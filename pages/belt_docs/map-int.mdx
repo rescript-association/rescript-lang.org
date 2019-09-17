@@ -1,0 +1,340 @@
+---
+id: map-int
+title: MapInt
+---
+
+## key
+
+```
+type key = int;
+```
+
+## t
+
+```
+type t('value);
+```
+
+## empty
+
+```
+let empty: t('v);
+```
+
+## isEmpty
+
+```
+let isEmpty: t('v) => bool;
+```
+
+## has
+
+```
+let has: (t('v), key) => bool;
+```
+
+## cmpU
+
+```
+let cmpU: (t('v), t('v), [@bs] (('v, 'v) => int)) => int;
+```
+
+## cmp
+
+```
+let cmp: (t('v), t('v), ('v, 'v) => int) => int;
+```
+
+## eqU
+
+```
+let eqU: (t('v), t('v), [@bs] (('v, 'v) => bool)) => bool;
+```
+
+## eq
+
+```
+let eq: (t('v), t('v), ('v, 'v) => bool) => bool;
+```
+
+## findFirstByU
+
+```
+let findFirstByU: (t('v), [@bs] ((key, 'v) => bool)) => option((key, 'v));
+```
+
+## findFirstBy
+
+```
+let findFirstBy: (t('v), (key, 'v) => bool) => option((key, 'v));
+```
+
+## forEachU
+
+```
+let forEachU: (t('v), [@bs] ((key, 'v) => unit)) => unit;
+```
+
+## forEach
+
+```
+let forEach: (t('v), (key, 'v) => unit) => unit;
+```
+
+## reduceU
+
+```
+let reduceU: (t('v), 'v2, [@bs] (('v2, key, 'v) => 'v2)) => 'v2;
+```
+
+## reduce
+
+```
+let reduce: (t('v), 'v2, ('v2, key, 'v) => 'v2) => 'v2;
+```
+
+## everyU
+
+```
+let everyU: (t('v), [@bs] ((key, 'v) => bool)) => bool;
+```
+
+## every
+
+```
+let every: (t('v), (key, 'v) => bool) => bool;
+```
+
+## someU
+
+```
+let someU: (t('v), [@bs] ((key, 'v) => bool)) => bool;
+```
+
+## some
+
+```
+let some: (t('v), (key, 'v) => bool) => bool;
+```
+
+## size
+
+```
+let size: t('v) => int;
+```
+
+## toList
+
+```
+let toList: t('v) => list((key, 'v));
+```
+
+## toArray
+
+```
+let toArray: t('v) => array((key, 'v));
+```
+
+## fromArray
+
+```
+let fromArray: array((key, 'v)) => t('v);
+```
+
+## keysToArray
+
+```
+let keysToArray: t('v) => array(key);
+```
+
+## valuesToArray
+
+```
+let valuesToArray: t('v) => array('v);
+```
+
+## minKey
+
+```
+let minKey: t('a) => option(key);
+```
+
+## minKeyUndefined
+
+```
+let minKeyUndefined: t('a) => Js.undefined(key);
+```
+
+## maxKey
+
+```
+let maxKey: t('a) => option(key);
+```
+
+## maxKeyUndefined
+
+```
+let maxKeyUndefined: t('a) => Js.undefined(key);
+```
+
+## minimum
+
+```
+let minimum: t('v) => option((key, 'v));
+```
+
+## minUndefined
+
+```
+let minUndefined: t('v) => Js.undefined((key, 'v));
+```
+
+## maximum
+
+```
+let maximum: t('v) => option((key, 'v));
+```
+
+## maxUndefined
+
+```
+let maxUndefined: t('v) => Js.undefined((key, 'v));
+```
+
+## get
+
+```
+let get: (t('v), key) => option('v);
+```
+
+## getUndefined
+
+```
+let getUndefined: (t('v), key) => Js.undefined('v);
+```
+
+## getWithDefault
+
+```
+let getWithDefault: (t('v), key, 'v) => 'v;
+```
+
+## getExn
+
+```
+let getExn: (t('v), key) => 'v;
+```
+
+## checkInvariantInternal
+
+```
+let checkInvariantInternal: t('a) => unit;
+```
+
+## checkInvariantInternal
+
+```
+let checkInvariantInternal: t('a) => unit;
+```
+
+## remove
+
+```
+let remove: (t('v), key) => t('v);
+```
+
+## removeMany
+
+```
+let removeMany: (t('v), array(key)) => t('v);
+```
+
+## set
+
+```
+let set: (t('v), key, 'v) => t('v);
+```
+
+## updateU
+
+```
+let updateU: (t('v), key, [@bs] (option('v) => option('v))) => t('v);
+```
+
+## update
+
+```
+let update: (t('v), key, option('v) => option('v)) => t('v);
+```
+
+## mergeU
+
+```
+let mergeU: (t('v), t('v2), [@bs] ((key, option('v), option('v2)) => option('c))) => t('c);
+```
+
+## merge
+
+```
+let merge: (t('v), t('v2), (key, option('v), option('v2)) => option('c)) => t('c);
+```
+
+## mergeMany
+
+```
+let mergeMany: (t('v), array((key, 'v))) => t('v);
+```
+
+## keepU
+
+```
+let keepU: (t('v), [@bs] ((key, 'v) => bool)) => t('v);
+```
+
+## keep
+
+```
+let keep: (t('v), (key, 'v) => bool) => t('v);
+```
+
+## partitionU
+
+```
+let partitionU: (t('v), [@bs] ((key, 'v) => bool)) => (t('v), t('v));
+```
+
+## partition
+
+```
+let partition: (t('v), (key, 'v) => bool) => (t('v), t('v));
+```
+
+## split
+
+```
+let split: (key, t('v)) => (t('v), option('v), t('v));
+```
+
+## mapU
+
+```
+let mapU: (t('v), [@bs] ('v => 'v2)) => t('v2);
+```
+
+## map
+
+```
+let map: (t('v), 'v => 'v2) => t('v2);
+```
+
+## mapWithKeyU
+
+```
+let mapWithKeyU: (t('v), [@bs] ((key, 'v) => 'v2)) => t('v2);
+```
+
+## mapWithKey
+
+```
+let mapWithKey: (t('v), (key, 'v) => 'v2) => t('v2);
+```

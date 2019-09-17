@@ -4,7 +4,7 @@
   "reason": { "react-jsx": 3 },
   "refmt": 3,
   "bs-dependencies": ["reason-react", "bs-fetch", "@glennsl/bs-json"],
-  "ppx-flags": ["graphql_ppx/ppx"],
+  "ppx-flags": [],
   "sources": [
     { "dir": "common" },
     { "dir": "bindings" },

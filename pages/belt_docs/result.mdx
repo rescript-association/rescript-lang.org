@@ -1,0 +1,88 @@
+---
+id: result
+title: Result
+---
+
+## getExn
+
+```
+let getExn: t('a, 'b) => 'a;
+```
+
+## mapWithDefaultU
+
+```
+let mapWithDefaultU: (t('a, 'c), 'b, [@bs] ('a => 'b)) => 'b;
+```
+
+## mapWithDefault
+
+```
+let mapWithDefault: (t('a, 'c), 'b, 'a => 'b) => 'b;
+```
+
+## mapU
+
+```
+let mapU: (t('a, 'c), [@bs] ('a => 'b)) => t('b, 'c);
+```
+
+## map
+
+```
+let map: (t('a, 'c), 'a => 'b) => t('b, 'c);
+```
+
+## flatMapU
+
+```
+let flatMapU: (t('a, 'c), [@bs] ('a => t('b, 'c))) => t('b, 'c);
+```
+
+## flatMap
+
+```
+let flatMap: (t('a, 'c), 'a => t('b, 'c)) => t('b, 'c);
+```
+
+## getWithDefault
+
+```
+let getWithDefault: (t('a, 'b), 'a) => 'a;
+```
+
+## isOk
+
+```
+let isOk: t('a, 'b) => bool;
+```
+
+## isError
+
+```
+let isError: t('a, 'b) => bool;
+```
+
+## eqU
+
+```
+let eqU: (t('a, 'c), t('b, 'd), [@bs] (('a, 'b) => bool)) => bool;
+```
+
+## eq
+
+```
+let eq: (t('a, 'c), t('b, 'd), ('a, 'b) => bool) => bool;
+```
+
+## cmpU
+
+```
+let cmpU: (t('a, 'c), t('b, 'd), [@bs] (('a, 'b) => int)) => int;
+```
+
+## cmp
+
+```
+let cmp: (t('a, 'c), t('b, 'd), ('a, 'b) => int) => int;
+```

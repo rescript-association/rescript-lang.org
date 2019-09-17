@@ -1,0 +1,136 @@
+---
+id: mutable-queue
+title: MutableQueue
+---
+
+## t
+
+```
+type t('a);
+```
+
+## make
+
+```
+let make: unit => t('a);
+```
+
+## clear
+
+```
+let clear: t('a) => unit;
+```
+
+## isEmpty
+
+```
+let isEmpty: t('a) => bool;
+```
+
+## fromArray
+
+```
+let fromArray: array('a) => t('a);
+```
+
+## add
+
+```
+let add: (t('a), 'a) => unit;
+```
+
+## peek
+
+```
+let peek: t('a) => option('a);
+```
+
+## peekUndefined
+
+```
+let peekUndefined: t('a) => Js.undefined('a);
+```
+
+## peekExn
+
+```
+let peekExn: t('a) => 'a;
+```
+
+## pop
+
+```
+let pop: t('a) => option('a);
+```
+
+## popUndefined
+
+```
+let popUndefined: t('a) => Js.undefined('a);
+```
+
+## popExn
+
+```
+let popExn: t('a) => 'a;
+```
+
+## copy
+
+```
+let copy: t('a) => t('a);
+```
+
+## size
+
+```
+let size: t('a) => int;
+```
+
+## mapU
+
+```
+let mapU: (t('a), [@bs] ('a => 'b)) => t('b);
+```
+
+## map
+
+```
+let map: (t('a), 'a => 'b) => t('b);
+```
+
+## forEachU
+
+```
+let forEachU: (t('a), [@bs] ('a => unit)) => unit;
+```
+
+## forEach
+
+```
+let forEach: (t('a), 'a => unit) => unit;
+```
+
+## reduceU
+
+```
+let reduceU: (t('a), 'b, [@bs] (('b, 'a) => 'b)) => 'b;
+```
+
+## reduce
+
+```
+let reduce: (t('a), 'b, ('b, 'a) => 'b) => 'b;
+```
+
+## transfer
+
+```
+let transfer: (t('a), t('a)) => unit;
+```
+
+## toArray
+
+```
+let toArray: t('a) => array('a);
+```

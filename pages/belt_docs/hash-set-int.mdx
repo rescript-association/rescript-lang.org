@@ -1,0 +1,118 @@
+---
+id: hash-set-int
+title: HashSetInt
+---
+
+## key
+
+```
+type key = int;
+```
+
+## t
+
+```
+type t;
+```
+
+## make
+
+```
+let make: (~hintSize: int) => t;
+```
+
+## clear
+
+```
+let clear: t => unit;
+```
+
+## isEmpty
+
+```
+let isEmpty: t => bool;
+```
+
+## add
+
+```
+let add: (t, key) => unit;
+```
+
+## copy
+
+```
+let copy: t => t;
+```
+
+## has
+
+```
+let has: (t, key) => bool;
+```
+
+## remove
+
+```
+let remove: (t, key) => unit;
+```
+
+## forEachU
+
+```
+let forEachU: (t, [@bs] (key => unit)) => unit;
+```
+
+## forEach
+
+```
+let forEach: (t, key => unit) => unit;
+```
+
+## reduceU
+
+```
+let reduceU: (t, 'c, [@bs] (('c, key) => 'c)) => 'c;
+```
+
+## reduce
+
+```
+let reduce: (t, 'c, ('c, key) => 'c) => 'c;
+```
+
+## size
+
+```
+let size: t => int;
+```
+
+## logStats
+
+```
+let logStats: t => unit;
+```
+
+## toArray
+
+```
+let toArray: t => array(key);
+```
+
+## fromArray
+
+```
+let fromArray: array(key) => t;
+```
+
+## mergeMany
+
+```
+let mergeMany: (t, array(key)) => unit;
+```
+
+## getBucketHistogram
+
+```
+let getBucketHistogram: t => array(int);
+```

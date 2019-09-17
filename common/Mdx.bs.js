@@ -1,7 +1,7 @@
 
 
 import * as $$Text from "../components/Text.bs.js";
-import * as Block from "bs-platform/lib/es6/block.js";
+import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
 var $$default = {
   p: $$Text.Md[/* P */3][/* make */0],
@@ -19,9 +19,9 @@ var $$default = {
   a: $$Text.Md[/* A */4][/* make */2]
 };
 
-var Components = /* module */Block.localModule(["default"], [$$default]);
+var Components = /* module */Caml_chrome_debugger.localModule(["default"], [$$default]);
 
-var Provider = /* module */Block.localModule([], []);
+var Provider = /* module */Caml_chrome_debugger.localModule([], []);
 
 export {
   Components ,

@@ -1,0 +1,280 @@
+---
+id: mutable-map-string
+title: MutableMapString
+---
+
+## key
+
+```
+type key = string;
+```
+
+## t
+
+```
+type t('a);
+```
+
+## make
+
+```
+let make: unit => t('a);
+```
+
+## clear
+
+```
+let clear: t('a) => unit;
+```
+
+## isEmpty
+
+```
+let isEmpty: t('a) => bool;
+```
+
+## has
+
+```
+let has: (t('a), key) => bool;
+```
+
+## cmpU
+
+```
+let cmpU: (t('a), t('a), [@bs] (('a, 'a) => int)) => int;
+```
+
+## cmp
+
+```
+let cmp: (t('a), t('a), ('a, 'a) => int) => int;
+```
+
+## eqU
+
+```
+let eqU: (t('a), t('a), [@bs] (('a, 'a) => bool)) => bool;
+```
+
+## eq
+
+```
+let eq: (t('a), t('a), ('a, 'a) => bool) => bool;
+```
+
+## forEachU
+
+```
+let forEachU: (t('a), [@bs] ((key, 'a) => unit)) => unit;
+```
+
+## forEach
+
+```
+let forEach: (t('a), (key, 'a) => unit) => unit;
+```
+
+## reduceU
+
+```
+let reduceU: (t('a), 'b, [@bs] (('b, key, 'a) => 'b)) => 'b;
+```
+
+## reduce
+
+```
+let reduce: (t('a), 'b, ('b, key, 'a) => 'b) => 'b;
+```
+
+## everyU
+
+```
+let everyU: (t('a), [@bs] ((key, 'a) => bool)) => bool;
+```
+
+## every
+
+```
+let every: (t('a), (key, 'a) => bool) => bool;
+```
+
+## someU
+
+```
+let someU: (t('a), [@bs] ((key, 'a) => bool)) => bool;
+```
+
+## some
+
+```
+let some: (t('a), (key, 'a) => bool) => bool;
+```
+
+## size
+
+```
+let size: t('a) => int;
+```
+
+## toList
+
+```
+let toList: t('a) => list((key, 'a));
+```
+
+## toArray
+
+```
+let toArray: t('a) => array((key, 'a));
+```
+
+## fromArray
+
+```
+let fromArray: array((key, 'a)) => t('a);
+```
+
+## keysToArray
+
+```
+let keysToArray: t('a) => array(key);
+```
+
+## valuesToArray
+
+```
+let valuesToArray: t('a) => array('a);
+```
+
+## minKey
+
+```
+let minKey: t('a) => option(key);
+```
+
+## minKeyUndefined
+
+```
+let minKeyUndefined: t('a) => Js.undefined(key);
+```
+
+## maxKey
+
+```
+let maxKey: t('a) => option(key);
+```
+
+## maxKeyUndefined
+
+```
+let maxKeyUndefined: t('a) => Js.undefined(key);
+```
+
+## minimum
+
+```
+let minimum: t('a) => option((key, 'a));
+```
+
+## minUndefined
+
+```
+let minUndefined: t('a) => Js.undefined((key, 'a));
+```
+
+## maximum
+
+```
+let maximum: t('a) => option((key, 'a));
+```
+
+## maxUndefined
+
+```
+let maxUndefined: t('a) => Js.undefined((key, 'a));
+```
+
+## get
+
+```
+let get: (t('a), key) => option('a);
+```
+
+## getUndefined
+
+```
+let getUndefined: (t('a), key) => Js.undefined('a);
+```
+
+## getWithDefault
+
+```
+let getWithDefault: (t('a), key, 'a) => 'a;
+```
+
+## getExn
+
+```
+let getExn: (t('a), key) => 'a;
+```
+
+## checkInvariantInternal
+
+```
+let checkInvariantInternal: t('a) => unit;
+```
+
+## remove
+
+```
+let remove: (t('a), key) => unit;
+```
+
+## removeMany
+
+```
+let removeMany: (t('a), array(key)) => unit;
+```
+
+## set
+
+```
+let set: (t('a), key, 'a) => unit;
+```
+
+## updateU
+
+```
+let updateU: (t('a), key, [@bs] (option('a) => option('a))) => unit;
+```
+
+## update
+
+```
+let update: (t('a), key, option('a) => option('a)) => unit;
+```
+
+## mapU
+
+```
+let mapU: (t('a), [@bs] ('a => 'b)) => t('b);
+```
+
+## map
+
+```
+let map: (t('a), 'a => 'b) => t('b);
+```
+
+## mapWithKeyU
+
+```
+let mapWithKeyU: (t('a), [@bs] ((key, 'a) => 'b)) => t('b);
+```
+
+## mapWithKey
+
+```
+let mapWithKey: (t('a), (key, 'a) => 'b) => t('b);
+```

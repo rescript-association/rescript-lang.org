@@ -1,0 +1,262 @@
+---
+id: set
+title: Set
+---
+
+## t
+
+```
+type t('value, 'identity);
+```
+
+## id
+
+```
+type id('value, 'id) = Belt_Id.comparable('value, 'id);
+```
+
+## make
+
+```
+let make: (~id: id('value, 'id)) => t('value, 'id);
+```
+
+## fromArray
+
+```
+let fromArray: (array('value), ~id: id('value, 'id)) => t('value, 'id);
+```
+
+## fromSortedArrayUnsafe
+
+```
+let fromSortedArrayUnsafe: (array('value), ~id: id('value, 'id)) => t('value, 'id);
+```
+
+## isEmpty
+
+```
+let isEmpty: t('a, 'b) => bool;
+```
+
+## has
+
+```
+let has: (t('value, 'id), 'value) => bool;
+```
+
+## add
+
+```
+let add: (t('value, 'id), 'value) => t('value, 'id);
+```
+
+## mergeMany
+
+```
+let mergeMany: (t('value, 'id), array('value)) => t('value, 'id);
+```
+
+## remove
+
+```
+let remove: (t('value, 'id), 'value) => t('value, 'id);
+```
+
+## removeMany
+
+```
+let removeMany: (t('value, 'id), array('value)) => t('value, 'id);
+```
+
+## union
+
+```
+let union: (t('value, 'id), t('value, 'id)) => t('value, 'id);
+```
+
+## intersect
+
+```
+let intersect: (t('value, 'id), t('value, 'id)) => t('value, 'id);
+```
+
+## diff
+
+```
+let diff: (t('value, 'id), t('value, 'id)) => t('value, 'id);
+```
+
+## subset
+
+```
+let subset: (t('value, 'id), t('value, 'id)) => bool;
+```
+
+## cmp
+
+```
+let cmp: (t('value, 'id), t('value, 'id)) => int;
+```
+
+## eq
+
+```
+let eq: (t('value, 'id), t('value, 'id)) => bool;
+```
+
+## forEachU
+
+```
+let forEachU: (t('value, 'id), [@bs] ('value => unit)) => unit;
+```
+
+## forEach
+
+```
+let forEach: (t('value, 'id), 'value => unit) => unit;
+```
+
+## reduceU
+
+```
+let reduceU: (t('value, 'id), 'a, [@bs] (('a, 'value) => 'a)) => 'a;
+```
+
+## reduce
+
+```
+let reduce: (t('value, 'id), 'a, ('a, 'value) => 'a) => 'a;
+```
+
+## everyU
+
+```
+let everyU: (t('value, 'id), [@bs] ('value => bool)) => bool;
+```
+
+## every
+
+```
+let every: (t('value, 'id), 'value => bool) => bool;
+```
+
+## someU
+
+```
+let someU: (t('value, 'id), [@bs] ('value => bool)) => bool;
+```
+
+## some
+
+```
+let some: (t('value, 'id), 'value => bool) => bool;
+```
+
+## keepU
+
+```
+let keepU: (t('value, 'id), [@bs] ('value => bool)) => t('value, 'id);
+```
+
+## keep
+
+```
+let keep: (t('value, 'id), 'value => bool) => t('value, 'id);
+```
+
+## partitionU
+
+```
+let partitionU: (t('value, 'id), [@bs] ('value => bool)) => (t('value, 'id), t('value, 'id));
+```
+
+## partition
+
+```
+let partition: (t('value, 'id), 'value => bool) => (t('value, 'id), t('value, 'id));
+```
+
+## size
+
+```
+let size: t('value, 'id) => int;
+```
+
+## toArray
+
+```
+let toArray: t('value, 'id) => array('value);
+```
+
+## toList
+
+```
+let toList: t('value, 'id) => list('value);
+```
+
+## minimum
+
+```
+let minimum: t('value, 'id) => option('value);
+```
+
+## minUndefined
+
+```
+let minUndefined: t('value, 'id) => Js.undefined('value);
+```
+
+## maximum
+
+```
+let maximum: t('value, 'id) => option('value);
+```
+
+## maxUndefined
+
+```
+let maxUndefined: t('value, 'id) => Js.undefined('value);
+```
+
+## get
+
+```
+let get: (t('value, 'id), 'value) => option('value);
+```
+
+## getUndefined
+
+```
+let getUndefined: (t('value, 'id), 'value) => Js.undefined('value);
+```
+
+## getExn
+
+```
+let getExn: (t('value, 'id), 'value) => 'value;
+```
+
+## split
+
+```
+let split: (t('value, 'id), 'value) => ((t('value, 'id), t('value, 'id)), bool);
+```
+
+## getData
+
+```
+let getData: t('value, 'id) => Belt_SetDict.t('value, 'id);
+```
+
+## getId
+
+```
+let getId: t('value, 'id) => id('value, 'id);
+```
+
+## packIdData
+
+```
+let packIdData: (~id: id('value, 'id), ~data: Belt_SetDict.t('value, 'id)) => t('value, 'id);
+```

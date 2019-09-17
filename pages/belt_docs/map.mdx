@@ -1,0 +1,344 @@
+---
+id: map
+title: Map
+---
+
+## t
+
+```
+type t('key, 'value, 'identity);
+```
+
+## id
+
+```
+type id('key, 'id) = Belt_Id.comparable('key, 'id);
+```
+
+## isEmpty
+
+```
+let isEmpty: t('a, 'b, 'c) => bool;
+```
+
+## has
+
+```
+let has: (t('k, 'v, 'id), 'k) => bool;
+```
+
+## cmpU
+
+```
+let cmpU: (t('k, 'v, 'id), t('k, 'v, 'id), [@bs] (('v, 'v) => int)) => int;
+```
+
+## cmp
+
+```
+let cmp: (t('k, 'v, 'id), t('k, 'v, 'id), ('v, 'v) => int) => int;
+```
+
+## eq
+
+```
+let eqU: (t('k, 'v, 'id), t('k, 'v, 'id), [@bs] (('v, 'v) => bool)) => bool;
+```
+
+## eq
+
+```
+let eq: (t('k, 'v, 'id), t('k, 'v, 'id), ('v, 'v) => bool) => bool;
+```
+
+## findFirstByU
+
+```
+let findFirstByU: (t('k, 'v, 'id), [@bs] (('k, 'v) => bool)) => option(('k, 'v));
+```
+
+## findFirstBy
+
+```
+let findFirstBy: (t('k, 'v, 'id), ('k, 'v) => bool) => option(('k, 'v));
+```
+
+## forEachU
+
+```
+let forEachU: (t('k, 'v, 'id), [@bs] (('k, 'v) => unit)) => unit;
+```
+
+## forEach
+
+```
+let forEach: (t('k, 'v, 'id), ('k, 'v) => unit) => unit;
+```
+
+## reduceU
+
+```
+let reduceU: (t('k, 'v, 'id), 'acc, [@bs] (('acc, 'k, 'v) => 'acc)) => 'acc;
+```
+
+## reduce
+
+```
+let reduce: (t('k, 'v, 'id), 'acc, ('acc, 'k, 'v) => 'acc) => 'acc;
+```
+
+## everyU
+
+```
+let everyU: (t('k, 'v, 'id), [@bs] (('k, 'v) => bool)) => bool;
+```
+
+## every
+
+```
+let every: (t('k, 'v, 'id), ('k, 'v) => bool) => bool;
+```
+
+## someU
+
+```
+let someU: (t('k, 'v, 'id), [@bs] (('k, 'v) => bool)) => bool;
+```
+
+## some
+
+```
+let some: (t('k, 'v, 'id), ('k, 'v) => bool) => bool;
+```
+
+## size
+
+```
+let size: t('k, 'v, 'id) => int;
+```
+
+## toArray
+
+```
+let toArray: t('k, 'v, 'id) => array(('k, 'v));
+```
+
+## toList
+
+```
+let toList: t('k, 'v, 'id) => list(('k, 'v));
+```
+
+## fromArray
+
+```
+let fromArray: (array(('k, 'v)), ~id: id('k, 'id)) => t('k, 'v, 'id);
+```
+
+## keysToArray
+
+```
+let keysToArray: t('k, 'v, 'id) => array('k);
+```
+
+## valuesToArray
+
+```
+let valuesToArray: t('k, 'v, 'id) => array('v);
+```
+
+## minKey
+
+```
+let minKey: t('k, 'a, 'b) => option('k);
+```
+
+## minKeyUndefined
+
+```
+let minKeyUndefined: t('k, 'a, 'b) => Js.undefined('k);
+```
+
+## maxKey
+
+```
+let maxKey: t('k, 'a, 'b) => option('k);
+```
+
+## maxKeyUndefined
+
+```
+let maxKeyUndefined: t('k, 'a, 'b) => Js.undefined('k);
+```
+
+## minimum
+
+```
+let minimum: t('k, 'v, 'a) => option(('k, 'v));
+```
+
+## minUndefined
+
+```
+let minUndefined: t('k, 'v, 'a) => Js.undefined(('k, 'v));
+```
+
+## maximum
+
+```
+let maximum: t('k, 'v, 'a) => option(('k, 'v));
+```
+
+## maxUndefined
+
+```
+let maxUndefined: t('k, 'v, 'a) => Js.undefined(('k, 'v));
+```
+
+## get
+
+```
+let get: (t('k, 'v, 'id), 'k) => option('v);
+```
+
+## getUndefined
+
+```
+let getUndefined: (t('k, 'v, 'id), 'k) => Js.undefined('v);
+```
+
+## getWithDefault
+
+```
+let getWithDefault: (t('k, 'v, 'id), 'k, 'v) => 'v;
+```
+
+## getExn
+
+```
+let getExn: (t('k, 'v, 'id), 'k) => 'v;
+```
+
+## remove
+
+```
+let remove: (t('k, 'v, 'id), 'k) => t('k, 'v, 'id);
+```
+
+## removeMany
+
+```
+let removeMany: (t('k, 'v, 'id), array('k)) => t('k, 'v, 'id);
+```
+
+## set
+
+```
+let set: (t('k, 'v, 'id), 'k, 'v) => t('k, 'v, 'id);
+```
+
+## updateU
+
+```
+let updateU: (t('k, 'v, 'id), 'k, [@bs] (option('v) => option('v))) => t('k, 'v, 'id);
+```
+
+## update
+
+```
+let update: (t('k, 'v, 'id), 'k, option('v) => option('v)) => t('k, 'v, 'id);
+```
+
+## mergeMany
+
+```
+let mergeMany: (t('k, 'v, 'id), array(('k, 'v))) => t('k, 'v, 'id);
+```
+
+## mergeU
+
+```
+let mergeU:
+(t('k, 'v, 'id), t('k, 'v2, 'id), [@bs] (('k, option('v), option('v2)) => option('v3))) =>
+t('k, 'v3, 'id);
+```
+
+## merge
+
+```
+let merge:
+(t('k, 'v, 'id), t('k, 'v2, 'id), ('k, option('v), option('v2)) => option('v3)) =>
+t('k, 'v3, 'id);
+```
+
+## keepU
+
+```
+let keepU: (t('k, 'v, 'id), [@bs] (('k, 'v) => bool)) => t('k, 'v, 'id);
+```
+
+## keep
+
+```
+let keep: (t('k, 'v, 'id), ('k, 'v) => bool) => t('k, 'v, 'id);
+```
+
+## partitionU
+
+```
+let partitionU: (t('k, 'v, 'id), [@bs] (('k, 'v) => bool)) => (t('k, 'v, 'id), t('k, 'v, 'id));
+```
+
+## partition
+
+```
+let partition: (t('k, 'v, 'id), ('k, 'v) => bool) => (t('k, 'v, 'id), t('k, 'v, 'id));
+```
+
+## split
+
+```
+let split: (t('k, 'v, 'id), 'k) => ((t('k, 'v, 'id), t('k, 'v, 'id)), option('v));
+```
+
+## mapU
+
+```
+let mapU: (t('k, 'v, 'id), [@bs] ('v => 'v2)) => t('k, 'v2, 'id);
+```
+
+## map
+
+```
+let map: (t('k, 'v, 'id), 'v => 'v2) => t('k, 'v2, 'id);
+```
+
+## mapWithKeyU
+
+```
+let mapWithKeyU: (t('k, 'v, 'id), [@bs] (('k, 'v) => 'v2)) => t('k, 'v2, 'id);
+```
+
+## mapWithKey
+
+```
+let mapWithKey: (t('k, 'v, 'id), ('k, 'v) => 'v2) => t('k, 'v2, 'id);
+```
+
+## getData
+
+```
+let getData: t('k, 'v, 'id) => Belt_MapDict.t('k, 'v, 'id);
+```
+
+## getId
+
+```
+let getId: t('k, 'v, 'id) => id('k, 'id);
+```
+
+## packIdData
+
+```
+let packIdData: (~id: id('k, 'id), ~data: Belt_MapDict.t('k, 'v, 'id)) => t('k, 'v, 'id);
+```

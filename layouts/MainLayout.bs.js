@@ -3,10 +3,10 @@
 import * as Mdx from "../common/Mdx.bs.js";
 import * as $$Text from "../components/Text.bs.js";
 import * as Util from "../common/Util.bs.js";
-import * as Block from "bs-platform/lib/es6/block.js";
 import * as React from "react";
 import * as Link from "next/link";
 import * as React$1 from "@mdx-js/react";
+import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
 require('../styles/main.css')
 ;
@@ -24,7 +24,12 @@ function MainLayout$Navigation(Props) {
                           }))
                 }), React.createElement("div", {
                   className: "flex w-1/3 justify-end"
-                }, React.createElement("a", {
+                }, React.createElement(Link.default, {
+                      href: "/belt_docs",
+                      children: React.createElement("a", {
+                            className: $$Text.Link[/* inline */0] + " mx-2"
+                          }, Util.ReactStuff[/* s */0]("Belt Documentation"))
+                    }), React.createElement("a", {
                       className: $$Text.Link[/* inline */0],
                       href: "https://github.com/reason-association/reasonml.org",
                       rel: "noopener noreferrer",
@@ -32,7 +37,7 @@ function MainLayout$Navigation(Props) {
                     }, Util.ReactStuff[/* s */0]("Github"))));
 }
 
-var Navigation = /* module */Block.localModule(["make"], [MainLayout$Navigation]);
+var Navigation = /* module */Caml_chrome_debugger.localModule(["make"], [MainLayout$Navigation]);
 
 function MainLayout(Props) {
   var children = Props.children;

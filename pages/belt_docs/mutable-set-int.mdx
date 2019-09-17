@@ -1,0 +1,268 @@
+---
+id: mutable-set-int
+title: MutableSetInt
+---
+
+## value
+
+```
+type value = int;
+```
+
+## t
+
+```
+type t;
+```
+
+## make
+
+```
+let make: unit => t;
+```
+
+## fromArray
+
+```
+let fromArray: array(value) => t;
+```
+
+## fromSortedArrayUnsafe
+
+```
+let fromSortedArrayUnsafe: array(value) => t;
+```
+
+## copy
+
+```
+let copy: t => t;
+```
+
+## isEmpty
+
+```
+let isEmpty: t => bool;
+```
+
+## has
+
+```
+let has: (t, value) => bool;
+```
+
+## add
+
+```
+let add: (t, value) => unit;
+```
+
+## addCheck
+
+```
+let addCheck: (t, value) => bool;
+```
+
+## mergeMany
+
+```
+let mergeMany: (t, array(value)) => unit;
+```
+
+## remove
+
+```
+let remove: (t, value) => unit;
+```
+
+## removeCheck
+
+```
+let removeCheck: (t, value) => bool;
+```
+
+## removeMany
+
+```
+let removeMany: (t, array(value)) => unit;
+```
+
+## union
+
+```
+let union: (t, t) => t;
+```
+
+## intersect
+
+```
+let intersect: (t, t) => t;
+```
+
+## diff
+
+```
+let diff: (t, t) => t;
+```
+
+## subset
+
+```
+let subset: (t, t) => bool;
+```
+
+## cmp
+
+```
+let cmp: (t, t) => int;
+```
+
+## eq
+
+```
+let eq: (t, t) => bool;
+```
+
+## forEachU
+
+```
+let forEachU: (t, [@bs] (value => unit)) => unit;
+```
+
+## forEach
+
+```
+let forEach: (t, value => unit) => unit;
+```
+
+## reduceU
+
+```
+let reduceU: (t, 'a, [@bs] (('a, value) => 'a)) => 'a;
+```
+
+## reduce
+
+```
+let reduce: (t, 'a, ('a, value) => 'a) => 'a;
+```
+
+## everyU
+
+```
+let everyU: (t, [@bs] (value => bool)) => bool;
+```
+
+## every
+
+```
+let every: (t, value => bool) => bool;
+```
+
+## someU
+
+```
+let someU: (t, [@bs] (value => bool)) => bool;
+```
+
+## some
+
+```
+let some: (t, value => bool) => bool;
+```
+
+## keepU
+
+```
+let keepU: (t, [@bs] (value => bool)) => t;
+```
+
+## keep
+
+```
+let keep: (t, value => bool) => t;
+```
+
+## partitionU
+
+```
+let partitionU: (t, [@bs] (value => bool)) => (t, t);
+```
+
+## partition
+
+```
+let partition: (t, value => bool) => (t, t);
+```
+
+## size
+
+```
+let size: t => int;
+```
+
+## toList
+
+```
+let toList: t => list(value);
+```
+
+## toArray
+
+```
+let toArray: t => array(value);
+```
+
+## minimum
+
+```
+let minimum: t => option(value);
+```
+
+## minUndefined
+
+```
+let minUndefined: t => Js.undefined(value);
+```
+
+## maximum
+
+```
+let maximum: t => option(value);
+```
+
+## maxUndefined
+
+```
+let maxUndefined: t => Js.undefined(value);
+```
+
+## get
+
+```
+let get: (t, value) => option(value);
+```
+
+## getUndefined
+
+```
+let getUndefined: (t, value) => Js.undefined(value);
+```
+
+## getExn
+
+```
+let getExn: (t, value) => value;
+```
+
+## split
+
+```
+let split: (t, value) => ((t, t), bool);
+```
+
+## checkInvariantInternal
+
+```
+let checkInvariantInternal: t => unit;
+```

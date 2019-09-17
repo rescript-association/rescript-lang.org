@@ -1,14 +1,14 @@
 
 
 import * as Util from "../common/Util.bs.js";
-import * as Block from "bs-platform/lib/es6/block.js";
 import * as React from "react";
 import * as ReactDOMRe from "reason-react/src/ReactDOMRe.js";
 import * as ReasonReact from "reason-react/src/ReasonReact.js";
+import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
 var inline = "no-underline border-b hover:text-main-lighten-20 hover:border-primary-dark-10 border-primary-lighten-50 text-inherit";
 
-var Link = /* module */Block.localModule([
+var Link = /* module */Caml_chrome_debugger.localModule([
     "inline",
     "standalone"
   ], [
@@ -32,7 +32,7 @@ function Text$Anchor(Props) {
                 }));
 }
 
-var Anchor = /* module */Block.localModule(["make"], [Text$Anchor]);
+var Anchor = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Anchor]);
 
 function Text$Box(Props) {
   var children = Props.children;
@@ -41,7 +41,7 @@ function Text$Box(Props) {
             }, children);
 }
 
-var Box = /* module */Block.localModule(["make"], [Text$Box]);
+var Box = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Box]);
 
 function Text$H1(Props) {
   var children = Props.children;
@@ -50,7 +50,7 @@ function Text$H1(Props) {
             }, children);
 }
 
-var H1 = /* module */Block.localModule(["make"], [Text$H1]);
+var H1 = /* module */Caml_chrome_debugger.localModule(["make"], [Text$H1]);
 
 function Text$H2(Props) {
   var children = Props.children;
@@ -59,7 +59,7 @@ function Text$H2(Props) {
             }, children);
 }
 
-var H2 = /* module */Block.localModule(["make"], [Text$H2]);
+var H2 = /* module */Caml_chrome_debugger.localModule(["make"], [Text$H2]);
 
 function Text$H3(Props) {
   var children = Props.children;
@@ -68,7 +68,7 @@ function Text$H3(Props) {
             }, children);
 }
 
-var H3 = /* module */Block.localModule(["make"], [Text$H3]);
+var H3 = /* module */Caml_chrome_debugger.localModule(["make"], [Text$H3]);
 
 function Text$H4(Props) {
   var children = Props.children;
@@ -77,7 +77,7 @@ function Text$H4(Props) {
             }, children);
 }
 
-var H4 = /* module */Block.localModule(["make"], [Text$H4]);
+var H4 = /* module */Caml_chrome_debugger.localModule(["make"], [Text$H4]);
 
 function Text$H5(Props) {
   var children = Props.children;
@@ -86,7 +86,7 @@ function Text$H5(Props) {
             }, children);
 }
 
-var H5 = /* module */Block.localModule(["make"], [Text$H5]);
+var H5 = /* module */Caml_chrome_debugger.localModule(["make"], [Text$H5]);
 
 function Text$Overline(Props) {
   var match = Props.underline;
@@ -100,7 +100,7 @@ function Text$Overline(Props) {
             }, children);
 }
 
-var Overline = /* module */Block.localModule(["make"], [Text$Overline]);
+var Overline = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Overline]);
 
 function Text$P(Props) {
   var match = Props.spacing;
@@ -113,7 +113,7 @@ function Text$P(Props) {
             }, children);
 }
 
-var P = /* module */Block.localModule(["make"], [Text$P]);
+var P = /* module */Caml_chrome_debugger.localModule(["make"], [Text$P]);
 
 function Text$Md$Pre(Props) {
   var children = Props.children;
@@ -122,7 +122,7 @@ function Text$Md$Pre(Props) {
             }, children);
 }
 
-var Pre = /* module */Block.localModule(["make"], [Text$Md$Pre]);
+var Pre = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Md$Pre]);
 
 function Text$Md$Code(Props) {
   var className = Props.className;
@@ -152,7 +152,7 @@ function Text$Md$Code(Props) {
             }, children);
 }
 
-var Code = /* module */Block.localModule(["make"], [Text$Md$Code]);
+var Code = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Md$Code]);
 
 function Text$Md$InlineCode(Props) {
   var children = Props.children;
@@ -161,7 +161,7 @@ function Text$Md$InlineCode(Props) {
             }, children);
 }
 
-var InlineCode = /* module */Block.localModule(["make"], [Text$Md$InlineCode]);
+var InlineCode = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Md$InlineCode]);
 
 function Text$Md$P(Props) {
   var children = Props.children;
@@ -170,7 +170,7 @@ function Text$Md$P(Props) {
             }, children);
 }
 
-var P$1 = /* module */Block.localModule(["make"], [Text$Md$P]);
+var P$1 = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Md$P]);
 
 var refPrefix = "ref-";
 
@@ -206,7 +206,7 @@ function Text$Md$A(Props) {
   }
 }
 
-var A = /* module */Block.localModule([
+var A = /* module */Caml_chrome_debugger.localModule([
     "refPrefix",
     "textRefPrefix",
     "make"
@@ -223,7 +223,7 @@ function Text$Md$Ul(Props) {
             }, children);
 }
 
-var Ul = /* module */Block.localModule(["make"], [Text$Md$Ul]);
+var Ul = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Md$Ul]);
 
 function Text$Md$Ol(Props) {
   var children = Props.children;
@@ -232,7 +232,7 @@ function Text$Md$Ol(Props) {
             }, children);
 }
 
-var Ol = /* module */Block.localModule(["make"], [Text$Md$Ol]);
+var Ol = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Md$Ol]);
 
 function typeOf (thing){{ return typeof thing; }};
 
@@ -265,7 +265,7 @@ function Text$Md$Li(Props) {
             }, elements);
 }
 
-var Li = /* module */Block.localModule([
+var Li = /* module */Caml_chrome_debugger.localModule([
     "typeOf",
     "isArray",
     "isSublist",
@@ -277,7 +277,7 @@ var Li = /* module */Block.localModule([
     Text$Md$Li
   ]);
 
-var Md = /* module */Block.localModule([
+var Md = /* module */Caml_chrome_debugger.localModule([
     "Pre",
     "Code",
     "InlineCode",
@@ -304,7 +304,7 @@ function Text$Small(Props) {
             }, children);
 }
 
-var Small = /* module */Block.localModule(["make"], [Text$Small]);
+var Small = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Small]);
 
 var component = ReasonReact.statelessComponent("Text.Xsmall");
 
@@ -315,7 +315,7 @@ function Text$Xsmall(Props) {
             }, children);
 }
 
-var Xsmall = /* module */Block.localModule([
+var Xsmall = /* module */Caml_chrome_debugger.localModule([
     "component",
     "make"
   ], [
@@ -330,7 +330,7 @@ function Text$Lead(Props) {
             }, children);
 }
 
-var Lead = /* module */Block.localModule(["make"], [Text$Lead]);
+var Lead = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Lead]);
 
 function Text$Quote(Props) {
   var match = Props.bold;
@@ -347,7 +347,7 @@ function Text$Quote(Props) {
                 }, children));
 }
 
-var Quote = /* module */Block.localModule(["make"], [Text$Quote]);
+var Quote = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Quote]);
 
 function Text$Page(Props) {
   var children = Props.children;
@@ -358,7 +358,7 @@ function Text$Page(Props) {
                 }, children));
 }
 
-var Page = /* module */Block.localModule(["make"], [Text$Page]);
+var Page = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Page]);
 
 export {
   Link ,

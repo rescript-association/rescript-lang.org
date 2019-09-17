@@ -1,0 +1,64 @@
+---
+id: range
+title: Range
+---
+
+## forEachU
+
+```
+let forEachU: (int, int, [@bs] (int => unit)) => unit;
+```
+
+## forEach
+
+```
+let forEach: (int, int, int => unit) => unit;
+```
+
+## everyU
+
+```
+let everyU: (int, int, [@bs] (int => bool)) => bool;
+```
+
+## every
+
+```
+let every: (int, int, int => bool) => bool;
+```
+
+## everyByU
+
+```
+let everyByU: (int, int, ~step: int, [@bs] (int => bool)) => bool;
+```
+
+## everyBy
+
+```
+let everyBy: (int, int, ~step: int, int => bool) => bool;
+```
+
+## someU
+
+```
+let someU: (int, int, [@bs] (int => bool)) => bool;
+```
+
+## some
+
+```
+let some: (int, int, int => bool) => bool;
+```
+
+## someByU
+
+```
+let someByU: (int, int, ~step: int, [@bs] (int => bool)) => bool;
+```
+
+## someBy
+
+```
+let someBy: (int, int, ~step: int, int => bool) => bool;
+```

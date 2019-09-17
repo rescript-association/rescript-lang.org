@@ -1,0 +1,538 @@
+---
+id: list
+title: List
+---
+
+## t('a)
+
+```
+type t('a) = list('a);
+```
+
+## length
+
+```
+let length: t('a) => int;
+```
+
+## size
+
+```
+let size: t('a) => int;
+```
+
+## head
+
+```
+let head: t('a) => option('a);
+```
+
+## headExn
+
+```
+let headExn: t('a) => 'a;
+```
+
+## tail
+
+```
+let tail: t('a) => option(t('a));
+```
+
+## tailExn
+
+```
+let tailExn: t('a) => t('a);
+```
+
+## add
+
+```
+let add: (t('a), 'a) => t('a);
+```
+
+## get
+
+```
+let get: (t('a), int) => option('a);
+```
+
+## getExn
+
+```
+let getExn: (t('a), int) => 'a;
+```
+
+## make
+
+```
+let make: (int, 'a) => t('a);
+```
+
+## makeByU
+
+```
+let makeByU: (int, [@bs] (int => 'a)) => t('a);
+```
+
+## makeBy
+
+```
+let makeBy: (int, int => 'a) => t('a);
+```
+
+## shuffle
+
+```
+let shuffle: t('a) => t('a);
+```
+
+## drop
+
+```
+let drop: (t('a), int) => option(t('a));
+```
+
+## take
+
+```
+let take: (t('a), int) => option(t('a));
+```
+
+## splitAt
+
+```
+let splitAt: (t('a), int) => option((list('a), list('a)));
+```
+
+## concat
+
+```
+let concat: (t('a), t('a)) => t('a);
+```
+
+## concatMany
+
+```
+let concatMany: array(t('a)) => t('a);
+```
+
+## reverseConcat
+
+```
+let reverseConcat: (t('a), t('a)) => t('a);
+```
+
+## flatten
+
+```
+let flatten: t(t('a)) => t('a);
+```
+
+## mapU
+
+```
+let mapU: (t('a), [@bs] ('a => 'b)) => t('b);
+```
+
+## map
+
+```
+let map: (t('a), 'a => 'b) => t('b);
+```
+
+## zip
+
+```
+let zip: (t('a), t('b)) => t(('a, 'b));
+```
+
+## zipByU
+
+```
+let zipByU: (t('a), t('b), [@bs] (('a, 'b) => 'c)) => t('c);
+```
+
+## zipBy
+
+```
+let zipBy: (t('a), t('b), ('a, 'b) => 'c) => t('c);
+```
+
+## mapWithIndexU
+
+```
+let mapWithIndexU: (t('a), [@bs] ((int, 'a) => 'b)) => t('b);
+```
+
+## mapWithIndex
+
+```
+let mapWithIndex: (t('a), (int, 'a) => 'b) => t('b);
+```
+
+## fromArray
+
+```
+let fromArray: array('a) => t('a);
+```
+
+## toArray
+
+```
+let toArray: t('a) => array('a);
+```
+
+## reverse
+
+```
+let reverse: t('a) => t('a);
+```
+
+## mapReverseU
+
+```
+let mapReverseU: (t('a), [@bs] ('a => 'b)) => t('b);
+```
+
+## mapReverse
+
+```
+let mapReverse: (t('a), 'a => 'b) => t('b);
+```
+
+## forEachU
+
+```
+let forEachU: (t('a), [@bs] ('a => 'b)) => unit;
+```
+
+## forEach
+
+```
+let forEach: (t('a), 'a => 'b) => unit;
+```
+
+## forEachWithIndexU
+
+```
+let forEachWithIndexU: (t('a), [@bs] ((int, 'a) => 'b)) => unit;
+```
+
+## forEachWithIndex
+
+```
+let forEachWithIndex: (t('a), (int, 'a) => 'b) => unit;
+```
+
+## reduceU
+
+```
+let reduceU: (t('a), 'b, [@bs] (('b, 'a) => 'b)) => 'b;
+```
+
+## reduce
+
+```
+let reduce: (t('a), 'b, ('b, 'a) => 'b) => 'b;
+```
+
+## reduceWithIndexU
+
+```
+let reduceWithIndexU: (t('a), 'b, [@bs] (('b, 'a, int) => 'b)) => 'b;
+```
+
+## reduceWithIndex
+
+```
+let reduceWithIndex: (t('a), 'b, ('b, 'a, int) => 'b) => 'b;
+```
+
+## reduceReverseU
+
+```
+let reduceReverseU: (t('a), 'b, [@bs] (('b, 'a) => 'b)) => 'b;
+```
+
+## reduceReverse
+
+```
+let reduceReverse: (t('a), 'b, ('b, 'a) => 'b) => 'b;
+```
+
+## mapReverse2U
+
+```
+let mapReverse2U: (t('a), t('b), [@bs] (('a, 'b) => 'c)) => t('c);
+```
+
+## mapReverse2
+
+```
+let mapReverse2: (t('a), t('b), ('a, 'b) => 'c) => t('c);
+```
+
+## forEach2U
+
+```
+let forEach2U: (t('a), t('b), [@bs] (('a, 'b) => 'c)) => unit;
+```
+
+## forEach2
+
+```
+let forEach2: (t('a), t('b), ('a, 'b) => 'c) => unit;
+```
+
+## reduce2U
+
+```
+let reduce2U: (t('b), t('c), 'a, [@bs] (('a, 'b, 'c) => 'a)) => 'a;
+```
+
+## reduce2
+
+```
+let reduce2: (t('b), t('c), 'a, ('a, 'b, 'c) => 'a) => 'a;
+```
+
+## reduceReverse2U
+
+```
+let reduceReverse2U: (t('a), t('b), 'c, [@bs] (('c, 'a, 'b) => 'c)) => 'c;
+```
+
+## reduceReverse2
+
+```
+let reduceReverse2: (t('a), t('b), 'c, ('c, 'a, 'b) => 'c) => 'c;
+```
+
+## everyU
+
+```
+let everyU: (t('a), [@bs] ('a => bool)) => bool;
+```
+
+## every
+
+```
+let every: (t('a), 'a => bool) => bool;
+```
+
+## someU
+
+```
+let someU: (t('a), [@bs] ('a => bool)) => bool;
+```
+
+## some
+
+```
+let some: (t('a), 'a => bool) => bool;
+```
+
+## every2U
+
+```
+let every2U: (t('a), t('b), [@bs] (('a, 'b) => bool)) => bool;
+```
+
+## every2
+
+```
+let every2: (t('a), t('b), ('a, 'b) => bool) => bool;
+```
+
+## some2U
+
+```
+let some2U: (t('a), t('b), [@bs] (('a, 'b) => bool)) => bool;
+```
+
+## some2
+
+```
+let some2: (t('a), t('b), ('a, 'b) => bool) => bool;
+```
+
+## cmpByLength
+
+```
+let cmpByLength: (t('a), t('a)) => int;
+```
+
+## cmpU
+
+```
+let cmpU: (t('a), t('a), [@bs] (('a, 'a) => int)) => int;
+```
+
+## cmp
+
+```
+let cmp: (t('a), t('a), ('a, 'a) => int) => int;
+```
+
+## eqU
+
+```
+let eqU: (t('a), t('a), [@bs] (('a, 'a) => bool)) => bool;
+```
+
+## eq
+
+```
+let eq: (t('a), t('a), ('a, 'a) => bool) => bool;
+```
+
+## hasU
+
+```
+let hasU: (t('a), 'b, [@bs] (('a, 'b) => bool)) => bool;
+```
+
+## has
+
+```
+let has: (t('a), 'b, ('a, 'b) => bool) => bool;
+```
+
+## getByU
+
+```
+let getByU: (t('a), [@bs] ('a => bool)) => option('a);
+```
+
+## getBy
+
+```
+let getBy: (t('a), 'a => bool) => option('a);
+```
+
+## keepU
+
+```
+let keepU: (t('a), [@bs] ('a => bool)) => t('a);
+```
+
+## keep
+
+```
+let keep: (t('a), 'a => bool) => t('a);
+```
+
+## filter
+
+```
+let filter: (t('a), 'a => bool) => t('a);
+```
+
+## keepWithIndexU
+
+```
+let keepWithIndexU: (t('a), [@bs] (('a, int) => bool)) => t('a);
+```
+
+## keepWithIndex
+
+```
+let keepWithIndex: (t('a), ('a, int) => bool) => t('a);
+```
+
+## filterWithIndex
+
+```
+let filterWithIndex: (t('a), ('a, int) => bool) => t('a);
+```
+
+## keepMapU
+
+```
+let keepMapU: (t('a), [@bs] ('a => option('b))) => t('b);
+```
+
+## keepMap
+
+```
+let keepMap: (t('a), 'a => option('b)) => t('b);
+```
+
+## partitionU
+
+```
+let partitionU: (t('a), [@bs] ('a => bool)) => (t('a), t('a));
+```
+
+## partition
+
+```
+let partition: (t('a), 'a => bool) => (t('a), t('a));
+```
+
+## unzip
+
+```
+let unzip: t(('a, 'b)) => (t('a), t('b));
+```
+
+## getAssocU
+
+```
+let getAssocU: (t(('a, 'c)), 'b, [@bs] (('a, 'b) => bool)) => option('c);
+```
+
+## getAssoc
+
+```
+let getAssoc: (t(('a, 'c)), 'b, ('a, 'b) => bool) => option('c);
+```
+
+## hasAssocU
+
+```
+let hasAssocU: (t(('a, 'c)), 'b, [@bs] (('a, 'b) => bool)) => bool;
+```
+
+## hasAssoc
+
+```
+let hasAssoc: (t(('a, 'c)), 'b, ('a, 'b) => bool) => bool;
+```
+
+## removeAssocU
+
+```
+let removeAssocU: (t(('a, 'c)), 'b, [@bs] (('a, 'b) => bool)) => t(('a, 'c));
+```
+
+## removeAssoc
+
+```
+let removeAssoc: (t(('a, 'c)), 'b, ('a, 'b) => bool) => t(('a, 'c));
+```
+
+## setAssocU
+
+```
+let setAssocU: (t(('a, 'c)), 'a, 'c, [@bs] (('a, 'a) => bool)) => t(('a, 'c));
+```
+
+## setAssoc
+
+```
+let setAssoc: (t(('a, 'c)), 'a, 'c, ('a, 'a) => bool) => t(('a, 'c));
+```
+
+## sortU
+
+```
+let sortU: (t('a), [@bs] (('a, 'a) => int)) => t('a);
+```
+
+## sort
+
+```
+let sort: (t('a), ('a, 'a) => int) => t('a);
+```

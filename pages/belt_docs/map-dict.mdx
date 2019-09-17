@@ -1,0 +1,352 @@
+---
+id: map-dict
+title: MapDict
+---
+
+## t
+
+```
+type t('key, 'value, 'id);
+```
+
+## cmp
+
+```
+type cmp('key, 'id) = Belt_Id.cmp('key, 'id);
+```
+
+## empty
+
+```
+let empty: t('k, 'v, 'id);
+```
+
+## isEmpty
+
+```
+let isEmpty: t('k, 'v, 'id) => bool;
+```
+
+## has
+
+```
+let has: (t('k, 'a, 'id), 'k, ~cmp: cmp('k, 'id)) => bool;
+```
+
+## cmpU
+
+```
+let cmpU:
+  (t('k, 'v, 'id), t('k, 'v, 'id), ~kcmp: cmp('k, 'id), ~vcmp: [@bs] (('v, 'v) => int)) => int;
+```
+
+## cmp
+
+```
+let cmp: (t('k, 'v, 'id), t('k, 'v, 'id), ~kcmp: cmp('k, 'id), ~vcmp: ('v, 'v) => int) => int;
+```
+
+## eqU
+
+```
+let eqU:
+  (t('k, 'a, 'id), t('k, 'a, 'id), ~kcmp: cmp('k, 'id), ~veq: [@bs] (('a, 'a) => bool)) => bool;
+```
+
+## eq
+
+```
+let eq: (t('k, 'a, 'id), t('k, 'a, 'id), ~kcmp: cmp('k, 'id), ~veq: ('a, 'a) => bool) => bool;
+```
+
+## findFirstByU
+
+```
+let findFirstByU: (t('k, 'v, 'id), [@bs] (('k, 'v) => bool)) => option(('k, 'v));
+```
+
+## findFirstBy
+
+```
+let findFirstBy: (t('k, 'v, 'id), ('k, 'v) => bool) => option(('k, 'v));
+```
+
+## forEachU
+
+```
+let forEachU: (t('k, 'a, 'id), [@bs] (('k, 'a) => unit)) => unit;
+```
+
+## forEach
+
+```
+let forEach: (t('k, 'a, 'id), ('k, 'a) => unit) => unit;
+```
+
+## reduceU
+
+```
+let reduceU: (t('k, 'a, 'id), 'b, [@bs] (('b, 'k, 'a) => 'b)) => 'b;
+```
+
+## reduce
+
+```
+let reduce: (t('k, 'a, 'id), 'b, ('b, 'k, 'a) => 'b) => 'b;
+```
+
+## everyU
+
+```
+let everyU: (t('k, 'a, 'id), [@bs] (('k, 'a) => bool)) => bool;
+```
+
+## every
+
+```
+let every: (t('k, 'a, 'id), ('k, 'a) => bool) => bool;
+```
+
+## someU
+
+```
+let someU: (t('k, 'a, 'id), [@bs] (('k, 'a) => bool)) => bool;
+```
+
+## some
+
+```
+let some: (t('k, 'a, 'id), ('k, 'a) => bool) => bool;
+```
+
+## size
+
+```
+let size: t('k, 'a, 'id) => int;
+```
+
+## toList
+
+```
+let toList: t('k, 'a, 'id) => list(('k, 'a));
+```
+
+## toArray
+
+```
+let toArray: t('k, 'a, 'id) => array(('k, 'a));
+```
+
+## fromArray
+
+```
+let fromArray: (array(('k, 'a)), ~cmp: cmp('k, 'id)) => t('k, 'a, 'id);
+```
+
+## keysToArray
+
+```
+let keysToArray: t('k, 'a, 'id) => array('k);
+```
+
+## valuesToArray
+
+```
+let valuesToArray: t('k, 'a, 'id) => array('a);
+```
+
+## minKey
+
+```
+let minKey: t('k, 'a, 'b) => option('k);
+```
+
+## minKeyUndefined
+
+```
+let minKeyUndefined: t('k, 'a, 'b) => Js.undefined('k);
+```
+
+## maxKey
+
+```
+let maxKey: t('k, 'a, 'b) => option('k);
+```
+
+## maxKeyUndefined
+
+```
+let maxKeyUndefined: t('k, 'a, 'b) => Js.undefined('k);
+```
+
+## minimum
+
+```
+let minimum: t('k, 'a, 'b) => option(('k, 'a));
+```
+
+## minUndefined
+
+```
+let minUndefined: t('k, 'a, 'b) => Js.undefined(('k, 'a));
+```
+
+## maximum
+
+```
+let maximum: t('k, 'a, 'b) => option(('k, 'a));
+```
+
+## maxUndefined
+
+```
+let maxUndefined: t('k, 'a, 'b) => Js.undefined(('k, 'a));
+```
+
+## get
+
+```
+let get: (t('k, 'a, 'id), 'k, ~cmp: cmp('k, 'id)) => option('a);
+```
+
+## getUndefined
+
+```
+let getUndefined: (t('k, 'a, 'id), 'k, ~cmp: cmp('k, 'id)) => Js.undefined('a);
+```
+
+## getWithDefault
+
+```
+let getWithDefault: (t('k, 'a, 'id), 'k, 'a, ~cmp: cmp('k, 'id)) => 'a;
+```
+
+## getExn
+
+```
+let getExn: (t('k, 'a, 'id), 'k, ~cmp: cmp('k, 'id)) => 'a;
+```
+
+## checkInvariantInternal
+
+```
+let checkInvariantInternal: t('a, 'b, 'c) => unit;
+```
+
+## remove
+
+```
+let remove: (t('a, 'b, 'id), 'a, ~cmp: cmp('a, 'id)) => t('a, 'b, 'id);
+```
+
+## removeMany
+
+```
+let removeMany: (t('a, 'b, 'id), array('a), ~cmp: cmp('a, 'id)) => t('a, 'b, 'id);
+```
+
+## set
+
+```
+let set: (t('a, 'b, 'id), 'a, 'b, ~cmp: cmp('a, 'id)) => t('a, 'b, 'id);
+```
+
+## updateU
+
+```
+let updateU:
+  (t('a, 'b, 'id), 'a, [@bs] (option('b) => option('b)), ~cmp: cmp('a, 'id)) => t('a, 'b, 'id);
+```
+
+## update
+
+```
+let update: (t('a, 'b, 'id), 'a, option('b) => option('b), ~cmp: cmp('a, 'id)) => t('a, 'b, 'id);
+```
+
+## mergeU
+
+```
+let mergeU:
+  (
+    t('a, 'b, 'id),
+    t('a, 'c, 'id),
+    [@bs] (('a, option('b), option('c)) => option('d)),
+    ~cmp: cmp('a, 'id)
+  ) =>
+  t('a, 'd, 'id);
+```
+
+## merge
+
+```
+let merge:
+  (
+    t('a, 'b, 'id),
+    t('a, 'c, 'id),
+    ('a, option('b), option('c)) => option('d),
+    ~cmp: cmp('a, 'id)
+  ) =>
+  t('a, 'd, 'id);
+```
+
+## mergeMany
+
+```
+let mergeMany: (t('a, 'b, 'id), array(('a, 'b)), ~cmp: cmp('a, 'id)) => t('a, 'b, 'id);
+```
+
+## keepU
+
+```
+let keepU: (t('k, 'a, 'id), [@bs] (('k, 'a) => bool)) => t('k, 'a, 'id);
+```
+
+## keep
+
+```
+let keep: (t('k, 'a, 'id), ('k, 'a) => bool) => t('k, 'a, 'id);
+```
+
+## partitionU
+
+```
+let partitionU: (t('k, 'a, 'id), [@bs] (('k, 'a) => bool)) => (t('k, 'a, 'id), t('k, 'a, 'id));
+```
+
+## partition
+
+```
+let partition: (t('k, 'a, 'id), ('k, 'a) => bool) => (t('k, 'a, 'id), t('k, 'a, 'id));
+```
+
+## split
+
+```
+let split:
+  (t('a, 'b, 'id), 'a, ~cmp: cmp('a, 'id)) => ((t('a, 'b, 'id), t('a, 'b, 'id)), option('b));
+```
+
+## mapU
+
+```
+let mapU: (t('k, 'a, 'id), [@bs] ('a => 'b)) => t('k, 'b, 'id);
+```
+
+## map
+
+```
+let map: (t('k, 'a, 'id), 'a => 'b) => t('k, 'b, 'id);
+```
+
+## mapWithKeyU
+
+```
+let mapWithKeyU: (t('k, 'a, 'id), [@bs] (('k, 'a) => 'b)) => t('k, 'b, 'id);
+```
+
+## mapWithKey
+
+```
+let mapWithKey: (t('k, 'a, 'id), ('k, 'a) => 'b) => t('k, 'b, 'id);
+```

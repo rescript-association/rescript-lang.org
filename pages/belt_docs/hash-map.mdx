@@ -1,0 +1,148 @@
+---
+id: hash-map
+title: HashMap
+---
+
+## t
+
+```
+type t('key, 'value, 'id);
+```
+
+## id
+
+```
+type id('a, 'id) = BeltId.hashable('a, 'id);
+```
+
+## make
+
+```
+let make: (~hintSize: int, ~id: id('key, 'id)) => t('key, 'value, 'id);
+```
+
+## clear
+
+```
+let clear: t('key, 'value, 'id) => unit;
+```
+
+## isEmpty
+
+```
+let isEmpty: t('a, 'b, 'c) => bool;
+```
+
+## set
+
+```
+let set: (t('key, 'value, 'id), 'key, 'value) => unit;
+```
+
+## copy
+
+```
+let copy: t('key, 'value, 'id) => t('key, 'value, 'id);
+```
+
+## get
+
+```
+let get: (t('key, 'value, 'id), 'key) => option('value);
+```
+
+## has
+
+```
+let has: (t('key, 'value, 'id), 'key) => bool;
+```
+
+## remove
+
+```
+let remove: (t('key, 'value, 'id), 'key) => unit;
+```
+
+## forEachU
+
+```
+let forEachU: (t('key, 'value, 'id), [@bs] (('key, 'value) => unit)) => unit;
+```
+
+## forEach
+
+```
+let forEach: (t('key, 'value, 'id), ('key, 'value) => unit) => unit;
+```
+
+## reduceU
+
+```
+let reduceU: (t('key, 'value, 'id), 'c, [@bs] (('c, 'key, 'value) => 'c)) => 'c;
+```
+
+## reduce
+
+```
+let reduce: (t('key, 'value, 'id), 'c, ('c, 'key, 'value) => 'c) => 'c;
+```
+
+## keepMapInPlaceU
+
+```
+let keepMapInPlaceU: (t('key, 'value, 'id), [@bs] (('key, 'value) => option('value))) => unit;
+```
+
+## keepMapInPlace
+
+```
+let keepMapInPlace: (t('key, 'value, 'id), ('key, 'value) => option('value)) => unit;
+```
+
+## size
+
+```
+let size: t('a, 'b, 'c) => int;
+```
+
+## toArray
+
+```
+let toArray: t('key, 'value, 'id) => array(('key, 'value));
+```
+
+## keysToArray
+
+```
+let keysToArray: t('key, 'a, 'b) => array('key);
+```
+
+## valuesToArray
+
+```
+let valuesToArray: t('a, 'value, 'b) => array('value);
+```
+
+## fromArray
+
+```
+let fromArray: (array(('key, 'value)), ~id: id('key, 'id)) => t('key, 'value, 'id);
+```
+
+## mergeMany
+
+```
+let mergeMany: (t('key, 'value, 'id), array(('key, 'value))) => unit;
+```
+
+## getBucketHistogram
+
+```
+let getBucketHistogram: t('a, 'b, 'c) => array(int);
+```
+
+## logStats
+
+```
+let logStats: t('a, 'b, 'c) => unit;
+```

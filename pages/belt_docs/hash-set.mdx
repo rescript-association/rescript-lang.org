@@ -1,0 +1,118 @@
+---
+id: hash-set
+title: HashSet
+---
+
+## t
+
+```
+type t('a, 'id);
+```
+
+## id
+
+```
+type id('a, 'id) = BeltId.hashable('a, 'id);
+```
+
+## make
+
+```
+let make: (~hintSize: int, ~id: id('a, 'id)) => t('a, 'id);
+```
+
+## clear
+
+```
+let clear: t('a, 'id) => unit;
+```
+
+## isEmpty
+
+```
+let isEmpty: t('a, 'b) => bool;
+```
+
+## add
+
+```
+let add: (t('a, 'id), 'a) => unit;
+```
+
+## copy
+
+```
+let copy: t('a, 'id) => t('a, 'id);
+```
+
+## has
+
+```
+let has: (t('a, 'id), 'a) => bool;
+```
+
+## remove
+
+```
+let remove: (t('a, 'id), 'a) => unit;
+```
+
+## forEachU
+
+```
+let forEachU: (t('a, 'id), [@bs] ('a => unit)) => unit;
+```
+
+## forEach
+
+```
+let forEach: (t('a, 'id), 'a => unit) => unit;
+```
+
+## reduceU
+
+```
+let reduceU: (t('a, 'id), 'c, [@bs] (('c, 'a) => 'c)) => 'c;
+```
+
+## reduce
+
+```
+let reduce: (t('a, 'id), 'c, ('c, 'a) => 'c) => 'c;
+```
+
+## size
+
+```
+let size: t('a, 'id) => int;
+```
+
+## logStats
+
+```
+let logStats: t('a, 'b) => unit;
+```
+
+## toArray
+
+```
+let toArray: t('a, 'id) => array('a);
+```
+
+## fromArray
+
+```
+let fromArray: (array('a), ~id: id('a, 'id)) => t('a, 'id);
+```
+
+## mergeMany
+
+```
+let mergeMany: (t('a, 'id), array('a)) => unit;
+```
+
+## getBucketHistogram
+
+```
+let getBucketHistogram: t('a, 'b) => array(int);
+```

@@ -1,0 +1,251 @@
+---
+id: set-dict
+title: SetDict
+---
+
+## t
+
+```
+type t('value, 'identity);
+```
+
+## cmp
+
+```
+type cmp('value, 'id) = BeltId.cmp('value, 'id);
+```
+
+## empty
+
+```
+let empty: t('value, 'id);
+```
+
+## fromArray
+
+```
+let fromArray: (array('value), ~cmp: cmp('value, 'id)) => t('value, 'id);
+```
+
+## fromSortedArrayUnsafe
+
+```
+let fromSortedArrayUnsafe: array('value) => t('value, 'id);
+```
+
+## isEmpty
+
+```
+let isEmpty: t('a, 'b) => bool;
+```
+
+## has
+
+```
+let has: (t('value, 'id), 'value, ~cmp: cmp('value, 'id)) => bool;
+```
+
+## add
+
+```
+let add: (t('value, 'id), 'value, ~cmp: cmp('value, 'id)) => t('value, 'id);
+```
+
+## mergeMany
+
+```
+let mergeMany: (t('value, 'id), array('value), ~cmp: cmp('value, 'id)) => t('value, 'id);
+```
+
+## remove
+
+```
+let remove: (t('value, 'id), 'value, ~cmp: cmp('value, 'id)) => t('value, 'id);
+```
+
+## removeMany
+
+```
+let removeMany: (t('value, 'id), array('value), ~cmp: cmp('value, 'id)) => t('value, 'id);
+```
+
+## union
+
+```
+let union: (t('value, 'id), t('value, 'id), ~cmp: cmp('value, 'id)) => t('value, 'id);
+```
+
+## intersect
+
+```
+let intersect: (t('value, 'id), t('value, 'id), ~cmp: cmp('value, 'id)) => t('value, 'id);
+```
+
+## diff
+
+```
+let diff: (t('value, 'id), t('value, 'id), ~cmp: cmp('value, 'id)) => t('value, 'id);
+```
+
+## subset
+
+```
+let subset: (t('value, 'id), t('value, 'id), ~cmp: cmp('value, 'id)) => bool;
+```
+
+## cmp
+
+```
+let cmp: (t('value, 'id), t('value, 'id), ~cmp: cmp('value, 'id)) => int;
+```
+
+## eq
+
+```
+let eq: (t('value, 'id), t('value, 'id), ~cmp: cmp('value, 'id)) => bool;
+```
+
+## forEachU
+
+```
+let forEachU: (t('value, 'id), [@bs] ('value => unit)) => unit;
+```
+
+## forEach
+
+```
+let forEach: (t('value, 'id), 'value => unit) => unit;
+```
+
+## reduceU
+
+```
+let reduceU: (t('value, 'id), 'a, [@bs] (('a, 'value) => 'a)) => 'a;
+```
+
+## reduce
+
+```
+let reduce: (t('value, 'id), 'a, ('a, 'value) => 'a) => 'a;
+```
+
+## everyU
+
+```
+let everyU: (t('value, 'id), [@bs] ('value => bool)) => bool;
+```
+
+## every
+
+```
+let every: (t('value, 'id), 'value => bool) => bool;
+```
+
+## someU
+
+```
+let someU: (t('value, 'id), [@bs] ('value => bool)) => bool;
+```
+
+## some
+
+```
+let some: (t('value, 'id), 'value => bool) => bool;
+```
+
+## keepU
+
+```
+let keepU: (t('value, 'id), [@bs] ('value => bool)) => t('value, 'id);
+```
+
+## keep
+
+```
+let keep: (t('value, 'id), 'value => bool) => t('value, 'id);
+```
+
+## partitionU
+
+```
+let partitionU: (t('value, 'id), [@bs] ('value => bool)) => (t('value, 'id), t('value, 'id));
+```
+
+## partition
+
+```
+let partition: (t('value, 'id), 'value => bool) => (t('value, 'id), t('value, 'id));
+```
+
+## size
+
+```
+let size: t('value, 'id) => int;
+```
+
+## toList
+
+```
+let toList: t('value, 'id) => list('value);
+```
+
+## toArray
+
+```
+let toArray: t('value, 'id) => array('value);
+```
+
+## minimum
+
+```
+let minimum: t('value, 'id) => option('value);
+```
+
+## minUndefined
+
+```
+let minUndefined: t('value, 'id) => Js.undefined('value);
+```
+
+## maximum
+
+```
+let maximum: t('value, 'id) => option('value);
+```
+
+## maxUndefined
+
+```
+let maxUndefined: t('value, 'id) => Js.undefined('value);
+```
+
+## get
+
+```
+let get: (t('value, 'id), 'value, ~cmp: cmp('value, 'id)) => option('value);
+```
+
+## getUndefined
+
+```
+let getUndefined: (t('value, 'id), 'value, ~cmp: cmp('value, 'id)) => Js.undefined('value);
+```
+
+## getExn
+
+```
+let getExn: (t('value, 'id), 'value, ~cmp: cmp('value, 'id)) => 'value;
+```
+
+## split
+
+```
+let split:
+  (t('value, 'id), 'value, ~cmp: cmp('value, 'id)) => ((t('value, 'id), t('value, 'id)), bool);
+```
+
+## checkInvariantInternal
+
+```
+let checkInvariantInternal: t('a, 'b) => unit;
+```

@@ -1,0 +1,286 @@
+---
+id: mutable-map
+title: MutableMap
+---
+
+## t
+
+```
+type t('k, 'v, 'id);
+```
+
+## id
+
+```
+type id('key, 'id) = Belt_Id.comparable('key, 'id);
+```
+
+## make
+
+```
+let make: (~id: id('k, 'id)) => t('k, 'a, 'id);
+```
+
+## clear
+
+```
+let clear: t('a, 'b, 'c) => unit;
+```
+
+## isEmpty
+
+```
+let isEmpty: t('a, 'b, 'c) => bool;
+```
+
+## has
+
+```
+let has: (t('k, 'a, 'b), 'k) => bool;
+```
+
+## cmpU
+
+```
+let cmpU: (t('k, 'a, 'id), t('k, 'a, 'id), [@bs] (('a, 'a) => int)) => int;
+```
+
+## cmp
+
+```
+let cmp: (t('k, 'a, 'id), t('k, 'a, 'id), ('a, 'a) => int) => int;
+```
+
+## eqU
+
+```
+let eqU: (t('k, 'a, 'id), t('k, 'a, 'id), [@bs] (('a, 'a) => bool)) => bool;
+```
+
+## eq
+
+```
+let eq: (t('k, 'a, 'id), t('k, 'a, 'id), ('a, 'a) => bool) => bool;
+```
+
+## forEachU
+
+```
+let forEachU: (t('k, 'a, 'id), [@bs] (('k, 'a) => unit)) => unit;
+```
+
+## forEach
+
+```
+let forEach: (t('k, 'a, 'id), ('k, 'a) => unit) => unit;
+```
+
+## reduceU
+
+```
+let reduceU: (t('k, 'a, 'id), 'b, [@bs] (('b, 'k, 'a) => 'b)) => 'b;
+```
+
+## reduce
+
+```
+let reduce: (t('k, 'a, 'id), 'b, ('b, 'k, 'a) => 'b) => 'b;
+```
+
+## everyU
+
+```
+let everyU: (t('k, 'a, 'id), [@bs] (('k, 'a) => bool)) => bool;
+```
+
+## every
+
+```
+let every: (t('k, 'a, 'id), ('k, 'a) => bool) => bool;
+```
+
+## someU
+
+```
+let someU: (t('k, 'a, 'id), [@bs] (('k, 'a) => bool)) => bool;
+```
+
+## some
+
+```
+let some: (t('k, 'a, 'id), ('k, 'a) => bool) => bool;
+```
+
+## size
+
+```
+let size: t('k, 'a, 'id) => int;
+```
+
+## toList
+
+```
+let toList: t('k, 'a, 'id) => list(('k, 'a));
+```
+
+## toArray
+
+```
+let toArray: t('k, 'a, 'id) => array(('k, 'a));
+```
+
+## fromArray
+
+```
+let fromArray: (array(('k, 'a)), ~id: id('k, 'id)) => t('k, 'a, 'id);
+```
+
+## keysToArray
+
+```
+let keysToArray: t('k, 'a, 'b) => array('k);
+```
+
+## valuesToArray
+
+```
+let valuesToArray: t('b, 'a, 'c) => array('a);
+```
+
+## minKey
+
+```
+let minKey: t('k, 'a, 'b) => option('k);
+```
+
+## minKeyUndefined
+
+```
+let minKeyUndefined: t('k, 'a, 'b) => Js.undefined('k);
+```
+
+## maxKey
+
+```
+let maxKey: t('k, 'a, 'b) => option('k);
+```
+
+## maxKeyUndefined
+
+```
+let maxKeyUndefined: t('k, 'a, 'b) => Js.undefined('k);
+```
+
+## minimum
+
+```
+let minimum: t('k, 'a, 'b) => option(('k, 'a));
+```
+
+## minUndefined
+
+```
+let minUndefined: t('k, 'a, 'b) => Js.undefined(('k, 'a));
+```
+
+## maximum
+
+```
+let maximum: t('k, 'a, 'b) => option(('k, 'a));
+```
+
+## maxUndefined
+
+```
+let maxUndefined: t('k, 'a, 'b) => Js.undefined(('k, 'a));
+```
+
+## get
+
+```
+let get: (t('k, 'a, 'id), 'k) => option('a);
+```
+
+## getUndefined
+
+```
+let getUndefined: (t('k, 'a, 'id), 'k) => Js.undefined('a);
+```
+
+## getWithDefault
+
+```
+let getWithDefault: (t('k, 'a, 'id), 'k, 'a) => 'a;
+```
+
+## getExn
+
+```
+let getExn: (t('k, 'a, 'id), 'k) => 'a;
+```
+
+## checkInvariantInternal
+
+```
+let checkInvariantInternal: t('a, 'b, 'c) => unit;
+```
+
+## remove
+
+```
+let remove: (t('k, 'a, 'id), 'k) => unit;
+```
+
+## removeMany
+
+```
+let removeMany: (t('k, 'a, 'id), array('k)) => unit;
+```
+
+## set
+
+```
+let set: (t('k, 'a, 'id), 'k, 'a) => unit;
+```
+
+## updateU
+
+```
+let updateU: (t('k, 'a, 'id), 'k, [@bs] (option('a) => option('a))) => unit;
+```
+
+## update
+
+```
+let update: (t('k, 'a, 'id), 'k, option('a) => option('a)) => unit;
+```
+
+## mergeMany
+
+```
+let mergeMany: (t('k, 'a, 'id), array(('k, 'a))) => unit;
+```
+
+## mapU
+
+```
+let mapU: (t('k, 'a, 'id), [@bs] ('a => 'b)) => t('k, 'b, 'id);
+```
+
+## map
+
+```
+let map: (t('k, 'a, 'id), 'a => 'b) => t('k, 'b, 'id);
+```
+
+## mapWithKeyU
+
+```
+let mapWithKeyU: (t('k, 'a, 'id), [@bs] (('k, 'a) => 'b)) => t('k, 'b, 'id);
+```
+
+## mapWithKey
+
+```
+let mapWithKey: (t('k, 'a, 'id), ('k, 'a) => 'b) => t('k, 'b, 'id);
+```

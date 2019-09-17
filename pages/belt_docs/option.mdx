@@ -1,0 +1,104 @@
+---
+id: option
+title: Option
+---
+
+In Belt we represent the existence and nonexistence of a value by wrapping it with the option type. Option as part of Reason's standard library and in there it's defined like this:
+
+```
+type option('a) = None | Some('a)
+```
+
+## getExn
+
+Raises an Error in case `None` is provided.
+
+```
+let getExn: option('a) => 'a;
+```
+
+Examples
+
+```
+Belt.Option.getExn(Some(3)) === 3;
+
+Belt.Option.getExn(None); /* Raises an Error */
+```
+
+## mapWithDefaultU
+
+```
+let mapWithDefaultU: (option('a), 'b, [@bs] ('a => 'b)) => 'b;
+```
+
+## mapWithDefault
+
+```
+let mapWithDefault: (option('a), 'b, 'a => 'b) => 'b;
+```
+
+## mapU
+
+```
+let mapU: (option('a), [@bs] ('a => 'b)) => option('b);
+```
+
+## map
+
+```
+let map: (option('a), 'a => 'b) => option('b);
+```
+
+## flatMapU
+
+```
+let flatMapU: (option('a), [@bs] ('a => option('b))) => option('b);
+```
+
+## flatMap
+
+```
+let flatMap: (option('a), 'a => option('b)) => option('b);
+```
+
+## getWithDefault
+
+```
+let getWithDefault: (option('a), 'a) => 'a;
+```
+
+## isSome
+
+```
+let isSome: option('a) => bool;
+```
+
+## isNone
+
+```
+let isNone: option('a) => bool;
+```
+
+## eqU
+
+```
+let eqU: (option('a), option('b), [@bs] (('a, 'b) => bool)) => bool;
+```
+
+## eq
+
+```
+let eq: (option('a), option('b), ('a, 'b) => bool) => bool;
+```
+
+## cmpU
+
+```
+let cmpU: (option('a), option('b), [@bs] (('a, 'b) => int)) => int;
+```
+
+## cmp
+
+```
+let cmp: (option('a), option('b), ('a, 'b) => int) => int;
+```

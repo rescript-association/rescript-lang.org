@@ -1,6 +1,6 @@
 
 
-import * as Block from "bs-platform/lib/es6/block.js";
+import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
 function s(prim) {
   return prim;
@@ -10,7 +10,7 @@ function ate(prim) {
   return prim;
 }
 
-var ReactStuff = /* module */Block.localModule([
+var ReactStuff = /* module */Caml_chrome_debugger.localModule([
     "s",
     "ate"
   ], [

@@ -1,0 +1,64 @@
+---
+id: sort-array
+title: SortArray
+---
+
+## strictlySortedLengthU
+
+```
+let strictlySortedLengthU: (array('a), [@bs] (('a, 'a) => bool)) => int;
+```
+
+## strictlySortedLength
+
+```
+let strictlySortedLength: (array('a), ('a, 'a) => bool) => int;
+```
+
+## isSortedU
+
+```
+let isSortedU: (array('a), [@bs] (('a, 'a) => int)) => bool;
+```
+
+## isSorted
+
+```
+let isSorted: (array('a), ('a, 'a) => int) => bool;
+```
+
+## stableSortInPlaceByU
+
+```
+let stableSortInPlaceByU: (array('a), [@bs] (('a, 'a) => int)) => unit;
+```
+
+## stableSortInPlaceBy
+
+```
+let stableSortInPlaceBy: (array('a), ('a, 'a) => int) => unit;
+```
+
+## stableSortByU
+
+```
+let stableSortByU: (array('a), [@bs] (('a, 'a) => int)) => array('a);
+```
+
+## stableSortBy
+
+```
+let stableSortBy: (array('a), ('a, 'a) => int) => array('a);
+```
+
+## binarySearchByU
+
+```
+let binarySearchByU: (array('a), 'a, [@bs] (('a, 'a) => int)) => int;
+```
+
+## binarySearchBy
+
+```
+let binarySearchBy: (array('a), 'a, ('a, 'a) => int) => int;
+```
