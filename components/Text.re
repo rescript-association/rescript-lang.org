@@ -285,7 +285,7 @@ module Md = {
             /* Scenario 1 */
         } else {
           /* Unknown Scenario */
-          children;
+          <p> children </p>;
         };
 
       <li className="md-li mt-4 leading-4 ml-8 text-lg text-main-lighten-15">

@@ -257,7 +257,8 @@ function Text$Md$Li(Props) {
       elements = isSublist(potentialSublist) ? children : React.createElement("p", undefined, children);
     }
   } else {
-    elements = typeOf(children) === "string" ? React.createElement("p", undefined, children) : children;
+    typeOf(children) === "string";
+    elements = React.createElement("p", undefined, children);
   }
   return React.createElement("li", {
               className: "md-li mt-4 leading-4 ml-8 text-lg text-main-lighten-15"
