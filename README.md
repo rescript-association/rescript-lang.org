@@ -1,12 +1,11 @@
-# Reason NextJS Workshop
+# reasonml.org 
 
-This repo will be the starting point for building some Reason app.
+This is the repository for [reasonml.org](reasonml.org) and is currently **work
+in progress**.
 
 ## Setup
 
 ```
-git clone https://github.com/ryyppy/reason-workshop-nextjs
-cd reason-workshop-nextjs
 yarn 
 
 # Initial build
