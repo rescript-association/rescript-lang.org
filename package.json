@@ -1,0 +1,42 @@
+{
+  "name": "reason-workshop-nextjs",
+  "version": "1.0.0",
+  "author": "Patrick Stapfer <ryyppy@users.noreply.github.com>",
+  "license": "Apache License 2.0",
+  "dependencies": {
+    "@fullhuman/postcss-purgecss": "^1.2.0",
+    "@glennsl/bs-json": "^3.0.0",
+    "@mdx-js/loader": "^1.0.21",
+    "@next/mdx": "^8.1.0",
+    "@zeit/next-css": "^1.0.1",
+    "bs-fetch": "^0.3.1",
+    "bs-platform": "^5.0.4",
+    "gentype": "^2.23.0",
+    "graphql_ppx": "^0.2.8",
+    "isomorphic-unfetch": "^3.0.0",
+    "next": "^8.1.0",
+    "next-transpile-modules": "^2.3.1",
+    "prism-react-renderer": "^0.1.6",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "reason-react": "^0.7.0",
+    "request": "^2.88.0"
+  },
+  "scripts": {
+    "dev": "next",
+    "build": "bsb -clean-world -make-world && next build",
+    "now-build": "bsb -clean-world -make-world && next build",
+    "export": "next export",
+    "start": "next start -p $PORT",
+    "introspection": "./scripts/introspection.js",
+    "bs:build": "bsb -make-world",
+    "bs:clean": "bsb -clean-world",
+    "bs:start": "bsb -make-world -w"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.5.1",
+    "cssnano": "^4.1.10",
+    "postcss-easy-import": "^3.0.0",
+    "tailwindcss": "^1.0.1"
+  }
+}

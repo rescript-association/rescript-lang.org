@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "scope": "reason-association",
+  "regions": ["sfo1", "cdg1"],
+  "builds": [{ "src": "next.config.js", "use": "@now/next" }]
+}

@@ -1,0 +1,29 @@
+import {make as Layout} from "../layouts/MainLayout.bs.js"
+import Link from "next/link";
+import Highlight, { reasonExample } from "../common/highlight";
+export default Layout
+
+# A better Documentation Platform for Reason & BuckleScript
+
+The website `reasonml.org` is dedicated to a better doc experience for the
+Reason & BuckleScript platform and is currently a **Work in Progress**.
+Project announcements and current roadmap are documented
+[here](https://www.reason-association.org/projects/better-learning-materials-and-tools). 
+
+**Current Focus:** Belt API documentation
+
+## How to contribute
+
+We are currently in the process of extracting Belt documentation from the
+BuckleScript source code. Each module (e.g. `Belt.List`) will have its own
+dedicated markdown file.
+
+**Possiblilties for contributions:**
+
+- Extract documentation from the original source code w/ convertion to Reason syntax
+- Improvement of usage examples
+- Working on mechanics to automatically verify & test the examples inside the markdown for CI
+
+The project is still in an early stage, so we don't have any contribution
+guidelines yet. As a start, refer to existing modules and ask questions on
+[Discord](https://discord.gg/reasonml) or ping [@ryyppy](https://twitter.com/ryyppy).
