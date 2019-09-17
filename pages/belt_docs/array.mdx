@@ -1,9 +1,11 @@
-import {make as Layout} from "../../layouts/MainLayout.bs.js"
-export default Layout
+import { make as Layout } from "../../layouts/MainLayout.bs.js";
+export default Layout;
 
 ---
+
 id: array
 title: Array
+
 ---
 
 Utililites for Array functions.
@@ -515,6 +517,16 @@ let mapU: (array('a), [@bs] ('a => 'b)) => array('b);
 let map: (array('a), 'a => 'b) => array('b);
 ```
 
+`map(xs, f);`
+
+Returns a new array by calling `f` for each element of `xs` from the beginning to end.
+
+Examples
+
+```
+map([|1, 2|], (x) => x + 1) == [|3, 4|];
+```
+
 ## getByU
 
 ```
@@ -525,6 +537,17 @@ let getByU: (array('a), [@bs] ('a => bool)) => option('a);
 
 ```
 let getBy: (array('a), 'a => bool) => option('a);
+```
+
+`getBy(xs, p);`
+
+Returns `Some(value)` for the first value in `xs` that satisifies the predicate function `p`; returns `None` if no element satisifies the function.
+
+Examples
+
+```
+getBy([|1, 4, 3, 2|], (x) => x mod 2 == 0) == Some(4);
+getBy([|15, 13, 11|], (x) => x mod 2 == 0) == None;
 ```
 
 ## getIndexByU
@@ -539,6 +562,18 @@ let getIndexByU: (array('a), [@bs] ('a => bool)) => option(int);
 let getIndexBy: (array('a), 'a => bool) => option(int);
 ```
 
+`getIndexBy(xs, p);`
+
+returns `Some(index)` for the first value in `xs` that satisifies the predicate function `p`;
+returns `None` if no element satisifies the function.
+
+Examples
+
+```
+getIndexBy([|1, 4, 3, 2|], (x) => x mod 2 == 0) == Some(1);
+getIndexBy([|15, 13, 11|], (x) => x mod 2 == 0) == None;
+```
+
 ## keepU
 
 ```
@@ -549,6 +584,16 @@ let keepU: (array('a), [@bs] ('a => bool)) => array('a);
 
 ```
 let keep: (array('a), 'a => bool) => array('a);
+```
+
+`keep(xs, p);`
+
+Returns a new array that keep all elements satisfy `p`.
+
+Examples
+
+```
+keep([|1, 2, 3|], (x) => x mod 2 == 0) == [|2|];
 ```
 
 ## keepWithIndexU
@@ -563,6 +608,16 @@ let keepWithIndexU: (array('a), [@bs] (('a, int) => bool)) => array('a);
 let keepWithIndex: (array('a), ('a, int) => bool) => array('a);
 ```
 
+`keepWithIndex(xs, p);`
+
+Returns a new array that keep all elements satisfy `p`.
+
+Examples
+
+```
+keepWithIndex([|1, 2, 3|], (_x, i) => i == 1) == [|2|];
+```
+
 ## keepMapU
 
 ```
@@ -573,6 +628,25 @@ let keepMapU: (array('a), [@bs] ('a => option('b))) => array('b);
 
 ```
 let keepMap: (array('a), 'a => option('b)) => array('b);
+```
+
+`keepMap(xs, p);`
+
+Returns a new array that keep all elements that return a non-None applied `p`.
+
+Examples
+
+```
+keepMap(
+  [|1, 2, 3|],
+  (x) =>
+    if (x mod 2) {
+      Some(x);
+    } else {
+      None;
+    }
+)
+== [|2|];
 ```
 
 ## forEachWithIndexU
@@ -587,6 +661,28 @@ let forEachWithIndexU: (array('a), [@bs] ((int, 'a) => unit)) => unit;
 let forEachWithIndex: (array('a), (int, 'a) => unit) => unit;
 ```
 
+`forEachWithIndex(xs, f);`
+
+The same as `Belt_Array.forEach`;
+except that `f` is supplied two arguments: the index starting from 0 and the element from `xs`.
+
+Examples
+
+```
+forEach([|"a", "b", "c"|], (i, x) => Js.log("Item " ++ string_of_int(i) ++ " is " ++ x));
+
+/*  prints:
+      Item 0 is a
+      Item 1 is b
+      Item 2 is cc
+    */
+let total = ref(0);
+
+forEachWithIndex([|10, 11, 12, 13|], (i, x) => total := total^ + x + i);
+
+total^ == 0 + 10 + 1 + 11 + 2 + 12 + 3 + 13;
+```
+
 ## mapWithIndexU
 
 ```
@@ -597,6 +693,16 @@ let mapWithIndexU: (array('a), [@bs] ((int, 'a) => 'b)) => array('b);
 
 ```
 let mapWithIndex: (array('a), (int, 'a) => 'b) => array('b);
+```
+
+`mapWithIndex(xs, f);`
+
+`mapWithIndex(xs, f)` applies `f` to each element of `xs`. Function `f` takes two arguments: the index starting from 0 and the element from `xs`.
+
+Examples
+
+```
+mapWithIndex([|1, 2, 3|], (i, x) => i + x) == [|0 + 1, 1 + 2, 2 + 3|];
 ```
 
 ## partitionU
@@ -611,6 +717,34 @@ let partitionU: (array('a), [@bs] ('a => bool)) => (array('a), array('a));
 let partition: (array('a), 'a => bool) => (array('a), array('a));
 ```
 
+`partition(f, a)` split array into tuple of two arrays based on predicate `f`; first of tuple where predicate cause true, second where predicate cause false
+
+Examples
+
+```
+partition(
+  [|1, 2, 3, 4, 5|],
+  (x) =>
+    if (x mod 2 == 0) {
+      true;
+    } else {
+      false;
+    }
+)
+== ([|2, 4|], [|1, 2, 3|]);
+
+partition(
+  [|1, 2, 3, 4, 5|],
+  (x) =>
+    if (x mod 2 != 0) {
+      true;
+    } else {
+      false;
+    }
+)
+== ([|1, 2, 3|], [|2, 4|]);
+```
+
 ## reduceU
 
 ```
@@ -621,6 +755,18 @@ let reduceU: (array('b), 'a, [@bs] (('a, 'b) => 'a)) => 'a;
 
 ```
 let reduce: (array('b), 'a, ('a, 'b) => 'a) => 'a;
+```
+
+`reduce(xs, init, f);`
+
+Applies `f` to each element of `xs` from beginning to end. Function `f` has two parameters: the item from the list and an “accumulator”; which starts with a value of `init`. `reduce` returns the final value of the accumulator.
+
+Examples
+
+```
+reduce([|2, 3, 4|], 1, (+)) == 10;
+
+reduce([|"a", "b", "c", "d"|], "", (++)) == "abcd";
 ```
 
 ## reduceReverseU
@@ -635,6 +781,16 @@ let reduceReverseU: (array('b), 'a, [@bs] (('a, 'b) => 'a)) => 'a;
 let reduceReverse: (array('b), 'a, ('a, 'b) => 'a) => 'a;
 ```
 
+`reduceReverse(xs, init, f);`
+
+Works like `Belt_Array.reduce`; except that function `f` is applied to each item of `xs` from the last back to the first.
+
+Examples
+
+```
+reduceReverse([|"a", "b", "c", "d"|], "", (++)) == "dcba";
+```
+
 ## reduceReverse2U
 
 ```
@@ -645,6 +801,16 @@ let reduceReverse2U: (array('a), array('b), 'c, [@bs] (('c, 'a, 'b) => 'c)) => '
 
 ```
 let reduceReverse2: (array('a), array('b), 'c, ('c, 'a, 'b) => 'c) => 'c;
+```
+
+`reduceReverse2(xs, ys, init, f);`
+
+Reduces two arrays xs and ys;taking items starting at `min(length(xs), length(ys))` down to and including zero.
+
+Examples
+
+```
+reduceReverse2([|1, 2, 3|], [|1, 2|], 0, (acc, x, y) => acc + x + y) == 6;
 ```
 
 ## reduceWithIndexU
@@ -659,6 +825,16 @@ let reduceWithIndexU: (array('a), 'b, [@bs] (('b, 'a, int) => 'b)) => 'b;
 let reduceWithIndex: (array('a), 'b, ('b, 'a, int) => 'b) => 'b;
 ```
 
+`reduceWithIndex(xs, f);`
+
+Applies `f` to each element of `xs` from beginning to end. Function `f` has three parameters: the item from the array and an “accumulator”, which starts with a value of `init` and the index of each element. `reduceWithIndex` returns the final value of the accumulator.
+
+Examples
+
+```
+reduceWithIndex([|1, 2, 3, 4|], 0, (acc, x, i) => acc + x + i) == 16;
+```
+
 ## someU
 
 ```
@@ -669,6 +845,18 @@ let someU: (array('a), [@bs] ('a => bool)) => bool;
 
 ```
 let some: (array('a), 'a => bool) => bool;
+```
+
+`some(xs, p);`
+
+Returns true if at least one of the elements in `xs` satifies `p`; where `p` is a predicate: a function taking an element and returning a `bool`.
+
+Examples
+
+```
+some([|2, 3, 4|], (x) => x mod 2 == 1) == true;
+
+some([|(-1), (-3), (-5)|], (x) => x > 0) == false;
 ```
 
 ## everyU
@@ -683,6 +871,18 @@ let everyU: (array('a), [@bs] ('a => bool)) => bool;
 let every: (array('a), 'a => bool) => bool;
 ```
 
+`every(xs, p);`
+
+Returns `true` if all elements satisfy `p`; where `p` is a predicate: a function taking an element and returning a `bool`.
+
+Examples
+
+```
+every([|1, 3, 5|], (x) => x mod 2 == 1) == true;
+
+every([|1, (-3), 5|], (x) => x > 0) == false;
+```
+
 ## every2U
 
 ```
@@ -693,6 +893,22 @@ let every2U: (array('a), array('b), [@bs] (('a, 'b) => bool)) => bool;
 
 ```
 let every2: (array('a), array('b), ('a, 'b) => bool) => bool;
+```
+
+`every2(xs, ys, p);`
+
+returns true if `p(xi, yi);` is true for all pairs of elements up to the shorter length (i.e. `min(length(xs), length(ys));`)
+
+Examples
+
+```
+every2([|1, 2, 3|], [|0, 1|], (>)) == true;
+
+every2([||], [|1|], (x, y) => x > y) == true;
+
+every2([|2, 3|], [|1|], (x, y) => x > y) == true;
+
+every2([|0, 1|], [|5, 0|], (x, y) => x > y) == false;
 ```
 
 ## some2U
@@ -707,6 +923,20 @@ let some2U: (array('a), array('b), [@bs] (('a, 'b) => bool)) => bool;
 let some2: (array('a), array('b), ('a, 'b) => bool) => bool;
 ```
 
+`some2(xs, ys, p);`
+
+returns true if `p(xi, yi);` is true for any pair of elements up to the shorter length (i.e. `min(length(xs), length(ys));`)
+
+Examples
+
+```
+some2([|0, 2|], [|1, 0, 3|], (>)) == true;
+
+some2([||], [|1|], (x, y) => x > y) == false;
+
+some2([|2, 3|], [|1, 4|], (x, y) => x > y) == true;
+```
+
 ## cmpU
 
 ```
@@ -717,6 +947,25 @@ let cmpU: (array('a), array('a), [@bs] (('a, 'a) => int)) => int;
 
 ```
 let cmp: (array('a), array('a), ('a, 'a) => int) => int;
+```
+
+`cmp(xs, ys, f);`
+
+Compared by length if `length(xs) != length(ys)`; returning -1 if `length(xs) < length(ys)` or 1 if `length(xs) > length(ys)`
+Otherwise compare one by one `f(x, y);`. `f` returns
+a negative number if `x` is “less than” `y`
+zero if `x` is “equal to” `y`
+a positive number if `x` is “greater than” `y`
+The comparison returns the first non-zero result of `f`;or zero if `f` returns zero for all `x` and `y`.
+
+Examples
+
+```
+cmp([|1, 3, 5|], [|1, 4, 2|], (a, b) => compare(a, b)) == (-1);
+
+cmp([|1, 3, 5|], [|1, 2, 3|], (a, b) => compare(a, b)) == 1;
+
+cmp([|1, 3, 5|], [|1, 3, 5|], (a, b) => compare(a, b)) == 0;
 ```
 
 ## eqU
@@ -731,8 +980,35 @@ let eqU: (array('a), array('a), [@bs] (('a, 'a) => bool)) => bool;
 let eq: (array('a), array('a), ('a, 'a) => bool) => bool;
 ```
 
+`eq(xs, ys);`
+
+return false if length is not the same
+otherwise compare items one by one using `f(xi, yi);`; and return true if all results are true;false otherwise
+
+Examples
+
+```
+eq([|1, 2, 3|], [|(-1), (-2), (-3)|], (a, b) => abs(a) == abs(b)) == true;
+```
+
 ## truncateToLengthUnsafe
 
 ```
 let truncateToLengthUnsafe: (array('a), int) => unit;
+```
+
+Unsafe `truncateToLengthUnsafe(xs, n);` sets length of array `xs` to `n`.
+
+If `n` is greater than the length of `xs`; the extra elements are set to `Js.Null_undefined.null`.
+
+If `n` is less than zero; raises a `RangeError`.
+
+Examples
+
+```
+let arr = [|"ant", "bee", "cat", "dog", "elk"|];
+
+truncateToLengthUnsafe(arr, 3);
+
+arr == [|"ant", "bee", "cat"|];
 ```
