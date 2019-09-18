@@ -49,6 +49,8 @@ module Sidebar = {
     items: array(moduleNav),
   };
 
+  let overviewNavs = [|{name: "Introduction", href: "/belt_docs"}|];
+
   let setNavs = [|
     {name: "HashSet", href: "/belt_docs/hash-set"},
     {name: "HashSetInt", href: "/belt_docs/hash-set-int"},
@@ -69,17 +71,14 @@ module Sidebar = {
     {name: "MapString", href: "/belt_docs/map-string"},
   |];
 
-  let mutableMapNavs = [|
+  let mutableCollectionsNavs = [|
     {name: "MutableMap", href: "/belt_docs/mutable-map"},
     {name: "MutableMapInt", href: "/belt_docs/mutable-map-int"},
     {name: "MutableMapString", href: "/belt_docs/mutable-map-string"},
-  |];
-
-  let mutableCollectionsNavs = [|
+    {name: "MutableQueue", href: "/belt_docs/mutable-queue"},
     {name: "MutableSet", href: "/belt_docs/mutable-set"},
     {name: "MutableSetInt", href: "/belt_docs/mutable-set-int"},
     {name: "MutableSetString", href: "/belt_docs/mutable-set-string"},
-    {name: "MutableQueue", href: "/belt_docs/mutable-queue"},
     {name: "MutableStack", href: "/belt_docs/mutable-stack"},
   |];
 
@@ -103,13 +102,13 @@ module Sidebar = {
   let utilityNavs = [|{name: "Debug", href: "/belt_docs/debug"}|];
 
   let categories = [|
+    {name: "Overview", items: overviewNavs},
+    {name: "Basics", items: basicNavs},
     {name: "Set", items: setNavs},
     {name: "Map", items: mapNavs},
-    {name: "Mutable Map", items: mutableMapNavs},
-    {name: "Basics", items: basicNavs},
-    {name: "Sort Collections", items: sortNavs},
     {name: "Mutable Collections", items: mutableCollectionsNavs},
-    {name: "Utility", items: utilityNavs},
+    {name: "Sort Collections", items: sortNavs},
+    {name: "Utilities", items: utilityNavs},
   |];
 
   let categoryToElement = (category: category): React.element => {
@@ -139,10 +138,10 @@ let make = (~children) => {
   <div className="mb-32">
     <div className="max-w-4xl w-full lg:w-3/4 text-gray-900 font-base">
       <Navigation />
-      <main style=minWidth className="flex justify-between mt-12 mx-4">
+      <main style=minWidth className="flex mt-12 mx-4">
         <Sidebar />
         <Mdx.Provider components=Mdx.Components.default>
-          <div className="pl-5 w-full"> children </div>
+          <div className="pl-8 w-3/4"> children </div>
         </Mdx.Provider>
       </main>
     </div>

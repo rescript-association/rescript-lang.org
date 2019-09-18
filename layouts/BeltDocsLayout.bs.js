@@ -50,6 +50,14 @@ var Navigation = /* module */Caml_chrome_debugger.localModule([
     BeltDocsLayout$Navigation
   ]);
 
+var overviewNavs = /* array */[/* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Introduction",
+      "/belt_docs"
+    ])];
+
 var setNavs = /* array */[
   /* record */Caml_chrome_debugger.record([
       "name",
@@ -154,7 +162,7 @@ var mapNavs = /* array */[
     ])
 ];
 
-var mutableMapNavs = /* array */[
+var mutableCollectionsNavs = /* array */[
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
@@ -175,10 +183,14 @@ var mutableMapNavs = /* array */[
     ], [
       "MutableMapString",
       "/belt_docs/mutable-map-string"
-    ])
-];
-
-var mutableCollectionsNavs = /* array */[
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "MutableQueue",
+      "/belt_docs/mutable-queue"
+    ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
@@ -199,13 +211,6 @@ var mutableCollectionsNavs = /* array */[
     ], [
       "MutableSetString",
       "/belt_docs/mutable-set-string"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "MutableQueue",
-      "/belt_docs/mutable-queue"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
@@ -312,6 +317,20 @@ var categories = /* array */[
       "name",
       "items"
     ], [
+      "Overview",
+      overviewNavs
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "items"
+    ], [
+      "Basics",
+      basicNavs
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "items"
+    ], [
       "Set",
       setNavs
     ]),
@@ -326,15 +345,8 @@ var categories = /* array */[
       "name",
       "items"
     ], [
-      "Mutable Map",
-      mutableMapNavs
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "items"
-    ], [
-      "Basics",
-      basicNavs
+      "Mutable Collections",
+      mutableCollectionsNavs
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
@@ -347,14 +359,7 @@ var categories = /* array */[
       "name",
       "items"
     ], [
-      "Mutable Collections",
-      mutableCollectionsNavs
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "items"
-    ], [
-      "Utility",
+      "Utilities",
       utilityNavs
     ])
 ];
@@ -382,9 +387,9 @@ function BeltDocsLayout$Sidebar(Props) {
 }
 
 var Sidebar = /* module */Caml_chrome_debugger.localModule([
+    "overviewNavs",
     "setNavs",
     "mapNavs",
-    "mutableMapNavs",
     "mutableCollectionsNavs",
     "basicNavs",
     "sortNavs",
@@ -393,9 +398,9 @@ var Sidebar = /* module */Caml_chrome_debugger.localModule([
     "categoryToElement",
     "make"
   ], [
+    overviewNavs,
     setNavs,
     mapNavs,
-    mutableMapNavs,
     mutableCollectionsNavs,
     basicNavs,
     sortNavs,
@@ -415,12 +420,12 @@ function BeltDocsLayout(Props) {
             }, React.createElement("div", {
                   className: "max-w-4xl w-full lg:w-3/4 text-gray-900 font-base"
                 }, React.createElement(BeltDocsLayout$Navigation, { }), React.createElement("main", {
-                      className: "flex justify-between mt-12 mx-4",
+                      className: "flex mt-12 mx-4",
                       style: minWidth
                     }, React.createElement(BeltDocsLayout$Sidebar, { }), React.createElement(React$1.MDXProvider, {
                           components: Mdx.Components[/* default */0],
                           children: React.createElement("div", {
-                                className: "pl-5 w-full"
+                                className: "pl-8 w-3/4"
                               }, children)
                         }))));
 }
