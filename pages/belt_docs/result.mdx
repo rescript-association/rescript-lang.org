@@ -3,10 +3,30 @@ id: result
 title: Result
 ---
 
+Utilities for result data type.
+
+```
+type t('a, 'b) =
+  | Ok('a)
+  | Error('b);
+```
+
 ## getExn
 
 ```
 let getExn: t('a, 'b) => 'a;
+```
+
+`getExn(res);`
+
+when `res` is `Ok(n)`, returns `n` when `res` is `Error(m)`, raise an exception
+
+Examples
+
+```
+getExn(good) == 42;
+
+getExn(bad); /* raises exception */
 ```
 
 ## mapWithDefaultU
@@ -21,6 +41,18 @@ let mapWithDefaultU: (t('a, 'c), 'b, [@bs] ('a => 'b)) => 'b;
 let mapWithDefault: (t('a, 'c), 'b, 'a => 'b) => 'b;
 ```
 
+`mapWithDefault(res, default, f);`
+
+When res is `Ok(n)`, returns `f(n)`, otherwise `default`.
+
+Examples
+
+```
+mapWithDefault(good, 0, (x) => x / 2) == 21;
+
+mapWithDefault(bad, 0, (x) => x / 2) == 0;
+```
+
 ## mapU
 
 ```
@@ -31,6 +63,20 @@ let mapU: (t('a, 'c), [@bs] ('a => 'b)) => t('b, 'c);
 
 ```
 let map: (t('a, 'c), 'a => 'b) => t('b, 'c);
+```
+
+`map(res, f);`
+
+When res is `Ok(n)`, returns `Ok(f(n))`. Otherwise returns res unchanged. Function `f` takes a value of the same type as `n` and returns an ordinary value.
+
+Examples
+
+```
+let f = (x) => sqrt(float_of_int(x));
+
+map(Ok(64), f) == Ok(8.0);
+
+map(Error("Invalid data"), f) == Error("Invalid data");
 ```
 
 ## flatMapU
@@ -45,10 +91,43 @@ let flatMapU: (t('a, 'c), [@bs] ('a => t('b, 'c))) => t('b, 'c);
 let flatMap: (t('a, 'c), 'a => t('b, 'c)) => t('b, 'c);
 ```
 
+`flatMap(res, f);`
+
+When res is `Ok(n)`, returns `f(n)`. Otherwise, returns res unchanged. Function `f` takes a value of the same type as `n` and returns a `Belt.Result`.
+
+Examples
+
+```
+let recip = (x) =>
+  if (x !== 0.0) {
+    Ok(1.0 /. x);
+  } else {
+    Error("Divide by zero");
+  };
+
+flatMap(Ok(2.0), recip) == Ok(0.5);
+
+flatMap(Ok(0.0), recip) == Error("Divide by zero");
+
+flatMap(Error("Already bad"), recip) == Error("Already bad");
+```
+
 ## getWithDefault
 
 ```
 let getWithDefault: (t('a, 'b), 'a) => 'a;
+```
+
+`getWithDefault(res, defaultValue);`
+
+if `res` is `Ok(n)`, returns `n`, otherwise `default`
+
+Examples
+
+```
+getWithDefault(Ok(42), 0) == 42;
+
+getWithDefault(Error("Invalid Data")) == 0;
 ```
 
 ## isOk
@@ -57,11 +136,19 @@ let getWithDefault: (t('a, 'b), 'a) => 'a;
 let isOk: t('a, 'b) => bool;
 ```
 
+`isOk(res);`
+
+Returns `true` if `res` is of the form `Ok(n)`, `false` if it is the `Error(e)` variant.
+
 ## isError
 
 ```
 let isError: t('a, 'b) => bool;
 ```
+
+`isError(res);`
+
+Returns `true` if `res` is of the form `Error(e)`, `false` if it is the `Ok(n)` variant.
 
 ## eqU
 
@@ -75,6 +162,32 @@ let eqU: (t('a, 'c), t('b, 'd), [@bs] (('a, 'b) => bool)) => bool;
 let eq: (t('a, 'c), t('b, 'd), ('a, 'b) => bool) => bool;
 ```
 
+`eq(res1, res2, f);`
+
+Determine if two `Belt.Result` variables are equal with respect to an equality function. If `res1` and `res2` are of the form `Ok(n)` and `Ok(m)`, return the result of `f(n, m)`. If one of `res1` and `res2` are of the form `Error(e)`, return false If both `res1` and `res2` are of the form `Error(e)`, return true
+
+Examples
+
+```
+let good1 = Ok(42);
+
+let good2 = Ok(32);
+
+let bad1 = Error("invalid");
+
+let bad2 = Error("really invalid");
+
+let mod10equal = (a, b) => a mod 10 === b mod 10;
+
+eq(good1, good2, mod10equal) == true;
+
+eq(good1, bad1, mod10equal) == false;
+
+eq(bad2, good2, mod10equal) == false;
+
+eq(bad1, bad2, mod10equal) == true;
+```
+
 ## cmpU
 
 ```
@@ -85,4 +198,34 @@ let cmpU: (t('a, 'c), t('b, 'd), [@bs] (('a, 'b) => int)) => int;
 
 ```
 let cmp: (t('a, 'c), t('b, 'd), ('a, 'b) => int) => int;
+```
+
+`cmp(res1, res2, f);`
+
+Compare two `Belt.Result` variables with respect to a comparison function. The comparison function returns -1 if the first variable is "less than" the second, 0 if the two variables are equal, and 1 if the first is "greater than" the second.
+
+If `res1` and `res2` are of the form `Ok(n)` and `Ok(m)`, return the result of `f(n, m)`. If `res1` is of the form `Error(e)` and `res2` of the form `Ok(n)`, return -1 (nothing is less than something) If `res1` is of the form `Ok(n)` and `res2` of the form `Error(e)`, return 1 (something is greater than nothing) If both `res1` and `res2` are of the form `Error(e)`, return 0 (equal)
+
+Examples
+
+```
+let good1 = Ok(59);
+
+let good2 = Ok(37);
+
+let bad1 = Error("invalid");
+
+let bad2 = Error("really invalid");
+
+let mod10cmp = (a, b) => Pervasives.compare(a mod 10, b mod 10);
+
+cmp(Ok(39), Ok(57), mod10cmp) == 1;
+
+cmp(Ok(57), Ok(39), mod10cmp) == (-1);
+
+cmp(Ok(39), Error("y"), mod10cmp) == 1;
+
+cmp(Error("x"), Ok(57), mod10cmp) == (-1);
+
+cmp(Error("x"), Error("y"), mod10cmp) == 0;
 ```
