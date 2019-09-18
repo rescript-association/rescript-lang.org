@@ -3,6 +3,8 @@ id: range
 title: Range
 ---
 
+A small module to provide a inclusive range operations `[start, finsish]`, it use a for-loop internally instead of creating an array
+
 ## forEachU
 
 ```
@@ -14,6 +16,10 @@ let forEachU: (int, int, [@bs] (int => unit)) => unit;
 ```
 let forEach: (int, int, int => unit) => unit;
 ```
+
+`forEach(start, finish, action);`
+
+equivalent to `Belt.Array.(forEach(range(start, finish), action));`
 
 ## everyU
 
@@ -27,6 +33,10 @@ let everyU: (int, int, [@bs] (int => bool)) => bool;
 let every: (int, int, int => bool) => bool;
 ```
 
+`every(start, finish, p);`
+
+equivalent to `Belt.Array.(every(range(start, finish), p));`
+
 ## everyByU
 
 ```
@@ -38,6 +48,12 @@ let everyByU: (int, int, ~step: int, [@bs] (int => bool)) => bool;
 ```
 let everyBy: (int, int, ~step: int, int => bool) => bool;
 ```
+
+`everyBy(start, finish, ~step, p);`
+
+See `Belt_Array.rangeBy`
+
+equivalent to `Belt.Array.(every(rangeBy(start, finish, ~step), p));`
 
 ## someU
 
@@ -51,6 +67,10 @@ let someU: (int, int, [@bs] (int => bool)) => bool;
 let some: (int, int, int => bool) => bool;
 ```
 
+`some(start, finish, p);`
+
+equivalent to `Belt.Array.(some(range(start, finish), p));`
+
 ## someByU
 
 ```
@@ -62,3 +82,9 @@ let someByU: (int, int, ~step: int, [@bs] (int => bool)) => bool;
 ```
 let someBy: (int, int, ~step: int, int => bool) => bool;
 ```
+
+`someBy(start, finish, ~step, p);`
+
+See `Belt_Array.rangeBy`
+
+equivalent to `Belt.Array.(some(rangeBy(start, finish, ~step), p));`
