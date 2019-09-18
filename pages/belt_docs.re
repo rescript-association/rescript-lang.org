@@ -45,12 +45,12 @@ module Data = {
 
 [@react.component]
 let default = () => {
-  <MainLayout>
+  <BeltDocsLayout>
     <div>
       <ul>
         {Data.getAllBeltModules()
          ->Belt.Array.map(m =>
-             <li key={m.id}>
+             <li key={m.id} className="font-bold lg:font-normal">
                <Link href={"/belt_docs/" ++ m.id}>
                <a> m.id->s </a> </Link>
              </li>
@@ -58,5 +58,5 @@ let default = () => {
          ->ate}
       </ul>
     </div>
-  </MainLayout>;
+  </BeltDocsLayout>;
 };

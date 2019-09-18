@@ -35,7 +35,12 @@ module.exports = {
           "lighten-65": "rgba(35, 36, 46, 0.35)",
           "lighten-90": "rgba(35, 36, 46, 0.1)",
           "lighten-95": "rgba(35, 36, 46, 0.05)"
-        }
+        },
+
+        bs: {
+          purple: "rgb(171, 94, 163)"
+        },
+        "white-80": "rgba(255,255,255,0.8)",
       }
     },
     screens: {

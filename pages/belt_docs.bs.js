@@ -5,7 +5,7 @@ import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
-import * as MainLayout from "../layouts/MainLayout.bs.js";
+import * as BeltDocsLayout from "../layouts/BeltDocsLayout.bs.js";
 import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
 function getMdxModule (ctx,filepath){{ return ctx(filepath); }};
@@ -44,10 +44,11 @@ var Data = /* module */Caml_chrome_debugger.localModule([
   ]);
 
 function Belt_docs$default(Props) {
-  return React.createElement(MainLayout.make, {
+  return React.createElement(BeltDocsLayout.make, {
               children: React.createElement("div", undefined, React.createElement("ul", undefined, Util.ReactStuff[/* ate */1](Belt_Array.map(toMdxModules(beltCtx), (function (m) {
                                   return React.createElement("li", {
-                                              key: m[/* id */0]
+                                              key: m[/* id */0],
+                                              className: "font-bold lg:font-normal"
                                             }, React.createElement(Link.default, {
                                                   href: "/belt_docs/" + m[/* id */0],
                                                   children: React.createElement("a", undefined, Util.ReactStuff[/* s */0](m[/* id */0]))
