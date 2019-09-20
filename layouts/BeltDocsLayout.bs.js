@@ -1,6 +1,5 @@
 
 
-import * as Mdx from "../common/Mdx.bs.js";
 import * as $$Text from "../components/Text.bs.js";
 import * as Util from "../common/Util.bs.js";
 import * as React from "react";
@@ -11,6 +10,61 @@ import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.
 
 require('../styles/main.css')
 ;
+
+function BeltDocsLayout$BeltMd$Anchor(Props) {
+  var id = Props.id;
+  var style = {
+    position: "absolute",
+    top: "-7rem"
+  };
+  return React.createElement("span", {
+              style: {
+                position: "relative"
+              }
+            }, React.createElement("a", {
+                  id: id,
+                  style: style
+                }));
+}
+
+var Anchor = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$BeltMd$Anchor]);
+
+function BeltDocsLayout$BeltMd$H2(Props) {
+  var children = Props.children;
+  return React.createElement(React.Fragment, undefined, React.createElement(BeltDocsLayout$BeltMd$Anchor, {
+                  id: children
+                }), React.createElement("h2", {
+                  className: "text-xl leading-3 font-montserrat font-medium text-main-black"
+                }, children));
+}
+
+var H2 = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$BeltMd$H2]);
+
+var components = {
+  p: $$Text.Md[/* P */3][/* make */0],
+  li: $$Text.Md[/* Li */7][/* make */3],
+  h1: $$Text.H1[/* make */0],
+  h2: BeltDocsLayout$BeltMd$H2,
+  h3: $$Text.H3[/* make */0],
+  h4: $$Text.H4[/* make */0],
+  h5: $$Text.H5[/* make */0],
+  ul: $$Text.Md[/* Ul */5][/* make */0],
+  ol: $$Text.Md[/* Ol */6][/* make */0],
+  inlineCode: $$Text.Md[/* InlineCode */2][/* make */0],
+  code: $$Text.Md[/* Code */1][/* make */0],
+  pre: $$Text.Md[/* Pre */0][/* make */0],
+  a: $$Text.Md[/* A */4][/* make */2]
+};
+
+var BeltMd = /* module */Caml_chrome_debugger.localModule([
+    "Anchor",
+    "H2",
+    "components"
+  ], [
+    Anchor,
+    H2,
+    components
+  ]);
 
 var link = "no-underline text-inherit hover:text-white";
 
@@ -423,7 +477,7 @@ function BeltDocsLayout(Props) {
                       className: "flex mt-12 mx-4",
                       style: minWidth
                     }, React.createElement(BeltDocsLayout$Sidebar, { }), React.createElement(React$1.MDXProvider, {
-                          components: Mdx.Components[/* default */0],
+                          components: components,
                           children: React.createElement("div", {
                                 className: "pl-8 w-3/4"
                               }, children)
@@ -436,6 +490,7 @@ var make = BeltDocsLayout;
 
 export {
   Link$1 as Link,
+  BeltMd ,
   Navigation ,
   Sidebar ,
   make ,

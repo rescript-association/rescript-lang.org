@@ -5,6 +5,56 @@ open Util.ReactStuff;
 open Text;
 module Link = Next.Link;
 
+/*
+    We use some custom markdown styling for the Belt docs to make
+    it easier on the eyes
+ */
+module BeltMd = {
+  external elementAsString: React.element => string = "%identity";
+  module Anchor = {
+    [@react.component]
+    let make = (~id: string) => {
+      let style =
+        ReactDOMRe.Style.make(~position="absolute", ~top="-7rem", ());
+      <span style={ReactDOMRe.Style.make(~position="relative", ())}>
+        <a style id />
+      </span>;
+    };
+  };
+
+  module H2 = {
+    [@react.component]
+    let make = (~children) => {
+      <>
+        // Here we know that children is always a string (## headline)
+        <Anchor id={children->elementAsString} />
+        <h2
+          className="text-xl leading-3 font-montserrat font-medium text-main-black">
+          children
+        </h2>
+      </>;
+    };
+  };
+
+  let components =
+    Mdx.Components.t(
+      ~p=Md.P.make,
+      ~li=Md.Li.make,
+      ~h1=H1.make,
+      ~h2=H2.make,
+      ~h3=H3.make,
+      ~h4=H4.make,
+      ~h5=H5.make,
+      ~ul=Md.Ul.make,
+      ~ol=Md.Ol.make,
+      ~a=Md.A.make,
+      ~pre=Md.Pre.make,
+      ~inlineCode=Md.InlineCode.make,
+      ~code=Md.Code.make,
+      (),
+    );
+};
+
 module Navigation = {
   let link = "no-underline text-inherit hover:text-white";
   [@react.component]
@@ -140,7 +190,7 @@ let make = (~children) => {
       <Navigation />
       <main style=minWidth className="flex mt-12 mx-4">
         <Sidebar />
-        <Mdx.Provider components=Mdx.Components.default>
+        <Mdx.Provider components=BeltMd.components>
           <div className="pl-8 w-3/4"> children </div>
         </Mdx.Provider>
       </main>
