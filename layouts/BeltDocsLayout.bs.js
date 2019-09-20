@@ -22,6 +22,9 @@ function BeltDocsLayout$BeltMd$Anchor(Props) {
                 position: "relative"
               }
             }, React.createElement("a", {
+                  className: "mr-2 text-main-lighten-65 hover:cursor-pointer",
+                  href: "#" + id
+                }, Util.ReactStuff[/* s */0]("#")), React.createElement("a", {
                   id: id,
                   style: style
                 }));
@@ -31,11 +34,11 @@ var Anchor = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLay
 
 function BeltDocsLayout$BeltMd$H2(Props) {
   var children = Props.children;
-  return React.createElement(React.Fragment, undefined, React.createElement(BeltDocsLayout$BeltMd$Anchor, {
-                  id: children
-                }), React.createElement("h2", {
+  return React.createElement(React.Fragment, undefined, React.createElement("h2", {
                   className: "text-xl leading-3 font-montserrat font-medium text-main-black"
-                }, children));
+                }, React.createElement(BeltDocsLayout$BeltMd$Anchor, {
+                      id: children
+                    }), children));
 }
 
 var H2 = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$BeltMd$H2]);

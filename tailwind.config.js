@@ -133,6 +133,7 @@ module.exports = {
   },
   variants: {
     color: ["hover"],
+    cursor: ["hover"],
     width: ["responsive"],
     border: ["hover"]
   },

@@ -17,6 +17,11 @@ module BeltMd = {
       let style =
         ReactDOMRe.Style.make(~position="absolute", ~top="-7rem", ());
       <span style={ReactDOMRe.Style.make(~position="relative", ())}>
+        <a
+          className="mr-2 text-main-lighten-65 hover:cursor-pointer"
+          href={"#" ++ id}>
+          {j|#|j}->s
+        </a>
         <a style id />
       </span>;
     };
@@ -27,9 +32,9 @@ module BeltMd = {
     let make = (~children) => {
       <>
         // Here we know that children is always a string (## headline)
-        <Anchor id={children->elementAsString} />
         <h2
           className="text-xl leading-3 font-montserrat font-medium text-main-black">
+          <Anchor id={children->elementAsString} />
           children
         </h2>
       </>;
