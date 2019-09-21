@@ -11,6 +11,13 @@ import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.
 require('../styles/main.css')
 ;
 
+
+let hljs = require('highlight.js/lib/highlight');
+let reasonHighlightJs = require('reason-highlightjs');
+hljs.registerLanguage('reason', reasonHighlightJs);
+
+;
+
 function BeltDocsLayout$BeltMd$Anchor(Props) {
   var id = Props.id;
   var style = {
@@ -43,6 +50,15 @@ function BeltDocsLayout$BeltMd$H2(Props) {
 
 var H2 = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$BeltMd$H2]);
 
+function BeltDocsLayout$BeltMd$Pre(Props) {
+  var children = Props.children;
+  return React.createElement("pre", {
+              className: "mt-2 mb-4 block"
+            }, children);
+}
+
+var Pre = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$BeltMd$Pre]);
+
 var components = {
   p: $$Text.Md[/* P */3][/* make */0],
   li: $$Text.Md[/* Li */7][/* make */3],
@@ -55,17 +71,19 @@ var components = {
   ol: $$Text.Md[/* Ol */6][/* make */0],
   inlineCode: $$Text.Md[/* InlineCode */2][/* make */0],
   code: $$Text.Md[/* Code */1][/* make */0],
-  pre: $$Text.Md[/* Pre */0][/* make */0],
+  pre: BeltDocsLayout$BeltMd$Pre,
   a: $$Text.Md[/* A */4][/* make */2]
 };
 
 var BeltMd = /* module */Caml_chrome_debugger.localModule([
     "Anchor",
     "H2",
+    "Pre",
     "components"
   ], [
     Anchor,
     H2,
+    Pre,
     components
   ]);
 
