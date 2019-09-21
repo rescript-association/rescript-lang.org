@@ -3,6 +3,10 @@ export default Layout;
 
 # MutableStack
 
+First in last out stack.
+
+This module implements stacks, with in-place modification.
+
 ## t
 
 ```
@@ -15,17 +19,23 @@ type t('a);
 let make: unit => t('a);
 ```
 
+Returns a new stack, initially empty.
+
 ## clear
 
 ```
 let clear: t('a) => unit;
 ```
 
+Discard all elements from the stack.
+
 ## copy
 
 ```
 let copy: t('a) => t('a);
 ```
+
+`copy(x)` O(1) operation, return a new stack.
 
 ## push
 
@@ -92,3 +102,5 @@ let dynamicPopIterU: (t('a), [@bs] ('a => unit)) => unit;
 ```
 let dynamicPopIter: (t('a), 'a => unit) => unit;
 ```
+
+`dynamicPopIter(s, f)` apply `f` to each element of `s`. The item is poped before applying `f`, `s` will be empty after this opeartion. This function is useful for worklist algorithm.
