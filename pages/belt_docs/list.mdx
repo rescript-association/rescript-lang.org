@@ -879,6 +879,18 @@ every2(xs, ys, p);
 
 Returns `true` if predicate `p(xi, yi)` is `true` for all pairs of elements up to the shorter length (i.e. `min(length(xs), length(ys))`)
 
+**Examples**
+
+```reason
+Belt.List.every2([1, 2, 3], [0, 1], (>)); /* true */
+
+Belt.List.every2([], [1], (x, y) => x > y); /* true */
+
+Belt.List.every2([2, 3], [1], (x, y) => x > y); /* true */
+
+Belt.List.every2([0, 1], [5, 0], (x, y) => x > y); /* false */
+```
+
 ## every2U
 
 ```
@@ -887,17 +899,25 @@ let every2U: (t('a), t('b), [@bs] (('a, 'b) => bool)) => bool;
 
 Uncurried version of [every2](#every2).
 
+## some2
+
+```
+let some2: (t('a), t('b), ('a, 'b) => bool) => bool;
+```
+
+```reason
+some2(xs, ys, p);
+```
+
+Returns `true` if `p(xi, yi)` is true for any pair of elements up to the shorter length (i.e. `min(length(xs), length(ys))`)
+
 ## some2U
 
 ```
 let some2U: (t('a), t('b), [@bs] (('a, 'b) => bool)) => bool;
 ```
 
-## some2
-
-```
-let some2: (t('a), t('b), ('a, 'b) => bool) => bool;
-```
+Uncurried version of [some2](#some2).
 
 ## cmpByLength
 
@@ -905,10 +925,20 @@ let some2: (t('a), t('b), ('a, 'b) => bool) => bool;
 let cmpByLength: (t('a), t('a)) => int;
 ```
 
-## cmpU
-
+```reason
+cmpByLength(firstList, secondList);
 ```
-let cmpU: (t('a), t('a), [@bs] (('a, 'a) => int)) => int;
+
+Compare two lists solely by length. Returns `-1` if `length(firstList)` is less than `length(secondList)`, `0` if `length(firstList)` equals `length(secondList)`, and `1` if `length(firstList)` is greater than `length(secondList)`.
+
+**Examples**
+
+```reason
+Belt.List.cmpByLength([1, 2], [3, 4, 5, 6]); /* (-1) */
+
+Belt.List.cmpByLength([1, 2, 3], [4, 5, 6]); /* = 0 */
+
+Belt.List.cmpByLength([1, 2, 3, 4], [5, 6]); /* = 1 */
 ```
 
 ## cmp
@@ -917,16 +947,92 @@ let cmpU: (t('a), t('a), [@bs] (('a, 'a) => int)) => int;
 let cmp: (t('a), t('a), ('a, 'a) => int) => int;
 ```
 
+**Examples**
+
+```reason
+cmp(firstList, secondList, compareFn);
+```
+
+Compare elements one by one `f(x, y)`. `f` returns a negative number if `x` is "less than" `y`, zero if `x`is "equal to" `y`, a positive number if `x`is "greater than" `y`.
+
+The comparison returns the first non-zero result of `f`, or zero if `f` returns zero for all `x` and `y`.
+If all items have compared equal, but `firstList` is exhausted first, return `-1`. (`firstList` is shorter).
+If all items have compared equal, but `secondList` is exhausted first, return `1` (`firstList` is longer).
+
+```reason
+Belt.List.cmp([3], [3, 7], (a, b) => compare(a, b)); /* (-1) */
+
+Belt.List.cmp([5, 3], [5], (a, b) => compare(a, b)); /* 1 */
+
+Belt.List.cmp([|1, 3, 5|], [|1, 4, 2|], (a, b) => compare(a, b)); /* (-1) */
+
+Belt.List.cmp([|1, 3, 5|], [|1, 2, 3|], (a, b) => compare(a, b)); /* 1 */
+
+Belt.List.cmp([|1, 3, 5|], [|1, 3, 5|], (a, b) => compare(a, b)); /* 0 */
+```
+
+**Please note:** The total ordering of List is different from Array,
+for Array, we compare the length first and, only if the lengths are equal, elements one by one.
+For lists, we just compare elements one by one.
+
+## cmpU
+
+```
+let cmpU: (t('a), t('a), [@bs] (('a, 'a) => int)) => int;
+```
+
+Uncurried version of [cmp](#cmp).
+
+## eq
+
+```
+let eq: (t('a), t('a), ('a, 'a) => bool) => bool;
+```
+
+```reason
+eq(firstList, secondList, eqElem);
+```
+
+Check equality of `firstList` and `secondList` using `eqElem` for equality on elements, where `eqElem` is a function that returns `true` if items `x` and `y` meet some criterion for equality, `false` otherwise. eq `false` if length of `firstList` and `secondList` are not the same.
+
+**Examples**
+
+```reason
+Belt.List.eq([1, 2, 3], [1, 2], (==)); /* false */
+
+Belt.List.eq([1, 2], [1, 2], (==)); /* true */
+
+Belt.List.eq([1, 2, 3], [(-1), (-2), (-3)], (a, b) => abs(a) == abs(b)); /* true */
+```
+
 ## eqU
 
 ```
 let eqU: (t('a), t('a), [@bs] (('a, 'a) => bool)) => bool;
 ```
 
-## eq
+Uncurried version of [eqU](#eqU).
+
+## has
 
 ```
-let eq: (t('a), t('a), ('a, 'a) => bool) => bool;
+let has: (t('a), 'b, ('a, 'b) => bool) => bool;
+```
+
+```reason
+has(someList, eqFunction);
+```
+
+Returns `true` if the list contains at least one element for which `eqFunction(x)` returns true.
+
+**Examples**
+
+```reason
+[1, 2, 3]->Belt.List.has(2, (==)); /* true */
+
+[1, 2, 3]->Belt.List.has(4, (==)); /* false */
+
+[(-1), (-2), (-3)]->Belt.List.has(2, (a, b) => abs(a) == abs(b)); /* true */
 ```
 
 ## hasU
@@ -935,10 +1041,12 @@ let eq: (t('a), t('a), ('a, 'a) => bool) => bool;
 let hasU: (t('a), 'b, [@bs] (('a, 'b) => bool)) => bool;
 ```
 
-## has
+Uncurried version of [has](#has).
+
+## getBy
 
 ```
-let has: (t('a), 'b, ('a, 'b) => bool) => bool;
+let getBy: (t('a), 'a => bool) => option('a);
 ```
 
 ## getByU
@@ -947,11 +1055,7 @@ let has: (t('a), 'b, ('a, 'b) => bool) => bool;
 let getByU: (t('a), [@bs] ('a => bool)) => option('a);
 ```
 
-## getBy
-
-```
-let getBy: (t('a), 'a => bool) => option('a);
-```
+Uncurried version of [getBy](#getBy).
 
 ## keepU
 
