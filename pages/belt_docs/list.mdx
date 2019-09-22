@@ -609,16 +609,52 @@ let forEachWithIndexU: (t('a), [@bs] ((int, 'a) => 'b)) => unit;
 
 Uncurried version of [forEachWithIndex](#forEachWithIndex).
 
+## reduce
+
+```
+let reduce: (t('a), 'b, ('b, 'a) => 'b) => 'b;
+```
+
+```reason
+reduce(someList, initialValue, f);
+```
+
+Applies `f` to each element of `someList` from beginning to end. Function `f` has two parameters: the item from the list and an “accumulator”, which starts with a value of `initialValue`. reduce returns the final value of the accumulator.
+
+**Examples**
+
+```reason
+[1, 2, 3, 4]->Belt.List.reduce(0, (+)); /* 10 */
+
+/* same as */
+
+[1, 2, 3, 4]->Belt.List.reduce(0, (acc, item) => acc + item); /* 10 */
+```
+
 ## reduceU
 
 ```
 let reduceU: (t('a), 'b, [@bs] (('b, 'a) => 'b)) => 'b;
 ```
 
-## reduce
+Uncurried version of [reduce](#reduce).
+
+## reduceWithIndex
 
 ```
-let reduce: (t('a), 'b, ('b, 'a) => 'b) => 'b;
+let reduceWithIndex: (t('a), 'b, ('b, 'a, int) => 'b) => 'b;
+```
+
+```reason
+reduceWithIndex(someList, initialValue, f);
+```
+
+Applies `f` to each element of `someList` from beginning to end. Function `f` has three parameters: the item from the list and an “accumulator”, which starts with a value of `initialValue` and the index of each element. `reduceWithIndex` returns the final value of the accumulator.
+
+**Example**
+
+```reason
+[1, 2, 3, 4]->Belt.List.reduceWithIndex(0, (acc, item, index) => acc + item + index); /* 16 */
 ```
 
 ## reduceWithIndexU
@@ -627,10 +663,28 @@ let reduce: (t('a), 'b, ('b, 'a) => 'b) => 'b;
 let reduceWithIndexU: (t('a), 'b, [@bs] (('b, 'a, int) => 'b)) => 'b;
 ```
 
-## reduceWithIndex
+Uncurried version of [reduceWithIndex](#reduceWithIndex).
+
+## reduceReverse
 
 ```
-let reduceWithIndex: (t('a), 'b, ('b, 'a, int) => 'b) => 'b;
+let reduceReverse: (t('a), 'b, ('b, 'a) => 'b) => 'b;
+```
+
+```reason
+reduceReverse(someList, f);
+```
+
+Works like [reduce](#reduce), except that function `f` is applied to each item of `someList` from the last back to the first.
+
+**Examples**
+
+```reason
+[1, 2, 3, 4]->Belt.List.reduceReverse(0, (+)); /* 10 */
+
+[1, 2, 3, 4]->Belt.List.reduceReverse(10, (-)); /* 0 */
+
+[1, 2, 3, 4]->Belt.List.reduceReverse([], add); /* [1, 2, 3, 4] */
 ```
 
 ## reduceReverseU
@@ -639,11 +693,7 @@ let reduceWithIndex: (t('a), 'b, ('b, 'a, int) => 'b) => 'b;
 let reduceReverseU: (t('a), 'b, [@bs] (('b, 'a) => 'b)) => 'b;
 ```
 
-## reduceReverse
-
-```
-let reduceReverse: (t('a), 'b, ('b, 'a) => 'b) => 'b;
-```
+Uncurried version of [reduceReverse](#reduceReverse).
 
 ## mapReverse2U
 
@@ -657,10 +707,20 @@ let mapReverse2U: (t('a), t('b), [@bs] (('a, 'b) => 'c)) => t('c);
 let mapReverse2: (t('a), t('b), ('a, 'b) => 'c) => t('c);
 ```
 
-## forEach2U
-
+```reason
+mapReverse2(firstList, secondList, f);
 ```
-let forEach2U: (t('a), t('b), [@bs] (('a, 'b) => 'c)) => unit;
+
+Equivalent to:
+
+```reason
+zipBy(xs, ys, f)->reverse;
+```
+
+**Example**
+
+```reason
+Belt.List.mapReverse2([1, 2, 3], [1, 2], (+)); /* [4, 2] */
 ```
 
 ## forEach2
@@ -669,16 +729,74 @@ let forEach2U: (t('a), t('b), [@bs] (('a, 'b) => 'c)) => unit;
 let forEach2: (t('a), t('b), ('a, 'b) => 'c) => unit;
 ```
 
+```reason
+forEach2(firstList, secondList, f);
+```
+
+Stops at the length of the shorter list.
+
+**Example**
+
+```reason
+Belt.List.forEach2(["Z", "Y"], ["A", "B", "C"], (x, y) => Js.log2(x, y));
+
+/* prints:
+"Z" "A"
+"Y" "B"
+*/
+```
+
+## forEach2U
+
+```
+let forEach2U: (t('a), t('b), [@bs] (('a, 'b) => 'c)) => unit;
+```
+
+Uncurried version of [forEach2](#forEach2).
+
+## reduce2
+
+```
+let reduce2: (t('b), t('c), 'a, ('a, 'b, 'c) => 'a) => 'a;
+```
+
+```reason
+reduce2(firstList, secondList, initialValue, f);
+```
+
+Applies `f` to each element of `firstList` and `secondList` from beginning to end. Stops with the shorter list. Function `f` has three parameters: an “accumulator” which starts with a value of `initialValue`, an item from `firstList`, and an item from `secondList`. `reduce2` returns the final value of the accumulator.
+
+**Example**
+
+```reason
+Belt.List.reduce2([1, 2, 3], [4, 5], 0, (acc, x, y) => acc + x * x + y); /* 0 + (1 * 1 + 4) + (2 * 2 + 5) */
+```
+
 ## reduce2U
 
 ```
 let reduce2U: (t('b), t('c), 'a, [@bs] (('a, 'b, 'c) => 'a)) => 'a;
 ```
 
-## reduce2
+Uncurried version of [reduce2](#reduce2).
+
+## reduceReverse2
 
 ```
-let reduce2: (t('b), t('c), 'a, ('a, 'b, 'c) => 'a) => 'a;
+let reduceReverse2: (t('a), t('b), 'c, ('c, 'a, 'b) => 'c) => 'c;
+```
+
+```reason
+reduceReverse2(firstList, secondList, initialValue, f);
+```
+
+Applies `f` to each element of `firstList` and `secondList` from end to beginning. Stops with the shorter list. Function `f` has three parameters: an “accumulator” which starts with a value of init, an item from `firstList`, and an item from `secondList`. `reduce2` returns the final value of the accumulator.
+
+**Example**
+
+```reason
+Belt.List.reduceReverse2([1, 2, 3], [4, 5], 0, (acc, x, y) => acc + x * x + y); /*  + (1 * 1 + 4) + (2 * 2 + 5) */
+
 ```
 
 ## reduceReverse2U
@@ -687,10 +805,28 @@ let reduce2: (t('b), t('c), 'a, ('a, 'b, 'c) => 'a) => 'a;
 let reduceReverse2U: (t('a), t('b), 'c, [@bs] (('c, 'a, 'b) => 'c)) => 'c;
 ```
 
-## reduceReverse2
+Uncurried version of [reduceReverse2](#reduceReverse2).
+
+## every
 
 ```
-let reduceReverse2: (t('a), t('b), 'c, ('c, 'a, 'b) => 'c) => 'c;
+let every: (t('a), 'a => bool) => bool;
+```
+
+```reason
+every(someList, p);
+```
+
+Returns `true` if all elements satisfy `p`, where `p` is a predicate: a function taking an element and returning a bool.
+
+**Examples**
+
+```reason
+let isBelow10 = value => value < 10;
+
+[1, 9, 8, 2]->Belt.List.every(isBelow10); /* true */
+
+[1, 99, 8, 2]->Belt.List.every(isBelow10); /* false */
 ```
 
 ## everyU
@@ -699,10 +835,28 @@ let reduceReverse2: (t('a), t('b), 'c, ('c, 'a, 'b) => 'c) => 'c;
 let everyU: (t('a), [@bs] ('a => bool)) => bool;
 ```
 
-## every
+Uncurried version of [every](#every).
+
+## some
 
 ```
-let every: (t('a), 'a => bool) => bool;
+let some: (t('a), 'a => bool) => bool;
+```
+
+```reason
+some(someList, p);
+```
+
+Returns `true` if at least _one_ of the elements in `someList` satifies `p`, where `p` is a predicate: a function taking an element and returning a bool.
+
+**Examples**
+
+```reason
+let isAbove100 = value => value > 100;
+
+[101, 1, 2, 3]->Belt.List.some(isAbove100); /* true */
+
+[1, 2, 3, 4]->Belt.List.some(isAbove100); /* false */
 ```
 
 ## someU
@@ -711,11 +865,19 @@ let every: (t('a), 'a => bool) => bool;
 let someU: (t('a), [@bs] ('a => bool)) => bool;
 ```
 
-## some
+Uncurried version of [some](#some).
+
+## every2
 
 ```
-let some: (t('a), 'a => bool) => bool;
+let every2: (t('a), t('b), ('a, 'b) => bool) => bool;
 ```
+
+```reason
+every2(xs, ys, p);
+```
+
+Returns `true` if predicate `p(xi, yi)` is `true` for all pairs of elements up to the shorter length (i.e. `min(length(xs), length(ys))`)
 
 ## every2U
 
@@ -723,11 +885,7 @@ let some: (t('a), 'a => bool) => bool;
 let every2U: (t('a), t('b), [@bs] (('a, 'b) => bool)) => bool;
 ```
 
-## every2
-
-```
-let every2: (t('a), t('b), ('a, 'b) => bool) => bool;
-```
+Uncurried version of [every2](#every2).
 
 ## some2U
 
