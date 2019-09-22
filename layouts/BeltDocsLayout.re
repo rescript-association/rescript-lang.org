@@ -1,6 +1,14 @@
 %raw
 "require('../styles/main.css')";
 
+%raw
+{|
+let hljs = require('highlight.js/lib/highlight');
+let reasonHighlightJs = require('reason-highlightjs');
+hljs.registerLanguage('reason', reasonHighlightJs);
+|};
+
+
 open Util.ReactStuff;
 open Text;
 module Link = Next.Link;
@@ -41,6 +49,13 @@ module BeltMd = {
     };
   };
 
+  module Pre = {
+    [@react.component]
+    let make = (~children) => {
+      <pre className="mt-2 mb-4 block"> children </pre>;
+    };
+  };
+
   let components =
     Mdx.Components.t(
       ~p=Md.P.make,
@@ -53,7 +68,7 @@ module BeltMd = {
       ~ul=Md.Ul.make,
       ~ol=Md.Ol.make,
       ~a=Md.A.make,
-      ~pre=Md.Pre.make,
+      ~pre=Pre.make,
       ~inlineCode=Md.InlineCode.make,
       ~code=Md.Code.make,
       (),
