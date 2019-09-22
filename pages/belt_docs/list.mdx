@@ -17,8 +17,6 @@ type t('a) = list('a);
 let length: t('a) => int;
 ```
 
-**Usage**
-
 ```reason
 length(someList);
 ```
@@ -43,8 +41,6 @@ let size: t('a) => int;
 let head: t('a) => option('a);
 ```
 
-**Usage**
-
 ```reason
 head(someList);
 ```
@@ -65,8 +61,6 @@ Belt.List.head([1, 2, 3]); /* Some(1) */
 let headExn: t('a) => 'a;
 ```
 
-**Usage**
-
 ```reason
 head(someList);
 ```
@@ -78,8 +72,6 @@ Same as [head](#head), but raises an exception if `someList` is empty. Use with 
 ```
 let tail: t('a) => option(t('a));
 ```
-
-**Usage**
 
 ```reason
 tail(someList);
@@ -101,8 +93,6 @@ Belt.List.tail([]); /* None */
 let tailExn: t('a) => t('a);
 ```
 
-**Usage**
-
 ```reason
 tailExn(someList);
 ```
@@ -114,8 +104,6 @@ Same as [tail](#tail), but raises an exception if `someList` is empty. Use with 
 ```
 let add: (t('a), 'a) => t('a);
 ```
-
-**Usage**
 
 ```reason
 add(someList, value);
@@ -136,8 +124,6 @@ Belt.List.add(["World", "!"], "Hello"); /* ["Hello", "World", "!"] */
 ```
 let get: (t('a), int) => option('a);
 ```
-
-**Usage**
 
 ```reason
 get(someList, index);
@@ -161,8 +147,6 @@ abc->Belt.List.get(4); /* None */
 let getExn: (t('a), int) => 'a;
 ```
 
-**Usage**
-
 ```reason
 getExn(someList, index);
 ```
@@ -174,8 +158,6 @@ Same as [get](#get), but raises an exception if `index` is larger than the lengt
 ```
 let make: (int, 'a) => t('a);
 ```
-
-**Usage**
 
 ```reason
 make(numItems, v);
@@ -194,8 +176,6 @@ Belt.List.make(3, 1); /* [1, 1, 1] */
 ```
 let makeBy: (int, int => 'a) => t('a);
 ```
-
-**Usage**
 
 ```reason
 makeBy(numItems, f);
@@ -226,8 +206,6 @@ Uncurried version of [makeBy](#makeBy)
 let shuffle: t('a) => t('a);
 ```
 
-**Usage**
-
 ```reason
 shuffle(someList);
 ```
@@ -245,8 +223,6 @@ Belt.List.shuffle([1, 2, 3]); /* [2, 1, 3] */
 ```
 let drop: (t('a), int) => option(t('a));
 ```
-
-**Usage**
 
 ```reason
 drop(someList, n);
@@ -270,8 +246,6 @@ Return a new list, dropping the first `n` elements. Returns `None` if `someList`
 let take: (t('a), int) => option(t('a));
 ```
 
-**Usage**
-
 ```reason
 take(someList, n);
 ```
@@ -294,8 +268,6 @@ Returns a list with the first `n` elements from `someList`, or `None` if `someLi
 let splitAt: (t('a), int) => option((list('a), list('a)));
 ```
 
-**Usage**
-
 ```reason
 splitAt(someList, index);
 ```
@@ -316,8 +288,6 @@ Split the list `someList` at `index`. Returns `None` when the length of `someLis
 let concat: (t('a), t('a)) => t('a);
 ```
 
-**Usage**
-
 ```reason
 concat(firstList, secondList);
 ```
@@ -336,8 +306,6 @@ Belt.List.concat([1, 2, 3], [4, 5]); /* [1, 2, 3, 4, 5] */
 let concatMany: array(t('a)) => t('a);
 ```
 
-**Usage**
-
 ```reason
 concatMany(a);
 ```
@@ -355,8 +323,6 @@ Belt.List.concatMany([|[1, 2, 3], [], [3], [4]|]); /* [1, 2, 3, 3, 4] */
 ```
 let reverseConcat: (t('a), t('a)) => t('a);
 ```
-
-**Usage**
 
 ```reason
 reverseConcat(firstList, secondList);
@@ -380,8 +346,6 @@ Belt.List.reverseConcat([1, 2], [3, 4]); /* [2, 1, 3, 4] */
 let flatten: t(t('a)) => t('a);
 ```
 
-**Usage**
-
 ```reason
 flatten(ls);
 ```
@@ -394,17 +358,31 @@ Return the list obtained by concatenating all the lists in list `ls`, in order.
 Belt.List.flatten([[1, 2, 3], [], [3], [4]]); /* [1, 2, 3, 3, 4] */
 ```
 
+## map
+
+```
+let map: (t('a), 'a => 'b) => t('b);
+```
+
+```reason
+map(someList, f);
+```
+
+Returns a new list with `f` applied to each element of `someList`.
+
+**Example**
+
+```reason
+[1, 2]->Belt.List.map(x => x + 1); /* [3, 4] */
+```
+
 ## mapU
 
 ```
 let mapU: (t('a), [@bs] ('a => 'b)) => t('b);
 ```
 
-## map
-
-```
-let map: (t('a), 'a => 'b) => t('b);
-```
+Uncurried version of [map](#map).
 
 ## zip
 
@@ -412,10 +390,16 @@ let map: (t('a), 'a => 'b) => t('b);
 let zip: (t('a), t('b)) => t(('a, 'b));
 ```
 
-## zipByU
-
+```reason
+zip(firstList, secondList);
 ```
-let zipByU: (t('a), t('b), [@bs] (('a, 'b) => 'c)) => t('c);
+
+Returns a list of pairs from the two lists with the length of the shorter list.
+
+**Example**
+
+```reason
+Belt.List.zip([1, 2], [3, 4, 5]); /* [(1, 3), (2, 4)] */
 ```
 
 ## zipBy
@@ -424,11 +408,31 @@ let zipByU: (t('a), t('b), [@bs] (('a, 'b) => 'c)) => t('c);
 let zipBy: (t('a), t('b), ('a, 'b) => 'c) => t('c);
 ```
 
-## mapWithIndexU
+```reason
+zipBy(firstList, secondList, f);
+```
+
+**See:** [zip](#zip)
+
+Equivalent to:
+
+```reason
+zip(firstList, secondList) |> List.map(((x, y)) => f(x, y));
+```
+
+**Example**
+
+```reason
+Belt.List.zipBy([1, 2, 3], [4, 5], (a, b) => 2 * a + b); /* [6, 9] */
+```
+
+## zipByU
 
 ```
-let mapWithIndexU: (t('a), [@bs] ((int, 'a) => 'b)) => t('b);
+let zipByU: (t('a), t('b), [@bs] (('a, 'b) => 'c)) => t('c);
 ```
+
+Uncurried version of [zipBy](#zipBy).
 
 ## mapWithIndex
 
@@ -436,10 +440,43 @@ let mapWithIndexU: (t('a), [@bs] ((int, 'a) => 'b)) => t('b);
 let mapWithIndex: (t('a), (int, 'a) => 'b) => t('b);
 ```
 
+```reason
+mapWithIndex(someList, f);
+```
+
+Applies `f` to each element of `someList`.
+Function `f` takes two arguments: the index starting from 0 and the element from `someList`, in that order.
+
+**Example**
+
+```reason
+[1, 2, 3]->Belt.List.mapWithIndex((index, x) => index + x); /* [1, 3, 5] */
+```
+
+## mapWithIndexU
+
+```
+let mapWithIndexU: (t('a), [@bs] ((int, 'a) => 'b)) => t('b);
+```
+
+Uncurried version of [mapWithIndex](#mapWithIndex).
+
 ## fromArray
 
 ```
 let fromArray: array('a) => t('a);
+```
+
+```reason
+fromArray(someArray);
+```
+
+Converts the given array to a list.
+
+**Examples**
+
+```reason
+Belt.List.fromArray([|1, 2, 3|]); /* [1, 2, 3] */
 ```
 
 ## toArray
@@ -448,16 +485,34 @@ let fromArray: array('a) => t('a);
 let toArray: t('a) => array('a);
 ```
 
+```reason
+toArray(someList);
+```
+
+Converts the given list to an array.
+
+**Example**
+
+```reason
+Belt.List.toArray([1, 2, 3]); /* [|1, 2, 3|] */
+```
+
 ## reverse
 
 ```
 let reverse: t('a) => t('a);
 ```
 
-## mapReverseU
-
+```reason
+reverse(someList);
 ```
-let mapReverseU: (t('a), [@bs] ('a => 'b)) => t('b);
+
+Returns a new list whose elements are those of `someList` in reversed order.
+
+**Example**
+
+```reason
+Belt.List.reverse([1, 2, 3]); /* [3, 2, 1] */
 ```
 
 ## mapReverse
@@ -466,16 +521,84 @@ let mapReverseU: (t('a), [@bs] ('a => 'b)) => t('b);
 let mapReverse: (t('a), 'a => 'b) => t('b);
 ```
 
+```reason
+mapReverse(someList, f);
+```
+
+Equivalent to:
+
+```reason
+map(someList, f)->reverse;
+```
+
+**Example**
+
+```reason
+[3, 4, 5]->Belt.List.mapReverse(x => x * x); /* [25, 16, 9] */
+```
+
+## mapReverseU
+
+```
+let mapReverseU: (t('a), [@bs] ('a => 'b)) => t('b);
+```
+
+Uncurried version of [mapReverse](#mapReverse).
+
+## forEach
+
+```
+let forEach: (t('a), 'a => 'b) => unit;
+```
+
+```reason
+forEach(xs, f);
+```
+
+Call `f` on each element of `someList` from the beginning to end.
+`f` returns `unit`, so no new array is created. Use `forEach` when you are primarily concerned with repetitively creating side effects.
+
+**Example**
+
+```reason
+Belt.List.forEach(["a", "b", "c"], x => Js.log("Item: " ++ x));
+/*  prints:
+      Item: a
+      Item: b
+      Item: c
+    */
+```
+
 ## forEachU
 
 ```
 let forEachU: (t('a), [@bs] ('a => 'b)) => unit;
 ```
 
-## forEach
+Uncurried version of [forEach](#forEach).
+
+## forEachWithIndex
 
 ```
-let forEach: (t('a), 'a => 'b) => unit;
+let forEachWithIndex: (t('a), (int, 'a) => 'b) => unit;
+```
+
+```reason
+forEachWithIndex(xs, f);
+```
+
+Call `f` on each element of `someList` from beginning to end.
+Function `f` takes two arguments: the index starting from 0 and the element from `someList`. `f` returns `unit`.
+
+**Example**
+
+```reason
+forEachWithIndex(["a", "b", "c"], (index, x) => Js.log("Item " ++ string_of_int(index) ++ " is " ++ x));
+/*  prints:
+      Item 0 is a
+      Item 1 is b
+      Item 2 is cc
+    */
 ```
 
 ## forEachWithIndexU
@@ -484,11 +607,7 @@ let forEach: (t('a), 'a => 'b) => unit;
 let forEachWithIndexU: (t('a), [@bs] ((int, 'a) => 'b)) => unit;
 ```
 
-## forEachWithIndex
-
-```
-let forEachWithIndex: (t('a), (int, 'a) => 'b) => unit;
-```
+Uncurried version of [forEachWithIndex](#forEachWithIndex).
 
 ## reduceU
 
