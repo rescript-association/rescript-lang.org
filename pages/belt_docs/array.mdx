@@ -716,28 +716,10 @@ let partition: (array('a), 'a => bool) => (array('a), array('a));
 
 Examples
 
-```re
-partition(
-  [|1, 2, 3, 4, 5|],
-  (x) =>
-    if (x mod 2 == 0) {
-      true;
-    } else {
-      false;
-    }
-)
-== ([|2, 4|], [|1, 2, 3|]);
+```
+partition([|1, 2, 3, 4, 5|], (x) => x mod 2 == 0) == ([|2, 4|], [|1, 2, 3|]);
 
-partition(
-  [|1, 2, 3, 4, 5|],
-  (x) =>
-    if (x mod 2 != 0) {
-      true;
-    } else {
-      false;
-    }
-)
-== ([|1, 2, 3|], [|2, 4|]);
+partition([|1, 2, 3, 4, 5|], (x) => x mod 2 != 0) == ([|1, 2, 3|], [|2, 4|]);
 ```
 
 ## reduceU
