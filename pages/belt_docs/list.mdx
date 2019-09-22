@@ -17,16 +17,46 @@ type t('a) = list('a);
 let length: t('a) => int;
 ```
 
+**Usage**
+
+```reason
+length(someList);
+```
+
+**Example**
+
+```reason
+Belt.List.length([1, 2, 3]); /* 3 */
+```
+
 ## size
 
 ```
 let size: t('a) => int;
 ```
 
+**See:** [length](#length)
+
 ## head
 
 ```
 let head: t('a) => option('a);
+```
+
+**Usage**
+
+```reason
+head(someList);
+```
+
+Returns `Some(value)` where `value` is the first element in the list, or `None` if `someList` is an empty list.
+
+**Examples**
+
+```reason
+Belt.List.head([]); /* None */
+
+Belt.List.head([1, 2, 3]); /* Some(1) */
 ```
 
 ## headExn
@@ -35,10 +65,34 @@ let head: t('a) => option('a);
 let headExn: t('a) => 'a;
 ```
 
+**Usage**
+
+```reason
+head(someList);
+```
+
+Same as [head](#head), but raises an exception if `someList` is empty. Use with care.
+
 ## tail
 
 ```
 let tail: t('a) => option(t('a));
+```
+
+**Usage**
+
+```reason
+tail(someList);
+```
+
+Returns `None` if `someList` is empty, otherwise it returns `Some(tail)` where `tail` is everything except the first element of `someList`.
+
+**Example**
+
+```reason
+Belt.List.tail([1, 2, 3]); /* Some([2, 3]) */
+
+Belt.List.tail([]); /* None */
 ```
 
 ## tailExn
@@ -47,10 +101,34 @@ let tail: t('a) => option(t('a));
 let tailExn: t('a) => t('a);
 ```
 
+**Usage**
+
+```reason
+tailExn(someList);
+```
+
+Same as [tail](#tail), but raises an exception if `someList` is empty. Use with care.
+
 ## add
 
 ```
 let add: (t('a), 'a) => t('a);
+```
+
+**Usage**
+
+```reason
+add(someList, value);
+```
+
+Adds `value` to the beginning of `someList`.
+
+**Examples**
+
+```reason
+Belt.List.add([2, 3], 1); /* [1, 2, 3] */
+
+Belt.List.add(["World", "!"], "Hello"); /* ["Hello", "World", "!"] */
 ```
 
 ## get
@@ -59,11 +137,37 @@ let add: (t('a), 'a) => t('a);
 let get: (t('a), int) => option('a);
 ```
 
+**Usage**
+
+```reason
+get(someList, index);
+```
+
+Return the nth element in `someList`, or `None` if `index` is larger than the length.
+
+**Examples**
+
+```reason
+let abc = ["A", "B", "C"];
+
+abc->Belt.List.get(1); /* Some("B") */
+
+abc->Belt.List.get(4); /* None */
+```
+
 ## getExn
 
 ```
 let getExn: (t('a), int) => 'a;
 ```
+
+**Usage**
+
+```reason
+getExn(someList, index);
+```
+
+Same as [get](#get), but raises an exception if `index` is larger than the length. Use with care.
 
 ## make
 
@@ -71,10 +175,18 @@ let getExn: (t('a), int) => 'a;
 let make: (int, 'a) => t('a);
 ```
 
-## makeByU
+**Usage**
 
+```reason
+make(numItems, v);
 ```
-let makeByU: (int, [@bs] (int => 'a)) => t('a);
+
+Returns a list of length `numItems` with each element filled with value `v`. Returns an empty list if `numItems` is negative.
+
+**Example**
+
+```reason
+Belt.List.make(3, 1); /* [1, 1, 1] */
 ```
 
 ## makeBy
@@ -83,10 +195,49 @@ let makeByU: (int, [@bs] (int => 'a)) => t('a);
 let makeBy: (int, int => 'a) => t('a);
 ```
 
+**Usage**
+
+```reason
+makeBy(numItems, f);
+```
+
+Return a list of length `numItems` with element `i` initialized with `f(i)`.
+Returns an empty list if `numItems` is negative.
+
+**Examples**
+
+```reason
+Belt.List.makeBy(5, i => i); /* [0, 1, 2, 3, 4] */
+
+Belt.List.makeBy(5, i => i * i); /* [0, 1, 4, 9, 16] */
+```
+
+## makeByU
+
+```
+let makeByU: (int, [@bs] (int => 'a)) => t('a);
+```
+
+Uncurried version of [makeBy](#makeBy)
+
 ## shuffle
 
 ```
 let shuffle: t('a) => t('a);
+```
+
+**Usage**
+
+```reason
+shuffle(someList);
+```
+
+Returns a new list in random order.
+
+**Example**
+
+```reason
+Belt.List.shuffle([1, 2, 3]); /* [2, 1, 3] */
 ```
 
 ## drop
@@ -95,10 +246,46 @@ let shuffle: t('a) => t('a);
 let drop: (t('a), int) => option(t('a));
 ```
 
+**Usage**
+
+```reason
+drop(someList, n);
+```
+
+Return a new list, dropping the first `n` elements. Returns `None` if `someList` has fewer than `n` elements.
+
+**Examples**
+
+```reason
+[1, 2, 3]->Belt.List.drop(2); /* Some([3]) */
+
+[1, 2, 3]->Belt.List.drop(3); /* Some([]) */
+
+[1, 2, 3]->Belt.List.drop(4); /* None */
+```
+
 ## take
 
 ```
 let take: (t('a), int) => option(t('a));
+```
+
+**Usage**
+
+```reason
+take(someList, n);
+```
+
+Returns a list with the first `n` elements from `someList`, or `None` if `someList` has fewer than `n` elements.
+
+**Examples**
+
+```reason
+[1, 2, 3]->Belt.List.take(1); /* Some([1]) */
+
+[1, 2, 3]->Belt.List.take(2); /* Some([1, 2]) */
+
+[1, 2, 3]->Belt.List.take(4); /* None */
 ```
 
 ## splitAt
@@ -107,10 +294,40 @@ let take: (t('a), int) => option(t('a));
 let splitAt: (t('a), int) => option((list('a), list('a)));
 ```
 
+**Usage**
+
+```reason
+splitAt(someList, index);
+```
+
+Split the list `someList` at `index`. Returns `None` when the length of `someList` is less than `index`.
+
+**Examples**
+
+```reason
+["Hello", "World"]->Belt.List.splitAt(1); /* Some((["Hello"], ["World"])) */
+
+[0, 1, 2, 3, 4]->Belt.List.splitAt(2); /* Some(([0, 1], [2, 3, 4])) */
+```
+
 ## concat
 
 ```
 let concat: (t('a), t('a)) => t('a);
+```
+
+**Usage**
+
+```reason
+concat(firstList, secondList);
+```
+
+Returns the list obtained by adding `secondList` after `firstList`.
+
+**Example**
+
+```reason
+Belt.List.concat([1, 2, 3], [4, 5]); /* [1, 2, 3, 4, 5] */
 ```
 
 ## concatMany
@@ -119,16 +336,62 @@ let concat: (t('a), t('a)) => t('a);
 let concatMany: array(t('a)) => t('a);
 ```
 
+**Usage**
+
+```reason
+concatMany(a);
+```
+
+Returns the list obtained by concatenating all the lists in array `a`, in order.
+
+**Example**
+
+```reason
+Belt.List.concatMany([|[1, 2, 3], [], [3], [4]|]); /* [1, 2, 3, 3, 4] */
+```
+
 ## reverseConcat
 
 ```
 let reverseConcat: (t('a), t('a)) => t('a);
 ```
 
+**Usage**
+
+```reason
+reverseConcat(firstList, secondList);
+```
+
+Equivalent to writing:
+
+```reason
+concat(reverse(firstList), secondList);
+```
+
+**Example**
+
+```reason
+Belt.List.reverseConcat([1, 2], [3, 4]); /* [2, 1, 3, 4] */
+```
+
 ## flatten
 
 ```
 let flatten: t(t('a)) => t('a);
+```
+
+**Usage**
+
+```reason
+flatten(ls);
+```
+
+Return the list obtained by concatenating all the lists in list `ls`, in order.
+
+**Example**
+
+```reason
+Belt.List.flatten([[1, 2, 3], [], [3], [4]]); /* [1, 2, 3, 3, 4] */
 ```
 
 ## mapU
