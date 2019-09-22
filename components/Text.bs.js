@@ -3,8 +3,10 @@
 import * as Util from "../common/Util.bs.js";
 import * as React from "react";
 import * as ReactDOMRe from "reason-react/src/ReactDOMRe.js";
+import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as ReasonReact from "reason-react/src/ReasonReact.js";
 import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
+import * as Highlight from "highlight.js/lib/highlight";
 
 var inline = "no-underline border-b hover:text-main-lighten-20 hover:border-primary-dark-10 border-primary-lighten-50 text-inherit";
 
@@ -130,26 +132,45 @@ function Text$Md$Code(Props) {
   var children = Props.children;
   var lang;
   if (className !== undefined) {
-    var arr = className.split("-");
-    if (arr.length !== 2) {
+    var match = className.split("-");
+    if (match.length !== 2) {
       lang = "none";
     } else {
-      var match = arr[0];
-      if (match === "language") {
-        var lang$1 = arr[1];
+      var match$1 = match[0];
+      if (match$1 === "language") {
+        var lang$1 = match[1];
         lang = lang$1 === "" ? "none" : lang$1;
       } else {
         lang = "none";
       }
     }
   } else {
-    lang = "none";
+    lang = "re";
   }
   var langClass = "lang-" + lang;
-  return ReactDOMRe.createElementVariadic("code", {
-              className: langClass + " font-mono block overflow-x-scroll",
-              metastring: metastring
-            }, children);
+  var base = {
+    className: langClass + " font-mono block overflow-x-scroll hljs",
+    metastring: metastring
+  };
+  var exit = 0;
+  switch (lang) {
+    case "re" : 
+    case "reason" : 
+        exit = 1;
+        break;
+    default:
+      return ReactDOMRe.createElementVariadic("code", Caml_option.some(base), children);
+  }
+  if (exit === 1) {
+    var highlighted = Highlight.highlight(lang, children).value;
+    var finalProps = Object.assign(base, {
+          dangerouslySetInnerHTML: {
+            __html: highlighted
+          }
+        });
+    return ReactDOMRe.createElementVariadic("code", Caml_option.some(finalProps), /* array */[]);
+  }
+  
 }
 
 var Code = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Md$Code]);

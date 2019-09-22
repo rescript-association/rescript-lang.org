@@ -7,7 +7,7 @@ Utililites for Array functions.
 
 ## length
 
-```
+```re
 let length: array('a) => int;
 ```
 
@@ -15,7 +15,7 @@ return the size of the array
 
 ## size
 
-```
+```re
 let size: array('a) => int;
 ```
 
@@ -23,7 +23,7 @@ See Belt_Array.length
 
 ## get
 
-```
+```re
 let get: (array('a), int) => option('a);
 ```
 
@@ -32,7 +32,7 @@ If `i` is out of range returns `None`
 
 ## getExn
 
-```
+```re
 let getExn: (array('a), int) => 'a;
 ```
 
@@ -41,7 +41,7 @@ Otherwise return the value at index `i` in `arr`.
 
 ## getUnsafe
 
-```
+```re
 let getUnsafe: (array('a), int) => 'a;
 ```
 
@@ -51,7 +51,7 @@ no bounds checking; this would cause type error if `i` does not stay within rang
 
 ## getUndefined
 
-```
+```re
 let getUndefined: (array('a), int) => Js.undefined('a);
 ```
 
@@ -59,7 +59,7 @@ It does the samething in the runtime as `Belt_Array.getUnsafe` it is type safe s
 
 ## set
 
-```
+```re
 let set: (array('a), int, 'a) => bool;
 ```
 
@@ -69,7 +69,7 @@ Returns false means not updated due to out of range.
 
 ## setExn
 
-```
+```re
 let setExn: (array('a), int, 'a) => unit;
 ```
 
@@ -77,13 +77,13 @@ let setExn: (array('a), int, 'a) => unit;
 
 ## setUnsafe
 
-```
+```re
 let setUnsafe: (array('a), int, 'a) => unit;
 ```
 
 ## shuffleInPlace
 
-```
+```re
 let shuffleInPlace: array('a) => unit;
 ```
 
@@ -91,7 +91,7 @@ let shuffleInPlace: array('a) => unit;
 
 ## shuffle
 
-```
+```re
 let shuffle: array('a) => array('a);
 ```
 
@@ -99,7 +99,7 @@ Returns a fresh array with items in original array randomly shuffled.
 
 ## reverseInPlace
 
-```
+```re
 let reverseInPlace: array('a) => unit;
 ```
 
@@ -107,7 +107,7 @@ let reverseInPlace: array('a) => unit;
 
 Examples
 
-```
+```re
 let arr = [|10, 11, 12, 13, 14|];
 
 let () = reverseInPlace(arr);
@@ -117,7 +117,7 @@ arr == [|14, 13, 12, 11, 10|];
 
 ## reverse
 
-```
+```re
 let reverse: array('a) => array('a);
 ```
 
@@ -125,13 +125,13 @@ let reverse: array('a) => array('a);
 
 Examples
 
-```
+```re
 reverse([|10, 11, 12, 13, 14|]) == [|14, 13, 12, 11, 10|];
 ```
 
 ## makeUninitialized
 
-```
+```re
 let makeUninitialized: int => array(Js.undefined('a));
 ```
 
@@ -139,7 +139,7 @@ let makeUninitialized: int => array(Js.undefined('a));
 
 Examples
 
-```
+```re
 let arr: array(Js.undefined(string)) = makeUninitialized(5);
 
 getExn(arr, 0) == Js.undefined;
@@ -147,7 +147,7 @@ getExn(arr, 0) == Js.undefined;
 
 ## makeUninitializedUnsafe
 
-```
+```re
 let makeUninitializedUnsafe: int => array('a);
 ```
 
@@ -155,7 +155,7 @@ Unsafe
 
 Examples
 
-```
+```re
 let arr = Belt.Array.makeUninitializedUnsafe(5);
 
 let () = Js.log(Belt.Array.getExn(arr, 0)); /* undefined */
@@ -167,7 +167,7 @@ let () = Js.log(Belt.Array.getExn(arr, 0) == "example");
 
 ## make
 
-```
+```re
 let make: (int, 'a) => array('a);
 ```
 
@@ -176,7 +176,7 @@ Returns an empty array when `n` is negative.
 
 ## range
 
-```
+```re
 let range: (int, int) => array(int);
 ```
 
@@ -184,7 +184,7 @@ let range: (int, int) => array(int);
 
 Examples
 
-```
+```re
 range(0, 3) == [|0, 1, 2, 3|];
 
 range(3, 0) == [||];
@@ -194,7 +194,7 @@ range(3, 3) == [|3|];
 
 ## rangeBy
 
-```
+```re
 let rangeBy: (int, int, ~step: int) => array(int);
 ```
 
@@ -204,7 +204,7 @@ Returns empty array when step is 0 or negative. It also return an empty array wh
 
 Examples
 
-```
+```re
 rangeBy(0, 10, ~step=3) == [|0, 3, 6, 9|];
 
 rangeBy(0, 12, ~step=3) == [|0, 3, 6, 9, 12|];
@@ -222,13 +222,13 @@ rangeBy(3, 3, ~step=1) == [|3|];
 
 ## makeByU
 
-```
+```re
 let makeByU: (int, [@bs] (int => 'a)) => array('a);
 ```
 
 ## makeBy
 
-```
+```re
 let makeBy: (int, int => 'a) => array('a);
 ```
 
@@ -238,7 +238,7 @@ Return an empty array when n is negative return an array of size n populated by 
 
 Examples
 
-```
+```re
 makeBy(5, (i) => i) == [|0, 1, 2, 3, 4|];
 
 makeBy(5, (i) => i * i) == [|0, 1, 4, 9, 16|];
@@ -246,13 +246,13 @@ makeBy(5, (i) => i * i) == [|0, 1, 4, 9, 16|];
 
 ## makeByAndShuffleU
 
-```
+```re
 let makeByAndShuffleU: (int, [@bs] (int => 'a)) => array('a);
 ```
 
 ## makeByAndShuffle
 
-```
+```re
 let makeByAndShuffle: (int, int => 'a) => array('a);
 ```
 
@@ -262,7 +262,7 @@ Equivalent to `shuffle(makeBy(n, f));`
 
 ## zip
 
-```
+```re
 let zip: (array('a), array('b)) => array(('a, 'b));
 ```
 
@@ -272,19 +272,19 @@ Create an array of pairs from corresponding elements of a and b. Stop with the s
 
 Examples:
 
-```
+```re
 Belt.Array.zip([|1, 2|], [|3, 4, 5|]) == [|(1, 3), (2, 4)|]
 ```
 
 ## zipByU
 
-```
+```re
 let zipByU: (array('a), array('b), [@bs] (('a, 'b) => 'c)) => array('c);
 ```
 
 ## zipBy
 
-```
+```re
 let zipBy: (array('a), array('b), ('a, 'b) => 'c) => array('c);
 ```
 
@@ -296,13 +296,13 @@ Equivalent to `map(zip(xs, ys), ((a, b)) => f(a, b));`
 
 Examples
 
-```
+```re
 zipBy([|1, 2, 3|], [|4, 5|], (a, b) => 2 * a + b) == [|6, 9|];
 ```
 
 ## unzip
 
-```
+```re
 let unzip: array(('a, 'b)) => (array('a), array('b));
 ```
 
@@ -310,7 +310,7 @@ let unzip: array(('a, 'b)) => (array('a), array('b));
 
 Examples
 
-```
+```re
 unzip([|(1, 2), (3, 4)|]) == ([|1, 3|], [|2, 4|]);
 
 unzip([|(1, 2), (3, 4), (5, 6), (7, 8)|]) == ([|1, 3, 5, 7|], [|2, 4, 6, 8|]);
@@ -318,7 +318,7 @@ unzip([|(1, 2), (3, 4), (5, 6), (7, 8)|]) == ([|1, 3, 5, 7|], [|2, 4, 6, 8|]);
 
 ## concat
 
-```
+```re
 let concat: (array('a), array('a)) => array('a);
 ```
 
@@ -328,7 +328,7 @@ Returns a fresh array containing the concatenation of the arrays `v1` and `v2`;s
 
 Examples
 
-```
+```re
 concat([|1, 2, 3|], [|4, 5|]) == [|1, 2, 3, 4, 5|];
 
 concat([||], [|"a", "b", "c"|]) == [|"a", "b", "c"|];
@@ -336,7 +336,7 @@ concat([||], [|"a", "b", "c"|]) == [|"a", "b", "c"|];
 
 ## concatMany
 
-```
+```re
 let concatMany: array(array('a)) => array('a);
 ```
 
@@ -346,13 +346,13 @@ Returns a fresh array as the concatenation of `xss` (an array of arrays)
 
 Examples
 
-```
+```re
 concatMany([|[|1, 2, 3|], [|4, 5, 6|], [|7, 8|]|]) == [|1, 2, 3, 4, 5, 6, 7, 8|];
 ```
 
 ## slice
 
-```
+```re
 let slice: (array('a), ~offset: int, ~len: int) => array('a);
 ```
 
@@ -368,7 +368,7 @@ if `len` is negative; returns the empty array.
 
 Examples
 
-```
+```re
 slice([|10, 11, 12, 13, 14, 15, 16|], ~offset=2, ~len=3) == [|12, 13, 14|];
 
 slice([|10, 11, 12, 13, 14, 15, 16|], ~offset=-4, ~len=3) == [|13, 14, 15|];
@@ -378,7 +378,7 @@ slice([|10, 11, 12, 13, 14, 15, 16|], ~offset=4, ~len=9) == [|14, 15, 16|];
 
 ## sliceToEnd
 
-```
+```re
 let sliceToEnd: (array('a), int) => array('a);
 ```
 
@@ -390,7 +390,7 @@ let sliceToEnd: (array('a), int) => array('a);
 
 Examples
 
-```
+```re
 sliceToEnd([|10, 11, 12, 13, 14, 15, 16|], 2) == [|12, 13, 14, 15, 16|];
 
 sliceToEnd([|10, 11, 12, 13, 14, 15, 16|], -4) == [|13, 14, 15, 16|];
@@ -398,7 +398,7 @@ sliceToEnd([|10, 11, 12, 13, 14, 15, 16|], -4) == [|13, 14, 15, 16|];
 
 ## copy
 
-```
+```re
 let copy: array('a) => array('a);
 ```
 
@@ -408,7 +408,7 @@ Returns a copy of a; that is; a fresh array containing the same elements as a.
 
 ## fill
 
-```
+```re
 let fill: (array('a), ~offset: int, ~len: int, 'a) => unit;
 ```
 
@@ -421,7 +421,7 @@ Modifies `arr` in place, storing `x` in elements number `offset` to `offset + le
 
 Examples
 
-```
+```re
 let arr = makeBy(5, (i) => i);
 
 fill(arr, ~offset=2, ~len=2, 9);
@@ -435,7 +435,7 @@ arr == [|0, 1, 9, 9, 4|];
 
 ## blit
 
-```
+```re
 let blit: (~src: array('a), ~srcOffset: int, ~dst: array('a), ~dstOffset: int, ~len: int) => unit;
 ```
 
@@ -451,7 +451,7 @@ For each of the examples;presume that `v1 == [|10, 11, 12, 13, 14, 15, 16, 17|];
 
 Examples
 
-```
+```re
 Belt.Array.blit(~src=v1, ~srcOffset=4, ~dst=v2, ~dstOffset=2, ~len=3)
 |. [|20, 21, 14, 15, 16, 25, 26, 27|];
 
@@ -461,7 +461,7 @@ Belt.Array.blit(~src=v1, ~srcOffset=4, ~dst=v1, ~dstOffset=2, ~len=3)
 
 ## blitUnsafe
 
-```
+```re
 let blitUnsafe: (~src: array('a), ~srcOffset: int, ~dst: array('a), ~dstOffset: int, ~len: int) => unit;
 ```
 
@@ -469,13 +469,13 @@ Unsafe blit without bounds checking.
 
 ## forEachU
 
-```
+```re
 let forEachU: (array('a), [@bs] ('a => unit)) => unit;
 ```
 
 ## forEach
 
-```
+```re
 let forEach: (array('a), 'a => unit) => unit;
 ```
 
@@ -485,7 +485,7 @@ Call `f` on each element of `xs` from the beginning to end. `f` returns `unit`;s
 
 Examples
 
-```
+```re
 forEach([|"a", "b", "c"|], (x) => Js.log("Item: " ++ x));
 
 /*  prints:
@@ -502,13 +502,13 @@ total^ == 1 + 2 + 3 + 4;
 
 ## mapU
 
-```
+```re
 let mapU: (array('a), [@bs] ('a => 'b)) => array('b);
 ```
 
 ## map
 
-```
+```re
 let map: (array('a), 'a => 'b) => array('b);
 ```
 
@@ -518,19 +518,19 @@ Returns a new array by calling `f` for each element of `xs` from the beginning t
 
 Examples
 
-```
+```re
 map([|1, 2|], (x) => x + 1) == [|3, 4|];
 ```
 
 ## getByU
 
-```
+```re
 let getByU: (array('a), [@bs] ('a => bool)) => option('a);
 ```
 
 ## getBy
 
-```
+```re
 let getBy: (array('a), 'a => bool) => option('a);
 ```
 
@@ -540,20 +540,20 @@ Returns `Some(value)` for the first value in `xs` that satisifies the predicate 
 
 Examples
 
-```
+```re
 getBy([|1, 4, 3, 2|], (x) => x mod 2 == 0) == Some(4);
 getBy([|15, 13, 11|], (x) => x mod 2 == 0) == None;
 ```
 
 ## getIndexByU
 
-```
+```re
 let getIndexByU: (array('a), [@bs] ('a => bool)) => option(int);
 ```
 
 ## getIndexBy
 
-```
+```re
 let getIndexBy: (array('a), 'a => bool) => option(int);
 ```
 
@@ -564,20 +564,20 @@ returns `None` if no element satisifies the function.
 
 Examples
 
-```
+```re
 getIndexBy([|1, 4, 3, 2|], (x) => x mod 2 == 0) == Some(1);
 getIndexBy([|15, 13, 11|], (x) => x mod 2 == 0) == None;
 ```
 
 ## keepU
 
-```
+```re
 let keepU: (array('a), [@bs] ('a => bool)) => array('a);
 ```
 
 ## keep
 
-```
+```re
 let keep: (array('a), 'a => bool) => array('a);
 ```
 
@@ -587,19 +587,19 @@ Returns a new array that keep all elements satisfy `p`.
 
 Examples
 
-```
+```re
 keep([|1, 2, 3|], (x) => x mod 2 == 0) == [|2|];
 ```
 
 ## keepWithIndexU
 
-```
+```re
 let keepWithIndexU: (array('a), [@bs] (('a, int) => bool)) => array('a);
 ```
 
 ## keepWithIndex
 
-```
+```re
 let keepWithIndex: (array('a), ('a, int) => bool) => array('a);
 ```
 
@@ -609,19 +609,19 @@ Returns a new array that keep all elements satisfy `p`.
 
 Examples
 
-```
+```re
 keepWithIndex([|1, 2, 3|], (_x, i) => i == 1) == [|2|];
 ```
 
 ## keepMapU
 
-```
+```re
 let keepMapU: (array('a), [@bs] ('a => option('b))) => array('b);
 ```
 
 ## keepMap
 
-```
+```re
 let keepMap: (array('a), 'a => option('b)) => array('b);
 ```
 
@@ -631,7 +631,7 @@ Returns a new array that keep all elements that return a non-None applied `p`.
 
 Examples
 
-```
+```re
 keepMap(
   [|1, 2, 3|],
   (x) =>
@@ -646,13 +646,13 @@ keepMap(
 
 ## forEachWithIndexU
 
-```
+```re
 let forEachWithIndexU: (array('a), [@bs] ((int, 'a) => unit)) => unit;
 ```
 
 ## forEachWithIndex
 
-```
+```re
 let forEachWithIndex: (array('a), (int, 'a) => unit) => unit;
 ```
 
@@ -663,7 +663,7 @@ except that `f` is supplied two arguments: the index starting from 0 and the ele
 
 Examples
 
-```
+```re
 forEach([|"a", "b", "c"|], (i, x) => Js.log("Item " ++ string_of_int(i) ++ " is " ++ x));
 
 /*  prints:
@@ -680,13 +680,13 @@ total^ == 0 + 10 + 1 + 11 + 2 + 12 + 3 + 13;
 
 ## mapWithIndexU
 
-```
+```re
 let mapWithIndexU: (array('a), [@bs] ((int, 'a) => 'b)) => array('b);
 ```
 
 ## mapWithIndex
 
-```
+```re
 let mapWithIndex: (array('a), (int, 'a) => 'b) => array('b);
 ```
 
@@ -696,19 +696,19 @@ let mapWithIndex: (array('a), (int, 'a) => 'b) => array('b);
 
 Examples
 
-```
+```re
 mapWithIndex([|1, 2, 3|], (i, x) => i + x) == [|0 + 1, 1 + 2, 2 + 3|];
 ```
 
 ## partitionU
 
-```
+```re
 let partitionU: (array('a), [@bs] ('a => bool)) => (array('a), array('a));
 ```
 
 ## partition
 
-```
+```re
 let partition: (array('a), 'a => bool) => (array('a), array('a));
 ```
 
@@ -724,13 +724,13 @@ partition([|1, 2, 3, 4, 5|], (x) => x mod 2 != 0) == ([|1, 2, 3|], [|2, 4|]);
 
 ## reduceU
 
-```
+```re
 let reduceU: (array('b), 'a, [@bs] (('a, 'b) => 'a)) => 'a;
 ```
 
 ## reduce
 
-```
+```re
 let reduce: (array('b), 'a, ('a, 'b) => 'a) => 'a;
 ```
 
@@ -740,7 +740,7 @@ Applies `f` to each element of `xs` from beginning to end. Function `f` has two 
 
 Examples
 
-```
+```re
 reduce([|2, 3, 4|], 1, (+)) == 10;
 
 reduce([|"a", "b", "c", "d"|], "", (++)) == "abcd";
@@ -748,13 +748,13 @@ reduce([|"a", "b", "c", "d"|], "", (++)) == "abcd";
 
 ## reduceReverseU
 
-```
+```re
 let reduceReverseU: (array('b), 'a, [@bs] (('a, 'b) => 'a)) => 'a;
 ```
 
 ## reduceReverse
 
-```
+```re
 let reduceReverse: (array('b), 'a, ('a, 'b) => 'a) => 'a;
 ```
 
@@ -764,19 +764,19 @@ Works like `Belt_Array.reduce`; except that function `f` is applied to each item
 
 Examples
 
-```
+```re
 reduceReverse([|"a", "b", "c", "d"|], "", (++)) == "dcba";
 ```
 
 ## reduceReverse2U
 
-```
+```re
 let reduceReverse2U: (array('a), array('b), 'c, [@bs] (('c, 'a, 'b) => 'c)) => 'c;
 ```
 
 ## reduceReverse2
 
-```
+```re
 let reduceReverse2: (array('a), array('b), 'c, ('c, 'a, 'b) => 'c) => 'c;
 ```
 
@@ -786,19 +786,19 @@ Reduces two arrays xs and ys;taking items starting at `min(length(xs), length(ys
 
 Examples
 
-```
+```re
 reduceReverse2([|1, 2, 3|], [|1, 2|], 0, (acc, x, y) => acc + x + y) == 6;
 ```
 
 ## reduceWithIndexU
 
-```
+```re
 let reduceWithIndexU: (array('a), 'b, [@bs] (('b, 'a, int) => 'b)) => 'b;
 ```
 
 ## reduceWithIndex
 
-```
+```re
 let reduceWithIndex: (array('a), 'b, ('b, 'a, int) => 'b) => 'b;
 ```
 
@@ -808,19 +808,19 @@ Applies `f` to each element of `xs` from beginning to end. Function `f` has thre
 
 Examples
 
-```
+```re
 reduceWithIndex([|1, 2, 3, 4|], 0, (acc, x, i) => acc + x + i) == 16;
 ```
 
 ## someU
 
-```
+```re
 let someU: (array('a), [@bs] ('a => bool)) => bool;
 ```
 
 ## some
 
-```
+```re
 let some: (array('a), 'a => bool) => bool;
 ```
 
@@ -830,7 +830,7 @@ Returns true if at least one of the elements in `xs` satifies `p`; where `p` is 
 
 Examples
 
-```
+```re
 some([|2, 3, 4|], (x) => x mod 2 == 1) == true;
 
 some([|(-1), (-3), (-5)|], (x) => x > 0) == false;
@@ -838,13 +838,13 @@ some([|(-1), (-3), (-5)|], (x) => x > 0) == false;
 
 ## everyU
 
-```
+```re
 let everyU: (array('a), [@bs] ('a => bool)) => bool;
 ```
 
 ## every
 
-```
+```re
 let every: (array('a), 'a => bool) => bool;
 ```
 
@@ -854,7 +854,7 @@ Returns `true` if all elements satisfy `p`; where `p` is a predicate: a function
 
 Examples
 
-```
+```re
 every([|1, 3, 5|], (x) => x mod 2 == 1) == true;
 
 every([|1, (-3), 5|], (x) => x > 0) == false;
@@ -862,13 +862,13 @@ every([|1, (-3), 5|], (x) => x > 0) == false;
 
 ## every2U
 
-```
+```re
 let every2U: (array('a), array('b), [@bs] (('a, 'b) => bool)) => bool;
 ```
 
 ## every2
 
-```
+```re
 let every2: (array('a), array('b), ('a, 'b) => bool) => bool;
 ```
 
@@ -878,7 +878,7 @@ returns true if `p(xi, yi);` is true for all pairs of elements up to the shorter
 
 Examples
 
-```
+```re
 every2([|1, 2, 3|], [|0, 1|], (>)) == true;
 
 every2([||], [|1|], (x, y) => x > y) == true;
@@ -890,13 +890,13 @@ every2([|0, 1|], [|5, 0|], (x, y) => x > y) == false;
 
 ## some2U
 
-```
+```re
 let some2U: (array('a), array('b), [@bs] (('a, 'b) => bool)) => bool;
 ```
 
 ## some2
 
-```
+```re
 let some2: (array('a), array('b), ('a, 'b) => bool) => bool;
 ```
 
@@ -906,7 +906,7 @@ returns true if `p(xi, yi);` is true for any pair of elements up to the shorter 
 
 Examples
 
-```
+```re
 some2([|0, 2|], [|1, 0, 3|], (>)) == true;
 
 some2([||], [|1|], (x, y) => x > y) == false;
@@ -916,13 +916,13 @@ some2([|2, 3|], [|1, 4|], (x, y) => x > y) == true;
 
 ## cmpU
 
-```
+```re
 let cmpU: (array('a), array('a), [@bs] (('a, 'a) => int)) => int;
 ```
 
 ## cmp
 
-```
+```re
 let cmp: (array('a), array('a), ('a, 'a) => int) => int;
 ```
 
@@ -937,7 +937,7 @@ The comparison returns the first non-zero result of `f`;or zero if `f` returns z
 
 Examples
 
-```
+```re
 cmp([|1, 3, 5|], [|1, 4, 2|], (a, b) => compare(a, b)) == (-1);
 
 cmp([|1, 3, 5|], [|1, 2, 3|], (a, b) => compare(a, b)) == 1;
@@ -947,13 +947,13 @@ cmp([|1, 3, 5|], [|1, 3, 5|], (a, b) => compare(a, b)) == 0;
 
 ## eqU
 
-```
+```re
 let eqU: (array('a), array('a), [@bs] (('a, 'a) => bool)) => bool;
 ```
 
 ## eq
 
-```
+```re
 let eq: (array('a), array('a), ('a, 'a) => bool) => bool;
 ```
 
@@ -964,13 +964,13 @@ otherwise compare items one by one using `f(xi, yi);`; and return true if all re
 
 Examples
 
-```
+```re
 eq([|1, 2, 3|], [|(-1), (-2), (-3)|], (a, b) => abs(a) == abs(b)) == true;
 ```
 
 ## truncateToLengthUnsafe
 
-```
+```re
 let truncateToLengthUnsafe: (array('a), int) => unit;
 ```
 
@@ -982,7 +982,7 @@ If `n` is less than zero; raises a `RangeError`.
 
 Examples
 
-```
+```re
 let arr = [|"ant", "bee", "cat", "dog", "elk"|];
 
 truncateToLengthUnsafe(arr, 3);

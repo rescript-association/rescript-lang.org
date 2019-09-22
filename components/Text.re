@@ -126,24 +126,51 @@ module Md = {
     let make = (~className: option(string)=?, ~metastring: string, ~children) => {
       let lang =
         switch (className) {
-        | None => "none"
+        | None => "re"
         | Some(str) =>
           switch (Js.String.split("-", str)) {
           | [|"language", ""|] => "none"
           | [|"language", lang|] => lang
-          | arr => "none"
+          | _ => "none"
           }
         };
       let langClass = "lang-" ++ lang;
-      ReactDOMRe.createElementVariadic(
-        "code",
-        ~props=
-          ReactDOMRe.objToDOMProps({
-            "className": langClass ++ " font-mono block overflow-x-scroll",
-            "metastring": metastring,
-          }),
-        children,
-      );
+      let base = {
+        "className": langClass ++ " font-mono block overflow-x-scroll hljs",
+        "metastring": metastring,
+      };
+
+      /* If there is a configured language for HLJS, 
+         we use the highlight function to highlight the code,
+         which in this context is always a string parsed from
+         the markdown, otherwise we will just pass children down
+         without any modification */
+      switch (lang) {
+      | "re"
+      | "reason" =>
+        let highlighted =
+          HighlightJs.(highlight(lang, children->Obj.magic)->value);
+        let finalProps =
+          Js.Obj.assign(
+            base,
+            {
+              "dangerouslySetInnerHTML": {
+                "__html": highlighted,
+              },
+            },
+          );
+        ReactDOMRe.createElementVariadic(
+          "code",
+          ~props=ReactDOMRe.objToDOMProps(finalProps),
+          [||],
+        );
+      | _ =>
+        ReactDOMRe.createElementVariadic(
+          "code",
+          ~props=ReactDOMRe.objToDOMProps(base),
+          children,
+        )
+      };
     };
   };
   module InlineCode = {
@@ -284,8 +311,9 @@ module Md = {
              {Obj.magic(children)->ReasonReact.string} </p>;
             /* Scenario 1 */
         } else {
-          /* Unknown Scenario */
-          <p> children </p>;
+          <p>
+             children </p>;
+            /* Unknown Scenario */
         };
 
       <li className="md-li mt-4 leading-4 ml-8 text-lg text-main-lighten-15">
