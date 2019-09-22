@@ -3,102 +3,320 @@ export default Layout;
 
 # Option
 
-In Belt we represent the existence and nonexistence of a value by wrapping it with the option type. Option as part of Reason's standard library and in there it's defined like this:
+In Belt we represent the existence and nonexistence of a value by wrapping it with the `option` type.
+In order to make it a bit more convenient to work with option-types, Belt provides utility-functions for it.
 
-```
+Option is a part of Reason's standard library and in there it's defined like this:
+
+```reason
 type option('a) = None | Some('a)
+```
+
+**Example**
+
+```reason
+let someString: option(string) = Some("foo");
 ```
 
 ## getExn
 
-Raises an Error in case `None` is provided.
-
-```
+```reason
 let getExn: option('a) => 'a;
 ```
 
-Examples
+**Usage**
 
+```reason
+getExn(optionValue);
 ```
-Belt.Option.getExn(Some(3)) === 3;
+
+Raises an Error in case `None` is provided. Use with care.
+
+**Examples**
+
+```reason
+Belt.Option.getExn(Some(3)); /* 3 */
 
 Belt.Option.getExn(None); /* Raises an Error */
 ```
 
+## mapWithDefault
+
+```reason
+let mapWithDefault: (option('a), 'b, 'a => 'b) => 'b;
+```
+
+**Usage**
+
+```reason
+mapWithDefault(optionValue, default, f);
+```
+
+If `optionValue` is of `Some(value)`,
+this function returns that value applied with `f`, in other words `f(value)`.
+
+If `optionValue` is `None`, the default is returned.
+
+**Examples**
+
+```reason
+let someValue = Some(3);
+someValue->Belt.Option.mapWithDefault(0, x => x + 5); /* 8 */;
+
+let noneValue = None;
+noneValue->Belt.Option.mapWithDefault(0, x => x + 5); /* 0 */;
+```
+
 ## mapWithDefaultU
 
-```
+```reason
 let mapWithDefaultU: (option('a), 'b, [@bs] ('a => 'b)) => 'b;
 ```
 
-## mapWithDefault
+Uncurried version of mapWithDefault.
 
+## map
+
+```reason
+let map: (option('a), 'a => 'b) => option('b);
 ```
-let mapWithDefault: (option('a), 'b, 'a => 'b) => 'b;
+
+**Usage**
+
+```reason
+map(optionValue, f);
+```
+
+If `optionValue` is `Some(value)` this returns `f(value)`, otherwise it returns `None`.
+
+**Examples**
+
+```reason
+Belt.Option.map(Some(3), x => x * x); /* Some(9) */
+
+Belt.Option.map(None, x => x * x); /* None */
 ```
 
 ## mapU
 
-```
+```reason
 let mapU: (option('a), [@bs] ('a => 'b)) => option('b);
 ```
 
-## map
+Uncurried version of map.
 
+## flatMap
+
+```reason
+let flatMap: (option('a), 'a => option('b)) => option('b);
 ```
-let map: (option('a), 'a => 'b) => option('b);
+
+**Usage**
+
+```reason
+flatMap(optionValue, f);
+```
+
+If `optionValue` is `Some(value)`, returns `f(value)`, otherwise returns `None`.
+
+The function `f` must have a return type of `option('a)`.
+
+**Examples**
+
+```reason
+let addIfAboveOne = value =>
+  if (value > 1) {
+    Some(value + 1);
+  } else {
+    None;
+  };
+
+Belt.Option.flatMap(Some(2), addIfAboveOne); /* Some(3) */
+
+Belt.Option.flatMap(Some(-4), addIfAboveOne); /* None */
+
+Belt.Option.flatMap(None, addIfAboveOne); /* None */
 ```
 
 ## flatMapU
 
-```
+```reason
 let flatMapU: (option('a), [@bs] ('a => option('b))) => option('b);
 ```
 
-## flatMap
-
-```
-let flatMap: (option('a), 'a => option('b)) => option('b);
-```
+Uncurried version of flatMap.
 
 ## getWithDefault
 
-```
+```reason
 let getWithDefault: (option('a), 'a) => 'a;
+```
+
+**Usage**
+
+```reason
+getWithDefault(optionalValue, default);
+```
+
+If `optionalValue` is `Some(value)`, returns `value`, otherwise default.
+
+**Examples**
+
+```reason
+Belt.Option.getWithDefault(None, "Banana"); /* Banana */
+
+Belt.Option.getWithDefault(Some("Apple"), "Banana"); /* Apple */
+```
+
+```reason
+let greet = (firstName: option(string)) =>
+  Belt.Option.("Greetings " ++ firstName->getWithDefault("Anonymous"));
+
+Some("Jane")->greet; /* "Greetings Jane" */
+
+None->greet; /* "Greetings Anonymous" */
+```
+
+```reason
+Belt.Option.getWithDefault(Some(1812), 1066); /* 1812 */
+
+Belt.Option.getWithDefault(None, 1066); /* 1066 */
 ```
 
 ## isSome
 
-```
+```reason
 let isSome: option('a) => bool;
+```
+
+**Usage**
+
+```reason
+isSome(optionValue)
+```
+
+Returns `true` if the argument is `Some(value)`, `false` otherwise.
+
+**Examples**
+
+```reason
+Belt.Option.isSome(None); /* false */
+
+Belt.Option.isSome(Some(1)); /* true */
 ```
 
 ## isNone
 
-```
+```reason
 let isNone: option('a) => bool;
 ```
 
-## eqU
+**Usage**
 
+```reason
+isNone(optionValue)
 ```
-let eqU: (option('a), option('b), [@bs] (('a, 'b) => bool)) => bool;
+
+Returns `true` if the argument is `None`, `false` otherwise.
+
+**Examples**
+
+```reason
+Belt.Option.isNone(None); /* true */
+
+Belt.Option.isNone(Some(1)); /* false */
 ```
 
 ## eq
 
-```
+```reason
 let eq: (option('a), option('b), ('a, 'b) => bool) => bool;
+```
+
+**Usage**
+
+```reason
+eq(optValue1, optValue2, predicateFunction);
+```
+
+Evaluates two optional values for equality with respect to a predicate function.
+
+If both `optValue1` and `optValue2` are `None`, returns `true`.
+
+If one of the arguments is `Some(value)` and the other is `None`, returns `false`.
+
+If arguments are `Some(value1)` and `Some(value2)`, returns the result of `predicate(value1, value2)`; the predicate function must return a bool.
+
+**Examples**
+
+```reason
+let clockEqual = (a, b) => a mod 12 == b mod 12;
+
+open Belt.Option;
+
+eq(Some(3), Some(15), clockEqual); /* true */
+
+eq(Some(3), None, clockEqual); /* false */
+
+eq(None, Some(3), clockEqual); /* false */
+
+eq(None, None, clockEqual); /* true */
+```
+
+## eqU
+
+```reason
+let eqU: (option('a), option('b), [@bs] (('a, 'b) => bool)) => bool;
+```
+
+Uncurried version of `eq`.
+
+## cmp
+
+```reason
+let cmp: (option('a), option('b), ('a, 'b) => int) => int;
+```
+
+**Usage**
+
+```reason
+cmp(optValue1, optvalue2, comparisonFunction);
+```
+
+Compares two optional values with respect to a comparison function
+
+If both `optValue1` and `optValue2` are `None`, returns `0`.
+
+If the first argument is `Some(value1)` and the second is `None`, returns `1` (something is greater than nothing).
+
+If the first argument is `None` and the second is `Some(value2)`, returns `-1` (nothing is less than something).
+
+If the arguments are `Some(value1)` and `Some(value2)`, returns the result of `comparisonFunction(value1, value2)`; comparisonFunction takes two arguments and returns `-1` if the first argument is less than the second, `0` if the arguments are equal, and `1` if the first argument is greater than the second.
+
+**Examples**
+
+```reason
+let clockCompare = (a, b) => compare(a mod 12, b mod 12);
+
+open Belt.Option;
+
+cmp(Some(3), Some(15), clockCompare); /* 0 */
+
+cmp(Some(3), Some(14), clockCompare); /* 1 */
+
+cmp(Some(2), Some(15), clockCompare); /* (-1) */
+
+cmp(None, Some(15), clockCompare); /* (-1) */
+
+cmp(Some(14), None, clockCompare); /* 1 */
+
+cmp(None, None, clockCompare); /* 0 */
 ```
 
 ## cmpU
 
-```
+```reason
 let cmpU: (option('a), option('b), [@bs] (('a, 'b) => int)) => int;
 ```
 
-## cmp
-
-```
-let cmp: (option('a), option('b), ('a, 'b) => int) => int;
-```
+Uncurried version of `cmp`.
