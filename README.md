@@ -1,6 +1,6 @@
 # reasonml.org 
 
-This is the repository for [reasonml.org](reasonml.org) and is currently **work
+This is the repository for [reasonml.org](https://reasonml.org) and is currently **work
 in progress**.
 
 ## Setup
