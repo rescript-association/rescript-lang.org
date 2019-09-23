@@ -1049,6 +1049,20 @@ Uncurried version of [has](#has).
 let getBy: (t('a), 'a => bool) => option('a);
 ```
 
+```reason
+getBy(someList, p);
+```
+
+Returns `Some(value)` for the first value in `someList` that satisifies the predicate function `p`. Returns `None` if no element satisifies the function.
+
+**Examples**
+
+```reason
+Belt.List.getBy([1, 4, 3, 2], x => x > 3); /* Some(4) */
+
+Belt.List.getBy([1, 4, 3, 2], x => x > 4); /* None */
+```
+
 ## getByU
 
 ```
@@ -1057,17 +1071,35 @@ let getByU: (t('a), [@bs] ('a => bool)) => option('a);
 
 Uncurried version of [getBy](#getBy).
 
+## keep
+
+```
+let keep: (t('a), 'a => bool) => t('a);
+```
+
+```reason
+keep(someList, p);
+```
+
+Returns a list of all elements in `someList` which satisfy the predicate function `p`.
+
+**Examples**
+
+```reason
+let isEven = x => x mod 2 == 0;
+
+Belt.List.keep([1, 2, 3, 4], isEven); /* [2, 4] */
+
+Belt.List.keep([None, Some(2), Some(3), None], Belt.Option.isSome); /* [Some(2), Some(3)] */
+```
+
 ## keepU
 
 ```
 let keepU: (t('a), [@bs] ('a => bool)) => t('a);
 ```
 
-## keep
-
-```
-let keep: (t('a), 'a => bool) => t('a);
-```
+Uncurried version of [keep](#keep).
 
 ## filter
 
@@ -1075,10 +1107,20 @@ let keep: (t('a), 'a => bool) => t('a);
 let filter: (t('a), 'a => bool) => t('a);
 ```
 
-## keepWithIndexU
-
+```reason
+filter(someList, p);
 ```
-let keepWithIndexU: (t('a), [@bs] (('a, int) => bool)) => t('a);
+
+Returns a list of all elements in `someList` which satisfy the predicate function `p`.
+
+**Examples**
+
+```reason
+let isEven = x => x mod 2 == 0;
+
+Belt.List.filter([1, 2, 3, 4], isEven); /* [2, 4] */
+
+Belt.List.filter([None, Some(2), Some(3), None], Belt.Option.isSome); /* [Some(2), Some(3)] */
 ```
 
 ## keepWithIndex
@@ -1087,16 +1129,46 @@ let keepWithIndexU: (t('a), [@bs] (('a, int) => bool)) => t('a);
 let keepWithIndex: (t('a), ('a, int) => bool) => t('a);
 ```
 
+```reason
+keepWithIndex(someList, p);
+```
+
+Returns a list of all elements in `someList` which satisfy the predicate function `p`.
+
+**Examples**
+
+```reason
+let isEven = x => x mod 2 == 0;
+
+Belt.List.keepWithIndex([1, 2, 3, 4], (_x, index) => isEven(index)); /* [1, 3] */
+```
+
+## keepWithIndexU
+
+```
+let keepWithIndexU: (t('a), [@bs] (('a, int) => bool)) => t('a);
+```
+
+Uncurried version of [keepWithIndex](#keepWithIndex).
+
 ## filterWithIndex
 
 ```
 let filterWithIndex: (t('a), ('a, int) => bool) => t('a);
 ```
 
-## keepMapU
-
+```language
+filterWithIndex(someList, p);
 ```
-let keepMapU: (t('a), [@bs] ('a => option('b))) => t('b);
+
+Returns a list of all elements in `someList` which satisfy the predicate function `p`.
+
+**Examples**
+
+```reason
+let isEven = x => x mod 2 == 0;
+
+Belt.List.filterWithIndex([1, 2, 3, 4], (_x, index) => isEven(index)); /* [1, 3] */
 ```
 
 ## keepMap
@@ -1105,11 +1177,37 @@ let keepMapU: (t('a), [@bs] ('a => option('b))) => t('b);
 let keepMap: (t('a), 'a => option('b)) => t('b);
 ```
 
-## partitionU
+```reason
+keepMap(someList, f);
+```
+
+Applies `f` to each element of `someList`. If `f(xi)` returns `Some(value)`, then `value` is _kept_ in the resulting list.
+If `f(xi)` returns `None`, the element is _not_ retained in the result.
+
+**Examples**
+
+```reason
+let isEven = x => x mod 2 == 0;
+
+[1, 2, 3, 4]
+->Belt.List.keepMap(x =>
+    if (isEven(x)) {
+      Some(x);
+    } else {
+      None;
+    }
+  ); /* [2, 4] */
+
+[Some(1), Some(2), None]->Belt.List.keepMap(x => x); /* [1, 2] */
+```
+
+## keepMapU
 
 ```
-let partitionU: (t('a), [@bs] ('a => bool)) => (t('a), t('a));
+let keepMapU: (t('a), [@bs] ('a => option('b))) => t('b);
 ```
+
+Uncurried version of [keepMap](#keepMap).
 
 ## partition
 
@@ -1117,16 +1215,51 @@ let partitionU: (t('a), [@bs] ('a => bool)) => (t('a), t('a));
 let partition: (t('a), 'a => bool) => (t('a), t('a));
 ```
 
+```reason
+partition(someList, p);
+```
+
+Creates a pair of lists; the first list consists of all elements of `someList` that satisfy the predicate function `p`; the second list consists of all elements of `someList` that _do not_ satisfy `p`.
+
+In other words:
+
+```
+([elementsThatSatisfies], [elementsThatDoesNotSatisfy]);
+```
+
+**Examples**
+
+```reason
+Belt.List.partition([1, 2, 3, 4], x => x > 2); /* ([3, 4], [1, 2]) */
+```
+
+## partitionU
+
+```
+let partitionU: (t('a), [@bs] ('a => bool)) => (t('a), t('a));
+```
+
+Uncurried version of [partition](#partition).
+
 ## unzip
 
 ```
 let unzip: t(('a, 'b)) => (t('a), t('b));
 ```
 
-## getAssocU
-
+```reason
+unzip(someList);
 ```
-let getAssocU: (t(('a, 'c)), 'b, [@bs] (('a, 'b) => bool)) => option('c);
+
+Takes a list of pairs and creates a pair of lists. The first list contains all the first items of the pairs; the second list contains all the second items.
+
+**Examples**
+
+```reason
+Belt.List.unzip([(1, 2), (3, 4)]); /* ([1, 3], [2, 4]) */
+
+Belt.List.unzip([("H", "W"), ("e", "o"), ("l", "r"), ("l", "l"), ("o", "d"), (" ", "!")]);
+/* (["H", "e", "l", "l", "o", " "], ["W", "o", "r", "l", "d", "!"]); */
 ```
 
 ## getAssoc
@@ -1135,16 +1268,79 @@ let getAssocU: (t(('a, 'c)), 'b, [@bs] (('a, 'b) => bool)) => option('c);
 let getAssoc: (t(('a, 'c)), 'b, ('a, 'b) => bool) => option('c);
 ```
 
+```reason
+getAssoc(someList, k, eqFunction);
+```
+
+Return the second element of a pair in `someList` where the first element equals `k` as per the predicate function `eq`, or `None` if not found.
+
+**Examples**
+
+```reason
+[(1, "a"), (2, "b"), (3, "c")]->Belt.List.getAssoc(3, (==)); /* Some("c") */
+
+[(9, "morning"), (15, "afternoon"), (22, "night")]
+->Belt.List.getAssoc(15, (k, item) => k /* 15 */ == item /* 9, 5, 22 */);
+/* Some("afternoon"); */
+```
+
+## getAssocU
+
+```
+let getAssocU: (t(('a, 'c)), 'b, [@bs] (('a, 'b) => bool)) => option('c);
+```
+
+Uncurried version of [getAssoc](#getAssoc).
+
+## hasAssoc
+
+```
+let hasAssoc: (t(('a, 'c)), 'b, ('a, 'b) => bool) => bool;
+```
+
+```reason
+hasAssoc(someList, k, eqFunction);
+```
+
+Returns `true` if there is a pair in `someList` where the first element equals `k` as per the predicate function `eqFunction`.
+
+**Examples**
+
+```reason
+[(1, "a"), (2, "b"), (3, "c")]->Belt.List.hasAssoc(1, (==)); /* true */
+
+[(9, "morning"), (15, "afternoon"), (22, "night")]
+->Belt.List.hasAssoc(25, (k, item) => k /* 25 */ == item /* 9, 5, 22 */); /* false */
+```
+
 ## hasAssocU
 
 ```
 let hasAssocU: (t(('a, 'c)), 'b, [@bs] (('a, 'b) => bool)) => bool;
 ```
 
-## hasAssoc
+Uncurried version of [hasAssoc](#hasAssoc).
+
+## removeAssoc
 
 ```
-let hasAssoc: (t(('a, 'c)), 'b, ('a, 'b) => bool) => bool;
+let removeAssoc: (t(('a, 'c)), 'b, ('a, 'b) => bool) => t(('a, 'c));
+```
+
+```reason
+removeAssoc(someList, k, eqFunction);
+```
+
+Return a list after removing the first pair whose first value is `k` per the equality predicate `eqFunction`; if not found, return a new list identical to `someList`.
+
+**Example**
+
+```reason
+[(1, "a"), (2, "b"), (3, "c")]->Belt.List.removeAssoc(1, (==)); /* [(2, "b"), (3, "c")] */
+
+[(9, "morning"), (15, "afternoon"), (22, "night")]
+->Belt.List.removeAssoc(9, (k, item) => k /* 9 */ == item /* 9, 5, 22 */);
+/* [(15, "afternoon"), (22, "night")] */
 ```
 
 ## removeAssocU
@@ -1153,11 +1349,47 @@ let hasAssoc: (t(('a, 'c)), 'b, ('a, 'b) => bool) => bool;
 let removeAssocU: (t(('a, 'c)), 'b, [@bs] (('a, 'b) => bool)) => t(('a, 'c));
 ```
 
-## removeAssoc
+Uncurried version of [removeAssoc](#removeAssoc).
+
+## setAssoc
 
 ```
-let removeAssoc: (t(('a, 'c)), 'b, ('a, 'b) => bool) => t(('a, 'c));
+let setAssoc: (t(('a, 'c)), 'a, 'c, ('a, 'a) => bool) => t(('a, 'c));
 ```
+
+```reason
+setAssoc(someList, k, v, eq);
+```
+
+If `k` exists in `someList` by satisfying the `eq` predicate, return a new list with the key and value replaced by the new `k` and `v`; otherwise, return a new list with the pair `k`, `v` added to the head of `someList`.
+
+**Examples**
+
+```reason
+[(1, "a"), (2, "b"), (3, "c")]->Belt.List.setAssoc(2, "x", (==)); /* [(1, "a"), (2, "x"), (3, "c")]; */
+
+[(1, "a"), (3, "c")]->Belt.List.setAssoc(2, "b", (==)); /* [(2, "b"), (1, "a"), (3, "c")] */
+
+[(9, "morning"), (3, "morning?!"), (22, "night")]
+->Belt.List.setAssoc(15, "afternoon", (a, b) => a mod 12 == b mod 12);
+/* [(9, "morning"), (15, "afternoon"), (22, "night")] */
+```
+
+**Please note**
+
+In the last example, since:
+
+```reason
+15 mod 12
+```
+
+equals
+
+```reason
+3 mod 12
+```
+
+Both the key _and_ the value are replaced in the list.
 
 ## setAssocU
 
@@ -1165,10 +1397,24 @@ let removeAssoc: (t(('a, 'c)), 'b, ('a, 'b) => bool) => t(('a, 'c));
 let setAssocU: (t(('a, 'c)), 'a, 'c, [@bs] (('a, 'a) => bool)) => t(('a, 'c));
 ```
 
-## setAssoc
+Uncurried version of [setAssoc](#setAssoc).
+
+## sort
 
 ```
-let setAssoc: (t(('a, 'c)), 'a, 'c, ('a, 'a) => bool) => t(('a, 'c));
+let sort: (t('a), ('a, 'a) => int) => t('a);
+```
+
+```reason
+sort(someList);
+```
+
+Returns a sorted list.
+
+**Example**
+
+```reason
+Belt.List.sort([5, 4, 9, 3, 7], (a, b) => a - b); /* [3, 4, 5, 7, 9] */
 ```
 
 ## sortU
@@ -1177,8 +1423,4 @@ let setAssoc: (t(('a, 'c)), 'a, 'c, ('a, 'a) => bool) => t(('a, 'c));
 let sortU: (t('a), [@bs] (('a, 'a) => int)) => t('a);
 ```
 
-## sort
-
-```
-let sort: (t('a), ('a, 'a) => int) => t('a);
-```
+Uncurried version of [sort](#sort).
