@@ -7,29 +7,29 @@ Collection functions for manipulating `list` data structures.
 
 ## t('a)
 
-```
+```re
 type t('a) = list('a);
 ```
 
 ## length
 
-```
+```re
 let length: t('a) => int;
 ```
 
-```reason
+```re
 length(someList);
 ```
 
 **Example**
 
-```reason
+```re
 Belt.List.length([1, 2, 3]); /* 3 */
 ```
 
 ## size
 
-```
+```re
 let size: t('a) => int;
 ```
 
@@ -37,11 +37,11 @@ let size: t('a) => int;
 
 ## head
 
-```
+```re
 let head: t('a) => option('a);
 ```
 
-```reason
+```re
 head(someList);
 ```
 
@@ -49,7 +49,7 @@ Returns `Some(value)` where `value` is the first element in the list, or `None` 
 
 **Examples**
 
-```reason
+```re
 Belt.List.head([]); /* None */
 
 Belt.List.head([1, 2, 3]); /* Some(1) */
@@ -57,23 +57,23 @@ Belt.List.head([1, 2, 3]); /* Some(1) */
 
 ## headExn
 
-```
+```re
 let headExn: t('a) => 'a;
 ```
 
-```reason
-head(someList);
+```re
+headExn(someList);
 ```
 
 Same as [head](#head), but raises an exception if `someList` is empty. Use with care.
 
 ## tail
 
-```
+```re
 let tail: t('a) => option(t('a));
 ```
 
-```reason
+```re
 tail(someList);
 ```
 
@@ -81,7 +81,7 @@ Returns `None` if `someList` is empty, otherwise it returns `Some(tail)` where `
 
 **Example**
 
-```reason
+```re
 Belt.List.tail([1, 2, 3]); /* Some([2, 3]) */
 
 Belt.List.tail([]); /* None */
@@ -93,7 +93,7 @@ Belt.List.tail([]); /* None */
 let tailExn: t('a) => t('a);
 ```
 
-```reason
+```re
 tailExn(someList);
 ```
 
@@ -105,7 +105,7 @@ Same as [tail](#tail), but raises an exception if `someList` is empty. Use with 
 let add: (t('a), 'a) => t('a);
 ```
 
-```reason
+```re
 add(someList, value);
 ```
 
@@ -113,7 +113,7 @@ Adds `value` to the beginning of `someList`.
 
 **Examples**
 
-```reason
+```re
 Belt.List.add([2, 3], 1); /* [1, 2, 3] */
 
 Belt.List.add(["World", "!"], "Hello"); /* ["Hello", "World", "!"] */
@@ -125,7 +125,7 @@ Belt.List.add(["World", "!"], "Hello"); /* ["Hello", "World", "!"] */
 let get: (t('a), int) => option('a);
 ```
 
-```reason
+```re
 get(someList, index);
 ```
 
@@ -133,7 +133,7 @@ Return the nth element in `someList`, or `None` if `index` is larger than the le
 
 **Examples**
 
-```reason
+```re
 let abc = ["A", "B", "C"];
 
 abc->Belt.List.get(1); /* Some("B") */
@@ -143,11 +143,11 @@ abc->Belt.List.get(4); /* None */
 
 ## getExn
 
-```
+```re
 let getExn: (t('a), int) => 'a;
 ```
 
-```reason
+```re
 getExn(someList, index);
 ```
 
@@ -159,7 +159,7 @@ Same as [get](#get), but raises an exception if `index` is larger than the lengt
 let make: (int, 'a) => t('a);
 ```
 
-```reason
+```re
 make(numItems, v);
 ```
 
@@ -167,17 +167,17 @@ Returns a list of length `numItems` with each element filled with value `v`. Ret
 
 **Example**
 
-```reason
+```re
 Belt.List.make(3, 1); /* [1, 1, 1] */
 ```
 
 ## makeBy
 
-```
+```re
 let makeBy: (int, int => 'a) => t('a);
 ```
 
-```reason
+```re
 makeBy(numItems, f);
 ```
 
@@ -186,7 +186,7 @@ Returns an empty list if `numItems` is negative.
 
 **Examples**
 
-```reason
+```re
 Belt.List.makeBy(5, i => i); /* [0, 1, 2, 3, 4] */
 
 Belt.List.makeBy(5, i => i * i); /* [0, 1, 4, 9, 16] */
@@ -194,7 +194,7 @@ Belt.List.makeBy(5, i => i * i); /* [0, 1, 4, 9, 16] */
 
 ## makeByU
 
-```
+```re
 let makeByU: (int, [@bs] (int => 'a)) => t('a);
 ```
 
@@ -202,11 +202,11 @@ Uncurried version of [makeBy](#makeBy)
 
 ## shuffle
 
-```
+```re
 let shuffle: t('a) => t('a);
 ```
 
-```reason
+```re
 shuffle(someList);
 ```
 
@@ -214,17 +214,17 @@ Returns a new list in random order.
 
 **Example**
 
-```reason
+```re
 Belt.List.shuffle([1, 2, 3]); /* [2, 1, 3] */
 ```
 
 ## drop
 
-```
+```re
 let drop: (t('a), int) => option(t('a));
 ```
 
-```reason
+```re
 drop(someList, n);
 ```
 
@@ -232,7 +232,7 @@ Return a new list, dropping the first `n` elements. Returns `None` if `someList`
 
 **Examples**
 
-```reason
+```re
 [1, 2, 3]->Belt.List.drop(2); /* Some([3]) */
 
 [1, 2, 3]->Belt.List.drop(3); /* Some([]) */
@@ -242,11 +242,11 @@ Return a new list, dropping the first `n` elements. Returns `None` if `someList`
 
 ## take
 
-```
+```re
 let take: (t('a), int) => option(t('a));
 ```
 
-```reason
+```re
 take(someList, n);
 ```
 
@@ -254,7 +254,7 @@ Returns a list with the first `n` elements from `someList`, or `None` if `someLi
 
 **Examples**
 
-```reason
+```re
 [1, 2, 3]->Belt.List.take(1); /* Some([1]) */
 
 [1, 2, 3]->Belt.List.take(2); /* Some([1, 2]) */
@@ -264,11 +264,11 @@ Returns a list with the first `n` elements from `someList`, or `None` if `someLi
 
 ## splitAt
 
-```
+```re
 let splitAt: (t('a), int) => option((list('a), list('a)));
 ```
 
-```reason
+```re
 splitAt(someList, index);
 ```
 
@@ -276,7 +276,7 @@ Split the list `someList` at `index`. Returns `None` when the length of `someLis
 
 **Examples**
 
-```reason
+```re
 ["Hello", "World"]->Belt.List.splitAt(1); /* Some((["Hello"], ["World"])) */
 
 [0, 1, 2, 3, 4]->Belt.List.splitAt(2); /* Some(([0, 1], [2, 3, 4])) */
@@ -284,11 +284,11 @@ Split the list `someList` at `index`. Returns `None` when the length of `someLis
 
 ## concat
 
-```
+```re
 let concat: (t('a), t('a)) => t('a);
 ```
 
-```reason
+```re
 concat(firstList, secondList);
 ```
 
@@ -296,17 +296,17 @@ Returns the list obtained by adding `secondList` after `firstList`.
 
 **Example**
 
-```reason
+```re
 Belt.List.concat([1, 2, 3], [4, 5]); /* [1, 2, 3, 4, 5] */
 ```
 
 ## concatMany
 
-```
+```re
 let concatMany: array(t('a)) => t('a);
 ```
 
-```reason
+```re
 concatMany(a);
 ```
 
@@ -314,39 +314,39 @@ Returns the list obtained by concatenating all the lists in array `a`, in order.
 
 **Example**
 
-```reason
+```re
 Belt.List.concatMany([|[1, 2, 3], [], [3], [4]|]); /* [1, 2, 3, 3, 4] */
 ```
 
 ## reverseConcat
 
-```
+```re
 let reverseConcat: (t('a), t('a)) => t('a);
 ```
 
-```reason
+```re
 reverseConcat(firstList, secondList);
 ```
 
 Equivalent to writing:
 
-```reason
+```re
 concat(reverse(firstList), secondList);
 ```
 
 **Example**
 
-```reason
+```re
 Belt.List.reverseConcat([1, 2], [3, 4]); /* [2, 1, 3, 4] */
 ```
 
 ## flatten
 
-```
+```re
 let flatten: t(t('a)) => t('a);
 ```
 
-```reason
+```re
 flatten(ls);
 ```
 
@@ -354,17 +354,17 @@ Return the list obtained by concatenating all the lists in list `ls`, in order.
 
 **Example**
 
-```reason
+```re
 Belt.List.flatten([[1, 2, 3], [], [3], [4]]); /* [1, 2, 3, 3, 4] */
 ```
 
 ## map
 
-```
+```re
 let map: (t('a), 'a => 'b) => t('b);
 ```
 
-```reason
+```re
 map(someList, f);
 ```
 
@@ -372,13 +372,13 @@ Returns a new list with `f` applied to each element of `someList`.
 
 **Example**
 
-```reason
+```re
 [1, 2]->Belt.List.map(x => x + 1); /* [3, 4] */
 ```
 
 ## mapU
 
-```
+```re
 let mapU: (t('a), [@bs] ('a => 'b)) => t('b);
 ```
 
@@ -386,11 +386,11 @@ Uncurried version of [map](#map).
 
 ## zip
 
-```
+```re
 let zip: (t('a), t('b)) => t(('a, 'b));
 ```
 
-```reason
+```re
 zip(firstList, secondList);
 ```
 
@@ -398,17 +398,17 @@ Returns a list of pairs from the two lists with the length of the shorter list.
 
 **Example**
 
-```reason
+```re
 Belt.List.zip([1, 2], [3, 4, 5]); /* [(1, 3), (2, 4)] */
 ```
 
 ## zipBy
 
-```
+```re
 let zipBy: (t('a), t('b), ('a, 'b) => 'c) => t('c);
 ```
 
-```reason
+```re
 zipBy(firstList, secondList, f);
 ```
 
@@ -416,19 +416,19 @@ zipBy(firstList, secondList, f);
 
 Equivalent to:
 
-```reason
+```re
 zip(firstList, secondList) |> List.map(((x, y)) => f(x, y));
 ```
 
 **Example**
 
-```reason
+```re
 Belt.List.zipBy([1, 2, 3], [4, 5], (a, b) => 2 * a + b); /* [6, 9] */
 ```
 
 ## zipByU
 
-```
+```re
 let zipByU: (t('a), t('b), [@bs] (('a, 'b) => 'c)) => t('c);
 ```
 
@@ -436,11 +436,11 @@ Uncurried version of [zipBy](#zipBy).
 
 ## mapWithIndex
 
-```
+```re
 let mapWithIndex: (t('a), (int, 'a) => 'b) => t('b);
 ```
 
-```reason
+```re
 mapWithIndex(someList, f);
 ```
 
@@ -449,13 +449,13 @@ Function `f` takes two arguments: the index starting from 0 and the element from
 
 **Example**
 
-```reason
+```re
 [1, 2, 3]->Belt.List.mapWithIndex((index, x) => index + x); /* [1, 3, 5] */
 ```
 
 ## mapWithIndexU
 
-```
+```re
 let mapWithIndexU: (t('a), [@bs] ((int, 'a) => 'b)) => t('b);
 ```
 
@@ -463,11 +463,11 @@ Uncurried version of [mapWithIndex](#mapWithIndex).
 
 ## fromArray
 
-```
+```re
 let fromArray: array('a) => t('a);
 ```
 
-```reason
+```re
 fromArray(someArray);
 ```
 
@@ -475,17 +475,17 @@ Converts the given array to a list.
 
 **Examples**
 
-```reason
+```re
 Belt.List.fromArray([|1, 2, 3|]); /* [1, 2, 3] */
 ```
 
 ## toArray
 
-```
+```re
 let toArray: t('a) => array('a);
 ```
 
-```reason
+```re
 toArray(someList);
 ```
 
@@ -493,17 +493,17 @@ Converts the given list to an array.
 
 **Example**
 
-```reason
+```re
 Belt.List.toArray([1, 2, 3]); /* [|1, 2, 3|] */
 ```
 
 ## reverse
 
-```
+```re
 let reverse: t('a) => t('a);
 ```
 
-```reason
+```re
 reverse(someList);
 ```
 
@@ -511,35 +511,35 @@ Returns a new list whose elements are those of `someList` in reversed order.
 
 **Example**
 
-```reason
+```re
 Belt.List.reverse([1, 2, 3]); /* [3, 2, 1] */
 ```
 
 ## mapReverse
 
-```
+```re
 let mapReverse: (t('a), 'a => 'b) => t('b);
 ```
 
-```reason
+```re
 mapReverse(someList, f);
 ```
 
 Equivalent to:
 
-```reason
+```re
 map(someList, f)->reverse;
 ```
 
 **Example**
 
-```reason
+```re
 [3, 4, 5]->Belt.List.mapReverse(x => x * x); /* [25, 16, 9] */
 ```
 
 ## mapReverseU
 
-```
+```re
 let mapReverseU: (t('a), [@bs] ('a => 'b)) => t('b);
 ```
 
@@ -547,11 +547,11 @@ Uncurried version of [mapReverse](#mapReverse).
 
 ## forEach
 
-```
+```re
 let forEach: (t('a), 'a => 'b) => unit;
 ```
 
-```reason
+```re
 forEach(xs, f);
 ```
 
@@ -560,7 +560,7 @@ Call `f` on each element of `someList` from the beginning to end.
 
 **Example**
 
-```reason
+```re
 Belt.List.forEach(["a", "b", "c"], x => Js.log("Item: " ++ x));
 /*  prints:
       Item: a
@@ -571,7 +571,7 @@ Belt.List.forEach(["a", "b", "c"], x => Js.log("Item: " ++ x));
 
 ## forEachU
 
-```
+```re
 let forEachU: (t('a), [@bs] ('a => 'b)) => unit;
 ```
 
@@ -579,11 +579,11 @@ Uncurried version of [forEach](#forEach).
 
 ## forEachWithIndex
 
-```
+```re
 let forEachWithIndex: (t('a), (int, 'a) => 'b) => unit;
 ```
 
-```reason
+```re
 forEachWithIndex(xs, f);
 ```
 
@@ -592,7 +592,7 @@ Function `f` takes two arguments: the index starting from 0 and the element from
 
 **Example**
 
-```reason
+```re
 forEachWithIndex(["a", "b", "c"], (index, x) => Js.log("Item " ++ string_of_int(index) ++ " is " ++ x));
 /*  prints:
       Item 0 is a
@@ -603,7 +603,7 @@ forEachWithIndex(["a", "b", "c"], (index, x) => Js.log("Item " ++ string_of_int(
 
 ## forEachWithIndexU
 
-```
+```re
 let forEachWithIndexU: (t('a), [@bs] ((int, 'a) => 'b)) => unit;
 ```
 
@@ -611,11 +611,11 @@ Uncurried version of [forEachWithIndex](#forEachWithIndex).
 
 ## reduce
 
-```
+```re
 let reduce: (t('a), 'b, ('b, 'a) => 'b) => 'b;
 ```
 
-```reason
+```re
 reduce(someList, initialValue, f);
 ```
 
@@ -623,7 +623,7 @@ Applies `f` to each element of `someList` from beginning to end. Function `f` ha
 
 **Examples**
 
-```reason
+```re
 [1, 2, 3, 4]->Belt.List.reduce(0, (+)); /* 10 */
 
 /* same as */
@@ -633,7 +633,7 @@ Applies `f` to each element of `someList` from beginning to end. Function `f` ha
 
 ## reduceU
 
-```
+```re
 let reduceU: (t('a), 'b, [@bs] (('b, 'a) => 'b)) => 'b;
 ```
 
@@ -645,7 +645,7 @@ Uncurried version of [reduce](#reduce).
 let reduceWithIndex: (t('a), 'b, ('b, 'a, int) => 'b) => 'b;
 ```
 
-```reason
+```re
 reduceWithIndex(someList, initialValue, f);
 ```
 
@@ -653,13 +653,13 @@ Applies `f` to each element of `someList` from beginning to end. Function `f` ha
 
 **Example**
 
-```reason
+```re
 [1, 2, 3, 4]->Belt.List.reduceWithIndex(0, (acc, item, index) => acc + item + index); /* 16 */
 ```
 
 ## reduceWithIndexU
 
-```
+```re
 let reduceWithIndexU: (t('a), 'b, [@bs] (('b, 'a, int) => 'b)) => 'b;
 ```
 
@@ -667,11 +667,11 @@ Uncurried version of [reduceWithIndex](#reduceWithIndex).
 
 ## reduceReverse
 
-```
+```re
 let reduceReverse: (t('a), 'b, ('b, 'a) => 'b) => 'b;
 ```
 
-```reason
+```re
 reduceReverse(someList, f);
 ```
 
@@ -679,7 +679,7 @@ Works like [reduce](#reduce), except that function `f` is applied to each item o
 
 **Examples**
 
-```reason
+```re
 [1, 2, 3, 4]->Belt.List.reduceReverse(0, (+)); /* 10 */
 
 [1, 2, 3, 4]->Belt.List.reduceReverse(10, (-)); /* 0 */
@@ -689,7 +689,7 @@ Works like [reduce](#reduce), except that function `f` is applied to each item o
 
 ## reduceReverseU
 
-```
+```re
 let reduceReverseU: (t('a), 'b, [@bs] (('b, 'a) => 'b)) => 'b;
 ```
 
@@ -697,39 +697,39 @@ Uncurried version of [reduceReverse](#reduceReverse).
 
 ## mapReverse2U
 
-```
+```re
 let mapReverse2U: (t('a), t('b), [@bs] (('a, 'b) => 'c)) => t('c);
 ```
 
 ## mapReverse2
 
-```
+```re
 let mapReverse2: (t('a), t('b), ('a, 'b) => 'c) => t('c);
 ```
 
-```reason
+```re
 mapReverse2(firstList, secondList, f);
 ```
 
 Equivalent to:
 
-```reason
+```re
 zipBy(xs, ys, f)->reverse;
 ```
 
 **Example**
 
-```reason
+```re
 Belt.List.mapReverse2([1, 2, 3], [1, 2], (+)); /* [4, 2] */
 ```
 
 ## forEach2
 
-```
+```re
 let forEach2: (t('a), t('b), ('a, 'b) => 'c) => unit;
 ```
 
-```reason
+```re
 forEach2(firstList, secondList, f);
 ```
 
@@ -737,7 +737,7 @@ Stops at the length of the shorter list.
 
 **Example**
 
-```reason
+```re
 Belt.List.forEach2(["Z", "Y"], ["A", "B", "C"], (x, y) => Js.log2(x, y));
 
 /* prints:
@@ -748,7 +748,7 @@ Belt.List.forEach2(["Z", "Y"], ["A", "B", "C"], (x, y) => Js.log2(x, y));
 
 ## forEach2U
 
-```
+```re
 let forEach2U: (t('a), t('b), [@bs] (('a, 'b) => 'c)) => unit;
 ```
 
@@ -756,11 +756,11 @@ Uncurried version of [forEach2](#forEach2).
 
 ## reduce2
 
-```
+```re
 let reduce2: (t('b), t('c), 'a, ('a, 'b, 'c) => 'a) => 'a;
 ```
 
-```reason
+```re
 reduce2(firstList, secondList, initialValue, f);
 ```
 
@@ -768,13 +768,13 @@ Applies `f` to each element of `firstList` and `secondList` from beginning to en
 
 **Example**
 
-```reason
+```re
 Belt.List.reduce2([1, 2, 3], [4, 5], 0, (acc, x, y) => acc + x * x + y); /* 0 + (1 * 1 + 4) + (2 * 2 + 5) */
 ```
 
 ## reduce2U
 
-```
+```re
 let reduce2U: (t('b), t('c), 'a, [@bs] (('a, 'b, 'c) => 'a)) => 'a;
 ```
 
@@ -782,11 +782,11 @@ Uncurried version of [reduce2](#reduce2).
 
 ## reduceReverse2
 
-```
+```re
 let reduceReverse2: (t('a), t('b), 'c, ('c, 'a, 'b) => 'c) => 'c;
 ```
 
-```reason
+```re
 reduceReverse2(firstList, secondList, initialValue, f);
 ```
 
@@ -794,14 +794,13 @@ Applies `f` to each element of `firstList` and `secondList` from end to beginnin
 
 **Example**
 
-```reason
+```re
 Belt.List.reduceReverse2([1, 2, 3], [4, 5], 0, (acc, x, y) => acc + x * x + y); /*  + (1 * 1 + 4) + (2 * 2 + 5) */
-
 ```
 
 ## reduceReverse2U
 
-```
+```re
 let reduceReverse2U: (t('a), t('b), 'c, [@bs] (('c, 'a, 'b) => 'c)) => 'c;
 ```
 
@@ -809,11 +808,11 @@ Uncurried version of [reduceReverse2](#reduceReverse2).
 
 ## every
 
-```
+```re
 let every: (t('a), 'a => bool) => bool;
 ```
 
-```reason
+```re
 every(someList, p);
 ```
 
@@ -821,7 +820,7 @@ Returns `true` if all elements satisfy `p`, where `p` is a predicate: a function
 
 **Examples**
 
-```reason
+```re
 let isBelow10 = value => value < 10;
 
 [1, 9, 8, 2]->Belt.List.every(isBelow10); /* true */
@@ -831,7 +830,7 @@ let isBelow10 = value => value < 10;
 
 ## everyU
 
-```
+```re
 let everyU: (t('a), [@bs] ('a => bool)) => bool;
 ```
 
@@ -839,11 +838,11 @@ Uncurried version of [every](#every).
 
 ## some
 
-```
+```re
 let some: (t('a), 'a => bool) => bool;
 ```
 
-```reason
+```re
 some(someList, p);
 ```
 
@@ -851,7 +850,7 @@ Returns `true` if at least _one_ of the elements in `someList` satifies `p`, whe
 
 **Examples**
 
-```reason
+```re
 let isAbove100 = value => value > 100;
 
 [101, 1, 2, 3]->Belt.List.some(isAbove100); /* true */
@@ -861,7 +860,7 @@ let isAbove100 = value => value > 100;
 
 ## someU
 
-```
+```re
 let someU: (t('a), [@bs] ('a => bool)) => bool;
 ```
 
@@ -869,11 +868,11 @@ Uncurried version of [some](#some).
 
 ## every2
 
-```
+```re
 let every2: (t('a), t('b), ('a, 'b) => bool) => bool;
 ```
 
-```reason
+```re
 every2(xs, ys, p);
 ```
 
@@ -881,7 +880,7 @@ Returns `true` if predicate `p(xi, yi)` is `true` for all pairs of elements up t
 
 **Examples**
 
-```reason
+```re
 Belt.List.every2([1, 2, 3], [0, 1], (>)); /* true */
 
 Belt.List.every2([], [1], (x, y) => x > y); /* true */
@@ -893,7 +892,7 @@ Belt.List.every2([0, 1], [5, 0], (x, y) => x > y); /* false */
 
 ## every2U
 
-```
+```re
 let every2U: (t('a), t('b), [@bs] (('a, 'b) => bool)) => bool;
 ```
 
@@ -901,11 +900,11 @@ Uncurried version of [every2](#every2).
 
 ## some2
 
-```
+```re
 let some2: (t('a), t('b), ('a, 'b) => bool) => bool;
 ```
 
-```reason
+```re
 some2(xs, ys, p);
 ```
 
@@ -913,7 +912,7 @@ Returns `true` if `p(xi, yi)` is true for any pair of elements up to the shorter
 
 ## some2U
 
-```
+```re
 let some2U: (t('a), t('b), [@bs] (('a, 'b) => bool)) => bool;
 ```
 
@@ -921,11 +920,11 @@ Uncurried version of [some2](#some2).
 
 ## cmpByLength
 
-```
+```re
 let cmpByLength: (t('a), t('a)) => int;
 ```
 
-```reason
+```re
 cmpByLength(firstList, secondList);
 ```
 
@@ -933,7 +932,7 @@ Compare two lists solely by length. Returns `-1` if `length(firstList)` is less 
 
 **Examples**
 
-```reason
+```re
 Belt.List.cmpByLength([1, 2], [3, 4, 5, 6]); /* (-1) */
 
 Belt.List.cmpByLength([1, 2, 3], [4, 5, 6]); /* = 0 */
@@ -943,23 +942,24 @@ Belt.List.cmpByLength([1, 2, 3, 4], [5, 6]); /* = 1 */
 
 ## cmp
 
-```
+```re
 let cmp: (t('a), t('a), ('a, 'a) => int) => int;
 ```
 
 **Examples**
 
-```reason
+```re
 cmp(firstList, secondList, compareFn);
 ```
 
-Compare elements one by one `f(x, y)`. `f` returns a negative number if `x` is "less than" `y`, zero if `x`is "equal to" `y`, a positive number if `x`is "greater than" `y`.
+Compare elements one by one `compareFn(a, b)`. `compareFn` returns a negative number if `a` is "less than" `b`, zero if `a` is "equal to" `b`, a positive number if `a` is "greater than" `b`.
 
-The comparison returns the first non-zero result of `f`, or zero if `f` returns zero for all `x` and `y`.
+The comparison returns the first non-zero result of `compareFn`, or zero if `compareFn` returns zero for all `a` and `b`.
+
 If all items have compared equal, but `firstList` is exhausted first, return `-1`. (`firstList` is shorter).
 If all items have compared equal, but `secondList` is exhausted first, return `1` (`firstList` is longer).
 
-```reason
+```re
 Belt.List.cmp([3], [3, 7], (a, b) => compare(a, b)); /* (-1) */
 
 Belt.List.cmp([5, 3], [5], (a, b) => compare(a, b)); /* 1 */
@@ -977,7 +977,7 @@ For lists, we just compare elements one by one.
 
 ## cmpU
 
-```
+```re
 let cmpU: (t('a), t('a), [@bs] (('a, 'a) => int)) => int;
 ```
 
@@ -985,11 +985,11 @@ Uncurried version of [cmp](#cmp).
 
 ## eq
 
-```
+```re
 let eq: (t('a), t('a), ('a, 'a) => bool) => bool;
 ```
 
-```reason
+```re
 eq(firstList, secondList, eqElem);
 ```
 
@@ -997,7 +997,7 @@ Check equality of `firstList` and `secondList` using `eqElem` for equality on el
 
 **Examples**
 
-```reason
+```re
 Belt.List.eq([1, 2, 3], [1, 2], (==)); /* false */
 
 Belt.List.eq([1, 2], [1, 2], (==)); /* true */
@@ -1007,7 +1007,7 @@ Belt.List.eq([1, 2, 3], [(-1), (-2), (-3)], (a, b) => abs(a) == abs(b)); /* true
 
 ## eqU
 
-```
+```re
 let eqU: (t('a), t('a), [@bs] (('a, 'a) => bool)) => bool;
 ```
 
@@ -1015,11 +1015,11 @@ Uncurried version of [eqU](#eqU).
 
 ## has
 
-```
+```re
 let has: (t('a), 'b, ('a, 'b) => bool) => bool;
 ```
 
-```reason
+```re
 has(someList, eqFunction);
 ```
 
@@ -1027,7 +1027,7 @@ Returns `true` if the list contains at least one element for which `eqFunction(x
 
 **Examples**
 
-```reason
+```re
 [1, 2, 3]->Belt.List.has(2, (==)); /* true */
 
 [1, 2, 3]->Belt.List.has(4, (==)); /* false */
@@ -1037,7 +1037,7 @@ Returns `true` if the list contains at least one element for which `eqFunction(x
 
 ## hasU
 
-```
+```re
 let hasU: (t('a), 'b, [@bs] (('a, 'b) => bool)) => bool;
 ```
 
@@ -1045,11 +1045,11 @@ Uncurried version of [has](#has).
 
 ## getBy
 
-```
+```re
 let getBy: (t('a), 'a => bool) => option('a);
 ```
 
-```reason
+```re
 getBy(someList, p);
 ```
 
@@ -1057,7 +1057,7 @@ Returns `Some(value)` for the first value in `someList` that satisifies the pred
 
 **Examples**
 
-```reason
+```re
 Belt.List.getBy([1, 4, 3, 2], x => x > 3); /* Some(4) */
 
 Belt.List.getBy([1, 4, 3, 2], x => x > 4); /* None */
@@ -1065,7 +1065,7 @@ Belt.List.getBy([1, 4, 3, 2], x => x > 4); /* None */
 
 ## getByU
 
-```
+```re
 let getByU: (t('a), [@bs] ('a => bool)) => option('a);
 ```
 
@@ -1073,11 +1073,11 @@ Uncurried version of [getBy](#getBy).
 
 ## keep
 
-```
+```re
 let keep: (t('a), 'a => bool) => t('a);
 ```
 
-```reason
+```re
 keep(someList, p);
 ```
 
@@ -1085,7 +1085,7 @@ Returns a list of all elements in `someList` which satisfy the predicate functio
 
 **Examples**
 
-```reason
+```re
 let isEven = x => x mod 2 == 0;
 
 Belt.List.keep([1, 2, 3, 4], isEven); /* [2, 4] */
@@ -1095,7 +1095,7 @@ Belt.List.keep([None, Some(2), Some(3), None], Belt.Option.isSome); /* [Some(2),
 
 ## keepU
 
-```
+```re
 let keepU: (t('a), [@bs] ('a => bool)) => t('a);
 ```
 
@@ -1103,11 +1103,11 @@ Uncurried version of [keep](#keep).
 
 ## filter
 
-```
+```re
 let filter: (t('a), 'a => bool) => t('a);
 ```
 
-```reason
+```re
 filter(someList, p);
 ```
 
@@ -1115,7 +1115,7 @@ Returns a list of all elements in `someList` which satisfy the predicate functio
 
 **Examples**
 
-```reason
+```re
 let isEven = x => x mod 2 == 0;
 
 Belt.List.filter([1, 2, 3, 4], isEven); /* [2, 4] */
@@ -1125,11 +1125,11 @@ Belt.List.filter([None, Some(2), Some(3), None], Belt.Option.isSome); /* [Some(2
 
 ## keepWithIndex
 
-```
+```re
 let keepWithIndex: (t('a), ('a, int) => bool) => t('a);
 ```
 
-```reason
+```re
 keepWithIndex(someList, p);
 ```
 
@@ -1137,7 +1137,7 @@ Returns a list of all elements in `someList` which satisfy the predicate functio
 
 **Examples**
 
-```reason
+```re
 let isEven = x => x mod 2 == 0;
 
 Belt.List.keepWithIndex([1, 2, 3, 4], (_x, index) => isEven(index)); /* [1, 3] */
@@ -1145,7 +1145,7 @@ Belt.List.keepWithIndex([1, 2, 3, 4], (_x, index) => isEven(index)); /* [1, 3] *
 
 ## keepWithIndexU
 
-```
+```re
 let keepWithIndexU: (t('a), [@bs] (('a, int) => bool)) => t('a);
 ```
 
@@ -1153,11 +1153,11 @@ Uncurried version of [keepWithIndex](#keepWithIndex).
 
 ## filterWithIndex
 
-```
+```re
 let filterWithIndex: (t('a), ('a, int) => bool) => t('a);
 ```
 
-```language
+```re
 filterWithIndex(someList, p);
 ```
 
@@ -1165,7 +1165,7 @@ Returns a list of all elements in `someList` which satisfy the predicate functio
 
 **Examples**
 
-```reason
+```re
 let isEven = x => x mod 2 == 0;
 
 Belt.List.filterWithIndex([1, 2, 3, 4], (_x, index) => isEven(index)); /* [1, 3] */
@@ -1173,11 +1173,11 @@ Belt.List.filterWithIndex([1, 2, 3, 4], (_x, index) => isEven(index)); /* [1, 3]
 
 ## keepMap
 
-```
+```re
 let keepMap: (t('a), 'a => option('b)) => t('b);
 ```
 
-```reason
+```re
 keepMap(someList, f);
 ```
 
@@ -1186,7 +1186,7 @@ If `f(xi)` returns `None`, the element is _not_ retained in the result.
 
 **Examples**
 
-```reason
+```re
 let isEven = x => x mod 2 == 0;
 
 [1, 2, 3, 4]
@@ -1203,7 +1203,7 @@ let isEven = x => x mod 2 == 0;
 
 ## keepMapU
 
-```
+```re
 let keepMapU: (t('a), [@bs] ('a => option('b))) => t('b);
 ```
 
@@ -1211,11 +1211,11 @@ Uncurried version of [keepMap](#keepMap).
 
 ## partition
 
-```
+```re
 let partition: (t('a), 'a => bool) => (t('a), t('a));
 ```
 
-```reason
+```re
 partition(someList, p);
 ```
 
@@ -1229,13 +1229,13 @@ In other words:
 
 **Examples**
 
-```reason
+```re
 Belt.List.partition([1, 2, 3, 4], x => x > 2); /* ([3, 4], [1, 2]) */
 ```
 
 ## partitionU
 
-```
+```re
 let partitionU: (t('a), [@bs] ('a => bool)) => (t('a), t('a));
 ```
 
@@ -1243,11 +1243,11 @@ Uncurried version of [partition](#partition).
 
 ## unzip
 
-```
+```re
 let unzip: t(('a, 'b)) => (t('a), t('b));
 ```
 
-```reason
+```re
 unzip(someList);
 ```
 
@@ -1255,7 +1255,7 @@ Takes a list of pairs and creates a pair of lists. The first list contains all t
 
 **Examples**
 
-```reason
+```re
 Belt.List.unzip([(1, 2), (3, 4)]); /* ([1, 3], [2, 4]) */
 
 Belt.List.unzip([("H", "W"), ("e", "o"), ("l", "r"), ("l", "l"), ("o", "d"), (" ", "!")]);
@@ -1264,11 +1264,11 @@ Belt.List.unzip([("H", "W"), ("e", "o"), ("l", "r"), ("l", "l"), ("o", "d"), (" 
 
 ## getAssoc
 
-```
+```re
 let getAssoc: (t(('a, 'c)), 'b, ('a, 'b) => bool) => option('c);
 ```
 
-```reason
+```re
 getAssoc(someList, k, eqFunction);
 ```
 
@@ -1276,7 +1276,7 @@ Return the second element of a pair in `someList` where the first element equals
 
 **Examples**
 
-```reason
+```re
 [(1, "a"), (2, "b"), (3, "c")]->Belt.List.getAssoc(3, (==)); /* Some("c") */
 
 [(9, "morning"), (15, "afternoon"), (22, "night")]
@@ -1286,7 +1286,7 @@ Return the second element of a pair in `someList` where the first element equals
 
 ## getAssocU
 
-```
+```re
 let getAssocU: (t(('a, 'c)), 'b, [@bs] (('a, 'b) => bool)) => option('c);
 ```
 
@@ -1294,11 +1294,11 @@ Uncurried version of [getAssoc](#getAssoc).
 
 ## hasAssoc
 
-```
+```re
 let hasAssoc: (t(('a, 'c)), 'b, ('a, 'b) => bool) => bool;
 ```
 
-```reason
+```re
 hasAssoc(someList, k, eqFunction);
 ```
 
@@ -1306,7 +1306,7 @@ Returns `true` if there is a pair in `someList` where the first element equals `
 
 **Examples**
 
-```reason
+```re
 [(1, "a"), (2, "b"), (3, "c")]->Belt.List.hasAssoc(1, (==)); /* true */
 
 [(9, "morning"), (15, "afternoon"), (22, "night")]
@@ -1315,7 +1315,7 @@ Returns `true` if there is a pair in `someList` where the first element equals `
 
 ## hasAssocU
 
-```
+```re
 let hasAssocU: (t(('a, 'c)), 'b, [@bs] (('a, 'b) => bool)) => bool;
 ```
 
@@ -1323,11 +1323,11 @@ Uncurried version of [hasAssoc](#hasAssoc).
 
 ## removeAssoc
 
-```
+```re
 let removeAssoc: (t(('a, 'c)), 'b, ('a, 'b) => bool) => t(('a, 'c));
 ```
 
-```reason
+```re
 removeAssoc(someList, k, eqFunction);
 ```
 
@@ -1335,7 +1335,7 @@ Return a list after removing the first pair whose first value is `k` per the equ
 
 **Example**
 
-```reason
+```re
 [(1, "a"), (2, "b"), (3, "c")]->Belt.List.removeAssoc(1, (==)); /* [(2, "b"), (3, "c")] */
 
 [(9, "morning"), (15, "afternoon"), (22, "night")]
@@ -1345,7 +1345,7 @@ Return a list after removing the first pair whose first value is `k` per the equ
 
 ## removeAssocU
 
-```
+```re
 let removeAssocU: (t(('a, 'c)), 'b, [@bs] (('a, 'b) => bool)) => t(('a, 'c));
 ```
 
@@ -1353,11 +1353,11 @@ Uncurried version of [removeAssoc](#removeAssoc).
 
 ## setAssoc
 
-```
+```re
 let setAssoc: (t(('a, 'c)), 'a, 'c, ('a, 'a) => bool) => t(('a, 'c));
 ```
 
-```reason
+```re
 setAssoc(someList, k, v, eq);
 ```
 
@@ -1365,7 +1365,7 @@ If `k` exists in `someList` by satisfying the `eq` predicate, return a new list 
 
 **Examples**
 
-```reason
+```re
 [(1, "a"), (2, "b"), (3, "c")]->Belt.List.setAssoc(2, "x", (==)); /* [(1, "a"), (2, "x"), (3, "c")]; */
 
 [(1, "a"), (3, "c")]->Belt.List.setAssoc(2, "b", (==)); /* [(2, "b"), (1, "a"), (3, "c")] */
@@ -1379,13 +1379,13 @@ If `k` exists in `someList` by satisfying the `eq` predicate, return a new list 
 
 In the last example, since:
 
-```reason
+```re
 15 mod 12
 ```
 
 equals
 
-```reason
+```re
 3 mod 12
 ```
 
@@ -1393,7 +1393,7 @@ Both the key _and_ the value are replaced in the list.
 
 ## setAssocU
 
-```
+```re
 let setAssocU: (t(('a, 'c)), 'a, 'c, [@bs] (('a, 'a) => bool)) => t(('a, 'c));
 ```
 
@@ -1401,11 +1401,11 @@ Uncurried version of [setAssoc](#setAssoc).
 
 ## sort
 
-```
+```re
 let sort: (t('a), ('a, 'a) => int) => t('a);
 ```
 
-```reason
+```re
 sort(someList);
 ```
 
@@ -1413,13 +1413,13 @@ Returns a sorted list.
 
 **Example**
 
-```reason
+```re
 Belt.List.sort([5, 4, 9, 3, 7], (a, b) => a - b); /* [3, 4, 5, 7, 9] */
 ```
 
 ## sortU
 
-```
+```re
 let sortU: (t('a), [@bs] (('a, 'a) => int)) => t('a);
 ```
 
