@@ -13,3 +13,4 @@ yarn-error.log
 .merlin
 lib/
 .vscode/
+package-lock.json
