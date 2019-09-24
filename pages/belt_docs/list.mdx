@@ -1181,8 +1181,8 @@ let keepMap: (t('a), 'a => option('b)) => t('b);
 keepMap(someList, f);
 ```
 
-Applies `f` to each element of `someList`. If `f(xi)` returns `Some(value)`, then `value` is _kept_ in the resulting list.
-If `f(xi)` returns `None`, the element is _not_ retained in the result.
+Applies `f` to each element of `someList`. If `f(x)` returns `Some(value)`, then `value` is _kept_ in the resulting list.
+If `f(x)` returns `None`, the element is _not_ retained in the result.
 
 **Examples**
 
