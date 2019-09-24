@@ -12,3 +12,5 @@ yarn-error.log
 .bsb.lock
 .merlin
 lib/
+.vscode/
+package-lock.json
