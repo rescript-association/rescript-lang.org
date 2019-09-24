@@ -813,10 +813,10 @@ let every: (t('a), 'a => bool) => bool;
 ```
 
 ```re
-every(someList, p);
+every(someList, pred);
 ```
 
-Returns `true` if all elements satisfy `p`, where `p` is a predicate: a function taking an element and returning a bool.
+Returns `true` if all elements satisfy `pred`, where `pred` is a predicate: a function taking an element and returning a bool.
 
 **Examples**
 
@@ -843,10 +843,10 @@ let some: (t('a), 'a => bool) => bool;
 ```
 
 ```re
-some(someList, p);
+some(someList, pred);
 ```
 
-Returns `true` if at least _one_ of the elements in `someList` satifies `p`, where `p` is a predicate: a function taking an element and returning a bool.
+Returns `true` if at least _one_ of the elements in `someList` satifies `pred`, where `pred` is a predicate: a function taking an element and returning a bool.
 
 **Examples**
 
@@ -873,21 +873,21 @@ let every2: (t('a), t('b), ('a, 'b) => bool) => bool;
 ```
 
 ```re
-every2(xs, ys, p);
+every2(firstList, secondList, pred);
 ```
 
-Returns `true` if predicate `p(xi, yi)` is `true` for all pairs of elements up to the shorter length (i.e. `min(length(xs), length(ys))`)
+Returns `true` if predicate `pred(a, b)` is `true` for all pairs of elements up to the shorter length (i.e. `min(length(firstList), length(secondList))`)
 
 **Examples**
 
 ```re
 Belt.List.every2([1, 2, 3], [0, 1], (>)); /* true */
 
-Belt.List.every2([], [1], (x, y) => x > y); /* true */
+Belt.List.every2([], [1], (a, b) => a > b); /* true */
 
-Belt.List.every2([2, 3], [1], (x, y) => x > y); /* true */
+Belt.List.every2([2, 3], [1], (a, b) => a > b); /* true */
 
-Belt.List.every2([0, 1], [5, 0], (x, y) => x > y); /* false */
+Belt.List.every2([0, 1], [5, 0], (a, b) => a > b); /* false */
 ```
 
 ## every2U
@@ -1050,10 +1050,10 @@ let getBy: (t('a), 'a => bool) => option('a);
 ```
 
 ```re
-getBy(someList, p);
+getBy(someList, pred);
 ```
 
-Returns `Some(value)` for the first value in `someList` that satisifies the predicate function `p`. Returns `None` if no element satisifies the function.
+Returns `Some(value)` for the first value in `someList` that satisifies the predicate function `pred`. Returns `None` if no element satisifies the function.
 
 **Examples**
 
@@ -1078,10 +1078,10 @@ let keep: (t('a), 'a => bool) => t('a);
 ```
 
 ```re
-keep(someList, p);
+keep(someList, pred);
 ```
 
-Returns a list of all elements in `someList` which satisfy the predicate function `p`.
+Returns a list of all elements in `someList` which satisfy the predicate function `pred`.
 
 **Examples**
 
@@ -1108,10 +1108,10 @@ let filter: (t('a), 'a => bool) => t('a);
 ```
 
 ```re
-filter(someList, p);
+filter(someList, pred);
 ```
 
-Returns a list of all elements in `someList` which satisfy the predicate function `p`.
+Returns a list of all elements in `someList` which satisfy the predicate function `pred`.
 
 **Examples**
 
@@ -1130,10 +1130,10 @@ let keepWithIndex: (t('a), ('a, int) => bool) => t('a);
 ```
 
 ```re
-keepWithIndex(someList, p);
+keepWithIndex(someList, pred);
 ```
 
-Returns a list of all elements in `someList` which satisfy the predicate function `p`.
+Returns a list of all elements in `someList` which satisfy the predicate function `pred`.
 
 **Examples**
 
@@ -1158,10 +1158,10 @@ let filterWithIndex: (t('a), ('a, int) => bool) => t('a);
 ```
 
 ```re
-filterWithIndex(someList, p);
+filterWithIndex(someList, pred);
 ```
 
-Returns a list of all elements in `someList` which satisfy the predicate function `p`.
+Returns a list of all elements in `someList` which satisfy the predicate function `pred`.
 
 **Examples**
 
@@ -1216,10 +1216,10 @@ let partition: (t('a), 'a => bool) => (t('a), t('a));
 ```
 
 ```re
-partition(someList, p);
+partition(someList, pred);
 ```
 
-Creates a pair of lists; the first list consists of all elements of `someList` that satisfy the predicate function `p`; the second list consists of all elements of `someList` that _do not_ satisfy `p`.
+Creates a pair of lists; the first list consists of all elements of `someList` that satisfy the predicate function `pred`; the second list consists of all elements of `someList` that _do not_ satisfy `pred.
 
 In other words:
 
@@ -1272,7 +1272,7 @@ let getAssoc: (t(('a, 'c)), 'b, ('a, 'b) => bool) => option('c);
 getAssoc(someList, k, eqFunction);
 ```
 
-Return the second element of a pair in `someList` where the first element equals `k` as per the predicate function `eq`, or `None` if not found.
+Return the second element of a pair in `someList` where the first element equals `k` as per the predicate function `eqFunction`, or `None` if not found.
 
 **Examples**
 
@@ -1358,10 +1358,10 @@ let setAssoc: (t(('a, 'c)), 'a, 'c, ('a, 'a) => bool) => t(('a, 'c));
 ```
 
 ```re
-setAssoc(someList, k, v, eq);
+setAssoc(someList, k, v, eqFunction);
 ```
 
-If `k` exists in `someList` by satisfying the `eq` predicate, return a new list with the key and value replaced by the new `k` and `v`; otherwise, return a new list with the pair `k`, `v` added to the head of `someList`.
+If `k` exists in `someList` by satisfying the `eqFunction` predicate, return a new list with the key and value replaced by the new `k` and `v`; otherwise, return a new list with the pair `k`, `v` added to the head of `someList`.
 
 **Examples**
 
