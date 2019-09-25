@@ -10,12 +10,16 @@ function ate(prim) {
   return prim;
 }
 
+var Unsafe = /* module */Caml_chrome_debugger.localModule([], []);
+
 var ReactStuff = /* module */Caml_chrome_debugger.localModule([
     "s",
-    "ate"
+    "ate",
+    "Unsafe"
   ], [
     s,
-    ate
+    ate,
+    Unsafe
   ]);
 
 export {

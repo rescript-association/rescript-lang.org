@@ -1,29 +1,52 @@
 import { make as Layout } from "../../layouts/BeltDocsLayout.bs.js";
+import { make as ApiIntro } from "../../components/ApiIntro.bs.js";
 export default Layout;
 
 # Result
 
-Utilities for result data type.
+<ApiIntro>
 
-```
+Result types are really useful to describe the result of a certain operation
+without relying on exceptions or `option` types.
+
+This module gives you useful utilities to create and combine `Result` data.
+
+</ApiIntro>
+
+## t
+
+```re
 type t('a, 'b) =
   | Ok('a)
   | Error('b);
 ```
 
+The type `Result.t(result, err)` describes a variant of two states:
+``Ok(someResult)`` represents a successful operation, whereby
+```Error(someError)`` signals an erronous operation.
+
+
+In this concrete example, we are defining our own `Result` type to reflect an HTTP like
+query operation:
+
+```re example
+type responseError = NotAvailable | NotFound;
+type queryResult = Belt.Result.t(string, responseError);
+
+let failQueryUser = (username: string): queryResult => {
+  Error(NotAvailable)
+};
+```
+
 ## getExn
 
-```
+```re
 let getExn: t('a, 'b) => 'a;
 ```
 
-`getExn(res);`
+`getExn(res)`: when `res` is `Ok(n)`, returns `n` when `res` is `Error(m)`, raise an exception
 
-when `res` is `Ok(n)`, returns `n` when `res` is `Error(m)`, raise an exception
-
-Examples
-
-```
+```re example
 getExn(good) == 42;
 
 getExn(bad); /* raises exception */
@@ -31,23 +54,20 @@ getExn(bad); /* raises exception */
 
 ## mapWithDefaultU
 
-```
-let mapWithDefaultU: (t('a, 'c), 'b, [@bs] ('a => 'b)) => 'b;
+```re
+let mapWithDefaultU: (t('a, 'c), 'b, (.'a => 'b)) => 'b;
 ```
 
 ## mapWithDefault
 
-```
+```re
 let mapWithDefault: (t('a, 'c), 'b, 'a => 'b) => 'b;
 ```
 
-`mapWithDefault(res, default, f);`
+`mapWithDefault(res, default, f);`: When res is `Ok(n)`, returns `f(n)`,
+otherwise `default`.
 
-When res is `Ok(n)`, returns `f(n)`, otherwise `default`.
-
-Examples
-
-```
+```re example
 mapWithDefault(good, 0, (x) => x / 2) == 21;
 
 mapWithDefault(bad, 0, (x) => x / 2) == 0;
@@ -55,23 +75,21 @@ mapWithDefault(bad, 0, (x) => x / 2) == 0;
 
 ## mapU
 
-```
+```re
 let mapU: (t('a, 'c), [@bs] ('a => 'b)) => t('b, 'c);
 ```
 
 ## map
 
-```
+```re
 let map: (t('a, 'c), 'a => 'b) => t('b, 'c);
 ```
 
-`map(res, f);`
+`map(res, f)`: When res is `Ok(n)`, returns `Ok(f(n))`. Otherwise returns res
+unchanged. Function `f` takes a value of the same type as `n` and returns an
+ordinary value.
 
-When res is `Ok(n)`, returns `Ok(f(n))`. Otherwise returns res unchanged. Function `f` takes a value of the same type as `n` and returns an ordinary value.
-
-Examples
-
-```
+```re example
 let f = (x) => sqrt(float_of_int(x));
 
 map(Ok(64), f) == Ok(8.0);
@@ -81,23 +99,21 @@ map(Error("Invalid data"), f) == Error("Invalid data");
 
 ## flatMapU
 
-```
+```re
 let flatMapU: (t('a, 'c), [@bs] ('a => t('b, 'c))) => t('b, 'c);
 ```
 
 ## flatMap
 
-```
+```re
 let flatMap: (t('a, 'c), 'a => t('b, 'c)) => t('b, 'c);
 ```
 
-`flatMap(res, f);`
+`flatMap(res, f)`: When res is `Ok(n)`, returns `f(n)`. Otherwise, returns res
+unchanged. Function `f` takes a value of the same type as `n` and returns a
+`Belt.Result`.
 
-When res is `Ok(n)`, returns `f(n)`. Otherwise, returns res unchanged. Function `f` takes a value of the same type as `n` and returns a `Belt.Result`.
-
-Examples
-
-```
+```re example
 let recip = (x) =>
   if (x !== 0.0) {
     Ok(1.0 /. x);
@@ -114,17 +130,14 @@ flatMap(Error("Already bad"), recip) == Error("Already bad");
 
 ## getWithDefault
 
-```
+```re
 let getWithDefault: (t('a, 'b), 'a) => 'a;
 ```
 
-`getWithDefault(res, defaultValue);`
+`getWithDefault(res, defaultValue)`: If `res` is `Ok(n)`, returns `n`,
+otherwise `default`
 
-if `res` is `Ok(n)`, returns `n`, otherwise `default`
-
-Examples
-
-```
+```re example
 getWithDefault(Ok(42), 0) == 42;
 
 getWithDefault(Error("Invalid Data")) == 0;
@@ -132,43 +145,41 @@ getWithDefault(Error("Invalid Data")) == 0;
 
 ## isOk
 
-```
+```re
 let isOk: t('a, 'b) => bool;
 ```
 
-`isOk(res);`
-
-Returns `true` if `res` is of the form `Ok(n)`, `false` if it is the `Error(e)` variant.
+`isOk(res)`: Returns `true` if `res` is of the form `Ok(n)`, `false` if it is
+the `Error(e)` variant.
 
 ## isError
 
-```
+```re
 let isError: t('a, 'b) => bool;
 ```
 
-`isError(res);`
-
-Returns `true` if `res` is of the form `Error(e)`, `false` if it is the `Ok(n)` variant.
+`isError(res)`: Returns `true` if `res` is of the form `Error(e)`, `false` if
+it is the `Ok(n)` variant.
 
 ## eqU
 
-```
-let eqU: (t('a, 'c), t('b, 'd), [@bs] (('a, 'b) => bool)) => bool;
+```re
+let eqU: (t('a, 'c), t('b, 'd), (.'a, 'b) => bool) => bool;
 ```
 
 ## eq
 
-```
+```re
 let eq: (t('a, 'c), t('b, 'd), ('a, 'b) => bool) => bool;
 ```
 
-`eq(res1, res2, f);`
+`eq(res1, res2, f)`: Determine if two `Belt.Result` variables are equal with
+respect to an equality function. If `res1` and `res2` are of the form `Ok(n)`
+and `Ok(m)`, return the result of `f(n, m)`. If one of `res1` and `res2` are of
+the form `Error(e)`, return false If both `res1` and `res2` are of the form
+`Error(e)`, return true
 
-Determine if two `Belt.Result` variables are equal with respect to an equality function. If `res1` and `res2` are of the form `Ok(n)` and `Ok(m)`, return the result of `f(n, m)`. If one of `res1` and `res2` are of the form `Error(e)`, return false If both `res1` and `res2` are of the form `Error(e)`, return true
-
-Examples
-
-```
+```re example
 let good1 = Ok(42);
 
 let good2 = Ok(32);
@@ -190,25 +201,28 @@ eq(bad1, bad2, mod10equal) == true;
 
 ## cmpU
 
-```
-let cmpU: (t('a, 'c), t('b, 'd), [@bs] (('a, 'b) => int)) => int;
+```re
+let cmpU: (t('a, 'c), t('b, 'd), (.'a, 'b) => int) => int;
 ```
 
 ## cmp
 
-```
+```re
 let cmp: (t('a, 'c), t('b, 'd), ('a, 'b) => int) => int;
 ```
 
-`cmp(res1, res2, f);`
+`cmp(res1, res2, f)`: Compare two `Belt.Result` variables with respect to a
+comparison function. The comparison function returns -1 if the first variable
+is "less than" the second, 0 if the two variables are equal, and 1 if the first
+is "greater than" the second.
 
-Compare two `Belt.Result` variables with respect to a comparison function. The comparison function returns -1 if the first variable is "less than" the second, 0 if the two variables are equal, and 1 if the first is "greater than" the second.
+If `res1` and `res2` are of the form `Ok(n)` and `Ok(m)`, return the result of
+`f(n, m)`. If `res1` is of the form `Error(e)` and `res2` of the form `Ok(n)`,
+return -1 (nothing is less than something) If `res1` is of the form `Ok(n)` and
+`res2` of the form `Error(e)`, return 1 (something is greater than nothing) If
+both `res1` and `res2` are of the form `Error(e)`, return 0 (equal)
 
-If `res1` and `res2` are of the form `Ok(n)` and `Ok(m)`, return the result of `f(n, m)`. If `res1` is of the form `Error(e)` and `res2` of the form `Ok(n)`, return -1 (nothing is less than something) If `res1` is of the form `Ok(n)` and `res2` of the form `Error(e)`, return 1 (something is greater than nothing) If both `res1` and `res2` are of the form `Error(e)`, return 0 (equal)
-
-Examples
-
-```
+```re example
 let good1 = Ok(59);
 
 let good2 = Ok(37);

@@ -29,7 +29,7 @@ module Components = {
       React.component({
         .
         "className": option(string),
-        "metastring": string,
+        "metastring": option(string),
         "children": array(ReasonReact.reactElement),
       }),
     [@bs.optional]

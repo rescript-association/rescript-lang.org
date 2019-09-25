@@ -5,6 +5,7 @@ import * as Util from "../common/Util.bs.js";
 import * as React from "react";
 import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
+import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as React$1 from "@mdx-js/react";
 import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
@@ -18,7 +19,7 @@ hljs.registerLanguage('reason', reasonHighlightJs);
 
 ;
 
-function BeltDocsLayout$BeltMd$Anchor(Props) {
+function BeltDocsLayout$Md$Anchor(Props) {
   var id = Props.id;
   var style = {
     position: "absolute",
@@ -37,33 +38,53 @@ function BeltDocsLayout$BeltMd$Anchor(Props) {
                 }));
 }
 
-var Anchor = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$BeltMd$Anchor]);
+var Anchor = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$Md$Anchor]);
 
-function BeltDocsLayout$BeltMd$H2(Props) {
-  var children = Props.children;
-  return React.createElement(React.Fragment, undefined, React.createElement("h2", {
-                  className: "text-xl leading-3 font-montserrat font-medium text-main-black"
-                }, React.createElement(BeltDocsLayout$BeltMd$Anchor, {
-                      id: children
-                    }), children));
+function BeltDocsLayout$Md$InvisibleAnchor(Props) {
+  var id = Props.id;
+  return React.createElement("span", {
+              "aria-hidden": true
+            }, React.createElement("a", {
+                  id: id
+                }));
 }
 
-var H2 = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$BeltMd$H2]);
+var InvisibleAnchor = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$Md$InvisibleAnchor]);
 
-function BeltDocsLayout$BeltMd$Pre(Props) {
+function BeltDocsLayout$Md$H2(Props) {
+  var children = Props.children;
+  return React.createElement(React.Fragment, undefined, React.createElement(BeltDocsLayout$Md$InvisibleAnchor, {
+                  id: children
+                }), React.createElement("div", {
+                  className: "border-b border-gray-200 mt-12"
+                }));
+}
+
+var H2 = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$Md$H2]);
+
+function BeltDocsLayout$Md$Pre(Props) {
   var children = Props.children;
   return React.createElement("pre", {
               className: "mt-2 mb-4 block"
             }, children);
 }
 
-var Pre = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$BeltMd$Pre]);
+var Pre = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$Md$Pre]);
+
+function BeltDocsLayout$Md$P(Props) {
+  var children = Props.children;
+  return React.createElement("p", {
+              className: "text-base mt-3 leading-4 ml-8 text-main-lighten-15"
+            }, children);
+}
+
+var P = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$Md$P]);
 
 var components = {
-  p: $$Text.Md[/* P */3][/* make */0],
+  p: BeltDocsLayout$Md$P,
   li: $$Text.Md[/* Li */7][/* make */3],
   h1: $$Text.H1[/* make */0],
-  h2: BeltDocsLayout$BeltMd$H2,
+  h2: BeltDocsLayout$Md$H2,
   h3: $$Text.H3[/* make */0],
   h4: $$Text.H4[/* make */0],
   h5: $$Text.H5[/* make */0],
@@ -71,19 +92,23 @@ var components = {
   ol: $$Text.Md[/* Ol */6][/* make */0],
   inlineCode: $$Text.Md[/* InlineCode */2][/* make */0],
   code: $$Text.Md[/* Code */1][/* make */0],
-  pre: BeltDocsLayout$BeltMd$Pre,
+  pre: BeltDocsLayout$Md$Pre,
   a: $$Text.Md[/* A */4][/* make */2]
 };
 
-var BeltMd = /* module */Caml_chrome_debugger.localModule([
+var Md = /* module */Caml_chrome_debugger.localModule([
     "Anchor",
+    "InvisibleAnchor",
     "H2",
     "Pre",
+    "P",
     "components"
   ], [
     Anchor,
+    InvisibleAnchor,
     H2,
     Pre,
+    P,
     components
   ]);
 
@@ -486,6 +511,8 @@ var Sidebar = /* module */Caml_chrome_debugger.localModule([
   ]);
 
 function BeltDocsLayout(Props) {
+  var match = Props.components;
+  var components$1 = match !== undefined ? Caml_option.valFromOption(match) : components;
   var children = Props.children;
   var minWidth = {
     minWidth: "20rem"
@@ -498,7 +525,7 @@ function BeltDocsLayout(Props) {
                       className: "flex mt-12 mx-4",
                       style: minWidth
                     }, React.createElement(BeltDocsLayout$Sidebar, { }), React.createElement(React$1.MDXProvider, {
-                          components: components,
+                          components: components$1,
                           children: React.createElement("div", {
                                 className: "pl-8 w-3/4"
                               }, children)
@@ -511,7 +538,7 @@ var make = BeltDocsLayout;
 
 export {
   Link$1 as Link,
-  BeltMd ,
+  Md ,
   Navigation ,
   Sidebar ,
   make ,

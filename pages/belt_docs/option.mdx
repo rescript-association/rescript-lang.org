@@ -1,20 +1,24 @@
 import { make as Layout } from "../../layouts/BeltDocsLayout.bs.js";
+import { make as ApiIntro } from "../../components/ApiIntro.bs.js";
 export default Layout;
 
 # Option
 
-In Belt we represent the existence and nonexistence of a value by wrapping it with the `option` type.
-In order to make it a bit more convenient to work with option-types, Belt provides utility-functions for it.
+<ApiIntro>
 
-Option is a part of Reason's standard library and in there it's defined like this:
+In Belt we represent the existence and nonexistence of a value by wrapping it
+with the `option` type.  In order to make it a bit more convenient to work with
+option-types, Belt provides utility-functions for it.
+
+The `option` type is a part of the Reason / OCaml standard library which is defined like this:
+
+</ApiIntro>
 
 ```reason
 type option('a) = None | Some('a)
 ```
 
-**Example**
-
-```reason
+```reason example
 let someString: option(string) = Some("foo");
 ```
 
@@ -24,17 +28,9 @@ let someString: option(string) = Some("foo");
 let getExn: option('a) => 'a;
 ```
 
-**Usage**
-
-```reason
-getExn(optionValue);
-```
-
 Raises an Error in case `None` is provided. Use with care.
 
-**Examples**
-
-```reason
+```reason example
 Belt.Option.getExn(Some(3)); /* 3 */
 
 Belt.Option.getExn(None); /* Raises an Error */
@@ -46,20 +42,12 @@ Belt.Option.getExn(None); /* Raises an Error */
 let mapWithDefault: (option('a), 'b, 'a => 'b) => 'b;
 ```
 
-**Usage**
-
-```reason
-mapWithDefault(optionValue, default, f);
-```
-
 If `optionValue` is of `Some(value)`,
 this function returns that value applied with `f`, in other words `f(value)`.
 
 If `optionValue` is `None`, the default is returned.
 
-**Examples**
-
-```reason
+```reason example
 let someValue = Some(3);
 someValue->Belt.Option.mapWithDefault(0, x => x + 5); /* 8 */;
 
@@ -70,10 +58,10 @@ noneValue->Belt.Option.mapWithDefault(0, x => x + 5); /* 0 */;
 ## mapWithDefaultU
 
 ```reason
-let mapWithDefaultU: (option('a), 'b, [@bs] ('a => 'b)) => 'b;
+let mapWithDefaultU: (option('a), 'b, (.'a => 'b)) => 'b;
 ```
 
-Uncurried version of mapWithDefault.
+Uncurried version of [mapWithDefault](#mapWithDefault).
 
 ## map
 
@@ -81,17 +69,9 @@ Uncurried version of mapWithDefault.
 let map: (option('a), 'a => 'b) => option('b);
 ```
 
-**Usage**
-
-```reason
-map(optionValue, f);
-```
-
 If `optionValue` is `Some(value)` this returns `f(value)`, otherwise it returns `None`.
 
-**Examples**
-
-```reason
+```reason example
 Belt.Option.map(Some(3), x => x * x); /* Some(9) */
 
 Belt.Option.map(None, x => x * x); /* None */
@@ -103,7 +83,7 @@ Belt.Option.map(None, x => x * x); /* None */
 let mapU: (option('a), [@bs] ('a => 'b)) => option('b);
 ```
 
-Uncurried version of map.
+Uncurried version of [map](#map).
 
 ## flatMap
 
@@ -111,19 +91,11 @@ Uncurried version of map.
 let flatMap: (option('a), 'a => option('b)) => option('b);
 ```
 
-**Usage**
-
-```reason
-flatMap(optionValue, f);
-```
-
-If `optionValue` is `Some(value)`, returns `f(value)`, otherwise returns `None`.
-
+If `optionValue` is `Some(value)`, returns `f(value)`, otherwise returns
+`None`.<br/>
 The function `f` must have a return type of `option('a)`.
 
-**Examples**
-
-```reason
+```reason example
 let addIfAboveOne = value =>
   if (value > 1) {
     Some(value + 1);
@@ -152,23 +124,15 @@ Uncurried version of flatMap.
 let getWithDefault: (option('a), 'a) => 'a;
 ```
 
-**Usage**
-
-```reason
-getWithDefault(optionalValue, default);
-```
-
 If `optionalValue` is `Some(value)`, returns `value`, otherwise default.
 
-**Examples**
-
-```reason
+```reason example
 Belt.Option.getWithDefault(None, "Banana"); /* Banana */
 
 Belt.Option.getWithDefault(Some("Apple"), "Banana"); /* Apple */
 ```
 
-```reason
+```reason example
 let greet = (firstName: option(string)) =>
   Belt.Option.("Greetings " ++ firstName->getWithDefault("Anonymous"));
 
@@ -177,7 +141,7 @@ Some("Jane")->greet; /* "Greetings Jane" */
 None->greet; /* "Greetings Anonymous" */
 ```
 
-```reason
+```reason example
 Belt.Option.getWithDefault(Some(1812), 1066); /* 1812 */
 
 Belt.Option.getWithDefault(None, 1066); /* 1066 */
@@ -189,17 +153,9 @@ Belt.Option.getWithDefault(None, 1066); /* 1066 */
 let isSome: option('a) => bool;
 ```
 
-**Usage**
+Returns `true` if the argument is `Some(value)`, `false` otherwise.
 
-```reason
-isSome(optionValue)
-```
-
-Returns `true` if the argument is `Some(value)`, `false` otherwise.
-
-**Examples**
-
-```reason
+```reason example
 Belt.Option.isSome(None); /* false */
 
 Belt.Option.isSome(Some(1)); /* true */
@@ -211,17 +167,9 @@ Belt.Option.isSome(Some(1)); /* true */
 let isNone: option('a) => bool;
 ```
 
-**Usage**
+Returns `true` if the argument is `None`, `false` otherwise.
 
-```reason
-isNone(optionValue)
-```
-
-Returns `true` if the argument is `None`, `false` otherwise.
-
-**Examples**
-
-```reason
+```reason example
 Belt.Option.isNone(None); /* true */
 
 Belt.Option.isNone(Some(1)); /* false */
@@ -233,23 +181,15 @@ Belt.Option.isNone(Some(1)); /* false */
 let eq: (option('a), option('b), ('a, 'b) => bool) => bool;
 ```
 
-**Usage**
+Evaluates two optional values for equality with respect to a predicate
+function. If both `optValue1` and `optValue2` are `None`, returns `true`.
+If one of the arguments is `Some(value)` and the other is `None`, returns
+`false`.
 
-```reason
-eq(optValue1, optValue2, predicateFunction);
-```
+If arguments are `Some(value1)` and `Some(value2)`, returns the result of
+`predicate(value1, value2)`; the predicate function must return a bool.
 
-Evaluates two optional values for equality with respect to a predicate function.
-
-If both `optValue1` and `optValue2` are `None`, returns `true`.
-
-If one of the arguments is `Some(value)` and the other is `None`, returns `false`.
-
-If arguments are `Some(value1)` and `Some(value2)`, returns the result of `predicate(value1, value2)`; the predicate function must return a bool.
-
-**Examples**
-
-```reason
+```reason example
 let clockEqual = (a, b) => a mod 12 == b mod 12;
 
 open Belt.Option;
@@ -266,10 +206,10 @@ eq(None, None, clockEqual); /* true */
 ## eqU
 
 ```reason
-let eqU: (option('a), option('b), [@bs] (('a, 'b) => bool)) => bool;
+let eqU: (option('a), option('b), (.'a, 'b) => bool) => bool;
 ```
 
-Uncurried version of `eq`.
+Uncurried version of [eq](#eq).
 
 ## cmp
 
@@ -277,25 +217,23 @@ Uncurried version of `eq`.
 let cmp: (option('a), option('b), ('a, 'b) => int) => int;
 ```
 
-**Usage**
+`cmp(optValue1, optValue2, comparisonFunction)` compares two optional values
+with respect to given `comparisonFunction`.
 
-```reason
-cmp(optValue1, optvalue2, comparisonFunction);
-```
+If both `optValue1` and `optValue2` are `None`, it returns `0`.
 
-Compares two optional values with respect to a comparison function
+If the first argument is `Some(value1)` and the second is `None`, returns `1`
+(something is greater than nothing).
 
-If both `optValue1` and `optValue2` are `None`, returns `0`.
+If the first argument is `None` and the second is `Some(value2)`, returns `-1`
+(nothing is less than something).
 
-If the first argument is `Some(value1)` and the second is `None`, returns `1` (something is greater than nothing).
+If the arguments are `Some(value1)` and `Some(value2)`, returns the result of
+`comparisonFunction(value1, value2)`; comparisonFunction takes two arguments
+and returns `-1` if the first argument is less than the second, `0` if the
+arguments are equal, and `1` if the first argument is greater than the second.
 
-If the first argument is `None` and the second is `Some(value2)`, returns `-1` (nothing is less than something).
-
-If the arguments are `Some(value1)` and `Some(value2)`, returns the result of `comparisonFunction(value1, value2)`; comparisonFunction takes two arguments and returns `-1` if the first argument is less than the second, `0` if the arguments are equal, and `1` if the first argument is greater than the second.
-
-**Examples**
-
-```reason
+```reason example
 let clockCompare = (a, b) => compare(a mod 12, b mod 12);
 
 open Belt.Option;
@@ -316,7 +254,7 @@ cmp(None, None, clockCompare); /* 0 */
 ## cmpU
 
 ```reason
-let cmpU: (option('a), option('b), [@bs] (('a, 'b) => int)) => int;
+let cmpU: (option('a), option('b), ((.'a, 'b) => int)) => int;
 ```
 
-Uncurried version of `cmp`.
+Uncurried version of [cmp](#cmp).
