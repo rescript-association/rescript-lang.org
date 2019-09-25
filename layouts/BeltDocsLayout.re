@@ -16,7 +16,7 @@ module Link = Next.Link;
     We use some custom markdown styling for the Belt docs to make
     it easier on the eyes
  */
-module BeltMd = {
+module Md = {
   module Anchor = {
     [@react.component]
     let make = (~id: string) => {
@@ -222,14 +222,14 @@ module Sidebar = {
 };
 
 [@react.component]
-let make = (~children) => {
+let make = (~components=Md.components, ~children) => {
   let minWidth = ReactDOMRe.Style.make(~minWidth="20rem", ());
   <div className="mb-32">
     <div className="max-w-4xl w-full lg:w-3/4 text-gray-900 font-base">
       <Navigation />
       <main style=minWidth className="flex mt-12 mx-4">
         <Sidebar />
-        <Mdx.Provider components=BeltMd.components>
+        <Mdx.Provider components>
           <div className="pl-8 w-3/4"> children </div>
         </Mdx.Provider>
       </main>
