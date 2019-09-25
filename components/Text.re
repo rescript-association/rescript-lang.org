@@ -243,7 +243,7 @@ module Md = {
 
       if (Js.Float.isNaN(num)) {
         <a
-          href rel="noopener noreferrer" target="_blank" className=Link.inline>
+          href rel="noopener noreferrer" className=Link.inline>
           children
         </a>;
       } else {

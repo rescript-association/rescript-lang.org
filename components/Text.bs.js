@@ -220,8 +220,7 @@ function Text$Md$A(Props) {
     return React.createElement("a", {
                 className: inline,
                 href: href,
-                rel: "noopener noreferrer",
-                target: "_blank"
+                rel: "noopener noreferrer"
               }, children);
   } else {
     var id = String(num | 0);
