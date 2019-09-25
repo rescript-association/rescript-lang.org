@@ -1,24 +1,28 @@
 import { make as Layout } from "../../layouts/BeltDocsLayout.bs.js";
+import { make as ApiIntro } from "../../components/ApiIntro.bs.js";
 export default Layout;
 
 # HashSet
 
-A mutable Hash set which allows customized `hash` behavior.
+<ApiIntro>
 
+A mutable Hash set which allows customized `hash` behavior.
 All data are parameterized by not its only type but also a unique identity in the time of initialization, so that two HashSets of ints initialized with different hash functions will have different type.
 
-For example:
+</ApiIntro>
 
-```re
+```re example
 type t = int;
 
 module I0 = (
-  val Belt.Id.hashableU(~hash=[@bs] ((a: t) => a & 65535), ~eq=[@bs] ((a, b) => a == b))
+  val Belt.Id.hashableU(~hash=(. a: t) => a & 65535, ~eq=(. a, b) => a == b)
 );
 
 let s0 = make(~id=(module I0), ~hintSize=40);
 
-module I1 = (val Belt.Id.hashableU(~hash=[@bs] ((a: t) => a & 255), ~eq=[@bs] ((a, b) => a == b)));
+module I1 = (
+  val Belt.Id.hashableU(~hash=(. a: t) => a & 255, ~eq=(. a, b) => a == b)
+);
 
 let s1 = make(~id=(module I1), ~hintSize=40);
 ```
@@ -27,7 +31,7 @@ The invariant must be held: for two elements who are equal, their hashed value s
 
 Here the compiler would infer `s0` and `s1` having different type so that it would not mix.
 
-```re
+```re example
 let s0: t(int, I0.identity);
 
 let s1: t(int, I1.identity);
@@ -35,7 +39,7 @@ let s1: t(int, I1.identity);
 
 We can add elements to the collection:
 
-```re
+```re example
 add(s1, 0);
 
 add(s1, 1);
