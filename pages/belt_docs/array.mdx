@@ -17,16 +17,8 @@ let length: array('a) => int;
 return the size of the array
 
 ```re example
-let a = "";
-
-let add = (a,b) => {
-  switch(a) {
-    | None => b
-    | Some(a) => a ++ b
-  }
-};
-
-add("test", "bar");
+/* Returns 1 */
+Belt.Array.length([|"test"|]);
 ```
 
 ## size
