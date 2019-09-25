@@ -3,6 +3,8 @@ export default Layout;
 
 # HashMapString
 
+Specalized when key type is `string`, more efficient than the generic type
+
 ## key
 
 ```
@@ -38,6 +40,8 @@ let isEmpty: t('a) => bool;
 ```
 let set: (t('a), key, 'a) => unit;
 ```
+
+`set(tbl, k, v)` if `k` does not exist, add the binding `k,v`, otherwise, update the old value with the new `v`.
 
 ## copy
 
