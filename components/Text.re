@@ -121,9 +121,15 @@ module Md = {
       <pre className="my-8 p-4 block bg-main-lighten-95"> children </pre>;
     };
   };
+
   module Code = {
     [@react.component]
-    let make = (~className: option(string)=?, ~metastring: string, ~children) => {
+    let make =
+        (
+          ~className: option(string)=?,
+          ~metastring: option(string),
+          ~children,
+        ) => {
       let lang =
         switch (className) {
         | None => "re"
@@ -136,48 +142,65 @@ module Md = {
         };
       let langClass = "lang-" ++ lang;
       let base = {
-        "className": langClass ++ " font-mono block overflow-x-scroll hljs",
+        "className": langClass ++ " font-mono block overflow-x-scroll leading-tight hljs",
         "metastring": metastring,
       };
 
-      /* If there is a configured language for HLJS, 
+      /* If there is a configured language for HLJS,
          we use the highlight function to highlight the code,
          which in this context is always a string parsed from
          the markdown, otherwise we will just pass children down
          without any modification */
-      switch (lang) {
-      | "re"
-      | "reason" =>
-        let highlighted =
-          HighlightJs.(highlight(lang, children->Obj.magic)->value);
-        let finalProps =
-          Js.Obj.assign(
-            base,
-            {
-              "dangerouslySetInnerHTML": {
-                "__html": highlighted,
+      let codeElement =
+        switch (lang) {
+        | "re"
+        | "reason" =>
+          let highlighted =
+            HighlightJs.(
+              highlight(~lang, ~value=children->Obj.magic)->valueGet
+            );
+          let finalProps =
+            Js.Obj.assign(
+              base,
+              {
+                "dangerouslySetInnerHTML": {
+                  "__html": highlighted,
+                },
               },
-            },
+            );
+          ReactDOMRe.createElementVariadic(
+            "code",
+            ~props=ReactDOMRe.objToDOMProps(finalProps),
+            [||],
           );
-        ReactDOMRe.createElementVariadic(
-          "code",
-          ~props=ReactDOMRe.objToDOMProps(finalProps),
-          [||],
-        );
-      | _ =>
-        ReactDOMRe.createElementVariadic(
-          "code",
-          ~props=ReactDOMRe.objToDOMProps(base),
-          children,
-        )
+        | _ =>
+          ReactDOMRe.createElementVariadic(
+            "code",
+            ~props=ReactDOMRe.objToDOMProps(base),
+            children,
+          )
+        };
+
+      switch (metastring) {
+      | None => codeElement
+      | Some(metastring) =>
+        let metaSplits =
+          Js.String.split(" ", metastring)->Belt.List.fromArray;
+
+        if (Belt.List.has(metaSplits, "example", (==))) {
+          <CodeExample> codeElement </CodeExample>;
+        } else {
+          codeElement;
+        };
       };
     };
   };
+
   module InlineCode = {
     [@react.component]
     let make = (~children) => {
       <code
-        className="px-1 rounded-sm text-inherit font-mono bg-info-blue-lighten-90">
+        className="px-1 rounded-sm text-inherit font-mono bg-sand-lighten-20">
         children
       </code>;
     };

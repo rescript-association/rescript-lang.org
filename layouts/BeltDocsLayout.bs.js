@@ -39,13 +39,24 @@ function BeltDocsLayout$BeltMd$Anchor(Props) {
 
 var Anchor = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$BeltMd$Anchor]);
 
+function BeltDocsLayout$BeltMd$InvisibleAnchor(Props) {
+  var id = Props.id;
+  return React.createElement("span", {
+              "aria-hidden": true
+            }, React.createElement("a", {
+                  id: id
+                }));
+}
+
+var InvisibleAnchor = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$BeltMd$InvisibleAnchor]);
+
 function BeltDocsLayout$BeltMd$H2(Props) {
   var children = Props.children;
-  return React.createElement(React.Fragment, undefined, React.createElement("h2", {
-                  className: "text-xl leading-3 font-montserrat font-medium text-main-black"
-                }, React.createElement(BeltDocsLayout$BeltMd$Anchor, {
-                      id: children
-                    }), children));
+  return React.createElement(React.Fragment, undefined, React.createElement(BeltDocsLayout$BeltMd$InvisibleAnchor, {
+                  id: children
+                }), React.createElement("div", {
+                  className: "border-b border-gray-200 mt-12"
+                }));
 }
 
 var H2 = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$BeltMd$H2]);
@@ -59,8 +70,17 @@ function BeltDocsLayout$BeltMd$Pre(Props) {
 
 var Pre = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$BeltMd$Pre]);
 
+function BeltDocsLayout$BeltMd$P(Props) {
+  var children = Props.children;
+  return React.createElement("p", {
+              className: "text-base mt-3 leading-4 ml-8 text-main-lighten-15"
+            }, children);
+}
+
+var P = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$BeltMd$P]);
+
 var components = {
-  p: $$Text.Md[/* P */3][/* make */0],
+  p: BeltDocsLayout$BeltMd$P,
   li: $$Text.Md[/* Li */7][/* make */3],
   h1: $$Text.H1[/* make */0],
   h2: BeltDocsLayout$BeltMd$H2,
@@ -77,13 +97,17 @@ var components = {
 
 var BeltMd = /* module */Caml_chrome_debugger.localModule([
     "Anchor",
+    "InvisibleAnchor",
     "H2",
     "Pre",
+    "P",
     "components"
   ], [
     Anchor,
+    InvisibleAnchor,
     H2,
     Pre,
+    P,
     components
   ]);
 

@@ -1,9 +1,12 @@
 import { make as Layout } from "../../layouts/BeltDocsLayout.bs.js";
+import { make as ApiIntro } from "../../components/ApiIntro.bs.js";
 export default Layout;
 
 # Array
 
+<ApiIntro>
 Utililites for Array functions.
+</ApiIntro>
 
 ## length
 
@@ -12,6 +15,19 @@ let length: array('a) => int;
 ```
 
 return the size of the array
+
+```re example
+let a = "";
+
+let add = (a,b) => {
+  switch(a) {
+    | None => b
+    | Some(a) => a ++ b
+  }
+};
+
+add("test", "bar");
+```
 
 ## size
 
@@ -105,9 +121,7 @@ let reverseInPlace: array('a) => unit;
 
 `reverseInPlace(arr)` reverses items in `arr` in place.
 
-Examples
-
-```re
+```re example
 let arr = [|10, 11, 12, 13, 14|];
 
 let () = reverseInPlace(arr);
@@ -123,9 +137,7 @@ let reverse: array('a) => array('a);
 
 `reverse(arr)` returns a fresh array with items in arr in reverse order.
 
-Examples
-
-```re
+```re example
 reverse([|10, 11, 12, 13, 14|]) == [|14, 13, 12, 11, 10|];
 ```
 
@@ -137,9 +149,7 @@ let makeUninitialized: int => array(Js.undefined('a));
 
 `makeUninitialized(n)` creates an array of length `n` filled with the undefined value. You must specify the type of data that will eventually fill the array.
 
-Examples
-
-```re
+```re example
 let arr: array(Js.undefined(string)) = makeUninitialized(5);
 
 getExn(arr, 0) == Js.undefined;
@@ -153,9 +163,7 @@ let makeUninitializedUnsafe: int => array('a);
 
 Unsafe
 
-Examples
-
-```re
+```re example
 let arr = Belt.Array.makeUninitializedUnsafe(5);
 
 let () = Js.log(Belt.Array.getExn(arr, 0)); /* undefined */
@@ -182,9 +190,7 @@ let range: (int, int) => array(int);
 
 `range(start, finish);` create an inclusive array.
 
-Examples
-
-```re
+```re example
 range(0, 3) == [|0, 1, 2, 3|];
 
 range(3, 0) == [||];
@@ -202,9 +208,7 @@ let rangeBy: (int, int, ~step: int) => array(int);
 
 Returns empty array when step is 0 or negative. It also return an empty array when `start > finish`.
 
-Examples
-
-```re
+```re example
 rangeBy(0, 10, ~step=3) == [|0, 3, 6, 9|];
 
 rangeBy(0, 12, ~step=3) == [|0, 3, 6, 9, 12|];
@@ -236,9 +240,7 @@ let makeBy: (int, int => 'a) => array('a);
 
 Return an empty array when n is negative return an array of size n populated by `f(i)` start from `0` to `n - 1`.
 
-Examples
-
-```re
+```re example
 makeBy(5, (i) => i) == [|0, 1, 2, 3, 4|];
 
 makeBy(5, (i) => i * i) == [|0, 1, 4, 9, 16|];
@@ -270,9 +272,7 @@ let zip: (array('a), array('b)) => array(('a, 'b));
 
 Create an array of pairs from corresponding elements of a and b. Stop with the shorter array.
 
-Examples:
-
-```re
+```re example
 Belt.Array.zip([|1, 2|], [|3, 4, 5|]) == [|(1, 3), (2, 4)|]
 ```
 
@@ -294,9 +294,7 @@ Create an array by applying `f` to corresponding elements of `xs` and `ys`. Stop
 
 Equivalent to `map(zip(xs, ys), ((a, b)) => f(a, b));`
 
-Examples
-
-```re
+```re example
 zipBy([|1, 2, 3|], [|4, 5|], (a, b) => 2 * a + b) == [|6, 9|];
 ```
 
@@ -308,9 +306,7 @@ let unzip: array(('a, 'b)) => (array('a), array('b));
 
 `unzip(a);` takes an array of pairs and creates a pair of arrays. The first array contains all the first items of the pairs; the second array contains all the second items.
 
-Examples
-
-```re
+```re example
 unzip([|(1, 2), (3, 4)|]) == ([|1, 3|], [|2, 4|]);
 
 unzip([|(1, 2), (3, 4), (5, 6), (7, 8)|]) == ([|1, 3, 5, 7|], [|2, 4, 6, 8|]);
@@ -326,9 +322,7 @@ let concat: (array('a), array('a)) => array('a);
 
 Returns a fresh array containing the concatenation of the arrays `v1` and `v2`;so even if `v1` or `v2` is empty; it can not be shared
 
-Examples
-
-```re
+```re example
 concat([|1, 2, 3|], [|4, 5|]) == [|1, 2, 3, 4, 5|];
 
 concat([||], [|"a", "b", "c"|]) == [|"a", "b", "c"|];
@@ -344,9 +338,7 @@ let concatMany: array(array('a)) => array('a);
 
 Returns a fresh array as the concatenation of `xss` (an array of arrays)
 
-Examples
-
-```re
+```re example
 concatMany([|[|1, 2, 3|], [|4, 5, 6|], [|7, 8|]|]) == [|1, 2, 3, 4, 5, 6, 7, 8|];
 ```
 
@@ -356,19 +348,15 @@ concatMany([|[|1, 2, 3|], [|4, 5, 6|], [|7, 8|]|]) == [|1, 2, 3, 4, 5, 6, 7, 8|]
 let slice: (array('a), ~offset: int, ~len: int) => array('a);
 ```
 
-`slice(xs, offset, len);` creates a new array with the len elements of `xs` starting at `offset` for
-
-`offset` can be negative;and is evaluated as `length(xs) - offset(slice, xs) - 1(1);` means get the last element as a singleton array
-
-`slice(xs, ~-len, len);` will return a copy of the array
-
-if the array does not have enough data; `slice` extracts through the end of sequence.
+`slice(xs, offset, len);` creates a new array with the len elements of `xs`
+starting at `offset` for `offset` can be negative;and is evaluated as
+`length(xs) - offset(slice, xs) - 1(1);` means get the last element as a
+singleton array `slice(xs, ~-len, len);` will return a copy of the array if the
+array does not have enough data; `slice` extracts through the end of sequence.
 
 if `len` is negative; returns the empty array.
 
-Examples
-
-```re
+```re example
 slice([|10, 11, 12, 13, 14, 15, 16|], ~offset=2, ~len=3) == [|12, 13, 14|];
 
 slice([|10, 11, 12, 13, 14, 15, 16|], ~offset=-4, ~len=3) == [|13, 14, 15|];
@@ -388,9 +376,7 @@ let sliceToEnd: (array('a), int) => array('a);
 
 `sliceToEnd(xs, 0);` will return a copy of the array
 
-Examples
-
-```re
+```re example
 sliceToEnd([|10, 11, 12, 13, 14, 15, 16|], 2) == [|12, 13, 14, 15, 16|];
 
 sliceToEnd([|10, 11, 12, 13, 14, 15, 16|], -4) == [|13, 14, 15, 16|];
@@ -419,9 +405,7 @@ Modifies `arr` in place, storing `x` in elements number `offset` to `offset + le
 
 `fill(arr, ~offset=-1, ~len=1);` means fill the last element, if the array does not have enough data; `fill` will ignore it
 
-Examples
-
-```re
+```re example
 let arr = makeBy(5, (i) => i);
 
 fill(arr, ~offset=2, ~len=2, 9);
@@ -436,7 +420,15 @@ arr == [|0, 1, 9, 9, 4|];
 ## blit
 
 ```re
-let blit: (~src: array('a), ~srcOffset: int, ~dst: array('a), ~dstOffset: int, ~len: int) => unit;
+let blit:
+  (
+    ~src: array('a),
+    ~srcOffset: int,
+    ~dst: array('a),
+    ~dstOffset: int,
+    ~len: int
+  ) =>
+  unit;
 ```
 
 `blit(~src=v1, ~srcOffset=o1, ~dst=v2, ~dstOffset=o2, ~len);`
@@ -449,9 +441,7 @@ It works correctly even if `v1` and `v2` are the same array;and the source and d
 
 For each of the examples;presume that `v1 == [|10, 11, 12, 13, 14, 15, 16, 17|];` and `v2 == [|20, 21, 22, 23, 24, 25, 26, 27|];`. The result shown is the content of the destination array.
 
-Examples
-
-```re
+```re example
 Belt.Array.blit(~src=v1, ~srcOffset=4, ~dst=v2, ~dstOffset=2, ~len=3)
 |. [|20, 21, 14, 15, 16, 25, 26, 27|];
 
@@ -483,9 +473,7 @@ let forEach: (array('a), 'a => unit) => unit;
 
 Call `f` on each element of `xs` from the beginning to end. `f` returns `unit`;so no new array is created. Use `forEach` when you are primarily concerned with repetitively creating side effects.
 
-Examples
-
-```re
+```re example
 forEach([|"a", "b", "c"|], (x) => Js.log("Item: " ++ x));
 
 /*  prints:
@@ -516,9 +504,7 @@ let map: (array('a), 'a => 'b) => array('b);
 
 Returns a new array by calling `f` for each element of `xs` from the beginning to end.
 
-Examples
-
-```re
+```re example
 map([|1, 2|], (x) => x + 1) == [|3, 4|];
 ```
 
@@ -538,9 +524,7 @@ let getBy: (array('a), 'a => bool) => option('a);
 
 Returns `Some(value)` for the first value in `xs` that satisifies the predicate function `p`; returns `None` if no element satisifies the function.
 
-Examples
-
-```re
+```re example
 getBy([|1, 4, 3, 2|], (x) => x mod 2 == 0) == Some(4);
 getBy([|15, 13, 11|], (x) => x mod 2 == 0) == None;
 ```
@@ -562,9 +546,7 @@ let getIndexBy: (array('a), 'a => bool) => option(int);
 returns `Some(index)` for the first value in `xs` that satisifies the predicate function `p`;
 returns `None` if no element satisifies the function.
 
-Examples
-
-```re
+```re example
 getIndexBy([|1, 4, 3, 2|], (x) => x mod 2 == 0) == Some(1);
 getIndexBy([|15, 13, 11|], (x) => x mod 2 == 0) == None;
 ```
@@ -585,9 +567,7 @@ let keep: (array('a), 'a => bool) => array('a);
 
 Returns a new array that keep all elements satisfy `p`.
 
-Examples
-
-```re
+```re example
 keep([|1, 2, 3|], (x) => x mod 2 == 0) == [|2|];
 ```
 
@@ -607,9 +587,7 @@ let keepWithIndex: (array('a), ('a, int) => bool) => array('a);
 
 Returns a new array that keep all elements satisfy `p`.
 
-Examples
-
-```re
+```re example
 keepWithIndex([|1, 2, 3|], (_x, i) => i == 1) == [|2|];
 ```
 
@@ -629,9 +607,7 @@ let keepMap: (array('a), 'a => option('b)) => array('b);
 
 Returns a new array that keep all elements that return a non-None applied `p`.
 
-Examples
-
-```re
+```re example
 keepMap(
   [|1, 2, 3|],
   (x) =>
@@ -661,9 +637,7 @@ let forEachWithIndex: (array('a), (int, 'a) => unit) => unit;
 The same as `Belt_Array.forEach`;
 except that `f` is supplied two arguments: the index starting from 0 and the element from `xs`.
 
-Examples
-
-```re
+```re example
 forEach([|"a", "b", "c"|], (i, x) => Js.log("Item " ++ string_of_int(i) ++ " is " ++ x));
 
 /*  prints:
@@ -694,9 +668,7 @@ let mapWithIndex: (array('a), (int, 'a) => 'b) => array('b);
 
 `mapWithIndex(xs, f)` applies `f` to each element of `xs`. Function `f` takes two arguments: the index starting from 0 and the element from `xs`.
 
-Examples
-
-```re
+```re example
 mapWithIndex([|1, 2, 3|], (i, x) => i + x) == [|0 + 1, 1 + 2, 2 + 3|];
 ```
 
@@ -714,9 +686,7 @@ let partition: (array('a), 'a => bool) => (array('a), array('a));
 
 `partition(f, a)` split array into tuple of two arrays based on predicate `f`; first of tuple where predicate cause true, second where predicate cause false
 
-Examples
-
-```
+```example
 partition([|1, 2, 3, 4, 5|], (x) => x mod 2 == 0) == ([|2, 4|], [|1, 2, 3|]);
 
 partition([|1, 2, 3, 4, 5|], (x) => x mod 2 != 0) == ([|1, 2, 3|], [|2, 4|]);
@@ -738,9 +708,7 @@ let reduce: (array('b), 'a, ('a, 'b) => 'a) => 'a;
 
 Applies `f` to each element of `xs` from beginning to end. Function `f` has two parameters: the item from the list and an “accumulator”; which starts with a value of `init`. `reduce` returns the final value of the accumulator.
 
-Examples
-
-```re
+```re example
 reduce([|2, 3, 4|], 1, (+)) == 10;
 
 reduce([|"a", "b", "c", "d"|], "", (++)) == "abcd";
@@ -762,9 +730,7 @@ let reduceReverse: (array('b), 'a, ('a, 'b) => 'a) => 'a;
 
 Works like `Belt_Array.reduce`; except that function `f` is applied to each item of `xs` from the last back to the first.
 
-Examples
-
-```re
+```re example
 reduceReverse([|"a", "b", "c", "d"|], "", (++)) == "dcba";
 ```
 
@@ -784,9 +750,7 @@ let reduceReverse2: (array('a), array('b), 'c, ('c, 'a, 'b) => 'c) => 'c;
 
 Reduces two arrays xs and ys;taking items starting at `min(length(xs), length(ys))` down to and including zero.
 
-Examples
-
-```re
+```re example
 reduceReverse2([|1, 2, 3|], [|1, 2|], 0, (acc, x, y) => acc + x + y) == 6;
 ```
 
@@ -806,9 +770,7 @@ let reduceWithIndex: (array('a), 'b, ('b, 'a, int) => 'b) => 'b;
 
 Applies `f` to each element of `xs` from beginning to end. Function `f` has three parameters: the item from the array and an “accumulator”, which starts with a value of `init` and the index of each element. `reduceWithIndex` returns the final value of the accumulator.
 
-Examples
-
-```re
+```re example
 reduceWithIndex([|1, 2, 3, 4|], 0, (acc, x, i) => acc + x + i) == 16;
 ```
 
@@ -828,9 +790,7 @@ let some: (array('a), 'a => bool) => bool;
 
 Returns true if at least one of the elements in `xs` satifies `p`; where `p` is a predicate: a function taking an element and returning a `bool`.
 
-Examples
-
-```re
+```re example
 some([|2, 3, 4|], (x) => x mod 2 == 1) == true;
 
 some([|(-1), (-3), (-5)|], (x) => x > 0) == false;
@@ -852,9 +812,7 @@ let every: (array('a), 'a => bool) => bool;
 
 Returns `true` if all elements satisfy `p`; where `p` is a predicate: a function taking an element and returning a `bool`.
 
-Examples
-
-```re
+```re example
 every([|1, 3, 5|], (x) => x mod 2 == 1) == true;
 
 every([|1, (-3), 5|], (x) => x > 0) == false;
@@ -876,9 +834,7 @@ let every2: (array('a), array('b), ('a, 'b) => bool) => bool;
 
 returns true if `p(xi, yi);` is true for all pairs of elements up to the shorter length (i.e. `min(length(xs), length(ys));`)
 
-Examples
-
-```re
+```re example
 every2([|1, 2, 3|], [|0, 1|], (>)) == true;
 
 every2([||], [|1|], (x, y) => x > y) == true;
@@ -904,9 +860,7 @@ let some2: (array('a), array('b), ('a, 'b) => bool) => bool;
 
 returns true if `p(xi, yi);` is true for any pair of elements up to the shorter length (i.e. `min(length(xs), length(ys));`)
 
-Examples
-
-```re
+```re example
 some2([|0, 2|], [|1, 0, 3|], (>)) == true;
 
 some2([||], [|1|], (x, y) => x > y) == false;
@@ -935,9 +889,7 @@ zero if `x` is “equal to” `y`
 a positive number if `x` is “greater than” `y`
 The comparison returns the first non-zero result of `f`;or zero if `f` returns zero for all `x` and `y`.
 
-Examples
-
-```re
+```re example
 cmp([|1, 3, 5|], [|1, 4, 2|], (a, b) => compare(a, b)) == (-1);
 
 cmp([|1, 3, 5|], [|1, 2, 3|], (a, b) => compare(a, b)) == 1;
@@ -962,9 +914,7 @@ let eq: (array('a), array('a), ('a, 'a) => bool) => bool;
 return false if length is not the same
 otherwise compare items one by one using `f(xi, yi);`; and return true if all results are true;false otherwise
 
-Examples
-
-```re
+```re example
 eq([|1, 2, 3|], [|(-1), (-2), (-3)|], (a, b) => abs(a) == abs(b)) == true;
 ```
 
@@ -980,9 +930,7 @@ If `n` is greater than the length of `xs`; the extra elements are set to `Js.Nul
 
 If `n` is less than zero; raises a `RangeError`.
 
-Examples
-
-```re
+```re example
 let arr = [|"ant", "bee", "cat", "dog", "elk"|];
 
 truncateToLengthUnsafe(arr, 3);

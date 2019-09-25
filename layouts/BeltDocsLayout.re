@@ -8,7 +8,6 @@ let reasonHighlightJs = require('reason-highlightjs');
 hljs.registerLanguage('reason', reasonHighlightJs);
 |};
 
-
 open Util.ReactStuff;
 open Text;
 module Link = Next.Link;
@@ -18,7 +17,6 @@ module Link = Next.Link;
     it easier on the eyes
  */
 module BeltMd = {
-  external elementAsString: React.element => string = "%identity";
   module Anchor = {
     [@react.component]
     let make = (~id: string) => {
@@ -35,16 +33,28 @@ module BeltMd = {
     };
   };
 
+  module InvisibleAnchor = {
+    [@react.component]
+    let make = (~id: string) => {
+      <span ariaHidden=true> <a id /> </span>;
+    };
+  };
+
   module H2 = {
+    // We will currently hide the headline, to keep the structure,
+    // but having an Elm like documentation
     [@react.component]
     let make = (~children) => {
       <>
         // Here we know that children is always a string (## headline)
-        <h2
-          className="text-xl leading-3 font-montserrat font-medium text-main-black">
-          <Anchor id={children->elementAsString} />
-          children
-        </h2>
+        <InvisibleAnchor id={children->Unsafe.elementAsString} />
+        <div className="border-b border-gray-200 mt-12" />
+        /*
+         <h2
+           className="inline text-xl leading-3 font-montserrat font-medium text-main-black">
+           <Anchor id={children->Unsafe.elementAsString} />
+         </h2>
+         */
       </>;
     };
   };
@@ -56,9 +66,18 @@ module BeltMd = {
     };
   };
 
+  module P = {
+    [@react.component]
+    let make = (~children) => {
+      <p className="text-base mt-3 leading-4 ml-8 text-main-lighten-15">
+        children
+      </p>;
+    };
+  };
+
   let components =
     Mdx.Components.t(
-      ~p=Md.P.make,
+      ~p=P.make,
       ~li=Md.Li.make,
       ~h1=H1.make,
       ~h2=H2.make,
