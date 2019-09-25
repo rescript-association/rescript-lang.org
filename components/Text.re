@@ -142,7 +142,8 @@ module Md = {
         };
       let langClass = "lang-" ++ lang;
       let base = {
-        "className": langClass ++ " font-mono block overflow-x-scroll leading-tight hljs",
+        "className":
+          langClass ++ " font-mono block overflow-x-scroll leading-tight hljs",
         "metastring": metastring,
       };
 
@@ -242,10 +243,7 @@ module Md = {
       let num = Js.Float.fromString(href);
 
       if (Js.Float.isNaN(num)) {
-        <a
-          href rel="noopener noreferrer" className=Link.inline>
-          children
-        </a>;
+        <a href rel="noopener noreferrer" className=Link.inline> children </a>;
       } else {
         let id = int_of_float(num) |> string_of_int;
         <>

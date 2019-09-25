@@ -1,9 +1,16 @@
 import { make as Layout } from "../../layouts/BeltDocsLayout.bs.js";
+import { make as ApiIntro } from "../../components/ApiIntro.bs.js";
 export default Layout;
 
 # Range
 
-A small module to provide a inclusive range operations `[start, finsish]`, it use a for-loop internally instead of creating an array
+<ApiIntro>
+
+A small utility module to provide inclusive range operations for `[start,
+finish]`.  Internally it is relying on loops instead of creating new arrays,
+which makes it pretty performant and memory friendly.
+
+</ApiIntro>
 
 ## forEachU
 
