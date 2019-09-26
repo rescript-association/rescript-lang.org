@@ -6,7 +6,6 @@ import * as Util from "../common/Util.bs.js";
 import * as React from "react";
 import * as Link from "next/link";
 import * as React$1 from "@mdx-js/react";
-import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
 require('../styles/main.css')
 ;
@@ -27,17 +26,19 @@ function MainLayout$Navigation(Props) {
                 }, React.createElement(Link.default, {
                       href: "/belt_docs",
                       children: React.createElement("a", {
-                            className: $$Text.Link[/* inline */0] + " mx-2"
-                          }, Util.ReactStuff[/* s */0]("Belt Documentation"))
+                            className: $$Text.Link.inline + " mx-2"
+                          }, Util.ReactStuff.s("Belt Documentation"))
                     }), React.createElement("a", {
-                      className: $$Text.Link[/* inline */0],
+                      className: $$Text.Link.inline,
                       href: "https://github.com/reason-association/reasonml.org",
                       rel: "noopener noreferrer",
                       target: "_blank"
-                    }, Util.ReactStuff[/* s */0]("Github"))));
+                    }, Util.ReactStuff.s("Github"))));
 }
 
-var Navigation = /* module */Caml_chrome_debugger.localModule(["make"], [MainLayout$Navigation]);
+var Navigation = {
+  make: MainLayout$Navigation
+};
 
 function MainLayout(Props) {
   var children = Props.children;
@@ -52,7 +53,7 @@ function MainLayout(Props) {
                       className: "mt-12 mx-4 max-w-lg",
                       style: minWidth
                     }, React.createElement(React$1.MDXProvider, {
-                          components: Mdx.Components[/* default */0],
+                          components: Mdx.Components.default,
                           children: children
                         }))));
 }

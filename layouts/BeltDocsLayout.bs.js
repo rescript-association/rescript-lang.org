@@ -32,13 +32,15 @@ function BeltDocsLayout$Md$Anchor(Props) {
             }, React.createElement("a", {
                   className: "mr-2 text-main-lighten-65 hover:cursor-pointer",
                   href: "#" + id
-                }, Util.ReactStuff[/* s */0]("#")), React.createElement("a", {
+                }, Util.ReactStuff.s("#")), React.createElement("a", {
                   id: id,
                   style: style
                 }));
 }
 
-var Anchor = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$Md$Anchor]);
+var Anchor = {
+  make: BeltDocsLayout$Md$Anchor
+};
 
 function BeltDocsLayout$Md$InvisibleAnchor(Props) {
   var id = Props.id;
@@ -49,7 +51,9 @@ function BeltDocsLayout$Md$InvisibleAnchor(Props) {
                 }));
 }
 
-var InvisibleAnchor = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$Md$InvisibleAnchor]);
+var InvisibleAnchor = {
+  make: BeltDocsLayout$Md$InvisibleAnchor
+};
 
 function BeltDocsLayout$Md$H2(Props) {
   var children = Props.children;
@@ -60,7 +64,9 @@ function BeltDocsLayout$Md$H2(Props) {
                 }));
 }
 
-var H2 = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$Md$H2]);
+var H2 = {
+  make: BeltDocsLayout$Md$H2
+};
 
 function BeltDocsLayout$Md$Pre(Props) {
   var children = Props.children;
@@ -69,7 +75,9 @@ function BeltDocsLayout$Md$Pre(Props) {
             }, children);
 }
 
-var Pre = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$Md$Pre]);
+var Pre = {
+  make: BeltDocsLayout$Md$Pre
+};
 
 function BeltDocsLayout$Md$P(Props) {
   var children = Props.children;
@@ -78,39 +86,34 @@ function BeltDocsLayout$Md$P(Props) {
             }, children);
 }
 
-var P = /* module */Caml_chrome_debugger.localModule(["make"], [BeltDocsLayout$Md$P]);
+var P = {
+  make: BeltDocsLayout$Md$P
+};
 
 var components = {
   p: BeltDocsLayout$Md$P,
-  li: $$Text.Md[/* Li */7][/* make */3],
-  h1: $$Text.H1[/* make */0],
+  li: $$Text.Md.Li.make,
+  h1: $$Text.H1.make,
   h2: BeltDocsLayout$Md$H2,
-  h3: $$Text.H3[/* make */0],
-  h4: $$Text.H4[/* make */0],
-  h5: $$Text.H5[/* make */0],
-  ul: $$Text.Md[/* Ul */5][/* make */0],
-  ol: $$Text.Md[/* Ol */6][/* make */0],
-  inlineCode: $$Text.Md[/* InlineCode */2][/* make */0],
-  code: $$Text.Md[/* Code */1][/* make */0],
+  h3: $$Text.H3.make,
+  h4: $$Text.H4.make,
+  h5: $$Text.H5.make,
+  ul: $$Text.Md.Ul.make,
+  ol: $$Text.Md.Ol.make,
+  inlineCode: $$Text.Md.InlineCode.make,
+  code: $$Text.Md.Code.make,
   pre: BeltDocsLayout$Md$Pre,
-  a: $$Text.Md[/* A */4][/* make */2]
+  a: $$Text.Md.A.make
 };
 
-var Md = /* module */Caml_chrome_debugger.localModule([
-    "Anchor",
-    "InvisibleAnchor",
-    "H2",
-    "Pre",
-    "P",
-    "components"
-  ], [
-    Anchor,
-    InvisibleAnchor,
-    H2,
-    Pre,
-    P,
-    components
-  ]);
+var Md = {
+  Anchor: Anchor,
+  InvisibleAnchor: InvisibleAnchor,
+  H2: H2,
+  Pre: Pre,
+  P: P,
+  components: components
+};
 
 var link = "no-underline text-inherit hover:text-white";
 
@@ -126,29 +129,26 @@ function BeltDocsLayout$Navigation(Props) {
                             src: "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1568788825/Reason%20Association/reasonml.org/bucklescript_bqxwee.svg"
                           }), React.createElement("span", {
                             className: "text-2xl ml-2 font-montserrat text-white-80 hover:text-white"
-                          }, Util.ReactStuff[/* s */0]("Belt")))
+                          }, Util.ReactStuff.s("Belt")))
                 }), React.createElement("div", {
                   className: "flex w-1/3 justify-end"
                 }, React.createElement(Link.default, {
                       href: "/",
                       children: React.createElement("a", {
                             className: "no-underline text-inherit hover:text-white mx-2"
-                          }, Util.ReactStuff[/* s */0]("ReasonML"))
+                          }, Util.ReactStuff.s("ReasonML"))
                     }), React.createElement("a", {
                       className: link,
                       href: "https://github.com/reason-association/reasonml.org",
                       rel: "noopener noreferrer",
                       target: "_blank"
-                    }, Util.ReactStuff[/* s */0]("Github"))));
+                    }, Util.ReactStuff.s("Github"))));
 }
 
-var Navigation = /* module */Caml_chrome_debugger.localModule([
-    "link",
-    "make"
-  ], [
-    link,
-    BeltDocsLayout$Navigation
-  ]);
+var Navigation = {
+  link: link,
+  make: BeltDocsLayout$Navigation
+};
 
 var overviewNavs = /* array */[/* record */Caml_chrome_debugger.record([
       "name",
@@ -467,48 +467,37 @@ var categories = /* array */[
 function categoryToElement(category) {
   return React.createElement("div", {
               key: category[/* name */0]
-            }, React.createElement($$Text.Overline[/* make */0], {
-                  children: Util.ReactStuff[/* s */0](category[/* name */0])
+            }, React.createElement($$Text.Overline.make, {
+                  children: Util.ReactStuff.s(category[/* name */0])
                 }), React.createElement("ul", {
                   className: "mr-4"
-                }, Util.ReactStuff[/* ate */1](Belt_Array.map(category[/* items */1], (function (m) {
+                }, Util.ReactStuff.ate(Belt_Array.map(category[/* items */1], (function (m) {
                             return React.createElement("li", {
                                         key: m[/* name */0],
                                         className: "font-bold lg:font-normal"
                                       }, React.createElement(Link.default, {
                                             href: m[/* href */1],
-                                            children: React.createElement("a", undefined, Util.ReactStuff[/* s */0](m[/* name */0]))
+                                            children: React.createElement("a", undefined, Util.ReactStuff.s(m[/* name */0]))
                                           }));
                           })))));
 }
 
 function BeltDocsLayout$Sidebar(Props) {
-  return React.createElement("div", undefined, Util.ReactStuff[/* ate */1](Belt_Array.map(categories, categoryToElement)));
+  return React.createElement("div", undefined, Util.ReactStuff.ate(Belt_Array.map(categories, categoryToElement)));
 }
 
-var Sidebar = /* module */Caml_chrome_debugger.localModule([
-    "overviewNavs",
-    "setNavs",
-    "mapNavs",
-    "mutableCollectionsNavs",
-    "basicNavs",
-    "sortNavs",
-    "utilityNavs",
-    "categories",
-    "categoryToElement",
-    "make"
-  ], [
-    overviewNavs,
-    setNavs,
-    mapNavs,
-    mutableCollectionsNavs,
-    basicNavs,
-    sortNavs,
-    utilityNavs,
-    categories,
-    categoryToElement,
-    BeltDocsLayout$Sidebar
-  ]);
+var Sidebar = {
+  overviewNavs: overviewNavs,
+  setNavs: setNavs,
+  mapNavs: mapNavs,
+  mutableCollectionsNavs: mutableCollectionsNavs,
+  basicNavs: basicNavs,
+  sortNavs: sortNavs,
+  utilityNavs: utilityNavs,
+  categories: categories,
+  categoryToElement: categoryToElement,
+  make: BeltDocsLayout$Sidebar
+};
 
 function BeltDocsLayout(Props) {
   var match = Props.components;

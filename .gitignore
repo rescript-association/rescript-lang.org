@@ -6,6 +6,7 @@ out
 
 node_modules/
 .next/
+index_data/*.json
 
 yarn-error.log
 

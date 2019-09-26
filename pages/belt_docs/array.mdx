@@ -12,7 +12,7 @@ Utililites for `Array` functions.
 
 ## length
 
-```re
+```re sig
 let length: array('a) => int;
 ```
 
@@ -25,7 +25,7 @@ Belt.Array.length([|"test"|]);
 
 ## size
 
-```re
+```re sig
 let size: array('a) => int;
 ```
 
@@ -33,7 +33,7 @@ See Belt_Array.length
 
 ## get
 
-```re
+```re sig
 let get: (array('a), int) => option('a);
 ```
 
@@ -42,7 +42,7 @@ If `i` is out of range returns `None`
 
 ## getExn
 
-```re
+```re sig
 let getExn: (array('a), int) => 'a;
 ```
 
@@ -51,7 +51,7 @@ Otherwise return the value at index `i` in `arr`.
 
 ## getUnsafe
 
-```re
+```re sig
 let getUnsafe: (array('a), int) => 'a;
 ```
 
@@ -61,7 +61,7 @@ no bounds checking; this would cause type error if `i` does not stay within rang
 
 ## getUndefined
 
-```re
+```re sig
 let getUndefined: (array('a), int) => Js.undefined('a);
 ```
 
@@ -69,7 +69,7 @@ It does the samething in the runtime as `Belt_Array.getUnsafe` it is type safe s
 
 ## set
 
-```re
+```re sig
 let set: (array('a), int, 'a) => bool;
 ```
 
@@ -79,7 +79,7 @@ Returns false means not updated due to out of range.
 
 ## setExn
 
-```re
+```re sig
 let setExn: (array('a), int, 'a) => unit;
 ```
 
@@ -87,13 +87,13 @@ let setExn: (array('a), int, 'a) => unit;
 
 ## setUnsafe
 
-```re
+```re sig
 let setUnsafe: (array('a), int, 'a) => unit;
 ```
 
 ## shuffleInPlace
 
-```re
+```re sig
 let shuffleInPlace: array('a) => unit;
 ```
 
@@ -101,7 +101,7 @@ let shuffleInPlace: array('a) => unit;
 
 ## shuffle
 
-```re
+```re sig
 let shuffle: array('a) => array('a);
 ```
 
@@ -109,7 +109,7 @@ Returns a fresh array with items in original array randomly shuffled.
 
 ## reverseInPlace
 
-```re
+```re sig
 let reverseInPlace: array('a) => unit;
 ```
 
@@ -125,7 +125,7 @@ arr == [|14, 13, 12, 11, 10|];
 
 ## reverse
 
-```re
+```re sig
 let reverse: array('a) => array('a);
 ```
 
@@ -137,7 +137,7 @@ reverse([|10, 11, 12, 13, 14|]) == [|14, 13, 12, 11, 10|];
 
 ## makeUninitialized
 
-```re
+```re sig
 let makeUninitialized: int => array(Js.undefined('a));
 ```
 
@@ -151,7 +151,7 @@ getExn(arr, 0) == Js.undefined;
 
 ## makeUninitializedUnsafe
 
-```re
+```re sig
 let makeUninitializedUnsafe: int => array('a);
 ```
 
@@ -169,7 +169,7 @@ let () = Js.log(Belt.Array.getExn(arr, 0) == "example");
 
 ## make
 
-```re
+```re sig
 let make: (int, 'a) => array('a);
 ```
 
@@ -178,7 +178,7 @@ Returns an empty array when `n` is negative.
 
 ## range
 
-```re
+```re sig
 let range: (int, int) => array(int);
 ```
 
@@ -194,7 +194,7 @@ range(3, 3) == [|3|];
 
 ## rangeBy
 
-```re
+```re sig
 let rangeBy: (int, int, ~step: int) => array(int);
 ```
 
@@ -220,13 +220,13 @@ rangeBy(3, 3, ~step=1) == [|3|];
 
 ## makeByU
 
-```re
+```re sig
 let makeByU: (int, [@bs] (int => 'a)) => array('a);
 ```
 
 ## makeBy
 
-```re
+```re sig
 let makeBy: (int, int => 'a) => array('a);
 ```
 
@@ -242,13 +242,13 @@ makeBy(5, (i) => i * i) == [|0, 1, 4, 9, 16|];
 
 ## makeByAndShuffleU
 
-```re
+```re sig
 let makeByAndShuffleU: (int, [@bs] (int => 'a)) => array('a);
 ```
 
 ## makeByAndShuffle
 
-```re
+```re sig
 let makeByAndShuffle: (int, int => 'a) => array('a);
 ```
 
@@ -258,7 +258,7 @@ Equivalent to `shuffle(makeBy(n, f));`
 
 ## zip
 
-```re
+```re sig
 let zip: (array('a), array('b)) => array(('a, 'b));
 ```
 
@@ -272,13 +272,13 @@ Belt.Array.zip([|1, 2|], [|3, 4, 5|]) == [|(1, 3), (2, 4)|]
 
 ## zipByU
 
-```re
+```re sig
 let zipByU: (array('a), array('b), [@bs] (('a, 'b) => 'c)) => array('c);
 ```
 
 ## zipBy
 
-```re
+```re sig
 let zipBy: (array('a), array('b), ('a, 'b) => 'c) => array('c);
 ```
 
@@ -294,7 +294,7 @@ zipBy([|1, 2, 3|], [|4, 5|], (a, b) => 2 * a + b) == [|6, 9|];
 
 ## unzip
 
-```re
+```re sig
 let unzip: array(('a, 'b)) => (array('a), array('b));
 ```
 
@@ -308,7 +308,7 @@ unzip([|(1, 2), (3, 4), (5, 6), (7, 8)|]) == ([|1, 3, 5, 7|], [|2, 4, 6, 8|]);
 
 ## concat
 
-```re
+```re sig
 let concat: (array('a), array('a)) => array('a);
 ```
 
@@ -324,7 +324,7 @@ concat([||], [|"a", "b", "c"|]) == [|"a", "b", "c"|];
 
 ## concatMany
 
-```re
+```re sig
 let concatMany: array(array('a)) => array('a);
 ```
 
@@ -338,7 +338,7 @@ concatMany([|[|1, 2, 3|], [|4, 5, 6|], [|7, 8|]|]) == [|1, 2, 3, 4, 5, 6, 7, 8|]
 
 ## slice
 
-```re
+```re sig
 let slice: (array('a), ~offset: int, ~len: int) => array('a);
 ```
 
@@ -360,7 +360,7 @@ slice([|10, 11, 12, 13, 14, 15, 16|], ~offset=4, ~len=9) == [|14, 15, 16|];
 
 ## sliceToEnd
 
-```re
+```re sig
 let sliceToEnd: (array('a), int) => array('a);
 ```
 
@@ -378,7 +378,7 @@ sliceToEnd([|10, 11, 12, 13, 14, 15, 16|], -4) == [|13, 14, 15, 16|];
 
 ## copy
 
-```re
+```re sig
 let copy: array('a) => array('a);
 ```
 
@@ -388,7 +388,7 @@ Returns a copy of a; that is; a fresh array containing the same elements as a.
 
 ## fill
 
-```re
+```re sig
 let fill: (array('a), ~offset: int, ~len: int, 'a) => unit;
 ```
 
@@ -413,7 +413,7 @@ arr == [|0, 1, 9, 9, 4|];
 
 ## blit
 
-```re
+```re sig
 let blit:
   (
     ~src: array('a),
@@ -445,7 +445,7 @@ Belt.Array.blit(~src=v1, ~srcOffset=4, ~dst=v1, ~dstOffset=2, ~len=3)
 
 ## blitUnsafe
 
-```re
+```re sig
 let blitUnsafe: (~src: array('a), ~srcOffset: int, ~dst: array('a), ~dstOffset: int, ~len: int) => unit;
 ```
 
@@ -453,13 +453,13 @@ Unsafe blit without bounds checking.
 
 ## forEachU
 
-```re
+```re sig
 let forEachU: (array('a), [@bs] ('a => unit)) => unit;
 ```
 
 ## forEach
 
-```re
+```re sig
 let forEach: (array('a), 'a => unit) => unit;
 ```
 
@@ -484,13 +484,13 @@ total^ == 1 + 2 + 3 + 4;
 
 ## mapU
 
-```re
+```re sig
 let mapU: (array('a), [@bs] ('a => 'b)) => array('b);
 ```
 
 ## map
 
-```re
+```re sig
 let map: (array('a), 'a => 'b) => array('b);
 ```
 
@@ -504,13 +504,13 @@ map([|1, 2|], (x) => x + 1) == [|3, 4|];
 
 ## getByU
 
-```re
+```re sig
 let getByU: (array('a), [@bs] ('a => bool)) => option('a);
 ```
 
 ## getBy
 
-```re
+```re sig
 let getBy: (array('a), 'a => bool) => option('a);
 ```
 
@@ -525,13 +525,13 @@ getBy([|15, 13, 11|], (x) => x mod 2 == 0) == None;
 
 ## getIndexByU
 
-```re
+```re sig
 let getIndexByU: (array('a), [@bs] ('a => bool)) => option(int);
 ```
 
 ## getIndexBy
 
-```re
+```re sig
 let getIndexBy: (array('a), 'a => bool) => option(int);
 ```
 
@@ -547,13 +547,13 @@ getIndexBy([|15, 13, 11|], (x) => x mod 2 == 0) == None;
 
 ## keepU
 
-```re
+```re sig
 let keepU: (array('a), [@bs] ('a => bool)) => array('a);
 ```
 
 ## keep
 
-```re
+```re sig
 let keep: (array('a), 'a => bool) => array('a);
 ```
 
@@ -567,13 +567,13 @@ keep([|1, 2, 3|], (x) => x mod 2 == 0) == [|2|];
 
 ## keepWithIndexU
 
-```re
+```re sig
 let keepWithIndexU: (array('a), [@bs] (('a, int) => bool)) => array('a);
 ```
 
 ## keepWithIndex
 
-```re
+```re sig
 let keepWithIndex: (array('a), ('a, int) => bool) => array('a);
 ```
 
@@ -587,13 +587,13 @@ keepWithIndex([|1, 2, 3|], (_x, i) => i == 1) == [|2|];
 
 ## keepMapU
 
-```re
+```re sig
 let keepMapU: (array('a), [@bs] ('a => option('b))) => array('b);
 ```
 
 ## keepMap
 
-```re
+```re sig
 let keepMap: (array('a), 'a => option('b)) => array('b);
 ```
 
@@ -616,13 +616,13 @@ keepMap(
 
 ## forEachWithIndexU
 
-```re
+```re sig
 let forEachWithIndexU: (array('a), [@bs] ((int, 'a) => unit)) => unit;
 ```
 
 ## forEachWithIndex
 
-```re
+```re sig
 let forEachWithIndex: (array('a), (int, 'a) => unit) => unit;
 ```
 
@@ -648,13 +648,13 @@ total^ == 0 + 10 + 1 + 11 + 2 + 12 + 3 + 13;
 
 ## mapWithIndexU
 
-```re
+```re sig
 let mapWithIndexU: (array('a), [@bs] ((int, 'a) => 'b)) => array('b);
 ```
 
 ## mapWithIndex
 
-```re
+```re sig
 let mapWithIndex: (array('a), (int, 'a) => 'b) => array('b);
 ```
 
@@ -668,13 +668,13 @@ mapWithIndex([|1, 2, 3|], (i, x) => i + x) == [|0 + 1, 1 + 2, 2 + 3|];
 
 ## partitionU
 
-```re
+```re sig
 let partitionU: (array('a), [@bs] ('a => bool)) => (array('a), array('a));
 ```
 
 ## partition
 
-```re
+```re sig
 let partition: (array('a), 'a => bool) => (array('a), array('a));
 ```
 
@@ -688,13 +688,13 @@ partition([|1, 2, 3, 4, 5|], (x) => x mod 2 != 0) == ([|1, 2, 3|], [|2, 4|]);
 
 ## reduceU
 
-```re
+```re sig
 let reduceU: (array('b), 'a, [@bs] (('a, 'b) => 'a)) => 'a;
 ```
 
 ## reduce
 
-```re
+```re sig
 let reduce: (array('b), 'a, ('a, 'b) => 'a) => 'a;
 ```
 
@@ -710,13 +710,13 @@ reduce([|"a", "b", "c", "d"|], "", (++)) == "abcd";
 
 ## reduceReverseU
 
-```re
+```re sig
 let reduceReverseU: (array('b), 'a, [@bs] (('a, 'b) => 'a)) => 'a;
 ```
 
 ## reduceReverse
 
-```re
+```re sig
 let reduceReverse: (array('b), 'a, ('a, 'b) => 'a) => 'a;
 ```
 
@@ -730,13 +730,13 @@ reduceReverse([|"a", "b", "c", "d"|], "", (++)) == "dcba";
 
 ## reduceReverse2U
 
-```re
+```re sig
 let reduceReverse2U: (array('a), array('b), 'c, [@bs] (('c, 'a, 'b) => 'c)) => 'c;
 ```
 
 ## reduceReverse2
 
-```re
+```re sig
 let reduceReverse2: (array('a), array('b), 'c, ('c, 'a, 'b) => 'c) => 'c;
 ```
 
@@ -750,13 +750,13 @@ reduceReverse2([|1, 2, 3|], [|1, 2|], 0, (acc, x, y) => acc + x + y) == 6;
 
 ## reduceWithIndexU
 
-```re
+```re sig
 let reduceWithIndexU: (array('a), 'b, [@bs] (('b, 'a, int) => 'b)) => 'b;
 ```
 
 ## reduceWithIndex
 
-```re
+```re sig
 let reduceWithIndex: (array('a), 'b, ('b, 'a, int) => 'b) => 'b;
 ```
 
@@ -770,13 +770,13 @@ reduceWithIndex([|1, 2, 3, 4|], 0, (acc, x, i) => acc + x + i) == 16;
 
 ## someU
 
-```re
+```re sig
 let someU: (array('a), [@bs] ('a => bool)) => bool;
 ```
 
 ## some
 
-```re
+```re sig
 let some: (array('a), 'a => bool) => bool;
 ```
 
@@ -792,13 +792,13 @@ some([|(-1), (-3), (-5)|], (x) => x > 0) == false;
 
 ## everyU
 
-```re
+```re sig
 let everyU: (array('a), [@bs] ('a => bool)) => bool;
 ```
 
 ## every
 
-```re
+```re sig
 let every: (array('a), 'a => bool) => bool;
 ```
 
@@ -814,13 +814,13 @@ every([|1, (-3), 5|], (x) => x > 0) == false;
 
 ## every2U
 
-```re
+```re sig
 let every2U: (array('a), array('b), [@bs] (('a, 'b) => bool)) => bool;
 ```
 
 ## every2
 
-```re
+```re sig
 let every2: (array('a), array('b), ('a, 'b) => bool) => bool;
 ```
 
@@ -840,13 +840,13 @@ every2([|0, 1|], [|5, 0|], (x, y) => x > y) == false;
 
 ## some2U
 
-```re
+```re sig
 let some2U: (array('a), array('b), [@bs] (('a, 'b) => bool)) => bool;
 ```
 
 ## some2
 
-```re
+```re sig
 let some2: (array('a), array('b), ('a, 'b) => bool) => bool;
 ```
 
@@ -864,13 +864,13 @@ some2([|2, 3|], [|1, 4|], (x, y) => x > y) == true;
 
 ## cmpU
 
-```re
+```re sig
 let cmpU: (array('a), array('a), [@bs] (('a, 'a) => int)) => int;
 ```
 
 ## cmp
 
-```re
+```re sig
 let cmp: (array('a), array('a), ('a, 'a) => int) => int;
 ```
 
@@ -893,13 +893,13 @@ cmp([|1, 3, 5|], [|1, 3, 5|], (a, b) => compare(a, b)) == 0;
 
 ## eqU
 
-```re
+```re sig
 let eqU: (array('a), array('a), [@bs] (('a, 'a) => bool)) => bool;
 ```
 
 ## eq
 
-```re
+```re sig
 let eq: (array('a), array('a), ('a, 'a) => bool) => bool;
 ```
 
@@ -914,7 +914,7 @@ eq([|1, 2, 3|], [|(-1), (-2), (-3)|], (a, b) => abs(a) == abs(b)) == true;
 
 ## truncateToLengthUnsafe
 
-```re
+```re sig
 let truncateToLengthUnsafe: (array('a), int) => unit;
 ```
 
