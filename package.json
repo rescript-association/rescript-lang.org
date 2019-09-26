@@ -31,6 +31,8 @@
   "scripts": {
     "dev": "next",
     "build": "bsb -clean-world -make-world && next build",
+    "test": "node scripts/test-belt-examples.js",
+    "update-index": "node scripts/extract-belt-index.js",
     "now-build": "bsb -clean-world -make-world && next build",
     "export": "next export",
     "start": "next start -p $PORT",

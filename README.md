@@ -22,6 +22,20 @@ In case you want to run BuckleScript in watchmode:
 yarn run bs:start
 ```
 
+## Build Index Data
+
+We are parsing our content for specific index data (such as, all interesting
+search terms we need for searching inside the `Belt` docs). You can create your
+index by running following command:
+
+```
+yarn run update-index
+```
+
+All the index data is stored in `index_data`, but will not be tracked by git.
+Make sure to build the index after a fresh clone, otherwise Next might not
+build specific pages (file `index_data/x.json` not found).
+
 ## Run Tests
 
 We try to verify our code examples inside markdown files as much as possible.
