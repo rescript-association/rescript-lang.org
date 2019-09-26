@@ -126,6 +126,12 @@ const testFile = async filepath => {
   return testedExamples;
 };
 
+const showErrorMsg = (failedExample) => {
+  const { stderr } = failedExample.result;
+  console.log(`\n-----------\nError Preview:`);
+  console.log(stderr);
+};
+
 const main = async () => {
   const [, , pattern] = process.argv;
   const files = glob.sync(pattern ? pattern : `${BELT_MD_DIR}/*.md?(x)`);
@@ -144,6 +150,11 @@ const main = async () => {
   console.log(`Success: ${success.length}`);
 
   if (failed.length > 0) {
+    console.log(`\nTip: You can also run tests just for specific files / globs:`);
+    console.log(
+      '`node scripts/test-belt-examples.js "pages/belt_docs/array.mdx"`'
+    );
+    showErrorMsg(failed[0]);
     process.exit(1);
   }
 };
