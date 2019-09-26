@@ -63,9 +63,7 @@ const processor = unified()
 
 const BELT_MD_DIR = path.join(__dirname, "../pages/belt_docs");
 
-//TODO: Upgrade to newest BS first 5.2 version
-//const BSC = path.join(__dirname, '../node_modules/.bin/bsc');
-const BSC = "bsc"; // Requires globally installed 5.2
+const BSC = path.join(__dirname, "../node_modules/.bin/bsc");
 
 // relFilepath: instead of whole absolute path, just paths like `pages/belt_docs/...`
 const testExample = async (relFilepath, example) => {

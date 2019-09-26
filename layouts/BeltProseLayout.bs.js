@@ -5,7 +5,6 @@ import * as Util from "../common/Util.bs.js";
 import * as React from "react";
 import * as Link from "next/link";
 import * as BeltDocsLayout from "./BeltDocsLayout.bs.js";
-import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
 require('../styles/main.css')
 ;
@@ -30,13 +29,15 @@ function BeltProseLayout$Md$Anchor(Props) {
             }, React.createElement("a", {
                   className: "mr-2 text-main-lighten-65 hover:cursor-pointer",
                   href: "#" + id
-                }, Util.ReactStuff[/* s */0]("#")), React.createElement("a", {
+                }, Util.ReactStuff.s("#")), React.createElement("a", {
                   id: id,
                   style: style
                 }));
 }
 
-var Anchor = /* module */Caml_chrome_debugger.localModule(["make"], [BeltProseLayout$Md$Anchor]);
+var Anchor = {
+  make: BeltProseLayout$Md$Anchor
+};
 
 function BeltProseLayout$Md$H2(Props) {
   var children = Props.children;
@@ -47,7 +48,9 @@ function BeltProseLayout$Md$H2(Props) {
                     }), children));
 }
 
-var H2 = /* module */Caml_chrome_debugger.localModule(["make"], [BeltProseLayout$Md$H2]);
+var H2 = {
+  make: BeltProseLayout$Md$H2
+};
 
 function BeltProseLayout$Md$Pre(Props) {
   var children = Props.children;
@@ -56,7 +59,9 @@ function BeltProseLayout$Md$Pre(Props) {
             }, children);
 }
 
-var Pre = /* module */Caml_chrome_debugger.localModule(["make"], [BeltProseLayout$Md$Pre]);
+var Pre = {
+  make: BeltProseLayout$Md$Pre
+};
 
 function BeltProseLayout$Md$P(Props) {
   var children = Props.children;
@@ -65,37 +70,33 @@ function BeltProseLayout$Md$P(Props) {
             }, children);
 }
 
-var P = /* module */Caml_chrome_debugger.localModule(["make"], [BeltProseLayout$Md$P]);
+var P = {
+  make: BeltProseLayout$Md$P
+};
 
 var components = {
   p: BeltProseLayout$Md$P,
-  li: $$Text.Md[/* Li */7][/* make */3],
-  h1: $$Text.H1[/* make */0],
+  li: $$Text.Md.Li.make,
+  h1: $$Text.H1.make,
   h2: BeltProseLayout$Md$H2,
-  h3: $$Text.H3[/* make */0],
-  h4: $$Text.H4[/* make */0],
-  h5: $$Text.H5[/* make */0],
-  ul: $$Text.Md[/* Ul */5][/* make */0],
-  ol: $$Text.Md[/* Ol */6][/* make */0],
-  inlineCode: $$Text.Md[/* InlineCode */2][/* make */0],
-  code: $$Text.Md[/* Code */1][/* make */0],
+  h3: $$Text.H3.make,
+  h4: $$Text.H4.make,
+  h5: $$Text.H5.make,
+  ul: $$Text.Md.Ul.make,
+  ol: $$Text.Md.Ol.make,
+  inlineCode: $$Text.Md.InlineCode.make,
+  code: $$Text.Md.Code.make,
   pre: BeltProseLayout$Md$Pre,
-  a: $$Text.Md[/* A */4][/* make */2]
+  a: $$Text.Md.A.make
 };
 
-var Md = /* module */Caml_chrome_debugger.localModule([
-    "Anchor",
-    "H2",
-    "Pre",
-    "P",
-    "components"
-  ], [
-    Anchor,
-    H2,
-    Pre,
-    P,
-    components
-  ]);
+var Md = {
+  Anchor: Anchor,
+  H2: H2,
+  Pre: Pre,
+  P: P,
+  components: components
+};
 
 var link = "no-underline text-inherit hover:text-white";
 
@@ -111,29 +112,26 @@ function BeltProseLayout$Navigation(Props) {
                             src: "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1568788825/Reason%20Association/reasonml.org/bucklescript_bqxwee.svg"
                           }), React.createElement("span", {
                             className: "text-2xl ml-2 font-montserrat text-white-80 hover:text-white"
-                          }, Util.ReactStuff[/* s */0]("Belt")))
+                          }, Util.ReactStuff.s("Belt")))
                 }), React.createElement("div", {
                   className: "flex w-1/3 justify-end"
                 }, React.createElement(Link.default, {
                       href: "/",
                       children: React.createElement("a", {
                             className: "no-underline text-inherit hover:text-white mx-2"
-                          }, Util.ReactStuff[/* s */0]("ReasonML"))
+                          }, Util.ReactStuff.s("ReasonML"))
                     }), React.createElement("a", {
                       className: link,
                       href: "https://github.com/reason-association/reasonml.org",
                       rel: "noopener noreferrer",
                       target: "_blank"
-                    }, Util.ReactStuff[/* s */0]("Github"))));
+                    }, Util.ReactStuff.s("Github"))));
 }
 
-var Navigation = /* module */Caml_chrome_debugger.localModule([
-    "link",
-    "make"
-  ], [
-    link,
-    BeltProseLayout$Navigation
-  ]);
+var Navigation = {
+  link: link,
+  make: BeltProseLayout$Navigation
+};
 
 function BeltProseLayout(Props) {
   var children = Props.children;

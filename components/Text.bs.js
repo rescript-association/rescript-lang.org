@@ -8,18 +8,14 @@ import * as ReactDOMRe from "reason-react/src/ReactDOMRe.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as CodeExample from "./CodeExample.bs.js";
 import * as ReasonReact from "reason-react/src/ReasonReact.js";
-import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 import * as Highlight from "highlight.js/lib/highlight";
 
 var inline = "no-underline border-b hover:text-main-lighten-20 hover:border-primary-dark-10 border-primary-lighten-50 text-inherit";
 
-var Link = /* module */Caml_chrome_debugger.localModule([
-    "inline",
-    "standalone"
-  ], [
-    inline,
-    "no-underline text-primary"
-  ]);
+var Link = {
+  inline: inline,
+  standalone: "no-underline text-primary"
+};
 
 function Text$Anchor(Props) {
   var name = Props.name;
@@ -37,7 +33,9 @@ function Text$Anchor(Props) {
                 }));
 }
 
-var Anchor = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Anchor]);
+var Anchor = {
+  make: Text$Anchor
+};
 
 function Text$Box(Props) {
   var children = Props.children;
@@ -46,7 +44,9 @@ function Text$Box(Props) {
             }, children);
 }
 
-var Box = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Box]);
+var Box = {
+  make: Text$Box
+};
 
 function Text$H1(Props) {
   var children = Props.children;
@@ -55,7 +55,9 @@ function Text$H1(Props) {
             }, children);
 }
 
-var H1 = /* module */Caml_chrome_debugger.localModule(["make"], [Text$H1]);
+var H1 = {
+  make: Text$H1
+};
 
 function Text$H2(Props) {
   var children = Props.children;
@@ -64,7 +66,9 @@ function Text$H2(Props) {
             }, children);
 }
 
-var H2 = /* module */Caml_chrome_debugger.localModule(["make"], [Text$H2]);
+var H2 = {
+  make: Text$H2
+};
 
 function Text$H3(Props) {
   var children = Props.children;
@@ -73,7 +77,9 @@ function Text$H3(Props) {
             }, children);
 }
 
-var H3 = /* module */Caml_chrome_debugger.localModule(["make"], [Text$H3]);
+var H3 = {
+  make: Text$H3
+};
 
 function Text$H4(Props) {
   var children = Props.children;
@@ -82,7 +88,9 @@ function Text$H4(Props) {
             }, children);
 }
 
-var H4 = /* module */Caml_chrome_debugger.localModule(["make"], [Text$H4]);
+var H4 = {
+  make: Text$H4
+};
 
 function Text$H5(Props) {
   var children = Props.children;
@@ -91,7 +99,9 @@ function Text$H5(Props) {
             }, children);
 }
 
-var H5 = /* module */Caml_chrome_debugger.localModule(["make"], [Text$H5]);
+var H5 = {
+  make: Text$H5
+};
 
 function Text$Overline(Props) {
   var match = Props.underline;
@@ -105,7 +115,9 @@ function Text$Overline(Props) {
             }, children);
 }
 
-var Overline = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Overline]);
+var Overline = {
+  make: Text$Overline
+};
 
 function Text$P(Props) {
   var match = Props.spacing;
@@ -118,7 +130,9 @@ function Text$P(Props) {
             }, children);
 }
 
-var P = /* module */Caml_chrome_debugger.localModule(["make"], [Text$P]);
+var P = {
+  make: Text$P
+};
 
 function Text$Md$Pre(Props) {
   var children = Props.children;
@@ -127,7 +141,9 @@ function Text$Md$Pre(Props) {
             }, children);
 }
 
-var Pre = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Md$Pre]);
+var Pre = {
+  make: Text$Md$Pre
+};
 
 function Text$Md$Code(Props) {
   var className = Props.className;
@@ -158,8 +174,8 @@ function Text$Md$Code(Props) {
   var codeElement;
   var exit = 0;
   switch (lang) {
-    case "re" : 
-    case "reason" : 
+    case "re" :
+    case "reason" :
         exit = 1;
         break;
     default:
@@ -188,7 +204,9 @@ function Text$Md$Code(Props) {
   }
 }
 
-var Code = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Md$Code]);
+var Code = {
+  make: Text$Md$Code
+};
 
 function Text$Md$InlineCode(Props) {
   var children = Props.children;
@@ -197,7 +215,9 @@ function Text$Md$InlineCode(Props) {
             }, children);
 }
 
-var InlineCode = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Md$InlineCode]);
+var InlineCode = {
+  make: Text$Md$InlineCode
+};
 
 function Text$Md$P(Props) {
   var children = Props.children;
@@ -206,7 +226,9 @@ function Text$Md$P(Props) {
             }, children);
 }
 
-var P$1 = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Md$P]);
+var P$1 = {
+  make: Text$Md$P
+};
 
 var refPrefix = "ref-";
 
@@ -237,19 +259,15 @@ function Text$Md$A(Props) {
                           left: "0.05rem",
                           top: "-0.5rem"
                         }
-                      }, Util.ReactStuff[/* s */0](id))));
+                      }, Util.ReactStuff.s(id))));
   }
 }
 
-var A = /* module */Caml_chrome_debugger.localModule([
-    "refPrefix",
-    "textRefPrefix",
-    "make"
-  ], [
-    refPrefix,
-    textRefPrefix,
-    Text$Md$A
-  ]);
+var A = {
+  refPrefix: refPrefix,
+  textRefPrefix: textRefPrefix,
+  make: Text$Md$A
+};
 
 function Text$Md$Ul(Props) {
   var children = Props.children;
@@ -258,7 +276,9 @@ function Text$Md$Ul(Props) {
             }, children);
 }
 
-var Ul = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Md$Ul]);
+var Ul = {
+  make: Text$Md$Ul
+};
 
 function Text$Md$Ol(Props) {
   var children = Props.children;
@@ -267,7 +287,9 @@ function Text$Md$Ol(Props) {
             }, children);
 }
 
-var Ol = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Md$Ol]);
+var Ol = {
+  make: Text$Md$Ol
+};
 
 function typeOf (thing){{ return typeof thing; }};
 
@@ -300,37 +322,23 @@ function Text$Md$Li(Props) {
             }, elements);
 }
 
-var Li = /* module */Caml_chrome_debugger.localModule([
-    "typeOf",
-    "isArray",
-    "isSublist",
-    "make"
-  ], [
-    typeOf,
-    isArray,
-    isSublist,
-    Text$Md$Li
-  ]);
+var Li = {
+  typeOf: typeOf,
+  isArray: isArray,
+  isSublist: isSublist,
+  make: Text$Md$Li
+};
 
-var Md = /* module */Caml_chrome_debugger.localModule([
-    "Pre",
-    "Code",
-    "InlineCode",
-    "P",
-    "A",
-    "Ul",
-    "Ol",
-    "Li"
-  ], [
-    Pre,
-    Code,
-    InlineCode,
-    P$1,
-    A,
-    Ul,
-    Ol,
-    Li
-  ]);
+var Md = {
+  Pre: Pre,
+  Code: Code,
+  InlineCode: InlineCode,
+  P: P$1,
+  A: A,
+  Ul: Ul,
+  Ol: Ol,
+  Li: Li
+};
 
 function Text$Small(Props) {
   var children = Props.children;
@@ -339,7 +347,9 @@ function Text$Small(Props) {
             }, children);
 }
 
-var Small = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Small]);
+var Small = {
+  make: Text$Small
+};
 
 var component = ReasonReact.statelessComponent("Text.Xsmall");
 
@@ -350,13 +360,10 @@ function Text$Xsmall(Props) {
             }, children);
 }
 
-var Xsmall = /* module */Caml_chrome_debugger.localModule([
-    "component",
-    "make"
-  ], [
-    component,
-    Text$Xsmall
-  ]);
+var Xsmall = {
+  component: component,
+  make: Text$Xsmall
+};
 
 function Text$Lead(Props) {
   var children = Props.children;
@@ -365,7 +372,9 @@ function Text$Lead(Props) {
             }, children);
 }
 
-var Lead = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Lead]);
+var Lead = {
+  make: Text$Lead
+};
 
 function Text$Quote(Props) {
   var match = Props.bold;
@@ -382,7 +391,9 @@ function Text$Quote(Props) {
                 }, children));
 }
 
-var Quote = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Quote]);
+var Quote = {
+  make: Text$Quote
+};
 
 function Text$Page(Props) {
   var children = Props.children;
@@ -393,7 +404,9 @@ function Text$Page(Props) {
                 }, children));
 }
 
-var Page = /* module */Caml_chrome_debugger.localModule(["make"], [Text$Page]);
+var Page = {
+  make: Text$Page
+};
 
 export {
   Link ,

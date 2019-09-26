@@ -12,9 +12,9 @@ function CodeExample(Props) {
               className: "flex flex-col rounded-lg bg-sand-lighten-20 py-4 px-6 mt-6"
             }, React.createElement("div", {
                   className: "flex justify-between font-overpass text-main-lighten-20 font-bold text-sm mb-3"
-                }, Util.ReactStuff[/* s */0]("Example"), React.createElement("span", {
+                }, Util.ReactStuff.s("Example"), React.createElement("span", {
                       className: "font-montserrat text-primary-lighten-50"
-                    }, Util.ReactStuff[/* s */0](langStr))), children);
+                    }, Util.ReactStuff.s(langStr))), children);
 }
 
 var make = CodeExample;
