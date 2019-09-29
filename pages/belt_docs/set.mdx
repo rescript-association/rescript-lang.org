@@ -8,9 +8,28 @@ export default Layout;
 
 Generic **immutable** set operations.
 
+A _immutable_ sorted set module which allows customize compare behavior.
+The implementation uses balanced binary trees, and therefore searching and insertion take time logarithmic in the size of the map.
+
 It also has three specialized inner modules [Belt.Set.Int](/belt_docs/set-int), [Belt.Set.String](/belt_docs/set-string) and [Belt.Set.Dict](/belt_docs/set-dict) - This module separates data from function which is more verbose but slightly more efficient
 
 </ApiIntro>
+
+```re example
+module PairComparator =
+  Belt.Id.MakeComparable({
+    type t = (int, int);
+    let cmp = ((a0, a1), (b0, b1)) =>
+      switch (Pervasives.compare(a0, b0)) {
+      | 0 => Pervasives.compare(a1, b1)
+      | c => c
+      };
+  });
+
+let mySet = Belt.Set.make(~id=(module PairComparator));
+let mySet2 = Belt.Set.add(mySet, (1, 2));
+
+```
 
 ## t
 
@@ -203,7 +222,7 @@ let diff: (t('value, 'id), t('value, 'id)) => t('value, 'id);
 
 Returns elements from first set, not existing in second set.
 
-```re
+```re example
 let s0 = Belt.Set.fromArray([|5,2,3,5,6|], ~id=(module IntCmp));
 let s1 = Belt.Set.fromArray([|5,2,3,1,5,4|], ~id=(module IntCmp));
 Belt.Set.toArray(Belt.Set.diff(s0, s1)); /* [|6|] */
@@ -289,7 +308,9 @@ Applies function `f` to each element of set in increasing order. Function `f` ha
 
 ```re example
 let s0 = Belt.Set.fromArray([|5,2,3,5,6|], ~id=(module IntCmp));
-s0->Belt.List.reduce([], (element, acc) => acc->Bs.List.add(element)); /* [6,5,3,2] */
+s0->Belt.Set.reduce([], (element, acc) =>
+  acc->Bs.List.add(element)
+); /* [6,5,3,2] */
 ```
 
 ## everyU
@@ -504,7 +525,7 @@ s0->Belt.Set.get(20); /* None */
 let getUndefined: (t('value, 'id), 'value) => Js.undefined('value);
 ```
 
-See [get](#get) - returns `undefined` when element does not exist.
+Same as [get](#get) but returns `undefined` when element does not exist.
 
 ## getExn
 
@@ -512,7 +533,7 @@ See [get](#get) - returns `undefined` when element does not exist.
 let getExn: (t('value, 'id), 'value) => 'value;
 ```
 
-See [get](#get) - raise when element does not exist.
+Same as [get](#get) but raise when element does not exist.
 
 ## split
 

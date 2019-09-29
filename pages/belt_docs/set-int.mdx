@@ -237,7 +237,7 @@ Total ordering between sets. Can be used as the ordering function for doing sets
 let eq: (t, t) => bool;
 ```
 
-Checks if two sets are equal.<br/>
+Checks if two sets are equal.
 
 ```re example
 let s0 = Belt.Set.Int.fromArray([|5,2,3|]);
@@ -285,7 +285,9 @@ Applies function `f` to each element of set in increasing order. Function `f` ha
 
 ```re example
 let s0 = Belt.Set.Int.fromArray([|5,2,3,5,6|]);
-s0->Belt.List.reduce([], (element, acc) => acc->Bs.List.add(element)); /* [6,5,3,2] */
+s0->Belt.Set.Int.reduce([], (element, acc) =>
+  acc->Bs.List.add(element)
+); /* [6,5,3,2] */
 ```
 
 ## everyU
@@ -504,7 +506,7 @@ s0->Belt.Set.Int.get(20); /* None */
 let getUndefined: (t, value) => Js.undefined(value);
 ```
 
-See [get](#get) - returns `undefined` when element does not exist.
+Same as [get](#get) but returns `undefined` when element does not exist.
 
 ## getExn
 
@@ -512,7 +514,7 @@ See [get](#get) - returns `undefined` when element does not exist.
 let getExn: (t, value) => value;
 ```
 
-See [get](#get) - raise when element does not exist.
+Same as [get](#get) but raise when element does not exist.
 
 ## split
 
