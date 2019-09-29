@@ -23,4 +23,4 @@ export {
   make ,
   
 }
-/* react Not a pure module */
+/* Util Not a pure module */

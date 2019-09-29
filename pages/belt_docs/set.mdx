@@ -28,7 +28,16 @@ module PairComparator =
 
 let mySet = Belt.Set.make(~id=(module PairComparator));
 let mySet2 = Belt.Set.add(mySet, (1, 2));
+```
 
+The API documentation below will assume a predeclared comparator module for integers, `IntCmp`
+
+```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
 ```
 
 ## t
@@ -260,13 +269,13 @@ Total ordering between sets. Can be used as the ordering function for doing sets
 let eq: (t('value, 'id), t('value, 'id)) => bool;
 ```
 
-Checks if two sets are equal.<br/>
+Checks if two sets are equal.
 
 ```re example
 let s0 = Belt.Set..fromArray([|5,2,3|], ~id=(module IntCmp));
 let s1 = Belt.Set.fromArray([|3,2,5|], ~id=(module IntCmp));
 
-Belt.Int.toArray(s0) == Belt.Int.toArray(s1); /* true */
+Belt.Set.eq(s0, s1); /* true */
 ```
 
 ## forEachU

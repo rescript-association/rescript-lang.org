@@ -243,7 +243,7 @@ Checks if two sets are equal.
 let s0 = Belt.Set.Int.fromArray([|5,2,3|]);
 let s1 = Belt.Set.Int.fromArray([|3,2,5|]);
 
-Belt.Set.Int.toArray(s0) == Belt.Set.Int.toArray(s1); /* true */
+Belt.Set.Int.eq(s0, s1); /* true */
 ```
 
 ## forEachU
