@@ -1,268 +1,592 @@
 import { make as Layout } from "../../layouts/BeltDocsLayout.bs.js";
+import { make as ApiIntro } from "../../components/ApiIntro.bs.js";
 export default Layout;
 
 # MutableSet
 
+<ApiIntro>
+
+A **mutable** sorted set module which allows customize compare behavior.
+The implementation uses balanced binary trees, and therefore searching and insertion take time logarithmic in the size of the map.
+
+It also has three specialized inner modules [Belt.MutableSet.Int](/belt_docs/mutable-set-int) and [Belt.MutableSet.String](/belt_docs/mutable-set-string) - This module separates data from function which is more verbose but slightly more efficient
+
+</ApiIntro>
+
+```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = (int, int);
+    let cmp = ((a0, a1), (b0, b1)) =>
+      switch (Pervasives.compare(a0, b0)) {
+      | 0 => Pervasives.compare(a1, b1)
+      | c => c
+      };
+  });
+
+let mySet = Belt.MutableSet.make(~id=(module PairComparator));
+mySet->Belt.MutableSet.add((1, 2));
+```
+
+The API documentation below will assume a predeclared comparator module for integers, `IntCmp`
+
+```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+```
+
 ## t
 
+```re
+type t('value, 'id);
 ```
-type t('k, 'id);
-```
+
+`'value` is the element type
+
+`'id` the identity of the collection
 
 ## id
 
+```re
+type id('value, 'id) = Belt_Id.comparable('value, 'id);
 ```
-type id('k, 'id) = Belt_Id.comparable('k, 'id);
-```
+
+The identity needed for making a set from scratch
 
 ## make
 
-```
+```re
 let make: (~id: id('value, 'id)) => t('value, 'id);
 ```
 
+Creates a new set by taking in the comparator
+
 ## fromArray
 
+```re
+let fromArray: (array('value), ~id: id('value, 'id)) => t('value, 'id);
 ```
-let fromArray: (array('k), ~id: id('k, 'id)) => t('k, 'id);
+
+Creates new set from array of elements.
+
+```re example
+let s0 = Belt.MutableSet.fromArray([|1, 3, 2, 4|], ~id=(module IntCmp))
+
+s0->Belt.MutableSet.toArray; /* [|1, 2, 3, 4|] */
 ```
 
 ## fromSortedArrayUnsafe
 
-```
+```re
 let fromSortedArrayUnsafe: (array('value), ~id: id('value, 'id)) => t('value, 'id);
 ```
 
+The same as [fromArray][#fromarray] except it is after assuming the input array is already sorted.
+
 ## copy
 
+```re
+let copy: t('value, 'id) => t('value, 'id);
 ```
-let copy: t('k, 'id) => t('k, 'id);
+
+Returns copy of a set.
+
+```re example
+let s0 = Belt.MutableSet.fromArray([|1, 3, 2, 4|], ~id=(module IntCmp))
+
+let copied = s0->Belt.MutableSet.copy;
+copied->Belt.MutableSet.toArray /* [|1, 2, 3, 4|] */
 ```
 
 ## isEmpty
 
-```
+```re
 let isEmpty: t('a, 'b) => bool;
+```
+
+Checks if set is empty.
+
+```re example
+let empty = Belt.MutableSet.fromArray([||], ~id=(module IntCmp));
+let notEmpty = Belt.MutableSet.fromArray([|1|],~id=(module IntCmp));
+
+Belt.MutableSet.isEmpty(empty); /* true */
+Belt.MutableSet.isEmpty(notEmpty); /* false */
 ```
 
 ## has
 
-```
+```re
 let has: (t('value, 'a), 'value) => bool;
+```
+
+Checks if element exists in set.
+
+```re example
+let set = Belt.MutableSet.fromArray([|1, 4, 2, 5|], ~id=(module IntCmp));
+
+set->Belt.MutableSet.has(3) /* false */
+set->Belt.MutableSet.has(1) /* true */
 ```
 
 ## add
 
-```
+```re
 let add: (t('value, 'id), 'value) => unit;
+```
+
+Adds element to set. If element existed in set, value is unchanged.
+
+```re example
+let s0 = Belt.MutableSet.make(~id=(module IntCmp));
+s0->Belt.MutableSet.add(1);
+s0->Belt.MutableSet.add(2);
+s0->Belt.MutableSet.add(2);
+
+s3->Belt.MutableSet.toArray; /* [|1, 2|] */
 ```
 
 ## addCheck
 
-```
+```re
 let addCheck: (t('value, 'id), 'value) => bool;
 ```
 
 ## mergeMany
 
-```
+```re
 let mergeMany: (t('value, 'id), array('value)) => unit;
+```
+
+Adds each element of array to set.
+
+```re example
+let set = Belt.MutableSet.make(~id=(module IntCmp));
+
+set->Belt.MutableSet.mergeMany([|5, 4, 3, 2, 1|]);
+set->Belt.MutableSet.toArray; /* [|1, 2, 3, 4, 5|] */
 ```
 
 ## remove
 
-```
+```re
 let remove: (t('value, 'id), 'value) => unit;
+```
+
+Removes element from set. If element wasn't existed in set, value is unchanged.
+
+```re example
+let s0 = Belt.MutableSet.fromArray([|2,3,1,4,5|], ~id=(module IntCmp));
+s0->Belt.MutableSet.remove(1);
+s0->Belt.MutableSet.remove(3);
+s0->Belt.MutableSet.remove(3);
+
+s0->Belt.MutableSet.toArray; /* [|2,4,5|] */
 ```
 
 ## removeCheck
 
-```
+```re
 let removeCheck: (t('value, 'id), 'value) => bool;
 ```
 
 ## removeMany
 
-```
+```re
 let removeMany: (t('value, 'id), array('value)) => unit;
+```
+
+Removes each element of array from set.
+
+```re example
+let set = Belt.MutableSet.fromArray([1, 2, 3, 4],~id=(module IntCmp));
+
+set->Belt.MutableSet.removeMany([|5, 4, 3, 2, 1|]);
+set->Belt.MutableSet.toArray; /* [||] */
 ```
 
 ## union
 
-```
+```re
 let union: (t('value, 'id), t('value, 'id)) => t('value, 'id);
+```
+
+Returns union of two sets.
+
+```re example
+let s0 = Belt.MutableSet.fromArray([|5,2,3,5,6|], ~id=(module IntCmp));
+let s1 = Belt.MutableSet.fromArray([|5,2,3,1,5,4|], ~id=(module IntCmp));
+let union = Belt.MutableSet.union(s0, s1);
+union->Belt.MutableSet.toArray; /* [|1,2,3,4,5,6|] */
 ```
 
 ## intersect
 
-```
+```re
 let intersect: (t('value, 'id), t('value, 'id)) => t('value, 'id);
+```
+
+Returns intersection of two sets.
+
+```re example
+
+let s0 = Belt.MutableSet.fromArray([|5,2,3,5,6|], ~id=(module IntCmp));
+let s1 = Belt.MutableSet.fromArray([|5,2,3,1,5,4|], ~id=(module IntCmp));
+let intersect = Belt.MutableSet.intersect(s0, s1);
+intersect->Belt.MutableSet.toArray; /* [|2,3,5|] */
 ```
 
 ## diff
 
-```
+```re
 let diff: (t('value, 'id), t('value, 'id)) => t('value, 'id);
+```
+
+Returns elements from first set, not existing in second set.
+
+```re example
+let s0 = Belt.MutableSet.fromArray([|5,2,3,5,6|], ~id=(module IntCmp));
+let s1 = Belt.MutableSet.fromArray([|5,2,3,1,5,4|], ~id=(module IntCmp));
+Belt.MutableSet.toArray(Belt.MutableSet.diff(s0, s1)); /* [|6|] */
+Belt.MutableSet.toArray(Belt.MutableSet.diff(s1,s0)); /* [|1,4|] */
 ```
 
 ## subset
 
-```
+```re
 let subset: (t('value, 'id), t('value, 'id)) => bool;
+```
+
+Checks if second set is subset of first set.
+
+```re example
+let s0 = Belt.MutableSet.fromArray([|5,2,3,5,6|], ~id=(module IntCmp));
+let s1 = Belt.MutableSet.fromArray([|5,2,3,1,5,4|], ~id=(module IntCmp));
+let s2 = Belt.MutableSet.intersect(s0, s1);
+Belt.MutableSet.subset(s2, s0); /* true */
+Belt.MutableSet.subset(s2, s1); /* true */
+Belt.MutableSet.subset(s1, s0); /* false */
 ```
 
 ## cmp
 
-```
+```re
 let cmp: (t('value, 'id), t('value, 'id)) => int;
 ```
 
+Total ordering between sets. Can be used as the ordering function for doing sets of sets. It compares size first and then iterates over each element following the order of elements.
+
 ## eq
 
-```
+```re
 let eq: (t('value, 'id), t('value, 'id)) => bool;
+```
+
+Checks if two sets are equal.
+
+```re example
+let s0 = Belt.MutableSet.fromArray([|5,2,3|], ~id=(module IntCmp));
+let s1 = Belt.MutableSet.fromArray([|3,2,5|], ~id=(module IntCmp));
+
+Belt.MutableSet.eq(s0, s1); /* true */
 ```
 
 ## forEachU
 
-```
+```re
 let forEachU: (t('value, 'id), [@bs] ('value => unit)) => unit;
 ```
 
+Same as [forEach](##forEach) but takes uncurried functon.
+
 ## forEach
 
-```
+```re
 let forEach: (t('value, 'id), 'value => unit) => unit;
+```
+
+Applies function `f` in turn to all elements of set in increasing order.
+
+```re example
+let s0 = Belt.MutableSet.fromArray([|5,2,3,5,6|], ~id=(module IntCmp));
+let acc = ref([]);
+s0->Belt.MutableSet.forEach(x => {
+  acc := acc->Belt.List.add(x)
+});
+acc; /* [6,5,3,2] */
 ```
 
 ## reduceU
 
-```
+```re
 let reduceU: (t('value, 'id), 'a, [@bs] (('a, 'value) => 'a)) => 'a;
 ```
 
 ## reduce
 
-```
+```re
 let reduce: (t('value, 'id), 'a, ('a, 'value) => 'a) => 'a;
+```
+
+Applies function `f` to each element of set in increasing order. Function `f` has two parameters: the item from the set and an “accumulator”, which starts with a value of `initialValue`. `reduce` returns the final value of the accumulator.
+
+```re example
+let s0 = Belt.MutableSet.fromArray([|5,2,3,5,6|], ~id=(module IntCmp));
+s0->Belt.MutableSet.reduce([], (element, acc) =>
+  acc->Bs.List.add(element)
+); /* [6,5,3,2] */
 ```
 
 ## everyU
 
-```
+```re
 let everyU: (t('value, 'id), [@bs] ('value => bool)) => bool;
 ```
 
 ## every
 
-```
+```re
 let every: (t('value, 'id), 'value => bool) => bool;
+```
+
+Checks if all elements of the set satisfy the predicate. Order unspecified.
+
+```re example
+let isEven = x => x mod 2 == 0;
+
+let s0 = Belt.MutableSet.fromArray([|2,4,6,8|], ~id=(module IntCmp));
+s0->Belt.MutableSet.every(isEven); /* true */
 ```
 
 ## someU
 
-```
+```re
 let someU: (t('value, 'id), [@bs] ('value => bool)) => bool;
 ```
 
 ## some
 
-```
+```re
 let some: (t('value, 'id), 'value => bool) => bool;
+```
+
+Checks if at least one element of the set satisfies the predicate.
+
+```re example
+let isOdd = x => x mod 2 != 0;
+
+let s0 = Belt.MutableSet.fromArray([|1,2,4,6,8|], ~id=(module IntCmp));
+s0->Belt.MutableSet.some(isOdd); /* true */
 ```
 
 ## keepU
 
-```
+```re
 let keepU: (t('value, 'id), [@bs] ('value => bool)) => t('value, 'id);
 ```
 
 ## keep
 
-```
+```re
 let keep: (t('value, 'id), 'value => bool) => t('value, 'id);
+```
+
+Returns the set of all elements that satisfy the predicate.
+
+```re example
+let isEven = x => x mod 2 == 0;
+
+let s0 = Belt.MutableSet.fromArray([|1,2,3,4,5|], ~id=(module IntCmp));
+let s1 = s0->Belt.MutableSet.keep(isEven);
+
+s1->Belt.MutableSet.toArray; /* [|2, 4|] */
 ```
 
 ## partitionU
 
-```
+```re
 let partitionU: (t('value, 'id), [@bs] ('value => bool)) => (t('value, 'id), t('value, 'id));
 ```
 
 ## partition
 
-```
+```re
 let partition: (t('value, 'id), 'value => bool) => (t('value, 'id), t('value, 'id));
+```
+
+```re example
+let isOdd = x => x mod 2 != 0;
+
+let s0 = Belt.MutableSet.fromArray([|1,2,3,4,5|], ~id=(module IntCmp));
+let (s1, s2) = s0->Belt.MutableSet.partition(isOdd);
+
+s1->Belt.MutableSet.toArray; /* [|1,3,5|] */
+s2->Belt.MutableSet.toArray; /* [|2,4|] */
 ```
 
 ## size
 
-```
+```re
 let size: t('value, 'id) => int;
+```
+
+Returns size of the set.
+
+```re example
+let s0 = Belt.MutableSet.fromArray([|1,2,3,4|], ~id=(module IntCmp));
+
+s0->Belt.MutableSet.size; /* 4 */
 ```
 
 ## toList
 
-```
+```re
 let toList: t('value, 'id) => list('value);
+```
+
+Returns list of ordered set elements.
+
+```re example
+let s0 = Belt.MutableSet.fromArray([|3,2,1,5|], ~id=(module IntCmp));
+
+s0->Belt.MutableSet.toList; /* [1,2,3,5] */
 ```
 
 ## toArray
 
-```
+```re
 let toArray: t('value, 'id) => array('value);
+```
+
+Returns array of ordered set elements.
+
+```re example
+let s0 = Belt.MutableSet.fromArray([|3,2,1,5|], ~id=(module IntCmp));
+
+s0->Belt.MutableSet.toArray; /* [|1,2,3,5|] */
 ```
 
 ## minimum
 
-```
+```re
 let minimum: t('value, 'id) => option('value);
+```
+
+Returns minimum value of the collection. `None` if collection is empty.
+
+```re example
+let s0 = Belt.MutableSet.make(~id=(module IntCmp));
+let s1 = Belt.MutableSet.fromArray([|3,2,1,5|], ~id=(module IntCmp));
+
+s0->Belt.MutableSet.minimum; /* None */
+s1->Belt.MutableSet.minimum; /* Some(1) */
 ```
 
 ## minUndefined
 
-```
+```re
 let minUndefined: t('value, 'id) => Js.undefined('value);
+```
+
+Returns minimum value of the collection. `undefined` if collection is empty.
+
+```re example
+let s0 = Belt.MutableSet.make(~id=(module IntCmp));
+let s1 = Belt.MutableSet.fromArray([|3,2,1,5|], ~id=(module IntCmp));
+
+s0->Belt.MutableSet.minUndefined; /* undefined */
+s1->Belt.MutableSet.minUndefined; /* 1 */
 ```
 
 ## maximum
 
-```
+```re
 let maximum: t('value, 'id) => option('value);
+```
+
+Returns maximum value of the collection. `None` if collection is empty.
+
+```re example
+let s0 = Belt.MutableSet.make(~id=(module IntCmp));
+let s1 = Belt.MutableSet.fromArray([|3,2,1,5|], ~id=(module IntCmp));
+
+s0->Belt.MutableSet.maximum; /* None */
+s1->Belt.MutableSet.maximum; /* Some(5) */
 ```
 
 ## maxUndefined
 
-```
+```re
 let maxUndefined: t('value, 'id) => Js.undefined('value);
+```
+
+Returns maximum value of the collection. `undefined` if collection is empty.
+
+```re example
+let s0 = Belt.MutableSet.make(~id=(module IntCmp));
+let s1 = Belt.MutableSet.fromArray([|3,2,1,5|], ~id=(module IntCmp));
+
+s0->Belt.MutableSet.maxUndefined; /* undefined */
+s1->Belt.MutableSet.maxUndefined; /* 5 */
 ```
 
 ## get
 
-```
+```re
 let get: (t('value, 'id), 'value) => option('value);
+```
+
+Returns the reference of the value which is equivalent to value using the comparator specifiecd by this collection. Returns `None` if element does not exist.
+
+```re example
+let s0 = Belt.MutableSet.fromArray([|1,2,3,4,5|], ~id=(module IntCmp));
+
+s0->Belt.MutableSet.get(3); /* Some(3) */
+s0->Belt.MutableSet.get(20); /* None */
 ```
 
 ## getUndefined
 
-```
+```re
 let getUndefined: (t('value, 'id), 'value) => Js.undefined('value);
 ```
 
+Same as [get](#get) but returns `undefined` when element does not exist.
+
 ## getExn
 
-```
+```re
 let getExn: (t('value, 'id), 'value) => 'value;
 ```
 
+Same as [get](#get) but raise when element does not exist.
+
 ## split
 
-```
+```re
 let split: (t('value, 'id), 'value) => ((t('value, 'id), t('value, 'id)), bool);
+```
+
+Returns a tuple `((smaller, larger), present)`, `present` is true when element exist in set.
+
+```re example
+let s0 = Belt.MutableSet.fromArray([|1,2,3,4,5|], ~id=(module IntCmp));
+
+let ((smaller, larger), present) = s0->Belt.MutableSet.split(3);
+
+present; /* true */
+smaller->Belt.MutableSet.toArray; /* [|1,2|] */
+larger->Belt.MutableSet.toArray; /* [|4,5|] */
+
 ```
 
 ## checkInvariantInternal
 
-```
+```re
 let checkInvariantInternal: t('a, 'b) => unit;
 ```
+
+**raise** when invariant is not held
