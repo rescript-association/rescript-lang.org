@@ -132,8 +132,8 @@ Adds each element of array to set. Unlike [add](#add), the reference of return v
 ```re example
 let set = Belt.Set.Dict.empty;
 
-set->Belt.Set.Dict.mergeMany([|5, 4, 3, 2, 1|], ~cmp=IntCmp.cmp);
-set->Belt.Set.Dict.toArray; /* [|1, 2, 3, 4, 5|] */
+let newSet = set->Belt.Set.Dict.mergeMany([|5, 4, 3, 2, 1|], ~cmp=IntCmp.cmp);
+newSet->Belt.Set.Dict.toArray; /* [|1, 2, 3, 4, 5|] */
 ```
 
 ## remove
@@ -166,8 +166,8 @@ Removes each element of array from set. Unlike [remove](#remove), the reference 
 ```re example
 let set = Belt.Set.Dict.fromArray([1, 2, 3, 4],~cmp=IntCmp.cmp);
 
-set->Belt.Set.Dict.removeMany([|5, 4, 3, 2, 1|], ~cmp=IntCmp.cmp);
-set->Belt.Set.Dict.toArray; /* [||] */
+let newSet = set->Belt.Set.Dict.removeMany([|5, 4, 3, 2, 1|], ~cmp=IntCmp.cmp);
+newSet->Belt.Set.Dict.toArray; /* [||] */
 ```
 
 ## union
@@ -254,7 +254,7 @@ let eq: (t('value, 'id), t('value, 'id), ~cmp: cmp('value, 'id)) => bool;
 Checks if two sets are equal.
 
 ```re example
-let s0 = Belt.Set.Dict..fromArray([|5,2,3|], ~cmp=IntCmp.cmp);
+let s0 = Belt.Set.Dict.fromArray([|5,2,3|], ~cmp=IntCmp.cmp);
 let s1 = Belt.Set.Dict.fromArray([|3,2,5|], ~cmp=IntCmp.cmp);
 
 Belt.Set.Dict.eq(s0, s1, ~cmp=IntCmp.cmp); /* true */
@@ -265,6 +265,8 @@ Belt.Set.Dict.eq(s0, s1, ~cmp=IntCmp.cmp); /* true */
 ```re
 let forEachU: (t('value, 'id), [@bs] ('value => unit)) => unit;
 ```
+
+Same as [forEach](##forEach) but takes uncurried functon.
 
 ## forEach
 

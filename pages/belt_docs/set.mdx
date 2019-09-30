@@ -6,9 +6,7 @@ export default Layout;
 
 <ApiIntro>
 
-Generic **immutable** set operations.
-
-A _immutable_ sorted set module which allows customize compare behavior.
+A **immutable** sorted set module which allows customize compare behavior.
 The implementation uses balanced binary trees, and therefore searching and insertion take time logarithmic in the size of the map.
 
 It also has three specialized inner modules [Belt.Set.Int](/belt_docs/set-int), [Belt.Set.String](/belt_docs/set-string) and [Belt.Set.Dict](/belt_docs/set-dict) - This module separates data from function which is more verbose but slightly more efficient
@@ -154,8 +152,8 @@ Adds each element of array to set. Unlike [add](#add), the reference of return v
 ```re example
 let set = Belt.Set.make(~id=(module IntCmp));
 
-set->Belt.Set.mergeMany([|5, 4, 3, 2, 1|]);
-set->Belt.Set.toArray; /* [|1, 2, 3, 4, 5|] */
+let newSet = set->Belt.Set.mergeMany([|5, 4, 3, 2, 1|]);
+newSet->Belt.Set.toArray; /* [|1, 2, 3, 4, 5|] */
 ```
 
 ## remove
@@ -188,8 +186,8 @@ Removes each element of array from set. Unlike [remove](#remove), the reference 
 ```re example
 let set = Belt.Set.fromArray([1, 2, 3, 4],~id=(module IntCmp));
 
-set->Belt.Set.removeMany([|5, 4, 3, 2, 1|]);
-set->Belt.Set.toArray; /* [||] */
+let newSet = set->Belt.Set.removeMany([|5, 4, 3, 2, 1|]);
+newSet->Belt.Set.toArray; /* [||] */
 ```
 
 ## union
@@ -272,7 +270,7 @@ let eq: (t('value, 'id), t('value, 'id)) => bool;
 Checks if two sets are equal.
 
 ```re example
-let s0 = Belt.Set..fromArray([|5,2,3|], ~id=(module IntCmp));
+let s0 = Belt.Set.fromArray([|5,2,3|], ~id=(module IntCmp));
 let s1 = Belt.Set.fromArray([|3,2,5|], ~id=(module IntCmp));
 
 Belt.Set.eq(s0, s1); /* true */
@@ -283,6 +281,8 @@ Belt.Set.eq(s0, s1); /* true */
 ```re
 let forEachU: (t('value, 'id), [@bs] ('value => unit)) => unit;
 ```
+
+Same as [forEach](##forEach) but takes uncurried functon.
 
 ## forEach
 

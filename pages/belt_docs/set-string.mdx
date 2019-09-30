@@ -122,8 +122,10 @@ Adds each element of array to set. Unlike [add](#add), the reference of return v
 ```re example
 let set = Belt.Set.String.empty;
 
-set->Belt.Set.String.mergeMany([|"apple", "banana", "orange", "strawberry"|]);
-set->Belt.Set.String.toArray; /* [|"apple", "banana", "orange", "strawberry"|] */
+let newSet =
+  set->Belt.Set.String.mergeMany([|"apple", "banana", "orange", "strawberry"|]);
+
+newSet->Belt.Set.String.toArray; /* [|"apple", "banana", "orange", "strawberry"|] */
 ```
 
 ## remove
@@ -156,8 +158,8 @@ Removes each element of array from set. Unlike [remove](#remove), the reference 
 ```re example
 let set = Belt.Set.String.fromArray([|"apple", "banana", "orange"|]);
 
-set->Belt.Set.String.removeMany([|"strawberry", "apple", "banana", "orange"|]);
-set->Belt.Set.String.toArray; /* [||] */
+let newSet = set->Belt.Set.String.removeMany([|"strawberry", "apple", "banana", "orange"|]);
+newSet->Belt.Set.String.toArray; /* [||] */
 ```
 
 ## union
@@ -250,6 +252,8 @@ Belt.Set.String.eq(s0, s1); /* true */
 ```re
 let forEachU: (t, [@bs] (value => unit)) => unit;
 ```
+
+Same as [forEach](##forEach) but takes uncurried functon.
 
 ## forEach
 

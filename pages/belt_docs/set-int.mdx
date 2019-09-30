@@ -24,7 +24,7 @@ The type of the set elements.
 type t;
 ```
 
-Type of the sets
+Type of the sets.
 
 ## empty
 
@@ -122,8 +122,8 @@ Adds each element of array to set. Unlike [add](#add), the reference of return v
 ```re example
 let set = Belt.Set.Int.empty;
 
-set->Belt.Set.Int.mergeMany([|5, 4, 3, 2, 1|]);
-set->Belt.Set.Int.toArray; /* [|1, 2, 3, 4, 5|] */
+let newSet = set->Belt.Set.Int.mergeMany([|5, 4, 3, 2, 1|]);
+newSet->Belt.Set.Int.toArray; /* [|1, 2, 3, 4, 5|] */
 ```
 
 ## remove
@@ -156,8 +156,8 @@ Removes each element of array from set. Unlike [remove](#remove), the reference 
 ```re example
 let set = Belt.Set.Int.fromArray([1, 2, 3, 4]);
 
-set->Belt.Set.Int.removeMany([|5, 4, 3, 2, 1|]);
-set->Belt.Set.Int.toArray; /* [||] */
+let newSet = set->Belt.Set.Int.removeMany([|5, 4, 3, 2, 1|]);
+newSet->Belt.Set.Int.toArray; /* [||] */
 ```
 
 ## union
@@ -251,6 +251,8 @@ Belt.Set.Int.eq(s0, s1); /* true */
 ```re
 let forEachU: (t, [@bs] (value => unit)) => unit;
 ```
+
+Same as [forEach](##forEach) but takes uncurried functon.
 
 ## forEach
 
