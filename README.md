@@ -1,4 +1,6 @@
-# reasonml.org 
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](code-of-conduct.md)
+
+# reasonml.org
 
 This is the repository for [reasonml.org](https://reasonml.org) and is currently **work
 in progress**.
@@ -6,7 +8,7 @@ in progress**.
 ## Setup
 
 ```
-yarn 
+yarn
 
 # Initial build
 yarn bs:build
@@ -78,6 +80,7 @@ NODE_ENV=production postcss styles/main.css -o test.css
 Check out our [CONTRIBUTING.md](CONTRIBUTING.md) for how to get started working
 on this project.
 
-**TLDR:** Always make sure to have an issue assigned / create issues, or join
-us in the [ReasonML Discord #docs channel](https://discord.gg/fscQAnj) to find
-a good task to work on.
+**TLDR:** Read and comply to our [Code of Conduct](CODE_OF_CONDUCT.md); always
+make sure to have an issue assigned / create issues / join us in the
+[ReasonML Discord #docs channel](https://discord.gg/fscQAnj) to find a good
+task to work on.
