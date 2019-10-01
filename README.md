@@ -52,6 +52,15 @@ node scripts/test-belt-examples.js
 node scripts/test-belt-examples.js "pages/belt_docs/set-*.mdx"
 ```
 
+## Design / UX
+
+Design mockups can be found
+[here](https://xd.adobe.com/spec/15aaca36-8352-45aa-48c2-18fc508c81ed-639b/grid).
+
+Be aware that some screen designs might still be work in progress, if you have
+any design / UX questions, either comment directly on the design tool as guest,
+or open an issue.
+
 ## Useful commands
 
 Build CSS seperately via `postcss` (useful for debugging)
