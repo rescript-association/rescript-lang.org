@@ -72,3 +72,12 @@ postcss styles/main.css -o test.css
 # Production
 NODE_ENV=production postcss styles/main.css -o test.css
 ```
+
+### Contributing
+
+Check out our [CONTRIBUTING.md](CONTRIBUTING.md) for how to get started working
+on this project.
+
+**TLDR:** Always make sure to have an issue assigned / create issues, or join
+us in the [ReasonML Discord #docs channel](https://discord.gg/fscQAnj) to find
+a good task to work on.
