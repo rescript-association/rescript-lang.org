@@ -23,10 +23,9 @@ module Link = {
 };
 
 module Router = {
-  type props = {. "router": {. "query": Js.Dict.t(string)}};
+  type router = {. "route": string};
 
-  [@bs.module "next/router"]
-  external withRouter: (props => React.element) => React.element = "withRouter";
+  [@bs.module "next/router"] external useRouter: unit => router = "useRouter";
 };
 
 module Head = {

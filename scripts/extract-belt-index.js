@@ -12,8 +12,6 @@ const glob = require("glob");
 const path = require("path");
 const fs = require("fs");
 
-const codeblocks = require("./lib/codeblocks");
-
 const headers = options => (tree, file) => {
   const headers = [];
   let mainHeader;
@@ -33,25 +31,39 @@ const headers = options => (tree, file) => {
   file.data = Object.assign({}, file.data, { headers, mainHeader });
 };
 
-const filterBy = ({ meta, lang }) => {
-  return meta === "sig" && lang === "re";
-};
+const codeblocks = options => (tree, file) => {
+  const { children } = tree;
+  const codeblocks = {};
 
-// Codeblock formatter
-const formatter = value => {
-  // Strip newlines and weird spacing
-  return value
-    .replace(/\n/g, " ")
-    .replace(/\s+/g, " ")
-    .replace(/\(\s+/g, "(")
-    .replace(/\s+\)/g, ")");
+  const formatter = value => {
+    // Strip newlines and weird spacing
+    return value
+      .replace(/\n/g, " ")
+      .replace(/\s+/g, " ")
+      .replace(/\(\s+/g, "(")
+      .replace(/\s+\)/g, ")");
+  };
+
+  children.forEach(child => {
+    if (child.type === "code" && child.value) {
+      const { meta, lang } = child;
+      if (meta === "sig" && lang === "re") {
+        if (codeblocks[lang] == null) {
+          codeblocks[lang] = [];
+        }
+        codeblocks[lang].push(formatter(child.value));
+      }
+    }
+  });
+
+  file.data = Object.assign({}, file.data, { codeblocks });
 };
 
 const processor = unified()
   .use(markdown, { gfm: true })
   .use(stringify)
   .use(headers)
-  .use(codeblocks, { filterBy, formatter });
+  .use(codeblocks);
 
 const toBeltDocsPath = filepath => {
   return path.join("belt_docs", path.basename(filepath));
@@ -71,15 +83,25 @@ const processFile = filepath => {
     headers: result.data.headers,
     signatures: result.data.codeblocks.re,
     href: path.join("belt_docs", filename),
-    moduleName: result.data.mainHeader,
+    moduleName: result.data.mainHeader
   };
   return dataset;
 };
 
 const result = files.map(processFile);
 
-// TODO: Order data appropriately for the index
-const index = result;
+// Currently we reorder the data to a map, the key is
+// reflected as the router pathname, as defined by the
+// NextJS router
+const index = result.reduce((acc, data) => {
+  const { signatures = [], moduleName, headers } = data;
+  acc["/" + data.href] = {
+    signatures,
+    moduleName,
+    headers
+  };
 
+  return acc;
+}, {});
 
-fs.writeFileSync(INDEX_FILE, JSON.stringify(index), 'utf8')
+fs.writeFileSync(INDEX_FILE, JSON.stringify(index), "utf8");

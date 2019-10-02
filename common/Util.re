@@ -5,4 +5,5 @@ module ReactStuff = {
   module Unsafe = {
     external elementAsString: React.element => string = "%identity";
   };
+  module Style = ReactDOMRe.Style;
 };

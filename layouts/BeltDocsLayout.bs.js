@@ -3,9 +3,12 @@
 import * as $$Text from "../components/Text.bs.js";
 import * as Util from "../common/Util.bs.js";
 import * as React from "react";
+import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
 import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
+import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
+import * as Router from "next/router";
 import * as React$1 from "@mdx-js/react";
 import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
@@ -19,6 +22,8 @@ hljs.registerLanguage('reason', reasonHighlightJs);
 
 ;
 
+var indexData = (require('../index_data/belt_api_index.json'));
+
 function BeltDocsLayout$Md$Anchor(Props) {
   var id = Props.id;
   var style = {
@@ -26,9 +31,7 @@ function BeltDocsLayout$Md$Anchor(Props) {
     top: "-7rem"
   };
   return React.createElement("span", {
-              style: {
-                position: "relative"
-              }
+              className: "relative"
             }, React.createElement("a", {
                   className: "mr-2 text-main-lighten-65 hover:cursor-pointer",
                   href: "#" + id
@@ -44,10 +47,16 @@ var Anchor = {
 
 function BeltDocsLayout$Md$InvisibleAnchor(Props) {
   var id = Props.id;
+  var style = {
+    position: "absolute",
+    top: "-3rem"
+  };
   return React.createElement("span", {
-              "aria-hidden": true
+              "aria-hidden": true,
+              className: "relative"
             }, React.createElement("a", {
-                  id: id
+                  id: id,
+                  style: style
                 }));
 }
 
@@ -119,7 +128,8 @@ var link = "no-underline text-inherit hover:text-white";
 
 function BeltDocsLayout$Navigation(Props) {
   return React.createElement("nav", {
-              className: "p-2 flex items-center text-sm bg-bs-purple text-white-80"
+              className: "fixed z-10 top-0 p-2 w-full flex items-center text-sm bg-bs-purple text-white-80",
+              id: "header"
             }, React.createElement(Link.default, {
                   href: "/belt_docs",
                   children: React.createElement("a", {
@@ -473,8 +483,7 @@ function categoryToElement(category) {
                   className: "mr-4"
                 }, Util.ReactStuff.ate(Belt_Array.map(category[/* items */1], (function (m) {
                             return React.createElement("li", {
-                                        key: m[/* name */0],
-                                        className: "font-bold lg:font-normal"
+                                        key: m[/* name */0]
                                       }, React.createElement(Link.default, {
                                             href: m[/* href */1],
                                             children: React.createElement("a", undefined, Util.ReactStuff.s(m[/* name */0]))
@@ -482,8 +491,50 @@ function categoryToElement(category) {
                           })))));
 }
 
+function BeltDocsLayout$Sidebar$ModuleContent(Props) {
+  var headers = Props.headers;
+  var moduleName = Props.moduleName;
+  return React.createElement("div", undefined, React.createElement(Link.default, {
+                  href: "/belt_docs",
+                  children: React.createElement("a", undefined, Util.ReactStuff.s("<-- Back"))
+                }), React.createElement($$Text.Overline.make, {
+                  children: Util.ReactStuff.s(moduleName)
+                }), React.createElement("ul", undefined, Util.ReactStuff.ate(Belt_Array.map(headers, (function (header) {
+                            return React.createElement("li", {
+                                        key: header
+                                      }, React.createElement("a", {
+                                            href: "#" + header
+                                          }, Util.ReactStuff.s(header)));
+                          })))));
+}
+
+var ModuleContent = {
+  make: BeltDocsLayout$Sidebar$ModuleContent
+};
+
 function BeltDocsLayout$Sidebar(Props) {
-  return React.createElement("div", undefined, Util.ReactStuff.ate(Belt_Array.map(categories, categoryToElement)));
+  var route = Props.route;
+  var headers = Belt_Option.getWithDefault(Belt_Option.map(Js_dict.get(indexData, route), (function (data) {
+              return data.headers;
+            })), /* array */[]);
+  var moduleName = Belt_Option.getWithDefault(Belt_Option.map(Js_dict.get(indexData, route), (function (data) {
+              return data.moduleName;
+            })), "?");
+  var sidebarElement = route === "/belt_docs" ? React.createElement("div", undefined, Util.ReactStuff.ate(Belt_Array.map(categories, categoryToElement))) : React.createElement(BeltDocsLayout$Sidebar$ModuleContent, {
+          headers: headers,
+          moduleName: moduleName
+        });
+  return React.createElement("div", {
+              className: "w-1/3 h-auto overflow-y-visible block",
+              style: {
+                maxWidth: "17.5rem"
+              }
+            }, React.createElement("nav", {
+                  className: "pl-6 relative sticky h-screen block overflow-y-auto scrolling-touch",
+                  style: {
+                    top: "4rem"
+                  }
+                }, sidebarElement));
 }
 
 var Sidebar = {
@@ -496,6 +547,7 @@ var Sidebar = {
   utilityNavs: utilityNavs,
   categories: categories,
   categoryToElement: categoryToElement,
+  ModuleContent: ModuleContent,
   make: BeltDocsLayout$Sidebar
 };
 
@@ -503,22 +555,27 @@ function BeltDocsLayout(Props) {
   var match = Props.components;
   var components$1 = match !== undefined ? Caml_option.valFromOption(match) : components;
   var children = Props.children;
+  var router = Router.useRouter();
   var minWidth = {
     minWidth: "20rem"
   };
   return React.createElement("div", {
               className: "mb-32"
             }, React.createElement("div", {
-                  className: "max-w-4xl w-full lg:w-3/4 text-gray-900 font-base"
-                }, React.createElement(BeltDocsLayout$Navigation, { }), React.createElement("main", {
-                      className: "flex mt-12 mx-4",
-                      style: minWidth
-                    }, React.createElement(BeltDocsLayout$Sidebar, { }), React.createElement(React$1.MDXProvider, {
-                          components: components$1,
-                          children: React.createElement("div", {
-                                className: "pl-8 w-3/4"
-                              }, children)
-                        }))));
+                  className: "max-w-4xl w-full text-gray-900 font-base"
+                }, React.createElement(BeltDocsLayout$Navigation, { }), React.createElement("div", {
+                      className: "flex mt-12"
+                    }, React.createElement(BeltDocsLayout$Sidebar, {
+                          route: router.route
+                        }), React.createElement("main", {
+                          className: "pt-12 static min-h-screen overflow-visible",
+                          style: minWidth
+                        }, React.createElement(React$1.MDXProvider, {
+                              components: components$1,
+                              children: React.createElement("div", {
+                                    className: "pl-8 max-w-2xl"
+                                  }, children)
+                            })))));
 }
 
 var Link$1 = 0;
@@ -527,6 +584,7 @@ var make = BeltDocsLayout;
 
 export {
   Link$1 as Link,
+  indexData ,
   Md ,
   Navigation ,
   Sidebar ,

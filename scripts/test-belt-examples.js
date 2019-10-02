@@ -20,7 +20,6 @@
 const unified = require("unified");
 const markdown = require("remark-parse");
 const stringify = require("remark-stringify");
-const codeblocks = require("./lib/codeblocks");
 const glob = require("glob");
 const path = require("path");
 const fs = require("fs");
