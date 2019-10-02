@@ -1,5 +1,6 @@
 
 
+import * as ReactDOMRe from "reason-react/src/ReactDOMRe.js";
 
 function s(prim) {
   return prim;
@@ -14,11 +15,12 @@ var Unsafe = { };
 var ReactStuff = {
   s: s,
   ate: ate,
-  Unsafe: Unsafe
+  Unsafe: Unsafe,
+  Style: 0
 };
 
 export {
   ReactStuff ,
   
 }
-/* No side effect */
+/* ReactDOMRe Not a pure module */
