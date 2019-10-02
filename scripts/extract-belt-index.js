@@ -78,8 +78,20 @@ const processFile = filepath => {
 
 const result = files.map(processFile);
 
-// TODO: Order data appropriately for the index
-const index = result;
+// Currently we reorder the data to a map, the key is
+// reflected as the router pathname, as defined by the
+// NextJS router
+const index = result.reduce((acc, data) => {
+  const { signatures = [], moduleName, headers } = data;
+  acc["/" + data.href] =  {
+    signatures,
+    moduleName,
+    headers
+  };
+
+  return acc;
+}, {});
+
 
 
 fs.writeFileSync(INDEX_FILE, JSON.stringify(index), 'utf8')
