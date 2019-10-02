@@ -12,6 +12,17 @@ open Util.ReactStuff;
 open Text;
 module Link = Next.Link;
 
+// Structure defined by `scripts/extract-belt-index.js`
+let indexData:
+  Js.Dict.t({
+    .
+    "signatures": array(string),
+    "moduleName": string,
+    "headers": array(string),
+  }) = [%raw
+  "require('../index_data/belt_api_index.json')"
+];
+
 /*
     We use some custom markdown styling for the Belt docs to make
     it easier on the eyes
@@ -22,7 +33,7 @@ module Md = {
     let make = (~id: string) => {
       let style =
         ReactDOMRe.Style.make(~position="absolute", ~top="-7rem", ());
-      <span style={ReactDOMRe.Style.make(~position="relative", ())}>
+      <span className="relative">
         <a
           className="mr-2 text-main-lighten-65 hover:cursor-pointer"
           href={"#" ++ id}>
@@ -36,7 +47,9 @@ module Md = {
   module InvisibleAnchor = {
     [@react.component]
     let make = (~id: string) => {
-      <span ariaHidden=true> <a id /> </span>;
+      let style =
+        ReactDOMRe.Style.make(~position="absolute", ~top="-3rem", ());
+      <span className="relative" ariaHidden=true> <a id style /> </span>;
     };
   };
 
@@ -98,7 +111,9 @@ module Navigation = {
   let link = "no-underline text-inherit hover:text-white";
   [@react.component]
   let make = () =>
-    <nav className="p-2 flex items-center text-sm bg-bs-purple text-white-80">
+    <nav
+      id="header"
+      className="fixed z-10 top-0 p-2 w-full flex items-center text-sm bg-bs-purple text-white-80">
       <Link href="/belt_docs">
         <a className="flex items-center w-2/3">
           <img
@@ -206,7 +221,7 @@ module Sidebar = {
       <ul className="mr-4">
         {category.items
          ->Belt.Array.map(m =>
-             <li key={m.name} className="font-bold lg:font-normal">
+             <li key={m.name}>
                <Link href={m.href}> <a> m.name->s </a> </Link>
              </li>
            )
@@ -215,24 +230,77 @@ module Sidebar = {
     </div>;
   };
 
+  module ModuleContent = {
+    [@react.component]
+    let make = (~headers: array(string), ~moduleName: string) => {
+      <div>
+        <Link href="/belt_docs"> <a> "<-- Back"->s </a> </Link>
+        <Overline> moduleName->s </Overline>
+        <ul>
+          {{Belt.Array.map(headers, header =>
+              <li> <a href={"#" ++ header}> header->s </a> </li>
+            )}
+           ->ate}
+        </ul>
+      </div>;
+    };
+  };
+
+  // subitems: list of functions inside given module (defined by route)
   [@react.component]
-  let make = () => {
-    <div> {categories->Belt.Array.map(categoryToElement)->ate} </div>;
+  let make = (~route: string) => {
+    let headers =
+      Belt.Option.(
+        Js.Dict.get(indexData, route)
+        ->map(data => data##headers)
+        ->getWithDefault([||])
+      );
+
+    let moduleName =
+      Belt.Option.(
+        Js.Dict.get(indexData, route)
+        ->map(data => data##moduleName)
+        ->getWithDefault("?")
+      );
+
+    Js.log(headers);
+
+    /*General overview */
+    let sidebarElement =
+      if (route === "/belt_docs") {
+        <div> {categories->Belt.Array.map(categoryToElement)->ate} </div>;
+      } else {
+        <ModuleContent headers moduleName />;
+      };
+
+    <div className="w-1/3 h-auto overflow-y-visible block" style=Style.make(~maxWidth="17.5rem",())>
+      <nav
+        className="pl-6 relative sticky h-screen block overflow-y-auto scrolling-touch"
+        style={Style.make(~top="4rem", ())}>
+        sidebarElement
+      </nav>
+    </div>;
   };
 };
 
 [@react.component]
 let make = (~components=Md.components, ~children) => {
+  let router = Next.Router.useRouter();
+
   let minWidth = ReactDOMRe.Style.make(~minWidth="20rem", ());
   <div className="mb-32">
-    <div className="max-w-4xl w-full lg:w-3/4 text-gray-900 font-base">
+    <div className="max-w-4xl w-full text-gray-900 font-base">
       <Navigation />
-      <main style=minWidth className="flex mt-12 mx-4">
-        <Sidebar />
-        <Mdx.Provider components>
-          <div className="pl-8 w-3/4"> children </div>
-        </Mdx.Provider>
-      </main>
+      <div className="flex mt-12">
+        <Sidebar route={router##route} />
+        <main
+          style=minWidth
+          className="pt-12 static min-h-screen overflow-visible">
+          <Mdx.Provider components>
+            <div className="pl-8 max-w-2xl"> children </div>
+          </Mdx.Provider>
+        </main>
+      </div>
     </div>
   </div>;
 };
