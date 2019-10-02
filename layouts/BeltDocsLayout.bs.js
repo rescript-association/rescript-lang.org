@@ -559,9 +559,7 @@ function BeltDocsLayout(Props) {
   var minWidth = {
     minWidth: "20rem"
   };
-  return React.createElement("div", {
-              className: "mb-32"
-            }, React.createElement("div", {
+  return React.createElement("div", undefined, React.createElement("div", {
                   className: "max-w-4xl w-full text-gray-900 font-base"
                 }, React.createElement(BeltDocsLayout$Navigation, { }), React.createElement("div", {
                       className: "flex mt-12"
@@ -573,7 +571,7 @@ function BeltDocsLayout(Props) {
                         }, React.createElement(React$1.MDXProvider, {
                               components: components$1,
                               children: React.createElement("div", {
-                                    className: "pl-8 max-w-2xl"
+                                    className: "pl-8 max-w-2xl mb-32"
                                   }, children)
                             })))));
 }

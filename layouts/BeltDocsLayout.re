@@ -286,7 +286,7 @@ let make = (~components=Md.components, ~children) => {
   let router = Next.Router.useRouter();
 
   let minWidth = ReactDOMRe.Style.make(~minWidth="20rem", ());
-  <div className="mb-32">
+  <div>
     <div className="max-w-4xl w-full text-gray-900 font-base">
       <Navigation />
       <div className="flex mt-12">
@@ -295,7 +295,7 @@ let make = (~components=Md.components, ~children) => {
           style=minWidth
           className="pt-12 static min-h-screen overflow-visible">
           <Mdx.Provider components>
-            <div className="pl-8 max-w-2xl"> children </div>
+            <div className="pl-8 max-w-2xl mb-32"> children </div>
           </Mdx.Provider>
         </main>
       </div>
