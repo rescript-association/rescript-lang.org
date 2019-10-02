@@ -238,7 +238,7 @@ module Sidebar = {
         <Overline> moduleName->s </Overline>
         <ul>
           {{Belt.Array.map(headers, header =>
-              <li> <a href={"#" ++ header}> header->s </a> </li>
+              <li key={header}> <a href={"#" ++ header}> header->s </a> </li>
             )}
            ->ate}
         </ul>
@@ -262,8 +262,6 @@ module Sidebar = {
         ->map(data => data##moduleName)
         ->getWithDefault("?")
       );
-
-    Js.log(headers);
 
     /*General overview */
     let sidebarElement =

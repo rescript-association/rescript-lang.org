@@ -500,7 +500,9 @@ function BeltDocsLayout$Sidebar$ModuleContent(Props) {
                 }), React.createElement($$Text.Overline.make, {
                   children: Util.ReactStuff.s(moduleName)
                 }), React.createElement("ul", undefined, Util.ReactStuff.ate(Belt_Array.map(headers, (function (header) {
-                            return React.createElement("li", undefined, React.createElement("a", {
+                            return React.createElement("li", {
+                                        key: header
+                                      }, React.createElement("a", {
                                             href: "#" + header
                                           }, Util.ReactStuff.s(header)));
                           })))));
@@ -518,7 +520,6 @@ function BeltDocsLayout$Sidebar(Props) {
   var moduleName = Belt_Option.getWithDefault(Belt_Option.map(Js_dict.get(indexData, route), (function (data) {
               return data.moduleName;
             })), "?");
-  console.log(headers);
   var sidebarElement = route === "/belt_docs" ? React.createElement("div", undefined, Util.ReactStuff.ate(Belt_Array.map(categories, categoryToElement))) : React.createElement(BeltDocsLayout$Sidebar$ModuleContent, {
           headers: headers,
           moduleName: moduleName
