@@ -122,10 +122,8 @@ module.exports = {
         "sans-serif"
       ],
       mono: [
-        // TODO: We need to find a better mono font than overpass mono
-        "SFMono-Regular",
-        "Overpass Mono",
         "Roboto Mono",
+        "SFMono-Regular",
         "Segoe UI",
         "Courier",
         "monospace"
