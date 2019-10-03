@@ -2,6 +2,7 @@
 
 import * as $$Text from "../components/Text.bs.js";
 import * as Util from "../common/Util.bs.js";
+import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
 import * as Link from "next/link";
@@ -474,38 +475,70 @@ var categories = /* array */[
     ])
 ];
 
-function categoryToElement(category) {
+function BeltDocsLayout$Sidebar$NavUl(Props) {
+  var match = Props.isItemActive;
+  var isItemActive = match !== undefined ? match : (function (_nav) {
+        return false;
+      });
+  var items = Props.items;
+  return React.createElement("ul", {
+              className: "ml-2 mt-1 text-main-lighten-15"
+            }, Util.ReactStuff.ate(Belt_Array.map(items, (function (m) {
+                        var match = Curry._1(isItemActive, m);
+                        var active = match ? " bg-bs-purple-lighten-95 text-bs-pink rounded -ml-1 px-2 font-bold w-3/4" : "";
+                        return React.createElement("li", {
+                                    key: m[/* name */0],
+                                    className: "leading-5 " + active
+                                  }, React.createElement(Link.default, {
+                                        href: m[/* href */1],
+                                        children: React.createElement("a", undefined, Util.ReactStuff.s(m[/* name */0]))
+                                      }));
+                      }))));
+}
+
+var NavUl = {
+  make: BeltDocsLayout$Sidebar$NavUl
+};
+
+function categoryToElement(isItemActive, category) {
+  var tmp = {
+    items: category[/* items */1]
+  };
+  if (isItemActive !== undefined) {
+    tmp.isItemActive = Caml_option.valFromOption(isItemActive);
+  }
   return React.createElement("div", {
               key: category[/* name */0]
             }, React.createElement($$Text.Overline.make, {
                   children: Util.ReactStuff.s(category[/* name */0])
-                }), React.createElement("ul", {
-                  className: "mr-4"
-                }, Util.ReactStuff.ate(Belt_Array.map(category[/* items */1], (function (m) {
-                            return React.createElement("li", {
-                                        key: m[/* name */0]
-                                      }, React.createElement(Link.default, {
-                                            href: m[/* href */1],
-                                            children: React.createElement("a", undefined, Util.ReactStuff.s(m[/* name */0]))
-                                          }));
-                          })))));
+                }), React.createElement(BeltDocsLayout$Sidebar$NavUl, tmp));
 }
 
 function BeltDocsLayout$Sidebar$ModuleContent(Props) {
+  var isItemActive = Props.isItemActive;
   var headers = Props.headers;
   var moduleName = Props.moduleName;
+  var items = Belt_Array.map(headers, (function (header) {
+          return /* record */Caml_chrome_debugger.record([
+                    "name",
+                    "href"
+                  ], [
+                    header,
+                    "#" + header
+                  ]);
+        }));
+  var tmp = {
+    items: items
+  };
+  if (isItemActive !== undefined) {
+    tmp.isItemActive = Caml_option.valFromOption(isItemActive);
+  }
   return React.createElement("div", undefined, React.createElement(Link.default, {
                   href: "/belt_docs",
                   children: React.createElement("a", undefined, Util.ReactStuff.s("<-- Back"))
                 }), React.createElement($$Text.Overline.make, {
                   children: Util.ReactStuff.s(moduleName)
-                }), React.createElement("ul", undefined, Util.ReactStuff.ate(Belt_Array.map(headers, (function (header) {
-                            return React.createElement("li", {
-                                        key: header
-                                      }, React.createElement("a", {
-                                            href: "#" + header
-                                          }, Util.ReactStuff.s(header)));
-                          })))));
+                }), React.createElement(BeltDocsLayout$Sidebar$NavUl, tmp));
 }
 
 var ModuleContent = {
@@ -520,17 +553,28 @@ function BeltDocsLayout$Sidebar(Props) {
   var moduleName = Belt_Option.getWithDefault(Belt_Option.map(Js_dict.get(indexData, route), (function (data) {
               return data.moduleName;
             })), "?");
-  var sidebarElement = route === "/belt_docs" ? React.createElement("div", undefined, Util.ReactStuff.ate(Belt_Array.map(categories, categoryToElement))) : React.createElement(BeltDocsLayout$Sidebar$ModuleContent, {
+  var sidebarElement;
+  if (route === "/belt_docs") {
+    var isItemActive = function (navItem) {
+      return navItem[/* href */1] === route;
+    };
+    var partial_arg = isItemActive;
+    sidebarElement = React.createElement("div", undefined, Util.ReactStuff.ate(Belt_Array.map(categories, (function (param) {
+                    return categoryToElement(partial_arg, param);
+                  }))));
+  } else {
+    sidebarElement = React.createElement(BeltDocsLayout$Sidebar$ModuleContent, {
           headers: headers,
           moduleName: moduleName
         });
+  }
   return React.createElement("div", {
-              className: "w-1/3 h-auto overflow-y-visible block",
+              className: "w-1/3 h-auto overflow-y-visible block bg-light-grey",
               style: {
                 maxWidth: "17.5rem"
               }
             }, React.createElement("nav", {
-                  className: "pl-6 relative sticky h-screen block overflow-y-auto scrolling-touch",
+                  className: "pl-12 relative sticky h-screen block overflow-y-auto scrolling-touch pb-32",
                   style: {
                     top: "4rem"
                   }
@@ -546,6 +590,7 @@ var Sidebar = {
   sortNavs: sortNavs,
   utilityNavs: utilityNavs,
   categories: categories,
+  NavUl: NavUl,
   categoryToElement: categoryToElement,
   ModuleContent: ModuleContent,
   make: BeltDocsLayout$Sidebar
@@ -560,7 +605,7 @@ function BeltDocsLayout(Props) {
     minWidth: "20rem"
   };
   return React.createElement("div", undefined, React.createElement("div", {
-                  className: "max-w-4xl w-full text-gray-900 font-base"
+                  className: "max-w-4xl w-full font-base"
                 }, React.createElement(BeltDocsLayout$Navigation, { }), React.createElement("div", {
                       className: "flex mt-12"
                     }, React.createElement(BeltDocsLayout$Sidebar, {

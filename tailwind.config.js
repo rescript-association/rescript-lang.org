@@ -25,6 +25,7 @@ module.exports = {
           "lighten-50": "rgb(249, 84, 62, 0.5)"
         },
         
+        "light-grey": "rgba(245, 245, 245, 0.5)",
         main: {
           // Text Colors
           black: "#23242e",
@@ -38,7 +39,9 @@ module.exports = {
         },
 
         bs: {
-          purple: "rgb(171, 94, 163)"
+          pink: "#C732B8",
+          purple: "rgb(171, 94, 163)",
+          "purple-lighten-95": "rgba(171, 94, 163, 0.15)"
         },
         "white-80": "rgba(255,255,255,0.8)",
       }

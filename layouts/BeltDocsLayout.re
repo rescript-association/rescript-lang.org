@@ -143,14 +143,14 @@ module Navigation = {
 
 module Sidebar = {
   // Navigation point information
-  type moduleNav = {
+  type navItem = {
     name: string,
     href: string,
   };
 
   type category = {
     name: string,
-    items: array(moduleNav),
+    items: array(navItem),
   };
 
   let overviewNavs = [|{name: "Introduction", href: "/belt_docs"}|];
@@ -215,33 +215,50 @@ module Sidebar = {
     {name: "Utilities", items: utilityNavs},
   |];
 
-  let categoryToElement = (category: category): React.element => {
+  module NavUl = {
+    [@react.component]
+    let make =
+        (
+          ~isItemActive: navItem => bool=_nav => false,
+          ~items: array(navItem),
+        ) => {
+      <ul className="ml-2 mt-1 text-main-lighten-15">
+        {Belt.Array.map(
+           items,
+           m => {
+             let active =
+               isItemActive(m) ? " bg-bs-purple-lighten-95 text-bs-pink rounded -ml-1 px-2 font-bold w-3/4" : "";
+             <li key={m.name} className={"leading-5 " ++ active}>
+               <Link href={m.href}> <a> m.name->s </a> </Link>
+             </li>;
+           },
+         )
+         ->ate}
+      </ul>;
+    };
+  };
+
+  let categoryToElement =
+      (~isItemActive: option(navItem => bool)=?, category: category)
+      : React.element => {
     <div key={category.name}>
       <Overline> category.name->s </Overline>
-      <ul className="mr-4">
-        {category.items
-         ->Belt.Array.map(m =>
-             <li key={m.name}>
-               <Link href={m.href}> <a> m.name->s </a> </Link>
-             </li>
-           )
-         ->ate}
-      </ul>
+      <NavUl ?isItemActive items={category.items} />
     </div>;
   };
 
   module ModuleContent = {
     [@react.component]
-    let make = (~headers: array(string), ~moduleName: string) => {
+    let make =
+        (~isItemActive=?, ~headers: array(string), ~moduleName: string) => {
+      let items =
+        Belt.Array.map(headers, header =>
+          {name: header, href: "#" ++ header}
+        );
       <div>
         <Link href="/belt_docs"> <a> "<-- Back"->s </a> </Link>
         <Overline> moduleName->s </Overline>
-        <ul>
-          {{Belt.Array.map(headers, header =>
-              <li key={header}> <a href={"#" ++ header}> header->s </a> </li>
-            )}
-           ->ate}
-        </ul>
+        <NavUl ?isItemActive items />
       </div>;
     };
   };
@@ -266,14 +283,27 @@ module Sidebar = {
     /*General overview */
     let sidebarElement =
       if (route === "/belt_docs") {
-        <div> {categories->Belt.Array.map(categoryToElement)->ate} </div>;
+        let isItemActive = navItem => {
+          navItem.href === route;
+        };
+        <div>
+          {categories->Belt.Array.map(categoryToElement(~isItemActive))->ate}
+        </div>;
       } else {
-        <ModuleContent headers moduleName />;
+        <ModuleContent
+          headers
+          // Todo: We need to introduce router state to be able to
+          //       listen to anchor changes (#get, #map,...)
+          moduleName
+          //       Add a `isItemActive` as soon as we have access to this info
+        />;
       };
 
-    <div className="w-1/3 h-auto overflow-y-visible block" style=Style.make(~maxWidth="17.5rem",())>
+    <div
+      className="w-1/3 h-auto overflow-y-visible block bg-light-grey"
+      style={Style.make(~maxWidth="17.5rem", ())}>
       <nav
-        className="pl-6 relative sticky h-screen block overflow-y-auto scrolling-touch"
+        className="pl-12 relative sticky h-screen block overflow-y-auto scrolling-touch pb-32"
         style={Style.make(~top="4rem", ())}>
         sidebarElement
       </nav>
@@ -287,7 +317,7 @@ let make = (~components=Md.components, ~children) => {
 
   let minWidth = ReactDOMRe.Style.make(~minWidth="20rem", ());
   <div>
-    <div className="max-w-4xl w-full text-gray-900 font-base">
+    <div className="max-w-4xl w-full font-base">
       <Navigation />
       <div className="flex mt-12">
         <Sidebar route={router##route} />

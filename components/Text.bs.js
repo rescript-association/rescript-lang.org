@@ -107,7 +107,7 @@ function Text$Overline(Props) {
   var match = Props.underline;
   var underline = match !== undefined ? match : false;
   var children = Props.children;
-  var className = "font-overpass font-bold text-main-lighten-50 uppercase text-xs mt-5 tracking-wide" + (
+  var className = "font-overpass font-black text-main-black text-xl mt-5" + (
     underline ? " pb-3 border-b border-main-lighten-90" : ""
   );
   return React.createElement("div", {

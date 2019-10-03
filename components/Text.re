@@ -76,7 +76,7 @@ module Overline = {
   [@react.component]
   let make = (~underline=false, ~children) => {
     let className =
-      "font-overpass font-bold text-main-lighten-50 uppercase text-xs mt-5 tracking-wide"
+      "font-overpass font-black text-main-black text-xl mt-5"
       ++ (underline ? " pb-3 border-b border-main-lighten-90" : "");
 
     <div className> children </div>;
