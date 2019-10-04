@@ -36,7 +36,15 @@ let make: (~id: id('k, 'id)) => t('k, 'v, 'id);
 `make(~id)` creates a new map by taking in the comparator.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = (a, b) => Pervasives.compare(a, b);
+  });
+
 let m = Belt.Map.make(~id=(module IntCmp));
+
+Belt.Map.set(m, 0, "a");
 ```
 
 ## isEmpty
@@ -48,7 +56,13 @@ let isEmpty: t('a, 'b, 'c) => bool;
 `isEmpty(m)` checks whether a map m is empty.
 
 ```re example
-isEmpty(fromArray([|(1, "1")|], ~id=(module IntCmp))) == false;
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = (a, b) => Pervasives.compare(a, b);
+  });
+  
+Belt.Map.isEmpty(Belt.Map.fromArray([|(1, "1")|], ~id=(module IntCmp))) == false;
 ```
 
 ## has
@@ -60,7 +74,13 @@ let has: (t('k, 'v, 'id), 'k) => bool;
 `has(m, k)` checks whether `m` has the key `k`.
 
 ```re example
-has(fromArray([|(1, "1")|], ~id=(module IntCmp)), 1) == true;
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = (a, b) => Pervasives.compare(a, b);
+  });
+
+Belt.Map.has(Belt.Map.fromArray([|(1, "1")|], ~id=(module IntCmp)), 1) == true;
 ```
 
 ## cmpU
@@ -110,9 +130,15 @@ let findFirstBy: (t('k, 'v, 'id), ('k, 'v) => bool) => option(('k, 'v));
 `findFirstBy(m, p)` uses funcion `f` to find the first key value pair to match predicate `p`.
 
 ```re example
-let s0 = fromArray(~id=(module IntCmp), [|(4, "4"), (1, "1"), (2, "2,"(3, ""))|]);
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = (a, b) => Pervasives.compare(a, b);
+  });
 
-findFirstBy(s0, (k, v) => k == 4) == option((4, "4"));
+let s0 = Belt.Map.fromArray(~id=(module IntCmp), [|(4, "4"), (1, "1"), (2, "2"), (3, "")|]);
+
+Belt.Map.findFirstBy(s0, (k, v) => k == 4); /* (4, "4") */
 ```
 
 ## forEachU
@@ -130,11 +156,17 @@ let forEach: (t('k, 'v, 'id), ('k, 'v) => unit) => unit;
 `forEach(m, f)` applies `f` to all bindings in map `m`. `f` receives the `'k` as first argument, and the associated value as second argument. The bindings are passed to `f` in increasing order with respect to the ordering over the type of the keys.
 
 ```re example
-let s0 = fromArray(~id=(module IntCmp), [|(4, "4"), (1, "1"), (2, "2,"(3, ""))|]);
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = (a, b) => Pervasives.compare(a, b);
+  });
+
+let s0 = Belt.Map.fromArray(~id=(module IntCmp), [|(4, "4"), (1, "1"), (2, "2"), (3, "")|]);
 
 let acc = ref([]);
 
-forEach(s0, (k, v) => acc := [(k, v), ...acc^]);
+Belt.Map.forEach(s0, (k, v) => acc := [(k, v), ...acc^]);
 
 acc^ == [(4, "4"), (3, "3"), (2, "2"), (1, "1")];
 ```
@@ -154,9 +186,15 @@ let reduce: (t('k, 'v, 'id), 'acc, ('acc, 'k, 'v) => 'acc) => 'acc;
 `reduce(m, a, f)` computes `(f(kN, dN) ... (f(k1, d1, a))...)`, where `k1 ... kN` are the keys of all bindings in m (in increasing order), and `d1 ... dN` are the associated data.
 
 ```re example
-let s0 = fromArray(~id=(module IntCmp), [|(4, "4"), (1, "1"), (2, "2,"(3, ""))|]);
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = (a, b) => Pervasives.compare(a, b);
+  });
 
-reduce(s0, [], (acc, k, v) => (k, v)(acc)) == [(4, "4"), (3, "3"), (2, "2"), (1, "1")];
+let s0 = Belt.Map.fromArray(~id=(module IntCmp), [|(4, "4"), (1, "1"), (2, "2"), (3, "3")|]);
+
+Belt.Map.reduce(s0, [], (acc, k, v) => [(k, v), ...acc]); /* [(4, "4"), (3, "3"), (2, "2"), (1, "1"), 0] */
 ```
 
 ## everyU
@@ -196,7 +234,13 @@ let size: t('k, 'v, 'id) => int;
 `size(s)`
 
 ```re example
-size(fromArray([(2, "2"), (2, "1"), (3, "3")], ~id=(module IntCmp))) == 2;
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = (a, b) => Pervasives.compare(a, b);
+  });
+
+Belt.Map.size(Belt.Map.fromArray([|(2, "2"), (2, "1"), (3, "3")|], ~id=(module IntCmp))) == 2;
 ```
 
 ## toArray
@@ -208,8 +252,14 @@ let toArray: t('k, 'v, 'id) => array(('k, 'v));
 `toArray(s)`
 
 ```re example
-toArray(fromArray([(2, "2"), (1, "1"), (3, "3")], ~id=(module IntCmp)))
-== [(1, "1"), (2, "2"), (3, "3")];
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = (a, b) => Pervasives.compare(a, b);
+  });
+
+Belt.Map.toArray(Belt.Map.fromArray([|(2, "2"), (1, "1"), (3, "3")|], ~id=(module IntCmp)))
+== [|(1, "1"), (2, "2"), (3, "3")|];
 ```
 
 ## toList
@@ -231,8 +281,14 @@ let fromArray: (array(('k, 'v)), ~id: id('k, 'id)) => t('k, 'v, 'id);
 `fromArray(kvs, ~id);`
 
 ```re example
-toArray(fromArray([(2, "2"), (1, "1"), (3, "3")], ~id=(module IntCmp)))
-== [(1, "1"), (2, "2"), (3, "3")];
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = (a, b) => Pervasives.compare(a, b);
+  });
+
+Belt.Map.toArray(Belt.Map.fromArray([|(2, "2"), (1, "1"), (3, "3")|], ~id=(module IntCmp)))
+== [|(1, "1"), (2, "2"), (3, "3")|];
 ```
 
 ## keysToArray
@@ -244,7 +300,13 @@ let keysToArray: t('k, 'v, 'id) => array('k);
 `keysToArray(s);`
 
 ```re example
-keysToArray(fromArray([(2, "2"), (1, "1"), (3, "3")], ~id=(module IntCmp))) == [|1, 2, 3|];
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = (a, b) => Pervasives.compare(a, b);
+  });
+
+Belt.Map.keysToArray(Belt.Map.fromArray([|(2, "2"), (1, "1"), (3, "3")|], ~id=(module IntCmp))) == [|1, 2, 3|];
 ```
 
 ## valuesToArray
@@ -256,7 +318,13 @@ let valuesToArray: t('k, 'v, 'id) => array('v);
 `valuesToArray(s);`
 
 ```re example
-valuesToArray(fromArray([(2, "2"), (1, "1"), (3, "3")], ~id=(module IntCmp))) == [|"1", "2", "3"|];
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = (a, b) => Pervasives.compare(a, b);
+  });
+
+Belt.Map.valuesToArray(Belt.Map.fromArray([|(2, "2"), (1, "1"), (3, "3")|], ~id=(module IntCmp))) == [|"1", "2", "3"|];
 ```
 
 ## minKey
@@ -332,9 +400,15 @@ let get: (t('k, 'v, 'id), 'k) => option('v);
 `get(s, k)`
 
 ```re example
-get(fromArray([(2, "2"), (1, "1"), (3, "3")], ~id=(module IntCmp)), 2) == Some("2");
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = (a, b) => Pervasives.compare(a, b);
+  });
 
-get(fromArray([(2, "2"), (1, "1"), (3, "3")], ~id=(module IntCmp)), 2) == None;
+Belt.Map.get(Belt.Map.fromArray([|(2, "2"), (1, "1"), (3, "3")|], ~id=(module IntCmp)), 2) == Some("2");
+
+Belt.Map.get(Belt.Map.fromArray([|(2, "2"), (1, "1"), (3, "3")|], ~id=(module IntCmp)), 2) == None;
 ```
 
 ## getUndefined
@@ -380,15 +454,21 @@ let remove: (t('k, 'v, 'id), 'k) => t('k, 'v, 'id);
 `remove(m, x)` when `x` is not in `m`, `m` is returned reference unchanged.
 
 ```re example
-let s0 = fromArray([(2, "2"), (1, "1"), (3, "3")], ~id=(module IntCmp));
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = (a, b) => Pervasives.compare(a, b);
+  });
 
-let s1 = remove(s0, 1);
+let s0 = Belt.Map.fromArray([|(2, "2"), (1, "1"), (3, "3")|], ~id=(module IntCmp));
 
-let s2 = remove(s1, 1);
+let s1 = Belt.Map.remove(s0, 1);
+
+let s2 = Belt.Map.remove(s1, 1);
 
 s1 === s2;
 
-keysToArray(s1) == [|2, 3|];
+Belt.Map.keysToArray(s1) == [|2, 3|];
 ```
 
 ## removeMany
@@ -410,11 +490,17 @@ let set: (t('k, 'v, 'id), 'k, 'v) => t('k, 'v, 'id);
 `set(m, x, y)` returns a map containing the same bindings as `m`, with a new binding of `x` to `y`. If `x` was already bound in `m`, its previous binding disappears.
 
 ```re example
-let s0 = fromArray([(2, "2"), (1, "1"), (3, "3")], ~id=(module IntCmp));
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = (a, b) => Pervasives.compare(a, b);
+  });
+  
+let s0 = Belt.Map.fromArray([|(2, "2"), (1, "1"), (3, "3")|], ~id=(module IntCmp));
 
-let s1 = set(s0, 2, "3");
+let s1 = Belt.Map.set(s0, 2, "3");
 
-valuesToArray(s1) == ["1", "3", "3"];
+Belt.Map.valuesToArray(s1) == [|"1", "3", "3"|];
 ```
 
 ## updateU
