@@ -15,37 +15,38 @@ All data are parameterized by not its only type but also a unique identity in th
 type t = int;
 
 module I0 = (
-  val Belt.Id.hashableU(~hash=(. a: t) => a & 65535, ~eq=(. a, b) => a == b)
+  val Belt.Id.hashableU(
+        ~hash=(. a: t) => a land 65535,
+        ~eq=(. a, b) => a == b,
+      )
 );
 
-let s0 = make(~id=(module I0), ~hintSize=40);
+let s0 = Belt.HashSet.make(~id=(module I0), ~hintSize=40);
 
 module I1 = (
-  val Belt.Id.hashableU(~hash=(. a: t) => a & 255, ~eq=(. a, b) => a == b)
+  val Belt.Id.hashableU(
+        ~hash=(. a: t) => a land 255,
+        ~eq=(. a, b) => a == b,
+      )
 );
 
-let s1 = make(~id=(module I1), ~hintSize=40);
+let s1 = Belt.HashSet.make(~id=(module I1), ~hintSize=40);
+
+Belt.HashSet.add(s1, 0);
+Belt.HashSet.add(s1, 1);
 ```
 
 The invariant must be held: for two elements who are equal, their hashed value should be the same.
 
 Here the compiler would infer `s0` and `s1` having different type so that it would not mix.
 
-```re example
+```re
 let s0: t(int, I0.identity);
 
 let s1: t(int, I1.identity);
 ```
 
-We can add elements to the collection:
-
-```re example
-add(s1, 0);
-
-add(s1, 1);
-```
-
-Since this is an mutable data strucure, `s1` will contain two pairs.
+We can add elements to the collection (see last two lines in the example above). Since this is an mutable data structure, `s1` will contain two pairs.
 
 ## t
 

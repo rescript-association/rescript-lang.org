@@ -435,7 +435,7 @@ Call `f` on each element of `someList` from beginning to end.
 Function `f` takes two arguments: the index starting from 0 and the element from `someList`. `f` returns `unit`.
 
 ```re example
-forEachWithIndex(["a", "b", "c"], (index, x) => Js.log("Item " ++ string_of_int(index) ++ " is " ++ x));
+Belt.List.forEachWithIndex(["a", "b", "c"], (index, x) => Js.log("Item " ++ string_of_int(index) ++ " is " ++ x));
 /*  prints:
       Item 0 is a
       Item 1 is b
@@ -508,7 +508,7 @@ Works like [reduce](#reduce), except that function `f` is applied to each item o
 
 [1, 2, 3, 4]->Belt.List.reduceReverse(10, (-)); /* 0 */
 
-[1, 2, 3, 4]->Belt.List.reduceReverse([], add); /* [1, 2, 3, 4] */
+[1, 2, 3, 4]->Belt.List.reduceReverse([], Belt.List.add); /* [1, 2, 3, 4] */
 ```
 
 ## reduceReverseU
@@ -726,16 +726,16 @@ The comparison returns the first non-zero result of `compareFn`, or zero if `com
 If all items have compared equal, but `firstList` is exhausted first, return `-1`. (`firstList` is shorter).
 If all items have compared equal, but `secondList` is exhausted first, return `1` (`firstList` is longer).
 
-```re
+```re example
 Belt.List.cmp([3], [3, 7], (a, b) => compare(a, b)); /* (-1) */
 
 Belt.List.cmp([5, 3], [5], (a, b) => compare(a, b)); /* 1 */
 
-Belt.List.cmp([|1, 3, 5|], [|1, 4, 2|], (a, b) => compare(a, b)); /* (-1) */
+Belt.List.cmp([1, 3, 5], [1, 4, 2], (a, b) => compare(a, b)); /* (-1) */
 
-Belt.List.cmp([|1, 3, 5|], [|1, 2, 3|], (a, b) => compare(a, b)); /* 1 */
+Belt.List.cmp([1, 3, 5], [1, 2, 3], (a, b) => compare(a, b)); /* 1 */
 
-Belt.List.cmp([|1, 3, 5|], [|1, 3, 5|], (a, b) => compare(a, b)); /* 0 */
+Belt.List.cmp([1, 3, 5], [1, 3, 5], (a, b) => compare(a, b)); /* 0 */
 ```
 
 **Please note:** The total ordering of List is different from Array,
