@@ -12,13 +12,13 @@ Specalized when key type is `string`, more efficient than the generic type, its 
 
 ## key
 
-```re
+```re sig
 type key = string;
 ```
 
 ## t
 
-```re
+```re sig
 type t('value);
 ```
 
@@ -26,43 +26,43 @@ The type of maps from type `key` to type `'value`.
 
 ## empty
 
-```re
+```re sig
 let empty: t('v);
 ```
 
 ## isEmpty
 
-```re
+```re sig
 let isEmpty: t('v) => bool;
 ```
 
 ## has
 
-```re
+```re sig
 let has: (t('v), key) => bool;
 ```
 
 ## cmpU
 
-```re
+```re sig
 let cmpU: (t('v), t('v), [@bs] (('v, 'v) => int)) => int;
 ```
 
 ## cmp
 
-```re
+```re sig
 let cmp: (t('v), t('v), ('v, 'v) => int) => int;
 ```
 
 ## eqU
 
-```re
+```re sig
 let eqU: (t('v), t('v), [@bs] (('v, 'v) => bool)) => bool;
 ```
 
 ## eq
 
-```re
+```re sig
 let eq: (t('v), t('v), ('v, 'v) => bool) => bool;
 ```
 
@@ -70,13 +70,13 @@ let eq: (t('v), t('v), ('v, 'v) => bool) => bool;
 
 ## findFirstByU
 
-```re
+```re sig
 let findFirstByU: (t('v), [@bs] ((key, 'v) => bool)) => option((key, 'v));
 ```
 
 ## findFirstBy
 
-```re
+```re sig
 let findFirstBy: (t('v), (key, 'v) => bool) => option((key, 'v));
 ```
 
@@ -90,13 +90,13 @@ findFirstBy(s0, (k, v) => k == 4) == option((4, "4"));
 
 ## forEachU
 
-```re
+```re sig
 let forEachU: (t('v), [@bs] ((key, 'v) => unit)) => unit;
 ```
 
 ## forEach
 
-```re
+```re sig
 let forEach: (t('v), (key, 'v) => unit) => unit;
 ```
 
@@ -104,13 +104,13 @@ let forEach: (t('v), (key, 'v) => unit) => unit;
 
 ## reduceU
 
-```re
+```re sig
 let reduceU: (t('v), 'v2, [@bs] (('v2, key, 'v) => 'v2)) => 'v2;
 ```
 
 ## reduce
 
-```re
+```re sig
 let reduce: (t('v), 'v2, ('v2, key, 'v) => 'v2) => 'v2;
 ```
 
@@ -118,13 +118,13 @@ let reduce: (t('v), 'v2, ('v2, key, 'v) => 'v2) => 'v2;
 
 ## everyU
 
-```re
+```re sig
 let everyU: (t('v), [@bs] ((key, 'v) => bool)) => bool;
 ```
 
 ## every
 
-```re
+```re sig
 let every: (t('v), (key, 'v) => bool) => bool;
 ```
 
@@ -132,13 +132,13 @@ let every: (t('v), (key, 'v) => bool) => bool;
 
 ## someU
 
-```re
+```re sig
 let someU: (t('v), [@bs] ((key, 'v) => bool)) => bool;
 ```
 
 ## some
 
-```re
+```re sig
 let some: (t('v), (key, 'v) => bool) => bool;
 ```
 
@@ -146,13 +146,13 @@ let some: (t('v), (key, 'v) => bool) => bool;
 
 ## size
 
-```re
+```re sig
 let size: t('v) => int;
 ```
 
 ## toList
 
-```re
+```re sig
 let toList: t('v) => list((key, 'v));
 ```
 
@@ -160,103 +160,103 @@ In increasing order.
 
 ## toArray
 
-```re
+```re sig
 let toArray: t('v) => array((key, 'v));
 ```
 
 ## fromArray
 
-```re
+```re sig
 let fromArray: array((key, 'v)) => t('v);
 ```
 
 ## keysToArray
 
-```re
+```re sig
 let keysToArray: t('v) => array(key);
 ```
 
 ## valuesToArray
 
-```re
+```re sig
 let valuesToArray: t('v) => array('v);
 ```
 
 ## minKey
 
-```re
+```re sig
 let minKey: t('a) => option(key);
 ```
 
 ## minKeyUndefined
 
-```re
+```re sig
 let minKeyUndefined: t('a) => Js.undefined(key);
 ```
 
 ## maxKey
 
-```re
+```re sig
 let maxKey: t('a) => option(key);
 ```
 
 ## maxKeyUndefined
 
-```re
+```re sig
 let maxKeyUndefined: t('a) => Js.undefined(key);
 ```
 
 ## minimum
 
-```re
+```re sig
 let minimum: t('v) => option((key, 'v));
 ```
 
 ## minUndefined
 
-```re
+```re sig
 let minUndefined: t('v) => Js.undefined((key, 'v));
 ```
 
 ## maximum
 
-```re
+```re sig
 let maximum: t('v) => option((key, 'v));
 ```
 
 ## maxUndefined
 
-```re
+```re sig
 let maxUndefined: t('v) => Js.undefined((key, 'v));
 ```
 
 ## get
 
-```re
+```re sig
 let get: (t('v), key) => option('v);
 ```
 
 ## getUndefined
 
-```re
+```re sig
 let getUndefined: (t('v), key) => Js.undefined('v);
 ```
 
 ## getWithDefault
 
-```re
+```re sig
 let getWithDefault: (t('v), key, 'v) => 'v;
 ```
 
 ## getExn
 
-```re
+```re sig
 let getExn: (t('v), key) => 'v;
 ```
 
 ## checkInvariantInternal
 
-```re
+```re sig
 let checkInvariantInternal: t('a) => unit;
 ```
 
@@ -264,7 +264,7 @@ let checkInvariantInternal: t('a) => unit;
 
 ## remove
 
-```re
+```re sig
 let remove: (t('v), key) => t('v);
 ```
 
@@ -272,13 +272,13 @@ let remove: (t('v), key) => t('v);
 
 ## removeMany
 
-```re
+```re sig
 let removeMany: (t('v), array(key)) => t('v);
 ```
 
 ## set
 
-```re
+```re sig
 let set: (t('v), key, 'v) => t('v);
 ```
 
@@ -286,25 +286,25 @@ let set: (t('v), key, 'v) => t('v);
 
 ## updateU
 
-```re
+```re sig
 let updateU: (t('v), key, [@bs] (option('v) => option('v))) => t('v);
 ```
 
 ## update
 
-```re
+```re sig
 let update: (t('v), key, option('v) => option('v)) => t('v);
 ```
 
 ## mergeU
 
-```re
+```re sig
 let mergeU: (t('v), t('v2), [@bs] ((key, option('v), option('v2)) => option('c))) => t('c);
 ```
 
 ## merge
 
-```re
+```re sig
 let merge: (t('v), t('v2), (key, option('v), option('v2)) => option('c)) => t('c);
 ```
 
@@ -312,19 +312,19 @@ let merge: (t('v), t('v2), (key, option('v), option('v2)) => option('c)) => t('c
 
 ## mergeMany
 
-```re
+```re sig
 let mergeMany: (t('v), array((key, 'v))) => t('v);
 ```
 
 ## keepU
 
-```re
+```re sig
 let keepU: (t('v), [@bs] ((key, 'v) => bool)) => t('v);
 ```
 
 ## keep
 
-```re
+```re sig
 let keep: (t('v), (key, 'v) => bool) => t('v);
 ```
 
@@ -332,13 +332,13 @@ let keep: (t('v), (key, 'v) => bool) => t('v);
 
 ## partitionU
 
-```re
+```re sig
 let partitionU: (t('v), [@bs] ((key, 'v) => bool)) => (t('v), t('v));
 ```
 
 ## partition
 
-```re
+```re sig
 let partition: (t('v), (key, 'v) => bool) => (t('v), t('v));
 ```
 
@@ -346,7 +346,7 @@ let partition: (t('v), (key, 'v) => bool) => (t('v), t('v));
 
 ## split
 
-```re
+```re sig
 let split: (key, t('v)) => (t('v), option('v), t('v));
 ```
 
@@ -354,13 +354,13 @@ let split: (key, t('v)) => (t('v), option('v), t('v));
 
 ## mapU
 
-```re
+```re sig
 let mapU: (t('v), [@bs] ('v => 'v2)) => t('v2);
 ```
 
 ## map
 
-```re
+```re sig
 let map: (t('v), 'v => 'v2) => t('v2);
 ```
 
@@ -368,12 +368,12 @@ let map: (t('v), 'v => 'v2) => t('v2);
 
 ## mapWithKeyU
 
-```re
+```re sig
 let mapWithKeyU: (t('v), [@bs] ((key, 'v) => 'v2)) => t('v2);
 ```
 
 ## mapWithKey
 
-```re
+```re sig
 let mapWithKey: (t('v), (key, 'v) => 'v2) => t('v2);
 ```

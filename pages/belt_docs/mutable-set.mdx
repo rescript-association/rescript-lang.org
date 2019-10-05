@@ -40,7 +40,7 @@ module IntCmp =
 
 ## t
 
-```re
+```re sig
 type t('value, 'id);
 ```
 
@@ -50,7 +50,7 @@ type t('value, 'id);
 
 ## id
 
-```re
+```re sig
 type id('value, 'id) = Belt_Id.comparable('value, 'id);
 ```
 
@@ -58,7 +58,7 @@ The identity needed for making a set from scratch
 
 ## make
 
-```re
+```re sig
 let make: (~id: id('value, 'id)) => t('value, 'id);
 ```
 
@@ -66,7 +66,7 @@ Creates a new set by taking in the comparator
 
 ## fromArray
 
-```re
+```re sig
 let fromArray: (array('value), ~id: id('value, 'id)) => t('value, 'id);
 ```
 
@@ -80,7 +80,7 @@ s0->Belt.MutableSet.toArray; /* [|1, 2, 3, 4|] */
 
 ## fromSortedArrayUnsafe
 
-```re
+```re sig
 let fromSortedArrayUnsafe: (array('value), ~id: id('value, 'id)) => t('value, 'id);
 ```
 
@@ -88,7 +88,7 @@ The same as [fromArray][#fromarray] except it is after assuming the input array 
 
 ## copy
 
-```re
+```re sig
 let copy: t('value, 'id) => t('value, 'id);
 ```
 
@@ -103,7 +103,7 @@ copied->Belt.MutableSet.toArray /* [|1, 2, 3, 4|] */
 
 ## isEmpty
 
-```re
+```re sig
 let isEmpty: t('a, 'b) => bool;
 ```
 
@@ -119,7 +119,7 @@ Belt.MutableSet.isEmpty(notEmpty); /* false */
 
 ## has
 
-```re
+```re sig
 let has: (t('value, 'a), 'value) => bool;
 ```
 
@@ -134,7 +134,7 @@ set->Belt.MutableSet.has(1) /* true */
 
 ## add
 
-```re
+```re sig
 let add: (t('value, 'id), 'value) => unit;
 ```
 
@@ -151,13 +151,13 @@ s3->Belt.MutableSet.toArray; /* [|1, 2|] */
 
 ## addCheck
 
-```re
+```re sig
 let addCheck: (t('value, 'id), 'value) => bool;
 ```
 
 ## mergeMany
 
-```re
+```re sig
 let mergeMany: (t('value, 'id), array('value)) => unit;
 ```
 
@@ -172,7 +172,7 @@ set->Belt.MutableSet.toArray; /* [|1, 2, 3, 4, 5|] */
 
 ## remove
 
-```re
+```re sig
 let remove: (t('value, 'id), 'value) => unit;
 ```
 
@@ -189,13 +189,13 @@ s0->Belt.MutableSet.toArray; /* [|2,4,5|] */
 
 ## removeCheck
 
-```re
+```re sig
 let removeCheck: (t('value, 'id), 'value) => bool;
 ```
 
 ## removeMany
 
-```re
+```re sig
 let removeMany: (t('value, 'id), array('value)) => unit;
 ```
 
@@ -210,7 +210,7 @@ set->Belt.MutableSet.toArray; /* [||] */
 
 ## union
 
-```re
+```re sig
 let union: (t('value, 'id), t('value, 'id)) => t('value, 'id);
 ```
 
@@ -225,7 +225,7 @@ union->Belt.MutableSet.toArray; /* [|1,2,3,4,5,6|] */
 
 ## intersect
 
-```re
+```re sig
 let intersect: (t('value, 'id), t('value, 'id)) => t('value, 'id);
 ```
 
@@ -241,7 +241,7 @@ intersect->Belt.MutableSet.toArray; /* [|2,3,5|] */
 
 ## diff
 
-```re
+```re sig
 let diff: (t('value, 'id), t('value, 'id)) => t('value, 'id);
 ```
 
@@ -256,7 +256,7 @@ Belt.MutableSet.toArray(Belt.MutableSet.diff(s1,s0)); /* [|1,4|] */
 
 ## subset
 
-```re
+```re sig
 let subset: (t('value, 'id), t('value, 'id)) => bool;
 ```
 
@@ -273,7 +273,7 @@ Belt.MutableSet.subset(s1, s0); /* false */
 
 ## cmp
 
-```re
+```re sig
 let cmp: (t('value, 'id), t('value, 'id)) => int;
 ```
 
@@ -281,7 +281,7 @@ Total ordering between sets. Can be used as the ordering function for doing sets
 
 ## eq
 
-```re
+```re sig
 let eq: (t('value, 'id), t('value, 'id)) => bool;
 ```
 
@@ -296,7 +296,7 @@ Belt.MutableSet.eq(s0, s1); /* true */
 
 ## forEachU
 
-```re
+```re sig
 let forEachU: (t('value, 'id), [@bs] ('value => unit)) => unit;
 ```
 
@@ -304,7 +304,7 @@ Same as [forEach](##forEach) but takes uncurried functon.
 
 ## forEach
 
-```re
+```re sig
 let forEach: (t('value, 'id), 'value => unit) => unit;
 ```
 
@@ -321,13 +321,13 @@ acc; /* [6,5,3,2] */
 
 ## reduceU
 
-```re
+```re sig
 let reduceU: (t('value, 'id), 'a, [@bs] (('a, 'value) => 'a)) => 'a;
 ```
 
 ## reduce
 
-```re
+```re sig
 let reduce: (t('value, 'id), 'a, ('a, 'value) => 'a) => 'a;
 ```
 
@@ -342,13 +342,13 @@ s0->Belt.MutableSet.reduce([], (element, acc) =>
 
 ## everyU
 
-```re
+```re sig
 let everyU: (t('value, 'id), [@bs] ('value => bool)) => bool;
 ```
 
 ## every
 
-```re
+```re sig
 let every: (t('value, 'id), 'value => bool) => bool;
 ```
 
@@ -363,13 +363,13 @@ s0->Belt.MutableSet.every(isEven); /* true */
 
 ## someU
 
-```re
+```re sig
 let someU: (t('value, 'id), [@bs] ('value => bool)) => bool;
 ```
 
 ## some
 
-```re
+```re sig
 let some: (t('value, 'id), 'value => bool) => bool;
 ```
 
@@ -384,13 +384,13 @@ s0->Belt.MutableSet.some(isOdd); /* true */
 
 ## keepU
 
-```re
+```re sig
 let keepU: (t('value, 'id), [@bs] ('value => bool)) => t('value, 'id);
 ```
 
 ## keep
 
-```re
+```re sig
 let keep: (t('value, 'id), 'value => bool) => t('value, 'id);
 ```
 
@@ -407,13 +407,13 @@ s1->Belt.MutableSet.toArray; /* [|2, 4|] */
 
 ## partitionU
 
-```re
+```re sig
 let partitionU: (t('value, 'id), [@bs] ('value => bool)) => (t('value, 'id), t('value, 'id));
 ```
 
 ## partition
 
-```re
+```re sig
 let partition: (t('value, 'id), 'value => bool) => (t('value, 'id), t('value, 'id));
 ```
 
@@ -429,7 +429,7 @@ s2->Belt.MutableSet.toArray; /* [|2,4|] */
 
 ## size
 
-```re
+```re sig
 let size: t('value, 'id) => int;
 ```
 
@@ -443,7 +443,7 @@ s0->Belt.MutableSet.size; /* 4 */
 
 ## toList
 
-```re
+```re sig
 let toList: t('value, 'id) => list('value);
 ```
 
@@ -457,7 +457,7 @@ s0->Belt.MutableSet.toList; /* [1,2,3,5] */
 
 ## toArray
 
-```re
+```re sig
 let toArray: t('value, 'id) => array('value);
 ```
 
@@ -471,7 +471,7 @@ s0->Belt.MutableSet.toArray; /* [|1,2,3,5|] */
 
 ## minimum
 
-```re
+```re sig
 let minimum: t('value, 'id) => option('value);
 ```
 
@@ -487,7 +487,7 @@ s1->Belt.MutableSet.minimum; /* Some(1) */
 
 ## minUndefined
 
-```re
+```re sig
 let minUndefined: t('value, 'id) => Js.undefined('value);
 ```
 
@@ -503,7 +503,7 @@ s1->Belt.MutableSet.minUndefined; /* 1 */
 
 ## maximum
 
-```re
+```re sig
 let maximum: t('value, 'id) => option('value);
 ```
 
@@ -519,7 +519,7 @@ s1->Belt.MutableSet.maximum; /* Some(5) */
 
 ## maxUndefined
 
-```re
+```re sig
 let maxUndefined: t('value, 'id) => Js.undefined('value);
 ```
 
@@ -535,7 +535,7 @@ s1->Belt.MutableSet.maxUndefined; /* 5 */
 
 ## get
 
-```re
+```re sig
 let get: (t('value, 'id), 'value) => option('value);
 ```
 
@@ -550,7 +550,7 @@ s0->Belt.MutableSet.get(20); /* None */
 
 ## getUndefined
 
-```re
+```re sig
 let getUndefined: (t('value, 'id), 'value) => Js.undefined('value);
 ```
 
@@ -558,7 +558,7 @@ Same as [get](#get) but returns `undefined` when element does not exist.
 
 ## getExn
 
-```re
+```re sig
 let getExn: (t('value, 'id), 'value) => 'value;
 ```
 
@@ -566,7 +566,7 @@ Same as [get](#get) but raise when element does not exist.
 
 ## split
 
-```re
+```re sig
 let split: (t('value, 'id), 'value) => ((t('value, 'id), t('value, 'id)), bool);
 ```
 
@@ -585,7 +585,7 @@ larger->Belt.MutableSet.toArray; /* [|4,5|] */
 
 ## checkInvariantInternal
 
-```re
+```re sig
 let checkInvariantInternal: t('a, 'b) => unit;
 ```
 

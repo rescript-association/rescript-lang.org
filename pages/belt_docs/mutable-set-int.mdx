@@ -13,7 +13,7 @@ It is more efficient in general, the API is the same with [Belt.MutableSet](/bel
 
 ## value
 
-```re
+```re sig
 type value = int;
 ```
 
@@ -21,7 +21,7 @@ The type of the set elements
 
 ## t
 
-```re
+```re sig
 type t;
 ```
 
@@ -29,7 +29,7 @@ Type of the sets.
 
 ## make
 
-```re
+```re sig
 let make: unit => t;
 ```
 
@@ -41,7 +41,7 @@ let set = Belt.MutableSet.Int.make();
 
 ## fromArray
 
-```re
+```re sig
 let fromArray: array(value) => t;
 ```
 
@@ -55,7 +55,7 @@ s0->Belt.MutableSet.Int.toArray; /* [|1, 2, 3, 4|] */
 
 ## fromSortedArrayUnsafe
 
-```re
+```re sig
 let fromSortedArrayUnsafe: array(value) => t;
 ```
 
@@ -63,7 +63,7 @@ The same as [fromArray][#fromarray] except it is after assuming the input array 
 
 ## copy
 
-```re
+```re sig
 let copy: t => t;
 ```
 
@@ -78,7 +78,7 @@ copied->Belt.MutableSet.Int.toArray /* [|1, 2, 3, 4|] */
 
 ## isEmpty
 
-```re
+```re sig
 let isEmpty: t => bool;
 ```
 
@@ -94,7 +94,7 @@ Belt.MutableSet.Int.isEmpty(notEmpty); /* false */
 
 ## has
 
-```re
+```re sig
 let has: (t, value) => bool;
 ```
 
@@ -109,7 +109,7 @@ set->Belt.MutableSet.Int.has(1) /* true */
 
 ## add
 
-```re
+```re sig
 let add: (t, value) => unit;
 ```
 
@@ -132,7 +132,7 @@ let addCheck: (t, value) => bool;
 
 ## mergeMany
 
-```re
+```re sig
 let mergeMany: (t, array(value)) => unit;
 ```
 
@@ -147,7 +147,7 @@ set->Belt.MutableSet.toArray; /* [|1, 2, 3, 4, 5|] */
 
 ## remove
 
-```re
+```re sig
 let remove: (t, value) => unit;
 ```
 
@@ -164,13 +164,13 @@ s0->Belt.MutableSet.toArray; /* [|2,4,5|] */
 
 ## removeCheck
 
-```re
+```re sig
 let removeCheck: (t, value) => bool;
 ```
 
 ## removeMany
 
-```re
+```re sig
 let removeMany: (t, array(value)) => unit;
 ```
 
@@ -185,7 +185,7 @@ set->Belt.MutableSet.toArray; /* [||] */
 
 ## union
 
-```re
+```re sig
 let union: (t, t) => t;
 ```
 
@@ -200,7 +200,7 @@ union->Belt.MutableSet.toArray; /* [|1,2,3,4,5,6|] */
 
 ## intersect
 
-```re
+```re sig
 let intersect: (t, t) => t;
 ```
 
@@ -216,7 +216,7 @@ intersect->Belt.MutableSet.toArray; /* [|2,3,5|] */
 
 ## diff
 
-```re
+```re sig
 let diff: (t, t) => t;
 ```
 
@@ -231,7 +231,7 @@ Belt.MutableSet.toArray(Belt.MutableSet.diff(s1,s0)); /* [|1,4|] */
 
 ## subset
 
-```re
+```re sig
 let subset: (t, t) => bool;
 ```
 
@@ -248,7 +248,7 @@ Belt.MutableSet.subset(s1, s0); /* false */
 
 ## cmp
 
-```re
+```re sig
 let cmp: (t, t) => int;
 ```
 
@@ -256,7 +256,7 @@ Total ordering between sets. Can be used as the ordering function for doing sets
 
 ## eq
 
-```re
+```re sig
 let eq: (t, t) => bool;
 ```
 
@@ -271,7 +271,7 @@ Belt.MutableSet.eq(s0, s1); /* true */
 
 ## forEachU
 
-```re
+```re sig
 let forEachU: (t, [@bs] (value => unit)) => unit;
 ```
 
@@ -279,7 +279,7 @@ Same as [forEach](##forEach) but takes uncurried functon.
 
 ## forEach
 
-```re
+```re sig
 let forEach: (t, value => unit) => unit;
 ```
 
@@ -296,7 +296,7 @@ acc; /* [6,5,3,2] */
 
 ## reduceU
 
-```re
+```re sig
 let reduceU: (t, 'a, [@bs] (('a, value) => 'a)) => 'a;
 ```
 
@@ -317,13 +317,13 @@ s0->Belt.MutableSet.reduce([], (element, acc) =>
 
 ## everyU
 
-```re
+```re sig
 let everyU: (t, [@bs] (value => bool)) => bool;
 ```
 
 ## every
 
-```re
+```re sig
 let every: (t, value => bool) => bool;
 ```
 
@@ -338,13 +338,13 @@ s0->Belt.MutableSet.every(isEven); /* true */
 
 ## someU
 
-```re
+```re sig
 let someU: (t, [@bs] (value => bool)) => bool;
 ```
 
 ## some
 
-```re
+```re sig
 let some: (t, value => bool) => bool;
 ```
 
@@ -359,13 +359,13 @@ s0->Belt.MutableSet.some(isOdd); /* true */
 
 ## keepU
 
-```re
+```re sig
 let keepU: (t, [@bs] (value => bool)) => t;
 ```
 
 ## keep
 
-```re
+```re sig
 let keep: (t, value => bool) => t;
 ```
 
@@ -382,13 +382,13 @@ s1->Belt.MutableSet.toArray; /* [|2, 4|] */
 
 ## partitionU
 
-```re
+```re sig
 let partitionU: (t, [@bs] (value => bool)) => (t, t);
 ```
 
 ## partition
 
-```re
+```re sig
 let partition: (t, value => bool) => (t, t);
 ```
 
@@ -404,7 +404,7 @@ s2->Belt.MutableSet.toArray; /* [|2,4|] */
 
 ## size
 
-```re
+```re sig
 let size: t => int;
 ```
 
@@ -418,7 +418,7 @@ s0->Belt.MutableSet.size; /* 4 */
 
 ## toList
 
-```re
+```re sig
 let toList: t => list(value);
 ```
 
@@ -432,7 +432,7 @@ s0->Belt.MutableSet.toList; /* [1,2,3,5] */
 
 ## toArray
 
-```re
+```re sig
 let toArray: t => array(value);
 ```
 
@@ -446,7 +446,7 @@ s0->Belt.MutableSet.toArray; /* [|1,2,3,5|] */
 
 ## minimum
 
-```re
+```re sig
 let minimum: t => option(value);
 ```
 
@@ -462,7 +462,7 @@ s1->Belt.MutableSet.minimum; /* Some(1) */
 
 ## minUndefined
 
-```re
+```re sig
 let minUndefined: t => Js.undefined(value);
 ```
 
@@ -478,7 +478,7 @@ s1->Belt.MutableSet.minUndefined; /* 1 */
 
 ## maximum
 
-```re
+```re sig
 let maximum: t => option(value);
 ```
 
@@ -494,7 +494,7 @@ s1->Belt.MutableSet.maximum; /* Some(5) */
 
 ## maxUndefined
 
-```re
+```re sig
 let maxUndefined: t => Js.undefined(value);
 ```
 
@@ -510,7 +510,7 @@ s1->Belt.MutableSet.maxUndefined; /* 5 */
 
 ## get
 
-```re
+```re sig
 let get: (t, value) => option(value);
 ```
 
@@ -525,7 +525,7 @@ s0->Belt.MutableSet.get(20); /* None */
 
 ## getUndefined
 
-```re
+```re sig
 let getUndefined: (t, value) => Js.undefined(value);
 ```
 
@@ -533,7 +533,7 @@ Same as [get](#get) but returns `undefined` when element does not exist.
 
 ## getExn
 
-```re
+```re sig
 let getExn: (t, value) => value;
 ```
 
@@ -541,7 +541,7 @@ Same as [get](#get) but raise when element does not exist.
 
 ## split
 
-```re
+```re sig
 let split: (t, value) => ((t, t), bool);
 ```
 
@@ -560,7 +560,7 @@ larger->Belt.MutableSet.toArray; /* [|4,5|] */
 
 ## checkInvariantInternal
 
-```re
+```re sig
 let checkInvariantInternal: t => unit;
 ```
 
