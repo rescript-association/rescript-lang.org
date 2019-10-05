@@ -15,16 +15,15 @@ This module gives you useful utilities to create and combine `Result` data.
 
 ## t
 
-```re
+```re sig
 type t('a, 'b) =
   | Ok('a)
   | Error('b);
 ```
 
 The type `Result.t(result, err)` describes a variant of two states:
-``Ok(someResult)`` represents a successful operation, whereby
-```Error(someError)`` signals an erronous operation.
-
+`Ok(someResult)` represents a successful operation, whereby
+``Error(someError)` signals an erronous operation.
 
 In this concrete example, we are defining our own `Result` type to reflect an HTTP like
 query operation:
@@ -40,7 +39,7 @@ let failQueryUser = (username: string): queryResult => {
 
 ## getExn
 
-```re
+```re sig
 let getExn: t('a, 'b) => 'a;
 ```
 
@@ -54,13 +53,13 @@ getExn(bad); /* raises exception */
 
 ## mapWithDefaultU
 
-```re
+```re sig
 let mapWithDefaultU: (t('a, 'c), 'b, (.'a => 'b)) => 'b;
 ```
 
 ## mapWithDefault
 
-```re
+```re sig
 let mapWithDefault: (t('a, 'c), 'b, 'a => 'b) => 'b;
 ```
 
@@ -75,13 +74,13 @@ mapWithDefault(bad, 0, (x) => x / 2) == 0;
 
 ## mapU
 
-```re
+```re sig
 let mapU: (t('a, 'c), [@bs] ('a => 'b)) => t('b, 'c);
 ```
 
 ## map
 
-```re
+```re sig
 let map: (t('a, 'c), 'a => 'b) => t('b, 'c);
 ```
 
@@ -99,13 +98,13 @@ map(Error("Invalid data"), f) == Error("Invalid data");
 
 ## flatMapU
 
-```re
+```re sig
 let flatMapU: (t('a, 'c), [@bs] ('a => t('b, 'c))) => t('b, 'c);
 ```
 
 ## flatMap
 
-```re
+```re sig
 let flatMap: (t('a, 'c), 'a => t('b, 'c)) => t('b, 'c);
 ```
 
@@ -130,7 +129,7 @@ flatMap(Error("Already bad"), recip) == Error("Already bad");
 
 ## getWithDefault
 
-```re
+```re sig
 let getWithDefault: (t('a, 'b), 'a) => 'a;
 ```
 
@@ -145,7 +144,7 @@ getWithDefault(Error("Invalid Data")) == 0;
 
 ## isOk
 
-```re
+```re sig
 let isOk: t('a, 'b) => bool;
 ```
 
@@ -154,7 +153,7 @@ the `Error(e)` variant.
 
 ## isError
 
-```re
+```re sig
 let isError: t('a, 'b) => bool;
 ```
 
@@ -163,13 +162,13 @@ it is the `Ok(n)` variant.
 
 ## eqU
 
-```re
+```re sig
 let eqU: (t('a, 'c), t('b, 'd), (.'a, 'b) => bool) => bool;
 ```
 
 ## eq
 
-```re
+```re sig
 let eq: (t('a, 'c), t('b, 'd), ('a, 'b) => bool) => bool;
 ```
 
@@ -201,13 +200,13 @@ eq(bad1, bad2, mod10equal) == true;
 
 ## cmpU
 
-```re
+```re sig
 let cmpU: (t('a, 'c), t('b, 'd), (.'a, 'b) => int) => int;
 ```
 
 ## cmp
 
-```re
+```re sig
 let cmp: (t('a, 'c), t('b, 'd), ('a, 'b) => int) => int;
 ```
 

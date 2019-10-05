@@ -13,7 +13,7 @@ It is more efficient in general, the API is the same with [Belt.MutableSet](/bel
 
 ## value
 
-```re
+```re sig
 type value = string;
 ```
 
@@ -21,7 +21,7 @@ The type of the set elements.
 
 ## t
 
-```re
+```re sig
 type t;
 ```
 
@@ -29,7 +29,7 @@ The type of sets.
 
 ## make
 
-```re
+```re sig
 let make: unit => t;
 ```
 
@@ -41,7 +41,7 @@ let set = Belt.MutableSet.String.make();
 
 ## fromArray
 
-```re
+```re sig
 let fromArray: array(value) => t;
 ```
 
@@ -55,7 +55,7 @@ s0->Belt.MutableSet.String.toArray; /* [|"apple", "banana", "orange"|] */
 
 ## fromSortedArrayUnsafe
 
-```re
+```re sig
 let fromSortedArrayUnsafe: array(value) => t;
 ```
 
@@ -63,7 +63,7 @@ The same as [fromArray][#fromarray] except it is after assuming the input array 
 
 ## copy
 
-```re
+```re sig
 let copy: t => t;
 ```
 
@@ -78,7 +78,7 @@ copied->Belt.MutableSet.String.toArray /* [|1, 2, 3, 4|] */
 
 ## isEmpty
 
-```re
+```re sig
 let isEmpty: t => bool;
 ```
 
@@ -94,7 +94,7 @@ Belt.MutableSet.String.isEmpty(notEmpty); /* false */
 
 ## has
 
-```re
+```re sig
 let has: (t, value) => bool;
 ```
 
@@ -109,7 +109,7 @@ set->Belt.MutableSet.String.has("apple") /* true */
 
 ## add
 
-```re
+```re sig
 let add: (t, value) => unit;
 ```
 
@@ -129,13 +129,13 @@ s2 == s3; /* true */
 
 ## addCheck
 
-```re
+```re sig
 let addCheck: (t, value) => bool;
 ```
 
 ## mergeMany
 
-```re
+```re sig
 let mergeMany: (t, array(value)) => unit;
 ```
 
@@ -152,7 +152,7 @@ newSet->Belt.MutableSet.String.toArray; /* [|"apple", "banana", "orange", "straw
 
 ## remove
 
-```re
+```re sig
 let remove: (t, value) => unit;
 ```
 
@@ -169,13 +169,13 @@ s0->Belt.MutableSet.String.toArray; /* [|"orange|] */
 
 ## removeCheck
 
-```re
+```re sig
 let removeCheck: (t, value) => bool;
 ```
 
 ## removeMany
 
-```re
+```re sig
 let removeMany: (t, array(value)) => unit;
 ```
 
@@ -190,7 +190,7 @@ set->Belt.MutableSet.String.toArray; /* [||] */
 
 ## union
 
-```re
+```re sig
 let union: (t, t) => t;
 ```
 
@@ -205,7 +205,7 @@ union->Belt.MutableSet.String.toArray; /* [|"apple", "banana", "carrot", "orange
 
 ## intersect
 
-```re
+```re sig
 let intersect: (t, t) => t;
 ```
 
@@ -220,7 +220,7 @@ intersect->Belt.MutableSet.String.toArray; /* [|"apple", "banana", "orange"|] */
 
 ## diff
 
-```re
+```re sig
 let diff: (t, t) => t;
 ```
 
@@ -235,7 +235,7 @@ Belt.MutableSet.String.toArray(Belt.MutableSet.String.diff(s1, s0)); /* [|"straw
 
 ## subset
 
-```re
+```re sig
 let subset: (t, t) => bool;
 ```
 
@@ -252,7 +252,7 @@ Belt.MutableSet.String.subset(s1, s0); /* false */
 
 ## cmp
 
-```re
+```re sig
 let cmp: (t, t) => int;
 ```
 
@@ -260,7 +260,7 @@ Total ordering between sets. Can be used as the ordering function for doing sets
 
 ## eq
 
-```re
+```re sig
 let eq: (t, t) => bool;
 ```
 
@@ -275,7 +275,7 @@ Belt.MutableSet.String.eq(s0, s1); /* true */
 
 ## forEachU
 
-```re
+```re sig
 let forEachU: (t, [@bs] (value => unit)) => unit;
 ```
 
@@ -283,7 +283,7 @@ Same as [forEach](##forEach) but takes uncurried functon.
 
 ## forEach
 
-```re
+```re sig
 let forEach: (t, value => unit) => unit;
 ```
 
@@ -300,13 +300,13 @@ acc; /* ["orange", "banana", "apple"] */
 
 ## reduceU
 
-```re
+```re sig
 let reduceU: (t, 'a, [@bs] (('a, value) => 'a)) => 'a;
 ```
 
 ## reduce
 
-```re
+```re sig
 let reduce: (t, 'a, ('a, value) => 'a) => 'a;
 ```
 
@@ -323,13 +323,13 @@ s0->Belt.MutableSet.String.reduce(0, (element, acc) =>
 
 ## everyU
 
-```re
+```re sig
 let everyU: (t, [@bs] (value => bool)) => bool;
 ```
 
 ## every
 
-```re
+```re sig
 let every: (t, value => bool) => bool;
 ```
 
@@ -344,13 +344,13 @@ s0->Belt.MutableSet.String.every(hasAtLeastFiveChars); /* true */
 
 ## someU
 
-```re
+```re sig
 let someU: (t, [@bs] (value => bool)) => bool;
 ```
 
 ## some
 
-```re
+```re sig
 let some: (t, value => bool) => bool;
 ```
 
@@ -365,13 +365,13 @@ s0->Belt.MutableSet.String.some(hasFiveChars); /* true */
 
 ## keepU
 
-```re
+```re sig
 let keepU: (t, [@bs] (value => bool)) => t;
 ```
 
 ## keep
 
-```re
+```re sig
 let keep: (t, value => bool) => t;
 ```
 
@@ -388,13 +388,13 @@ s1->Belt.MutableSet.String.toArray; /* [|"apple"|] */
 
 ## partitionU
 
-```re
+```re sig
 let partitionU: (t, [@bs] (value => bool)) => (t, t);
 ```
 
 ## partition
 
-```re
+```re sig
 let partition: (t, value => bool) => (t, t);
 ```
 
@@ -412,7 +412,7 @@ s2->Belt.MutableSet.String.toArray; /* [|"carrot"|] */
 
 ## size
 
-```re
+```re sig
 let size: t => int;
 ```
 
@@ -426,7 +426,7 @@ s0->Belt.MutableSet.String.size; /* 1 */
 
 ## toList
 
-```re
+```re sig
 let toList: t => list(value);
 ```
 
@@ -440,7 +440,7 @@ s0->Belt.MutableSet.String.toList; /* ["apple", "watermelon"] */
 
 ## toArray
 
-```re
+```re sig
 let toArray: t => array(value);
 ```
 
@@ -454,7 +454,7 @@ s0->Belt.MutableSet.String.toArray; /* [|"apple", "watermelon"|] */
 
 ## minimum
 
-```re
+```re sig
 let minimum: t => option(value);
 ```
 
@@ -470,7 +470,7 @@ s1->Belt.MutableSet.String.minimum; /* Some("apple") */
 
 ## minUndefined
 
-```re
+```re sig
 let minUndefined: t => Js.undefined(value);
 ```
 
@@ -486,7 +486,7 @@ s1->Belt.MutableSet.String.minUndefined; /* "apple" */
 
 ## maximum
 
-```re
+```re sig
 let maximum: t => option(value);
 ```
 
@@ -502,7 +502,7 @@ s1->Belt.MutableSet.String.maximum; /* Some("orange") */
 
 ## maxUndefined
 
-```re
+```re sig
 let maxUndefined: t => Js.undefined(value);
 ```
 
@@ -518,7 +518,7 @@ s1->Belt.MutableSet.String.maxUndefined; /* orange */
 
 ## get
 
-```re
+```re sig
 let get: (t, value) => option(value);
 ```
 
@@ -533,7 +533,7 @@ s0->Belt.MutableSet.String.get("watermelon"); /* None */
 
 ## getUndefined
 
-```re
+```re sig
 let getUndefined: (t, value) => Js.undefined(value);
 ```
 
@@ -541,7 +541,7 @@ Same as [get](#get) but returns `undefined` when element does not exist.
 
 ## getExn
 
-```re
+```re sig
 let getExn: (t, value) => value;
 ```
 
@@ -549,7 +549,7 @@ Same as [get](#get) but raise when element does not exist.
 
 ## split
 
-```re
+```re sig
 let split: (t, value) => ((t, t), bool);
 ```
 
@@ -567,7 +567,7 @@ larger->Belt.MutableSet.String.toArray; /* [|"orange"|] */
 
 ## checkInvariantInternal
 
-```re
+```re sig
 let checkInvariantInternal: t => unit;
 ```
 

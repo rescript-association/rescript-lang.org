@@ -22,7 +22,7 @@ module IntCmp =
 
 ## t
 
-```re
+```re sig
 type t('value, 'identity);
 ```
 
@@ -32,7 +32,7 @@ type t('value, 'identity);
 
 ## cmp
 
-```re
+```re sig
 type cmp('value, 'id) = BeltId.cmp('value, 'id);
 ```
 
@@ -40,7 +40,7 @@ Type of compare function.
 
 ## empty
 
-```re
+```re sig
 let empty: t('value, 'id);
 ```
 
@@ -50,7 +50,7 @@ let s0 = Belt.Set.Dict.Int.empty;
 
 ## fromArray
 
-```re
+```re sig
 let fromArray: (array('value), ~cmp: cmp('value, 'id)) => t('value, 'id);
 ```
 
@@ -64,7 +64,7 @@ s0->Belt.Set.Dict.toArray; /* [|1, 2, 3, 4|] */
 
 ## fromSortedArrayUnsafe
 
-```re
+```re sig
 let fromSortedArrayUnsafe: array('value) => t('value, 'id);
 ```
 
@@ -72,7 +72,7 @@ The same as [fromArray][#fromarray] except it is after assuming the input array 
 
 ## isEmpty
 
-```re
+```re sig
 let isEmpty: t('a, 'b) => bool;
 ```
 
@@ -88,7 +88,7 @@ Belt.Set.Dict.isEmpty(notEmpty); /* false */
 
 ## has
 
-```re
+```re sig
 let has: (t('value, 'id), 'value, ~cmp: cmp('value, 'id)) => bool;
 ```
 
@@ -103,7 +103,7 @@ set->Belt.Set.Dict.has(1) /* true */
 
 ## add
 
-```re
+```re sig
 let add: (t('value, 'id), 'value, ~cmp: cmp('value, 'id)) => t('value, 'id);
 ```
 
@@ -123,7 +123,7 @@ s2 == s3; /* true */
 
 ## mergeMany
 
-```re
+```re sig
 let mergeMany: (t('value, 'id), array('value), ~cmp: cmp('value, 'id)) => t('value, 'id);
 ```
 
@@ -138,7 +138,7 @@ newSet->Belt.Set.Dict.toArray; /* [|1, 2, 3, 4, 5|] */
 
 ## remove
 
-```re
+```re sig
 let remove: (t('value, 'id), 'value, ~cmp: cmp('value, 'id)) => t('value, 'id);
 ```
 
@@ -157,7 +157,7 @@ s2 == s3; /* true */
 
 ## removeMany
 
-```re
+```re sig
 let removeMany: (t('value, 'id), array('value), ~cmp: cmp('value, 'id)) => t('value, 'id);
 ```
 
@@ -172,7 +172,7 @@ newSet->Belt.Set.Dict.toArray; /* [||] */
 
 ## union
 
-```re
+```re sig
 let union: (t('value, 'id), t('value, 'id), ~cmp: cmp('value, 'id)) => t('value, 'id);
 ```
 
@@ -187,7 +187,7 @@ union->Belt.Set.Dict.toArray; /* [|1,2,3,4,5,6|] */
 
 ## intersect
 
-```re
+```re sig
 let intersect: (t('value, 'id), t('value, 'id), ~cmp: cmp('value, 'id)) => t('value, 'id);
 ```
 
@@ -203,7 +203,7 @@ intersect->Belt.Set.Dict.toArray; /* [|2,3,5|] */
 
 ## diff
 
-```re
+```re sig
 let diff: (t('value, 'id), t('value, 'id), ~cmp: cmp('value, 'id)) => t('value, 'id);
 ```
 
@@ -222,7 +222,7 @@ diff2->Belt.Set.Dict.toArray; /* [|1,4|] */
 
 ## subset
 
-```re
+```re sig
 let subset: (t('value, 'id), t('value, 'id), ~cmp: cmp('value, 'id)) => bool;
 ```
 
@@ -239,7 +239,7 @@ Belt.Set.Dict.subset(s1, s0, ~cmp=IntCmp.cmp); /* false */
 
 ## cmp
 
-```re
+```re sig
 let cmp: (t('value, 'id), t('value, 'id), ~cmp: cmp('value, 'id)) => int;
 ```
 
@@ -247,7 +247,7 @@ Total ordering between sets. Can be used as the ordering function for doing sets
 
 ## eq
 
-```re
+```re sig
 let eq: (t('value, 'id), t('value, 'id), ~cmp: cmp('value, 'id)) => bool;
 ```
 
@@ -262,7 +262,7 @@ Belt.Set.Dict.eq(s0, s1, ~cmp=IntCmp.cmp); /* true */
 
 ## forEachU
 
-```re
+```re sig
 let forEachU: (t('value, 'id), [@bs] ('value => unit)) => unit;
 ```
 
@@ -270,7 +270,7 @@ Same as [forEach](##forEach) but takes uncurried functon.
 
 ## forEach
 
-```re
+```re sig
 let forEach: (t('value, 'id), 'value => unit) => unit;
 ```
 
@@ -287,13 +287,13 @@ acc; /* [6,5,3,2] */
 
 ## reduceU
 
-```re
+```re sig
 let reduceU: (t('value, 'id), 'a, [@bs] (('a, 'value) => 'a)) => 'a;
 ```
 
 ## reduce
 
-```re
+```re sig
 let reduce: (t('value, 'id), 'a, ('a, 'value) => 'a) => 'a;
 ```
 
@@ -308,13 +308,13 @@ s0->Belt.Set.Dict.reduce([], (element, acc) =>
 
 ## everyU
 
-```re
+```re sig
 let everyU: (t('value, 'id), [@bs] ('value => bool)) => bool;
 ```
 
 ## every
 
-```re
+```re sig
 let every: (t('value, 'id), 'value => bool) => bool;
 ```
 
@@ -329,13 +329,13 @@ s0->Belt.Set.Dict.every(isEven); /* true */
 
 ## someU
 
-```re
+```re sig
 let someU: (t('value, 'id), [@bs] ('value => bool)) => bool;
 ```
 
 ## some
 
-```re
+```re sig
 let some: (t('value, 'id), 'value => bool) => bool;
 ```
 
@@ -350,13 +350,13 @@ s0->Belt.Set.Dict.some(isOdd); /* true */
 
 ## keepU
 
-```re
+```re sig
 let keepU: (t('value, 'id), [@bs] ('value => bool)) => t('value, 'id);
 ```
 
 ## keep
 
-```re
+```re sig
 let keep: (t('value, 'id), 'value => bool) => t('value, 'id);
 ```
 
@@ -373,13 +373,13 @@ s1->Belt.Set.Dict.toArray; /* [|2,4|] */
 
 ## partitionU
 
-```re
+```re sig
 let partitionU: (t('value, 'id), [@bs] ('value => bool)) => (t('value, 'id), t('value, 'id));
 ```
 
 ## partition
 
-```re
+```re sig
 let partition: (t('value, 'id), 'value => bool) => (t('value, 'id), t('value, 'id));
 ```
 
@@ -397,7 +397,7 @@ s2->Belt.Set.Dict.toArray; /* [|2,4|] */
 
 ## size
 
-```re
+```re sig
 let size: t('value, 'id) => int;
 ```
 
@@ -411,7 +411,7 @@ s0->Belt.Set.Dict.size; /* 4 */
 
 ## toList
 
-```re
+```re sig
 let toList: t('value, 'id) => list('value);
 ```
 
@@ -425,7 +425,7 @@ s0->Belt.Set.Dict.toList; /* [1,2,3,5] */
 
 ## toArray
 
-```re
+```re sig
 let toArray: t('value, 'id) => array('value);
 ```
 
@@ -439,7 +439,7 @@ s0->Belt.Set.Dict.toArray; /* [|1,2,3,5|] */
 
 ## minimum
 
-```re
+```re sig
 let minimum: t('value, 'id) => option('value);
 ```
 
@@ -455,7 +455,7 @@ s1->Belt.Set.Dict.minimum; /* Some(1) */
 
 ## minUndefined
 
-```re
+```re sig
 let minUndefined: t('value, 'id) => Js.undefined('value);
 ```
 
@@ -471,7 +471,7 @@ s1->Belt.Set.Dict.minUndefined; /* 1 */
 
 ## maximum
 
-```re
+```re sig
 let maximum: t('value, 'id) => option('value);
 ```
 
@@ -487,7 +487,7 @@ s1->Belt.Set.Dict.maximum; /* Some(5) */
 
 ## maxUndefined
 
-```re
+```re sig
 let maxUndefined: t('value, 'id) => Js.undefined('value);
 ```
 
@@ -503,7 +503,7 @@ s1->Belt.Set.Dict.maxUndefined; /* 5 */
 
 ## get
 
-```re
+```re sig
 let get: (t('value, 'id), 'value, ~cmp: cmp('value, 'id)) => option('value);
 ```
 
@@ -518,7 +518,7 @@ s0->Belt.Set.Dict.get(20, ~cmp=IntCmp.cmp); /* None */
 
 ## getUndefined
 
-```re
+```re sig
 let getUndefined: (t('value, 'id), 'value, ~cmp: cmp('value, 'id)) => Js.undefined('value);
 ```
 
@@ -526,7 +526,7 @@ Same as [get](#get) but returns `undefined` when element does not exist.
 
 ## getExn
 
-```re
+```re sig
 let getExn: (t('value, 'id), 'value, ~cmp: cmp('value, 'id)) => 'value;
 ```
 
@@ -534,7 +534,7 @@ Same as [get](#get) but raise when element does not exist.
 
 ## split
 
-```re
+```re sig
 let split: (t('value, 'id), 'value, ~cmp: cmp('value, 'id)) => ((t('value, 'id), t('value, 'id)), bool);
 ```
 
@@ -554,7 +554,7 @@ larger->Belt.Set.Dict.toArray; /* [|4,5|] */
 
 ## checkInvariantInternal
 
-```re
+```re sig
 let checkInvariantInternal: t('a, 'b) => unit;
 ```
 

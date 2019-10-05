@@ -12,7 +12,7 @@ Specalized when value type is `string`, more efficient than the generic type, it
 
 ## value
 
-```re
+```re sig
 type value = string;
 ```
 
@@ -20,7 +20,7 @@ The type of the set elements.
 
 ## t
 
-```re
+```re sig
 type t;
 ```
 
@@ -28,7 +28,7 @@ The type of sets.
 
 ## empty
 
-```re
+```re sig
 let empty: t;
 ```
 
@@ -40,7 +40,7 @@ let s0 = Belt.Set.String.empty;
 
 ## fromArray
 
-```re
+```re sig
 let fromArray: array(value) => t;
 ```
 
@@ -54,7 +54,7 @@ so->Belt.Set.String.toArray; /* [|"apple", "banana", "orange"|] */
 
 ## fromSortedArrayUnsafe
 
-```re
+```re sig
 let fromSortedArrayUnsafe: array(value) => t;
 ```
 
@@ -62,7 +62,7 @@ The same as [fromArray][#fromarray] except it is after assuming the input array 
 
 ## isEmpty
 
-```re
+```re sig
 let isEmpty: t => bool;
 ```
 
@@ -78,7 +78,7 @@ Belt.Set.String.isEmpty(notEmpty); /* false */
 
 ## has
 
-```re
+```re sig
 let has: (t, value) => bool;
 ```
 
@@ -93,7 +93,7 @@ set->Belt.Set.String.has("apple") /* true */
 
 ## add
 
-```re
+```re sig
 let add: (t, value) => t;
 ```
 
@@ -113,7 +113,7 @@ s2 == s3; /* true */
 
 ## mergeMany
 
-```re
+```re sig
 let mergeMany: (t, array(value)) => t;
 ```
 
@@ -130,7 +130,7 @@ newSet->Belt.Set.String.toArray; /* [|"apple", "banana", "orange", "strawberry"|
 
 ## remove
 
-```re
+```re sig
 let remove: (t, value) => t;
 ```
 
@@ -149,7 +149,7 @@ s2 == s3; /* true */
 
 ## removeMany
 
-```re
+```re sig
 let removeMany: (t, array(value)) => t;
 ```
 
@@ -164,7 +164,7 @@ newSet->Belt.Set.String.toArray; /* [||] */
 
 ## union
 
-```re
+```re sig
 let union: (t, t) => t;
 ```
 
@@ -179,7 +179,7 @@ union->Belt.Set.String.toArray; /* [|"apple", "banana", "carrot", "orange", "str
 
 ## intersect
 
-```re
+```re sig
 let intersect: (t, t) => t;
 ```
 
@@ -194,7 +194,7 @@ intersect->Belt.Set.String.toArray; /* [|"apple", "banana", "orange"|] */
 
 ## diff
 
-```re
+```re sig
 let diff: (t, t) => t;
 ```
 
@@ -209,7 +209,7 @@ Belt.Set.String.toArray(Belt.Set.String.diff(s1, s0)); /* [|"strawberry"|] */
 
 ## subset
 
-```re
+```re sig
 let subset: (t, t) => bool;
 ```
 
@@ -226,7 +226,7 @@ Belt.Set.String.subset(s1, s0); /* false */
 
 ## cmp
 
-```re
+```re sig
 let cmp: (t, t) => int;
 ```
 
@@ -234,7 +234,7 @@ Total ordering between sets. Can be used as the ordering function for doing sets
 
 ## eq
 
-```re
+```re sig
 let eq: (t, t) => bool;
 ```
 
@@ -249,7 +249,7 @@ Belt.Set.String.eq(s0, s1); /* true */
 
 ## forEachU
 
-```re
+```re sig
 let forEachU: (t, [@bs] (value => unit)) => unit;
 ```
 
@@ -257,7 +257,7 @@ Same as [forEach](##forEach) but takes uncurried functon.
 
 ## forEach
 
-```re
+```re sig
 let forEach: (t, value => unit) => unit;
 ```
 
@@ -274,13 +274,13 @@ acc; /* ["orange", "banana", "apple"] */
 
 ## reduceU
 
-```re
+```re sig
 let reduceU: (t, 'a, [@bs] (('a, value) => 'a)) => 'a;
 ```
 
 ## reduce
 
-```re
+```re sig
 let reduce: (t, 'a, ('a, value) => 'a) => 'a;
 ```
 
@@ -295,13 +295,13 @@ s0->Belt.Set.String.reduce(0, (element, acc) =>
 
 ## everyU
 
-```re
+```re sig
 let everyU: (t, [@bs] (value => bool)) => bool;
 ```
 
 ## every
 
-```re
+```re sig
 let every: (t, value => bool) => bool;
 ```
 
@@ -316,13 +316,13 @@ s0->Belt.Set.String.every(hasAtLeastFiveChars); /* true */
 
 ## someU
 
-```re
+```re sig
 let someU: (t, [@bs] (value => bool)) => bool;
 ```
 
 ## some
 
-```re
+```re sig
 let some: (t, value => bool) => bool;
 ```
 
@@ -337,13 +337,13 @@ s0->Belt.Set.String.some(hasFiveChars); /* true */
 
 ## keepU
 
-```re
+```re sig
 let keepU: (t, [@bs] (value => bool)) => t;
 ```
 
 ## keep
 
-```re
+```re sig
 let keep: (t, value => bool) => t;
 ```
 
@@ -360,13 +360,13 @@ s1->Belt.Set.String.toArray; /* [|"apple"|] */
 
 ## partitionU
 
-```re
+```re sig
 let partitionU: (t, [@bs] (value => bool)) => (t, t);
 ```
 
 ## partition
 
-```re
+```re sig
 let partition: (t, value => bool) => (t, t);
 ```
 
@@ -384,7 +384,7 @@ s2->Belt.Set.String.toArray; /* [|"carrot"|] */
 
 ## size
 
-```re
+```re sig
 let size: t => int;
 ```
 
@@ -398,7 +398,7 @@ s0->Belt.Set.String.size; /* 1 */
 
 ## toList
 
-```re
+```re sig
 let toList: t => list(value);
 ```
 
@@ -412,7 +412,7 @@ s0->Belt.Set.String.toList; /* ["apple", "watermelon"] */
 
 ## toArray
 
-```re
+```re sig
 let toArray: t => array(value);
 ```
 
@@ -426,7 +426,7 @@ s0->Belt.Set.String.toArray; /* [|"apple", "watermelon"|] */
 
 ## minimum
 
-```re
+```re sig
 let minimum: t => option(value);
 ```
 
@@ -442,7 +442,7 @@ s1->Belt.Set.String.minimum; /* Some("apple") */
 
 ## minUndefined
 
-```re
+```re sig
 let minUndefined: t => Js.undefined(value);
 ```
 
@@ -458,7 +458,7 @@ s1->Belt.Set.String.minUndefined; /* "apple" */
 
 ## maximum
 
-```re
+```re sig
 let maximum: t => option(value);
 ```
 
@@ -474,7 +474,7 @@ s1->Belt.Set.String.maximum; /* Some("orange") */
 
 ## maxUndefined
 
-```re
+```re sig
 let maxUndefined: t => Js.undefined(value);
 ```
 
@@ -490,7 +490,7 @@ s1->Belt.Set.String.maxUndefined; /* orange */
 
 ## get
 
-```re
+```re sig
 let get: (t, value) => option(value);
 ```
 
@@ -505,7 +505,7 @@ s0->Belt.Set.String.get("watermelon"); /* None */
 
 ## getUndefined
 
-```re
+```re sig
 let getUndefined: (t, value) => Js.undefined(value);
 ```
 
@@ -513,7 +513,7 @@ See [get](#get) - returns `undefined` when element does not exist.
 
 ## getExn
 
-```re
+```re sig
 let getExn: (t, value) => value;
 ```
 
@@ -521,7 +521,7 @@ See [get](#get) - raise when element does not exist.
 
 ## split
 
-```re
+```re sig
 let split: (t, value) => ((t, t), bool);
 ```
 
@@ -539,7 +539,7 @@ larger->Belt.Set.String.toArray; /* [|"orange"|] */
 
 ## checkInvariantInternal
 
-```re
+```re sig
 let checkInvariantInternal: t => unit;
 ```
 
