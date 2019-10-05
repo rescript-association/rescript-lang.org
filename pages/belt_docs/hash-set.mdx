@@ -40,9 +40,8 @@ The invariant must be held: for two elements who are equal, their hashed value s
 
 Here the compiler would infer `s0` and `s1` having different type so that it would not mix.
 
-```re example
+```re sig
 let s0: t(int, I0.identity);
-
 let s1: t(int, I1.identity);
 ```
 
@@ -50,67 +49,67 @@ We can add elements to the collection (see last two lines in the example above).
 
 ## t
 
-```
+```re sig
 type t('a, 'id);
 ```
 
 ## id
 
-```
+```re sig
 type id('a, 'id) = BeltId.hashable('a, 'id);
 ```
 
 ## make
 
-```
+```re sig
 let make: (~hintSize: int, ~id: id('a, 'id)) => t('a, 'id);
 ```
 
 ## clear
 
-```
+```re sig
 let clear: t('a, 'id) => unit;
 ```
 
 ## isEmpty
 
-```
+```re sig
 let isEmpty: t('a, 'b) => bool;
 ```
 
 ## add
 
-```
+```re sig
 let add: (t('a, 'id), 'a) => unit;
 ```
 
 ## copy
 
-```
+```re sig
 let copy: t('a, 'id) => t('a, 'id);
 ```
 
 ## has
 
-```
+```re sig
 let has: (t('a, 'id), 'a) => bool;
 ```
 
 ## remove
 
-```
+```re sig
 let remove: (t('a, 'id), 'a) => unit;
 ```
 
 ## forEachU
 
-```
+```re sig
 let forEachU: (t('a, 'id), [@bs] ('a => unit)) => unit;
 ```
 
 ## forEach
 
-```
+```re sig
 let forEach: (t('a, 'id), 'a => unit) => unit;
 ```
 
@@ -118,13 +117,13 @@ Order unspecified.
 
 ## reduceU
 
-```
+```re sig
 let reduceU: (t('a, 'id), 'c, [@bs] (('c, 'a) => 'c)) => 'c;
 ```
 
 ## reduce
 
-```
+```re sig
 let reduce: (t('a, 'id), 'c, ('c, 'a) => 'c) => 'c;
 ```
 
@@ -132,36 +131,36 @@ Order unspecified.
 
 ## size
 
-```
+```re sig
 let size: t('a, 'id) => int;
 ```
 
 ## logStats
 
-```
+```re sig
 let logStats: t('a, 'b) => unit;
 ```
 
 ## toArray
 
-```
+```re sig
 let toArray: t('a, 'id) => array('a);
 ```
 
 ## fromArray
 
-```
+```re sig
 let fromArray: (array('a), ~id: id('a, 'id)) => t('a, 'id);
 ```
 
 ## mergeMany
 
-```
+```re sig
 let mergeMany: (t('a, 'id), array('a)) => unit;
 ```
 
 ## getBucketHistogram
 
-```
+```re sig
 let getBucketHistogram: t('a, 'b) => array(int);
 ```

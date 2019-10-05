@@ -28,16 +28,6 @@ let mySet = Belt.Set.make(~id=(module PairComparator));
 let mySet2 = Belt.Set.add(mySet, (1, 2));
 ```
 
-The API documentation below will assume a predeclared comparator module for integers, `IntCmp`
-
-```re example
-module IntCmp =
-  Belt.Id.MakeComparable({
-    type t = int;
-    let cmp = Pervasives.compare;
-  });
-```
-
 ## t
 
 ```re sig
@@ -65,6 +55,12 @@ let make: (~id: id('value, 'id)) => t('value, 'id);
 Creates a new set by taking in the comparator
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let set = Belt.Set.make(~id=(module IntCmp));
 ```
 
@@ -77,6 +73,12 @@ let fromArray: (array('value), ~id: id('value, 'id)) => t('value, 'id);
 Creates new set from array of elements.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let s0 = Belt.Set.fromArray([|1, 3, 2, 4|], ~id=(module IntCmp))
 
 s0->Belt.Set.toArray; /* [|1, 2, 3, 4|] */
@@ -99,6 +101,12 @@ let isEmpty: t('a, 'b) => bool;
 Checks if set is empty.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let empty = Belt.Set.fromArray([||], ~id=(module IntCmp));
 let notEmpty = Belt.Set.fromArray([|1|],~id=(module IntCmp));
 
@@ -115,6 +123,12 @@ let has: (t('value, 'id), 'value) => bool;
 Checks if element exists in set.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let set = Belt.Set.fromArray([|1, 4, 2, 5|], ~id=(module IntCmp));
 
 set->Belt.Set.has(3) /* false */
@@ -130,6 +144,12 @@ let add: (t('value, 'id), 'value) => t('value, 'id);
 Adds element to set. If element existed in set, value is unchanged.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let s0 = Belt.Set.make(~id=(module IntCmp));
 let s1 = s0->Belt.Set.add(1);
 let s2 = s1->Belt.Set.add(2);
@@ -150,6 +170,12 @@ let mergeMany: (t('value, 'id), array('value)) => t('value, 'id);
 Adds each element of array to set. Unlike [add](#add), the reference of return value might be changed even if all values in array already exist in set
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let set = Belt.Set.make(~id=(module IntCmp));
 
 let newSet = set->Belt.Set.mergeMany([|5, 4, 3, 2, 1|]);
@@ -165,6 +191,12 @@ let remove: (t('value, 'id), 'value) => t('value, 'id);
 Removes element from set. If element wasn't existed in set, value is unchanged.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let s0 = Belt.Set.fromArray([|2,3,1,4,5|], ~id=(module IntCmp));
 let s1 = s0->Belt.Set.remove(1);
 let s2 = s1->Belt.Set.remove(3);
@@ -184,7 +216,13 @@ let removeMany: (t('value, 'id), array('value)) => t('value, 'id);
 Removes each element of array from set. Unlike [remove](#remove), the reference of return value might be changed even if any values in array not existed in set.
 
 ```re example
-let set = Belt.Set.fromArray([1, 2, 3, 4],~id=(module IntCmp));
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
+let set = Belt.Set.fromArray([|1, 2, 3, 4|],~id=(module IntCmp));
 
 let newSet = set->Belt.Set.removeMany([|5, 4, 3, 2, 1|]);
 newSet->Belt.Set.toArray; /* [||] */
@@ -199,6 +237,12 @@ let union: (t('value, 'id), t('value, 'id)) => t('value, 'id);
 Returns union of two sets.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let s0 = Belt.Set.fromArray([|5,2,3,5,6|], ~id=(module IntCmp));
 let s1 = Belt.Set.fromArray([|5,2,3,1,5,4|], ~id=(module IntCmp));
 let union = Belt.Set.union(s0, s1);
@@ -214,6 +258,11 @@ let intersect: (t('value, 'id), t('value, 'id)) => t('value, 'id);
 Returns intersection of two sets.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
 
 let s0 = Belt.Set.fromArray([|5,2,3,5,6|], ~id=(module IntCmp));
 let s1 = Belt.Set.fromArray([|5,2,3,1,5,4|], ~id=(module IntCmp));
@@ -230,6 +279,12 @@ let diff: (t('value, 'id), t('value, 'id)) => t('value, 'id);
 Returns elements from first set, not existing in second set.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let s0 = Belt.Set.fromArray([|5,2,3,5,6|], ~id=(module IntCmp));
 let s1 = Belt.Set.fromArray([|5,2,3,1,5,4|], ~id=(module IntCmp));
 Belt.Set.toArray(Belt.Set.diff(s0, s1)); /* [|6|] */
@@ -245,6 +300,12 @@ let subset: (t('value, 'id), t('value, 'id)) => bool;
 Checks if second set is subset of first set.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let s0 = Belt.Set.fromArray([|5,2,3,5,6|], ~id=(module IntCmp));
 let s1 = Belt.Set.fromArray([|5,2,3,1,5,4|], ~id=(module IntCmp));
 let s2 = Belt.Set.intersect(s0, s1);
@@ -270,6 +331,12 @@ let eq: (t('value, 'id), t('value, 'id)) => bool;
 Checks if two sets are equal.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let s0 = Belt.Set.fromArray([|5,2,3|], ~id=(module IntCmp));
 let s1 = Belt.Set.fromArray([|3,2,5|], ~id=(module IntCmp));
 
@@ -293,10 +360,16 @@ let forEach: (t('value, 'id), 'value => unit) => unit;
 Applies function `f` in turn to all elements of set in increasing order.
 
 ```re example
-let s0 = Belt.SEt.fromArray([|5,2,3,5,6|], ~id=(module IntCmp));
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
+let s0 = Belt.Set.fromArray([|5,2,3,5,6|], ~id=(module IntCmp));
 let acc = ref([]);
 s0->Belt.Set.forEach(x => {
-  acc := acc->Belt.List.add(x)
+  acc := Belt.List.add(acc^, x)
 });
 acc; /* [6,5,3,2] */
 ```
@@ -316,9 +389,15 @@ let reduce: (t('value, 'id), 'a, ('a, 'value) => 'a) => 'a;
 Applies function `f` to each element of set in increasing order. Function `f` has two parameters: the item from the set and an “accumulator”, which starts with a value of `initialValue`. `reduce` returns the final value of the accumulator.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let s0 = Belt.Set.fromArray([|5,2,3,5,6|], ~id=(module IntCmp));
-s0->Belt.Set.reduce([], (element, acc) =>
-  acc->Bs.List.add(element)
+s0->Belt.Set.reduce([], (acc, element) =>
+  acc->Belt.List.add(element)
 ); /* [6,5,3,2] */
 ```
 
@@ -337,6 +416,12 @@ let every: (t('value, 'id), 'value => bool) => bool;
 Checks if all elements of the set satisfy the predicate. Order unspecified.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let isEven = x => x mod 2 == 0;
 
 let s0 = Belt.Set.fromArray([|2,4,6,8|], ~id=(module IntCmp));
@@ -358,6 +443,12 @@ let some: (t('value, 'id), 'value => bool) => bool;
 Checks if at least one element of the set satisfies the predicate.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let isOdd = x => x mod 2 != 0;
 
 let s0 = Belt.Set.fromArray([|1,2,4,6,8|], ~id=(module IntCmp));
@@ -379,6 +470,12 @@ let keep: (t('value, 'id), 'value => bool) => t('value, 'id);
 Returns the set of all elements that satisfy the predicate.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let isEven = x => x mod 2 == 0;
 
 let s0 = Belt.Set.fromArray([|1,2,3,4,5|], ~id=(module IntCmp));
@@ -402,6 +499,12 @@ let partition: (t('value, 'id), 'value => bool) => (t('value, 'id), t('value, 'i
 Returns a pair of sets, where first is the set of all the elements of set that satisfy the predicate, and second is the set of all the elements of set that do not satisfy the predicate.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let isOdd = x => x mod 2 != 0;
 
 let s0 = Belt.Set.fromArray([|1,2,3,4,5|], ~id=(module IntCmp));
@@ -420,6 +523,12 @@ let size: t('value, 'id) => int;
 Returns size of the set.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let s0 = Belt.Set.fromArray([|1,2,3,4|], ~id=(module IntCmp));
 
 s0->Belt.Set.size; /* 4 */
@@ -434,6 +543,12 @@ let toArray: t('value, 'id) => array('value);
 Returns array of ordered set elements.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let s0 = Belt.Set.fromArray([|3,2,1,5|], ~id=(module IntCmp));
 
 s0->Belt.Set.toArray; /* [|1,2,3,5|] */
@@ -448,6 +563,12 @@ let toList: t('value, 'id) => list('value);
 Returns list of ordered set elements.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let s0 = Belt.Set.fromArray([|3,2,1,5|], ~id=(module IntCmp));
 
 s0->Belt.Set.toList; /* [1,2,3,5] */
@@ -462,6 +583,12 @@ let minimum: t('value, 'id) => option('value);
 Returns minimum value of the collection. `None` if collection is empty.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let s0 = Belt.Set.make(~id=(module IntCmp));
 let s1 = Belt.Set.fromArray([|3,2,1,5|], ~id=(module IntCmp));
 
@@ -478,6 +605,12 @@ let minUndefined: t('value, 'id) => Js.undefined('value);
 Returns minimum value of the collection. `undefined` if collection is empty.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let s0 = Belt.Set.make(~id=(module IntCmp));
 let s1 = Belt.Set.fromArray([|3,2,1,5|], ~id=(module IntCmp));
 
@@ -490,6 +623,12 @@ s1->Belt.Set.minUndefined; /* 1 */
 Returns maximum value of the collection. `None` if collection is empty.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let s0 = Belt.Set.make(~id=(module IntCmp));
 let s1 = Belt.Set.fromArray([|3,2,1,5|], ~id=(module IntCmp));
 
@@ -506,6 +645,12 @@ let maxUndefined: t('value, 'id) => Js.undefined('value);
 Returns maximum value of the collection. `undefined` if collection is empty.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let s0 = Belt.Set.make(~id=(module IntCmp));
 let s1 = Belt.Set.fromArray([|3,2,1,5|], ~id=(module IntCmp));
 
@@ -522,6 +667,12 @@ let get: (t('value, 'id), 'value) => option('value);
 Returns the reference of the value which is equivalent to value using the comparator specifiecd by this collection. Returns `None` if element does not exist.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let s0 = Belt.Set.fromArray([|1,2,3,4,5|], ~id=(module IntCmp));
 
 s0->Belt.Set.get(3); /* Some(3) */
@@ -553,6 +704,12 @@ let split: (t('value, 'id), 'value) => ((t('value, 'id), t('value, 'id)), bool);
 Returns a tuple `((smaller, larger), present)`, `present` is true when element exist in set.
 
 ```re example
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
+
 let s0 = Belt.Set.fromArray([|1,2,3,4,5|], ~id=(module IntCmp));
 
 let ((smaller, larger), present) = s0->Belt.Set.split(3);
