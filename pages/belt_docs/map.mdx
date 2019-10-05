@@ -107,7 +107,7 @@ let findFirstByU: (t('k, 'v, 'id), [@bs] (('k, 'v) => bool)) => option(('k, 'v))
 let findFirstBy: (t('k, 'v, 'id), ('k, 'v) => bool) => option(('k, 'v));
 ```
 
-`findFirstBy(m, p)` uses funcion `f` to find the first key value pair to match predicate `p`.
+`findFirstBy(m, p)` uses function `f` to find the first key value pair to match predicate `p`.
 
 ```re example
 let s0 = fromArray(~id=(module IntCmp), [|(4, "4"), (1, "1"), (2, "2,"(3, ""))|]);
