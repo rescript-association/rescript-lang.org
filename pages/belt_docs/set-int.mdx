@@ -49,7 +49,7 @@ Creates new set from array of elements.
 ```re example
 let s0 = Belt.Set.Int.fromArray([|1, 3, 2, 4|])
 
-so->Belt.Set.Int.toArray; /* [|1, 2, 3, 4|] */
+s0->Belt.Set.Int.toArray; /* [|1, 2, 3, 4|] */
 ```
 
 ## fromSortedArrayUnsafe
@@ -154,7 +154,7 @@ let removeMany: (t, array(value)) => t;
 Removes each element of array from set. Unlike [remove](#remove), the reference of return value might be changed even if any values in array not existed in set.
 
 ```re example
-let set = Belt.Set.Int.fromArray([1, 2, 3, 4]);
+let set = Belt.Set.Int.fromArray([|1, 2, 3, 4|]);
 
 let newSet = set->Belt.Set.Int.removeMany([|5, 4, 3, 2, 1|]);
 newSet->Belt.Set.Int.toArray; /* [||] */
