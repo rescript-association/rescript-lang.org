@@ -3,7 +3,6 @@
 import * as React from "react";
 
 function CodeSignature(Props) {
-  Props.children;
   return React.createElement("div", undefined);
 }
 

@@ -2,7 +2,6 @@
 "require('../styles/main.css')";
 
 open Util.ReactStuff;
-open Text;
 module Link = Next.Link;
 
 module Navigation = {
@@ -19,7 +18,9 @@ module Navigation = {
       </Link>
       <div className="flex w-1/3 justify-end">
         <Link href="/belt_docs">
-          <a className={Text.Link.inline ++ " mx-2"}> "Belt Documentation"->s </a>
+          <a className={Text.Link.inline ++ " mx-2"}>
+            "Belt Documentation"->s
+          </a>
         </Link>
         <a
           href="https://github.com/reason-association/reasonml.org"
