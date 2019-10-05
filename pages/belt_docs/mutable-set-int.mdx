@@ -116,12 +116,12 @@ let add: (t, value) => unit;
 Adds element to set. If element existed in set, value is unchanged.
 
 ```re example
-let s0 = Belt.MutableSet.make();
-s0->Belt.MutableSet.add(1);
-s0->Belt.MutableSet.add(2);
-s0->Belt.MutableSet.add(2);
+let s0 = Belt.MutableSet.Int.make();
+s0->Belt.MutableSet.Int.add(1);
+s0->Belt.MutableSet.Int.add(2);
+s0->Belt.MutableSet.Int.add(2);
 
-s0->Belt.MutableSet.toArray; /* [|1, 2|] */
+s0->Belt.MutableSet.Int.toArray; /* [|1, 2|] */
 ```
 
 ## addCheck
@@ -139,10 +139,10 @@ let mergeMany: (t, array(value)) => unit;
 Adds each element of array to set. Unlike [add](#add), the reference of return value might be changed even if all values in array already exist in set
 
 ```re example
-let set = Belt.MutableSet.make();
+let set = Belt.MutableSet.Int.make();
 
-set->Belt.MutableSet.mergeMany([|5, 4, 3, 2, 1|]);
-set->Belt.MutableSet.toArray; /* [|1, 2, 3, 4, 5|] */
+set->Belt.MutableSet.Int.mergeMany([|5, 4, 3, 2, 1|]);
+set->Belt.MutableSet.Int.toArray; /* [|1, 2, 3, 4, 5|] */
 ```
 
 ## remove
@@ -154,12 +154,12 @@ let remove: (t, value) => unit;
 Removes element from set. If element wasn't existed in set, value is unchanged.
 
 ```re example
-let s0 = Belt.MutableSet.fromArray([|2,3,1,4,5|]);
-s0->Belt.MutableSet.remove(1);
-s0->Belt.MutableSet.remove(3);
-s0->Belt.MutableSet.remove(3);
+let s0 = Belt.MutableSet.Int.fromArray([|2,3,1,4,5|]);
+s0->Belt.MutableSet.Int.remove(1);
+s0->Belt.MutableSet.Int.remove(3);
+s0->Belt.MutableSet.Int.remove(3);
 
-s0->Belt.MutableSet.toArray; /* [|2,4,5|] */
+s0->Belt.MutableSet.Int.toArray; /* [|2,4,5|] */
 ```
 
 ## removeCheck
@@ -177,10 +177,10 @@ let removeMany: (t, array(value)) => unit;
 Removes each element of array from set.
 
 ```re example
-let set = Belt.MutableSet.fromArray([1, 2, 3, 4]);
+let set = Belt.MutableSet.Int.fromArray([|1, 2, 3, 4|]);
 
-set->Belt.MutableSet.removeMany([|5, 4, 3, 2, 1|]);
-set->Belt.MutableSet.toArray; /* [||] */
+set->Belt.MutableSet.Int.removeMany([|5, 4, 3, 2, 1|]);
+set->Belt.MutableSet.Int.toArray; /* [||] */
 ```
 
 ## union
@@ -192,10 +192,10 @@ let union: (t, t) => t;
 Returns union of two sets.
 
 ```re example
-let s0 = Belt.MutableSet.fromArray([|5,2,3,5,6|]);
-let s1 = Belt.MutableSet.fromArray([|5,2,3,1,5,4|]);
-let union = Belt.MutableSet.union(s0, s1);
-union->Belt.MutableSet.toArray; /* [|1,2,3,4,5,6|] */
+let s0 = Belt.MutableSet.Int.fromArray([|5,2,3,5,6|]);
+let s1 = Belt.MutableSet.Int.fromArray([|5,2,3,1,5,4|]);
+let union = Belt.MutableSet.Int.union(s0, s1);
+union->Belt.MutableSet.Int.toArray; /* [|1,2,3,4,5,6|] */
 ```
 
 ## intersect
@@ -208,10 +208,10 @@ Returns intersection of two sets.
 
 ```re example
 
-let s0 = Belt.MutableSet.fromArray([|5,2,3,5,6|]);
-let s1 = Belt.MutableSet.fromArray([|5,2,3,1,5,4|]);
-let intersect = Belt.MutableSet.intersect(s0, s1);
-intersect->Belt.MutableSet.toArray; /* [|2,3,5|] */
+let s0 = Belt.MutableSet.Int.fromArray([|5,2,3,5,6|]);
+let s1 = Belt.MutableSet.Int.fromArray([|5,2,3,1,5,4|]);
+let intersect = Belt.MutableSet.Int.intersect(s0, s1);
+intersect->Belt.MutableSet.Int.toArray; /* [|2,3,5|] */
 ```
 
 ## diff
@@ -223,10 +223,10 @@ let diff: (t, t) => t;
 Returns elements from first set, not existing in second set.
 
 ```re example
-let s0 = Belt.MutableSet.fromArray([|5,2,3,5,6|]);
-let s1 = Belt.MutableSet.fromArray([|5,2,3,1,5,4|]);
-Belt.MutableSet.toArray(Belt.MutableSet.diff(s0, s1)); /* [|6|] */
-Belt.MutableSet.toArray(Belt.MutableSet.diff(s1,s0)); /* [|1,4|] */
+let s0 = Belt.MutableSet.Int.fromArray([|5,2,3,5,6|]);
+let s1 = Belt.MutableSet.Int.fromArray([|5,2,3,1,5,4|]);
+Belt.MutableSet.Int.toArray(Belt.MutableSet.Int.diff(s0, s1)); /* [|6|] */
+Belt.MutableSet.Int.toArray(Belt.MutableSet.Int.diff(s1,s0)); /* [|1,4|] */
 ```
 
 ## subset
@@ -238,12 +238,12 @@ let subset: (t, t) => bool;
 Checks if second set is subset of first set.
 
 ```re example
-let s0 = Belt.MutableSet.fromArray([|5,2,3,5,6|]);
-let s1 = Belt.MutableSet.fromArray([|5,2,3,1,5,4|]);
-let s2 = Belt.MutableSet.intersect(s0, s1);
-Belt.MutableSet.subset(s2, s0); /* true */
-Belt.MutableSet.subset(s2, s1); /* true */
-Belt.MutableSet.subset(s1, s0); /* false */
+let s0 = Belt.MutableSet.Int.fromArray([|5,2,3,5,6|]);
+let s1 = Belt.MutableSet.Int.fromArray([|5,2,3,1,5,4|]);
+let s2 = Belt.MutableSet.Int.intersect(s0, s1);
+Belt.MutableSet.Int.subset(s2, s0); /* true */
+Belt.MutableSet.Int.subset(s2, s1); /* true */
+Belt.MutableSet.Int.subset(s1, s0); /* false */
 ```
 
 ## cmp
@@ -263,10 +263,10 @@ let eq: (t, t) => bool;
 Checks if two sets are equal.
 
 ```re example
-let s0 = Belt.MutableSet..fromArray([|5,2,3|]);
-let s1 = Belt.MutableSet.fromArray([|3,2,5|]);
+let s0 = Belt.MutableSet.Int.fromArray([|5,2,3|]);
+let s1 = Belt.MutableSet.Int.fromArray([|3,2,5|]);
 
-Belt.MutableSet.eq(s0, s1); /* true */
+Belt.MutableSet.Int.eq(s0, s1); /* true */
 ```
 
 ## forEachU
@@ -286,10 +286,10 @@ let forEach: (t, value => unit) => unit;
 Applies function `f` in turn to all elements of set in increasing order.
 
 ```re example
-let s0 = Belt.MutableSet.fromArray([|5,2,3,5,6|]);
+let s0 = Belt.MutableSet.Int.fromArray([|5,2,3,5,6|]);
 let acc = ref([]);
-s0->Belt.MutableSet.forEach(x => {
-  acc := acc->Belt.List.add(x)
+s0->Belt.MutableSet.Int.forEach(x => {
+  acc := Belt.List.add(acc^, x)
 });
 acc; /* [6,5,3,2] */
 ```
@@ -309,9 +309,9 @@ let reduce: (t, 'a, ('a, value) => 'a) => 'a;
 Applies function `f` to each element of set in increasing order. Function `f` has two parameters: the item from the set and an “accumulator”, which starts with a value of `initialValue`. `reduce` returns the final value of the accumulator.
 
 ```re example
-let s0 = Belt.MutableSet.fromArray([|5,2,3,5,6|]);
-s0->Belt.MutableSet.reduce([], (element, acc) =>
-  acc->Bs.List.add(element)
+let s0 = Belt.MutableSet.Int.fromArray([|5,2,3,5,6|]);
+s0->Belt.MutableSet.Int.reduce([], (acc, element) =>
+  acc->Belt.List.add(element)
 ); /* [6,5,3,2] */
 ```
 
@@ -332,8 +332,8 @@ Checks if all elements of the set satisfy the predicate. Order unspecified.
 ```re example
 let isEven = x => x mod 2 == 0;
 
-let s0 = Belt.MutableSet.fromArray([|2,4,6,8|]);
-s0->Belt.MutableSet.every(isEven); /* true */
+let s0 = Belt.MutableSet.Int.fromArray([|2,4,6,8|]);
+s0->Belt.MutableSet.Int.every(isEven); /* true */
 ```
 
 ## someU
@@ -353,8 +353,8 @@ Checks if at least one element of the set satisfies the predicate.
 ```re example
 let isOdd = x => x mod 2 != 0;
 
-let s0 = Belt.MutableSet.fromArray([|1,2,4,6,8|]);
-s0->Belt.MutableSet.some(isOdd); /* true */
+let s0 = Belt.MutableSet.Int.fromArray([|1,2,4,6,8|]);
+s0->Belt.MutableSet.Int.some(isOdd); /* true */
 ```
 
 ## keepU
@@ -374,10 +374,10 @@ Returns the set of all elements that satisfy the predicate.
 ```re example
 let isEven = x => x mod 2 == 0;
 
-let s0 = Belt.MutableSet.fromArray([|1,2,3,4,5|]);
-let s1 = s0->Belt.MutableSet.keep(isEven);
+let s0 = Belt.MutableSet.Int.fromArray([|1,2,3,4,5|]);
+let s1 = s0->Belt.MutableSet.Int.keep(isEven);
 
-s1->Belt.MutableSet.toArray; /* [|2, 4|] */
+s1->Belt.MutableSet.Int.toArray; /* [|2, 4|] */
 ```
 
 ## partitionU
@@ -395,11 +395,11 @@ let partition: (t, value => bool) => (t, t);
 ```re example
 let isOdd = x => x mod 2 != 0;
 
-let s0 = Belt.MutableSet.fromArray([|1,2,3,4,5|]);
-let (s1, s2) = s0->Belt.MutableSet.partition(isOdd);
+let s0 = Belt.MutableSet.Int.fromArray([|1,2,3,4,5|]);
+let (s1, s2) = s0->Belt.MutableSet.Int.partition(isOdd);
 
-s1->Belt.MutableSet.toArray; /* [|1,3,5|] */
-s2->Belt.MutableSet.toArray; /* [|2,4|] */
+s1->Belt.MutableSet.Int.toArray; /* [|1,3,5|] */
+s2->Belt.MutableSet.Int.toArray; /* [|2,4|] */
 ```
 
 ## size
@@ -411,9 +411,9 @@ let size: t => int;
 Returns size of the set.
 
 ```re example
-let s0 = Belt.MutableSet.fromArray([|1,2,3,4|]);
+let s0 = Belt.MutableSet.Int.fromArray([|1,2,3,4|]);
 
-s0->Belt.MutableSet.size; /* 4 */
+s0->Belt.MutableSet.Int.size; /* 4 */
 ```
 
 ## toList
@@ -425,9 +425,9 @@ let toList: t => list(value);
 Returns list of ordered set elements.
 
 ```re example
-let s0 = Belt.MutableSet.fromArray([|3,2,1,5|]);
+let s0 = Belt.MutableSet.Int.fromArray([|3,2,1,5|]);
 
-s0->Belt.MutableSet.toList; /* [1,2,3,5] */
+s0->Belt.MutableSet.Int.toList; /* [1,2,3,5] */
 ```
 
 ## toArray
@@ -439,9 +439,9 @@ let toArray: t => array(value);
 Returns array of ordered set elements.
 
 ```re example
-let s0 = Belt.MutableSet.fromArray([|3,2,1,5|]);
+let s0 = Belt.MutableSet.Int.fromArray([|3,2,1,5|]);
 
-s0->Belt.MutableSet.toArray; /* [|1,2,3,5|] */
+s0->Belt.MutableSet.Int.toArray; /* [|1,2,3,5|] */
 ```
 
 ## minimum
@@ -453,11 +453,11 @@ let minimum: t => option(value);
 Returns minimum value of the collection. `None` if collection is empty.
 
 ```re example
-let s0 = Belt.MutableSet.make();
-let s1 = Belt.MutableSet.fromArray([|3,2,1,5|]);
+let s0 = Belt.MutableSet.Int.make();
+let s1 = Belt.MutableSet.Int.fromArray([|3,2,1,5|]);
 
-s0->Belt.MutableSet.minimum; /* None */
-s1->Belt.MutableSet.minimum; /* Some(1) */
+s0->Belt.MutableSet.Int.minimum; /* None */
+s1->Belt.MutableSet.Int.minimum; /* Some(1) */
 ```
 
 ## minUndefined
@@ -469,11 +469,11 @@ let minUndefined: t => Js.undefined(value);
 Returns minimum value of the collection. `undefined` if collection is empty.
 
 ```re example
-let s0 = Belt.MutableSet.make();
-let s1 = Belt.MutableSet.fromArray([|3,2,1,5|]);
+let s0 = Belt.MutableSet.Int.make();
+let s1 = Belt.MutableSet.Int.fromArray([|3,2,1,5|]);
 
-s0->Belt.MutableSet.minUndefined; /* undefined */
-s1->Belt.MutableSet.minUndefined; /* 1 */
+s0->Belt.MutableSet.Int.minUndefined; /* undefined */
+s1->Belt.MutableSet.Int.minUndefined; /* 1 */
 ```
 
 ## maximum
@@ -485,11 +485,11 @@ let maximum: t => option(value);
 Returns maximum value of the collection. `None` if collection is empty.
 
 ```re example
-let s0 = Belt.MutableSet.make();
-let s1 = Belt.MutableSet.fromArray([|3,2,1,5|]);
+let s0 = Belt.MutableSet.Int.make();
+let s1 = Belt.MutableSet.Int.fromArray([|3,2,1,5|]);
 
-s0->Belt.MutableSet.maximum; /* None */
-s1->Belt.MutableSet.maximum; /* Some(5) */
+s0->Belt.MutableSet.Int.maximum; /* None */
+s1->Belt.MutableSet.Int.maximum; /* Some(5) */
 ```
 
 ## maxUndefined
@@ -501,11 +501,11 @@ let maxUndefined: t => Js.undefined(value);
 Returns maximum value of the collection. `undefined` if collection is empty.
 
 ```re example
-let s0 = Belt.MutableSet.make();
-let s1 = Belt.MutableSet.fromArray([|3,2,1,5|]);
+let s0 = Belt.MutableSet.Int.make();
+let s1 = Belt.MutableSet.Int.fromArray([|3,2,1,5|]);
 
-s0->Belt.MutableSet.maxUndefined; /* undefined */
-s1->Belt.MutableSet.maxUndefined; /* 5 */
+s0->Belt.MutableSet.Int.maxUndefined; /* undefined */
+s1->Belt.MutableSet.Int.maxUndefined; /* 5 */
 ```
 
 ## get
@@ -517,10 +517,10 @@ let get: (t, value) => option(value);
 Returns the reference of the value which is equivalent to value using the comparator specifiecd by this collection. Returns `None` if element does not exist.
 
 ```re example
-let s0 = Belt.MutableSet.fromArray([|1,2,3,4,5|]);
+let s0 = Belt.MutableSet.Int.fromArray([|1,2,3,4,5|]);
 
-s0->Belt.MutableSet.get(3); /* Some(3) */
-s0->Belt.MutableSet.get(20); /* None */
+s0->Belt.MutableSet.Int.get(3); /* Some(3) */
+s0->Belt.MutableSet.Int.get(20); /* None */
 ```
 
 ## getUndefined
@@ -548,13 +548,13 @@ let split: (t, value) => ((t, t), bool);
 Returns a tuple `((smaller, larger), present)`, `present` is true when element exist in set.
 
 ```re example
-let s0 = Belt.MutableSet.fromArray([|1,2,3,4,5|]);
+let s0 = Belt.MutableSet.Int.fromArray([|1,2,3,4,5|]);
 
-let ((smaller, larger), present) = s0->Belt.MutableSet.split(3);
+let ((smaller, larger), present) = s0->Belt.MutableSet.Int.split(3);
 
 present; /* true */
-smaller->Belt.MutableSet.toArray; /* [|1,2|] */
-larger->Belt.MutableSet.toArray; /* [|4,5|] */
+smaller->Belt.MutableSet.Int.toArray; /* [|1,2|] */
+larger->Belt.MutableSet.Int.toArray; /* [|4,5|] */
 
 ```
 

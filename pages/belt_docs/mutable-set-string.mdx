@@ -70,10 +70,10 @@ let copy: t => t;
 Returns copy of a set.
 
 ```re example
-let s0 = Belt.MutableSet.String.fromArray([|1, 3, 2, 4|], ~id=(module IntCmp))
+let s0 = Belt.MutableSet.String.fromArray([|"orange", "apple"|])
 
 let copied = s0->Belt.MutableSet.String.copy;
-copied->Belt.MutableSet.String.toArray /* [|1, 2, 3, 4|] */
+copied->Belt.MutableSet.String.toArray /* [|"apple", "orange"|] */
 ```
 
 ## isEmpty
@@ -116,15 +116,12 @@ let add: (t, value) => unit;
 Adds element to set. If element existed in set, value is unchanged.
 
 ```re example
-let s0 = Belt.MutableSet.String.empty;
-let s1 = s0->Belt.MutableSet.String.add("apple");
-let s2 = s1->Belt.MutableSet.String.add("banana");
-let s3 = s2->Belt.MutableSet.String.add("banana");
-s0->Belt.MutableSet.String.toArray; /* [||] */
-s1->Belt.MutableSet.String.toArray; /* [|"apple"|] */
-s2->Belt.MutableSet.String.toArray; /* [|"apple", "banana"|] */
-s3->Belt.MutableSet.String.toArray; /* [|"apple", "banana"|] */
-s2 == s3; /* true */
+let s0 = Belt.MutableSet.String.make();
+s0->Belt.MutableSet.String.add("apple");
+s0->Belt.MutableSet.String.add("banana");
+s0->Belt.MutableSet.String.add("banana");
+
+s0->Belt.MutableSet.String.toArray; /* [|"apple", "banana"|] */
 ```
 
 ## addCheck
@@ -142,12 +139,10 @@ let mergeMany: (t, array(value)) => unit;
 Adds each element of array to set.
 
 ```re example
-let set = Belt.MutableSet.String.empty;
+let set = Belt.MutableSet.String.make();
 
-let newSet =
-  set->Belt.MutableSet.String.mergeMany([|"apple", "banana", "orange", "strawberry"|]);
-
-newSet->Belt.MutableSet.String.toArray; /* [|"apple", "banana", "orange", "strawberry"|] */
+set->Belt.MutableSet.String.mergeMany([|"apple", "banana", "orange", "strawberry"|]);
+set->Belt.MutableSet.String.toArray; /* [|"apple", "banana", "orange", "strawberry"|] */
 ```
 
 ## remove
@@ -164,7 +159,7 @@ s0->Belt.MutableSet.String.remove("apple");
 s0->Belt.MutableSet.String.remove("banana");
 s0->Belt.MutableSet.String.remove("banana");
 
-s0->Belt.MutableSet.String.toArray; /* [|"orange|] */
+s0->Belt.MutableSet.String.toArray; /* [|"orange"|] */
 ```
 
 ## removeCheck
@@ -293,7 +288,7 @@ Applies function `f` in turn to all elements of set in increasing order.
 let s0 = Belt.MutableSet.String.fromArray([|"banana", "orange", "apple"|]);
 let acc = ref([]);
 s0->Belt.MutableSet.String.forEach(x => {
-  acc := acc->Belt.List.add(x)
+  acc := Belt.List.add(acc^, x)
 });
 acc; /* ["orange", "banana", "apple"] */
 ```
@@ -316,7 +311,7 @@ Applies function `f` to each element of set in increasing order. Function `f` ha
 
 ```re example
 let s0 = Belt.MutableSet.String.fromArray([|"apple", "orange"|]);
-s0->Belt.MutableSet.String.reduce(0, (element, acc) =>
+s0->Belt.MutableSet.String.reduce(0, (acc, element) =>
   acc + String.length(element)
 ); /* 11 */
 ```
@@ -447,7 +442,7 @@ let toArray: t => array(value);
 Returns array of ordered set elements.
 
 ```re example
-let s0 = Belt.MutableSet.String.fromArray([|"apple", "watermelon"|);
+let s0 = Belt.MutableSet.String.fromArray([|"apple", "watermelon"|]);
 
 s0->Belt.MutableSet.String.toArray; /* [|"apple", "watermelon"|] */
 ```
@@ -461,7 +456,7 @@ let minimum: t => option(value);
 Returns minimum value of the collection. `None` if collection is empty.
 
 ```re example
-let s0 = Belt.MutableSet.String.empty;
+let s0 = Belt.MutableSet.String.make();
 let s1 = Belt.MutableSet.String.fromArray([|"apple", "orange"|]);
 
 s0->Belt.MutableSet.String.minimum; /* None */
@@ -477,7 +472,7 @@ let minUndefined: t => Js.undefined(value);
 Returns minimum value of the collection. `undefined` if collection is empty.
 
 ```re example
-let s0 = Belt.MutableSet.String.empty;
+let s0 = Belt.MutableSet.String.make();
 let s1 = Belt.MutableSet.String.fromArray([|"apple", "orange"|]);
 
 s0->Belt.MutableSet.String.minUndefined; /* undefined */
@@ -493,7 +488,7 @@ let maximum: t => option(value);
 Returns maximum value of the collection. `None` if collection is empty.
 
 ```re example
-let s0 = Belt.MutableSet.String.empty;
+let s0 = Belt.MutableSet.String.make();
 let s1 = Belt.MutableSet.String.fromArray([|"apple", "orange"|]);
 
 s0->Belt.MutableSet.String.maximum; /* None */
@@ -509,7 +504,7 @@ let maxUndefined: t => Js.undefined(value);
 Returns maximum value of the collection. `undefined` if collection is empty.
 
 ```re example
-let s0 = Belt.MutableSet.String.empty;
+let s0 = Belt.MutableSet.String.make();
 let s1 = Belt.MutableSet.String.fromArray([|"apple", "orange"|]);
 
 s0->Belt.MutableSet.String.maxUndefined; /* undefined */
