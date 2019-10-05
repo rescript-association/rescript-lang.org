@@ -5,7 +5,7 @@ export default Layout;
 
 ## SortArrayInt
 
-```re
+```re sig
 module Int : Belt_SortArrayInt
 ```
 
@@ -13,7 +13,7 @@ Specalized when key type is `int`, more efficient than the generic type
 
 ## SortArrayString
 
-```re
+```re sig
 module String: Belt_SortArrayString
 ```
 
@@ -21,13 +21,13 @@ Specalized when key type is `string`, more efficient than the generic type
 
 ## strictlySortedLengthU
 
-```re
+```re sig
 let strictlySortedLengthU: (array('a), [@bs] (('a, 'a) => bool)) => int;
 ```
 
 ## strictlySortedLength
 
-```re
+```re sig
 let strictlySortedLength: (array('a), ('a, 'a) => bool) => int;
 ```
 
@@ -45,13 +45,13 @@ strictlySortedLength([|4, 3, 2, 1|], (x, y) => x < y) == (-4);
 
 ## isSortedU
 
-```re
+```re sig
 let isSortedU: (array('a), [@bs] (('a, 'a) => int)) => bool;
 ```
 
 ## isSorted
 
-```re
+```re sig
 let isSorted: (array('a), ('a, 'a) => int) => bool;
 ```
 
@@ -59,25 +59,25 @@ let isSorted: (array('a), ('a, 'a) => int) => bool;
 
 ## stableSortInPlaceByU
 
-```re
+```re sig
 let stableSortInPlaceByU: (array('a), [@bs] (('a, 'a) => int)) => unit;
 ```
 
 ## stableSortInPlaceBy
 
-```re
+```re sig
 let stableSortInPlaceBy: (array('a), ('a, 'a) => int) => unit;
 ```
 
 ## stableSortByU
 
-```re
+```re sig
 let stableSortByU: (array('a), [@bs] (('a, 'a) => int)) => array('a);
 ```
 
 ## stableSortBy
 
-```re
+```re sig
 let stableSortBy: (array('a), ('a, 'a) => int) => array('a);
 ```
 
@@ -87,13 +87,13 @@ be preserved
 
 ## binarySearchByU
 
-```re
+```re sig
 let binarySearchByU: (array('a), 'a, [@bs] (('a, 'a) => int)) => int;
 ```
 
 ## binarySearchBy
 
-```re
+```re sig
 let binarySearchBy: (array('a), 'a, ('a, 'a) => int) => int;
 ```
 
