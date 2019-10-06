@@ -129,7 +129,7 @@ var link = "no-underline text-inherit hover:text-white";
 
 function BeltDocsLayout$Navigation(Props) {
   return React.createElement("nav", {
-              className: "fixed z-10 top-0 p-2 w-full flex items-center text-sm bg-bs-purple text-white-80",
+              className: "fixed z-10 top-0 p-2 w-full shadow flex items-center text-sm bg-bs-purple text-white-80",
               id: "header"
             }, React.createElement(Link.default, {
                   href: "/belt_docs",
@@ -485,13 +485,15 @@ function BeltDocsLayout$Sidebar$NavUl(Props) {
               className: "ml-2 mt-1 text-main-lighten-15"
             }, Util.ReactStuff.ate(Belt_Array.map(items, (function (m) {
                         var match = Curry._1(isItemActive, m);
-                        var active = match ? " bg-bs-purple-lighten-95 text-bs-pink rounded -ml-1 px-2 font-bold w-3/4" : "";
+                        var active = match ? " bg-bs-purple-lighten-95 text-bs-pink rounded -ml-1 px-2 font-bold block " : "";
                         return React.createElement("li", {
                                     key: m[/* name */0],
-                                    className: "leading-5 " + active
+                                    className: "leading-5 w-4/5"
                                   }, React.createElement(Link.default, {
                                         href: m[/* href */1],
-                                        children: React.createElement("a", undefined, Util.ReactStuff.s(m[/* name */0]))
+                                        children: React.createElement("a", {
+                                              className: active
+                                            }, Util.ReactStuff.s(m[/* name */0]))
                                       }));
                       }))));
 }
@@ -508,7 +510,8 @@ function categoryToElement(isItemActive, category) {
     tmp.isItemActive = Caml_option.valFromOption(isItemActive);
   }
   return React.createElement("div", {
-              key: category[/* name */0]
+              key: category[/* name */0],
+              className: "my-12"
             }, React.createElement($$Text.Overline.make, {
                   children: Util.ReactStuff.s(category[/* name */0])
                 }), React.createElement(BeltDocsLayout$Sidebar$NavUl, tmp));
@@ -533,10 +536,9 @@ function BeltDocsLayout$Sidebar$ModuleContent(Props) {
   if (isItemActive !== undefined) {
     tmp.isItemActive = Caml_option.valFromOption(isItemActive);
   }
-  return React.createElement("div", undefined, React.createElement(Link.default, {
-                  href: "/belt_docs",
-                  children: React.createElement("a", undefined, Util.ReactStuff.s("<-- Back"))
-                }), React.createElement($$Text.Overline.make, {
+  return React.createElement("div", {
+              className: "my-12"
+            }, React.createElement($$Text.Overline.make, {
                   children: Util.ReactStuff.s(moduleName)
                 }), React.createElement(BeltDocsLayout$Sidebar$NavUl, tmp));
 }
@@ -553,32 +555,27 @@ function BeltDocsLayout$Sidebar(Props) {
   var moduleName = Belt_Option.getWithDefault(Belt_Option.map(Js_dict.get(indexData, route), (function (data) {
               return data.moduleName;
             })), "?");
-  var sidebarElement;
-  if (route === "/belt_docs") {
-    var isItemActive = function (navItem) {
-      return navItem[/* href */1] === route;
-    };
-    var partial_arg = isItemActive;
-    sidebarElement = React.createElement("div", undefined, Util.ReactStuff.ate(Belt_Array.map(categories, (function (param) {
-                    return categoryToElement(partial_arg, param);
-                  }))));
-  } else {
-    sidebarElement = React.createElement(BeltDocsLayout$Sidebar$ModuleContent, {
-          headers: headers,
-          moduleName: moduleName
-        });
-  }
+  var isItemActive = function (navItem) {
+    return navItem[/* href */1] === route;
+  };
+  var match = route !== "/belt_docs";
+  var partial_arg = isItemActive;
   return React.createElement("div", {
-              className: "w-1/3 h-auto overflow-y-visible block bg-light-grey",
+              className: "pl-2 flex w-full justify-center h-auto overflow-y-visible block bg-light-grey",
               style: {
                 maxWidth: "17.5rem"
               }
             }, React.createElement("nav", {
-                  className: "pl-12 relative sticky h-screen block overflow-y-auto scrolling-touch pb-32",
+                  className: "relative w-48 sticky h-screen block overflow-y-auto scrolling-touch pb-32",
                   style: {
                     top: "4rem"
                   }
-                }, sidebarElement));
+                }, match ? React.createElement(BeltDocsLayout$Sidebar$ModuleContent, {
+                        headers: headers,
+                        moduleName: moduleName
+                      }) : null, React.createElement("div", undefined, Util.ReactStuff.ate(Belt_Array.map(categories, (function (param) {
+                                return categoryToElement(partial_arg, param);
+                              }))))));
 }
 
 var Sidebar = {
@@ -605,14 +602,14 @@ function BeltDocsLayout(Props) {
     minWidth: "20rem"
   };
   return React.createElement("div", undefined, React.createElement("div", {
-                  className: "max-w-4xl w-full font-base"
+                  className: "max-w-4xl w-full font-base",
+                  style: minWidth
                 }, React.createElement(BeltDocsLayout$Navigation, { }), React.createElement("div", {
                       className: "flex mt-12"
                     }, React.createElement(BeltDocsLayout$Sidebar, {
                           route: router.route
                         }), React.createElement("main", {
-                          className: "pt-12 static min-h-screen overflow-visible",
-                          style: minWidth
+                          className: "pt-12 w-4/5 static min-h-screen overflow-visible"
                         }, React.createElement(React$1.MDXProvider, {
                               components: components$1,
                               children: React.createElement("div", {

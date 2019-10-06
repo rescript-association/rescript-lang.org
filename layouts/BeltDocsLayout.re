@@ -113,7 +113,7 @@ module Navigation = {
   let make = () =>
     <nav
       id="header"
-      className="fixed z-10 top-0 p-2 w-full flex items-center text-sm bg-bs-purple text-white-80">
+      className="fixed z-10 top-0 p-2 w-full shadow flex items-center text-sm bg-bs-purple text-white-80">
       <Link href="/belt_docs">
         <a className="flex items-center w-2/3">
           <img
@@ -227,9 +227,11 @@ module Sidebar = {
            items,
            m => {
              let active =
-               isItemActive(m) ? " bg-bs-purple-lighten-95 text-bs-pink rounded -ml-1 px-2 font-bold w-3/4" : "";
-             <li key={m.name} className={"leading-5 " ++ active}>
-               <Link href={m.href}> <a> m.name->s </a> </Link>
+               isItemActive(m)
+                 ? " bg-bs-purple-lighten-95 text-bs-pink rounded -ml-1 px-2 font-bold block "
+                 : "";
+             <li key={m.name} className="leading-5 w-4/5">
+               <Link href={m.href}> <a className=active> m.name->s </a> </Link>
              </li>;
            },
          )
@@ -241,7 +243,7 @@ module Sidebar = {
   let categoryToElement =
       (~isItemActive: option(navItem => bool)=?, category: category)
       : React.element => {
-    <div key={category.name}>
+    <div key={category.name} className="my-12">
       <Overline> category.name->s </Overline>
       <NavUl ?isItemActive items={category.items} />
     </div>;
@@ -255,8 +257,7 @@ module Sidebar = {
         Belt.Array.map(headers, header =>
           {name: header, href: "#" ++ header}
         );
-      <div>
-        <Link href="/belt_docs"> <a> "<-- Back"->s </a> </Link>
+      <div className="my-12">
         <Overline> moduleName->s </Overline>
         <NavUl ?isItemActive items />
       </div>;
@@ -280,32 +281,28 @@ module Sidebar = {
         ->getWithDefault("?")
       );
 
-    /*General overview */
-    let sidebarElement =
-      if (route === "/belt_docs") {
-        let isItemActive = navItem => {
-          navItem.href === route;
-        };
-        <div>
-          {categories->Belt.Array.map(categoryToElement(~isItemActive))->ate}
-        </div>;
-      } else {
-        <ModuleContent
-          headers
-          // Todo: We need to introduce router state to be able to
-          //       listen to anchor changes (#get, #map,...)
-          moduleName
-          //       Add a `isItemActive` as soon as we have access to this info
-        />;
-      };
+    let isItemActive = navItem => {
+      navItem.href === route;
+    };
 
     <div
-      className="w-1/3 h-auto overflow-y-visible block bg-light-grey"
+      className="pl-2 flex w-full justify-center h-auto overflow-y-visible block bg-light-grey"
       style={Style.make(~maxWidth="17.5rem", ())}>
       <nav
-        className="pl-12 relative sticky h-screen block overflow-y-auto scrolling-touch pb-32"
+        className="relative w-48 sticky h-screen block overflow-y-auto scrolling-touch pb-32"
         style={Style.make(~top="4rem", ())}>
-        sidebarElement
+        {route !== "/belt_docs"
+           ? <ModuleContent
+               headers
+               // Todo: We need to introduce router state to be able to
+               //       listen to anchor changes (#get, #map,...)
+               moduleName
+               //       Add a `isItemActive` as soon as we have access to this info
+             />
+           : React.null}
+        <div>
+          {categories->Belt.Array.map(categoryToElement(~isItemActive))->ate}
+        </div>
       </nav>
     </div>;
   };
@@ -317,13 +314,11 @@ let make = (~components=Md.components, ~children) => {
 
   let minWidth = ReactDOMRe.Style.make(~minWidth="20rem", ());
   <div>
-    <div className="max-w-4xl w-full font-base">
+    <div className="max-w-4xl w-full font-base" style=minWidth>
       <Navigation />
       <div className="flex mt-12">
         <Sidebar route={router##route} />
-        <main
-          style=minWidth
-          className="pt-12 static min-h-screen overflow-visible">
+        <main className="pt-12 w-4/5 static min-h-screen overflow-visible">
           <Mdx.Provider components>
             <div className="pl-8 max-w-2xl mb-32"> children </div>
           </Mdx.Provider>
