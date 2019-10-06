@@ -46,9 +46,9 @@ let getExn: t('a, 'b) => 'a;
 `getExn(res)`: when `res` is `Ok(n)`, returns `n` when `res` is `Error(m)`, raise an exception
 
 ```re example
-getExn(good) == 42;
+Belt.Result.getExn(Belt.Result.Ok(42)) == 42;
 
-getExn(bad); /* raises exception */
+Belt.Result.getExn(Belt.Result.Error("Invalid data")); /* raises exception */
 ```
 
 ## mapWithDefaultU
@@ -67,9 +67,11 @@ let mapWithDefault: (t('a, 'c), 'b, 'a => 'b) => 'b;
 otherwise `default`.
 
 ```re example
-mapWithDefault(good, 0, (x) => x / 2) == 21;
+let ok = Belt.Result.Ok(42)
+Belt.Result.mapWithDefault(ok, 0, (x) => x / 2) == 21;
 
-mapWithDefault(bad, 0, (x) => x / 2) == 0;
+let error = Belt.Result.Error("Invalid data")
+Belt.Result.mapWithDefault(error, 0, (x) => x / 2) == 0;
 ```
 
 ## mapU
@@ -91,9 +93,9 @@ ordinary value.
 ```re example
 let f = (x) => sqrt(float_of_int(x));
 
-map(Ok(64), f) == Ok(8.0);
+Belt.Result.map(Ok(64), f) == Ok(8.0);
 
-map(Error("Invalid data"), f) == Error("Invalid data");
+Belt.Result.map(Error("Invalid data"), f) == Error("Invalid data");
 ```
 
 ## flatMapU
@@ -115,16 +117,16 @@ unchanged. Function `f` takes a value of the same type as `n` and returns a
 ```re example
 let recip = (x) =>
   if (x !== 0.0) {
-    Ok(1.0 /. x);
+    Belt.Result.Ok(1.0 /. x);
   } else {
-    Error("Divide by zero");
+    Belt.Result.Error("Divide by zero");
   };
 
-flatMap(Ok(2.0), recip) == Ok(0.5);
+Belt.Result.flatMap(Ok(2.0), recip) == Ok(0.5);
 
-flatMap(Ok(0.0), recip) == Error("Divide by zero");
+Belt.Result.flatMap(Ok(0.0), recip) == Error("Divide by zero");
 
-flatMap(Error("Already bad"), recip) == Error("Already bad");
+Belt.Result.flatMap(Error("Already bad"), recip) == Error("Already bad");
 ```
 
 ## getWithDefault
@@ -137,9 +139,9 @@ let getWithDefault: (t('a, 'b), 'a) => 'a;
 otherwise `default`
 
 ```re example
-getWithDefault(Ok(42), 0) == 42;
+Belt.Result.getWithDefault(Ok(42), 0) == 42;
 
-getWithDefault(Error("Invalid Data")) == 0;
+Belt.Result.getWithDefault(Error("Invalid Data"), 0) == 0;
 ```
 
 ## isOk
@@ -179,23 +181,23 @@ the form `Error(e)`, return false If both `res1` and `res2` are of the form
 `Error(e)`, return true
 
 ```re example
-let good1 = Ok(42);
+let good1 = Belt.Result.Ok(42);
 
-let good2 = Ok(32);
+let good2 = Belt.Result.Ok(32);
 
-let bad1 = Error("invalid");
+let bad1 = Belt.Result.Error("invalid");
 
-let bad2 = Error("really invalid");
+let bad2 = Belt.Result.Error("really invalid");
 
 let mod10equal = (a, b) => a mod 10 === b mod 10;
 
-eq(good1, good2, mod10equal) == true;
+Belt.Result.eq(good1, good2, mod10equal) == true;
 
-eq(good1, bad1, mod10equal) == false;
+Belt.Result.eq(good1, bad1, mod10equal) == false;
 
-eq(bad2, good2, mod10equal) == false;
+Belt.Result.eq(bad2, good2, mod10equal) == false;
 
-eq(bad1, bad2, mod10equal) == true;
+Belt.Result.eq(bad1, bad2, mod10equal) == true;
 ```
 
 ## cmpU
@@ -222,23 +224,23 @@ return -1 (nothing is less than something) If `res1` is of the form `Ok(n)` and
 both `res1` and `res2` are of the form `Error(e)`, return 0 (equal)
 
 ```re example
-let good1 = Ok(59);
+let good1 = Belt.Result.Ok(59);
 
-let good2 = Ok(37);
+let good2 = Belt.Result.Ok(37);
 
-let bad1 = Error("invalid");
+let bad1 = Belt.Result.Error("invalid");
 
-let bad2 = Error("really invalid");
+let bad2 = Belt.Result.Error("really invalid");
 
 let mod10cmp = (a, b) => Pervasives.compare(a mod 10, b mod 10);
 
-cmp(Ok(39), Ok(57), mod10cmp) == 1;
+Belt.Result.cmp(Ok(39), Ok(57), mod10cmp) == 1;
 
-cmp(Ok(57), Ok(39), mod10cmp) == (-1);
+Belt.Result.cmp(Ok(57), Ok(39), mod10cmp) == (-1);
 
-cmp(Ok(39), Error("y"), mod10cmp) == 1;
+Belt.Result.cmp(Ok(39), Error("y"), mod10cmp) == 1;
 
-cmp(Error("x"), Ok(57), mod10cmp) == (-1);
+Belt.Result.cmp(Error("x"), Ok(57), mod10cmp) == (-1);
 
-cmp(Error("x"), Error("y"), mod10cmp) == 0;
+Belt.Result.cmp(Error("x"), Error("y"), mod10cmp) == 0;
 ```

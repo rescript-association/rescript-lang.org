@@ -85,9 +85,15 @@ let findFirstBy: (t('k, 'v, 'id), ('k, 'v) => bool) => option(('k, 'v));
 `findFirstBy(m, p)` uses function `f` to find the first key value pair to match predicate `p`.
 
 ```re example
-let s0 = fromArray(~id=(module IntCmp), [|(4, "4"), (1, "1"), (2, "2,"(3, ""))|]);
+module IntCmp =
+  Belt.Id.MakeComparable({
+    type t = int;
+    let cmp = Pervasives.compare;
+  });
 
-findFirstBy(s0, (k, v) => k == 4) == option((4, "4"));
+let s0 = Belt.Map.Dict.fromArray([|(4, "4"), (1, "1"), (2, "2"), (3, "3")|], ~cmp=IntCmp.cmp);
+
+Belt.Map.Dict.findFirstBy(s0, (k, _) => k == 4) == Some((4, "4"));
 ```
 
 ## forEachU

@@ -266,7 +266,7 @@ Applies function `f` in turn to all elements of set in increasing order.
 let s0 = Belt.Set.Int.fromArray([|5,2,3,5,6|]);
 let acc = ref([]);
 s0->Belt.Set.Int.forEach(x => {
-  acc := acc->Belt.List.add(x)
+  acc := Belt.List.add(acc^, x)
 });
 acc; /* [6,5,3,2] */
 ```
@@ -287,8 +287,8 @@ Applies function `f` to each element of set in increasing order. Function `f` ha
 
 ```re example
 let s0 = Belt.Set.Int.fromArray([|5,2,3,5,6|]);
-s0->Belt.Set.Int.reduce([], (element, acc) =>
-  acc->Bs.List.add(element)
+s0->Belt.Set.Int.reduce([], (acc, element) =>
+  acc->Belt.List.add(element)
 ); /* [6,5,3,2] */
 ```
 
@@ -524,12 +524,12 @@ Same as [get](#get) but raise when element does not exist.
 let split: (t, value) => ((t, t), bool);
 ```
 
-Returns a triple `(l, present, r)`, where `l` is the set of elements of set that are strictly less than value, `r` is the set of elements of set that are strictly greater than value, `present` is `false` if set contains no element equal to value, or `true` if set contains an element equal to value.
+Returns a tuple `((l, r), present)`, where `l` is the set of elements of set that are strictly less than value, `r` is the set of elements of set that are strictly greater than value, `present` is `false` if set contains no element equal to value, or `true` if set contains an element equal to value.
 
 ```re example
 let s0 = Belt.Set.Int.fromArray([|1,2,3,4,5|]);
 
-let (smaller, present, larger) = s0->Belt.Set.Int.split(3);
+let ((smaller, larger), present) = s0->Belt.Set.Int.split(3);
 
 present; /* true */
 smaller->Belt.Set.Int.toArray; /* [|1,2|] */

@@ -49,7 +49,7 @@ Creates new set from array of elements.
 ```re example
 let s0 = Belt.Set.String.fromArray([|"apple", "orange", "banana"|])
 
-so->Belt.Set.String.toArray; /* [|"apple", "banana", "orange"|] */
+s0->Belt.Set.String.toArray; /* [|"apple", "banana", "orange"|] */
 ```
 
 ## fromSortedArrayUnsafe
@@ -143,7 +143,7 @@ let s2 = s1->Belt.Set.String.remove("banana");
 let s3 = s2->Belt.Set.String.remove("banana");
 
 s1->Belt.Set.String.toArray; /* [|"orange", "banana"|] */
-s2->Belt.Set.String.toArray; /* [|"orange|] */
+s2->Belt.Set.String.toArray; /* [|"orange"|] */
 s2 == s3; /* true */
 ```
 
@@ -267,7 +267,7 @@ Applies function `f` in turn to all elements of set in increasing order.
 let s0 = Belt.Set.String.fromArray([|"banana", "orange", "apple"|]);
 let acc = ref([]);
 s0->Belt.Set.String.forEach(x => {
-  acc := acc->Belt.List.add(x)
+  acc := Belt.List.add(acc^, x)
 });
 acc; /* ["orange", "banana", "apple"] */
 ```
@@ -288,7 +288,7 @@ Applies function `f` to each element of set in increasing order. Function `f` ha
 
 ```re example
 let s0 = Belt.Set.String.fromArray([|"apple", "orange"|]);
-s0->Belt.Set.String.reduce(0, (element, acc) =>
+s0->Belt.Set.String.reduce(0, (acc, element) =>
   acc + String.length(element)
 ); /* 11 */
 ```
@@ -419,7 +419,7 @@ let toArray: t => array(value);
 Returns array of ordered set elements.
 
 ```re example
-let s0 = Belt.Set.String.fromArray([|"apple", "watermelon"|);
+let s0 = Belt.Set.String.fromArray([|"apple", "watermelon"|]);
 
 s0->Belt.Set.String.toArray; /* [|"apple", "watermelon"|] */
 ```
@@ -525,12 +525,12 @@ See [get](#get) - raise when element does not exist.
 let split: (t, value) => ((t, t), bool);
 ```
 
-Returns a triple `(l, present, r)`, where `l` is the set of elements of set that are strictly less than value, `r` is the set of elements of set that are strictly greater than value, `present` is `false` if set contains no element equal to value, or `true` if set contains an element equal to value.
+Returns a triple `((l, r), present)`, where `l` is the set of elements of set that are strictly less than value, `r` is the set of elements of set that are strictly greater than value, `present` is `false` if set contains no element equal to value, or `true` if set contains an element equal to value.
 
 ```re example
 let s0 = Belt.Set.String.fromArray([|"apple", "banana", "orange"|]);
 
-let (smaller, present, larger) = s0->Belt.Set.String.split("banana");
+let ((smaller, larger), present) = s0->Belt.Set.String.split("banana");
 
 present; /* true */
 smaller->Belt.Set.String.toArray; /* [|"apple"|] */
