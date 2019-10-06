@@ -26,6 +26,7 @@ module.exports = {
         },
         
         "light-grey": "rgba(245, 245, 245, 0.5)",
+        "light-grey-20": "rgba(245, 245, 245, 0.2)",
         main: {
           // Text Colors
           black: "#23242e",
@@ -43,6 +44,7 @@ module.exports = {
           purple: "rgb(171, 94, 163)",
           "purple-lighten-95": "rgba(171, 94, 163, 0.15)"
         },
+        "ghost-white": "#F8F7F9",
         "white-80": "rgba(255,255,255,0.8)",
       }
     },

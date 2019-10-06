@@ -113,22 +113,34 @@ module Navigation = {
   let make = () =>
     <nav
       id="header"
-      className="fixed z-10 top-0 p-2 w-full shadow flex items-center text-sm bg-bs-purple text-white-80">
+      className="fixed z-10 top-0 p-2 w-full h-16 shadow flex items-center text-ghost-white text-sm bg-bs-purple">
       <Link href="/belt_docs">
-        <a className="flex items-center w-2/3">
-          <img
-            className="h-12"
-            src="https://res.cloudinary.com/dmm9n7v9f/image/upload/v1568788825/Reason%20Association/reasonml.org/bucklescript_bqxwee.svg"
-          />
-          <span
-            className="text-2xl ml-2 font-montserrat text-white-80 hover:text-white">
+        <a className="flex items-center pl-10 w-1/5">
+          <div
+            className="h-6 w-6 bg-white rounded-full flex flex-col justify-center items-center">
+            <div className="h-4 w-4 bg-bs-purple rounded-full" />
+          </div>
+          <span className="text-xl ml-2 font-black text-white">
             "Belt"->s
           </span>
         </a>
       </Link>
-      <div className="flex w-1/3 justify-end">
+      <div
+        className="ml-6 flex w-3/5 px-3 h-10 max-w-sm rounded-lg text-white bg-light-grey-20 content-center items-center w-2/3">
+        <img
+          src="/static/ic_search_small.svg"
+          className="mr-3"
+          ariaHidden=true
+        />
+        <input
+          type_="text"
+          className="bg-transparent placeholder-ghost-white block focus:outline-none w-full ml-2"
+          placeholder="Search not ready yet..."
+        />
+      </div>
+      <div className="flex ml-8 text-ghost-white justify-between">
         <Link href="/">
-          <a className={link ++ " mx-2"}> "ReasonML"->s </a>
+          <a className={link ++ " mx-4"}> "ReasonML"->s </a>
         </Link>
         <a
           href="https://github.com/reason-association/reasonml.org"

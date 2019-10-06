@@ -129,24 +129,35 @@ var link = "no-underline text-inherit hover:text-white";
 
 function BeltDocsLayout$Navigation(Props) {
   return React.createElement("nav", {
-              className: "fixed z-10 top-0 p-2 w-full shadow flex items-center text-sm bg-bs-purple text-white-80",
+              className: "fixed z-10 top-0 p-2 w-full h-16 shadow flex items-center text-ghost-white text-sm bg-bs-purple",
               id: "header"
             }, React.createElement(Link.default, {
                   href: "/belt_docs",
                   children: React.createElement("a", {
-                        className: "flex items-center w-2/3"
-                      }, React.createElement("img", {
-                            className: "h-12",
-                            src: "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1568788825/Reason%20Association/reasonml.org/bucklescript_bqxwee.svg"
-                          }), React.createElement("span", {
-                            className: "text-2xl ml-2 font-montserrat text-white-80 hover:text-white"
+                        className: "flex items-center pl-10 w-1/5"
+                      }, React.createElement("div", {
+                            className: "h-6 w-6 bg-white rounded-full flex flex-col justify-center items-center"
+                          }, React.createElement("div", {
+                                className: "h-4 w-4 bg-bs-purple rounded-full"
+                              })), React.createElement("span", {
+                            className: "text-xl ml-2 font-black text-white"
                           }, Util.ReactStuff.s("Belt")))
                 }), React.createElement("div", {
-                  className: "flex w-1/3 justify-end"
+                  className: "ml-6 flex w-3/5 px-3 h-10 max-w-sm rounded-lg text-white bg-light-grey-20 content-center items-center w-2/3"
+                }, React.createElement("img", {
+                      "aria-hidden": true,
+                      className: "mr-3",
+                      src: "/static/ic_search_small.svg"
+                    }), React.createElement("input", {
+                      className: "bg-transparent placeholder-ghost-white block focus:outline-none w-full ml-2",
+                      placeholder: "Search not ready yet...",
+                      type: "text"
+                    })), React.createElement("div", {
+                  className: "flex ml-8 text-ghost-white justify-between"
                 }, React.createElement(Link.default, {
                       href: "/",
                       children: React.createElement("a", {
-                            className: "no-underline text-inherit hover:text-white mx-2"
+                            className: "no-underline text-inherit hover:text-white mx-4"
                           }, Util.ReactStuff.s("ReasonML"))
                     }), React.createElement("a", {
                       className: link,
