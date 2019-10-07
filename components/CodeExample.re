@@ -9,14 +9,13 @@ let make = (~children, ~lang=`Reason) => {
     | `Reason => "RE"
     | `OCaml => "ML"
     };
-  <div className="flex flex-col rounded-lg bg-sand-lighten-20 py-4 px-6 mt-6">
+  <div className="flex flex-col rounded-lg bg-main-black py-3 px-3 mt-10 overflow-x-auto">
     <div
-      className="flex justify-between font-overpass text-main-lighten-20 font-bold text-sm mb-3">
-      "Example"->s
-      <span className="font-montserrat text-primary-lighten-50">
-        langStr->s
-      </span>
+      className="font-montserrat text-sm mb-3 font-bold text-primary-dark-10">
+      langStr->s
     </div>
+    <div className="pl-3 text-base pb-4">
     children
+    </div>
   </div>;
 };

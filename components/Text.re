@@ -1,7 +1,7 @@
 open Util.ReactStuff;
 
 module Link = {
-  let inline = "no-underline border-b hover:text-main-lighten-20 hover:border-primary-dark-10 border-primary-lighten-50 text-inherit";
+  let inline = "no-underline border-b border-main-black hover:border-bs-purple text-inherit";
   let standalone = "no-underline text-primary";
 };
 
@@ -141,11 +141,8 @@ module Md = {
           }
         };
       let langClass = "lang-" ++ lang;
-      let base = {
-        "className":
-          langClass ++ " font-mono block overflow-x-scroll leading-tight hljs",
-        "metastring": metastring,
-      };
+
+      let baseClass = langClass ++ " font-mono block leading-tight";
 
       /* If there is a configured language for HLJS,
          we use the highlight function to highlight the code,
@@ -153,16 +150,16 @@ module Md = {
          the markdown, otherwise we will just pass children down
          without any modification */
       let codeElement =
-        switch (lang) {
-        | "re"
-        | "reason" =>
+        switch (lang, metastring) {
+        | ("re", Some("example"))
+        | ("reason", Some("example")) =>
           let highlighted =
             HighlightJs.(
               highlight(~lang, ~value=children->Obj.magic)->valueGet
             );
           let finalProps =
             Js.Obj.assign(
-              base,
+              {"className": baseClass ++ " hljs"},
               {
                 "dangerouslySetInnerHTML": {
                   "__html": highlighted,
@@ -177,7 +174,7 @@ module Md = {
         | _ =>
           ReactDOMRe.createElementVariadic(
             "code",
-            ~props=ReactDOMRe.objToDOMProps(base),
+            ~props=ReactDOMRe.objToDOMProps({"className": baseClass}),
             children,
           )
         };
@@ -190,6 +187,8 @@ module Md = {
 
         if (Belt.List.has(metaSplits, "example", (==))) {
           <CodeExample> codeElement </CodeExample>;
+        } else if (Belt.List.has(metaSplits, "sig", (==))) {
+          <CodeSignature> children->Obj.magic </CodeSignature>;
         } else {
           codeElement;
         };
@@ -201,11 +200,12 @@ module Md = {
     [@react.component]
     let make = (~children) => {
       <code
-        className="px-1 rounded-sm text-inherit font-mono bg-sand-lighten-20">
+        className="px-1 rounded-sm text-inherit font-mono font-bold bg-yellow">
         children
       </code>;
     };
   };
+
   module P = {
     [@react.component]
     let make = (~children) => {

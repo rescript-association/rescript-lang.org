@@ -8,9 +8,10 @@ import * as ReactDOMRe from "reason-react/src/ReactDOMRe.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as CodeExample from "./CodeExample.bs.js";
 import * as ReasonReact from "reason-react/src/ReasonReact.js";
+import * as CodeSignature from "./CodeSignature.bs.js";
 import * as Highlight from "highlight.js/lib/highlight";
 
-var inline = "no-underline border-b hover:text-main-lighten-20 hover:border-primary-dark-10 border-primary-lighten-50 text-inherit";
+var inline = "no-underline border-b border-main-black hover:border-bs-purple text-inherit";
 
 var Link = {
   inline: inline,
@@ -167,34 +168,47 @@ function Text$Md$Code(Props) {
     lang = "re";
   }
   var langClass = "lang-" + lang;
-  var base = {
-    className: langClass + " font-mono block overflow-x-scroll leading-tight hljs",
-    metastring: metastring
-  };
+  var baseClass = langClass + " font-mono block leading-tight";
   var codeElement;
   var exit = 0;
+  var exit$1 = 0;
   switch (lang) {
     case "re" :
     case "reason" :
-        exit = 1;
+        exit$1 = 2;
         break;
     default:
-      codeElement = ReactDOMRe.createElementVariadic("code", Caml_option.some(base), children);
+      exit = 1;
+  }
+  if (exit$1 === 2) {
+    if (metastring !== undefined && metastring === "example") {
+      var highlighted = Highlight.highlight(lang, children).value;
+      var finalProps = Object.assign({
+            className: baseClass + " hljs"
+          }, {
+            dangerouslySetInnerHTML: {
+              __html: highlighted
+            }
+          });
+      codeElement = ReactDOMRe.createElementVariadic("code", Caml_option.some(finalProps), /* array */[]);
+    } else {
+      exit = 1;
+    }
   }
   if (exit === 1) {
-    var highlighted = Highlight.highlight(lang, children).value;
-    var finalProps = Object.assign(base, {
-          dangerouslySetInnerHTML: {
-            __html: highlighted
-          }
-        });
-    codeElement = ReactDOMRe.createElementVariadic("code", Caml_option.some(finalProps), /* array */[]);
+    codeElement = ReactDOMRe.createElementVariadic("code", {
+          className: baseClass
+        }, children);
   }
   if (metastring !== undefined) {
     var metaSplits = Belt_List.fromArray(metastring.split(" "));
     if (Belt_List.has(metaSplits, "example", Caml_obj.caml_equal)) {
       return React.createElement(CodeExample.make, {
                   children: codeElement
+                });
+    } else if (Belt_List.has(metaSplits, "sig", Caml_obj.caml_equal)) {
+      return React.createElement(CodeSignature.make, {
+                  children: children
                 });
     } else {
       return codeElement;
@@ -211,7 +225,7 @@ var Code = {
 function Text$Md$InlineCode(Props) {
   var children = Props.children;
   return React.createElement("code", {
-              className: "px-1 rounded-sm text-inherit font-mono bg-sand-lighten-20"
+              className: "px-1 rounded-sm text-inherit font-mono font-bold bg-yellow"
             }, children);
 }
 

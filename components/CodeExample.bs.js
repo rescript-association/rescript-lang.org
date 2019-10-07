@@ -9,12 +9,12 @@ function CodeExample(Props) {
   var lang = match !== undefined ? match : /* Reason */825328612;
   var langStr = lang >= 825328612 ? "RE" : "ML";
   return React.createElement("div", {
-              className: "flex flex-col rounded-lg bg-sand-lighten-20 py-4 px-6 mt-6"
+              className: "flex flex-col rounded-lg bg-main-black py-3 px-3 mt-10 overflow-x-auto"
             }, React.createElement("div", {
-                  className: "flex justify-between font-overpass text-main-lighten-20 font-bold text-sm mb-3"
-                }, Util.ReactStuff.s("Example"), React.createElement("span", {
-                      className: "font-montserrat text-primary-lighten-50"
-                    }, Util.ReactStuff.s(langStr))), children);
+                  className: "font-montserrat text-sm mb-3 font-bold text-primary-dark-10"
+                }, Util.ReactStuff.s(langStr)), React.createElement("div", {
+                  className: "pl-3 text-base pb-4"
+                }, children));
 }
 
 var make = CodeExample;

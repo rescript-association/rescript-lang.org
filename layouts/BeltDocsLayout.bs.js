@@ -50,7 +50,7 @@ function BeltDocsLayout$Md$InvisibleAnchor(Props) {
   var id = Props.id;
   var style = {
     position: "absolute",
-    top: "-3rem"
+    top: "-1rem"
   };
   return React.createElement("span", {
               "aria-hidden": true,
@@ -70,7 +70,7 @@ function BeltDocsLayout$Md$H2(Props) {
   return React.createElement(React.Fragment, undefined, React.createElement(BeltDocsLayout$Md$InvisibleAnchor, {
                   id: children
                 }), React.createElement("div", {
-                  className: "border-b border-gray-200 mt-12"
+                  className: "border-b border-gray-200 my-20"
                 }));
 }
 
@@ -92,7 +92,7 @@ var Pre = {
 function BeltDocsLayout$Md$P(Props) {
   var children = Props.children;
   return React.createElement("p", {
-              className: "text-base mt-3 leading-4 ml-8 text-main-lighten-15"
+              className: "mt-3 leading-4 text-main-lighten-15"
             }, children);
 }
 
@@ -153,7 +153,7 @@ function BeltDocsLayout$Navigation(Props) {
                       placeholder: "Search not ready yet...",
                       type: "text"
                     })), React.createElement("div", {
-                  className: "flex ml-8 text-ghost-white justify-between"
+                  className: "flex mx-4 text-ghost-white justify-between ml-auto"
                 }, React.createElement(Link.default, {
                       href: "/",
                       children: React.createElement("a", {
@@ -491,21 +491,22 @@ function BeltDocsLayout$Sidebar$NavUl(Props) {
   var isItemActive = match !== undefined ? match : (function (_nav) {
         return false;
       });
+  var match$1 = Props.isHidden;
+  var isHidden = match$1 !== undefined ? match$1 : false;
   var items = Props.items;
   return React.createElement("ul", {
               className: "ml-2 mt-1 text-main-lighten-15"
             }, Util.ReactStuff.ate(Belt_Array.map(items, (function (m) {
+                        var hidden = isHidden ? "hidden" : "block";
                         var match = Curry._1(isItemActive, m);
                         var active = match ? " bg-bs-purple-lighten-95 text-bs-pink rounded -ml-1 px-2 font-bold block " : "";
                         return React.createElement("li", {
                                     key: m[/* name */0],
-                                    className: "leading-5 w-4/5"
-                                  }, React.createElement(Link.default, {
-                                        href: m[/* href */1],
-                                        children: React.createElement("a", {
-                                              className: active
-                                            }, Util.ReactStuff.s(m[/* name */0]))
-                                      }));
+                                    className: hidden + " leading-5 w-4/5"
+                                  }, React.createElement("a", {
+                                        className: "hover:text-bs-purple " + active,
+                                        href: m[/* href */1]
+                                      }, Util.ReactStuff.s(m[/* name */0])));
                       }))));
 }
 
@@ -532,6 +533,11 @@ function BeltDocsLayout$Sidebar$ModuleContent(Props) {
   var isItemActive = Props.isItemActive;
   var headers = Props.headers;
   var moduleName = Props.moduleName;
+  var match = React.useState((function () {
+          return false;
+        }));
+  var setCollapsed = match[1];
+  var collapsed = match[0];
   var items = Belt_Array.map(headers, (function (header) {
           return /* record */Caml_chrome_debugger.record([
                     "name",
@@ -542,6 +548,7 @@ function BeltDocsLayout$Sidebar$ModuleContent(Props) {
                   ]);
         }));
   var tmp = {
+    isHidden: collapsed,
     items: items
   };
   if (isItemActive !== undefined) {
@@ -550,7 +557,18 @@ function BeltDocsLayout$Sidebar$ModuleContent(Props) {
   return React.createElement("div", {
               className: "my-12"
             }, React.createElement($$Text.Overline.make, {
-                  children: Util.ReactStuff.s(moduleName)
+                  children: React.createElement("a", {
+                        className: "cursor-pointer hover:text-bs-purple",
+                        href: "#",
+                        onClick: (function (evt) {
+                            evt.preventDefault();
+                            return Curry._1(setCollapsed, (function (isCollapsed) {
+                                          return !isCollapsed;
+                                        }));
+                          })
+                      }, React.createElement("span", {
+                            className: "hidden hover:block"
+                          }, Util.ReactStuff.s(collapsed ? "v" : "^")), Util.ReactStuff.s(moduleName))
                 }), React.createElement(BeltDocsLayout$Sidebar$NavUl, tmp));
 }
 
@@ -613,7 +631,7 @@ function BeltDocsLayout(Props) {
     minWidth: "20rem"
   };
   return React.createElement("div", undefined, React.createElement("div", {
-                  className: "max-w-4xl w-full font-base",
+                  className: "max-w-4xl w-full",
                   style: minWidth
                 }, React.createElement(BeltDocsLayout$Navigation, { }), React.createElement("div", {
                       className: "flex mt-12"
@@ -624,7 +642,7 @@ function BeltDocsLayout(Props) {
                         }, React.createElement(React$1.MDXProvider, {
                               components: components$1,
                               children: React.createElement("div", {
-                                    className: "pl-8 max-w-2xl mb-32"
+                                    className: "pl-8 max-w-md mb-32 text-lg"
                                   }, children)
                             })))));
 }

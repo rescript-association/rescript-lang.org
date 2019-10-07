@@ -48,7 +48,7 @@ module Md = {
     [@react.component]
     let make = (~id: string) => {
       let style =
-        ReactDOMRe.Style.make(~position="absolute", ~top="-3rem", ());
+        ReactDOMRe.Style.make(~position="absolute", ~top="-1rem", ());
       <span className="relative" ariaHidden=true> <a id style /> </span>;
     };
   };
@@ -61,7 +61,7 @@ module Md = {
       <>
         // Here we know that children is always a string (## headline)
         <InvisibleAnchor id={children->Unsafe.elementAsString} />
-        <div className="border-b border-gray-200 mt-12" />
+        <div className="border-b border-gray-200 my-20" />
         /*
          <h2
            className="inline text-xl leading-3 font-montserrat font-medium text-main-black">
@@ -82,9 +82,7 @@ module Md = {
   module P = {
     [@react.component]
     let make = (~children) => {
-      <p className="text-base mt-3 leading-4 ml-8 text-main-lighten-15">
-        children
-      </p>;
+      <p className="mt-3 leading-4 text-main-lighten-15"> children </p>;
     };
   };
 
@@ -138,7 +136,7 @@ module Navigation = {
           placeholder="Search not ready yet..."
         />
       </div>
-      <div className="flex ml-8 text-ghost-white justify-between">
+      <div className="flex mx-4 text-ghost-white justify-between ml-auto">
         <Link href="/">
           <a className={link ++ " mx-4"}> "ReasonML"->s </a>
         </Link>
@@ -232,18 +230,22 @@ module Sidebar = {
     let make =
         (
           ~isItemActive: navItem => bool=_nav => false,
+          ~isHidden=false,
           ~items: array(navItem),
         ) => {
       <ul className="ml-2 mt-1 text-main-lighten-15">
         {Belt.Array.map(
            items,
            m => {
+             let hidden = isHidden ? "hidden" : "block";
              let active =
                isItemActive(m)
                  ? " bg-bs-purple-lighten-95 text-bs-pink rounded -ml-1 px-2 font-bold block "
                  : "";
-             <li key={m.name} className="leading-5 w-4/5">
-               <Link href={m.href}> <a className=active> m.name->s </a> </Link>
+             <li key={m.name} className={hidden ++ " leading-5 w-4/5"}>
+               <a href={m.href} className={"hover:text-bs-purple " ++ active}>
+                 m.name->s
+               </a>
              </li>;
            },
          )
@@ -265,13 +267,27 @@ module Sidebar = {
     [@react.component]
     let make =
         (~isItemActive=?, ~headers: array(string), ~moduleName: string) => {
+      let (collapsed, setCollapsed) = React.useState(() => false);
       let items =
         Belt.Array.map(headers, header =>
           {name: header, href: "#" ++ header}
         );
       <div className="my-12">
-        <Overline> moduleName->s </Overline>
-        <NavUl ?isItemActive items />
+        <Overline>
+          <a
+            className="cursor-pointer hover:text-bs-purple"
+            href="#"
+            onClick={evt => {
+              ReactEvent.Mouse.preventDefault(evt);
+              setCollapsed(isCollapsed => !isCollapsed);
+            }}>
+            <span className="hidden hover:block">
+              {collapsed ? "v" : "^"}->s
+            </span>
+            moduleName->s
+          </a>
+        </Overline>
+        <NavUl ?isItemActive items isHidden=collapsed />
       </div>;
     };
   };
@@ -326,13 +342,13 @@ let make = (~components=Md.components, ~children) => {
 
   let minWidth = ReactDOMRe.Style.make(~minWidth="20rem", ());
   <div>
-    <div className="max-w-4xl w-full font-base" style=minWidth>
+    <div className="max-w-4xl w-full" style=minWidth>
       <Navigation />
       <div className="flex mt-12">
         <Sidebar route={router##route} />
         <main className="pt-12 w-4/5 static min-h-screen overflow-visible">
           <Mdx.Provider components>
-            <div className="pl-8 max-w-2xl mb-32"> children </div>
+            <div className="pl-8 max-w-md mb-32 text-lg"> children </div>
           </Mdx.Provider>
         </main>
       </div>

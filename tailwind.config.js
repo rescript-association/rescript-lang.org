@@ -16,6 +16,11 @@ module.exports = {
         sand: "#f4f1e6",
         "sand-lighten-20": "rgba(249, 246, 243, 0.8)",
 
+        yellow: "#fef8d1",
+
+        "leaf-green": "#7fba3b",
+        "dark-green": "#5c6e5a",
+
         // Primary Color
         primary: {
           default: "#f9543e",
@@ -24,9 +29,11 @@ module.exports = {
           "lighten-90": "rgb(249, 84, 62, 0.1)",
           "lighten-50": "rgb(249, 84, 62, 0.5)"
         },
-        
+
         "light-grey": "rgba(245, 245, 245, 0.5)",
         "light-grey-20": "rgba(245, 245, 245, 0.2)",
+        "lighter-grey": "#f2f2f2",
+        "teal": "#38bcd5",
         main: {
           // Text Colors
           black: "#23242e",
@@ -45,68 +52,68 @@ module.exports = {
           "purple-lighten-95": "rgba(171, 94, 163, 0.15)"
         },
         "ghost-white": "#F8F7F9",
-        "white-80": "rgba(255,255,255,0.8)",
+        "white-80": "rgba(255,255,255,0.8)"
       }
     },
     screens: {
-      'sm': '576px',
-      'md': '768px',
-      'lg': '992px',
-      'xl': '1200px',
+      sm: "576px",
+      md: "768px",
+      lg: "992px",
+      xl: "1200px"
     },
     /* Most of the time we customize the font-sizes,
      so we added the Tailwind default values here for
      convenience */
     fontSize: {
-      'xs': '.75rem',     // 12px
-      'sm': '.875rem',    // 14px
-      'base': '1rem',     // 16px
-      'lg': '1.125rem',   // 18px
-      'xl': '1.25rem',    // 20px
-      '2xl': '1.5rem',    // 24px
-      '3xl': '2rem',      // 32px
-      '4xl': '2.125rem',  // 34px
-      '5xl': '2.25rem',   // 36px
-      '6xl': '2.625rem',  // 42px
+      xs: ".75rem", // 12px
+      sm: ".875rem", // 14px
+      base: "1rem", // 16px
+      lg: "1.125rem", // 18px
+      xl: "1.25rem", // 20px
+      "2xl": "1.5rem", // 24px
+      "3xl": "2rem", // 32px
+      "4xl": "2.125rem", // 34px
+      "5xl": "2.25rem", // 36px
+      "6xl": "2.625rem" // 42px
     },
     fontWeight: {
-      'hairline': 100,
-      'thin': 200,
-      'light': 300,
-      'normal': 400,
-      'medium': 500,
-      'semibold': 600,
-      'bold': 700,
-      'extrabold': 800,
-      'black': 900,
+      hairline: 100,
+      thin: 200,
+      light: 300,
+      normal: 400,
+      medium: 500,
+      semibold: 600,
+      bold: 700,
+      extrabold: 800,
+      black: 900
     },
     lineHeight: {
-      'none': 1,
-      'tight': 1.25,
-      'normal': 1.875,
-      'loose': 2,
-      '1': 1.25,
-      '2': 1.3,
-      '3': 1.4,
-      '4': 1.5,
-      '5': 1.75
+      none: 1,
+      tight: 1.25,
+      normal: 1.875,
+      loose: 2,
+      "1": 1.25,
+      "2": 1.3,
+      "3": 1.4,
+      "4": 1.5,
+      "5": 1.75
     },
     letterSpacing: {
-      'tight': '-0.05em',
-      'normal': '0',
-      'wide': '0.075em',
+      tight: "-0.05em",
+      normal: "0",
+      wide: "0.075em"
     },
     maxWidth: {
-      'xs': '20rem',    //  320px
-      'sm': '30rem',    //  480px
-      'md': '40rem',    //  640px
-      'lg': '50rem',    //  800px
-      'xl': '60rem',    //  960px
-      '2xl': '70rem',   // 1120px
-      '3xl': '80rem',   // 1280px 
-      '4xl': '90rem',   // 1440px
-      '5xl': '100rem',  // 1600px
-      'full': '100%',
+      xs: "20rem", //  320px
+      sm: "30rem", //  480px
+      md: "40rem", //  640px
+      lg: "50rem", //  800px
+      xl: "60rem", //  960px
+      "2xl": "70rem", // 1120px
+      "3xl": "80rem", // 1280px
+      "4xl": "90rem", // 1440px
+      "5xl": "100rem", // 1600px
+      full: "100%"
     },
     /* We override the default font-families with our own default prefs  */
     fontFamily: {
