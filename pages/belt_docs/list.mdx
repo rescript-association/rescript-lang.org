@@ -533,11 +533,9 @@ let mapReverse2: (t('a), t('b), ('a, 'b) => 'c) => t('c);
 
 Equivalent to: `zipBy(xs, ys, f)->reverse`
 
-````
-
 ```re example
 Belt.List.mapReverse2([1, 2, 3], [1, 2], (+)); /* [4, 2] */
-````
+```
 
 ## forEach2
 
