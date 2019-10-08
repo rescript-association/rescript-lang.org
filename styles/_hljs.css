@@ -14,6 +14,10 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
   font-style: italic;
 }
 
+.hljs-operator, .hljs-literal {
+  @apply text-primary
+}
+
 .hljs-comment {
   @apply text-dark-green;
 }
@@ -55,7 +59,7 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 .hljs-tag,
 .hljs-name,
 .hljs-attribute {
-  color: #000080;
+  @apply text-info-blue;
   font-weight: normal;
 }
 

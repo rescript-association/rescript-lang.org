@@ -164,7 +164,6 @@ function Text$Md$Code(Props) {
   } else {
     lang = "re";
   }
-  var baseClass = "font-mono block leading-tight";
   var codeElement;
   if (metastring !== undefined) {
     var metaSplits = Belt_List.fromArray(metastring.split(" "));
@@ -175,15 +174,19 @@ function Text$Md$Code(Props) {
         Belt_List.has(metaSplits, "sig", Caml_obj.caml_equal) ? React.createElement(CodeSignature.make, {
                 code: children,
                 lang: lang
-              }) : React.createElement("code", undefined, Util.ReactStuff.ate(children))
+              }) : React.createElement(CodeExample.make, {
+                code: children,
+                lang: lang
+              })
       );
   } else {
-    codeElement = React.createElement("code", {
-          className: baseClass
-        }, Util.ReactStuff.ate(children));
+    codeElement = React.createElement(CodeExample.make, {
+          code: children,
+          lang: lang
+        });
   }
   return React.createElement("div", {
-              className: baseClass
+              className: "font-mono block leading-tight"
             }, codeElement);
 }
 

@@ -141,20 +141,21 @@ module Md = {
           }
         };
 
+      let code = Unsafe.elementAsString(children);
       let baseClass = "font-mono block leading-tight";
       let codeElement =
         switch (metastring) {
-        | None => <code className=baseClass> children->ate </code>
+        | None => <CodeExample code lang />
         | Some(metastring) =>
           let metaSplits =
             Js.String.split(" ", metastring)->Belt.List.fromArray;
 
           if (Belt.List.has(metaSplits, "example", (==))) {
-            <CodeExample code={children->Obj.magic} lang />;
+            <CodeExample code lang />;
           } else if (Belt.List.has(metaSplits, "sig", (==))) {
-            <CodeSignature code={children->Obj.magic} lang />;
+            <CodeSignature code lang />;
           } else {
-            <code> children->ate </code>;
+            <CodeExample code lang />;
           };
         };
 
