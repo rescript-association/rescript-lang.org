@@ -48,7 +48,7 @@ module Md = {
     [@react.component]
     let make = (~id: string) => {
       let style =
-        ReactDOMRe.Style.make(~position="absolute", ~top="-3rem", ());
+        ReactDOMRe.Style.make(~position="absolute", ~top="-1rem", ());
       <span className="relative" ariaHidden=true> <a id style /> </span>;
     };
   };
@@ -61,7 +61,7 @@ module Md = {
       <>
         // Here we know that children is always a string (## headline)
         <InvisibleAnchor id={children->Unsafe.elementAsString} />
-        <div className="border-b border-gray-200 mt-12" />
+        <div className="border-b border-gray-200 my-20" />
         /*
          <h2
            className="inline text-xl leading-3 font-montserrat font-medium text-main-black">
@@ -82,9 +82,7 @@ module Md = {
   module P = {
     [@react.component]
     let make = (~children) => {
-      <p className="text-base mt-3 leading-4 ml-8 text-main-lighten-15">
-        children
-      </p>;
+      <p className="mt-3 leading-4 text-main-lighten-15"> children </p>;
     };
   };
 
@@ -113,22 +111,34 @@ module Navigation = {
   let make = () =>
     <nav
       id="header"
-      className="fixed z-10 top-0 p-2 w-full flex items-center text-sm bg-bs-purple text-white-80">
+      className="fixed z-10 top-0 p-2 w-full h-16 shadow flex items-center text-ghost-white text-sm bg-bs-purple">
       <Link href="/belt_docs">
-        <a className="flex items-center w-2/3">
-          <img
-            className="h-12"
-            src="https://res.cloudinary.com/dmm9n7v9f/image/upload/v1568788825/Reason%20Association/reasonml.org/bucklescript_bqxwee.svg"
-          />
-          <span
-            className="text-2xl ml-2 font-montserrat text-white-80 hover:text-white">
+        <a className="flex items-center pl-10 w-1/5">
+          <div
+            className="h-6 w-6 bg-white rounded-full flex flex-col justify-center items-center">
+            <div className="h-4 w-4 bg-bs-purple rounded-full" />
+          </div>
+          <span className="text-xl ml-2 font-black text-white">
             "Belt"->s
           </span>
         </a>
       </Link>
-      <div className="flex w-1/3 justify-end">
+      <div
+        className="ml-6 flex w-3/5 px-3 h-10 max-w-sm rounded-lg text-white bg-light-grey-20 content-center items-center w-2/3">
+        <img
+          src="/static/ic_search_small.svg"
+          className="mr-3"
+          ariaHidden=true
+        />
+        <input
+          type_="text"
+          className="bg-transparent placeholder-ghost-white block focus:outline-none w-full ml-2"
+          placeholder="Search not ready yet..."
+        />
+      </div>
+      <div className="flex mx-4 text-ghost-white justify-between ml-auto">
         <Link href="/">
-          <a className={link ++ " mx-2"}> "ReasonML"->s </a>
+          <a className={link ++ " mx-4"}> "ReasonML"->s </a>
         </Link>
         <a
           href="https://github.com/reason-association/reasonml.org"
@@ -143,14 +153,14 @@ module Navigation = {
 
 module Sidebar = {
   // Navigation point information
-  type moduleNav = {
+  type navItem = {
     name: string,
     href: string,
   };
 
   type category = {
     name: string,
-    items: array(moduleNav),
+    items: array(navItem),
   };
 
   let overviewNavs = [|{name: "Introduction", href: "/belt_docs"}|];
@@ -215,33 +225,69 @@ module Sidebar = {
     {name: "Utilities", items: utilityNavs},
   |];
 
-  let categoryToElement = (category: category): React.element => {
-    <div key={category.name}>
-      <Overline> category.name->s </Overline>
-      <ul className="mr-4">
-        {category.items
-         ->Belt.Array.map(m =>
-             <li key={m.name}>
-               <Link href={m.href}> <a> m.name->s </a> </Link>
-             </li>
-           )
+  module NavUl = {
+    [@react.component]
+    let make =
+        (
+          ~isItemActive: navItem => bool=_nav => false,
+          ~isHidden=false,
+          ~items: array(navItem),
+        ) => {
+      <ul className="ml-2 mt-1 text-main-lighten-15">
+        {Belt.Array.map(
+           items,
+           m => {
+             let hidden = isHidden ? "hidden" : "block";
+             let active =
+               isItemActive(m)
+                 ? " bg-bs-purple-lighten-95 text-bs-pink rounded -ml-1 px-2 font-bold block "
+                 : "";
+             <li key={m.name} className={hidden ++ " leading-5 w-4/5"}>
+               <a href={m.href} className={"hover:text-bs-purple " ++ active}>
+                 m.name->s
+               </a>
+             </li>;
+           },
+         )
          ->ate}
-      </ul>
+      </ul>;
+    };
+  };
+
+  let categoryToElement =
+      (~isItemActive: option(navItem => bool)=?, category: category)
+      : React.element => {
+    <div key={category.name} className="my-12">
+      <Overline> category.name->s </Overline>
+      <NavUl ?isItemActive items={category.items} />
     </div>;
   };
 
   module ModuleContent = {
     [@react.component]
-    let make = (~headers: array(string), ~moduleName: string) => {
-      <div>
-        <Link href="/belt_docs"> <a> "<-- Back"->s </a> </Link>
-        <Overline> moduleName->s </Overline>
-        <ul>
-          {{Belt.Array.map(headers, header =>
-              <li key={header}> <a href={"#" ++ header}> header->s </a> </li>
-            )}
-           ->ate}
-        </ul>
+    let make =
+        (~isItemActive=?, ~headers: array(string), ~moduleName: string) => {
+      let (collapsed, setCollapsed) = React.useState(() => false);
+      let items =
+        Belt.Array.map(headers, header =>
+          {name: header, href: "#" ++ header}
+        );
+      <div className="my-12">
+        <Overline>
+          <a
+            className="cursor-pointer hover:text-bs-purple"
+            href="#"
+            onClick={evt => {
+              ReactEvent.Mouse.preventDefault(evt);
+              setCollapsed(isCollapsed => !isCollapsed);
+            }}>
+            <span className="hidden hover:block">
+              {collapsed ? "v" : "^"}->s
+            </span>
+            moduleName->s
+          </a>
+        </Overline>
+        <NavUl ?isItemActive items isHidden=collapsed />
       </div>;
     };
   };
@@ -263,19 +309,28 @@ module Sidebar = {
         ->getWithDefault("?")
       );
 
-    /*General overview */
-    let sidebarElement =
-      if (route === "/belt_docs") {
-        <div> {categories->Belt.Array.map(categoryToElement)->ate} </div>;
-      } else {
-        <ModuleContent headers moduleName />;
-      };
+    let isItemActive = navItem => {
+      navItem.href === route;
+    };
 
-    <div className="w-1/3 h-auto overflow-y-visible block" style=Style.make(~maxWidth="17.5rem",())>
+    <div
+      className="pl-2 flex w-full justify-center h-auto overflow-y-visible block bg-light-grey"
+      style={Style.make(~maxWidth="17.5rem", ())}>
       <nav
-        className="pl-6 relative sticky h-screen block overflow-y-auto scrolling-touch"
+        className="relative w-48 sticky h-screen block overflow-y-auto scrolling-touch pb-32"
         style={Style.make(~top="4rem", ())}>
-        sidebarElement
+        {route !== "/belt_docs"
+           ? <ModuleContent
+               headers
+               // Todo: We need to introduce router state to be able to
+               //       listen to anchor changes (#get, #map,...)
+               moduleName
+               //       Add a `isItemActive` as soon as we have access to this info
+             />
+           : React.null}
+        <div>
+          {categories->Belt.Array.map(categoryToElement(~isItemActive))->ate}
+        </div>
       </nav>
     </div>;
   };
@@ -287,15 +342,13 @@ let make = (~components=Md.components, ~children) => {
 
   let minWidth = ReactDOMRe.Style.make(~minWidth="20rem", ());
   <div>
-    <div className="max-w-4xl w-full text-gray-900 font-base">
+    <div className="max-w-4xl w-full" style=minWidth>
       <Navigation />
       <div className="flex mt-12">
         <Sidebar route={router##route} />
-        <main
-          style=minWidth
-          className="pt-12 static min-h-screen overflow-visible">
+        <main className="pt-12 w-4/5 static min-h-screen overflow-visible">
           <Mdx.Provider components>
-            <div className="pl-8 max-w-2xl mb-32"> children </div>
+            <div className="pl-8 max-w-md mb-32 text-lg"> children </div>
           </Mdx.Provider>
         </main>
       </div>

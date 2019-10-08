@@ -534,6 +534,8 @@ let mapReverse2: (t('a), t('b), ('a, 'b) => 'c) => t('c);
 Equivalent to: `zipBy(xs, ys, f)->reverse`
 
 ```re example
+
+mapReverse2([1,3,4]);
 Belt.List.mapReverse2([1, 2, 3], [1, 2], (+)); /* [4, 2] */
 ```
 
@@ -1059,17 +1061,7 @@ If `k` exists in `someList` by satisfying the `eqFunction` predicate, return a n
 
 **Please note**
 
-In the last example, since:
-
-```re sig
-15 mod 12
-```
-
-equals
-
-```re sig
-3 mod 12
-```
+In the last example, since: `15 mod 12` equals `3 mod 12`
 
 Both the key _and_ the value are replaced in the list.
 

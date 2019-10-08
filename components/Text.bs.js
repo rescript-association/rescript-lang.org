@@ -4,13 +4,11 @@ import * as Util from "../common/Util.bs.js";
 import * as React from "react";
 import * as Caml_obj from "bs-platform/lib/es6/caml_obj.js";
 import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
-import * as ReactDOMRe from "reason-react/src/ReactDOMRe.js";
-import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as CodeExample from "./CodeExample.bs.js";
 import * as ReasonReact from "reason-react/src/ReasonReact.js";
-import * as Highlight from "highlight.js/lib/highlight";
+import * as CodeSignature from "./CodeSignature.bs.js";
 
-var inline = "no-underline border-b hover:text-main-lighten-20 hover:border-primary-dark-10 border-primary-lighten-50 text-inherit";
+var inline = "no-underline border-b border-main-black hover:border-bs-purple text-inherit";
 
 var Link = {
   inline: inline,
@@ -107,7 +105,7 @@ function Text$Overline(Props) {
   var match = Props.underline;
   var underline = match !== undefined ? match : false;
   var children = Props.children;
-  var className = "font-overpass font-bold text-main-lighten-50 uppercase text-xs mt-5 tracking-wide" + (
+  var className = "font-overpass font-black text-main-black text-xl mt-5" + (
     underline ? " pb-3 border-b border-main-lighten-90" : ""
   );
   return React.createElement("div", {
@@ -166,42 +164,30 @@ function Text$Md$Code(Props) {
   } else {
     lang = "re";
   }
-  var langClass = "lang-" + lang;
-  var base = {
-    className: langClass + " font-mono block overflow-x-scroll leading-tight hljs",
-    metastring: metastring
-  };
   var codeElement;
-  var exit = 0;
-  switch (lang) {
-    case "re" :
-    case "reason" :
-        exit = 1;
-        break;
-    default:
-      codeElement = ReactDOMRe.createElementVariadic("code", Caml_option.some(base), children);
-  }
-  if (exit === 1) {
-    var highlighted = Highlight.highlight(lang, children).value;
-    var finalProps = Object.assign(base, {
-          dangerouslySetInnerHTML: {
-            __html: highlighted
-          }
-        });
-    codeElement = ReactDOMRe.createElementVariadic("code", Caml_option.some(finalProps), /* array */[]);
-  }
   if (metastring !== undefined) {
     var metaSplits = Belt_List.fromArray(metastring.split(" "));
-    if (Belt_List.has(metaSplits, "example", Caml_obj.caml_equal)) {
-      return React.createElement(CodeExample.make, {
-                  children: codeElement
-                });
-    } else {
-      return codeElement;
-    }
+    codeElement = Belt_List.has(metaSplits, "example", Caml_obj.caml_equal) ? React.createElement(CodeExample.make, {
+            code: children,
+            lang: lang
+          }) : (
+        Belt_List.has(metaSplits, "sig", Caml_obj.caml_equal) ? React.createElement(CodeSignature.make, {
+                code: children,
+                lang: lang
+              }) : React.createElement(CodeExample.make, {
+                code: children,
+                lang: lang
+              })
+      );
   } else {
-    return codeElement;
+    codeElement = React.createElement(CodeExample.make, {
+          code: children,
+          lang: lang
+        });
   }
+  return React.createElement("div", {
+              className: "font-mono block leading-tight"
+            }, codeElement);
 }
 
 var Code = {
@@ -211,7 +197,7 @@ var Code = {
 function Text$Md$InlineCode(Props) {
   var children = Props.children;
   return React.createElement("code", {
-              className: "px-1 rounded-sm text-inherit font-mono bg-sand-lighten-20"
+              className: "px-1 rounded-sm text-inherit font-mono font-bold bg-yellow"
             }, children);
 }
 

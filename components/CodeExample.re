@@ -1,22 +1,28 @@
 open Util.ReactStuff;
 
-type lang = [ | `Reason | `OCaml];
-
 [@react.component]
-let make = (~children, ~lang=`Reason) => {
-  let langStr =
-    switch (lang) {
-    | `Reason => "RE"
-    | `OCaml => "ML"
-    };
-  <div className="flex flex-col rounded-lg bg-sand-lighten-20 py-4 px-6 mt-6">
+let make = (~code: string, ~lang) => {
+  let highlighted = HighlightJs.(highlight(~lang, ~value=code)->valueGet);
+
+  let children =
+    ReactDOMRe.createElementVariadic(
+      "code",
+      ~props=
+        ReactDOMRe.objToDOMProps({
+          "className": "hljs lang-" ++ lang,
+          "dangerouslySetInnerHTML": {
+            "__html": highlighted,
+          },
+        }),
+      [||],
+    );
+
+  <div
+    className="flex flex-col rounded-lg bg-main-black py-3 px-3 mt-10 overflow-x-auto text-lighter-grey">
     <div
-      className="flex justify-between font-overpass text-main-lighten-20 font-bold text-sm mb-3">
-      "Example"->s
-      <span className="font-montserrat text-primary-lighten-50">
-        langStr->s
-      </span>
+      className="font-montserrat text-sm mb-3 font-bold text-primary-dark-10">
+      {Js.String2.toUpperCase(lang)->s}
     </div>
-    children
+    <div className="pl-5 text-base pb-4"> children </div>
   </div>;
 };

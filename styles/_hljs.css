@@ -6,31 +6,38 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 .hljs {
   display: block;
   overflow-x: auto;
-  padding: 0.5em;
-  color: #000;
   /*background: #f8f8ff;*/
 }
 
-.hljs-comment,
 .hljs-quote {
   color: #408080;
   font-style: italic;
 }
 
-.hljs-keyword,
+.hljs-operator, .hljs-literal {
+  @apply text-primary
+}
+
+.hljs-comment {
+  @apply text-dark-green;
+}
+
 .hljs-selector-tag,
-.hljs-literal,
 .hljs-subst {
   color: #954121;
 }
 
+.hljs-keyword {
+  @apply text-leaf-green;
+}
+
 .hljs-number {
-  color: #40a070;
+  @apply text-teal;
 }
 
 .hljs-string,
 .hljs-doctag {
-  color: #219161;
+  @apply text-teal;
 }
 
 .hljs-selector-id,
@@ -52,7 +59,7 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 .hljs-tag,
 .hljs-name,
 .hljs-attribute {
-  color: #000080;
+  @apply text-info-blue;
   font-weight: normal;
 }
 
@@ -98,14 +105,12 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 }
 
 /* tweaks to syntax highlighting, assuming atom-one-light theme */
-.hljs-operator {
-  color: #a626a4;
-}
+
 .hljs-character {
   color: #50a14f;
 }
 .hljs-module-identifier {
-  color: #4078f2;
+  @apply text-bs-pink;
 }
 .hljs-constructor {
   color: #e45649;

@@ -1,9 +1,18 @@
 
 
-import * as React from "react";
+import * as ReactDOMRe from "reason-react/src/ReactDOMRe.js";
+import * as Highlight from "highlight.js/lib/highlight";
 
 function CodeSignature(Props) {
-  return React.createElement("div", undefined);
+  var code = Props.code;
+  var lang = Props.lang;
+  var highlighted = Highlight.highlight(lang, code).value;
+  return ReactDOMRe.createElementVariadic("code", {
+              className: "font-bold hljs lang-" + lang,
+              dangerouslySetInnerHTML: {
+                __html: highlighted
+              }
+            }, /* array */[]);
 }
 
 var make = CodeSignature;
@@ -12,4 +21,4 @@ export {
   make ,
   
 }
-/* react Not a pure module */
+/* ReactDOMRe Not a pure module */

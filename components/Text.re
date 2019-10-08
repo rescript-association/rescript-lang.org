@@ -1,7 +1,7 @@
 open Util.ReactStuff;
 
 module Link = {
-  let inline = "no-underline border-b hover:text-main-lighten-20 hover:border-primary-dark-10 border-primary-lighten-50 text-inherit";
+  let inline = "no-underline border-b border-main-black hover:border-bs-purple text-inherit";
   let standalone = "no-underline text-primary";
 };
 
@@ -76,7 +76,7 @@ module Overline = {
   [@react.component]
   let make = (~underline=false, ~children) => {
     let className =
-      "font-overpass font-bold text-main-lighten-50 uppercase text-xs mt-5 tracking-wide"
+      "font-overpass font-black text-main-black text-xl mt-5"
       ++ (underline ? " pb-3 border-b border-main-lighten-90" : "");
 
     <div className> children </div>;
@@ -140,60 +140,26 @@ module Md = {
           | _ => "none"
           }
         };
-      let langClass = "lang-" ++ lang;
-      let base = {
-        "className":
-          langClass ++ " font-mono block overflow-x-scroll leading-tight hljs",
-        "metastring": metastring,
-      };
 
-      /* If there is a configured language for HLJS,
-         we use the highlight function to highlight the code,
-         which in this context is always a string parsed from
-         the markdown, otherwise we will just pass children down
-         without any modification */
+      let code = Unsafe.elementAsString(children);
+      let baseClass = "font-mono block leading-tight";
       let codeElement =
-        switch (lang) {
-        | "re"
-        | "reason" =>
-          let highlighted =
-            HighlightJs.(
-              highlight(~lang, ~value=children->Obj.magic)->valueGet
-            );
-          let finalProps =
-            Js.Obj.assign(
-              base,
-              {
-                "dangerouslySetInnerHTML": {
-                  "__html": highlighted,
-                },
-              },
-            );
-          ReactDOMRe.createElementVariadic(
-            "code",
-            ~props=ReactDOMRe.objToDOMProps(finalProps),
-            [||],
-          );
-        | _ =>
-          ReactDOMRe.createElementVariadic(
-            "code",
-            ~props=ReactDOMRe.objToDOMProps(base),
-            children,
-          )
+        switch (metastring) {
+        | None => <CodeExample code lang />
+        | Some(metastring) =>
+          let metaSplits =
+            Js.String.split(" ", metastring)->Belt.List.fromArray;
+
+          if (Belt.List.has(metaSplits, "example", (==))) {
+            <CodeExample code lang />;
+          } else if (Belt.List.has(metaSplits, "sig", (==))) {
+            <CodeSignature code lang />;
+          } else {
+            <CodeExample code lang />;
+          };
         };
 
-      switch (metastring) {
-      | None => codeElement
-      | Some(metastring) =>
-        let metaSplits =
-          Js.String.split(" ", metastring)->Belt.List.fromArray;
-
-        if (Belt.List.has(metaSplits, "example", (==))) {
-          <CodeExample> codeElement </CodeExample>;
-        } else {
-          codeElement;
-        };
-      };
+      <div className=baseClass> codeElement </div>;
     };
   };
 
@@ -201,11 +167,12 @@ module Md = {
     [@react.component]
     let make = (~children) => {
       <code
-        className="px-1 rounded-sm text-inherit font-mono bg-sand-lighten-20">
+        className="px-1 rounded-sm text-inherit font-mono font-bold bg-yellow">
         children
       </code>;
     };
   };
+
   module P = {
     [@react.component]
     let make = (~children) => {

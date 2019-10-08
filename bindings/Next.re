@@ -23,7 +23,7 @@ module Link = {
 };
 
 module Router = {
-  type router = {. "route": string};
+  type router = {. "route": string, "asPath": string};
 
   [@bs.module "next/router"] external useRouter: unit => router = "useRouter";
 };
