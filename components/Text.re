@@ -140,59 +140,25 @@ module Md = {
           | _ => "none"
           }
         };
-      let langClass = "lang-" ++ lang;
 
-      let baseClass = langClass ++ " font-mono block leading-tight";
-
-      /* If there is a configured language for HLJS,
-         we use the highlight function to highlight the code,
-         which in this context is always a string parsed from
-         the markdown, otherwise we will just pass children down
-         without any modification */
+      let baseClass = "font-mono block leading-tight";
       let codeElement =
-        switch (lang, metastring) {
-        | ("re", Some("example"))
-        | ("reason", Some("example")) =>
-          let highlighted =
-            HighlightJs.(
-              highlight(~lang, ~value=children->Obj.magic)->valueGet
-            );
-          let finalProps =
-            Js.Obj.assign(
-              {"className": baseClass ++ " hljs"},
-              {
-                "dangerouslySetInnerHTML": {
-                  "__html": highlighted,
-                },
-              },
-            );
-          ReactDOMRe.createElementVariadic(
-            "code",
-            ~props=ReactDOMRe.objToDOMProps(finalProps),
-            [||],
-          );
-        | _ =>
-          ReactDOMRe.createElementVariadic(
-            "code",
-            ~props=ReactDOMRe.objToDOMProps({"className": baseClass}),
-            children,
-          )
+        switch (metastring) {
+        | None => <code className=baseClass> children->ate </code>
+        | Some(metastring) =>
+          let metaSplits =
+            Js.String.split(" ", metastring)->Belt.List.fromArray;
+
+          if (Belt.List.has(metaSplits, "example", (==))) {
+            <CodeExample code={children->Obj.magic} lang />;
+          } else if (Belt.List.has(metaSplits, "sig", (==))) {
+            <CodeSignature code={children->Obj.magic} lang />;
+          } else {
+            <code> children->ate </code>;
+          };
         };
 
-      switch (metastring) {
-      | None => codeElement
-      | Some(metastring) =>
-        let metaSplits =
-          Js.String.split(" ", metastring)->Belt.List.fromArray;
-
-        if (Belt.List.has(metaSplits, "example", (==))) {
-          <CodeExample> codeElement </CodeExample>;
-        } else if (Belt.List.has(metaSplits, "sig", (==))) {
-          <CodeSignature> children->Obj.magic </CodeSignature>;
-        } else {
-          codeElement;
-        };
-      };
+      <div className=baseClass> codeElement </div>;
     };
   };
 

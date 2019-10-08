@@ -1,13 +1,18 @@
 
 
-import * as Util from "../common/Util.bs.js";
-import * as React from "react";
+import * as ReactDOMRe from "reason-react/src/ReactDOMRe.js";
+import * as Highlight from "highlight.js/lib/highlight";
 
 function CodeSignature(Props) {
-  var children = Props.children;
-  return React.createElement("div", {
-              className: "font-bold"
-            }, Util.ReactStuff.s(children));
+  var code = Props.code;
+  var lang = Props.lang;
+  var highlighted = Highlight.highlight(lang, code).value;
+  return ReactDOMRe.createElementVariadic("code", {
+              className: "font-bold hljs lang-" + lang,
+              dangerouslySetInnerHTML: {
+                __html: highlighted
+              }
+            }, /* array */[]);
 }
 
 var make = CodeSignature;
@@ -16,4 +21,4 @@ export {
   make ,
   
 }
-/* Util Not a pure module */
+/* ReactDOMRe Not a pure module */

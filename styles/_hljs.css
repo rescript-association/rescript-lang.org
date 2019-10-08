@@ -6,8 +6,6 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 .hljs {
   display: block;
   overflow-x: auto;
-  padding: 0.5em;
-  @apply text-lighter-grey;
   /*background: #f8f8ff;*/
 }
 
