@@ -16,7 +16,7 @@ structures with slightly different comparison functions won't mix.
 
 ## hash
 
-```
+```re sig
 type hash('a, 'id);
 ```
 
@@ -24,7 +24,7 @@ Its runtime represenation is a hash function, but signed with a type parameter, 
 
 ## eq
 
-```
+```re sig
 type eq('a, 'id);
 ```
 
@@ -32,7 +32,7 @@ Its runtime represenation is an eq function, but signed with a type parameter, s
 
 ## cmp
 
-```
+```re sig
 type cmp('a, 'id);
 ```
 
@@ -40,7 +40,7 @@ Its runtime representation is a cmp function, but signed with a type parameter, 
 
 ## Comparable
 
-```
+```re sig
 module type Comparable {
   type identity;
 
@@ -52,7 +52,7 @@ module type Comparable {
 
 ## comparable
 
-```
+```re sig
 type ('key,'id) comparable = (module BeltId.Comparable with type identity = 'id and type t = 'key)
 ```
 
@@ -66,31 +66,31 @@ The idea of a unique identity when created is that it makes sure two sets would 
 
 ## MakeComparableU
 
-```
+```re sig
 module MakeComparableU: (M: {type t; let cmp: [@bs] ((t, t) => int);}) => Comparable with type t = M.t;
 ```
 
 ## MakeComparable
 
-```
+```re sig
 module MakeComparable: (M: {type t; let cmp: (t, t) => int;}) => Comparable with type t = M.t;
 ```
 
 ## comparableU
 
-```
+```re sig
 let comparableU: (~cmp: [@bs] (('a, 'a) => int)) => (module BeltId.Comparable with type t = 'a);
 ```
 
 ## comparable
 
-```
+```re sig
 type ('key, 'id) comparable = (module BeltId.Comparable with type identity = 'id and type t = 'key)
 ```
 
 ## Hashable
 
-```
+```re sig
 module type Hashable = {
   type identity;
 
@@ -104,7 +104,7 @@ module type Hashable = {
 
 ## hashable
 
-```
+```re sig
 type hashable('key, 'id) = (module BeltId.Hashable with type identity = 'id and type t = 'key);
 ```
 
@@ -118,24 +118,24 @@ The idea of a unique identity when created is that it makes sure two hash sets w
 
 ## MakeHashableU
 
-```
+```re sig
 module MakeHashableU: (M: {type t; let hash: [@bs] (t => int); let eq: [@bs] ((t, t) => bool);}) => Hashable with type t = M.t;
 ```
 
 ## MakeHashable
 
-```
+```re sig
 module MakeHashable: (M: {type t; let hash: t => int; let eq: (t, t) => bool;}) => Hashable with type t = M.t;
 ```
 
 ## hashableU
 
-```
+```re sig
 let hashableU: (~hash: [@bs] ('a => int), ~eq: [@bs] (('a, 'a) => bool)) => (module BeltId.Hashable with type t = 'a);
 ```
 
 ## hashable
 
-```
+```re sig
 let hashable: (~hash: 'a => int, ~eq: ('a, 'a) => bool) => (module BeltId.Hashable with type t = 'a);
 ```

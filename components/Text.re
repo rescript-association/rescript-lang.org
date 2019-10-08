@@ -167,7 +167,7 @@ module Md = {
     [@react.component]
     let make = (~children) => {
       <code
-        className="px-1 rounded-sm text-inherit font-mono font-bold bg-yellow">
+        className="px-1 rounded-sm text-inherit font-mono font-bold bg-info-blue-lighten-90">
         children
       </code>;
     };

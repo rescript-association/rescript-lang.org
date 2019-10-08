@@ -197,7 +197,7 @@ var Code = {
 function Text$Md$InlineCode(Props) {
   var children = Props.children;
   return React.createElement("code", {
-              className: "px-1 rounded-sm text-inherit font-mono font-bold bg-yellow"
+              className: "px-1 rounded-sm text-inherit font-mono font-bold bg-info-blue-lighten-90"
             }, children);
 }
 

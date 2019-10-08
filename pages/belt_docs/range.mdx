@@ -14,13 +14,13 @@ which makes it pretty performant and memory friendly.
 
 ## forEachU
 
-```
+```re sig
 let forEachU: (int, int, [@bs] (int => unit)) => unit;
 ```
 
 ## forEach
 
-```
+```re sig
 let forEach: (int, int, int => unit) => unit;
 ```
 
@@ -30,13 +30,13 @@ equivalent to `Belt.Array.(forEach(range(start, finish), action));`
 
 ## everyU
 
-```
+```re sig
 let everyU: (int, int, [@bs] (int => bool)) => bool;
 ```
 
 ## every
 
-```
+```re sig
 let every: (int, int, int => bool) => bool;
 ```
 
@@ -46,13 +46,13 @@ equivalent to `Belt.Array.(every(range(start, finish), p));`
 
 ## everyByU
 
-```
+```re sig
 let everyByU: (int, int, ~step: int, [@bs] (int => bool)) => bool;
 ```
 
 ## everyBy
 
-```
+```re sig
 let everyBy: (int, int, ~step: int, int => bool) => bool;
 ```
 
@@ -64,13 +64,13 @@ equivalent to `Belt.Array.(every(rangeBy(start, finish, ~step), p));`
 
 ## someU
 
-```
+```re sig
 let someU: (int, int, [@bs] (int => bool)) => bool;
 ```
 
 ## some
 
-```
+```re sig
 let some: (int, int, int => bool) => bool;
 ```
 
@@ -80,13 +80,13 @@ equivalent to `Belt.Array.(some(range(start, finish), p));`
 
 ## someByU
 
-```
+```re sig
 let someByU: (int, int, ~step: int, [@bs] (int => bool)) => bool;
 ```
 
 ## someBy
 
-```
+```re sig
 let someBy: (int, int, ~step: int, int => bool) => bool;
 ```
 

@@ -30,6 +30,7 @@ module.exports = {
           "lighten-50": "rgb(249, 84, 62, 0.5)"
         },
 
+        "highlight-grey": "#E7E7EA",
         "light-grey": "rgba(245, 245, 245, 0.5)",
         "light-grey-20": "rgba(245, 245, 245, 0.2)",
         "lighter-grey": "#f2f2f2",

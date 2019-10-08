@@ -14,23 +14,23 @@ The `option` type is a part of the Reason / OCaml standard library which is defi
 
 </ApiIntro>
 
-```reason
+```re sig
 type option('a) = None | Some('a)
 ```
 
-```reason example
+```re example
 let someString: option(string) = Some("foo");
 ```
 
 ## getExn
 
-```reason
+```re sig
 let getExn: option('a) => 'a;
 ```
 
 Raises an Error in case `None` is provided. Use with care.
 
-```reason example
+```re example
 Belt.Option.getExn(Some(3)); /* 3 */
 
 Belt.Option.getExn(None); /* Raises an Error */
@@ -38,7 +38,7 @@ Belt.Option.getExn(None); /* Raises an Error */
 
 ## mapWithDefault
 
-```reason
+```re sig
 let mapWithDefault: (option('a), 'b, 'a => 'b) => 'b;
 ```
 
@@ -47,17 +47,17 @@ this function returns that value applied with `f`, in other words `f(value)`.
 
 If `optionValue` is `None`, the default is returned.
 
-```reason example
+```re example
 let someValue = Some(3);
-someValue->Belt.Option.mapWithDefault(0, x => x + 5); /* 8 */;
+someValue->Belt.Option.mapWithDefault(0, x => x + 5); /* 8 */
 
 let noneValue = None;
-noneValue->Belt.Option.mapWithDefault(0, x => x + 5); /* 0 */;
+noneValue->Belt.Option.mapWithDefault(0, x => x + 5); /* 0 */
 ```
 
 ## mapWithDefaultU
 
-```reason
+```re sig
 let mapWithDefaultU: (option('a), 'b, (.'a => 'b)) => 'b;
 ```
 
@@ -65,13 +65,13 @@ Uncurried version of [mapWithDefault](#mapWithDefault).
 
 ## map
 
-```reason
+```re sig
 let map: (option('a), 'a => 'b) => option('b);
 ```
 
 If `optionValue` is `Some(value)` this returns `f(value)`, otherwise it returns `None`.
 
-```reason example
+```re example
 Belt.Option.map(Some(3), x => x * x); /* Some(9) */
 
 Belt.Option.map(None, x => x * x); /* None */
@@ -79,7 +79,7 @@ Belt.Option.map(None, x => x * x); /* None */
 
 ## mapU
 
-```reason
+```re sig
 let mapU: (option('a), [@bs] ('a => 'b)) => option('b);
 ```
 
@@ -87,7 +87,7 @@ Uncurried version of [map](#map).
 
 ## flatMap
 
-```reason
+```re sig
 let flatMap: (option('a), 'a => option('b)) => option('b);
 ```
 
@@ -95,7 +95,7 @@ If `optionValue` is `Some(value)`, returns `f(value)`, otherwise returns
 `None`.<br/>
 The function `f` must have a return type of `option('a)`.
 
-```reason example
+```re example
 let addIfAboveOne = value =>
   if (value > 1) {
     Some(value + 1);
@@ -112,7 +112,7 @@ Belt.Option.flatMap(None, addIfAboveOne); /* None */
 
 ## flatMapU
 
-```reason
+```re sig
 let flatMapU: (option('a), [@bs] ('a => option('b))) => option('b);
 ```
 
@@ -120,19 +120,19 @@ Uncurried version of flatMap.
 
 ## getWithDefault
 
-```reason
+```re sig
 let getWithDefault: (option('a), 'a) => 'a;
 ```
 
 If `optionalValue` is `Some(value)`, returns `value`, otherwise default.
 
-```reason example
+```re example
 Belt.Option.getWithDefault(None, "Banana"); /* Banana */
 
 Belt.Option.getWithDefault(Some("Apple"), "Banana"); /* Apple */
 ```
 
-```reason example
+```re example
 let greet = (firstName: option(string)) =>
   Belt.Option.("Greetings " ++ firstName->getWithDefault("Anonymous"));
 
@@ -141,7 +141,7 @@ Some("Jane")->greet; /* "Greetings Jane" */
 None->greet; /* "Greetings Anonymous" */
 ```
 
-```reason example
+```re example
 Belt.Option.getWithDefault(Some(1812), 1066); /* 1812 */
 
 Belt.Option.getWithDefault(None, 1066); /* 1066 */
@@ -149,13 +149,13 @@ Belt.Option.getWithDefault(None, 1066); /* 1066 */
 
 ## isSome
 
-```reason
+```re sig
 let isSome: option('a) => bool;
 ```
 
 Returns `true` if the argument is `Some(value)`, `false` otherwise.
 
-```reason example
+```re example
 Belt.Option.isSome(None); /* false */
 
 Belt.Option.isSome(Some(1)); /* true */
@@ -163,13 +163,13 @@ Belt.Option.isSome(Some(1)); /* true */
 
 ## isNone
 
-```reason
+```re sig
 let isNone: option('a) => bool;
 ```
 
 Returns `true` if the argument is `None`, `false` otherwise.
 
-```reason example
+```re example
 Belt.Option.isNone(None); /* true */
 
 Belt.Option.isNone(Some(1)); /* false */
@@ -177,7 +177,7 @@ Belt.Option.isNone(Some(1)); /* false */
 
 ## eq
 
-```reason
+```re sig
 let eq: (option('a), option('b), ('a, 'b) => bool) => bool;
 ```
 
@@ -189,7 +189,7 @@ If one of the arguments is `Some(value)` and the other is `None`, returns
 If arguments are `Some(value1)` and `Some(value2)`, returns the result of
 `predicate(value1, value2)`; the predicate function must return a bool.
 
-```reason example
+```re example
 let clockEqual = (a, b) => a mod 12 == b mod 12;
 
 open Belt.Option;
@@ -205,7 +205,7 @@ eq(None, None, clockEqual); /* true */
 
 ## eqU
 
-```reason
+```re sig
 let eqU: (option('a), option('b), (.'a, 'b) => bool) => bool;
 ```
 
@@ -213,7 +213,7 @@ Uncurried version of [eq](#eq).
 
 ## cmp
 
-```reason
+```re sig
 let cmp: (option('a), option('b), ('a, 'b) => int) => int;
 ```
 
@@ -233,7 +233,7 @@ If the arguments are `Some(value1)` and `Some(value2)`, returns the result of
 and returns `-1` if the first argument is less than the second, `0` if the
 arguments are equal, and `1` if the first argument is greater than the second.
 
-```reason example
+```re example
 let clockCompare = (a, b) => compare(a mod 12, b mod 12);
 
 open Belt.Option;
@@ -253,7 +253,7 @@ cmp(None, None, clockCompare); /* 0 */
 
 ## cmpU
 
-```reason
+```re sig
 let cmpU: (option('a), option('b), ((.'a, 'b) => int)) => int;
 ```
 

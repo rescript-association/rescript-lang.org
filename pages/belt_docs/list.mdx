@@ -74,7 +74,7 @@ Belt.List.tail([]); /* None */
 
 ## tailExn
 
-```
+```re sig
 let tailExn: t('a) => t('a);
 ```
 
@@ -82,7 +82,7 @@ Same as [tail](#tail), but raises an exception if `someList` is empty. Use with 
 
 ## add
 
-```
+```re sig
 let add: (t('a), 'a) => t('a);
 ```
 
@@ -96,7 +96,7 @@ Belt.List.add(["World", "!"], "Hello"); /* ["Hello", "World", "!"] */
 
 ## get
 
-```
+```re sig
 let get: (t('a), int) => option('a);
 ```
 
@@ -477,7 +477,7 @@ Uncurried version of [reduce](#reduce).
 
 ## reduceWithIndex
 
-```
+```re sig
 let reduceWithIndex: (t('a), 'b, ('b, 'a, int) => 'b) => 'b;
 ```
 
@@ -535,7 +535,6 @@ Equivalent to: `zipBy(xs, ys, f)->reverse`
 
 ```re example
 
-mapReverse2([1,3,4]);
 Belt.List.mapReverse2([1, 2, 3], [1, 2], (+)); /* [4, 2] */
 ```
 
