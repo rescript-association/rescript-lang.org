@@ -1,9 +1,12 @@
 /*
  * This script globs all `belt_docs/*.mdx` files and
- * parses all codeblocks with an `example` meta string.
+ * parses all codeblocks with an `example` and `prelude` meta string.
  *
- * It will then run it through `bsc -i -e '[code]'` (only since version 5.2)
- * and check if there was a non-0 exit code.
+ * For every mdx files with prelude, it will prepand all prelude snippets on each
+ * parse example.
+ *
+ * It will then run the full prelude + example code through `bsc -i -e
+ * '[code]'` (only since version 5.2) and check if there was a non-0 exit code.
  *
  * If an error was found, then stderr will be modified to output the right
  * error location in the mdx file (pointing to the correct line inside the
@@ -32,6 +35,7 @@ const execFile = util.promisify(child_process.execFile);
 const candidates = options => (tree, file) => {
   const signatures = [];
   const examples = [];
+  const preludes = [];
 
   const formatter = v => v;
 
@@ -46,12 +50,15 @@ const candidates = options => (tree, file) => {
         } else if (meta === "example") {
           const line = child.position.start.line;
           examples.push({ value: formatter(child.value), line });
+        } else if (meta === "prelude") {
+          const line = child.position.start.line;
+          preludes.push({ value: formatter(child.value), line });
         }
       }
     }
   });
 
-  const candidates = { signatures, examples };
+  const candidates = { signatures, examples, preludes };
   file.data = Object.assign({}, file.data, { candidates });
 };
 
@@ -65,10 +72,54 @@ const BELT_MD_DIR = path.join(__dirname, "../pages/belt_docs");
 const BSC = path.join(__dirname, "../node_modules/.bin/bsc");
 
 // relFilepath: instead of whole absolute path, just paths like `pages/belt_docs/...`
-const testExample = async (relFilepath, example) => {
+// prelude: All prelude snippets in one string which will be prepended to each example
+const testExample = async (relFilepath, example, prelude) => {
   const { line, value } = example;
 
+  const preludeLines = prelude !== "" ? prelude.split('\n').length : 0;
+  const fullCode = prelude ? `${prelude}\n${value}` : value;
+
   console.log(`Testing example in '${relFilepath}' on line ${line}...`);
+  try {
+    const ret = await execFile(BSC, ["-i", "-e", fullCode]);
+    return { status: "ok" };
+  } catch (e) {
+    const { stderr } = e;
+
+    const matchParseErr = stderr.match(/, line ([0-9]+)/);
+    const matchCompErr = stderr.match(/([0-9]+):(.*)/);
+
+    // Relative line inside the codesnippet
+    let relLine;
+    let relPos;
+
+    if(matchParseErr) {
+      relLine = matchParseErr[1];
+    } else if(matchCompErr) {
+      relLine = matchCompErr[1];
+      relPos = matchCompErr[2];
+    }
+
+    // Markdown line + relative line - prelude lines = the actual error line
+    const errorLine = line + (relLine ? parseInt(relLine) : 0) - preludeLines;
+
+    // If there are parsing errors, there might not be a relPos (e.g. [line]:1-5)
+    const lineAndPos = errorLine + (relPos ? ":" + relPos : "");
+
+    const improvedStderr = stderr.replace(
+      /\/var.*/g,
+      `${relFilepath}: ${lineAndPos}`
+    );
+
+    //console.error(improvedStderr);
+    return { status: "failed", stderr: improvedStderr, line: errorLine };
+  }
+};
+
+const testPrelude = async (relFilepath, prelude) => {
+  const { line, value } = prelude;
+  console.log(`Testing prelude in '${relFilepath}' on line ${line}...`);
+
   try {
     const ret = await execFile(BSC, ["-i", "-e", value]);
     return { status: "ok" };
@@ -100,11 +151,32 @@ const testFile = async filepath => {
   const relFilepath = "pages/belt_docs/" + path.basename(filepath);
 
   const result = processor.processSync(content);
-  const { examples } = result.data.candidates;
+  const { examples, preludes } = result.data.candidates;
+
+  const testedPreludes = await Promise.all(
+    preludes.map(async prelude => {
+      const result = await testPrelude(relFilepath, prelude);
+      return {
+        ...prelude,
+        filepath: relFilepath,
+        result
+      };
+    })
+  );
+
+  const preludeFailed = testedPreludes.filter(e => e.result.status === "failed").length > 0;
+
+  // Don't attempt to test the examples if one of the preludes is broken
+  if(preludeFailed) {
+    return testedPreludes;
+  }
+
+  // This is the prelude code which will get appended to each example
+  const fullPrelude = preludes.map(prelude => prelude.value).join("\n");
 
   const testedExamples = await Promise.all(
     examples.map(async example => {
-      const result = await testExample(relFilepath, example);
+      const result = await testExample(relFilepath, example, fullPrelude);
       return {
         ...example,
         filepath: relFilepath,
