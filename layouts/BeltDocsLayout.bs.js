@@ -125,6 +125,8 @@ var Md = {
   components: components
 };
 
+var $$package = (require('../package.json'));
+
 var link = "no-underline text-inherit hover:text-white";
 
 function BeltDocsLayout$Navigation(Props) {
@@ -157,14 +159,19 @@ function BeltDocsLayout$Navigation(Props) {
                 }, React.createElement(Link.default, {
                       href: "/",
                       children: React.createElement("a", {
-                            className: "no-underline text-inherit hover:text-white mx-4"
+                            className: link
                           }, Util.ReactStuff.s("ReasonML"))
                     }), React.createElement("a", {
-                      className: link,
+                      className: "no-underline text-inherit hover:text-white align-middle ml-6",
                       href: "https://github.com/reason-association/reasonml.org",
                       rel: "noopener noreferrer",
                       target: "_blank"
-                    }, Util.ReactStuff.s("Github"))));
+                    }, Util.ReactStuff.s("Github")), React.createElement("a", {
+                      className: "bg-light-grey-20 leading-normal ml-6 px-1 rounded text-light-grey text-xs",
+                      href: "https://github.com/BuckleScript/bucklescript/releases",
+                      rel: "noopener noreferrer",
+                      target: "_blank"
+                    }, Util.ReactStuff.s("v." + $$package.dependencies["bs-platform"]))));
 }
 
 var Navigation = {
@@ -655,6 +662,7 @@ export {
   Link$1 as Link,
   indexData ,
   Md ,
+  $$package ,
   Navigation ,
   Sidebar ,
   make ,
