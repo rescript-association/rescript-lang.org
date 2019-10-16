@@ -58,6 +58,12 @@ let headExn: t('a) => 'a;
 
 Same as [head](#head), but raises an exception if `someList` is empty. Use with care.
 
+```re example
+Belt.List.headExn([1, 2, 3]); /* 1 */
+
+Belt.List.headExn([]); /* Raises an Error */
+```
+
 ## tail
 
 ```re sig
@@ -79,6 +85,12 @@ let tailExn: t('a) => t('a);
 ```
 
 Same as [tail](#tail), but raises an exception if `someList` is empty. Use with care.
+
+```re example
+Belt.List.tailExn([1, 2, 3]); /* [2, 3] */
+
+Belt.List.tailExn([]); /* Raises an Error */
+```
 
 ## add
 
@@ -117,6 +129,14 @@ let getExn: (t('a), int) => 'a;
 ```
 
 Same as [get](#get), but raises an exception if `index` is larger than the length. Use with care.
+
+```re example
+let abc = ["A", "B", "C"];
+
+abc->Belt.List.getExn(1); /* "B" */
+
+abc->Belt.List.getExn(4); /* Raises an Error */
+```
 
 ## make
 
@@ -519,12 +539,6 @@ let reduceReverseU: (t('a), 'b, [@bs] (('b, 'a) => 'b)) => 'b;
 
 Uncurried version of [reduceReverse](#reduceReverse).
 
-## mapReverse2U
-
-```re sig
-let mapReverse2U: (t('a), t('b), [@bs] (('a, 'b) => 'c)) => t('c);
-```
-
 ## mapReverse2
 
 ```re sig
@@ -537,6 +551,13 @@ Equivalent to: `zipBy(xs, ys, f)->reverse`
 
 Belt.List.mapReverse2([1, 2, 3], [1, 2], (+)); /* [4, 2] */
 ```
+## mapReverse2U
+
+```re sig
+let mapReverse2U: (t('a), t('b), [@bs] (('a, 'b) => 'c)) => t('c);
+```
+
+Uncurried version of [mapReverse2](#mapReverse2).
 
 ## forEach2
 
@@ -633,7 +654,7 @@ Uncurried version of [every](#every).
 let some: (t('a), 'a => bool) => bool;
 ```
 
-Returns `true` if at least _one_ of the elements in `someList` satifies `pred`, where `pred` is a predicate: a function taking an element and returning a bool.
+Returns `true` if at least _one_ of the elements in `someList` satisfies `pred`, where `pred` is a predicate: a function taking an element and returning a bool.
 
 ```re example
 let isAbove100 = value => value > 100;
@@ -683,7 +704,17 @@ Uncurried version of [every2](#every2).
 let some2: (t('a), t('b), ('a, 'b) => bool) => bool;
 ```
 
-Returns `true` if `p(xi, yi)` is true for any pair of elements up to the shorter length (i.e. `min(length(xs), length(ys))`)
+Returns `true` if predicate `pred(a, b)` is true for any pair of elements up to the shorter length (i.e. `min(length(firstList), length(secondList))`)
+
+```re example
+Belt.List.some2([1, 2, 3], [0, 1], (>)); /* true */
+
+Belt.List.some2([], [1], (a, b) => a > b); /* false */
+
+Belt.List.some2([2, 3], [1], (a, b) => a > b); /* true */
+
+Belt.List.some2([0, 1], [5, 0], (a, b) => a > b); /* true */
+```
 
 ## some2U
 
@@ -804,7 +835,7 @@ Uncurried version of [has](#has).
 let getBy: (t('a), 'a => bool) => option('a);
 ```
 
-Returns `Some(value)` for the first value in `someList` that satisifies the predicate function `pred`. Returns `None` if no element satisifies the function.
+Returns `Some(value)` for the first value in `someList` that satisfies the predicate function `pred`. Returns `None` if no element satisfies the function.
 
 ```re example
 Belt.List.getBy([1, 4, 3, 2], x => x > 3); /* Some(4) */
