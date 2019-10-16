@@ -105,7 +105,7 @@ module Md = {
     );
 };
 
-// Retrive package.json to access the version of bs-platform.
+// Retrieve package.json to access the version of bs-platform.
 let package: {. "dependencies": {. "bs-platform": string}} = [%raw
   "require('../package.json')"
 ];
