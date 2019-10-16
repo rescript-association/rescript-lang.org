@@ -1,0 +1,19 @@
+import { make as Layout } from "../../layouts/BeltDocsLayout.bs.js";
+import { make as ApiIntro } from "../../components/ApiIntro.bs.js";
+export default Layout;
+
+# Result
+
+<ApiIntro>
+
+Define the interface for result.
+
+</ApiIntro>
+
+## t
+
+```re sig
+type t('good, 'bad) =
+  | Ok('good)
+  | Error('bad);
+```
