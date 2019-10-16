@@ -155,7 +155,7 @@ module Navigation = {
           rel="noopener noreferrer"
           target="_blank"
           className="bg-light-grey-20 leading-normal ml-6 px-1 rounded text-light-grey text-xs">
-          {("v." ++ package##dependencies##"bs-platform")->s}
+          {("v" ++ package##dependencies##"bs-platform")->s}
         </a>
       </div>
     </nav>;

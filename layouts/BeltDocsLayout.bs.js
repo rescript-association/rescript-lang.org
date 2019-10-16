@@ -171,7 +171,7 @@ function BeltDocsLayout$Navigation(Props) {
                       href: "https://github.com/BuckleScript/bucklescript/releases",
                       rel: "noopener noreferrer",
                       target: "_blank"
-                    }, Util.ReactStuff.s("v." + $$package.dependencies["bs-platform"]))));
+                    }, Util.ReactStuff.s("v" + $$package.dependencies["bs-platform"]))));
 }
 
 var Navigation = {
