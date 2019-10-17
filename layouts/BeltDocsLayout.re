@@ -105,6 +105,11 @@ module Md = {
     );
 };
 
+// Retrieve package.json to access the version of bs-platform.
+let package: {. "dependencies": {. "bs-platform": string}} = [%raw
+  "require('../package.json')"
+];
+
 module Navigation = {
   let link = "no-underline text-inherit hover:text-white";
   [@react.component]
@@ -137,15 +142,20 @@ module Navigation = {
         />
       </div>
       <div className="flex mx-4 text-ghost-white justify-between ml-auto">
-        <Link href="/">
-          <a className={link ++ " mx-4"}> "ReasonML"->s </a>
-        </Link>
+        <Link href="/"> <a className=link> "ReasonML"->s </a> </Link>
         <a
           href="https://github.com/reason-association/reasonml.org"
           rel="noopener noreferrer"
           target="_blank"
-          className=link>
+          className={link ++ " align-middle ml-6"}>
           "Github"->s
+        </a>
+        <a
+          href="https://github.com/BuckleScript/bucklescript/releases"
+          rel="noopener noreferrer"
+          target="_blank"
+          className="bg-light-grey-20 leading-normal ml-6 px-1 rounded text-light-grey text-xs">
+          {("v" ++ package##dependencies##"bs-platform")->s}
         </a>
       </div>
     </nav>;
