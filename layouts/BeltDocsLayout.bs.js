@@ -509,7 +509,8 @@ function BeltDocsLayout$Sidebar$NavUl(Props) {
                         var active = match ? " bg-bs-purple-lighten-95 text-bs-pink rounded -ml-1 px-2 font-bold block " : "";
                         return React.createElement("li", {
                                     key: m[/* name */0],
-                                    className: hidden + " leading-5 w-4/5"
+                                    className: hidden + " leading-5 w-4/5",
+                                    tabIndex: 0
                                   }, React.createElement("a", {
                                         className: "hover:text-bs-purple " + active,
                                         href: m[/* href */1]
