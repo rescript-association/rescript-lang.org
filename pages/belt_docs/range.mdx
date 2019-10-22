@@ -28,6 +28,19 @@ let forEach: (int, int, int => unit) => unit;
 
 equivalent to `Belt.Array.(forEach(range(start, finish), action));`
 
+```re example
+Belt.Range.forEach(0, 4, (i) => Js.log(i));
+
+/**
+ * prints:
+ *   0
+ *   1
+ *   2
+ *   3
+ *   4
+ */
+```
+
 ## everyU
 
 ```re sig
@@ -43,6 +56,12 @@ let every: (int, int, int => bool) => bool;
 `every(start, finish, p);`
 
 equivalent to `Belt.Array.(every(range(start, finish), p));`
+
+```re example
+Belt.Range.every(0, 4, (i) => i < 5); /* true */
+
+Belt.Range.every(0, 4, (i) => i < 4); /* false */
+```
 
 ## everyByU
 
@@ -62,6 +81,12 @@ See `Belt_Array.rangeBy`
 
 equivalent to `Belt.Array.(every(rangeBy(start, finish, ~step), p));`
 
+```re example
+Belt.Range.everyBy(0, 4, ~step=1, (i) => i mod 2 === 0); /* false */
+
+Belt.Range.everyBy(0, 4, ~step=2, (i) => i mod 2 === 0); /* true */
+```
+
 ## someU
 
 ```re sig
@@ -77,6 +102,12 @@ let some: (int, int, int => bool) => bool;
 `some(start, finish, p);`
 
 equivalent to `Belt.Array.(some(range(start, finish), p));`
+
+```re example
+Belt.Range.some(0, 4, (i) => i > 5); /* false */
+
+Belt.Range.some(0, 4, (i) => i > 2); /* true */
+```
 
 ## someByU
 
@@ -95,3 +126,9 @@ let someBy: (int, int, ~step: int, int => bool) => bool;
 See `Belt_Array.rangeBy`
 
 equivalent to `Belt.Array.(some(rangeBy(start, finish, ~step), p));`
+
+```re example
+Belt.Range.someBy(1, 5, ~step=2, (i) => i mod 2 === 0); /* false */
+
+Belt.Range.someBy(0, 4, ~step=2, (i) => i mod 2 === 0); /* true */
+```
