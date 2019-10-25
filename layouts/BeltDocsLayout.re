@@ -252,7 +252,10 @@ module Sidebar = {
                isItemActive(m)
                  ? " bg-bs-purple-lighten-95 text-bs-pink rounded -ml-1 px-2 font-bold block "
                  : "";
-             <li key={m.name} className={hidden ++ " leading-5 w-4/5"}>
+             <li
+               key={m.name}
+               className={hidden ++ " leading-5 w-4/5"}
+               tabIndex=0>
                <a href={m.href} className={"hover:text-bs-purple " ++ active}>
                  m.name->s
                </a>
