@@ -2,7 +2,6 @@
 
 import * as Util from "../common/Util.bs.js";
 import * as React from "react";
-import * as Caml_obj from "bs-platform/lib/es6/caml_obj.js";
 import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
 import * as CodeExample from "./CodeExample.bs.js";
 import * as ReasonReact from "reason-react/src/ReasonReact.js";
@@ -167,11 +166,15 @@ function Text$Md$Code(Props) {
   var codeElement;
   if (metastring !== undefined) {
     var metaSplits = Belt_List.fromArray(metastring.split(" "));
-    codeElement = Belt_List.has(metaSplits, "example", Caml_obj.caml_equal) ? React.createElement(CodeExample.make, {
+    codeElement = Belt_List.has(metaSplits, "example", (function (prim, prim$1) {
+            return prim === prim$1;
+          })) ? React.createElement(CodeExample.make, {
             code: children,
             lang: lang
           }) : (
-        Belt_List.has(metaSplits, "sig", Caml_obj.caml_equal) ? React.createElement(CodeSignature.make, {
+        Belt_List.has(metaSplits, "sig", (function (prim, prim$1) {
+                return prim === prim$1;
+              })) ? React.createElement(CodeSignature.make, {
                 code: children,
                 lang: lang
               }) : React.createElement(CodeExample.make, {

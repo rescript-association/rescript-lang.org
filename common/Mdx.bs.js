@@ -19,7 +19,7 @@ var $$default = {
 };
 
 var Components = {
-  default: $$default
+  $$default: $$default
 };
 
 var Provider = { };

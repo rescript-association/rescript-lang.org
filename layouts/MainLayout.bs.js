@@ -53,7 +53,7 @@ function MainLayout(Props) {
                       className: "mt-12 mx-4 max-w-lg",
                       style: minWidth
                     }, React.createElement(React$1.MDXProvider, {
-                          components: Mdx.Components.default,
+                          components: Mdx.Components.$$default,
                           children: children
                         }))));
 }
