@@ -1,5 +1,5 @@
 /*
- * This script globs all `belt_docs/*.mdx` files and
+ * This script globs all `pages/*.mdx` files and
  * parses all codeblocks with an `example` and `prelude` meta string.
  *
  * For every mdx files with prelude, it will prepand all prelude snippets on each
@@ -16,7 +16,7 @@
  *
  * ```
  * # Don't forget the doubleticks, otherwise asterisks might not be recognized
- * node scripts/extract-belt-index.js "pages/belt_docs/*.mdx"
+ * node scripts/test-examples.js "pages/belt_docs/array.mdx"
  * ```
  *
  */
@@ -67,16 +67,16 @@ const processor = unified()
   .use(stringify)
   .use(candidates);
 
-const BELT_MD_DIR = path.join(__dirname, "../pages/belt_docs");
+const MD_DIR = path.join(__dirname, "../pages");
 
 const BSC = path.join(__dirname, "../node_modules/.bin/bsc");
 
-// relFilepath: instead of whole absolute path, just paths like `pages/belt_docs/...`
+// relFilepath: instead of whole absolute path, just paths like `pages/...`
 // prelude: All prelude snippets in one string which will be prepended to each example
 const testExample = async (relFilepath, example, prelude) => {
   const { line, value } = example;
 
-  const preludeLines = prelude !== "" ? prelude.split('\n').length : 0;
+  const preludeLines = prelude !== "" ? prelude.split("\n").length : 0;
   const fullCode = prelude ? `${prelude}\n${value}` : value;
 
   console.log(`Testing example in '${relFilepath}' on line ${line}...`);
@@ -93,9 +93,9 @@ const testExample = async (relFilepath, example, prelude) => {
     let relLine;
     let relPos;
 
-    if(matchParseErr) {
+    if (matchParseErr) {
       relLine = matchParseErr[1];
-    } else if(matchCompErr) {
+    } else if (matchCompErr) {
       relLine = matchCompErr[1];
       relPos = matchCompErr[2];
     }
@@ -148,7 +148,7 @@ const testPrelude = async (relFilepath, prelude) => {
 const testFile = async filepath => {
   const content = fs.readFileSync(filepath, "utf8");
 
-  const relFilepath = "pages/belt_docs/" + path.basename(filepath);
+  const relFilepath = "pages/" + path.basename(filepath);
 
   const result = processor.processSync(content);
   const { examples, preludes } = result.data.candidates;
@@ -164,10 +164,11 @@ const testFile = async filepath => {
     })
   );
 
-  const preludeFailed = testedPreludes.filter(e => e.result.status === "failed").length > 0;
+  const preludeFailed =
+    testedPreludes.filter(e => e.result.status === "failed").length > 0;
 
   // Don't attempt to test the examples if one of the preludes is broken
-  if(preludeFailed) {
+  if (preludeFailed) {
     return testedPreludes;
   }
 
@@ -197,7 +198,7 @@ const testFile = async filepath => {
   return testedExamples;
 };
 
-const showErrorMsg = (failedExample) => {
+const showErrorMsg = failedExample => {
   const { stderr } = failedExample.result;
   console.log(`\n-----------\nError Preview:`);
   console.log(stderr);
@@ -205,7 +206,7 @@ const showErrorMsg = (failedExample) => {
 
 const main = async () => {
   const [, , pattern] = process.argv;
-  const files = glob.sync(pattern ? pattern : `${BELT_MD_DIR}/*.md?(x)`);
+  const files = glob.sync(pattern ? pattern : `${MD_DIR}/**/*.md?(x)`);
 
   const allTested = await files.reduce(async (acc, filepath) => {
     const tested = await testFile(filepath);
@@ -221,10 +222,10 @@ const main = async () => {
   console.log(`Success: ${success.length}`);
 
   if (failed.length > 0) {
-    console.log(`\nTip: You can also run tests just for specific files / globs:`);
     console.log(
-      '`node scripts/test-belt-examples.js "pages/belt_docs/array.mdx"`'
+      `\nTip: You can also run tests just for specific files / globs:`
     );
+    console.log('`node scripts/test-examples.js "pages/belt_docs/array.mdx"`');
     showErrorMsg(failed[0]);
     process.exit(1);
   }
