@@ -187,13 +187,365 @@ var overviewNavs = /* array */[/* record */Caml_chrome_debugger.record([
       "/js_docs"
     ])];
 
-var apiNavs = /* array */[/* record */Caml_chrome_debugger.record([
+var apiNavs = /* array */[
+  /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "Array2",
       "/js_docs/array-2"
-    ])];
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Array",
+      "/js_docs/array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Console",
+      "/js_docs/console"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Date",
+      "/js_docs/date"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Dict",
+      "/js_docs/dict"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Exn",
+      "/js_docs/exn"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Float",
+      "/js_docs/float"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Global",
+      "/js_docs/global"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Int",
+      "/js_docs/int"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Json",
+      "/js_docs/json"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "List",
+      "/js_docs/list"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Math",
+      "/js_docs/math"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "NullUndefined",
+      "/js_docs/null-undefined"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Null",
+      "/js_docs/null"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Nullable",
+      "/js_docs/nullable"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Obj",
+      "/js_docs/obj"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Option",
+      "/js_docs/option"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Promise",
+      "/js_docs/promise"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Re",
+      "/js_docs/re"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Result",
+      "/js_docs/result"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "String2",
+      "/js_docs/string-2"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "String",
+      "/js_docs/string"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArrayArrayBuffer",
+      "/js_docs/typed-array_array-buffer"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArrayDataView",
+      "/js_docs/typed-array_data-view"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArrayFloat32Array",
+      "/js_docs/typed-array_float-32-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArrayFloat64Array",
+      "/js_docs/typed-array_float-64-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArrayInt8Array",
+      "/js_docs/typed-array_int-8-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArrayInt16Array",
+      "/js_docs/typed-array_int-16-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArrayInt32Array",
+      "/js_docs/typed-array_int-32-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArrayTypeS",
+      "/js_docs/typed-array_type-s"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArrayUint8Array",
+      "/js_docs/typed-array_uint-8-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArrayUint8ClampedArray",
+      "/js_docs/typed-array_uint-8-clamped-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArrayUint16Array",
+      "/js_docs/typed-array_uint-16-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArrayUint32Array",
+      "/js_docs/typed-array_uint-32-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArray2ArrayBuffer",
+      "/js_docs/typed-array-2_array-buffer"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArray2DataView",
+      "/js_docs/typed-array-2_data-view"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArray2Float32Array",
+      "/js_docs/typed-array-2_float-32-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArray2Float64Array",
+      "/js_docs/typed-array-2_float-64-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArray2Int8Array",
+      "/js_docs/typed-array-2_int-8-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArray2Int16Array",
+      "/js_docs/typed-array-2_int-16-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArray2Int32Array",
+      "/js_docs/typed-array-2_int-32-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArray2TypeS",
+      "/js_docs/typed-array-2_type-s"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArray2Uint8Array",
+      "/js_docs/typed-array-2_uint-8-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArray2Uint8ClampedArray",
+      "/js_docs/typed-array-2_uint-8-clamped-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArray2Uint16Array",
+      "/js_docs/typed-array-2_uint-16-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArray2Uint32Array",
+      "/js_docs/typed-array-2_uint-32-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArray2",
+      "/js_docs/typed-array-2"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "TypedArray",
+      "/js_docs/typed-array"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Types",
+      "/js_docs/types"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Undefined",
+      "/js_docs/undefined"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Vector",
+      "/js_docs/vector"
+    ])
+];
 
 var categories = /* array */[
   /* record */Caml_chrome_debugger.record([
