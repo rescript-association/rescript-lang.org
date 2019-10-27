@@ -147,8 +147,8 @@ const testPrelude = async (relFilepath, prelude) => {
 
 const testFile = async filepath => {
   const content = fs.readFileSync(filepath, "utf8");
-
-  const relFilepath = "pages/" + path.basename(filepath);
+  const root = path.resolve(".");
+  const relFilepath = path.relative(root, filepath);
 
   const result = processor.processSync(content);
   const { examples, preludes } = result.data.candidates;
