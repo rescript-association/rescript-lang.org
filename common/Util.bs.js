@@ -1,6 +1,5 @@
 
 
-import * as ReactDOMRe from "reason-react/src/ReactDOMRe.js";
 
 function s(prim) {
   return prim;
@@ -23,4 +22,4 @@ export {
   ReactStuff ,
   
 }
-/* ReactDOMRe Not a pure module */
+/* No side effect */

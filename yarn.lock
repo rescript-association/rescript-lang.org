@@ -1505,10 +1505,10 @@ bs-fetch@^0.3.1:
   resolved "https://registry.yarnpkg.com/bs-fetch/-/bs-fetch-0.3.1.tgz#9c7d074b27e6bb2b9f2ec985964f32bcac49f79e"
   integrity sha512-MxwnuuXPldXnoCtlpeN5JNbbmb1tVgsqpLfVunvuMLAIQNyP0TqoImHiQRTz38PBSN8/iX+2yVlm+PFJfnHHiA==
 
-bs-platform@5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-5.2.0.tgz#0ec317273daed573491c105f68ea48826a285b7a"
-  integrity sha512-miyePsOF9VbuhT5QD5E/hb+l454Fo4MAcg5xV1GJhbWxmejuF/X7mCYUsNrK1UUAaYt8hnoyFdeLG22sxVta9A==
+bs-platform@6.2.1:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-6.2.1.tgz#30266c7f23a3b323e1fc9596a9a6eb9f053981b4"
+  integrity sha512-FmQ8kYV52A0Y302qh6o0/J9TO+kHzsjGQnsjrg/ONUYIY/jWzBnt9dCBO6EBnaEKfFJLqk5JrUDCxuihqtTcnw==
 
 buffer-from@^1.0.0:
   version "1.1.1"
@@ -2738,10 +2738,10 @@ gauge@~2.7.3:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
-gentype@^2.23.0:
-  version "2.39.0"
-  resolved "https://registry.yarnpkg.com/gentype/-/gentype-2.39.0.tgz#297a83986c03073fc7c1e4a3bd89dff3cf83dedd"
-  integrity sha512-Bpw3h++ZLDqOcdwzEtiehnXBpwu77kCfelmpSHqPigMOP7tbZ7M07a51/KuhQSnpc5Nx+IsG/oUNuiO/++DNQw==
+gentype@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/gentype/-/gentype-3.1.0.tgz#274f9b684e5bcf983ad35e9df22c79c882bde7b0"
+  integrity sha512-NJyGcRL8giqeC1MSdcc+/WV6oWw/gy8Gcg9KFzYvpWltuPmm0WtChrUNQiTjO0dsuAjhwtEleDmWRmMLCTSfqA==
 
 get-caller-file@^2.0.1:
   version "2.0.5"
