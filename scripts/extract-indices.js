@@ -71,11 +71,12 @@ const processFile = filepath => {
 
   const pagesPath = path.resolve("./pages");
   const relFilepath = path.relative(pagesPath, filepath);
+  const parsedPath = path.parse(relFilepath);
 
   const dataset = {
     headers: result.data.headers,
     signatures: result.data.codeblocks.re,
-    href: relFilepath,
+    href: path.join(parsedPath.dir, parsedPath.name),
     moduleName: result.data.mainHeader
   };
   return dataset;
