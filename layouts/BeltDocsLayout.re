@@ -12,7 +12,7 @@ open Util.ReactStuff;
 open Text;
 module Link = Next.Link;
 
-// Structure defined by `scripts/extract-belt-index.js`
+// Structure defined by `scripts/extract-indices.js`
 let indexData:
   Js.Dict.t({
     .
