@@ -28,6 +28,11 @@ function MainLayout$Navigation(Props) {
                       children: React.createElement("a", {
                             className: $$Text.Link.inline + " mx-2"
                           }, Util.ReactStuff.s("Belt Documentation"))
+                    }), React.createElement(Link.default, {
+                      href: "/js_docs",
+                      children: React.createElement("a", {
+                            className: $$Text.Link.inline + " mx-2"
+                          }, Util.ReactStuff.s("Js Documentation"))
                     }), React.createElement("a", {
                       className: $$Text.Link.inline,
                       href: "https://github.com/reason-association/reasonml.org",

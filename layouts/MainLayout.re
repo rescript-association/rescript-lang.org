@@ -22,6 +22,11 @@ module Navigation = {
             "Belt Documentation"->s
           </a>
         </Link>
+        <Link href="/js_docs">
+          <a className={Text.Link.inline ++ " mx-2"}>
+            "Js Documentation"->s
+          </a>
+        </Link>
         <a
           href="https://github.com/reason-association/reasonml.org"
           rel="noopener noreferrer"
