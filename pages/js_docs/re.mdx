@@ -12,15 +12,16 @@ Provide bindings to JS regular expressions (RegExp).
 
 ## t
 
-```re sig 
-type t 
+```re sig
+type t
 ```
 
 The RegExp object.
 
 ## result
-```re sig 
-type result 
+
+```re sig
+type result
 ```
 
 The result of a executing a RegExp on a string.
@@ -91,11 +92,11 @@ See `Js.Re.fromString`.
 
 Valid flags:
 
-g	global
-i	ignore case
-m	multiline
-u	unicode	(es2015)
-y	sticky	(es2015)
+g global
+i ignore case
+m multiline
+u unicode (es2015)
+y sticky (es2015)
 
 ## flags
 
@@ -140,7 +141,7 @@ while (! break^) {
   | Some(result) =>
     Js.Nullable.iter(
       Js.Re.captures(result)[0],
-      match => {
+      [@bs] match => {
         let next = string_of_int(Js.Re.lastIndex(re));
         Js.log("Found " ++ match ++ ". Next match starts at " ++ next);
       },
@@ -190,7 +191,7 @@ let unicode: t => bool;
 
 Returns a `bool` indicating whether the unicode flag is set.
 
-## exec_
+## exec\_
 
 ```re sig
 let exec_: (t, string) => option(result);
@@ -217,7 +218,7 @@ let exec: (string, t) => option(result);
 
 Deprecated. please use `Js.Re.exec_` instead.
 
-## test_
+## test\_
 
 ```re sig
 let test_: (t, string) => bool;
@@ -242,5 +243,5 @@ Js.log(str->(startsWith("hello"))); /* prints "true" */
 ```re sig
 let test: (string, t) => bool;
 ```
- 
+
 Deprecated. please use `Js.Re.test_` instead.
