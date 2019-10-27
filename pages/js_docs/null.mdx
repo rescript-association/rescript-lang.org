@@ -61,7 +61,7 @@ If `Js.null('a)` contains a value, that value is unwrapped, mapped to a `'b` usi
 
 ```re example
 let maybeGreetWorld = (maybeGreeting: Js.null(string)) =>
-  Js.Undefined.bind(maybeGreeting, greeting => greeting ++ " world!");
+  Js.Null.bind(maybeGreeting, [@bs] greeting => greeting ++ " world!");
 ```
 
 ## iter
@@ -75,7 +75,7 @@ If `Js.null('a)` contains a value, that value is unwrapped and applied to the gi
 
 ```re example
 let maybeSay = (maybeMessage: Js.null(string)) =>
-  Js.Null_undefined.iter(maybeMessage, message => Js.log(message));
+  Js.Null.iter(maybeMessage, [@bs] message => Js.log(message));
 ```
 
 ## fromOption
@@ -85,8 +85,8 @@ let fromOption: option('a) => t('a);
 ```
 
 Maps `option('a)` to `Js.null('a)`.
-`Some(a)`	=> `a`
-`None`	=> `empty`
+`Some(a)` => `a`
+`None` => `empty`
 
 ## from_opt
 
@@ -101,8 +101,8 @@ let toOption: t('a) => option('a);
 ```
 
 Maps `Js.null('a)` to `option('a)`.
-`a`	=>	`Some(a)`
-`empty`	=>	`None`
+`a` => `Some(a)`
+`empty` => `None`
 
 ## to_opt
 
