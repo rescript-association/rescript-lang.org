@@ -32,7 +32,7 @@
     "dev": "next",
     "build": "yarn run update-index && bsb -clean-world -make-world && next build",
     "test": "node scripts/test-examples.js",
-    "update-index": "node scripts/extract-belt-index.js",
+    "update-index": "node scripts/extract-indices.js",
     "now-build": "yarn run build",
     "export": "next export",
     "start": "next start -p $PORT",
