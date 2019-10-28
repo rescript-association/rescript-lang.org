@@ -2,11 +2,11 @@
 
 import * as $$Text from "../components/Text.bs.js";
 import * as Util from "../common/Util.bs.js";
-import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
-import * as Link from "next/link";
-import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
+import * as ApiLayout from "./ApiLayout.bs.js";
+import * as ColorTheme from "../common/ColorTheme.bs.js";
+import * as Navigation from "../components/Navigation.bs.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Router from "next/router";
@@ -126,58 +126,6 @@ var Md = {
 };
 
 var $$package = (require('../package.json'));
-
-var link = "no-underline text-inherit hover:text-white";
-
-function JsDocsLayout$Navigation(Props) {
-  return React.createElement("nav", {
-              className: "fixed z-10 top-0 p-2 w-full h-16 shadow flex items-center text-ghost-white text-sm bg-bs-purple",
-              id: "header"
-            }, React.createElement(Link.default, {
-                  href: "/js_docs",
-                  children: React.createElement("a", {
-                        className: "flex items-center pl-10 w-1/5"
-                      }, React.createElement("div", {
-                            className: "h-6 w-6 bg-white rounded-full flex flex-col justify-center items-center"
-                          }, React.createElement("div", {
-                                className: "h-4 w-4 bg-bs-purple rounded-full"
-                              })), React.createElement("span", {
-                            className: "text-xl ml-2 font-black text-white"
-                          }, Util.ReactStuff.s("Js")))
-                }), React.createElement("div", {
-                  className: "ml-6 flex w-3/5 px-3 h-10 max-w-sm rounded-lg text-white bg-light-grey-20 content-center items-center w-2/3"
-                }, React.createElement("img", {
-                      "aria-hidden": true,
-                      className: "mr-3",
-                      src: "/static/ic_search_small.svg"
-                    }), React.createElement("input", {
-                      className: "bg-transparent placeholder-ghost-white block focus:outline-none w-full ml-2",
-                      placeholder: "Search not ready yet...",
-                      type: "text"
-                    })), React.createElement("div", {
-                  className: "flex mx-4 text-ghost-white justify-between ml-auto"
-                }, React.createElement(Link.default, {
-                      href: "/",
-                      children: React.createElement("a", {
-                            className: link
-                          }, Util.ReactStuff.s("ReasonML"))
-                    }), React.createElement("a", {
-                      className: "no-underline text-inherit hover:text-white align-middle ml-6",
-                      href: "https://github.com/reason-association/reasonml.org",
-                      rel: "noopener noreferrer",
-                      target: "_blank"
-                    }, Util.ReactStuff.s("Github")), React.createElement("a", {
-                      className: "bg-light-grey-20 leading-normal ml-6 px-1 rounded text-light-grey text-xs",
-                      href: "https://github.com/BuckleScript/bucklescript/releases",
-                      rel: "noopener noreferrer",
-                      target: "_blank"
-                    }, Util.ReactStuff.s("v" + $$package.dependencies["bs-platform"]))));
-}
-
-var Navigation = {
-  link: link,
-  make: JsDocsLayout$Navigation
-};
 
 var overviewNavs = /* array */[/* record */Caml_chrome_debugger.record([
       "name",
@@ -479,13 +427,6 @@ var apiNavs = /* array */[
       "name",
       "href"
     ], [
-      "TypedArray2TypeS",
-      "/js_docs/typed-array-2_type-s"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
       "TypedArray2Uint8Array",
       "/js_docs/typed-array-2_uint-8-array"
     ]),
@@ -564,153 +505,41 @@ var categories = /* array */[
     ])
 ];
 
-function JsDocsLayout$Sidebar$NavUl(Props) {
-  var match = Props.isItemActive;
-  var isItemActive = match !== undefined ? match : (function (_nav) {
-        return false;
-      });
-  var match$1 = Props.isHidden;
-  var isHidden = match$1 !== undefined ? match$1 : false;
-  var items = Props.items;
-  return React.createElement("ul", {
-              className: "ml-2 mt-1 text-main-lighten-15"
-            }, Util.ReactStuff.ate(Belt_Array.map(items, (function (m) {
-                        var hidden = isHidden ? "hidden" : "block";
-                        var match = Curry._1(isItemActive, m);
-                        var active = match ? " bg-bs-purple-lighten-95 text-bs-pink rounded -ml-1 px-2 font-bold block " : "";
-                        return React.createElement("li", {
-                                    key: m[/* name */0],
-                                    className: hidden + " leading-5 w-4/5",
-                                    tabIndex: 0
-                                  }, React.createElement("a", {
-                                        className: "hover:text-bs-purple " + active,
-                                        href: m[/* href */1]
-                                      }, Util.ReactStuff.s(m[/* name */0])));
-                      }))));
-}
-
-var NavUl = {
-  make: JsDocsLayout$Sidebar$NavUl
-};
-
-function categoryToElement(isItemActive, category) {
-  var tmp = {
-    items: category[/* items */1]
-  };
-  if (isItemActive !== undefined) {
-    tmp.isItemActive = Caml_option.valFromOption(isItemActive);
-  }
-  return React.createElement("div", {
-              key: category[/* name */0],
-              className: "my-12"
-            }, React.createElement($$Text.Overline.make, {
-                  children: Util.ReactStuff.s(category[/* name */0])
-                }), React.createElement(JsDocsLayout$Sidebar$NavUl, tmp));
-}
-
-function JsDocsLayout$Sidebar$ModuleContent(Props) {
-  var isItemActive = Props.isItemActive;
-  var headers = Props.headers;
-  var moduleName = Props.moduleName;
-  var match = React.useState((function () {
-          return false;
-        }));
-  var setCollapsed = match[1];
-  var collapsed = match[0];
-  var items = Belt_Array.map(headers, (function (header) {
-          return /* record */Caml_chrome_debugger.record([
-                    "name",
-                    "href"
-                  ], [
-                    header,
-                    "#" + header
-                  ]);
-        }));
-  var tmp = {
-    isHidden: collapsed,
-    items: items
-  };
-  if (isItemActive !== undefined) {
-    tmp.isItemActive = Caml_option.valFromOption(isItemActive);
-  }
-  return React.createElement("div", {
-              className: "my-12"
-            }, React.createElement($$Text.Overline.make, {
-                  children: React.createElement("a", {
-                        className: "cursor-pointer hover:text-bs-purple",
-                        href: "#",
-                        onClick: (function (evt) {
-                            evt.preventDefault();
-                            return Curry._1(setCollapsed, (function (isCollapsed) {
-                                          return !isCollapsed;
-                                        }));
-                          })
-                      }, React.createElement("span", {
-                            className: "hidden hover:block"
-                          }, Util.ReactStuff.s(collapsed ? "v" : "^")), Util.ReactStuff.s(moduleName))
-                }), React.createElement(JsDocsLayout$Sidebar$NavUl, tmp));
-}
-
-var ModuleContent = {
-  make: JsDocsLayout$Sidebar$ModuleContent
-};
-
-function JsDocsLayout$Sidebar(Props) {
-  var route = Props.route;
+function JsDocsLayout$Docs(Props) {
+  var match = Props.components;
+  var components$1 = match !== undefined ? Caml_option.valFromOption(match) : components;
+  var children = Props.children;
+  var router = Router.useRouter();
+  var route = router.route;
   var headers = Belt_Option.getWithDefault(Belt_Option.map(Js_dict.get(indexData, route), (function (data) {
               return data.headers;
             })), /* array */[]);
   var moduleName = Belt_Option.getWithDefault(Belt_Option.map(Js_dict.get(indexData, route), (function (data) {
               return data.moduleName;
             })), "?");
-  var isItemActive = function (navItem) {
-    return navItem[/* href */1] === route;
-  };
-  var match = route !== "/js_docs";
-  var partial_arg = isItemActive;
-  return React.createElement("div", {
-              className: "pl-2 flex w-full justify-center h-auto overflow-y-visible block bg-light-grey",
-              style: {
-                maxWidth: "17.5rem"
-              }
-            }, React.createElement("nav", {
-                  className: "relative w-48 sticky h-screen block overflow-y-auto scrolling-touch pb-32",
-                  style: {
-                    top: "4rem"
-                  }
-                }, match ? React.createElement(JsDocsLayout$Sidebar$ModuleContent, {
-                        headers: headers,
-                        moduleName: moduleName
-                      }) : null, React.createElement("div", undefined, Util.ReactStuff.ate(Belt_Array.map(categories, (function (param) {
-                                return categoryToElement(partial_arg, param);
-                              }))))));
-}
-
-var Sidebar = {
-  overviewNavs: overviewNavs,
-  apiNavs: apiNavs,
-  categories: categories,
-  NavUl: NavUl,
-  categoryToElement: categoryToElement,
-  ModuleContent: ModuleContent,
-  make: JsDocsLayout$Sidebar
-};
-
-function JsDocsLayout(Props) {
-  var match = Props.components;
-  var components$1 = match !== undefined ? Caml_option.valFromOption(match) : components;
-  var children = Props.children;
-  var router = Router.useRouter();
+  var match$1 = route !== "/js_docs";
+  var collapsibleSection = match$1 ? React.createElement(ApiLayout.Sidebar.CollapsibleSection.make, {
+          theme: ColorTheme.js,
+          headers: headers,
+          moduleName: moduleName
+        }) : null;
   var minWidth = {
     minWidth: "20rem"
   };
   return React.createElement("div", undefined, React.createElement("div", {
                   className: "max-w-4xl w-full",
                   style: minWidth
-                }, React.createElement(JsDocsLayout$Navigation, { }), React.createElement("div", {
+                }, React.createElement(Navigation.ApiDocs.make, {
+                      route: router.route,
+                      theme: ColorTheme.js,
+                      versionInfo: "v" + $$package.dependencies["bs-platform"]
+                    }), React.createElement("div", {
                       className: "flex mt-12"
-                    }, React.createElement(JsDocsLayout$Sidebar, {
-                          route: router.route
+                    }, React.createElement(ApiLayout.Sidebar.make, {
+                          categories: categories,
+                          theme: ColorTheme.js,
+                          route: router.route,
+                          children: collapsibleSection
                         }), React.createElement("main", {
                           className: "pt-12 w-4/5 static min-h-screen overflow-visible"
                         }, React.createElement(React$1.MDXProvider, {
@@ -721,18 +550,43 @@ function JsDocsLayout(Props) {
                             })))));
 }
 
-var Link$1 = 0;
+var Docs = {
+  make: JsDocsLayout$Docs
+};
 
-var make = JsDocsLayout;
+function JsDocsLayout$Prose(Props) {
+  var children = Props.children;
+  return React.createElement(JsDocsLayout$Docs, {
+              components: ApiLayout.ApiMd.components,
+              children: children
+            });
+}
+
+var Prose = {
+  make: JsDocsLayout$Prose
+};
+
+var Link = 0;
+
+var Sidebar = 0;
+
+var NavItem = 0;
+
+var Category = 0;
 
 export {
-  Link$1 as Link,
+  Link ,
   indexData ,
   Md ,
   $$package ,
-  Navigation ,
   Sidebar ,
-  make ,
+  NavItem ,
+  Category ,
+  overviewNavs ,
+  apiNavs ,
+  categories ,
+  Docs ,
+  Prose ,
   
 }
 /*  Not a pure module */

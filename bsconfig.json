@@ -19,7 +19,7 @@
   "suffix": ".bs.js",
   "bsc-flags": ["-bs-no-version-header", "-bs-super-errors", "-bs-g"],
   "gentypeconfig": {
-    "language": "typescript",
+    "language": "untyped",
     "shims": [],
     "module": "es6"
   }
