@@ -20,11 +20,11 @@ let indexData:
     "moduleName": string,
     "headers": array(string),
   }) = [%raw
-  "require('../index_data/belt_api_index.json')"
+  "require('../index_data/js_api_index.json')"
 ];
 
 /*
-    We use some custom markdown styling for the Belt docs to make
+    We use some custom markdown styling for the Js docs to make
     it easier on the eyes
  */
 module Md = {
@@ -117,15 +117,13 @@ module Navigation = {
     <nav
       id="header"
       className="fixed z-10 top-0 p-2 w-full h-16 shadow flex items-center text-ghost-white text-sm bg-bs-purple">
-      <Link href="/belt_docs">
+      <Link href="/js_docs">
         <a className="flex items-center pl-10 w-1/5">
           <div
             className="h-6 w-6 bg-white rounded-full flex flex-col justify-center items-center">
             <div className="h-4 w-4 bg-bs-purple rounded-full" />
           </div>
-          <span className="text-xl ml-2 font-black text-white">
-            "Belt"->s
-          </span>
+          <span className="text-xl ml-2 font-black text-white"> "Js"->s </span>
         </a>
       </Link>
       <div
@@ -173,66 +171,113 @@ module Sidebar = {
     items: array(navItem),
   };
 
-  let overviewNavs = [|{name: "Introduction", href: "/belt_docs"}|];
+  let overviewNavs = [|{name: "Introduction", href: "/js_docs"}|];
 
-  let setNavs = [|
-    {name: "HashSet", href: "/belt_docs/hash-set"},
-    {name: "HashSetInt", href: "/belt_docs/hash-set-int"},
-    {name: "HashSetString", href: "/belt_docs/hash-set-string"},
-    {name: "Set", href: "/belt_docs/set"},
-    {name: "SetDict", href: "/belt_docs/set-dict"},
-    {name: "SetInt", href: "/belt_docs/set-int"},
-    {name: "SetString", href: "/belt_docs/set-string"},
+  let apiNavs = [|
+    {name: "Array2", href: "/js_docs/array-2"},
+    {name: "Array", href: "/js_docs/array"},
+    {name: "Console", href: "/js_docs/console"},
+    {name: "Date", href: "/js_docs/date"},
+    {name: "Dict", href: "/js_docs/dict"},
+    {name: "Exn", href: "/js_docs/exn"},
+    {name: "Float", href: "/js_docs/float"},
+    {name: "Global", href: "/js_docs/global"},
+    {name: "Int", href: "/js_docs/int"},
+    {name: "Json", href: "/js_docs/json"},
+    {name: "List", href: "/js_docs/list"},
+    {name: "Math", href: "/js_docs/math"},
+    {name: "NullUndefined", href: "/js_docs/null-undefined"},
+    {name: "Null", href: "/js_docs/null"},
+    {name: "Nullable", href: "/js_docs/nullable"},
+    {name: "Obj", href: "/js_docs/obj"},
+    {name: "Option", href: "/js_docs/option"},
+    {name: "Promise", href: "/js_docs/promise"},
+    {name: "Re", href: "/js_docs/re"},
+    {name: "Result", href: "/js_docs/result"},
+    {name: "String2", href: "/js_docs/string-2"},
+    {name: "String", href: "/js_docs/string"},
+    {
+      name: "TypedArrayArrayBuffer",
+      href: "/js_docs/typed-array_array-buffer",
+    },
+    {name: "TypedArrayDataView", href: "/js_docs/typed-array_data-view"},
+    {
+      name: "TypedArrayFloat32Array",
+      href: "/js_docs/typed-array_float-32-array",
+    },
+    {
+      name: "TypedArrayFloat64Array",
+      href: "/js_docs/typed-array_float-64-array",
+    },
+    {name: "TypedArrayInt8Array", href: "/js_docs/typed-array_int-8-array"},
+    {name: "TypedArrayInt16Array", href: "/js_docs/typed-array_int-16-array"},
+    {name: "TypedArrayInt32Array", href: "/js_docs/typed-array_int-32-array"},
+    {name: "TypedArrayTypeS", href: "/js_docs/typed-array_type-s"},
+    {name: "TypedArrayUint8Array", href: "/js_docs/typed-array_uint-8-array"},
+    {
+      name: "TypedArrayUint8ClampedArray",
+      href: "/js_docs/typed-array_uint-8-clamped-array",
+    },
+    {
+      name: "TypedArrayUint16Array",
+      href: "/js_docs/typed-array_uint-16-array",
+    },
+    {
+      name: "TypedArrayUint32Array",
+      href: "/js_docs/typed-array_uint-32-array",
+    },
+    {
+      name: "TypedArray2ArrayBuffer",
+      href: "/js_docs/typed-array-2_array-buffer",
+    },
+    {name: "TypedArray2DataView", href: "/js_docs/typed-array-2_data-view"},
+    {
+      name: "TypedArray2Float32Array",
+      href: "/js_docs/typed-array-2_float-32-array",
+    },
+    {
+      name: "TypedArray2Float64Array",
+      href: "/js_docs/typed-array-2_float-64-array",
+    },
+    {
+      name: "TypedArray2Int8Array",
+      href: "/js_docs/typed-array-2_int-8-array",
+    },
+    {
+      name: "TypedArray2Int16Array",
+      href: "/js_docs/typed-array-2_int-16-array",
+    },
+    {
+      name: "TypedArray2Int32Array",
+      href: "/js_docs/typed-array-2_int-32-array",
+    },
+    {name: "TypedArray2TypeS", href: "/js_docs/typed-array-2_type-s"},
+    {
+      name: "TypedArray2Uint8Array",
+      href: "/js_docs/typed-array-2_uint-8-array",
+    },
+    {
+      name: "TypedArray2Uint8ClampedArray",
+      href: "/js_docs/typed-array-2_uint-8-clamped-array",
+    },
+    {
+      name: "TypedArray2Uint16Array",
+      href: "/js_docs/typed-array-2_uint-16-array",
+    },
+    {
+      name: "TypedArray2Uint32Array",
+      href: "/js_docs/typed-array-2_uint-32-array",
+    },
+    {name: "TypedArray2", href: "/js_docs/typed-array-2"},
+    {name: "TypedArray", href: "/js_docs/typed-array"},
+    {name: "Types", href: "/js_docs/types"},
+    {name: "Undefined", href: "/js_docs/undefined"},
+    {name: "Vector", href: "/js_docs/vector"},
   |];
-
-  let mapNavs = [|
-    {name: "HashMap", href: "/belt_docs/hash-map"},
-    {name: "HashMapInt", href: "/belt_docs/hash-map-int"},
-    {name: "HashMapString", href: "/belt_docs/hash-map-string"},
-    {name: "Map", href: "/belt_docs/map"},
-    {name: "MapDict", href: "/belt_docs/map-dict"},
-    {name: "MapInt", href: "/belt_docs/map-int"},
-    {name: "MapString", href: "/belt_docs/map-string"},
-  |];
-
-  let mutableCollectionsNavs = [|
-    {name: "MutableMap", href: "/belt_docs/mutable-map"},
-    {name: "MutableMapInt", href: "/belt_docs/mutable-map-int"},
-    {name: "MutableMapString", href: "/belt_docs/mutable-map-string"},
-    {name: "MutableQueue", href: "/belt_docs/mutable-queue"},
-    {name: "MutableSet", href: "/belt_docs/mutable-set"},
-    {name: "MutableSetInt", href: "/belt_docs/mutable-set-int"},
-    {name: "MutableSetString", href: "/belt_docs/mutable-set-string"},
-    {name: "MutableStack", href: "/belt_docs/mutable-stack"},
-  |];
-
-  let basicNavs = [|
-    {name: "List", href: "/belt_docs/list"},
-    {name: "Array", href: "/belt_docs/array"},
-    {name: "Float", href: "/belt_docs/float"},
-    {name: "Int", href: "/belt_docs/int"},
-    {name: "Range", href: "/belt_docs/range"},
-    {name: "Id", href: "/belt_docs/id"},
-    {name: "Option", href: "/belt_docs/option"},
-    {name: "Result", href: "/belt_docs/result"},
-  |];
-
-  let sortNavs = [|
-    {name: "SortArray", href: "/belt_docs/sort-array"},
-    {name: "SortArrayInt", href: "/belt_docs/sort-array-int"},
-    {name: "SortArrayString", href: "/belt_docs/sort-array-string"},
-  |];
-
-  let utilityNavs = [|{name: "Debug", href: "/belt_docs/debug"}|];
 
   let categories = [|
     {name: "Overview", items: overviewNavs},
-    {name: "Basics", items: basicNavs},
-    {name: "Set", items: setNavs},
-    {name: "Map", items: mapNavs},
-    {name: "Mutable Collections", items: mutableCollectionsNavs},
-    {name: "Sort Collections", items: sortNavs},
-    {name: "Utilities", items: utilityNavs},
+    {name: "API", items: apiNavs},
   |];
 
   module NavUl = {
@@ -334,7 +379,7 @@ module Sidebar = {
       <nav
         className="relative w-48 sticky h-screen block overflow-y-auto scrolling-touch pb-32"
         style={Style.make(~top="4rem", ())}>
-        {route !== "/belt_docs"
+        {route !== "/js_docs"
            ? <ModuleContent
                headers
                // Todo: We need to introduce router state to be able to

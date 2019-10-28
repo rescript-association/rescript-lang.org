@@ -1,4 +1,4 @@
-import { make as Layout } from "../../layouts/BeltDocsLayout.bs.js";
+import { make as Layout } from "../../layouts/JsDocsLayout.bs.js";
 import { make as ApiIntro } from "../../components/ApiIntro.bs.js";
 export default Layout;
 
@@ -12,7 +12,7 @@ Provide utilities around `Js.undefined`.
 
 ## t
 
-```re sig 
+```re sig
 type t('a) = Js.undefined('a);
 ```
 
@@ -40,7 +40,7 @@ Returns `true` if the given value is empty (undefined), `false` otherwise.
 let testAny: 'a => bool;
 ```
 
-Since 1.6.1 Returns [true] if the given value is [empty] ([undefined]).
+Since 1.6.1 Returns [true] if the given value is [empty]([undefined]).
 
 ## empty
 
@@ -73,7 +73,7 @@ If `Js.undefined('a)` contains a value, that value is unwrapped, mapped to a `'b
 
 ```re example
 let maybeGreetWorld = (maybeGreeting: Js.undefined(string)) =>
-  Js.Undefined.bind(maybeGreeting, greeting => greeting ++ " world!");
+  Js.Undefined.bind(maybeGreeting, [@bs] greeting => greeting ++ " world!");
 ```
 
 ## iter
@@ -87,7 +87,7 @@ If `Js.undefined('a)` contains a value, that value is unwrapped and applied to t
 
 ```re example
 let maybeSay = (maybeMessage: Js.undefined(string)) =>
-  Js.Undefined.iter(maybeMessage, message => Js.log(message));
+  Js.Undefined.iter(maybeMessage, [@bs] message => Js.log(message));
 ```
 
 ## fromOption
@@ -97,8 +97,8 @@ let fromOption: option('a) => t('a);
 ```
 
 Maps `option('a)` to `Js.undefined('a)`.
-`Some(a)`	=> `a`
-`None`	=> `empty`
+`Some(a)` => `a`
+`None` => `empty`
 
 ## from_opt
 
@@ -113,8 +113,8 @@ let toOption: t('a) => option('a);
 ```
 
 Maps `Js.undefined('a)` to `option('a)`
-`a`	=>	`Some(a)`
-`empty`	=>	`None`
+`a` => `Some(a)`
+`empty` => `None`
 
 ## to_opt
 

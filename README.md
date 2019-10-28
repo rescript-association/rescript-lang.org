@@ -41,17 +41,17 @@ build specific pages (file `index_data/x.json` not found).
 ## Run Tests
 
 We try to verify our code examples inside markdown files as much as possible.
-Currently we are using `scripts/test-belt-examples.js` to test all our example
+Currently we are using `scripts/test-examples.js` to test all our example
 codeblocks (those blocks marked with `re examples`).
 
 After writing documentation, make sure to run this code before submitting a PR:
 
 ```
 # Tests all files
-node scripts/test-belt-examples.js
+node scripts/test-examples.js
 
 # Or just a subset (glob pattern)
-node scripts/test-belt-examples.js "pages/belt_docs/set-*.mdx"
+node scripts/test-examples.js "pages/belt_docs/set-*.mdx"
 ```
 
 ## Design / UX

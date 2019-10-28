@@ -1,4 +1,4 @@
-import { make as Layout } from "../../layouts/BeltDocsLayout.bs.js";
+import { make as Layout } from "../../layouts/JsDocsLayout.bs.js";
 import { make as ApiIntro } from "../../components/ApiIntro.bs.js";
 export default Layout;
 
@@ -12,7 +12,7 @@ Provide utilities around `Js.null_undefined`.
 
 ## t
 
-```re sig 
+```re sig
 type t('a) = Js.null_undefined('a);
 ```
 
@@ -67,7 +67,7 @@ If `Js.null_undefined('a)` contains a value, that value is unwrapped, mapped to 
 
 ```re example
 let maybeGreetWorld = (maybeGreeting: Js.null_undefined(string)) =>
-  Js.Undefined.bind(maybeGreeting, greeting => greeting ++ " world!");
+  Js.Nullable.bind(maybeGreeting, [@bs] greeting => greeting ++ " world!");
 ```
 
 ## iter
@@ -81,7 +81,7 @@ If `Js.null_undefined('a)` contains a value, that value is unwrapped and applied
 
 ```re example
 let maybeSay = (maybeMessage: Js.null_undefined(string)) =>
-  Js.Null_undefined.iter(maybeMessage, message => Js.log(message));
+  Js.Nullable.iter(maybeMessage, [@bs] message => Js.log(message));
 ```
 
 ## fromOption
@@ -91,8 +91,8 @@ let fromOption: option('a) => t('a);
 ```
 
 Maps `option('a)` to `Js.null_undefined('a)`.
-`Some(a)`	=> `a`
-`None`	=> `undefined`
+`Some(a)` => `a`
+`None` => `undefined`
 
 ## from_opt
 
@@ -107,9 +107,9 @@ let toOption: t('a) => option('a);
 ```
 
 Maps `Js.null_undefined('a)` to `option('a)`.
-`a`	=>	`Some(a)`
-`undefined`	=>	`None`
-`null`	=>	`None`
+`a` => `Some(a)`
+`undefined` => `None`
+`null` => `None`
 
 ## to_opt
 

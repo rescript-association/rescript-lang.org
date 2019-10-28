@@ -65,43 +65,52 @@ const processor = unified()
   .use(headers)
   .use(codeblocks);
 
-const toBeltDocsPath = filepath => {
-  return path.join("belt_docs", path.basename(filepath));
-};
-
-const BELT_MD_DIR = path.join(__dirname, "../pages/belt_docs");
-const INDEX_FILE = path.join(__dirname, "../index_data/belt_api_index.json");
-const files = glob.sync(`${BELT_MD_DIR}/*.md?(x)`);
-
 const processFile = filepath => {
   const content = fs.readFileSync(filepath, "utf8");
   const result = processor.processSync(content);
 
-  const filename = path.parse(filepath).name;
+  const pagesPath = path.resolve("./pages");
+  const relFilepath = path.relative(pagesPath, filepath);
+  const parsedPath = path.parse(relFilepath);
 
   const dataset = {
     headers: result.data.headers,
     signatures: result.data.codeblocks.re,
-    href: path.join("belt_docs", filename),
+    href: path.join(parsedPath.dir, parsedPath.name),
     moduleName: result.data.mainHeader
   };
   return dataset;
 };
 
-const result = files.map(processFile);
+const createIndex = result => {
+  // Currently we reorder the data to a map, the key is
+  // reflected as the router pathname, as defined by the
+  // NextJS router
+  return result.reduce((acc, data) => {
+    const { signatures = [], moduleName, headers } = data;
+    acc["/" + data.href] = {
+      signatures,
+      moduleName,
+      headers
+    };
 
-// Currently we reorder the data to a map, the key is
-// reflected as the router pathname, as defined by the
-// NextJS router
-const index = result.reduce((acc, data) => {
-  const { signatures = [], moduleName, headers } = data;
-  acc["/" + data.href] = {
-    signatures,
-    moduleName,
-    headers
-  };
+    return acc;
+  }, {});
+};
 
-  return acc;
-}, {});
+const BELT_MD_DIR = path.join(__dirname, "../pages/belt_docs");
+const BELT_INDEX_FILE = path.join(
+  __dirname,
+  "../index_data/belt_api_index.json"
+);
+const beltFiles = glob.sync(`${BELT_MD_DIR}/*.md?(x)`);
+const beltResult = beltFiles.map(processFile);
+const beltIndex = createIndex(beltResult);
+fs.writeFileSync(BELT_INDEX_FILE, JSON.stringify(beltIndex), "utf8");
 
-fs.writeFileSync(INDEX_FILE, JSON.stringify(index), "utf8");
+const JS_MD_DIR = path.join(__dirname, "../pages/js_docs");
+const JS_INDEX_FILE = path.join(__dirname, "../index_data/js_api_index.json");
+const jsFiles = glob.sync(`${JS_MD_DIR}/*.md?(x)`);
+const jsResult = jsFiles.map(processFile);
+const jsIndex = createIndex(jsResult);
+fs.writeFileSync(JS_INDEX_FILE, JSON.stringify(jsIndex), "utf8");
