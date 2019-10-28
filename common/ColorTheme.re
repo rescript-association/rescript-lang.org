@@ -1,15 +1,9 @@
-type t = {
-  primary: string,
-  primaryLighten: string,
-};
+// Equivalent to styles/_theme.css
 
-let reason = {
-  primary: "primary",
-  primaryLighten: "primary-lighten-90"
-};
+[@bs.deriving jsConverter]
+type t = [
+  | [@bs.as "theme-reason"] `Reason
+  | [@bs.as "theme-js"] `JS
+];
 
-// aka. BuckleScript
-let js = {
-  primary: "bs-purple",
-  primaryLighten: "bs-purple-lighten-95"
-};
+let toCN = value => tToJs(value);

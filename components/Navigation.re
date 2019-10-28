@@ -8,14 +8,13 @@ let linkOrActiveLink = (~target, ~route) =>
   target === route ? activeLink : link;
 
 [@react.component]
-let make = (~route="/", ~theme=ColorTheme.reason) => {
-  let bg = "bg-" ++ theme.primary;
-
+let make = (~route="/", ~theme=`Reason) => {
+  let theme = ColorTheme.toCN(theme);
   <nav
     id="header"
     className={
-      "fixed z-10 top-0 p-2 w-full h-16 shadow flex items-center text-ghost-white text-sm "
-      ++ bg
+      "fixed z-10 top-0 p-2 w-full h-16 bg-t-primary shadow flex items-center text-ghost-white text-sm "
+      ++ theme
     }>
     <Link href="/">
       <a className="flex items-center pl-10 w-1/5">
@@ -59,14 +58,14 @@ let make = (~route="/", ~theme=ColorTheme.reason) => {
  */
 module ApiDocs = {
   [@react.component]
-  let make = (~route: string, ~theme=ColorTheme.reason, ~versionInfo=?) => {
-    let bg = "bg-" ++ theme.primary;
+  let make = (~route: string, ~theme=`Reason, ~versionInfo=?) => {
+    let theme = ColorTheme.toCN(theme);
 
     <nav
       id="header"
       className={
-        "fixed z-10 top-0 p-2 w-full h-16 shadow flex items-center text-ghost-white text-sm "
-        ++ bg
+        "fixed z-10 top-0 p-2 w-full h-16 bg-t-primary shadow flex items-center text-ghost-white text-sm "
+        ++ theme
       }>
       <Link href="/">
         <a className="flex items-center pl-10 w-1/5">

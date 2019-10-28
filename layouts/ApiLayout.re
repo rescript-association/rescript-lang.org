@@ -1,13 +1,13 @@
 /*
-   This is the master layout for everything API related.
-   Most of the modules defined in here are here to be reused
-   in other API related layouts, such as the Markdown representation
-   or the Sidebar component.
+    This is the master layout for everything API related.
+    Most of the modules defined in here are here to be reused
+    in other API related layouts, such as the Markdown representation
+    or the Sidebar component.
 
-   It exposes two genType exported React modules:
-   - Docs: For displaying function signature docs etc
-   - Prose: For displaying prose text documentation
-*/
+    It exposes two genType exported React modules:
+    - Docs: For displaying function signature docs etc
+    - Prose: For displaying prose text documentation
+ */
 
 %raw
 "require('../styles/main.css')";
@@ -126,21 +126,18 @@ module Sidebar = {
     [@react.component]
     let make =
         (
-          ~theme: ColorTheme.t,
           ~isItemActive: t => bool=_nav => false,
           ~isHidden=false,
           ~items: array(t),
         ) => {
-      <ul className="ml-2 mt-1 text-main-lighten-15">
+      <ul className={"ml-2 mt-1 text-main-lighten-15"}>
         {Belt.Array.map(
            items,
            m => {
              let hidden = isHidden ? "hidden" : "block";
-             let bg = "bg-" ++ theme.primaryLighten;
-             let textColor = "text-" ++ theme.primary;
              let active =
                isItemActive(m)
-                 ? {j| $bg $textColor rounded -ml-1 px-2 font-bold block |j}
+                 ? {j| bg-t-primary-lighten text-t-primary rounded -ml-1 px-2 font-bold block |j}
                  : "";
              <li
                key={m.name}
@@ -148,7 +145,7 @@ module Sidebar = {
                // to make non-interactive elements (like div, span or li) tab-able
                // see https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets
                tabIndex=0>
-               <a href={m.href} className={{j|hover:$textColor|j} ++ active}>
+               <a href={m.href} className={{j|hover:text-t-primary|j} ++ active}>
                  m.name->s
                </a>
              </li>;
@@ -166,15 +163,10 @@ module Sidebar = {
     };
 
     [@react.component]
-    let make =
-        (
-          ~theme: ColorTheme.t,
-          ~isItemActive: option(NavItem.t => bool)=?,
-          ~category: t,
-        ) => {
+    let make = (~isItemActive: option(NavItem.t => bool)=?, ~category: t) => {
       <div key={category.name} className="my-12">
         <Overline> category.name->s </Overline>
-        <NavItem theme ?isItemActive items={category.items} />
+        <NavItem ?isItemActive items={category.items} />
       </div>;
     };
   };
@@ -182,12 +174,7 @@ module Sidebar = {
   module CollapsibleSection = {
     [@react.component]
     let make =
-        (
-          ~theme: ColorTheme.t,
-          ~isItemActive=?,
-          ~headers: array(string),
-          ~moduleName: string,
-        ) => {
+        (~isItemActive=?, ~headers: array(string), ~moduleName: string) => {
       let (collapsed, setCollapsed) = React.useState(() => false);
       let items =
         Belt.Array.map(headers, header =>
@@ -208,7 +195,7 @@ module Sidebar = {
             moduleName->s
           </a>
         </Overline>
-        <NavItem theme ?isItemActive items isHidden=collapsed />
+        <NavItem ?isItemActive items isHidden=collapsed />
       </div>;
     };
   };
@@ -216,12 +203,7 @@ module Sidebar = {
   // subitems: list of functions inside given module (defined by route)
   [@react.component]
   let make =
-      (
-        ~categories: array(Category.t),
-        ~theme: ColorTheme.t,
-        ~route: string,
-        ~children=React.null,
-      ) => {
+      (~categories: array(Category.t), ~route: string, ~children=React.null) => {
     let isItemActive = (navItem: NavItem.t) => {
       navItem.href === route;
     };
@@ -235,9 +217,7 @@ module Sidebar = {
         children
         <div>
           {categories
-           ->Belt.Array.map(category =>
-               <Category theme isItemActive category />
-             )
+           ->Belt.Array.map(category => <Category isItemActive category />)
            ->ate}
         </div>
       </nav>
@@ -249,8 +229,7 @@ module Sidebar = {
 module Docs = {
   [@genType]
   [@react.component]
-  let make =
-      (~theme=ColorTheme.reason, ~components=ApiMd.components, ~children) => {
+  let make = (~theme=`Reason, ~components=ApiMd.components, ~children) => {
     let router = Next.Router.useRouter();
 
     let categories: array(Sidebar.Category.t) = [|
@@ -264,12 +243,13 @@ module Docs = {
       },
     |];
 
+    let theme = ColorTheme.toCN(theme);
     let minWidth = ReactDOMRe.Style.make(~minWidth="20rem", ());
     <div>
-      <div className="max-w-4xl w-full" style=minWidth>
-        <Navigation.ApiDocs route={router##route} theme />
+      <div className={"max-w-4xl w-full " ++ theme} style=minWidth>
+        <Navigation.ApiDocs route={router##route} />
         <div className="flex mt-12">
-          <Sidebar categories theme route={router##route} />
+          <Sidebar categories route={router##route} />
           <main className="pt-12 w-4/5 static min-h-screen overflow-visible">
             <Mdx.Provider components>
               <div className="pl-8 max-w-md mb-32 text-lg"> children </div>

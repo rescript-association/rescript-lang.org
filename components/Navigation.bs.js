@@ -22,10 +22,10 @@ function Navigation(Props) {
   var match = Props.route;
   var route = match !== undefined ? match : "/";
   var match$1 = Props.theme;
-  var theme = match$1 !== undefined ? match$1 : ColorTheme.reason;
-  var bg = "bg-" + theme[/* primary */0];
+  var theme = match$1 !== undefined ? match$1 : /* Reason */825328612;
+  var theme$1 = ColorTheme.toCN(theme);
   return React.createElement("nav", {
-              className: "fixed z-10 top-0 p-2 w-full h-16 shadow flex items-center text-ghost-white text-sm " + bg,
+              className: "fixed z-10 top-0 p-2 w-full h-16 bg-t-primary shadow flex items-center text-ghost-white text-sm " + theme$1,
               id: "header"
             }, React.createElement(Link.default, {
                   href: "/",
@@ -62,11 +62,11 @@ function Navigation(Props) {
 function Navigation$ApiDocs(Props) {
   var route = Props.route;
   var match = Props.theme;
-  var theme = match !== undefined ? match : ColorTheme.reason;
+  var theme = match !== undefined ? match : /* Reason */825328612;
   var versionInfo = Props.versionInfo;
-  var bg = "bg-" + theme[/* primary */0];
+  var theme$1 = ColorTheme.toCN(theme);
   return React.createElement("nav", {
-              className: "fixed z-10 top-0 p-2 w-full h-16 shadow flex items-center text-ghost-white text-sm " + bg,
+              className: "fixed z-10 top-0 p-2 w-full h-16 bg-t-primary shadow flex items-center text-ghost-white text-sm " + theme$1,
               id: "header"
             }, React.createElement(Link.default, {
                   href: "/",

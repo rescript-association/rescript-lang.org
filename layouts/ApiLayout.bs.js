@@ -125,7 +125,6 @@ var ApiMd = {
 };
 
 function ApiLayout$Sidebar$NavItem(Props) {
-  var theme = Props.theme;
   var match = Props.isItemActive;
   var isItemActive = match !== undefined ? match : (function (_nav) {
         return false;
@@ -137,16 +136,14 @@ function ApiLayout$Sidebar$NavItem(Props) {
               className: "ml-2 mt-1 text-main-lighten-15"
             }, Util.ReactStuff.ate(Belt_Array.map(items, (function (m) {
                         var hidden = isHidden ? "hidden" : "block";
-                        var bg = "bg-" + theme[/* primaryLighten */1];
-                        var textColor = "text-" + theme[/* primary */0];
                         var match = Curry._1(isItemActive, m);
-                        var active = match ? " " + (String(bg) + (" " + (String(textColor) + " rounded -ml-1 px-2 font-bold block "))) : "";
+                        var active = match ? " bg-t-primary-lighten text-t-primary rounded -ml-1 px-2 font-bold block " : "";
                         return React.createElement("li", {
                                     key: m[/* name */0],
                                     className: hidden + " leading-5 w-4/5",
                                     tabIndex: 0
                                   }, React.createElement("a", {
-                                        className: "hover:" + (String(textColor) + "") + active,
+                                        className: "hover:text-t-primary" + active,
                                         href: m[/* href */1]
                                       }, Util.ReactStuff.s(m[/* name */0])));
                       }))));
@@ -157,11 +154,9 @@ var NavItem = {
 };
 
 function ApiLayout$Sidebar$Category(Props) {
-  var theme = Props.theme;
   var isItemActive = Props.isItemActive;
   var category = Props.category;
   var tmp = {
-    theme: theme,
     items: category[/* items */1]
   };
   if (isItemActive !== undefined) {
@@ -180,7 +175,6 @@ var Category = {
 };
 
 function ApiLayout$Sidebar$CollapsibleSection(Props) {
-  var theme = Props.theme;
   var isItemActive = Props.isItemActive;
   var headers = Props.headers;
   var moduleName = Props.moduleName;
@@ -199,7 +193,6 @@ function ApiLayout$Sidebar$CollapsibleSection(Props) {
                   ]);
         }));
   var tmp = {
-    theme: theme,
     isHidden: collapsed,
     items: items
   };
@@ -230,7 +223,6 @@ var CollapsibleSection = {
 
 function ApiLayout$Sidebar(Props) {
   var categories = Props.categories;
-  var theme = Props.theme;
   var route = Props.route;
   var match = Props.children;
   var children = match !== undefined ? Caml_option.valFromOption(match) : null;
@@ -249,7 +241,6 @@ function ApiLayout$Sidebar(Props) {
                   }
                 }, children, React.createElement("div", undefined, Util.ReactStuff.ate(Belt_Array.map(categories, (function (category) {
                                 return React.createElement(ApiLayout$Sidebar$Category, {
-                                            theme: theme,
                                             isItemActive: isItemActive,
                                             category: category
                                           });
@@ -265,7 +256,7 @@ var Sidebar = {
 
 function ApiLayout$Docs(Props) {
   var match = Props.theme;
-  var theme = match !== undefined ? match : ColorTheme.reason;
+  var theme = match !== undefined ? match : /* Reason */825328612;
   var match$1 = Props.components;
   var components$1 = match$1 !== undefined ? Caml_option.valFromOption(match$1) : components;
   var children = Props.children;
@@ -307,20 +298,19 @@ function ApiLayout$Docs(Props) {
         ]
       ])
   ];
+  var theme$1 = ColorTheme.toCN(theme);
   var minWidth = {
     minWidth: "20rem"
   };
   return React.createElement("div", undefined, React.createElement("div", {
-                  className: "max-w-4xl w-full",
+                  className: "max-w-4xl w-full " + theme$1,
                   style: minWidth
                 }, React.createElement(Navigation.ApiDocs.make, {
-                      route: router.route,
-                      theme: theme
+                      route: router.route
                     }), React.createElement("div", {
                       className: "flex mt-12"
                     }, React.createElement(ApiLayout$Sidebar, {
                           categories: categories,
-                          theme: theme,
                           route: router.route
                         }), React.createElement("main", {
                           className: "pt-12 w-4/5 static min-h-screen overflow-visible"

@@ -20,6 +20,11 @@ module.exports = {
 
         "leaf-green": "#7fba3b",
         "dark-green": "#5c6e5a",
+        
+        t: {
+          primary: "var(--color-text-primary)",
+          "primary-lighten": "var(--color-text-primary-lighten)",
+        },
 
         // Primary Color
         primary: {

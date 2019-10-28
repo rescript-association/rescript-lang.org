@@ -509,6 +509,7 @@ function JsDocsLayout$Docs(Props) {
   var match = Props.components;
   var components$1 = match !== undefined ? Caml_option.valFromOption(match) : components;
   var children = Props.children;
+  var theme = ColorTheme.toCN(/* JS */16585);
   var router = Router.useRouter();
   var route = router.route;
   var headers = Belt_Option.getWithDefault(Belt_Option.map(Js_dict.get(indexData, route), (function (data) {
@@ -519,7 +520,6 @@ function JsDocsLayout$Docs(Props) {
             })), "?");
   var match$1 = route !== "/js_docs";
   var collapsibleSection = match$1 ? React.createElement(ApiLayout.Sidebar.CollapsibleSection.make, {
-          theme: ColorTheme.js,
           headers: headers,
           moduleName: moduleName
         }) : null;
@@ -527,17 +527,16 @@ function JsDocsLayout$Docs(Props) {
     minWidth: "20rem"
   };
   return React.createElement("div", undefined, React.createElement("div", {
-                  className: "max-w-4xl w-full",
+                  className: "max-w-4xl w-full " + theme,
                   style: minWidth
                 }, React.createElement(Navigation.ApiDocs.make, {
                       route: router.route,
-                      theme: ColorTheme.js,
+                      theme: /* JS */16585,
                       versionInfo: "v" + $$package.dependencies["bs-platform"]
                     }), React.createElement("div", {
                       className: "flex mt-12"
                     }, React.createElement(ApiLayout.Sidebar.make, {
                           categories: categories,
-                          theme: ColorTheme.js,
                           route: router.route,
                           children: collapsibleSection
                         }), React.createElement("main", {

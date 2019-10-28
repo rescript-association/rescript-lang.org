@@ -1,0 +1,11 @@
+/* purgecss start ignore */
+.theme-reason {
+  --color-text-primary: #f9543e;
+  --color-text-primary-lighten: rgb(249, 84, 62, 0.1);
+}
+
+.theme-js {
+  --color-text-primary: rgb(171, 94, 163);
+  --color-text-primary-lighten: rgba(171, 94, 163, 0.15)
+}
+/* purgecss end ignore */

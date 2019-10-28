@@ -1,26 +1,32 @@
 
 
-import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
+import * as Js_mapperRt from "bs-platform/lib/es6/js_mapperRt.js";
 
-var reason = /* record */Caml_chrome_debugger.record([
-    "primary",
-    "primaryLighten"
-  ], [
-    "primary",
-    "primary-lighten-90"
-  ]);
+var jsMapperConstantArray = /* array */[
+  /* tuple */[
+    16585,
+    "theme-js"
+  ],
+  /* tuple */[
+    825328612,
+    "theme-reason"
+  ]
+];
 
-var js = /* record */Caml_chrome_debugger.record([
-    "primary",
-    "primaryLighten"
-  ], [
-    "bs-purple",
-    "bs-purple-lighten-95"
-  ]);
+function tToJs(param) {
+  return Js_mapperRt.binarySearch(2, param, jsMapperConstantArray);
+}
+
+function tFromJs(param) {
+  return Js_mapperRt.revSearch(2, jsMapperConstantArray, param);
+}
+
+var toCN = tToJs;
 
 export {
-  reason ,
-  js ,
+  tToJs ,
+  tFromJs ,
+  toCN ,
   
 }
 /* No side effect */

@@ -353,25 +353,24 @@ function BeltDocsLayout$Docs(Props) {
             })), "?");
   var match$1 = route !== "/belt_docs";
   var collapsibleSection = match$1 ? React.createElement(ApiLayout.Sidebar.CollapsibleSection.make, {
-          theme: ColorTheme.js,
           headers: headers,
           moduleName: moduleName
         }) : null;
+  var theme = ColorTheme.toCN(/* JS */16585);
   var minWidth = {
     minWidth: "20rem"
   };
   return React.createElement("div", undefined, React.createElement("div", {
-                  className: "max-w-4xl w-full",
+                  className: "max-w-4xl w-full " + theme,
                   style: minWidth
                 }, React.createElement(Navigation.ApiDocs.make, {
                       route: route,
-                      theme: ColorTheme.js,
+                      theme: /* JS */16585,
                       versionInfo: "v" + $$package.dependencies["bs-platform"]
                     }), React.createElement("div", {
                       className: "flex mt-12"
                     }, React.createElement(ApiLayout.Sidebar.make, {
                           categories: categories,
-                          theme: ColorTheme.js,
                           route: router.route,
                           children: collapsibleSection
                         }), React.createElement("main", {

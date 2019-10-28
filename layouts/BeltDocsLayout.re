@@ -96,7 +96,6 @@ module Docs = {
   [@genType]
   [@react.component]
   let make = (~components=ApiLayout.ApiMd.components, ~children) => {
-    let theme = ColorTheme.js;
     let router = Next.Router.useRouter();
     let route = router##route;
 
@@ -119,18 +118,19 @@ module Docs = {
     //       listen to anchor changes (#get, #map,...)
     let collapsibleSection =
       route !== "/belt_docs"
-        ? <Sidebar.CollapsibleSection theme headers moduleName /> : React.null;
+        ? <Sidebar.CollapsibleSection headers moduleName /> : React.null;
 
+    let theme = ColorTheme.toCN(`JS);
     let minWidth = ReactDOMRe.Style.make(~minWidth="20rem", ());
     <div>
-      <div className="max-w-4xl w-full" style=minWidth>
+      <div className={"max-w-4xl w-full " ++ theme} style=minWidth>
         <Navigation.ApiDocs
+          theme=`JS
           route
-          theme
           versionInfo={"v" ++ package##dependencies##"bs-platform"}
         />
         <div className="flex mt-12">
-          <Sidebar theme categories route={router##route}>
+          <Sidebar categories route={router##route}>
             collapsibleSection
           </Sidebar>
           <main className="pt-12 w-4/5 static min-h-screen overflow-visible">
