@@ -3,33 +3,129 @@ export default Layout;
 
 # Belt
 
-A stdlib shipped with BuckleScript This stdlib is still in beta but we
-encourage you to try it out and give us feedback.
+The preferred standard library for Reason when targeting JavaScript
+(browser, node, React Native).
+
+It is recommended to use the modules from Belt rather than from the
+OCaml standard library or from the Js namespace, e.g. use
+[Belt.List](belt_docs/list) instead of `List` or [Js.List](/js_docs/list)
+and [Belt.Array](/belt_docs/array) instead of `Array` or [Js.Array](/js_docs/array).
+
+Belt is currently mostly covering collection types. It has no string or
+date functions yet, although Belt.String is in the works. In the meantime,
+use
+
+- [Js.String2](/js_docs/string-2) for string functions
+- [Js.Date](js_docs/date) for date functions
 
 ## Motivation
 
-The motivation for creating such library is to provide BuckleScript users a
-better end-to-end user experience, since the original OCaml stdlib was not
-written with JS in mind. Below is a list of areas this lib aims to improve:
+Belt aims to improve the user experience for Reason developers targeting
+JavaScript as well as for JavaScript developers learning Reason,
+since the original OCaml standard library was not written with JS in mind.
 
-Consistency in name convention: camlCase, and arguments order Exception thrown
-functions are all suffixed with Exn, e.g, getExn Better performance and smaller
-code size running on JS platform
+To achieve this, Belt provides:
 
-## Name Convention
+- A consistent naming convention familiar to JS developers ([camelCase](https://en.wikipedia.org/wiki/Camel_case))
+- A consistent argument order familiar to JS Developers (see [Pipe First](#Pipe%20First))  
+- Safety by default: A Belt function will never throw exceptions, unless it is
+  indicated explicitly in the function name (suffix "Exn").
+- Better performance and smaller code size running on the JS platform
+- Ready for [Tree Shaking](https://webpack.js.org/guides/tree-shaking/)
 
-For higher order functions, it will be suffixed U if it takes uncurried callback.
+## Usage
+
+To use modules from Belt, either refer to them by their fully qualified name
+(`Belt.List`, `Belt.Array` etc.) or open the `Belt` module by putting
+
+```
+open Belt;
+```
+
+at the top of your source files. After opening Belt this way,
+`Array` will refer to `Belt.Array`, `List` will refer to `Belt.List` etc.
+in the source code below.
+
+If you want to open Belt globally for all files in your project instead,
+you can put
+
+```
+  "bsc-flags": [ "-open Belt" ],
+```
+
+into your `bsconfig.json`.
+
+## Pipe First
+
+The argument order of Belt functions follows the "Pipe First" convention.
+I.e. the object they act on (e.g. a list or an array) will always be
+the first argument.
+
+This way, the pipe first operator can be used nicely with the Belt APIs,
+giving a similar feel to method invocations in OOP languages and allowing
+easy chaining of Belt API calls.
+
+For more information about the "Pipe First" argument order and the
+trade-offs compared to "Pipe Last", see
+[this blog post](https://www.javierchavarri.com/data-first-and-data-last-a-comparison/).
+
+Example:
+
+```
+let someNumbers = [|1, 1, 4, 2, 3, 6, 3, 4, 2|];
+
+let greaterThan2UniqueAndSorted =
+  someNumbers
+  ->Belt.Array.keep(x => x > 2)
+  /* convert to and from set to make values unique */
+  ->Belt.Set.Int.fromArray
+  ->Belt.Set.Int.toArray; /* output is already sorted */
+
+Js.log2("result", greaterThan2UniqueAndSorted);
+```
+
+## Curried vs. Uncurried Callbacks
+
+For functions taking a callback parameter, there are usually two versions
+available:
+
+- curried (no suffix)
+- uncurried (suffixed with `U`)
+
+E.g.:
 
 ```
 let forEach: (t('a), 'a => unit) => unit;
-let forEachU: (t('a), [@bs] ('a => unit)) => unit;
+
+let forEachU: (t('a), (. 'a) => unit) => unit;
 ```
 
-In general, uncurried version will be faster, but it may be less familiar to
-people who have a background in functional programming.
+The uncurried version will be faster in some cases, but for simplicity we
+recommend to stick with the curried version unless you know
+what you are doing and really need the optimization.
 
+The two versions can be invoked as follows:
 
-## A special encoding for collection safety
+```
+["a", "b", "c"]->Belt.List.forEach(x => Js.log(x));
+
+["a", "b", "c"]->Belt.List.forEachU((. x) => Js.log(x));
+```
+
+## Specialized Collections
+
+For collections types like set or map, Belt provides both a generic module
+as well as specialized, more efficient implementations for string and int keys.
+
+For example, Belt has the following set modules:
+
+- [Belt.Set](/belt_docs/set)
+- [Belt.Set.Int](/belt_docs/set-int)
+- [Belt.Set.String](/belt_docs/set-string)
+
+## Implementation Details
+
+### A special encoding for collection safety
 
 When we create a collection library for a custom data type we need a way to
 provide a comparator function. Take Set for example, suppose its element type
@@ -84,20 +180,3 @@ let mySet2: t((int, int), Comparable2.identity);
 `Comparable1.identity` and `Comparable2.identity` are not the same using our
 encoding scheme.
 
-## Collection Hierarchy
-
-In general, we provide a generic collection module, but also create specialized
-modules for commonly used data type. Take `Belt.Set` for example, we provide:
-
-```
-Belt.Set
-Belt.Set.Int
-Belt.Set.String
-```
-
-The specialized modules `Belt.Set.Int`, `Belt.Set.String` are in general more
-efficient.
-
-Currently, both `Belt_Set` and `Belt.Set` are accessible to users for some
-technical reasons, we strongly recommend users stick to qualified import,
-`Belt.Set`, we may hide the internal, i.e, `Belt_Set` in the future
