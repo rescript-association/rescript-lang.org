@@ -1,0 +1,511 @@
+import { Docs } from "layouts/JsDocsLayout.bs.js";
+import { make as ApiIntro } from "components/ApiIntro.bs.js";
+export default Docs.make;
+
+# Math
+
+<ApiIntro>
+
+Provide utilities for JS Math.
+
+</ApiIntro>
+
+## _E
+
+```re sig
+let _E: float;
+```
+
+Euler's number.
+
+## _LN2
+
+```re sig
+let _LN2: float;
+```
+
+Natural logarithm of 2.
+
+## _LN10
+
+```re sig
+let _LN10: float;
+```
+
+Natural logarithm of 10.
+
+## _LOG2E
+
+```re sig
+let _LOG2E: float;
+```
+
+Base 2 logarithm of E.
+
+## _LOG10E
+
+```re sig
+let _LOG10E: float;
+```
+
+Base 10 logarithm of E.
+
+## _PI
+
+```re sig
+let _PI: float;
+```
+
+Pi - ratio of the circumference and diameter of a circle.
+
+## _SQRT1_2
+
+```re sig
+let _SQRT1_2: float;
+```
+
+Square root of 1/2.
+
+## _SQRT2
+
+```re sig
+let _SQRT2: float;
+```
+
+Square root of 2.
+
+## abs_int
+
+```re sig
+let abs_int: int => int;
+```
+
+Absolute value.
+
+## abs_float
+
+```re sig
+let abs_float: float => float;
+```
+
+Absolute value.
+
+## acos
+
+```re sig
+let acos: float => float;
+```
+
+Arccosine in radians, can return NaN.
+
+## acosh
+
+```re sig
+let acosh: float => float;
+```
+
+Hyperbolic arccosine in radians, can return NaN.
+
+## asin
+
+```re sig
+let asin: float => float;
+```
+
+Arcsine in radians, can return NaN.
+
+## asinh
+
+```re sig
+let asinh: float => float;
+```
+
+Hyperbolic arcsine in radians.
+
+## atan
+
+```re sig
+let atan: float => float;
+```
+
+Arctangent in radians.
+
+## atanh
+
+```re sig
+let atanh: float => float;
+```
+
+Hyperbolic arctangent in radians, can return NaN.
+
+## atan2
+
+```re sig
+let atan2: (~y: float, ~x: float, unit) => float;
+```
+
+Arctangent of the quotient of x and y, mostly... this one's a bit weird.
+
+## cbrt
+
+```re sig
+let cbrt: float => float;
+```
+
+Cube root, can return NaN.
+
+## unsafe_ceil_int
+
+```re sig
+let unsafe_ceil_int: float => int;
+```
+
+May return values not representable by `int`.
+
+## unsafe_ceil
+
+```re sig
+let unsafe_ceil: float => int;
+```
+
+## ceil_int
+
+```re sig
+let ceil_int: float => int;
+```
+
+Smallest `int` greater than or equal to the argument.
+
+## ceil
+
+```re sig
+let ceil: float => int;
+```
+
+## ceil_float
+
+```re sig
+let ceil_float: float => float;
+```
+
+## clz32
+
+```re sig
+let clz32: int => int;
+```
+
+Number of leading zero bits of the argument's 32 bit int representation.
+
+## cos
+
+```re sig
+let cos: float => float;
+```
+
+Cosine in radians.
+
+## cosh
+
+```re sig
+let cosh: float => float;
+```
+
+Hyperbolic cosine in radians.
+
+## exp
+
+```re sig
+let exp: float => float;
+```
+
+Natural exponentional.
+
+## expm1
+
+```re sig
+let expm1: float => float;
+```
+
+Natural exponential minus 1.
+
+## unsafe_floor_int
+
+```re sig
+let unsafe_floor_int: float => int;
+```
+
+May return values not representable by `int`.
+
+## unsafe_floor
+
+```re sig
+let unsafe_floor: float => int;
+```
+
+## floor_int
+
+```re sig
+let floor_int: float => int;
+```
+
+Largest `int` greater than or equal to the arugment.
+
+## floor
+
+```re sig
+let floor: float => int;
+```
+
+## floor_float
+
+```re sig
+let floor_float: float => float;
+```
+
+## fround
+
+```re sig
+let fround: float => float;
+```
+
+Round to nearest single precision float.
+
+## hypot
+
+```re sig
+let hypot: (float, float) => float;
+```
+
+Pythagorean equation.
+
+## hypotMany
+
+```re sig
+let hypotMany: array(float) => float;
+```
+
+Generalized pythagorean equation.
+
+## imul
+
+```re sig
+let imul: (int, int) => int;
+```
+
+32-bit integer multiplication.
+
+## log
+
+```re sig
+let log: float => float;
+```
+
+Natural logarithm, can return NaN.
+
+## log1p
+
+```re sig
+let log1p: float => float;
+```
+
+Natural logarithm of 1 + the argument, can return NaN.
+
+## log10
+
+```re sig
+let log10: float => float;
+```
+
+Base 10 logarithm, can return NaN.
+
+## log2
+
+```re sig
+let log2: float => float;
+```
+
+Base 2 logarithm, can return NaN.
+
+## max_int
+
+```re sig
+let max_int: (int, int) => int;
+```
+
+Max value.
+
+## maxMany_int
+
+```re sig
+let maxMany_int: array(int) => int;
+```
+
+Max value.
+
+## max_float
+
+```re sig
+let max_float: (float, float) => float;
+```
+
+Max value.
+
+## maxMany_float
+
+```re sig
+let maxMany_float: array(float) => float;
+```
+
+Max value.
+
+## min_int
+
+```re sig
+let min_int: (int, int) => int;
+```
+
+Min value.
+
+## minMany_int
+
+```re sig
+let minMany_int: array(int) => int;
+```
+
+Min value.
+
+## min_float
+
+```re sig
+let min_float: (float, float) => float;
+```
+
+Min value.
+
+## minMany_float
+
+```re sig
+let minMany_float: array(float) => float;
+```
+
+Min value.
+
+## pow_int
+
+```re sig
+let pow_int: (~base: int, ~exp: int) => int;
+```
+
+Base to the power of the exponent.
+
+## pow_float
+
+```re sig
+let pow_float: (~base: float, ~exp: float) => float;
+```
+
+Base to the power of the exponent.
+
+## random
+
+```re sig
+let random: unit => float;
+```
+
+Random number in [0,1).
+
+## random_int
+
+```re sig
+let random_int: (int, int) => int;
+```
+
+Random number in [min,max).
+
+## unsafe_round
+
+```re sig
+let unsafe_round: float => int;
+```
+
+Rounds to nearest integer, returns a value not representable as `int` if NaN.
+
+## round
+
+```re sig
+let round: float => float;
+```
+
+Rounds to nearest integer.
+
+## sign_int
+
+```re sig
+let sign_int: int => int;
+```
+
+The sign of the argument, 1, -1 or 0.
+
+## sign_float
+
+```re sig
+let sign_float: float => float;
+```
+
+The sign of the argument, 1, -1, 0, -0 or NaN.
+
+## sin
+
+```re sig
+let sin: float => float;
+```
+
+Sine in radians.
+
+## sinh
+
+```re sig
+let sinh: float => float;
+```
+
+Hyperbolic sine in radians.
+
+## sqrt
+
+```re sig
+let sqrt: float => float;
+```
+
+Square root, can return NaN.
+
+## tan
+
+```re sig
+let tan: float => float;
+```
+
+Tangent in radians.
+
+## tanh
+
+```re sig
+let tanh: float => float;
+```
+
+Hyperbolic tangent in radians.
+
+## unsafe_trunc
+
+```re sig
+let unsafe_trunc: float => int;
+```
+
+Truncate, ie. remove fractional digits, returns a value not representable as `int` if NaN.
+
+## trunc
+
+```re sig
+let trunc: float => float;
+```
+
+Truncate, ie. remove fractional digits, returns a value not representable as `int` if NaN

@@ -51,13 +51,13 @@ After writing documentation, make sure to run this code before submitting a PR:
 node scripts/test-examples.js
 
 # Or just a subset (glob pattern)
-node scripts/test-examples.js "pages/belt_docs/set-*.mdx"
+node scripts/test-examples.js "pages/apis/latest/belt/set-*.mdx"
 ```
 
 ## Design / UX
 
 Design mockups can be found
-[here](https://xd.adobe.com/spec/15aaca36-8352-45aa-48c2-18fc508c81ed-639b/grid).
+[here](https://xd.adobe.com/spec/1cd19c3a-a0bb-4f93-4e11-725589888696-6ae0/grid/).
 
 Be aware that some screen designs might still be work in progress, if you have
 any design / UX questions, either comment directly on the design tool as guest,
@@ -73,6 +73,35 @@ postcss styles/main.css -o test.css
 
 # Production
 NODE_ENV=production postcss styles/main.css -o test.css
+```
+
+## URL Route Design
+
+This is an attempt to formalize the URL structure of this website
+
+### API related urls
+
+By convention, NextJS uses `pages/api` for server related functionality, so we
+need to fall back to `pages/apis` instead.
+
+- `/apis/javascript` refers to all BuckleScript related APIs.
+- `/apis/javascript/latest` refers to the overview of all JavaScript related modules on the `latest` version
+- `/apis/javascript/x.x.x` refers to the overview of all JavaScript related modules on the `x.x.x` version
+- `/apis/javascript/latest/list` refers to Belt's List module on the latest version
+
+**Examples:**
+
+```
+/apis/javascript/latest (overview)
+/apis/javascript/latest/belt
+/apis/javascript/latest/js
+/apis/javascript/latest/node
+
+/apis/javascript/6.2.1 (overview)
+/apis/javascript/6.2.1/node
+/apis/javascript/6.2.1/belt
+
+/apis/ (overview / version independent)
 ```
 
 ### Contributing

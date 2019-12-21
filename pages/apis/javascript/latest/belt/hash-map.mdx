@@ -1,0 +1,171 @@
+import { Docs } from "layouts/BeltDocsLayout.bs.js";
+import { make as ApiIntro } from "components/ApiIntro.bs.js";
+export default Docs.make;
+
+# HashMap
+
+<ApiIntro>
+
+The top level provides generic mutable hash map operations.
+
+</ApiIntro>
+
+## t
+
+```
+type t('key, 'value, 'id);
+```
+
+The type of hash tables from type `'key` to type `'value`.
+
+## id
+
+```
+type id('a, 'id) = BeltId.hashable('a, 'id);
+```
+
+## make
+
+```
+let make: (~hintSize: int, ~id: id('key, 'id)) => t('key, 'value, 'id);
+```
+
+## clear
+
+```
+let clear: t('key, 'value, 'id) => unit;
+```
+
+Empty a hash table.
+
+## isEmpty
+
+```
+let isEmpty: t('a, 'b, 'c) => bool;
+```
+
+## set
+
+```
+let set: (t('key, 'value, 'id), 'key, 'value) => unit;
+```
+
+`set(tbl, k, v)` if `k` does not exist, add the binding `k,v`, otherwise, update the old value with the new `v`.
+
+## copy
+
+```
+let copy: t('key, 'value, 'id) => t('key, 'value, 'id);
+```
+
+## get
+
+```
+let get: (t('key, 'value, 'id), 'key) => option('value);
+```
+
+## has
+
+```
+let has: (t('key, 'value, 'id), 'key) => bool;
+```
+
+`has(tbl, x)` checks if `x` is bound in `tbl`.
+
+## remove
+
+```
+let remove: (t('key, 'value, 'id), 'key) => unit;
+```
+
+## forEachU
+
+```
+let forEachU: (t('key, 'value, 'id), [@bs] (('key, 'value) => unit)) => unit;
+```
+
+## forEach
+
+```
+let forEach: (t('key, 'value, 'id), ('key, 'value) => unit) => unit;
+```
+
+`forEach(tbl, f)` applies `f` to all bindings in table `tbl`. `f` receives the key as first argument, and the associated value as second argument. Each binding is presented exactly once to `f`.
+
+## reduceU
+
+```
+let reduceU: (t('key, 'value, 'id), 'c, [@bs] (('c, 'key, 'value) => 'c)) => 'c;
+```
+
+## reduce
+
+```
+let reduce: (t('key, 'value, 'id), 'c, ('c, 'key, 'value) => 'c) => 'c;
+```
+
+`reduce(tbl, init, f)` computes `(f(kN, dN) ... (f(k1, d1, init))...)`, where `k1 ... kN` are the keys of all bindings in `tbl`, and `d1 ... dN` are the associated values. Each binding is presented exactly once to `f`.
+
+The order in which the bindings are passed to `f` is unspecified. However, if the table contains several bindings for the same key, they are passed to `f` in reverse order of introduction, that is, the most recent binding is passed first.
+
+## keepMapInPlaceU
+
+```
+let keepMapInPlaceU: (t('key, 'value, 'id), [@bs] (('key, 'value) => option('value))) => unit;
+```
+
+## keepMapInPlace
+
+```
+let keepMapInPlace: (t('key, 'value, 'id), ('key, 'value) => option('value)) => unit;
+```
+
+## size
+
+```
+let size: t('a, 'b, 'c) => int;
+```
+
+`size(tbl)` returns the number of bindings in `tbl`. It takes constant time.
+
+## toArray
+
+```
+let toArray: t('key, 'value, 'id) => array(('key, 'value));
+```
+
+## keysToArray
+
+```
+let keysToArray: t('key, 'a, 'b) => array('key);
+```
+
+## valuesToArray
+
+```
+let valuesToArray: t('a, 'value, 'b) => array('value);
+```
+
+## fromArray
+
+```
+let fromArray: (array(('key, 'value)), ~id: id('key, 'id)) => t('key, 'value, 'id);
+```
+
+## mergeMany
+
+```
+let mergeMany: (t('key, 'value, 'id), array(('key, 'value))) => unit;
+```
+
+## getBucketHistogram
+
+```
+let getBucketHistogram: t('a, 'b, 'c) => array(int);
+```
+
+## logStats
+
+```
+let logStats: t('a, 'b, 'c) => unit;
+```

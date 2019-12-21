@@ -1,0 +1,518 @@
+import { Docs } from "layouts/JsDocsLayout.bs.js";
+import { make as ApiIntro } from "components/ApiIntro.bs.js";
+export default Docs.make;
+
+# Date
+
+<ApiIntro>
+
+Provide bindings to JS date.
+
+</ApiIntro>
+
+## t
+
+```re sig
+type t;
+```
+
+## valueOf
+
+```re sig
+let valueOf: t => float;
+```
+Returns the primitive value of this date, equivalent to getTime.
+
+## make
+
+```re sig
+let make: unit => t;
+```
+Returns a date representing the current time.
+
+## fromFloat
+
+```re sig
+let fromFloat: float => t;
+```
+
+## fromString
+
+```re sig
+let fromString: string => t;
+```
+
+## makeWithYM
+
+```re sig
+let makeWithYM: (~year: float, ~month: float, unit) => t;
+```
+
+## makeWithYMD
+
+```re sig
+let makeWithYMD: (~year: float, ~month: float, ~date: float, unit) => t;
+```
+
+## makeWithYMDH
+
+```re sig
+let makeWithYMDH: (~year: float, ~month: float, ~date: float, ~hours: float, unit) => t;
+```
+
+## makeWithYMDHM
+
+```re sig
+let makeWithYMDHM: (~year: float, ~month: float, ~date: float, ~hours: float, ~minutes: float, unit) => t;
+```
+
+## makeWithYMDHMS
+
+```re sig
+let makeWithYMDHMS: (~year: float, ~month: float, ~date: float, ~hours: float, ~minutes: float, ~seconds: float, unit) => t;
+```
+
+## utcWithYM
+
+```re sig
+let utcWithYM: (~year: float, ~month: float, unit) => float;
+```
+
+## utcWithYMD
+
+```re sig
+let utcWithYMD: (~year: float, ~month: float, ~date: float, unit) => float;
+```
+
+## utcWithYMDH
+
+```re sig
+let utcWithYMDH: (~year: float, ~month: float, ~date: float, ~hours: float, unit) => float;
+```
+
+## utcWithYMDHM
+
+```re sig
+let utcWithYMDHM: (~year: float, ~month: float, ~date: float, ~hours: float, ~minutes: float, unit) => float;
+```
+
+## utcWithYMDHMS
+
+```re sig
+let utcWithYMDHMS: (~year: float, ~month: float, ~date: float, ~hours: float, ~minutes: float, ~seconds: float, unit) => float;
+```
+
+## now
+
+```re sig
+let now: unit => float;
+```
+Returns the number of milliseconds since Unix epoch.
+
+## parse
+
+```re sig
+let parse: string => t;
+```
+
+## parseAsFloat
+
+```re sig
+let parseAsFloat: string => float;
+```
+Returns NaN if passed invalid date string.
+
+## getDate
+
+```re sig
+let getDate: t => float;
+```
+
+## getDay
+
+```re sig
+let getDay: t => float;
+```
+Returns the day of the month (1-31).
+
+## getFullYear
+
+```re sig
+let getFullYear: t => float;
+```
+
+## getHours
+
+```re sig
+let getHours: t => float;
+```
+
+## getMilliseconds
+
+```re sig
+let getMilliseconds: t => float;
+```
+
+## getMinutes
+
+```re sig
+let getMinutes: t => float;
+```
+
+## getMonth
+
+```re sig
+let getMonth: t => float;
+```
+Returns the month (0-11).
+
+## getSeconds
+
+```re sig
+let getSeconds: t => float;
+```
+
+## getTime
+
+```re sig
+let getTime: t => float;
+```
+Returns the number of milliseconds since Unix epoch.
+
+## getTimezoneOffset
+
+```re sig
+let getTimezoneOffset: t => float;
+```
+
+## getUTCDate
+
+```re sig
+let getUTCDate: t => float;
+```
+
+## getUTCDay
+
+```re sig
+let getUTCDay: t => float;
+```
+Returns the day of the month (1-31).
+
+## getUTCFullYear
+
+```re sig
+let getUTCFullYear: t => float;
+```
+
+## getUTCHours
+
+```re sig
+let getUTCHours: t => float;
+```
+
+## getUTCMilliseconds
+
+```re sig
+let getUTCMilliseconds: t => float;
+```
+
+## getUTCMinutes
+
+```re sig
+let getUTCMinutes: t => float;
+```
+
+## getUTCMonth
+
+```re sig
+let getUTCMonth: t => float;
+```
+Returns the month (0-11).
+
+## getUTCSeconds
+
+```re sig
+let getUTCSeconds: t => float;
+```
+
+## getYear
+
+```re sig
+let getYear: t => float;
+```
+
+## setDate
+
+```re sig
+let setDate: (t, float) => float;
+```
+
+## setFullYear
+
+```re sig
+let setFullYear: (t, float) => float;
+```
+
+## setFullYearM
+
+```re sig
+let setFullYearM: (t, ~year: float, ~month: float, unit) => float;
+```
+
+## setFullYearMD
+
+```re sig
+let setFullYearMD: (t, ~year: float, ~month: float, ~date: float, unit) => float;
+```
+
+## setHours
+
+```re sig
+let setHours: (t, float) => float;
+```
+
+## setHoursM
+
+```re sig
+let setHoursM: (t, ~hours: float, ~minutes: float, unit) => float;
+```
+
+## setHoursMS
+
+```re sig
+let setHoursMS: (t, ~hours: float, ~minutes: float, ~seconds: float, unit) => float;
+```
+
+## setHoursMSMs
+
+```re sig
+let setHoursMSMs: (t, ~hours: float, ~minutes: float, ~seconds: float, ~milliseconds: float, unit) => float;
+```
+
+## setMilliseconds
+
+```re sig
+let setMilliseconds: (t, float) => float;
+```
+
+## setMinutes
+
+```re sig
+let setMinutes: (t, float) => float;
+```
+
+## setMinutesS
+
+```re sig
+let setMinutesS: (t, ~minutes: float, ~seconds: float, unit) => float;
+```
+
+## setMinutesSMs
+
+```re sig
+let setMinutesSMs: (t, ~minutes: float, ~seconds: float, ~milliseconds: float, unit) => float;
+```
+
+## setMonth
+
+```re sig
+let setMonth: (t, float) => float;
+```
+
+## setMonthD
+
+```re sig
+let setMonthD: (t, ~month: float, ~date: float, unit) => float;
+```
+
+## setSeconds
+
+```re sig
+let setSeconds: (t, float) => float;
+```
+
+## setSecondsMs
+
+```re sig
+let setSecondsMs: (t, ~seconds: float, ~milliseconds: float, unit) => float;
+```
+
+## setTime
+
+```re sig
+let setTime: (t, float) => float;
+```
+
+## setUTCDate
+
+```re sig
+let setUTCDate: (t, float) => float;
+```
+
+## setUTCFullYear
+
+```re sig
+let setUTCFullYear: (t, float) => float;
+```
+
+## setUTCFullYearM
+
+```re sig
+let setUTCFullYearM: (t, ~year: float, ~month: float, unit) => float;
+```
+
+## setUTCFullYearMD
+
+```re sig
+let setUTCFullYearMD: (t, ~year: float, ~month: float, ~date: float, unit) => float;
+```
+
+## setUTCHours
+
+```re sig
+let setUTCHours: (t, float) => float;
+```
+
+## setUTCHoursM
+
+```re sig
+let setUTCHoursM: (t, ~hours: float, ~minutes: float, unit) => float;
+```
+
+## setUTCHoursMS
+
+```re sig
+let setUTCHoursMS: (t, ~hours: float, ~minutes: float, ~seconds: float, unit) => float;
+```
+
+## setUTCHoursMSMs
+
+```re sig
+let setUTCHoursMSMs: (t, ~hours: float, ~minutes: float, ~seconds: float, ~milliseconds: float, unit) => float;
+```
+
+## setUTCMilliseconds
+
+```re sig
+let setUTCMilliseconds: (t, float) => float;
+```
+
+## setUTCMinutes
+
+```re sig
+let setUTCMinutes: (t, float) => float;
+```
+
+## setUTCMinutesS
+
+```re sig
+let setUTCMinutesS: (t, ~minutes: float, ~seconds: float, unit) => float;
+```
+
+## setUTCMinutesSMs
+
+```re sig
+let setUTCMinutesSMs: (t, ~minutes: float, ~seconds: float, ~milliseconds: float, unit) => float;
+```
+
+## setUTCMonth
+
+```re sig
+let setUTCMonth: (t, float) => float;
+```
+
+## setUTCMonthD
+
+```re sig
+let setUTCMonthD: (t, ~month: float, ~date: float, unit) => float;
+```
+
+## setUTCSeconds
+
+```re sig
+let setUTCSeconds: (t, float) => float;
+```
+
+## setUTCSecondsMs
+
+```re sig
+let setUTCSecondsMs: (t, ~seconds: float, ~milliseconds: float, unit) => float;
+```
+
+## setUTCTime
+
+```re sig
+let setUTCTime: (t, float) => float;
+```
+
+## setYear
+
+```re sig
+let setYear: (t, float) => float;
+```
+
+## toDateString
+
+```re sig
+let toDateString: t => string;
+```
+
+## toGMTString
+
+```re sig
+let toGMTString: t => string;
+```
+
+## toISOString
+
+```re sig
+let toISOString: t => string;
+```
+
+## toJSON
+
+```re sig
+let toJSON: t => string;
+```
+
+## toJSONUnsafe
+
+```re sig
+let toJSONUnsafe: t => string;
+```
+
+## toLocaleDateString
+
+```re sig
+let toLocaleDateString: t => string;
+```
+
+## toLocaleString
+
+```re sig
+let toLocaleString: t => string;
+```
+
+## toLocaleTimeString
+
+```re sig
+let toLocaleTimeString: t => string;
+```
+
+## toString
+
+```re sig
+let toString: t => string;
+```
+
+## toTimeString
+
+```re sig
+let toTimeString: t => string;
+```
+
+## toUTCString
+
+```re sig
+let toUTCString: t => string;
+```

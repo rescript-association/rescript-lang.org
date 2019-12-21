@@ -1,14 +1,12 @@
 
 
+import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
-import * as ApiLayout from "./ApiLayout.bs.js";
-import * as ColorTheme from "../common/ColorTheme.bs.js";
-import * as Navigation from "../components/Navigation.bs.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Router from "next/router";
-import * as React$1 from "@mdx-js/react";
+import * as SidebarLayout from "./SidebarLayout.bs.js";
 import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
 require('../styles/main.css')
@@ -30,7 +28,7 @@ var overviewNavs = /* array */[/* record */Caml_chrome_debugger.record([
       "href"
     ], [
       "Introduction",
-      "/belt_docs"
+      "/apis/javascript/latest/belt"
     ])];
 
 var setNavs = /* array */[
@@ -39,49 +37,49 @@ var setNavs = /* array */[
       "href"
     ], [
       "HashSet",
-      "/belt_docs/hash-set"
+      "/apis/javascript/latest/belt/hash-set"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "HashSetInt",
-      "/belt_docs/hash-set-int"
+      "/apis/javascript/latest/belt/hash-set-int"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "HashSetString",
-      "/belt_docs/hash-set-string"
+      "/apis/javascript/latest/belt/hash-set-string"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "Set",
-      "/belt_docs/set"
+      "/apis/javascript/latest/belt/set"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "SetDict",
-      "/belt_docs/set-dict"
+      "/apis/javascript/latest/belt/set-dict"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "SetInt",
-      "/belt_docs/set-int"
+      "/apis/javascript/latest/belt/set-int"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "SetString",
-      "/belt_docs/set-string"
+      "/apis/javascript/latest/belt/set-string"
     ])
 ];
 
@@ -91,49 +89,49 @@ var mapNavs = /* array */[
       "href"
     ], [
       "HashMap",
-      "/belt_docs/hash-map"
+      "/apis/javascript/latest/belt/hash-map"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "HashMapInt",
-      "/belt_docs/hash-map-int"
+      "/apis/javascript/latest/belt/hash-map-int"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "HashMapString",
-      "/belt_docs/hash-map-string"
+      "/apis/javascript/latest/belt/hash-map-string"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "Map",
-      "/belt_docs/map"
+      "/apis/javascript/latest/belt/map"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "MapDict",
-      "/belt_docs/map-dict"
+      "/apis/javascript/latest/belt/map-dict"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "MapInt",
-      "/belt_docs/map-int"
+      "/apis/javascript/latest/belt/map-int"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "MapString",
-      "/belt_docs/map-string"
+      "/apis/javascript/latest/belt/map-string"
     ])
 ];
 
@@ -143,56 +141,56 @@ var mutableCollectionsNavs = /* array */[
       "href"
     ], [
       "MutableMap",
-      "/belt_docs/mutable-map"
+      "/apis/javascript/latest/belt/mutable-map"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "MutableMapInt",
-      "/belt_docs/mutable-map-int"
+      "/apis/javascript/latest/belt/mutable-map-int"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "MutableMapString",
-      "/belt_docs/mutable-map-string"
+      "/apis/javascript/latest/belt/mutable-map-string"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "MutableQueue",
-      "/belt_docs/mutable-queue"
+      "/apis/javascript/latest/belt/mutable-queue"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "MutableSet",
-      "/belt_docs/mutable-set"
+      "/apis/javascript/latest/belt/mutable-set"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "MutableSetInt",
-      "/belt_docs/mutable-set-int"
+      "/apis/javascript/latest/belt/mutable-set-int"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "MutableSetString",
-      "/belt_docs/mutable-set-string"
+      "/apis/javascript/latest/belt/mutable-set-string"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "MutableStack",
-      "/belt_docs/mutable-stack"
+      "/apis/javascript/latest/belt/mutable-stack"
     ])
 ];
 
@@ -202,56 +200,56 @@ var basicNavs = /* array */[
       "href"
     ], [
       "List",
-      "/belt_docs/list"
+      "/apis/javascript/latest/belt/list"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "Array",
-      "/belt_docs/array"
+      "/apis/javascript/latest/belt/array"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "Float",
-      "/belt_docs/float"
+      "/apis/javascript/latest/belt/float"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "Int",
-      "/belt_docs/int"
+      "/apis/javascript/latest/belt/int"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "Range",
-      "/belt_docs/range"
+      "/apis/javascript/latest/belt/range"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "Id",
-      "/belt_docs/id"
+      "/apis/javascript/latest/belt/id"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "Option",
-      "/belt_docs/option"
+      "/apis/javascript/latest/belt/option"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "Result",
-      "/belt_docs/result"
+      "/apis/javascript/latest/belt/result"
     ])
 ];
 
@@ -261,21 +259,21 @@ var sortNavs = /* array */[
       "href"
     ], [
       "SortArray",
-      "/belt_docs/sort-array"
+      "/apis/javascript/latest/belt/sort-array"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "SortArrayInt",
-      "/belt_docs/sort-array-int"
+      "/apis/javascript/latest/belt/sort-array-int"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "SortArrayString",
-      "/belt_docs/sort-array-string"
+      "/apis/javascript/latest/belt/sort-array-string"
     ])
 ];
 
@@ -284,7 +282,7 @@ var utilityNavs = /* array */[/* record */Caml_chrome_debugger.record([
       "href"
     ], [
       "Debug",
-      "/belt_docs/debug"
+      "/apis/javascript/latest/belt/debug"
     ])];
 
 var categories = /* array */[
@@ -341,7 +339,7 @@ var categories = /* array */[
 
 function BeltDocsLayout$Docs(Props) {
   var match = Props.components;
-  var components = match !== undefined ? Caml_option.valFromOption(match) : ApiLayout.ApiMd.components;
+  var components = match !== undefined ? Caml_option.valFromOption(match) : SidebarLayout.ApiMd.components;
   var children = Props.children;
   var router = Router.useRouter();
   var route = router.route;
@@ -351,36 +349,85 @@ function BeltDocsLayout$Docs(Props) {
   var moduleName = Belt_Option.getWithDefault(Belt_Option.map(Js_dict.get(indexData, route), (function (data) {
               return data.moduleName;
             })), "?");
-  var match$1 = route !== "/belt_docs";
-  var collapsibleSection = match$1 ? React.createElement(ApiLayout.Sidebar.CollapsibleSection.make, {
+  var match$1 = React.useState((function () {
+          return false;
+        }));
+  var setSidebarOpen = match$1[1];
+  var toggleSidebar = function (param) {
+    return Curry._1(setSidebarOpen, (function (prev) {
+                  return !prev;
+                }));
+  };
+  var urlPath = SidebarLayout.UrlPath.parse("/apis/javascript", route);
+  var breadcrumbs = Belt_Option.map(urlPath, (function (v) {
+          var prefix_000 = /* record */Caml_chrome_debugger.record([
+              "name",
+              "href"
+            ], [
+              "API",
+              "/apis"
+            ]);
+          var prefix_001 = /* :: */Caml_chrome_debugger.simpleVariant("::", [
+              /* record */Caml_chrome_debugger.record([
+                  "name",
+                  "href"
+                ], [
+                  "JavaScript",
+                  "/apis/javascript/" + v[/* version */1]
+                ]),
+              /* [] */0
+            ]);
+          var prefix = /* :: */Caml_chrome_debugger.simpleVariant("::", [
+              prefix_000,
+              prefix_001
+            ]);
+          return SidebarLayout.UrlPath.toBreadCrumbs(prefix, v);
+        }));
+  var toplevelNav;
+  if (urlPath !== undefined) {
+    var urlPath$1 = urlPath;
+    var version = urlPath$1[/* version */1];
+    var backHref = SidebarLayout.UrlPath.fullUpLink(urlPath$1);
+    var tmp = {
+      title: "Belt",
+      version: version
+    };
+    if (backHref !== undefined) {
+      tmp.backHref = Caml_option.valFromOption(backHref);
+    }
+    toplevelNav = React.createElement(SidebarLayout.Sidebar.ToplevelNav.make, tmp);
+  } else {
+    toplevelNav = null;
+  }
+  var match$2 = route !== "/apis/javascript/latest/belt";
+  var preludeSection = match$2 ? React.createElement(SidebarLayout.Sidebar.CollapsibleSection.make, {
+          onHeaderClick: (function (param) {
+              return Curry._1(setSidebarOpen, (function (param) {
+                            return false;
+                          }));
+            }),
           headers: headers,
           moduleName: moduleName
         }) : null;
-  var theme = ColorTheme.toCN(/* JS */16585);
-  var minWidth = {
-    minWidth: "20rem"
+  var sidebar = React.createElement(SidebarLayout.Sidebar.make, {
+        categories: categories,
+        route: router.route,
+        toplevelNav: toplevelNav,
+        preludeSection: preludeSection,
+        isOpen: match$1[0],
+        toggle: toggleSidebar
+      });
+  var tmp$1 = {
+    theme: /* Js */16617,
+    components: components,
+    sidebar: sidebar,
+    route: router.route,
+    children: children
   };
-  return React.createElement("div", undefined, React.createElement("div", {
-                  className: "max-w-4xl w-full " + theme,
-                  style: minWidth
-                }, React.createElement(Navigation.ApiDocs.make, {
-                      route: route,
-                      theme: /* JS */16585,
-                      versionInfo: "v" + $$package.dependencies["bs-platform"]
-                    }), React.createElement("div", {
-                      className: "flex mt-12"
-                    }, React.createElement(ApiLayout.Sidebar.make, {
-                          categories: categories,
-                          route: router.route,
-                          children: collapsibleSection
-                        }), React.createElement("main", {
-                          className: "pt-12 w-4/5 static min-h-screen overflow-visible"
-                        }, React.createElement(React$1.MDXProvider, {
-                              components: components,
-                              children: React.createElement("div", {
-                                    className: "pl-8 max-w-md mb-32 text-lg"
-                                  }, children)
-                            })))));
+  if (breadcrumbs !== undefined) {
+    tmp$1.breadcrumbs = Caml_option.valFromOption(breadcrumbs);
+  }
+  return React.createElement(SidebarLayout.make, tmp$1);
 }
 
 var Docs = {
@@ -390,7 +437,7 @@ var Docs = {
 function BeltDocsLayout$Prose(Props) {
   var children = Props.children;
   return React.createElement(BeltDocsLayout$Docs, {
-              components: ApiLayout.Prose.Md.components,
+              components: SidebarLayout.ProseMd.components,
               children: children
             });
 }
@@ -403,6 +450,8 @@ var Link = 0;
 
 var Sidebar = 0;
 
+var UrlPath = 0;
+
 var NavItem = 0;
 
 var Category = 0;
@@ -412,6 +461,7 @@ export {
   indexData ,
   $$package ,
   Sidebar ,
+  UrlPath ,
   NavItem ,
   Category ,
   overviewNavs ,

@@ -4,6 +4,7 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
   content: [
     './components/**/*.re',
     './pages/**/*.re',
+    './pages/**/*.mdx',
     './layouts/**/*.re',
   ],
 

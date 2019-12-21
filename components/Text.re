@@ -1,8 +1,8 @@
 open Util.ReactStuff;
 
 module Link = {
-  let inline = "no-underline border-b border-main-black hover:border-bs-purple text-inherit";
-  let standalone = "no-underline text-primary";
+  let inline = "no-underline border-b border-night-dark hover:border-bs-purple text-inherit";
+  let standalone = "no-underline text-fire";
 };
 
 module Anchor = {
@@ -26,7 +26,7 @@ module H1 = {
   [@react.component]
   let make = (~children) => {
     <h1
-      className="text-5xl lg:text-6xl leading-3 lg:leading-2 font-montserrat font-medium lg:font-bold text-main-black">
+      className="text-6xl md:text-7xl tracking-tight leading-1 font-overpass font-black text-night-dark">
       children
     </h1>;
   };
@@ -36,7 +36,7 @@ module H2 = {
   [@react.component]
   let make = (~children) => {
     <h2
-      className="text-4xl leading-3 font-montserrat font-medium text-main-black">
+      className="text-4xl leading-3 font-overpass font-medium text-night-dark">
       children
     </h2>;
   };
@@ -46,7 +46,7 @@ module H3 = {
   [@react.component]
   let make = (~children) => {
     <h3
-      className="text-xl leading-3 font-montserrat font-semibold text-main-black">
+      className="text-xl leading-3 font-overpass font-semibold text-night-dark">
       children
     </h3>;
   };
@@ -56,7 +56,7 @@ module H4 = {
   [@react.component]
   let make = (~children) => {
     <h4
-      className="text-lg leading-2 font-montserrat font-semibold text-main-black">
+      className="text-lg leading-2 font-overpass font-semibold text-night-dark">
       children
     </h4>;
   };
@@ -66,7 +66,7 @@ module H5 = {
   [@react.component]
   let make = (~children) => {
     <h5
-      className="text-xs leading-2 font-montserrat font-semibold uppercase tracking-wide text-main-lighten-50">
+      className="text-xs leading-2 font-overpass font-semibold uppercase tracking-wide">
       children
     </h5>;
   };
@@ -76,8 +76,8 @@ module Overline = {
   [@react.component]
   let make = (~underline=false, ~children) => {
     let className =
-      "font-overpass font-black text-main-black text-xl mt-5"
-      ++ (underline ? " pb-3 border-b border-main-lighten-90" : "");
+      "font-overpass font-black text-night-dark text-xl mt-5"
+      ++ (underline ? " pb-3 border-b" : "");
 
     <div className> children </div>;
   };
@@ -93,7 +93,7 @@ module P = {
       | `none => ""
       | `default => "mt-3"
       };
-    let className = "text-lg leading-4 text-main-lighten-15 " ++ spacingClass;
+    let className = "text-lg leading-4 " ++ spacingClass;
     <p className> children </p>;
   };
 };
@@ -118,7 +118,7 @@ module Md = {
   module Pre = {
     [@react.component]
     let make = (~children) => {
-      <pre className="my-8 p-4 block bg-main-lighten-95"> children </pre>;
+      <pre className="my-8 p-4 block"> children </pre>;
     };
   };
 
@@ -167,7 +167,7 @@ module Md = {
     [@react.component]
     let make = (~children) => {
       <code
-        className="px-1 rounded-sm text-inherit font-mono font-bold bg-info-blue-lighten-90">
+        className="px-1 rounded-sm text-inherit font-mono bg-snow">
         children
       </code>;
     };
@@ -176,7 +176,7 @@ module Md = {
   module P = {
     [@react.component]
     let make = (~children) => {
-      <p className="text-lg leading-4 my-6 text-main-lighten-15">
+      <p className="text-lg leading-4 my-6 text-inherit">
         children
       </p>;
     };
@@ -219,7 +219,7 @@ module Md = {
             href={"#" ++ refPrefix ++ id}
             className="no-underline text-inherit">
             <span
-              className="hover:text-main-lighten-20 hover:border-b border-primary">
+              className="hover:border-b border-fire">
               children
             </span>
             <sup
@@ -228,7 +228,7 @@ module Md = {
                 ~top="-0.5rem",
                 (),
               )}
-              className="font-overpass border-b-0 font-bold text-primary text-xs">
+              className="font-overpass border-b-0 font-bold text-fire text-xs">
               id->s
             </sup>
           </a>
@@ -247,7 +247,7 @@ module Md = {
   module Ol = {
     [@react.component]
     let make = (~children) => {
-      <ol className="md-ol -ml-4 text-primary"> children </ol>;
+      <ol className="md-ol -ml-4 text-fire"> children </ol>;
     };
   };
 
@@ -304,7 +304,7 @@ module Md = {
             /* Unknown Scenario */
         };
 
-      <li className="md-li mt-4 leading-4 ml-8 text-lg text-main-lighten-15">
+      <li className="md-li mt-4 leading-4 ml-8 text-lg">
         elements
       </li>;
     };
@@ -314,7 +314,7 @@ module Md = {
 module Small = {
   [@react.component]
   let make = (~children) => {
-    <p className="text-base font-overpass leading-4 text-main-lighten-15">
+    <p className="text-base font-overpass leading-4">
       children
     </p>;
   };
@@ -326,7 +326,7 @@ module Xsmall = {
   [@react.component]
   let make = (~children) => {
     <p
-      className="text-sm font-overpass text-normal leading-3 text-main-lighten-15">
+      className="text-sm font-overpass text-normal leading-3">
       children
     </p>;
   };
@@ -336,7 +336,7 @@ module Lead = {
   [@react.component]
   let make = (~children) => {
     <p
-      className="text-2xl font-montserrat font-medium leading-4 mt-2 text-main-black">
+      className="text-2xl font-overpass font-medium leading-4 mt-2 text-night-dark">
       children
     </p>;
   };
@@ -347,10 +347,10 @@ module Quote = {
   let make = (~bold=true, ~children) => {
     <div className={"flex flex-row mt-5 mb-3 " ++ (bold ? "font-bold" : "")}>
       <div
-        className="border-l-2 border-primary w-2 mt-3 mb-3 md:mt-3 md:mb-3"
+        className="border-l-2 border-fire w-2 mt-3 mb-3 md:mt-3 md:mb-3"
       />
       <div
-        className="text-main-lighten-15 leading-4 text-lg pl-5 md:pl-8 md:text-2xl italic  md:pr-10 md:py-5">
+        className="leading-4 text-lg pl-5 md:pl-8 md:text-2xl italic  md:pr-10 md:py-5">
         children
       </div>
     </div>;

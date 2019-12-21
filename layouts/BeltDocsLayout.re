@@ -14,7 +14,6 @@ module Link = Next.Link;
 let indexData:
   Js.Dict.t({
     .
-    "signatures": array(string),
     "moduleName": string,
     "headers": array(string),
   }) = [%raw
@@ -26,61 +25,93 @@ let package: {. "dependencies": {. "bs-platform": string}} = [%raw
   "require('../package.json')"
 ];
 
-module Sidebar = ApiLayout.Sidebar;
+module Sidebar = SidebarLayout.Sidebar;
+module UrlPath = SidebarLayout.UrlPath;
 module NavItem = Sidebar.NavItem;
 module Category = Sidebar.Category;
 
-let overviewNavs = [|NavItem.{name: "Introduction", href: "/belt_docs"}|];
+let overviewNavs = [|
+  NavItem.{name: "Introduction", href: "/apis/javascript/latest/belt"},
+|];
 
 let setNavs = [|
-  NavItem.{name: "HashSet", href: "/belt_docs/hash-set"},
-  {name: "HashSetInt", href: "/belt_docs/hash-set-int"},
-  {name: "HashSetString", href: "/belt_docs/hash-set-string"},
-  {name: "Set", href: "/belt_docs/set"},
-  {name: "SetDict", href: "/belt_docs/set-dict"},
-  {name: "SetInt", href: "/belt_docs/set-int"},
-  {name: "SetString", href: "/belt_docs/set-string"},
+  NavItem.{name: "HashSet", href: "/apis/javascript/latest/belt/hash-set"},
+  {name: "HashSetInt", href: "/apis/javascript/latest/belt/hash-set-int"},
+  {
+    name: "HashSetString",
+    href: "/apis/javascript/latest/belt/hash-set-string",
+  },
+  {name: "Set", href: "/apis/javascript/latest/belt/set"},
+  {name: "SetDict", href: "/apis/javascript/latest/belt/set-dict"},
+  {name: "SetInt", href: "/apis/javascript/latest/belt/set-int"},
+  {name: "SetString", href: "/apis/javascript/latest/belt/set-string"},
 |];
 
 let mapNavs = [|
-  NavItem.{name: "HashMap", href: "/belt_docs/hash-map"},
-  {name: "HashMapInt", href: "/belt_docs/hash-map-int"},
-  {name: "HashMapString", href: "/belt_docs/hash-map-string"},
-  {name: "Map", href: "/belt_docs/map"},
-  {name: "MapDict", href: "/belt_docs/map-dict"},
-  {name: "MapInt", href: "/belt_docs/map-int"},
-  {name: "MapString", href: "/belt_docs/map-string"},
+  NavItem.{name: "HashMap", href: "/apis/javascript/latest/belt/hash-map"},
+  {name: "HashMapInt", href: "/apis/javascript/latest/belt/hash-map-int"},
+  {
+    name: "HashMapString",
+    href: "/apis/javascript/latest/belt/hash-map-string",
+  },
+  {name: "Map", href: "/apis/javascript/latest/belt/map"},
+  {name: "MapDict", href: "/apis/javascript/latest/belt/map-dict"},
+  {name: "MapInt", href: "/apis/javascript/latest/belt/map-int"},
+  {name: "MapString", href: "/apis/javascript/latest/belt/map-string"},
 |];
 
 let mutableCollectionsNavs = [|
-  NavItem.{name: "MutableMap", href: "/belt_docs/mutable-map"},
-  {name: "MutableMapInt", href: "/belt_docs/mutable-map-int"},
-  {name: "MutableMapString", href: "/belt_docs/mutable-map-string"},
-  {name: "MutableQueue", href: "/belt_docs/mutable-queue"},
-  {name: "MutableSet", href: "/belt_docs/mutable-set"},
-  {name: "MutableSetInt", href: "/belt_docs/mutable-set-int"},
-  {name: "MutableSetString", href: "/belt_docs/mutable-set-string"},
-  {name: "MutableStack", href: "/belt_docs/mutable-stack"},
+  NavItem.{
+    name: "MutableMap",
+    href: "/apis/javascript/latest/belt/mutable-map",
+  },
+  {
+    name: "MutableMapInt",
+    href: "/apis/javascript/latest/belt/mutable-map-int",
+  },
+  {
+    name: "MutableMapString",
+    href: "/apis/javascript/latest/belt/mutable-map-string",
+  },
+  {name: "MutableQueue", href: "/apis/javascript/latest/belt/mutable-queue"},
+  {name: "MutableSet", href: "/apis/javascript/latest/belt/mutable-set"},
+  {
+    name: "MutableSetInt",
+    href: "/apis/javascript/latest/belt/mutable-set-int",
+  },
+  {
+    name: "MutableSetString",
+    href: "/apis/javascript/latest/belt/mutable-set-string",
+  },
+  {name: "MutableStack", href: "/apis/javascript/latest/belt/mutable-stack"},
 |];
 
 let basicNavs = [|
-  NavItem.{name: "List", href: "/belt_docs/list"},
-  {name: "Array", href: "/belt_docs/array"},
-  {name: "Float", href: "/belt_docs/float"},
-  {name: "Int", href: "/belt_docs/int"},
-  {name: "Range", href: "/belt_docs/range"},
-  {name: "Id", href: "/belt_docs/id"},
-  {name: "Option", href: "/belt_docs/option"},
-  {name: "Result", href: "/belt_docs/result"},
+  NavItem.{name: "List", href: "/apis/javascript/latest/belt/list"},
+  {name: "Array", href: "/apis/javascript/latest/belt/array"},
+  {name: "Float", href: "/apis/javascript/latest/belt/float"},
+  {name: "Int", href: "/apis/javascript/latest/belt/int"},
+  {name: "Range", href: "/apis/javascript/latest/belt/range"},
+  {name: "Id", href: "/apis/javascript/latest/belt/id"},
+  {name: "Option", href: "/apis/javascript/latest/belt/option"},
+  {name: "Result", href: "/apis/javascript/latest/belt/result"},
 |];
 
 let sortNavs = [|
-  NavItem.{name: "SortArray", href: "/belt_docs/sort-array"},
-  {name: "SortArrayInt", href: "/belt_docs/sort-array-int"},
-  {name: "SortArrayString", href: "/belt_docs/sort-array-string"},
+  NavItem.{
+    name: "SortArray",
+    href: "/apis/javascript/latest/belt/sort-array",
+  },
+  {name: "SortArrayInt", href: "/apis/javascript/latest/belt/sort-array-int"},
+  {
+    name: "SortArrayString",
+    href: "/apis/javascript/latest/belt/sort-array-string",
+  },
 |];
 
-let utilityNavs = [|NavItem.{name: "Debug", href: "/belt_docs/debug"}|];
+let utilityNavs = [|
+  NavItem.{name: "Debug", href: "/apis/javascript/latest/belt/debug"},
+|];
 
 let categories = [|
   Category.{name: "Overview", items: overviewNavs},
@@ -93,9 +124,8 @@ let categories = [|
 |];
 
 module Docs = {
-  [@genType]
   [@react.component]
-  let make = (~components=ApiLayout.ApiMd.components, ~children) => {
+  let make = (~components=SidebarLayout.ApiMd.components, ~children) => {
     let router = Next.Router.useRouter();
     let route = router##route;
 
@@ -114,40 +144,73 @@ module Docs = {
         ->getWithDefault("?")
       );
 
+    let (isSidebarOpen, setSidebarOpen) = React.useState(_ => false);
+    let toggleSidebar = () => setSidebarOpen(prev => !prev);
+
+    let urlPath = UrlPath.parse(~base="/apis/javascript", route);
+
+    let breadcrumbs =
+      Belt.Option.map(
+        urlPath,
+        v => {
+          let {UrlPath.version} = v;
+          let prefix =
+            UrlPath.[
+              {name: "API", href: "/apis"},
+              {name: "JavaScript", href: "/apis/javascript/" ++ version},
+            ];
+          UrlPath.toBreadCrumbs(~prefix, v);
+        },
+      );
+
+    let toplevelNav =
+      switch (urlPath) {
+      | Some(urlPath) =>
+        let version = UrlPath.(urlPath.version);
+        let backHref = Some(UrlPath.fullUpLink(urlPath));
+        <Sidebar.ToplevelNav title="Belt" version ?backHref />;
+      | None => React.null
+      };
+
     // Todo: We need to introduce router state to be able to
     //       listen to anchor changes (#get, #map,...)
-    let collapsibleSection =
-      route !== "/belt_docs"
-        ? <Sidebar.CollapsibleSection headers moduleName /> : React.null;
+    let preludeSection =
+      route !== "/apis/javascript/latest/belt"
+        ? <Sidebar.CollapsibleSection
+            onHeaderClick={_ => setSidebarOpen(_ => false)}
+            headers
+            moduleName
+          />
+        : React.null;
 
-    let theme = ColorTheme.toCN(`JS);
-    let minWidth = ReactDOMRe.Style.make(~minWidth="20rem", ());
-    <div>
-      <div className={"max-w-4xl w-full " ++ theme} style=minWidth>
-        <Navigation.ApiDocs
-          theme=`JS
-          route
-          versionInfo={"v" ++ package##dependencies##"bs-platform"}
-        />
-        <div className="flex mt-12">
-          <Sidebar categories route={router##route}>
-            collapsibleSection
-          </Sidebar>
-          <main className="pt-12 w-4/5 static min-h-screen overflow-visible">
-            <Mdx.Provider components>
-              <div className="pl-8 max-w-md mb-32 text-lg"> children </div>
-            </Mdx.Provider>
-          </main>
-        </div>
-      </div>
-    </div>;
+    let sidebar =
+      <Sidebar
+        isOpen=isSidebarOpen
+        toggle=toggleSidebar
+        categories
+        route={
+          router##route;
+        }
+        toplevelNav
+        preludeSection
+      />;
+
+    <SidebarLayout
+      theme=`Js
+      components
+      sidebar
+      ?breadcrumbs
+      route={
+        router##route;
+      }>
+      children
+    </SidebarLayout>;
   };
 };
 
 module Prose = {
-  [@genType]
   [@react.component]
   let make = (~children) => {
-    <Docs components=ApiLayout.Prose.Md.components> children </Docs>;
+    <Docs components=SidebarLayout.ProseMd.components> children </Docs>;
   };
 };

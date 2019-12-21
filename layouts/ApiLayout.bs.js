@@ -2,14 +2,10 @@
 
 import * as $$Text from "../components/Text.bs.js";
 import * as Util from "../common/Util.bs.js";
-import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
+import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
-import * as ColorTheme from "../common/ColorTheme.bs.js";
-import * as Navigation from "../components/Navigation.bs.js";
-import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
-import * as Router from "next/router";
-import * as React$1 from "@mdx-js/react";
+import * as MainLayout from "./MainLayout.bs.js";
 import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
 require('../styles/main.css')
@@ -22,88 +18,33 @@ hljs.registerLanguage('reason', reasonHighlightJs);
 
 ;
 
-var indexData = (require('../index_data/belt_api_index.json'));
-
-function ApiLayout$ApiMd$Anchor(Props) {
-  var id = Props.id;
-  var style = {
-    position: "absolute",
-    top: "-7rem"
-  };
-  return React.createElement("span", {
-              className: "relative"
-            }, React.createElement("a", {
-                  className: "mr-2 text-main-lighten-65 hover:cursor-pointer",
-                  href: "#" + id
-                }, Util.ReactStuff.s("#")), React.createElement("a", {
-                  id: id,
-                  style: style
-                }));
-}
-
-var Anchor = {
-  make: ApiLayout$ApiMd$Anchor
-};
-
-function ApiLayout$ApiMd$InvisibleAnchor(Props) {
-  var id = Props.id;
-  var style = {
-    position: "absolute",
-    top: "-1rem"
-  };
-  return React.createElement("span", {
-              "aria-hidden": true,
-              className: "relative"
-            }, React.createElement("a", {
-                  id: id,
-                  style: style
-                }));
-}
-
-var InvisibleAnchor = {
-  make: ApiLayout$ApiMd$InvisibleAnchor
-};
-
-function ApiLayout$ApiMd$H2(Props) {
-  var children = Props.children;
-  return React.createElement(React.Fragment, undefined, React.createElement(ApiLayout$ApiMd$InvisibleAnchor, {
-                  id: children
-                }), React.createElement("div", {
-                  className: "border-b border-gray-200 my-20"
-                }));
-}
-
-var H2 = {
-  make: ApiLayout$ApiMd$H2
-};
-
-function ApiLayout$ApiMd$Pre(Props) {
-  var children = Props.children;
-  return React.createElement("pre", {
-              className: "mt-2 mb-4 block"
-            }, children);
-}
-
-var Pre = {
-  make: ApiLayout$ApiMd$Pre
-};
-
-function ApiLayout$ApiMd$P(Props) {
+function ApiLayout$MainMd$P(Props) {
   var children = Props.children;
   return React.createElement("p", {
-              className: "mt-3 leading-4 text-main-lighten-15"
+              className: "text-xl mt-3 leading-4 text-night-dark"
             }, children);
 }
 
 var P = {
-  make: ApiLayout$ApiMd$P
+  make: ApiLayout$MainMd$P
+};
+
+function ApiLayout$MainMd$H1(Props) {
+  var children = Props.children;
+  return React.createElement("h1", {
+              className: "text-7xl font-overpass font-black text-night-dark"
+            }, children);
+}
+
+var H1 = {
+  make: ApiLayout$MainMd$H1
 };
 
 var components = {
-  p: ApiLayout$ApiMd$P,
+  p: ApiLayout$MainMd$P,
   li: $$Text.Md.Li.make,
-  h1: $$Text.H1.make,
-  h2: ApiLayout$ApiMd$H2,
+  h1: ApiLayout$MainMd$H1,
+  h2: $$Text.H2.make,
   h3: $$Text.H3.make,
   h4: $$Text.H4.make,
   h5: $$Text.H5.make,
@@ -111,325 +52,133 @@ var components = {
   ol: $$Text.Md.Ol.make,
   inlineCode: $$Text.Md.InlineCode.make,
   code: $$Text.Md.Code.make,
-  pre: ApiLayout$ApiMd$Pre,
+  pre: $$Text.Md.Pre.make,
   a: $$Text.Md.A.make
 };
 
-var ApiMd = {
-  Anchor: Anchor,
-  InvisibleAnchor: InvisibleAnchor,
-  H2: H2,
-  Pre: Pre,
+var MainMd = {
   P: P,
+  H1: H1,
   components: components
 };
 
-function ApiLayout$Sidebar$NavItem(Props) {
-  var match = Props.isItemActive;
-  var isItemActive = match !== undefined ? match : (function (_nav) {
-        return false;
-      });
-  var match$1 = Props.isHidden;
-  var isHidden = match$1 !== undefined ? match$1 : false;
-  var items = Props.items;
-  return React.createElement("ul", {
-              className: "ml-2 mt-1 text-main-lighten-15"
-            }, Util.ReactStuff.ate(Belt_Array.map(items, (function (m) {
-                        var hidden = isHidden ? "hidden" : "block";
-                        var match = Curry._1(isItemActive, m);
-                        var active = match ? " bg-t-primary-lighten text-t-primary rounded -ml-1 px-2 font-bold block " : "";
-                        return React.createElement("li", {
-                                    key: m[/* name */0],
-                                    className: hidden + " leading-5 w-4/5",
-                                    tabIndex: 0
-                                  }, React.createElement("a", {
-                                        className: "hover:text-t-primary" + active,
-                                        href: m[/* href */1]
-                                      }, Util.ReactStuff.s(m[/* name */0])));
-                      }))));
+function ApiLayout$Category$Card(Props) {
+  var card = Props.card;
+  var element = React.createElement(React.Fragment, undefined, React.createElement("img", {
+            className: "w-full mb-2",
+            src: card[/* src */3]
+          }), React.createElement("h3", {
+            className: "font-overpass font-black text-3xl text-night-dark"
+          }, Util.ReactStuff.s(card[/* title */0])), React.createElement("div", {
+            className: "text-base leading-5 text-night"
+          }, Util.ReactStuff.s(card[/* descr */1])));
+  var match = card[/* href */2];
+  return React.createElement("div", {
+              className: "w-2/4 sm:w-1/4 mb-12"
+            }, match !== undefined ? React.createElement(Link.default, {
+                    href: match,
+                    children: React.createElement("a", undefined, element)
+                  }) : React.createElement("div", {
+                    className: "opacity-50",
+                    title: "Not available yet"
+                  }, element));
 }
 
-var NavItem = {
-  make: ApiLayout$Sidebar$NavItem
+var Card = {
+  make: ApiLayout$Category$Card
 };
 
-function ApiLayout$Sidebar$Category(Props) {
-  var isItemActive = Props.isItemActive;
+function ApiLayout$Category(Props) {
   var category = Props.category;
-  var tmp = {
-    items: category[/* items */1]
-  };
-  if (isItemActive !== undefined) {
-    tmp.isItemActive = Caml_option.valFromOption(isItemActive);
-  }
   return React.createElement("div", {
-              key: category[/* name */0],
-              className: "my-12"
-            }, React.createElement($$Text.Overline.make, {
-                  children: Util.ReactStuff.s(category[/* name */0])
-                }), React.createElement(ApiLayout$Sidebar$NavItem, tmp));
+              className: "border-t border-snow-dark pt-8"
+            }, React.createElement("h2", {
+                  className: "mb-8 font-black text-6xl text-night-dark"
+                }, Util.ReactStuff.s(category[/* name */0])), React.createElement("div", {
+                  className: "flex flex-col sm:flex-row flex-wrap justify-between"
+                }, Util.ReactStuff.ate(Belt_Array.map(category[/* cards */1], (function (card) {
+                            return React.createElement(ApiLayout$Category$Card, {
+                                        card: card,
+                                        key: card[/* title */0]
+                                      });
+                          })))));
 }
 
 var Category = {
-  make: ApiLayout$Sidebar$Category
+  Card: Card,
+  make: ApiLayout$Category
 };
 
-function ApiLayout$Sidebar$CollapsibleSection(Props) {
-  var isItemActive = Props.isItemActive;
-  var headers = Props.headers;
-  var moduleName = Props.moduleName;
-  var match = React.useState((function () {
-          return false;
-        }));
-  var setCollapsed = match[1];
-  var collapsed = match[0];
-  var items = Belt_Array.map(headers, (function (header) {
-          return /* record */Caml_chrome_debugger.record([
-                    "name",
-                    "href"
-                  ], [
-                    header,
-                    "#" + header
-                  ]);
-        }));
-  var tmp = {
-    isHidden: collapsed,
-    items: items
-  };
-  if (isItemActive !== undefined) {
-    tmp.isItemActive = Caml_option.valFromOption(isItemActive);
-  }
-  return React.createElement("div", {
-              className: "my-12"
-            }, React.createElement($$Text.Overline.make, {
-                  children: React.createElement("a", {
-                        className: "cursor-pointer hover:text-bs-purple",
-                        href: "#",
-                        onClick: (function (evt) {
-                            evt.preventDefault();
-                            return Curry._1(setCollapsed, (function (isCollapsed) {
-                                          return !isCollapsed;
-                                        }));
-                          })
-                      }, React.createElement("span", {
-                            className: "hidden hover:block"
-                          }, Util.ReactStuff.s(collapsed ? "v" : "^")), Util.ReactStuff.s(moduleName))
-                }), React.createElement(ApiLayout$Sidebar$NavItem, tmp));
-}
+var categories = /* array */[/* record */Caml_chrome_debugger.record([
+      "name",
+      "cards"
+    ], [
+      "JavaScript",
+      [
+        /* record */Caml_chrome_debugger.record([
+            "title",
+            "descr",
+            "href",
+            "src"
+          ], [
+            "Js Module",
+            "Bindings for Common Browser APIs",
+            "/apis/javascript/latest/js",
+            "/static/api-img-js.svg"
+          ]),
+        /* record */Caml_chrome_debugger.record([
+            "title",
+            "descr",
+            "href",
+            "src"
+          ], [
+            "Belt Module",
+            "The Reason Standard Library for the Web",
+            "/apis/javascript/latest/belt",
+            "/static/api-img-belt.svg"
+          ]),
+        /* record */Caml_chrome_debugger.record([
+            "title",
+            "descr",
+            "href",
+            "src"
+          ], [
+            "Node Module",
+            "Simple Bindings for the NodeJS API",
+            undefined,
+            "/static/api-img-nodejs.svg"
+          ])
+      ]
+    ])];
 
-var CollapsibleSection = {
-  make: ApiLayout$Sidebar$CollapsibleSection
-};
-
-function ApiLayout$Sidebar(Props) {
-  var categories = Props.categories;
-  var route = Props.route;
-  var match = Props.children;
-  var children = match !== undefined ? Caml_option.valFromOption(match) : null;
-  var isItemActive = function (navItem) {
-    return navItem[/* href */1] === route;
-  };
-  return React.createElement("div", {
-              className: "pl-2 flex w-full justify-center h-auto overflow-y-visible block bg-light-grey",
-              style: {
-                maxWidth: "17.5rem"
-              }
-            }, React.createElement("nav", {
-                  className: "relative w-48 sticky h-screen block overflow-y-auto scrolling-touch pb-32",
-                  style: {
-                    top: "4rem"
-                  }
-                }, children, React.createElement("div", undefined, Util.ReactStuff.ate(Belt_Array.map(categories, (function (category) {
-                                return React.createElement(ApiLayout$Sidebar$Category, {
-                                            isItemActive: isItemActive,
-                                            category: category
-                                          });
-                              }))))));
-}
-
-var Sidebar = {
-  NavItem: NavItem,
-  Category: Category,
-  CollapsibleSection: CollapsibleSection,
-  make: ApiLayout$Sidebar
-};
-
-function ApiLayout$Docs(Props) {
-  var match = Props.theme;
-  var theme = match !== undefined ? match : /* Reason */825328612;
-  var match$1 = Props.components;
-  var components$1 = match$1 !== undefined ? Caml_option.valFromOption(match$1) : components;
+function ApiLayout(Props) {
   var children = Props.children;
-  var router = Router.useRouter();
-  var categories = /* array */[
-    /* record */Caml_chrome_debugger.record([
-        "name",
-        "items"
-      ], [
-        "Introduction",
-        [/* record */Caml_chrome_debugger.record([
-              "name",
-              "href"
-            ], [
-              "Overview",
-              "/api"
-            ])]
-      ]),
-    /* record */Caml_chrome_debugger.record([
-        "name",
-        "items"
-      ], [
-        "JavaScript",
-        [
-          /* record */Caml_chrome_debugger.record([
-              "name",
-              "href"
-            ], [
-              "Js Module",
-              "/js_docs"
-            ]),
-          /* record */Caml_chrome_debugger.record([
-              "name",
-              "href"
-            ], [
-              "Belt Stdlib",
-              "/belt_docs"
-            ])
-        ]
-      ])
-  ];
-  var theme$1 = ColorTheme.toCN(theme);
-  var minWidth = {
-    minWidth: "20rem"
-  };
-  return React.createElement("div", undefined, React.createElement("div", {
-                  className: "max-w-4xl w-full " + theme$1,
-                  style: minWidth
-                }, React.createElement(Navigation.ApiDocs.make, {
-                      route: router.route
-                    }), React.createElement("div", {
-                      className: "flex mt-12"
-                    }, React.createElement(ApiLayout$Sidebar, {
-                          categories: categories,
-                          route: router.route
-                        }), React.createElement("main", {
-                          className: "pt-12 w-4/5 static min-h-screen overflow-visible"
-                        }, React.createElement(React$1.MDXProvider, {
-                              components: components$1,
-                              children: React.createElement("div", {
-                                    className: "pl-8 max-w-md mb-32 text-lg"
-                                  }, children)
-                            })))));
-}
-
-var Docs = {
-  make: ApiLayout$Docs
-};
-
-function ApiLayout$Prose$Md$Anchor(Props) {
-  var id = Props.id;
-  var style = {
-    position: "absolute",
-    top: "-7rem"
-  };
-  return React.createElement("span", {
-              style: {
-                position: "relative"
-              }
-            }, React.createElement("a", {
-                  className: "mr-2 text-main-lighten-65 hover:cursor-pointer",
-                  href: "#" + id
-                }, Util.ReactStuff.s("#")), React.createElement("a", {
-                  id: id,
-                  style: style
-                }));
-}
-
-var Anchor$1 = {
-  make: ApiLayout$Prose$Md$Anchor
-};
-
-function ApiLayout$Prose$Md$H2(Props) {
-  var children = Props.children;
-  return React.createElement(React.Fragment, undefined, React.createElement("h2", {
-                  className: "mt-12 text-xl leading-3 font-montserrat font-medium text-main-black"
-                }, React.createElement(ApiLayout$Prose$Md$Anchor, {
-                      id: children
-                    }), children));
-}
-
-var H2$1 = {
-  make: ApiLayout$Prose$Md$H2
-};
-
-function ApiLayout$Prose$Md$Pre(Props) {
-  var children = Props.children;
-  return React.createElement("pre", {
-              className: "mt-2 mb-4 block"
-            }, children);
-}
-
-var Pre$1 = {
-  make: ApiLayout$Prose$Md$Pre
-};
-
-function ApiLayout$Prose$Md$P(Props) {
-  var children = Props.children;
-  return React.createElement("p", {
-              className: "text-base mt-3 leading-4 text-main-lighten-15"
-            }, children);
-}
-
-var P$1 = {
-  make: ApiLayout$Prose$Md$P
-};
-
-var components$1 = {
-  p: ApiLayout$Prose$Md$P,
-  li: $$Text.Md.Li.make,
-  h1: $$Text.H1.make,
-  h2: ApiLayout$Prose$Md$H2,
-  h3: $$Text.H3.make,
-  h4: $$Text.H4.make,
-  h5: $$Text.H5.make,
-  ul: $$Text.Md.Ul.make,
-  ol: $$Text.Md.Ol.make,
-  inlineCode: $$Text.Md.InlineCode.make,
-  code: $$Text.Md.Code.make,
-  pre: ApiLayout$Prose$Md$Pre,
-  a: $$Text.Md.A.make
-};
-
-var Md = {
-  Anchor: Anchor$1,
-  H2: H2$1,
-  Pre: Pre$1,
-  P: P$1,
-  components: components$1
-};
-
-function ApiLayout$Prose(Props) {
-  var children = Props.children;
-  return React.createElement(ApiLayout$Docs, {
-              components: components$1,
-              children: children
+  return React.createElement(MainLayout.make, {
+              children: React.createElement("div", {
+                    className: "flex flex-col"
+                  }, React.createElement("div", {
+                        className: "max-w-md mb-32 text-lg"
+                      }, children), React.createElement("div", undefined, Util.ReactStuff.ate(Belt_Array.map(categories, (function (category) {
+                                  return React.createElement("div", {
+                                              key: category[/* name */0],
+                                              className: "pb-16"
+                                            }, React.createElement(ApiLayout$Category, {
+                                                  category: category
+                                                }));
+                                })))))
             });
 }
 
-var Prose = {
-  Md: Md,
-  make: ApiLayout$Prose
-};
+var Link$1 = 0;
 
-var Link = 0;
+var make = ApiLayout;
 
 export {
-  Link ,
-  indexData ,
-  ApiMd ,
-  Sidebar ,
-  Docs ,
-  Prose ,
+  Link$1 as Link,
+  MainMd ,
+  Category ,
+  categories ,
+  make ,
   
 }
 /*  Not a pure module */

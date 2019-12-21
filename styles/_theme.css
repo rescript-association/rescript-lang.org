@@ -1,11 +1,24 @@
 /* purgecss start ignore */
 .theme-reason {
-  --color-text-primary: #f9543e;
-  --color-text-primary-lighten: rgb(249, 84, 62, 0.1);
+  --color-text-primary-dark: theme('colors.fire.default');
+  --color-text-primary: theme('colors.fire.default');
+  --color-text-primary-light: theme('colors.fire.default');
+  --color-text-primary-80: theme('colors.fire.80');
+  --color-text-primary-40: theme('colors.fire.40');
+  --color-text-primary-15: theme('colors.fire.15');
 }
 
 .theme-js {
-  --color-text-primary: rgb(171, 94, 163);
-  --color-text-primary-lighten: rgba(171, 94, 163, 0.15)
+  --color-text-primary-dark: theme('colors.berry.default'); 
+  --color-text-primary: theme('colors.berry.default'); 
+  --color-text-primary-light: theme('colors.berry.default');
+  --color-text-primary-80: theme('colors.berry.80');
+  --color-text-primary-40: theme('colors.berry.40');
+  --color-text-primary-15: theme('colors.berry.15');
+}
+
+.list-primary li::before {
+  content: "•";
+  @apply text-primary mr-2;
 }
 /* purgecss end ignore */

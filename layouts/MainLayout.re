@@ -4,16 +4,30 @@
 module Link = Next.Link;
 
 [@react.component]
-let make = (~children) => {
+let make = (~children, ~components=Mdx.Components.default) => {
+  let router = Next.Router.useRouter();
   let minWidth = ReactDOMRe.Style.make(~minWidth="20rem", ());
-  <div className="mb-32">
-    <div className="max-w-4xl w-full lg:w-3/4 text-gray-900 font-base">
-      <Navigation />
-      <main style=minWidth className="mt-24 mx-4 max-w-lg">
-        <Mdx.Provider components=Mdx.Components.default>
-          children
-        </Mdx.Provider>
-      </main>
+  let (isOpen, setIsOpen) = React.useState(() => false);
+
+  <>
+    <Meta />
+    <div className="mb-32 mt-16">
+      <div className="w-full text-night font-base">
+        <Navigation
+          isOverlayOpen=isOpen
+          toggle={() => setIsOpen(prev => !prev)}
+          route={router##route}
+        />
+        <div className="flex justify-center">
+          <main
+            style=minWidth
+            className="mt-32 lg:align-center w-full px-4 max-w-xl " /*++ (isOpen ? " hidden" : "")*/>
+            <Mdx.Provider components>
+              <div className="w-full max-w-lg"> children </div>
+            </Mdx.Provider>
+          </main>
+        </div>
+      </div>
     </div>
-  </div>;
+  </>;
 };

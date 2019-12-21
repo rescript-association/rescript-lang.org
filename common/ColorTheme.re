@@ -3,7 +3,7 @@
 [@bs.deriving jsConverter]
 type t = [
   | [@bs.as "theme-reason"] `Reason
-  | [@bs.as "theme-js"] `JS
+  | [@bs.as "theme-js"] `Js
 ];
 
 let toCN = value => tToJs(value);

@@ -1,0 +1,383 @@
+import { Docs } from "layouts/JsDocsLayout.bs.js";
+import { make as ApiIntro } from "components/ApiIntro.bs.js";
+export default Docs.make;
+
+# Array
+
+<ApiIntro>
+
+Provide bindings to JS array. Optimized for pipe-last.
+
+</ApiIntro>
+
+## t
+
+```re sig
+type t('a) = array('a);
+```
+
+## array_like
+
+```re sig
+type array_like('a) = Js_array2.array_like('a);
+```
+
+## from
+
+```re sig
+let from: array_like('a) => array('b);
+```
+
+## fromMap
+
+```re sig
+let fromMap: (array_like('a), 'a => 'b) => array('b);
+```
+
+## isArray
+
+```re sig
+let isArray: 'a => bool;
+```
+
+## length
+
+```re sig
+let length: array('a) => int;
+```
+
+## copyWithin
+
+```re sig
+let copyWithin: (~to_: int, t('a)) => t('a);
+```
+
+## copyWithinFrom
+
+```re sig
+let copyWithinFrom: (~to_: int, ~from: int, t('a)) => t('a);
+```
+
+## copyWithinFromRange
+
+```re sig
+let copyWithinFromRange: (~to_: int, ~start: int, ~end_: int, t('a)) => t('a);
+```
+
+## fillInPlace
+
+```re sig
+let fillInPlace: ('a, t('a)) => t('a);
+```
+
+## fillFromInPlace
+
+```re sig
+let fillFromInPlace: ('a, ~from: int, t('a)) => t('a);
+```
+
+## fillRangeInPlace
+
+```re sig
+let fillRangeInPlace: ('a, ~start: int, ~end_: int, t('a)) => t('a);
+```
+
+## pop
+
+```re sig
+let pop: t('a) => option('a);
+```
+
+## push
+
+```re sig
+let push: ('a, t('a)) => int;
+```
+
+## pushMany
+
+```re sig
+let pushMany: (array('a), t('a)) => int;
+```
+
+## reverseInPlace
+
+```re sig
+let reverseInPlace: t('a) => t('a);
+```
+
+## shift
+
+```re sig
+let shift: t('a) => option('a);
+```
+
+## sortInPlace
+
+```re sig
+let sortInPlace: t('a) => t('a);
+```
+
+## sortInPlaceWith
+
+```re sig
+let sortInPlaceWith: (('a, 'a) => int, t('a)) => t('a);
+```
+
+## spliceInPlace
+
+```re sig
+let spliceInPlace: (~pos: int, ~remove: int, ~add: array('a), t('a)) => t('a);
+```
+
+## removeFromInPlace
+
+```re sig
+let removeFromInPlace: (~pos: int, t('a)) => t('a);
+```
+
+## removeCountInPlace
+
+```re sig
+let removeCountInPlace: (~pos: int, ~count: int, t('a)) => t('a);
+```
+
+## unshift
+
+```re sig
+let unshift: ('a, t('a)) => int;
+```
+
+## unshiftMany
+
+```re sig
+let unshiftMany: (array('a), t('a)) => int;
+```
+
+## append
+
+```re sig
+let append: ('a, t('a)) => t('a);
+```
+
+## concat
+
+```re sig
+let concat: (t('a), t('a)) => t('a);
+```
+
+## concatMany
+
+```re sig
+let concatMany: (array(t('a)), t('a)) => t('a);
+```
+
+## includes
+
+```re sig
+let includes: ('a, t('a)) => bool;
+```
+
+## indexOf
+
+```re sig
+let indexOf: ('a, t('a)) => int;
+```
+
+## indexOfFrom
+
+```re sig
+let indexOfFrom: ('a, ~from: int, t('a)) => int;
+```
+
+## join
+
+```re sig
+let join: t('a) => string;
+```
+
+## joinWith
+
+```re sig
+let joinWith: (string, t('a)) => string;
+```
+
+## lastIndexOf
+
+```re sig
+let lastIndexOf: ('a, t('a)) => int;
+```
+
+## lastIndexOfFrom
+
+```re sig
+let lastIndexOfFrom: ('a, ~from: int, t('a)) => int;
+```
+
+## lastIndexOf_start
+
+```re sig
+let lastIndexOf_start: ('a, t('a)) => int;
+```
+
+## slice
+
+```re sig
+let slice: (~start: int, ~end_: int, t('a)) => t('a);
+```
+
+## copy
+
+```re sig
+let copy: t('a) => t('a);
+```
+
+## slice_copy
+
+```re sig
+let slice_copy: (unit, t('a)) => t('a);
+```
+
+## sliceFrom
+
+```re sig
+let sliceFrom: (int, t('a)) => t('a);
+```
+
+## slice_start
+
+```re sig
+let slice_start: (int, t('a)) => t('a);
+```
+
+## toString
+
+```re sig
+let toString: t('a) => string;
+```
+
+## toLocaleString
+
+```re sig
+let toLocaleString: t('a) => string;
+```
+
+## every
+
+```re sig
+let every: ('a => bool, t('a)) => bool;
+```
+
+## everyi
+
+```re sig
+let everyi: (('a, int) => bool, t('a)) => bool;
+```
+
+## filter
+
+```re sig
+let filter: ('a => bool, t('a)) => t('a);
+```
+
+## filteri
+
+```re sig
+let filteri: (('a, int) => bool, t('a)) => t('a);
+```
+
+## find
+
+```re sig
+let find: ('a => bool, t('a)) => option('a);
+```
+
+## findi
+
+```re sig
+let findi: (('a, int) => bool, t('a)) => option('a);
+```
+
+## findIndex
+
+```re sig
+let findIndex: ('a => bool, t('a)) => int;
+```
+
+## findIndexi
+
+```re sig
+let findIndexi: (('a, int) => bool, t('a)) => int;
+```
+
+## forEach
+
+```re sig
+let forEach: ('a => unit, t('a)) => unit;
+```
+
+## forEachi
+
+```re sig
+let forEachi: (('a, int) => unit, t('a)) => unit;
+```
+
+## map
+
+```re sig
+let map: ('a => 'b, t('a)) => t('b);
+```
+
+## mapi
+
+```re sig
+let mapi: (('a, int) => 'b, t('a)) => t('b);
+```
+
+## reduce
+
+```re sig
+let reduce: (('b, 'a) => 'b, 'b, t('a)) => 'b;
+```
+
+## reducei
+
+```re sig
+let reducei: (('b, 'a, int) => 'b, 'b, t('a)) => 'b;
+```
+
+## reduceRight
+
+```re sig
+let reduceRight: (('b, 'a) => 'b, 'b, t('a)) => 'b;
+```
+
+## reduceRighti
+
+```re sig
+let reduceRighti: (('b, 'a, int) => 'b, 'b, t('a)) => 'b;
+```
+
+## some
+
+```re sig
+let some: ('a => bool, t('a)) => bool;
+```
+
+## somei
+
+```re sig
+let somei: (('a, int) => bool, t('a)) => bool;
+```
+
+## unsafe_get
+
+```re sig
+let unsafe_get: (array('a), int) => 'a;
+```
+
+## unsafe_set
+
+```re sig
+let unsafe_set: (array('a), int, 'a) => unit;
+```

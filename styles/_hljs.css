@@ -5,7 +5,7 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 /* purgecss start ignore */
 .hljs {
   display: block;
-  overflow-x: auto;
+  /*overflow-x: auto;*/
   /*background: #f8f8ff;*/
 }
 
@@ -15,11 +15,11 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 }
 
 .hljs-operator, .hljs-literal {
-  @apply text-primary
+  @apply text-code-5  
 }
 
 .hljs-comment {
-  @apply text-dark-green;
+  @apply text-code-4;
 }
 
 .hljs-selector-tag,
@@ -28,20 +28,17 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 }
 
 .hljs-keyword {
-  @apply text-leaf-green;
+  color: #7fba3b;
 }
 
 .sig .hljs-keyword {
-  @apply text-bs-purple;
+  @apply text-berry;
 }
 
-.hljs-number {
-  @apply text-teal;
-}
-
+.hljs-number,
 .hljs-string,
 .hljs-doctag {
-  @apply text-teal;
+  @apply text-code-2;
 }
 
 .hljs-selector-id,
@@ -63,7 +60,7 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 .hljs-tag,
 .hljs-name,
 .hljs-attribute {
-  @apply text-info-blue;
+  color: #376fdd;
   font-weight: normal;
 }
 
@@ -114,10 +111,10 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
   color: #50a14f;
 }
 .hljs-module-identifier {
-  @apply text-bs-pink;
+  @apply text-berry;
 }
 .hljs-constructor {
-  color: #e45649;
+  @apply text-code-1;
 }
 
 /* purgecss end ignore */

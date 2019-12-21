@@ -7,11 +7,11 @@ import * as CodeExample from "./CodeExample.bs.js";
 import * as ReasonReact from "reason-react/src/ReasonReact.js";
 import * as CodeSignature from "./CodeSignature.bs.js";
 
-var inline = "no-underline border-b border-main-black hover:border-bs-purple text-inherit";
+var inline = "no-underline border-b border-night-dark hover:border-bs-purple text-inherit";
 
 var Link = {
   inline: inline,
-  standalone: "no-underline text-primary"
+  standalone: "no-underline text-fire"
 };
 
 function Text$Anchor(Props) {
@@ -48,7 +48,7 @@ var Box = {
 function Text$H1(Props) {
   var children = Props.children;
   return React.createElement("h1", {
-              className: "text-5xl lg:text-6xl leading-3 lg:leading-2 font-montserrat font-medium lg:font-bold text-main-black"
+              className: "text-6xl md:text-7xl tracking-tight leading-1 font-overpass font-black text-night-dark"
             }, children);
 }
 
@@ -59,7 +59,7 @@ var H1 = {
 function Text$H2(Props) {
   var children = Props.children;
   return React.createElement("h2", {
-              className: "text-4xl leading-3 font-montserrat font-medium text-main-black"
+              className: "text-4xl leading-3 font-overpass font-medium text-night-dark"
             }, children);
 }
 
@@ -70,7 +70,7 @@ var H2 = {
 function Text$H3(Props) {
   var children = Props.children;
   return React.createElement("h3", {
-              className: "text-xl leading-3 font-montserrat font-semibold text-main-black"
+              className: "text-xl leading-3 font-overpass font-semibold text-night-dark"
             }, children);
 }
 
@@ -81,7 +81,7 @@ var H3 = {
 function Text$H4(Props) {
   var children = Props.children;
   return React.createElement("h4", {
-              className: "text-lg leading-2 font-montserrat font-semibold text-main-black"
+              className: "text-lg leading-2 font-overpass font-semibold text-night-dark"
             }, children);
 }
 
@@ -92,7 +92,7 @@ var H4 = {
 function Text$H5(Props) {
   var children = Props.children;
   return React.createElement("h5", {
-              className: "text-xs leading-2 font-montserrat font-semibold uppercase tracking-wide text-main-lighten-50"
+              className: "text-xs leading-2 font-overpass font-semibold uppercase tracking-wide"
             }, children);
 }
 
@@ -104,8 +104,8 @@ function Text$Overline(Props) {
   var match = Props.underline;
   var underline = match !== undefined ? match : false;
   var children = Props.children;
-  var className = "font-overpass font-black text-main-black text-xl mt-5" + (
-    underline ? " pb-3 border-b border-main-lighten-90" : ""
+  var className = "font-overpass font-black text-night-dark text-xl mt-5" + (
+    underline ? " pb-3 border-b" : ""
   );
   return React.createElement("div", {
               className: className
@@ -121,7 +121,7 @@ function Text$P(Props) {
   var spacing = match !== undefined ? match : /* default */465819841;
   var children = Props.children;
   var spacingClass = spacing >= 465819841 ? "mt-3" : "";
-  var className = "text-lg leading-4 text-main-lighten-15 " + spacingClass;
+  var className = "text-lg leading-4 " + spacingClass;
   return React.createElement("p", {
               className: className
             }, children);
@@ -134,7 +134,7 @@ var P = {
 function Text$Md$Pre(Props) {
   var children = Props.children;
   return React.createElement("pre", {
-              className: "my-8 p-4 block bg-main-lighten-95"
+              className: "my-8 p-4 block"
             }, children);
 }
 
@@ -200,7 +200,7 @@ var Code = {
 function Text$Md$InlineCode(Props) {
   var children = Props.children;
   return React.createElement("code", {
-              className: "px-1 rounded-sm text-inherit font-mono font-bold bg-info-blue-lighten-90"
+              className: "px-1 rounded-sm text-inherit font-mono bg-snow"
             }, children);
 }
 
@@ -211,7 +211,7 @@ var InlineCode = {
 function Text$Md$P(Props) {
   var children = Props.children;
   return React.createElement("p", {
-              className: "text-lg leading-4 my-6 text-main-lighten-15"
+              className: "text-lg leading-4 my-6 text-inherit"
             }, children);
 }
 
@@ -241,9 +241,9 @@ function Text$Md$A(Props) {
                     className: "no-underline text-inherit",
                     href: "#" + (refPrefix + id)
                   }, React.createElement("span", {
-                        className: "hover:text-main-lighten-20 hover:border-b border-primary"
+                        className: "hover:border-b border-fire"
                       }, children), React.createElement("sup", {
-                        className: "font-overpass border-b-0 font-bold text-primary text-xs",
+                        className: "font-overpass border-b-0 font-bold text-fire text-xs",
                         style: {
                           left: "0.05rem",
                           top: "-0.5rem"
@@ -272,7 +272,7 @@ var Ul = {
 function Text$Md$Ol(Props) {
   var children = Props.children;
   return React.createElement("ol", {
-              className: "md-ol -ml-4 text-primary"
+              className: "md-ol -ml-4 text-fire"
             }, children);
 }
 
@@ -307,7 +307,7 @@ function Text$Md$Li(Props) {
     elements = React.createElement("p", undefined, children);
   }
   return React.createElement("li", {
-              className: "md-li mt-4 leading-4 ml-8 text-lg text-main-lighten-15"
+              className: "md-li mt-4 leading-4 ml-8 text-lg"
             }, elements);
 }
 
@@ -332,7 +332,7 @@ var Md = {
 function Text$Small(Props) {
   var children = Props.children;
   return React.createElement("p", {
-              className: "text-base font-overpass leading-4 text-main-lighten-15"
+              className: "text-base font-overpass leading-4"
             }, children);
 }
 
@@ -345,7 +345,7 @@ var component = ReasonReact.statelessComponent("Text.Xsmall");
 function Text$Xsmall(Props) {
   var children = Props.children;
   return React.createElement("p", {
-              className: "text-sm font-overpass text-normal leading-3 text-main-lighten-15"
+              className: "text-sm font-overpass text-normal leading-3"
             }, children);
 }
 
@@ -357,7 +357,7 @@ var Xsmall = {
 function Text$Lead(Props) {
   var children = Props.children;
   return React.createElement("p", {
-              className: "text-2xl font-montserrat font-medium leading-4 mt-2 text-main-black"
+              className: "text-2xl font-overpass font-medium leading-4 mt-2 text-night-dark"
             }, children);
 }
 
@@ -374,9 +374,9 @@ function Text$Quote(Props) {
                 bold ? "font-bold" : ""
               )
             }, React.createElement("div", {
-                  className: "border-l-2 border-primary w-2 mt-3 mb-3 md:mt-3 md:mb-3"
+                  className: "border-l-2 border-fire w-2 mt-3 mb-3 md:mt-3 md:mb-3"
                 }), React.createElement("div", {
-                  className: "text-main-lighten-15 leading-4 text-lg pl-5 md:pl-8 md:text-2xl italic  md:pr-10 md:py-5"
+                  className: "leading-4 text-lg pl-5 md:pl-8 md:text-2xl italic  md:pr-10 md:py-5"
                 }, children));
 }
 

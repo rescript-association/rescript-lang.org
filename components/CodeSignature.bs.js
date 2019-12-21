@@ -8,7 +8,7 @@ function CodeSignature(Props) {
   var lang = Props.lang;
   var highlighted = Highlight.highlight(lang, code).value;
   return ReactDOMRe.createElementVariadic("code", {
-              className: "font-bold hljs sig lang-" + lang,
+              className: "text-lg font-bold md:texxt-xl whitespace-pre-line text-night-dark hljs sig lang-" + lang,
               dangerouslySetInnerHTML: {
                 __html: highlighted
               }
