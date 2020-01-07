@@ -6,9 +6,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: nuxt/actions-yarn@node-10
+      - uses: actions/setup-node@v1
         with:
-          args: install # runs `yarn install`
-      - uses: nuxt/actions-yarn@node-10
-        with:
-          args: test # runs `yarn test`
+          node-version: '12.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: yarn install
+      - run: yarn test
