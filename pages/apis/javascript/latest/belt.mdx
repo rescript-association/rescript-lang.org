@@ -7,16 +7,14 @@ The preferred standard library for Reason when targeting JavaScript
 (browser, node, React Native).
 
 It is recommended to use the modules from Belt rather than from the
-OCaml standard library or from the Js namespace, e.g. use
+OCaml standard library or from the [Js](/apis/javascript/latest/js) namespace, e.g. use
 [Belt.List](/apis/javascript/latest/belt/list) instead of `List` or [Js.List](/apis/javascript/latest/js/list)
 and [Belt.Array](/apis/javascript/latest/belt/array) instead of `Array` or [Js.Array](/apis/javascript/latest/js/array).
 
 Belt is currently mostly covering collection types. It has no string or
-date functions yet, although Belt.String is in the works. In the meantime,
-use
-
-- [Js.String2](/apis/javascript/latest/js/string-2) for string functions
-- [Js.Date](/apis/javascript/latest/js/date) for date functions
+date functions yet, although Belt.String is in the works. (In the meantime,
+use [Js.String](/apis/javascript/latest/js/string) for string functions and [Js.Date](/apis/javascript/latest/js/date)
+for date functions.)
 
 ## Motivation
 
@@ -27,7 +25,7 @@ since the original OCaml standard library was not written with JS in mind.
 To achieve this, Belt provides:
 
 - A consistent naming convention familiar to JS developers ([camelCase](https://en.wikipedia.org/wiki/Camel_case))
-- A consistent argument order familiar to JS Developers (see [Pipe First](#Pipe%20First))  
+- A consistent argument order familiar to JS Developers (see [Pipe First](#Pipe%20First))
 - Safety by default: A Belt function will never throw exceptions, unless it is
   indicated explicitly in the function name (suffix "Exn").
 - Better performance and smaller code size running on the JS platform
@@ -57,16 +55,16 @@ into your `bsconfig.json`.
 
 ## Pipe First
 
-The argument order of Belt functions follows the "Pipe First" convention.
+The argument order of Belt functions follows the "Data-First" convention.
 I.e. the object they act on (e.g. a list or an array) will always be
 the first argument.
 
-This way, the pipe first operator can be used nicely with the Belt APIs,
+This way, the _pipe first operator_ `->` can be used nicely with the Belt APIs,
 giving a similar feel to method invocations in OOP languages and allowing
 easy chaining of Belt API calls.
 
-For more information about the "Pipe First" argument order and the
-trade-offs compared to "Pipe Last", see
+For more information about the data-first argument order and the
+trade-offs compared to data-last, see
 [this blog post](https://www.javierchavarri.com/data-first-and-data-last-a-comparison/).
 
 Example:
@@ -130,7 +128,7 @@ For example, Belt has the following set modules:
 When we create a collection library for a custom data type we need a way to
 provide a comparator function. Take Set for example, suppose its element type
 is a pair of ints, it needs a custom compare function that takes two tuples and
-returns their order. The Set could not just be typed as Set.t (int * int) , its
+returns their order. The Set could not just be typed as Set.t (int \* int) , its
 customized compare function needs to manifest itself in the signature,
 otherwise, if the user creates another customized compare function, the two
 collection could mix which would result in runtime error.
@@ -179,4 +177,3 @@ let mySet2: t((int, int), Comparable2.identity);
 
 `Comparable1.identity` and `Comparable2.identity` are not the same using our
 encoding scheme.
-

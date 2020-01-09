@@ -3,15 +3,57 @@ export default Prose.make;
 
 # Js
 
-This library provides bindings and necessary support for JS FFI.
-It contains all bindings into Js namespace.
+The Js module mostly contains Reason bindings to _standard JavaScript APIs_
+like [console.log](https://developer.mozilla.org/en-US/docs/Web/API/Console/log),
+or the JavaScript
+[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String),
+[Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), and
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+classes.
+
+It is meant as a zero-abstraction interop layer and directly exposes
+JavaScript functions as they are, even when their behavior should be considered unsafe
+(e.g. modifying an array in place using [Js.Array.push](/apis/javascript/latest/js/array#push)).
+
+Therefore, when a correpsonding module is available in the [Belt](/apis/javascript/latest/belt) standard library,
+it is recommended to use the Belt version rather than the Js version.
+For example, you should prefer [Belt.Array](/apis/javascript/latest/belt/array)
+to [Js.Array](/apis/javascript/latest/js/array)
+and [Belt.Map.String](http://localhost:3000/apis/javascript/latest/belt/map-string)
+to [Js.Dict](/apis/javascript/latest/js/dict).
+
+## Argument Order
+
+For historical reasons, some APIs in the Js namespace (e.g. [Js.String](/apis/javascript/latest/js/string)) are
+using the data-last argument order whereas others (e.g. [Js.Date](/apis/javascript/latest/js/date)) are using data-first.
+
+For more information about these argument orders and the trade-offs between them, see
+[this blog post](https://www.javierchavarri.com/data-first-and-data-last-a-comparison/).
+
+_Eventually, all modules in the Js namespace are going to be migrated to data-first though._
+
+In the meantime, there are several options for dealing with the data-last APIs:
 
 ```re example
-[|1, 2, 3, 4|]
-->Js.Array2.map(x => x + 1)
-->Js.Array2.reduce((+), 0)
-->Js.log;
+/* Js.String (data-last API used with pipe last operator) */
+Js.log("2019-11-10" |> Js.String.split("-"));
+Js.log("Reason" |> Js.String.startsWith("Re"));
+
+/* Js.String (data-last API used with pipe first operator) */
+Js.log("2019-11-10"->Js.String.split("-", _));
+Js.log("Reason"->Js.String.startsWith("Re", _));
+
+/* Js.String (data-last API used without any piping) */
+Js.log(Js.String.split("-", "2019-11-10"));
+Js.log(Js.String.startsWith("Re", "Reason"));
 ```
+
+## Js.Xxx2 Modules
+
+For some modules with data-last argument order (e.g. [Js.String](/apis/javascript/latest/js/string)),
+there currently exists a matching module suffixed with "2" (e.g. [Js.String2](/apis/javascript/latest/js/string-2))
+that uses data-first argument order.
+These `Js.Xxx2` modules are non-public API, so their use is dicouraged.
 
 ## Object
 
