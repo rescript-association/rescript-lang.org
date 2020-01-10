@@ -135,9 +135,12 @@ function Navigation$SubNav$DocsLinks(Props) {
               className: "lg:flex lg:flex-row px-4 max-w-xl"
             }, React.createElement("div", {
                   className: reTheme + " pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/4"
-                }, React.createElement("div", {
-                      className: overlineClass
-                    }, Util.ReactStuff.s("Language Manual")), React.createElement("ul", {
+                }, React.createElement(Link.default, {
+                      href: "/docs/manual/latest",
+                      children: React.createElement("a", {
+                            className: overlineClass
+                          }, Util.ReactStuff.s("Language Manual"))
+                    }), React.createElement("ul", {
                       className: sectionUl
                     }, React.createElement("li", undefined, Util.ReactStuff.s("Coming soon")))), React.createElement("div", {
                   className: reTheme + " pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/4"

@@ -167,13 +167,11 @@ module SubNav = {
 
       <div className="lg:flex lg:flex-row px-4 max-w-xl">
         <div className={reTheme ++ " " ++ sectionClass}>
-          /*<Link href="/apis">*/
-          /*<a className=overlineClass> "Language Manual"->s </a>*/
-          /*</Link>*/
-
-            <div className=overlineClass> "Language Manual"->s </div>
-            <ul className=sectionUl> <li> "Coming soon"->s </li> </ul>
-          </div>
+          <Link href="/docs/manual/latest">
+            <a className=overlineClass> "Language Manual"->s </a>
+          </Link>
+          <ul className=sectionUl> <li> "Coming soon"->s </li> </ul>
+        </div>
         <div className={reTheme ++ " " ++ sectionClass}>
           /*<Link href="/apis/javascript/latest">*/
           /*<a className=overlineClass> "Tools"->s </a>*/
