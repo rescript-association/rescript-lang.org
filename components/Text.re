@@ -122,26 +122,33 @@ module Md = {
     };
   };
 
-  module Code = {
+  module InlineCode = {
     [@react.component]
-    let make =
-        (
-          ~className: option(string)=?,
-          ~metastring: option(string),
-          ~children,
-        ) => {
-      let lang =
-        switch (className) {
-        | None => "re"
-        | Some(str) =>
-          switch (Js.String.split("-", str)) {
-          | [|"language", ""|] => "none"
-          | [|"language", lang|] => lang
-          | _ => "none"
-          }
-        };
+    let make = (~children) => {
+      <code className="px-1 rounded-sm text-inherit font-mono bg-snow">
+        children
+      </code>;
+    };
+  };
 
-      let code = Unsafe.elementAsString(children);
+  module Code = {
+    type unknown;
+    let typeOf: unknown => string = [%raw thing => "{ return typeof thing; }"];
+    let isArray: unknown => bool = [%raw
+      thing => "{ return thing instanceof Array; }"
+    ];
+    let isObject: unknown => bool = [%raw
+      thing => "{ return thing instanceof Object; }"
+    ];
+    let isString: unknown => bool = [%raw
+      thing => "{ return thing instanceof String; }"
+    ];
+    external asStringArray: 'a => array(string) = "%identity";
+    external asElement: 'a => React.element = "%identity";
+
+    external unknownAsString: unknown => string = "%identity";
+
+    let makeCodeElement = (~code, ~metastring, ~lang) => {
       let baseClass = "font-mono block leading-tight";
       let codeElement =
         switch (metastring) {
@@ -161,24 +168,62 @@ module Md = {
 
       <div className=baseClass> codeElement </div>;
     };
-  };
 
-  module InlineCode = {
     [@react.component]
-    let make = (~children) => {
-      <code
-        className="px-1 rounded-sm text-inherit font-mono bg-snow">
-        children
-      </code>;
+    let make =
+        (
+          ~className: option(string)=?,
+          ~metastring: option(string),
+          ~children: unknown,
+        ) => {
+      let lang =
+        switch (className) {
+        | None => "re"
+        | Some(str) =>
+          switch (Js.String.split("-", str)) {
+          | [|"language", ""|] => "none"
+          | [|"language", lang|] => lang
+          | _ => "none"
+          }
+        };
+
+      /*
+        Converts the given children provided by remark, depending on
+        given scenarios.
+
+        Scenario 1 (children = array(string):
+        Someone is using a literal <code> tag with some source in it
+        e.g. <code> hello world </code>
+
+        Then remark would call this component with children = [ "hello", "world" ].
+        In this case we need to open the Array,
+
+        Scenario 2 (children = React element / object):
+        Children is an element, so we will need to render the given
+        React element without adding our own components.
+
+        Scenario 3 (children = string):
+        Children is already a string, we will go straight to the
+       */
+      if (isArray(children)) {
+        // Scenario 1
+        let code = children->asStringArray->Js.Array2.joinWith("");
+        <InlineCode> code->s </InlineCode>;
+      } else if (isObject(children)) {
+        // Scenario 2
+        children->asElement;
+      } else {
+        // Scenario 3
+        let code = unknownAsString(children);
+        makeCodeElement(~code, ~metastring, ~lang);
+      };
     };
   };
 
   module P = {
     [@react.component]
     let make = (~children) => {
-      <p className="text-lg leading-4 my-6 text-inherit">
-        children
-      </p>;
+      <p className="text-lg leading-4 my-6 text-inherit"> children </p>;
     };
   };
 
@@ -218,10 +263,7 @@ module Md = {
           <a
             href={"#" ++ refPrefix ++ id}
             className="no-underline text-inherit">
-            <span
-              className="hover:border-b border-fire">
-              children
-            </span>
+            <span className="hover:border-b border-fire"> children </span>
             <sup
               style={ReactDOMRe.Style.make(
                 ~left="0.05rem",
@@ -304,9 +346,7 @@ module Md = {
             /* Unknown Scenario */
         };
 
-      <li className="md-li mt-4 leading-4 ml-8 text-lg">
-        elements
-      </li>;
+      <li className="md-li mt-4 leading-4 ml-8 text-lg"> elements </li>;
     };
   };
 };
@@ -314,9 +354,7 @@ module Md = {
 module Small = {
   [@react.component]
   let make = (~children) => {
-    <p className="text-base font-overpass leading-4">
-      children
-    </p>;
+    <p className="text-base font-overpass leading-4"> children </p>;
   };
 };
 
@@ -325,10 +363,7 @@ module Xsmall = {
 
   [@react.component]
   let make = (~children) => {
-    <p
-      className="text-sm font-overpass text-normal leading-3">
-      children
-    </p>;
+    <p className="text-sm font-overpass text-normal leading-3"> children </p>;
   };
 };
 
@@ -346,9 +381,7 @@ module Quote = {
   [@react.component]
   let make = (~bold=true, ~children) => {
     <div className={"flex flex-row mt-5 mb-3 " ++ (bold ? "font-bold" : "")}>
-      <div
-        className="border-l-2 border-fire w-2 mt-3 mb-3 md:mt-3 md:mb-3"
-      />
+      <div className="border-l-2 border-fire w-2 mt-3 mb-3 md:mt-3 md:mb-3" />
       <div
         className="leading-4 text-lg pl-5 md:pl-8 md:text-2xl italic  md:pr-10 md:py-5">
         children

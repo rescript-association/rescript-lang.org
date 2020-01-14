@@ -30,7 +30,7 @@ module Components = {
         .
         "className": option(string),
         "metastring": option(string),
-        "children": ReasonReact.reactElement,
+        "children": Md.Code.unknown,
       }),
     [@bs.optional]
     pre: React.component(props),

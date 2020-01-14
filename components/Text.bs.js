@@ -142,6 +142,56 @@ var Pre = {
   make: Text$Md$Pre
 };
 
+function Text$Md$InlineCode(Props) {
+  var children = Props.children;
+  return React.createElement("code", {
+              className: "px-1 rounded-sm text-inherit font-mono bg-snow"
+            }, children);
+}
+
+var InlineCode = {
+  make: Text$Md$InlineCode
+};
+
+function typeOf (thing){{ return typeof thing; }};
+
+function isArray (thing){{ return thing instanceof Array; }};
+
+function isObject (thing){{ return thing instanceof Object; }};
+
+function isString (thing){{ return thing instanceof String; }};
+
+function makeCodeElement(code, metastring, lang) {
+  var codeElement;
+  if (metastring !== undefined) {
+    var metaSplits = Belt_List.fromArray(metastring.split(" "));
+    codeElement = Belt_List.has(metaSplits, "example", (function (prim, prim$1) {
+            return prim === prim$1;
+          })) ? React.createElement(CodeExample.make, {
+            code: code,
+            lang: lang
+          }) : (
+        Belt_List.has(metaSplits, "sig", (function (prim, prim$1) {
+                return prim === prim$1;
+              })) ? React.createElement(CodeSignature.make, {
+                code: code,
+                lang: lang
+              }) : React.createElement(CodeExample.make, {
+                code: code,
+                lang: lang
+              })
+      );
+  } else {
+    codeElement = React.createElement(CodeExample.make, {
+          code: code,
+          lang: lang
+        });
+  }
+  return React.createElement("div", {
+              className: "font-mono block leading-tight"
+            }, codeElement);
+}
+
 function Text$Md$Code(Props) {
   var className = Props.className;
   var metastring = Props.metastring;
@@ -163,49 +213,25 @@ function Text$Md$Code(Props) {
   } else {
     lang = "re";
   }
-  var codeElement;
-  if (metastring !== undefined) {
-    var metaSplits = Belt_List.fromArray(metastring.split(" "));
-    codeElement = Belt_List.has(metaSplits, "example", (function (prim, prim$1) {
-            return prim === prim$1;
-          })) ? React.createElement(CodeExample.make, {
-            code: children,
-            lang: lang
-          }) : (
-        Belt_List.has(metaSplits, "sig", (function (prim, prim$1) {
-                return prim === prim$1;
-              })) ? React.createElement(CodeSignature.make, {
-                code: children,
-                lang: lang
-              }) : React.createElement(CodeExample.make, {
-                code: children,
-                lang: lang
-              })
-      );
+  if (isArray(children)) {
+    var code = children.join("");
+    return React.createElement(Text$Md$InlineCode, {
+                children: Util.ReactStuff.s(code)
+              });
+  } else if (isObject(children)) {
+    return children;
   } else {
-    codeElement = React.createElement(CodeExample.make, {
-          code: children,
-          lang: lang
-        });
+    return makeCodeElement(children, metastring, lang);
   }
-  return React.createElement("div", {
-              className: "font-mono block leading-tight"
-            }, codeElement);
 }
 
 var Code = {
+  typeOf: typeOf,
+  isArray: isArray,
+  isObject: isObject,
+  isString: isString,
+  makeCodeElement: makeCodeElement,
   make: Text$Md$Code
-};
-
-function Text$Md$InlineCode(Props) {
-  var children = Props.children;
-  return React.createElement("code", {
-              className: "px-1 rounded-sm text-inherit font-mono bg-snow"
-            }, children);
-}
-
-var InlineCode = {
-  make: Text$Md$InlineCode
 };
 
 function Text$Md$P(Props) {
@@ -280,9 +306,9 @@ var Ol = {
   make: Text$Md$Ol
 };
 
-function typeOf (thing){{ return typeof thing; }};
+function typeOf$1 (thing){{ return typeof thing; }};
 
-function isArray (thing){{ return thing instanceof Array; }};
+function isArray$1 (thing){{ return thing instanceof Array; }};
 
 function isSublist (element){{
         if(element == null || element.props == null) {
@@ -295,7 +321,7 @@ function isSublist (element){{
 function Text$Md$Li(Props) {
   var children = Props.children;
   var elements;
-  if (isArray(children)) {
+  if (isArray$1(children)) {
     if (children.length !== 2) {
       elements = React.createElement("p", undefined, children);
     } else {
@@ -303,7 +329,7 @@ function Text$Md$Li(Props) {
       elements = isSublist(potentialSublist) ? children : React.createElement("p", undefined, children);
     }
   } else {
-    typeOf(children) === "string";
+    typeOf$1(children) === "string";
     elements = React.createElement("p", undefined, children);
   }
   return React.createElement("li", {
@@ -312,16 +338,16 @@ function Text$Md$Li(Props) {
 }
 
 var Li = {
-  typeOf: typeOf,
-  isArray: isArray,
+  typeOf: typeOf$1,
+  isArray: isArray$1,
   isSublist: isSublist,
   make: Text$Md$Li
 };
 
 var Md = {
   Pre: Pre,
-  Code: Code,
   InlineCode: InlineCode,
+  Code: Code,
   P: P$1,
   A: A,
   Ul: Ul,
