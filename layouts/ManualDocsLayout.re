@@ -5,9 +5,11 @@
 {|
 let hljs = require('highlight.js/lib/highlight');
 let javascriptHighlightJs = require('highlight.js/lib/languages/javascript');
+let ocamlHighlightJs = require('highlight.js/lib/languages/ocaml');
 let reasonHighlightJs = require('reason-highlightjs');
 hljs.registerLanguage('reason', reasonHighlightJs);
 hljs.registerLanguage('javascript', javascriptHighlightJs);
+hljs.registerLanguage('ocaml', ocamlHighlightJs);
 |};
 
 module Link = Next.Link;
