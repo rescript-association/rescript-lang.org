@@ -164,6 +164,7 @@ module ProseMd = {
       ~ul=Md.Ul.make,
       ~ol=Md.Ol.make,
       ~a=Md.A.make,
+      ~table=Md.Table.make,
       ~pre=Pre.make,
       ~inlineCode=Md.InlineCode.make,
       ~code=Md.Code.make,

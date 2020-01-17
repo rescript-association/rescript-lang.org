@@ -23,6 +23,8 @@ module Components = {
     [@bs.optional]
     ol: React.component(props),
     [@bs.optional]
+    table: React.component(props),
+    [@bs.optional]
     inlineCode: React.component(props),
     [@bs.optional]
     code:
@@ -57,6 +59,7 @@ module Components = {
       ~h5=H5.make,
       ~ul=Md.Ul.make,
       ~ol=Md.Ol.make,
+      ~table=Md.Table.make,
       ~a=Md.A.make,
       ~pre=Md.Pre.make,
       ~inlineCode=Md.InlineCode.make,

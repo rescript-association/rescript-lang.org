@@ -131,6 +131,17 @@ module Md = {
     };
   };
 
+  module Table = {
+    [@react.component]
+    let make = (~children) => {
+      <div className="overflow-x-auto mt-2">
+        <table className="md-table border-2 border-night-dark">
+          children
+        </table>
+      </div>;
+    };
+  };
+
   module Code = {
     type unknown;
     let typeOf: unknown => string = [%raw thing => "{ return typeof thing; }"];
@@ -187,6 +198,9 @@ module Md = {
           }
         };
 
+      Js.log(className);
+      Js.log(metastring);
+      Js.log(children);
       /*
         Converts the given children provided by remark, depending on
         given scenarios.

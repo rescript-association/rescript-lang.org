@@ -153,6 +153,19 @@ var InlineCode = {
   make: Text$Md$InlineCode
 };
 
+function Text$Md$Table(Props) {
+  var children = Props.children;
+  return React.createElement("div", {
+              className: "overflow-x-auto mt-2"
+            }, React.createElement("table", {
+                  className: "md-table border-2 border-night-dark"
+                }, children));
+}
+
+var Table = {
+  make: Text$Md$Table
+};
+
 function typeOf (thing){{ return typeof thing; }};
 
 function isArray (thing){{ return thing instanceof Array; }};
@@ -213,6 +226,9 @@ function Text$Md$Code(Props) {
   } else {
     lang = "re";
   }
+  console.log(className);
+  console.log(metastring);
+  console.log(children);
   if (isArray(children)) {
     var code = children.join("");
     return React.createElement(Text$Md$InlineCode, {
@@ -347,6 +363,7 @@ var Li = {
 var Md = {
   Pre: Pre,
   InlineCode: InlineCode,
+  Table: Table,
   Code: Code,
   P: P$1,
   A: A,

@@ -207,6 +207,7 @@ var components$1 = {
   h5: $$Text.H5.make,
   ul: $$Text.Md.Ul.make,
   ol: $$Text.Md.Ol.make,
+  table: $$Text.Md.Table.make,
   inlineCode: $$Text.Md.InlineCode.make,
   code: $$Text.Md.Code.make,
   pre: SidebarLayout$ProseMd$Pre,
