@@ -37,19 +37,21 @@ Reason's lexical scoping is exactly the same as OCaml's, but let bindings syntac
   <tbody>
   <tr>
     <td>
-      <pre><code>let _ =
+      <pre>{`let _ =
   let msg = "Hello" in
   print_string msg;
   let msg2 = "Goodbye" in
-  print_string msg2</code></pre>
+  print_string msg2`}</pre>
     </td>
     <td>
-      <pre><code>{
-  let msg = "Hello";
-  print_string(msg);
-  let msg2 = "Goodbye";
-  print_string(msg2)
-};</code></pre>
+      <pre>{
+`
+{
+let msg = "Hello";
+print_string(msg);
+let msg2 = "Goodbye";
+print_string(msg2)
+};`}</pre>
     </td>
   </tr>
 </tbody>
@@ -64,7 +66,7 @@ Reason's `{}` syntax removes many commonly reported pain points in OCaml's synta
 
 ## Local Scope Vs. Module Body
 
-In Reason, everything that can go between the `{}` in [Local Scopes](#local-scope) and in module bodies. You can usually even cut/paste code between the two contexts. In OCaml, the syntaxes for the two contexts are very different. Local scope requires trailing `in`, but module bodies do not and some imperative statements must be assigned to `_` or `()`, or else use double `;;`.
+In Reason, everything that can go between the `{}` in [Local Scopes](#Local%20Scope) and in module bodies. You can usually even cut/paste code between the two contexts. In OCaml, the syntaxes for the two contexts are very different. Local scope requires trailing `in`, but module bodies do not and some imperative statements must be assigned to `_` or `()`, or else use double `;;`.
 
 <table>
   <thead>
@@ -76,21 +78,21 @@ In Reason, everything that can go between the `{}` in [Local Scopes](#local-scop
   <tbody>
     <tr>
       <td>
-        <pre><code>let ten = 10
+        <pre>{`let ten = 10
 let () = imperativeFunc ten ten
-let () = imperativeFunc 0 0</code></pre>
+let () = imperativeFunc 0 0`}</pre>
       </td>
       <td>
-        <pre><code>let ten = 10;
+        <pre>{`let ten = 10;
 imperativeFunc(ten, ten);
-imperativeFunc(0, 0);</code></pre>
+imperativeFunc(0, 0);`}</pre>
       </td>
     </tr>
     <tr>
       <td>
-        <pre><code>let ten = 10;;
+        <pre>{`let ten = 10;;
 imperativeFunc ten ten;;
-imperativeFunc 0 0;;</code></pre>
+imperativeFunc 0 0;;`}</pre>
       </td>
       <td>
         Same as above
@@ -107,9 +109,9 @@ imperativeFunc 0 0;;</code></pre>
   <tbody>
     <tr>
       <td>
-        <pre><code>let ten = 10 in
+        <pre>{`let ten = 10 in
 let _ = imperativeFunc ten ten in
-imperativeFunc 0 0</code></pre>
+imperativeFunc 0 0`}</pre>
       </td>
       <td>
         Same as above
@@ -117,10 +119,10 @@ imperativeFunc 0 0</code></pre>
     </tr>
     <tr>
       <td>
-        <pre><code>let ten = 10 in begin
+        <pre>{`let ten = 10 in begin
   imperativeFunc ten ten;
   imperativeFunc 0 0
-end</code></pre>
+end`}</pre>
       </td>
       <td>
         Same as above
@@ -128,10 +130,10 @@ end</code></pre>
     </tr>
     <tr>
       <td>
-        <pre><code>let ten = 10 in (
+        <pre>{`let ten = 10 in (
   imperativeFunc ten ten;
   imperativeFunc 0 0
-)</code></pre>
+)`}</pre>
       </td>
       <td>
         Same as above
@@ -162,24 +164,27 @@ In Reason, record values resemble JavaScript, using `:` instead of `=`.
   <tbody>
     <tr>
       <td>
-        <pre><code>let myRec = {x = 0; y = 10}</code></pre>
+        <pre>{`let myRec = {x = 0; y = 10}`}</pre>
       </td>
       <td>
-        <pre><code>let myRec = {x: 0, y: 10};</code></pre>
+        <pre>{`let myRec = {x: 0, y: 10};`}</pre>
       </td>
     </tr>
     <tr>
       <td>
-        <pre><code>let myFuncs = {
+        <pre>
+{
+`let myFuncs = {
   myFun = (fun x -> x + 1);
   your = (fun a b -> a + b);
-}</code></pre>
+}
+`}</pre>
       </td>
       <td>
-        <pre><code>let myFuncs = {
+        <pre>{`let myFuncs = {
   myFun: (x) => x + 1,
   your: (a, b) => a + b
-};</code></pre>
+};`}</pre>
       </td>
     </tr>
   </tbody>
@@ -239,10 +244,10 @@ and the multicase lambda is a natural extension of the single case lambda.
         Lambda
       </td>
       <td>
-        <pre><code>fun pat -> e</code></pre>
+        <pre>fun pat -> e</pre>
       </td>
       <td>
-        <pre><code>fun pat => e</code></pre>
+        <pre>fun pat => e</pre>
       </td>
     </tr>
     <tr>
@@ -250,10 +255,10 @@ and the multicase lambda is a natural extension of the single case lambda.
         One match case
       </td>
       <td>
-        <pre><code>function | pat -> e</code></pre>
+        <pre>function | pat -> e</pre>
       </td>
       <td>
-        <pre><code>fun | pat => e</code></pre>
+        <pre>fun | pat => e</pre>
       </td>
     </tr>
     <tr>
@@ -261,12 +266,12 @@ and the multicase lambda is a natural extension of the single case lambda.
         Many cases
       </td>
       <td>
-        <pre><code>function | pat -> e
-         | pat2 -> e</code></pre>
+        <pre>function | pat -> e
+         | pat2 -> e</pre>
       </td>
       <td>
-        <pre><code>fun | pat => e
-    | pat2 => e</code></pre>
+        <pre>fun | pat => e
+    | pat2 => e</pre>
       </td>
     </tr>
   </tbody>
@@ -280,13 +285,9 @@ everything else), wrapping them in parenthesis after appending
 
 ```reason
 (arg: argType) => returnValue;
-```
 
-```reason
 (arg: argType) => (arg2: arg2Type) => returnValue;
-```
 
-```reason
 (arg: argType, arg2: arg2Type) => returnValue;
 ```
 
@@ -363,18 +364,18 @@ type and returns a new type.
   <tbody>
     <tr>
       <td>
-        <pre><code>let x: int list = [2]
+        <pre>{`let x: int list = [2]
 type listOfListOfInts = int list list
 type ('a, 'b) tup = ('a * 'b)
 type pairs = (int, int) tup list
-let tuples: pairs = [(2, 3)]</code></pre>
+let tuples: pairs = [(2, 3)]`}</pre>
       </td>
       <td>
-        <pre><code>let x: list(int) = [2];
+        <pre>{`let x: list(int) = [2];
 type listOfListOfInts = list(list(int));
 type tup('a, 'b) = ('a, 'b);
 type pairs = list(tup(int, int));
-let tuples: pairs = [(2, 3)];</code></pre>
+let tuples: pairs = [(2, 3)];`}</pre>
       </td>
     </tr>
   </tbody>
@@ -436,54 +437,54 @@ OCaml | Reason
   <tbody>
     <tr>
       <td>
-        <pre><code>type myVariant =
+        <pre>{`type myVariant =
   | HasNothing
   | HasSingleInt of int
   | HasSingleTuple of (int * int)
   | HasMultipleInts of int * int
-  | HasMultipleTuples of (int * int) * (int * int)</code></pre>
+  | HasMultipleTuples of (int * int) * (int * int)`}</pre>
       </td>
       <td>
-        <pre><code>type myVariant =
+        <pre>{`type myVariant =
   | HasNothing
   | HasSingleInt(int)
   | HasSingleTuple((int, int))
   | HasMultipleInts(int, int)
-  | HasMultipleTuples((int, int), (int, int));</code></pre>
+  | HasMultipleTuples((int, int), (int, int));`}</pre>
       </td>
     </tr>
     <tr>
       <td>
-        <pre><code>let a = HasSingleInt 10
+        <pre>{`let a = HasSingleInt 10
 let a = HasSingleTuple (10, 10)
 let a = HasMultipleInts (10, 10)
-let a = HasMultipleTuples ((10, 10), (10, 10))</code></pre>
+let a = HasMultipleTuples ((10, 10), (10, 10))`}</pre>
       </td>
       <td>
-        <pre><code>let a = HasSingleInt(10);
+        <pre>{`let a = HasSingleInt(10);
 let a = HasSingleTuple((10, 10));
 let a = HasMultipleInts(10, 10);
-let a = HasMultipleTuples((10, 10), (10, 10));</code></pre>
+let a = HasMultipleTuples((10, 10), (10, 10));`}</pre>
       </td>
     </tr>
     <tr>
       <td>
-        <pre><code>let res x = match x with
+        <pre>{`let res x = match x with
   | HasNothing -> 0
   | HasSingleInt x -> 0
   | HasSingleTuple (x, y) -> 0
   | HasMultipleInts (x, y) -> 0
-  | HasMultipleTuples ((x, y), (q, r)) -> 0</code></pre>
+  | HasMultipleTuples ((x, y), (q, r)) -> 0`}</pre>
       </td>
       <td>
-        <pre><code>let res = (x) =>
+        <pre>{`let res = (x) =>
   switch (x) {
   | HasNothing => 0
   | HasSingleInt(x) => 0
   | HasSingleTuple((x, y)) => 0
   | HasMultipleInts(x, y) => 0
   | HasMultipleTuples((x, y), (q, r)) => 0
-  };</code></pre>
+  };`}</pre>
       </td>
     </tr>
   </tbody>
@@ -501,20 +502,20 @@ let a = HasMultipleTuples((10, 10), (10, 10));</code></pre>
   <tbody>
     <tr>
       <td>
-        <pre><code>let res = match x with
+        <pre>{`let res = match x with
   | A (x, y) -> match y with
     | None -> 0
     | Some i -> 10
-  | B (x, y) -> 0</code></pre>
+  | B (x, y) -> 0`}</pre>
       </td>
       <td>
-        <pre><code>let res = switch (x) {
+        <pre>{`let res = switch (x) {
   | A((x, y)) => switch (y) {
       | None => 0
       | Some(i) => 10
     }
   | B((x, y)) => 0
-};</code></pre>
+};`}</pre>
       </td>
     </tr>
   </tbody>
@@ -546,7 +547,7 @@ Reason's mandatory `{}` around `switch` cases prevents this issue.
   <tbody>
     <tr>
       <td>
-        <pre><code>module type MySig = sig
+        <pre>{`module type MySig = sig
   type t = int
   val x: int
 end
@@ -558,10 +559,10 @@ module MyModule = struct
   module NestedModule = struct
      let msg = "hello";
   end
-end</code></pre>
+end`}</pre>
       </td>
       <td>
-        <pre><code>module type MySig = {
+        <pre>{`module type MySig = {
   type t = int;
   let x: int;
 };
@@ -573,7 +574,7 @@ module MyModule = {
   module NestedModule = {
     let msg = "hello";
   };
-};</code></pre>
+};`}</pre>
       </td>
     </tr>
   </tbody>
@@ -591,14 +592,14 @@ module MyModule = {
   <tbody>
     <tr>
       <td>
-        <pre><code>module type FType =
+        <pre>{`module type FType =
   functor (A: ASig) ->
-  functor (B: BSig) -> Result</code></pre>
+  functor (B: BSig) -> Result`}</pre>
       </td>
       <td>
-        <pre><code>module type FType =
+        <pre>{`module type FType =
   (A: ASig) =>
-  (B: BSig) => Result;</code></pre>
+  (B: BSig) => Result;`}</pre>
       </td>
     </tr>
   </tbody>
@@ -616,38 +617,38 @@ module MyModule = {
   <tbody>
     <tr>
       <td>
-        <pre><code>module F =
+        <pre>{`module F =
   functor (A: ASig) ->
-  functor (B: BSig) -> struct end</code></pre>
+  functor (B: BSig) -> struct end`}</pre>
       </td>
       <td>
-        <pre><code>module F =
+        <pre>{`module F =
   (A: ASig) =>
-  (B: BSig) => {};</code></pre>
+  (B: BSig) => {};`}</pre>
       </td>
     </tr>
     <tr>
       <td>
-        <pre><code>module F = functor (A: ASig) (B: BSig) -> struct end</code></pre>
+        <pre>{`module F = functor (A: ASig) (B: BSig) -> struct end`}</pre>
       </td>
       <td>
-        <pre><code>module F = (A: ASig, B: BSig) => {};</code></pre>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <pre><code>module F (A: ASig) (B: BSig) = struct end</code></pre>
-      </td>
-      <td>
-        <pre><code>module F = (A: ASig, B: BSig) => {};</code></pre>
+        <pre>{`module F = (A: ASig, B: BSig) => {};`}</pre>
       </td>
     </tr>
     <tr>
       <td>
-        <pre><code>module Res = F(A)(B)</code></pre>
+        <pre>{`module F (A: ASig) (B: BSig) = struct end`}</pre>
       </td>
       <td>
-        <pre><code>module Res = F(A, B);</code></pre>
+        <pre>{`module F = (A: ASig, B: BSig) => {};`}</pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <pre>{`module Res = F(A)(B)`}</pre>
+      </td>
+      <td>
+        <pre>{`module Res = F(A, B);`}</pre>
       </td>
     </tr>
   </tbody>
@@ -677,16 +678,16 @@ was a tuple with infix `,` comma.
   <tbody>
     <tr>
       <td>
-        <pre><code>let myFuncs = {
+        <pre>{`let myFuncs = {
   myFun = (fun x -> x + 1);
   your = (fun a b -> a + b);
-}</code></pre>
+}`}</pre>
       </td>
       <td>
-        <pre><code>let myFuncs = {
+        <pre>{`let myFuncs = {
   myFun: (x) => x + 1,
   your: (a, b) => a + b
-};</code></pre>
+};`}</pre>
       </td>
     </tr>
   </tbody>
@@ -705,19 +706,19 @@ was a tuple with infix `,` comma.
   <tbody>
     <tr>
       <td>
-        <pre><code>let x = match prnt with
+        <pre>{`let x = match prnt with
   | None -> fun a -> blah
   (* Extra () required ! *)
   | Some "_" -> (fun a -> ())
-  | Some "ml" -> blah</code></pre>
+  | Some "ml" -> blah`}</pre>
       </td>
       <td>
-        <pre><code>let x =
+        <pre>{`let x =
   switch (prnt) {
   | None => (a) => blah
   | Some("_") => (a) => ()
   | Some("ml") => blah
-  };</code></pre>
+  };`}</pre>
       </td>
     </tr>
   </tbody>
@@ -747,16 +748,16 @@ for entire rows in pattern matching.
   <tbody>
     <tr>
       <td>
-        <pre><code>let ppp = match MyThing 20 with
+        <pre>{`let ppp = match MyThing 20 with
   | (MyThing x as ppp)
-  | (YourThing x as ppp) -> ppp;</code></pre>
+  | (YourThing x as ppp) -> ppp;`}</pre>
       </td>
       <td>
-        <pre><code>let ppp =
+        <pre>{`let ppp =
   switch (MyThing(20)) {
   | MyThing(x) as ppp
   | YourThing(x) as ppp => ppp
-  };</code></pre>
+  };`}</pre>
       </td>
     </tr>
   </tbody>
