@@ -8,10 +8,12 @@ let javascriptHighlightJs = require('highlight.js/lib/languages/javascript');
 let ocamlHighlightJs = require('highlight.js/lib/languages/ocaml');
 let reasonHighlightJs = require('reason-highlightjs');
 let bashHighlightJs = require('highlight.js/lib/languages/bash');
+let jsonHighlightJs = require('highlight.js/lib/languages/json');
 hljs.registerLanguage('reason', reasonHighlightJs);
 hljs.registerLanguage('javascript', javascriptHighlightJs);
 hljs.registerLanguage('ocaml', ocamlHighlightJs);
 hljs.registerLanguage('sh', bashHighlightJs);
+hljs.registerLanguage('json', jsonHighlightJs);
 |};
 
 module Link = Next.Link;
@@ -53,7 +55,7 @@ let basicNavs = [|
   {name: "Pattern Matching", href: "/docs/manual/latest/pattern-matching"},
   {name: "Mutation", href: "/docs/manual/latest/mutation"},
   {name: "Imperative Loops", href: "/docs/manual/latest/imperative-loops"},
-  {name: "JSX", href: "/docs/manual/latest/JSX"},
+  {name: "JSX", href: "/docs/manual/latest/jsx"},
   {name: "External", href: "/docs/manual/latest/external"},
   {name: "Exception", href: "/docs/manual/latest/exception"},
   {name: "Object", href: "/docs/manual/latest/object"},
@@ -61,9 +63,31 @@ let basicNavs = [|
   {name: "Promise", href: "/docs/manual/latest/promise"},
 |];
 
+let javascriptNavs = [|
+  NavItem.{name: "Interop", href: "/docs/manual/latest/interop"},
+  {name: "Syntax Cheatsheet", href: "/docs/manual/latest/syntax-cheatsheet"},
+  {name: "Libraries", href: "/docs/manual/latest/libraries"},
+  {name: "Converting from JS", href: "/docs/manual/latest/converting-from-js"},
+|];
+
+let nativeNavs = [|
+  NavItem.{name: "Native", href: "/docs/manual/latest/native"},
+  {name: "Native Quickstart", href: "/docs/manual/latest/native-quickstart"},
+  {name: "Converting from OCaml", href: "/docs/manual/latest/converting-from-ocaml"},
+|];
+
+let extraNavs = [|
+  NavItem.{name: "FAQ", href: "/docs/manual/latest/faq"},
+  {name: "Comparison to OCaml", href: "/docs/manual/latest/comparison-to-ocaml"},
+  {name: "Newcomer Examples", href: "/docs/manual/latest/newcomer-examples"},
+|];
+
 let categories = [|
   Category.{name: "Overview", items: overviewNavs},
   {name: "Basics", items: basicNavs},
+  {name: "JavaScript", items: javascriptNavs},
+  {name: "Native", items: nativeNavs},
+  {name: "Extra", items: extraNavs},
 |];
 
 module Docs = {

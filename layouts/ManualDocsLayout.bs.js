@@ -17,10 +17,12 @@ let javascriptHighlightJs = require('highlight.js/lib/languages/javascript');
 let ocamlHighlightJs = require('highlight.js/lib/languages/ocaml');
 let reasonHighlightJs = require('reason-highlightjs');
 let bashHighlightJs = require('highlight.js/lib/languages/bash');
+let jsonHighlightJs = require('highlight.js/lib/languages/json');
 hljs.registerLanguage('reason', reasonHighlightJs);
 hljs.registerLanguage('javascript', javascriptHighlightJs);
 hljs.registerLanguage('ocaml', ocamlHighlightJs);
 hljs.registerLanguage('sh', bashHighlightJs);
+hljs.registerLanguage('json', jsonHighlightJs);
 
 ;
 
@@ -173,7 +175,7 @@ var basicNavs = /* array */[
       "href"
     ], [
       "JSX",
-      "/docs/manual/latest/JSX"
+      "/docs/manual/latest/jsx"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
@@ -212,6 +214,85 @@ var basicNavs = /* array */[
     ])
 ];
 
+var javascriptNavs = /* array */[
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Interop",
+      "/docs/manual/latest/interop"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Syntax Cheatsheet",
+      "/docs/manual/latest/syntax-cheatsheet"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Libraries",
+      "/docs/manual/latest/libraries"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Converting from JS",
+      "/docs/manual/latest/converting-from-js"
+    ])
+];
+
+var nativeNavs = /* array */[
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Native",
+      "/docs/manual/latest/native"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Native Quickstart",
+      "/docs/manual/latest/native-quickstart"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Converting from OCaml",
+      "/docs/manual/latest/converting-from-ocaml"
+    ])
+];
+
+var extraNavs = /* array */[
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "FAQ",
+      "/docs/manual/latest/faq"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Comparison to OCaml",
+      "/docs/manual/latest/comparison-to-ocaml"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Newcomer Examples",
+      "/docs/manual/latest/newcomer-examples"
+    ])
+];
+
 var categories = /* array */[
   /* record */Caml_chrome_debugger.record([
       "name",
@@ -226,6 +307,27 @@ var categories = /* array */[
     ], [
       "Basics",
       basicNavs
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "items"
+    ], [
+      "JavaScript",
+      javascriptNavs
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "items"
+    ], [
+      "Native",
+      nativeNavs
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "items"
+    ], [
+      "Extra",
+      extraNavs
     ])
 ];
 
@@ -323,6 +425,9 @@ export {
   Category ,
   overviewNavs ,
   basicNavs ,
+  javascriptNavs ,
+  nativeNavs ,
+  extraNavs ,
   categories ,
   Docs ,
   Prose ,
