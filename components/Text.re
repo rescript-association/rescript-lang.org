@@ -198,9 +198,6 @@ module Md = {
           }
         };
 
-      Js.log(className);
-      Js.log(metastring);
-      Js.log(children);
       /*
         Converts the given children provided by remark, depending on
         given scenarios.

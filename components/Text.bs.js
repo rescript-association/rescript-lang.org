@@ -226,9 +226,6 @@ function Text$Md$Code(Props) {
   } else {
     lang = "re";
   }
-  console.log(className);
-  console.log(metastring);
-  console.log(children);
   if (isArray(children)) {
     var code = children.join("");
     return React.createElement(Text$Md$InlineCode, {
