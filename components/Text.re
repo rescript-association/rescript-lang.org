@@ -15,13 +15,6 @@ module Anchor = {
   };
 };
 
-module Box = {
-  [@react.component]
-  let make = (~children) => {
-    <div className="mt-12"> children </div>;
-  };
-};
-
 module H1 = {
   [@react.component]
   let make = (~children) => {
@@ -69,32 +62,6 @@ module H5 = {
       className="text-xs leading-2 font-overpass font-semibold uppercase tracking-wide">
       children
     </h5>;
-  };
-};
-
-module Overline = {
-  [@react.component]
-  let make = (~underline=false, ~children) => {
-    let className =
-      "font-overpass font-black text-night-dark text-xl mt-5"
-      ++ (underline ? " pb-3 border-b" : "");
-
-    <div className> children </div>;
-  };
-};
-
-module P = {
-  type spacing = [ | `none | `default];
-
-  [@react.component]
-  let make = (~spacing: spacing=`default, ~children) => {
-    let spacingClass =
-      switch (spacing) {
-      | `none => ""
-      | `default => "mt-3"
-      };
-    let className = "text-lg leading-4 " ++ spacingClass;
-    <p className> children </p>;
   };
 };
 
@@ -160,7 +127,7 @@ module Md = {
     external unknownAsString: unknown => string = "%identity";
 
     let makeCodeElement = (~code, ~metastring, ~lang) => {
-      let baseClass = "font-mono block leading-tight";
+      let baseClass = "md-code font-mono block leading-tight";
       let codeElement =
         switch (metastring) {
         | None => <CodeExample code lang />
@@ -349,12 +316,11 @@ module Md = {
           };
         } else if (typeOf(children) === "string") {
           <p>
-             {Obj.magic(children)->ReasonReact.string} </p>;
+             {Unsafe.elementAsString(children)->ReasonReact.string} </p>;
             /* Scenario 1 */
         } else {
-          <p>
-             children </p>;
-            /* Unknown Scenario */
+          children;
+          /* Unknown Scenario */
         };
 
       <li className="md-li mt-4 leading-4 ml-8 text-lg"> elements </li>;
@@ -362,53 +328,10 @@ module Md = {
   };
 };
 
-module Small = {
+module Introduction = {
+  [@genType]
   [@react.component]
   let make = (~children) => {
-    <p className="text-base font-overpass leading-4"> children </p>;
-  };
-};
-
-module Xsmall = {
-  let component = ReasonReact.statelessComponent("Text.Xsmall");
-
-  [@react.component]
-  let make = (~children) => {
-    <p className="text-sm font-overpass text-normal leading-3"> children </p>;
-  };
-};
-
-module Lead = {
-  [@react.component]
-  let make = (~children) => {
-    <p
-      className="text-2xl font-overpass font-medium leading-4 mt-2 text-night-dark">
-      children
-    </p>;
-  };
-};
-
-module Quote = {
-  [@react.component]
-  let make = (~bold=true, ~children) => {
-    <div className={"flex flex-row mt-5 mb-3 " ++ (bold ? "font-bold" : "")}>
-      <div className="border-l-2 border-fire w-2 mt-3 mb-3 md:mt-3 md:mb-3" />
-      <div
-        className="leading-4 text-lg pl-5 md:pl-8 md:text-2xl italic  md:pr-10 md:py-5">
-        children
-      </div>
-    </div>;
-  };
-};
-
-/* Page for centered, readable text (like /about) */
-module Page = {
-  [@react.component]
-  let make = (~children) => {
-    <div className="flex sm:justify-center mb-24">
-      <div className="pt-12 px-5 xl:px-0 sm:w-4/5 lg:w-3/5 xl:w-1/2">
-        children
-      </div>
-    </div>;
+    <p className="text-xl"> children </p>;
   };
 };

@@ -24,20 +24,6 @@ module Link = Next.Link;
     it easier on the eyes
  */
 module ApiMd = {
-  module Anchor = {
-    [@react.component]
-    let make = (~id: string) => {
-      let style =
-        ReactDOMRe.Style.make(~position="absolute", ~top="-7rem", ());
-      <span className="relative">
-        <a className="mr-2 hover:cursor-pointer" href={"#" ++ id}>
-          {j|#|j}->s
-        </a>
-        <a style id />
-      </span>;
-    };
-  };
-
   module InvisibleAnchor = {
     [@react.component]
     let make = (~id: string) => {
@@ -66,12 +52,6 @@ module ApiMd = {
         // Here we know that children is always a string (## headline)
         <InvisibleAnchor id={children->Unsafe.elementAsString} />
         <div className="border-b border-gray-200 my-20" />
-        /*
-         <h2
-           className="inline text-xl leading-3 font-overpass font-medium">
-           <Anchor id={children->Unsafe.elementAsString} />
-         </h2>
-         */
       </>;
     };
   };
@@ -115,8 +95,10 @@ module ProseMd = {
     let make = (~id: string) => {
       let style =
         ReactDOMRe.Style.make(~position="absolute", ~top="-7rem", ());
-      <span style={ReactDOMRe.Style.make(~position="relative", ())}>
-        <a className="mr-2 hover:cursor-pointer" href={"#" ++ id}>
+      <span className="inline group relative -mt-2">
+        <a
+          className="invisible text-night-light opacity-50 -ml-6 align-middle pr-2 text-xl hover:opacity-100 hover:text-night-light hover:cursor-pointer group-hover:visible"
+          href={"#" ++ id}>
           {j|#|j}->s
         </a>
         <a style id />
@@ -130,7 +112,7 @@ module ProseMd = {
       <>
         // Here we know that children is always a string (## headline)
         <h2
-          className="mt-12 text-3xl leading-1 tracking-tight font-overpass font-medium font-black text-night-dark">
+          className="group mt-12 text-3xl leading-1 tracking-tight font-overpass font-medium font-black text-night-dark">
           <Anchor id={children->Unsafe.elementAsString} />
           children
         </h2>
@@ -148,7 +130,7 @@ module ProseMd = {
   module P = {
     [@react.component]
     let make = (~children) => {
-      <p className="text-base mt-3 leading-4 text-night"> children </p>;
+      <p className="text-inherit mt-3 leading-4 text-night"> children </p>;
     };
   };
 
@@ -530,7 +512,7 @@ module Sidebar = {
                 toggle();
               }}
               className="md:hidden h-16">
-              <Icon.Close/>
+              <Icon.Close />
             </button>
           </div>
           preludeSection

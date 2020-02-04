@@ -4,7 +4,6 @@ import * as Util from "../common/Util.bs.js";
 import * as React from "react";
 import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
 import * as CodeExample from "./CodeExample.bs.js";
-import * as ReasonReact from "reason-react/src/ReasonReact.js";
 import * as CodeSignature from "./CodeSignature.bs.js";
 
 var inline = "no-underline border-b border-night-dark hover:border-bs-purple text-inherit";
@@ -32,17 +31,6 @@ function Text$Anchor(Props) {
 
 var Anchor = {
   make: Text$Anchor
-};
-
-function Text$Box(Props) {
-  var children = Props.children;
-  return React.createElement("div", {
-              className: "mt-12"
-            }, children);
-}
-
-var Box = {
-  make: Text$Box
 };
 
 function Text$H1(Props) {
@@ -98,37 +86,6 @@ function Text$H5(Props) {
 
 var H5 = {
   make: Text$H5
-};
-
-function Text$Overline(Props) {
-  var match = Props.underline;
-  var underline = match !== undefined ? match : false;
-  var children = Props.children;
-  var className = "font-overpass font-black text-night-dark text-xl mt-5" + (
-    underline ? " pb-3 border-b" : ""
-  );
-  return React.createElement("div", {
-              className: className
-            }, children);
-}
-
-var Overline = {
-  make: Text$Overline
-};
-
-function Text$P(Props) {
-  var match = Props.spacing;
-  var spacing = match !== undefined ? match : /* default */465819841;
-  var children = Props.children;
-  var spacingClass = spacing >= 465819841 ? "mt-3" : "";
-  var className = "text-lg leading-4 " + spacingClass;
-  return React.createElement("p", {
-              className: className
-            }, children);
-}
-
-var P = {
-  make: Text$P
 };
 
 function Text$Md$Pre(Props) {
@@ -201,7 +158,7 @@ function makeCodeElement(code, metastring, lang) {
         });
   }
   return React.createElement("div", {
-              className: "font-mono block leading-tight"
+              className: "md-code font-mono block leading-tight"
             }, codeElement);
 }
 
@@ -254,7 +211,7 @@ function Text$Md$P(Props) {
             }, children);
 }
 
-var P$1 = {
+var P = {
   make: Text$Md$P
 };
 
@@ -342,8 +299,7 @@ function Text$Md$Li(Props) {
       elements = isSublist(potentialSublist) ? children : React.createElement("p", undefined, children);
     }
   } else {
-    typeOf$1(children) === "string";
-    elements = React.createElement("p", undefined, children);
+    elements = typeOf$1(children) === "string" ? React.createElement("p", undefined, children) : children;
   }
   return React.createElement("li", {
               className: "md-li mt-4 leading-4 ml-8 text-lg"
@@ -362,98 +318,34 @@ var Md = {
   InlineCode: InlineCode,
   Table: Table,
   Code: Code,
-  P: P$1,
+  P: P,
   A: A,
   Ul: Ul,
   Ol: Ol,
   Li: Li
 };
 
-function Text$Small(Props) {
+function Text$Introduction(Props) {
   var children = Props.children;
   return React.createElement("p", {
-              className: "text-base font-overpass leading-4"
+              className: "text-xl"
             }, children);
 }
 
-var Small = {
-  make: Text$Small
-};
-
-var component = ReasonReact.statelessComponent("Text.Xsmall");
-
-function Text$Xsmall(Props) {
-  var children = Props.children;
-  return React.createElement("p", {
-              className: "text-sm font-overpass text-normal leading-3"
-            }, children);
-}
-
-var Xsmall = {
-  component: component,
-  make: Text$Xsmall
-};
-
-function Text$Lead(Props) {
-  var children = Props.children;
-  return React.createElement("p", {
-              className: "text-2xl font-overpass font-medium leading-4 mt-2 text-night-dark"
-            }, children);
-}
-
-var Lead = {
-  make: Text$Lead
-};
-
-function Text$Quote(Props) {
-  var match = Props.bold;
-  var bold = match !== undefined ? match : true;
-  var children = Props.children;
-  return React.createElement("div", {
-              className: "flex flex-row mt-5 mb-3 " + (
-                bold ? "font-bold" : ""
-              )
-            }, React.createElement("div", {
-                  className: "border-l-2 border-fire w-2 mt-3 mb-3 md:mt-3 md:mb-3"
-                }), React.createElement("div", {
-                  className: "leading-4 text-lg pl-5 md:pl-8 md:text-2xl italic  md:pr-10 md:py-5"
-                }, children));
-}
-
-var Quote = {
-  make: Text$Quote
-};
-
-function Text$Page(Props) {
-  var children = Props.children;
-  return React.createElement("div", {
-              className: "flex sm:justify-center mb-24"
-            }, React.createElement("div", {
-                  className: "pt-12 px-5 xl:px-0 sm:w-4/5 lg:w-3/5 xl:w-1/2"
-                }, children));
-}
-
-var Page = {
-  make: Text$Page
+var Introduction = {
+  make: Text$Introduction
 };
 
 export {
   Link ,
   Anchor ,
-  Box ,
   H1 ,
   H2 ,
   H3 ,
   H4 ,
   H5 ,
-  Overline ,
-  P ,
   Md ,
-  Small ,
-  Xsmall ,
-  Lead ,
-  Quote ,
-  Page ,
+  Introduction ,
   
 }
-/* component Not a pure module */
+/* react Not a pure module */

@@ -46,8 +46,9 @@ module.exports = {
           "60": "rgba(62, 64, 87, 0.60)"
         },
         snow: {
-          dark: "#EAEBED",
-          default: "#F4F4F5"
+          light: "#FCFCFC",
+          default: "#F4F4F5",
+          dark: "#EAEBED"
         },
         white: {
           default: "#FFFFFF",
@@ -89,7 +90,7 @@ module.exports = {
           "2": "#81A2BE",
           "3": "#60915F",
           "4": "#999999",
-          "5": "#D1BC72",
+          "5": "#D1BC72"
         },
         "light-grey": "rgba(245, 245, 245, 0.5)",
         "light-grey-20": "rgba(245, 245, 245, 0.2)",
@@ -99,8 +100,16 @@ module.exports = {
         "20": "20rem"
       },
       inset: {
-        '16': "4rem",
+        "16": "4rem"
       }
+    },
+    borderRadius: {
+      none: "0",
+      sm: ".125rem",
+      default: "0.25rem",
+      lg: "0.5rem",
+      full: "9999px",
+      large: "0.75rem"
     },
     screens: {
       xs: "510px",
@@ -116,7 +125,7 @@ module.exports = {
       xs: ".75rem", // 12px
       sm: ".8125rem", // 13px
       base: "1rem", // 16px
-      lg: "1.0625rem", // 17px
+      lg: "1.125rem", // 18px
       xl: "1.3125rem", // 21px
       "2xl": "1.5rem", // 24px
       "3xl": "2rem", // 32px
@@ -198,7 +207,8 @@ module.exports = {
     border: ["hover", "responsive"],
     borderWidth: ["last"],
     inset: ["responsive"],
-    padding: ["hover", "responsive"]
+    padding: ["hover", "responsive"],
+    visibility: ["group-hover"]
   },
   plugins: []
 };

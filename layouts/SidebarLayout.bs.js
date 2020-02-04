@@ -27,27 +27,6 @@ hljs.registerLanguage('reason', reasonHighlightJs);
 
 ;
 
-function SidebarLayout$ApiMd$Anchor(Props) {
-  var id = Props.id;
-  var style = {
-    position: "absolute",
-    top: "-7rem"
-  };
-  return React.createElement("span", {
-              className: "relative"
-            }, React.createElement("a", {
-                  className: "mr-2 hover:cursor-pointer",
-                  href: "#" + id
-                }, Util.ReactStuff.s("#")), React.createElement("a", {
-                  id: id,
-                  style: style
-                }));
-}
-
-var Anchor = {
-  make: SidebarLayout$ApiMd$Anchor
-};
-
 function SidebarLayout$ApiMd$InvisibleAnchor(Props) {
   var id = Props.id;
   var style = {
@@ -130,7 +109,6 @@ var components = {
 };
 
 var ApiMd = {
-  Anchor: Anchor,
   InvisibleAnchor: InvisibleAnchor,
   H1: H1,
   H2: H2,
@@ -146,11 +124,9 @@ function SidebarLayout$ProseMd$Anchor(Props) {
     top: "-7rem"
   };
   return React.createElement("span", {
-              style: {
-                position: "relative"
-              }
+              className: "inline group relative -mt-2"
             }, React.createElement("a", {
-                  className: "mr-2 hover:cursor-pointer",
+                  className: "invisible text-night-light opacity-50 -ml-6 align-middle pr-2 text-xl hover:opacity-100 hover:text-night-light hover:cursor-pointer group-hover:visible",
                   href: "#" + id
                 }, Util.ReactStuff.s("#")), React.createElement("a", {
                   id: id,
@@ -158,14 +134,14 @@ function SidebarLayout$ProseMd$Anchor(Props) {
                 }));
 }
 
-var Anchor$1 = {
+var Anchor = {
   make: SidebarLayout$ProseMd$Anchor
 };
 
 function SidebarLayout$ProseMd$H2(Props) {
   var children = Props.children;
   return React.createElement(React.Fragment, undefined, React.createElement("h2", {
-                  className: "mt-12 text-3xl leading-1 tracking-tight font-overpass font-medium font-black text-night-dark"
+                  className: "group mt-12 text-3xl leading-1 tracking-tight font-overpass font-medium font-black text-night-dark"
                 }, React.createElement(SidebarLayout$ProseMd$Anchor, {
                       id: children
                     }), children));
@@ -189,7 +165,7 @@ var Pre$1 = {
 function SidebarLayout$ProseMd$P(Props) {
   var children = Props.children;
   return React.createElement("p", {
-              className: "text-base mt-3 leading-4 text-night"
+              className: "text-inherit mt-3 leading-4 text-night"
             }, children);
 }
 
@@ -215,7 +191,7 @@ var components$1 = {
 };
 
 var ProseMd = {
-  Anchor: Anchor$1,
+  Anchor: Anchor,
   H2: H2$1,
   Pre: Pre$1,
   P: P$1,
