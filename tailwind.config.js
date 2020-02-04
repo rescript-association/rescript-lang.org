@@ -183,7 +183,7 @@ module.exports = {
         "Arial",
         "sans-serif"
       ],
-      overpass: [
+      sans: [
         "Overpass",
         "-apple-system",
         "BlinkMacSystemFont",

@@ -8,5 +8,5 @@
 @import "./_fonts.css";
 
 body {
-  @apply font-overpass bg-white;
+  @apply font-sans bg-white;
 }

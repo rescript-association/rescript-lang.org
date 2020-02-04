@@ -32,7 +32,7 @@ var P = {
 function ApiLayout$MainMd$H1(Props) {
   var children = Props.children;
   return React.createElement("h1", {
-              className: "text-7xl font-overpass font-black text-night-dark"
+              className: "text-7xl font-sans font-black text-night-dark"
             }, children);
 }
 
@@ -68,7 +68,7 @@ function ApiLayout$Category$Card(Props) {
             className: "w-full mb-2",
             src: card[/* src */3]
           }), React.createElement("h3", {
-            className: "font-overpass font-black text-3xl text-night-dark"
+            className: "font-sans font-black text-3xl text-night-dark"
           }, Util.ReactStuff.s(card[/* title */0])), React.createElement("div", {
             className: "text-base leading-5 text-night"
           }, Util.ReactStuff.s(card[/* descr */1])));

@@ -36,7 +36,7 @@ var Anchor = {
 function Text$H1(Props) {
   var children = Props.children;
   return React.createElement("h1", {
-              className: "text-6xl md:text-7xl tracking-tight leading-1 font-overpass font-black text-night-dark"
+              className: "text-6xl md:text-7xl tracking-tight leading-1 font-sans font-black text-night-dark"
             }, children);
 }
 
@@ -47,7 +47,7 @@ var H1 = {
 function Text$H2(Props) {
   var children = Props.children;
   return React.createElement("h2", {
-              className: "text-4xl leading-3 font-overpass font-medium text-night-dark"
+              className: "text-4xl leading-3 font-sans font-medium text-night-dark"
             }, children);
 }
 
@@ -58,7 +58,7 @@ var H2 = {
 function Text$H3(Props) {
   var children = Props.children;
   return React.createElement("h3", {
-              className: "text-xl leading-3 font-overpass font-semibold text-night-dark"
+              className: "text-xl leading-3 font-sans font-bold text-night-darker"
             }, children);
 }
 
@@ -69,7 +69,7 @@ var H3 = {
 function Text$H4(Props) {
   var children = Props.children;
   return React.createElement("h4", {
-              className: "text-lg leading-2 font-overpass font-semibold text-night-dark"
+              className: "text-lg leading-2 font-sans font-semibold text-night-dark"
             }, children);
 }
 
@@ -80,7 +80,7 @@ var H4 = {
 function Text$H5(Props) {
   var children = Props.children;
   return React.createElement("h5", {
-              className: "text-xs leading-2 font-overpass font-semibold uppercase tracking-wide"
+              className: "text-xs leading-2 font-sans font-semibold uppercase tracking-wide"
             }, children);
 }
 
@@ -102,7 +102,7 @@ var Pre = {
 function Text$Md$InlineCode(Props) {
   var children = Props.children;
   return React.createElement("code", {
-              className: "px-1 rounded-sm text-inherit font-mono bg-snow"
+              className: "px-1 rounded-sm text-base font-mono bg-snow"
             }, children);
 }
 
@@ -239,7 +239,7 @@ function Text$Md$A(Props) {
                   }, React.createElement("span", {
                         className: "hover:border-b border-fire"
                       }, children), React.createElement("sup", {
-                        className: "font-overpass border-b-0 font-bold text-fire text-xs",
+                        className: "font-sans border-b-0 font-bold text-fire text-xs",
                         style: {
                           left: "0.05rem",
                           top: "-0.5rem"
@@ -268,7 +268,7 @@ var Ul = {
 function Text$Md$Ol(Props) {
   var children = Props.children;
   return React.createElement("ol", {
-              className: "md-ol -ml-4 text-fire"
+              className: "md-ol -ml-4"
             }, children);
 }
 
@@ -302,7 +302,7 @@ function Text$Md$Li(Props) {
     elements = typeOf$1(children) === "string" ? React.createElement("p", undefined, children) : children;
   }
   return React.createElement("li", {
-              className: "md-li mt-4 leading-4 ml-8 text-lg"
+              className: "md-li mt-4 leading-4 ml-4 text-lg"
             }, elements);
 }
 

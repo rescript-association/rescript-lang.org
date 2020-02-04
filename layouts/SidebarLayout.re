@@ -95,9 +95,9 @@ module ProseMd = {
     let make = (~id: string) => {
       let style =
         ReactDOMRe.Style.make(~position="absolute", ~top="-7rem", ());
-      <span className="inline group relative -mt-2">
+      <span className="inline group relative">
         <a
-          className="invisible text-night-light opacity-50 -ml-6 align-middle pr-2 text-xl hover:opacity-100 hover:text-night-light hover:cursor-pointer group-hover:visible"
+          className="invisible text-night-light opacity-50 text-inherit hover:opacity-100 hover:text-night-light hover:cursor-pointer group-hover:visible"
           href={"#" ++ id}>
           {j|#|j}->s
         </a>
@@ -113,10 +113,38 @@ module ProseMd = {
         // Here we know that children is always a string (## headline)
         <h2
           className="group mt-12 text-3xl leading-1 tracking-tight font-overpass font-medium font-black text-night-dark">
-          <Anchor id={children->Unsafe.elementAsString} />
+          <span className="-ml-8 pr-2">
+            <Anchor id={children->Unsafe.elementAsString} />
+          </span>
           children
         </h2>
       </>;
+    };
+  };
+
+  module H3 = {
+    [@react.component]
+    let make = (~children) => {
+      <h3
+        className="group text-xl mt-12 leading-3 font-sans font-bold text-night-darker">
+        <span className="-ml-6 pr-2">
+          <Anchor id={children->Unsafe.elementAsString} />
+        </span>
+        children
+      </h3>;
+    };
+  };
+
+  module H4 = {
+    [@react.component]
+    let make = (~children) => {
+      <h4
+        className="group text-lg mt-12 leading-2 font-sans font-semibold text-night-dark">
+        <span className="-ml-5 pr-2">
+          <Anchor id={children->Unsafe.elementAsString} />
+        </span>
+        children
+      </h4>;
     };
   };
 

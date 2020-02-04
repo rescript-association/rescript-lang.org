@@ -19,7 +19,7 @@ module H1 = {
   [@react.component]
   let make = (~children) => {
     <h1
-      className="text-6xl md:text-7xl tracking-tight leading-1 font-overpass font-black text-night-dark">
+      className="text-6xl md:text-7xl tracking-tight leading-1 font-sans font-black text-night-dark">
       children
     </h1>;
   };
@@ -29,7 +29,7 @@ module H2 = {
   [@react.component]
   let make = (~children) => {
     <h2
-      className="text-4xl leading-3 font-overpass font-medium text-night-dark">
+      className="text-4xl leading-3 font-sans font-medium text-night-dark">
       children
     </h2>;
   };
@@ -39,7 +39,7 @@ module H3 = {
   [@react.component]
   let make = (~children) => {
     <h3
-      className="text-xl leading-3 font-overpass font-semibold text-night-dark">
+      className="text-xl leading-3 font-sans font-bold text-night-darker">
       children
     </h3>;
   };
@@ -49,7 +49,7 @@ module H4 = {
   [@react.component]
   let make = (~children) => {
     <h4
-      className="text-lg leading-2 font-overpass font-semibold text-night-dark">
+      className="text-lg leading-2 font-sans font-semibold text-night-dark">
       children
     </h4>;
   };
@@ -59,7 +59,7 @@ module H5 = {
   [@react.component]
   let make = (~children) => {
     <h5
-      className="text-xs leading-2 font-overpass font-semibold uppercase tracking-wide">
+      className="text-xs leading-2 font-sans font-semibold uppercase tracking-wide">
       children
     </h5>;
   };
@@ -92,7 +92,7 @@ module Md = {
   module InlineCode = {
     [@react.component]
     let make = (~children) => {
-      <code className="px-1 rounded-sm text-inherit font-mono bg-snow">
+      <code className="px-1 rounded-sm text-base font-mono bg-snow">
         children
       </code>;
     };
@@ -248,7 +248,7 @@ module Md = {
                 ~top="-0.5rem",
                 (),
               )}
-              className="font-overpass border-b-0 font-bold text-fire text-xs">
+              className="font-sans border-b-0 font-bold text-fire text-xs">
               id->s
             </sup>
           </a>
@@ -267,7 +267,7 @@ module Md = {
   module Ol = {
     [@react.component]
     let make = (~children) => {
-      <ol className="md-ol -ml-4 text-fire"> children </ol>;
+      <ol className="md-ol -ml-4"> children </ol>;
     };
   };
 
@@ -323,7 +323,7 @@ module Md = {
           /* Unknown Scenario */
         };
 
-      <li className="md-li mt-4 leading-4 ml-8 text-lg"> elements </li>;
+      <li className="md-li mt-4 leading-4 ml-4 text-lg"> elements </li>;
     };
   };
 };

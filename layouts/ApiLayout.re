@@ -23,7 +23,7 @@ module MainMd = {
   module H1 = {
     [@react.component]
     let make = (~children) => {
-      <h1 className="text-7xl font-overpass font-black text-night-dark">
+      <h1 className="text-7xl font-sans font-black text-night-dark">
         children
       </h1>;
     };
@@ -60,7 +60,7 @@ module Category = {
       let element =
         <>
           <img src={card.src} className="w-full mb-2" />
-          <h3 className="font-overpass font-black text-3xl text-night-dark">
+          <h3 className="font-sans font-black text-3xl text-night-dark">
             card.title->s
           </h3>
           <div className="text-base leading-5 text-night"> card.descr->s </div>

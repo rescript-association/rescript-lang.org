@@ -124,9 +124,9 @@ function SidebarLayout$ProseMd$Anchor(Props) {
     top: "-7rem"
   };
   return React.createElement("span", {
-              className: "inline group relative -mt-2"
+              className: "inline group relative"
             }, React.createElement("a", {
-                  className: "invisible text-night-light opacity-50 -ml-6 align-middle pr-2 text-xl hover:opacity-100 hover:text-night-light hover:cursor-pointer group-hover:visible",
+                  className: "invisible text-night-light opacity-50 text-inherit hover:opacity-100 hover:text-night-light hover:cursor-pointer group-hover:visible",
                   href: "#" + id
                 }, Util.ReactStuff.s("#")), React.createElement("a", {
                   id: id,
@@ -142,13 +142,45 @@ function SidebarLayout$ProseMd$H2(Props) {
   var children = Props.children;
   return React.createElement(React.Fragment, undefined, React.createElement("h2", {
                   className: "group mt-12 text-3xl leading-1 tracking-tight font-overpass font-medium font-black text-night-dark"
-                }, React.createElement(SidebarLayout$ProseMd$Anchor, {
-                      id: children
-                    }), children));
+                }, React.createElement("span", {
+                      className: "-ml-8 pr-2"
+                    }, React.createElement(SidebarLayout$ProseMd$Anchor, {
+                          id: children
+                        })), children));
 }
 
 var H2$1 = {
   make: SidebarLayout$ProseMd$H2
+};
+
+function SidebarLayout$ProseMd$H3(Props) {
+  var children = Props.children;
+  return React.createElement("h3", {
+              className: "group text-xl mt-12 leading-3 font-sans font-bold text-night-darker"
+            }, React.createElement("span", {
+                  className: "-ml-6 pr-2"
+                }, React.createElement(SidebarLayout$ProseMd$Anchor, {
+                      id: children
+                    })), children);
+}
+
+var H3 = {
+  make: SidebarLayout$ProseMd$H3
+};
+
+function SidebarLayout$ProseMd$H4(Props) {
+  var children = Props.children;
+  return React.createElement("h4", {
+              className: "group text-lg mt-12 leading-2 font-sans font-semibold text-night-dark"
+            }, React.createElement("span", {
+                  className: "-ml-5 pr-2"
+                }, React.createElement(SidebarLayout$ProseMd$Anchor, {
+                      id: children
+                    })), children);
+}
+
+var H4 = {
+  make: SidebarLayout$ProseMd$H4
 };
 
 function SidebarLayout$ProseMd$Pre(Props) {
@@ -178,8 +210,8 @@ var components$1 = {
   li: $$Text.Md.Li.make,
   h1: SidebarLayout$ApiMd$H1,
   h2: SidebarLayout$ProseMd$H2,
-  h3: $$Text.H3.make,
-  h4: $$Text.H4.make,
+  h3: SidebarLayout$ProseMd$H3,
+  h4: SidebarLayout$ProseMd$H4,
   h5: $$Text.H5.make,
   ul: $$Text.Md.Ul.make,
   ol: $$Text.Md.Ol.make,
@@ -193,6 +225,8 @@ var components$1 = {
 var ProseMd = {
   Anchor: Anchor,
   H2: H2$1,
+  H3: H3,
+  H4: H4,
   Pre: Pre$1,
   P: P$1,
   components: components$1
