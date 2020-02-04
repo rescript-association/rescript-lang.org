@@ -126,11 +126,23 @@ function useWindowWidth (){{
   }};
 
 function Navigation$SubNav$DocsLinks(Props) {
-  Props.route;
+  var route = Props.route;
   ColorTheme.toCN(/* Js */16617);
   var reTheme = ColorTheme.toCN(/* Reason */825328612);
-  var overlineClass = "font-black uppercase text-sm tracking-wide text-primary-80";
-  var sectionUl = "flex flex-wrap mt-8 list-primary list-inside lg:w-auto max-w-md";
+  var languageItems = /* array */[
+    /* tuple */[
+      "Introduction",
+      "/docs/manual/latest"
+    ],
+    /* tuple */[
+      "JS Interop",
+      "/docs/manual/latest/interop"
+    ],
+    /* tuple */[
+      "Cheatsheet",
+      "/docs/manual/latest/syntax-cheatsheet"
+    ]
+  ];
   return React.createElement("div", {
               className: "lg:flex lg:flex-row px-4 max-w-xl"
             }, React.createElement("div", {
@@ -138,17 +150,24 @@ function Navigation$SubNav$DocsLinks(Props) {
                 }, React.createElement(Link.default, {
                       href: "/docs/manual/latest",
                       children: React.createElement("a", {
-                            className: overlineClass
+                            className: "font-black uppercase text-sm tracking-wide text-primary-80"
                           }, Util.ReactStuff.s("Language Manual"))
                     }), React.createElement("ul", {
-                      className: sectionUl
-                    }, React.createElement("li", undefined, Util.ReactStuff.s("Coming soon")))), React.createElement("div", {
-                  className: reTheme + " pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/4"
-                }, React.createElement("div", {
-                      className: overlineClass
-                    }, Util.ReactStuff.s("Tools")), React.createElement("ul", {
-                      className: sectionUl
-                    }, React.createElement("li", undefined, Util.ReactStuff.s("Coming soon")))));
+                      className: "flex flex-wrap mt-8 list-primary list-inside lg:w-auto max-w-md"
+                    }, Util.ReactStuff.ate(Belt_Array.mapWithIndex(languageItems, (function (idx, param) {
+                                var href = param[1];
+                                var match = route === href;
+                                var active = match ? "text-primary-80 hover:text-primary" : "";
+                                return React.createElement("li", {
+                                            key: String(idx),
+                                            className: "w-1/2 xs:w-1/2 h-10"
+                                          }, React.createElement(Link.default, {
+                                                href: href,
+                                                children: React.createElement("a", {
+                                                      className: "text-white-80 hover:text-white hover:cursor-pointer " + active
+                                                    }, Util.ReactStuff.s(param[0]))
+                                              }));
+                              }))))));
 }
 
 var DocsLinks = {

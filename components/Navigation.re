@@ -153,11 +153,10 @@ module SubNav = {
       let jsTheme = ColorTheme.toCN(`Js);
       let reTheme = ColorTheme.toCN(`Reason);
 
-      let jsItems = [|
-        ("Belt Stdlib", "/apis/javascript/latest/belt"),
-        ("Js Module", "/apis/javascript/latest/js"),
-        /*("Module 3", "/apis/javascript/latest/mod3"),*/
-        /*("Module 4", "/apis/javascript/latest/mod4"),*/
+      let languageItems = [|
+        ("Introduction", "/docs/manual/latest"),
+        ("JS Interop", "/docs/manual/latest/interop"),
+        ("Cheatsheet", "/docs/manual/latest/syntax-cheatsheet"),
       |];
 
       let sectionClass = "pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/4";
@@ -170,37 +169,29 @@ module SubNav = {
           <Link href="/docs/manual/latest">
             <a className=overlineClass> "Language Manual"->s </a>
           </Link>
-          <ul className=sectionUl> <li> "Coming soon"->s </li> </ul>
+          <ul className=sectionUl>
+            {languageItems
+             ->Belt.Array.mapWithIndex((idx, (title, href)) => {
+                 let active =
+                   route == href ? "text-primary-80 hover:text-primary" : "";
+                 <li
+                   className="w-1/2 xs:w-1/2 h-10"
+                   key={Belt.Int.toString(idx)}>
+                   <Link href>
+                     <a
+                       className={
+                         "text-white-80 hover:text-white hover:cursor-pointer "
+                         ++ active
+                       }>
+                       title->s
+                     </a>
+                   </Link>
+                 </li>;
+               })
+             ->ate}
+          </ul>
         </div>
-        <div className={reTheme ++ " " ++ sectionClass}>
-          /*<Link href="/apis/javascript/latest">*/
-          /*<a className=overlineClass> "Tools"->s </a>*/
-          /*</Link>*/
-
-            <div className=overlineClass> "Tools"->s </div>
-            <ul className=sectionUl> <li> "Coming soon"->s </li> </ul>
-          </div>
       </div>;
-      /*{jsItems*/
-      /*->Belt.Array.mapWithIndex((idx, (title, href)) => {*/
-      /*let active =*/
-      /*Js.String2.startsWith(route, href)*/
-      /*? "text-primary-80 hover:text-primary" : "";*/
-      /*<li*/
-      /*className="w-1/2 xs:w-1/2 h-10"*/
-      /*key={Belt.Int.toString(idx)}>*/
-      /*<Link href>*/
-      /*<a*/
-      /*className={*/
-      /*"text-white-80 hover:text-white hover:cursor-pointer "*/
-      /*++ active*/
-      /*}>*/
-      /*title->s*/
-      /*</a>*/
-      /*</Link>*/
-      /*</li>;*/
-      /*})*/
-      /*->ate}*/
     };
   };
 
