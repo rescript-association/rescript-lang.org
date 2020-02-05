@@ -175,16 +175,10 @@ module.exports = {
     },
     /* We override the default font-families with our own default prefs  */
     fontFamily: {
-      montserrat: [
-        "Montserrat",
-        "-apple-system",
-        "BlinkMacSystemFont",
-        "Helvetica Neue",
-        "Arial",
-        "sans-serif"
-      ],
       sans: [
-        "Overpass",
+        "Inter",
+        "SF Pro Text",
+        "Roboto",
         "-apple-system",
         "BlinkMacSystemFont",
         "Helvetica Neue",
@@ -192,6 +186,7 @@ module.exports = {
         "sans-serif"
       ],
       mono: [
+        "Menlo",
         "Roboto Mono",
         "SFMono-Regular",
         "Segoe UI",

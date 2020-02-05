@@ -37,7 +37,7 @@ module ApiMd = {
     [@react.component]
     let make = (~children) => {
       <h1
-        className="text-6xl tracking-tight leading-1 font-overpass font-black text-night-dark">
+        className="text-6xl tracking-tight leading-1 font-sans font-black text-night-dark">
         children
       </h1>;
     };
@@ -112,7 +112,7 @@ module ProseMd = {
       <>
         // Here we know that children is always a string (## headline)
         <h2
-          className="group mt-12 text-3xl leading-1 tracking-tight font-overpass font-medium font-black text-night-dark">
+          className="group mt-12 text-3xl leading-1 tracking-tight font-sans font-medium font-black text-night-dark">
           <span className="-ml-8 pr-2">
             <Anchor id={children->Unsafe.elementAsString} />
           </span>

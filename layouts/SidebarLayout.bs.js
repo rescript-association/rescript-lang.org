@@ -49,7 +49,7 @@ var InvisibleAnchor = {
 function SidebarLayout$ApiMd$H1(Props) {
   var children = Props.children;
   return React.createElement("h1", {
-              className: "text-6xl tracking-tight leading-1 font-overpass font-black text-night-dark"
+              className: "text-6xl tracking-tight leading-1 font-sans font-black text-night-dark"
             }, children);
 }
 
@@ -141,7 +141,7 @@ var Anchor = {
 function SidebarLayout$ProseMd$H2(Props) {
   var children = Props.children;
   return React.createElement(React.Fragment, undefined, React.createElement("h2", {
-                  className: "group mt-12 text-3xl leading-1 tracking-tight font-overpass font-medium font-black text-night-dark"
+                  className: "group mt-12 text-3xl leading-1 tracking-tight font-sans font-medium font-black text-night-dark"
                 }, React.createElement("span", {
                       className: "-ml-8 pr-2"
                     }, React.createElement(SidebarLayout$ProseMd$Anchor, {
