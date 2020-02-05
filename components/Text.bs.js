@@ -327,8 +327,8 @@ var Md = {
 
 function Text$Introduction(Props) {
   var children = Props.children;
-  return React.createElement("p", {
-              className: "text-xl"
+  return React.createElement("span", {
+              className: "text-xl block"
             }, children);
 }
 
