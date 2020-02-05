@@ -10,7 +10,7 @@
   @apply text-fire inline-block w-4;
 }
 
-.md-ul > .md-li p::before {
+.md-ul > .md-li p::before, .md-ul > .md-li > a::before {
   content: "•";
   @apply inline-block w-4 -ml-4 pr-2;
 }
