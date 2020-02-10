@@ -60,7 +60,7 @@ function ManualDocsLayout$Sidebar$NavItem(Props) {
                         var active = match ? " bg-primary-15 text-primary-dark rounded -mx-2 px-2 font-bold block " : "";
                         return React.createElement("li", {
                                     key: m[/* name */0],
-                                    className: hidden + " mt-3 leading-5 w-4/5",
+                                    className: hidden + " mt-2 leading-5 w-4/5",
                                     tabIndex: 0
                                   }, React.createElement(Link.default, {
                                         href: m[/* href */1],

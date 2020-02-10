@@ -14,7 +14,3 @@
   content: "•";
   @apply inline-block w-4 -ml-4 pr-2;
 }
-
-.md-table > * > tr > * {
-  @apply border p-2;
-}

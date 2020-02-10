@@ -48,7 +48,8 @@ module.exports = {
         snow: {
           light: "#FCFCFC",
           default: "#F4F4F5",
-          dark: "#EAEBED"
+          dark: "#EAEBED",
+          darker: "#BCBEC9"
         },
         white: {
           default: "#FFFFFF",

@@ -58,7 +58,7 @@ module Sidebar = {
                  : "";
              <li
                key={m.name}
-               className={hidden ++ " mt-3 leading-5 w-4/5"}
+               className={hidden ++ " mt-2 leading-5 w-4/5"}
                // to make non-interactive elements (like div, span or li) tab-able
                // see https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets
                tabIndex=0>
@@ -208,7 +208,6 @@ module Sidebar = {
       </div>;
     };
   };
-
 
   // subitems: list of functions inside given module (defined by route)
   [@react.component]
@@ -387,8 +386,8 @@ module Docs = {
     /*: */
     /*React.null;*/
 
-    let preludeSection = 
-      <div className="text-primary font-semibold">"Language Manual"->s</div>
+    let preludeSection =
+      <div className="text-primary font-semibold"> "Language Manual"->s </div>;
 
     let sidebar =
       <Sidebar

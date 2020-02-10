@@ -25,6 +25,12 @@ module Components = {
     [@bs.optional]
     table: React.component(props),
     [@bs.optional]
+    thead: React.component(props),
+    [@bs.optional]
+    th: React.component(props),
+    [@bs.optional]
+    td: React.component(props),
+    [@bs.optional]
     inlineCode: React.component(props),
     [@bs.optional]
     code:
@@ -60,6 +66,9 @@ module Components = {
       ~ul=Md.Ul.make,
       ~ol=Md.Ol.make,
       ~table=Md.Table.make,
+      ~thead=Md.Thead.make,
+      ~th=Md.Th.make,
+      ~td=Md.Td.make,
       ~a=Md.A.make,
       ~pre=Md.Pre.make,
       ~inlineCode=Md.InlineCode.make,

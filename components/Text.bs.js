@@ -113,14 +113,45 @@ var InlineCode = {
 function Text$Md$Table(Props) {
   var children = Props.children;
   return React.createElement("div", {
-              className: "overflow-x-auto mt-2"
+              className: "overflow-x-auto mt-2 mb-16"
             }, React.createElement("table", {
-                  className: "md-table border-2 border-night-dark"
+                  className: "md-table"
                 }, children));
 }
 
 var Table = {
   make: Text$Md$Table
+};
+
+function Text$Md$Thead(Props) {
+  var children = Props.children;
+  return React.createElement("thead", undefined, children);
+}
+
+var Thead = {
+  make: Text$Md$Thead
+};
+
+function Text$Md$Th(Props) {
+  var children = Props.children;
+  return React.createElement("th", {
+              className: "py-2 pr-8 text-sm uppercase font-medium tracking-wide text-left border-b-2 border-snow-darker"
+            }, children);
+}
+
+var Th = {
+  make: Text$Md$Th
+};
+
+function Text$Md$Td(Props) {
+  var children = Props.children;
+  return React.createElement("td", {
+              className: "border-b border-snow-darker py-3 pr-8"
+            }, children);
+}
+
+var Td = {
+  make: Text$Md$Td
 };
 
 function typeOf (thing){{ return typeof thing; }};
@@ -317,6 +348,9 @@ var Md = {
   Pre: Pre,
   InlineCode: InlineCode,
   Table: Table,
+  Thead: Thead,
+  Th: Th,
+  Td: Td,
   Code: Code,
   P: P,
   A: A,

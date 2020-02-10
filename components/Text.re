@@ -28,8 +28,7 @@ module H1 = {
 module H2 = {
   [@react.component]
   let make = (~children) => {
-    <h2
-      className="text-4xl leading-3 font-sans font-medium text-night-dark">
+    <h2 className="text-4xl leading-3 font-sans font-medium text-night-dark">
       children
     </h2>;
   };
@@ -38,8 +37,7 @@ module H2 = {
 module H3 = {
   [@react.component]
   let make = (~children) => {
-    <h3
-      className="text-xl leading-3 font-sans font-bold text-night-darker">
+    <h3 className="text-xl leading-3 font-sans font-bold text-night-darker">
       children
     </h3>;
   };
@@ -48,8 +46,7 @@ module H3 = {
 module H4 = {
   [@react.component]
   let make = (~children) => {
-    <h4
-      className="text-lg leading-2 font-sans font-semibold text-night-dark">
+    <h4 className="text-lg leading-2 font-sans font-semibold text-night-dark">
       children
     </h4>;
   };
@@ -101,11 +98,34 @@ module Md = {
   module Table = {
     [@react.component]
     let make = (~children) => {
-      <div className="overflow-x-auto mt-2">
-        <table className="md-table border-2 border-night-dark">
+      <div className="overflow-x-auto mt-2 mb-16">
+        <table className="md-table">
           children
         </table>
       </div>;
+    };
+  };
+
+  module Thead = {
+    [@react.component]
+    let make = (~children) => {
+      <thead> children </thead>;
+    };
+  };
+
+  module Th = {
+    [@react.component]
+    let make = (~children) => {
+      <th className="py-2 pr-8 text-sm uppercase font-medium tracking-wide text-left border-b-2 border-snow-darker">
+        children
+      </th>;
+    };
+  };
+
+  module Td = {
+    [@react.component]
+    let make = (~children) => {
+      <td className="border-b border-snow-darker py-3 pr-8"> children </td>;
     };
   };
 
