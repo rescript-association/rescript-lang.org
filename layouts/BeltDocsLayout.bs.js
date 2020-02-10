@@ -420,7 +420,10 @@ function BeltDocsLayout$Docs(Props) {
   var tmp$1 = {
     theme: /* Js */16617,
     components: components,
-    sidebar: sidebar,
+    sidebar: /* tuple */[
+      sidebar,
+      toggleSidebar
+    ],
     route: router.route,
     children: children
   };

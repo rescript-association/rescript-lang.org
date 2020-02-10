@@ -284,7 +284,7 @@ module BreadCrumbs = {
   // See UrlPath for more details on the parameters
   [@react.component]
   let make = (~crumbs: list(UrlPath.breadcrumb)) => {
-    <div className="text-xs text-night mb-10">
+    <div className="text-xs text-night">
       {Belt.List.mapWithIndex(
          crumbs,
          (i, crumb) => {
@@ -494,20 +494,6 @@ module Sidebar = {
     };
   };
 
-  module MobileNavButton = {
-    [@react.component]
-    let make = (~hidden: bool, ~onClick) => {
-      <button
-        className={
-          (hidden ? "hidden" : "")
-          ++ " md:hidden flex justify-center items-center block shadow-md bg-primary text-snow hover:text-white rounded-full w-12 h-12 fixed bottom-0 right-0 mr-8 mb-8"
-        }
-        onMouseDown=onClick>
-        <Icon.Table />
-      </button>;
-    };
-  };
-
   // subitems: list of functions inside given module (defined by route)
   [@react.component]
   let make =
@@ -559,14 +545,17 @@ module Sidebar = {
           </div>
         </aside>
       </div>
-      <MobileNavButton
-        hidden=isOpen
-        onClick={evt => {
-          ReactEvent.Mouse.preventDefault(evt);
-          toggle();
-        }}
-      />
     </>;
+  };
+};
+
+module MobileDrawerButton = {
+  [@react.component]
+  let make = (~hidden: bool, ~onClick) => {
+    <button
+      className={(hidden ? "hidden" : "") ++ " md:hidden mr-3"} onMouseDown=onClick>
+      <img className="h-4" src="/static/ic_sidebar_drawer.svg" />
+    </button>;
   };
 };
 
@@ -579,7 +568,8 @@ let make =
     (
       ~theme: ColorTheme.t,
       ~components=ApiMd.components,
-      ~sidebar: React.element,
+      // (Sidebar, toggleSidebar)
+      ~sidebar: (React.element, unit => unit),
       ~breadcrumbs: option(list(UrlPath.breadcrumb))=?,
       ~route: string,
       ~children,
@@ -593,6 +583,7 @@ let make =
       <BreadCrumbs crumbs />
     );
 
+  let (sidebar, toggleSidebar) = sidebar;
   <>
     <Meta />
     <div className={"mt-16 min-w-20 " ++ theme}>
@@ -610,7 +601,16 @@ let make =
                 <div
                   className="flex justify-center w-full md:w-3/4 overflow-hidden">
                   <main className="w-5/6 pt-8 mb-32 text-lg">
-                    breadcrumbs
+                    <div className="flex items-center mb-10">
+                      <MobileDrawerButton
+                        hidden=isOpen
+                        onClick={evt => {
+                          ReactEvent.Mouse.preventDefault(evt);
+                          toggleSidebar();
+                        }}
+                      />
+                      breadcrumbs
+                    </div>
                     children
                   </main>
                 </div>

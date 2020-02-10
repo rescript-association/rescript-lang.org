@@ -213,21 +213,6 @@ var CollapsibleSection = {
   make: ManualDocsLayout$Sidebar$CollapsibleSection
 };
 
-function ManualDocsLayout$Sidebar$MobileNavButton(Props) {
-  var hidden = Props.hidden;
-  var onClick = Props.onClick;
-  return React.createElement("button", {
-              className: (
-                hidden ? "hidden" : ""
-              ) + " md:hidden flex justify-center items-center block shadow-md bg-primary text-snow hover:text-white rounded-full w-12 h-12 fixed bottom-0 right-0 mr-8 mb-8",
-              onMouseDown: onClick
-            }, React.createElement(Icon.Table.make, { }));
-}
-
-var MobileNavButton = {
-  make: ManualDocsLayout$Sidebar$MobileNavButton
-};
-
 function ManualDocsLayout$Sidebar(Props) {
   var categories = Props.categories;
   var route = Props.route;
@@ -269,13 +254,7 @@ function ManualDocsLayout$Sidebar(Props) {
                                                     isItemActive: isItemActive,
                                                     category: category
                                                   }));
-                                  })))))), React.createElement(ManualDocsLayout$Sidebar$MobileNavButton, {
-                  hidden: isOpen,
-                  onClick: (function (evt) {
-                      evt.preventDefault();
-                      return Curry._1(toggle, /* () */0);
-                    })
-                }));
+                                  })))))));
 }
 
 var Sidebar = {
@@ -284,7 +263,6 @@ var Sidebar = {
   Category: Category,
   ToplevelNav: ToplevelNav,
   CollapsibleSection: CollapsibleSection,
-  MobileNavButton: MobileNavButton,
   make: ManualDocsLayout$Sidebar
 };
 
@@ -645,7 +623,10 @@ function ManualDocsLayout$Docs(Props) {
   var tmp = {
     theme: /* Reason */825328612,
     components: components,
-    sidebar: sidebar,
+    sidebar: /* tuple */[
+      sidebar,
+      toggleSidebar
+    ],
     route: router.route,
     children: children
   };

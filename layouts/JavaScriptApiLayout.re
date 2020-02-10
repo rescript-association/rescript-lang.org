@@ -50,7 +50,7 @@ module Docs = {
     <SidebarLayout
       theme=`Js
       components
-      sidebar
+      sidebar=(sidebar, toggleSidebar)
       route={
         router##route;
       }>

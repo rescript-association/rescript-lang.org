@@ -235,7 +235,7 @@ module Docs = {
     <SidebarLayout
       theme=`Js
       components
-      sidebar
+      sidebar=(sidebar, toggleSidebar)
       breadcrumbs=?breadcrumbs
       route={
         router##route;

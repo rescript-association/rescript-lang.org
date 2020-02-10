@@ -80,7 +80,10 @@ function JavaScriptApiLayout$Docs(Props) {
   return React.createElement(SidebarLayout.make, {
               theme: /* Js */16617,
               components: components,
-              sidebar: sidebar,
+              sidebar: /* tuple */[
+                sidebar,
+                toggleSidebar
+              ],
               route: router.route,
               children: children
             });

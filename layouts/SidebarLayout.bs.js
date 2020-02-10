@@ -334,7 +334,7 @@ var UrlPath = {
 function SidebarLayout$BreadCrumbs(Props) {
   var crumbs = Props.crumbs;
   return React.createElement("div", {
-              className: "text-xs text-night mb-10"
+              className: "text-xs text-night"
             }, Util.ReactStuff.ate(Belt_List.toArray(Belt_List.mapWithIndex(crumbs, (function (i, crumb) {
                             var item = i === (Belt_List.length(crumbs) - 1 | 0) ? React.createElement("span", {
                                     key: String(i)
@@ -537,21 +537,6 @@ var CollapsibleSection = {
   make: SidebarLayout$Sidebar$CollapsibleSection
 };
 
-function SidebarLayout$Sidebar$MobileNavButton(Props) {
-  var hidden = Props.hidden;
-  var onClick = Props.onClick;
-  return React.createElement("button", {
-              className: (
-                hidden ? "hidden" : ""
-              ) + " md:hidden flex justify-center items-center block shadow-md bg-primary text-snow hover:text-white rounded-full w-12 h-12 fixed bottom-0 right-0 mr-8 mb-8",
-              onMouseDown: onClick
-            }, React.createElement(Icon.Table.make, { }));
-}
-
-var MobileNavButton = {
-  make: SidebarLayout$Sidebar$MobileNavButton
-};
-
 function SidebarLayout$Sidebar(Props) {
   var categories = Props.categories;
   var route = Props.route;
@@ -592,13 +577,7 @@ function SidebarLayout$Sidebar(Props) {
                                                     isItemActive: isItemActive,
                                                     category: category
                                                   }));
-                                  })))))), React.createElement(SidebarLayout$Sidebar$MobileNavButton, {
-                  hidden: isOpen,
-                  onClick: (function (evt) {
-                      evt.preventDefault();
-                      return Curry._1(toggle, /* () */0);
-                    })
-                }));
+                                  })))))));
 }
 
 var Sidebar = {
@@ -607,8 +586,25 @@ var Sidebar = {
   Category: Category,
   ToplevelNav: ToplevelNav,
   CollapsibleSection: CollapsibleSection,
-  MobileNavButton: MobileNavButton,
   make: SidebarLayout$Sidebar
+};
+
+function SidebarLayout$MobileDrawerButton(Props) {
+  var hidden = Props.hidden;
+  var onClick = Props.onClick;
+  return React.createElement("button", {
+              className: (
+                hidden ? "hidden" : ""
+              ) + " md:hidden mr-3",
+              onMouseDown: onClick
+            }, React.createElement("img", {
+                  className: "h-4",
+                  src: "/static/ic_sidebar_drawer.svg"
+                }));
+}
+
+var MobileDrawerButton = {
+  make: SidebarLayout$MobileDrawerButton
 };
 
 function SidebarLayout(Props) {
@@ -623,18 +619,20 @@ function SidebarLayout(Props) {
           return false;
         }));
   var setIsOpen = match$1[1];
+  var isOpen = match$1[0];
   var theme$1 = ColorTheme.toCN(theme);
   var breadcrumbs$1 = Belt_Option.mapWithDefault(breadcrumbs, null, (function (crumbs) {
           return React.createElement(SidebarLayout$BreadCrumbs, {
                       crumbs: crumbs
                     });
         }));
+  var toggleSidebar = sidebar[1];
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, { }), React.createElement("div", {
                   className: "mt-16 min-w-20 " + theme$1
                 }, React.createElement("div", {
                       className: "w-full text-night font-base"
                     }, React.createElement(Navigation.make, {
-                          isOverlayOpen: match$1[0],
+                          isOverlayOpen: isOpen,
                           toggle: (function (param) {
                               return Curry._1(setIsOpen, (function (prev) {
                                             return !prev;
@@ -649,11 +647,19 @@ function SidebarLayout(Props) {
                                   components: components$2,
                                   children: React.createElement("div", {
                                         className: "flex"
-                                      }, sidebar, React.createElement("div", {
+                                      }, sidebar[0], React.createElement("div", {
                                             className: "flex justify-center w-full md:w-3/4 overflow-hidden"
                                           }, React.createElement("main", {
                                                 className: "w-5/6 pt-8 mb-32 text-lg"
-                                              }, breadcrumbs$1, children)))
+                                              }, React.createElement("div", {
+                                                    className: "flex items-center mb-10"
+                                                  }, React.createElement(SidebarLayout$MobileDrawerButton, {
+                                                        hidden: isOpen,
+                                                        onClick: (function (evt) {
+                                                            evt.preventDefault();
+                                                            return Curry._1(toggleSidebar, /* () */0);
+                                                          })
+                                                      }), breadcrumbs$1), children)))
                                 }))))));
 }
 
@@ -668,6 +674,7 @@ export {
   UrlPath ,
   BreadCrumbs ,
   Sidebar ,
+  MobileDrawerButton ,
   make ,
   
 }
