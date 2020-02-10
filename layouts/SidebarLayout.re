@@ -284,7 +284,7 @@ module BreadCrumbs = {
   // See UrlPath for more details on the parameters
   [@react.component]
   let make = (~crumbs: list(UrlPath.breadcrumb)) => {
-    <div className="text-xs text-night">
+    <div className="w-full overflow-x-auto text-xs text-night">
       {Belt.List.mapWithIndex(
          crumbs,
          (i, crumb) => {
@@ -399,7 +399,7 @@ module Sidebar = {
         | None => React.null
         };
 
-      <div className="flex items-center justify-between my-4 w-full">
+      <div className="flex items-center justify-between mb-4 w-full">
         <div className="flex items-center w-2/3">
           back
           <span className="ml-2 font-sans font-black text-night-dark text-xl">
@@ -516,7 +516,7 @@ module Sidebar = {
           ++ " md:block md:w-1/4 md:h-auto md:relative overflow-y-visible bg-white md:relative"
         }>
         <aside
-          className="relative top-0 px-4 w-full block md:top-16 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24"
+          className="relative top-0 px-4 w-full block md:top-16 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24 pt-8"
           style={Style.make(~height="calc(100vh - 4rem", ())}>
           <div className="flex justify-between">
             <div className="w-3/4 md:w-full"> toplevelNav </div>
@@ -525,7 +525,7 @@ module Sidebar = {
                 ReactEvent.Mouse.preventDefault(evt);
                 toggle();
               }}
-              className="md:hidden h-16">
+              className="md:hidden h-8">
               <Icon.Close />
             </button>
           </div>
@@ -553,7 +553,8 @@ module MobileDrawerButton = {
   [@react.component]
   let make = (~hidden: bool, ~onClick) => {
     <button
-      className={(hidden ? "hidden" : "") ++ " md:hidden mr-3"} onMouseDown=onClick>
+      className={(hidden ? "hidden" : "") ++ " md:hidden mr-3"}
+      onMouseDown=onClick>
       <img className="h-4" src="/static/ic_sidebar_drawer.svg" />
     </button>;
   };
@@ -600,8 +601,9 @@ let make =
                 sidebar
                 <div
                   className="flex justify-center w-full md:w-3/4 overflow-hidden">
-                  <main className="w-5/6 pt-8 mb-32 text-lg">
-                    <div className="flex items-center mb-10">
+                  <main className="w-5/6 pt-10 mb-32 text-lg">
+                    <div
+                      className="fixed border-b shadow top-16 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center">
                       <MobileDrawerButton
                         hidden=isOpen
                         onClick={evt => {
@@ -609,9 +611,11 @@ let make =
                           toggleSidebar();
                         }}
                       />
-                      breadcrumbs
+                      <div className="truncate overflow-x-auto touch-scroll">
+                        breadcrumbs
+                      </div>
                     </div>
-                    children
+                    <div className="mt-10"> children </div>
                   </main>
                 </div>
               </div>

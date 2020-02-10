@@ -334,7 +334,7 @@ var UrlPath = {
 function SidebarLayout$BreadCrumbs(Props) {
   var crumbs = Props.crumbs;
   return React.createElement("div", {
-              className: "text-xs text-night"
+              className: "w-full overflow-x-auto text-xs text-night"
             }, Util.ReactStuff.ate(Belt_List.toArray(Belt_List.mapWithIndex(crumbs, (function (i, crumb) {
                             var item = i === (Belt_List.length(crumbs) - 1 | 0) ? React.createElement("span", {
                                     key: String(i)
@@ -438,7 +438,7 @@ function SidebarLayout$Sidebar$ToplevelNav(Props) {
           kind: /* Subtle */-828367219
         }) : null;
   return React.createElement("div", {
-              className: "flex items-center justify-between my-4 w-full"
+              className: "flex items-center justify-between mb-4 w-full"
             }, React.createElement("div", {
                   className: "flex items-center w-2/3"
                 }, back, React.createElement("span", {
@@ -554,7 +554,7 @@ function SidebarLayout$Sidebar(Props) {
                     isOpen ? "fixed w-full left-0 h-full z-10 min-w-20" : "hidden "
                   ) + " md:block md:w-1/4 md:h-auto md:relative overflow-y-visible bg-white md:relative"
                 }, React.createElement("aside", {
-                      className: "relative top-0 px-4 w-full block md:top-16 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24",
+                      className: "relative top-0 px-4 w-full block md:top-16 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24 pt-8",
                       style: {
                         height: "calc(100vh - 4rem"
                       }
@@ -563,7 +563,7 @@ function SidebarLayout$Sidebar(Props) {
                         }, React.createElement("div", {
                               className: "w-3/4 md:w-full"
                             }, toplevelNav), React.createElement("button", {
-                              className: "md:hidden h-16",
+                              className: "md:hidden h-8",
                               onClick: (function (evt) {
                                   evt.preventDefault();
                                   return Curry._1(toggle, /* () */0);
@@ -650,16 +650,20 @@ function SidebarLayout(Props) {
                                       }, sidebar[0], React.createElement("div", {
                                             className: "flex justify-center w-full md:w-3/4 overflow-hidden"
                                           }, React.createElement("main", {
-                                                className: "w-5/6 pt-8 mb-32 text-lg"
+                                                className: "w-5/6 pt-10 mb-32 text-lg"
                                               }, React.createElement("div", {
-                                                    className: "flex items-center mb-10"
+                                                    className: "fixed border-b shadow top-16 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center"
                                                   }, React.createElement(SidebarLayout$MobileDrawerButton, {
                                                         hidden: isOpen,
                                                         onClick: (function (evt) {
                                                             evt.preventDefault();
                                                             return Curry._1(toggleSidebar, /* () */0);
                                                           })
-                                                      }), breadcrumbs$1), children)))
+                                                      }), React.createElement("div", {
+                                                        className: "truncate overflow-x-auto touch-scroll"
+                                                      }, breadcrumbs$1)), React.createElement("div", {
+                                                    className: "mt-10"
+                                                  }, children))))
                                 }))))));
 }
 
