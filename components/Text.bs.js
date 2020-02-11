@@ -190,7 +190,7 @@ function makeCodeElement(code, metastring, lang) {
         });
   }
   return React.createElement("div", {
-              className: "md-code font-mono block leading-tight"
+              className: "md-code font-mono block leading-tight mt-4 mb-10"
             }, codeElement);
 }
 

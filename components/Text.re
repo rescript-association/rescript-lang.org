@@ -147,7 +147,7 @@ module Md = {
     external unknownAsString: unknown => string = "%identity";
 
     let makeCodeElement = (~code, ~metastring, ~lang) => {
-      let baseClass = "md-code font-mono block leading-tight";
+      let baseClass = "md-code font-mono block leading-tight mt-4 mb-10";
       let codeElement =
         switch (metastring) {
         | None => <CodeExample code lang />
