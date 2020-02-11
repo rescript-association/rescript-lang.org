@@ -98,7 +98,7 @@ module Md = {
   module Table = {
     [@react.component]
     let make = (~children) => {
-      <div className="overflow-x-auto mt-2 mb-16">
+      <div className="overflow-x-auto mt-10 mb-16">
         <table className="md-table">
           children
         </table>

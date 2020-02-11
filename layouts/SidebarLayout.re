@@ -151,6 +151,19 @@ module ProseMd = {
     };
   };
 
+  module H5 = {
+    [@react.component]
+    let make = (~children) => {
+      <h5
+        className="group mt-12 text-xs leading-2 font-sans font-semibold uppercase tracking-wide">
+        <span className="-ml-5 pr-2">
+          <Anchor id={children->Unsafe.elementAsString} />
+        </span>
+        children
+      </h5>;
+    };
+  };
+
   module Pre = {
     [@react.component]
     let make = (~children) => {

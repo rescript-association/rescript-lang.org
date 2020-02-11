@@ -113,7 +113,7 @@ var InlineCode = {
 function Text$Md$Table(Props) {
   var children = Props.children;
   return React.createElement("div", {
-              className: "overflow-x-auto mt-2 mb-16"
+              className: "overflow-x-auto mt-10 mb-16"
             }, React.createElement("table", {
                   className: "md-table"
                 }, children));

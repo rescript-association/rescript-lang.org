@@ -186,6 +186,21 @@ var H4 = {
   make: SidebarLayout$ProseMd$H4
 };
 
+function SidebarLayout$ProseMd$H5(Props) {
+  var children = Props.children;
+  return React.createElement("h5", {
+              className: "group mt-12 text-xs leading-2 font-sans font-semibold uppercase tracking-wide"
+            }, React.createElement("span", {
+                  className: "-ml-5 pr-2"
+                }, React.createElement(SidebarLayout$ProseMd$Anchor, {
+                      id: children
+                    })), children);
+}
+
+var H5 = {
+  make: SidebarLayout$ProseMd$H5
+};
+
 function SidebarLayout$ProseMd$Pre(Props) {
   var children = Props.children;
   return React.createElement("pre", {
@@ -215,7 +230,7 @@ var components$1 = {
   h2: SidebarLayout$ProseMd$H2,
   h3: SidebarLayout$ProseMd$H3,
   h4: SidebarLayout$ProseMd$H4,
-  h5: $$Text.H5.make,
+  h5: SidebarLayout$ProseMd$H5,
   ul: $$Text.Md.Ul.make,
   ol: $$Text.Md.Ol.make,
   table: $$Text.Md.Table.make,
@@ -233,6 +248,7 @@ var ProseMd = {
   H2: H2$1,
   H3: H3,
   H4: H4,
+  H5: H5,
   Pre: Pre$1,
   P: P$1,
   components: components$1
