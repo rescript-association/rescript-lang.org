@@ -123,6 +123,7 @@ module.exports = {
      so we added the Tailwind default values here for
      convenience */
     fontSize: {
+      "smaller-1": "0.9em", // 18px => 16.2px (used for inlineCode)
       xs: ".75rem", // 12px
       sm: ".875rem", // 14px
       base: "1rem", // 16px

@@ -89,7 +89,7 @@ module Md = {
   module InlineCode = {
     [@react.component]
     let make = (~children) => {
-      <code className="px-1 rounded-sm text-base font-mono bg-snow">
+      <code className="md-inline-code px-1 text-smaller-1 rounded-sm font-mono bg-snow">
         children
       </code>;
     };

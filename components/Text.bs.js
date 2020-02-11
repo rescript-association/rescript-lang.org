@@ -102,7 +102,7 @@ var Pre = {
 function Text$Md$InlineCode(Props) {
   var children = Props.children;
   return React.createElement("code", {
-              className: "px-1 rounded-sm text-base font-mono bg-snow"
+              className: "md-inline-code px-1 text-smaller-1 rounded-sm font-mono bg-snow"
             }, children);
 }
 
