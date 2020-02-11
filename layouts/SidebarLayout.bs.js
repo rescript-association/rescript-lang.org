@@ -159,7 +159,7 @@ var H2$1 = {
 function SidebarLayout$ProseMd$H3(Props) {
   var children = Props.children;
   return React.createElement("h3", {
-              className: "group text-xl mt-12 leading-3 font-sans font-bold text-night-darker"
+              className: "group text-xl mt-12 leading-3 font-sans font-medium text-night-darker"
             }, React.createElement("span", {
                   className: "-ml-6 pr-2"
                 }, React.createElement(SidebarLayout$ProseMd$Anchor, {
