@@ -89,7 +89,8 @@ module Md = {
   module InlineCode = {
     [@react.component]
     let make = (~children) => {
-      <code className="md-inline-code px-1 text-smaller-1 rounded-sm font-mono bg-snow">
+      <code
+        className="md-inline-code px-1 text-smaller-1 rounded-sm font-mono bg-snow">
         children
       </code>;
     };
@@ -99,9 +100,7 @@ module Md = {
     [@react.component]
     let make = (~children) => {
       <div className="overflow-x-auto mt-10 mb-16">
-        <table className="md-table">
-          children
-        </table>
+        <table className="md-table"> children </table>
       </div>;
     };
   };
@@ -116,7 +115,8 @@ module Md = {
   module Th = {
     [@react.component]
     let make = (~children) => {
-      <th className="py-2 pr-8 text-sm uppercase font-medium tracking-wide text-left border-b-2 border-snow-darker">
+      <th
+        className="py-2 pr-8 text-sm uppercase font-medium tracking-wide text-left border-b-2 border-snow-darker">
         children
       </th>;
     };
@@ -287,7 +287,7 @@ module Md = {
   module Ol = {
     [@react.component]
     let make = (~children) => {
-      <ol className="md-ol -ml-4"> children </ol>;
+      <ol className="md-ol ml-2"> children </ol>;
     };
   };
 
@@ -302,8 +302,8 @@ module Md = {
         if(element == null || element.props == null) {
           return false;
         }
-        const name = element.props.name;
-        return name === 'ul' || name === 'ol';
+        const type = element.props.mdxType;
+        return type === 'ul' || type === 'ol';
       }"
     ];
 
@@ -318,25 +318,29 @@ module Md = {
 
        We are iterating on these here with quite some bailout JS
        */
+
       let elements: ReasonReact.reactElement =
         if (isArray(children)) {
-          switch (children->asArray) {
-          | [|_p, potentialSublist|] =>
-            if (isSublist(potentialSublist)) {
-              /* Scenario 2 */
-              children;
-            } else {
-              <p>
-                 children </p>;
-                /* Scenario 3 */
-            }
-          | _ =>
-            /* Scenario 3 */
-            <p> children </p>
+          let arr = children->asArray;
+          let last = Belt.Array.(arr->getExn(arr->length - 1));
+
+          if (isSublist(last)) {
+            /* Scenario 2 */
+            let head =
+              Js.Array2.slice(
+                arr,
+                ~start=0,
+                ~end_=arr->Belt.Array.length - 1,
+              );
+            <> <p> head->ate </p> last </>;
+          } else {
+            <p>
+               children </p>;
+              /* Scenario 3 */
           };
         } else if (typeOf(children) === "string") {
           <p>
-             {Unsafe.elementAsString(children)->ReasonReact.string} </p>;
+             {children->Unsafe.elementAsString->ReasonReact.string} </p>;
             /* Scenario 1 */
         } else {
           children;

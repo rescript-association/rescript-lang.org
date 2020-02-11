@@ -3,6 +3,7 @@
 import * as Util from "../common/Util.bs.js";
 import * as React from "react";
 import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
+import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as CodeExample from "./CodeExample.bs.js";
 import * as CodeSignature from "./CodeSignature.bs.js";
 
@@ -299,7 +300,7 @@ var Ul = {
 function Text$Md$Ol(Props) {
   var children = Props.children;
   return React.createElement("ol", {
-              className: "md-ol -ml-4"
+              className: "md-ol ml-2"
             }, children);
 }
 
@@ -315,19 +316,20 @@ function isSublist (element){{
         if(element == null || element.props == null) {
           return false;
         }
-        const name = element.props.name;
-        return name === 'ul' || name === 'ol';
+        const type = element.props.mdxType;
+        return type === 'ul' || type === 'ol';
       }};
 
 function Text$Md$Li(Props) {
   var children = Props.children;
   var elements;
   if (isArray$1(children)) {
-    if (children.length !== 2) {
-      elements = React.createElement("p", undefined, children);
+    var last = Belt_Array.getExn(children, children.length - 1 | 0);
+    if (isSublist(last)) {
+      var head = children.slice(0, children.length - 1 | 0);
+      elements = React.createElement(React.Fragment, undefined, React.createElement("p", undefined, Util.ReactStuff.ate(head)), last);
     } else {
-      var potentialSublist = children[1];
-      elements = isSublist(potentialSublist) ? children : React.createElement("p", undefined, children);
+      elements = React.createElement("p", undefined, children);
     }
   } else {
     elements = typeOf$1(children) === "string" ? React.createElement("p", undefined, children) : children;
