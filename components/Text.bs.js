@@ -289,7 +289,7 @@ var A = {
 function Text$Md$Ul(Props) {
   var children = Props.children;
   return React.createElement("ul", {
-              className: "md-ul my-4"
+              className: "md-ul mt-4 mb-16"
             }, children);
 }
 
@@ -300,7 +300,7 @@ var Ul = {
 function Text$Md$Ol(Props) {
   var children = Props.children;
   return React.createElement("ol", {
-              className: "md-ol ml-2"
+              className: "md-ol ml-2 mt-4 mb-16"
             }, children);
 }
 
@@ -335,7 +335,7 @@ function Text$Md$Li(Props) {
     elements = typeOf$1(children) === "string" ? React.createElement("p", undefined, children) : children;
   }
   return React.createElement("li", {
-              className: "md-li mt-4 leading-4 ml-4 text-lg"
+              className: "md-li mt-3 leading-4 ml-4 text-lg"
             }, elements);
 }
 

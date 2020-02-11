@@ -280,14 +280,14 @@ module Md = {
   module Ul = {
     [@react.component]
     let make = (~children) => {
-      <ul className="md-ul my-4"> children </ul>;
+      <ul className="md-ul mt-4 mb-16"> children </ul>;
     };
   };
 
   module Ol = {
     [@react.component]
     let make = (~children) => {
-      <ol className="md-ol ml-2"> children </ol>;
+      <ol className="md-ol ml-2 mt-4 mb-16"> children </ol>;
     };
   };
 
@@ -347,7 +347,7 @@ module Md = {
           /* Unknown Scenario */
         };
 
-      <li className="md-li mt-4 leading-4 ml-4 text-lg"> elements </li>;
+      <li className="md-li mt-3 leading-4 ml-4 text-lg"> elements </li>;
     };
   };
 };
