@@ -9,8 +9,8 @@ var Link = {
 
 function Text$Introduction(Props) {
   var children = Props.children;
-  return React.createElement("span", {
-              className: "text-xl block"
+  return React.createElement("div", {
+              className: "text-xl mt-8 mb-4"
             }, children);
 }
 

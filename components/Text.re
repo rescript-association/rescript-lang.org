@@ -7,6 +7,6 @@ module Introduction = {
   [@genType]
   [@react.component]
   let make = (~children) => {
-    <span className="text-xl block"> children </span>;
+    <div className="text-xl mt-8 mb-4"> children </div>;
   };
 };

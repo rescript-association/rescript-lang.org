@@ -63,7 +63,7 @@ module H3 = {
   [@react.component]
   let make = (~children) => {
     <h3
-      className="group text-xl mt-12 leading-3 font-sans font-medium text-night-darker">
+      className="group text-xl mt-12 leading-3 font-sans font-semibold text-night-darker">
       <span className="-ml-6 pr-2">
         <Anchor id={children->Unsafe.elementAsString} />
       </span>
