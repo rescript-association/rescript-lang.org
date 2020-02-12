@@ -27,7 +27,7 @@ function MainLayout(Props) {
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, { }), React.createElement("div", {
                   className: "mb-32 mt-16"
                 }, React.createElement("div", {
-                      className: "w-full text-night font-base"
+                      className: "w-full text-night text-lg"
                     }, React.createElement(Navigation.make, {
                           isOverlayOpen: match$1[0],
                           toggle: (function (param) {

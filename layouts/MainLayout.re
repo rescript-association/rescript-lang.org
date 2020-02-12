@@ -12,7 +12,7 @@ let make = (~children, ~components=Markdown.default) => {
   <>
     <Meta />
     <div className="mb-32 mt-16">
-      <div className="w-full text-night font-base">
+      <div className="w-full text-night text-lg">
         <Navigation
           isOverlayOpen=isOpen
           toggle={() => setIsOpen(prev => !prev)}
