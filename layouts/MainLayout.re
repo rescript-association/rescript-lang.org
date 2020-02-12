@@ -4,7 +4,7 @@
 module Link = Next.Link;
 
 [@react.component]
-let make = (~children, ~components=Mdx.Components.default) => {
+let make = (~children, ~components=Markdown.default) => {
   let router = Next.Router.useRouter();
   let minWidth = ReactDOMRe.Style.make(~minWidth="20rem", ());
   let (isOpen, setIsOpen) = React.useState(() => false);

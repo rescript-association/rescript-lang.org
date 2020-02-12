@@ -2,7 +2,9 @@
 
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
+import * as Markdown from "../common/Markdown.bs.js";
 import * as ColorTheme from "../common/ColorTheme.bs.js";
+import * as ApiMarkdown from "../common/ApiMarkdown.bs.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Router from "next/router";
 import * as SidebarLayout from "./SidebarLayout.bs.js";
@@ -21,7 +23,7 @@ hljs.registerLanguage('reason', reasonHighlightJs);
 function JavaScriptApiLayout$Docs(Props) {
   Props.theme;
   var match = Props.components;
-  var components = match !== undefined ? Caml_option.valFromOption(match) : SidebarLayout.ApiMd.components;
+  var components = match !== undefined ? Caml_option.valFromOption(match) : ApiMarkdown.$$default;
   var children = Props.children;
   var router = Router.useRouter();
   ColorTheme.toCN(/* Js */16617);
@@ -96,7 +98,7 @@ var Docs = {
 function JavaScriptApiLayout$Prose(Props) {
   var children = Props.children;
   return React.createElement(JavaScriptApiLayout$Docs, {
-              components: SidebarLayout.ProseMd.components,
+              components: Markdown.$$default,
               children: children
             });
 }
@@ -109,12 +111,9 @@ var Link = 0;
 
 var Sidebar = 0;
 
-var ApiMd = 0;
-
 export {
   Link ,
   Sidebar ,
-  ApiMd ,
   Docs ,
   Prose ,
   

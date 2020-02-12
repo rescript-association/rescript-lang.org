@@ -1,6 +1,34 @@
+/*
+  Abstract type for representing mdx
+  components mostly passed as children to
+  the component context API
+ */
+type mdxComponent;
+
+external fromReactElement: React.element => mdxComponent = "%identity";
+external toReactElement: mdxComponent => React.element = "%identity";
+
+/* Useful for getting the type of a certain mdx component, such as
+   "inlineCode" | "p" | "ul" | etc.
+
+   Will return "unknown" if either given element is not an mdx component,
+   or if there is no mdxType property found */
+let getMdxType: mdxComponent => string = [%raw
+  element => "{
+      if(element == null || element.props == null) {
+        return 'unknown';
+      }
+      return element.props.mdxType;
+    }"
+];
+
 module Components = {
-  open Text;
   type props = {. "children": ReasonReact.reactElement};
+
+  // Used for reflection based logic in
+  // components such as `code` or `ul`
+  // with runtime reflection
+  type unknown;
 
   [@bs.deriving abstract]
   type t = {
@@ -38,7 +66,7 @@ module Components = {
         .
         "className": option(string),
         "metastring": option(string),
-        "children": Md.Code.unknown,
+        "children": unknown,
       }),
     [@bs.optional]
     pre: React.component(props),
@@ -50,31 +78,6 @@ module Components = {
         "href": string,
       }),
   };
-
-  /* Sets our preferred branded styles
-     We most likely will never need a different ~components
-     option on our website. */
-  let default =
-    t(
-      ~p=Md.P.make,
-      ~li=Md.Li.make,
-      ~h1=H1.make,
-      ~h2=H2.make,
-      ~h3=H3.make,
-      ~h4=H4.make,
-      ~h5=H5.make,
-      ~ul=Md.Ul.make,
-      ~ol=Md.Ol.make,
-      ~table=Md.Table.make,
-      ~thead=Md.Thead.make,
-      ~th=Md.Th.make,
-      ~td=Md.Td.make,
-      ~a=Md.A.make,
-      ~pre=Md.Pre.make,
-      ~inlineCode=Md.InlineCode.make,
-      ~code=Md.Code.make,
-      (),
-    );
 };
 
 module Provider = {

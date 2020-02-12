@@ -3,7 +3,6 @@
 import * as Tag from "../components/Tag.bs.js";
 import * as Icon from "../components/Icon.bs.js";
 import * as Meta from "../components/Meta.bs.js";
-import * as $$Text from "../components/Text.bs.js";
 import * as Util from "../common/Util.bs.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
@@ -26,233 +25,6 @@ let reasonHighlightJs = require('reason-highlightjs');
 hljs.registerLanguage('reason', reasonHighlightJs);
 
 ;
-
-function SidebarLayout$ApiMd$InvisibleAnchor(Props) {
-  var id = Props.id;
-  var style = {
-    position: "absolute",
-    top: "-1rem"
-  };
-  return React.createElement("span", {
-              "aria-hidden": true,
-              className: "relative"
-            }, React.createElement("a", {
-                  id: id,
-                  style: style
-                }));
-}
-
-var InvisibleAnchor = {
-  make: SidebarLayout$ApiMd$InvisibleAnchor
-};
-
-function SidebarLayout$ApiMd$H1(Props) {
-  var children = Props.children;
-  return React.createElement("h1", {
-              className: "text-6xl leading-1 mb-2 font-sans font-medium text-night-dark"
-            }, children);
-}
-
-var H1 = {
-  make: SidebarLayout$ApiMd$H1
-};
-
-function SidebarLayout$ApiMd$H2(Props) {
-  var children = Props.children;
-  return React.createElement(React.Fragment, undefined, React.createElement(SidebarLayout$ApiMd$InvisibleAnchor, {
-                  id: children
-                }), React.createElement("div", {
-                  className: "border-b border-gray-200 my-20"
-                }));
-}
-
-var H2 = {
-  make: SidebarLayout$ApiMd$H2
-};
-
-function SidebarLayout$ApiMd$Pre(Props) {
-  var children = Props.children;
-  return React.createElement("pre", {
-              className: "mt-2 mb-4 block"
-            }, children);
-}
-
-var Pre = {
-  make: SidebarLayout$ApiMd$Pre
-};
-
-function SidebarLayout$ApiMd$P(Props) {
-  var children = Props.children;
-  return React.createElement("p", {
-              className: "mt-3 leading-4 text-night"
-            }, children);
-}
-
-var P = {
-  make: SidebarLayout$ApiMd$P
-};
-
-var components = {
-  p: SidebarLayout$ApiMd$P,
-  li: $$Text.Md.Li.make,
-  h1: SidebarLayout$ApiMd$H1,
-  h2: SidebarLayout$ApiMd$H2,
-  h3: $$Text.H3.make,
-  h4: $$Text.H4.make,
-  h5: $$Text.H5.make,
-  ul: $$Text.Md.Ul.make,
-  ol: $$Text.Md.Ol.make,
-  thead: $$Text.Md.Thead.make,
-  th: $$Text.Md.Th.make,
-  td: $$Text.Md.Td.make,
-  inlineCode: $$Text.Md.InlineCode.make,
-  code: $$Text.Md.Code.make,
-  pre: SidebarLayout$ApiMd$Pre,
-  a: $$Text.Md.A.make
-};
-
-var ApiMd = {
-  InvisibleAnchor: InvisibleAnchor,
-  H1: H1,
-  H2: H2,
-  Pre: Pre,
-  P: P,
-  components: components
-};
-
-function SidebarLayout$ProseMd$Anchor(Props) {
-  var id = Props.id;
-  var style = {
-    position: "absolute",
-    top: "-7rem"
-  };
-  return React.createElement("span", {
-              className: "inline group relative"
-            }, React.createElement("a", {
-                  className: "invisible text-night-light opacity-50 text-inherit hover:opacity-100 hover:text-night-light hover:cursor-pointer group-hover:visible",
-                  href: "#" + id
-                }, Util.ReactStuff.s("#")), React.createElement("a", {
-                  id: id,
-                  style: style
-                }));
-}
-
-var Anchor = {
-  make: SidebarLayout$ProseMd$Anchor
-};
-
-function SidebarLayout$ProseMd$H2(Props) {
-  var children = Props.children;
-  return React.createElement(React.Fragment, undefined, React.createElement("h2", {
-                  className: "group mt-12 text-3xl leading-1 font-sans font-medium text-night-dark"
-                }, React.createElement("span", {
-                      className: "-ml-8 pr-2"
-                    }, React.createElement(SidebarLayout$ProseMd$Anchor, {
-                          id: children
-                        })), children));
-}
-
-var H2$1 = {
-  make: SidebarLayout$ProseMd$H2
-};
-
-function SidebarLayout$ProseMd$H3(Props) {
-  var children = Props.children;
-  return React.createElement("h3", {
-              className: "group text-xl mt-12 leading-3 font-sans font-medium text-night-darker"
-            }, React.createElement("span", {
-                  className: "-ml-6 pr-2"
-                }, React.createElement(SidebarLayout$ProseMd$Anchor, {
-                      id: children
-                    })), children);
-}
-
-var H3 = {
-  make: SidebarLayout$ProseMd$H3
-};
-
-function SidebarLayout$ProseMd$H4(Props) {
-  var children = Props.children;
-  return React.createElement("h4", {
-              className: "group text-lg mt-12 leading-2 font-sans font-semibold text-night-dark"
-            }, React.createElement("span", {
-                  className: "-ml-5 pr-2"
-                }, React.createElement(SidebarLayout$ProseMd$Anchor, {
-                      id: children
-                    })), children);
-}
-
-var H4 = {
-  make: SidebarLayout$ProseMd$H4
-};
-
-function SidebarLayout$ProseMd$H5(Props) {
-  var children = Props.children;
-  return React.createElement("h5", {
-              className: "group mt-12 text-xs leading-2 font-sans font-semibold uppercase tracking-wide"
-            }, React.createElement("span", {
-                  className: "-ml-5 pr-2"
-                }, React.createElement(SidebarLayout$ProseMd$Anchor, {
-                      id: children
-                    })), children);
-}
-
-var H5 = {
-  make: SidebarLayout$ProseMd$H5
-};
-
-function SidebarLayout$ProseMd$Pre(Props) {
-  var children = Props.children;
-  return React.createElement("pre", {
-              className: "mt-2 mb-4 block"
-            }, children);
-}
-
-var Pre$1 = {
-  make: SidebarLayout$ProseMd$Pre
-};
-
-function SidebarLayout$ProseMd$P(Props) {
-  var children = Props.children;
-  return React.createElement("p", {
-              className: "text-inherit mt-3 leading-4 text-night"
-            }, children);
-}
-
-var P$1 = {
-  make: SidebarLayout$ProseMd$P
-};
-
-var components$1 = {
-  p: SidebarLayout$ProseMd$P,
-  li: $$Text.Md.Li.make,
-  h1: SidebarLayout$ApiMd$H1,
-  h2: SidebarLayout$ProseMd$H2,
-  h3: SidebarLayout$ProseMd$H3,
-  h4: SidebarLayout$ProseMd$H4,
-  h5: SidebarLayout$ProseMd$H5,
-  ul: $$Text.Md.Ul.make,
-  ol: $$Text.Md.Ol.make,
-  table: $$Text.Md.Table.make,
-  thead: $$Text.Md.Thead.make,
-  th: $$Text.Md.Th.make,
-  td: $$Text.Md.Td.make,
-  inlineCode: $$Text.Md.InlineCode.make,
-  code: $$Text.Md.Code.make,
-  pre: SidebarLayout$ProseMd$Pre,
-  a: $$Text.Md.A.make
-};
-
-var ProseMd = {
-  Anchor: Anchor,
-  H2: H2$1,
-  H3: H3,
-  H4: H4,
-  H5: H5,
-  Pre: Pre$1,
-  P: P$1,
-  components: components$1
-};
 
 function parse(base, route) {
   var allPaths = route.replace(base + "/", "").split("/");
@@ -631,17 +403,16 @@ var MobileDrawerButton = {
 
 function SidebarLayout(Props) {
   var theme = Props.theme;
-  var match = Props.components;
-  var components$2 = match !== undefined ? Caml_option.valFromOption(match) : components;
+  var components = Props.components;
   var sidebar = Props.sidebar;
   var breadcrumbs = Props.breadcrumbs;
   var route = Props.route;
   var children = Props.children;
-  var match$1 = React.useState((function () {
+  var match = React.useState((function () {
           return false;
         }));
-  var setIsOpen = match$1[1];
-  var isOpen = match$1[0];
+  var setIsOpen = match[1];
+  var isOpen = match[0];
   var theme$1 = ColorTheme.toCN(theme);
   var breadcrumbs$1 = Belt_Option.mapWithDefault(breadcrumbs, null, (function (crumbs) {
           return React.createElement(SidebarLayout$BreadCrumbs, {
@@ -666,7 +437,7 @@ function SidebarLayout(Props) {
                         }, React.createElement("div", {
                               className: "lg:align-center w-full max-w-xl"
                             }, React.createElement(React$1.MDXProvider, {
-                                  components: components$2,
+                                  components: components,
                                   children: React.createElement("div", {
                                         className: "flex"
                                       }, sidebar[0], React.createElement("div", {
@@ -695,8 +466,6 @@ var make = SidebarLayout;
 
 export {
   Link$1 as Link,
-  ApiMd ,
-  ProseMd ,
   UrlPath ,
   BreadCrumbs ,
   Sidebar ,

@@ -342,7 +342,7 @@ let categories = [|
 
 module Docs = {
   [@react.component]
-  let make = (~components=SidebarLayout.ApiMd.components, ~children) => {
+  let make = (~components=Markdown.default, ~children) => {
     let router = Next.Router.useRouter();
     let route = router##route;
 
@@ -417,6 +417,6 @@ module Docs = {
 module Prose = {
   [@react.component]
   let make = (~children) => {
-    <Docs components=SidebarLayout.ProseMd.components> children </Docs>;
+    <Docs components=Markdown.default> children </Docs>;
   };
 };

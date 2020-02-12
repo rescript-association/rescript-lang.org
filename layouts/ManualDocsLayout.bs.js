@@ -5,6 +5,7 @@ import * as Icon from "../components/Icon.bs.js";
 import * as Util from "../common/Util.bs.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
+import * as Markdown from "../common/Markdown.bs.js";
 import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
@@ -571,7 +572,7 @@ var categories = /* array */[
 
 function ManualDocsLayout$Docs(Props) {
   var match = Props.components;
-  var components = match !== undefined ? Caml_option.valFromOption(match) : SidebarLayout.ApiMd.components;
+  var components = match !== undefined ? Caml_option.valFromOption(match) : Markdown.$$default;
   var children = Props.children;
   var router = Router.useRouter();
   var route = router.route;
@@ -643,7 +644,7 @@ var Docs = {
 function ManualDocsLayout$Prose(Props) {
   var children = Props.children;
   return React.createElement(ManualDocsLayout$Docs, {
-              components: SidebarLayout.ProseMd.components,
+              components: Markdown.$$default,
               children: children
             });
 }

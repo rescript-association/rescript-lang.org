@@ -11,12 +11,11 @@ hljs.registerLanguage('reason', reasonHighlightJs);
 module Link = Next.Link;
 
 module Sidebar = SidebarLayout.Sidebar;
-module ApiMd = SidebarLayout.ApiMd;
 
 /* Used for API docs (structured data) */
 module Docs = {
   [@react.component]
-  let make = (~theme=`Reason, ~components=ApiMd.components, ~children) => {
+  let make = (~theme=`Reason, ~components=ApiMarkdown.default, ~children) => {
     let router = Next.Router.useRouter();
     let theme = ColorTheme.toCN(`Js);
 
@@ -68,6 +67,6 @@ module Docs = {
 module Prose = {
   [@react.component]
   let make = (~children) => {
-    <Docs components=SidebarLayout.ProseMd.components> children </Docs>;
+    <Docs components=Markdown.default> children </Docs>;
   };
 };

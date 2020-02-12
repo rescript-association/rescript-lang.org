@@ -1,8 +1,8 @@
 
 
-import * as $$Text from "../components/Text.bs.js";
 import * as Util from "../common/Util.bs.js";
 import * as React from "react";
+import * as Markdown from "../common/Markdown.bs.js";
 import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as MainLayout from "./MainLayout.bs.js";
@@ -42,18 +42,18 @@ var H1 = {
 
 var components = {
   p: ApiLayout$MainMd$P,
-  li: $$Text.Md.Li.make,
+  li: Markdown.Li.make,
   h1: ApiLayout$MainMd$H1,
-  h2: $$Text.H2.make,
-  h3: $$Text.H3.make,
-  h4: $$Text.H4.make,
-  h5: $$Text.H5.make,
-  ul: $$Text.Md.Ul.make,
-  ol: $$Text.Md.Ol.make,
-  inlineCode: $$Text.Md.InlineCode.make,
-  code: $$Text.Md.Code.make,
-  pre: $$Text.Md.Pre.make,
-  a: $$Text.Md.A.make
+  h2: Markdown.H2.make,
+  h3: Markdown.H3.make,
+  h4: Markdown.H4.make,
+  h5: Markdown.H5.make,
+  ul: Markdown.Ul.make,
+  ol: Markdown.Ol.make,
+  inlineCode: Markdown.InlineCode.make,
+  code: Markdown.Code.make,
+  pre: Markdown.Pre.make,
+  a: Markdown.A.make
 };
 
 var MainMd = {
