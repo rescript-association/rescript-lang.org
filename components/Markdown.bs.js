@@ -43,7 +43,7 @@ var H1 = {
 function Markdown$H2(Props) {
   var children = Props.children;
   return React.createElement(React.Fragment, undefined, React.createElement("h2", {
-                  className: "group mt-8 text-3xl leading-1 font-sans font-medium text-night-dark"
+                  className: "group mt-12 text-3xl leading-1 font-sans font-medium text-night-dark"
                 }, React.createElement("span", {
                       className: "-ml-8 pr-2"
                     }, React.createElement(Markdown$Anchor, {

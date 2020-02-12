@@ -49,7 +49,7 @@ module H2 = {
     <>
       // Here we know that children is always a string (## headline)
       <h2
-        className="group mt-8 text-3xl leading-1 font-sans font-medium text-night-dark">
+        className="group mt-12 text-3xl leading-1 font-sans font-medium text-night-dark">
         <span className="-ml-8 pr-2">
           <Anchor id={children->Unsafe.elementAsString} />
         </span>
