@@ -8,7 +8,7 @@
   "dependencies": {
     "@fullhuman/postcss-purgecss": "^1.2.0",
     "@glennsl/bs-json": "^3.0.0",
-    "@mdx-js/loader": "^1.0.21",
+    "@mdx-js/loader": "^1.5.5",
     "@next/mdx": "^8.1.0",
     "@zeit/next-css": "^1.0.1",
     "bs-fetch": "^0.3.1",
@@ -33,7 +33,7 @@
     "dev": "next",
     "build": "yarn run update-index && bsb -clean-world -make-world && next build",
     "test": "node scripts/test-examples.js",
-    "update-index": "node scripts/extract-indices.js",
+    "update-index": "node scripts/extract-indices.js && node scripts/extract-tocs.js",
     "now-build": "yarn run build",
     "export": "next export",
     "start": "next start -p $PORT",

@@ -15,12 +15,26 @@ function CodeExample(Props) {
           __html: highlighted
         }
       }, /* array */[]);
+  var langShortname;
+  switch (lang) {
+    case "bash" :
+        langShortname = "sh";
+        break;
+    case "ocaml" :
+        langShortname = "ml";
+        break;
+    case "reason" :
+        langShortname = "re";
+        break;
+    default:
+      langShortname = lang;
+  }
   return React.createElement("div", {
-              className: "flex flex-col -mx-8 xs:mx-0 rounded-none xs:rounded-lg bg-night-dark py-3 px-3 mt-10 text-snow-dark"
+              className: "flex flex-col -mx-8 xs:mx-0 rounded-none xs:rounded border border-snow-dark bg-snow-light px-5 py-2 text-night-dark"
             }, React.createElement("div", {
-                  className: "font-montserrat text-sm mb-3 font-bold text-fire"
-                }, Util.ReactStuff.s(lang.toUpperCase())), React.createElement("div", {
-                  className: "pl-5 text-base pb-4 overflow-x-auto"
+                  className: "flex self-end font-sans mb-4 text-sm font-bold text-night-light"
+                }, Util.ReactStuff.s(langShortname.toUpperCase())), React.createElement("div", {
+                  className: "px-5 text-base pb-6 overflow-x-auto"
                 }, children));
 }
 

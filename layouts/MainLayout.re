@@ -4,7 +4,7 @@
 module Link = Next.Link;
 
 [@react.component]
-let make = (~children, ~components=Mdx.Components.default) => {
+let make = (~children, ~components=Markdown.default) => {
   let router = Next.Router.useRouter();
   let minWidth = ReactDOMRe.Style.make(~minWidth="20rem", ());
   let (isOpen, setIsOpen) = React.useState(() => false);
@@ -12,7 +12,7 @@ let make = (~children, ~components=Mdx.Components.default) => {
   <>
     <Meta />
     <div className="mb-32 mt-16">
-      <div className="w-full text-night font-base">
+      <div className="w-full text-night text-lg">
         <Navigation
           isOverlayOpen=isOpen
           toggle={() => setIsOpen(prev => !prev)}

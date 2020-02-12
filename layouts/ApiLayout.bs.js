@@ -1,8 +1,8 @@
 
 
-import * as $$Text from "../components/Text.bs.js";
 import * as Util from "../common/Util.bs.js";
 import * as React from "react";
+import * as Markdown from "../components/Markdown.bs.js";
 import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as MainLayout from "./MainLayout.bs.js";
@@ -32,7 +32,7 @@ var P = {
 function ApiLayout$MainMd$H1(Props) {
   var children = Props.children;
   return React.createElement("h1", {
-              className: "text-7xl font-overpass font-black text-night-dark"
+              className: "text-7xl font-sans font-black text-night-dark"
             }, children);
 }
 
@@ -42,18 +42,18 @@ var H1 = {
 
 var components = {
   p: ApiLayout$MainMd$P,
-  li: $$Text.Md.Li.make,
+  li: Markdown.Li.make,
   h1: ApiLayout$MainMd$H1,
-  h2: $$Text.H2.make,
-  h3: $$Text.H3.make,
-  h4: $$Text.H4.make,
-  h5: $$Text.H5.make,
-  ul: $$Text.Md.Ul.make,
-  ol: $$Text.Md.Ol.make,
-  inlineCode: $$Text.Md.InlineCode.make,
-  code: $$Text.Md.Code.make,
-  pre: $$Text.Md.Pre.make,
-  a: $$Text.Md.A.make
+  h2: Markdown.H2.make,
+  h3: Markdown.H3.make,
+  h4: Markdown.H4.make,
+  h5: Markdown.H5.make,
+  ul: Markdown.Ul.make,
+  ol: Markdown.Ol.make,
+  inlineCode: Markdown.InlineCode.make,
+  code: Markdown.Code.make,
+  pre: Markdown.Pre.make,
+  a: Markdown.A.make
 };
 
 var MainMd = {
@@ -68,7 +68,7 @@ function ApiLayout$Category$Card(Props) {
             className: "w-full mb-2",
             src: card[/* src */3]
           }), React.createElement("h3", {
-            className: "font-overpass font-black text-3xl text-night-dark"
+            className: "font-sans font-black text-3xl text-night-dark"
           }, Util.ReactStuff.s(card[/* title */0])), React.createElement("div", {
             className: "text-base leading-5 text-night"
           }, Util.ReactStuff.s(card[/* descr */1])));

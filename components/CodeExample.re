@@ -17,12 +17,23 @@ let make = (~code: string, ~lang) => {
       [||],
     );
 
+  let langShortname =
+    switch (lang) {
+    | "ocaml" => "ml"
+    | "reason" => "re"
+    | "bash" => "sh"
+    | rest => rest
+    };
+
+  let fooBar = Some("test");
+
   <div
-    className="flex flex-col -mx-8 xs:mx-0 rounded-none xs:rounded-lg bg-night-dark py-3 px-3 mt-10 text-snow-dark">
+    className="flex flex-col -mx-8 xs:mx-0 rounded-none xs:rounded border border-snow-dark bg-snow-light px-5 py-2 text-night-dark">
     <div
-      className="font-montserrat text-sm mb-3 font-bold text-fire">
-      {Js.String2.toUpperCase(lang)->s}
+      className="flex self-end font-sans mb-4 text-sm font-bold text-night-light">
+      {Js.String2.toUpperCase(langShortname)->s}
     </div>
-    <div className="pl-5 text-base pb-4 overflow-x-auto"> children </div>
+    <div className="px-5 text-base pb-6 overflow-x-auto"> children </div>
   </div>;
 };
+

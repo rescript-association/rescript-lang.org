@@ -6,11 +6,11 @@
 }
 
 .md-ol > .md-li p::before {
-  content: counter(li);
-  @apply text-fire inline-block w-4;
+  content: counter(li) ".";
+  @apply text-night-dark font-semibold inline-block w-6 -ml-6;
 }
 
 .md-ul > .md-li p::before {
   content: "•";
-  @apply text-fire inline-block w-4 -ml-4 pr-2;
+  @apply inline-block w-4 -ml-4 pr-2;
 }

@@ -3,7 +3,6 @@
 import * as Tag from "../components/Tag.bs.js";
 import * as Icon from "../components/Icon.bs.js";
 import * as Meta from "../components/Meta.bs.js";
-import * as $$Text from "../components/Text.bs.js";
 import * as Util from "../common/Util.bs.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
@@ -26,200 +25,6 @@ let reasonHighlightJs = require('reason-highlightjs');
 hljs.registerLanguage('reason', reasonHighlightJs);
 
 ;
-
-function SidebarLayout$ApiMd$Anchor(Props) {
-  var id = Props.id;
-  var style = {
-    position: "absolute",
-    top: "-7rem"
-  };
-  return React.createElement("span", {
-              className: "relative"
-            }, React.createElement("a", {
-                  className: "mr-2 hover:cursor-pointer",
-                  href: "#" + id
-                }, Util.ReactStuff.s("#")), React.createElement("a", {
-                  id: id,
-                  style: style
-                }));
-}
-
-var Anchor = {
-  make: SidebarLayout$ApiMd$Anchor
-};
-
-function SidebarLayout$ApiMd$InvisibleAnchor(Props) {
-  var id = Props.id;
-  var style = {
-    position: "absolute",
-    top: "-1rem"
-  };
-  return React.createElement("span", {
-              "aria-hidden": true,
-              className: "relative"
-            }, React.createElement("a", {
-                  id: id,
-                  style: style
-                }));
-}
-
-var InvisibleAnchor = {
-  make: SidebarLayout$ApiMd$InvisibleAnchor
-};
-
-function SidebarLayout$ApiMd$H1(Props) {
-  var children = Props.children;
-  return React.createElement("h1", {
-              className: "text-6xl tracking-tight leading-1 font-overpass font-black text-night-dark"
-            }, children);
-}
-
-var H1 = {
-  make: SidebarLayout$ApiMd$H1
-};
-
-function SidebarLayout$ApiMd$H2(Props) {
-  var children = Props.children;
-  return React.createElement(React.Fragment, undefined, React.createElement(SidebarLayout$ApiMd$InvisibleAnchor, {
-                  id: children
-                }), React.createElement("div", {
-                  className: "border-b border-gray-200 my-20"
-                }));
-}
-
-var H2 = {
-  make: SidebarLayout$ApiMd$H2
-};
-
-function SidebarLayout$ApiMd$Pre(Props) {
-  var children = Props.children;
-  return React.createElement("pre", {
-              className: "mt-2 mb-4 block"
-            }, children);
-}
-
-var Pre = {
-  make: SidebarLayout$ApiMd$Pre
-};
-
-function SidebarLayout$ApiMd$P(Props) {
-  var children = Props.children;
-  return React.createElement("p", {
-              className: "mt-3 leading-4 text-night"
-            }, children);
-}
-
-var P = {
-  make: SidebarLayout$ApiMd$P
-};
-
-var components = {
-  p: SidebarLayout$ApiMd$P,
-  li: $$Text.Md.Li.make,
-  h1: SidebarLayout$ApiMd$H1,
-  h2: SidebarLayout$ApiMd$H2,
-  h3: $$Text.H3.make,
-  h4: $$Text.H4.make,
-  h5: $$Text.H5.make,
-  ul: $$Text.Md.Ul.make,
-  ol: $$Text.Md.Ol.make,
-  inlineCode: $$Text.Md.InlineCode.make,
-  code: $$Text.Md.Code.make,
-  pre: SidebarLayout$ApiMd$Pre,
-  a: $$Text.Md.A.make
-};
-
-var ApiMd = {
-  Anchor: Anchor,
-  InvisibleAnchor: InvisibleAnchor,
-  H1: H1,
-  H2: H2,
-  Pre: Pre,
-  P: P,
-  components: components
-};
-
-function SidebarLayout$ProseMd$Anchor(Props) {
-  var id = Props.id;
-  var style = {
-    position: "absolute",
-    top: "-7rem"
-  };
-  return React.createElement("span", {
-              style: {
-                position: "relative"
-              }
-            }, React.createElement("a", {
-                  className: "mr-2 hover:cursor-pointer",
-                  href: "#" + id
-                }, Util.ReactStuff.s("#")), React.createElement("a", {
-                  id: id,
-                  style: style
-                }));
-}
-
-var Anchor$1 = {
-  make: SidebarLayout$ProseMd$Anchor
-};
-
-function SidebarLayout$ProseMd$H2(Props) {
-  var children = Props.children;
-  return React.createElement(React.Fragment, undefined, React.createElement("h2", {
-                  className: "mt-12 text-3xl leading-1 tracking-tight font-overpass font-medium font-black text-night-dark"
-                }, React.createElement(SidebarLayout$ProseMd$Anchor, {
-                      id: children
-                    }), children));
-}
-
-var H2$1 = {
-  make: SidebarLayout$ProseMd$H2
-};
-
-function SidebarLayout$ProseMd$Pre(Props) {
-  var children = Props.children;
-  return React.createElement("pre", {
-              className: "mt-2 mb-4 block"
-            }, children);
-}
-
-var Pre$1 = {
-  make: SidebarLayout$ProseMd$Pre
-};
-
-function SidebarLayout$ProseMd$P(Props) {
-  var children = Props.children;
-  return React.createElement("p", {
-              className: "text-base mt-3 leading-4 text-night"
-            }, children);
-}
-
-var P$1 = {
-  make: SidebarLayout$ProseMd$P
-};
-
-var components$1 = {
-  p: SidebarLayout$ProseMd$P,
-  li: $$Text.Md.Li.make,
-  h1: SidebarLayout$ApiMd$H1,
-  h2: SidebarLayout$ProseMd$H2,
-  h3: $$Text.H3.make,
-  h4: $$Text.H4.make,
-  h5: $$Text.H5.make,
-  ul: $$Text.Md.Ul.make,
-  ol: $$Text.Md.Ol.make,
-  inlineCode: $$Text.Md.InlineCode.make,
-  code: $$Text.Md.Code.make,
-  pre: SidebarLayout$ProseMd$Pre,
-  a: $$Text.Md.A.make
-};
-
-var ProseMd = {
-  Anchor: Anchor$1,
-  H2: H2$1,
-  Pre: Pre$1,
-  P: P$1,
-  components: components$1
-};
 
 function parse(base, route) {
   var allPaths = route.replace(base + "/", "").split("/");
@@ -323,7 +128,7 @@ var UrlPath = {
 function SidebarLayout$BreadCrumbs(Props) {
   var crumbs = Props.crumbs;
   return React.createElement("div", {
-              className: "text-xs text-night mb-10"
+              className: "w-full overflow-x-auto text-xs text-night"
             }, Util.ReactStuff.ate(Belt_List.toArray(Belt_List.mapWithIndex(crumbs, (function (i, crumb) {
                             var item = i === (Belt_List.length(crumbs) - 1 | 0) ? React.createElement("span", {
                                     key: String(i)
@@ -427,7 +232,7 @@ function SidebarLayout$Sidebar$ToplevelNav(Props) {
           kind: /* Subtle */-828367219
         }) : null;
   return React.createElement("div", {
-              className: "flex items-center justify-between my-4 w-full"
+              className: "flex items-center justify-between mb-4 w-full"
             }, React.createElement("div", {
                   className: "flex items-center w-2/3"
                 }, back, React.createElement("span", {
@@ -526,21 +331,6 @@ var CollapsibleSection = {
   make: SidebarLayout$Sidebar$CollapsibleSection
 };
 
-function SidebarLayout$Sidebar$MobileNavButton(Props) {
-  var hidden = Props.hidden;
-  var onClick = Props.onClick;
-  return React.createElement("button", {
-              className: (
-                hidden ? "hidden" : ""
-              ) + " md:hidden flex justify-center items-center block shadow-md bg-primary text-snow hover:text-white rounded-full w-12 h-12 fixed bottom-0 right-0 mr-8 mb-8",
-              onMouseDown: onClick
-            }, React.createElement(Icon.Table.make, { }));
-}
-
-var MobileNavButton = {
-  make: SidebarLayout$Sidebar$MobileNavButton
-};
-
 function SidebarLayout$Sidebar(Props) {
   var categories = Props.categories;
   var route = Props.route;
@@ -558,7 +348,7 @@ function SidebarLayout$Sidebar(Props) {
                     isOpen ? "fixed w-full left-0 h-full z-10 min-w-20" : "hidden "
                   ) + " md:block md:w-1/4 md:h-auto md:relative overflow-y-visible bg-white md:relative"
                 }, React.createElement("aside", {
-                      className: "relative top-0 px-4 w-full block md:top-16 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24",
+                      className: "relative top-0 px-4 w-full block md:top-16 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24 pt-8",
                       style: {
                         height: "calc(100vh - 4rem"
                       }
@@ -567,7 +357,7 @@ function SidebarLayout$Sidebar(Props) {
                         }, React.createElement("div", {
                               className: "w-3/4 md:w-full"
                             }, toplevelNav), React.createElement("button", {
-                              className: "md:hidden h-16",
+                              className: "md:hidden h-8",
                               onClick: (function (evt) {
                                   evt.preventDefault();
                                   return Curry._1(toggle, /* () */0);
@@ -581,13 +371,7 @@ function SidebarLayout$Sidebar(Props) {
                                                     isItemActive: isItemActive,
                                                     category: category
                                                   }));
-                                  })))))), React.createElement(SidebarLayout$Sidebar$MobileNavButton, {
-                  hidden: isOpen,
-                  onClick: (function (evt) {
-                      evt.preventDefault();
-                      return Curry._1(toggle, /* () */0);
-                    })
-                }));
+                                  })))))));
 }
 
 var Sidebar = {
@@ -596,34 +380,52 @@ var Sidebar = {
   Category: Category,
   ToplevelNav: ToplevelNav,
   CollapsibleSection: CollapsibleSection,
-  MobileNavButton: MobileNavButton,
   make: SidebarLayout$Sidebar
+};
+
+function SidebarLayout$MobileDrawerButton(Props) {
+  var hidden = Props.hidden;
+  var onClick = Props.onClick;
+  return React.createElement("button", {
+              className: (
+                hidden ? "hidden" : ""
+              ) + " md:hidden mr-3",
+              onMouseDown: onClick
+            }, React.createElement("img", {
+                  className: "h-4",
+                  src: "/static/ic_sidebar_drawer.svg"
+                }));
+}
+
+var MobileDrawerButton = {
+  make: SidebarLayout$MobileDrawerButton
 };
 
 function SidebarLayout(Props) {
   var theme = Props.theme;
-  var match = Props.components;
-  var components$2 = match !== undefined ? Caml_option.valFromOption(match) : components;
+  var components = Props.components;
   var sidebar = Props.sidebar;
   var breadcrumbs = Props.breadcrumbs;
   var route = Props.route;
   var children = Props.children;
-  var match$1 = React.useState((function () {
+  var match = React.useState((function () {
           return false;
         }));
-  var setIsOpen = match$1[1];
+  var setIsOpen = match[1];
+  var isOpen = match[0];
   var theme$1 = ColorTheme.toCN(theme);
   var breadcrumbs$1 = Belt_Option.mapWithDefault(breadcrumbs, null, (function (crumbs) {
           return React.createElement(SidebarLayout$BreadCrumbs, {
                       crumbs: crumbs
                     });
         }));
+  var toggleSidebar = sidebar[1];
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, { }), React.createElement("div", {
                   className: "mt-16 min-w-20 " + theme$1
                 }, React.createElement("div", {
                       className: "w-full text-night font-base"
                     }, React.createElement(Navigation.make, {
-                          isOverlayOpen: match$1[0],
+                          isOverlayOpen: isOpen,
                           toggle: (function (param) {
                               return Curry._1(setIsOpen, (function (prev) {
                                             return !prev;
@@ -635,14 +437,26 @@ function SidebarLayout(Props) {
                         }, React.createElement("div", {
                               className: "lg:align-center w-full max-w-xl"
                             }, React.createElement(React$1.MDXProvider, {
-                                  components: components$2,
+                                  components: components,
                                   children: React.createElement("div", {
                                         className: "flex"
-                                      }, sidebar, React.createElement("div", {
+                                      }, sidebar[0], React.createElement("div", {
                                             className: "flex justify-center w-full md:w-3/4 overflow-hidden"
                                           }, React.createElement("main", {
-                                                className: "w-5/6 pt-8 mb-32 text-lg"
-                                              }, breadcrumbs$1, children)))
+                                                className: "w-5/6 pt-10 mb-32 text-lg"
+                                              }, React.createElement("div", {
+                                                    className: "fixed border-b shadow top-16 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center"
+                                                  }, React.createElement(SidebarLayout$MobileDrawerButton, {
+                                                        hidden: isOpen,
+                                                        onClick: (function (evt) {
+                                                            evt.preventDefault();
+                                                            return Curry._1(toggleSidebar, /* () */0);
+                                                          })
+                                                      }), React.createElement("div", {
+                                                        className: "truncate overflow-x-auto touch-scroll"
+                                                      }, breadcrumbs$1)), React.createElement("div", {
+                                                    className: "mt-10"
+                                                  }, children))))
                                 }))))));
 }
 
@@ -652,11 +466,10 @@ var make = SidebarLayout;
 
 export {
   Link$1 as Link,
-  ApiMd ,
-  ProseMd ,
   UrlPath ,
   BreadCrumbs ,
   Sidebar ,
+  MobileDrawerButton ,
   make ,
   
 }

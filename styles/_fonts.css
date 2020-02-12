@@ -14,66 +14,50 @@ Example of using a google font as a self hosted .woff file
 }
 */
 
-/* OVERPASS: https://fonts.googleapis.com/css?family=Overpass:400,700,700i */
+/* INTER - https://github.com/rsms/inter */
 
-/* latin */
+/* Subsets of the open source font were generated via https://transfonter.org/ */
+
 @font-face {
-  font-family: "Overpass";
-  font-style: italic;
-  font-weight: 700;
-  src: local("Overpass Bold Italic"), local("Overpass-BoldItalic"),
-    url(/static/fonts/overpass-700i.woff2)
-      format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
+    font-family: 'Inter';
+    src: local('Inter Bold'), local('Inter-Bold'),
+        url('/static/fonts/subset-Inter-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
 }
 
-/* latin */
 @font-face {
-  font-family: "Overpass";
-  font-style: normal;
-  font-weight: 400;
-  src: local("Overpass Regular"), local("Overpass-Regular"),
-    url(/static/fonts/overpass-400.woff2)
-      format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
+    font-family: 'Inter';
+    src: local('Inter Italic'), local('Inter-Italic'),
+        url('/static/fonts/subset-Inter-Italic.woff2') format('woff2');
+    font-weight: 400;
+    font-style: italic;
 }
 
-/* latin */
 @font-face {
-  font-family: 'Overpass';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: local('Overpass SemiBold'), local('Overpass-SemiBold'), url(/static/fonts/overpass-600.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    font-family: 'Inter';
+    src: local('Inter Medium'), local('Inter-Medium'),
+        url('/static/fonts/subset-Inter-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
 }
 
-/* latin */
 @font-face {
-  font-family: "Overpass";
-  font-style: normal;
-  font-weight: 700;
-  src: local("Overpass Bold"), local("Overpass-Bold"),
-    url(/static/fonts/overpass-700.woff2)
-      format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
-    U+FEFF, U+FFFD;
+    font-family: 'Inter Semi';
+    src: local('Inter Semi Bold'), local('Inter-SemiBold'),
+        url('/static/fonts/subset-Inter-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
 }
 
-/* latin */
 @font-face {
-  font-family: 'Overpass';
-  font-style: normal;
-  font-weight: 900;
-  font-display: swap;
-  src: local('Overpass Black'), local('Overpass-Black'), url(/static/fonts/overpass-900.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    font-family: 'Inter';
+    src: local('Inter Regular'), local('Inter-Regular'),
+        url('/static/fonts/subset-Inter-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
 }
+
 
 
 /* ROBOTO MONO */

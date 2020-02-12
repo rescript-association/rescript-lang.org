@@ -1,9 +1,9 @@
 
 
-import * as Mdx from "../common/Mdx.bs.js";
 import * as Meta from "../components/Meta.bs.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
+import * as Markdown from "../components/Markdown.bs.js";
 import * as Navigation from "../components/Navigation.bs.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Router from "next/router";
@@ -15,7 +15,7 @@ require('../styles/main.css')
 function MainLayout(Props) {
   var children = Props.children;
   var match = Props.components;
-  var components = match !== undefined ? Caml_option.valFromOption(match) : Mdx.Components.$$default;
+  var components = match !== undefined ? Caml_option.valFromOption(match) : Markdown.$$default;
   var router = Router.useRouter();
   var minWidth = {
     minWidth: "20rem"
@@ -27,7 +27,7 @@ function MainLayout(Props) {
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, { }), React.createElement("div", {
                   className: "mb-32 mt-16"
                 }, React.createElement("div", {
-                      className: "w-full text-night font-base"
+                      className: "w-full text-night text-lg"
                     }, React.createElement(Navigation.make, {
                           isOverlayOpen: match$1[0],
                           toggle: (function (param) {

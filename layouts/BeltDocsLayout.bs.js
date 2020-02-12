@@ -3,6 +3,8 @@
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
+import * as Markdown from "../components/Markdown.bs.js";
+import * as ApiMarkdown from "../components/ApiMarkdown.bs.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Router from "next/router";
@@ -339,7 +341,7 @@ var categories = /* array */[
 
 function BeltDocsLayout$Docs(Props) {
   var match = Props.components;
-  var components = match !== undefined ? Caml_option.valFromOption(match) : SidebarLayout.ApiMd.components;
+  var components = match !== undefined ? Caml_option.valFromOption(match) : ApiMarkdown.$$default;
   var children = Props.children;
   var router = Router.useRouter();
   var route = router.route;
@@ -420,7 +422,10 @@ function BeltDocsLayout$Docs(Props) {
   var tmp$1 = {
     theme: /* Js */16617,
     components: components,
-    sidebar: sidebar,
+    sidebar: /* tuple */[
+      sidebar,
+      toggleSidebar
+    ],
     route: router.route,
     children: children
   };
@@ -437,7 +442,7 @@ var Docs = {
 function BeltDocsLayout$Prose(Props) {
   var children = Props.children;
   return React.createElement(BeltDocsLayout$Docs, {
-              components: SidebarLayout.ProseMd.components,
+              components: Markdown.$$default,
               children: children
             });
 }

@@ -16,160 +16,8 @@ hljs.registerLanguage('reason', reasonHighlightJs);
 |};
 
 open Util.ReactStuff;
-open Text;
 module Link = Next.Link;
 
-/*
-    We use some custom markdown styling for the Belt docs to make
-    it easier on the eyes
- */
-module ApiMd = {
-  module Anchor = {
-    [@react.component]
-    let make = (~id: string) => {
-      let style =
-        ReactDOMRe.Style.make(~position="absolute", ~top="-7rem", ());
-      <span className="relative">
-        <a className="mr-2 hover:cursor-pointer" href={"#" ++ id}>
-          {j|#|j}->s
-        </a>
-        <a style id />
-      </span>;
-    };
-  };
-
-  module InvisibleAnchor = {
-    [@react.component]
-    let make = (~id: string) => {
-      let style =
-        ReactDOMRe.Style.make(~position="absolute", ~top="-1rem", ());
-      <span className="relative" ariaHidden=true> <a id style /> </span>;
-    };
-  };
-
-  module H1 = {
-    [@react.component]
-    let make = (~children) => {
-      <h1
-        className="text-6xl tracking-tight leading-1 font-overpass font-black text-night-dark">
-        children
-      </h1>;
-    };
-  };
-
-  module H2 = {
-    // We will currently hide the headline, to keep the structure,
-    // but having an Elm like documentation
-    [@react.component]
-    let make = (~children) => {
-      <>
-        // Here we know that children is always a string (## headline)
-        <InvisibleAnchor id={children->Unsafe.elementAsString} />
-        <div className="border-b border-gray-200 my-20" />
-        /*
-         <h2
-           className="inline text-xl leading-3 font-overpass font-medium">
-           <Anchor id={children->Unsafe.elementAsString} />
-         </h2>
-         */
-      </>;
-    };
-  };
-
-  module Pre = {
-    [@react.component]
-    let make = (~children) => {
-      <pre className="mt-2 mb-4 block"> children </pre>;
-    };
-  };
-
-  module P = {
-    [@react.component]
-    let make = (~children) => {
-      <p className="mt-3 leading-4 text-night"> children </p>;
-    };
-  };
-
-  let components =
-    Mdx.Components.t(
-      ~p=P.make,
-      ~li=Md.Li.make,
-      ~h1=H1.make,
-      ~h2=H2.make,
-      ~h3=H3.make,
-      ~h4=H4.make,
-      ~h5=H5.make,
-      ~ul=Md.Ul.make,
-      ~ol=Md.Ol.make,
-      ~a=Md.A.make,
-      ~pre=Pre.make,
-      ~inlineCode=Md.InlineCode.make,
-      ~code=Md.Code.make,
-      (),
-    );
-};
-
-module ProseMd = {
-  module Anchor = {
-    [@react.component]
-    let make = (~id: string) => {
-      let style =
-        ReactDOMRe.Style.make(~position="absolute", ~top="-7rem", ());
-      <span style={ReactDOMRe.Style.make(~position="relative", ())}>
-        <a className="mr-2 hover:cursor-pointer" href={"#" ++ id}>
-          {j|#|j}->s
-        </a>
-        <a style id />
-      </span>;
-    };
-  };
-
-  module H2 = {
-    [@react.component]
-    let make = (~children) => {
-      <>
-        // Here we know that children is always a string (## headline)
-        <h2
-          className="mt-12 text-3xl leading-1 tracking-tight font-overpass font-medium font-black text-night-dark">
-          <Anchor id={children->Unsafe.elementAsString} />
-          children
-        </h2>
-      </>;
-    };
-  };
-
-  module Pre = {
-    [@react.component]
-    let make = (~children) => {
-      <pre className="mt-2 mb-4 block"> children </pre>;
-    };
-  };
-
-  module P = {
-    [@react.component]
-    let make = (~children) => {
-      <p className="text-base mt-3 leading-4 text-night"> children </p>;
-    };
-  };
-
-  let components =
-    Mdx.Components.t(
-      ~p=P.make,
-      ~li=Md.Li.make,
-      ~h1=ApiMd.H1.make,
-      ~h2=H2.make,
-      ~h3=H3.make,
-      ~h4=H4.make,
-      ~h5=H5.make,
-      ~ul=Md.Ul.make,
-      ~ol=Md.Ol.make,
-      ~a=Md.A.make,
-      ~pre=Pre.make,
-      ~inlineCode=Md.InlineCode.make,
-      ~code=Md.Code.make,
-      (),
-    );
-};
 
 module UrlPath = {
   /*
@@ -273,7 +121,7 @@ module BreadCrumbs = {
   // See UrlPath for more details on the parameters
   [@react.component]
   let make = (~crumbs: list(UrlPath.breadcrumb)) => {
-    <div className="text-xs text-night mb-10">
+    <div className="w-full overflow-x-auto text-xs text-night">
       {Belt.List.mapWithIndex(
          crumbs,
          (i, crumb) => {
@@ -388,7 +236,7 @@ module Sidebar = {
         | None => React.null
         };
 
-      <div className="flex items-center justify-between my-4 w-full">
+      <div className="flex items-center justify-between mb-4 w-full">
         <div className="flex items-center w-2/3">
           back
           <span className="ml-2 font-sans font-black text-night-dark text-xl">
@@ -483,20 +331,6 @@ module Sidebar = {
     };
   };
 
-  module MobileNavButton = {
-    [@react.component]
-    let make = (~hidden: bool, ~onClick) => {
-      <button
-        className={
-          (hidden ? "hidden" : "")
-          ++ " md:hidden flex justify-center items-center block shadow-md bg-primary text-snow hover:text-white rounded-full w-12 h-12 fixed bottom-0 right-0 mr-8 mb-8"
-        }
-        onMouseDown=onClick>
-        <Icon.Table />
-      </button>;
-    };
-  };
-
   // subitems: list of functions inside given module (defined by route)
   [@react.component]
   let make =
@@ -519,7 +353,7 @@ module Sidebar = {
           ++ " md:block md:w-1/4 md:h-auto md:relative overflow-y-visible bg-white md:relative"
         }>
         <aside
-          className="relative top-0 px-4 w-full block md:top-16 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24"
+          className="relative top-0 px-4 w-full block md:top-16 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24 pt-8"
           style={Style.make(~height="calc(100vh - 4rem", ())}>
           <div className="flex justify-between">
             <div className="w-3/4 md:w-full"> toplevelNav </div>
@@ -528,8 +362,8 @@ module Sidebar = {
                 ReactEvent.Mouse.preventDefault(evt);
                 toggle();
               }}
-              className="md:hidden h-16">
-              <Icon.Close/>
+              className="md:hidden h-8">
+              <Icon.Close />
             </button>
           </div>
           preludeSection
@@ -548,14 +382,18 @@ module Sidebar = {
           </div>
         </aside>
       </div>
-      <MobileNavButton
-        hidden=isOpen
-        onClick={evt => {
-          ReactEvent.Mouse.preventDefault(evt);
-          toggle();
-        }}
-      />
     </>;
+  };
+};
+
+module MobileDrawerButton = {
+  [@react.component]
+  let make = (~hidden: bool, ~onClick) => {
+    <button
+      className={(hidden ? "hidden" : "") ++ " md:hidden mr-3"}
+      onMouseDown=onClick>
+      <img className="h-4" src="/static/ic_sidebar_drawer.svg" />
+    </button>;
   };
 };
 
@@ -567,8 +405,9 @@ module Sidebar = {
 let make =
     (
       ~theme: ColorTheme.t,
-      ~components=ApiMd.components,
-      ~sidebar: React.element,
+      ~components: Mdx.Components.t,
+      // (Sidebar, toggleSidebar)
+      ~sidebar: (React.element, unit => unit),
       ~breadcrumbs: option(list(UrlPath.breadcrumb))=?,
       ~route: string,
       ~children,
@@ -582,6 +421,7 @@ let make =
       <BreadCrumbs crumbs />
     );
 
+  let (sidebar, toggleSidebar) = sidebar;
   <>
     <Meta />
     <div className={"mt-16 min-w-20 " ++ theme}>
@@ -598,9 +438,21 @@ let make =
                 sidebar
                 <div
                   className="flex justify-center w-full md:w-3/4 overflow-hidden">
-                  <main className="w-5/6 pt-8 mb-32 text-lg">
-                    breadcrumbs
-                    children
+                  <main className="w-5/6 pt-10 mb-32 text-lg">
+                    <div
+                      className="fixed border-b shadow top-16 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center">
+                      <MobileDrawerButton
+                        hidden=isOpen
+                        onClick={evt => {
+                          ReactEvent.Mouse.preventDefault(evt);
+                          toggleSidebar();
+                        }}
+                      />
+                      <div className="truncate overflow-x-auto touch-scroll">
+                        breadcrumbs
+                      </div>
+                    </div>
+                    <div className="mt-10"> children </div>
                   </main>
                 </div>
               </div>

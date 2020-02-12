@@ -65,10 +65,12 @@ module CollapsibleLink = {
           onMouseDown
           className={
             (active ? activeLink : link)
-            ++ " flex items-center hover:cursor-pointer "
+            ++ " border-none flex items-center hover:cursor-pointer "
             ++ (isOpen ? " text-white" : "")
           }>
-          title->s
+          <span className={active ? "border-b border-fire" : ""}>
+            title->s
+          </span>
           <span className="fill-current flex-no-wrap inline-block ml-2 w-2">
             <Icon.Caret
               direction
@@ -153,11 +155,10 @@ module SubNav = {
       let jsTheme = ColorTheme.toCN(`Js);
       let reTheme = ColorTheme.toCN(`Reason);
 
-      let jsItems = [|
-        ("Belt Stdlib", "/apis/javascript/latest/belt"),
-        ("Js Module", "/apis/javascript/latest/js"),
-        /*("Module 3", "/apis/javascript/latest/mod3"),*/
-        /*("Module 4", "/apis/javascript/latest/mod4"),*/
+      let languageItems = [|
+        ("Introduction", "/docs/manual/latest"),
+        ("JS Interop", "/docs/manual/latest/interop"),
+        ("Cheatsheet", "/docs/manual/latest/syntax-cheatsheet"),
       |];
 
       let sectionClass = "pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/4";
@@ -167,42 +168,32 @@ module SubNav = {
 
       <div className="lg:flex lg:flex-row px-4 max-w-xl">
         <div className={reTheme ++ " " ++ sectionClass}>
-          /*<Link href="/apis">*/
-          /*<a className=overlineClass> "Language Manual"->s </a>*/
-          /*</Link>*/
-
-            <div className=overlineClass> "Language Manual"->s </div>
-            <ul className=sectionUl> <li> "Coming soon"->s </li> </ul>
-          </div>
-        <div className={reTheme ++ " " ++ sectionClass}>
-          /*<Link href="/apis/javascript/latest">*/
-          /*<a className=overlineClass> "Tools"->s </a>*/
-          /*</Link>*/
-
-            <div className=overlineClass> "Tools"->s </div>
-            <ul className=sectionUl> <li> "Coming soon"->s </li> </ul>
-          </div>
+          <Link href="/docs/manual/latest">
+            <a className=overlineClass> "Language Manual"->s </a>
+          </Link>
+          <ul className=sectionUl>
+            {languageItems
+             ->Belt.Array.mapWithIndex((idx, (title, href)) => {
+                 let active =
+                   route == href ? activeLink ++ " hover:text-primary cursor-auto" : "";
+                 <li
+                   className="w-1/2 xs:w-1/2 h-10"
+                   key={Belt.Int.toString(idx)}>
+                   <Link href>
+                     <a
+                       className={
+                         "text-white-80 hover:text-white hover:cursor-pointer "
+                         ++ active
+                       }>
+                       title->s
+                     </a>
+                   </Link>
+                 </li>;
+               })
+             ->ate}
+          </ul>
+        </div>
       </div>;
-      /*{jsItems*/
-      /*->Belt.Array.mapWithIndex((idx, (title, href)) => {*/
-      /*let active =*/
-      /*Js.String2.startsWith(route, href)*/
-      /*? "text-primary-80 hover:text-primary" : "";*/
-      /*<li*/
-      /*className="w-1/2 xs:w-1/2 h-10"*/
-      /*key={Belt.Int.toString(idx)}>*/
-      /*<Link href>*/
-      /*<a*/
-      /*className={*/
-      /*"text-white-80 hover:text-white hover:cursor-pointer "*/
-      /*++ active*/
-      /*}>*/
-      /*title->s*/
-      /*</a>*/
-      /*</Link>*/
-      /*</li>;*/
-      /*})*/
-      /*->ate}*/
     };
   };
 
@@ -239,7 +230,7 @@ module SubNav = {
              ->Belt.Array.mapWithIndex((idx, (title, href)) => {
                  let active =
                    Js.String2.startsWith(route, href)
-                     ? "text-primary-80 hover:text-primary" : "";
+                     ? "text-primary" : "";
                  <li
                    className="w-1/2 xs:w-1/2 h-10"
                    key={Belt.Int.toString(idx)}>
@@ -360,6 +351,11 @@ let make = (~isOverlayOpen=false, ~toggle=() => (), ~route="/") => {
     | None => true
     };
 
+  let nonCollapsibleOnMouseEnter = evt => {
+    ReactEvent.Mouse.preventDefault(evt);
+    resetCollapsibles();
+  };
+
   <nav
     ref={ReactDOMRe.Ref.domRef(outerRef)}
     id="header"
@@ -426,7 +422,8 @@ let make = (~isOverlayOpen=false, ~toggle=() => (), ~route="/") => {
             <a
               className={
                 "hidden xs:block " ++ linkOrActiveLink(~target="/try", ~route)
-              }>
+              }
+              onMouseEnter=nonCollapsibleOnMouseEnter>
               "Playground"->s
             </a>
           </Link>
@@ -435,7 +432,8 @@ let make = (~isOverlayOpen=false, ~toggle=() => (), ~route="/") => {
               className={
                 "hidden sm:block "
                 ++ linkOrActiveLink(~target="/blog", ~route)
-              }>
+              }
+              onMouseEnter=nonCollapsibleOnMouseEnter>
               "Blog"->s
             </a>
           </Link>
@@ -444,7 +442,8 @@ let make = (~isOverlayOpen=false, ~toggle=() => (), ~route="/") => {
               className={
                 "hidden sm:block "
                 ++ linkOrActiveLink(~target="/community", ~route)
-              }>
+              }
+              onMouseEnter=nonCollapsibleOnMouseEnter>
               "Community"->s
             </a>
           </Link>
@@ -454,21 +453,24 @@ let make = (~isOverlayOpen=false, ~toggle=() => (), ~route="/") => {
             href="https://github.com/reason-association/reasonml.org"
             rel="noopener noreferrer"
             target="_blank"
-            className=link>
+            className=link
+            onMouseEnter=nonCollapsibleOnMouseEnter>
             <Icon.Github className="w-5 h-5" />
           </a>
           <a
             href="https://twitter.com/reasonml"
             rel="noopener noreferrer"
             target="_blank"
-            className=link>
+            className=link
+            onMouseEnter=nonCollapsibleOnMouseEnter>
             <Icon.Twitter className="w-5 h-5" />
           </a>
           <a
             href="https://discord.gg/reasonml"
             rel="noopener noreferrer"
             target="_blank"
-            className=link>
+            className=link
+            onMouseEnter=nonCollapsibleOnMouseEnter>
             <Icon.Discord className="w-5 h-5" />
           </a>
         </div>

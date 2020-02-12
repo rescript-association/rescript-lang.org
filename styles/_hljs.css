@@ -15,7 +15,8 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 }
 
 .hljs-operator, .hljs-literal {
-  @apply text-code-5  
+  color: #A766D0; /* TODO: add to TW */
+  /*@apply text-code-5  */
 }
 
 .hljs-comment {
@@ -28,7 +29,7 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 }
 
 .hljs-keyword {
-  color: #7fba3b;
+  color: #38B790; /* TODO: add to TW */
 }
 
 .sig .hljs-keyword {
@@ -38,7 +39,8 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 .hljs-number,
 .hljs-string,
 .hljs-doctag {
-  @apply text-code-2;
+  color: #1A8AD3; /* TODO: add to TW */
+  /*@apply text-code-2;*/
 }
 
 .hljs-selector-id,
@@ -114,7 +116,8 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
   @apply text-berry;
 }
 .hljs-constructor {
-  @apply text-code-1;
+  color: #EB523E; /* TODO: add to TW */
+  /*@apply text-code-1;*/
 }
 
 /* purgecss end ignore */

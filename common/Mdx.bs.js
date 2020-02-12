@@ -1,32 +1,21 @@
 
 
-import * as $$Text from "../components/Text.bs.js";
 
-var $$default = {
-  p: $$Text.Md.P.make,
-  li: $$Text.Md.Li.make,
-  h1: $$Text.H1.make,
-  h2: $$Text.H2.make,
-  h3: $$Text.H3.make,
-  h4: $$Text.H4.make,
-  h5: $$Text.H5.make,
-  ul: $$Text.Md.Ul.make,
-  ol: $$Text.Md.Ol.make,
-  inlineCode: $$Text.Md.InlineCode.make,
-  code: $$Text.Md.Code.make,
-  pre: $$Text.Md.Pre.make,
-  a: $$Text.Md.A.make
-};
+function getMdxType (element){{
+      if(element == null || element.props == null) {
+        return 'unknown';
+      }
+      return element.props.mdxType;
+    }};
 
-var Components = {
-  $$default: $$default
-};
+var Components = { };
 
 var Provider = { };
 
 export {
+  getMdxType ,
   Components ,
   Provider ,
   
 }
-/* Text Not a pure module */
+/* No side effect */
