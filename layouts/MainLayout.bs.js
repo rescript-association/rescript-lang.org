@@ -3,7 +3,7 @@
 import * as Meta from "../components/Meta.bs.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
-import * as Markdown from "../common/Markdown.bs.js";
+import * as Markdown from "../components/Markdown.bs.js";
 import * as Navigation from "../components/Navigation.bs.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Router from "next/router";

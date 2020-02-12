@@ -3,8 +3,8 @@
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
-import * as Markdown from "../common/Markdown.bs.js";
-import * as ApiMarkdown from "../common/ApiMarkdown.bs.js";
+import * as Markdown from "../components/Markdown.bs.js";
+import * as ApiMarkdown from "../components/ApiMarkdown.bs.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Router from "next/router";

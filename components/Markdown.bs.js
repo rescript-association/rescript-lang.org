@@ -1,12 +1,12 @@
 
 
-import * as Mdx from "./Mdx.bs.js";
-import * as Util from "./Util.bs.js";
+import * as Mdx from "../common/Mdx.bs.js";
+import * as Util from "../common/Util.bs.js";
 import * as React from "react";
 import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
-import * as CodeExample from "../components/CodeExample.bs.js";
-import * as CodeSignature from "../components/CodeSignature.bs.js";
+import * as CodeExample from "./CodeExample.bs.js";
+import * as CodeSignature from "./CodeSignature.bs.js";
 
 function Markdown$Anchor(Props) {
   var id = Props.id;

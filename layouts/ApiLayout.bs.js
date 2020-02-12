@@ -2,7 +2,7 @@
 
 import * as Util from "../common/Util.bs.js";
 import * as React from "react";
-import * as Markdown from "../common/Markdown.bs.js";
+import * as Markdown from "../components/Markdown.bs.js";
 import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as MainLayout from "./MainLayout.bs.js";

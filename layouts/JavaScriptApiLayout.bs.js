@@ -2,9 +2,9 @@
 
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
-import * as Markdown from "../common/Markdown.bs.js";
+import * as Markdown from "../components/Markdown.bs.js";
 import * as ColorTheme from "../common/ColorTheme.bs.js";
-import * as ApiMarkdown from "../common/ApiMarkdown.bs.js";
+import * as ApiMarkdown from "../components/ApiMarkdown.bs.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Router from "next/router";
 import * as SidebarLayout from "./SidebarLayout.bs.js";
