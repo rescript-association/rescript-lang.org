@@ -56,11 +56,13 @@ function Navigation$CollapsibleLink(Props) {
                 }, React.createElement("a", {
                       className: (
                         active ? activeLink : link
-                      ) + (" flex items-center hover:cursor-pointer " + (
+                      ) + (" border-none flex items-center hover:cursor-pointer " + (
                           isOpen ? " text-white" : ""
                         )),
                       onMouseDown: onMouseDown
-                    }, Util.ReactStuff.s(title), React.createElement("span", {
+                    }, React.createElement("span", {
+                          className: active ? "border-b border-fire" : ""
+                        }, Util.ReactStuff.s(title)), React.createElement("span", {
                           className: "fill-current flex-no-wrap inline-block ml-2 w-2"
                         }, React.createElement(Icon.Caret.make, {
                               className: active ? "text-inherit" : "text-night-light",

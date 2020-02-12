@@ -65,10 +65,12 @@ module CollapsibleLink = {
           onMouseDown
           className={
             (active ? activeLink : link)
-            ++ " flex items-center hover:cursor-pointer "
+            ++ " border-none flex items-center hover:cursor-pointer "
             ++ (isOpen ? " text-white" : "")
           }>
-          title->s
+          <span className={active ? "border-b border-fire" : ""}>
+            title->s
+          </span>
           <span className="fill-current flex-no-wrap inline-block ml-2 w-2">
             <Icon.Caret
               direction
