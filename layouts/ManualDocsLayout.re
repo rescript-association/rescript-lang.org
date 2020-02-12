@@ -24,6 +24,49 @@ let package: {. "dependencies": {. "bs-platform": string}} = [%raw
   "require('../package.json')"
 ];
 
+// Structure defined by `scripts/extract-tocs.js`
+let tocData:
+  Js.Dict.t({
+    .
+    "title": string,
+    "headers": array(string),
+  }) = [%raw
+  "require('../index_data/manual_toc.json')"
+];
+
+module Toc = {
+  type entry = {
+    header: string,
+    href: string,
+  };
+
+  type t = {
+    title: string,
+    entries: array(entry),
+  };
+
+  [@react.component]
+  let make =
+      (
+        ~onItemClick: option(ReactEvent.Mouse.t => unit)=?,
+        ~entries: array(entry),
+      ) => {
+    <ul className="mt-2 mb-6 border-l border-primary">
+      {Belt.Array.map(entries, ({header, href}) =>
+         <li key=header className="pl-2 mt-1">
+           <a
+             onClick=?onItemClick
+             href
+             className="font-medium text-sm text-night-light hover:text-primary">
+             header->s
+           </a>
+         </li>
+       )
+       ->ate}
+    </ul>;
+  };
+};
+
 module Sidebar = {
   module Title = {
     [@react.component]
@@ -43,6 +86,8 @@ module Sidebar = {
     [@react.component]
     let make =
         (
+          ~getActiveToc: option(t => option(Toc.t))=?,
+          ~onTocItemClick=?,
           ~isItemActive: t => bool=_nav => false,
           ~isHidden=false,
           ~items: array(t),
@@ -56,6 +101,13 @@ module Sidebar = {
                isItemActive(m)
                  ? {j| bg-primary-15 text-primary-dark rounded -mx-2 px-2 font-bold block |j}
                  : "";
+
+             let activeToc =
+               switch (getActiveToc) {
+               | Some(getActiveToc) => getActiveToc(m)
+               | None => None
+               };
+
              <li
                key={m.name}
                className={hidden ++ " mt-2 leading-5 w-4/5"}
@@ -71,6 +123,15 @@ module Sidebar = {
                    m.name->s
                  </a>
                </Link>
+               {switch (activeToc) {
+                | Some({entries}) =>
+                  if (Belt.Array.length(entries) === 0) {
+                    React.null;
+                  } else {
+                    <Toc onItemClick=?onTocItemClick entries />;
+                  }
+                | None => React.null
+                }}
              </li>;
            },
          )
@@ -86,10 +147,21 @@ module Sidebar = {
     };
 
     [@react.component]
-    let make = (~isItemActive: option(NavItem.t => bool)=?, ~category: t) => {
+    let make =
+        (
+          ~getActiveToc=?,
+          ~onTocItemClick=?,
+          ~isItemActive: option(NavItem.t => bool)=?,
+          ~category: t,
+        ) => {
       <div key={category.name} className="my-12">
         <Title> category.name->s </Title>
-        <NavItem ?isItemActive items={category.items} />
+        <NavItem
+          ?onTocItemClick
+          ?isItemActive
+          ?getActiveToc
+          items={category.items}
+        />
       </div>;
     };
   };
@@ -175,6 +247,7 @@ module Sidebar = {
     let make =
         (
           ~onHeaderClick: ReactEvent.Mouse.t => unit=?,
+          ~getActiveToc=?,
           ~isItemActive=?,
           ~headers: array(string),
           ~moduleName: string,
@@ -218,12 +291,21 @@ module Sidebar = {
         ~toplevelNav=React.null,
         ~title: string=?,
         ~preludeSection=React.null,
+        ~onTocItemClick=?,
+        ~activeToc: option(Toc.t)=?,
         ~isOpen: bool,
         ~toggle: unit => unit,
       ) => {
     let isItemActive = (navItem: NavItem.t) => {
       navItem.href === route;
     };
+
+    let getActiveToc = (navItem: NavItem.t) =>
+      if (navItem.href === route) {
+        activeToc;
+      } else {
+        None;
+      };
 
     <>
       <div
@@ -254,7 +336,12 @@ module Sidebar = {
             {categories
              ->Belt.Array.map(category =>
                  <div key={category.name}>
-                   <Category isItemActive category />
+                   <Category
+                     ?onTocItemClick
+                     getActiveToc
+                     isItemActive
+                     category
+                   />
                  </div>
                )
              ->ate}
@@ -346,6 +433,19 @@ module Docs = {
     let router = Next.Router.useRouter();
     let route = router##route;
 
+    let activeToc: option(Toc.t) =
+      Belt.Option.(
+        Js.Dict.get(tocData, route)
+        ->map(data => {
+            let title = data##title;
+            let entries =
+              Belt.Array.map(data##headers, header =>
+                {Toc.header, href: "#" ++ header}
+              );
+            {Toc.title, entries};
+          })
+      );
+
     let (isSidebarOpen, setSidebarOpen) = React.useState(_ => false);
     let toggleSidebar = () => setSidebarOpen(prev => !prev);
 
@@ -387,14 +487,20 @@ module Docs = {
     /*React.null;*/
 
     let preludeSection =
-      <div className="text-primary font-semibold"> "Language Manual"->s </div>;
+      <div
+        className="flex justify-between text-primary font-medium items-baseline">
+        "Language Manual"->s
+        <span className="font-mono text-sm"> "v3.6"->s </span>
+      </div>;
 
     let sidebar =
       <Sidebar
         isOpen=isSidebarOpen
         toggle=toggleSidebar
+        onTocItemClick={_ => setSidebarOpen(_ => false)}
         preludeSection
         title="Language Manual"
+        ?activeToc
         categories
         route={
           router##route;

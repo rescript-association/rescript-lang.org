@@ -5,6 +5,7 @@ import * as Icon from "../components/Icon.bs.js";
 import * as Util from "../common/Util.bs.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
+import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
 import * as Markdown from "../components/Markdown.bs.js";
 import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
@@ -34,6 +35,33 @@ hljs.registerLanguage('json', jsonHighlightJs);
 
 var $$package = (require('../package.json'));
 
+var tocData = (require('../index_data/manual_toc.json'));
+
+function ManualDocsLayout$Toc(Props) {
+  var onItemClick = Props.onItemClick;
+  var entries = Props.entries;
+  return React.createElement("ul", {
+              className: "mt-2 mb-6 border-l border-primary"
+            }, Util.ReactStuff.ate(Belt_Array.map(entries, (function (param) {
+                        var header = param[/* header */0];
+                        var tmp = {
+                          className: "font-medium text-sm text-night-light hover:text-primary",
+                          href: param[/* href */1]
+                        };
+                        if (onItemClick !== undefined) {
+                          tmp.onClick = Caml_option.valFromOption(onItemClick);
+                        }
+                        return React.createElement("li", {
+                                    key: header,
+                                    className: "pl-2 mt-1"
+                                  }, React.createElement("a", tmp, Util.ReactStuff.s(header)));
+                      }))));
+}
+
+var Toc = {
+  make: ManualDocsLayout$Toc
+};
+
 function ManualDocsLayout$Sidebar$Title(Props) {
   var children = Props.children;
   return React.createElement("div", {
@@ -46,6 +74,8 @@ var Title = {
 };
 
 function ManualDocsLayout$Sidebar$NavItem(Props) {
+  var getActiveToc = Props.getActiveToc;
+  var onTocItemClick = Props.onTocItemClick;
   var match = Props.isItemActive;
   var isItemActive = match !== undefined ? match : (function (_nav) {
         return false;
@@ -59,6 +89,24 @@ function ManualDocsLayout$Sidebar$NavItem(Props) {
                         var hidden = isHidden ? "hidden" : "block";
                         var match = Curry._1(isItemActive, m);
                         var active = match ? " bg-primary-15 text-primary-dark rounded -mx-2 px-2 font-bold block " : "";
+                        var activeToc = getActiveToc !== undefined ? Curry._1(getActiveToc, m) : undefined;
+                        var tmp;
+                        if (activeToc !== undefined) {
+                          var entries = activeToc[/* entries */1];
+                          if (entries.length === 0) {
+                            tmp = null;
+                          } else {
+                            var tmp$1 = {
+                              entries: entries
+                            };
+                            if (onTocItemClick !== undefined) {
+                              tmp$1.onItemClick = Caml_option.valFromOption(onTocItemClick);
+                            }
+                            tmp = React.createElement(ManualDocsLayout$Toc, tmp$1);
+                          }
+                        } else {
+                          tmp = null;
+                        }
                         return React.createElement("li", {
                                     key: m[/* name */0],
                                     className: hidden + " mt-2 leading-5 w-4/5",
@@ -68,7 +116,7 @@ function ManualDocsLayout$Sidebar$NavItem(Props) {
                                         children: React.createElement("a", {
                                               className: "truncate block py-1 md:h-auto text-night-darker hover:text-primary " + active
                                             }, Util.ReactStuff.s(m[/* name */0]))
-                                      }));
+                                      }), tmp);
                       }))));
 }
 
@@ -77,11 +125,19 @@ var NavItem = {
 };
 
 function ManualDocsLayout$Sidebar$Category(Props) {
+  var getActiveToc = Props.getActiveToc;
+  var onTocItemClick = Props.onTocItemClick;
   var isItemActive = Props.isItemActive;
   var category = Props.category;
   var tmp = {
     items: category[/* items */1]
   };
+  if (getActiveToc !== undefined) {
+    tmp.getActiveToc = Caml_option.valFromOption(getActiveToc);
+  }
+  if (onTocItemClick !== undefined) {
+    tmp.onTocItemClick = Caml_option.valFromOption(onTocItemClick);
+  }
   if (isItemActive !== undefined) {
     tmp.isItemActive = Caml_option.valFromOption(isItemActive);
   }
@@ -159,6 +215,7 @@ var NavUl = {
 
 function ManualDocsLayout$Sidebar$CollapsibleSection(Props) {
   var onHeaderClick = Props.onHeaderClick;
+  Props.getActiveToc;
   var isItemActive = Props.isItemActive;
   var headers = Props.headers;
   var moduleName = Props.moduleName;
@@ -222,10 +279,18 @@ function ManualDocsLayout$Sidebar(Props) {
   Props.title;
   var match$1 = Props.preludeSection;
   var preludeSection = match$1 !== undefined ? Caml_option.valFromOption(match$1) : null;
+  var onTocItemClick = Props.onTocItemClick;
+  var activeToc = Props.activeToc;
   var isOpen = Props.isOpen;
   var toggle = Props.toggle;
   var isItemActive = function (navItem) {
     return navItem[/* href */1] === route;
+  };
+  var getActiveToc = function (navItem) {
+    if (navItem[/* href */1] === route) {
+      return activeToc;
+    }
+    
   };
   return React.createElement(React.Fragment, undefined, React.createElement("div", {
                   className: (
@@ -249,12 +314,17 @@ function ManualDocsLayout$Sidebar(Props) {
                             }, React.createElement(Icon.Close.make, { }))), preludeSection, React.createElement("div", {
                           className: "mb-56"
                         }, Util.ReactStuff.ate(Belt_Array.map(categories, (function (category) {
+                                    var tmp = {
+                                      getActiveToc: getActiveToc,
+                                      isItemActive: isItemActive,
+                                      category: category
+                                    };
+                                    if (onTocItemClick !== undefined) {
+                                      tmp.onTocItemClick = Caml_option.valFromOption(onTocItemClick);
+                                    }
                                     return React.createElement("div", {
                                                 key: category[/* name */0]
-                                              }, React.createElement(ManualDocsLayout$Sidebar$Category, {
-                                                    isItemActive: isItemActive,
-                                                    category: category
-                                                  }));
+                                              }, React.createElement(ManualDocsLayout$Sidebar$Category, tmp));
                                   })))))));
 }
 
@@ -576,6 +646,25 @@ function ManualDocsLayout$Docs(Props) {
   var children = Props.children;
   var router = Router.useRouter();
   var route = router.route;
+  var activeToc = Belt_Option.map(Js_dict.get(tocData, route), (function (data) {
+          var title = data.title;
+          var entries = Belt_Array.map(data.headers, (function (header) {
+                  return /* record */Caml_chrome_debugger.record([
+                            "header",
+                            "href"
+                          ], [
+                            header,
+                            "#" + header
+                          ]);
+                }));
+          return /* record */Caml_chrome_debugger.record([
+                    "title",
+                    "entries"
+                  ], [
+                    title,
+                    entries
+                  ]);
+        }));
   var match$1 = React.useState((function () {
           return false;
         }));
@@ -611,17 +700,28 @@ function ManualDocsLayout$Docs(Props) {
           return SidebarLayout.UrlPath.toBreadCrumbs(prefix, v);
         }));
   var preludeSection = React.createElement("div", {
-        className: "text-primary font-semibold"
-      }, Util.ReactStuff.s("Language Manual"));
-  var sidebar = React.createElement(ManualDocsLayout$Sidebar, {
-        categories: categories,
-        route: router.route,
-        title: "Language Manual",
-        preludeSection: preludeSection,
-        isOpen: match$1[0],
-        toggle: toggleSidebar
-      });
+        className: "flex justify-between text-primary font-medium items-baseline"
+      }, Util.ReactStuff.s("Language Manual"), React.createElement("span", {
+            className: "font-mono text-sm"
+          }, Util.ReactStuff.s("v3.6")));
   var tmp = {
+    categories: categories,
+    route: router.route,
+    title: "Language Manual",
+    preludeSection: preludeSection,
+    onTocItemClick: (function (param) {
+        return Curry._1(setSidebarOpen, (function (param) {
+                      return false;
+                    }));
+      }),
+    isOpen: match$1[0],
+    toggle: toggleSidebar
+  };
+  if (activeToc !== undefined) {
+    tmp.activeToc = Caml_option.valFromOption(activeToc);
+  }
+  var sidebar = React.createElement(ManualDocsLayout$Sidebar, tmp);
+  var tmp$1 = {
     theme: /* Reason */825328612,
     components: components,
     sidebar: /* tuple */[
@@ -632,9 +732,9 @@ function ManualDocsLayout$Docs(Props) {
     children: children
   };
   if (breadcrumbs !== undefined) {
-    tmp.breadcrumbs = Caml_option.valFromOption(breadcrumbs);
+    tmp$1.breadcrumbs = Caml_option.valFromOption(breadcrumbs);
   }
-  return React.createElement(SidebarLayout.make, tmp);
+  return React.createElement(SidebarLayout.make, tmp$1);
 }
 
 var Docs = {
@@ -664,6 +764,8 @@ var Category$1 = 0;
 export {
   Link$1 as Link,
   $$package ,
+  tocData ,
+  Toc ,
   Sidebar ,
   UrlPath ,
   NavItem$1 as NavItem,
