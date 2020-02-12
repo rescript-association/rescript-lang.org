@@ -159,7 +159,7 @@ function Navigation$SubNav$DocsLinks(Props) {
                     }, Util.ReactStuff.ate(Belt_Array.mapWithIndex(languageItems, (function (idx, param) {
                                 var href = param[1];
                                 var match = route === href;
-                                var active = match ? "text-primary-80 hover:text-primary" : "";
+                                var active = match ? "text-inherit font-normal text-fire border-b border-fire hover:text-primary cursor-auto" : "";
                                 return React.createElement("li", {
                                             key: String(idx),
                                             className: "w-1/2 xs:w-1/2 h-10"
@@ -212,7 +212,7 @@ function Navigation$SubNav$ApiLinks(Props) {
                     }, Util.ReactStuff.ate(Belt_Array.mapWithIndex(jsItems, (function (idx, param) {
                                 var href = param[1];
                                 var match = route.startsWith(href);
-                                var active = match ? "text-primary-80 hover:text-primary" : "";
+                                var active = match ? "text-primary" : "";
                                 return React.createElement("li", {
                                             key: String(idx),
                                             className: "w-1/2 xs:w-1/2 h-10"
@@ -351,6 +351,10 @@ function Navigation(Props) {
   useOutsideClick(outerRef, resetCollapsibles);
   var windowWidth = Curry._1(useWindowWidth, /* () */0);
   var allowHover = windowWidth !== undefined ? windowWidth > 576 : true;
+  var nonCollapsibleOnMouseEnter = function (evt) {
+    evt.preventDefault();
+    return resetCollapsibles(/* () */0);
+  };
   return React.createElement("nav", {
               ref: outerRef,
               className: "fixed flex justify-center z-20 top-0 w-full h-16 bg-night-dark shadow text-white-80 text-base",
@@ -430,17 +434,20 @@ function Navigation(Props) {
                                   }))), React.createElement(Link.default, {
                               href: "/try",
                               children: React.createElement("a", {
-                                    className: "hidden xs:block " + linkOrActiveLink("/try", route)
+                                    className: "hidden xs:block " + linkOrActiveLink("/try", route),
+                                    onMouseEnter: nonCollapsibleOnMouseEnter
                                   }, Util.ReactStuff.s("Playground"))
                             }), React.createElement(Link.default, {
                               href: "/blog",
                               children: React.createElement("a", {
-                                    className: "hidden sm:block " + linkOrActiveLink("/blog", route)
+                                    className: "hidden sm:block " + linkOrActiveLink("/blog", route),
+                                    onMouseEnter: nonCollapsibleOnMouseEnter
                                   }, Util.ReactStuff.s("Blog"))
                             }), React.createElement(Link.default, {
                               href: "/community",
                               children: React.createElement("a", {
-                                    className: "hidden sm:block " + linkOrActiveLink("/community", route)
+                                    className: "hidden sm:block " + linkOrActiveLink("/community", route),
+                                    onMouseEnter: nonCollapsibleOnMouseEnter
                                   }, Util.ReactStuff.s("Community"))
                             })), React.createElement("div", {
                           className: "hidden lg:-mr-6 lg:flex lg:justify-between lg:w-20 "
@@ -448,21 +455,24 @@ function Navigation(Props) {
                               className: link,
                               href: "https://github.com/reason-association/reasonml.org",
                               rel: "noopener noreferrer",
-                              target: "_blank"
+                              target: "_blank",
+                              onMouseEnter: nonCollapsibleOnMouseEnter
                             }, React.createElement(Icon.Github.make, {
                                   className: "w-5 h-5"
                                 })), React.createElement("a", {
                               className: link,
                               href: "https://twitter.com/reasonml",
                               rel: "noopener noreferrer",
-                              target: "_blank"
+                              target: "_blank",
+                              onMouseEnter: nonCollapsibleOnMouseEnter
                             }, React.createElement(Icon.Twitter.make, {
                                   className: "w-5 h-5"
                                 })), React.createElement("a", {
                               className: link,
                               href: "https://discord.gg/reasonml",
                               rel: "noopener noreferrer",
-                              target: "_blank"
+                              target: "_blank",
+                              onMouseEnter: nonCollapsibleOnMouseEnter
                             }, React.createElement(Icon.Discord.make, {
                                   className: "w-5 h-5"
                                 })))), React.createElement("button", {

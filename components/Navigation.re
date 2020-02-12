@@ -175,7 +175,7 @@ module SubNav = {
             {languageItems
              ->Belt.Array.mapWithIndex((idx, (title, href)) => {
                  let active =
-                   route == href ? "text-primary-80 hover:text-primary" : "";
+                   route == href ? activeLink ++ " hover:text-primary cursor-auto" : "";
                  <li
                    className="w-1/2 xs:w-1/2 h-10"
                    key={Belt.Int.toString(idx)}>
@@ -230,7 +230,7 @@ module SubNav = {
              ->Belt.Array.mapWithIndex((idx, (title, href)) => {
                  let active =
                    Js.String2.startsWith(route, href)
-                     ? "text-primary-80 hover:text-primary" : "";
+                     ? "text-primary" : "";
                  <li
                    className="w-1/2 xs:w-1/2 h-10"
                    key={Belt.Int.toString(idx)}>
@@ -351,6 +351,11 @@ let make = (~isOverlayOpen=false, ~toggle=() => (), ~route="/") => {
     | None => true
     };
 
+  let nonCollapsibleOnMouseEnter = evt => {
+    ReactEvent.Mouse.preventDefault(evt);
+    resetCollapsibles();
+  };
+
   <nav
     ref={ReactDOMRe.Ref.domRef(outerRef)}
     id="header"
@@ -417,7 +422,8 @@ let make = (~isOverlayOpen=false, ~toggle=() => (), ~route="/") => {
             <a
               className={
                 "hidden xs:block " ++ linkOrActiveLink(~target="/try", ~route)
-              }>
+              }
+              onMouseEnter=nonCollapsibleOnMouseEnter>
               "Playground"->s
             </a>
           </Link>
@@ -426,7 +432,8 @@ let make = (~isOverlayOpen=false, ~toggle=() => (), ~route="/") => {
               className={
                 "hidden sm:block "
                 ++ linkOrActiveLink(~target="/blog", ~route)
-              }>
+              }
+              onMouseEnter=nonCollapsibleOnMouseEnter>
               "Blog"->s
             </a>
           </Link>
@@ -435,7 +442,8 @@ let make = (~isOverlayOpen=false, ~toggle=() => (), ~route="/") => {
               className={
                 "hidden sm:block "
                 ++ linkOrActiveLink(~target="/community", ~route)
-              }>
+              }
+              onMouseEnter=nonCollapsibleOnMouseEnter>
               "Community"->s
             </a>
           </Link>
@@ -445,21 +453,24 @@ let make = (~isOverlayOpen=false, ~toggle=() => (), ~route="/") => {
             href="https://github.com/reason-association/reasonml.org"
             rel="noopener noreferrer"
             target="_blank"
-            className=link>
+            className=link
+            onMouseEnter=nonCollapsibleOnMouseEnter>
             <Icon.Github className="w-5 h-5" />
           </a>
           <a
             href="https://twitter.com/reasonml"
             rel="noopener noreferrer"
             target="_blank"
-            className=link>
+            className=link
+            onMouseEnter=nonCollapsibleOnMouseEnter>
             <Icon.Twitter className="w-5 h-5" />
           </a>
           <a
             href="https://discord.gg/reasonml"
             rel="noopener noreferrer"
             target="_blank"
-            className=link>
+            className=link
+            onMouseEnter=nonCollapsibleOnMouseEnter>
             <Icon.Discord className="w-5 h-5" />
           </a>
         </div>
