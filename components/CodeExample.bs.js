@@ -32,7 +32,7 @@ function CodeExample(Props) {
   return React.createElement("div", {
               className: "flex flex-col -mx-8 xs:mx-0 rounded-none xs:rounded border border-snow-dark bg-snow-light py-2 px-3 text-night-dark"
             }, React.createElement("div", {
-                  className: "font-sans text-sm mb-3 font-bold text-fire"
+                  className: "flex self-end font-sans text-sm font-bold text-night-light"
                 }, Util.ReactStuff.s(langShortname.toUpperCase())), React.createElement("div", {
                   className: "pl-5 text-base pb-4 overflow-x-auto"
                 }, children));

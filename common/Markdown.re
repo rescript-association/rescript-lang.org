@@ -101,7 +101,7 @@ module H5 = {
 module Pre = {
   [@react.component]
   let make = (~children) => {
-    <pre className="text-inherit mt-3 leading-4 text-night"> children </pre>;
+    <pre className="mt-2 mb-4 block"> children </pre>;
   };
 };
 
@@ -265,7 +265,7 @@ module P = {
 module A = {
   [@react.component]
   let make = (~href, ~children) => {
-    <a href rel="noopener noreferrer" className=Text.Link.inline>
+    <a href rel="noopener noreferrer" className="no-underline text-fire hover:underline">
       children
     </a>;
   };

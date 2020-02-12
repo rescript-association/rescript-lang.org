@@ -1,7 +1,6 @@
 
 
 import * as Mdx from "./Mdx.bs.js";
-import * as $$Text from "../components/Text.bs.js";
 import * as Util from "./Util.bs.js";
 import * as React from "react";
 import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
@@ -104,7 +103,7 @@ var H5 = {
 function Markdown$Pre(Props) {
   var children = Props.children;
   return React.createElement("pre", {
-              className: "text-inherit mt-3 leading-4 text-night"
+              className: "mt-2 mb-4 block"
             }, children);
 }
 
@@ -263,7 +262,7 @@ function Markdown$A(Props) {
   var href = Props.href;
   var children = Props.children;
   return React.createElement("a", {
-              className: $$Text.Link.inline,
+              className: "no-underline text-fire hover:underline",
               href: href,
               rel: "noopener noreferrer"
             }, children);
@@ -379,4 +378,4 @@ export {
   $$default as default,
   
 }
-/* Text Not a pure module */
+/* react Not a pure module */

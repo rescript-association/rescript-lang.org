@@ -46,30 +46,8 @@ var H2 = {
   make: ApiMarkdown$H2
 };
 
-function ApiMarkdown$Pre(Props) {
-  var children = Props.children;
-  return React.createElement("pre", {
-              className: "mt-2 mb-4 block"
-            }, children);
-}
-
-var Pre = {
-  make: ApiMarkdown$Pre
-};
-
-function ApiMarkdown$P(Props) {
-  var children = Props.children;
-  return React.createElement("p", {
-              className: "mt-3 leading-4"
-            }, children);
-}
-
-var P = {
-  make: ApiMarkdown$P
-};
-
 var $$default = {
-  p: ApiMarkdown$P,
+  p: Markdown.P.make,
   li: Markdown.Li.make,
   h1: ApiMarkdown$H1,
   h2: ApiMarkdown$H2,
@@ -83,7 +61,7 @@ var $$default = {
   td: Markdown.Td.make,
   inlineCode: Markdown.InlineCode.make,
   code: Markdown.Code.make,
-  pre: ApiMarkdown$Pre,
+  pre: Markdown.Pre.make,
   a: Markdown.A.make
 };
 
@@ -91,8 +69,6 @@ export {
   InvisibleAnchor ,
   H1 ,
   H2 ,
-  Pre ,
-  P ,
   $$default ,
   $$default as default,
   

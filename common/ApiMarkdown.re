@@ -1,8 +1,8 @@
 open Util.ReactStuff;
 
 /*
-    We use some custom markdown styling for the Belt docs to make
-    it easier on the eyes
+   This module is intended for the ODOC like documentation layout.
+   It hides the h2 tags and does
  */
 open Markdown;
 
@@ -34,20 +34,6 @@ module H2 = {
       <InvisibleAnchor id={children->Unsafe.elementAsString} />
       <div className="border-b border-gray-200 my-20" />
     </>;
-  };
-};
-
-module Pre = {
-  [@react.component]
-  let make = (~children) => {
-    <pre className="mt-2 mb-4 block"> children </pre>;
-  };
-};
-
-module P = {
-  [@react.component]
-  let make = (~children) => {
-    <p className="mt-3 leading-4"> children </p>;
   };
 };
 
