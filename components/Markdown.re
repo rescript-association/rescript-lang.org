@@ -265,7 +265,10 @@ module P = {
 module A = {
   [@react.component]
   let make = (~href, ~children) => {
-    <a href rel="noopener noreferrer" className="no-underline text-fire hover:underline">
+    <a
+      href
+      rel="noopener noreferrer"
+      className="no-underline text-fire hover:underline">
       children
     </a>;
   };
@@ -274,14 +277,15 @@ module A = {
 module Ul = {
   [@react.component]
   let make = (~children) => {
-    <ul className="md-ul mt-4 mb-16"> children </ul>;
+    Js.log(children);
+    <ul className="md-ul"> children </ul>;
   };
 };
 
 module Ol = {
   [@react.component]
   let make = (~children) => {
-    <ol className="md-ol ml-2 mt-4 mb-16"> children </ol>;
+    <ol className="md-ol ml-2"> children </ol>;
   };
 };
 
@@ -292,16 +296,6 @@ module Li = {
   ];
   external asArray: 'a => array(ReasonReact.reactElement) = "%identity";
 
-  let isSublist: 'a => bool = [%raw
-    element => "{
-        if(element == null || element.props == null) {
-          return false;
-        }
-        const type = element.props.mdxType;
-        return type === 'ul' || type === 'ol';
-      }"
-  ];
-
   [@react.component]
   let make = (~children) => {
     /*
@@ -310,6 +304,7 @@ module Li = {
      1) string (if bullet point is standalone text)
      2) array(<p>, <ul>|<ol>) (if nested list)
      3) array(<p>,<inlineCode>,...,<p>) (if text with nested content)
+     4) array(<strong>, <inlineCode>, string,...) (if nested content without wrapping <p>)
 
      We are iterating on these here with quite some bailout JS
      */
@@ -317,17 +312,24 @@ module Li = {
     let elements: ReasonReact.reactElement =
       if (isArray(children)) {
         let arr = children->asArray;
-        let last = Belt.Array.(arr->getExn(arr->length - 1));
+        let last: ReasonReact.reactElement =
+          Belt.Array.(arr->getExn(arr->length - 1));
 
-        if (isSublist(last)) {
-          /* Scenario 2 */
-          let head =
-            Js.Array2.slice(arr, ~start=0, ~end_=arr->Belt.Array.length - 1);
-          <> <p> head->ate </p> last </>;
-        } else {
-          <p>
-             children </p>;
-            /* Scenario 3 */
+        let head =
+          Js.Array2.slice(arr, ~start=0, ~end_=arr->Belt.Array.length - 1);
+
+        let first = Belt.Array.getExn(head, 0);
+
+        switch (Mdx.(last->fromReactElement->getMdxType)) {
+        | "ul"
+        | "li"
+        | "pre" =>
+          switch (Mdx.(first->fromReactElement->getMdxType)) {
+          | "p" => <> head->ate last </>
+          | _ => <> <p> head->ate </p> last </>
+          }
+        | _ => <p> children </p>
+        /* Scenario 3 */
         };
       } else if (typeOf(children) === "string") {
         <p>
@@ -336,6 +338,7 @@ module Li = {
       } else {
         /* Unknown Scenario */
         switch (Mdx.(children->fromReactElement->getMdxType)) {
+        | "pre" => children
         | "p" => children
         | _ => <p> children </p>
         };

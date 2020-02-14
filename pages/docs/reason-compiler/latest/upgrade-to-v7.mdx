@@ -74,57 +74,68 @@ owners or Github organizations to make it easier for us to upgrade build
 artifacts in the future. If you are using a PPX we are not aware of, please [let us
 know in this issue](https://github.com/BuckleScript/bucklescript/issues/3914).
 
-- **Upgrade your bs-platform dependency:**
-    - `npm install bs-platform@7 --dev`
-- **Upgrade any PPX dependencies you're using:**
-  - [`graphql_ppx`](https://github.com/mhallin/graphql_ppx) ->
-    [`graphql_ppx_re`](https://github.com/baransu/graphql_ppx_re):
-    - Remove the [deprecated `graphql_ppx` (by
-      mhallin)](https://github.com/mhallin/graphql_ppx): `npm remove
-      graphql_ppx`
-    - Add the new one: `npm install @baransu/graphql_ppx_re --save-dev`
-    - Update your `ppx-flags`: `"ppx-flags": ["@baransu/graphql_ppx_re/ppx6"]`
-  - [`gentype`](https://github.com/cristianoc/genType):
-    - `npm install gentype@3 --save-dev`
-  - [`decco`](https://github.com/reasonml-labs/decco):
-    - `npm install decco@1 --save-dev`
-  - [`bs-let`](https://github.com/reasonml-labs/bs-let):
-    - `npm install --save-dev bs-let`
-    - Update your `ppx-flags`: `"ppx-flags": ["bs-let/ppx"]`
-  - [`bs-emotion-ppx`](https://github.com/ahrefs/bs-emotion):
-    - `npm install bs-emotion-ppx@1 --save-dev`
-    - Update your `ppx-flags`: `"ppx-flags": ["@ahrefs/bs-emotion-ppx/bin/bs-emotion-ppx"]`
-  - [`bs-log`](https://github.com/MinimaHQ/bs-log)
-    - Currently WIP and [not done
-      yet](https://github.com/MinimaHQ/bs-log/issues/10)
-  - [`ppx_bs_css`](https://github.com/astrada/ppx_bs_css):
-    - No upgrade activity yet, please [let us
-      know](https://github.com/BuckleScript/bucklescript/issues/3914) if you are
-      using it!
-- **Clean & Rebuild your project:**
-    - `npx bsb -clean-world`
-    - `npx bsb -make-world`
-    - Your project should now be built and working correctly
-- **Fix specific warnings:**
-    - `BuckleScript warning: isWebUri : the external name is inferred from val
-      name is unsafe from refactoring when changing value name`
-        - This  means that you have `external` bindings ending with `= "";`
-          (which will automatically take the name of the binding itself), you
-          now need to be explicit with the name. Example:
-            ```reason
-            /* Before (warning) */
-            [@bs.module "valid-url"]
-            external isWebUri: string => option(string) = "";
+#### Upgrade your bs-platform dependency:
 
-            /* After (fixed the warning) */
-            [@bs.module "valid-url"]
-            external isWebUri: string => option(string) = "isWebUri";
-            ```
-    - Don't forget to rebuild your project again
+- `npm install bs-platform@7 --dev`
+
+#### Upgrade any PPX dependencies you're using:
+
+[`graphql_ppx`](https://github.com/mhallin/graphql_ppx) ->
+[`graphql_ppx_re`](https://github.com/baransu/graphql_ppx_re):
+  - Remove the [deprecated `graphql_ppx` (by
+      mhallin)](https://github.com/mhallin/graphql_ppx): `npm remove
+  graphql_ppx`
+  - Add the new one: `npm install @baransu/graphql_ppx_re --save-dev`
+  - Update your `ppx-flags`: `"ppx-flags": ["@baransu/graphql_ppx_re/ppx6"]`
+
+[`gentype`](https://github.com/cristianoc/genType):
+- `npm install gentype@3 --save-dev`
+
+[`decco`](https://github.com/reasonml-labs/decco):
+- `npm install decco@1 --save-dev`
+
+[`bs-let`](https://github.com/reasonml-labs/bs-let):
+- `npm install --save-dev bs-let`
+- Update your `ppx-flags`: `"ppx-flags": ["bs-let/ppx"]`
+
+[`bs-emotion-ppx`](https://github.com/ahrefs/bs-emotion):
+- `npm install bs-emotion-ppx@1 --save-dev`
+- Update your `ppx-flags`: `"ppx-flags": ["@ahrefs/bs-emotion-ppx/bin/bs-emotion-ppx"]`
+
+[`bs-log`](https://github.com/MinimaHQ/bs-log)
+- Currently WIP and [not done
+yet](https://github.com/MinimaHQ/bs-log/issues/10)
+
+[`ppx_bs_css`](https://github.com/astrada/ppx_bs_css):
+- No upgrade activity yet, please [let us
+know](https://github.com/BuckleScript/bucklescript/issues/3914) if you are
+      using it!
+
+#### Clean & Rebuild your project:
+- `npx bsb -clean-world`
+- `npx bsb -make-world`
+- Your project should now be built and working correctly
+
+#### Fix specific warnings:
+- `BuckleScript warning: isWebUri : the external name is inferred from val
+  name is unsafe from refactoring when changing value name`
+    - This  means that you have `external` bindings ending with `= "";`
+      (which will automatically take the name of the binding itself), you
+      now need to be explicit with the name. Example:
+        ```reason
+        /* Before (warning) */
+        [@bs.module "valid-url"]
+        external isWebUri: string => option(string) = "";
+
+        /* After (fixed the warning) */
+        [@bs.module "valid-url"]
+        external isWebUri: string => option(string) = "isWebUri";
+        ```
+- Don't forget to rebuild your project again
   
-- **Commit your changes:**
-    - Your `.bs.js` files will very likely change, make sure to commit
-      everything to have a clean BS upgrade commit
+#### Commit your changes:
+- Your `.bs.js` files will very likely change, make sure to commit
+  everything to have a clean BS upgrade commit
 
 
 **Note:** Since this upgrade will change the internal data representation of
