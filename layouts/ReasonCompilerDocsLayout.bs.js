@@ -29,7 +29,7 @@ hljs.registerLanguage('json', jsonHighlightJs);
 
 ;
 
-var tocData = (require('../index_data/manual_toc.json'));
+var tocData = (require('../index_data/reason_compiler_toc.json'));
 
 var overviewNavs = /* array */[
   /* record */Caml_chrome_debugger.record([

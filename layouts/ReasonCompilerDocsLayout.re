@@ -26,7 +26,7 @@ let tocData:
     "title": string,
     "headers": array(string),
   }) = [%raw
-  "require('../index_data/manual_toc.json')"
+  "require('../index_data/reason_compiler_toc.json')"
 ];
 
 module UrlPath = DocsLayout.UrlPath;

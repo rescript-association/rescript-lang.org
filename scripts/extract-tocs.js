@@ -12,6 +12,13 @@ const fs = require("fs");
 // Used for collapsing nested inlineCodes with the actual header text
 const collapseHeaderChildren = (children) => {
   return children.reduce((acc, node) => {
+    if(node.type === "link") {
+      return acc + collapseHeaderChildren(node.children);
+    }
+    // Prevents 'undefined' values in our headers
+    else if(node.value == null) {
+      return acc;
+    }
     return acc + node.value
   }, "");
 }
@@ -84,5 +91,18 @@ const createManualToc = () => {
   fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
 };
 
+const createReasonCompilerToc = () => {
+  const MD_DIR = path.join(__dirname, "../pages/docs/reason-compiler/latest");
+  const TARGET_FILE = path.join(__dirname, "../index_data/reason_compiler_toc.json");
+
+  const files = glob.sync(`${MD_DIR}/*.md?(x)`);
+  const result = files.map(processFile);
+  const toc = createTOC(result);
+
+  fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
+
+};
+
 // main
 createManualToc();
+createReasonCompilerToc();
