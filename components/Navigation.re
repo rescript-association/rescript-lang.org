@@ -157,17 +157,19 @@ module SubNav = {
 
       let languageItems = [|
         ("Introduction", "/docs/manual/latest"),
-        ("JS Interop", "/docs/manual/latest/interop"),
         ("Cheatsheet", "/docs/manual/latest/syntax-cheatsheet"),
       |];
 
       let recompItems = [|
         ("Introduction", "/docs/reason-compiler/latest"),
+        ("Installation", "/docs/reason-compiler/latest/installation"),
+        ("Configuration", "/docs/reason-compiler/latest/build-configuration"),
+        ("Interop", "/docs/reason-compiler/latest/interop-cheatsheet"),
       |];
 
       let activeThemeLink = "font-normal text-primary border-b border-primary";
 
-      let sectionClass = "pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/4";
+      let sectionClass = "pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/3";
       let overlineClass = "font-black uppercase text-sm tracking-wide text-primary-80";
 
       let sectionUl = "flex flex-wrap mt-8 list-primary list-inside lg:w-auto max-w-md";
@@ -199,9 +201,9 @@ module SubNav = {
              ->ate}
           </ul>
         </div>
-        <div className={jsTheme ++ " " ++ sectionClass ++ " lg:pl-12"}>
+        <div className={jsTheme ++ " " ++ sectionClass}>
           <Link href="/docs/reason-compiler/latest">
-            <a className=overlineClass> "Reason Compiler"->s </a>
+            <a className=overlineClass> "BuckleScript"->s </a>
           </Link>
           <ul className=sectionUl>
             {recompItems

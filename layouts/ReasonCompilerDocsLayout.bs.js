@@ -415,7 +415,7 @@ function ReasonCompilerDocsLayout(Props) {
                   "name",
                   "href"
                 ], [
-                  "Reason Compiler",
+                  "BuckleScript",
                   "/docs/reason-compiler/" + v[/* version */1]
                 ]),
               /* [] */0
@@ -428,7 +428,7 @@ function ReasonCompilerDocsLayout(Props) {
         }));
   var tmp = {
     breadcrumbs: breadcrumbs,
-    title: "Reason Compiler",
+    title: "BuckleScript",
     version: "v7",
     categories: categories,
     components: components,

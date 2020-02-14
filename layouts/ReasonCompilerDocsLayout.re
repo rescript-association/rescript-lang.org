@@ -215,7 +215,7 @@ let make = (~components=Markdown.default, ~children) => {
           UrlPath.[
             {name: "Docs", href: "/docs"},
             {
-              name: "Reason Compiler",
+              name: "BuckleScript",
               href: "/docs/reason-compiler/" ++ version,
             },
           ];
@@ -223,7 +223,7 @@ let make = (~components=Markdown.default, ~children) => {
       },
     );
 
-  let title = "Reason Compiler";
+  let title = "BuckleScript";
   let version = "v7";
 
   <DocsLayout
