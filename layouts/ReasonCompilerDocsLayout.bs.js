@@ -31,268 +31,310 @@ hljs.registerLanguage('json', jsonHighlightJs);
 
 var tocData = (require('../index_data/manual_toc.json'));
 
-var overviewNavs = /* array */[/* record */Caml_chrome_debugger.record([
+var overviewNavs = /* array */[
+  /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "Introduction",
-      "/docs/manual/latest"
-    ])];
+      "/docs/reason-compiler/latest"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Installation",
+      "/docs/reason-compiler/latest/installation"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "New Project",
+      "/docs/reason-compiler/latest/new-project"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Try",
+      "/docs/reason-compiler/latest/try"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Concepts Overview",
+      "/docs/reason-compiler/latest/concepts-overview"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Upgrade Guide to v7",
+      "/docs/reason-compiler/latest/upgrade-to-v7"
+    ])
+];
 
-var basicNavs = /* array */[
+var interopNavs = /* array */[
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "Overview",
-      "/docs/manual/latest/overview"
+      "/docs/reason-compiler/latest/interop-overview"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
-      "Let Binding",
-      "/docs/manual/latest/let-binding"
+      "Cheatsheet",
+      "/docs/reason-compiler/latest/interop-cheatsheet"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
-      "Type",
-      "/docs/manual/latest/type"
+      "Embed Raw JavaScript",
+      "/docs/reason-compiler/latest/embed-raw-javascript"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
-      "String & Char",
-      "/docs/manual/latest/string-and-char"
+      "Common Data Types",
+      "/docs/reason-compiler/latest/common-data-types"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
-      "Boolean",
-      "/docs/manual/latest/boolean"
+      "Intro to External",
+      "/docs/reason-compiler/latest/intro-to-external"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
-      "Integer & Float",
-      "/docs/manual/latest/integer-and-float"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Tuple",
-      "/docs/manual/latest/tuple"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Record",
-      "/docs/manual/latest/record"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Variant",
-      "/docs/manual/latest/variant"
+      "Bind to Global Values",
+      "/docs/reason-compiler/latest/bind-to-global-values"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "Null, Undefined & Option",
-      "/docs/manual/latest/null-undefined-option"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "List & Array",
-      "/docs/manual/latest/list-and-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Function",
-      "/docs/manual/latest/function"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "If-Else",
-      "/docs/manual/latest/if-else"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Pipe First",
-      "/docs/manual/latest/pipe-first"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "More on Type",
-      "/docs/manual/latest/more-on-type"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Destructuring",
-      "/docs/manual/latest/destructuring"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Pattern Matching",
-      "/docs/manual/latest/pattern-matching"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Mutation",
-      "/docs/manual/latest/mutation"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Imperative Loops",
-      "/docs/manual/latest/imperative-loops"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "JSX",
-      "/docs/manual/latest/jsx"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "External",
-      "/docs/manual/latest/external"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Exception",
-      "/docs/manual/latest/exception"
+      "/docs/reason-compiler/latest/null-undefined-option"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
       "Object",
-      "/docs/manual/latest/object"
+      "/docs/reason-compiler/latest/object"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
-      "Module",
-      "/docs/manual/latest/module"
+      "Object 2",
+      "/docs/reason-compiler/latest/object-2"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
-      "Promise",
-      "/docs/manual/latest/promise"
+      "Class",
+      "/docs/reason-compiler/latest/class"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Function",
+      "/docs/reason-compiler/latest/function"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Property access",
+      "/docs/reason-compiler/latest/property-access"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Return Value Wrapping",
+      "/docs/reason-compiler/latest/return-value-wrapping"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Import & Export",
+      "/docs/reason-compiler/latest/import-export"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Regular Expression",
+      "/docs/reason-compiler/latest/regular-expression"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Exceptions",
+      "/docs/reason-compiler/latest/exceptions"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "JSON",
+      "/docs/reason-compiler/latest/json"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Pipe First",
+      "/docs/reason-compiler/latest/pipe-first"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Generate Converters & Helpers",
+      "/docs/reason-compiler/latest/generate-converters-accessors"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Better Data Structures Printing (Debug Mode)",
+      "/docs/reason-compiler/latest/better-data-structures-printing-debug-mode"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "NodeJS Special Variables",
+      "/docs/reason-compiler/latest/nodejs-special-variables"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Miscellaneous",
+      "/docs/reason-compiler/latest/interop-misc"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Browser Support & Polyfills",
+      "/docs/reason-compiler/latest/browser-support-polyfills"
     ])
 ];
 
-var javascriptNavs = /* array */[
+var buildsystemNavs = /* array */[
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
-      "Interop",
-      "/docs/manual/latest/interop"
+      "Overview",
+      "/docs/reason-compiler/latest/build-overview"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
-      "Syntax Cheatsheet",
-      "/docs/manual/latest/syntax-cheatsheet"
+      "Configuration",
+      "/docs/reason-compiler/latest/build-configuration"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
-      "Libraries",
-      "/docs/manual/latest/libraries"
+      "Automatic Interface Generation",
+      "/docs/reason-compiler/latest/automatic-interface-generation"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
-      "Converting from JS",
-      "/docs/manual/latest/converting-from-js"
+      "Interop with Other Build System",
+      "/docs/reason-compiler/latest/interop-with-js-build-systems"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Performance",
+      "/docs/reason-compiler/latest/build-performance"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Advanced",
+      "/docs/reason-compiler/latest/build-advanced"
     ])
 ];
 
-var nativeNavs = /* array */[
-  /* record */Caml_chrome_debugger.record([
+var stdlibNavs = /* array */[/* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
-      "Native",
-      "/docs/manual/latest/native"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Native Quickstart",
-      "/docs/manual/latest/native-quickstart"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Converting from OCaml",
-      "/docs/manual/latest/converting-from-ocaml"
-    ])
-];
+      "Overview",
+      "/docs/reason-compiler/latest/stdlib-overview"
+    ])];
 
-var extraNavs = /* array */[
+var advancedNavs = /* array */[
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
-      "FAQ",
-      "/docs/manual/latest/faq"
+      "Conditional Compilation",
+      "/docs/reason-compiler/latest/conditional-compilation"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
-      "Comparison to OCaml",
-      "/docs/manual/latest/comparison-to-ocaml"
+      "Extended Compiler Options",
+      "/docs/reason-compiler/latest/extended-compiler-options"
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "href"
     ], [
-      "Newcomer Examples",
-      "/docs/manual/latest/newcomer-examples"
+      "Use Existing OCaml Libraries",
+      "/docs/reason-compiler/latest/use-existing-ocaml-libraries"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Difference from Native OCaml",
+      "/docs/reason-compiler/latest/difference-from-native-ocaml"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Compiler Architecture & Principles",
+      "/docs/reason-compiler/latest/compiler-architecture-principles"
+    ]),
+  /* record */Caml_chrome_debugger.record([
+      "name",
+      "href"
+    ], [
+      "Comparison to Js_of_ocaml",
+      "/docs/reason-compiler/latest/comparison-to-jsoo"
     ])
 ];
 
@@ -308,33 +350,33 @@ var categories = /* array */[
       "name",
       "items"
     ], [
-      "Basics",
-      basicNavs
+      "Interop",
+      interopNavs
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "items"
     ], [
-      "JavaScript",
-      javascriptNavs
+      "Build System",
+      buildsystemNavs
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "items"
     ], [
-      "Native",
-      nativeNavs
+      "Standard Library",
+      stdlibNavs
     ]),
   /* record */Caml_chrome_debugger.record([
       "name",
       "items"
     ], [
-      "Extra",
-      extraNavs
+      "Advanced",
+      advancedNavs
     ])
 ];
 
-function ManualDocsLayout$Docs(Props) {
+function ReasonCompilerDocsLayout(Props) {
   var match = Props.components;
   var components = match !== undefined ? Caml_option.valFromOption(match) : Markdown.$$default;
   var children = Props.children;
@@ -359,7 +401,7 @@ function ManualDocsLayout$Docs(Props) {
                     entries
                   ]);
         }));
-  var urlPath = SidebarLayout.UrlPath.parse("/docs/manual", route);
+  var urlPath = SidebarLayout.UrlPath.parse("/docs/reason-compiler", route);
   var breadcrumbs = Belt_Option.map(urlPath, (function (v) {
           var prefix_000 = /* record */Caml_chrome_debugger.record([
               "name",
@@ -373,8 +415,8 @@ function ManualDocsLayout$Docs(Props) {
                   "name",
                   "href"
                 ], [
-                  "Language Manual",
-                  "/docs/manual/" + v[/* version */1]
+                  "Reason Compiler",
+                  "/docs/reason-compiler/" + v[/* version */1]
                 ]),
               /* [] */0
             ]);
@@ -386,11 +428,11 @@ function ManualDocsLayout$Docs(Props) {
         }));
   var tmp = {
     breadcrumbs: breadcrumbs,
-    title: "Language Manual",
-    version: "v3.6",
+    title: "Reason Compiler",
+    version: "v7",
     categories: categories,
     components: components,
-    theme: /* Reason */825328612,
+    theme: /* Js */16617,
     children: children
   };
   if (activeToc !== undefined) {
@@ -398,22 +440,6 @@ function ManualDocsLayout$Docs(Props) {
   }
   return React.createElement(DocsLayout.make, tmp);
 }
-
-var Docs = {
-  make: ManualDocsLayout$Docs
-};
-
-function ManualDocsLayout$Prose(Props) {
-  var children = Props.children;
-  return React.createElement(ManualDocsLayout$Docs, {
-              components: Markdown.$$default,
-              children: children
-            });
-}
-
-var Prose = {
-  make: ManualDocsLayout$Prose
-};
 
 var Link = 0;
 
@@ -425,6 +451,8 @@ var Category = 0;
 
 var Toc = 0;
 
+var make = ReasonCompilerDocsLayout;
+
 export {
   Link ,
   tocData ,
@@ -433,13 +461,12 @@ export {
   Category ,
   Toc ,
   overviewNavs ,
-  basicNavs ,
-  javascriptNavs ,
-  nativeNavs ,
-  extraNavs ,
+  interopNavs ,
+  buildsystemNavs ,
+  stdlibNavs ,
+  advancedNavs ,
   categories ,
-  Docs ,
-  Prose ,
+  make ,
   
 }
 /*  Not a pure module */

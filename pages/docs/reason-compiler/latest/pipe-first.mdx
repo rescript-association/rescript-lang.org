@@ -1,0 +1,118 @@
+import { make } from "layouts/ReasonCompilerDocsLayout.bs.js";
+export default make;
+
+# Pipe-first
+
+BuckleScript has a special `|.` (or `->` for Reason) pipe syntax for dealing with various situations. This operator has many uses.
+
+## Pipelining
+
+The pipe takes the item on the left and put it as the first argument of the item on the right. Great for building pipelines of data processing:
+
+```ocaml
+a
+|. foo b
+|. bar
+```
+
+```reason
+a
+->foo(b)
+->bar
+```
+
+is equal to
+
+```ocaml
+bar(foo a b)
+```
+
+```reason
+bar(foo(a, b))
+```
+
+## JS Method Chaining
+
+JavaScript's APIs are often attached to objects, and often chainable, like so:
+
+```js
+const result = [1, 2, 3].map(a => a + 1).filter(a => a % 2 === 0);
+
+asyncRequest().setWaitDuration(4000).send();
+```
+
+Assuming we don't need the chaining behavior above, we'd bind to each case this using `bs.send` from the previous section:
+
+```ocaml
+external map : 'a array -> ('a -> 'b) -> 'b array = "map" [@@bs.send]
+external filter : 'a array -> ('a -> 'b) -> 'b array = "filter" [@@bs.send]
+
+type request
+external asyncRequest: unit -> request = "asyncRequest"
+external setWaitDuration: request -> int -> request = "setWaitDuration" [@@bs.send]
+external send: request -> unit = "send" [@@bs.send]
+```
+
+```reason
+[@bs.send] external map : (array('a), 'a => 'b) => array('b) = "map";
+[@bs.send] external filter : (array('a), 'a => 'b) => array('b) = "filter";
+
+type request;
+external asyncRequest: unit => request = "asyncRequest";
+[@bs.send] external setWaitDuration: (request, int) => request = "setWaitDuration";
+[@bs.send] external send: request => unit = "send";
+```
+
+You'd use them like this:
+
+```ocaml
+let result = filter (map [|1; 2; 3|] (fun a -> a + 1)) (fun a -> a mod 2 = 0)
+
+let () = send(setWaitDuration (asyncRequest()) 4000)
+```
+
+```reason
+let result = filter(map([|1, 2, 3|], a => a + 1), a => a mod 2 == 0);
+
+send(setWaitDuration(asyncRequest(), 4000));
+```
+
+This looks much worse than the JS counterpart! Now we need to read the actual logic "inside-out". We also cannot use the `|>` operator here, since the object comes _first_ in the binding. But `|.` and `->` work!
+
+```ocaml
+let result = [|1; 2; 3|]
+  |. map(fun a -> a + 1)
+  |. filter(fun a -> a mod 2 == 0)
+
+let () = asyncRequest () |. setWaitDuration 400 |. send
+```
+
+```reason
+let result = [|1, 2, 3|]
+  ->map(a => a + 1)
+  ->filter(a => a mod 2 === 0);
+
+asyncRequest()->setWaitDuration(400)->send;
+```
+
+## Pipe Into Variants
+
+This works:
+
+```ocaml
+let result = name |. preprocess |. Some
+```
+
+```reason
+let result = name->preprocess->Some
+```
+
+We turn this into:
+
+```ocaml
+let result = Some(preprocess(name))
+```
+
+```reason
+let result = Some(preprocess(name))
+```
