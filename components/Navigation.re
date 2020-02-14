@@ -199,7 +199,7 @@ module SubNav = {
              ->ate}
           </ul>
         </div>
-        <div className={jsTheme ++ " " ++ sectionClass}>
+        <div className={jsTheme ++ " " ++ sectionClass ++ " lg:pl-12"}>
           <Link href="/docs/reason-compiler/latest">
             <a className=overlineClass> "Reason Compiler"->s </a>
           </Link>

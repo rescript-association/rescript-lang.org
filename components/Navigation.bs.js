@@ -176,7 +176,7 @@ function Navigation$SubNav$DocsLinks(Props) {
                                                     }, Util.ReactStuff.s(param[0]))
                                               }));
                               }))))), React.createElement("div", {
-                  className: jsTheme + " pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/4"
+                  className: jsTheme + " pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/4 lg:pl-12"
                 }, React.createElement(Link.default, {
                       href: "/docs/reason-compiler/latest",
                       children: React.createElement("a", {
