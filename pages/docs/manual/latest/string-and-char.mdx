@@ -52,7 +52,7 @@ BuckleScript's special pre-processor can then look for such `js` and `j` markers
 
 ### Usage
 
-[More string operations can be found in the standard library](/api/String.html). For JS compilation, see the familiar `Js.String` API in the [BuckleScript API docs](http://bucklescript.github.io/bucklescript/api/Js.String.html). Since a Reason string maps to a JavaScript string, you can mix & match the string operations in both standard libraries.
+[More string operations can be found in the standard library](//reasonml.github.io/api/String.html). For JS compilation, see the familiar `Js.String` API in the [BuckleScript API docs](http://bucklescript.github.io/bucklescript/api/Js.String.html). Since a Reason string maps to a JavaScript string, you can mix & match the string operations in both standard libraries.
 
 ### Tips & Tricks
 
@@ -68,13 +68,13 @@ https://twitter.com/jusrin00/status/875238742621028355
 
 The more you overload the poor string type, the less the type system (or a teammate) can help you! Reason provides concise, fast and maintainable types & data structures alternatives to the use-cases above (e.g. variants, in a later section).
 
-Under native compilation, Reason strings compile to a simple representation whose performance is straightforward to analyze, at the expense of sometimes requiring manual performance tuning. For example, naively concatenating strings like `"hi " ++ "how " ++ "are " ++ "you?"` unnecessarily allocates the intermediate strings `"are you?"` and `"how are you?"` (though it might be optimized into a single string in these simple cases). In this case, prefer [`String.concat`](/api/String.html). In a way, it's somewhat nice that the traditional runtime analysis we've learned in school can finally be useful again.
+Under native compilation, Reason strings compile to a simple representation whose performance is straightforward to analyze, at the expense of sometimes requiring manual performance tuning. For example, naively concatenating strings like `"hi " ++ "how " ++ "are " ++ "you?"` unnecessarily allocates the intermediate strings `"are you?"` and `"how are you?"` (though it might be optimized into a single string in these simple cases). In this case, prefer [`String.concat`](//reasonml.github.io/api/String.html). In a way, it's somewhat nice that the traditional runtime analysis we've learned in school can finally be useful again.
 
 Under JavaScript compilation, a Reason string maps to a JavaScript string and vice-versa, so no such above concern or analysis opportunities apply.
 
 ### Design Decisions
 
-Quoted string's feature of not escaping special characters enables neat DSLs like [regular expression](/api/Str.html):
+Quoted string's feature of not escaping special characters enables neat DSLs like [regular expression](//reasonml.github.io/api/Str.html):
 
 ```reason
 let r = Str.regexp({|hello \([A-Za-z]+\)|});
@@ -102,7 +102,7 @@ let firstLetterOfAlphabet = 'a';
 
 ### Tips & Tricks
 
-A character [compiles to an integer ranging from 0 to 255](/try.html?reason=DYUwLgBAhhC8EHIoKA), for extra speed. You can also pattern-match (covered later) on it:
+A character [compiles to an integer ranging from 0 to 255](//reasonml.github.io/try.html?reason=DYUwLgBAhhC8EHIoKA), for extra speed. You can also pattern-match (covered later) on it:
 
 ```reason
 let isVowel = (theChar) =>

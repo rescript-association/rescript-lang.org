@@ -1,6 +1,14 @@
 /* Markdown related stuff */
 /* Sometimes we cannot circumvent the cascade, especially for nested lists */
 
+.md-ul {
+  @apply mb-16;
+}
+
+.md-ul ul {
+  @apply mb-0;
+}
+
 .md-ol > li {
   counter-increment: li;
 }

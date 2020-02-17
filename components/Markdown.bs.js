@@ -8,6 +8,10 @@ import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as CodeExample from "./CodeExample.bs.js";
 import * as CodeSignature from "./CodeSignature.bs.js";
 
+function idFormat(id) {
+  return id;
+}
+
 function Markdown$Anchor(Props) {
   var id = Props.id;
   var style = {
@@ -26,6 +30,7 @@ function Markdown$Anchor(Props) {
 }
 
 var Anchor = {
+  idFormat: idFormat,
   make: Markdown$Anchor
 };
 
@@ -261,9 +266,10 @@ var P = {
 function Markdown$A(Props) {
   var href = Props.href;
   var children = Props.children;
+  var href$1 = href.replace((/\.md(x)?$/), "");
   return React.createElement("a", {
               className: "no-underline text-fire hover:underline",
-              href: href,
+              href: href$1,
               rel: "noopener noreferrer"
             }, children);
 }
@@ -275,7 +281,7 @@ var A = {
 function Markdown$Ul(Props) {
   var children = Props.children;
   return React.createElement("ul", {
-              className: "md-ul mt-4 mb-16"
+              className: "md-ul"
             }, children);
 }
 
@@ -286,7 +292,7 @@ var Ul = {
 function Markdown$Ol(Props) {
   var children = Props.children;
   return React.createElement("ol", {
-              className: "md-ol ml-2 mt-4 mb-16"
+              className: "md-ol ml-2"
             }, children);
 }
 
@@ -298,30 +304,41 @@ function typeOf$1 (thing){{ return typeof thing; }};
 
 function isArray$1 (thing){{ return thing instanceof Array; }};
 
-function isSublist (element){{
-        if(element == null || element.props == null) {
-          return false;
-        }
-        const type = element.props.mdxType;
-        return type === 'ul' || type === 'ol';
-      }};
-
 function Markdown$Li(Props) {
   var children = Props.children;
   var elements;
   if (isArray$1(children)) {
     var last = Belt_Array.getExn(children, children.length - 1 | 0);
-    if (isSublist(last)) {
-      var head = children.slice(0, children.length - 1 | 0);
-      elements = React.createElement(React.Fragment, undefined, React.createElement("p", undefined, Util.ReactStuff.ate(head)), last);
-    } else {
-      elements = React.createElement("p", undefined, children);
+    var head = children.slice(0, children.length - 1 | 0);
+    var first = Belt_Array.getExn(head, 0);
+    var match = Mdx.getMdxType(last);
+    var exit = 0;
+    switch (match) {
+      case "li" :
+      case "pre" :
+      case "ul" :
+          exit = 1;
+          break;
+      default:
+        elements = React.createElement("p", undefined, children);
     }
+    if (exit === 1) {
+      var match$1 = Mdx.getMdxType(first);
+      elements = match$1 === "p" ? React.createElement(React.Fragment, undefined, Util.ReactStuff.ate(head), last) : React.createElement(React.Fragment, undefined, React.createElement("p", undefined, Util.ReactStuff.ate(head)), last);
+    }
+    
   } else if (typeOf$1(children) === "string") {
     elements = React.createElement("p", undefined, children);
   } else {
-    var match = Mdx.getMdxType(children);
-    elements = match === "p" ? children : React.createElement("p", undefined, children);
+    var match$2 = Mdx.getMdxType(children);
+    switch (match$2) {
+      case "p" :
+      case "pre" :
+          elements = children;
+          break;
+      default:
+        elements = React.createElement("p", undefined, children);
+    }
   }
   return React.createElement("li", {
               className: "md-li mt-3 leading-4 ml-4 text-lg"
@@ -331,7 +348,6 @@ function Markdown$Li(Props) {
 var Li = {
   typeOf: typeOf$1,
   isArray: isArray$1,
-  isSublist: isSublist,
   make: Markdown$Li
 };
 

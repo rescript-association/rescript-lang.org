@@ -18,7 +18,7 @@ let toExponential: int => string;
 
 Formats an `int` using exponential (scientific) notation.
 Returns a `string` representing the given value in exponential notation.
-Raises `RangeError` if digits is not in the range [0, 20] (inclusive).
+Raises `RangeError` if digits is not in the range \[0, 20\] (inclusive).
 
 ```re example
 /* prints "7.7e+1" */
@@ -32,12 +32,12 @@ let toExponentialWithPrecision: (int, ~digits: int) => string;
 ```
 
 Formats an `int` using exponential (scientific) notation.
-`digits` specifies how many digits should appear after the decimal point. The value must be in the range [0, 20] (inclusive).
+`digits` specifies how many digits should appear after the decimal point. The value must be in the range \[0, 20\] (inclusive).
 
 Returns a `string` representing the given value in exponential notation.
 
 The output will be rounded or padded with zeroes if necessary.
-Raises `RangeError` if `digits` is not in the range [0, 20] (inclusive).
+Raises `RangeError` if `digits` is not in the range \[0, 20\] (inclusive).
 
 ```re example
 /* prints "7.70e+1" */
@@ -110,9 +110,9 @@ let toStringWithRadix: (int, ~radix: int) => string;
 ```
 
 Formats an `int` as a `string`.
-`radix` specifies the radix base to use for the formatted number. The value must be in the range [2, 36] (inclusive).
+`radix` specifies the radix base to use for the formatted number. The value must be in the range \[2, 36\] (inclusive).
 Returns a `string` representing the given value in fixed-point (usually).
-Raises `RangeError` if `radix` is not in the range [2, 36] (inclusive).
+Raises `RangeError` if `radix` is not in the range \[2, 36\] (inclusive).
 
 ```re example
 /* prints "110" */

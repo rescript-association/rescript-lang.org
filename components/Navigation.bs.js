@@ -129,7 +129,7 @@ function useWindowWidth (){{
 
 function Navigation$SubNav$DocsLinks(Props) {
   var route = Props.route;
-  ColorTheme.toCN(/* Js */16617);
+  var jsTheme = ColorTheme.toCN(/* Js */16617);
   var reTheme = ColorTheme.toCN(/* Reason */825328612);
   var languageItems = /* array */[
     /* tuple */[
@@ -137,29 +137,67 @@ function Navigation$SubNav$DocsLinks(Props) {
       "/docs/manual/latest"
     ],
     /* tuple */[
-      "JS Interop",
-      "/docs/manual/latest/interop"
-    ],
-    /* tuple */[
       "Cheatsheet",
       "/docs/manual/latest/syntax-cheatsheet"
     ]
   ];
+  var recompItems = /* array */[
+    /* tuple */[
+      "Introduction",
+      "/docs/reason-compiler/latest"
+    ],
+    /* tuple */[
+      "Installation",
+      "/docs/reason-compiler/latest/installation"
+    ],
+    /* tuple */[
+      "Configuration",
+      "/docs/reason-compiler/latest/build-configuration"
+    ],
+    /* tuple */[
+      "Interop",
+      "/docs/reason-compiler/latest/interop-cheatsheet"
+    ]
+  ];
+  var overlineClass = "font-black uppercase text-sm tracking-wide text-primary-80";
+  var sectionUl = "flex flex-wrap mt-8 list-primary list-inside lg:w-auto max-w-md";
   return React.createElement("div", {
               className: "lg:flex lg:flex-row px-4 max-w-xl"
             }, React.createElement("div", {
-                  className: reTheme + " pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/4"
+                  className: reTheme + " pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/3"
                 }, React.createElement(Link.default, {
                       href: "/docs/manual/latest",
                       children: React.createElement("a", {
-                            className: "font-black uppercase text-sm tracking-wide text-primary-80"
+                            className: overlineClass
                           }, Util.ReactStuff.s("Language Manual"))
                     }), React.createElement("ul", {
-                      className: "flex flex-wrap mt-8 list-primary list-inside lg:w-auto max-w-md"
+                      className: sectionUl
                     }, Util.ReactStuff.ate(Belt_Array.mapWithIndex(languageItems, (function (idx, param) {
                                 var href = param[1];
                                 var match = route === href;
-                                var active = match ? "text-inherit font-normal text-fire border-b border-fire hover:text-primary cursor-auto" : "";
+                                var active = match ? "font-normal text-primary border-b border-primary hover:text-primary cursor-auto" : "";
+                                return React.createElement("li", {
+                                            key: String(idx),
+                                            className: "w-1/2 xs:w-1/2 h-10"
+                                          }, React.createElement(Link.default, {
+                                                href: href,
+                                                children: React.createElement("a", {
+                                                      className: "text-white-80 hover:text-white hover:cursor-pointer " + active
+                                                    }, Util.ReactStuff.s(param[0]))
+                                              }));
+                              }))))), React.createElement("div", {
+                  className: jsTheme + " pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/3"
+                }, React.createElement(Link.default, {
+                      href: "/docs/reason-compiler/latest",
+                      children: React.createElement("a", {
+                            className: overlineClass
+                          }, Util.ReactStuff.s("BuckleScript"))
+                    }), React.createElement("ul", {
+                      className: sectionUl
+                    }, Util.ReactStuff.ate(Belt_Array.mapWithIndex(recompItems, (function (idx, param) {
+                                var href = param[1];
+                                var match = route === href;
+                                var active = match ? "font-normal text-primary border-b border-primary hover:text-primary cursor-auto" : "";
                                 return React.createElement("li", {
                                             key: String(idx),
                                             className: "w-1/2 xs:w-1/2 h-10"
