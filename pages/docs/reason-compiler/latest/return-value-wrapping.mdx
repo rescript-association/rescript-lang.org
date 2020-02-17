@@ -31,22 +31,8 @@ let test = dom => {
 };
 ```
 
-```ocaml
-type element
-type dom
-external getElementById : dom -> string -> element option = "getElementById"
-[@@bs.send] [@@bs.return nullable]
-
-let test dom =
-    let elem = dom |. getElementById "haha" in
-    match elem with
-    | None -> 1
-    | Some ui -> Js.log ui ; 2
-```
 `return nullable` attribute will automatically convert null and undefined to `option`
 
-```reason
-```
 Output:
 ```js
 function test(dom) {

@@ -5,11 +5,6 @@ export default make;
 
 Modeling a JS function is like modeling a normal value:
 
-```ocaml
-external encodeURI: string -> string = "encodeURI" [@@bs.val]
-let result = encodeURI "hello"
-```
-
 ```reason
 [@bs.val] external encodeURI: string => string = "encodeURI";
 let result = encodeURI("hello");
@@ -30,13 +25,6 @@ draw(20, 20, true)
 ```
 
 It'd be nice if on the BS side, we can bind & call `draw` while labeling things a bit:
-
-```ocaml
-external draw: x:int -> y:int -> ?border:bool -> unit -> unit = "draw" [@@bs.val]
-
-let _ = draw ~x:10 ~y:20 ~border:true ()
-let _ = draw ~x:10 ~y:20 ()
-```
 
 ```reason
 [@bs.val] external draw: (~x: int, ~y: int, ~border: bool=?, unit) => unit = "draw";
@@ -75,14 +63,6 @@ draw(10, 20, undefined);
 
 Functions attached to a JS objects require a special way of binding to them, using `bs.send`:
 
-```ocaml
-type document (* abstract type for a document object *)
-external getElementById: document -> string -> Dom.element = "getElementById" [@@bs.send]
-external doc: document = "document" [@@bs.val]
-
-let el = getElementById doc "myId"
-```
-
 ```reason
 type document; /* abstract type for a document object */
 [@bs.send] external getElementById: (document, string) => Dom.element = "getElementById";
@@ -107,11 +87,6 @@ Ever used `foo().bar().baz()` chaining ("fluent api") in JS OOP? We can model th
 
 You might have JS functions that take an arbitrary amount of arguments. BuckleScript supports modeling those, under the condition that the arbitrary arguments part is homogenous (aka of the same type). If so, add `bs.variadic` (was `bs.splice` prior to version 4.08) to your `external`.
 
-```ocaml
-external join: string array -> string = "join" [@@bs.module "path"] [@@bs.variadic]
-let v = join [| "a"; "b"|]
-```
-
 ```reason
 [@bs.module "path"] [@bs.variadic] external join: array(string) => string = "join";
 let v = join([|"a", "b"|]);
@@ -133,12 +108,6 @@ Apart from the above special-case, JS function in general are often arbitrary ov
 ### Trick 1: Multiple `external`s
 
 If you can exhaustively enumerate the many forms an overloaded JS function can take, simply bind to each differently:
-
-```ocaml
-external drawCat: unit -> unit = "draw" [@@bs.module "Drawing"]
-external drawDog: giveName:string -> unit = "draw" [@@bs.module "Drawing"]
-external draw : string -> useRandomAnimal:bool -> unit = "draw" [@@bs.module "Drawing"]
-```
 
 ```reason
 [@bs.module "Drawing"] external drawCat: unit => unit = "draw";
@@ -166,19 +135,6 @@ function padLeft(value, padding) {
 
 Here, `padding` is really conceptually a variant. Let's model it as such.
 
-```ocaml
-external padLeft:
-  string
-  -> ([ `Str of string
-      | `Int of int
-      ] [@bs.unwrap])
-  -> string
-  = "padLeft" [@@bs.val]
-
-let _ = padLeft "Hello World" (`Int 4)
-let _ = padLeft "Hello World" (`Str "Message from BS: ")
-```
-
 ```reason
 [@bs.val]
 external padLeft: (
@@ -203,18 +159,6 @@ padLeft("Hello World", "Message from BS: ");
 ## Constrain Arguments Better
 
 Consider the Node `fs.readFileSync`'s second argument. It can take a string, but really only a defined set: `"ascii"`, `"utf8"`, etc. You can still bind it as a string, but we can use poly variants + `bs.string` to ensure that our usage's more correct:
-
-```ocaml
-external readFileSync:
-  name:string ->
-  ([ `utf8
-   | `useAscii [@bs.as "ascii"]
-   ] [@bs.string]) ->
-  string = "readFileSync"
-  [@@bs.module "fs"]
-
-let _ = readFileSync ~name:"xx.txt" `useAscii
-```
 
 ```reason
 [@bs.module "fs"]
@@ -243,18 +187,6 @@ And now, passing something like `"myOwnUnicode"` or other variant constructor na
 
 Aside from string, you can also compile an argument to an int, using `bs.int` instead of `bs.string` in a similar way:
 
-```ocaml
-external test_int_type:
-  ([ `on_closed
-   | `on_open [@bs.as 20]
-   | `in_bin
-   ]
-   [@bs.int]) -> int =
-  "test_int_type" [@@bs.val]
-
-let _ = test_int_type `in_bin
-```
-
 ```reason
 [@bs.val]
 external test_int_type: (
@@ -273,23 +205,6 @@ test_int_type(`in_bin);
 ## Special-case: Event Listeners
 
 One last trick with polymorphic variants:
-
-```ocaml
-type readline
-
-external on:
-  readline
-  -> ([
-      |`close of unit -> unit
-      | `line of string -> unit
-      ] [@bs.string])
-  -> readline = "on" [@@bs.send]
-
-let register rl =
-  rl
-  |. on (`close (fun event -> ()))
-  |. on (`line (fun line -> print_endline line))
-```
 
 ```reason
 type readline;
@@ -327,18 +242,6 @@ function register(rl) {
 
 Sometimes it's convenient to bind to a function using an `external`, while passing predetermined argument values to the JS function:
 
-```ocaml
-external process_on_exit:
-  (_ [@bs.as "exit"]) ->
-  (int -> unit) ->
-  unit =
-  "process.on" [@@bs.val]
-
-let () = process_on_exit (fun exit_code ->
-  Js.log ("error code: " ^ string_of_int exit_code)
-)
-```
-
 ```reason
 [@bs.val]
 external process_on_exit: (
@@ -366,25 +269,7 @@ The `[@bs.as "exit"]` and the placeholder `_` argument together indicates that y
 
 Curry is a delicious Indian dish. More importantly, in the context of BuckleScript (and functional programming in general), currying means that function taking multiple arguments can be applied a few arguments at time, until all the arguments are applied.
 
-```ocaml
-let add x y z = x + y + z
-let addFive = add 5
-let twelve = addFive 3 4
-```
-
-```reason
-let add = (x, y, z) => x + y + z;
-let addFive = add(5);
-let twelve = addFive(3, 4);
-```
-
 See the `addFive` intermediate function? `add` takes in 3 arguments but received only 1. It's interpreted as "currying" the argument `5` and waiting for the next 2 arguments to be applied later on. Type signatures:
-
-```ocaml
-val add: int -> int -> int -> int
-val addFive: int -> int -> int
-val twelve: int
-```
 
 ```reason
 let add: (int, int, int) => int;
@@ -414,13 +299,6 @@ BS tries to do #1 as much as it can. Even when it bails and uses #2's currying m
 
 If you annotate a function declaration signature on an `external` or `let` with a `[@bs]` (or, in Reason syntax, annotate the start of the parameters with a dot), you'll turn that function into an similar-looking one that's guaranteed to be uncurried:
 
-```ocaml
-type timerId
-external setTimeout: (unit -> unit [@bs]) -> int -> timerId = "setTimeout" [@@bs.val]
-
-let id = setTimeout (fun [@bs] () -> Js.log "hello") 1000
-```
-
 ```reason
 type timerId;
 [@bs.val] external setTimeout: ((. unit) => unit, int) => timerId = "setTimeout";
@@ -432,21 +310,12 @@ let id = setTimeout((.) => Js.log("hello"), 1000);
 
 When you try to curry such a function, you'll get a type error:
 
-```ocaml
-let add = fun [@bs] x y z -> x + y + z
-let addFiveOops = add 5
-```
-
 ```reason
 let add = (. x, y, z) => x + y + z;
 let addFiveOops = add(5);
 ```
 
 Error:
-
-```ocaml
-This is an uncurried BuckleScript function. It must be applied with a `[@bs]`.
-```
 
 ```reason
 This is an uncurried BuckleScript function. It must be applied with a dot.
@@ -464,11 +333,6 @@ The above solution is safe, guaranteed, and performant, but sometimes visually a
 
 Then try `[@bs.uncurry]`:
 
-```ocaml
-external map: 'a array -> ('a -> 'b [@bs.uncurry]) -> 'b array = "map" [@@bs.send]
-let _ = map [|1; 2; 3|] (fun x -> x+ 1)
-```
-
 ```reason
 [@bs.send] external map: (array('a), [@bs.uncurry] ('a => 'b)) => array('b) = "map";
 map([|1, 2, 3|], x => x + 1);
@@ -477,10 +341,6 @@ map([|1, 2, 3|], x => x + 1);
 #### Pitfall
 
 If you try to do this:
-
-```ocaml
-let id: ('a -> 'a [@bs]) = ((fun v -> v) [@bs])
-```
 
 ```reason
 let id: (. 'a) => 'a = (. v) => v;
@@ -496,10 +356,6 @@ Error: The type of this expression, ('_a -> '_a [@bs]),
 The issue here isn’t that the function is polymorphic. You can use polymorphic uncurried functions as inline callbacks, but you can’t export them (and `let`s are exposed by default unless you hide it with an interface file). The issue here is a combination of the uncurried call, polymorphism and exporting the function. It’s an unfortunate limitation of how OCaml’s type system incorporates side-effects, and how BS handles uncurrying.
 
 The simplest solution is in most cases to just not export it, by adding an interface to the module. Alternatively, if you really need to export it, you can do so in its curried form, and then wrap it in an uncurried lambda at the call site. E.g.:
-
-```ocaml
-let _ = map (fun v -> id v [@bs])
-```
 
 ```reason
 map(v => id(. v));
@@ -522,18 +378,6 @@ x.onload = function(v) {
 ```
 
 Here, `this` would point to `x` (actually, it depends on how `onload` is called, but we digress). It's not correct to declare `x.onload` of type `unit → unit [@bs]`. Instead, we introduced a special attribute, `bs.this`, which allows us to type `x` as so:
-
-```ocaml
-type x
-external x: x = "x" [@@bs.val]
-external set_onload: x -> (x -> int -> unit [@bs.this]) -> unit = "onload" [@@bs.set]
-external resp: x -> int = "response" [@@bs.get]
-
-let _ =
-  set_onload x begin fun [@bs.this] o v ->
-    Js.log(resp o + v )
-  end
-```
 
 ```reason
 type x;

@@ -7,13 +7,6 @@ export default make;
 
 Use `bs.new` to emulate e.g. `new Date()`:
 
-```ocaml
-type t
-external createDate : unit -> t = "Date" [@@bs.new]
-
-let date = createDate ()
-```
-
 ```reason
 type t;
 [@bs.new] external createDate : unit => t = "Date";
@@ -28,12 +21,6 @@ var date = new Date();
 ```
 
 You can chain `bs.new` and `bs.module` if the JS module you're importing is itself a class:
-
-```ocaml
-type t
-external book : unit -> t = "Book" [@@bs.new] [@@bs.module]
-let bookInstance = book ()
-```
 
 ```reason
 type t;
@@ -53,16 +40,6 @@ var bookInstance = new Book();
 JS classes are really just JS objects wired up funnily. **In general**, prefer using the previous object section's features to bind to a JS object.
 
 OCaml having classes really helps with modeling JS classes. Just add a `[@bs]` to a class type to turn them into a `Js.t` class:
-
-```ocaml
-class type _rect = object
-  method height : int [@@bs.set]
-  method width : int [@@bs.set]
-  method draw : unit -> unit
-end [@bs]
-
-type rect = _rect Js.t
-```
 
 ```reason
 class type _rect =

@@ -33,11 +33,6 @@ import studentName from 'student.js';
 
 Technically, since a BuckleScript file maps to a module, there's no such thing as "default" export, only named ones. However, we've made an exception to support default module when you do the following:
 
-```ocaml
-(* FavoriteStudent.ml *)
-let default = "Bob"
-```
-
 ```reason
 /* FavoriteStudent.ml */
 let default = "Bob"
@@ -62,11 +57,6 @@ let studentName = require('FavoriteStudent').default;
 
 Use `bs.module`. It's like a `bs.val` that accepts a string that's the module name or path.
 
-```ocaml
-external dirname: string -> string = "dirname" [@@bs.module "path"]
-let root = dirname "/User/chenglou"
-```
-
 ```reason
 [@bs.module "path"] external dirname : string => string = "dirname";
 let root = dirname("/User/chenglou");
@@ -85,11 +75,6 @@ var root = Path.dirname("/User/chenglou");
 
 By omitting the payload to `bs.module`, you bind to the whole JS module:
 
-```ocaml
-external leftPad: string -> int -> string = "./leftPad" [@@bs.module]
-let paddedResult = leftPad "hi" 5
-```
-
 ```reason
 [@bs.module] external leftPad : string => int => string = "./leftPad";
 let paddedResult = leftPad("hi", 5);
@@ -105,11 +90,6 @@ var paddedResult = LeftPad("hi", 5);
 #### Import an ES6 Default Value
 
 This is a recurring question, so we'll answer it here. **If your JS project is using ES6**, you're likely using Babel to compile it to regular JavaScript. Babel's ES6 default export actually exports the default value under the name `default`. You'd bind to it like this:
-
-```ocaml
-external studentName: string = "default" [@@bs.module "./student"]
-let _ = Js.log studentName
-```
 
 ```reason
 [@bs.module "./student"] external studentName : string = "default";

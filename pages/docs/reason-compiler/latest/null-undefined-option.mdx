@@ -9,19 +9,11 @@ However, the **concept** of a potentially nonexistent value is still useful, and
 
 We represent the existence and nonexistence of a value by wrapping it with the `option` type. Here's its definition from the standard library:
 
-```ocaml
-type 'a option = None | Some 'a
-```
-
 ```reason
 type option('a) = None | Some('a)
 ```
 
 It means "a value of type option is either None (nothing) or that actual value wrapped in a Some". You might wonder why we can't drop that `Some` wrapper and just do the following:
-
-```ocaml
-type 'a option = None | 'a
-```
 
 ```reason
 type option('a) = None | 'a
@@ -33,23 +25,11 @@ So that the value can be either `None` or `theActualValue`. While convenient, th
 
 Here's a normal value:
 
-```ocaml
-let licenseNumber = 5
-```
-
 ```reason
 let licenseNumber = 5
 ```
 
 To represent the concept of "maybe null", you'd turn this into an `option` type by wrapping it. For the sake of a more illustrative example, we'll put a condition around it:
-
-```ocaml
-let licenseNumber =
-  if personHasACar then
-    Some(5)
-  else
-    None
-```
 
 ```reason
 let licenseNumber =
@@ -61,12 +41,6 @@ let licenseNumber =
 ```
 
 Later on, when another piece of code receives such value, it'd be forced to handle both cases:
-
-```ocaml
-match licenseNumber with
-| None -> print_endline "The person doesn't have a car"
-| Some(number) -> print_endline ("The person's license number is " ^ (string_of_int number))
-```
 
 ```reason
 switch (licenseNumber) {
@@ -86,19 +60,11 @@ By turning your ordinary number into an `option` type, and by forcing you to han
 
 The `option` type is common enough that we special-case it when compiling to JavaScript:
 
-```ocaml
-Some 5
-```
-
 ```reason
 Some(5)
 ```
 
 simply compiles down to `5`, and
-
-```ocaml
-None
-```
 
 ```reason
 None
@@ -110,19 +76,11 @@ compiles to `undefined`! If you've got e.g. a string in JavaScript that you know
 
 The option-to-undefined translation isn't perfect, because on our side, `option` values can be composed:
 
-```ocaml
-Some (Some (Some 5))
-```
-
 ```reason
 Some(Some(Some(5)))
 ```
 
 This still compiles to `5`, but this gets troublesome:
-
-```ocaml
-Some None
-```
 
 ```reason
 Some(None)
@@ -153,22 +111,11 @@ To create a JS `null`, use the value `Js.Nullable.null`. To create a JS `undefin
 
 If you're receiving, for example, a JS string that can be `null` and `undefined`, type it as:
 
-```ocaml
-external myId: string Js.Nullable.t = "myId" [@@bs.module "MyConstant"]
-```
-
 ```reason
 [@bs.module "MyConstant"] external myId: Js.Nullable.t(string) = "myId"
 ```
 
 To create such a nullable string from our side (presumably to pass it to the JS side, for interop purpose), do:
-
-```ocaml
-external validate: string Js.Nullable.t -> bool = "validate" [@@bs.module "MyIdValidator"]
-let personId: string Js.Nullable.t = Js.Nullable.return "abc123"
-
-let result = validate personId
-```
 
 ```reason
 [@bs.module "MyIdValidator"] external validate: Js.Nullable.t(string) => bool = "validate";

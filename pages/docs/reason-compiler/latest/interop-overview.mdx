@@ -21,10 +21,6 @@ Most variables' name compile to clean JS names. `hello` compiles to `hello`, whe
 
 Major data structures in BuckleScript **map over cleanly to JS**. For example, a BS string is a JS string. A BS array is a JS array. The following BS code:
 
-```ocaml
-let messages = [| "hello"; "world"; "how"; "are"; "you" |]
-```
-
 ```reason
 let messages = [|"hello", "world", "how", "are", "you"|];
 ```

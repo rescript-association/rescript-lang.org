@@ -11,11 +11,6 @@ Do you want to use `window`? Or `Math`? Or anything that you don't have to first
 
 Now, here's how you bind to a JS value:
 
-```ocaml
-external setTimeout : (unit -> unit) -> int -> float = "setTimeout" [@@bs.val]
-external clearTimeout : float -> unit = "clearTimeout" [@@bs.val]
-```
-
 ```reason
 [@bs.val] external setTimeout : (unit => unit, int) => float = "setTimeout";
 [@bs.val] external clearTimeout : float => unit = "clearTimeout";
@@ -33,12 +28,6 @@ This binds to the JavaScript [`setTimeout`](https://developer.mozilla.org/en-US/
 
 We're in a language with a great type system now! Let's leverage a popular feature to solve this problem: abstract types.
 
-```ocaml
-type timerId
-external setTimeout : (unit -> unit) -> int -> timerId = "setTimeout" [@@bs.val]
-external clearTimeout : timerId -> unit = "clearTimeout" [@@bs.val]
-```
-
 ```reason
 type timerId;
 [@bs.val] external setTimeout : (unit => unit, int) => timerId = "setTimeout";
@@ -55,21 +44,12 @@ This trick is often used to allow folks to agree on _what_ JS functionalities to
 
 If you want to bind to a value inside a global module, e.g. `Math.random`, attach a `bs.scope` to your `bs.val` external:
 
-```ocaml
-external random: unit -> float = "random" [@@bs.val][@@bs.scope "Math"]
-let someNumber = random ()
-```
-
 ```reason
 [@bs.scope "Math"] [@bs.val] external random : unit => float = "random";
 let someNumber = random();
 ```
 
 you can bind to an arbitrarily deep object by passing a tuple to `bs.scope`:
-
-```ocaml
-external length: int = "length" [@@bs.val][@@bs.scope "window", "location", "ancestorOrigins"]
-```
 
 ```reason
 [@bs.val] [@bs.scope ("window", "location", "ancestorOrigins")] external length : int = "length";

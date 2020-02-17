@@ -13,14 +13,6 @@ This emulates JavaScript's JSON conversion.
 
 Simply use the (last resort) special [identity external](intro-to-external.md#special-identity-external):
 
-```ocaml
-type data = {name: string} [@@bs.deriving abstract]
-external parseIntoMyData : string -> data = "parse" [@@bs.scope "JSON"][@@bs.val]
-
-let result = parseIntoMyData "{\"name\": \"Luke\"}"
-let n = result |. name
-```
-
 ```reason
 [@bs.deriving abstract]
 type data = {name: string};

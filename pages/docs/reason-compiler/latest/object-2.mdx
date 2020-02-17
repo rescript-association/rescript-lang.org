@@ -16,14 +16,6 @@ This section describes how BuckleScript uses OCaml's object facility to achieve 
 
 First, note that we **cannot** use the ordinary OCaml/Reason object type, like this:
 
-```ocaml
-type person = <
-  name: string;
-  age: int;
-  job: string
->
-```
-
 ```reason
 type person = {
   .
@@ -38,16 +30,6 @@ You can still use this feature, but this OCaml/Reason object type does **not** c
 ## Actual Solution
 
 BuckleScript wraps the regular OCaml/Reason object type with `Js.t`, in order to control and track a **subset** of operations and types that we know would compile cleanly to JavaScript. This is how it looks like:
-
-```ocaml
-type person = <
-  name: string;
-  age: int;
-  job: string
-> Js.t
-
-external john : person = "john" [@@bs.val]
-```
 
 ```reason
 type person = Js.t({
@@ -77,13 +59,6 @@ To access a field, use `##`: `let johnName = john##name`.
 
 To modify a field, you need to first mark a field as mutable. By default, the `Js.t` object type is immutable.
 
-```ocaml
-type person = < age : int [@bs.set] > Js.t
-external john: person = "john" [@@bs.val]
-
-let _ = john##age #= 99
-```
-
 ```reason
 type person = {. [@bs.set] "age": int};
 [@bs.val] external john : person = "john";
@@ -97,13 +72,6 @@ john##age #= 99;
 
 To call a method of a field, mark the function signature as `[@bs.meth]`:
 
-```ocaml
-type person = < say : string -> string -> unit [@bs.meth] > Js.t
-external john: person = "john" [@@bs.val]
-
-let _ = john##say "hey" "jude"
-```
-
 ```reason
 type person = {. [@bs.meth] "say": (string, string) => unit};
 [@bs.val] external john : person = "john";
@@ -112,14 +80,6 @@ john##say("hey", "jude");
 ```
 
 **Why `[bs.meth]`**? Why not just call it directly? A JS object might carry around a reference to `this`, and infamously, what `this` points to can change. OCaml/BuckleScript functions are curried by default; this means that if you intentionally curry `say`, by the time you fully apply it, the `this` context could be wrong:
-
-```ocaml
-(* wrong *)
-let talkTo = john##say("hey")
-
-let jude = talkTo "jude"
-let paul = talkTo "paul"
-```
 
 ```reason
 /* wrong */
@@ -137,14 +97,6 @@ To ensure that folks don't accidentally curry a JavaScript method, we track ever
 
 You can use `[%bs.obj putAnOCamlRecordHere]` DSL to create a `Js.t` object:
 
-```ocaml
-let bucklescript = [%bs.obj {
-  info = {author = "Bob"}
-}]
-
-let name = bucklescript##info##author
-```
-
 ```reason
 let bucklescript = [%bs.obj {
   info: {author: "Bob"}
@@ -159,20 +111,7 @@ Because object values are used often, Reason gives it a nicer sugar: `{"foo": 1}
 
 The created object will have an inferred type, no type declaration needed! The above example will infer as:
 
-```ocaml
-< info: < author: string > Js.t > Js.t
-```
-
-```reason
-{. "info": {. "author": string}}
-```
-
 **Note**: since the value has its type inferred, **don't** accidentally do this:
-
-```ocaml
-type person = <age: int> Js.t
-let jane = [%bs.obj {age = "hi"}]
-```
 
 ```reason
 type person = {. "age": int};
@@ -198,16 +137,6 @@ var homeRoute = {
 
 But only the first three fields are required; the `options` field is optional. You can declare the binding function like so:
 
-```ocaml
-external route :
-  _method:string ->
-  path:string ->
-  action:(string list -> unit) ->
-  ?options:< .. > Js.t ->
-  unit ->
-  _ = "" [@@bs.obj]
-```
-
 ```reason
 [@bs.obj] external route: (
   ~_method:string,
@@ -226,14 +155,10 @@ Also of interest is the return type: `_`, which tells BuckleScript to automatica
 
 The function is called like so:
 
-```ocaml
-let homeRoute = route ~_method:"GET" ~path:"/" ~action:(fun _ -> Js.log "Home") ()
-```
-
 ```reason
 let homeRoute = route(~_method="GET", ~path="/", ~action=(_ => Js.log("Home")), ());
 ```
 
 This generates the desired JavaScript object–but you'll notice that the `options` parameter was left out. As expected, the generated object won't include the `options` field.
 
-**Note** that for more type-safety you'll probably want to [constrain](https://bucklescript.github.io/docs/en/function#constrain-arguments-better) the `_method` parameter type to only the acceptable values.
+**Note** that for more type-safety you'll probably want to [constrain](function#Constrain%20Arguments%20Better) the `_method` parameter type to only the acceptable values.

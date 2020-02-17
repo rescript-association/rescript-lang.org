@@ -7,10 +7,6 @@ Many parts of the interop system uses a concept called `external`, so we'll spec
 
 `external` is a keyword for declaring a value in BuckleScript/OCaml/Reason:
 
-```ocaml
-external myCFunction : int -> string = "theCFunctionName"
-```
-
 ```reason
 external myCFunction : int => string = "theCFunctionName";
 ```
@@ -26,10 +22,6 @@ BuckleScript `external`s are turned into the expected JS values, inlined into th
 ## Special Identity External
 
 One external worth mentioning is the following one:
-
-```ocaml
-external myShadyConversion : foo -> bar = "%identity"
-```
 
 ```reason
 external myShadyConversion : foo => bar = "%identity";
