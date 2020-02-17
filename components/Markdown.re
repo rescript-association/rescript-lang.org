@@ -19,6 +19,13 @@ open Util.ReactStuff;
 // Used for creating invisible, hoverable <a> anchors
 // for url linking
 module Anchor = {
+  // Todo: Headers with nested components don't pass a string, we need to flatten
+  // everything to a single string first before we are able to use this id transformation
+  // function
+  let idFormat = (id: string): string => {
+    id
+    /*Js.String2.(id->toLowerCase->Js.String2.replaceByRe([%re "/\\s/g"], "-"));*/
+  };
   [@react.component]
   let make = (~id: string) => {
     let style = ReactDOMRe.Style.make(~position="absolute", ~top="-7rem", ());
@@ -265,6 +272,11 @@ module P = {
 module A = {
   [@react.component]
   let make = (~href, ~children) => {
+    // We drop any .md / .mdx extensions on every href...
+    // Ideally one would check if this link is relative first,
+    // but it's very unlikely we'd refer to an absolute URL ending
+    // with .md
+    let href = Js.String2.replaceByRe(href, [%re "/\\.md(x)?$/"], "");
     <a
       href
       rel="noopener noreferrer"
@@ -277,7 +289,6 @@ module A = {
 module Ul = {
   [@react.component]
   let make = (~children) => {
-    Js.log(children);
     <ul className="md-ul"> children </ul>;
   };
 };

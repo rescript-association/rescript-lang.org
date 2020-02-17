@@ -8,6 +8,10 @@ import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as CodeExample from "./CodeExample.bs.js";
 import * as CodeSignature from "./CodeSignature.bs.js";
 
+function idFormat(id) {
+  return id;
+}
+
 function Markdown$Anchor(Props) {
   var id = Props.id;
   var style = {
@@ -26,6 +30,7 @@ function Markdown$Anchor(Props) {
 }
 
 var Anchor = {
+  idFormat: idFormat,
   make: Markdown$Anchor
 };
 
@@ -261,9 +266,10 @@ var P = {
 function Markdown$A(Props) {
   var href = Props.href;
   var children = Props.children;
+  var href$1 = href.replace((/\.md(x)?$/), "");
   return React.createElement("a", {
               className: "no-underline text-fire hover:underline",
-              href: href,
+              href: href$1,
               rel: "noopener noreferrer"
             }, children);
 }
@@ -274,7 +280,6 @@ var A = {
 
 function Markdown$Ul(Props) {
   var children = Props.children;
-  console.log(children);
   return React.createElement("ul", {
               className: "md-ul"
             }, children);
