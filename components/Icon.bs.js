@@ -82,10 +82,11 @@ var MagnifierGlass = {
 };
 
 function Icon$Caret(Props) {
-  var className = Props.className;
-  var match = Props.size;
-  var size = match !== undefined ? match : /* Sm */18618;
+  var $staropt$star = Props.className;
+  var $staropt$star$1 = Props.size;
   var direction = Props.direction;
+  var className = $staropt$star !== undefined ? $staropt$star : "";
+  var size = $staropt$star$1 !== undefined ? $staropt$star$1 : /* Sm */18618;
   var width = size >= 18618 ? "10" : "14";
   return React.createElement("svg", {
               className: "stroke-current " + className,
@@ -107,7 +108,8 @@ var Caret = {
 };
 
 function Icon$DrawerDots(Props) {
-  var className = Props.className;
+  var $staropt$star = Props.className;
+  var className = $staropt$star !== undefined ? $staropt$star : "";
   return React.createElement("svg", {
               className: "fill-current " + className,
               height: "4",
@@ -136,7 +138,8 @@ var DrawerDots = {
 };
 
 function Icon$CornerLeftUp(Props) {
-  var className = Props.className;
+  var $staropt$star = Props.className;
+  var className = $staropt$star !== undefined ? $staropt$star : "";
   return React.createElement("svg", {
               className: "stroke-current " + className,
               height: "18",
@@ -157,7 +160,8 @@ var CornerLeftUp = {
 };
 
 function Icon$Table(Props) {
-  var className = Props.className;
+  var $staropt$star = Props.className;
+  var className = $staropt$star !== undefined ? $staropt$star : "";
   return React.createElement("svg", {
               className: "stroke-current " + className,
               height: "23",
@@ -201,7 +205,8 @@ var Table = {
 };
 
 function Icon$Close(Props) {
-  var className = Props.className;
+  var $staropt$star = Props.className;
+  var className = $staropt$star !== undefined ? $staropt$star : "";
   return React.createElement("svg", {
               className: "fill-current " + className,
               height: "12.728",

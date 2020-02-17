@@ -15,7 +15,7 @@ var ReactStuff = {
   s: s,
   ate: ate,
   Unsafe: Unsafe,
-  Style: 0
+  Style: /* alias */0
 };
 
 function camelCase (str){{

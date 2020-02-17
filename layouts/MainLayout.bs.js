@@ -14,22 +14,22 @@ require('../styles/main.css')
 
 function MainLayout(Props) {
   var children = Props.children;
-  var match = Props.components;
-  var components = match !== undefined ? Caml_option.valFromOption(match) : Markdown.$$default;
+  var $staropt$star = Props.components;
+  var components = $staropt$star !== undefined ? Caml_option.valFromOption($staropt$star) : Markdown.$$default;
   var router = Router.useRouter();
   var minWidth = {
     minWidth: "20rem"
   };
-  var match$1 = React.useState((function () {
+  var match = React.useState((function () {
           return false;
         }));
-  var setIsOpen = match$1[1];
+  var setIsOpen = match[1];
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, { }), React.createElement("div", {
                   className: "mb-32 mt-16"
                 }, React.createElement("div", {
                       className: "w-full text-night text-lg"
                     }, React.createElement(Navigation.make, {
-                          isOverlayOpen: match$1[0],
+                          isOverlayOpen: match[0],
                           toggle: (function (param) {
                               return Curry._1(setIsOpen, (function (prev) {
                                             return !prev;
@@ -49,7 +49,7 @@ function MainLayout(Props) {
                                 }))))));
 }
 
-var Link = 0;
+var Link = /* alias */0;
 
 var make = MainLayout;
 

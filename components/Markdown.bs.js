@@ -266,7 +266,7 @@ var P = {
 function Markdown$A(Props) {
   var href = Props.href;
   var children = Props.children;
-  var href$1 = href.replace((/\.md(x)?$/), "");
+  var href$1 = href.replace(/\.md(x)?$/, "");
   return React.createElement("a", {
               className: "no-underline text-fire hover:underline",
               href: href$1,

@@ -12,7 +12,7 @@ function CodeSignature(Props) {
               dangerouslySetInnerHTML: {
                 __html: highlighted
               }
-            }, /* array */[]);
+            }, []);
 }
 
 var make = CodeSignature;

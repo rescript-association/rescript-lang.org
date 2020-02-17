@@ -14,7 +14,7 @@ function Meta(Props) {
                 }));
 }
 
-var Head$1 = 0;
+var Head$1 = /* alias */0;
 
 var make = Meta;
 

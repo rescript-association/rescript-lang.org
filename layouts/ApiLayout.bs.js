@@ -6,16 +6,13 @@ import * as Markdown from "../components/Markdown.bs.js";
 import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as MainLayout from "./MainLayout.bs.js";
-import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
 require('../styles/main.css')
 ;
 
-
 let hljs = require('highlight.js/lib/highlight');
 let reasonHighlightJs = require('reason-highlightjs');
 hljs.registerLanguage('reason', reasonHighlightJs);
-
 ;
 
 function ApiLayout$MainMd$P(Props) {
@@ -66,13 +63,13 @@ function ApiLayout$Category$Card(Props) {
   var card = Props.card;
   var element = React.createElement(React.Fragment, undefined, React.createElement("img", {
             className: "w-full mb-2",
-            src: card[/* src */3]
+            src: card.src
           }), React.createElement("h3", {
             className: "font-sans font-black text-3xl text-night-dark"
-          }, Util.ReactStuff.s(card[/* title */0])), React.createElement("div", {
+          }, Util.ReactStuff.s(card.title)), React.createElement("div", {
             className: "text-base leading-5 text-night"
-          }, Util.ReactStuff.s(card[/* descr */1])));
-  var match = card[/* href */2];
+          }, Util.ReactStuff.s(card.descr)));
+  var match = card.href;
   return React.createElement("div", {
               className: "w-2/4 sm:w-1/4 mb-12"
             }, match !== undefined ? React.createElement(Link.default, {
@@ -94,12 +91,12 @@ function ApiLayout$Category(Props) {
               className: "border-t border-snow-dark pt-8"
             }, React.createElement("h2", {
                   className: "mb-8 font-black text-6xl text-night-dark"
-                }, Util.ReactStuff.s(category[/* name */0])), React.createElement("div", {
+                }, Util.ReactStuff.s(category.name)), React.createElement("div", {
                   className: "flex flex-col sm:flex-row flex-wrap justify-between"
-                }, Util.ReactStuff.ate(Belt_Array.map(category[/* cards */1], (function (card) {
+                }, Util.ReactStuff.ate(Belt_Array.map(category.cards, (function (card) {
                             return React.createElement(ApiLayout$Category$Card, {
                                         card: card,
-                                        key: card[/* title */0]
+                                        key: card.title
                                       });
                           })))));
 }
@@ -109,47 +106,29 @@ var Category = {
   make: ApiLayout$Category
 };
 
-var categories = /* array */[/* record */Caml_chrome_debugger.record([
-      "name",
-      "cards"
-    ], [
-      "JavaScript",
-      [
-        /* record */Caml_chrome_debugger.record([
-            "title",
-            "descr",
-            "href",
-            "src"
-          ], [
-            "Js Module",
-            "Bindings for Common Browser APIs",
-            "/apis/javascript/latest/js",
-            "/static/api-img-js.svg"
-          ]),
-        /* record */Caml_chrome_debugger.record([
-            "title",
-            "descr",
-            "href",
-            "src"
-          ], [
-            "Belt Module",
-            "The Reason Standard Library for the Web",
-            "/apis/javascript/latest/belt",
-            "/static/api-img-belt.svg"
-          ]),
-        /* record */Caml_chrome_debugger.record([
-            "title",
-            "descr",
-            "href",
-            "src"
-          ], [
-            "Node Module",
-            "Simple Bindings for the NodeJS API",
-            undefined,
-            "/static/api-img-nodejs.svg"
-          ])
-      ]
-    ])];
+var categories = [{
+    name: "JavaScript",
+    cards: [
+      {
+        title: "Js Module",
+        descr: "Bindings for Common Browser APIs",
+        href: "/apis/javascript/latest/js",
+        src: "/static/api-img-js.svg"
+      },
+      {
+        title: "Belt Module",
+        descr: "The Reason Standard Library for the Web",
+        href: "/apis/javascript/latest/belt",
+        src: "/static/api-img-belt.svg"
+      },
+      {
+        title: "Node Module",
+        descr: "Simple Bindings for the NodeJS API",
+        href: undefined,
+        src: "/static/api-img-nodejs.svg"
+      }
+    ]
+  }];
 
 function ApiLayout(Props) {
   var children = Props.children;
@@ -160,7 +139,7 @@ function ApiLayout(Props) {
                         className: "max-w-md mb-32 text-lg"
                       }, children), React.createElement("div", undefined, Util.ReactStuff.ate(Belt_Array.map(categories, (function (category) {
                                   return React.createElement("div", {
-                                              key: category[/* name */0],
+                                              key: category.name,
                                               className: "pb-16"
                                             }, React.createElement(ApiLayout$Category, {
                                                   category: category
@@ -169,7 +148,7 @@ function ApiLayout(Props) {
             });
 }
 
-var Link$1 = 0;
+var Link$1 = /* alias */0;
 
 var make = ApiLayout;
 

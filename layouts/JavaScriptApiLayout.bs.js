@@ -8,66 +8,48 @@ import * as ApiMarkdown from "../components/ApiMarkdown.bs.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Router from "next/router";
 import * as SidebarLayout from "./SidebarLayout.bs.js";
-import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
 require('../styles/main.css')
 ;
 
-
 let hljs = require('highlight.js/lib/highlight');
 let reasonHighlightJs = require('reason-highlightjs');
 hljs.registerLanguage('reason', reasonHighlightJs);
-
 ;
 
 function JavaScriptApiLayout$Docs(Props) {
   Props.theme;
-  var match = Props.components;
-  var components = match !== undefined ? Caml_option.valFromOption(match) : ApiMarkdown.$$default;
+  var $staropt$star = Props.components;
   var children = Props.children;
+  var components = $staropt$star !== undefined ? Caml_option.valFromOption($staropt$star) : ApiMarkdown.$$default;
   var router = Router.useRouter();
   ColorTheme.toCN(/* Js */16617);
-  var categories = /* array */[
-    /* record */Caml_chrome_debugger.record([
-        "name",
-        "items"
-      ], [
-        "Introduction",
-        [/* record */Caml_chrome_debugger.record([
-              "name",
-              "href"
-            ], [
-              "Overview",
-              "/apis/javascript/latest"
-            ])]
-      ]),
-    /* record */Caml_chrome_debugger.record([
-        "name",
-        "items"
-      ], [
-        "JavaScript",
-        [
-          /* record */Caml_chrome_debugger.record([
-              "name",
-              "href"
-            ], [
-              "Js Module",
-              "/apis/javascript/latest/js"
-            ]),
-          /* record */Caml_chrome_debugger.record([
-              "name",
-              "href"
-            ], [
-              "Belt Stdlib",
-              "/apis/javascript/latest/belt"
-            ])
-        ]
-      ])
+  var categories = [
+    {
+      name: "Introduction",
+      items: [{
+          name: "Overview",
+          href: "/apis/javascript/latest"
+        }]
+    },
+    {
+      name: "JavaScript",
+      items: [
+        {
+          name: "Js Module",
+          href: "/apis/javascript/latest/js"
+        },
+        {
+          name: "Belt Stdlib",
+          href: "/apis/javascript/latest/belt"
+        }
+      ]
+    }
   ];
-  var match$1 = React.useState((function () {
+  var match = React.useState((function () {
           return false;
         }));
-  var setSidebarOpen = match$1[1];
+  var setSidebarOpen = match[1];
   var toggleSidebar = function (param) {
     return Curry._1(setSidebarOpen, (function (prev) {
                   return !prev;
@@ -76,7 +58,7 @@ function JavaScriptApiLayout$Docs(Props) {
   var sidebar = React.createElement(SidebarLayout.Sidebar.make, {
         categories: categories,
         route: router.route,
-        isOpen: match$1[0],
+        isOpen: match[0],
         toggle: toggleSidebar
       });
   return React.createElement(SidebarLayout.make, {
@@ -107,9 +89,9 @@ var Prose = {
   make: JavaScriptApiLayout$Prose
 };
 
-var Link = 0;
+var Link = /* alias */0;
 
-var Sidebar = 0;
+var Sidebar = /* alias */0;
 
 export {
   Link ,

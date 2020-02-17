@@ -179,7 +179,7 @@ module Sidebar = {
       [@react.component]
       let make =
           (
-            ~onItemClick: ReactEvent.Mouse.t => unit=?,
+            ~onItemClick: option(ReactEvent.Mouse.t => unit)=?,
             ~isItemActive: t => bool=_nav => false,
             ~items: array(t),
           ) => {
@@ -199,7 +199,7 @@ module Sidebar = {
                  tabIndex=0>
                  <a
                    href={m.href}
-                   onClick=onItemClick
+                   onClick=?onItemClick
                    className={
                      "truncate block pl-3 h-8 md:h-auto border-l-2 border-night-10 block text-night hover:pl-4 hover:text-night-dark"
                      ++ active
@@ -216,7 +216,7 @@ module Sidebar = {
     [@react.component]
     let make =
         (
-          ~onHeaderClick: ReactEvent.Mouse.t => unit=?,
+          ~onHeaderClick: option(ReactEvent.Mouse.t => unit)=?,
           ~getActiveToc=?,
           ~isItemActive=?,
           ~headers: array(string),
@@ -244,7 +244,7 @@ module Sidebar = {
           </span>
         </a>
         {if (!collapsed) {
-           <NavUl ?isItemActive onItemClick=onHeaderClick items />;
+           <NavUl ?isItemActive onItemClick=?onHeaderClick items />;
          } else {
            React.null;
          }}
@@ -259,7 +259,7 @@ module Sidebar = {
         ~categories: array(Category.t),
         ~route: string,
         ~toplevelNav=React.null,
-        ~title: string=?,
+        ~title: option(string)=?,
         ~preludeSection=React.null,
         ~onTocItemClick=?,
         ~activeToc: option(Toc.t)=?,

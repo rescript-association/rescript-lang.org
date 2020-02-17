@@ -9,7 +9,6 @@ hljs.registerLanguage('reason', reasonHighlightJs);
 |};
 
 open Util.ReactStuff;
-open Text;
 module Link = Next.Link;
 
 module MainMd = {

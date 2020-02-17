@@ -80,7 +80,7 @@ module Caret = {
   type size = [ | `Sm | `Md];
 
   [@react.component]
-  let make = (~className: string=?, ~size=`Sm, ~direction: direction) => {
+  let make = (~className: string="", ~size=`Sm, ~direction: direction) => {
     let width =
       switch (size) {
       | `Sm => "10"
@@ -103,7 +103,7 @@ module Caret = {
 
 module DrawerDots = {
   [@react.component]
-  let make = (~className: string=?) => {
+  let make = (~className: string="") => {
     <svg
       className={"fill-current " ++ className}
       stroke="none"
@@ -119,7 +119,7 @@ module DrawerDots = {
 
 module CornerLeftUp = {
   [@react.component]
-  let make = (~className: string=?) => {
+  let make = (~className: string="") => {
     <svg
       className={"stroke-current " ++ className}
       width="18.414"
@@ -136,7 +136,7 @@ module CornerLeftUp = {
 
 module Table = {
   [@react.component]
-  let make = (~className: string=?) => {
+  let make = (~className: string="") => {
     <svg className={"stroke-current " ++ className} width="25" height="23">
       <defs>
         <style>
@@ -173,7 +173,7 @@ module Table = {
 
 module Close = {
   [@react.component]
-  let make = (~className: string=?) => {
+  let make = (~className: string="") => {
     <svg
       className={"fill-current " ++ className} width="12.728" height="12.728">
       <path d="M12.728 11.313l-1.414 1.414L0 1.414 1.414-.001z" />

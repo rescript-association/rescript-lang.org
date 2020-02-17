@@ -19,11 +19,9 @@ import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.
 require('../styles/main.css')
 ;
 
-
 let hljs = require('highlight.js/lib/highlight');
 let reasonHighlightJs = require('reason-highlightjs');
 hljs.registerLanguage('reason', reasonHighlightJs);
-
 ;
 
 function parse(base, route) {
@@ -43,27 +41,20 @@ function parse(base, route) {
     } else {
       var up = match[0];
       var current = match[1];
-      var match$2 = up === version;
-      var up$1 = match$2 ? undefined : up;
+      var up$1 = up === version ? undefined : up;
       match$1 = /* tuple */[
         up$1,
         current
       ];
     }
     var relPaths = allPaths.slice(1, -2);
-    return /* record */Caml_chrome_debugger.record([
-              "base",
-              "version",
-              "relPaths",
-              "up",
-              "current"
-            ], [
-              base,
-              version,
-              relPaths,
-              match$1[0],
-              match$1[1]
-            ]);
+    return {
+            base: base,
+            version: version,
+            relPaths: relPaths,
+            up: match$1[0],
+            current: match$1[1]
+          };
   }
 }
 
@@ -72,29 +63,26 @@ function prettyString(str) {
 }
 
 function fullUpLink(urlPath) {
-  return urlPath[/* base */0] + ("/" + (urlPath[/* version */1] + Belt_Option.mapWithDefault(urlPath[/* up */3], "", (function (str) {
+  return urlPath.base + ("/" + (urlPath.version + Belt_Option.mapWithDefault(urlPath.up, "", (function (str) {
                     return "/" + str;
                   }))));
 }
 
 function toBreadCrumbs($staropt$star, urlPath) {
   var prefix = $staropt$star !== undefined ? $staropt$star : /* [] */0;
-  var up = urlPath[/* up */3];
-  var version = urlPath[/* version */1];
-  var base = urlPath[/* base */0];
+  var up = urlPath.up;
+  var version = urlPath.version;
+  var base = urlPath.base;
   var upCrumb = Belt_Option.mapWithDefault(up, /* [] */0, (function (up) {
           return /* :: */Caml_chrome_debugger.simpleVariant("::", [
-                    /* record */Caml_chrome_debugger.record([
-                        "name",
-                        "href"
-                      ], [
-                        prettyString(up),
-                        fullUpLink(urlPath)
-                      ]),
+                    {
+                      name: prettyString(up),
+                      href: fullUpLink(urlPath)
+                    },
                     /* [] */0
                   ]);
         }));
-  var calculatedCrumbs = Belt_List.map(Belt_List.concat(Belt_List.fromArray(urlPath[/* relPaths */2]), Belt_Option.mapWithDefault(urlPath[/* current */4], /* [] */0, (function (current) {
+  var calculatedCrumbs = Belt_List.map(Belt_List.concat(Belt_List.fromArray(urlPath.relPaths), Belt_Option.mapWithDefault(urlPath.current, /* [] */0, (function (current) {
                   return /* :: */Caml_chrome_debugger.simpleVariant("::", [
                             current,
                             /* [] */0
@@ -103,15 +91,12 @@ function toBreadCrumbs($staropt$star, urlPath) {
           var upPath = Belt_Option.mapWithDefault(up, "", (function (up) {
                   return up + "/";
                 }));
-          return /* record */Caml_chrome_debugger.record([
-                    "name",
-                    "href"
-                  ], [
-                    prettyString(path),
-                    base + ("/" + (version + ("/" + (upPath + path))))
-                  ]);
+          return {
+                  name: prettyString(path),
+                  href: base + ("/" + (version + ("/" + (upPath + path))))
+                };
         }));
-  return Belt_List.concatMany(/* array */[
+  return Belt_List.concatMany([
               prefix,
               upCrumb,
               calculatedCrumbs
@@ -132,9 +117,9 @@ function SidebarLayout$BreadCrumbs(Props) {
             }, Util.ReactStuff.ate(Belt_List.toArray(Belt_List.mapWithIndex(crumbs, (function (i, crumb) {
                             var item = i === (Belt_List.length(crumbs) - 1 | 0) ? React.createElement("span", {
                                     key: String(i)
-                                  }, Util.ReactStuff.s(crumb[/* name */0])) : React.createElement(Link.default, {
-                                    href: crumb[/* href */1],
-                                    children: React.createElement("a", undefined, Util.ReactStuff.s(crumb[/* name */0])),
+                                  }, Util.ReactStuff.s(crumb.name)) : React.createElement(Link.default, {
+                                    href: crumb.href,
+                                    children: React.createElement("a", undefined, Util.ReactStuff.s(crumb.name)),
                                     key: String(i)
                                   });
                             if (i > 0) {
@@ -163,28 +148,27 @@ var Title = {
 };
 
 function SidebarLayout$Sidebar$NavItem(Props) {
-  var match = Props.isItemActive;
-  var isItemActive = match !== undefined ? match : (function (_nav) {
+  var $staropt$star = Props.isItemActive;
+  var $staropt$star$1 = Props.isHidden;
+  var items = Props.items;
+  var isItemActive = $staropt$star !== undefined ? $staropt$star : (function (_nav) {
         return false;
       });
-  var match$1 = Props.isHidden;
-  var isHidden = match$1 !== undefined ? match$1 : false;
-  var items = Props.items;
+  var isHidden = $staropt$star$1 !== undefined ? $staropt$star$1 : false;
   return React.createElement("ul", {
               className: "ml-2 mt-1 text-night"
             }, Util.ReactStuff.ate(Belt_Array.map(items, (function (m) {
                         var hidden = isHidden ? "hidden" : "block";
-                        var match = Curry._1(isItemActive, m);
-                        var active = match ? " bg-primary-15 text-primary-dark rounded -mx-2 px-2 font-bold block " : "";
+                        var active = Curry._1(isItemActive, m) ? " bg-primary-15 text-primary-dark rounded -mx-2 px-2 font-bold block " : "";
                         return React.createElement("li", {
-                                    key: m[/* name */0],
+                                    key: m.name,
                                     className: hidden + " leading-5 w-4/5",
                                     tabIndex: 0
                                   }, React.createElement(Link.default, {
-                                        href: m[/* href */1],
+                                        href: m.href,
                                         children: React.createElement("a", {
                                               className: "truncate block h-8 md:h-auto text-night hover:text-primary " + active
-                                            }, Util.ReactStuff.s(m[/* name */0]))
+                                            }, Util.ReactStuff.s(m.name))
                                       }));
                       }))));
 }
@@ -197,16 +181,16 @@ function SidebarLayout$Sidebar$Category(Props) {
   var isItemActive = Props.isItemActive;
   var category = Props.category;
   var tmp = {
-    items: category[/* items */1]
+    items: category.items
   };
   if (isItemActive !== undefined) {
     tmp.isItemActive = Caml_option.valFromOption(isItemActive);
   }
   return React.createElement("div", {
-              key: category[/* name */0],
+              key: category.name,
               className: "my-12"
             }, React.createElement(SidebarLayout$Sidebar$Title, {
-                  children: Util.ReactStuff.s(category[/* name */0])
+                  children: Util.ReactStuff.s(category.name)
                 }), React.createElement(SidebarLayout$Sidebar$NavItem, tmp));
 }
 
@@ -215,10 +199,10 @@ var Category = {
 };
 
 function SidebarLayout$Sidebar$ToplevelNav(Props) {
-  var match = Props.title;
-  var title = match !== undefined ? match : "";
+  var $staropt$star = Props.title;
   var backHref = Props.backHref;
   var version = Props.version;
+  var title = $staropt$star !== undefined ? $staropt$star : "";
   var back = backHref !== undefined ? React.createElement(Link.default, {
           href: backHref,
           children: React.createElement("a", {
@@ -248,25 +232,27 @@ var ToplevelNav = {
 
 function SidebarLayout$Sidebar$CollapsibleSection$NavUl(Props) {
   var onItemClick = Props.onItemClick;
-  var match = Props.isItemActive;
-  var isItemActive = match !== undefined ? match : (function (_nav) {
+  var $staropt$star = Props.isItemActive;
+  var items = Props.items;
+  var isItemActive = $staropt$star !== undefined ? $staropt$star : (function (_nav) {
         return false;
       });
-  var items = Props.items;
   return React.createElement("ul", {
               className: "mt-3 text-night"
             }, Util.ReactStuff.ate(Belt_Array.map(items, (function (m) {
-                        var match = Curry._1(isItemActive, m);
-                        var active = match ? " bg-primary-15 text-primary-dark -ml-1 px-2 font-bold block " : "";
+                        var active = Curry._1(isItemActive, m) ? " bg-primary-15 text-primary-dark -ml-1 px-2 font-bold block " : "";
+                        var tmp = {
+                          className: "truncate block pl-3 h-8 md:h-auto border-l-2 border-night-10 block text-night hover:pl-4 hover:text-night-dark" + active,
+                          href: m.href
+                        };
+                        if (onItemClick !== undefined) {
+                          tmp.onClick = Caml_option.valFromOption(onItemClick);
+                        }
                         return React.createElement("li", {
-                                    key: m[/* name */0],
+                                    key: m.name,
                                     className: "leading-5 w-4/5",
                                     tabIndex: 0
-                                  }, React.createElement("a", {
-                                        className: "truncate block pl-3 h-8 md:h-auto border-l-2 border-night-10 block text-night hover:pl-4 hover:text-night-dark" + active,
-                                        href: m[/* href */1],
-                                        onClick: onItemClick
-                                      }, Util.ReactStuff.s(m[/* name */0])));
+                                  }, React.createElement("a", tmp, Util.ReactStuff.s(m.name)));
                       }))));
 }
 
@@ -285,13 +271,10 @@ function SidebarLayout$Sidebar$CollapsibleSection(Props) {
   var setCollapsed = match[1];
   var collapsed = match[0];
   var items = Belt_Array.map(headers, (function (header) {
-          return /* record */Caml_chrome_debugger.record([
-                    "name",
-                    "href"
-                  ], [
-                    header,
-                    "#" + header
-                  ]);
+          return {
+                  name: header,
+                  href: "#" + header
+                };
         }));
   var direction = collapsed ? /* Down */759637122 : /* Up */19067;
   var tmp;
@@ -299,9 +282,11 @@ function SidebarLayout$Sidebar$CollapsibleSection(Props) {
     tmp = null;
   } else {
     var tmp$1 = {
-      onItemClick: onHeaderClick,
       items: items
     };
+    if (onHeaderClick !== undefined) {
+      tmp$1.onItemClick = Caml_option.valFromOption(onHeaderClick);
+    }
     if (isItemActive !== undefined) {
       tmp$1.isItemActive = Caml_option.valFromOption(isItemActive);
     }
@@ -334,14 +319,14 @@ var CollapsibleSection = {
 function SidebarLayout$Sidebar(Props) {
   var categories = Props.categories;
   var route = Props.route;
-  var match = Props.toplevelNav;
-  var toplevelNav = match !== undefined ? Caml_option.valFromOption(match) : null;
-  var match$1 = Props.preludeSection;
-  var preludeSection = match$1 !== undefined ? Caml_option.valFromOption(match$1) : null;
+  var $staropt$star = Props.toplevelNav;
+  var $staropt$star$1 = Props.preludeSection;
   var isOpen = Props.isOpen;
   var toggle = Props.toggle;
+  var toplevelNav = $staropt$star !== undefined ? Caml_option.valFromOption($staropt$star) : null;
+  var preludeSection = $staropt$star$1 !== undefined ? Caml_option.valFromOption($staropt$star$1) : null;
   var isItemActive = function (navItem) {
-    return navItem[/* href */1] === route;
+    return navItem.href === route;
   };
   return React.createElement(React.Fragment, undefined, React.createElement("div", {
                   className: (
@@ -366,7 +351,7 @@ function SidebarLayout$Sidebar(Props) {
                           className: "mb-56"
                         }, Util.ReactStuff.ate(Belt_Array.map(categories, (function (category) {
                                     return React.createElement("div", {
-                                                key: category[/* name */0]
+                                                key: category.name
                                               }, React.createElement(SidebarLayout$Sidebar$Category, {
                                                     isItemActive: isItemActive,
                                                     category: category
@@ -460,7 +445,7 @@ function SidebarLayout(Props) {
                                 }))))));
 }
 
-var Link$1 = 0;
+var Link$1 = /* alias */0;
 
 var make = SidebarLayout;
 
