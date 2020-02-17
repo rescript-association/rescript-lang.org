@@ -3,6 +3,8 @@ export default Prose.make;
 
 # FAQ
 
+
+
 ## Should I learn Reason or OCaml first?
 There's no need to pick! Reason and OCaml share the exact same semantics (i.e. how the code runs). Only the syntax differ. Carry [Reason-tools](https://github.com/reasonml/reason-tools) around so that you can freely convert between the two syntaxes. A Reason tutorial is an OCaml tutorial, vice-versa. In the terminal, you can have these aliases:
 
@@ -32,7 +34,7 @@ https://reasonml.github.io/api/Pervasives.html
 If you're compiling to JavaScript through BuckleScript, you can use the JS `console.log` through [`Js.log`](https://bucklescript.github.io/bucklescript/api/Js.html#VALlog). If you're compiling to native, you'll need something like [ppx_show](https://github.com/diml/ppx_show). A future OCaml feature (called modular implicit) will solve this directly in the language.
 
 ## Why is there a + for adding ints and +. for adding floats, etc.?
-See [here](integer-and-float.md#design-decisions).
+See [here](integer-and-float#Design%20Decisions).
 
 ## Does library ___ work with Reason?
 Most JS libraries should easily work under Reason + BuckleScript. On the native side, since Reason's just a syntax transform: yes, they work with Reason too. But the native workflow is currently work-in-progress and needs polish.
@@ -51,15 +53,15 @@ For a more idiomatic OCaml solution: on the native OCaml side, we have [lwt](htt
 Some of OCaml's language features (not just types) might be able to defer the need for unit testing until later. In the meantime, for compilation to JS, we're working on [Jest wrapper](https://github.com/BuckleTypes/bs-jest). We'll look into using Jest for native too, if Jest is written using Reason in the future (no concrete plan yet). [OUnit](http://ounit.forge.ocamlcore.org) is a good, small native OCaml testing library right now.
 
 ## What's the `.merlin` file at the root of my project?
-That's the metadata file for [editor support](editor-plugins.md). This is usually generated for you; You don't need to check that into your version control and don't have to manually modify it.
+That's the metadata file for [editor support](editor-plugins). This is usually generated for you; You don't need to check that into your version control and don't have to manually modify it.
 
 ## I don't see any `import` or `require` in my file; how does module resolution work?
-Reason/OCaml doesn't require you to write any import; modules being referred to in the file are automatically searched in the project. Specifically, a module `Hello` asks the compiler to look for the file `hello.re` or `hello.ml` (and their corresponding [interface file](module.md#signatures), `hello.rei` or `hello.mli`, if available).
+Reason/OCaml doesn't require you to write any import; modules being referred to in the file are automatically searched in the project. Specifically, a module `Hello` asks the compiler to look for the file `hello.re` or `hello.ml` (and their corresponding [interface file](module#Signatures), `hello.rei` or `hello.mli`, if available).
 
 A module name is the file name, capitalized. It has to be unique per project; this abstracts away the file system and allows you to move files around without changing code.
 
 ## Is `Some | None`, `contents`, `Array`, `List` and all of these special? Where do they come from?
-They're ordinary variants/records/module definitions that come with the [standard library](/api/index.html), `open`ed by default during compilation out of convenience.
+They're ordinary variants/records/module definitions that come with the [standard library](https://reasonml.github.io/api/index.html), `open`ed by default during compilation out of convenience.
 
 ## What does an argument with a prepended underscore (e.g. `_` or `_foo`) mean?
 Say you have `List.map(item => 1, myList);`. The argument `item` isn't used and will generate a compiler warning. Using `_ => 1` instead indicates that you're intentionally receiving and ignoring the argument, therefore bypassing the warning. Alternatively, `_item => 1` has the same effect, but indicates more descriptively what you're ignoring.
