@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "author": "Patrick Stapfer <ryyppy@users.noreply.github.com>",
   "license": "MIT",
-  "engines": { "node": "12.x" },
+  "engines": {
+    "node": "12.x"
+  },
   "dependencies": {
     "@fullhuman/postcss-purgecss": "^1.2.0",
     "@glennsl/bs-json": "^3.0.0",
@@ -12,7 +14,7 @@
     "@next/mdx": "^8.1.0",
     "@zeit/next-css": "^1.0.1",
     "bs-fetch": "^0.3.1",
-    "bs-platform": "6.2.1",
+    "bs-platform": "7.1.1",
     "gentype": "^3.1.0",
     "glob": "^7.1.4",
     "highlight.js": "^9.15.10",
