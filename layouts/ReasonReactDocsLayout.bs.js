@@ -32,7 +32,7 @@ var tocData = (require('../index_data/reason_react_toc.json'));
 var overviewNavs = [
   {
     name: "Introduction",
-    href: "/docs/reason-react/latest"
+    href: "/docs/reason-react/latest/introduction"
   },
   {
     name: "Installation",
@@ -213,7 +213,7 @@ function ReasonReactDocsLayout(Props) {
           var prefix_001 = /* :: */Caml_chrome_debugger.simpleVariant("::", [
               {
                 name: "ReasonReact",
-                href: "/docs/reason-react/" + v.version
+                href: "/docs/reason-react/" + (v.version + "/introduction")
               },
               /* [] */0
             ]);

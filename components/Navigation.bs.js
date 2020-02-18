@@ -132,7 +132,7 @@ function Navigation$SubNav$DocsLinks(Props) {
   var languageItems = [
     /* tuple */[
       "Introduction",
-      "/docs/manual/latest"
+      "/docs/manual/latest/introduction"
     ],
     /* tuple */[
       "Cheatsheet",
@@ -142,11 +142,11 @@ function Navigation$SubNav$DocsLinks(Props) {
   var recompItems = [
     /* tuple */[
       "Reason Compiler",
-      "/docs/reason-compiler/latest"
+      "/docs/reason-compiler/latest/introduction"
     ],
     /* tuple */[
       "ReasonReact",
-      "/docs/reason-react/latest"
+      "/docs/reason-react/latest/introduction"
     ]
   ];
   var overlineClass = "font-black uppercase text-sm tracking-wide text-primary-80";
@@ -156,7 +156,7 @@ function Navigation$SubNav$DocsLinks(Props) {
             }, React.createElement("div", {
                   className: reTheme + " pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/3"
                 }, React.createElement(Link.default, {
-                      href: "/docs/manual/latest",
+                      href: "/docs/manual/latest/introduction",
                       children: React.createElement("a", {
                             className: overlineClass
                           }, Util.ReactStuff.s("Language Manual"))
@@ -177,7 +177,7 @@ function Navigation$SubNav$DocsLinks(Props) {
                               }))))), React.createElement("div", {
                   className: jsTheme + " pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/3"
                 }, React.createElement(Link.default, {
-                      href: "/docs/reason-compiler/latest",
+                      href: "/docs/reason-compiler/latest/introduction",
                       children: React.createElement("a", {
                             className: overlineClass
                           }, Util.ReactStuff.s("JavaScript"))

@@ -34,7 +34,7 @@ module Category = DocsLayout.Category;
 module Toc = DocsLayout.Toc;
 
 let overviewNavs = [|
-  NavItem.{name: "Introduction", href: "/docs/reason-react/latest"},
+  NavItem.{name: "Introduction", href: "/docs/reason-react/latest/introduction"},
   {name: "Installation", href: "/docs/reason-react/latest/installation"},
   {name: "Intro Example", href: "/docs/reason-react/latest/intro-example"},
 |];
@@ -117,7 +117,7 @@ let make = (~components=Markdown.default, ~children) => {
             {name: "Docs", href: "/docs"},
             {
               name: "ReasonReact",
-              href: "/docs/reason-react/" ++ version,
+              href: "/docs/reason-react/" ++ version ++ "/introduction",
             },
           ];
         UrlPath.toBreadCrumbs(~prefix, v);
