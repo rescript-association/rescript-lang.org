@@ -27,7 +27,7 @@ hljs.registerLanguage('sh', bashHighlightJs);
 hljs.registerLanguage('json', jsonHighlightJs);
 ;
 
-var tocData = (require('../index_data/reason_compiler_toc.json'));
+var tocData = (require('../index_data/reason_react_toc.json'));
 
 var overviewNavs = [
   {

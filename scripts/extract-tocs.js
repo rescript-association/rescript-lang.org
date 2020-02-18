@@ -103,6 +103,18 @@ const createReasonCompilerToc = () => {
 
 };
 
+const createReasonReactToc = () => {
+  const MD_DIR = path.join(__dirname, "../pages/docs/reason-react/latest");
+  const TARGET_FILE = path.join(__dirname, "../index_data/reason_react_toc.json");
+
+  const files = glob.sync(`${MD_DIR}/*.md?(x)`);
+  const result = files.map(processFile);
+  const toc = createTOC(result);
+
+  fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
+};
+
 // main
 createManualToc();
 createReasonCompilerToc();
+createReasonReactToc();
