@@ -31,7 +31,7 @@ You can read more about the Pervasives library in the api documentation:
 https://reasonml.github.io/api/Pervasives.html
 
 ## Can I have a function to print arbitrary data structures?
-If you're compiling to JavaScript through BuckleScript, you can use the JS `console.log` through [`Js.log`](https://bucklescript.github.io/bucklescript/api/Js.html#VALlog). If you're compiling to native, you'll need something like [ppx_show](https://github.com/diml/ppx_show). A future OCaml feature (called modular implicit) will solve this directly in the language.
+If you're compiling to JavaScript through BuckleScript, you can use the JS `console.log` through [`Js.log`](/apis/javascript/latest/js#Logging). If you're compiling to native, you'll need something like [ppx_show](https://github.com/diml/ppx_show). A future OCaml feature (called modular implicit) will solve this directly in the language.
 
 ## Why is there a + for adding ints and +. for adding floats, etc.?
 See [here](integer-and-float#Design%20Decisions).
@@ -45,7 +45,7 @@ We do compile to native, but the native workflow is currently work-in-progress. 
 ## What's BuckleScript's async story?
 First, if you're not interfacing with any library that uses promises, you can simply use callbacks. Everyone gets them and they're performant.
 
-If you need to bind to a JS library that uses promises, or communicate with such library, you can use BS's [Js.Promise](http://bucklescript.github.io/bucklescript/api/Js.Promise.html). There's also potential to have some syntactic sugar in the future. In the long run, we'd like to implement a spec-compliant promises implementation in OCaml/Reason proper, so that the compiler optimizations could kick in.
+If you need to bind to a JS library that uses promises, or communicate with such library, you can use BS's [Js.Promise](/apis/javascript/latest/js/promise). There's also potential to have some syntactic sugar in the future. In the long run, we'd like to implement a spec-compliant promises implementation in OCaml/Reason proper, so that the compiler optimizations could kick in.
 
 For a more idiomatic OCaml solution: on the native OCaml side, we have [lwt](http://ocsigen.org/lwt/) and [Async](https://ocaml.janestreet.com/ocaml-core/111.03.00/doc/async/#Std). We don't use them in web right now, but we might in the future.
 
@@ -67,7 +67,7 @@ They're ordinary variants/records/module definitions that come with the [standar
 Say you have `List.map(item => 1, myList);`. The argument `item` isn't used and will generate a compiler warning. Using `_ => 1` instead indicates that you're intentionally receiving and ignoring the argument, therefore bypassing the warning. Alternatively, `_item => 1` has the same effect, but indicates more descriptively what you're ignoring.
 
 ## What's this `MyModule.t` I keep seeing?
-Assuming `MyModule` is a module's name, `t` is a community convention that indicates "the type that represents that module, whatever that means". For example, for the [`Js.String`](http://bucklescript.github.io/bucklescript/api/Js.String.html) module, [`String.t`](http://bucklescript.github.io/bucklescript/api/Js.String.html#TYPEt) is the type carried around and representing "a string".
+Assuming `MyModule` is a module's name, `t` is a community convention that indicates "the type that represents that module, whatever that means". For example, for the [`Js.String`](/apis/javascript/latest/js/string) module, [`String.t`](/apis/javascript/latest/js/string#t) is the type carried around and representing "a string".
 
 ## Why is there a [`Js_promise`](http://bucklescript.github.io/bucklescript/api/Js_promise.html) and then a [`Js.Promise`](http://bucklescript.github.io/bucklescript/api/Js.Promise.html)? What about [`Js_array`](http://bucklescript.github.io/bucklescript/api/Js_array.html), [`Js_string`](http://bucklescript.github.io/bucklescript/api/Js_string.html) and whatever else?
 As a convention, `Js_foo` is the actual module, and `Js.Foo` is just an alias for it. They're [equivalent](https://github.com/bloomberg/bucklescript/blob/7bc37f387a726ba1ae4afeefe02b9c82577d9e10/jscomp/runtime/js.ml#L124-L138). Prefer `Js.Foo`, because that's the official, public module name.
