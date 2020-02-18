@@ -29,10 +29,24 @@ hljs.registerLanguage('json', jsonHighlightJs);
 
 var tocData = (require('../index_data/manual_toc.json'));
 
-var overviewNavs = [{
+var overviewNavs = [
+  {
     name: "Introduction",
-    href: "/docs/manual/latest"
-  }];
+    href: "/docs/manual/latest/introduction"
+  },
+  {
+    name: "Installation",
+    href: "/docs/manual/latest/installation"
+  },
+  {
+    name: "Editor Plugins",
+    href: "/docs/manual/latest/editor-plugins"
+  },
+  {
+    name: "Extra Goodies",
+    href: "/docs/manual/latest/extra-goodies"
+  }
+];
 
 var basicNavs = [
   {
@@ -237,7 +251,7 @@ function ManualDocsLayout$Docs(Props) {
           var prefix_001 = /* :: */Caml_chrome_debugger.simpleVariant("::", [
               {
                 name: "Language Manual",
-                href: "/docs/manual/" + v.version
+                href: "/docs/manual/" + (v.version + "/introduction")
               },
               /* [] */0
             ]);

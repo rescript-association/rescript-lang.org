@@ -16,7 +16,6 @@ hljs.registerLanguage('sh', bashHighlightJs);
 hljs.registerLanguage('json', jsonHighlightJs);
 |};
 
-open Util.ReactStuff;
 module Link = Next.Link;
 
 // Structure defined by `scripts/extract-tocs.js`
@@ -35,7 +34,7 @@ module Category = DocsLayout.Category;
 module Toc = DocsLayout.Toc;
 
 let overviewNavs = [|
-  NavItem.{name: "Introduction", href: "/docs/reason-compiler/latest"},
+  NavItem.{name: "Introduction", href: "/docs/reason-compiler/latest/introduction"},
   {name: "Installation", href: "/docs/reason-compiler/latest/installation"},
   {name: "New Project", href: "/docs/reason-compiler/latest/new-project"},
   {name: "Try", href: "/docs/reason-compiler/latest/try"},
@@ -216,7 +215,7 @@ let make = (~components=Markdown.default, ~children) => {
             {name: "Docs", href: "/docs"},
             {
               name: "BuckleScript",
-              href: "/docs/reason-compiler/" ++ version,
+              href: "/docs/reason-compiler/" ++ version ++ "/introduction",
             },
           ];
         UrlPath.toBreadCrumbs(~prefix, v);

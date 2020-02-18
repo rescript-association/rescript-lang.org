@@ -34,7 +34,10 @@ module Category = DocsLayout.Category;
 module Toc = DocsLayout.Toc;
 
 let overviewNavs = [|
-  NavItem.{name: "Introduction", href: "/docs/manual/latest"},
+  NavItem.{name: "Introduction", href: "/docs/manual/latest/introduction"},
+  {name: "Installation", href: "/docs/manual/latest/installation"},
+  {name: "Editor Plugins", href: "/docs/manual/latest/editor-plugins"},
+  {name: "Extra Goodies", href: "/docs/manual/latest/extra-goodies"},
 |];
 
 let basicNavs = [|
@@ -133,7 +136,7 @@ module Docs = {
           let prefix =
             UrlPath.[
               {name: "Docs", href: "/docs"},
-              {name: "Language Manual", href: "/docs/manual/" ++ version},
+              {name: "Language Manual", href: "/docs/manual/" ++ version ++ "/introduction"},
             ];
           UrlPath.toBreadCrumbs(~prefix, v);
         },

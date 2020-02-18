@@ -32,7 +32,7 @@ var tocData = (require('../index_data/reason_compiler_toc.json'));
 var overviewNavs = [
   {
     name: "Introduction",
-    href: "/docs/reason-compiler/latest"
+    href: "/docs/reason-compiler/latest/introduction"
   },
   {
     name: "Installation",
@@ -261,7 +261,7 @@ function ReasonCompilerDocsLayout(Props) {
           var prefix_001 = /* :: */Caml_chrome_debugger.simpleVariant("::", [
               {
                 name: "BuckleScript",
-                href: "/docs/reason-compiler/" + v.version
+                href: "/docs/reason-compiler/" + (v.version + "/introduction")
               },
               /* [] */0
             ]);

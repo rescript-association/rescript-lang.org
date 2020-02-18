@@ -156,13 +156,13 @@ module SubNav = {
       let reTheme = ColorTheme.toCN(`Reason);
 
       let languageItems = [|
-        ("Introduction", "/docs/manual/latest"),
+        ("Introduction", "/docs/manual/latest/introduction"),
         ("Cheatsheet", "/docs/manual/latest/syntax-cheatsheet"),
       |];
 
       let recompItems = [|
-        ("Reason Compiler", "/docs/reason-compiler/latest"),
-        ("ReasonReact", "/docs/reason-react/latest"),
+        ("Reason Compiler", "/docs/reason-compiler/latest/introduction"),
+        ("ReasonReact", "/docs/reason-react/latest/introduction"),
         /*("GenType", "/docs/reason-compiler/gentype/latest"),*/
       |];
 
@@ -175,7 +175,7 @@ module SubNav = {
 
       <div className="lg:flex lg:flex-row px-4 max-w-xl">
         <div className={reTheme ++ " " ++ sectionClass}>
-          <Link href="/docs/manual/latest">
+          <Link href="/docs/manual/latest/introduction">
             <a className=overlineClass> "Language Manual"->s </a>
           </Link>
           <ul className=sectionUl>
@@ -201,7 +201,7 @@ module SubNav = {
           </ul>
         </div>
         <div className={jsTheme ++ " " ++ sectionClass}>
-          <Link href="/docs/reason-compiler/latest">
+          <Link href="/docs/reason-compiler/latest/introduction">
             <a className=overlineClass> "JavaScript"->s </a>
           </Link>
           <ul className=sectionUl>
