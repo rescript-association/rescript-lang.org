@@ -4,7 +4,7 @@ export default make;
 # Callback Handlers
 
 <aside class="warning">
-The Record API is in feature-freeze. For the newest features and better support going forward, please consider migrating to the new <a href="https://reasonml.github.io/reason-react/docs/en/components">function components</a>.
+The Record API is in feature-freeze. For the newest features and better support going forward, please consider migrating to the new <a href="/docs/reason-react/latest/components">function components</a>.
 </aside>
 
 This section describes how ReactJS' `<div onClick={this.handleClick} />` pattern translates into ReasonReact.
@@ -28,7 +28,7 @@ let make = (~name, ~onClick, _children) => {
 };
 ```
 
-No surprise here. Since Reason's JSX has [punning syntax](https://reasonml.github.io/docs/en/jsx.html#punning), that `button` will format into `<button onClick />`.
+No surprise here. Since Reason's JSX has [punning syntax](/docs/manual/latest/jsx#Punning), that `button` will format into `<button onClick />`.
 
 Similarly, to pre-process a value before sending it back to the component's owner:
 
@@ -80,7 +80,7 @@ Get it? Through Reason's natural language-level currying, we usually only ask yo
 
 #### Callback Receiving Multiple Arguments
 
-Sometimes, the component you're calling is from JavaScript (using the [ReasonReact<->ReactJS interop](interop.md)), and its callback prop asks you to pass a callback that receives more than one argument. In ReactJS, it'd look like:
+Sometimes, the component you're calling is from JavaScript (using the [ReasonReact<->ReactJS interop](interop)), and its callback prop asks you to pass a callback that receives more than one argument. In ReactJS, it'd look like:
 
 ```javascript
 handleSubmit: function(username, password, event) {

@@ -4,7 +4,7 @@ export default make;
 # Instance Variables
 
 <aside class="warning">
-The Record API is in feature-freeze. For the newest features and better support going forward, please consider migrating to the new <a href="https://reasonml.github.io/reason-react/docs/en/components">function components</a>.
+The Record API is in feature-freeze. For the newest features and better support going forward, please consider migrating to the new <a href="/docs/reason-react/latest/components">function components</a>.
 </aside>
 
 A common pattern in ReactJS is to attach extra variables onto a component's spec:
@@ -17,7 +17,7 @@ const Greeting = React.createClass({
 });
 ```
 
-In reality, this is nothing but a thinly veiled way to mutate a component's "state", without triggering a re-render. ReasonReact asks you to correctly put these instance variables into your component's `state`, into Reason [`ref`s](https://reasonml.github.io/docs/en/mutation.html).
+In reality, this is nothing but a thinly veiled way to mutate a component's "state", without triggering a re-render. ReasonReact asks you to correctly put these instance variables into your component's `state`, into Reason [`ref`s](/docs/manual/latest/mutation).
 
 ```reason
 type state = {

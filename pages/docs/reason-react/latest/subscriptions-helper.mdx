@@ -79,4 +79,4 @@ let make = _children => {
 
 If the component unmounts and _then_ the `fetchAsyncData` calls the callback, it'll accidentally call `self.send`. Using `let cancel = fetchAsyncData(...); self.onUnmount(() => cancel())` is much easier.
 
-**Note**: this is an **interop helper**. This isn't meant to be used as a shiny first-class feature for e.g. adding more flux stores into your app (for that purpose, please use our [local reducer](state-actions-reducer.md#actions-reducer)). Every time you use `self.onUnmount`, consider it as a simple, pragmatic and performant way to talk to the existing world.
+**Note**: this is an **interop helper**. This isn't meant to be used as a shiny first-class feature for e.g. adding more flux stores into your app (for that purpose, please use our [local reducer](state-actions-reducer#actions-reducer)). Every time you use `self.onUnmount`, consider it as a simple, pragmatic and performant way to talk to the existing world.

@@ -16,7 +16,7 @@ ReasonReact comes with a router! We've leveraged the language and library featur
 - `ReasonReactRouter.watchUrl(f)`: start watching for URL changes. Returns a subscription token. Upon url change, calls the callback and passes it the `ReasonReactRouter.url` record.
 - `ReasonReactRouter.unwatchUrl(watcherID)`: stop watching for url changes.
 - `ReasonReactRouter.dangerouslyGetInitialUrl()`: get `url` record outside of `watchUrl`. Described later.
-- `ReasonReactRouter.useUrl(~serverUrl)`: only usable in the new [function component api](https://reasonml.github.io/docs/en/components).
+- `ReasonReactRouter.useUrl(~serverUrl)`: only usable in the new [function component api](components).
 
 ## Match a Route
 
@@ -34,7 +34,7 @@ type url = {
 ```
 
 <aside class="warning">
-The Record API is in feature-freeze. For the newest features and better support going forward, please consider migrating to the new <a href="https://reasonml.github.io/docs/en/components">function componenents</a>.
+The Record API is in feature-freeze. For the newest features and better support going forward, please consider migrating to the new <a href="/docs/reason-react/latest/components">function components</a>.
 </aside>
 
 So the url `www.hello.com/book/10/edit?name=Jane#author` is given back as:
@@ -72,7 +72,7 @@ So you can match a path, match a subset of a path, defer part of a matching to a
 
 ### Tips & Tricks
 
-Notice that this is just normal [pattern matching](https://reasonml.github.io/docs/en/pattern-matching.html). You can combine it with other features, such as tuple + ReasonReact features like [subscriptions](subscriptions-helper.md) and reducer:
+Notice that this is just normal [pattern matching](/docs/manual/latest/pattern-matching). You can combine it with other features, such as tuple + ReasonReact features like [subscriptions](subscriptions-helper.md) and reducer:
 
 ```reason
 let component = ReasonReact.reducerComponent("TodoApp");
