@@ -141,20 +141,16 @@ function Navigation$SubNav$DocsLinks(Props) {
   ];
   var recompItems = [
     /* tuple */[
-      "Introduction",
+      "Reason Compiler",
       "/docs/reason-compiler/latest"
     ],
     /* tuple */[
-      "Installation",
-      "/docs/reason-compiler/latest/installation"
+      "ReasonReact",
+      "/docs/reason-react/latest"
     ],
     /* tuple */[
-      "Configuration",
-      "/docs/reason-compiler/latest/build-configuration"
-    ],
-    /* tuple */[
-      "Interop",
-      "/docs/reason-compiler/latest/interop-cheatsheet"
+      "GenType",
+      "/docs/reason-compiler/gentype/latest"
     ]
   ];
   var overlineClass = "font-black uppercase text-sm tracking-wide text-primary-80";
@@ -188,7 +184,7 @@ function Navigation$SubNav$DocsLinks(Props) {
                       href: "/docs/reason-compiler/latest",
                       children: React.createElement("a", {
                             className: overlineClass
-                          }, Util.ReactStuff.s("BuckleScript"))
+                          }, Util.ReactStuff.s("JavaScript"))
                     }), React.createElement("ul", {
                       className: sectionUl
                     }, Util.ReactStuff.ate(Belt_Array.mapWithIndex(recompItems, (function (idx, param) {
