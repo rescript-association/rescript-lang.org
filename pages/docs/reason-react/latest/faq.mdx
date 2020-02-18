@@ -1,0 +1,73 @@
+import { make } from "layouts/ReasonReactDocsLayout.bs.js";
+export default make;
+
+# Frequently Asked Questions
+
+## I'm Having a Type Error
+
+Check your terminal to see if we've provided a dedicated error message for your
+use-case! If not, please file an issue
+[here](https://github.com/reasonml/reason-react/issues) or
+[here](https://github.com/reasonml-community/error-message-improvement/issues).
+Thanks!
+
+## Record Field send / handle Not Found
+
+Do you see a type error related to this? This might mean that you've passed
+`self` to a helper function of your render, and it used it like so: `<div
+onClick={_e => self.send(Click)} />`. This is because the record can't be found
+in the scope of the file. Just annotate it: `<div onClick={_e =>
+self.ReasonReact.send(Click)} />`.
+
+More info
+[here](/docs/manual/latest/record#Record%20Needs%20an%20Explicit%20Definition).
+
+
+## send/handle callbacks having Incompatible Types
+
+You've probably passed `self.send` to a helper function that uses this `send`
+reference twice. For complex reasons this doesn't type; you'd have to pass in
+the whole `self` to the helper.
+
+
+## I Really Need Feature X From ReactJS
+
+First make sure that you indeed can't achieve this idiom using the latest
+version of ReasonReact. If you need help figuring out how to translate a
+certain idiom, feel free to ask us on [Discord](https://discord.gg/reasonml).
+If it is not achievable with ReasonReact, you can always write the component in
+ReactJS first, then bind to it using [our interop](interop.md). Try to isolate
+the required functionality into a tiny ReactJS component and write the rest of
+your code in ReasonReact. Once this is done, feel free to [file an
+issue](https://github.com/reasonml/reason-react/issues) explaining your use
+case!
+
+
+## Element Type is Invalid Runtime Error
+
+If you run your app and see in the console the error:
+
+> "element type is invalid... You likely forgot to export your component from
+> the file it's defined in, or you might have mixed up default and named
+> imports"
+
+This likely means that:
+
+- You're wrapping a JS component for ReasonReact using with
+  [`ReasonReact.wrapJsForReason`](interop#reasonreact-using-reactjs).
+- The JS component uses ES6 default export (`export default MyComponent`) (or, you forgot to export the component altogether!).
+- You're using Babel/Webpack to compile those ES6 modules.
+
+This is a common mistake. Please see BuckleScript's [Import an ES6 Default Value](/docs/reason-compiler/latest/import-export#Import%20an%20ES6%20Default%20Value). Aka, instead of:
+
+```reason
+[@bs.module] external myJSReactClass: ReasonReact.reactClass = "./myJSReactClass";
+```
+
+Use:
+
+```reason
+[@bs.module "./myJSReactClass"] external myJSReactClass: ReasonReact.reactClass = "default";
+```
+
+Remember that Reason doesn't have runtime type errors! So it _must_ have meant that your binding was written wrongly.

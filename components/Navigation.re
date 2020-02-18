@@ -161,10 +161,9 @@ module SubNav = {
       |];
 
       let recompItems = [|
-        ("Introduction", "/docs/reason-compiler/latest"),
-        ("Installation", "/docs/reason-compiler/latest/installation"),
-        ("Configuration", "/docs/reason-compiler/latest/build-configuration"),
-        ("Interop", "/docs/reason-compiler/latest/interop-cheatsheet"),
+        ("Reason Compiler", "/docs/reason-compiler/latest"),
+        ("ReasonReact", "/docs/reason-react/latest"),
+        /*("GenType", "/docs/reason-compiler/gentype/latest"),*/
       |];
 
       let activeThemeLink = "font-normal text-primary border-b border-primary";
@@ -203,7 +202,7 @@ module SubNav = {
         </div>
         <div className={jsTheme ++ " " ++ sectionClass}>
           <Link href="/docs/reason-compiler/latest">
-            <a className=overlineClass> "BuckleScript"->s </a>
+            <a className=overlineClass> "JavaScript"->s </a>
           </Link>
           <ul className=sectionUl>
             {recompItems

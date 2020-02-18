@@ -131,7 +131,7 @@ If you come from an untyped language, you might be tempted to try `type foo = in
 
 ### Interop with JavaScript
 
-_This section assumes knowledge about BuckleScript's [FFI](https://bucklescript.github.io/docs/en/interop-overview.html). Skip this if you haven't felt the itch to use variants for wrapping JS functions yet_.
+_This section assumes knowledge about BuckleScript's [FFI](/docs/reason-compiler/latest/interop-overview). Skip this if you haven't felt the itch to use variants for wrapping JS functions yet_.
 
 Quite a few JS libraries use functions that can accept many types of arguments. In these cases, it's very tempting to model them as variants. For example, suppose there's a `myLibrary.draw` JS function that takes in either a `number` or a `string`. You might be tempted to bind it like so:
 
@@ -157,11 +157,11 @@ You could definitely do that, but there are better ways! For example, simply two
 [@bs.module "myLibrary"] external drawString : string => unit = "draw";
 ```
 
-BuckleScript also provides [a few other ways](https://bucklescript.github.io/docs/en/function.html#modeling-polymorphic-function) to do this.
+BuckleScript also provides [a few other ways](/docs/reason-compiler/latest/function#Modeling%20Polymorphic%20Function) to do this.
 
 ### Variant Types Are Found By Field Name
 
-Please refer to this [record section](record.md#record-types-are-found-by-field-name). Variants are the same: a function can't accept an arbitrary constructor shared by two different variants. Again, such feature exists, it's called a polymorphic variant. We'll talk about this in the future =).
+Please refer to this [record section](record#Record%20Types%20Are%20Found%20By%20Field%20Name). Variants are the same: a function can't accept an arbitrary constructor shared by two different variants. Again, such feature exists, it's called a polymorphic variant. We'll talk about this in the future =).
 
 ## Design Decisions
 

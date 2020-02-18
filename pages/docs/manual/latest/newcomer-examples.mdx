@@ -50,15 +50,15 @@ let obj1 = payload(~name="John", ~age=30);
 /* Compiles to a JS object with the above fields */
 ```
 
-Note that the above isn't a record; this is a [special BuckleScript feature](https://bucklescript.github.io/docs/en/object.html#record-mode).
+Note that the above isn't a record; this is a [special BuckleScript feature](/docs/reason-compiler/latest/object#Abstract%20Record%20Mode).
 
 ## Modeling a JS Module with Default Export
 
-See [here](https://bucklescript.github.io/docs/en/import-export.html#import-a-default-value).
+See [here](/docs/reason-compiler/latest/import-export#Import%20a%20Default%20Value).
 
 ## Checking for JS nullable types using the `option` type
 
-For a function whose argument is passed a JavaScript value that's potentially `null` or `undefined`, it's idiomatic to convert it to a Reason `option`. The conversion is done through the helper functions in Bucklescript's [`Js.Nullable`](http://bucklescript.github.io/bucklescript/api/Js.html#TYPEnullable) module. In this case, `toOption`:
+For a function whose argument is passed a JavaScript value that's potentially `null` or `undefined`, it's idiomatic to convert it to a Reason `option`. The conversion is done through the helper functions in Bucklescript's [`Js.Nullable`](/apis/javascript/latest/js/nullable#t) module. In this case, `toOption`:
 
 ```reason
 let greetByName = (possiblyNullName) => {

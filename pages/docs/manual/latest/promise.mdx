@@ -3,7 +3,7 @@ export default Prose.make;
 
 # Promise
 
-Reason has built-in support for [JavaScript promises through BuckleScript](https://bucklescript.github.io/bucklescript/api/Js.Promise.html). The 3 functions you generally need are:
+Reason has built-in support for [JavaScript promises through BuckleScript](/apis/javascript/latest/js/promise). The 3 functions you generally need are:
 
 - `Js.Promise.resolve: 'a => Js.Promise.t('a)`
 - `Js.Promise.then_: ('a => Js.Promise.t('b), Js.Promise.t('a)) => Js.Promise.t('b)`
@@ -18,7 +18,7 @@ Additionally, here's how to create a JS promise on the Reason side:
       ) => unit
     ) => Js.Promise.t('a)`
 
-This type signature means that `make` takes a callback that takes 2 named arguments, `resolve` and `reject`. Both arguments are themselves [uncurried callbacks](https://bucklescript.github.io/docs/en/function.html#solution-guaranteed-uncurrying) (they have a dot). `make` returns the created promise.
+This type signature means that `make` takes a callback that takes 2 named arguments, `resolve` and `reject`. Both arguments are themselves [uncurried callbacks](/docs/reason-compiler/latest/function#Solution:%20Guaranteed%20Uncurrying) (they have a dot). `make` returns the created promise.
 
 ## Usage
 

@@ -11,11 +11,11 @@ This means that if you receive e.g. a string from the JS side, you can use it **
 
 P.S. if you need an overview of the language primitives themselves, see [the Reason docs](https://reasonml.github.io/docs/en/overview.html).
 
-**BuckleScript uses the same standard library as OCaml**; see the docs [here](https://reasonml.github.io/api/) (in Reason syntax). **Additionally**, we provide access to all the familiar JS primitives [here](https://bucklescript.github.io/bucklescript/api/Js). You can mix and match these two.
+**BuckleScript uses the same standard library as OCaml**; see the docs [here](https://reasonml.github.io/api/) (in Reason syntax). **Additionally**, we provide access to all the familiar JS primitives [here](/apis/javascript/latest/js). You can mix and match these two.
 
 ### String
 
-Immutable on both sides, as expected. [BuckleScript String API](https://reasonml.github.io/api/String.html). [JS String API](https://bucklescript.github.io/bucklescript/api/Js.String.html).
+Immutable on both sides, as expected. [BuckleScript String API](https://reasonml.github.io/api/String.html). [JS String API](/apis/javascript/latest/js/string).
 
 #### Unicode Support
 
@@ -57,15 +57,15 @@ You can surround the variable in parentheses too: `{j|你好，$(world)|j}`.
 
 ### Float
 
-BuckleScript floats are JS numbers, vice-versa. The OCaml standard library doesn't come with a Float module. JS Float API is [here](https://bucklescript.github.io/bucklescript/api/Js.Float.html).
+BuckleScript floats are JS numbers, vice-versa. The OCaml standard library doesn't come with a Float module. JS Float API is [here](/apis/javascript/latest/js/float).
 
 ### Int
 
-**Ints are 32-bits**! Be careful, you can potentially treat them as JS numbers and vice-versa, but if the number's large, then you better treat JS numbers as floats. For example, we bind to Js.Date using `float`s. Js Int API [here](https://bucklescript.github.io/bucklescript/api/Js.Int.html).
+**Ints are 32-bits**! Be careful, you can potentially treat them as JS numbers and vice-versa, but if the number's large, then you better treat JS numbers as floats. For example, we bind to Js.Date using `float`s. Js Int API [here](/apis/javascript/latest/js/int).
 
 ### Array
 
-Idiomatic OCaml arrays are supposed to be fix-sized. This constraint is relaxed on the BuckleScript size. You can change its length using the usual [JS Array API](https://bucklescript.github.io/bucklescript/api/Js.Array.html#VALdefault). BuckleScript's own Array API is [here](https://reasonml.github.io/api/Array.html).
+Idiomatic OCaml arrays are supposed to be fix-sized. This constraint is relaxed on the BuckleScript size. You can change its length using the usual [JS Array API](/apis/javascript/latest/js/array). BuckleScript's own Array API is [here](https://reasonml.github.io/api/Array.html).
 
 ### Tuple
 
