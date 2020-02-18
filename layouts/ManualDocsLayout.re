@@ -16,7 +16,6 @@ hljs.registerLanguage('sh', bashHighlightJs);
 hljs.registerLanguage('json', jsonHighlightJs);
 |};
 
-open Util.ReactStuff;
 module Link = Next.Link;
 
 // Structure defined by `scripts/extract-tocs.js`

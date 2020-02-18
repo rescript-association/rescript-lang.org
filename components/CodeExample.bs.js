@@ -14,7 +14,7 @@ function CodeExample(Props) {
         dangerouslySetInnerHTML: {
           __html: highlighted
         }
-      }, /* array */[]);
+      }, []);
   var langShortname;
   switch (lang) {
     case "bash" :

@@ -14,411 +14,250 @@ import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.
 require('../styles/main.css')
 ;
 
-
 let hljs = require('highlight.js/lib/highlight');
 let reasonHighlightJs = require('reason-highlightjs');
 hljs.registerLanguage('reason', reasonHighlightJs);
-
 ;
 
 var indexData = (require('../index_data/js_api_index.json'));
 
 var $$package = (require('../package.json'));
 
-var overviewNavs = /* array */[/* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Introduction",
-      "/apis/javascript/latest/js"
-    ])];
+var overviewNavs = [{
+    name: "Introduction",
+    href: "/apis/javascript/latest/js"
+  }];
 
-var apiNavs = /* array */[
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Array2",
-      "/apis/javascript/latest/js/array-2"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Array",
-      "/apis/javascript/latest/js/array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Console",
-      "/apis/javascript/latest/js/console"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Date",
-      "/apis/javascript/latest/js/date"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Dict",
-      "/apis/javascript/latest/js/dict"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Exn",
-      "/apis/javascript/latest/js/exn"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Float",
-      "/apis/javascript/latest/js/float"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Global",
-      "/apis/javascript/latest/js/global"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Int",
-      "/apis/javascript/latest/js/int"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Json",
-      "/apis/javascript/latest/js/json"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "List",
-      "/apis/javascript/latest/js/list"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Math",
-      "/apis/javascript/latest/js/math"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "NullUndefined",
-      "/apis/javascript/latest/js/null-undefined"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Null",
-      "/apis/javascript/latest/js/null"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Nullable",
-      "/apis/javascript/latest/js/nullable"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Obj",
-      "/apis/javascript/latest/js/obj"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Option",
-      "/apis/javascript/latest/js/option"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Promise",
-      "/apis/javascript/latest/js/promise"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Re",
-      "/apis/javascript/latest/js/re"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Result",
-      "/apis/javascript/latest/js/result"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "String2",
-      "/apis/javascript/latest/js/string-2"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "String",
-      "/apis/javascript/latest/js/string"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArrayArrayBuffer",
-      "/apis/javascript/latest/js/typed-array_array-buffer"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArrayDataView",
-      "/apis/javascript/latest/js/typed-array_data-view"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArrayFloat32Array",
-      "/apis/javascript/latest/js/typed-array_float-32-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArrayFloat64Array",
-      "/apis/javascript/latest/js/typed-array_float-64-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArrayInt8Array",
-      "/apis/javascript/latest/js/typed-array_int-8-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArrayInt16Array",
-      "/apis/javascript/latest/js/typed-array_int-16-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArrayInt32Array",
-      "/apis/javascript/latest/js/typed-array_int-32-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArrayTypeS",
-      "/apis/javascript/latest/js/typed-array_type-s"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArrayUint8Array",
-      "/apis/javascript/latest/js/typed-array_uint-8-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArrayUint8ClampedArray",
-      "/apis/javascript/latest/js/typed-array_uint-8-clamped-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArrayUint16Array",
-      "/apis/javascript/latest/js/typed-array_uint-16-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArrayUint32Array",
-      "/apis/javascript/latest/js/typed-array_uint-32-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArray2ArrayBuffer",
-      "/apis/javascript/latest/js/typed-array-2_array-buffer"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArray2DataView",
-      "/apis/javascript/latest/js/typed-array-2_data-view"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArray2Float32Array",
-      "/apis/javascript/latest/js/typed-array-2_float-32-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArray2Float64Array",
-      "/apis/javascript/latest/js/typed-array-2_float-64-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArray2Int8Array",
-      "/apis/javascript/latest/js/typed-array-2_int-8-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArray2Int16Array",
-      "/apis/javascript/latest/js/typed-array-2_int-16-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArray2Int32Array",
-      "/apis/javascript/latest/js/typed-array-2_int-32-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArray2Uint8Array",
-      "/apis/javascript/latest/js/typed-array-2_uint-8-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArray2Uint8ClampedArray",
-      "/apis/javascript/latest/js/typed-array-2_uint-8-clamped-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArray2Uint16Array",
-      "/apis/javascript/latest/js/typed-array-2_uint-16-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArray2Uint32Array",
-      "/apis/javascript/latest/js/typed-array-2_uint-32-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArray2",
-      "/apis/javascript/latest/js/typed-array-2"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "TypedArray",
-      "/apis/javascript/latest/js/typed-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Types",
-      "/apis/javascript/latest/js/types"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Undefined",
-      "/apis/javascript/latest/js/undefined"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Vector",
-      "/apis/javascript/latest/js/vector"
-    ])
+var apiNavs = [
+  {
+    name: "Array2",
+    href: "/apis/javascript/latest/js/array-2"
+  },
+  {
+    name: "Array",
+    href: "/apis/javascript/latest/js/array"
+  },
+  {
+    name: "Console",
+    href: "/apis/javascript/latest/js/console"
+  },
+  {
+    name: "Date",
+    href: "/apis/javascript/latest/js/date"
+  },
+  {
+    name: "Dict",
+    href: "/apis/javascript/latest/js/dict"
+  },
+  {
+    name: "Exn",
+    href: "/apis/javascript/latest/js/exn"
+  },
+  {
+    name: "Float",
+    href: "/apis/javascript/latest/js/float"
+  },
+  {
+    name: "Global",
+    href: "/apis/javascript/latest/js/global"
+  },
+  {
+    name: "Int",
+    href: "/apis/javascript/latest/js/int"
+  },
+  {
+    name: "Json",
+    href: "/apis/javascript/latest/js/json"
+  },
+  {
+    name: "List",
+    href: "/apis/javascript/latest/js/list"
+  },
+  {
+    name: "Math",
+    href: "/apis/javascript/latest/js/math"
+  },
+  {
+    name: "NullUndefined",
+    href: "/apis/javascript/latest/js/null-undefined"
+  },
+  {
+    name: "Null",
+    href: "/apis/javascript/latest/js/null"
+  },
+  {
+    name: "Nullable",
+    href: "/apis/javascript/latest/js/nullable"
+  },
+  {
+    name: "Obj",
+    href: "/apis/javascript/latest/js/obj"
+  },
+  {
+    name: "Option",
+    href: "/apis/javascript/latest/js/option"
+  },
+  {
+    name: "Promise",
+    href: "/apis/javascript/latest/js/promise"
+  },
+  {
+    name: "Re",
+    href: "/apis/javascript/latest/js/re"
+  },
+  {
+    name: "Result",
+    href: "/apis/javascript/latest/js/result"
+  },
+  {
+    name: "String2",
+    href: "/apis/javascript/latest/js/string-2"
+  },
+  {
+    name: "String",
+    href: "/apis/javascript/latest/js/string"
+  },
+  {
+    name: "TypedArrayArrayBuffer",
+    href: "/apis/javascript/latest/js/typed-array_array-buffer"
+  },
+  {
+    name: "TypedArrayDataView",
+    href: "/apis/javascript/latest/js/typed-array_data-view"
+  },
+  {
+    name: "TypedArrayFloat32Array",
+    href: "/apis/javascript/latest/js/typed-array_float-32-array"
+  },
+  {
+    name: "TypedArrayFloat64Array",
+    href: "/apis/javascript/latest/js/typed-array_float-64-array"
+  },
+  {
+    name: "TypedArrayInt8Array",
+    href: "/apis/javascript/latest/js/typed-array_int-8-array"
+  },
+  {
+    name: "TypedArrayInt16Array",
+    href: "/apis/javascript/latest/js/typed-array_int-16-array"
+  },
+  {
+    name: "TypedArrayInt32Array",
+    href: "/apis/javascript/latest/js/typed-array_int-32-array"
+  },
+  {
+    name: "TypedArrayTypeS",
+    href: "/apis/javascript/latest/js/typed-array_type-s"
+  },
+  {
+    name: "TypedArrayUint8Array",
+    href: "/apis/javascript/latest/js/typed-array_uint-8-array"
+  },
+  {
+    name: "TypedArrayUint8ClampedArray",
+    href: "/apis/javascript/latest/js/typed-array_uint-8-clamped-array"
+  },
+  {
+    name: "TypedArrayUint16Array",
+    href: "/apis/javascript/latest/js/typed-array_uint-16-array"
+  },
+  {
+    name: "TypedArrayUint32Array",
+    href: "/apis/javascript/latest/js/typed-array_uint-32-array"
+  },
+  {
+    name: "TypedArray2ArrayBuffer",
+    href: "/apis/javascript/latest/js/typed-array-2_array-buffer"
+  },
+  {
+    name: "TypedArray2DataView",
+    href: "/apis/javascript/latest/js/typed-array-2_data-view"
+  },
+  {
+    name: "TypedArray2Float32Array",
+    href: "/apis/javascript/latest/js/typed-array-2_float-32-array"
+  },
+  {
+    name: "TypedArray2Float64Array",
+    href: "/apis/javascript/latest/js/typed-array-2_float-64-array"
+  },
+  {
+    name: "TypedArray2Int8Array",
+    href: "/apis/javascript/latest/js/typed-array-2_int-8-array"
+  },
+  {
+    name: "TypedArray2Int16Array",
+    href: "/apis/javascript/latest/js/typed-array-2_int-16-array"
+  },
+  {
+    name: "TypedArray2Int32Array",
+    href: "/apis/javascript/latest/js/typed-array-2_int-32-array"
+  },
+  {
+    name: "TypedArray2Uint8Array",
+    href: "/apis/javascript/latest/js/typed-array-2_uint-8-array"
+  },
+  {
+    name: "TypedArray2Uint8ClampedArray",
+    href: "/apis/javascript/latest/js/typed-array-2_uint-8-clamped-array"
+  },
+  {
+    name: "TypedArray2Uint16Array",
+    href: "/apis/javascript/latest/js/typed-array-2_uint-16-array"
+  },
+  {
+    name: "TypedArray2Uint32Array",
+    href: "/apis/javascript/latest/js/typed-array-2_uint-32-array"
+  },
+  {
+    name: "TypedArray2",
+    href: "/apis/javascript/latest/js/typed-array-2"
+  },
+  {
+    name: "TypedArray",
+    href: "/apis/javascript/latest/js/typed-array"
+  },
+  {
+    name: "Types",
+    href: "/apis/javascript/latest/js/types"
+  },
+  {
+    name: "Undefined",
+    href: "/apis/javascript/latest/js/undefined"
+  },
+  {
+    name: "Vector",
+    href: "/apis/javascript/latest/js/vector"
+  }
 ];
 
-var categories = /* array */[
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "items"
-    ], [
-      "Overview",
-      overviewNavs
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "items"
-    ], [
-      "API",
-      apiNavs
-    ])
+var categories = [
+  {
+    name: "Overview",
+    items: overviewNavs
+  },
+  {
+    name: "API",
+    items: apiNavs
+  }
 ];
 
 function JsDocsLayout$Docs(Props) {
-  var match = Props.components;
-  var components = match !== undefined ? Caml_option.valFromOption(match) : ApiMarkdown.$$default;
+  var $staropt$star = Props.components;
   var children = Props.children;
+  var components = $staropt$star !== undefined ? Caml_option.valFromOption($staropt$star) : ApiMarkdown.$$default;
   var router = Router.useRouter();
   var route = router.route;
   var headers = Belt_Option.getWithDefault(Belt_Option.map(Js_dict.get(indexData, route), (function (data) {
               return data.headers;
-            })), /* array */[]);
+            })), []);
   var moduleName = Belt_Option.getWithDefault(Belt_Option.map(Js_dict.get(indexData, route), (function (data) {
               return data.moduleName;
             })), "?");
-  var match$1 = React.useState((function () {
+  var match = React.useState((function () {
           return false;
         }));
-  var setSidebarOpen = match$1[1];
+  var setSidebarOpen = match[1];
   var toggleSidebar = function (param) {
     return Curry._1(setSidebarOpen, (function (prev) {
                   return !prev;
@@ -426,21 +265,15 @@ function JsDocsLayout$Docs(Props) {
   };
   var urlPath = SidebarLayout.UrlPath.parse("/apis/javascript", route);
   var breadcrumbs = Belt_Option.map(urlPath, (function (v) {
-          var prefix_000 = /* record */Caml_chrome_debugger.record([
-              "name",
-              "href"
-            ], [
-              "API",
-              "/apis"
-            ]);
+          var prefix_000 = {
+            name: "API",
+            href: "/apis"
+          };
           var prefix_001 = /* :: */Caml_chrome_debugger.simpleVariant("::", [
-              /* record */Caml_chrome_debugger.record([
-                  "name",
-                  "href"
-                ], [
-                  "JavaScript",
-                  "/apis/javascript/" + v[/* version */1]
-                ]),
+              {
+                name: "JavaScript",
+                href: "/apis/javascript/" + v.version
+              },
               /* [] */0
             ]);
           var prefix = /* :: */Caml_chrome_debugger.simpleVariant("::", [
@@ -452,7 +285,7 @@ function JsDocsLayout$Docs(Props) {
   var toplevelNav;
   if (urlPath !== undefined) {
     var urlPath$1 = urlPath;
-    var version = urlPath$1[/* version */1];
+    var version = urlPath$1.version;
     var backHref = SidebarLayout.UrlPath.fullUpLink(urlPath$1);
     var tmp = {
       title: "Js Module",
@@ -465,8 +298,7 @@ function JsDocsLayout$Docs(Props) {
   } else {
     toplevelNav = null;
   }
-  var match$2 = route !== "/apis/javascript/latest/js";
-  var preludeSection = match$2 ? React.createElement(SidebarLayout.Sidebar.CollapsibleSection.make, {
+  var preludeSection = route !== "/apis/javascript/latest/js" ? React.createElement(SidebarLayout.Sidebar.CollapsibleSection.make, {
           onHeaderClick: (function (param) {
               return Curry._1(setSidebarOpen, (function (param) {
                             return false;
@@ -480,7 +312,7 @@ function JsDocsLayout$Docs(Props) {
         route: router.route,
         toplevelNav: toplevelNav,
         preludeSection: preludeSection,
-        isOpen: match$1[0],
+        isOpen: match[0],
         toggle: toggleSidebar
       });
   var tmp$1 = {
@@ -515,15 +347,15 @@ var Prose = {
   make: JsDocsLayout$Prose
 };
 
-var Link = 0;
+var Link = /* alias */0;
 
-var Sidebar = 0;
+var Sidebar = /* alias */0;
 
-var UrlPath = 0;
+var UrlPath = /* alias */0;
 
-var NavItem = 0;
+var NavItem = /* alias */0;
 
-var Category = 0;
+var Category = /* alias */0;
 
 export {
   Link ,

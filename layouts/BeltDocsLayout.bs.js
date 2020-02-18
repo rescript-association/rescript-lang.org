@@ -14,347 +14,219 @@ import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.
 require('../styles/main.css')
 ;
 
-
 let hljs = require('highlight.js/lib/highlight');
 let reasonHighlightJs = require('reason-highlightjs');
 hljs.registerLanguage('reason', reasonHighlightJs);
-
 ;
 
 var indexData = (require('../index_data/belt_api_index.json'));
 
 var $$package = (require('../package.json'));
 
-var overviewNavs = /* array */[/* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Introduction",
-      "/apis/javascript/latest/belt"
-    ])];
+var overviewNavs = [{
+    name: "Introduction",
+    href: "/apis/javascript/latest/belt"
+  }];
 
-var setNavs = /* array */[
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "HashSet",
-      "/apis/javascript/latest/belt/hash-set"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "HashSetInt",
-      "/apis/javascript/latest/belt/hash-set-int"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "HashSetString",
-      "/apis/javascript/latest/belt/hash-set-string"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Set",
-      "/apis/javascript/latest/belt/set"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "SetDict",
-      "/apis/javascript/latest/belt/set-dict"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "SetInt",
-      "/apis/javascript/latest/belt/set-int"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "SetString",
-      "/apis/javascript/latest/belt/set-string"
-    ])
+var setNavs = [
+  {
+    name: "HashSet",
+    href: "/apis/javascript/latest/belt/hash-set"
+  },
+  {
+    name: "HashSetInt",
+    href: "/apis/javascript/latest/belt/hash-set-int"
+  },
+  {
+    name: "HashSetString",
+    href: "/apis/javascript/latest/belt/hash-set-string"
+  },
+  {
+    name: "Set",
+    href: "/apis/javascript/latest/belt/set"
+  },
+  {
+    name: "SetDict",
+    href: "/apis/javascript/latest/belt/set-dict"
+  },
+  {
+    name: "SetInt",
+    href: "/apis/javascript/latest/belt/set-int"
+  },
+  {
+    name: "SetString",
+    href: "/apis/javascript/latest/belt/set-string"
+  }
 ];
 
-var mapNavs = /* array */[
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "HashMap",
-      "/apis/javascript/latest/belt/hash-map"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "HashMapInt",
-      "/apis/javascript/latest/belt/hash-map-int"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "HashMapString",
-      "/apis/javascript/latest/belt/hash-map-string"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Map",
-      "/apis/javascript/latest/belt/map"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "MapDict",
-      "/apis/javascript/latest/belt/map-dict"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "MapInt",
-      "/apis/javascript/latest/belt/map-int"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "MapString",
-      "/apis/javascript/latest/belt/map-string"
-    ])
+var mapNavs = [
+  {
+    name: "HashMap",
+    href: "/apis/javascript/latest/belt/hash-map"
+  },
+  {
+    name: "HashMapInt",
+    href: "/apis/javascript/latest/belt/hash-map-int"
+  },
+  {
+    name: "HashMapString",
+    href: "/apis/javascript/latest/belt/hash-map-string"
+  },
+  {
+    name: "Map",
+    href: "/apis/javascript/latest/belt/map"
+  },
+  {
+    name: "MapDict",
+    href: "/apis/javascript/latest/belt/map-dict"
+  },
+  {
+    name: "MapInt",
+    href: "/apis/javascript/latest/belt/map-int"
+  },
+  {
+    name: "MapString",
+    href: "/apis/javascript/latest/belt/map-string"
+  }
 ];
 
-var mutableCollectionsNavs = /* array */[
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "MutableMap",
-      "/apis/javascript/latest/belt/mutable-map"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "MutableMapInt",
-      "/apis/javascript/latest/belt/mutable-map-int"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "MutableMapString",
-      "/apis/javascript/latest/belt/mutable-map-string"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "MutableQueue",
-      "/apis/javascript/latest/belt/mutable-queue"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "MutableSet",
-      "/apis/javascript/latest/belt/mutable-set"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "MutableSetInt",
-      "/apis/javascript/latest/belt/mutable-set-int"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "MutableSetString",
-      "/apis/javascript/latest/belt/mutable-set-string"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "MutableStack",
-      "/apis/javascript/latest/belt/mutable-stack"
-    ])
+var mutableCollectionsNavs = [
+  {
+    name: "MutableMap",
+    href: "/apis/javascript/latest/belt/mutable-map"
+  },
+  {
+    name: "MutableMapInt",
+    href: "/apis/javascript/latest/belt/mutable-map-int"
+  },
+  {
+    name: "MutableMapString",
+    href: "/apis/javascript/latest/belt/mutable-map-string"
+  },
+  {
+    name: "MutableQueue",
+    href: "/apis/javascript/latest/belt/mutable-queue"
+  },
+  {
+    name: "MutableSet",
+    href: "/apis/javascript/latest/belt/mutable-set"
+  },
+  {
+    name: "MutableSetInt",
+    href: "/apis/javascript/latest/belt/mutable-set-int"
+  },
+  {
+    name: "MutableSetString",
+    href: "/apis/javascript/latest/belt/mutable-set-string"
+  },
+  {
+    name: "MutableStack",
+    href: "/apis/javascript/latest/belt/mutable-stack"
+  }
 ];
 
-var basicNavs = /* array */[
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "List",
-      "/apis/javascript/latest/belt/list"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Array",
-      "/apis/javascript/latest/belt/array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Float",
-      "/apis/javascript/latest/belt/float"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Int",
-      "/apis/javascript/latest/belt/int"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Range",
-      "/apis/javascript/latest/belt/range"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Id",
-      "/apis/javascript/latest/belt/id"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Option",
-      "/apis/javascript/latest/belt/option"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Result",
-      "/apis/javascript/latest/belt/result"
-    ])
+var basicNavs = [
+  {
+    name: "List",
+    href: "/apis/javascript/latest/belt/list"
+  },
+  {
+    name: "Array",
+    href: "/apis/javascript/latest/belt/array"
+  },
+  {
+    name: "Float",
+    href: "/apis/javascript/latest/belt/float"
+  },
+  {
+    name: "Int",
+    href: "/apis/javascript/latest/belt/int"
+  },
+  {
+    name: "Range",
+    href: "/apis/javascript/latest/belt/range"
+  },
+  {
+    name: "Id",
+    href: "/apis/javascript/latest/belt/id"
+  },
+  {
+    name: "Option",
+    href: "/apis/javascript/latest/belt/option"
+  },
+  {
+    name: "Result",
+    href: "/apis/javascript/latest/belt/result"
+  }
 ];
 
-var sortNavs = /* array */[
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "SortArray",
-      "/apis/javascript/latest/belt/sort-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "SortArrayInt",
-      "/apis/javascript/latest/belt/sort-array-int"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "SortArrayString",
-      "/apis/javascript/latest/belt/sort-array-string"
-    ])
+var sortNavs = [
+  {
+    name: "SortArray",
+    href: "/apis/javascript/latest/belt/sort-array"
+  },
+  {
+    name: "SortArrayInt",
+    href: "/apis/javascript/latest/belt/sort-array-int"
+  },
+  {
+    name: "SortArrayString",
+    href: "/apis/javascript/latest/belt/sort-array-string"
+  }
 ];
 
-var utilityNavs = /* array */[/* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Debug",
-      "/apis/javascript/latest/belt/debug"
-    ])];
+var utilityNavs = [{
+    name: "Debug",
+    href: "/apis/javascript/latest/belt/debug"
+  }];
 
-var categories = /* array */[
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "items"
-    ], [
-      "Overview",
-      overviewNavs
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "items"
-    ], [
-      "Basics",
-      basicNavs
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "items"
-    ], [
-      "Set",
-      setNavs
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "items"
-    ], [
-      "Map",
-      mapNavs
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "items"
-    ], [
-      "Mutable Collections",
-      mutableCollectionsNavs
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "items"
-    ], [
-      "Sort Collections",
-      sortNavs
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "items"
-    ], [
-      "Utilities",
-      utilityNavs
-    ])
+var categories = [
+  {
+    name: "Overview",
+    items: overviewNavs
+  },
+  {
+    name: "Basics",
+    items: basicNavs
+  },
+  {
+    name: "Set",
+    items: setNavs
+  },
+  {
+    name: "Map",
+    items: mapNavs
+  },
+  {
+    name: "Mutable Collections",
+    items: mutableCollectionsNavs
+  },
+  {
+    name: "Sort Collections",
+    items: sortNavs
+  },
+  {
+    name: "Utilities",
+    items: utilityNavs
+  }
 ];
 
 function BeltDocsLayout$Docs(Props) {
-  var match = Props.components;
-  var components = match !== undefined ? Caml_option.valFromOption(match) : ApiMarkdown.$$default;
+  var $staropt$star = Props.components;
   var children = Props.children;
+  var components = $staropt$star !== undefined ? Caml_option.valFromOption($staropt$star) : ApiMarkdown.$$default;
   var router = Router.useRouter();
   var route = router.route;
   var headers = Belt_Option.getWithDefault(Belt_Option.map(Js_dict.get(indexData, route), (function (data) {
               return data.headers;
-            })), /* array */[]);
+            })), []);
   var moduleName = Belt_Option.getWithDefault(Belt_Option.map(Js_dict.get(indexData, route), (function (data) {
               return data.moduleName;
             })), "?");
-  var match$1 = React.useState((function () {
+  var match = React.useState((function () {
           return false;
         }));
-  var setSidebarOpen = match$1[1];
+  var setSidebarOpen = match[1];
   var toggleSidebar = function (param) {
     return Curry._1(setSidebarOpen, (function (prev) {
                   return !prev;
@@ -362,21 +234,15 @@ function BeltDocsLayout$Docs(Props) {
   };
   var urlPath = SidebarLayout.UrlPath.parse("/apis/javascript", route);
   var breadcrumbs = Belt_Option.map(urlPath, (function (v) {
-          var prefix_000 = /* record */Caml_chrome_debugger.record([
-              "name",
-              "href"
-            ], [
-              "API",
-              "/apis"
-            ]);
+          var prefix_000 = {
+            name: "API",
+            href: "/apis"
+          };
           var prefix_001 = /* :: */Caml_chrome_debugger.simpleVariant("::", [
-              /* record */Caml_chrome_debugger.record([
-                  "name",
-                  "href"
-                ], [
-                  "JavaScript",
-                  "/apis/javascript/" + v[/* version */1]
-                ]),
+              {
+                name: "JavaScript",
+                href: "/apis/javascript/" + v.version
+              },
               /* [] */0
             ]);
           var prefix = /* :: */Caml_chrome_debugger.simpleVariant("::", [
@@ -388,7 +254,7 @@ function BeltDocsLayout$Docs(Props) {
   var toplevelNav;
   if (urlPath !== undefined) {
     var urlPath$1 = urlPath;
-    var version = urlPath$1[/* version */1];
+    var version = urlPath$1.version;
     var backHref = SidebarLayout.UrlPath.fullUpLink(urlPath$1);
     var tmp = {
       title: "Belt",
@@ -401,8 +267,7 @@ function BeltDocsLayout$Docs(Props) {
   } else {
     toplevelNav = null;
   }
-  var match$2 = route !== "/apis/javascript/latest/belt";
-  var preludeSection = match$2 ? React.createElement(SidebarLayout.Sidebar.CollapsibleSection.make, {
+  var preludeSection = route !== "/apis/javascript/latest/belt" ? React.createElement(SidebarLayout.Sidebar.CollapsibleSection.make, {
           onHeaderClick: (function (param) {
               return Curry._1(setSidebarOpen, (function (param) {
                             return false;
@@ -416,7 +281,7 @@ function BeltDocsLayout$Docs(Props) {
         route: router.route,
         toplevelNav: toplevelNav,
         preludeSection: preludeSection,
-        isOpen: match$1[0],
+        isOpen: match[0],
         toggle: toggleSidebar
       });
   var tmp$1 = {
@@ -451,15 +316,15 @@ var Prose = {
   make: BeltDocsLayout$Prose
 };
 
-var Link = 0;
+var Link = /* alias */0;
 
-var Sidebar = 0;
+var Sidebar = /* alias */0;
 
-var UrlPath = 0;
+var UrlPath = /* alias */0;
 
-var NavItem = 0;
+var NavItem = /* alias */0;
 
-var Category = 0;
+var Category = /* alias */0;
 
 export {
   Link ,

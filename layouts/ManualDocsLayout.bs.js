@@ -14,7 +14,6 @@ import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.
 require('../styles/main.css')
 ;
 
-
 let hljs = require('highlight.js/lib/highlight');
 let javascriptHighlightJs = require('highlight.js/lib/languages/javascript');
 let ocamlHighlightJs = require('highlight.js/lib/languages/ocaml');
@@ -26,356 +25,220 @@ hljs.registerLanguage('javascript', javascriptHighlightJs);
 hljs.registerLanguage('ocaml', ocamlHighlightJs);
 hljs.registerLanguage('sh', bashHighlightJs);
 hljs.registerLanguage('json', jsonHighlightJs);
-
 ;
 
 var tocData = (require('../index_data/manual_toc.json'));
 
-var overviewNavs = /* array */[/* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Introduction",
-      "/docs/manual/latest"
-    ])];
+var overviewNavs = [{
+    name: "Introduction",
+    href: "/docs/manual/latest"
+  }];
 
-var basicNavs = /* array */[
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Overview",
-      "/docs/manual/latest/overview"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Let Binding",
-      "/docs/manual/latest/let-binding"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Type",
-      "/docs/manual/latest/type"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "String & Char",
-      "/docs/manual/latest/string-and-char"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Boolean",
-      "/docs/manual/latest/boolean"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Integer & Float",
-      "/docs/manual/latest/integer-and-float"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Tuple",
-      "/docs/manual/latest/tuple"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Record",
-      "/docs/manual/latest/record"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Variant",
-      "/docs/manual/latest/variant"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Null, Undefined & Option",
-      "/docs/manual/latest/null-undefined-option"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "List & Array",
-      "/docs/manual/latest/list-and-array"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Function",
-      "/docs/manual/latest/function"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "If-Else",
-      "/docs/manual/latest/if-else"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Pipe First",
-      "/docs/manual/latest/pipe-first"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "More on Type",
-      "/docs/manual/latest/more-on-type"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Destructuring",
-      "/docs/manual/latest/destructuring"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Pattern Matching",
-      "/docs/manual/latest/pattern-matching"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Mutation",
-      "/docs/manual/latest/mutation"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Imperative Loops",
-      "/docs/manual/latest/imperative-loops"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "JSX",
-      "/docs/manual/latest/jsx"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "External",
-      "/docs/manual/latest/external"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Exception",
-      "/docs/manual/latest/exception"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Object",
-      "/docs/manual/latest/object"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Module",
-      "/docs/manual/latest/module"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Promise",
-      "/docs/manual/latest/promise"
-    ])
+var basicNavs = [
+  {
+    name: "Overview",
+    href: "/docs/manual/latest/overview"
+  },
+  {
+    name: "Let Binding",
+    href: "/docs/manual/latest/let-binding"
+  },
+  {
+    name: "Type",
+    href: "/docs/manual/latest/type"
+  },
+  {
+    name: "String & Char",
+    href: "/docs/manual/latest/string-and-char"
+  },
+  {
+    name: "Boolean",
+    href: "/docs/manual/latest/boolean"
+  },
+  {
+    name: "Integer & Float",
+    href: "/docs/manual/latest/integer-and-float"
+  },
+  {
+    name: "Tuple",
+    href: "/docs/manual/latest/tuple"
+  },
+  {
+    name: "Record",
+    href: "/docs/manual/latest/record"
+  },
+  {
+    name: "Variant",
+    href: "/docs/manual/latest/variant"
+  },
+  {
+    name: "Null, Undefined & Option",
+    href: "/docs/manual/latest/null-undefined-option"
+  },
+  {
+    name: "List & Array",
+    href: "/docs/manual/latest/list-and-array"
+  },
+  {
+    name: "Function",
+    href: "/docs/manual/latest/function"
+  },
+  {
+    name: "If-Else",
+    href: "/docs/manual/latest/if-else"
+  },
+  {
+    name: "Pipe First",
+    href: "/docs/manual/latest/pipe-first"
+  },
+  {
+    name: "More on Type",
+    href: "/docs/manual/latest/more-on-type"
+  },
+  {
+    name: "Destructuring",
+    href: "/docs/manual/latest/destructuring"
+  },
+  {
+    name: "Pattern Matching",
+    href: "/docs/manual/latest/pattern-matching"
+  },
+  {
+    name: "Mutation",
+    href: "/docs/manual/latest/mutation"
+  },
+  {
+    name: "Imperative Loops",
+    href: "/docs/manual/latest/imperative-loops"
+  },
+  {
+    name: "JSX",
+    href: "/docs/manual/latest/jsx"
+  },
+  {
+    name: "External",
+    href: "/docs/manual/latest/external"
+  },
+  {
+    name: "Exception",
+    href: "/docs/manual/latest/exception"
+  },
+  {
+    name: "Object",
+    href: "/docs/manual/latest/object"
+  },
+  {
+    name: "Module",
+    href: "/docs/manual/latest/module"
+  },
+  {
+    name: "Promise",
+    href: "/docs/manual/latest/promise"
+  }
 ];
 
-var javascriptNavs = /* array */[
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Interop",
-      "/docs/manual/latest/interop"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Syntax Cheatsheet",
-      "/docs/manual/latest/syntax-cheatsheet"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Libraries",
-      "/docs/manual/latest/libraries"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Converting from JS",
-      "/docs/manual/latest/converting-from-js"
-    ])
+var javascriptNavs = [
+  {
+    name: "Interop",
+    href: "/docs/manual/latest/interop"
+  },
+  {
+    name: "Syntax Cheatsheet",
+    href: "/docs/manual/latest/syntax-cheatsheet"
+  },
+  {
+    name: "Libraries",
+    href: "/docs/manual/latest/libraries"
+  },
+  {
+    name: "Converting from JS",
+    href: "/docs/manual/latest/converting-from-js"
+  }
 ];
 
-var nativeNavs = /* array */[
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Native",
-      "/docs/manual/latest/native"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Native Quickstart",
-      "/docs/manual/latest/native-quickstart"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Converting from OCaml",
-      "/docs/manual/latest/converting-from-ocaml"
-    ])
+var nativeNavs = [
+  {
+    name: "Native",
+    href: "/docs/manual/latest/native"
+  },
+  {
+    name: "Native Quickstart",
+    href: "/docs/manual/latest/native-quickstart"
+  },
+  {
+    name: "Converting from OCaml",
+    href: "/docs/manual/latest/converting-from-ocaml"
+  }
 ];
 
-var extraNavs = /* array */[
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "FAQ",
-      "/docs/manual/latest/faq"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Comparison to OCaml",
-      "/docs/manual/latest/comparison-to-ocaml"
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "href"
-    ], [
-      "Newcomer Examples",
-      "/docs/manual/latest/newcomer-examples"
-    ])
+var extraNavs = [
+  {
+    name: "FAQ",
+    href: "/docs/manual/latest/faq"
+  },
+  {
+    name: "Comparison to OCaml",
+    href: "/docs/manual/latest/comparison-to-ocaml"
+  },
+  {
+    name: "Newcomer Examples",
+    href: "/docs/manual/latest/newcomer-examples"
+  }
 ];
 
-var categories = /* array */[
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "items"
-    ], [
-      "Overview",
-      overviewNavs
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "items"
-    ], [
-      "Basics",
-      basicNavs
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "items"
-    ], [
-      "JavaScript",
-      javascriptNavs
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "items"
-    ], [
-      "Native",
-      nativeNavs
-    ]),
-  /* record */Caml_chrome_debugger.record([
-      "name",
-      "items"
-    ], [
-      "Extra",
-      extraNavs
-    ])
+var categories = [
+  {
+    name: "Overview",
+    items: overviewNavs
+  },
+  {
+    name: "Basics",
+    items: basicNavs
+  },
+  {
+    name: "JavaScript",
+    items: javascriptNavs
+  },
+  {
+    name: "Native",
+    items: nativeNavs
+  },
+  {
+    name: "Extra",
+    items: extraNavs
+  }
 ];
 
 function ManualDocsLayout$Docs(Props) {
-  var match = Props.components;
-  var components = match !== undefined ? Caml_option.valFromOption(match) : Markdown.$$default;
+  var $staropt$star = Props.components;
   var children = Props.children;
+  var components = $staropt$star !== undefined ? Caml_option.valFromOption($staropt$star) : Markdown.$$default;
   var router = Router.useRouter();
   var route = router.route;
   var activeToc = Belt_Option.map(Js_dict.get(tocData, route), (function (data) {
           var title = data.title;
           var entries = Belt_Array.map(data.headers, (function (header) {
-                  return /* record */Caml_chrome_debugger.record([
-                            "header",
-                            "href"
-                          ], [
-                            header,
-                            "#" + header
-                          ]);
+                  return {
+                          header: header,
+                          href: "#" + header
+                        };
                 }));
-          return /* record */Caml_chrome_debugger.record([
-                    "title",
-                    "entries"
-                  ], [
-                    title,
-                    entries
-                  ]);
+          return {
+                  title: title,
+                  entries: entries
+                };
         }));
   var urlPath = SidebarLayout.UrlPath.parse("/docs/manual", route);
   var breadcrumbs = Belt_Option.map(urlPath, (function (v) {
-          var prefix_000 = /* record */Caml_chrome_debugger.record([
-              "name",
-              "href"
-            ], [
-              "Docs",
-              "/docs"
-            ]);
+          var prefix_000 = {
+            name: "Docs",
+            href: "/docs"
+          };
           var prefix_001 = /* :: */Caml_chrome_debugger.simpleVariant("::", [
-              /* record */Caml_chrome_debugger.record([
-                  "name",
-                  "href"
-                ], [
-                  "Language Manual",
-                  "/docs/manual/" + v[/* version */1]
-                ]),
+              {
+                name: "Language Manual",
+                href: "/docs/manual/" + v.version
+              },
               /* [] */0
             ]);
           var prefix = /* :: */Caml_chrome_debugger.simpleVariant("::", [
@@ -415,15 +278,15 @@ var Prose = {
   make: ManualDocsLayout$Prose
 };
 
-var Link = 0;
+var Link = /* alias */0;
 
-var UrlPath = 0;
+var UrlPath = /* alias */0;
 
-var NavItem = 0;
+var NavItem = /* alias */0;
 
-var Category = 0;
+var Category = /* alias */0;
 
-var Toc = 0;
+var Toc = /* alias */0;
 
 export {
   Link ,

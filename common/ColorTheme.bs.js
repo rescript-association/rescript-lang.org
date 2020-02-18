@@ -2,7 +2,7 @@
 
 import * as Js_mapperRt from "bs-platform/lib/es6/js_mapperRt.js";
 
-var jsMapperConstantArray = /* array */[
+var jsMapperConstantArray = [
   /* tuple */[
     16617,
     "theme-js"
