@@ -266,7 +266,29 @@ var P = {
 function Markdown$A(Props) {
   var href = Props.href;
   var children = Props.children;
-  var href$1 = href.replace(/\.md(x)?$/, "");
+  var regex = /\.md(x)?|\.html$/;
+  var match = href.split("#");
+  var len = match.length;
+  var href$1;
+  if (len >= 3) {
+    href$1 = href;
+  } else {
+    switch (len) {
+      case 0 :
+          href$1 = href;
+          break;
+      case 1 :
+          var pathname = match[0];
+          href$1 = pathname.replace(regex, "");
+          break;
+      case 2 :
+          var pathname$1 = match[0];
+          var anchor = match[1];
+          href$1 = pathname$1.replace(regex, "") + ("#" + anchor);
+          break;
+      
+    }
+  }
   return React.createElement("a", {
               className: "no-underline text-fire hover:underline",
               href: href$1,
