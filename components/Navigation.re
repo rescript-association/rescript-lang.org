@@ -57,12 +57,20 @@ module CollapsibleLink = {
       | HoverOpen => true
       };
 
+    // This onClick is required for iOS12 safari.
+    // There seems to be a bug where mouse events
+    // won't be registered, unless an onClick event
+    // is attached
+    // DO NOT REMOVE, OTHERWISE THE COLLAPSIBLE WON'T WORK
+    let onClick = _ => ();
+
     let direction = isOpen ? `Up : `Down;
 
     <div className="relative" onMouseEnter>
       <div className="flex items-center">
         <a
           onMouseDown
+          onClick
           className={
             (active ? activeLink : link)
             ++ " border-none flex items-center hover:cursor-pointer "
@@ -182,7 +190,9 @@ module SubNav = {
             {languageItems
              ->Belt.Array.mapWithIndex((idx, (title, href)) => {
                  let active =
-                   route == href ? activeThemeLink ++ " hover:text-primary cursor-auto" : "";
+                   route == href
+                     ? activeThemeLink ++ " hover:text-primary cursor-auto"
+                     : "";
                  <li
                    className="w-1/2 xs:w-1/2 h-10"
                    key={Belt.Int.toString(idx)}>
@@ -208,7 +218,9 @@ module SubNav = {
             {recompItems
              ->Belt.Array.mapWithIndex((idx, (title, href)) => {
                  let active =
-                   route == href ? activeThemeLink ++ " hover:text-primary cursor-auto" : "";
+                   route == href
+                     ? activeThemeLink ++ " hover:text-primary cursor-auto"
+                     : "";
                  <li
                    className="w-1/2 xs:w-1/2 h-10"
                    key={Belt.Int.toString(idx)}>
@@ -262,8 +274,7 @@ module SubNav = {
             {jsItems
              ->Belt.Array.mapWithIndex((idx, (title, href)) => {
                  let active =
-                   Js.String2.startsWith(route, href)
-                     ? "text-primary" : "";
+                   Js.String2.startsWith(route, href) ? "text-primary" : "";
                  <li
                    className="w-1/2 xs:w-1/2 h-10"
                    key={Belt.Int.toString(idx)}>
@@ -424,20 +435,21 @@ let make = (~isOverlayOpen=false, ~toggle=() => (), ~route="/") => {
              collapsibles,
              (idx, c) => {
                let {href, title, children, state} = c;
-               let onStateChange = (~id, state) =>
-                 {setCollapsibles(prev => {
-                    /* This is important to close the nav overlay, before showing the subnavigation */
-                    if (isOverlayOpen) {
-                      toggle();
-                    };
-                    Belt.Array.map(prev, c =>
-                      if (c.title === id) {
-                        {...c, state};
-                      } else {
-                        {...c, state: Closed};
-                      }
-                    );
-                  })};
+               let onStateChange = (~id, state) => {
+                 setCollapsibles(prev => {
+                   /* This is important to close the nav overlay, before showing the subnavigation */
+                   if (isOverlayOpen) {
+                     toggle();
+                   };
+                   Belt.Array.map(prev, c =>
+                     if (c.title === id) {
+                       {...c, state};
+                     } else {
+                       {...c, state: Closed};
+                     }
+                   );
+                 });
+               };
                <CollapsibleLink
                  id=title
                  onStateChange
