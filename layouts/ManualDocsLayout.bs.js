@@ -178,10 +178,6 @@ var nativeNavs = [
   {
     name: "Native Quickstart",
     href: "/docs/manual/latest/native-quickstart"
-  },
-  {
-    name: "Converting from OCaml",
-    href: "/docs/manual/latest/converting-from-ocaml"
   }
 ];
 
@@ -191,12 +187,12 @@ var extraNavs = [
     href: "/docs/manual/latest/faq"
   },
   {
-    name: "Comparison to OCaml",
-    href: "/docs/manual/latest/comparison-to-ocaml"
-  },
-  {
     name: "Newcomer Examples",
     href: "/docs/manual/latest/newcomer-examples"
+  },
+  {
+    name: "Project Structure",
+    href: "/docs/manual/latest/project-structure"
   }
 ];
 
