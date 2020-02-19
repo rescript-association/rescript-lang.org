@@ -40,11 +40,14 @@ build specific pages (file `index_data/x.json` not found).
 
 ## Run Tests
 
+
+### Markdown Codeblock Tests
+
 We try to verify our code examples inside markdown files as much as possible.
 Currently we are using `scripts/test-examples.js` to test all our example
 codeblocks (those blocks marked with `re examples`).
 
-After writing documentation, make sure to run this code before submitting a PR:
+After writing documentation, this is how you can run your codeblock tests:
 
 ```
 # Tests all files
@@ -53,6 +56,40 @@ node scripts/test-examples.js
 # Or just a subset (glob pattern)
 node scripts/test-examples.js "pages/apis/latest/belt/set-*.mdx"
 ```
+
+### Markdown Hyperlink Tests
+
+We are also verifying markdown href links to relative resources (via
+`[text](url)` syntax) with our `scripts/test-hrefs.js` script. Here is a short
+explanation on how the href testing works:
+
+Domain relative links, such as `/docs/manual/latest`, `./introduction`,
+`introduction`, `/docs/foo/introduction.md` will be verified. That means the
+tester will check if given path exists in the `pages` directory.
+
+If there are any anchor refs, such as `/docs/manual#test`, then the anchor will
+be ignored for the specific file path check. If there are any hrefs with `.md`,
+`.mdx` or `.html` file extension, then those will be stripped before the check
+happens (the markdown renderer drops file extensions on relative links as
+well).
+
+External hrefs, such as `https://www.hello.world`, `//www.hello.world` will NOT be
+checked since they are assumed to be external resources.
+
+Here is an example on how to run the tests:
+
+```
+# Tests all files
+node scripts/test-hrefs.js
+
+# Or just a subset (glob pattern)
+node scripts/test-hrefs.js "pages/docs/manual/**/*.mdx"
+```
+
+### Continous Integration
+
+Always make sure to run `npm test` before pushing any content, otherwise our CI
+might trigger a failure warning. Failing branches are very unlikely to be merged.
 
 ## Design / UX
 
