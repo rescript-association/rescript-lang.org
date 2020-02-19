@@ -8,13 +8,27 @@ The website `reasonml.org` is a community project dedicated to a better doc
 experience for the Reason & BuckleScript platform and is currently a **Work in
 Progress**.
 
-**You will notice that many buttons / navigation items do not have any content
-or functionality. Stay tuned for regular updates and keep an eye on the
-[@ReasonAssoc](https://twitter.com/ReasonAssoc) twitter handle / [ReasonML
-Discord](https://discord.gg/reasonml)!**
-
-Project announcements and a high level roadmap (1-2 years) are documented
+More details about this project and its high level roadmap (1-2 years) are
+documented
 [here](https://www.reason-association.org/projects/better-learning-materials-and-tools).
+
+## Current Progress 
+
+**Feature** | **Status** | **Note**
+--------|-----------|---------------
+ReasonML Manual (v3.6) | ✅ | in sync w/ [reasonml.github.io](//reasonml.github.io)
+BuckleScript Docs (v7)| ✅ |  in sync w/ [bucklescript.github.io](//bucklescript.github.io)
+ReasonReact Docs (v0.7) |  ✅ | in sync w/ [reasonml.github.io/reason-react](//reasonml.github.io/reason-react)
+Playground |  🚧 | In the works within the BuckleScript repo
+BS API Docs |  🚧 | Only JS / Belt module (rest coming soon)
+Full Page Search | 📝 | In the planning phase
+Blog | ❌ | Not started
+Community | ❌ | Not started
+
+**Stay informed about recent updates either via the
+[@ReasonAssoc](https://twitter.com/ReasonAssoc) twitter handle or within the
+[ReasonML Discord](https://discord.gg/reasonml)!**
+
 
 ## Official Resources
 
@@ -35,19 +49,20 @@ In case you are looking for the current official docs, here is a good reference 
 Following sections are just a rough outline on what needs to be done in the
 next steps:
 
-**Docs:**
+### Docs:
 
-- Upstream the Reason language docs from reasonml.github.io
-- Upstream the BuckleScript docs from bucklescript.github.io
+- ~~Upstream the Reason language docs from reasonml.github.io~~
+- ~~Upstream the BuckleScript docs from bucklescript.github.io~~
+- Upstream GenType docs
 - Merge Reason's & BuckleScript's docs into one cohesive document
 
-**API documentation:**
+### API documentation:
 
 - Refining the [Belt API](/apis/javascript/latest/belt) & [Js API](/apis/javascript/latest/js) documentation by hand via markdown
 - Deep dive into `odoc` to extract API documentation from the BuckleScript modules' source code
 - Upstream our markdown curated changes of the Belt / Js modules into the BuckleScript source code
 
-**Playground:**
+### Playground:
 
 - Implement the design for
 [mobile](https://xd.adobe.com/spec/1cd19c3a-a0bb-4f93-4e11-725589888696-6ae0/screen/adfe80dc-6bc1-40a5-9975-aa062e63cdc5/Reason-Playground)
@@ -60,7 +75,7 @@ and
 the [NIT](https://github.com/Sketch-sh/nit/tree/406) playground for
 inspiration)
 
-**Search Functionality:**
+### Search Functionality:
 
 - Build the custom Search overlay (see the
 [design](https://xd.adobe.com/spec/1cd19c3a-a0bb-4f93-4e11-725589888696-6ae0/screen/5ef4d42c-05eb-4117-82b6-a2906e652ff1/Reason-1400-Nav-Search))
@@ -77,21 +92,22 @@ to find a task to work on and make sure to sync up with the team via
 [Discord](https://discord.gg/fscQAnj) (ReasonML / #docs channel) and / or ping
 [@ryyppy](https://twitter.com/ryyppy).
 
+If you want to contribute to the ReasonML / BuckleScript / ReasonReact /
+GenType docs, please open PRs on the original sources for now and feel free to
+open issues on reasonml.org to let us know about it.
 
 ## Sponsors
 
 **We want to thank our sponsors for making this project possible.**
 
-<div className="flex flex-col sm:flex-row sm:items-center">
+<div className="my-8 flex flex-col sm:flex-row sm:items-center">
   <img src="/static/partners/ahrefs.svg" className="w-1/2 sm:w-1/4 mr-10 h-16"/>
   <img src="/static/partners/tezos_foundation.svg" className="w-4/5 mt-8 sm:mt-0 sm:w-2/4 h-16"/>
 </div>
 
-<div className="mt-16">
 
-  We are always looking for new sponsor partners to continously improve our
-  documentation experience. Please refer to the Reason Assocation's
-  [donation](https://www.reason-association.org/donate) section for more
-  information.
+We are always looking for new sponsor partners to continously improve our
+documentation experience. Please refer to the Reason Assocation's
+[donation](https://www.reason-association.org/donate) section for more
+information.
 
-</div>
