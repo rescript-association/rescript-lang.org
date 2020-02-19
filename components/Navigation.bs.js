@@ -45,6 +45,9 @@ function Navigation$CollapsibleLink(Props) {
     }
   };
   var isOpen = state < 2;
+  var onClick = function (param) {
+    return /* () */0;
+  };
   var direction = isOpen ? /* Up */19067 : /* Down */759637122;
   return React.createElement("div", {
               className: "relative",
@@ -57,6 +60,7 @@ function Navigation$CollapsibleLink(Props) {
                       ) + (" border-none flex items-center hover:cursor-pointer " + (
                           isOpen ? " text-white" : ""
                         )),
+                      onClick: onClick,
                       onMouseDown: onMouseDown
                     }, React.createElement("span", {
                           className: active ? "border-b border-fire" : ""
