@@ -23,7 +23,7 @@ module Anchor = {
   // everything to a single string first before we are able to use this id transformation
   // function
   let idFormat = (id: string): string => {
-    id
+    id;
     /*Js.String2.(id->toLowerCase->Js.String2.replaceByRe([%re "/\\s/g"], "-"));*/
   };
   [@react.component]
@@ -272,11 +272,20 @@ module P = {
 module A = {
   [@react.component]
   let make = (~href, ~children) => {
-    // We drop any .md / .mdx extensions on every href...
+
+    // We drop any .md / .mdx / .html extensions on every href...
     // Ideally one would check if this link is relative first,
     // but it's very unlikely we'd refer to an absolute URL ending
     // with .md
-    let href = Js.String2.replaceByRe(href, [%re "/\\.md(x)?$/"], "");
+    let regex = [%re "/\\.md(x)?|\\.html$/"];
+    let href =
+      switch (Js.String2.split(href, "#")) {
+      | [|pathname, anchor|] =>
+        Js.String2.replaceByRe(pathname, regex, "") ++ "#" ++ anchor
+      | [|pathname|] => Js.String2.replaceByRe(pathname, regex, "")
+      | _ => href
+      };
+
     <a
       href
       rel="noopener noreferrer"

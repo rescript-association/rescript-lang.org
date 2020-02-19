@@ -72,11 +72,13 @@ const testFile = (pageMap, test) => {
   test.links.forEach(link => {
     const parsed = urlModule.parse(link.url);
 
-    // Drops .md / .mdx file extension in pathname section, since UI ignores them
+    // Drops .md / .mdx / .html file extension in pathname section, since UI ignores them
     // Needs to be kept in sync with `components/Markdown.re`s <A> component
+    // This requirements stems from the original documentation on reasonml.github.io, where lots of .md / .html
+    // hrefs are included
     let url = link.url;
     if (parsed.pathname) {
-      parsed.pathname = parsed.pathname.replace(/\.md(x)?$/, "");
+      parsed.pathname = parsed.pathname.replace(/\.md(x)?|\.html$/, "");
       url = urlModule.format(parsed);
     }
 
@@ -109,7 +111,7 @@ const testFile = (pageMap, test) => {
       // If there's no page stated the relative link
       if (!pageMap[resolved]) {
         const { line, column } = link.position.start;
-        const stderr = `${filepath}: Unknown href'${url}' in line ${line}:${column}`;
+        const stderr = `${filepath}: Unknown href '${url}' in line ${line}:${column}`;
         results.push({
           status: "failed",
           filepath,
