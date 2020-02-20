@@ -35,7 +35,7 @@ module Cite = {
 module Info = {
   [@react.component]
   let make = (~children) => {
-    <div className="border-l-2 border-sky my-6 py-6 pl-8 bg-sky-10">
+    <div className="border-l-2 border-sky my-5 py-6 pl-8 pr-10 bg-sky-10">
       children
     </div>;
   };
@@ -44,7 +44,7 @@ module Info = {
 module Warn = {
   [@react.component]
   let make = (~children) => {
-    <div className="border-l-2 border-gold my-6 py-6 pl-8 bg-gold-10">
+    <div className="border-l-2 border-gold my-6 py-6 pl-8 pr-10 bg-gold-10">
       children
     </div>;
   };
@@ -345,7 +345,7 @@ module Code = {
 module Blockquote = {
   [@react.component]
   let make = (~children) => {
-    <blockquote className="md-blockquote my-4">
+    <blockquote className="md-blockquote">
       <Info> children </Info>
     </blockquote>;
   };

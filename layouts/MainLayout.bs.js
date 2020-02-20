@@ -30,7 +30,7 @@ function MainLayout(Props) {
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, { }), React.createElement("div", {
                   className: "mb-32 mt-16"
                 }, React.createElement("div", {
-                      className: "w-full text-night text-lg"
+                      className: "text-night text-lg"
                     }, React.createElement(Navigation.make, {
                           isOverlayOpen: match[0],
                           toggle: (function (param) {
@@ -40,7 +40,7 @@ function MainLayout(Props) {
                             }),
                           route: router.route
                         }), React.createElement("div", {
-                          className: "flex justify-center"
+                          className: "flex justify-center overflow-hidden"
                         }, React.createElement("main", {
                               className: "mt-32 lg:align-center w-full px-4 max-w-xl ",
                               style: minWidth

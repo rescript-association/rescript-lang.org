@@ -58,7 +58,7 @@ var Cite = {
 function Markdown$Info(Props) {
   var children = Props.children;
   return React.createElement("div", {
-              className: "border-l-2 border-sky my-6 py-6 pl-8 bg-sky-10"
+              className: "border-l-2 border-sky my-5 py-6 pl-8 pr-10 bg-sky-10"
             }, children);
 }
 
@@ -69,7 +69,7 @@ var Info = {
 function Markdown$Warn(Props) {
   var children = Props.children;
   return React.createElement("div", {
-              className: "border-l-2 border-gold my-6 py-6 pl-8 bg-gold-10"
+              className: "border-l-2 border-gold my-6 py-6 pl-8 pr-10 bg-gold-10"
             }, children);
 }
 
@@ -388,7 +388,7 @@ var Code = {
 function Markdown$Blockquote(Props) {
   var children = Props.children;
   return React.createElement("blockquote", {
-              className: "md-blockquote my-4"
+              className: "md-blockquote"
             }, React.createElement(Markdown$Info, {
                   children: children
                 }));
