@@ -2,11 +2,7 @@
 "require('../styles/main.css')";
 
 %raw
-{|
-let hljs = require('highlight.js/lib/highlight');
-let reasonHighlightJs = require('reason-highlightjs');
-hljs.registerLanguage('reason', reasonHighlightJs);
-|};
+"require('./init_hljs.js')";
 
 open Util.ReactStuff;
 module Link = Next.Link;
