@@ -3,9 +3,11 @@ export default make;
 
 # JSX (Old, Version 2)
 
-<aside class="warning">
+<Warn>
+
 The Record API is in feature-freeze. For the newest features and better support going forward, please consider migrating to the new <a href="/docs/reason-react/latest/components">function components</a>.
-</aside>
+
+</Warn>
 
 In addition to the [primary JSX transform](jsx.md), you can also use JSX to call older Record components. To do so you can add a `[@bs.config {jsx: 2}];` configuration attribute at the top of a file. Within that file all JSX tags will desugar to the form described here.
 
