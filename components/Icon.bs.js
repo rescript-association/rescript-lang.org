@@ -222,6 +222,42 @@ var Close = {
   make: Icon$Close
 };
 
+function Icon$ArrowRight(Props) {
+  var $staropt$star = Props.className;
+  var className = $staropt$star !== undefined ? $staropt$star : "";
+  return React.createElement("svg", {
+              className: "fill-current " + className,
+              height: "11.769",
+              width: "18",
+              viewBox: "0 0 18 11.769"
+            }, React.createElement("defs", undefined, React.createElement("clipPath", {
+                      id: "prefix__a"
+                    }, React.createElement("path", {
+                          clipRule: "evenodd",
+                          d: "M12.121-16.823a.67.67 0 00-.907 0 .566.566 0 000 .835l4.6 4.277H.635A.611.611 0 000-11.12a.617.617 0 00.635.6h15.179l-4.6 4.269a.576.576 0 000 .844.67.67 0 00.907 0L17.81-10.7a.553.553 0 000-.835z",
+                          fill: "current",
+                          transform: "translate(0 17)"
+                        })), React.createElement("clipPath", {
+                      id: "prefix__b"
+                    }, React.createElement("path", {
+                          className: "prefix__b",
+                          d: "M-297 336.231h747.692V-534H-297z",
+                          transform: "translate(297 534)"
+                        }))), React.createElement("g", {
+                  clipPath: "url(#prefix__a)"
+                }, React.createElement("g", {
+                      clipPath: "url(#prefix__b)",
+                      transform: "translate(-205.615 -357.923)"
+                    }, React.createElement("path", {
+                          className: "prefix__b",
+                          d: "M202.154 354.462h24.923v18.692h-24.923z"
+                        }))));
+}
+
+var ArrowRight = {
+  make: Icon$ArrowRight
+};
+
 export {
   Github ,
   Twitter ,
@@ -232,6 +268,7 @@ export {
   CornerLeftUp ,
   Table ,
   Close ,
+  ArrowRight ,
   
 }
 /* react Not a pure module */

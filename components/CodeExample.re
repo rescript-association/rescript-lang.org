@@ -1,7 +1,7 @@
 open Util.ReactStuff;
 
 [@react.component]
-let make = (~code: string, ~lang) => {
+let make = (~code: string, ~lang="text") => {
   let highlighted = HighlightJs.(highlight(~lang, ~value=code)->valueGet);
 
   let children =
@@ -22,10 +22,9 @@ let make = (~code: string, ~lang) => {
     | "ocaml" => "ml"
     | "reason" => "re"
     | "bash" => "sh"
+    | "text" => ""
     | rest => rest
     };
-
-  let fooBar = Some("test");
 
   <div
     className="flex flex-col -mx-8 xs:mx-0 rounded-none xs:rounded border border-snow-dark bg-snow-light px-5 py-2 text-night-dark">
@@ -36,4 +35,3 @@ let make = (~code: string, ~lang) => {
     <div className="px-5 text-base pb-6 overflow-x-auto"> children </div>
   </div>;
 };
-

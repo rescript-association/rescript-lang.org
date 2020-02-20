@@ -4,9 +4,9 @@ module Link = {
 };
 
 module Introduction = {
-  [@genType]
   [@react.component]
   let make = (~children) => {
     <div className="text-xl mt-8 mb-4"> children </div>;
   };
 };
+

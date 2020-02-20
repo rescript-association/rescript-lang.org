@@ -65,7 +65,8 @@ module.exports = {
           default: "#376FDD",
           "80": "rgba(55, 111, 221, 0.8)",
           "40": "rgba(55, 111, 221, 0.4)",
-          "15": "rgba(55, 111, 221, 0.15)"
+          "15": "rgba(55, 111, 221, 0.15)",
+          "10": "rgba(55, 111, 221, 0.10)"
         },
         berry: {
           default: "#AB5EA3",
@@ -76,7 +77,8 @@ module.exports = {
         gold: {
           light: "#FFC833",
           default: "#E0AC00",
-          dark: "#C19400"
+          dark: "#C19400",
+          "10": "rgba(224, 172, 0, 0.10)"
         },
         primary: {
           dark: "var(--color-text-primary-dark)",

@@ -22,3 +22,7 @@
   content: "•";
   @apply inline-block w-4 -ml-4 pr-2;
 }
+
+.md-p + .md-p {
+  @apply mt-3;
+}
