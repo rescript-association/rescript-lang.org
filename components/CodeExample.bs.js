@@ -7,7 +7,8 @@ import * as Highlight from "highlight.js/lib/highlight";
 
 function CodeExample(Props) {
   var code = Props.code;
-  var lang = Props.lang;
+  var $staropt$star = Props.lang;
+  var lang = $staropt$star !== undefined ? $staropt$star : "text";
   var highlighted = Highlight.highlight(lang, code).value;
   var children = ReactDOMRe.createElementVariadic("code", {
         className: "wrap hljs lang-" + lang,
@@ -25,6 +26,9 @@ function CodeExample(Props) {
         break;
     case "reason" :
         langShortname = "re";
+        break;
+    case "text" :
+        langShortname = "";
         break;
     default:
       langShortname = lang;

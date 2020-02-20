@@ -31,9 +31,23 @@ var $$String = {
   capitalize: capitalize
 };
 
+var isAbsolute = (function(str) {
+      var r = new RegExp('^(?:[a-z]+:)?//', 'i');
+      if (r.test(str))
+      {
+        return true
+      }
+      return false;
+    });
+
+var Url = {
+  isAbsolute: isAbsolute
+};
+
 export {
   ReactStuff ,
   $$String ,
+  Url ,
   
 }
 /* No side effect */

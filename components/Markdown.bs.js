@@ -1,12 +1,145 @@
 
 
 import * as Mdx from "../common/Mdx.bs.js";
+import * as Icon from "./Icon.bs.js";
 import * as Util from "../common/Util.bs.js";
+import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
+import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
+import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as CodeExample from "./CodeExample.bs.js";
 import * as CodeSignature from "./CodeSignature.bs.js";
+
+function Markdown$P(Props) {
+  var children = Props.children;
+  return React.createElement("p", {
+              className: "md-p leading-4"
+            }, children);
+}
+
+var P = {
+  make: Markdown$P
+};
+
+function Markdown$Intro(Props) {
+  var children = Props.children;
+  return React.createElement("div", {
+              className: "text-xl mt-8 mb-4"
+            }, children);
+}
+
+var Intro = {
+  make: Markdown$Intro
+};
+
+function Markdown$Cite(Props) {
+  var author = Props.author;
+  var children = Props.children;
+  return React.createElement("div", {
+              className: "my-10 border-l-2 border-fire font-normal pl-10 py-1 text-fire",
+              style: {
+                maxWidth: "30rem"
+              }
+            }, React.createElement("blockquote", {
+                  className: "text-3xl italic mb-2"
+                }, children), Belt_Option.mapWithDefault(author, null, (function (author) {
+                    return React.createElement("figcaption", {
+                                className: "font-semibold text-sm"
+                              }, Util.ReactStuff.s(author));
+                  })));
+}
+
+var Cite = {
+  make: Markdown$Cite
+};
+
+function Markdown$Info(Props) {
+  var children = Props.children;
+  return React.createElement("div", {
+              className: "border-l-2 border-sky my-5 py-6 pl-8 pr-10 bg-sky-10"
+            }, children);
+}
+
+var Info = {
+  make: Markdown$Info
+};
+
+function Markdown$Warn(Props) {
+  var children = Props.children;
+  return React.createElement("div", {
+              className: "border-l-2 border-gold my-6 py-6 pl-8 pr-10 bg-gold-10"
+            }, children);
+}
+
+var Warn = {
+  make: Markdown$Warn
+};
+
+var imgEl = React.createElement("img", {
+      className: "mr-2 inline-block",
+      src: "/static/hyperlink.svg"
+    });
+
+function Markdown$UrlBox(Props) {
+  var text = Props.text;
+  var href = Props.href;
+  var children = Props.children;
+  var match = Mdx.MdxChildren.classify(children);
+  var content;
+  switch (match.tag | 0) {
+    case /* String */0 :
+        content = React.createElement("p", undefined, imgEl, Util.ReactStuff.s(match[0]));
+        break;
+    case /* Element */1 :
+        var subChildren = Mdx.MdxChildren.getMdxChildren(match[0]);
+        content = React.createElement("p", undefined, imgEl, Curry._1(Mdx.MdxChildren.toReactElement, subChildren));
+        break;
+    case /* Array */2 :
+        var arr = match[0];
+        var length = arr.length;
+        if (length >= 1) {
+          var head = Belt_Array.getExn(arr, 0);
+          var headChildren = Mdx.MdxChildren.getMdxChildren(head);
+          content = React.createElement(React.Fragment, undefined, React.createElement(Markdown$P, {
+                    children: null
+                  }, imgEl, Curry._1(Mdx.MdxChildren.toReactElement, headChildren)), length > 1 ? arr.slice(1, length) : null);
+        } else {
+          content = null;
+        }
+        break;
+    case /* Unknown */3 :
+        console.log("Received unknown", match[0]);
+        content = null;
+        break;
+    
+  }
+  var link = Util.Url.isAbsolute(href) ? React.createElement("a", {
+          className: "flex items-center",
+          href: href,
+          rel: "noopener noreferrer"
+        }, Util.ReactStuff.s(text), React.createElement(Icon.ArrowRight.make, {
+              className: "ml-1"
+            })) : React.createElement(Link.default, {
+          href: href,
+          children: React.createElement("a", {
+                className: "flex items-center"
+              }, Util.ReactStuff.s(text), React.createElement(Icon.ArrowRight.make, {
+                    className: "ml-1"
+                  }))
+        });
+  return React.createElement("div", {
+              className: "md-url-box text-base border-l-2 border-night-light my-6 py-6 pl-8 pr-10 bg-snow"
+            }, content, React.createElement("div", {
+                  className: "mt-4 text-sky hover:text-sky-80"
+                }, link));
+}
+
+var UrlBox = {
+  imgEl: imgEl,
+  make: Markdown$UrlBox
+};
 
 function idFormat(id) {
   return id;
@@ -37,7 +170,7 @@ var Anchor = {
 function Markdown$H1(Props) {
   var children = Props.children;
   return React.createElement("h1", {
-              className: "text-6xl leading-1 mb-2 font-sans font-medium text-night-dark"
+              className: "text-6xl leading-1 mb-5 font-sans font-medium text-night-dark"
             }, children);
 }
 
@@ -48,7 +181,7 @@ var H1 = {
 function Markdown$H2(Props) {
   var children = Props.children;
   return React.createElement(React.Fragment, undefined, React.createElement("h2", {
-                  className: "group mt-12 text-3xl leading-1 font-sans font-medium text-night-dark"
+                  className: "group mt-12 mb-3 text-3xl leading-1 font-sans font-medium text-night-dark"
                 }, React.createElement("span", {
                       className: "-ml-8 pr-2"
                     }, React.createElement(Markdown$Anchor, {
@@ -63,7 +196,7 @@ var H2 = {
 function Markdown$H3(Props) {
   var children = Props.children;
   return React.createElement("h3", {
-              className: "group text-xl mt-12 leading-3 font-sans font-semibold text-night-darker"
+              className: "group text-xl mt-12 mb-3 leading-3 font-sans font-semibold text-night-darker"
             }, React.createElement("span", {
                   className: "-ml-6 pr-2"
                 }, React.createElement(Markdown$Anchor, {
@@ -78,7 +211,7 @@ var H3 = {
 function Markdown$H4(Props) {
   var children = Props.children;
   return React.createElement("h4", {
-              className: "group text-lg mt-12 leading-2 font-sans font-semibold text-night-dark"
+              className: "group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-night-dark"
             }, React.createElement("span", {
                   className: "-ml-5 pr-2"
                 }, React.createElement(Markdown$Anchor, {
@@ -93,7 +226,7 @@ var H4 = {
 function Markdown$H5(Props) {
   var children = Props.children;
   return React.createElement("h5", {
-              className: "group mt-12 text-xs leading-2 font-sans font-semibold uppercase tracking-wide"
+              className: "group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide"
             }, React.createElement("span", {
                   className: "-ml-5 pr-2"
                 }, React.createElement(Markdown$Anchor, {
@@ -218,18 +351,18 @@ function Markdown$Code(Props) {
   if (className !== undefined) {
     var match = className.split("-");
     if (match.length !== 2) {
-      lang = "none";
+      lang = "text";
     } else {
       var match$1 = match[0];
       if (match$1 === "language") {
         var lang$1 = match[1];
-        lang = lang$1 === "" ? "none" : lang$1;
+        lang = lang$1 === "" ? "text" : lang$1;
       } else {
-        lang = "none";
+        lang = "text";
       }
     }
   } else {
-    lang = "re";
+    lang = "text";
   }
   if (isArray(children)) {
     var code = children.join("");
@@ -252,15 +385,27 @@ var Code = {
   make: Markdown$Code
 };
 
-function Markdown$P(Props) {
+function Markdown$Blockquote(Props) {
   var children = Props.children;
-  return React.createElement("p", {
-              className: "mt-3 leading-4"
-            }, children);
+  return React.createElement("blockquote", {
+              className: "md-blockquote"
+            }, React.createElement(Markdown$Info, {
+                  children: children
+                }));
 }
 
-var P = {
-  make: Markdown$P
+var Blockquote = {
+  make: Markdown$Blockquote
+};
+
+function Markdown$Hr(Props) {
+  return React.createElement("hr", {
+              className: "my-4"
+            });
+}
+
+var Hr = {
+  make: Markdown$Hr
 };
 
 function Markdown$A(Props) {
@@ -374,6 +519,11 @@ var Li = {
 };
 
 var $$default = {
+  Cite: Markdown$Cite,
+  Info: Markdown$Info,
+  Warn: Markdown$Warn,
+  Intro: Markdown$Intro,
+  UrlBox: Markdown$UrlBox,
   p: Markdown$P,
   li: Markdown$Li,
   h1: Markdown$H1,
@@ -387,13 +537,21 @@ var $$default = {
   thead: Markdown$Thead,
   th: Markdown$Th,
   td: Markdown$Td,
+  blockquote: Markdown$Blockquote,
   inlineCode: Markdown$InlineCode,
+  hr: Markdown$Hr,
   code: Markdown$Code,
   pre: Markdown$Pre,
   a: Markdown$A
 };
 
 export {
+  P ,
+  Intro ,
+  Cite ,
+  Info ,
+  Warn ,
+  UrlBox ,
   Anchor ,
   H1 ,
   H2 ,
@@ -407,7 +565,8 @@ export {
   Th ,
   Td ,
   Code ,
-  P ,
+  Blockquote ,
+  Hr ,
   A ,
   Ul ,
   Ol ,
@@ -416,4 +575,4 @@ export {
   $$default as default,
   
 }
-/* react Not a pure module */
+/* imgEl Not a pure module */

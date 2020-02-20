@@ -14,9 +14,7 @@ import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.
 require('../styles/main.css')
 ;
 
-let hljs = require('highlight.js/lib/highlight');
-let reasonHighlightJs = require('reason-highlightjs');
-hljs.registerLanguage('reason', reasonHighlightJs);
+require('./init_hljs.js')
 ;
 
 var indexData = (require('../index_data/belt_api_index.json'));

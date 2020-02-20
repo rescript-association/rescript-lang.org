@@ -21,3 +21,18 @@ module String = {
     }"
   ];
 };
+
+module Url = {
+  let isAbsolute: string => bool = [%raw
+    {|
+    function(str) {
+      var r = new RegExp('^(?:[a-z]+:)?//', 'i');
+      if (r.test(str))
+      {
+        return true
+      }
+      return false;
+    }
+  |}
+  ];
+};

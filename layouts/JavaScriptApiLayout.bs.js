@@ -12,9 +12,7 @@ import * as SidebarLayout from "./SidebarLayout.bs.js";
 require('../styles/main.css')
 ;
 
-let hljs = require('highlight.js/lib/highlight');
-let reasonHighlightJs = require('reason-highlightjs');
-hljs.registerLanguage('reason', reasonHighlightJs);
+require('./init_hljs.js')
 ;
 
 function JavaScriptApiLayout$Docs(Props) {

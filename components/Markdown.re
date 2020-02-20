@@ -1,23 +1,119 @@
 open Util.ReactStuff;
 
-/**
-  ~ This is a quite tricky component ~
+module P = {
+  [@react.component]
+  let make = (~children) => {
+    <p className="md-p leading-4"> children </p>;
+  };
+};
 
-  You need to understand what HTML structure MDX exposes for Markdown.
-  MDX uses Remark to parse Markdown, so be aware that it will put
-  sublists of lists in an extra paragraph.
+// Used for hero like introduction text in
+// e.g Doc sections
+module Intro = {
+  [@react.component]
+  let make = (~children) => {
+    <div className="text-xl mt-8 mb-4"> children </div>;
+  };
+};
 
-  Markdown is a lot about structured text, that means we need quite
-  some cascading to render specific CSS values, like list numbers.
-  Refer to the `styles/_styles.css` for custom CSS stuff.
+module Cite = {
+  [@react.component]
+  let make = (~author: option(string), ~children) => {
+    // For semantics, check out
+    // https://css-tricks.com/quoting-in-html-quotations-citations-and-blockquotes/
+    <div
+      className="my-10 border-l-2 border-fire font-normal pl-10 py-1 text-fire"
+      style={ReactDOMRe.Style.make(~maxWidth="30rem", ())}>
+      <blockquote className="text-3xl italic mb-2"> children </blockquote>
+      {Belt.Option.mapWithDefault(author, React.null, author => {
+         <figcaption className="font-semibold text-sm"> author->s </figcaption>
+       })}
+    </div>;
+  };
+};
 
-  I tried to inline as much styling as possible in the
-  component, to stay true to the Tailwind spirit.
-  Everything else cascading-wise can be found as custom
-  CSS.
- */
-// Used for creating invisible, hoverable <a> anchors
-// for url linking
+module Info = {
+  [@react.component]
+  let make = (~children) => {
+    <div className="border-l-2 border-sky my-5 py-6 pl-8 pr-10 bg-sky-10">
+      children
+    </div>;
+  };
+};
+
+module Warn = {
+  [@react.component]
+  let make = (~children) => {
+    <div className="border-l-2 border-gold my-6 py-6 pl-8 pr-10 bg-gold-10">
+      children
+    </div>;
+  };
+};
+
+module UrlBox = {
+  open Mdx.MdxChildren;
+
+  let imgEl =
+    <img src="/static/hyperlink.svg" className="mr-2 inline-block" />;
+
+  [@react.component]
+  let make = (~text: string, ~href: string, ~children: Mdx.MdxChildren.t) => {
+    let content =
+      switch (classify(children)) {
+      | String(str) => <p> imgEl str->s </p>
+      | Element(el) =>
+        let subChildren = el->getMdxChildren;
+        <p> imgEl subChildren->toReactElement </p>;
+      | Array(arr) =>
+        // Scenario: Take the first element, rewrap its children with the hyperlink img
+        let length = Belt.Array.length(arr);
+        if (length >= 1) {
+          let head = Belt.Array.getExn(arr, 0);
+          let headChildren = head->getMdxChildren;
+
+          <>
+            <P> imgEl headChildren->toReactElement </P>
+            {if (length > 1) {
+               arr
+               ->Js.Array2.slice(~start=1, ~end_=length)
+               ->Mdx.arrToReactElement;
+             } else {
+               React.null;
+             }}
+          </>;
+        } else {
+          React.null;
+        };
+      | Unknown(el) =>
+        Js.log2("Received unknown", el);
+        React.null;
+      };
+
+    // Next.Link doesn't allow any absolute URLs, so we need to render
+    // a plain <a> component when there is an absolute href
+    let link =
+      if (Util.Url.isAbsolute(href)) {
+        <a href rel="noopener noreferrer" className="flex items-center">
+          text->s
+          <Icon.ArrowRight className="ml-1" />
+        </a>;
+      } else {
+        <Next.Link href>
+          <a className="flex items-center">
+            text->s
+            <Icon.ArrowRight className="ml-1" />
+          </a>
+        </Next.Link>;
+      };
+    <div
+      className="md-url-box text-base border-l-2 border-night-light my-6 py-6 pl-8 pr-10 bg-snow">
+      content
+      <div className="mt-4 text-sky hover:text-sky-80"> link </div>
+    </div>;
+  };
+};
+
+// Used for creating invisible, hoverable <a> anchors for url linking
 module Anchor = {
   // Todo: Headers with nested components don't pass a string, we need to flatten
   // everything to a single string first before we are able to use this id transformation
@@ -44,7 +140,7 @@ module H1 = {
   [@react.component]
   let make = (~children) => {
     <h1
-      className="text-6xl leading-1 mb-2 font-sans font-medium text-night-dark">
+      className="text-6xl leading-1 mb-5 font-sans font-medium text-night-dark">
       children
     </h1>;
   };
@@ -56,7 +152,7 @@ module H2 = {
     <>
       // Here we know that children is always a string (## headline)
       <h2
-        className="group mt-12 text-3xl leading-1 font-sans font-medium text-night-dark">
+        className="group mt-12 mb-3 text-3xl leading-1 font-sans font-medium text-night-dark">
         <span className="-ml-8 pr-2">
           <Anchor id={children->Unsafe.elementAsString} />
         </span>
@@ -70,7 +166,7 @@ module H3 = {
   [@react.component]
   let make = (~children) => {
     <h3
-      className="group text-xl mt-12 leading-3 font-sans font-semibold text-night-darker">
+      className="group text-xl mt-12 mb-3 leading-3 font-sans font-semibold text-night-darker">
       <span className="-ml-6 pr-2">
         <Anchor id={children->Unsafe.elementAsString} />
       </span>
@@ -83,7 +179,7 @@ module H4 = {
   [@react.component]
   let make = (~children) => {
     <h4
-      className="group text-lg mt-12 leading-2 font-sans font-semibold text-night-dark">
+      className="group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-night-dark">
       <span className="-ml-5 pr-2">
         <Anchor id={children->Unsafe.elementAsString} />
       </span>
@@ -96,7 +192,7 @@ module H5 = {
   [@react.component]
   let make = (~children) => {
     <h5
-      className="group mt-12 text-xs leading-2 font-sans font-semibold uppercase tracking-wide">
+      className="group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide">
       <span className="-ml-5 pr-2">
         <Anchor id={children->Unsafe.elementAsString} />
       </span>
@@ -169,8 +265,8 @@ module Code = {
   let isString: unknown => bool = [%raw
     thing => "{ return thing instanceof String; }"
   ];
-  external asStringArray: 'a => array(string) = "%identity";
-  external asElement: 'a => React.element = "%identity";
+  external asStringArray: unknown => array(string) = "%identity";
+  external asElement: unknown => React.element = "%identity";
 
   external unknownAsString: unknown => string = "%identity";
 
@@ -204,12 +300,12 @@ module Code = {
       ) => {
     let lang =
       switch (className) {
-      | None => "re"
+      | None => "text"
       | Some(str) =>
         switch (Js.String.split("-", str)) {
-        | [|"language", ""|] => "none"
+        | [|"language", ""|] => "text"
         | [|"language", lang|] => lang
-        | _ => "none"
+        | _ => "text"
         }
       };
 
@@ -229,7 +325,7 @@ module Code = {
       React element without adding our own components.
 
       Scenario 3 (children = string):
-      Children is already a string, we will go straight to the
+      Children is already a string, we don't need to anything special
      */
     if (isArray(children)) {
       // Scenario 1
@@ -246,10 +342,19 @@ module Code = {
   };
 };
 
-module P = {
+module Blockquote = {
   [@react.component]
   let make = (~children) => {
-    <p className="mt-3 leading-4"> children </p>;
+    <blockquote className="md-blockquote">
+      <Info> children </Info>
+    </blockquote>;
+  };
+};
+
+module Hr = {
+  [@react.component]
+  let make = () => {
+    <hr className="my-4" />;
   };
 };
 
@@ -272,7 +377,6 @@ module P = {
 module A = {
   [@react.component]
   let make = (~href, ~children) => {
-
     // We drop any .md / .mdx / .html extensions on every href...
     // Ideally one would check if this link is relative first,
     // but it's very unlikely we'd refer to an absolute URL ending
@@ -375,6 +479,11 @@ module Li = {
    option on our website. */
 let default =
   Mdx.Components.t(
+    ~cite=Cite.make,
+    ~info=Info.make,
+    ~intro=Intro.make,
+    ~warn=Warn.make,
+    ~urlBox=UrlBox.make,
     ~p=P.make,
     ~li=Li.make,
     ~h1=H1.make,
@@ -388,8 +497,10 @@ let default =
     ~thead=Thead.make,
     ~th=Th.make,
     ~td=Td.make,
+    ~hr=Hr.make,
     ~a=A.make,
     ~pre=Pre.make,
+    ~blockquote=Blockquote.make,
     ~inlineCode=InlineCode.make,
     ~code=Code.make,
     (),

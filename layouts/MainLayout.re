@@ -1,6 +1,9 @@
 %raw
 "require('../styles/main.css')";
 
+%raw
+"require('./init_hljs.js')";
+
 module Link = Next.Link;
 
 [@react.component]
@@ -12,13 +15,13 @@ let make = (~children, ~components=Markdown.default) => {
   <>
     <Meta />
     <div className="mb-32 mt-16">
-      <div className="w-full text-night text-lg">
+      <div className="text-night text-lg">
         <Navigation
           isOverlayOpen=isOpen
           toggle={() => setIsOpen(prev => !prev)}
           route={router##route}
         />
-        <div className="flex justify-center">
+        <div className="flex justify-center overflow-hidden">
           <main
             style=minWidth
             className="mt-32 lg:align-center w-full px-4 max-w-xl " /*++ (isOpen ? " hidden" : "")*/>
