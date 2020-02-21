@@ -17,12 +17,14 @@
   let reason = require('reason-highlightjs');
   let bash = require('highlight.js/lib/languages/bash');
   let json = require('highlight.js/lib/languages/json');
+  let text = require('highlight.js/lib/languages/plaintext');
 
   hljs.registerLanguage('reason', reason);
   hljs.registerLanguage('javascript', js);
   hljs.registerLanguage('ocaml', ocaml);
   hljs.registerLanguage('sh', bash);
   hljs.registerLanguage('json', json);
+  hljs.registerLanguage('text', text);
 |};
 
 type pageComponent = React.component(Js.t({.}));
