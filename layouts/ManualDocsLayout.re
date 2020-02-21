@@ -84,7 +84,7 @@ let categories = [|
 
 module Docs = {
   [@react.component]
-  let make = (~components=Markdown.default, ~children) => {
+  let make = (~navHook, ~components=Markdown.default, ~children) => {
     let router = Next.Router.useRouter();
     let route = router##route;
 
@@ -111,7 +111,10 @@ module Docs = {
           let prefix =
             UrlPath.[
               {name: "Docs", href: "/docs"},
-              {name: "Language Manual", href: "/docs/manual/" ++ version ++ "/introduction"},
+              {
+                name: "Language Manual",
+                href: "/docs/manual/" ++ version ++ "/introduction",
+              },
             ];
           UrlPath.toBreadCrumbs(~prefix, v);
         },
@@ -121,6 +124,7 @@ module Docs = {
     let version = "v3.6";
 
     <DocsLayout
+      navHook
       theme=`Reason components categories version title ?activeToc breadcrumbs>
       children
     </DocsLayout>;
@@ -129,7 +133,7 @@ module Docs = {
 
 module Prose = {
   [@react.component]
-  let make = (~children) => {
-    <Docs components=Markdown.default> children </Docs>;
+  let make = (~navHook, ~children) => {
+    <Docs navHook components=Markdown.default> children </Docs>;
   };
 };

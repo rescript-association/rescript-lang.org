@@ -1,10 +1,15 @@
 module Link = Next.Link;
 
 [@react.component]
-let make = (~children, ~components=Markdown.default) => {
+let make =
+    (
+      ~navHook: (bool, (bool => bool) => unit)=React.useState(() => false),
+      ~children,
+      ~components=Markdown.default,
+    ) => {
   let router = Next.Router.useRouter();
   let minWidth = ReactDOMRe.Style.make(~minWidth="20rem", ());
-  let (isOpen, setIsOpen) = React.useState(() => false);
+  let (isOpen, setIsOpen) = navHook;
 
   <>
     <Meta />

@@ -379,17 +379,18 @@ var MobileDrawerButton = {
 };
 
 function SidebarLayout(Props) {
+  var $staropt$star = Props.navHook;
   var theme = Props.theme;
   var components = Props.components;
   var sidebar = Props.sidebar;
   var breadcrumbs = Props.breadcrumbs;
   var route = Props.route;
   var children = Props.children;
-  var match = React.useState((function () {
-          return false;
-        }));
-  var setIsOpen = match[1];
-  var isOpen = match[0];
+  var navHook = $staropt$star !== undefined ? $staropt$star : React.useState((function () {
+            return false;
+          }));
+  var setIsOpen = navHook[1];
+  var isOpen = navHook[0];
   var theme$1 = ColorTheme.toCN(theme);
   var breadcrumbs$1 = Belt_Option.mapWithDefault(breadcrumbs, null, (function (crumbs) {
           return React.createElement(SidebarLayout$BreadCrumbs, {

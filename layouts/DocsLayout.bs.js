@@ -313,6 +313,7 @@ var Sidebar = {
 };
 
 function DocsLayout(Props) {
+  var navHook = Props.navHook;
   var breadcrumbs = Props.breadcrumbs;
   var title = Props.title;
   var version = Props.version;
@@ -357,6 +358,7 @@ function DocsLayout(Props) {
   }
   var sidebar = React.createElement(DocsLayout$Sidebar, tmp);
   var tmp$1 = {
+    navHook: navHook,
     theme: theme,
     components: components,
     sidebar: /* tuple */[

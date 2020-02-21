@@ -10,23 +10,24 @@ import * as Router from "next/router";
 import * as React$1 from "@mdx-js/react";
 
 function MainLayout(Props) {
+  var $staropt$star = Props.navHook;
   var children = Props.children;
-  var $staropt$star = Props.components;
-  var components = $staropt$star !== undefined ? Caml_option.valFromOption($staropt$star) : Markdown.$$default;
+  var $staropt$star$1 = Props.components;
+  var navHook = $staropt$star !== undefined ? $staropt$star : React.useState((function () {
+            return false;
+          }));
+  var components = $staropt$star$1 !== undefined ? Caml_option.valFromOption($staropt$star$1) : Markdown.$$default;
   var router = Router.useRouter();
   var minWidth = {
     minWidth: "20rem"
   };
-  var match = React.useState((function () {
-          return false;
-        }));
-  var setIsOpen = match[1];
+  var setIsOpen = navHook[1];
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, { }), React.createElement("div", {
                   className: "mb-32 mt-16"
                 }, React.createElement("div", {
                       className: "text-night text-lg"
                     }, React.createElement(Navigation.make, {
-                          isOverlayOpen: match[0],
+                          isOverlayOpen: navHook[0],
                           toggle: (function (param) {
                               return Curry._1(setIsOpen, (function (prev) {
                                             return !prev;

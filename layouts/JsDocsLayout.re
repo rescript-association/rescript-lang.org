@@ -153,7 +153,7 @@ let categories = [|
 
 module Docs = {
   [@react.component]
-  let make = (~components=ApiMarkdown.default, ~children) => {
+  let make = (~navHook, ~components=ApiMarkdown.default, ~children) => {
     let router = Next.Router.useRouter();
     let route = router##route;
 
@@ -215,21 +215,18 @@ module Docs = {
         isOpen=isSidebarOpen
         toggle=toggleSidebar
         categories
-        route={
-          router##route;
-        }
+        route={router##route}
         preludeSection
         toplevelNav
       />;
 
     <SidebarLayout
+      navHook
       theme=`Js
       components
       sidebar=(sidebar, toggleSidebar)
-      breadcrumbs=?breadcrumbs
-      route={
-        router##route;
-      }>
+      ?breadcrumbs
+      route={router##route}>
       children
     </SidebarLayout>;
   };
@@ -237,7 +234,7 @@ module Docs = {
 
 module Prose = {
   [@react.component]
-  let make = (~children) => {
-    <Docs components=Markdown.default> children </Docs>;
+  let make = (~navHook, ~children) => {
+    <Docs navHook components=Markdown.default> children </Docs>;
   };
 };

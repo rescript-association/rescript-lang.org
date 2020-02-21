@@ -329,6 +329,7 @@ module Category = Sidebar.Category;
 [@react.component]
 let make =
     (
+      ~navHook,
       ~breadcrumbs: option(list(UrlPath.breadcrumb)),
       ~title: string,
       ~version: option(string)=?,
@@ -368,13 +369,12 @@ let make =
     />;
 
   <SidebarLayout
+    navHook
     theme
     components
     sidebar=(sidebar, toggleSidebar)
     ?breadcrumbs
-    route={
-      router##route;
-    }>
+    route={router##route}>
     children
   </SidebarLayout>;
 };

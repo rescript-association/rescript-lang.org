@@ -204,6 +204,7 @@ var categories = [
 ];
 
 function ManualDocsLayout$Docs(Props) {
+  var navHook = Props.navHook;
   var $staropt$star = Props.components;
   var children = Props.children;
   var components = $staropt$star !== undefined ? Caml_option.valFromOption($staropt$star) : Markdown.$$default;
@@ -242,6 +243,7 @@ function ManualDocsLayout$Docs(Props) {
           return SidebarLayout.UrlPath.toBreadCrumbs(prefix, v);
         }));
   var tmp = {
+    navHook: navHook,
     breadcrumbs: breadcrumbs,
     title: "Language Manual",
     version: "v3.6",
@@ -261,8 +263,10 @@ var Docs = {
 };
 
 function ManualDocsLayout$Prose(Props) {
+  var navHook = Props.navHook;
   var children = Props.children;
   return React.createElement(ManualDocsLayout$Docs, {
+              navHook: navHook,
               components: Markdown.$$default,
               children: children
             });

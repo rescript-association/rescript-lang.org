@@ -7,7 +7,6 @@
 open Util.ReactStuff;
 module Link = Next.Link;
 
-
 module UrlPath = {
   /*
       Example base: /apis/javascript
@@ -393,6 +392,7 @@ module MobileDrawerButton = {
 [@react.component]
 let make =
     (
+      ~navHook: (bool, (bool => bool) => unit)=React.useState(() => false),
       ~theme: ColorTheme.t,
       ~components: Mdx.Components.t,
       // (Sidebar, toggleSidebar)
@@ -401,7 +401,7 @@ let make =
       ~route: string,
       ~children,
     ) => {
-  let (isOpen, setIsOpen) = React.useState(() => false);
+  let (isOpen, setIsOpen) = navHook;
 
   let theme = ColorTheme.toCN(theme);
 

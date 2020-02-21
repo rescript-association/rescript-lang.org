@@ -16,7 +16,10 @@ module Category = DocsLayout.Category;
 module Toc = DocsLayout.Toc;
 
 let overviewNavs = [|
-  NavItem.{name: "Introduction", href: "/docs/reason-compiler/latest/introduction"},
+  NavItem.{
+    name: "Introduction",
+    href: "/docs/reason-compiler/latest/introduction",
+  },
   {name: "Installation", href: "/docs/reason-compiler/latest/installation"},
   {name: "New Project", href: "/docs/reason-compiler/latest/new-project"},
   {name: "Try", href: "/docs/reason-compiler/latest/try"},
@@ -168,7 +171,7 @@ let categories = [|
 |];
 
 [@react.component]
-let make = (~components=Markdown.default, ~children) => {
+let make = (~navHook, ~components=Markdown.default, ~children) => {
   let router = Next.Router.useRouter();
   let route = router##route;
 
@@ -208,7 +211,14 @@ let make = (~components=Markdown.default, ~children) => {
   let version = "v7";
 
   <DocsLayout
-    theme=`Js components categories version title ?activeToc breadcrumbs>
+    navHook
+    theme=`Js
+    components
+    categories
+    version
+    title
+    ?activeToc
+    breadcrumbs>
     children
   </DocsLayout>;
 };

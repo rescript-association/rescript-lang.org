@@ -235,6 +235,7 @@ var categories = [
 ];
 
 function JsDocsLayout$Docs(Props) {
+  var navHook = Props.navHook;
   var $staropt$star = Props.components;
   var children = Props.children;
   var components = $staropt$star !== undefined ? Caml_option.valFromOption($staropt$star) : ApiMarkdown.$$default;
@@ -308,6 +309,7 @@ function JsDocsLayout$Docs(Props) {
         toggle: toggleSidebar
       });
   var tmp$1 = {
+    navHook: navHook,
     theme: /* Js */16617,
     components: components,
     sidebar: /* tuple */[
@@ -328,8 +330,10 @@ var Docs = {
 };
 
 function JsDocsLayout$Prose(Props) {
+  var navHook = Props.navHook;
   var children = Props.children;
   return React.createElement(JsDocsLayout$Docs, {
+              navHook: navHook,
               components: Markdown.$$default,
               children: children
             });

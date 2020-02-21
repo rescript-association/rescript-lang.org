@@ -47,6 +47,7 @@ var H2 = {
 };
 
 var $$default = {
+  Intro: Markdown.Intro.make,
   p: Markdown.P.make,
   li: Markdown.Li.make,
   h1: ApiMarkdown$H1,

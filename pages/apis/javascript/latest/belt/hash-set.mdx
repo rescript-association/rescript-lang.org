@@ -1,15 +1,11 @@
-import { Docs } from "layouts/BeltDocsLayout.bs.js";
-import { make as ApiIntro } from "components/ApiIntro.bs.js";
-export default Docs.make;
-
 # HashSet
 
-<ApiIntro>
+<Intro>
 
 A mutable Hash set which allows customized `hash` behavior.
 All data are parameterized by not its only type but also a unique identity in the time of initialization, so that two HashSets of ints initialized with different hash functions will have different type.
 
-</ApiIntro>
+</Intro>
 
 ```re example
 type t = int;

@@ -6,8 +6,13 @@ import * as MainLayout from "../layouts/MainLayout.bs.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Router from "next/router";
+import * as JsDocsLayout from "../layouts/JsDocsLayout.bs.js";
+import * as BeltDocsLayout from "../layouts/BeltDocsLayout.bs.js";
 import * as ManualDocsLayout from "../layouts/ManualDocsLayout.bs.js";
+import * as JavaScriptApiLayout from "../layouts/JavaScriptApiLayout.bs.js";
 import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
+import * as ReasonReactDocsLayout from "../layouts/ReasonReactDocsLayout.bs.js";
+import * as ReasonCompilerDocsLayout from "../layouts/ReasonCompilerDocsLayout.bs.js";
 
 require('../styles/main.css')
 ;
@@ -86,27 +91,118 @@ function make(props) {
   var component = props.Component;
   var pageProps = props.pageProps;
   var router = Router.useRouter();
+  var navHook = React.useState((function () {
+          return false;
+        }));
   var element = React.createElement(component, pageProps);
   var url = parse(router.route);
+  console.log("Url", url);
   var match = url.base;
   if (match.length === 2) {
     var match$1 = match[0];
-    if (match$1 === "docs") {
-      var match$2 = match[1];
-      if (match$2 === "manual") {
-        var match$3 = url.version;
-        if (typeof match$3 === "number" && match$3 === 0) {
-          return React.createElement(ManualDocsLayout.Prose.make, {
-                      children: element
-                    });
-        }
+    switch (match$1) {
+      case "apis" :
+          var match$2 = match[1];
+          if (match$2 === "javascript") {
+            var match$3 = url.version;
+            if (typeof match$3 === "number" && match$3 === 0) {
+              var pagepath = url.pagepath;
+              var match$4 = pagepath.length;
+              var match$5 = Belt_Array.get(pagepath, 0);
+              var exit = 0;
+              if (match$4 !== 0) {
+                if (match$4 !== 1) {
+                  exit = 2;
+                } else if (match$5 !== undefined) {
+                  switch (match$5) {
+                    case "belt" :
+                        return React.createElement(BeltDocsLayout.Prose.make, {
+                                    navHook: navHook,
+                                    children: element
+                                  });
+                    case "js" :
+                        console.log("HI");
+                        return React.createElement(JsDocsLayout.Prose.make, {
+                                    navHook: navHook,
+                                    children: element
+                                  });
+                    default:
+                      exit = 2;
+                  }
+                } else {
+                  return null;
+                }
+              } else {
+                return React.createElement(JavaScriptApiLayout.Docs.make, {
+                            navHook: navHook,
+                            children: element
+                          });
+              }
+              if (exit === 2) {
+                if (match$5 !== undefined) {
+                  switch (match$5) {
+                    case "belt" :
+                        return React.createElement(BeltDocsLayout.Docs.make, {
+                                    navHook: navHook,
+                                    children: element
+                                  });
+                    case "js" :
+                        return React.createElement(JsDocsLayout.Docs.make, {
+                                    navHook: navHook,
+                                    children: element
+                                  });
+                    default:
+                      return null;
+                  }
+                } else {
+                  return null;
+                }
+              }
+              
+            }
+            
+          }
+          break;
+      case "docs" :
+          var match$6 = match[1];
+          switch (match$6) {
+            case "manual" :
+                var match$7 = url.version;
+                if (typeof match$7 === "number" && match$7 === 0) {
+                  return React.createElement(ManualDocsLayout.Prose.make, {
+                              navHook: navHook,
+                              children: element
+                            });
+                }
+                break;
+            case "reason-compiler" :
+                var match$8 = url.version;
+                if (typeof match$8 === "number" && match$8 === 0) {
+                  return React.createElement(ReasonCompilerDocsLayout.make, {
+                              navHook: navHook,
+                              children: element
+                            });
+                }
+                break;
+            case "reason-react" :
+                var match$9 = url.version;
+                if (typeof match$9 === "number" && match$9 === 0) {
+                  return React.createElement(ReasonReactDocsLayout.make, {
+                              navHook: navHook,
+                              children: element
+                            });
+                }
+                break;
+            default:
+              
+          }
+          break;
+      default:
         
-      }
-      
     }
-    
   }
   return React.createElement(MainLayout.make, {
+              navHook: navHook,
               children: element
             });
 }

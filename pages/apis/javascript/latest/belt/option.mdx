@@ -1,10 +1,6 @@
-import { Docs } from "layouts/BeltDocsLayout.bs.js";
-import { make as ApiIntro } from "components/ApiIntro.bs.js";
-export default Docs.make;
-
 # Option
 
-<ApiIntro>
+<Intro>
 
 In Belt we represent the existence and nonexistence of a value by wrapping it
 with the `option` type.  In order to make it a bit more convenient to work with
@@ -12,7 +8,7 @@ option-types, Belt provides utility-functions for it.
 
 The `option` type is a part of the Reason / OCaml standard library which is defined like this:
 
-</ApiIntro>
+</Intro>
 
 ```re sig
 type option('a) = None | Some('a)

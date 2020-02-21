@@ -218,6 +218,7 @@ var categories = [
 ];
 
 function ReasonCompilerDocsLayout(Props) {
+  var navHook = Props.navHook;
   var $staropt$star = Props.components;
   var children = Props.children;
   var components = $staropt$star !== undefined ? Caml_option.valFromOption($staropt$star) : Markdown.$$default;
@@ -256,6 +257,7 @@ function ReasonCompilerDocsLayout(Props) {
           return SidebarLayout.UrlPath.toBreadCrumbs(prefix, v);
         }));
   var tmp = {
+    navHook: navHook,
     breadcrumbs: breadcrumbs,
     title: "BuckleScript",
     version: "v7",

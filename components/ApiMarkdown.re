@@ -39,6 +39,7 @@ module H2 = {
 
 let default =
   Mdx.Components.t(
+    ~intro=Intro.make,
     ~p=P.make,
     ~li=Li.make,
     ~h1=H1.make,
