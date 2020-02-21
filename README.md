@@ -134,9 +134,9 @@ need to fall back to `pages/apis` instead.
 /apis/javascript/latest/js
 /apis/javascript/latest/node
 
-/apis/javascript/6.2.1 (overview)
-/apis/javascript/6.2.1/node
-/apis/javascript/6.2.1/belt
+/apis/javascript/v6.2.1 (overview)
+/apis/javascript/v6.2.1/node
+/apis/javascript/v6.2.1/belt
 
 /apis/ (overview / version independent)
 ```
