@@ -139,8 +139,6 @@ let make = (props: props): React.element => {
 
   let url = router##route->Url.parse;
 
-  Js.log2("Url", url);
-
   switch (url) {
   // docs routes
   | {base: [|"docs", "manual"|], version: Latest} =>

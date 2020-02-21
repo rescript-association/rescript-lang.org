@@ -96,7 +96,6 @@ function make(props) {
         }));
   var element = React.createElement(component, pageProps);
   var url = parse(router.route);
-  console.log("Url", url);
   var match = url.base;
   if (match.length === 2) {
     var match$1 = match[0];
