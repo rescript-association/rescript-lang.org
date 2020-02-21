@@ -4,13 +4,6 @@
     in other API related layouts, such as the Markdown representation
     or the Sidebar component.
  */
-
-%raw
-"require('../styles/main.css')";
-
-%raw
-"require('./init_hljs.js')";
-
 open Util.ReactStuff;
 module Link = Next.Link;
 

@@ -11,12 +11,6 @@ import * as Router from "next/router";
 import * as SidebarLayout from "./SidebarLayout.bs.js";
 import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
-require('../styles/main.css')
-;
-
-require('./init_hljs.js')
-;
-
 var tocData = (require('../index_data/reason_compiler_toc.json'));
 
 var overviewNavs = [
@@ -304,4 +298,4 @@ export {
   make ,
   
 }
-/*  Not a pure module */
+/* tocData Not a pure module */

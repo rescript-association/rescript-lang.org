@@ -9,12 +9,6 @@ import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Router from "next/router";
 import * as React$1 from "@mdx-js/react";
 
-require('../styles/main.css')
-;
-
-require('./init_hljs.js')
-;
-
 function MainLayout(Props) {
   var children = Props.children;
   var $staropt$star = Props.components;
@@ -61,4 +55,4 @@ export {
   make ,
   
 }
-/*  Not a pure module */
+/* Meta Not a pure module */

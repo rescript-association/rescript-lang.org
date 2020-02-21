@@ -1,9 +1,3 @@
-%raw
-"require('../styles/main.css')";
-
-%raw
-"require('./init_hljs.js')";
-
 module Link = Next.Link;
 
 // Structure defined by `scripts/extract-tocs.js`

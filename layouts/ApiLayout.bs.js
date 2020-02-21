@@ -7,12 +7,6 @@ import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as MainLayout from "./MainLayout.bs.js";
 
-require('../styles/main.css')
-;
-
-require('./init_hljs.js')
-;
-
 function ApiLayout$MainMd$P(Props) {
   var children = Props.children;
   return React.createElement("p", {
@@ -158,4 +152,4 @@ export {
   make ,
   
 }
-/*  Not a pure module */
+/* react Not a pure module */

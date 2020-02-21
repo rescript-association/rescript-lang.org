@@ -9,12 +9,6 @@ import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Router from "next/router";
 import * as SidebarLayout from "./SidebarLayout.bs.js";
 
-require('../styles/main.css')
-;
-
-require('./init_hljs.js')
-;
-
 function JavaScriptApiLayout$Docs(Props) {
   Props.theme;
   var $staropt$star = Props.components;
@@ -98,4 +92,4 @@ export {
   Prose ,
   
 }
-/*  Not a pure module */
+/* react Not a pure module */

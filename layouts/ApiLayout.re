@@ -1,9 +1,3 @@
-%raw
-"require('../styles/main.css')";
-
-%raw
-"require('./init_hljs.js')";
-
 open Util.ReactStuff;
 module Link = Next.Link;
 

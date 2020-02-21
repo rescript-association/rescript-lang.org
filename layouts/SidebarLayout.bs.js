@@ -16,12 +16,6 @@ import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as React$1 from "@mdx-js/react";
 import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
-require('../styles/main.css')
-;
-
-require('./init_hljs.js')
-;
-
 function parse(base, route) {
   var allPaths = route.replace(base + "/", "").split("/");
   var total = allPaths.length;
@@ -456,4 +450,4 @@ export {
   make ,
   
 }
-/*  Not a pure module */
+/* Tag Not a pure module */
