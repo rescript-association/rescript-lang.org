@@ -174,12 +174,7 @@ module Docs = {
     //       listen to anchor changes (#get, #map,...)
     let preludeSection =
       route !== "/apis/javascript/latest/belt"
-        ? <Sidebar.CollapsibleSection
-            onHeaderClick={_ => setSidebarOpen(_ => false)}
-            headers
-            moduleName
-          />
-        : React.null;
+        ? <Sidebar.CollapsibleSection headers moduleName /> : React.null;
 
     let sidebar =
       <Sidebar
@@ -192,7 +187,11 @@ module Docs = {
       />;
 
     <SidebarLayout
-      theme=`Js components sidebar=(sidebar, toggleSidebar) ?breadcrumbs>
+      theme=`Js
+      components
+      sidebarState=(isSidebarOpen, setSidebarOpen)
+      sidebar
+      ?breadcrumbs>
       children
     </SidebarLayout>;
   };

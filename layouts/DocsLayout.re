@@ -362,7 +362,11 @@ let make =
     />;
 
   <SidebarLayout
-    theme components sidebar=(sidebar, toggleSidebar) ?breadcrumbs>
+    theme
+    components
+    sidebarState=(isSidebarOpen, setSidebarOpen)
+    sidebar
+    ?breadcrumbs>
     children
   </SidebarLayout>;
 };

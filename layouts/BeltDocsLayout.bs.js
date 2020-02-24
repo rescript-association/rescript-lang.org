@@ -225,6 +225,7 @@ function BeltDocsLayout$Docs(Props) {
           return false;
         }));
   var setSidebarOpen = match[1];
+  var isSidebarOpen = match[0];
   var toggleSidebar = function (param) {
     return Curry._1(setSidebarOpen, (function (prev) {
                   return !prev;
@@ -266,11 +267,6 @@ function BeltDocsLayout$Docs(Props) {
     toplevelNav = null;
   }
   var preludeSection = route !== "/apis/javascript/latest/belt" ? React.createElement(SidebarLayout.Sidebar.CollapsibleSection.make, {
-          onHeaderClick: (function (param) {
-              return Curry._1(setSidebarOpen, (function (param) {
-                            return false;
-                          }));
-            }),
           headers: headers,
           moduleName: moduleName
         }) : null;
@@ -279,16 +275,17 @@ function BeltDocsLayout$Docs(Props) {
         route: router.route,
         toplevelNav: toplevelNav,
         preludeSection: preludeSection,
-        isOpen: match[0],
+        isOpen: isSidebarOpen,
         toggle: toggleSidebar
       });
   var tmp$1 = {
     theme: /* Js */16617,
     components: components,
-    sidebar: /* tuple */[
-      sidebar,
-      toggleSidebar
+    sidebarState: /* tuple */[
+      isSidebarOpen,
+      setSidebarOpen
     ],
+    sidebar: sidebar,
     children: children
   };
   if (breadcrumbs !== undefined) {

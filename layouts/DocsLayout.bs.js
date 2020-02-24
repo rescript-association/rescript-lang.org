@@ -307,6 +307,7 @@ function DocsLayout(Props) {
           return false;
         }));
   var setSidebarOpen = match[1];
+  var isSidebarOpen = match[0];
   var toggleSidebar = function (param) {
     return Curry._1(setSidebarOpen, (function (prev) {
                   return !prev;
@@ -337,7 +338,7 @@ function DocsLayout(Props) {
     route: route,
     title: title,
     preludeSection: preludeSection,
-    isOpen: match[0],
+    isOpen: isSidebarOpen,
     toggle: toggleSidebar
   };
   if (activeToc !== undefined) {
@@ -347,10 +348,11 @@ function DocsLayout(Props) {
   var tmp$1 = {
     theme: theme,
     components: components,
-    sidebar: /* tuple */[
-      sidebar,
-      toggleSidebar
+    sidebarState: /* tuple */[
+      isSidebarOpen,
+      setSidebarOpen
     ],
+    sidebar: sidebar,
     children: children
   };
   if (breadcrumbs !== undefined) {

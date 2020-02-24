@@ -42,6 +42,7 @@ function JavaScriptApiLayout$Docs(Props) {
           return false;
         }));
   var setSidebarOpen = match[1];
+  var isSidebarOpen = match[0];
   var toggleSidebar = function (param) {
     return Curry._1(setSidebarOpen, (function (prev) {
                   return !prev;
@@ -50,16 +51,17 @@ function JavaScriptApiLayout$Docs(Props) {
   var sidebar = React.createElement(SidebarLayout.Sidebar.make, {
         categories: categories,
         route: router.route,
-        isOpen: match[0],
+        isOpen: isSidebarOpen,
         toggle: toggleSidebar
       });
   return React.createElement(SidebarLayout.make, {
               theme: /* Js */16617,
               components: components,
-              sidebar: /* tuple */[
-                sidebar,
-                toggleSidebar
+              sidebarState: /* tuple */[
+                isSidebarOpen,
+                setSidebarOpen
               ],
+              sidebar: sidebar,
               children: children
             });
 }

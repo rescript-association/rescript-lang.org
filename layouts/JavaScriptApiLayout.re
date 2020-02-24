@@ -34,7 +34,11 @@ module Docs = {
         route={router.route}
       />;
 
-    <SidebarLayout theme=`Js components sidebar=(sidebar, toggleSidebar)>
+    <SidebarLayout
+      theme=`Js
+      components
+      sidebarState=(isSidebarOpen, setSidebarOpen)
+      sidebar>
       children
     </SidebarLayout>;
   };
