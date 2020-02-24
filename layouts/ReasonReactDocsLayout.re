@@ -105,9 +105,9 @@ let categories = [|
 |];
 
 [@react.component]
-let make = (~navHook, ~components=Markdown.default, ~children) => {
+let make = (~components=Markdown.default, ~children) => {
   let router = Next.Router.useRouter();
-  let route = router##route;
+  let route = router.route;
 
   let activeToc: option(Toc.t) =
     Belt.Option.(
@@ -145,7 +145,6 @@ let make = (~navHook, ~components=Markdown.default, ~children) => {
   let version = "v0.7";
 
   <DocsLayout
-    navHook
     theme=`Js
     components
     categories

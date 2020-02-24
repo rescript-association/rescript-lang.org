@@ -133,36 +133,30 @@ let make = (props: props): React.element => {
 
   let router = Next.Router.useRouter();
 
-  let navHook = React.useState(() => false);
+  let content = React.createElement(component, pageProps);
 
-  let element = React.createElement(component, pageProps);
-
-  let url = router##route->Url.parse;
+  let url = router.route->Url.parse;
 
   switch (url) {
   // docs routes
   | {base: [|"docs", "manual"|], version: Latest} =>
-    <ManualDocsLayout.Prose navHook> element </ManualDocsLayout.Prose>
+    <ManualDocsLayout.Prose> content </ManualDocsLayout.Prose>
   | {base: [|"docs", "reason-compiler"|], version: Latest} =>
-    <ReasonCompilerDocsLayout navHook> element </ReasonCompilerDocsLayout>
+    <ReasonCompilerDocsLayout> content </ReasonCompilerDocsLayout>
   | {base: [|"docs", "reason-react"|], version: Latest} =>
-    <ReasonReactDocsLayout navHook> element </ReasonReactDocsLayout>
+    <ReasonReactDocsLayout> content </ReasonReactDocsLayout>
   // apis routes
   | {base: [|"apis", "javascript"|], version: Latest, pagepath} =>
     switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 0)) {
-    | (0, _) =>
-      <JavaScriptApiLayout.Docs navHook> element </JavaScriptApiLayout.Docs>
-    | (1, Some("js")) =>
-      Js.log("HI");
-      <JsDocsLayout.Prose navHook> element </JsDocsLayout.Prose>
+    | (0, _) => <JavaScriptApiLayout.Docs> content </JavaScriptApiLayout.Docs>
+    | (1, Some("js")) => <JsDocsLayout.Prose> content </JsDocsLayout.Prose>
     | (1, Some("belt")) =>
-      <BeltDocsLayout.Prose navHook> element </BeltDocsLayout.Prose>
-    | (_, Some("js")) =>
-      <JsDocsLayout.Docs navHook> element </JsDocsLayout.Docs>
+      <BeltDocsLayout.Prose> content </BeltDocsLayout.Prose>
+    | (_, Some("js")) => <JsDocsLayout.Docs> content </JsDocsLayout.Docs>
     | (_, Some("belt")) =>
-      <BeltDocsLayout.Docs navHook> element </BeltDocsLayout.Docs>
+      <BeltDocsLayout.Docs> content </BeltDocsLayout.Docs>
     | _ => React.null
     }
-  | _ => <MainLayout navHook> element </MainLayout>
+  | _ => <MainLayout> content </MainLayout>
   };
 };

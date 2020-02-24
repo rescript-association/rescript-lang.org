@@ -91,10 +91,7 @@ function make(props) {
   var component = props.Component;
   var pageProps = props.pageProps;
   var router = Router.useRouter();
-  var navHook = React.useState((function () {
-          return false;
-        }));
-  var element = React.createElement(component, pageProps);
+  var content = React.createElement(component, pageProps);
   var url = parse(router.route);
   var match = url.base;
   if (match.length === 2) {
@@ -116,14 +113,11 @@ function make(props) {
                   switch (match$5) {
                     case "belt" :
                         return React.createElement(BeltDocsLayout.Prose.make, {
-                                    navHook: navHook,
-                                    children: element
+                                    children: content
                                   });
                     case "js" :
-                        console.log("HI");
                         return React.createElement(JsDocsLayout.Prose.make, {
-                                    navHook: navHook,
-                                    children: element
+                                    children: content
                                   });
                     default:
                       exit = 2;
@@ -133,8 +127,7 @@ function make(props) {
                 }
               } else {
                 return React.createElement(JavaScriptApiLayout.Docs.make, {
-                            navHook: navHook,
-                            children: element
+                            children: content
                           });
               }
               if (exit === 2) {
@@ -142,13 +135,11 @@ function make(props) {
                   switch (match$5) {
                     case "belt" :
                         return React.createElement(BeltDocsLayout.Docs.make, {
-                                    navHook: navHook,
-                                    children: element
+                                    children: content
                                   });
                     case "js" :
                         return React.createElement(JsDocsLayout.Docs.make, {
-                                    navHook: navHook,
-                                    children: element
+                                    children: content
                                   });
                     default:
                       return null;
@@ -169,8 +160,7 @@ function make(props) {
                 var match$7 = url.version;
                 if (typeof match$7 === "number" && match$7 === 0) {
                   return React.createElement(ManualDocsLayout.Prose.make, {
-                              navHook: navHook,
-                              children: element
+                              children: content
                             });
                 }
                 break;
@@ -178,8 +168,7 @@ function make(props) {
                 var match$8 = url.version;
                 if (typeof match$8 === "number" && match$8 === 0) {
                   return React.createElement(ReasonCompilerDocsLayout.make, {
-                              navHook: navHook,
-                              children: element
+                              children: content
                             });
                 }
                 break;
@@ -187,8 +176,7 @@ function make(props) {
                 var match$9 = url.version;
                 if (typeof match$9 === "number" && match$9 === 0) {
                   return React.createElement(ReasonReactDocsLayout.make, {
-                              navHook: navHook,
-                              children: element
+                              children: content
                             });
                 }
                 break;
@@ -201,8 +189,7 @@ function make(props) {
     }
   }
   return React.createElement(MainLayout.make, {
-              navHook: navHook,
-              children: element
+              children: content
             });
 }
 

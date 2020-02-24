@@ -115,9 +115,9 @@ let categories = [|
 
 module Docs = {
   [@react.component]
-  let make = (~navHook, ~components=ApiMarkdown.default, ~children) => {
+  let make = (~components=ApiMarkdown.default, ~children) => {
     let router = Next.Router.useRouter();
-    let route = router##route;
+    let route = router.route;
 
     // Gather data for the CollapsibleSection
     let headers =
@@ -178,22 +178,13 @@ module Docs = {
         isOpen=isSidebarOpen
         toggle=toggleSidebar
         categories
-        route={
-          router##route;
-        }
+        route={router.route}
         toplevelNav
         preludeSection
       />;
 
     <SidebarLayout
-      navHook
-      theme=`Js
-      components
-      sidebar=(sidebar, toggleSidebar)
-      ?breadcrumbs
-      route={
-        router##route;
-      }>
+      theme=`Js components sidebar=(sidebar, toggleSidebar) ?breadcrumbs>
       children
     </SidebarLayout>;
   };
@@ -201,7 +192,7 @@ module Docs = {
 
 module Prose = {
   [@react.component]
-  let make = (~navHook, ~children) => {
-    <Docs navHook components=Markdown.default> children </Docs>;
+  let make = (~children) => {
+    <Docs components=Markdown.default> children </Docs>;
   };
 };

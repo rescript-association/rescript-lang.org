@@ -204,7 +204,6 @@ var categories = [
 ];
 
 function BeltDocsLayout$Docs(Props) {
-  var navHook = Props.navHook;
   var $staropt$star = Props.components;
   var children = Props.children;
   var components = $staropt$star !== undefined ? Caml_option.valFromOption($staropt$star) : ApiMarkdown.$$default;
@@ -278,14 +277,12 @@ function BeltDocsLayout$Docs(Props) {
         toggle: toggleSidebar
       });
   var tmp$1 = {
-    navHook: navHook,
     theme: /* Js */16617,
     components: components,
     sidebar: /* tuple */[
       sidebar,
       toggleSidebar
     ],
-    route: router.route,
     children: children
   };
   if (breadcrumbs !== undefined) {
@@ -299,10 +296,8 @@ var Docs = {
 };
 
 function BeltDocsLayout$Prose(Props) {
-  var navHook = Props.navHook;
   var children = Props.children;
   return React.createElement(BeltDocsLayout$Docs, {
-              navHook: navHook,
               components: Markdown.$$default,
               children: children
             });

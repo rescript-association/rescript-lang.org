@@ -23,7 +23,43 @@ module Link = {
 };
 
 module Router = {
-  type router = {. "route": string, "asPath": string};
+  /*
+      Make sure to only register events via a useEffect hook!
+   */
+  module Events = {
+    type t;
+
+    [@bs.send]
+    external on:
+      (
+        t,
+        [@bs.string] [
+          | `routeChangeStart(string => unit)
+          | `routeChangeComplete(string => unit)
+          | `hashChangeComplete(string => unit)
+        ]
+      ) =>
+      unit =
+      "on";
+
+    [@bs.send]
+    external off:
+      (
+        t,
+        [@bs.string] [
+          | `routeChangeStart(string => unit)
+          | `routeChangeComplete(string => unit)
+          | `hashChangeComplete(string => unit)
+        ]
+      ) => unit =
+      "off";
+  };
+
+  type router = {
+    route: string,
+    asPath: string,
+    events: Events.t,
+  };
 
   [@bs.module "next/router"] external useRouter: unit => router = "useRouter";
 };

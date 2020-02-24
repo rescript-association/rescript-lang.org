@@ -379,18 +379,15 @@ var MobileDrawerButton = {
 };
 
 function SidebarLayout(Props) {
-  var $staropt$star = Props.navHook;
   var theme = Props.theme;
   var components = Props.components;
   var sidebar = Props.sidebar;
   var breadcrumbs = Props.breadcrumbs;
-  var route = Props.route;
   var children = Props.children;
-  var navHook = $staropt$star !== undefined ? $staropt$star : React.useState((function () {
-            return false;
-          }));
-  var setIsOpen = navHook[1];
-  var isOpen = navHook[0];
+  var match = React.useState((function () {
+          return false;
+        }));
+  var isOpen = match[0];
   var theme$1 = ColorTheme.toCN(theme);
   var breadcrumbs$1 = Belt_Option.mapWithDefault(breadcrumbs, null, (function (crumbs) {
           return React.createElement(SidebarLayout$BreadCrumbs, {
@@ -403,13 +400,10 @@ function SidebarLayout(Props) {
                 }, React.createElement("div", {
                       className: "w-full text-night font-base"
                     }, React.createElement(Navigation.make, {
-                          isOverlayOpen: isOpen,
-                          toggle: (function (param) {
-                              return Curry._1(setIsOpen, (function (prev) {
-                                            return !prev;
-                                          }));
-                            }),
-                          route: route
+                          overlayState: /* tuple */[
+                            isOpen,
+                            match[1]
+                          ]
                         }), React.createElement("div", {
                           className: "flex justify-center"
                         }, React.createElement("div", {

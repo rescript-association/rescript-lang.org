@@ -1,39 +1,28 @@
 
 
 import * as Meta from "../components/Meta.bs.js";
-import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Markdown from "../components/Markdown.bs.js";
 import * as Navigation from "../components/Navigation.bs.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
-import * as Router from "next/router";
 import * as React$1 from "@mdx-js/react";
 
 function MainLayout(Props) {
-  var $staropt$star = Props.navHook;
   var children = Props.children;
-  var $staropt$star$1 = Props.components;
-  var navHook = $staropt$star !== undefined ? $staropt$star : React.useState((function () {
-            return false;
-          }));
-  var components = $staropt$star$1 !== undefined ? Caml_option.valFromOption($staropt$star$1) : Markdown.$$default;
-  var router = Router.useRouter();
+  var $staropt$star = Props.components;
+  var components = $staropt$star !== undefined ? Caml_option.valFromOption($staropt$star) : Markdown.$$default;
   var minWidth = {
     minWidth: "20rem"
   };
-  var setIsOpen = navHook[1];
+  var overlayState = React.useState((function () {
+          return false;
+        }));
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, { }), React.createElement("div", {
                   className: "mb-32 mt-16"
                 }, React.createElement("div", {
                       className: "text-night text-lg"
                     }, React.createElement(Navigation.make, {
-                          isOverlayOpen: navHook[0],
-                          toggle: (function (param) {
-                              return Curry._1(setIsOpen, (function (prev) {
-                                            return !prev;
-                                          }));
-                            }),
-                          route: router.route
+                          overlayState: overlayState
                         }), React.createElement("div", {
                           className: "flex justify-center overflow-hidden"
                         }, React.createElement("main", {

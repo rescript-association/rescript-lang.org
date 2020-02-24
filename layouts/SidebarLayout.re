@@ -385,23 +385,17 @@ module MobileDrawerButton = {
   };
 };
 
-/*
-    sidebarOpen: shows if sidebar is open for mobile view
-    toggleSidebar: toggles sidebar for mobile view
- */
 [@react.component]
 let make =
     (
-      ~navHook: (bool, (bool => bool) => unit)=React.useState(() => false),
       ~theme: ColorTheme.t,
       ~components: Mdx.Components.t,
-      // (Sidebar, toggleSidebar)
+      // (Sidebar, toggleSidebar) ... for toggling sidebar in mobile view
       ~sidebar: (React.element, unit => unit),
       ~breadcrumbs: option(list(UrlPath.breadcrumb))=?,
-      ~route: string,
       ~children,
     ) => {
-  let (isOpen, setIsOpen) = navHook;
+  let (isOpen, setIsOpen) = React.useState(() => false);
 
   let theme = ColorTheme.toCN(theme);
 
@@ -415,11 +409,7 @@ let make =
     <Meta />
     <div className={"mt-16 min-w-20 " ++ theme}>
       <div className="w-full text-night font-base">
-        <Navigation
-          isOverlayOpen=isOpen
-          toggle={() => setIsOpen(prev => !prev)}
-          route
-        />
+        <Navigation overlayState=(isOpen, setIsOpen) />
         <div className="flex justify-center">
           <div className="lg:align-center w-full max-w-xl">
             <Mdx.Provider components>

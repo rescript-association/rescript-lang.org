@@ -10,7 +10,6 @@ import * as Router from "next/router";
 import * as SidebarLayout from "./SidebarLayout.bs.js";
 
 function JavaScriptApiLayout$Docs(Props) {
-  var navHook = Props.navHook;
   Props.theme;
   var $staropt$star = Props.components;
   var children = Props.children;
@@ -55,14 +54,12 @@ function JavaScriptApiLayout$Docs(Props) {
         toggle: toggleSidebar
       });
   return React.createElement(SidebarLayout.make, {
-              navHook: navHook,
               theme: /* Js */16617,
               components: components,
               sidebar: /* tuple */[
                 sidebar,
                 toggleSidebar
               ],
-              route: router.route,
               children: children
             });
 }
@@ -72,10 +69,8 @@ var Docs = {
 };
 
 function JavaScriptApiLayout$Prose(Props) {
-  var navHook = Props.navHook;
   var children = Props.children;
   return React.createElement(JavaScriptApiLayout$Docs, {
-              navHook: navHook,
               components: Markdown.$$default,
               children: children
             });

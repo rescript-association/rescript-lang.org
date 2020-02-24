@@ -37,7 +37,6 @@ var categories = [{
   }];
 
 function GenTypeDocsLayout(Props) {
-  var navHook = Props.navHook;
   var $staropt$star = Props.components;
   var children = Props.children;
   var components = $staropt$star !== undefined ? Caml_option.valFromOption($staropt$star) : Markdown.$$default;
@@ -76,7 +75,6 @@ function GenTypeDocsLayout(Props) {
           return SidebarLayout.UrlPath.toBreadCrumbs(prefix, v);
         }));
   var tmp = {
-    navHook: navHook,
     breadcrumbs: breadcrumbs,
     title: "GenType",
     version: "v3",

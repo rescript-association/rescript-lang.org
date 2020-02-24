@@ -5,8 +5,7 @@ module Sidebar = SidebarLayout.Sidebar;
 /* Used for API docs (structured data) */
 module Docs = {
   [@react.component]
-  let make =
-      (~navHook, ~theme=`Reason, ~components=ApiMarkdown.default, ~children) => {
+  let make = (~theme=`Reason, ~components=ApiMarkdown.default, ~children) => {
     let router = Next.Router.useRouter();
     let theme = ColorTheme.toCN(`Js);
 
@@ -32,15 +31,10 @@ module Docs = {
         isOpen=isSidebarOpen
         toggle=toggleSidebar
         categories
-        route={router##route}
+        route={router.route}
       />;
 
-    <SidebarLayout
-      navHook
-      theme=`Js
-      components
-      sidebar=(sidebar, toggleSidebar)
-      route={router##route}>
+    <SidebarLayout theme=`Js components sidebar=(sidebar, toggleSidebar)>
       children
     </SidebarLayout>;
   };
@@ -54,7 +48,7 @@ module Docs = {
  */
 module Prose = {
   [@react.component]
-  let make = (~navHook, ~children) => {
-    <Docs navHook components=Markdown.default> children </Docs>;
+  let make = (~children) => {
+    <Docs components=Markdown.default> children </Docs>;
   };
 };
