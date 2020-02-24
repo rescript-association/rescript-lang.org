@@ -34,9 +34,10 @@ var H1 = {
 };
 
 function ApiMarkdown$H2(Props) {
-  var children = Props.children;
+  var id = Props.id;
+  Props.children;
   return React.createElement(React.Fragment, undefined, React.createElement(ApiMarkdown$InvisibleAnchor, {
-                  id: children
+                  id: id
                 }), React.createElement("div", {
                   className: "border-b border-gray-200 my-20"
                 }));

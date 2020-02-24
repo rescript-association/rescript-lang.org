@@ -179,13 +179,14 @@ var H1 = {
 };
 
 function Markdown$H2(Props) {
+  var id = Props.id;
   var children = Props.children;
   return React.createElement(React.Fragment, undefined, React.createElement("h2", {
                   className: "group mt-12 mb-3 text-3xl leading-1 font-sans font-medium text-night-dark"
                 }, React.createElement("span", {
                       className: "-ml-8 pr-2"
                     }, React.createElement(Markdown$Anchor, {
-                          id: children
+                          id: id
                         })), children));
 }
 
@@ -194,13 +195,14 @@ var H2 = {
 };
 
 function Markdown$H3(Props) {
+  var id = Props.id;
   var children = Props.children;
   return React.createElement("h3", {
               className: "group text-xl mt-12 mb-3 leading-3 font-sans font-semibold text-night-darker"
             }, React.createElement("span", {
                   className: "-ml-6 pr-2"
                 }, React.createElement(Markdown$Anchor, {
-                      id: children
+                      id: id
                     })), children);
 }
 
@@ -209,13 +211,14 @@ var H3 = {
 };
 
 function Markdown$H4(Props) {
+  var id = Props.id;
   var children = Props.children;
   return React.createElement("h4", {
               className: "group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-night-dark"
             }, React.createElement("span", {
                   className: "-ml-5 pr-2"
                 }, React.createElement(Markdown$Anchor, {
-                      id: children
+                      id: id
                     })), children);
 }
 
@@ -224,13 +227,14 @@ var H4 = {
 };
 
 function Markdown$H5(Props) {
+  var id = Props.id;
   var children = Props.children;
   return React.createElement("h5", {
               className: "group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide"
             }, React.createElement("span", {
                   className: "-ml-5 pr-2"
                 }, React.createElement(Markdown$Anchor, {
-                      id: children
+                      id: id
                     })), children);
 }
 

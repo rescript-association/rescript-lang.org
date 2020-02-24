@@ -4,6 +4,7 @@ import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
 import * as Markdown from "../components/Markdown.bs.js";
+import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as ApiMarkdown from "../components/ApiMarkdown.bs.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
@@ -210,7 +211,12 @@ function BeltDocsLayout$Docs(Props) {
   var router = Router.useRouter();
   var route = router.route;
   var headers = Belt_Option.getWithDefault(Belt_Option.map(Js_dict.get(indexData, route), (function (data) {
-              return data.headers;
+              return Belt_Array.map(data.headers, (function (header) {
+                            return /* tuple */[
+                                    header.name,
+                                    "#" + header.href
+                                  ];
+                          }));
             })), []);
   var moduleName = Belt_Option.getWithDefault(Belt_Option.map(Js_dict.get(indexData, route), (function (data) {
               return data.moduleName;

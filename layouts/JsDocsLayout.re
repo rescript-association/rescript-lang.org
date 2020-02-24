@@ -5,7 +5,12 @@ let indexData:
   Js.Dict.t({
     .
     "moduleName": string,
-    "headers": array(string),
+    "headers":
+      array({
+        .
+        "name": string,
+        "href": string,
+      }),
   }) = [%raw
   "require('../index_data/js_api_index.json')"
 ];
@@ -161,7 +166,10 @@ module Docs = {
     let headers =
       Belt.Option.(
         Js.Dict.get(indexData, route)
-        ->map(data => data##headers)
+        ->map(data => {
+            data##headers
+            ->Belt.Array.map(header => (header##name, "#" ++ header##href))
+          })
         ->getWithDefault([||])
       );
 

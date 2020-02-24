@@ -262,10 +262,10 @@ function SidebarLayout$Sidebar$CollapsibleSection(Props) {
         }));
   var setCollapsed = match[1];
   var collapsed = match[0];
-  var items = Belt_Array.map(headers, (function (header) {
+  var items = Belt_Array.map(headers, (function (param) {
           return {
-                  name: header,
-                  href: "#" + header
+                  name: param[0],
+                  href: param[1]
                 };
         }));
   var direction = collapsed ? /* Down */759637122 : /* Up */19067;

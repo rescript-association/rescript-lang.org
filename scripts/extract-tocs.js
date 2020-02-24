@@ -5,6 +5,7 @@
 const unified = require("unified");
 const markdown = require("remark-parse");
 const stringify = require("remark-stringify");
+const slug = require('remark-slug');
 const glob = require("glob");
 const path = require("path");
 const fs = require("fs");
@@ -34,8 +35,10 @@ const headers = options => (tree, file) => {
     }
     if (child.type === "heading" && child.depth === 2) {
       if (child.children.length > 0) {
+        // Take the id generated from remark-slug
         const headerValue = collapseHeaderChildren(child.children);
-        headers.push(headerValue);
+        const id = child.data.id || "";
+        headers.push({ name: headerValue, href: id });
       }
     }
   });
@@ -45,6 +48,7 @@ const headers = options => (tree, file) => {
 
 const processor = unified()
   .use(markdown, { gfm: true })
+  .use(slug)
   .use(stringify)
   .use(headers);
 
@@ -113,6 +117,19 @@ const createReasonReactToc = () => {
 
   fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
 };
+
+const debugToc = () => {
+  const MD_DIR = path.join(__dirname, "../pages/docs/manual/latest");
+
+  const files = glob.sync(`${MD_DIR}/introduction.md?(x)`);
+  const result = files.map(processFile);
+  const toc = createTOC(result);
+
+  console.log(JSON.stringify(toc, null, 2));
+
+};
+
+//debugToc();
 
 // main
 createManualToc();

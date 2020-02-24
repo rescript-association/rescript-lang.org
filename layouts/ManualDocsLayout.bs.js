@@ -213,8 +213,8 @@ function ManualDocsLayout$Docs(Props) {
           var title = data.title;
           var entries = Belt_Array.map(data.headers, (function (header) {
                   return {
-                          header: header,
-                          href: "#" + header
+                          header: header.name,
+                          href: "#" + header.href
                         };
                 }));
           return {

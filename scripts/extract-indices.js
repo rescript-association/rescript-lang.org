@@ -8,6 +8,7 @@
 const unified = require("unified");
 const markdown = require("remark-parse");
 const stringify = require("remark-stringify");
+const slug = require("remark-slug");
 const glob = require("glob");
 const path = require("path");
 const fs = require("fs");
@@ -23,7 +24,9 @@ const headers = options => (tree, file) => {
     }
     if (child.type === "heading" && child.depth === 2) {
       if (child.children.length > 0) {
-        headers.push(child.children[0].value);
+        const id = child.data.id || "";
+        const name = child.children[0].value;
+        headers.push({ name, href: id });
       }
     }
   });
@@ -61,6 +64,7 @@ const codeblocks = options => (tree, file) => {
 
 const processor = unified()
   .use(markdown, { gfm: true })
+  .use(slug)
   .use(stringify)
   .use(headers)
   .use(codeblocks);

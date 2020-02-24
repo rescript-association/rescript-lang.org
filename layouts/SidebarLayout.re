@@ -286,14 +286,13 @@ module Sidebar = {
         (
           ~onHeaderClick: option(ReactEvent.Mouse.t => unit)=?,
           ~isItemActive=?,
-          ~headers: array(string),
+          // array((name, href))
+          ~headers: array((string, string)),
           ~moduleName: string,
         ) => {
       let (collapsed, setCollapsed) = React.useState(() => false);
       let items =
-        Belt.Array.map(headers, header =>
-          NavUl.{name: header, href: "#" ++ header}
-        );
+        Belt.Array.map(headers, ((name, href)) => NavUl.{name, href});
 
       let direction = collapsed ? `Down : `Up;
 

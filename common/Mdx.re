@@ -8,7 +8,8 @@ type mdxComponent;
 external fromReactElement: React.element => mdxComponent = "%identity";
 external toReactElement: mdxComponent => React.element = "%identity";
 
-external arrToReactElement: array(mdxComponent) => React.element = "%identity";
+external arrToReactElement: array(mdxComponent) => React.element =
+  "%identity";
 
 /* Useful for getting the type of a certain mdx component, such as
    "inlineCode" | "p" | "ul" | etc.
@@ -88,6 +89,12 @@ module MdxChildren: {
 module Components = {
   type props = {. "children": ReasonReact.reactElement};
 
+  type headerProps = {
+    .
+    "id": string, // Used for anchor tags
+    "children": React.element,
+  };
+
   // Used for reflection based logic in
   // components such as `code` or `ul`
   // with runtime reflection
@@ -125,13 +132,13 @@ module Components = {
     [@bs.optional]
     h1: React.component(props),
     [@bs.optional]
-    h2: React.component(props),
+    h2: React.component(headerProps),
     [@bs.optional]
-    h3: React.component(props),
+    h3: React.component(headerProps),
     [@bs.optional]
-    h4: React.component(props),
+    h4: React.component(headerProps),
     [@bs.optional]
-    h5: React.component(props),
+    h5: React.component(headerProps),
     [@bs.optional]
     ul: React.component(props),
     [@bs.optional]

@@ -5,7 +5,12 @@ let tocData:
   Js.Dict.t({
     .
     "title": string,
-    "headers": array(string),
+    "headers":
+      array({
+        .
+        "name": string,
+        "href": string,
+      }),
   }) = [%raw
   "require('../index_data/reason_compiler_toc.json')"
 ];
@@ -182,7 +187,7 @@ let make = (~components=Markdown.default, ~children) => {
           let title = data##title;
           let entries =
             Belt.Array.map(data##headers, header =>
-              {Toc.header, href: "#" ++ header}
+              {Toc.header: header##name, href: "#" ++ header##href}
             );
           {Toc.title, entries};
         })
@@ -211,13 +216,7 @@ let make = (~components=Markdown.default, ~children) => {
   let version = "v7";
 
   <DocsLayout
-    theme=`Js
-    components
-    categories
-    version
-    title
-    ?activeToc
-    breadcrumbs>
+    theme=`Js components categories version title ?activeToc breadcrumbs>
     children
   </DocsLayout>;
 };

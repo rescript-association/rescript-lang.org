@@ -5,7 +5,12 @@ let tocData:
   Js.Dict.t({
     .
     "title": string,
-    "headers": array(string),
+    "headers":
+      array({
+        .
+        "name": string,
+        "href": string,
+      }),
   }) = [%raw
   "require('../index_data/manual_toc.json')"
 ];
@@ -95,7 +100,7 @@ module Docs = {
             let title = data##title;
             let entries =
               Belt.Array.map(data##headers, header =>
-                {Toc.header, href: "#" ++ header}
+                {Toc.header: header##name, href: "#" ++ header##href}
               );
             {Toc.title, entries};
           })
@@ -124,13 +129,7 @@ module Docs = {
     let version = "v3.6";
 
     <DocsLayout
-      theme=`Reason
-      components
-      categories
-      version
-      title
-      ?activeToc
-      breadcrumbs>
+      theme=`Reason components categories version title ?activeToc breadcrumbs>
       children
     </DocsLayout>;
   };
