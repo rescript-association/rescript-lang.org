@@ -22,7 +22,7 @@ module Toc = {
          <li key=header className="pl-2 mt-1">
            <Link href>
              <a
-               className="font-medium text-sm text-night-light hover:text-primary">
+               className="font-medium block text-sm text-night-light hover:text-primary">
                header->s
              </a>
            </Link>
@@ -73,12 +73,7 @@ module Sidebar = {
                | None => None
                };
 
-             <li
-               key={m.name}
-               className={hidden ++ " mt-2 leading-5 w-4/5"}
-               // to make non-interactive elements (like div, span or li) tab-able
-               // see https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets
-               tabIndex=0>
+             <li key={m.name} className={hidden ++ " mt-2 leading-5 w-4/5"}>
                <Link href={m.href}>
                  <a
                    className={
@@ -180,12 +175,7 @@ module Sidebar = {
                  isItemActive(m)
                    ? {j| bg-primary-15 text-primary-dark -ml-1 px-2 font-bold block |j}
                    : "";
-               <li
-                 key={m.name}
-                 className="leading-5 w-4/5"
-                 // to make non-interactive elements (like div, span or li) tab-able
-                 // see https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets
-                 tabIndex=0>
+               <li key={m.name} className="leading-5 w-4/5">
                  <Link href={m.href}>
                    <a
                      onClick=?onItemClick

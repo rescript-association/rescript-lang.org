@@ -24,7 +24,7 @@ function DocsLayout$Toc(Props) {
                                   }, React.createElement(Link.default, {
                                         href: param.href,
                                         children: React.createElement("a", {
-                                              className: "font-medium text-sm text-night-light hover:text-primary"
+                                              className: "font-medium block text-sm text-night-light hover:text-primary"
                                             }, Util.ReactStuff.s(header))
                                       }));
                       }))));
@@ -71,8 +71,7 @@ function DocsLayout$Sidebar$NavItem(Props) {
                         }
                         return React.createElement("li", {
                                     key: m.name,
-                                    className: hidden + " mt-2 leading-5 w-4/5",
-                                    tabIndex: 0
+                                    className: hidden + " mt-2 leading-5 w-4/5"
                                   }, React.createElement(Link.default, {
                                         href: m.href,
                                         children: React.createElement("a", {
@@ -162,8 +161,7 @@ function DocsLayout$Sidebar$CollapsibleSection$NavUl(Props) {
                         }
                         return React.createElement("li", {
                                     key: m.name,
-                                    className: "leading-5 w-4/5",
-                                    tabIndex: 0
+                                    className: "leading-5 w-4/5"
                                   }, React.createElement(Link.default, {
                                         href: m.href,
                                         children: React.createElement("a", tmp, Util.ReactStuff.s(m.name))
