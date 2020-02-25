@@ -382,12 +382,23 @@ module A = {
       | _ => href
       };
 
-    <a
-      href
-      rel="noopener noreferrer"
-      className="no-underline text-fire hover:underline">
-      children
-    </a>;
+    // In case we are handling a relative URL, we will use the Next routing
+    if (Util.Url.isAbsolute(href)) {
+      <a
+        href
+        rel="noopener noreferrer"
+        className="no-underline text-fire hover:underline">
+        children
+      </a>;
+    } else {
+      <Next.Link href>
+        <a
+          rel="noopener noreferrer"
+          className="no-underline text-fire hover:underline">
+          children
+        </a>
+      </Next.Link>;
+    };
   };
 };
 

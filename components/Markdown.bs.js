@@ -438,11 +438,21 @@ function Markdown$A(Props) {
       
     }
   }
-  return React.createElement("a", {
-              className: "no-underline text-fire hover:underline",
-              href: href$1,
-              rel: "noopener noreferrer"
-            }, children);
+  if (Util.Url.isAbsolute(href$1)) {
+    return React.createElement("a", {
+                className: "no-underline text-fire hover:underline",
+                href: href$1,
+                rel: "noopener noreferrer"
+              }, children);
+  } else {
+    return React.createElement(Link.default, {
+                href: href$1,
+                children: React.createElement("a", {
+                      className: "no-underline text-fire hover:underline",
+                      rel: "noopener noreferrer"
+                    }, children)
+              });
+  }
 }
 
 var A = {
