@@ -9,6 +9,7 @@ import * as Router from "next/router";
 import * as JsDocsLayout from "../layouts/JsDocsLayout.bs.js";
 import * as BeltDocsLayout from "../layouts/BeltDocsLayout.bs.js";
 import * as ManualDocsLayout from "../layouts/ManualDocsLayout.bs.js";
+import * as GenTypeDocsLayout from "../layouts/GenTypeDocsLayout.bs.js";
 import * as JavaScriptApiLayout from "../layouts/JavaScriptApiLayout.bs.js";
 import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 import * as ReasonReactDocsLayout from "../layouts/ReasonReactDocsLayout.bs.js";
@@ -23,10 +24,12 @@ let hljs = require('highlight.js/lib/highlight');
   let reason = require('reason-highlightjs');
   let bash = require('highlight.js/lib/languages/bash');
   let json = require('highlight.js/lib/languages/json');
+  let ts = require('highlight.js/lib/languages/typescript');
   let text = require('highlight.js/lib/languages/plaintext');
 
   hljs.registerLanguage('reason', reason);
   hljs.registerLanguage('javascript', js);
+  hljs.registerLanguage('ts', ts);
   hljs.registerLanguage('ocaml', ocaml);
   hljs.registerLanguage('sh', bash);
   hljs.registerLanguage('json', json);
@@ -156,25 +159,33 @@ function make(props) {
       case "docs" :
           var match$6 = match[1];
           switch (match$6) {
-            case "manual" :
+            case "gentype" :
                 var match$7 = url.version;
                 if (typeof match$7 === "number" && match$7 === 0) {
+                  return React.createElement(GenTypeDocsLayout.make, {
+                              children: content
+                            });
+                }
+                break;
+            case "manual" :
+                var match$8 = url.version;
+                if (typeof match$8 === "number" && match$8 === 0) {
                   return React.createElement(ManualDocsLayout.Prose.make, {
                               children: content
                             });
                 }
                 break;
             case "reason-compiler" :
-                var match$8 = url.version;
-                if (typeof match$8 === "number" && match$8 === 0) {
+                var match$9 = url.version;
+                if (typeof match$9 === "number" && match$9 === 0) {
                   return React.createElement(ReasonCompilerDocsLayout.make, {
                               children: content
                             });
                 }
                 break;
             case "reason-react" :
-                var match$9 = url.version;
-                if (typeof match$9 === "number" && match$9 === 0) {
+                var match$10 = url.version;
+                if (typeof match$10 === "number" && match$10 === 0) {
                   return React.createElement(ReasonReactDocsLayout.make, {
                               children: content
                             });

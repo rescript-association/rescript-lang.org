@@ -24,17 +24,38 @@ hljs.registerLanguage('sh', bashHighlightJs);
 hljs.registerLanguage('json', jsonHighlightJs);
 ;
 
-var tocData = (require('../index_data/reason_react_toc.json'));
+var tocData = (require('../index_data/gentype_toc.json'));
 
-var overviewNavs = [{
+var overviewNavs = [
+  {
     name: "Introduction",
     href: "/docs/gentype/latest/introduction"
+  },
+  {
+    name: "Getting Started",
+    href: "/docs/gentype/latest/getting-started"
+  },
+  {
+    name: "Usage",
+    href: "/docs/gentype/latest/usage"
+  }
+];
+
+var advancedNavs = [{
+    name: "Supported Types",
+    href: "/docs/gentype/latest/supported-types"
   }];
 
-var categories = [{
-    name: "Getting Started",
+var categories = [
+  {
+    name: "Overview",
     items: overviewNavs
-  }];
+  },
+  {
+    name: "Advanced",
+    items: advancedNavs
+  }
+];
 
 function GenTypeDocsLayout(Props) {
   var $staropt$star = Props.components;
@@ -109,6 +130,7 @@ export {
   Category ,
   Toc ,
   overviewNavs ,
+  advancedNavs ,
   categories ,
   make ,
   

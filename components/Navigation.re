@@ -171,7 +171,7 @@ module SubNav = {
       let recompItems = [|
         ("Reason Compiler", "/docs/reason-compiler/latest/introduction"),
         ("ReasonReact", "/docs/reason-react/latest/introduction"),
-        /*("GenType", "/docs/reason-compiler/gentype/latest"),*/
+        ("GenType", "/docs/gentype/latest/introduction"),
       |];
 
       let activeThemeLink = "font-normal text-primary border-b border-primary";

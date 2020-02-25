@@ -17,10 +17,12 @@
   let reason = require('reason-highlightjs');
   let bash = require('highlight.js/lib/languages/bash');
   let json = require('highlight.js/lib/languages/json');
+  let ts = require('highlight.js/lib/languages/typescript');
   let text = require('highlight.js/lib/languages/plaintext');
 
   hljs.registerLanguage('reason', reason);
   hljs.registerLanguage('javascript', js);
+  hljs.registerLanguage('ts', ts);
   hljs.registerLanguage('ocaml', ocaml);
   hljs.registerLanguage('sh', bash);
   hljs.registerLanguage('json', json);
@@ -145,6 +147,8 @@ let make = (props: props): React.element => {
     <ReasonCompilerDocsLayout> content </ReasonCompilerDocsLayout>
   | {base: [|"docs", "reason-react"|], version: Latest} =>
     <ReasonReactDocsLayout> content </ReasonReactDocsLayout>
+  | {base: [|"docs", "gentype"|], version: Latest} =>
+    <GenTypeDocsLayout> content </GenTypeDocsLayout>
   // apis routes
   | {base: [|"apis", "javascript"|], version: Latest, pagepath} =>
     switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 0)) {

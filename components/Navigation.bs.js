@@ -152,6 +152,10 @@ function Navigation$SubNav$DocsLinks(Props) {
     /* tuple */[
       "ReasonReact",
       "/docs/reason-react/latest/introduction"
+    ],
+    /* tuple */[
+      "GenType",
+      "/docs/gentype/latest/introduction"
     ]
   ];
   var overlineClass = "font-black uppercase text-sm tracking-wide text-primary-80";

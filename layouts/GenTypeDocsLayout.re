@@ -27,7 +27,7 @@ let tocData:
         "href": string,
       }),
   }) = [%raw
-  "require('../index_data/reason_react_toc.json')"
+  "require('../index_data/gentype_toc.json')"
 ];
 
 module UrlPath = DocsLayout.UrlPath;
@@ -37,11 +37,23 @@ module Toc = DocsLayout.Toc;
 
 let overviewNavs = [|
   NavItem.{name: "Introduction", href: "/docs/gentype/latest/introduction"},
+  NavItem.{
+    name: "Getting Started",
+    href: "/docs/gentype/latest/getting-started",
+  },
+  NavItem.{name: "Usage", href: "/docs/gentype/latest/usage"},
+|];
+
+let advancedNavs = [|
+  NavItem.{
+    name: "Supported Types",
+    href: "/docs/gentype/latest/supported-types",
+  },
 |];
 
 let categories = [|
-  Category.{name: "Getting Started", items: overviewNavs},
-  /*{name: "Core", items: coreNavs},*/
+  Category.{name: "Overview", items: overviewNavs},
+  {name: "Advanced", items: advancedNavs},
 |];
 
 [@react.component]
