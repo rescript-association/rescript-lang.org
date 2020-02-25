@@ -368,20 +368,7 @@ module Hr = {
  */
 module A = {
   [@react.component]
-  let make = (~href, ~children) => {
-    // We drop any .md / .mdx / .html extensions on every href...
-    // Ideally one would check if this link is relative first,
-    // but it's very unlikely we'd refer to an absolute URL ending
-    // with .md
-    let regex = [%re "/\\.md(x)?|\\.html$/"];
-    let href =
-      switch (Js.String2.split(href, "#")) {
-      | [|pathname, anchor|] =>
-        Js.String2.replaceByRe(pathname, regex, "") ++ "#" ++ anchor
-      | [|pathname|] => Js.String2.replaceByRe(pathname, regex, "")
-      | _ => href
-      };
-
+  let make = (~href, ~children) =>
     // In case we are handling a relative URL, we will use the Next routing
     if (Util.Url.isAbsolute(href)) {
       <a
@@ -391,6 +378,18 @@ module A = {
         children
       </a>;
     } else {
+      // We drop any .md / .mdx / .html extensions on every href...
+      // Ideally one would check if this link is relative first,
+      // but it's very unlikely we'd refer to an absolute URL ending
+      // with .md
+      let regex = [%re "/\\.md(x)?|\\.html$/"];
+      let href =
+        switch (Js.String2.split(href, "#")) {
+        | [|pathname, anchor|] =>
+          Js.String2.replaceByRe(pathname, regex, "") ++ "#" ++ anchor
+        | [|pathname|] => Js.String2.replaceByRe(pathname, regex, "")
+        | _ => href
+        };
       <Next.Link href>
         <a
           rel="noopener noreferrer"
@@ -399,7 +398,6 @@ module A = {
         </a>
       </Next.Link>;
     };
-  };
 };
 
 module Ul = {
