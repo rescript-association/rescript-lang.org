@@ -1,6 +1,3 @@
-import { Prose } from "layouts/ManualDocsLayout.bs.js";
-export default Prose.make;
-
 # Variant
 
 Behold, the crown jewel of Reason data structures!
@@ -157,11 +154,11 @@ You could definitely do that, but there are better ways! For example, simply two
 [@bs.module "myLibrary"] external drawString : string => unit = "draw";
 ```
 
-BuckleScript also provides [a few other ways](/docs/reason-compiler/latest/function#Modeling%20Polymorphic%20Function) to do this.
+BuckleScript also provides [a few other ways](/docs/reason-compiler/latest/function#modeling-polymorphic-function) to do this.
 
 ### Variant Types Are Found By Field Name
 
-Please refer to this [record section](record#Record%20Types%20Are%20Found%20By%20Field%20Name). Variants are the same: a function can't accept an arbitrary constructor shared by two different variants. Again, such feature exists, it's called a polymorphic variant. We'll talk about this in the future =).
+Please refer to this [record section](record#record-types-are-found-by-field-name). Variants are the same: a function can't accept an arbitrary constructor shared by two different variants. Again, such feature exists, it's called a polymorphic variant. We'll talk about this in the future =).
 
 ## Design Decisions
 

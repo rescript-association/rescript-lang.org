@@ -179,13 +179,14 @@ var H1 = {
 };
 
 function Markdown$H2(Props) {
+  var id = Props.id;
   var children = Props.children;
   return React.createElement(React.Fragment, undefined, React.createElement("h2", {
                   className: "group mt-12 mb-3 text-3xl leading-1 font-sans font-medium text-night-dark"
                 }, React.createElement("span", {
                       className: "-ml-8 pr-2"
                     }, React.createElement(Markdown$Anchor, {
-                          id: children
+                          id: id
                         })), children));
 }
 
@@ -194,13 +195,14 @@ var H2 = {
 };
 
 function Markdown$H3(Props) {
+  var id = Props.id;
   var children = Props.children;
   return React.createElement("h3", {
               className: "group text-xl mt-12 mb-3 leading-3 font-sans font-semibold text-night-darker"
             }, React.createElement("span", {
                   className: "-ml-6 pr-2"
                 }, React.createElement(Markdown$Anchor, {
-                      id: children
+                      id: id
                     })), children);
 }
 
@@ -209,13 +211,14 @@ var H3 = {
 };
 
 function Markdown$H4(Props) {
+  var id = Props.id;
   var children = Props.children;
   return React.createElement("h4", {
               className: "group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-night-dark"
             }, React.createElement("span", {
                   className: "-ml-5 pr-2"
                 }, React.createElement(Markdown$Anchor, {
-                      id: children
+                      id: id
                     })), children);
 }
 
@@ -224,13 +227,14 @@ var H4 = {
 };
 
 function Markdown$H5(Props) {
+  var id = Props.id;
   var children = Props.children;
   return React.createElement("h5", {
               className: "group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide"
             }, React.createElement("span", {
                   className: "-ml-5 pr-2"
                 }, React.createElement(Markdown$Anchor, {
-                      id: children
+                      id: id
                     })), children);
 }
 
@@ -411,34 +415,44 @@ var Hr = {
 function Markdown$A(Props) {
   var href = Props.href;
   var children = Props.children;
-  var regex = /\.md(x)?|\.html$/;
-  var match = href.split("#");
-  var len = match.length;
-  var href$1;
-  if (len >= 3) {
-    href$1 = href;
+  if (Util.Url.isAbsolute(href)) {
+    return React.createElement("a", {
+                className: "no-underline text-fire hover:underline",
+                href: href,
+                rel: "noopener noreferrer"
+              }, children);
   } else {
-    switch (len) {
-      case 0 :
-          href$1 = href;
-          break;
-      case 1 :
-          var pathname = match[0];
-          href$1 = pathname.replace(regex, "");
-          break;
-      case 2 :
-          var pathname$1 = match[0];
-          var anchor = match[1];
-          href$1 = pathname$1.replace(regex, "") + ("#" + anchor);
-          break;
-      
+    var regex = /\.md(x)?|\.html$/;
+    var match = href.split("#");
+    var len = match.length;
+    var href$1;
+    if (len >= 3) {
+      href$1 = href;
+    } else {
+      switch (len) {
+        case 0 :
+            href$1 = href;
+            break;
+        case 1 :
+            var pathname = match[0];
+            href$1 = pathname.replace(regex, "");
+            break;
+        case 2 :
+            var pathname$1 = match[0];
+            var anchor = match[1];
+            href$1 = pathname$1.replace(regex, "") + ("#" + anchor);
+            break;
+        
+      }
     }
+    return React.createElement(Link.default, {
+                href: href$1,
+                children: React.createElement("a", {
+                      className: "no-underline text-fire hover:underline",
+                      rel: "noopener noreferrer"
+                    }, children)
+              });
   }
-  return React.createElement("a", {
-              className: "no-underline text-fire hover:underline",
-              href: href$1,
-              rel: "noopener noreferrer"
-            }, children);
 }
 
 var A = {

@@ -1,6 +1,3 @@
-import { Prose } from "layouts/ManualDocsLayout.bs.js";
-export default Prose.make;
-
 # Destructuring
 
 "Destructuring" is a visually concise way of extracting fields from a data structure. You can use destructuring anywhere you'd normally use a variable.
@@ -59,4 +56,4 @@ let otherFunction = (~person as {name} as thePerson) => {
 Destructuring can make your code much more concise without requiring you to name intermediate variables. Do use them! But don't abuse them and make your code overly nested & terse.
 
 If you're destructuring a record or a variant whose definition isn't in the current file, you need to explicitly annotate it.
-See [here](record#Record%20Needs%20an%20Explicit%20Definition) and [here](variant#Variant%20Needs%20an%20Explicit%20Definition).
+See [here](record#record-needs-an-explicit-definition) and [here](variant#variant-needs-an-explicit-definition).

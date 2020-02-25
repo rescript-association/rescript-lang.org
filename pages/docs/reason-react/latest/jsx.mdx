@@ -1,13 +1,10 @@
-import { make } from "layouts/ReasonReactDocsLayout.bs.js";
-export default make;
-
 # JSX (Version 3)
 
 Reason comes with the [JSX](/docs/manual/latest/jsx) syntax! ReasonReact has two different transforms that you can use for your components. This doc covers Version 3 of the transform which is very similar to how [the ReactJS JSX transform](https://reactjs.org/docs/introducing-jsx.html) works. To use it, put `{"reason": {"react-jsx": 3}` in your [`bsconfig.json`](/docs/reason-compiler/latest/build-configuration#reason,%20refmt) (schema [here](http://bucklescript.github.io/bucklescript/docson/#build-schema.json)).
 
 [Version 2](jsx-2.md) is used to render Reducer style components which require special interop to handle the ways they differ from ReactJS components. If you are starting a new project you can stick to version 3 all the time.
 
-For help to migrate from version 2 to version 3, check the section [below](/docs/reason-react/latest/jsx#Migrating%20from%20version%202%20to%20version%203).
+For help to migrate from version 2 to version 3, check the section [below](/docs/reason-react/latest/jsx#migrating-from-version-2-to-version-3).
 
 ## Uncapitalized
 
@@ -145,7 +142,7 @@ Depending on the size and nature of your application there are two options avail
 
 ### Application level
 
-By adding `{"reason": {"react-jsx": 3}` in your [`bsconfig.json`](/docs/reason-compiler/latest/build-configuration#reason,%20refmt).
+By adding `{"reason": {"react-jsx": 3}` in your [`bsconfig.json`](/docs/reason-compiler/latest/build-configuration#reason-refmt).
 
 This approach requires that all components in the application must be made compatible with version 3 of JSX at once, so it will be a better fit for smaller apps with a reduced number of components, where all of them can be migrated to version 3 in one fell swoop.
 

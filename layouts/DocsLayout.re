@@ -16,20 +16,16 @@ module Toc = {
   };
 
   [@react.component]
-  let make =
-      (
-        ~onItemClick: option(ReactEvent.Mouse.t => unit)=?,
-        ~entries: array(entry),
-      ) => {
+  let make = (~entries: array(entry)) => {
     <ul className="mt-2 mb-6 border-l border-primary">
       {Belt.Array.map(entries, ({header, href}) =>
          <li key=header className="pl-2 mt-1">
-           <a
-             onClick=?onItemClick
-             href
-             className="font-medium text-sm text-night-light hover:text-primary">
-             header->s
-           </a>
+           <Link href>
+             <a
+               className="font-medium block text-sm text-night-light hover:text-primary">
+               header->s
+             </a>
+           </Link>
          </li>
        )
        ->ate}
@@ -57,7 +53,6 @@ module Sidebar = {
     let make =
         (
           ~getActiveToc: option(t => option(Toc.t))=?,
-          ~onTocItemClick=?,
           ~isItemActive: t => bool=_nav => false,
           ~isHidden=false,
           ~items: array(t),
@@ -78,12 +73,7 @@ module Sidebar = {
                | None => None
                };
 
-             <li
-               key={m.name}
-               className={hidden ++ " mt-2 leading-5 w-4/5"}
-               // to make non-interactive elements (like div, span or li) tab-able
-               // see https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets
-               tabIndex=0>
+             <li key={m.name} className={hidden ++ " mt-2 leading-5 w-4/5"}>
                <Link href={m.href}>
                  <a
                    className={
@@ -98,7 +88,7 @@ module Sidebar = {
                   if (Belt.Array.length(entries) === 0) {
                     React.null;
                   } else {
-                    <Toc onItemClick=?onTocItemClick entries />;
+                    <Toc entries />;
                   }
                 | None => React.null
                 }}
@@ -120,18 +110,12 @@ module Sidebar = {
     let make =
         (
           ~getActiveToc=?,
-          ~onTocItemClick=?,
           ~isItemActive: option(NavItem.t => bool)=?,
           ~category: t,
         ) => {
       <div key={category.name} className="my-12">
         <Title> category.name->s </Title>
-        <NavItem
-          ?onTocItemClick
-          ?isItemActive
-          ?getActiveToc
-          items={category.items}
-        />
+        <NavItem ?isItemActive ?getActiveToc items={category.items} />
       </div>;
     };
   };
@@ -191,21 +175,17 @@ module Sidebar = {
                  isItemActive(m)
                    ? {j| bg-primary-15 text-primary-dark -ml-1 px-2 font-bold block |j}
                    : "";
-               <li
-                 key={m.name}
-                 className="leading-5 w-4/5"
-                 // to make non-interactive elements (like div, span or li) tab-able
-                 // see https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets
-                 tabIndex=0>
-                 <a
-                   href={m.href}
-                   onClick=?onItemClick
-                   className={
-                     "truncate block pl-3 h-8 md:h-auto border-l-2 border-night-10 block text-night hover:pl-4 hover:text-night-dark"
-                     ++ active
-                   }>
-                   m.name->s
-                 </a>
+               <li key={m.name} className="leading-5 w-4/5">
+                 <Link href={m.href}>
+                   <a
+                     onClick=?onItemClick
+                     className={
+                       "truncate block pl-3 h-8 md:h-auto border-l-2 border-night-10 block text-night hover:pl-4 hover:text-night-dark"
+                       ++ active
+                     }>
+                     m.name->s
+                   </a>
+                 </Link>
                </li>;
              },
            )
@@ -217,7 +197,6 @@ module Sidebar = {
     let make =
         (
           ~onHeaderClick: option(ReactEvent.Mouse.t => unit)=?,
-          ~getActiveToc=?,
           ~isItemActive=?,
           ~headers: array(string),
           ~moduleName: string,
@@ -261,7 +240,6 @@ module Sidebar = {
         ~toplevelNav=React.null,
         ~title: option(string)=?,
         ~preludeSection=React.null,
-        ~onTocItemClick=?,
         ~activeToc: option(Toc.t)=?,
         ~isOpen: bool,
         ~toggle: unit => unit,
@@ -306,12 +284,7 @@ module Sidebar = {
             {categories
              ->Belt.Array.map(category =>
                  <div key={category.name}>
-                   <Category
-                     ?onTocItemClick
-                     getActiveToc
-                     isItemActive
-                     category
-                   />
+                   <Category getActiveToc isItemActive category />
                  </div>
                )
              ->ate}
@@ -339,10 +312,32 @@ let make =
       ~children,
     ) => {
   let router = Next.Router.useRouter();
-  let route = router##route;
+  let route = router.route;
 
   let (isSidebarOpen, setSidebarOpen) = React.useState(_ => false);
   let toggleSidebar = () => setSidebarOpen(prev => !prev);
+
+  React.useEffect1(
+    () => {
+      open Next.Router.Events;
+      let {Next.Router.events} = router;
+
+      let onChangeComplete = _url => {
+        setSidebarOpen(_ => false);
+      };
+
+      events->on(`routeChangeComplete(onChangeComplete));
+      events->on(`hashChangeComplete(onChangeComplete));
+
+      Some(
+        () => {
+          events->off(`routeChangeComplete(onChangeComplete));
+          events->off(`hashChangeComplete(onChangeComplete));
+        },
+      );
+    },
+    [||],
+  );
 
   let preludeSection =
     <div
@@ -359,7 +354,6 @@ let make =
     <Sidebar
       isOpen=isSidebarOpen
       toggle=toggleSidebar
-      onTocItemClick={_ => setSidebarOpen(_ => false)}
       preludeSection
       title
       ?activeToc
@@ -370,11 +364,9 @@ let make =
   <SidebarLayout
     theme
     components
-    sidebar=(sidebar, toggleSidebar)
-    ?breadcrumbs
-    route={
-      router##route;
-    }>
+    sidebarState=(isSidebarOpen, setSidebarOpen)
+    sidebar
+    ?breadcrumbs>
     children
   </SidebarLayout>;
 };

@@ -151,7 +151,7 @@ let useWindowWidth: unit => option(int) = [%raw
 
 type collapsible = {
   title: string,
-  children: React.element,
+  children: string => React.element,
   href: string,
   state: CollapsibleLink.state,
 };
@@ -171,7 +171,7 @@ module SubNav = {
       let recompItems = [|
         ("Reason Compiler", "/docs/reason-compiler/latest/introduction"),
         ("ReasonReact", "/docs/reason-react/latest/introduction"),
-        /*("GenType", "/docs/reason-compiler/gentype/latest"),*/
+        ("GenType", "/docs/gentype/latest/introduction"),
       |];
 
       let activeThemeLink = "font-normal text-primary border-b border-primary";
@@ -359,8 +359,11 @@ module MobileNav = {
 
 /* isOverlayOpen: if the mobile overlay is toggled open */
 [@react.component]
-let make = (~isOverlayOpen=false, ~toggle=() => (), ~route="/") => {
+let make = (~overlayState: (bool, (bool => bool) => unit)) => {
   let minWidth = "20rem";
+  let router = Next.Router.useRouter();
+
+  let route = router.route;
 
   let (collapsibles, setCollapsibles) =
     React.useState(_ =>
@@ -368,17 +371,25 @@ let make = (~isOverlayOpen=false, ~toggle=() => (), ~route="/") => {
         {
           title: "Docs",
           href: "/docs",
-          children: <SubNav.DocsLinks route />,
+          children: route => {
+            <SubNav.DocsLinks route />;
+          },
           state: Closed,
         },
         {
           title: "API",
           href: "/apis",
-          children: <SubNav.ApiLinks route />,
+          children: route => <SubNav.ApiLinks route />,
           state: Closed,
         },
       |]
     );
+
+  let (isOverlayOpen, setOverlayOpen) = overlayState;
+
+  let toggleOverlay = () => {
+    setOverlayOpen(prev => !prev);
+  };
 
   let resetCollapsibles = () =>
     setCollapsibles(prev => Belt.Array.map(prev, c => {...c, state: Closed}));
@@ -399,6 +410,32 @@ let make = (~isOverlayOpen=false, ~toggle=() => (), ~route="/") => {
     ReactEvent.Mouse.preventDefault(evt);
     resetCollapsibles();
   };
+
+  // Client side navigation requires us to reset the collapsibles
+  // whenever a route change had occurred, otherwise the collapsible
+  // will stay open, even though you clicked a link
+  React.useEffect1(
+    () => {
+      open Next.Router.Events;
+      let {Next.Router.events} = router;
+
+      let onChangeComplete = _url => {
+        resetCollapsibles();
+        setOverlayOpen(_ => false);
+      };
+
+      events->on(`routeChangeComplete(onChangeComplete));
+      events->on(`hashChangeComplete(onChangeComplete));
+
+      Some(
+        () => {
+          events->off(`routeChangeComplete(onChangeComplete));
+          events->off(`hashChangeComplete(onChangeComplete));
+        },
+      );
+    },
+    [||],
+  );
 
   <nav
     ref={ReactDOMRe.Ref.domRef(outerRef)}
@@ -439,7 +476,7 @@ let make = (~isOverlayOpen=false, ~toggle=() => (), ~route="/") => {
                  setCollapsibles(prev => {
                    /* This is important to close the nav overlay, before showing the subnavigation */
                    if (isOverlayOpen) {
-                     toggle();
+                     toggleOverlay();
                    };
                    Belt.Array.map(prev, c =>
                      if (c.title === id) {
@@ -458,7 +495,7 @@ let make = (~isOverlayOpen=false, ~toggle=() => (), ~route="/") => {
                  title
                  active={Js.String2.startsWith(route, href)}
                  state>
-                 children
+                 {children(route)}
                </CollapsibleLink>;
              },
            )
@@ -531,7 +568,7 @@ let make = (~isOverlayOpen=false, ~toggle=() => (), ~route="/") => {
       onClick={evt => {
         ReactEvent.Mouse.preventDefault(evt);
         resetCollapsibles();
-        toggle();
+        toggleOverlay();
       }}>
       <Icon.DrawerDots
         className={"h-1 w-auto block " ++ (isOverlayOpen ? "text-fire" : "")}

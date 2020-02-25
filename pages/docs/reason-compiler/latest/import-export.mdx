@@ -1,6 +1,3 @@
-import { make } from "layouts/ReasonCompilerDocsLayout.bs.js";
-export default make;
-
 # Import Export
 
 ## Export
@@ -15,7 +12,7 @@ The output format is configurable in bsb, described in a later section.
 
 By default, every `let` binding is exported. If their values are safe to use on the JS side, you can directly require the generated JS file and use them (see the JS file itself!).
 
-To only export a few selected `let`s, simply add an [interface file](https://reasonml.github.io/docs/en/module.html#signatures) that hides some of the let bindings.
+To only export a few selected `let`s, simply add an [interface file](/docs/manual/latest/module.html#signatures) that hides some of the let bindings.
 
 ### Export an ES6 default value
 

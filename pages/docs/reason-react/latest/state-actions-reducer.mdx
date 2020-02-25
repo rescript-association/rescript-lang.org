@@ -1,6 +1,3 @@
-import { make } from "layouts/ReasonReactDocsLayout.bs.js";
-export default make;
-
 # State, Actions & Reducers
 
 <Warn>
@@ -124,7 +121,7 @@ A few things:
 
 So, when a click on the dialog is triggered, we "send" the `Click` action to the reducer, which handles the `Click` case by returning the new state that increments a counter. ReasonReact takes the state and updates the component.
 
-**Note**: just like for `self.handle`, sometimes you might be forwarding `send` to some helper functions. Pass the whole `self` instead and **annotate it**. This avoids a complex `self` record type behavior. See [Record Field `send`/`handle` Not Found](faq#Record%20Field%20send%20/%20handle%20Not%20Found).
+**Note**: just like for `self.handle`, sometimes you might be forwarding `send` to some helper functions. Pass the whole `self` instead and **annotate it**. This avoids a complex `self` record type behavior. See [Record Field `send`/`handle` Not Found](faq#record-field-send--handle-not-found).
 
 ## State Update Through Reducer
 

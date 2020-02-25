@@ -1,9 +1,3 @@
-%raw
-"require('../styles/main.css')";
-
-%raw
-"require('./init_hljs.js')";
-
 module Link = Next.Link;
 
 // Structure defined by `scripts/extract-tocs.js`
@@ -11,7 +5,12 @@ let tocData:
   Js.Dict.t({
     .
     "title": string,
-    "headers": array(string),
+    "headers":
+      array({
+        .
+        "name": string,
+        "href": string,
+      }),
   }) = [%raw
   "require('../index_data/reason_react_toc.json')"
 ];
@@ -22,7 +21,10 @@ module Category = DocsLayout.Category;
 module Toc = DocsLayout.Toc;
 
 let overviewNavs = [|
-  NavItem.{name: "Introduction", href: "/docs/reason-react/latest/introduction"},
+  NavItem.{
+    name: "Introduction",
+    href: "/docs/reason-react/latest/introduction",
+  },
   {name: "Installation", href: "/docs/reason-react/latest/installation"},
   {name: "Intro Example", href: "/docs/reason-react/latest/intro-example"},
 |];
@@ -38,28 +40,60 @@ let coreNavs = [|
 |];
 
 let idiomNavs = [|
-  NavItem.{name: "Invalid Prop Name", href: "/docs/reason-react/latest/invalid-prop-name"},
+  NavItem.{
+    name: "Invalid Prop Name",
+    href: "/docs/reason-react/latest/invalid-prop-name",
+  },
   {name: "Props Spread", href: "/docs/reason-react/latest/props-spread"},
-  {name: "Component as Prop", href: "/docs/reason-react/latest/component-as-prop"},
-  {name: "Ternary Shortcut", href: "/docs/reason-react/latest/ternary-shortcut"},
-  {name: "Context & Mixins", href: "/docs/reason-react/latest/context-mixins"},
-  {name: "Custom Class / Component Property", href: "/docs/reason-react/latest/custom-class-component-property"},
-
+  {
+    name: "Component as Prop",
+    href: "/docs/reason-react/latest/component-as-prop",
+  },
+  {
+    name: "Ternary Shortcut",
+    href: "/docs/reason-react/latest/ternary-shortcut",
+  },
+  {
+    name: "Context & Mixins",
+    href: "/docs/reason-react/latest/context-mixins",
+  },
+  {
+    name: "Custom Class / Component Property",
+    href: "/docs/reason-react/latest/custom-class-component-property",
+  },
 |];
 
 let recordApiNavs = [|
   NavItem.{name: "JSX (Old, v2)", href: "/docs/reason-react/latest/jsx-2"},
-  {name: "Creation, Props & Self", href: "/docs/reason-react/latest/creation-props-self"},
+  {
+    name: "Creation, Props & Self",
+    href: "/docs/reason-react/latest/creation-props-self",
+  },
   {name: "Render", href: "/docs/reason-react/latest/render"},
-  {name: "Callback Handlers", href: "/docs/reason-react/latest/callback-handlers"},
-  {name: "State, Action & Reducer", href: "/docs/reason-react/latest/state-actions-reducer"},
+  {
+    name: "Callback Handlers",
+    href: "/docs/reason-react/latest/callback-handlers",
+  },
+  {
+    name: "State, Action & Reducer",
+    href: "/docs/reason-react/latest/state-actions-reducer",
+  },
   {name: "Lifecycles", href: "/docs/reason-react/latest/lifecycles"},
-  {name: "Instance Variables", href: "/docs/reason-react/latest/instance-variables"},
+  {
+    name: "Instance Variables",
+    href: "/docs/reason-react/latest/instance-variables",
+  },
   {name: "React Ref", href: "/docs/reason-react/latest/react-ref"},
-  {name: "Talk to Existing ReactJS Code", href: "/docs/reason-react/latest/interop"},
+  {
+    name: "Talk to Existing ReactJS Code",
+    href: "/docs/reason-react/latest/interop",
+  },
   {name: "cloneElement", href: "/docs/reason-react/latest/clone-element"},
   {name: "Children", href: "/docs/reason-react/latest/children"},
-  {name: "Subscriptions Helper", href: "/docs/reason-react/latest/subscriptions-helper"},
+  {
+    name: "Subscriptions Helper",
+    href: "/docs/reason-react/latest/subscriptions-helper",
+  },
   {name: "Router", href: "/docs/reason-react/latest/router-2"},
 |];
 
@@ -78,7 +112,7 @@ let categories = [|
 [@react.component]
 let make = (~components=Markdown.default, ~children) => {
   let router = Next.Router.useRouter();
-  let route = router##route;
+  let route = router.route;
 
   let activeToc: option(Toc.t) =
     Belt.Option.(
@@ -87,7 +121,7 @@ let make = (~components=Markdown.default, ~children) => {
           let title = data##title;
           let entries =
             Belt.Array.map(data##headers, header =>
-              {Toc.header, href: "#" ++ header}
+              {Toc.header: header##name, href: "#" ++ header##href}
             );
           {Toc.title, entries};
         })

@@ -1,0 +1,122 @@
+# GenType
+
+`genType` lets you export [Reason](/docs/manual/latest/introduction) values and
+types to use in JavaScript, and import JavaScript values and types into Reason,
+idiomatically. Converter functions between the two representations are
+generated based on the type of the value. The converters can be generated in
+vanilla JavaScript, or in [TypeScript](https://www.typescriptlang.org/) /
+[Flow](https://flow.org/en/) for a type-safe idiomatic interface. In
+particular, conversion of [ReasonReact](/docs/reason-react/latest/introduction)
+components both ways is supported, with automatic generation of the wrappers.
+
+Here's an article describing how to use `genType` as part of a migration
+strategy where a tree of components is gradually converted to Reason bottom-up:
+[Adopting Reason: strategies, dual sources of truth, and why genType is a big
+deal](https://www.javierchavarri.com/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal/).
+
+The implementation of [@genType] performs a type-directed transformation of
+Reason programs after
+[bucklescript](https://github.com/BuckleScript/bucklescript) compilation. The
+transformed programs operate on data types idiomatic to JS. For example, a
+Reason function operating on a Reason variant `type t  = | A(int) | B(string)`
+(which is represented as custom blocks at runtime) is exported to a JS function
+operating on the corresponding JS object of type `{ tag: "A"; value: number }
+  | { tag: "B"; value: string }`.
+
+The output of `genType` can be configured by using one of 3 back-ends:
+`untyped` to generate wrappers in vanilla JS, `typescript` to generate
+[TypeScript](https://www.typescriptlang.org/), and `flow` to generate JS with
+[Flow](https://flow.org/en/) type annotations.
+
+## A More Concrete Example
+
+Let's assume we are working on a TypeScript (TS) codebase and we want to
+integrate a single ReasonReact component.
+
+Firstly we want to be able to import the ReasonReact component like any other
+React component, secondly we also want to preserve all the Reason types in the
+TS type system (and convert incompatible values if necessary). **That's what's
+`genType` was made for!**
+
+
+First we'll set up a ReasonReact component just like this (we will assume that
+`genType` and `bs-platform` is already configured correctly):
+
+```re
+/* src/MyComp.re */
+
+[@genType]
+type color =
+  | Red
+  | Blue;
+
+[@genType]
+[@react.component]
+let make = (~name: string, ~color: color) => {
+  let colorStr =
+    switch (color) {
+    | Red => "red"
+    | Blue => "blue"
+    };
+
+  <div className={"color-" ++ colorStr}> name->React.string </div>;
+};
+```
+
+> **Note:** We need to add a `[@genType]` annotation for `type color` as well,
+otherwise `genType` cannot create any type conversions for us.
+
+On a successful compile, `genType` will convert `MyComp.re` to a TS file called
+`src/MyComp.gen.ts` which will look something like this:
+
+```ts
+// src/MyComp.gen.tsx
+
+/* TypeScript file generated from MyComp.re by genType. */
+/* eslint-disable import/first */
+
+
+import * as React from 'react';
+
+const $$toRE818596289: { [key: string]: any } = {"Red": 0, "Blue": 1};
+
+// tslint:disable-next-line:no-var-requires
+const MyCompBS = require('./MyComp.bs');
+
+// tslint:disable-next-line:interface-over-type-literal
+export type color = "Red" | "Blue";
+
+// tslint:disable-next-line:interface-over-type-literal
+export type Props = { readonly color: color; readonly name: string };
+
+export const make: React.ComponentType<{ readonly color: color; readonly name: string }> = function MyComp(Arg1: any) {
+  const $props = {color:$$toRE818596289[Arg1.color], name:Arg1.name};
+  const result = React.createElement(MyCompBS.make, $props);
+  return result
+};
+```
+
+
+Note how `genType` automatically maps the `color` variant to TS via a string
+union type `color = "Red" | "Blue"`.  We can seamlessly use Reason specific
+data structures within TS without doing any manual transformations!
+
+Now, within our TypeScript application, we can now import and use the React
+component in following manner:
+
+```ts
+// src/App.ts
+import { make as MyComp } from "./MyComp.gen.tsx";
+
+const App = () => {
+  <div>
+    <h1> My Component </h1>
+    <MyComp color="Blue" name="Reason & TypeScript" />
+  </div>
+};
+```
+
+We are only scratching the surface on what `genType` can actually do. For more
+information, head to the [Getting Started](getting-started) section, or find relevant
+topics from the sidebar !
+

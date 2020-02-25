@@ -1,6 +1,3 @@
-import { Prose } from "layouts/ManualDocsLayout.bs.js";
-export default Prose.make;
-
 # Promise
 
 Reason has built-in support for [JavaScript promises through BuckleScript](/apis/javascript/latest/js/promise). The 3 functions you generally need are:
@@ -18,7 +15,7 @@ Additionally, here's how to create a JS promise on the Reason side:
       ) => unit
     ) => Js.Promise.t('a)`
 
-This type signature means that `make` takes a callback that takes 2 named arguments, `resolve` and `reject`. Both arguments are themselves [uncurried callbacks](/docs/reason-compiler/latest/function#Solution:%20Guaranteed%20Uncurrying) (they have a dot). `make` returns the created promise.
+This type signature means that `make` takes a callback that takes 2 named arguments, `resolve` and `reject`. Both arguments are themselves [uncurried callbacks](/docs/reason-compiler/latest/function#solution-guaranteed-uncurrying) (they have a dot). `make` returns the created promise.
 
 ## Usage
 

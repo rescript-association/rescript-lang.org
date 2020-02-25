@@ -4,16 +4,8 @@
     in other API related layouts, such as the Markdown representation
     or the Sidebar component.
  */
-
-%raw
-"require('../styles/main.css')";
-
-%raw
-"require('./init_hljs.js')";
-
 open Util.ReactStuff;
 module Link = Next.Link;
-
 
 module UrlPath = {
   /*
@@ -253,35 +245,30 @@ module Sidebar = {
       };
 
       [@react.component]
-      let make =
-          (
-            ~onItemClick: option(ReactEvent.Mouse.t => unit)=?,
-            ~isItemActive: t => bool=_nav => false,
-            ~items: array(t),
-          ) => {
+      let make = (~isItemActive: t => bool=_nav => false, ~items: array(t)) => {
         <ul className="mt-3 text-night">
-          {Belt.Array.map(
+          {Belt.Array.mapWithIndex(
              items,
-             m => {
+             (idx, m) => {
                let active =
                  isItemActive(m)
                    ? {j| bg-primary-15 text-primary-dark -ml-1 px-2 font-bold block |j}
                    : "";
                <li
-                 key={m.name}
+                 key={m.href}
                  className="leading-5 w-4/5"
                  // to make non-interactive elements (like div, span or li) tab-able
                  // see https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets
-                 tabIndex=0>
-                 <a
-                   href={m.href}
-                   onClick=?onItemClick
-                   className={
-                     "truncate block pl-3 h-8 md:h-auto border-l-2 border-night-10 block text-night hover:pl-4 hover:text-night-dark"
-                     ++ active
-                   }>
-                   m.name->s
-                 </a>
+                 tabIndex=idx>
+                 <Link href={m.href}>
+                   <a
+                     className={
+                       "truncate block pl-3 h-8 md:h-auto border-l-2 border-night-10 block text-night hover:pl-4 hover:text-night-dark"
+                       ++ active
+                     }>
+                     m.name->s
+                   </a>
+                 </Link>
                </li>;
              },
            )
@@ -292,16 +279,14 @@ module Sidebar = {
     [@react.component]
     let make =
         (
-          ~onHeaderClick: option(ReactEvent.Mouse.t => unit)=?,
           ~isItemActive=?,
-          ~headers: array(string),
+          // array((name, href))
+          ~headers: array((string, string)),
           ~moduleName: string,
         ) => {
       let (collapsed, setCollapsed) = React.useState(() => false);
       let items =
-        Belt.Array.map(headers, header =>
-          NavUl.{name: header, href: "#" ++ header}
-        );
+        Belt.Array.map(headers, ((name, href)) => NavUl.{name, href});
 
       let direction = collapsed ? `Down : `Up;
 
@@ -319,7 +304,7 @@ module Sidebar = {
           </span>
         </a>
         {if (!collapsed) {
-           <NavUl ?isItemActive onItemClick=?onHeaderClick items />;
+           <NavUl ?isItemActive items />;
          } else {
            React.null;
          }}
@@ -393,22 +378,19 @@ module MobileDrawerButton = {
   };
 };
 
-/*
-    sidebarOpen: shows if sidebar is open for mobile view
-    toggleSidebar: toggles sidebar for mobile view
- */
 [@react.component]
 let make =
     (
       ~theme: ColorTheme.t,
       ~components: Mdx.Components.t,
-      // (Sidebar, toggleSidebar)
-      ~sidebar: (React.element, unit => unit),
+      ~sidebarState: (bool, (bool => bool) => unit),
+      // (Sidebar, toggleSidebar) ... for toggling sidebar in mobile view
+      ~sidebar: React.element,
       ~breadcrumbs: option(list(UrlPath.breadcrumb))=?,
-      ~route: string,
       ~children,
     ) => {
-  let (isOpen, setIsOpen) = React.useState(() => false);
+  let (isNavOpen, setNavOpen) = React.useState(() => false);
+  let router = Next.Router.useRouter();
 
   let theme = ColorTheme.toCN(theme);
 
@@ -417,16 +399,34 @@ let make =
       <BreadCrumbs crumbs />
     );
 
-  let (sidebar, toggleSidebar) = sidebar;
+  let (isSidebarOpen, setSidebarOpen) = sidebarState;
+  let toggleSidebar = () => setSidebarOpen(prev => !prev);
+
+  React.useEffect1(
+    () => {
+      open Next.Router.Events;
+      let {Next.Router.events} = router;
+
+      let onChangeComplete = _url => setSidebarOpen(_ => false);
+
+      events->on(`routeChangeComplete(onChangeComplete));
+      events->on(`hashChangeComplete(onChangeComplete));
+
+      Some(
+        () => {
+          events->off(`routeChangeComplete(onChangeComplete));
+          events->off(`hashChangeComplete(onChangeComplete));
+        },
+      );
+    },
+    [||],
+  );
+
   <>
     <Meta />
     <div className={"mt-16 min-w-20 " ++ theme}>
       <div className="w-full text-night font-base">
-        <Navigation
-          isOverlayOpen=isOpen
-          toggle={() => setIsOpen(prev => !prev)}
-          route
-        />
+        <Navigation overlayState=(isNavOpen, setNavOpen) />
         <div className="flex justify-center">
           <div className="lg:align-center w-full max-w-xl">
             <Mdx.Provider components>
@@ -438,7 +438,7 @@ let make =
                     <div
                       className="fixed border-b shadow top-16 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center">
                       <MobileDrawerButton
-                        hidden=isOpen
+                        hidden=isNavOpen
                         onClick={evt => {
                           ReactEvent.Mouse.preventDefault(evt);
                           toggleSidebar();

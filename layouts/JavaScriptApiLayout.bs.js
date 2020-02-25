@@ -9,12 +9,6 @@ import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Router from "next/router";
 import * as SidebarLayout from "./SidebarLayout.bs.js";
 
-require('../styles/main.css')
-;
-
-require('./init_hljs.js')
-;
-
 function JavaScriptApiLayout$Docs(Props) {
   Props.theme;
   var $staropt$star = Props.components;
@@ -48,6 +42,7 @@ function JavaScriptApiLayout$Docs(Props) {
           return false;
         }));
   var setSidebarOpen = match[1];
+  var isSidebarOpen = match[0];
   var toggleSidebar = function (param) {
     return Curry._1(setSidebarOpen, (function (prev) {
                   return !prev;
@@ -56,17 +51,17 @@ function JavaScriptApiLayout$Docs(Props) {
   var sidebar = React.createElement(SidebarLayout.Sidebar.make, {
         categories: categories,
         route: router.route,
-        isOpen: match[0],
+        isOpen: isSidebarOpen,
         toggle: toggleSidebar
       });
   return React.createElement(SidebarLayout.make, {
               theme: /* Js */16617,
               components: components,
-              sidebar: /* tuple */[
-                sidebar,
-                toggleSidebar
+              sidebarState: /* tuple */[
+                isSidebarOpen,
+                setSidebarOpen
               ],
-              route: router.route,
+              sidebar: sidebar,
               children: children
             });
 }
@@ -98,4 +93,4 @@ export {
   Prose ,
   
 }
-/*  Not a pure module */
+/* react Not a pure module */

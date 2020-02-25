@@ -1,11 +1,8 @@
-import { make } from "layouts/ReasonReactDocsLayout.bs.js";
-export default make;
-
 # Event
 
 ReasonReact events map cleanly to ReactJS [synthetic events](https://reactjs.org/docs/events.html). More info in the [inline docs](https://github.com/reasonml/reason-react/blob/master/src/ReactEvent.rei#L1).
 
-If you're accessing fields on your event object, like `event.target.value`, you'd use a combination of a `ReactDOMRe` helper and [BuckleScript's `##` object access FFI](/docs/reason-compiler/latest/object#Accessors):
+If you're accessing fields on your event object, like `event.target.value`, you'd use a combination of a `ReactDOMRe` helper and [BuckleScript's `##` object access FFI](/docs/reason-compiler/latest/object#accessors):
 
 ```reason
 ReactEvent.Form.target(event)##value;

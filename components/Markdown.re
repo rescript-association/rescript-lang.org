@@ -148,14 +148,12 @@ module H1 = {
 
 module H2 = {
   [@react.component]
-  let make = (~children) => {
+  let make = (~id, ~children) => {
     <>
       // Here we know that children is always a string (## headline)
       <h2
         className="group mt-12 mb-3 text-3xl leading-1 font-sans font-medium text-night-dark">
-        <span className="-ml-8 pr-2">
-          <Anchor id={children->Unsafe.elementAsString} />
-        </span>
+        <span className="-ml-8 pr-2"> <Anchor id /> </span>
         children
       </h2>
     </>;
@@ -164,12 +162,10 @@ module H2 = {
 
 module H3 = {
   [@react.component]
-  let make = (~children) => {
+  let make = (~id, ~children) => {
     <h3
       className="group text-xl mt-12 mb-3 leading-3 font-sans font-semibold text-night-darker">
-      <span className="-ml-6 pr-2">
-        <Anchor id={children->Unsafe.elementAsString} />
-      </span>
+      <span className="-ml-6 pr-2"> <Anchor id /> </span>
       children
     </h3>;
   };
@@ -177,12 +173,10 @@ module H3 = {
 
 module H4 = {
   [@react.component]
-  let make = (~children) => {
+  let make = (~id, ~children) => {
     <h4
       className="group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-night-dark">
-      <span className="-ml-5 pr-2">
-        <Anchor id={children->Unsafe.elementAsString} />
-      </span>
+      <span className="-ml-5 pr-2"> <Anchor id /> </span>
       children
     </h4>;
   };
@@ -190,12 +184,10 @@ module H4 = {
 
 module H5 = {
   [@react.component]
-  let make = (~children) => {
+  let make = (~id, ~children) => {
     <h5
       className="group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide">
-      <span className="-ml-5 pr-2">
-        <Anchor id={children->Unsafe.elementAsString} />
-      </span>
+      <span className="-ml-5 pr-2"> <Anchor id /> </span>
       children
     </h5>;
   };
@@ -376,27 +368,36 @@ module Hr = {
  */
 module A = {
   [@react.component]
-  let make = (~href, ~children) => {
-    // We drop any .md / .mdx / .html extensions on every href...
-    // Ideally one would check if this link is relative first,
-    // but it's very unlikely we'd refer to an absolute URL ending
-    // with .md
-    let regex = [%re "/\\.md(x)?|\\.html$/"];
-    let href =
-      switch (Js.String2.split(href, "#")) {
-      | [|pathname, anchor|] =>
-        Js.String2.replaceByRe(pathname, regex, "") ++ "#" ++ anchor
-      | [|pathname|] => Js.String2.replaceByRe(pathname, regex, "")
-      | _ => href
-      };
-
-    <a
-      href
-      rel="noopener noreferrer"
-      className="no-underline text-fire hover:underline">
-      children
-    </a>;
-  };
+  let make = (~href, ~children) =>
+    // In case we are handling a relative URL, we will use the Next routing
+    if (Util.Url.isAbsolute(href)) {
+      <a
+        href
+        rel="noopener noreferrer"
+        className="no-underline text-fire hover:underline">
+        children
+      </a>;
+    } else {
+      // We drop any .md / .mdx / .html extensions on every href...
+      // Ideally one would check if this link is relative first,
+      // but it's very unlikely we'd refer to an absolute URL ending
+      // with .md
+      let regex = [%re "/\\.md(x)?|\\.html$/"];
+      let href =
+        switch (Js.String2.split(href, "#")) {
+        | [|pathname, anchor|] =>
+          Js.String2.replaceByRe(pathname, regex, "") ++ "#" ++ anchor
+        | [|pathname|] => Js.String2.replaceByRe(pathname, regex, "")
+        | _ => href
+        };
+      <Next.Link href>
+        <a
+          rel="noopener noreferrer"
+          className="no-underline text-fire hover:underline">
+          children
+        </a>
+      </Next.Link>;
+    };
 };
 
 module Ul = {
@@ -471,6 +472,18 @@ module Li = {
     <li className="md-li mt-3 leading-4 ml-4 text-lg"> elements </li>;
   };
 };
+
+// Useful for debugging injected values in props
+/*
+ let mdxTestComponent: React.component(Js.t({.})) = [%raw
+   {|
+ function(children) {
+   console.log(children);
+   return React.createElement("div");
+ }
+ |}
+ ];
+ */
 
 // Used for the MdxJS Provider
 

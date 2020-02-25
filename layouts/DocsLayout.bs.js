@@ -13,23 +13,20 @@ import * as Router from "next/router";
 import * as SidebarLayout from "./SidebarLayout.bs.js";
 
 function DocsLayout$Toc(Props) {
-  var onItemClick = Props.onItemClick;
   var entries = Props.entries;
   return React.createElement("ul", {
               className: "mt-2 mb-6 border-l border-primary"
             }, Util.ReactStuff.ate(Belt_Array.map(entries, (function (param) {
                         var header = param.header;
-                        var tmp = {
-                          className: "font-medium text-sm text-night-light hover:text-primary",
-                          href: param.href
-                        };
-                        if (onItemClick !== undefined) {
-                          tmp.onClick = Caml_option.valFromOption(onItemClick);
-                        }
                         return React.createElement("li", {
                                     key: header,
                                     className: "pl-2 mt-1"
-                                  }, React.createElement("a", tmp, Util.ReactStuff.s(header)));
+                                  }, React.createElement(Link.default, {
+                                        href: param.href,
+                                        children: React.createElement("a", {
+                                              className: "font-medium block text-sm text-night-light hover:text-primary"
+                                            }, Util.ReactStuff.s(header))
+                                      }));
                       }))));
 }
 
@@ -50,7 +47,6 @@ var Title = {
 
 function DocsLayout$Sidebar$NavItem(Props) {
   var getActiveToc = Props.getActiveToc;
-  var onTocItemClick = Props.onTocItemClick;
   var $staropt$star = Props.isItemActive;
   var $staropt$star$1 = Props.isHidden;
   var items = Props.items;
@@ -67,24 +63,15 @@ function DocsLayout$Sidebar$NavItem(Props) {
                         var tmp;
                         if (activeToc !== undefined) {
                           var entries = activeToc.entries;
-                          if (entries.length === 0) {
-                            tmp = null;
-                          } else {
-                            var tmp$1 = {
-                              entries: entries
-                            };
-                            if (onTocItemClick !== undefined) {
-                              tmp$1.onItemClick = Caml_option.valFromOption(onTocItemClick);
-                            }
-                            tmp = React.createElement(DocsLayout$Toc, tmp$1);
-                          }
+                          tmp = entries.length === 0 ? null : React.createElement(DocsLayout$Toc, {
+                                  entries: entries
+                                });
                         } else {
                           tmp = null;
                         }
                         return React.createElement("li", {
                                     key: m.name,
-                                    className: hidden + " mt-2 leading-5 w-4/5",
-                                    tabIndex: 0
+                                    className: hidden + " mt-2 leading-5 w-4/5"
                                   }, React.createElement(Link.default, {
                                         href: m.href,
                                         children: React.createElement("a", {
@@ -100,7 +87,6 @@ var NavItem = {
 
 function DocsLayout$Sidebar$Category(Props) {
   var getActiveToc = Props.getActiveToc;
-  var onTocItemClick = Props.onTocItemClick;
   var isItemActive = Props.isItemActive;
   var category = Props.category;
   var tmp = {
@@ -108,9 +94,6 @@ function DocsLayout$Sidebar$Category(Props) {
   };
   if (getActiveToc !== undefined) {
     tmp.getActiveToc = Caml_option.valFromOption(getActiveToc);
-  }
-  if (onTocItemClick !== undefined) {
-    tmp.onTocItemClick = Caml_option.valFromOption(onTocItemClick);
   }
   if (isItemActive !== undefined) {
     tmp.isItemActive = Caml_option.valFromOption(isItemActive);
@@ -171,17 +154,18 @@ function DocsLayout$Sidebar$CollapsibleSection$NavUl(Props) {
             }, Util.ReactStuff.ate(Belt_Array.map(items, (function (m) {
                         var active = Curry._1(isItemActive, m) ? " bg-primary-15 text-primary-dark -ml-1 px-2 font-bold block " : "";
                         var tmp = {
-                          className: "truncate block pl-3 h-8 md:h-auto border-l-2 border-night-10 block text-night hover:pl-4 hover:text-night-dark" + active,
-                          href: m.href
+                          className: "truncate block pl-3 h-8 md:h-auto border-l-2 border-night-10 block text-night hover:pl-4 hover:text-night-dark" + active
                         };
                         if (onItemClick !== undefined) {
                           tmp.onClick = Caml_option.valFromOption(onItemClick);
                         }
                         return React.createElement("li", {
                                     key: m.name,
-                                    className: "leading-5 w-4/5",
-                                    tabIndex: 0
-                                  }, React.createElement("a", tmp, Util.ReactStuff.s(m.name)));
+                                    className: "leading-5 w-4/5"
+                                  }, React.createElement(Link.default, {
+                                        href: m.href,
+                                        children: React.createElement("a", tmp, Util.ReactStuff.s(m.name))
+                                      }));
                       }))));
 }
 
@@ -191,7 +175,6 @@ var NavUl = {
 
 function DocsLayout$Sidebar$CollapsibleSection(Props) {
   var onHeaderClick = Props.onHeaderClick;
-  Props.getActiveToc;
   var isItemActive = Props.isItemActive;
   var headers = Props.headers;
   var moduleName = Props.moduleName;
@@ -252,7 +235,6 @@ function DocsLayout$Sidebar(Props) {
   var $staropt$star = Props.toplevelNav;
   Props.title;
   var $staropt$star$1 = Props.preludeSection;
-  var onTocItemClick = Props.onTocItemClick;
   var activeToc = Props.activeToc;
   var isOpen = Props.isOpen;
   var toggle = Props.toggle;
@@ -289,17 +271,13 @@ function DocsLayout$Sidebar(Props) {
                             }, React.createElement(Icon.Close.make, { }))), preludeSection, React.createElement("div", {
                           className: "mb-56"
                         }, Util.ReactStuff.ate(Belt_Array.map(categories, (function (category) {
-                                    var tmp = {
-                                      getActiveToc: getActiveToc,
-                                      isItemActive: isItemActive,
-                                      category: category
-                                    };
-                                    if (onTocItemClick !== undefined) {
-                                      tmp.onTocItemClick = Caml_option.valFromOption(onTocItemClick);
-                                    }
                                     return React.createElement("div", {
                                                 key: category.name
-                                              }, React.createElement(DocsLayout$Sidebar$Category, tmp));
+                                              }, React.createElement(DocsLayout$Sidebar$Category, {
+                                                    getActiveToc: getActiveToc,
+                                                    isItemActive: isItemActive,
+                                                    category: category
+                                                  }));
                                   })))))));
 }
 
@@ -329,11 +307,27 @@ function DocsLayout(Props) {
           return false;
         }));
   var setSidebarOpen = match[1];
+  var isSidebarOpen = match[0];
   var toggleSidebar = function (param) {
     return Curry._1(setSidebarOpen, (function (prev) {
                   return !prev;
                 }));
   };
+  React.useEffect((function () {
+          var events = router.events;
+          var onChangeComplete = function (_url) {
+            return Curry._1(setSidebarOpen, (function (param) {
+                          return false;
+                        }));
+          };
+          events.on("routeChangeComplete", onChangeComplete);
+          events.on("hashChangeComplete", onChangeComplete);
+          return (function (param) {
+                    events.off("routeChangeComplete", onChangeComplete);
+                    events.off("hashChangeComplete", onChangeComplete);
+                    return /* () */0;
+                  });
+        }), []);
   var preludeSection = React.createElement("div", {
         className: "flex justify-between text-primary font-medium items-baseline"
       }, Util.ReactStuff.s(title), version !== undefined ? React.createElement("span", {
@@ -344,12 +338,7 @@ function DocsLayout(Props) {
     route: route,
     title: title,
     preludeSection: preludeSection,
-    onTocItemClick: (function (param) {
-        return Curry._1(setSidebarOpen, (function (param) {
-                      return false;
-                    }));
-      }),
-    isOpen: match[0],
+    isOpen: isSidebarOpen,
     toggle: toggleSidebar
   };
   if (activeToc !== undefined) {
@@ -359,11 +348,11 @@ function DocsLayout(Props) {
   var tmp$1 = {
     theme: theme,
     components: components,
-    sidebar: /* tuple */[
-      sidebar,
-      toggleSidebar
+    sidebarState: /* tuple */[
+      isSidebarOpen,
+      setSidebarOpen
     ],
-    route: router.route,
+    sidebar: sidebar,
     children: children
   };
   if (breadcrumbs !== undefined) {

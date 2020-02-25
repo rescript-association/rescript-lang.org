@@ -1,9 +1,3 @@
-%raw
-"require('../styles/main.css')";
-
-%raw
-"require('./init_hljs.js')";
-
 module Link = Next.Link;
 
 // Structure defined by `scripts/extract-tocs.js`
@@ -11,7 +5,12 @@ let tocData:
   Js.Dict.t({
     .
     "title": string,
-    "headers": array(string),
+    "headers":
+      array({
+        .
+        "name": string,
+        "href": string,
+      }),
   }) = [%raw
   "require('../index_data/manual_toc.json')"
 ];
@@ -92,7 +91,7 @@ module Docs = {
   [@react.component]
   let make = (~components=Markdown.default, ~children) => {
     let router = Next.Router.useRouter();
-    let route = router##route;
+    let route = router.route;
 
     let activeToc: option(Toc.t) =
       Belt.Option.(
@@ -101,7 +100,7 @@ module Docs = {
             let title = data##title;
             let entries =
               Belt.Array.map(data##headers, header =>
-                {Toc.header, href: "#" ++ header}
+                {Toc.header: header##name, href: "#" ++ header##href}
               );
             {Toc.title, entries};
           })
@@ -117,7 +116,10 @@ module Docs = {
           let prefix =
             UrlPath.[
               {name: "Docs", href: "/docs"},
-              {name: "Language Manual", href: "/docs/manual/" ++ version ++ "/introduction"},
+              {
+                name: "Language Manual",
+                href: "/docs/manual/" ++ version ++ "/introduction",
+              },
             ];
           UrlPath.toBreadCrumbs(~prefix, v);
         },

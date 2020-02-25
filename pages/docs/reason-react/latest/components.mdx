@@ -1,6 +1,3 @@
-import { make } from "layouts/ReasonReactDocsLayout.bs.js";
-export default make;
-
 # Components
 
 ReasonReact uses functions and [React Hooks](https://reactjs.org/docs/hooks-intro.html) to compose the component of your application. Let's look at how a component is written and then break down some of the things happening.
@@ -40,7 +37,7 @@ let make = (Props) => {
 };
 ```
 
-It has added a new function with `Props` as a suffix which uses [`[@bs.obj]`](/docs/reason-compiler/latest/object-2#Function) to create your props object. This function gets compiled away by BuckleScript and will be replaced by object literals when used.
+It has added a new function with `Props` as a suffix which uses [`[@bs.obj]`](/docs/reason-compiler/latest/object-2#function) to create your props object. This function gets compiled away by BuckleScript and will be replaced by object literals when used.
 
 ### A note on `children`
 
@@ -100,7 +97,7 @@ Reason also always opts for the safest form of a given hook as well. So `React.u
 
 ## Hand-writing components
 
-You don't need to use the `[@react.component]` declaration to write components. Instead you can write a pair of `foo` and `fooProps` functions such that `type fooProps: 'a => props and foo: props => React.element` and these will always work as React components! This works with your own version of [`[@bs.obj]`](/docs/reason-compiler/latest/object-2#Function), [`[bs.deriving abstract]`](/docs/reason-compiler/latest/object#Abstract%20Record%20Mode), or any other function that takes named args and returns a single props structure.
+You don't need to use the `[@react.component]` declaration to write components. Instead you can write a pair of `foo` and `fooProps` functions such that `type fooProps: 'a => props and foo: props => React.element` and these will always work as React components! This works with your own version of [`[@bs.obj]`](/docs/reason-compiler/latest/object-2#function), [`[bs.deriving abstract]`](/docs/reason-compiler/latest/object#abstract-record-mode), or any other function that takes named args and returns a single props structure.
 
 ## Interop
 
@@ -135,7 +132,7 @@ external makeProps: (~name: 'name, ~key: string=?, unit) => {. "name": 'name} = 
 external make: ({. "name": string}) => React.element = "default";
 ```
 
-**Note on `default`:** to understand what `default` means, see [the BuckleScript docs](/docs/reason-compiler/latest/import-export#Import%20an%20ES6%20Default%20Value).
+**Note on `default`:** to understand what `default` means, see [the BuckleScript docs](/docs/reason-compiler/latest/import-export#import-an-es6-default-value).
 
 ## Component Naming
 

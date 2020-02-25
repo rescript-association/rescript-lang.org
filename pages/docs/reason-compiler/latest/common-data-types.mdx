@@ -1,6 +1,3 @@
-import { make } from "layouts/ReasonCompilerDocsLayout.bs.js";
-export default make;
-
 # Common Data Types
 
 ## Shared Data Types
@@ -31,7 +28,7 @@ It'll compile to the following JS:
 console.log("\xe4\xbd\xa0\xe5\xa5\xbd");
 ```
 
-Which gives you cryptic console output. To rectify this, BuckleScript exposes a special `js` annotation to the default [quoted string syntax](https://reasonml.github.io/docs/en/string-and-char.html#quoted-string) built into the language. Use it like this:
+Which gives you cryptic console output. To rectify this, BuckleScript exposes a special `js` annotation to the default [quoted string syntax](/docs/manual/latest/string-and-char.html#quoted-string) built into the language. Use it like this:
 
 ```reason
 Js.log({js|你好，

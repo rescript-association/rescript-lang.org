@@ -1,6 +1,3 @@
-import { make } from "layouts/ReasonCompilerDocsLayout.bs.js";
-export default make;
-
 # Null, Undefined & Option
 
 BuckleScript itself doesn't have the notion of `null` or `undefined`. This is a _great_ thing, as it wipes out an entire category of bugs. No more `undefined is not a function`, and `cannot access foo of undefined`!
@@ -128,7 +125,7 @@ The `return` part "wraps" a string into a nullable string, to make the type syst
 
 The `.t` in `Js.Nullable.t` is an OCaml convention.
 `Js.Nullable.t` denotes the primary data type that module `Js.Nullable` operates on.
-Most of the time, this `t` type is also usually an [abstract type](https://reasonml.github.io/docs/en/module#creation-1) i.e. you do not know (and should not have to know) the internal representation of `t`.
+Most of the time, this `t` type is also usually an [abstract type](/docs/manual/latest/module#creation-1) i.e. you do not know (and should not have to know) the internal representation of `t`.
 However, in the case of `Js.Nullable.t('a)`, you can guess that it's something a long the line of `type Js.Nullable.t('a) = Js.Nullable.null | Js.Nullable.undefined | Some('a)`.
 
 #### Convert to/from `option`

@@ -1,6 +1,3 @@
-import { Prose } from "layouts/ManualDocsLayout.bs.js";
-export default Prose.make;
-
 # Installation
 
 Reason comes by default in [BuckleScript](/docs/reason-compiler/latest/introduction), a compiler that turns Reason code into JavaScript code.
@@ -35,7 +32,7 @@ That uses BuckleScript to compile Reason to JavaScript, then uses NodeJS to run 
 
 During development, instead of running `npm run build` each time to compile, run `npm run start` to start a watcher that recompiles automatically after file changes.
 
-By default, the `basic-reason` theme configures BuckleScript to output the generated JS files alongside the Reason files they were produced from. [There's a reason why this is helpful](/docs/reason-compiler/latest/build-overview#Tips%20&%20Tricks ). If you prefer to keep the generated files somewhere else, edit `bsconfig.json` to set `in-source` to `false`; the JS files will then be output to the `lib/js` directory instead.
+By default, the `basic-reason` theme configures BuckleScript to output the generated JS files alongside the Reason files they were produced from. [There's a reason why this is helpful](/docs/reason-compiler/latest/build-overview#tips--tricks). If you prefer to keep the generated files somewhere else, edit `bsconfig.json` to set `in-source` to `false`; the JS files will then be output to the `lib/js` directory instead.
 
 Alternatively, **to start a [ReasonReact](https://reasonml.github.io/reason-react/docs/en/installation.html) app**, follow the instructions [here](https://reasonml.github.io/reason-react/docs/en/installation).
 

@@ -1,0 +1,156 @@
+# Getting Started
+
+`genType` is tightly integrated in the [Reason
+Compiler](/docs/reason-compiler/latest/introduction).  It only requires minimal
+setup.
+
+
+## Setup
+
+<Warn>
+
+**Requirements:**
+
+`bs-platform` 7.0.2 or higher: use `genType` 3.8.0 or higher.
+
+`bs-platform` 7.0.0 or higher: use `genType` 3.2.0 or higher.
+
+`bs-platform` 6.2.0 or higher: use `genType` 3.0.0 or higher.
+
+`bs-platform` 5.2.0 or higher: use `genType` 2.40.0 or higher.
+
+`bs-platform` 5.0.x and 5.1.x: use `genType` 2.17.0 or higher.
+
+For earlier versions, see the older [README](https://github.com/cristianoc/genType/blob/v2.16.0/README.md).
+
+</Warn>
+
+Install the binaries via `npm` (or `yarn`):
+
+```
+npm install --save-dev gentype
+
+# Verify installed gentype binary
+npx gentype --help
+```
+
+Add a `gentypeconfig` section to your `bsconfig.json` (See [Configuration](#configuration) for details):
+
+```
+"gentypeconfig": {
+    "language": "untyped",
+    "shims": {},
+    "debug": {
+      "all": false,
+      "basic": false
+    }
+}
+```
+
+For running `gentype` with BuckleScript via `npm` workflow, add following script in your `package.json`:
+
+```
+scripts: {
+  "bs:build": "bsb -make-world",
+  "bs:clean": "bsb -clean-world"
+}
+```
+
+> **Note:** `bsb` will automatically
+> detect your installed `genType` version.
+> 
+> With genType < 2.17.0 or bucklescript < 5.0.0, one has to set
+> the environment variable `BS_CMT_POST_PROCESS_CMD`. See the older
+> [README](https://github.com/cristianoc/genType/blob/v2.16.0/README.md).
+
+## Configuration
+
+Every `genType` powered project requires a configuration item `"gentypeconfig"`
+at top level in the project's `bsconfig.json`. (The use of a separate file
+`gentypeconfig.json` is being deprecated). The configuration has following
+structure:
+
+```js
+  //...
+  "gentypeconfig": {
+    "language": "typescript" | "flow" | "untyped",
+    "shims": {
+      "ReasonReact": "ReactShim"
+    }
+  }
+```
+
+- **language**
+
+  - `"typescript"` : Generate `*.gen.tsx` files written in TypeScript.
+  - `"flow"`: Generate `*.gen.js` files with Flow type annotations.
+  - `"untyped"`: Generate `*.gen.js` files in vanilla JavaScript.
+
+- **shims**
+  - e.g. `Array<string>` with format: `"ReasonModule=JavaScriptModule"`
+  - Required to export certain basic Reason data types to JS when one cannot modify the sources to add annotations (e.g. exporting Reason lists)
+
+## Adding Shims (TS & Flow)
+
+Configure your shim files in your `"gentypeconfig"` in
+[`bsconfig.json`](https://github.com/cristianoc/genType/blob/master/examples/typescript-react-example/bsconfig.json), and add
+relevant `.shims.js` files in a directory which is visible by bucklescript e.g.
+[`src/shims/`](https://github.com/cristianoc/genType/blob/master/examples/typescript-react-example/src/shims). An example shim to
+export ReactEvent can be found
+[here](https://github.com/cristianoc/genType/blob/master/examples/typescript-react-example/src/shims/ReactEvent.shim.ts).
+
+## Testing the Whole Setup
+
+Open any relevant `*.re` file and add `[@genType]` annotations to any bindings
+/ values / functions to be used from JavaScript. If an annotated value uses a
+type, the type must be annotated too. See e.g.
+[Hooks.re](https://github.com/cristianoc/genType/blob/master/examples/typescript-react-example/src/Hooks.re).
+
+Save the file and rebuild the project via `npm run bs:build` or similar. You
+should now see a `*.gen.tsx` (for TypeScript, or `*.gen.js` for Flow) file with
+the same name (e.g. `MyComponent.re` -> `MyComponent.gen.tsx`).
+
+Any values exported from `MyComponent.re` can then be imported from JS. For
+example:
+
+```js
+import MyComponent from "./components/MyComponent.gen";
+```
+
+## Limitations
+
+- **BuckleScript in-source = true**. Currently only supports bucklescript
+projects with [in-source
+generation](/docs/reason-compiler/latest/build-configuration#package-specs) and
+`.bs.js` file suffix.
+
+- **Limited namespace support**. Currently there's
+limited
+[namespace](/docs/reason-compiler/latest/build-configuration#name-namespace)
+support, and only `namespace:true` is possible, not e.g. `namespace:"custom"`.
+
+## Examples
+
+We prepared some examples to give you an idea on how to integrate `genType` in
+your own project. Check out the READMEs of the listed projects.
+
+- [flow-react-example](https://github.com/cristianoc/genType/tree/master/examples/flow-react-example)
+- [typescript-react-example](https://github.com/cristianoc/genType/tree/master/examples/typescript-react-example)
+- [untyped-react-example](https://github.com/cristianoc/tree/blob/master/examples/untyped-react-example)
+
+## Experimental features
+
+These features are for experimentation only. They could be changed/removed any
+time, and not be considered breaking changes.
+
+- Export object and record types as interfaces. To activate, add
+`"exportInterfaces": true` to the configuration. The types are also renamed
+from `name` to `Iname`.
+
+- Emit prop types for the untyped back-end. To activate, add `"propTypes":
+true` and `"language": "untyped"` to the configuration.
+
+## Changelog
+
+See [Changes.md](https://github.com/cristianoc/genType/Changes.md) for a
+complete list of features, fixes, and changes for each release.

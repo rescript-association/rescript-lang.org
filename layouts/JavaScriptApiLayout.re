@@ -1,9 +1,3 @@
-%raw
-"require('../styles/main.css')";
-
-%raw
-"require('./init_hljs.js')";
-
 module Link = Next.Link;
 
 module Sidebar = SidebarLayout.Sidebar;
@@ -37,18 +31,14 @@ module Docs = {
         isOpen=isSidebarOpen
         toggle=toggleSidebar
         categories
-        route={
-          router##route;
-        }
+        route={router.route}
       />;
 
     <SidebarLayout
       theme=`Js
       components
-      sidebar=(sidebar, toggleSidebar)
-      route={
-        router##route;
-      }>
+      sidebarState=(isSidebarOpen, setSidebarOpen)
+      sidebar>
       children
     </SidebarLayout>;
   };

@@ -11,12 +11,6 @@ import * as Router from "next/router";
 import * as SidebarLayout from "./SidebarLayout.bs.js";
 import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
-require('../styles/main.css')
-;
-
-require('./init_hljs.js')
-;
-
 var tocData = (require('../index_data/reason_react_toc.json'));
 
 var overviewNavs = [
@@ -185,8 +179,8 @@ function ReasonReactDocsLayout(Props) {
           var title = data.title;
           var entries = Belt_Array.map(data.headers, (function (header) {
                   return {
-                          header: header,
-                          href: "#" + header
+                          header: header.name,
+                          href: "#" + header.href
                         };
                 }));
           return {
@@ -256,4 +250,4 @@ export {
   make ,
   
 }
-/*  Not a pure module */
+/* tocData Not a pure module */

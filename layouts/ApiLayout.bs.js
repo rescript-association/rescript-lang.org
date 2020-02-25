@@ -5,13 +5,6 @@ import * as React from "react";
 import * as Markdown from "../components/Markdown.bs.js";
 import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
-import * as MainLayout from "./MainLayout.bs.js";
-
-require('../styles/main.css')
-;
-
-require('./init_hljs.js')
-;
 
 function ApiLayout$MainMd$P(Props) {
   var children = Props.children;
@@ -130,20 +123,18 @@ var categories = [{
 
 function ApiLayout(Props) {
   var children = Props.children;
-  return React.createElement(MainLayout.make, {
-              children: React.createElement("div", {
-                    className: "flex flex-col"
-                  }, React.createElement("div", {
-                        className: "max-w-md mb-32 text-lg"
-                      }, children), React.createElement("div", undefined, Util.ReactStuff.ate(Belt_Array.map(categories, (function (category) {
-                                  return React.createElement("div", {
-                                              key: category.name,
-                                              className: "pb-16"
-                                            }, React.createElement(ApiLayout$Category, {
-                                                  category: category
-                                                }));
-                                })))))
-            });
+  return React.createElement("div", {
+              className: "flex flex-col"
+            }, React.createElement("div", {
+                  className: "max-w-md mb-32 text-lg"
+                }, children), React.createElement("div", undefined, Util.ReactStuff.ate(Belt_Array.map(categories, (function (category) {
+                            return React.createElement("div", {
+                                        key: category.name,
+                                        className: "pb-16"
+                                      }, React.createElement(ApiLayout$Category, {
+                                            category: category
+                                          }));
+                          })))));
 }
 
 var Link$1 = /* alias */0;
@@ -158,4 +149,4 @@ export {
   make ,
   
 }
-/*  Not a pure module */
+/* react Not a pure module */

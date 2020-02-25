@@ -1,6 +1,3 @@
-import { make } from "layouts/ReasonCompilerDocsLayout.bs.js";
-export default make;
-
 # Build Performance
 
 BuckleScript considers performance at install time, build time and run time as a serious feature. Here are some more info, and tips on keeping the build fast. **Feel free to skip this section** if you're just starting out.
@@ -52,7 +49,7 @@ In short, thanks to OCaml, BuckleScript and bsb's architecture, we're able to **
 
 ## Speed Up Incremental Build
 
-OCaml/BuckleScript/Reason uses the concept of interface files (`.mli` or `.rei`) (or, equivalently, [module signatures](https://reasonml.github.io/docs/en/module.html#signatures)). Exposing only what you need naturally speeds up incremental builds. E.g. if you change a `.ml` or `.re` file whose corresponding `.mli` or `.rei` file doesn't expose the changed part, then you've reduced the amount of dependent files you have to rebuild.
+OCaml/BuckleScript/Reason uses the concept of interface files (`.mli` or `.rei`) (or, equivalently, [module signatures](/docs/manual/latest/module#signatures)). Exposing only what you need naturally speeds up incremental builds. E.g. if you change a `.ml` or `.re` file whose corresponding `.mli` or `.rei` file doesn't expose the changed part, then you've reduced the amount of dependent files you have to rebuild.
 
 <!-- TODO: validate this -->
 

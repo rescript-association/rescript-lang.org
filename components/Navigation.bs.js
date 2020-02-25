@@ -7,6 +7,7 @@ import * as React from "react";
 import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as ColorTheme from "../common/ColorTheme.bs.js";
+import * as Router from "next/router";
 
 var link = "no-underline block text-inherit hover:cursor-pointer hover:text-white text-white-80 mb-px";
 
@@ -151,6 +152,10 @@ function Navigation$SubNav$DocsLinks(Props) {
     /* tuple */[
       "ReasonReact",
       "/docs/reason-react/latest/introduction"
+    ],
+    /* tuple */[
+      "GenType",
+      "/docs/gentype/latest/introduction"
     ]
   ];
   var overlineClass = "font-black uppercase text-sm tracking-wide text-primary-80";
@@ -319,35 +324,36 @@ var MobileNav = {
 };
 
 function Navigation(Props) {
-  var $staropt$star = Props.isOverlayOpen;
-  var $staropt$star$1 = Props.toggle;
-  var $staropt$star$2 = Props.route;
-  var isOverlayOpen = $staropt$star !== undefined ? $staropt$star : false;
-  var toggle = $staropt$star$1 !== undefined ? $staropt$star$1 : (function (param) {
-        return /* () */0;
-      });
-  var route = $staropt$star$2 !== undefined ? $staropt$star$2 : "/";
+  var overlayState = Props.overlayState;
   var minWidth = "20rem";
+  var router = Router.useRouter();
+  var route = router.route;
   var match = React.useState((function () {
           return [
                   {
                     title: "Docs",
-                    children: React.createElement(Navigation$SubNav$DocsLinks, {
-                          route: route
-                        }),
+                    children: (function (route) {
+                        return React.createElement(Navigation$SubNav$DocsLinks, {
+                                    route: route
+                                  });
+                      }),
                     href: "/docs",
                     state: /* Closed */2
                   },
                   {
                     title: "API",
-                    children: React.createElement(Navigation$SubNav$ApiLinks, {
-                          route: route
-                        }),
+                    children: (function (route) {
+                        return React.createElement(Navigation$SubNav$ApiLinks, {
+                                    route: route
+                                  });
+                      }),
                     href: "/apis",
                     state: /* Closed */2
                   }
                 ];
         }));
+  var setOverlayOpen = overlayState[1];
+  var isOverlayOpen = overlayState[0];
   var setCollapsibles = match[1];
   var resetCollapsibles = function (param) {
     return Curry._1(setCollapsibles, (function (prev) {
@@ -369,6 +375,22 @@ function Navigation(Props) {
     evt.preventDefault();
     return resetCollapsibles(/* () */0);
   };
+  React.useEffect((function () {
+          var events = router.events;
+          var onChangeComplete = function (_url) {
+            resetCollapsibles(/* () */0);
+            return Curry._1(setOverlayOpen, (function (param) {
+                          return false;
+                        }));
+          };
+          events.on("routeChangeComplete", onChangeComplete);
+          events.on("hashChangeComplete", onChangeComplete);
+          return (function (param) {
+                    events.off("routeChangeComplete", onChangeComplete);
+                    events.off("hashChangeComplete", onChangeComplete);
+                    return /* () */0;
+                  });
+        }), []);
   return React.createElement("nav", {
               ref: outerRef,
               className: "fixed flex justify-center z-20 top-0 w-full h-16 bg-night-dark shadow text-white-80 text-base",
@@ -404,7 +426,9 @@ function Navigation(Props) {
                                     var onStateChange = function (id, state) {
                                       return Curry._1(setCollapsibles, (function (prev) {
                                                     if (isOverlayOpen) {
-                                                      Curry._1(toggle, /* () */0);
+                                                      Curry._1(setOverlayOpen, (function (prev) {
+                                                              return !prev;
+                                                            }));
                                                     }
                                                     return Belt_Array.map(prev, (function (c) {
                                                                   if (c.title === id) {
@@ -432,7 +456,7 @@ function Navigation(Props) {
                                                 id: title,
                                                 state: c.state,
                                                 active: route.startsWith(c.href),
-                                                children: c.children,
+                                                children: Curry._1(c.children, route),
                                                 key: String(idx)
                                               });
                                   }))), React.createElement(Link.default, {
@@ -488,7 +512,9 @@ function Navigation(Props) {
                   onClick: (function (evt) {
                       evt.preventDefault();
                       resetCollapsibles(/* () */0);
-                      return Curry._1(toggle, /* () */0);
+                      return Curry._1(setOverlayOpen, (function (prev) {
+                                    return !prev;
+                                  }));
                     })
                 }, React.createElement(Icon.DrawerDots.make, {
                       className: "h-1 w-auto block " + (

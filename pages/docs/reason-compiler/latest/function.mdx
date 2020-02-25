@@ -1,6 +1,3 @@
-import { make } from "layouts/ReasonCompilerDocsLayout.bs.js";
-export default make;
-
 # Function
 
 Modeling a JS function is like modeling a normal value:
@@ -42,7 +39,7 @@ draw(10, 20, undefined);
 
 We've compiled to the same function, but now the usage is much clearer on the BS side thanks to labels!
 
-**Note**: in this particular case, you need a unit, `()` after `border`, since `border` is an [optional argument at the last position](https://reasonml.github.io/docs/en/function.html#optional-labeled-arguments). Not having a unit to indicate you've finished applying the function would generate a warning.
+**Note**: in this particular case, you need a unit, `()` after `border`, since `border` is an [optional argument at the last position](/docs/manual/latest/function.html#optional-labeled-arguments). Not having a unit to indicate you've finished applying the function would generate a warning.
 
 Note that you can change the order of labeled arguments on the Reason side and BuckleScript will ensure that they appear the right way in the JavaScript output:
 

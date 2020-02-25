@@ -13,14 +13,9 @@ import * as ColorTheme from "../common/ColorTheme.bs.js";
 import * as Navigation from "../components/Navigation.bs.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
+import * as Router from "next/router";
 import * as React$1 from "@mdx-js/react";
 import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
-
-require('../styles/main.css')
-;
-
-require('./init_hljs.js')
-;
 
 function parse(base, route) {
   var allPaths = route.replace(base + "/", "").split("/");
@@ -229,7 +224,6 @@ var ToplevelNav = {
 };
 
 function SidebarLayout$Sidebar$CollapsibleSection$NavUl(Props) {
-  var onItemClick = Props.onItemClick;
   var $staropt$star = Props.isItemActive;
   var items = Props.items;
   var isItemActive = $staropt$star !== undefined ? $staropt$star : (function (_nav) {
@@ -237,20 +231,18 @@ function SidebarLayout$Sidebar$CollapsibleSection$NavUl(Props) {
       });
   return React.createElement("ul", {
               className: "mt-3 text-night"
-            }, Util.ReactStuff.ate(Belt_Array.map(items, (function (m) {
+            }, Util.ReactStuff.ate(Belt_Array.mapWithIndex(items, (function (idx, m) {
                         var active = Curry._1(isItemActive, m) ? " bg-primary-15 text-primary-dark -ml-1 px-2 font-bold block " : "";
-                        var tmp = {
-                          className: "truncate block pl-3 h-8 md:h-auto border-l-2 border-night-10 block text-night hover:pl-4 hover:text-night-dark" + active,
-                          href: m.href
-                        };
-                        if (onItemClick !== undefined) {
-                          tmp.onClick = Caml_option.valFromOption(onItemClick);
-                        }
                         return React.createElement("li", {
-                                    key: m.name,
+                                    key: m.href,
                                     className: "leading-5 w-4/5",
-                                    tabIndex: 0
-                                  }, React.createElement("a", tmp, Util.ReactStuff.s(m.name)));
+                                    tabIndex: idx
+                                  }, React.createElement(Link.default, {
+                                        href: m.href,
+                                        children: React.createElement("a", {
+                                              className: "truncate block pl-3 h-8 md:h-auto border-l-2 border-night-10 block text-night hover:pl-4 hover:text-night-dark" + active
+                                            }, Util.ReactStuff.s(m.name))
+                                      }));
                       }))));
 }
 
@@ -259,7 +251,6 @@ var NavUl = {
 };
 
 function SidebarLayout$Sidebar$CollapsibleSection(Props) {
-  var onHeaderClick = Props.onHeaderClick;
   var isItemActive = Props.isItemActive;
   var headers = Props.headers;
   var moduleName = Props.moduleName;
@@ -268,10 +259,10 @@ function SidebarLayout$Sidebar$CollapsibleSection(Props) {
         }));
   var setCollapsed = match[1];
   var collapsed = match[0];
-  var items = Belt_Array.map(headers, (function (header) {
+  var items = Belt_Array.map(headers, (function (param) {
           return {
-                  name: header,
-                  href: "#" + header
+                  name: param[0],
+                  href: param[1]
                 };
         }));
   var direction = collapsed ? /* Down */759637122 : /* Up */19067;
@@ -282,9 +273,6 @@ function SidebarLayout$Sidebar$CollapsibleSection(Props) {
     var tmp$1 = {
       items: items
     };
-    if (onHeaderClick !== undefined) {
-      tmp$1.onItemClick = Caml_option.valFromOption(onHeaderClick);
-    }
     if (isItemActive !== undefined) {
       tmp$1.isItemActive = Caml_option.valFromOption(isItemActive);
     }
@@ -387,34 +375,46 @@ var MobileDrawerButton = {
 function SidebarLayout(Props) {
   var theme = Props.theme;
   var components = Props.components;
+  var sidebarState = Props.sidebarState;
   var sidebar = Props.sidebar;
   var breadcrumbs = Props.breadcrumbs;
-  var route = Props.route;
   var children = Props.children;
   var match = React.useState((function () {
           return false;
         }));
-  var setIsOpen = match[1];
-  var isOpen = match[0];
+  var isNavOpen = match[0];
+  var router = Router.useRouter();
   var theme$1 = ColorTheme.toCN(theme);
   var breadcrumbs$1 = Belt_Option.mapWithDefault(breadcrumbs, null, (function (crumbs) {
           return React.createElement(SidebarLayout$BreadCrumbs, {
                       crumbs: crumbs
                     });
         }));
-  var toggleSidebar = sidebar[1];
+  var setSidebarOpen = sidebarState[1];
+  React.useEffect((function () {
+          var events = router.events;
+          var onChangeComplete = function (_url) {
+            return Curry._1(setSidebarOpen, (function (param) {
+                          return false;
+                        }));
+          };
+          events.on("routeChangeComplete", onChangeComplete);
+          events.on("hashChangeComplete", onChangeComplete);
+          return (function (param) {
+                    events.off("routeChangeComplete", onChangeComplete);
+                    events.off("hashChangeComplete", onChangeComplete);
+                    return /* () */0;
+                  });
+        }), []);
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, { }), React.createElement("div", {
                   className: "mt-16 min-w-20 " + theme$1
                 }, React.createElement("div", {
                       className: "w-full text-night font-base"
                     }, React.createElement(Navigation.make, {
-                          isOverlayOpen: isOpen,
-                          toggle: (function (param) {
-                              return Curry._1(setIsOpen, (function (prev) {
-                                            return !prev;
-                                          }));
-                            }),
-                          route: route
+                          overlayState: /* tuple */[
+                            isNavOpen,
+                            match[1]
+                          ]
                         }), React.createElement("div", {
                           className: "flex justify-center"
                         }, React.createElement("div", {
@@ -423,17 +423,19 @@ function SidebarLayout(Props) {
                                   components: components,
                                   children: React.createElement("div", {
                                         className: "flex"
-                                      }, sidebar[0], React.createElement("div", {
+                                      }, sidebar, React.createElement("div", {
                                             className: "flex justify-center w-full md:w-3/4 overflow-hidden"
                                           }, React.createElement("main", {
                                                 className: "w-5/6 pt-10 mb-32 text-lg"
                                               }, React.createElement("div", {
                                                     className: "fixed border-b shadow top-16 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center"
                                                   }, React.createElement(SidebarLayout$MobileDrawerButton, {
-                                                        hidden: isOpen,
+                                                        hidden: isNavOpen,
                                                         onClick: (function (evt) {
                                                             evt.preventDefault();
-                                                            return Curry._1(toggleSidebar, /* () */0);
+                                                            return Curry._1(setSidebarOpen, (function (prev) {
+                                                                          return !prev;
+                                                                        }));
                                                           })
                                                       }), React.createElement("div", {
                                                         className: "truncate overflow-x-auto touch-scroll"
@@ -456,4 +458,4 @@ export {
   make ,
   
 }
-/*  Not a pure module */
+/* Tag Not a pure module */

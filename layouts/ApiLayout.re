@@ -1,9 +1,3 @@
-%raw
-"require('../styles/main.css')";
-
-%raw
-"require('./init_hljs.js')";
-
 open Util.ReactStuff;
 module Link = Next.Link;
 
@@ -122,17 +116,15 @@ let categories: array(Category.t) = [|
 /* Used for API docs (structured data) */
 [@react.component]
 let make = (~children) => {
-  <MainLayout>
-    <div className="flex flex-col">
-      <div className="max-w-md mb-32 text-lg"> children </div>
-      <div>
-        {Belt.Array.map(categories, category =>
-           <div key={category.name} className="pb-16">
-             <Category category />
-           </div>
-         )
-         ->ate}
-      </div>
+  <div className="flex flex-col">
+    <div className="max-w-md mb-32 text-lg"> children </div>
+    <div>
+      {Belt.Array.map(categories, category =>
+         <div key={category.name} className="pb-16">
+           <Category category />
+         </div>
+       )
+       ->ate}
     </div>
-  </MainLayout>;
+  </div>;
 };

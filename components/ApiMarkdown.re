@@ -28,10 +28,10 @@ module H2 = {
   // We will currently hide the headline, to keep the structure,
   // but having an Elm like documentation
   [@react.component]
-  let make = (~children) => {
+  let make = (~id, ~children as _) => {
     <>
       // Here we know that children is always a string (## headline)
-      <InvisibleAnchor id={children->Unsafe.elementAsString} />
+      <InvisibleAnchor id />
       <div className="border-b border-gray-200 my-20" />
     </>;
   };
@@ -39,6 +39,7 @@ module H2 = {
 
 let default =
   Mdx.Components.t(
+    ~intro=Intro.make,
     ~p=P.make,
     ~li=Li.make,
     ~h1=H1.make,

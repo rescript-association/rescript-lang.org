@@ -1,6 +1,3 @@
-import { make } from "layouts/ReasonCompilerDocsLayout.bs.js";
-export default make;
-
 # Object 2
 
 There's an alternative of binding to JavaScript objects, if the previous section's `bs.deriving abstract` doesn't suit your needs:
@@ -8,7 +5,7 @@ There's an alternative of binding to JavaScript objects, if the previous section
 - You don't want to declare a type beforehand
 - You want your object to be "structural", e.g. your function wants to accept "any object with the field `age`, not just a particular object whose type definition is declared above".
 
-> Reminder of the above distinction of record vs object [here](https://reasonml.github.io/docs/en/record#record-types-are-found-by-field-name).
+> Reminder of the above distinction of record vs object [here](/docs/manual/latest/record#record-types-are-found-by-field-name).
 
 This section describes how BuckleScript uses OCaml's object facility to achieve this other way of binding and compiling to JavaScript objects.
 
@@ -149,7 +146,7 @@ But only the first three fields are required; the `options` field is optional. Y
 
 **Note**: the ` = ""` part at the end is just a dummy placeholder, due to syntactic limitations. It serves no purpose currently.
 
-This function has four labelled parameters (the fourth one optional), one unlabelled parameter at the end (which we mandate for functions with [optional parameters](https://reasonml.github.io/docs/en/function.html#optional-labeled-arguments)), and one parameter (`_method`) that requires an underscore prefix to avoid confusion with the OCaml/Reason keyword `method`.
+This function has four labelled parameters (the fourth one optional), one unlabelled parameter at the end (which we mandate for functions with [optional parameters](/docs/manual/latest/function.html#optional-labeled-arguments)), and one parameter (`_method`) that requires an underscore prefix to avoid confusion with the OCaml/Reason keyword `method`.
 
 Also of interest is the return type: `_`, which tells BuckleScript to automatically infer the full type of the `Js.t` object, sparing you the hassle of writing down the type manually!
 
@@ -161,4 +158,4 @@ let homeRoute = route(~_method="GET", ~path="/", ~action=(_ => Js.log("Home")), 
 
 This generates the desired JavaScript object–but you'll notice that the `options` parameter was left out. As expected, the generated object won't include the `options` field.
 
-**Note** that for more type-safety you'll probably want to [constrain](function#Constrain%20Arguments%20Better) the `_method` parameter type to only the acceptable values.
+**Note** that for more type-safety you'll probably want to [constrain](function#constrain-arguments-better) the `_method` parameter type to only the acceptable values.

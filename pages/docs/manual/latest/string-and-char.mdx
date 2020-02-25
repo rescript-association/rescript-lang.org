@@ -1,6 +1,3 @@
-import { Prose } from "layouts/ManualDocsLayout.bs.js";
-export default Prose.make;
-
 # String and Char
 
 ## String
@@ -41,7 +38,7 @@ Hehe...
 |};
 ```
 
-Analogically speaking, it's like JavaScript's backtick string interpolation, except without needing to escape special chars, and without built-in interpolation of variables. Though you can trivially restore the latter functionality, [as BuckleScript has done](/docs/reason-compiler/latest/common-data-types#Interpolation):
+Analogically speaking, it's like JavaScript's backtick string interpolation, except without needing to escape special chars, and without built-in interpolation of variables. Though you can trivially restore the latter functionality, [as BuckleScript has done](/docs/reason-compiler/latest/common-data-types#interpolation):
 
 ```reason
 let world = {js|世界|js}; /* Supports Unicode characters */

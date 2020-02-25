@@ -4,18 +4,13 @@ import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
 import * as Markdown from "../components/Markdown.bs.js";
+import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as ApiMarkdown from "../components/ApiMarkdown.bs.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Router from "next/router";
 import * as SidebarLayout from "./SidebarLayout.bs.js";
 import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
-
-require('../styles/main.css')
-;
-
-require('./init_hljs.js')
-;
 
 var indexData = (require('../index_data/js_api_index.json'));
 
@@ -247,7 +242,12 @@ function JsDocsLayout$Docs(Props) {
   var router = Router.useRouter();
   var route = router.route;
   var headers = Belt_Option.getWithDefault(Belt_Option.map(Js_dict.get(indexData, route), (function (data) {
-              return data.headers;
+              return Belt_Array.map(data.headers, (function (header) {
+                            return /* tuple */[
+                                    header.name,
+                                    "#" + header.href
+                                  ];
+                          }));
             })), []);
   var moduleName = Belt_Option.getWithDefault(Belt_Option.map(Js_dict.get(indexData, route), (function (data) {
               return data.moduleName;
@@ -256,6 +256,7 @@ function JsDocsLayout$Docs(Props) {
           return false;
         }));
   var setSidebarOpen = match[1];
+  var isSidebarOpen = match[0];
   var toggleSidebar = function (param) {
     return Curry._1(setSidebarOpen, (function (prev) {
                   return !prev;
@@ -297,11 +298,6 @@ function JsDocsLayout$Docs(Props) {
     toplevelNav = null;
   }
   var preludeSection = route !== "/apis/javascript/latest/js" ? React.createElement(SidebarLayout.Sidebar.CollapsibleSection.make, {
-          onHeaderClick: (function (param) {
-              return Curry._1(setSidebarOpen, (function (param) {
-                            return false;
-                          }));
-            }),
           headers: headers,
           moduleName: moduleName
         }) : null;
@@ -310,17 +306,17 @@ function JsDocsLayout$Docs(Props) {
         route: router.route,
         toplevelNav: toplevelNav,
         preludeSection: preludeSection,
-        isOpen: match[0],
+        isOpen: isSidebarOpen,
         toggle: toggleSidebar
       });
   var tmp$1 = {
     theme: /* Js */16617,
     components: components,
-    sidebar: /* tuple */[
-      sidebar,
-      toggleSidebar
+    sidebarState: /* tuple */[
+      isSidebarOpen,
+      setSidebarOpen
     ],
-    route: router.route,
+    sidebar: sidebar,
     children: children
   };
   if (breadcrumbs !== undefined) {
@@ -370,4 +366,4 @@ export {
   Prose ,
   
 }
-/*  Not a pure module */
+/* indexData Not a pure module */

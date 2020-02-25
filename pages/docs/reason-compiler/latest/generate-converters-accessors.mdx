@@ -1,6 +1,3 @@
-import { make } from "layouts/ReasonCompilerDocsLayout.bs.js";
-export default make;
-
 # Generate Converters
 
 Sometimes, you might want to generate e.g. function accessors from a variant declaration, or a `Js.t` object + converter functions from a record definition. BuckleScript comes with a few annotations that allow you to generate those.
@@ -86,7 +83,7 @@ pets
 ## Convert Between `Js.t` Object and Record
 
 > **Note:** In BuckleScript >= v7 [records are already compiled to JS
-> objects](object#Records%20as%20Objects). `jsConverter` is therefore
+> objects](object#records-as-objects). `jsConverter` is therefore
 > obsolete and will generate a no-op function for compatibility instead.
 
 Use `jsConverter`.

@@ -3,7 +3,11 @@
 
 var Link = { };
 
-var Router = { };
+var Events = { };
+
+var Router = {
+  Events: Events
+};
 
 var Head = { };
 

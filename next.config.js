@@ -2,9 +2,13 @@ const bsconfig = require("./bsconfig.json");
 const withCSS = require("@zeit/next-css");
 const withTM = require("next-transpile-modules");
 const path = require('path');
+const remarkSlug = require('remark-slug');
 
 const withMdx = require("@next/mdx")({
   extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [remarkSlug]
+  }
 });
 
 const config = {

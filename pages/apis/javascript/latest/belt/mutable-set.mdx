@@ -1,17 +1,13 @@
-import { Docs } from "layouts/BeltDocsLayout.bs.js";
-import { make as ApiIntro } from "components/ApiIntro.bs.js";
-export default Docs.make;
-
 # MutableSet
 
-<ApiIntro>
+<Intro>
 
 A **mutable** sorted set module which allows customize compare behavior.
 The implementation uses balanced binary trees, and therefore searching and insertion take time logarithmic in the size of the map.
 
 It also has three specialized inner modules [Belt.MutableSet.Int](/apis/javascript/latest/belt/mutable-set-int) and [Belt.MutableSet.String](/apis/javascript/latest/belt/mutable-set-string) - This module separates data from function which is more verbose but slightly more efficient
 
-</ApiIntro>
+</Intro>
 
 ```re example
 module PairComparator =

@@ -1,6 +1,3 @@
-import { Prose } from "layouts/ManualDocsLayout.bs.js";
-export default Prose.make;
-
 # Converting from JS
 
 Preparation
@@ -66,7 +63,7 @@ Types, Pass 1
 You might still occasionally get syntax errors, but not as drastic as the previous step's.
 
 - Change `foo.bar` to `foo##bar`. This escape-hatch [BuckleScript feature](/docs/reason-compiler/latest/object) will be your medium-term friend.
-- Convert `{foo: bar}` to `[%bs.obj {foo: bar}]` ([docs](/docs/reason-compiler/latest/object#Creation)). After `refmt`, this will sugar to `{"foo": bar}`.
+- Convert `{foo: bar}` to `[%bs.obj {foo: bar}]` ([docs](/docs/reason-compiler/latest/object#creation)). After `refmt`, this will sugar to `{"foo": bar}`.
 - To communicate with external JS files, use `external`. They're BuckleScript's [foreign function interface](/docs/reason-compiler/latest/intro-to-external).
   - Inline externals. No need to create clean, well-separated files for externals for now. We'll come back to these.
   - If it's too cumbersome to correctly type an `external`'s input/output, use some placeholder polymorphic types, e.g. `external getStudentById: 'whatever => 'whateverElse = ...`.
@@ -149,7 +146,7 @@ type student;
 [@bs.module "School"] external getAllStudents : unit => array(student) = "getAllStudents";
 ```
 
-Type `student` doesn't have an actual content; that's called an [abstract type](module#Signatures). It's a convenient way of specifying the relationship between external calls without knowing what the shape of the data is under the hood.
+Type `student` doesn't have an actual content; that's called an [abstract type](module#signatures). It's a convenient way of specifying the relationship between external calls without knowing what the shape of the data is under the hood.
 
 And then you're done!
 

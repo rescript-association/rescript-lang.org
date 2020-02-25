@@ -1,9 +1,3 @@
-%raw
-"require('../styles/main.css')";
-
-%raw
-"require('./init_hljs.js')";
-
 module Link = Next.Link;
 
 // Structure defined by `scripts/extract-indices.js`
@@ -11,7 +5,12 @@ let indexData:
   Js.Dict.t({
     .
     "moduleName": string,
-    "headers": array(string),
+    "headers":
+      array({
+        .
+        "name": string,
+        "href": string,
+      }),
   }) = [%raw
   "require('../index_data/belt_api_index.json')"
 ];
@@ -123,13 +122,16 @@ module Docs = {
   [@react.component]
   let make = (~components=ApiMarkdown.default, ~children) => {
     let router = Next.Router.useRouter();
-    let route = router##route;
+    let route = router.route;
 
     // Gather data for the CollapsibleSection
     let headers =
       Belt.Option.(
         Js.Dict.get(indexData, route)
-        ->map(data => data##headers)
+        ->map(data => {
+            data##headers
+            ->Belt.Array.map(header => (header##name, "#" ++ header##href))
+          })
         ->getWithDefault([||])
       );
 
@@ -172,21 +174,14 @@ module Docs = {
     //       listen to anchor changes (#get, #map,...)
     let preludeSection =
       route !== "/apis/javascript/latest/belt"
-        ? <Sidebar.CollapsibleSection
-            onHeaderClick={_ => setSidebarOpen(_ => false)}
-            headers
-            moduleName
-          />
-        : React.null;
+        ? <Sidebar.CollapsibleSection headers moduleName /> : React.null;
 
     let sidebar =
       <Sidebar
         isOpen=isSidebarOpen
         toggle=toggleSidebar
         categories
-        route={
-          router##route;
-        }
+        route={router.route}
         toplevelNav
         preludeSection
       />;
@@ -194,11 +189,9 @@ module Docs = {
     <SidebarLayout
       theme=`Js
       components
-      sidebar=(sidebar, toggleSidebar)
-      ?breadcrumbs
-      route={
-        router##route;
-      }>
+      sidebarState=(isSidebarOpen, setSidebarOpen)
+      sidebar
+      ?breadcrumbs>
       children
     </SidebarLayout>;
   };

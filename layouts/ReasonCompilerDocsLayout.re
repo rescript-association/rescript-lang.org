@@ -1,9 +1,3 @@
-%raw
-"require('../styles/main.css')";
-
-%raw
-"require('./init_hljs.js')";
-
 module Link = Next.Link;
 
 // Structure defined by `scripts/extract-tocs.js`
@@ -11,7 +5,12 @@ let tocData:
   Js.Dict.t({
     .
     "title": string,
-    "headers": array(string),
+    "headers":
+      array({
+        .
+        "name": string,
+        "href": string,
+      }),
   }) = [%raw
   "require('../index_data/reason_compiler_toc.json')"
 ];
@@ -22,7 +21,10 @@ module Category = DocsLayout.Category;
 module Toc = DocsLayout.Toc;
 
 let overviewNavs = [|
-  NavItem.{name: "Introduction", href: "/docs/reason-compiler/latest/introduction"},
+  NavItem.{
+    name: "Introduction",
+    href: "/docs/reason-compiler/latest/introduction",
+  },
   {name: "Installation", href: "/docs/reason-compiler/latest/installation"},
   {name: "New Project", href: "/docs/reason-compiler/latest/new-project"},
   {name: "Try", href: "/docs/reason-compiler/latest/try"},
@@ -176,7 +178,7 @@ let categories = [|
 [@react.component]
 let make = (~components=Markdown.default, ~children) => {
   let router = Next.Router.useRouter();
-  let route = router##route;
+  let route = router.route;
 
   let activeToc: option(Toc.t) =
     Belt.Option.(
@@ -185,7 +187,7 @@ let make = (~components=Markdown.default, ~children) => {
           let title = data##title;
           let entries =
             Belt.Array.map(data##headers, header =>
-              {Toc.header, href: "#" ++ header}
+              {Toc.header: header##name, href: "#" ++ header##href}
             );
           {Toc.title, entries};
         })

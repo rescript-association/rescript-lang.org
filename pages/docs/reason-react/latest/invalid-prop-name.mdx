@@ -1,9 +1,6 @@
-import { make } from "layouts/ReasonReactDocsLayout.bs.js";
-export default make;
-
 # Invalid Prop Name
 
-Prop names like `type` (as in `<input type="text" />`) aren't syntactically valid; `type` is a reserved keyword in Reason/OCaml. Use `<input type_="text" />` instead. This follows BuckleScript's [name mangling rules](/docs/reason-compiler/latest/object#Rename%20Fields).
+Prop names like `type` (as in `<input type="text" />`) aren't syntactically valid; `type` is a reserved keyword in Reason/OCaml. Use `<input type_="text" />` instead. This follows BuckleScript's [name mangling rules](/docs/reason-compiler/latest/object#rename-fields).
 
 For `aria-*`: use the camelCased `ariaFoo`. E.g. `ariaLabel`. For DOM components, we'll translate it to `aria-label` under the hood.
 

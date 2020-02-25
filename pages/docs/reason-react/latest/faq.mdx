@@ -1,6 +1,3 @@
-import { make } from "layouts/ReasonReactDocsLayout.bs.js";
-export default make;
-
 # Frequently Asked Questions
 
 ## I'm Having a Type Error
@@ -20,7 +17,7 @@ in the scope of the file. Just annotate it: `<div onClick={_e =>
 self.ReasonReact.send(Click)} />`.
 
 More info
-[here](/docs/manual/latest/record#Record%20Needs%20an%20Explicit%20Definition).
+[here](/docs/manual/latest/record#record-needs-an-explicit-definition).
 
 
 ## send/handle callbacks having Incompatible Types
@@ -58,7 +55,7 @@ This likely means that:
 - The JS component uses ES6 default export (`export default MyComponent`) (or, you forgot to export the component altogether!).
 - You're using Babel/Webpack to compile those ES6 modules.
 
-This is a common mistake. Please see BuckleScript's [Import an ES6 Default Value](/docs/reason-compiler/latest/import-export#Import%20an%20ES6%20Default%20Value). Aka, instead of:
+This is a common mistake. Please see BuckleScript's [Import an ES6 Default Value](/docs/reason-compiler/latest/import-export#import-an-es6-default-value). Aka, instead of:
 
 ```reason
 [@bs.module] external myJSReactClass: ReasonReact.reactClass = "./myJSReactClass";
