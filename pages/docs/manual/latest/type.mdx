@@ -1,11 +1,20 @@
 # Type
 
-<Intro>
+Reason types are unlike many languages' types.
 
-Types are the highlight of Reason! Here, you get a glimpse of why so many are excited about them.
-This section briefly introduces the types syntax so that you can power through the subsequent sections without getting confused. More advanced topics on types can be found in the [More On Type](more-on-type.md) section.
+**Reason types are:**
+- Static. They are verified at compilation time and don't have overhead during runtime.
+- "Sound". They're are **not** best-effort. The inferred types are **always** correct!
 
-</Intro>
+Many folks who come from a gradually typed community (for example, having experienced using a type system on top of JavaScript, Ruby, Python, etc.) don't understand the fuss about Reason's types. In reality, there's a big difference between these type systems that are "best effort", aka 99.9% correct, and our type system that's "sound", aka 100% correct.
+
+Many claim that "99% is good enough". While this could be true in other domains, such claim isn't very valid for code. **Naive probability**: If your code has 100 types, 99.9% probability of correctness per type means that overall, that code's correctness is `99.9% ^ 100 = 90.4%`
+
+Oops. That's potentially lots of false positives in the system's reported types now. Which ones are wrong though? That type system sure isn't telling you ¯\\\_(ツ)\_/¯.
+
+Reason's type system tells you: every type is always 100% correct. This builds trust!
+
+This page briefly introduces the types syntax so that you can power through the subsequent sections without getting confused. More advanced topics on types can be found in the [More On Type](more-on-type.md) section.
 
 ## Annotations
 
