@@ -28,7 +28,7 @@ let overviewNavs = [|
   {name: "Get involved", href: "/community/get-involved"},
 |];
 
-let categories = [|Category.{name: "Overview", items: overviewNavs}|];
+let categories = [|Category.{name: "Resources", items: overviewNavs}|];
 
 [@react.component]
 let make = (~components=Markdown.default, ~children) => {

@@ -37,7 +37,7 @@ var overviewNavs = [
 ];
 
 var categories = [{
-    name: "Overview",
+    name: "Resources",
     items: overviewNavs
   }];
 
