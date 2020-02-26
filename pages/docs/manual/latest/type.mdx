@@ -3,7 +3,8 @@
 <Intro>
 
 Types are the highlight of Reason! Here, you get a glimpse of why so many are excited about them.
-This section briefly introduces the types syntax so that you can power through the subsequent sections without getting confused. More advanced topics on types can be found in the [More On Type](more-on-type.md) section.
+
+This page briefly introduces the types syntax so that you can power through the subsequent sections without getting confused. More advanced topics on types can be found in the [More On Type](more-on-type.md) section.
 
 </Intro>
 
@@ -45,11 +46,17 @@ let x: scoreType = 10;
 ```
 
 ## Design Decisions
-
-Reason is backed by OCaml, whose type system has received decades of engineering. Here are a few highlights:
+#
+Reason's type system is the crystallization of decades of research and engineering. Here are a few highlights:
 
 - **Types can be inferred**. The type system deduces the types for you even if you don't manually write them down. This speeds up the prototyping phase. Additionally, editor features like [VSCode's codelens](https://github.com/jaredly/reason-language-server) in our editor integrations show you all the types while you write code.
 
 - **The type coverage is always 100%**. We don't need a "type coverage" tool! Every piece of Reason code has a type.
 
 - **The type system is completely "sound"**. This means that, as long as your code compiles fine, every type guarantees that it's not lying about itself. In a conventional, best-effort type system, just because the type says it's e.g. "an integer that's never null", doesn't mean it's actually never null. In contrast, a pure Reason program has no null bugs.
+
+Many folks who come from a gradually typed community (for example, having experienced using a type system on top of JavaScript, Ruby, Python, etc.) don't understand the fuss about Reason's types "soundness". In reality, there's a big difference between these type systems that are "best effort", aka 99.9% correct, and our type system that's "sound", aka 100% correct.
+
+Many claim that "99% is good enough". While this could be true in other domains, such claim isn't very valid for code. **Naive probability**: If your code has 100 types, 99.9% probability of correctness per type means that overall, that code's correctness is `99.9% ^ 100 = 90.4%`
+
+Oops. That's potentially lots of false positives in the system's reported types now. Which ones are wrong though? That type system sure isn't telling you ¯\\\_(ツ)\_/¯.
