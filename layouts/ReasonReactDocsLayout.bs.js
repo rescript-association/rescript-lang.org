@@ -208,7 +208,6 @@ function ReasonReactDocsLayout(Props) {
           return SidebarLayout.UrlPath.toBreadCrumbs(prefix, v);
         }));
   var tmp = {
-    breadcrumbs: breadcrumbs,
     title: "ReasonReact",
     version: "v0.7",
     categories: categories,
@@ -216,6 +215,9 @@ function ReasonReactDocsLayout(Props) {
     theme: /* Js */16617,
     children: children
   };
+  if (breadcrumbs !== undefined) {
+    tmp.breadcrumbs = Caml_option.valFromOption(breadcrumbs);
+  }
   if (activeToc !== undefined) {
     tmp.activeToc = Caml_option.valFromOption(activeToc);
   }

@@ -242,7 +242,6 @@ function ManualDocsLayout$Docs(Props) {
           return SidebarLayout.UrlPath.toBreadCrumbs(prefix, v);
         }));
   var tmp = {
-    breadcrumbs: breadcrumbs,
     title: "Language Manual",
     version: "v3.6",
     categories: categories,
@@ -250,6 +249,9 @@ function ManualDocsLayout$Docs(Props) {
     theme: /* Reason */825328612,
     children: children
   };
+  if (breadcrumbs !== undefined) {
+    tmp.breadcrumbs = Caml_option.valFromOption(breadcrumbs);
+  }
   if (activeToc !== undefined) {
     tmp.activeToc = Caml_option.valFromOption(activeToc);
   }

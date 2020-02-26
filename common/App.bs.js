@@ -1,6 +1,7 @@
 
 
 import * as React from "react";
+import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as MainLayout from "../layouts/MainLayout.bs.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
@@ -8,6 +9,7 @@ import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Router from "next/router";
 import * as JsDocsLayout from "../layouts/JsDocsLayout.bs.js";
 import * as BeltDocsLayout from "../layouts/BeltDocsLayout.bs.js";
+import * as CommunityLayout from "../layouts/CommunityLayout.bs.js";
 import * as ManualDocsLayout from "../layouts/ManualDocsLayout.bs.js";
 import * as GenTypeDocsLayout from "../layouts/GenTypeDocsLayout.bs.js";
 import * as JavaScriptApiLayout from "../layouts/JavaScriptApiLayout.bs.js";
@@ -96,112 +98,132 @@ function make(props) {
   var router = Router.useRouter();
   var content = React.createElement(component, pageProps);
   var url = parse(router.route);
-  var match = url.base;
-  if (match.length === 2) {
-    var match$1 = match[0];
-    switch (match$1) {
+  var base = url.base;
+  var exit = 0;
+  if (base.length !== 2) {
+    exit = 1;
+  } else {
+    var match = base[0];
+    switch (match) {
       case "apis" :
-          var match$2 = match[1];
-          if (match$2 === "javascript") {
-            var match$3 = url.version;
-            if (typeof match$3 === "number" && match$3 === 0) {
+          var match$1 = base[1];
+          if (match$1 === "javascript") {
+            var match$2 = url.version;
+            if (typeof match$2 === "number" && match$2 === 0) {
               var pagepath = url.pagepath;
-              var match$4 = pagepath.length;
-              var match$5 = Belt_Array.get(pagepath, 0);
-              var exit = 0;
-              if (match$4 !== 0) {
-                if (match$4 !== 1) {
-                  exit = 2;
-                } else if (match$5 !== undefined) {
-                  switch (match$5) {
-                    case "belt" :
-                        return React.createElement(BeltDocsLayout.Prose.make, {
-                                    children: content
-                                  });
-                    case "js" :
-                        return React.createElement(JsDocsLayout.Prose.make, {
-                                    children: content
-                                  });
-                    default:
-                      exit = 2;
+              var match$3 = pagepath.length;
+              var match$4 = Belt_Array.get(pagepath, 0);
+              if (match$3 !== 0) {
+                if (match$3 === 1) {
+                  if (match$4 !== undefined) {
+                    switch (match$4) {
+                      case "belt" :
+                          return React.createElement(BeltDocsLayout.Prose.make, {
+                                      children: content
+                                    });
+                      case "js" :
+                          return React.createElement(JsDocsLayout.Prose.make, {
+                                      children: content
+                                    });
+                      default:
+                        
+                    }
+                  } else {
+                    return null;
                   }
-                } else {
-                  return null;
                 }
+                
               } else {
                 return React.createElement(JavaScriptApiLayout.Docs.make, {
                             children: content
                           });
               }
-              if (exit === 2) {
-                if (match$5 !== undefined) {
-                  switch (match$5) {
-                    case "belt" :
-                        return React.createElement(BeltDocsLayout.Docs.make, {
-                                    children: content
-                                  });
-                    case "js" :
-                        return React.createElement(JsDocsLayout.Docs.make, {
-                                    children: content
-                                  });
-                    default:
-                      return null;
-                  }
-                } else {
-                  return null;
+              if (match$4 !== undefined) {
+                switch (match$4) {
+                  case "belt" :
+                      return React.createElement(BeltDocsLayout.Docs.make, {
+                                  children: content
+                                });
+                  case "js" :
+                      return React.createElement(JsDocsLayout.Docs.make, {
+                                  children: content
+                                });
+                  default:
+                    return null;
                 }
+              } else {
+                return null;
               }
-              
+            } else {
+              exit = 1;
             }
-            
+          } else {
+            exit = 1;
           }
           break;
       case "docs" :
-          var match$6 = match[1];
-          switch (match$6) {
+          var match$5 = base[1];
+          switch (match$5) {
             case "gentype" :
-                var match$7 = url.version;
-                if (typeof match$7 === "number" && match$7 === 0) {
+                var match$6 = url.version;
+                if (typeof match$6 === "number" && match$6 === 0) {
                   return React.createElement(GenTypeDocsLayout.make, {
                               children: content
                             });
+                } else {
+                  exit = 1;
                 }
                 break;
             case "manual" :
-                var match$8 = url.version;
-                if (typeof match$8 === "number" && match$8 === 0) {
+                var match$7 = url.version;
+                if (typeof match$7 === "number" && match$7 === 0) {
                   return React.createElement(ManualDocsLayout.Prose.make, {
                               children: content
                             });
+                } else {
+                  exit = 1;
                 }
                 break;
             case "reason-compiler" :
-                var match$9 = url.version;
-                if (typeof match$9 === "number" && match$9 === 0) {
+                var match$8 = url.version;
+                if (typeof match$8 === "number" && match$8 === 0) {
                   return React.createElement(ReasonCompilerDocsLayout.make, {
                               children: content
                             });
+                } else {
+                  exit = 1;
                 }
                 break;
             case "reason-react" :
-                var match$10 = url.version;
-                if (typeof match$10 === "number" && match$10 === 0) {
+                var match$9 = url.version;
+                if (typeof match$9 === "number" && match$9 === 0) {
                   return React.createElement(ReasonReactDocsLayout.make, {
                               children: content
                             });
+                } else {
+                  exit = 1;
                 }
                 break;
             default:
-              
+              exit = 1;
           }
           break;
       default:
-        
+        exit = 1;
     }
   }
-  return React.createElement(MainLayout.make, {
-              children: content
-            });
+  if (exit === 1) {
+    var match$10 = Belt_List.fromArray(base);
+    if (match$10 && match$10[0] === "community") {
+      return React.createElement(CommunityLayout.make, {
+                  children: content
+                });
+    }
+    return React.createElement(MainLayout.make, {
+                children: content
+              });
+  }
+  
 }
 
 export {

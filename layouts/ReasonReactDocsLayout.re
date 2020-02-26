@@ -150,7 +150,7 @@ let make = (~components=Markdown.default, ~children) => {
   let version = "v0.7";
 
   <DocsLayout
-    theme=`Js components categories version title ?activeToc breadcrumbs>
+    theme=`Js components categories version title ?activeToc ?breadcrumbs>
     children
   </DocsLayout>;
 };

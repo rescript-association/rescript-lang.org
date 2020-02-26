@@ -96,7 +96,6 @@ function GenTypeDocsLayout(Props) {
           return SidebarLayout.UrlPath.toBreadCrumbs(prefix, v);
         }));
   var tmp = {
-    breadcrumbs: breadcrumbs,
     title: "GenType",
     version: "v3",
     categories: categories,
@@ -104,6 +103,9 @@ function GenTypeDocsLayout(Props) {
     theme: /* Js */16617,
     children: children
   };
+  if (breadcrumbs !== undefined) {
+    tmp.breadcrumbs = Caml_option.valFromOption(breadcrumbs);
+  }
   if (activeToc !== undefined) {
     tmp.activeToc = Caml_option.valFromOption(activeToc);
   }
