@@ -302,7 +302,7 @@ module Category = Sidebar.Category;
 [@react.component]
 let make =
     (
-      ~breadcrumbs: option(list(UrlPath.breadcrumb)),
+      ~breadcrumbs: option(list(UrlPath.breadcrumb))=?,
       ~title: string,
       ~version: option(string)=?,
       ~activeToc: option(Toc.t)=?,

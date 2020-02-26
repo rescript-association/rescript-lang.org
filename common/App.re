@@ -161,6 +161,12 @@ let make = (props: props): React.element => {
       <BeltDocsLayout.Docs> content </BeltDocsLayout.Docs>
     | _ => React.null
     }
+  // common routes
+  | {base} =>
+    switch (Belt.List.fromArray(base)) {
+    | ["community", ..._rest] => <CommunityLayout> content </CommunityLayout>
+    | _ => <MainLayout> content </MainLayout>
+    }
   | _ => <MainLayout> content </MainLayout>
   };
 };

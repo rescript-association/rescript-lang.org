@@ -260,7 +260,6 @@ function ReasonCompilerDocsLayout(Props) {
           return SidebarLayout.UrlPath.toBreadCrumbs(prefix, v);
         }));
   var tmp = {
-    breadcrumbs: breadcrumbs,
     title: "BuckleScript",
     version: "v7",
     categories: categories,
@@ -268,6 +267,9 @@ function ReasonCompilerDocsLayout(Props) {
     theme: /* Js */16617,
     children: children
   };
+  if (breadcrumbs !== undefined) {
+    tmp.breadcrumbs = Caml_option.valFromOption(breadcrumbs);
+  }
   if (activeToc !== undefined) {
     tmp.activeToc = Caml_option.valFromOption(activeToc);
   }
