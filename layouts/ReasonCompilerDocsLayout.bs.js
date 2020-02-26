@@ -132,6 +132,10 @@ var interopNavs = [
   {
     name: "Browser Support & Polyfills",
     href: "/docs/reason-compiler/latest/browser-support-polyfills"
+  },
+  {
+    name: "Decorators",
+    href: "/docs/reason-compiler/latest/decorators"
   }
 ];
 
