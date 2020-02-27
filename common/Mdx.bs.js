@@ -23,6 +23,9 @@ function classify(param) {
 }
 
 function getMdxChildren (element){{
+      if(typeof element === 'string') {
+        return element;
+      }
       if(element == null || element.props == null || element.props.children == null) {
         return;
       }
