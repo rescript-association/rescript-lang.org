@@ -76,7 +76,6 @@ function CommunityLayout(Props) {
       ]) : Belt_Option.map(urlPath, (function (v) {
             return SidebarLayout.UrlPath.toBreadCrumbs(/* [] */0, v);
           }));
-  console.log(breadcrumbs);
   var tmp = {
     title: "Community",
     categories: categories,
