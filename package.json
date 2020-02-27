@@ -17,6 +17,7 @@
     "bs-platform": "7.1.1",
     "gentype": "^3.1.0",
     "glob": "^7.1.4",
+    "gray-matter": "^4.0.2",
     "highlight.js": "^9.15.10",
     "isomorphic-unfetch": "^3.0.0",
     "next": "^9.1.7",
@@ -30,6 +31,7 @@
     "remark-slug": "^5.1.2",
     "remark-stringify": "^7.0.3",
     "request": "^2.88.0",
+    "stringify-object": "^3.3.0",
     "unified": "^8.4.0"
   },
   "scripts": {
@@ -49,6 +51,6 @@
     "autoprefixer": "^9.5.1",
     "cssnano": "^4.1.10",
     "postcss-easy-import": "^3.0.0",
-    "tailwindcss": "^1.0.1"
+    "tailwindcss": "^1.2.0"
   }
 }

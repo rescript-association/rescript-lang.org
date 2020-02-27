@@ -29,8 +29,21 @@
   hljs.registerLanguage('text', text);
 |};
 
+open Util.ReactStuff;
+
 type pageComponent = React.component(Js.t({.}));
 type pageProps = Js.t({.});
+
+let getFrontMatter: pageComponent => Js.Json.t = [%raw
+  {|
+  function(component) {
+    if(typeof component.frontmatter === "object") {
+      return component.frontmatter;
+    }
+    return {};
+  }
+|}
+];
 
 type props = {
   .
@@ -165,8 +178,21 @@ let make = (props: props): React.element => {
   | {base} =>
     switch (Belt.List.fromArray(base)) {
     | ["community", ..._rest] => <CommunityLayout> content </CommunityLayout>
+    | ["blog"] => <MainLayout> content </MainLayout>
+    | ["blog", ..._rest] =>
+      let fm = component->getFrontMatter;
+      switch (fm->BlogArticleLayout.FrontMatter.validate) {
+      | Ok({author, date}) =>
+        <BlogArticleLayout author date> content </BlogArticleLayout>
+      | Error(msg) =>
+        <MainLayout>
+          {{
+             "Blog frontmatter malformed: " ++ msg;
+           }
+           ->s}
+        </MainLayout>
+      };
     | _ => <MainLayout> content </MainLayout>
     }
-  | _ => <MainLayout> content </MainLayout>
   };
 };

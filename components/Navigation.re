@@ -8,6 +8,10 @@ let linkOrActiveLink = (~target, ~route) => {
   target === route ? activeLink : link;
 };
 
+let linkOrActiveLinkSubroute = (~target, ~route) => {
+  Js.String2.startsWith(route, target) ? activeLink : link;
+};
+
 module CollapsibleLink = {
   // KeepOpen = Menu has been opened and should stay open
   type state =
@@ -313,7 +317,7 @@ module MobileNav = {
         </li>
         <li className=base>
           <Link href="/blog">
-            <a className={linkOrActiveLink(~target="/blog", ~route)}>
+            <a className={linkOrActiveLinkSubroute(~target="/blog", ~route)}>
               "Blog"->s
             </a>
           </Link>

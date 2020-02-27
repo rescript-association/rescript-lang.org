@@ -4,7 +4,7 @@ const withTM = require("next-transpile-modules");
 const path = require('path');
 const remarkSlug = require('remark-slug');
 
-const withMdx = require("@next/mdx")({
+const withMdx = require("./plugins/next-mdx")({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [remarkSlug]

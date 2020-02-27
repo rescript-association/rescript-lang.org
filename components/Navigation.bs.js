@@ -21,6 +21,14 @@ function linkOrActiveLink(target, route) {
   }
 }
 
+function linkOrActiveLinkSubroute(target, route) {
+  if (route.startsWith(target)) {
+    return activeLink;
+  } else {
+    return link;
+  }
+}
+
 function Navigation$CollapsibleLink(Props) {
   var title = Props.title;
   var onStateChange = Props.onStateChange;
@@ -286,7 +294,7 @@ function Navigation$MobileNav(Props) {
                     }, React.createElement(Link.default, {
                           href: "/blog",
                           children: React.createElement("a", {
-                                className: linkOrActiveLink("/blog", route)
+                                className: linkOrActiveLinkSubroute("/blog", route)
                               }, Util.ReactStuff.s("Blog"))
                         })), React.createElement("li", {
                       className: base
@@ -542,6 +550,7 @@ export {
   link ,
   activeLink ,
   linkOrActiveLink ,
+  linkOrActiveLinkSubroute ,
   CollapsibleLink ,
   useOutsideClick ,
   useWindowWidth ,
