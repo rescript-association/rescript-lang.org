@@ -36,7 +36,7 @@
   },
   "scripts": {
     "dev": "next",
-    "build": "yarn run update-index && bsb -clean-world -make-world && next build",
+    "build": "yarn run update-index && bsb -clean-world -make-world && next build && next export",
     "test": "node scripts/test-examples.js && node scripts/test-hrefs.js",
     "update-index": "node scripts/extract-indices.js && node scripts/extract-tocs.js",
     "now-build": "yarn run build",
