@@ -157,6 +157,27 @@ Because we _do_ supply the unit OCaml knows we deliberately omit the `radius` pa
 let circle = drawCircle(~color, ());
 ```
 
+### Signatures and Type Annotations
+
+Functions with optional labeled arguments can be confusing when it comes to signature and type annotations. Indeed, the type of an optional labeled argument looks different depending on whether you're calling the function, or working inside the function body. Outside the function, a raw value is either passed in (`int`, for example), or left off entirely. Inside the function, the parameter is always there, but its value is an option (`option(int)`). This means that the type signature is different, depending on whether you're writing out the function type, or the parameter type annotation. The first being a raw value, and the second being an option.
+
+If we get back to our previous example and both add a signature and type annotations to its argument, we get this:
+```reason
+let drawCircle: (~color: color, ~radius: int=?, unit) => unit =
+  (~color: color, ~radius: option(int)=?, ()) => {
+    setColor(color);
+    switch (radius) {
+    | None => startAt(1, 1)
+    | Some(r_) => startAt(r_, r_)
+    };
+  };
+```
+The first line is the function's signature, we would define it like that in an interface file (cf. [Signatures](module.mdx#signatures)). The function's signature describes the types that the **outside world** interacts with, hence the type `int` for `radius` because it indeed expects an `int` when called.
+
+In the second line, we annotate the arguments to help us remember the types of the arguments when we use them **inside** the function's body, here indeed `radius` will be an `option(int)` inside the function. 
+
+So if you happen to struggle when writing the signature of a function with optional labeled arguments, try to remember this!
+
 ### Explicitly Passed Optional
 
 Sometimes, you might want to forward a value to a function without knowing whether the value is `None` or `Some(a)`. Naively, you'd do:
