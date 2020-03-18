@@ -620,8 +620,51 @@ When using this decorator, the original record type will be removed. You'll
 need to use the newly created functions to create / get / set values of this
 type.
 
-Refer to the [Abstract Record Mode](/docs/reason-compiler/latest/object#abstract-record-mode)
-section for a detailed explanation.
+For example let's define a decorated record type `person`:
+
+```reason
+[@bs.deriving abstract]
+type person = {
+  name: string,
+
+  /* Use the mutable keyword for generating setters */
+  mutable age: int
+};
+```
+
+This will expand to the following code within the same module scope:
+
+```reason
+/* The abstract type */
+type person;
+
+/* Getters */
+let nameGet: (~name: string, ~age: int) => person;
+let ageGet: (person) => int;
+
+/* Setters (only mutable attributes) */
+let ageSet: (person, int) => unit;
+```
+
+This is how we would use the generated functions:
+
+```reason
+let friend = person(~name="Misha", ~age=20);
+
+Js.log(friend->nameGet); /* => "Misha" */
+
+/* Increase age by 1 via mutation */
+friend->ageSet(friend->ageGet + 1);
+
+Js.log(friend->ageGet); /* => 21 */
+
+/* This will NOT be possible (type is abstract now): */
+let misha = { name: "Misha", age: 20 };
+```
+
+Refer to the [Abstract
+Record Mode](/docs/reason-compiler/latest/object#abstract-record-mode) section
+for a more detailed explanation.
 
 
 ## `[@bs.as]`
