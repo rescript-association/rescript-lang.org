@@ -209,13 +209,41 @@ let drawCircle = (~radius=1, ~color, ()) => {
 };
 ```
 
-### Recursive Functions
+## Recursive Functions
 
 By default, a value can't see a binding that points to it, but including the `rec` keyword in a `let` binding makes this possible. This allows functions to see and call themselves, giving us the power of recursion.
 
 ```reason
 let rec neverTerminate = () => neverTerminate();
 ```
+
+In imperative languages, including JavaScript, recursive functions are rarely used. In Reason, recursive functions are common, and can typically replace an imperative loop.
+
+A simple recursive function may look like this:
+
+```reason
+/**
+ * Recursively check every item on the list until one equals the `item`
+ * argument. If a match is found, return `true`, otherwise return `false`.
+ */
+let rec listHas = (list, item) =>
+  switch (list) {
+  | [] => false
+  | [a, ...rest] => a == item || listHas(rest, item)
+  };
+```
+
+Using recursion with a `switch` statement is a powerful combination that can sometimes produce code simpler than a standard library function like `fold` or `reduce`. In fact, if you dig into the Reason standard library's source code, you'll see that its implementations of `fold` or `reduce` are actually just recursive functions and `switch` statements!
+
+### Tail Recursion
+
+The reason why recursive functions are avoided in many languages, such as JavaScript, is those languages don't support "tail call optimization." This means that each time the function recurses, the previous call to the function is held in memory, which can lead to a stack overflow.
+
+When the recursion happens in the tail position (meaning that the recursive call is the last step performed in the function), this can be optimized in a way that is stack safe. Fortunately for us, the Reason compiler is able to detect and perform this optimization.
+
+For example, if you take our `listHas` function and compile it to JavaScript, you'll see that it removes the tail-calls by compiling into a `while` loop! Reason gives us the best of both worlds.
+
+For writing `for` or `while` loops instead of recursive functions, see: [Imperative Loops](imperative-loops.mdx).
 
 ### Mutually Recursive Functions
 
