@@ -41,12 +41,8 @@ function $$default(props) {
 }
 
 function getStaticProps(ctx) {
-  var params = ctx.params;
-  var props_slug = params.slug;
-  var props_mdxFile = "../../_blogposts/" + (params.slug + ".mdx");
   var props = {
-    slug: props_slug,
-    mdxFile: props_mdxFile
+    slug: ctx.params.slug
   };
   return $$Promise.resolved({
               props: props

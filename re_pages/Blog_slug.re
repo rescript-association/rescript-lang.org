@@ -14,17 +14,12 @@ module Params = {
   type t = {slug: string};
 };
 
-type props = {
-  slug: string,
-  mdxFile: string,
-};
+type props = {slug: string};
 
 module BlogComponent = {
   type t = {default: React.component(Js.t({.}))};
 
   [@bs.val] external require: string => t = "require";
-
-  [@bs.get] external frontmatter: t => Js.Json.t = "frontmatter";
 
   let frontmatter: React.component(Js.t({.})) => Js.Json.t = [%raw
     {|
@@ -75,10 +70,7 @@ let getStaticProps: Next.GetStaticProps.t(props, Params.t) =
     open Next.GetStaticProps;
     let {params} = ctx;
 
-    let props = {
-      slug: params.slug,
-      mdxFile: "../../_blogposts/" ++ params.slug ++ ".mdx",
-    };
+    let props = {slug: params.slug};
     let ret = {"props": props};
     Promise.resolved(ret);
   };

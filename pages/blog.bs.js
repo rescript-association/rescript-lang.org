@@ -16,13 +16,13 @@ function Blog$BlogCard(Props) {
   var author = Props.author;
   Props.tags;
   var date = Props.date;
-  var href = Props.href;
+  var slug = Props.slug;
   var title = $staropt$star !== undefined ? $staropt$star : "Unknown Title";
   return React.createElement("section", {
               className: "h-full"
             }, React.createElement(Link.default, {
                   href: "/blog/[slug]",
-                  as: href,
+                  as: "/blog/" + slug,
                   children: React.createElement("a", undefined, React.createElement("div", undefined, imgUrl !== undefined ? React.createElement("img", {
                                   className: "mb-4",
                                   src: imgUrl
@@ -44,7 +44,7 @@ function Blog$FeatureCard(Props) {
   var author = Props.author;
   Props.date;
   var $staropt$star$1 = Props.firstParagraph;
-  var href = Props.href;
+  var slug = Props.slug;
   var title = $staropt$star !== undefined ? $staropt$star : "Unknown Title";
   var firstParagraph = $staropt$star$1 !== undefined ? $staropt$star$1 : "";
   return React.createElement("section", {
@@ -52,7 +52,8 @@ function Blog$FeatureCard(Props) {
             }, React.createElement("div", {
                   className: "w-1/2 h-full"
                 }, React.createElement(Link.default, {
-                      href: href,
+                      href: "/blog/[slug]",
+                      as: "/blog/" + slug,
                       children: React.createElement("a", undefined, imgUrl !== undefined ? React.createElement("img", {
                                   className: "h-full w-full object-cover",
                                   src: imgUrl
@@ -70,7 +71,8 @@ function Blog$FeatureCard(Props) {
                         }, Util.ReactStuff.s(firstParagraph)), React.createElement("div", {
                           className: "text-night-light text-sm"
                         }, Util.ReactStuff.s(author))), React.createElement(Link.default, {
-                      href: href,
+                      href: "/blog/[slug]",
+                      as: "/blog/" + slug,
                       children: React.createElement("a", undefined, React.createElement(Button.make, {
                                 children: Util.ReactStuff.s("Read Article")
                               }))
@@ -125,7 +127,7 @@ function $$default(props) {
       title: first.title,
       author: first.frontmatter.author,
       date: BlogArticleLayout.DateStr.toDate(first.frontmatter.date),
-      href: "/blog/" + first.id
+      slug: first.id
     };
     var tmp$1 = Caml_option.null_to_opt(first.frontmatter.imgUrl);
     if (tmp$1 !== undefined) {
@@ -144,7 +146,7 @@ function $$default(props) {
                       title: post.title,
                       author: post.frontmatter.author,
                       date: BlogArticleLayout.DateStr.toDate(post.frontmatter.date),
-                      href: "/blog/" + post.id,
+                      slug: post.id,
                       key: post.id + String(i)
                     };
                     var tmp$1 = Caml_option.null_to_opt(post.frontmatter.imgUrl);

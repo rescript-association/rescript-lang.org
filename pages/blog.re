@@ -26,10 +26,10 @@ module BlogCard = {
         ~author: string,
         ~tags: array(string)=[||],
         ~date: Js.Date.t,
-        ~href: string,
+        ~slug: string,
       ) => {
     <section className="h-full">
-      <Link href="/blog/[slug]" _as=href>
+      <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
         <a>
           <div>
             {switch (imgUrl) {
@@ -58,11 +58,11 @@ module FeatureCard = {
         ~author: string,
         ~date: Js.Date.t,
         ~firstParagraph: string="",
-        ~href: string,
+        ~slug: string,
       ) => {
     <section className="flex h-full">
       <div className="w-1/2 h-full">
-        <Link href>
+        <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
           <a>
             {switch (imgUrl) {
              | Some(src) => <img className="h-full w-full object-cover" src />
@@ -77,7 +77,9 @@ module FeatureCard = {
           <p className="text-night-dark text-lg"> firstParagraph->s </p>
           <div className="text-night-light text-sm"> author->s </div>
         </div>
-        <Link href> <a> <Button> "Read Article"->s </Button> </a> </Link>
+        <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
+          <a> <Button> "Read Article"->s </Button> </a>
+        </Link>
       </div>
     </section>;
   };
@@ -175,7 +177,7 @@ let default = (props: props): React.element => {
             author={first.frontmatter.author}
             firstParagraph=?{first.frontmatter.description->Js.Null.toOption}
             date={first.frontmatter.date->BlogArticleLayout.DateStr.toDate}
-            href={"/blog/" ++ first.id}
+            slug={first.id}
           />
         </div>
         {Belt.Array.mapWithIndex(rest, (i, post) => {
@@ -185,7 +187,7 @@ let default = (props: props): React.element => {
              title={post.title}
              author={post.frontmatter.author}
              date={post.frontmatter.date->BlogArticleLayout.DateStr.toDate}
-             href={"/blog/" ++ post.id}
+             slug={post.id}
            />
          })
          ->ate}
