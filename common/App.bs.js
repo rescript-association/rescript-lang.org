@@ -1,6 +1,5 @@
 
 
-import * as Util from "./Util.bs.js";
 import * as React from "react";
 import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
@@ -12,7 +11,6 @@ import * as JsDocsLayout from "../layouts/JsDocsLayout.bs.js";
 import * as BeltDocsLayout from "../layouts/BeltDocsLayout.bs.js";
 import * as CommunityLayout from "../layouts/CommunityLayout.bs.js";
 import * as ManualDocsLayout from "../layouts/ManualDocsLayout.bs.js";
-import * as BlogArticleLayout from "../layouts/BlogArticleLayout.bs.js";
 import * as GenTypeDocsLayout from "../layouts/GenTypeDocsLayout.bs.js";
 import * as JavaScriptApiLayout from "../layouts/JavaScriptApiLayout.bs.js";
 import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
@@ -39,13 +37,6 @@ let hljs = require('highlight.js/lib/highlight');
   hljs.registerLanguage('json', json);
   hljs.registerLanguage('text', text);
 ;
-
-var getFrontMatter = (function(component) {
-    if(typeof component.frontmatter === "object") {
-      return component.frontmatter;
-    }
-    return {};
-  });
 
 function isVersion(str) {
   return Belt_Option.isSome(Caml_option.null_to_opt(str.match(/latest|v\d+(\.\d+)?(\.\d+)?/)));
@@ -227,20 +218,7 @@ function make(props) {
       switch (match$10[0]) {
         case "blog" :
             if (match$10[1]) {
-              var fm = getFrontMatter(component);
-              var match$11 = BlogArticleLayout.FrontMatter.validate(fm);
-              if (match$11.tag) {
-                return React.createElement(MainLayout.make, {
-                            children: Util.ReactStuff.s("Blog frontmatter malformed: " + match$11[0])
-                          });
-              } else {
-                var match$12 = match$11[0];
-                return React.createElement(BlogArticleLayout.make, {
-                            author: match$12.author,
-                            date: match$12.date,
-                            children: content
-                          });
-              }
+              return content;
             } else {
               return React.createElement(MainLayout.make, {
                           children: content
@@ -262,7 +240,6 @@ function make(props) {
 }
 
 export {
-  getFrontMatter ,
   Url ,
   make ,
   

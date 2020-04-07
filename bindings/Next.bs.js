@@ -1,6 +1,12 @@
 
 
 
+var GetServerSideProps = { };
+
+var GetStaticProps = { };
+
+var GetStaticPaths = { };
+
 var Link = { };
 
 var Events = { };
@@ -14,6 +20,9 @@ var Head = { };
 var $$Error = { };
 
 export {
+  GetServerSideProps ,
+  GetStaticProps ,
+  GetStaticPaths ,
   Link ,
   Router ,
   Head ,

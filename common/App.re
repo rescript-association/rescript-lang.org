@@ -34,17 +34,6 @@ open Util.ReactStuff;
 type pageComponent = React.component(Js.t({.}));
 type pageProps = Js.t({.});
 
-let getFrontMatter: pageComponent => Js.Json.t = [%raw
-  {|
-  function(component) {
-    if(typeof component.frontmatter === "object") {
-      return component.frontmatter;
-    }
-    return {};
-  }
-|}
-];
-
 type props = {
   .
   "Component": pageComponent,
@@ -180,18 +169,9 @@ let make = (props: props): React.element => {
     | ["community", ..._rest] => <CommunityLayout> content </CommunityLayout>
     | ["blog"] => <MainLayout> content </MainLayout>
     | ["blog", ..._rest] =>
-      let fm = component->getFrontMatter;
-      switch (fm->BlogArticleLayout.FrontMatter.validate) {
-      | Ok({author, date}) =>
-        <BlogArticleLayout author date> content </BlogArticleLayout>
-      | Error(msg) =>
-        <MainLayout>
-          {{
-             "Blog frontmatter malformed: " ++ msg;
-           }
-           ->s}
-        </MainLayout>
-      };
+      // Here, the layout will be handled by the Blog_slug component
+      // to keep the frontmatter parsing etc in one place
+      content
     | _ => <MainLayout> content </MainLayout>
     }
   };

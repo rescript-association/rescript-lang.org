@@ -26,8 +26,13 @@ const loader = async function(raw) {
 
   const { renderer = DEFAULT_RENDERER } = options;
 
+  /* We need to attach frontmatter to the MDXContent component function to be able
+     to access the frontmatter within the App.re module without the need of writing
+      custom getStaticProps etc to do the frontmatter handling and injection */
   const code = `${renderer}\n${result}
 MDXContent.frontmatter = ${stringifyObject(data)};`;
+
+  console.log(code);
 
   return callback(null, code);
 };

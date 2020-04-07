@@ -17,186 +17,6 @@ open Util.ReactStuff;
 
 module Link = Next.Link;
 
-module Data = {
-  type rawModule = Js.Json.t;
-
-  module BlogPost = {
-    type frontmatter = {
-      author: string,
-      date: string,
-      imgUrl: option(string),
-    };
-
-    type t = {
-      frontmatter,
-      /*default: React.component({. "children": Mdx.MdxChildren.t}),*/
-      default: unit => Mdx.MdxChildren.t,
-    };
-
-    type content = {
-      title: option(string),
-      firstParagraph: option(string),
-    };
-
-    // That's a really wild function traversing through the MdxChildren
-    // element to find the title & First paragraph of the post
-    // This might be worth revisiting by using webpack / remark instead
-    let extractContent = (mdx: Mdx.MdxChildren.t) => {
-      Mdx.MdxChildren.(
-        switch (classify(mdx)) {
-        | Element(el) =>
-          let children = el->getMdxChildren;
-          switch (classify(children)) {
-          | Array(elements) =>
-            let title: ref(option(string)) = ref(None);
-            let firstParagraph: ref(option(string)) = ref(None);
-            let i = ref(0);
-            let to_ = Array.length(elements);
-
-            while (i^ < to_ && (title^ === None || firstParagraph^ === None)) {
-              let el = Belt.Array.getExn(elements, i^);
-
-              switch (Mdx.getMdxType(el)) {
-              | "h1" => title := flatten(el)->Js.Array2.joinWith(" ")->Some
-              | "p" =>
-                firstParagraph := flatten(el)->Js.Array2.joinWith(" ")->Some
-              | _ => ()
-              };
-
-              i := i^ + 1;
-            };
-            Some({title: title^, firstParagraph: firstParagraph^});
-          | _ => None
-          };
-        | _ => None
-        }
-      );
-    };
-
-    // We are using raw JS to validate for now
-    // gives at least some small guarantees that the values are there
-    let validate: Js.Json.t => option(t) = [%raw
-      {|
-      function(json) {
-        if(typeof json !== "object") {
-          return
-        }
-
-        if(json.default == null) {
-          return
-        }
-
-        if(typeof json.default.frontmatter !== "object") {
-          return
-        }
-
-        var frontmatter = json.default.frontmatter;
-        if(typeof frontmatter.author !== "string") {
-          return;
-        }
-
-        if(typeof frontmatter.date === "string") {
-          var date = new Date(frontmatter.date);
-
-          // Weird isNan emulation
-          let time = date.getTime();
-          if(time !== time) {
-            return
-          }
-        }
-
-        json.frontmatter = frontmatter;
-
-        return json;
-      }
-    |}
-    ];
-  };
-
-  type post = {
-    id: string, /* Id, which is also part of the Url */
-    filepath: string,
-    frontmatter: BlogPost.frontmatter,
-    content: BlogPost.content,
-  };
-
-  type webpackCtx = {keys: unit => array(string)};
-
-  let getMdxModule: (webpackCtx, string) => rawModule = [%raw
-    (ctx, filepath) => "{ return ctx(filepath); }"
-  ];
-
-  let blogCtx: webpackCtx = [%raw
-    "require.context('../pages/blog', true, /^\.\/.*\.mdx$/)"
-  ];
-
-  let readPosts = (ctx: webpackCtx): array(post) =>
-    ctx.keys()
-    ->Belt.Array.reduce(
-        [||],
-        (acc, filepath) => {
-          let id =
-            switch (Js.String.match([%re "/\\.\\/(.*)\\.mdx/"], filepath)) {
-            | Some([|_, id|]) => id
-            | _ => filepath
-            };
-
-          let correctFilepath = path =>
-            Js.String.replaceByRe([%re "/^\\.\\//"], "./pages/blog/", path);
-
-          let m = ctx->getMdxModule(filepath);
-          switch (BlogPost.validate(m)) {
-          | Some({frontmatter, default}) =>
-            let element = default();
-
-            let content = BlogPost.extractContent(element);
-
-            switch (content) {
-            | None => acc
-            | Some({title: None}) =>
-              Js.log("h1 title is missing in " ++ filepath);
-              acc;
-            | Some(content) =>
-              Js.Array2.concat(
-                acc,
-                [|
-                  {
-                    id,
-                    filepath: correctFilepath(filepath),
-                    frontmatter,
-                    content,
-                  },
-                |],
-              )
-            };
-          | None =>
-            Js.log("Could not parse blog post " ++ filepath);
-            acc;
-          };
-        },
-      );
-
-  let orderByDate = (posts: array(post)): array(post) => {
-    posts
-    ->Js.Array.copy
-    ->Js.Array2.sortInPlaceWith((a, b) => {
-        let aV = a.frontmatter.date->Js.Date.fromString->Js.Date.valueOf;
-        let bV = b.frontmatter.date->Js.Date.fromString->Js.Date.valueOf;
-        if (aV === bV) {
-          0;
-        } else if (aV > bV) {
-          (-1);
-        } else {
-          1;
-        };
-      });
-  };
-
-  let getAllBlogPosts = () => {
-    blogCtx->readPosts->orderByDate;
-  };
-};
-
 module BlogCard = {
   [@react.component]
   let make =
@@ -263,15 +83,85 @@ module FeatureCard = {
   };
 };
 
-[@react.component]
-let default = () => {
-  let posts = Data.getAllBlogPosts();
+type params = {slug: string};
 
-  let posts = Belt.Array.concatMany([|posts, posts, posts, posts|]);
+module FrontMatter = BlogArticleLayout.FrontMatter;
+
+module Post = {
+  type t = {
+    id: string,
+    title: string,
+    frontmatter: FrontMatter.t,
+  };
+
+  let orderByDate = (posts: array(t)): array(t) => {
+    posts
+    ->Js.Array.copy
+    ->Js.Array2.sortInPlaceWith((a, b) => {
+        let aV =
+          a.frontmatter.date
+          ->BlogArticleLayout.DateStr.toDate
+          ->Js.Date.valueOf;
+        let bV =
+          b.frontmatter.date
+          ->BlogArticleLayout.DateStr.toDate
+          ->Js.Date.valueOf;
+        if (aV === bV) {
+          0;
+        } else if (aV > bV) {
+          (-1);
+        } else {
+          1;
+        };
+      });
+  };
+};
+
+module Malformed = {
+  type t = {
+    id: string,
+    message: string,
+  };
+};
+
+type props = {
+  posts: array(Post.t),
+  malformed: array(Malformed.t),
+};
+
+let default = (props: props): React.element => {
+  let {posts, malformed} = props;
+
+  let errorBox =
+    if (ProcessEnv.env === ProcessEnv.development
+        && Belt.Array.length(malformed) > 0) {
+      <div className="bg-red-300 rounded p-8 mb-12">
+        <h2 className="font-bold text-night-dark text-2xl mb-2">
+          "Some Blog Posts are Malformed!"->s
+        </h2>
+        <p>
+          "Any blog post with invalid data will not be displayed in production."
+          ->s
+        </p>
+        <div>
+          <p className="font-bold mt-4"> "Errors:"->s </p>
+          <ul>
+            {Belt.Array.map(malformed, m => {
+               <li className="list-disc ml-5">
+                 {("pages/blog/" ++ m.id ++ ".mdx: " ++ m.message)->s}
+               </li>
+             })
+             ->ate}
+          </ul>
+        </div>
+      </div>;
+    } else {
+      React.null;
+    };
 
   let content =
-    if (Array.length(posts) === 0) {
-      <div> "No blog posts available yet"->s </div>;
+    if (Belt.Array.length(posts) === 0) {
+      <div> "Currently no posts available"->s </div>;
     } else {
       let first = Belt.Array.getExn(posts, 0);
       let rest = Js.Array2.sliceFrom(posts, 1);
@@ -280,21 +170,21 @@ let default = () => {
         className="grid grid-cols-1 xs:grid-cols-3 gap-20 row-gap-40 w-full">
         <div className="col-span-3 row-span-3">
           <FeatureCard
-            imgUrl=?{first.frontmatter.imgUrl}
-            title=?{first.content.title}
+            imgUrl=?{first.frontmatter.imgUrl->Js.Null.toOption}
+            title={first.title}
             author={first.frontmatter.author}
-            firstParagraph=?{first.content.firstParagraph}
-            date={first.frontmatter.date->Js.Date.fromString}
+            firstParagraph=?{first.frontmatter.description->Js.Null.toOption}
+            date={first.frontmatter.date->BlogArticleLayout.DateStr.toDate}
             href={"/blog/" ++ first.id}
           />
         </div>
         {Belt.Array.mapWithIndex(rest, (i, post) => {
            <BlogCard
              key={post.id ++ Belt.Int.toString(i)}
-             imgUrl=?{post.frontmatter.imgUrl}
-             title=?{post.content.title}
+             imgUrl=?{post.frontmatter.imgUrl->Js.Null.toOption}
+             title={post.title}
              author={post.frontmatter.author}
-             date={post.frontmatter.date->Js.Date.fromString}
+             date={post.frontmatter.date->BlogArticleLayout.DateStr.toDate}
              href={"/blog/" ++ post.id}
            />
          })
@@ -302,5 +192,37 @@ let default = () => {
       </div>;
     };
 
-  <div> content </div>;
+  <div> errorBox content </div>;
 };
+
+let getStaticProps: Next.GetStaticProps.t(props, params) =
+  _ctx => {
+    let (posts, malformed) =
+      BlogApi.getAllPosts()
+      ->Belt.Array.reduce(
+          ([||], [||]),
+          (acc, postData) => {
+            let (posts, malformed) = acc;
+            let id = postData.slug;
+            let title = "Test";
+
+            let decoded =
+              BlogArticleLayout.FrontMatter.decode(postData.frontmatter);
+
+            switch (decoded) {
+            | Error(message) =>
+              let m = {Malformed.id, message};
+              let malformed = Belt.Array.concat(malformed, [|m|]);
+              (posts, malformed);
+            | Ok(frontmatter) =>
+              let p = {Post.id, frontmatter, title};
+              let posts = Belt.Array.concat(posts, [|p|]);
+              (posts, malformed);
+            };
+          },
+        );
+
+    let props = {posts: Post.orderByDate(posts), malformed};
+
+    Promise.resolved({"props": props});
+  };

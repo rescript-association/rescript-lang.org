@@ -1,31 +1,49 @@
 open Util.ReactStuff;
 module Link = Next.Link;
 
+/* JSON doesn't support JS.Date, so we need to codify them as strings */
+module DateStr: {
+  type t;
+  let fromDate: Js.Date.t => t;
+  let toDate: t => Js.Date.t;
+} = {
+  type t = string;
+
+  // Used to prevent issues with webkit based date representations
+  let parse = (dateStr: string): Js.Date.t => {
+    dateStr->Js.String2.replaceByRe([%re "/-/g"], "/")->Js.Date.fromString;
+  };
+
+  let fromDate = date => Js.Date.toString(date);
+  let toDate = dateStr => {
+    parse(dateStr);
+  };
+};
+
 module FrontMatter = {
   type t = {
     author: string,
-    date: Js.Date.t,
+    date: DateStr.t,
+    imgUrl: Js.null(string),
+    description: Js.null(string),
   };
 
-  let validate = (json: Js.Json.t): result(t, string) => {
-    Js.Json.(
-      switch (json->Js.Json.classify) {
-      | JSONObject(obj) =>
-        let authorJson =
-          Js.Dict.get(obj, "author")
-          ->Belt.Option.mapWithDefault(None, json => Some(classify(json)));
-        let dateJson =
-          Js.Dict.get(obj, "date")
-          ->Belt.Option.mapWithDefault(None, json => Some(classify(json)));
-        switch (authorJson, dateJson) {
-        | (Some(JSONString(author)), Some(JSONString(dateStr))) =>
-          Ok({author, date: Js.Date.fromString(dateStr)})
-        | (Some(JSONString(_)), _) => Error("json.date not a string")
-        | (_, Some(JSONString(_))) => Error("json.author not a string")
-        | _ => Error("json.author / json.date not a string")
-        };
-
-      | _ => Error("Given json is not an object")
+  let decode = (json: Js.Json.t): result(t, string) => {
+    Json.Decode.(
+      switch (
+        {
+          author: json->field("author", string, _),
+          date:
+            json
+            ->field("date", string, _)
+            ->Js.Date.fromString
+            ->DateStr.fromDate,
+          imgUrl: json->nullable(field("imgUrl", string), _),
+          description: json->nullable(field("description", string), _),
+        }
+      ) {
+      | fm => Ok(fm)
+      | exception (DecodeError(str)) => Error(str)
       }
     );
   };

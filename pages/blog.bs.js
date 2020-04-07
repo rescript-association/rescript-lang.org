@@ -1,155 +1,14 @@
 
 
-import * as Mdx from "../common/Mdx.bs.js";
 import * as Util from "../common/Util.bs.js";
-import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Button from "../components/Button.bs.js";
+import * as BlogApi from "../common/BlogApi.bs.js";
+import * as $$Promise from "reason-promise/src/js/promise.js";
 import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
-
-function extractContent(mdx) {
-  var match = Mdx.MdxChildren.classify(mdx);
-  if (match.tag === /* Element */1) {
-    var children = Mdx.MdxChildren.getMdxChildren(match[0]);
-    var match$1 = Mdx.MdxChildren.classify(children);
-    if (match$1.tag === /* Array */2) {
-      var elements = match$1[0];
-      var title = undefined;
-      var firstParagraph = undefined;
-      var i = 0;
-      var to_ = elements.length;
-      while(i < to_ && (title === undefined || firstParagraph === undefined)) {
-        var el = Belt_Array.getExn(elements, i);
-        var match$2 = Mdx.getMdxType(el);
-        switch (match$2) {
-          case "h1" :
-              title = Mdx.MdxChildren.flatten(el).join(" ");
-              break;
-          case "p" :
-              firstParagraph = Mdx.MdxChildren.flatten(el).join(" ");
-              break;
-          default:
-            
-        }
-        i = i + 1 | 0;
-      };
-      return {
-              title: title,
-              firstParagraph: firstParagraph
-            };
-    } else {
-      return ;
-    }
-  }
-  
-}
-
-var validate = (function(json) {
-        if(typeof json !== "object") {
-          return
-        }
-
-        if(json.default == null) {
-          return
-        }
-
-        if(typeof json.default.frontmatter !== "object") {
-          return
-        }
-
-        var frontmatter = json.default.frontmatter;
-        if(typeof frontmatter.author !== "string") {
-          return;
-        }
-
-        if(typeof frontmatter.date === "string") {
-          var date = new Date(frontmatter.date);
-
-          // Weird isNan emulation
-          let time = date.getTime();
-          if(time !== time) {
-            return
-          }
-        }
-
-        json.frontmatter = frontmatter;
-
-        return json;
-      });
-
-var BlogPost = {
-  extractContent: extractContent,
-  validate: validate
-};
-
-function getMdxModule (ctx,filepath){{ return ctx(filepath); }};
-
-var blogCtx = (require.context('../pages/blog', true, /^\.\/.*\.mdx$/));
-
-function readPosts(ctx) {
-  return Belt_Array.reduce(Curry._1(ctx.keys, /* () */0), [], (function (acc, filepath) {
-                var match = filepath.match(/\.\/(.*)\.mdx/);
-                var id = match !== null && match.length === 2 ? match[1] : filepath;
-                var correctFilepath = function (path) {
-                  return path.replace(/^\.\//, "./pages/blog/");
-                };
-                var m = getMdxModule(ctx, filepath);
-                var match$1 = validate(m);
-                if (match$1 !== undefined) {
-                  var match$2 = match$1;
-                  var element = Curry._1(match$2.default, /* () */0);
-                  var content = extractContent(element);
-                  if (content !== undefined) {
-                    var content$1 = content;
-                    if (content$1.title !== undefined) {
-                      return acc.concat([{
-                                    id: id,
-                                    filepath: correctFilepath(filepath),
-                                    frontmatter: match$2.frontmatter,
-                                    content: content$1
-                                  }]);
-                    } else {
-                      console.log("h1 title is missing in " + filepath);
-                      return acc;
-                    }
-                  } else {
-                    return acc;
-                  }
-                } else {
-                  console.log("Could not parse blog post " + filepath);
-                  return acc;
-                }
-              }));
-}
-
-function orderByDate(posts) {
-  return posts.slice().sort((function (a, b) {
-                var aV = new Date(a.frontmatter.date).valueOf();
-                var bV = new Date(b.frontmatter.date).valueOf();
-                if (aV === bV) {
-                  return 0;
-                } else if (aV > bV) {
-                  return -1;
-                } else {
-                  return 1;
-                }
-              }));
-}
-
-function getAllBlogPosts(param) {
-  return orderByDate(readPosts(blogCtx));
-}
-
-var Data = {
-  BlogPost: BlogPost,
-  getMdxModule: getMdxModule,
-  blogCtx: blogCtx,
-  readPosts: readPosts,
-  orderByDate: orderByDate,
-  getAllBlogPosts: getAllBlogPosts
-};
+import * as BlogArticleLayout from "../layouts/BlogArticleLayout.bs.js";
 
 function Blog$BlogCard(Props) {
   var imgUrl = Props.imgUrl;
@@ -221,33 +80,59 @@ var FeatureCard = {
   make: Blog$FeatureCard
 };
 
-function Blog$default(Props) {
-  var posts = orderByDate(readPosts(blogCtx));
-  var posts$1 = Belt_Array.concatMany([
-        posts,
-        posts,
-        posts,
-        posts
-      ]);
+function orderByDate(posts) {
+  return posts.slice().sort((function (a, b) {
+                var aV = BlogArticleLayout.DateStr.toDate(a.frontmatter.date).valueOf();
+                var bV = BlogArticleLayout.DateStr.toDate(b.frontmatter.date).valueOf();
+                if (aV === bV) {
+                  return 0;
+                } else if (aV > bV) {
+                  return -1;
+                } else {
+                  return 1;
+                }
+              }));
+}
+
+var Post = {
+  orderByDate: orderByDate
+};
+
+var Malformed = { };
+
+function $$default(props) {
+  var malformed = props.malformed;
+  var posts = props.posts;
+  var errorBox = process.env.ENV === "development" && malformed.length !== 0 ? React.createElement("div", {
+          className: "bg-red-300 rounded p-8 mb-12"
+        }, React.createElement("h2", {
+              className: "font-bold text-night-dark text-2xl mb-2"
+            }, Util.ReactStuff.s("Some Blog Posts are Malformed!")), React.createElement("p", undefined, Util.ReactStuff.s("Any blog post with invalid data will not be displayed in production.")), React.createElement("div", undefined, React.createElement("p", {
+                  className: "font-bold mt-4"
+                }, Util.ReactStuff.s("Errors:")), React.createElement("ul", undefined, Util.ReactStuff.ate(Belt_Array.map(malformed, (function (m) {
+                            return React.createElement("li", {
+                                        className: "list-disc ml-5"
+                                      }, Util.ReactStuff.s("pages/blog/" + (m.id + (".mdx: " + m.message))));
+                          })))))) : null;
   var content;
-  if (posts$1.length === 0) {
-    content = React.createElement("div", undefined, Util.ReactStuff.s("No blog posts available yet"));
+  if (posts.length === 0) {
+    content = React.createElement("div", undefined, Util.ReactStuff.s("Currently no posts available"));
   } else {
-    var first = Belt_Array.getExn(posts$1, 0);
-    var rest = posts$1.slice(1);
+    var first = Belt_Array.getExn(posts, 0);
+    var rest = posts.slice(1);
     var tmp = {
+      title: first.title,
       author: first.frontmatter.author,
-      date: new Date(first.frontmatter.date),
+      date: BlogArticleLayout.DateStr.toDate(first.frontmatter.date),
       href: "/blog/" + first.id
     };
-    if (first.frontmatter.imgUrl !== undefined) {
-      tmp.imgUrl = Caml_option.valFromOption(first.frontmatter.imgUrl);
+    var tmp$1 = Caml_option.null_to_opt(first.frontmatter.imgUrl);
+    if (tmp$1 !== undefined) {
+      tmp.imgUrl = Caml_option.valFromOption(tmp$1);
     }
-    if (first.content.title !== undefined) {
-      tmp.title = Caml_option.valFromOption(first.content.title);
-    }
-    if (first.content.firstParagraph !== undefined) {
-      tmp.firstParagraph = Caml_option.valFromOption(first.content.firstParagraph);
+    var tmp$2 = Caml_option.null_to_opt(first.frontmatter.description);
+    if (tmp$2 !== undefined) {
+      tmp.firstParagraph = Caml_option.valFromOption(tmp$2);
     }
     content = React.createElement("div", {
           className: "grid grid-cols-1 xs:grid-cols-3 gap-20 row-gap-40 w-full"
@@ -255,34 +140,81 @@ function Blog$default(Props) {
               className: "col-span-3 row-span-3"
             }, React.createElement(Blog$FeatureCard, tmp)), Util.ReactStuff.ate(Belt_Array.mapWithIndex(rest, (function (i, post) {
                     var tmp = {
+                      title: post.title,
                       author: post.frontmatter.author,
-                      date: new Date(post.frontmatter.date),
+                      date: BlogArticleLayout.DateStr.toDate(post.frontmatter.date),
                       href: "/blog/" + post.id,
                       key: post.id + String(i)
                     };
-                    if (post.frontmatter.imgUrl !== undefined) {
-                      tmp.imgUrl = Caml_option.valFromOption(post.frontmatter.imgUrl);
-                    }
-                    if (post.content.title !== undefined) {
-                      tmp.title = Caml_option.valFromOption(post.content.title);
+                    var tmp$1 = Caml_option.null_to_opt(post.frontmatter.imgUrl);
+                    if (tmp$1 !== undefined) {
+                      tmp.imgUrl = Caml_option.valFromOption(tmp$1);
                     }
                     return React.createElement(Blog$BlogCard, tmp);
                   }))));
   }
-  return React.createElement("div", undefined, content);
+  return React.createElement("div", undefined, errorBox, content);
+}
+
+function getStaticProps(_ctx) {
+  var match = Belt_Array.reduce(BlogApi.getAllPosts(/* () */0), /* tuple */[
+        [],
+        []
+      ], (function (acc, postData) {
+          var malformed = acc[1];
+          var posts = acc[0];
+          var id = postData.slug;
+          var decoded = BlogArticleLayout.FrontMatter.decode(postData.frontmatter);
+          if (decoded.tag) {
+            var m_message = decoded[0];
+            var m = {
+              id: id,
+              message: m_message
+            };
+            var malformed$1 = Belt_Array.concat(malformed, [m]);
+            return /* tuple */[
+                    posts,
+                    malformed$1
+                  ];
+          } else {
+            var p_frontmatter = decoded[0];
+            var p = {
+              id: id,
+              title: "Test",
+              frontmatter: p_frontmatter
+            };
+            var posts$1 = Belt_Array.concat(posts, [p]);
+            return /* tuple */[
+                    posts$1,
+                    malformed
+                  ];
+          }
+        }));
+  var props_posts = orderByDate(match[0]);
+  var props_malformed = match[1];
+  var props = {
+    posts: props_posts,
+    malformed: props_malformed
+  };
+  return $$Promise.resolved({
+              props: props
+            });
 }
 
 var Link$1 = /* alias */0;
 
-var $$default = Blog$default;
+var FrontMatter = /* alias */0;
 
 export {
   Link$1 as Link,
-  Data ,
   BlogCard ,
   FeatureCard ,
+  FrontMatter ,
+  Post ,
+  Malformed ,
   $$default ,
   $$default as default,
+  getStaticProps ,
   
 }
-/* blogCtx Not a pure module */
+/* react Not a pure module */
