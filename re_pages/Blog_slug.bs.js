@@ -25,7 +25,6 @@ var cwd = Process.cwd();
 
 function $$default(props) {
   var module_ = require("../_blogposts/" + (props.slug + ".mdx"));
-  console.log("module", module_);
   var component = module_.default;
   var fm = BlogArticleLayout.FrontMatter.decode(frontmatter(component));
   var content = React.createElement(component, { });
@@ -43,8 +42,6 @@ function $$default(props) {
 
 function getStaticProps(ctx) {
   var params = ctx.params;
-  console.log("params:", params);
-  console.log("cwd", Process.cwd());
   var props_slug = params.slug;
   var props_mdxFile = "../../_blogposts/" + (params.slug + ".mdx");
   var props = {

@@ -46,8 +46,6 @@ let default = (props: props) => {
   let module_ =
     BlogComponent.require("../_blogposts/" ++ props.slug ++ ".mdx");
 
-  Js.log2("module", module_);
-
   let component = module_.default;
 
   let fm =
@@ -76,9 +74,7 @@ let getStaticProps: Next.GetStaticProps.t(props, Params.t) =
   ctx => {
     open Next.GetStaticProps;
     let {params} = ctx;
-    Js.log2("params:", params);
 
-    Js.log2("cwd", Node.Process.cwd());
     let props = {
       slug: params.slug,
       mdxFile: "../../_blogposts/" ++ params.slug ++ ".mdx",

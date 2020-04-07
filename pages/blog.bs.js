@@ -21,7 +21,8 @@ function Blog$BlogCard(Props) {
   return React.createElement("section", {
               className: "h-full"
             }, React.createElement(Link.default, {
-                  href: href,
+                  href: "/blog/[slug]",
+                  as: href,
                   children: React.createElement("a", undefined, React.createElement("div", undefined, imgUrl !== undefined ? React.createElement("img", {
                                   className: "mb-4",
                                   src: imgUrl

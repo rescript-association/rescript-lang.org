@@ -29,7 +29,7 @@ module BlogCard = {
         ~href: string,
       ) => {
     <section className="h-full">
-      <Link href>
+      <Link href="/blog/[slug]" _as=href>
         <a>
           <div>
             {switch (imgUrl) {
