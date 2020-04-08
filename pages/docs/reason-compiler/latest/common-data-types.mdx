@@ -64,6 +64,10 @@ BuckleScript floats are JS numbers, vice-versa. The OCaml standard library doesn
 
 Idiomatic OCaml arrays are supposed to be fix-sized. This constraint is relaxed on the BuckleScript size. You can change its length using the usual [JS Array API](/apis/javascript/latest/js/array). BuckleScript's own Array API is [here](https://reasonml.github.io/api/Array.html).
 
+#### Empty arrays
+
+Sometimes, the compiler may raise an error when you have an empty array (`let a = [||];`). This is because an empty array is "weakly typed." The compiler doesn't know what type it will contain until you add a value to it. Without the error, `Js.Array.push` could unsafely add incompatible values to the same array. When this error happens, you can correct it by explicitly annotating the type of the array: `let a: array(int) = [||];`.
+
 ### Tuple
 
 OCaml tuples are compiled to JS arrays. Convenient when you're interop-ing with a JS array that contains heterogeneous values, but happens to have a fixed length. Model it as a tuple on the BS side!
