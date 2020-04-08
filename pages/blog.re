@@ -21,30 +21,50 @@ module BlogCard = {
   [@react.component]
   let make =
       (
-        ~imgUrl: option(string)=?,
+        ~previewImg: option(string)=?,
         ~title: string="Unknown Title",
-        ~author: string,
+        ~author: BlogFrontmatter.Author.t,
         ~tags: array(string)=[||],
         ~date: Js.Date.t,
         ~slug: string,
       ) => {
     <section className="h-full">
-      <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
-        <a>
-          <div>
-            {switch (imgUrl) {
+      <div>
+        <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
+          <a>
+            {switch (previewImg) {
              | Some(src) => <img className="mb-4" src />
              | None => React.null
              }}
-            <h2 className="text-night-dark text-2xl"> title->s </h2>
-            <div className="text-night-light text-sm">
-              author->s
-              {j| · |j}->s
-              {date->Util.Date.toDayMonthYear->s}
-            </div>
-          </div>
-        </a>
-      </Link>
+          </a>
+        </Link>
+        <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
+          <a>
+            <h2 className="inline-block text-night-dark text-2xl">
+              title->s
+            </h2>
+          </a>
+        </Link>
+      </div>
+      <div className="text-night-light text-sm">
+        {switch (author.social->Js.Null.toOption) {
+         | Some(social) =>
+           let href =
+             BlogFrontmatter.Author.socialUrl(social)
+             ++ "/"
+             ++ author.username;
+           <a
+             href
+             className="hover:text-night"
+             rel="noopener noreferrer"
+             target="_blank">
+             author.username->s
+           </a>;
+         | None => author.username->s
+         }}
+        {j| · |j}->s
+        {date->Util.Date.toDayMonthYear->s}
+      </div>
     </section>;
   };
 };
@@ -53,9 +73,9 @@ module FeatureCard = {
   [@react.component]
   let make =
       (
-        ~imgUrl: option(string)=?,
+        ~previewImg: option(string)=?,
         ~title: string="Unknown Title",
-        ~author: string,
+        ~author: BlogFrontmatter.Author.t,
         ~date: Js.Date.t,
         ~firstParagraph: string="",
         ~slug: string,
@@ -64,7 +84,7 @@ module FeatureCard = {
       <div className="w-1/2 h-full">
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
           <a>
-            {switch (imgUrl) {
+            {switch (previewImg) {
              | Some(src) => <img className="h-full w-full object-cover" src />
              | None => <div className="bg-night-light" />
              }}
@@ -75,7 +95,26 @@ module FeatureCard = {
         <h2 className="text-night-dark font-semibold text-6xl"> title->s </h2>
         <div className="mb-4">
           <p className="text-night-dark text-lg"> firstParagraph->s </p>
-          <div className="text-night-light text-sm"> author->s </div>
+          <div className="text-night-light text-sm mt-2 mb-8">
+            "by "->s
+            {switch (author.social->Js.Null.toOption) {
+             | Some(social) =>
+               let href =
+                 BlogFrontmatter.Author.socialUrl(social)
+                 ++ "/"
+                 ++ author.username;
+               <a
+                 className="hover:text-night"
+                 href
+                 rel="noopener noreferrer"
+                 target="_blank">
+                 author.username->s
+               </a>;
+             | None => author.username->s
+             }}
+            {j| · |j}->s
+            {date->Util.Date.toDayMonthYear->s}
+          </div>
         </div>
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
           <a> <Button> "Read Article"->s </Button> </a>
@@ -87,27 +126,18 @@ module FeatureCard = {
 
 type params = {slug: string};
 
-module FrontMatter = BlogArticleLayout.FrontMatter;
-
 module Post = {
   type t = {
     id: string,
-    title: string,
-    frontmatter: FrontMatter.t,
+    frontmatter: BlogFrontmatter.t,
   };
 
   let orderByDate = (posts: array(t)): array(t) => {
     posts
     ->Js.Array.copy
     ->Js.Array2.sortInPlaceWith((a, b) => {
-        let aV =
-          a.frontmatter.date
-          ->BlogArticleLayout.DateStr.toDate
-          ->Js.Date.valueOf;
-        let bV =
-          b.frontmatter.date
-          ->BlogArticleLayout.DateStr.toDate
-          ->Js.Date.valueOf;
+        let aV = a.frontmatter.date->DateStr.toDate->Js.Date.valueOf;
+        let bV = b.frontmatter.date->DateStr.toDate->Js.Date.valueOf;
         if (aV === bV) {
           0;
         } else if (aV > bV) {
@@ -137,25 +167,27 @@ let default = (props: props): React.element => {
   let errorBox =
     if (ProcessEnv.env === ProcessEnv.development
         && Belt.Array.length(malformed) > 0) {
-      <div className="bg-red-300 rounded p-8 mb-12">
-        <h2 className="font-bold text-night-dark text-2xl mb-2">
-          "Some Blog Posts are Malformed!"->s
-        </h2>
-        <p>
-          "Any blog post with invalid data will not be displayed in production."
-          ->s
-        </p>
-        <div>
-          <p className="font-bold mt-4"> "Errors:"->s </p>
-          <ul>
-            {Belt.Array.map(malformed, m => {
-               <li className="list-disc ml-5">
-                 {("pages/blog/" ++ m.id ++ ".mdx: " ++ m.message)->s}
-               </li>
-             })
-             ->ate}
-          </ul>
-        </div>
+      <div className="mb-12">
+        <Markdown.Warn>
+          <h2 className="font-bold text-night-dark text-2xl mb-2">
+            "Some Blog Posts are Malformed!"->s
+          </h2>
+          <p>
+            "Any blog post with invalid data will not be displayed in production."
+            ->s
+          </p>
+          <div>
+            <p className="font-bold mt-4"> "Errors:"->s </p>
+            <ul>
+              {Belt.Array.map(malformed, m => {
+                 <li className="list-disc ml-5">
+                   {("pages/blog/" ++ m.id ++ ".mdx: " ++ m.message)->s}
+                 </li>
+               })
+               ->ate}
+            </ul>
+          </div>
+        </Markdown.Warn>
       </div>;
     } else {
       React.null;
@@ -172,21 +204,21 @@ let default = (props: props): React.element => {
         className="grid grid-cols-1 xs:grid-cols-3 gap-20 row-gap-40 w-full">
         <div className="col-span-3 row-span-3">
           <FeatureCard
-            imgUrl=?{first.frontmatter.imgUrl->Js.Null.toOption}
-            title={first.title}
+            previewImg=?{first.frontmatter.previewImg->Js.Null.toOption}
+            title={first.frontmatter.title}
             author={first.frontmatter.author}
             firstParagraph=?{first.frontmatter.description->Js.Null.toOption}
-            date={first.frontmatter.date->BlogArticleLayout.DateStr.toDate}
+            date={first.frontmatter.date->DateStr.toDate}
             slug={first.id}
           />
         </div>
         {Belt.Array.mapWithIndex(rest, (i, post) => {
            <BlogCard
              key={post.id ++ Belt.Int.toString(i)}
-             imgUrl=?{post.frontmatter.imgUrl->Js.Null.toOption}
-             title={post.title}
+             previewImg=?{post.frontmatter.previewImg->Js.Null.toOption}
+             title={post.frontmatter.title}
              author={post.frontmatter.author}
-             date={post.frontmatter.date->BlogArticleLayout.DateStr.toDate}
+             date={post.frontmatter.date->DateStr.toDate}
              slug={post.id}
            />
          })
@@ -206,10 +238,8 @@ let getStaticProps: Next.GetStaticProps.t(props, params) =
           (acc, postData) => {
             let (posts, malformed) = acc;
             let id = postData.slug;
-            let title = "Test";
 
-            let decoded =
-              BlogArticleLayout.FrontMatter.decode(postData.frontmatter);
+            let decoded = BlogFrontmatter.decode(postData.frontmatter);
 
             switch (decoded) {
             | Error(message) =>
@@ -217,7 +247,7 @@ let getStaticProps: Next.GetStaticProps.t(props, params) =
               let malformed = Belt.Array.concat(malformed, [|m|]);
               (posts, malformed);
             | Ok(frontmatter) =>
-              let p = {Post.id, frontmatter, title};
+              let p = {Post.id, frontmatter};
               let posts = Belt.Array.concat(posts, [|p|]);
               (posts, malformed);
             };

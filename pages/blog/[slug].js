@@ -9,7 +9,7 @@ export {
 function Page(props) {
   const router = useRouter();
   const { slug } = router.query;
-  const { default: Component } = require("../../_blogposts/first-post.mdx");
+  const { default: Component } = require(`../../_blogposts/${slug}.mdx`);
 
   console.log("test", slug);
 

@@ -35,6 +35,7 @@ let getPostBySlug = (~fields: array(string)=[||], slug: string): postData => {
 
 let getAllPosts = () => {
   let slugs =
-    getPostSlugs()->Belt.Array.keep(slug => Js.String2.endsWith(slug, ".mdx"));
+    getPostSlugs()
+    ->Belt.Array.keep(slug => Js.String2.endsWith(slug, ".mdx"));
   Belt.Array.map(slugs, slug => getPostBySlug(slug));
 };
