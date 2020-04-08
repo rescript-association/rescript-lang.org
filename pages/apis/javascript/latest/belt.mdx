@@ -120,6 +120,55 @@ For example, Belt has the following set modules:
 
 ## Implementation Details
 
+### Array access runtime safety
+
+One common confusion comes from the way Belt handles array access. It differs from than the default standard library's.
+
+```reason
+let letters = [|"a", "b", "c"|];
+let a = letters[0]; /* a == "a" */
+let capitalA = Js.String.toUpperCase(a);
+let k = letters[10]; /* Raises an exception! The 10th index doesn't exist. */
+```
+
+Because Belt avoids exceptions and returns `options` instead, this code behaves differently:
+
+```reason
+open Belt;
+let letters = [|"a", "b", "c"|];
+let a = letters[0]; /* a == Some("a") */
+let captialA = Js.String.toUpperCase(a); /* Type error! This code will not compile. */
+let k = letters[10]; /* k == None */
+```
+
+Although we've fixed the problem where `k` raises an exception, we now have a type error when trying to capitalize `a`. There are a few things going on here:
+
+- Reason transforms array index access to the function `Array.get`. So `letters[0]` is the same as `Array.get(letters, 0)`. 
+- The compiler uses whichever `Array` module is in scope. If you `open Belt`, then it uses `Belt.Array`.
+- `Belt.Array.get` returns values wrapped in options, so `letters[0] == Some("a")`. 
+
+Fortunately, this is easy to fix:
+
+```reason example
+open Belt;
+let letters = [|"a, "b, "c"|];
+let a = letters[0];
+
+/* Use a switch statement: */
+let capitalA =
+  switch(a) {
+    | Some(a) => Some(Js.String.toUpperCase(a))
+    | None => None
+  };
+  
+/* Alternatively, use the Option module: */
+let capitalA = a->Option.map(Js.String.toUpperCase);
+
+let k = letters[10]; /* k == None */
+```
+
+With that little bit of tweaking, our code now compiles successfully and is 100% free of runtime errors!
+
 ### A special encoding for collection safety
 
 When we create a collection library for a custom data type we need a way to

@@ -89,7 +89,7 @@ myArray[0] = "hey";
 /* now [|"hey", "world", "how are you"|] */
 ```
 
-The above array access/update is just syntax sugar for `Array.get`/`Array.set`.
+The above array access/update is syntax sugar for `Array.get`/`Array.set`. If you're compiling to JavaScript, note that code like `myArray[0]` does *not* compile to JavaScript `myArray[0]`, but rather `Array.get(myArray, 0)`. [See this for more information](../../../apis/javascript/latest/belt.mdx#array-access-runtime-safety).
 
 ### Tips & Tricks
 
