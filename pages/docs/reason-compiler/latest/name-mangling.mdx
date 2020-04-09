@@ -1,0 +1,89 @@
+There are times when you might need to use one of the [reserved keywords](/docs/manual/latest/reserved-keywords) in your code.
+
+## Using reserved keywords as JSX props
+
+Many React components have a prop named `type` in JavaScript:
+
+```js
+/* this won't work in Reason since `type` is a reserved keyword! */
+<Component type="title" />
+```
+
+If you're using a React component with a reserved keyword as a prop name, then simply prepend a underscore (so that it's a valid Reason name):
+
+```reason
+/* This works because `_type` is not a reserved keyword */
+<Component _type="title" />
+```
+
+The Reason compiler will remove the trailing underscore when outputting JavaScript (so the JavaScript will have `<Component type="POST" />`)
+
+## Accessing JavaScript object attributes that start with a capital letter
+
+Capital letters in reason are used exclusively for module names, like `String` and `Belt`, and they cannot be used as record field names like in JavaScript.
+
+```js
+const payload = {
+  PostTitle: "Welcome to Reason",
+};
+
+/* this won't work in Reason since `PostTitle` is capitalized, so `paylod.PostTitle` would break */
+const title = payload.PostTitle;
+```
+
+In this case, when writing bindings to the JavaScript object, you can use the `[@bs.as "whatever-name-you-want-in-javascript"]` to tell the compiler exactly what the JavaScript attribute name should be in the compiled output:
+
+```reason
+type payload {
+    [@bs.as "PostTitle"]
+    postTitle: string
+}
+
+let payload = {
+    postTitle: "Welcome to Reason"
+}
+
+/* Reason is happy since we're using the valid `postTitle` field name */
+let title = payload.postTitle;
+```
+
+The reason compiler will output the JavaScript for `title` as:
+
+```js
+/* The correct capitalized field name is output in the JavaScript! */
+var title = payload.PostTitle;
+```
+
+## Accessing reserved keywords as JavaScript object attribute names
+
+Just like accessing attributes that start with a capital letter, we can use `[@bs.as "the-reserved-keyword-that-javascript-wants"]`. It's customary to append an underscore (just like the JSX case) to the reserved keyword name:
+
+```reason
+type payload {
+    [@bs.as "type"]
+    type_: string
+}
+
+let payload = {
+    type_: "Documentation"
+}
+
+/* Reason is happy since we're using the valid `type_` field name */
+let payloadType = payload.type_;
+```
+
+The reason compiler will output the JavaScript for `payloadType` as:
+
+```js
+/* The reason compiler has correctly ouput `payload.type` even though *we* called the field `type_` */
+var payloadType = payload.type;
+```
+
+## Warning accessing a JavaScript object field names in a structural way [Advanced]
+
+When accessing a JavaScript object field in a structural way (e.g. `myJsObject##some`), the following rules apply:
+
+1. A single _leading_ underscore will be dropped from the output: `myJsObject##_type` => `myJsObject.type`
+1. Double (or more) _leading_ underscores will kept in the output: `myJsObject##__type` => `myJsObject.__type`
+1. There is _no way_ to access e.g. `myJsObject##_type` structurally - use records and `[@bs.as "_type"]` instead
+1. The _final trailing_ double underscores (and anything following them) will be dropped from the output: `myJsObject##this_is_kept__this_is_omitted` => `myJsObject.this_is_kept`

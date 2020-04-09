@@ -132,6 +132,10 @@ var basicNavs = [
   {
     name: "Promise",
     href: "/docs/manual/latest/promise"
+  },
+  {
+    name: "Reserved Keywords List",
+    href: "/docs/manual/latest/reserved-keywords"
   }
 ];
 
