@@ -60,6 +60,8 @@ var Author = {
   parse: parse
 };
 
+var Category = { };
+
 function decodeAuthor(str) {
   var match = parse(str);
   if (match.tag) {
@@ -69,6 +71,22 @@ function decodeAuthor(str) {
         ];
   } else {
     return match[0];
+  }
+}
+
+function decodeCategory(str) {
+  var str$1 = str.toLowerCase();
+  switch (str$1) {
+    case "community" :
+        return /* Community */1;
+    case "news" :
+    case "updates" :
+        return /* NewsAndUpdates */0;
+    default:
+      throw [
+            Json_decode.DecodeError,
+            "Unknown category \"" + (String(str$1) + "\"")
+          ];
   }
 }
 
@@ -82,6 +100,7 @@ function decode(json) {
               return Json_decode.field("previewImg", Json_decode.string, param);
             }), json),
       title: Json_decode.field("title", Json_decode.string, json),
+      category: decodeCategory(Json_decode.field("category", Json_decode.string, json)),
       description: Json_decode.nullable((function (param) {
               return Json_decode.field("description", Json_decode.string, param);
             }), json)
@@ -100,7 +119,9 @@ function decode(json) {
 
 export {
   Author ,
+  Category ,
   decodeAuthor ,
+  decodeCategory ,
   decode ,
   
 }

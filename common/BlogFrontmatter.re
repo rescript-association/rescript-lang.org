@@ -40,11 +40,18 @@ module Author = {
   };
 };
 
+module Category = {
+  type t =
+    | NewsAndUpdates
+    | Community;
+};
+
 type t = {
   author: Author.t,
   date: DateStr.t,
   previewImg: Js.null(string),
   title: string,
+  category: Category.t,
   description: Js.null(string),
 };
 
@@ -52,6 +59,15 @@ let decodeAuthor = (str: string): Author.t => {
   switch (Author.parse(str)) {
   | Ok(author) => author
   | Error(msg) => raise(Json.Decode.DecodeError(msg))
+  };
+};
+
+let decodeCategory = (str: string): Category.t => {
+  switch (Js.String2.toLowerCase(str)) {
+  | "updates"
+  | "news" => NewsAndUpdates
+  | "community" => Community
+  | str => raise(Json.Decode.DecodeError({j|Unknown category "$str"|j}))
   };
 };
 
@@ -65,6 +81,7 @@ let decode = (json: Js.Json.t): result(t, string) => {
           ->field("date", string, _)
           ->Js.Date.fromString
           ->DateStr.fromDate,
+        category: json->field("category", string, _)->decodeCategory,
         previewImg: json->nullable(field("previewImg", string), _),
         title: json->field("title", string, _),
         description: json->nullable(field("description", string), _),
