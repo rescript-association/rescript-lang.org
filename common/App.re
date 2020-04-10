@@ -29,8 +29,6 @@
   hljs.registerLanguage('text', text);
 |};
 
-open Util.ReactStuff;
-
 type pageComponent = React.component(Js.t({.}));
 type pageProps = Js.t({.});
 
