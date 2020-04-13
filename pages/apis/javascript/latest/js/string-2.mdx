@@ -406,12 +406,11 @@ The function receives as its parameters the matched string, the offset at which 
 ```re example
 let str = "beautiful vowels";
 let re = [%re "/[aeiou]/g"];
-let matchFn = (matchPart, offset, wholeString) =>
+let matchFn = (matchPart, _offset, _wholeString) =>
   Js.String2.toUpperCase(matchPart);
 
-let replaced = Js.String2.unsafeReplaceBy0(str, re, matchFn);
-
-Js.log(replaced); /* prints "bEAUtifUl vOwEls" */
+Js.String2.unsafeReplaceBy0(str, re, matchFn)
+  == "bEAUtIfUl vOwEls";
 ```
 
 ## unsafeReplaceBy1
@@ -426,12 +425,11 @@ The function receives as its parameters the matched string, the captured string,
 ```re example
 let str = "increment 23";
 let re = [%re "/increment (\\d+)/g"];
-let matchFn = (matchPart, p1, offset, wholeString) =>
+let matchFn = (_matchPart, p1, _offset, wholeString) =>
   wholeString ++ " is " ++ string_of_int(int_of_string(p1) + 1);
 
-let replaced = Js.String2.unsafeReplaceBy1(str, re, matchFn);
-
-Js.log(replaced); /* prints "increment 23 is 24" */
+Js.String2.unsafeReplaceBy1(str, re, matchFn)
+  == "increment 23 is 24";
 ```
 
 ## unsafeReplaceBy2
@@ -449,9 +447,7 @@ let re = [%re "/(\\d+) times (\\d+)/"];
 let matchFn = (matchPart, p1, p2, offset, wholeString) =>
   string_of_int(int_of_string(p1) * int_of_string(p2));
 
-let replaced = Js.String2.unsafeReplaceBy2(str, re, matchFn);
-
-Js.log(replaced); /* prints "42" */
+Js.String2.unsafeReplaceBy2(str, re, matchFn) == "42";
 ```
 
 ## unsafeReplaceBy3
@@ -553,10 +549,8 @@ let splitByRe: (t, Js_re.t) => array(option(t));
 `splitByRe(str, regex)` splits the given `str` at every occurrence of `regex` and returns an array of the resulting substrings. See [`String.split`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split) on MDN.
 
 ```re example
-Js.log(
-  Js.String2.splitByRe("art; bed , cog ;dad", [%re "/\\s*[,;]\\s*/"])
-  == [|Some("art"), Some("bed"), Some("cog"), Some("dad")|],
-);
+Js.String2.splitByRe("art; bed , cog ;dad", [%re "/\\s*[,;]\\s*/"])
+  == [|Some("art"), Some("bed"), Some("cog"), Some("dad")|];
 ```
 
 ## splitByReAtMost
@@ -569,18 +563,14 @@ let splitByReAtMost: (t, Js_re.t, ~limit: int) => array(option(t));
 If `n` is negative or greater than the number of substrings, the array will contain all the substrings. See [`String.split`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split) on MDN.
 
 ```re example
-Js.log(
-  Js.String2.splitByReAtMost("one: two: three: four", [%re "/\\s*:\\s*/"], ~limit=3)
-  == [|Some("one"), Some("two"), Some("three")|],
-);
-Js.log(
-  Js.String2.splitByReAtMost("one: two: three: four", [%re "/\\s*:\\s*/"], ~limit=0)
-  == [||],
-);
-Js.log(
-  Js.String2.splitByReAtMost("one: two: three: four", [%re "/\\s*:\\s*/"], ~limit=8)
-  == [|Some("one"), Some("two"), Some("three"), Some("four")|],
-);
+Js.String2.splitByReAtMost("one: two: three: four", [%re "/\\s*:\\s*/"], ~limit=3)
+  == [|Some("one"), Some("two"), Some("three")|];
+
+Js.String2.splitByReAtMost("one: two: three: four", [%re "/\\s*:\\s*/"], ~limit=0)
+  == [||];
+
+Js.String2.splitByReAtMost("one: two: three: four", [%re "/\\s*:\\s*/"], ~limit=8)
+  == [|Some("one"), Some("two"), Some("three"), Some("four")|];
 ```
 
 ## startsWith
