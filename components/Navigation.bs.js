@@ -476,7 +476,7 @@ function Navigation(Props) {
                             }), React.createElement(Link.default, {
                               href: "/blog",
                               children: React.createElement("a", {
-                                    className: "hidden sm:block " + linkOrActiveLink("/blog", route),
+                                    className: "hidden sm:block " + linkOrActiveLinkSubroute("/blog", route),
                                     onMouseEnter: nonCollapsibleOnMouseEnter
                                   }, Util.ReactStuff.s("Blog"))
                             }), React.createElement(Link.default, {

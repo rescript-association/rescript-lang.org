@@ -517,7 +517,7 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
             <a
               className={
                 "hidden sm:block "
-                ++ linkOrActiveLink(~target="/blog", ~route)
+                ++ linkOrActiveLinkSubroute(~target="/blog", ~route)
               }
               onMouseEnter=nonCollapsibleOnMouseEnter>
               "Blog"->s
