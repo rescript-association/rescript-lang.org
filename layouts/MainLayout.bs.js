@@ -26,13 +26,11 @@ function MainLayout(Props) {
                         }), React.createElement("div", {
                           className: "flex justify-center overflow-hidden"
                         }, React.createElement("main", {
-                              className: "mt-32 lg:align-center w-full px-4 max-w-xl ",
+                              className: "mt-32 lg:align-center w-full px-8 lg:px-0 max-w-xl ",
                               style: minWidth
                             }, React.createElement(React$1.MDXProvider, {
                                   components: components,
-                                  children: React.createElement("div", {
-                                        className: "w-full max-w-lg"
-                                      }, children)
+                                  children: children
                                 }))))));
 }
 

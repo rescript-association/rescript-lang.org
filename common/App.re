@@ -19,6 +19,7 @@
   let json = require('highlight.js/lib/languages/json');
   let ts = require('highlight.js/lib/languages/typescript');
   let text = require('highlight.js/lib/languages/plaintext');
+  let diff = require('highlight.js/lib/languages/diff');
 
   hljs.registerLanguage('reason', reason);
   hljs.registerLanguage('javascript', js);
@@ -27,6 +28,7 @@
   hljs.registerLanguage('sh', bash);
   hljs.registerLanguage('json', json);
   hljs.registerLanguage('text', text);
+  hljs.registerLanguage('diff', diff);
 |};
 
 type pageComponent = React.component(Js.t({.}));
@@ -170,7 +172,12 @@ let make = (props: props): React.element => {
       // Here, the layout will be handled by the Blog_slug component
       // to keep the frontmatter parsing etc in one place
       content
-    | _ => <MainLayout> content </MainLayout>
+    | _ =>
+      <MainLayout>
+        <div className="flex justify-center">
+          <div className="max-w-705 w-full"> content </div>
+        </div>
+      </MainLayout>
     }
   };
 };

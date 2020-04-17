@@ -16,23 +16,12 @@ function Blog$BlogCard(Props) {
   var previewImg = Props.previewImg;
   var $staropt$star = Props.title;
   var author = Props.author;
-  Props.tags;
+  var category = Props.category;
   var date = Props.date;
   var slug = Props.slug;
   var title = $staropt$star !== undefined ? $staropt$star : "Unknown Title";
-  var match = author.social;
-  var tmp;
-  if (match !== null) {
-    var href = BlogFrontmatter.Author.socialUrl(match) + ("/" + author.username);
-    tmp = React.createElement("a", {
-          className: "hover:text-night",
-          href: href,
-          rel: "noopener noreferrer",
-          target: "_blank"
-        }, Util.ReactStuff.s(author.username));
-  } else {
-    tmp = Util.ReactStuff.s(author.username);
-  }
+  var displayName = BlogFrontmatter.Author.getDisplayName(author);
+  var match = author.twitter;
   return React.createElement("section", {
               className: "h-full"
             }, React.createElement("div", undefined, React.createElement(Link.default, {
@@ -50,7 +39,12 @@ function Blog$BlogCard(Props) {
                               }, Util.ReactStuff.s(title)))
                     })), React.createElement("div", {
                   className: "text-night-light text-sm"
-                }, tmp, Util.ReactStuff.s(" · "), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date))));
+                }, match !== null ? React.createElement("a", {
+                        className: "hover:text-night",
+                        href: "https://twitter.com/" + match,
+                        rel: "noopener noreferrer",
+                        target: "_blank"
+                      }, Util.ReactStuff.s(displayName)) : Util.ReactStuff.s(displayName), Util.ReactStuff.s(" • "), Util.ReactStuff.s(category), Util.ReactStuff.s(" • "), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date))));
 }
 
 var BlogCard = {
@@ -62,23 +56,13 @@ function Blog$FeatureCard(Props) {
   var $staropt$star = Props.title;
   var author = Props.author;
   var date = Props.date;
+  var category = Props.category;
   var $staropt$star$1 = Props.firstParagraph;
   var slug = Props.slug;
   var title = $staropt$star !== undefined ? $staropt$star : "Unknown Title";
   var firstParagraph = $staropt$star$1 !== undefined ? $staropt$star$1 : "";
-  var match = author.social;
-  var tmp;
-  if (match !== null) {
-    var href = BlogFrontmatter.Author.socialUrl(match) + ("/" + author.username);
-    tmp = React.createElement("a", {
-          className: "hover:text-night",
-          href: href,
-          rel: "noopener noreferrer",
-          target: "_blank"
-        }, Util.ReactStuff.s(author.username));
-  } else {
-    tmp = Util.ReactStuff.s(author.username);
-  }
+  var displayName = BlogFrontmatter.Author.getDisplayName(author);
+  var match = author.twitter;
   return React.createElement("section", {
               className: "flex h-full"
             }, React.createElement("div", {
@@ -102,7 +86,12 @@ function Blog$FeatureCard(Props) {
                           className: "text-night-dark text-lg"
                         }, Util.ReactStuff.s(firstParagraph)), React.createElement("div", {
                           className: "text-night-light text-sm mt-2 mb-8"
-                        }, Util.ReactStuff.s("by "), tmp, Util.ReactStuff.s(" · "), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date)))), React.createElement(Link.default, {
+                        }, Util.ReactStuff.s("by "), match !== null ? React.createElement("a", {
+                                className: "hover:text-night",
+                                href: "https://twitter.com/" + match,
+                                rel: "noopener noreferrer",
+                                target: "_blank"
+                              }, Util.ReactStuff.s(displayName)) : Util.ReactStuff.s(displayName), Util.ReactStuff.s(" • "), Util.ReactStuff.s(category), Util.ReactStuff.s(" • "), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date)))), React.createElement(Link.default, {
                       href: "/blog/[slug]",
                       as: "/blog/" + slug,
                       children: React.createElement("a", undefined, React.createElement(Button.make, {
@@ -161,6 +150,7 @@ function $$default(props) {
       title: first.frontmatter.title,
       author: first.frontmatter.author,
       date: DateStr.toDate(first.frontmatter.date),
+      category: BlogFrontmatter.Category.toString(first.frontmatter.category),
       slug: first.id
     };
     var tmp$1 = Caml_option.null_to_opt(first.frontmatter.previewImg);
@@ -179,6 +169,7 @@ function $$default(props) {
                     var tmp = {
                       title: post.frontmatter.title,
                       author: post.frontmatter.author,
+                      category: BlogFrontmatter.Category.toString(post.frontmatter.category),
                       date: DateStr.toDate(post.frontmatter.date),
                       slug: post.id,
                       key: post.id + String(i)
@@ -194,6 +185,7 @@ function $$default(props) {
 }
 
 function getStaticProps(_ctx) {
+  var authors = BlogFrontmatter.Author.getAllAuthors(/* () */0);
   var match = Belt_Array.reduce(BlogApi.getAllPosts(/* () */0), /* tuple */[
         [],
         []
@@ -201,7 +193,7 @@ function getStaticProps(_ctx) {
           var malformed = acc[1];
           var posts = acc[0];
           var id = postData.slug;
-          var decoded = BlogFrontmatter.decode(postData.frontmatter);
+          var decoded = BlogFrontmatter.decode(authors, postData.frontmatter);
           if (decoded.tag) {
             var m_message = decoded[0];
             var m = {
@@ -237,6 +229,10 @@ function getStaticProps(_ctx) {
             });
 }
 
+function f(g, x) {
+  return g(x);
+}
+
 var Link$1 = /* alias */0;
 
 export {
@@ -248,6 +244,7 @@ export {
   $$default ,
   $$default as default,
   getStaticProps ,
+  f ,
   
 }
 /* react Not a pure module */

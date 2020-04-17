@@ -24,10 +24,11 @@ module BlogCard = {
         ~previewImg: option(string)=?,
         ~title: string="Unknown Title",
         ~author: BlogFrontmatter.Author.t,
-        ~tags: array(string)=[||],
+        ~category: string,
         ~date: Js.Date.t,
         ~slug: string,
       ) => {
+    let displayName = BlogFrontmatter.Author.getDisplayName(author);
     <section className="h-full">
       <div>
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
@@ -47,22 +48,20 @@ module BlogCard = {
         </Link>
       </div>
       <div className="text-night-light text-sm">
-        {switch (author.social->Js.Null.toOption) {
-         | Some(social) =>
-           let href =
-             BlogFrontmatter.Author.socialUrl(social)
-             ++ "/"
-             ++ author.username;
+        {switch (author.twitter->Js.Null.toOption) {
+         | Some(handle) =>
            <a
-             href
+             href={"https://twitter.com/" ++ handle}
              className="hover:text-night"
              rel="noopener noreferrer"
              target="_blank">
-             author.username->s
-           </a>;
-         | None => author.username->s
+             displayName->s
+           </a>
+         | None => displayName->s
          }}
-        {j| · |j}->s
+        {j| • |j}->s
+        category->s
+        {j| • |j}->s
         {date->Util.Date.toDayMonthYear->s}
       </div>
     </section>;
@@ -77,9 +76,11 @@ module FeatureCard = {
         ~title: string="Unknown Title",
         ~author: BlogFrontmatter.Author.t,
         ~date: Js.Date.t,
+        ~category: string,
         ~firstParagraph: string="",
         ~slug: string,
       ) => {
+    let displayName = BlogFrontmatter.Author.getDisplayName(author);
     <section className="flex h-full">
       <div className="w-1/2 h-full">
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
@@ -97,22 +98,20 @@ module FeatureCard = {
           <p className="text-night-dark text-lg"> firstParagraph->s </p>
           <div className="text-night-light text-sm mt-2 mb-8">
             "by "->s
-            {switch (author.social->Js.Null.toOption) {
-             | Some(social) =>
-               let href =
-                 BlogFrontmatter.Author.socialUrl(social)
-                 ++ "/"
-                 ++ author.username;
+            {switch (author.twitter->Js.Null.toOption) {
+             | Some(handle) =>
                <a
                  className="hover:text-night"
-                 href
+                 href={"https://twitter.com/" ++ handle}
                  rel="noopener noreferrer"
                  target="_blank">
-                 author.username->s
-               </a>;
-             | None => author.username->s
+                 displayName->s
+               </a>
+             | None => displayName->s
              }}
-            {j| · |j}->s
+            {j| • |j}->s
+            category->s
+            {j| • |j}->s
             {date->Util.Date.toDayMonthYear->s}
           </div>
         </div>
@@ -209,6 +208,9 @@ let default = (props: props): React.element => {
             author={first.frontmatter.author}
             firstParagraph=?{first.frontmatter.description->Js.Null.toOption}
             date={first.frontmatter.date->DateStr.toDate}
+            category={
+              first.frontmatter.category->BlogFrontmatter.Category.toString
+            }
             slug={first.id}
           />
         </div>
@@ -218,6 +220,9 @@ let default = (props: props): React.element => {
              previewImg=?{post.frontmatter.previewImg->Js.Null.toOption}
              title={post.frontmatter.title}
              author={post.frontmatter.author}
+             category={
+               post.frontmatter.category->BlogFrontmatter.Category.toString
+             }
              date={post.frontmatter.date->DateStr.toDate}
              slug={post.id}
            />
@@ -231,6 +236,7 @@ let default = (props: props): React.element => {
 
 let getStaticProps: Next.GetStaticProps.t(props, params) =
   _ctx => {
+    let authors = BlogFrontmatter.Author.getAllAuthors();
     let (posts, malformed) =
       BlogApi.getAllPosts()
       ->Belt.Array.reduce(
@@ -239,7 +245,8 @@ let getStaticProps: Next.GetStaticProps.t(props, params) =
             let (posts, malformed) = acc;
             let id = postData.slug;
 
-            let decoded = BlogFrontmatter.decode(postData.frontmatter);
+            let decoded =
+              BlogFrontmatter.decode(~authors, postData.frontmatter);
 
             switch (decoded) {
             | Error(message) =>
@@ -258,3 +265,7 @@ let getStaticProps: Next.GetStaticProps.t(props, params) =
 
     Promise.resolved({"props": props});
   };
+
+let f = (g, x) => g(. x);
+
+let f: ((. 'a) => 'b, 'a) => 'b = (g, x) => g(. x);

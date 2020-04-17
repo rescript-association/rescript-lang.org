@@ -168,6 +168,7 @@ module.exports = {
       wide: "0.075em"
     },
     maxWidth: {
+      '705': "44.0625rem",
       xs: "20rem", //  320px
       sm: "30rem", //  480px
       md: "40rem", //  640px

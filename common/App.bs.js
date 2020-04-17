@@ -28,6 +28,7 @@ let hljs = require('highlight.js/lib/highlight');
   let json = require('highlight.js/lib/languages/json');
   let ts = require('highlight.js/lib/languages/typescript');
   let text = require('highlight.js/lib/languages/plaintext');
+  let diff = require('highlight.js/lib/languages/diff');
 
   hljs.registerLanguage('reason', reason);
   hljs.registerLanguage('javascript', js);
@@ -36,6 +37,7 @@ let hljs = require('highlight.js/lib/highlight');
   hljs.registerLanguage('sh', bash);
   hljs.registerLanguage('json', json);
   hljs.registerLanguage('text', text);
+  hljs.registerLanguage('diff', diff);
 ;
 
 function isVersion(str) {
@@ -233,7 +235,11 @@ function make(props) {
       }
     }
     return React.createElement(MainLayout.make, {
-                children: content
+                children: React.createElement("div", {
+                      className: "flex justify-center"
+                    }, React.createElement("div", {
+                          className: "max-w-705 w-full"
+                        }, content))
               });
   }
   
