@@ -81,7 +81,7 @@ function Navigation$CollapsibleLink(Props) {
                             })))), React.createElement("div", {
                   className: (
                     isOpen ? "flex" : "hidden"
-                  ) + " fixed left-0 border-night border-t bg-night-dark min-w-20 w-full h-full sm:h-auto sm:justify-center",
+                  ) + " fixed left-0 border-night border-t bg-night-dark min-w-320 w-full h-full sm:h-auto sm:justify-center",
                   style: {
                     marginTop: "1.375rem"
                   }

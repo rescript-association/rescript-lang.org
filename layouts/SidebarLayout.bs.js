@@ -316,7 +316,7 @@ function SidebarLayout$Sidebar(Props) {
   };
   return React.createElement(React.Fragment, undefined, React.createElement("div", {
                   className: (
-                    isOpen ? "fixed w-full left-0 h-full z-10 min-w-20" : "hidden "
+                    isOpen ? "fixed w-full left-0 h-full z-10 min-w-320" : "hidden "
                   ) + " md:block md:w-1/4 md:h-auto md:relative overflow-y-visible bg-white md:relative"
                 }, React.createElement("aside", {
                       className: "relative top-0 px-4 w-full block md:top-18 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24 pt-8",
@@ -407,7 +407,7 @@ function SidebarLayout(Props) {
                   });
         }), []);
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, { }), React.createElement("div", {
-                  className: "mt-16 min-w-20 " + theme$1
+                  className: "mt-16 min-w-320 " + theme$1
                 }, React.createElement("div", {
                       className: "w-full text-night font-base"
                     }, React.createElement(Navigation.make, {

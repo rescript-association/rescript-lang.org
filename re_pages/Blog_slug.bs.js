@@ -91,7 +91,7 @@ function Blog_slug$BlogHeader(Props) {
                   className: "max-w-705"
                 }, React.createElement("div", {
                       className: "text-night-light text-lg mb-6"
-                    }, Util.ReactStuff.s(category), Util.ReactStuff.s(" • "), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date$1))), React.createElement("h1", {
+                    }, Util.ReactStuff.s(category), Util.ReactStuff.s(" · "), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date$1))), React.createElement("h1", {
                       className: "text-48 text-night-dark"
                     }, Util.ReactStuff.s(title)), Belt_Option.mapWithDefault(description, null, (function (desc) {
                         return React.createElement("div", {

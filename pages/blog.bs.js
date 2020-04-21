@@ -1,6 +1,8 @@
 
 
+import * as Meta from "../components/Meta.bs.js";
 import * as Util from "../common/Util.bs.js";
+import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Button from "../components/Button.bs.js";
 import * as BlogApi from "../common/BlogApi.bs.js";
@@ -9,45 +11,97 @@ import * as $$Promise from "reason-promise/src/js/promise.js";
 import * as Markdown from "../components/Markdown.bs.js";
 import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
+import * as Navigation from "../components/Navigation.bs.js";
+import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
+import * as React$1 from "@mdx-js/react";
 import * as BlogFrontmatter from "../common/BlogFrontmatter.bs.js";
+import * as NameInitialsAvatar from "../components/NameInitialsAvatar.bs.js";
+
+function Blog$Badge(Props) {
+  var badge = Props.badge;
+  return React.createElement("div", {
+              className: "inline-block items-center bg-turtle font-medium tracking-tight text-onyx-80 text-14 px-2 rounded-sm py-1"
+            }, React.createElement("img", {
+                  className: "w-4 inline-block pb-1 mr-1",
+                  src: "/static/star.svg"
+                }), Util.ReactStuff.s(badge));
+}
+
+var Badge = {
+  make: Blog$Badge
+};
+
+function Blog$CategorySelector(Props) {
+  var categories = Props.categories;
+  var selected = Props.selected;
+  var onSelected = Props.onSelected;
+  return React.createElement("div", {
+              className: "text-16 w-full flex items-center justify-between text-onyx-50"
+            }, Util.ReactStuff.ate(Belt_Array.map(categories, (function (cat) {
+                        return React.createElement("div", {
+                                    key: cat,
+                                    className: (
+                                      cat === selected ? "bg-snow-dark text-onyx rounded py-1" : "hover:cursor-pointer hover:text-onyx"
+                                    ) + "  px-4 inline-block",
+                                    onClick: (function (evt) {
+                                        evt.preventDefault();
+                                        return Curry._1(onSelected, cat);
+                                      })
+                                  }, Util.ReactStuff.s(cat));
+                      }))));
+}
+
+var CategorySelector = {
+  make: Blog$CategorySelector
+};
+
+var defaultPreviewImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1587479463/Reason%20Association/reasonml.org/reasonml_art2_1280_vhzxnz.png";
 
 function Blog$BlogCard(Props) {
   var previewImg = Props.previewImg;
   var $staropt$star = Props.title;
-  var author = Props.author;
+  Props.author;
   var category = Props.category;
+  var badge = Props.badge;
   var date = Props.date;
   var slug = Props.slug;
   var title = $staropt$star !== undefined ? $staropt$star : "Unknown Title";
-  var displayName = BlogFrontmatter.Author.getDisplayName(author);
-  var match = author.twitter;
   return React.createElement("section", {
               className: "h-full"
-            }, React.createElement("div", undefined, React.createElement(Link.default, {
+            }, React.createElement("div", {
+                  className: "relative"
+                }, badge !== undefined ? React.createElement("div", {
+                        className: "absolute bottom-0 mb-4 -ml-2"
+                      }, React.createElement(Blog$Badge, {
+                            badge: badge
+                          })) : null, React.createElement(Link.default, {
                       href: "/blog/[slug]",
                       as: "/blog/" + slug,
-                      children: React.createElement("a", undefined, previewImg !== undefined ? React.createElement("img", {
-                                  className: "mb-4",
+                      children: React.createElement("a", {
+                            className: "h-40 w-auto block mb-4"
+                          }, previewImg !== undefined ? React.createElement("img", {
+                                  className: "mb-4 h-full w-full",
                                   src: previewImg
-                                }) : null)
-                    }), React.createElement(Link.default, {
+                                }) : React.createElement("img", {
+                                  className: "mb-4 object-cover h-full w-full",
+                                  src: defaultPreviewImg
+                                }))
+                    })), React.createElement("div", {
+                  className: "px-2"
+                }, React.createElement(Link.default, {
                       href: "/blog/[slug]",
                       as: "/blog/" + slug,
                       children: React.createElement("a", undefined, React.createElement("h2", {
-                                className: "inline-block text-night-dark text-2xl"
+                                className: "text-onyx font-semibold text-21 leading-2"
                               }, Util.ReactStuff.s(title)))
-                    })), React.createElement("div", {
-                  className: "text-night-light text-sm"
-                }, match !== null ? React.createElement("a", {
-                        className: "hover:text-night",
-                        href: "https://twitter.com/" + match,
-                        rel: "noopener noreferrer",
-                        target: "_blank"
-                      }, Util.ReactStuff.s(displayName)) : Util.ReactStuff.s(displayName), Util.ReactStuff.s(" • "), Util.ReactStuff.s(category), Util.ReactStuff.s(" • "), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date))));
+                    }), React.createElement("div", {
+                      className: "text-night-light text-sm"
+                    }, Util.ReactStuff.s(category), Util.ReactStuff.s(" · "), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date)))));
 }
 
 var BlogCard = {
+  defaultPreviewImg: defaultPreviewImg,
   make: Blog$BlogCard
 };
 
@@ -55,6 +109,7 @@ function Blog$FeatureCard(Props) {
   var previewImg = Props.previewImg;
   var $staropt$star = Props.title;
   var author = Props.author;
+  var badge = Props.badge;
   var date = Props.date;
   var category = Props.category;
   var $staropt$star$1 = Props.firstParagraph;
@@ -62,36 +117,57 @@ function Blog$FeatureCard(Props) {
   var title = $staropt$star !== undefined ? $staropt$star : "Unknown Title";
   var firstParagraph = $staropt$star$1 !== undefined ? $staropt$star$1 : "";
   var displayName = BlogFrontmatter.Author.getDisplayName(author);
-  var match = author.twitter;
+  var match = author.imgUrl;
+  var authorImg = match !== null ? React.createElement("img", {
+          className: "h-full w-full rounded-full",
+          src: match
+        }) : React.createElement(NameInitialsAvatar.make, {
+          displayName: displayName
+        });
+  var match$1 = author.twitter;
   return React.createElement("section", {
-              className: "flex h-full"
+              className: "flex sm:px-4 md:px-0 flex-col justify-end lg:flex-row sm:items-center h-full"
             }, React.createElement("div", {
-                  className: "w-1/2 h-full"
+                  className: "w-full h-full sm:self-start md:self-auto",
+                  style: {
+                    maxHeight: "25.4375rem",
+                    maxWidth: "38.125rem"
+                  }
                 }, React.createElement(Link.default, {
                       href: "/blog/[slug]",
                       as: "/blog/" + slug,
-                      children: React.createElement("a", undefined, previewImg !== undefined ? React.createElement("img", {
-                                  className: "h-full w-full object-cover",
+                      children: React.createElement("a", {
+                            className: "relative block"
+                          }, badge !== undefined ? React.createElement("div", {
+                                  className: "absolute mt-10 ml-4 lg:-ml-4"
+                                }, React.createElement(Blog$Badge, {
+                                      badge: badge
+                                    })) : null, previewImg !== undefined ? React.createElement("img", {
+                                  className: "h-full w-full",
                                   src: previewImg
                                 }) : React.createElement("div", {
                                   className: "bg-night-light"
                                 }))
                     })), React.createElement("div", {
-                  className: "w-1/2 mt-8 ml-16"
-                }, React.createElement("h2", {
-                      className: "text-night-dark font-semibold text-6xl"
-                    }, Util.ReactStuff.s(title)), React.createElement("div", {
-                      className: "mb-4"
-                    }, React.createElement("p", {
-                          className: "text-night-dark text-lg"
-                        }, Util.ReactStuff.s(firstParagraph)), React.createElement("div", {
-                          className: "text-night-light text-sm mt-2 mb-8"
-                        }, Util.ReactStuff.s("by "), match !== null ? React.createElement("a", {
-                                className: "hover:text-night",
-                                href: "https://twitter.com/" + match,
-                                rel: "noopener noreferrer",
-                                target: "_blank"
-                              }, Util.ReactStuff.s(displayName)) : Util.ReactStuff.s(displayName), Util.ReactStuff.s(" • "), Util.ReactStuff.s(category), Util.ReactStuff.s(" • "), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date)))), React.createElement(Link.default, {
+                  className: "relative px-4 lg:self-auto md:pt-12 md:px-20 sm:self-start md:ml-16 md:-mt-20 mt-4 bg-white lg:w-full lg:pt-0 lg:mt-8 lg:px-0 lg:ml-12"
+                }, React.createElement("div", {
+                      className: "max-w-400 "
+                    }, React.createElement("h2", {
+                          className: "text-onyx font-semibold text-42 leading-2"
+                        }, Util.ReactStuff.s(title)), React.createElement("div", {
+                          className: "mb-6"
+                        }, React.createElement("div", {
+                              className: "flex items-center font-medium text-onyx-50 text-sm my-2"
+                            }, React.createElement("div", {
+                                  className: "inline-block w-4 h-4 mr-2"
+                                }, authorImg), React.createElement("div", undefined, match$1 !== null ? React.createElement("a", {
+                                        className: "hover:text-onyx-80",
+                                        href: "https://twitter.com/" + match$1,
+                                        rel: "noopener noreferrer",
+                                        target: "_blank"
+                                      }, Util.ReactStuff.s(displayName)) : Util.ReactStuff.s(displayName), Util.ReactStuff.s(" · "), Util.ReactStuff.s(category), Util.ReactStuff.s(" · "), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date)))), React.createElement("p", {
+                              className: "text-night-dark text-16"
+                            }, Util.ReactStuff.s(firstParagraph)))), React.createElement(Link.default, {
                       href: "/blog/[slug]",
                       as: "/blog/" + slug,
                       children: React.createElement("a", undefined, React.createElement(Button.make, {
@@ -127,6 +203,10 @@ var Malformed = { };
 function $$default(props) {
   var malformed = props.malformed;
   var posts = props.posts;
+  var match = React.useState((function () {
+          return "All";
+        }));
+  var setCategory = match[1];
   var errorBox = process.env.ENV === "development" && malformed.length !== 0 ? React.createElement("div", {
           className: "mb-12"
         }, React.createElement(Markdown.Warn.make, {
@@ -146,6 +226,14 @@ function $$default(props) {
   } else {
     var first = Belt_Array.getExn(posts, 0);
     var rest = posts.slice(1);
+    var categories = [
+      "All",
+      "Syntax",
+      "Compiler",
+      "Ecosystem",
+      "Docs",
+      "Community"
+    ];
     var tmp = {
       title: first.frontmatter.title,
       author: first.frontmatter.author,
@@ -157,31 +245,76 @@ function $$default(props) {
     if (tmp$1 !== undefined) {
       tmp.previewImg = Caml_option.valFromOption(tmp$1);
     }
-    var tmp$2 = Caml_option.null_to_opt(first.frontmatter.description);
+    var tmp$2 = Belt_Option.map(Caml_option.null_to_opt(first.frontmatter.badge), BlogFrontmatter.Badge.toString);
     if (tmp$2 !== undefined) {
-      tmp.firstParagraph = Caml_option.valFromOption(tmp$2);
+      tmp.badge = Caml_option.valFromOption(tmp$2);
     }
-    content = React.createElement("div", {
-          className: "grid grid-cols-1 xs:grid-cols-3 gap-20 row-gap-40 w-full"
-        }, React.createElement("div", {
-              className: "col-span-3 row-span-3"
-            }, React.createElement(Blog$FeatureCard, tmp)), Util.ReactStuff.ate(Belt_Array.mapWithIndex(rest, (function (i, post) {
-                    var tmp = {
-                      title: post.frontmatter.title,
-                      author: post.frontmatter.author,
-                      category: BlogFrontmatter.Category.toString(post.frontmatter.category),
-                      date: DateStr.toDate(post.frontmatter.date),
-                      slug: post.id,
-                      key: post.id + String(i)
-                    };
-                    var tmp$1 = Caml_option.null_to_opt(post.frontmatter.previewImg);
-                    if (tmp$1 !== undefined) {
-                      tmp.previewImg = Caml_option.valFromOption(tmp$1);
-                    }
-                    return React.createElement(Blog$BlogCard, tmp);
-                  }))));
+    var tmp$3 = Caml_option.null_to_opt(first.frontmatter.description);
+    if (tmp$3 !== undefined) {
+      tmp.firstParagraph = Caml_option.valFromOption(tmp$3);
+    }
+    content = React.createElement(React.Fragment, undefined, React.createElement("div", {
+              className: "hidden sm:flex justify-center "
+            }, React.createElement("div", {
+                  className: "my-16 w-full",
+                  style: {
+                    maxWidth: "32rem"
+                  }
+                }, React.createElement(Blog$CategorySelector, {
+                      categories: categories,
+                      selected: match[0],
+                      onSelected: (function (category) {
+                          return Curry._1(setCategory, (function (param) {
+                                        return category;
+                                      }));
+                        })
+                    }))), React.createElement("div", {
+              className: "mb-24"
+            }, React.createElement(Blog$FeatureCard, tmp)), React.createElement("div", {
+              className: "mx-4 xl:mx-0 grid grid-cols-1 xs:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full"
+            }, Util.ReactStuff.ate(Belt_Array.mapWithIndex(rest, (function (i, post) {
+                        var badge = Belt_Option.map(Caml_option.null_to_opt(post.frontmatter.badge), BlogFrontmatter.Badge.toString);
+                        var tmp = {
+                          title: post.frontmatter.title,
+                          author: post.frontmatter.author,
+                          category: BlogFrontmatter.Category.toString(post.frontmatter.category),
+                          date: DateStr.toDate(post.frontmatter.date),
+                          slug: post.id,
+                          key: post.id + String(i)
+                        };
+                        var tmp$1 = Caml_option.null_to_opt(post.frontmatter.previewImg);
+                        if (tmp$1 !== undefined) {
+                          tmp.previewImg = Caml_option.valFromOption(tmp$1);
+                        }
+                        if (badge !== undefined) {
+                          tmp.badge = Caml_option.valFromOption(badge);
+                        }
+                        return React.createElement(Blog$BlogCard, tmp);
+                      })))));
   }
-  return React.createElement("div", undefined, errorBox, content);
+  var overlayState = React.useState((function () {
+          return false;
+        }));
+  return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, { }), React.createElement("div", {
+                  className: "mb-32 mt-16 pt-2"
+                }, React.createElement("div", {
+                      className: "text-night text-lg"
+                    }, React.createElement(Navigation.make, {
+                          overlayState: overlayState
+                        }), React.createElement("div", {
+                          className: "flex justify-center overflow-hidden"
+                        }, React.createElement("main", {
+                              className: "min-w-320 lg:align-center w-full lg:px-0 max-w-1280 "
+                            }, React.createElement(React$1.MDXProvider, {
+                                  components: Markdown.$$default,
+                                  children: React.createElement("div", {
+                                        className: "flex justify-center"
+                                      }, React.createElement("div", {
+                                            style: {
+                                              maxWidth: "66.625rem"
+                                            }
+                                          }, errorBox, content))
+                                }))))));
 }
 
 function getStaticProps(_ctx) {
@@ -229,14 +362,12 @@ function getStaticProps(_ctx) {
             });
 }
 
-function f(g, x) {
-  return g(x);
-}
-
 var Link$1 = /* alias */0;
 
 export {
   Link$1 as Link,
+  Badge ,
+  CategorySelector ,
   BlogCard ,
   FeatureCard ,
   Post ,
@@ -244,7 +375,6 @@ export {
   $$default ,
   $$default as default,
   getStaticProps ,
-  f ,
   
 }
-/* react Not a pure module */
+/* Meta Not a pure module */

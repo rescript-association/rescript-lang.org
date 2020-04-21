@@ -251,7 +251,7 @@ function DocsLayout$Sidebar(Props) {
   };
   return React.createElement(React.Fragment, undefined, React.createElement("div", {
                   className: (
-                    isOpen ? "fixed w-full left-0 h-full z-10 min-w-20" : "hidden "
+                    isOpen ? "fixed w-full left-0 h-full z-10 min-w-320" : "hidden "
                   ) + " md:block md:w-48 md:-ml-4 lg:w-1/4 md:h-auto md:relative overflow-y-visible bg-white md:relative",
                   id: "sidebar",
                   style: {

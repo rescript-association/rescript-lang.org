@@ -6,8 +6,14 @@ var Link = {
   standalone: "no-underline text-fire"
 };
 
+var H2 = { };
+
+var H3 = { };
+
 export {
   Link ,
+  H2 ,
+  H3 ,
   
 }
 /* No side effect */

@@ -138,7 +138,7 @@ let decode = (~authors: array(Author.t), json: Js.Json.t): result(t, string) => 
           json
           ->optional(j => {field("badge", string, j)->decodeBadge}, _)
           ->Js.Null.fromOption,
-        previewImg: json->nullable(field("previewImg", string), _),
+        previewImg: json->optional(field("previewImg", string), _)->Js.Null.fromOption,
         articleImg:
           json->optional(field("articleImg", string), _)->Js.Null.fromOption,
         title: json->field("title", string, _),

@@ -145,9 +145,9 @@ function decode$1(authors, json) {
             return decodeAuthor(param, arg);
           })(authors),
       date: DateStr.fromDate(new Date(Json_decode.field("date", Json_decode.string, json))),
-      previewImg: Json_decode.nullable((function (param) {
-              return Json_decode.field("previewImg", Json_decode.string, param);
-            }), json),
+      previewImg: Js_null.fromOption(Json_decode.optional((function (param) {
+                  return Json_decode.field("previewImg", Json_decode.string, param);
+                }), json)),
       articleImg: Js_null.fromOption(Json_decode.optional((function (param) {
                   return Json_decode.field("articleImg", Json_decode.string, param);
                 }), json)),

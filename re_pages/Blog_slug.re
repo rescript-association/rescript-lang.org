@@ -1,7 +1,6 @@
 /*
      This module is responsible for statically prerendering each individual blog post.
-
-     General concepts:
+General concepts:
      -----------------------
      - We use webpack's "require" mechanic to reuse the MDX pipeline for rendering
      - Frontmatter is being parsed and attached as an attribute to the resulting component function via plugins/mdx-loader
@@ -86,7 +85,7 @@ module BlogHeader = {
       <div className="max-w-705">
         <div className="text-night-light text-lg mb-6">
           category->s
-          {j| • |j}->s
+          {j| · |j}->s
           {Util.Date.toDayMonthYear(date)->s}
         </div>
         <h1 className="text-48 text-night-dark"> title->s </h1>

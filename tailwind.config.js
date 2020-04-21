@@ -37,6 +37,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        onyx: {
+          default: "#010427",
+          "80": "rgba(1, 4, 39, 0.8)",
+          "50": "rgba(1, 4, 39, 0.5)"
+        },
         night: {
           darker: "#010427",
           dark: "#0A0D2F",
@@ -74,6 +79,9 @@ module.exports = {
           "40": "rgba(171, 94, 163, 0.4)",
           "15": "rgba(171, 94, 163, 0.15)"
         },
+        turtle: {
+          default: "#38B790",
+        },
         gold: {
           light: "#FFC833",
           default: "#E0AC00",
@@ -100,17 +108,17 @@ module.exports = {
         "ghost-white": "#F8F7F9"
       },
       height: {
-        "18": "4.5rem", // 72px
+        "18": "4.5rem" // 72px
       },
       minWidth: {
-        "20": "20rem"
+        "320": "20rem"
       },
       inset: {
         "18": "4.5rem"
       },
       letterSpacing: {
-        "tight": "0.02em"
-      },
+        tight: "0.02em"
+      }
     },
     borderRadius: {
       none: "0",
@@ -132,8 +140,11 @@ module.exports = {
      convenience */
     fontSize: {
       "14": "0.875rem",
+      "16": "1rem",
       "18": "1.125rem",
+      "21": "1.3125rem",
       "28": "1.75rem",
+      "42": "2.625rem",
       "48": "3rem",
       "smaller-1": "0.9em", // 18px => 16.2px (used for inlineCode)
       xs: ".75rem", // 12px
@@ -176,9 +187,10 @@ module.exports = {
       wide: "0.075em"
     },
     maxWidth: {
-      '320': "20rem",
-      '1280': "80rem",
-      '705': "44.0625rem",
+      "320": "20rem",
+      "400": "25rem",
+      "1280": "80rem",
+      "705": "44.0625rem",
       xs: "20rem", //  320px
       sm: "30rem", //  480px
       md: "40rem", //  640px
@@ -188,7 +200,7 @@ module.exports = {
       "3xl": "80rem", // 1280px
       "4xl": "90rem", // 1440px
       "5xl": "100rem", // 1600px
-      "none": "none",
+      none: "none",
       full: "100%"
     },
     /* We override the default font-families with our own default prefs  */

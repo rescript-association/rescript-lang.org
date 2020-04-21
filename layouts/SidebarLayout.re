@@ -331,7 +331,7 @@ module Sidebar = {
     <>
       <div
         className={
-          (isOpen ? "fixed w-full left-0 h-full z-10 min-w-20" : "hidden ")
+          (isOpen ? "fixed w-full left-0 h-full z-10 min-w-320" : "hidden ")
           ++ " md:block md:w-1/4 md:h-auto md:relative overflow-y-visible bg-white md:relative"
         }>
         /* Sticky toplevel nav with toggle for opening the sidebar */
@@ -427,7 +427,7 @@ let make =
 
   <>
     <Meta />
-    <div className={"mt-16 min-w-20 " ++ theme}>
+    <div className={"mt-16 min-w-320 " ++ theme}>
       <div className="w-full text-night font-base">
         <Navigation overlayState=(isNavOpen, setNavOpen) />
         <div className="flex justify-center">

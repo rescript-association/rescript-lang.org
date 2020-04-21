@@ -219,13 +219,7 @@ function make(props) {
     if (match$10) {
       switch (match$10[0]) {
         case "blog" :
-            if (match$10[1]) {
-              return content;
-            } else {
-              return React.createElement(MainLayout.make, {
-                          children: content
-                        });
-            }
+            return content;
         case "community" :
             return React.createElement(CommunityLayout.make, {
                         children: content

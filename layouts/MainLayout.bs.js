@@ -11,9 +11,6 @@ function MainLayout(Props) {
   var children = Props.children;
   var $staropt$star = Props.components;
   var components = $staropt$star !== undefined ? Caml_option.valFromOption($staropt$star) : Markdown.$$default;
-  var minWidth = {
-    minWidth: "20rem"
-  };
   var overlayState = React.useState((function () {
           return false;
         }));
@@ -26,8 +23,7 @@ function MainLayout(Props) {
                         }), React.createElement("div", {
                           className: "flex justify-center overflow-hidden"
                         }, React.createElement("main", {
-                              className: "mt-32 lg:align-center w-full px-8 lg:px-0 max-w-1280 ",
-                              style: minWidth
+                              className: "mt-32 min-w-320 lg:align-center w-full px-8 lg:px-0 max-w-1280 "
                             }, React.createElement(React$1.MDXProvider, {
                                   components: components,
                                   children: children
