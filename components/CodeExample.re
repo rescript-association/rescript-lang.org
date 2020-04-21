@@ -27,11 +27,11 @@ let make = (~code: string, ~lang="text") => {
     };
 
   <div
-    className="flex flex-col -mx-8 xs:mx-0 rounded-none xs:rounded border border-snow-dark bg-snow-light px-5 py-2 text-night-dark">
+    className="flex w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-snow-dark bg-snow-light px-5 py-2 text-night-dark">
     <div
       className="flex self-end font-sans mb-4 text-sm font-bold text-night-light">
       {Js.String2.toUpperCase(langShortname)->s}
     </div>
-    <div className="px-5 text-base pb-6 overflow-x-auto"> children </div>
+    <div className="px-5 text-base pb-6 overflow-x-auto -mt-2"> children </div>
   </div>;
 };

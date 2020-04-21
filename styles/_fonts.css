@@ -43,7 +43,7 @@ Example of using a google font as a self hosted .woff file
 }
 
 @font-face {
-    font-family: 'Inter Semi';
+    font-family: 'Inter';
     src: local('Inter Semi Bold'), local('Inter-SemiBold'),
         url('/static/fonts/subset-Inter-SemiBold.woff2') format('woff2');
     font-weight: 600;

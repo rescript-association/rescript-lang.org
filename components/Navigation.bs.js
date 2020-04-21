@@ -81,7 +81,10 @@ function Navigation$CollapsibleLink(Props) {
                             })))), React.createElement("div", {
                   className: (
                     isOpen ? "flex" : "hidden"
-                  ) + " fixed left-0 mt-4 border-night border-t bg-night-dark min-w-20 w-full h-full sm:h-auto sm:justify-center"
+                  ) + " fixed left-0 border-night border-t bg-night-dark min-w-20 w-full h-full sm:h-auto sm:justify-center",
+                  style: {
+                    marginTop: "1.375rem"
+                  }
                 }, React.createElement("div", {
                       className: "max-w-xl w-full"
                     }, children)));
@@ -401,24 +404,21 @@ function Navigation(Props) {
         }), []);
   return React.createElement("nav", {
               ref: outerRef,
-              className: "fixed flex justify-center z-20 top-0 w-full h-16 bg-night-dark shadow text-white-80 text-base",
+              className: "fixed flex justify-center z-20 top-0 w-full h-18 bg-night-dark shadow text-white-80 text-base",
               id: "header",
               style: {
                 minWidth: minWidth
               }
             }, React.createElement("div", {
-                  className: "flex justify-between pl-4 items-center h-full w-full max-w-xl"
+                  className: "flex justify-between mx-4 md:mx-8 items-center h-full w-full max-w-1280"
                 }, React.createElement("div", {
-                      className: "h-8 w-8 md:w-20 md:mb-3 "
+                      className: "h-10 w-10"
                     }, React.createElement("a", {
                           href: "/"
-                        }, React.createElement("picture", undefined, React.createElement("source", {
-                                  media: "(min-width: 768px)",
-                                  srcSet: "/static/reason_logo_full.svg"
-                                }), React.createElement("img", {
-                                  className: "h-8 w-auto inline-block",
-                                  src: "/static/reason_logo.svg"
-                                })))), React.createElement("div", {
+                        }, React.createElement("img", {
+                              className: "inline-block w-full h-full",
+                              src: "/static/reason_logo.svg"
+                            }))), React.createElement("div", {
                       className: "flex sm:justify-between bg-night-dark w-10/12 sm:w-9/12 sm:h-auto sm:relative"
                     }, React.createElement("div", {
                           className: "flex justify-between w-2/4 xs:w-3/4 sm:w-full max-w-sm",
@@ -534,7 +534,7 @@ function Navigation(Props) {
                   ) + " sm:hidden flex-col fixed top-0 left-0 h-full w-full sm:w-9/12 bg-night-dark sm:h-auto sm:flex sm:relative sm:flex-row sm:justify-between",
                   style: {
                     minWidth: minWidth,
-                    top: "4rem"
+                    top: "4.5rem"
                   }
                 }, React.createElement(Navigation$MobileNav, {
                       route: route

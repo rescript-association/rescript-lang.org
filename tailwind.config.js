@@ -99,12 +99,18 @@ module.exports = {
         "light-grey-20": "rgba(245, 245, 245, 0.2)",
         "ghost-white": "#F8F7F9"
       },
+      height: {
+        "18": "4.5rem", // 72px
+      },
       minWidth: {
         "20": "20rem"
       },
       inset: {
-        "16": "4rem"
-      }
+        "18": "4.5rem"
+      },
+      letterSpacing: {
+        "tight": "0.02em"
+      },
     },
     borderRadius: {
       none: "0",
@@ -118,14 +124,16 @@ module.exports = {
       xs: "510px",
       sm: "576px",
       md: "768px",
-      lg: "992px",
+      lg: "1024px",
       xl: "1200px"
     },
     /* Most of the time we customize the font-sizes,
      so we added the Tailwind default values here for
      convenience */
     fontSize: {
+      "14": "0.875rem",
       "18": "1.125rem",
+      "28": "1.75rem",
       "48": "3rem",
       "smaller-1": "0.9em", // 18px => 16.2px (used for inlineCode)
       xs: ".75rem", // 12px
@@ -168,6 +176,8 @@ module.exports = {
       wide: "0.075em"
     },
     maxWidth: {
+      '320': "20rem",
+      '1280': "80rem",
       '705': "44.0625rem",
       xs: "20rem", //  320px
       sm: "30rem", //  480px
@@ -178,6 +188,7 @@ module.exports = {
       "3xl": "80rem", // 1280px
       "4xl": "90rem", // 1440px
       "5xl": "100rem", // 1600px
+      "none": "none",
       full: "100%"
     },
     /* We override the default font-families with our own default prefs  */
@@ -207,9 +218,9 @@ module.exports = {
     cursor: ["hover"],
     width: ["responsive"],
     border: ["hover", "responsive"],
-    borderWidth: ["last"],
-    inset: ["responsive"],
+    borderWidth: ["responsive", "last"],
     padding: ["hover", "responsive"],
+    margin: ["responsive", "first"],
     visibility: ["group-hover"]
   },
   plugins: []

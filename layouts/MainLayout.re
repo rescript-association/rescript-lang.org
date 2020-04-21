@@ -13,7 +13,7 @@ let make = (~children, ~components=Markdown.default) => {
         <div className="flex justify-center overflow-hidden">
           <main
             style=minWidth
-            className="mt-32 lg:align-center w-full px-8 lg:px-0 max-w-xl " /*++ (isOpen ? " hidden" : "")*/>
+            className="mt-32 lg:align-center w-full px-8 lg:px-0 max-w-1280 " /*++ (isOpen ? " hidden" : "")*/>
             <Mdx.Provider components>
               children
             </Mdx.Provider>

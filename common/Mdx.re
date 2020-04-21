@@ -87,7 +87,7 @@ module MdxChildren: {
         Belt.Array.concat(acc, flatten(next))
       })
     | Element(el) => flatten(el)
-    | Unknown (_) => [||]
+    | Unknown(_) => [||]
     };
   };
 };
@@ -161,6 +161,8 @@ module Components = {
     blockquote: React.component(props),
     [@bs.optional]
     inlineCode: React.component(props),
+    [@bs.optional]
+    strong: React.component(props),
     [@bs.optional]
     hr: React.component(Js.t({.})),
     [@bs.optional]

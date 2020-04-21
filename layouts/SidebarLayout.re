@@ -109,7 +109,8 @@ module BreadCrumbs = {
   // See UrlPath for more details on the parameters
   [@react.component]
   let make = (~crumbs: list(UrlPath.breadcrumb)) => {
-    <div className="w-full overflow-x-auto text-xs text-night">
+    <div
+      className="w-full font-medium tracking-tight overflow-x-auto text-14 text-night">
       {Belt.List.mapWithIndex(
          crumbs,
          (i, crumb) => {
@@ -333,36 +334,38 @@ module Sidebar = {
           (isOpen ? "fixed w-full left-0 h-full z-10 min-w-20" : "hidden ")
           ++ " md:block md:w-1/4 md:h-auto md:relative overflow-y-visible bg-white md:relative"
         }>
-        <aside
-          className="relative top-0 px-4 w-full block md:top-16 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24 pt-8"
-          style={Style.make(~height="calc(100vh - 4rem", ())}>
-          <div className="flex justify-between">
-            <div className="w-3/4 md:w-full"> toplevelNav </div>
-            <button
-              onClick={evt => {
-                ReactEvent.Mouse.preventDefault(evt);
-                toggle();
-              }}
-              className="md:hidden h-8">
-              <Icon.Close />
-            </button>
-          </div>
-          preludeSection
-          /* Firefox ignores padding in scroll containers, so we need margin
-               to make a bottom gap for the sidebar.
-               See https://stackoverflow.com/questions/29986977/firefox-ignores-padding-when-using-overflowscroll
-             */
-          <div className="mb-56">
-            {categories
-             ->Belt.Array.map(category =>
-                 <div key={category.name}>
-                   <Category isItemActive category />
-                 </div>
-               )
-             ->ate}
-          </div>
-        </aside>
-      </div>
+        /* Sticky toplevel nav with toggle for opening the sidebar */
+
+          <aside
+            className="relative top-0 px-4 w-full block md:top-18 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24 pt-8"
+            style={Style.make(~height="calc(100vh - 4.5rem)", ())}>
+            <div className="flex justify-between">
+              <div className="w-3/4 md:w-full"> toplevelNav </div>
+              <button
+                onClick={evt => {
+                  ReactEvent.Mouse.preventDefault(evt);
+                  toggle();
+                }}
+                className="md:hidden h-8">
+                <Icon.Close />
+              </button>
+            </div>
+            preludeSection
+            /* Firefox ignores padding in scroll containers, so we need margin
+                 to make a bottom gap for the sidebar.
+                 See https://stackoverflow.com/questions/29986977/firefox-ignores-padding-when-using-overflowscroll
+               */
+            <div className="mb-56">
+              {categories
+               ->Belt.Array.map(category =>
+                   <div key={category.name}>
+                     <Category isItemActive category />
+                   </div>
+                 )
+               ->ate}
+            </div>
+          </aside>
+        </div>
     </>;
   };
 };
@@ -428,31 +431,29 @@ let make =
       <div className="w-full text-night font-base">
         <Navigation overlayState=(isNavOpen, setNavOpen) />
         <div className="flex justify-center">
-          <div className="lg:align-center w-full max-w-xl">
-            <Mdx.Provider components>
-              <div className="flex">
-                sidebar
+          <div className="w-full max-w-1280 md:mx-8">
+            <div className="flex">
+              sidebar
+              <main
+                className="px-6 w-full md:ml-12 md:mx-8 pt-16 md:mt-2 md:pt-24 mb-32 text-lg max-w-705">
                 <div
-                  className="flex justify-center w-full md:w-3/4 overflow-hidden">
-                  <main className="w-5/6 pt-10 mb-32 text-lg">
-                    <div
-                      className="fixed border-b shadow top-16 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center">
-                      <MobileDrawerButton
-                        hidden=isNavOpen
-                        onClick={evt => {
-                          ReactEvent.Mouse.preventDefault(evt);
-                          toggleSidebar();
-                        }}
-                      />
-                      <div className="truncate overflow-x-auto touch-scroll">
-                        breadcrumbs
-                      </div>
-                    </div>
-                    <div className="mt-10"> children </div>
-                  </main>
+                  className="fixed border-b shadow top-18 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center">
+                  <MobileDrawerButton
+                    hidden=isNavOpen
+                    onClick={evt => {
+                      ReactEvent.Mouse.preventDefault(evt);
+                      toggleSidebar();
+                    }}
+                  />
+                  <div className="truncate overflow-x-auto touch-scroll">
+                    breadcrumbs
+                  </div>
                 </div>
-              </div>
-            </Mdx.Provider>
+                <div className="mt-10">
+                  <Mdx.Provider components> children </Mdx.Provider>
+                </div>
+              </main>
+            </div>
           </div>
         </div>
       </div>
