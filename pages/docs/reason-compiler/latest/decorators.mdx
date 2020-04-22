@@ -637,9 +637,10 @@ This will expand to the following code within the same module scope:
 ```reason
 /* The abstract type */
 type person;
+let person: (~name: string, ~age: int) => person;
 
 /* Getters */
-let nameGet: (~name: string, ~age: int) => person;
+let nameGet: (person) => string;
 let ageGet: (person) => int;
 
 /* Setters (only mutable attributes) */
