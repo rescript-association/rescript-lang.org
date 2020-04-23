@@ -525,232 +525,151 @@ var myBook = new Book();
 
 ### `[@bs.deriving accessors]`
 
-Reason records are represented as arrays in JS.
-
-For example:
-
-```reason
-type person = {
-  name: string,
-  age: int,
-  country: string,
-};
-
-let misha: person = {
-  name: "Misha",
-  age: 18,
-  country: "Australia",
-};
-```
-
-compiles to:
-
-```js
-var misha = ["Misha", 18, "Australia"];
-```
-
-Imagine that you converted some JS code to Reason and it uses the record above. The code that isn't converted to Reason yet wants to access `misha`'s fields. 
-
-In order to get the `country`, for example, you would need to know to access `misha[2]`.
-
-You shouldn't need to worry about the array representation of a record or the indices where certain fields live.
-
-That's exactly what `bs.deriving accessors` is for! It creates getter functions for all fields of the annotated record.
-
-For example:
-
-```reason
-[@bs.deriving accessors]
-type person = {
-  name: string,
-  age: int,
-  country: string,
-};
-
-let misha: person = {
-  name: "Misha",
-  age: 18,
-  country: "Australia",
-};
-```
-
-compiles to:
-
-```js
-function name(param) {
-  return param[0];
-}
-
-function age(param) {
-  return param[1];
-}
-
-function country(param) {
-  return param[2];
-}
-
-var misha = ["Misha", 18, "Australia"];
-```
-
-Now, to get `misha`'s `country` we can use the generated accessor: `country(misha)`
-
-Similarly, imagine your new Reason code has the following variant:
-
-```reason
-type action =
-  | Add(string)
-  | Toggle(int)
-  | DeleteOne(int)
-  | DeleteAll;
-```
-
-and you want to create `DeleteOne(12)` from JS, for example.
-
-By adding `bs.deriving accessors`, you get a creation function for every variant constructor.
-
-```reason
-[@bs.deriving accessors]
-type action =
-  | Add(string)
-  | Toggle(int)
-  | DeleteOne(int)
-  | DeleteAll;
-```
-
-Now, in JS you can do:
-
-```js
-let actions = [
-  add("Drink coffee"), 
-  toggle(34),
-  deleteOne(12),
-  deleteAll
-];
-```
-
-### `[@bs.deriving abstract]`
-
-Reason records are represented as arrays in JS:
-
-```reason
-type person = {
-  name: string,
-  age: int
-};
-
-let misha: person = {
-  name: "Misha",
-  age: 18
-};
-
-Js.log(misha); /* => ["Misha",18] */
-```
-
-To represent them as objects, add `bs.deriving abstract`:
-
-```reason
-[@bs.deriving abstract]
-type person = {
-  name: string,
-  age: int
-};
-```
-
-`bs.deriving abstract` converts a record to an abstract type, and also creates a creation function:
-
-```reason
-let misha = person(~name="Misha", ~age=18);
-
-Js.log(misha); /* => {"name":"Misha","age":18} */
-```
-
-You can also mark fields as optional with [`bs.optional`](#bsoptional) and rename fields with [`bs.as`](#bsas).
-
-#### Getters
-
-`bs.deriving abstract` generates a getter function for every field.
-
-Continuing the example above:
-
-```reason
-Js.log(nameGet(misha)); /* => "Misha" */
-Js.log(ageGet(misha));  /* => undefined */
-```
-
-or, equivalently:
-
-```reason
-Js.log(misha->nameGet); /* => "Misha" */
-Js.log(misha->ageGet);  /* => undefined */
-```
-
-#### Setters
-
-Field values can't be updated unless marked with `mutable`.
-
-`bs.deriving abstract` generates a setter function for every mutable field.
-
-For example:
-
-```reason
-[@bs.deriving abstract]
-type person = {
-  name: string,
-  [@bs.optional] mutable age: int,
-  mutable country: string
-};
-
-let misha = person(~name="Misha", ~country="United States", ());
-
-ageSet(misha, 18);
-misha->countrySet("Australia");
-```
-
-compiles to:
-
-```js
-var misha = {
-  name: "Misha",
-  country: "United States"
-};
-
-misha.age = 18;
-misha.country = "Australia";
-```
+`[@bs.deriving accessors]` can be used to either generate getter functions for
+a decorated **record type**, or to generate creator functions for constructors of a **variant
+type**.
 
 <Info>
 
-**Note:** `bs.*` must come before `mutable`.
+**Hint:** Since BuckleScript v7, records are compiled to plain JS objects, so
+you might not need `[@bs.deriving accessors]` for record types.  More about
+this [here](/docs/reason-compiler/latest/object#records-as-objects).
 
 </Info>
 
-## `[@bs.optional]`
+#### Record Accessors
 
-`bs.optional` can be used with [`bs.deriving abstract`](#bsderiving-abstract) to mark fields as optional.
+The decorator can be applied to **record types**:
 
-For example:
+```reason
+[@bs.deriving accessors]
+type person = {
+  name: string,
+  age: int,
+  country: string,
+};
+```
+
+This will create a set of getter functions in the same module scope:
+
+```reason
+let name: (person) => string;
+let age: (person) => int;
+let country: (person) => string;
+```
+
+More details on this can be found
+[here](/docs/reason-compiler/latest/generate-converters-accessors#generate-first-class-accessors-for-record-types).
+
+#### Variant Accessors
+
+For **variant type constructors** we can use the same decorator:
+
+```reason
+[@bs.deriving accessors]
+type action =
+  | Add(string)
+  | Toggle(int)
+  | DeleteOne(int)
+  | DeleteAll;
+```
+
+This will create a set of creator functions for every variant constructor in
+the same module scope which will look something like this:
+
+```reason
+let add: (string) => action;
+let toggle: (int) => action;
+let deleteOne: (int) => action;
+let deleteAll: action;
+```
+
+We are now able to use the creator functions safely on the JS side without
+relying on the internal representation of a variant constructor:
+
+```js
+// Note: We assume we've imported the functions from the compiled bs.js file!
+
+const action1 = add("Drink coffee");
+const action2 = toggle(34);
+
+/* Constructors without parameter are just a plain value*/
+const action3 = deleteAll; 
+```
+
+More details on this feature can be found
+[here](/docs/reason-compiler/latest/generate-converters-accessors#functions--plain-values-for-variant).
+
+### `[@bs.deriving abstract]`
+
+<Info>
+
+**Hint:** Since BuckleScript v7, records are compiled to plain JS objects, so you might not need `[@bs.deriving abstract]`.
+More about this [here](/docs/reason-compiler/latest/object#records-as-objects).
+
+</Info>
+
+`bs.deriving abstract` is used to convert a **record type** to the following set of constructs:
+
+- An abstract type representing the "abstract record"
+- A creator function for the new abstract type, where labeled arguments
+represent the attributes of the record
+- A set of setter / getter functions for each record attribute
+
+When using this decorator, the original record type will be removed. You'll
+need to use the newly created functions to create / get / set values of this
+type.
+
+For example let's define a decorated record type `person`:
 
 ```reason
 [@bs.deriving abstract]
 type person = {
   name: string,
-  [@bs.optional] age: int
-};
 
-let misha = person(~name="Misha", ());
-```
-
-compiles to:
-
-```js
-var misha = {
-  name: "Misha"
+  /* Use the mutable keyword for generating setters */
+  mutable age: int
 };
 ```
+
+This will expand to the following code within the same module scope:
+
+```reason
+/* The abstract type */
+type person;
+
+/* Getters */
+let nameGet: (~name: string, ~age: int) => person;
+let ageGet: (person) => int;
+
+/* Setters (only mutable attributes) */
+let ageSet: (person, int) => unit;
+```
+
+This is how we would use the generated functions:
+
+```reason
+let friend = person(~name="Misha", ~age=20);
+
+Js.log(friend->nameGet); /* => "Misha" */
+
+/* Increase age by 1 via mutation */
+friend->ageSet(friend->ageGet + 1);
+
+Js.log(friend->ageGet); /* => 21 */
+
+/* This will NOT be possible (type is abstract now): */
+let misha = { name: "Misha", age: 20 };
+```
+
+Refer to the [Abstract
+Record Mode](/docs/reason-compiler/latest/object#abstract-record-mode) section
+for a more detailed explanation.
+
 
 ## `[@bs.as]`
 
-`bs.as` can be used with [`bs.deriving abstract`](#bsderiving-abstract) to rename fields. This is useful when field names are valid in JS, but not in BS.
+`bs.as` can be used with [`bs.deriving abstract`](#bsderiving-abstract) or records (BuckleScript v7 and above) to rename fields. This is useful when field names are valid in JS, but not in BS.
 
 For example:
 
@@ -772,6 +691,28 @@ var submitButton = {
   "aria-label": "Submit"
 };
 ```
+
+<Info>
+
+**Note:** Since BuckleScript 7, `bs.as` can also be used in records: 
+
+```reason
+type action = {
+  [@bs.as "type"] _type: string,
+};
+```
+
+will be compiled to:
+
+```js
+var action = {
+  type: "ADD_USER"
+};
+```
+
+Refer to the [Records as Objects](object.md#records-as-objects) section for a detailed explanation.
+
+</Info>
 
 ## `[@bs.variadic]`
 
@@ -808,7 +749,102 @@ log(404, "NOT_FOUND", "this", "page", "is", "not", "found");
 ```
 
 ## `[@bs.inline]`
-TODO
+
+A binding marked with `[@bs.inline]` will tell the compiler to copy (inline) its value in every place the binding is being used.
+This is especially useful for cases where e.g. string constants can't be used as variables, but need to be present as constant values.
+
+Suppose you have a list of allowed colors which are represented as strings in JS:
+
+```reason
+/* Colors.re */
+[@bs.inline]
+let green = "green";
+
+[@bs.inline]
+let red = "red";
+```
+
+You can use them in another module:
+
+```reason
+let allowedColors = [|Colors.green, Colors.red|];
+```
+
+the corresponding values get directly inlined in the JS code:
+
+```js
+var allowedColors = [
+  "green",
+  "red"
+];
+```
+
+If you omitted the [@bs.inline] statements in the example above, the resulting JS code would look like this:
+
+```js
+var allowedColors = [
+  Colors.green,
+  Colors.red
+];
+```
+
+which is not zero-cost. Currently `bs.inline` works for `string`, `int` and `bool`. `float` cannot be inlined (yet).
+
+A more advanced, but pretty common use-case is to inline the `NODE_ENV` strings:
+
+```reason
+/* NodeEnv.re */
+[@bs.val] [@bs.scope "process.env"] external env: string = "NODE_ENV";
+
+[@bs.inline]
+let development = "development";
+[@bs.inline]
+let production = "production";
+```
+
+Invoke them in another module: 
+
+```reason
+if (NodeEnv.env === NodeEnv.development) {
+  Js.log("development");
+}
+```
 
 ## `[@bs.meth]`
-TODO
+
+If you want to call a function of a `Js.t` object, you need to use `bs.meth`, to avoid issues with currying.
+
+For instance, take the following JS object:
+
+```js
+function say (a, b) {
+  console.log(a, b);
+};
+
+var john = { 
+  say
+};
+```
+
+The shape of the `john` object could be typed as follows:
+
+```reason
+type person = {. [@bs.meth] "say": (string, string) => unit};
+[@bs.val] external john: person = "john";
+```
+
+and the `say` method can be called with the JS object access notation (`##`):
+
+```reason
+john##say("hey", "jude");
+```
+
+which compiles to 
+
+```js
+john.say("hey", "jude");
+```
+
+When you forget to use `[@bs.meth]` in the function signature, the type checker will error, because it is ensured by the compiler to enforce only fully applied functions in `Js.t` objects. 
+
+Refer to the [Object 2](object-2.md#call) section for a more detailed explanation.

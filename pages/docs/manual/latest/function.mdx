@@ -157,6 +157,27 @@ Because we _do_ supply the unit OCaml knows we deliberately omit the `radius` pa
 let circle = drawCircle(~color, ());
 ```
 
+### Signatures and Type Annotations
+
+Functions with optional labeled arguments can be confusing when it comes to signature and type annotations. Indeed, the type of an optional labeled argument looks different depending on whether you're calling the function, or working inside the function body. Outside the function, a raw value is either passed in (`int`, for example), or left off entirely. Inside the function, the parameter is always there, but its value is an option (`option(int)`). This means that the type signature is different, depending on whether you're writing out the function type, or the parameter type annotation. The first being a raw value, and the second being an option.
+
+If we get back to our previous example and both add a signature and type annotations to its argument, we get this:
+```reason
+let drawCircle: (~color: color, ~radius: int=?, unit) => unit =
+  (~color: color, ~radius: option(int)=?, ()) => {
+    setColor(color);
+    switch (radius) {
+    | None => startAt(1, 1)
+    | Some(r_) => startAt(r_, r_)
+    };
+  };
+```
+The first line is the function's signature, we would define it like that in an interface file (cf. [Signatures](module.mdx#signatures)). The function's signature describes the types that the **outside world** interacts with, hence the type `int` for `radius` because it indeed expects an `int` when called.
+
+In the second line, we annotate the arguments to help us remember the types of the arguments when we use them **inside** the function's body, here indeed `radius` will be an `option(int)` inside the function. 
+
+So if you happen to struggle when writing the signature of a function with optional labeled arguments, try to remember this!
+
 ### Explicitly Passed Optional
 
 Sometimes, you might want to forward a value to a function without knowing whether the value is `None` or `Some(a)`. Naively, you'd do:
@@ -188,13 +209,41 @@ let drawCircle = (~radius=1, ~color, ()) => {
 };
 ```
 
-### Recursive Functions
+## Recursive Functions
 
 By default, a value can't see a binding that points to it, but including the `rec` keyword in a `let` binding makes this possible. This allows functions to see and call themselves, giving us the power of recursion.
 
 ```reason
 let rec neverTerminate = () => neverTerminate();
 ```
+
+In imperative languages, including JavaScript, recursive functions are rarely used. In Reason, recursive functions are common, and can typically replace an imperative loop.
+
+A simple recursive function may look like this:
+
+```reason
+/**
+ * Recursively check every item on the list until one equals the `item`
+ * argument. If a match is found, return `true`, otherwise return `false`.
+ */
+let rec listHas = (list, item) =>
+  switch (list) {
+  | [] => false
+  | [a, ...rest] => a == item || listHas(rest, item)
+  };
+```
+
+Using recursion with a `switch` statement is a powerful combination that can sometimes produce code simpler than a standard library function like `fold` or `reduce`. In fact, if you dig into the Reason standard library's source code, you'll see that its implementations of `fold` or `reduce` are actually just recursive functions and `switch` statements!
+
+### Tail Recursion
+
+The reason why recursive functions are avoided in many languages, such as JavaScript, is those languages don't support "tail call optimization." This means that each time the function recurses, the previous call to the function is held in memory, which can lead to a stack overflow.
+
+When the recursion happens in the tail position (meaning that the recursive call is the last step performed in the function), this can be optimized in a way that is stack safe. Fortunately for us, the Reason compiler is able to detect and perform this optimization.
+
+For example, if you take our `listHas` function and compile it to JavaScript, you'll see that it removes the tail-calls by compiling into a `while` loop! Reason gives us the best of both worlds.
+
+For writing `for` or `while` loops instead of recursive functions, see: [Imperative Loops](imperative-loops.mdx).
 
 ### Mutually Recursive Functions
 

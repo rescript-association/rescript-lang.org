@@ -71,4 +71,18 @@ while (! break^) {
 };
 ```
 
+### Recursive functions
+
+Another technique to accomplish an early `return` is by using recursive functions. If we look at our example from the [Recursive functions section](function.mdx#recursive-functions):
+
+```reason
+let rec listHas = (list, item) =>
+  switch (list) {
+  | [] => false
+  | [a, ...rest] => a == item || listHas(rest, item)
+  };
+```
+
+The `listHas` function will return `true` as soon as `a == item` is `true`. Otherwise, it calls itself again and continues the search.
+
 We don't have a preference on whether you should use a loop over `map`/`filter`/`reduce`. Some algorithms are better expressed with the former, and some with the latter.

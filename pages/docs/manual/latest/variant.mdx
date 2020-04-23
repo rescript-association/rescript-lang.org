@@ -84,6 +84,26 @@ let greeting =
   };
 ```
 
+### Records in Variants
+
+You can use a record type in a variant:
+
+```reason
+type idType = {name: string, password: string};
+
+type user = 
+  | Number(int)
+  | Id(idType);
+```
+
+If the record type is used only in the variant definition, you may put it in line:
+
+```reason
+type user =
+  | Number(int)
+  | Id({name: string, password: string});
+```
+
 ### Honorable Mentions
 
 The [standard library](//reasonml.github.io/api/index.html) exposes two important variants you'll come to hear a lot.
