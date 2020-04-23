@@ -244,21 +244,14 @@ module Malformed = {
 type props = {
   posts: array(Post.t),
   malformed: array(Malformed.t),
+  availableCategories: array(BlogFrontmatter.Category.t),
 };
 
 let default = (props: props): React.element => {
-  let {posts, malformed} = props;
+  let {availableCategories, posts, malformed} = props;
 
   let (currentSelection, setSelection) =
     React.useState(() => CategorySelector.All);
-
-  let categories = [|
-    BlogFrontmatter.Category.Syntax,
-    Compiler,
-    Ecosystem,
-    Docs,
-    Community,
-  |];
 
   let errorBox =
     if (ProcessEnv.env === ProcessEnv.development
@@ -368,21 +361,25 @@ let default = (props: props): React.element => {
           <> featureBox postsBox </>;
         };
 
-      <>
-        /* We hide the Category Selector for mobile for now*/
-        <div className="hidden sm:flex justify-center ">
-          <div
-            className="my-16 w-full"
-            style={Style.make(~maxWidth="32rem", ())}>
-            <CategorySelector
-              categories
-              onSelected={selection => setSelection(_ => selection)}
-              selected=currentSelection
-            />
-          </div>
-        </div>
-        result
-      </>;
+      let catSelector =
+        if (Belt.Array.length(availableCategories) >= 2) {
+          /* We hide the Category Selector for mobile for now*/
+          <div className="hidden sm:flex justify-center ">
+            <div
+              className="my-16 w-full"
+              style={Style.make(~maxWidth="32rem", ())}>
+              <CategorySelector
+                categories=availableCategories
+                onSelected={selection => setSelection(_ => selection)}
+                selected=currentSelection
+              />
+            </div>
+          </div>;
+        } else {
+          <div className="md:mt-32"/>
+        };
+
+      <> catSelector result </>;
     };
 
   let overlayState = React.useState(() => false);
@@ -413,12 +410,12 @@ let default = (props: props): React.element => {
 let getStaticProps: Next.GetStaticProps.t(props, params) =
   _ctx => {
     let authors = BlogFrontmatter.Author.getAllAuthors();
-    let (posts, malformed) =
+    let (posts, malformed, availableCategories) =
       BlogApi.getAllPosts()
       ->Belt.Array.reduce(
-          ([||], [||]),
+          ([||], [||], [||]),
           (acc, postData) => {
-            let (posts, malformed) = acc;
+            let (posts, malformed, availableCategories) = acc;
             let id = postData.slug;
 
             let decoded =
@@ -428,16 +425,38 @@ let getStaticProps: Next.GetStaticProps.t(props, params) =
             | Error(message) =>
               let m = {Malformed.id, message};
               let malformed = Belt.Array.concat(malformed, [|m|]);
-              (posts, malformed);
+              (posts, malformed, availableCategories);
             | Ok(frontmatter) =>
               let p = {Post.id, frontmatter};
               let posts = Belt.Array.concat(posts, [|p|]);
-              (posts, malformed);
+
+              let hasCategory =
+                Js.Array2.some(availableCategories, c =>
+                  c === frontmatter.category
+                );
+
+              // We will only add categories that are not yet
+              // accumulated from previous post frontmatters
+              let newAvailableCat =
+                if (hasCategory) {
+                  availableCategories;
+                } else {
+                  Belt.Array.concat(
+                    availableCategories,
+                    [|frontmatter.category|],
+                  );
+                };
+
+              (posts, malformed, newAvailableCat);
             };
           },
         );
 
-    let props = {posts: Post.orderByDate(posts), malformed};
+    let props = {
+      posts: Post.orderByDate(posts),
+      malformed,
+      availableCategories,
+    };
 
     Promise.resolved({"props": props});
   };

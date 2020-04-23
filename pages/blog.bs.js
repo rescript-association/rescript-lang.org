@@ -216,6 +216,7 @@ var Post = {
 var Malformed = { };
 
 function $$default(props) {
+  var availableCategories = props.availableCategories;
   var malformed = props.malformed;
   var posts = props.posts;
   var match = React.useState((function () {
@@ -223,13 +224,6 @@ function $$default(props) {
         }));
   var setSelection = match[1];
   var currentSelection = match[0];
-  var categories = [
-    /* Syntax */1,
-    /* Compiler */0,
-    /* Ecosystem */2,
-    /* Docs */3,
-    /* Community */4
-  ];
   var errorBox = process.env.ENV === "development" && malformed.length !== 0 ? React.createElement("div", {
           className: "mb-12"
         }, React.createElement(Markdown.Warn.make, {
@@ -308,22 +302,25 @@ function $$default(props) {
     } else {
       result = React.createElement("div", undefined, Util.ReactStuff.s("No posts for this category available..."));
     }
-    content = React.createElement(React.Fragment, undefined, React.createElement("div", {
-              className: "hidden sm:flex justify-center "
-            }, React.createElement("div", {
-                  className: "my-16 w-full",
-                  style: {
-                    maxWidth: "32rem"
-                  }
-                }, React.createElement(Blog$CategorySelector, {
-                      categories: categories,
-                      selected: currentSelection,
-                      onSelected: (function (selection) {
-                          return Curry._1(setSelection, (function (param) {
-                                        return selection;
-                                      }));
-                        })
-                    }))), result);
+    var catSelector = availableCategories.length >= 2 ? React.createElement("div", {
+            className: "hidden sm:flex justify-center "
+          }, React.createElement("div", {
+                className: "my-16 w-full",
+                style: {
+                  maxWidth: "32rem"
+                }
+              }, React.createElement(Blog$CategorySelector, {
+                    categories: availableCategories,
+                    selected: currentSelection,
+                    onSelected: (function (selection) {
+                        return Curry._1(setSelection, (function (param) {
+                                      return selection;
+                                    }));
+                      })
+                  }))) : React.createElement("div", {
+            className: "md:mt-32"
+          });
+    content = React.createElement(React.Fragment, undefined, catSelector, result);
   }
   var overlayState = React.useState((function () {
           return false;
@@ -354,8 +351,10 @@ function getStaticProps(_ctx) {
   var authors = BlogFrontmatter.Author.getAllAuthors(/* () */0);
   var match = Belt_Array.reduce(BlogApi.getAllPosts(/* () */0), /* tuple */[
         [],
+        [],
         []
       ], (function (acc, postData) {
+          var availableCategories = acc[2];
           var malformed = acc[1];
           var posts = acc[0];
           var id = postData.slug;
@@ -369,26 +368,34 @@ function getStaticProps(_ctx) {
             var malformed$1 = Belt_Array.concat(malformed, [m]);
             return /* tuple */[
                     posts,
-                    malformed$1
+                    malformed$1,
+                    availableCategories
                   ];
           } else {
-            var p_frontmatter = decoded[0];
+            var frontmatter = decoded[0];
             var p = {
               id: id,
-              frontmatter: p_frontmatter
+              frontmatter: frontmatter
             };
             var posts$1 = Belt_Array.concat(posts, [p]);
+            var hasCategory = availableCategories.some((function (c) {
+                    return c === frontmatter.category;
+                  }));
+            var newAvailableCat = hasCategory ? availableCategories : Belt_Array.concat(availableCategories, [frontmatter.category]);
             return /* tuple */[
                     posts$1,
-                    malformed
+                    malformed,
+                    newAvailableCat
                   ];
           }
         }));
   var props_posts = orderByDate(match[0]);
   var props_malformed = match[1];
+  var props_availableCategories = match[2];
   var props = {
     posts: props_posts,
-    malformed: props_malformed
+    malformed: props_malformed,
+    availableCategories: props_availableCategories
   };
   return $$Promise.resolved({
               props: props
