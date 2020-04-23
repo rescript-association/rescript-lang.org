@@ -184,7 +184,7 @@ function Markdown$H2(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement(React.Fragment, undefined, React.createElement("h2", {
-                  className: "group mt-12 mb-3 text-28 leading-1 font-sans font-semibold text-night-dark"
+                  className: "group mt-12 mb-3 text-28 leading-1 font-sans font-semibold text-onyx"
                 }, React.createElement("span", {
                       className: "pr-2",
                       style: {
@@ -203,7 +203,7 @@ function Markdown$H3(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h3", {
-              className: "group text-xl mt-12 mb-3 leading-3 font-sans font-semibold text-night-darker"
+              className: "group text-xl mt-12 mb-3 leading-3 font-sans font-semibold text-onyx"
             }, React.createElement("span", {
                   className: "pr-2",
                   style: {
@@ -222,7 +222,7 @@ function Markdown$H4(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h4", {
-              className: "group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-night-dark"
+              className: "group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-onyx"
             }, React.createElement("span", {
                   className: "pr-2",
                   style: {
@@ -241,7 +241,7 @@ function Markdown$H5(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h5", {
-              className: "group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide"
+              className: "group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide text-onyx"
             }, React.createElement("span", {
                   className: "pr-2",
                   style: {

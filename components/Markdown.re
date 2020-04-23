@@ -154,7 +154,7 @@ module H2 = {
     <>
       // Here we know that children is always a string (## headline)
       <h2
-        className="group mt-12 mb-3 text-28 leading-1 font-sans font-semibold text-night-dark">
+        className="group mt-12 mb-3 text-28 leading-1 font-sans font-semibold text-onyx">
         <span className="pr-2" style={Style.make(~marginLeft="-2rem", ())}>
           <Anchor id />
         </span>
@@ -168,7 +168,7 @@ module H3 = {
   [@react.component]
   let make = (~id, ~children) => {
     <h3
-      className="group text-xl mt-12 mb-3 leading-3 font-sans font-semibold text-night-darker">
+      className="group text-xl mt-12 mb-3 leading-3 font-sans font-semibold text-onyx">
       <span className="pr-2" style={Style.make(~marginLeft="-1.6rem", ())}>
         <Anchor id />
       </span>
@@ -181,7 +181,7 @@ module H4 = {
   [@react.component]
   let make = (~id, ~children) => {
     <h4
-      className="group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-night-dark">
+      className="group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-onyx">
       <span className="pr-2" style={Style.make(~marginLeft="-1.45rem", ())}>
         <Anchor id />
       </span>
@@ -194,7 +194,7 @@ module H5 = {
   [@react.component]
   let make = (~id, ~children) => {
     <h5
-      className="group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide">
+      className="group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide text-onyx">
       <span className="pr-2" style={Style.make(~marginLeft="-1.1rem", ())}>
         <Anchor id />
       </span>
