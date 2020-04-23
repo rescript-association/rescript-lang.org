@@ -3,6 +3,11 @@ module Link = {
   let standalone = "no-underline text-fire";
 };
 
+module H1 = {
+  [@bs.inline]
+  let default = "text-onyx font-semibold text-42 leading-2";
+};
+
 module H2 = {
   [@bs.inline]
   let default = "text-onyx font-semibold text-42 leading-2";
