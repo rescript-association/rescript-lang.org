@@ -1,5 +1,5 @@
 {
-  "name": "reason-workshop-nextjs",
+  "name": "reasonml.org",
   "namespace": false,
   "reason": { "react-jsx": 3 },
   "refmt": 3,
