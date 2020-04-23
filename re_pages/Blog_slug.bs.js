@@ -9,13 +9,13 @@ import * as DateStr from "../common/DateStr.bs.js";
 import * as $$Promise from "reason-promise/src/js/promise.js";
 import * as Process from "process";
 import * as Markdown from "../components/Markdown.bs.js";
-import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
 import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as MainLayout from "../layouts/MainLayout.bs.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as BlogFrontmatter from "../common/BlogFrontmatter.bs.js";
+import * as NameInitialsAvatar from "../components/NameInitialsAvatar.bs.js";
 
 var Params = { };
 
@@ -48,43 +48,13 @@ function Blog_slug$BlogHeader(Props) {
   var date$1 = DateStr.toDate(date);
   var displayName = BlogFrontmatter.Author.getDisplayName(author);
   var match = author.imgUrl;
-  var authorImg;
-  if (match !== null) {
-    authorImg = React.createElement("img", {
+  var authorImg = match !== null ? React.createElement("img", {
           className: "h-full w-full rounded-full",
           src: match
+        }) : React.createElement(NameInitialsAvatar.make, {
+          displayName: displayName
         });
-  } else {
-    var match$1 = Belt_List.fromArray(displayName.split(" "));
-    var initials;
-    if (match$1) {
-      var match$2 = match$1[1];
-      var first = match$1[0];
-      if (match$2) {
-        var match$3 = match$2[1];
-        var exit = 0;
-        if (match$3 && !match$3[1]) {
-          initials = first[0] + match$3[0][0];
-        } else {
-          exit = 1;
-        }
-        if (exit === 1) {
-          initials = first[0] + match$2[0][0];
-        }
-        
-      } else {
-        initials = first[0];
-      }
-    } else {
-      initials = "";
-    }
-    authorImg = React.createElement("div", {
-          className: "block uppercase h-full w-full flex items-center justify-center rounded-full"
-        }, React.createElement("span", {
-              className: "text-xl text-night"
-            }, Util.ReactStuff.s(initials)));
-  }
-  var match$4 = author.twitter;
+  var match$1 = author.twitter;
   return React.createElement("div", {
               className: "flex flex-col items-center"
             }, React.createElement("div", {
@@ -92,10 +62,10 @@ function Blog_slug$BlogHeader(Props) {
                 }, React.createElement("div", {
                       className: "text-night-light text-lg mb-6"
                     }, Util.ReactStuff.s(category), Util.ReactStuff.s(" · "), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date$1))), React.createElement("h1", {
-                      className: "text-48 text-night-dark"
+                      className: "text-onyx font-semibold text-42 leading-2"
                     }, Util.ReactStuff.s(title)), Belt_Option.mapWithDefault(description, null, (function (desc) {
                         return React.createElement("div", {
-                                    className: "my-8 text-night-darker"
+                                    className: "my-8 text-onyx"
                                   }, React.createElement(Markdown.Intro.make, {
                                         children: Util.ReactStuff.s(desc)
                                       }));
@@ -104,13 +74,13 @@ function Blog_slug$BlogHeader(Props) {
                     }, React.createElement("div", {
                           className: "w-12 h-12 bg-berry-40 block rounded-full mr-3"
                         }, authorImg), React.createElement("div", {
-                          className: "text-18 text-night-dark"
-                        }, match$4 !== null ? React.createElement("a", {
+                          className: "text-14 font-medium text-night-dark"
+                        }, match$1 !== null ? React.createElement("a", {
                                 className: "hover:text-night",
-                                href: "https://twitter.com/" + match$4,
+                                href: "https://twitter.com/" + match$1,
                                 rel: "noopener noreferrer",
                                 target: "_blank"
-                              }, Util.ReactStuff.s(displayName)) : Util.ReactStuff.s(author.username), React.createElement("div", {
+                              }, Util.ReactStuff.s(displayName)) : Util.ReactStuff.s(displayName), React.createElement("div", {
                               className: "text-night-light"
                             }, Util.ReactStuff.s(author.role))))), articleImg !== undefined ? React.createElement("div", {
                     className: "-mx-8 sm:mx-0 sm:w-full bg-night-10 md:mt-24"

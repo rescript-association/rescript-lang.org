@@ -1,21 +1,21 @@
 /*
-     This module is responsible for statically prerendering each individual blog post.
-General concepts:
-     -----------------------
-     - We use webpack's "require" mechanic to reuse the MDX pipeline for rendering
-     - Frontmatter is being parsed and attached as an attribute to the resulting component function via plugins/mdx-loader
-     - We generate a list of static paths for each blog post via the BlogApi module (using fs)
-     - The contents of this file is being reexported by /pages/blog/[slug].js
+      This module is responsible for statically prerendering each individual blog post.
+ General concepts:
+      -----------------------
+      - We use webpack's "require" mechanic to reuse the MDX pipeline for rendering
+      - Frontmatter is being parsed and attached as an attribute to the resulting component function via plugins/mdx-loader
+      - We generate a list of static paths for each blog post via the BlogApi module (using fs)
+      - The contents of this file is being reexported by /pages/blog/[slug].js
 
 
-     A Note on Performance:
-     -----------------------
-     Luckily, since pages are prerendered, we don't need to worry about
-     increased bundle sizes due to the `require` with path interpolation. It
-     might cause longer builds though, so we might need to refactor as soon as
-     builds are taking too long.  I think we will be fine for now.
- Link to NextJS discussion: https://github.com/zeit/next.js/discussions/11728#discussioncomment-3501
-  */
+      A Note on Performance:
+      -----------------------
+      Luckily, since pages are prerendered, we don't need to worry about
+      increased bundle sizes due to the `require` with path interpolation. It
+      might cause longer builds though, so we might need to refactor as soon as
+      builds are taking too long.  I think we will be fine for now.
+  Link to NextJS discussion: https://github.com/zeit/next.js/discussions/11728#discussioncomment-3501
+   */
 open Util.ReactStuff;
 
 module Params = {
@@ -64,21 +64,7 @@ module BlogHeader = {
     let authorImg =
       switch (author.imgUrl->Js.Null.toOption) {
       | Some(src) => <img className="h-full w-full rounded-full" src />
-      | None =>
-        let initials =
-          switch (Js.String2.split(displayName, " ")->Belt.List.fromArray) {
-          | [first] => Js.String2.get(first, 0)
-          | [first, _middle, second] =>
-            Js.String2.get(first, 0) ++ Js.String2.get(second, 0)
-          | [first, second, ..._] =>
-            Js.String2.get(first, 0) ++ Js.String2.get(second, 0)
-          | _ => ""
-          };
-
-        <div
-          className="block uppercase h-full w-full flex items-center justify-center rounded-full">
-          <span className="text-xl text-night"> initials->s </span>
-        </div>;
+      | None => <NameInitialsAvatar displayName />
       };
 
     <div className="flex flex-col items-center">
@@ -88,9 +74,9 @@ module BlogHeader = {
           {j| · |j}->s
           {Util.Date.toDayMonthYear(date)->s}
         </div>
-        <h1 className="text-48 text-night-dark"> title->s </h1>
+        <h1 className=Text.H1.default> title->s </h1>
         {description->Belt.Option.mapWithDefault(React.null, desc => {
-           <div className="my-8 text-night-darker">
+           <div className="my-8 text-onyx">
              <Markdown.Intro> desc->s </Markdown.Intro>
            </div>
          })}
@@ -98,7 +84,7 @@ module BlogHeader = {
           <div className="w-12 h-12 bg-berry-40 block rounded-full mr-3">
             authorImg
           </div>
-          <div className="text-18 text-night-dark">
+          <div className="text-14 font-medium text-night-dark">
             {switch (author.twitter->Js.Null.toOption) {
              | Some(handle) =>
                <a
@@ -108,7 +94,7 @@ module BlogHeader = {
                  target="_blank">
                  {displayName}->s
                </a>
-             | None => author.username->s
+             | None => displayName->s
              }}
             <div className="text-night-light"> author.role->s </div>
           </div>
