@@ -118,6 +118,10 @@ module.exports = {
       },
       letterSpacing: {
         tight: "0.02em"
+      },
+      spacing: {
+        '2/3': "66.666667%",
+        '9/16': "56.25%",
       }
     },
     borderRadius: {

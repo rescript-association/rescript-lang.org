@@ -8,6 +8,7 @@ import * as Button from "../components/Button.bs.js";
 import * as BlogApi from "../common/BlogApi.bs.js";
 import * as DateStr from "../common/DateStr.bs.js";
 import * as $$Promise from "reason-promise/src/js/promise.js";
+import * as Caml_obj from "bs-platform/lib/es6/caml_obj.js";
 import * as Markdown from "../components/Markdown.bs.js";
 import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
@@ -17,6 +18,7 @@ import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as React$1 from "@mdx-js/react";
 import * as BlogFrontmatter from "../common/BlogFrontmatter.bs.js";
 import * as NameInitialsAvatar from "../components/NameInitialsAvatar.bs.js";
+import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
 function Blog$Badge(Props) {
   var badge = Props.badge;
@@ -32,27 +34,38 @@ var Badge = {
   make: Blog$Badge
 };
 
+function renderTab(text, isActive, onClick) {
+  return React.createElement("div", {
+              key: text,
+              className: (
+                isActive ? "bg-snow-dark text-onyx rounded py-1" : "hover:cursor-pointer hover:text-onyx"
+              ) + "  px-4 inline-block",
+              onClick: onClick
+            }, Util.ReactStuff.s(text));
+}
+
 function Blog$CategorySelector(Props) {
   var categories = Props.categories;
   var selected = Props.selected;
   var onSelected = Props.onSelected;
+  var tabs = [/* All */0].concat(Belt_Array.map(categories, (function (cat) {
+              return /* Category */Caml_chrome_debugger.simpleVariant("Category", [cat]);
+            })));
   return React.createElement("div", {
               className: "text-16 w-full flex items-center justify-between text-onyx-50"
-            }, Util.ReactStuff.ate(Belt_Array.map(categories, (function (cat) {
-                        return React.createElement("div", {
-                                    key: cat,
-                                    className: (
-                                      cat === selected ? "bg-snow-dark text-onyx rounded py-1" : "hover:cursor-pointer hover:text-onyx"
-                                    ) + "  px-4 inline-block",
-                                    onClick: (function (evt) {
-                                        evt.preventDefault();
-                                        return Curry._1(onSelected, cat);
-                                      })
-                                  }, Util.ReactStuff.s(cat));
+            }, Util.ReactStuff.ate(Belt_Array.map(tabs, (function (tab) {
+                        var onClick = function (evt) {
+                          evt.preventDefault();
+                          return Curry._1(onSelected, tab);
+                        };
+                        var isActive = Caml_obj.caml_equal(selected, tab);
+                        var text = tab ? BlogFrontmatter.Category.toString(tab[0]) : "All";
+                        return renderTab(text, isActive, onClick);
                       }))));
 }
 
 var CategorySelector = {
+  renderTab: renderTab,
   make: Blog$CategorySelector
 };
 
@@ -67,24 +80,25 @@ function Blog$BlogCard(Props) {
   var date = Props.date;
   var slug = Props.slug;
   var title = $staropt$star !== undefined ? $staropt$star : "Unknown Title";
+  var className = "absolute top-0 h-full w-full object-cover";
   return React.createElement("section", {
               className: "h-full"
             }, React.createElement("div", {
                   className: "relative"
                 }, badge !== undefined ? React.createElement("div", {
-                        className: "absolute bottom-0 mb-4 -ml-2"
+                        className: "absolute z-10 bottom-0 mb-4 -ml-2"
                       }, React.createElement(Blog$Badge, {
                             badge: badge
                           })) : null, React.createElement(Link.default, {
                       href: "/blog/[slug]",
                       as: "/blog/" + slug,
                       children: React.createElement("a", {
-                            className: "h-40 w-auto block mb-4"
+                            className: "relative block mb-4 pt-9/16"
                           }, previewImg !== undefined ? React.createElement("img", {
-                                  className: "mb-4 h-full w-full",
+                                  className: className,
                                   src: previewImg
                                 }) : React.createElement("img", {
-                                  className: "mb-4 object-cover h-full w-full",
+                                  className: className,
                                   src: defaultPreviewImg
                                 }))
                     })), React.createElement("div", {
@@ -124,6 +138,7 @@ function Blog$FeatureCard(Props) {
         }) : React.createElement(NameInitialsAvatar.make, {
           displayName: displayName
         });
+  var className = "absolute top-0 h-full w-full object-cover";
   var match$1 = author.twitter;
   return React.createElement("section", {
               className: "flex sm:px-4 md:px-0 flex-col justify-end lg:flex-row sm:items-center h-full"
@@ -137,16 +152,16 @@ function Blog$FeatureCard(Props) {
                       href: "/blog/[slug]",
                       as: "/blog/" + slug,
                       children: React.createElement("a", {
-                            className: "relative block"
+                            className: "relative block pt-2/3"
                           }, badge !== undefined ? React.createElement("div", {
-                                  className: "absolute mt-10 ml-4 lg:-ml-4"
+                                  className: "absolute z-10 top-0 mt-10 ml-4 lg:-ml-4"
                                 }, React.createElement(Blog$Badge, {
                                       badge: badge
                                     })) : null, previewImg !== undefined ? React.createElement("img", {
-                                  className: "h-full w-full",
+                                  className: className,
                                   src: previewImg
                                 }) : React.createElement("div", {
-                                  className: "bg-night-light"
+                                  className: "absolute top-0 h-full w-full object-coverbg-night-light"
                                 }))
                     })), React.createElement("div", {
                   className: "relative px-4 lg:self-auto md:pt-12 md:px-20 sm:self-start md:ml-16 md:-mt-20 mt-4 bg-white lg:w-full lg:pt-0 lg:mt-8 lg:px-0 lg:ml-12"
@@ -204,9 +219,17 @@ function $$default(props) {
   var malformed = props.malformed;
   var posts = props.posts;
   var match = React.useState((function () {
-          return "All";
+          return /* All */0;
         }));
-  var setCategory = match[1];
+  var setSelection = match[1];
+  var currentSelection = match[0];
+  var categories = [
+    /* Syntax */1,
+    /* Compiler */0,
+    /* Ecosystem */2,
+    /* Docs */3,
+    /* Community */4
+  ];
   var errorBox = process.env.ENV === "development" && malformed.length !== 0 ? React.createElement("div", {
           className: "mb-12"
         }, React.createElement(Markdown.Warn.make, {
@@ -224,54 +247,44 @@ function $$default(props) {
   if (posts.length === 0) {
     content = React.createElement("div", undefined, Util.ReactStuff.s("Currently no posts available"));
   } else {
-    var first = Belt_Array.getExn(posts, 0);
-    var rest = posts.slice(1);
-    var categories = [
-      "All",
-      "Syntax",
-      "Compiler",
-      "Ecosystem",
-      "Docs",
-      "Community"
-    ];
-    var tmp = {
-      title: first.frontmatter.title,
-      author: first.frontmatter.author,
-      date: DateStr.toDate(first.frontmatter.date),
-      category: BlogFrontmatter.Category.toString(first.frontmatter.category),
-      slug: first.id
-    };
-    var tmp$1 = Caml_option.null_to_opt(first.frontmatter.previewImg);
-    if (tmp$1 !== undefined) {
-      tmp.previewImg = Caml_option.valFromOption(tmp$1);
+    var filtered;
+    if (currentSelection) {
+      var selected = currentSelection[0];
+      filtered = Belt_Array.keep(posts, (function (param) {
+              return param.frontmatter.category === selected;
+            }));
+    } else {
+      filtered = posts;
     }
-    var tmp$2 = Belt_Option.map(Caml_option.null_to_opt(first.frontmatter.badge), BlogFrontmatter.Badge.toString);
-    if (tmp$2 !== undefined) {
-      tmp.badge = Caml_option.valFromOption(tmp$2);
-    }
-    var tmp$3 = Caml_option.null_to_opt(first.frontmatter.description);
-    if (tmp$3 !== undefined) {
-      tmp.firstParagraph = Caml_option.valFromOption(tmp$3);
-    }
-    content = React.createElement(React.Fragment, undefined, React.createElement("div", {
-              className: "hidden sm:flex justify-center "
-            }, React.createElement("div", {
-                  className: "my-16 w-full",
-                  style: {
-                    maxWidth: "32rem"
-                  }
-                }, React.createElement(Blog$CategorySelector, {
-                      categories: categories,
-                      selected: match[0],
-                      onSelected: (function (category) {
-                          return Curry._1(setCategory, (function (param) {
-                                        return category;
-                                      }));
-                        })
-                    }))), React.createElement("div", {
-              className: "mb-24"
-            }, React.createElement(Blog$FeatureCard, tmp)), React.createElement("div", {
-              className: "mx-4 xl:mx-0 grid grid-cols-1 xs:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full"
+    var match$1 = filtered.length;
+    var result;
+    if (match$1 !== 0) {
+      var first = Belt_Array.getExn(posts, 0);
+      var rest = posts.slice(1);
+      var tmp = {
+        title: first.frontmatter.title,
+        author: first.frontmatter.author,
+        date: DateStr.toDate(first.frontmatter.date),
+        category: BlogFrontmatter.Category.toString(first.frontmatter.category),
+        slug: first.id
+      };
+      var tmp$1 = Caml_option.null_to_opt(first.frontmatter.previewImg);
+      if (tmp$1 !== undefined) {
+        tmp.previewImg = Caml_option.valFromOption(tmp$1);
+      }
+      var tmp$2 = Belt_Option.map(Caml_option.null_to_opt(first.frontmatter.badge), BlogFrontmatter.Badge.toString);
+      if (tmp$2 !== undefined) {
+        tmp.badge = Caml_option.valFromOption(tmp$2);
+      }
+      var tmp$3 = Caml_option.null_to_opt(first.frontmatter.description);
+      if (tmp$3 !== undefined) {
+        tmp.firstParagraph = Caml_option.valFromOption(tmp$3);
+      }
+      var featureBox = React.createElement("div", {
+            className: "mb-24 lg:px-4 xl:px-0"
+          }, React.createElement(Blog$FeatureCard, tmp));
+      var postsBox = rest.length !== 0 ? React.createElement("div", {
+              className: "px-4 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full"
             }, Util.ReactStuff.ate(Belt_Array.mapWithIndex(rest, (function (i, post) {
                         var badge = Belt_Option.map(Caml_option.null_to_opt(post.frontmatter.badge), BlogFrontmatter.Badge.toString);
                         var tmp = {
@@ -290,7 +303,27 @@ function $$default(props) {
                           tmp.badge = Caml_option.valFromOption(badge);
                         }
                         return React.createElement(Blog$BlogCard, tmp);
-                      })))));
+                      })))) : null;
+      result = React.createElement(React.Fragment, undefined, featureBox, postsBox);
+    } else {
+      result = React.createElement("div", undefined, Util.ReactStuff.s("No posts for this category available..."));
+    }
+    content = React.createElement(React.Fragment, undefined, React.createElement("div", {
+              className: "hidden sm:flex justify-center "
+            }, React.createElement("div", {
+                  className: "my-16 w-full",
+                  style: {
+                    maxWidth: "32rem"
+                  }
+                }, React.createElement(Blog$CategorySelector, {
+                      categories: categories,
+                      selected: currentSelection,
+                      onSelected: (function (selection) {
+                          return Curry._1(setSelection, (function (param) {
+                                        return selection;
+                                      }));
+                        })
+                    }))), result);
   }
   var overlayState = React.useState((function () {
           return false;

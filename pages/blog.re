@@ -28,33 +28,56 @@ module Badge = {
   };
 };
 module CategorySelector = {
+  type selection =
+    | All
+    | Category(BlogFrontmatter.Category.t);
+
+  let renderTab = (~text: string, ~isActive: bool, ~onClick) => {
+    let active = "bg-snow-dark text-onyx rounded py-1";
+    <div
+      key=text
+      onClick
+      className={
+        (isActive ? active : "hover:cursor-pointer hover:text-onyx")
+        ++ "  px-4 inline-block"
+      }>
+      text->s
+    </div>;
+  };
+
   [@react.component]
   let make =
       (
-        ~categories: array(string),
-        ~selected: string,
-        ~onSelected: string => unit,
+        ~categories: array(BlogFrontmatter.Category.t),
+        ~selected: selection,
+        ~onSelected: selection => unit,
       ) => {
-    let active = "bg-snow-dark text-onyx rounded py-1";
+    let tabs =
+      [|All|]
+      ->Js.Array2.concat(Belt.Array.map(categories, cat => {Category(cat)}));
+
     <div
       className="text-16 w-full flex items-center justify-between text-onyx-50">
-      {Belt.Array.map(categories, cat => {
-         <div
-           key=cat
-           onClick={evt => {
+      {Belt.Array.map(
+         tabs,
+         tab => {
+           let onClick = evt => {
              evt->ReactEvent.Mouse.preventDefault;
-             onSelected(cat);
-           }}
-           className={
-             (
-               cat === selected
-                 ? active : "hover:cursor-pointer hover:text-onyx"
-             )
-             ++ "  px-4 inline-block"
-           }>
-           cat->s
-         </div>
-       })
+             onSelected(tab);
+           };
+
+           // Deep comparison here!
+           let isActive = selected == tab;
+
+           let text =
+             switch (tab) {
+             | All => "All"
+             | Category(cat) => BlogFrontmatter.Category.toString(cat)
+             };
+
+           renderTab(~isActive, ~text, ~onClick);
+         },
+       )
        ->ate}
     </div>;
   };
@@ -78,19 +101,16 @@ module BlogCard = {
         {switch (badge) {
          | None => React.null
          | Some(badge) =>
-           <div className="absolute bottom-0 mb-4 -ml-2">
+           <div className="absolute z-10 bottom-0 mb-4 -ml-2">
              <Badge badge />
            </div>
          }}
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
-          <a className="h-40 w-auto block mb-4">
-            {switch (previewImg) {
-             | Some(src) => <img className="mb-4 h-full w-full" src />
-             | None =>
-               <img
-                 className="mb-4 object-cover h-full w-full"
-                 src=defaultPreviewImg
-               />
+          <a className="relative block mb-4 pt-9/16">
+            {let className = "absolute top-0 h-full w-full object-cover";
+             switch (previewImg) {
+             | Some(src) => <img className src />
+             | None => <img className src=defaultPreviewImg />
              }}
           </a>
         </Link>
@@ -136,15 +156,18 @@ module FeatureCard = {
         className="w-full h-full sm:self-start md:self-auto"
         style={Style.make(~maxWidth="38.125rem", ~maxHeight="25.4375rem", ())}>
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
-          <a className="relative block">
+          <a className="relative block pt-2/3">
             {switch (badge) {
              | Some(badge) =>
-               <div className="absolute mt-10 ml-4 lg:-ml-4"> <Badge badge /> </div>
+               <div className="absolute z-10 top-0 mt-10 ml-4 lg:-ml-4">
+                 <Badge badge />
+               </div>
              | None => React.null
              }}
-            {switch (previewImg) {
-             | Some(src) => <img className="h-full w-full" src />
-             | None => <div className="bg-night-light" />
+            {let className = "absolute top-0 h-full w-full object-cover";
+             switch (previewImg) {
+             | Some(src) => <img className src />
+             | None => <div className={className ++ "bg-night-light"} />
              }}
           </a>
         </Link>
@@ -226,7 +249,16 @@ type props = {
 let default = (props: props): React.element => {
   let {posts, malformed} = props;
 
-  let (currentCategory, setCategory) = React.useState(() => "All");
+  let (currentSelection, setSelection) =
+    React.useState(() => CategorySelector.All);
+
+  let categories = [|
+    BlogFrontmatter.Category.Syntax,
+    Compiler,
+    Ecosystem,
+    Docs,
+    Community,
+  |];
 
   let errorBox =
     if (ProcessEnv.env === ProcessEnv.development
@@ -261,17 +293,80 @@ let default = (props: props): React.element => {
     if (Belt.Array.length(posts) === 0) {
       <div> "Currently no posts available"->s </div>;
     } else {
-      let first = Belt.Array.getExn(posts, 0);
-      let rest = Js.Array2.sliceFrom(posts, 1);
+      let filtered =
+        switch (currentSelection) {
+        | All => posts
+        | Category(selected) =>
+          Belt.Array.keep(posts, ({frontmatter}) => {
+            frontmatter.category === selected
+          })
+        };
 
-      let categories = [|
-        "All",
-        "Syntax",
-        "Compiler",
-        "Ecosystem",
-        "Docs",
-        "Community",
-      |];
+      let result =
+        switch (Belt.Array.length(filtered)) {
+        | 0 => <div> "No posts for this category available..."->s </div>
+        | _ =>
+          let first = Belt.Array.getExn(posts, 0);
+          let rest = Js.Array2.sliceFrom(posts, 1);
+
+          let featureBox =
+            <div className="mb-24 lg:px-4 xl:px-0">
+              <FeatureCard
+                previewImg=?{first.frontmatter.previewImg->Js.Null.toOption}
+                title={first.frontmatter.title}
+                badge=?{
+                  first.frontmatter.badge
+                  ->Js.Null.toOption
+                  ->Belt.Option.map(BlogFrontmatter.Badge.toString)
+                }
+                author={first.frontmatter.author}
+                firstParagraph=?{
+                  first.frontmatter.description->Js.Null.toOption
+                }
+                date={first.frontmatter.date->DateStr.toDate}
+                category={
+                  first.frontmatter.category->BlogFrontmatter.Category.toString
+                }
+                slug={first.id}
+              />
+            </div>;
+
+          let postsBox =
+            switch (rest) {
+            | [||] => React.null
+            | rest =>
+              <div
+                className="px-4 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full">
+                {Belt.Array.mapWithIndex(
+                   rest,
+                   (i, post) => {
+                     let badge =
+                       post.frontmatter.badge
+                       ->Js.Null.toOption
+                       ->Belt.Option.map(BlogFrontmatter.Badge.toString);
+                     <BlogCard
+                       key={post.id ++ Belt.Int.toString(i)}
+                       previewImg=?{
+                         post.frontmatter.previewImg->Js.Null.toOption
+                       }
+                       title={post.frontmatter.title}
+                       author={post.frontmatter.author}
+                       ?badge
+                       category={
+                         post.frontmatter.category
+                         ->BlogFrontmatter.Category.toString
+                       }
+                       date={post.frontmatter.date->DateStr.toDate}
+                       slug={post.id}
+                     />;
+                   },
+                 )
+                 ->ate}
+              </div>
+            };
+
+          <> featureBox postsBox </>;
+        };
 
       <>
         /* We hide the Category Selector for mobile for now*/
@@ -281,54 +376,12 @@ let default = (props: props): React.element => {
             style={Style.make(~maxWidth="32rem", ())}>
             <CategorySelector
               categories
-              onSelected={category => setCategory(_ => category)}
-              selected=currentCategory
+              onSelected={selection => setSelection(_ => selection)}
+              selected=currentSelection
             />
           </div>
         </div>
-        <div className="mb-24">
-          <FeatureCard
-            previewImg=?{first.frontmatter.previewImg->Js.Null.toOption}
-            title={first.frontmatter.title}
-            badge=?{
-              first.frontmatter.badge
-              ->Js.Null.toOption
-              ->Belt.Option.map(BlogFrontmatter.Badge.toString)
-            }
-            author={first.frontmatter.author}
-            firstParagraph=?{first.frontmatter.description->Js.Null.toOption}
-            date={first.frontmatter.date->DateStr.toDate}
-            category={
-              first.frontmatter.category->BlogFrontmatter.Category.toString
-            }
-            slug={first.id}
-          />
-        </div>
-        <div
-          className="mx-4 xl:mx-0 grid grid-cols-1 xs:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full">
-          {Belt.Array.mapWithIndex(
-             rest,
-             (i, post) => {
-               let badge =
-                 post.frontmatter.badge
-                 ->Js.Null.toOption
-                 ->Belt.Option.map(BlogFrontmatter.Badge.toString);
-               <BlogCard
-                 key={post.id ++ Belt.Int.toString(i)}
-                 previewImg=?{post.frontmatter.previewImg->Js.Null.toOption}
-                 title={post.frontmatter.title}
-                 author={post.frontmatter.author}
-                 ?badge
-                 category={
-                   post.frontmatter.category->BlogFrontmatter.Category.toString
-                 }
-                 date={post.frontmatter.date->DateStr.toDate}
-                 slug={post.id}
-               />;
-             },
-           )
-           ->ate}
-        </div>
+        result
       </>;
     };
 
