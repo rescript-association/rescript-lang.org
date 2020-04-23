@@ -15,7 +15,7 @@ function MainLayout(Props) {
           return false;
         }));
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, { }), React.createElement("div", {
-                  className: "mb-32 mt-16"
+                  className: "mb-32 mt-4 xs:mt-16"
                 }, React.createElement("div", {
                       className: "text-night text-lg"
                     }, React.createElement(Navigation.make, {

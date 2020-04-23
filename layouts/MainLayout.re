@@ -6,7 +6,7 @@ let make = (~children, ~components=Markdown.default) => {
 
   <>
     <Meta />
-    <div className="mb-32 mt-16">
+    <div className="mb-32 mt-4 xs:mt-16">
       <div className="text-night text-lg">
         <Navigation overlayState />
         <div className="flex justify-center overflow-hidden">
