@@ -22,7 +22,7 @@ module Params = {
   type t = {slug: string};
 };
 
-type props = {slug: string};
+type props = {fullslug: string};
 
 module BlogComponent = {
   type t = {default: React.component(Js.t({.}))};
@@ -68,7 +68,7 @@ module BlogHeader = {
       };
 
     <div className="flex flex-col items-center">
-      <div className="max-w-705">
+      <div className="w-full max-w-705">
         <div className="text-night-light text-lg mb-6">
           category->s
           {j| · |j}->s
@@ -118,10 +118,9 @@ module BlogHeader = {
 let cwd = Node.Process.cwd();
 
 let default = (props: props) => {
-  let {slug} = props;
+  let {fullslug} = props;
 
-  let module_ =
-    BlogComponent.require("../_blogposts/" ++ props.slug ++ ".mdx");
+  let module_ = BlogComponent.require("../_blogposts/" ++ fullslug ++ ".mdx");
 
   let component = module_.default;
 
@@ -174,7 +173,7 @@ let default = (props: props) => {
         <Markdown.Warn>
           <h2 className="font-bold text-night-dark text-2xl mb-2">
             {{
-               "Could not parse file '_blogposts/" ++ slug ++ ".mdx'";
+               "Could not parse file '_blogposts/" ++ fullslug ++ ".mdx'";
              }
              ->s}
           </h2>
@@ -196,7 +195,11 @@ let getStaticProps: Next.GetStaticProps.t(props, Params.t) =
     open Next.GetStaticProps;
     let {params} = ctx;
 
-    let props = {slug: params.slug};
+    let fullslug =
+      BlogApi.getFullSlug(params.slug)
+      ->Belt.Option.getWithDefault(params.slug);
+
+    let props = {fullslug: fullslug};
     let ret = {"props": props};
     Promise.resolved(ret);
   };
@@ -212,8 +215,6 @@ let getStaticPaths: Next.GetStaticPaths.t(Params.t) =
                                         Params.slug: postData.slug,
                                       },
                                     }});
-
     let ret = {paths, fallback: false};
-
     Promise.resolved(ret);
   };

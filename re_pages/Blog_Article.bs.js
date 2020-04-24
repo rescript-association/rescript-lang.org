@@ -28,17 +28,17 @@ var BlogComponent = {
   frontmatter: frontmatter
 };
 
-function Blog_slug$Line(Props) {
+function Blog_Article$Line(Props) {
   return React.createElement("div", {
               className: "block border-t border-snow-darker"
             });
 }
 
 var Line = {
-  make: Blog_slug$Line
+  make: Blog_Article$Line
 };
 
-function Blog_slug$BlogHeader(Props) {
+function Blog_Article$BlogHeader(Props) {
   var date = Props.date;
   var author = Props.author;
   var title = Props.title;
@@ -58,7 +58,7 @@ function Blog_slug$BlogHeader(Props) {
   return React.createElement("div", {
               className: "flex flex-col items-center"
             }, React.createElement("div", {
-                  className: "max-w-705"
+                  className: "w-full max-w-705"
                 }, React.createElement("div", {
                       className: "text-night-light text-lg mb-6"
                     }, Util.ReactStuff.s(category), Util.ReactStuff.s(" · "), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date$1))), React.createElement("h1", {
@@ -92,17 +92,18 @@ function Blog_slug$BlogHeader(Props) {
                         src: articleImg
                       })) : React.createElement("div", {
                     className: "max-w-705 w-full"
-                  }, React.createElement(Blog_slug$Line, { })));
+                  }, React.createElement(Blog_Article$Line, { })));
 }
 
 var BlogHeader = {
-  make: Blog_slug$BlogHeader
+  make: Blog_Article$BlogHeader
 };
 
 var cwd = Process.cwd();
 
 function $$default(props) {
-  var module_ = require("../_blogposts/" + (props.slug + ".mdx"));
+  var fullslug = props.fullslug;
+  var module_ = require("../_blogposts/" + (fullslug + ".mdx"));
   var component = module_.default;
   var authors = BlogFrontmatter.Author.getAllAuthors(/* () */0);
   var arg = frontmatter(component);
@@ -116,7 +117,7 @@ function $$default(props) {
               children: null
             }, React.createElement("h2", {
                   className: "font-bold text-night-dark text-2xl mb-2"
-                }, Util.ReactStuff.s("Could not parse file '_blogposts/" + (props.slug + ".mdx'"))), React.createElement("p", undefined, Util.ReactStuff.s("The content of this blog post will be displayed as soon as all\n            required frontmatter data has been added.")), React.createElement("p", {
+                }, Util.ReactStuff.s("Could not parse file '_blogposts/" + (fullslug + ".mdx'"))), React.createElement("p", undefined, Util.ReactStuff.s("The content of this blog post will be displayed as soon as all\n            required frontmatter data has been added.")), React.createElement("p", {
                   className: "font-bold mt-4"
                 }, Util.ReactStuff.s("Errors:")), Util.ReactStuff.s(fm[0])));
   } else {
@@ -130,7 +131,7 @@ function $$default(props) {
           className: "w-full"
         }, React.createElement(Meta.make, tmp), React.createElement("div", {
               className: "md:mb-32"
-            }, React.createElement(Blog_slug$BlogHeader, {
+            }, React.createElement(Blog_Article$BlogHeader, {
                   date: match.date,
                   author: match.author,
                   title: match.title,
@@ -143,7 +144,7 @@ function $$default(props) {
                   className: "max-w-705 w-full"
                 }, children, React.createElement("div", {
                       className: "mt-12"
-                    }, React.createElement(Blog_slug$Line, { }), React.createElement("div", {
+                    }, React.createElement(Blog_Article$Line, { }), React.createElement("div", {
                           className: "pt-20 flex flex-col items-center"
                         }, React.createElement("div", {
                               className: "text-3xl sm:text-4xl text-center text-night-dark font-medium"
@@ -162,8 +163,10 @@ function $$default(props) {
 }
 
 function getStaticProps(ctx) {
+  var params = ctx.params;
+  var fullslug = Belt_Option.getWithDefault(BlogApi.getFullSlug(params.slug), params.slug);
   var props = {
-    slug: ctx.params.slug
+    fullslug: fullslug
   };
   return $$Promise.resolved({
               props: props

@@ -143,6 +143,7 @@ module FeatureCard = {
         ~slug: string,
       ) => {
     let displayName = BlogFrontmatter.Author.getDisplayName(author);
+    let defaultPreviewImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1587479463/Reason%20Association/reasonml.org/reasonml_art2_1280_vhzxnz.png";
 
     let authorImg =
       switch (author.imgUrl->Js.Null.toOption) {
@@ -167,7 +168,7 @@ module FeatureCard = {
             {let className = "absolute top-0 h-full w-full object-cover";
              switch (previewImg) {
              | Some(src) => <img className src />
-             | None => <div className={className ++ "bg-night-light"} />
+             | None => <img className src=defaultPreviewImg />
              }}
           </a>
         </Link>
@@ -299,11 +300,11 @@ let default = (props: props): React.element => {
         switch (Belt.Array.length(filtered)) {
         | 0 => <div> "No posts for this category available..."->s </div>
         | _ =>
-          let first = Belt.Array.getExn(posts, 0);
-          let rest = Js.Array2.sliceFrom(posts, 1);
+          let first = Belt.Array.getExn(filtered, 0);
+          let rest = Js.Array2.sliceFrom(filtered, 1);
 
           let featureBox =
-            <div className="mb-24 lg:px-4 xl:px-0">
+            <div className="w-full mb-24 lg:px-4 xl:px-0">
               <FeatureCard
                 previewImg=?{first.frontmatter.previewImg->Js.Null.toOption}
                 title={first.frontmatter.title}
@@ -376,7 +377,7 @@ let default = (props: props): React.element => {
             </div>
           </div>;
         } else {
-          <div className="md:mt-32"/>
+          <div className="md:mt-32" />;
         };
 
       <> catSelector result </>;
@@ -394,7 +395,9 @@ let default = (props: props): React.element => {
             className="min-w-320 lg:align-center w-full lg:px-0 max-w-1280 " /*++ (isOpen ? " hidden" : "")*/>
             <Mdx.Provider components=Markdown.default>
               <div className="flex justify-center">
-                <div style={Style.make(~maxWidth="66.625rem", ())}>
+                <div
+                  className="w-full"
+                  style={Style.make(~maxWidth="66.625rem", ())}>
                   errorBox
                   content
                 </div>

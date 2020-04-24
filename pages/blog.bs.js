@@ -160,8 +160,9 @@ function Blog$FeatureCard(Props) {
                                     })) : null, previewImg !== undefined ? React.createElement("img", {
                                   className: className,
                                   src: previewImg
-                                }) : React.createElement("div", {
-                                  className: "absolute top-0 h-full w-full object-coverbg-night-light"
+                                }) : React.createElement("img", {
+                                  className: className,
+                                  src: "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1587479463/Reason%20Association/reasonml.org/reasonml_art2_1280_vhzxnz.png"
                                 }))
                     })), React.createElement("div", {
                   className: "relative px-4 lg:self-auto md:pt-12 md:px-20 sm:self-start md:ml-16 md:-mt-20 mt-4 bg-white lg:w-full lg:pt-0 lg:mt-8 lg:px-0 lg:ml-12"
@@ -253,8 +254,8 @@ function $$default(props) {
     var match$1 = filtered.length;
     var result;
     if (match$1 !== 0) {
-      var first = Belt_Array.getExn(posts, 0);
-      var rest = posts.slice(1);
+      var first = Belt_Array.getExn(filtered, 0);
+      var rest = filtered.slice(1);
       var tmp = {
         title: first.frontmatter.title,
         author: first.frontmatter.author,
@@ -275,7 +276,7 @@ function $$default(props) {
         tmp.firstParagraph = Caml_option.valFromOption(tmp$3);
       }
       var featureBox = React.createElement("div", {
-            className: "mb-24 lg:px-4 xl:px-0"
+            className: "w-full mb-24 lg:px-4 xl:px-0"
           }, React.createElement(Blog$FeatureCard, tmp));
       var postsBox = rest.length !== 0 ? React.createElement("div", {
               className: "px-4 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full"
@@ -340,6 +341,7 @@ function $$default(props) {
                                   children: React.createElement("div", {
                                         className: "flex justify-center"
                                       }, React.createElement("div", {
+                                            className: "w-full",
                                             style: {
                                               maxWidth: "66.625rem"
                                             }
