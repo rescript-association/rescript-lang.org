@@ -1,0 +1,26 @@
+---
+author: chenglou
+date: "2018-03-26" 
+previewImg:
+category: syntax
+badge: release
+title: Reason 3.1.0 Released
+description: |
+canonical: https://reasonml.github.io/blog/2018/03/06/reason-3.1.0
+---
+
+Special shout-out to this version, as it fixes many bugs and comes with some
+long awaited features. As always, the changes are in
+[HISTORY.md](https://github.com/facebook/reason/blob/master/HISTORY.md#310).
+Special highlights:
+
+- New pipe sugar allows inserting argument at arbitrary position: `[1, 2, 3] |>
+  map(_, a => a + 1) |> keep(_, a => a === 2)`. Basically ES2030.
+- Tired of seeing `[@bs] foo(bar, baz)` for uncurrying? Use the new version to
+  refmt your code to automatically format it into `foo(. bar, baz)`!
+- Trailing comma for everything, final function body item now formats to a
+  trailing semicolon, `let%foo` extension sugar, fixes for comments, JSX, etc.
+
+Get the new version through
+[reason-cli](https://www.npmjs.com/package/reason-cli/) and through
+BuckleScript's bs-platform 2.2.2. Have fun!
