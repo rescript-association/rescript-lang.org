@@ -18,12 +18,29 @@ open Util.ReactStuff;
 module Link = Next.Link;
 
 module Badge = {
+  type color =
+    | Turtle
+    | Orange;
+
   [@react.component]
-  let make = (~badge: string) => {
+  let make = (~badge: BlogFrontmatter.Badge.t) => {
+    let bgColor =
+      switch (badge) {
+      | Preview
+      | Roadmap
+      | Release => "bg-turtle"
+      | Testing => "bg-code-1"
+      };
+
+    let text = badge->BlogFrontmatter.Badge.toString;
+
     <div
-      className="inline-block items-center bg-turtle font-medium tracking-tight text-onyx-80 text-14 px-2 rounded-sm py-1">
-      <img className="w-4 inline-block pb-1 mr-1" src="/static/star.svg" />
-      badge->s
+      className={
+        bgColor
+        ++ " flex items-center h-6 font-medium tracking-tight text-onyx-80 text-14 px-2 rounded-sm"
+      }>
+      <div> <img className="h-3 block mr-1" src="/static/star.svg" /> </div>
+      <div> text->s </div>
     </div>;
   };
 };
@@ -92,7 +109,7 @@ module BlogCard = {
         ~title: string="Unknown Title",
         ~author: BlogFrontmatter.Author.t,
         ~category: string,
-        ~badge: option(string)=?,
+        ~badge: option(BlogFrontmatter.Badge.t)=?,
         ~date: Js.Date.t,
         ~slug: string,
       ) => {
@@ -136,7 +153,7 @@ module FeatureCard = {
         ~previewImg: option(string)=?,
         ~title: string="Unknown Title",
         ~author: BlogFrontmatter.Author.t,
-        ~badge: option(string)=?,
+        ~badge: option(BlogFrontmatter.Badge.t)=?,
         ~date: Js.Date.t,
         ~category: string,
         ~firstParagraph: string="",
@@ -152,10 +169,14 @@ module FeatureCard = {
       };
 
     <section
-      className="flex sm:px-4 md:px-0 flex-col justify-end lg:flex-row sm:items-center h-full">
+      className="flex sm:px-4 md:px-8 lg:px-0 flex-col justify-end lg:flex-row sm:items-center h-full">
       <div
         className="w-full h-full sm:self-start md:self-auto"
-        style={Style.make(~maxWidth="38.125rem", ~maxHeight="25.4375rem", ())}>
+        style={Style.make(
+          /*~maxWidth="38.125rem", */
+          ~maxHeight="25.4375rem",
+          (),
+        )}>
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
           <a className="relative block pt-2/3">
             {switch (badge) {
@@ -174,7 +195,7 @@ module FeatureCard = {
         </Link>
       </div>
       <div
-        className="relative px-4 lg:self-auto md:pt-12 md:px-20 sm:self-start md:ml-16 md:-mt-20 mt-4 bg-white lg:w-full lg:pt-0 lg:mt-0 lg:px-0 lg:ml-12">
+        className="relative px-4 lg:self-auto sm:pt-12 md:px-20 sm:self-start md:-mt-20 mt-4 bg-white lg:w-full lg:pt-0 lg:mt-0 lg:px-0 lg:ml-12">
         <div className="max-w-400 ">
           <h2 className=Text.H2.default> title->s </h2>
           <div className="mb-6">
@@ -304,15 +325,10 @@ let default = (props: props): React.element => {
           let rest = Js.Array2.sliceFrom(filtered, 1);
 
           let featureBox =
-            <div className="w-full mb-24 lg:px-4 xl:px-0">
-              <FeatureCard
-                previewImg=?{first.frontmatter.previewImg->Js.Null.toOption}
+            <div className="w-full mb-24 lg:px-8 xl:px-0">
+              <FeatureCard previewImg=?{first.frontmatter.previewImg->Js.Null.toOption}
                 title={first.frontmatter.title}
-                badge=?{
-                  first.frontmatter.badge
-                  ->Js.Null.toOption
-                  ->Belt.Option.map(BlogFrontmatter.Badge.toString)
-                }
+                badge=?{first.frontmatter.badge->Js.Null.toOption}
                 author={first.frontmatter.author}
                 firstParagraph=?{
                   first.frontmatter.description->Js.Null.toOption
@@ -330,14 +346,11 @@ let default = (props: props): React.element => {
             | [||] => React.null
             | rest =>
               <div
-                className="px-4 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full">
+                className="px-4 md:px-8 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full">
                 {Belt.Array.mapWithIndex(
                    rest,
                    (i, post) => {
-                     let badge =
-                       post.frontmatter.badge
-                       ->Js.Null.toOption
-                       ->Belt.Option.map(BlogFrontmatter.Badge.toString);
+                     let badge = post.frontmatter.badge->Js.Null.toOption;
                      <BlogCard
                        key={post.id ++ Belt.Int.toString(i)}
                        previewImg=?{

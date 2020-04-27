@@ -11,7 +11,7 @@ let make = (~children, ~components=Markdown.default) => {
         <Navigation overlayState />
         <div className="flex justify-center overflow-hidden">
           <main
-            className="mt-32 min-w-320 lg:align-center w-full px-8 lg:px-0 max-w-1280 " /*++ (isOpen ? " hidden" : "")*/>
+            className="mt-32 min-w-320 lg:align-center w-full px-4 md:px-8 lg:px-0 max-w-1280 " /*++ (isOpen ? " hidden" : "")*/>
             <Mdx.Provider components> children </Mdx.Provider>
           </main>
         </div>

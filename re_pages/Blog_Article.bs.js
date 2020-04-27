@@ -60,15 +60,21 @@ function Blog_Article$BlogHeader(Props) {
             }, React.createElement("div", {
                   className: "w-full max-w-705"
                 }, React.createElement("div", {
-                      className: "text-night-light text-lg mb-6"
+                      className: "text-night-light text-lg mb-5"
                     }, Util.ReactStuff.s(category), Util.ReactStuff.s(" · "), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date$1))), React.createElement("h1", {
                       className: "text-onyx font-semibold text-42 leading-2"
                     }, Util.ReactStuff.s(title)), Belt_Option.mapWithDefault(description, null, (function (desc) {
-                        return React.createElement("div", {
-                                    className: "my-8 text-onyx"
-                                  }, React.createElement(Markdown.Intro.make, {
-                                        children: Util.ReactStuff.s(desc)
-                                      }));
+                        if (desc === "") {
+                          return React.createElement("div", {
+                                      className: "mb-8"
+                                    });
+                        } else {
+                          return React.createElement("div", {
+                                      className: "my-8 text-onyx"
+                                    }, React.createElement(Markdown.Intro.make, {
+                                          children: Util.ReactStuff.s(desc)
+                                        }));
+                        }
                       })), React.createElement("div", {
                       className: "flex mb-12 items-center"
                     }, React.createElement("div", {
@@ -130,7 +136,7 @@ function $$default(props) {
     content = React.createElement("div", {
           className: "w-full"
         }, React.createElement(Meta.make, tmp), React.createElement("div", {
-              className: "md:mb-32"
+              className: "mb-10 md:mb-20"
             }, React.createElement(Blog_Article$BlogHeader, {
                   date: match.date,
                   author: match.author,

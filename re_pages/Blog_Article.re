@@ -69,16 +69,20 @@ module BlogHeader = {
 
     <div className="flex flex-col items-center">
       <div className="w-full max-w-705">
-        <div className="text-night-light text-lg mb-6">
+        <div className="text-night-light text-lg mb-5">
           category->s
           {j| · |j}->s
           {Util.Date.toDayMonthYear(date)->s}
         </div>
         <h1 className=Text.H1.default> title->s </h1>
         {description->Belt.Option.mapWithDefault(React.null, desc => {
-           <div className="my-8 text-onyx">
-             <Markdown.Intro> desc->s </Markdown.Intro>
-           </div>
+           switch (desc) {
+           | "" => <div className="mb-8" />
+           | desc =>
+             <div className="my-8 text-onyx">
+               <Markdown.Intro> desc->s </Markdown.Intro>
+             </div>
+           }
          })}
         <div className="flex mb-12 items-center">
           <div className="w-12 h-12 bg-berry-40 block rounded-full mr-3">
@@ -136,7 +140,7 @@ let default = (props: props) => {
     | Ok({date, author, title, description, canonical, articleImg, category}) =>
       <div className="w-full">
         <Meta canonical=?{canonical->Js.Null.toOption} />
-        <div className="md:mb-32">
+        <div className="mb-10 md:mb-20">
           <BlogHeader
             date
             author

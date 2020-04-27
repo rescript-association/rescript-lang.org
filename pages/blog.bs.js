@@ -13,7 +13,6 @@ import * as Markdown from "../components/Markdown.bs.js";
 import * as Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as Navigation from "../components/Navigation.bs.js";
-import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as React$1 from "@mdx-js/react";
 import * as BlogFrontmatter from "../common/BlogFrontmatter.bs.js";
@@ -22,12 +21,14 @@ import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.
 
 function Blog$Badge(Props) {
   var badge = Props.badge;
+  var bgColor = badge !== 1 ? "bg-turtle" : "bg-code-1";
+  var text = BlogFrontmatter.Badge.toString(badge);
   return React.createElement("div", {
-              className: "inline-block items-center bg-turtle font-medium tracking-tight text-onyx-80 text-14 px-2 rounded-sm py-1"
-            }, React.createElement("img", {
-                  className: "w-4 inline-block pb-1 mr-1",
-                  src: "/static/star.svg"
-                }), Util.ReactStuff.s(badge));
+              className: bgColor + " flex items-center h-6 font-medium tracking-tight text-onyx-80 text-14 px-2 rounded-sm"
+            }, React.createElement("div", undefined, React.createElement("img", {
+                      className: "h-3 block mr-1",
+                      src: "/static/star.svg"
+                    })), React.createElement("div", undefined, Util.ReactStuff.s(text)));
 }
 
 var Badge = {
@@ -141,12 +142,11 @@ function Blog$FeatureCard(Props) {
   var className = "absolute top-0 h-full w-full object-cover";
   var match$1 = author.twitter;
   return React.createElement("section", {
-              className: "flex sm:px-4 md:px-0 flex-col justify-end lg:flex-row sm:items-center h-full"
+              className: "flex sm:px-4 md:px-8 lg:px-0 flex-col justify-end lg:flex-row sm:items-center h-full"
             }, React.createElement("div", {
                   className: "w-full h-full sm:self-start md:self-auto",
                   style: {
-                    maxHeight: "25.4375rem",
-                    maxWidth: "38.125rem"
+                    maxHeight: "25.4375rem"
                   }
                 }, React.createElement(Link.default, {
                       href: "/blog/[slug]",
@@ -165,7 +165,7 @@ function Blog$FeatureCard(Props) {
                                   src: "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1587479463/Reason%20Association/reasonml.org/reasonml_art2_1280_vhzxnz.png"
                                 }))
                     })), React.createElement("div", {
-                  className: "relative px-4 lg:self-auto md:pt-12 md:px-20 sm:self-start md:ml-16 md:-mt-20 mt-4 bg-white lg:w-full lg:pt-0 lg:mt-0 lg:px-0 lg:ml-12"
+                  className: "relative px-4 lg:self-auto sm:pt-12 md:px-20 sm:self-start md:-mt-20 mt-4 bg-white lg:w-full lg:pt-0 lg:mt-0 lg:px-0 lg:ml-12"
                 }, React.createElement("div", {
                       className: "max-w-400 "
                     }, React.createElement("h2", {
@@ -267,7 +267,7 @@ function $$default(props) {
       if (tmp$1 !== undefined) {
         tmp.previewImg = Caml_option.valFromOption(tmp$1);
       }
-      var tmp$2 = Belt_Option.map(Caml_option.null_to_opt(first.frontmatter.badge), BlogFrontmatter.Badge.toString);
+      var tmp$2 = Caml_option.null_to_opt(first.frontmatter.badge);
       if (tmp$2 !== undefined) {
         tmp.badge = Caml_option.valFromOption(tmp$2);
       }
@@ -276,12 +276,12 @@ function $$default(props) {
         tmp.firstParagraph = Caml_option.valFromOption(tmp$3);
       }
       var featureBox = React.createElement("div", {
-            className: "w-full mb-24 lg:px-4 xl:px-0"
+            className: "w-full mb-24 lg:px-8 xl:px-0"
           }, React.createElement(Blog$FeatureCard, tmp));
       var postsBox = rest.length !== 0 ? React.createElement("div", {
-              className: "px-4 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full"
+              className: "px-4 md:px-8 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full"
             }, Util.ReactStuff.ate(Belt_Array.mapWithIndex(rest, (function (i, post) {
-                        var badge = Belt_Option.map(Caml_option.null_to_opt(post.frontmatter.badge), BlogFrontmatter.Badge.toString);
+                        var badge = post.frontmatter.badge;
                         var tmp = {
                           title: post.frontmatter.title,
                           author: post.frontmatter.author,
@@ -294,8 +294,9 @@ function $$default(props) {
                         if (tmp$1 !== undefined) {
                           tmp.previewImg = Caml_option.valFromOption(tmp$1);
                         }
-                        if (badge !== undefined) {
-                          tmp.badge = Caml_option.valFromOption(badge);
+                        var tmp$2 = badge === null ? undefined : Caml_option.some(badge);
+                        if (tmp$2 !== undefined) {
+                          tmp.badge = Caml_option.valFromOption(tmp$2);
                         }
                         return React.createElement(Blog$BlogCard, tmp);
                       })))) : null;
