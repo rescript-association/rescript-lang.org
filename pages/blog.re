@@ -174,7 +174,7 @@ module FeatureCard = {
         </Link>
       </div>
       <div
-        className="relative px-4 lg:self-auto md:pt-12 md:px-20 sm:self-start md:ml-16 md:-mt-20 mt-4 bg-white lg:w-full lg:pt-0 lg:mt-8 lg:px-0 lg:ml-12">
+        className="relative px-4 lg:self-auto md:pt-12 md:px-20 sm:self-start md:ml-16 md:-mt-20 mt-4 bg-white lg:w-full lg:pt-0 lg:mt-0 lg:px-0 lg:ml-12">
         <div className="max-w-400 ">
           <h2 className=Text.H2.default> title->s </h2>
           <div className="mb-6">
