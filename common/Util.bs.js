@@ -1,5 +1,7 @@
 
 
+import * as Curry from "bs-platform/lib/es6/curry.js";
+import * as IntlDateTimeFormat from "../bindings/IntlDateTimeFormat.bs.js";
 
 function s(prim) {
   return prim;
@@ -44,56 +46,15 @@ var Url = {
   isAbsolute: isAbsolute
 };
 
-function toMonthStr(date) {
-  var param = date.getUTCMonth() | 0;
-  switch (param) {
-    case 0 :
-        return "Jan";
-    case 1 :
-        return "Feb";
-    case 2 :
-        return "Mar";
-    case 3 :
-        return "Apr";
-    case 4 :
-        return "May";
-    case 5 :
-        return "Jun";
-    case 6 :
-        return "Jul";
-    case 7 :
-        return "Aug";
-    case 8 :
-        return "Sep";
-    case 9 :
-        return "Oct";
-    case 10 :
-        return "Nov";
-    case 11 :
-        return "Dec";
-    default:
-      return "???";
-  }
-}
-
-function pad(n) {
-  if (n < 10) {
-    return "0" + n.toString();
-  } else {
-    return n.toString();
-  }
-}
-
 function toDayMonthYear(date) {
-  var month = toMonthStr(date);
-  var day = pad(date.getDate() | 0);
-  var year = date.getFullYear() | 0;
-  return "" + (String(month) + (" " + (String(day) + (", " + (String(year) + "")))));
+  return IntlDateTimeFormat.$$Date.make(/* US */19038, {
+              year: Curry._1(IntlDateTimeFormat.$$Date.Year.make, /* numeric */734061261),
+              day: Curry._1(IntlDateTimeFormat.$$Date.Day.make, /* numeric */734061261),
+              month: Curry._1(IntlDateTimeFormat.$$Date.Month.make, /* short */-64519044)
+            }, date);
 }
 
 var $$Date = {
-  toMonthStr: toMonthStr,
-  pad: pad,
   toDayMonthYear: toDayMonthYear
 };
 
