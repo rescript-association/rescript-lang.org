@@ -169,7 +169,7 @@ let make = (props: props): React.element => {
     | ["community", ..._rest] => <CommunityLayout> content </CommunityLayout>
     | ["blog"] => content // Blog implements its own layout as well
     | ["blog", ..._rest] =>
-      // Here, the layout will be handled by the  Blog_slug component
+      // Here, the layout will be handled by the Blog_Article component
       // to keep the frontmatter parsing etc in one place
       content
     | _ =>
