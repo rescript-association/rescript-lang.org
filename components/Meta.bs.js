@@ -23,28 +23,18 @@ function Meta(Props) {
   var ogLocale = $staropt$star$3 !== undefined ? $staropt$star$3 : "en_US";
   var ogDescription = $staropt$star$4 !== undefined ? $staropt$star$4 : description;
   var ogImage = $staropt$star$5 !== undefined ? $staropt$star$5 : ogImgDefault;
-  var match;
+  var title$1;
   if (title !== undefined) {
-    var title$1 = title;
-    match = title$1 === "" ? /* tuple */[
-        siteName,
-        siteName
-      ] : /* tuple */[
-        title$1,
-        title$1 + (" | " + siteName)
-      ];
+    var title$2 = title;
+    title$1 = title$2 === "" ? siteName : title$2;
   } else {
-    match = /* tuple */[
-      siteName,
-      siteName
-    ];
+    title$1 = siteName;
   }
-  var fullTitle = match[1];
   var ogSiteName$1 = ogSiteName !== undefined ? ogSiteName : siteName;
-  var ogTitle$1 = ogTitle !== undefined ? ogTitle : fullTitle;
+  var ogTitle$1 = ogTitle !== undefined ? ogTitle : title$1;
   return React.createElement(Head.default, {
               children: null
-            }, React.createElement("title", undefined, Util.ReactStuff.s(fullTitle)), React.createElement("meta", {
+            }, React.createElement("title", undefined, Util.ReactStuff.s(title$1)), React.createElement("meta", {
                   charSet: "ISO-8859-1"
                 }), React.createElement("meta", {
                   content: "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, minimal-ui",
@@ -78,7 +68,7 @@ function Meta(Props) {
                   content: ogImage,
                   property: "og:image"
                 }), React.createElement("meta", {
-                  content: match[0],
+                  content: title$1,
                   name: "twitter:title"
                 }), React.createElement("meta", {
                   content: description,

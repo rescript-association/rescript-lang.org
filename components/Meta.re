@@ -20,11 +20,11 @@ let make =
       ~ogTitle=?,
       ~ogImage=ogImgDefault,
     ) => {
-  let (title, fullTitle) =
+  let title =
     switch (title) {
     | None
-    | Some("") => (siteName, siteName)
-    | Some(title) => (title, title ++ " | " ++ siteName)
+    | Some("") => siteName
+    | Some(title) => title
     };
 
   let ogSiteName =
@@ -36,11 +36,11 @@ let make =
   let ogTitle =
     switch (ogTitle) {
     | Some(ogTitle) => ogTitle
-    | None => fullTitle
+    | None => title
     };
 
   <Head>
-    <title> fullTitle->s </title>
+    <title> title->s </title>
     <meta charSet="ISO-8859-1" />
     <meta
       name="viewport"

@@ -174,6 +174,7 @@ let make = (props: props): React.element => {
       content
     | _ =>
       <MainLayout>
+        <Meta />
         <div className="flex justify-center">
           <div className="max-w-705 w-full"> content </div>
         </div>

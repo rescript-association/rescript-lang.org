@@ -128,14 +128,22 @@ function $$default(props) {
                 }, Util.ReactStuff.s("Errors:")), Util.ReactStuff.s(fm[0])));
   } else {
     var match = fm[0];
-    var tmp = { };
-    var tmp$1 = Caml_option.null_to_opt(match.canonical);
+    var description = match.description;
+    var title = match.title;
+    var tmp = {
+      title: title + "| Blog"
+    };
+    var tmp$1 = description === null ? undefined : Caml_option.some(description);
     if (tmp$1 !== undefined) {
-      tmp.canonical = Caml_option.valFromOption(tmp$1);
+      tmp.description = Caml_option.valFromOption(tmp$1);
     }
-    var tmp$2 = Caml_option.null_to_opt(match.previewImg);
+    var tmp$2 = Caml_option.null_to_opt(match.canonical);
     if (tmp$2 !== undefined) {
-      tmp.ogImage = Caml_option.valFromOption(tmp$2);
+      tmp.canonical = Caml_option.valFromOption(tmp$2);
+    }
+    var tmp$3 = Caml_option.null_to_opt(match.previewImg);
+    if (tmp$3 !== undefined) {
+      tmp.ogImage = Caml_option.valFromOption(tmp$3);
     }
     content = React.createElement("div", {
           className: "w-full"
@@ -144,9 +152,9 @@ function $$default(props) {
             }, React.createElement(Blog_Article$BlogHeader, {
                   date: match.date,
                   author: match.author,
-                  title: match.title,
+                  title: title,
                   category: BlogFrontmatter.Category.toString(match.category),
-                  description: Caml_option.null_to_opt(match.description),
+                  description: description === null ? undefined : Caml_option.some(description),
                   articleImg: Caml_option.null_to_opt(match.articleImg)
                 })), React.createElement("div", {
               className: "flex justify-center"

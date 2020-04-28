@@ -5,7 +5,6 @@ let make = (~children, ~components=Markdown.default) => {
   let overlayState = React.useState(() => false);
 
   <>
-    <Meta />
     <div className="mb-32 mt-4 xs:mt-16">
       <div className="text-night text-lg">
         <Navigation overlayState />

@@ -1,5 +1,6 @@
 
 
+import * as Meta from "../components/Meta.bs.js";
 import * as React from "react";
 import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
@@ -229,12 +230,12 @@ function make(props) {
       }
     }
     return React.createElement(MainLayout.make, {
-                children: React.createElement("div", {
-                      className: "flex justify-center"
-                    }, React.createElement("div", {
-                          className: "max-w-705 w-full"
-                        }, content))
-              });
+                children: null
+              }, React.createElement(Meta.make, { }), React.createElement("div", {
+                    className: "flex justify-center"
+                  }, React.createElement("div", {
+                        className: "max-w-705 w-full"
+                      }, content)));
   }
   
 }

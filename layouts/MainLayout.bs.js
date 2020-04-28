@@ -1,6 +1,5 @@
 
 
-import * as Meta from "../components/Meta.bs.js";
 import * as React from "react";
 import * as Markdown from "../components/Markdown.bs.js";
 import * as Navigation from "../components/Navigation.bs.js";
@@ -14,7 +13,7 @@ function MainLayout(Props) {
   var overlayState = React.useState((function () {
           return false;
         }));
-  return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, { }), React.createElement("div", {
+  return React.createElement(React.Fragment, undefined, React.createElement("div", {
                   className: "mb-32 mt-4 xs:mt-16"
                 }, React.createElement("div", {
                       className: "text-night text-lg"
@@ -39,4 +38,4 @@ export {
   make ,
   
 }
-/* Meta Not a pure module */
+/* react Not a pure module */
