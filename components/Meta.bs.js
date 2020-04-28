@@ -34,58 +34,75 @@ function Meta(Props) {
   var ogTitle$1 = ogTitle !== undefined ? ogTitle : title$1;
   return React.createElement(Head.default, {
               children: null
-            }, React.createElement("title", undefined, Util.ReactStuff.s(title$1)), React.createElement("meta", {
+            }, React.createElement("title", {
+                  key: "title"
+                }, Util.ReactStuff.s(title$1)), React.createElement("meta", {
                   charSet: "ISO-8859-1"
                 }), React.createElement("meta", {
                   content: "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, minimal-ui",
                   name: "viewport"
                 }), React.createElement("meta", {
+                  key: "description",
                   content: description,
                   name: "description"
                 }), React.createElement("meta", {
+                  key: "keywords",
                   content: keywords.join(","),
                   name: "keywords"
                 }), canonical !== undefined ? React.createElement("link", {
+                    key: "canonical",
                     href: canonical,
                     rel: "canonical"
                   }) : null, React.createElement("link", {
+                  key: "icon",
                   href: "/static/favicon.ico",
                   rel: "icon",
                   sizes: "16x16 32x32 64x64"
                 }), React.createElement("meta", {
+                  key: "og:site_name",
                   content: ogSiteName$1,
                   property: "og:site_name"
                 }), React.createElement("meta", {
+                  key: "og:locale",
                   content: ogLocale,
                   property: "og:locale"
                 }), React.createElement("meta", {
+                  key: "og:title",
                   content: ogTitle$1,
                   property: "og:title"
                 }), React.createElement("meta", {
+                  key: "og:description",
                   content: ogDescription,
                   property: "og:description"
                 }), React.createElement("meta", {
+                  key: "og:image",
                   content: ogImage,
                   property: "og:image"
                 }), React.createElement("meta", {
+                  key: "twitter:title",
                   content: title$1,
                   name: "twitter:title"
                 }), React.createElement("meta", {
+                  key: "twitter:description",
                   content: description,
                   name: "twitter:description"
                 }), React.createElement("meta", {
+                  key: "twitter:site",
                   content: "@reasonml",
                   name: "twitter:site"
                 }), React.createElement("meta", {
+                  key: "twitter:creator",
                   content: "@ReasonAssoc",
                   name: "twitter:creator"
                 }), React.createElement("meta", {
                   content: "image/jpeg",
                   property: "og:image:type"
                 }), React.createElement("meta", {
+                  key: "twitter:card",
                   content: "summary_large_image",
                   name: "twitter:card"
                 }), React.createElement("meta", {
+                  key: "twitter:image",
                   content: ogImage,
                   property: "twitter:image"
                 }));
