@@ -131,7 +131,7 @@ function $$default(props) {
     var description = match.description;
     var title = match.title;
     var tmp = {
-      title: title + "| Blog"
+      title: title + " | Reason Blog"
     };
     var tmp$1 = description === null ? undefined : Caml_option.some(description);
     if (tmp$1 !== undefined) {
