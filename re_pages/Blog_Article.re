@@ -137,9 +137,21 @@ let default = (props: props) => {
 
   let content =
     switch (fm) {
-    | Ok({date, author, title, description, canonical, articleImg, category}) =>
+    | Ok({
+        date,
+        author,
+        title,
+        description,
+        canonical,
+        articleImg,
+        previewImg,
+        category,
+      }) =>
       <div className="w-full">
-        <Meta canonical=?{canonical->Js.Null.toOption} />
+        <Meta
+          canonical=?{canonical->Js.Null.toOption}
+          ogImage=?{previewImg->Js.Null.toOption}
+        />
         <div className="mb-10 md:mb-20">
           <BlogHeader
             date

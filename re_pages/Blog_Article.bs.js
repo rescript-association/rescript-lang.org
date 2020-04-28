@@ -133,6 +133,10 @@ function $$default(props) {
     if (tmp$1 !== undefined) {
       tmp.canonical = Caml_option.valFromOption(tmp$1);
     }
+    var tmp$2 = Caml_option.null_to_opt(match.previewImg);
+    if (tmp$2 !== undefined) {
+      tmp.ogImage = Caml_option.valFromOption(tmp$2);
+    }
     content = React.createElement("div", {
           className: "w-full"
         }, React.createElement(Meta.make, tmp), React.createElement("div", {
