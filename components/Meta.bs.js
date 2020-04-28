@@ -37,7 +37,7 @@ function Meta(Props) {
             }, React.createElement("title", {
                   key: "title"
                 }, Util.ReactStuff.s(title$1)), React.createElement("meta", {
-                  charSet: "ISO-8859-1"
+                  charSet: "utf-8"
                 }), React.createElement("meta", {
                   content: "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, minimal-ui",
                   name: "viewport"
