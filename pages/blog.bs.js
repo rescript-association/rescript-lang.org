@@ -233,8 +233,9 @@ function $$default(props) {
                   className: "font-bold text-night-dark text-2xl mb-2"
                 }, Util.ReactStuff.s("Some Blog Posts are Malformed!")), React.createElement("p", undefined, Util.ReactStuff.s("Any blog post with invalid data will not be displayed in production.")), React.createElement("div", undefined, React.createElement("p", {
                       className: "font-bold mt-4"
-                    }, Util.ReactStuff.s("Errors:")), React.createElement("ul", undefined, Util.ReactStuff.ate(Belt_Array.map(malformed, (function (m) {
+                    }, Util.ReactStuff.s("Errors:")), React.createElement("ul", undefined, Util.ReactStuff.ate(Belt_Array.mapWithIndex(malformed, (function (i, m) {
                                 return React.createElement("li", {
+                                            key: String(i),
                                             className: "list-disc ml-5"
                                           }, Util.ReactStuff.s("pages/blog/" + (m.id + (".mdx: " + m.message))));
                               }))))))) : null;

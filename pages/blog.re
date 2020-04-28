@@ -290,8 +290,8 @@ let default = (props: props): React.element => {
           <div>
             <p className="font-bold mt-4"> "Errors:"->s </p>
             <ul>
-              {Belt.Array.map(malformed, m => {
-                 <li className="list-disc ml-5">
+              {Belt.Array.mapWithIndex(malformed, (i, m) => {
+                 <li key={i->Belt.Int.toString} className="list-disc ml-5">
                    {("pages/blog/" ++ m.id ++ ".mdx: " ++ m.message)->s}
                  </li>
                })
