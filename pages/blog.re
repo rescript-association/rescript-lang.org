@@ -399,7 +399,7 @@ let default = (props: props): React.element => {
   let overlayState = React.useState(() => false);
 
   <>
-    <Meta />
+    <Meta title="Blog | Reason Documentation" description="News, Announcements, Release Notes and more"/>
     <div className="mb-32 mt-16 pt-2">
       <div className="text-night text-lg">
         <Navigation overlayState />

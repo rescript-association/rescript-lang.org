@@ -328,7 +328,10 @@ function $$default(props) {
   var overlayState = React.useState((function () {
           return false;
         }));
-  return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, { }), React.createElement("div", {
+  return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, {
+                  description: "News, Announcements, Release Notes and more",
+                  title: "Blog | Reason Documentation"
+                }), React.createElement("div", {
                   className: "mb-32 mt-16 pt-2"
                 }, React.createElement("div", {
                       className: "text-night text-lg"
