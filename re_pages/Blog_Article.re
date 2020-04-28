@@ -18,6 +18,8 @@
    */
 open Util.ReactStuff;
 
+let middleDotSpacer = " " ++ Js.String.fromCharCode(183) ++ " ";
+
 module Params = {
   type t = {slug: string};
 };
@@ -71,7 +73,7 @@ module BlogHeader = {
       <div className="w-full max-w-705">
         <div className="text-night-light text-lg mb-5">
           category->s
-          {j| · |j}->s
+          middleDotSpacer->s
           {Util.Date.toDayMonthYear(date)->s}
         </div>
         <h1 className=Text.H1.default> title->s </h1>

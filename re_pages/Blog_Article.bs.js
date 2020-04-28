@@ -17,6 +17,8 @@ import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as BlogFrontmatter from "../common/BlogFrontmatter.bs.js";
 import * as NameInitialsAvatar from "../components/NameInitialsAvatar.bs.js";
 
+var middleDotSpacer = " " + (String.fromCharCode(183) + " ");
+
 var Params = { };
 
 var frontmatter = (function(component) {
@@ -61,7 +63,7 @@ function Blog_Article$BlogHeader(Props) {
                   className: "w-full max-w-705"
                 }, React.createElement("div", {
                       className: "text-night-light text-lg mb-5"
-                    }, Util.ReactStuff.s(category), Util.ReactStuff.s(" · "), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date$1))), React.createElement("h1", {
+                    }, Util.ReactStuff.s(category), Util.ReactStuff.s(middleDotSpacer), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date$1))), React.createElement("h1", {
                       className: "text-onyx font-semibold text-42 leading-2"
                     }, Util.ReactStuff.s(title)), Belt_Option.mapWithDefault(description, null, (function (desc) {
                         if (desc === "") {
@@ -206,6 +208,7 @@ function getStaticPaths(param) {
 }
 
 export {
+  middleDotSpacer ,
   Params ,
   BlogComponent ,
   Line ,
@@ -217,4 +220,4 @@ export {
   getStaticPaths ,
   
 }
-/* cwd Not a pure module */
+/* middleDotSpacer Not a pure module */

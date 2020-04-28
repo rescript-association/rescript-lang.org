@@ -17,6 +17,9 @@ open Util.ReactStuff;
 
 module Link = Next.Link;
 
+// For encoding reasons, see https://shripadk.github.io/react/docs/jsx-gotchas.html
+let middleDotSpacer = " " ++ Js.String.fromCharCode(183) ++ " ";
+
 module Badge = {
   type color =
     | Turtle
@@ -214,9 +217,9 @@ module FeatureCard = {
                    </a>
                  | None => displayName->s
                  }}
-                {j| · |j}->s
+                middleDotSpacer->s
                 category->s
-                {j| · |j}->s
+                middleDotSpacer->s
                 {date->Util.Date.toDayMonthYear->s}
               </div>
             </div>
@@ -326,7 +329,8 @@ let default = (props: props): React.element => {
 
           let featureBox =
             <div className="w-full mb-24 lg:px-8 xl:px-0">
-              <FeatureCard previewImg=?{first.frontmatter.previewImg->Js.Null.toOption}
+              <FeatureCard
+                previewImg=?{first.frontmatter.previewImg->Js.Null.toOption}
                 title={first.frontmatter.title}
                 badge=?{first.frontmatter.badge->Js.Null.toOption}
                 author={first.frontmatter.author}
@@ -399,7 +403,10 @@ let default = (props: props): React.element => {
   let overlayState = React.useState(() => false);
 
   <>
-    <Meta title="Blog | Reason Documentation" description="News, Announcements, Release Notes and more"/>
+    <Meta
+      title="Blog | Reason Documentation"
+      description="News, Announcements, Release Notes and more"
+    />
     <div className="mb-32 mt-16 pt-2">
       <div className="text-night text-lg">
         <Navigation overlayState />
