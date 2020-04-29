@@ -13,10 +13,12 @@ documented
 All the information you can find here is a fork of the official sources,
 unified and optimized for a single doc website experience. Especially for the
 BuckleScript documentation, you'll find some useful additions and better
-explanations for certain functionality.
+explanations for its functionality.
 
 We always make sure to regularly sync with the changes upstream and we accept
 PRs for doc improvements (we try to keep the same file structure though).
+
+If there's anything missing, please open up an issue and let us know!
 
 **Docs** |  **Official Source** | **Latest Update / Commit**
 --------|-----------|---------------|-------------
@@ -31,8 +33,8 @@ GenType | [github.com/cristianoc/genType](//github.com/cristianoc/genType) | Feb
 Playground |  🚧 | In the works within the BuckleScript repo
 BS API Docs |  🚧 | Only JS / Belt module (rest coming soon) (BS v7.0.0)
 Full Page Search | 📝 | In the planning phase
-Blog | ✅ | BuckleScript Posts
-Community | ✅ | rewritte
+Blog | ✅ | Relocated and cross-referenced all BuckleScript, ReasonReact, ReasonML Posts
+Community | ✅ | adapted and partly rewritten
 
 **Stay informed about recent updates either via the
 [@ReasonAssoc](https://twitter.com/ReasonAssoc) twitter handle or within the
@@ -63,14 +65,16 @@ next steps:
 - ~~Upstream the Reason language docs from reasonml.github.io~~
 - ~~Upstream the BuckleScript docs from bucklescript.github.io~~
 - ~~Upstream GenType docs~~
+- ~~Upstream Blog Posts from all different sources~~
 - Merge Reason's & BuckleScript's docs into one cohesive document
 
 ### API documentation:
 
 - Refining the [Belt API](/apis/javascript/latest/belt) & [Js API](/apis/javascript/latest/js) documentation by hand via markdown
-- Deep dive into `odoc` to extract API documentation from the BuckleScript modules' source code
+- Use `odoc` to extract JSON API documentation from source code (see our
+[doc-tools](https://github.com/reason-association/doc-tools) project for more
+details)
 - Upstream our markdown curated changes of the Belt / Js modules into the BuckleScript source code
-
 ### Playground:
 
 - Implement the design for
