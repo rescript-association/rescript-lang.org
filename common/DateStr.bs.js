@@ -10,7 +10,12 @@ function toDate(dateStr) {
   return new Date(dateStr$1.replace(/-/g, "/"));
 }
 
+function fromString(prim) {
+  return prim;
+}
+
 export {
+  fromString ,
   fromDate ,
   toDate ,
   

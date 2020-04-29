@@ -1,4 +1,4 @@
-/* JSON doesn't support JS.Date, so we need to codify them as strings */
+/* JSON doesn't support a native date type, so we need to codify dates as strings */
 type t = string;
 
 // Used to prevent issues with webkit based date representations
@@ -10,3 +10,5 @@ let fromDate = date => Js.Date.toString(date);
 let toDate = dateStr => {
   parse(dateStr);
 };
+
+external fromString: string => t = "%identity";

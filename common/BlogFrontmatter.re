@@ -128,17 +128,14 @@ let decode = (~authors: array(Author.t), json: Js.Json.t): result(t, string) => 
     switch (
       {
         author: json->field("author", string, _)->decodeAuthor(~authors),
-        date:
-          json
-          ->field("date", string, _)
-          ->Js.Date.fromString
-          ->DateStr.fromDate,
+        date: json->field("date", string, _)->DateStr.fromString,
         category: json->field("category", string, _)->decodeCategory,
         badge:
           json
           ->optional(j => {field("badge", string, j)->decodeBadge}, _)
           ->Js.Null.fromOption,
-        previewImg: json->optional(field("previewImg", string), _)->Js.Null.fromOption,
+        previewImg:
+          json->optional(field("previewImg", string), _)->Js.Null.fromOption,
         articleImg:
           json->optional(field("articleImg", string), _)->Js.Null.fromOption,
         title: json->field("title", string, _),

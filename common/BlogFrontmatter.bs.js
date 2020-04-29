@@ -144,7 +144,7 @@ function decode$1(authors, json) {
       author: (function (param) {
             return decodeAuthor(param, arg);
           })(authors),
-      date: DateStr.fromDate(new Date(Json_decode.field("date", Json_decode.string, json))),
+      date: DateStr.fromString(Json_decode.field("date", Json_decode.string, json)),
       previewImg: Js_null.fromOption(Json_decode.optional((function (param) {
                   return Json_decode.field("previewImg", Json_decode.string, param);
                 }), json)),
