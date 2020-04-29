@@ -19,6 +19,8 @@ import * as BlogFrontmatter from "../common/BlogFrontmatter.bs.js";
 import * as NameInitialsAvatar from "../components/NameInitialsAvatar.bs.js";
 import * as Caml_chrome_debugger from "bs-platform/lib/es6/caml_chrome_debugger.js";
 
+var middleDotSpacer = " " + (String.fromCharCode(183) + " ");
+
 function Blog$Badge(Props) {
   var badge = Props.badge;
   var bgColor = badge !== 1 ? "bg-turtle" : "bg-code-1";
@@ -181,7 +183,7 @@ function Blog$FeatureCard(Props) {
                                         href: "https://twitter.com/" + match$1,
                                         rel: "noopener noreferrer",
                                         target: "_blank"
-                                      }, Util.ReactStuff.s(displayName)) : Util.ReactStuff.s(displayName), Util.ReactStuff.s(" · "), Util.ReactStuff.s(category), Util.ReactStuff.s(" · "), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date)))), React.createElement("p", {
+                                      }, Util.ReactStuff.s(displayName)) : Util.ReactStuff.s(displayName), Util.ReactStuff.s(middleDotSpacer), Util.ReactStuff.s(category), Util.ReactStuff.s(middleDotSpacer), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date)))), React.createElement("p", {
                               className: "text-night-dark text-16"
                             }, Util.ReactStuff.s(firstParagraph)))), React.createElement(Link.default, {
                       href: "/blog/[slug]",
@@ -413,6 +415,7 @@ var Link$1 = /* alias */0;
 
 export {
   Link$1 as Link,
+  middleDotSpacer ,
   Badge ,
   CategorySelector ,
   BlogCard ,
@@ -424,4 +427,4 @@ export {
   getStaticProps ,
   
 }
-/* Meta Not a pure module */
+/* middleDotSpacer Not a pure module */
