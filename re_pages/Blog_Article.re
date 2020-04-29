@@ -169,6 +169,16 @@ let default = (props: props) => {
         <div className="flex justify-center">
           <div className="max-w-705 w-full">
             children
+            {switch (canonical->Js.Null.toOption) {
+             | Some(canonical) =>
+               <div className="mt-12 text-14">
+                 "This article was originally released on "->s
+                 <a href=canonical target="_blank" rel="noopener noreferrer">
+                   canonical->s
+                 </a>
+               </div>
+             | None => React.null
+             }}
             <div className="mt-12">
               <Line />
               <div className="pt-20 flex flex-col items-center">

@@ -130,6 +130,7 @@ function $$default(props) {
                 }, Util.ReactStuff.s("Errors:")), Util.ReactStuff.s(fm[0])));
   } else {
     var match = fm[0];
+    var canonical = match.canonical;
     var description = match.description;
     var title = match.title;
     var tmp = {
@@ -139,7 +140,7 @@ function $$default(props) {
     if (tmp$1 !== undefined) {
       tmp.description = Caml_option.valFromOption(tmp$1);
     }
-    var tmp$2 = Caml_option.null_to_opt(match.canonical);
+    var tmp$2 = canonical === null ? undefined : Caml_option.some(canonical);
     if (tmp$2 !== undefined) {
       tmp.canonical = Caml_option.valFromOption(tmp$2);
     }
@@ -162,7 +163,13 @@ function $$default(props) {
               className: "flex justify-center"
             }, React.createElement("div", {
                   className: "max-w-705 w-full"
-                }, children, React.createElement("div", {
+                }, children, canonical !== null ? React.createElement("div", {
+                        className: "mt-12 text-14"
+                      }, Util.ReactStuff.s("This article was originally released on "), React.createElement("a", {
+                            href: canonical,
+                            rel: "noopener noreferrer",
+                            target: "_blank"
+                          }, Util.ReactStuff.s(canonical))) : null, React.createElement("div", {
                       className: "mt-12"
                     }, React.createElement(Blog_Article$Line, { }), React.createElement("div", {
                           className: "pt-20 flex flex-col items-center"
