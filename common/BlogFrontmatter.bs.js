@@ -1,6 +1,5 @@
 
 
-import * as DateStr from "./DateStr.bs.js";
 import * as Js_null from "bs-platform/lib/es6/js_null.js";
 import * as Json_decode from "@glennsl/bs-json/src/Json_decode.bs.js";
 import * as Caml_js_exceptions from "bs-platform/lib/es6/caml_js_exceptions.js";
@@ -144,7 +143,7 @@ function decode$1(authors, json) {
       author: (function (param) {
             return decodeAuthor(param, arg);
           })(authors),
-      date: DateStr.fromString(Json_decode.field("date", Json_decode.string, json)),
+      date: Json_decode.field("date", Json_decode.string, json),
       previewImg: Js_null.fromOption(Json_decode.optional((function (param) {
                   return Json_decode.field("previewImg", Json_decode.string, param);
                 }), json)),
