@@ -33,7 +33,9 @@ const mapBlogFilePath = (path) => {
 // { key=url: value=original_filepath}
 const createPageIndex = files => {
   return files.reduce((acc, path) => {
-    const url = mapBlogFilePath(path).replace(/^\.\//, "/").replace(/\.md?(x)/, "");
+    // We need to consider all the different file formats used in pages
+    // Calculate the website url by stripping .re, .bs.js, .md(x), etc.
+    const url = mapBlogFilePath(path).replace(/^\.\//, "/").replace(/\.re|\.bs\.js|\.js|\.md(x)?$/, "");
     acc[url] = path;
     return acc;
   }, {});
@@ -170,7 +172,7 @@ const main = () => {
   const files = glob.sync(pattern ? pattern : `./{pages,_blogposts}/**/*.md?(x)`, { cwd });
 
   // We need to capture all files independently from the test file glob
-  const pageMapFiles = glob.sync("./{pages,_blogposts}/**/*.md?(x)", { cwd });
+  const pageMapFiles = glob.sync("./{pages,_blogposts}/**/*.{js,mdx}", { cwd });
   const pageMap = createPageIndex(pageMapFiles);
 
   const processedFiles = files.map(processFile);
