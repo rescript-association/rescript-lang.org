@@ -40,7 +40,6 @@ build specific pages (file `index_data/x.json` not found).
 
 ## Run Tests
 
-
 ### Markdown Codeblock Tests
 
 We try to verify our code examples inside markdown files as much as possible.
@@ -111,6 +110,17 @@ postcss styles/main.css -o test.css
 # Production
 NODE_ENV=production postcss styles/main.css -o test.css
 ```
+
+## Writing Blog Posts
+
+In case you are a blog author, please refer to our [guide on writing blog
+posts](https://reasonml.org/blogpost-guide).
+
+**Quick-takeaways:**
+
+- Blogposts are located in `_blogposts`
+- Author metadata is located in `index_data/blog_authors.json`
+- Make sure to follow the file naming rules
 
 ## URL Route Design
 
