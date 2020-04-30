@@ -3,7 +3,7 @@ open Util.ReactStuff;
 module P = {
   [@react.component]
   let make = (~children) => {
-    <p className="md-p leading-4"> children </p>;
+    <p className="md-p leading-5"> children </p>;
   };
 };
 
@@ -129,7 +129,9 @@ module Anchor = {
       <a
         className="invisible text-night-light opacity-50 text-inherit hover:opacity-100 hover:text-night-light hover:cursor-pointer group-hover:visible"
         href={"#" ++ id}>
-        {j|#|j}->s
+        <Icon.Hyperlink
+          className="inline-block align-middle text-snow-darker"
+        />
       </a>
       <a style id />
     </span>;
@@ -140,7 +142,7 @@ module H1 = {
   [@react.component]
   let make = (~children) => {
     <h1
-      className="text-6xl leading-1 mb-5 font-sans font-medium text-night-dark">
+      className="text-6xl leading-1 mb-5 font-sans font-semibold text-night-dark">
       children
     </h1>;
   };
@@ -152,8 +154,10 @@ module H2 = {
     <>
       // Here we know that children is always a string (## headline)
       <h2
-        className="group mt-12 mb-3 text-3xl leading-1 font-sans font-medium text-night-dark">
-        <span className="-ml-8 pr-2"> <Anchor id /> </span>
+        className="group mt-12 mb-3 text-28 leading-1 font-sans font-semibold text-onyx">
+        <span className="pr-2" style={Style.make(~marginLeft="-2rem", ())}>
+          <Anchor id />
+        </span>
         children
       </h2>
     </>;
@@ -164,8 +168,10 @@ module H3 = {
   [@react.component]
   let make = (~id, ~children) => {
     <h3
-      className="group text-xl mt-12 mb-3 leading-3 font-sans font-semibold text-night-darker">
-      <span className="-ml-6 pr-2"> <Anchor id /> </span>
+      className="group text-xl mt-12 mb-3 leading-3 font-sans font-semibold text-onyx">
+      <span className="pr-2" style={Style.make(~marginLeft="-1.6rem", ())}>
+        <Anchor id />
+      </span>
       children
     </h3>;
   };
@@ -175,8 +181,10 @@ module H4 = {
   [@react.component]
   let make = (~id, ~children) => {
     <h4
-      className="group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-night-dark">
-      <span className="-ml-5 pr-2"> <Anchor id /> </span>
+      className="group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-onyx">
+      <span className="pr-2" style={Style.make(~marginLeft="-1.45rem", ())}>
+        <Anchor id />
+      </span>
       children
     </h4>;
   };
@@ -186,8 +194,10 @@ module H5 = {
   [@react.component]
   let make = (~id, ~children) => {
     <h5
-      className="group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide">
-      <span className="-ml-5 pr-2"> <Anchor id /> </span>
+      className="group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide text-onyx">
+      <span className="pr-2" style={Style.make(~marginLeft="-1.1rem", ())}>
+        <Anchor id />
+      </span>
       children
     </h5>;
   };
@@ -196,7 +206,7 @@ module H5 = {
 module Pre = {
   [@react.component]
   let make = (~children) => {
-    <pre className="mt-2 mb-4 block"> children </pre>;
+    <pre className="mt-2 mb-4 -mx-6 xs:mx-0 block"> children </pre>;
   };
 };
 
@@ -263,7 +273,7 @@ module Code = {
   external unknownAsString: unknown => string = "%identity";
 
   let makeCodeElement = (~code, ~metastring, ~lang) => {
-    let baseClass = "md-code font-mono block leading-tight mt-4 mb-10";
+    let baseClass = "md-code font-mono w-full block leading-tight mt-4 mb-10";
     let codeElement =
       switch (metastring) {
       | None => <CodeExample code lang />
@@ -473,6 +483,13 @@ module Li = {
   };
 };
 
+module Strong = {
+  [@react.component]
+  let make = (~children) => {
+    <strong className="font-semibold"> children </strong>;
+  };
+};
+
 // Useful for debugging injected values in props
 /*
  let mdxTestComponent: React.component(Js.t({.})) = [%raw
@@ -511,6 +528,7 @@ let default =
     ~th=Th.make,
     ~td=Td.make,
     ~hr=Hr.make,
+    ~strong=Strong.make,
     ~a=A.make,
     ~pre=Pre.make,
     ~blockquote=Blockquote.make,

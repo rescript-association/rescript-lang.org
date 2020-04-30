@@ -15,7 +15,7 @@ import * as CodeSignature from "./CodeSignature.bs.js";
 function Markdown$P(Props) {
   var children = Props.children;
   return React.createElement("p", {
-              className: "md-p leading-4"
+              className: "md-p leading-5"
             }, children);
 }
 
@@ -156,7 +156,9 @@ function Markdown$Anchor(Props) {
             }, React.createElement("a", {
                   className: "invisible text-night-light opacity-50 text-inherit hover:opacity-100 hover:text-night-light hover:cursor-pointer group-hover:visible",
                   href: "#" + id
-                }, Util.ReactStuff.s("#")), React.createElement("a", {
+                }, React.createElement(Icon.Hyperlink.make, {
+                      className: "inline-block align-middle text-snow-darker"
+                    })), React.createElement("a", {
                   id: id,
                   style: style
                 }));
@@ -170,7 +172,7 @@ var Anchor = {
 function Markdown$H1(Props) {
   var children = Props.children;
   return React.createElement("h1", {
-              className: "text-6xl leading-1 mb-5 font-sans font-medium text-night-dark"
+              className: "text-6xl leading-1 mb-5 font-sans font-semibold text-night-dark"
             }, children);
 }
 
@@ -182,9 +184,12 @@ function Markdown$H2(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement(React.Fragment, undefined, React.createElement("h2", {
-                  className: "group mt-12 mb-3 text-3xl leading-1 font-sans font-medium text-night-dark"
+                  className: "group mt-12 mb-3 text-28 leading-1 font-sans font-semibold text-onyx"
                 }, React.createElement("span", {
-                      className: "-ml-8 pr-2"
+                      className: "pr-2",
+                      style: {
+                        marginLeft: "-2rem"
+                      }
                     }, React.createElement(Markdown$Anchor, {
                           id: id
                         })), children));
@@ -198,9 +203,12 @@ function Markdown$H3(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h3", {
-              className: "group text-xl mt-12 mb-3 leading-3 font-sans font-semibold text-night-darker"
+              className: "group text-xl mt-12 mb-3 leading-3 font-sans font-semibold text-onyx"
             }, React.createElement("span", {
-                  className: "-ml-6 pr-2"
+                  className: "pr-2",
+                  style: {
+                    marginLeft: "-1.6rem"
+                  }
                 }, React.createElement(Markdown$Anchor, {
                       id: id
                     })), children);
@@ -214,9 +222,12 @@ function Markdown$H4(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h4", {
-              className: "group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-night-dark"
+              className: "group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-onyx"
             }, React.createElement("span", {
-                  className: "-ml-5 pr-2"
+                  className: "pr-2",
+                  style: {
+                    marginLeft: "-1.45rem"
+                  }
                 }, React.createElement(Markdown$Anchor, {
                       id: id
                     })), children);
@@ -230,9 +241,12 @@ function Markdown$H5(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h5", {
-              className: "group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide"
+              className: "group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide text-onyx"
             }, React.createElement("span", {
-                  className: "-ml-5 pr-2"
+                  className: "pr-2",
+                  style: {
+                    marginLeft: "-1.1rem"
+                  }
                 }, React.createElement(Markdown$Anchor, {
                       id: id
                     })), children);
@@ -245,7 +259,7 @@ var H5 = {
 function Markdown$Pre(Props) {
   var children = Props.children;
   return React.createElement("pre", {
-              className: "mt-2 mb-4 block"
+              className: "mt-2 mb-4 -mx-6 xs:mx-0 block"
             }, children);
 }
 
@@ -343,7 +357,7 @@ function makeCodeElement(code, metastring, lang) {
         });
   }
   return React.createElement("div", {
-              className: "md-code font-mono block leading-tight mt-4 mb-10"
+              className: "md-code font-mono w-full block leading-tight mt-4 mb-10"
             }, codeElement);
 }
 
@@ -532,6 +546,17 @@ var Li = {
   make: Markdown$Li
 };
 
+function Markdown$Strong(Props) {
+  var children = Props.children;
+  return React.createElement("strong", {
+              className: "font-semibold"
+            }, children);
+}
+
+var Strong = {
+  make: Markdown$Strong
+};
+
 var $$default = {
   Cite: Markdown$Cite,
   Info: Markdown$Info,
@@ -553,6 +578,7 @@ var $$default = {
   td: Markdown$Td,
   blockquote: Markdown$Blockquote,
   inlineCode: Markdown$InlineCode,
+  strong: Markdown$Strong,
   hr: Markdown$Hr,
   code: Markdown$Code,
   pre: Markdown$Pre,
@@ -585,6 +611,7 @@ export {
   Ul ,
   Ol ,
   Li ,
+  Strong ,
   $$default ,
   $$default as default,
   

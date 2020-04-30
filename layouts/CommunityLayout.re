@@ -63,8 +63,6 @@ let make = (~components=Markdown.default, ~children) => {
       Belt.Option.map(urlPath, v => {UrlPath.toBreadCrumbs(~prefix=[], v)});
     };
 
-  Js.log(breadcrumbs);
-
   let title = "Community";
 
   <DocsLayout

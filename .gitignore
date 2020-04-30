@@ -7,6 +7,7 @@ out
 node_modules/
 .next/
 index_data/*.json
+!index_data/blog_authors.json
 
 yarn-error.log
 

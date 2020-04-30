@@ -1,5 +1,6 @@
 
 
+import * as Meta from "../components/Meta.bs.js";
 import * as React from "react";
 import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
@@ -28,6 +29,7 @@ let hljs = require('highlight.js/lib/highlight');
   let json = require('highlight.js/lib/languages/json');
   let ts = require('highlight.js/lib/languages/typescript');
   let text = require('highlight.js/lib/languages/plaintext');
+  let diff = require('highlight.js/lib/languages/diff');
 
   hljs.registerLanguage('reason', reason);
   hljs.registerLanguage('javascript', js);
@@ -36,6 +38,7 @@ let hljs = require('highlight.js/lib/highlight');
   hljs.registerLanguage('sh', bash);
   hljs.registerLanguage('json', json);
   hljs.registerLanguage('text', text);
+  hljs.registerLanguage('diff', diff);
 ;
 
 function isVersion(str) {
@@ -214,14 +217,25 @@ function make(props) {
   }
   if (exit === 1) {
     var match$10 = Belt_List.fromArray(base);
-    if (match$10 && match$10[0] === "community") {
-      return React.createElement(CommunityLayout.make, {
-                  children: content
-                });
+    if (match$10) {
+      switch (match$10[0]) {
+        case "blog" :
+            return content;
+        case "community" :
+            return React.createElement(CommunityLayout.make, {
+                        children: content
+                      });
+        default:
+          
+      }
     }
     return React.createElement(MainLayout.make, {
-                children: content
-              });
+                children: null
+              }, React.createElement(Meta.make, { }), React.createElement("div", {
+                    className: "flex justify-center"
+                  }, React.createElement("div", {
+                        className: "max-w-705 w-full"
+                      }, content)));
   }
   
 }

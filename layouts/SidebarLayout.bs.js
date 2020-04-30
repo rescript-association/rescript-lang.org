@@ -106,7 +106,7 @@ var UrlPath = {
 function SidebarLayout$BreadCrumbs(Props) {
   var crumbs = Props.crumbs;
   return React.createElement("div", {
-              className: "w-full overflow-x-auto text-xs text-night"
+              className: "w-full font-medium tracking-tight overflow-x-auto text-14 text-night"
             }, Util.ReactStuff.ate(Belt_List.toArray(Belt_List.mapWithIndex(crumbs, (function (i, crumb) {
                             var item = i === (Belt_List.length(crumbs) - 1 | 0) ? React.createElement("span", {
                                     key: String(i)
@@ -316,12 +316,12 @@ function SidebarLayout$Sidebar(Props) {
   };
   return React.createElement(React.Fragment, undefined, React.createElement("div", {
                   className: (
-                    isOpen ? "fixed w-full left-0 h-full z-10 min-w-20" : "hidden "
+                    isOpen ? "fixed w-full left-0 h-full z-10 min-w-320" : "hidden "
                   ) + " md:block md:w-1/4 md:h-auto md:relative overflow-y-visible bg-white md:relative"
                 }, React.createElement("aside", {
-                      className: "relative top-0 px-4 w-full block md:top-16 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24 pt-8",
+                      className: "relative top-0 px-4 w-full block md:top-18 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24 pt-8",
                       style: {
-                        height: "calc(100vh - 4rem"
+                        height: "calc(100vh - 4.5rem)"
                       }
                     }, React.createElement("div", {
                           className: "flex justify-between"
@@ -407,7 +407,7 @@ function SidebarLayout(Props) {
                   });
         }), []);
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, { }), React.createElement("div", {
-                  className: "mt-16 min-w-20 " + theme$1
+                  className: "mt-16 min-w-320 " + theme$1
                 }, React.createElement("div", {
                       className: "w-full text-night font-base"
                     }, React.createElement(Navigation.make, {
@@ -418,31 +418,29 @@ function SidebarLayout(Props) {
                         }), React.createElement("div", {
                           className: "flex justify-center"
                         }, React.createElement("div", {
-                              className: "lg:align-center w-full max-w-xl"
-                            }, React.createElement(React$1.MDXProvider, {
-                                  components: components,
-                                  children: React.createElement("div", {
-                                        className: "flex"
-                                      }, sidebar, React.createElement("div", {
-                                            className: "flex justify-center w-full md:w-3/4 overflow-hidden"
-                                          }, React.createElement("main", {
-                                                className: "w-5/6 pt-10 mb-32 text-lg"
-                                              }, React.createElement("div", {
-                                                    className: "fixed border-b shadow top-16 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center"
-                                                  }, React.createElement(SidebarLayout$MobileDrawerButton, {
-                                                        hidden: isNavOpen,
-                                                        onClick: (function (evt) {
-                                                            evt.preventDefault();
-                                                            return Curry._1(setSidebarOpen, (function (prev) {
-                                                                          return !prev;
-                                                                        }));
-                                                          })
-                                                      }), React.createElement("div", {
-                                                        className: "truncate overflow-x-auto touch-scroll"
-                                                      }, breadcrumbs$1)), React.createElement("div", {
-                                                    className: "mt-10"
-                                                  }, children))))
-                                }))))));
+                              className: "w-full max-w-1280 md:mx-8"
+                            }, React.createElement("div", {
+                                  className: "flex"
+                                }, sidebar, React.createElement("main", {
+                                      className: "px-6 w-full md:ml-12 md:mx-8 pt-16 md:mt-2 md:pt-24 mb-32 text-lg max-w-705"
+                                    }, React.createElement("div", {
+                                          className: "fixed border-b shadow top-18 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center"
+                                        }, React.createElement(SidebarLayout$MobileDrawerButton, {
+                                              hidden: isNavOpen,
+                                              onClick: (function (evt) {
+                                                  evt.preventDefault();
+                                                  return Curry._1(setSidebarOpen, (function (prev) {
+                                                                return !prev;
+                                                              }));
+                                                })
+                                            }), React.createElement("div", {
+                                              className: "truncate overflow-x-auto touch-scroll"
+                                            }, breadcrumbs$1)), React.createElement("div", {
+                                          className: "mt-10"
+                                        }, React.createElement(React$1.MDXProvider, {
+                                              components: components,
+                                              children: children
+                                            })))))))));
 }
 
 var Link$1 = /* alias */0;

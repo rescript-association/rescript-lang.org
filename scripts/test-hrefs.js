@@ -14,11 +14,28 @@ const path = require("path");
 const fs = require("fs");
 const urlModule = require("url");
 
+// Our blogposts are stored in a different directory than `pages`
+// So we need to function to map between pages <--> _blogposts
+// e.g. "./_blogposts/compiler/foo.mdx" => "./pages/blog/foo.mdx"
+// e.g. "./_blogposts/other.mdx" => "./pages/blog/other.mdx"
+const mapBlogFilePath = (path) => {
+  const match = path.match(/\.\/_blogposts\/(.*\/)*(.*\.mdx)/);
+
+  if(match) {
+    return `./pages/blog/${match[2]}`;
+  }
+  return path;
+};
+
 // Creates a lookup table of all available pages within the website
+// It will also automatically map urls for dedicated directorys (such as _blogposts)
+// to the correct url
 // { key=url: value=original_filepath}
 const createPageIndex = files => {
   return files.reduce((acc, path) => {
-    const url = path.replace(/^\.\//, "/").replace(/\.md?(x)/, "");
+    // We need to consider all the different file formats used in pages
+    // Calculate the website url by stripping .re, .bs.js, .md(x), etc.
+    const url = mapBlogFilePath(path).replace(/^\.\//, "/").replace(/\.re|\.bs\.js|\.js|\.md(x)?$/, "");
     acc[url] = path;
     return acc;
   }, {});
@@ -130,6 +147,7 @@ const testFile = (pageMap, test) => {
 
   if (results.length > 0) {
     console.log(`\n-------Results for '${filepath}'----------`);
+
     results.forEach(r => {
       const { status } = r;
       const { line, column } = r.link.position.start;
@@ -151,13 +169,13 @@ const testFile = (pageMap, test) => {
 const main = () => {
   const [, , pattern] = process.argv;
   const cwd = path.join(__dirname, "..");
-  const files = glob.sync(pattern ? pattern : `./pages/**/*.md?(x)`, { cwd });
-
-  const processedFiles = files.map(processFile);
+  const files = glob.sync(pattern ? pattern : `./{pages,_blogposts}/**/*.md?(x)`, { cwd });
 
   // We need to capture all files independently from the test file glob
-  const pageMapFiles = glob.sync("./pages/**/*.md?(x)", { cwd });
+  const pageMapFiles = glob.sync("./{pages,_blogposts}/**/*.{js,mdx}", { cwd });
   const pageMap = createPageIndex(pageMapFiles);
+
+  const processedFiles = files.map(processFile);
 
   const allTested = processedFiles.map(file => testFile(pageMap, file));
 
@@ -178,7 +196,7 @@ const main = () => {
     console.log(
       `\nTip: You can also run tests just for specific files / globs:`
     );
-    console.log('`node scripts/test-hrefs.js "pages/belt_docs/*.mdx"`');
+    console.log('`node scripts/test-hrefs.js "pages/**/*.mdx"`');
     showErrorMsg(failed[0]);
     process.exit(1);
   }

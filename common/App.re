@@ -19,6 +19,7 @@
   let json = require('highlight.js/lib/languages/json');
   let ts = require('highlight.js/lib/languages/typescript');
   let text = require('highlight.js/lib/languages/plaintext');
+  let diff = require('highlight.js/lib/languages/diff');
 
   hljs.registerLanguage('reason', reason);
   hljs.registerLanguage('javascript', js);
@@ -27,6 +28,7 @@
   hljs.registerLanguage('sh', bash);
   hljs.registerLanguage('json', json);
   hljs.registerLanguage('text', text);
+  hljs.registerLanguage('diff', diff);
 |};
 
 type pageComponent = React.component(Js.t({.}));
@@ -165,8 +167,18 @@ let make = (props: props): React.element => {
   | {base} =>
     switch (Belt.List.fromArray(base)) {
     | ["community", ..._rest] => <CommunityLayout> content </CommunityLayout>
-    | _ => <MainLayout> content </MainLayout>
+    | ["blog"] => content // Blog implements its own layout as well
+    | ["blog", ..._rest] =>
+      // Here, the layout will be handled by the Blog_Article component
+      // to keep the frontmatter parsing etc in one place
+      content
+    | _ =>
+      <MainLayout>
+        <Meta />
+        <div className="flex justify-center">
+          <div className="max-w-705 w-full"> content </div>
+        </div>
+      </MainLayout>
     }
-  | _ => <MainLayout> content </MainLayout>
   };
 };

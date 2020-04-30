@@ -1,6 +1,5 @@
 
 
-import * as Meta from "../components/Meta.bs.js";
 import * as React from "react";
 import * as Markdown from "../components/Markdown.bs.js";
 import * as Navigation from "../components/Navigation.bs.js";
@@ -11,14 +10,11 @@ function MainLayout(Props) {
   var children = Props.children;
   var $staropt$star = Props.components;
   var components = $staropt$star !== undefined ? Caml_option.valFromOption($staropt$star) : Markdown.$$default;
-  var minWidth = {
-    minWidth: "20rem"
-  };
   var overlayState = React.useState((function () {
           return false;
         }));
-  return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, { }), React.createElement("div", {
-                  className: "mb-32 mt-16"
+  return React.createElement(React.Fragment, undefined, React.createElement("div", {
+                  className: "mb-32 mt-4 xs:mt-16"
                 }, React.createElement("div", {
                       className: "text-night text-lg"
                     }, React.createElement(Navigation.make, {
@@ -26,13 +22,10 @@ function MainLayout(Props) {
                         }), React.createElement("div", {
                           className: "flex justify-center overflow-hidden"
                         }, React.createElement("main", {
-                              className: "mt-32 lg:align-center w-full px-4 max-w-xl ",
-                              style: minWidth
+                              className: "mt-32 min-w-320 lg:align-center w-full px-4 md:px-8 lg:px-0 max-w-1280 "
                             }, React.createElement(React$1.MDXProvider, {
                                   components: components,
-                                  children: React.createElement("div", {
-                                        className: "w-full max-w-lg"
-                                      }, children)
+                                  children: children
                                 }))))));
 }
 
@@ -45,4 +38,4 @@ export {
   make ,
   
 }
-/* Meta Not a pure module */
+/* react Not a pure module */

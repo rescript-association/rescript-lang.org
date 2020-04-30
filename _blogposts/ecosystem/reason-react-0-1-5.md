@@ -1,0 +1,14 @@
+---
+author: chenglou
+date: "2017-06-21" 
+previewImg:
+category: ecosystem
+badge: release
+title: ReasonReact 0.1.5
+description: |
+canonical: https://reasonml.github.io/reason-react/blog/2017/06/21/015
+---
+
+Thanks for the wait! Head over to [HISTORY.md](https://github.com/reasonml/reason-react/blob/master/HISTORY.md#015) to see the changes. This is a small non-breaking release, though we did fix a ref-related issue that can cause type errors. The fix is trivial; see the notes.
+
+We've batched together non-breaking features for your upgrading convenience. Next version will be a breaking one, with API tweaks that fix some of the existing pain points. Stay tuned!

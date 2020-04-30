@@ -1,0 +1,51 @@
+---
+author: chenglou
+date: "2017-10-27" 
+previewImg:
+category: syntax
+badge: release
+title: Announcing Reason 3.0
+description: |
+canonical: https://reasonml.github.io/blog/2017/10/27/reason3
+---
+
+I'm writing this post while coincidentally sitting next to the Reason team manager's manager who's trying out the new Reason syntax; his first impression is "this is exactly how I think it works!". I think this alone made all our effort worthwhile.
+
+Reason 3 is primarily the work of [Fred](https://github.com/let-def), the maintainer of Merlin (yeah, _that_ [Merlin](https://github.com/ocaml/merlin)), [Iwan](https://github.com/iwankaramazow) and [Jared](https://github.com/jaredly), over the last six months. The release packs a _lot_ of infra changes under the hood, most of which, we hope, stay invisible to you and occasionally make you feel "yeah, that _is_ how I think it should work".
+
+The infra changes wouldn't have happened without a tight cooperation from these OCaml and JavaScript folks. We're really, _really_ grateful for all the support we've gotten. Thank you so much.
+
+**Highlights**:
+
+- [Here's how it looks](https://github.com/reasonml-community/reason-react-example/commit/3640ce6bb6729c3b3d8a0c200a624996f8da8beb).
+- 100+ parsing & printing issues fixed! The total open issues count went from almost 500 to <300.
+- New error messages infra, by Fred. This solves lots of existing pain points with refmt error report: reserved keywords, missing semicolon, etc. More coming soon! **Please do give Fred a shout out on his [Twitter](https://twitter.com/let_def)**. Show that the JavaScript folks appreciate his help.
+- Unification of `[@foo]`, `[@@foo]` and `[@@@foo]` into `[@foo]`. Labeled argument + type punning, JS object type sugar `{. "foo": string}`, string concat is now `++`, infix operators formatting tweaks, etc.
+- We've now exposed [dedicated APIs](https://github.com/facebook/reason/tree/9c578b4e5ace89e8966fc9ec747d393985b05933#installation-for-programmatic-usage) for programmatic usage of the Reason parser and printer, `refmt`, for both native and web usage. In particular, the web version of `refmt` powers [Klipse](http://blog.klipse.tech/reason/2017/10/06/blog-reason.html), [reason-tools](https://github.com/reasonml/reason-tools), the Reason docs site, etc. If you're coming from JavaScript: `npm install --save reason` to get the single `refmt.js` script. It gzips to <350kb, so go wild and impress us with your `refmt` usages!\*
+- **Aaaand yes, JS application/abstraction syntax (aka, parentheses around functions/parametrized types)**. Yes, you still get automatic currying; it's a pure syntactical change. Honestly, this point alone deserves its own post, but it opens the floodgates of [bikeshedding](http://whatis.techtarget.com/definition/Parkinsons-law-of-triviality-bikeshedding), so we're gonna refrain from writing one and will just watch you folks argue over this on Twitter (and pick the most creative rants and hang them on our wall!). More seriously, **if you deeply care about syntax**, then instead of shouting about the change publicly, voice your feedbacks/complains privately to [@_chenglou](https://twitter.com/_chenglou) and [@jordwalke](https://twitter.com/jordwalke). If you don't care about syntax, then great!
+
+**How do I get it?**
+
+- There's a [**migration script here**](https://github.com/reasonml/upgradeSyntaxFrom2To3). Use it. No manual syntax upgrade needed.
+- Uninstall & upgrade your [editor tooling](/docs/manual/latest/editor-plugins) to `3.0.0` (instead of the old `1.13.7`), for editor tooling.
+- Upgrade your project's [BuckleScript](https://bucklescript.github.io) to `2.1.0`.
+- Set `"refmt": 3` in your `bsconfig.json`.
+- Restart your editor.
+
+- If you're working on native, it's `reason.3.0.0` on OPAM.
+
+**How does this affect existing projects**?
+
+- If you don't specify `"refmt": 3` in your `bsconfig.json`, nothing changes. (Update: bs-platform 2.1.0 now defaults to refmt 3. If you want to keep refmt 2, put `"refmt": 2`).
+- Your third-party dependencies can still stay at version 2, vice-versa. Things will work as intended.
+- Learning the new syntax? [Reason-tools](https://github.com/reasonml/reason-tools) now converts between syntaxes too!
+
+- For native, the dependencies will have to upgrade the syntax first. We'll solve this better in the future.
+
+Voilà!
+
+**To see the full list of the changes**, please go to [HISTORY.md](https://github.com/facebook/reason/blob/master/HISTORY.md#300). Again, check the migration script so that you don't go and manually convert each file.
+
+Thank you again, Fred, Iwan, Jared and all the others (hcarty, Sean, Jordan, Cristiano, Hongbo, Ricky, Andrey, etc.) for the whole effort.
+
+\* If you format your own blog site's Reason code using it, the post's syntax can potentially stay always up-to-date without you needing to go and manually update the snippets. And yes, we have some crazy ideas around this soon.

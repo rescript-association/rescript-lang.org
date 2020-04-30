@@ -8,6 +8,10 @@ let linkOrActiveLink = (~target, ~route) => {
   target === route ? activeLink : link;
 };
 
+let linkOrActiveLinkSubroute = (~target, ~route) => {
+  Js.String2.startsWith(route, target) ? activeLink : link;
+};
+
 module CollapsibleLink = {
   // KeepOpen = Menu has been opened and should stay open
   type state =
@@ -90,8 +94,9 @@ module CollapsibleLink = {
       <div
         className={
           (isOpen ? "flex" : "hidden")
-          ++ " fixed left-0 mt-4 border-night border-t bg-night-dark min-w-20 w-full h-full sm:h-auto sm:justify-center"
-        }>
+          ++ " fixed left-0 border-night border-t bg-night-dark min-w-320 w-full h-full sm:h-auto sm:justify-center"
+        }
+        style={Style.make(~marginTop="1.375rem", ())}>
         <div className="max-w-xl w-full"> children </div>
       </div>
     </div>;
@@ -313,7 +318,7 @@ module MobileNav = {
         </li>
         <li className=base>
           <Link href="/blog">
-            <a className={linkOrActiveLink(~target="/blog", ~route)}>
+            <a className={linkOrActiveLinkSubroute(~target="/blog", ~route)}>
               "Blog"->s
             </a>
           </Link>
@@ -441,21 +446,15 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
     ref={ReactDOMRe.Ref.domRef(outerRef)}
     id="header"
     style={Style.make(~minWidth, ())}
-    className="fixed flex justify-center z-20 top-0 w-full h-16 bg-night-dark shadow text-white-80 text-base">
+    className="fixed flex justify-center z-20 top-0 w-full h-18 bg-night-dark shadow text-white-80 text-base">
     <div
-      className="flex justify-between pl-4 items-center h-full w-full max-w-xl">
-      <div className="h-8 w-8 md:w-20 md:mb-3 ">
+      className="flex justify-between mx-4 md:mx-8 items-center h-full w-full max-w-1280">
+      <div className="h-10 w-10">
         <a href="/">
-          <picture>
-            <source
-              srcSet="/static/reason_logo_full.svg"
-              media="(min-width: 768px)"
-            />
-            <img
-              className="h-8 w-auto inline-block"
-              src="/static/reason_logo.svg"
-            />
-          </picture>
+          <img
+            className="inline-block w-full h-full"
+            src="/static/reason_logo.svg"
+          />
         </a>
       </div>
       /* Desktop horizontal navigation */
@@ -513,7 +512,7 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
             <a
               className={
                 "hidden sm:block "
-                ++ linkOrActiveLink(~target="/blog", ~route)
+                ++ linkOrActiveLinkSubroute(~target="/blog", ~route)
               }
               onMouseEnter=nonCollapsibleOnMouseEnter>
               "Blog"->s
@@ -576,7 +575,7 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
     </button>
     /* Mobile overlay */
     <div
-      style={Style.make(~minWidth, ~top="4rem", ())}
+      style={Style.make(~minWidth, ~top="4.5rem", ())}
       className={
         (isOverlayOpen ? "flex" : "hidden")
         ++ " sm:hidden flex-col fixed top-0 left-0 h-full w-full sm:w-9/12 bg-night-dark sm:h-auto sm:flex sm:relative sm:flex-row sm:justify-between"

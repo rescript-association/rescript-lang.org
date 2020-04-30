@@ -15,16 +15,16 @@ import * as SidebarLayout from "./SidebarLayout.bs.js";
 function DocsLayout$Toc(Props) {
   var entries = Props.entries;
   return React.createElement("ul", {
-              className: "mt-2 mb-6 border-l border-primary"
+              className: "mt-2 py-1 mb-4 border-l border-primary"
             }, Util.ReactStuff.ate(Belt_Array.map(entries, (function (param) {
                         var header = param.header;
                         return React.createElement("li", {
                                     key: header,
-                                    className: "pl-2 mt-1"
+                                    className: "pl-2 mt-3 first:mt-1"
                                   }, React.createElement(Link.default, {
                                         href: param.href,
                                         children: React.createElement("a", {
-                                              className: "font-medium block text-sm text-night-light hover:text-primary"
+                                              className: "font-medium block text-sm text-night-light leading-tight tracking-tight hover:text-primary"
                                             }, Util.ReactStuff.s(header))
                                       }));
                       }))));
@@ -58,7 +58,7 @@ function DocsLayout$Sidebar$NavItem(Props) {
               className: "mt-2 text-sm font-medium"
             }, Util.ReactStuff.ate(Belt_Array.map(items, (function (m) {
                         var hidden = isHidden ? "hidden" : "block";
-                        var active = Curry._1(isItemActive, m) ? " bg-primary-15 text-primary-dark rounded -mx-2 px-2 font-bold block " : "";
+                        var active = Curry._1(isItemActive, m) ? " bg-primary-15 text-primary-dark leading-5 rounded-sm -ml-2 pl-2 font-semibold block " : "";
                         var activeToc = getActiveToc !== undefined ? Curry._1(getActiveToc, m) : undefined;
                         var tmp;
                         if (activeToc !== undefined) {
@@ -71,11 +71,11 @@ function DocsLayout$Sidebar$NavItem(Props) {
                         }
                         return React.createElement("li", {
                                     key: m.name,
-                                    className: hidden + " mt-2 leading-5 w-4/5"
+                                    className: hidden + " mt-1 leading-4 w-4/5"
                                   }, React.createElement(Link.default, {
                                         href: m.href,
                                         children: React.createElement("a", {
-                                              className: "truncate block py-1 md:h-auto text-night-darker hover:text-primary " + active
+                                              className: "truncate block py-1 md:h-auto tracking-tight text-night-darker hover:text-primary " + active
                                             }, Util.ReactStuff.s(m.name))
                                       }), tmp);
                       }))));
@@ -152,7 +152,7 @@ function DocsLayout$Sidebar$CollapsibleSection$NavUl(Props) {
   return React.createElement("ul", {
               className: "mt-3 text-night"
             }, Util.ReactStuff.ate(Belt_Array.map(items, (function (m) {
-                        var active = Curry._1(isItemActive, m) ? " bg-primary-15 text-primary-dark -ml-1 px-2 font-bold block " : "";
+                        var active = Curry._1(isItemActive, m) ? " bg-primary-15 text-primary-dark -ml-1 px-2 font-semibold block " : "";
                         var tmp = {
                           className: "truncate block pl-3 h-8 md:h-auto border-l-2 border-night-10 block text-night hover:pl-4 hover:text-night-dark" + active
                         };
@@ -251,12 +251,17 @@ function DocsLayout$Sidebar(Props) {
   };
   return React.createElement(React.Fragment, undefined, React.createElement("div", {
                   className: (
-                    isOpen ? "fixed w-full left-0 h-full z-10 min-w-20" : "hidden "
-                  ) + " md:block md:w-1/4 md:h-auto md:relative overflow-y-visible bg-white md:relative"
+                    isOpen ? "fixed w-full left-0 h-full z-10 min-w-320" : "hidden "
+                  ) + " md:block md:w-48 md:-ml-4 lg:w-1/4 md:h-auto md:relative overflow-y-visible bg-white md:relative",
+                  id: "sidebar",
+                  style: {
+                    minWidth: "12.9375rem"
+                  }
                 }, React.createElement("aside", {
-                      className: "relative top-0 px-4 w-full block md:top-16 md:pt-10 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24",
+                      className: "relative top-0 px-4 w-full block md:top-18 md:pt-24 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24",
+                      id: "sidebar-content",
                       style: {
-                        height: "calc(100vh - 4rem"
+                        height: "calc(100vh - 4.5rem"
                       }
                     }, React.createElement("div", {
                           className: "flex justify-between"

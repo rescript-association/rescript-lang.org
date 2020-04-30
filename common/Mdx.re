@@ -63,8 +63,14 @@ module MdxChildren: {
 
   external toReactElement: t => React.element = "%identity";
 
+  // Sometimes an mdxComponent element can be a string
+  // which means it doesn't have any children.
+  // We will return the element as its own child then
   let getMdxChildren: mdxComponent => t = [%raw
     element => "{
+      if(typeof element === 'string') {
+        return element;
+      }
       if(element == null || element.props == null || element.props.children == null) {
         return;
       }
@@ -155,6 +161,8 @@ module Components = {
     blockquote: React.component(props),
     [@bs.optional]
     inlineCode: React.component(props),
+    [@bs.optional]
+    strong: React.component(props),
     [@bs.optional]
     hr: React.component(Js.t({.})),
     [@bs.optional]

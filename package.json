@@ -12,24 +12,28 @@
     "@glennsl/bs-json": "^3.0.0",
     "@mdx-js/loader": "^1.5.5",
     "@next/mdx": "^8.1.0",
+    "@octokit/graphql-schema": "^7.4.0",
     "@zeit/next-css": "^1.0.1",
     "bs-fetch": "^0.3.1",
     "bs-platform": "7.1.1",
     "gentype": "^3.1.0",
     "glob": "^7.1.4",
+    "gray-matter": "^4.0.2",
     "highlight.js": "^9.15.10",
     "isomorphic-unfetch": "^3.0.0",
-    "next": "^9.1.7",
+    "next": "^9.3.4",
     "next-transpile-modules": "^2.3.1",
     "prettier": "^1.18.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "reason-highlightjs": "^0.2.0",
+    "reason-promise": "^1.0.2",
     "reason-react": "^0.7.0",
     "remark-parse": "^7.0.1",
     "remark-slug": "^5.1.2",
     "remark-stringify": "^7.0.3",
     "request": "^2.88.0",
+    "stringify-object": "^3.3.0",
     "unified": "^8.4.0"
   },
   "scripts": {
@@ -49,6 +53,6 @@
     "autoprefixer": "^9.5.1",
     "cssnano": "^4.1.10",
     "postcss-easy-import": "^3.0.0",
-    "tailwindcss": "^1.0.1"
+    "tailwindcss": "^1.2.0"
   }
 }

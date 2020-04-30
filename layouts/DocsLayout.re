@@ -17,12 +17,12 @@ module Toc = {
 
   [@react.component]
   let make = (~entries: array(entry)) => {
-    <ul className="mt-2 mb-6 border-l border-primary">
+    <ul className="mt-2 py-1 mb-4 border-l border-primary">
       {Belt.Array.map(entries, ({header, href}) =>
-         <li key=header className="pl-2 mt-1">
+         <li key=header className="pl-2 mt-3 first:mt-1">
            <Link href>
              <a
-               className="font-medium block text-sm text-night-light hover:text-primary">
+               className="font-medium block text-sm text-night-light leading-tight tracking-tight hover:text-primary">
                header->s
              </a>
            </Link>
@@ -64,7 +64,7 @@ module Sidebar = {
              let hidden = isHidden ? "hidden" : "block";
              let active =
                isItemActive(m)
-                 ? {j| bg-primary-15 text-primary-dark rounded -mx-2 px-2 font-bold block |j}
+                 ? {j| bg-primary-15 text-primary-dark leading-5 rounded-sm -ml-2 pl-2 font-semibold block |j}
                  : "";
 
              let activeToc =
@@ -73,11 +73,11 @@ module Sidebar = {
                | None => None
                };
 
-             <li key={m.name} className={hidden ++ " mt-2 leading-5 w-4/5"}>
+             <li key={m.name} className={hidden ++ " mt-1 leading-4 w-4/5"}>
                <Link href={m.href}>
                  <a
                    className={
-                     "truncate block py-1 md:h-auto text-night-darker hover:text-primary "
+                     "truncate block py-1 md:h-auto tracking-tight text-night-darker hover:text-primary "
                      ++ active
                    }>
                    m.name->s
@@ -152,6 +152,7 @@ module Sidebar = {
     };
   };
 
+  // Still used for the legacy API sidebar layout
   module CollapsibleSection = {
     module NavUl = {
       // Navigation point information
@@ -173,7 +174,7 @@ module Sidebar = {
              m => {
                let active =
                  isItemActive(m)
-                   ? {j| bg-primary-15 text-primary-dark -ml-1 px-2 font-bold block |j}
+                   ? {j| bg-primary-15 text-primary-dark -ml-1 px-2 font-semibold block |j}
                    : "";
                <li key={m.name} className="leading-5 w-4/5">
                  <Link href={m.href}>
@@ -193,6 +194,7 @@ module Sidebar = {
         </ul>;
       };
     };
+
     [@react.component]
     let make =
         (
@@ -257,13 +259,16 @@ module Sidebar = {
 
     <>
       <div
+        id="sidebar"
         className={
-          (isOpen ? "fixed w-full left-0 h-full z-10 min-w-20" : "hidden ")
-          ++ " md:block md:w-1/4 md:h-auto md:relative overflow-y-visible bg-white md:relative"
-        }>
+          (isOpen ? "fixed w-full left-0 h-full z-10 min-w-320" : "hidden ")
+          ++ " md:block md:w-48 md:-ml-4 lg:w-1/4 md:h-auto md:relative overflow-y-visible bg-white md:relative"
+        }
+        style={Style.make(~minWidth="12.9375rem", ())}>
         <aside
-          className="relative top-0 px-4 w-full block md:top-16 md:pt-10 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24"
-          style={Style.make(~height="calc(100vh - 4rem", ())}>
+          id="sidebar-content"
+          className="relative top-0 px-4 w-full block md:top-18 md:pt-24 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24"
+          style={Style.make(~height="calc(100vh - 4.5rem", ())}>
           <div className="flex justify-between">
             <div className="w-3/4 md:w-full"> toplevelNav </div>
             <button

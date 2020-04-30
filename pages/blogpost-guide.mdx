@@ -1,0 +1,111 @@
+# Blogpost Guide
+
+<Intro>
+Here you can find all the information needed to write and publish a new blog post
+on reasonml.org.
+</Intro>
+
+## Requirements
+
+Clone the [reasonml.org repo](https://github.com/reason-association/reasonml.org) and follow the README instructions to run the local development server.
+
+Open the [localhost:3000/blog](/blog) page to see the blog page.
+
+## Create a new file
+
+Blogposts are located in the `./_blogposts` directory, which consists of
+subdirectories for each available blog category:
+
+- community
+- compiler
+- docs
+- ecosystem
+- syntax
+
+### Filename Rules
+
+- The file needs to be put into the `_blogposts` directory (or in one of its
+  subdirectories)
+- The filename must be **unique across the whole `_blogposts` directory and
+  its subdirectories** (since filenames are mapped to the url `/blog/[filename]`)
+- File extension must be `.mdx`
+- Make sure to choose a meaningful filename (it will be used within the url)
+
+**Filename examples:**
+
+- ✅ `bucklescript-release-X-X-X.mdx`: Shows that the release is
+  BuckleScript related
+- ✅ `cool-thing-to-expect-in-bucklescript-8.mdx`: Here, the filename replicates the
+  title, context / version number is well communicated
+- ❌ `new-version.mdx`: Bad, since there's no context about the release
+  platform. Also `new-version` is very relative; we need more context on the
+  version number
+
+**Example for creating a file within the reasonml.org repository:**
+
+```sh
+touch _blogposts/compiler/bucklescript-release-1-0-0.mdx
+touch _blogposts/some-other-post.mdx
+```
+
+After creating the file, refresh your browser on the [/blog](/blog) url.  You
+will see a warning because of malformed frontmatter data. Let's fix this!
+
+## Add Frontmatter Data
+
+Each blogpost requires a certain set of meta information (so called
+"frontmatter"), otherwise it can't be displayed in the blog.
+
+In
+development mode, you will see error messages for invalid frontmatter on the
+`localhost:3000/blog` url. Blogposts with invalid frontmatter will not be
+rendered and displayed in production, so make sure to fix those errors.
+
+Frontmatter is put **on the top of your file**. Here is a fully working example
+of all available attributes:
+
+```
+---
+author: hongbo
+date: "2017-10-01" 
+previewImg:
+category: compiler
+badge: release
+title: Bloomberg announces BuckleScript 1.0
+description: |
+  some multiline
+  description
+canonical: https://bucklescript.github.io/blog/2017/10/01/announcing-1-0
+---
+```
+
+- `author`: An author alias as defined in `./index_data/blog_authors.json`
+- `date`: A **string** date (always make sure to use the `"`, otherwise yaml
+  will parse it as a `date`). The date format is `"YYYY-MM-DD hh:mm"`. All blog
+  posts are ordered ascending by date.
+- `previewImg`: The image shown in the blog overview, which will also be used
+  as a link preview image
+- `category`: Categories as listed in [Creating a new
+  File](#creating-a-new-file)
+- `badge`: An additional badge on the blog, on top of the preview image.
+  Available values are `release`, `testing`, `preview`, `roadmap`
+- `title`: The title of the article (h1 headline)
+- `description`: A description, which will be shown in the Featured blog post
+  in the blog overview, and also as an introductory text in the blog article
+- `canonical`: This is used to point to a canonical url (mostly for refering to
+  the original source of a post, in case it is duplicated content)
+
+> **For Maintainers:** The implementation for the frontmatter logic can be found in the
+`common/BlogFrontmatter.re` module. 
+
+### Writing Markdown Content
+
+You can use all the markdown features available to this documentation platform.
+
+
+<UrlBox text="Markdown Guide" href="/markdown-guide">
+
+Check out our markdown guide to get an overview
+over all available UI components.
+
+</UrlBox>

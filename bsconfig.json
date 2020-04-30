@@ -1,14 +1,15 @@
 {
-  "name": "reason-workshop-nextjs",
+  "name": "reasonml.org",
   "namespace": false,
   "reason": { "react-jsx": 3 },
   "refmt": 3,
-  "bs-dependencies": ["reason-react", "bs-fetch", "@glennsl/bs-json"],
+  "bs-dependencies": ["reason-react", "bs-fetch", "@glennsl/bs-json", "reason-promise"],
   "ppx-flags": [],
   "sources": [
     { "dir": "common" },
     { "dir": "bindings" },
     { "dir": "pages", "subdirs": true },
+    { "dir": "re_pages", "subdirs": true },
     { "dir": "components", "subdirs": true },
     "layouts"
   ],
