@@ -59,8 +59,6 @@ As pictured in the diagram above, BuckleScript is primarily based on the Lambda 
 
 BuckleScript requires patches to the OCaml compiler. One of the main reasons is to enrich the Lambda representation so that the generated code is as nice as possible. A design goal is to keep those patches minimal and useful for the OCaml compiler in general so that they can later be integrated.
 
-**Note**: a common question is to wonder why BuckleScript transpiles an OCaml record value to a JavaScript array while a more intuitive representation would be a JavaScript object. This technical decision is a direct consequence of the above 2 design principles: the Lambda layer assumes in a lot of places that a record value is an array and such modification would be too large of a change to OCaml compiler.
-
 ### Soundness
 
 BuckleScript preserves the soundness of the OCaml language. Assuming the FFI is correctly implemented, the type safety is preserved.
