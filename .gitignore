@@ -4,6 +4,8 @@ out
 *.swp
 *.swo
 
+*.bs.js
+
 node_modules/
 .next/
 index_data/*.json
