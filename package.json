@@ -8,7 +8,6 @@
     "node": "12.x"
   },
   "dependencies": {
-    "@fullhuman/postcss-purgecss": "^1.2.0",
     "@glennsl/bs-json": "^3.0.0",
     "@mdx-js/loader": "^1.5.5",
     "@next/mdx": "^8.1.0",
