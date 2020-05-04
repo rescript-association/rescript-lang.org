@@ -157,7 +157,7 @@ function Navigation$SubNav$DocsLinks(Props) {
   ];
   var recompItems = [
     /* tuple */[
-      "Reason Compiler",
+      "BuckleScript",
       "/docs/reason-compiler/latest/introduction"
     ],
     /* tuple */[
