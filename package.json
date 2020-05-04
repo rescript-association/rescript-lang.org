@@ -8,7 +8,6 @@
     "node": "12.x"
   },
   "dependencies": {
-    "@fullhuman/postcss-purgecss": "^1.2.0",
     "@glennsl/bs-json": "^3.0.0",
     "@mdx-js/loader": "^1.5.5",
     "@next/mdx": "^8.1.0",
@@ -52,6 +51,7 @@
   "devDependencies": {
     "autoprefixer": "^9.5.1",
     "cssnano": "^4.1.10",
+    "postcss-cli": "^7.1.1",
     "postcss-easy-import": "^3.0.0",
     "tailwindcss": "^1.2.0"
   }

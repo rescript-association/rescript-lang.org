@@ -34,6 +34,19 @@
  *
  */
 module.exports = {
+  purge: {
+    // Specify the paths to all of the template files in your project
+    content: [
+      './components/**/*.re',
+      './re_pages/**/*.re',
+      './pages/**/*.re',
+      './pages/**/*.mdx',
+      './layouts/**/*.re',
+    ],
+    options: {
+      whitelist: ["html", "body"],
+    }
+  },
   theme: {
     extend: {
       colors: {
