@@ -6,6 +6,9 @@ out
 
 *.bs.js
 
+# Generated via update-index script
+public/blog/feed.xml
+
 node_modules/
 .next/
 index_data/*.json

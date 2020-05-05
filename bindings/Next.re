@@ -1,12 +1,26 @@
 module GetServerSideProps = {
-  // See: https://github.com/zeit/next.js/blob/canary/packages/next/types/index.d.ts
-  type context('a) = {
-    params: Js.t({.}),
-    query: Js.Dict.t(string),
-    req: Js.Nullable.t(Js.t('a)),
+  module Req = {
+    type t;
   };
 
-  type t('a) = context('a) => Js.Promise.t(Js.t('a));
+  module Res = {
+    type t;
+
+    [@bs.send] external setHeader: (t, string, string) => unit = "setHeader";
+    [@bs.send] external write: (t, string) => unit = "write";
+    [@bs.send] external end_: t => unit = "end";
+  };
+
+  // See: https://github.com/zeit/next.js/blob/canary/packages/next/types/index.d.ts
+  type context('props, 'params) = {
+    params: Js.t('params),
+    query: Js.Dict.t(string),
+    req: Req.t,
+    res: Res.t,
+  };
+
+  type t('props, 'params) =
+    context('props, 'params) => Js.Promise.t({. "props": 'props});
 };
 
 module GetStaticProps = {
@@ -17,15 +31,14 @@ module GetStaticProps = {
     req: Js.Nullable.t(Js.t('props)),
   };
 
-  type t('props, 'params) = context('props, 'params) => Promise.t({. "props": 'props});
+  type t('props, 'params) =
+    context('props, 'params) => Promise.t({. "props": 'props});
 };
 
 module GetStaticPaths = {
   // 'params: dynamic route params used in dynamic routing paths
   // Example: pages/[id].js would result in a 'params = { id: string }
-  type path('params) = {
-    params: 'params
-  };
+  type path('params) = {params: 'params};
 
   type return('params) = {
     paths: array(path('params)),
@@ -33,7 +46,7 @@ module GetStaticPaths = {
   };
 
   type t('params) = unit => Promise.t(return('params));
-}
+};
 
 module Link = {
   [@bs.module "next/link"] [@react.component]

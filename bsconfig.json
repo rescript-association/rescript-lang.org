@@ -10,6 +10,7 @@
     { "dir": "bindings" },
     { "dir": "pages", "subdirs": true },
     { "dir": "re_pages", "subdirs": true },
+    { "dir": "scripts", "subdirs": true },
     { "dir": "components", "subdirs": true },
     "layouts"
   ],

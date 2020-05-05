@@ -104,7 +104,7 @@ let getFullSlug = (slug: string) => {
   // and could be optimized
 
   let filepathEqualSlug = (filepath, slug) => {
-    slug === Js.String2.replaceByRe(filepath, [%re "/\.mdx?/"], "");
+    slug === Js.String2.replaceByRe(filepath, [%re "/\\.mdx?/"], "");
   };
 
   getGroupedFiles()
@@ -118,7 +118,7 @@ let getFullSlug = (slug: string) => {
         filepathEqualSlug(filepath, slug)
       })
       ->Belt.Option.map(filepath => {
-          let slug = Js.String2.replaceByRe(filepath, [%re "/\.mdx?/"], "");
+          let slug = Js.String2.replaceByRe(filepath, [%re "/\\.mdx?/"], "");
           let fullslug =
             switch (subdir) {
             | Some(subdir) => subdir ++ "/" ++ slug
@@ -138,4 +138,131 @@ let getAllPosts = () => {
       Belt.Array.map(mdxFiles, filepath => getPostBySlug(~subdir?, filepath)),
     )
   });
+};
+
+module RssFeed = {
+  // Module inspired by
+  // https://gist.github.com/fredrikbergqvist/36704828353ebf5379a5c08c7583fe2d
+
+  // Example reference example for RSS 2.0:
+  // http://static.userland.com/gems/backend/rssTwoExample2.xml
+
+  // TODO:
+  // In case the pubDate formatting doesn't work with toUTCString,
+  // we can port something like this:
+  // https://github.com/tjconcept/js-rfc822-date
+
+  type item = {
+    title: string,
+    href: string,
+    description: string,
+    pubDate: Js.Date.t,
+  };
+
+  // TODO: This is yet again a dirty approach to prevent UTC to substract too many
+  //       hours of my local timezone so it does end up on another day, so we set the hours
+  //       to 15 o clock. We need to reconsider the way we parse blog article dates,
+  //       since the dates should always be parsed from a single timezone perspective
+  let dateToUTCString = date => {
+    date->Js.Date.setHours(15.0)->ignore;
+    date->Js.Date.toUTCString;
+  };
+
+  // Retrieves the most recent [max] blog post feed items
+  let getLatest = (~max=10, ~baseUrl="https://reasonml.org", ()): array(item) => {
+    let authors = BlogFrontmatter.Author.getAllAuthors();
+    let items = getAllPosts()
+    ->Belt.Array.reduce([||], (acc, next) => {
+        switch (BlogFrontmatter.decode(~authors, next.frontmatter)) {
+        | Ok(fm) =>
+          let description =
+            Js.Null.toOption(fm.description)->Belt.Option.getWithDefault("");
+          let item = {
+            title: fm.title,
+            href: baseUrl ++ "/blog/" ++ next.slug,
+            description,
+            pubDate: DateStr.toDate(fm.date),
+          };
+
+          Belt.Array.concat(acc, [|item|]);
+        | Error(_) => acc
+        }
+      })
+    ->Js.Array2.sortInPlaceWith((item1, item2) => {
+        let v1 = item1.pubDate->Js.Date.valueOf;
+        let v2 = item2.pubDate->Js.Date.valueOf;
+        if (v1 === v2) {
+          0;
+        } else if (v1 > v2) {
+          (-1);
+        } else {
+          1;
+        };
+      })
+    ->Js.Array2.slice(~start=0, ~end_=max);
+    items;
+  };
+
+
+  let toXmlString =
+      (~siteTitle="ReasonML Blog", ~siteDescription="", items: array(item)) => {
+    let latestPubDateElement =
+      Belt.Array.get(items, 0)
+      ->Belt.Option.map(item => {
+          let latestPubDateStr = item.pubDate->dateToUTCString;
+          {j|<lastBuildDate>$latestPubDateStr</lastBuildDate>|j};
+        })
+      ->Belt.Option.getWithDefault("");
+
+    let itemsStr =
+      Belt.Array.reduce(
+        items,
+        "",
+        (acc, item) => {
+          let {title, pubDate, description, href} = item;
+
+          let descriptionElement =
+            switch (description) {
+            | "" => ""
+            | desc => {j|<description>
+        <![CDATA[$desc]]>
+        </description>
+          |j}
+            };
+
+          // TODO: convert pubdate to string
+          let dateStr = pubDate->dateToUTCString;
+          acc
+          ++ {j|
+      <item>
+        <title>$title</title>
+        <link>
+          $href
+        </link>
+        <guid>
+          $href
+        </guid>
+        $descriptionElement
+
+        <pubDate>$dateStr</pubDate>
+
+    </item>|j};
+        },
+      );
+
+    let ret = {j|<?xml version="1.0" ?>
+  <rss version="2.0">
+    <channel>
+        <title>$siteTitle</title>
+        <link>https://reasonml.org</link>
+        <description>$siteDescription</description>
+        <language>en</language>
+        $latestPubDateElement
+        $itemsStr
+
+    </channel>
+  </rss>|j};
+
+    ret;
+  };
 };
