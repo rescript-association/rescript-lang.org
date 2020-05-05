@@ -1,0 +1,52 @@
+# Pipe Last
+
+<Warn>
+
+We discourage the usage of the `|>` / pipe-last operator in BuckleScript codebases. Using it may sometimes have a runtime cost due to currying.
+Please use the [pipe-first](./pipe-first) operator instead.
+
+Pipe-last is mainly used in native / OCaml codebases or in functional programming libraries
+aiming for a `data last` approach. You'll also find it in older Reason codebases and libraries.
+
+</Warn>
+
+[`|>`](https://reasonml.github.io/api/Pervasives.html#VAL(|%3E)) is an infix operator for piping a value to the last argument position of a function.
+
+**Example:**
+
+```reason
+let personSays = (person, msg) => person ++ " says: " ++ msg;
+
+"This will be put in the msg arg"
+  |> personSays("Alpaca");
+
+/* Returns: "Alpaca says: This will be put in the msg arg */
+```
+
+### Differences between pipe-last and pipe-first
+
+- Pipe-last is a **binding to a compiler intrinsic,** it will optimize some currying, but not all. Pipe-first (`->`) is implemented as syntactic sugar within BuckleScript and guarantees zero extra currying overhead.
+- Pipe-last can't pipe into a variant constructor (see `1->Some`)
+
+For a more thorough discussion on the rationale and differences between the two operators,
+please refer to the [Data-first and Data-last comparison by Javier Chávarri](https://www.javierchavarri.com/data-first-and-data-last-a-comparison/)
+
+### Note on Precedence
+
+Mixing both pipe operators might lead to confusion, since the pipe-first operator has a higher precedence. For example:
+
+```reason
+let maybeGreeting = Some("hello");
+
+maybeGreeting |> Belt.Option.isSome -> Js.log;
+```
+
+will not compile, since the compiler will process the `->` first (`Belt.Option.isSome -> Js.log`)
+before applying `maybeGreeting` to `Belt.Option.isSome`. A fix for the example above would involve
+using parenthesis, like this:
+
+```reason
+let maybeGreeting = Some("hello");
+
+(maybeGreeting |> Belt.Option.isSome) -> Js.log;
+```
