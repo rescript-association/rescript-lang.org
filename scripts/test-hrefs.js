@@ -35,7 +35,13 @@ const createPageIndex = files => {
   return files.reduce((acc, path) => {
     // We need to consider all the different file formats used in pages
     // Calculate the website url by stripping .re, .bs.js, .md(x), etc.
-    const url = mapBlogFilePath(path).replace(/^\.\//, "/").replace(/\.re|\.bs\.js|\.js|\.md(x)?$/, "");
+    let url = mapBlogFilePath(path).replace(/^\.\//, "/").replace(/\.re|\.bs\.js|\.js|\.md(x)?$/, "");
+
+    // For index we need to special case, since it can be referred as '/' as well
+    if(path.match(/\.\/pages\/index(\.re|\.bs\.js|\.js|\.md(x))?$/)) {
+      url = "/pages/";
+    }
+
     acc[url] = path;
     return acc;
   }, {});
