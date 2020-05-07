@@ -140,7 +140,7 @@ The `obj` value in the `Js.Exn.Error` branch is an opaque type to maintain type 
 
 ## Caveat
 
-- Please note that it's not allowed to rely on the key name of `RE_EXN_ID`. It's an implementation detail which will probably be changed into a symbol in the future.
+- Please note that it's not allowed to rely on the key name `RE_EXN_ID`. It's an implementation detail which will probably be changed into a symbol in the future.
 
 - Don't over-use exeptions, remember exception should only be used in exceptional cases like division by zero. Whenever you  try to express erroneous results, use the `result` or `option` type instead.
 
