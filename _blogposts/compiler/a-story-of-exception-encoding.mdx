@@ -91,7 +91,7 @@ In more detail, the native array will also have a magic tag 248 attached which i
 We had to simplify and unify the encoding for the different exception cases to make it possible to compile exceptions into an object instead of an array. Let's take a look at the two exception values below for example:
 
 ```reason
-A ({ x : 1, y : "x"}
+A ({ x : 1, y : "x"})
 B
 ```
 
@@ -123,7 +123,7 @@ It's important to note that a stacktrace will only be attached *when you raise a
 
 Note that in the JS world, users can pretty much throw any value they want. It is even totally valid to `throw undefined`. In ReasonML, when you try to catch an exception, the compiler will convert any arbitrary value to a ReasonML exception behind the scene:
 
-- If it is already a ReasonML exception, then the conversion will be a no-op (no runtime cost
+- If it is already a ReasonML exception, then the conversion will be a no-op (no runtime cost)
 - Otherwise it will be wrapped as a `Js.Exn.Error obj`
 
 Here is an example on how you'd access the exception value within a Reason `try` expression:
@@ -142,7 +142,7 @@ The `obj` value in the `Js.Exn.Error` branch is an opaque type to maintain type 
 
 - Please note that it's not allowed to rely on the key name `RE_EXN_ID`. It's an implementation detail which will probably be changed into a symbol in the future.
 
-- Don't over-use exeptions, remember exception should only be used in exceptional cases like division by zero. Whenever you  try to express erroneous results, use the `result` or `option` type instead.
+- Don't over-use exceptions, remember exceptions should only be used in exceptional cases like division by zero. Whenever you  try to express erroneous results, use the `result` or `option` type instead.
 
 ## Bonus
 
