@@ -92,5 +92,11 @@ let make =
       content="summary_large_image"
     />
     <meta key="twitter:image" property="twitter:image" content=ogImage />
+    <link
+      rel="alternate"
+      type_="application/rss+xml"
+      title="ReasonML Blog"
+      href="/blog/feed.xml"
+    />
   </Head>;
 };
