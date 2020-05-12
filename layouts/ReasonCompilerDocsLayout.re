@@ -102,7 +102,7 @@ let interopNavs = [|
     name: "NodeJS Special Variables",
     href: "/docs/reason-compiler/latest/nodejs-special-variables",
   },
-  {name: "Name Mangling", href: "/docs/reason-compiler/latest/name-mangling"},
+  {name: "Handling JS Naming Collisions", href: "/docs/reason-compiler/latest/handling-js-naming-collisions"},
   {name: "Miscellaneous", href: "/docs/reason-compiler/latest/interop-misc"},
   {
     name: "Browser Support & Polyfills",

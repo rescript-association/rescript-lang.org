@@ -58,7 +58,7 @@ let basicNavs = [|
   {name: "Module", href: "/docs/manual/latest/module"},
   {name: "Promise", href: "/docs/manual/latest/promise"},
   {
-    name: "Reserved Keywords List",
+    name: "Reserved Keywords",
     href: "/docs/manual/latest/reserved-keywords",
   },
 |];

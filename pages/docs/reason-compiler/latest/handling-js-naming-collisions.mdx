@@ -1,4 +1,16 @@
-There are times when you might need to use one of the [reserved keywords](/docs/manual/latest/reserved-keywords) in your code.
+# Handling JS Naming Collisions
+
+JavaScript has different naming conventions and has only very few limitations when it comes to naming variables, classes, functions, JS object attributes etc.
+
+Reason on the contrary has more restrictive naming rules which need to be considered whenever you define  a type, function, value, module, record attribute or similar. Here are a few typical naming restrictions which cause trouble with JS: 
+- Every name needs to start with a lowercase letter (uppercase is reserved for module names)
+- For the same reason, names can't be all caps  (very common for JS constants: `const MY_CONSTANT = "my_constant"`)
+- It's not possible to use [reserved keywords](/docs/manual/latest/reserved-keywords) for names
+- Labeled arguments (for defining JSX attributes) can't be named after keywords and can't start with an uppercase letter
+- etc.
+
+Of course, when doing interop, we still want to be able to map to the JS equivalent (preferably without any runtime overhead). In this section we describe some common scenarios on how to gracefully handle naming collisions.
+
 
 ## Using reserved keywords as JSX props
 
@@ -16,7 +28,9 @@ If you're using a React component with a reserved keyword as a prop name, then s
 <Component _type="title" />
 ```
 
-The Reason compiler will remove the trailing underscore when outputting JavaScript (so the JavaScript will have `<Component type="POST" />`)
+The Reason compiler will remove the trailing underscore when outputting JavaScript (so the JavaScript will have `<Component type="POST" />`).
+
+The removal of the `_` is called "Name mangling". The ruleset for this behavior is discussed [further down below](#special-name-mangling-rules-for-js-object-attribute-names).
 
 ## Accessing JavaScript object attributes that start with a capital letter
 
@@ -47,7 +61,7 @@ let payload = {
 let title = payload.postTitle;
 ```
 
-The reason compiler will output the JavaScript for `title` as:
+The code above will be translated to following JS:
 
 ```js
 /* The correct capitalized field name is output in the JavaScript! */
@@ -70,16 +84,23 @@ let payload = {
 
 /* Reason is happy since we're using the valid `type_` field name */
 let payloadType = payload.type_;
+
 ```
 
-The reason compiler will output the JavaScript for `payloadType` as:
+The code above will be translated to following JS:
 
 ```js
 /* The reason compiler has correctly ouput `payload.type` even though *we* called the field `type_` */
 var payloadType = payload.type;
 ```
 
-## Warning accessing a JavaScript object field names in a structural way [Advanced]
+## Special name mangling rules for JS object attribute names
+
+> **Note:** This is special behavior partly implemented in the Reason syntax, partly in the BuckleScript compiler. This section is mostly useful for understanding how JS object attributes and labeled arguments of ReasonReact components are compiled.
+
+> **Another Note:** A JS object type is a structurally typed entity with special compilation behavior, so they act differently than records or plain Reason objects. They are encoded as `Js.t({...})` types, more details about that feature can be found [here](http://localhost:3000/docs/reason-compiler/latest/object-2#actual-solution).
+>
+> Labeled arguments used in `[@react.component]` functions (like `let make = (~name: string, ~age: int) => React.element`) are transformed into the `Js.t` representation (e.g. `let make = Js.t({."name": string, "age": int}) => React.element`), so they follow the same ruleset.
 
 When accessing a JavaScript object field in a structural way (e.g. `myJsObject##some`), the following rules apply:
 
