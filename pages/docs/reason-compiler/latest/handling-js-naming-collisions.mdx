@@ -49,12 +49,12 @@ In this case, when writing bindings to the JavaScript object, you can use the `[
 
 ```reason
 type payload {
-    [@bs.as "PostTitle"]
-    postTitle: string
+  [@bs.as "PostTitle"]
+  postTitle: string
 }
 
 let payload = {
-    postTitle: "Welcome to Reason"
+  postTitle: "Welcome to Reason"
 }
 
 /* Reason is happy since we're using the valid `postTitle` field name */
@@ -74,17 +74,16 @@ Just like accessing attributes that start with a capital letter, we can use `[@b
 
 ```reason
 type payload {
-    [@bs.as "type"]
-    type_: string
+  [@bs.as "type"]
+  type_: string
 }
 
 let payload = {
-    type_: "Documentation"
+  type_: "Documentation"
 }
 
 /* Reason is happy since we're using the valid `type_` field name */
 let payloadType = payload.type_;
-
 ```
 
 The code above will be translated to following JS:
