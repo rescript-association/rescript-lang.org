@@ -28,13 +28,13 @@ If you're using a React component with a reserved keyword as a prop name, then s
 <Component _type="title" />
 ```
 
-The Reason compiler will remove the trailing underscore when outputting JavaScript (so the JavaScript will have `<Component type="POST" />`).
+The Reason compiler will remove the leading underscore when outputting JavaScript (so the JavaScript will have `<Component type="POST" />`).
 
 The removal of the `_` is called "Name mangling". The ruleset for this behavior is discussed [further down below](#special-name-mangling-rules-for-js-object-attribute-names).
 
 ## Accessing JavaScript object attributes that start with a capital letter
 
-Capital letters in reason are used exclusively for module names, like `String` and `Belt`, and they cannot be used as record field names like in JavaScript.
+Capital letters in Reason are used exclusively for module names, like `String` and `Belt`, and they cannot be used as record field names like in JavaScript.
 
 ```js
 const payload = {
@@ -70,7 +70,7 @@ var title = payload.PostTitle;
 
 ## Accessing reserved keywords as JavaScript object attribute names
 
-Just like accessing attributes that start with a capital letter, we can use `[@bs.as "the-reserved-keyword-that-javascript-wants"]`. It's customary to append an underscore (just like the JSX case) to the reserved keyword name:
+Just like accessing attributes that start with a capital letter, we can use `[@bs.as "the-reserved-keyword-that-javascript-wants"]`. It's customary to append an underscore (unlike the JSX case, where we *prepend* the underscore) to the reserved keyword name:
 
 ```reason
 type payload {
@@ -104,7 +104,7 @@ var payloadType = payload.type;
 
 When accessing a JavaScript object field in a structural way (e.g. `myJsObject##some`), the following rules apply:
 
-1. A single _leading_ underscore will be dropped from the output: `myJsObject##_type` => `myJsObject.type`
-1. Double (or more) _leading_ underscores will kept in the output: `myJsObject##__type` => `myJsObject.__type`
+1. A single _leading_ underscore will be *dropped* from the output: `myJsObject##_type` => `myJsObject.type`
+1. Two (or more) _leading_ underscores will be *kept* in the output: `myJsObject##__type` => `myJsObject.__type`
 1. There is _no way_ to access e.g. `myJsObject##_type` structurally - use records and `[@bs.as "_type"]` instead
 1. The _final trailing_ double underscores (and anything following them) will be dropped from the output: `myJsObject##this_is_kept__this_is_omitted` => `myJsObject.this_is_kept`
