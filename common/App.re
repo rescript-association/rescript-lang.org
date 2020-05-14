@@ -14,7 +14,7 @@
   let hljs = require('highlight.js/lib/highlight');
   let js = require('highlight.js/lib/languages/javascript');
   let ocaml = require('highlight.js/lib/languages/ocaml');
-  let reason = require('reason-highlightjs');
+  let reason = require('../plugins/reason-highlightjs');
   let bash = require('highlight.js/lib/languages/bash');
   let json = require('highlight.js/lib/languages/json');
   let ts = require('highlight.js/lib/languages/typescript');
