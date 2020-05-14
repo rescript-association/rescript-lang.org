@@ -2,7 +2,11 @@ open Util.ReactStuff;
 
 [@react.component]
 let make = (~code: string, ~lang="text") => {
-  let highlighted = HighlightJs.(highlight(~lang, ~value=code)->valueGet);
+  // If the language couldn't be parsed, we will fall back to text
+  let (lang, highlighted) =
+    try((lang, HighlightJs.(highlight(~lang, ~value=code)->valueGet))) {
+    | Js.Exn.Error(_) => ("text", code)
+    };
 
   let children =
     ReactDOMRe.createElementVariadic(
@@ -20,6 +24,7 @@ let make = (~code: string, ~lang="text") => {
   let langShortname =
     switch (lang) {
     | "ocaml" => "ml"
+    | "reasonml"
     | "reason" => "re"
     | "bash" => "sh"
     | "text" => ""
