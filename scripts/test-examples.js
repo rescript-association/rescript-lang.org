@@ -44,7 +44,7 @@ const candidates = options => (tree, file) => {
   children.forEach(child => {
     if (child.type === "code" && child.value) {
       const { meta, lang = "_" } = child;
-      if (lang === "re") {
+      if (lang === "re" || lang === "reason" || lang === "reasonml") {
         if (meta === "sig") {
           signatures.push(formatter(child.value));
         } else if (meta === "example") {

@@ -5815,11 +5815,6 @@ readdirp@~3.4.0:
   dependencies:
     picomatch "^2.2.1"
 
-reason-highlightjs@^0.2.0:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/reason-highlightjs/-/reason-highlightjs-0.2.1.tgz#65fb8d7faa7c14c5dbcd4104bb9216abac919729"
-  integrity sha512-DWWPtfeQjwKgHj2OOieEIAB544uAVjwOAIAg2Yu09CobdUe41Yah0Z67GEvmVtpYCGG/+3CZvDRM1hMVr1zN3A==
-
 reason-promise@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/reason-promise/-/reason-promise-1.0.2.tgz#22b9bb4097ce511190182b948aef11427d5b8b86"
