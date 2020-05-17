@@ -12,7 +12,7 @@ export default class extends Document {
           <NextScript />
 
           {isProduction && (
-            <Fragment>
+            <React.Fragment>
               <script
                 async
                 defer
@@ -24,7 +24,7 @@ export default class extends Document {
                   alt=""
                 />
               </noscript>
-            </Fragment>
+            </React.Fragment>
           )}
         </body>
       </html>
