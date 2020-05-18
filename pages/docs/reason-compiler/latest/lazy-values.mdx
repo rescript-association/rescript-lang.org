@@ -1,8 +1,8 @@
 # Lazy Values
 
-A lazy value of represents a deferred computation which will automatically memoize the result on the first run, and then return the memoized result on any repeated execution.
+A lazy value represents a deferred computation which will automatically memoize the result on the first run, and then return the memoized result on any repeated execution.
 
-This is useful for e.g. defining functions and expressions for complex procedures that always return the same value, for example:
+This is useful for defining functions and expressions for complex procedures that always return the same value, for example:
 
 - Doing expensive DOM traversals over the same tree over and over again
 - Doing file system operations on a static set of files that won't change 
@@ -36,7 +36,7 @@ Lazy.force(getFiles)->Js.log;
 let getFiles = () => { Node.Fs.readdirSync("./pages"); };
 
 // Note: getFiles() is not actually called within the lazy expression!
-let lazyGetFiles = lazy(getFiles());
+let lazyGetFiles = Lazy.from_fun(getFiles);
 ```
 
 Note that `getFiles()` inside the `lazy` expression is not evaluated right away (its type will be `Lazy.t(array(string))`! This is because `lazy(...)` is not a function and will be treated differently by the compiler.
@@ -123,7 +123,6 @@ Lazy.force(value)->Js.log;
 ```
 
 The runtime representation will change in the upcoming `v8` release (see this [blog post](/blog/a-story-of-lazy-encoding) for more infos).
-
 
 
 
