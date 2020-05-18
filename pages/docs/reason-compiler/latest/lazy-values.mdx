@@ -35,14 +35,11 @@ Lazy.force(getFiles)->Js.log;
 ```reason example
 let getFiles = () => { Node.Fs.readdirSync("./pages"); };
 
-// Note: getFiles() is not actually called within the lazy expression!
+// Here we wrap our function in the lazy value
 let lazyGetFiles = Lazy.from_fun(getFiles);
 ```
 
-Note that `getFiles()` inside the `lazy` expression is not evaluated right away (its type will be `Lazy.t(array(string))`! This is because `lazy(...)` is not a function and will be treated differently by the compiler.
-
-Alternatively we can use `Lazy.from_fun(getFiles)` to create the same lazy value.
-
+Whenever we want to wrap a function, we use `Lazy.from_fun`, otherwise we use the `lazy([expr])` keyword to wrap an expression.
 
 ## Force a lazy computation
 
@@ -58,7 +55,9 @@ Lazy.force(computation);
 It is also possible to use pattern matching to force a lazy value to compute, this includes `switch` expressions and similar syntax such as tuple destructing:
 
 ```re example
-// Pattern matching syntax
+//------------------------------------------
+// Extract a lazy value via pattern matching
+//------------------------------------------
 let computation = lazy("computed"); 
 
 switch(computation) {
@@ -66,11 +65,22 @@ switch(computation) {
  | _ => Js.log("not ok")
 };
 
-// Tuple Destructing
+
+//------------------------------
+// Destructing a single value
+//------------------------------
+let lazy(word) = lazy("hello");
+
+// Output: "hello"
+Js.log(word);
+
+//------------------------------
+// Destructing a tuple
+//------------------------------
 let lazyValues = (lazy("hello"), lazy("world"));
 let (lazy(word1), lazy(word2)) = lazyValues;
 
-// Logs "hello world"
+// Output: "hello world"
 Js.log2(word1, word2);
 ```
 
@@ -122,7 +132,9 @@ Js.log(value);
 Lazy.force(value)->Js.log;
 ```
 
-The runtime representation will change in the upcoming `v8` release (see this [blog post](/blog/a-story-of-lazy-encoding) for more infos).
-
+It's important to note that the runtime representation is a non-shared data
+type (don't rely on its shape on the JS side, more details [here](common-data-types#non-shared-data-types)) and will also change in the
+upcoming `v8` release (see this [blog post](/blog/a-story-of-lazy-encoding) for
+more infos).
 
 
