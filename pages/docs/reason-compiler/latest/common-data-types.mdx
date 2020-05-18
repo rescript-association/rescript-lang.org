@@ -82,7 +82,7 @@ Since BuckleScript v7, OCaml/Reason records map directly to JS objects. If recor
 
 ## Non-shared Data Types
 
-Variants (including `option` and `list`), BuckleScript objects and others can be exported as well, but you should **not** rely on their internal representation on the JS side. Aka, don't grab a BS list and start manipulating its structure on the JS side.
+Variants (including `option` and `list`), BuckleScript objects, lazy values and others can be exported as well, but you should **not** rely on their internal representation on the JS side. Aka, don't grab a BS list and start manipulating its structure on the JS side.
 
 However, for BuckleScript related data types, we provide [generation of converters and accessors](generate-converters-accessors.md). Once you convert e.g. variants to a string, you can naturally use them on the JS side.
 
@@ -136,6 +136,7 @@ Polymorphic variant | \*\*
 exception | -
 extension | -
 object | -
+lazy value| - 
 
 \* Variants with a single non-nullary constructor:
 
