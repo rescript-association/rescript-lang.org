@@ -1,5 +1,7 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
+<a href="https://simpleanalytics.com/reasonml.org?utm_source=reasonml.org&utm_content=badge" referrerpolicy="origin" target="_blank"><img src="https://simpleanalyticsbadge.com/reasonml.org?counter=true" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" /></a>
+
 # reasonml.org
 
 This is the repository for [reasonml.org](https://reasonml.org) and is currently **work
