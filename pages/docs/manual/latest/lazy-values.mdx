@@ -37,8 +37,6 @@ Lazy.force(getFiles)->Js.log;
 // Example for wrapping a function with 0 parameters
 let getFiles = () => { Node.Fs.readdirSync("./pages"); };
 
-let getFilesWithName (name) => { Node.Fs.readdirSync("./pages")->Js.
-
 // Here we wrap our function in the lazy value
 let lazyGetFiles = Lazy.from_fun(getFiles);
 ```
