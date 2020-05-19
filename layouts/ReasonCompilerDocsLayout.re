@@ -90,7 +90,6 @@ let interopNavs = [|
   {name: "Exceptions", href: "/docs/reason-compiler/latest/exceptions"},
   {name: "JSON", href: "/docs/reason-compiler/latest/json"},
   {name: "Pipe First", href: "/docs/reason-compiler/latest/pipe-first"},
-  {name: "Lazy Values", href: "/docs/reason-compiler/latest/lazy-values"},
   {
     name: "Generate Converters & Helpers",
     href: "/docs/reason-compiler/latest/generate-converters-accessors",

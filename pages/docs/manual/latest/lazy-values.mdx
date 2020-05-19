@@ -10,6 +10,7 @@ This is useful for defining functions and expressions for complex procedures tha
 
 A lazy value has a type of `Lazy.t('a)`, where `'a` is the return value of the computation. All its functionality is encapsulated with the globally available `Lazy` module.
 
+
 ## Creating a lazy value
 
 Lazy values are part of the language. You can either use the `lazy` keyword to create a lazy value from an expression...
@@ -33,13 +34,25 @@ Lazy.force(getFiles)->Js.log;
 ... or you can also wrap an existing function to make it lazy:
 
 ```reason example
+// Example for wrapping a function with 0 parameters
 let getFiles = () => { Node.Fs.readdirSync("./pages"); };
 
 // Here we wrap our function in the lazy value
 let lazyGetFiles = Lazy.from_fun(getFiles);
 ```
 
-Whenever we want to wrap a function, we use `Lazy.from_fun`, otherwise we use the `lazy([expr])` keyword to wrap an expression.
+```re example
+// Example for wrapping a function with parameters 
+let doesFileExist = name => {
+  Node.Fs.readdirSync("./pages")->Js.Array.find(s => name === s, _);
+};
+
+// Here we use the lazy syntax again
+// since we can't use Lazy.from_fun 
+let lazyDoesFileExist = lazy(doesFileExist("blog.re"));
+```
+
+Whenever we want to wrap a function `unit => 'a`, we use `Lazy.from_fun`, otherwise we use the `lazy([expr])` keyword to wrap an expression or a function with 1 or more arguments.
 
 ## Force a lazy computation
 
@@ -52,7 +65,7 @@ let computation = lazy(1);
 Lazy.force(computation);
 ```
 
-It is also possible to use pattern matching to force a lazy value to compute, this includes `switch` expressions and similar syntax such as tuple destructing:
+It is also possible to use pattern matching to force a lazy value to compute, this includes `switch` expressions and similar syntax such as tuple destructuring:
 
 ```re example
 //------------------------------------------
@@ -69,6 +82,8 @@ switch(computation) {
 //------------------------------
 // Destructuring a single value
 //------------------------------
+// Note: currently refmt will reprint this
+//       as `let lazy word = ...`
 let lazy(word) = lazy("hello");
 
 // Output: "hello"
@@ -105,35 +120,10 @@ try(Lazy.force(readFile)) {
 };
 ```
 
-Nothing new here, since we are using the `try` expression to match the exception raised in the lazy computation context!
+Nothing new here, since we are using the `try` expression to match the exception raised in the lazy computation!
 
 Please remember: Exceptions should be used sparsely!
 
+## Notes
 
-## Runtime Representation
-
-A lazy value is a wrapped data structure with different shapes depending on the status of the computation.
-
-If the lazy value hasn't been forced to compute, the value is represented as a JS array with a function and an attached magic `tag` attribute (`[ [Function], tag: 246]`).
-
-If the value **has been forced**, the runtime representation will be the actual result of the computation.
-
-(Please note that the magic tag attribute doesn't yield any practical value and should be ignored)
-
-**Example:**
-
-```re
-let value = lazy(string_of_int(1));
-
-// Outputs: [ [Function], tag: 246 ]
-Js.log(value);
-
-// Outputs: 1
-Lazy.force(value)->Js.log;
-```
-
-It's important to note that the runtime representation is a non-shared data
-type (don't rely on its shape on the JS side, more details [here](common-data-types#non-shared-data-types)) and will also change in the
-upcoming `v8` release (see this [blog post](/blog/a-story-of-lazy-encoding) for
-more infos).
-
+A lazy value is a [non-shared data type](/docs/reason-compiler/latest/common-data-types#non-shared-data-types). Don't rely on the runtime  representation on the JS side. 
