@@ -111,7 +111,7 @@ the other is either a closure or an evaluated value.
 - The compiler optimization still kicks in at compile time: if it knows a lazy value is already evaluated or does not need to be evaluated, it will promote its status to be 'done'. However, unlike in a native environment, unboxing is not happening. This makes sense since the most interesting unboxing scenarios only happen during runtime and not during compile time (a scenario which is impossible in the JSVM).
 
 
-With the new encoding, `lazy` is now way more viable for JS usage, so we encourage our users to use it whenever it is convenient! We will also provide some more details about the `lazy` values in our documentation soon.
+With the new encoding, `lazy` is now way more viable for JS usage, so we encourage our users to use it whenever it is convenient!
 
 ## Caveats:
 
