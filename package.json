@@ -26,6 +26,7 @@
     "prettier": "^1.18.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-script-hook": "^1.1.1",
     "reason-promise": "^1.0.2",
     "reason-react": "^0.7.0",
     "remark-parse": "^7.0.1",

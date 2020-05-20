@@ -167,6 +167,7 @@ let make = (props: props): React.element => {
   | {base} =>
     switch (Belt.List.fromArray(base)) {
     | ["community", ..._rest] => <CommunityLayout> content </CommunityLayout>
+    | ["try"] => content
     | ["blog"] => content // Blog implements its own layout as well
     | ["blog", ..._rest] =>
       // Here, the layout will be handled by the Blog_Article component
