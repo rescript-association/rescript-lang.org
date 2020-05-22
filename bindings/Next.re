@@ -117,3 +117,16 @@ module Error = {
   external make: (~statusCode: int, ~children: React.element) => React.element =
     "default";
 };
+
+module Dynamic = {
+  [@bs.deriving abstract]
+  type options = {
+    [@bs.optional]
+    ssr: bool,
+  };
+
+  [@bs.module "next/dynamic"]
+  external dynamic: (unit => Js.Promise.t('a), options) => 'a = "default";
+
+  [@bs.val] external import: string => Js.Promise.t('a) = "import";
+};
