@@ -1,3 +1,44 @@
+module Debounce = {
+  // See: https://davidwalsh.name/javascript-debounce-function
+  let debounce = (~wait, fn) => {
+    let timeout = ref(None);
+
+    () => {
+      let unset = () => {
+        timeout := None;
+      };
+
+      switch (timeout^) {
+      | Some(id) => Js.Global.clearTimeout(id)
+      | None => fn()
+      };
+      timeout := Some(Js.Global.setTimeout(unset, wait));
+    };
+  };
+
+  let debounce3 = (~wait, ~immediate=false, fn) => {
+    let timeout = ref(None);
+
+    (a1, a2, a3) => {
+      let unset = () => {
+        timeout := None;
+        immediate ? fn(a1, a2, a3) : ();
+      };
+
+      switch (timeout^) {
+      | Some(id) => Js.Global.clearTimeout(id)
+      | None => fn(a1, a2, a3)
+      };
+      timeout := Some(Js.Global.setTimeout(unset, wait));
+
+      if (immediate && timeout^ === None) {
+        fn(a1, a2, a3);
+      } else {
+        ();
+      };
+    };
+  };
+};
 module ReactStuff = {
   let s = ReasonReact.string;
   let ate = ReasonReact.array;

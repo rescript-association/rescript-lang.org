@@ -32,7 +32,7 @@ export default function CodeMirrorReact(props) {
   return (
     <CodeMirror
       value={props.value}
-      options={{ theme: "material" }}
+      options={{ lineNumbers: true, theme: "material" }}
       onChange={props.onChange}
     />
   );

@@ -8,10 +8,14 @@ type method =
   | Get
   | Post;
 
+type response = {
+  status: int,
+  text: string,
+};
+
 let make =
     (
-      ~onSuccess: string => unit,
-      ~onError as onErrorCb: 'error => unit,
+      ~completed: result(response, response) => unit,
       ~method=Get,
       ~contentType=Json,
       url: string,
@@ -27,11 +31,22 @@ let make =
     };
 
   xhr->onLoad(_ => {
-    onSuccess(
-      xhr->responseText->Js.Nullable.toOption->Belt.Option.getWithDefault(""),
-    )
+    let status = xhr->status;
+
+    let text =
+      xhr->responseText->Js.Nullable.toOption->Belt.Option.getWithDefault("");
+
+    if (status === 200) {
+      completed(Ok({status, text}));
+    } else {
+      completed(Error({status, text}));
+    };
   });
-  xhr->onError(onErrorCb);
+
+  xhr->onError(_ =>
+    completed(Error({status: xhr->status, text: "Connection error"}))
+  );
+
   xhr->open_(~method, ~url);
 
   switch (contentType) {
