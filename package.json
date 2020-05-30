@@ -26,7 +26,6 @@
     "prettier": "^1.18.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "reanalyze": "^2.3.0",
     "reason-promise": "^1.0.2",
     "reason-react": "^0.7.0",
     "remark-parse": "^7.0.1",
@@ -56,6 +55,7 @@
     "cssnano": "^4.1.10",
     "postcss-cli": "^7.1.1",
     "postcss-easy-import": "^3.0.0",
+    "reanalyze": "^2.5.0",
     "tailwindcss": "^1.2.0"
   }
 }

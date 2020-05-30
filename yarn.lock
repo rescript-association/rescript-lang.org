@@ -5815,10 +5815,10 @@ readdirp@~3.4.0:
   dependencies:
     picomatch "^2.2.1"
 
-reanalyze@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/reanalyze/-/reanalyze-2.3.0.tgz#b1ab78310c74e22a9960e6737eff8e2618f59c7d"
-  integrity sha512-1X+sgwgxBAN1Rt+XYuTEMhIfFQ4XoOA7U13wREH/lYM9CoLbWb8Y+t6AUTHede5hD6F5+mSsJJcNCT1+IRotkw==
+reanalyze@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/reanalyze/-/reanalyze-2.5.0.tgz#15f881f270d4cf9fc20cf2d465236a22e10304c0"
+  integrity sha512-90pqCxQon6ov6LDmNjd9hn5sgx/7r4aI0KrAsPWDqAkG9S7GCpFXVmyFzyIzRNSPC7JjSsRCPZjwkT0mRFCU3Q==
 
 reason-promise@^1.0.2:
   version "1.0.2"
