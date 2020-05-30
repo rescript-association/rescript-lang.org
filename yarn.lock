@@ -5815,6 +5815,11 @@ readdirp@~3.4.0:
   dependencies:
     picomatch "^2.2.1"
 
+reanalyze@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/reanalyze/-/reanalyze-2.3.0.tgz#b1ab78310c74e22a9960e6737eff8e2618f59c7d"
+  integrity sha512-1X+sgwgxBAN1Rt+XYuTEMhIfFQ4XoOA7U13wREH/lYM9CoLbWb8Y+t6AUTHede5hD6F5+mSsJJcNCT1+IRotkw==
+
 reason-promise@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/reason-promise/-/reason-promise-1.0.2.tgz#22b9bb4097ce511190182b948aef11427d5b8b86"
