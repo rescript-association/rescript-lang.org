@@ -21,8 +21,7 @@
     "glob": "^7.1.4",
     "gray-matter": "^4.0.2",
     "highlight.js": "^9.15.10",
-    "isomorphic-unfetch": "^3.0.0",
-    "next": "^9.4.0",
+    "next": "^9.4.4",
     "next-transpile-modules": "^2.3.1",
     "prettier": "^1.18.2",
     "react": "^16.12.0",
@@ -41,6 +40,8 @@
     "dev": "next",
     "build": "bsb -make-world && yarn run update-index && next build",
     "test": "node scripts/test-examples.js && node scripts/test-hrefs.js",
+    "check-dead-code": "reanalyze -dce",
+    "check-for-exceptions": "reanalyze -exception",
     "update-index": "node scripts/extract-indices.js && node scripts/extract-tocs.js && node -r esm scripts/generate_feed.bs.js > public/blog/feed.xml",
     "now-build": "yarn run build",
     "export": "next export",
@@ -54,7 +55,7 @@
     "autoprefixer": "^9.5.1",
     "cssnano": "^4.1.10",
     "postcss-cli": "^7.1.1",
-    "postcss-easy-import": "^3.0.0",
-    "tailwindcss": "^1.2.0"
+    "reanalyze": "^2.5.0",
+    "tailwindcss": "^1.4.6"
   }
 }
