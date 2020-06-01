@@ -20,8 +20,7 @@
     "glob": "^7.1.4",
     "gray-matter": "^4.0.2",
     "highlight.js": "^9.15.10",
-    "isomorphic-unfetch": "^3.0.0",
-    "next": "^9.4.0",
+    "next": "^9.4.4",
     "next-transpile-modules": "^2.3.1",
     "prettier": "^1.18.2",
     "react": "^16.12.0",
@@ -54,8 +53,7 @@
     "autoprefixer": "^9.5.1",
     "cssnano": "^4.1.10",
     "postcss-cli": "^7.1.1",
-    "postcss-easy-import": "^3.0.0",
     "reanalyze": "^2.5.0",
-    "tailwindcss": "^1.2.0"
+    "tailwindcss": "^1.4.6"
   }
 }

@@ -1,6 +1,5 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@tailwind base;
+@tailwind components;
 
 @import './_hljs.css';
 @import './_markdown.css';
@@ -10,3 +9,5 @@
 body {
   @apply font-sans bg-white;
 }
+
+@tailwind utilities;
