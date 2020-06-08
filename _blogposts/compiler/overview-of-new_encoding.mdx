@@ -54,7 +54,7 @@ If users want to make it even  shorter, in next version, they can choose to comp
 
 ```reasonml
 type int64 = {
-    loBits : int [@bs.as "0"],
+     [@bs.as "0"] loBits : int,
     hiBits : int [@bs.as "1"]
 }
 let value = {hiBits : 33 , loBits : 32 };
