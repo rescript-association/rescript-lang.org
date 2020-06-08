@@ -58,7 +58,7 @@ type int64 = {
     hiBits : int [@bs.as "1"]
 }
 let value = {hiBits : 33 , loBits : 32 };
-let rand = ({loBits; hiBits}) => loBits + hiBits;
+let rand = ({loBits, hiBits}) => loBits + hiBits;
 ```
 
 This produces the following JS output:
