@@ -5,8 +5,8 @@ previewImg:
 category: compiler
 title: Overview of new encoding in BuckleScript
 description: |
-  Highlights of our newest changes to the internal representation of lazy values
-  and how it will benefit our users.
+  Highlights of our newest changes to the internal representation 
+  and how they will benefit our users.
 ---
 
 
@@ -14,17 +14,22 @@ description: |
 title: An overview of new data representation in BuckleScript
 ---
 
-In the next version of BuckleScript, we made several major changes to tweak the data representation for various data types, it's more idiomatic and debugger friendly. 
+In the next version of BuckleScript, we will make several major changes to tweak the data representation for various data types, 
+making them more idiomatic and debugger friendly. 
 
-Note since V8 or other JavaScript engines are tweaked to make idiomatic JS code running fast, so it also results in faster running code. 
+Note: since V8 or other JavaScript engines are tweaked to make idiomatic JS code run fast, these changes also results in faster running code. 
 
-Another property, for a compiled language like BuckleScript, is that we can reason about [IC](https://en.wikipedia.org/wiki/Inline_caching) friendliness by just looking at the type definitions locally; this is very helpful for advanced users to write performance reliable JS code, if you are unfamiliar with how IC works in general, feel free to skip the section about IC.
+Another property, for a compiled language like BuckleScript, 
+is that we can reason about [IC](https://en.wikipedia.org/wiki/Inline_caching) friendliness by just looking at the type definitions locally; 
+this is very helpful for advanced users to write performance predictable JS code. 
+If you are unfamiliar with how IC works in general, feel free to skip the section about IC.
 
-Note this article is quite dense so that we will skip the old encoding.
+Note: this article is quite dense, so  we will skip the old encoding.
 
 ## Record (stable)
 
-We compile records to idiomatic JS objects since [version 7](https://bucklescript.github.io/blog/2019/11/18/whats-new-in-7), this is great for performance and debugging. We also support label renaming to shorten field names to save sizes.
+BuckleScript has compiled records to idiomatic JS objects since [version 7](https://bucklescript.github.io/blog/2019/11/18/whats-new-in-7). This is great for performance and debugging. 
+We also support label renaming to shorten field names to save space.
 
 Take the code below for example:
 
@@ -45,7 +50,7 @@ function rand (param){
 }
 ```
 
-If users want to make it even  shorter, they can choose to compile record as an array as below:
+If users want to make it even  shorter, in next version, they can choose to compile record as an array, as follows:
 
 ```reasonml
 type int64 = {
@@ -56,7 +61,7 @@ let value = {hiBits : 33 , loBits : 32 };
 let rand = ({loBits; hiBits}) => loBits + hiBits;
 ```
 
-Now output JS as below:
+This produces the following JS output:
 
 ```js
 var value = [32,33]
@@ -65,16 +70,18 @@ function rand(param){
 }
 ```
 
-The label renaming techniques can be applied systematically using a syntactic macro, in the future we may provide an advanced mode to apply it automatically. Another nice property is that only the type definition needs to be adapted, other parts of code is untouched.
+The label renaming techniques can be applied systematically using a syntactic macro; 
+in the future we may provide an advanced mode to apply it automatically. Another nice property is that 
+only the type definition needs to be adapted; other parts of code remain untouched.
 
 ### IC friendliness
 
-Record is always in a perfect IC position, the compiler can ensure all generated records are of the same shape
+Records are always in a perfect position for Inline Caching(IC); the compiler can ensure all generated records are of the same shape.
 
 ## Variant (internal)
 This encoding for variants may be  subject to change in the future, but it is so simple that it makes sense for users to have a basic understanding.
 
-Take such type definition for example:
+Take the following type definition, for example:
 
 ```reasonml
 type t =
@@ -93,11 +100,13 @@ var v0  = {TAG : 0/*Black*/, _0 : /*Empty*/ 0 , _1 : 3 , _2 : /*Empty */ 0};
 var v1 = {TAG : 1/*Red*/, _0 : /*Empty*/ 0 , _1 : 3 , _2 : /*Empty */ 0};
 ```
 
-As you can see, variants are divided into two categories, the variant which does not have payload is compiled into a number starting from 0, while variants which has the payload is compiled into an object which has the first slot named `TAG` and the following slots named as `_0`, `_1` ..
+As you can see, variants are divided into two categories.  
+Variants which do not have a payload are compiled into a number starting from 0, 
+while variants which have a payload are compiled into an object which has the first slot named `TAG` and the following slots named as `_0`, `_1` ..
 
 ### variant with inline records
 
-Users can give names to the payload, and the compiler respect it, however, we don't support user level renaming, i.e, using `bs.as`, at this time.
+Users can give names to the payload, and the compiler respects those names. However, we don't support user-level renaming, i.e, using `bs.as`, at this time.
 
 ```reasonml
 type t =
@@ -123,15 +132,17 @@ Take the types below for example:
 ```reasonml
 type list = 
     | Nil
-    | Cons (int * list);
+    | Cons (int , list);
 ```
 
-Since the number of variants which has payload is only 1, the compiler does not need add `TAG` when we destruct the data for pattern matching, so the code below:
+
+Since only one variant has a payload, the compiler does not need  add `TAG` when we destructure the data for pattern matching. 
+Thus, the following code:
 
 ```reasonml
 let u = Cons(1,Nil)
 ```
-Will generate such JS output:
+will generate the following JS output:
 
 ```js
 var u = {_0: 1, _1 : /*Nil*/ 0 }; // No TAG data.
@@ -139,42 +150,45 @@ var u = {_0: 1, _1 : /*Nil*/ 0 }; // No TAG data.
 
 ### Specialized for immutable list
 
-The `list` type is a built-in type, its type definition is similar to this :
+The `list` type is a built-in type; its type definition is similar to this :
 
 ```reasonml
 type t ('a) = 
     | []
-    | (::) ('a * t ('a))
+    | (::) ('a , t ('a))
 ```
 
-Without any customization,  it will generate js objects with indexes like `_0`, `_1`, since list is so pervasive,
-we provide some special treatment so that 
+Without any customization, this would generate JS objects with indexes like `_0`, `_1`, etc. 
+Since lists are so pervasive, we provide some special treatment so that
+
 ```reasonml
 let u = [0,1,2,3]
 ```
 Will generate js code as below:
 ```js
-var u = {hd : 0, {hd : 1, {hd: 2, {hd :3 , tl : /*[]*/0 }}}}
+var u = {hd : 0, {tl : {hd : 1, {tl : {hd: 2, {tl : {hd :3 , tl : /*[]*/0 }}}}}}}
 ```
 
-This is a minor change, we changed the name of `_0` to `hd` and `_1` to `tl`.
+This is a minor change; we changed the name of `_0` to `hd` and `_1` to `tl`.
 
 ### IC friendliness
 
-For types whose number of variants which has payload is 1, it will be in a perfect IC position. 
+Types that have only one variant with a payload are in a perfect position for IC.
+
 The number of variants which does not carry payload will not affect IC, since the pattern match will do a split first. 
 
-For types whose number of variants which has the same number of payloads, it will also be in a perfect IC position, like the red-black-tree example above. 
+Types with variants that have the same number of payloads, such as the red-black-tree example above, are also in a perfect position for IC.
 
 For other cases, it will hit a polymorphic IC in the V8 jit compiler, this is not the fastest running case.
 
-Note that user can always tweak the variant layout to make it IC friendly, for example, it can always introduce one level of indirection to make all variants share the same number of payloads:
+Note that you can always tweak the variant layout to make it IC friendly. For example, you can always introduce one level
+of indirection to make all variants share the same number of payloads:
 
 ```reasonml
 type t = 
-    | A0 of a0 // 1 paylaod
-    | A1 of a1 // 1 payload
-    | A2 of a2 // 1 payload
+    | A0 (a0) // 1 payload
+    | A1 (a1) // 1 payload
+    | A2 (a2) // 1 payload
     | C0
     | C1
     | C2 // This will not affect IC 
@@ -182,7 +196,8 @@ type t =
 
 ### Variant in debug mode
 
-Note we only generate constructor names in comments for debugging,  when constructor names are attached to the data, it will be more useful for debugging. When debug mode is activated using `-bs-g`, 
+Note we only generate constructor names in comments for debugging.  
+When constructor names are attached to the data, it will be more useful for debugging. When debug mode is activated using `-bs-g`, 
 
 The generated code will be changed from below 
 ```js
@@ -196,7 +211,7 @@ var v0  = {TAG : 0, _0 : /*Empty*/ 0 , _1 : 3 , _2 : /*Empty */ 0, [Symbol.for("
 
 ## Polymorphic-variant (internal)
 
-Polymorphic variant allows users to use the types without declaring it first:
+Polymorphic variants allow users to use the types without declaring them first:
 
 ```reasonml
 let u = 3 -> `hello
@@ -210,7 +225,8 @@ The field of `HASH` is the hash of name `"hello"`, while the `VAL` is the payloa
 
 ### IC friendliness
 
-Polymorphic variant is always in a perfect IC position, the compiler can ensure all generated records are of the same shape. This is due to that the payload is not unpacked, it is always just one payload
+Polymorphic variants are always in a perfect position for IC, the compiler can ensure all generated objects are of the same shape. 
+This is because the payload is not unpacked; it is always just one payload.
 
 
 ### Polymorphic variant in debug mode
