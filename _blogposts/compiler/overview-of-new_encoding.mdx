@@ -55,7 +55,7 @@ If users want to make it even  shorter, in next version, they can choose to comp
 ```reasonml
 type int64 = {
      [@bs.as "0"] loBits : int,
-    hiBits : int [@bs.as "1"]
+    [@bs.as "1"] hiBits : int
 }
 let value = {hiBits : 33 , loBits : 32 };
 let rand = ({loBits, hiBits}) => loBits + hiBits;
