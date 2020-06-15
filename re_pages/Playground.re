@@ -1,23 +1,44 @@
 open Util.ReactStuff;
 
+%raw
+"require('../styles/main.css')";
+
 module CodeMirror = {
   type editor;
-  type props = {
-    .
-    value: string,
-    onChange: (editor, string, string) => unit // (editor, data, value) => {}
-  };
+
+  type props;
+
+  [@bs.obj]
+  external props:
+    (
+      ~value: string,
+      ~mode: string,
+      ~readOnly: bool=?,
+      ~onBeforeChange: (editor, string, string) => unit=?, // (editor, data, value) => {}
+      ~onChange: (editor, string, string) => unit=?,
+      unit
+    ) =>
+    props;
 
   // Codemirror relies heavily on Browser APIs, so we need to disable
   // SSR for this specific component and use the dynamic loading mechanism
   // to run this component clientside only
-  let dynamicComponent: React.component(Js.t(props)) =
+  let dynamicComponent: React.component(props) =
     Next.Dynamic.(
       dynamic(
         () => import("../ffi/react-codemirror"),
         options(~ssr=true, ()),
       )
     );
+
+  [@react.component]
+  let make =
+      (~value="", ~mode, ~readOnly=false, ~onBeforeChange=?, ~onChange=?) => {
+    React.createElement(
+      dynamicComponent,
+      props(~value, ~mode, ~readOnly, ~onBeforeChange?, ~onChange?, ()),
+    );
+  };
 };
 
 module LoadScript = {
@@ -57,8 +78,12 @@ module Compiler = {
     module CompilationResult = {
       type raw = Js.Json.t;
 
+      // TODO: Would be great to get rid of the separate console.error
+      //       capturing and retrieve the super_error output through the
+      //       actual json result instead (needs change on the compiler bundle)
       type fail = {
         js_error_msg: string,
+        super_errors: string, // also includes warnings
         row: int,
         column: int,
         endRow: int,
@@ -66,13 +91,19 @@ module Compiler = {
         text: string,
       };
 
+      type success = {
+        js_output: string,
+        warnings: string,
+      };
+
       type t =
         | Fail(fail)
-        | Success(string)
+        | Success(success)
         | Unknown(string, raw)
         | None;
 
-      let classify = (raw: raw): t => {
+      let classify = (raw: raw, super_errors: string): t => {
+        Js.log2("raw", raw);
         Js.Json.(
           switch (raw->classify) {
           | JSONObject(root) =>
@@ -82,7 +113,8 @@ module Compiler = {
             switch (jsCode, type_) {
             | (Some(json), None) =>
               switch (classify(json)) {
-              | JSONString(jscode) => Success(jscode)
+              | JSONString(js_output) =>
+                Success({js_output, warnings: super_errors})
               | value => Unknown({j|.js_code is not a string: $value|j}, raw)
               }
             | (None, Some(type_)) =>
@@ -92,7 +124,8 @@ module Compiler = {
                 switch (
                   {
                     js_error_msg: raw->field("js_error_msg", string, _),
-                    row: raw->field("js_error_msg", int, _),
+                    super_errors,
+                    row: raw->field("row", int, _),
                     column: raw->field("column", int, _),
                     endRow: raw->field("endRow", int, _),
                     endColumn: raw->field("endColumn", int, _),
@@ -118,11 +151,63 @@ module Compiler = {
     [@bs.val] [@bs.scope "reason"] external reasonVersion: string = "version";
     [@bs.val] [@bs.scope "ocaml"] external compilerVersion: string = "version";
 
+    // TODO: We need to add this information in the actual bundle and retrieve it
+    //       via external
+    let ocamlVersion = "4.06.1";
+
     [@bs.val] [@bs.scope "ocaml"]
-    external ocamlCompile: string => Js.Json.t = "compile";
+    external ocamlCompile: string => Js.Json.t = "compile_super_errors";
 
     [@bs.val] [@bs.scope "reason"]
-    external reasonCompile: string => Js.Json.t = "compile";
+    external reasonCompile: string => Js.Json.t = "compile_super_errors";
+
+    module ConsoleCapture = {
+      /*
+          Right now, super error printing only happens on stderr / console.error.
+          For that reason, we need to replace console.error with a mocked function
+          to capture and gather all the error output during a compile process.
+
+          This module provides functionality for that purpose.
+
+          See https://github.com/reasonml/reasonml.github.io/blob/source/website/playground/try.js#L621
+       */
+
+      [@bs.val] [@bs.scope "console"]
+      external consoleError: (. string) => unit = "error";
+
+      let setConsoleError: (. ((. string) => unit)) => unit = [%raw
+        {|
+        function setConsoleError(cerror) {
+          console.error = cerror;
+        }
+      |}
+      ];
+
+      // Used for restoring
+      let _originalConsoleError = consoleError;
+
+      /*
+          Usage:
+          let flush = captureErrorConsole();
+          // do some error logging in between
+          let result = flush();
+
+          Running flush will automatically restore
+          the original error logger again
+       */
+      let captureErrorConsole = () => {
+        let errs = ref("");
+
+        setConsoleError(. (. msg) => {errs := errs^ ++ msg ++ "\n"});
+
+        let flush = () => {
+          setConsoleError(. _originalConsoleError);
+          errs^;
+        };
+
+        flush;
+      };
+    };
   };
 
   // Splits and sanitizes the content of the VERSIONS file
@@ -138,9 +223,16 @@ module Compiler = {
     | SetupError(string)
     | CompilerLoadingError(string);
 
+  type selected = {
+    name: string, // The name used for loading the compiler bundle
+    compilerVersion: string,
+    ocamlVersion: string,
+    reasonVersion: string,
+  };
+
   type ready = {
     versions: array(string),
-    selected: string,
+    selected,
     errors: array(string),
     result: Api.CompilationResult.t,
   };
@@ -165,7 +257,7 @@ module Compiler = {
       | SwitchToCompiler(target) =>
         switch (state) {
         | Ready(ready) =>
-          if (ready.selected !== target) {
+          if (ready.selected.name !== target) {
             setState(_ => SwitchingCompiler((ready, target)));
           } else {
             ();
@@ -211,11 +303,17 @@ module Compiler = {
                 // don't have any running version downloaded yet
                 let latest = versions[0];
                 let src = getCompilerUrl(latest);
-                Js.log(src);
+
                 let onSuccess = () => {
+                  let selected = {
+                    name: latest,
+                    compilerVersion: Api.compilerVersion,
+                    ocamlVersion: Api.ocamlVersion,
+                    reasonVersion: Api.reasonVersion,
+                  };
                   setState(_ => {
                     Ready({
-                      selected: latest,
+                      selected,
                       versions,
                       errors: [||],
                       result: Api.CompilationResult.None,
@@ -245,7 +343,7 @@ module Compiler = {
             make(
               ~contentType=Plain,
               ~completed,
-              "https://cdn.jsdelivr.net/gh/ryyppy/bs-platform-js-releases@latest/VERSIONS",
+              "https://cdn.jsdelivr.net/gh/ryyppy/bs-platform-js-releases@master/VERSIONS",
             )
             ->send
           );
@@ -253,9 +351,18 @@ module Compiler = {
           let src = getCompilerUrl(version);
           let onSuccess = () => {
             // Make sure to remove the previous script from the DOM as well
-            LoadScript.removeScript(~src=getCompilerUrl(ready.selected));
+            LoadScript.removeScript(
+              ~src=getCompilerUrl(ready.selected.name),
+            );
 
-            setState(_ => {Ready({...ready, result: None, selected: version})});
+            let selected = {
+              name: version,
+              compilerVersion: Api.compilerVersion,
+              ocamlVersion: Api.ocamlVersion,
+              reasonVersion: Api.reasonVersion,
+            };
+
+            setState(_ => {Ready({...ready, result: None, selected})});
           };
           let onError = _err => {
             dispatchError(
@@ -266,14 +373,20 @@ module Compiler = {
           };
           LoadScript.loadScript(~src, ~onSuccess, ~onError);
         | Compiling(ready, (lang, code)) =>
+          let flush = Api.ConsoleCapture.captureErrorConsole();
+
+          let jsonResult =
+            switch (lang) {
+            | Api.OCaml => Api.ocamlCompile(code)
+            | Api.Reason => Api.reasonCompile(code)
+            };
+
+          // Retrieve the console.error output and append it
+          // to the result if necessary
+          let superErrors = flush();
+
           let result =
-            (
-              switch (lang) {
-              | Api.OCaml => Api.ocamlCompile(code)
-              | Api.Reason => Api.reasonCompile(code)
-              }
-            )
-            ->Api.CompilationResult.classify;
+            Api.CompilationResult.classify(jsonResult, superErrors);
 
           Js.log2("result", result);
           setState(_ => {Ready({...ready, result})});
@@ -289,8 +402,19 @@ module Compiler = {
   };
 };
 
-// Playground state
-module State = {};
+module ErrorPane = {
+  [@react.component]
+  let make = (~errors: array(string), ~warnings: array(string)) => {
+    let errorNumber = Belt.Array.length(errors);
+
+    Js.log2("foo", errors);
+    let errorElements =
+      Belt.Array.map(errors, err => {<div> err->s </div>})->ate;
+    <div>
+      <div> <div> {{j|Errors ($errorNumber)|j}}->s </div> errorElements </div>
+    </div>;
+  };
+};
 
 [@react.component]
 let default = () => {
@@ -298,40 +422,59 @@ let default = () => {
 
   let overlayState = React.useState(() => false);
 
-  let (reasonContent, setReasonContent) = React.useState(() => "");
+  let initialContent = {j|type tree = Leaf | Node(int, tree, tree);
 
-  let reasonEditor =
-    React.createElement(
-      CodeMirror.dynamicComponent,
-      {
-        "value": reasonContent,
-        "onChange":
-          Util.Debounce.debounce3(
-            ~wait=300,
-            ~immediate=true,
-            (_editor, _data, value: string) => {
-              setReasonContent(_ => value);
-              ();
-            },
-          ),
+[@some.decorator]
+let rec sum = (item) => {
+  switch (item) {
+  | Leaf => 0
+  | Node(value, left, right) => value + sum(left) + sum(right);
+  }
+};
+
+let myTree =
+  Node(
+    1,
+    Node(2, Node(4, Leaf, Leaf), Node(6, Leaf, Leaf)),
+    Node(3, Node(5, Leaf, Leaf), Node(7, Leaf, Leaf))
+  );
+
+Js.log(sum(myTree));
+
+let test: string = "foobar";
+let test2: string => string = (a) => a;
+
+let test = ("foo": int);
+
+
+module Test = {
+  [@react.component]
+  let make = (~a: string, ~b: string) => {
+    <div>
+    </div>
+  };
+}
+
+  |j};
+
+  let (reasonContent, setReasonContent) =
+    React.useState(() => initialContent);
+
+  let onReasonEditorChange =
+    Util.Debounce.debounce3(
+      ~wait=600,
+      ~immediate=true,
+      (_editor, _data, value: string) => {
+        setReasonContent(_ => value);
+        ();
       },
     );
 
   let output =
     switch (compilerState) {
-    | Ready({result: Compiler.Api.CompilationResult.Success(output)}) => output
+    | Ready({result: Compiler.Api.CompilationResult.Success({js_output})}) => js_output
     | _ => ""
     };
-
-  Js.log2("output:", output);
-
-  let outputEditor =
-    React.createElement(
-      CodeMirror.dynamicComponent,
-      {"value": output, "onChange": (_, _, _) => ()},
-    );
-
-  let code = "let a = 1 + 1";
 
   let isReady =
     switch (compilerState) {
@@ -339,8 +482,6 @@ let default = () => {
     | _ => false
     };
 
-  Js.log2("editor content: ", reasonContent);
-  Js.log(compilerState);
   <>
     <Meta
       title="Reason Playground"
@@ -354,33 +495,55 @@ let default = () => {
             disabled={!isReady}
             onClick={evt => {
               ReactEvent.Mouse.preventDefault(evt);
-              compilerDispatch(CompileCode(Compiler.Api.Reason, code));
+              compilerDispatch(
+                CompileCode(Compiler.Api.Reason, reasonContent),
+              );
             }}>
             "Compile"->s
           </button>
-          <div className="flex">
-            <div className="w-1/2 mr-4"> reasonEditor </div>
-            <div className="w-1/2"> outputEditor </div>
+          <div className="flex h-2/3">
+            <div className="w-1/2 mr-4">
+              <CodeMirror
+                mode="reason"
+                value=reasonContent
+                onChange=onReasonEditorChange
+              />
+            </div>
+            <div className="w-1/2">
+              <CodeMirror mode="javascript" value=output readOnly=true />
+            </div>
           </div>
           <h3 className=Text.H3.default> "Compiler Debugging:"->s </h3>
           {switch (compilerState) {
            | Ready(ready) =>
+             let (errors, warnings) =
+               switch (ready.result) {
+               | Fail({super_errors}) => ([|super_errors|], [||])
+               | Success({warnings}) => ([||], [|warnings|])
+               | _ => ([||], [||])
+               };
              <>
-               <p> "Selected Version:"->s ready.selected->s </p>
-               <ul>
-                 {Belt.Array.map(
-                    ready.versions,
-                    version => {
-                      let onClick = evt => {
-                        ReactEvent.Mouse.preventDefault(evt);
-                        compilerDispatch(SwitchToCompiler(version));
-                      };
-                      <li key=version onClick> version->s </li>;
-                    },
-                  )
+               <p> "Selected Bundle:"->s ready.selected.name->s </p>
+               <select
+                 name="availableVersions"
+                 value={ready.selected.name}
+                 disabled={!isReady}
+                 onChange={evt => {
+                   ReactEvent.Form.preventDefault(evt);
+                   let version = evt->ReactEvent.Form.target##value;
+                   compilerDispatch(SwitchToCompiler(version));
+                 }}>
+                 {Belt.Array.map(ready.versions, version => {
+                    <option key=version value=version> version->s </option>
+                  })
                   ->ate}
-               </ul>
-             </>
+               </select>
+               <div className="flex">
+                 <div> "BS: "->s {ready.selected.compilerVersion}->s </div>
+                 <div> "Reason: "->s {ready.selected.reasonVersion}->s </div>
+               </div>
+               <ErrorPane errors warnings />
+             </>;
            | SwitchingCompiler((_, version)) =>
              ("Switching to " ++ version)->s
            | Init => "Initializing"->s

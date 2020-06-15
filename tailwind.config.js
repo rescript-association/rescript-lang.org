@@ -37,14 +37,14 @@ module.exports = {
   purge: {
     // Specify the paths to all of the template files in your project
     content: [
-      './components/**/*.re',
-      './re_pages/**/*.re',
-      './pages/**/*.re',
-      './pages/**/*.mdx',
-      './layouts/**/*.re',
+      "./components/**/*.re",
+      "./re_pages/**/*.re",
+      "./pages/**/*.re",
+      "./pages/**/*.mdx",
+      "./layouts/**/*.re"
     ],
     options: {
-      whitelist: ["html", "body"],
+      whitelist: ["html", "body"]
     }
   },
   theme: {
@@ -93,7 +93,7 @@ module.exports = {
           "15": "rgba(171, 94, 163, 0.15)"
         },
         turtle: {
-          default: "#38B790",
+          default: "#38B790"
         },
         gold: {
           light: "#FFC833",
@@ -108,6 +108,12 @@ module.exports = {
           "15": "var(--color-text-primary-15)",
           "40": "var(--color-text-primary-40)",
           "80": "var(--color-text-primary-80)"
+        },
+        "dark-code": {
+          "1": "#DE935F",
+          "2": "#81A2BE",
+          "3": "#60915F",
+          "4": "#999999"
         },
         code: {
           "1": "#DE935F",
@@ -133,8 +139,8 @@ module.exports = {
         tight: "0.02em"
       },
       spacing: {
-        '2/3': "66.666667%",
-        '9/16': "56.25%",
+        "2/3": "66.666667%",
+        "9/16": "56.25%"
       }
     },
     borderRadius: {

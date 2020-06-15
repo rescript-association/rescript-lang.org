@@ -7,9 +7,9 @@
 import React, { Component } from "react";
 import { UnControlled as CodeMirror } from "react-codemirror2";
 import "codemirror/lib/codemirror.css";
-import "codemirror/theme/material.css";
 
-import "codemirror/lib/codemirror.css";
+// We use our own forked codemirror theme here
+import "../styles/cm.css";
 
 //import javascript from 'codemirror/mode/javascript/javascript';
 //import mllike from 'codemirror/mode/mllike/mllike';
@@ -23,16 +23,24 @@ import "codemirror/lib/codemirror.css";
   language = "javascript",
   */
 
-if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
-  require('codemirror/mode/javascript/javascript')
-  require('codemirror/mode/rust/rust')
+if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
+  require("codemirror/mode/javascript/javascript");
+  require("../plugins/cm-reason-mode");
 }
 
 export default function CodeMirrorReact(props) {
   return (
     <CodeMirror
+      autoCursor={false}
+      readOnly={props.readOnly}
       value={props.value}
-      options={{ lineNumbers: true, theme: "material" }}
+      onBeforeChange={props.onBeforeChange}
+      options={{
+        mode:props.mode,
+        lineNumbers: true,
+        theme: "material",
+        readOnly: props.readOnly
+      }}
       onChange={props.onChange}
     />
   );
