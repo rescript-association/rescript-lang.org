@@ -43,13 +43,26 @@ module CodeMirror = {
 
 module LoadScript = {
   type err;
+
   [@bs.module "../ffi/loadScript"]
   external loadScript:
-    (~src: string, ~onSuccess: unit => unit, ~onError: err => unit) => unit =
+    (~src: string, ~onSuccess: unit => unit, ~onError: err => unit) =>
+    (. unit) => unit =
     "default";
 
   [@bs.module "../ffi/loadScript"]
   external removeScript: (~src: string) => unit = "removeScript";
+
+  let loadScriptPromise = (url: string): Promise.t(result(unit, string)) => {
+    let (p, resolve) = Promise.pending();
+    loadScript(
+      ~src=url,
+      ~onSuccess=() => {resolve(Ok())},
+      ~onError=_err => {resolve(Error({j|Could not load script: $url|j}))},
+    )
+    ->ignore;
+    p;
+  };
 };
 
 module Compiler = {
@@ -57,6 +70,7 @@ module Compiler = {
       This module is intended to manage following things:
       - Loading available versions of bs-platform-js releases
       - Loading actual bs-platform-js bundles on demand
+      - Loading third-party libraries together with the compiler bundle
       - Sending data back and forth between consumer and compiler
 
       The interface is defined with a finite state and action dispatcher.
@@ -219,15 +233,76 @@ module Compiler = {
     {j|https://cdn.jsdelivr.net/gh/ryyppy/bs-platform-js-releases@master/$version/compiler.js|j};
   };
 
+  let getLibraryCmijUrl = (version: string, libraryName: string): string => {
+    {j|https://cdn.jsdelivr.net/gh/ryyppy/bs-platform-js-releases@master/$version/$libraryName/cmij.js|j};
+  };
+
+  /*
+      This function loads the compiler, plus a defined set of libraries that are available
+      on our bs-platform-js-releases channel.
+
+      Due to JSOO specifics, even if we already loaded a compiler before, we need to make sure
+      to load the compiler bundle first, and then load the library cmij files right after that.
+
+      If you don't respect the loading order, then the loaded cmij files will not hook into the
+      jsoo filesystem and the compiler won't be able to find the cmij content.
+
+      We coupled the compiler / library loading to prevent ppl to try loading compiler / cmij files
+      separately and cause all kinds of race conditions.
+   */
+  let attachCompilerAndLibraries =
+      (~id: string, ~libraries: array(string), unit)
+      : Promise.t(result(unit, array(string))) => {
+    let compilerUrl = getCompilerUrl(id);
+
+    LoadScript.loadScriptPromise(compilerUrl)
+    ->Promise.mapError(_msg =>
+        {j|Could not load compiler from url $compilerUrl|j}
+      )
+    ->Promise.map(r => {
+        switch (r) {
+        | Ok () =>
+          Belt.Array.map(
+            libraries,
+            lib => {
+              let cmijUrl = getLibraryCmijUrl(id, lib);
+              LoadScript.loadScriptPromise(cmijUrl)
+              ->Promise.mapError(_msg =>
+                  {j|Could not load cmij from url $cmijUrl|j}
+                );
+            },
+          )
+        | Error(msg) => [|Promise.resolved(Error(msg))|]
+        }
+      })
+    ->Promise.flatMap(Promise.allArray)
+    ->Promise.map(all => {
+        // all: array(Promise.result(unit, string))
+        let errors =
+          Belt.Array.reduce(all, [||], (acc, r) =>
+            switch (r) {
+            | Error(msg) => Js.Array2.concat(acc, [|msg|])
+            | _ => acc
+            }
+          );
+
+        switch (errors) {
+        | [||] => Ok()
+        | errs => Error(errs)
+        };
+      });
+  };
+
   type error =
     | SetupError(string)
     | CompilerLoadingError(string);
 
   type selected = {
-    name: string, // The name used for loading the compiler bundle
+    id: string, // The id used for loading the compiler bundle
     compilerVersion: string,
     ocamlVersion: string,
     reasonVersion: string,
+    libraries: array(string),
   };
 
   type ready = {
@@ -240,12 +315,15 @@ module Compiler = {
   type state =
     | Init
     | SetupFailed(string)
-    | SwitchingCompiler((ready, string))
+    | SwitchingCompiler(ready, string, array(string))
     | Ready(ready)
     | Compiling(ready, (Api.lang, string));
 
   type action =
-    | SwitchToCompiler(string)
+    | SwitchToCompiler({
+        id: string,
+        libraries: array(string),
+      })
     | CompileCode(Api.lang, string);
 
   let useCompilerManager = () => {
@@ -254,11 +332,12 @@ module Compiler = {
     // Dispatch method for the public interface
     let dispatch = (action: action): unit => {
       switch (action) {
-      | SwitchToCompiler(target) =>
+      | SwitchToCompiler({id, libraries}) =>
         switch (state) {
         | Ready(ready) =>
-          if (ready.selected.name !== target) {
-            setState(_ => SwitchingCompiler((ready, target)));
+          // TODO: Check if libraries have changed as well
+          if (ready.selected.id !== id) {
+            setState(_ => SwitchingCompiler(ready, id, libraries));
           } else {
             ();
           }
@@ -291,6 +370,8 @@ module Compiler = {
       () => {
         switch (state) {
         | Init =>
+          let libraries = [|"reason-react"|];
+
           let completed = res => {
             open SimpleRequest;
             switch (res) {
@@ -302,32 +383,32 @@ module Compiler = {
                 // Fetching the initial compiler is different, since we
                 // don't have any running version downloaded yet
                 let latest = versions[0];
-                let src = getCompilerUrl(latest);
 
-                let onSuccess = () => {
-                  let selected = {
-                    name: latest,
-                    compilerVersion: Api.compilerVersion,
-                    ocamlVersion: Api.ocamlVersion,
-                    reasonVersion: Api.reasonVersion,
-                  };
-                  setState(_ => {
-                    Ready({
-                      selected,
-                      versions,
-                      errors: [||],
-                      result: Api.CompilationResult.None,
-                    })
+                attachCompilerAndLibraries(~id=latest, ~libraries, ())
+                ->Promise.get(result => {
+                    switch (result) {
+                    | Ok () =>
+                      let selected = {
+                        id: latest,
+                        compilerVersion: Api.compilerVersion,
+                        ocamlVersion: Api.ocamlVersion,
+                        reasonVersion: Api.reasonVersion,
+                        libraries,
+                      };
+                      setState(_ => {
+                        Ready({
+                          selected,
+                          versions,
+                          errors: [||],
+                          result: Api.CompilationResult.None,
+                        })
+                      });
+                    | Error(errs) =>
+                      let msg = Js.Array2.joinWith(errs, "; ");
+
+                      dispatchError(CompilerLoadingError(msg));
+                    }
                   });
-                };
-                let onError = _err => {
-                  dispatchError(
-                    CompilerLoadingError(
-                      {j|Could not load compiler located at $src|j},
-                    ),
-                  );
-                };
-                LoadScript.loadScript(~src, ~onSuccess, ~onError);
               }
             | Error({text, status}) =>
               dispatchError(
@@ -347,31 +428,45 @@ module Compiler = {
             )
             ->send
           );
-        | SwitchingCompiler((ready, version)) =>
-          let src = getCompilerUrl(version);
-          let onSuccess = () => {
-            // Make sure to remove the previous script from the DOM as well
-            LoadScript.removeScript(
-              ~src=getCompilerUrl(ready.selected.name),
-            );
+        | SwitchingCompiler(ready, id, libraries) =>
+          /*let src = getCompilerUrl(version);*/
 
-            let selected = {
-              name: version,
-              compilerVersion: Api.compilerVersion,
-              ocamlVersion: Api.ocamlVersion,
-              reasonVersion: Api.reasonVersion,
-            };
+          attachCompilerAndLibraries(~id, ~libraries, ())
+          ->Promise.get(result => {
+              switch (result) {
+              | Ok () =>
+                // Make sure to remove the previous script from the DOM as well
+                LoadScript.removeScript(
+                  ~src=getCompilerUrl(ready.selected.id),
+                );
 
-            setState(_ => {Ready({...ready, result: None, selected})});
-          };
-          let onError = _err => {
-            dispatchError(
-              CompilerLoadingError(
-                {j|Could not load compiler located at $src|j},
-              ),
-            );
-          };
-          LoadScript.loadScript(~src, ~onSuccess, ~onError);
+                Belt.Array.forEach(ready.selected.libraries, lib => {
+                  LoadScript.removeScript(
+                    ~src=
+                      getLibraryCmijUrl(ready.selected.id, lib),
+                  )
+                });
+                let selected = {
+                  id,
+                  compilerVersion: Api.compilerVersion,
+                  ocamlVersion: Api.ocamlVersion,
+                  reasonVersion: Api.reasonVersion,
+                  libraries,
+                };
+                setState(_ => {
+                  Ready({
+                    selected,
+                    versions: ready.versions,
+                    errors: [||],
+                    result: Api.CompilationResult.None,
+                  })
+                });
+              | Error(errs) =>
+                let msg = Js.Array2.joinWith(errs, "; ");
+
+                dispatchError(CompilerLoadingError(msg));
+              }
+            })
         | Compiling(ready, (lang, code)) =>
           let flush = Api.ConsoleCapture.captureErrorConsole();
 
@@ -388,7 +483,6 @@ module Compiler = {
           let result =
             Api.CompilationResult.classify(jsonResult, superErrors);
 
-          Js.log2("result", result);
           setState(_ => {Ready({...ready, result})});
         | SetupFailed(_)
         | Ready(_) => ()
@@ -407,7 +501,6 @@ module ErrorPane = {
   let make = (~errors: array(string), ~warnings: array(string)) => {
     let errorNumber = Belt.Array.length(errors);
 
-    Js.log2("foo", errors);
     let errorElements =
       Belt.Array.map(errors, err => {<div> err->s </div>})->ate;
     <div>
@@ -523,15 +616,20 @@ module Test = {
                | _ => ([||], [||])
                };
              <>
-               <p> "Selected Bundle:"->s ready.selected.name->s </p>
+               <p> "Selected Bundle:"->s ready.selected.id->s </p>
                <select
                  name="availableVersions"
-                 value={ready.selected.name}
+                 value={ready.selected.id}
                  disabled={!isReady}
                  onChange={evt => {
                    ReactEvent.Form.preventDefault(evt);
-                   let version = evt->ReactEvent.Form.target##value;
-                   compilerDispatch(SwitchToCompiler(version));
+                   let id = evt->ReactEvent.Form.target##value;
+                   compilerDispatch(
+                     SwitchToCompiler({
+                       id,
+                       libraries: ready.selected.libraries,
+                     }),
+                   );
                  }}>
                  {Belt.Array.map(ready.versions, version => {
                     <option key=version value=version> version->s </option>
@@ -542,10 +640,23 @@ module Test = {
                  <div> "BS: "->s {ready.selected.compilerVersion}->s </div>
                  <div> "Reason: "->s {ready.selected.reasonVersion}->s </div>
                </div>
+               <div>
+                 "Loaded Libraries: "->s
+                 {switch (ready.selected.libraries) {
+                  | [||] => "No third party library loaded"->s
+                  | arr => Js.Array2.joinWith(arr, ", ")->s
+                  }}
+               </div>
                <ErrorPane errors warnings />
              </>;
-           | SwitchingCompiler((_, version)) =>
-             ("Switching to " ++ version)->s
+           | SwitchingCompiler(_, version, libraries) =>
+             let appendix =
+               if (Js.Array.length(libraries) > 0) {
+                 " (+" ++ Js.Array2.joinWith(libraries, ", ") ++ ")";
+               } else {
+                 "";
+               };
+             ("Switching to " ++ version ++ appendix)->s;
            | Init => "Initializing"->s
            | SetupFailed(msg) => ("Setup failed: " ++ msg)->s
            | Compiling(_, (lang, _)) =>
