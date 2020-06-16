@@ -95,6 +95,3 @@ CodeMirror.defineSimpleMode("reason", {
 
 CodeMirror.defineMIME("text/x-reasonsrc", "reason");
 CodeMirror.defineMIME("text/reason", "reason");
-
-console.log("HIIHI");
-console.log(CodeMirror);
