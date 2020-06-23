@@ -123,6 +123,8 @@ module Dynamic = {
   type options = {
     [@bs.optional]
     ssr: bool,
+    [@bs.optional]
+    loading: unit => React.element,
   };
 
   [@bs.module "next/dynamic"]
