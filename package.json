@@ -25,7 +25,6 @@
     "next-transpile-modules": "^2.3.1",
     "prettier": "^1.18.2",
     "react": "^16.12.0",
-    "react-codemirror2": "^7.2.0",
     "react-dom": "^16.12.0",
     "reason-promise": "^1.0.2",
     "reason-react": "^0.7.0",
