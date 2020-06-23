@@ -39,6 +39,7 @@ module.exports = {
     content: [
       "./components/**/*.re",
       "./re_pages/**/*.re",
+      "./ffi/**/*.js",
       "./pages/**/*.re",
       "./pages/**/*.mdx",
       "./layouts/**/*.re"
