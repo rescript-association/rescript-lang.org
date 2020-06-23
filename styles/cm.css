@@ -8,6 +8,15 @@
   @apply h-auto;
 }
 
+.CodeMirror-gutters .errors {
+  /*@apply bg-white text-red-500;*/
+  @apply w-6;
+}
+
+/*.CodeMirror-scroll {*/
+  /*min-height: 40vh;*/
+/*}*/
+
 .cm-s-material.CodeMirror {
   /*background-color: #263238;*/
   @apply text-snow-darker bg-onyx font-mono text-14 py-8;

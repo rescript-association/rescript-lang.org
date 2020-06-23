@@ -3,40 +3,80 @@ open Util.ReactStuff;
 %raw
 "require('../styles/main.css')";
 
-module CodeMirror = {
-  type editor;
-
+module CodeMirrorHooks = {
   type props;
+  type cmOptions;
+
+  [@bs.obj]
+  external cmOptions:
+    (~mode: string, ~lineNumbers: bool=?, ~readOnly: bool=?, unit) => cmOptions;
+
+  type cmError = {
+    row: int,
+    column: int,
+    endRow: int,
+    endColumn: int,
+    text: string,
+  };
 
   [@bs.obj]
   external props:
     (
+      ~errors: array(cmError)=?,
+      ~minHeight: string=?, // minHeight of the scroller element
+      ~className: string=?,
+      ~style: ReactDOMRe.Style.t=?,
       ~value: string,
-      ~mode: string,
-      ~readOnly: bool=?,
-      ~onBeforeChange: (editor, string, string) => unit=?, // (editor, data, value) => {}
-      ~onChange: (editor, string, string) => unit=?,
+      ~onChange: string => unit=?,
+      ~options: cmOptions,
       unit
     ) =>
     props;
 
-  // Codemirror relies heavily on Browser APIs, so we need to disable
-  // SSR for this specific component and use the dynamic loading mechanism
-  // to run this component clientside only
   let dynamicComponent: React.component(props) =
     Next.Dynamic.(
       dynamic(
-        () => import("../ffi/react-codemirror"),
-        options(~ssr=true, ()),
+        () => {import("../ffi/react-codemirror-hooks")},
+        options(
+          ~ssr=false,
+          ~loading=
+            () => {
+              <div
+                className="bg-onyx text-snow-darker p-4"
+                style={ReactDOMRe.Style.make(~minHeight="40vh", ())}>
+                "/* Loading.... */"->s
+              </div>
+            },
+          (),
+        ),
       )
     );
 
   [@react.component]
   let make =
-      (~value="", ~mode, ~readOnly=false, ~onBeforeChange=?, ~onChange=?) => {
+      (
+        ~style=?,
+        ~minHeight=?,
+        ~className=?,
+        ~mode,
+        ~readOnly=false,
+        ~value,
+        ~errors=?,
+        ~onChange=?,
+      ) => {
+    let options = cmOptions(~mode, ~readOnly, ~lineNumbers=true, ());
     React.createElement(
       dynamicComponent,
-      props(~value, ~mode, ~readOnly, ~onBeforeChange?, ~onChange?, ()),
+      props(
+        ~className?,
+        ~minHeight?,
+        ~style?,
+        ~value,
+        ~errors?,
+        ~onChange?,
+        ~options,
+        (),
+      ),
     );
   };
 };
@@ -117,7 +157,6 @@ module Compiler = {
         | None;
 
       let classify = (raw: raw, super_errors: string): t => {
-        Js.log2("raw", raw);
         Js.Json.(
           switch (raw->classify) {
           | JSONObject(root) =>
@@ -251,9 +290,9 @@ module Compiler = {
       separately and cause all kinds of race conditions.
    */
   let attachCompilerAndLibraries =
-      (~id: string, ~libraries: array(string), unit)
+      (~version: string, ~libraries: array(string), ())
       : Promise.t(result(unit, array(string))) => {
-    let compilerUrl = getCompilerUrl(id);
+    let compilerUrl = getCompilerUrl(version);
 
     LoadScript.loadScriptPromise(compilerUrl)
     ->Promise.mapError(_msg =>
@@ -265,7 +304,7 @@ module Compiler = {
           Belt.Array.map(
             libraries,
             lib => {
-              let cmijUrl = getLibraryCmijUrl(id, lib);
+              let cmijUrl = getLibraryCmijUrl(version, lib);
               LoadScript.loadScriptPromise(cmijUrl)
               ->Promise.mapError(_msg =>
                   {j|Could not load cmij from url $cmijUrl|j}
@@ -298,7 +337,7 @@ module Compiler = {
     | CompilerLoadingError(string);
 
   type selected = {
-    id: string, // The id used for loading the compiler bundle
+    id: string, // The id used for loading the compiler bundle (ideally should be the same as compilerVersion)
     compilerVersion: string,
     ocamlVersion: string,
     reasonVersion: string,
@@ -384,7 +423,7 @@ module Compiler = {
                 // don't have any running version downloaded yet
                 let latest = versions[0];
 
-                attachCompilerAndLibraries(~id=latest, ~libraries, ())
+                attachCompilerAndLibraries(~version=latest, ~libraries, ())
                 ->Promise.get(result => {
                     switch (result) {
                     | Ok () =>
@@ -428,10 +467,8 @@ module Compiler = {
             )
             ->send
           );
-        | SwitchingCompiler(ready, id, libraries) =>
-          /*let src = getCompilerUrl(version);*/
-
-          attachCompilerAndLibraries(~id, ~libraries, ())
+        | SwitchingCompiler(ready, version, libraries) =>
+          attachCompilerAndLibraries(~version, ~libraries, ())
           ->Promise.get(result => {
               switch (result) {
               | Ok () =>
@@ -442,12 +479,12 @@ module Compiler = {
 
                 Belt.Array.forEach(ready.selected.libraries, lib => {
                   LoadScript.removeScript(
-                    ~src=
-                      getLibraryCmijUrl(ready.selected.id, lib),
+                    ~src=getLibraryCmijUrl(ready.selected.id, lib),
                   )
                 });
+
                 let selected = {
-                  id,
+                  id: version,
                   compilerVersion: Api.compilerVersion,
                   ocamlVersion: Api.ocamlVersion,
                   reasonVersion: Api.reasonVersion,
@@ -496,15 +533,91 @@ module Compiler = {
   };
 };
 
+module DropdownSelect = {
+  [@react.component]
+  let make = (~onChange, ~name, ~value, ~disabled, ~children) => {
+    <select
+      className="border border-night-light inline-block rounded px-4 py-1 bg-onyx appearance-none font-semibold"
+      name
+      value
+      disabled
+      onChange>
+      children
+    </select>;
+  };
+};
+
 module ErrorPane = {
   [@react.component]
   let make = (~errors: array(string), ~warnings: array(string)) => {
     let errorNumber = Belt.Array.length(errors);
 
     let errorElements =
-      Belt.Array.map(errors, err => {<div> err->s </div>})->ate;
+      Belt.Array.mapWithIndex(errors, (idx, err) => {
+        <div key={Belt.Int.toString(idx)}> err->s </div>
+      })
+      ->ate;
     <div>
       <div> <div> {{j|Errors ($errorNumber)|j}}->s </div> errorElements </div>
+    </div>;
+  };
+};
+
+module ControlPanel = {
+  [@react.component]
+  let make =
+      (
+        ~compilerReady: bool,
+        ~compilerVersion: string,
+        ~availableCompilerVersions: array(string),
+        ~loadedLibraries: array(string),
+        ~reasonVersion: string,
+        ~onCompilerSelect: string => unit,
+        ~onCompileClick: unit => unit,
+      ) => {
+    <div className="flex bg-onyx text-night-light px-6 w-full text-14">
+      <div
+        className="flex justify-between items-center border-t py-4 border-night-60 w-full">
+        <div>
+          <span className="font-semibold mr-2"> "BS"->s </span>
+          <DropdownSelect
+            name="compilerVersions"
+            value=compilerVersion
+            disabled={!compilerReady}
+            onChange={evt => {
+              ReactEvent.Form.preventDefault(evt);
+              let id = evt->ReactEvent.Form.target##value;
+              onCompilerSelect(id);
+            }}>
+            {Belt.Array.map(availableCompilerVersions, version => {
+               <option className="py-4" key=version value=version>
+                 version->s
+               </option>
+             })
+             ->ate}
+          </DropdownSelect>
+        </div>
+        <div className="font-semibold"> "Reason "->s {reasonVersion}->s </div>
+        <div className="font-semibold">
+          "Bindings: "->s
+          {switch (loadedLibraries) {
+           | [||] => "No third party library loaded"->s
+           | arr => Js.Array2.joinWith(arr, ", ")->s
+           }}
+        </div>
+        <button
+          disabled={!compilerReady}
+          className={
+            (!compilerReady ? "opacity-25" : "")
+            ++ " inline-block bg-sky text-16 text-white-80 rounded py-2 px-6"
+          }
+          onClick={evt => {
+            ReactEvent.Mouse.preventDefault(evt);
+            onCompileClick();
+          }}>
+          "Compile"->s
+        </button>
+      </div>
     </div>;
   };
 };
@@ -515,32 +628,9 @@ let default = () => {
 
   let overlayState = React.useState(() => false);
 
-  let initialContent = {j|type tree = Leaf | Node(int, tree, tree);
-
-[@some.decorator]
-let rec sum = (item) => {
-  switch (item) {
-  | Leaf => 0
-  | Node(value, left, right) => value + sum(left) + sum(right);
-  }
-};
-
-let myTree =
-  Node(
-    1,
-    Node(2, Node(4, Leaf, Leaf), Node(6, Leaf, Leaf)),
-    Node(3, Node(5, Leaf, Leaf), Node(7, Leaf, Leaf))
-  );
-
-Js.log(sum(myTree));
-
-let test: string = "foobar";
-let test2: string => string = (a) => a;
-
-let test = ("foo": int);
-
-
-module Test = {
+  let initialContent = {j|
+  let a = 1 + "";
+module Test2 = {
   [@react.component]
   let make = (~a: string, ~b: string) => {
     <div>
@@ -550,22 +640,33 @@ module Test = {
 
   |j};
 
-  let (reasonContent, setReasonContent) =
-    React.useState(() => initialContent);
+  /*let (reasonContent, setReasonContent) =*/
+  /*React.useState(() => initialContent);*/
 
-  let onReasonEditorChange =
-    Util.Debounce.debounce3(
-      ~wait=600,
-      ~immediate=true,
-      (_editor, _data, value: string) => {
-        setReasonContent(_ => value);
-        ();
-      },
-    );
+  /*let onReasonEditorChange =*/
+  /*Util.Debounce.debounce3(*/
+  /*~wait=600,*/
+  /*~immediate=true,*/
+  /*(_editor, _data, value: string) => {*/
+  /*setReasonContent(_ => value);*/
+  /*();*/
+  /*},*/
+  /*);*/
 
-  let output =
+  let jsOutput =
     switch (compilerState) {
     | Ready({result: Compiler.Api.CompilationResult.Success({js_output})}) => js_output
+    | Ready({result: Compiler.Api.CompilationResult.Fail(_)}) => "/* Could not compile, check the error pane for details. */"
+    | Ready({result: Compiler.Api.CompilationResult.None}) => "/* Compiler ready! Press the \"Compile\" button to see the JS output. */"
+    | Compiling(_, _) => "/* Compiling... */"
+    | SwitchingCompiler(_, version, libraries) =>
+      let appendix =
+        if (Js.Array.length(libraries) > 0) {
+          " (+" ++ Js.Array2.joinWith(libraries, ", ") ++ ")";
+        } else {
+          "";
+        };
+      "/* Switching to " ++ version ++ appendix ++ " ... */";
     | _ => ""
     };
 
@@ -575,96 +676,108 @@ module Test = {
     | _ => false
     };
 
+  let reasonCode = React.useRef(initialContent);
+
+  let compilerErrors =
+    switch (compilerState) {
+    /*| Compiling({result: Fail({row, column, endColumn})}, _)*/
+    | Ready({result: Fail({row, column, endColumn, endRow, text})}) => [|
+        {CodeMirrorHooks.row, column, endColumn, endRow, text},
+      |]
+    | _ => [||]
+    };
+
   <>
     <Meta
       title="Reason Playground"
       description="Try ReasonML in the browser"
     />
-    <div className="mb-32 mt-16 pt-2">
+    <div className="mb-32 mt-16 pt-2 bg-night-dark">
       <div className="text-night text-lg">
         <Navigation overlayState />
-        <main className="mx-10 mt-16">
-          <button
-            disabled={!isReady}
-            onClick={evt => {
-              ReactEvent.Mouse.preventDefault(evt);
-              compilerDispatch(
-                CompileCode(Compiler.Api.Reason, reasonContent),
-              );
-            }}>
-            "Compile"->s
-          </button>
-          <div className="flex h-2/3">
-            <div className="w-1/2 mr-4">
-              <CodeMirror
+        <main className="mx-10 mt-16 pb-32 flex justify-center">
+          <div className="flex max-w-1280 w-full">
+            <div className="w-full max-w-705 border-r-4 border-night">
+              <CodeMirrorHooks
+                className="w-full"
+                minHeight="40vh"
                 mode="reason"
-                value=reasonContent
-                onChange=onReasonEditorChange
+                errors=compilerErrors
+                value={React.Ref.current(reasonCode)}
+                onChange={value => {React.Ref.setCurrent(reasonCode, value)}}
               />
-            </div>
-            <div className="w-1/2">
-              <CodeMirror mode="javascript" value=output readOnly=true />
-            </div>
-          </div>
-          <h3 className=Text.H3.default> "Compiler Debugging:"->s </h3>
-          {switch (compilerState) {
-           | Ready(ready) =>
-             let (errors, warnings) =
-               switch (ready.result) {
-               | Fail({super_errors}) => ([|super_errors|], [||])
-               | Success({warnings}) => ([||], [|warnings|])
-               | _ => ([||], [||])
-               };
-             <>
-               <p> "Selected Bundle:"->s ready.selected.id->s </p>
-               <select
-                 name="availableVersions"
-                 value={ready.selected.id}
-                 disabled={!isReady}
-                 onChange={evt => {
-                   ReactEvent.Form.preventDefault(evt);
-                   let id = evt->ReactEvent.Form.target##value;
+              {switch (compilerState) {
+               | Ready(ready)
+               | Compiling(ready, _)
+               | SwitchingCompiler(ready, _, _) =>
+                 let (errors, warnings) =
+                   switch (ready.result) {
+                   | Fail({super_errors, js_error_msg}) =>
+                     let errors =
+                       if (super_errors !== "") {
+                         [|super_errors|];
+                       } else {
+                         [|js_error_msg|];
+                       };
+
+                     (errors, [||]);
+                   | Success({warnings}) => ([||], [|warnings|])
+                   | _ => ([||], [||])
+                   };
+
+                 let onCompilerSelect = id => {
                    compilerDispatch(
                      SwitchToCompiler({
                        id,
                        libraries: ready.selected.libraries,
                      }),
                    );
-                 }}>
-                 {Belt.Array.map(ready.versions, version => {
-                    <option key=version value=version> version->s </option>
-                  })
-                  ->ate}
-               </select>
-               <div className="flex">
-                 <div> "BS: "->s {ready.selected.compilerVersion}->s </div>
-                 <div> "Reason: "->s {ready.selected.reasonVersion}->s </div>
-               </div>
-               <div>
-                 "Loaded Libraries: "->s
-                 {switch (ready.selected.libraries) {
-                  | [||] => "No third party library loaded"->s
-                  | arr => Js.Array2.joinWith(arr, ", ")->s
-                  }}
-               </div>
-               <ErrorPane errors warnings />
-             </>;
-           | SwitchingCompiler(_, version, libraries) =>
-             let appendix =
-               if (Js.Array.length(libraries) > 0) {
-                 " (+" ++ Js.Array2.joinWith(libraries, ", ") ++ ")";
-               } else {
-                 "";
-               };
-             ("Switching to " ++ version ++ appendix)->s;
-           | Init => "Initializing"->s
-           | SetupFailed(msg) => ("Setup failed: " ++ msg)->s
-           | Compiling(_, (lang, _)) =>
-             switch (lang) {
-             | OCaml => "Compiling OCaml..."->s
-             | Reason => "Compiling Reason..."->s
-             }
-           }}
+                 };
+
+                 let onCompileClick = () => {
+                   compilerDispatch(
+                     CompileCode(
+                       Compiler.Api.Reason,
+                       React.Ref.current(reasonCode),
+                     ),
+                   );
+                 };
+
+                 // When a new compiler version was selected, it should
+                 // be shown in the control panel as the currently selected
+                 // version, even when it is currently loading
+                 let compilerVersion =
+                   switch (compilerState) {
+                   | SwitchingCompiler(_, version, _) => version
+                   | _ => ready.selected.id
+                   };
+
+                 <>
+                   <ControlPanel
+                     compilerReady=isReady
+                     compilerVersion
+                     availableCompilerVersions={ready.versions}
+                     loadedLibraries={ready.selected.libraries}
+                     reasonVersion={ready.selected.reasonVersion}
+                     onCompilerSelect
+                     onCompileClick
+                   />
+                   <ErrorPane errors warnings />
+                 </>;
+               | Init => "Initializing"->s
+               | SetupFailed(msg) => ("Setup failed: " ++ msg)->s
+               }}
+            </div>
+            <div className="w-full">
+              <CodeMirrorHooks
+                minHeight="40vh"
+                className="bg-onyx w-full max-w-705"
+                mode="javascript"
+                value=jsOutput
+                readOnly=true
+              />
+            </div>
+          </div>
         </main>
       </div>
     </div>
