@@ -58,10 +58,7 @@ let basicNavs = [|
   {name: "Object", href: "/docs/manual/latest/object"},
   {name: "Module", href: "/docs/manual/latest/module"},
   {name: "Promise", href: "/docs/manual/latest/promise"},
-  {
-    name: "Reserved Keywords",
-    href: "/docs/manual/latest/reserved-keywords",
-  },
+  {name: "Reserved Keywords", href: "/docs/manual/latest/reserved-keywords"},
 |];
 
 let javascriptNavs = [|
