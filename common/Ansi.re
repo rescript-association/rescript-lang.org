@@ -11,18 +11,18 @@
     https://github.com/BuckleScript/ocaml/blob/0a3ec12fef5dbee795778a47b18024563b5e49f2/utils/misc.ml
  */
 
-type color =
-  | Black // fg=30 bg=40
-  | Red // fg=31 bg=41
-  | Green // fg=32 bg=42
-  | Yellow // fg=33 bg=43
-  | Blue // fg=34 bg=44
-  | Magenta // fg=35 bg=45
-  | Cyan // fg=36 bg=46
-  | White; // fg=37 bg=47
-
 module Color = {
-  let toString = (c: color) =>
+  type t =
+    | Black // fg=30 bg=40
+    | Red // fg=31 bg=41
+    | Green // fg=32 bg=42
+    | Yellow // fg=33 bg=43
+    | Blue // fg=34 bg=44
+    | Magenta // fg=35 bg=45
+    | Cyan // fg=36 bg=46
+    | White; // fg=37 bg=47
+
+  let toString = (c: t) =>
     switch (c) {
     | Black => "black"
     | Red => "red"
@@ -35,19 +35,21 @@ module Color = {
     };
 };
 
-// We don't encode Clear (0) here since it's a special case
-type sgr =
-  | Bold // 1
-  | Fg(color) // 30 - 37
-  | Bg(color) // 40 - 47
-  | Unknown(string);
+module Sgr = {
+  // We don't encode Clear (0) here since it's a special case
+  type param =
+    | Bold // 1
+    | Fg(Color.t) // 30 - 37
+    | Bg(Color.t) // 40 - 47
+    | Unknown(string);
 
-let sgrToString = s => {
-  switch (s) {
-  | Bold => "bold"
-  | Fg(c) => "Fg(" ++ Color.toString(c) ++ ")"
-  | Bg(c) => "Bg(" ++ Color.toString(c) ++ ")"
-  | Unknown(s) => "Unknown: " ++ s
+  let paramToString = s => {
+    switch (s) {
+    | Bold => "bold"
+    | Fg(c) => "Fg(" ++ Color.toString(c) ++ ")"
+    | Bg(c) => "Bg(" ++ Color.toString(c) ++ ")"
+    | Unknown(s) => "Unknown: " ++ s
+    };
   };
 };
 
@@ -111,6 +113,7 @@ module Location = {
 
 module Lexer = {
   open Location;
+  open Sgr;
 
   type token =
     | Text({
@@ -120,7 +123,7 @@ module Lexer = {
     | Sgr({
         loc: Location.loc,
         raw: string,
-        sgrs: array(sgr),
+        params: array(Sgr.param),
       })
     | ClearSgr({
         loc: Location.loc,
@@ -128,8 +131,8 @@ module Lexer = {
       });
 
   type state =
-    | Start
-    | SgrOpen({
+    | Scan
+    | ReadSgr({
         startPos: int,
         content: string,
       }) // contains collected data
@@ -138,20 +141,22 @@ module Lexer = {
         content: string,
       });
 
+  // Note: the acc array will be mutated in the process
   let rec lex =
-          (~acc: array(token)=[||], ~state=Start, p: Location.t)
+          (~acc: array(token)=[||], ~state=Scan, p: Location.t)
           : array(token) =>
     if (isDone(p)) {
       acc;
     } else {
       switch (state) {
-      | Start =>
+      | Scan =>
+        // Checks for the next character and does a state
+        // transition according to the entity we are reading (SGR / Text)
         let c = next(p);
-        // We start by checking the first character to see if we start
-        // with reading text or reading an SGR sequence
+
         let state =
           if (c === esc) {
-            SgrOpen({startPos: p.pos, content: ""});
+            ReadSgr({startPos: p.pos, content: ""});
           } else {
             ReadText({startPos: p.pos, content: c});
           };
@@ -168,8 +173,8 @@ module Lexer = {
                         },
                         content,
                       });
-          let acc = Js.Array2.concat(acc, [|token|]);
-          lex(~acc, ~state=SgrOpen({startPos: p.pos, content: c}), p);
+          Js.Array2.push(acc, token)->ignore;
+          lex(~acc, ~state=ReadSgr({startPos: p.pos, content: c}), p);
         } else if (isDone(p)) {
           let token = Text({
                         loc: {
@@ -178,13 +183,13 @@ module Lexer = {
                         },
                         content,
                       });
-          let acc = Js.Array2.concat(acc, [|token|]);
+          Js.Array2.push(acc, token)->ignore;
           acc;
         } else {
           let content = content ++ c;
           lex(~acc, ~state=ReadText({startPos, content}), p);
         };
-      | SgrOpen({startPos, content}) =>
+      | ReadSgr({startPos, content}) =>
         let c = next(p);
 
         // on termination
@@ -204,7 +209,7 @@ module Lexer = {
                       switch (Js.String2.split(str, ";")) {
                       | [|"0"|] => ClearSgr({loc, raw})
                       | other =>
-                        let sgrs =
+                        let params =
                           Belt.Array.map(other, s => {
                             switch (s) {
                             | "1" => Bold
@@ -227,22 +232,28 @@ module Lexer = {
                             | o => Unknown(o)
                             }
                           });
-                        Sgr({loc, raw, sgrs});
+                        Sgr({loc, raw, params});
                       }
 
-                    | None => Sgr({loc, raw, sgrs: [||]})
+                    | None => Sgr({loc, raw, params: [||]})
                     };
                   }
-                | None => Sgr({loc, raw, sgrs: [||]})
+                | None => Sgr({loc, raw, params: [||]})
               );
-          let acc = Js.Array2.concat(acc, [|token|]);
-          lex(~acc, ~state=Start, p);
+          Js.Array2.push(acc, token)->ignore;
+          lex(~acc, ~state=Scan, p);
         } else {
-          lex(~acc, ~state=SgrOpen({startPos, content: content ++ c}), p);
+          lex(~acc, ~state=ReadSgr({startPos, content: content ++ c}), p);
         };
       };
     };
 
+  // We hide the original implementation to prevent users
+  // to pass in their own `acc` array (this array is getting mutated and
+  // this could cause side-effects for the consumer otherwise)
+  let lex = (p: Location.t) => {
+    lex(p);
+  };
 };
 
 let parse = (input: string) => {
@@ -272,11 +283,11 @@ module Printer = {
           replaceByRe(content, [%re "/\\n/g"], "\\n")->replace(esc, "")
         );
       {j|Text "$content" ($startPos to $endPos)|j};
-    | Sgr({sgrs, raw, loc: {startPos, endPos}}) =>
+    | Sgr({params, raw, loc: {startPos, endPos}}) =>
       let raw = Js.String2.replace(raw, esc, "");
-      let commands =
-        Belt.Array.map(sgrs, sgrToString)->Js.Array2.joinWith(", ");
-      {j|Sgr "$raw" -> $commands ($startPos to $endPos)|j};
+      let params =
+        Belt.Array.map(params, Sgr.paramToString)->Js.Array2.joinWith(", ");
+      {j|Sgr "$raw" -> $params ($startPos to $endPos)|j};
     | ClearSgr({loc: {startPos, endPos}, raw}) =>
       let raw = Js.String2.replace(raw, esc, "");
       {j|Clear Sgr "$raw" ($startPos to $endPos)|j};
