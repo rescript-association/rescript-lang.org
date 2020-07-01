@@ -3,84 +3,6 @@ open Util.ReactStuff;
 %raw
 "require('../styles/main.css')";
 
-module CodeMirrorHooks = {
-  type props;
-  type cmOptions;
-
-  [@bs.obj]
-  external cmOptions:
-    (~mode: string, ~lineNumbers: bool=?, ~readOnly: bool=?, unit) => cmOptions;
-
-  type cmError = {
-    row: int,
-    column: int,
-    endRow: int,
-    endColumn: int,
-    text: string,
-  };
-
-  [@bs.obj]
-  external props:
-    (
-      ~errors: array(cmError)=?,
-      ~minHeight: string=?, // minHeight of the scroller element
-      ~className: string=?,
-      ~style: ReactDOMRe.Style.t=?,
-      ~value: string,
-      ~onChange: string => unit=?,
-      ~options: cmOptions,
-      unit
-    ) =>
-    props;
-
-  let dynamicComponent: React.component(props) =
-    Next.Dynamic.(
-      dynamic(
-        () => {import("../ffi/react-codemirror-hooks")},
-        options(
-          ~ssr=false,
-          ~loading=
-            () => {
-              <div
-                className="bg-onyx text-snow-darker p-4"
-                style={ReactDOMRe.Style.make(~minHeight="40vh", ())}>
-                "/* Loading.... */"->s
-              </div>
-            },
-          (),
-        ),
-      )
-    );
-
-  [@react.component]
-  let make =
-      (
-        ~style=?,
-        ~minHeight=?,
-        ~className=?,
-        ~mode,
-        ~readOnly=false,
-        ~value,
-        ~errors=?,
-        ~onChange=?,
-      ) => {
-    let options = cmOptions(~mode, ~readOnly, ~lineNumbers=true, ());
-    React.createElement(
-      dynamicComponent,
-      props(
-        ~className?,
-        ~minHeight?,
-        ~style?,
-        ~value,
-        ~errors?,
-        ~onChange?,
-        ~options,
-        (),
-      ),
-    );
-  };
-};
-
 module LoadScript = {
   type err;
 
@@ -553,9 +475,13 @@ module ErrorPane = {
     let errorNumber = Belt.Array.length(errors);
 
     let errorElements =
-      Belt.Array.mapWithIndex(errors, (idx, err) => {
-        <div key={Belt.Int.toString(idx)}> err->s </div>
-      })
+      Belt.Array.mapWithIndex(
+        errors,
+        (idx, err) => {
+          let text = Ansi.parse(err)->Ansi.Printer.plainString;
+          <div key={Belt.Int.toString(idx)}> text->s </div>;
+        },
+      )
       ->ate;
     <div>
       <div> <div> {{j|Errors ($errorNumber)|j}}->s </div> errorElements </div>
@@ -640,19 +566,6 @@ module Test2 = {
 
   |j};
 
-  /*let (reasonContent, setReasonContent) =*/
-  /*React.useState(() => initialContent);*/
-
-  /*let onReasonEditorChange =*/
-  /*Util.Debounce.debounce3(*/
-  /*~wait=600,*/
-  /*~immediate=true,*/
-  /*(_editor, _data, value: string) => {*/
-  /*setReasonContent(_ => value);*/
-  /*();*/
-  /*},*/
-  /*);*/
-
   let jsOutput =
     switch (compilerState) {
     | Ready({result: Compiler.Api.CompilationResult.Success({js_output})}) => js_output
@@ -682,7 +595,7 @@ module Test2 = {
     switch (compilerState) {
     /*| Compiling({result: Fail({row, column, endColumn})}, _)*/
     | Ready({result: Fail({row, column, endColumn, endRow, text})}) => [|
-        {CodeMirrorHooks.row, column, endColumn, endRow, text},
+        {CodeMirrorBase.row, column, endColumn, endRow, text},
       |]
     | _ => [||]
     };
@@ -698,7 +611,7 @@ module Test2 = {
         <main className="mx-10 mt-16 pb-32 flex justify-center">
           <div className="flex max-w-1280 w-full">
             <div className="w-full max-w-705 border-r-4 border-night">
-              <CodeMirrorHooks
+              <CodeMirror
                 className="w-full"
                 minHeight="40vh"
                 mode="reason"
@@ -769,9 +682,9 @@ module Test2 = {
                }}
             </div>
             <div className="w-full">
-              <CodeMirrorHooks
+              <CodeMirror
+                className="w-full"
                 minHeight="40vh"
-                className="bg-onyx w-full max-w-705"
                 mode="javascript"
                 value=jsOutput
                 readOnly=true

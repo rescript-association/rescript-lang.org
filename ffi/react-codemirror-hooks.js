@@ -1,3 +1,10 @@
+//
+// OBSOLETE!
+//
+// This file is reimplemented in common/CodeMirrorBase.re
+// We keep this around for reference in case we find some 
+// bugs in the new implementation
+//
 import React, { useEffect, useRef } from "react";
 import CodeMirror from "codemirror";
 import "codemirror/lib/codemirror.css";
