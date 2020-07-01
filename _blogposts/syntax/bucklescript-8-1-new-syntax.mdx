@@ -1,0 +1,36 @@
+---
+author: chenglou
+date: "2020-07-01"
+previewImg: https://res.cloudinary.com/dmm9n7v9f/image/upload/v1587472539/Reason%20Association/reasonml.org/reasonml_art1_1280_zfwnyo.png
+category: syntax
+badge: release
+title: New Syntax for Reason & BuckleScript
+description: |
+  First announcements on our latest efforts for a better syntax parser.
+---
+
+## What's new?
+
+The release of BuckleScript 8.1 contains a new important addition: we've rewritten the Reason syntax parser and printer.
+
+The rewrite was done by a community member of ours, [Maxim](https://twitter.com/_binary_search). Maxim was a main contributor to the old Reason repo, and together we've reached the conclusion a while ago that the codebase needed a revamp. After wrestling with it for the longest time, we've settled on a low-key rewrite.
+
+We apologize for having kept this under wrap; syntax discussions have always been churny, so we didn't want to prematurity announce something before it's ready. After testing this extensively; we now deem it solid enough for your consumption.
+
+Here's what you need to know:
+- The new syntax comes directly with your BuckleScript 8.1 installation. You won't have to install anything else. It does not depend on the old `refmt`.
+- There are a few differences in syntax, documented [here](/docs/reason-compiler/latest/new-bucklescript-syntax).
+- This is BuckleScript-only currently.
+- Our editor support is currently limited; we'd like to take this occasion to clean it up. In the meantime, if you upgrade your [VSCode](https://marketplace.visualstudio.com/items?itemName=jaredly.reason-vscode) or [Sublime Text](https://github.com/reasonml-editor/sublime-reason) plugin, you should get the proper highlighting.
+- We've made a refmt-to-new-syntax converter that we'll release later. We'd like you to test it on small bits of code for now; a wholesale conversion at this stage would be a bit too rushed.
+- To avoid conflict, we've employed the new file extensions `.res` and `.resi`, for implementation and interface respectively.
+- This means the syntax sits alongside the existing Reason and ml syntax. We'd like to avoid eagerly deprecating the other syntaxes, but if this new one works well, we'd like to move onto more ambitious territories. Either way: your existing code will keep working!
+- Issues for the new syntax should go to [https://github.com/BuckleScript/syntax](https://github.com/BuckleScript/syntax) (to lessen the load on the main BuckleScript repo)
+
+The short version: install bs-platform@8.1, create a new `.res` file in your new/existing project, then have fun!
+
+Quality-wise, the parser now features excellent error messages, is noticeably faster on projects of all scales, and should be much more robust. The rearchitecture also allows us to release in a more professional manner. We'll go into more details on the motivation and architecture in our upcoming blog posts; these will prove to be **very** interesting and illuminating for all engineers. Stay tuned! In the meantime, for any immediate questions, please ask in this [Discourse thread](https://reasonml.chat/t/bucklescript-8-1-new-syntax-option/2379).
+
+Maxim's effort is our community at its best: one person taking on a daunting challenge where we, admittedly, have dropped the balls. We hope that you'll enjoy his work as much as we did testing it!
+
+Stay safe!

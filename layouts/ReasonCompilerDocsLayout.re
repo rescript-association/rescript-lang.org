@@ -36,6 +36,10 @@ let overviewNavs = [|
     name: "Upgrade Guide to v7",
     href: "/docs/reason-compiler/latest/upgrade-to-v7",
   },
+  {
+    name: "New BuckleScript Syntax (v8.1)",
+    href: "/docs/reason-compiler/latest/new-bucklescript-syntax",
+  },
 |];
 
 let interopNavs = [|
@@ -215,7 +219,7 @@ let make = (~components=Markdown.default, ~children) => {
     );
 
   let title = "BuckleScript";
-  let version = "v7";
+  let version = "v8";
 
   <DocsLayout
     theme=`Js components categories version title ?activeToc ?breadcrumbs>
