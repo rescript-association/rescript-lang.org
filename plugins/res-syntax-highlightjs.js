@@ -361,7 +361,7 @@ module.exports = function(hljs) {
   OPEN_OR_INCLUDE_MODULE_MODE.contains.push(MODULE_MODE)
 
   return {
-    aliases: ['bss', 'bs-syntax'],
+    aliases: ['res'],
     keywords: KEYWORDS,
     illegal: '(:\\-|:=|\\${|\\+=)',
     // lol beautiful
