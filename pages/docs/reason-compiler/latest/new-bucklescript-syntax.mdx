@@ -22,7 +22,7 @@ This document gives an overview over the most relevant features until more detai
 - Complete removal of semicolon (you can still write them).
 - No need for parentheses around `if`, `switch` and `try`.
 - Type arguments: from `option(int)` to `option<int>`.
-- Interpolated string: from `{j|hello ${name}|j}` to `` j`hello ${name}\` ``
+- Interpolated string: from `{j|hello ${name}|j}` to `` j`hello ${name}` ``
 - Polymorphic variants: from `` `foo`` to `#foo`.
 - Arrays: from `[|1,2,3|]` to `[1,2,3]`. In JS, arrays are the right default.
 - Lists: from `[1,2,3]` to `list[1,2,3]`. This ties with upcoming plans to access containers in a uniform way: `set[...]` and `map[...]`. Maybe temporary.
@@ -32,13 +32,36 @@ This document gives an overview over the most relevant features until more detai
 - Object: from `Js.t({"a": b})` to just `{"a": b}`. The `Js.t` part is now implicit.
 - Attribute: from `[@foo bar]` to `@foo(bar)`. From `[%foo bar]` to `%foo(bar)`.
 - Removed dereference syntax `foo^`. Just use `foo.contents`.
-- `foo bar` for multiline strings. "foo bar" string is now singleline.
+- `` `foo bar` `` for multiline strings. `"foo bar"` string is now singleline.
 - `fun` pattern matching syntax removed.
 - Use any words, including reserved keywords, as your identifier name: `let \"try" = true`.
 
 ## How to Use the New Syntax
 
 Install `bs-platform@8.1` and create a file with the `.res` or `.resi` file extension to enable the new syntax parser (no further configuration required).
+
+## Quick Example
+
+```bss
+if hasEaten {
+  Js.log("more dessert please")
+} else {
+  Js.log("dessert please")
+}
+
+let message = j`Hello ${userName->Js.String.toUpperCase}!`
+
+type student<'extraInfo> = {
+  name: string,
+  age: int,
+  otherInfo: 'extraInfo,
+}
+
+@bs.val external window: {..} = "window"
+
+window["addEventListener"]("focus", onFocus)
+```
+
 
 ## Comparison to JS
 
@@ -57,7 +80,7 @@ Let's have a look on how different JS constructs look in our new syntax:
 | ----------------------- | ------------------------------ |
 | `const x = 5;`          | `let x = 5`                   |
 | `var x = y;`            | No equivalent (thankfully)     |
-| `let x = 5; x = x + 1;` | `let x = ref(5); x := x.content + 1` |
+| `let x = 5; x = x + 1;` | `let x = ref(5); x := x.contents + 1` |
 
 ### String & Character
 
