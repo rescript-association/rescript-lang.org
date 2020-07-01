@@ -17,7 +17,7 @@ The rewrite was done by a community member of ours, [Maxim](https://twitter.com/
 
 We apologize for having kept this under wrap; syntax discussions have always been churny, so we didn't want to prematurity announce something before it's ready. After testing this extensively; we now deem it solid enough for your consumption.
 
-Here's what you need to know:
+**Here's what you need to know:**
 - The new syntax comes directly with your BuckleScript 8.1 installation. You won't have to install anything else. It does not depend on the old `refmt`.
 - There are a few differences in syntax, documented [here](/docs/reason-compiler/latest/new-bucklescript-syntax).
 - This is BuckleScript-only currently.
@@ -26,6 +26,45 @@ Here's what you need to know:
 - To avoid conflict, we've employed the new file extensions `.res` and `.resi`, for implementation and interface respectively.
 - This means the syntax sits alongside the existing Reason and ml syntax. We'd like to avoid eagerly deprecating the other syntaxes, but if this new one works well, we'd like to move onto more ambitious territories. Either way: your existing code will keep working!
 - Issues for the new syntax should go to [https://github.com/BuckleScript/syntax](https://github.com/BuckleScript/syntax) (to lessen the load on the main BuckleScript repo)
+
+**This is how it looks like:**
+
+```bss
+// src/example.res
+
+if hasEaten {
+  Js.log("more dessert please")
+} else {
+  Js.log("dessert please")
+}
+
+let message = j`Hello ${userName->Js.String.toUpperCase}!`
+
+type student<'extraInfo> = {
+  name: string,
+  age: int,
+  otherInfo: 'extraInfo,
+}
+
+@bs.val external window: {..} = "window"
+
+window["addEventListener"]("focus", onFocus)
+```
+
+**Here is an example of an error message:**
+
+```
+File "src/test.res", line 12, characters 57-231:
+
+
+10 │  }
+11 │
+12 │  let message = jHello ${userName->Js.String.toUpperCase}!`
+13 │
+14 │  type student<'extraInfo> = {
+
+Did you forget to close this template expression with a backtick?
+```
 
 The short version: install bs-platform@8.1, create a new `.res` file in your new/existing project, then have fun!
 
