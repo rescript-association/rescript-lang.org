@@ -1,0 +1,226 @@
+# New BuckleScript Syntax
+
+<Intro>
+
+BuckleScript 8.1 comes with a brand new syntax parser and printer that allows for much better syntax error messages and other benefits we will talk about soon.
+
+More details about the new syntax can be found in this [early announcement blog post](/blog/bucklescript-8-1-new-syntax). 
+
+This document gives an overview over the most relevant features until more details / docs are revealed. 
+
+</Intro>
+
+## What is Different?
+
+- Complete removal of semicolon (you can still write them).
+- No need for parentheses around `if`, `switch` and `try`.
+- Type arguments: from `option(int)` to `option<int>`.
+- Interpolated string: from `{j|hello ${name}|j}` to `` j`hello ${name}\` ``
+- Polymorphic variants: from `` `foo`` to `#foo`.
+- Arrays: from `[|1,2,3|]` to `[1,2,3]`. In JS, arrays are the right default.
+- Lists: from `[1,2,3]` to `list[1,2,3]`. This ties with upcoming plans to access containers in a uniform way: `set[...]` and `map[...]`. Maybe temporary.
+- Exception: from `try (foo) { | Bar => 1}` to `try foo catch { | Bar => 1}`
+- No custom infix operator for now (including `mod`).
+- Object access: from `foo##bar #= baz` to `foo["bar"] = baz`. Rejoice!
+- Object: from `Js.t({"a": b})` to just `{"a": b}`. The `Js.t` part is now implicit.
+- Attribute: from `[@foo bar]` to `@foo(bar)`. From `[%foo bar]` to `%foo(bar)`.
+- Removed dereference syntax `foo^`. Just use `foo.contents`.
+- `foo bar` for multiline strings. "foo bar" string is now singleline.
+- `fun` pattern matching syntax removed.
+- Use any words, including reserved keywords, as your identifier name: `let \"try" = true`.
+
+## How to Use the New Syntax
+
+Create a file with the `.res` or `.resi` file extension to enable the new syntax parser (no further configuration required).
+
+## Comments
+
+| JavaScript        | Us          |
+| ----------------- | ----------- |
+| `/* Comment */`   | Same        |
+| `// Line comment` | Same        |
+
+## Variable
+
+| JavaScript              | Us                             |
+| ----------------------- | ------------------------------ |
+| `const x = 5;`          | `let x = 5`                   |
+| `var x = y;`            | No equivalent (thankfully)     |
+| `let x = 5; x = x + 1;` | `let x = ref(5); x := x.content + 1` |
+
+## String & Character
+
+| JavaScript             | Us                    |
+| ---------------------- | --------------------- |
+| `"Hello world!"`       | Same                  |
+| `'Hello world!'`       | Strings must use `"`  |
+| `"hello " + "world"`   | `"hello " ++ "world"` |
+| `` `hello world` ``    | Same |
+
+## Boolean
+
+| JavaScript                                            | Us                                             |
+| ----------------------------------------------------- | ---------------------------------------------- |
+| `true`, `false`                                       | Same                                |
+| `!true`                                               | Same                                           |
+| <code>&#124;&#124;</code>, `&&`, `<=`, `>=`, `<`, `>` | Same                                           |
+| `a === b`, `a !== b`                                  | Same                                           |
+| No deep equality (recursive compare)                  | `a == b`, `a != b`                             |
+| `a == b`                                              | No equality with implicit casting (thankfully) |
+
+## Number
+
+| JavaScript  | Us           |
+| ----------- | ------------ |
+| `3`         | Same \*      |
+| `3.1415`    | Same         |
+| `3 + 4`     | Same         |
+| `3.0 + 4.5` | `3.0 +. 4.5` |
+| `5 % 3`     | `mod(5, 3)`  |
+
+\* JS has no distinction between integer and float.
+
+## Object/Record
+
+| JavaScript          | Us                                      |
+| ------------------- | --------------------------------------- |
+| no types            | `type point = {x: int, mutable y: int}` |
+| `{x: 30, y: 20}`    | Same                                    |
+| `point.x`           | Same                                    |
+| `point.y = 30;`     | Same                                    |
+| `{...point, x: 30}` | Same                                    |
+
+## Array
+
+| JavaScript            | Us                                 |
+| --------------------- | ---------------------------------- |
+| `[1, 2, 3]`           | Same |
+| `myArray[1] = 10`     | Same                               |
+| `[1, "Bob", true]`    | `(1, "Bob", true)` \*              |
+
+\* Heterogenous arrays in JS are disallowed for us. Use tuple instead.
+
+## Null
+
+| JavaScript          | Us        |
+| ------------------- | --------- |
+| `null`, `undefined` | `None` \* |
+
+\* Again, only a spiritual equivalent; we don't have nulls, nor null bugs! But we do have an `option` type for when you actually need nullability.
+
+## Function
+
+| JavaScript                      | Us                           |
+| ------------------------------- | ---------------------------- |
+| `arg => retVal`                 | Same                         |
+| `function named(arg) {...}`     | `let named = (arg) => {...}` |
+| `const f = function(arg) {...}` | `let f = (arg) => {...}`     |
+| `add(4, add(5, 6))`             | Same                         |
+
+### Blocks
+
+<table>
+  <thead>
+    <tr>
+      <th>JavaScript</th>
+      <th>Us    </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+  <pre><code>{`const myFun = (x, y) => {
+  const doubleX = x + x;
+  const doubleY = y + y;
+  return doubleX + doubleY
+};`}</code></pre>
+      </td>
+      <td>
+  <pre><code>{`let myFun = (x, y) => {
+  let doubleX = x + x
+  let doubleY = y + y
+  doubleX + doubleY
+}`}</code></pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## If-else
+
+| JavaScript            | Us                                                                  |
+| --------------------- | ------------------------------------------------------------------- |
+| `if (a) {b} else {c}` | `if a {b} else {c}`                                                 |
+| `a ? b : c`           | Same                                                                |
+| `switch`              | `switch` but [super-powered pattern matching!](pattern-matching.md) |
+
+\* Our conditionals are always expressions! You can write `let result = if a {"hello"} else {"bye"}`
+
+## Destructuring
+
+| JavaScript                    | Us                                            |
+| ----------------------------- | --------------------------------------------- |
+| `const {a, b} = data`         | `let {a, b} = data`                           |
+| `const [a, b] = data`         | <code>let [a, b] = data</code> \*             |
+| `const {a: aa, b: bb} = data` | `let {a: aa, b: bb} = data`                   |
+
+\* Gives good compiler warning that `data` might not be of length 2.
+
+## Loop
+
+| JavaScript                            | Us                             |
+| ------------------------------------- | ------------------------------ |
+| `for (let i = 0; i <= 10; i++) {...}` | `for i in 0 to 10 {...}`       |
+| `for (let i = 10; i >= 0; i--) {...}` | `for i in 10 downto 0 {...}`   |
+| `while (true) {...}`                  | `while true {...}`             |
+
+## JSX
+
+| JavaScript                             | Us                       |
+| -------------------------------------- | ------------------------ |
+| `<Foo bar=1 baz="hi" onClick={bla} />` | Same                     |
+| `<Foo bar=bar />`                      | `<Foo bar />` \*         |
+| `<input checked />`                    | `<input checked=true />` |
+| No children spread                     | `<Foo>...children</Foo>` |
+
+\* Argument punning!
+
+## Exception
+
+| JavaScript                                      | Us                                         |
+| ----------------------------------------------- | ------------------------------------------ |
+| `throw new SomeError(...)`                      | `raise(SomeError(...))`                    |
+| `try {a} catch (Err) {...} finally {...}` | <code>try a catch { &#124; Err => ...}</code> \* |
+
+\* No finally.
+
+## Blocks
+
+The last expression of a block delimited by `{}` implicitly returns (including function body). In JavaScript, this can only be simulated via an immediately-invoked function expression (since function bodies have their own local scope).
+
+<table>
+  <thead>
+    <tr>
+      <th>JavaScript</th>
+      <th>Us</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+  <pre><code>{`let result = (function() {
+  const x = 23;
+  const y = 34;
+  return x + y;
+})();`}</code></pre>
+      </td>
+      <td>
+  <pre><code>{`let result = {
+  let x = 23
+  let y = 34
+  x + y
+}`}</code></pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
