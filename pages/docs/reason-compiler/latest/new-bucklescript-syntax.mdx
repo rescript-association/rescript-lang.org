@@ -4,9 +4,9 @@
 
 BuckleScript 8.1 comes with a brand new syntax parser and printer that allows for much better syntax error messages and other benefits we will talk about soon.
 
-More details about the new syntax can be found in this [early announcement blog post](/blog/bucklescript-8-1-new-syntax). 
+More details about the new syntax can be found in this [early announcement blog post](/blog/bucklescript-8-1-new-syntax).
 
-This document gives an overview over the most relevant features until more details / docs are revealed. 
+This document gives an overview over the most relevant features until more details / docs are revealed.
 
 </Intro>
 
@@ -22,11 +22,12 @@ This document gives an overview over the most relevant features until more detai
 - Complete removal of semicolon (you can still write them).
 - No need for parentheses around `if`, `switch` and `try`.
 - Type arguments: from `option(int)` to `option<int>`.
-- Interpolated string: from `{j|hello ${name}|j}` to `` j`hello ${name}` ``
+- Interpolated string: from `{j|hello ${name}|j}` to `` j`hello ${name}` ``.
 - Polymorphic variants: from `` `foo`` to `#foo`.
 - Arrays: from `[|1,2,3|]` to `[1,2,3]`. In JS, arrays are the right default.
 - Lists: from `[1,2,3]` to `list[1,2,3]`. This ties with upcoming plans to access containers in a uniform way: `set[...]` and `map[...]`. Maybe temporary.
-- Exception: from `try (foo) { | Bar => 1}` to `try foo catch { | Bar => 1}`
+- Exception: from `try (foo) { | Bar => 1}` to `try foo catch { | Bar => 1}`.
+- First class module: from `(module Foo: Bar)` to `module(Foo: bar)`.
 - No custom infix operator for now (including `mod`).
 - Object access: from `foo##bar #= baz` to `foo["bar"] = baz`. Rejoice!
 - Object: from `Js.t({"a": b})` to just `{"a": b}`. The `Js.t` part is now implicit.
