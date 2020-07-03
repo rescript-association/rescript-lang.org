@@ -164,12 +164,14 @@ module Lexer = {
       | ReadText({startPos, content}) =>
         let c = next(p);
 
+        let endPos = p.pos - 1;
+
         // Determine if we are keep reading text, or start read SGRs
         if (c === esc) {
           let token = Text({
                         loc: {
                           startPos,
-                          endPos: p.pos,
+                          endPos,
                         },
                         content,
                       });
@@ -179,7 +181,7 @@ module Lexer = {
           let token = Text({
                         loc: {
                           startPos,
-                          endPos: p.pos,
+                          endPos,
                         },
                         content,
                       });
@@ -270,6 +272,91 @@ let onlyText = (tokens: array(Lexer.token)) => {
       | _ => false,
     )
   );
+};
+
+module SgrString = {
+  // A sgr encoded element
+  open Lexer;
+
+  type t = {
+    content: string,
+    params: array(Sgr.param),
+  };
+
+  let fromTokens = (tokens: array(token)): array(t) => {
+    let ret = [||];
+    let params = ref([||]);
+    let content = ref("");
+
+    let length = Js.Array.length(tokens);
+    for (i in 0 to length - 1) {
+      let token = Belt.Array.getExn(tokens, i);
+
+      let isLast = i === length - 1;
+
+      switch (token) {
+      | Text(data) =>
+        content := content^ ++ data.content;
+        if (isLast && content^ !== "") {
+          let element = {content: content^, params: params^};
+          Js.Array2.push(ret, element)->ignore;
+        };
+      | Sgr(data) =>
+        // merge together specific sgr params
+        let (fg, bg, rest) =
+          Belt.Array.concat(params^, data.params)
+          ->Belt.Array.reduce(
+              (None, None, [||]),
+              (acc, next) => {
+                let (fg, bg, other) = acc;
+                switch (next) {
+                | Fg(_) => (Some(next), bg, other)
+                | Bg(_) => (fg, Some(next), other)
+                | o =>
+                  if (Js.Array2.find(other, o2 => o === o2) === None) {
+                    Js.Array2.push(other, next)->ignore;
+                  };
+                  (fg, bg, other);
+                };
+              },
+            );
+
+        if (content^ !== "") {
+          let element = {content: content^, params: params^};
+          Js.Array2.push(ret, element)->ignore;
+          content := "";
+        };
+
+        params :=
+          Belt.Array.concatMany([|
+            Belt.Option.mapWithDefault(fg, [||], v => [|v|]),
+            Belt.Option.mapWithDefault(bg, [||], v => [|v|]),
+            rest,
+          |]);
+      | ClearSgr(_) =>
+        if (content^ !== "") {
+          let element = {content: content^, params: params^};
+          Js.Array2.push(ret, element)->ignore;
+
+          params := [||];
+          content := "";
+        }
+      };
+    };
+
+    ret;
+  };
+
+  let toString = (e: t): string => {
+    let content =
+      Js.String2.(
+        replaceByRe(e.content, [%re "/\\n/g"], "\\n")->replace(esc, "")
+      );
+    let params =
+      Belt.Array.map(e.params, Sgr.paramToString)->Js.Array2.joinWith(", ");
+
+    {j|SgrString params: $params | content: $content|j};
+  };
 };
 
 module Printer = {
