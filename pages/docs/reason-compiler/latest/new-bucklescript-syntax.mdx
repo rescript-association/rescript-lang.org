@@ -23,18 +23,19 @@ This document gives an overview over the most relevant features until more detai
 - No need for parentheses around `if`, `switch` and `try`.
 - Type arguments: from `option(int)` to `option<int>`.
 - Interpolated string: from `{j|hello ${name}|j}` to `` j`hello ${name}` ``.
-- Polymorphic variants: from `` `foo`` to `#foo`.
+- Polymorphic variants: from `` `red`` to `#red`.
 - Arrays: from `[|1,2,3|]` to `[1,2,3]`. In JS, arrays are the right default.
 - Lists: from `[1,2,3]` to `list[1,2,3]`. This ties with upcoming plans to access containers in a uniform way: `set[...]` and `map[...]`. Maybe temporary.
-- Exception: from `try (foo) { | Bar => 1}` to `try foo catch { | Bar => 1}`.
-- First class module: from `(module Foo: Bar)` to `module(Foo: bar)`.
+- Exception: from `try (compute()) { | Not_found => Js.log("oops")}` to `try compute() catch { | Not_found => Js.log("oops")}`.
+- First class module: from `(module S: Student)` to `module(S: Student)`.
 - No custom infix operator for now (including `mod`).
-- Object access: from `foo##bar #= baz` to `foo["bar"] = baz`. Rejoice!
-- Object: from `Js.t({"a": b})` to just `{"a": b}`. The `Js.t` part is now implicit.
-- Attribute: from `[@foo bar]` to `@foo(bar)`. From `[%foo bar]` to `%foo(bar)`.
-- Removed dereference syntax `foo^`. Just use `foo.contents`.
-- `` `foo bar` `` for multiline strings. `"foo bar"` string is now singleline.
+- Object access: from `settings##visible #= true` to `settings["visible"] = true`. Rejoice!
+- Object: from `Js.t({"age": int})` to just `{"age": int}`. The `Js.t` part is now implicit.
+- Attribute: from `[@bs.deriving accessors]` to `@bs.deriving(accessors)`. From `[%re bla]` to `%re(bla)`.
+- Removed dereference syntax `result^`. Just use `result.contents`.
+- `` `hello world` `` for multiline strings. `"hello world"` string is now singleline.
 - `fun` pattern matching syntax removed.
+- Type declaration is non-recursive by default, consistent with let bindings. To have recursive types, use `type rec myList<'a> = Nil | Cons('a, myList<'a>)`.
 - Use any words, including reserved keywords, as your identifier name: `let \"try" = true`.
 
 ## How to Use the New Syntax
