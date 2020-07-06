@@ -67,6 +67,9 @@ of all available attributes:
 ```
 ---
 author: hongbo
+co-authors:
+  - chenglou
+  - ryyppy
 date: "2017-10-01" 
 previewImg:
 category: compiler
@@ -80,6 +83,7 @@ canonical: https://bucklescript.github.io/blog/2017/10/01/announcing-1-0
 ```
 
 - `author`: An author alias as defined in `./index_data/blog_authors.json`
+- `co-authors`: A list of co-author aliases (same aliases allowed as in the `author` field)
 - `date`: A **string** date (always make sure to use the `"`, otherwise yaml
   will parse it as a `date`). The date format is `"YYYY-MM-DD hh:mm"`. All blog
   posts are ordered ascending by date.
