@@ -274,8 +274,6 @@ let default = (props: Props.t): React.element => {
 
       Belt.Option.forEach(onChange, onValueChange => {
         cm->CM.onChange(instance => {
-          Js.log("onValueChange");
-          Js.log2("foo:", instance->CM.getValue);
           onValueChange(instance->CM.getValue);
         })
       });
