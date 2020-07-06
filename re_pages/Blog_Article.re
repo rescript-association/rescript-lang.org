@@ -48,19 +48,9 @@ module Line = {
   };
 };
 
-module BlogHeader = {
+module AuthorBox = {
   [@react.component]
-  let make =
-      (
-        ~date: DateStr.t,
-        ~author: BlogFrontmatter.Author.t,
-        ~title: string,
-        ~category: string,
-        ~description: option(string),
-        ~articleImg: option(string),
-      ) => {
-    let date = DateStr.toDate(date);
-
+  let make = (~author: BlogFrontmatter.Author.t) => {
     let displayName = BlogFrontmatter.Author.getDisplayName(author);
 
     let authorImg =
@@ -68,6 +58,44 @@ module BlogHeader = {
       | Some(src) => <img className="h-full w-full rounded-full" src />
       | None => <NameInitialsAvatar displayName />
       };
+
+    <div className="flex items-center">
+      <div className="w-12 h-12 bg-berry-40 block rounded-full mr-3">
+        authorImg
+      </div>
+      <div className="text-14 font-medium text-night-dark">
+        {switch (author.twitter->Js.Null.toOption) {
+         | Some(handle) =>
+           <a
+             href={"https://twitter.com/" ++ handle}
+             className="hover:text-night"
+             rel="noopener noreferrer"
+             target="_blank">
+             {displayName}->s
+           </a>
+         | None => displayName->s
+         }}
+        <div className="text-night-light"> author.role->s </div>
+      </div>
+    </div>;
+  };
+};
+
+module BlogHeader = {
+  [@react.component]
+  let make =
+      (
+        ~date: DateStr.t,
+        ~author: BlogFrontmatter.Author.t,
+        ~co_authors: array(BlogFrontmatter.Author.t),
+        ~title: string,
+        ~category: string,
+        ~description: option(string),
+        ~articleImg: option(string),
+      ) => {
+    let date = DateStr.toDate(date);
+
+    let authors = Belt.Array.concat([|author|], co_authors);
 
     <div className="flex flex-col items-center">
       <div className="w-full max-w-705">
@@ -86,24 +114,16 @@ module BlogHeader = {
              </div>
            }
          })}
-        <div className="flex mb-12 items-center">
-          <div className="w-12 h-12 bg-berry-40 block rounded-full mr-3">
-            authorImg
-          </div>
-          <div className="text-14 font-medium text-night-dark">
-            {switch (author.twitter->Js.Null.toOption) {
-             | Some(handle) =>
-               <a
-                 href={"https://twitter.com/" ++ handle}
-                 className="hover:text-night"
-                 rel="noopener noreferrer"
-                 target="_blank">
-                 {displayName}->s
-               </a>
-             | None => displayName->s
-             }}
-            <div className="text-night-light"> author.role->s </div>
-          </div>
+        <div className="flex flex-col md:flex-row mb-12">
+          {Belt.Array.map(authors, author =>
+             <div
+               key={author.username}
+               style={Style.make(~minWidth="8.1875rem", ())}
+               className="mt-4 md:mt-0 md:ml-8 first:ml-0">
+               <AuthorBox author />
+             </div>
+           )
+           ->ate}
         </div>
       </div>
       {switch (articleImg) {
@@ -142,6 +162,7 @@ let default = (props: props) => {
     | Ok({
         date,
         author,
+        co_authors,
         title,
         description,
         canonical,
@@ -160,6 +181,7 @@ let default = (props: props) => {
           <BlogHeader
             date
             author
+            co_authors
             title
             category={category->BlogFrontmatter.Category.toString}
             description={description->Js.Null.toOption}
