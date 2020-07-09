@@ -266,7 +266,7 @@ let default = (props: Props.t): React.element => {
           (),
         );
       let cm = CM.fromTextArea(input, options);
-      Js.log2("cm", cm);
+      /*Js.log2("cm", cm);*/
 
       Belt.Option.forEach(minHeight, minHeight =>
         cm->CM.getScrollerElement->DomUtil.setMinHeight(minHeight)
