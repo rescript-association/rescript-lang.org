@@ -49,7 +49,42 @@ module Compiler = {
 
     type lang =
       | Reason
-      | OCaml;
+      | OCaml
+      | Napkin;
+
+    module Version = {
+      type t =
+        | V1 // before 8.1.0
+        | V2 // since 8.1.0;
+        | UnknownVersion;
+
+      // Helps finding the right API version
+      let whichApi = (compilerVersion: string): t =>
+        switch (Js.String2.split(compilerVersion, ".")->Belt.List.fromArray) {
+        | [maj, min, ..._] =>
+          let maj = Belt.Int.fromString(maj);
+          let min = Belt.Int.fromString(min);
+
+          switch (maj, min) {
+          | (Some(maj), Some(min)) =>
+            if (maj >= 8 && min >= 1) {
+              V2;
+            } else if (maj >= 8 && min < 1 || maj < 8) {
+              V1;
+            } else {
+              UnknownVersion;
+            }
+          | _ => UnknownVersion
+          };
+        | _ => UnknownVersion
+        };
+
+      let defaultTargetLang = t =>
+        switch (t) {
+        | V2 => Napkin
+        | _ => Reason
+        };
+    };
 
     module CompilationResult = {
       type raw = Js.Json.t;
@@ -73,12 +108,101 @@ module Compiler = {
       };
 
       type t =
-        | Fail(fail)
+        | Fail(fail) // When a compilation failed with some error result
         | Success(success)
+        | UnexpectedError(string) // Errors that slip through as uncaught exceptions within the playground
         | Unknown(string, raw)
         | None;
 
-      let classify = (raw: raw, super_errors: string): t => {
+      // Used for compiler version >= 8.1
+      // TODO: We might change this specific api completely before launching
+      let classifyV2 = (raw: raw, super_errors: string): t => {
+        Js.Json.(
+          switch (raw->classify) {
+          | JSONObject(root) =>
+            let type_ = Js.Dict.get(root, "type");
+
+            switch (type_) {
+            | Some(type_) =>
+              switch (classify(type_)) {
+              | JSONString("error") =>
+                open! Json.Decode;
+                switch (
+                  {
+                    js_error_msg: raw->field("js_error_msg", string, _),
+                    super_errors,
+                    row: raw->field("row", int, _),
+                    column: raw->field("column", int, _),
+                    endRow: raw->field("endRow", int, _),
+                    endColumn: raw->field("endColumn", int, _),
+                    text: raw->field("text", string, _),
+                  }
+                ) {
+                | fail => Fail(fail)
+                | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
+                };
+              | JSONString("success") =>
+                switch (Js.Dict.get(root, "js_code")) {
+                | Some(jscode) =>
+                  switch (classify(jscode)) {
+                  | JSONString(js_output) =>
+                    Success({js_output, warnings: super_errors})
+                  | value =>
+                    Unknown({j|.js_code is not a string: $value|j}, raw)
+                  }
+                | None => Unknown({j|.js_code not found in result|j}, raw)
+                }
+              | JSONString("unexpected_error") =>
+                open! Json.Decode;
+                switch (raw->field("js_error_msg", string, _)) {
+                | msg => UnexpectedError(msg)
+                | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
+                };
+              | value => Unknown({j|.type is not a string: $value|j}, raw)
+              }
+            | _ => Unknown("Malformed result", raw)
+            };
+
+          /*
+           switch (jsCode, type_) {
+           | (Some(json), None) =>
+             switch (classify(json)) {
+             | JSONString(js_output) =>
+               Success({js_output, warnings: super_errors})
+             | value => Unknown({j|.js_code is not a string: $value|j}, raw)
+             }
+           | (None, Some(type_)) =>
+             switch (classify(type_)) {
+             | JSONString("error") =>
+               open! Json.Decode;
+               switch (
+                 {
+                   js_error_msg: raw->field("js_error_msg", string, _),
+                   super_errors,
+                   row: raw->field("row", int, _),
+                   column: raw->field("column", int, _),
+                   endRow: raw->field("endRow", int, _),
+                   endColumn: raw->field("endColumn", int, _),
+                   text: raw->field("text", string, _),
+                 }
+               ) {
+               | fail => Fail(fail)
+               | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
+               };
+
+             | value => Unknown({j|.type is not a string: $value|j}, raw)
+             }
+           | (Some(_), Some(_)) =>
+             Unknown("Not sure if this is a success / error result", raw)
+           | (None, None) => Unknown("No js code / error message", raw)
+           };
+           */
+          | _ => Unknown("Malformed result", raw)
+          }
+        );
+      };
+
+      let classifyV1 = (raw: raw, super_errors: string): t => {
         Js.Json.(
           switch (raw->classify) {
           | JSONObject(root) =>
@@ -100,9 +224,9 @@ module Compiler = {
                   {
                     js_error_msg: raw->field("js_error_msg", string, _),
                     super_errors,
-                    row: raw->field("row", int, _),
+                    row: raw->field("row", int, _), // TODO: Adapt row with +1?
                     column: raw->field("column", int, _),
-                    endRow: raw->field("endRow", int, _),
+                    endRow: raw->field("endRow", int, _), // TODO: Adapt endRow with +1?
                     endColumn: raw->field("endColumn", int, _),
                     text: raw->field("text", string, _),
                   }
@@ -135,6 +259,9 @@ module Compiler = {
 
     [@bs.val] [@bs.scope "reason"]
     external reasonCompile: string => Js.Json.t = "compile_super_errors";
+
+    [@bs.val] [@bs.scope "napkin"]
+    external napkinCompile: string => Js.Json.t = "compile_super_errors";
 
     module ConsoleCapture = {
       /*
@@ -260,6 +387,7 @@ module Compiler = {
 
   type selected = {
     id: string, // The id used for loading the compiler bundle (ideally should be the same as compilerVersion)
+    apiVersion: Api.Version.t, // The playground API version in use
     compilerVersion: string,
     ocamlVersion: string,
     reasonVersion: string,
@@ -269,6 +397,7 @@ module Compiler = {
   type ready = {
     versions: array(string),
     selected,
+    targetLang: Api.lang,
     errors: array(string),
     result: Api.CompilationResult.t,
   };
@@ -343,22 +472,29 @@ module Compiler = {
               | versions =>
                 // Fetching the initial compiler is different, since we
                 // don't have any running version downloaded yet
+
                 let latest = versions[0];
 
                 attachCompilerAndLibraries(~version=latest, ~libraries, ())
                 ->Promise.get(result => {
                     switch (result) {
                     | Ok () =>
+                      let apiVersion =
+                        Api.Version.whichApi(Api.compilerVersion);
                       let selected = {
                         id: latest,
+                        apiVersion,
                         compilerVersion: Api.compilerVersion,
                         ocamlVersion: Api.ocamlVersion,
                         reasonVersion: Api.reasonVersion,
                         libraries,
                       };
+
                       setState(_ => {
                         Ready({
                           selected,
+                          targetLang:
+                            Api.Version.defaultTargetLang(apiVersion),
                           versions,
                           errors: [||],
                           result: Api.CompilationResult.None,
@@ -385,7 +521,7 @@ module Compiler = {
             make(
               ~contentType=Plain,
               ~completed,
-              "https://cdn.jsdelivr.net/gh/ryyppy/bs-platform-js-releases@master/VERSIONS",
+              "https://cdn.jsdelivr.net/gh/ryyppy/bs-platform-js-releases@latest/VERSIONS",
             )
             ->send
           );
@@ -405,16 +541,21 @@ module Compiler = {
                   )
                 });
 
+                let apiVersion = Api.Version.whichApi(Api.compilerVersion);
+
                 let selected = {
                   id: version,
+                  apiVersion,
                   compilerVersion: Api.compilerVersion,
                   ocamlVersion: Api.ocamlVersion,
                   reasonVersion: Api.reasonVersion,
                   libraries,
                 };
+
                 setState(_ => {
                   Ready({
                     selected,
+                    targetLang: Api.Version.defaultTargetLang(apiVersion),
                     versions: ready.versions,
                     errors: [||],
                     result: Api.CompilationResult.None,
@@ -429,10 +570,14 @@ module Compiler = {
         | Compiling(ready, (lang, code)) =>
           let flush = Api.ConsoleCapture.captureErrorConsole();
 
+          let apiVersion = ready.selected.apiVersion;
+          let compilerVersion = ready.selected.compilerVersion;
+
           let jsonResult =
             switch (lang) {
             | Api.OCaml => Api.ocamlCompile(code)
             | Api.Reason => Api.reasonCompile(code)
+            | Api.Napkin => Api.napkinCompile(code)
             };
 
           // Retrieve the console.error output and append it
@@ -440,7 +585,16 @@ module Compiler = {
           let superErrors = flush();
 
           let result =
-            Api.CompilationResult.classify(jsonResult, superErrors);
+            switch (apiVersion) {
+            | Api.Version.V1 =>
+              Api.CompilationResult.classifyV1(jsonResult, superErrors)
+            | V2 => Api.CompilationResult.classifyV2(jsonResult, superErrors)
+            | UnknownVersion =>
+              Api.CompilationResult.Unknown(
+                {j|Can't classify result of compiler version "$compilerVersion" (This is a bug)|j},
+                jsonResult,
+              )
+            };
 
           setState(_ => {Ready({...ready, result})});
         | SetupFailed(_)
@@ -492,11 +646,21 @@ module ControlPanel = {
         ~compilerReady: bool,
         ~compilerVersion: string,
         ~availableCompilerVersions: array(string),
+        ~availableTargetLangs: array(Compiler.Api.lang),
+        ~selectedTargetLang: (Compiler.Api.lang, string), // (lang, version)
         ~loadedLibraries: array(string),
-        ~reasonVersion: string,
         ~onCompilerSelect: string => unit,
         ~onCompileClick: unit => unit,
       ) => {
+    let (targetLang, targetLangVersion) = selectedTargetLang;
+
+    let targetLangName =
+      switch (targetLang) {
+      | Napkin => "Napkin"
+      | Reason => "Reason"
+      | OCaml => "OCaml"
+      };
+
     <div className="flex bg-onyx text-night-light px-6 w-full text-14">
       <div
         className="flex justify-between items-center border-t py-4 border-night-60 w-full">
@@ -519,7 +683,10 @@ module ControlPanel = {
              ->ate}
           </DropdownSelect>
         </div>
-        <div className="font-semibold"> "Reason "->s {reasonVersion}->s </div>
+        <div className="font-semibold">
+          {(targetLangName ++ ": ")->s}
+          {targetLangVersion}->s
+        </div>
         <div className="font-semibold">
           "Bindings: "->s
           {switch (loadedLibraries) {
@@ -562,9 +729,11 @@ module Test2 = {
 
   |j};
 
+  Js.log(compilerState);
   let jsOutput =
     switch (compilerState) {
     | Ready({result: Compiler.Api.CompilationResult.Success({js_output})}) => js_output
+    | Ready({result: Compiler.Api.CompilationResult.Unknown(msg, _)}) => {j|/* Unexpected Result: \n $msg */|j}
     | Ready({result: Compiler.Api.CompilationResult.Fail(_)}) => "/* Could not compile, check the error pane for details. */"
     | Ready({result: Compiler.Api.CompilationResult.None}) => "/* Compiler ready! Press the \"Compile\" button to see the JS output. */"
     | Compiling(_, _) => "/* Compiling... */"
@@ -634,6 +803,23 @@ module Test2 = {
                    | _ => ([||], [||])
                    };
 
+                 let availableTargetLangs =
+                   switch (ready.selected.apiVersion) {
+                   | V2 => [|Compiler.Api.Reason, Napkin|]
+                   | V1
+                   | UnknownVersion => [|Reason|]
+                   };
+
+                 let selectedTargetLang =
+                   switch (ready.targetLang) {
+                   | Napkin => (
+                       Compiler.Api.Napkin,
+                       ready.selected.compilerVersion,
+                     )
+                   | Reason => (Reason, ready.selected.reasonVersion)
+                   | OCaml => (OCaml, ready.selected.ocamlVersion)
+                   };
+
                  let onCompilerSelect = id => {
                    compilerDispatch(
                      SwitchToCompiler({
@@ -646,11 +832,12 @@ module Test2 = {
                  let onCompileClick = () => {
                    compilerDispatch(
                      CompileCode(
-                       Compiler.Api.Reason,
+                       ready.targetLang,
                        React.Ref.current(reasonCode),
                      ),
                    );
                  };
+                 Js.log(ready.result);
 
                  // When a new compiler version was selected, it should
                  // be shown in the control panel as the currently selected
@@ -661,14 +848,14 @@ module Test2 = {
                    | _ => ready.selected.id
                    };
 
-                 Js.log(errors);
                  <>
                    <ControlPanel
                      compilerReady=isReady
                      compilerVersion
+                     availableTargetLangs
                      availableCompilerVersions={ready.versions}
+                     selectedTargetLang
                      loadedLibraries={ready.selected.libraries}
-                     reasonVersion={ready.selected.reasonVersion}
                      onCompilerSelect
                      onCompileClick
                    />

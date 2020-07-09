@@ -3,7 +3,12 @@
   "namespace": false,
   "reason": { "react-jsx": 3 },
   "refmt": 3,
-  "bs-dependencies": ["reason-react", "bs-fetch", "@glennsl/bs-json", "reason-promise"],
+  "bs-dependencies": [
+    "reason-react",
+    "bs-fetch",
+    "@glennsl/bs-json",
+    "reason-promise"
+  ],
   "ppx-flags": [],
   "sources": [
     { "dir": "common" },
@@ -17,6 +22,9 @@
   "package-specs": {
     "module": "es6",
     "in-source": true
+  },
+  "warnings": {
+    "error": "+8"
   },
   "suffix": ".bs.js",
   "bsc-flags": ["-bs-no-version-header", "-bs-super-errors", "-bs-g"],
