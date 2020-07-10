@@ -72,7 +72,7 @@ module Location = {
 
   let fromString = input => {input, pos: (-1)};
 
-  let isDone = p => p.pos >= Js.String.length(p.input) - 1;
+  let isDone = p => p.pos >= Js.String.length(p.input);
 
   let next = p =>
     if (!isDone(p)) {
