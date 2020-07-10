@@ -589,22 +589,28 @@ module ErrorPane = {
   let make = (~errors: array(string), ~warnings: array(string)) => {
     let errorNumber = Belt.Array.length(errors);
 
-    let lines =
-      if (Belt.Array.length(errors) === 0) {
-        [|"0 errors occurred!"|];
-      } else {
-        errors;
-      };
-
     <div>
       <div>
         <div> {{j|Errors ($errorNumber)|j}}->s </div>
         <div
           style={ReactDOMRe.Style.make(~maxHeight="17rem", ())}
-          className="overflow-y-scroll">
-          <AnsiTerminal className="bg-onyx text-snow-darker text-14 px-4 py-4">
-            lines
-          </AnsiTerminal>
+          className="overflow-y-scroll ">
+          <div className="bg-onyx text-snow-darker text-14 px-4 py-4">
+            {errors
+             ->Belt.Array.mapWithIndex((i, line) => {
+                 <AnsiPre
+                   className="mb-4 pb-2 last:mb-0 last:pb-0 last:border-0 border-b border-night-light"
+                   key={Belt.Int.toString(i)}>
+                   line
+                 </AnsiPre>
+               })
+             ->ate}
+            {warnings
+             ->Belt.Array.mapWithIndex((i, line) => {
+                 <AnsiPre key={Belt.Int.toString(i)}> line </AnsiPre>
+               })
+             ->ate}
+          </div>
         </div>
       </div>
     </div>;

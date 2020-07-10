@@ -42,28 +42,16 @@ let renderSgrString = (~key: string, sgrStr: SgrString.t): React.element => {
   <span key className> content->s </span>;
 };
 
-let renderLine = (~key: string, tokens: array(Lexer.token)): React.element => {
-  <pre key className="bg-fire-15 rounded p-4 mb-4 ">
-
-      {SgrString.fromTokens(tokens)
-       ->Belt.Array.mapWithIndex((i, str) => {
-           let key = key ++ " " ++ Belt.Int.toString(i);
-           renderSgrString(~key, str);
-         })
-       ->ate}
-    </pre>;
-    // Note: pre is essential here, otherwise whitespace and newlines are not respected
-};
-
-/*
-   Renders an array of ANSI encoded strings
-   and applying the right styling for our design system
- */
 [@react.component]
-let make = (~className=?, ~children: array(string)) => {
-  let lines =
-    Belt.Array.mapWithIndex(children, (i, line) =>
-      line->Ansi.parse->renderLine(~key=Belt.Int.toString(i))
-    );
-  <div ?className> lines->ate </div>;
+let make = (~className=?, ~children: string) => {
+  let spans =
+    Ansi.parse(children)
+    ->SgrString.fromTokens
+    ->Belt.Array.mapWithIndex((i, str) => {
+        let key = Belt.Int.toString(i);
+        renderSgrString(~key, str);
+      });
+
+  // Note: pre is essential here, otherwise whitespace and newlines are not respected
+  <pre ?className> spans->ate </pre>;
 };
