@@ -26,7 +26,7 @@ let mapColor = (~target: colorTarget, c: Color.t): string => {
   };
 };
 
-let renderSgrString = (sgrStr: SgrString.t): React.element => {
+let renderSgrString = (~key: string, sgrStr: SgrString.t): React.element => {
   let {SgrString.content, params} = sgrStr;
 
   let className =
@@ -39,15 +39,20 @@ let renderSgrString = (sgrStr: SgrString.t): React.element => {
       }
     });
 
-  <span className> content->s </span>;
+  <span key className> content->s </span>;
 };
 
+let renderLine = (~key: string, tokens: array(Lexer.token)): React.element => {
+  <pre key className="bg-fire-15 rounded p-4 mb-4 ">
 
-let renderLine = (tokens: array(Lexer.token)): React.element => {
-  // Note: pre is essential here, otherwise whitespace and newlines are not respected
-  <pre>
-    {SgrString.fromTokens(tokens)->Belt.Array.map(renderSgrString)->ate}
-  </pre>;
+      {SgrString.fromTokens(tokens)
+       ->Belt.Array.mapWithIndex((i, str) => {
+           let key = key ++ " " ++ Belt.Int.toString(i);
+           renderSgrString(~key, str);
+         })
+       ->ate}
+    </pre>;
+    // Note: pre is essential here, otherwise whitespace and newlines are not respected
 };
 
 /*
@@ -56,6 +61,9 @@ let renderLine = (tokens: array(Lexer.token)): React.element => {
  */
 [@react.component]
 let make = (~className=?, ~children: array(string)) => {
-  let lines = Belt.Array.map(children, line => line->Ansi.parse->renderLine);
+  let lines =
+    Belt.Array.mapWithIndex(children, (i, line) =>
+      line->Ansi.parse->renderLine(~key=Belt.Int.toString(i))
+    );
   <div ?className> lines->ate </div>;
 };
