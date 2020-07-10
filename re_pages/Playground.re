@@ -108,7 +108,7 @@ module Compiler = {
       };
 
       type t =
-        | Fail(fail) // When a compilation failed with some error result
+        | Fail(array(fail)) // When a compilation failed with some error result
         | Success(success)
         | UnexpectedError(string) // Errors that slip through as uncaught exceptions within the playground
         | Unknown(string, raw)
@@ -117,89 +117,43 @@ module Compiler = {
       // Used for compiler version >= 8.1
       // TODO: We might change this specific api completely before launching
       let classifyV2 = (raw: raw, super_errors: string): t => {
-        Js.Json.(
-          switch (raw->classify) {
-          | JSONObject(root) =>
-            let type_ = Js.Dict.get(root, "type");
+        open! Json.Decode;
 
-            switch (type_) {
-            | Some(type_) =>
-              switch (classify(type_)) {
-              | JSONString("error") =>
-                open! Json.Decode;
-                switch (
-                  {
-                    js_error_msg: raw->field("js_error_msg", string, _),
-                    super_errors,
-                    row: raw->field("row", int, _),
-                    column: raw->field("column", int, _),
-                    endRow: raw->field("endRow", int, _),
-                    endColumn: raw->field("endColumn", int, _),
-                    text: raw->field("text", string, _),
-                  }
-                ) {
-                | fail => Fail(fail)
-                | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
-                };
-              | JSONString("success") =>
-                switch (Js.Dict.get(root, "js_code")) {
-                | Some(jscode) =>
-                  switch (classify(jscode)) {
-                  | JSONString(js_output) =>
-                    Success({js_output, warnings: super_errors})
-                  | value =>
-                    Unknown({j|.js_code is not a string: $value|j}, raw)
-                  }
-                | None => Unknown({j|.js_code not found in result|j}, raw)
-                }
-              | JSONString("unexpected_error") =>
-                open! Json.Decode;
-                switch (raw->field("js_error_msg", string, _)) {
-                | msg => UnexpectedError(msg)
-                | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
-                };
-              | value => Unknown({j|.type is not a string: $value|j}, raw)
-              }
-            | _ => Unknown("Malformed result", raw)
-            };
+        let errDecoder = json => {
+          Json.Decode.{
+            js_error_msg: json->field("js_error_msg", string, _),
+            super_errors,
+            row: json->field("row", int, _),
+            column: json->field("column", int, _),
+            endRow: json->field("endRow", int, _),
+            endColumn: json->field("endColumn", int, _),
+            text: json->field("text", string, _),
+          };
+        };
 
-          /*
-           switch (jsCode, type_) {
-           | (Some(json), None) =>
-             switch (classify(json)) {
-             | JSONString(js_output) =>
-               Success({js_output, warnings: super_errors})
-             | value => Unknown({j|.js_code is not a string: $value|j}, raw)
-             }
-           | (None, Some(type_)) =>
-             switch (classify(type_)) {
-             | JSONString("error") =>
-               open! Json.Decode;
-               switch (
-                 {
-                   js_error_msg: raw->field("js_error_msg", string, _),
-                   super_errors,
-                   row: raw->field("row", int, _),
-                   column: raw->field("column", int, _),
-                   endRow: raw->field("endRow", int, _),
-                   endColumn: raw->field("endColumn", int, _),
-                   text: raw->field("text", string, _),
-                 }
-               ) {
-               | fail => Fail(fail)
-               | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
-               };
-
-             | value => Unknown({j|.type is not a string: $value|j}, raw)
-             }
-           | (Some(_), Some(_)) =>
-             Unknown("Not sure if this is a success / error result", raw)
-           | (None, None) => Unknown("No js code / error message", raw)
-           };
-           */
-          | _ => Unknown("Malformed result", raw)
+        switch (field("type", string, raw)) {
+        | "success" =>
+          switch (field("js_code", string, raw)) {
+          | js_output => Success({js_output, warnings: super_errors})
+          | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
           }
-        );
+        | "error" =>
+          switch (field("errors", array(errDecoder), raw)) {
+          | [||] =>
+            Unknown("Failed, but no errors returned by the compiler", raw)
+          | fails =>
+            Js.log2("fails", fails);
+            Fail(fails);
+          | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
+          }
+        | "unexpected_error" =>
+          switch (field("js_error_msg", string, raw)) {
+          | msg => UnexpectedError(msg)
+          | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
+          }
+        | _ => Unknown("Malformed result", raw)
+        | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
+        };
       };
 
       let classifyV1 = (raw: raw, super_errors: string): t => {
@@ -220,18 +174,25 @@ module Compiler = {
               switch (classify(type_)) {
               | JSONString("error") =>
                 open! Json.Decode;
+                // Note:
+                // The V1 playground bundle API was already correcting the row numbers
+                // to a zero based value. This will correct them back to 1 based ones to
+                // have a unified interface for the UI (which again, converts them to zero based
+                // line numbers)
+                let toOneBased = n => n + 1;
+
                 switch (
                   {
                     js_error_msg: raw->field("js_error_msg", string, _),
                     super_errors,
-                    row: raw->field("row", int, _), // TODO: Adapt row with +1?
+                    row: raw->field("row", int, _)->toOneBased,
                     column: raw->field("column", int, _),
-                    endRow: raw->field("endRow", int, _), // TODO: Adapt endRow with +1?
+                    endRow: raw->field("endRow", int, _)->toOneBased,
                     endColumn: raw->field("endColumn", int, _),
                     text: raw->field("text", string, _),
                   }
                 ) {
-                | fail => Fail(fail)
+                | fail => Fail([|fail|])
                 | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
                 };
 
@@ -628,12 +589,23 @@ module ErrorPane = {
   let make = (~errors: array(string), ~warnings: array(string)) => {
     let errorNumber = Belt.Array.length(errors);
 
+    let lines =
+      if (Belt.Array.length(errors) === 0) {
+        [|"0 errors occurred!"|];
+      } else {
+        errors;
+      };
+
     <div>
       <div>
         <div> {{j|Errors ($errorNumber)|j}}->s </div>
-        <AnsiTerminal className="bg-onyx text-snow-darker text-14 px-4">
-          errors
-        </AnsiTerminal>
+        <div
+          style={ReactDOMRe.Style.make(~maxHeight="17rem", ())}
+          className="overflow-y-scroll">
+          <AnsiTerminal className="bg-onyx text-snow-darker text-14 px-4 py-4">
+            lines
+          </AnsiTerminal>
+        </div>
       </div>
     </div>;
   };
@@ -656,7 +628,7 @@ module ControlPanel = {
 
     let targetLangName =
       switch (targetLang) {
-      | Napkin => "Napkin"
+      | Napkin => "New BS Syntax"
       | Reason => "Reason"
       | OCaml => "OCaml"
       };
@@ -729,11 +701,23 @@ module Test2 = {
 
   |j};
 
+  let initialContent = {j|module A = {
+  let = 1;
+  let a = 1;
+}
+
+module B = {
+  let = 2
+  let b = 2
+}
+  |j};
+
   Js.log(compilerState);
   let jsOutput =
     switch (compilerState) {
+    | Init => "/* Initializing Playground... */"
     | Ready({result: Compiler.Api.CompilationResult.Success({js_output})}) => js_output
-    | Ready({result: Compiler.Api.CompilationResult.Unknown(msg, _)}) => {j|/* Unexpected Result: \n $msg */|j}
+    | Ready({result: Compiler.Api.CompilationResult.Unknown(msg, _)}) => {j|/* Unexpected Result: $msg */|j}
     | Ready({result: Compiler.Api.CompilationResult.Fail(_)}) => "/* Could not compile, check the error pane for details. */"
     | Ready({result: Compiler.Api.CompilationResult.None}) => "/* Compiler ready! Press the \"Compile\" button to see the JS output. */"
     | Compiling(_, _) => "/* Compiling... */"
@@ -759,9 +743,10 @@ module Test2 = {
   let compilerErrors =
     switch (compilerState) {
     /*| Compiling({result: Fail({row, column, endColumn})}, _)*/
-    | Ready({result: Fail({row, column, endColumn, endRow, text})}) => [|
-        {CodeMirrorBase.row, column, endColumn, endRow, text},
-      |]
+    | Ready({result: Fail(fails)}) =>
+      Belt.Array.map(fails, ({row, column, endColumn, endRow, text}) => {
+        {CodeMirrorBase.row, column, endColumn, endRow, text}
+      })
     | _ => [||]
     };
 
@@ -790,13 +775,28 @@ module Test2 = {
                | SwitchingCompiler(ready, _, _) =>
                  let (errors, warnings) =
                    switch (ready.result) {
-                   | Fail({super_errors, js_error_msg}) =>
+                   | Fail(fails) =>
                      let errors =
-                       if (super_errors !== "") {
-                         [|super_errors|];
-                       } else {
-                         [|js_error_msg|];
-                       };
+                       Belt.Array.reduce(
+                         fails,
+                         [||],
+                         (acc, next) => {
+                           let {
+                             Compiler.Api.CompilationResult.super_errors,
+                             js_error_msg,
+                           } = next;
+
+                           let add =
+                             if (super_errors !== "") {
+                               [|super_errors|];
+                             } else {
+                               [|js_error_msg|];
+                             };
+
+                           Js.Array2.concat(acc, add);
+                         },
+                       );
+                     Js.log2("errorrrrs", errors);
 
                      (errors, [||]);
                    | Success({warnings}) => ([||], [|warnings|])
@@ -870,6 +870,7 @@ module Test2 = {
                 className="w-full"
                 minHeight="40vh"
                 mode="javascript"
+                lineWrapping=true
                 value=jsOutput
                 readOnly=true
               />
