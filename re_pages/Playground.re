@@ -141,9 +141,7 @@ module Compiler = {
           switch (field("errors", array(errDecoder), raw)) {
           | [||] =>
             Unknown("Failed, but no errors returned by the compiler", raw)
-          | fails =>
-            Js.log2("fails", fails);
-            Fail(fails);
+          | fails => Fail(fails)
           | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
           }
         | "unexpected_error" =>
@@ -718,7 +716,6 @@ module B = {
 }
   |j};
 
-  Js.log(compilerState);
   let jsOutput =
     switch (compilerState) {
     | Init => "/* Initializing Playground... */"
@@ -802,7 +799,6 @@ module B = {
                            Js.Array2.concat(acc, add);
                          },
                        );
-                     Js.log2("errorrrrs", errors);
 
                      (errors, [||]);
                    | Success({warnings}) => ([||], [|warnings|])
@@ -843,7 +839,6 @@ module B = {
                      ),
                    );
                  };
-                 Js.log(ready.result);
 
                  // When a new compiler version was selected, it should
                  // be shown in the control panel as the currently selected
