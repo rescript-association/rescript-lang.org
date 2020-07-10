@@ -29,6 +29,7 @@ let make =
       ~className=?,
       ~mode,
       ~readOnly=false,
+      ~lineWrapping=false,
       ~value: string,
       ~errors=?,
       ~onChange=?,
@@ -39,6 +40,7 @@ let make =
       ~mode,
       ~readOnly,
       ~lineNumbers=true,
+      ~lineWrapping,
       (),
     );
 

@@ -36,6 +36,8 @@ module CM = {
       lineNumbers: bool,
       [@bs.optional]
       readOnly: bool,
+      [@bs.optional]
+      lineWrapping: bool,
     };
   };
 
@@ -220,10 +222,14 @@ let updateErrors = (~state: state, ~cm: CM.t, errors) => {
       let marker = ErrorMarker.make(~text=e.text, ~wrapper);
       wrapper->appendChild(marker);
 
-      cm->CM.setGutterMarker(e.row, CM.errorGutterId, marker);
+      // CodeMirrors line numbers are (strangely enough) zero based
+      let row = e.row - 1;
+      let endRow = e.endRow - 1;
 
-      let from = {CM.line: e.row, ch: e.column};
-      let to_ = {CM.line: e.endRow, ch: e.endColumn};
+      cm->CM.setGutterMarker(row, CM.errorGutterId, marker);
+
+      let from = {CM.line: row, ch: e.column};
+      let to_ = {CM.line: endRow, ch: e.endColumn};
 
       cm
       ->CM.markText(
@@ -260,6 +266,11 @@ let default = (props: Props.t): React.element => {
           ~theme="material",
           ~gutters=[|CM.errorGutterId, "CodeMirror-linenumbers"|],
           ~mode=cmOptions->CM.Options.mode,
+          ~lineWrapping=
+            Belt.Option.getWithDefault(
+              cmOptions->CM.Options.lineWrapping,
+              false,
+            ),
           ~readOnly=
             Belt.Option.getWithDefault(cmOptions->CM.Options.readOnly, false),
           ~lineNumbers=true,
@@ -273,9 +284,7 @@ let default = (props: Props.t): React.element => {
       );
 
       Belt.Option.forEach(onChange, onValueChange => {
-        cm->CM.onChange(instance => {
-          onValueChange(instance->CM.getValue);
-        })
+        cm->CM.onChange(instance => {onValueChange(instance->CM.getValue)})
       });
 
       // For some reason, injecting value with the options doesn't work
@@ -300,8 +309,7 @@ let default = (props: Props.t): React.element => {
   React.useEffect1(
     () => {
       switch (cmRef->React.Ref.current) {
-      | Some(cm) =>
-        cm->CM.setValue(value)
+      | Some(cm) => cm->CM.setValue(value)
       | None => ()
       };
       None;
