@@ -162,7 +162,17 @@ module Props = {
 };
 
 module ErrorMarker = {
-  let make = (~text: string, ~wrapper: Dom.element): Dom.element => {
+  // Note: this is not a React component
+  let make =
+      (
+        ~id,
+        ~text: string,
+        ~onMouseHover=?,
+        ~onMouseLeave=?,
+        ~wrapper: Dom.element,
+        (),
+      )
+      : Dom.element => {
     open DomUtil;
 
     let msg = createElement("div");
@@ -180,23 +190,28 @@ module ErrorMarker = {
 
     let marker = createElement("div");
     marker->setClassName(
-      "text-center text-fire font-bold bg-fire-15 rounded w-4 ml-2 hover:cursor-pointer",
+      "text-center text-fire font-bold bg-fire-15 rounded-full w-5 h-5 ml-2 hover:cursor-pointer",
     );
     marker->setInnerHTML("!");
 
     marker->setOnMouseOver(() => {
       let wrapperPos = wrapper->getBoundingClientRect;
       let pos = marker->getBoundingClientRect;
+      Js.log(text);
 
       msg->setLeft(
         Belt.Int.toString(pos.x - wrapperPos.x + pos.width) ++ "px",
       );
       msg->setTop(Belt.Int.toString(pos.y - wrapperPos.y) ++ "px");
 
+      Belt.Option.forEach(onMouseHover, cb => cb(id));
       showMsg();
     });
 
-    marker->setOnMouseLeave(() => {hideMsg()});
+    marker->setOnMouseLeave(() => {
+      Belt.Option.forEach(onMouseLeave, cb => cb(id));
+      hideMsg();
+    });
 
     marker;
   };
@@ -214,12 +229,26 @@ let updateErrors = (~state: state, ~cm: CM.t, errors) => {
 
   let wrapper = cm->CM.getWrapperElement;
 
-  Belt.Array.forEach(
+  Belt.Array.forEachWithIndex(
     errors,
-    e => {
+    (idx, e) => {
       open DomUtil;
 
-      let marker = ErrorMarker.make(~text=e.text, ~wrapper);
+      let onMouseHover = id => {
+        Js.log2("onMouseHover: ", id);
+      };
+      let onMouseLeave = id => {
+        Js.log2("onMouseLeave: ", id);
+      };
+      let marker =
+        ErrorMarker.make(
+          ~id=idx,
+          ~onMouseHover,
+          ~onMouseLeave,
+          ~text=e.text,
+          ~wrapper,
+          (),
+        );
       wrapper->appendChild(marker);
 
       // CodeMirrors line numbers are (strangely enough) zero based
@@ -308,8 +337,11 @@ let default = (props: Props.t): React.element => {
 
   React.useEffect1(
     () => {
+      let state = cmStateRef->React.Ref.current;
       switch (cmRef->React.Ref.current) {
-      | Some(cm) => cm->CM.setValue(value)
+      | Some(cm) =>
+        cm->CM.operation(() => {updateErrors(~state, ~cm, errors)});
+        cm->CM.setValue(value);
       | None => ()
       };
       None;

@@ -255,8 +255,8 @@ module.exports = {
     width: ["responsive"],
     border: ["hover", "responsive"],
     borderWidth: ["responsive", "last"],
-    padding: ["hover", "responsive"],
-    margin: ["responsive", "first"],
+    padding: ["hover", "responsive", "last"],
+    margin: ["responsive", "first", "last"],
     visibility: ["group-hover"]
   },
   plugins: []

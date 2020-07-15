@@ -50,7 +50,7 @@ module Compiler = {
     type lang =
       | Reason
       | OCaml
-      | Napkin;
+      | Res;
 
     module Version = {
       type t =
@@ -81,8 +81,15 @@ module Compiler = {
 
       let defaultTargetLang = t =>
         switch (t) {
-        | V2 => Napkin
+        | V2 => Res
         | _ => Reason
+        };
+
+      let availableLanguages = t =>
+        switch (t) {
+        | V2 => [|Reason, Res|]
+        | V1
+        | UnknownVersion => [|Reason|]
         };
     };
 
@@ -114,12 +121,15 @@ module Compiler = {
         | Unknown(string, raw)
         | None;
 
-      // Used for compiler version >= 8.1
-      // TODO: We might change this specific api completely before launching
-      let classifyV2 = (raw: raw, super_errors: string): t => {
-        open! Json.Decode;
+      // Useful for showing errors in a more compact format
+      let toCompactErrorLine = (fail: fail) => {
+        let {row, column, text} = fail;
 
-        let errDecoder = json => {
+        {j|[1;31m[E] Line $row, $column:[0m $text|j};
+      };
+
+      module DecodeV2 = {
+        let decodeCompilationErr = (~super_errors="", json) => {
           Json.Decode.{
             js_error_msg: json->field("js_error_msg", string, _),
             super_errors,
@@ -131,78 +141,93 @@ module Compiler = {
           };
         };
 
-        switch (field("type", string, raw)) {
-        | "success" =>
-          switch (field("js_code", string, raw)) {
-          | js_output => Success({js_output, warnings: super_errors})
+        // Used for compiler version >= 8.1
+        // TODO: We might change this specific api completely before launching
+        let classify = (raw: raw, super_errors: string): t => {
+          open! Json.Decode;
+
+          switch (field("type", string, raw)) {
+          | "success" =>
+            switch (field("js_code", string, raw)) {
+            | js_output => Success({js_output, warnings: super_errors})
+            | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
+            }
+          | "error" =>
+            switch (
+              field(
+                "errors",
+                array(decodeCompilationErr(~super_errors)),
+                raw,
+              )
+            ) {
+            | [||] =>
+              Unknown("Failed, but no errors returned by the compiler", raw)
+            | fails => Fail(fails)
+            | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
+            }
+          | "unexpected_error" =>
+            switch (field("js_error_msg", string, raw)) {
+            | msg => UnexpectedError(msg)
+            | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
+            }
+          | _ => Unknown("Malformed result", raw)
           | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
-          }
-        | "error" =>
-          switch (field("errors", array(errDecoder), raw)) {
-          | [||] =>
-            Unknown("Failed, but no errors returned by the compiler", raw)
-          | fails => Fail(fails)
-          | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
-          }
-        | "unexpected_error" =>
-          switch (field("js_error_msg", string, raw)) {
-          | msg => UnexpectedError(msg)
-          | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
-          }
-        | _ => Unknown("Malformed result", raw)
-        | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
+          };
         };
       };
 
-      let classifyV1 = (raw: raw, super_errors: string): t => {
-        Js.Json.(
-          switch (raw->classify) {
-          | JSONObject(root) =>
-            let type_ = Js.Dict.get(root, "type");
-            let jsCode = Js.Dict.get(root, "js_code");
+      module DecodeV1 = {
+        let classify = (raw: raw, super_errors: string): t => {
+          Js.Json.(
+            switch (raw->classify) {
+            | JSONObject(root) =>
+              let type_ = Js.Dict.get(root, "type");
+              let jsCode = Js.Dict.get(root, "js_code");
 
-            switch (jsCode, type_) {
-            | (Some(json), None) =>
-              switch (classify(json)) {
-              | JSONString(js_output) =>
-                Success({js_output, warnings: super_errors})
-              | value => Unknown({j|.js_code is not a string: $value|j}, raw)
-              }
-            | (None, Some(type_)) =>
-              switch (classify(type_)) {
-              | JSONString("error") =>
-                open! Json.Decode;
-                // Note:
-                // The V1 playground bundle API was already correcting the row numbers
-                // to a zero based value. This will correct them back to 1 based ones to
-                // have a unified interface for the UI (which again, converts them to zero based
-                // line numbers)
-                let toOneBased = n => n + 1;
+              switch (jsCode, type_) {
+              | (Some(json), None) =>
+                switch (classify(json)) {
+                | JSONString(js_output) =>
+                  Success({js_output, warnings: super_errors})
+                | value =>
+                  Unknown({j|.js_code is not a string: $value|j}, raw)
+                }
+              | (None, Some(type_)) =>
+                switch (classify(type_)) {
+                | JSONString("error") =>
+                  open! Json.Decode;
+                  // Note:
+                  // The V1 playground bundle API was already correcting the row numbers
+                  // to a zero based value. This will correct them back to 1 based ones to
+                  // have a unified interface for the UI (which again, converts them to zero based
+                  // line numbers)
+                  let toOneBased = n => n + 1;
 
-                switch (
-                  {
-                    js_error_msg: raw->field("js_error_msg", string, _),
-                    super_errors,
-                    row: raw->field("row", int, _)->toOneBased,
-                    column: raw->field("column", int, _),
-                    endRow: raw->field("endRow", int, _)->toOneBased,
-                    endColumn: raw->field("endColumn", int, _),
-                    text: raw->field("text", string, _),
-                  }
-                ) {
-                | fail => Fail([|fail|])
-                | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
-                };
+                  switch (
+                    {
+                      js_error_msg: raw->field("js_error_msg", string, _),
+                      super_errors,
+                      row: raw->field("row", int, _)->toOneBased,
+                      column: raw->field("column", int, _),
+                      endRow: raw->field("endRow", int, _)->toOneBased,
+                      endColumn: raw->field("endColumn", int, _),
+                      text: raw->field("text", string, _),
+                    }
+                  ) {
+                  | fail => Fail([|fail|])
+                  | exception (DecodeError(errMsg)) => Unknown(errMsg, raw)
+                  };
 
-              | value => Unknown({j|.type is not a string: $value|j}, raw)
-              }
-            | (Some(_), Some(_)) =>
-              Unknown("Not sure if this is a success / error result", raw)
-            | (None, None) => Unknown("No js code / error message", raw)
-            };
-          | _ => Unknown("Malformed result", raw)
-          }
-        );
+                | value => Unknown({j|.type is not a string: $value|j}, raw)
+                }
+              | (Some(_), Some(_)) =>
+                Unknown("Not sure if this is a success / error result", raw)
+              | (None, None) => Unknown("No js code / error message", raw)
+              };
+            | _ => Unknown("Malformed result", raw)
+            }
+          );
+        };
       };
     };
 
@@ -221,6 +246,98 @@ module Compiler = {
 
     [@bs.val] [@bs.scope "napkin"]
     external napkinCompile: string => Js.Json.t = "compile_super_errors";
+
+    module ConvertionResult = {
+      type fail = CompilationResult.fail; // Currently the convertion result is the same as with a compilation
+      type t =
+        | Fail({
+            fromLang: lang,
+            toLang: lang,
+            fails: array(fail),
+          }) // When a conversion failed with some error result
+        | Success(string)
+        | UnexpectedError(string) // Errors that slip through as uncaught exceptions within the playground
+        | Unknown(string, Js.Json.t)
+        | None;
+
+      let decode = (~fromLang, ~toLang, json) => {
+        Json.Decode.(
+          try(
+            switch (field("type", string, json)) {
+            | "success" => Success(field("code", string, json))
+            | "error" =>
+              switch (
+                field(
+                  "errors",
+                  array(
+                    CompilationResult.DecodeV2.decodeCompilationErr(
+                      ~super_errors="",
+                    ),
+                  ),
+                  json,
+                )
+              ) {
+              | [||] =>
+                Unknown(
+                  "Failed, but no errors returned by the converter",
+                  json,
+                )
+              | fails => Fail({fromLang, toLang, fails})
+              }
+            | "unexpected_error" =>
+              switch (field("js_error_msg", string, json)) {
+              | msg => UnexpectedError(msg)
+              }
+            | _ => Unknown("Unknown type value", json)
+            }
+          ) {
+          | DecodeError(errMsg) => Unknown(errMsg, json)
+          }
+        );
+      };
+    };
+
+    module FinalResult = {
+      /* A final result is the last operation the compiler has done, right now this includes... */
+      type t =
+        | Conv(ConvertionResult.t)
+        | Comp(CompilationResult.t)
+        | Nothing;
+    };
+
+    // Pretty printing facilities (v2 only)
+    [@bs.val] [@bs.scope "napkin"]
+    external napkinPrettyPrint: string => Js.Json.t = "pretty_print";
+
+    [@bs.val] [@bs.scope "reason"]
+    external reasonPrettyPrint: string => Js.Json.t = "pretty_print";
+
+    let napkinPrettyPrint = (code): ConvertionResult.t => {
+      let json = napkinPrettyPrint(code);
+      json->ConvertionResult.decode(~fromLang=Res, ~toLang=Res);
+    };
+
+    let reasonPrettyPrint = (code): ConvertionResult.t => {
+      let json = reasonPrettyPrint(code);
+      json->ConvertionResult.decode(~fromLang=Reason, ~toLang=Reason);
+    };
+
+    // Syntax convertion functions
+    [@bs.val] [@bs.scope "convert"]
+    external reason_to_res: string => Js.Json.t = "reason_to_res";
+
+    [@bs.val] [@bs.scope "convert"]
+    external res_to_reason: string => Js.Json.t = "res_to_reason";
+
+    let reason_to_res = (code): ConvertionResult.t => {
+      reason_to_res(code)
+      ->ConvertionResult.decode(~fromLang=Reason, ~toLang=Res);
+    };
+
+    let res_to_reason = (code): ConvertionResult.t => {
+      res_to_reason(code)
+      ->ConvertionResult.decode(~fromLang=Res, ~toLang=Reason);
+    };
 
     module ConsoleCapture = {
       /*
@@ -357,8 +474,8 @@ module Compiler = {
     versions: array(string),
     selected,
     targetLang: Api.lang,
-    errors: array(string),
-    result: Api.CompilationResult.t,
+    errors: array(string), // For major errors like bundle loading
+    result: Api.FinalResult.t,
   };
 
   type state =
@@ -372,6 +489,15 @@ module Compiler = {
     | SwitchToCompiler({
         id: string,
         libraries: array(string),
+      })
+    | SwitchLanguage({
+        lang: Api.lang,
+        code: string,
+        onCodeChange: string => unit,
+      })
+    | Format({
+        code: string,
+        onCodeChange: string => unit,
       })
     | CompileCode(Api.lang, string);
 
@@ -395,6 +521,78 @@ module Compiler = {
       | CompileCode(lang, code) =>
         switch (state) {
         | Ready(ready) => setState(_ => Compiling(ready, (lang, code)))
+        | _ => ()
+        }
+      | SwitchLanguage({lang, code, onCodeChange}) =>
+        switch (state) {
+        | Ready(ready) =>
+          let availableTargetLangs =
+            Api.Version.availableLanguages(ready.selected.apiVersion);
+
+          let currentLang = ready.targetLang;
+
+          Js.Array2.find(availableTargetLangs, l => l === lang)
+          ->Belt.Option.forEach(l => {
+              // Try to automatically transform code
+              let (result, targetLang) =
+                switch (ready.selected.apiVersion) {
+                | V2 =>
+                  let convResult =
+                    switch (currentLang, lang) {
+                    | (Reason, Res) => Api.reason_to_res(code)
+                    | (Res, Reason) => Api.res_to_reason(code)
+                    | _ => None
+                    };
+
+                  // In case of an error, keep the current lang
+                  switch (convResult) {
+                  | Api.ConvertionResult.Fail(_)
+                  | Unknown(_, _)
+                  | UnexpectedError(_) => (
+                      Api.FinalResult.Conv(convResult),
+                      currentLang,
+                    )
+                  | Api.ConvertionResult.Success(code) =>
+                    onCodeChange(code);
+                    (Nothing, l);
+                  | None => (Nothing, l)
+                  };
+                | _ => (Nothing, l)
+                };
+
+              setState(_ =>
+                Ready({...ready, result, errors: [||], targetLang})
+              );
+            });
+        | _ => ()
+        }
+      | Format({code, onCodeChange}) =>
+        switch (state) {
+        | Ready(ready) =>
+          let convResult =
+            switch (ready.targetLang) {
+            | Res => Api.napkinPrettyPrint(code)
+            | Reason => Api.reasonPrettyPrint(code)
+            | _ => None
+            };
+
+          // We will only change the result to a ConvertionResult
+          // in case the reformatting has actually changed code
+          // otherwise we'd loose previous compilationResults, although
+          // the result should be the same anyways
+          let result =
+            switch (convResult) {
+            | Api.ConvertionResult.Success(newCode) =>
+              if (code !== newCode) {
+                onCodeChange(newCode);
+                Api.FinalResult.Conv(convResult);
+              } else {
+                ready.result;
+              }
+            | _ => ready.result
+            };
+
+          setState(_ => Ready({...ready, result, errors: [||]}));
         | _ => ()
         }
       };
@@ -456,7 +654,7 @@ module Compiler = {
                             Api.Version.defaultTargetLang(apiVersion),
                           versions,
                           errors: [||],
-                          result: Api.CompilationResult.None,
+                          result: Api.FinalResult.Nothing,
                         })
                       });
                     | Error(errs) =>
@@ -517,7 +715,7 @@ module Compiler = {
                     targetLang: Api.Version.defaultTargetLang(apiVersion),
                     versions: ready.versions,
                     errors: [||],
-                    result: Api.CompilationResult.None,
+                    result: Api.FinalResult.Nothing,
                   })
                 });
               | Error(errs) =>
@@ -536,18 +734,19 @@ module Compiler = {
             switch (lang) {
             | Api.OCaml => Api.ocamlCompile(code)
             | Api.Reason => Api.reasonCompile(code)
-            | Api.Napkin => Api.napkinCompile(code)
+            | Api.Res => Api.napkinCompile(code)
             };
 
           // Retrieve the console.error output and append it
           // to the result if necessary
           let superErrors = flush();
 
-          let result =
+          let compResult =
             switch (apiVersion) {
             | Api.Version.V1 =>
-              Api.CompilationResult.classifyV1(jsonResult, superErrors)
-            | V2 => Api.CompilationResult.classifyV2(jsonResult, superErrors)
+              Api.CompilationResult.DecodeV1.classify(jsonResult, superErrors)
+            | V2 =>
+              Api.CompilationResult.DecodeV2.classify(jsonResult, superErrors)
             | UnknownVersion =>
               Api.CompilationResult.Unknown(
                 {j|Can't classify result of compiler version "$compilerVersion" (This is a bug)|j},
@@ -555,7 +754,9 @@ module Compiler = {
               )
             };
 
-          setState(_ => {Ready({...ready, result})});
+          setState(_ => {
+            Ready({...ready, result: Api.FinalResult.Comp(compResult)})
+          });
         | SetupFailed(_)
         | Ready(_) => ()
         };
@@ -569,10 +770,16 @@ module Compiler = {
 };
 
 module DropdownSelect = {
+  type style = [ | `Error | `Normal];
+
   [@react.component]
   let make = (~onChange, ~name, ~value, ~disabled, ~children) => {
+    let opacity = disabled ? " opacity-50" : "";
     <select
-      className="border border-night-light inline-block rounded px-4 py-1 bg-onyx appearance-none font-semibold"
+      className={
+        "border border-night-light inline-block rounded px-4 py-1 bg-onyx appearance-none font-semibold "
+        ++ opacity
+      }
       name
       value
       disabled
@@ -584,7 +791,12 @@ module DropdownSelect = {
 
 module ErrorPane = {
   [@react.component]
-  let make = (~errors: array(string), ~warnings: array(string)) => {
+  let make =
+      (
+        ~highlightedErrors: array(int)=[||], // index values of [errors] that should be highlighted
+        ~errors: array(string),
+        ~warnings: array(string)=[||],
+      ) => {
     let errorNumber = Belt.Array.length(errors);
 
     <div>
@@ -596,11 +808,21 @@ module ErrorPane = {
           <div className="bg-onyx text-snow-darker text-14 px-4 py-4">
             {errors
              ->Belt.Array.mapWithIndex((i, line) => {
+                 let highlight =
+                   switch (
+                     Js.Array2.find(highlightedErrors, errIdx => errIdx === i)
+                   ) {
+                   | Some(_) => "bg-fire-15 rounded"
+                   | None => ""
+                   };
                  <AnsiPre
-                   className="mb-4 pb-2 last:mb-0 last:pb-0 last:border-0 border-b border-night-light"
+                   className={
+                     "mb-4 pb-2 last:mb-0 last:pb-0 last:border-0 border-b border-night-light "
+                     ++ highlight
+                   }
                    key={Belt.Int.toString(i)}>
                    line
-                 </AnsiPre>
+                 </AnsiPre>;
                })
              ->ate}
             {warnings
@@ -616,25 +838,41 @@ module ErrorPane = {
 };
 
 module ControlPanel = {
+  let langToString = lang =>
+    switch (lang) {
+    | Compiler.Api.Res => "New BS Syntax"
+    | Reason => "Reason"
+    | OCaml => "OCaml"
+    };
+
   [@react.component]
   let make =
       (
         ~compilerReady: bool,
+        ~langSelectionDisabled: bool, // In case a syntax conversion error occurred
         ~compilerVersion: string,
         ~availableCompilerVersions: array(string),
         ~availableTargetLangs: array(Compiler.Api.lang),
         ~selectedTargetLang: (Compiler.Api.lang, string), // (lang, version)
         ~loadedLibraries: array(string),
         ~onCompilerSelect: string => unit,
+        ~onFormatClick: option(unit => unit)=?,
         ~onCompileClick: unit => unit,
+        ~onTargetLangSelect: Compiler.Api.lang => unit,
       ) => {
     let (targetLang, targetLangVersion) = selectedTargetLang;
 
-    let targetLangName =
-      switch (targetLang) {
-      | Napkin => "New BS Syntax"
-      | Reason => "Reason"
-      | OCaml => "OCaml"
+    let targetLangName = langToString(targetLang);
+
+    let (formatDisabled, formatClickHandler) =
+      switch (onFormatClick) {
+      | Some(cb) =>
+        let handler = evt => {
+          ReactEvent.Mouse.preventDefault(evt);
+          cb();
+        };
+        (false, Some(handler));
+      | None => (true, None)
       };
 
     <div className="flex bg-onyx text-night-light px-6 w-full text-14">
@@ -659,17 +897,50 @@ module ControlPanel = {
              ->ate}
           </DropdownSelect>
         </div>
-        <div className="font-semibold">
-          {(targetLangName ++ ": ")->s}
-          {targetLangVersion}->s
-        </div>
-        <div className="font-semibold">
-          "Bindings: "->s
-          {switch (loadedLibraries) {
-           | [||] => "No third party library loaded"->s
-           | arr => Js.Array2.joinWith(arr, ", ")->s
-           }}
-        </div>
+        <DropdownSelect
+          name="targetLang"
+          value=targetLangName
+          disabled=langSelectionDisabled
+          onChange={evt => {
+            ReactEvent.Form.preventDefault(evt);
+            let lang =
+              switch (evt->ReactEvent.Form.target##value) {
+              | "New BS Syntax" => Compiler.Api.Res
+              | "Reason" => Reason
+              | "OCaml" => OCaml
+              | _ => Reason
+              };
+            onTargetLangSelect(lang);
+          }}>
+          {Belt.Array.map(
+             availableTargetLangs,
+             lang => {
+               let langStr = langToString(lang);
+               <option className="py-4" key=langStr value=langStr>
+                 langStr->s
+               </option>;
+             },
+           )
+           ->ate}
+        </DropdownSelect>
+        <button
+          className={
+            (!compilerReady ? "opacity-25" : "")
+            ++ " font-semibold inline-block border border-night-light rounded py-1 px-4"
+          }
+          disabled={formatDisabled}
+          onClick=?formatClickHandler>
+          "Format"->s
+        </button>
+        /*
+         <div className="font-semibold">
+           "Bindings: "->s
+           {switch (loadedLibraries) {
+            | [||] => "No third party library loaded"->s
+            | arr => Js.Array2.joinWith(arr, ", ")->s
+            }}
+         </div>
+         */
         <button
           disabled={!compilerReady}
           className={
@@ -692,6 +963,9 @@ let default = () => {
   let (compilerState, compilerDispatch) = Compiler.useCompilerManager();
 
   let overlayState = React.useState(() => false);
+
+  // index based list of errors that should be highlighted in the ErrorPane
+  let highlightedErrorState = React.useState(() => [||]);
 
   let initialContent = {j|
   let a = 1 + "";
@@ -717,23 +991,31 @@ module B = {
   |j};
 
   let jsOutput =
-    switch (compilerState) {
-    | Init => "/* Initializing Playground... */"
-    | Ready({result: Compiler.Api.CompilationResult.Success({js_output})}) => js_output
-    | Ready({result: Compiler.Api.CompilationResult.Unknown(msg, _)}) => {j|/* Unexpected Result: $msg */|j}
-    | Ready({result: Compiler.Api.CompilationResult.Fail(_)}) => "/* Could not compile, check the error pane for details. */"
-    | Ready({result: Compiler.Api.CompilationResult.None}) => "/* Compiler ready! Press the \"Compile\" button to see the JS output. */"
-    | Compiling(_, _) => "/* Compiling... */"
-    | SwitchingCompiler(_, version, libraries) =>
-      let appendix =
-        if (Js.Array.length(libraries) > 0) {
-          " (+" ++ Js.Array2.joinWith(libraries, ", ") ++ ")";
-        } else {
-          "";
-        };
-      "/* Switching to " ++ version ++ appendix ++ " ... */";
-    | _ => ""
-    };
+    Compiler.Api.(
+      switch (compilerState) {
+      | Init => "/* Initializing Playground... */"
+      | Ready({result: FinalResult.Comp(comp)}) =>
+        switch (comp) {
+        | CompilationResult.Success({js_output}) => js_output
+        | UnexpectedError(msg)
+        | Unknown(msg, _) => {j|/* Unexpected Result: $msg */|j}
+        | Fail(_) => "/* Could not compile, check the error pane for details. */"
+        | None => "/* Compiler ready! Press the \"Compile\" button to see the JS output. */"
+        }
+      | Ready({result: Nothing})
+      | Ready({result: Conv(_)}) => "/* Compiler ready! Press the \"Compile\" button to see the JS output. */"
+      | Compiling(_, _) => "/* Compiling... */"
+      | SwitchingCompiler(_, version, libraries) =>
+        let appendix =
+          if (Js.Array.length(libraries) > 0) {
+            " (+" ++ Js.Array2.joinWith(libraries, ", ") ++ ")";
+          } else {
+            "";
+          };
+        "/* Switching to " ++ version ++ appendix ++ " ... */";
+      | _ => ""
+      }
+    );
 
   let isReady =
     switch (compilerState) {
@@ -743,13 +1025,24 @@ module B = {
 
   let reasonCode = React.useRef(initialContent);
 
-  let compilerErrors =
+  let getCurrentReasonCode = () => {
+    React.Ref.current(reasonCode);
+  };
+
+  let cmErrors =
     switch (compilerState) {
-    /*| Compiling({result: Fail({row, column, endColumn})}, _)*/
-    | Ready({result: Fail(fails)}) =>
+    | Ready({result}) =>
+      let fails =
+        switch (result) {
+        | Compiler.Api.FinalResult.Comp(Fail(fails)) => fails
+        | Conv(Fail({fails})) => fails
+        | Comp(_)
+        | Conv(_)
+        | Nothing => [||]
+        };
       Belt.Array.map(fails, ({row, column, endColumn, endRow, text}) => {
         {CodeMirrorBase.row, column, endColumn, endRow, text}
-      })
+      });
     | _ => [||]
     };
 
@@ -768,7 +1061,7 @@ module B = {
                 className="w-full"
                 minHeight="40vh"
                 mode="reason"
-                errors=compilerErrors
+                errors=cmErrors
                 value={React.Ref.current(reasonCode)}
                 onChange={value => {React.Ref.setCurrent(reasonCode, value)}}
               />
@@ -777,47 +1070,67 @@ module B = {
                | Compiling(ready, _)
                | SwitchingCompiler(ready, _, _) =>
                  let (errors, warnings) =
-                   switch (ready.result) {
-                   | Fail(fails) =>
-                     let errors =
-                       Belt.Array.reduce(
-                         fails,
-                         [||],
-                         (acc, next) => {
-                           let {
-                             Compiler.Api.CompilationResult.super_errors,
-                             js_error_msg,
-                           } = next;
+                   Compiler.Api.(
+                     switch (ready.result) {
+                     | FinalResult.Comp(CompilationResult.Fail(fails))
+                     | Conv(Fail({fails})) =>
+                       let initial =
+                         switch (ready.result) {
+                         | FinalResult.Conv(Fail({fromLang, toLang})) =>
+                           let fromStr = ControlPanel.langToString(fromLang);
+                           let toStr = ControlPanel.langToString(toLang);
+                           [|
+                             {j|Cannot switch "$fromStr" to "$toStr" because of syntax errors:|j},
+                           |];
+                         | _ => [||]
+                         };
+                       let errors =
+                         Belt.Array.reduce(
+                           fails,
+                           initial,
+                           (acc, next) => {
+                             let {
+                               Compiler.Api.CompilationResult.super_errors,
+                               js_error_msg,
+                             } = next;
 
-                           let add =
-                             if (super_errors !== "") {
-                               [|super_errors|];
-                             } else {
-                               [|js_error_msg|];
+                             switch (
+                               ready.selected.apiVersion,
+                               ready.targetLang,
+                             ) {
+                             | (Compiler.Api.Version.V2, Res) =>
+                               let text =
+                                 Compiler.Api.CompilationResult.toCompactErrorLine(
+                                   next,
+                                 );
+
+                               Js.Array2.concat(acc, [|text|]);
+                             | _ =>
+                               let add =
+                                 if (super_errors !== "") {
+                                   [|super_errors|];
+                                 } else {
+                                   [|js_error_msg|];
+                                 };
+                               Js.Array2.concat(acc, add);
                              };
+                           },
+                         );
 
-                           Js.Array2.concat(acc, add);
-                         },
-                       );
-
-                     (errors, [||]);
-                   | Success({warnings}) => ([||], [|warnings|])
-                   | _ => ([||], [||])
-                   };
+                       (errors, [||]);
+                     | Comp(Success({warnings})) => ([||], [|warnings|])
+                     | _ => (ready.errors, [||])
+                     }
+                   );
 
                  let availableTargetLangs =
-                   switch (ready.selected.apiVersion) {
-                   | V2 => [|Compiler.Api.Reason, Napkin|]
-                   | V1
-                   | UnknownVersion => [|Reason|]
-                   };
+                   Compiler.Api.Version.availableLanguages(
+                     ready.selected.apiVersion,
+                   );
 
                  let selectedTargetLang =
                    switch (ready.targetLang) {
-                   | Napkin => (
-                       Compiler.Api.Napkin,
-                       ready.selected.compilerVersion,
-                     )
+                   | Res => (Compiler.Api.Res, ready.selected.compilerVersion)
                    | Reason => (Reason, ready.selected.reasonVersion)
                    | OCaml => (OCaml, ready.selected.ocamlVersion)
                    };
@@ -827,6 +1140,18 @@ module B = {
                      SwitchToCompiler({
                        id,
                        libraries: ready.selected.libraries,
+                     }),
+                   );
+                 };
+
+                 let onTargetLangSelect = lang => {
+                   compilerDispatch(
+                     SwitchLanguage({
+                       lang,
+                       code: React.Ref.current(reasonCode),
+                       onCodeChange: code => {
+                         React.Ref.setCurrent(reasonCode, code);
+                       },
                      }),
                    );
                  };
@@ -849,21 +1174,47 @@ module B = {
                    | _ => ready.selected.id
                    };
 
+                 let langSelectionDisabled =
+                   Compiler.Api.(
+                     switch (ready.result) {
+                     | FinalResult.Conv(ConvertionResult.Fail(_))
+                     | Comp(CompilationResult.Fail(_)) => true
+                     | _ => false
+                     }
+                   );
+                 let (highlightedErrors, _) = highlightedErrorState;
+
+                 let onFormatClick = () => {
+                   compilerDispatch(
+                     Format({
+                       code: getCurrentReasonCode(),
+                       onCodeChange: code => {
+                         React.Ref.setCurrent(reasonCode, code);
+                       },
+                     }),
+                   );
+                 };
+
                  <>
                    <ControlPanel
                      compilerReady=isReady
+                     langSelectionDisabled
                      compilerVersion
                      availableTargetLangs
                      availableCompilerVersions={ready.versions}
                      selectedTargetLang
                      loadedLibraries={ready.selected.libraries}
                      onCompilerSelect
+                     onTargetLangSelect
                      onCompileClick
+                     onFormatClick
                    />
-                   <ErrorPane errors warnings />
+                   <ErrorPane highlightedErrors errors warnings />
                  </>;
                | Init => "Initializing"->s
-               | SetupFailed(msg) => ("Setup failed: " ++ msg)->s
+               | SetupFailed(msg) =>
+                 let errors = [|"Setup failed: " ++ msg|];
+                 <> <ErrorPane errors /> </>;
                }}
             </div>
             <div className="w-full">
