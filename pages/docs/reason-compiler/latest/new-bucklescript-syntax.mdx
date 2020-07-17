@@ -22,10 +22,10 @@ This document gives an overview over the most relevant features until more detai
 - Complete removal of semicolon (you can still write them).
 - No need for parentheses around `if`, `switch` and `try`.
 - Type arguments: from `option(int)` to `option<int>`.
-- Interpolated string: from `{j|hello ${name}|j}` to `` j`hello ${name}` `` (_update_: now it also works without `j`, as the type-safe version).
+- Interpolated string: from `{j|hello ${name}|j}` to `` j`hello ${name}` `` (_8.1.1 update_: now it also works without `j`, as the type-safe version). The string now has proper unicode support!
 - Polymorphic variants: from `` `red`` to `#red`.
 - Arrays: from `[|1,2,3|]` to `[1,2,3]`. In JS, arrays are the right default.
-- Lists: from `[1,2,3]` to `list[1,2,3]` (_update_: now it is `list{1, 2, 3}`). This ties with upcoming plans to access containers in a uniform way: `set[...]` and `map[...]`. Maybe temporary.
+- Lists: from `[1,2,3]` to `list[1,2,3]` (_8.1.1 update_: now it is `list{1, 2, 3}`). This ties with upcoming plans to access containers in a uniform way: `set[...]` and `map[...]`. Maybe temporary.
 - Exception: from `try (compute()) { | Not_found => Js.log("oops")}` to `try compute() catch { | Not_found => Js.log("oops")}`.
 - First class module: from `(module S: Student)` to `module(S: Student)`.
 - No custom infix operator for now (including `mod`).
