@@ -247,7 +247,7 @@ module Compiler = {
     [@bs.val] [@bs.scope "napkin"]
     external napkinCompile: string => Js.Json.t = "compile_super_errors";
 
-    module ConvertionResult = {
+    module ConversionResult = {
       type fail = CompilationResult.fail; // Currently the convertion result is the same as with a compilation
       type t =
         | Fail({
@@ -300,7 +300,7 @@ module Compiler = {
     module FinalResult = {
       /* A final result is the last operation the compiler has done, right now this includes... */
       type t =
-        | Conv(ConvertionResult.t)
+        | Conv(ConversionResult.t)
         | Comp(CompilationResult.t)
         | Nothing;
     };
@@ -312,14 +312,14 @@ module Compiler = {
     [@bs.val] [@bs.scope "reason"]
     external reasonPrettyPrint: string => Js.Json.t = "pretty_print";
 
-    let napkinPrettyPrint = (code): ConvertionResult.t => {
+    let napkinPrettyPrint = (code): ConversionResult.t => {
       let json = napkinPrettyPrint(code);
-      json->ConvertionResult.decode(~fromLang=Res, ~toLang=Res);
+      json->ConversionResult.decode(~fromLang=Res, ~toLang=Res);
     };
 
-    let reasonPrettyPrint = (code): ConvertionResult.t => {
+    let reasonPrettyPrint = (code): ConversionResult.t => {
       let json = reasonPrettyPrint(code);
-      json->ConvertionResult.decode(~fromLang=Reason, ~toLang=Reason);
+      json->ConversionResult.decode(~fromLang=Reason, ~toLang=Reason);
     };
 
     // Syntax convertion functions
@@ -329,14 +329,14 @@ module Compiler = {
     [@bs.val] [@bs.scope "convert"]
     external res_to_reason: string => Js.Json.t = "res_to_reason";
 
-    let reason_to_res = (code): ConvertionResult.t => {
+    let reason_to_res = (code): ConversionResult.t => {
       reason_to_res(code)
-      ->ConvertionResult.decode(~fromLang=Reason, ~toLang=Res);
+      ->ConversionResult.decode(~fromLang=Reason, ~toLang=Res);
     };
 
-    let res_to_reason = (code): ConvertionResult.t => {
+    let res_to_reason = (code): ConversionResult.t => {
       res_to_reason(code)
-      ->ConvertionResult.decode(~fromLang=Res, ~toLang=Reason);
+      ->ConversionResult.decode(~fromLang=Res, ~toLang=Reason);
     };
 
     module ConsoleCapture = {
@@ -493,12 +493,8 @@ module Compiler = {
     | SwitchLanguage({
         lang: Api.lang,
         code: string,
-        onCodeChange: string => unit,
       })
-    | Format({
-        code: string,
-        onCodeChange: string => unit,
-      })
+    | Format(string)
     | CompileCode(Api.lang, string);
 
   let useCompilerManager = () => {
@@ -523,7 +519,7 @@ module Compiler = {
         | Ready(ready) => setState(_ => Compiling(ready, (lang, code)))
         | _ => ()
         }
-      | SwitchLanguage({lang, code, onCodeChange}) =>
+      | SwitchLanguage({lang, code}) =>
         switch (state) {
         | Ready(ready) =>
           let availableTargetLangs =
@@ -546,15 +542,16 @@ module Compiler = {
 
                   // In case of an error, keep the current lang
                   switch (convResult) {
-                  | Api.ConvertionResult.Fail(_)
+                  | Api.ConversionResult.Fail(_)
                   | Unknown(_, _)
                   | UnexpectedError(_) => (
                       Api.FinalResult.Conv(convResult),
                       currentLang,
                     )
-                  | Api.ConvertionResult.Success(code) =>
-                    onCodeChange(code);
-                    (Nothing, l);
+                  | Api.ConversionResult.Success(code) => (
+                      Conv(convResult),
+                      l,
+                    )
                   | None => (Nothing, l)
                   };
                 | _ => (Nothing, l)
@@ -566,7 +563,7 @@ module Compiler = {
             });
         | _ => ()
         }
-      | Format({code, onCodeChange}) =>
+      | Format(code) =>
         switch (state) {
         | Ready(ready) =>
           let convResult =
@@ -576,19 +573,21 @@ module Compiler = {
             | _ => None
             };
 
-          // We will only change the result to a ConvertionResult
-          // in case the reformatting has actually changed code
-          // otherwise we'd loose previous compilationResults, although
-          // the result should be the same anyways
           let result =
             switch (convResult) {
-            | Api.ConvertionResult.Success(newCode) =>
+            | Api.ConversionResult.Success(newCode) =>
+              // We will only change the result to a ConversionResult
+              // in case the reformatting has actually changed code
+              // otherwise we'd loose previous compilationResults, although
+              // the result should be the same anyways
               if (code !== newCode) {
-                onCodeChange(newCode);
                 Api.FinalResult.Conv(convResult);
               } else {
                 ready.result;
               }
+            | Api.ConversionResult.Fail(_)
+            | Unknown(_, _)
+            | UnexpectedError(_) => Api.FinalResult.Conv(convResult)
             | _ => ready.result
             };
 
@@ -857,6 +856,7 @@ module ControlPanel = {
         ~loadedLibraries: array(string),
         ~onCompilerSelect: string => unit,
         ~onFormatClick: option(unit => unit)=?,
+        ~formatDisabled: bool=false,
         ~onCompileClick: unit => unit,
         ~onTargetLangSelect: Compiler.Api.lang => unit,
       ) => {
@@ -864,15 +864,15 @@ module ControlPanel = {
 
     let targetLangName = langToString(targetLang);
 
-    let (formatDisabled, formatClickHandler) =
+    let formatClickHandler =
       switch (onFormatClick) {
       | Some(cb) =>
         let handler = evt => {
           ReactEvent.Mouse.preventDefault(evt);
           cb();
         };
-        (false, Some(handler));
-      | None => (true, None)
+        Some(handler);
+      | None => None
       };
 
     <div className="flex bg-onyx text-night-light px-6 w-full text-14">
@@ -928,7 +928,7 @@ module ControlPanel = {
             (!compilerReady ? "opacity-25" : "")
             ++ " font-semibold inline-block border border-night-light rounded py-1 px-4"
           }
-          disabled={formatDisabled}
+          disabled=formatDisabled
           onClick=?formatClickHandler>
           "Format"->s
         </button>
@@ -975,9 +975,7 @@ module Test2 = {
     <div>
     </div>
   };
-}
-
-  |j};
+}|j};
 
   let initialContent = {j|module A = {
   let = 1;
@@ -987,8 +985,7 @@ module Test2 = {
 module B = {
   let = 2
   let b = 2
-}
-  |j};
+}|j};
 
   let jsOutput =
     Compiler.Api.(
@@ -1025,9 +1022,17 @@ module B = {
 
   let reasonCode = React.useRef(initialContent);
 
-  let getCurrentReasonCode = () => {
-    React.Ref.current(reasonCode);
-  };
+  /* In case the compiler did some kind of syntax conversion / reformatting,
+     we take any success results and set the editor code to the new formatted code */
+  Compiler.Api.(
+    switch (compilerState) {
+    | Ready({result: FinalResult.Conv(ConversionResult.Success(code))}) =>
+      React.Ref.setCurrent(reasonCode, code)
+    | _ => ()
+    }
+  );
+
+  Js.log2("state", compilerState);
 
   let cmErrors =
     switch (compilerState) {
@@ -1077,11 +1082,19 @@ module B = {
                        let initial =
                          switch (ready.result) {
                          | FinalResult.Conv(Fail({fromLang, toLang})) =>
-                           let fromStr = ControlPanel.langToString(fromLang);
-                           let toStr = ControlPanel.langToString(toLang);
-                           [|
-                             {j|Cannot switch "$fromStr" to "$toStr" because of syntax errors:|j},
-                           |];
+                           let msg =
+                             if (fromLang === toLang) {
+                               let fromStr =
+                                 ControlPanel.langToString(fromLang);
+                               {j|Cannot format "$fromStr" code because of following syntax errors:|j};
+                             } else {
+                               let fromStr =
+                                 ControlPanel.langToString(fromLang);
+                               let toStr = ControlPanel.langToString(toLang);
+                               {j|Cannot switch "$fromStr" to "$toStr" because of syntax errors:|j};
+                             };
+
+                           [|msg|];
                          | _ => [||]
                          };
                        let errors =
@@ -1149,9 +1162,6 @@ module B = {
                      SwitchLanguage({
                        lang,
                        code: React.Ref.current(reasonCode),
-                       onCodeChange: code => {
-                         React.Ref.setCurrent(reasonCode, code);
-                       },
                      }),
                    );
                  };
@@ -1177,22 +1187,16 @@ module B = {
                  let langSelectionDisabled =
                    Compiler.Api.(
                      switch (ready.result) {
-                     | FinalResult.Conv(ConvertionResult.Fail(_))
+                     | FinalResult.Conv(ConversionResult.Fail(_))
                      | Comp(CompilationResult.Fail(_)) => true
                      | _ => false
                      }
                    );
+
                  let (highlightedErrors, _) = highlightedErrorState;
 
                  let onFormatClick = () => {
-                   compilerDispatch(
-                     Format({
-                       code: getCurrentReasonCode(),
-                       onCodeChange: code => {
-                         React.Ref.setCurrent(reasonCode, code);
-                       },
-                     }),
-                   );
+                   compilerDispatch(Format(React.Ref.current(reasonCode)));
                  };
 
                  <>

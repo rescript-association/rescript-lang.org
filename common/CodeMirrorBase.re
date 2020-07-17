@@ -156,7 +156,7 @@ module Props = {
     style: ReactDOMRe.Style.t,
     value: string,
     [@bs.optional]
-    onChange: string => unit,
+    onChange: (string) => unit,
     options: CM.Options.t,
   };
 };
@@ -313,7 +313,9 @@ let default = (props: Props.t): React.element => {
       );
 
       Belt.Option.forEach(onChange, onValueChange => {
-        cm->CM.onChange(instance => {onValueChange(instance->CM.getValue)})
+        cm->CM.onChange(instance => {
+          onValueChange(instance->CM.getValue);
+        })
       });
 
       // For some reason, injecting value with the options doesn't work
@@ -335,19 +337,31 @@ let default = (props: Props.t): React.element => {
     }
   });
 
-  React.useEffect1(
-    () => {
+  /*
+     Previously we did this in a useEffect([|value|) setup, but
+     this issues for syncing up the current editor value state
+     with the passed value prop.
+
+     Example: Let's assume you press a format code button for a
+     piece of code that formats to the same value as the previously
+     passed value prop. Even though the source code looks different
+     in the editor (as observed via getValue) it doesn't recognize
+     that there is an actual change.
+
+     By checking if the local state of the CM instance is different
+     to the input value, we can sync up both states accordingly
+   */
+  switch (cmRef->React.Ref.current) {
+  | Some(cm) =>
+    if (CM.getValue(cm) === value) {
+      ();
+    } else {
       let state = cmStateRef->React.Ref.current;
-      switch (cmRef->React.Ref.current) {
-      | Some(cm) =>
-        cm->CM.operation(() => {updateErrors(~state, ~cm, errors)});
-        cm->CM.setValue(value);
-      | None => ()
-      };
-      None;
-    },
-    [|value|],
-  );
+      cm->CM.operation(() => {updateErrors(~state, ~cm, errors)});
+      cm->CM.setValue(value);
+    }
+  | None => ()
+  };
 
   React.useEffect1(
     () => {
