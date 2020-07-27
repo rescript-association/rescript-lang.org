@@ -96,11 +96,18 @@ module LocMsg = {
     };
   };
 
-  // Useful for showing errors in a more compact format
-  let toCompactErrorLine = (locMsg: t) => {
-    let {row, column, shortMsg} = locMsg;
+  type prefix = [ | `W | `E];
 
-    {j|[1;31m[E] Line $row, $column:[0m $shortMsg|j};
+  // Useful for showing errors in a more compact format
+  let toCompactErrorLine = (~prefix: prefix, locMsg: t) => {
+    let {row, column, shortMsg} = locMsg;
+    let prefix =
+      switch (prefix) {
+      | `W => "W"
+      | `E => "E"
+      };
+
+    {j|[1;31m[$prefix] Line $row, $column:[0m $shortMsg|j};
   };
 };
 
@@ -113,7 +120,7 @@ module Warning = {
     | WarnErr({
         warnNumber: int,
         details: LocMsg.t,
-      });
+      }); // Describes an erronous warning
 
   let decode = (json): t => {
     open! Json.Decode;
@@ -123,6 +130,26 @@ module Warning = {
 
     field("isError", bool, json)
       ? WarnErr({warnNumber, details}) : Warn({warnNumber, details});
+  };
+
+  // Useful for showing errors in a more compact format
+  let toCompactErrorLine = (t: t) => {
+    let prefix =
+      switch (t) {
+      | Warn(_) => "W"
+      | WarnErr(_) => "E"
+      };
+
+    let (row, column, msg) =
+      switch (t) {
+      | Warn({warnNumber, details})
+      | WarnErr({warnNumber, details}) =>
+        let {LocMsg.row, column, shortMsg} = details;
+        let msg = {j|(Warning number $warnNumber) $shortMsg|j};
+        (row, column, msg);
+      };
+
+    {j|[1;31m[$prefix] Line $row, $column:[0m $msg|j};
   };
 };
 
@@ -229,18 +256,22 @@ module CompilationResult = {
 module ConversionResult = {
   type t =
     | Success(ConvertSuccess.t)
-    | Fail(array(LocMsg.t)) // When a compilation failed with some error result
+    | Fail({
+        fromLang: Lang.t,
+        toLang: Lang.t,
+        details: array(LocMsg.t),
+      }) // When a compilation failed with some error result
     | UnexpectedError(string) // Errors that slip through as uncaught exceptions within the playground
     | Unknown(string, Js.Json.t);
 
-  let decode = (json): t => {
+  let decode = (~fromLang: Lang.t, ~toLang: Lang.t, json): t => {
     Json.Decode.(
       switch (field("type", string, json)) {
       | "success" => Success(ConvertSuccess.decode(json))
       | "unexpected_error" => UnexpectedError(field("msg", string, json))
       | "syntax_error" =>
         let locMsgs = field("errors", array(LocMsg.decode), json);
-        Fail(locMsgs);
+        Fail({fromLang, toLang, details: locMsgs});
       | other => Unknown({j|Unknown conversion result type "$other"|j}, json)
       | exception (DecodeError(errMsg)) => Unknown(errMsg, json)
       }
@@ -279,7 +310,7 @@ module Compiler = {
 
   let resFormat = (t, code): ConversionResult.t => {
     let json = resFormat(t, code);
-    ConversionResult.decode(json);
+    ConversionResult.decode(~fromLang=Res, ~toLang=Res, json);
   };
 
   /*
@@ -299,7 +330,7 @@ module Compiler = {
 
   let reasonFormat = (t, code): ConversionResult.t => {
     let json = reasonFormat(t, code);
-    ConversionResult.decode(json);
+    ConversionResult.decode(~fromLang=Reason, ~toLang=Reason, json);
   };
 
   /*
@@ -339,7 +370,7 @@ module Compiler = {
       (t, ~fromLang: Lang.t, ~toLang: Lang.t, ~code: string)
       : ConversionResult.t => {
     convertSyntax(t, Lang.toExt(fromLang), Lang.toExt(toLang), code)
-    ->ConversionResult.decode;
+    ->ConversionResult.decode(~fromLang, ~toLang);
   };
 };
 
