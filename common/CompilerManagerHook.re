@@ -8,7 +8,8 @@
     The interface is defined with a finite state and action dispatcher.
  */
 
-module Api = Bs_platform_api;
+
+open Bs_platform_api;
 
 module LoadScript = {
   type err;
@@ -52,8 +53,8 @@ module CdnMeta = {
 module FinalResult = {
   /* A final result is the last operation the compiler has done, right now this includes... */
   type t =
-    | Conv(Api.ConversionResult.t)
-    | Comp(Api.CompilationResult.t)
+    | Conv(ConversionResult.t)
+    | Comp(CompilationResult.t)
     | Nothing;
 };
 
@@ -119,18 +120,18 @@ type error =
 
 type selected = {
   id: string, // The id used for loading the compiler bundle (ideally should be the same as compilerVersion)
-  apiVersion: Api.Version.t, // The playground API version in use
+  apiVersion: Version.t, // The playground API version in use
   compilerVersion: string,
   ocamlVersion: string,
   reasonVersion: string,
   libraries: array(string),
-  instance: Api.Compiler.t,
+  instance: Compiler.t,
 };
 
 type ready = {
   versions: array(string),
   selected,
-  targetLang: Api.Lang.t,
+  targetLang: Lang.t,
   errors: array(string), // For major errors like bundle loading
   result: FinalResult.t,
 };
@@ -140,7 +141,7 @@ type state =
   | SetupFailed(string)
   | SwitchingCompiler(ready, string, array(string))
   | Ready(ready)
-  | Compiling(ready, (Api.Lang.t, string));
+  | Compiling(ready, (Lang.t, string));
 
 type action =
   | SwitchToCompiler({
@@ -148,11 +149,11 @@ type action =
       libraries: array(string),
     })
   | SwitchLanguage({
-      lang: Api.Lang.t,
+      lang: Lang.t,
       code: string,
     })
   | Format(string)
-  | CompileCode(Api.Lang.t, string);
+  | CompileCode(Lang.t, string);
 
 let useCompilerManager = () => {
   let (state, setState) = React.useState(_ => Init);
@@ -181,7 +182,7 @@ let useCompilerManager = () => {
       | Ready(ready) =>
         let instance = ready.selected.instance;
         let availableTargetLangs =
-          Api.Version.availableLanguages(ready.selected.apiVersion);
+          Version.availableLanguages(ready.selected.apiVersion);
 
         let currentLang = ready.targetLang;
 
@@ -195,7 +196,7 @@ let useCompilerManager = () => {
                   switch (currentLang, lang) {
                   | (Reason, Res) =>
                     instance
-                    ->Api.Compiler.convertSyntax(
+                    ->Compiler.convertSyntax(
                         ~fromLang=Reason,
                         ~toLang=Res,
                         ~code,
@@ -203,7 +204,7 @@ let useCompilerManager = () => {
                     ->Some
                   | (Res, Reason) =>
                     instance
-                    ->Api.Compiler.convertSyntax(
+                    ->Compiler.convertSyntax(
                         ~fromLang=Res,
                         ~toLang=Reason,
                         ~code,
@@ -216,13 +217,13 @@ let useCompilerManager = () => {
                 switch (convResult) {
                 | Some(result) =>
                   switch (result) {
-                  | Api.ConversionResult.Fail(_)
+                  | ConversionResult.Fail(_)
                   | Unknown(_, _)
                   | UnexpectedError(_) => (
                       FinalResult.Conv(result),
                       currentLang,
                     )
-                  | Api.ConversionResult.Success(code) => (Conv(result), l)
+                  | ConversionResult.Success(code) => (Conv(result), l)
                   }
                 | None => (Nothing, l)
                 };
@@ -241,8 +242,8 @@ let useCompilerManager = () => {
         let instance = ready.selected.instance;
         let convResult =
           switch (ready.targetLang) {
-          | Res => instance->Api.Compiler.resFormat(code)->Some
-          | Reason => instance->Api.Compiler.reasonFormat(code)->Some
+          | Res => instance->Compiler.resFormat(code)->Some
+          | Reason => instance->Compiler.reasonFormat(code)->Some
           | _ => None
           };
 
@@ -250,7 +251,7 @@ let useCompilerManager = () => {
           switch (convResult) {
           | Some(result) =>
             switch (result) {
-            | Api.ConversionResult.Success(success) =>
+            | ConversionResult.Success(success) =>
               // We will only change the result to a ConversionResult
               // in case the reformatting has actually changed code
               // otherwise we'd loose previous compilationResults, although
@@ -260,7 +261,7 @@ let useCompilerManager = () => {
               } else {
                 ready.result;
               }
-            | Api.ConversionResult.Fail(_)
+            | ConversionResult.Fail(_)
             | Unknown(_, _)
             | UnexpectedError(_) => FinalResult.Conv(result)
             }
@@ -311,15 +312,15 @@ let useCompilerManager = () => {
               ->Promise.get(result => {
                   switch (result) {
                   | Ok () =>
-                    let instance = Api.Compiler.make();
-                    let apiVersion = Api.apiVersion->Api.Version.fromString;
+                    let instance = Compiler.make();
+                    let apiVersion = apiVersion->Version.fromString;
 
                     let selected = {
                       id: latest,
                       apiVersion,
-                      compilerVersion: instance->Api.Compiler.version,
-                      ocamlVersion: instance->Api.Compiler.ocamlVersion,
-                      reasonVersion: instance->Api.Compiler.reasonVersion,
+                      compilerVersion: instance->Compiler.version,
+                      ocamlVersion: instance->Compiler.ocamlVersion,
+                      reasonVersion: instance->Compiler.reasonVersion,
                       libraries,
                       instance,
                     };
@@ -327,7 +328,7 @@ let useCompilerManager = () => {
                     setState(_ => {
                       Ready({
                         selected,
-                        targetLang: Api.Version.defaultTargetLang(apiVersion),
+                        targetLang: Version.defaultTargetLang(apiVersion),
                         versions,
                         errors: [||],
                         result: FinalResult.Nothing,
@@ -372,15 +373,15 @@ let useCompilerManager = () => {
                 )
               });
 
-              let instance = Api.Compiler.make();
-              let apiVersion = Api.apiVersion->Api.Version.fromString;
+              let instance = Compiler.make();
+              let apiVersion = apiVersion->Version.fromString;
 
               let selected = {
                 id: version,
                 apiVersion,
-                compilerVersion: instance->Api.Compiler.version,
-                ocamlVersion: instance->Api.Compiler.ocamlVersion,
-                reasonVersion: instance->Api.Compiler.reasonVersion,
+                compilerVersion: instance->Compiler.version,
+                ocamlVersion: instance->Compiler.ocamlVersion,
+                reasonVersion: instance->Compiler.reasonVersion,
                 libraries,
                 instance,
               };
@@ -388,7 +389,7 @@ let useCompilerManager = () => {
               setState(_ => {
                 Ready({
                   selected,
-                  targetLang: Api.Version.defaultTargetLang(apiVersion),
+                  targetLang: Version.defaultTargetLang(apiVersion),
                   versions: ready.versions,
                   errors: [||],
                   result: FinalResult.Nothing,
@@ -406,14 +407,14 @@ let useCompilerManager = () => {
 
         let compResult =
           switch (apiVersion) {
-          | Api.Version.V1 =>
+          | Version.V1 =>
             switch (lang) {
-            | Api.Lang.OCaml => instance->Api.Compiler.ocamlCompile(code)
-            | Api.Lang.Reason => instance->Api.Compiler.reasonCompile(code)
-            | Api.Lang.Res => instance->Api.Compiler.resCompile(code)
+            | Lang.OCaml => instance->Compiler.ocamlCompile(code)
+            | Lang.Reason => instance->Compiler.reasonCompile(code)
+            | Lang.Res => instance->Compiler.resCompile(code)
             }
           | UnknownVersion(apiVersion) =>
-            Api.CompilationResult.UnexpectedError(
+            CompilationResult.UnexpectedError(
               {j|Can't handle result of compiler API version "$apiVersion"|j},
             )
           };
