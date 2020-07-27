@@ -25,15 +25,25 @@ module Lang = {
     | Reason => "re"
     | OCaml => "ml"
     };
+
+  let decode = (json): t => {
+    open! Json.Decode;
+    switch (string(json)) {
+    | "ml" => OCaml
+    | "re" => Reason
+    | "res" => Res
+    | other => raise(DecodeError({j|Unknown language "$other"|j}))
+    };
+  };
 };
 
 module Version = {
   type t =
     | V1
-    | UnknownVersion;
+    | UnknownVersion(string);
 
   // Helps finding the right API version
-  let whichApi = (apiVersion: string): t =>
+  let fromString = (apiVersion: string): t =>
     switch (Js.String2.split(apiVersion, ".")->Belt.List.fromArray) {
     | [maj, min, ..._] =>
       let maj = Belt.Int.fromString(maj);
@@ -45,11 +55,11 @@ module Version = {
         if (maj >= 1) {
           V1;
         } else {
-          UnknownVersion;
+          UnknownVersion(apiVersion);
         }
-      | _ => UnknownVersion
+      | _ => UnknownVersion(apiVersion)
       };
-    | _ => UnknownVersion
+    | _ => UnknownVersion(apiVersion)
     };
 
   let defaultTargetLang = t =>
@@ -61,197 +71,184 @@ module Version = {
   let availableLanguages = t =>
     switch (t) {
     | V1 => [|Lang.Reason, Res|]
-    | UnknownVersion => [|Res|]
+    | UnknownVersion(_) => [|Res|]
     };
 };
 
-module Decode = {
-  type raw = Js.Json.t;
+module LocMsg = {
+  type t = {
+    fullMsg: string,
+    shortMsg: string,
+    row: int,
+    column: int,
+    endRow: int,
+    endColumn: int,
+  };
 
-  module LocMsg = {
-    type t = {
-      fullMsg: string,
-      shortMsg: string,
-      row: int,
-      column: int,
-      endRow: int,
-      endColumn: int,
-    };
-
-    let decode = (json): t => {
-      Json.Decode.{
-        fullMsg: json->field("fullMsg", string, _),
-        shortMsg: json->field("shortMsg", string, _),
-        row: json->field("row", int, _),
-        column: json->field("column", int, _),
-        endRow: json->field("endRow", int, _),
-        endColumn: json->field("endColumn", int, _),
-      };
-    };
-
-    // Useful for showing errors in a more compact format
-    let toCompactErrorLine = (locMsg: t) => {
-      let {row, column, shortMsg} = locMsg;
-
-      {j|[1;31m[E] Line $row, $column:[0m $shortMsg|j};
+  let decode = (json): t => {
+    Json.Decode.{
+      fullMsg: json->field("fullMsg", string, _),
+      shortMsg: json->field("shortMsg", string, _),
+      row: json->field("row", int, _),
+      column: json->field("column", int, _),
+      endRow: json->field("endRow", int, _),
+      endColumn: json->field("endColumn", int, _),
     };
   };
 
-  module Warning = {
-    type t =
-      | Warn({
-          warnNumber: int,
-          details: LocMsg.t,
-        })
-      | WarnErr({
-          warnNumber: int,
-          details: LocMsg.t,
-        });
+  // Useful for showing errors in a more compact format
+  let toCompactErrorLine = (locMsg: t) => {
+    let {row, column, shortMsg} = locMsg;
 
-    let decode = (json): t => {
-      open! Json.Decode;
+    {j|[1;31m[E] Line $row, $column:[0m $shortMsg|j};
+  };
+};
 
-      let warnNumber = field("warnNumber", int, json);
-      let details = LocMsg.decode(json);
+module Warning = {
+  type t =
+    | Warn({
+        warnNumber: int,
+        details: LocMsg.t,
+      })
+    | WarnErr({
+        warnNumber: int,
+        details: LocMsg.t,
+      });
 
-      field("isError", bool, json)
-        ? WarnErr({warnNumber, details}) : Warn({warnNumber, details});
-    };
+  let decode = (json): t => {
+    open! Json.Decode;
+
+    let warnNumber = field("warnNumber", int, json);
+    let details = LocMsg.decode(json);
+
+    field("isError", bool, json)
+      ? WarnErr({warnNumber, details}) : Warn({warnNumber, details});
+  };
+};
+
+module WarningFlag = {
+  type t = {
+    msg: string,
+    warn_flags: string,
+    warn_error_flags: string,
   };
 
-  module WarningFlag = {
-    type t = {
-      msg: string,
-      warn_flags: string,
-      warn_error_flags: string,
-    };
-
-    let decode = (json): t => {
-      Json.Decode.{
-        msg: field("msg", string, json),
-        warn_flags: field("warn_flags", string, json),
-        warn_error_flags: field("warn_error_flags", string, json),
-      };
+  let decode = (json): t => {
+    Json.Decode.{
+      msg: field("msg", string, json),
+      warn_flags: field("warn_flags", string, json),
+      warn_error_flags: field("warn_error_flags", string, json),
     };
   };
+};
 
-  module CompileSuccess = {
-    type t = {
-      js_code: string,
-      warnings: array(Warning.t),
-    };
-
-    let decode = (json): t => {
-      Json.Decode.{
-        js_code: field("js_code", string, json),
-        warnings: field("warnings", array(Warning.decode), json),
-      };
-    };
+module CompileSuccess = {
+  type t = {
+    js_code: string,
+    warnings: array(Warning.t),
   };
 
-  module ConvertSuccess = {
-    type t = {
-      code: string,
-      fromLang: Lang.t,
-      toLang: Lang.t,
-    };
-
-    let decodeLang = (json): Lang.t => {
-      open! Json.Decode;
-      switch (string(json)) {
-      | "ml" => Lang.OCaml
-      | "re" => Reason
-      | "res" => Res
-      | other => raise(DecodeError({j|Unknown language "$other"|j}))
-      };
-    };
-
-    let decode = (json): t => {
-      Json.Decode.{
-        code: field("code", string, json),
-        fromLang: field("fromLang", decodeLang, json),
-        toLang: field("toLang", decodeLang, json),
-      };
+  let decode = (json): t => {
+    Json.Decode.{
+      js_code: field("js_code", string, json),
+      warnings: field("warnings", array(Warning.decode), json),
     };
   };
+};
 
-  module CompileFail = {
-    type t =
-      | SyntaxErr(array(LocMsg.t))
-      | TypecheckErr(array(LocMsg.t))
-      | WarningErr(array(Warning.t))
-      | WarningFlagErr(WarningFlag.t)
-      | OtherErr(array(LocMsg.t));
+module ConvertSuccess = {
+  type t = {
+    code: string,
+    fromLang: Lang.t,
+    toLang: Lang.t,
+  };
 
-    let decode = (json): t => {
-      open! Json.Decode;
+  let decode = (json): t => {
+    Json.Decode.{
+      code: field("code", string, json),
+      fromLang: field("fromLang", Lang.decode, json),
+      toLang: field("toLang", Lang.decode, json),
+    };
+  };
+};
 
+module CompileFail = {
+  type t =
+    | SyntaxErr(array(LocMsg.t))
+    | TypecheckErr(array(LocMsg.t))
+    | WarningErr(array(Warning.t))
+    | WarningFlagErr(WarningFlag.t)
+    | OtherErr(array(LocMsg.t));
+
+  let decode = (json): t => {
+    open! Json.Decode;
+
+    switch (field("type", string, json)) {
+    | "syntax_error" =>
+      let locMsgs = field("errors", array(LocMsg.decode), json);
+      SyntaxErr(locMsgs);
+    | "type_error" =>
+      let locMsgs = field("errors", array(LocMsg.decode), json);
+      TypecheckErr(locMsgs);
+    | "warning_error" =>
+      let warnings = field("errors", array(Warning.decode), json);
+      WarningErr(warnings);
+    | "other_error" =>
+      let locMsgs = field("errors", array(LocMsg.decode), json);
+      OtherErr(locMsgs);
+
+    | "warning_flag_error" =>
+      let warningFlag = WarningFlag.decode(json);
+      WarningFlagErr(warningFlag);
+    | other =>
+      raise(DecodeError({j|Unknown type $other in CompileFail result|j}))
+    };
+  };
+};
+
+module CompilationResult = {
+  type t =
+    | Fail(CompileFail.t) // When a compilation failed with some error result
+    | Success(CompileSuccess.t)
+    | UnexpectedError(string) // Errors that slip through as uncaught exceptions of the compiler bundle
+    | Unknown(string, Js.Json.t);
+
+  // TODO: We might change this specific api completely before launching
+  let decode = (json: Js.Json.t): t => {
+    open! Json.Decode;
+
+    switch (field("type", string, json)) {
+    | "success" => Success(CompileSuccess.decode(json))
+    | "unexpected_error" => UnexpectedError(field("msg", string, json))
+    | _ => Fail(CompileFail.decode(json))
+    | exception (DecodeError(errMsg)) => Unknown(errMsg, json)
+    };
+  };
+};
+
+module ConversionResult = {
+  type t =
+    | Success(ConvertSuccess.t)
+    | Fail(array(LocMsg.t)) // When a compilation failed with some error result
+    | UnexpectedError(string) // Errors that slip through as uncaught exceptions within the playground
+    | Unknown(string, Js.Json.t);
+
+  let decode = (json): t => {
+    Json.Decode.(
       switch (field("type", string, json)) {
+      | "success" => Success(ConvertSuccess.decode(json))
+      | "unexpected_error" => UnexpectedError(field("msg", string, json))
       | "syntax_error" =>
         let locMsgs = field("errors", array(LocMsg.decode), json);
-        SyntaxErr(locMsgs);
-      | "type_error" =>
-        let locMsgs = field("errors", array(LocMsg.decode), json);
-        TypecheckErr(locMsgs);
-      | "warning_error" =>
-        let warnings = field("errors", array(Warning.decode), json);
-        WarningErr(warnings);
-      | "other_error" =>
-        let locMsgs = field("errors", array(LocMsg.decode), json);
-        OtherErr(locMsgs);
-
-      | "warning_flag_error" =>
-        let warningFlag = WarningFlag.decode(json);
-        WarningFlagErr(warningFlag);
-      | other =>
-        raise(DecodeError({j|Unknown type $other in CompileFail result|j}))
-      };
-    };
-  };
-
-  module CompilationResult = {
-    type t =
-      | Fail(CompileFail.t) // When a compilation failed with some error result
-      | Success(CompileSuccess.t)
-      | UnexpectedError(string) // Errors that slip through as uncaught exceptions of the compiler bundle
-      | Unknown(string, raw);
-
-    // TODO: We might change this specific api completely before launching
-    let decode = (json: raw): t => {
-      open! Json.Decode;
-
-      switch (field("type", string, json)) {
-      | "success" => Success(CompileSuccess.decode(json))
-      | "unexpected_error" => UnexpectedError(field("msg", string, json))
-      | _ => Fail(CompileFail.decode(json))
+        Fail(locMsgs);
+      | other => Unknown({j|Unknown conversion result type "$other"|j}, json)
       | exception (DecodeError(errMsg)) => Unknown(errMsg, json)
-      };
-    };
-  };
-
-  module ConversionResult = {
-    type t =
-      | Success(ConvertSuccess.t)
-      | Fail(CompileFail.t) // When a compilation failed with some error result
-      | UnexpectedError(string) // Errors that slip through as uncaught exceptions within the playground
-      | Unknown(string, raw);
-
-    let decode = (json): t => {
-      Json.Decode.(
-        switch (field("type", string, json)) {
-        | "parse_print_success" =>
-          Success(field("code", ConvertSuccess.decode, json))
-        | "unexpected_error" => UnexpectedError(field("msg", string, json))
-        | _ => Fail(CompileFail.decode(json))
-        | exception (DecodeError(errMsg)) => Unknown(errMsg, json)
-        }
-      );
-    };
+      }
+    );
   };
 };
 
 module Compiler = {
-  open Decode;
   type t;
 
   type config = {
@@ -263,6 +260,8 @@ module Compiler = {
   // Factory
   [@bs.val] [@bs.scope "bs_platform"] external make: unit => t = "make";
 
+  [@bs.get] external version: t => string = "version";
+
   /*
       Res compiler actions
    */
@@ -271,8 +270,17 @@ module Compiler = {
   [@bs.send] [@bs.scope "napkin"]
   external resCompile: (t, string) => Js.Json.t = "compile";
 
+  let resCompile = (t, code): CompilationResult.t => {
+    resCompile(t, code)->CompilationResult.decode;
+  };
+
   [@bs.send] [@bs.scope "napkin"]
-  external resPrettyPrint: (t, string) => Js.Json.t = "pretty_print";
+  external resFormat: (t, string) => Js.Json.t = "format";
+
+  let resFormat = (t, code): ConversionResult.t => {
+    let json = resFormat(t, code);
+    ConversionResult.decode(json);
+  };
 
   /*
       Reason compiler actions
@@ -282,9 +290,17 @@ module Compiler = {
 
   [@bs.send] [@bs.scope "reason"]
   external reasonCompile: (t, string) => Js.Json.t = "compile";
+  let reasonCompile = (t, code): CompilationResult.t => {
+    reasonCompile(t, code)->CompilationResult.decode;
+  };
 
   [@bs.send] [@bs.scope "reason"]
-  external reasonPrettyPrint: (t, string) => Js.Json.t = "pretty_print";
+  external reasonFormat: (t, string) => Js.Json.t = "format";
+
+  let reasonFormat = (t, code): ConversionResult.t => {
+    let json = reasonFormat(t, code);
+    ConversionResult.decode(json);
+  };
 
   /*
       OCaml compiler actions (Note: no pretty print available for OCaml)
@@ -294,54 +310,38 @@ module Compiler = {
   [@bs.send] [@bs.scope "ocaml"]
   external ocamlCompile: (t, string) => Js.Json.t = "compile";
 
+  let ocamlCompile = (t, code): CompilationResult.t => {
+    ocamlCompile(t, code)->CompilationResult.decode;
+  };
+
   /*
-      Setting actions
+      Config setter / getters
    */
-  [@bs.send] [@bs.scope "settings"] external getConfig: t => config = "list";
+  [@bs.send] external getConfig: t => config = "getConfig";
 
-  [@bs.send] [@bs.scope "settings"]
-  external setFilename: (t, string) => bool = "setFilename";
+  [@bs.send] external setFilename: (t, string) => bool = "setFilename";
 
-  [@bs.send] [@bs.scope "settings"]
+  [@bs.send]
   external setModuleSystem: (t, [@bs.string] [ | `es6 | `nodejs]) => bool =
     "setModuleSystem";
 
-  [@bs.send] [@bs.scope "settings"]
-  external setWarnFlags: (t, string) => bool = "setWarnFlags";
+  [@bs.send] external setWarnFlags: (t, string) => bool = "setWarnFlags";
 
-  [@bs.send] [@bs.scope "settings"]
+  [@bs.send]
   external setWarnErrorFlags: (t, string) => bool = "setWarnErrorFlags";
 
-  // Pretty print decoder overrides
-  let napkinPrettyPrint = (t, code): ConversionResult.t => {
-    let json = resPrettyPrint(t, code);
-    ConversionResult.decode(json);
-  };
+  [@bs.send]
+  external convertSyntax: (t, string, string, string) => Js.Json.t =
+    "convertSyntax";
 
-  let reasonPrettyPrint = (t, code): ConversionResult.t => {
-    let json = reasonPrettyPrint(t, code);
-    ConversionResult.decode(json);
+  // General format function
+  let convertSyntax =
+      (t, ~fromLang: Lang.t, ~toLang: Lang.t, ~code: string)
+      : ConversionResult.t => {
+    convertSyntax(t, Lang.toExt(fromLang), Lang.toExt(toLang), code)
+    ->ConversionResult.decode;
   };
 };
 
 [@bs.val] [@bs.scope "bs_platform"]
-external api_version: string = "api_version";
-
-module Convert = {
-  open Decode;
-
-  // Syntax convertion functions
-  [@bs.send] [@bs.scope "convert"]
-  external reason_to_res: (Compiler.t, string) => Js.Json.t = "reason_to_res";
-
-  [@bs.send] [@bs.scope "convert"]
-  external res_to_reason: (Compiler.t, string) => Js.Json.t = "res_to_reason";
-
-  let reason_to_res = (comp: Compiler.t, code): ConversionResult.t => {
-    reason_to_res(comp, code)->ConversionResult.decode;
-  };
-
-  let res_to_reason = (comp: Compiler.t, code): ConversionResult.t => {
-    res_to_reason(comp, code)->ConversionResult.decode;
-  };
-};
+external apiVersion: string = "api_version";
