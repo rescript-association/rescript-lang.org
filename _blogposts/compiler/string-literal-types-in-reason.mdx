@@ -13,16 +13,17 @@ description: |
 
 ## String literal types in BuckleScript
 
-[String literal types](https://www.typescriptlang.org/docs/handbook/advanced-types.html#string-literal-types) was introduced by TypeScript to model
+[String literal types](https://www.typescriptlang.org/docs/handbook/advanced-types.html#string-literal-types) were introduced by TypeScript to model
 JavaScript behavior, it's a relatively new concept since most type systems are runtime encoding agnostic. However, to smooth the user experience when writing
-bindings to existing JS API, we are introducing string literal types which is unique in several behaviors compared with TypeScript: it supports type inference,
-pattern match and can be attached to data.
+bindings to existing JS API, we are introducing string literal types which are unique in several behaviors compared with TypeScript: they support type inference,
+pattern matching and can be attached to data.
 
 ## Vanilla string literal types
 
-The notation in Reason for string literal types is like this \``hello`, it will be compiled into "hello", the difference is that \``hello` is given a type so that you can not mix it with other strings.
+The notation in Reason for string literal types is like this: \``hello`, which will be compiled into "hello". 
+The difference is that \``hello` is given a type so that you can not mix it with other strings.
 
-Take such code snippet below as an example:
+Take the following code snippet as an example:
 
 ```reasonml
 let encoding = (enc) =>
@@ -57,7 +58,7 @@ This expression has type [> `ucs32 ]
 
 Another thing you can observe from the generated JS is that since the compiler can guarantee that the input could only be `` `utf8, `ascii,`utf16 ``, it will skip the comparison with "utf8" when the first two are compared.
 
-If we add a wild catch to match any encoding
+If we add a wild card to match any encoding
 
 ```reasonml
 let encoding = (enc) =>
@@ -87,7 +88,8 @@ function encoding(en) {
 
 ## Declaring types for string literal types
 
-Note all string literal types can be inferred, this is great for develop experience when you are doing the development. When things get more stable, it would be nice to give string literal types a name as below:
+Note that all string literal types can be inferred. 
+This is very convenient for you when you are doing development. When things get more stable, it would be nice to give string literal types a name as below:
 
 ```reasonml
 type utf = [
@@ -100,7 +102,7 @@ type ascii = [
 
 ```
 
-The cool thing is that you can creat union types by simply put them together:
+The cool thing is that you can create union types by simply putting them together:
 
 ```reasonml
 type encoding = [
@@ -115,7 +117,7 @@ The compiler even supports a sugar over named string literal types:
 let classify = (enc) =>
   switch (enc) {
   | #utf => "utf" // string literals belong to utf
-  | #ascii => "asci" // string literals belog to ascii
+  | #ascii => "ascii" // string literals belog to ascii
   };
 ```
 
@@ -124,7 +126,7 @@ The compiler would generate well optimized code as below:
 ```js
 function classify(enc) {
   if (enc === "ascii") {
-    return "asci";
+    return "ascii";
   } else {
     return "utf";
   }
@@ -133,8 +135,8 @@ function classify(enc) {
 
 ## String literal types in bindings
 
-Since string literal types are just strings after type checking, user can use it
-bind to js libs directly without any conversion as below:
+Since string literal types are just strings after type checking, you can use them to 
+bind to js libraries directly without any conversion, as follows:
 
 ```reasonml
 type encoding = [
@@ -142,7 +144,6 @@ type encoding = [
   | `utf8
   | `ascii
   | `latin1
-  | `base64
   | `ucs2
   | `base64
   | `binary
@@ -154,9 +155,11 @@ external readFileSync: (string, encoding) => string = "readFileSync";
 ```
 ## String literal types attached to data
 
-Since Reason is a typed language, you can not mix data of different types in a collection, for example, you will get a type error when writing code like this: `[ 3, "3" ]`.
+Since Reason is a typed language, you can not mix data of different types in a collection. 
 
-The deep reason is that if the compiler allows you to do such things, after you box different types of data in a single collection, it is hard to give such collection a type and process it later.
+For example, you will get a type error when writing code like this: `[ 3, "3" ]`.
+
+The deep reason is that if the compiler allows you to do such things after you box different types of data in a single collection, it is hard to give such collection a type and process it later.
 
 With string literal types, you can do things like this:
 
@@ -177,9 +180,10 @@ And you can also write code to process such collections:
 let handle = (xs) =>
   Belt.List.map(
     xs,
-    fun
+    (param) => switch(param){
     | `Int(n) => n
-    | `String(s) => String.length(s),
+    | `String(s) => String.length(s)
+    },
   );
 ```
 
@@ -196,11 +200,12 @@ function handle(xs) {
   });
 }
 ```
-To conclude, string literal types give users a convenient way to mix data with different types together and process it via pattern matching later.
+
+To conclude, string literal types give users a convenient way to mix data with different types and process it via pattern matching later.
 
 ## Declaring types for string literal types attached to data
 
-Type inference is great during development, user can also write down the formal types for string literal types attched to data:
+Type inference is great during development. Users can also write down the formal types for string literal types attached to data:
 
 ```reasonml
 type number_or_string = [ 
@@ -211,5 +216,7 @@ type number_or_string = [
 
 ## Further reading
 
-Here we only cover some basic usage of string literal types, user can refer [here](https://caml.inria.fr/pub/docs/manual-ocaml/lablexamples.html#s%3Apolymorphic-variants) for more advanced stuff. The type theory is almost the same, however, we adapt it to make sure it's compiled into string literals to match the JS runtime.
+Here we only cover some basic usage of string literal types. 
+For more advanced usage, see [here](https://caml.inria.fr/pub/docs/manual-ocaml/lablexamples.html#s%3Apolymorphic-variants). 
+The type theory is almost the same, however, we adapt it to make sure it is compiled into string literals to match the JS runtime.
 
