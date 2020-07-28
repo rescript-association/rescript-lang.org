@@ -131,6 +131,27 @@ function classify(enc) {
 }
 ```
 
+## String literal types in bindings
+
+Since string literal types are just strings after type checking, user can use it
+bind to js libs directly without any conversion as below:
+
+```reasonml
+type encoding = [
+  | `hex
+  | `utf8
+  | `ascii
+  | `latin1
+  | `base64
+  | `ucs2
+  | `base64
+  | `binary
+  | `utf16le
+];
+
+[@bs.val] [@bs.module "fs"]
+external readFileSync: (string, encoding) => string = "readFileSync";
+```
 ## String literal types attached to data
 
 Since Reason is a typed language, you can not mix data of different types in a collection, for example, you will get a type error when writing code like this: `[ 3, "3" ]`.
