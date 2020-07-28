@@ -101,6 +101,13 @@ type ascii = [
 ]
 
 ```
+You can also embed string literal types directly inside other types without declaring it first:
+
+```reasonml
+type t = {
+  encodings : [| `utf8 | `ascii ] list 
+}
+```
 
 The cool thing is that you can create union types by simply putting them together:
 
@@ -216,7 +223,7 @@ type number_or_string = [
 
 ## Further reading
 
-Here we only cover some basic usage of string literal types. 
+Here we only cover most daily usage of string literal types. 
 For more advanced usage, see [here](https://caml.inria.fr/pub/docs/manual-ocaml/lablexamples.html#s%3Apolymorphic-variants). 
 The type theory is almost the same, however, we adapt it to make sure it is compiled into string literals to match the JS runtime.
 
