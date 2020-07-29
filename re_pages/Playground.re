@@ -5,10 +5,13 @@ open Util.ReactStuff;
 
 /*
     TODO / Idea list:
-    - Refactor ErrorPane so it can render locMsgs instead of strings
     - Convert language dropdown to toggle component
     - Allow syntax switching on errornous syntax
     - Add settings pane to set moduleSystem
+    - Add advanced mode for enabling OCaml output as well
+
+    More advanced tasks:
+    - Fix syntax convertion issue where comments are stripped on Reason <-> Res convertion
  */
 
 open CompilerManagerHook;
@@ -260,7 +263,7 @@ module ErrorPane = {
     | Conv(Success({fromLang, toLang})) =>
       let msg =
         if (fromLang === toLang) {
-          "Formating completed with 0 errors"
+          "Formatting completed with 0 errors"
         } else {
           let toStr = Api.Lang.toString(toLang);
           {j|Switched to $toStr with 0 errors|j};
