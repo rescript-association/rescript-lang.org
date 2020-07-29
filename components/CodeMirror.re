@@ -32,6 +32,8 @@ let make =
       ~lineWrapping=false,
       ~value: string,
       ~errors=?,
+      ~onMarkerFocus=?,
+      ~onMarkerFocusLeave=?,
       ~onChange=?,
     ) => {
   let options =
@@ -52,6 +54,8 @@ let make =
       ~value,
       ~errors?,
       ~onChange?,
+      ~onMarkerFocus?,
+      ~onMarkerFocusLeave?,
       ~options,
       (),
     );

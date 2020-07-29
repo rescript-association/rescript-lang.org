@@ -6,11 +6,14 @@
 
 .CodeMirror {
   @apply h-auto;
+  background-color: inherit;
+  color: inherit;
 }
 
 .CodeMirror-gutters .errors {
   /*@apply bg-white text-red-500;*/
   @apply w-6;
+  background-color: inherit;
 }
 
 /*.CodeMirror-scroll {*/
@@ -19,12 +22,19 @@
 
 .cm-s-material.CodeMirror {
   /*background-color: #263238;*/
-  @apply text-snow-darker bg-onyx font-mono text-14 py-8;
+  @apply font-mono py-8;
 }
 
 .cm-s-material .CodeMirror-gutters {
-  @apply bg-onyx text-night;
+  /*@apply  text-night;*/
   border: none;
+  background-color: inherit;
+  color: inherit;
+}
+
+.CodeMirror pre.CodeMirror-line,
+.CodeMirror pre.CodeMirror-line-like {
+  @apply pl-8 pr-2;
 }
 
 .cm-s-material .CodeMirror-guttermarker,

@@ -100,6 +100,7 @@ module.exports = {
           light: "#FFC833",
           default: "#E0AC00",
           dark: "#C19400",
+          "15": "rgba(224, 172, 0, 0.15)",
           "10": "rgba(224, 172, 0, 0.10)"
         },
         primary: {

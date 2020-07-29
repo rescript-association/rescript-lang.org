@@ -76,6 +76,9 @@ let attachCompilerAndLibraries =
     : Promise.t(result(unit, array(string))) => {
   let compilerUrl = CdnMeta.getCompilerUrl(version);
 
+  // Useful for debugging our local build
+  /*let compilerUrl = "/static/linked-bs-bundle.js";*/
+
   LoadScript.loadScriptPromise(compilerUrl)
   ->Promise.mapError(_msg =>
       {j|Could not load compiler from url $compilerUrl|j}
@@ -223,7 +226,7 @@ let useCompilerManager = () => {
                       FinalResult.Conv(result),
                       currentLang,
                     )
-                  | ConversionResult.Success(code) => (Conv(result), l)
+                  | ConversionResult.Success(_) => (Conv(result), l)
                   }
                 | None => (Nothing, l)
                 };
