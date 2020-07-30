@@ -196,7 +196,7 @@ let useCompilerManager = (~onAction: option(action => unit)=?, ()) => {
         let currentLang = ready.targetLang;
 
         Js.Array2.find(availableTargetLangs, l => l === lang)
-        ->Belt.Option.forEach(l => {
+        ->Belt.Option.forEach(lang => {
             // Try to automatically transform code
             let (result, targetLang) =
               switch (ready.selected.apiVersion) {
@@ -222,21 +222,38 @@ let useCompilerManager = (~onAction: option(action => unit)=?, ()) => {
                   | _ => None
                   };
 
-                // In case of an error, keep the current lang
+                /*
+                   Syntax convertion works the following way:
+                   If currentLang -> otherLang is not valid, try to pretty print the code
+                   with the otherLang, in case we e.g. want to copy paste or otherLang code
+                   in the editor and quickly switch to it
+                */
                 switch (convResult) {
                 | Some(result) =>
                   switch (result) {
                   | ConversionResult.Fail(_)
                   | Unknown(_, _)
-                  | UnexpectedError(_) => (
-                      FinalResult.Conv(result),
-                      currentLang,
-                    )
-                  | ConversionResult.Success(_) => (Conv(result), l)
+                  | UnexpectedError(_) =>
+                    let secondTry =
+                      instance->Compiler.convertSyntax(
+                        ~fromLang=lang,
+                        ~toLang=lang,
+                        ~code,
+                      );
+                    switch (secondTry) {
+                    | ConversionResult.Fail(_)
+                    | Unknown(_, _)
+                    | UnexpectedError(_) => (
+                        FinalResult.Conv(secondTry),
+                        lang,
+                      )
+                    | Success(_) => (Conv(secondTry), lang)
+                    };
+                  | ConversionResult.Success(_) => (Conv(result), lang)
                   }
-                | None => (Nothing, l)
+                | None => (Nothing, lang)
                 };
-              | _ => (Nothing, l)
+              | _ => (Nothing, lang)
               };
 
             setState(_ =>

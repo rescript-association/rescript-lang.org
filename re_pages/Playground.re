@@ -346,15 +346,18 @@ module ErrorPane = {
           })
         ->ate;
 
-      let fromStr = Api.Lang.toString(fromLang);
-      let toStr = Api.Lang.toString(toLang);
-      <div>
-        <PreWrap className="text-16 mb-4">
-          {j|Could not convert from "$fromStr" to "$toStr" due to malformed syntax. Fix these errors first:|j}
-          ->s
-        </PreWrap>
-        errs
-      </div>;
+      // The way the UI is currently designed, there shouldn't be a case where fromLang !== toLang.
+      // We keep both cases though in case we change things later
+      let msg =
+        if (fromLang === toLang) {
+          let langStr = Api.Lang.toString(toLang);
+          {j|The code above is no valid $langStr syntax.|j};
+        } else {
+          let fromStr = Api.Lang.toString(fromLang);
+          let toStr = Api.Lang.toString(toLang);
+          {j|Could not convert from "$fromStr" to "$toStr" due to malformed syntax:|j};
+        };
+      <div> <PreWrap className="text-16 mb-4"> msg->s </PreWrap> errs </div>;
     | Comp(UnexpectedError(msg))
     | Conv(UnexpectedError(msg)) => msg->s
     | Comp(Unknown(msg, json))
