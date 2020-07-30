@@ -336,13 +336,14 @@ module ErrorPane = {
       <PreWrap> msg->s </PreWrap>;
     | Conv(Fail({fromLang, toLang, details})) =>
       let errs =
-        Belt.Array.map(details, locMsg => {
-          compactErrorLine(
-            ~highlight=isHighlighted(~focusedRowCol?, locMsg),
-            ~prefix=`E,
-            locMsg,
-          )
-        })
+        filterHighlightedLocMsgs(~focusedRowCol, details)
+        ->Belt.Array.map(locMsg => {
+            compactErrorLine(
+              ~highlight=isHighlighted(~focusedRowCol?, locMsg),
+              ~prefix=`E,
+              locMsg,
+            )
+          })
         ->ate;
 
       let fromStr = Api.Lang.toString(fromLang);
@@ -562,7 +563,7 @@ module ControlPanel = {
          </div>
          */
         <button
-          disabled={isCompilerSwitching}
+          disabled=isCompilerSwitching
           className={
             (isCompilerSwitching ? "opacity-25" : "")
             ++ " inline-block bg-sky text-16 text-white-80 rounded py-2 px-6"
