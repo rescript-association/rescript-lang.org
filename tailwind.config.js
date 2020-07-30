@@ -38,6 +38,7 @@ module.exports = {
     // Specify the paths to all of the template files in your project
     content: [
       "./components/**/*.re",
+      "./common/**/*.re",
       "./re_pages/**/*.re",
       "./ffi/**/*.js",
       "./pages/**/*.re",
@@ -143,6 +144,15 @@ module.exports = {
       spacing: {
         "2/3": "66.666667%",
         "9/16": "56.25%"
+      },
+      animation: {
+        pulse: 'pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1)',
+      },
+      keyframes: {
+        pulse: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '.5' },
+        },
       }
     },
     borderRadius: {
