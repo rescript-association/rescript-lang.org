@@ -8,7 +8,6 @@
     The interface is defined with a finite state and action dispatcher.
  */
 
-
 open Bs_platform_api;
 
 module LoadScript = {
@@ -158,11 +157,18 @@ type action =
   | Format(string)
   | CompileCode(Lang.t, string);
 
-let useCompilerManager = () => {
+// onAction: This function is especially useful if you want to maintain
+//           state that depends on any action happening in the compiler, no
+//           matter if a state transition happened, or not.
+//           We need that for a ActivityIndicator component to give feedback
+//           to the user that an action happened (useful in cases where the output
+//           didn't visually change)
+let useCompilerManager = (~onAction: option(action => unit)=?, ()) => {
   let (state, setState) = React.useState(_ => Init);
 
   // Dispatch method for the public interface
   let dispatch = (action: action): unit => {
+    Belt.Option.forEach(onAction, cb => cb(action));
     switch (action) {
     | SwitchToCompiler({id, libraries}) =>
       switch (state) {
