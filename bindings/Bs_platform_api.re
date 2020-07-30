@@ -228,7 +228,7 @@ module CompileFail = {
       let warningFlag = WarningFlag.decode(json);
       WarningFlagErr(warningFlag);
     | other =>
-      raise(DecodeError({j|Unknown type $other in CompileFail result|j}))
+      raise(DecodeError({j|Unknown type "$other" in CompileFail result|j}))
     };
   };
 };
@@ -244,11 +244,14 @@ module CompilationResult = {
   let decode = (json: Js.Json.t): t => {
     open! Json.Decode;
 
-    switch (field("type", string, json)) {
-    | "success" => Success(CompileSuccess.decode(json))
-    | "unexpected_error" => UnexpectedError(field("msg", string, json))
-    | _ => Fail(CompileFail.decode(json))
-    | exception (DecodeError(errMsg)) => Unknown(errMsg, json)
+    try(
+      switch (field("type", string, json)) {
+      | "success" => Success(CompileSuccess.decode(json))
+      | "unexpected_error" => UnexpectedError(field("msg", string, json))
+      | _ => Fail(CompileFail.decode(json))
+      }
+    ) {
+    | DecodeError(errMsg) => Unknown(errMsg, json)
     };
   };
 };
@@ -265,7 +268,8 @@ module ConversionResult = {
     | Unknown(string, Js.Json.t);
 
   let decode = (~fromLang: Lang.t, ~toLang: Lang.t, json): t => {
-    Json.Decode.(
+    open! Json.Decode;
+    try(
       switch (field("type", string, json)) {
       | "success" => Success(ConvertSuccess.decode(json))
       | "unexpected_error" => UnexpectedError(field("msg", string, json))
@@ -273,9 +277,10 @@ module ConversionResult = {
         let locMsgs = field("errors", array(LocMsg.decode), json);
         Fail({fromLang, toLang, details: locMsgs});
       | other => Unknown({j|Unknown conversion result type "$other"|j}, json)
-      | exception (DecodeError(errMsg)) => Unknown(errMsg, json)
       }
-    );
+    ) {
+    | DecodeError(errMsg) => Unknown(errMsg, json)
+    };
   };
 };
 
