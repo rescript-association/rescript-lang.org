@@ -21,7 +21,7 @@ module DropdownSelect = {
   type style = [ | `Error | `Normal];
 
   [@react.component]
-  let make = (~onChange, ~name, ~value, ~disabled, ~children) => {
+  let make = (~onChange, ~name, ~value, ~disabled=false, ~children) => {
     let opacity = disabled ? " opacity-50" : "";
     <select
       className={
@@ -37,55 +37,66 @@ module DropdownSelect = {
   };
 };
 
-let getErrorsAndWarningsFromResult =
-    (result: FinalResult.t): (array(string), array(string)) => {
-  open Api;
-  let (errors, warnings) = {
-    let locMsgs =
-      switch (result) {
-      | FinalResult.Comp(Fail(result)) =>
-        switch (result) {
-        | SyntaxErr(locMsgs)
-        | TypecheckErr(locMsgs)
-        | OtherErr(locMsgs) => locMsgs
-        | WarningErr(warnings) =>
-          Belt.Array.reduce(
-            warnings,
-            [||],
-            (acc, next) => {
-              switch (next) {
-              | Api.Warning.Warn({details})
-              | WarnErr({details}) => Js.Array2.push(acc, details)->ignore
-              };
-              acc;
-            },
-          )
-        | WarningFlagErr(_) => [||]
-        }
-      | Conv(Fail({details})) => details
-      | Comp(_)
-      | Conv(_)
-      | Nothing => [||]
+module LanguageToggle = {
+  [@react.component]
+  let make =
+      (
+        ~onChange: Api.Lang.t => unit,
+        ~values: array(Api.Lang.t),
+        ~selected: Api.Lang.t,
+        ~disabled=false,
+      ) => {
+    // We make sure that there's at least one element in the array
+    // otherwise we run into undefined behavior
+    let values =
+      if (Array.length(values) === 0) {
+        [|selected|];
+      } else {
+        values;
       };
 
-    let errors =
-      Belt.Array.map(locMsgs, locMsg => {
-        Api.LocMsg.toCompactErrorLine(~prefix=`E, locMsg)
-      });
-
-    let warnings =
-      switch (result) {
-      | FinalResult.Comp(Success({warnings}))
-      | Comp(Fail(WarningErr(warnings))) =>
-        warnings->Belt.Array.map(Warning.toCompactErrorLine)
-      | Comp(_)
-      | Conv(_)
-      | Nothing => [||]
+    let selectedIndex =
+      switch (Belt.Array.getIndexBy(values, lang => {lang === selected})) {
+      | Some(i) => i
+      | None => 0
       };
 
-    (errors, warnings);
+    let elements =
+      Belt.Array.mapWithIndex(
+        values,
+        (i, lang) => {
+          let active = i === selectedIndex ? "text-fire" : "";
+          let ext = Api.Lang.toExt(lang)->Js.String2.toUpperCase;
+
+          <span key=ext className={"mr-1 last:mr-0 " ++ active}>
+            ext->s
+          </span>;
+        },
+      );
+
+    let onClick = evt => {
+      ReactEvent.Mouse.preventDefault(evt);
+
+      // Rotate through the array
+      let nextIdx =
+        selectedIndex < Array.length(values) - 1 ? selectedIndex + 1 : 0;
+
+      switch (Belt.Array.get(values, nextIdx)) {
+      | Some(lang) => onChange(lang)
+      | None => ()
+      };
+    };
+
+    <button
+      className={
+        (disabled ? "opacity-25" : "")
+        ++ " border border-night-light inline-block rounded px-4 py-1 flex text-16"
+      }
+      disabled
+      onClick>
+      elements->ate
+    </button>;
   };
-  (errors, warnings);
 };
 
 module Pane = {
@@ -147,16 +158,23 @@ module SingleTabPane = {
 };
 
 module ErrorPane = {
+  module ActionIndicator = {
+    [@react.component]
+    let make = () => {
+      <div className="animate-pulse"> "<!>"->s </div>;
+    };
+  };
+
   module PreWrap = {
     [@react.component]
-    let make = (~children) => {
-      <pre className="whitespace-pre-wrap"> children </pre>;
+    let make = (~className="", ~children) => {
+      <pre className={"whitespace-pre-wrap " ++ className}> children </pre>;
     };
   };
   type prefix = [ | `W | `E];
   let compactErrorLine =
       (~highlight=false, ~prefix: prefix, locMsg: Api.LocMsg.t) => {
-    let {Api.LocMsg.row, column, shortMsg, fullMsg} = locMsg;
+    let {Api.LocMsg.row, column, shortMsg} = locMsg;
     let prefixColor =
       switch (prefix) {
       | `W => "text-code-5"
@@ -200,6 +218,50 @@ module ErrorPane = {
     };
   };
 
+  let filterHighlightedLocMsgs =
+      (~focusedRowCol, locMsgs: array(Api.LocMsg.t)): array(Api.LocMsg.t) => {
+    Api.LocMsg.(
+      switch (focusedRowCol) {
+      | Some(focusedRowCol) =>
+        let (fRow, fCol) = focusedRowCol;
+        let filtered =
+          Belt.Array.keep(locMsgs, locMsg => {
+            fRow === locMsg.row && fCol === locMsg.column
+          });
+
+        if (Array.length(filtered) === 0) {
+          locMsgs;
+        } else {
+          filtered;
+        };
+
+      | None => locMsgs
+      }
+    );
+  };
+
+  let filterHighlightedLocWarnings =
+      (~focusedRowCol, warnings: array(Api.Warning.t)): array(Api.Warning.t) => {
+    switch (focusedRowCol) {
+    | Some(focusedRowCol) =>
+      let (fRow, fCol) = focusedRowCol;
+      let filtered =
+        Belt.Array.keep(warnings, warning => {
+          switch (warning) {
+          | Warn({details})
+          | WarnErr({details}) =>
+            fRow === details.row && fCol === details.column
+          }
+        });
+      if (Array.length(filtered) === 0) {
+        warnings;
+      } else {
+        filtered;
+      };
+    | None => warnings
+    };
+  };
+
   let renderResult =
       (
         ~focusedRowCol: option((int, int)),
@@ -214,26 +276,29 @@ module ErrorPane = {
       | TypecheckErr(locMsgs)
       | OtherErr(locMsgs)
       | SyntaxErr(locMsgs) =>
-        Belt.Array.map(locMsgs, locMsg => {
-          compactErrorLine(
-            ~highlight=isHighlighted(~focusedRowCol?, locMsg),
-            ~prefix=`E,
-            locMsg,
-          )
-        })
+        filterHighlightedLocMsgs(~focusedRowCol, locMsgs)
+        ->Belt.Array.map(locMsg => {
+            compactErrorLine(
+              ~highlight=isHighlighted(~focusedRowCol?, locMsg),
+              ~prefix=`E,
+              locMsg,
+            )
+          })
         ->ate
       | WarningErr(warnings) =>
-        Belt.Array.map(warnings, next => {
-          switch (next) {
-          | Api.Warning.Warn({details})
-          | WarnErr({details}) =>
+        filterHighlightedLocWarnings(~focusedRowCol, warnings)
+        ->Belt.Array.map(warning => {
+            let (prefix, details) =
+              switch (warning) {
+              | Api.Warning.Warn({details}) => (`W, details)
+              | WarnErr({details}) => (`E, details)
+              };
             compactErrorLine(
               ~highlight=isHighlighted(~focusedRowCol?, details),
-              ~prefix=`W,
+              ~prefix,
               details,
-            )
-          }
-        })
+            );
+          })
         ->ate
       | WarningFlagErr({msg}) =>
         <div>
@@ -245,47 +310,79 @@ module ErrorPane = {
       if (Array.length(warnings) === 0) {
         <PreWrap> "0 Errors, 0 Warnings"->s </PreWrap>;
       } else {
-        Belt.Array.map(warnings, next => {
-          switch (next) {
-          | Api.Warning.Warn({details})
-          | WarnErr({details}) =>
-            let warns =
-              compactErrorLine(
-                ~highlight=isHighlighted(~focusedRowCol?, details),
-                ~prefix=`W,
-                details,
-              );
-            <div> warns </div>;
-          }
-        })
+        filterHighlightedLocWarnings(~focusedRowCol, warnings)
+        ->Belt.Array.map(warning => {
+            let (prefix, details) =
+              switch (warning) {
+              | Api.Warning.Warn({details}) => (`W, details)
+              | WarnErr({details}) => (`E, details)
+              };
+            compactErrorLine(
+              ~highlight=isHighlighted(~focusedRowCol?, details),
+              ~prefix,
+              details,
+            );
+          })
         ->ate;
       }
     | Conv(Success({fromLang, toLang})) =>
       let msg =
         if (fromLang === toLang) {
-          "Formatting completed with 0 errors"
+          "Formatting completed with 0 errors";
         } else {
           let toStr = Api.Lang.toString(toLang);
           {j|Switched to $toStr with 0 errors|j};
         };
       <PreWrap> msg->s </PreWrap>;
-    | Conv(Fail({details})) =>
-      Belt.Array.map(details, locMsg => {
-        compactErrorLine(
-          ~highlight=isHighlighted(~focusedRowCol?, locMsg),
-          ~prefix=`E,
-          locMsg,
-        )
-      })
-      ->ate
+    | Conv(Fail({fromLang, toLang, details})) =>
+      let errs =
+        Belt.Array.map(details, locMsg => {
+          compactErrorLine(
+            ~highlight=isHighlighted(~focusedRowCol?, locMsg),
+            ~prefix=`E,
+            locMsg,
+          )
+        })
+        ->ate;
+
+      let fromStr = Api.Lang.toString(fromLang);
+      let toStr = Api.Lang.toString(toLang);
+      <div>
+        <PreWrap className="text-16 mb-4">
+          {j|Could not convert from "$fromStr" to "$toStr" due to malformed syntax. Fix these errors first:|j}
+          ->s
+        </PreWrap>
+        errs
+      </div>;
     | Comp(UnexpectedError(msg))
     | Conv(UnexpectedError(msg)) => msg->s
     | Comp(Unknown(msg, json))
     | Conv(Unknown(msg, json)) =>
-      <PreWrap>
-        "This should not happen. Please report this as a bug."->s
-        {Js.Json.stringify(json)->s}
-      </PreWrap>
+      let subheader = "font-bold text-night-light text-16";
+      <div>
+        <PreWrap>
+          "The compiler bundle API returned a result that couldn't be interpreted. Please open an issue on our "
+          ->s
+          <Markdown.A
+            target="_blank"
+            href="https://github.com/reason-association/reasonml.org/issues">
+            "issue tracker"->s
+          </Markdown.A>
+          "."->s
+        </PreWrap>
+        <div className="mt-4">
+          <PreWrap>
+            <div className=subheader> "Message: "->s </div>
+            msg->s
+          </PreWrap>
+        </div>
+        <div className="mt-4">
+          <PreWrap>
+            <span className=subheader> "Received JSON payload:"->s </span>
+            <div> {Util.Json.prettyStringify(json)->s} </div>
+          </PreWrap>
+        </div>
+      </div>;
     | Nothing =>
       let syntax =
         switch (targetLang) {
@@ -324,9 +421,9 @@ module ErrorPane = {
         }
       | Conv(Success(_)) => (okClass, "Format Successful")
       | Comp(UnexpectedError(_))
-      | Conv(UnexpectedError(_))
+      | Conv(UnexpectedError(_)) => (errClass, "Unexpected Error")
       | Comp(Unknown(_))
-      | Conv(Unknown(_)) => (errClass, "Errors")
+      | Conv(Unknown(_)) => (errClass, "Unknown Result")
       | Nothing => (okClass, "Ready")
       };
 
@@ -336,43 +433,48 @@ module ErrorPane = {
   [@react.component]
   let make =
       (
+        ~actionIndicatorKey: string,
         ~targetLang: Api.Lang.t,
         ~compilerVersion: string,
         ~focusedRowCol: option((int, int))=?,
         ~result: FinalResult.t,
       ) => {
-    let (errors, warnings) = getErrorsAndWarningsFromResult(result);
-    let errorNumber = Belt.Array.length(errors);
+    let activityIndicatorColor =
+      switch (result) {
+      | FinalResult.Comp(Fail(_))
+      | Conv(Fail(_))
+      | Comp(UnexpectedError(_))
+      | Conv(UnexpectedError(_))
+      | Comp(Unknown(_))
+      | Conv(Unknown(_)) => "bg-fire-80"
+      | Conv(Success(_))
+      | Nothing => "bg-dark-code-3"
+      | Comp(Success({warnings})) =>
+        if (Array.length(warnings) === 0) {
+          "bg-dark-code-3";
+        } else {
+          "bg-code-5";
+        }
+      };
 
-    let _ =
-      <div className="pt-4 bg-night-dark">
-        <div className="text-fire font-medium px-4"> "Errors"->s </div>
+    <div
+      className="pt-4 bg-night-dark overflow-y-auto hide-scrollbar"
+      style={ReactDOMRe.Style.make(
+        ~minHeight="20rem",
+        ~maxHeight="20rem",
+        (),
+      )}>
+      <div className="flex items-center text-16 font-medium px-4">
+        <div className="pr-4"> {renderTitle(result)} </div>
         <div
-          style={ReactDOMRe.Style.make(~maxHeight="17rem", ())} className="">
-          <div className="bg-night-dark text-snow-darker px-4 py-4">
-            {errors
-             ->Belt.Array.mapWithIndex((i, line) => {
-                 <AnsiPre
-                   className="whitespace-pre-wrap mb-4 pb-2 last:mb-0 last:pb-0 last:border-0 border-b border-night-light"
-                   key={Belt.Int.toString(i)}>
-                   line
-                 </AnsiPre>
-               })
-             ->ate}
-            {warnings
-             ->Belt.Array.mapWithIndex((i, line) => {
-                 <AnsiPre key={Belt.Int.toString(i)}> line </AnsiPre>
-               })
-             ->ate}
-          </div>
-        </div>
-      </div>;
-
-    <div className="pt-4 bg-night-dark">
-      <div className="flex items-center text-16 font-medium px-4 pr-16">
-        {renderTitle(result)}
+          key=actionIndicatorKey
+          className={
+            "animate-pulse block h-1 w-1 rounded-full "
+            ++ activityIndicatorColor
+          }
+        />
       </div>
-      <div style={ReactDOMRe.Style.make(~maxHeight="17rem", ())} className="">
+      <div className="">
         <div className="bg-night-dark text-snow-darker px-4 py-4">
           {renderResult(~focusedRowCol, ~compilerVersion, ~targetLang, result)}
         </div>
@@ -385,7 +487,7 @@ module ControlPanel = {
   [@react.component]
   let make =
       (
-        ~compilerReady: bool,
+        ~isCompilerSwitching: bool,
         ~langSelectionDisabled: bool, // In case a syntax conversion error occurred
         ~compilerVersion: string,
         ~availableCompilerVersions: array(string),
@@ -421,7 +523,7 @@ module ControlPanel = {
           <DropdownSelect
             name="compilerVersions"
             value=compilerVersion
-            disabled={!compilerReady}
+            disabled=isCompilerSwitching
             onChange={evt => {
               ReactEvent.Form.preventDefault(evt);
               let id = evt->ReactEvent.Form.target##value;
@@ -435,38 +537,18 @@ module ControlPanel = {
              ->ate}
           </DropdownSelect>
         </div>
-        <DropdownSelect
-          name="targetLang"
-          value=targetLangName
-          disabled=langSelectionDisabled
-          onChange={evt => {
-            ReactEvent.Form.preventDefault(evt);
-            let lang =
-              switch (evt->ReactEvent.Form.target##value) {
-              | "New BS Syntax" => Api.Lang.Res
-              | "Reason" => Reason
-              | "OCaml" => OCaml
-              | _ => Reason
-              };
-            onTargetLangSelect(lang);
-          }}>
-          {Belt.Array.map(
-             availableTargetLangs,
-             lang => {
-               let langStr = Api.Lang.toString(lang);
-               <option className="py-4" key=langStr value=langStr>
-                 langStr->s
-               </option>;
-             },
-           )
-           ->ate}
-        </DropdownSelect>
+        <LanguageToggle
+          values=availableTargetLangs
+          selected=targetLang
+          disabled=isCompilerSwitching
+          onChange=onTargetLangSelect
+        />
         <button
           className={
-            (!compilerReady ? "opacity-25" : "")
+            (isCompilerSwitching ? "opacity-25" : "")
             ++ " font-semibold inline-block border border-night-light rounded py-1 px-4"
           }
-          disabled=formatDisabled
+          disabled=isCompilerSwitching
           onClick=?formatClickHandler>
           "Format"->s
         </button>
@@ -480,9 +562,9 @@ module ControlPanel = {
          </div>
          */
         <button
-          disabled={!compilerReady}
+          disabled={isCompilerSwitching}
           className={
-            (!compilerReady ? "opacity-25" : "")
+            (isCompilerSwitching ? "opacity-25" : "")
             ++ " inline-block bg-sky text-16 text-white-80 rounded py-2 px-6"
           }
           onClick={evt => {
@@ -505,7 +587,13 @@ let locMsgToCmError =
 
 [@react.component]
 let default = () => {
-  let (compilerState, compilerDispatch) = useCompilerManager();
+  // We don't count to infinity. This value is only required to trigger
+  // rerenders for specific components (ActivityIndicator)
+  let (actionCount, setActionCount) = React.useState(_ => 0);
+  let onAction = _ => {
+    setActionCount(prev => prev > 1000000 ? 0 : prev + 1);
+  };
+  let (compilerState, compilerDispatch) = useCompilerManager(~onAction, ());
 
   let overlayState = React.useState(() => false);
 
@@ -566,13 +654,13 @@ module B = {
     | _ => false
     };
 
-  let reasonCode = React.useRef(initialContent);
+  let editorCode = React.useRef(initialContent);
 
   /* In case the compiler did some kind of syntax conversion / reformatting,
      we take any success results and set the editor code to the new formatted code */
   switch (compilerState) {
   | Ready({result: FinalResult.Conv(Api.ConversionResult.Success({code}))}) =>
-    React.Ref.setCurrent(reasonCode, code)
+    React.Ref.setCurrent(editorCode, code)
   | _ => ()
   };
 
@@ -645,9 +733,9 @@ module B = {
                     minHeight="40vh"
                     mode="reason"
                     errors=cmErrors
-                    value={React.Ref.current(reasonCode)}
+                    value={React.Ref.current(editorCode)}
                     onChange={value => {
-                      React.Ref.setCurrent(reasonCode, value)
+                      React.Ref.setCurrent(editorCode, value)
                     }}
                     onMarkerFocus={rowCol => {
                       setFocusedRowCol(prev => {Some(rowCol)})
@@ -683,7 +771,7 @@ module B = {
                    compilerDispatch(
                      SwitchLanguage({
                        lang,
-                       code: React.Ref.current(reasonCode),
+                       code: React.Ref.current(editorCode),
                      }),
                    );
                  };
@@ -692,7 +780,7 @@ module B = {
                    compilerDispatch(
                      CompileCode(
                        ready.targetLang,
-                       React.Ref.current(reasonCode),
+                       React.Ref.current(editorCode),
                      ),
                    );
                  };
@@ -716,12 +804,19 @@ module B = {
                    );
 
                  let onFormatClick = () => {
-                   compilerDispatch(Format(React.Ref.current(reasonCode)));
+                   compilerDispatch(Format(React.Ref.current(editorCode)));
                  };
 
+                 let actionIndicatorKey = string_of_int(actionCount);
+
+                 let isCompilerSwitching =
+                   switch (compilerState) {
+                   | SwitchingCompiler(_, _, _) => true
+                   | _ => false
+                   };
                  <>
                    <ControlPanel
-                     compilerReady=isReady
+                     isCompilerSwitching
                      langSelectionDisabled
                      compilerVersion
                      availableTargetLangs
@@ -735,6 +830,7 @@ module B = {
                    />
                    <div className="border-fire border-t-4">
                      <ErrorPane
+                       actionIndicatorKey
                        targetLang={ready.targetLang}
                        compilerVersion={ready.selected.compilerVersion}
                        ?focusedRowCol

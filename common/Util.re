@@ -52,7 +52,8 @@ module ReactStuff = {
   external lazy_: (unit => Js.Promise.t('a)) => 'a = "lazy";
 
   module Suspense = {
-    [@bs.module "react"][@react.component] external make: (~children: React.element) => React.element = "Suspense";
+    [@bs.module "react"] [@react.component]
+    external make: (~children: React.element) => React.element = "Suspense";
   };
 };
 
@@ -68,6 +69,13 @@ module String = {
       return str && str.charAt(0).toUpperCase() + str.substring(1);
     }"
   ];
+};
+
+module Json = {
+  [@bs.val] [@bs.scope "JSON"]
+  external prettyStringify:
+    (Js.Json.t, [@bs.as {json|null|json}] _, [@bs.as 4] _) => string =
+    "stringify";
 };
 
 module Url = {

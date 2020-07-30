@@ -180,6 +180,7 @@ module Components = {
       React.component({
         .
         "children": ReasonReact.reactElement,
+        "target": option(string),
         "href": string,
       }),
   };

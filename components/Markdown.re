@@ -378,13 +378,14 @@ module Hr = {
  */
 module A = {
   [@react.component]
-  let make = (~href, ~children) =>
+  let make = (~href, ~target=?, ~children) =>
     // In case we are handling a relative URL, we will use the Next routing
     if (Util.Url.isAbsolute(href)) {
       <a
         href
         rel="noopener noreferrer"
-        className="no-underline text-fire hover:underline">
+        className="no-underline text-fire hover:underline"
+        ?target>
         children
       </a>;
     } else {
@@ -403,7 +404,8 @@ module A = {
       <Next.Link href>
         <a
           rel="noopener noreferrer"
-          className="no-underline text-fire hover:underline">
+          className="no-underline text-fire hover:underline"
+          ?target>
           children
         </a>
       </Next.Link>;
