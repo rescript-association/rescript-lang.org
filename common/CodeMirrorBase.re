@@ -324,9 +324,6 @@ let updateErrors =
 
                let id = getId(target);
                if (isMarkerId(id)) {
-                 Js.log("Wrapper >> onMouseOver");
-                 Js.log(id);
-
                  switch (extractRowColFromId(id)) {
                  | Some(rowCol) =>
                    Belt.Option.forEach(onMarkerFocus, cb => cb(rowCol))
@@ -342,9 +339,6 @@ let updateErrors =
 
                let id = getId(target);
                if (isMarkerId(id)) {
-                 Js.log("Wrapper >> onMouseOut");
-                 Js.log(id);
-
                  switch (extractRowColFromId(id)) {
                  | Some(rowCol) =>
                    Belt.Option.forEach(onMarkerFocusLeave, cb => cb(rowCol))
@@ -441,7 +435,6 @@ let default = (props: Props.t): React.element => {
     } else {
       let state = cmStateRef->React.Ref.current;
       cm->CM.operation(() => {
-        Js.log("update because value changed");
         updateErrors(
           ~onMarkerFocus?,
           ~onMarkerFocusLeave?,
@@ -477,7 +470,6 @@ let default = (props: Props.t): React.element => {
       switch (cmRef->React.Ref.current) {
       | Some(cm) =>
         cm->CM.operation(() => {
-          Js.log("update because errors changed");
           updateErrors(
             ~onMarkerFocus?,
             ~onMarkerFocusLeave?,
