@@ -14,7 +14,7 @@ module Lang = {
 
   let toString = t =>
     switch (t) {
-    | Res => "New BS Syntax"
+    | Res => "RES"
     | Reason => "Reason"
     | OCaml => "OCaml"
     };

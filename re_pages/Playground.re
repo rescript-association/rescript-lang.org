@@ -388,12 +388,7 @@ module ErrorPane = {
         </div>
       </div>;
     | Nothing =>
-      let syntax =
-        switch (targetLang) {
-        | Api.Lang.OCaml => "OCaml"
-        | Res => "New BuckleScript"
-        | Reason => "Reason"
-        };
+      let syntax = Api.Lang.toString(targetLang);
       <PreWrap>
         {j|This playground is now running on compiler version $compilerVersion with the $syntax syntax|j}
         ->s
