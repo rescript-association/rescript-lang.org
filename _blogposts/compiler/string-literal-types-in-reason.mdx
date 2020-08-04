@@ -104,11 +104,11 @@ You can also embed string literal types directly inside other types without decl
 
 ```reasonml
 type t = {
-  encodings : [| `utf8 | `ascii ] list 
+  encodings : list([ | `utf8 | `ascii ])
 }
 ```
 
-The cool thing is that you can create union types by simply putting them together:
+The cool thing is that you can create union types by simply putting the types together:
 
 ```reasonml
 type encoding = [
@@ -117,13 +117,13 @@ type encoding = [
 ]
 ```
 
-The compiler even supports a sugar over named string literal types:
+The compiler even supports sugar over named string literal types:
 
 ```reasonml
 let classify = (enc) =>
   switch (enc) {
-  | #utf => "utf" // string literals belong to utf
-  | #ascii => "ascii" // string literals belog to ascii
+  | #utf => "utf" // string literals belong to utf type
+  | #ascii => "ascii" // string literals belog to ascii type
   };
 ```
 
