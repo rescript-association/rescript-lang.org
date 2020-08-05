@@ -911,7 +911,7 @@ module MiscPanel = {
             | NoSuggestion =>
               "Type + / - followed by a number or letter (e.g. +a+1)"->s
             | ErrorSuggestion(msg) => msg->s
-            | FuzzySuggestions({selected, results, modifier}) =>
+            | FuzzySuggestions({precedingTokens, selected, results, modifier}) =>
               Belt.Array.mapWithIndex(
                 results,
                 (i, (flag, desc)) => {
@@ -935,7 +935,49 @@ module MiscPanel = {
                       None;
                     };
 
-                  <div ?ref className=activeClass key=flag>
+                  let onMouseEnter = evt => {
+                    ReactEvent.Mouse.preventDefault(evt);
+                    setState(prev => {
+                      switch (prev) {
+                      | Typing({
+                          suggestion: FuzzySuggestions(fuzzySuggestion),
+                        }) =>
+                        Typing({
+                          ...typing,
+                          suggestion:
+                            FuzzySuggestions({
+                              ...fuzzySuggestion,
+                              selected: i,
+                            }),
+                        })
+                      | _ => prev
+                      }
+                    });
+                  };
+
+                  let onClick = evt => {
+                    ReactEvent.Mouse.preventDefault(evt);
+                    setState(prev => {
+                      switch (prev) {
+                      | Typing(_) =>
+                        let full = modifier ++ flag;
+                        let completed =
+                          WarningFlagDescription.Parser.tokensToString(
+                            precedingTokens,
+                          )
+                          ++ full;
+                        updateInput(prev, completed);
+                      | _ => prev
+                      }
+                    });
+                  };
+
+                  <div
+                    ?ref
+                    onMouseEnter
+                    onMouseDown=onClick
+                    className=activeClass
+                    key=flag>
                     {{
                        modifier ++ flag ++ ": " ++ desc;
                      }
@@ -1093,9 +1135,9 @@ module MiscPanel = {
 
       <div className="p-4 pt-8 text-snow-darker">
         <div className="flex justify-end">
-        <button onMouseDown=onResetClick className=Text.Link.standalone>
-          "Reset"->s
-        </button>
+          <button onMouseDown=onResetClick className=Text.Link.standalone>
+            "Reset"->s
+          </button>
         </div>
         <div>
           <div> {("Module-System: " ++ config.module_system)->s} </div>
