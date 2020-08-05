@@ -572,7 +572,7 @@ module MiscPanel = {
       | ErrorSuggestion(string);
 
     type state =
-      | HideSuggestion
+      | HideSuggestion({input: string})
       | ShowTokenHint({
           lastState: state, // For restoring the previous state
           token: WarningFlagDescription.Parser.token,
@@ -581,6 +581,16 @@ module MiscPanel = {
           suggestion,
           input: string,
         });
+
+    let hide = (prev: state) => {
+      switch (prev) {
+      | Typing({input})
+      | ShowTokenHint({lastState: Typing({input})}) =>
+        HideSuggestion({input: input})
+      | ShowTokenHint(_) => HideSuggestion({input: ""})
+      | HideSuggestion(_) => prev
+      };
+    };
 
     let updateInput = (prev: state, input: string) => {
       let results = WarningFlagDescription.Parser.parse(input);
@@ -663,7 +673,7 @@ module MiscPanel = {
       switch (prev) {
       | ShowTokenHint(_)
       | Typing(_) => Typing({suggestion, input})
-      | HideSuggestion => Typing({suggestion, input})
+      | HideSuggestion(_) => Typing({suggestion, input})
       };
     };
 
@@ -684,7 +694,7 @@ module MiscPanel = {
         });
       | ShowTokenHint(_)
       | Typing(_)
-      | HideSuggestion => prev
+      | HideSuggestion(_) => prev
       };
     };
 
@@ -705,7 +715,7 @@ module MiscPanel = {
         });
       | ShowTokenHint(_)
       | Typing(_)
-      | HideSuggestion => prev
+      | HideSuggestion(_) => prev
       };
     };
 
@@ -715,7 +725,8 @@ module MiscPanel = {
           ~onUpdate: array(WarningFlagDescription.Parser.token) => unit,
           ~flags: array(WarningFlagDescription.Parser.token),
         ) => {
-      let (state, setState) = React.useState(_ => HideSuggestion);
+      let (state, setState) =
+        React.useState(_ => HideSuggestion({input: ""}));
 
       // Used for the suggestion box list
       let listboxRef = React.useRef(Js.Nullable.null);
@@ -988,7 +999,7 @@ module MiscPanel = {
               ->ate
             };
           Some(suggestions);
-        | HideSuggestion => None
+        | HideSuggestion(_) => None
         };
 
       let suggestionBox =
@@ -1011,7 +1022,7 @@ module MiscPanel = {
       let onBlur = evt => {
         ReactEvent.Focus.preventDefault(evt);
         ReactEvent.Focus.stopPropagation(evt);
-        setState(_ => HideSuggestion);
+        setState(prev => hide(prev));
       };
 
       let onFocus = evt => {
@@ -1023,7 +1034,7 @@ module MiscPanel = {
         switch (state) {
         | ShowTokenHint(_)
         | Typing(_) => true
-        | HideSuggestion => false
+        | HideSuggestion(_) => false
         };
 
       let deleteButton =
@@ -1067,8 +1078,8 @@ module MiscPanel = {
         switch (state) {
         | ShowTokenHint({lastState: Typing({input})})
         | Typing({input}) => input
-        | ShowTokenHint(_)
-        | HideSuggestion => ""
+        | HideSuggestion({input}) => input
+        | ShowTokenHint(_) => ""
         };
 
       <div tabIndex=(-1) className="relative" onFocus=areaOnFocus onKeyDown>
