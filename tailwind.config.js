@@ -262,13 +262,15 @@ module.exports = {
   },
   variants: {
     color: ["hover"],
+    backgroundColor: ["hover", "active"],
     cursor: ["hover"],
     width: ["responsive"],
     border: ["hover", "responsive"],
-    borderWidth: ["responsive", "last"],
+    borderWidth: ["active", "responsive", "last"],
     padding: ["hover", "responsive", "last"],
     margin: ["responsive", "first", "last"],
-    visibility: ["group-hover"]
+    visibility: ["group-hover"],
+    outline: ["focus"],
   },
   plugins: []
 };

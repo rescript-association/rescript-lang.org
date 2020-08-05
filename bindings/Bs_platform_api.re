@@ -284,19 +284,23 @@ module ConversionResult = {
   };
 };
 
-module Compiler = {
-  type t;
-
-  type config = {
+module Config = {
+  type t = {
     module_system: string,
     warn_flags: string,
     warn_error_flags: string,
   };
+};
+
+module Compiler = {
+  type t;
 
   // Factory
   [@bs.val] [@bs.scope "bs_platform"] external make: unit => t = "make";
 
   [@bs.get] external version: t => string = "version";
+  [@bs.get]
+  external version_git_commit: t => option(string) = "version_git_commit";
 
   /*
       Res compiler actions
@@ -353,7 +357,7 @@ module Compiler = {
   /*
       Config setter / getters
    */
-  [@bs.send] external getConfig: t => config = "getConfig";
+  [@bs.send] external getConfig: t => Config.t = "getConfig";
 
   [@bs.send] external setFilename: (t, string) => bool = "setFilename";
 
@@ -365,6 +369,22 @@ module Compiler = {
 
   [@bs.send]
   external setWarnErrorFlags: (t, string) => bool = "setWarnErrorFlags";
+
+  let setConfig = (t: t, config: Config.t): unit => {
+    let moduleSystem =
+      switch (config.module_system) {
+      | "nodejs" => `nodejs->Some
+      | "es6" => `es6->Some
+      | _ => None
+      };
+
+    Belt.Option.forEach(moduleSystem, moduleSystem =>
+      t->setModuleSystem(moduleSystem)->ignore
+    );
+
+    t->setWarnFlags(config.warn_flags)->ignore;
+    t->setWarnErrorFlags(config.warn_error_flags)->ignore;
+  };
 
   [@bs.send]
   external convertSyntax: (t, string, string, string) => Js.Json.t =

@@ -5,13 +5,13 @@ open Util.ReactStuff;
 
 /*
     TODO / Idea list:
-    - Convert language dropdown to toggle component
-    - Allow syntax switching on errornous syntax
+    - Fix issue with Reason where a comment on the last line causes a infinite loop
     - Add settings pane to set moduleSystem
     - Add advanced mode for enabling OCaml output as well
 
     More advanced tasks:
     - Fix syntax convertion issue where comments are stripped on Reason <-> Res convertion
+    - Try to get Reason's recoverable errors working
  */
 
 open CompilerManagerHook;
@@ -74,8 +74,9 @@ module LanguageToggle = {
         },
       );
 
-    let onClick = evt => {
+    let onMouseDown = evt => {
       ReactEvent.Mouse.preventDefault(evt);
+      ReactEvent.Mouse.stopPropagation(evt);
 
       // Rotate through the array
       let nextIdx =
@@ -87,12 +88,16 @@ module LanguageToggle = {
       };
     };
 
+    // Required for iOS Safari 12
+    let onClick = _ => ();
+
     <button
       className={
         (disabled ? "opacity-25" : "")
         ++ " border border-night-light inline-block rounded px-4 py-1 flex text-16"
       }
       disabled
+      onMouseDown
       onClick>
       elements->ate
     </button>;
@@ -105,15 +110,20 @@ module Pane = {
     content: React.element,
   };
 
+  // Classname is applied to a div element
   let defaultMakeTabClass = (active: bool): string => {
-    let activeClass = active ? "text-fire font-medium bg-onyx" : "";
+    let rest =
+      active
+        ? "text-fire font-medium bg-onyx hover:cursor-default"
+        : "hover:cursor-pointer";
 
-    "flex items-center h-12 px-4 pr-16 " ++ activeClass;
+    "flex items-center text-16 h-12 px-4 pr-24 " ++ rest;
   };
 
   // tabClass: base class for bg color etc
   [@react.component]
-  let make = (~tabs: array(tab), ~makeTabClass=defaultMakeTabClass) => {
+  let make =
+      (~disabled=false, ~tabs: array(tab), ~makeTabClass=defaultMakeTabClass) => {
     let (current, setCurrent) = React.useState(_ => 0);
 
     let headers =
@@ -121,15 +131,23 @@ module Pane = {
         tabs,
         (i, tab) => {
           let title = tab.title;
-          let onClick = evt => {
+          let onMouseDown = evt => {
             ReactEvent.Mouse.preventDefault(evt);
+            ReactEvent.Mouse.stopPropagation(evt);
             setCurrent(_ => i);
           };
           let active = current === i;
+          // For Safari iOS12
+          let onClick = _ => ();
           let className = makeTabClass(active);
-          <div key={string_of_int(i) ++ "-" ++ title} onClick className>
+          <button
+            key={string_of_int(i) ++ "-" ++ title}
+            onMouseDown
+            onClick
+            className
+            disabled>
             title->s
-          </div>;
+          </button>;
         },
       );
 
@@ -141,7 +159,12 @@ module Pane = {
 
     <div>
       <div>
-        <div className="flex bg-night-10 w-full"> headers->ate </div>
+        <div
+          className={
+            "flex bg-night-10 w-full " ++ (disabled ? "opacity-50" : "")
+          }>
+          headers->ate
+        </div>
         <div> body </div>
       </div>
     </div>;
@@ -264,6 +287,7 @@ module ErrorPane = {
 
   let renderResult =
       (
+        ~compilerVersionGitCommit: option(string)=?,
         ~focusedRowCol: option((int, int)),
         ~targetLang: Api.Lang.t,
         ~compilerVersion: string,
@@ -389,8 +413,13 @@ module ErrorPane = {
       </div>;
     | Nothing =>
       let syntax = Api.Lang.toString(targetLang);
+      let fullVersion =
+        switch (compilerVersionGitCommit) {
+        | Some(gitCommit) => compilerVersion ++ " (" ++ gitCommit ++ ")"
+        | None => compilerVersion
+        };
       <PreWrap>
-        {j|This playground is now running on compiler version $compilerVersion with the $syntax syntax|j}
+        {j|This playground is now running on compiler version $fullVersion with $syntax syntax|j}
         ->s
       </PreWrap>;
     };
@@ -435,6 +464,7 @@ module ErrorPane = {
         ~actionIndicatorKey: string,
         ~targetLang: Api.Lang.t,
         ~compilerVersion: string,
+        ~compilerVersionGitCommit: option(string)=?,
         ~focusedRowCol: option((int, int))=?,
         ~result: FinalResult.t,
       ) => {
@@ -475,10 +505,595 @@ module ErrorPane = {
       </div>
       <div className="">
         <div className="bg-night-dark text-snow-darker px-4 py-4">
-          {renderResult(~focusedRowCol, ~compilerVersion, ~targetLang, result)}
+          {renderResult(
+             ~compilerVersionGitCommit?,
+             ~focusedRowCol,
+             ~compilerVersion,
+             ~targetLang,
+             result,
+           )}
         </div>
       </div>
     </div>;
+  };
+};
+
+// For console, settings etc
+module MiscPanel = {
+  module Console = {
+    [@react.component]
+    let make = () => {
+      <div className="p-4 pt-8">
+        <AnsiPre> "> console output" </AnsiPre>
+      </div>;
+    };
+  };
+
+  [@bs.set] external scrollTop: (Dom.element, int) => unit = "scrollTop";
+  [@bs.send] external focus: Dom.element => unit = "focus";
+  [@bs.send]
+  external scrollIntoView: (Dom.element, [@bs.as {json|false|json}] _) => unit =
+    "scrollIntoView";
+
+  [@bs.send] external blur: Dom.element => unit = "blur";
+
+  [@bs.get] external scrollHeight: Dom.element => int = "scrollHeight";
+  [@bs.get] external clientHeight: Dom.element => int = "clientHeight";
+  [@bs.get] external scrollTop: Dom.element => int = "scrollTop";
+  [@bs.get] external offsetTop: Dom.element => int = "offsetTop";
+  [@bs.get] external offsetHeight: Dom.element => int = "offsetHeight";
+
+  [@bs.set] external setScrollTop: (Dom.element, int) => unit = "scrollTop";
+
+  // Inspired by MUI (who got inspired by WAI best practise examples)
+  // https://github.com/mui-org/material-ui/blob/next/packages/material-ui-lab/src/useAutocomplete/useAutocomplete.js#L327
+  let scrollToElement = (~parent: Dom.element, element: Dom.element): unit =>
+    if (parent->scrollHeight > parent->clientHeight) {
+      let scrollBottom = parent->clientHeight + parent->scrollTop;
+      let elementBottom = element->offsetTop + element->offsetHeight;
+
+      if (elementBottom > scrollBottom) {
+        parent->setScrollTop(elementBottom - parent->clientHeight);
+      } else if (element->offsetTop - element->offsetHeight < parent->scrollTop) {
+        parent->setScrollTop(element->offsetTop - element->offsetHeight);
+      };
+    };
+
+  module WarningFlagsWidget = {
+    type suggestion =
+      | NoSuggestion
+      | FuzzySuggestions({
+          modifier: string, // tells if the user is currently inputting a + / -
+          // All tokens without the suggestion token (last one)
+          precedingTokens: array(WarningFlagDescription.Parser.token),
+          results: array((string, string)),
+          selected: int,
+        })
+      | ErrorSuggestion(string);
+
+    type state =
+      | HideSuggestion
+      | Typing({
+          suggestion,
+          input: string,
+        });
+
+    let updateInput = (prev: state, input: string) => {
+      let results = WarningFlagDescription.Parser.parse(input);
+
+      let suggestion =
+        switch (input) {
+        | "" => NoSuggestion
+        | _ =>
+          // Case: +
+          let last = input->Js.String2.length - 1;
+          switch (input->Js.String2.get(last)) {
+          | "+" as modifier
+          | "-" as modifier =>
+            let results = WarningFlagDescription.lookupAll();
+
+            let partial = input->Js.String2.substring(~from=0, ~to_=last);
+
+            let precedingTokens =
+              switch (WarningFlagDescription.Parser.parse(partial)) {
+              | Ok(tokens) => tokens
+              | Error(_) => [||]
+              };
+
+            FuzzySuggestions({
+              modifier,
+              precedingTokens,
+              results,
+              selected: 0,
+            });
+          | _ =>
+            // Case: +1...
+            let results = WarningFlagDescription.Parser.parse(input);
+            switch (results) {
+            | Ok(tokens) =>
+              let last =
+                Belt.Array.get(tokens, Belt.Array.length(tokens) - 1);
+
+              switch (last) {
+              | Some(token) =>
+                let results = WarningFlagDescription.fuzzyLookup(token.flag);
+                if (Belt.Array.length(results) === 0) {
+                  ErrorSuggestion("No results");
+                } else {
+                  let precedingTokens =
+                    Belt.Array.slice(
+                      tokens,
+                      ~offset=0,
+                      ~len=Belt.Array.length(tokens) - 1,
+                    );
+                  let modifier = token.enabled ? "+" : "-";
+                  FuzzySuggestions({
+                    modifier,
+                    precedingTokens,
+                    results,
+                    selected: 0,
+                  });
+                };
+              | None => NoSuggestion
+              };
+            | Error(msg) =>
+              // In case the user started with a + / -
+              // show all available flags
+              switch (input) {
+              | "+" as modifier
+              | "-" as modifier =>
+                let results = WarningFlagDescription.lookupAll();
+
+                FuzzySuggestions({
+                  modifier,
+                  precedingTokens: [||],
+                  results,
+                  selected: 0,
+                });
+              | _ => ErrorSuggestion(msg)
+              }
+            };
+          };
+        };
+
+      let _suggestion =
+        switch (results) {
+        | Ok(tokens) =>
+          let last = Belt.Array.get(tokens, Belt.Array.length(tokens) - 1);
+
+          let precedingTokens =
+            Belt.Array.slice(
+              tokens,
+              ~offset=0,
+              ~len=Belt.Array.length(tokens) - 1,
+            );
+
+          switch (last) {
+          | Some(token) =>
+            let results = WarningFlagDescription.fuzzyLookup(token.flag);
+            let modifier = token.enabled ? "+" : "-";
+            FuzzySuggestions({
+              modifier,
+              precedingTokens,
+              results,
+              selected: 0,
+            });
+          | None =>
+            if (Js.String2.length(input) < 2) {
+              NoSuggestion;
+            } else {
+              ErrorSuggestion("No results");
+            }
+          };
+        | Error(msg) =>
+          // In case the user started with a + / -
+          // show all available flags
+          switch (input) {
+          | "+" as modifier
+          | "-" as modifier =>
+            let results = WarningFlagDescription.lookupAll();
+
+            FuzzySuggestions({
+              modifier,
+              precedingTokens: [||],
+              results,
+              selected: 0,
+            });
+          | _ => ErrorSuggestion(msg)
+          }
+        };
+
+      switch (prev) {
+      | Typing(_) => Typing({suggestion, input})
+      | HideSuggestion => Typing({suggestion, input})
+      };
+    };
+
+    let selectPrevious = (prev: state) => {
+      switch (prev) {
+      | Typing(
+          {suggestion: FuzzySuggestions({selected, results} as suggestion)} as typing,
+        ) =>
+        let nextIdx =
+          if (selected > 0) {
+            selected - 1;
+          } else {
+            Belt.Array.length(results) - 1;
+          };
+        Typing({
+          ...typing,
+          suggestion: FuzzySuggestions({...suggestion, selected: nextIdx}),
+        });
+      | Typing(_) => prev
+      | HideSuggestion => prev
+      };
+    };
+
+    let selectNext = (prev: state) => {
+      switch (prev) {
+      | Typing(
+          {suggestion: FuzzySuggestions({selected, results} as suggestion)} as typing,
+        ) =>
+        let nextIdx =
+          if (selected < Belt.Array.length(results) - 1) {
+            selected + 1;
+          } else {
+            0;
+          };
+        Typing({
+          ...typing,
+          suggestion: FuzzySuggestions({...suggestion, selected: nextIdx}),
+        });
+      | Typing(_) => prev
+      | HideSuggestion => prev
+      };
+    };
+
+    [@react.component]
+    let make =
+        (
+          ~onUpdate: array(WarningFlagDescription.Parser.token) => unit,
+          ~flags: array(WarningFlagDescription.Parser.token),
+        ) => {
+      let (state, setState) = React.useState(_ => HideSuggestion);
+
+      // Used for the suggestion box list
+      let listboxRef = React.useRef(Js.Nullable.null);
+
+      // Used for the text input
+      let inputRef = React.useRef(Js.Nullable.null);
+
+      let focusInput = () => {
+        React.Ref.current(inputRef)
+        ->Js.Nullable.toOption
+        ->Belt.Option.forEach(el => el->focus);
+      };
+
+      let blurInput = () => {
+        React.Ref.current(inputRef)
+        ->Js.Nullable.toOption
+        ->Belt.Option.forEach(el => el->blur);
+      };
+
+      let chips =
+        Belt.Array.mapWithIndex(
+          flags,
+          (i, token) => {
+            let {WarningFlagDescription.Parser.flag, enabled} = token;
+
+            let full = (enabled ? "+" : "-") ++ flag;
+            let color = enabled ? "text-dark-code-3" : "text-fire";
+
+            <span
+              className={
+                color
+                ++ " text-16 inline-block border border-night-light rounded-full px-2 mr-1"
+              }
+              key={Belt.Int.toString(i) ++ flag}>
+              full->s
+            </span>;
+          },
+        )
+        ->ate;
+
+      let onKeyDown = evt => {
+        let key = ReactEvent.Keyboard.key(evt);
+        let ctrlKey = ReactEvent.Keyboard.ctrlKey(evt);
+
+        let caretPosition = ReactEvent.Keyboard.target(evt)##selectionStart;
+        /*Js.log2("caretPosition", caretPosition);*/
+
+        let full = (ctrlKey ? "CTRL+" : "") ++ key;
+        switch (full) {
+        | "Enter" =>
+          switch (state) {
+          | Typing({
+              suggestion:
+                FuzzySuggestions({
+                  precedingTokens,
+                  modifier,
+                  selected,
+                  results,
+                }),
+            }) =>
+            // In case a selection was made correctly, add
+            // the flag to the current flags
+            switch (Belt.Array.get(results, selected)) {
+            | Some((num, _)) =>
+              let token = {
+                WarningFlagDescription.Parser.enabled: modifier === "+",
+                flag: num,
+              };
+
+              // TODO: merge tokens with flags
+              let newTokens = Belt.Array.concat(precedingTokens, [|token|]);
+
+              let all = WarningFlagDescription.Parser.merge(flags, newTokens);
+
+              onUpdate(all);
+              setState(prev => updateInput(prev, ""));
+            | None => ()
+            }
+          | _ => ()
+          };
+          ReactEvent.Keyboard.preventDefault(evt);
+        | "Tab" =>
+          switch (state) {
+          | Typing({
+              suggestion:
+                FuzzySuggestions({
+                  modifier,
+                  precedingTokens,
+                  selected,
+                  results,
+                }),
+            }) =>
+            switch (Belt.Array.get(results, selected)) {
+            | Some((num, _)) =>
+              let flag = modifier ++ num;
+
+              let completed =
+                WarningFlagDescription.Parser.tokensToString(precedingTokens)
+                ++ flag;
+              setState(prev => updateInput(prev, completed));
+            | None => ()
+            };
+            // Prevents tab to change focus
+            ReactEvent.Keyboard.preventDefault(evt);
+          | _ => ()
+          }
+        | "ArrowDown"
+        | "CTRL+n" =>
+          setState(prev => selectNext(prev));
+          ReactEvent.Keyboard.preventDefault(evt);
+        | "ArrowUp"
+        | "CTRL+p" =>
+          setState(prev => selectPrevious(prev));
+          ReactEvent.Keyboard.preventDefault(evt);
+        /*| "ArrowRight"*/
+        /*| "ArrowLeft"*/
+        | full =>
+          switch (state) {
+          | Typing({suggestion: ErrorSuggestion(_)}) =>
+            if (full !== "Backspace") {
+              ReactEvent.Keyboard.preventDefault(evt);
+            }
+          | _ => Js.log(full)
+          }
+        /*Js.log("entered key:" ++ full)*/
+        /*ReactEvent.Keyboard.preventDefault(evt);*/
+        };
+      };
+
+      let suggestionBox =
+        switch (state) {
+        | Typing(typing) =>
+          let suggestions =
+            switch (typing.suggestion) {
+            | NoSuggestion =>
+              "Type + / - followed by a number or letter (e.g. +a+1)"->s
+            | ErrorSuggestion(msg) => msg->s
+            | FuzzySuggestions({selected, results, modifier}) =>
+              Belt.Array.mapWithIndex(
+                results,
+                (i, (flag, desc)) => {
+                  let activeClass = selected === i ? "bg-night-light" : "";
+
+                  let ref =
+                    if (selected === i) {
+                      ReactDOMRe.Ref.callbackDomRef(dom => {
+                        let el = Js.Nullable.toOption(dom);
+                        let parent =
+                          React.Ref.current(listboxRef)->Js.Nullable.toOption;
+
+                        switch (parent, el) {
+                        | (Some(parent), Some(el)) =>
+                          scrollToElement(~parent, el)
+                        | _ => ()
+                        };
+                      })
+                      ->Some;
+                    } else {
+                      None;
+                    };
+
+                  <div ?ref className=activeClass key=flag>
+                    {{
+                       modifier ++ flag ++ ": " ++ desc;
+                     }
+                     ->s}
+                  </div>;
+                },
+              )
+              ->ate
+            };
+
+          <div
+            ref={ReactDOMRe.Ref.domRef(listboxRef)}
+            className="p-2 absolute overflow-auto z-50 border-b rounded border-l border-r block w-full bg-onyx"
+            style={ReactDOMRe.Style.make(~maxHeight="10rem", ())}>
+            suggestions
+          </div>;
+        | HideSuggestion => React.null
+        };
+
+      let onChange = evt => {
+        ReactEvent.Form.preventDefault(evt);
+        let input = ReactEvent.Form.target(evt)##value;
+        setState(prev => {updateInput(prev, input)});
+      };
+
+      let onBlur = evt => {
+        ReactEvent.Focus.preventDefault(evt);
+        ReactEvent.Focus.stopPropagation(evt);
+        setState(_ => HideSuggestion);
+      };
+
+      let onFocus = evt => {
+        Js.log2("focus element", ReactEvent.Focus.target(evt));
+        let input = ReactEvent.Focus.target(evt)##value;
+        setState(prev => updateInput(prev, input));
+      };
+
+      let isActive =
+        switch (state) {
+        | Typing(_) => true
+        | HideSuggestion => false
+        };
+
+      let deleteButton =
+        switch (flags) {
+        | [||]
+        | [|{enabled: false, flag: "a"}|] => React.null
+        | _ =>
+          let onMouseDown = evt => {
+            ReactEvent.Mouse.preventDefault(evt);
+            onUpdate([|
+              {WarningFlagDescription.Parser.enabled: false, flag: "a"},
+            |]);
+          };
+
+          // For iOS12 compat
+          let onClick = _ => ();
+          let onFocus = evt => {
+            ReactEvent.Focus.preventDefault(evt);
+            ReactEvent.Focus.stopPropagation(evt);
+          };
+
+          <button
+            onMouseDown
+            onClick
+            onFocus
+            tabIndex=0
+            className="focus:outline-none self-start focus:shadow-outline hover:cursor-pointer hover:bg-night-light p-2 rounded-full">
+            <Icon.Close />
+          </button>;
+        };
+
+      let activeClass =
+        if (isActive) {"border-white"} else {"border-night-light"};
+
+      let areaOnFocus = evt =>
+        if (!isActive) {
+          focusInput();
+        };
+
+      let inputValue =
+        switch (state) {
+        | Typing({input}) => input
+        | HideSuggestion => ""
+        };
+
+      <div tabIndex=(-1) className="relative" onFocus=areaOnFocus onKeyDown>
+        <div className={"flex justify-between border p-2 " ++ activeClass}>
+          <div>
+            chips
+            <input
+              ref={ReactDOMRe.Ref.domRef(inputRef)}
+              className="outline-none bg-night-dark placeholder-snow-darker placeholder-opacity-50"
+              placeholder="Flags"
+              type_="text"
+              tabIndex=0
+              value=inputValue
+              onChange
+              onFocus
+              onBlur
+            />
+          </div>
+          deleteButton
+        </div>
+        suggestionBox
+      </div>;
+    };
+  };
+
+  module Settings = {
+    [@react.component]
+    let make = (~setConfig: Api.Config.t => unit, ~config: Api.Config.t) => {
+      let {Api.Config.warn_flags, warn_error_flags} = config;
+      let onWarningFlagsUpdate = flags => {
+        let config = {
+          ...config,
+          warn_flags: WarningFlagDescription.Parser.tokensToString(flags),
+        };
+        setConfig(config);
+      };
+
+      let onWarnErrFlagsUpdate = flags => {
+        let config = {
+          ...config,
+          warn_error_flags:
+            WarningFlagDescription.Parser.tokensToString(flags),
+        };
+        setConfig(config);
+      };
+
+      let warnFlagTokens =
+        WarningFlagDescription.Parser.parse(warn_flags)
+        ->Belt.Result.getWithDefault([||]);
+
+      let warnErrFlagTokens =
+        WarningFlagDescription.Parser.parse(warn_error_flags)
+        ->Belt.Result.getWithDefault([||]);
+
+      <div className="p-4 pt-8 text-snow-darker">
+        <div>
+          <div> {("Module-System: " ++ config.module_system)->s} </div>
+          <div>
+            <div> "Warn-Flags: "->s </div>
+            <WarningFlagsWidget
+              onUpdate=onWarningFlagsUpdate
+              flags=warnFlagTokens
+            />
+          </div>
+          <div>
+            <div> "Warn-Error-Flags: "->s </div>
+            <WarningFlagsWidget
+              onUpdate=onWarnErrFlagsUpdate
+              flags=warnErrFlagTokens
+            />
+          </div>
+        </div>
+      </div>;
+    };
+  };
+
+  [@react.component]
+  let make = (~disabled=false, ~setConfig, ~config, ~className=?) => {
+    let tabs = [|
+      {Pane.title: "Console", content: <Console />},
+      {title: "Settings", content: <Settings setConfig config />},
+    |];
+
+    let makeTabClass = (active: bool): string => {
+      let rest =
+        active
+          ? "text-fire font-medium bg-night-dark hover:cursor-default"
+          : "hover:cursor-pointer bg-night-10 text-night-light";
+
+      "flex items-center h-12 px-4 pr-24 " ++ rest;
+    };
+    <div ?className> <Pane disabled makeTabClass tabs /> </div>;
   };
 };
 
@@ -564,7 +1179,7 @@ module ControlPanel = {
           disabled=isCompilerSwitching
           className={
             (isCompilerSwitching ? "opacity-25" : "")
-            ++ " inline-block bg-sky text-16 text-white-80 rounded py-2 px-6"
+            ++ " inline-block active:bg-sky-80 bg-sky text-16 text-white-80 rounded py-2 px-6"
           }
           onClick={evt => {
             ReactEvent.Mouse.preventDefault(evt);
@@ -714,6 +1329,19 @@ module B = {
     | _ => [||]
     };
 
+  let editorTitle =
+    switch (compilerState) {
+    | SwitchingCompiler(ready, _, _)
+    | Compiling(ready, _)
+    | Ready(ready) =>
+      switch (ready.targetLang) {
+      | Reason => "ReasonML"
+      | OCaml => "OCaml"
+      | Res => "BuckleScript Syntax"
+      }
+    | _ => "..."
+    };
+
   <>
     <Meta
       title="Reason Playground"
@@ -725,7 +1353,7 @@ module B = {
         <main className="mx-10 mt-16 pb-32 flex justify-center">
           <div className="flex max-w-1280 w-full border-4 border-night">
             <div className="w-full max-w-705 border-r-4 border-night">
-              <SingleTabPane title="ReasonML">
+              <SingleTabPane title=editorTitle>
                 <div className="bg-onyx text-snow-darker">
                   <CodeMirror
                     className="w-full"
@@ -813,6 +1441,9 @@ module B = {
                    | SwitchingCompiler(_, _, _) => true
                    | _ => false
                    };
+
+                 let compilerVersionGitCommit =
+                   Api.Compiler.version_git_commit(ready.selected.instance);
                  <>
                    <ControlPanel
                      isCompilerSwitching
@@ -832,6 +1463,7 @@ module B = {
                        actionIndicatorKey
                        targetLang={ready.targetLang}
                        compilerVersion={ready.selected.compilerVersion}
+                       ?compilerVersionGitCommit
                        ?focusedRowCol
                        result={ready.result}
                      />
@@ -844,25 +1476,52 @@ module B = {
                  <> <Pane tabs /> </>;
                }}
             </div>
-            <SingleTabPane
-              title="JavaScript"
-              makeTabClass={active => {
-                let activeClass =
-                  active ? "text-fire font-medium bg-night-dark" : "";
+            <div>
+              <SingleTabPane
+                title="JavaScript"
+                makeTabClass={active => {
+                  let activeClass =
+                    active
+                      ? "text-fire font-medium bg-night-dark hover:cursor-default"
+                      : "";
 
-                "flex items-center h-12 px-4 pr-16 " ++ activeClass;
-              }}>
-              <div className="w-full bg-night-dark text-snow-darker">
-                <CodeMirror
-                  className="w-full"
-                  minHeight="40vh"
-                  mode="javascript"
-                  lineWrapping=true
-                  value=jsOutput
-                  readOnly=true
-                />
-              </div>
-            </SingleTabPane>
+                  "flex items-center h-12 px-4 pr-16 " ++ activeClass;
+                }}>
+                <div className="w-full bg-night-dark text-snow-darker">
+                  <CodeMirror
+                    className="w-full"
+                    minHeight="40vh"
+                    mode="javascript"
+                    lineWrapping=true
+                    value=jsOutput
+                    readOnly=true
+                  />
+                </div>
+              </SingleTabPane>
+              {switch (compilerState) {
+               | Ready(ready)
+               | Compiling(ready, _)
+               | SwitchingCompiler(ready, _, _) =>
+                 let disabled =
+                   switch (compilerState) {
+                   | SwitchingCompiler(_, _, _) => true
+                   | _ => false
+                   };
+                 let config = ready.selected.config;
+                 let setConfig = config => {
+                   compilerDispatch(UpdateConfig(config));
+                 };
+
+                 <MiscPanel
+                   config
+                   setConfig
+                   disabled
+                   className="border-t-4 border-night"
+                 />;
+               | Init
+               | SetupFailed(_) => React.null
+               }}
+            </div>
           </div>
         </main>
       </div>

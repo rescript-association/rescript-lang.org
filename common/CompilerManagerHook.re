@@ -127,6 +127,7 @@ type selected = {
   ocamlVersion: string,
   reasonVersion: string,
   libraries: array(string),
+  config: Config.t,
   instance: Compiler.t,
 };
 
@@ -155,7 +156,8 @@ type action =
       code: string,
     })
   | Format(string)
-  | CompileCode(Lang.t, string);
+  | CompileCode(Lang.t, string)
+  | UpdateConfig(Config.t);
 
 // onAction: This function is especially useful if you want to maintain
 //           state that depends on any action happening in the compiler, no
@@ -179,6 +181,16 @@ let useCompilerManager = (~onAction: option(action => unit)=?, ()) => {
         } else {
           ();
         }
+      | _ => ()
+      }
+    | UpdateConfig(config) =>
+      switch (state) {
+      | Ready(ready) =>
+        ready.selected.instance->Compiler.setConfig(config);
+        setState(_ => {
+          let selected = {...ready.selected, config};
+          Ready({...ready, selected});
+        });
       | _ => ()
       }
     | CompileCode(lang, code) =>
@@ -223,11 +235,11 @@ let useCompilerManager = (~onAction: option(action => unit)=?, ()) => {
                   };
 
                 /*
-                   Syntax convertion works the following way:
-                   If currentLang -> otherLang is not valid, try to pretty print the code
-                   with the otherLang, in case we e.g. want to copy paste or otherLang code
-                   in the editor and quickly switch to it
-                */
+                    Syntax convertion works the following way:
+                    If currentLang -> otherLang is not valid, try to pretty print the code
+                    with the otherLang, in case we e.g. want to copy paste or otherLang code
+                    in the editor and quickly switch to it
+                 */
                 switch (convResult) {
                 | Some(result) =>
                   switch (result) {
@@ -340,6 +352,7 @@ let useCompilerManager = (~onAction: option(action => unit)=?, ()) => {
                   | Ok () =>
                     let instance = Compiler.make();
                     let apiVersion = apiVersion->Version.fromString;
+                    let config = instance->Compiler.getConfig;
 
                     let selected = {
                       id: latest,
@@ -347,6 +360,7 @@ let useCompilerManager = (~onAction: option(action => unit)=?, ()) => {
                       compilerVersion: instance->Compiler.version,
                       ocamlVersion: instance->Compiler.ocamlVersion,
                       reasonVersion: instance->Compiler.reasonVersion,
+                      config,
                       libraries,
                       instance,
                     };
@@ -401,6 +415,7 @@ let useCompilerManager = (~onAction: option(action => unit)=?, ()) => {
 
               let instance = Compiler.make();
               let apiVersion = apiVersion->Version.fromString;
+              let config = instance->Compiler.getConfig;
 
               let selected = {
                 id: version,
@@ -408,6 +423,7 @@ let useCompilerManager = (~onAction: option(action => unit)=?, ()) => {
                 compilerVersion: instance->Compiler.version,
                 ocamlVersion: instance->Compiler.ocamlVersion,
                 reasonVersion: instance->Compiler.reasonVersion,
+                config,
                 libraries,
                 instance,
               };
