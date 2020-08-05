@@ -573,6 +573,10 @@ module MiscPanel = {
 
     type state =
       | HideSuggestion
+      | ShowTokenHint({
+          lastState: state, // For restoring the previous state
+          token: WarningFlagDescription.Parser.token,
+        }) // hover target
       | Typing({
           suggestion,
           input: string,
@@ -656,54 +660,8 @@ module MiscPanel = {
           };
         };
 
-      let _suggestion =
-        switch (results) {
-        | Ok(tokens) =>
-          let last = Belt.Array.get(tokens, Belt.Array.length(tokens) - 1);
-
-          let precedingTokens =
-            Belt.Array.slice(
-              tokens,
-              ~offset=0,
-              ~len=Belt.Array.length(tokens) - 1,
-            );
-
-          switch (last) {
-          | Some(token) =>
-            let results = WarningFlagDescription.fuzzyLookup(token.flag);
-            let modifier = token.enabled ? "+" : "-";
-            FuzzySuggestions({
-              modifier,
-              precedingTokens,
-              results,
-              selected: 0,
-            });
-          | None =>
-            if (Js.String2.length(input) < 2) {
-              NoSuggestion;
-            } else {
-              ErrorSuggestion("No results");
-            }
-          };
-        | Error(msg) =>
-          // In case the user started with a + / -
-          // show all available flags
-          switch (input) {
-          | "+" as modifier
-          | "-" as modifier =>
-            let results = WarningFlagDescription.lookupAll();
-
-            FuzzySuggestions({
-              modifier,
-              precedingTokens: [||],
-              results,
-              selected: 0,
-            });
-          | _ => ErrorSuggestion(msg)
-          }
-        };
-
       switch (prev) {
+      | ShowTokenHint(_)
       | Typing(_) => Typing({suggestion, input})
       | HideSuggestion => Typing({suggestion, input})
       };
@@ -724,7 +682,8 @@ module MiscPanel = {
           ...typing,
           suggestion: FuzzySuggestions({...suggestion, selected: nextIdx}),
         });
-      | Typing(_) => prev
+      | ShowTokenHint(_)
+      | Typing(_)
       | HideSuggestion => prev
       };
     };
@@ -744,7 +703,8 @@ module MiscPanel = {
           ...typing,
           suggestion: FuzzySuggestions({...suggestion, selected: nextIdx}),
         });
-      | Typing(_) => prev
+      | ShowTokenHint(_)
+      | Typing(_)
       | HideSuggestion => prev
       };
     };
@@ -781,13 +741,55 @@ module MiscPanel = {
           (i, token) => {
             let {WarningFlagDescription.Parser.flag, enabled} = token;
 
+            let isActive =
+              switch (state) {
+              | ShowTokenHint({token}) => token.flag === flag
+              | _ => false
+              };
+
             let full = (enabled ? "+" : "-") ++ flag;
-            let color = enabled ? "text-dark-code-3" : "text-fire";
+            let color =
+              switch (enabled, isActive) {
+              | (true, false) => "text-dark-code-3"
+              | (false, false) => "text-fire"
+              | (true, true) => "bg-night-light text-dark-code-3"
+              | (false, true) => "bg-night-light text-fire"
+              };
+
+            let onMouseEnter = evt => {
+              ReactEvent.Mouse.preventDefault(evt);
+              ReactEvent.Mouse.stopPropagation(evt);
+
+              setState(prev => {ShowTokenHint({token, lastState: prev})});
+            };
+
+            let onMouseLeave = evt => {
+              ReactEvent.Mouse.preventDefault(evt);
+              ReactEvent.Mouse.stopPropagation(evt);
+
+              setState(prev => {
+                switch (prev) {
+                | ShowTokenHint({lastState}) => lastState
+                | _ => prev
+                }
+              });
+            };
+
+            let onClick = evt => {
+              // Removes clicked token from the current flags
+              ReactEvent.Mouse.preventDefault(evt);
+
+              let remaining = Belt.Array.keep(flags, t => {t.flag !== flag});
+              onUpdate(remaining);
+            };
 
             <span
+              onClick
+              onMouseEnter
+              onMouseLeave
               className={
                 color
-                ++ " text-16 inline-block border border-night-light rounded-full px-2 mr-1"
+                ++ " hover:cursor-default text-16 inline-block border border-night-light rounded-full px-2 mr-1"
               }
               key={Belt.Int.toString(i) ++ flag}>
               full->s
@@ -837,6 +839,7 @@ module MiscPanel = {
           | _ => ()
           };
           ReactEvent.Keyboard.preventDefault(evt);
+        | "Escape" => blurInput()
         | "Tab" =>
           switch (state) {
           | Typing({
@@ -870,8 +873,8 @@ module MiscPanel = {
         | "CTRL+p" =>
           setState(prev => selectPrevious(prev));
           ReactEvent.Keyboard.preventDefault(evt);
-        /*| "ArrowRight"*/
-        /*| "ArrowLeft"*/
+        | "ArrowRight"
+        | "ArrowLeft" => ()
         | full =>
           switch (state) {
           | Typing({suggestion: ErrorSuggestion(_)}) =>
@@ -880,13 +883,28 @@ module MiscPanel = {
             }
           | _ => Js.log(full)
           }
-        /*Js.log("entered key:" ++ full)*/
-        /*ReactEvent.Keyboard.preventDefault(evt);*/
         };
       };
 
-      let suggestionBox =
+      let suggestions =
         switch (state) {
+        | ShowTokenHint({token}) =>
+          WarningFlagDescription.lookup(token.flag)
+          ->Belt.Array.map(((num, description)) => {
+              let (modifier, color) =
+                if (token.enabled) {
+                  ("(Enabled) ", "text-dark-code-3");
+                } else {
+                  ("(Disabled) ", "text-fire");
+                };
+
+              <div key=num>
+                <span className=color> modifier->s </span>
+                description->s
+              </div>;
+            })
+          ->ate
+          ->Some
         | Typing(typing) =>
           let suggestions =
             switch (typing.suggestion) {
@@ -927,15 +945,20 @@ module MiscPanel = {
               )
               ->ate
             };
+          Some(suggestions);
+        | HideSuggestion => None
+        };
 
+      let suggestionBox =
+        Belt.Option.map(suggestions, elements => {
           <div
             ref={ReactDOMRe.Ref.domRef(listboxRef)}
             className="p-2 absolute overflow-auto z-50 border-b rounded border-l border-r block w-full bg-onyx"
-            style={ReactDOMRe.Style.make(~maxHeight="10rem", ())}>
-            suggestions
-          </div>;
-        | HideSuggestion => React.null
-        };
+            style={ReactDOMRe.Style.make(~maxHeight="15rem", ())}>
+            elements
+          </div>
+        })
+        ->Belt.Option.getWithDefault(React.null);
 
       let onChange = evt => {
         ReactEvent.Form.preventDefault(evt);
@@ -950,13 +973,13 @@ module MiscPanel = {
       };
 
       let onFocus = evt => {
-        Js.log2("focus element", ReactEvent.Focus.target(evt));
         let input = ReactEvent.Focus.target(evt)##value;
         setState(prev => updateInput(prev, input));
       };
 
       let isActive =
         switch (state) {
+        | ShowTokenHint(_)
         | Typing(_) => true
         | HideSuggestion => false
         };
@@ -1000,7 +1023,9 @@ module MiscPanel = {
 
       let inputValue =
         switch (state) {
+        | ShowTokenHint({lastState: Typing({input})})
         | Typing({input}) => input
+        | ShowTokenHint(_)
         | HideSuggestion => ""
         };
 
@@ -1056,7 +1081,22 @@ module MiscPanel = {
         WarningFlagDescription.Parser.parse(warn_error_flags)
         ->Belt.Result.getWithDefault([||]);
 
+      let onResetClick = evt => {
+        ReactEvent.Mouse.preventDefault(evt);
+        let defaultConfig = {
+          Api.Config.module_system: "nodejs",
+          warn_error_flags: "-a+5+6+101",
+          warn_flags: "+a-4-9-20-40-41-42-50-61-102",
+        };
+        setConfig(defaultConfig);
+      };
+
       <div className="p-4 pt-8 text-snow-darker">
+        <div className="flex justify-end">
+        <button onMouseDown=onResetClick className=Text.Link.standalone>
+          "Reset"->s
+        </button>
+        </div>
         <div>
           <div> {("Module-System: " ++ config.module_system)->s} </div>
           <div>
