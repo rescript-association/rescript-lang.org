@@ -50,21 +50,22 @@ file for reference.
 
 ## Troubleshooting
 
-### spawnSync ENOENT error
+Try these if your installation fails:
+
+### spawnSync ENOENT Error
 
 If you get an error that looks like `Error: spawnSync /node_modules/bs-platform/lib/bsb.exe ENOENT` it might be caused if 
 you have npm postinstall scripts disabled. In that case, re-enable scripts with `npm config set ignore-scripts false` and re-install `bs-platform`
 
-
-### Permission denied errors
+### Permission Denied Errors
 
 Under some conditions, the global installation of `bs-platform` will result in npm errors, typically indicating `Error: EACCES: permission denied`. Here are some methods for resolving this problem.
 
-#### Manually change npm’s default directory
+#### Manually Change NPM's Default Directory
 
 Changing where NPM stores the package files may help, see the [second solution](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally) on the [docs.npmjs.com](https://docs.npmjs.com/) site.
 
-#### Enable the `unsafe-perm` npm option
+#### Enable the `unsafe-perm` NPM option
 
 While using `unsafe-perm` does have some drawbacks, it easily resolves the permissions issue. When the changing the default directory does not work, then this may be the next best option.
 
