@@ -25,7 +25,6 @@ let overviewNavs = [|
     name: "Introduction",
     href: "/docs/reason-compiler/latest/introduction",
   },
-  {name: "Installation", href: "/docs/reason-compiler/latest/installation"},
   {name: "New Project", href: "/docs/reason-compiler/latest/new-project"},
   {name: "Try", href: "/docs/reason-compiler/latest/try"},
   {

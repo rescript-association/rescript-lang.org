@@ -150,8 +150,7 @@ module Prose = {
     <Docs components=Markdown.default>
       <Markdown.Warn>
       <div className="font-bold">"IMPORTANT!"->React.string</div>
-        "This section is still
-        about ReasonML & BuckleScript.\nIt will be rewritten to ReScript very soon."
+        "This section might still contains ReasonML & BuckleScript terms.\nThey will be updated very soon."
         ->React.string
       </Markdown.Warn>
       children

@@ -1,16 +1,12 @@
 # Installation
 
-Reason comes by default in [BuckleScript](/docs/reason-compiler/latest/introduction), a compiler that turns Reason code into JavaScript code.
+Prerequisite: NPM, which comes with [NodeJS](https://nodejs.org/en/). [Yarn](https://yarnpkg.com/en/) also works.
 
-**Prerequisite**: either NPM (comes with [node](https://nodejs.org/en/)) or [Yarn](https://yarnpkg.com/en/).
-
-To install BuckleScript & Reason globally:
+To install ReScript globally:
 
 ```sh
-yarn global add bs-platform
+npm install -g bs-platform
 ```
-
-(or `npm install -g bs-platform` for npm).
 
 ## New Project
 
@@ -24,27 +20,25 @@ To compile & run the project you just created:
 
 ```sh
 cd my-new-project
-yarn install # or npm install, for npm
-yarn build # or npm run build, for npm
+npm install
+npm run build
 node src/Demo.bs.js
 ```
 
-That uses BuckleScript to compile Reason to JavaScript, then uses NodeJS to run the JavaScript. Feel free to use the generated JS files in whichever way you'd like, as if they're hand-written by you.
+That compiles your ReScript into JavaScript, then uses NodeJS to run said JavaScript. **We recommend you our highly unique workflow of keeping a tab open for the generated `.bs.js` file**, so that you can learn how ReScript transforms to JavaScript. Not many languages output clean JavaScript code you can manually inspect!
 
-During development, instead of running `npm run build` each time to compile, run `npm run start` to start a watcher that recompiles automatically after file changes.
+During development, instead of running `npm run build` each time to compile, use `npm run start` to start a watcher that recompiles automatically after file changes.
 
-By default, the `basic-reason` theme configures BuckleScript to output the generated JS files alongside the Reason files they were produced from. [There's a reason why this is helpful](/docs/reason-compiler/latest/build-overview#tips--tricks). If you prefer to keep the generated files somewhere else, edit `bsconfig.json` to set `in-source` to `false`; the JS files will then be output to the `lib/js` directory instead.
+By default, the `basic-reason` theme configures ReScript to output the generated JS files alongside the files they were produced from. [There's a reason why this is helpful](/docs/reason-compiler/latest/build-overview#tips--tricks). If you prefer to keep the generated files somewhere else, edit `bsconfig.json` to set `in-source` to `false`; the JS files will then be output to the `lib/js` directory instead.
 
 Alternatively, **to start a [ReasonReact](https://reasonml.github.io/reason-react/docs/en/installation.html) app**, follow the instructions [here](https://reasonml.github.io/reason-react/docs/en/installation).
 
-## Existing Project
+## Integrate Into Existing JS Project
 
-You can install the toolchain locally to an existing project, through the familiar command:
+You can install the toolchain locally to an existing JS project, through the familiar command:
 
 ```sh
-yarn add --dev bs-platform
+npm install --save-dev bs-platform
 ```
 
-(or `npm install --save-dev bs-platform` for npm).
-
-The rest is the same as above.
+The rest is the same as above. Since we output clean `.bs.js` files, the rest of your existing toolchain (e.g. Babel and webpack) should mostly just work. Nothing to learn on the bundling side!
