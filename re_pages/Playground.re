@@ -767,24 +767,37 @@ module MiscPanel = {
               | (false, true) => "bg-night-light text-fire"
               };
 
-            let onMouseEnter = evt => {
-              ReactEvent.Mouse.preventDefault(evt);
-              ReactEvent.Mouse.stopPropagation(evt);
+            let hoverEnabled =
+              switch (state) {
+              | ShowTokenHint(_)
+              | Typing(_) => true
+              | HideSuggestion(_) => false
+              };
 
-              setState(prev => {ShowTokenHint({token, lastState: prev})});
-            };
+            let (onMouseEnter, onMouseLeave) =
+              if (hoverEnabled) {
+                let enter = evt => {
+                  ReactEvent.Mouse.preventDefault(evt);
+                  ReactEvent.Mouse.stopPropagation(evt);
 
-            let onMouseLeave = evt => {
-              ReactEvent.Mouse.preventDefault(evt);
-              ReactEvent.Mouse.stopPropagation(evt);
+                  setState(prev => {ShowTokenHint({token, lastState: prev})});
+                };
 
-              setState(prev => {
-                switch (prev) {
-                | ShowTokenHint({lastState}) => lastState
-                | _ => prev
-                }
-              });
-            };
+                let leave = evt => {
+                  ReactEvent.Mouse.preventDefault(evt);
+                  ReactEvent.Mouse.stopPropagation(evt);
+
+                  setState(prev => {
+                    switch (prev) {
+                    | ShowTokenHint({lastState}) => lastState
+                    | _ => prev
+                    }
+                  });
+                };
+                (Some(enter), Some(leave));
+              } else {
+                (None, None);
+              };
 
             let onClick = evt => {
               // Removes clicked token from the current flags
@@ -796,8 +809,8 @@ module MiscPanel = {
 
             <span
               onClick
-              onMouseEnter
-              onMouseLeave
+              ?onMouseEnter
+              ?onMouseLeave
               className={
                 color
                 ++ " hover:cursor-default text-16 inline-block border border-night-light rounded-full px-2 mr-1"
@@ -1109,10 +1122,23 @@ module MiscPanel = {
     [@react.component]
     let make = (~setConfig: Api.Config.t => unit, ~config: Api.Config.t) => {
       let {Api.Config.warn_flags, warn_error_flags} = config;
+
+      let normalizeEmptyFlags = flags => {
+        switch (flags) {
+        | [||] => [|
+            {WarningFlagDescription.Parser.enabled: false, flag: "a"},
+          |]
+        | other => other
+        };
+      };
+
       let onWarningFlagsUpdate = flags => {
         let config = {
           ...config,
-          warn_flags: WarningFlagDescription.Parser.tokensToString(flags),
+          warn_flags:
+            flags
+            ->normalizeEmptyFlags
+            ->WarningFlagDescription.Parser.tokensToString,
         };
         setConfig(config);
       };
@@ -1121,7 +1147,9 @@ module MiscPanel = {
         let config = {
           ...config,
           warn_error_flags:
-            WarningFlagDescription.Parser.tokensToString(flags),
+            flags
+            ->normalizeEmptyFlags
+            ->WarningFlagDescription.Parser.tokensToString,
         };
         setConfig(config);
       };
