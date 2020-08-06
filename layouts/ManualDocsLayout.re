@@ -60,13 +60,12 @@ let basicNavs = [|
   {name: "Reserved Keywords", href: "/docs/manual/latest/reserved-keywords"},
 |];
 
-let javascriptNavs = [|
-  NavItem.{name: "Syntax Cheatsheet", href: "/docs/manual/latest/syntax-cheatsheet"},
-  {name: "Libraries", href: "/docs/manual/latest/libraries"},
-  {
+let guidesNavs = [|
+  NavItem.{
     name: "Converting from JS",
     href: "/docs/manual/latest/converting-from-js",
   },
+  {name: "Libraries", href: "/docs/manual/latest/libraries"},
 |];
 
 let extraNavs = [|
@@ -77,7 +76,7 @@ let extraNavs = [|
 let categories = [|
   Category.{name: "Overview", items: overviewNavs},
   {name: "Basics", items: basicNavs},
-  {name: "JavaScript", items: javascriptNavs},
+  {name: "Guides", items: guidesNavs},
   {name: "Extra", items: extraNavs},
 |];
 
