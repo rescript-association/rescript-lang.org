@@ -1,60 +1,85 @@
-# Reason Language Manual
+# ReScript
 
-## What Is Reason?
+ReScript isn't a new language. It simply takes [OCaml](http://ocaml.org), **a fast, pragmatic and typed language**, and makes it compile to clean, readable and performant JavaScript code. This allows the users to write in an industrial-strength language while using the existing, familiar JavaScript tools (npm/yarn, bundlers, minifiers, devtools, etc.) and accessing the vast ecosystem from JavaScript.
 
-Reason is not a new language; it's a new syntax and toolchain powered by the battle-tested language, [OCaml](http://ocaml.org). Reason gives OCaml a familiar syntax geared toward JavaScript programmers, and caters to the existing NPM/Yarn workflow folks already know.
+Thanks to its great interoperability with JS, ReScript can be seen as a "gradually" typed language, where you get to incrementally adopt it in your codebase file-by-file, while keeping the full benefits of a 100% sound and reliable type system, plus extra language features.
 
-In that regard, Reason can be considered as a solidly, statically typed, faster and simpler cousin of JavaScript, minus the historical crufts, plus the features of ES2030 you can use today, and with access to both the JS and the OCaml ecosystem!
+## Why Compile to JavaScript?
 
-Reason compiles to JavaScript thanks to our `Reason Compiler` called [BuckleScript](/docs/reason-compiler/latest/introduction), which compiles OCaml/Reason into readable JavaScript with smooth interop. Reason also compiles to fast, barebone assembly, thanks to OCaml itself.
+JavaScript's ecosystem and community are very vibrant and active. The language itself is unparalleled in terms of adoption & distribution. Compiling to JavaScript is a therefore pragmatic choice (and sometimes, the only choice).
 
-## Why Reason?
+Additionally, the JavaScript VMs also received many engineering-years of fine-tuning and get faster all the time.
 
-<Cite author="A Pragmatic Person">
+## Why ReScript?
 
-"Why bother learning an **entire** new language?"
+_"Why not just use nothing but JavaScript then?"_
 
-</Cite>
+Despite its clear advantages, JavaScript does present a few drawbacks. Here's how ReScript solves them.
 
-This isn't what Reason is about.
+### Reliability
 
-The core runtime semantics of OCaml (how it behaves at runtime) maps straightforwardly to JavaScript\*. If one leaves out a few corners of JavaScript and adds a few nice features, one can actually compile to pretty readable JS and directly use 80% of JavaScript's ecosystem & tooling. On top of that, you can use that same language to compile to barebone assembly, iOS, Android and even [microcontrollers](http://www.algo-prog.info/ocapic/web/index.php?id=ocapic)!
+ReScript's type system alone offers three major benefits to make your programs more reliable:
 
-However, it's unclear which features of JS to reshape, in order to fit it into the mold of a language designed around fast semantics and sound typing. But we can _work backward_, from a language that has been designed from the ground up around performance and safety, and make some adjustments so that it looks and acts a bit more like the better part of the familiar web language we've come to know.
+- **Sound type system**. "Sound" here means that the types _guarantee_ that they are what they are, not just 90% of the time. Once a ReScript project compiles, there are no runtime type errors. \*
+- **Strong type inference**. Almost the entirety of the language can be inferred. You don't have to tediously write all the types manually. Feel free to still type out some parts for readability!
+- **Expressive type features**. With well-thought-out features like [variants](/docs/manual/latest/variant), [modules](/docs/manual/latest/module) and even an opt-in [object system](/docs/reason-compiler/latest/object.html), the types guide you through your iteration process and don't block you from expressing what you need.
 
-All these decisions made it so that, for common use-cases, the learning curve of Reason isn't really higher than learning JS + a gradual type system; in return, you get:
+The combination of these three highlights, along with other type system features, unlocks new workflow possibilities and is something existing gradual typing solutions for JavaScript don't offer.
 
-- **A rock solid type system**. OCaml types have 100% coverage (every line of code), inference (types can be deduced and aren't required to be written manually), and soundness (once it compiles, the types are guaranteed to be accurate).
-- **A focus on simplicity & pragmatism**. Reason allows opt-in side-effect, mutation and objects for familiarity & interop, while keeping the rest of the language pure, immutable and functional.
-- **A focus on performance & size**. Reason is used to compile to JavaScript using the build system, [`bsb`](/docs/reason-compiler/latest/build-overview), which finishes incremental builds in less than 100ms. The resulting output is also [tiny](https://twitter.com/bobzhang1988/status/827562467148623875).
-- **Incremental learning & codebase conversion**. Reap the benefits of a fully typed file from day one. If everything else fails, [paste some raw JavaScript snippets right in your Reason file](interop).
-- **Great ecosystem & tooling**. Use [your favorite editor](./editor-plugins), [your favorite NPM package](./libraries), and any of your [favorite](https://github.com/reasonml/reason-react) [existing](https://github.com/reasonml-community/bs-jest) [stack](https://webpack.js.org).
+\* The exceptions are some deliberate, optional interoperability hooks.
 
-\* Don't believe it? Check our [JS -> Reason cheat sheet](./syntax-cheatsheet) or try a few snippets of Reason in [the playground](//reasonml.github.io/try.html) and observe the output at the right!
+### High Quality Dead Code Elimination
 
-## Why OCaml As The Backing Language? Why Not [My Favorite Language]?
+The JavaScript ecosystem is very reliant on dependencies, and quite often many of them. Shipping the final product inevitably drags in a huge amount of code, lots of which the project doesn't actually use. These regions of dead code impact loading, parsing and interpretation speed. ReScript provides powerful dead code elimination at all
+levels:
 
-Many backing languages would satisfy the previous section's points; the points below, however, are important features of the OCaml language that make it particularly well suited as a foundation for Reason.
+- Function and module level code elimination is facilitated by the well-engineered type system and **purity analysis**.
+- At the global level, ReScript generates code that are naturally friendly to dead code elimination done by bundling tools such as [Rollup](https://github.com/rollup/rollup) and [Closure Compiler](https://developers.google.com/closure/compiler/), after its own sophisticated elimination pass.
+- The same applies for ReScript's own tiny runtime (which is written in ReScript itself).
 
-- **The ability to compile to native code**. OCaml's native (assembly) startup time is in **single digit milliseconds**. People are already starting to use Reason for native use cases today; meanwhile, we're focusing on adoption through great JavaScript compatibility.
-- **Side-effects, mutation & other escape hatches**. These aren't usually the shiny selling points of a language; but being able to bridge toward a part of a codebase without an elaborate interop/rewrite is crucial for us at Facebook. OCaml defaults to immutable and functional code, but having the escape hatches makes the initial adoption sometimes simply possible.
-- **Implementation polish matters**. OCaml has been refined over two decades and gets better every year.
-- **The language for writing React**. [ReasonReact](/docs/reason-react/latest/introduction) demonstrates how naturally React patterns play to the strengths of OCaml/Reason, and ReactJS itself was inspired by the functional, yet pragmatic philosophy of the ML family of languages (as described in the [React To The Future](https://www.youtube.com/watch?v=5fG_lyNuEAw) talk by [jordwalke](https://twitter.com/jordwalke)).
-- **Welcoming, growing community**. The Reason community is welcoming of newcomers. The community has members from all over the world. Join [the Discord channel](https://discord.gg/reasonml) and ask for help. Stick around to share what you've learned with other newcomers.
+### Compile-time Optimizations
 
-## Reason isn't for you?
+JavaScript is a dynamic language; it takes a performance hit when the browser engine optimizes code at runtime. While some engines circumvent the problem to some extent by [caching](http://v8project.blogspot.com/2015/07/code-caching.html), this isn't always available nor predictable. The lack of a strong, built-in type system also limits the amount of optimizations possible. ReScript, on the other hand, is able to provide many optimizations during compilation time, way before the code's shipped to the browser. A widespread adage to write fast JavaScript code is to write as if there's a type system (in order to trigger JS engines' good optimization heuristics); ReScript gives you a real one and generates code that's friendly to optimizations by default.
 
-Here are some alternatives that share some similar concepts/lineage with Reason/OCaml, but often with a different focus:
+### Runs on Native Too!
 
-- [OCaml](http://ocaml.org). Reason is a syntax and toolchain built on top of the OCaml language. OCaml and Reason interoperate with each other. You can compile plain OCaml with BuckleScript, and [Js_of_ocaml](http://ocsigen.org/js_of_ocaml/) can work with Reason as well.
-- [Rust](http://rust-lang.org). Inspired by the ML family of langauges, but not garbage collected. Has excellent parallelism support.
-- [Elm](http://elm-lang.org). Another great language in the ML family. Focuses on building web applications. See the widely praised talk on Elm, [Let's Be Mainstream](https://www.youtube.com/watch?v=oYk8CKH7OhE).
-- [PureScript](http://www.purescript.org). Inspired by Haskell, compiles to the JavaScript.
-- [Fable](http://fable.io/). Based on F#, which is closely related to OCaml.
-- [ClojureScript](https://clojurescript.org). Dynamically typed language that prioritizes simplicity & great interop as well. Doesn't appear to have much in common with ReasonML. Shares some functional roots with the ML family of languages.
-- [Swift](https://www.apple.com/swift/). Language built by Apple, and interoperates with Objective-C well. Uses reference counted collection (but without automatic cycle breaking).
-- [Haxe](https://haxe.org). Compiles to basically anything with a focus on game development.
+ReScript is really just OCaml (apart from the JavaScript interop). OCaml can compile directly to machine code (aka fast, barebone assembly)\*. When you're not targeting JavaScript, you can reuse the same code and target servers, desktops, mobile OSes, etc. This unlocks even better performance. For example, the traditional node.js application starts up in **>100ms**, while OCaml compiled to machine code starts in around **2ms**.
 
-Want to know more? Strike a conversation with anyone in the [community](//reasonml.github.io/community)!
+\* In fact, it even runs on [microcontrollers](http://www.algo-prog.info/ocapic/web/index.php?id=ocapic) with only a few KBs of memory.
 
-_Reason is an open source project that started at Facebook but that is heavily community built/organized_.
+## How Is ReScript Different?
+
+Nowadays, there are many languages out there that compile to JavaScript. ReScript distinguishes itself from the alternatives in a few crucial ways.
+
+### Fast Iteration Loop
+
+ReScript's build time is **one or two orders of magnitude** faster than alternatives. In its watcher mode, the build system usually finishes before you switch screen from the editor to the terminal tab (two digits of milliseconds). A fast iteration cycle reduces need of keeping one's mental state around longer; this in turns allows one to stay in the flow longer and more often.
+
+### Readable Output & Great Interop
+
+Unreadable JavaScript code generated from other compiled-to-js languages makes it so that it could be, practically speaking:
+
+- Hard to debug (cryptic stack trace, mangled variable names)
+- Hard to learn from (non-straightforward mapping of concepts from one language to another)
+- Hard to profile for performance (unclear what runtime performance cost there is)
+- Hard to integrate with existing hand-written JS code
+
+<!-- TODO: playground link -->
+
+ReScript's JS output is very readable. This is especially important while learning, where users might want to understand how the code's compiled, and to audit for bugs.
+
+<!-- TODO: link to interop -->
+
+This characteristic, combined with a fully-featured JS interop system, allows ReScript code to be inserted into an existing JavaScript codebase almost unnoticed.
+
+<!-- TODO: how to slip code into others' codebase -->
+
+### Tiny JS Output
+
+<!-- TODO: playground link -->
+
+A `Hello world` ReScript program generates **20 bytes** JS code. Additionally, the standard library pieces you require in are only include when needed.
+
+### Preservation of Code Structure
+
+ReScript maps one source file to one JavaScript output file. This eases the integration of existing tools such as bundlers and test runners. You can even start writing a single file without much change your build setup. Each file's code structure is approximately preserved, too.
