@@ -1,28 +1,29 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
-<a href="https://simpleanalytics.com/reasonml.org?utm_source=reasonml.org&utm_content=badge" referrerpolicy="origin" target="_blank"><img src="https://simpleanalyticsbadge.com/reasonml.org?counter=true" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" /></a>
+<a href="https://simpleanalytics.com/rescript-lang.org?utm_source=rescript-lang.org&utm_content=badge" referrerpolicy="origin" target="_blank"><img src="https://simpleanalyticsbadge.com/rescript-lang.org?counter=true" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" /></a>
 
-# reasonml.org
+# rescript-lang.org
 
-This is the repository for [reasonml.org](https://reasonml.org) and is currently **work
-in progress**.
+This is the repository for [rescript-lang.org](https://rescript-lang.org) and
+is currently **work in progress**.
 
 ## Setup
 
-```
+```sh
 yarn
 
 # Initial build
 yarn bs:build
 
+# In a new tab
 yarn dev
 
-# Open localhost:3000
+# then open localhost:3000
 ```
 
 In case you want to run BuckleScript in watchmode:
 
-```
+```sh
 yarn run bs:start
 ```
 
@@ -32,7 +33,7 @@ We are parsing our content for specific index data (such as, all interesting
 search terms we need for searching inside the `Belt` docs). You can create your
 index by running following command:
 
-```
+```sh
 yarn run update-index
 ```
 
@@ -116,7 +117,7 @@ NODE_ENV=production npx postcss styles/main.css -o test.css
 ## Writing Blog Posts
 
 In case you are a blog author, please refer to our [guide on writing blog
-posts](https://reasonml.org/blogpost-guide).
+posts](https://rescript-lang.org/blogpost-guide).
 
 **Quick-takeaways:**
 
@@ -158,7 +159,4 @@ need to fall back to `pages/apis` instead.
 Check out our [CONTRIBUTING.md](CONTRIBUTING.md) for how to get started working
 on this project.
 
-**TLDR:** Read and comply to our [Code of Conduct](CODE_OF_CONDUCT.md); always
-make sure to have an issue assigned / create issues / join us in the
-[ReasonML Discord #docs channel](https://discord.gg/fscQAnj) to find a good
-task to work on.
+**TLDR:** Please read and comply to our [Code of Conduct](CODE_OF_CONDUCT.md).
