@@ -138,11 +138,6 @@ module Prose = {
   [@react.component]
   let make = (~children) => {
     <Docs components=Markdown.default>
-      <Markdown.Warn>
-      <div className="font-bold">"IMPORTANT!"->React.string</div>
-        "This section might still contains ReasonML & BuckleScript terms.\nThey will be updated very soon."
-        ->React.string
-      </Markdown.Warn>
       children
     </Docs>;
   };
