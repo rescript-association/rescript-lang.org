@@ -1252,7 +1252,7 @@ module ControlPanel = {
       <div
         className="flex justify-between items-center border-t py-4 border-night-60 w-full">
         <div>
-          <span className="font-semibold mr-2"> "BS"->s </span>
+          <span className="font-semibold mr-2"> "REV: "->s </span>
           <DropdownSelect
             name="compilerVersions"
             value=compilerVersion
@@ -1335,16 +1335,6 @@ let default = () => {
   // in the CodeMirror editor
   let (focusedRowCol, setFocusedRowCol) = React.useState(_ => None);
 
-  let initialContent = {j|
-  let a = 1 + "";
-module Test2 = {
-  [@react.component]
-  let make = (~a: string, ~b: string) => {
-    <div>
-    </div>
-  };
-}|j};
-
   let initialContent = {j|module A = {
   let = 1;
   let a = 1;
@@ -1353,6 +1343,24 @@ module Test2 = {
 module B = {
   let = 2
   let b = 2
+}|j};
+
+  let initialContent = {j|// Please note:
+// ---
+// The Playground is still a work in progress
+// ReScript / old Reason syntax should parse just
+// fine.
+//
+// Feel free to play around and compile some
+// ReScript code!
+
+module Button = {
+  @react.module
+  let make = () => {
+    let msg = "Click me"
+
+    <button> {msg->React.string} </button>
+  }
 }|j};
 
   let jsOutput =
@@ -1466,193 +1474,204 @@ module B = {
       title="ReScript Playground"
       description="Try ReScript in the browser"
     />
-
     <div className="text-16 mb-32 mt-16 pt-2 bg-night-dark">
       <div className="text-night text-lg">
         <Navigation overlayState />
-        <main className="mx-10 mt-16 pb-32 flex justify-center">
+        <main className="mx-10 mt-4 pb-32 flex justify-center">
           /* MOBILE PLACEHOLDER */
-          <div className="block lg:hidden text-snow-darker text-center">
-            <div className="font-bold mb-4">
-            "Mobile Playground version not available yet."->s
-            </div>
-            <div>
-            "Please use a screen with at least 1024px width for the desktop version"->s
-            </div>
-          </div>
-          <div className="hidden lg:flex max-w-1280 w-full border-4 border-night">
-            <div className="w-full max-w-705 border-r-4 border-night">
-              <SingleTabPane title=editorTitle>
-                <div className="bg-onyx text-snow-darker">
-                  <CodeMirror
-                    className="w-full"
-                    minHeight="40vh"
-                    mode="reason"
-                    errors=cmErrors
-                    value={React.Ref.current(editorCode)}
-                    onChange={value => {
-                      React.Ref.setCurrent(editorCode, value)
-                    }}
-                    onMarkerFocus={rowCol => {
-                      setFocusedRowCol(prev => {Some(rowCol)})
-                    }}
-                    onMarkerFocusLeave={_ => {setFocusedRowCol(_ => None)}}
-                  />
-                </div>
-              </SingleTabPane>
-              {switch (compilerState) {
-               | Ready(ready)
-               | Compiling(ready, _)
-               | SwitchingCompiler(ready, _, _) =>
-                 let availableTargetLangs =
-                   Api.Version.availableLanguages(ready.selected.apiVersion);
 
-                 let selectedTargetLang =
-                   switch (ready.targetLang) {
-                   | Res => (Api.Lang.Res, ready.selected.compilerVersion)
-                   | Reason => (Reason, ready.selected.reasonVersion)
-                   | OCaml => (OCaml, ready.selected.ocamlVersion)
+            <div className="block lg:hidden text-snow-darker text-center">
+              <div className="font-bold mb-4">
+                "Mobile Playground version not available yet."->s
+              </div>
+              <div>
+                "Please use a screen with at least 1024px width for the desktop version"
+                ->s
+              </div>
+            </div>
+            <div className="hidden w-full lg:flex border-4 border-night" style=ReactDOMRe.Style.make(~maxWidth="112rem",())>
+              <div
+                className="w-full border-r-4 border-night"
+                style={ReactDOMRe.Style.make(~maxWidth="56rem", ())}>
+                <SingleTabPane title=editorTitle>
+                  <div className="bg-onyx text-snow-darker">
+                    <CodeMirror
+                      className="w-full"
+                      minHeight="40vh"
+                      maxHeight="40vh"
+                      mode="reason"
+                      errors=cmErrors
+                      value={React.Ref.current(editorCode)}
+                      onChange={value => {
+                        React.Ref.setCurrent(editorCode, value)
+                      }}
+                      onMarkerFocus={rowCol => {
+                        setFocusedRowCol(prev => {Some(rowCol)})
+                      }}
+                      onMarkerFocusLeave={_ => {setFocusedRowCol(_ => None)}}
+                    />
+                  </div>
+                </SingleTabPane>
+                {switch (compilerState) {
+                 | Ready(ready)
+                 | Compiling(ready, _)
+                 | SwitchingCompiler(ready, _, _) =>
+                   let availableTargetLangs =
+                     Api.Version.availableLanguages(
+                       ready.selected.apiVersion,
+                     );
+
+                   let selectedTargetLang =
+                     switch (ready.targetLang) {
+                     | Res => (Api.Lang.Res, ready.selected.compilerVersion)
+                     | Reason => (Reason, ready.selected.reasonVersion)
+                     | OCaml => (OCaml, ready.selected.ocamlVersion)
+                     };
+
+                   let onCompilerSelect = id => {
+                     compilerDispatch(
+                       SwitchToCompiler({
+                         id,
+                         libraries: ready.selected.libraries,
+                       }),
+                     );
                    };
 
-                 let onCompilerSelect = id => {
-                   compilerDispatch(
-                     SwitchToCompiler({
-                       id,
-                       libraries: ready.selected.libraries,
-                     }),
-                   );
-                 };
-
-                 let onTargetLangSelect = lang => {
-                   compilerDispatch(
-                     SwitchLanguage({
-                       lang,
-                       code: React.Ref.current(editorCode),
-                     }),
-                   );
-                 };
-
-                 let onCompileClick = () => {
-                   compilerDispatch(
-                     CompileCode(
-                       ready.targetLang,
-                       React.Ref.current(editorCode),
-                     ),
-                   );
-                 };
-
-                 // When a new compiler version was selected, it should
-                 // be shown in the control panel as the currently selected
-                 // version, even when it is currently loading
-                 let compilerVersion =
-                   switch (compilerState) {
-                   | SwitchingCompiler(_, version, _) => version
-                   | _ => ready.selected.id
+                   let onTargetLangSelect = lang => {
+                     compilerDispatch(
+                       SwitchLanguage({
+                         lang,
+                         code: React.Ref.current(editorCode),
+                       }),
+                     );
                    };
 
-                 let langSelectionDisabled =
-                   Api.(
-                     switch (ready.result) {
-                     | FinalResult.Conv(ConversionResult.Fail(_))
-                     | Comp(CompilationResult.Fail(_)) => true
+                   let onCompileClick = () => {
+                     compilerDispatch(
+                       CompileCode(
+                         ready.targetLang,
+                         React.Ref.current(editorCode),
+                       ),
+                     );
+                   };
+
+                   // When a new compiler version was selected, it should
+                   // be shown in the control panel as the currently selected
+                   // version, even when it is currently loading
+                   let compilerVersion =
+                     switch (compilerState) {
+                     | SwitchingCompiler(_, version, _) => version
+                     | _ => ready.selected.id
+                     };
+
+                   let langSelectionDisabled =
+                     Api.(
+                       switch (ready.result) {
+                       | FinalResult.Conv(ConversionResult.Fail(_))
+                       | Comp(CompilationResult.Fail(_)) => true
+                       | _ => false
+                       }
+                     );
+
+                   let onFormatClick = () => {
+                     compilerDispatch(
+                       Format(React.Ref.current(editorCode)),
+                     );
+                   };
+
+                   let actionIndicatorKey = string_of_int(actionCount);
+
+                   let isCompilerSwitching =
+                     switch (compilerState) {
+                     | SwitchingCompiler(_, _, _) => true
                      | _ => false
-                     }
-                   );
+                     };
 
-                 let onFormatClick = () => {
-                   compilerDispatch(Format(React.Ref.current(editorCode)));
-                 };
-
-                 let actionIndicatorKey = string_of_int(actionCount);
-
-                 let isCompilerSwitching =
-                   switch (compilerState) {
-                   | SwitchingCompiler(_, _, _) => true
-                   | _ => false
-                   };
-
-                 let compilerVersionGitCommit =
-                   Api.Compiler.version_git_commit(ready.selected.instance);
-                 <>
-                   <ControlPanel
-                     isCompilerSwitching
-                     langSelectionDisabled
-                     compilerVersion
-                     availableTargetLangs
-                     availableCompilerVersions={ready.versions}
-                     selectedTargetLang
-                     loadedLibraries={ready.selected.libraries}
-                     onCompilerSelect
-                     onTargetLangSelect
-                     onCompileClick
-                     onFormatClick
-                   />
-                   <div className="border-fire border-t-4">
-                     <ErrorPane
-                       actionIndicatorKey
-                       targetLang={ready.targetLang}
-                       compilerVersion={ready.selected.compilerVersion}
-                       ?compilerVersionGitCommit
-                       ?focusedRowCol
-                       result={ready.result}
+                   let compilerVersionGitCommit =
+                     Api.Compiler.version_git_commit(ready.selected.instance);
+                   <>
+                     <ControlPanel
+                       isCompilerSwitching
+                       langSelectionDisabled
+                       compilerVersion
+                       availableTargetLangs
+                       availableCompilerVersions={ready.versions}
+                       selectedTargetLang
+                       loadedLibraries={ready.selected.libraries}
+                       onCompilerSelect
+                       onTargetLangSelect
+                       onCompileClick
+                       onFormatClick
                      />
-                   </div>
-                 </>;
-               | Init => "Initializing"->s
-               | SetupFailed(msg) =>
-                 let content = ("Setup failed: " ++ msg)->s;
-                 let tabs = [|{Pane.title: "Error", content}|];
-                 <> <Pane tabs /> </>;
-               }}
-            </div>
-            <div>
-              <SingleTabPane
-                title="JavaScript"
-                makeTabClass={active => {
-                  let activeClass =
-                    active
-                      ? "text-fire font-medium bg-night-dark hover:cursor-default"
-                      : "";
+                     <div className="border-fire border-t-4">
+                       <ErrorPane
+                         actionIndicatorKey
+                         targetLang={ready.targetLang}
+                         compilerVersion={ready.selected.compilerVersion}
+                         ?compilerVersionGitCommit
+                         ?focusedRowCol
+                         result={ready.result}
+                       />
+                     </div>
+                   </>;
+                 | Init => "Initializing"->s
+                 | SetupFailed(msg) =>
+                   let content = ("Setup failed: " ++ msg)->s;
+                   let tabs = [|{Pane.title: "Error", content}|];
+                   <> <Pane tabs /> </>;
+                 }}
+              </div>
+              <div
+                className="w-full"
+                style={ReactDOMRe.Style.make(~maxWidth="56rem", ())}>
+                <SingleTabPane
+                  title="JavaScript"
+                  makeTabClass={active => {
+                    let activeClass =
+                      active
+                        ? "text-fire font-medium bg-night-dark hover:cursor-default"
+                        : "";
 
-                  "flex items-center h-12 px-4 pr-16 " ++ activeClass;
-                }}>
-                <div className="w-full bg-night-dark text-snow-darker">
-                  <CodeMirror
-                    className="w-full"
-                    minHeight="40vh"
-                    mode="javascript"
-                    lineWrapping=true
-                    value=jsOutput
-                    readOnly=true
-                  />
-                </div>
-              </SingleTabPane>
-              {switch (compilerState) {
-               | Ready(ready)
-               | Compiling(ready, _)
-               | SwitchingCompiler(ready, _, _) =>
-                 let disabled =
-                   switch (compilerState) {
-                   | SwitchingCompiler(_, _, _) => true
-                   | _ => false
+                    "flex items-center h-12 px-4 pr-16 " ++ activeClass;
+                  }}>
+                  <div className="w-full bg-night-dark text-snow-darker">
+                    <CodeMirror
+                      className="w-full"
+                      minHeight="40vh"
+                      maxHeight="40vh"
+                      mode="javascript"
+                      lineWrapping=true
+                      value=jsOutput
+                      readOnly=true
+                    />
+                  </div>
+                </SingleTabPane>
+                {switch (compilerState) {
+                 | Ready(ready)
+                 | Compiling(ready, _)
+                 | SwitchingCompiler(ready, _, _) =>
+                   let disabled =
+                     switch (compilerState) {
+                     | SwitchingCompiler(_, _, _) => true
+                     | _ => false
+                     };
+                   let config = ready.selected.config;
+                   let setConfig = config => {
+                     compilerDispatch(UpdateConfig(config));
                    };
-                 let config = ready.selected.config;
-                 let setConfig = config => {
-                   compilerDispatch(UpdateConfig(config));
-                 };
 
-                 <MiscPanel
-                   config
-                   setConfig
-                   disabled
-                   className="border-t-4 border-night"
-                 />;
-               | Init
-               | SetupFailed(_) => React.null
-               }}
+                   <MiscPanel
+                     config
+                     setConfig
+                     disabled
+                     className="border-t-4 border-night"
+                   />;
+                 | Init
+                 | SetupFailed(_) => React.null
+                 }}
+              </div>
             </div>
-          </div>
-        </main>
+          </main>
       </div>
     </div>
   </>;

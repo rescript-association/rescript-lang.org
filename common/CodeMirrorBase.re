@@ -116,6 +116,9 @@ module DomUtil = {
   external setMinHeight: (Dom.element, string) => unit = "minHeight";
 
   [@bs.set] [@bs.scope "style"]
+  external setMaxHeight: (Dom.element, string) => unit = "maxHeight";
+
+  [@bs.set] [@bs.scope "style"]
   external setDisplay: (Dom.element, string) => unit = "display";
 
   [@bs.set] [@bs.scope "style"]
@@ -175,6 +178,8 @@ module Props = {
     errors: array(Error.t),
     [@bs.optional]
     minHeight: string, // minHeight of the scroller element
+    [@bs.optional]
+    maxHeight: string, // maxHeight of the scroller element
     [@bs.optional]
     className: string,
     [@bs.optional]
@@ -356,6 +361,7 @@ let default = (props: Props.t): React.element => {
 
   // Destruct all our props here
   let minHeight = props->Props.minHeight;
+  let maxHeight = props->Props.maxHeight;
   let onChange = props->Props.onChange;
   let value = props->Props.value;
   let errors = Belt.Option.getWithDefault(props->Props.errors, [||]);
@@ -389,6 +395,10 @@ let default = (props: Props.t): React.element => {
 
       Belt.Option.forEach(minHeight, minHeight =>
         cm->CM.getScrollerElement->DomUtil.setMinHeight(minHeight)
+      );
+
+      Belt.Option.forEach(maxHeight, maxHeight =>
+        cm->CM.getScrollerElement->DomUtil.setMaxHeight(maxHeight)
       );
 
       Belt.Option.forEach(onChange, onValueChange => {

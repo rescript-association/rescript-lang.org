@@ -26,6 +26,7 @@ let make =
     (
       ~style=?,
       ~minHeight=?,
+      ~maxHeight=?,
       ~className=?,
       ~mode,
       ~readOnly=false,
@@ -50,6 +51,7 @@ let make =
     CodeMirrorBase.Props.t(
       ~className?,
       ~minHeight?,
+      ~maxHeight?,
       ~style?,
       ~value,
       ~errors?,
