@@ -60,6 +60,25 @@ let basicNavs = [|
   {name: "Reserved Keywords", href: "/docs/manual/latest/reserved-keywords"},
 |];
 
+let buildsystemNavs = [|
+  NavItem.{
+    name: "Overview",
+    href: "/docs/manual/latest/build-overview",
+  },
+  {
+    name: "Configuration",
+    href: "/docs/manual/latest/build-configuration",
+  },
+  {
+    name: "Interop with JS Build System",
+    href: "/docs/manual/latest/interop-with-js-build-systems",
+  },
+  {
+    name: "Performance",
+    href: "/docs/manual/latest/build-performance",
+  },
+|];
+
 let guidesNavs = [|
   NavItem.{
     name: "Converting from JS",
@@ -76,6 +95,7 @@ let extraNavs = [|
 let categories = [|
   Category.{name: "Overview", items: overviewNavs},
   {name: "Basics", items: basicNavs},
+  {name: "Build System", items: buildsystemNavs},
   {name: "Guides", items: guidesNavs},
   {name: "Extra", items: extraNavs},
 |];

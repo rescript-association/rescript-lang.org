@@ -100,25 +100,6 @@ let interopNavs = [|
   {name: "Decorators", href: "/docs/reason-compiler/latest/decorators"},
 |];
 
-let buildsystemNavs = [|
-  NavItem.{
-    name: "Overview",
-    href: "/docs/reason-compiler/latest/build-overview",
-  },
-  {
-    name: "Configuration",
-    href: "/docs/reason-compiler/latest/build-configuration",
-  },
-  {
-    name: "Interop with JS Build System",
-    href: "/docs/reason-compiler/latest/interop-with-js-build-systems",
-  },
-  {
-    name: "Performance",
-    href: "/docs/reason-compiler/latest/build-performance",
-  },
-|];
-
 let stdlibNavs = [|
   NavItem.{
     name: "Overview",
@@ -148,7 +129,6 @@ let advancedNavs = [|
 let categories = [|
   Category.{name: "Overview", items: overviewNavs},
   {name: "Interop", items: interopNavs},
-  {name: "Build System", items: buildsystemNavs},
   {name: "Standard Library", items: stdlibNavs},
   {name: "Advanced", items: advancedNavs},
 |];
