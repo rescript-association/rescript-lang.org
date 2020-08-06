@@ -56,12 +56,12 @@ let make =
      | Some(href) => <link key="canonical" href rel="canonical" />
      | None => React.null
      }}
-    <link
-      key="icon"
-      rel="icon"
-      sizes="16x16 32x32 64x64"
-      href="/static/favicon.ico"
-    />
+    /*<link*/
+      /*key="icon"*/
+      /*rel="icon"*/
+      /*sizes="16x16 32x32 64x64"*/
+      /*href="/static/favicon.ico"*/
+    /*/>*/
     /* OG link preview meta data */
     <meta key="og:site_name" property="og:site_name" content=ogSiteName />
     <meta key="og:locale" property="og:locale" content=ogLocale />
