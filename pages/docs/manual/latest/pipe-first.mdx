@@ -4,13 +4,13 @@
 
 Imagine you have the following:
 
-```reason
+```re
 validateAge(getAge(parseData(person)))
 ```
 
 This is slightly hard to read, since you need to read the code from the innermost part, to the outer parts. Use Pipe First to streamline it
 
-```reason
+```re
 person
   ->parseData
   ->getAge
@@ -21,13 +21,13 @@ Basically, `parseData(person)` is transformed into `person->parseData`, and `get
 
 **This works when the function takes more than one argument too**.
 
-```reason
+```re
 a(one, two, three)
 ```
 
 is the same as
 
-```reason
+```re
 one->a(two, three)
 ```
 
@@ -39,7 +39,7 @@ Try not to abuse pipes; they're a means to an end. Newcomers sometimes shape a l
 
 Conventionally, we don't turn the innermost layer of function call into a pipe. So the above example would usually be written as:
 
-```reason
+```re
 parseData(person)
   ->getAge
   ->validateAge
@@ -61,45 +61,45 @@ asyncRequest()
 
 Assuming we don't need the chaining behavior above, we'd bind to each case this using `bs.send` from the previous section:
 
-```reason
-[@bs.send] external map : (array('a), 'a => 'b) => array('b) = "map";
-[@bs.send] external filter : (array('a), 'a => bool) => array('a) = "filter";
+```re
+[@bs.send] external map : (array('a), 'a => 'b) => array('b) = "map"
+[@bs.send] external filter : (array('a), 'a => bool) => array('a) = "filter"
 
-type request;
-external asyncRequest: unit => request = "asyncRequest";
-[@bs.send] external setWaitDuration: (request, int) => request = "setWaitDuration";
-[@bs.send] external send: request => unit = "send";
+type request
+external asyncRequest: unit => request = "asyncRequest"
+[@bs.send] external setWaitDuration: (request, int) => request = "setWaitDuration"
+[@bs.send] external send: request => unit = "send"
 ```
 
 You'd use them like this:
 
-```reason
-let result = filter(map([|1, 2, 3|], a => a + 1), a => a mod 2 == 0);
+```re
+let result = filter(map([|1, 2, 3|], a => a + 1), a => a mod 2 == 0)
 
-send(setWaitDuration(asyncRequest(), 4000));
+send(setWaitDuration(asyncRequest(), 4000))
 ```
 
 This looks much worse than the JS counterpart! Now we need to read the actual logic inside-out. We also cannot use the [`|>` (pipe last)](./pipe-last) operator here, since the object comes _first_ in the binding. But `->` works!
 
-```reason
+```re
 let result = [|1, 2, 3|]
   ->map(a => a + 1)
-  ->filter(a => a mod 2 === 0);
+  ->filter(a => a mod 2 === 0)
 
-asyncRequest()->setWaitDuration(4000)->send;
+asyncRequest()->setWaitDuration(4000)->send
 ```
 
 ## Pipe Into Variants
 
 A variant's constructors, like `Some` or `Student`, look like functions, but unfortunately aren't, due to historical reasons. Sometime, it'd still be nice to be able to use them as functions. Pipe First takes the occasion to enable that for you!
 
-```reason
+```re
 let result = name->preprocess->Some
 ```
 
 We turn this into:
 
-```reason
+```re
 let result = Some(preprocess(name))
 ```
 
@@ -107,32 +107,32 @@ let result = Some(preprocess(name))
 
 ## Pipe Placeholders
 
-A placeholder is written as an underscore and it tells Reason that you want to fill in an argument of a function later. These two have equivalent meaning:
+A placeholder is written as an underscore and it tells ReScript that you want to fill in an argument of a function later. These two have equivalent meaning:
 
-```reason
-let addTo7 = (x) => add3(3, x, 4);
-let addTo7 = add3(3, _, 4);
+```re
+let addTo7 = (x) => add3(3, x, 4)
+let addTo7 = add3(3, _, 4)
 ```
 
 Sometimes you don't want to pipe the value you have into the first position. In these cases you can mark a placeholder value to show which argument you would like to pipe into.
 
 Let's say you have a function `namePerson`, which takes a `person` then a `name` argument. If you are transforming a person then pipe will work as-is:
 
-```reason
+```re
 makePerson(~age=47, ())
-  ->namePerson("Jane");
+  ->namePerson("Jane")
 ```
 
 If you have a name that you want to apply to a person object, you can use a placeholder:
 
-```reason
+```re
 getName(input)
-  ->namePerson(personDetails, _);
+  ->namePerson(personDetails, _)
 ```
 
 This allows you to pipe into any positional argument. It also works for named arguments:
 
-```reason
+```re
 getName(input)
-  ->namePerson(~person=personDetails, ~name=_);
+  ->namePerson(~person=personDetails, ~name=_)
 ```
