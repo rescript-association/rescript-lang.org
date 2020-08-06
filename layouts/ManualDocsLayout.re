@@ -61,8 +61,7 @@ let basicNavs = [|
 |];
 
 let javascriptNavs = [|
-  NavItem.{name: "Interop", href: "/docs/manual/latest/interop"},
-  {name: "Syntax Cheatsheet", href: "/docs/manual/latest/syntax-cheatsheet"},
+  NavItem.{name: "Syntax Cheatsheet", href: "/docs/manual/latest/syntax-cheatsheet"},
   {name: "Libraries", href: "/docs/manual/latest/libraries"},
   {
     name: "Converting from JS",
@@ -71,8 +70,7 @@ let javascriptNavs = [|
 |];
 
 let extraNavs = [|
-  NavItem.{name: "FAQ", href: "/docs/manual/latest/faq"},
-  {name: "Newcomer Examples", href: "/docs/manual/latest/newcomer-examples"},
+  NavItem.{name: "Newcomer Examples", href: "/docs/manual/latest/newcomer-examples"},
   {name: "Project Structure", href: "/docs/manual/latest/project-structure"},
 |];
 
