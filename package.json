@@ -5,7 +5,7 @@
   "author": "Patrick Stapfer <ryyppy@users.noreply.github.com>",
   "license": "MIT",
   "engines": {
-    "node": "12.x"
+    "node": ">=12.x"
   },
   "dependencies": {
     "@glennsl/bs-json": "^3.0.0",
