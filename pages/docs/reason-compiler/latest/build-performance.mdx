@@ -1,6 +1,6 @@
 # Build Performance
 
-BuckleScript considers performance at install time, build time and run time as a serious feature. Here are some more info, and tips on keeping the build fast. **Feel free to skip this section** if you're just starting out.
+ReScript considers performance at install time, build time and run time as a serious feature. Here are some more info, and tips on keeping the build fast. **Feel free to skip this section** if you're just starting out.
 
 ## Under the Hood
 
@@ -45,11 +45,11 @@ Note that bsb is a file-based build system. We don't do in-memory build, even if
 
 Bsb doesn't take whole seconds to run every time. The bulk of the build performance comes from incremental build, aka re-building a previously built project when a few files changed.
 
-In short, thanks to OCaml, BuckleScript and bsb's architecture, we're able to **only build what's needed**. E.g. if `MyFile.ml` isn't changed, then it's not recompiled. You can roughly emulate such incrementality in languages like JavaScript, but the degree of correctness is unfortunately low. For example, if you rename or move a JS file, then the watcher might get confused and not pick up the "new" file or fail to clean things up correctly, resulting in you needing to clean your build and restart anew, which defeats the purpose.
+In short, thanks to our bsc compiler and bsb build system's architecture, we're able to **only build what's needed**. E.g. if `MyFile.ml` isn't changed, then it's not recompiled. You can roughly emulate such incrementality in languages like JavaScript, but the degree of correctness is unfortunately low. For example, if you rename or move a JS file, then the watcher might get confused and not pick up the "new" file or fail to clean things up correctly, resulting in you needing to clean your build and restart anew, which defeats the purpose.
 
 ## Speed Up Incremental Build
 
-OCaml/BuckleScript/Reason uses the concept of interface files (`.mli` or `.rei`) (or, equivalently, [module signatures](/docs/manual/latest/module#signatures)). Exposing only what you need naturally speeds up incremental builds. E.g. if you change a `.ml` or `.re` file whose corresponding `.mli` or `.rei` file doesn't expose the changed part, then you've reduced the amount of dependent files you have to rebuild.
+ReScript uses the concept of interface files (`.mli` or `.rei`) (or, equivalently, [module signatures](/docs/manual/latest/module#signatures)). Exposing only what you need naturally speeds up incremental builds. E.g. if you change a `.ml` or `.re` file whose corresponding `.mli` or `.rei` file doesn't expose the changed part, then you've reduced the amount of dependent files you have to rebuild.
 
 <!-- TODO: validate this -->
 
@@ -57,7 +57,7 @@ OCaml/BuckleScript/Reason uses the concept of interface files (`.mli` or `.rei`)
 
 Unfortunately, JS build systems are usually the bottleneck for building a JS project nowadays. Having parts of the build blazingly fast doesn't matter much if the rest of the build takes seconds or literally minutes. Here are a few suggestions:
 
-- Convert more files into BuckleScript/Reason =). Fewer files going through fewer parts of the JS pipeline helps a ton.
+- Convert more files into ReScript =). Fewer files going through fewer parts of the JS pipeline helps a ton.
 - Careful with bringing in more dependencies: libraries, syntax transforms, build step loaders, etc. The bulk of these dragging down the editing & building experience might out-weight the API benefits they provide.
 - Wait for us to create our own super fast linker (aka bundler).
 

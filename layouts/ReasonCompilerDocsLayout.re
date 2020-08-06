@@ -110,18 +110,13 @@ let buildsystemNavs = [|
     href: "/docs/reason-compiler/latest/build-configuration",
   },
   {
-    name: "Automatic Interface Generation",
-    href: "/docs/reason-compiler/latest/automatic-interface-generation",
-  },
-  {
-    name: "Interop with Other Build System",
+    name: "Interop with JS Build System",
     href: "/docs/reason-compiler/latest/interop-with-js-build-systems",
   },
   {
     name: "Performance",
     href: "/docs/reason-compiler/latest/build-performance",
   },
-  {name: "Advanced", href: "/docs/reason-compiler/latest/build-advanced"},
 |];
 
 let stdlibNavs = [|

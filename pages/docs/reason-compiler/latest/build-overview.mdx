@@ -1,17 +1,11 @@
 # Build System Overview
 
-BuckleScript comes with a build system, bsb, that's meant to be fast, lean and used as the build system of the BuckleScript/Reason community.
+ReScript comes with a build system, bsb, that's meant to be fast, lean and used as the authoritative build system of the community.
 
 Bsb provides a few templates to quickly start a new project:
 
 ```sh
 bsb -init my-directory-name
-```
-
-To generate a Reason project:
-
-```sh
-bsb -init my-directory-name -theme basic-reason
 ```
 
 Feel free to inspect the various files in the newly generated directory. To see all the templates available, do:
@@ -20,9 +14,7 @@ Feel free to inspect the various files in the newly generated directory. To see 
 bsb -themes
 ```
 
-<!-- TODO: clean up themes -->
-
-The build description file is called `bsconfig.json`. Every BuckleScript project needs one.
+The build description file is called `bsconfig.json`. Every ReScript project needs one.
 
 **To build a project**, run:
 
@@ -33,8 +25,6 @@ bsb -make-world
 Add `-w` to keep the built-in watcher running. Any new file change will be picked up and the build will re-run.
 
 **Note**: third-party libraries (in `node_modules`) aren't watched, as doing so may exceed the node.js watcher count limit. If you're doing quick and dirty modifications inside `node_modules`, you have to do `bsb -clean-world -make-world` to rebuild them.
-
-**Note 2**: The watcher clears the screen with each rebuild. To suppress this, set the environment variable BS_WATCHNOCLEAR to some truthy value: `BS_WATCHNOCLEAR=1 npm start`
 
 **Note 3**: If you are developing across multiple devices, you may find the `-ws` configuration useful in order to have live-reloading across the network. Possible configurations are:
 - `bsb -make-world -w -ws _` (default)
@@ -57,9 +47,7 @@ Or `bsb -clean` to clean only your own artifacts.
 
 ## Editor Support
 
-Bsb generates a `.merlin` file, used by various [editor plugins](https://reasonml.github.io/docs/en/editor-plugins.html) under the hood to power e.g. autocomplete, type hint, diagnosis, etc.
-
-**Bonus**: you can directly pipe the bsb terminal error messages into VSCode by setting the config [here](https://github.com/reasonml-editor/vscode-reasonml#bsb).
+Bsb generates a `.merlin` file, used by various [editor plugins](editor-plugins.md) under the hood to power e.g. autocomplete, type hint, diagnosis, etc.
 
 ### Tips & Tricks
 

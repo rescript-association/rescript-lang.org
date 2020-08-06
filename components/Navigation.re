@@ -170,7 +170,6 @@ module SubNav = {
 
       let languageItems = [|
         ("Introduction", "/docs/manual/latest/introduction"),
-        ("Cheatsheet", "/docs/manual/latest/syntax-cheatsheet"),
       |];
 
       let recompItems = [|

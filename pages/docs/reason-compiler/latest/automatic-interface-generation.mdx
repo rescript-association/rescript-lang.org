@@ -1,6 +1,8 @@
 # Automatic Interface Generation
 
-"Interface files" (`.mli`, `.rei` files) are the "public description" of their corresponding "implementation files" (`.ml`, `.re`), exposed as documentation, and containing nothing but type declarations. Since a file is a module, an interface file is essentially a [module signature](https://reasonml.github.io/docs/en/module.html#signatures).
+> Note: this feature currently does not work for new projects!
+
+"Interface files" (`.resi` files) are the "public description" of their corresponding "implementation files" (`.ml`, `.re`), exposed as documentation, and containing nothing but type declarations. Since a file is a module, an interface file is essentially a [module signature](https://reasonml.github.io/docs/en/module.html#signatures).
 
 ## Tips & Tricks
 
@@ -18,14 +20,10 @@ For a file `src/MyUtils.ml`, run:
 bsc lib/bs/src/MyUtils-MyProject.cmi
 ```
 
-Where `MyProject` is your project's [namespace](build-configuration.md#name-namespace). If it's not enabled, it'll be just `MyUtils.cmi`). `.cmi` is the OCaml/BuckleScript file that contains some [compiled type info](https://reasonml.github.io/community/faq#compiled-files).
+Where `MyProject` is your project's [namespace](build-configuration.md#name-namespace). If it's not enabled, it'll be just `MyUtils.cmi`). `.cmi` is the ReScript file that contains some [compiled type info](https://reasonml.github.io/community/faq#compiled-files).
 
-The above command outputs a boilerplate `.mli` interface to stdout. If you're using Reason, turn it into `.rei` syntax:
-
-```sh
-bsc -bs-re-out lib/bs/src/MyUtils-MyProject.cmi
-```
+The above command outputs a boilerplate `.mli` interface to stdout (old ml syntax).
 
 _If you don't have `bsc` globally available, use the ones provided locally in `node_modules/bs-platform/lib/bsc.exe`_.
 
-**Note**: the generated boilerplate might contain the strings `"BS-EXTERNAL"` or `"BuckleScript External"`. This happens when you've used `@bs` externals in your implementation file. It's a temporary flaw; you need to manually turn these `"BS-EXTERNAL"` back into the right `@bs` externals for now. We'll correct this in the future.
+**Note**: the generated boilerplate might contain the strings `"BS-EXTERNAL"` or `"ReScript External"`. This happens when you've used `@bs` externals in your implementation file. It's a temporary flaw; you need to manually turn these `"BS-EXTERNAL"` back into the right `@bs` externals for now. We'll correct this in the future.

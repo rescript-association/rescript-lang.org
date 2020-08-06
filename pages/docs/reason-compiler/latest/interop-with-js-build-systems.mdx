@@ -2,20 +2,18 @@
 
 If you come from JS, chances are that you already have a build system in your existing project. Here's an overview of the role bsb would play in your build pipeline, if you want to introduce some BS code into the codebase.
 
-> As much as possible, please try not to wrap bsb into your own incremental build framework. OCaml's compilation is very hard to get right, and you'll inevitably run into stale or badly performing builds (therefore erasing much of our value proposition) if you create your own meta layer on top.
+> As much as possible, please try not to wrap bsb into your own incremental build framework. ReScript's compilation is very hard to get right, and you'll inevitably run into stale or badly performing builds (therefore erasing much of our value proposition) if you create your own meta layer on top.
 
 ## Popular JS Build Systems
 
 The JS ecosystem uses a few build systems: [browserify](http://browserify.org/), [rollup](https://github.com/rollup/rollup), [webpack](https://webpack.js.org/), etc. The latter's probably the most popular of the three (as of 2019 =P). These build systems do both the compilation and the linking (aka, bundling many files into one or few files).
 
-BuckleScript and bsb only take care of the compilation step; it maps one ml/re/mli/rei file into one JS output file. As such, in theory, no build system integration is needed from our side. From e.g. the webpack watcher's perspective, the JS files BuckleScript generates are almost equivalent to your hand-written JS files. We also recommend that you initially check in those BS-generated JS files, as this workflow means:
+ReScript and bsb only take care of the compilation step; it maps one ml/re/mli/rei file into one JS output file. As such, in theory, no build system integration is needed from our side. From e.g. the webpack watcher's perspective, the JS files ReScript generates are almost equivalent to your hand-written JS files. We also recommend that you initially check in those BS-generated JS files, as this workflow means:
 
-- You can introduce BuckleScript and/or Reason silently into your codebase without disturbing existing infra.
+- You can introduce ReScript silently into your codebase without disturbing existing infra.
 - You have a **visual** diff of the performance & correctness of your JS file when you update the ml/re files and the JS artifacts change.
-- You can let teammates hot-patch the JS files in emergency situations, without needing to first start learning BS/Reason.
-- You can remove BuckleScript and Reason completely from your codebase and things will still work (in case your company decides to stop using us for whatever reason).
-
-The slight disavantage of such approach is that you need to keep both a bsb watcher and a webpack watcher open. Though if you activate [VSCode-Reasonml's bsb feature](https://github.com/reasonml-editor/vscode-reasonml#bsb), you avoid the former rather seamlessly.
+- You can let teammates hot-patch the JS files in emergency situations, without needing to first start learning ReScript.
+- You can remove ReScript completely from your codebase and things will still work (in case your company decides to stop using us for whatever reason).
 
 For what it's worth, you can also turn bsb into an automated step in your build pipeline, e.g. into a webpack loader; but such approach is error-prone and therefore discouraged.
 
@@ -40,9 +38,9 @@ This will:
 
 ## Use Loaders on BS Side
 
-"What if my build system uses a CSS/png/whatever loader and I'd like to use it in BuckleScript?"
+"What if my build system uses a CSS/png/whatever loader and I'd like to use it in ReScript?"
 
-Loaders are indeed troublesome; in the meantime, please use e.g. `[%raw {|require('./myStyles.css')|}]` at the top of your file. This just uses [`raw`](embed-raw-javascript.md) to compile the snippet into an actual JS require.
+Loaders are indeed troublesome; in the meantime, please use e.g. `%raw(`require('./myStyles.css')`)` at the top of your file. This just uses [`raw`](embed-raw-javascript.md) to compile the snippet into an actual JS require.
 
 ## Getting Project's Dependencies
 

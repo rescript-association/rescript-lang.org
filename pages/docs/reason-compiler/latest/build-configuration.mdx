@@ -61,11 +61,11 @@ You can mark your directories as dev-only (for e.g. tests). These won't be built
 
 ## bs-dependencies, bs-dev-dependencies
 
-List of BuckleScript/Reason dependencies. Just like `package.json`'s dependencies, they'll be searched in `node_modules`. 
+List of ReScript dependencies. Just like `package.json`'s dependencies, they'll be searched in `node_modules`.
 
 Note that only sources marked with `"type":"dev"` will be able to resolve modules from `bs-dev-dependencies`.
 
-## reason, refmt
+## reason, refmt (old)
 
 `reason` config is enabled by default. To turn on JSX for [ReasonReact](https://reasonml.github.io/reason-react/), specify:
 
@@ -76,7 +76,7 @@ Note that only sources marked with `"type":"dev"` will be able to resolve module
 }
 ```
 
-The `refmt` config **should be explicitly specified** as `3`, as in the [Reason V3 syntax](https://reasonml.github.io/blog/2017/10/27/reason3.html).
+The `refmt` config **should be explicitly specified** as `3`.
 
 ## js-post-build
 
@@ -125,11 +125,11 @@ Either `".js"` or `".bs.js"`. Strongly prefer the latter.
 
 ### Design Decisions
 
-Generating JS files with the `.bs.js` suffix means that, on the JS side, you can do `const myBuckleScriptFile = require('./theFile.bs')`. The benefits:
+Generating JS files with the `.bs.js` suffix means that, on the JS side, you can do `const myReScriptFile = require('./theFile.bs')`. The benefits:
 
 - It's immediately clear that we're dealing with a generated JS file here.
 - It avoids clashes with a potential `theFile.js` file in the same folder.
-- It avoids the need of using a build system loader for BuckleScript files. This + in-source build means integrating a BuckleScript project into your pure JS codebase **basically doesn't touch anything in your build pipeline at all**.
+- It avoids the need of using a build system loader for ReScript files. This + in-source build means integrating a ReScript project into your pure JS codebase **basically doesn't touch anything in your build pipeline at all**.
 - The `.bs.js` suffix [lets bsb track JS artifacts much better](build-overview.md#tips-tricks).
 
 ## warnings
@@ -147,11 +147,11 @@ Selectively turn on/off certain warnings and/or turn them into hard errors. Exam
 
 Turn off warning `44` and `102` (polymorphic comparison). Turn warning `5` (partial application whose result has function type and is ignored) into a hard error.
 
-The warning number are shown in the build output when they're triggered. The complete list is [here](https://caml.inria.fr/pub/docs/manual-ocaml/comp.html#sec281), a little bit below. `100` and up are BuckleScript-specific.
+The warning number are shown in the build output when they're triggered. The complete list is [here](https://caml.inria.fr/pub/docs/manual-ocaml/comp.html#sec281), a little bit below. `100` and up are ReScript-specific.
 
 ## bsc-flags
 
-Extra flags to pass to the underlying `bsc` call. Notably: `["-bs-super-errors"]` for turning on [cleaner error output](https://reasonml.github.io/blog/2017/08/25/way-nicer-error-messages.html). No need to pass this flag for a Reason project; it's enabled by default.
+Extra flags to pass to the underlying `bsc` call. Notably: `["-bs-super-errors"]` for turning on [cleaner error output](https://reasonml.github.io/blog/2017/08/25/way-nicer-error-messages.html). No need to pass this flag for a new ReScript project; it's enabled by default.
 
 ## Environment Variables
 
