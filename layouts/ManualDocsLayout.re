@@ -70,11 +70,6 @@ let javascriptNavs = [|
   },
 |];
 
-let nativeNavs = [|
-  NavItem.{name: "Native", href: "/docs/manual/latest/native"},
-  {name: "Native Quickstart", href: "/docs/manual/latest/native-quickstart"},
-|];
-
 let extraNavs = [|
   NavItem.{name: "FAQ", href: "/docs/manual/latest/faq"},
   {name: "Newcomer Examples", href: "/docs/manual/latest/newcomer-examples"},
@@ -85,7 +80,6 @@ let categories = [|
   Category.{name: "Overview", items: overviewNavs},
   {name: "Basics", items: basicNavs},
   {name: "JavaScript", items: javascriptNavs},
-  {name: "Native", items: nativeNavs},
   {name: "Extra", items: extraNavs},
 |];
 
