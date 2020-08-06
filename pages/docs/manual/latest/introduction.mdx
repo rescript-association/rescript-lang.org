@@ -1,6 +1,6 @@
 # ReScript
 
-ReScript isn't a new language. It simply takes [OCaml](http://ocaml.org), **a fast, pragmatic and typed language**, and makes it compile to clean, readable and performant JavaScript code. This allows the users to write in an industrial-strength language while using the existing, familiar JavaScript tools (npm/yarn, bundlers, minifiers, devtools, etc.) and accessing the vast ecosystem from JavaScript.
+ReScript looks like JavaScript, works like JavaScript, works _with_ JavaScript, and outputs to the highest quality of clean, readable and performant JavaScript. The big difference is that ReScript comes with a bulletproof type system, a solid build system, and a couple of extra features that'd make JavaScript users envious.
 
 Thanks to its great interoperability with JS, ReScript can be seen as a "gradually" typed language, where you get to incrementally adopt it in your codebase file-by-file, while keeping the full benefits of a 100% sound and reliable type system, plus extra language features.
 
@@ -40,12 +40,6 @@ levels:
 ### Compile-time Optimizations
 
 JavaScript is a dynamic language; it takes a performance hit when the browser engine optimizes code at runtime. While some engines circumvent the problem to some extent by [caching](http://v8project.blogspot.com/2015/07/code-caching.html), this isn't always available nor predictable. The lack of a strong, built-in type system also limits the amount of optimizations possible. ReScript, on the other hand, is able to provide many optimizations during compilation time, way before the code's shipped to the browser. A widespread adage to write fast JavaScript code is to write as if there's a type system (in order to trigger JS engines' good optimization heuristics); ReScript gives you a real one and generates code that's friendly to optimizations by default.
-
-### Runs on Native Too!
-
-ReScript is really just OCaml (apart from the JavaScript interop). OCaml can compile directly to machine code (aka fast, barebone assembly)\*. When you're not targeting JavaScript, you can reuse the same code and target servers, desktops, mobile OSes, etc. This unlocks even better performance. For example, the traditional node.js application starts up in **>100ms**, while OCaml compiled to machine code starts in around **2ms**.
-
-\* In fact, it even runs on [microcontrollers](http://www.algo-prog.info/ocapic/web/index.php?id=ocapic) with only a few KBs of memory.
 
 ## How Is ReScript Different?
 
