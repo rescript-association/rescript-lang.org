@@ -1,144 +1,97 @@
-# A better Documentation Platform for Reason
+# ReScript (prev. known BuckleScript & Reason) 
 
-The website `reasonml.org` is a community project dedicated to a better
-documentation experience for the Reason & BuckleScript platform and is
-currently a **Work in Progress**.
+The website `rescript-lang.org` is part of the rebranding process of the
+BuckleScript project. What used to be known as "BuckleScript & ReasonML" will
+soon be called the ReScript platform.
 
-More details about this project and its high level roadmap (1-2 years) are
-documented
-[here](https://www.reason-association.org/projects/better-learning-materials-and-tools).
+Here you'll find the official documentation for the ReScript language manual,
+compiler, APIs and user guides. All ReScript related content was sourced from
+the preceeding [reasonml.org BuckleScript
+section](https://reasonml.org/docs/reason-compiler/latest/introduction)
+website.
+
+As soon as ReScript has officially relaunched, original ReScript related
+sources on [reasonml.org](https://reasonml.org) will be removed.
+
+## When is rescript-lang.org ready?
+
+We will make a dedicated announcement on the [ReasonML](https://reasonml.org)
+and [Reason Association](https://www.reason-association.org) blog as soon as we
+are ready to launch.
+
+All original [BuckleScript documentation links](https://bucklescript.github.io)
+will be forwarded to the proper ReScript page to not break existing infrastructure.
 
 <Warn>
 
-The `reasonml.org` website is currently in `pre-alpha` phase.
-Please be aware that the URL structure for this website is not finalized yet
-and may be subject to change.
+The `rescript-lang.org` website is currently not ready yet and will be heavily
+restructured in the near future. Don't rely on the URL structure etc.
 
 We will introduce permalinks with our first stable release.
 
 </Warn>
 
+## Why the rebrand?
+
+We strongly believe that the ReScript compiler and syntax will provide the best
+experience to write JS and React applications. Unifiying the tools in one coherent
+platform and core team allows us to build features that wouldn't be possible in
+the original BuckleScript + ReasonML setup.
+
+This has no impact on the development of the ReasonML language. In contrary, ReasonML
+can now focus on their goals, as much as we can focus on ours.
+
+## What Will Change with ReScript?
+
+Technically, not much. One of our main goals is to keep backwards compatibility
+for existing BuckleScript codebases and will provide an automated upgrade path
+from `.re` (Reason) to `.res` (ReScript) files. 
+
+The BuckleScript compiler toolchain and its new `.res` syntax will be unified
+into one platform called ReScript. Upgrading from the bs-platform to the
+soon-to-be-published ReScript npm package will just be a matter of updating
+your package.json file. Syntax wise, we believe that previous Reason users will
+feel right at home.
+
+ReScript will continue shipping the old Reason v3.6 syntax as well and it will
+be possible to mix `.re` and `.res` files in one codebase (same with
+libraries).
+
+More details about future compatibility with Reason can be found in
+one of our [future commitment blog
+post](https://reasonml.org/blog/a-note-on-bucklescripts-future-commitments).
+
+## The Team
+
+**Name**                                         | **Area**  | **Country** 
+-------------------------------------------------|-----------|---------------
+[Hongbo Zhang](https://twitter.com/bobzhang1988) | Compiler | 🇨🇳
+[Cheng Lou](https://twitter.com/chenglou_)       | Compiler, Syntax | 🇨🇦
+[Cristiano Calcagno](https://github.com/cristianoc) | Compiler, Tools | 🇨🇭 
+[Ricky Vetter](https://twitter.com/rickyvetter) | ReasonReact | 🇺🇸
+[Maxim Valke](https://twitter.com/_binary_search) | Syntax | 🇧🇪 
+[Patrick Stapfer](https://twitter.com/ryyppy) | Docs, Tools | 🇦🇹
+
+
 ## Current Progress 
-
-All the information you can find here is a fork of the official sources,
-unified and optimized for a single doc website experience. Especially for the
-BuckleScript documentation, you'll find some useful additions and better
-explanations for its functionality.
-
-We always make sure to regularly sync with the changes upstream and we accept
-PRs for doc improvements (we try to keep the same file structure though).
-
-If there's anything missing, please open up an issue and let us know!
-
-**Docs** |  **Official Source** | **Latest Update / Commit**
---------|-----------|---------------|-------------
-ReasonML | [reasonml.github.io](//reasonml.github.io) | Feb 19, 2020 / [#bd70b1](https://github.com/reasonml/reasonml.github.io/commit/bd70b19269f8a7df8b4170c8600a75e9919e9a55)|  
-BuckleScript | [bucklescript.github.io](//bucklescript.github.io) | Feb 19, 2020 / [#5f8df9](https://github.com/BuckleScript/bucklescript.github.io/commit/5f8df9d475701c1b41f1dd6b9440a18f36fbc08f)
-ReasonReact | [reasonml.github.io/reason-react](//reasonml.github.io/reason-react) | Feb 21, 2020 / [#206d8c](https://github.com/reasonml/reason-react/commit/206d8ca14c93d9b0ee1b9ff722860913401af798)
-GenType | [github.com/cristianoc/genType](//github.com/cristianoc/genType) | Feb 25, 2020 / [#e2590e](https://github.com/cristianoc/genType/commit/e2590e6c64cc46515a0a7e866dbd2708a4509e3d#diff-04c6e90faac2675aa89e2176d2eec7d8)
-
 
 **Feature** | **Status** | **Notes**
 --------|-----------|---------------|-------------
-Playground |  🚧 | In the works within the BuckleScript repo
-BS API Docs |  🚧 | Only JS / Belt module (rest coming soon) (BS v7.0.0)
+BuckleScript -> ReScript Docs refactor |  🚧 | In the works
+Playground |  🚧 | In the works
+BS API Docs |  🚧 | Only JS / Belt module (automatic docs generation coming soon) (BS >= v7.0.0)
+Blog | 🚧 | We will be moving content over from the original [reasonml.org Blog](https://reasonml.org/blog) soon
 Full Page Search | 📝 | In the planning phase
-Blog | ✅ | Relocated and cross-referenced all BuckleScript, ReasonReact, ReasonML Posts
-Community | ✅ | adapted and partly rewritten
-
-**Stay informed about recent updates either via the
-[@ReasonAssoc](https://twitter.com/ReasonAssoc) twitter handle or within the
-[ReasonML Discord](https://discord.gg/reasonml)!**
-
-
-## Official Resources
-
-In case you are looking for the current official docs, here is a good reference sheet:
-
-- [Reason Language Reference](https://reasonml.github.io/)
-- [BuckleScript](https://bucklescript.github.io/)
-- [BuckleScript’s Js Stdlib](https://bucklescript.github.io/bucklescript/api/Js.html)
-- [BuckleScript’s Belt Stdlib](https://bucklescript.github.io/bucklescript/api/Belt.html)
-- [Esy Package Manager - Easy package management for native Reason, OCaml and more](https://esy.sh)
-- [GenType - Auto generation of idiomatic bindings between Reason and JavaScript](https://github.com/cristianoc/genType)
-- [Sketch.sh - Interactive ReasonML sketchbook](https://sketch.sh)
-- [Nit - A better ReasonML Playground](https://nit.sketch.sh/)
-- [Redex - Reason Package Index](https://redex.github.io/)
-
-
-## Current Focus / Open Tasks
-
-Following sections are just a rough outline on what needs to be done in the
-next steps:
-
-### Docs:
-
-- ~~Upstream the Reason language docs from reasonml.github.io~~
-- ~~Upstream the BuckleScript docs from bucklescript.github.io~~
-- ~~Upstream GenType docs~~
-- ~~Upstream Blog Posts from all different sources~~
-- Merge Reason's & BuckleScript's docs into one cohesive document
-
-### API documentation:
-
-- Refining the [Belt API](/apis/javascript/latest/belt) & [Js API](/apis/javascript/latest/js) documentation by hand via markdown
-- Use `odoc` to extract JSON API documentation from source code (see our
-[doc-tools](https://github.com/reason-association/doc-tools) project for more
-details)
-- Upstream our markdown curated changes of the Belt / Js modules into the BuckleScript source code
-### Playground:
-
-- Implement the design for
-[mobile](https://xd.adobe.com/spec/1cd19c3a-a0bb-4f93-4e11-725589888696-6ae0/screen/adfe80dc-6bc1-40a5-9975-aa062e63cdc5/Reason-Playground)
-and
-[desktop](https://xd.adobe.com/spec/1cd19c3a-a0bb-4f93-4e11-725589888696-6ae0/screen/e8559ac4-5e35-430b-83f3-e4ad8c1e274c/Reason-1400-Playground)
-- Improve the BuckleScript generated playground bundle for our use-cases (see
-[issue](https://github.com/BuckleScript/bucklescript/issues/3857#issuecomment-558540278))
-- Improve the workflow for generating third-party package bundles (define a protocol on how to hook those into the playground engine)
-- Integrate the Playground Engine + ReasonReact 3rd Party dep into the UI (see
-the [NIT](https://github.com/Sketch-sh/nit/tree/406) playground for
-inspiration)
-
-### Search Functionality:
-
-- Build the custom Search overlay (see the
-[design](https://xd.adobe.com/spec/1cd19c3a-a0bb-4f93-4e11-725589888696-6ae0/screen/5ef4d42c-05eb-4117-82b6-a2906e652ff1/Reason-1400-Nav-Search))
-- Add Algolia's OSS webscraper engine and wire it up with our UI
-- Generate indexing data via `odoc` and use a paid plan for Algolia's indexing service
-- Tweak UI for API vs. whole page searches
 
 
 ## How to contribute
 
-Check out our [contribution
-guidelines](https://github.com/reason-association/reasonml.org/blob/master/CONTRIBUTING.md)
-to find a task to work on and make sure to sync up with the team via
-[Discord](https://discord.gg/fscQAnj) (ReasonML / #docs channel) and / or ping
-[@ryyppy](https://twitter.com/ryyppy).
-
-If you want to contribute to the ReasonML / BuckleScript / ReasonReact /
-GenType docs, please open PRs on the original sources for now and feel free to
-open issues on reasonml.org to let us know about it.
+As for right now, this website is not yet open source. We will release more
+information on the contribution process soon.
 
 <UrlBox text="Markdown Guide" href="/markdown-guide">
 
-Also check out our markdown guide to get an overview
+For maintainers: check out our markdown guide to get an overview
 over all available UI components when writing documentation.
 
 </UrlBox>
-
-## Sponsors
-
-**We want to thank our sponsors for making this project possible.**
-
-<div className="my-8 flex flex-col sm:flex-row sm:items-center">
-  <img src="/static/partners/ahrefs.svg" className="w-1/2 sm:w-1/4 mr-10 h-16"/>
-  <img src="/static/partners/tezos_foundation.svg" className="w-4/5 mt-8 sm:mt-0 sm:w-2/4 h-16"/>
-</div>
-
-
-We are always looking for new sponsor partners to continously improve our
-documentation experience. Please refer to the Reason Assocation's
-[donation](https://www.reason-association.org/donate) section for more
-information.
-

@@ -309,7 +309,15 @@ let default = (props: props): React.element => {
 
   let content =
     if (Belt.Array.length(posts) === 0) {
-      <div> "Currently no posts available"->s </div>;
+      /*<div> "Currently no posts available"->s </div>;*/
+      <div className="mt-8">
+        // TODO: Undo this later when posts are ready
+
+          <Markdown.H1> "Blog not yet available"->s </Markdown.H1>
+          <Markdown.Warn>
+            "This blog is currently in the works."->s
+          </Markdown.Warn>
+        </div>;
     } else {
       let filtered =
         switch (currentSelection) {
@@ -404,7 +412,7 @@ let default = (props: props): React.element => {
 
   <>
     <Meta
-      title="Blog | Reason Documentation"
+      title="Blog | ReScript Documentation"
       description="News, Announcements, Release Notes and more"
     />
     <div className="mb-32 mt-16 pt-2">
@@ -476,7 +484,9 @@ let getStaticProps: Next.GetStaticProps.t(props, params) =
         );
 
     let props = {
-      posts: Post.orderByDate(posts),
+      //TODO: Undo this later as soon as blog migration is done
+      /*posts: Post.orderByDate(posts),*/
+      posts: [||],
       malformed,
       availableCategories,
     };

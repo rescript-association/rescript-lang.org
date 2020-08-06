@@ -82,6 +82,7 @@ module Badge = {
 
 type t = {
   author: Author.t,
+  co_authors: array(Author.t),
   date: DateStr.t,
   previewImg: Js.null(string),
   articleImg: Js.null(string),
@@ -113,21 +114,52 @@ let decodeBadge = (str: string): Badge.t => {
   };
 };
 
-let decodeAuthor = (~authors: array(Author.t), username) => {
+exception AuthorNotFound(string);
+
+let decodeAuthor = (~fieldName: string, ~authors: array(Author.t), username) => {
   switch (Js.Array2.find(authors, a => a.username === username)) {
   | Some(author) => author
   | None =>
     raise(
-      Json.Decode.DecodeError({j|Couldn't find author called "$username"|j}),
+      AuthorNotFound(
+        {j|Couldn't find author "$username" in field $fieldName|j},
+      ),
     )
   };
+};
+
+let authorDecoder = (~fieldName: string, ~authors, json) => {
+  open Json.Decode;
+
+  let multiple = j => {
+    array(string, j)->Belt.Array.map(decodeAuthor(~fieldName, ~authors));
+  };
+
+  let single = j => {
+    [|string(j)->decodeAuthor(~fieldName, ~authors)|];
+  };
+
+  either(single, multiple, json);
 };
 
 let decode = (~authors: array(Author.t), json: Js.Json.t): result(t, string) => {
   Json.Decode.(
     switch (
       {
-        author: json->field("author", string, _)->decodeAuthor(~authors),
+        author:
+          json
+          ->field("author", string, _)
+          ->decodeAuthor(~fieldName="author", ~authors),
+        co_authors:
+          json
+          ->optional(
+              field(
+                "co-authors",
+                authorDecoder(~fieldName="co-authors", ~authors),
+              ),
+              _,
+            )
+          ->Belt.Option.getWithDefault([||]),
         date: json->field("date", string, _)->DateStr.fromString,
         category: json->field("category", string, _)->decodeCategory,
         badge:
@@ -146,6 +178,7 @@ let decode = (~authors: array(Author.t), json: Js.Json.t): result(t, string) => 
     ) {
     | fm => Ok(fm)
     | exception (DecodeError(str)) => Error(str)
+    | exception (AuthorNotFound(str)) => Error(str)
     }
   );
 };

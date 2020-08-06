@@ -58,10 +58,7 @@ let basicNavs = [|
   {name: "Object", href: "/docs/manual/latest/object"},
   {name: "Module", href: "/docs/manual/latest/module"},
   {name: "Promise", href: "/docs/manual/latest/promise"},
-  {
-    name: "Reserved Keywords",
-    href: "/docs/manual/latest/reserved-keywords",
-  },
+  {name: "Reserved Keywords", href: "/docs/manual/latest/reserved-keywords"},
 |];
 
 let javascriptNavs = [|
@@ -150,6 +147,14 @@ module Docs = {
 module Prose = {
   [@react.component]
   let make = (~children) => {
-    <Docs components=Markdown.default> children </Docs>;
+    <Docs components=Markdown.default>
+      <Markdown.Warn>
+      <div className="font-bold">"IMPORTANT!"->React.string</div>
+        "This section is still
+        about ReasonML & BuckleScript.\nIt will be rewritten to ReScript very soon."
+        ->React.string
+      </Markdown.Warn>
+      children
+    </Docs>;
   };
 };

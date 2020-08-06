@@ -113,7 +113,7 @@ module Head = {
 };
 
 module Error = {
-  [@bs.module "next/head"] [@react.component]
+  [@bs.module "next/error"] [@react.component]
   external make: (~statusCode: int, ~children: React.element) => React.element =
     "default";
 };

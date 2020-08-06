@@ -3,6 +3,5 @@
   "scope": "reason-association",
   "github": {
     "silent": true
-  },
-  "builds": [{ "src": "next.config.js", "use": "@now/next" }]
+  }
 }

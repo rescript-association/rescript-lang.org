@@ -9,9 +9,9 @@ let ogImgDefault = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v158807751
 [@react.component]
 let make =
     (
-      ~siteName="Reason Documentation",
+      ~siteName="ReScript Documentation",
       ~keywords: array(string)=[||],
-      ~description="The Reason language and ecosystem docs",
+      ~description="The ReScript language and ecosystem docs",
       ~canonical=?,
       ~title=?,
       ~ogLocale="en_US",
@@ -56,12 +56,12 @@ let make =
      | Some(href) => <link key="canonical" href rel="canonical" />
      | None => React.null
      }}
-    <link
-      key="icon"
-      rel="icon"
-      sizes="16x16 32x32 64x64"
-      href="/static/favicon.ico"
-    />
+    /*<link*/
+      /*key="icon"*/
+      /*rel="icon"*/
+      /*sizes="16x16 32x32 64x64"*/
+      /*href="/static/favicon.ico"*/
+    /*/>*/
     /* OG link preview meta data */
     <meta key="og:site_name" property="og:site_name" content=ogSiteName />
     <meta key="og:locale" property="og:locale" content=ogLocale />
@@ -71,7 +71,8 @@ let make =
       property="og:description"
       content=ogDescription
     />
-    <meta key="og:image" property="og:image" content=ogImage />
+    /*TODO: Undo this later */
+    /*<meta key="og:image" property="og:image" content=ogImage />*/
     /* Twitter Meta */
     <meta key="twitter:title" name="twitter:title" content=title />
     <meta
@@ -91,11 +92,12 @@ let make =
       name="twitter:card"
       content="summary_large_image"
     />
-    <meta key="twitter:image" property="twitter:image" content=ogImage />
+    /*TODO: Undo this later */
+    /*<meta key="twitter:image" property="twitter:image" content=ogImage />*/
     <link
       rel="alternate"
       type_="application/rss+xml"
-      title="ReasonML Blog"
+      title="ReScript Blog"
       href="/blog/feed.xml"
     />
   </Head>;
