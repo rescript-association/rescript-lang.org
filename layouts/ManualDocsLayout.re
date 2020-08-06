@@ -24,7 +24,6 @@ let overviewNavs = [|
   NavItem.{name: "Introduction", href: "/docs/manual/latest/introduction"},
   {name: "Installation", href: "/docs/manual/latest/installation"},
   {name: "Editor Plugins", href: "/docs/manual/latest/editor-plugins"},
-  {name: "Extra Goodies", href: "/docs/manual/latest/extra-goodies"},
 |];
 
 let basicNavs = [|
@@ -129,7 +128,7 @@ module Docs = {
       );
 
     let title = "Language Manual";
-    let version = "v3.6";
+    let version = "v8.2.0";
 
     <DocsLayout
       theme=`Reason
