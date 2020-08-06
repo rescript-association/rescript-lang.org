@@ -593,8 +593,6 @@ module MiscPanel = {
     };
 
     let updateInput = (prev: state, input: string) => {
-      let results = WarningFlagDescription.Parser.parse(input);
-
       let suggestion =
         switch (input) {
         | "" => NoSuggestion
@@ -1465,8 +1463,8 @@ module B = {
 
   <>
     <Meta
-      title="Reason Playground"
-      description="Try ReasonML in the browser"
+      title="ReScript Playground"
+      description="Try ReScript in the browser"
     />
 
     <div className="text-16 mb-32 mt-16 pt-2 bg-night-dark">

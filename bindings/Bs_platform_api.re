@@ -14,7 +14,7 @@ module Lang = {
 
   let toString = t =>
     switch (t) {
-    | Res => "RES"
+    | Res => "ReScript"
     | Reason => "Reason"
     | OCaml => "OCaml"
     };
