@@ -6,47 +6,47 @@
 
 The following binds variables: `ten = 10`, `twenty = 20`
 
-```reason
-let someInts = (10, 20);
-let (ten, twenty) = someInts;
+```re
+let someInts = (10, 20)
+let (ten, twenty) = someInts
 ```
 
 The following binds variables: `name = "Guy"`, `age = 30`
 
-```reason
-type person = {name: string, age: int};
-let somePerson = {name: "Guy", age: 30};
-let {name, age} = somePerson;
+```re
+type person = {name: string, age: int}
+let somePerson = {name: "Guy", age: 30}
+let {name, age} = somePerson
 ```
 
 When you pull out fields, you can optionally rename the fields. The following binds these instead: `n = "Guy"`, `a = 30`.
 
-```reason
-let {name: n, age: a} = somePerson;
+```re
+let {name: n, age: a} = somePerson
 ```
 
 Destructuring also allows type annotations.
 
-```reason
-let (ten: int, twenty: int) = someInts;
-let {name: (n: string), age: (a: int)} = somePerson;
+```re
+let (ten: int, twenty: int) = someInts
+let {name: (n: string), age: (a: int)} = somePerson
 ```
 
 Destructuring a function's labeled arguments is also possible.
 
-```reason
+```re
 type person = {
   name: string,
   age: int
-};
+}
 
 let someFunction = (~person as {name}) => {
-  /* you can use `name` here */
-};
+  // you can use `name` here
+}
 
 let otherFunction = (~person as {name} as thePerson) => {
-  /* you can use both `name` and the whole record as `thePerson` here */
-};
+  // you can use both `name` and the whole record as `thePerson` here
+}
 ```
 
 **Keep reading the section, pattern matching, for a crazier form of destructuring**!
