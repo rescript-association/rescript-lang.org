@@ -21,20 +21,7 @@ module Category = DocsLayout.Category;
 module Toc = DocsLayout.Toc;
 
 let overviewNavs = [|
-  NavItem.{name: "New Project", href: "/docs/reason-compiler/latest/new-project"},
-  {name: "Try", href: "/docs/reason-compiler/latest/try"},
-  {
-    name: "Concepts Overview",
-    href: "/docs/reason-compiler/latest/concepts-overview",
-  },
-  {
-    name: "Upgrade Guide to v7",
-    href: "/docs/reason-compiler/latest/upgrade-to-v7",
-  },
-  {
-    name: "New BuckleScript Syntax (v8.1)",
-    href: "/docs/reason-compiler/latest/new-bucklescript-syntax",
-  },
+  NavItem.{name: "Try", href: "/docs/reason-compiler/latest/try"},
 |];
 
 let interopNavs = [|
@@ -208,7 +195,7 @@ let make = (~components=Markdown.default, ~children) => {
           UrlPath.[
             {name: "Docs", href: "/docs"},
             {
-              name: "BuckleScript",
+              name: "Interop",
               href: "/docs/reason-compiler/" ++ version ++ "/introduction",
             },
           ];
@@ -216,8 +203,8 @@ let make = (~components=Markdown.default, ~children) => {
       },
     );
 
-  let title = "BuckleScript";
-  let version = "v8";
+  let title = "Interop";
+  let version = "v8.2.0";
 
   <DocsLayout
     theme=`Js components categories version title ?activeToc ?breadcrumbs>

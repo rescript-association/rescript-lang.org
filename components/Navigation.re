@@ -174,7 +174,7 @@ module SubNav = {
       |];
 
       let recompItems = [|
-        ("BuckleScript", "/docs/reason-compiler/latest/introduction"),
+        ("Interop", "/docs/reason-compiler/latest/interop-overview"),
         ("ReasonReact", "/docs/reason-react/latest/introduction"),
         ("GenType", "/docs/gentype/latest/introduction"),
       |];
