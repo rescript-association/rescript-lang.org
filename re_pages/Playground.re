@@ -524,7 +524,7 @@ module MiscPanel = {
     [@react.component]
     let make = () => {
       <div className="p-4 pt-8">
-        <AnsiPre> "> console output" </AnsiPre>
+        <AnsiPre> "> console not implemented yet (coming soon)" </AnsiPre>
       </div>;
     };
   };
@@ -1468,11 +1468,21 @@ module B = {
       title="Reason Playground"
       description="Try ReasonML in the browser"
     />
+
     <div className="text-16 mb-32 mt-16 pt-2 bg-night-dark">
       <div className="text-night text-lg">
         <Navigation overlayState />
         <main className="mx-10 mt-16 pb-32 flex justify-center">
-          <div className="flex max-w-1280 w-full border-4 border-night">
+          /* MOBILE PLACEHOLDER */
+          <div className="block lg:hidden text-snow-darker text-center">
+            <div className="font-bold mb-4">
+            "Mobile Playground version not available yet."->s
+            </div>
+            <div>
+            "Please use a screen with at least 1024px width for the desktop version"->s
+            </div>
+          </div>
+          <div className="hidden lg:flex max-w-1280 w-full border-4 border-night">
             <div className="w-full max-w-705 border-r-4 border-night">
               <SingleTabPane title=editorTitle>
                 <div className="bg-onyx text-snow-darker">
