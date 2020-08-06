@@ -141,14 +141,6 @@ let advancedNavs = [|
     href: "/docs/reason-compiler/latest/extended-compiler-options",
   },
   {
-    name: "Use Existing OCaml Libraries",
-    href: "/docs/reason-compiler/latest/use-existing-ocaml-libraries",
-  },
-  {
-    name: "Difference from Native OCaml",
-    href: "/docs/reason-compiler/latest/difference-from-native-ocaml",
-  },
-  {
     name: "Compiler Architecture & Principles",
     href: "/docs/reason-compiler/latest/compiler-architecture-principles",
   },

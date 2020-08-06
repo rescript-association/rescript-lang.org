@@ -1,17 +1,15 @@
 # Conditional Compilation
 
-> This doesn't work with the Reason syntax right now, only the OCaml syntax.
+> This only works with the old OCaml syntax.
 
 Sometimes you want to write code that works with different versions of compilers and libraries.
 
 People used to use preprocessors like [C preprocessor](http://tigcc.ticalc.org/doc/cpp.html) for the C family languages. The OCaml community uses several preprocessors: [cppo](https://github.com/mjambon/cppo), [ocp-pp](https://github.com/OCamlPro/typerex-build/tree/master/tools/ocp-pp), camlp4 IFDEF macros, [optcomp](https://github.com/diml/optcomp) and [ppx optcomp](https://github.com/janestreet/ppx_optcomp).
 
-Instead of a preprocessor, BuckleScript adds language-level static `if` compilation. It's less powerful than other preprocessors since it only supports static `if` (no `#define`, `#undefine`, `#include`), but there are several advantages.
+Instead of a preprocessor, ReScript adds language-level static `if` compilation. It's less powerful than other preprocessors since it only supports static `if` (no `#define`, `#undefine`, `#include`), but there are several advantages.
 
 - It’s tiny (only ~500 lines) and highly efficient. Everything can be done in a **single pass**. It's easy to rebuild the pre-processor into a standalone file, with no dependencies on compiler libs, to back-port it to old OCaml compilers.
 - It’s purely functional and type-safe, and cooperates with editor tooling like Merlin.
-
-**Note**: BuckleScript's conditional compilation doesn't work with Reason yet.
 
 ## Usage
 
