@@ -236,3 +236,16 @@ module Hyperlink = {
     </svg>;
   };
 };
+
+module TriangleDown = {
+  [@react.component]
+  let make = (~className: string="") => {
+    <svg
+      className={"fill-current " ++ className}
+      width="8"
+      height="5"
+      viewBox="0 0 8 5">
+      <path d="M4,0,8,5H0Z" transform="translate(8 5) rotate(180)" />
+    </svg>;
+  };
+};

@@ -37,14 +37,16 @@ module.exports = {
   purge: {
     // Specify the paths to all of the template files in your project
     content: [
-      './components/**/*.re',
-      './re_pages/**/*.re',
-      './pages/**/*.re',
-      './pages/**/*.mdx',
-      './layouts/**/*.re',
+      "./components/**/*.re",
+      "./common/**/*.re",
+      "./re_pages/**/*.re",
+      "./ffi/**/*.js",
+      "./pages/**/*.re",
+      "./pages/**/*.mdx",
+      "./layouts/**/*.re"
     ],
     options: {
-      whitelist: ["html", "body"],
+      whitelist: ["html", "body"]
     }
   },
   theme: {
@@ -93,12 +95,13 @@ module.exports = {
           "15": "rgba(171, 94, 163, 0.15)"
         },
         turtle: {
-          default: "#38B790",
+          default: "#38B790"
         },
         gold: {
           light: "#FFC833",
           default: "#E0AC00",
           dark: "#C19400",
+          "15": "rgba(224, 172, 0, 0.15)",
           "10": "rgba(224, 172, 0, 0.10)"
         },
         primary: {
@@ -108,6 +111,12 @@ module.exports = {
           "15": "var(--color-text-primary-15)",
           "40": "var(--color-text-primary-40)",
           "80": "var(--color-text-primary-80)"
+        },
+        "dark-code": {
+          "1": "#DE935F",
+          "2": "#81A2BE",
+          "3": "#60915F",
+          "4": "#999999"
         },
         code: {
           "1": "#DE935F",
@@ -133,8 +142,17 @@ module.exports = {
         tight: "0.02em"
       },
       spacing: {
-        '2/3': "66.666667%",
-        '9/16': "56.25%",
+        "2/3": "66.666667%",
+        "9/16": "56.25%"
+      },
+      animation: {
+        pulse: 'pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1)',
+      },
+      keyframes: {
+        pulse: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '.5' },
+        },
       }
     },
     borderRadius: {
@@ -244,13 +262,15 @@ module.exports = {
   },
   variants: {
     color: ["hover"],
+    backgroundColor: ["hover", "active"],
     cursor: ["hover"],
     width: ["responsive"],
     border: ["hover", "responsive"],
-    borderWidth: ["responsive", "last"],
-    padding: ["hover", "responsive"],
-    margin: ["responsive", "first"],
-    visibility: ["group-hover"]
+    borderWidth: ["active", "responsive", "last"],
+    padding: ["hover", "responsive", "last"],
+    margin: ["responsive", "first", "last"],
+    visibility: ["group-hover"],
+    outline: ["focus"],
   },
   plugins: []
 };

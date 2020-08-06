@@ -15,6 +15,7 @@
     "@zeit/next-css": "^1.0.1",
     "bs-fetch": "^0.3.1",
     "bs-platform": "7.1.1",
+    "codemirror": "^5.54.0",
     "esm": "^3.2.25",
     "gentype": "^3.1.0",
     "glob": "^7.1.4",
@@ -54,6 +55,6 @@
     "cssnano": "^4.1.10",
     "postcss-cli": "^7.1.1",
     "reanalyze": "^2.5.0",
-    "tailwindcss": "^1.4.6"
+    "tailwindcss": "^1.6.0"
   }
 }
