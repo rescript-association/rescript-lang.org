@@ -106,7 +106,10 @@ let interopNavs = [|
     name: "NodeJS Special Variables",
     href: "/docs/reason-compiler/latest/nodejs-special-variables",
   },
-  {name: "Handling JS Naming Collisions", href: "/docs/reason-compiler/latest/handling-js-naming-collisions"},
+  {
+    name: "Handling JS Naming Collisions",
+    href: "/docs/reason-compiler/latest/handling-js-naming-collisions",
+  },
   {name: "Miscellaneous", href: "/docs/reason-compiler/latest/interop-misc"},
   {
     name: "Browser Support & Polyfills",
@@ -223,6 +226,12 @@ let make = (~components=Markdown.default, ~children) => {
 
   <DocsLayout
     theme=`Js components categories version title ?activeToc ?breadcrumbs>
+    <Markdown.Warn>
+      <div className="font-bold"> "IMPORTANT!"->React.string </div>
+      "This section is still
+        about ReasonML & BuckleScript.\nIt will be rewritten to ReScript very soon."
+      ->React.string
+    </Markdown.Warn>
     children
   </DocsLayout>;
 };

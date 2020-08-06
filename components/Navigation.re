@@ -323,13 +323,15 @@ module MobileNav = {
             </a>
           </Link>
         </li>
-        <li className=base>
-          <Link href="/community">
-            <a className={linkOrActiveLink(~target="/community", ~route)}>
-              "Community"->s
-            </a>
-          </Link>
-        </li>
+        /*
+         <li className=base>
+           <Link href="/community">
+             <a className={linkOrActiveLink(~target="/community", ~route)}>
+               "Community"->s
+             </a>
+           </Link>
+         </li>
+         */
         <li className=base>
           <a
             href="https://twitter.com/reasonml"
@@ -450,13 +452,16 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
     <div
       className="flex justify-between mx-4 md:mx-8 items-center h-full w-full max-w-1280">
       <div className="h-10 w-10">
-        <a href="/">
-          <img
-            className="inline-block w-full h-full"
-            src="/static/reason_logo.svg"
-          />
-        </a>
-      </div>
+          <a
+            href="/"
+            className="block hover:cursor-pointer flex justify-center items-center border w-full h-full font-bold">
+            "RES"->s
+          </a>
+        </div>
+        /*<img*/
+        /*className="inline-block w-full h-full"*/
+        /*src="/static/reason_logo.svg"*/
+        /*/>*/
       /* Desktop horizontal navigation */
       <div
         className="flex sm:justify-between bg-night-dark w-10/12 sm:w-9/12 sm:h-auto sm:relative">
@@ -518,20 +523,22 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
               "Blog"->s
             </a>
           </Link>
-          <Link href="/community">
-            <a
-              className={
-                "hidden sm:block "
-                ++ linkOrActiveLink(~target="/community", ~route)
-              }
-              onMouseEnter=nonCollapsibleOnMouseEnter>
-              "Community"->s
-            </a>
-          </Link>
         </div>
+        /*
+         <Link href="/community">
+           <a
+             className={
+               "hidden sm:block "
+               ++ linkOrActiveLink(~target="/community", ~route)
+             }
+             onMouseEnter=nonCollapsibleOnMouseEnter>
+             "Community"->s
+           </a>
+         </Link>
+         */
         <div className="hidden lg:-mr-6 lg:flex lg:justify-between lg:w-20 ">
           <a
-            href="https://github.com/reason-association/reasonml.org"
+            href="https://github.com/reason-association/rescript-lang.org"
             rel="noopener noreferrer"
             target="_blank"
             className=link
