@@ -2,48 +2,48 @@
 
 A "let binding", in other languages, might be called a "variable declaration". `let` _binds_ values to names. They can be seen and referenced by code that comes _after_ them.
 
-```reason
-let greeting = "hello!";
-let score = 10;
-let newScore = 10 + score;
+```re
+let greeting = "hello!"
+let score = 10
+let newScore = 10 + score
 ```
 
 ## Block Scope
 
 Bindings can be scoped through `{}`.
 
-```reason
+```re
 let message = {
-  let part1 = "hello";
-  let part2 = "world";
+  let part1 = "hello"
+  let part2 = "world"
   part1 ++ " " ++ part2
-};
-/* `part1` and `part2` not accessible here! */
+}
+// `part1` and `part2` not accessible here!
 ```
 
 The value of the last line of a scope is implicitly returned.
 
 ### Design Decisions
 
-Reason's `if`, `while` and functions all use the same block scoping. The code below works **not** because of some special "if scope"; but simply because it's the same scope syntax and feature you just saw:
+ReScript's `if`, `while` and functions all use the same block scoping mecanism. The code below works **not** because of some special "if scope"; but simply because it's the same scope syntax and feature you just saw:
 
-```reason
-if (displayGreeting) {
-  let message = "Enjoying the docs so far?";
-  print_endline(message)
+```re
+if displayGreeting {
+  let message = "Enjoying the docs so far?"
+  Js.log(message)
 };
-/* `message` not accessible here! */
+// `message` not accessible here!
 ```
 
 ## Bindings Are Immutable
 
-Reason let bindings are "immutable", aka "cannot change/vary". This helps Reason's type system to deduce and optimize much more than other languages (and in turn, help you more).
+Let bindings are "immutable", aka "cannot change". This helps our type system deduce and optimize much more than other languages (and in turn, help you more).
 
 ## Binding Shadowing
 
 The above restriction might sound unpractical at first. How are would you change a value then? Usually, 2 ways:
 
-The first is to realize that many times, what you want isn't to mutate a variable's value. For example, in JavaScript:
+The first is to realize that many times, what you want isn't to mutate a variable's value. For example, this JavaScript pattern:
 
 ```js
 var result = 0;
@@ -51,7 +51,7 @@ result = calculate(result);
 result = calculateSomeMore(result);
 ```
 
-What you're really doing is just to name intermediate steps. You didn't need to mutate `result` at all! You could have just written this:
+...is really just to comment on intermediate steps. You didn't need to mutate `result` at all! You could have just written this JS:
 
 ```js
 var result1 = 0;
@@ -59,29 +59,31 @@ var result2 = calculate(result1);
 var result3 = calculateSomeMore(result2);
 ```
 
-In Reason, this obviously works too:
+In ReScript, this obviously works too:
 
 ```re
-let result1 = 0;
-let result2 = calculate(result1);
-let result3 = calculateSomeMore(result2);
+let result1 = 0
+let result2 = calculate(result1)
+let result3 = calculateSomeMore(result2)
 ```
 
-Anyway, in Reason, we support let binding "shadowing". So you can write this too:
+Additionally, reusing the same let binding name overshadows the previous bindings with the same name. So you can write this too:
 
 ```re
-let result = 0;
-let result = calculate(result);
-let result = calculateSomeMore(result);
+let result = 0
+let result = calculate(result)
+let result = calculateSomeMore(result)
 ```
 
-As a matter of fact, even this is fine:
+(Though for the sake of clarity, we don't recommend this).
+
+As a matter of fact, even this is valid code:
 
 ```re
-let result = "hello";
-Js.log(result); // prints "hello"
-let result = 1;
-Js.log(result); // prints 1
+let result = "hello"
+Js.log(result) // prints "hello"
+let result = 1
+Js.log(result) // prints 1
 ```
 
 The binding you refer to is whatever's the closest upward. No mutation here!
