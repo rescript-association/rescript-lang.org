@@ -1,0 +1,74 @@
+# Array and List
+
+## Array
+
+Arrays are our primary ordered data structure. They work the same way as JavaScript arrays.
+
+```re
+let myArray = ["hello", "world", "how are you"]
+```
+
+### Usage
+
+See the [Js.Array](/apis/javascript/latest/js/array) API.
+
+Access & update an array item like so:
+
+```re
+let myArray = ["hello", "world", "how are you"]
+
+let firstItem = myArray[0] // "hello"
+
+myArray[0] = "hey"
+
+// now ["hey", "world", "how are you"]
+```
+
+## List
+
+We provide a singly linked lists. Lists are:
+
+- homogeneous
+- immutable
+- fast at prepending items
+- fast at getting the tail
+- slow at everything else
+
+```re
+let myList = list{1, 2, 3}
+```
+
+### Usage
+
+You'd use list for its resizability, its fast prepend (adding at the head), and its fast split, all of which are immutable and relatively efficient.
+
+Do **not** use list if you need to randomly access an item or insert at non-head position. Your code would end up obtuse and/or slow.
+
+The standard lib provides a [List module](https://reasonml.github.io/api/List.html).
+
+#### Immutable Prepend
+
+Use the spread syntax:
+
+```re
+let myList = list{1, 2, 3}
+let anotherList = list{0, ...myList}
+```
+
+`myList` didn't mutate. `anotherList` is now `list{0, 1, 2, 3}`. This is efficient (constant time, not linear). `anotherList`'s last 3 elements are shared with `myList`!
+
+**Note that `list{a, ...b, ...c}` is a syntax error**. We don't support multiple spread for a list. That'd be an accidental linear operation (`O(b)`), since each item of b would be one-by-one added to the head of `c`. You can use `List.concat` for this, but we highly discourage it.
+
+Updating an arbitrary item in the middle of a list is also discouraged, since its performance and allocation overhead would be linear (`O(n)`).
+
+#### Access
+
+`switch` (described in the [pattern matching section](pattern-matching.md)) is usually used to access list items:
+
+```re
+let message =
+  switch myList {
+  | list{} => "This list is empty"
+  | list{a, ...rest} => "The head of the list is the string " ++ string_of_int(a)
+  }
+```

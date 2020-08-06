@@ -41,7 +41,7 @@ let basicNavs = [|
     name: "Null, Undefined & Option",
     href: "/docs/manual/latest/null-undefined-option",
   },
-  {name: "List & Array", href: "/docs/manual/latest/list-and-array"},
+  {name: "Array & List", href: "/docs/manual/latest/array-and-list"},
   {name: "Function", href: "/docs/manual/latest/function"},
   {name: "If-Else", href: "/docs/manual/latest/if-else"},
   {name: "Pipe First", href: "/docs/manual/latest/pipe-first"},
