@@ -20,10 +20,6 @@ module NavItem = DocsLayout.NavItem;
 module Category = DocsLayout.Category;
 module Toc = DocsLayout.Toc;
 
-let overviewNavs = [|
-  NavItem.{name: "Try", href: "/docs/reason-compiler/latest/try"},
-|];
-
 let interopNavs = [|
   NavItem.{
     name: "Overview",
@@ -127,8 +123,7 @@ let advancedNavs = [|
 |];
 
 let categories = [|
-  Category.{name: "Overview", items: overviewNavs},
-  {name: "Interop", items: interopNavs},
+  Category.{name: "Interop", items: interopNavs},
   {name: "Standard Library", items: stdlibNavs},
   {name: "Advanced", items: advancedNavs},
 |];

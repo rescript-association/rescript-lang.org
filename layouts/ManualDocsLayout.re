@@ -23,6 +23,7 @@ module Toc = DocsLayout.Toc;
 let overviewNavs = [|
   NavItem.{name: "Introduction", href: "/docs/manual/latest/introduction"},
   {name: "Installation", href: "/docs/manual/latest/installation"},
+  {name: "Try", href: "/docs/manual/latest/try"},
   {name: "Editor Plugins", href: "/docs/manual/latest/editor-plugins"},
 |];
 
