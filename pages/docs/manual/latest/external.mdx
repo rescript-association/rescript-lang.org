@@ -1,19 +1,13 @@
 # External
 
-`external`, or "FFI" (foreign function interface), or simply "interop" (for "interoperability") is how Reason communicates with other languages, like C or JavaScript.
+`external`, or "FFI" (foreign function interface), or simply "interop" (for "interoperability") is how ReScript brings in existing JavaScript values.
 
 Imagine writing a let binding, but with its body omitted and its (mandatory) type written down:
 
-```reason
-external myCFunction: int => string = "theCFunction";
+```re
+@bs.val external getElementsByClassName:
+  string => array<Dom.element> = "document.getElementsByClassName"
 ```
-
-```reason
-[@bs.val] external getElementsByClassName: string => array(Dom.element) =
-  "document.getElementsByClassName";
-```
-
-(The above is a [BuckleScript](/docs/reason-compiler/latest/intro-to-external)-specific external that binds to a JavaScript function of the same name.)
 
 **Note**: `external`s can only be at the top level, or inside a module definition. You can't declare them in e.g. a function body.
 
@@ -23,8 +17,8 @@ You'd use an external value/function as if it was a normal let binding.
 
 ## Tips & Tricks
 
-If you come from a JavaScript background: **do take some time to learn about the [BuckleScript externals](/docs/reason-compiler/latest/intro-to-external)**! In the beginning, you'll likely encounter quite a few `external`s before you get to write 100% pure idiomatic Reason code.
+If you come from a JavaScript background: **do take some time to learn about the [externals](/docs/reason-compiler/latest/intro-to-external)**! In the beginning, you'll likely encounter quite a few `external`s before you get to write 100% pure idiomatic ReScript code.
 
 ## Design Decisions
 
-Reason takes interoperating with existing code very seriously. Our type system has very strong guarantees. However, such strong feature also means that, without a great interop system, it'd be very hard to gradually convert a codebase over to Reason. Fortunately, the FFI allows us to cooperate very well with [dirty, existing code](converting-from-js). The combination of a sound type system + great interop means that we get the benefits of a traditional gradual type system regarding incremental codebase coverage & conversion, without the downside of such gradual type system: complex features to support existing patterns, slow analysis, diminishing return in terms of type coverage, etc.
+ReScript takes interoperating with existing code very seriously. Our type system has very strong guarantees. However, such strong feature also means that, without a great interop system, it'd be very hard to gradually convert a codebase over to ReScript. Fortunately, the FFI allows us to cooperate very well with [dirty, existing code](converting-from-js). The combination of a sound type system + great interop means that we get the benefits of a traditional gradual type system regarding incremental codebase coverage & conversion, without the downside of such gradual type system: complex features to support existing patterns, slow analysis, diminishing return in terms of type coverage, etc.

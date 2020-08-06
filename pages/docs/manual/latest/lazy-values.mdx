@@ -5,11 +5,10 @@ A lazy value represents a deferred computation which will automatically memoize 
 This is useful for defining functions and expressions for complex procedures that always return the same value, for example:
 
 - Doing expensive DOM traversals over the same tree over and over again
-- Doing file system operations on a static set of files that won't change 
+- Doing file system operations on a static set of files that won't change
 - Doing expensive requests to an API server that would always return the same data
 
 A lazy value has a type of `Lazy.t('a)`, where `'a` is the return value of the computation. All its functionality is encapsulated with the globally available `Lazy` module.
-
 
 ## Creating a lazy value
 
@@ -20,36 +19,38 @@ Lazy values are part of the language. You can either use the `lazy` keyword to c
 // so we wrap it in a lazy value
 let getFiles =
   lazy({
-    Js.log("Reading dir");
-    Node.Fs.readdirSync("./pages");
+    Js.log("Reading dir")
+    Node.Fs.readdirSync("./pages")
   });
 
 // On the first call, the computation takes place
-Lazy.force(getFiles)->Js.log;
+Lazy.force(getFiles)->Js.log
 
 // The second call will just return the already calculated files
-Lazy.force(getFiles)->Js.log;
+Lazy.force(getFiles)->Js.log
 ```
 
 ... or you can also wrap an existing function to make it lazy:
 
-```reason example
+```re example
 // Example for wrapping a function with 0 parameters
-let getFiles = () => { Node.Fs.readdirSync("./pages"); };
+let getFiles = () => {
+  Node.Fs.readdirSync("./pages")
+}
 
 // Here we wrap our function in the lazy value
-let lazyGetFiles = Lazy.from_fun(getFiles);
+let lazyGetFiles = Lazy.from_fun(getFiles)
 ```
 
 ```re example
-// Example for wrapping a function with parameters 
+// Example for wrapping a function with parameters
 let doesFileExist = name => {
-  Node.Fs.readdirSync("./pages")->Js.Array.find(s => name === s, _);
-};
+  Node.Fs.readdirSync("./pages")->Js.Array.find(s => name === s, _)
+}
 
 // Here we use the lazy syntax again
-// since we can't use Lazy.from_fun 
-let lazyDoesFileExist = lazy(doesFileExist("blog.re"));
+// since we can't use Lazy.from_fun
+let lazyDoesFileExist = lazy(doesFileExist("blog.re"))
 ```
 
 Whenever we want to wrap a function `unit => 'a`, we use `Lazy.from_fun`, otherwise we use the `lazy([expr])` keyword to wrap an expression or a function with 1 or more arguments.
@@ -59,10 +60,10 @@ Whenever we want to wrap a function `unit => 'a`, we use `Lazy.from_fun`, otherw
 Lazy values need to be explicitly executed to be able to return a value. Use the `Lazy.force`to start the execution:
 
 ```re example
-let computation = lazy(1);
+let computation = lazy(1)
 
 // Returns 1
-Lazy.force(computation);
+Lazy.force(computation)
 ```
 
 It is also possible to use pattern matching to force a lazy value to compute, this includes `switch` expressions and similar syntax such as tuple destructuring:
@@ -71,12 +72,12 @@ It is also possible to use pattern matching to force a lazy value to compute, th
 //------------------------------------------
 // Extract a lazy value via pattern matching
 //------------------------------------------
-let computation = lazy("computed"); 
+let computation = lazy("computed")
 
 switch(computation) {
  | lazy("computed") => Js.log("ok")
  | _ => Js.log("not ok")
-};
+}
 
 
 //------------------------------
@@ -84,19 +85,19 @@ switch(computation) {
 //------------------------------
 // Note: currently refmt will reprint this
 //       as `let lazy word = ...`
-let lazy(word) = lazy("hello");
+let lazy(word) = lazy("hello")
 
 // Output: "hello"
-Js.log(word);
+Js.log(word)
 
 //------------------------------
 // Destructing a tuple
 //------------------------------
-let lazyValues = (lazy("hello"), lazy("world"));
-let (lazy(word1), lazy(word2)) = lazyValues;
+let lazyValues = (lazy("hello"), lazy("world"))
+let (lazy(word1), lazy(word2)) = lazyValues
 
 // Output: "hello world"
-Js.log2(word1, word2);
+Js.log2(word1, word2)
 ```
 
 As you can see, the `lazy` syntax is a really great way for creating and handling lazy computations!
@@ -106,18 +107,18 @@ As you can see, the `lazy` syntax is a really great way for creating and handlin
 Whenever a lazy value computation raises an exception, the same exception will be thrown by `Lazy.force`.
 
 ```re example
-exception NoFile;
+exception NoFile
 
 let readFile =
   lazy(
     {
-      raise(NoFile);
+      raise(NoFile)
     }
-  );
+  )
 
 try(Lazy.force(readFile)) {
   | NoFile => Js.log("No file")
-};
+}
 ```
 
 Nothing new here, since we are using the `try` expression to match the exception raised in the lazy computation!
@@ -126,4 +127,4 @@ Please remember: Exceptions should be used sparsely!
 
 ## Notes
 
-A lazy value is a [non-shared data type](/docs/reason-compiler/latest/common-data-types#non-shared-data-types). Don't rely on the runtime  representation on the JS side. 
+A lazy value is a [non-shared data type](/docs/reason-compiler/latest/common-data-types#non-shared-data-types). Don't rely on the runtime  representation on the JS side.
