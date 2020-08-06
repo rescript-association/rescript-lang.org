@@ -11,7 +11,7 @@ Records are like JavaScript objects but are:
 
 A record needs a mandatory type declaration:
 
-```re
+```res
 type person = {
   age: int,
   name: string
@@ -20,7 +20,7 @@ type person = {
 
 Value (this will be inferred to be of type `person`, declared above):
 
-```re
+```res
 let me = {
   age: 5,
   name: "Big ReScript"
@@ -29,7 +29,7 @@ let me = {
 
 Access (the familiar dot notation):
 
-```re
+```res
 let name = me.name
 ```
 
@@ -37,13 +37,13 @@ let name = me.name
 
 If you only write `{age: 5, name: "Baby ReScript"}` without an explicit declaration somewhere above, the type system will give you an error. If the type definition resides in another file, you need to explicitly indicate which file it is:
 
-```re
+```res
 // School.res
 
 type person = {age: int, name: string}
 ```
 
-```re
+```res
 // Example.res
 
 let me: School.person = {age: 20, name: "Big ReScript"}
@@ -59,7 +59,7 @@ Either of the above 3 says "this record's definition is found in the School file
 
 New records can be created from old records with the `...` spread operator. The original record isn't mutated.
 
-```re
+```res
 let meNextYear = {...me, age: me.age + 1}
 ```
 
@@ -71,7 +71,7 @@ This update is very efficient! Try a few in our [playground](//reasonml.github.i
 
 Record fields can optionally be mutable. This allows you to update those fields in-place with the `=` operator.
 
-```re
+```res
 type person = {
   name: string,
   mutable age: int
@@ -86,7 +86,7 @@ baby.age = baby.age + 1 /* alter `baby`. Happy birthday! */
 
 With records, you **cannot** say "I'd like this function to take any record type, as long as they have the field `age`". The following _works_, but not as expected:
 
-```re
+```res
 type person = {age: int, name: string}
 type monster = {age: int, hasTentacles: bool}
 
@@ -95,7 +95,7 @@ let getAge = (entity) => entity.age
 
 The last line's function will infer that the parameter `entity` must be of type `monster`. The following code's last line fails:
 
-```re
+```res
 let kraken = {age: 9999, hasTentacles: true}
 let me = {age: 5, name: "Baby ReScript"}
 
@@ -103,7 +103,7 @@ getAge(kraken)
 getAge(me)
 ```
 
-The type system will complain that `me` is a `person`, and that `getAge` only works on `monster`. If you need such capability, use Reason objects, described [here](object.md).
+The type system will complain that `me` is a `person`, and that `getAge` only works on `monster`. If you need such capability, use ReScript objects, described [here](object.md).
 
 ## Design Decisions
 

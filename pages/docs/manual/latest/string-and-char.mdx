@@ -4,7 +4,7 @@
 
 ReScript strings are delimited using **double** quotes (single quotes are reserved for the character type below).
 
-```re
+```res
 let greeting = "Hello world!"
 let multilineGreeting = "Hello
  world!"
@@ -12,13 +12,13 @@ let multilineGreeting = "Hello
 
 Special characters in the string need to be escaped:
 
-```re
+```res
 let oneSlash = "\\"
 ```
 
 To concatenate strings, use `++`:
 
-```re
+```res
 let greetings = "Hello " ++ "world!"
 ```
 
@@ -31,7 +31,7 @@ There's a special syntax for string that allows
 - Interpolation
 - Proper unicode handling
 
-```re
+```res
 let greetingAndOneSlash = `Hello
 World
 \
@@ -43,7 +43,7 @@ This is just like JavaScript's backtick string interpolation, except without nee
 
 ### Usage
 
-[More string operations can be found in the standard library](https://reasonml.github.io/api/String.html). For JS compilation, see the familiar `Js.String` API in the [BuckleScript API docs](/apis/javascript/latest/js/string). Since a ReScript string maps to a JavaScript string, you can mix & match the string operations in both standard libraries.
+See the familiar `Js.String` API in the [API docs](/apis/javascript/latest/js/string). Since a ReScript string maps to a JavaScript string, you can mix & match the string operations in both standard libraries.
 
 ### Tips & Tricks
 
@@ -57,15 +57,11 @@ This is just like JavaScript's backtick string interpolation, except without nee
 
 The more you overload the poor string type, the less the type system (or a teammate) can help you! ReScript provides concise, fast and maintainable types & data structures alternatives to the use-cases above (e.g. variants, in a later section).
 
-Under native compilation, ReScript strings compile to a simple representation whose performance is straightforward to analyze, at the expense of sometimes requiring manual performance tuning. For example, naively concatenating strings like `"hi " ++ "how " ++ "are " ++ "you?"` unnecessarily allocates the intermediate strings `"are you?"` and `"how are you?"` (though it might be optimized into a single string in these simple cases). In this case, prefer [`String.concat`](//reasonml.github.io/api/String.html). In a way, it's somewhat nice that the traditional runtime analysis we've learned in school can finally be useful again.
-
-Under JavaScript compilation, a ReScript string maps to a JavaScript string and vice-versa, so no such above concern or analysis opportunities apply.
-
 ## Char
 
 ReScript has a type for a string with a single letter:
 
-```re
+```res
 let firstLetterOfAlphabet = 'a'
 ```
 

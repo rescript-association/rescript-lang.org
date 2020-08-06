@@ -8,19 +8,19 @@ This section is dedicated to newcomers trying to figure out general idioms & con
 
 `option` is a [variant](variant.md) that comes with the [standard library](//reasonml.github.io/api/index.html). It obviates the need for null values in other languages.
 
-```re
+```res
 let possiblyNullValue1 = None
-let possiblyNullValue2: option(string) = Some("Hello@")
+let possiblyNullValue2: option<string> = Some("Hello@")
 
-switch (possiblyNullValue2) {
-| None => print_endline("Nothing to see here.")
-| Some(message) => print_endline(message)
+switch possiblyNullValue2 {
+| None => Js.log("Nothing to see here.")
+| Some(message) => Js.log(message)
 }
 ```
 
 ## Creating a parametrized type
 
-```re
+```res
 type universityStudent = {gpa: float}
 
 type response('studentType) = {
@@ -35,7 +35,7 @@ let result: response(universityStudent) = fetchDataFromServer()
 
 Assuming you're compiling to JavaScript.
 
-```re
+```res
 type payload = {
   name: string,
   age: int
@@ -55,9 +55,9 @@ See [here](/docs/reason-compiler/latest/import-export#import-a-default-value).
 
 ## Checking for JS nullable types using the `option` type
 
-For a function whose argument is passed a JavaScript value that's potentially `null` or `undefined`, it's idiomatic to convert it to an `option`. The conversion is done through the helper functions in Bucklescript's [`Js.Nullable`](/apis/javascript/latest/js/nullable#t) module. In this case, `toOption`:
+For a function whose argument is passed a JavaScript value that's potentially `null` or `undefined`, it's idiomatic to convert it to an `option`. The conversion is done through the helper functions in ReScript's [`Js.Nullable`](/apis/javascript/latest/js/nullable#t) module. In this case, `toOption`:
 
-```re
+```res
 let greetByName = (possiblyNullName) => {
   let optionName = Js.Nullable.toOption(possiblyNullName)
   switch optionName {

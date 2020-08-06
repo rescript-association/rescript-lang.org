@@ -2,7 +2,7 @@
 
 Unlike its JavaScript counterpart, ReScript's `if` is an expression; they evaluate to their body's content:
 
-```re
+```res
 let message = if isMorning {
   "Good morning!"
 } else {
@@ -12,7 +12,7 @@ let message = if isMorning {
 
 **Note:** an `if-else` expression without the final `else` branch implicitly gives `()`. So this:
 
-```re
+```res
 if showMenu {
   displayMenu()
 }
@@ -20,7 +20,7 @@ if showMenu {
 
 is basically the same as:
 
-```re
+```res
 if showMenu {
   displayMenu()
 } else {
@@ -32,7 +32,7 @@ Which is usually what you'd expect; `displayMenu()` should return unit too.
 
 Here's another way to look at it. This is clearly wrong:
 
-```re
+```res
 let result = if showMenu {
   1 + 2
 }
@@ -42,7 +42,7 @@ It'll give a type error, saying basically that the implicit `else` branch has th
 
 We also have ternary sugar.
 
-```re
+```res
 let message = isMorning ? "Good morning!" : "Hello!"
 ```
 
@@ -54,7 +54,7 @@ let message = isMorning ? "Good morning!" : "Hello!"
 
 ReScript ternary is just a sugar for the `bool` variant and a switch:
 
-```re
+```res
 switch isMorning {
 | true => "Good morning!"
 | false => "Hello!"
@@ -63,6 +63,6 @@ switch isMorning {
 
 If you pass that through our formatter, you'd get:
 
-```re
+```res
 isMorning ? "Good morning!" : "Hello!"
 ```

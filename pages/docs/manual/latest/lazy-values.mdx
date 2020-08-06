@@ -14,7 +14,7 @@ A lazy value has a type of `Lazy.t('a)`, where `'a` is the return value of the c
 
 Lazy values are part of the language. You can either use the `lazy` keyword to create a lazy value from an expression...
 
-```re example
+```res example
 // We only want getFiles to read the file system once,
 // so we wrap it in a lazy value
 let getFiles =
@@ -32,7 +32,7 @@ Lazy.force(getFiles)->Js.log
 
 ... or you can also wrap an existing function to make it lazy:
 
-```re example
+```res example
 // Example for wrapping a function with 0 parameters
 let getFiles = () => {
   Node.Fs.readdirSync("./pages")
@@ -42,7 +42,7 @@ let getFiles = () => {
 let lazyGetFiles = Lazy.from_fun(getFiles)
 ```
 
-```re example
+```res example
 // Example for wrapping a function with parameters
 let doesFileExist = name => {
   Node.Fs.readdirSync("./pages")->Js.Array.find(s => name === s, _)
@@ -50,7 +50,7 @@ let doesFileExist = name => {
 
 // Here we use the lazy syntax again
 // since we can't use Lazy.from_fun
-let lazyDoesFileExist = lazy(doesFileExist("blog.re"))
+let lazyDoesFileExist = lazy(doesFileExist("blog.res"))
 ```
 
 Whenever we want to wrap a function `unit => 'a`, we use `Lazy.from_fun`, otherwise we use the `lazy([expr])` keyword to wrap an expression or a function with 1 or more arguments.
@@ -59,7 +59,7 @@ Whenever we want to wrap a function `unit => 'a`, we use `Lazy.from_fun`, otherw
 
 Lazy values need to be explicitly executed to be able to return a value. Use the `Lazy.force`to start the execution:
 
-```re example
+```res example
 let computation = lazy(1)
 
 // Returns 1
@@ -68,7 +68,7 @@ Lazy.force(computation)
 
 It is also possible to use pattern matching to force a lazy value to compute, this includes `switch` expressions and similar syntax such as tuple destructuring:
 
-```re example
+```res example
 //------------------------------------------
 // Extract a lazy value via pattern matching
 //------------------------------------------
@@ -83,7 +83,7 @@ switch(computation) {
 //------------------------------
 // Destructuring a single value
 //------------------------------
-// Note: currently refmt will reprint this
+// Note: currently the formatter will reprint this
 //       as `let lazy word = ...`
 let lazy(word) = lazy("hello")
 
@@ -106,7 +106,7 @@ As you can see, the `lazy` syntax is a really great way for creating and handlin
 
 Whenever a lazy value computation raises an exception, the same exception will be thrown by `Lazy.force`.
 
-```re example
+```res example
 exception NoFile
 
 let readFile =
@@ -116,7 +116,9 @@ let readFile =
     }
   )
 
-try(Lazy.force(readFile)) {
+try {
+  Lazy.force(readFile)
+} catch {
   | NoFile => Js.log("No file")
 }
 ```

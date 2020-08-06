@@ -4,7 +4,7 @@
 
 For loops iterate from a starting value up to (and including) the ending value.
 
-```re
+```res
 for myBinding in startValue to endValue {
   // use myBinding here
 }
@@ -13,7 +13,7 @@ for myBinding in startValue to endValue {
 The parenthesis around `startValue` and `endValue` may be omitted if they are
 unnecessary.
 
-```re
+```res
 let xStart = 1
 let xEnd = 3
 
@@ -26,13 +26,13 @@ for (x in xStart to xEnd) {
 
 You can make the `for` loop count in the opposite direction by using `downto`.
 
-```re
+```res
 for myBinding in startValue downto endValue {
   statements
 }
 ```
 
-```re
+```res
 let xStart = 3
 let xEnd = 1
 
@@ -47,7 +47,7 @@ for x in xStart downto xEnd {
 
 While loops execute a code block while some condition is true. The form of a `while` loop includes a single expression, the condition to test.
 
-```re
+```res
 while testCondition {
   statements
 }
@@ -57,13 +57,13 @@ while testCondition {
 
 There's no loop-breaking `break` keyword (nor early `return` from functions, for that matter) in ReScript. However, we can break out of a while loop easily through using a [mutable binding](mutation.mdx).
 
-```re
+```res
 Random.self_init()
 
 let break = ref(false)
 
 while (!break.contents) {
-  if (Random.int(10) === 3) {
+  if Random.int(10 === 3) {
     break := true
   } else {
     Js.log("hello")
@@ -75,7 +75,7 @@ while (!break.contents) {
 
 Another technique to accomplish an early `return` is by using recursive functions. If we look at our example from the [Recursive functions section](function.mdx#recursive-functions):
 
-```re
+```res
 let rec listHas = (list, item) =>
   switch list {
   | list{} => false

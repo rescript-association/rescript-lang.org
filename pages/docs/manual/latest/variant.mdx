@@ -4,7 +4,7 @@ Behold, the crown jewel of ReScript data structures!
 
 Most data structures in most languages are about "this **and** that". A variant allows us to express "this **or** that".
 
-```re
+```res
 type myResponse =
   | Yes
   | No
@@ -23,7 +23,7 @@ Along with a variant comes one of the most important features of ReScript, the `
 
 A ReScript `switch` is visually similar to other languages' `switch` (aka a large `if/elseif/elseif...`). It allows you to check every possible case of a variant. To use it, enumerate every variant constructor of the particular variant you'd like to use, each followed by an `=>` and the expression corresponding to that case.
 
-```re
+```res
 let message =
   switch areYouCrushingIt {
   | No => "No worries. Keep going!"
@@ -39,13 +39,13 @@ A variant has an extremely rich amount of type system assistance. For example, w
 
 If the variant you're using is in a different file, bring it into scope like you'd do [for a record](record.md#record-needs-an-explicit-definition):
 
-```re
+```res
 // Zoo.res
 
 type animal = Dog | Cat | Bird
 ```
 
-```re
+```res
 // Example.res
 
 let pet: Zoo.animal = Dog // preferred
@@ -57,7 +57,7 @@ let pet = Zoo.Dog
 
 A variant's constructors can hold extra data separated by comma.
 
-```re
+```res
 type account =
   | None
   | Instagram(string)
@@ -66,7 +66,7 @@ type account =
 
 Here, `Instagram` holds a `string`, and `Facebook` holds a `string` and an `int`. Usage:
 
-```re
+```res
 let myAccount = Facebook("Josh", 26)
 let friendAccount = Instagram("Jenny")
 ```
@@ -75,7 +75,7 @@ let friendAccount = Instagram("Jenny")
 
 Using `switch`, you can pattern-match (again, described in a later section) a constructor's arguments:
 
-```re
+```res
 let greeting =
   switch myAccount {
   | None => "Hi!"
@@ -88,7 +88,7 @@ let greeting =
 
 You can use a record type in a variant:
 
-```re
+```res
 type idType = {name: string, password: string}
 
 type user =
@@ -98,7 +98,7 @@ type user =
 
 If the record type is used only in the variant definition, you may put it in line:
 
-```re
+```res
 type user =
   | Number(int)
   | Id({name: string, password: string})
@@ -108,7 +108,7 @@ type user =
 
 The [standard library](//reasonml.github.io/api/index.html) exposes an important variant you'll come to hear a lot:
 
-```re
+```res
 type option<'a> = None | Some('a)
 ```
 
@@ -122,7 +122,7 @@ Did you know that you can use `switch` on string, int, float, array, and most ot
 
 **Be careful** not to confuse a constructor carrying 2 arguments with a constructor carrying a single tuple argument:
 
-```re
+```res
 type account =
   | Facebook(string, int) // 2 arguments
 type account2 =
@@ -138,7 +138,7 @@ _This section assumes knowledge about our [FFI](/docs/reason-compiler/latest/int
 
 Quite a few JS libraries use functions that can accept many types of arguments. In these cases, it's very tempting to model them as variants. For example, suppose there's a `myLibrary.draw` JS function that takes in either a `number` or a `string`. You might be tempted to bind it like so:
 
-```re
+```res
 // reserved for internal usage
 @bs.module("myLibrary") external draw : 'a => unit = "draw"
 
@@ -155,12 +155,12 @@ let betterDraw = (animal) =>
 
 You could definitely do that, but there are better ways! For example, simply two `external`s that both compile to the same JS call:
 
-```re
+```res
 @bs.module("myLibrary") external drawFloat: float => unit = "draw"
 @bs.module("myLibrary") external drawString: string => unit = "draw"
 ```
 
-BuckleScript also provides [a few other ways](/docs/reason-compiler/latest/function#modeling-polymorphic-function) to do this.
+ReScript also provides [a few other ways](/docs/reason-compiler/latest/function#modeling-polymorphic-function) to do this.
 
 ### Variant Types Are Found By Field Name
 
@@ -187,7 +187,7 @@ if (data === 'dog') {
 
 There's a linear amount of branch checking here (`O(n)`). Compare this to using a ReScript variant:
 
-```re
+```res
 type animal = Dog | Cat | Bird
 let data = Dog
 switch data {

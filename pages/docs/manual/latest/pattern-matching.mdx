@@ -8,7 +8,7 @@ _Make sure you've read up on [Variant](variant) first_.
 
 Consider a variant:
 
-```re
+```res
 type payload =
   | BadResult(int)
   | GoodResult(string)
@@ -17,7 +17,7 @@ type payload =
 
 While using the `switch` expression on it, you can "destructure" it:
 
-```re
+```res
 let data = GoodResult("Product shipped!")
 
 let message =
@@ -37,7 +37,7 @@ NoResult
 
 Isn't that great? While matching on the shape of your data, the type system warned of an unhandled case. This **conditional** aspect is what makes it pattern matching rather than plain destructuring. Most data structures with an "**if this then that**" aspect work with it:
 
-```re
+```res
 switch myList {
 | list{} => Js.log("Empty list")
 | list{a, ...theRest} => Js.log("list with the head value " ++ a)
@@ -54,7 +54,7 @@ The `_` case is a special fall-through case that allows all unmatched conditions
 
 You can even switch on string, int and others. You can even have many patterns going to the same result!
 
-```re
+```res
 let reply =
   switch message {
   | "ReScript's pretty cool" => "Yep"
@@ -66,7 +66,7 @@ let reply =
 
 Combined with other data structures, pattern matching can produce extremely concise, compiler-verified, performant code:
 
-```re
+```res
 let message =
   switch data {
   | GoodResult(theMessage) => "Success! " ++ theMessage
@@ -78,7 +78,7 @@ let message =
 
 **Note**: you can only pass literals (i.e. concrete values) as a pattern, not let-binding names or other things. The following doesn't work as expected:
 
-```re
+```res
 let myMessage = "Hello"
 switch greeting {
 | myMessage => Js.log("Hi to you")
@@ -91,7 +91,7 @@ Instead, it'd assume you're matching on any string, and binding that to the name
 
 When you really need to use arbitrary logic with an otherwise clean pattern match, you can slip in some `when` clauses, which are basically `if` sugar:
 
-```re
+```res
 let message =
   switch data {
   | GoodResult(theMessage) => ...
@@ -105,7 +105,7 @@ let message =
 
 If the function throws an exception (covered later), you can also match on _that_, in addition to the function's normally returned values.
 
-```re
+```res
 switch List.find((i => i === theItem, myItems)) {
 | item => Js.log(item)
 | exception Not_found => Js.log("No such item found!")
@@ -116,7 +116,7 @@ switch List.find((i => i === theItem, myItems)) {
 
 Nested `|` work as intended:
 
-```re
+```res
 switch student {
 | {name: "Jane" | "Joe"} => ...
 | {name: "Bob", Job: Programmer({fullTime: Yes | Maybe})} => ...
@@ -127,7 +127,7 @@ switch student {
 
 You can put a pattern anywhere you'd put a normal "variable declaration":
 
-```re
+```res
 type leftOrRight =
   | Left(int)
   | Right(int)
@@ -146,7 +146,7 @@ Do not abuse the fall-through `_` case too much. This prevents the compiler from
 
 Here's a series of examples, from worst to best:
 
-```re
+```res
 let optionBoolToBool = opt =>
   if opt == None {
     false
@@ -159,7 +159,7 @@ let optionBoolToBool = opt =>
 
 Now that's just silly =). Let's turn it into pattern-matching:
 
-```re
+```res
 let optionBoolToBool = opt =>
   switch opt {
   | None => false
@@ -169,7 +169,7 @@ let optionBoolToBool = opt =>
 
 Slightly better, but still nested. Pattern-matching allows you to do this:
 
-```re
+```res
 let optionBoolToBool = opt =>
   switch opt {
   | None => false
@@ -180,7 +180,7 @@ let optionBoolToBool = opt =>
 
 Much more linear-looking! Now, you might be tempted to do this:
 
-```re
+```res
 let optionBoolToBool = opt =>
   switch opt {
   | Some(true) => true
@@ -190,7 +190,7 @@ let optionBoolToBool = opt =>
 
 Which is much more concise, but kills the exhaustiveness check mentioned above; refrain from using that. This is the best:
 
-```re
+```res
 let optionBoolToBool = opt =>
   switch opt {
   | Some(trueOrFalse) => trueOrFalse
@@ -210,7 +210,7 @@ Using a ReScript `switch` for the first time might make you feel like you've bee
 
 If you've tried to refactor a big, nested if-else logic, you might realize it's very hard to get the logic right. On the other hand, pattern matching + tuple conceptually maps to a 2D table, where each cell can be independently filled. This ensures that whenever you need to add a case in the `switch`, you can target that and only that table cell, without messing other cells up.
 
-```re
+```res
 type animal = Dog | Cat | Bird
 let result = switch isBig, myAnimal {
 | (true, Dog) => 1

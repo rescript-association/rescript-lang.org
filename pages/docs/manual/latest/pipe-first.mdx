@@ -4,13 +4,13 @@
 
 Imagine you have the following:
 
-```re
+```res
 validateAge(getAge(parseData(person)))
 ```
 
 This is slightly hard to read, since you need to read the code from the innermost part, to the outer parts. Use Pipe First to streamline it
 
-```re
+```res
 person
   ->parseData
   ->getAge
@@ -21,13 +21,13 @@ Basically, `parseData(person)` is transformed into `person->parseData`, and `get
 
 **This works when the function takes more than one argument too**.
 
-```re
+```res
 a(one, two, three)
 ```
 
 is the same as
 
-```re
+```res
 one->a(two, three)
 ```
 
@@ -39,7 +39,7 @@ Try not to abuse pipes; they're a means to an end. Newcomers sometimes shape a l
 
 Conventionally, we don't turn the innermost layer of function call into a pipe. So the above example would usually be written as:
 
-```re
+```res
 parseData(person)
   ->getAge
   ->validateAge
@@ -47,7 +47,7 @@ parseData(person)
 
 ## JS Method Chaining
 
-_This section requires understanding of [Bucklescript's binding API](/docs/reason-compiler/latest/function#object-method)_.
+_This section requires understanding of [our binding API](/docs/reason-compiler/latest/function#object-method)_.
 
 JavaScript's APIs are often attached to objects, and often chainable, like so:
 
@@ -61,7 +61,7 @@ asyncRequest()
 
 Assuming we don't need the chaining behavior above, we'd bind to each case this using `bs.send` from the previous section:
 
-```re
+```res
 [@bs.send] external map : (array('a), 'a => 'b) => array('b) = "map"
 [@bs.send] external filter : (array('a), 'a => bool) => array('a) = "filter"
 
@@ -73,7 +73,7 @@ external asyncRequest: unit => request = "asyncRequest"
 
 You'd use them like this:
 
-```re
+```res
 let result = filter(map([|1, 2, 3|], a => a + 1), a => a mod 2 == 0)
 
 send(setWaitDuration(asyncRequest(), 4000))
@@ -81,7 +81,7 @@ send(setWaitDuration(asyncRequest(), 4000))
 
 This looks much worse than the JS counterpart! Now we need to read the actual logic inside-out. We also cannot use the [`|>` (pipe last)](./pipe-last) operator here, since the object comes _first_ in the binding. But `->` works!
 
-```re
+```res
 let result = [|1, 2, 3|]
   ->map(a => a + 1)
   ->filter(a => a mod 2 === 0)
@@ -93,13 +93,13 @@ asyncRequest()->setWaitDuration(4000)->send
 
 A variant's constructors, like `Some` or `Student`, look like functions, but unfortunately aren't, due to historical reasons. Sometime, it'd still be nice to be able to use them as functions. Pipe First takes the occasion to enable that for you!
 
-```re
+```res
 let result = name->preprocess->Some
 ```
 
 We turn this into:
 
-```re
+```res
 let result = Some(preprocess(name))
 ```
 
@@ -109,7 +109,7 @@ let result = Some(preprocess(name))
 
 A placeholder is written as an underscore and it tells ReScript that you want to fill in an argument of a function later. These two have equivalent meaning:
 
-```re
+```res
 let addTo7 = (x) => add3(3, x, 4)
 let addTo7 = add3(3, _, 4)
 ```
@@ -118,21 +118,21 @@ Sometimes you don't want to pipe the value you have into the first position. In 
 
 Let's say you have a function `namePerson`, which takes a `person` then a `name` argument. If you are transforming a person then pipe will work as-is:
 
-```re
+```res
 makePerson(~age=47, ())
   ->namePerson("Jane")
 ```
 
 If you have a name that you want to apply to a person object, you can use a placeholder:
 
-```re
+```res
 getName(input)
   ->namePerson(personDetails, _)
 ```
 
 This allows you to pipe into any positional argument. It also works for named arguments:
 
-```re
+```res
 getName(input)
   ->namePerson(~person=personDetails, ~name=_)
 ```

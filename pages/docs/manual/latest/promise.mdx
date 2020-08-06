@@ -8,7 +8,7 @@ ReScript has built-in support for [JavaScript promises](/apis/javascript/latest/
 
 Additionally, here's the type signature for creating a promise on the ReScript side:
 
-```re
+```res
 Js.Promise.make: (
   (
     ~resolve: (. 'a) => unit,
@@ -23,7 +23,7 @@ This type signature means that `make` takes a callback that takes 2 named argume
 
 Using the pipe operator (see "Composition operators" in the [Pervasives module](https://reasonml.github.io/api/Pervasives.html)):
 
-```re
+```res
 let myPromise = Js.Promise.make((~resolve, ~reject) => resolve(. 2))
 
 myPromise

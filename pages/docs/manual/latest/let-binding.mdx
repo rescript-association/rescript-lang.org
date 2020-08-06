@@ -2,7 +2,7 @@
 
 A "let binding", in other languages, might be called a "variable declaration". `let` _binds_ values to names. They can be seen and referenced by code that comes _after_ them.
 
-```re
+```res
 let greeting = "hello!"
 let score = 10
 let newScore = 10 + score
@@ -12,7 +12,7 @@ let newScore = 10 + score
 
 Bindings can be scoped through `{}`.
 
-```re
+```res
 let message = {
   let part1 = "hello"
   let part2 = "world"
@@ -27,7 +27,7 @@ The value of the last line of a scope is implicitly returned.
 
 ReScript's `if`, `while` and functions all use the same block scoping mecanism. The code below works **not** because of some special "if scope"; but simply because it's the same scope syntax and feature you just saw:
 
-```re
+```res
 if displayGreeting {
   let message = "Enjoying the docs so far?"
   Js.log(message)
@@ -61,7 +61,7 @@ var result3 = calculateSomeMore(result2);
 
 In ReScript, this obviously works too:
 
-```re
+```res
 let result1 = 0
 let result2 = calculate(result1)
 let result3 = calculateSomeMore(result2)
@@ -69,7 +69,7 @@ let result3 = calculateSomeMore(result2)
 
 Additionally, reusing the same let binding name overshadows the previous bindings with the same name. So you can write this too:
 
-```re
+```res
 let result = 0
 let result = calculate(result)
 let result = calculateSomeMore(result)
@@ -79,7 +79,7 @@ let result = calculateSomeMore(result)
 
 As a matter of fact, even this is valid code:
 
-```re
+```res
 let result = "hello"
 Js.log(result) // prints "hello"
 let result = 1

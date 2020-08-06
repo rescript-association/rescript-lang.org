@@ -6,7 +6,7 @@ Types can accept parameters, akin to generics in other languages. It's as if a t
 
 The use-case of a parameterized type is to kill duplications. Before:
 
-```re
+```res
 // this is a tuple of 3 items, explained next
 type intCoordinates = (int, int, int)
 type floatCoordinates = (float, float, float)
@@ -16,7 +16,7 @@ let buddy: intCoordinates = (10, 20, 20)
 
 After:
 
-```re
+```res
 type coordinates<'a> = ('a, 'a, 'a)
 
 // apply the coordinates "type function" and return the type (int, int, int)
@@ -30,7 +30,7 @@ let buddy: coordinates<float> = (10.5, 20.5, 20.5)
 
 In practice, types are inferred for you. So the more concise version of the above example would be nothing but:
 
-```re
+```res
 let buddy = (10, 20, 20)
 ```
 
@@ -38,7 +38,7 @@ The type system infers that it's a `(int, int, int)`. Nothing else needed to be 
 
 Type arguments appear everywhere.
 
-```re
+```res
 // inferred as `array<string>`
 let greetings = ["hello", "world", "how are you"]
 ```
@@ -47,7 +47,7 @@ If types didn't accept parameters (ie, if we didn't have "type functions"), the 
 
 Types can receive more arguments, and be composable.
 
-```re
+```res
 type result<'a, 'b> =
   | Ok('a)
   | Error('b)
@@ -67,7 +67,7 @@ let payloadResults: myPayloadResults(string) = [
 
 Just like a functions, a type can reference itself within itself `rec`:
 
-```re
+```res
 type rec person = {
   name: string,
   friends: array<person>
@@ -78,7 +78,7 @@ type rec person = {
 
 Types can also be _mutually_ recursive through `and`:
 
-```re
+```res
 type student = {taughtBy: teacher}
 and teacher = {students: array<student>}
 ```

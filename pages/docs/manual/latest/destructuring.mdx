@@ -6,14 +6,14 @@
 
 The following binds variables: `ten = 10`, `twenty = 20`
 
-```re
+```res
 let someInts = (10, 20)
 let (ten, twenty) = someInts
 ```
 
 The following binds variables: `name = "Guy"`, `age = 30`
 
-```re
+```res
 type person = {name: string, age: int}
 let somePerson = {name: "Guy", age: 30}
 let {name, age} = somePerson
@@ -21,20 +21,20 @@ let {name, age} = somePerson
 
 When you pull out fields, you can optionally rename the fields. The following binds these instead: `n = "Guy"`, `a = 30`.
 
-```re
+```res
 let {name: n, age: a} = somePerson
 ```
 
 Destructuring also allows type annotations.
 
-```re
+```res
 let (ten: int, twenty: int) = someInts
 let {name: (n: string), age: (a: int)} = somePerson
 ```
 
 Destructuring a function's labeled arguments is also possible.
 
-```re
+```res
 type person = {
   name: string,
   age: int

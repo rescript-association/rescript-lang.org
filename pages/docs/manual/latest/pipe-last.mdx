@@ -12,7 +12,7 @@ Pipe-last is mainly used in legacy codebases.
 
 **Example:**
 
-```re
+```res
 let personSays = (person, msg) => person ++ " says: " ++ msg
 
 "This will be put in the msg arg"
@@ -33,7 +33,7 @@ please refer to the [Data-first and Data-last comparison by Javier Chávarri](ht
 
 Mixing both pipe operators might lead to confusion, since the pipe-first operator has a higher precedence. For example:
 
-```re
+```res
 let maybeGreeting = Some("hello")
 
 maybeGreeting |> Belt.Option.isSome -> Js.log
@@ -41,7 +41,7 @@ maybeGreeting |> Belt.Option.isSome -> Js.log
 
 will not compile, since the compiler will process the `->` first (`Belt.Option.isSome -> Js.log`) before applying `maybeGreeting` to `Belt.Option.isSome`. A fix for the example above would involve using parenthesis, like this:
 
-```re
+```res
 let maybeGreeting = Some("hello")
 
 (maybeGreeting |> Belt.Option.isSome) -> Js.log

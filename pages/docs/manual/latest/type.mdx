@@ -12,7 +12,7 @@ This page briefly introduces the types syntax so that you can power through the 
 
 This let-binding doesn't contain any written type:
 
-```re
+```res
 let score = 10
 ```
 
@@ -20,13 +20,13 @@ ReScript knows that `score` is an `int`, judging by the value `10`. This is call
 
 But types can also be explicitly written down by choice:
 
-```re
+```res
 let score: int = 10
 ```
 
 You can also wrap any expression in parentheses and annotate it:
 
-```re
+```res
 let myInt = 5
 let myInt: int = 5
 let myInt = (5: int) + (4: int)
@@ -40,7 +40,7 @@ Note: in the last line, `(~radius as r: int)` is a labeled argument. More on thi
 
 You can refer to a type by a different name. They'll be equivalent:
 
-```re
+```res
 type scoreType = int
 let x: scoreType = 10
 ```

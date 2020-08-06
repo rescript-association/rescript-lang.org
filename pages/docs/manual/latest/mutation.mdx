@@ -6,7 +6,7 @@ ReScript has great traditional imperative & mutative programming capabilities. Y
 
 Let-bindings are immutable, but you can wrap it with a `ref`, exposed as a record with a single mutable field in the standard library:
 
-```re
+```res
 let foo = ref(5)
 ```
 
@@ -14,19 +14,19 @@ let foo = ref(5)
 
 You can get the actual value of a `ref` box through accessing its `contents` field:
 
-```re
+```res
 let five = foo.contents // 5
 ```
 
 Assign a new value to `foo` like so:
 
-```re
+```res
 foo.contents = 6
 ```
 
 We provide a syntax sugar for this:
 
-```re
+```res
 foo := 6
 ```
 
@@ -36,7 +36,7 @@ Note that the previous binding `five` stays `5`, since it got the underlying ite
 
 Before reaching for `ref`, know that you can achieve lightweight, local "mutations" through overriding let bindings:
 
-```re
+```res
 let foo = 10
 let foo = someCondition ? foo + 5 : foo
 Js.log(foo) /* either 15 or 10 */

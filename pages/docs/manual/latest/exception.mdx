@@ -4,7 +4,7 @@ Exceptions are just a special kind of variant, "thrown" in **exceptional** cases
 
 ## Usage
 
-```re
+```res
 let getItem = (theList) =>
   if callSomeFunctionThatThrows() {
     // return the found item here
@@ -20,11 +20,11 @@ let result =
   }
 ```
 
-Note that the above is just for demonstration purposes; in reality, you'd return an `option(int)` directly from `getItem` and avoid the `try` altogether.
+Note that the above is just for demonstration purposes; in reality, you'd return an `option<int>` directly from `getItem` and avoid the `try` altogether.
 
 You can directly match on exceptions _while_ getting another return value from a function:
 
-```re
+```res
 switch List.find((i => i === theItem, myItems)) {
 | item => Js.log(item)
 | exception Not_found => Js.log("No such item found!")
@@ -33,7 +33,7 @@ switch List.find((i => i === theItem, myItems)) {
 
 You can also make your own exceptions like you'd make a variant (exceptions need to be capitalized too).
 
-```re
+```res
 exception InputClosed(string)
 // later on
 raise(InputClosed("the stream has closed!"))

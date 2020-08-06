@@ -4,7 +4,7 @@
 
 Arrays are our primary ordered data structure. They work the same way as JavaScript arrays.
 
-```re
+```res
 let myArray = ["hello", "world", "how are you"]
 ```
 
@@ -14,7 +14,7 @@ See the [Js.Array](/apis/javascript/latest/js/array) API.
 
 Access & update an array item like so:
 
-```re
+```res
 let myArray = ["hello", "world", "how are you"]
 
 let firstItem = myArray[0] // "hello"
@@ -34,7 +34,7 @@ We provide a singly linked lists. Lists are:
 - fast at getting the tail
 - slow at everything else
 
-```re
+```res
 let myList = list{1, 2, 3}
 ```
 
@@ -50,7 +50,7 @@ The standard lib provides a [List module](https://reasonml.github.io/api/List.ht
 
 Use the spread syntax:
 
-```re
+```res
 let myList = list{1, 2, 3}
 let anotherList = list{0, ...myList}
 ```
@@ -65,7 +65,7 @@ Updating an arbitrary item in the middle of a list is also discouraged, since it
 
 `switch` (described in the [pattern matching section](pattern-matching.md)) is usually used to access list items:
 
-```re
+```res
 let message =
   switch myList {
   | list{} => "This list is empty"

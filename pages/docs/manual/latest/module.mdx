@@ -8,16 +8,16 @@ bindings, nested modules, etc.
 ### Creation
 
 To create a module, use the `module` keyword. The module name must start with a
-**capital letter**. Whatever you could place in a `.re` file, you may place
+**capital letter**. Whatever you could place in a `.res` file, you may place
 inside a module definition's `{}` block.
 
-```re
+```res
 module School = {
   type profession = Teacher | Director
 
   let person1 = Teacher
   let getProfession = (person) =>
-    switch (person) {
+    switch person {
     | Teacher => "A teacher"
     | Director => "A director"
     }
@@ -27,14 +27,14 @@ module School = {
 A module's contents (including types!) can be accessed much like a record's,
 using the `.` notation. This demonstrates modules' utility for namespacing.
 
-```re
+```res
 let anotherPerson: School.profession = School.Teacher
-print_endline(School.getProfession(anotherPerson)) /* "A teacher" */
+Js.log(School.getProfession(anotherPerson)) /* "A teacher" */
 ```
 
 Nested modules work too.
 
-```re
+```res
 module MyModule = {
   module NestedModule = {
     let message = "hello"
@@ -49,13 +49,13 @@ let message = MyModule.NestedModule.message
 Constantly referring to a value/type in a module can be tedious. Instead, we can "open" a module and refer to its contents without always prepending them with the
 module's name. Instead of writing:
 
-```re
+```res
 let p: School.profession = School.getProfession(School.person1)
 ```
 
 We can write:
 
-```re
+```res
 open School
 let p: profession = getProfession(person1)
 ```
@@ -64,7 +64,7 @@ The content of `School` module are made visible (**not** copied into the file, b
 
 **Use `open` this sparingly, it's convenient, but makes it hard to know where some values come from**. You should usually use `open` in a local scope:
 
-```re
+```res
 let p = {
   open School
   getProfession(person1)
@@ -74,16 +74,16 @@ let p = {
 
 For an `open` followed by a single expression, we have a dedicated syntax sugar:
 
-```re
+```res
 let p = School.(getProfession(person1))
 ```
 
 Anything else needs to be written in the first way:
 
-```re
+```res
 let p = {
   open School
-  print_endline("hello!")
+  Js.log("hello!")
   getProfession(person1)
 }
 ```
@@ -93,7 +93,7 @@ let p = {
 Using `include` in a module statically "spreads" a module's content into
 a new one, thus often fulfill the role of "inheritance" or "mixin".
 
-```re
+```res
 module BaseComponent = {
   let defaultGreeting = "Hello"
   let getAudience = (~excited) => excited ? "world!" : "world"
@@ -110,19 +110,19 @@ module ActualComponent = {
 
 **Note**: `open` and `include` are very different! The former brings a module's content into your current scope, so that you don't have to refer to a value by prefixing it with the module's name every time. The latter **copies over** the definition of a module statically, then also do an `open`.
 
-### Every `.re` file is a module
+### Every `.res` file is a module
 
 A ReScript file maps to a module this unlocks some interesting
 expressivity that'd previously require code generation in other languages. The
-file `React.re` implicitly forms a module `React`, which can be seen by other
+file `React.res` implicitly forms a module `React`, which can be seen by other
 source files.
 
-```re
-/* FileA.re. This typically compiles to module FileA below */
+```res
+/* FileA.res. This typically compiles to module FileA below */
 let a = 1
 let b = 2
 
-/* FileB.re */
+/* FileB.res */
 /* Maps FileA's implementation to a new API */
 let alpha = FileA.a
 let beta = FileA.b
@@ -130,23 +130,23 @@ let beta = FileA.b
 
 This contrived snippet expresses "copying" a file:
 
-```re
-/* FileA.re. This typically compiles to module FileA below */
+```res
+/* FileA.res. This typically compiles to module FileA below */
 let a = 1
 let b = 2
 
-/* FileB.re */
-/* compiles to exactly fileA.re's content with no runtime overhead! */
+/* FileB.res */
+/* compiles to exactly fileA.res' content with no runtime overhead! */
 include FileA
 ```
 
-**Note**: Because files are modules, file names should, by convention, be capitalized so they match their module names. Uncapitalized file names are not invalid, but will be transformed into a capitalized module name. I.e. `file.re` will be compiled into the module `File`. To simplify and minimize the disconnect here, the convention is therefore to capitalize file names too.
+**Note**: Because files are modules, file names should, by convention, be capitalized so they match their module names. Uncapitalized file names are not invalid, but will be transformed into a capitalized module name. I.e. `file.res` will be compiled into the module `File`. To simplify and minimize the disconnect here, the convention is therefore to capitalize file names too.
 
 Signatures
 ----------------------------------
 
 A module's type is called a "signature", and can be written explicitly. If a
-module is like a `.re` (implementation) file, then a module's signature is like
+module is like a `.res` (implementation) file, then a module's signature is like
 a `.resi` (interface) file.
 
 ### Creation
@@ -155,7 +155,7 @@ To create a signature, use the `module type` keyword. The signature name must st
 **capital letter**. Whatever you could place in a `.resi` file, you may place
 inside a signature definition's `{}` block.
 
-```re
+```res
 /* Picking up previous section's example */
 module type EstablishmentType = {
   type profession
@@ -190,7 +190,7 @@ concrete type; it's saying "I don't care what the actual type is, but it's used
 as input to `getProfession`". This is useful to fit many modules under the same
 interface:
 
-```re
+```res
 module Company: EstablishmentType = {
   type profession = CEO | Designer | Engineer | ...
 
@@ -208,7 +208,7 @@ exposing the variant, it'll only tell you "it's `Company.profession`".
 
 Like modules themselves, module signatures can also be extended by other module signatures using `include`:
 
-```re
+```res
 module type BaseComponent = {
   let defaultGreeting: string
   let getAudience: (~excited: bool) => string
@@ -228,7 +228,7 @@ using `include (module type of ActualModuleName)`. For example, we can extend th
 `List` module from the standard library, which does not define a module
 type.
 
-```re
+```res
 module type MyList = {
   include (module type of List)
   let myListFun: list('a) => list('a)
@@ -237,19 +237,19 @@ module type MyList = {
 
 ### Every `.resi` file is a signature
 
-Similar to how a `React.re` file implicitly defines a module `React`, a file
+Similar to how a `React.res` file implicitly defines a module `React`, a file
 `React.resi` implicitly defines a signature for `React`. If `React.resi` isn't
-provided, the signature of `React.re` defaults to exposing all the fields of the
+provided, the signature of `React.res` defaults to exposing all the fields of the
 module. Because they don't contain implementation files, `.resi` files are used
 in the ecosystem to also document the public API of their corresponding modules.
 
-```re
-/* file React.re (implementation. Compiles to module React) */
+```res
+/* file React.res (implementation. Compiles to module React) */
 type state = int
 let render = (str) => str
 ```
 
-```re
+```res
 /* file React.resi (interface. Compiles to signature of module React) */
 type state = int
 let render: str => str
@@ -274,7 +274,7 @@ for defining and using regular functions. The primary differences are:
 Here's an example `MakeSet` functor, that takes in a module of the type
 `Comparable` and returns a new set that can contain such comparable items.
 
-```re
+```res
 module type Comparable = {
   type t
   let equal: (t, t) => bool
@@ -286,7 +286,7 @@ module MakeSet = (Item: Comparable) => {
   let empty = []
   let add = (currentSet: backingType, newItem: Item.t) : backingType =>
     /* if item exists */
-    if (List.exists((x) => Item.equal(x, newItem), currentSet)) {
+    if List.exists((x => Item.equal(x, newItem), currentSet)) {
       currentSet /* return the same (immutable) set (a list really) */
     } else {
       [
@@ -300,7 +300,7 @@ module MakeSet = (Item: Comparable) => {
 Functors can be applied using function application syntax. In this case, we're
 creating a set, whose items are pairs of integers.
 
-```re
+```res
 module IntPair = {
   type t = (int, int)
   let equal = ((x1, y1), (x2, y2)) => x1 == x2 && y1 == y2
@@ -320,7 +320,7 @@ modules the functor accepts as arguments and return values. In the
 previous example, we're exposing the backing type of a set; by giving `MakeSet`
 a functor signature, we can hide the underlying data structure!
 
-```re
+```res
 module type Comparable = ...
 
 module type MakeSetType = (Item: Comparable) => {

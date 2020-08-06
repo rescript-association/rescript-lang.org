@@ -8,49 +8,49 @@ ReScript supports the JSX syntax, with some slight differences compared to the o
 
 ## Capitalized Tag
 
-```re
+```res
 <MyComponent name={"ReScript"} />
 ```
 
 becomes
 
-```re
+```res
 @JSX MyComponent.createElement(~name="ReScript", ~children=list{}, ())
 ```
 
 ## Uncapitalized Tag
 
-```re
+```res
 <div onClick={handler}> child1 child2 </div>
 ```
 
 becomes
 
-```re
+```res
 @JSX div(~onClick=handler, ~children=list{child1, child2}, ())
 ```
 
 ## Fragment
 
-```re
+```res
 <> child1 child2 </>
 ```
 
 becomes
 
-```re
+```res
 @JSX list{child1, child2}
 ```
 
 ### Children
 
-```re
+```res
 <MyComponent> foo bar </MyComponent>
 ```
 
 This is the syntax for passing a list of two items, `foo` and `bar`, to the children position. It desugars to a list containing `foo` and `bar`:
 
-```re
+```res
 @JSX MyComponent.createElement(~children=list{foo, bar}, ())
 ```
 
@@ -62,19 +62,19 @@ So naturally, `<MyComponent> foo </MyComponent>` desugars to `@JSX MyComponent.c
 
 To solve the above problem, we've introduced
 
-```re
+```res
 <MyComponent> ...foo </MyComponent>
 ```
 
 This passes the value `foo` _without_ wrapping it in a list (or array, in the case of ReasonReact). Aka, this desugars to:
 
-```re
+```res
 @JSX MyComponent.createElement(~children=foo, ())
 ```
 
 This is extra useful in the cases where you are handled `foo` that is already a list of things, and want to forward that without wrapping it an extra time (which would be a type error) \*. It also allows you to pass arbitrary data structures at `children` position (remember, JSX `children` is really just a totally normal prop):
 
-```re
+```res
 <MyComponent> ...((theClassName) => <div className=theClassName />) </MyComponent>
 <MyForm> ...("Hello", "Submit") </MyForm>
 ```
@@ -85,7 +85,7 @@ See [ReasonReact](//reasonml.github.io/reason-react/docs/jsx) for an example app
 
 Here's a JSX tag that shows most of the features.
 
-```re
+```res
 <MyComponent
   booleanAttribute={true}
   stringAttribute="string"
@@ -108,7 +108,7 @@ Here's a JSX tag that shows most of the features.
 
 Reason JSX supports punning. `<input checked />` is just a shorthand for `<input checked=checked />`. The formatter will help you format to the latter whenever possible. This is convenient in the cases where there are lots of props to pass down:
 
-```re
+```res
 <MyComponent isLoading text onClick />
 ```
 
