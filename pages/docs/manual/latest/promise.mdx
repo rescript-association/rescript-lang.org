@@ -1,19 +1,21 @@
 # Promise
 
-Reason has built-in support for [JavaScript promises through BuckleScript](/apis/javascript/latest/js/promise). The 3 functions you generally need are:
+ReScript has built-in support for [JavaScript promises](/apis/javascript/latest/js/promise). The 3 functions you generally need are:
 
 - `Js.Promise.resolve: 'a => Js.Promise.t('a)`
 - `Js.Promise.then_: ('a => Js.Promise.t('b), Js.Promise.t('a)) => Js.Promise.t('b)`
 - `Js.Promise.catch: (Js.Promise.error => Js.Promise.t('a), Js.Promise.t('a)) => Js.Promise.t('a)`
 
-Additionally, here's how to create a JS promise on the Reason side:
+Additionally, here's the type signature for creating a promise on the ReScript side:
 
-- `Js.Promise.make: (
-      (
-        ~resolve: (. 'a) => unit,
-        ~reject: (. exn) => unit
-      ) => unit
-    ) => Js.Promise.t('a)`
+```re
+Js.Promise.make: (
+  (
+    ~resolve: (. 'a) => unit,
+    ~reject: (. exn) => unit
+  ) => unit
+) => Js.Promise.t('a)`
+```
 
 This type signature means that `make` takes a callback that takes 2 named arguments, `resolve` and `reject`. Both arguments are themselves [uncurried callbacks](/docs/reason-compiler/latest/function#solution-guaranteed-uncurrying) (they have a dot). `make` returns the created promise.
 
@@ -21,22 +23,22 @@ This type signature means that `make` takes a callback that takes 2 named argume
 
 Using the pipe operator (see "Composition operators" in the [Pervasives module](https://reasonml.github.io/api/Pervasives.html)):
 
-```reason
-let myPromise = Js.Promise.make((~resolve, ~reject) => resolve(. 2));
+```re
+let myPromise = Js.Promise.make((~resolve, ~reject) => resolve(. 2))
 
 myPromise
 |> Js.Promise.then_(value => {
-     Js.log(value);
-     Js.Promise.resolve(value + 2);
+     Js.log(value)
+     Js.Promise.resolve(value + 2)
    })
 |> Js.Promise.then_(value => {
-     Js.log(value);
-     Js.Promise.resolve(value + 3);
+     Js.log(value)
+     Js.Promise.resolve(value + 3)
    })
 |> Js.Promise.catch(err => {
-     Js.log2("Failure!!", err);
-     Js.Promise.resolve(-2);
-   });
+     Js.log2("Failure!!", err)
+     Js.Promise.resolve(-2)
+   })
 ```
 
 **Note**: we might offer a dedicated syntax for JS promises (async/await) in the future. Stay tuned!
