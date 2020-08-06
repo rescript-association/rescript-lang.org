@@ -1458,7 +1458,7 @@ module B = {
       switch (ready.targetLang) {
       | Reason => "ReasonML"
       | OCaml => "OCaml"
-      | Res => "BuckleScript Syntax"
+      | Res => "ReScript"
       }
     | _ => "..."
     };
