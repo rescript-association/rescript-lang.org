@@ -31,6 +31,7 @@ let basicNavs = [|
   {name: "Let Binding", href: "/docs/manual/latest/let-binding"},
   {name: "Type", href: "/docs/manual/latest/type"},
   {name: "String & Char", href: "/docs/manual/latest/string-and-char"},
+  {name: "Regular Expression", href: "/docs/manual/latest/regular-expression"},
   {name: "Boolean", href: "/docs/manual/latest/boolean"},
   {name: "Integer & Float", href: "/docs/manual/latest/integer-and-float"},
   {name: "Tuple", href: "/docs/manual/latest/tuple"},
