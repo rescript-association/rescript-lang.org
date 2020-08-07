@@ -71,10 +71,6 @@ let interopNavs = [|
     href: "/docs/reason-compiler/latest/better-data-structures-printing-debug-mode",
   },
   {
-    name: "NodeJS Special Variables",
-    href: "/docs/reason-compiler/latest/nodejs-special-variables",
-  },
-  {
     name: "Handling JS Naming Collisions",
     href: "/docs/reason-compiler/latest/handling-js-naming-collisions",
   },
