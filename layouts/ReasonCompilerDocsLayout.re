@@ -30,10 +30,6 @@ let interopNavs = [|
     href: "/docs/reason-compiler/latest/interop-cheatsheet",
   },
   {
-    name: "Common Data Types",
-    href: "/docs/reason-compiler/latest/common-data-types",
-  },
-  {
     name: "Bind to Global Values",
     href: "/docs/reason-compiler/latest/bind-to-global-values",
   },
