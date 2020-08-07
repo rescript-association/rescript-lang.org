@@ -75,10 +75,6 @@ let interopNavs = [|
     href: "/docs/reason-compiler/latest/handling-js-naming-collisions",
   },
   {name: "Miscellaneous", href: "/docs/reason-compiler/latest/interop-misc"},
-  {
-    name: "Browser Support & Polyfills",
-    href: "/docs/reason-compiler/latest/browser-support-polyfills",
-  },
   {name: "Decorators", href: "/docs/reason-compiler/latest/decorators"},
 |];
 
