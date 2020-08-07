@@ -96,6 +96,7 @@ let jsInteropNavs = [|
     name: "Bind to Global JS Values",
     href: "/docs/manual/latest/bind-to-global-js-values",
   },
+  {name: "JSON", href: "/docs/manual/latest/json"},
 |];
 
 let guidesNavs = [|
