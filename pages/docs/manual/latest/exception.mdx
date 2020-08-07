@@ -1,6 +1,6 @@
 # Exception
 
-Exceptions are just a special kind of variant, "thrown" in **exceptional** cases (don't abuse them!).
+Exceptions are just a special kind of variant, thrown in **exceptional** cases (don't abuse them!).
 
 ## Usage
 
@@ -36,9 +36,102 @@ You can also make your own exceptions like you'd make a variant (exceptions need
 ```res
 exception InputClosed(string)
 // later on
-raise(InputClosed("the stream has closed!"))
+raise(InputClosed("The stream has closed!"))
 ```
+
+## Catching JS Exceptions
+
+To distinguish between JavaScript exceptions and ReScript exceptions, ReScript namespaces JS exceptions under the `Js.Exn.Error(payload)` variant. To catch an exception thrown from the JS side:
+
+```res
+try {
+  someJSFunctionThatThrows()
+} catch {
+| Js.Exn.Error(obj) =>
+  switch Js.Exn.message(obj) {
+  | Some(m) => Js.log("Caught a JS exception! Message: " ++ m)
+  | None => ()
+  }
+}
+```
+
+The `obj` here is of type `Js.Exn.t`, intentionally opaque to disallow illegal operations. To operate on `obj`, do like the code above by using the standard library's [`Js.Exn`](apis/javascript/latest/js/exn) module's helpers.
+
+## Raise a JS Exception
+
+`raise MyException` raises a ReScript exception. To raise a JavaScript exception (whatever your purpose is), use `Js.Exn.raiseError`:
+
+```res
+let myTest = () => {
+  Js.Exn.raiseError("Hello!")
+}
+```
+
+Then you can catch it from the JS side:
+
+```js
+// after importing `myTest`...
+try {
+  myTest()
+} catch (e) {
+  console.log(e.message) // "Hello!"
+}
+```
+
+## Catch ReScript Exceptions from JS
+
+The previous section is less useful than you think; to let your JS code work with your exception-throwing ReScript code, the latter doesn't actually need to throw a JS exception. ReScript exceptions can be used by JS code!
+
+```res
+exception BadArgument({myMessage: string})
+
+let myTest = () => {
+  raise(BadArgument({myMessage: "Oops!"}))
+}
+```
+
+Output:
+
+```js
+function myTest(param) {
+  throw {
+    RE_EXN_ID: BadArgument,
+    myMessage: "Oops!",
+    Error: new Error()
+  };
+}
+```
+
+Then, in your JS:
+
+```js
+// after importing `myTest`...
+try {
+  myTest()
+} catch (e) {
+  console.log(e.myMessage) // "Oops!"
+  console.log(e.Error.stack) // the stack trace
+}
+```
+
+> Note: `RE_EXN_ID` is an internal field for bookkeeping purposes. Don't use it on the JS side. Use the other fields.
+
+The above `BadArgument` exception takes an inline record type. We special-case compile the exception as `{RE_EXN_ID, myMessage, Error}` for good ergonomics. If the exception instead took ordinary positional arguments, l like the standard library's `Invalid_argument("Oops!")`, which takes a single argument, the argument is compiled to JS as the field `_1` instead. A second positional argument would compile to `_2`, etc.
 
 ## Tips & Tricks
 
 When you have ordinary variants, you often don't **need** exceptions. For example, instead of throwing when `item` can't be found in a collection, try to return an `option<item>` (`None` in this case) instead.
+
+### Catch Both ReScript and JS Exceptions in the Same `catch` Clause
+
+```res
+try {
+  someOtherJSFunctionThatThrows()
+} catch {
+| Not_found => ..  // catch a ReScript exception
+| Invalid_argument =>  // catch a second ReScript exception
+| Js.Exn.Error(obj) => ... // catch the JS exception
+}
+```
+
+This technically works, but hopefully you don't ever have to work with such code...

@@ -61,7 +61,6 @@ let interopNavs = [|
     name: "Import & Export",
     href: "/docs/reason-compiler/latest/import-export",
   },
-  {name: "Exceptions", href: "/docs/reason-compiler/latest/exceptions"},
   {
     name: "Generate Converters & Helpers",
     href: "/docs/reason-compiler/latest/generate-converters-accessors",
