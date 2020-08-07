@@ -50,9 +50,15 @@ module Warn = {
   };
 };
 
-module CodeToggle = {
+module CodeTab = {
+  module Tab = {
+    [@react.component]
+    let make = () => {};
+  };
+
   [@react.component]
-  let make = (~children: Mdx.MdxChildren.t) => {
+  let make =
+      (~children: Mdx.MdxChildren.t, ~labels: array(string)=[||]) => {
     let mdxElements =
       switch (Mdx.MdxChildren.classify(children)) {
       | Array(mdxElements) => mdxElements
@@ -69,6 +75,7 @@ module CodeToggle = {
             mdxElement
             ->Mdx.MdxChildren.getMdxChildren
             ->Mdx.MdxChildren.classify;
+
           switch (child) {
           | Element(codeEl) =>
             switch (codeEl->Mdx.getMdxType) {
@@ -86,7 +93,8 @@ module CodeToggle = {
               let code =
                 Mdx.MdxChildren.flatten(codeEl)->Js.Array2.joinWith("");
 
-              let tab = {CodeExample.Toggle.lang, code};
+              let label = Belt.Array.get(labels, i);
+              let tab = {CodeExample.Toggle.lang, code, label};
               Js.Array2.push(acc, tab)->ignore;
 
             | _ => ()
@@ -567,7 +575,7 @@ let default =
     ~intro=Intro.make,
     ~warn=Warn.make,
     ~urlBox=UrlBox.make,
-    ~codeToggle=CodeToggle.make,
+    ~codeTab=CodeTab.make,
     ~p=P.make,
     ~li=Li.make,
     ~h1=H1.make,

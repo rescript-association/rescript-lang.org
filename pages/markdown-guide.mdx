@@ -194,14 +194,14 @@ The default language is set to `text` and will not provide any syntax
 highlighting
 ```
 
-## Codeblocks with syntax toggles
+## CodeTabs
 
 For cases where you want to show a single codeblock with multiple syntaxes, use the `<CodeToggle>` component.
 Make sure to leave a newline between the `<CodeToggle>` JSX tags, otherwise codeblock children won't be recognized!
 
 **Example:**
 ~~~
-<CodeToggle>
+<CodeTab>
 
 ```res
 let a = "Some ReScript code"
@@ -211,17 +211,20 @@ let a = "Some ReScript code"
 var a = "Some JavaScript code";
 ```
 
-</CodeToggle>
+</CodeTab>
 ~~~
 
-<CodeToggle>
+<CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
-let a = "Some ReScript code"
-```
+  ```res
+  let a = "Some ReScript code"
+  switch foo {
 
-```js
-var a = "Some JavaScript code";
-```
+  }
+  ```
 
-</CodeToggle>
+  ```js
+  var a = "Some JavaScript code";
+  ```
+
+</CodeTab>

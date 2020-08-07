@@ -49,6 +49,7 @@ let make = (~code: string, ~lang="text") => {
 
 module Toggle = {
   type tab = {
+    label: option(string),
     lang: option(string),
     code: string,
   };
@@ -64,29 +65,31 @@ module Toggle = {
         Belt.Array.mapWithIndex(
           multiple,
           (i, tab) => {
+            // if there's no label, infer the label from the language
             let label =
-              switch (tab.lang) {
-              | Some(lang) => langShortname(lang)->Js.String2.toUpperCase
-              | None => string_of_int(i)
+              switch (tab.label) {
+              | Some(label) => label
+              | None =>
+                switch (tab.lang) {
+                | Some(lang) => langShortname(lang)->Js.String2.toUpperCase
+                | None => string_of_int(i)
+                }
               };
 
-            let className =
+            let activeClass =
               selected === i ? "text-fire-80" : "hover:cursor-pointer";
+
             let onClick = evt => {
               ReactEvent.Mouse.preventDefault(evt);
               setSelected(_ => i);
             };
             let key = label ++ "-" ++ string_of_int(i);
-            let spacer =
-              if (i > 0) {
-                <span className="mx-1"> "-"->s </span>;
-              } else {
-                React.null;
-              };
 
-            <span key>
-              spacer
-              <span className onClick> label->s </span>
+            <span
+              key
+              className={"inline-block p-2 last:border-r-0 border-r "  ++ activeClass}
+              onClick>
+              label->s
             </span>;
           },
         );
@@ -100,9 +103,9 @@ module Toggle = {
         ->Belt.Option.getWithDefault(React.null);
 
       <div
-        className="flex w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-snow-dark bg-snow-light px-5 py-2 text-night-dark">
+        className="flex w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-snow-dark bg-snow-light px-5 pb-2 text-night-dark">
         <div
-          className="flex self-end font-sans mb-4 text-sm font-bold text-night-light">
+          className="border-b border-l border-r flex self-end font-sans mb-6 md:mb-4 text-sm font-bold text-night-light">
           labels->ate
         </div>
         <div className="px-5 text-base pb-6 overflow-x-auto -mt-2">

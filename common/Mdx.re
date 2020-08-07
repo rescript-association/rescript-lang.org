@@ -139,8 +139,13 @@ module Components = {
         "href": string,
         "children": MdxChildren.t,
       }),
-    [@bs.as "CodeToggle"] [@bs.optional]
-    codeToggle: React.component({. "children": MdxChildren.t}),
+    [@bs.as "CodeTab"] [@bs.optional]
+    codeTab:
+      React.component({
+        .
+        "children": MdxChildren.t,
+        "labels": option(array(string)),
+      }),
     /* Common markdown elements */
     [@bs.optional]
     p: React.component(props),
