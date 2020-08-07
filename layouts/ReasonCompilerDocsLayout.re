@@ -30,10 +30,6 @@ let interopNavs = [|
     href: "/docs/reason-compiler/latest/interop-cheatsheet",
   },
   {
-    name: "Embed Raw JavaScript",
-    href: "/docs/reason-compiler/latest/embed-raw-javascript",
-  },
-  {
     name: "Common Data Types",
     href: "/docs/reason-compiler/latest/common-data-types",
   },
@@ -65,13 +61,8 @@ let interopNavs = [|
     name: "Import & Export",
     href: "/docs/reason-compiler/latest/import-export",
   },
-  {
-    name: "Regular Expression",
-    href: "/docs/reason-compiler/latest/regular-expression",
-  },
   {name: "Exceptions", href: "/docs/reason-compiler/latest/exceptions"},
   {name: "JSON", href: "/docs/reason-compiler/latest/json"},
-  {name: "Pipe First", href: "/docs/reason-compiler/latest/pipe-first"},
   {
     name: "Generate Converters & Helpers",
     href: "/docs/reason-compiler/latest/generate-converters-accessors",

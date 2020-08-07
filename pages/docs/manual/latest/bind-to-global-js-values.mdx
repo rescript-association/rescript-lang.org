@@ -1,0 +1,43 @@
+## Bind to Global JS Values
+
+ReScript provides a relatively type safe approach for such use case: `%external(a_single_identifier)` is a value of type `option`. Example:
+
+```re
+switch %external(__DEV__) {
+| Some(_) => Js.log("dev mode")
+| None => Js.log("production mode")
+};
+```
+
+Output:
+
+```js
+var match = typeof (__DEV__) === "undefined" ? undefined : (__DEV__);
+
+if (match !== undefined) {
+  console.log("dev mode");
+} else {
+  console.log("production mode");
+}
+```
+
+Another example:
+
+```re
+switch %external(__filename) {
+| Some(f) => Js.log(f)
+| None => Js.log("non-node environment")
+};
+```
+
+Output:
+
+```js
+var match = typeof (__filename) === "undefined" ? undefined : (__filename);
+
+if (match !== undefined) {
+  console.log(match);
+} else {
+  console.log("non-node environment");
+}
+```

@@ -80,6 +80,17 @@ let buildsystemNavs = [|
   },
 |];
 
+let jsInteropNavs = [|
+  NavItem.{
+    name: "Embed Raw JavaScript",
+    href: "/docs/reason-compiler/latest/embed-raw-javascript",
+  },
+  {
+    name: "Bind to Global JS Values",
+    href: "/docs/manual/latest/bind-to-global-js-values",
+  },
+|];
+
 let guidesNavs = [|
   NavItem.{
     name: "Converting from JS",
@@ -96,6 +107,7 @@ let extraNavs = [|
 let categories = [|
   Category.{name: "Overview", items: overviewNavs},
   {name: "Basics", items: basicNavs},
+  {name: "JavaScript Interop", items: jsInteropNavs},
   {name: "Build System", items: buildsystemNavs},
   {name: "Guides", items: guidesNavs},
   {name: "Extra", items: extraNavs},
