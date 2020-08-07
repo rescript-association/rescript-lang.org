@@ -1,0 +1,44 @@
+# Use Illegal Identifier Names
+
+Sometime, for e.g. a let binding or a record field, you might want to use:
+- A capitalized name.
+- A name that contains illegal characters (e.g. emojis, hyphen, space).
+- A name that's one of ReScript's reserved keywords.
+
+We provide an escape hatch syntax for these cases:
+
+```res
+let \"my-🍎" = 10
+
+type element = {
+  \"aria-label": string
+}
+
+let myElement = {
+  \"aria-label": "close"
+}
+
+let label = myElement.\"aria-label"
+
+let calculate = (~\"Props") => {
+  \"Props" + 1
+}
+```
+
+Output:
+
+```js
+var my$$unknown$unknown$unknown$unknown = 10;
+
+var myElement = {
+  "aria-label": "close"
+};
+
+var label = myElement["aria-label"];
+
+function calculate(Props) {
+  return Props + 1 | 0;
+}
+```
+
+**Use them only when necessary**, for interop with JavaScript.

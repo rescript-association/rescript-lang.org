@@ -97,6 +97,7 @@ let jsInteropNavs = [|
     href: "/docs/manual/latest/bind-to-global-js-values",
   },
   {name: "JSON", href: "/docs/manual/latest/json"},
+  {name: "Use Illegal Identifier Names", href: "/docs/manual/latest/use-illegal-identifier-names"},
   {
     name: "Browser Support & Polyfills",
     href: "/docs/manual/latest/browser-support-polyfills",

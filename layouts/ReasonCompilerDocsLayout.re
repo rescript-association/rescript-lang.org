@@ -65,10 +65,6 @@ let interopNavs = [|
     name: "Better Data Structures Printing (Debug Mode)",
     href: "/docs/reason-compiler/latest/better-data-structures-printing-debug-mode",
   },
-  {
-    name: "Handling JS Naming Collisions",
-    href: "/docs/reason-compiler/latest/handling-js-naming-collisions",
-  },
   {name: "Miscellaneous", href: "/docs/reason-compiler/latest/interop-misc"},
   {name: "Decorators", href: "/docs/reason-compiler/latest/decorators"},
 |];
