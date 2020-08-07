@@ -87,13 +87,6 @@ let interopNavs = [|
   {name: "Decorators", href: "/docs/reason-compiler/latest/decorators"},
 |];
 
-let stdlibNavs = [|
-  NavItem.{
-    name: "Overview",
-    href: "/docs/reason-compiler/latest/stdlib-overview",
-  },
-|];
-
 let advancedNavs = [|
   NavItem.{
     name: "Conditional Compilation",
@@ -115,7 +108,6 @@ let advancedNavs = [|
 
 let categories = [|
   Category.{name: "Interop", items: interopNavs},
-  {name: "Standard Library", items: stdlibNavs},
   {name: "Advanced", items: advancedNavs},
 |];
 
