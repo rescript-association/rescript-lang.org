@@ -50,6 +50,65 @@ module Warn = {
   };
 };
 
+module CodeTab = {
+  module Tab = {
+    [@react.component]
+    let make = () => {};
+  };
+
+  [@react.component]
+  let make =
+      (~children: Mdx.MdxChildren.t, ~labels: array(string)=[||]) => {
+    let mdxElements =
+      switch (Mdx.MdxChildren.classify(children)) {
+      | Array(mdxElements) => mdxElements
+      | Element(el) => [|el|]
+      | _ => [||]
+      };
+
+    let tabs =
+      Belt.Array.reduceWithIndex(
+        mdxElements,
+        [||],
+        (acc, mdxElement, i) => {
+          let child =
+            mdxElement
+            ->Mdx.MdxChildren.getMdxChildren
+            ->Mdx.MdxChildren.classify;
+
+          switch (child) {
+          | Element(codeEl) =>
+            switch (codeEl->Mdx.getMdxType) {
+            | "code" =>
+              let className =
+                Mdx.getMdxClassName(codeEl)->Belt.Option.getWithDefault("");
+
+              let lang =
+                switch (Js.String2.split(className, "-")) {
+                | [|"language", lang|] => Some(lang)
+                | _ => None
+                };
+
+              // codeEl should actually be a String only mdxComponent
+              let code =
+                Mdx.MdxChildren.flatten(codeEl)->Js.Array2.joinWith("");
+
+              let label = Belt.Array.get(labels, i);
+              let tab = {CodeExample.Toggle.lang, code, label};
+              Js.Array2.push(acc, tab)->ignore;
+
+            | _ => ()
+            }
+          | _ => ()
+          };
+          acc;
+        },
+      );
+
+    <CodeExample.Toggle tabs />;
+  };
+};
+
 module UrlBox = {
   open Mdx.MdxChildren;
 
@@ -516,6 +575,7 @@ let default =
     ~intro=Intro.make,
     ~warn=Warn.make,
     ~urlBox=UrlBox.make,
+    ~codeTab=CodeTab.make,
     ~p=P.make,
     ~li=Li.make,
     ~h1=H1.make,

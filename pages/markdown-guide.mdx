@@ -194,3 +194,37 @@ The default language is set to `text` and will not provide any syntax
 highlighting
 ```
 
+## CodeTabs
+
+For cases where you want to show a single codeblock with multiple syntaxes, use the `<CodeToggle>` component.
+Make sure to leave a newline between the `<CodeToggle>` JSX tags, otherwise codeblock children won't be recognized!
+
+**Example:**
+~~~
+<CodeTab>
+
+```res
+let a = "Some ReScript code"
+```
+
+```js
+var a = "Some JavaScript code";
+```
+
+</CodeTab>
+~~~
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+  ```res
+  let a = "Some ReScript code"
+  switch foo {
+
+  }
+  ```
+
+  ```js
+  var a = "Some JavaScript code";
+  ```
+
+</CodeTab>
