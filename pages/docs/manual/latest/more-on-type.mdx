@@ -83,10 +83,24 @@ type student = {taughtBy: teacher}
 and teacher = {students: array<student>}
 ```
 
-## Design Decisions
+## Type Escape Hatch
 
-A type system allowing type argument is basically allowing type-level functions. `array<int>` is really the `array` type function taking in the `int` type, and returning the final, concrete type you'd use in some places. You might have noticed that in other languages, this is more or less called "generics". For example, `ArrayList<Integer>` in Java.
+ReScript's type system is robust and does not allow dangerous, unsafe stuff like implicit type casting, randomly guessing a value's type, etc. However, out of pragmatism, we expose a single escape hatch for you to "lie" to the type system:
 
-[The principle of least power](https://en.wikipedia.org/wiki/Rule_of_least_power) applies when you're trying to "Get Things Done". If the problem domain allows, definitely pick the least abstract (aka, the most concrete) solution available, so that the solution is reached faster and has fewer unstable indirections you'd have to traverse. For example, prefer types over free-form data, prefer data-driven configuration over turing-complete function calls, prefer function calls over macros, prefer macros over project forks, etc. When you constrain your domain and power, things become easier to analyze. That is, _if_ the domain is constrained enough to allow it.
+```res
+external myShadyConversion : myType1 => myType2 = "%identity"
+```
 
-When a type system is an all-encompassing aspect of your program, we need to make sure we leave enough power in order not to overly constrain your expressiveness; without "type functions", you'd end up with quite a bit of boilerplate, e.g. hard-coded `arrayOfInt`, `arrayOfString`, `arrayOfArrayOfFloat`, their respective helper functions, etc. However, please also make sure you don't overly abuse the power given to you through a rather powerful type system. Sometimes, it's fine to write a _little_ bit of boilerplate to reduce the need for otherwise extra powerful types. If anything, tasteful tradeoffs might show your pragmatism and judgement more than fancy types!
+This declaration converts a `myType1` of your choice to `myType2` of your choice. You can use it like so:
+
+```res
+external convertToFloat : int => float = "%identity"
+let age = 10
+let gpa = 2.1 +. convertToFloat(age)
+```
+
+Obviously, do **not** abuse this feature. Use it tastefully when you're working with existing, overly dynamic JS code, for example.
+
+More on externals [here](external.md).
+
+**Note**: this particular `external` is the only one that isn't preceded by a `@bs` annotation.

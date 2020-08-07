@@ -34,10 +34,6 @@ let interopNavs = [|
     href: "/docs/reason-compiler/latest/common-data-types",
   },
   {
-    name: "Intro to External",
-    href: "/docs/reason-compiler/latest/intro-to-external",
-  },
-  {
     name: "Bind to Global Values",
     href: "/docs/reason-compiler/latest/bind-to-global-values",
   },

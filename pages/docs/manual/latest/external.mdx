@@ -1,15 +1,25 @@
 # External
 
-`external`, or "FFI" (foreign function interface), or simply "interop" (for "interoperability") is how ReScript brings in existing JavaScript values.
+`external`, or "FFI" (foreign function interface), or simply "interop" (for "interoperability") is how ReScript brings in and use JavaScript values.
 
-Imagine writing a let binding, but with its body omitted and its (mandatory) type written down:
+Imagine writing a let binding, but
+
+`external` is like a let binding, but:
+- You need to prepend the `external` with one of the `@bs` annotations.
+- The right side isn't a value; it's the name of the JS value you're binding to.
+- The type for the binding is mandatory, since we need to know what the type of that JS value is.
 
 ```res
 @bs.val external getElementsByClassName:
-  string => array<Dom.element> = "document.getElementsByClassName"
+  string => array<Dom.element>
+  = "document.getElementsByClassName"
 ```
 
 **Note**: `external`s can only be at the top level, or inside a module definition. You can't declare them in e.g. a function body.
+
+Once declared, you can use an `external` as a normal value, just like a let binding.
+
+`external`s declarations are inlined into their callers during compilation, **and completely disappear from the JS output**. No performance cost!
 
 ## Usage
 
