@@ -25,6 +25,15 @@ let getMdxType: mdxComponent => string = [%raw
     }"
 ];
 
+let getMdxClassName: mdxComponent => option(string) = [%raw
+  element => "{
+      if(element == null || element.props == null) {
+        return;
+      }
+      return element.props.className;
+    }"
+];
+
 module MdxChildren: {
   type unknown;
   type t;
@@ -130,6 +139,8 @@ module Components = {
         "href": string,
         "children": MdxChildren.t,
       }),
+    [@bs.as "CodeToggle"] [@bs.optional]
+    codeToggle: React.component({. "children": MdxChildren.t}),
     /* Common markdown elements */
     [@bs.optional]
     p: React.component(props),
