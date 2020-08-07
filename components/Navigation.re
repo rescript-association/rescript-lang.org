@@ -333,7 +333,7 @@ module MobileNav = {
          */
         <li className=base>
           <a
-            href="https://twitter.com/reasonml"
+            href="https://twitter.com/rescriptlang"
             rel="noopener noreferrer"
             target="_blank"
             className=extLink>
