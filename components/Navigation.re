@@ -340,15 +340,15 @@ module MobileNav = {
             "Twitter"->s
           </a>
         </li>
-        <li className=base>
-          <a
-            href="https://discord.gg/reasonml"
-            rel="noopener noreferrer"
-            target="_blank"
-            className=extLink>
-            "Discord"->s
-          </a>
-        </li>
+        /*<li className=base>*/
+          /*<a*/
+            /*href="https://discord.gg/reasonml"*/
+            /*rel="noopener noreferrer"*/
+            /*target="_blank"*/
+            /*className=extLink>*/
+            /*"Discord"->s*/
+          /*</a>*/
+        /*</li>*/
         <li className=base>
           <a
             href="https://github.com/reason-association/reasonml.org"
@@ -545,21 +545,21 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
             <Icon.Github className="w-5 h-5" />
           </a>
           <a
-            href="https://twitter.com/reasonml"
+            href="https://twitter.com/rescriptlang"
             rel="noopener noreferrer"
             target="_blank"
             className=link
             onMouseEnter=nonCollapsibleOnMouseEnter>
             <Icon.Twitter className="w-5 h-5" />
           </a>
-          <a
-            href="https://discord.gg/reasonml"
-            rel="noopener noreferrer"
-            target="_blank"
-            className=link
-            onMouseEnter=nonCollapsibleOnMouseEnter>
-            <Icon.Discord className="w-5 h-5" />
-          </a>
+          /*<a*/
+            /*href="https://discord.gg/reasonml"*/
+            /*rel="noopener noreferrer"*/
+            /*target="_blank"*/
+            /*className=link*/
+            /*onMouseEnter=nonCollapsibleOnMouseEnter>*/
+            /*<Icon.Discord className="w-5 h-5" />*/
+          /*</a>*/
         </div>
       </div>
       <button
