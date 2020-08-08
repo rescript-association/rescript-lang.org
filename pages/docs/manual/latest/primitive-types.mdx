@@ -1,8 +1,10 @@
-# String and Char
+# Primitive Types
+
+ReScript comes with the familiar primitive types like `string`, `int`, `float`, etc.
 
 ## String
 
-ReScript strings are delimited using **double** quotes (single quotes are reserved for the character type below).
+ReScript `string`s are delimited using **double** quotes (single quotes are reserved for the character type below).
 
 ```res
 let greeting = "Hello world!"
@@ -68,3 +70,38 @@ let firstLetterOfAlphabet = 'a'
 **Note**: Char doesn't support Unicode or UTF-8 and is therefore disrecommended.
 
 To convert a String to a Char, use `"a".[0]`. To convert a Char to a String, use `String.make(1, 'a')`.
+
+## Regular Expression
+
+ReScript regular expressions compile cleanly to their JavaScript counterpart:
+
+```res
+let r = %re("/b/g")
+```
+
+A regular expression like the above has the type `Js.Re.t`. The [Js.Re](/apis/javascript/latest/js/re) module contains the regular expression helpers you have seen in JS.
+
+## Boolean
+
+A ReScript boolean has the type `bool` and can be either `true` or `false`. Common operations:
+
+- `&&`: logical and.
+- `||`: logical or.
+- `!`: logical not.
+- `<=`, `>=`, `<`, `>`
+- `==`: structural equal, compares data structures deeply: `(1, 2) == (1, 2)` is `true`. Convenient, but use with caution.
+- `===`: referential equal, compares shallowly. `(1, 2) === (1, 2)` is `false`. `let myTuple = (1, 2); myTuple === myTuple` is `true`.
+- `!=`: structural unequal.
+- `!==`: referential unequal.
+
+ReScript's `true/false` compiles into a JavaScript `true/false`.
+
+## Integers
+
+32-bits, truncated when necessary. We provides the usual operations on them: `+`, `-`, `*`, `/`, etc. See [Js.Int](/apis/javascript/latest/js/int) for helper functions.
+
+**Careful when you bind to JavaScript numbers**! Long ones might be truncated. Bind JS number (especially Dates) as **float** instead.
+
+## Floats
+
+Float requires other operators: `+.`, `-.`, `*.`, `/.`, etc. Like `0.5 +. 0.6`. See [Js.Float](/apis/javascript/latest/js/float) for helper functions.
