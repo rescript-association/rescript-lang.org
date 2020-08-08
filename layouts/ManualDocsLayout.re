@@ -43,7 +43,6 @@ let basicNavs = [|
   {name: "Function", href: "/docs/manual/latest/function"},
   {name: "Control Flow", href: "/docs/manual/latest/control-flow"},
   {name: "Pipe", href: "/docs/manual/latest/pipe"},
-  {name: "More on Type", href: "/docs/manual/latest/more-on-type"},
   {name: "Destructuring", href: "/docs/manual/latest/destructuring"},
   {name: "Pattern Matching", href: "/docs/manual/latest/pattern-matching"},
   {name: "Mutation", href: "/docs/manual/latest/mutation"},
