@@ -1,14 +1,14 @@
-# Pipe First
+# Pipe
 
-`->` is a convenient operator that allows you to "flip" your code inside-out. `a(b)` becomes `b->a`. It's a piece of syntax that doesn't have any runtime cost.
+ReScript provides a tiny but surprisingly useful operator `->`, called the "pipe", that allows you to "flip" your code inside-out. `a(b)` becomes `b->a`. It's a simple piece of syntax that doesn't have any runtime cost.
 
-Imagine you have the following:
+Why would you use it? Imagine you have the following:
 
 ```res
 validateAge(getAge(parseData(person)))
 ```
 
-This is slightly hard to read, since you need to read the code from the innermost part, to the outer parts. Use Pipe First to streamline it
+This is slightly hard to read, since you need to read the code from the innermost part, to the outer parts. Use pipe to streamline it:
 
 ```res
 person
@@ -31,11 +31,13 @@ is the same as
 one->a(two, three)
 ```
 
-This works with labeled arguments too.
+This also works with labeled arguments.
 
-### Tips & Tricks
+Pipes are used to emulate object-oriented programming, e.g. what's `myStudent.getName` in other languages like Java would be `myStudent->getName` in ReScript (aka `getName(myStudent)`). This allows us to have the readability of the good parts of OOP without its downside of dragging in a huge class system just to call a function on a piece of data.
 
-Try not to abuse pipes; they're a means to an end. Newcomers sometimes shape a library's API to take advantage of the pipe. This is rather backward.
+## Tips & Tricks
+
+Try not to abuse pipes; they're a means to an end. Newcomers sometimes shape a library's API to take advantage of the pipe. This is backward and immature.
 
 Conventionally, we don't turn the innermost layer of function call into a pipe. So the above example would usually be written as:
 
@@ -62,13 +64,13 @@ asyncRequest()
 Assuming we don't need the chaining behavior above, we'd bind to each case this using `bs.send` from the previous section:
 
 ```res
-[@bs.send] external map : (array('a), 'a => 'b) => array('b) = "map"
-[@bs.send] external filter : (array('a), 'a => bool) => array('a) = "filter"
+@bs.send external map: (array<'a>, 'a => 'b) => array<'b> = "map"
+@bs.send external filter: (array<'a>, 'a => bool) => array<'a> = "filter"
 
 type request
 external asyncRequest: unit => request = "asyncRequest"
-[@bs.send] external setWaitDuration: (request, int) => request = "setWaitDuration"
-[@bs.send] external send: request => unit = "send"
+@bs.send external setWaitDuration: (request, int) => request = "setWaitDuration"
+@bs.send external send: request => unit = "send"
 ```
 
 You'd use them like this:
@@ -79,7 +81,7 @@ let result = filter(map([|1, 2, 3|], a => a + 1), a => a mod 2 == 0)
 send(setWaitDuration(asyncRequest(), 4000))
 ```
 
-This looks much worse than the JS counterpart! Now we need to read the actual logic inside-out. We also cannot use the [`|>` (pipe last)](./pipe-last) operator here, since the object comes _first_ in the binding. But `->` works!
+This looks much worse than the JS counterpart! Clean it up visually with pipe:
 
 ```res
 let result = [|1, 2, 3|]
@@ -91,7 +93,7 @@ asyncRequest()->setWaitDuration(4000)->send
 
 ## Pipe Into Variants
 
-A variant's constructors, like `Some` or `Student`, look like functions, but unfortunately aren't, due to historical reasons. Sometime, it'd still be nice to be able to use them as functions. Pipe First takes the occasion to enable that for you!
+You can pipe into a variant's constructor as if it was a function:
 
 ```res
 let result = name->preprocess->Some
@@ -103,7 +105,7 @@ We turn this into:
 let result = Some(preprocess(name))
 ```
 
-**Note** that using a variant constructor as a function wouldn't work anywhere else.
+**Note** that using a variant constructor as a function wouldn't work anywhere else beside here.
 
 ## Pipe Placeholders
 
@@ -136,3 +138,11 @@ This allows you to pipe into any positional argument. It also works for named ar
 getName(input)
   ->namePerson(~person=personDetails, ~name=_)
 ```
+
+## Triangle Pipe (Deprecated)
+
+You might see usages of another pipe, `|>`, in some codebases. These are deprecated.
+
+Unlike `->` pipe, the `|>` pipe puts the subject as the last (not first) argument of the function. `a |> f(b)` turns into `f(a, b)`.
+
+For a more thorough discussion on the rationale and differences between the two operators, please refer to the [Data-first and Data-last comparison by Javier Chávarri](https://www.javierchavarri.com/data-first-and-data-last-a-comparison/)
