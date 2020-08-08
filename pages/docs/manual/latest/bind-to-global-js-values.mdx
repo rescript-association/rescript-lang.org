@@ -69,7 +69,7 @@ Global values like `__filename` and `__DEV__` don't always exist; you can't even
 
 For these troublesome global values, ReScript provides a special approach: `%external(a_single_identifier)`.
 
-```re
+```res
 switch %external(__DEV__) {
 | Some(_) => Js.log("dev mode")
 | None => Js.log("production mode")
@@ -92,7 +92,7 @@ That first line's `typeof` check won't trigger a JS ReferenceError.
 
 Another example:
 
-```re
+```res
 switch %external(__filename) {
 | Some(f) => Js.log(f)
 | None => Js.log("non-node environment")

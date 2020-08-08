@@ -90,7 +90,7 @@ let buildsystemNavs = [|
 let jsInteropNavs = [|
   NavItem.{
     name: "Embed Raw JavaScript",
-    href: "/docs/reason-compiler/latest/embed-raw-javascript",
+    href: "/docs/manual/latest/embed-raw-javascript",
   },
   {
     name: "Shared Data Types",
