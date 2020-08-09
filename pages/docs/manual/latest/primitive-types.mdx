@@ -37,11 +37,17 @@ There's a special syntax for string that allows
 let greetingAndOneSlash = `Hello
 World
 \
-Hehe...
+${name}
 `
 ```
 
 This is just like JavaScript's backtick string interpolation, except without needing to escape special characters.
+
+For interpolation, you'll have to convert the binding (`name` in the example) into a string if it isn't one. If you want the interpolation to implicitly convert a binding into a string, prepend a `j`:
+
+```res
+let message = j`Today I am ${age} years old.`
+```
 
 ### Usage
 
