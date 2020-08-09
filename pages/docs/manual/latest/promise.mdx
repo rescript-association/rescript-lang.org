@@ -21,7 +21,7 @@ This type signature means that `make` takes a callback that takes 2 named argume
 
 ## Usage
 
-Using the pipe operator (see "Composition operators" in the [Pervasives module](https://reasonml.github.io/api/Pervasives.html)):
+Using the [pipe operator](pipe.md):
 
 ```res
 let myPromise = Js.Promise.make((~resolve, ~reject) => resolve(. 2))
