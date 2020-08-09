@@ -12,12 +12,6 @@ type option<'a> = None | Some('a)
 
 It means "a value of type option is either None (nothing) or that actual value wrapped in a Some". You might wonder why we can't drop that `Some` wrapper and just do the following:
 
-```res
-type option<'a> = None | 'a
-```
-
-So that the value can be either `None` or `theActualValue`. While convenient, there are many reasons why this is undesirable later on. We'll spare the explanation here.
-
 ## Example
 
 Here's a normal value:
@@ -41,9 +35,10 @@ Later on, when another piece of code receives such value, it'd be forced to hand
 
 ```res
 switch licenseNumber {
-| None => Js.log("The person doesn't have a car")
+| None =>
+  Js.log("The person doesn't have a car")
 | Some(number) =>
-  Js.log("The person's license number is " ++ string_of_int(number))
+  Js.log("The person's license number is " ++ Js.Int.toString(number))
 }
 ```
 

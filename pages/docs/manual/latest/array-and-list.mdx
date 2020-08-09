@@ -69,6 +69,6 @@ Updating an arbitrary item in the middle of a list is also discouraged, since it
 let message =
   switch myList {
   | list{} => "This list is empty"
-  | list{a, ...rest} => "The head of the list is the string " ++ string_of_int(a)
+  | list{a, ...rest} => "The head of the list is the string " ++ Js.Int.toString(a)
   }
 ```

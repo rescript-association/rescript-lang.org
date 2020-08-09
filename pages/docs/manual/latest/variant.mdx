@@ -79,7 +79,7 @@ Using `switch`, you can pattern-match (again, described in a later section) a co
 let greeting =
   switch myAccount {
   | None => "Hi!"
-  | Facebook(name, age) => "Hi " ++ name ++ ", you're " ++ string_of_int(age) ++ "-year-old."
+  | Facebook(name, age) => "Hi " ++ name ++ ", you're " ++ Js.Int.toString(age) ++ "-year-old."
   | Instagram(name) => "Hello " ++ name ++ "!"
   }
 ```

@@ -86,7 +86,7 @@ switch data {
 | GoodResult(theMessage) =>
   Js.log("Success! " ++ theMessage)
 | BadResult(errorCode) =>
-  Js.log("Something's wrong. The error code is: " ++ string_of_int(errorCode))
+  Js.log("Something's wrong. The error code is: " ++ Js.Int.toString(errorCode))
 | NoResult =>
   Js.log("Bah.")
 }
