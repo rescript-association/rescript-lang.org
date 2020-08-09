@@ -50,65 +50,6 @@ module Warn = {
   };
 };
 
-module CodeTab = {
-  module Tab = {
-    [@react.component]
-    let make = () => {};
-  };
-
-  [@react.component]
-  let make =
-      (~children: Mdx.MdxChildren.t, ~labels: array(string)=[||]) => {
-    let mdxElements =
-      switch (Mdx.MdxChildren.classify(children)) {
-      | Array(mdxElements) => mdxElements
-      | Element(el) => [|el|]
-      | _ => [||]
-      };
-
-    let tabs =
-      Belt.Array.reduceWithIndex(
-        mdxElements,
-        [||],
-        (acc, mdxElement, i) => {
-          let child =
-            mdxElement
-            ->Mdx.MdxChildren.getMdxChildren
-            ->Mdx.MdxChildren.classify;
-
-          switch (child) {
-          | Element(codeEl) =>
-            switch (codeEl->Mdx.getMdxType) {
-            | "code" =>
-              let className =
-                Mdx.getMdxClassName(codeEl)->Belt.Option.getWithDefault("");
-
-              let lang =
-                switch (Js.String2.split(className, "-")) {
-                | [|"language", lang|] => Some(lang)
-                | _ => None
-                };
-
-              // codeEl should actually be a String only mdxComponent
-              let code =
-                Mdx.MdxChildren.flatten(codeEl)->Js.Array2.joinWith("");
-
-              let label = Belt.Array.get(labels, i);
-              let tab = {CodeExample.Toggle.lang, code, label};
-              Js.Array2.push(acc, tab)->ignore;
-
-            | _ => ()
-            }
-          | _ => ()
-          };
-          acc;
-        },
-      );
-
-    <CodeExample.Toggle tabs />;
-  };
-};
-
 module UrlBox = {
   open Mdx.MdxChildren;
 
@@ -313,6 +254,9 @@ module Td = {
 };
 
 module Code = {
+  [@bs.module "../ffi/parse-numeric-range.js"]
+  external parseNumericRange: string => array(int) = "parsePart";
+
   // TODO: Might be refactorable with the new @unboxed feature
   type unknown = Mdx.Components.unknown;
 
@@ -331,6 +275,20 @@ module Code = {
 
   external unknownAsString: unknown => string = "%identity";
 
+  let parseNumericRangeMeta = (metastring: string) => {
+    Js.String2.split(metastring, " ")
+    ->Js.Array2.find(s => {
+        Js.String2.startsWith(s, "{") && Js.String2.endsWith(s, "}")
+      })
+    ->Belt.Option.map(str => {
+        let nums =
+          Js.String2.replaceByRe(str, [%re "/[\{\}]/g"], "")
+          ->parseNumericRange;
+        nums;
+      })
+    ->Belt.Option.getWithDefault([||]);
+  };
+
   let makeCodeElement = (~code, ~metastring, ~lang) => {
     let baseClass = "md-code font-mono w-full block leading-tight mt-4 mb-10";
     let codeElement =
@@ -340,12 +298,14 @@ module Code = {
         let metaSplits =
           Js.String.split(" ", metastring)->Belt.List.fromArray;
 
+        let highlightedLines = parseNumericRangeMeta(metastring);
+
         if (Belt.List.has(metaSplits, "example", (==))) {
           <CodeExample code lang />;
         } else if (Belt.List.has(metaSplits, "sig", (==))) {
           <CodeSignature code lang />;
         } else {
-          <CodeExample code lang />;
+          <CodeExample highlightedLines code lang />;
         };
       };
 
@@ -400,6 +360,78 @@ module Code = {
       let code = unknownAsString(children);
       makeCodeElement(~code, ~metastring, ~lang);
     };
+  };
+};
+
+module CodeTab = {
+  let getMdxMetastring: Mdx.mdxComponent => option(string) = [%raw
+    element => "{
+      if(element == null || element.props == null) {
+        return;
+      }
+      return element.props.metastring;
+    }"
+  ];
+  [@react.component]
+  let make = (~children: Mdx.MdxChildren.t, ~labels: array(string)=[||]) => {
+    let mdxElements =
+      switch (Mdx.MdxChildren.classify(children)) {
+      | Array(mdxElements) => mdxElements
+      | Element(el) => [|el|]
+      | _ => [||]
+      };
+
+    let tabs =
+      Belt.Array.reduceWithIndex(
+        mdxElements,
+        [||],
+        (acc, mdxElement, i) => {
+          let child =
+            mdxElement
+            ->Mdx.MdxChildren.getMdxChildren
+            ->Mdx.MdxChildren.classify;
+
+          switch (child) {
+          | Element(codeEl) =>
+            switch (codeEl->Mdx.getMdxType) {
+            | "code" =>
+              let className =
+                Mdx.getMdxClassName(codeEl)->Belt.Option.getWithDefault("");
+
+              let metastring =
+                getMdxMetastring(codeEl)->Belt.Option.getWithDefault("");
+
+              let lang =
+                switch (Js.String2.split(className, "-")) {
+                | [|"language", lang|] => Some(lang)
+                | _ => None
+                };
+
+              // codeEl should actually be a String only mdxComponent
+              let code =
+                Mdx.MdxChildren.flatten(codeEl)->Js.Array2.joinWith("");
+
+              let label = Belt.Array.get(labels, i);
+              let tab = {
+                CodeExample.Toggle.lang,
+                code,
+                label,
+                highlightedLines:
+                  Some(Code.parseNumericRangeMeta(metastring)),
+              };
+              Js.Array2.push(acc, tab)->ignore;
+
+            | _ => ()
+            }
+          | _ => ()
+          };
+          acc;
+        },
+      );
+
+    <div className="mt-4 mb-10">
+    <CodeExample.Toggle tabs />
+    </div>
   };
 };
 
