@@ -255,8 +255,8 @@ module SubNav = {
       let jsItems = [|
         ("Belt Stdlib", "/apis/latest/belt"),
         ("Js Module", "/apis/latest/js"),
-        /*("Module 3", "/apis/javascript/latest/mod3"),*/
-        /*("Module 4", "/apis/javascript/latest/mod4"),*/
+        /*("Module 3", "/apis/latest/mod3"),*/
+        /*("Module 4", "/apis/latest/mod4"),*/
       |];
 
       let sectionClass = "pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/4";

@@ -135,17 +135,17 @@ By convention, NextJS uses `pages/api` for server related functionality, so we
 need to fall back to `pages/apis` instead.
 
 - `/apis/javascript` refers to all BuckleScript related APIs.
-- `/apis/javascript/latest` refers to the overview of all JavaScript related modules on the `latest` version
+- `/apis/latest` refers to the overview of all JavaScript related modules on the `latest` version
 - `/apis/javascript/x.x.x` refers to the overview of all JavaScript related modules on the `x.x.x` version
-- `/apis/javascript/latest/list` refers to Belt's List module on the latest version
+- `/apis/latest/list` refers to Belt's List module on the latest version
 
 **Examples:**
 
 ```
-/apis/javascript/latest (overview)
-/apis/javascript/latest/belt
-/apis/javascript/latest/js
-/apis/javascript/latest/node
+/apis/latest (overview)
+/apis/latest/belt
+/apis/latest/js
+/apis/latest/node
 
 /apis/javascript/v6.2.1 (overview)
 /apis/javascript/v6.2.1/node

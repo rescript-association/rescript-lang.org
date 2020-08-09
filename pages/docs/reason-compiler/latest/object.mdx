@@ -15,7 +15,7 @@ Until recently, where JS finally got proper Map support, objects have been (ab)u
 - values might or might not be accessed using a dynamic/computed key
 - values are all of the same type
 
-Then use our [`Js.Dict`](/apis/javascript/latest/js/dict) (for "dictionary") API to bind to that JS object! In this mode, you can do all the metaprogramming you're used to with JS objects: get all keys through `Js.Dict.keys`, get values through `Js.Dict.values`, etc.
+Then use our [`Js.Dict`](/apis/latest/js/dict) (for "dictionary") API to bind to that JS object! In this mode, you can do all the metaprogramming you're used to with JS objects: get all keys through `Js.Dict.keys`, get values through `Js.Dict.values`, etc.
 
 ### Example
 
@@ -60,7 +60,7 @@ You can see that under the hood, a `Js.Dict` is simply backed by a JS object. Th
 
 In BuckleScript, records are directly compiled into JS objects with the same shape (same attribute names).
 As long as your record doesn't contain any BS specific data structures (variants, lists), it will almost always
-compile to idiomatic JS (this includes nested records etc.): 
+compile to idiomatic JS (this includes nested records etc.):
 
 ```reason
 type pet =
@@ -77,7 +77,7 @@ type person = {
   pet: option(pet),
   age: int,
   /* let's pretend our JS expects a null here */
-  bloodGroup: Js.Nullable.t(bloodGroup), 
+  bloodGroup: Js.Nullable.t(bloodGroup),
 };
 
 let john = {
@@ -171,8 +171,8 @@ p.name = "Sabine";
 
 ## Abstract Record Mode
 
-> **Note**: For BuckleScript >= v7, we recommend using the plain [Record as Objects](#records-as-objects) mechanic. 
-> This feature might still be useful for certain scenarios, but the ergonomics might be worse 
+> **Note**: For BuckleScript >= v7, we recommend using the plain [Record as Objects](#records-as-objects) mechanic.
+> This feature might still be useful for certain scenarios, but the ergonomics might be worse
 
 If your JS object:
 
@@ -413,7 +413,7 @@ let cat = Cat.t(~name="Snowball", ~isLazy=true);
 /* We can use each nameGet function separately now */
 let shoutPersonName = Person.(person->nameGet->Js.String.toUpperCase);
 
-/* Note how we use a local open Cat.([some expression]) to 
+/* Note how we use a local open Cat.([some expression]) to
    get access to Cat's nameGet function */
 let whisperCatName = Cat.(cat->nameGet->Js.String.toLowerCase);
 ```

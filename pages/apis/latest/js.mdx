@@ -10,19 +10,19 @@ classes.
 
 It is meant as a zero-abstraction interop layer and directly exposes
 JavaScript functions as they are, even when their behavior should be considered unsafe
-(e.g. modifying an array in place using [Js.Array.push](/apis/javascript/latest/js/array#push)).
+(e.g. modifying an array in place using [Js.Array.push](/apis/latest/js/array#push)).
 
-Therefore, when a correpsonding module is available in the [Belt](/apis/javascript/latest/belt) standard library,
+Therefore, when a correpsonding module is available in the [Belt](/apis/latest/belt) standard library,
 it is recommended to use the Belt version rather than the Js version.
-For example, you should prefer [Belt.Array](/apis/javascript/latest/belt/array)
-to [Js.Array](/apis/javascript/latest/js/array)
-and [Belt.Map.String](/apis/javascript/latest/belt/map-string)
-to [Js.Dict](/apis/javascript/latest/js/dict).
+For example, you should prefer [Belt.Array](/apis/latest/belt/array)
+to [Js.Array](/apis/latest/js/array)
+and [Belt.Map.String](/apis/latest/belt/map-string)
+to [Js.Dict](/apis/latest/js/dict).
 
 ## Argument Order
 
-For historical reasons, some APIs in the Js namespace (e.g. [Js.String](/apis/javascript/latest/js/string)) are
-using the data-last argument order whereas others (e.g. [Js.Date](/apis/javascript/latest/js/date)) are using data-first.
+For historical reasons, some APIs in the Js namespace (e.g. [Js.String](/apis/latest/js/string)) are
+using the data-last argument order whereas others (e.g. [Js.Date](/apis/latest/js/date)) are using data-first.
 
 For more information about these argument orders and the trade-offs between them, see
 [this blog post](https://www.javierchavarri.com/data-first-and-data-last-a-comparison/).
@@ -47,8 +47,8 @@ Js.log(Js.String.startsWith("Re", "Reason"));
 
 ## Js.Xxx2 Modules
 
-For some modules with data-last argument order (e.g. [Js.String](/apis/javascript/latest/js/string)),
-there currently exists a matching module suffixed with "2" (e.g. [Js.String2](/apis/javascript/latest/js/string-2))
+For some modules with data-last argument order (e.g. [Js.String](/apis/latest/js/string)),
+there currently exists a matching module suffixed with "2" (e.g. [Js.String2](/apis/latest/js/string-2))
 that uses data-first argument order.
 These `Js.Xxx2` modules are non-public API, so their use is discouraged.
 
