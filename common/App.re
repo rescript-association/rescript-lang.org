@@ -149,7 +149,7 @@ let default = (props: props): React.element => {
   | {base: [|"docs", "gentype"|], version: Latest} =>
     <GenTypeDocsLayout> content </GenTypeDocsLayout>
   // apis routes
-  | {base: [|"apis", "javascript"|], version: Latest, pagepath} =>
+  | {base: [|"apis"|], version: Latest, pagepath} =>
     switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 0)) {
     | (0, _) => <JavaScriptApiLayout.Docs> content </JavaScriptApiLayout.Docs>
     | (1, Some("js")) => <JsDocsLayout.Prose> content </JsDocsLayout.Prose>

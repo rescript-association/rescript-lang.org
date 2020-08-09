@@ -2,7 +2,7 @@ open Util.ReactStuff;
 module Link = Next.Link;
 
 let link = "no-underline block text-inherit hover:cursor-pointer hover:text-white text-white-80 mb-px";
-let activeLink = "text-inherit font-normal text-fire border-b border-fire";
+let activeLink = "text-inherit font-normal border-b border-fire";
 
 let linkOrActiveLink = (~target, ~route) => {
   target === route ? activeLink : link;
@@ -94,7 +94,7 @@ module CollapsibleLink = {
       <div
         className={
           (isOpen ? "flex" : "hidden")
-          ++ " fixed left-0 border-night border-t bg-night-dark min-w-320 w-full h-full sm:h-auto sm:justify-center"
+          ++ " fixed left-0 border-night border-t bg-onyx min-w-320 w-full h-full sm:h-auto sm:justify-center"
         }
         style={Style.make(~marginTop="1.375rem", ())}>
         <div className="max-w-xl w-full"> children </div>
@@ -165,15 +165,15 @@ module SubNav = {
   module DocsLinks = {
     [@react.component]
     let make = (~route: string) => {
-      let jsTheme = ColorTheme.toCN(`Js);
       let reTheme = ColorTheme.toCN(`Reason);
+      let jsTheme = ColorTheme.toCN(`Js);
 
       let languageItems = [|
         ("Introduction", "/docs/manual/latest/introduction"),
       |];
 
       let recompItems = [|
-        ("Interop", "/docs/reason-compiler/latest/interop-overview"),
+        ("Overview", "/docs/reason-compiler/latest/interop-overview"),
         ("ReasonReact", "/docs/reason-react/latest/introduction"),
         ("GenType", "/docs/gentype/latest/introduction"),
       |];
@@ -215,8 +215,8 @@ module SubNav = {
           </ul>
         </div>
         <div className={jsTheme ++ " " ++ sectionClass}>
-          <Link href="/docs/reason-compiler/latest/introduction">
-            <a className=overlineClass> "JavaScript"->s </a>
+          <Link href="/docs/reason-compiler/latest/interop-overview">
+            <a className=overlineClass> "JavaScript & Interop"->s </a>
           </Link>
           <ul className=sectionUl>
             {recompItems
@@ -246,15 +246,15 @@ module SubNav = {
     };
   };
 
+  /*
   module ApiLinks = {
     [@react.component]
     let make = (~route: string) => {
-      let jsTheme = ColorTheme.toCN(`Js);
       let reTheme = ColorTheme.toCN(`Reason);
 
       let jsItems = [|
-        ("Belt Stdlib", "/apis/javascript/latest/belt"),
-        ("Js Module", "/apis/javascript/latest/js"),
+        ("Belt Stdlib", "/apis/latest/belt"),
+        ("Js Module", "/apis/latest/js"),
         /*("Module 3", "/apis/javascript/latest/mod3"),*/
         /*("Module 4", "/apis/javascript/latest/mod4"),*/
       |];
@@ -270,8 +270,8 @@ module SubNav = {
             <a className=overlineClass> "Overview"->s </a>
           </Link>
         </div>
-        <div className={jsTheme ++ " " ++ sectionClass}>
-          <Link href="/apis/javascript/latest">
+        <div className={reTheme ++ " " ++ sectionClass}>
+          <Link href="/apis/latest">
             <a className=overlineClass> "JavaScript"->s </a>
           </Link>
           <ul className=sectionUl>
@@ -299,6 +299,7 @@ module SubNav = {
       </div>;
     };
   };
+  */
 };
 
 module MobileNav = {
@@ -341,13 +342,13 @@ module MobileNav = {
           </a>
         </li>
         /*<li className=base>*/
-          /*<a*/
-            /*href="https://discord.gg/reasonml"*/
-            /*rel="noopener noreferrer"*/
-            /*target="_blank"*/
-            /*className=extLink>*/
-            /*"Discord"->s*/
-          /*</a>*/
+        /*<a*/
+        /*href="https://discord.gg/reasonml"*/
+        /*rel="noopener noreferrer"*/
+        /*target="_blank"*/
+        /*className=extLink>*/
+        /*"Discord"->s*/
+        /*</a>*/
         /*</li>*/
         <li className=base>
           <a
@@ -382,12 +383,12 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
           },
           state: Closed,
         },
-        {
-          title: "API",
-          href: "/apis",
-          children: route => <SubNav.ApiLinks route />,
-          state: Closed,
-        },
+        /*{*/
+        /*title: "API",*/
+        /*href: "/apis",*/
+        /*children: route => <SubNav.ApiLinks route />,*/
+        /*state: Closed,*/
+        /*},*/
       |]
     );
 
@@ -451,78 +452,91 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
     <div
       className="flex justify-between mx-4 md:mx-8 items-center h-full w-full max-w-1280">
       <div className="h-10 w-10">
-          <a
-            href="/"
-            className="block hover:cursor-pointer flex justify-center items-center border w-full h-full font-bold">
-            "RES"->s
-          </a>
-        </div>
-        /*<img*/
-        /*className="inline-block w-full h-full"*/
-        /*src="/static/reason_logo.svg"*/
-        /*/>*/
+        <a
+          href="/"
+          className="block hover:cursor-pointer flex justify-center items-center border w-full h-full font-bold">
+          "RES"->s
+        </a>
+      </div>
+      /*<img*/
+      /*className="inline-block w-full h-full"*/
+      /*src="/static/reason_logo.svg"*/
+      /*/>*/
       /* Desktop horizontal navigation */
       <div
-        className="flex sm:justify-between bg-night-dark w-10/12 sm:w-9/12 sm:h-auto sm:relative">
+        className="flex xs:justify-end w-full bg-night-dark sm:h-auto sm:relative">
         <div
-          className="flex justify-between w-2/4 xs:w-3/4 sm:w-full max-w-sm"
+          className="flex ml-10 w-full max-w-320"
           style={Style.make(~minWidth="12rem", ())}>
-          <button
-            className="sm:hidden px-4 flex items-center justify-center h-full">
-            <Icon.MagnifierGlass className="w-5 h-5 hover:text-white" />
-          </button>
-          {Belt.Array.mapWithIndex(
-             collapsibles,
-             (idx, c) => {
-               let {href, title, children, state} = c;
-               let onStateChange = (~id, state) => {
-                 setCollapsibles(prev => {
-                   /* This is important to close the nav overlay, before showing the subnavigation */
-                   if (isOverlayOpen) {
-                     toggleOverlay();
-                   };
-                   Belt.Array.map(prev, c =>
-                     if (c.title === id) {
-                       {...c, state};
-                     } else {
-                       {...c, state: Closed};
-                     }
-                   );
-                 });
-               };
-               <CollapsibleLink
-                 id=title
-                 onStateChange
-                 key={idx->Belt.Int.toString}
-                 allowHover
-                 title
-                 active={Js.String2.startsWith(route, href)}
-                 state>
-                 {children(route)}
-               </CollapsibleLink>;
-             },
-           )
-           ->ate}
-          <Link href="/try">
-            <a
-              className={
-                "hidden xs:block " ++ linkOrActiveLink(~target="/try", ~route)
-              }
-              onMouseEnter=nonCollapsibleOnMouseEnter>
-              "Playground"->s
-            </a>
-          </Link>
-          <Link href="/blog">
-            <a
-              className={
-                "hidden sm:block "
-                ++ linkOrActiveLinkSubroute(~target="/blog", ~route)
-              }
-              onMouseEnter=nonCollapsibleOnMouseEnter>
-              "Blog"->s
-            </a>
-          </Link>
-        </div>
+          /*<button*/
+          /*className="sm:hidden px-4 flex items-center justify-center h-full">*/
+          /*<Icon.MagnifierGlass className="w-5 h-5 hover:text-white" />*/
+          /*</button>*/
+
+            {Belt.Array.mapWithIndex(
+               collapsibles,
+               (idx, c) => {
+                 let {href, title, children, state} = c;
+                 let onStateChange = (~id, state) => {
+                   setCollapsibles(prev => {
+                     /* This is important to close the nav overlay, before showing the subnavigation */
+                     if (isOverlayOpen) {
+                       toggleOverlay();
+                     };
+                     Belt.Array.map(prev, c =>
+                       if (c.title === id) {
+                         {...c, state};
+                       } else {
+                         {...c, state: Closed};
+                       }
+                     );
+                   });
+                 };
+                 <div className="mr-5">
+                   <CollapsibleLink
+                     id=title
+                     onStateChange
+                     key={idx->Belt.Int.toString}
+                     allowHover
+                     title
+                     active={Js.String2.startsWith(route, href)}
+                     state>
+                     {children(route)}
+                   </CollapsibleLink>
+                 </div>;
+               },
+             )
+             ->ate}
+            <Link href="/apis/latest">
+              <a
+                className={
+                  "mr-5 "
+                  ++ linkOrActiveLinkSubroute(~target="/apis/latest", ~route)
+                }
+                onMouseEnter=nonCollapsibleOnMouseEnter>
+                "API"->s
+              </a>
+            </Link>
+            <Link href="/try">
+              <a
+                className={
+                  "mr-5 " ++ linkOrActiveLink(~target="/try", ~route)
+                }
+                onMouseEnter=nonCollapsibleOnMouseEnter>
+                "Playground"->s
+              </a>
+            </Link>
+            <Link href="/blog">
+              <a
+                className={
+                  "hidden xs:block "
+                  ++ linkOrActiveLinkSubroute(~target="/blog", ~route)
+                }
+                onMouseEnter=nonCollapsibleOnMouseEnter>
+                "Blog"->s
+              </a>
+            </Link>
+          </div>
         /*
          <Link href="/community">
            <a
@@ -535,14 +549,14 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
            </a>
          </Link>
          */
-        <div className="hidden lg:-mr-6 lg:flex lg:justify-between lg:w-20 ">
+        <div className="hidden md:flex">
           <a
             href="https://github.com/reason-association/rescript-lang.org"
             rel="noopener noreferrer"
             target="_blank"
-            className=link
+            className={"mr-5 " ++ link}
             onMouseEnter=nonCollapsibleOnMouseEnter>
-            <Icon.Github className="w-5 h-5" />
+            <Icon.Github className="w-6 h-6 opacity-50 hover:opacity-100" />
           </a>
           <a
             href="https://twitter.com/rescriptlang"
@@ -550,26 +564,26 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
             target="_blank"
             className=link
             onMouseEnter=nonCollapsibleOnMouseEnter>
-            <Icon.Twitter className="w-5 h-5" />
+            <Icon.Twitter className="w-6 h-6 opacity-50 hover:opacity-100" />
           </a>
-          /*<a*/
-            /*href="https://discord.gg/reasonml"*/
-            /*rel="noopener noreferrer"*/
-            /*target="_blank"*/
-            /*className=link*/
-            /*onMouseEnter=nonCollapsibleOnMouseEnter>*/
-            /*<Icon.Discord className="w-5 h-5" />*/
-          /*</a>*/
         </div>
       </div>
-      <button
-        className="hidden sm:flex sm:px-4 sm:items-center sm:justify-center sm:border-l sm:border-r sm:border-night sm:h-full">
-        <Icon.MagnifierGlass className="w-5 h-5 hover:text-white" />
-      </button>
     </div>
+    /*<a*/
+    /*href="https://discord.gg/reasonml"*/
+    /*rel="noopener noreferrer"*/
+    /*target="_blank"*/
+    /*className=link*/
+    /*onMouseEnter=nonCollapsibleOnMouseEnter>*/
+    /*<Icon.Discord className="w-5 h-5" />*/
+    /*</a>*/
+    /*<button*/
+    /*className="hidden sm:flex sm:px-4 sm:items-center sm:justify-center sm:border-l sm:border-r sm:border-night sm:h-full">*/
+    /*<Icon.MagnifierGlass className="w-5 h-5 hover:text-white" />*/
+    /*</button>*/
     /* Burger Button */
     <button
-      className="h-full px-4 sm:hidden flex items-center hover:text-white"
+      className="h-full px-4 xs:hidden flex items-center hover:text-white"
       onClick={evt => {
         ReactEvent.Mouse.preventDefault(evt);
         resetCollapsibles();

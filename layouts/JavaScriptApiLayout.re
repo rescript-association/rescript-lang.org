@@ -12,13 +12,13 @@ module Docs = {
     let categories: array(Sidebar.Category.t) = [|
       {
         name: "Introduction",
-        items: [|{name: "Overview", href: "/apis/javascript/latest"}|],
+        items: [|{name: "Overview", href: "/apis/latest"}|],
       },
       {
         name: "JavaScript",
         items: [|
-          {name: "Js Module", href: "/apis/javascript/latest/js"},
-          {name: "Belt Stdlib", href: "/apis/javascript/latest/belt"},
+          {name: "Js Module", href: "/apis/latest/js"},
+          {name: "Belt Stdlib", href: "/apis/latest/belt"},
         |],
       },
     |];
@@ -35,7 +35,7 @@ module Docs = {
       />;
 
     <SidebarLayout
-      theme=`Js
+      theme=`Reason
       components
       sidebarState=(isSidebarOpen, setSidebarOpen)
       sidebar>
