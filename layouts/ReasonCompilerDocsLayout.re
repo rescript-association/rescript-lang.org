@@ -29,14 +29,6 @@ let interopNavs = [|
     name: "Cheatsheet",
     href: "/docs/reason-compiler/latest/interop-cheatsheet",
   },
-  {
-    name: "Bind to Global Values",
-    href: "/docs/reason-compiler/latest/bind-to-global-values",
-  },
-  {
-    name: "Null, Undefined & Option",
-    href: "/docs/reason-compiler/latest/null-undefined-option",
-  },
   {name: "Object", href: "/docs/reason-compiler/latest/object"},
   {name: "Object 2", href: "/docs/reason-compiler/latest/object-2"},
   {name: "Class", href: "/docs/reason-compiler/latest/class"},
@@ -52,10 +44,6 @@ let interopNavs = [|
   {
     name: "Import & Export",
     href: "/docs/reason-compiler/latest/import-export",
-  },
-  {
-    name: "Generate Converters & Helpers",
-    href: "/docs/reason-compiler/latest/generate-converters-accessors",
   },
   {
     name: "Better Data Structures Printing (Debug Mode)",
