@@ -82,7 +82,7 @@ let make = (~components=Markdown.default, ~children) => {
   let version = "v3";
 
   <DocsLayout
-    theme=`Js components categories version title ?activeToc ?breadcrumbs>
+    theme=`Reason components categories version title ?activeToc ?breadcrumbs>
     children
   </DocsLayout>;
 };

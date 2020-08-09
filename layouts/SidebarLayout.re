@@ -337,7 +337,7 @@ module Sidebar = {
         /* Sticky toplevel nav with toggle for opening the sidebar */
 
           <aside
-            className="relative top-0 px-4 w-full block md:top-18 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24 pt-8"
+            className="relative top-0 px-4 w-full block md:top-18 md:pt-24 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24 pt-8"
             style={Style.make(~height="calc(100vh - 4.5rem)", ())}>
             <div className="flex justify-between">
               <div className="w-3/4 md:w-full"> toplevelNav </div>
