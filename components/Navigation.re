@@ -94,7 +94,7 @@ module CollapsibleLink = {
       <div
         className={
           (isOpen ? "flex" : "hidden")
-          ++ " fixed left-0 border-night border-t bg-night-dark min-w-320 w-full h-full sm:h-auto sm:justify-center"
+          ++ " fixed left-0 border-night border-t bg-onyx min-w-320 w-full h-full sm:h-auto sm:justify-center"
         }
         style={Style.make(~marginTop="1.375rem", ())}>
         <div className="max-w-xl w-full"> children </div>
@@ -165,15 +165,15 @@ module SubNav = {
   module DocsLinks = {
     [@react.component]
     let make = (~route: string) => {
-      let jsTheme = ColorTheme.toCN(`Js);
       let reTheme = ColorTheme.toCN(`Reason);
+      let jsTheme = ColorTheme.toCN(`Js);
 
       let languageItems = [|
         ("Introduction", "/docs/manual/latest/introduction"),
       |];
 
       let recompItems = [|
-        ("Interop", "/docs/reason-compiler/latest/interop-overview"),
+        ("Overview", "/docs/reason-compiler/latest/interop-overview"),
         ("ReasonReact", "/docs/reason-react/latest/introduction"),
         ("GenType", "/docs/gentype/latest/introduction"),
       |];
@@ -215,8 +215,8 @@ module SubNav = {
           </ul>
         </div>
         <div className={jsTheme ++ " " ++ sectionClass}>
-          <Link href="/docs/reason-compiler/latest/introduction">
-            <a className=overlineClass> "Compiler & Ecosystem"->s </a>
+          <Link href="/docs/reason-compiler/latest/interop-overview">
+            <a className=overlineClass> "JavaScript & Interop"->s </a>
           </Link>
           <ul className=sectionUl>
             {recompItems
@@ -246,10 +246,10 @@ module SubNav = {
     };
   };
 
+  /*
   module ApiLinks = {
     [@react.component]
     let make = (~route: string) => {
-      let jsTheme = ColorTheme.toCN(`Js);
       let reTheme = ColorTheme.toCN(`Reason);
 
       let jsItems = [|
@@ -270,7 +270,7 @@ module SubNav = {
             <a className=overlineClass> "Overview"->s </a>
           </Link>
         </div>
-        <div className={jsTheme ++ " " ++ sectionClass}>
+        <div className={reTheme ++ " " ++ sectionClass}>
           <Link href="/apis/latest">
             <a className=overlineClass> "JavaScript"->s </a>
           </Link>
@@ -299,6 +299,7 @@ module SubNav = {
       </div>;
     };
   };
+  */
 };
 
 module MobileNav = {
@@ -492,27 +493,26 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
                    });
                  };
                  <div className="mr-5">
-                 <CollapsibleLink
-                   id=title
-                   onStateChange
-                   key={idx->Belt.Int.toString}
-                   allowHover
-                   title
-                   active={Js.String2.startsWith(route, href)}
-                   state>
-                   {children(route)}
-                 </CollapsibleLink>
-                   </div>
-                   ;
+                   <CollapsibleLink
+                     id=title
+                     onStateChange
+                     key={idx->Belt.Int.toString}
+                     allowHover
+                     title
+                     active={Js.String2.startsWith(route, href)}
+                     state>
+                     {children(route)}
+                   </CollapsibleLink>
+                 </div>;
                },
              )
              ->ate}
             <Link href="/apis/latest">
               <a
-                className={"mr-5 " ++ linkOrActiveLinkSubroute(
-                  ~target="/apis/latest",
-                  ~route,
-                )}
+                className={
+                  "mr-5 "
+                  ++ linkOrActiveLinkSubroute(~target="/apis/latest", ~route)
+                }
                 onMouseEnter=nonCollapsibleOnMouseEnter>
                 "API"->s
               </a>
