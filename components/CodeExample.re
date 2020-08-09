@@ -1,10 +1,26 @@
 open Util.ReactStuff;
 
-let renderHLJS = (~code: string, ~lang: string) => {
+let renderHLJS = (~highlightedLines=[||], ~code: string, ~lang: string, ()) => {
   // If the language couldn't be parsed, we will fall back to text
   let (lang, highlighted) =
     try((lang, HighlightJs.(highlight(~lang, ~value=code)->valueGet))) {
     | Js.Exn.Error(_) => ("text", code)
+    };
+
+  // Add line highlighting as well
+  let highlighted =
+    if (Belt.Array.length(highlightedLines) > 0) {
+      Js.String2.split(highlighted, "\n")
+      ->Belt.Array.mapWithIndex((i, line) =>
+          if (Js.Array2.find(highlightedLines, lnum => lnum === i + 1) !== None) {
+            "<span class=\"hljs-line-highlight\">" ++ line ++ "</span>";
+          } else {
+            line;
+          }
+        )
+      ->Js.Array2.joinWith("\n");
+    } else {
+      highlighted;
     };
 
   ReactDOMRe.createElementVariadic(
@@ -32,8 +48,8 @@ let langShortname = (lang: string) => {
 };
 
 [@react.component]
-let make = (~code: string, ~lang="text") => {
-  let children = renderHLJS(~code, ~lang);
+let make = (~highlightedLines=[||], ~code: string, ~lang="text") => {
+  let children = renderHLJS(~highlightedLines, ~code, ~lang, ());
 
   let label = langShortname(lang);
 
@@ -49,6 +65,7 @@ let make = (~code: string, ~lang="text") => {
 
 module Toggle = {
   type tab = {
+    highlightedLines: option(array(int)),
     label: option(string),
     lang: option(string),
     code: string,
@@ -59,7 +76,12 @@ module Toggle = {
     let (selected, setSelected) = React.useState(_ => 0);
 
     switch (tabs) {
-    | [|tab|] => make({"code": tab.code, "lang": tab.lang})
+    | [|tab|] =>
+      make({
+        "highlightedLines": tab.highlightedLines,
+        "code": tab.code,
+        "lang": tab.lang,
+      })
     | multiple =>
       let labels =
         Belt.Array.mapWithIndex(
@@ -87,7 +109,9 @@ module Toggle = {
 
             <span
               key
-              className={"inline-block p-2 last:border-r-0 border-r "  ++ activeClass}
+              className={
+                "inline-block p-2 last:border-r-0 border-r " ++ activeClass
+              }
               onClick>
               label->s
             </span>;
@@ -98,7 +122,12 @@ module Toggle = {
         Belt.Array.get(multiple, selected)
         ->Belt.Option.map(tab => {
             let lang = Belt.Option.getWithDefault(tab.lang, "text");
-            renderHLJS(~code=tab.code, ~lang);
+            renderHLJS(
+              ~highlightedLines=?tab.highlightedLines,
+              ~code=tab.code,
+              ~lang,
+              (),
+            );
           })
         ->Belt.Option.getWithDefault(React.null);
 

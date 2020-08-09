@@ -194,6 +194,37 @@ The default language is set to `text` and will not provide any syntax
 highlighting
 ```
 
+### Highlighting lines
+
+To highlight codelines in your code snippet, use the `{range}` meta parameter:
+
+~~~
+```res {1,4-5}
+
+let a = 1;
+let b = 2;
+
+switch a => {
+  | 1 => a + b
+  | 2 => a - b
+  | _ => b
+}
+```
+~~~
+
+which will render:
+
+```res {1,4-5}
+let a = 1;
+let b = 2;
+
+switch a => {
+  | 1 => a + b
+  | 2 => a - b
+  | _ => b
+}
+```
+
 ## CodeTabs
 
 For cases where you want to show a single codeblock with multiple syntaxes, use the `<CodeToggle>` component.
@@ -207,12 +238,16 @@ Make sure to leave a newline between the `<CodeToggle>` JSX tags, otherwise code
 let a = "Some ReScript code"
 ```
 
-```js
+```js {3}
 var a = "Some JavaScript code";
+
+var highlighted = "yep"
 ```
 
 </CodeTab>
 ~~~
+
+Renders to following output:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -223,8 +258,10 @@ var a = "Some JavaScript code";
   }
   ```
 
-  ```js
+  ```js {3} 
   var a = "Some JavaScript code";
+
+  var highlighted = "Also supports highlighting ranges";
   ```
 
 </CodeTab>
