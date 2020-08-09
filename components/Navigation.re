@@ -467,10 +467,10 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
         <div
           className="flex justify-between w-2/4 xs:w-3/4 sm:w-full max-w-sm"
           style={Style.make(~minWidth="12rem", ())}>
-          <button
-            className="sm:hidden px-4 flex items-center justify-center h-full">
-            <Icon.MagnifierGlass className="w-5 h-5 hover:text-white" />
-          </button>
+          /*<button*/
+            /*className="sm:hidden px-4 flex items-center justify-center h-full">*/
+            /*<Icon.MagnifierGlass className="w-5 h-5 hover:text-white" />*/
+          /*</button>*/
           {Belt.Array.mapWithIndex(
              collapsibles,
              (idx, c) => {
@@ -562,10 +562,10 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
           /*</a>*/
         </div>
       </div>
-      <button
-        className="hidden sm:flex sm:px-4 sm:items-center sm:justify-center sm:border-l sm:border-r sm:border-night sm:h-full">
-        <Icon.MagnifierGlass className="w-5 h-5 hover:text-white" />
-      </button>
+      /*<button*/
+        /*className="hidden sm:flex sm:px-4 sm:items-center sm:justify-center sm:border-l sm:border-r sm:border-night sm:h-full">*/
+        /*<Icon.MagnifierGlass className="w-5 h-5 hover:text-white" />*/
+      /*</button>*/
     </div>
     /* Burger Button */
     <button
