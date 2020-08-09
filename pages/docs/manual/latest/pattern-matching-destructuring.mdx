@@ -1,0 +1,354 @@
+# Pattern Matching / Destructuring
+
+One of ReScript's **best** feature is our pattern matching. Pattern matching combines 3 brilliant features into one:
+
+- Destructuring.
+- `switch` based on shape of data.
+- Exhaustiveness check.
+
+We'll dive into each aspect below.
+
+## Destructuring
+
+Even JavaScript has destructuring, which is "opening up" a data structure to extract the parts we want and assign variable names to them:
+
+```res
+let coordinates = (10, 20, 30)
+let (x, _, _) = coordinates
+Js.log(x) // 10
+```
+
+Destructuring works with most built-in data structures:
+
+```res
+// Record
+type student = {name: string, age: int}
+let student1 = {name: "John", age: 10}
+let {name} = student1 // "John" assigned to `name`
+
+// Variant
+type result =
+  | Success(string)
+let myResult = Success("You did it!")
+let Success(message) = myResult // "You did it!" assigned to `message`
+
+// Array
+let myArray = [1, 2, 3]
+let [item1, item2] = myArray // 1 assigned to `item1`, 2 assigned to `item2`
+
+// List
+let myList = list{1, 2, 3}
+let list{head, ...tail} = myList // 1 assigned to `head`, `list{2, 3}` assigned to tail
+```
+
+You can also use destructuring anywhere you'd usually put a binding:
+
+```res
+type result =
+  | Success(string)
+
+let displayMessage = (Success(m)) => {
+  // we've directly extracted the success message
+  // string by destructuring the parameter
+  Js.log(m)
+}
+
+displayMessage(Success("You did it!"))
+```
+
+For a record, you can rename the field while destructuring:
+
+```res
+let {name: n} = student1 // "John" assigned to `n`
+```
+
+## `switch` Based on Shape of Data
+
+While the destructuring aspect of pattern matching is nice, it doesn't really change the way you think about structuring your code. One paradigm-changing way of thinking about your code is to execute some code based on the shape of the data.
+
+Consider a variant:
+
+```res
+type payload =
+  | BadResult(int)
+  | GoodResult(string)
+  | NoResult
+```
+
+We'd like to handle each of the 3 cases differently. For example, print a success message if the value is `GoodResult(...)`, do something else when the value is `NoResult`, etc.
+
+In other languages, you'd end up with a series of if-elses that are hard to read and error-prone. In ReScript, you can instead use the supercharged `switch` pattern matching facility to destructure the value while calling the right code based on what you destructured:
+
+```res
+let data = GoodResult("Product shipped!")
+
+switch data {
+| GoodResult(theMessage) =>
+  Js.log("Success! " ++ theMessage)
+| BadResult(errorCode) =>
+  Js.log("Something's wrong. The error code is: " ++ string_of_int(errorCode))
+| NoResult =>
+  Js.log("Bah.")
+}
+
+```
+
+In this case, `message` will have the value `"Success! Product shipped!"`.
+
+Suddenly, your if-elses that messily checks some structure of the value got turned into a clean, compiler-verified, linear list of code to execute based on exactly the shape of the value.
+
+### Complex Examples
+
+Here's a real-world scenario that'd be a headache to code in other languages. Given this data structure:
+
+```res
+type status = Vacations(int) | Sabbatical(int) | Sick | Present
+type person =
+  | Teacher({
+    name: string,
+    age: int,
+  })
+  | Student({
+    name: string,
+    reportCard: {
+      passing: bool,
+      gpa: float,
+      status: status,
+    }
+  })
+```
+
+Imagine this requirement:
+
+- Informally greet a person who's a teacher and if his name is Mary or Joe.
+- Greet other teachers formally.
+- If the person's a student, congratulate him/her score if they passed the semester.
+- If the student has a gpa of 0 and is on vacations or sabbatical, display a different message.
+- A catch-all message for a student.
+
+ReScript can do this easily!
+
+```res
+let message = switch person1 {
+| Teacher({name: "Mary" | "Joe"}) =>
+  `Hey, still going to the party on Saturday?`
+| Teacher({name}) =>
+  // this is matched only if `name` isn't "Joe"
+  `Hello ${name}.`
+| Student({name, reportCard: {passing: true, gpa}}) =>
+  `Congrats ${name}, nice GPA of ${Js.Float.toString(gpa)} you got there!`
+| Student({
+    reportCard: {gpa: 0.0},
+    status: Vacations(daysLeft) | Sabbatical(daysLeft)
+  }) =>
+  `Come back in ${Js.Int.toString(daysLeft)} days!`
+| Student({status: Sick}) =>
+  `How are you feeling?`
+| Student({name}) =>
+  `Good luck next semester ${name}!`
+}
+```
+
+**Note** how we've:
+- drilled deep down into the value concisely
+- using a nested pattern check `"Mary" | "Joe"` and `Vacations | Sabbatical`
+- while extracting the `daysLeft` number from the latter case
+- and assigned the greeting to the binding `message`.
+
+Here's another example of pattern matching, this time on an inline tuple.
+
+```res
+type animal = Dog | Cat | Bird
+let categoryId = switch (isBig, myAnimal) {
+| (true, Dog) => 1
+| (true, Cat) => 2
+| (true, Bird) => 3
+| (false, Dog | Cat) => 4
+| (false, Bird) => 5
+};
+```
+
+**Note** how pattern matching on a tuple is equivalent to a 2D table:
+
+isBig \ myAnimal | Dog | Cat | Bird
+-----------------|-----|-----|------
+true             |  1  |  2  |  3
+false            |  4  |  4  |  5
+
+### Ignore Part of a Value
+
+If you have a value like `Teacher(payload)` where you just want to pattern match on the `Teacher` part and ignore the `payload` completely, you can use the `_` wildcard like this:
+
+```res
+switch person {
+| Teacher(_) => Js.log("Hi teacher")
+| Student(_) => Js.log("Hey student")
+}
+```
+
+`_` also works at the top level of the pattern like `| _ => ...` if you want to execute catch-all condition.
+
+### When Clause
+
+Sometime, you want to check more than the shape of a value. You want to also run some arbitrary check on it. You might be tempted to write this:
+
+```res
+switch person {
+| Teacher(_) => () // do nothing
+| Student({gpa}) =>
+  if gpa < 0.5 {
+    Js.log("What's happening")
+  } else {
+    Js.log("Heyo")
+  }
+}
+```
+
+`switch` patterns support a shortcut for the arbitrary `if` check, to keep your pattern linear-looking:
+
+```res
+switch person {
+| Teacher(_) => () // do nothing
+| Student({gpa}) when gpa < 0.5 =>
+  Js.log("What's happening")
+| Student({gpa}) =>
+  // fall-through, catch-all case
+  Js.log("Heyo")
+}
+```
+
+### Match on Exceptions
+
+If the function throws an exception (covered later), you can also match on _that_, in addition to the function's normally returned values.
+
+```res
+switch List.find((i => i === theItem, myItems)) {
+| item => Js.log(item)
+| exception Not_found => Js.log("No such item found!")
+}
+```
+
+### Small Pitfall
+
+**Note**: you can only pass literals (i.e. concrete values) as a pattern, not let-binding names or other things. The following doesn't work as expected:
+
+```res
+let coordinates = (10, 20, 30)
+let centerY = 20
+switch coordinates {
+| (x, centerY, _) => /* code */
+}
+```
+
+A first time ReScript user might accidentally write that code, assuming that it's matching on `coordinates` when the second value is of the same value as `centerY`. In reality, this is interpreted as matching on coordinates and assigning the second value of the tuple to the name `centerY`, which isn't what's intended.
+
+## Exhaustiveness Check
+
+As if the above features aren't enough, ReScript also provides arguably the most important pattern matching feature: **compile-time check of missing patterns**.
+
+Let's revisit one of the above examples:
+
+```res
+let message = switch person1 {
+| Teacher({name: "Mary" | "Joe"}) =>
+  `Hey, still going to the party on Saturday?`
+| Student({name, reportCard: {passing: true, gpa}}) =>
+  `Congrats ${name}, nice GPA of ${Js.Float.toString(gpa)} you got there!`
+| Student({
+    reportCard: {gpa: 0.0},
+    status: Vacations(daysLeft) | Sabbatical(daysLeft)
+  }) =>
+  `Come back in ${Js.Int.toString(daysLeft)} days!`
+| Student({status: Sick}) =>
+  `How are you feeling?`
+| Student({name}) =>
+  `Good luck next semester ${name}!`
+}
+```
+
+Did you see what we removed? This time, we've omitted the handling of the case where `person` is `Teacher({name})` when `name` isn't Mary or Joe.
+
+Failing to handle every scenario of a value likely constitutes the majority of program bugs out there. This happens very often when you refactor a piece of code someone else wrote. Fortunately for ReScript, the compiler will tell you so:
+
+```
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a value that is not matched:
+Some({name: ""})
+```
+
+**BAM**! You've just erased an entire category of important bugs before you even ran the code. In fact, this is how most of nullable values is handled:
+
+```res
+switch myNullableValue {
+| Some(v) => /* code */
+| None => /* code */
+}
+```
+
+If you don't handle the `None` case, the compiler warns. No more `undefined` bugs in your code!
+
+## Conclusion & Tips & Tricks
+
+Hopefully you can see how pattern matching is a game changer for writing correct code, through the concise destructuring syntax, the proper conditions handling of `switch`, and the static exhaustiveness check.
+
+Here are some advices.
+
+Do not abuse the wildcard `_` too much. This prevents the compiler from giving you better exhaustiveness check, which would be especially important after a refactoring where you add a new case to a variant. Try only using `_` against infinite possibilities, e.g. string, int, etc.
+
+Use `when` clause sparingly.
+
+**Flatten your pattern-match whenever you can**. This is a real bug remover. Here's a series of examples, from worst to best:
+
+```res
+let optionBoolToBool = opt =>
+  if opt == None {
+    false
+  } else if opt == Some(true) {
+    true
+  } else {
+    false
+  }
+```
+
+Now that's just silly =). Let's turn it into pattern-matching:
+
+```res
+let optionBoolToBool = opt =>
+  switch opt {
+  | None => false
+  | Some(a) => a ? true : false
+  }
+```
+
+Slightly better, but still nested. Pattern-matching allows you to do this:
+
+```res
+let optionBoolToBool = opt =>
+  switch opt {
+  | None => false
+  | Some(true) => true
+  | Some(false) => false
+  }
+```
+
+Much more linear-looking! Now, you might be tempted to do this:
+
+```res
+let optionBoolToBool = opt =>
+  switch opt {
+  | Some(true) => true
+  | _ => false
+  }
+```
+
+Which is much more concise, but kills the exhaustiveness check mentioned above; refrain from using that. This is the best:
+
+```res
+let optionBoolToBool = opt =>
+  switch opt {
+  | Some(trueOrFalse) => trueOrFalse
+  | None => false
+  }
+```
+
+Pretty darn hard to make a mistake in this code at this point! Whenever you'd like to use an if-else with many branches, prefer pattern matching instead. It's more concise and [performant](variant#design-decisions) too.
