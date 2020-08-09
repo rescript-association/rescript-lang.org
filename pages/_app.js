@@ -6,8 +6,6 @@
   //return <Component {...pageProps} />
 //}
 
-import { make } from "../common/App.bs";
-
-
+import make from "../common/App.bs";
 
 export default make;

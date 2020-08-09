@@ -128,12 +128,7 @@ module Url = {
   };
 };
 
-[@bs.obj]
-external makeProps:
-  (~component: pageComponent, ~pageProps: pageProps, ~key: string=?, unit) =>
-  props;
-
-let make = (props: props): React.element => {
+let default = (props: props): React.element => {
   let component = props##"Component";
   let pageProps = props##pageProps;
 
