@@ -1,13 +1,13 @@
 # Record
 
-Records are like JavaScript objects but are:
+Records are like JavaScript objects but:
 
-- lighter
-- immutable by default
-- fixed in field names and types
-- a bit more rigidly typed
+- are immutable by default
+- have fixed fields (not extensible)
 
 ## Usage
+
+### Type Declaration
 
 A record needs a mandatory type declaration:
 
@@ -18,7 +18,9 @@ type person = {
 };
 ```
 
-Value (this will be inferred to be of type `person`, declared above):
+### Creation
+
+To create a `person` record (declared above):
 
 ```res
 let me = {
@@ -27,19 +29,12 @@ let me = {
 }
 ```
 
-Access (the familiar dot notation):
+When you create a new record value, ReScript tries to find a record type declaration that conforms to the shape of the value. So the `me` value here is inferred as of type `person`.
 
-```res
-let name = me.name
-```
-
-### Record Needs an Explicit Definition
-
-If you only write `{age: 5, name: "Baby ReScript"}` without an explicit declaration somewhere above, the type system will give you an error. If the type definition resides in another file, you need to explicitly indicate which file it is:
+The type is found by looking above the `me` value. **Note**: if the type instead resides in another file or module, you need to explicitly indicate which file or module it is:
 
 ```res
 // School.res
-
 type person = {age: int, name: string}
 ```
 
@@ -55,6 +50,14 @@ let me = {School.age: 20, name: "Big ReScript"}
 
 Either of the above 3 says "this record's definition is found in the School file". The first one, the regular type annotation, is preferred.
 
+### Access
+
+Use the familiar dot notation:
+
+```res
+let name = me.name
+```
+
 ### Immutable Update
 
 New records can be created from old records with the `...` spread operator. The original record isn't mutated.
@@ -63,13 +66,11 @@ New records can be created from old records with the `...` spread operator. The 
 let meNextYear = {...me, age: me.age + 1}
 ```
 
-This update is very efficient! Try a few in our [playground](//reasonml.github.io/try.html) to see how records are compiled.
-
-**Note**: spread cannot add new fields, as a record's shape is fixed by its type.
+**Note**: spread cannot add new fields to the record value, as a record's shape is fixed by its type.
 
 ### Mutable Update
 
-Record fields can optionally be mutable. This allows you to update those fields in-place with the `=` operator.
+Record fields can optionally be mutable. This allows you to efficiently update those fields in-place with the `=` operator.
 
 ```res
 type person = {
@@ -77,14 +78,14 @@ type person = {
   mutable age: int
 }
 let baby = {name: "Baby ReScript", age: 5}
-baby.age = baby.age + 1 /* alter `baby`. Happy birthday! */
+baby.age = baby.age + 1 // `baby.age` is now 6. Happy birthday!
 ```
 
 ## Tips & Tricks
 
 ### Record Types Are Found By Field Name
 
-With records, you **cannot** say "I'd like this function to take any record type, as long as they have the field `age`". The following _works_, but not as expected:
+With records, you **cannot** say "I'd like this function to take any record type, as long as they have the field `age`". The following **won't work as intended**:
 
 ```res
 type person = {age: int, name: string}
@@ -93,14 +94,14 @@ type monster = {age: int, hasTentacles: bool}
 let getAge = (entity) => entity.age
 ```
 
-The last line's function will infer that the parameter `entity` must be of type `monster`. The following code's last line fails:
+Instead, `getAge` will infer that the parameter `entity` must be of type `monster`, the closest record type with the field `age`. The following code's last line fails:
 
 ```res
 let kraken = {age: 9999, hasTentacles: true}
 let me = {age: 5, name: "Baby ReScript"}
 
 getAge(kraken)
-getAge(me)
+getAge(me) // type error!
 ```
 
 The type system will complain that `me` is a `person`, and that `getAge` only works on `monster`. If you need such capability, use ReScript objects, described [here](object.md).
@@ -110,4 +111,4 @@ The type system will complain that `me` is a `person`, and that `getAge` only wo
 After reading the constraints in the previous sections, and if you're coming from a dynamic language background, you might be wondering why one would bother with record in the first place instead of straight using object, since the former needs explicit typing and doesn't allow different records with the same field name to be passed to the same function, etc.
 
 1. The truth is that most of the times in your app, your data's shape is actually fixed, and if it's not, it can potentially be better represented as a combination of variant (introduced next) + record instead.
-3. Finally, since a record type is resolved through finding that single explicit type declaration (we call this "nominal typing"), the type error messages end up better than the counterpart ("structural typing", like for tuples). This makes refactoring easier; changing a record type's fields naturally allows the compiler to know that it's still the same record, just misused in some places. Otherwise, under structural typing, it might get hard to tell whether the definition site or the usage site is wrong.
+2. Since a record type is resolved through finding that single explicit type declaration (we call this "nominal typing"), the type error messages end up better than the counterpart ("structural typing", like for tuples). This makes refactoring easier; changing a record type's fields naturally allows the compiler to know that it's still the same record, just misused in some places. Otherwise, under structural typing, it might get hard to tell whether the definition site or the usage site is wrong.
