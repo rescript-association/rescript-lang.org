@@ -8,6 +8,8 @@ Arrays are our primary ordered data structure. They work the same way as JavaScr
 let myArray = ["hello", "world", "how are you"]
 ```
 
+ReScript arrays' items must have the same type, i.e. homogeneous.
+
 ### Usage
 
 See the [Js.Array](/apis/javascript/latest/js/array) API.
@@ -19,16 +21,13 @@ let myArray = ["hello", "world", "how are you"]
 
 let firstItem = myArray[0] // "hello"
 
-myArray[0] = "hey"
-
-// now ["hey", "world", "how are you"]
+myArray[0] = "hey" // now ["hey", "world", "how are you"]
 ```
 
 ## List
 
-We provide a singly linked lists. Lists are:
+ReScript provides a singly linked list too. Lists are:
 
-- homogeneous
 - immutable
 - fast at prepending items
 - fast at getting the tail
@@ -37,6 +36,8 @@ We provide a singly linked lists. Lists are:
 ```res
 let myList = list{1, 2, 3}
 ```
+
+Like arrays, lists' items need to be of the same type.
 
 ### Usage
 
@@ -63,7 +64,7 @@ Updating an arbitrary item in the middle of a list is also discouraged, since it
 
 #### Access
 
-`switch` (described in the [pattern matching section](pattern-matching.md)) is usually used to access list items:
+`switch` (described in the [pattern matching section](pattern-matching-destructuring.md)) is usually used to access list items:
 
 ```res
 let message =

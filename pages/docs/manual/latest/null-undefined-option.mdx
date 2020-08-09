@@ -10,7 +10,9 @@ We represent the existence and nonexistence of a value by wrapping it with the `
 type option<'a> = None | Some('a)
 ```
 
-It means "a value of type option is either None (nothing) or that actual value wrapped in a Some". You might wonder why we can't drop that `Some` wrapper and just do the following:
+It means "a value of type option is either None (representing nothing) or that actual value wrapped in a Some".
+
+**Note** how the `option` type is just a regular [variant](variant.md).
 
 ## Example
 
@@ -31,7 +33,7 @@ let licenseNumber =
   }
 ```
 
-Later on, when another piece of code receives such value, it'd be forced to handle both cases:
+Later on, when another piece of code receives such value, it'd be forced to handle both cases through [pattern matching](pattern-matching-destructuring.md):
 
 ```res
 switch licenseNumber {
@@ -42,11 +44,7 @@ switch licenseNumber {
 }
 ```
 
-By turning your ordinary number into an `option` type, and by forcing you to handle the `None` case, the language effectively removed the possibility for you to mishandle, or forget to handle, a conceptual `null` value!
-
-## Usage
-
-**The `Option` helper module** is [here](/apis/javascript/latest/js/option).
+By turning your ordinary number into an `option` type, and by forcing you to handle the `None` case, the language effectively removed the possibility for you to mishandle, or forget to handle, a conceptual `null` value! **A pure ReScript program doesn't have null errors**.
 
 ## Interoperate with JavaScript `undefined` and `null`
 

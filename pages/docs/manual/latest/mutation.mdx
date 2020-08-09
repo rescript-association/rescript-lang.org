@@ -34,10 +34,4 @@ Note that the previous binding `five` stays `5`, since it got the underlying ite
 
 ## Tip & Tricks
 
-Before reaching for `ref`, know that you can achieve lightweight, local "mutations" through overriding let bindings:
-
-```res
-let foo = 10
-let foo = someCondition ? foo + 5 : foo
-Js.log(foo) /* either 15 or 10 */
-```
+Before reaching for `ref`, know that you can achieve lightweight, local "mutations" through [overriding let bindings](let-binding.md#binding-shadowing).
