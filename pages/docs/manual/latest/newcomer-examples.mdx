@@ -4,9 +4,7 @@ An example is worth a thousand words.
 
 This section is dedicated to newcomers trying to figure out general idioms & conventions. If you're a beginner who's got a good idea for an example, please suggest an edit!
 
-## Using the `option` type
-
-`option` is a [variant](variant.md) that comes with the [standard library](//reasonml.github.io/api/index.html). It obviates the need for null values in other languages.
+## Use the [`option` type](null-undefined-option.md)
 
 ```res
 let possiblyNullValue1 = None
@@ -18,7 +16,7 @@ switch possiblyNullValue2 {
 }
 ```
 
-## Creating a parametrized type
+## Create a Parametrized Type
 
 ```res
 type universityStudent = {gpa: float}
@@ -28,7 +26,7 @@ type response('studentType) = {
   student: 'studentType
 }
 
-let result: response(universityStudent) = fetchDataFromServer()
+let result: response<universityStudent> = fetchDataFromServer()
 ```
 
 ## Creating a JS Object
