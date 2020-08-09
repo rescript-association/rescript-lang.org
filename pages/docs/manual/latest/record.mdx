@@ -5,9 +5,7 @@ Records are like JavaScript objects but:
 - are immutable by default
 - have fixed fields (not extensible)
 
-## Usage
-
-### Type Declaration
+## Type Declaration
 
 A record needs a mandatory type declaration:
 
@@ -18,7 +16,7 @@ type person = {
 };
 ```
 
-### Creation
+## Creation
 
 To create a `person` record (declared above):
 
@@ -50,7 +48,7 @@ let me = {School.age: 20, name: "Big ReScript"}
 
 Either of the above 3 says "this record's definition is found in the School file". The first one, the regular type annotation, is preferred.
 
-### Access
+## Access
 
 Use the familiar dot notation:
 
@@ -58,7 +56,7 @@ Use the familiar dot notation:
 let name = me.name
 ```
 
-### Immutable Update
+## Immutable Update
 
 New records can be created from old records with the `...` spread operator. The original record isn't mutated.
 
@@ -68,7 +66,7 @@ let meNextYear = {...me, age: me.age + 1}
 
 **Note**: spread cannot add new fields to the record value, as a record's shape is fixed by its type.
 
-### Mutable Update
+## Mutable Update
 
 Record fields can optionally be mutable. This allows you to efficiently update those fields in-place with the `=` operator.
 
@@ -83,9 +81,7 @@ baby.age = baby.age + 1 // `baby.age` is now 6. Happy birthday!
 
 ## Tips & Tricks
 
-### Record Types Are Found By Field Name
-
-With records, you **cannot** say "I'd like this function to take any record type, as long as they have the field `age`". The following **won't work as intended**:
+**Record Types Are Found By Field Name**. With records, you **cannot** say "I'd like this function to take any record type, as long as they have the field `age`". The following **won't work as intended**:
 
 ```res
 type person = {age: int, name: string}

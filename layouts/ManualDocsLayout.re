@@ -34,6 +34,7 @@ let basicNavs = [|
   {name: "Primitive Types", href: "/docs/manual/latest/primitive-types"},
   {name: "Tuple", href: "/docs/manual/latest/tuple"},
   {name: "Record", href: "/docs/manual/latest/record"},
+  {name: "Object", href: "/docs/manual/latest/object"},
   {name: "Variant", href: "/docs/manual/latest/variant"},
   {
     name: "Null, Undefined & Option",
@@ -84,6 +85,10 @@ let jsInteropNavs = [|
   NavItem.{
     name: "Embed Raw JavaScript",
     href: "/docs/manual/latest/embed-raw-javascript",
+  },
+  {
+    name: "Bind to JS Object",
+    href: "/docs/manual/latest/bind-to-js-object",
   },
   {
     name: "Shared Data Types",
