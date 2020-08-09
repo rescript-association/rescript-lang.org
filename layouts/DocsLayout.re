@@ -73,7 +73,7 @@ module Sidebar = {
                | None => None
                };
 
-             <li key={m.name} className={hidden ++ " mt-1 leading-4 w-4/5"}>
+             <li key={m.name} className={hidden ++ " mt-1 leading-4"}>
                <Link href={m.href}>
                  <a
                    className={
