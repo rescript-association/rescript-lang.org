@@ -88,6 +88,7 @@ let jsInteropNavs = [|
     href: "/docs/manual/latest/embed-raw-javascript",
   },
   {name: "Bind to JS Object", href: "/docs/manual/latest/bind-to-js-object"},
+  {name: "Bind to JS Function", href: "/docs/manual/latest/bind-to-js-function"},
   {name: "Shared Data Types", href: "/docs/manual/latest/shared-data-types"},
   {name: "Import from/Export to JS", href: "/docs/manual/latest/import-from-export-to-js"},
   {name: "Bind to Global JS Values", href: "/docs/manual/latest/bind-to-global-js-values"},

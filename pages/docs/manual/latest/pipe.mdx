@@ -76,7 +76,7 @@ external asyncRequest: unit => request = "asyncRequest"
 You'd use them like this:
 
 ```res
-let result = filter(map([|1, 2, 3|], a => a + 1), a => a mod 2 == 0)
+let result = filter(map([1, 2, 3], a => a + 1), a => a mod 2 == 0)
 
 send(setWaitDuration(asyncRequest(), 4000))
 ```
@@ -84,7 +84,7 @@ send(setWaitDuration(asyncRequest(), 4000))
 This looks much worse than the JS counterpart! Clean it up visually with pipe:
 
 ```res
-let result = [|1, 2, 3|]
+let result = [1, 2, 3]
   ->map(a => a + 1)
   ->filter(a => a mod 2 === 0)
 

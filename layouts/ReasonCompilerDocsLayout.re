@@ -32,7 +32,6 @@ let interopNavs = [|
   {name: "Object", href: "/docs/reason-compiler/latest/object"},
   {name: "Object 2", href: "/docs/reason-compiler/latest/object-2"},
   {name: "Class", href: "/docs/reason-compiler/latest/class"},
-  {name: "Function", href: "/docs/reason-compiler/latest/function"},
   {
     name: "Property access",
     href: "/docs/reason-compiler/latest/property-access",

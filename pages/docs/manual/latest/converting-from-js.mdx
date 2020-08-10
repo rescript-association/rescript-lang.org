@@ -99,7 +99,8 @@ All this time, check the output for any change.
 ```res
 type student /* abstract type, described later */
 
-[@bs.module "school"] external getStudentById : 'whatever => student = "getStudentById"
+@bs.module("school")
+external getStudentById: 'whatever => student = "getStudentById"
 
 type payloadType = {. "student": student}
 
