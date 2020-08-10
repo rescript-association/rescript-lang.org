@@ -10,7 +10,7 @@ This means that if you receive e.g. a string from the JS side, you can use it **
 - Array. In addition to the [JS Array API](/apis/latest/js/array), we provide our own [Belt.Array](/apis/latest/belt/array#set) API too.
 - Tuple. Compiles to a JS array. You can treat a fixed-sized, heterogenous JS array as ReScript tuple too.
 - Boolean.
-- Record. Record compiles to JS object. Therefore you can also treat JS objects as records. If they're too dynamic, consider modeling them on the ReScript side as a hashmap/dictionary [`Js.Dict`](apis/latest/js/dict) or a ReScript object.
+- Record. Record compiles to JS object. Therefore you can also treat JS objects as records. If they're too dynamic, consider modeling them on the ReScript side as a hashmap/dictionary [`Js.Dict`](/apis/latest/js/dict) or a ReScript object.
 - Unit. The `unit` type, which has a single value `()`, compiles to `undefined` too. Likewise, you can treat an incoming JS `undefined` as `()`.
 
 <!-- TODO: talk about poly variant -->

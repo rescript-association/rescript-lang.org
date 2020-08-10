@@ -31,8 +31,7 @@ That compiles your ReScript into JavaScript, then uses NodeJS to run said JavaSc
 
 During development, instead of running `npm run build` each time to compile, use `npm run start` to start a watcher that recompiles automatically after file changes.
 
-By default, the `basic-reason` theme configures ReScript to output the generated JS files alongside the files they were produced from. [There's a reason why this is helpful](/docs/reason-compiler/latest/build-overview#tips--tricks). If you prefer to keep the generated files somewhere else, edit `bsconfig.json` to set `in-source` to `false`; the JS files will then be output to the `lib/js` directory instead.
-
+By default, the `basic-reason` theme configures ReScript to output the generated JS files alongside the files they were produced from. [There's a reason why this is helpful](build-overview.md#tips--tricks). If you prefer to keep the generated files somewhere else, edit `bsconfig.json` to set `in-source` to `false`; the JS files will then be output to the `lib/js` directory instead.
 Alternatively, **to start a [ReasonReact](/docs/reason-react/latest/introduction) app**, follow the instructions [here](/docs/reason-react/latest/installation).
 
 ## Integrate Into Existing JS Project

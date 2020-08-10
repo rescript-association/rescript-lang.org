@@ -1,9 +1,6 @@
 # Getting Started
 
-`genType` is tightly integrated in the [Reason
-Compiler](/docs/reason-compiler/latest/introduction).  It only requires minimal
-setup.
-
+`genType` is tightly integrated in the ReScript Compiler. It only requires minimal setup.
 
 ## Setup
 
@@ -58,7 +55,7 @@ scripts: {
 
 > **Note:** `bsb` will automatically
 > detect your installed `genType` version.
-> 
+>
 > With genType < 2.17.0 or bucklescript < 5.0.0, one has to set
 > the environment variable `BS_CMT_POST_PROCESS_CMD`. See the older
 > [README](https://github.com/cristianoc/genType/blob/v2.16.0/README.md).
@@ -120,14 +117,9 @@ import MyComponent from "./components/MyComponent.gen";
 ## Limitations
 
 - **BuckleScript in-source = true**. Currently only supports bucklescript
-projects with [in-source
-generation](/docs/reason-compiler/latest/build-configuration#package-specs) and
-`.bs.js` file suffix.
+projects with [in-source generation](/docs/manual/latest/build-configuration#package-specs) and `.bs.js` file suffix.
 
-- **Limited namespace support**. Currently there's
-limited
-[namespace](/docs/reason-compiler/latest/build-configuration#name-namespace)
-support, and only `namespace:true` is possible, not e.g. `namespace:"custom"`.
+- **Limited namespace support**. Currently there's limited [namespace](/docs/manual/latest/build-configuration#name-namespace) support, and only `namespace:true` is possible, not e.g. `namespace:"custom"`.
 
 ## Examples
 
