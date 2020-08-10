@@ -102,8 +102,8 @@ let make = (~components=Markdown.default, ~children) => {
       },
     );
 
-  let title = "Interop";
-  let version = "v8.2.0";
+  let title = "Old Docs";
+  let version = "BS@8.2.0";
 
   <DocsLayout
     theme=`Js components categories version title ?activeToc ?breadcrumbs>

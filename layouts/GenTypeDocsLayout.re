@@ -68,7 +68,7 @@ let make = (~components=Markdown.default, ~children) => {
         let {UrlPath.version} = v;
         let prefix =
           UrlPath.[
-            {name: "Docs", href: "/docs"},
+            {name: "Docs", href: "/docs/latest"},
             {
               name: "GenType",
               href: "/docs/gentype/" ++ version ++ "/introduction",

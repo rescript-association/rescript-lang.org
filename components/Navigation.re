@@ -245,61 +245,60 @@ module SubNav = {
       </div>;
     };
   };
-
   /*
-  module ApiLinks = {
-    [@react.component]
-    let make = (~route: string) => {
-      let reTheme = ColorTheme.toCN(`Reason);
+   module ApiLinks = {
+     [@react.component]
+     let make = (~route: string) => {
+       let reTheme = ColorTheme.toCN(`Reason);
 
-      let jsItems = [|
-        ("Belt Stdlib", "/apis/latest/belt"),
-        ("Js Module", "/apis/latest/js"),
-        /*("Module 3", "/apis/latest/mod3"),*/
-        /*("Module 4", "/apis/latest/mod4"),*/
-      |];
+       let jsItems = [|
+         ("Belt Stdlib", "/apis/latest/belt"),
+         ("Js Module", "/apis/latest/js"),
+         /*("Module 3", "/apis/latest/mod3"),*/
+         /*("Module 4", "/apis/latest/mod4"),*/
+       |];
 
-      let sectionClass = "pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/4";
-      let overlineClass = "font-black uppercase text-sm tracking-wide text-primary-80";
+       let sectionClass = "pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/4";
+       let overlineClass = "font-black uppercase text-sm tracking-wide text-primary-80";
 
-      let sectionUl = "flex flex-wrap mt-8 list-primary list-inside lg:w-auto max-w-md";
+       let sectionUl = "flex flex-wrap mt-8 list-primary list-inside lg:w-auto max-w-md";
 
-      <div className="lg:flex lg:flex-row px-4 max-w-xl">
-        <div className={reTheme ++ " " ++ sectionClass}>
-          <Link href="/apis">
-            <a className=overlineClass> "Overview"->s </a>
-          </Link>
-        </div>
-        <div className={reTheme ++ " " ++ sectionClass}>
-          <Link href="/apis/latest">
-            <a className=overlineClass> "JavaScript"->s </a>
-          </Link>
-          <ul className=sectionUl>
-            {jsItems
-             ->Belt.Array.mapWithIndex((idx, (title, href)) => {
-                 let active =
-                   Js.String2.startsWith(route, href) ? "text-primary" : "";
-                 <li
-                   className="w-1/2 xs:w-1/2 h-10"
-                   key={Belt.Int.toString(idx)}>
-                   <Link href>
-                     <a
-                       className={
-                         "text-white-80 hover:text-white hover:cursor-pointer "
-                         ++ active
-                       }>
-                       title->s
-                     </a>
-                   </Link>
-                 </li>;
-               })
-             ->ate}
-          </ul>
-        </div>
-      </div>;
-    };
-  };
-  */
+       <div className="lg:flex lg:flex-row px-4 max-w-xl">
+         <div className={reTheme ++ " " ++ sectionClass}>
+           <Link href="/apis">
+             <a className=overlineClass> "Overview"->s </a>
+           </Link>
+         </div>
+         <div className={reTheme ++ " " ++ sectionClass}>
+           <Link href="/apis/latest">
+             <a className=overlineClass> "JavaScript"->s </a>
+           </Link>
+           <ul className=sectionUl>
+             {jsItems
+              ->Belt.Array.mapWithIndex((idx, (title, href)) => {
+                  let active =
+                    Js.String2.startsWith(route, href) ? "text-primary" : "";
+                  <li
+                    className="w-1/2 xs:w-1/2 h-10"
+                    key={Belt.Int.toString(idx)}>
+                    <Link href>
+                      <a
+                        className={
+                          "text-white-80 hover:text-white hover:cursor-pointer "
+                          ++ active
+                        }>
+                        title->s
+                      </a>
+                    </Link>
+                  </li>;
+                })
+              ->ate}
+           </ul>
+         </div>
+       </div>;
+     };
+   };
+   */
 };
 
 module MobileNav = {
@@ -375,14 +374,14 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
   let (collapsibles, setCollapsibles) =
     React.useState(_ =>
       [|
-        {
-          title: "Docs",
-          href: "/docs",
-          children: route => {
-            <SubNav.DocsLinks route />;
-          },
-          state: Closed,
-        },
+        /*{*/
+        /*title: "Docs",*/
+        /*href: "/docs",*/
+        /*children: route => {*/
+        /*<SubNav.DocsLinks route />;*/
+        /*},*/
+        /*state: Closed,*/
+        /*},*/
         /*{*/
         /*title: "API",*/
         /*href: "/apis",*/
@@ -472,41 +471,53 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
           /*className="sm:hidden px-4 flex items-center justify-center h-full">*/
           /*<Icon.MagnifierGlass className="w-5 h-5 hover:text-white" />*/
           /*</button>*/
+          /*
+                       {Belt.Array.mapWithIndex(
+                          collapsibles,
+                          (idx, c) => {
+                            let {href, title, children, state} = c;
+                            let onStateChange = (~id, state) => {
+                              setCollapsibles(prev => {
+                                /* This is important to close the nav overlay, before showing the subnavigation */
+                                if (isOverlayOpen) {
+                                  toggleOverlay();
+                                };
+                                Belt.Array.map(prev, c =>
+                                  if (c.title === id) {
+                                    {...c, state};
+                                  } else {
+                                    {...c, state: Closed};
+                                  }
+                                );
+                              });
+                            };
+                            <div className="mr-5">
+                              <CollapsibleLink
+                                id=title
+                                onStateChange
+                                key={idx->Belt.Int.toString}
+                                allowHover
+                                title
+                                active={Js.String2.startsWith(route, href)}
+                                state>
+                                {children(route)}
+                              </CollapsibleLink>
+                            </div>;
+                          },
+                        )
+                        ->ate}
+           */
 
-            {Belt.Array.mapWithIndex(
-               collapsibles,
-               (idx, c) => {
-                 let {href, title, children, state} = c;
-                 let onStateChange = (~id, state) => {
-                   setCollapsibles(prev => {
-                     /* This is important to close the nav overlay, before showing the subnavigation */
-                     if (isOverlayOpen) {
-                       toggleOverlay();
-                     };
-                     Belt.Array.map(prev, c =>
-                       if (c.title === id) {
-                         {...c, state};
-                       } else {
-                         {...c, state: Closed};
-                       }
-                     );
-                   });
-                 };
-                 <div className="mr-5">
-                   <CollapsibleLink
-                     id=title
-                     onStateChange
-                     key={idx->Belt.Int.toString}
-                     allowHover
-                     title
-                     active={Js.String2.startsWith(route, href)}
-                     state>
-                     {children(route)}
-                   </CollapsibleLink>
-                 </div>;
-               },
-             )
-             ->ate}
+            <Link href="/docs/latest">
+              <a
+                className={
+                  "mr-5 "
+                  ++ linkOrActiveLinkSubroute(~target="/docs/latest", ~route)
+                }
+                onMouseEnter=nonCollapsibleOnMouseEnter>
+                "Docs"->s
+              </a>
+            </Link>
             <Link href="/apis/latest">
               <a
                 className={
@@ -562,9 +573,17 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
             href="https://twitter.com/rescriptlang"
             rel="noopener noreferrer"
             target="_blank"
-            className=link
+            className={"mr-5 " ++ link}
             onMouseEnter=nonCollapsibleOnMouseEnter>
             <Icon.Twitter className="w-6 h-6 opacity-50 hover:opacity-100" />
+          </a>
+          <a
+            href="https://forum.rescript-lang.org"
+            rel="noopener noreferrer"
+            target="_blank"
+            className=link
+            onMouseEnter=nonCollapsibleOnMouseEnter>
+            <Icon.Discourse className="w-6 h-6 opacity-50 hover:opacity-100" />
           </a>
         </div>
       </div>

@@ -141,7 +141,7 @@ module Docs = {
           let {UrlPath.version} = v;
           let prefix =
             UrlPath.[
-              {name: "Docs", href: "/docs"},
+              {name: "Docs", href: "/docs/" ++ version},
               {
                 name: "Language Manual",
                 href: "/docs/manual/" ++ version ++ "/introduction",
