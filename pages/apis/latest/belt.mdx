@@ -4,13 +4,13 @@ The preferred standard library for Reason when targeting JavaScript
 (browser, node, React Native).
 
 It is recommended to use the modules from Belt rather than from the
-OCaml standard library or from the [Js](/apis/javascript/latest/js) namespace, e.g. use
-[Belt.List](/apis/javascript/latest/belt/list) instead of `List` or [Js.List](/apis/javascript/latest/js/list)
-and [Belt.Array](/apis/javascript/latest/belt/array) instead of `Array` or [Js.Array](/apis/javascript/latest/js/array).
+OCaml standard library or from the [Js](/apis/latest/js) namespace, e.g. use
+[Belt.List](/apis/latest/belt/list) instead of `List` or [Js.List](/apis/latest/js/list)
+and [Belt.Array](/apis/latest/belt/array) instead of `Array` or [Js.Array](/apis/latest/js/array).
 
 Belt is currently mostly covering collection types. It has no string or
 date functions yet, although Belt.String is in the works. (In the meantime,
-use [Js.String](/apis/javascript/latest/js/string) for string functions and [Js.Date](/apis/javascript/latest/js/date)
+use [Js.String](/apis/latest/js/string) for string functions and [Js.Date](/apis/latest/js/date)
 for date functions.)
 
 ## Motivation
@@ -114,9 +114,9 @@ as well as specialized, more efficient implementations for string and int keys.
 
 For example, Belt has the following set modules:
 
-- [Belt.Set](/apis/javascript/latest/belt/set)
-- [Belt.Set.Int](/apis/javascript/latest/belt/set-int)
-- [Belt.Set.String](/apis/javascript/latest/belt/set-string)
+- [Belt.Set](/apis/latest/belt/set)
+- [Belt.Set.Int](/apis/latest/belt/set-int)
+- [Belt.Set.String](/apis/latest/belt/set-string)
 
 ## Implementation Details
 
@@ -143,9 +143,9 @@ let k = letters[10]; /* k == None */
 
 Although we've fixed the problem where `k` raises an exception, we now have a type error when trying to capitalize `a`. There are a few things going on here:
 
-- Reason transforms array index access to the function `Array.get`. So `letters[0]` is the same as `Array.get(letters, 0)`. 
+- Reason transforms array index access to the function `Array.get`. So `letters[0]` is the same as `Array.get(letters, 0)`.
 - The compiler uses whichever `Array` module is in scope. If you `open Belt`, then it uses `Belt.Array`.
-- `Belt.Array.get` returns values wrapped in options, so `letters[0] == Some("a")`. 
+- `Belt.Array.get` returns values wrapped in options, so `letters[0] == Some("a")`.
 
 Fortunately, this is easy to fix:
 
@@ -160,7 +160,7 @@ let capitalA =
     | Some(a) => Some(Js.String.toUpperCase(a))
     | None => None
   };
-  
+
 /* Alternatively, use the Option module: */
 let capitalA = a->Option.map(Js.String.toUpperCase);
 

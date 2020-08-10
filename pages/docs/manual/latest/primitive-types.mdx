@@ -51,7 +51,7 @@ let message = j`Today I am ${age} years old.`
 
 ### Usage
 
-See the familiar `Js.String` API in the [API docs](/apis/javascript/latest/js/string). Since a ReScript string maps to a JavaScript string, you can mix & match the string operations in both standard libraries.
+See the familiar `Js.String` API in the [API docs](/apis/latest/js/string). Since a ReScript string maps to a JavaScript string, you can mix & match the string operations in both standard libraries.
 
 ### Tips & Tricks
 
@@ -85,7 +85,7 @@ ReScript regular expressions compile cleanly to their JavaScript counterpart:
 let r = %re("/b/g")
 ```
 
-A regular expression like the above has the type `Js.Re.t`. The [Js.Re](/apis/javascript/latest/js/re) module contains the regular expression helpers you have seen in JS.
+A regular expression like the above has the type `Js.Re.t`. The [Js.Re](/apis/latest/js/re) module contains the regular expression helpers you have seen in JS.
 
 ## Boolean
 
@@ -104,10 +104,10 @@ ReScript's `true/false` compiles into a JavaScript `true/false`.
 
 ## Integers
 
-32-bits, truncated when necessary. We provides the usual operations on them: `+`, `-`, `*`, `/`, etc. See [Js.Int](/apis/javascript/latest/js/int) for helper functions.
+32-bits, truncated when necessary. We provides the usual operations on them: `+`, `-`, `*`, `/`, etc. See [Js.Int](/apis/latest/js/int) for helper functions.
 
 **Careful when you bind to JavaScript numbers**! Long ones might be truncated. Bind JS number (especially Dates) as **float** instead.
 
 ## Floats
 
-Float requires other operators: `+.`, `-.`, `*.`, `/.`, etc. Like `0.5 +. 0.6`. See [Js.Float](/apis/javascript/latest/js/float) for helper functions.
+Float requires other operators: `+.`, `-.`, `*.`, `/.`, etc. Like `0.5 +. 0.6`. See [Js.Float](/apis/latest/js/float) for helper functions.

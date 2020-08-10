@@ -9,12 +9,12 @@ module Link = Next.Link;
 
 module UrlPath = {
   /*
-      Example base: /apis/javascript
-      Example route: /apis/javascript/latest/belt/something/mutable-map-int
+      Example base: /apis
+      Example route: /apis/latest/belt/something/mutable-map-int
 
       would parse into following `t`:
       {
-       base: "/apis/javascript",
+       base: "/apis",
        version: "latest",
        relPaths: [|"something"|],
        up: Some("belt"),
@@ -74,7 +74,7 @@ module UrlPath = {
       Example to represent:
       Api / JavaScript / latest / Belt / Array
 
-      ~prefix=[{name: "API", href="apis"}, {name: "JavaScript", href="apis/javascript/latest"}]
+      ~prefix=[{name: "API", href="apis"}, {name: "JavaScript", href="apis/latest"}]
 
    */
   let toBreadCrumbs =
