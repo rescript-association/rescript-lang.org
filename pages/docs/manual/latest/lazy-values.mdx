@@ -21,7 +21,7 @@ let getFiles =
   lazy({
     Js.log("Reading dir")
     Node.Fs.readdirSync("./pages")
-  });
+  })
 
 // On the first call, the computation takes place
 Lazy.force(getFiles)->Js.log

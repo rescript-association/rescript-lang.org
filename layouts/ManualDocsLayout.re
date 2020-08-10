@@ -50,8 +50,8 @@ let basicNavs = [|
   {name: "External", href: "/docs/manual/latest/external"},
   {name: "Exception", href: "/docs/manual/latest/exception"},
   {name: "Lazy Values", href: "/docs/manual/latest/lazy-values"},
-  {name: "Module", href: "/docs/manual/latest/module"},
   {name: "Promise", href: "/docs/manual/latest/promise"},
+  {name: "Module", href: "/docs/manual/latest/module"},
   {name: "Import & Export", href: "/docs/manual/latest/import-export"},
   {name: "Reserved Keywords", href: "/docs/manual/latest/reserved-keywords"},
 |];
