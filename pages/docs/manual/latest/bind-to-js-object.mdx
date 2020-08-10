@@ -11,7 +11,7 @@ ReScript cleanly separates the binding methods for JS object based on these 4 us
 
 <!-- TODO: mention bs.scope here too? -->
 
-## As a Record
+## Bind to Record-like JS Objects
 
 If your JavaScript object has fixed fields, then it's conceptually like a ReScript record. Since a ReScript record compiles to a clean JavaScript object, you can definitely type a JS object as a ReScript record!
 
@@ -20,7 +20,7 @@ type person = {
   name: string,
   friends: array<string>,
   age: int,
-};
+}
 
 @bs.module("MySchool") external john: person = "john"
 
@@ -51,7 +51,7 @@ type person = {
 let johnName = john["name"]
 ```
 
-## As a Hash Map
+## Bind to Hash Map-like JS Object
 
 If your JavaScript object:
 
@@ -60,7 +60,7 @@ If your JavaScript object:
 
 Then it's not really an object, it's a hash map. Use [Js.Dict](/apis/latest/js/dict), which contains operations like `get`, `set`, etc. and cleanly compiles to a JavaScript object still.
 
-## As a Class
+## Bind to a JS Object That's a Class
 
 Use `bs.new` to emulate e.g. `new Date()`:
 

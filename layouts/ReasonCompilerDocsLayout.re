@@ -26,10 +26,6 @@ let interopNavs = [|
     href: "/docs/reason-compiler/latest/interop-overview",
   },
   {
-    name: "Cheatsheet",
-    href: "/docs/reason-compiler/latest/interop-cheatsheet",
-  },
-  {
     name: "Property access",
     href: "/docs/reason-compiler/latest/property-access",
   },
