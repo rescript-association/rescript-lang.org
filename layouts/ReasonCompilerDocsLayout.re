@@ -42,10 +42,6 @@ let interopNavs = [|
     href: "/docs/reason-compiler/latest/return-value-wrapping",
   },
   {
-    name: "Import & Export",
-    href: "/docs/reason-compiler/latest/import-export",
-  },
-  {
     name: "Better Data Structures Printing (Debug Mode)",
     href: "/docs/reason-compiler/latest/better-data-structures-printing-debug-mode",
   },

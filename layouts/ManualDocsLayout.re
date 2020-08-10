@@ -52,6 +52,7 @@ let basicNavs = [|
   {name: "Lazy Values", href: "/docs/manual/latest/lazy-values"},
   {name: "Module", href: "/docs/manual/latest/module"},
   {name: "Promise", href: "/docs/manual/latest/promise"},
+  {name: "Import & Export", href: "/docs/manual/latest/import-export"},
   {name: "Reserved Keywords", href: "/docs/manual/latest/reserved-keywords"},
 |];
 
@@ -86,18 +87,10 @@ let jsInteropNavs = [|
     name: "Embed Raw JavaScript",
     href: "/docs/manual/latest/embed-raw-javascript",
   },
-  {
-    name: "Bind to JS Object",
-    href: "/docs/manual/latest/bind-to-js-object",
-  },
-  {
-    name: "Shared Data Types",
-    href: "/docs/manual/latest/shared-data-types",
-  },
-  {
-    name: "Bind to Global JS Values",
-    href: "/docs/manual/latest/bind-to-global-js-values",
-  },
+  {name: "Bind to JS Object", href: "/docs/manual/latest/bind-to-js-object"},
+  {name: "Shared Data Types", href: "/docs/manual/latest/shared-data-types"},
+  {name: "Import from/Export to JS", href: "/docs/manual/latest/import-from-export-to-js"},
+  {name: "Bind to Global JS Values", href: "/docs/manual/latest/bind-to-global-js-values"},
   {name: "JSON", href: "/docs/manual/latest/json"},
   {name: "Use Illegal Identifier Names", href: "/docs/manual/latest/use-illegal-identifier-names"},
   {
