@@ -82,8 +82,8 @@ let mutableCollectionsNavs = [|
 |];
 
 let basicNavs = [|
-  NavItem.{name: "List", href: "/apis/latest/belt/list"},
-  {name: "Array", href: "/apis/latest/belt/array"},
+  NavItem.{name: "Array", href: "/apis/latest/belt/array"},
+  {name: "List", href: "/apis/latest/belt/list"},
   {name: "Float", href: "/apis/latest/belt/float"},
   {name: "Int", href: "/apis/latest/belt/int"},
   {name: "Range", href: "/apis/latest/belt/range"},
