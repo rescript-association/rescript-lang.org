@@ -364,3 +364,45 @@ x.onload = (function (v) {
 ```
 
 `bs.this` has its first parameter is reserved for `this` and for arity of 0, there is no need for a redundant `unit` type.
+
+## Function Nullable Return Value Wrapping
+
+For JS functions that return a value that can also be `undefined` or `null`, we provide `@bs.return(...)`. To automatically convert that value to an `option` type (recall that ReScript `option` type's `None` value only compiles to `undefined` and not `null`).
+
+```res
+type element
+type dom
+
+@bs.send @bs.return(nullable)
+external getElementById: (dom, string) => option<element> = "getElementById"
+
+let test = dom => {
+  let elem = dom->(getElementById("haha"))
+  switch (elem) {
+  | None => 1
+  | Some(_ui) => 2
+  }
+}
+```
+
+`bs.return(nullable)` attribute will automatically convert `null` and `undefined` to `option` type.
+
+Output:
+
+```js
+function test(dom) {
+  var elem = dom.getElementById("haha");
+  if (elem == null) {
+    return 1;
+  } else {
+    console.log(elem);
+    return 2;
+  }
+}
+```
+
+Currently 4 directives are supported: `null_to_opt`, `undefined_to_opt`, `nullable` and `identity`.
+
+<!-- When the return type is unit: the compiler will append its return value with an OCaml unit literal to make sure it does return unit. Its main purpose is to make the user consume FFI in idiomatic OCaml code, the cost is very very small and the compiler will do smart optimizations to remove it when the returned value is not used (mostly likely). -->
+
+`identity` will make sure that compiler will do nothing about the returned value. It is rarely used, but introduced here for debugging purpose.

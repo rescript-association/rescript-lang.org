@@ -30,10 +30,6 @@ let interopNavs = [|
     href: "/docs/reason-compiler/latest/property-access",
   },
   {
-    name: "Return Value Wrapping",
-    href: "/docs/reason-compiler/latest/return-value-wrapping",
-  },
-  {
     name: "Better Data Structures Printing (Debug Mode)",
     href: "/docs/reason-compiler/latest/better-data-structures-printing-debug-mode",
   },
