@@ -56,13 +56,6 @@ let basicNavs = [|
   {name: "Reserved Keywords", href: "/docs/manual/latest/reserved-keywords"},
 |];
 
-let stdlibNavs = [|
-  NavItem.{
-    name: "Overview",
-    href: "/docs/manual/latest/stdlib-overview",
-  },
-|];
-
 let buildsystemNavs = [|
   NavItem.{
     name: "Overview",
@@ -114,7 +107,6 @@ let extraNavs = [|
 let categories = [|
   Category.{name: "Overview", items: overviewNavs},
   {name: "Basics", items: basicNavs},
-  {name: "Standard Library", items: stdlibNavs},
   {name: "JavaScript Interop", items: jsInteropNavs},
   {name: "Build System", items: buildsystemNavs},
   {name: "Guides", items: guidesNavs},
