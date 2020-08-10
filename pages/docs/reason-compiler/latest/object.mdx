@@ -113,7 +113,7 @@ var john = {
 **Please note:**
 - You will still be required to transform variants and lists, so for seamless
   interop, make sure to only use [shared data
-  types](shared-data-types.md), such as array, string, int, float, etc.
+  types](/docs/manual/latest/shared-data-types), such as array, string, int, float, etc.
   Alternatively you can use [genType](https://github.com/cristianoc/genType) to
   do automatic convertions between JS <-> BuckleScript values as well.
 - `None` (`option`) values are converted to `undefined`, so if your JS code
@@ -272,7 +272,7 @@ One getter function is generated per `bs.deriving abstract` record type field. I
 let twenty = ageGet(joe)
 ```
 
-Alternatively, you can use the [Pipe](pipe.md) feature in a later section for a nicer-looking access syntax:
+Alternatively, you can use the [Pipe](/docs/manual/latest/pipe.md) feature in a later section for a nicer-looking access syntax:
 
 ```reason
 let twenty = joe->ageGet
@@ -321,7 +321,7 @@ joe->ageSet(21)
 
 ### Methods
 
-You can attach arbitrary methods onto a type (_any_ type, as a matter of fact. Not just `bs.deriving abstract` record types). See [Object Method](function.md#object-method) in the function section later.
+You can attach arbitrary methods onto a type (_any_ type, as a matter of fact. Not just `bs.deriving abstract` record types). See [Object Method](/docs/manual/latest/bind-to-js-function.md#object-method) in the function section later.
 
 ### Tips & Tricks
 

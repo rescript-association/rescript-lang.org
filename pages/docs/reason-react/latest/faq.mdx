@@ -55,7 +55,7 @@ This likely means that:
 - The JS component uses ES6 default export (`export default MyComponent`) (or, you forgot to export the component altogether!).
 - You're using Babel/Webpack to compile those ES6 modules.
 
-This is a common mistake. Please see BuckleScript's [Import an ES6 Default Value](/docs/reason-compiler/latest/import-export#import-an-es6-default-value). Aka, instead of:
+This is a common mistake. Please see BuckleScript's [Import an ES6 Default Value](/docs/manual/latest/import-from-export-to-js#import-a-javascript-module-itself-es6-module-format). Aka, instead of:
 
 ```reason
 [@bs.module] external myJSReactClass: ReasonReact.reactClass = "./myJSReactClass";

@@ -116,7 +116,7 @@ A few things:
 - There's a user-defined type called **`action`**, named so by convention. It's a variant of all the possible state transitions in your component. _In state machine terminology, this'd be a "token"_.
 - A user-defined `state` type, and an `initialState`. Nothing special.
 - The current `state` value is accessible through `self.state`, whenever `self` is passed to you as an argument of some function.
-- A "**reducer**"! This [pattern-matches](/docs/manual/latest/pattern-matching) on the possible actions and specifies what state update each action corresponds to. _In state machine terminology, this'd be a "state transition"_.
+- A "**reducer**"! This [pattern-matches](/docs/manual/latest/pattern-matching-destructuring) on the possible actions and specifies what state update each action corresponds to. _In state machine terminology, this'd be a "state transition"_.
 - In `render`, instead of `self.handle` (which doesn't allow state updates), you'd use `self.send`. `send` takes an action.
 
 So, when a click on the dialog is triggered, we "send" the `Click` action to the reducer, which handles the `Click` case by returning the new state that increments a counter. ReasonReact takes the state and updates the component.
