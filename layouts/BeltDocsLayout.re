@@ -186,7 +186,7 @@ module Docs = {
       />;
 
     <SidebarLayout
-      theme=`Js
+      theme=`Reason
       components
       sidebarState=(isSidebarOpen, setSidebarOpen)
       sidebar

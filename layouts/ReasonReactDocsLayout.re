@@ -136,7 +136,7 @@ let make = (~components=Markdown.default, ~children) => {
         let {UrlPath.version} = v;
         let prefix =
           UrlPath.[
-            {name: "Docs", href: "/docs"},
+            {name: "Docs", href: "/docs/latest"},
             {
               name: "ReasonReact",
               href: "/docs/reason-react/" ++ version ++ "/introduction",
@@ -150,7 +150,7 @@ let make = (~components=Markdown.default, ~children) => {
   let version = "v0.7";
 
   <DocsLayout
-    theme=`Js components categories version title ?activeToc ?breadcrumbs>
+    theme=`Reason components categories version title ?activeToc ?breadcrumbs>
     children
   </DocsLayout>;
 };
