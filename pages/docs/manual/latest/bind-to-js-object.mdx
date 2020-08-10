@@ -1,6 +1,93 @@
 # Bind to JS Object
 
+JavaScript objects are a combination of several use-cases:
+
+- As a "record" or "struct" in other languages (like ReScript and C).
+- As a hash map.
+- As a class.
+- As a module to import/export.
+
+ReScript cleanly separates the binding methods for JS object based on these 4 use-cases. This page documents the first three. Binding to JS module objects is described in the [Import from/Export to JS](import-from-export-to-js.md) section.
+
+<!-- TODO: mention bs.scope here too? -->
+
+## As a Record
+
+If your JavaScript object has fixed fields, then it's conceptually like a ReScript record. Since a ReScript record compiles to a clean JavaScript object, you can definitely type a JS object as a ReScript record!
+
 ```res
-@bs.module("path") external dirname: string => string = "dirname"
-let root = dirname("/User/jony")
+type person = {
+  name: string,
+  friends: array<string>,
+  age: int,
+};
+
+@bs.module("MySchool") external john: person = "john"
+
+let johnName = john.name
+```
+
+Output:
+
+```js
+var MySchool = require("MySchool");
+
+var johnName = MySchool.john.name;
+```
+
+External is documented [here](external.md). `@bs.module` is documented [here](import-from-export-to-js.md).
+
+Alternatively, you can use [ReScript object](object.md) to model a JS object too:
+
+```res
+type person = {
+  "name": string,
+  "friends": array<string>,
+  "age": int,
+};
+
+@bs.module("MySchool") external john: person = "john"
+
+let johnName = john["name"]
+```
+
+## As a Hash Map
+
+If your JavaScript object:
+
+- might or might not add/remove keys
+- contains only values that are of the same type
+
+Then it's not really an object, it's a hash map. Use [Js.Dict](/apis/latest/js/dict), which contains operations like `get`, `set`, etc. and cleanly compiles to a JavaScript object still.
+
+## As a Class
+
+Use `bs.new` to emulate e.g. `new Date()`:
+
+```res
+type t
+@bs.new external createDate: unit => t = "Date"
+
+let date = createDate();
+```
+
+Output:
+
+```js
+var date = new Date();
+```
+
+You can chain `bs.new` and `bs.module` if the JS module you're importing is itself a class:
+
+```res
+type t
+@bs.new @bs.module external book: unit => t = "Book"
+let myBook = book()
+```
+
+Output:
+
+```js
+var Book = require("Book");
+var myBook = new Book();
 ```
