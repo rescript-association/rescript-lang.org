@@ -17,7 +17,8 @@ Js.Promise.make: (
 ) => Js.Promise.t('a)`
 ```
 
-This type signature means that `make` takes a callback that takes 2 named arguments, `resolve` and `reject`. Both arguments are themselves [uncurried callbacks](/docs/reason-compiler/latest/function#solution-guaranteed-uncurrying) (they have a dot). `make` returns the created promise.
+This type signature means that `make` takes a callback that takes 2 named arguments, `resolve` and `reject`. Both arguments are themselves [uncurried callbacks](
+function.md#uncurried-function) (with a dot). `make` returns the created promise.
 
 ## Usage
 
