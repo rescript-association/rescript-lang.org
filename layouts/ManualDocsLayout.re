@@ -106,7 +106,7 @@ let extraNavs = [|
 
 let categories = [|
   Category.{name: "Overview", items: overviewNavs},
-  {name: "Basics", items: basicNavs},
+  {name: "Language Features", items: basicNavs},
   {name: "JavaScript Interop", items: jsInteropNavs},
   {name: "Build System", items: buildsystemNavs},
   {name: "Guides", items: guidesNavs},
