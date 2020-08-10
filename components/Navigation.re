@@ -466,7 +466,7 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
         className="flex xs:justify-end w-full bg-night-dark sm:h-auto sm:relative">
         <div
           className="flex ml-10 w-full max-w-320"
-          style={Style.make(~minWidth="12rem", ())}>
+          style={Style.make(~minWidth="12rem", ~maxWidth="26rem", ())}>
           /*<button*/
           /*className="sm:hidden px-4 flex items-center justify-center h-full">*/
           /*<Icon.MagnifierGlass className="w-5 h-5 hover:text-white" />*/
@@ -540,27 +540,24 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
             <Link href="/blog">
               <a
                 className={
-                  "hidden xs:block "
+                  "hidden xs:block mr-5 "
                   ++ linkOrActiveLinkSubroute(~target="/blog", ~route)
                 }
                 onMouseEnter=nonCollapsibleOnMouseEnter>
                 "Blog"->s
               </a>
             </Link>
+            <Link href="/community">
+              <a
+                className={
+                  "hidden xs:block " ++ linkOrActiveLink(~target="/community", ~route)
+                }
+                onMouseEnter=nonCollapsibleOnMouseEnter>
+                "Community"->s
+              </a>
+            </Link>
           </div>
-        /*
-         <Link href="/community">
-           <a
-             className={
-               "hidden sm:block "
-               ++ linkOrActiveLink(~target="/community", ~route)
-             }
-             onMouseEnter=nonCollapsibleOnMouseEnter>
-             "Community"->s
-           </a>
-         </Link>
-         */
-        <div className="hidden md:flex">
+        <div className="hidden sm:flex">
           <a
             href="https://github.com/reason-association/rescript-lang.org"
             rel="noopener noreferrer"

@@ -23,9 +23,9 @@ module Toc = DocsLayout.Toc;
 let overviewNavs = [|
   NavItem.{name: "Overview", href: "/community"},
   {name: "Code of Conduct", href: "/community/code-of-conduct"},
-  {name: "Events & Meetups", href: "/community/events"},
-  {name: "Articles & Videos", href: "/community/articles-and-videos"},
-  {name: "Get involved", href: "/community/get-involved"},
+  /*{name: "Events & Meetups", href: "/community/events"},*/
+  /*{name: "Articles & Videos", href: "/community/articles-and-videos"},*/
+  /*{name: "Get involved", href: "/community/get-involved"},*/
 |];
 
 let categories = [|Category.{name: "Resources", items: overviewNavs}|];
