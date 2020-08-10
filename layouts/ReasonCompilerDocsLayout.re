@@ -26,10 +26,6 @@ let interopNavs = [|
     href: "/docs/reason-compiler/latest/interop-overview",
   },
   {
-    name: "Property access",
-    href: "/docs/reason-compiler/latest/property-access",
-  },
-  {
     name: "Better Data Structures Printing (Debug Mode)",
     href: "/docs/reason-compiler/latest/better-data-structures-printing-debug-mode",
   },
