@@ -1355,9 +1355,14 @@ module B = {
 // ReScript code!
 
 module Button = {
-  @react.module
-  let make = () => {
-    let msg = "Click me"
+  @react.component
+  let make = (~count: int) => {
+    let times = switch count {
+    | 1 => "once"
+    | 2 => "twice"
+    | n => Belt.Int.toString(n) ++ " times"
+    }
+    let msg = "Click me " ++ times
 
     <button> {msg->React.string} </button>
   }
