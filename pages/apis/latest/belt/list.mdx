@@ -48,7 +48,6 @@ Returns `Some(value)` where `value` is the first element in the list, or `None` 
 
 ```res example
 Belt.List.head(list{}) // None
-
 Belt.List.head(list{1, 2, 3}) // Some(1)
 ```
 
@@ -170,7 +169,7 @@ Belt.List.makeBy(5, i => i * i) // list{0, 1, 4, 9, 16}
 ## makeByU
 
 ```res sig
-let makeByU: (int, (. int => 'a)) => t<'a>
+let makeByU: (int, (. int) => 'a) => t<'a>
 ```
 
 Uncurried version of [makeBy](#makeBy)
@@ -222,7 +221,7 @@ list{1, 2, 3}->Belt.List.take(4) // None
 ## splitAt
 
 ```res sig
-let splitAt: (t<'a>, int) => option<(list<'a>, list<'a>>)
+let splitAt: (t<'a>, int) => option<(list<'a>, list<'a>)>
 ```
 
 Split the list `someList` at `index`. Returns `None` when the length of `someList` is less than `index`.
@@ -248,7 +247,7 @@ Belt.List.concat(list{1, 2, 3}, list{4, 5}) // list{1, 2, 3, 4, 5}
 ## concatMany
 
 ```res sig
-let concatMany: array(t<'a>) => t<'a>
+let concatMany: array<t<'a>> => t<'a>
 ```
 
 Returns the list obtained by concatenating all the lists in array `a`, in order.
@@ -272,7 +271,7 @@ Belt.List.reverseConcat(list{1, 2}, list{3, 4}) // list{2, 1, 3, 4}
 ## flatten
 
 ```res sig
-let flatten: t<t<'a>) => t<'a>
+let flatten: t<t<'a>> => t<'a>
 ```
 
 Return the list obtained by concatenating all the lists in list `ls`, in order.
@@ -304,7 +303,7 @@ Uncurried version of [map](#map).
 ## zip
 
 ```res sig
-let zip: (t<'a>, t<'b>) => t<('a, 'b>)
+let zip: (t<'a>, t<'b>) => t<('a, 'b)>
 ```
 
 Returns a list of pairs from the two lists with the length of the shorter list.
@@ -321,12 +320,6 @@ let zipBy: (t<'a>, t<'b>, ('a, 'b) => 'c) => t<'c>
 
 **See:** [zip](#zip)
 
-Equivalent to:
-
-```res sig
-zip(firstList, secondList) -> Belt.List.map(((x, y)) => f(x, y))
-```
-
 ```res example
 Belt.List.zipBy(list{1, 2, 3}, list{4, 5}, (a, b) => 2 * a + b) // list{6, 9}
 ```
@@ -334,7 +327,7 @@ Belt.List.zipBy(list{1, 2, 3}, list{4, 5}, (a, b) => 2 * a + b) // list{6, 9}
 ## zipByU
 
 ```res sig
-let zipByU: (t<'a>, t<'b>, (. ('a, 'b) => 'c)) => t<'c>
+let zipByU: (t<'a>, t<'b>, (. 'a, 'b) => 'c) => t<'c>
 ```
 
 Uncurried version of [zipBy](#zipBy).
@@ -375,7 +368,7 @@ Belt.List.fromArray([1, 2, 3]) // [1, 2, 3]
 ## toArray
 
 ```res sig
-let toArray: t<'a> => array('a)
+let toArray: t<'a> => array<'a>
 ```
 
 Converts the given list to an array.
@@ -404,7 +397,7 @@ let mapReverse: (t<'a>, 'a => 'b) => t<'b>
 
 Equivalent to:
 
-```res sig
+```res example
 map(someList, f)->reverse;
 ```
 
@@ -415,7 +408,7 @@ list{3, 4, 5}->Belt.List.mapReverse(x => x * x) /* list{25, 16, 9} */
 ## mapReverseU
 
 ```res sig
-let mapReverseU: (t<'a>, (. 'a => 'b)) => t<'b>
+let mapReverseU: (t<'a>, (. 'a) => 'b) => t<'b>
 ```
 
 Uncurried version of [mapReverse](#mapReverse).
@@ -442,7 +435,7 @@ Belt.List.forEach(list{"a", "b", "c"}, x => Js.log("Item: " ++ x))
 ## forEachU
 
 ```res sig
-let forEachU: (t<'a>, (. 'a => 'b)) => unit;
+let forEachU: (t<'a>, (. 'a) => 'b) => unit;
 ```
 
 Uncurried version of [forEach](#forEach).
@@ -471,7 +464,7 @@ Belt.List.forEachWithIndex(list{"a", "b", "c"}, (index, x) => {
 ## forEachWithIndexU
 
 ```res sig
-let forEachWithIndexU: (t<'a>, (. (int, 'a) => 'b)) => unit;
+let forEachWithIndexU: (t<'a>, (. int, 'a) => 'b) => unit;
 ```
 
 Uncurried version of [forEachWithIndex](#forEachWithIndex).
@@ -495,7 +488,7 @@ list{1, 2, 3, 4}->Belt.List.reduce(0, (acc, item) => acc + item) /* 10 */
 ## reduceU
 
 ```res sig
-let reduceU: (t<'a>, 'b, (. ('b, 'a) => 'b)) => 'b;
+let reduceU: (t<'a>, 'b, (. 'b, 'a) => 'b) => 'b;
 ```
 
 Uncurried version of [reduce](#reduce).
@@ -515,7 +508,7 @@ list{1, 2, 3, 4}->Belt.List.reduceWithIndex(0, (acc, item, index) => acc + item 
 ## reduceWithIndexU
 
 ```res sig
-let reduceWithIndexU: (t<'a>, 'b, (. ('b, 'a, int) => 'b)) => 'b;
+let reduceWithIndexU: (t<'a>, 'b, (. 'b, 'a, int) => 'b) => 'b;
 ```
 
 Uncurried version of [reduceWithIndex](#reduceWithIndex).
@@ -539,7 +532,7 @@ list{1, 2, 3, 4}->Belt.List.reduceReverse(list{}, Belt.List.add) // list{1, 2, 3
 ## reduceReverseU
 
 ```res sig
-let reduceReverseU: (t<'a>, 'b, (. ('b, 'a) => 'b)) => 'b;
+let reduceReverseU: (t<'a>, 'b, ('b, 'a) => 'b) => 'b;
 ```
 
 Uncurried version of [reduceReverse](#reduceReverse).
@@ -559,7 +552,7 @@ Belt.List.mapReverse2(list{1, 2, 3}, list{1, 2}, (a, b) => a + b) // list{4, 2}
 ## mapReverse2U
 
 ```res sig
-let mapReverse2U: (t<'a>, t<'b>, (. ('a, 'b) => 'c)) => t<'c>
+let mapReverse2U: (t<'a>, t<'b>, ('a, 'b) => 'c) => t<'c>
 ```
 
 Uncurried version of [mapReverse2](#mapReverse2).
@@ -673,7 +666,7 @@ list{1, 2, 3, 4}->Belt.List.some(isAbove100) /* false */
 ## someU
 
 ```res sig
-let someU: (t<'a>, (.'a => bool)) => bool
+let someU: (t<'a>, (. 'a) => bool) => bool
 ```
 
 Uncurried version of [some](#some).
@@ -699,7 +692,7 @@ Belt.List.every2(list{0, 1}, list{5, 0}, (a, b) => a > b) /* false */
 ## every2U
 
 ```res sig
-let every2U: (t<'a>, t<'b>, (. ('a, 'b) => bool)) => bool
+let every2U: (t<'a>, t<'b>, (. 'a, 'b) => bool) => bool
 ```
 
 Uncurried version of [every2](#every2).
@@ -725,7 +718,7 @@ Belt.List.some2(list{0, 1}, list{5, 0}, (a, b) => a > b) /* true */
 ## some2U
 
 ```res sig
-let some2U: (t<'a>, t<'b>, (. ('a, 'b) => bool)) => bool
+let some2U: (t<'a>, t<'b>, (. 'a, 'b) => bool) => bool
 ```
 
 Uncurried version of [some2](#some2).
@@ -736,14 +729,14 @@ Uncurried version of [some2](#some2).
 let cmpByLength: (t<'a>, t<'a>) => int
 ```
 
-```res sig
+```res example
 cmpByLength(firstList, secondList)
 ```
 
 Compare two lists solely by length. Returns `-1` if `length(firstList)` is less than `length(secondList)`, `0` if `length(firstList)` equals `length(secondList)`, and `1` if `length(firstList)` is greater than `length(secondList)`.
 
 ```res example
-Belt.List.cmpByLength(list{1, 2}, list{3, 4, 5, 6}) /* (-1) */
+Belt.List.cmpByLength(list{1, 2}, list{3, 4, 5, 6}) /* -1 */
 
 Belt.List.cmpByLength(list{1, 2, 3}, list{4, 5, 6}) /* = 0 */
 
@@ -782,7 +775,7 @@ For lists, we just compare elements one by one.
 ## cmpU
 
 ```res sig
-let cmpU: (t<'a>, t<'a>, (. ('a, 'a) => int)) => int
+let cmpU: (t<'a>, t<'a>, (. 'a, 'a) => int) => int
 ```
 
 Uncurried version of [cmp](#cmp).
@@ -806,7 +799,7 @@ Belt.List.eq(list{1, 2, 3}, list{(-1), (-2), (-3)}, (a, b) => abs(a) == abs(b)) 
 ## eqU
 
 ```res sig
-let eqU: (t<'a>, t<'a>, (. ('a, 'a) => bool)) => bool
+let eqU: (t<'a>, t<'a>, (. 'a, 'a) => bool) => bool
 ```
 
 Uncurried version of [eqU](#eqU).
@@ -830,7 +823,7 @@ list{(-1), (-2), (-3)}->Belt.List.has(2, (a, b) => abs(a) == abs(b)) /* true */
 ## hasU
 
 ```res sig
-let hasU: (t<'a>, 'b, (. ('a, 'b) => bool)) => bool
+let hasU: (t<'a>, 'b, (. 'a, 'b) => bool) => bool
 ```
 
 Uncurried version of [has](#has).
@@ -852,7 +845,7 @@ Belt.List.getBy(list{1, 4, 3, 2}, x => x > 4) /* None */
 ## getByU
 
 ```res sig
-let getByU: (t<'a>, (. 'a => bool)) => option<'a>
+let getByU: (t<'a>, (. 'a) => bool) => option<'a>
 ```
 
 Uncurried version of [getBy](#getBy).
@@ -876,7 +869,7 @@ Belt.List.keep(list{None, Some(2), Some(3), None}, Belt.Option.isSome) /* list{S
 ## keepU
 
 ```res sig
-let keepU: (t<'a>, (. 'a => bool)) => t<'a>
+let keepU: (t<'a>, (. 'a) => bool) => t<'a>
 ```
 
 Uncurried version of [keep](#keep).
@@ -914,7 +907,7 @@ Belt.List.keepWithIndex(list{1, 2, 3, 4}, (_x, index) => isEven(index)) /* list{
 ## keepWithIndexU
 
 ```res sig
-let keepWithIndexU: (t<'a>, (. ('a, int) => bool)) => t<'a>
+let keepWithIndexU: (t<'a>, (. 'a, int) => bool) => t<'a>
 ```
 
 Uncurried version of [keepWithIndex](#keepWithIndex).
@@ -960,7 +953,7 @@ list{Some(1), Some(2), None}->Belt.List.keepMap(x => x) /* list{1, 2} */
 ## keepMapU
 
 ```res sig
-let keepMapU: (t<'a>, (. 'a => option<'b>)) => t<'b>
+let keepMapU: (t<'a>, (. 'a) => option<'b>) => t<'b>
 ```
 
 Uncurried version of [keepMap](#keepMap).
@@ -986,7 +979,7 @@ Belt.List.partition(list{1, 2, 3, 4}, x => x > 2) /* (list{3, 4}, list{1, 2}) */
 ## partitionU
 
 ```res sig
-let partitionU: (t<'a>, (. 'a => bool)) => (t<'a>, t<'a>)
+let partitionU: (t<'a>, (. 'a) => bool) => (t<'a>, t<'a>)
 ```
 
 Uncurried version of [partition](#partition).
@@ -994,7 +987,7 @@ Uncurried version of [partition](#partition).
 ## unzip
 
 ```res sig
-let unzip: t<('a, 'b>) => (t<'a>, t<'b>)
+let unzip: t<('a, 'b)> => (t<'a>, t<'b>)
 ```
 
 Takes a list of pairs and creates a pair of lists. The first list contains all the first items of the pairs; the second list contains all the second items.
@@ -1009,7 +1002,7 @@ Belt.List.unzip(list{("H", "W"), ("e", "o"), ("l", "r"), ("l", "l"), ("o", "d"),
 ## getAssoc
 
 ```res sig
-let getAssoc: (t<('a, 'c>), 'b, ('a, 'b) => bool) => option<'c>
+let getAssoc: (t<('a, 'c)>, 'b, ('a, 'b) => bool) => option<'c>
 ```
 
 Return the second element of a pair in `someList` where the first element equals `k` as per the predicate function `eqFunction`, or `None` if not found.
@@ -1025,7 +1018,7 @@ list{(9, "morning"), (15, "afternoon"), (22, "night")}
 ## getAssocU
 
 ```res sig
-let getAssocU: (t<('a, 'c>), 'b, (. ('a, 'b) => bool)) => option<'c>
+let getAssocU: (t<('a, 'c)>, 'b, (. 'a, 'b) => bool) => option<'c>
 ```
 
 Uncurried version of [getAssoc](#getAssoc).
@@ -1033,7 +1026,7 @@ Uncurried version of [getAssoc](#getAssoc).
 ## hasAssoc
 
 ```res sig
-let hasAssoc: (t<('a, 'c>), 'b, ('a, 'b) => bool) => bool
+let hasAssoc: (t<('a, 'c)>, 'b, ('a, 'b) => bool) => bool
 ```
 
 Returns `true` if there is a pair in `someList` where the first element equals `k` as per the predicate function `eqFunction`.
@@ -1048,7 +1041,7 @@ list{(9, "morning"), (15, "afternoon"), (22, "night")}
 ## hasAssocU
 
 ```res sig
-let hasAssocU: (t<('a, 'c>), 'b, (. ('a, 'b) => bool)) => bool
+let hasAssocU: (t<('a, 'c)>, 'b, (. 'a, 'b) => bool) => bool
 ```
 
 Uncurried version of [hasAssoc](#hasAssoc).
@@ -1056,7 +1049,7 @@ Uncurried version of [hasAssoc](#hasAssoc).
 ## removeAssoc
 
 ```res sig
-let removeAssoc: (t<('a, 'c>), 'b, ('a, 'b) => bool) => t<('a, 'c>)
+let removeAssoc: (t<('a, 'c)>, 'b, ('a, 'b) => bool) => t<('a, 'c)>
 ```
 
 Return a list after removing the first pair whose first value is `k` per the equality predicate `eqFunction`; if not found, return a new list identical to `someList`.
@@ -1072,7 +1065,7 @@ list{(9, "morning"), (15, "afternoon"), (22, "night")}
 ## removeAssocU
 
 ```res sig
-let removeAssocU: (t<('a, 'c>), 'b, (. ('a, 'b) => bool)) => t<('a, 'c>)
+let removeAssocU: (t<('a, 'c)>, 'b, (. 'a, 'b) => bool) => t<('a, 'c)>
 ```
 
 Uncurried version of [removeAssoc](#removeAssoc).
@@ -1080,7 +1073,7 @@ Uncurried version of [removeAssoc](#removeAssoc).
 ## setAssoc
 
 ```res sig
-let setAssoc: (t<('a, 'c>), 'a, 'c, ('a, 'a) => bool) => t<('a, 'c>)
+let setAssoc: (t<('a, 'c)>, 'a, 'c, ('a, 'a) => bool) => t<('a, 'c)>
 ```
 
 If `k` exists in `someList` by satisfying the `eqFunction` predicate, return a new list with the key and value replaced by the new `k` and `v`; otherwise, return a new list with the pair `k`, `v` added to the head of `someList`.
@@ -1104,7 +1097,7 @@ Both the key _and_ the value are replaced in the list.
 ## setAssocU
 
 ```res sig
-let setAssocU: (t<('a, 'c>), 'a, 'c, (. ('a, 'a) => bool)) => t<('a, 'c>)
+let setAssocU: (t<('a, 'c)>, 'a, 'c, (. 'a, 'a) => bool) => t<('a, 'c)>
 ```
 
 Uncurried version of [setAssoc](#setAssoc).
@@ -1124,7 +1117,7 @@ Belt.List.sort(list{5, 4, 9, 3, 7}, (a, b) => a - b) // list{3, 4, 5, 7, 9}
 ## sortU
 
 ```res sig
-let sortU: (t<'a>, (. ('a, 'a) => int)) => t<'a>
+let sortU: (t<'a>, (. 'a, 'a) => int) => t<'a>
 ```
 
 Uncurried version of [sort](#sort).
