@@ -219,7 +219,15 @@ module Docs = {
         toplevelNav
       />;
 
+    let pageTitle =
+      switch (breadcrumbs) {
+      | Some([_, {name}]) => name
+      | Some([_, _, {name}]) => "Js." ++ name
+      | _ => "Js"
+      };
+
     <SidebarLayout
+      metaTitle={pageTitle ++ " | ReScript API"}
       theme=`Reason
       components
       sidebarState=(isSidebarOpen, setSidebarOpen)

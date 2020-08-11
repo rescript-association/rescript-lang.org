@@ -68,7 +68,7 @@ let default = (props: props): React.element => {
   // apis routes
   | {base: [|"apis"|], version: Latest, pagepath} =>
     switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 0)) {
-    | (0, _) => <JavaScriptApiLayout.Docs> content </JavaScriptApiLayout.Docs>
+    | (0, _) => <ApiOverviewLayout.Docs> content </ApiOverviewLayout.Docs>
     | (1, Some("js")) => <JsDocsLayout.Prose> content </JsDocsLayout.Prose>
     | (1, Some("belt")) =>
       <BeltDocsLayout.Prose> content </BeltDocsLayout.Prose>

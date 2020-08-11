@@ -32,10 +32,7 @@ let overviewNavs = [|
 let setNavs = [|
   NavItem.{name: "HashSet", href: "/apis/latest/belt/hash-set"},
   {name: "HashSetInt", href: "/apis/latest/belt/hash-set-int"},
-  {
-    name: "HashSetString",
-    href: "/apis/latest/belt/hash-set-string",
-  },
+  {name: "HashSetString", href: "/apis/latest/belt/hash-set-string"},
   {name: "Set", href: "/apis/latest/belt/set"},
   {name: "SetDict", href: "/apis/latest/belt/set-dict"},
   {name: "SetInt", href: "/apis/latest/belt/set-int"},
@@ -45,10 +42,7 @@ let setNavs = [|
 let mapNavs = [|
   NavItem.{name: "HashMap", href: "/apis/latest/belt/hash-map"},
   {name: "HashMapInt", href: "/apis/latest/belt/hash-map-int"},
-  {
-    name: "HashMapString",
-    href: "/apis/latest/belt/hash-map-string",
-  },
+  {name: "HashMapString", href: "/apis/latest/belt/hash-map-string"},
   {name: "Map", href: "/apis/latest/belt/map"},
   {name: "MapDict", href: "/apis/latest/belt/map-dict"},
   {name: "MapInt", href: "/apis/latest/belt/map-int"},
@@ -56,28 +50,13 @@ let mapNavs = [|
 |];
 
 let mutableCollectionsNavs = [|
-  NavItem.{
-    name: "MutableMap",
-    href: "/apis/latest/belt/mutable-map",
-  },
-  {
-    name: "MutableMapInt",
-    href: "/apis/latest/belt/mutable-map-int",
-  },
-  {
-    name: "MutableMapString",
-    href: "/apis/latest/belt/mutable-map-string",
-  },
+  NavItem.{name: "MutableMap", href: "/apis/latest/belt/mutable-map"},
+  {name: "MutableMapInt", href: "/apis/latest/belt/mutable-map-int"},
+  {name: "MutableMapString", href: "/apis/latest/belt/mutable-map-string"},
   {name: "MutableQueue", href: "/apis/latest/belt/mutable-queue"},
   {name: "MutableSet", href: "/apis/latest/belt/mutable-set"},
-  {
-    name: "MutableSetInt",
-    href: "/apis/latest/belt/mutable-set-int",
-  },
-  {
-    name: "MutableSetString",
-    href: "/apis/latest/belt/mutable-set-string",
-  },
+  {name: "MutableSetInt", href: "/apis/latest/belt/mutable-set-int"},
+  {name: "MutableSetString", href: "/apis/latest/belt/mutable-set-string"},
   {name: "MutableStack", href: "/apis/latest/belt/mutable-stack"},
 |];
 
@@ -93,15 +72,9 @@ let basicNavs = [|
 |];
 
 let sortNavs = [|
-  NavItem.{
-    name: "SortArray",
-    href: "/apis/latest/belt/sort-array",
-  },
+  NavItem.{name: "SortArray", href: "/apis/latest/belt/sort-array"},
   {name: "SortArrayInt", href: "/apis/latest/belt/sort-array-int"},
-  {
-    name: "SortArrayString",
-    href: "/apis/latest/belt/sort-array-string",
-  },
+  {name: "SortArrayString", href: "/apis/latest/belt/sort-array-string"},
 |];
 
 let utilityNavs = [|
@@ -152,10 +125,7 @@ module Docs = {
         urlPath,
         v => {
           let {UrlPath.version} = v;
-          let prefix =
-            UrlPath.[
-              {name: "API", href: "/apis/" ++ version},
-            ];
+          let prefix = UrlPath.[{name: "API", href: "/apis/" ++ version}];
           UrlPath.toBreadCrumbs(~prefix, v);
         },
       );
@@ -185,7 +155,15 @@ module Docs = {
         preludeSection
       />;
 
+    let pageTitle =
+      switch (breadcrumbs) {
+      | Some([_, {name}]) => name
+      | Some([_, _, {name}]) => "Belt." ++ name
+      | _ => "Belt"
+      };
+
     <SidebarLayout
+      metaTitle={pageTitle ++ " | ReScript API"}
       theme=`Reason
       components
       sidebarState=(isSidebarOpen, setSidebarOpen)

@@ -35,6 +35,7 @@ module Docs = {
       />;
 
     <SidebarLayout
+      metaTitle="ReScript API"
       theme=`Reason
       components
       sidebarState=(isSidebarOpen, setSidebarOpen)
