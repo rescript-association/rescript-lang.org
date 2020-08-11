@@ -398,7 +398,7 @@ let mapReverse: (t<'a>, 'a => 'b) => t<'b>
 Equivalent to:
 
 ```res
-map(someList, f)->reverse;
+map(someList, f)->reverse
 ```
 
 ```res example
@@ -416,7 +416,7 @@ Uncurried version of [mapReverse](#mapReverse).
 ## forEach
 
 ```res sig
-let forEach: (t<'a>, 'a => 'b) => unit;
+let forEach: (t<'a>, 'a => 'b) => unit
 ```
 
 Call `f` on each element of `someList` from the beginning to end.
@@ -435,7 +435,7 @@ Belt.List.forEach(list{"a", "b", "c"}, x => Js.log("Item: " ++ x))
 ## forEachU
 
 ```res sig
-let forEachU: (t<'a>, (. 'a) => 'b) => unit;
+let forEachU: (t<'a>, (. 'a) => 'b) => unit
 ```
 
 Uncurried version of [forEach](#forEach).
@@ -443,7 +443,7 @@ Uncurried version of [forEach](#forEach).
 ## forEachWithIndex
 
 ```res sig
-let forEachWithIndex: (t<'a>, (int, 'a) => 'b) => unit;
+let forEachWithIndex: (t<'a>, (int, 'a) => 'b) => unit
 ```
 
 Call `f` on each element of `someList` from beginning to end.
@@ -464,7 +464,7 @@ Belt.List.forEachWithIndex(list{"a", "b", "c"}, (index, x) => {
 ## forEachWithIndexU
 
 ```res sig
-let forEachWithIndexU: (t<'a>, (. int, 'a) => 'b) => unit;
+let forEachWithIndexU: (t<'a>, (. int, 'a) => 'b) => unit
 ```
 
 Uncurried version of [forEachWithIndex](#forEachWithIndex).
@@ -472,7 +472,7 @@ Uncurried version of [forEachWithIndex](#forEachWithIndex).
 ## reduce
 
 ```res sig
-let reduce: (t<'a>, 'b, ('b, 'a) => 'b) => 'b;
+let reduce: (t<'a>, 'b, ('b, 'a) => 'b) => 'b
 ```
 
 Applies `f` to each element of `someList` from beginning to end. Function `f` has two parameters: the item from the list and an “accumulator”, which starts with a value of `initialValue`. reduce returns the final value of the accumulator.
@@ -488,7 +488,7 @@ list{1, 2, 3, 4}->Belt.List.reduce(0, (acc, item) => acc + item) /* 10 */
 ## reduceU
 
 ```res sig
-let reduceU: (t<'a>, 'b, (. 'b, 'a) => 'b) => 'b;
+let reduceU: (t<'a>, 'b, (. 'b, 'a) => 'b) => 'b
 ```
 
 Uncurried version of [reduce](#reduce).
@@ -496,7 +496,7 @@ Uncurried version of [reduce](#reduce).
 ## reduceWithIndex
 
 ```res sig
-let reduceWithIndex: (t<'a>, 'b, ('b, 'a, int) => 'b) => 'b;
+let reduceWithIndex: (t<'a>, 'b, ('b, 'a, int) => 'b) => 'b
 ```
 
 Applies `f` to each element of `someList` from beginning to end. Function `f` has three parameters: the item from the list and an “accumulator”, which starts with a value of `initialValue` and the index of each element. `reduceWithIndex` returns the final value of the accumulator.
@@ -508,7 +508,7 @@ list{1, 2, 3, 4}->Belt.List.reduceWithIndex(0, (acc, item, index) => acc + item 
 ## reduceWithIndexU
 
 ```res sig
-let reduceWithIndexU: (t<'a>, 'b, (. 'b, 'a, int) => 'b) => 'b;
+let reduceWithIndexU: (t<'a>, 'b, (. 'b, 'a, int) => 'b) => 'b
 ```
 
 Uncurried version of [reduceWithIndex](#reduceWithIndex).
@@ -516,7 +516,7 @@ Uncurried version of [reduceWithIndex](#reduceWithIndex).
 ## reduceReverse
 
 ```res sig
-let reduceReverse: (t<'a>, 'b, ('b, 'a) => 'b) => 'b;
+let reduceReverse: (t<'a>, 'b, ('b, 'a) => 'b) => 'b
 ```
 
 Works like [reduce](#reduce), except that function `f` is applied to each item of `someList` from the last back to the first.
@@ -532,7 +532,7 @@ list{1, 2, 3, 4}->Belt.List.reduceReverse(list{}, Belt.List.add) // list{1, 2, 3
 ## reduceReverseU
 
 ```res sig
-let reduceReverseU: (t<'a>, 'b, ('b, 'a) => 'b) => 'b;
+let reduceReverseU: (t<'a>, 'b, ('b, 'a) => 'b) => 'b
 ```
 
 Uncurried version of [reduceReverse](#reduceReverse).
@@ -560,7 +560,7 @@ Uncurried version of [mapReverse2](#mapReverse2).
 ## forEach2
 
 ```res sig
-let forEach2: (t<'a>, t<'b>, ('a, 'b) => 'c) => unit;
+let forEach2: (t<'a>, t<'b>, ('a, 'b) => 'c) => unit
 ```
 
 Stops at the length of the shorter list.
@@ -578,7 +578,7 @@ Belt.List.forEach2(list{"Z", "Y"}, list{"A", "B", "C"}, (x, y) => Js.log2(x, y))
 ## forEach2U
 
 ```res sig
-let forEach2U: (t<'a>, t<'b>, (.'a, 'b) => 'c) => unit;
+let forEach2U: (t<'a>, t<'b>, (.'a, 'b) => 'c) => unit
 ```
 
 Uncurried version of [forEach2](#forEach2).
@@ -606,7 +606,7 @@ Uncurried version of [reduce2](#reduce2).
 ## reduceReverse2
 
 ```res sig
-let reduceReverse2: (t<'a>, t<'b>, 'c, ('c, 'a, 'b) => 'c) => 'c;
+let reduceReverse2: (t<'a>, t<'b>, 'c, ('c, 'a, 'b) => 'c) => 'c
 ```
 
 Applies `f` to each element of `firstList` and `secondList` from end to beginning. Stops with the shorter list. Function `f` has three parameters: an “accumulator” which starts with a value of init, an item from `firstList`, and an item from `secondList`. `reduce2` returns the final value of the accumulator.
@@ -618,7 +618,7 @@ Belt.List.reduceReverse2(list{1, 2, 3}, list{4, 5}, 0, (acc, x, y) => acc + x * 
 ## reduceReverse2U
 
 ```res sig
-let reduceReverse2U: (t<'a>, t<'b>, 'c, (.'c, 'a, 'b) => 'c) => 'c;
+let reduceReverse2U: (t<'a>, t<'b>, 'c, (.'c, 'a, 'b) => 'c) => 'c
 ```
 
 Uncurried version of [reduceReverse2](#reduceReverse2).
@@ -632,7 +632,7 @@ let every: (t<'a>, 'a => bool) => bool
 Returns `true` if all elements satisfy `pred`, where `pred` is a predicate: a function taking an element and returning a bool.
 
 ```res example
-let isBelow10 = value => value < 10;
+let isBelow10 = value => value < 10
 
 list{1, 9, 8, 2}->Belt.List.every(isBelow10) /* true */
 
@@ -656,7 +656,7 @@ let some: (t<'a>, 'a => bool) => bool
 Returns `true` if at least _one_ of the elements in `someList` satisfies `pred`, where `pred` is a predicate: a function taking an element and returning a bool.
 
 ```res example
-let isAbove100 = value => value > 100;
+let isAbove100 = value => value > 100
 
 list{101, 1, 2, 3}->Belt.List.some(isAbove100) /* true */
 
@@ -859,7 +859,7 @@ let keep: (t<'a>, 'a => bool) => t<'a>
 Returns a list of all elements in `someList` which satisfy the predicate function `pred`.
 
 ```res example
-let isEven = x => mod(x, 2) == 0;
+let isEven = x => mod(x, 2) == 0
 
 Belt.List.keep(list{1, 2, 3, 4}, isEven) /* list{2, 4} */
 
@@ -883,7 +883,7 @@ let filter: (t<'a>, 'a => bool) => t<'a>
 Returns a list of all elements in `someList` which satisfy the predicate function `pred`.
 
 ```res example
-let isEven = x => mod(x, 2) == 0;
+let isEven = x => mod(x, 2) == 0
 
 Belt.List.filter(list{1, 2, 3, 4}, isEven) /* list{2, 4} */
 
@@ -899,7 +899,7 @@ let keepWithIndex: (t<'a>, ('a, int) => bool) => t<'a>
 Returns a list of all elements in `someList` which satisfy the predicate function `pred`.
 
 ```res example
-let isEven = x => mod(x, 2) == 0;
+let isEven = x => mod(x, 2) == 0
 
 Belt.List.keepWithIndex(list{1, 2, 3, 4}, (_x, index) => isEven(index)) /* list{1, 3} */
 ```
@@ -921,7 +921,7 @@ let filterWithIndex: (t<'a>, ('a, int) => bool) => t<'a>
 Returns a list of all elements in `someList` which satisfy the predicate function `pred`.
 
 ```res example
-let isEven = x => mod(x, 2) == 0;
+let isEven = x => mod(x, 2) == 0
 
 Belt.List.filterWithIndex(list{1, 2, 3, 4}, (_x, index) => isEven(index)) /* list{1, 3} */
 ```
@@ -936,14 +936,14 @@ Applies `f` to each element of `someList`. If `f(x)` returns `Some(value)`, then
 If `f(x)` returns `None`, the element is _not_ retained in the result.
 
 ```res example
-let isEven = x => mod(x, 2) == 0;
+let isEven = x => mod(x, 2) == 0
 
 list{1, 2, 3, 4}
 ->Belt.List.keepMap(x =>
     if (isEven(x)) {
       Some(x)
     } else {
-      None;
+      None
     }
   ) /* list{2, 4} */
 
@@ -1079,7 +1079,7 @@ let setAssoc: (t<('a, 'c)>, 'a, 'c, ('a, 'a) => bool) => t<('a, 'c)>
 If `k` exists in `someList` by satisfying the `eqFunction` predicate, return a new list with the key and value replaced by the new `k` and `v`; otherwise, return a new list with the pair `k`, `v` added to the head of `someList`.
 
 ```res example
-list{(1, "a"), (2, "b"), (3, "c")}->Belt.List.setAssoc(2, "x", (a, b) => a == b) /* list{(1, "a"), (2, "x"), (3, "c")}; */
+list{(1, "a"), (2, "b"), (3, "c")}->Belt.List.setAssoc(2, "x", (a, b) => a == b) /* list{(1, "a"), (2, "x"), (3, "c")} */
 
 list{(1, "a"), (3, "c")}->Belt.List.setAssoc(2, "b", (a, b) => a == b) /* list{(2, "b"), (1, "a"), (3, "c")} */
 
