@@ -19,7 +19,7 @@ let length: array<'a> => int
 return the size of the array
 
 ```res example
-/* Returns 1 */
+// Returns 1
 Belt.Array.length(["test"])
 ```
 
@@ -160,11 +160,11 @@ Unsafe
 ```res example
 let arr = Belt.Array.makeUninitializedUnsafe(5)
 
-let () = Js.log(Belt.Array.getExn(arr, 0)) /* undefined */
+Js.log(Belt.Array.getExn(arr, 0)) // undefined
 
 Belt.Array.setExn(arr, 0, "example")
 
-let () = Js.log(Belt.Array.getExn(arr, 0) == "example")
+Js.log(Belt.Array.getExn(arr, 0) == "example")
 ```
 
 ## make
@@ -243,7 +243,7 @@ Belt.Array.makeBy(5, (i) => i * i) == [0, 1, 4, 9, 16]
 ## makeByAndShuffleU
 
 ```res sig
-let makeByAndShuffleU: (int, (. int => 'a)) => array<'a>
+let makeByAndShuffleU: (int, (. int) => 'a) => array<'a>
 ```
 
 ## makeByAndShuffle
@@ -259,7 +259,7 @@ Equivalent to `shuffle(makeBy(n, f))`
 ## zip
 
 ```res sig
-let zip: (array<'a>, array<'b>) => array<('a, 'b>)
+let zip: (array<'a>, array<'b>) => array<('a, 'b)>
 ```
 
 `zip(a, b)`
@@ -273,7 +273,7 @@ Belt.Array.zip([1, 2], [3, 4, 5]) == [(1, 3), (2, 4)]
 ## zipByU
 
 ```res sig
-let zipByU: (array<'a>, array<'b>, (. ('a, 'b) => 'c)) => array<'c>
+let zipByU: (array<'a>, array<'b>, (. 'a, 'b) => 'c) => array<'c>
 ```
 
 ## zipBy
@@ -295,7 +295,7 @@ Belt.Array.zipBy([1, 2, 3], [4, 5], (a, b) => 2 * a + b) == [6, 9]
 ## unzip
 
 ```res sig
-let unzip: array<('a, 'b>) => (array<'a>, array<'b>)
+let unzip: array<('a, 'b)> => (array<'a>, array<'b>)
 ```
 
 `unzip(a)` takes an array of pairs and creates a pair of arrays. The first array contains all the first items of the pairs; the second array contains all the second items.
@@ -325,7 +325,7 @@ Belt.Array.concat([], ["a", "b", "c"]) == ["a", "b", "c"]
 ## concatMany
 
 ```res sig
-let concatMany: array<array<'a>) => array<'a>
+let concatMany: array<array<'a>> => array<'a>
 ```
 
 `concatMany(xss)`
@@ -457,7 +457,7 @@ Unsafe blit without bounds checking.
 ## forEachU
 
 ```res sig
-let forEachU: (array<'a>, (. 'a => unit)) => unit
+let forEachU: (array<'a>, (. 'a) => unit) => unit
 ```
 
 ## forEach
@@ -473,22 +473,23 @@ Call `f` on each element of `xs` from the beginning to end. `f` returns `unit`;s
 ```res example
 Belt.Array.forEach(["a", "b", "c"], x => Js.log("Item: " ++ x))
 
-/*  prints:
-      Item: a
-      Item: b
-      Item: c
-    */
+/*
+  prints:
+  Item: a
+  Item: b
+  Item: c
+*/
 let total = ref(0)
 
-Belt.Array.forEach([1, 2, 3, 4], x => total := total^ + x)
+Belt.Array.forEach([1, 2, 3, 4], x => total := total.contents + x)
 
-total^ == 1 + 2 + 3 + 4
+total.contents == 1 + 2 + 3 + 4
 ```
 
 ## mapU
 
 ```res sig
-let mapU: (array<'a>, (. 'a => 'b)) => array<'b>
+let mapU: (array<'a>, (. 'a) => 'b) => array<'b>
 ```
 
 ## map
@@ -508,7 +509,7 @@ Belt.Array.map([1, 2], (x) => x + 1) == [3, 4]
 ## getByU
 
 ```res sig
-let getByU: (array<'a>, (. 'a => bool)) => option<'a>
+let getByU: (array<'a>, (. 'a) => bool) => option<'a>
 ```
 
 ## getBy
@@ -522,14 +523,14 @@ let getBy: (array<'a>, 'a => bool) => option<'a>
 Returns `Some(value)` for the first value in `xs` that satisifies the predicate function `p`; returns `None` if no element satisifies the function.
 
 ```res example
-Belt.Array.getBy([1, 4, 3, 2], (x) => x mod 2 == 0) == Some(4)
-Belt.Array.getBy([15, 13, 11], (x) => x mod 2 == 0) == None
+Belt.Array.getBy([1, 4, 3, 2], (x) => mod(x, 2) == 0) == Some(4)
+Belt.Array.getBy([15, 13, 11], (x) => mod(x, 2) == 0) == None
 ```
 
 ## getIndexByU
 
 ```res sig
-let getIndexByU: (array<'a>, (. 'a => bool)) => option<int>
+let getIndexByU: (array<'a>, (. 'a) => bool) => option<int>
 ```
 
 ## getIndexBy
@@ -544,14 +545,14 @@ returns `Some(index)` for the first value in `xs` that satisifies the predicate 
 returns `None` if no element satisifies the function.
 
 ```res example
-Belt.Array.getIndexBy([1, 4, 3, 2], (x) => x mod 2 == 0) == Some(1)
-Belt.Array.getIndexBy([15, 13, 11], (x) => x mod 2 == 0) == None
+Belt.Array.getIndexBy([1, 4, 3, 2], (x) => mod(x, 2) == 0) == Some(1)
+Belt.Array.getIndexBy([15, 13, 11], (x) => mod(x, 2) == 0) == None
 ```
 
 ## keepU
 
 ```res sig
-let keepU: (array<'a>, (. 'a => bool)) => array<'a>
+let keepU: (array<'a>, (. 'a) => bool) => array<'a>
 ```
 
 ## keep
@@ -565,13 +566,13 @@ let keep: (array<'a>, 'a => bool) => array<'a>
 Returns a new array that keep all elements satisfy `p`.
 
 ```res example
-Belt.Array.keep([1, 2, 3], (x) => x mod 2 == 0) == [2]
+Belt.Array.keep([1, 2, 3], (x) => mod(x, 2) == 0) == [2]
 ```
 
 ## keepWithIndexU
 
 ```res sig
-let keepWithIndexU: (array<'a>, (. ('a, int) => bool)) => array<'a>
+let keepWithIndexU: (array<'a>, (. 'a, int) => bool) => array<'a>
 ```
 
 ## keepWithIndex
@@ -591,7 +592,7 @@ Belt.Array.keepWithIndex([1, 2, 3], (_x, i) => i == 1) == [2]
 ## keepMapU
 
 ```res sig
-let keepMapU: (array<'a>, (. 'a => option<'b>)) => array<'b>
+let keepMapU: (array<'a>, (. 'a) => option<'b>) => array<'b>
 ```
 
 ## keepMap
@@ -606,7 +607,7 @@ Returns a new array that keep all elements that return a non-None applied `p`.
 
 ```res example
 Belt.Array.keepMap([1, 2, 3], x =>
-  if (x mod 2 == 0) {
+  if mod(x, 2) == 0 {
     Some(x)
   } else {
     None
@@ -618,7 +619,7 @@ Belt.Array.keepMap([1, 2, 3], x =>
 ## forEachWithIndexU
 
 ```res sig
-let forEachWithIndexU: (array<'a>, (. (int, 'a) => unit)) => unit
+let forEachWithIndexU: (array<'a>, (. int, 'a) => unit) => unit
 ```
 
 ## forEachWithIndex
@@ -642,15 +643,15 @@ Belt.Array.forEachWithIndex(["a", "b", "c"], (i, x) => Js.log("Item " ++ string_
     */
 let total = ref(0)
 
-Belt.Array.forEachWithIndex([10, 11, 12, 13], (i, x) => total := total^ + x + i)
+Belt.Array.forEachWithIndex([10, 11, 12, 13], (i, x) => total := total.contents + x + i)
 
-total^ == 0 + 10 + 1 + 11 + 2 + 12 + 3 + 13
+total.contents == 0 + 10 + 1 + 11 + 2 + 12 + 3 + 13
 ```
 
 ## mapWithIndexU
 
 ```res sig
-let mapWithIndexU: (array<'a>, (. (int, 'a) => 'b)) => array<'b>
+let mapWithIndexU: (array<'a>, (. int, 'a) => 'b) => array<'b>
 ```
 
 ## mapWithIndex
@@ -670,7 +671,7 @@ Belt.Array.mapWithIndex([1, 2, 3], (i, x) => i + x) == [0 + 1, 1 + 2, 2 + 3]
 ## partitionU
 
 ```res sig
-let partitionU: (array<'a>, (. 'a => bool)) => (array<'a>, array<'a>)
+let partitionU: (array<'a>, (. 'a) => bool) => (array<'a>, array<'a>)
 ```
 
 ## partition
@@ -682,15 +683,15 @@ let partition: (array<'a>, 'a => bool) => (array<'a>, array<'a>)
 `partition(f, a)` split array into tuple of two arrays based on predicate `f`; first of tuple where predicate cause true, second where predicate cause false
 
 ```res example
-Belt.Array.partition([1, 2, 3, 4, 5], (x) => x mod 2 == 0) == ([2, 4], [1, 2, 3])
+Belt.Array.partition([1, 2, 3, 4, 5], (x) => mod(x, 2) == 0) == ([2, 4], [1, 2, 3])
 
-Belt.Array.partition([1, 2, 3, 4, 5], (x) => x mod 2 != 0) == ([1, 2, 3], [2, 4])
+Belt.Array.partition([1, 2, 3, 4, 5], (x) => mod(x, 2) != 0) == ([1, 2, 3], [2, 4])
 ```
 
 ## reduceU
 
 ```res sig
-let reduceU: (array<'b>, 'a, (. ('a, 'b) => 'a)) => 'a
+let reduceU: (array<'b>, 'a, (. 'a, 'b) => 'a) => 'a
 ```
 
 ## reduce
@@ -704,15 +705,15 @@ let reduce: (array<'b>, 'a, ('a, 'b) => 'a) => 'a
 Applies `f` to each element of `xs` from beginning to end. Function `f` has two parameters: the item from the list and an “accumulator”; which starts with a value of `init`. `reduce` returns the final value of the accumulator.
 
 ```res example
-Belt.Array.reduce([2, 3, 4], 1, (+)) == 10
+Belt.Array.reduce([2, 3, 4], 1, (a, b) => a + b) == 10
 
-Belt.Array.reduce(["a", "b", "c", "d"], "", (++)) == "abcd"
+Belt.Array.reduce(["a", "b", "c", "d"], "", (a, b) => a ++ b) == "abcd"
 ```
 
 ## reduceReverseU
 
 ```res sig
-let reduceReverseU: (array<'b>, 'a, (. ('a, 'b) => 'a)) => 'a
+let reduceReverseU: (array<'b>, 'a, (. 'a, 'b) => 'a) => 'a
 ```
 
 ## reduceReverse
@@ -726,13 +727,13 @@ let reduceReverse: (array<'b>, 'a, ('a, 'b) => 'a) => 'a
 Works like `Belt_Array.reduce`; except that function `f` is applied to each item of `xs` from the last back to the first.
 
 ```res example
-Belt.Array.reduceReverse(["a", "b", "c", "d"], "", (++)) == "dcba"
+Belt.Array.reduceReverse(["a", "b", "c", "d"], "", (a, b) => a ++ b) == "dcba"
 ```
 
 ## reduceReverse2U
 
 ```res sig
-let reduceReverse2U: (array<'a>, array<'b>, 'c, (. ('c, 'a, 'b) => 'c)) => 'c
+let reduceReverse2U: (array<'a>, array<'b>, 'c, (. 'c, 'a, 'b) => 'c) => 'c
 ```
 
 ## reduceReverse2
@@ -752,7 +753,7 @@ Belt.Array.reduceReverse2([1, 2, 3], [1, 2], 0, (acc, x, y) => acc + x + y) == 6
 ## reduceWithIndexU
 
 ```res sig
-let reduceWithIndexU: (array<'a>, 'b, (. ('b, 'a, int) => 'b)) => 'b
+let reduceWithIndexU: (array<'a>, 'b, (. 'b, 'a, int) => 'b) => 'b
 ```
 
 ## reduceWithIndex
@@ -772,7 +773,7 @@ Belt.Array.reduceWithIndex([1, 2, 3, 4], 0, (acc, x, i) => acc + x + i) == 16
 ## someU
 
 ```res sig
-let someU: (array<'a>, (. 'a => bool)) => bool
+let someU: (array<'a>, (. 'a) => bool) => bool
 ```
 
 ## some
@@ -786,7 +787,7 @@ let some: (array<'a>, 'a => bool) => bool
 Returns true if at least one of the elements in `xs` satifies `p`; where `p` is a predicate: a function taking an element and returning a `bool`.
 
 ```res example
-Belt.Array.some([2, 3, 4], (x) => x mod 2 == 1) == true
+Belt.Array.some([2, 3, 4], (x) => mod(x, 2) == 1) == true
 
 Belt.Array.some([(-1), (-3), (-5)], (x) => x > 0) == false
 ```
@@ -794,7 +795,7 @@ Belt.Array.some([(-1), (-3), (-5)], (x) => x > 0) == false
 ## everyU
 
 ```res sig
-let everyU: (array<'a>, (. 'a => bool)) => bool
+let everyU: (array<'a>, (. 'a) => bool) => bool
 ```
 
 ## every
@@ -808,7 +809,7 @@ let every: (array<'a>, 'a => bool) => bool
 Returns `true` if all elements satisfy `p`; where `p` is a predicate: a function taking an element and returning a `bool`.
 
 ```res example
-Belt.Array.every([1, 3, 5], (x) => x mod 2 == 1) == true
+Belt.Array.every([1, 3, 5], (x) => mod(x, 2) == 1) == true
 
 Belt.Array.every([1, (-3), 5], (x) => x > 0) == false
 ```
@@ -816,7 +817,7 @@ Belt.Array.every([1, (-3), 5], (x) => x > 0) == false
 ## every2U
 
 ```res sig
-let every2U: (array<'a>, array<'b>, (. ('a, 'b) => bool)) => bool
+let every2U: (array<'a>, array<'b>, (. 'a, 'b) => bool) => bool
 ```
 
 ## every2
@@ -830,7 +831,7 @@ let every2: (array<'a>, array<'b>, ('a, 'b) => bool) => bool
 returns true if `p(xi, yi)` is true for all pairs of elements up to the shorter length (i.e. `min(length(xs), length(ys))`)
 
 ```res example
-Belt.Array.every2([1, 2, 3], [0, 1], (>)) == true
+Belt.Array.every2([1, 2, 3], [0, 1], (a, b) => a > b) == true
 
 Belt.Array.every2([], [1], (x, y) => x > y) == true
 
@@ -842,7 +843,7 @@ Belt.Array.every2([0, 1], [5, 0], (x, y) => x > y) == false
 ## some2U
 
 ```res sig
-let some2U: (array<'a>, array<'b>, (. ('a, 'b) => bool)) => bool
+let some2U: (array<'a>, array<'b>, (. 'a, 'b) => bool) => bool
 ```
 
 ## some2
@@ -856,7 +857,7 @@ let some2: (array<'a>, array<'b>, ('a, 'b) => bool) => bool
 returns true if `p(xi, yi)` is true for any pair of elements up to the shorter length (i.e. `min(length(xs), length(ys))`)
 
 ```res example
-Belt.Array.some2([0, 2], [1, 0, 3], (>)) == true
+Belt.Array.some2([0, 2], [1, 0, 3], (a, b) => a > b) == true
 
 Belt.Array.some2([], [1], (x, y) => x > y) == false
 
@@ -866,7 +867,7 @@ Belt.Array.some2([2, 3], [1, 4], (x, y) => x > y) == true
 ## cmpU
 
 ```res sig
-let cmpU: (array<'a>, array<'a>, (. ('a, 'a) => int)) => int
+let cmpU: (array<'a>, array<'a>, (. 'a, 'a) => int) => int
 ```
 
 ## cmp
@@ -885,7 +886,7 @@ a positive number if `x` is “greater than” `y`
 The comparison returns the first non-zero result of `f`;or zero if `f` returns zero for all `x` and `y`.
 
 ```res example
-Belt.Array.cmp([1, 3, 5], [1, 4, 2], (a, b) => compare(a, b)) == (-1)
+Belt.Array.cmp([1, 3, 5], [1, 4, 2], (a, b) => compare(a, b)) == -1
 
 Belt.Array.cmp([1, 3, 5], [1, 2, 3], (a, b) => compare(a, b)) == 1
 
@@ -895,7 +896,7 @@ Belt.Array.cmp([1, 3, 5], [1, 3, 5], (a, b) => compare(a, b)) == 0
 ## eqU
 
 ```res sig
-let eqU: (array<'a>, array<'a>, (. ('a, 'a) => bool)) => bool
+let eqU: (array<'a>, array<'a>, (. 'a, 'a) => bool) => bool
 ```
 
 ## eq
