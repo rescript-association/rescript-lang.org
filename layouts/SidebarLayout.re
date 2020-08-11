@@ -384,6 +384,7 @@ module MobileDrawerButton = {
 [@react.component]
 let make =
     (
+      ~metaTitle: string,
       ~theme: ColorTheme.t,
       ~components: Mdx.Components.t,
       ~sidebarState: (bool, (bool => bool) => unit),
@@ -426,7 +427,7 @@ let make =
   );
 
   <>
-    <Meta />
+    <Meta title=metaTitle  />
     <div className={"mt-16 min-w-320 " ++ theme}>
       <div className="w-full text-night font-base">
         <Navigation overlayState=(isNavOpen, setNavOpen) />

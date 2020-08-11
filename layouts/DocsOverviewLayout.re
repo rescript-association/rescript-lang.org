@@ -17,6 +17,7 @@ let make = (~children, ~components=Markdown.default) => {
   <>
     <div className="mb-32 mt-4 xs:mt-16">
       <div className="text-night text-lg">
+      <Meta title="Overview | ReScript Documentation"/>
         <Navigation overlayState />
         <div className="flex justify-center overflow-hidden">
           <main

@@ -366,7 +366,10 @@ let make =
       route
     />;
 
+  let metaTitle = title ++ " | ReScript Documentation";
+
   <SidebarLayout
+    metaTitle
     theme
     components
     sidebarState=(isSidebarOpen, setSidebarOpen)
