@@ -8,14 +8,14 @@ This is a specialized module for `Belt.SortArray`, the docs in that module also 
 
 ## element
 
-```re sig
-type element = string;
+```res prelude
+type element = string
 ```
 
 ## strictlySortedLength
 
-```re sig
-let strictlySortedLength: array(element) => int;
+```res sig
+let strictlySortedLength: array<element> => int
 ```
 
 The same as `Belt.SortArray.strictlySortedLength` except the comparator is fixed.
@@ -24,32 +24,32 @@ Returns `+n` means increasing order `-n` means negative order.
 
 ## isSorted
 
-```re sig
-let isSorted: array(element) => bool;
+```res sig
+let isSorted: array<element> => bool
 ```
 
 `sorted(xs)` return true if `xs` is in non strict increasing order.
 
 ## stableSortInPlace
 
-```re sig
-let stableSortInPlace: array(element) => unit;
+```res sig
+let stableSortInPlace: array<element> => unit
 ```
 
 The same as `Belt.SortArray.stableSortInPlaceBy` except the comparator is fixed.
 
 ## stableSort
 
-```re sig
-let stableSort: array(element) => array(element);
+```res sig
+let stableSort: array<element> => array<element>
 ```
 
 The same as `Belt.SortArray.stableSortBy` except the comparator is fixed.
 
 ## binarySearch
 
-```re sig
-let binarySearch: (array(element), element) => int;
+```res sig
+let binarySearch: (array<element>, element) => int
 ```
 
 If value is not found and value is less than one or more elements in array, the negative number returned is the bitwise complement of the index of the first element that is larger than value.
