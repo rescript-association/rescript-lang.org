@@ -47,7 +47,7 @@ A type used to describe JavaScript objects that are like an array or are iterabl
 ## from
 
 ```res sig
-let from: array_like<'a> => array<'b>;
+let from: array_like<'a> => array<'b>
 ```
 
 Creates a shallow copy of an array from an array-like object. See [`Array.from`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from) on MDN.
@@ -60,7 +60,7 @@ Js.Array2.from(strArr) == ["a", "b", "c", "d"]
 ## fromMap
 
 ```res sig
-let fromMap: (array_like<'a>, 'a => 'b) => array<'b>;
+let fromMap: (array_like<'a>, 'a => 'b) => array<'b>
 ```
 
 Creates a new array by applying a function (the second argument) to each item in the `array_like` first argument.  See [`Array.from`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from) on MDN.
@@ -74,7 +74,7 @@ Js.Array2.fromMap(strArr, code) == [97.0, 98.0, 99.0, 100.0]
 ## isArray
 
 ```res sig
-let isArray: 'a => bool;
+let isArray: 'a => bool
 ```
 
 Returns `true` if its argument is an array; `false` otherwise. This is a runtime check, which is why the second example returns `true`---a list is internally represented as a nested JavaScript array.
@@ -88,7 +88,7 @@ Js.Array2.isArray("abcd") == false
 ## length
 
 ```res sig
-let length: array<'a> => int;
+let length: array<'a> => int
 ```
 
 Returns the number of elements in the array. See [`Array.length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/length) on MDN.
@@ -96,7 +96,7 @@ Returns the number of elements in the array. See [`Array.length`](https://develo
 ## copyWithin
 
 ```res sig
-let copyWithin: (t<'a>, ~to_: int) => t<'a>;
+let copyWithin: (t<'a>, ~to_: int) => t<'a>
 ```
 
 Copies from the first element in the given array to the designated `~to_` position, returning the resulting array. *This function modifies the original array.* See [`Array.copyWithin`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/copyWithin) on MDN.
@@ -110,7 +110,7 @@ arr == [100, 101, 100, 101, 102]
 ## copyWithinFrom
 
 ```res sig
-let copyWithinFrom: (t<'a>, ~to_: int, ~from: int) => t<'a>;
+let copyWithinFrom: (t<'a>, ~to_: int, ~from: int) => t<'a>
 ```
 
 Copies starting at element `~from` in the given array to the designated `~to_` position, returning the resulting array. *This function modifies the original array.* See [`Array.copyWithin`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/copyWithin) on MDN.
@@ -837,13 +837,13 @@ Sets the value at the given position in the array if the position is in bounds. 
 ```res example
 let arr = [100, 101, 102, 103]
 Js.Array2.unsafe_set(arr, 3, 99)
-// result is [|100, 101, 102, 99|];
+// result is [100, 101, 102, 99];
 
 Js.Array2.unsafe_set(arr, 4, 88)
-// result is [|100, 101, 102, 99, 88|]
+// result is [100, 101, 102, 99, 88]
 
 Js.Array2.unsafe_set(arr, 6, 77)
-// result is [|100, 101, 102, 99, 88, <1 empty item>, 77|]
+// result is [100, 101, 102, 99, 88, <1 empty item>, 77]
 
 Js.Array2.unsafe_set(arr, -1, 66)
 // you don't want to know.

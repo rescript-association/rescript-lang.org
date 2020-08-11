@@ -46,7 +46,7 @@ Creates new set from array of elements.
 ```res example
 let s0 = Belt.MutableSet.String.fromArray(["apple", "orange", "banana"])
 
-s0->Belt.MutableSet.String.toArray /* [|"apple", "banana", "orange"|] */
+s0->Belt.MutableSet.String.toArray /* ["apple", "banana", "orange"] */
 ```
 
 ## fromSortedArrayUnsafe
@@ -69,7 +69,7 @@ Returns copy of a set.
 let s0 = Belt.MutableSet.String.fromArray(["orange", "apple"])
 
 let copied = s0->Belt.MutableSet.String.copy
-copied->Belt.MutableSet.String.toArray /* [|"apple", "orange"|] */
+copied->Belt.MutableSet.String.toArray /* ["apple", "orange"] */
 ```
 
 ## isEmpty
@@ -117,7 +117,7 @@ s0->Belt.MutableSet.String.add("apple")
 s0->Belt.MutableSet.String.add("banana")
 s0->Belt.MutableSet.String.add("banana")
 
-s0->Belt.MutableSet.String.toArray /* [|"apple", "banana"|] */
+s0->Belt.MutableSet.String.toArray /* ["apple", "banana"] */
 ```
 
 ## addCheck
@@ -138,7 +138,7 @@ Adds each element of array to set.
 let set = Belt.MutableSet.String.make()
 
 set->Belt.MutableSet.String.mergeMany(["apple", "banana", "orange", "strawberry"])
-set->Belt.MutableSet.String.toArray /* [|"apple", "banana", "orange", "strawberry"|] */
+set->Belt.MutableSet.String.toArray /* ["apple", "banana", "orange", "strawberry"] */
 ```
 
 ## remove
@@ -155,7 +155,7 @@ s0->Belt.MutableSet.String.remove("apple")
 s0->Belt.MutableSet.String.remove("banana")
 s0->Belt.MutableSet.String.remove("banana")
 
-s0->Belt.MutableSet.String.toArray /* [|"orange"|] */
+s0->Belt.MutableSet.String.toArray /* ["orange"] */
 ```
 
 ## removeCheck
@@ -176,7 +176,7 @@ Removes each element of array from set.
 let set = Belt.MutableSet.String.fromArray(["apple", "banana", "orange"])
 
 set->Belt.MutableSet.String.removeMany(["strawberry", "apple", "banana", "orange"])
-set->Belt.MutableSet.String.toArray /* [||] */
+set->Belt.MutableSet.String.toArray /* [] */
 ```
 
 ## union
@@ -191,7 +191,7 @@ Returns union of two sets.
 let s0 = Belt.MutableSet.String.fromArray(["apple", "banana", "orange", "carrot"])
 let s1 = Belt.MutableSet.String.fromArray(["apple", "banana", "orange", "strawberry"])
 let union = Belt.MutableSet.String.union(s0, s1)
-union->Belt.MutableSet.String.toArray /* [|"apple", "banana", "carrot", "orange", "strawberry"|] */
+union->Belt.MutableSet.String.toArray /* ["apple", "banana", "carrot", "orange", "strawberry"] */
 ```
 
 ## intersect
@@ -206,7 +206,7 @@ Returns intersection of two sets.
 let s0 = Belt.MutableSet.String.fromArray(["apple", "banana", "orange", "carrot"])
 let s1 = Belt.MutableSet.String.fromArray(["apple", "banana", "orange", "strawberry"])
 let intersect = Belt.MutableSet.String.intersect(s0, s1)
-intersect->Belt.MutableSet.String.toArray /* [|"apple", "banana", "orange"|] */
+intersect->Belt.MutableSet.String.toArray /* ["apple", "banana", "orange"] */
 ```
 
 ## diff
@@ -220,8 +220,8 @@ Returns elements from first set, not existing in second set.
 ```res example
 let s0 = Belt.MutableSet.String.fromArray(["apple", "banana", "orange", "carrot"])
 let s1 = Belt.MutableSet.String.fromArray(["apple", "banana", "orange", "strawberry"])
-Belt.MutableSet.String.toArray(Belt.MutableSet.String.diff(s0, s1)) /* [|"carrot"|] */
-Belt.MutableSet.String.toArray(Belt.MutableSet.String.diff(s1, s0)) /* [|"strawberry"|] */
+Belt.MutableSet.String.toArray(Belt.MutableSet.String.diff(s0, s1)) /* ["carrot"] */
+Belt.MutableSet.String.toArray(Belt.MutableSet.String.diff(s1, s0)) /* ["strawberry"] */
 ```
 
 ## subset
@@ -370,7 +370,7 @@ let hasFiveChars = x => String.length(x) == 5
 let s0 = Belt.MutableSet.String.fromArray(["apple", "orange", "banana"])
 let s1 = s0->Belt.MutableSet.String.keep(hasFiveChars)
 
-s1->Belt.MutableSet.String.toArray /* [|"apple"|] */
+s1->Belt.MutableSet.String.toArray /* ["apple"] */
 ```
 
 ## partitionU
@@ -393,8 +393,8 @@ let hasFiveChars = x => String.length(x) == 5
 let s0 = Belt.MutableSet.String.fromArray(["apple", "carrot"])
 let (s1, s2) = s0->Belt.MutableSet.String.partition(hasFiveChars)
 
-s1->Belt.MutableSet.String.toArray /* [|"apple"|] */
-s2->Belt.MutableSet.String.toArray /* [|"carrot"|] */
+s1->Belt.MutableSet.String.toArray /* ["apple"] */
+s2->Belt.MutableSet.String.toArray /* ["carrot"] */
 ```
 
 ## size
@@ -436,7 +436,7 @@ Returns array of ordered set elements.
 ```res example
 let s0 = Belt.MutableSet.String.fromArray(["apple", "watermelon"])
 
-s0->Belt.MutableSet.String.toArray /* [|"apple", "watermelon"|] */
+s0->Belt.MutableSet.String.toArray /* ["apple", "watermelon"] */
 ```
 
 ## minimum
@@ -548,8 +548,8 @@ let s0 = Belt.MutableSet.String.fromArray(["apple", "banana", "orange"])
 let ((smaller, larger), present) = s0->Belt.MutableSet.String.split("banana")
 
 present /* true */
-smaller->Belt.MutableSet.String.toArray /* [|"apple"|] */
-larger->Belt.MutableSet.String.toArray /* [|"orange"|] */
+smaller->Belt.MutableSet.String.toArray /* ["apple"] */
+larger->Belt.MutableSet.String.toArray /* ["orange"] */
 ```
 
 ## checkInvariantInternal

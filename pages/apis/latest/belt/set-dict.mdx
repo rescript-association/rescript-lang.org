@@ -50,7 +50,7 @@ module IntCmp = Belt.Id.MakeComparable({
 
 let s0 = Belt.Set.Dict.fromArray([1, 3, 2, 4], ~cmp=IntCmp.cmp)
 
-s0->Belt.Set.Dict.toArray /* [|1, 2, 3, 4|] */
+s0->Belt.Set.Dict.toArray /* [1, 2, 3, 4] */
 ```
 
 ## fromSortedArrayUnsafe
@@ -120,10 +120,10 @@ let s0 = Belt.Set.Dict.empty
 let s1 = s0->Belt.Set.Dict.add(1, ~cmp=IntCmp.cmp)
 let s2 = s1->Belt.Set.Dict.add(2, ~cmp=IntCmp.cmp)
 let s3 = s2->Belt.Set.Dict.add(2, ~cmp=IntCmp.cmp)
-s0->Belt.Set.Dict.toArray /* [||] */
-s1->Belt.Set.Dict.toArray /* [|1|] */
-s2->Belt.Set.Dict.toArray /* [|1, 2|] */
-s3->Belt.Set.Dict.toArray /* [|1,2 |] */
+s0->Belt.Set.Dict.toArray /* [] */
+s1->Belt.Set.Dict.toArray /* [1] */
+s2->Belt.Set.Dict.toArray /* [1, 2] */
+s3->Belt.Set.Dict.toArray /* [1,2 ] */
 s2 == s3 /* true */
 ```
 
@@ -144,7 +144,7 @@ module IntCmp = Belt.Id.MakeComparable({
 let set = Belt.Set.Dict.empty
 
 let newSet = set->Belt.Set.Dict.mergeMany([5, 4, 3, 2, 1], ~cmp=IntCmp.cmp)
-newSet->Belt.Set.Dict.toArray /* [|1, 2, 3, 4, 5|] */
+newSet->Belt.Set.Dict.toArray /* [1, 2, 3, 4, 5] */
 ```
 
 ## remove
@@ -166,8 +166,8 @@ let s1 = s0->Belt.Set.Dict.remove(1, ~cmp=IntCmp.cmp)
 let s2 = s1->Belt.Set.Dict.remove(3, ~cmp=IntCmp.cmp)
 let s3 = s2->Belt.Set.Dict.remove(3, ~cmp=IntCmp.cmp)
 
-s1->Belt.Set.Dict.toArray /* [|2,3,4,5|] */
-s2->Belt.Set.Dict.toArray /* [|2,4,5|] */
+s1->Belt.Set.Dict.toArray /* [2,3,4,5] */
+s2->Belt.Set.Dict.toArray /* [2,4,5] */
 s2 == s3 /* true */
 ```
 
@@ -188,7 +188,7 @@ module IntCmp = Belt.Id.MakeComparable({
 let set = Belt.Set.Dict.fromArray([1, 2, 3, 4], ~cmp=IntCmp.cmp)
 
 let newSet = set->Belt.Set.Dict.removeMany([5, 4, 3, 2, 1], ~cmp=IntCmp.cmp)
-newSet->Belt.Set.Dict.toArray /* [||] */
+newSet->Belt.Set.Dict.toArray /* [] */
 ```
 
 ## union
@@ -208,7 +208,7 @@ module IntCmp = Belt.Id.MakeComparable({
 let s0 = Belt.Set.Dict.fromArray([5, 2, 3, 5, 6], ~cmp=IntCmp.cmp)
 let s1 = Belt.Set.Dict.fromArray([5, 2, 3, 1, 5, 4], ~cmp=IntCmp.cmp)
 let union = Belt.Set.Dict.union(s0, s1, ~cmp=IntCmp.cmp)
-union->Belt.Set.Dict.toArray /* [|1,2,3,4,5,6|] */
+union->Belt.Set.Dict.toArray /* [1,2,3,4,5,6] */
 ```
 
 ## intersect
@@ -228,7 +228,7 @@ module IntCmp = Belt.Id.MakeComparable({
 let s0 = Belt.Set.Dict.fromArray([5, 2, 3, 5, 6], ~cmp=IntCmp.cmp)
 let s1 = Belt.Set.Dict.fromArray([5, 2, 3, 1, 5, 4], ~cmp=IntCmp.cmp)
 let intersect = Belt.Set.Dict.intersect(s0, s1, ~cmp=IntCmp.cmp)
-intersect->Belt.Set.Dict.toArray /* [|2,3,5|] */
+intersect->Belt.Set.Dict.toArray /* [2,3,5] */
 ```
 
 ## diff
@@ -251,8 +251,8 @@ let s1 = Belt.Set.Dict.fromArray([5, 2, 3, 1, 5, 4], ~cmp=IntCmp.cmp)
 let diff1 = Belt.Set.Dict.diff(s0, s1, ~cmp=IntCmp.cmp)
 let diff2 = Belt.Set.Dict.diff(s1, s0, ~cmp=IntCmp.cmp)
 
-diff1->Belt.Set.Dict.toArray /* [|6|] */
-diff2->Belt.Set.Dict.toArray /* [|1,4|] */
+diff1->Belt.Set.Dict.toArray /* [6] */
+diff2->Belt.Set.Dict.toArray /* [1,4] */
 ```
 
 ## subset
@@ -434,7 +434,7 @@ let isEven = x => mod(x, 2) == 0
 let s0 = Belt.Set.Dict.fromArray([1, 2, 3, 4, 5], ~cmp=IntCmp.cmp)
 let s1 = s0->Belt.Set.Dict.keep(isEven)
 
-s1->Belt.Set.Dict.toArray /* [|2,4|] */
+s1->Belt.Set.Dict.toArray /* [2,4] */
 ```
 
 ## partitionU
@@ -462,8 +462,8 @@ let isOdd = x => mod(x, 2) != 0
 let s0 = Belt.Set.Dict.fromArray([1, 2, 3, 4, 5], ~cmp=IntCmp.cmp)
 let (s1, s2) = s0->Belt.Set.Dict.partition(isOdd)
 
-s1->Belt.Set.Dict.toArray /* [|1,3,5|] */
-s2->Belt.Set.Dict.toArray /* [|2,4|] */
+s1->Belt.Set.Dict.toArray /* [1,3,5] */
+s2->Belt.Set.Dict.toArray /* [2,4] */
 ```
 
 ## size
@@ -520,7 +520,7 @@ module IntCmp = Belt.Id.MakeComparable({
 
 let s0 = Belt.Set.Dict.fromArray([3, 2, 1, 5], ~cmp=IntCmp.cmp)
 
-s0->Belt.Set.Dict.toArray /* [|1,2,3,5|] */
+s0->Belt.Set.Dict.toArray /* [1,2,3,5] */
 ```
 
 ## minimum
@@ -666,8 +666,8 @@ let s0 = Belt.Set.Dict.fromArray([1, 2, 3, 4, 5], ~cmp=IntCmp.cmp)
 let ((smaller, larger), present) = s0->Belt.Set.Dict.split(3, ~cmp=IntCmp.cmp)
 
 present /* true */
-smaller->Belt.Set.Dict.toArray /* [|1,2|] */
-larger->Belt.Set.Dict.toArray /* [|4,5|] */
+smaller->Belt.Set.Dict.toArray /* [1,2] */
+larger->Belt.Set.Dict.toArray /* [4,5] */
 ```
 
 ## checkInvariantInternal

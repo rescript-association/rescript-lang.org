@@ -47,7 +47,7 @@ Js.String2.fromCharCode(-64568) == `ψ`
 let fromCharCodeMany: array<int> => t
 ```
 
-`fromCharCodeMany([|n1;n2;n3|])` creates a `string` from the characters corresponding to the given numbers, using the same rules as `fromCharCode`. See [`String.fromCharCode`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode) on MDN.
+`fromCharCodeMany([n1, n2, n3])` creates a `string` from the characters corresponding to the given numbers, using the same rules as `fromCharCode`. See [`String.fromCharCode`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode) on MDN.
 
 ## fromCodePoint
 
@@ -72,7 +72,7 @@ Js.String2.fromCodePoint(0x1f63a) == `😺`
 let fromCodePointMany: array<int> => t
 ```
 
-`fromCodePointMany([|n1;n2;n3|])` creates a `string` from the characters corresponding to the given code point numbers, using the same rules as `fromCodePoint`. See [`String.fromCodePoint`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint) on MDN.
+`fromCodePointMany([n1, n2, n3])` creates a `string` from the characters corresponding to the given code point numbers, using the same rules as `fromCodePoint`. See [`String.fromCodePoint`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint) on MDN.
 
 ```res example
 Js.String2.fromCodePointMany([0xd55c, 0xae00, 0x1f63a]) == `한글😺`

@@ -913,13 +913,13 @@ Sets the value at the given position in the array if the position is in bounds. 
 ```res example
 let arr = [100, 101, 102, 103]
 Js.Array.unsafe_set(arr, 3, 99)
-// result is [|100, 101, 102, 99|];
+// result is [100, 101, 102, 99]
 
 Js.Array.unsafe_set(arr, 4, 88)
-// result is [|100, 101, 102, 99, 88|]
+// result is [100, 101, 102, 99, 88]
 
 Js.Array.unsafe_set(arr, 6, 77)
-// result is [|100, 101, 102, 99, 88, <1 empty item>, 77|]
+// result is [100, 101, 102, 99, 88, <1 empty item>, 77]
 
 Js.Array.unsafe_set(arr, -1, 66)
 // you don't want to know.

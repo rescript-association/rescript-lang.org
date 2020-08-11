@@ -65,7 +65,7 @@ module IntCmp = Belt.Id.MakeComparable({
 
 let s0 = Belt.MutableSet.fromArray([1, 3, 2, 4], ~id=module(IntCmp))
 
-s0->Belt.MutableSet.toArray /* [|1, 2, 3, 4|] */
+s0->Belt.MutableSet.toArray /* [1, 2, 3, 4] */
 ```
 
 ## fromSortedArrayUnsafe
@@ -93,7 +93,7 @@ module IntCmp = Belt.Id.MakeComparable({
 let s0 = Belt.MutableSet.fromArray([1, 3, 2, 4], ~id=module(IntCmp))
 
 let copied = s0->Belt.MutableSet.copy
-copied->Belt.MutableSet.toArray /* [|1, 2, 3, 4|] */
+copied->Belt.MutableSet.toArray /* [1, 2, 3, 4] */
 ```
 
 ## isEmpty
@@ -156,7 +156,7 @@ s0->Belt.MutableSet.add(1)
 s0->Belt.MutableSet.add(2)
 s0->Belt.MutableSet.add(2)
 
-s0->Belt.MutableSet.toArray /* [|1, 2|] */
+s0->Belt.MutableSet.toArray /* [1, 2] */
 ```
 
 ## addCheck
@@ -182,7 +182,7 @@ module IntCmp = Belt.Id.MakeComparable({
 let set = Belt.MutableSet.make(~id=module(IntCmp))
 
 set->Belt.MutableSet.mergeMany([5, 4, 3, 2, 1])
-set->Belt.MutableSet.toArray /* [|1, 2, 3, 4, 5|] */
+set->Belt.MutableSet.toArray /* [1, 2, 3, 4, 5] */
 ```
 
 ## remove
@@ -204,7 +204,7 @@ s0->Belt.MutableSet.remove(1)
 s0->Belt.MutableSet.remove(3)
 s0->Belt.MutableSet.remove(3)
 
-s0->Belt.MutableSet.toArray /* [|2,4,5|] */
+s0->Belt.MutableSet.toArray /* [2,4,5] */
 ```
 
 ## removeCheck
@@ -230,7 +230,7 @@ module IntCmp = Belt.Id.MakeComparable({
 let set = Belt.MutableSet.fromArray([1, 2, 3, 4], ~id=module(IntCmp))
 
 set->Belt.MutableSet.removeMany([5, 4, 3, 2, 1])
-set->Belt.MutableSet.toArray /* [||] */
+set->Belt.MutableSet.toArray /* [] */
 ```
 
 ## union
@@ -250,7 +250,7 @@ module IntCmp = Belt.Id.MakeComparable({
 let s0 = Belt.MutableSet.fromArray([5, 2, 3, 5, 6], ~id=module(IntCmp))
 let s1 = Belt.MutableSet.fromArray([5, 2, 3, 1, 5, 4], ~id=module(IntCmp))
 let union = Belt.MutableSet.union(s0, s1)
-union->Belt.MutableSet.toArray /* [|1,2,3,4,5,6|] */
+union->Belt.MutableSet.toArray /* [1,2,3,4,5,6] */
 ```
 
 ## intersect
@@ -270,7 +270,7 @@ module IntCmp = Belt.Id.MakeComparable({
 let s0 = Belt.MutableSet.fromArray([5, 2, 3, 5, 6], ~id=module(IntCmp))
 let s1 = Belt.MutableSet.fromArray([5, 2, 3, 1, 5, 4], ~id=module(IntCmp))
 let intersect = Belt.MutableSet.intersect(s0, s1)
-intersect->Belt.MutableSet.toArray /* [|2,3,5|] */
+intersect->Belt.MutableSet.toArray /* [2,3,5] */
 ```
 
 ## diff
@@ -289,8 +289,8 @@ module IntCmp = Belt.Id.MakeComparable({
 
 let s0 = Belt.MutableSet.fromArray([5, 2, 3, 5, 6], ~id=module(IntCmp))
 let s1 = Belt.MutableSet.fromArray([5, 2, 3, 1, 5, 4], ~id=module(IntCmp))
-Belt.MutableSet.toArray(Belt.MutableSet.diff(s0, s1)) /* [|6|] */
-Belt.MutableSet.toArray(Belt.MutableSet.diff(s1, s0)) /* [|1,4|] */
+Belt.MutableSet.toArray(Belt.MutableSet.diff(s0, s1)) /* [6] */
+Belt.MutableSet.toArray(Belt.MutableSet.diff(s1, s0)) /* [1,4] */
 ```
 
 ## subset
@@ -472,7 +472,7 @@ let isEven = x => mod(x, 2) == 0
 let s0 = Belt.MutableSet.fromArray([1, 2, 3, 4, 5], ~id=module(IntCmp))
 let s1 = s0->Belt.MutableSet.keep(isEven)
 
-s1->Belt.MutableSet.toArray /* [|2, 4|] */
+s1->Belt.MutableSet.toArray /* [2, 4] */
 ```
 
 ## partitionU
@@ -498,8 +498,8 @@ let isOdd = x => mod(x, 2) != 0
 let s0 = Belt.MutableSet.fromArray([1, 2, 3, 4, 5], ~id=module(IntCmp))
 let (s1, s2) = s0->Belt.MutableSet.partition(isOdd)
 
-s1->Belt.MutableSet.toArray /* [|1,3,5|] */
-s2->Belt.MutableSet.toArray /* [|2,4|] */
+s1->Belt.MutableSet.toArray /* [1,3,5] */
+s2->Belt.MutableSet.toArray /* [2,4] */
 ```
 
 ## size
@@ -556,7 +556,7 @@ module IntCmp = Belt.Id.MakeComparable({
 
 let s0 = Belt.MutableSet.fromArray([3, 2, 1, 5], ~id=module(IntCmp))
 
-s0->Belt.MutableSet.toArray /* [|1,2,3,5|] */
+s0->Belt.MutableSet.toArray /* [1,2,3,5] */
 ```
 
 ## minimum
@@ -698,8 +698,8 @@ let s0 = Belt.MutableSet.fromArray([1, 2, 3, 4, 5], ~id=module(IntCmp))
 let ((smaller, larger), present) = s0->Belt.MutableSet.split(3)
 
 present /* true */
-smaller->Belt.MutableSet.toArray /* [|1,2|] */
-larger->Belt.MutableSet.toArray /* [|4,5|] */
+smaller->Belt.MutableSet.toArray /* [1,2] */
+larger->Belt.MutableSet.toArray /* [4,5] */
 ```
 
 ## checkInvariantInternal
