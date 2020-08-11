@@ -59,13 +59,13 @@ module ReactStuff = {
 
 module String = {
   let camelCase: string => string = [%raw
-    str => "{
+    "str => {
      return str.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
     }"
   ];
 
   let capitalize: string => string = [%raw
-    str => "{
+    "str => {
       return str && str.charAt(0).toUpperCase() + str.substring(1);
     }"
   ];

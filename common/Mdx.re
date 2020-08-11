@@ -17,7 +17,7 @@ external arrToReactElement: array(mdxComponent) => React.element =
    Will return "unknown" if either given element is not an mdx component,
    or if there is no mdxType property found */
 let getMdxType: mdxComponent => string = [%raw
-  element => "{
+  "element => {
       if(element == null || element.props == null) {
         return 'unknown';
       }
@@ -26,7 +26,7 @@ let getMdxType: mdxComponent => string = [%raw
 ];
 
 let getMdxClassName: mdxComponent => option(string) = [%raw
-  element => "{
+  "element => {
       if(element == null || element.props == null) {
         return;
       }
@@ -76,7 +76,7 @@ module MdxChildren: {
   // which means it doesn't have any children.
   // We will return the element as its own child then
   let getMdxChildren: mdxComponent => t = [%raw
-    element => "{
+    "element => {
       if(typeof element === 'string') {
         return element;
       }

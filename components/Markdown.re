@@ -260,15 +260,15 @@ module Code = {
   // TODO: Might be refactorable with the new @unboxed feature
   type unknown = Mdx.Components.unknown;
 
-  let typeOf: unknown => string = [%raw thing => "{ return typeof thing; }"];
+  let typeOf: unknown => string = [%raw "thing => { return typeof thing; }"];
   let isArray: unknown => bool = [%raw
-    thing => "{ return thing instanceof Array; }"
+    "thing => { return thing instanceof Array; }"
   ];
   let isObject: unknown => bool = [%raw
-    thing => "{ return thing instanceof Object; }"
+    "thing => { return thing instanceof Object; }"
   ];
   let isString: unknown => bool = [%raw
-    thing => "{ return thing instanceof String; }"
+    "thing => { return thing instanceof String; }"
   ];
   external asStringArray: unknown => array(string) = "%identity";
   external asElement: unknown => React.element = "%identity";
@@ -365,7 +365,7 @@ module Code = {
 
 module CodeTab = {
   let getMdxMetastring: Mdx.mdxComponent => option(string) = [%raw
-    element => "{
+    "element => {
       if(element == null || element.props == null) {
         return;
       }
@@ -518,9 +518,9 @@ module Ol = {
 };
 
 module Li = {
-  let typeOf: 'a => string = [%raw thing => "{ return typeof thing; }"];
+  let typeOf: 'a => string = [%raw "thing => { return typeof thing; }"];
   let isArray: 'a => bool = [%raw
-    thing => "{ return thing instanceof Array; }"
+    "thing => { return thing instanceof Array; }"
   ];
   external asArray: 'a => array(ReasonReact.reactElement) = "%identity";
 
