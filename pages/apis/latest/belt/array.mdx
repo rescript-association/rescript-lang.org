@@ -636,11 +636,12 @@ except that `f` is supplied two arguments: the index starting from 0 and the ele
 ```res example
 Belt.Array.forEachWithIndex(["a", "b", "c"], (i, x) => Js.log("Item " ++ string_of_int(i) ++ " is " ++ x))
 
-/*  prints:
-      Item 0 is a
-      Item 1 is b
-      Item 2 is cc
-    */
+/*
+  prints:
+  Item 0 is a
+  Item 1 is b
+  Item 2 is cc
+*/
 let total = ref(0)
 
 Belt.Array.forEachWithIndex([10, 11, 12, 13], (i, x) => total := total.contents + x + i)
