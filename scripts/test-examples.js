@@ -28,6 +28,7 @@ const path = require("path");
 const fs = require("fs");
 const child_process = require("child_process");
 const util = require("util");
+const tmp = require("tmp");
 
 const execFile = util.promisify(child_process.execFile);
 
@@ -43,8 +44,8 @@ const candidates = options => (tree, file) => {
 
   children.forEach(child => {
     if (child.type === "code" && child.value) {
-      const { meta, lang = "_" } = child;
-      if (lang === "re" || lang === "reason" || lang === "reasonml") {
+      const { meta, lang} = child;
+      if (lang === "res") {
         if (meta === "sig") {
           signatures.push(formatter(child.value));
         } else if (meta === "example") {
@@ -77,11 +78,15 @@ const testExample = async (relFilepath, example, prelude) => {
   const { line, value } = example;
 
   const preludeLines = prelude !== "" ? prelude.split("\n").length : 0;
+
+  const tempFile = tmp.fileSync();
+  const fileToFormat = tempFile.name + '.res';
   const fullCode = prelude ? `${prelude}\n${value}` : value;
+  fs.writeFileSync(fileToFormat, fullCode);
 
   console.log(`Testing example in '${relFilepath}' on line ${line}...`);
   try {
-    const ret = await execFile(BSC, ["-i", "-e", fullCode]);
+    const ret = await execFile(BSC, ["-i", fileToFormat]);
     return { status: "ok" };
   } catch (e) {
     const { stderr } = e;
@@ -118,10 +123,15 @@ const testExample = async (relFilepath, example, prelude) => {
 
 const testPrelude = async (relFilepath, prelude) => {
   const { line, value } = prelude;
+
+  const tempFile = tmp.fileSync();
+  const fileToFormat = tempFile.name + '.res';
+  fs.writeFileSync(fileToFormat, value);
+
   console.log(`Testing prelude in '${relFilepath}' on line ${line}...`);
 
   try {
-    const ret = await execFile(BSC, ["-i", "-e", value]);
+    const ret = await execFile(BSC, ["-i", fileToFormat]);
     return { status: "ok" };
   } catch (e) {
     const { stderr } = e;
@@ -225,7 +235,7 @@ const main = async () => {
     console.log(
       `\nTip: You can also run tests just for specific files / globs:`
     );
-    console.log('`node scripts/test-examples.js "pages/belt_docs/array.mdx"`');
+    console.log('`node scripts/test-examples.js pages/apis/latest/belt/array.mdx`');
     showErrorMsg(failed[0]);
     process.exit(1);
   }
