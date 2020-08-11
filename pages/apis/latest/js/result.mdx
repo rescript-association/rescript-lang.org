@@ -8,8 +8,8 @@ Define the interface for result.
 
 ## t
 
-```re sig
-type t('good, 'bad) =
+```res sig
+type t<'good, 'bad> =
   | Ok('good)
-  | Error('bad);
+  | Error('bad)
 ```

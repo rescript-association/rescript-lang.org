@@ -8,50 +8,50 @@ Provide utilities for Js.t.
 
 ## empty
 
-```re sig
-let empty: unit => Js.t({..});
+```res sig
+let empty: unit => {..}
 ```
 
 `empty()` returns the empty object `{}`.
 
 ## assign
 
-```re sig
-let assign: (Js.t({..}), Js.t({..})) => Js.t({..});
+```res sig
+let assign: ({..}, {..}) => {..}
 ```
 
 `assign(target, source)` copies properties from source to target.
 Properties in `target` will be overwritten by properties in `source` if they have the same key.
 Returns `target`.
 
-```re example
+```res example
 /* Copy an object */
 
-let obj = [%obj {a: 1}];
+let obj = %obj({a: 1})
 
-let copy = Js.Obj.assign(Js.Obj.empty(), obj);
+let copy = Js.Obj.assign(Js.Obj.empty(), obj)
 
 /* prints "{ a: 1 }" */
-Js.log(copy);
+Js.log(copy)
 
 /* Merge objects with same properties */
 
-let target = [%obj {a: 1, b: 1}];
-let source = [%obj {b: 2}];
+let target = %obj({a: 1, b: 1})
+let source = %obj({b: 2})
 
-let obj = Js.Obj.assign(target, source);
+let obj = Js.Obj.assign(target, source)
 
 /* prints "{ a: 1, b: 2 }" */
-Js.log(obj);
+Js.log(obj)
 
 /* prints "{ a: 1, b: 2 }", target is modified */
-Js.log(target);
+Js.log(target)
 ```
 
 ## keys
 
-```re sig
-let keys: Js.t('a) => array(string);
+```res sig
+let keys: Js.t<'a> => array<string>
 ```
 
 `keys(obj)` returns an `array` of the keys of `obj`'s own enumerable properties.

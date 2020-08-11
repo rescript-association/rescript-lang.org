@@ -8,84 +8,84 @@ Provide bindings to JS promise.
 
 ## t
 
-```re sig
-type t(+'a);
+```res prelude
+type t<+'a>
 ```
 
 ## error
 
-```re sig
-type error;
+```res prelude
+type error
 ```
 
 ## make
 
-```re sig
-let make: ((~resolve: (. 'a) => unit, ~reject: (. exn) => unit) => unit) => t('a);
+```res sig
+let make: ((~resolve: (. 'a) => unit, ~reject: (. exn) => unit) => unit) => t<'a>
 ```
 
 ## resolve
 
-```re sig
-let resolve: 'a => t('a);
+```res sig
+let resolve: 'a => t<'a>
 ```
 
 ## reject
 
-```re sig
-let reject: exn => t('a);
+```res sig
+let reject: exn => t<'a>
 ```
 
 ## all
 
-```re sig
-let all: array(t('a)) => t(array('a));
+```res sig
+let all: array<t<'a>> => t<array<'a>>
 ```
 
 ## all2
 
-```re sig
-let all2: ((t('a0), t('a1))) => t(('a0, 'a1));
+```res sig
+let all2: ((t<'a0>, t<'a1>)) => t<('a0, 'a1)>
 ```
 
 ## all3
 
-```re sig
-let all3: ((t('a0), t('a1), t('a2))) => t(('a0, 'a1, 'a2));
+```res sig
+let all3: ((t<'a0>, t<'a1>, t<'a2>)) => t<('a0, 'a1, 'a2)>
 ```
 
 ## all4
 
-```re sig
-let all4: ((t('a0), t('a1), t('a2), t('a3))) => t(('a0, 'a1, 'a2, 'a3));
+```res sig
+let all4: ((t<'a0>, t<'a1>, t<'a2>, t<'a3>)) => t<('a0, 'a1, 'a2, 'a3)>
 ```
 
 ## all5
 
-```re sig
-let all5: ((t('a0), t('a1), t('a2), t('a3), t('a4))) => t(('a0, 'a1, 'a2, 'a3, 'a4));
+```res sig
+let all5: ((t<'a0>, t<'a1>, t<'a2>, t<'a3>, t<'a4>)) => t<('a0, 'a1, 'a2, 'a3, 'a4)>
 ```
 
 ## all6
 
-```re sig
-let all6: ((t('a0), t('a1), t('a2), t('a3), t('a4), t('a5))) => t(('a0, 'a1, 'a2, 'a3, 'a4, 'a5));
+```res sig
+let all6: ((t<'a0>, t<'a1>, t<'a2>, t<'a3>, t<'a4>, t<'a5>)) => t<('a0, 'a1, 'a2, 'a3, 'a4, 'a5)>
 ```
 
 ## race
 
-```re sig
-let race: array(t('a)) => t('a);
+```res sig
+let race: array<t<'a>> => t<'a>
 ```
 
 ## then_
 
-```re sig
-let then_: ('a => t('b), t('a)) => t('b);
+```res sig
+let then_: ('a => t<'b>, t<'a>) => t<'b>
 ```
 
 ## catch
 
-```re sig
-let catch: (error => t('a), t('a)) => t('a);
+```res sig
+let catch: (error => t<'a>, t<'a>) => t<'a>
 ```

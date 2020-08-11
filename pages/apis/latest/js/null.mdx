@@ -6,78 +6,78 @@ Provide utilities around `null('a)`.
 
 </Intro>
 
-```re sig
-type t('a) = Js.null('a);
+```res prelude
+type t<'a> = Js.null<'a>
 ```
 
 Local alias for `Js.null('a)`.
 
-```re sig
-let return: 'a => t('a);
+```res sig
+let return: 'a => t<'a>
 ```
 
 Constructs a value of `Js.null('a)` containing a value of `'a`.
 
 ## test
 
-```re sig
-let test: t('a) => bool;
+```res sig
+let test: t<'a> => bool
 ```
 
 Returns `true` if the given value is empty (`null`), `false` otherwise.
 
 ## empty
 
-```re sig
-let empty: t('a);
+```res sig
+let empty: t<'a>
 ```
 
 The empty value, `null`.
 
 ## getUnsafe
 
-```re sig
-let getUnsafe: t('a) => 'a;
+```res sig
+let getUnsafe: t<'a> => 'a
 ```
 
 ## getExn
 
-```re sig
-let getExn: t('a) => 'a;
+```res sig
+let getExn: t<'a> => 'a
 ```
 
 ## bind
 
-```re sig
-let bind: (t('a), (. 'a) => 'b) => t('b);
+```res sig
+let bind: (t<'a>, (. 'a) => 'b) => t<'b>
 ```
 
 Maps the contained value using the given function.
 If `Js.null('a)` contains a value, that value is unwrapped, mapped to a `'b` using the given function `'a => 'b`, then wrapped back up and returned as `Js.null('b)`.
 
-```re example
-let maybeGreetWorld = (maybeGreeting: Js.null(string)) =>
-  Js.Null.bind(maybeGreeting, [@bs] greeting => greeting ++ " world!");
+```res example
+let maybeGreetWorld = (maybeGreeting: Js.null<string>) =>
+  Js.Null.bind(maybeGreeting, (. greeting) => greeting ++ " world!")
 ```
 
 ## iter
 
-```re sig
-let iter: (t('a), (. 'a) => unit) => unit;
+```res sig
+let iter: (t<'a>, (. 'a) => unit) => unit
 ```
 
 Iterates over the contained value with the given function.
 If `Js.null('a)` contains a value, that value is unwrapped and applied to the given function.
 
-```re example
-let maybeSay = (maybeMessage: Js.null(string)) =>
-  Js.Null.iter(maybeMessage, [@bs] message => Js.log(message));
+```res example
+let maybeSay = (maybeMessage: Js.null<string>) =>
+  Js.Null.iter(maybeMessage, (. message) => Js.log(message))
 ```
 
 ## fromOption
 
-```re sig
-let fromOption: option('a) => t('a);
+```res sig
+let fromOption: option<'a> => t<'a>
 ```
 
 Maps `option('a)` to `Js.null('a)`.
@@ -86,14 +86,14 @@ Maps `option('a)` to `Js.null('a)`.
 
 ## from_opt
 
-```re sig
-let from_opt: option('a) => t('a);
+```res sig
+let from_opt: option<'a> => t<'a>
 ```
 
 ## toOption
 
-```re sig
-let toOption: t('a) => option('a);
+```res sig
+let toOption: t<'a> => option<'a>
 ```
 
 Maps `Js.null('a)` to `option('a)`.
@@ -102,6 +102,6 @@ Maps `Js.null('a)` to `option('a)`.
 
 ## to_opt
 
-```re sig
-let to_opt: t('a) => option('a);
+```res sig
+let to_opt: t<'a> => option<'a>
 ```

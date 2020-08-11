@@ -8,32 +8,32 @@ Provide bindings to JS typed array ArrayBuffer.
 
 ## t
 
-```re sig
-type t = Js_typed_array.array_buffer;
+```res prelude
+type t = Js_typed_array.array_buffer
 ```
 
 ## make
 
-```re sig
-let make: int => t;
+```res sig
+let make: int => t
 ```
 
 Takes length. initializes elements to 0.
 
 ## byteLength
 
-```re sig
-let byteLength: t => int;
+```res sig
+let byteLength: t => int
 ```
 
 ## slice
 
-```re sig
-let slice: (~start: int, ~end_: int, t) => Js_typed_array.array_buffer;
+```res sig
+let slice: (~start: int, ~end_: int, t) => Js_typed_array.array_buffer
 ```
 
 ## sliceFrom
 
-```re sig
-let sliceFrom: (int, t) => Js_typed_array.array_buffer;
+```res sig
+let sliceFrom: (int, t) => Js_typed_array.array_buffer
 ```
