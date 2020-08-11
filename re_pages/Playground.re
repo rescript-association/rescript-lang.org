@@ -287,7 +287,6 @@ module ErrorPane = {
 
   let renderResult =
       (
-        ~compilerVersionGitCommit: option(string)=?,
         ~focusedRowCol: option((int, int)),
         ~targetLang: Api.Lang.t,
         ~compilerVersion: string,
@@ -413,13 +412,8 @@ module ErrorPane = {
       </div>;
     | Nothing =>
       let syntax = Api.Lang.toString(targetLang);
-      let fullVersion =
-        switch (compilerVersionGitCommit) {
-        | Some(gitCommit) => compilerVersion ++ " (" ++ gitCommit ++ ")"
-        | None => compilerVersion
-        };
       <PreWrap>
-        {j|This playground is now running on compiler version $fullVersion with $syntax syntax|j}
+        {j|This playground is now running on compiler version $compilerVersion with $syntax syntax|j}
         ->s
       </PreWrap>;
     };
@@ -464,7 +458,6 @@ module ErrorPane = {
         ~actionIndicatorKey: string,
         ~targetLang: Api.Lang.t,
         ~compilerVersion: string,
-        ~compilerVersionGitCommit: option(string)=?,
         ~focusedRowCol: option((int, int))=?,
         ~result: FinalResult.t,
       ) => {
@@ -506,7 +499,6 @@ module ErrorPane = {
       <div className="">
         <div className="bg-night-dark text-snow-darker px-4 py-4">
           {renderResult(
-             ~compilerVersionGitCommit?,
              ~focusedRowCol,
              ~compilerVersion,
              ~targetLang,
@@ -1592,8 +1584,6 @@ module Button = {
                      | _ => false
                      };
 
-                   let compilerVersionGitCommit =
-                     Api.Compiler.version_git_commit(ready.selected.instance);
                    <>
                      <ControlPanel
                        isCompilerSwitching
@@ -1613,7 +1603,6 @@ module Button = {
                          actionIndicatorKey
                          targetLang={ready.targetLang}
                          compilerVersion={ready.selected.compilerVersion}
-                         ?compilerVersionGitCommit
                          ?focusedRowCol
                          result={ready.result}
                        />

@@ -299,8 +299,6 @@ module Compiler = {
   [@bs.val] [@bs.scope "bs_platform"] external make: unit => t = "make";
 
   [@bs.get] external version: t => string = "version";
-  [@bs.get]
-  external version_git_commit: t => option(string) = "version_git_commit";
 
   /*
       Res compiler actions
