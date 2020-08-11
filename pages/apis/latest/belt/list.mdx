@@ -14,7 +14,7 @@ Collection functions for manipulating the `list` data structures, a singly-linke
 
 ## t<'a>
 
-```res sig
+```res prelude
 type t<'a> = list<'a>
 ```
 
@@ -397,7 +397,7 @@ let mapReverse: (t<'a>, 'a => 'b) => t<'b>
 
 Equivalent to:
 
-```res example
+```res
 map(someList, f)->reverse;
 ```
 
@@ -729,7 +729,7 @@ Uncurried version of [some2](#some2).
 let cmpByLength: (t<'a>, t<'a>) => int
 ```
 
-```res example
+```res
 cmpByLength(firstList, secondList)
 ```
 
