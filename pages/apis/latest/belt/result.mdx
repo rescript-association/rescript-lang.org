@@ -161,7 +161,7 @@ it is the `Ok(n)` variant.
 ## eqU
 
 ```res sig
-let eqU: (t<'a, 'c>, t<'b, 'd>, (.'a, 'b) => bool) => bool
+let eqU: (t<'a, 'c>, t<'b, 'd>, (. 'a, 'b) => bool) => bool
 ```
 
 ## eq
@@ -199,7 +199,7 @@ Belt.Result.eq(bad1, bad2, mod10equal) == true
 ## cmpU
 
 ```res sig
-let cmpU: (t<'a, 'c>, t<'b, 'd>, (.'a, 'b) => int) => int
+let cmpU: (t<'a, 'c>, t<'b, 'd>, (. 'a, 'b) => int) => int
 ```
 
 ## cmp

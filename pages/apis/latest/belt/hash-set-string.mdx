@@ -10,114 +10,114 @@ It is more efficient in general, the API is the same with `Belt.HashSet` except 
 
 ## key
 
-```re sig
-type key = string;
+```res prelude
+type key = string
 ```
 
 ## t
 
-```re sig
-type t;
+```res prelude
+type t
 ```
 
 ## make
 
-```re sig
-let make: (~hintSize: int) => t;
+```res sig
+let make: (~hintSize: int) => t
 ```
 
 ## clear
 
-```re sig
-let clear: t => unit;
+```res sig
+let clear: t => unit
 ```
 
 ## isEmpty
 
-```re sig
-let isEmpty: t => bool;
+```res sig
+let isEmpty: t => bool
 ```
 
 ## add
 
-```re sig
-let add: (t, key) => unit;
+```res sig
+let add: (t, key) => unit
 ```
 
 ## copy
 
-```re sig
-let copy: t => t;
+```res sig
+let copy: t => t
 ```
 
 ## has
 
-```re sig
-let has: (t, key) => bool;
+```res sig
+let has: (t, key) => bool
 ```
 
 ## remove
 
-```re sig
-let remove: (t, key) => unit;
+```res sig
+let remove: (t, key) => unit
 ```
 
 ## forEachU
 
-```re sig
-let forEachU: (t, [@bs] (key => unit)) => unit;
+```res sig
+let forEachU: (t, (. key) => unit) => unit
 ```
 
 ## forEach
 
-```re sig
-let forEach: (t, key => unit) => unit;
+```res sig
+let forEach: (t, key => unit) => unit
 ```
 
 ## reduceU
 
-```re sig
-let reduceU: (t, 'c, [@bs] (('c, key) => 'c)) => 'c;
+```res sig
+let reduceU: (t, 'c, (. 'c, key) => 'c) => 'c
 ```
 
 ## reduce
 
-```re sig
-let reduce: (t, 'c, ('c, key) => 'c) => 'c;
+```res sig
+let reduce: (t, 'c, ('c, key) => 'c) => 'c
 ```
 
 ## size
 
-```re sig
-let size: t => int;
+```res sig
+let size: t => int
 ```
 
 ## logStats
 
-```re sig
-let logStats: t => unit;
+```res sig
+let logStats: t => unit
 ```
 
 ## toArray
 
-```re sig
-let toArray: t => array(key);
+```res sig
+let toArray: t => array<key>
 ```
 
 ## fromArray
 
-```re sig
-let fromArray: array(key) => t;
+```res sig
+let fromArray: array<key> => t
 ```
 
 ## mergeMany
 
-```re sig
-let mergeMany: (t, array(key)) => unit;
+```res sig
+let mergeMany: (t, array<key>) => unit
 ```
 
 ## getBucketHistogram
 
-```re sig
-let getBucketHistogram: t => array(int);
+```res sig
+let getBucketHistogram: t => array<int>
 ```
