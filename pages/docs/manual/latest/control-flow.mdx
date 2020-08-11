@@ -103,7 +103,7 @@ There's no loop-breaking `break` keyword (nor early `return` from functions, for
 ```res
 let break = ref(false)
 
-while (!break.contents) {
+while !break.contents {
   if Js.Math.random_int(1, 10) === 3 {
     break := true
   } else {
