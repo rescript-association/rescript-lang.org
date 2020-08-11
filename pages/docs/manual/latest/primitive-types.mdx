@@ -75,7 +75,7 @@ ReScript has a type for a string with a single letter:
 let firstLetterOfAlphabet = 'a'
 ```
 
-**Note**: Char doesn't support Unicode or UTF-8 and is therefore disrecommended.
+**Note**: Char doesn't support Unicode or UTF-8 and is therefore not recommended.
 
 To convert a String to a Char, use `"a".[0]`. To convert a Char to a String, use `String.make(1, 'a')`.
 
@@ -106,7 +106,7 @@ ReScript's `true/false` compiles into a JavaScript `true/false`.
 
 ## Integers
 
-32-bits, truncated when necessary. We provides the usual operations on them: `+`, `-`, `*`, `/`, etc. See [Js.Int](/apis/latest/js/int) for helper functions.
+32-bits, truncated when necessary. We provide the usual operations on them: `+`, `-`, `*`, `/`, etc. See [Js.Int](/apis/latest/js/int) for helper functions.
 
 **Careful when you bind to JavaScript numbers**! Long ones might be truncated. Bind JS number (especially Dates) as **float** instead.
 
