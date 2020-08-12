@@ -298,23 +298,23 @@ add(~first: option<int>?, ~second: option<int>?)
 
 ```res
 // first arg type, second arg type, return type
-type foo = (int, int) => int
+type add = (int, int) => int
 
 // labeled
-type foo = (~first: int, ~second: int) => int
+type add = (~first: int, ~second: int) => int
 
 // labeled
-type foo = (~first: int=?, ~second: int=?, unit) => int
+type add = (~first: int=?, ~second: int=?, unit) => int
 ```
 
 #### In Interface Files
 
-To annotate a function from the implementation file (`.res`):
+To annotate a function from the implementation file (`.res`) in your interface file (`.resi`):
 
 ```res
 let add: (int, int) => int
 ```
 
-Same rules as the previous section, except replacing `type foo = bar` with `let add: bar`.
+The type annotation part is the same as the previous section on With Type Annotation.
 
-**Don't** confuse this with actually exporting a type in the interface file. `let add: bar` annotates an existing value `bar` from the implementation file. `type foo = bar` exports a type of the same shape from the implementation file.
+**Don't** confuse `let add: myType` with `type add = myType`. When used in `.resi` interface files, the former exports the binding `add` while annotating it as type `myType`. The latter exports the type `add`, whose value is the type `myType`.

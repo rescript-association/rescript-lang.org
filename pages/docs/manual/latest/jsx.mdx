@@ -45,34 +45,34 @@ becomes
 ### Children
 
 ```res
-<MyComponent> foo bar </MyComponent>
+<MyComponent> child1 child2 </MyComponent>
 ```
 
-This is the syntax for passing a list of two items, `foo` and `bar`, to the children position. It desugars to a list containing `foo` and `bar`:
+This is the syntax for passing a list of two items, `child1` and `child2`, to the children position. It desugars to a list containing `child1` and `child2`:
 
 ```res
-@JSX MyComponent.createElement(~children=list{foo, bar}, ())
+@JSX MyComponent.createElement(~children=list{child1, child2}, ())
 ```
 
 **Note** again that this isn't the transform for ReasonReact; ReasonReact turns the final list into an array. But the idea still applies.
 
-So naturally, `<MyComponent> foo </MyComponent>` desugars to `@JSX MyComponent.createElement(~children=list{foo}, ())`. I.e. whatever you do, the arguments passed to the children position will be wrapped in a list. What if you don't want that? **What if you want to directly pass `foo` without an extra wrapping**?
+So naturally, `<MyComponent> myChild </MyComponent>` desugars to `@JSX MyComponent.createElement(~children=list{myChild}, ())`. I.e. whatever you do, the arguments passed to the children position will be wrapped in a list. What if you don't want that? **What if you want to directly pass `myChild` without an extra wrapping**?
 
 #### Children Spread
 
 To solve the above problem, we've introduced
 
 ```res
-<MyComponent> ...foo </MyComponent>
+<MyComponent> ...myChild </MyComponent>
 ```
 
-This passes the value `foo` _without_ wrapping it in a list (or array, in the case of ReasonReact). Aka, this desugars to:
+This passes the value `myChild` _without_ wrapping it in a list (or array, in the case of ReasonReact). Aka, this desugars to:
 
 ```res
-@JSX MyComponent.createElement(~children=foo, ())
+@JSX MyComponent.createElement(~children=myChild, ())
 ```
 
-This is extra useful in the cases where you are handled `foo` that is already a list of things, and want to forward that without wrapping it an extra time (which would be a type error) \*. It also allows you to pass arbitrary data structures at `children` position (remember, JSX `children` is really just a totally normal prop):
+This is extra useful in the cases where you are handled `myChild` that is already a list of things, and want to forward that without wrapping it an extra time (which would be a type error) \*. It also allows you to pass arbitrary data structures at `children` position (remember, JSX `children` is really just a totally normal prop):
 
 ```res
 <MyComponent> ...((theClassName) => <div className=theClassName />) </MyComponent>
@@ -99,7 +99,7 @@ Here's a JSX tag that shows most of the features.
 ## Departures From JS JSX
 
 - Attributes and children don't mandate `{}`, but we show them anyway for ease of learning. Once you format your file, some of them go away and some turn into parentheses.
-- There is no support for JSX prop spread: `<Foo {...bar} />`. Though somewhat related,  we do have children spread, described above: `<Foo> ...baz </Foo>`.
+- There is no support for JSX prop spread: `<Comp {...props} />`. Though somewhat related,  we do have children spread, described above: `<Comp> ...children </Comp>`.
 - Punning!
 
 ### Punning

@@ -189,7 +189,7 @@ Fs.readFileSync("xx.txt", "ascii");
 ```
 
 - Attaching `@bs.string` to the whole poly variant type makes its constructor compile to a string of the same name.
-- Attaching a `@bs.as("foo")` to a constructor lets you customize the final string.
+- Attaching a `@bs.as("bla")` to a constructor lets you customize the final string.
 
 And now, passing something like `"myOwnUnicode"` or other variant constructor names to `readFileSync` would correctly error.
 

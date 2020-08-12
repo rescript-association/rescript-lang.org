@@ -44,7 +44,7 @@ Loaders are indeed troublesome; in the meantime, please use e.g. `%raw(`require(
 
 ## Getting Project's Dependencies
 
-`bsb` generates one `foo.mlast.d` file per `foo` source file; you'll find them in `lib/bs`. These are human readable, machine-friendly list of the dependencies of said `foo` file. You can read into them for your purpose (though mind the IO overhead). Use these files instead of creating your own dependency graph; we did the hard work of tracking the dependencies as best as possible (including inner modules, `open`s, module names overlap, etc).
+`bsb` generates one `MyFile.mlast.d` file per `MyFile` source file; you'll find them in `lib/bs`. These are human readable, machine-friendly list of the dependencies of said `MyFile`. You can read into them for your purpose (though mind the IO overhead). Use these files instead of creating your own dependency graph; we did the hard work of tracking the dependencies as best as possible (including inner modules, `open`s, module names overlap, etc).
 
 ## Run Script Per File Built
 

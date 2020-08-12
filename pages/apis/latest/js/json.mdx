@@ -197,7 +197,7 @@ Raises `SyntaxError` if the given string is not a valid JSON. Note: `SyntaxError
 ```res example
 /* parse a simple JSON string */
 
-let json = try Js.Json.parseExn(` "foo" `) catch {
+let json = try Js.Json.parseExn(` "hello" `) catch {
 | _ => failwith("Error parsing JSON string")
 }
 
@@ -288,6 +288,6 @@ let stringifyAny: 'a => option<string>
 `stringifyAny(value)` formats any value into a JSON string.
 
 ```res example
-/* prints `["foo", "bar"]` */
-Js.log(Js.Json.stringifyAny(["foo", "bar"]))
+/* prints `["hello", "world"]` */
+Js.log(Js.Json.stringifyAny(["hello", "world"]))
 ```

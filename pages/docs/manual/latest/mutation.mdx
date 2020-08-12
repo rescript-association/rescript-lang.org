@@ -7,7 +7,7 @@ ReScript has great traditional imperative & mutative programming capabilities. Y
 Let-bindings are immutable, but you can wrap it with a `ref`, exposed as a record with a single mutable field in the standard library:
 
 ```res
-let foo = ref(5)
+let myValue = ref(5)
 ```
 
 ## Usage
@@ -15,19 +15,19 @@ let foo = ref(5)
 You can get the actual value of a `ref` box through accessing its `contents` field:
 
 ```res
-let five = foo.contents // 5
+let five = myValue.contents // 5
 ```
 
-Assign a new value to `foo` like so:
+Assign a new value to `myValue` like so:
 
 ```res
-foo.contents = 6
+myValue.contents = 6
 ```
 
 We provide a syntax sugar for this:
 
 ```res
-foo := 6
+myValue := 6
 ```
 
 Note that the previous binding `five` stays `5`, since it got the underlying item on the `ref` box, not the `ref` itself.
