@@ -61,6 +61,7 @@ glob.sync(__dirname + '/../pages/**/*.mdx').forEach((file) => {
       child_process.execFileSync(bsc, ['-i', tempFileName], {stdio: 'pipe'})
     } catch (e) {
       process.stdout.write(postprocessOutput(file, e))
+      process.exit(e.status);
     }
   }
 })
