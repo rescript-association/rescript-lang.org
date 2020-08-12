@@ -2,6 +2,16 @@
 
 ReScript considers performance at install time, build time and run time as a serious feature. Here are some more info, and tips on keeping the build fast. **Feel free to skip this section** if you're just starting out.
 
+## Profile Your Build
+
+Sometime your build can be slow due to some confused infra setups. We provide an interactive visualization of your build's performance via `bstracing`:
+
+```sh
+./node_modules/.bin/bstracing
+```
+
+Run the above command at your ReScript project's root; it'll spit out a JSON file you can drag and drop into `chrome://tracing`.
+
 ## Under the Hood
 
 Bsb itself uses a build system under the hood, called [Ninja](https://ninja-build.org). Ninja is like Make, but cross-platform, minimal, focuses in perf and destined to be more of a low-level building block than a full-blown build system. In this regard, Ninja's a great implementation detail for bsb.
