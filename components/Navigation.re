@@ -351,7 +351,7 @@ module MobileNav = {
         /*</li>*/
         <li className=base>
           <a
-            href="https://github.com/reason-association/reasonml.org"
+            href="https://github.com/reason-association/rescript-lang.org"
             rel="noopener noreferrer"
             target="_blank"
             className=extLink>

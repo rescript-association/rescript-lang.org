@@ -393,7 +393,7 @@ module ErrorPane = {
           ->s
           <Markdown.A
             target="_blank"
-            href="https://github.com/reason-association/reasonml.org/issues">
+            href="https://github.com/reason-association/rescript-lang.org/issues">
             "issue tracker"->s
           </Markdown.A>
           "."->s

@@ -1,16 +1,13 @@
 # Contributing
 
-Thanks for considering contributing to our platform. We really appreciate the help and would
-like to give you some tips on how to contribute in the most effective way.
+Thanks for considering contributing to our platform. We really appreciate the help and would like to give you some tips on how to contribute in the most effective way.
 
-Please make sure to check out our [Code of Conduct](CODE_OF_CONDUCT.md) and
-make sure to follow it in all your interactions within this project and the
-ReasonML community.
+Please make sure to check out our [Code of Conduct](CODE_OF_CONDUCT.md) and make sure to follow it in all your interactions within this project and the community.
 
 ## Ways to contribute
 
-- Writing docs for Belt (later on BuckleScript, Reason, ReasonReact)
-- Joining in discussions on our [issue tracker](https://github.com/reason-association/reasonml.org/issues)
+- Writing docs for Belt 
+- Joining in discussions on our [issue tracker](https://github.com/reason-association/rescript-lang.org/issues)
 - Give feedback for improvements (incomplete / missing docs, bad wording,
   search user experience / design, etc.)
 - Advanced: Help building platform features (design system, automatic testing, markdown parsing, etc.)
@@ -20,7 +17,7 @@ ReasonML community.
 ### Find an issue
 
 Before you start any work or submit any PRs, make sure to check our [issue
-tracker](https://github.com/reason-association/reasonml.org/issues) for any
+tracker](https://github.com/reason-association/rescript-lang.org/issues) for any
 issues or discussions on the topic.
 
 If you can't find any relevant issues, feel free to create a new one to start a
@@ -39,7 +36,7 @@ on the issue tracker. Otherwise your PR might not be accepted!
 
 If you need inspiration on what to work on, you can check out issues tagged
 with [`good first
-issue`](https://github.com/reason-association/reasonml.org/issues?q=is%3Aissue+is%3Aopen+label%3A"good+first+issue").
+issue`](https://github.com/reason-association/rescript-lang.org/issues?q=is%3Aissue+is%3Aopen+label%3A"good+first+issue").
 
 ### Discuss an issue
 
@@ -62,11 +59,11 @@ resource for others to understand technical decisions later on.
 
 ### Communication Channels
 
-- [Issue Tracker](https://github.com/reason-association/reasonml.org/issues)
-- [ReasonML Discord Chat](https://discord.gg/reasonml) -> [#docs](https://discord.gg/fscQAnj) Channel
-- [ReasonML Discourse (General / mostly unrelated discussions)](https://reasonml.chat)
+- [Issue Tracker](https://github.com/reason-association/rescript-lang.org/issues)
+- [Discord Chat](https://discord.gg/reasonml) -> [#docs](https://discord.gg/fscQAnj) Channel
+- [ReScript Discourse (General / mostly unrelated discussions)](http://forum.rescript-lang.org)
 
-## Working on the reasonml.org codebase
+## Working on the rescript-lang.org codebase
 
 We try to keep our contribution guidelines to a minimum. Please keep following
 rules in mind whenever writing code.
@@ -84,7 +81,7 @@ client side code (to keep the bundle size small).
 
 ### Think about the target audience & UX
 
-The reasonml.org project aims to be the best documentation experience for
+The rescript-lang.org project aims to be the best documentation experience for
 Reason / BuckleScript users. We don't necessarily need to target OCaml users as
 well (at least for the start), so keeping the docs minimalistic is important.
 

@@ -15,7 +15,7 @@
     - fullslug = "compiler/my-post"
 
     The reason for the flat hierarchy is that we want to keep a flat URL
-    hierarchy with `https://reasonml.org/blog/[some-slug]`, without carrying
+    hierarchy with `https://rescript-lang.org/blog/[some-slug]`, without carrying
     over the full subdirectory hierarchy. This allows us to restructure
     internally more easily without breaking permalinks.
 
@@ -169,7 +169,7 @@ module RssFeed = {
   };
 
   // Retrieves the most recent [max] blog post feed items
-  let getLatest = (~max=10, ~baseUrl="https://reasonml.org", ()): array(item) => {
+  let getLatest = (~max=10, ~baseUrl="https://rescript-lang.org", ()): array(item) => {
     let authors = BlogFrontmatter.Author.getAllAuthors();
     let items = getAllPosts()
     ->Belt.Array.reduce([||], (acc, next) => {
@@ -250,7 +250,7 @@ module RssFeed = {
   <rss version="2.0">
     <channel>
         <title>$siteTitle</title>
-        <link>https://reasonml.org</link>
+        <link>https://rescript-lang.org</link>
         <description>$siteDescription</description>
         <language>en</language>
         $latestPubDateElement
