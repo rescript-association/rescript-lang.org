@@ -52,6 +52,8 @@ let postprocessOutput = (file, error) => {
 
 fs.writeFileSync(tempFileName, '')
 
+let success = true
+
 glob.sync(__dirname + '/../pages/**/*.mdx').forEach((file) => {
   let content = fs.readFileSync(file, {encoding: 'utf-8'})
   let parsedResult = parseFile(content)
@@ -61,9 +63,10 @@ glob.sync(__dirname + '/../pages/**/*.mdx').forEach((file) => {
       child_process.execFileSync(bsc, ['-i', tempFileName], {stdio: 'pipe'})
     } catch (e) {
       process.stdout.write(postprocessOutput(file, e))
-      process.exit(e.status);
+      success = false
     }
   }
 })
 
 fs.unlinkSync(tempFileName)
+process.exit(success ? 0 : 1)
