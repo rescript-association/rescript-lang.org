@@ -8,7 +8,7 @@
     Other relevant resources:
     ----
     OCaml compiler Misc.Color encoding colors in the output printers:
-    https://github.com/BuckleScript/ocaml/blob/0a3ec12fef5dbee795778a47b18024563b5e49f2/utils/misc.ml
+    https://github.com/rescript-lang/ocaml/blob/0a3ec12fef5dbee795778a47b18024563b5e49f2/utils/misc.ml
  */
 
 module Color = {

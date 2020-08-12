@@ -15,8 +15,7 @@ strategy where a tree of components is gradually converted to Reason bottom-up:
 deal](https://www.javierchavarri.com/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal/).
 
 The implementation of [@genType] performs a type-directed transformation of
-Reason programs after
-[bucklescript](https://github.com/BuckleScript/bucklescript) compilation. The
+Reason programs after ReScript compilation. The
 transformed programs operate on data types idiomatic to JS. For example, a
 Reason function operating on a Reason variant `type t  = | A(int) | B(string)`
 (which is represented as custom blocks at runtime) is exported to a JS function
