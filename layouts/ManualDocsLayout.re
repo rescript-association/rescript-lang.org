@@ -102,6 +102,7 @@ let guidesNavs = [|
 let extraNavs = [|
   NavItem.{name: "Newcomer Examples", href: "/docs/manual/latest/newcomer-examples"},
   {name: "Project Structure", href: "/docs/manual/latest/project-structure"},
+  {name: "FAQ", href: "/docs/manual/latest/faq"},
 |];
 
 let categories = [|
