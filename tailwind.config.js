@@ -66,7 +66,7 @@ module.exports = {
           "60": "rgba(62, 64, 87, 0.60)"
         },
         snow: {
-          light: "#FCFCFC",
+          light: "#FAFAFA",
           default: "#F4F4F5",
           dark: "#EAEBED",
           darker: "#BCBEC9"

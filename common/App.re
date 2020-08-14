@@ -54,9 +54,6 @@ let default = (props: props): React.element => {
 
   switch (url) {
   // docs routes
-
-  | {base: [|"docs"|], version: Latest} =>
-    <DocsOverviewLayout> content </DocsOverviewLayout>
   | {base: [|"docs", "manual"|], version: Latest} =>
     <ManualDocsLayout.Prose> content </ManualDocsLayout.Prose>
   | {base: [|"docs", "reason-compiler"|], version: Latest} =>
