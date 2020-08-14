@@ -48,9 +48,11 @@ let default = () => {
   <>
     <Meta title="Overview | ReScript Documentation" />
     <div>
-      <div
-        className="inline-block rounded px-2 bg-fire mb-4 tracking-tight overflow-x-auto text-14 text-white">
-        {("Revision: " ++ version)->s}
+      // <div
+      //   className="inline-block rounded px-2 bg-fire mb-4 tracking-tight overflow-x-auto text-14 text-white">
+      //   {("Revision: " ++ version)->s}
+      // </div>
+      <div className="mb-6">
       </div>
       <Markdown.H1> "Docs"->s </Markdown.H1>
     </div>
