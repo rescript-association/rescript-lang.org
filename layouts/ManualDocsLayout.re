@@ -22,6 +22,7 @@ module Toc = DocsLayout.Toc;
 
 let overviewNavs = [|
   NavItem.{name: "Introduction", href: "/docs/manual/latest/introduction"},
+  {name: "Migrate from BuckleScript/Reason", href: "/docs/manual/latest/migrate-from-bucklescript-reason"},
   {name: "Installation", href: "/docs/manual/latest/installation"},
   {name: "Try", href: "/docs/manual/latest/try"},
   {name: "Editor Plugins", href: "/docs/manual/latest/editor-plugins"},
