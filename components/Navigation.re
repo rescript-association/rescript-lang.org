@@ -449,7 +449,7 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
     style={Style.make(~minWidth, ())}
     className="fixed flex xs:justify-center z-20 top-0 w-full h-18 bg-night-dark shadow text-white-80 text-base">
     <div
-      className="flex justify-between mx-4 md:mx-8 items-center h-full w-full min-w-320 max-w-1280">
+      className="flex justify-between mx-4 md:mx-8 items-center h-full w-full max-w-1280">
       <div className="h-10 w-10">
         <a
           href="/"
@@ -466,7 +466,7 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
         className="flex xs:justify-end w-full bg-night-dark sm:h-auto sm:relative">
         <div
           className="flex ml-10 w-full max-w-320"
-          style={Style.make(~minWidth="12rem", ~maxWidth="26rem", ())}>
+          style={Style.make(~maxWidth="26rem", ())}>
           /*<button*/
           /*className="sm:hidden px-4 flex items-center justify-center h-full">*/
           /*<Icon.MagnifierGlass className="w-5 h-5 hover:text-white" />*/
