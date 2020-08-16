@@ -11,8 +11,8 @@ module Card = {
       <h2 className="font-bold text-21 mb-4"> title->s </h2>
       <ul>
         {Belt.Array.map(hrefs, ((text, href)) => {
-           <li key="text" className="text-16 mb-1 last:mb-0">
-             <Link href> <Markdown.A href> text->s </Markdown.A> </Link>
+           <li key=text className="text-16 mb-1 last:mb-0">
+             <Markdown.A href> text->s </Markdown.A>
            </li>
          })
          ->ate}
