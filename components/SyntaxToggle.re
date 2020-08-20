@@ -21,14 +21,15 @@ let make = (~syntax: string, ~setSyntax: (string => string) => unit) => {
 
         let label =
           if (lang === "re") {
-            "RE (deprecated)"
+            <span> "RE "->s <span className="italic"> "(deprecated)"->s </span> </span>;
           } else {
-            Js.String2.toUpperCase(lang);
+            Js.String2.toUpperCase(lang)->s;
           };
 
         let element =
-          <button key=lang className={"inline-block px-4 w-1/2 " ++ active} onClick>
-            label->s
+          <button
+            key=lang className={"inline-block px-4 w-1/2 " ++ active} onClick>
+            label
           </button>;
 
         Js.Array2.push(acc, element)->ignore;
@@ -36,7 +37,9 @@ let make = (~syntax: string, ~setSyntax: (string => string) => unit) => {
       },
     );
 
-  <div className="flex text-12 border rounded text-onyx-50" style={ReactDOMRe.Style.make(~maxWidth="16rem", ())}>
+  <div
+    className="flex text-12 border rounded text-onyx-50"
+    style={ReactDOMRe.Style.make(~maxWidth="16rem", ())}>
     children->ate
   </div>;
 };
