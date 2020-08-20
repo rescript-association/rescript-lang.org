@@ -35,6 +35,7 @@ If the variant you're using is in a different file, bring it into scope like you
 type animal = Dog | Cat | Bird
 ```
 ```js
+// Empty output
 ```
 
 </CodeTab>
@@ -67,6 +68,7 @@ type account =
   | Facebook(string, int)
 ```
 ```js
+// Empty output
 ```
 
 </CodeTab>
@@ -107,6 +109,7 @@ type user =
   | Id(idType)
 ```
 ```js
+// Empty output
 ```
 
 </CodeTab>
@@ -121,6 +124,7 @@ type user =
   | Id({name: string, password: string})
 ```
 ```js
+// Empty output
 ```
 
 </CodeTab>
@@ -142,6 +146,7 @@ type account2 =
   | Instagram((string, int)) // 1 argument - happens to be a 2-tuple
 ```
 ```js
+// Empty output
 ```
 
 ### Variants Must Have Constructors
@@ -198,6 +203,7 @@ You could definitely do that, but there are better ways! For example, define two
 @bs.module("myLibrary") external drawString: string => unit = "draw"
 ```
 ```js
+// Empty output
 ```
 
 </CodeTab>

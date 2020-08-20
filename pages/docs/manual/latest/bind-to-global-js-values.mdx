@@ -11,6 +11,7 @@ Some JS values, like `setTimeout`, live in the global scope. You can bind to the
 @bs.val external clearTimeout: float => unit = "clearTimeout"
 ```
 ```js
+// Empty output
 ```
 
 </CodeTab>
@@ -77,6 +78,7 @@ you can bind to an arbitrarily deep object by passing a tuple to `bs.scope`:
 @bs.val @bs.scope(("window", "location", "ancestorOrigins")) external length : int = "length"
 ```
 ```js
+// Empty output
 ```
 
 </CodeTab>
