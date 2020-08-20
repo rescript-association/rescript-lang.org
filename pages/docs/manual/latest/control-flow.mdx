@@ -8,6 +8,8 @@ ReScript also supports our famous pattern matching, which will be covered in [it
 
 Unlike its JavaScript counterpart, ReScript's `if` is an expression; they evaluate to their body's content:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let message = if isMorning {
   "Good morning!"
@@ -15,16 +17,32 @@ let message = if isMorning {
   "Hello!"
 }
 ```
+```js
+var message = isMorning ? "Good morning!" : "Hello!";
+```
+
+</CodeTab>
 
 **Note:** an `if-else` expression without the final `else` branch implicitly gives `()` (aka the `unit` type). So this:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 if showMenu {
   displayMenu()
 }
 ```
+```js
+if (showMenu) {
+  displayMenu();
+}
+```
+
+</CodeTab>
 
 is basically the same as:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 if showMenu {
@@ -33,6 +51,13 @@ if showMenu {
   ()
 }
 ```
+```js
+if (showMenu) {
+  displayMenu()
+}
+```
+
+</CodeTab>
 
 Here's another way to look at it. This is clearly wrong:
 
@@ -46,9 +71,16 @@ It'll give a type error, saying basically that the implicit `else` branch has th
 
 We also have ternary sugar, but **we encourage you to prefer if-else when possible**.
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let message = isMorning ? "Good morning!" : "Hello!"
 ```
+```js
+var message = isMorning ? "Good morning!" : "Hello!";
+```
+
+</CodeTab>
 
 **`if-else` and ternary are much less used** in ReScript than in other languages; [Pattern-matching](pattern-matching-destructuring.md) kills a whole category of code that previously required conditionals.
 
@@ -56,11 +88,22 @@ let message = isMorning ? "Good morning!" : "Hello!"
 
 For loops iterate from a starting value up to (and including) the ending value.
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 for i in startValueInclusive to endValueInclusive {
-  // use i here
+  Js.log(i)
 }
 ```
+```js
+for(var i = startValueInclusive; i <= endValueInclusive; ++i){
+  console.log(i);
+}
+```
+
+</CodeTab>
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 // prints: 1 2 3
@@ -69,14 +112,33 @@ for x in 1 to 3 {
   Js.log(" ")
 }
 ```
+```js
+for(var x = 1; x <= 3; ++x){
+  console.log(x);
+  console.log(" ");
+}
+```
+
+</CodeTab>
 
 You can make the `for` loop count in the opposite direction by using `downto`.
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 for i in startValueInclusive downto endValueInclusive {
-  // use i here
+  Js.log(i)
 }
 ```
+```js
+for(var i = startValueInclusive; i >= endValueInclusive; --i){
+  console.log(i);
+}
+```
+
+</CodeTab>
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 // prints: 3 2 1
@@ -85,29 +147,63 @@ for x in 3 downto 1 {
   Js.log(" ")
 }
 ```
+```js
+for(var x = 3; x >= 1; --x){
+  console.log(x);
+  console.log(" ");
+}
+```
+
+</CodeTab>
 
 ## While Loops
 
 While loops execute its body code block while its condition is true.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 while testCondition {
   // body here
 }
 ```
+```js
+while (testCondition) {
+  // body here
+}
+```
+
+</CodeTab>
 
 ### Tips & Tricks
 
 There's no loop-breaking `break` keyword (nor early `return` from functions, for that matter) in ReScript. However, we can break out of a while loop easily through using a [mutable binding](mutation.md).
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let break = ref(false)
 
 while !break.contents {
-  if Js.Math.random_int(1, 10) === 3 {
+  if Js.Math.random() > 0.3 {
     break := true
   } else {
     Js.log("Still running")
   }
 }
 ```
+```js
+var $$break = {
+  contents: false
+};
+
+while(!$$break.contents) {
+  if (Math.random() > 0.3) {
+    $$break.contents = true;
+  } else {
+    console.log("Still running");
+  }
+};
+```
+
+</CodeTab>
