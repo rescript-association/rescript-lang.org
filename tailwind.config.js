@@ -174,6 +174,7 @@ module.exports = {
      so we added the Tailwind default values here for
      convenience */
     fontSize: {
+      "12": ".75rem",
       "14": "0.875rem",
       "16": "1rem",
       "18": "1.125rem",
