@@ -8,51 +8,117 @@ ReScript supports the JSX syntax, with some slight differences compared to the o
 
 ## Capitalized Tag
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 <MyComponent name={"ReScript"} />
 ```
+```js
+React.createElement(
+  MyComponent.make,
+  MyComponent.makeProps("ReScript", undefined)
+);
+```
+
+</CodeTab>
 
 becomes
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 @JSX MyComponent.createElement(~name="ReScript", ~children=list{}, ())
 ```
+```js
+React.createElement(
+  MyComponent.make,
+  MyComponent.makeProps("ReScript", undefined)
+);
+```
+
+</CodeTab>
 
 ## Uncapitalized Tag
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 <div onClick={handler}> child1 child2 </div>
 ```
+```js
+React.createElement("div", {
+  onClick: handler
+}, child1, child2);
+```
+
+</CodeTab>
 
 becomes
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 @JSX div(~onClick=handler, ~children=list{child1, child2}, ())
 ```
+```js
+React.createElement("div", {
+  onClick: handler
+}, child1, child2);
+```
+
+</CodeTab>
 
 ## Fragment
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 <> child1 child2 </>
 ```
+```js
+React.createElement(React.Fragment, undefined, child1, child2);
+```
+
+</CodeTab>
 
 becomes
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 @JSX list{child1, child2}
 ```
+```js
+React.createElement(React.Fragment, undefined, child1, child2);
+```
+
+</CodeTab>
 
 ### Children
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 <MyComponent> child1 child2 </MyComponent>
 ```
+```js
+React.createElement(MyComponent.make, MyComponent.makeProps(null, undefined), child1, child2);
+```
+
+</CodeTab>
 
 This is the syntax for passing a list of two items, `child1` and `child2`, to the children position. It desugars to a list containing `child1` and `child2`:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 @JSX MyComponent.createElement(~children=list{child1, child2}, ())
 ```
+```js
+React.createElement(MyComponent.make, MyComponent.makeProps(null, undefined), child1, child2);
+```
+
+</CodeTab>
 
 **Note** again that this isn't the transform for ReasonReact; ReasonReact turns the final list into an array. But the idea still applies.
 
@@ -62,22 +128,53 @@ So naturally, `<MyComponent> myChild </MyComponent>` desugars to `@JSX MyCompone
 
 To solve the above problem, we've introduced
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 <MyComponent> ...myChild </MyComponent>
 ```
+```js
+React.createElement(MyComponent.make, MyComponent.makeProps(myChild, undefined));
+```
+
+</CodeTab>
 
 This passes the value `myChild` _without_ wrapping it in a list (or array, in the case of ReasonReact). Aka, this desugars to:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 @JSX MyComponent.createElement(~children=myChild, ())
 ```
+```js
+React.createElement(MyComponent.make, MyComponent.makeProps(myChild, undefined));
+```
+
+</CodeTab>
 
 This is extra useful in the cases where you are handled `myChild` that is already a list of things, and want to forward that without wrapping it an extra time (which would be a type error) \*. It also allows you to pass arbitrary data structures at `children` position (remember, JSX `children` is really just a totally normal prop):
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 <MyComponent> ...((theClassName) => <div className=theClassName />) </MyComponent>
+
 <MyForm> ...("Hello", "Submit") </MyForm>
 ```
+```js
+React.createElement(
+  make,
+  makeProps(function (theClassName) {
+    return React.createElement("div", {
+      className: theClassName,
+    });
+  }, undefined)
+);
+
+React.createElement(MyForm.make, MyForm.makeProps(["Hello", "Submit"], undefined));
+```
+
+</CodeTab>
 
 ## Usage
 
@@ -85,16 +182,34 @@ See [ReasonReact JSX](/docs/reason-react/latest/jsx) for an example application 
 
 Here's a JSX tag that shows most of the features.
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 <MyComponent
   booleanAttribute={true}
   stringAttribute="string"
   intAttribute=1
   forcedOptional=?{Some("hello")}
-  onClick={send(handleClick)}>
+  onClick={handleClick}>
   <div> {React.string("hello")} </div>
 </MyComponent>
 ```
+```js
+React.createElement(
+  MyComponent.make,
+  MyComponent.makeProps(
+    true,
+    "string",
+    1,
+    "hello",
+    handleClick,
+    React.createElement("div", undefined, "hello"),
+    undefined
+  )
+);
+```
+
+</CodeTab>
 
 ## Departures From JS JSX
 
@@ -108,9 +223,19 @@ Here's a JSX tag that shows most of the features.
 
 Reason JSX supports punning. `<input checked />` is just a shorthand for `<input checked=checked />`. The formatter will help you format to the latter whenever possible. This is convenient in the cases where there are lots of props to pass down:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 <MyComponent isLoading text onClick />
 ```
+```js
+React.createElement(
+  MyComponent.make,
+  MyComponent.makeProps(isLoading, text, onClick, undefined)
+);
+```
+
+</CodeTab>
 
 Consequently, a Reason JSX component can cram in a few more props before reaching for extra libraries solutions that avoids props passing.
 

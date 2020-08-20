@@ -9,11 +9,17 @@ Imagine writing a let binding, but
 - The right side isn't a value; it's the name of the JS value you're binding to.
 - The type for the binding is mandatory, since we need to know what the type of that JS value is.
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 @bs.val external getElementsByClassName:
   string => array<Dom.element>
   = "document.getElementsByClassName"
 ```
+```js
+```
+
+</CodeTab>
 
 **Note**: `external`s can only be at the top level, or inside a module definition. You can't declare them in e.g. a function body.
 
