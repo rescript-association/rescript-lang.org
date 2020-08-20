@@ -381,6 +381,9 @@ module CodeTab = {
       | _ => [||]
       };
 
+    let preferredSyntax = React.useContext(SyntaxContextProvider.context);
+
+    // Index for the selected tab according to preferedSyntax
     let tabs =
       Belt.Array.reduceWithIndex(
         mdxElements,
@@ -420,7 +423,6 @@ module CodeTab = {
                   Some(Code.parseNumericRangeMeta(metastring)),
               };
               Js.Array2.push(acc, tab)->ignore;
-
             | _ => ()
             }
           | _ => ()
@@ -430,8 +432,8 @@ module CodeTab = {
       );
 
     <div className="mt-4 mb-10">
-    <CodeExample.Toggle tabs />
-    </div>
+      <CodeExample.Toggle preferredSyntax tabs />
+    </div>;
   };
 };
 

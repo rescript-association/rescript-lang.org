@@ -48,10 +48,14 @@ let langShortname = (lang: string) => {
 };
 
 [@react.component]
-let make = (~highlightedLines=[||], ~code: string, ~lang="text") => {
+let make = (~highlightedLines=[||], ~code: string, ~lang="text", ~label=?) => {
   let children = renderHLJS(~highlightedLines, ~code, ~lang, ());
 
-  let label = langShortname(lang);
+  let label =
+    switch (label) {
+    | Some(label) => label
+    | None => langShortname(lang)
+    };
 
   <div
     className="flex w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-snow-dark bg-snow-light px-5 py-2 text-night-dark">
@@ -72,15 +76,52 @@ module Toggle = {
   };
 
   [@react.component]
-  let make = (~tabs: array(tab)) => {
-    let (selected, setSelected) = React.useState(_ => 0);
+  let make = (~tabs: array(tab), ~preferredSyntax: string) => {
+    let hasRes =
+      Js.Array2.find(tabs, tab => tab.lang === Some("res")) !== None;
+    let hasRe = Js.Array2.find(tabs, tab => tab.lang === Some("re")) !== None;
 
-    switch (tabs) {
+    let filteredTabs =
+      Belt.Array.keep(tabs, tab =>
+        if (hasRes && hasRe) {
+          switch (preferredSyntax, tab.lang) {
+          | ("re", Some("res")) => false
+          | ("res", Some("re")) => false
+          | _ => true
+          };
+        } else {
+          true;
+        }
+      );
+
+    let preSelected =
+      switch (
+        Js.Array2.findIndex(filteredTabs, tab => {
+          Belt.Option.map(tab.lang, lang => lang === preferredSyntax)
+          ->Belt.Option.getWithDefault(false)
+        })
+      ) {
+      | (-1) => 0
+      | index => index
+      };
+
+    let (selected, setSelected) = React.useState(_ => preSelected);
+
+    React.useEffect1(
+      () => {
+        setSelected(_ => preSelected);
+        None;
+      },
+      [|preSelected|],
+    );
+
+    switch (filteredTabs) {
     | [|tab|] =>
       make({
         "highlightedLines": tab.highlightedLines,
         "code": tab.code,
         "lang": tab.lang,
+        "label": tab.label,
       })
     | multiple =>
       let labels =
@@ -131,6 +172,20 @@ module Toggle = {
           })
         ->Belt.Option.getWithDefault(React.null);
 
+      let convertMsg =
+        switch (hasRes, hasRe, preferredSyntax) {
+        | (true, false, "re") =>
+          let curr = Belt.Array.get(filteredTabs, selected);
+          switch (curr) {
+          | Some({lang: Some("res")}) =>
+            <div className="text-12 px-5 text-onyx-50 mt-2 italic">
+              "(This snippet is not available in Reason syntax)"->s
+            </div>
+          | _ => React.null
+          };
+        | _ => React.null
+        };
+
       <div
         className="flex w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-snow-dark bg-snow-light px-5 pb-2 text-night-dark">
         <div
@@ -140,6 +195,7 @@ module Toggle = {
         <div className="px-5 text-base pb-6 overflow-x-auto -mt-2">
           <pre> children </pre>
         </div>
+        convertMsg
       </div>;
     };
   };

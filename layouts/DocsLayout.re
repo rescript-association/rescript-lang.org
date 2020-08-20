@@ -322,6 +322,8 @@ let make =
   let (isSidebarOpen, setSidebarOpen) = React.useState(_ => false);
   let toggleSidebar = () => setSidebarOpen(prev => !prev);
 
+  let (syntax, setSyntax) = React.useState(() => "res");
+
   React.useEffect1(
     () => {
       open Next.Router.Events;
@@ -345,14 +347,19 @@ let make =
   );
 
   let preludeSection =
-    <div
-      className="flex justify-between text-primary font-medium items-baseline">
-      title->s
-      {switch (version) {
-       | Some(version) =>
-         <span className="font-mono text-sm"> version->s </span>
-       | None => React.null
-       }}
+    <div>
+      <div
+        className="flex justify-between text-primary font-medium items-baseline">
+        title->s
+        {switch (version) {
+         | Some(version) =>
+           <span className="font-mono text-sm"> version->s </span>
+         | None => React.null
+         }}
+      </div>
+        <div className="mt-4">
+      <SyntaxToggle syntax setSyntax />
+      </div>
     </div>;
 
   let sidebar =
@@ -368,13 +375,15 @@ let make =
 
   let metaTitle = title ++ " | ReScript Documentation";
 
-  <SidebarLayout
-    metaTitle
-    theme
-    components
-    sidebarState=(isSidebarOpen, setSidebarOpen)
-    sidebar
-    ?breadcrumbs>
-    children
-  </SidebarLayout>;
+  <SyntaxContextProvider value=syntax>
+    <SidebarLayout
+      metaTitle
+      theme
+      components
+      sidebarState=(isSidebarOpen, setSidebarOpen)
+      sidebar
+      ?breadcrumbs>
+      children
+    </SidebarLayout>
+  </SyntaxContextProvider>;
 };
