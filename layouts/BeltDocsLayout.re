@@ -30,27 +30,27 @@ let overviewNavs = [|
 |];
 
 let setNavs = [|
-  NavItem.{name: "HashSet", href: "/apis/latest/belt/hash-set"},
-  {name: "HashSetInt", href: "/apis/latest/belt/hash-set-int"},
-  {name: "HashSetString", href: "/apis/latest/belt/hash-set-string"},
-  {name: "Set", href: "/apis/latest/belt/set"},
+  NavItem.{name: "Set", href: "/apis/latest/belt/set"},
   {name: "SetDict", href: "/apis/latest/belt/set-dict"},
   {name: "SetInt", href: "/apis/latest/belt/set-int"},
   {name: "SetString", href: "/apis/latest/belt/set-string"},
 |];
 
 let mapNavs = [|
-  NavItem.{name: "HashMap", href: "/apis/latest/belt/hash-map"},
-  {name: "HashMapInt", href: "/apis/latest/belt/hash-map-int"},
-  {name: "HashMapString", href: "/apis/latest/belt/hash-map-string"},
-  {name: "Map", href: "/apis/latest/belt/map"},
+  NavItem.{name: "Map", href: "/apis/latest/belt/map"},
   {name: "MapDict", href: "/apis/latest/belt/map-dict"},
   {name: "MapInt", href: "/apis/latest/belt/map-int"},
   {name: "MapString", href: "/apis/latest/belt/map-string"},
 |];
 
 let mutableCollectionsNavs = [|
-  NavItem.{name: "MutableMap", href: "/apis/latest/belt/mutable-map"},
+  NavItem.{name: "HashMap", href: "/apis/latest/belt/hash-map"},
+  {name: "HashMapInt", href: "/apis/latest/belt/hash-map-int"},
+  {name: "HashMapString", href: "/apis/latest/belt/hash-map-string"},
+  {name: "HashSet", href: "/apis/latest/belt/hash-set"},
+  {name: "HashSetInt", href: "/apis/latest/belt/hash-set-int"},
+  {name: "HashSetString", href: "/apis/latest/belt/hash-set-string"},
+  {name: "MutableMap", href: "/apis/latest/belt/mutable-map"},
   {name: "MutableMapInt", href: "/apis/latest/belt/mutable-map-int"},
   {name: "MutableMapString", href: "/apis/latest/belt/mutable-map-string"},
   {name: "MutableQueue", href: "/apis/latest/belt/mutable-queue"},
