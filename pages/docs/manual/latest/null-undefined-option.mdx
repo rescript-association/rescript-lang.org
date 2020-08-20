@@ -6,9 +6,15 @@ However, the **concept** of a potentially nonexistent value is still useful, and
 
 We represent the existence and nonexistence of a value by wrapping it with the `option` type. Here's its definition from the standard library:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 type option<'a> = None | Some('a)
 ```
+```js
+```
+
+</CodeTab>
 
 It means "a value of type option is either None (representing nothing) or that actual value wrapped in a Some".
 
@@ -18,11 +24,20 @@ It means "a value of type option is either None (representing nothing) or that a
 
 Here's a normal value:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let licenseNumber = 5
 ```
+```js
+var licenseNumber = 5;
+```
+
+</CodeTab>
 
 To represent the concept of "maybe null", you'd turn this into an `option` type by wrapping it. For the sake of a more illustrative example, we'll put a condition around it:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 let licenseNumber =
@@ -32,8 +47,15 @@ let licenseNumber =
     None
   }
 ```
+```js
+var licenseNumber = personHasACar ? 5 : undefined;
+```
+
+</CodeTab>
 
 Later on, when another piece of code receives such value, it'd be forced to handle both cases through [pattern matching](pattern-matching-destructuring.md):
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 switch licenseNumber {
@@ -43,6 +65,17 @@ switch licenseNumber {
   Js.log("The person's license number is " ++ Js.Int.toString(number))
 }
 ```
+```js
+var number = licenseNumber;
+
+if (number !== undefined) {
+  console.log("The person's license number is " + number.toString());
+} else {
+  console.log("The person doesn't have a car");
+}
+```
+
+</CodeTab>
 
 By turning your ordinary number into an `option` type, and by forcing you to handle the `None` case, the language effectively removed the possibility for you to mishandle, or forget to handle, a conceptual `null` value! **A pure ReScript program doesn't have null errors**.
 
@@ -50,15 +83,29 @@ By turning your ordinary number into an `option` type, and by forcing you to han
 
 The `option` type is common enough that we special-case it when compiling to JavaScript:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
-Some(5)
+let x = Some(5)
 ```
+```js
+var x = 5;
+```
+
+</CodeTab>
 
 simply compiles down to `5`, and
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
-None
+let x = None
 ```
+```js
+var x;
+```
+
+</CodeTab>
 
 compiles to `undefined`! If you've got e.g. a string in JavaScript that you know might be `undefined`, type it as `option<string>` and you're done! Likewise, you can send a `Some(5)` or `None` to the JS side and expect it to be interpreted correctly =)
 
@@ -66,23 +113,35 @@ compiles to `undefined`! If you've got e.g. a string in JavaScript that you know
 
 The option-to-undefined translation isn't perfect, because on our side, `option` values can be composed:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
-Some(Some(Some(5)))
+let x = Some(Some(Some(5)))
 ```
+```js
+var x = 5;
+```
+
+</CodeTab>
 
 This still compiles to `5`, but this gets troublesome:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
-Some(None)
+let x = Some(None)
 ```
-
-This is compiled into the following JS:
-
 ```js
-Js_primitive.some(undefined)
+var Caml_option = require("./stdlib/caml_option.js");
+
+var x = Caml_option.some(undefined);
 ```
 
-What's this `Js_primitive` thing? Why can't this compile to `undefined`? Long story short, when dealing with a polymorphic `option` type (aka `option<'a>`, for any `'a`), many operations become tricky if we don't mark the value with some special annotation. If this doesn't make sense, don't worry; just remember the following rule:
+(See output tab).
+
+</CodeTab>
+
+What's this `Caml_option.some` thing? Why can't this compile to `undefined`? Long story short, when dealing with a polymorphic `option` type (aka `option<'a>`, for any `'a`), many operations become tricky if we don't mark the value with some special annotation. If this doesn't make sense, don't worry; just remember the following rule:
 
 - **Never, EVER, pass a nested `option` value (e.g. `Some(Some(Some(5)))`) into the JS side.**
 - **Never, EVER, annotate a value coming from JS as `option<'a>`. Always give the concrete, non-polymorphic type.**
@@ -101,18 +160,33 @@ To create a JS `null`, use the value `Js.Nullable.null`. To create a JS `undefin
 
 If you're receiving, for example, a JS string that can be `null` and `undefined`, type it as:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
-@bs.module("MyConstant") external myId: Js.Nullable.t(string) = "myId"
+@bs.module("MyConstant") external myId: Js.Nullable.t<string> = "myId"
 ```
+```js
+```
+
+</CodeTab>
 
 To create such a nullable string from our side (presumably to pass it to the JS side, for interop purpose), do:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
-@bs.module("MyIdValidator") external validate: Js.Nullable.t(string) => bool = "validate"
-let personId: Js.Nullable.t(string) = Js.Nullable.return("abc123")
+@bs.module("MyIdValidator") external validate: Js.Nullable.t<string> => bool = "validate"
+let personId: Js.Nullable.t<string> = Js.Nullable.return("abc123")
 
 let result = validate(personId)
 ```
+```js
+var MyIdValidator = require("MyIdValidator");
+var personId = "abc123";
+var result = MyIdValidator.validate(personId);
+```
+
+</CodeTab>
 
 The `return` part "wraps" a string into a nullable string, to make the type system understand and track the fact that, as you pass this value around, it's not just a string, but a string that can be `null` or `undefined`.
 

@@ -9,16 +9,24 @@ Records are like JavaScript objects but:
 
 A record needs a mandatory type declaration:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 type person = {
   age: int,
   name: string
 };
 ```
+```js
+```
+
+</CodeTab>
 
 ## Creation
 
 To create a `person` record (declared above):
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 let me = {
@@ -26,25 +34,51 @@ let me = {
   name: "Big ReScript"
 }
 ```
+```js
+var me = {
+  age: 5,
+  name: "Big ReScript"
+};
+```
+
+</CodeTab>
 
 When you create a new record value, ReScript tries to find a record type declaration that conforms to the shape of the value. So the `me` value here is inferred as of type `person`.
 
 The type is found by looking above the `me` value. **Note**: if the type instead resides in another file or module, you need to explicitly indicate which file or module it is:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 // School.res
 type person = {age: int, name: string}
 ```
+```js
+```
+
+</CodeTab>
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 // Example.res
 
 let me: School.person = {age: 20, name: "Big ReScript"}
 /* or */
-let me = School.{age: 20, name: "Big ReScript"}
-/* or */
-let me = {School.age: 20, name: "Big ReScript"}
+let me2 = {School.age: 20, name: "Big ReScript"}
 ```
+```js
+var me = {
+  age: 20,
+  name: "Big ReScript"
+};
+var me2 = {
+  age: 20,
+  name: "Big ReScript"
+};
+```
+
+</CodeTab>
 
 Either of the above 3 says "this record's definition is found in the School file". The first one, the regular type annotation, is preferred.
 
@@ -52,17 +86,34 @@ Either of the above 3 says "this record's definition is found in the School file
 
 Use the familiar dot notation:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let name = me.name
 ```
+```js
+var name = "Big ReScript";
+```
+
+</CodeTab>
 
 ## Immutable Update
 
 New records can be created from old records with the `...` spread operator. The original record isn't mutated.
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let meNextYear = {...me, age: me.age + 1}
 ```
+```js
+var meNextYear = {
+  age: 21,
+  name: "Big ReScript"
+};
+```
+
+</CodeTab>
 
 **Note**: spread cannot add new fields to the record value, as a record's shape is fixed by its type.
 
@@ -70,18 +121,33 @@ let meNextYear = {...me, age: me.age + 1}
 
 Record fields can optionally be mutable. This allows you to efficiently update those fields in-place with the `=` operator.
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 type person = {
   name: string,
   mutable age: int
 }
+
 let baby = {name: "Baby ReScript", age: 5}
 baby.age = baby.age + 1 // `baby.age` is now 6. Happy birthday!
 ```
+```js
+var baby = {
+  name: "Baby ReScript",
+  age: 5
+};
+
+baby.age = baby.age + 1 | 0;
+```
+
+</CodeTab>
 
 ## Tips & Tricks
 
 **Record Types Are Found By Field Name**. With records, you **cannot** say "I'd like this function to take any record type, as long as they have the field `age`". The following **won't work as intended**:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 type person = {age: int, name: string}
@@ -89,6 +155,13 @@ type monster = {age: int, hasTentacles: bool}
 
 let getAge = (entity) => entity.age
 ```
+```js
+function getAge(entity) {
+  return entity.age;
+}
+```
+
+</CodeTab>
 
 Instead, `getAge` will infer that the parameter `entity` must be of type `monster`, the closest record type with the field `age`. The following code's last line fails:
 
