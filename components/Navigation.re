@@ -340,15 +340,6 @@ module MobileNav = {
             "Twitter"->s
           </a>
         </li>
-        /*<li className=base>*/
-        /*<a*/
-        /*href="https://discord.gg/reasonml"*/
-        /*rel="noopener noreferrer"*/
-        /*target="_blank"*/
-        /*className=extLink>*/
-        /*"Discord"->s*/
-        /*</a>*/
-        /*</li>*/
         <li className=base>
           <a
             href="https://github.com/reason-association/rescript-lang.org"
