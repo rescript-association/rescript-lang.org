@@ -4,9 +4,16 @@
 
 Arrays are our primary ordered data structure. They work the same way as JavaScript arrays.
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let myArray = ["hello", "world", "how are you"]
 ```
+```js
+var myArray = ["hello", "world", "how are you"];
+```
+
+</CodeTab>
 
 ReScript arrays' items must have the same type, i.e. homogeneous.
 
@@ -16,6 +23,8 @@ See the [Js.Array](/apis/latest/js/array) API.
 
 Access & update an array item like so:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let myArray = ["hello", "world", "how are you"]
 
@@ -23,6 +32,15 @@ let firstItem = myArray[0] // "hello"
 
 myArray[0] = "hey" // now ["hey", "world", "how are you"]
 ```
+```js
+var myArray = ["hello", "world", "how are you"];
+
+var firstItem = myArray[0];
+
+myArray[0] = "hey";
+```
+
+</CodeTab>
 
 ## List
 
@@ -33,9 +51,25 @@ ReScript provides a singly linked list too. Lists are:
 - fast at getting the tail
 - slow at everything else
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let myList = list{1, 2, 3}
 ```
+```js
+var myList = {
+  hd: 1,
+  tl: {
+    hd: 2,
+    tl: {
+      hd: 3,
+      tl: 0
+    }
+  }
+};
+```
+
+</CodeTab>
 
 Like arrays, lists' items need to be of the same type.
 
@@ -51,10 +85,31 @@ The standard lib provides a [List module](/apis/latest/belt/list).
 
 Use the spread syntax:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let myList = list{1, 2, 3}
 let anotherList = list{0, ...myList}
 ```
+```js
+var myList = {
+  hd: 1,
+  tl: {
+    hd: 2,
+    tl: {
+      hd: 3,
+      tl: 0
+    }
+  }
+};
+
+var anotherList = {
+  hd: 0,
+  tl: myList
+};
+```
+
+</CodeTab>
 
 `myList` didn't mutate. `anotherList` is now `list{0, 1, 2, 3}`. This is efficient (constant time, not linear). `anotherList`'s last 3 elements are shared with `myList`!
 
@@ -66,6 +121,8 @@ Updating an arbitrary item in the middle of a list is also discouraged, since it
 
 `switch` (described in the [pattern matching section](pattern-matching-destructuring.md)) is usually used to access list items:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let message =
   switch myList {
@@ -73,3 +130,10 @@ let message =
   | list{a, ...rest} => "The head of the list is the string " ++ Js.Int.toString(a)
   }
 ```
+```js
+var message = myList
+  ? "The head of the list is the string " + (1).toString()
+  : "This list is empty";
+```
+
+</CodeTab>

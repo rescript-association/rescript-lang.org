@@ -2,15 +2,26 @@
 
 A "let binding", in other languages, might be called a "variable declaration". `let` _binds_ values to names. They can be seen and referenced by code that comes _after_ them.
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let greeting = "hello!"
 let score = 10
 let newScore = 10 + score
 ```
+```js
+var greeting = "hello!";
+var score = 10;
+var newScore = 20;
+```
+
+</CodeTab>
 
 ## Block Scope
 
 Bindings can be scoped through `{}`.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 let message = {
@@ -20,12 +31,19 @@ let message = {
 }
 // `part1` and `part2` not accessible here!
 ```
+```js
+var message = "hello world";
+```
+
+</CodeTab>
 
 The value of the last line of a scope is implicitly returned.
 
 ### Design Decisions
 
 ReScript's `if`, `while` and functions all use the same block scoping mecanism. The code below works **not** because of some special "if scope"; but simply because it's the same scope syntax and feature you just saw:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 if displayGreeting {
@@ -34,6 +52,13 @@ if displayGreeting {
 };
 // `message` not accessible here!
 ```
+```js
+if (displayGreeting) {
+  console.log("Enjoying the docs so far?");
+}
+```
+
+</CodeTab>
 
 ## Bindings Are Immutable
 
@@ -61,23 +86,42 @@ var result3 = calculateSomeMore(result2);
 
 In ReScript, this obviously works too:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let result1 = 0
 let result2 = calculate(result1)
 let result3 = calculateSomeMore(result2)
 ```
+```js
+var result1 = 0;
+var result2 = calculate(0);
+var result3 = calculateSomeMore(result2);
+```
+
+</CodeTab>
 
 Additionally, reusing the same let binding name overshadows the previous bindings with the same name. So you can write this too:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 let result = 0
 let result = calculate(result)
 let result = calculateSomeMore(result)
 ```
+```js
+var result = calculate(0);
+var result$1 = calculateSomeMore(result);
+```
+
+</CodeTab>
 
 (Though for the sake of clarity, we don't recommend this).
 
 As a matter of fact, even this is valid code:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 let result = "hello"
@@ -85,6 +129,13 @@ Js.log(result) // prints "hello"
 let result = 1
 Js.log(result) // prints 1
 ```
+```js
+var result = 1;
+console.log("hello");
+console.log(1);
+```
+
+</CodeTab>
 
 The binding you refer to is whatever's the closest upward. No mutation here!
 If you need _real_ mutation, e.g. passing a value around, have it modified by many pieces of code, we provide a slightly heavier [mutation feature](mutation.md).

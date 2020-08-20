@@ -8,23 +8,32 @@ ReScript comes with the familiar primitive types like `string`, `int`, `float`, 
 
 ReScript `string`s are delimited using **double** quotes (single quotes are reserved for the character type below).
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let greeting = "Hello world!"
 let multilineGreeting = "Hello
  world!"
 ```
-
-Special characters in the string need to be escaped:
-
-```res
-let oneSlash = "\\"
+```js
+var greeting = "Hello world!";
+var multilineGreeting = "Hello\n world!";
 ```
 
+</CodeTab>
+
 To concatenate strings, use `++`:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 let greetings = "Hello " ++ "world!"
 ```
+```js
+var greetings = "Hello world!";
+```
+
+</CodeTab>
 
 ### String Interpolation
 
@@ -35,21 +44,36 @@ There's a special syntax for string that allows
 - Interpolation
 - Proper unicode handling
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
-let greetingAndOneSlash = `Hello
+let greeting = `Hello
 World
-\
+👋
 ${name}
 `
 ```
+```js
+var greeting = "Hello\nWorld\n👋\n" + name + "\n";
+```
+
+</CodeTab>
 
 This is just like JavaScript's backtick string interpolation, except without needing to escape special characters.
 
 For interpolation, you'll have to convert the binding (`name` in the example) into a string if it isn't one. If you want the interpolation to implicitly convert a binding into a string, prepend a `j`:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
+let age = 10
 let message = j`Today I am ${age} years old.`
 ```
+```js
+var message = "Today I am " + 10 + " years old.";
+```
+
+</CodeTab>
 
 ### Usage
 
@@ -71,9 +95,16 @@ The more you overload the poor string type, the less the type system (or a teamm
 
 ReScript has a type for a string with a single letter:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let firstLetterOfAlphabet = 'a'
 ```
+```js
+var firstLetterOfAlphabet = /* "a" */97;
+```
+
+</CodeTab>
 
 **Note**: Char doesn't support Unicode or UTF-8 and is therefore not recommended.
 
@@ -83,9 +114,16 @@ To convert a String to a Char, use `"a".[0]`. To convert a Char to a String, use
 
 ReScript regular expressions compile cleanly to their JavaScript counterpart:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let r = %re("/b/g")
 ```
+```js
+var r = /b/g;
+```
+
+</CodeTab>
 
 A regular expression like the above has the type `Js.Re.t`. The [Js.Re](/apis/latest/js/re) module contains the regular expression helpers you have seen in JS.
 
