@@ -1,14 +1,12 @@
 # Converting from JS
 
-Preparation
--------
+## Preparation
 
 **Before you proceed**, please make sure that ReScript is what your team needs! As much as we vouch for ReScript popularity, please don't unnecessarily thrash your colleagues and give them a bad first impression. That's hard to undo afterward.
 
 This guide covers a workflow that's helped us convert things over rapidly and efficiently. It's not intended to go over language/FFI features (though it puts them in context). Basic ReScript knowledge is assumed.
 
-Syntax
--------
+## Syntax
 
 **Goal**: first and foremost, **make the file syntactically valid**. Don't care about wrong types, missing modules, bad file organization, too many externals, etc. We'll come back to clean these up after setting up the regression test that is "no more syntax errors".
 
@@ -55,8 +53,7 @@ let queryResult = (usePayload, payload) =>
   };
 ```
 
-Types, Pass 1
--------
+## Types, Pass 1
 
 **Goal**: correct the types, but just enough to move onto the next step.
 
@@ -84,8 +81,7 @@ let queryResult = (usePayload, payload) =>
   };
 ```
 
-Runtime Semantics
--------
+## Runtime Semantics
 
 **Goal**: fix the errors in the generated JS output.
 
@@ -95,6 +91,8 @@ Compare it with your old JS file. The output is likely incorrect; you probably m
 - Convert whichever parts to records/variants/idiomatic ReScript types.
 
 All this time, check the output for any change.
+
+<!-- TODO: these snippets -->
 
 ```res
 type student /* abstract type, described later */
@@ -114,8 +112,7 @@ let queryResult = (usePayload, payload: payloadType) =>
   }
 ```
 
-Clean Up (Types, Pass 2)
--------
+## Clean Up (Types, Pass 2)
 
 **Goal**: make your types legit (aka, sound).
 
@@ -150,8 +147,7 @@ Type `student` doesn't have an actual content; that's called an [abstract type](
 
 And then you're done!
 
-Tips
--------
+## Tips & Tricks
 
 **Don't** try to fully convert a JS file into a pristine ReScript file in a single shot. Such method might actually slow you down! It's fine to have externals and `bs.obj` left, and temporarily not take advantage of nice ReScript features (variants, labeled arguments, etc.). Once you've converted a few other related files, you can come back and now refactor **faster** by banking on the type system.
 

@@ -7,6 +7,8 @@ Sometime, for e.g. a let binding or a record field, you might want to use:
 
 We provide an escape hatch syntax for these cases:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let \"my-🍎" = 10
 
@@ -24,9 +26,6 @@ let calculate = (~\"Props") => {
   \"Props" + 1
 }
 ```
-
-Output:
-
 ```js
 var my$$unknown$unknown$unknown$unknown = 10;
 
@@ -41,4 +40,6 @@ function calculate(Props) {
 }
 ```
 
-**Use them only when necessary**, for interop with JavaScript.
+</CodeTab>
+
+See the output. **Use them only when necessary**, for interop with JavaScript.

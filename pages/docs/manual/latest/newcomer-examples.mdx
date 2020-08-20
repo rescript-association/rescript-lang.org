@@ -1,22 +1,41 @@
 # Newcomer Examples
 
+<!-- TODO: this whole page needs a revamp -->
+
 An example is worth a thousand words.
 
 This section is dedicated to newcomers trying to figure out general idioms & conventions. If you're a beginner who's got a good idea for an example, please suggest an edit!
 
 ## Use the [`option` type](null-undefined-option.md)
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 let possiblyNullValue1 = None
-let possiblyNullValue2: option<string> = Some("Hello@")
+let possiblyNullValue2 = Some("Hello")
 
 switch possiblyNullValue2 {
 | None => Js.log("Nothing to see here.")
 | Some(message) => Js.log(message)
 }
 ```
+```js
+var possiblyNullValue1;
+var possiblyNullValue2 = "Hello";
+
+if (possiblyNullValue2 !== undefined) {
+  console.log(possiblyNullValue2);
+} else {
+  console.log("Nothing to see here.");
+}
+
+```
+
+</CodeTab>
 
 ## Create a Parametrized Type
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 type universityStudent = {gpa: float}
@@ -25,13 +44,34 @@ type response<'studentType> = {
   status: int,
   student: 'studentType
 }
-
-let result: response<universityStudent> = fetchDataFromServer()
 ```
+```js
+```
+
+</CodeTab>
 
 ## Creating a JS Object
 
-Assuming you're compiling to JavaScript.
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let student1 = {
+  "name": "John",
+  "age": 30,
+}
+```
+```js
+var student1 = {
+  name: "John",
+  age: 30,
+};
+```
+
+</CodeTab>
+
+Or using [record](record.md):
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 type payload = {
@@ -43,9 +83,15 @@ let student1 = {
   name: "John",
   age: 30,
 }
-
-// Compiles to a JS object with the above fields
 ```
+```js
+var student1 = {
+  name: "John",
+  age: 30,
+};
+```
+
+</CodeTab>
 
 ## Modeling a JS Module with Default Export
 
@@ -54,6 +100,8 @@ See [here](import-from-export-to-js.md#import-a-javascript-module-itself-es6-mod
 ## Checking for JS nullable types using the `option` type
 
 For a function whose argument is passed a JavaScript value that's potentially `null` or `undefined`, it's idiomatic to convert it to an `option`. The conversion is done through the helper functions in ReScript's [`Js.Nullable`](/apis/latest/js/nullable#t) module. In this case, `toOption`:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 let greetByName = (possiblyNullName) => {
@@ -64,5 +112,16 @@ let greetByName = (possiblyNullName) => {
   }
 }
 ```
+```js
+function greetByName(possiblyNullName) {
+  if (possiblyNullName == null) {
+    return "Hi";
+  } else {
+    return "Hello " + possiblyNullName;
+  }
+}
+```
+
+</CodeTab>
 
 This check compiles to `possiblyNullName == null` in JS, so checks for the presence of `null` or `undefined`.

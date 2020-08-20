@@ -4,18 +4,34 @@
 
 ## Raw JS
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
-let add = %raw("(a + b) => a + b")
+let add = %raw("(a, b) => a + b")
 %%raw("const a = 1")
 ```
+```js
+var add = ((a, b) => a + b);
+const a = 1
+```
+
+</CodeTab>
 
 ## Global Value
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 @bs.val external setTimeout: (unit => unit, int) => float = "setTimeout"
 ```
+```js
+```
+
+</CodeTab>
 
 ## Global Module's Value
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 @bs.val @bs.scope("Math")
@@ -26,24 +42,50 @@ let someNumber = random()
 @bs.val @bs.scope(("window", "location", "ancestorOrigins"))
 external length: int = "length"
 ```
+```js
+var someNumber = Math.random();
+```
+
+</CodeTab>
 
 ## Nullable
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 let a = Some(5) // compiles to 5
 let b = None // compiles to undefined
 ```
+```js
+var a = 5;
+var b;
+```
+
+</CodeTab>
 
 Handling a value that can be `undefined` and `null`, by ditching the `option` type and using `Js.Nullable.t`:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 let jsNull = Js.Nullable.null;
 let jsUndefined = Js.Nullable.undefined;
-
-let result1: Js.Nullable.t(string) = Js.Nullable.return("hello");
-let result2: Js.Nullable.t(int) = Js.Nullable.fromOption(Some(10));
-let result3: option(int) = Js.Nullable.toOption(Js.Nullable.return(10));
+let result1: Js.Nullable.t<string> = Js.Nullable.return("hello");
+let result2: Js.Nullable.t<int> = Js.Nullable.fromOption(Some(10));
+let result3: option<int> = Js.Nullable.toOption(Js.Nullable.return(10));
 ```
+```js
+var Caml_option = require("./stdlib/caml_option.js");
+var Js_null_undefined = require("./stdlib/js_null_undefined.js");
+
+var jsNull = null;
+var jsUndefined;
+var result1 = "hello";
+var result2 = Js_null_undefined.fromOption(10);
+var result3 = Caml_option.nullable_to_opt(10);
+```
+
+</CodeTab>
 
 ## JS Object
 
@@ -55,29 +97,57 @@ let result3: option(int) = Js.Nullable.toOption(Js.Nullable.return(10));
 
 ### Object Method & Chaining
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 @bs.send external map: (array<'a>, 'a => 'b) => array<'b> = "map"
 @bs.send external filter: (array<'a>, 'a => 'b) => array<'b> = "filter"
-
 [1, 2, 3]
   ->map(a => a + 1)
-  ->filter(a => a mod 2 == 0)
+  ->filter(a => mod(a, 2) == 0)
   ->Js.log
 ```
+```js
+console.log(
+  [1, 2, 3]
+    .map(function (a) {
+      return (a + 1) | 0;
+    })
+    .filter(function (a) {
+      return a % 2 === 0;
+    })
+);
+```
+
+</CodeTab>
 
 ### Variadic Arguments
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 @bs.module("path") @bs.variadic
 external join: array<string> => string = "join"
 ```
+```js
+```
+
+</CodeTab>
 
 ### Polymorphic Function
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 @bs.module("Drawing") external drawCat: unit => unit = "draw"
 @bs.module("Drawing") external drawDog: (~giveName: string) => unit = "draw"
 ```
+```js
+```
+
+</CodeTab>
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 @bs.val
@@ -92,6 +162,12 @@ external padLeft: (
 padLeft("Hello World", #Int(4))
 padLeft("Hello World", #Str("Message from ReScript: "))
 ```
+```js
+padLeft("Hello World", 4);
+padLeft("Hello World", "Message from ReScript: ");
+```
+
+</CodeTab>
 
 ## JS Module Interop
 
@@ -101,11 +177,19 @@ padLeft("Hello World", #Str("Message from ReScript: "))
 
 Final escape hatch converter. Do not abuse.
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 external convertToFloat : int => float = "%identity"
 let age = 10
 let gpa = 2.1 +. convertToFloat(age)
 ```
+```js
+var age = 10;
+var gpa = 2.1 + 10;
+```
+
+</CodeTab>
 
 ## List of `@bs` Decorators
 

@@ -4,6 +4,8 @@
 
 Bind to JavaScript's `JSON.parse` and type the return value as the type you're expecting:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 // declare the shape of the json you're binding to
 type data = {names: array<string>}
@@ -15,13 +17,12 @@ external parseIntoMyData: string => data = "parse"
 let result = parseIntoMyData(`{"names": ["Luke", "Christine"]}`)
 let name1 = result.names[0]
 ```
-
-Output:
-
 ```js
 var result = JSON.parse("{\"names\": [\"Luke\", \"Christine\"]}");
 var name1 = result.names[0];
 ```
+
+</CodeTab>
 
 Where `data` can be any type you assume the JSON is. As you can see, this compiles to a straightforward `JSON.parse` call. As with regular JS, this is convenient, but has no guarantee that e.g. the data is correctly shaped, or even syntactically valid. Slightly dangerous.
 
@@ -29,18 +30,19 @@ Where `data` can be any type you assume the JSON is. As you can see, this compil
 
 Use `Js.Json.stringify`:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 Js.log(Js.Json.stringifyAny(["Amy", "Joe"]))
 ```
-
-Output:
-
 ```js
 console.log(JSON.stringify([
   "Amy",
   "Joe"
 ]));
 ```
+
+</CodeTab>
 
 ## Advanced
 
