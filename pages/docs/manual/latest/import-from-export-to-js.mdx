@@ -8,18 +8,19 @@ You've seen how ReScript's idiomatic [Import & Export](import-export.md) works. 
 
 Use the `bs.module` [external](external.md):
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 // Import nodejs' path.dirname
 @bs.module("path") external dirname: string => string = "dirname"
 let root = dirname("/User/github") // returns "User"
 ```
-
-Output:
-
 ```js
 var Path = require("path");
 var root = Path.dirname("/User/github");
 ```
+
+</CodeTab>
 
 Here's what the `external` does:
 
@@ -33,33 +34,35 @@ Here's what the `external` does:
 
 By omitting the string argument to `bs.module`, you bind to the whole JS module:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 @bs.module external leftPad: string => int => string = "./leftPad"
 let paddedResult = leftPad("hi", 5)
 ```
-
-Output:
-
 ```js
 var LeftPad = require("./leftPad");
 var paddedResult = LeftPad("hi", 5);
 ```
 
+</CodeTab>
+
 ### Import a JavaScript Module Itself (ES6 Module Format)
 
 If your JS project is using ES6, you're likely using Babel to compile it to regular JavaScript. Babel's ES6 default export actually exports the default value under the name `default`. You'd bind to it like this:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 @bs.module("./student") external studentName: string = "default"
 Js.log(studentName)
 ```
-
-Output:
-
 ```js
 var Student = require("./student");
 console.log(Student.default);
 ```
+
+</CodeTab>
 
 ## Export To JavaScript
 
@@ -88,10 +91,21 @@ import studentName from 'student.js';
 
 Technically, since a ReScript file maps to a module, there's no such thing as "default" export, only named ones. However, we've made an exception to support default module when you do the following:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 /* FavoriteStudent.ml */
 let default = "Bob"
 ```
+```js
+var $$default = "Bob";
+
+exports.$$default = $$default;
+exports.default = $$default;
+exports.__esModule = true;
+```
+
+</CodeTab>
 
 You can then require the default as normal JS side:
 

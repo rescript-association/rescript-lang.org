@@ -17,6 +17,8 @@ ReScript cleanly separates the binding methods for JS object based on these 4 us
 
 If your JavaScript object has fixed fields, then it's conceptually like a ReScript record. Since a ReScript record compiles to a clean JavaScript object, you can definitely type a JS object as a ReScript record!
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 type person = {
   name: string,
@@ -28,20 +30,21 @@ type person = {
 
 let johnName = john.name
 ```
-
-Output:
-
 ```js
 var MySchool = require("MySchool");
 
 var johnName = MySchool.john.name;
 ```
 
+</CodeTab>
+
 External is documented [here](external.md). `@bs.module` is documented [here](import-from-export-to-js.md).
 
 ### Bind Using ReScript Object
 
 Alternatively, you can use [ReScript object](object.md) to model a JS object too:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 type person = {
@@ -54,18 +57,36 @@ type person = {
 
 let johnName = john["name"]
 ```
+```js
+var MySchool = require("MySchool");
+
+var johnName = MySchool.john.name;
+```
+
+</CodeTab>
 
 ### Bind Using Special `@bs` Getters & Setters
 
 Alternatively, you can use `bs.get` and `bs.set` to bind to individual fields of a JS object:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 type textarea
 @bs.set external setName: (textarea, string) => unit = "name"
 @bs.get external getName: textarea => string = "name"
 ```
+```js
+type textarea
+@bs.set external setName: (textarea, string) => unit = "name"
+@bs.get external getName: textarea => string = "name"
+```
+
+</CodeTab>
 
 You can also use `bs.get_index` and `bs.set_index` to access a dynamic property or an index:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 type t
@@ -77,13 +98,13 @@ let i32arr = create(3)
 i32arr->set(0, 42)
 Js.log(i32arr->get(0))
 ```
-
-Output:
 ```js
 var i32arr = new Int32Array(3);
 i32arr[0] = 42;
 console.log(i32arr[0]);
 ```
+
+</CodeTab>
 
 ## Bind to Hash Map-like JS Object
 
@@ -98,30 +119,32 @@ Then it's not really an object, it's a hash map. Use [Js.Dict](/apis/latest/js/d
 
 Use `bs.new` to emulate e.g. `new Date()`:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 type t
 @bs.new external createDate: unit => t = "Date"
 
 let date = createDate();
 ```
-
-Output:
-
 ```js
 var date = new Date();
 ```
 
+</CodeTab>
+
 You can chain `bs.new` and `bs.module` if the JS module you're importing is itself a class:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 type t
 @bs.new @bs.module external book: unit => t = "Book"
 let myBook = book()
 ```
-
-Output:
-
 ```js
 var Book = require("Book");
 var myBook = new Book();
 ```
+
+</CodeTab>
