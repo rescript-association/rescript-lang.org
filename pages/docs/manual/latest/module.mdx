@@ -11,6 +11,8 @@ To create a module, use the `module` keyword. The module name must start with a
 **capital letter**. Whatever you could place in a `.res` file, you may place
 inside a module definition's `{}` block.
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 module School = {
   type profession = Teacher | Director
@@ -23,16 +25,42 @@ module School = {
     }
 }
 ```
+```js
+function getProfession(person) {
+  if (person) {
+    return "A director";
+  } else {
+    return "A teacher";
+  }
+}
+
+var School = {
+  person1: /* Teacher */0,
+  getProfession: getProfession
+};
+```
+
+</CodeTab>
 
 A module's contents (including types!) can be accessed much like a record's,
 using the `.` notation. This demonstrates modules' utility for namespacing.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 let anotherPerson: School.profession = School.Teacher
 Js.log(School.getProfession(anotherPerson)) /* "A teacher" */
 ```
+```js
+var anotherPerson = /* Teacher */0;
+console.log("A teacher");
+```
+
+</CodeTab>
 
 Nested modules work too.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 module MyModule = {
@@ -43,26 +71,55 @@ module MyModule = {
 
 let message = MyModule.NestedModule.message
 ```
+```js
+var NestedModule = {
+  message: message
+};
+
+var MyModule = {
+  NestedModule: NestedModule
+};
+
+var message = MyModule.NestedModule.message;
+```
+
+</CodeTab>
 
 ### `open`ing a module
 
 Constantly referring to a value/type in a module can be tedious. Instead, we can "open" a module and refer to its contents without always prepending them with the
 module's name. Instead of writing:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
-let p: School.profession = School.getProfession(School.person1)
+let p = School.getProfession(School.person1)
 ```
+```js
+var p = School.getProfession(School.person1);
+```
+
+</CodeTab>
 
 We can write:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 open School
-let p: profession = getProfession(person1)
+let p = getProfession(person1)
 ```
+```js
+var p = School.getProfession(School.person1);
+```
+
+</CodeTab>
 
 The content of `School` module are made visible (**not** copied into the file, but simply made visible!) in scope. `profession`, `getProfession` and `person1` will thus correctly be found.
 
 **Use `open` this sparingly, it's convenient, but makes it hard to know where some values come from**. You should usually use `open` in a local scope:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 let p = {
@@ -71,11 +128,19 @@ let p = {
 }
 /* School's content isn't visible here anymore */
 ```
+```js
+var p = School.getProfession(School.person1);
+```
+
+</CodeTab>
 
 ### Extending modules
 
-Using `include` in a module statically "spreads" a module's content into
-a new one, thus often fulfill the role of "inheritance" or "mixin".
+Using `include` in a module statically "spreads" a module's content into a new one, thus often fulfill the role of "inheritance" or "mixin".
+
+**Note**: this is equivalent to a compiler-level copy paste. **We heavily discourage `include`**. Use it as last resort!
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 module BaseComponent = {
@@ -91,43 +156,44 @@ module ActualComponent = {
   let render = () => defaultGreeting ++ " " ++ getAudience(~excited=true)
 }
 ```
+```js
+function getAudience(excited) {
+  if (excited) {
+    return "world!";
+  } else {
+    return "world";
+  }
+}
+
+var BaseComponent = {
+  defaultGreeting: "Hello",
+  getAudience: getAudience
+};
+
+var defaultGreeting = "Hey";
+
+function render(param) {
+  return "Hey world!";
+}
+
+var ActualComponent = {
+  getAudience: getAudience,
+  defaultGreeting: defaultGreeting,
+  render: render
+};
+```
+
+</CodeTab>
 
 **Note**: `open` and `include` are very different! The former brings a module's content into your current scope, so that you don't have to refer to a value by prefixing it with the module's name every time. The latter **copies over** the definition of a module statically, then also do an `open`.
 
 ### Every `.res` file is a module
 
-A ReScript file maps to a module this unlocks some interesting
-expressivity that'd previously require code generation in other languages. The
-file `React.res` implicitly forms a module `React`, which can be seen by other
-source files.
+Every ReScript file is itself compiled to a module of the same name as the file name, capitalized. The file `React.res` implicitly forms a module `React`, which can be seen by other source files.
 
-```res
-/* FileA.res. This typically compiles to module FileA below */
-let a = 1
-let b = 2
+**Note**: ReScript file names should, by convention, be capitalized so that their casing matches their module name. Uncapitalized file names are not invalid, but will be implicitly transformed into a capitalized module name. I.e. `file.res` will be compiled into the module `File`. To simplify and minimize the disconnect here, the convention is therefore to capitalize file names.
 
-/* FileB.res */
-/* Maps FileA's implementation to a new API */
-let alpha = FileA.a
-let beta = FileA.b
-```
-
-This contrived snippet expresses "copying" a file:
-
-```res
-/* FileA.res. This typically compiles to module FileA below */
-let a = 1
-let b = 2
-
-/* FileB.res */
-/* compiles to exactly fileA.res' content with no runtime overhead! */
-include FileA
-```
-
-**Note**: Because files are modules, file names should, by convention, be capitalized so they match their module names. Uncapitalized file names are not invalid, but will be transformed into a capitalized module name. I.e. `file.res` will be compiled into the module `File`. To simplify and minimize the disconnect here, the convention is therefore to capitalize file names too.
-
-Signatures
-----------------------------------
+## Signatures
 
 A module's type is called a "signature", and can be written explicitly. If a
 module is like a `.res` (implementation) file, then a module's signature is like
@@ -139,6 +205,8 @@ To create a signature, use the `module type` keyword. The signature name must st
 **capital letter**. Whatever you could place in a `.resi` file, you may place
 inside a signature definition's `{}` block.
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 /* Picking up previous section's example */
 module type EstablishmentType = {
@@ -146,6 +214,10 @@ module type EstablishmentType = {
   let getProfession: profession => string
 }
 ```
+```js
+```
+
+</CodeTab>
 
 A signature defines the list of requirements that a module must satisfy in order
 for that module to match the signature. Those requirements are of the form:
@@ -174,6 +246,8 @@ concrete type; it's saying "I don't care what the actual type is, but it's used
 as input to `getProfession`". This is useful to fit many modules under the same
 interface:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 module Company: EstablishmentType = {
   type profession = CEO | Designer | Engineer | ...
@@ -183,6 +257,23 @@ module Company: EstablishmentType = {
   let person2 = ...
 }
 ```
+```js
+function getProfession(person) {
+  ...
+}
+
+var person1 = ...
+
+var person2 = ...
+
+var Company = {
+  getProfession: getProfession,
+  person1: person1,
+  person2: person2
+};
+```
+
+</CodeTab>
 
 It's also useful to hide the underlying type as an implementation detail others
 can't rely on. If you ask what the type of `Company.profession` is, instead of
@@ -190,7 +281,9 @@ exposing the variant, it'll only tell you "it's `Company.profession`".
 
 ### Extending module signatures
 
-Like modules themselves, module signatures can also be extended by other module signatures using `include`:
+Like modules themselves, module signatures can also be extended by other module signatures using `include`. Again, **heavily discouraged**:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 module type BaseComponent = {
@@ -204,6 +297,10 @@ module type ActualComponent = {
   let render: unit => string
 }
 ```
+```js
+```
+
+</CodeTab>
 
 **Note**: `BaseComponent` is a module **type**, not an actual module itself!
 
@@ -212,12 +309,18 @@ using `include (module type of ActualModuleName)`. For example, we can extend th
 `List` module from the standard library, which does not define a module
 type.
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 module type MyList = {
   include (module type of List)
   let myListFun: list('a) => list('a)
 }
 ```
+```js
+```
+
+</CodeTab>
 
 ### Every `.resi` file is a signature
 
@@ -227,20 +330,28 @@ provided, the signature of `React.res` defaults to exposing all the fields of th
 module. Because they don't contain implementation files, `.resi` files are used
 in the ecosystem to also document the public API of their corresponding modules.
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 /* file React.res (implementation. Compiles to module React) */
 type state = int
 let render = (str) => str
 ```
+```js
+function render(str) {
+  return str;
+}
+```
+
+</CodeTab>
 
 ```res
-/* file React.resi (interface. Compiles to signature of module React) */
+/* file React.resi (interface. Compiles to the signature of React.res) */
 type state = int
 let render: str => str
 ```
 
-Module Functions (functors)
-----------------------------------
+## Module Functions (functors)
 
 Modules can be passed to functions! It would be the equivalent of passing a file
 as a first-class item. However, modules are at a different "layer" of the
@@ -258,6 +369,8 @@ for defining and using regular functions. The primary differences are:
 Here's an example `MakeSet` functor, that takes in a module of the type
 `Comparable` and returns a new set that can contain such comparable items.
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 module type Comparable = {
   type t
@@ -265,35 +378,88 @@ module type Comparable = {
 }
 
 module MakeSet = (Item: Comparable) => {
-  /* let's use a list as our naive backing data structure */
-  type backingType = list(Item.t)
-  let empty = []
-  let add = (currentSet: backingType, newItem: Item.t) : backingType =>
-    /* if item exists */
-    if List.exists((x => Item.equal(x, newItem), currentSet)) {
-      currentSet /* return the same (immutable) set (a list really) */
+  // let's use a list as our naive backing data structure
+  type backingType = list<Item.t>
+  let empty = list{}
+  let add = (currentSet: backingType, newItem: Item.t): backingType =>
+    // if item exists
+    if List.exists(x => Item.equal(x, newItem), currentSet) {
+      currentSet // return the same (immutable) set (a list really)
     } else {
-      [
+      list{
         newItem,
-        ...currentSet /* prepend to the set and return it */
-      ]
+        ...currentSet // prepend to the set and return it
+      }
     }
 }
 ```
+```js
+var List = require("./stdlib/list.js");
+
+function MakeSet(Item) {
+  var add = function(currentSet, newItem) {
+    if (
+      List.exists(function(x) {
+        return Item.equal(x, newItem);
+      }, currentSet)
+    ) {
+      return currentSet;
+    } else {
+      return {
+        hd: newItem,
+        tl: currentSet,
+      };
+    }
+  };
+  return {
+    empty: /* [] */ 0,
+    add: add,
+  };
+}
+```
+
+</CodeTab>
 
 Functors can be applied using function application syntax. In this case, we're
 creating a set, whose items are pairs of integers.
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 module IntPair = {
   type t = (int, int)
-  let equal = ((x1, y1), (x2, y2)) => x1 == x2 && y1 == y2
+  let equal = ((x1: int, y1: int), (x2, y2)) => x1 == x2 && y1 == y2
   let create = (x, y) => (x, y)
 }
 
 /* IntPair abides by the Comparable signature required by MakeSet */
 module SetOfIntPairs = MakeSet(IntPair)
 ```
+```js
+function equal(param, param$1) {
+  if (param[0] === param$1[0]) {
+    return param[1] === param$1[1];
+  } else {
+    return false;
+  }
+}
+
+function create(x, y) {
+  return [x, y];
+}
+
+var IntPair = {
+  equal: equal,
+  create: create,
+};
+
+var SetOfIntPairs = {
+  empty: /* [] */ 0,
+  add: add,
+};
+```
+
+</CodeTab>
 
 ### Module functions types
 
@@ -303,6 +469,8 @@ for function types, but with types capitalized to represent the signatures of
 modules the functor accepts as arguments and return values. In the
 previous example, we're exposing the backing type of a set; by giving `MakeSet`
 a functor signature, we can hide the underlying data structure!
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 module type Comparable = ...
@@ -317,6 +485,10 @@ module MakeSet: MakeSetType = (Item: Comparable) => {
   ...
 }
 ```
+```js
+```
+
+</CodeTab>
 
 ## Tips & Tricks
 

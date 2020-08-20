@@ -4,10 +4,18 @@
 
 Unlike JavaScript, ReScript doesn't have or need import statements:
 
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 // Inside School.res
 let studentMessage = Student.message
 ```
+```js
+var Student = require("./Student.bs");
+var studentMessage = Student.message
+```
+
+</CodeTab>
 
 The above code refers to the `message` binding in the file `Student.res`. Every ReScript file is also a module, so accessing another file's content is the same as accessing another module's content!
 

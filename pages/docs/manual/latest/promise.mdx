@@ -8,13 +8,13 @@ ReScript has built-in support for [JavaScript promises](/apis/latest/js/promise)
 
 Additionally, here's the type signature for creating a promise on the ReScript side:
 
-```res
+```resi
 Js.Promise.make: (
   (
     ~resolve: (. 'a) => unit,
     ~reject: (. exn) => unit
   ) => unit
-) => Js.Promise.t('a)`
+) => Js.Promise.t<'a>
 ```
 
 This type signature means that `make` takes a callback that takes 2 named arguments, `resolve` and `reject`. Both arguments are themselves [uncurried callbacks](
@@ -23,6 +23,8 @@ function.md#uncurried-function) (with a dot). `make` returns the created promise
 ## Usage
 
 Using the [pipe operator](pipe.md):
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 let myPromise = Js.Promise.make((~resolve, ~reject) => resolve(. 2))
@@ -41,5 +43,26 @@ myPromise
      Js.Promise.resolve(-2)
    })
 ```
+```js
+var myPromise = new Promise(function (resolve, reject) {
+  return resolve(2);
+});
+
+myPromise
+  .then(function (value) {
+    console.log(value);
+    return Promise.resolve((value + 2) | 0);
+  })
+  .then(function (value) {
+    console.log(value);
+    return Promise.resolve((value + 3) | 0);
+  })
+  .catch(function (err) {
+    console.log("Failure!!", err);
+    return Promise.resolve(-2);
+  });
+```
+
+</CodeTab>
 
 **Note**: we might offer a dedicated syntax for JS promises (async/await) in the future. Stay tuned!
