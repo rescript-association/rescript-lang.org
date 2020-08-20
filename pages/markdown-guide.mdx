@@ -182,11 +182,11 @@ Your hero text
 ## Codeblocks
 
 Codeblocks are represented via \`\`\` codefences.
-Following languages are available: `re`, `js`, `ml`, `text`, `json`, `sh`
+Following languages are available: `res`, `re`, `js`, `ml`, `text`, `json`, `sh`
 
 
-```re
-let a = "This is a Reason codeblock";
+```res
+let a = "This is a Reason codeblock"
 ```
 
 ```
@@ -201,13 +201,13 @@ To highlight codelines in your code snippet, use the `{range}` meta parameter:
 ~~~
 ```res {1,4-5}
 
-let a = 1;
-let b = 2;
+let a = 1
+let b = 2
 
 switch a => {
-  | 1 => a + b
-  | 2 => a - b
-  | _ => b
+| 1 => a + b
+| 2 => a - b
+| _ => b
 }
 ```
 ~~~
@@ -215,13 +215,13 @@ switch a => {
 which will render:
 
 ```res {1,4-5}
-let a = 1;
-let b = 2;
+let a = 1
+let b = 2
 
 switch a => {
-  | 1 => a + b
-  | 2 => a - b
-  | _ => b
+| 1 => a + b
+| 2 => a - b
+| _ => b
 }
 ```
 

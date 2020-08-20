@@ -45,18 +45,15 @@ build specific pages (file `index_data/x.json` not found).
 
 ### Markdown Codeblock Tests
 
-We try to verify our code examples inside markdown files as much as possible.
-Currently we are using `scripts/test-examples.js` to test all our example
-codeblocks (those blocks marked with `re examples`).
+We check the validity of our code examples marked with:
+- `` ```res example `` (ReScript code snippet)
+- `` ```res sig `` (signature)
+- `` ```res prelude `` (ReScript code snippet available for all subsequent code snippets)
 
-After writing documentation, this is how you can run your codeblock tests:
+Run the checks with:
 
-```
-# Tests all files
+```sh
 node scripts/test-examples.js
-
-# Or just a subset (glob pattern)
-node scripts/test-examples.js "pages/apis/latest/belt/set-*.mdx"
 ```
 
 ### Markdown Hyperlink Tests
@@ -80,7 +77,7 @@ checked since they are assumed to be external resources.
 
 Here is an example on how to run the tests:
 
-```
+```sh
 # Tests all files
 node scripts/test-hrefs.js
 
@@ -106,7 +103,7 @@ or open an issue.
 
 Build CSS seperately via `npx postcss` (useful for debugging)
 
-```
+```sh
 # Devmode
 npx postcss styles/main.css -o test.css
 

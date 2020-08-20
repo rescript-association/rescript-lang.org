@@ -3,7 +3,7 @@
  * Ideally we would like following information:
  *
  * - Module names (h1)
- *   - function names (```re sig)
+ *   - function names (```res sig)
  */
 const unified = require("unified");
 const markdown = require("remark-parse");
