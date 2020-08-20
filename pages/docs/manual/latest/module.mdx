@@ -72,22 +72,6 @@ let p = {
 /* School's content isn't visible here anymore */
 ```
 
-For an `open` followed by a single expression, we have a dedicated syntax sugar:
-
-```res
-let p = School.(getProfession(person1))
-```
-
-Anything else needs to be written in the first way:
-
-```res
-let p = {
-  open School
-  Js.log("hello!")
-  getProfession(person1)
-}
-```
-
 ### Extending modules
 
 Using `include` in a module statically "spreads" a module's content into
