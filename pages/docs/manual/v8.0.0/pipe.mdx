@@ -7,7 +7,7 @@ Why would you use it? Imagine you have the following:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-validateAge(getAge(parseData(person)))
+validateAge(getAge(parseData(person)));
 ```
 ```js
 validateAge(getAge(parseData(person)));
@@ -23,7 +23,7 @@ This is slightly hard to read, since you need to read the code from the innermos
 person
   ->parseData
   ->getAge
-  ->validateAge
+  ->validateAge;
 ```
 ```js
 validateAge(getAge(parseData(person)));
@@ -38,7 +38,7 @@ Basically, `parseData(person)` is transformed into `person->parseData`, and `get
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-a(one, two, three)
+a(one, two, three);
 ```
 ```js
 a(one, two, three);
@@ -51,7 +51,7 @@ is the same as
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-one->a(two, three)
+one->a(two, three);
 ```
 ```js
 a(one, two, three);
@@ -74,7 +74,7 @@ _This section requires understanding of [our binding API](bind-to-js-function.md
 JavaScript's APIs are often attached to objects, and often chainable, like so:
 
 ```js
-const result = [1, 2, 3].map(a => a + 1).filter(a => a % 2 === 0);
+const result = [|1, 2, 3|].map(a => a + 1).filter(a => a % 2 === 0);
 
 asyncRequest()
   .setWaitDuration(4000)
@@ -86,13 +86,13 @@ Assuming we don't need the chaining behavior above, we'd bind to each case this 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-[@bs.send] external map: (array('a), 'a => 'b) => array('b) = "map"
-[@bs.send] external filter: (array('a), 'a => bool) => array('a) = "filter"
+[@bs.send] external map: (array('a), 'a => 'b) => array('b) = "map";
+[@bs.send] external filter: (array('a), 'a => bool) => array('a) = "filter";
 
-type request
-external asyncRequest: unit => request = "asyncRequest"
-[@bs.send] external setWaitDuration: (request, int) => request = "setWaitDuration"
-[@bs.send] external send: request => unit = "send"
+type request;
+[@bs.val] external asyncRequest: unit => request = "asyncRequest";
+[@bs.send] external setWaitDuration: (request, int) => request = "setWaitDuration";
+[@bs.send] external send: request => unit = "send";
 ```
 ```js
 // Empty output
@@ -105,9 +105,9 @@ You'd use them like this:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let result = Js.Array2.filter(Js.Array2.map([1, 2, 3], a => a + 1), a => mod(a, 2) == 0)
+let result = Js.Array2.filter(Js.Array2.map([|1, 2, 3|], a => a + 1), a => mod(a, 2) == 0);
 
-send(setWaitDuration(asyncRequest(), 4000))
+send(setWaitDuration(asyncRequest(), 4000));
 ```
 ```js
 var result = [1, 2, 3].map(function(a) {
@@ -126,7 +126,7 @@ This looks much worse than the JS counterpart! Clean it up visually with pipe:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let result = [1, 2, 3]
+let result = [|1, 2, 3|]
   ->map(a => a + 1)
   ->filter(a => a mod 2 === 0)
 
@@ -151,7 +151,7 @@ You can pipe into a variant's constructor as if it was a function:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let result = name->preprocess->Some
+let result = name->preprocess->Some;
 ```
 ```js
 var result = preprocess(name);
@@ -164,7 +164,7 @@ We turn this into:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let result = Some(preprocess(name))
+let result = Some(preprocess(name));
 ```
 ```js
 var result = preprocess(name);
@@ -179,8 +179,8 @@ var result = preprocess(name);
 A placeholder is written as an underscore and it tells ReScript that you want to fill in an argument of a function later. These two have equivalent meaning:
 
 ```re
-let addTo7 = (x) => add3(3, x, 4)
-let addTo7 = add3(3, _, 4)
+let addTo7 = (x) => add3(3, x, 4);
+let addTo7 = add3(3, _, 4);
 ```
 
 Sometimes you don't want to pipe the value you have into the first position. In these cases you can mark a placeholder value to show which argument you would like to pipe into.
@@ -191,7 +191,7 @@ Let's say you have a function `namePerson`, which takes a `person` then a `name`
 
 ```re
 makePerson(~age=47, ())
-  ->namePerson("Jane")
+  ->namePerson("Jane");
 ```
 ```js
 namePerson(makePerson(47), "Jane");
@@ -205,7 +205,7 @@ If you have a name that you want to apply to a person object, you can use a plac
 
 ```re
 getName(input)
-  ->namePerson(personDetails, _)
+  ->namePerson(personDetails, _);
 ```
 ```js
 var __x = getName(input);
@@ -220,7 +220,7 @@ This allows you to pipe into any positional argument. It also works for named ar
 
 ```re
 getName(input)
-  ->namePerson(~person=personDetails, ~name=_)
+  ->namePerson(~person=personDetails, ~name=_);
 ```
 ```js
 var __x = getName(input);
