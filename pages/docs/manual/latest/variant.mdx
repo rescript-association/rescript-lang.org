@@ -157,7 +157,7 @@ If you come from an untyped language, you might be tempted to try `type myType =
 
 ### Interop with JavaScript
 
-_This section assumes knowledge about our [FFI](/docs/reason-compiler/latest/interop-overview). Skip this if you haven't felt the itch to use variants for wrapping JS functions yet_.
+_This section assumes knowledge about our JavaScript interop. Skip this if you haven't felt the itch to use variants for wrapping JS functions yet_.
 
 Quite a few JS libraries use functions that can accept many types of arguments. In these cases, it's very tempting to model them as variants. For example, suppose there's a `myLibrary.draw` JS function that takes in either a `number` or a `string`. You might be tempted to bind it like so:
 
