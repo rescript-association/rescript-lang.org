@@ -19,6 +19,7 @@ Although ReScript records compile to clean JavaScript objects, ReScript objects 
 
 ```re
 type person = {
+  .
   "age": int,
   "name": string
 };
@@ -41,10 +42,10 @@ To create a new object:
 let me = {
   "age": 5,
   "name": "Big ReScript"
-}
+};
 ```
 ```js
-bar me = {
+var me = {
   "age": 5,
   "name": "Big ReScript"
 };
@@ -58,12 +59,13 @@ bar me = {
 
 ```re
 type person = {
+  .
   "age": int
 };
 
 let me = {
   "age": "hello!" // age is a string. No error.
-}
+};
 ```
 ```js
 var me = {
@@ -88,7 +90,7 @@ Now the type system will error properly.
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let age = me["age"]
+let age = me##age;
 ```
 ```js
 var age = me["age"];
@@ -106,10 +108,10 @@ Disallowed unless the object is a binding that comes from the JavaScript side. I
 type student = {
   [@bs.set] "age": int,
   [@bs.set] "name": string,
-}
-[@bs.module "MyJSFile"] external student1: student = "student1"
+};
+[@bs.module "MyJSFile"] external student1: student = "student1";
 
-student1["name"] = "Mary"
+student1##name = "Mary";
 ```
 ```js
 var MyJSFile = require("MyJSFile");

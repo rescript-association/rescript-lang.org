@@ -9,7 +9,7 @@ We represent the existence and nonexistence of a value by wrapping it with the `
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-type option('a) = None | Some('a)
+type option('a) = None | Some('a);
 ```
 ```js
 // Empty output
@@ -28,7 +28,7 @@ Here's a normal value:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let licenseNumber = 5
+let licenseNumber = 5;
 ```
 ```js
 var licenseNumber = 5;
@@ -42,11 +42,11 @@ To represent the concept of "maybe null", you'd turn this into an `option` type 
 
 ```re
 let licenseNumber =
-  if personHasACar {
-    Some(5)
+  if (personHasACar) {
+    Some(5);
   } else {
-    None
-  }
+    None;
+  };
 ```
 ```js
 var licenseNumber = personHasACar ? 5 : undefined;
@@ -59,12 +59,12 @@ Later on, when another piece of code receives such value, it'd be forced to hand
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-switch licenseNumber {
+switch (licenseNumber) {
 | None =>
-  Js.log("The person doesn't have a car")
+  Js.log("The person doesn't have a car");
 | Some(number) =>
-  Js.log("The person's license number is " ++ Js.Int.toString(number))
-}
+  Js.log("The person's license number is " ++ Js.Int.toString(number));
+};
 ```
 ```js
 var number = licenseNumber;
@@ -87,7 +87,7 @@ The `option` type is common enough that we special-case it when compiling to Jav
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let x = Some(5)
+let x = Some(5);
 ```
 ```js
 var x = 5;
@@ -100,7 +100,7 @@ simply compiles down to `5`, and
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let x = None
+let x = None;
 ```
 ```js
 var x;
@@ -117,7 +117,7 @@ The option-to-undefined translation isn't perfect, because on our side, `option`
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let x = Some(Some(Some(5)))
+let x = Some(Some(Some(5)));
 ```
 ```js
 var x = 5;
@@ -130,7 +130,7 @@ This still compiles to `5`, but this gets troublesome:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let x = Some(None)
+let x = Some(None);
 ```
 ```js
 var Caml_option = require("./stdlib/caml_option.js");
@@ -164,7 +164,7 @@ If you're receiving, for example, a JS string that can be `null` and `undefined`
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-[@bs.module "MyConstant"] external myId: Js.Nullable.t(string) = "myId"
+[@bs.module "MyConstant"] external myId: Js.Nullable.t(string) = "myId";
 ```
 ```js
 // Empty output
@@ -177,10 +177,10 @@ To create such a nullable string from our side (presumably to pass it to the JS 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-[@bs.module "MyIdValidator"] external validate: Js.Nullable.t(string) => bool = "validate"
-let personId: Js.Nullable.t(string) = Js.Nullable.return("abc123")
+[@bs.module "MyIdValidator"] external validate: Js.Nullable.t(string) => bool = "validate";
+let personId: Js.Nullable.t(string) = Js.Nullable.return("abc123");
 
-let result = validate(personId)
+let result = validate(personId);
 ```
 ```js
 var MyIdValidator = require("MyIdValidator");
