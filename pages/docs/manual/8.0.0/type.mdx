@@ -133,7 +133,7 @@ Note that the above codes are just contrived examples for illustration purposes.
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let buddy = (10, 20, 20)
+let buddy = (10, 20, 20);
 ```
 ```js
 var buddy = [10, 20, 20];
@@ -149,7 +149,7 @@ Type arguments appear in many places. Our `array('a)` type is such a type that r
 
 ```re
 // inferred as `array(string)`
-let greetings = ["hello", "world", "how are you"]
+let greetings = ["hello", "world", "how are you"];
 ```
 ```js
 // inferred as `array(string)`
@@ -169,17 +169,17 @@ Types can receive many arguments, and be composable.
 ```re
 type result('a, 'b) =
   | Ok('a)
-  | Error('b)
+  | Error('b);
 
-type myPayload = {data: string}
+type myPayload = {data: string};
 
-type myPayloadResults('errorType) = array<result<myPayload, 'errorType>>
+type myPayloadResults('errorType) = array(result(myPayload, 'errorType));
 
 let payloadResults: myPayloadResults(string) = [
   Ok({data: "hi"}),
   Ok({data: "bye"}),
   Error("Something wrong happened!")
-]
+];
 ```
 ```js
 var payloadResults = [
@@ -202,12 +202,12 @@ var payloadResults = [
 
 ## Recursive Types
 
-Just like a functions, a type can reference itself within itself `rec`:
+Just like a functions, a type can reference itself within itself:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-type rec person = {
+type person = {
   name: string,
   friends: array(person)
 }
@@ -218,6 +218,8 @@ type rec person = {
 
 </CodeTab>
 
+To opt out of resursive type, use `type nonrec person = ...`.
+
 ## Mutually Recursive Types
 
 Types can also be _mutually_ recursive through `and`:
@@ -225,8 +227,8 @@ Types can also be _mutually_ recursive through `and`:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-type student = {taughtBy: teacher}
-and teacher = {students: array(student)}
+type student = {taughtBy: teacher};
+and teacher = {students: array(student)};
 ```
 ```js
 // Empty output
@@ -241,7 +243,7 @@ ReScript's type system is robust and does not allow dangerous, unsafe stuff like
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-external myShadyConversion : myType1 => myType2 = "%identity"
+external myShadyConversion : myType1 => myType2 = "%identity";
 ```
 ```js
 // Empty output
@@ -254,9 +256,9 @@ This declaration converts a `myType1` of your choice to `myType2` of your choice
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-external convertToFloat : int => float = "%identity"
-let age = 10
-let gpa = 2.1 +. convertToFloat(age)
+external convertToFloat : int => float = "%identity";
+let age = 10;
+let gpa = 2.1 +. convertToFloat(age);
 ```
 ```js
 var age = 10;
