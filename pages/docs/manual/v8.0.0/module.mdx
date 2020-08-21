@@ -15,15 +15,15 @@ inside a module definition's `{}` block.
 
 ```re
 module School = {
-  type profession = Teacher | Director
+  type profession = Teacher | Director;
 
-  let person1 = Teacher
+  let person1 = Teacher;
   let getProfession = (person) =>
     switch person {
     | Teacher => "A teacher"
     | Director => "A director"
-    }
-}
+    };
+};
 ```
 ```js
 function getProfession(person) {
@@ -48,8 +48,8 @@ using the `.` notation. This demonstrates modules' utility for namespacing.
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let anotherPerson: School.profession = School.Teacher
-Js.log(School.getProfession(anotherPerson)) /* "A teacher" */
+let anotherPerson: School.profession = School.Teacher;
+Js.log(School.getProfession(anotherPerson)); /* "A teacher" */
 ```
 ```js
 var anotherPerson = /* Teacher */0;
@@ -66,10 +66,10 @@ Nested modules work too.
 module MyModule = {
   module NestedModule = {
     let message = "hello"
-  }
-}
+  };
+};
 
-let message = MyModule.NestedModule.message
+let message = MyModule.NestedModule.message;
 ```
 ```js
 var NestedModule = {
@@ -93,7 +93,7 @@ module's name. Instead of writing:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let p = School.getProfession(School.person1)
+let p = School.getProfession(School.person1);
 ```
 ```js
 var p = School.getProfession(School.person1);
@@ -106,8 +106,8 @@ We can write:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-open School
-let p = getProfession(person1)
+open School;
+let p = getProfession(person1);
 ```
 ```js
 var p = School.getProfession(School.person1);
@@ -123,9 +123,9 @@ The content of `School` module are made visible (**not** copied into the file, b
 
 ```re
 let p = {
-  open School
-  getProfession(person1)
-}
+  open School;
+  getProfession(person1);
+};
 /* School's content isn't visible here anymore */
 ```
 ```js
@@ -144,17 +144,17 @@ Using `include` in a module statically "spreads" a module's content into a new o
 
 ```re
 module BaseComponent = {
-  let defaultGreeting = "Hello"
-  let getAudience = (~excited) => excited ? "world!" : "world"
-}
+  let defaultGreeting = "Hello";
+  let getAudience = (~excited) => excited ? "world!" : "world";
+};
 
 module ActualComponent = {
   /* the content is copied over */
-  include BaseComponent
+  include BaseComponent;
   /* overrides BaseComponent.defaultGreeting */
-  let defaultGreeting = "Hey"
-  let render = () => defaultGreeting ++ " " ++ getAudience(~excited=true)
-}
+  let defaultGreeting = "Hey";
+  let render = () => defaultGreeting ++ " " ++ getAudience(~excited=true);
+};
 ```
 ```js
 function getAudience(excited) {
@@ -189,7 +189,7 @@ var ActualComponent = {
 
 ### Every `.re` file is a module
 
-Every ReScript file is itself compiled to a module of the same name as the file name, capitalized. The file `React.res` implicitly forms a module `React`, which can be seen by other source files.
+Every ReScript file is itself compiled to a module of the same name as the file name, capitalized. The file `React.re` implicitly forms a module `React`, which can be seen by other source files.
 
 **Note**: ReScript file names should, by convention, be capitalized so that their casing matches their module name. Uncapitalized file names are not invalid, but will be implicitly transformed into a capitalized module name. I.e. `file.res` will be compiled into the module `File`. To simplify and minimize the disconnect here, the convention is therefore to capitalize file names.
 
@@ -210,9 +210,9 @@ inside a signature definition's `{}` block.
 ```re
 /* Picking up previous section's example */
 module type EstablishmentType = {
-  type profession
-  let getProfession: profession => string
-}
+  type profession;
+  let getProfession: profession => string;
+};
 ```
 ```js
 // Empty output
@@ -256,7 +256,7 @@ module Company: EstablishmentType = {
   let getProfession = (person) => ...
   let person1 = ...
   let person2 = ...
-}
+};
 ```
 ```js
 function getProfession(person) {
@@ -288,15 +288,15 @@ Like modules themselves, module signatures can also be extended by other module 
 
 ```re
 module type BaseComponent = {
-  let defaultGreeting: string
-  let getAudience: (~excited: bool) => string
-}
+  let defaultGreeting: string;
+  let getAudience: (~excited: bool) => string;
+};
 
 module type ActualComponent = {
   /* the BaseComponent signature is copied over */
-  include BaseComponent
-  let render: unit => string
-}
+  include BaseComponent;
+  let render: unit => string;
+};
 ```
 ```js
 // Empty output
@@ -315,9 +315,9 @@ type.
 
 ```re
 module type MyList = {
-  include (module type of List)
-  let myListFun: list('a) => list('a)
-}
+  include (module type of List);
+  let myListFun: list('a) => list('a);
+};
 ```
 ```js
 // Empty output
@@ -327,18 +327,18 @@ module type MyList = {
 
 ### Every `.rei` file is a signature
 
-Similar to how a `React.res` file implicitly defines a module `React`, a file
-`React.resi` implicitly defines a signature for `React`. If `React.resi` isn't
-provided, the signature of `React.res` defaults to exposing all the fields of the
+Similar to how a `React.re` file implicitly defines a module `React`, a file
+`React.rei` implicitly defines a signature for `React`. If `React.rei` isn't
+provided, the signature of `React.re` defaults to exposing all the fields of the
 module. Because they don't contain implementation files, `.rei` files are used
 in the ecosystem to also document the public API of their corresponding modules.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-/* file React.res (implementation. Compiles to module React) */
-type state = int
-let render = (str) => str
+/* file React.re (implementation. Compiles to module React) */
+type state = int;
+let render = (str) => str;
 ```
 ```js
 function render(str) {
@@ -349,9 +349,9 @@ function render(str) {
 </CodeTab>
 
 ```re
-/* file React.resi (interface. Compiles to the signature of React.res) */
-type state = int
-let render: str => str
+/* file React.rei (interface. Compiles to the signature of React.re) */
+type state = int;
+let render: str => str;
 ```
 
 ## Module Functions (functors)
@@ -376,25 +376,25 @@ Here's an example `MakeSet` functor, that takes in a module of the type
 
 ```re
 module type Comparable = {
-  type t
-  let equal: (t, t) => bool
+  type t;
+  let equal: (t, t) => bool;
 }
 
 module MakeSet = (Item: Comparable) => {
   // let's use a list as our naive backing data structure
-  type backingType = list<Item.t>
-  let empty = list{}
+  type backingType = list<Item.t>;
+  let empty = [];
   let add = (currentSet: backingType, newItem: Item.t): backingType =>
     // if item exists
-    if List.exists(x => Item.equal(x, newItem), currentSet) {
-      currentSet // return the same (immutable) set (a list really)
+    if (List.exists(x => Item.equal(x, newItem), currentSet)) {
+      currentSet; // return the same (immutable) set (a list really)
     } else {
       list{
         newItem,
         ...currentSet // prepend to the set and return it
-      }
-    }
-}
+      };
+    };
+};
 ```
 ```js
 var List = require("./stdlib/list.js");
@@ -430,13 +430,13 @@ creating a set, whose items are pairs of integers.
 
 ```re
 module IntPair = {
-  type t = (int, int)
-  let equal = ((x1: int, y1: int), (x2, y2)) => x1 == x2 && y1 == y2
-  let create = (x, y) => (x, y)
-}
+  type t = (int, int);
+  let equal = ((x1: int, y1: int), (x2, y2)) => x1 == x2 && y1 == y2;
+  let create = (x, y) => (x, y);
+};
 
 /* IntPair abides by the Comparable signature required by MakeSet */
-module SetOfIntPairs = MakeSet(IntPair)
+module SetOfIntPairs = MakeSet(IntPair);
 ```
 ```js
 function equal(param, param$1) {
@@ -479,14 +479,14 @@ a functor signature, we can hide the underlying data structure!
 module type Comparable = ...
 
 module type MakeSetType = (Item: Comparable) => {
-  type backingType
-  let empty: backingType
-  let add: (backingType, Item.t) => backingType
-}
+  type backingType;
+  let empty: backingType;
+  let add: (backingType, Item.t) => backingType;
+};
 
 module MakeSet: MakeSetType = (Item: Comparable) => {
   ...
-}
+};
 ```
 ```js
 // Empty output
