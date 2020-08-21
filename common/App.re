@@ -54,8 +54,15 @@ let default = (props: props): React.element => {
 
   switch (url) {
   // docs routes
-  | {base: [|"docs", "manual"|], version: Latest} =>
-    <ManualDocsLayout.Prose> content </ManualDocsLayout.Prose>
+  | {base: [|"docs", "manual"|], version} =>
+    switch (version) {
+    | Latest =>
+      <ManualDocsLayout.Prose> content </ManualDocsLayout.Prose>
+    | Version("v8.0.0") =>
+      <ManualDocsLayout8_0_0.Prose> content </ManualDocsLayout8_0_0.Prose>
+    | _ =>
+      React.null
+    }
   | {base: [|"docs", "reason-compiler"|], version: Latest} =>
     <ReasonCompilerDocsLayout> content </ReasonCompilerDocsLayout>
   | {base: [|"docs", "reason-react"|], version: Latest} =>
