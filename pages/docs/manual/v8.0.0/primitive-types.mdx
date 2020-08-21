@@ -11,9 +11,9 @@ ReScript `string`s are delimited using **double** quotes (single quotes are rese
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let greeting = "Hello world!"
+let greeting = "Hello world!";
 let multilineGreeting = "Hello
- world!"
+ world!";
 ```
 ```js
 var greeting = "Hello world!";
@@ -27,7 +27,7 @@ To concatenate strings, use `++`:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let greetings = "Hello " ++ "world!"
+let greetings = "Hello " ++ "world!";
 ```
 ```js
 var greetings = "Hello world!";
@@ -40,40 +40,23 @@ var greetings = "Hello world!";
 There's a special syntax for string that allows
 
 - multiline string just like before
-- no special character escaping
 - Interpolation
-- Proper unicode handling
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let greeting = `Hello
+let greeting = {j|Hello
 World
-👋
 ${name}
-`
+|j}
 ```
 ```js
-var greeting = "Hello\nWorld\n👋\n" + name + "\n";
+var greeting = "Hello\nWorld\n" + name + "\n";
 ```
 
 </CodeTab>
 
-This is just like JavaScript's backtick string interpolation, except without needing to escape special characters.
-
-For interpolation, you'll have to convert the binding (`name` in the example) into a string if it isn't one. If you want the interpolation to implicitly convert a binding into a string, prepend a `j`:
-
-<CodeTab labels={["ReScript", "JS Output"]}>
-
-```re
-let age = 10
-let message = j`Today I am ${age} years old.`
-```
-```js
-var message = "Today I am " + 10 + " years old.";
-```
-
-</CodeTab>
+This is just like JavaScript's backtick string interpolation.
 
 ### Usage
 
@@ -98,7 +81,7 @@ ReScript has a type for a string with a single letter:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let firstLetterOfAlphabet = 'a'
+let firstLetterOfAlphabet = 'a';
 ```
 ```js
 var firstLetterOfAlphabet = /* "a" */97;
@@ -117,7 +100,7 @@ ReScript regular expressions compile cleanly to their JavaScript counterpart:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let r = %re("/b/g")
+let r = [%re "/b/g"];
 ```
 ```js
 var r = /b/g;
