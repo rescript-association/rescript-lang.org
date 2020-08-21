@@ -218,8 +218,8 @@ String Concatenation            | `"Hello " ++ "World"`                | `"Hello
 Comparison                      | `>`, `<`, `>=`, `<=`                 | `>`, `<`, `>=`, `<=`
 Boolean operation               | `!`, `&&`, <code>&#124;&#124;</code> | `!`, `&&`, <code>&#124;&#124;</code>
 Shallow and deep Equality       | `===`, `==`                          | `===`, `==`
-List (disrecommended)           | `list{1, 2, 3}`                      | `[1, [2, [3, 0]]]`
-List Prepend                    | `list{a1, a2, ...theRest}`           | `[a1, [a2, theRest]]`
+List (disrecommended)           | `list{1, 2, 3}`                      | `{hd: 1, tl: {hd: 2, tl: {hd: 3, tl: 0}}}`
+List Prepend                    | `list{a1, a2, ...oldList}`           | `{hd: a1, tl: {hd: a2, tl: theRest}}`
 Array                           | `[1, 2, 3]`                          | `[1, 2, 3]`
 Record                          | `type t = {b: int}; let a = {b: 10}` | `var a = {b: 10}`
 Multiline Comment               | `/* Comment here */`                 | Not in output
