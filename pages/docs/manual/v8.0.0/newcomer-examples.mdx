@@ -11,13 +11,13 @@ This section is dedicated to newcomers trying to figure out general idioms & con
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let possiblyNullValue1 = None
-let possiblyNullValue2 = Some("Hello")
+let possiblyNullValue1 = None;
+let possiblyNullValue2 = Some("Hello");
 
-switch possiblyNullValue2 {
+switch (possiblyNullValue2) {
 | None => Js.log("Nothing to see here.")
 | Some(message) => Js.log(message)
-}
+};
 ```
 ```js
 var possiblyNullValue1;
@@ -38,12 +38,12 @@ if (possiblyNullValue2 !== undefined) {
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-type universityStudent = {gpa: float}
+type universityStudent = {gpa: float};
 
 type response('studentType) = {
   status: int,
-  student: 'studentType
-}
+  student: 'studentType,
+};
 ```
 ```js
 // Empty output
@@ -59,7 +59,7 @@ type response('studentType) = {
 let student1 = {
   "name": "John",
   "age": 30,
-}
+};
 ```
 ```js
 var student1 = {
@@ -77,13 +77,13 @@ Or using [record](record.md):
 ```re
 type payload = {
   name: string,
-  age: int
-}
+  age: int,
+};
 
 let student1 = {
   name: "John",
   age: 30,
-}
+};
 ```
 ```js
 var student1 = {
@@ -106,12 +106,12 @@ For a function whose argument is passed a JavaScript value that's potentially `n
 
 ```re
 let greetByName = (possiblyNullName) => {
-  let optionName = Js.Nullable.toOption(possiblyNullName)
-  switch optionName {
+  let optionName = Js.Nullable.toOption(possiblyNullName);
+  switch (optionName) {
   | None => "Hi"
   | Some(name) => "Hello " ++ name
   }
-}
+};
 ```
 ```js
 function greetByName(possiblyNullName) {
