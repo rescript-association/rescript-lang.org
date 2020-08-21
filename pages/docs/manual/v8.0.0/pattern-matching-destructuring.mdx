@@ -15,9 +15,9 @@ Even JavaScript has destructuring, which is "opening up" a data structure to ext
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let coordinates = (10, 20, 30)
-let (x, _, _) = coordinates
-Js.log(x) // 10
+let coordinates = (10, 20, 30);
+let (x, _, _) = coordinates;
+Js.log(x); // 10
 ```
 ```js
 var coordinates = [10, 20, 30];
@@ -33,23 +33,23 @@ Destructuring works with most built-in data structures:
 
 ```re
 // Record
-type student = {name: string, age: int}
-let student1 = {name: "John", age: 10}
-let {name} = student1 // "John" assigned to `name`
+type student = {name: string, age: int};
+let student1 = {name: "John", age: 10};
+let {name} = student1; // "John" assigned to `name`
 
 // Variant
 type result =
-  | Success(string)
-let myResult = Success("You did it!")
-let Success(message) = myResult // "You did it!" assigned to `message`
+  | Success(string);
+let myResult = Success("You did it!");
+let Success(message) = myResult; // "You did it!" assigned to `message`
 
 // Array
-let myArray = [1, 2, 3]
-let [item1, item2] = myArray // 1 assigned to `item1`, 2 assigned to `item2`
+let myArray = [|1, 2, 3|];
+let [item1, item2] = myArray; // 1 assigned to `item1`, 2 assigned to `item2`
 
 // List
-let myList = list{1, 2, 3}
-let list{head, ...tail} = myList // 1 assigned to `head`, `list{2, 3}` assigned to tail
+let myList = [1, 2, 3];
+let [head, ...tail] = myList; // 1 assigned to `head`, `[2, 3]` assigned to tail
 ```
 ```js
 var student1 = {
@@ -99,13 +99,13 @@ You can also use destructuring anywhere you'd usually put a binding:
 
 ```re
 type result =
-  | Success(string)
+  | Success(string);
 let displayMessage = (Success(m)) => {
   // we've directly extracted the success message
   // string by destructuring the parameter
-  Js.log(m)
+  Js.log(m);
 }
-displayMessage(Success("You did it!"))
+displayMessage(Success("You did it!"));
 ```
 ```js
 function displayMessage(m) {
@@ -124,7 +124,7 @@ For a record, you can rename the field while destructuring:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let {name: n} = student1 // "John" assigned to `n`
+let {name: n} = student1; // "John" assigned to `n`
 ```
 ```js
 var n = "John";
@@ -144,7 +144,7 @@ Consider a variant:
 type payload =
   | BadResult(int)
   | GoodResult(string)
-  | NoResult
+  | NoResult;
 ```
 ```js
 // Empty output
@@ -159,15 +159,15 @@ In other languages, you'd end up with a series of if-elses that are hard to read
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let data = GoodResult("Product shipped!")
-switch data {
+let data = GoodResult("Product shipped!");
+switch (data) {
 | GoodResult(theMessage) =>
   Js.log("Success! " ++ theMessage)
 | BadResult(errorCode) =>
   Js.log("Something's wrong. The error code is: " ++ Js.Int.toString(errorCode))
 | NoResult =>
   Js.log("Bah.")
-}
+};
 ```
 ```js
 var data = {
@@ -197,8 +197,8 @@ Here's a real-world scenario that'd be a headache to code in other languages. Gi
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-type status = Vacations(int) | Sabbatical(int) | Sick | Present
-type reportCard = {passing: bool, gpa: float}
+type status = Vacations(int) | Sabbatical(int) | Sick | Present;
+type reportCard = {passing: bool, gpa: float};
 type person =
   | Teacher({
     name: string,
@@ -208,7 +208,7 @@ type person =
     name: string,
     status: status,
     reportCard: reportCard,
-  })
+  });
 ```
 ```js
 // Empty output
@@ -229,24 +229,24 @@ ReScript can do this easily!
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let message = switch person1 {
+let message = switch (person1) {
 | Teacher({name: "Mary" | "Joe"}) =>
-  `Hey, still going to the party on Saturday?`
+  "Hey, still going to the party on Saturday?"
 | Teacher({name}) =>
   // this is matched only if `name` isn't "Joe"
-  `Hello ${name}.`
+  {j|Hello ${name}.|j}
 | Student({name, reportCard: {passing: true, gpa}}) =>
-  `Congrats ${name}, nice GPA of ${Js.Float.toString(gpa)} you got there!`
+  "Congrats " ++ name + ", nice GPA of " ++ Js.Float.toString(gpa) ++ " you got there!"
 | Student({
     reportCard: {gpa: 0.0},
     status: Vacations(daysLeft) | Sabbatical(daysLeft)
   }) =>
-  `Come back in ${Js.Int.toString(daysLeft)} days!`
+  "Come back in " ++ Js.Int.toString(daysLeft) ++ " days!"
 | Student({status: Sick}) =>
-  `How are you feeling?`
+  "How are you feeling?"
 | Student({name}) =>
-  `Good luck next semester ${name}!`
-}
+  {j|Good luck next semester ${name}!|j}
+};
 ```
 ```js
 var message;
@@ -301,7 +301,7 @@ let categoryId = switch (isBig, myAnimal) {
 | (true, Bird) => 3
 | (false, Dog | Cat) => 4
 | (false, Bird) => 5
-}
+};
 ```
 ```js
 var categoryId = isBig ? (myAnimal + 1) | 0 : myAnimal >= 2 ? 5 : 4;
@@ -323,10 +323,10 @@ If you have a value like `Teacher(payload)` where you just want to pattern match
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-switch person {
+switch (person) {
 | Teacher(_) => Js.log("Hi teacher")
 | Student(_) => Js.log("Hey student")
-}
+};
 ```
 ```js
 if (person.TAG) {
@@ -347,15 +347,15 @@ Sometime, you want to check more than the shape of a value. You want to also run
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-switch person {
+switch (person) {
 | Teacher(_) => () // do nothing
 | Student({reportCard: {gpa}}) =>
-  if gpa < 0.5 {
+  if (gpa < 0.5) {
     Js.log("What's happening")
   } else {
     Js.log("Heyo")
   }
-}
+};
 ```
 ```js
 if (person.TAG) {
@@ -374,13 +374,13 @@ if (person.TAG) {
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-switch person {
+switch (person) {
 | Teacher(_) => () // do nothing
 | Student({reportCard: {gpa}}) when gpa < 0.5 =>
-  Js.log("What's happening")
+  Js.log("What's happening");
 | Student(_) =>
   // fall-through, catch-all case
-  Js.log("Heyo")
+  Js.log("Heyo");
 }
 ```
 ```js
@@ -402,10 +402,10 @@ If the function throws an exception (covered later), you can also match on _that
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-switch List.find(i => i === theItem, myItems) {
+switch (List.find(i => i === theItem, myItems)) {
 | item => Js.log(item)
 | exception Not_found => Js.log("No such item found!")
-}
+};
 ```
 ```js
 var exit = 0;
@@ -443,7 +443,7 @@ if (exit === 1) {
 ```re
 let coordinates = (10, 20, 30)
 let centerY = 20
-switch coordinates {
+switch (coordinates) {
 | (x, centerY, _) => /* code */
 }
 ```
@@ -467,20 +467,20 @@ Let's revisit one of the above examples:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let message = switch person {
+let message = switch (person) {
 | Teacher({name: "Mary" | "Joe"}) =>
-  `Hey, still going to the party on Saturday?`
+  "Hey, still going to the party on Saturday?"
 | Student({name, reportCard: {passing: true, gpa}}) =>
-  `Congrats ${name}, nice GPA of ${Js.Float.toString(gpa)} you got there!`
+  "Congrats " ++ name ++ ", nice GPA of " ++ Js.Float.toString(gpa) ++ " you got there!"
 | Student({
     reportCard: {gpa: 0.0},
     status: Vacations(daysLeft) | Sabbatical(daysLeft)
   }) =>
-  `Come back in ${Js.Int.toString(daysLeft)} days!`
+  "Come back in " ++ Js.Int.toString(daysLeft) ++ " days!""
 | Student({status: Sick}) =>
-  `How are you feeling?`
+  "How are you feeling?"
 | Student({name}) =>
-  `Good luck next semester ${name}!`
+  "Good luck next semester " ++ name ++ "!"
 }
 ```
 ```js
@@ -537,10 +537,10 @@ Some({name: ""})
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-switch myNullableValue {
+switch (myNullableValue) {
 | Some(v) => Js.log("value is present")
 | None => Js.log("value is absent")
-}
+};
 ```
 ```js
 if (myNullableValue !== undefined) {
@@ -570,9 +570,9 @@ Use `when` clause sparingly.
 
 ```re
 let optionBoolToBool = opt => {
-  if opt == None {
+  if (opt == None) {
     false
-  } else if opt === Some(true) {
+  } else if (opt === Some(true)) {
     true
   } else {
     false
@@ -597,11 +597,11 @@ Now that's just silly =). Let's turn it into pattern-matching:
 
 ```re
 let optionBoolToBool = opt => {
-  switch opt {
+  switch (opt) {
   | None => false
   | Some(a) => a ? true : false
   }
-}
+};
 ```
 ```js
 function optionBoolToBool(opt) {
@@ -621,12 +621,12 @@ Slightly better, but still nested. Pattern-matching allows you to do this:
 
 ```re
 let optionBoolToBool = opt => {
-  switch opt {
+  switch (opt) {
   | None => false
   | Some(true) => true
   | Some(false) => false
   }
-}
+};
 ```
 ```js
 function optionBoolToBool(opt) {
@@ -646,11 +646,11 @@ Much more linear-looking! Now, you might be tempted to do this:
 
 ```re
 let optionBoolToBool = opt => {
-  switch opt {
+  switch (opt) {
   | Some(true) => true
   | _ => false
   }
-}
+};
 ```
 ```js
 function optionBoolToBool(opt) {
@@ -670,11 +670,11 @@ Which is much more concise, but kills the exhaustiveness check mentioned above; 
 
 ```re
 let optionBoolToBool = opt => {
-  switch opt {
+  switch (opt) {
   | Some(trueOrFalse) => trueOrFalse
   | None => false
   }
-}
+};
 ```
 ```js
 function optionBoolToBool(opt) {
