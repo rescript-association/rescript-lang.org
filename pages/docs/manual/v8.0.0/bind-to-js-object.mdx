@@ -24,11 +24,11 @@ type person = {
   name: string,
   friends: array(string),
   age: int,
-}
+};
 
-[@bs.module "MySchool"] external john: person = "john"
+[@bs.module "MySchool"] external john: person = "john";
 
-let johnName = john.name
+let johnName = john.name;
 ```
 ```js
 var MySchool = require("MySchool");
@@ -48,14 +48,15 @@ Alternatively, you can use [ReScript object](object.md) to model a JS object too
 
 ```re
 type person = {
+  .
   "name": string,
   "friends": array(string),
   "age": int,
 };
 
-[@bs.module "MySchool"] external john: person = "john"
+[@bs.module "MySchool"] external john: person = "john";
 
-let johnName = john["name"]
+let johnName = john##name;
 ```
 ```js
 var MySchool = require("MySchool");
@@ -72,14 +73,11 @@ Alternatively, you can use `bs.get` and `bs.set` to bind to individual fields of
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-type textarea
-[@bs.set] external setName: (textarea, string) => unit = "name"
-[@bs.get] external getName: textarea => string = "name"
+type textarea;
+[@bs.set] external setName: (textarea, string) => unit = "name";
+[@bs.get] external getName: textarea => string = "name";
 ```
 ```js
-type textarea
-[@bs.set] external setName: (textarea, string) => unit = "name"
-[@bs.get] external getName: textarea => string = "name"
 ```
 
 </CodeTab>
@@ -89,14 +87,14 @@ You can also use `bs.get_index` and `bs.set_index` to access a dynamic property 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-type t
-[@bs.new] external create: int => t = "Int32Array"
-[@bs.get_index] external get: (t, int) => int = ""
-[@bs.set_index] external set: (t, int, int) => unit = ""
+type t;
+[@bs.new] external create: int => t = "Int32Array";
+[@bs.get_index] external get: (t, int) => int = "";
+[@bs.set_index] external set: (t, int, int) => unit = "";
 
-let i32arr = create(3)
-i32arr->set(0, 42)
-Js.log(i32arr->get(0))
+let i32arr = create(3);
+i32arr->set(0, 42);
+Js.log(i32arr->get(0));
 ```
 ```js
 var i32arr = new Int32Array(3);
@@ -122,8 +120,8 @@ Use `bs.new` to emulate e.g. `new Date()`:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-type t
-[@bs.new] external createDate: unit => t = "Date"
+type t;
+[@bs.new] external createDate: unit => t = "Date";
 
 let date = createDate();
 ```
@@ -138,9 +136,9 @@ You can chain `bs.new` and `bs.module` if the JS module you're importing is itse
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-type t
-[@bs.new] @bs.module external book: unit => t = "Book"
-let myBook = book()
+type t;
+[@bs.new] [@bs.module] external book: unit => t = "Book";
+let myBook = book();
 ```
 ```js
 var Book = require("Book");
