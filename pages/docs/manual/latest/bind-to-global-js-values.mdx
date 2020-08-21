@@ -75,7 +75,8 @@ you can bind to an arbitrarily deep object by passing a tuple to `bs.scope`:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-@bs.val @bs.scope(("window", "location", "ancestorOrigins")) external length : int = "length"
+@bs.val @bs.scope(("window", "location", "ancestorOrigins"))
+external length : int = "length"
 ```
 ```js
 // Empty output
