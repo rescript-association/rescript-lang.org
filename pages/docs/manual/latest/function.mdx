@@ -458,8 +458,8 @@ let add = (~first: int=1, ~second: int=2) : int => first + second
 // optional
 let add = (~first as x: option<int>=?, ~second as y: option<int>=?) : int => switch x {...}
 // with punning sugar
-// note that the caller would pass an `int`, not `option int`
-// Inside the function, `first` and `second` are `option int`.
+// note that the caller would pass an `int`, not `option<int>`
+// Inside the function, `first` and `second` are `option<int>`.
 let add = (~first: option<int>=?, ~second: option<int>=?) : int => switch first {...}
 ```
 

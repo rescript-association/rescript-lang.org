@@ -51,7 +51,7 @@ type person = {
   "name": string,
   "friends": array<string>,
   "age": int,
-};
+}
 
 @bs.module("MySchool") external john: person = "john"
 
@@ -77,9 +77,6 @@ type textarea
 @bs.get external getName: textarea => string = "name"
 ```
 ```js
-type textarea
-@bs.set external setName: (textarea, string) => unit = "name"
-@bs.get external getName: textarea => string = "name"
 ```
 
 </CodeTab>
@@ -125,7 +122,7 @@ Use `bs.new` to emulate e.g. `new Date()`:
 type t
 @bs.new external createDate: unit => t = "Date"
 
-let date = createDate();
+let date = createDate()
 ```
 ```js
 var date = new Date();

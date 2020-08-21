@@ -7,7 +7,7 @@ Exceptions are just a special kind of variant, thrown in **exceptional** cases (
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-let getItem = (theList) =>
+let getItem = (items) =>
   if callSomeFunctionThatThrows() {
     // return the found item here
     1
@@ -23,7 +23,7 @@ let result =
   }
 ```
 ```js
-function getItem(theList) {
+function getItem(items) {
   if (callSomeFunctionThatThrows()) {
     return 1;
   }
@@ -153,7 +153,7 @@ The `obj` here is of type `Js.Exn.t`, intentionally opaque to disallow illegal o
 
 ## Raise a JS Exception
 
-`raise MyException` raises a ReScript exception. To raise a JavaScript exception (whatever your purpose is), use `Js.Exn.raiseError`:
+`raise(MyException)` raises a ReScript exception. To raise a JavaScript exception (whatever your purpose is), use `Js.Exn.raiseError`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 

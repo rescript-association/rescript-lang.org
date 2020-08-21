@@ -26,7 +26,7 @@ ReScript has [labeled arguments](function.md#labeled-arguments) (that can also b
 // MyGame.js
 
 function draw(x, y, border) {
-   // suppose `border`` is optional and defaults to false
+   // suppose `border` is optional and defaults to false
 }
 draw(10, 20)
 draw(20, 20, true)
@@ -259,7 +259,7 @@ external on: (
 let register = rl =>
   rl
   ->on(#close(event => ()))
-  ->on(#line(line => print_endline(line)))
+  ->on(#line(line => Js.log(line)));
 ```
 ```js
 function register(rl) {
@@ -287,13 +287,13 @@ external processOnExit: (
   @bs.as("exit") _,
   int => unit
 ) => unit = "process.on"
-let () = processOnExit(exit_code =>
-  Js.log("error code: " ++ string_of_int(exit_code))
+let () = processOnExit(exitCode =>
+  Js.log("error code: " ++ Js.Int.toString(exitCode))
 );
 ```
 ```js
-process.on("exit", function (exit_code) {
-  console.log("error code: " + String(exit_code));
+process.on("exit", function (exitCode) {
+  console.log("error code: " + exitCode.toString());
 });
 ```
 
@@ -308,9 +308,9 @@ Curry is a delicious Indian dish. More importantly, in the context of ReScript (
 See the `addFive` intermediate function? `add` takes in 3 arguments but received only 1. It's interpreted as "currying" the argument `5` and waiting for the next 2 arguments to be applied later on. Type signatures:
 
 ```resi
-let add: (int, int, int) => int;
-let addFive: (int, int) => int;
-let twelve: int;
+let add: (int, int, int) => int
+let addFive: (int, int) => int
+let twelve: int
 ```
 
 (In a dynamic language such as JS, currying would be dangerous, since accidentally forgetting to pass an argument doesn't error at compile time).

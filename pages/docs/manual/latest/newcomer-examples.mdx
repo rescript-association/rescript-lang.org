@@ -42,7 +42,7 @@ type universityStudent = {gpa: float}
 
 type response<'studentType> = {
   status: int,
-  student: 'studentType
+  student: 'studentType,
 }
 ```
 ```js
@@ -77,7 +77,7 @@ Or using [record](record.md):
 ```res
 type payload = {
   name: string,
-  age: int
+  age: int,
 }
 
 let student1 = {
