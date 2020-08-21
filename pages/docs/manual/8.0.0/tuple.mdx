@@ -10,8 +10,8 @@ Tuples are a ReScript-specific data structure that don't exist in JavaScript. Th
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let ageAndName = (24, "Lil' ReScript")
-let my3dCoordinates = (20.0, 30.5, 100.0)
+let ageAndName = (24, "Lil' ReScript");
+let my3dCoordinates = (20.0, 30.5, 100.0);
 ```
 ```js
 var ageAndName = [24, "Lil' ReScript"];
@@ -25,10 +25,10 @@ Tuples' types can be used in type annotations as well. Tuple types visually rese
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let ageAndName: (int, string) = (24, "Lil' ReScript")
+let ageAndName: (int, string) = (24, "Lil' ReScript");
 // a tuple type alias
-type coord3d = (float, float, float)
-let my3dCoordinates: coord3d = (20.0, 30.5, 100.0)
+type coord3d = (float, float, float);
+let my3dCoordinates: coord3d = (20.0, 30.5, 100.0);
 ```
 ```js
 var ageAndName = [24, "Lil' ReScript"];
@@ -45,7 +45,7 @@ To get a specific member of a tuple, destructure it:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let (_, y, _) = my3dCoordinates // now you've retrieved y
+let (_, y, _) = my3dCoordinates; // now you've retrieved y
 ```
 ```js
 var y = 30.5;
@@ -60,9 +60,9 @@ Tuples aren't meant to be updated mutatively. You'd create new ones by destructu
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let coordinates1 = (10, 20, 30)
-let (c1x, _, _) = coordinates1
-let coordinates2 = (c1x + 50, 20, 30)
+let coordinates1 = (10, 20, 30);
+let (c1x, _, _) = coordinates1;
+let coordinates2 = (c1x + 50, 20, 30);
 ```
 ```js
 var coordinates1 = [10, 20, 30];
@@ -83,7 +83,7 @@ let getCenterCoordinates = () => {
   let x = doSomeOperationsHere()
   let y = doSomeMoreOperationsHere()
   (x, y)
-}
+};
 ```
 ```js
 function getCenterCoordinates(param) {
