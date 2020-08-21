@@ -1,5 +1,4 @@
-let version = "v8.0.0";
-
+open Util.ReactStuff;
 module Link = Next.Link;
 
 // Structure defined by `scripts/extract-tocs.js`
@@ -14,7 +13,7 @@ let tocData:
         "href": string,
       }),
   }) = [%raw
-  "require('../index_data/manual_toc.json')"
+  "require('../index_data/manual_v800_toc.json')"
 ];
 
 module UrlPath = DocsLayout.UrlPath;
@@ -24,7 +23,10 @@ module Toc = DocsLayout.Toc;
 
 let overviewNavs = [|
   NavItem.{name: "Introduction", href: "/docs/manual/v8.0.0/introduction"},
-  {name: "Migrate to New Syntax", href: "/docs/manual/v8.0.0/migrate-to-new-syntax"},
+  {
+    name: "Migrate to New Syntax",
+    href: "/docs/manual/v8.0.0/migrate-to-new-syntax",
+  },
   {name: "Installation", href: "/docs/manual/v8.0.0/installation"},
   {name: "Try", href: "/docs/manual/v8.0.0/try"},
   {name: "Editor Plugins", href: "/docs/manual/v8.0.0/editor-plugins"},
@@ -47,7 +49,10 @@ let basicNavs = [|
   {name: "Function", href: "/docs/manual/v8.0.0/function"},
   {name: "Control Flow", href: "/docs/manual/v8.0.0/control-flow"},
   {name: "Pipe", href: "/docs/manual/v8.0.0/pipe"},
-  {name: "Pattern Matching/Destructuring", href: "/docs/manual/v8.0.0/pattern-matching-destructuring"},
+  {
+    name: "Pattern Matching/Destructuring",
+    href: "/docs/manual/v8.0.0/pattern-matching-destructuring",
+  },
   {name: "Mutation", href: "/docs/manual/v8.0.0/mutation"},
   {name: "JSX", href: "/docs/manual/v8.0.0/jsx"},
   {name: "External", href: "/docs/manual/v8.0.0/external"},
@@ -60,22 +65,13 @@ let basicNavs = [|
 |];
 
 let buildsystemNavs = [|
-  NavItem.{
-    name: "Overview",
-    href: "/docs/manual/v8.0.0/build-overview",
-  },
-  {
-    name: "Configuration",
-    href: "/docs/manual/v8.0.0/build-configuration",
-  },
+  NavItem.{name: "Overview", href: "/docs/manual/v8.0.0/build-overview"},
+  {name: "Configuration", href: "/docs/manual/v8.0.0/build-configuration"},
   {
     name: "Interop with JS Build System",
     href: "/docs/manual/v8.0.0/interop-with-js-build-systems",
   },
-  {
-    name: "Performance",
-    href: "/docs/manual/v8.0.0/build-performance",
-  },
+  {name: "Performance", href: "/docs/manual/v8.0.0/build-performance"},
 |];
 
 let jsInteropNavs = [|
@@ -85,12 +81,27 @@ let jsInteropNavs = [|
   },
   {name: "Shared Data Types", href: "/docs/manual/v8.0.0/shared-data-types"},
   {name: "Bind to JS Object", href: "/docs/manual/v8.0.0/bind-to-js-object"},
-  {name: "Bind to JS Function", href: "/docs/manual/v8.0.0/bind-to-js-function"},
-  {name: "Import from/Export to JS", href: "/docs/manual/v8.0.0/import-from-export-to-js"},
-  {name: "Bind to Global JS Values", href: "/docs/manual/v8.0.0/bind-to-global-js-values"},
+  {
+    name: "Bind to JS Function",
+    href: "/docs/manual/v8.0.0/bind-to-js-function",
+  },
+  {
+    name: "Import from/Export to JS",
+    href: "/docs/manual/v8.0.0/import-from-export-to-js",
+  },
+  {
+    name: "Bind to Global JS Values",
+    href: "/docs/manual/v8.0.0/bind-to-global-js-values",
+  },
   {name: "JSON", href: "/docs/manual/v8.0.0/json"},
-  {name: "Browser Support & Polyfills", href: "/docs/manual/v8.0.0/browser-support-polyfills"},
-  {name: "Interop Cheatsheet", href: "/docs/manual/v8.0.0/interop-cheatsheet"},
+  {
+    name: "Browser Support & Polyfills",
+    href: "/docs/manual/v8.0.0/browser-support-polyfills",
+  },
+  {
+    name: "Interop Cheatsheet",
+    href: "/docs/manual/v8.0.0/interop-cheatsheet",
+  },
 |];
 
 let guidesNavs = [|
@@ -102,7 +113,10 @@ let guidesNavs = [|
 |];
 
 let extraNavs = [|
-  NavItem.{name: "Newcomer Examples", href: "/docs/manual/v8.0.0/newcomer-examples"},
+  NavItem.{
+    name: "Newcomer Examples",
+    href: "/docs/manual/v8.0.0/newcomer-examples",
+  },
   {name: "Project Structure", href: "/docs/manual/v8.0.0/project-structure"},
   {name: "FAQ", href: "/docs/manual/v8.0.0/faq"},
 |];
@@ -118,7 +132,12 @@ let categories = [|
 
 module Docs = {
   [@react.component]
-  let make = (~frontmatter: option(Js.Json.t)=?, ~components=Markdown.default, ~children) => {
+  let make =
+      (
+        ~frontmatter: option(Js.Json.t)=?,
+        ~components=Markdown.default,
+        ~children,
+      ) => {
     let router = Next.Router.useRouter();
     let route = router.route;
 
@@ -155,16 +174,44 @@ module Docs = {
       );
 
     let title = "Language Manual";
+    let version = "v8.0.0";
+
+    let url = Url.parse(route);
+    let latestUrl =
+      "/"
+      ++ Js.Array2.joinWith(url.base, "/")
+      ++ "/latest/"
+      ++ Js.Array2.joinWith(url.pagepath, "/");
+
+    let warnBanner =
+      Markdown.(
+        <div className="mb-10">
+          <Info>
+            <P>
+              {(
+                 "You are currently looking at the "
+                 ++ version
+                 ++ " docs. You can find the latest manual page "
+               )
+               ->s}
+              <A href=latestUrl> "here"->s </A>
+              "."->s
+            </P>
+          </Info>
+        </div>
+      );
 
     <DocsLayout
       theme=`Reason
       components
       categories
       version
+      availableVersions=ManualDocsLayout.allManualVersions
       ?frontmatter
       title
       ?activeToc
       ?breadcrumbs>
+      warnBanner
       children
     </DocsLayout>;
   };
@@ -173,8 +220,6 @@ module Docs = {
 module Prose = {
   [@react.component]
   let make = (~frontmatter: option(Js.Json.t)=?, ~children) => {
-    <Docs ?frontmatter components=Markdown.default>
-      children
-    </Docs>;
+    <Docs ?frontmatter components=Markdown.default> children </Docs>;
   };
 };

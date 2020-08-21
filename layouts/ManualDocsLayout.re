@@ -1,5 +1,8 @@
 module Link = Next.Link;
 
+// This is used for the version dropdown in the manual layouts
+let allManualVersions = [|"latest", "v8.0.0"|];
+
 // Structure defined by `scripts/extract-tocs.js`
 let tocData:
   Js.Dict.t({
@@ -22,7 +25,10 @@ module Toc = DocsLayout.Toc;
 
 let overviewNavs = [|
   NavItem.{name: "Introduction", href: "/docs/manual/latest/introduction"},
-  {name: "Migrate from BuckleScript/Reason", href: "/docs/manual/latest/migrate-from-bucklescript-reason"},
+  {
+    name: "Migrate from BuckleScript/Reason",
+    href: "/docs/manual/latest/migrate-from-bucklescript-reason",
+  },
   {name: "Installation", href: "/docs/manual/latest/installation"},
   {name: "Try", href: "/docs/manual/latest/try"},
   {name: "Editor Plugins", href: "/docs/manual/latest/editor-plugins"},
@@ -45,7 +51,10 @@ let basicNavs = [|
   {name: "Function", href: "/docs/manual/latest/function"},
   {name: "Control Flow", href: "/docs/manual/latest/control-flow"},
   {name: "Pipe", href: "/docs/manual/latest/pipe"},
-  {name: "Pattern Matching/Destructuring", href: "/docs/manual/latest/pattern-matching-destructuring"},
+  {
+    name: "Pattern Matching/Destructuring",
+    href: "/docs/manual/latest/pattern-matching-destructuring",
+  },
   {name: "Mutation", href: "/docs/manual/latest/mutation"},
   {name: "JSX", href: "/docs/manual/latest/jsx"},
   {name: "External", href: "/docs/manual/latest/external"},
@@ -58,22 +67,13 @@ let basicNavs = [|
 |];
 
 let buildsystemNavs = [|
-  NavItem.{
-    name: "Overview",
-    href: "/docs/manual/latest/build-overview",
-  },
-  {
-    name: "Configuration",
-    href: "/docs/manual/latest/build-configuration",
-  },
+  NavItem.{name: "Overview", href: "/docs/manual/latest/build-overview"},
+  {name: "Configuration", href: "/docs/manual/latest/build-configuration"},
   {
     name: "Interop with JS Build System",
     href: "/docs/manual/latest/interop-with-js-build-systems",
   },
-  {
-    name: "Performance",
-    href: "/docs/manual/latest/build-performance",
-  },
+  {name: "Performance", href: "/docs/manual/latest/build-performance"},
 |];
 
 let jsInteropNavs = [|
@@ -83,13 +83,31 @@ let jsInteropNavs = [|
   },
   {name: "Shared Data Types", href: "/docs/manual/latest/shared-data-types"},
   {name: "Bind to JS Object", href: "/docs/manual/latest/bind-to-js-object"},
-  {name: "Bind to JS Function", href: "/docs/manual/latest/bind-to-js-function"},
-  {name: "Import from/Export to JS", href: "/docs/manual/latest/import-from-export-to-js"},
-  {name: "Bind to Global JS Values", href: "/docs/manual/latest/bind-to-global-js-values"},
+  {
+    name: "Bind to JS Function",
+    href: "/docs/manual/latest/bind-to-js-function",
+  },
+  {
+    name: "Import from/Export to JS",
+    href: "/docs/manual/latest/import-from-export-to-js",
+  },
+  {
+    name: "Bind to Global JS Values",
+    href: "/docs/manual/latest/bind-to-global-js-values",
+  },
   {name: "JSON", href: "/docs/manual/latest/json"},
-  {name: "Use Illegal Identifier Names", href: "/docs/manual/latest/use-illegal-identifier-names"},
-  {name: "Browser Support & Polyfills", href: "/docs/manual/latest/browser-support-polyfills"},
-  {name: "Interop Cheatsheet", href: "/docs/manual/latest/interop-cheatsheet"},
+  {
+    name: "Use Illegal Identifier Names",
+    href: "/docs/manual/latest/use-illegal-identifier-names",
+  },
+  {
+    name: "Browser Support & Polyfills",
+    href: "/docs/manual/latest/browser-support-polyfills",
+  },
+  {
+    name: "Interop Cheatsheet",
+    href: "/docs/manual/latest/interop-cheatsheet",
+  },
 |];
 
 let guidesNavs = [|
@@ -101,7 +119,10 @@ let guidesNavs = [|
 |];
 
 let extraNavs = [|
-  NavItem.{name: "Newcomer Examples", href: "/docs/manual/latest/newcomer-examples"},
+  NavItem.{
+    name: "Newcomer Examples",
+    href: "/docs/manual/latest/newcomer-examples",
+  },
   {name: "Project Structure", href: "/docs/manual/latest/project-structure"},
   {name: "FAQ", href: "/docs/manual/latest/faq"},
 |];
@@ -154,7 +175,7 @@ module Docs = {
       );
 
     let title = "Language Manual";
-    let version = "v8.2.0";
+    let version = "latest";
 
     <DocsLayout
       theme=`Reason
@@ -162,6 +183,7 @@ module Docs = {
       categories
       version
       title
+      availableVersions=allManualVersions
       ?activeToc
       ?breadcrumbs>
       children
@@ -172,8 +194,6 @@ module Docs = {
 module Prose = {
   [@react.component]
   let make = (~children) => {
-    <Docs components=Markdown.default>
-      children
-    </Docs>;
+    <Docs components=Markdown.default> children </Docs>;
   };
 };
