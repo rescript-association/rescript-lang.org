@@ -361,7 +361,7 @@ module.exports = function(hljs) {
   OPEN_OR_INCLUDE_MODULE_MODE.contains.push(MODULE_MODE)
 
   return {
-    aliases: ['res'],
+    aliases: ['res', 'resi'],
     keywords: KEYWORDS,
     illegal: '(:\\-|:=|\\${|\\+=)',
     // lol beautiful

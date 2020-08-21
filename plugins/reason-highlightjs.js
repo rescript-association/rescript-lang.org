@@ -326,7 +326,7 @@ module.exports = function(hljs) {
   OPEN_OR_INCLUDE_MODULE_MODE.contains.push(MODULE_MODE)
 
   return {
-    aliases: ['re', 'reasonml'],
+    aliases: ['re', 'reasonml', 'rei'],
     keywords: KEYWORDS,
     illegal: '(:\\-|:=|\\${|\\+=)',
     // lol beautiful
