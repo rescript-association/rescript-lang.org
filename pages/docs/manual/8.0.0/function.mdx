@@ -513,7 +513,7 @@ type add = (~first: int=?, ~second: int=?, unit) => int
 
 #### In Interface Files
 
-To annotate a function from the implementation file (`.res`) in your interface file (`.resi`):
+To annotate a function from the implementation file (`.re`) in your interface file (`.rei`):
 
 ```re
 let add: (int, int) => int
@@ -521,4 +521,4 @@ let add: (int, int) => int
 
 The type annotation part is the same as the previous section on With Type Annotation.
 
-**Don't** confuse `let add: myType` with `type add = myType`. When used in `.resi` interface files, the former exports the binding `add` while annotating it as type `myType`. The latter exports the type `add`, whose value is the type `myType`.
+**Don't** confuse `let add: myType` with `type add = myType`. When used in `.rei` interface files, the former exports the binding `add` while annotating it as type `myType`. The latter exports the type `add`, whose value is the type `myType`.
