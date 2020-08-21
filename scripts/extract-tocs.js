@@ -97,6 +97,17 @@ const createLatestManualToc = () => {
   fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
 };
 
+const createReasonCompilerToc = () => {
+  const MD_DIR = path.join(__dirname, "../pages/docs/reason-compiler/latest");
+  const TARGET_FILE = path.join(__dirname, "../index_data/reason_compiler_toc.json");
+
+  const files = glob.sync(`${MD_DIR}/*.md?(x)`);
+  const result = files.map(processFile);
+  const toc = createTOC(result);
+
+  fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
+};
+
 const createV800ManualToc = () => {
   const MD_DIR = path.join(__dirname, "../pages/docs/manual/v8.0.0");
   const TARGET_FILE = path.join(__dirname, "../index_data/manual_v800_toc.json");
@@ -159,6 +170,7 @@ debugToc();
 // main
 createLatestManualToc();
 createV800ManualToc();
+createReasonCompilerToc();
 createReasonReactToc();
 createGenTypeToc();
 createCommunityToc();
