@@ -1,3 +1,5 @@
+let version = "v8.2.0";
+
 module Link = Next.Link;
 
 // Structure defined by `scripts/extract-tocs.js`
@@ -154,7 +156,6 @@ module Docs = {
       );
 
     let title = "Language Manual";
-    let version = "v8.2.0";
 
     <DocsLayout
       theme=`Reason
