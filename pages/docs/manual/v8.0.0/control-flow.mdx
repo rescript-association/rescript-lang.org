@@ -14,7 +14,7 @@ ReScript also supports our famous pattern matching, which will be covered in [it
 
 Unlike its JavaScript counterpart, ReScript's `if` is an expression; they evaluate to their body's content:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let message = if (isMorning) {
@@ -31,7 +31,7 @@ var message = isMorning ? "Good morning!" : "Hello!";
 
 **Note:** an `if-else` expression without the final `else` branch implicitly gives `()` (aka the `unit` type). So this:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 if (showMenu) {
@@ -48,7 +48,7 @@ if (showMenu) {
 
 is basically the same as:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 if (showMenu) {
@@ -77,7 +77,7 @@ It'll give a type error, saying basically that the implicit `else` branch has th
 
 We also have ternary sugar, but **we encourage you to prefer if-else when possible**.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let message = isMorning ? "Good morning!" : "Hello!"
@@ -94,7 +94,7 @@ var message = isMorning ? "Good morning!" : "Hello!";
 
 For loops iterate from a starting value up to (and including) the ending value.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 for (i in startValueInclusive to endValueInclusive) {
@@ -109,7 +109,7 @@ for(var i = startValueInclusive; i <= endValueInclusive; ++i){
 
 </CodeTab>
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 // prints: 1 2 3
@@ -129,7 +129,7 @@ for(var x = 1; x <= 3; ++x){
 
 You can make the `for` loop count in the opposite direction by using `downto`.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 for (i in startValueInclusive downto endValueInclusive) {
@@ -144,7 +144,7 @@ for(var i = startValueInclusive; i >= endValueInclusive; --i){
 
 </CodeTab>
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 // prints: 3 2 1
@@ -166,7 +166,7 @@ for(var x = 3; x >= 1; --x){
 
 While loops execute its body code block while its condition is true.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 while (testCondition) {
@@ -185,7 +185,7 @@ while (testCondition) {
 
 There's no loop-breaking `break` keyword (nor early `return` from functions, for that matter) in ReScript. However, we can break out of a while loop easily through using a [mutable binding](mutation.md).
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let break = ref(false);

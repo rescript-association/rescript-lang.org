@@ -10,7 +10,7 @@ So far, most of ReScript's data structures might look familiar to you. This sect
 
 Most data structures in most languages are about "this **and** that". A variant allows us to express "this **or** that".
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type myResponse =
@@ -34,7 +34,7 @@ var areYouCrushingIt = /* Yes */0;
 
 If the variant you're using is in a different file, bring it into scope like you'd do [for a record](record.md#record-needs-an-explicit-definition):
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 // Zoo.re
@@ -46,7 +46,7 @@ type animal = Dog | Cat | Bird;
 
 </CodeTab>
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 // Example.re
@@ -65,7 +65,7 @@ var pet2 = /* Dog */0;
 
 A variant's constructors can hold extra data separated by comma.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type account =
@@ -81,7 +81,7 @@ type account =
 
 Here, `Instagram` holds a `string`, and `Facebook` holds a `string` and an `int`. Usage:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let myAccount = Facebook("Josh", 26);
@@ -105,7 +105,7 @@ var friendAccount = {
 
 You can use a record type in a variant:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type idType = {name: string, password: string};
@@ -122,7 +122,7 @@ type user =
 
 If the record type is used only in the variant definition, you may put it in line:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type user =
@@ -143,7 +143,7 @@ See the [Pattern Matching/Destructuring](pattern-matching-destructuring.md) sect
 
 **Be careful** not to confuse a constructor carrying 2 arguments with a constructor carrying a single tuple argument:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type account =
@@ -167,7 +167,7 @@ _This section assumes knowledge about our JavaScript interop. Skip this if you h
 
 Quite a few JS libraries use functions that can accept many types of arguments. In these cases, it's very tempting to model them as variants. For example, suppose there's a `myLibrary.draw` JS function that takes in either a `number` or a `string`. You might be tempted to bind it like so:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 // reserved for internal usage
@@ -202,7 +202,7 @@ betterDraw({
 
 You could definitely do that, but there are better ways! For example, define two `external`s that both compile to the same JS call:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module "myLibrary"] external drawFloat: float => unit = "draw";
@@ -241,7 +241,7 @@ if (data === 'dog') {
 
 There's a linear amount of branch checking here (`O(n)`). Compare this to using a ReScript variant:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type animal = Dog | Cat | Bird;

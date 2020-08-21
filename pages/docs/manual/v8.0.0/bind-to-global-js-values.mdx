@@ -10,7 +10,7 @@ canonical: "https://rescript-lang.org/docs/manual/latest/bind-to-global-js-value
 
 Some JS values, like `setTimeout`, live in the global scope. You can bind to them like so:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 [@bs.val] external setTimeout: (unit => unit, int) => float = "setTimeout";
@@ -36,7 +36,7 @@ This binds to the JavaScript [`setTimeout`](https://developer.mozilla.org/en-US/
 
 We're in a language with a great type system now! Let's leverage a popular feature to solve this problem: abstract types.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type timerId;
@@ -64,7 +64,7 @@ Since `external`s are inlined, we end up with JS output as readable as hand-writ
 
 If you want to bind to a value inside a global module, e.g. `Math.random`, attach a `bs.scope` to your `bs.val` external:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 [@bs.scope "Math"] [@bs.val] external random: unit => float = "random";
@@ -78,7 +78,7 @@ var someNumber = Math.random();
 
 you can bind to an arbitrarily deep object by passing a tuple to `bs.scope`:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 [@bs.val] [@bs.scope ("window", "location", "ancestorOrigins")]
@@ -98,7 +98,7 @@ Global values like `__filename` and `__DEV__` don't always exist; you can't even
 
 For these troublesome global values, ReScript provides a special approach: `%external(a_single_identifier)`.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 switch ([%external __DEV__]) {
@@ -122,7 +122,7 @@ That first line's `typeof` check won't trigger a JS ReferenceError.
 
 Another example:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 switch ([%external __filename]) {

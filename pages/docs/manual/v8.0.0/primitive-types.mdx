@@ -14,7 +14,7 @@ ReScript comes with the familiar primitive types like `string`, `int`, `float`, 
 
 ReScript `string`s are delimited using **double** quotes (single quotes are reserved for the character type below).
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let greeting = "Hello world!";
@@ -30,7 +30,7 @@ var multilineGreeting = "Hello\n world!";
 
 To concatenate strings, use `++`:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let greetings = "Hello " ++ "world!";
@@ -48,7 +48,7 @@ There's a special syntax for string that allows
 - multiline string just like before
 - Interpolation
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let greeting = {j|Hello
@@ -84,7 +84,7 @@ The more you overload the poor string type, the less the type system (or a teamm
 
 ReScript has a type for a string with a single letter:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let firstLetterOfAlphabet = 'a';
@@ -103,7 +103,7 @@ To convert a String to a Char, use `"a".[0]`. To convert a Char to a String, use
 
 ReScript regular expressions compile cleanly to their JavaScript counterpart:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let r = [%re "/b/g"];

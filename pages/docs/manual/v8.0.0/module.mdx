@@ -17,7 +17,7 @@ To create a module, use the `module` keyword. The module name must start with a
 **capital letter**. Whatever you could place in a `.re` file, you may place
 inside a module definition's `{}` block.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 module School = {
@@ -51,7 +51,7 @@ var School = {
 A module's contents (including types!) can be accessed much like a record's,
 using the `.` notation. This demonstrates modules' utility for namespacing.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let anotherPerson: School.profession = School.Teacher;
@@ -66,7 +66,7 @@ console.log("A teacher");
 
 Nested modules work too.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 module MyModule = {
@@ -96,7 +96,7 @@ var message = MyModule.NestedModule.message;
 Constantly referring to a value/type in a module can be tedious. Instead, we can "open" a module and refer to its contents without always prepending them with the
 module's name. Instead of writing:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let p = School.getProfession(School.person1);
@@ -109,7 +109,7 @@ var p = School.getProfession(School.person1);
 
 We can write:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 open School;
@@ -125,7 +125,7 @@ The content of `School` module are made visible (**not** copied into the file, b
 
 **Use `open` this sparingly, it's convenient, but makes it hard to know where some values come from**. You should usually use `open` in a local scope:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let p = {
@@ -146,7 +146,7 @@ Using `include` in a module statically "spreads" a module's content into a new o
 
 **Note**: this is equivalent to a compiler-level copy paste. **We heavily discourage `include`**. Use it as last resort!
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 module BaseComponent = {
@@ -211,7 +211,7 @@ To create a signature, use the `module type` keyword. The signature name must st
 **capital letter**. Whatever you could place in a `.rei` file, you may place
 inside a signature definition's `{}` block.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 /* Picking up previous section's example */
@@ -253,7 +253,7 @@ concrete type; it's saying "I don't care what the actual type is, but it's used
 as input to `getProfession`". This is useful to fit many modules under the same
 interface:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 module Company: EstablishmentType = {
@@ -290,7 +290,7 @@ exposing the variant, it'll only tell you "it's `Company.profession`".
 
 Like modules themselves, module signatures can also be extended by other module signatures using `include`. Again, **heavily discouraged**:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 module type BaseComponent = {
@@ -317,7 +317,7 @@ using `include (module type of ActualModuleName)`. For example, we can extend th
 `List` module from the standard library, which does not define a module
 type.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 module type MyList = {
@@ -339,7 +339,7 @@ provided, the signature of `React.re` defaults to exposing all the fields of the
 module. Because they don't contain implementation files, `.rei` files are used
 in the ecosystem to also document the public API of their corresponding modules.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 /* file React.re (implementation. Compiles to module React) */
@@ -378,7 +378,7 @@ for defining and using regular functions. The primary differences are:
 Here's an example `MakeSet` functor, that takes in a module of the type
 `Comparable` and returns a new set that can contain such comparable items.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 module type Comparable = {
@@ -432,7 +432,7 @@ function MakeSet(Item) {
 Functors can be applied using function application syntax. In this case, we're
 creating a set, whose items are pairs of integers.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 module IntPair = {
@@ -479,7 +479,7 @@ modules the functor accepts as arguments and return values. In the
 previous example, we're exposing the backing type of a set; by giving `MakeSet`
 a functor signature, we can hide the underlying data structure!
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 module type Comparable = ...

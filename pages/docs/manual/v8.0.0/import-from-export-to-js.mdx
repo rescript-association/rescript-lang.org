@@ -14,7 +14,7 @@ You've seen how ReScript's idiomatic [Import & Export](import-export.md) works. 
 
 Use the `bs.module` [external](external.md):
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 // Import nodejs' path.dirname
@@ -40,7 +40,7 @@ Here's what the `external` does:
 
 By omitting the string argument to `bs.module`, you bind to the whole JS module:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module] external leftPad: string => int => string = "./leftPad";
@@ -57,7 +57,7 @@ var paddedResult = LeftPad("hi", 5);
 
 If your JS project is using ES6, you're likely using Babel to compile it to regular JavaScript. Babel's ES6 default export actually exports the default value under the name `default`. You'd bind to it like this:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module "./student"] external studentName: string = "default";
@@ -97,7 +97,7 @@ import studentName from 'student.js';
 
 Technically, since a ReScript file maps to a module, there's no such thing as "default" export, only named ones. However, we've made an exception to support default module when you do the following:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 /* FavoriteStudent.re */

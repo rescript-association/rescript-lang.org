@@ -20,7 +20,7 @@ A lazy value has a type of `Lazy.t('a)`, where `'a` is the return value of the c
 
 Lazy values are part of the language. You can either use the `lazy` keyword to create a lazy value from an expression...
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re example
 // We only want getFiles to read the file system once,
@@ -57,7 +57,7 @@ console.log(CamlinternalLazy.force(getFiles));
 
 ... or you can also wrap an existing function to make it lazy:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re example
 // Example for wrapping a function with 0 parameters
@@ -81,7 +81,7 @@ var lazyGetFiles = Lazy.from_fun(getFiles);
 
 </CodeTab>
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re example
 // Example for wrapping a function with parameters
@@ -121,7 +121,7 @@ Whenever we want to wrap a function `unit => 'a`, we use `Lazy.from_fun`, otherw
 
 Lazy values need to be explicitly executed to be able to return a value. Use the `Lazy.force`to start the execution:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re example
 let computation = lazy(1);
@@ -144,7 +144,7 @@ CamlinternalLazy.force(computation);
 
 It is also possible to use pattern matching to force a lazy value to compute, this includes `switch` expressions and similar syntax such as tuple destructuring:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re example
 // Extract a lazy value via pattern matching
@@ -174,7 +174,7 @@ if (match === "computed") {
 
 </CodeTab>
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re example
 // Destructuring a single value
@@ -200,7 +200,7 @@ console.log(word);
 
 </CodeTab>
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re example
 // Destructing a tuple
@@ -248,7 +248,7 @@ As you can see, the `lazy` syntax is a really great way for creating and handlin
 
 Whenever a lazy value computation raises an exception, the same exception will be thrown by `Lazy.force`.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re example
 let readFile =

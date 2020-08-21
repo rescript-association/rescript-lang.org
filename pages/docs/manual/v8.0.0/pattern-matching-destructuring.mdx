@@ -18,7 +18,7 @@ We'll dive into each aspect below.
 
 Even JavaScript has destructuring, which is "opening up" a data structure to extract the parts we want and assign variable names to them:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let coordinates = (10, 20, 30);
@@ -35,7 +35,7 @@ console.log(10);
 
 Destructuring works with most built-in data structures:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 // Record
@@ -101,7 +101,7 @@ var myList = {
 
 You can also use destructuring anywhere you'd usually put a binding:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type result =
@@ -127,7 +127,7 @@ displayMessage(/* Success */{
 
 For a record, you can rename the field while destructuring:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let {name: n} = student1; // "John" assigned to `n`
@@ -144,7 +144,7 @@ While the destructuring aspect of pattern matching is nice, it doesn't really ch
 
 Consider a variant:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type payload =
@@ -162,7 +162,7 @@ We'd like to handle each of the 3 cases differently. For example, print a succes
 
 In other languages, you'd end up with a series of if-elses that are hard to read and error-prone. In ReScript, you can instead use the supercharged `switch` pattern matching facility to destructure the value while calling the right code based on what you destructured:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let data = GoodResult("Product shipped!");
@@ -200,7 +200,7 @@ Suddenly, your if-elses that messily checks some structure of the value got turn
 
 Here's a real-world scenario that'd be a headache to code in other languages. Given this data structure:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type status = Vacations(int) | Sabbatical(int) | Sick | Present;
@@ -232,7 +232,7 @@ Imagine this requirement:
 
 ReScript can do this easily!
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let message = switch (person1) {
@@ -297,7 +297,7 @@ if (person1.TAG) {
 
 Here's another example of pattern matching, this time on an inline tuple.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type animal = Dog | Cat | Bird
@@ -326,7 +326,7 @@ false            |  4  |  4  |  5
 
 If you have a value like `Teacher(payload)` where you just want to pattern match on the `Teacher` part and ignore the `payload` completely, you can use the `_` wildcard like this:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 switch (person) {
@@ -350,7 +350,7 @@ if (person.TAG) {
 
 Sometime, you want to check more than the shape of a value. You want to also run some arbitrary check on it. You might be tempted to write this:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 switch (person) {
@@ -377,7 +377,7 @@ if (person.TAG) {
 
 `switch` patterns support a shortcut for the arbitrary `if` check, to keep your pattern linear-looking:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 switch (person) {
@@ -405,7 +405,7 @@ if (person.TAG) {
 
 If the function throws an exception (covered later), you can also match on _that_, in addition to the function's normally returned values.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 switch (List.find(i => i === theItem, myItems)) {
@@ -444,7 +444,7 @@ if (exit === 1) {
 
 **Note**: you can only pass literals (i.e. concrete values) as a pattern, not let-binding names or other things. The following doesn't work as expected:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let coordinates = (10, 20, 30)
@@ -470,7 +470,7 @@ As if the above features aren't enough, ReScript also provides arguably the most
 
 Let's revisit one of the above examples:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let message = switch (person) {
@@ -540,7 +540,7 @@ Some({name: ""})
 
 **BAM**! You've just erased an entire category of important bugs before you even ran the code. In fact, this is how most of nullable values is handled:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 switch (myNullableValue) {
@@ -572,7 +572,7 @@ Use `when` clause sparingly.
 
 **Flatten your pattern-match whenever you can**. This is a real bug remover. Here's a series of examples, from worst to best:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let optionBoolToBool = opt => {
@@ -599,7 +599,7 @@ function optionBoolToBool(opt) {
 
 Now that's just silly =). Let's turn it into pattern-matching:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let optionBoolToBool = opt => {
@@ -623,7 +623,7 @@ function optionBoolToBool(opt) {
 
 Slightly better, but still nested. Pattern-matching allows you to do this:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let optionBoolToBool = opt => {
@@ -648,7 +648,7 @@ function optionBoolToBool(opt) {
 
 Much more linear-looking! Now, you might be tempted to do this:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let optionBoolToBool = opt => {
@@ -672,7 +672,7 @@ function optionBoolToBool(opt) {
 
 Which is much more concise, but kills the exhaustiveness check mentioned above; refrain from using that. This is the best:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let optionBoolToBool = opt => {

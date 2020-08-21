@@ -30,7 +30,7 @@ function.md#uncurried-function) (with a dot). `make` returns the created promise
 
 Using the [pipe operator](pipe.md):
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let myPromise = Js.Promise.make((~resolve, ~reject) => resolve(. 2));

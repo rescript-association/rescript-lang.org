@@ -12,7 +12,7 @@ ReScript has great traditional imperative & mutative programming capabilities. Y
 
 Let-bindings are immutable, but you can wrap it with a `ref`, exposed as a record with a single mutable field in the standard library:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let myValue = ref(5);
@@ -29,7 +29,7 @@ var myValue = {
 
 You can get the actual value of a `ref` box through accessing its `contents` field:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let five = myValue.contents; // 5
@@ -44,7 +44,7 @@ We provide a syntax shortcut for `myValue.contents`: `myValue^`. Though we no lo
 
 Assign a new value to `myValue` like so:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 myValue.contents = 6;
@@ -57,7 +57,7 @@ myValue.contents = 6;
 
 We provide a syntax sugar for this:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 myValue := 6;

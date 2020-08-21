@@ -14,7 +14,7 @@ ReScript supports the JSX syntax, with some slight differences compared to the o
 
 ## Capitalized Tag
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 <MyComponent name={"ReScript"} />;
@@ -30,7 +30,7 @@ React.createElement(
 
 becomes
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 @JSX MyComponent.createElement(~name="ReScript", ~children=[], ());
@@ -46,7 +46,7 @@ React.createElement(
 
 ## Uncapitalized Tag
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 <div onClick={handler}> child1 child2 </div>;
@@ -61,7 +61,7 @@ React.createElement("div", {
 
 becomes
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 @JSX div(~onClick=handler, ~children=[child1, child2], ());
@@ -76,7 +76,7 @@ React.createElement("div", {
 
 ## Fragment
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 <> child1 child2 </>;
@@ -89,7 +89,7 @@ React.createElement(React.Fragment, undefined, child1, child2);
 
 becomes
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 @JSX [child1, child2];
@@ -102,7 +102,7 @@ React.createElement(React.Fragment, undefined, child1, child2);
 
 ### Children
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 <MyComponent> child1 child2 </MyComponent>;
@@ -115,7 +115,7 @@ React.createElement(MyComponent.make, MyComponent.makeProps(null, undefined), ch
 
 This is the syntax for passing a list of two items, `child1` and `child2`, to the children position. It desugars to a list containing `child1` and `child2`:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 @JSX MyComponent.createElement(~children=[child1, child2], ());
@@ -134,7 +134,7 @@ So naturally, `<MyComponent> myChild </MyComponent>` desugars to `@JSX MyCompone
 
 To solve the above problem, we've introduced
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 <MyComponent> ...myChild </MyComponent>;
@@ -147,7 +147,7 @@ React.createElement(MyComponent.make, MyComponent.makeProps(myChild, undefined))
 
 This passes the value `myChild` _without_ wrapping it in a list (or array, in the case of ReasonReact). Aka, this desugars to:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 @JSX MyComponent.createElement(~children=myChild, ());
@@ -160,7 +160,7 @@ React.createElement(MyComponent.make, MyComponent.makeProps(myChild, undefined))
 
 This is extra useful in the cases where you are handled `myChild` that is already a list of things, and want to forward that without wrapping it an extra time (which would be a type error) \*. It also allows you to pass arbitrary data structures at `children` position (remember, JSX `children` is really just a totally normal prop):
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 <MyComponent> ...((theClassName) => <div className=theClassName />) </MyComponent>;
@@ -188,7 +188,7 @@ See [ReasonReact JSX](/docs/reason-react/latest/jsx) for an example application 
 
 Here's a JSX tag that shows most of the features.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 <MyComponent
@@ -229,7 +229,7 @@ React.createElement(
 
 Reason JSX supports punning. `<input checked />` is just a shorthand for `<input checked=checked />`. The formatter will help you format to the latter whenever possible. This is convenient in the cases where there are lots of props to pass down:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 <MyComponent isLoading text onClick />;

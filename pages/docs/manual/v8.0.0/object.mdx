@@ -21,7 +21,7 @@ Although ReScript records compile to clean JavaScript objects, ReScript objects 
 
 **Optional**, unlike for records. The type of an object is inferred from the value, so you never really need to write down is type definition. Nevertheless, here's its type declaration syntax:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type person = {
@@ -42,7 +42,7 @@ Visually similar to record type's syntax, with the field names quoted.
 
 To create a new object:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let me = {
@@ -61,7 +61,7 @@ var me = {
 
 **Note**: as said above, unlike for record, this `me` value does **not** try to find a conforming type declaration with the field `"age"` and `"name"`; rather, the type of `me` is inferred as `{"age": int, "name": string}`. This is convenient, but also means this code passes type checking without errors:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type person = {
@@ -93,7 +93,7 @@ Now the type system will error properly.
 
 ## Access
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let age = me##age;
@@ -108,7 +108,7 @@ var age = me["age"];
 
 Disallowed unless the object is a binding that comes from the JavaScript side. In that case, use `=`:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type student = {

@@ -10,7 +10,7 @@ Exceptions are just a special kind of variant, thrown in **exceptional** cases (
 
 ## Usage
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let getItem = (items) =>
@@ -57,7 +57,7 @@ Note that the above is just for demonstration purposes; in reality, you'd return
 
 You can directly match on exceptions _while_ getting another return value from a function:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 switch (List.find(i => i === theItem, myItems)) {
@@ -94,7 +94,7 @@ if (exit === 1) {
 
 You can also make your own exceptions like you'd make a variant (exceptions need to be capitalized too).
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 exception InputClosed(string);
@@ -119,7 +119,7 @@ throw {
 
 To distinguish between JavaScript exceptions and ReScript exceptions, ReScript namespaces JS exceptions under the `Js.Exn.Error(payload)` variant. To catch an exception thrown from the JS side:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 try (someJSFunctionThatThrows()) {
@@ -157,7 +157,7 @@ The `obj` here is of type `Js.Exn.t`, intentionally opaque to disallow illegal o
 
 `raise(MyException)` raises a ReScript exception. To raise a JavaScript exception (whatever your purpose is), use `Js.Exn.raiseError`:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let myTest = () => {
@@ -189,7 +189,7 @@ try {
 
 The previous section is less useful than you think; to let your JS code work with your exception-throwing ReScript code, the latter doesn't actually need to throw a JS exception. ReScript exceptions can be used by JS code!
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 exception BadArgument({myMessage: string});
@@ -236,7 +236,7 @@ When you have ordinary variants, you often don't **need** exceptions. For exampl
 
 ### Catch Both ReScript and JS Exceptions in the Same `catch` Clause
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 try (someOtherJSFunctionThatThrows()) {

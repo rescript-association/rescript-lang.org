@@ -19,7 +19,7 @@ The following sections explore more of our type system.
 
 This let-binding doesn't contain any written type:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let score = 10;
@@ -40,7 +40,7 @@ ReScript knows that `score` is an `int`, judging by the value `10`. This is call
 
 But you can also optionally write down the type, aka annotate your value:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let score: int = 10;
@@ -55,7 +55,7 @@ If the type annotation for `score` doesn't correspond to our inferred type for i
 
 You can also wrap any expression in parentheses and annotate it:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let myInt = 5;
@@ -82,7 +82,7 @@ Note: in the last line, `(~radius as r: int)` is a labeled argument. More on thi
 
 You can refer to a type by a different name. They'll be equivalent:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type scoreType = int;
@@ -100,7 +100,7 @@ Types can accept parameters, akin to generics in other languages. The parameters
 
 The use-case of a parameterized type is to kill duplications. Before:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 // this is a tuple of 3 items, explained next
@@ -119,7 +119,7 @@ var b = [10.5, 20.5, 20.5];
 
 After:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type coordinates('a) = ('a, 'a, 'a);
@@ -136,7 +136,7 @@ var b = [10.5, 20.5, 20.5];
 
 Note that the above codes are just contrived examples for illustration purposes. Since the types are inferred, you could have just written:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let buddy = (10, 20, 20);
@@ -151,7 +151,7 @@ The type system infers that it's a `(int, int, int)`. Nothing else needed to be 
 
 Type arguments appear in many places. Our `array('a)` type is such a type that requires a type parameter
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 // inferred as `array(string)`
@@ -170,7 +170,7 @@ Types can receive many arguments, and be composable.
 
 <!-- TODO: too early for this example -->
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type result('a, 'b) =
@@ -210,7 +210,7 @@ var payloadResults = [
 
 Just like a functions, a type can reference itself within itself:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type person = {
@@ -230,7 +230,7 @@ To opt out of resursive type, use `type nonrec person = ...`.
 
 Types can also be _mutually_ recursive through `and`:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type student = {taughtBy: teacher};
@@ -246,7 +246,7 @@ and teacher = {students: array(student)};
 
 ReScript's type system is robust and does not allow dangerous, unsafe stuff like implicit type casting, randomly guessing a value's type, etc. However, out of pragmatism, we expose a single escape hatch for you to "lie" to the type system:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 external myShadyConversion : myType1 => myType2 = "%identity";
@@ -259,7 +259,7 @@ external myShadyConversion : myType1 => myType2 = "%identity";
 
 This declaration converts a `myType1` of your choice to `myType2` of your choice. You can use it like so:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 external convertToFloat : int => float = "%identity";

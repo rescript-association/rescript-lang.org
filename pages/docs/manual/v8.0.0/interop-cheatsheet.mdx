@@ -10,7 +10,7 @@ canonical: "https://rescript-lang.org/docs/manual/latest/interop-cheatsheet"
 
 ## Raw JS
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let add = [%raw "(a, b) => a + b"];
@@ -25,7 +25,7 @@ const a = 1
 
 ## Global Value
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 [@bs.val] external setTimeout: (unit => unit, int) => float = "setTimeout";
@@ -38,7 +38,7 @@ const a = 1
 
 ## Global Module's Value
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 [@bs.val] [@bs.scope "Math"]
@@ -57,7 +57,7 @@ var someNumber = Math.random();
 
 ## Nullable
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let a = Some(5); // compiles to 5
@@ -72,7 +72,7 @@ var b;
 
 Handling a value that can be `undefined` and `null`, by ditching the `option` type and using `Js.Nullable.t`:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let jsNull = Js.Nullable.null;
@@ -104,7 +104,7 @@ var result3 = Caml_option.nullable_to_opt(10);
 
 ### Object Method & Chaining
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 [@bs.send] external map: (array('a), 'a => 'b) => array('b) = "map";
@@ -130,7 +130,7 @@ console.log(
 
 ### Variadic Arguments
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module "path"] [@bs.variadic]
@@ -144,7 +144,7 @@ external join: array(string) => string = "join";
 
 ### Polymorphic Function
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module "Drawing"] external drawCat: unit => unit = "draw";
@@ -156,7 +156,7 @@ external join: array(string) => string = "join";
 
 </CodeTab>
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 [@bs.val]
@@ -186,7 +186,7 @@ padLeft("Hello World", "Message from ReScript: ");
 
 Final escape hatch converter. Do not abuse.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 external convertToFloat : int => float = "%identity";

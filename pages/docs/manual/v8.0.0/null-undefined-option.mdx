@@ -12,7 +12,7 @@ However, the **concept** of a potentially nonexistent value is still useful, and
 
 We represent the existence and nonexistence of a value by wrapping it with the `option` type. Here's its definition from the standard library:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type option('a) = None | Some('a);
@@ -31,7 +31,7 @@ It means "a value of type option is either None (representing nothing) or that a
 
 Here's a normal value:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let licenseNumber = 5;
@@ -44,7 +44,7 @@ var licenseNumber = 5;
 
 To represent the concept of "maybe null", you'd turn this into an `option` type by wrapping it. For the sake of a more illustrative example, we'll put a condition around it:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let licenseNumber =
@@ -62,7 +62,7 @@ var licenseNumber = personHasACar ? 5 : undefined;
 
 Later on, when another piece of code receives such value, it'd be forced to handle both cases through [pattern matching](pattern-matching-destructuring.md):
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 switch (licenseNumber) {
@@ -90,7 +90,7 @@ By turning your ordinary number into an `option` type, and by forcing you to han
 
 The `option` type is common enough that we special-case it when compiling to JavaScript:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let x = Some(5);
@@ -103,7 +103,7 @@ var x = 5;
 
 simply compiles down to `5`, and
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let x = None;
@@ -120,7 +120,7 @@ compiles to `undefined`! If you've got e.g. a string in JavaScript that you know
 
 The option-to-undefined translation isn't perfect, because on our side, `option` values can be composed:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let x = Some(Some(Some(5)));
@@ -133,7 +133,7 @@ var x = 5;
 
 This still compiles to `5`, but this gets troublesome:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let x = Some(None);
@@ -167,7 +167,7 @@ To create a JS `null`, use the value `Js.Nullable.null`. To create a JS `undefin
 
 If you're receiving, for example, a JS string that can be `null` and `undefined`, type it as:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module "MyConstant"] external myId: Js.Nullable.t(string) = "myId";
@@ -180,7 +180,7 @@ If you're receiving, for example, a JS string that can be `null` and `undefined`
 
 To create such a nullable string from our side (presumably to pass it to the JS side, for interop purpose), do:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module "MyIdValidator"] external validate: Js.Nullable.t(string) => bool = "validate";

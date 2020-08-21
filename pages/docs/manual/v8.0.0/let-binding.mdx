@@ -8,7 +8,7 @@ canonical: "https://rescript-lang.org/docs/manual/latest/let-binding"
 
 A "let binding", in other languages, might be called a "variable declaration". `let` _binds_ values to names. They can be seen and referenced by code that comes _after_ them.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let greeting = "hello!";
@@ -27,7 +27,7 @@ var newScore = 20;
 
 Bindings can be scoped through `{}`.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let message = {
@@ -49,7 +49,7 @@ The value of the last line of a scope is implicitly returned.
 
 ReScript's `if`, `while` and functions all use the same block scoping mecanism. The code below works **not** because of some special "if scope"; but simply because it's the same scope syntax and feature you just saw:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 if (displayGreeting) {
@@ -92,7 +92,7 @@ var result3 = calculateSomeMore(result2);
 
 In ReScript, this obviously works too:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let result1 = 0;
@@ -109,7 +109,7 @@ var result3 = calculateSomeMore(result2);
 
 Additionally, reusing the same let binding name overshadows the previous bindings with the same name. So you can write this too:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let result = 0;
@@ -127,7 +127,7 @@ var result$1 = calculateSomeMore(result);
 
 As a matter of fact, even this is valid code:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let result = "hello";

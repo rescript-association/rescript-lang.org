@@ -15,7 +15,7 @@ Records are like JavaScript objects but:
 
 A record needs a mandatory type declaration:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type person = {
@@ -33,7 +33,7 @@ type person = {
 
 To create a `person` record (declared above):
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let me = {
@@ -54,7 +54,7 @@ When you create a new record value, ReScript tries to find a record type declara
 
 The type is found by looking above the `me` value. **Note**: if the type instead resides in another file or module, you need to explicitly indicate which file or module it is:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 // School.re
@@ -66,7 +66,7 @@ type person = {age: int, name: string};
 
 </CodeTab>
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 // Example.re
@@ -94,7 +94,7 @@ Either of the above 3 says "this record's definition is found in the School file
 
 Use the familiar dot notation:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let name = me.name;
@@ -109,7 +109,7 @@ var name = "Big ReScript";
 
 New records can be created from old records with the `...` spread operator. The original record isn't mutated.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let meNextYear = {...me, age: me.age + 1};
@@ -129,7 +129,7 @@ var meNextYear = {
 
 Record fields can optionally be mutable. This allows you to efficiently update those fields in-place with the `=` operator.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type person = {
@@ -155,7 +155,7 @@ baby.age = baby.age + 1 | 0;
 
 **Record Types Are Found By Field Name**. With records, you **cannot** say "I'd like this function to take any record type, as long as they have the field `age`". The following **won't work as intended**:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type person = {age: int, name: string};

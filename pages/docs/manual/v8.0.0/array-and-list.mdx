@@ -10,7 +10,7 @@ canonical: "https://rescript-lang.org/docs/manual/latest/array-and-list"
 
 Arrays are our primary ordered data structure. They work the same way as JavaScript arrays.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let myArray = [|"hello", "world", "how are you"|];
@@ -29,7 +29,7 @@ See the [Js.Array](/apis/latest/js/array) API.
 
 Access & update an array item like so:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let myArray = [|"hello", "world", "how are you"|];
@@ -57,7 +57,7 @@ ReScript provides a singly linked list too. Lists are:
 - fast at getting the tail
 - slow at everything else
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let myList = [1, 2, 3];
@@ -91,7 +91,7 @@ The standard lib provides a [List module](/apis/latest/belt/list).
 
 Use the spread syntax:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let myList = [1, 2, 3];
@@ -127,7 +127,7 @@ Updating an arbitrary item in the middle of a list is also discouraged, since it
 
 `switch` (described in the [pattern matching section](pattern-matching-destructuring.md)) is usually used to access list items:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let message =
