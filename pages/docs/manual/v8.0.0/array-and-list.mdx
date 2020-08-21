@@ -7,7 +7,7 @@ Arrays are our primary ordered data structure. They work the same way as JavaScr
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let myArray = ["hello", "world", "how are you"]
+let myArray = [|"hello", "world", "how are you"|];
 ```
 ```js
 var myArray = ["hello", "world", "how are you"];
@@ -26,11 +26,11 @@ Access & update an array item like so:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let myArray = ["hello", "world", "how are you"]
+let myArray = [|"hello", "world", "how are you"|];
 
-let firstItem = myArray[0] // "hello"
+let firstItem = myArray[0]; // "hello"
 
-myArray[0] = "hey" // now ["hey", "world", "how are you"]
+myArray[0] = "hey"; // now [|"hey", "world", "how are you"|]
 ```
 ```js
 var myArray = ["hello", "world", "how are you"];
@@ -54,7 +54,7 @@ ReScript provides a singly linked list too. Lists are:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let myList = list{1, 2, 3}
+let myList = [1, 2, 3];
 ```
 ```js
 var myList = {
@@ -88,8 +88,8 @@ Use the spread syntax:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let myList = list{1, 2, 3}
-let anotherList = list{0, ...myList}
+let myList = [1, 2, 3];
+let anotherList = [0, ...myList];
 ```
 ```js
 var myList = {
@@ -111,9 +111,9 @@ var anotherList = {
 
 </CodeTab>
 
-`myList` didn't mutate. `anotherList` is now `list{0, 1, 2, 3}`. This is efficient (constant time, not linear). `anotherList`'s last 3 elements are shared with `myList`!
+`myList` didn't mutate. `anotherList` is now `[0, 1, 2, 3]`. This is efficient (constant time, not linear). `anotherList`'s last 3 elements are shared with `myList`!
 
-**Note that `list{a, ...b, ...c}` is a syntax error**. We don't support multiple spread for a list. That'd be an accidental linear operation (`O(b)`), since each item of b would be one-by-one added to the head of `c`. You can use `List.concat` for this, but we highly discourage it.
+**Note that `[a, ...b, ...c]` is a syntax error**. We don't support multiple spread for a list. That'd be an accidental linear operation (`O(b)`), since each item of b would be one-by-one added to the head of `c`. You can use `List.concat` for this, but we highly discourage it.
 
 Updating an arbitrary item in the middle of a list is also discouraged, since its performance and allocation overhead would be linear (`O(n)`).
 
@@ -126,9 +126,9 @@ Updating an arbitrary item in the middle of a list is also discouraged, since it
 ```re
 let message =
   switch myList {
-  | list{} => "This list is empty"
-  | list{a, ...rest} => "The head of the list is the string " ++ Js.Int.toString(a)
-  }
+  | [] => "This list is empty"
+  | [a, ...rest] => "The head of the list is the string " ++ Js.Int.toString(a)
+  };
 ```
 ```js
 var message = myList
