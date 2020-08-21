@@ -2,7 +2,7 @@
 
 You can compile a file directly via `bsc MyFile.res`:
 
-```res
+```re
 // MyFile.res
 let rec fib = n => {
   switch n {
@@ -31,7 +31,7 @@ exports.fib = fib;
 
 You can also get the inferred signature directly via `bsc -i MyFile.res`
 
-```resi
+```rei
 let fib: int => int
 ```
 

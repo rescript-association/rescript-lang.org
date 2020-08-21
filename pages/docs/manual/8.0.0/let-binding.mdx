@@ -4,7 +4,7 @@ A "let binding", in other languages, might be called a "variable declaration". `
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let greeting = "hello!"
 let score = 10
 let newScore = 10 + score
@@ -23,7 +23,7 @@ Bindings can be scoped through `{}`.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let message = {
   let part1 = "hello"
   let part2 = "world"
@@ -45,7 +45,7 @@ ReScript's `if`, `while` and functions all use the same block scoping mecanism. 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 if displayGreeting {
   let message = "Enjoying the docs so far?"
   Js.log(message)
@@ -88,7 +88,7 @@ In ReScript, this obviously works too:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let result1 = 0
 let result2 = calculate(result1)
 let result3 = calculateSomeMore(result2)
@@ -105,7 +105,7 @@ Additionally, reusing the same let binding name overshadows the previous binding
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let result = 0
 let result = calculate(result)
 let result = calculateSomeMore(result)
@@ -123,7 +123,7 @@ As a matter of fact, even this is valid code:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let result = "hello"
 Js.log(result) // prints "hello"
 let result = 1

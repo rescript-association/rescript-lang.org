@@ -10,7 +10,7 @@ ReScript supports the JSX syntax, with some slight differences compared to the o
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 <MyComponent name={"ReScript"} />
 ```
 ```js
@@ -26,7 +26,7 @@ becomes
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 @JSX MyComponent.createElement(~name="ReScript", ~children=list{}, ())
 ```
 ```js
@@ -42,7 +42,7 @@ React.createElement(
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 <div onClick={handler}> child1 child2 </div>
 ```
 ```js
@@ -57,7 +57,7 @@ becomes
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 @JSX div(~onClick=handler, ~children=list{child1, child2}, ())
 ```
 ```js
@@ -72,7 +72,7 @@ React.createElement("div", {
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 <> child1 child2 </>
 ```
 ```js
@@ -85,7 +85,7 @@ becomes
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 @JSX list{child1, child2}
 ```
 ```js
@@ -98,7 +98,7 @@ React.createElement(React.Fragment, undefined, child1, child2);
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 <MyComponent> child1 child2 </MyComponent>
 ```
 ```js
@@ -111,7 +111,7 @@ This is the syntax for passing a list of two items, `child1` and `child2`, to th
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 @JSX MyComponent.createElement(~children=list{child1, child2}, ())
 ```
 ```js
@@ -130,7 +130,7 @@ To solve the above problem, we've introduced
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 <MyComponent> ...myChild </MyComponent>
 ```
 ```js
@@ -143,7 +143,7 @@ This passes the value `myChild` _without_ wrapping it in a list (or array, in th
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 @JSX MyComponent.createElement(~children=myChild, ())
 ```
 ```js
@@ -156,7 +156,7 @@ This is extra useful in the cases where you are handled `myChild` that is alread
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 <MyComponent> ...((theClassName) => <div className=theClassName />) </MyComponent>
 
 <MyForm> ...("Hello", "Submit") </MyForm>
@@ -184,7 +184,7 @@ Here's a JSX tag that shows most of the features.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 <MyComponent
   booleanAttribute={true}
   stringAttribute="string"
@@ -225,7 +225,7 @@ Reason JSX supports punning. `<input checked />` is just a shorthand for `<input
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 <MyComponent isLoading text onClick />
 ```
 ```js

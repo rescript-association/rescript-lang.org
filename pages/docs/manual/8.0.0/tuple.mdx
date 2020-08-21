@@ -9,7 +9,7 @@ Tuples are a ReScript-specific data structure that don't exist in JavaScript. Th
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let ageAndName = (24, "Lil' ReScript")
 let my3dCoordinates = (20.0, 30.5, 100.0)
 ```
@@ -24,7 +24,7 @@ Tuples' types can be used in type annotations as well. Tuple types visually rese
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let ageAndName: (int, string) = (24, "Lil' ReScript")
 // a tuple type alias
 type coord3d = (float, float, float)
@@ -44,7 +44,7 @@ To get a specific member of a tuple, destructure it:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let (_, y, _) = my3dCoordinates // now you've retrieved y
 ```
 ```js
@@ -59,7 +59,7 @@ Tuples aren't meant to be updated mutatively. You'd create new ones by destructu
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let coordinates1 = (10, 20, 30)
 let (c1x, _, _) = coordinates1
 let coordinates2 = (c1x + 50, 20, 30)
@@ -78,7 +78,7 @@ You'd use tuples in handy situations that pass around multiple values without to
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let getCenterCoordinates = () => {
   let x = doSomeOperationsHere()
   let y = doSomeMoreOperationsHere()

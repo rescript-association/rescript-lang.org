@@ -6,7 +6,7 @@ Functions are declared with an arrow and return an expression.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let greet = (name) => "Hello " ++ name
 ```
 ```js
@@ -21,7 +21,7 @@ This declares a function and assigns to it the name `greet`, which you can call 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 greet("world!") // "Hello world!"
 ```
 ```js
@@ -34,7 +34,7 @@ Multi-arguments functions have arguments separated by comma:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let add = (x, y, z) => x + y + z
 add(1, 2, 3) // 6
 ```
@@ -50,7 +50,7 @@ For longer functions, you'd surround the body with a block:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let greetMore = (name) => {
   let part1 = "Hello"
   part1 ++ " " ++ name
@@ -72,7 +72,7 @@ Multi-arguments functions, especially those whose arguments are of the same type
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let addCoordinates = (x, y) => {
   // use x and y here
 }
@@ -93,7 +93,7 @@ You can attach labels to an argument by prefixing the name with the `~` symbol:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let addCoordinates = (~x, ~y) => {
   // use x and y here
 }
@@ -114,7 +114,7 @@ You can provide the arguments in **any order**:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 addCoordinates(~y=6, ~x=5)
 ```
 ```js
@@ -127,7 +127,7 @@ The `~x` part in the declaration means the function accepts an argument labeled 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let drawCircle = (~radius as r, ~color as c) => {
   setColor(c)
   startAt(r, r)
@@ -153,7 +153,7 @@ Here's the syntax for typing the arguments:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let drawCircle = (~radius as r: int, ~color as c: string) => {
   // code here
 }
@@ -172,7 +172,7 @@ Labeled function arguments can be made optional during declaration. You can then
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 // radius can be omitted
 let drawCircle = (~color, ~radius=?, ()) => {
   setColor(color)
@@ -211,7 +211,7 @@ If we get back to our previous example and both add a signature and type annotat
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let drawCircle: (~color: color, ~radius: int=?, unit) => unit =
   (~color: color, ~radius: option<int>=?, ()) => {
     setColor(color)
@@ -246,7 +246,7 @@ Sometimes, you might want to forward a value to a function without knowing wheth
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let result =
   switch payloadRadius {
   | None => drawCircle(~color, ())
@@ -267,7 +267,7 @@ This quickly gets tedious. We provide a shortcut:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let result = drawCircle(~color, ~radius=?payloadRadius, ())
 ```
 ```js
@@ -284,7 +284,7 @@ Optional labeled arguments can also be provided a default value. In this case, t
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let drawCircle = (~radius=1, ~color, ()) => {
   setColor(color)
   startAt(radius, radius)
@@ -306,7 +306,7 @@ ReScript chooses the sane default of preventing a function to be called recursiv
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let rec neverTerminate = () => neverTerminate()
 ```
 ```js
@@ -324,7 +324,7 @@ A simple recursive function may look like this:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 // Recursively check every item on the list until one equals the `item`
 // argument. If a match is found, return `true`, otherwise return `false`
 let rec listHas = (list, item) =>
@@ -360,7 +360,7 @@ Mutually recursive functions start like a single recursive function using the
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let rec callSecond = () => callFirst()
 and callFirst = () => callSecond()
 ```
@@ -388,7 +388,7 @@ ReScript's functions are curried by default, which is one of the few performance
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let add = (. x, y) => x + y
 
 add(. 1, 2)
@@ -415,7 +415,7 @@ Cheat sheet for the function syntaxes:
 
 ### Declaration
 
-```res
+```re
 // anonymous function
 (x, y) => 1
 // bind to a name
@@ -439,7 +439,7 @@ let add = (~first=?, ~second=?) => switch first {...}
 
 #### With Type Annotation
 
-```res
+```re
 // anonymous function
 (x: int, y: int): int => 1
 // bind to a name
@@ -465,7 +465,7 @@ let add = (~first: option<int>=?, ~second: option<int>=?) : int => switch first 
 
 ### Application
 
-```res
+```re
 add(x, y)
 
 // labeled
@@ -484,7 +484,7 @@ add(~first?, ~second?)
 
 #### With Type Annotation
 
-```res
+```re
 // labeled
 add(~first=1: int, ~second=2: int)
 // with punning sugar
@@ -500,7 +500,7 @@ add(~first=?Some(1): option<int>, ~second=?Some(2): option<int>)
 
 ### Standalone Type Signature
 
-```res
+```re
 // first arg type, second arg type, return type
 type add = (int, int) => int
 
@@ -515,7 +515,7 @@ type add = (~first: int=?, ~second: int=?, unit) => int
 
 To annotate a function from the implementation file (`.res`) in your interface file (`.resi`):
 
-```res
+```re
 let add: (int, int) => int
 ```
 

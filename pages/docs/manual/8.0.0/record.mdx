@@ -11,7 +11,7 @@ A record needs a mandatory type declaration:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type person = {
   age: int,
   name: string
@@ -29,7 +29,7 @@ To create a `person` record (declared above):
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let me = {
   age: 5,
   name: "Big ReScript"
@@ -50,7 +50,7 @@ The type is found by looking above the `me` value. **Note**: if the type instead
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 // School.res
 type person = {age: int, name: string}
 ```
@@ -62,7 +62,7 @@ type person = {age: int, name: string}
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 // Example.res
 
 let me: School.person = {age: 20, name: "Big ReScript"}
@@ -90,7 +90,7 @@ Use the familiar dot notation:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let name = me.name
 ```
 ```js
@@ -105,7 +105,7 @@ New records can be created from old records with the `...` spread operator. The 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let meNextYear = {...me, age: me.age + 1}
 ```
 ```js
@@ -125,7 +125,7 @@ Record fields can optionally be mutable. This allows you to efficiently update t
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type person = {
   name: string,
   mutable age: int
@@ -151,7 +151,7 @@ baby.age = baby.age + 1 | 0;
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type person = {age: int, name: string}
 type monster = {age: int, hasTentacles: bool}
 
@@ -167,7 +167,7 @@ function getAge(entity) {
 
 Instead, `getAge` will infer that the parameter `entity` must be of type `monster`, the closest record type with the field `age`. The following code's last line fails:
 
-```res
+```re
 let kraken = {age: 9999, hasTentacles: true}
 let me = {age: 5, name: "Baby ReScript"}
 

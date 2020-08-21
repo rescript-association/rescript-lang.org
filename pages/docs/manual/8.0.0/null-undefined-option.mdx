@@ -8,7 +8,7 @@ We represent the existence and nonexistence of a value by wrapping it with the `
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type option<'a> = None | Some('a)
 ```
 ```js
@@ -27,7 +27,7 @@ Here's a normal value:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let licenseNumber = 5
 ```
 ```js
@@ -40,7 +40,7 @@ To represent the concept of "maybe null", you'd turn this into an `option` type 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let licenseNumber =
   if personHasACar {
     Some(5)
@@ -58,7 +58,7 @@ Later on, when another piece of code receives such value, it'd be forced to hand
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 switch licenseNumber {
 | None =>
   Js.log("The person doesn't have a car")
@@ -86,7 +86,7 @@ The `option` type is common enough that we special-case it when compiling to Jav
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let x = Some(5)
 ```
 ```js
@@ -99,7 +99,7 @@ simply compiles down to `5`, and
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let x = None
 ```
 ```js
@@ -116,7 +116,7 @@ The option-to-undefined translation isn't perfect, because on our side, `option`
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let x = Some(Some(Some(5)))
 ```
 ```js
@@ -129,7 +129,7 @@ This still compiles to `5`, but this gets troublesome:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let x = Some(None)
 ```
 ```js
@@ -163,8 +163,8 @@ If you're receiving, for example, a JS string that can be `null` and `undefined`
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
-@bs.module("MyConstant") external myId: Js.Nullable.t<string> = "myId"
+```re
+[@bs.module "MyConstant"] external myId: Js.Nullable.t<string> = "myId"
 ```
 ```js
 // Empty output
@@ -176,8 +176,8 @@ To create such a nullable string from our side (presumably to pass it to the JS 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
-@bs.module("MyIdValidator") external validate: Js.Nullable.t<string> => bool = "validate"
+```re
+[@bs.module "MyIdValidator"] external validate: Js.Nullable.t<string> => bool = "validate"
 let personId: Js.Nullable.t<string> = Js.Nullable.return("abc123")
 
 let result = validate(personId)

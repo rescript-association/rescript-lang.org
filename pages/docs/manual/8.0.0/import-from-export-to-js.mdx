@@ -10,9 +10,9 @@ Use the `bs.module` [external](external.md):
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 // Import nodejs' path.dirname
-@bs.module("path") external dirname: string => string = "dirname"
+[@bs.module "path"] external dirname: string => string = "dirname"
 let root = dirname("/User/github") // returns "User"
 ```
 ```js
@@ -24,7 +24,7 @@ var root = Path.dirname("/User/github");
 
 Here's what the `external` does:
 
-- `@bs.module("path")`: pass the name of the JS module as a string; in this case, `"path"`. The string can be anything: `"./src/myJsFile"`, `"@myNpmNamespace/myLib"`, etc.
+- `[@bs.module "path"]`: pass the name of the JS module as a string; in this case, `"path"`. The string can be anything: `"./src/myJsFile"`, `"@myNpmNamespace/myLib"`, etc.
 - `external`: the general keyword for declaring a value that exists on the JS side.
 - `dirname`: the binding name you'll use on the ReScript side.
 - `string => string`: the type signature of `dirname`.
@@ -36,7 +36,7 @@ By omitting the string argument to `bs.module`, you bind to the whole JS module:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 @bs.module external leftPad: string => int => string = "./leftPad"
 let paddedResult = leftPad("hi", 5)
 ```
@@ -53,8 +53,8 @@ If your JS project is using ES6, you're likely using Babel to compile it to regu
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
-@bs.module("./student") external studentName: string = "default"
+```re
+[@bs.module "./student"] external studentName: string = "default"
 Js.log(studentName)
 ```
 ```js
@@ -93,7 +93,7 @@ Technically, since a ReScript file maps to a module, there's no such thing as "d
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 /* FavoriteStudent.ml */
 let default = "Bob"
 ```

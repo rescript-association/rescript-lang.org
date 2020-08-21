@@ -6,13 +6,13 @@ Most data structures in most languages are about "this **and** that". A variant 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type myResponse =
   | Yes
   | No
-  | PrettyMuch
+  | PrettyMuch;
 
-let areYouCrushingIt = Yes
+let areYouCrushingIt = Yes;
 ```
 ```js
 var areYouCrushingIt = /* Yes */0;
@@ -30,9 +30,9 @@ If the variant you're using is in a different file, bring it into scope like you
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
-// Zoo.res
-type animal = Dog | Cat | Bird
+```re
+// Zoo.re
+type animal = Dog | Cat | Bird;
 ```
 ```js
 // Empty output
@@ -42,11 +42,11 @@ type animal = Dog | Cat | Bird
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
-// Example.res
-let pet: Zoo.animal = Dog // preferred
+```re
+// Example.re
+let pet: Zoo.animal = Dog; // preferred
 // or
-let pet2 = Zoo.Dog
+let pet2 = Zoo.Dog;
 ```
 ```js
 var pet = /* Dog */0;
@@ -61,11 +61,11 @@ A variant's constructors can hold extra data separated by comma.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type account =
   | None
   | Instagram(string)
-  | Facebook(string, int)
+  | Facebook(string, int);
 ```
 ```js
 // Empty output
@@ -77,9 +77,9 @@ Here, `Instagram` holds a `string`, and `Facebook` holds a `string` and an `int`
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
-let myAccount = Facebook("Josh", 26)
-let friendAccount = Instagram("Jenny")
+```re
+let myAccount = Facebook("Josh", 26);
+let friendAccount = Instagram("Jenny");
 ```
 ```js
 var myAccount = {
@@ -101,12 +101,12 @@ You can use a record type in a variant:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
-type idType = {name: string, password: string}
+```re
+type idType = {name: string, password: string};
 
 type user =
   | Number(int)
-  | Id(idType)
+  | Id(idType);
 ```
 ```js
 // Empty output
@@ -118,10 +118,10 @@ If the record type is used only in the variant definition, you may put it in lin
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type user =
   | Number(int)
-  | Id({name: string, password: string})
+  | Id({name: string, password: string});
 ```
 ```js
 // Empty output
@@ -139,11 +139,11 @@ See the [Pattern Matching/Destructuring](pattern-matching-destructuring.md) sect
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type account =
-  | Facebook(string, int) // 2 arguments
+  | Facebook(string, int); // 2 arguments
 type account2 =
-  | Instagram((string, int)) // 1 argument - happens to be a 2-tuple
+  | Instagram((string, int)); // 1 argument - happens to be a 2-tuple
 ```
 ```js
 // Empty output
@@ -163,21 +163,21 @@ Quite a few JS libraries use functions that can accept many types of arguments. 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 // reserved for internal usage
-@bs.module("myLibrary") external draw : 'a => unit = "draw"
+[@bs.module "myLibrary"] external draw : 'a => unit = "draw";
 
 type animal =
   | MyFloat(float)
-  | MyString(string)
+  | MyString(string);
 
 let betterDraw = (animal) =>
-  switch animal {
+  switch (animal) {
   | MyFloat(f) => draw(f)
   | MyString(s) => draw(s)
-  }
+  };
 
-betterDraw(MyFloat(1.5))
+betterDraw(MyFloat(1.5));
 ```
 ```js
 var MyLibrary = require("myLibrary");
@@ -198,9 +198,9 @@ You could definitely do that, but there are better ways! For example, define two
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
-@bs.module("myLibrary") external drawFloat: float => unit = "draw"
-@bs.module("myLibrary") external drawString: string => unit = "draw"
+```re
+[@bs.module "myLibrary"] external drawFloat: float => unit = "draw";
+[@bs.module "myLibrary"] external drawString: string => unit = "draw";
 ```
 ```js
 // Empty output
@@ -237,10 +237,10 @@ There's a linear amount of branch checking here (`O(n)`). Compare this to using 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
-type animal = Dog | Cat | Bird
+```re
+type animal = Dog | Cat | Bird;
 let data = Dog
-switch data {
+switch (data) {
 | Dog => Js.log("Wof")
 | Cat => Js.log("Meow")
 | Bird => Js.log("Kashiiin")

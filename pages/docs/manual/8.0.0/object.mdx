@@ -17,7 +17,7 @@ Although ReScript records compile to clean JavaScript objects, ReScript objects 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type person = {
   "age": int,
   "name": string
@@ -37,7 +37,7 @@ To create a new object:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let me = {
   "age": 5,
   "name": "Big ReScript"
@@ -56,7 +56,7 @@ bar me = {
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type person = {
   "age": int
 };
@@ -75,7 +75,7 @@ var me = {
 
 Since the type checker doesn't try to match `me` with the type `person`. If you ever want to force an object value to be of a predeclared object type, just annotate the value:
 
-```res
+```re
 let me: person = {
   "age": "hello!"
 }
@@ -87,7 +87,7 @@ Now the type system will error properly.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let age = me["age"]
 ```
 ```js
@@ -102,12 +102,12 @@ Disallowed unless the object is a binding that comes from the JavaScript side. I
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type student = {
   @bs.set "age": int,
   @bs.set "name": string,
 }
-@bs.module("MyJSFile") external student1: student = "student1"
+[@bs.module "MyJSFile"] external student1: student = "student1"
 
 student1["name"] = "Mary"
 ```

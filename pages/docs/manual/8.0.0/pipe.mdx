@@ -6,7 +6,7 @@ Why would you use it? Imagine you have the following:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 validateAge(getAge(parseData(person)))
 ```
 ```js
@@ -19,7 +19,7 @@ This is slightly hard to read, since you need to read the code from the innermos
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 person
   ->parseData
   ->getAge
@@ -37,7 +37,7 @@ Basically, `parseData(person)` is transformed into `person->parseData`, and `get
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 a(one, two, three)
 ```
 ```js
@@ -50,7 +50,7 @@ is the same as
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 one->a(two, three)
 ```
 ```js
@@ -85,7 +85,7 @@ Assuming we don't need the chaining behavior above, we'd bind to each case this 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 @bs.send external map: (array<'a>, 'a => 'b) => array<'b> = "map"
 @bs.send external filter: (array<'a>, 'a => bool) => array<'a> = "filter"
 
@@ -104,7 +104,7 @@ You'd use them like this:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let result = Js.Array2.filter(Js.Array2.map([1, 2, 3], a => a + 1), a => mod(a, 2) == 0)
 
 send(setWaitDuration(asyncRequest(), 4000))
@@ -125,7 +125,7 @@ This looks much worse than the JS counterpart! Clean it up visually with pipe:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let result = [1, 2, 3]
   ->map(a => a + 1)
   ->filter(a => a mod 2 === 0)
@@ -150,7 +150,7 @@ You can pipe into a variant's constructor as if it was a function:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let result = name->preprocess->Some
 ```
 ```js
@@ -163,7 +163,7 @@ We turn this into:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let result = Some(preprocess(name))
 ```
 ```js
@@ -178,7 +178,7 @@ var result = preprocess(name);
 
 A placeholder is written as an underscore and it tells ReScript that you want to fill in an argument of a function later. These two have equivalent meaning:
 
-```res
+```re
 let addTo7 = (x) => add3(3, x, 4)
 let addTo7 = add3(3, _, 4)
 ```
@@ -189,7 +189,7 @@ Let's say you have a function `namePerson`, which takes a `person` then a `name`
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 makePerson(~age=47, ())
   ->namePerson("Jane")
 ```
@@ -203,7 +203,7 @@ If you have a name that you want to apply to a person object, you can use a plac
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 getName(input)
   ->namePerson(personDetails, _)
 ```
@@ -218,7 +218,7 @@ This allows you to pipe into any positional argument. It also works for named ar
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 getName(input)
   ->namePerson(~person=personDetails, ~name=_)
 ```

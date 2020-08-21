@@ -13,7 +13,7 @@ inside a module definition's `{}` block.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 module School = {
   type profession = Teacher | Director
 
@@ -47,7 +47,7 @@ using the `.` notation. This demonstrates modules' utility for namespacing.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let anotherPerson: School.profession = School.Teacher
 Js.log(School.getProfession(anotherPerson)) /* "A teacher" */
 ```
@@ -62,7 +62,7 @@ Nested modules work too.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 module MyModule = {
   module NestedModule = {
     let message = "hello"
@@ -92,7 +92,7 @@ module's name. Instead of writing:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let p = School.getProfession(School.person1)
 ```
 ```js
@@ -105,7 +105,7 @@ We can write:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 open School
 let p = getProfession(person1)
 ```
@@ -121,7 +121,7 @@ The content of `School` module are made visible (**not** copied into the file, b
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let p = {
   open School
   getProfession(person1)
@@ -142,7 +142,7 @@ Using `include` in a module statically "spreads" a module's content into a new o
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 module BaseComponent = {
   let defaultGreeting = "Hello"
   let getAudience = (~excited) => excited ? "world!" : "world"
@@ -207,7 +207,7 @@ inside a signature definition's `{}` block.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 /* Picking up previous section's example */
 module type EstablishmentType = {
   type profession
@@ -249,7 +249,7 @@ interface:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 module Company: EstablishmentType = {
   type profession = CEO | Designer | Engineer | ...
 
@@ -286,7 +286,7 @@ Like modules themselves, module signatures can also be extended by other module 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 module type BaseComponent = {
   let defaultGreeting: string
   let getAudience: (~excited: bool) => string
@@ -313,7 +313,7 @@ type.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 module type MyList = {
   include (module type of List)
   let myListFun: list('a) => list('a)
@@ -335,7 +335,7 @@ in the ecosystem to also document the public API of their corresponding modules.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 /* file React.res (implementation. Compiles to module React) */
 type state = int
 let render = (str) => str
@@ -348,7 +348,7 @@ function render(str) {
 
 </CodeTab>
 
-```res
+```re
 /* file React.resi (interface. Compiles to the signature of React.res) */
 type state = int
 let render: str => str
@@ -374,7 +374,7 @@ Here's an example `MakeSet` functor, that takes in a module of the type
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 module type Comparable = {
   type t
   let equal: (t, t) => bool
@@ -428,7 +428,7 @@ creating a set, whose items are pairs of integers.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 module IntPair = {
   type t = (int, int)
   let equal = ((x1: int, y1: int), (x2, y2)) => x1 == x2 && y1 == y2
@@ -475,7 +475,7 @@ a functor signature, we can hide the underlying data structure!
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 module type Comparable = ...
 
 module type MakeSetType = (Item: Comparable) => {

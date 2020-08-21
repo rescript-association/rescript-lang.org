@@ -10,7 +10,7 @@ Unlike its JavaScript counterpart, ReScript's `if` is an expression; they evalua
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let message = if isMorning {
   "Good morning!"
 } else {
@@ -27,7 +27,7 @@ var message = isMorning ? "Good morning!" : "Hello!";
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 if showMenu {
   displayMenu()
 }
@@ -44,7 +44,7 @@ is basically the same as:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 if showMenu {
   displayMenu()
 } else {
@@ -61,7 +61,7 @@ if (showMenu) {
 
 Here's another way to look at it. This is clearly wrong:
 
-```res
+```re
 let result = if showMenu {
   1 + 2
 }
@@ -73,7 +73,7 @@ We also have ternary sugar, but **we encourage you to prefer if-else when possib
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let message = isMorning ? "Good morning!" : "Hello!"
 ```
 ```js
@@ -90,7 +90,7 @@ For loops iterate from a starting value up to (and including) the ending value.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 for i in startValueInclusive to endValueInclusive {
   Js.log(i)
 }
@@ -105,7 +105,7 @@ for(var i = startValueInclusive; i <= endValueInclusive; ++i){
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 // prints: 1 2 3
 for x in 1 to 3 {
   Js.log(x)
@@ -125,7 +125,7 @@ You can make the `for` loop count in the opposite direction by using `downto`.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 for i in startValueInclusive downto endValueInclusive {
   Js.log(i)
 }
@@ -140,7 +140,7 @@ for(var i = startValueInclusive; i >= endValueInclusive; --i){
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 // prints: 3 2 1
 for x in 3 downto 1 {
   Js.log(x)
@@ -162,7 +162,7 @@ While loops execute its body code block while its condition is true.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 while testCondition {
   // body here
 }
@@ -181,7 +181,7 @@ There's no loop-breaking `break` keyword (nor early `return` from functions, for
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let break = ref(false)
 
 while !break.contents {

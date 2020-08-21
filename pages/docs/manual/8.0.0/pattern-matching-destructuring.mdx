@@ -14,7 +14,7 @@ Even JavaScript has destructuring, which is "opening up" a data structure to ext
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let coordinates = (10, 20, 30)
 let (x, _, _) = coordinates
 Js.log(x) // 10
@@ -31,7 +31,7 @@ Destructuring works with most built-in data structures:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 // Record
 type student = {name: string, age: int}
 let student1 = {name: "John", age: 10}
@@ -97,7 +97,7 @@ You can also use destructuring anywhere you'd usually put a binding:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type result =
   | Success(string)
 let displayMessage = (Success(m)) => {
@@ -123,7 +123,7 @@ For a record, you can rename the field while destructuring:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let {name: n} = student1 // "John" assigned to `n`
 ```
 ```js
@@ -140,7 +140,7 @@ Consider a variant:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type payload =
   | BadResult(int)
   | GoodResult(string)
@@ -158,7 +158,7 @@ In other languages, you'd end up with a series of if-elses that are hard to read
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let data = GoodResult("Product shipped!")
 switch data {
 | GoodResult(theMessage) =>
@@ -196,7 +196,7 @@ Here's a real-world scenario that'd be a headache to code in other languages. Gi
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type status = Vacations(int) | Sabbatical(int) | Sick | Present
 type reportCard = {passing: bool, gpa: float}
 type person =
@@ -228,7 +228,7 @@ ReScript can do this easily!
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let message = switch person1 {
 | Teacher({name: "Mary" | "Joe"}) =>
   `Hey, still going to the party on Saturday?`
@@ -293,7 +293,7 @@ Here's another example of pattern matching, this time on an inline tuple.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type animal = Dog | Cat | Bird
 let categoryId = switch (isBig, myAnimal) {
 | (true, Dog) => 1
@@ -322,7 +322,7 @@ If you have a value like `Teacher(payload)` where you just want to pattern match
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 switch person {
 | Teacher(_) => Js.log("Hi teacher")
 | Student(_) => Js.log("Hey student")
@@ -346,7 +346,7 @@ Sometime, you want to check more than the shape of a value. You want to also run
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 switch person {
 | Teacher(_) => () // do nothing
 | Student({reportCard: {gpa}}) =>
@@ -373,7 +373,7 @@ if (person.TAG) {
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 switch person {
 | Teacher(_) => () // do nothing
 | Student({reportCard: {gpa}}) when gpa < 0.5 =>
@@ -401,7 +401,7 @@ If the function throws an exception (covered later), you can also match on _that
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 switch List.find(i => i === theItem, myItems) {
 | item => Js.log(item)
 | exception Not_found => Js.log("No such item found!")
@@ -440,7 +440,7 @@ if (exit === 1) {
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let coordinates = (10, 20, 30)
 let centerY = 20
 switch coordinates {
@@ -466,7 +466,7 @@ Let's revisit one of the above examples:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let message = switch person {
 | Teacher({name: "Mary" | "Joe"}) =>
   `Hey, still going to the party on Saturday?`
@@ -536,7 +536,7 @@ Some({name: ""})
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 switch myNullableValue {
 | Some(v) => Js.log("value is present")
 | None => Js.log("value is absent")
@@ -568,7 +568,7 @@ Use `when` clause sparingly.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let optionBoolToBool = opt => {
   if opt == None {
     false
@@ -595,7 +595,7 @@ Now that's just silly =). Let's turn it into pattern-matching:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let optionBoolToBool = opt => {
   switch opt {
   | None => false
@@ -619,7 +619,7 @@ Slightly better, but still nested. Pattern-matching allows you to do this:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let optionBoolToBool = opt => {
   switch opt {
   | None => false
@@ -644,7 +644,7 @@ Much more linear-looking! Now, you might be tempted to do this:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let optionBoolToBool = opt => {
   switch opt {
   | Some(true) => true
@@ -668,7 +668,7 @@ Which is much more concise, but kills the exhaustiveness check mentioned above; 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let optionBoolToBool = opt => {
   switch opt {
   | Some(trueOrFalse) => trueOrFalse

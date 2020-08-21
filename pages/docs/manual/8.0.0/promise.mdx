@@ -8,7 +8,7 @@ ReScript has built-in support for [JavaScript promises](/apis/latest/js/promise)
 
 Additionally, here's the type signature for creating a promise on the ReScript side:
 
-```resi
+```rei
 Js.Promise.make: (
   (
     ~resolve: (. 'a) => unit,
@@ -26,7 +26,7 @@ Using the [pipe operator](pipe.md):
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 let myPromise = Js.Promise.make((~resolve, ~reject) => resolve(. 2))
 
 myPromise
