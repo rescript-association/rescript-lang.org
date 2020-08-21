@@ -309,6 +309,7 @@ let make =
     (
       ~breadcrumbs: option(list(UrlPath.breadcrumb))=?,
       ~title: string,
+      ~frontmatter: option(Js.Json.t)=?,
       ~version: option(string)=?,
       ~activeToc: option(Toc.t)=?,
       ~categories: array(Category.t),
@@ -368,6 +369,20 @@ let make =
 
   let metaTitle = title ++ " | ReScript Documentation";
 
+  let metaElement =
+    switch (frontmatter) {
+    | Some(frontmatter) =>
+      switch (DocFrontmatter.decode(frontmatter)) {
+      | Ok(fm) =>
+        let canonical = Js.Null.toOption(fm.canonical);
+        let description = Js.Null.toOption(fm.description);
+        let title = fm.title ++ " | ReScript Language Manual";
+        <Meta title ?description ?canonical />;
+      | Error(_) => React.null
+      }
+    | None => React.null
+    };
+
   <SidebarLayout
     metaTitle
     theme
@@ -375,6 +390,7 @@ let make =
     sidebarState=(isSidebarOpen, setSidebarOpen)
     sidebar
     ?breadcrumbs>
+    metaElement
     children
   </SidebarLayout>;
 };

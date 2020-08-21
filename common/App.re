@@ -42,6 +42,8 @@ type props = {
   "pageProps": pageProps,
 };
 
+[@bs.get] external frontmatter: React.component(Js.t({.})) => Js.Json.t = "frontmatter";
+
 let default = (props: props): React.element => {
   let component = props##"Component";
   let pageProps = props##pageProps;
@@ -59,7 +61,7 @@ let default = (props: props): React.element => {
     | Latest =>
       <ManualDocsLayout.Prose> content </ManualDocsLayout.Prose>
     | Version("v8.0.0") =>
-      <ManualDocsLayout8_0_0.Prose> content </ManualDocsLayout8_0_0.Prose>
+      <ManualDocsLayout8_0_0.Prose frontmatter=component->frontmatter> content </ManualDocsLayout8_0_0.Prose>
     | _ =>
       React.null
     }
