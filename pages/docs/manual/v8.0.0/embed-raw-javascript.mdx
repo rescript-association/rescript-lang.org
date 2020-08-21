@@ -7,13 +7,13 @@ First thing first. If you're ever stuck learning ReScript, remember that you can
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-%%raw(`
+[%%raw {|
 // look ma, regular JavaScript!
 var message = "hello";
 function greet(m) {
   console.log(m)
 }
-`)
+|}];
 ```
 ```js
 // look ma, regular JavaScript!
@@ -34,14 +34,14 @@ While `%%raw` lets you embed top-level raw JS code, `%raw` lets you embed expres
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let add = %raw(`
+let add = %raw({|
   function(a, b) {
     console.log("hello from raw JavaScript!");
     return a + b
   }
-`)
+|});
 
-Js.log(add(1, 2))
+Js.log(add(1, 2));
 ```
 ```js
 var add = function(a, b) {
@@ -69,9 +69,9 @@ You can also drop a `%debugger` expression in a body:
 
 ```re
 let f = (x, y) => {
-  %debugger
-  x + y
-}
+  [%debugger];
+  x + y;
+};
 ```
 ```js
 function f(x, y) {
