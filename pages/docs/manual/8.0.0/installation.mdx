@@ -1,0 +1,37 @@
+# Installation
+
+Prerequisite: NPM, which comes with [NodeJS](https://nodejs.org/en/). [Yarn](https://yarnpkg.com/en/) also works.
+
+To install ReScript globally:
+
+```sh
+npm install -g bs-platform
+```
+
+## New Project
+
+```sh
+git clone https://github.com/rescript-lang/new-project
+cd new-project
+npm install
+npm run build
+node src/Demo.bs.js
+```
+
+<!-- TODO: rescript template -->
+
+That compiles your ReScript into JavaScript, then uses NodeJS to run said JavaScript. **We recommend you use our highly unique workflow of keeping a tab open for the generated `.bs.js` file**, so that you can learn how ReScript transforms to JavaScript. Not many languages output clean JavaScript code you can manually inspect!
+
+During development, instead of running `npm run build` each time to compile, use `npm run start` to start a watcher that recompiles automatically after file changes.
+
+Alternatively, **to start a [ReasonReact](/docs/reason-react/latest/introduction) app**, follow the instructions [here](/docs/reason-react/latest/installation).
+
+## Integrate Into Existing JS Project
+
+You can install the toolchain locally to an existing JS project, through the familiar command:
+
+```sh
+npm install --save-dev bs-platform
+```
+
+The rest is the same as above. Since we output clean `.bs.js` files, the rest of your existing toolchain (e.g. Babel and Webpack) should mostly just work. Nothing to learn on the bundling side!
