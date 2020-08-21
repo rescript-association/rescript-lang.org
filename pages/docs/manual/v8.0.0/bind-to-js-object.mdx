@@ -73,13 +73,13 @@ Alternatively, you can use `bs.get` and `bs.set` to bind to individual fields of
 
 ```re
 type textarea
-@bs.set external setName: (textarea, string) => unit = "name"
-@bs.get external getName: textarea => string = "name"
+[@bs.set] external setName: (textarea, string) => unit = "name"
+[@bs.get] external getName: textarea => string = "name"
 ```
 ```js
 type textarea
-@bs.set external setName: (textarea, string) => unit = "name"
-@bs.get external getName: textarea => string = "name"
+[@bs.set] external setName: (textarea, string) => unit = "name"
+[@bs.get] external getName: textarea => string = "name"
 ```
 
 </CodeTab>
@@ -90,9 +90,9 @@ You can also use `bs.get_index` and `bs.set_index` to access a dynamic property 
 
 ```re
 type t
-@bs.new external create: int => t = "Int32Array"
-@bs.get_index external get: (t, int) => int = ""
-@bs.set_index external set: (t, int, int) => unit = ""
+[@bs.new] external create: int => t = "Int32Array"
+[@bs.get_index] external get: (t, int) => int = ""
+[@bs.set_index] external set: (t, int, int) => unit = ""
 
 let i32arr = create(3)
 i32arr->set(0, 42)
@@ -123,7 +123,7 @@ Use `bs.new` to emulate e.g. `new Date()`:
 
 ```re
 type t
-@bs.new external createDate: unit => t = "Date"
+[@bs.new] external createDate: unit => t = "Date"
 
 let date = createDate();
 ```
@@ -139,7 +139,7 @@ You can chain `bs.new` and `bs.module` if the JS module you're importing is itse
 
 ```re
 type t
-@bs.new @bs.module external book: unit => t = "Book"
+[@bs.new] @bs.module external book: unit => t = "Book"
 let myBook = book()
 ```
 ```js

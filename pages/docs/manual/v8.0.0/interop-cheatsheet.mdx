@@ -22,7 +22,7 @@ const a = 1
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-@bs.val external setTimeout: (unit => unit, int) => float = "setTimeout"
+[@bs.val] external setTimeout: (unit => unit, int) => float = "setTimeout"
 ```
 ```js
 // Empty output
@@ -35,12 +35,12 @@ const a = 1
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-@bs.val @bs.scope("Math")
+[@bs.val] [@bs.scope "Math"]
 external random: unit => float = "random"
 
 let someNumber = random()
 
-@bs.val @bs.scope(("window", "location", "ancestorOrigins"))
+[@bs.val] @bs.scope(("window", "location", "ancestorOrigins"))
 external length: int = "length"
 ```
 ```js
@@ -101,8 +101,8 @@ var result3 = Caml_option.nullable_to_opt(10);
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-@bs.send external map: (array('a), 'a => 'b) => array('b) = "map"
-@bs.send external filter: (array('a), 'a => 'b) => array('b) = "filter"
+[@bs.send] external map: (array('a), 'a => 'b) => array('b) = "map"
+[@bs.send] external filter: (array('a), 'a => 'b) => array('b) = "filter"
 [1, 2, 3]
   ->map(a => a + 1)
   ->filter(a => mod(a, 2) == 0)
@@ -127,7 +127,7 @@ console.log(
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-[@bs.module "path"] @bs.variadic
+[@bs.module "path"] [@bs.variadic]
 external join: array(string) => string = "join"
 ```
 ```js
@@ -153,10 +153,10 @@ external join: array(string) => string = "join"
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-@bs.val
+[@bs.val]
 external padLeft: (
   string,
-  @bs.unwrap [
+  [@bs.unwrap] [
     | #Str(string)
     | #Int(int)
   ])

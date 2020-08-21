@@ -82,8 +82,8 @@ Functions attached to a JS objects (other than JS modules) require a special way
 
 ```re
 type document // abstract type for a document object
-@bs.send external getElementById: (document, string) => Dom.element = "getElementById"
-@bs.val external doc: document = "document"
+[@bs.send] external getElementById: (document, string) => Dom.element = "getElementById"
+[@bs.val] external doc: document = "document"
 
 let el = getElementById(doc, "myId")
 ```
@@ -164,10 +164,10 @@ Here, `padding` is really conceptually a variant. Let's model it as such.
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-@bs.val
+[@bs.val]
 external padLeft: (
   string,
-  @bs.unwrap [
+  [@bs.unwrap] [
     | #Str(string)
     | #Int(int)
   ])
@@ -194,7 +194,7 @@ Consider the Node `fs.readFileSync`'s second argument. It can take a string, but
 [@bs.module "fs"]
 external readFileSync: (
   ~name: string,
-  @bs.string [
+  [@bs.string] [
     | #utf8
     | @bs.as("ascii") #useAscii
   ],
@@ -209,7 +209,7 @@ Fs.readFileSync("xx.txt", "ascii");
 
 </CodeTab>
 
-- Attaching `@bs.string` to the whole poly variant type makes its constructor compile to a string of the same name.
+- Attaching `[@bs.string]` to the whole poly variant type makes its constructor compile to a string of the same name.
 - Attaching a `@bs.as("bla")` to a constructor lets you customize the final string.
 
 And now, passing something like `"myOwnUnicode"` or other variant constructor names to `readFileSync` would correctly error.
@@ -219,9 +219,9 @@ Aside from string, you can also compile an argument to an int, using `bs.int` in
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-@bs.val
+[@bs.val]
 external testIntType: (
-  @bs.int [
+  [@bs.int] [
     | #onClosed
     | @bs.as(20) #onOpen
     | #inBinary
@@ -246,10 +246,10 @@ One last trick with polymorphic variants:
 ```re
 type readline
 
-@bs.send
+[@bs.send]
 external on: (
     readline,
-    @bs.string [
+    [@bs.string] [
       | #close(unit => unit)
       | #line(string => unit)
     ]
@@ -282,7 +282,7 @@ Sometimes it's convenient to bind to a function using an `external`, while passi
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-@bs.val
+[@bs.val]
 external processOnExit: (
   @bs.as("exit") _,
   int => unit
@@ -339,7 +339,7 @@ ReScript tries to do #1 as much as it can. Even when it bails and uses #2's curr
 
 ```re
 type timerId
-@bs.val external setTimeout: ((. unit) => unit, int) => timerId = "setTimeout"
+[@bs.val] external setTimeout: ((. unit) => unit, int) => timerId = "setTimeout"
 
 let id = setTimeout((.) => Js.log("hello"), 1000)
 ```
@@ -366,7 +366,7 @@ Then try `@bs.uncurry`:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-@bs.send external map: (array('a), @bs.uncurry('a => 'b)) => array('b) = "map"
+[@bs.send] external map: (array('a), @bs.uncurry('a => 'b)) => array('b) = "map"
 map([1, 2, 3], x => x + 1)
 ```
 ```js
@@ -393,9 +393,9 @@ Here, `this` would point to `x` (actually, it depends on how `onload` is called,
 
 ```re
 type x
-@bs.val external x: x = "x"
-@bs.set external setOnload: (x, @bs.this ((x, int) => unit)) => unit = "onload"
-@bs.get external resp: x => int = "response"
+[@bs.val] external x: x = "x"
+[@bs.set] external setOnload: (x, @bs.this ((x, int) => unit)) => unit = "onload"
+[@bs.get] external resp: x => int = "response"
 setOnload(x, @bs.this ((o, v) => Js.log(resp(o) + v)))
 ```
 ```js
@@ -418,7 +418,7 @@ For JS functions that return a value that can also be `undefined` or `null`, we 
 ```re
 type element
 type dom
-@bs.send @bs.return(nullable)
+[@bs.send] @bs.return(nullable)
 external getElementById: (dom, string) => option(element) = "getElementById"
 let test = dom => {
   let elem = dom->(getElementById("haha"))

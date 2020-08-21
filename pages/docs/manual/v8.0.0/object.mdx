@@ -104,8 +104,8 @@ Disallowed unless the object is a binding that comes from the JavaScript side. I
 
 ```re
 type student = {
-  @bs.set "age": int,
-  @bs.set "name": string,
+  [@bs.set] "age": int,
+  [@bs.set] "name": string,
 }
 [@bs.module "MyJSFile"] external student1: student = "student1"
 

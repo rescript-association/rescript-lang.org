@@ -7,8 +7,8 @@ Some JS values, like `setTimeout`, live in the global scope. You can bind to the
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-@bs.val external setTimeout: (unit => unit, int) => float = "setTimeout"
-@bs.val external clearTimeout: float => unit = "clearTimeout"
+[@bs.val] external setTimeout: (unit => unit, int) => float = "setTimeout"
+[@bs.val] external clearTimeout: float => unit = "clearTimeout"
 ```
 ```js
 // Empty output
@@ -34,8 +34,8 @@ We're in a language with a great type system now! Let's leverage a popular featu
 
 ```re
 type timerId
-@bs.val external setTimeout: (unit => unit, int) => timerId = "setTimeout"
-@bs.val external clearTimeout: timerId => unit = "clearTimeout"
+[@bs.val] external setTimeout: (unit => unit, int) => timerId = "setTimeout"
+[@bs.val] external clearTimeout: timerId => unit = "clearTimeout"
 
 let id = setTimeout(() => Js.log("hello"), 100)
 clearTimeout(id)
@@ -61,7 +61,7 @@ If you want to bind to a value inside a global module, e.g. `Math.random`, attac
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-@bs.scope("Math") @bs.val external random: unit => float = "random"
+[@bs.scope "Math"] [@bs.val] external random: unit => float = "random"
 let someNumber = random()
 ```
 ```js
@@ -75,7 +75,7 @@ you can bind to an arbitrarily deep object by passing a tuple to `bs.scope`:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-@bs.val @bs.scope(("window", "location", "ancestorOrigins")) external length : int = "length"
+[@bs.val] @bs.scope(("window", "location", "ancestorOrigins")) external length : int = "length"
 ```
 ```js
 // Empty output

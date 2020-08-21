@@ -11,7 +11,7 @@ Bind to JavaScript's `JSON.parse` and type the return value as the type you're e
 type data = {names: array(string)}
 
 // bind to JS' JSON.parse
-@bs.scope("JSON") @bs.val
+[@bs.scope "JSON"] [@bs.val]
 external parseIntoMyData: string => data = "parse"
 
 let result = parseIntoMyData(`{"names": ["Luke", "Christine"]}`)
