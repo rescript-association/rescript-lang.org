@@ -1,3 +1,5 @@
+let version = "v8.0.0";
+
 module Link = Next.Link;
 
 // Structure defined by `scripts/extract-tocs.js`
@@ -21,88 +23,88 @@ module Category = DocsLayout.Category;
 module Toc = DocsLayout.Toc;
 
 let overviewNavs = [|
-  NavItem.{name: "Introduction", href: "/docs/manual/latest/introduction"},
-  {name: "Migrate from BuckleScript/Reason", href: "/docs/manual/latest/migrate-from-bucklescript-reason"},
-  {name: "Installation", href: "/docs/manual/latest/installation"},
-  {name: "Try", href: "/docs/manual/latest/try"},
-  {name: "Editor Plugins", href: "/docs/manual/latest/editor-plugins"},
+  NavItem.{name: "Introduction", href: "/docs/manual/v8.0.0/introduction"},
+  {name: "Migrate from BuckleScript/Reason", href: "/docs/manual/v8.0.0/migrate-from-bucklescript-reason"},
+  {name: "Installation", href: "/docs/manual/v8.0.0/installation"},
+  {name: "Try", href: "/docs/manual/v8.0.0/try"},
+  {name: "Editor Plugins", href: "/docs/manual/v8.0.0/editor-plugins"},
 |];
 
 let basicNavs = [|
-  NavItem.{name: "Overview", href: "/docs/manual/latest/overview"},
-  {name: "Let Binding", href: "/docs/manual/latest/let-binding"},
-  {name: "Type", href: "/docs/manual/latest/type"},
-  {name: "Primitive Types", href: "/docs/manual/latest/primitive-types"},
-  {name: "Tuple", href: "/docs/manual/latest/tuple"},
-  {name: "Record", href: "/docs/manual/latest/record"},
-  {name: "Object", href: "/docs/manual/latest/object"},
-  {name: "Variant", href: "/docs/manual/latest/variant"},
+  NavItem.{name: "Overview", href: "/docs/manual/v8.0.0/overview"},
+  {name: "Let Binding", href: "/docs/manual/v8.0.0/let-binding"},
+  {name: "Type", href: "/docs/manual/v8.0.0/type"},
+  {name: "Primitive Types", href: "/docs/manual/v8.0.0/primitive-types"},
+  {name: "Tuple", href: "/docs/manual/v8.0.0/tuple"},
+  {name: "Record", href: "/docs/manual/v8.0.0/record"},
+  {name: "Object", href: "/docs/manual/v8.0.0/object"},
+  {name: "Variant", href: "/docs/manual/v8.0.0/variant"},
   {
     name: "Null, Undefined & Option",
-    href: "/docs/manual/latest/null-undefined-option",
+    href: "/docs/manual/v8.0.0/null-undefined-option",
   },
-  {name: "Array & List", href: "/docs/manual/latest/array-and-list"},
-  {name: "Function", href: "/docs/manual/latest/function"},
-  {name: "Control Flow", href: "/docs/manual/latest/control-flow"},
-  {name: "Pipe", href: "/docs/manual/latest/pipe"},
-  {name: "Pattern Matching/Destructuring", href: "/docs/manual/latest/pattern-matching-destructuring"},
-  {name: "Mutation", href: "/docs/manual/latest/mutation"},
-  {name: "JSX", href: "/docs/manual/latest/jsx"},
-  {name: "External", href: "/docs/manual/latest/external"},
-  {name: "Exception", href: "/docs/manual/latest/exception"},
-  {name: "Lazy Values", href: "/docs/manual/latest/lazy-values"},
-  {name: "Promise", href: "/docs/manual/latest/promise"},
-  {name: "Module", href: "/docs/manual/latest/module"},
-  {name: "Import & Export", href: "/docs/manual/latest/import-export"},
-  {name: "Reserved Keywords", href: "/docs/manual/latest/reserved-keywords"},
+  {name: "Array & List", href: "/docs/manual/v8.0.0/array-and-list"},
+  {name: "Function", href: "/docs/manual/v8.0.0/function"},
+  {name: "Control Flow", href: "/docs/manual/v8.0.0/control-flow"},
+  {name: "Pipe", href: "/docs/manual/v8.0.0/pipe"},
+  {name: "Pattern Matching/Destructuring", href: "/docs/manual/v8.0.0/pattern-matching-destructuring"},
+  {name: "Mutation", href: "/docs/manual/v8.0.0/mutation"},
+  {name: "JSX", href: "/docs/manual/v8.0.0/jsx"},
+  {name: "External", href: "/docs/manual/v8.0.0/external"},
+  {name: "Exception", href: "/docs/manual/v8.0.0/exception"},
+  {name: "Lazy Values", href: "/docs/manual/v8.0.0/lazy-values"},
+  {name: "Promise", href: "/docs/manual/v8.0.0/promise"},
+  {name: "Module", href: "/docs/manual/v8.0.0/module"},
+  {name: "Import & Export", href: "/docs/manual/v8.0.0/import-export"},
+  {name: "Reserved Keywords", href: "/docs/manual/v8.0.0/reserved-keywords"},
 |];
 
 let buildsystemNavs = [|
   NavItem.{
     name: "Overview",
-    href: "/docs/manual/latest/build-overview",
+    href: "/docs/manual/v8.0.0/build-overview",
   },
   {
     name: "Configuration",
-    href: "/docs/manual/latest/build-configuration",
+    href: "/docs/manual/v8.0.0/build-configuration",
   },
   {
     name: "Interop with JS Build System",
-    href: "/docs/manual/latest/interop-with-js-build-systems",
+    href: "/docs/manual/v8.0.0/interop-with-js-build-systems",
   },
   {
     name: "Performance",
-    href: "/docs/manual/latest/build-performance",
+    href: "/docs/manual/v8.0.0/build-performance",
   },
 |];
 
 let jsInteropNavs = [|
   NavItem.{
     name: "Embed Raw JavaScript",
-    href: "/docs/manual/latest/embed-raw-javascript",
+    href: "/docs/manual/v8.0.0/embed-raw-javascript",
   },
-  {name: "Shared Data Types", href: "/docs/manual/latest/shared-data-types"},
-  {name: "Bind to JS Object", href: "/docs/manual/latest/bind-to-js-object"},
-  {name: "Bind to JS Function", href: "/docs/manual/latest/bind-to-js-function"},
-  {name: "Import from/Export to JS", href: "/docs/manual/latest/import-from-export-to-js"},
-  {name: "Bind to Global JS Values", href: "/docs/manual/latest/bind-to-global-js-values"},
-  {name: "JSON", href: "/docs/manual/latest/json"},
-  {name: "Browser Support & Polyfills", href: "/docs/manual/latest/browser-support-polyfills"},
-  {name: "Interop Cheatsheet", href: "/docs/manual/latest/interop-cheatsheet"},
+  {name: "Shared Data Types", href: "/docs/manual/v8.0.0/shared-data-types"},
+  {name: "Bind to JS Object", href: "/docs/manual/v8.0.0/bind-to-js-object"},
+  {name: "Bind to JS Function", href: "/docs/manual/v8.0.0/bind-to-js-function"},
+  {name: "Import from/Export to JS", href: "/docs/manual/v8.0.0/import-from-export-to-js"},
+  {name: "Bind to Global JS Values", href: "/docs/manual/v8.0.0/bind-to-global-js-values"},
+  {name: "JSON", href: "/docs/manual/v8.0.0/json"},
+  {name: "Browser Support & Polyfills", href: "/docs/manual/v8.0.0/browser-support-polyfills"},
+  {name: "Interop Cheatsheet", href: "/docs/manual/v8.0.0/interop-cheatsheet"},
 |];
 
 let guidesNavs = [|
   NavItem.{
     name: "Converting from JS",
-    href: "/docs/manual/latest/converting-from-js",
+    href: "/docs/manual/v8.0.0/converting-from-js",
   },
-  {name: "Libraries", href: "/docs/manual/latest/libraries"},
+  {name: "Libraries", href: "/docs/manual/v8.0.0/libraries"},
 |];
 
 let extraNavs = [|
-  NavItem.{name: "Newcomer Examples", href: "/docs/manual/latest/newcomer-examples"},
-  {name: "Project Structure", href: "/docs/manual/latest/project-structure"},
-  {name: "FAQ", href: "/docs/manual/latest/faq"},
+  NavItem.{name: "Newcomer Examples", href: "/docs/manual/v8.0.0/newcomer-examples"},
+  {name: "Project Structure", href: "/docs/manual/v8.0.0/project-structure"},
+  {name: "FAQ", href: "/docs/manual/v8.0.0/faq"},
 |];
 
 let categories = [|
@@ -153,7 +155,6 @@ module Docs = {
       );
 
     let title = "Language Manual";
-    let version = "v8.0.0";
 
     <DocsLayout
       theme=`Reason
