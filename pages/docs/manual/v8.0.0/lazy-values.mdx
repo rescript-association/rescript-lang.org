@@ -21,15 +21,15 @@ Lazy values are part of the language. You can either use the `lazy` keyword to c
 // so we wrap it in a lazy value
 let getFiles =
   lazy({
-    Js.log("Reading dir")
-    Node.Fs.readdirSync("./pages")
-  })
+    Js.log("Reading dir");
+    Node.Fs.readdirSync("./pages");
+  });
 
 // On the first call, the computation takes place
-Lazy.force(getFiles)->Js.log
+Lazy.force(getFiles)->Js.log;
 
 // The second call will just return the already calculated files
-Lazy.force(getFiles)->Js.log
+Lazy.force(getFiles)->Js.log;
 ```
 ```js
 var Fs = require("fs");
@@ -56,11 +56,11 @@ console.log(CamlinternalLazy.force(getFiles));
 ```re example
 // Example for wrapping a function with 0 parameters
 let getFiles = () => {
-  Node.Fs.readdirSync("./pages")
-}
+  Node.Fs.readdirSync("./pages");
+};
 
 // Here we wrap our function in the lazy value
-let lazyGetFiles = Lazy.from_fun(getFiles)
+let lazyGetFiles = Lazy.from_fun(getFiles);
 ```
 ```js
 var Fs = require("fs");
@@ -80,12 +80,12 @@ var lazyGetFiles = Lazy.from_fun(getFiles);
 ```re example
 // Example for wrapping a function with parameters
 let doesFileExist = name => {
-  Node.Fs.readdirSync("./pages")->Js.Array2.find(s => name === s)
-}
+  Node.Fs.readdirSync("./pages")->Js.Array2.find(s => name === s);
+};
 
 // Here we use the lazy syntax again
 // since we can't use Lazy.from_fun
-let lazyDoesFileExist = lazy(doesFileExist("blog.res"))
+let lazyDoesFileExist = lazy(doesFileExist("blog.re"));
 ```
 ```js
 var Fs = require("fs");
@@ -102,14 +102,14 @@ function doesFileExist(name) {
 var lazyDoesFileExist = {
   LAZY_DONE: false,
   VAL: function () {
-    return doesFileExist("blog.res");
+    return doesFileExist("blog.re");
   },
 };
 ```
 
 </CodeTab>
 
-Whenever we want to wrap a function `unit => 'a`, we use `Lazy.from_fun`, otherwise we use the `lazy([expr])` keyword to wrap an expression or a function with 1 or more arguments.
+Whenever we want to wrap a function `unit => 'a`, we use `Lazy.from_fun`, otherwise we use the `lazy(expr)` keyword to wrap an expression or a function with 1 or more arguments.
 
 ## Force a lazy computation
 
@@ -118,10 +118,10 @@ Lazy values need to be explicitly executed to be able to return a value. Use the
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re example
-let computation = lazy(1)
+let computation = lazy(1);
 
 // Returns 1
-Lazy.force(computation)
+Lazy.force(computation);
 ```
 ```js
 var CamlinternalLazy = require("./stdlib/camlinternalLazy.js");
@@ -142,12 +142,12 @@ It is also possible to use pattern matching to force a lazy value to compute, th
 
 ```re example
 // Extract a lazy value via pattern matching
-let computation = lazy("computed")
+let computation = lazy("computed");
 
 switch computation {
 | lazy("computed") => Js.log("ok")
 | _ => Js.log("not ok")
-}
+};
 ```
 ```js
 var CamlinternalLazy = require("./stdlib/camlinternalLazy.js");
@@ -174,10 +174,10 @@ if (match === "computed") {
 // Destructuring a single value
 // Note: currently the formatter will reprint this
 //       as `let lazy word = ...`
-let lazy(word) = lazy("hello")
+let lazy(word) = lazy("hello");
 
 // Output: "hello"
-Js.log(word)
+Js.log(word);
 ```
 ```js
 var CamlinternalLazy = require("./stdlib/camlinternalLazy.js");
@@ -198,12 +198,12 @@ console.log(word);
 
 ```re example
 // Destructing a tuple
-let lazyValues = (lazy("hello"), lazy("world"))
-let (lazy(word1), lazy(word2)) = lazyValues
+let lazyValues = (lazy("hello"), lazy("world"));
+let (lazy(word1), lazy(word2)) = lazyValues;
 
 // Output: "hello world"
-Js.log2(word1, word2)
-let lazy(word) = lazy("hello")
+Js.log2(word1, word2);
+let lazy(word) = lazy("hello");
 ```
 ```js
 var CamlinternalLazy = require("./stdlib/camlinternalLazy.js");
@@ -250,13 +250,11 @@ let readFile =
     {
       raise(Not_found)
     }
-  )
+  );
 
-try {
-  Lazy.force(readFile)
-} catch {
-  | Not_found => Js.log("No file")
-}
+try (Lazy.force(readFile)) {
+| Not_found => Js.log("No file")
+};
 ```
 ```js
 var CamlinternalLazy = require("./stdlib/camlinternalLazy.js");

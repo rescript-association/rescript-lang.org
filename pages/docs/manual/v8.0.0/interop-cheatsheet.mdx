@@ -7,8 +7,8 @@
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let add = %raw("(a, b) => a + b")
-%%raw("const a = 1")
+let add = [%raw "(a, b) => a + b"];
+[%%raw "const a = 1"];
 ```
 ```js
 var add = ((a, b) => a + b);
@@ -22,7 +22,7 @@ const a = 1
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-[@bs.val] external setTimeout: (unit => unit, int) => float = "setTimeout"
+[@bs.val] external setTimeout: (unit => unit, int) => float = "setTimeout";
 ```
 ```js
 // Empty output
@@ -36,12 +36,12 @@ const a = 1
 
 ```re
 [@bs.val] [@bs.scope "Math"]
-external random: unit => float = "random"
+external random: unit => float = "random";
 
-let someNumber = random()
+let someNumber = random();
 
-[@bs.val] @bs.scope(("window", "location", "ancestorOrigins"))
-external length: int = "length"
+[@bs.val] [@bs.scope ("window", "location", "ancestorOrigins")]
+external length: int = "length";
 ```
 ```js
 var someNumber = Math.random();
@@ -54,8 +54,8 @@ var someNumber = Math.random();
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let a = Some(5) // compiles to 5
-let b = None // compiles to undefined
+let a = Some(5); // compiles to 5
+let b = None; // compiles to undefined
 ```
 ```js
 var a = 5;
@@ -101,12 +101,12 @@ var result3 = Caml_option.nullable_to_opt(10);
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-[@bs.send] external map: (array('a), 'a => 'b) => array('b) = "map"
-[@bs.send] external filter: (array('a), 'a => 'b) => array('b) = "filter"
-[1, 2, 3]
+[@bs.send] external map: (array('a), 'a => 'b) => array('b) = "map";
+[@bs.send] external filter: (array('a), 'a => 'b) => array('b) = "filter";
+[|1, 2, 3|]
   ->map(a => a + 1)
   ->filter(a => mod(a, 2) == 0)
-  ->Js.log
+  ->Js.log;
 ```
 ```js
 console.log(
@@ -128,7 +128,7 @@ console.log(
 
 ```re
 [@bs.module "path"] [@bs.variadic]
-external join: array(string) => string = "join"
+external join: array(string) => string = "join";
 ```
 ```js
 // Empty output
@@ -141,8 +141,8 @@ external join: array(string) => string = "join"
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-[@bs.module "Drawing"] external drawCat: unit => unit = "draw"
-[@bs.module "Drawing"] external drawDog: (~giveName: string) => unit = "draw"
+[@bs.module "Drawing"] external drawCat: unit => unit = "draw";
+[@bs.module "Drawing"] external drawDog: (~giveName: string) => unit = "draw";
 ```
 ```js
 // Empty output
@@ -157,13 +157,13 @@ external join: array(string) => string = "join"
 external padLeft: (
   string,
   [@bs.unwrap] [
-    | #Str(string)
-    | #Int(int)
+    | `Str(string)
+    | `Int(int)
   ])
-  => string = "padLeft"
+  => string = "padLeft";
 
-padLeft("Hello World", #Int(4))
-padLeft("Hello World", #Str("Message from ReScript: "))
+padLeft("Hello World", `Int(4));
+padLeft("Hello World", `Str("Message from ReScript: "));
 ```
 ```js
 padLeft("Hello World", 4);
@@ -183,9 +183,9 @@ Final escape hatch converter. Do not abuse.
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-external convertToFloat : int => float = "%identity"
-let age = 10
-let gpa = 2.1 +. convertToFloat(age)
+external convertToFloat : int => float = "%identity";
+let age = 10;
+let gpa = 2.1 +. convertToFloat(age);
 ```
 ```js
 var age = 10;
@@ -212,4 +212,3 @@ var gpa = 2.1 + 10;
 - `@bs.unwrap`
 - `@bs.val`
 - `@bs.variadic`
-
