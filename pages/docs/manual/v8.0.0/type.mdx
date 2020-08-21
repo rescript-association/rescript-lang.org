@@ -149,7 +149,7 @@ Type arguments appear in many places. Our `array('a)` type is such a type that r
 
 ```re
 // inferred as `array(string)`
-let greetings = ["hello", "world", "how are you"];
+let greetings = [|"hello", "world", "how are you"|];
 ```
 ```js
 // inferred as `array(string)`
@@ -175,11 +175,11 @@ type myPayload = {data: string};
 
 type myPayloadResults('errorType) = array(result(myPayload, 'errorType));
 
-let payloadResults: myPayloadResults(string) = [
+let payloadResults: myPayloadResults(string) = [|
   Ok({data: "hi"}),
   Ok({data: "bye"}),
   Error("Something wrong happened!")
-];
+|];
 ```
 ```js
 var payloadResults = [
