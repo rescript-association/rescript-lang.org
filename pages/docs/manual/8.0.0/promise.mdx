@@ -14,7 +14,7 @@ Js.Promise.make: (
     ~resolve: (. 'a) => unit,
     ~reject: (. exn) => unit
   ) => unit
-) => Js.Promise.t<'a>
+) => Js.Promise.t('a)
 ```
 
 This type signature means that `make` takes a callback that takes 2 named arguments, `resolve` and `reject`. Both arguments are themselves [uncurried callbacks](

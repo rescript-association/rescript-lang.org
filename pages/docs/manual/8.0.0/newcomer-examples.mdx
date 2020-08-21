@@ -40,7 +40,7 @@ if (possiblyNullValue2 !== undefined) {
 ```re
 type universityStudent = {gpa: float}
 
-type response<'studentType> = {
+type response('studentType) = {
   status: int,
   student: 'studentType
 }

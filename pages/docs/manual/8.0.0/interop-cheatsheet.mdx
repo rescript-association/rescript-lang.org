@@ -101,8 +101,8 @@ var result3 = Caml_option.nullable_to_opt(10);
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-@bs.send external map: (array<'a>, 'a => 'b) => array<'b> = "map"
-@bs.send external filter: (array<'a>, 'a => 'b) => array<'b> = "filter"
+@bs.send external map: (array('a), 'a => 'b) => array('b) = "map"
+@bs.send external filter: (array('a), 'a => 'b) => array('b) = "filter"
 [1, 2, 3]
   ->map(a => a + 1)
   ->filter(a => mod(a, 2) == 0)
