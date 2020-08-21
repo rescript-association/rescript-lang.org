@@ -9,7 +9,7 @@ Let-bindings are immutable, but you can wrap it with a `ref`, exposed as a recor
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let myValue = ref(5)
+let myValue = ref(5);
 ```
 ```js
 var myValue = {
@@ -26,7 +26,7 @@ You can get the actual value of a `ref` box through accessing its `contents` fie
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let five = myValue.contents // 5
+let five = myValue.contents; // 5
 ```
 ```js
 var five = myValue.contents;
@@ -34,12 +34,14 @@ var five = myValue.contents;
 
 </CodeTab>
 
+We provide a syntax shortcut for `myValue.contents`: `myValue^`. Though we no longer encourage it.
+
 Assign a new value to `myValue` like so:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-myValue.contents = 6
+myValue.contents = 6;
 ```
 ```js
 myValue.contents = 6;
@@ -52,7 +54,7 @@ We provide a syntax sugar for this:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-myValue := 6
+myValue := 6;
 ```
 ```js
 myValue.contents = 6;
