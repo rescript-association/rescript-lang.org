@@ -7,7 +7,7 @@ Functions are declared with an arrow and return an expression.
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let greet = (name) => "Hello " ++ name
+let greet = (name) => "Hello " ++ name;
 ```
 ```js
 function greet(name) {
@@ -22,7 +22,7 @@ This declares a function and assigns to it the name `greet`, which you can call 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-greet("world!") // "Hello world!"
+greet("world!"); // "Hello world!"
 ```
 ```js
 greet("world!");
@@ -35,8 +35,8 @@ Multi-arguments functions have arguments separated by comma:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let add = (x, y, z) => x + y + z
-add(1, 2, 3) // 6
+let add = (x, y, z) => x + y + z;
+add(1, 2, 3); // 6
 ```
 ```js
 function add(x, y, z) {
@@ -52,9 +52,9 @@ For longer functions, you'd surround the body with a block:
 
 ```re
 let greetMore = (name) => {
-  let part1 = "Hello"
-  part1 ++ " " ++ name
-}
+  let part1 = "Hello";
+  part1 ++ " " ++ name;
+};
 ```
 ```js
 function greetMore(name) {
@@ -75,9 +75,9 @@ Multi-arguments functions, especially those whose arguments are of the same type
 ```re
 let addCoordinates = (x, y) => {
   // use x and y here
-}
+};
 // ...
-addCoordinates(5, 6) // which is x, which is y?
+addCoordinates(5, 6); // which is x, which is y?
 ```
 ```js
 function addCoordinates(x, y) {
@@ -96,9 +96,9 @@ You can attach labels to an argument by prefixing the name with the `~` symbol:
 ```re
 let addCoordinates = (~x, ~y) => {
   // use x and y here
-}
+};
 // ...
-addCoordinates(~x=5, ~y=6)
+addCoordinates(~x=5, ~y=6);
 ```
 ```js
 function addCoordinates(x, y) {
@@ -115,7 +115,7 @@ You can provide the arguments in **any order**:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-addCoordinates(~y=6, ~x=5)
+addCoordinates(~y=6, ~x=5);
 ```
 ```js
 addCoordinates(6, 5);
@@ -129,12 +129,12 @@ The `~x` part in the declaration means the function accepts an argument labeled 
 
 ```re
 let drawCircle = (~radius as r, ~color as c) => {
-  setColor(c)
-  startAt(r, r)
+  setColor(c);
+  startAt(r, r);
   // ...
-}
+};
 
-drawCircle(~radius=10, ~color="red")
+drawCircle(~radius=10, ~color="red");
 ```
 ```js
 function drawCircle(r, c) {
@@ -156,7 +156,7 @@ Here's the syntax for typing the arguments:
 ```re
 let drawCircle = (~radius as r: int, ~color as c: string) => {
   // code here
-}
+};
 ```
 ```js
 function drawCircle(r, c) {
@@ -175,12 +175,12 @@ Labeled function arguments can be made optional during declaration. You can then
 ```re
 // radius can be omitted
 let drawCircle = (~color, ~radius=?, ()) => {
-  setColor(color)
-  switch radius {
+  setColor(color);
+  switch (radius) {
   | None => startAt(1, 1)
   | Some(r_) => startAt(r_, r_)
-  }
-}
+  };
+};
 ```
 ```js
 var Caml_option = require("./stdlib/caml_option.js");
@@ -214,12 +214,12 @@ If we get back to our previous example and both add a signature and type annotat
 ```re
 let drawCircle: (~color: color, ~radius: int=?, unit) => unit =
   (~color: color, ~radius: option(int)=?, ()) => {
-    setColor(color)
-    switch radius {
+    setColor(color);
+    switch (radius) {
     | None => startAt(1, 1)
     | Some(r_) => startAt(r_, r_)
-    }
-  }
+    };
+  };
 ```
 ```js
 function drawCircle(color, radius, param) {
@@ -248,10 +248,10 @@ Sometimes, you might want to forward a value to a function without knowing wheth
 
 ```re
 let result =
-  switch payloadRadius {
+  switch (payloadRadius) {
   | None => drawCircle(~color, ())
   | Some(r) => drawCircle(~color, ~radius=r, ())
-  }
+  };
 ```
 ```js
 var r = payloadRadius;
@@ -268,7 +268,7 @@ This quickly gets tedious. We provide a shortcut:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let result = drawCircle(~color, ~radius=?payloadRadius, ())
+let result = drawCircle(~color, ~radius=?payloadRadius, ());
 ```
 ```js
 var result = drawCircle(1, undefined, undefined);
@@ -286,9 +286,9 @@ Optional labeled arguments can also be provided a default value. In this case, t
 
 ```re
 let drawCircle = (~radius=1, ~color, ()) => {
-  setColor(color)
-  startAt(radius, radius)
-}
+  setColor(color);
+  startAt(radius, radius);
+};
 ```
 ```js
 function drawCircle(radiusOpt, color, param) {
@@ -328,10 +328,10 @@ A simple recursive function may look like this:
 // Recursively check every item on the list until one equals the `item`
 // argument. If a match is found, return `true`, otherwise return `false`
 let rec listHas = (list, item) =>
-  switch list {
-  | list{} => false
-  | list{a, ...rest} => a === item || listHas(rest, item)
-  }
+  switch (list) {
+  | [] => false
+  | [a, ...rest] => a === item || listHas(rest, item)
+  };
 ```
 ```js
 function listHas(_list, item) {
@@ -362,7 +362,7 @@ Mutually recursive functions start like a single recursive function using the
 
 ```re
 let rec callSecond = () => callFirst()
-and callFirst = () => callSecond()
+and callFirst = () => callSecond();
 ```
 ```js
 function callSecond(_param) {
@@ -389,9 +389,9 @@ ReScript's functions are curried by default, which is one of the few performance
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let add = (. x, y) => x + y
+let add = (. x, y) => x + y;
 
-add(. 1, 2)
+add(. 1, 2);
 ```
 ```js
 function add(x, y) {
@@ -417,84 +417,84 @@ Cheat sheet for the function syntaxes:
 
 ```re
 // anonymous function
-(x, y) => 1
+(x, y) => 1;
 // bind to a name
-let add = (x, y) => 1
+let add = (x, y) => 1;
 
 // labeled
-let add = (~first as x, ~second as y) => x + y
+let add = (~first as x, ~second as y) => x + y;
 // with punning sugar
-let add = (~first, ~second) => first + second
+let add = (~first, ~second) => first + second;
 
 // labeled with default value
-let add = (~first as x=1, ~second as y=2) => x + y
+let add = (~first as x=1, ~second as y=2) => x + y;
 // with punning
-let add = (~first=1, ~second=2) => first + second
+let add = (~first=1, ~second=2) => first + second;
 
 // optional
-let add = (~first as x=?, ~second as y=?) => switch x {...}
+let add = (~first as x=?, ~second as y=?) => switch (x) {...};
 // with punning
-let add = (~first=?, ~second=?) => switch first {...}
+let add = (~first=?, ~second=?) => switch (first) {...};
 ```
 
 #### With Type Annotation
 
 ```re
 // anonymous function
-(x: int, y: int): int => 1
+(x: int, y: int): int => 1;
 // bind to a name
-let add = (x: int, y: int): int => 1
+let add = (x: int, y: int): int => 1;
 
 // labeled
-let add = (~first as x: int, ~second as y: int) : int => x + y
+let add = (~first as x: int, ~second as y: int) : int => x + y;
 // with punning sugar
-let add = (~first: int, ~second: int) : int => first + second
+let add = (~first: int, ~second: int) : int => first + second;
 
 // labeled with default value
-let add = (~first as x: int=1, ~second as y: int=2) : int => x + y
+let add = (~first as x: int=1, ~second as y: int=2) : int => x + y;
 // with punning sugar
-let add = (~first: int=1, ~second: int=2) : int => first + second
+let add = (~first: int=1, ~second: int=2) : int => first + second;
 
 // optional
-let add = (~first as x: option(int)=?, ~second as y: option(int)=?) : int => switch x {...}
+let add = (~first as x: option(int)=?, ~second as y: option(int)=?) : int => switch (x) {...};
 // with punning sugar
-// note that the caller would pass an `int`, not `option int`
-// Inside the function, `first` and `second` are `option int`.
-let add = (~first: option(int)=?, ~second: option(int)=?) : int => switch first {...}
+// note that the caller would pass an `int`, not `option(int)`
+// Inside the function, `first` and `second` are `option(int)`.
+let add = (~first: option(int)=?, ~second: option(int)=?) : int => switch (first) {...};
 ```
 
 ### Application
 
 ```re
-add(x, y)
+add(x, y);
 
 // labeled
-add(~first=1, ~second=2)
+add(~first=1, ~second=2);
 // with punning sugar
-add(~first, ~second)
+add(~first, ~second);
 
 // application with default value. Same as normal application
-add(~first=1, ~second=2)
+add(~first=1, ~second=2);
 
 // explicit optional application
-add(~first=?Some(1), ~second=?Some(2))
+add(~first=?Some(1), ~second=?Some(2));
 // with punning
-add(~first?, ~second?)
+add(~first?, ~second?);
 ```
 
 #### With Type Annotation
 
 ```re
 // labeled
-add(~first=1: int, ~second=2: int)
+add(~first=1: int, ~second=2: int);
 // with punning sugar
-add(~first: int, ~second: int)
+add(~first: int, ~second: int);
 
 // application with default value. Same as normal application
-add(~first=1: int, ~second=2: int)
+add(~first=1: int, ~second=2: int);
 
 // explicit optional application
-add(~first=?Some(1): option(int), ~second=?Some(2): option(int))
+add(~first=?Some(1): option(int), ~second=?Some(2): option(int));
 // no punning sugar when you want to type annotate
 ```
 
@@ -502,13 +502,13 @@ add(~first=?Some(1): option(int), ~second=?Some(2): option(int))
 
 ```re
 // first arg type, second arg type, return type
-type add = (int, int) => int
+type add = (int, int) => int;
 
 // labeled
-type add = (~first: int, ~second: int) => int
+type add = (~first: int, ~second: int) => int;
 
 // labeled
-type add = (~first: int=?, ~second: int=?, unit) => int
+type add = (~first: int=?, ~second: int=?, unit) => int;
 ```
 
 #### In Interface Files
@@ -516,7 +516,7 @@ type add = (~first: int=?, ~second: int=?, unit) => int
 To annotate a function from the implementation file (`.re`) in your interface file (`.rei`):
 
 ```re
-let add: (int, int) => int
+let add: (int, int) => int;
 ```
 
 The type annotation part is the same as the previous section on With Type Annotation.
