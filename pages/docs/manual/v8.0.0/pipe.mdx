@@ -10,7 +10,7 @@ ReScript provides a tiny but surprisingly useful operator `->`, called the "pipe
 
 Why would you use it? Imagine you have the following:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 validateAge(getAge(parseData(person)));
@@ -23,7 +23,7 @@ validateAge(getAge(parseData(person)));
 
 This is slightly hard to read, since you need to read the code from the innermost part, to the outer parts. Use pipe to streamline it:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 person
@@ -41,7 +41,7 @@ Basically, `parseData(person)` is transformed into `person->parseData`, and `get
 
 **This works when the function takes more than one argument too**.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 a(one, two, three);
@@ -54,7 +54,7 @@ a(one, two, three);
 
 is the same as
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 one->a(two, three);
@@ -89,7 +89,7 @@ asyncRequest()
 
 Assuming we don't need the chaining behavior above, we'd bind to each case this using `bs.send` from the previous section:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 [@bs.send] external map: (array('a), 'a => 'b) => array('b) = "map";
@@ -108,7 +108,7 @@ type request;
 
 You'd use them like this:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let result = Js.Array2.filter(Js.Array2.map([|1, 2, 3|], a => a + 1), a => mod(a, 2) == 0);
@@ -129,7 +129,7 @@ asyncRequest().setWaitDuration(4000).send();
 
 This looks much worse than the JS counterpart! Clean it up visually with pipe:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let result = [|1, 2, 3|]
@@ -154,7 +154,7 @@ asyncRequest().setWaitDuration(4000).send();
 
 You can pipe into a variant's constructor as if it was a function:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let result = name->preprocess->Some;
@@ -167,7 +167,7 @@ var result = preprocess(name);
 
 We turn this into:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let result = Some(preprocess(name));
@@ -193,7 +193,7 @@ Sometimes you don't want to pipe the value you have into the first position. In 
 
 Let's say you have a function `namePerson`, which takes a `person` then a `name` argument. If you are transforming a person then pipe will work as-is:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 makePerson(~age=47, ())
@@ -207,7 +207,7 @@ namePerson(makePerson(47), "Jane");
 
 If you have a name that you want to apply to a person object, you can use a placeholder:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 getName(input)
@@ -222,7 +222,7 @@ namePerson(personDetails, __x);
 
 This allows you to pipe into any positional argument. It also works for named arguments:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 getName(input)

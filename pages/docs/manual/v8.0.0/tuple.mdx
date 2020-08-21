@@ -7,7 +7,7 @@ Tuples are a ReScript-specific data structure that don't exist in JavaScript. Th
 - fix-sized at creation time
 - heterogeneous (can contain different types of values)
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let ageAndName = (24, "Lil' ReScript");
@@ -22,7 +22,7 @@ var my3dCoordinates = [20.0, 30.5, 100.0];
 
 Tuples' types can be used in type annotations as well. Tuple types visually resemble tuples values.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let ageAndName: (int, string) = (24, "Lil' ReScript");
@@ -42,7 +42,7 @@ var my3dCoordinates = [20.0, 30.5, 100.0];
 
 To get a specific member of a tuple, destructure it:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let (_, y, _) = my3dCoordinates; // now you've retrieved y
@@ -57,7 +57,7 @@ The `_` means you're ignoring the indicated members of the tuple.
 
 Tuples aren't meant to be updated mutatively. You'd create new ones by destructuring the old ones:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let coordinates1 = (10, 20, 30);
@@ -76,7 +76,7 @@ var coordinates2 = [60, 20, 30];
 
 You'd use tuples in handy situations that pass around multiple values without too much ceremony. For example, to return many values:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let getCenterCoordinates = () => {

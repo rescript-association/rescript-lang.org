@@ -23,7 +23,7 @@ ReScript cleanly separates the binding methods for JS object based on these 4 us
 
 If your JavaScript object has fixed fields, then it's conceptually like a ReScript record. Since a ReScript record compiles to a clean JavaScript object, you can definitely type a JS object as a ReScript record!
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type person = {
@@ -50,7 +50,7 @@ External is documented [here](external.md). `@bs.module` is documented [here](im
 
 Alternatively, you can use [ReScript object](object.md) to model a JS object too:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type person = {
@@ -76,7 +76,7 @@ var johnName = MySchool.john.name;
 
 Alternatively, you can use `bs.get` and `bs.set` to bind to individual fields of a JS object:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type textarea;
@@ -90,7 +90,7 @@ type textarea;
 
 You can also use `bs.get_index` and `bs.set_index` to access a dynamic property or an index:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type t;
@@ -123,7 +123,7 @@ Then it's not really an object, it's a hash map. Use [Js.Dict](/apis/latest/js/d
 
 Use `bs.new` to emulate e.g. `new Date()`:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type t;
@@ -139,7 +139,7 @@ var date = new Date();
 
 You can chain `bs.new` and `bs.module` if the JS module you're importing is itself a class:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 type t;

@@ -10,7 +10,7 @@ canonical: "https://rescript-lang.org/docs/manual/latest/json"
 
 Bind to JavaScript's `JSON.parse` and type the return value as the type you're expecting:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 // declare the shape of the json you're binding to
@@ -36,7 +36,7 @@ Where `data` can be any type you assume the JSON is. As you can see, this compil
 
 Use `Js.Json.stringify`:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 Js.log(Js.Json.stringifyAny([|"Amy", "Joe"|]));

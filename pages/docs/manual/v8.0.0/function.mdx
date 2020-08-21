@@ -10,7 +10,7 @@ _Cheat sheet for the full function syntax at the end_.
 
 Functions are declared with an arrow and return an expression.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let greet = (name) => "Hello " ++ name;
@@ -25,7 +25,7 @@ function greet(name) {
 
 This declares a function and assigns to it the name `greet`, which you can call like so:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 greet("world!"); // "Hello world!"
@@ -38,7 +38,7 @@ greet("world!");
 
 Multi-arguments functions have arguments separated by comma:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let add = (x, y, z) => x + y + z;
@@ -54,7 +54,7 @@ function add(x, y, z) {
 
 For longer functions, you'd surround the body with a block:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let greetMore = (name) => {
@@ -76,7 +76,7 @@ If your function has no argument, just write `let greetMore = () => {...}`.
 
 Multi-arguments functions, especially those whose arguments are of the same type, can be confusing to call.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let addCoordinates = (x, y) => {
@@ -97,7 +97,7 @@ addCoordinates(5, 6);
 
 You can attach labels to an argument by prefixing the name with the `~` symbol:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let addCoordinates = (~x, ~y) => {
@@ -118,7 +118,7 @@ addCoordinates(5, 6);
 
 You can provide the arguments in **any order**:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 addCoordinates(~y=6, ~x=5);
@@ -131,7 +131,7 @@ addCoordinates(6, 5);
 
 The `~x` part in the declaration means the function accepts an argument labeled `x` and can refer to it in the function body by the same name. You can also refer to the arguments inside the function body by a different name for conciseness:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let drawCircle = (~radius as r, ~color as c) => {
@@ -157,7 +157,7 @@ As a matter of fact, `(~radius)` is just a shorthand for `(~radius as radius)`.
 
 Here's the syntax for typing the arguments:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let drawCircle = (~radius as r: int, ~color as c: string) => {
@@ -176,7 +176,7 @@ function drawCircle(r, c) {
 
 Labeled function arguments can be made optional during declaration. You can then omit them when calling the function.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 // radius can be omitted
@@ -215,7 +215,7 @@ Functions with optional labeled arguments can be confusing when it comes to sign
 
 If we get back to our previous example and both add a signature and type annotations to its argument, we get this:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let drawCircle: (~color: color, ~radius: int=?, unit) => unit =
@@ -250,7 +250,7 @@ So if you happen to struggle when writing the signature of a function with optio
 
 Sometimes, you might want to forward a value to a function without knowing whether the value is `None` or `Some(a)`. Naively, you'd do:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let result =
@@ -271,7 +271,7 @@ var result = r !== undefined
 
 This quickly gets tedious. We provide a shortcut:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let result = drawCircle(~color, ~radius=?payloadRadius, ());
@@ -288,7 +288,7 @@ This means "I understand `radius` is optional, and that when I pass it a value i
 
 Optional labeled arguments can also be provided a default value. In this case, they aren't wrapped in an `option` type.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let drawCircle = (~radius=1, ~color, ()) => {
@@ -310,7 +310,7 @@ function drawCircle(radiusOpt, color, param) {
 
 ReScript chooses the sane default of preventing a function to be called recursively within itself. To make a function recursive, add the `rec` keyword after the `let`:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let rec neverTerminate = () => neverTerminate()
@@ -328,7 +328,7 @@ function neverTerminate(_param) {
 
 A simple recursive function may look like this:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 // Recursively check every item on the list until one equals the `item`
@@ -364,7 +364,7 @@ Recursively calling a function is bad for performance and the call stack. Howeve
 Mutually recursive functions start like a single recursive function using the
 `rec` keyword, and then are chained together with `and`:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let rec callSecond = () => callFirst()
@@ -392,7 +392,7 @@ function callFirst(_param) {
 
 ReScript's functions are curried by default, which is one of the few performance penalties we pay in the compiled JS output. The compiler does a best-effort job at removing those currying whenever possible. However, in certain edge cases, you might want guaranteed uncurrying. In those cases, put a dot in the function's parameter list:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
 let add = (. x, y) => x + y;
