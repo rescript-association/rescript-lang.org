@@ -11,11 +11,11 @@ Unlike its JavaScript counterpart, ReScript's `if` is an expression; they evalua
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let message = if isMorning {
+let message = if (isMorning) {
   "Good morning!"
 } else {
   "Hello!"
-}
+};
 ```
 ```js
 var message = isMorning ? "Good morning!" : "Hello!";
@@ -28,9 +28,9 @@ var message = isMorning ? "Good morning!" : "Hello!";
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-if showMenu {
-  displayMenu()
-}
+if (showMenu) {
+  displayMenu();
+};
 ```
 ```js
 if (showMenu) {
@@ -45,11 +45,11 @@ is basically the same as:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-if showMenu {
-  displayMenu()
+if (showMenu) {
+  displayMenu();
 } else {
-  ()
-}
+  ();
+};
 ```
 ```js
 if (showMenu) {
@@ -62,9 +62,9 @@ if (showMenu) {
 Here's another way to look at it. This is clearly wrong:
 
 ```re
-let result = if showMenu {
-  1 + 2
-}
+let result = if (showMenu) {
+  1 + 2;
+};
 ```
 
 It'll give a type error, saying basically that the implicit `else` branch has the type `unit` while the `if` branch has type `int`. Intuitively, this makes sense: what would `result`'s value be, if `showMenu` was `false`?
@@ -91,9 +91,9 @@ For loops iterate from a starting value up to (and including) the ending value.
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-for i in startValueInclusive to endValueInclusive {
-  Js.log(i)
-}
+for (i in startValueInclusive to endValueInclusive) {
+  Js.log(i);
+};
 ```
 ```js
 for(var i = startValueInclusive; i <= endValueInclusive; ++i){
@@ -107,10 +107,10 @@ for(var i = startValueInclusive; i <= endValueInclusive; ++i){
 
 ```re
 // prints: 1 2 3
-for x in 1 to 3 {
-  Js.log(x)
-  Js.log(" ")
-}
+for (x in 1 to 3) {
+  Js.log(x);
+  Js.log(" ");
+};
 ```
 ```js
 for(var x = 1; x <= 3; ++x){
@@ -126,9 +126,9 @@ You can make the `for` loop count in the opposite direction by using `downto`.
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-for i in startValueInclusive downto endValueInclusive {
-  Js.log(i)
-}
+for (i in startValueInclusive downto endValueInclusive) {
+  Js.log(i);
+};
 ```
 ```js
 for(var i = startValueInclusive; i >= endValueInclusive; --i){
@@ -142,10 +142,10 @@ for(var i = startValueInclusive; i >= endValueInclusive; --i){
 
 ```re
 // prints: 3 2 1
-for x in 3 downto 1 {
-  Js.log(x)
-  Js.log(" ")
-}
+for (x in 3 downto 1) {
+  Js.log(x);
+  Js.log(" ");
+};
 ```
 ```js
 for(var x = 3; x >= 1; --x){
@@ -163,9 +163,9 @@ While loops execute its body code block while its condition is true.
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-while testCondition {
+while (testCondition) {
   // body here
-}
+};
 ```
 ```js
 while (testCondition) {
@@ -182,15 +182,15 @@ There's no loop-breaking `break` keyword (nor early `return` from functions, for
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let break = ref(false)
+let break = ref(false);
 
-while !break.contents {
-  if Js.Math.random() > 0.3 {
-    break := true
+while (!break.contents) {
+  if (Js.Math.random() > 0.3) {
+    break := true;
   } else {
-    Js.log("Still running")
-  }
-}
+    Js.log("Still running");
+  };
+};
 ```
 ```js
 var $$break = {
