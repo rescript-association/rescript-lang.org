@@ -12,8 +12,8 @@ Use the `bs.module` [external](external.md):
 
 ```re
 // Import nodejs' path.dirname
-[@bs.module "path"] external dirname: string => string = "dirname"
-let root = dirname("/User/github") // returns "User"
+[@bs.module "path"] external dirname: string => string = "dirname";
+let root = dirname("/User/github"); // returns "User"
 ```
 ```js
 var Path = require("path");
@@ -37,8 +37,8 @@ By omitting the string argument to `bs.module`, you bind to the whole JS module:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-[@bs.module] external leftPad: string => int => string = "./leftPad"
-let paddedResult = leftPad("hi", 5)
+[@bs.module] external leftPad: string => int => string = "./leftPad";
+let paddedResult = leftPad("hi", 5);
 ```
 ```js
 var LeftPad = require("./leftPad");
@@ -54,8 +54,8 @@ If your JS project is using ES6, you're likely using Babel to compile it to regu
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-[@bs.module "./student"] external studentName: string = "default"
-Js.log(studentName)
+[@bs.module "./student"] external studentName: string = "default";
+Js.log(studentName);
 ```
 ```js
 var Student = require("./student");
@@ -94,7 +94,7 @@ Technically, since a ReScript file maps to a module, there's no such thing as "d
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-/* FavoriteStudent.ml */
+/* FavoriteStudent.re */
 let default = "Bob"
 ```
 ```js
