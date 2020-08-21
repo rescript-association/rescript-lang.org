@@ -107,7 +107,7 @@ You might have JS functions that take an arbitrary amount of arguments. BuckleSc
 
 ```re
 [@bs.module "path"] @bs.variadic
-external join: array<string> => string = "join"
+external join: array(string) => string = "join"
 
 let v = join(["a", "b"])
 ```
@@ -419,7 +419,7 @@ For JS functions that return a value that can also be `undefined` or `null`, we 
 type element
 type dom
 @bs.send @bs.return(nullable)
-external getElementById: (dom, string) => option<element> = "getElementById"
+external getElementById: (dom, string) => option(element) = "getElementById"
 let test = dom => {
   let elem = dom->(getElementById("haha"))
   switch (elem) {

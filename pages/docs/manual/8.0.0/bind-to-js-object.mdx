@@ -22,7 +22,7 @@ If your JavaScript object has fixed fields, then it's conceptually like a ReScri
 ```re
 type person = {
   name: string,
-  friends: array<string>,
+  friends: array(string),
   age: int,
 }
 
@@ -49,7 +49,7 @@ Alternatively, you can use [ReScript object](object.md) to model a JS object too
 ```re
 type person = {
   "name": string,
-  "friends": array<string>,
+  "friends": array(string),
   "age": int,
 };
 

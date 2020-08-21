@@ -49,7 +49,7 @@ try {
 
 </CodeTab>
 
-Note that the above is just for demonstration purposes; in reality, you'd return an `option<int>` directly from `getItem` and avoid the `try` altogether.
+Note that the above is just for demonstration purposes; in reality, you'd return an `option(int)` directly from `getItem` and avoid the `try` altogether.
 
 You can directly match on exceptions _while_ getting another return value from a function:
 
@@ -230,7 +230,7 @@ The above `BadArgument` exception takes an inline record type. We special-case c
 
 ## Tips & Tricks
 
-When you have ordinary variants, you often don't **need** exceptions. For example, instead of throwing when `item` can't be found in a collection, try to return an `option<item>` (`None` in this case) instead.
+When you have ordinary variants, you often don't **need** exceptions. For example, instead of throwing when `item` can't be found in a collection, try to return an `option(item)` (`None` in this case) instead.
 
 ### Catch Both ReScript and JS Exceptions in the Same `catch` Clause
 

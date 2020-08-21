@@ -108,7 +108,7 @@ var x;
 
 </CodeTab>
 
-compiles to `undefined`! If you've got e.g. a string in JavaScript that you know might be `undefined`, type it as `option<string>` and you're done! Likewise, you can send a `Some(5)` or `None` to the JS side and expect it to be interpreted correctly =)
+compiles to `undefined`! If you've got e.g. a string in JavaScript that you know might be `undefined`, type it as `option(string)` and you're done! Likewise, you can send a `Some(5)` or `None` to the JS side and expect it to be interpreted correctly =)
 
 ### Caveat 1
 
@@ -149,7 +149,7 @@ What's this `Caml_option.some` thing? Why can't this compile to `undefined`? Lon
 
 ### Caveat 2
 
-Unfortunately, lots of times, your JavaScript value might be _both_ `null` or `undefined`. In that case, you unfortunately can't type such value as e.g. `option<int>`, since our `option` type only checks for `undefined` and not `null` when dealing with a `None`.
+Unfortunately, lots of times, your JavaScript value might be _both_ `null` or `undefined`. In that case, you unfortunately can't type such value as e.g. `option(int)`, since our `option` type only checks for `undefined` and not `null` when dealing with a `None`.
 
 #### Solution: More Sophisticated `undefined` & `null` Interop
 
@@ -164,7 +164,7 @@ If you're receiving, for example, a JS string that can be `null` and `undefined`
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-[@bs.module "MyConstant"] external myId: Js.Nullable.t<string> = "myId"
+[@bs.module "MyConstant"] external myId: Js.Nullable.t(string) = "myId"
 ```
 ```js
 // Empty output
@@ -177,8 +177,8 @@ To create such a nullable string from our side (presumably to pass it to the JS 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-[@bs.module "MyIdValidator"] external validate: Js.Nullable.t<string> => bool = "validate"
-let personId: Js.Nullable.t<string> = Js.Nullable.return("abc123")
+[@bs.module "MyIdValidator"] external validate: Js.Nullable.t(string) => bool = "validate"
+let personId: Js.Nullable.t(string) = Js.Nullable.return("abc123")
 
 let result = validate(personId)
 ```

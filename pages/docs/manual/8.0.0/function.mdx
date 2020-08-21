@@ -205,7 +205,7 @@ More on `option` type [here](null-undefined-option.md).
 
 ### Signatures and Type Annotations
 
-Functions with optional labeled arguments can be confusing when it comes to signature and type annotations. Indeed, the type of an optional labeled argument looks different depending on whether you're calling the function, or working inside the function body. Outside the function, a raw value is either passed in (`int`, for example), or left off entirely. Inside the function, the parameter is always there, but its value is an option (`option<int>`). This means that the type signature is different, depending on whether you're writing out the function type, or the parameter type annotation. The first being a raw value, and the second being an option.
+Functions with optional labeled arguments can be confusing when it comes to signature and type annotations. Indeed, the type of an optional labeled argument looks different depending on whether you're calling the function, or working inside the function body. Outside the function, a raw value is either passed in (`int`, for example), or left off entirely. Inside the function, the parameter is always there, but its value is an option (`option(int)`). This means that the type signature is different, depending on whether you're writing out the function type, or the parameter type annotation. The first being a raw value, and the second being an option.
 
 If we get back to our previous example and both add a signature and type annotations to its argument, we get this:
 
@@ -213,7 +213,7 @@ If we get back to our previous example and both add a signature and type annotat
 
 ```re
 let drawCircle: (~color: color, ~radius: int=?, unit) => unit =
-  (~color: color, ~radius: option<int>=?, ()) => {
+  (~color: color, ~radius: option(int)=?, ()) => {
     setColor(color)
     switch radius {
     | None => startAt(1, 1)
@@ -236,7 +236,7 @@ function drawCircle(color, radius, param) {
 
 The first line is the function's signature, we would define it like that in an interface file (see [Signatures](module.md#signatures)). The function's signature describes the types that the **outside world** interacts with, hence the type `int` for `radius` because it indeed expects an `int` when called.
 
-In the second line, we annotate the arguments to help us remember the types of the arguments when we use them **inside** the function's body, here indeed `radius` will be an `option<int>` inside the function.
+In the second line, we annotate the arguments to help us remember the types of the arguments when we use them **inside** the function's body, here indeed `radius` will be an `option(int)` inside the function.
 
 So if you happen to struggle when writing the signature of a function with optional labeled arguments, try to remember this!
 
@@ -456,11 +456,11 @@ let add = (~first as x: int=1, ~second as y: int=2) : int => x + y
 let add = (~first: int=1, ~second: int=2) : int => first + second
 
 // optional
-let add = (~first as x: option<int>=?, ~second as y: option<int>=?) : int => switch x {...}
+let add = (~first as x: option(int)=?, ~second as y: option(int)=?) : int => switch x {...}
 // with punning sugar
 // note that the caller would pass an `int`, not `option int`
 // Inside the function, `first` and `second` are `option int`.
-let add = (~first: option<int>=?, ~second: option<int>=?) : int => switch first {...}
+let add = (~first: option(int)=?, ~second: option(int)=?) : int => switch first {...}
 ```
 
 ### Application
@@ -494,7 +494,7 @@ add(~first: int, ~second: int)
 add(~first=1: int, ~second=2: int)
 
 // explicit optional application
-add(~first=?Some(1): option<int>, ~second=?Some(2): option<int>)
+add(~first=?Some(1): option(int), ~second=?Some(2): option(int))
 // no punning sugar when you want to type annotate
 ```
 

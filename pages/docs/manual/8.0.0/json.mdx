@@ -8,7 +8,7 @@ Bind to JavaScript's `JSON.parse` and type the return value as the type you're e
 
 ```re
 // declare the shape of the json you're binding to
-type data = {names: array<string>}
+type data = {names: array(string)}
 
 // bind to JS' JSON.parse
 @bs.scope("JSON") @bs.val

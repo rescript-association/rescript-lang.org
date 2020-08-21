@@ -118,8 +118,8 @@ After:
 ```re
 type coordinates('a) = ('a, 'a, 'a);
 
-let a: coordinates<int> = (10, 20, 20);
-let b: coordinates<float> = (10.5, 20.5, 20.5);
+let a: coordinates(int) = (10, 20, 20);
+let b: coordinates(float) = (10.5, 20.5, 20.5);
 ```
 ```js
 var a = [10, 20, 20];
@@ -148,11 +148,11 @@ Type arguments appear in many places. Our `array('a)` type is such a type that r
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-// inferred as `array<string>`
+// inferred as `array(string)`
 let greetings = ["hello", "world", "how are you"]
 ```
 ```js
-// inferred as `array<string>`
+// inferred as `array(string)`
 var greetings = ["hello", "world", "how are you"];
 ```
 
@@ -175,7 +175,7 @@ type myPayload = {data: string}
 
 type myPayloadResults('errorType) = array<result<myPayload, 'errorType>>
 
-let payloadResults: myPayloadResults<string> = [
+let payloadResults: myPayloadResults(string) = [
   Ok({data: "hi"}),
   Ok({data: "bye"}),
   Error("Something wrong happened!")
@@ -209,7 +209,7 @@ Just like a functions, a type can reference itself within itself `rec`:
 ```re
 type rec person = {
   name: string,
-  friends: array<person>
+  friends: array(person)
 }
 ```
 ```js
@@ -226,7 +226,7 @@ Types can also be _mutually_ recursive through `and`:
 
 ```re
 type student = {taughtBy: teacher}
-and teacher = {students: array<student>}
+and teacher = {students: array(student)}
 ```
 ```js
 // Empty output

@@ -140,7 +140,7 @@ let queryResult = (usePayload, payload: payloadType) =>
 type student
 
 [@bs.module "School"] external getStudentById: int => student = "getStudentById"
-[@bs.module "School"] external getAllStudents: unit => array<student> = "getAllStudents"
+[@bs.module "School"] external getAllStudents: unit => array(student) = "getAllStudents"
 ```
 
 Type `student` doesn't have an actual content; that's called an [abstract type](module#signatures). It's a convenient way of specifying the relationship between external calls without knowing what the shape of the data is under the hood.
