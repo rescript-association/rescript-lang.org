@@ -11,7 +11,7 @@ ReScript supports the JSX syntax, with some slight differences compared to the o
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-<MyComponent name={"ReScript"} />
+<MyComponent name={"ReScript"} />;
 ```
 ```js
 React.createElement(
@@ -27,7 +27,7 @@ becomes
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-@JSX MyComponent.createElement(~name="ReScript", ~children=list{}, ())
+@JSX MyComponent.createElement(~name="ReScript", ~children=[], ());
 ```
 ```js
 React.createElement(
@@ -43,7 +43,7 @@ React.createElement(
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-<div onClick={handler}> child1 child2 </div>
+<div onClick={handler}> child1 child2 </div>;
 ```
 ```js
 React.createElement("div", {
@@ -58,7 +58,7 @@ becomes
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-@JSX div(~onClick=handler, ~children=list{child1, child2}, ())
+@JSX div(~onClick=handler, ~children=[child1, child2], ());
 ```
 ```js
 React.createElement("div", {
@@ -73,7 +73,7 @@ React.createElement("div", {
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-<> child1 child2 </>
+<> child1 child2 </>;
 ```
 ```js
 React.createElement(React.Fragment, undefined, child1, child2);
@@ -86,7 +86,7 @@ becomes
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-@JSX list{child1, child2}
+@JSX [child1, child2];
 ```
 ```js
 React.createElement(React.Fragment, undefined, child1, child2);
@@ -99,7 +99,7 @@ React.createElement(React.Fragment, undefined, child1, child2);
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-<MyComponent> child1 child2 </MyComponent>
+<MyComponent> child1 child2 </MyComponent>;
 ```
 ```js
 React.createElement(MyComponent.make, MyComponent.makeProps(null, undefined), child1, child2);
@@ -112,7 +112,7 @@ This is the syntax for passing a list of two items, `child1` and `child2`, to th
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-@JSX MyComponent.createElement(~children=list{child1, child2}, ())
+@JSX MyComponent.createElement(~children=[child1, child2], ());
 ```
 ```js
 React.createElement(MyComponent.make, MyComponent.makeProps(null, undefined), child1, child2);
@@ -122,7 +122,7 @@ React.createElement(MyComponent.make, MyComponent.makeProps(null, undefined), ch
 
 **Note** again that this isn't the transform for ReasonReact; ReasonReact turns the final list into an array. But the idea still applies.
 
-So naturally, `<MyComponent> myChild </MyComponent>` desugars to `@JSX MyComponent.createElement(~children=list{myChild}, ())`. I.e. whatever you do, the arguments passed to the children position will be wrapped in a list. What if you don't want that? **What if you want to directly pass `myChild` without an extra wrapping**?
+So naturally, `<MyComponent> myChild </MyComponent>` desugars to `@JSX MyComponent.createElement(~children=[myChild], ())`. I.e. whatever you do, the arguments passed to the children position will be wrapped in a list. What if you don't want that? **What if you want to directly pass `myChild` without an extra wrapping**?
 
 #### Children Spread
 
@@ -131,7 +131,7 @@ To solve the above problem, we've introduced
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-<MyComponent> ...myChild </MyComponent>
+<MyComponent> ...myChild </MyComponent>;
 ```
 ```js
 React.createElement(MyComponent.make, MyComponent.makeProps(myChild, undefined));
@@ -144,7 +144,7 @@ This passes the value `myChild` _without_ wrapping it in a list (or array, in th
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-@JSX MyComponent.createElement(~children=myChild, ())
+@JSX MyComponent.createElement(~children=myChild, ());
 ```
 ```js
 React.createElement(MyComponent.make, MyComponent.makeProps(myChild, undefined));
@@ -157,9 +157,9 @@ This is extra useful in the cases where you are handled `myChild` that is alread
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-<MyComponent> ...((theClassName) => <div className=theClassName />) </MyComponent>
+<MyComponent> ...((theClassName) => <div className=theClassName />) </MyComponent>;
 
-<MyForm> ...("Hello", "Submit") </MyForm>
+<MyForm> ...("Hello", "Submit") </MyForm>;
 ```
 ```js
 React.createElement(
@@ -192,7 +192,7 @@ Here's a JSX tag that shows most of the features.
   forcedOptional=?{Some("hello")}
   onClick={handleClick}>
   <div> {React.string("hello")} </div>
-</MyComponent>
+</MyComponent>;
 ```
 ```js
 React.createElement(
@@ -226,7 +226,7 @@ Reason JSX supports punning. `<input checked />` is just a shorthand for `<input
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-<MyComponent isLoading text onClick />
+<MyComponent isLoading text onClick />;
 ```
 ```js
 React.createElement(
