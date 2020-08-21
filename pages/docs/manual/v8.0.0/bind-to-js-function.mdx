@@ -6,8 +6,8 @@ Binding a JS function is like binding any other value:
 
 ```re
 // Import nodejs' path.dirname
-[@bs.module "path"] external dirname: string => string = "dirname"
-let root = dirname("/User/github") // returns "User"
+[@bs.module "path"] external dirname: string => string = "dirname";
+let root = dirname("/User/github"); // returns "User"
 ```
 ```js
 var Path = require("path");
@@ -26,7 +26,7 @@ ReScript has [labeled arguments](function.md#labeled-arguments) (that can also b
 // MyGame.js
 
 function draw(x, y, border) {
-   // suppose `border`` is optional and defaults to false
+   // suppose `border` is optional and defaults to false
 }
 draw(10, 20)
 draw(20, 20, true)
@@ -38,10 +38,10 @@ It'd be nice if on ReScript's side, we can bind & call `draw` while labeling thi
 
 ```re
 [@bs.module "MyGame"]
-external draw: (~x: int, ~y: int, ~border: bool=?, unit) => unit = "draw"
+external draw: (~x: int, ~y: int, ~border: bool=?, unit) => unit = "draw";
 
-draw(~x=10, ~y=20, ~border=true, ())
-draw(~x=10, ~y=20, ())
+draw(~x=10, ~y=20, ~border=true, ());
+draw(~x=10, ~y=20, ());
 ```
 ```js
 var MyGame = require("MyGame");
@@ -62,10 +62,10 @@ Note that you can change the order of labeled arguments on the ReScript side and
 
 ```re
 [@bs.module "MyGame"]
-external draw: (~x: int, ~y: int, ~border: bool=?, unit) => unit = "draw"
+external draw: (~x: int, ~y: int, ~border: bool=?, unit) => unit = "draw";
 
-draw(~x=10, ~y=20, ())
-draw(~y=20, ~x=10, ())
+draw(~x=10, ~y=20, ());
+draw(~y=20, ~x=10, ());
 ```
 ```js
 var MyGame = require("MyGame");
@@ -81,11 +81,11 @@ Functions attached to a JS objects (other than JS modules) require a special way
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-type document // abstract type for a document object
-[@bs.send] external getElementById: (document, string) => Dom.element = "getElementById"
-[@bs.val] external doc: document = "document"
+type document; // abstract type for a document object
+[@bs.send] external getElementById: (document, string) => Dom.element = "getElementById";
+[@bs.val] external doc: document = "document";
 
-let el = getElementById(doc, "myId")
+let el = getElementById(doc, "myId");
 ```
 ```js
 var el = document.getElementById("myId");
@@ -106,10 +106,10 @@ You might have JS functions that take an arbitrary amount of arguments. BuckleSc
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-[@bs.module "path"] @bs.variadic
-external join: array(string) => string = "join"
+[@bs.module "path"] [@bs.variadic]
+external join: array(string) => string = "join";
 
-let v = join(["a", "b"])
+let v = join([|"a", "b"|]);
 ```
 ```js
 var Path = require("path");
@@ -131,9 +131,9 @@ If you can exhaustively enumerate the many forms an overloaded JS function can t
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-[@bs.module "MyGame"] external drawCat: unit => unit = "draw"
-[@bs.module "MyGame"] external drawDog: (~giveName: string) => unit = "draw"
-[@bs.module "MyGame"] external draw: (string, ~useRandomAnimal: bool) => unit = "draw"
+[@bs.module "MyGame"] external drawCat: unit => unit = "draw";
+[@bs.module "MyGame"] external drawDog: (~giveName: string) => unit = "draw";
+[@bs.module "MyGame"] external draw: (string, ~useRandomAnimal: bool) => unit = "draw";
 ```
 ```js
 // Empty output
@@ -168,12 +168,12 @@ Here, `padding` is really conceptually a variant. Let's model it as such.
 external padLeft: (
   string,
   [@bs.unwrap] [
-    | #Str(string)
-    | #Int(int)
+    | `Str(string)
+    | `Int(int)
   ])
-  => string = "padLeft"
-padLeft("Hello World", #Int(4))
-padLeft("Hello World", #Str("Message from ReScript: "))
+  => string = "padLeft";
+padLeft("Hello World", `Int(4));
+padLeft("Hello World", `Str("Message from ReScript: "));
 ```
 ```js
 padLeft("Hello World", 4);
@@ -195,12 +195,12 @@ Consider the Node `fs.readFileSync`'s second argument. It can take a string, but
 external readFileSync: (
   ~name: string,
   [@bs.string] [
-    | #utf8
-    | @bs.as("ascii") #useAscii
+    | `utf8
+    | [@bs.as "ascii"] `useAscii
   ],
-) => string = "fs"
+) => string = "fs";
 
-readFileSync(~name="xx.txt", #useAscii)
+readFileSync(~name="xx.txt", `useAscii);
 ```
 ```js
 var Fs = require("fs");
@@ -210,7 +210,7 @@ Fs.readFileSync("xx.txt", "ascii");
 </CodeTab>
 
 - Attaching `[@bs.string]` to the whole poly variant type makes its constructor compile to a string of the same name.
-- Attaching a `@bs.as("bla")` to a constructor lets you customize the final string.
+- Attaching a `[@bs.as "bla"]` to a constructor lets you customize the final string.
 
 And now, passing something like `"myOwnUnicode"` or other variant constructor names to `readFileSync` would correctly error.
 
@@ -222,12 +222,12 @@ Aside from string, you can also compile an argument to an int, using `bs.int` in
 [@bs.val]
 external testIntType: (
   [@bs.int] [
-    | #onClosed
-    | @bs.as(20) #onOpen
-    | #inBinary
+    | `onClosed
+    | [@bs.as 20] `onOpen
+    | `inBinary
   ])
-  => int = "testIntType"
-testIntType(#inBinary)
+  => int = "testIntType";
+testIntType(`inBinary);
 ```
 ```js
 testIntType(21);
@@ -250,16 +250,16 @@ type readline
 external on: (
     readline,
     [@bs.string] [
-      | #close(unit => unit)
-      | #line(string => unit)
+      | `close(unit => unit)
+      | `line(string => unit)
     ]
   )
-  => readline = "on"
+  => readline = "on";
 
 let register = rl =>
   rl
-  ->on(#close(event => ()))
-  ->on(#line(line => print_endline(line)))
+  ->on(`close(event => ()))
+  ->on(`line(line => Js.log(line)));
 ```
 ```js
 function register(rl) {
@@ -284,22 +284,22 @@ Sometimes it's convenient to bind to a function using an `external`, while passi
 ```re
 [@bs.val]
 external processOnExit: (
-  @bs.as("exit") _,
+  [@bs.as "exit"] _,
   int => unit
-) => unit = "process.on"
-let () = processOnExit(exit_code =>
-  Js.log("error code: " ++ string_of_int(exit_code))
+) => unit = "process.on";
+let () = processOnExit(exitCode =>
+  Js.log("error code: " ++ Js.Int.toString(exitCode))
 );
 ```
 ```js
-process.on("exit", function (exit_code) {
-  console.log("error code: " + String(exit_code));
+process.on("exit", function (exitCode) {
+  console.log("error code: " + exitCode.toString());
 });
 ```
 
 </CodeTab>
 
-The `@bs.as("exit")` and the placeholder `_` argument together indicates that you want the first argument to compile to the string `"exit"`. You can also use any JSON literal with `bs.as`: `` @bs.as(json`true`) ``, `` @bs.as(json`{"name": "John"}`) ``, etc.
+The `[@bs.as "exit"]` and the placeholder `_` argument together indicates that you want the first argument to compile to the string `"exit"`. You can also use any JSON literal with `bs.as`: `` [@bs.as {json|true|json}] ``, `` [@bs.as {json|{"name": "John"}|json}] ``, etc.
 
 ## Curry & Uncurry
 
@@ -338,10 +338,10 @@ ReScript tries to do #1 as much as it can. Even when it bails and uses #2's curr
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-type timerId
-[@bs.val] external setTimeout: ((. unit) => unit, int) => timerId = "setTimeout"
+type timerId;
+[@bs.val] external setTimeout: ((. unit) => unit, int) => timerId = "setTimeout";
 
-let id = setTimeout((.) => Js.log("hello"), 1000)
+let id = setTimeout((.) => Js.log("hello"), 1000);
 ```
 ```js
 var id = setTimeout(function () {
@@ -366,8 +366,8 @@ Then try `@bs.uncurry`:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-[@bs.send] external map: (array('a), @bs.uncurry('a => 'b)) => array('b) = "map"
-map([1, 2, 3], x => x + 1)
+[@bs.send] external map: (array('a), [@bs.uncurry] ('a => 'b)) => array('b) = "map";
+map([|1, 2, 3|], x => x + 1);
 ```
 ```js
 // Empty output
@@ -393,10 +393,10 @@ Here, `this` would point to `x` (actually, it depends on how `onload` is called,
 
 ```re
 type x
-[@bs.val] external x: x = "x"
-[@bs.set] external setOnload: (x, @bs.this ((x, int) => unit)) => unit = "onload"
-[@bs.get] external resp: x => int = "response"
-setOnload(x, @bs.this ((o, v) => Js.log(resp(o) + v)))
+[@bs.val] external x: x = "x";
+[@bs.set] external setOnload: (x, [@bs.this] ((x, int) => unit)) => unit = "onload";
+[@bs.get] external resp: x => int = "response";
+setOnload(x, [@bs.this] ((o, v) => Js.log(resp(o) + v)));
 ```
 ```js
 x.onload = function (v) {
@@ -411,22 +411,22 @@ x.onload = function (v) {
 
 ## Function Nullable Return Value Wrapping
 
-For JS functions that return a value that can also be `undefined` or `null`, we provide `@bs.return(...)`. To automatically convert that value to an `option` type (recall that ReScript `option` type's `None` value only compiles to `undefined` and not `null`).
+For JS functions that return a value that can also be `undefined` or `null`, we provide `[@bs.return ...]`. To automatically convert that value to an `option` type (recall that ReScript `option` type's `None` value only compiles to `undefined` and not `null`).
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-type element
-type dom
-[@bs.send] @bs.return(nullable)
-external getElementById: (dom, string) => option(element) = "getElementById"
+type element;
+type dom;
+[@bs.send] [@bs.return nullable]
+external getElementById: (dom, string) => option(element) = "getElementById";
 let test = dom => {
   let elem = dom->(getElementById("haha"))
   switch (elem) {
   | None => 1
   | Some(_ui) => 2
   }
-}
+};
 ```
 ```js
 function test(dom) {
