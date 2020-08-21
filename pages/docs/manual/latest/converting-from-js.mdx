@@ -59,7 +59,7 @@ let queryResult = (usePayload, payload) =>
 
 You might still occasionally get syntax errors, but not as drastic as the previous step's.
 
-- Change `foo.bar` to `foo["bar"]`. This escape-hatch [ReScript feature](/docs/reason-compiler/latest/object) will be your medium-term friend.
+- Change `foo.bar` to `foo["bar"]`. This escape-hatch [ReScript feature](object.md) will be your medium-term friend.
 - To communicate with external JS files, use `external`. They're our [foreign function interface](external.md).
   - Inline externals. No need to create clean, well-separated files for externals for now. We'll come back to these.
   - If it's too cumbersome to correctly type an `external`'s input/output, use some placeholder polymorphic types, e.g. `external getStudentById: 'whatever => 'whateverElse = ...`.
@@ -75,7 +75,7 @@ let defaultId = 10
 
 let queryResult = (usePayload, payload) =>
   if usePayload {
-    payload["student"] // this will be inferred as `Js.t 'a`
+    payload["student"] // this will be inferred as `Js.t<'a>`
   } else {
     getStudentById(defaultId)
   };
