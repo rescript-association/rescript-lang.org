@@ -5,7 +5,7 @@ ReScript's built-in values of type `string`, `float`, `array` and a few others h
 This means that if you receive e.g. a string from the JS side, you can use it **without conversion** on the ReScript side, and vice-versa.
 
 **Shared, bidirectionally usable types**:
-- String. Backtick strings like `` `hello 👋 ${personName}` `` support unicode and interpolation. Normal `"hello"` strings don't.
+- String. Backtick strings like `` `hello ${personName}` `` support interpolation. Normal `"hello"` strings don't.
 - Float. ReScript floats are JS numbers, vice-versa.
 - Array. In addition to the [JS Array API](/apis/latest/js/array), we provide our own [Belt.Array](/apis/latest/belt/array#set) API too.
 - Tuple. Compiles to a JS array. You can treat a fixed-sized, heterogenous JS array as ReScript tuple too.

@@ -5,9 +5,9 @@ A "let binding", in other languages, might be called a "variable declaration". `
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let greeting = "hello!"
-let score = 10
-let newScore = 10 + score
+let greeting = "hello!";
+let score = 10;
+let newScore = 10 + score;
 ```
 ```js
 var greeting = "hello!";
@@ -25,10 +25,10 @@ Bindings can be scoped through `{}`.
 
 ```re
 let message = {
-  let part1 = "hello"
-  let part2 = "world"
-  part1 ++ " " ++ part2
-}
+  let part1 = "hello";
+  let part2 = "world";
+  part1 ++ " " ++ part2;
+};
 // `part1` and `part2` not accessible here!
 ```
 ```js
@@ -46,9 +46,9 @@ ReScript's `if`, `while` and functions all use the same block scoping mecanism. 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-if displayGreeting {
-  let message = "Enjoying the docs so far?"
-  Js.log(message)
+if (displayGreeting) {
+  let message = "Enjoying the docs so far?";
+  Js.log(message);
 };
 // `message` not accessible here!
 ```
@@ -89,9 +89,9 @@ In ReScript, this obviously works too:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let result1 = 0
-let result2 = calculate(result1)
-let result3 = calculateSomeMore(result2)
+let result1 = 0;
+let result2 = calculate(result1);
+let result3 = calculateSomeMore(result2);
 ```
 ```js
 var result1 = 0;
@@ -106,9 +106,9 @@ Additionally, reusing the same let binding name overshadows the previous binding
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let result = 0
-let result = calculate(result)
-let result = calculateSomeMore(result)
+let result = 0;
+let result = calculate(result);
+let result = calculateSomeMore(result);
 ```
 ```js
 var result = calculate(0);
@@ -124,10 +124,10 @@ As a matter of fact, even this is valid code:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let result = "hello"
-Js.log(result) // prints "hello"
-let result = 1
-Js.log(result) // prints 1
+let result = "hello";
+Js.log(result); // prints "hello"
+let result = 1;
+Js.log(result); // prints 1
 ```
 ```js
 var result = 1;

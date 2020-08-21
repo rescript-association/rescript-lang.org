@@ -33,7 +33,7 @@ To create a `person` record (declared above):
 let me = {
   age: 5,
   name: "Big ReScript"
-}
+};
 ```
 ```js
 var me = {
@@ -51,8 +51,8 @@ The type is found by looking above the `me` value. **Note**: if the type instead
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-// School.res
-type person = {age: int, name: string}
+// School.re
+type person = {age: int, name: string};
 ```
 ```js
 // Empty output
@@ -63,11 +63,11 @@ type person = {age: int, name: string}
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-// Example.res
+// Example.re
 
-let me: School.person = {age: 20, name: "Big ReScript"}
+let me: School.person = {age: 20, name: "Big ReScript"};
 /* or */
-let me2 = {School.age: 20, name: "Big ReScript"}
+let me2 = {School.age: 20, name: "Big ReScript"};
 ```
 ```js
 var me = {
@@ -91,7 +91,7 @@ Use the familiar dot notation:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let name = me.name
+let name = me.name;
 ```
 ```js
 var name = "Big ReScript";
@@ -106,7 +106,7 @@ New records can be created from old records with the `...` spread operator. The 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-let meNextYear = {...me, age: me.age + 1}
+let meNextYear = {...me, age: me.age + 1};
 ```
 ```js
 var meNextYear = {
@@ -129,10 +129,10 @@ Record fields can optionally be mutable. This allows you to efficiently update t
 type person = {
   name: string,
   mutable age: int
-}
+};
 
-let baby = {name: "Baby ReScript", age: 5}
-baby.age = baby.age + 1 // `baby.age` is now 6. Happy birthday!
+let baby = {name: "Baby ReScript", age: 5};
+baby.age = baby.age + 1; // `baby.age` is now 6. Happy birthday!
 ```
 ```js
 var baby = {
@@ -152,10 +152,10 @@ baby.age = baby.age + 1 | 0;
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```re
-type person = {age: int, name: string}
-type monster = {age: int, hasTentacles: bool}
+type person = {age: int, name: string};
+type monster = {age: int, hasTentacles: bool};
 
-let getAge = (entity) => entity.age
+let getAge = (entity) => entity.age;
 ```
 ```js
 function getAge(entity) {
@@ -168,11 +168,11 @@ function getAge(entity) {
 Instead, `getAge` will infer that the parameter `entity` must be of type `monster`, the closest record type with the field `age`. The following code's last line fails:
 
 ```re
-let kraken = {age: 9999, hasTentacles: true}
-let me = {age: 5, name: "Baby ReScript"}
+let kraken = {age: 9999, hasTentacles: true};
+let me = {age: 5, name: "Baby ReScript"};
 
-getAge(kraken)
-getAge(me) // type error!
+getAge(kraken);
+getAge(me); // type error!
 ```
 
 The type system will complain that `me` is a `person`, and that `getAge` only works on `monster`. If you need such capability, use ReScript objects, described [here](object.md).
