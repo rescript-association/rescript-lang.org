@@ -31,12 +31,12 @@ canonical: "https://rescript-lang.org/docs/manual/latest/overview"
 
 ### String & Character
 
-| JavaScript                | Us                    |
-| --------------------------| --------------------- |
-| `"Hello world!"`          | Same                  |
-| `'Hello world!'`          | Strings must use `"`  |
-| `"hello " + "world"`      | `"hello " ++ "world"` |
-| `` `hello ${message}` ``  | Same                  |
+| JavaScript                | Us                      |
+| --------------------------| ----------------------- |
+| `"Hello world!"`          | Same                    |
+| `'Hello world!'`          | Strings must use `"`    |
+| `"hello " + "world"`      | `"hello " ++ "world"`   |
+| `` `hello ${message}` ``  | <code>{j&#124;Hello $(message)&#124;j}</code>|
 
 ### Boolean
 
@@ -57,7 +57,7 @@ canonical: "https://rescript-lang.org/docs/manual/latest/overview"
 | `3.1415`    | Same         |
 | `3 + 4`     | Same         |
 | `3.0 + 4.5` | `3.0 +. 4.5` |
-| `5 % 3`     | `mod(5, 3)`  |
+| `5 % 3`     | `5 mod 3`    |
 
 \* JS has no distinction between integer and float.
 
@@ -75,7 +75,7 @@ canonical: "https://rescript-lang.org/docs/manual/latest/overview"
 
 | JavaScript            | Us                                 |
 | --------------------- | ---------------------------------- |
-| `[1, 2, 3]`           | Same                               |
+| `[1, 2, 3]`           | `[|1, 2, 3|]`                      |
 | `myArray[1] = 10`     | Same                               |
 | `[1, "Bob", true]`    | `(1, "Bob", true)` \*              |
 
@@ -142,7 +142,7 @@ canonical: "https://rescript-lang.org/docs/manual/latest/overview"
 | JavaScript                    | Us                                            |
 | ----------------------------- | --------------------------------------------- |
 | `const {a, b} = data`         | `let {a, b} = data`                           |
-| `const [a, b] = data`         | <code>let [a, b] = data</code> \*             |
+| `const [a, b] = data`         | <code>let [&#124;a, b&#124;] = data</code> \* |
 | `const {a: aa, b: bb} = data` | `let {a: aa, b: bb} = data`                   |
 
 \* Gives good compiler warning that `data` might not be of length 2.
@@ -168,10 +168,10 @@ canonical: "https://rescript-lang.org/docs/manual/latest/overview"
 
 ### Exception
 
-| JavaScript                                      | Us                                         |
-| ----------------------------------------------- | ------------------------------------------ |
-| `throw new SomeError(...)`                      | `raise(SomeError(...))`                    |
-| `try {a} catch (Err) {...} finally {...}`       | <code>try a catch { &#124; Err => ...}</code> \* |
+| JavaScript                                | Us                                         |
+| ----------------------------------------- | ------------------------------------------ |
+| `throw new SomeError(...)`                | `raise(SomeError(...))`                    |
+| `try {a} catch (Err) {...} finally {...}` | <code>try a catch { &#124; Err => ...}</code> \* |
 
 \* No finally.
 
@@ -211,7 +211,7 @@ The last expression of a block delimited by `{}` implicitly returns (including f
 Feature                         | Example                              | JavaScript Output
 --------------------------------|--------------------------------------|----------------------
 String                          | `"Hello"`                            | `"Hello"`
-String Interpolation            | `` `Hello ${message}` ``             | `"Hello " + message`
+String Interpolation            | <code>{j&#124;Hello $(message)&#124;j}</code>         | `"Hello " + message`
 Character (disrecommended)      | `'x'`                                | `120` (char code)
 Integer                         | `23`, `-23`                          | `23`, `-23`
 Float                           | `23.0`, `-23.0`                      | `23.0`, `-23.0`
@@ -226,7 +226,7 @@ Boolean operation               | `!`, `&&`, <code>&#124;&#124;</code> | `!`, `&
 Shallow and deep Equality       | `===`, `==`                          | `===`, `==`
 List (disrecommended)           | `[1, 2, 3]`                          | `{hd: 1, tl: {hd: 2, tl: {hd: 3, tl: 0}}}`
 List Prepend                    | `[a1, a2, ...oldList]`               | `{hd: a1, tl: {hd: a2, tl: theRest}}`
-Array                           | `[1, 2, 3]`                          | `[1, 2, 3]`
+Array                           | <code>[&#124;1, 2, 3&#124;]</code>   | `[1, 2, 3]`
 Record                          | `type t = {b: int}; let a = {b: 10}` | `var a = {b: 10}`
 Multiline Comment               | `/* Comment here */`                 | Not in output
 Single line Comment             | `// Comment here`                    | Not in output

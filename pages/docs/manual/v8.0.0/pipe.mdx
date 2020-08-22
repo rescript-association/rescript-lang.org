@@ -111,7 +111,7 @@ You'd use them like this:
 <CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
 
 ```re
-let result = Js.Array2.filter(Js.Array2.map([|1, 2, 3|], a => a + 1), a => mod(a, 2) == 0);
+let result = Js.Array2.filter(Js.Array2.map([|1, 2, 3|], a => a + 1), a => a mod 2 == 0);
 
 send(setWaitDuration(asyncRequest(), 4000));
 ```

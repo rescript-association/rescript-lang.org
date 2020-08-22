@@ -388,7 +388,7 @@ module type Comparable = {
 
 module MakeSet = (Item: Comparable) => {
   // let's use a list as our naive backing data structure
-  type backingType = list<Item.t>;
+  type backingType = list(Item.t);
   let empty = [];
   let add = (currentSet: backingType, newItem: Item.t): backingType =>
     // if item exists
