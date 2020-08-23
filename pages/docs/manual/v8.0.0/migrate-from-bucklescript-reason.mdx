@@ -1,0 +1,22 @@
+---
+title: "Migrate to ReScript Syntax"
+description: "Instructions on upgrading from Reason to ReScript"
+canonical: "/docs/manual/latest/migrate-to-new-syntax"
+---
+
+# Migrate to New Syntax
+
+Starting from `v8.2.0`, BuckleScript and the JS part of Reason are now fused into the new ReScript. We've also introduced a new syntax similar to the old Reason syntax, but [tremendously improved](https://reasonml.org/blog/bucklescript-8-1-new-syntax).
+
+The old ML and Reason syntax are still supported (see our support commitment [here](https://reasonml.org/blog/a-note-on-bucklescripts-future-commitments)). The gist is: this is mostly just a rebranding and shouldn't affect your existing code much.
+
+## Upgrade Your Codebase
+
+There are lots of exciting improvements in the new syntax (features, speed, error messages, etc.). The upgrade is trivial, backward-compatible and can be done on a per-file basis:
+
+- Upgrade your project to `bs-platform 8.2.0`.
+- `node_modules/.bin/bsc -format MyFile.re > MyFile.res`
+
+**That's it**! `MyFile.re` could be any `.re`, `.rei`, `.ml` and `.mli` file.
+
+Enjoy the improved experience!

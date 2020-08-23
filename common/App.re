@@ -42,6 +42,10 @@ type props = {
   "pageProps": pageProps,
 };
 
+[@bs.get]
+external frontmatter: React.component(Js.t({.})) => Js.Json.t =
+  "frontmatter";
+
 let default = (props: props): React.element => {
   let component = props##"Component";
   let pageProps = props##pageProps;
@@ -54,8 +58,18 @@ let default = (props: props): React.element => {
 
   switch (url) {
   // docs routes
-  | {base: [|"docs", "manual"|], version: Latest} =>
-    <ManualDocsLayout.Prose> content </ManualDocsLayout.Prose>
+  | {base: [|"docs", "manual"|], version} =>
+    switch (version) {
+    | Latest =>
+      <ManualDocsLayout.Prose frontmatter={component->frontmatter}>
+        content
+      </ManualDocsLayout.Prose>
+    | Version("v8.0.0") =>
+      <ManualDocsLayout8_0_0.Prose frontmatter={component->frontmatter}>
+        content
+      </ManualDocsLayout8_0_0.Prose>
+    | _ => React.null
+    }
   | {base: [|"docs", "reason-compiler"|], version: Latest} =>
     <ReasonCompilerDocsLayout> content </ReasonCompilerDocsLayout>
   | {base: [|"docs", "reason-react"|], version: Latest} =>

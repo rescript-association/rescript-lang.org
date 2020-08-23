@@ -104,6 +104,8 @@ module Router = {
     events: Events.t,
   };
 
+  [@bs.send] external push: (router, string ) => unit = "push";
+
   [@bs.module "next/router"] external useRouter: unit => router = "useRouter";
 };
 

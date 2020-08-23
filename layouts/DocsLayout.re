@@ -33,6 +33,33 @@ module Toc = {
   };
 };
 
+module VersionSelect = {
+  [@react.component]
+  let make =
+      (
+        ~onChange,
+        ~version: string,
+        ~latestVersionLabel: string,
+        ~availableVersions: array(string),
+      ) => {
+    let children =
+      Belt.Array.map(
+        availableVersions,
+        ver => {
+          let label = ver === "latest" ? latestVersionLabel : ver;
+          <option className="py-4" key=ver value=ver> label->s </option>;
+        },
+      );
+    <select
+      className="text-14 border border-fire inline-block rounded px-4 py-1  font-semibold "
+      name="versionSelection"
+      value=version
+      onChange>
+      children->ate
+    </select>;
+  };
+};
+
 module Sidebar = {
   module Title = {
     [@react.component]
@@ -309,7 +336,10 @@ let make =
     (
       ~breadcrumbs: option(list(UrlPath.breadcrumb))=?,
       ~title: string,
+      ~frontmatter: option(Js.Json.t)=?,
       ~version: option(string)=?,
+      ~availableVersions: option(array(string))=?,
+      ~latestVersionLabel: string="latest",
       ~activeToc: option(Toc.t)=?,
       ~categories: array(Category.t),
       ~components=Markdown.default,
@@ -350,7 +380,31 @@ let make =
       title->s
       {switch (version) {
        | Some(version) =>
-         <span className="font-mono text-sm"> version->s </span>
+         switch (availableVersions) {
+         | Some(availableVersions) =>
+           let onChange = evt => {
+             open Url;
+             ReactEvent.Form.preventDefault(evt);
+             let version = evt->ReactEvent.Form.target##value;
+             let url = Url.parse(route);
+
+             let targetUrl =
+               "/"
+               ++ Js.Array2.joinWith(url.base, "/")
+               ++ "/"
+               ++ version
+               ++ "/"
+               ++ Js.Array2.joinWith(url.pagepath, "/");
+             router->Next.Router.push(targetUrl);
+           };
+           <VersionSelect
+             latestVersionLabel
+             onChange
+             version
+             availableVersions
+           />;
+         | None => <span className="font-mono text-sm"> version->s </span>
+         }
        | None => React.null
        }}
     </div>;
@@ -368,6 +422,20 @@ let make =
 
   let metaTitle = title ++ " | ReScript Documentation";
 
+  let metaElement =
+    switch (frontmatter) {
+    | Some(frontmatter) =>
+      switch (DocFrontmatter.decode(frontmatter)) {
+      | Ok(fm) =>
+        let canonical = Js.Null.toOption(fm.canonical);
+        let description = Js.Null.toOption(fm.description);
+        let title = fm.title ++ " | ReScript Language Manual";
+        <Meta title ?description ?canonical />;
+      | Error(_) => React.null
+      }
+    | None => React.null
+    };
+
   <SidebarLayout
     metaTitle
     theme
@@ -375,6 +443,7 @@ let make =
     sidebarState=(isSidebarOpen, setSidebarOpen)
     sidebar
     ?breadcrumbs>
+    metaElement
     children
   </SidebarLayout>;
 };

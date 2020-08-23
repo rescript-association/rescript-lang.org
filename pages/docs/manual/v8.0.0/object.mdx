@@ -1,0 +1,129 @@
+---
+title: "Object"
+description: "Interoping with JS objects in ReScript"
+canonical: "/docs/manual/latest/object"
+---
+
+# Object
+
+ReScript objects are like [records](record.md), but:
+
+- No type declaration needed.
+- Structural and more polymorphic, [unlike records](record.md#record-types-are-found-by-field-name).
+- Doesn't support updates unless the object comes from the JS side.
+- Doesn't support [pattern matching](pattern-matching-destructuring.md).
+
+<!-- TODO: support update man -->
+
+Although ReScript records compile to clean JavaScript objects, ReScript objects are a better candidate for emulating/binding to JS objects, as you'll see.
+
+## Type Declaration
+
+**Optional**, unlike for records. The type of an object is inferred from the value, so you never really need to write down is type definition. Nevertheless, here's its type declaration syntax:
+
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+
+```re
+type person = {
+  .
+  "age": int,
+  "name": string
+};
+```
+```js
+// Empty output
+```
+
+</CodeTab>
+
+Visually similar to record type's syntax, with the field names quoted.
+
+## Creation
+
+To create a new object:
+
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+
+```re
+let me = {
+  "age": 5,
+  "name": "Big ReScript"
+};
+```
+```js
+var me = {
+  "age": 5,
+  "name": "Big ReScript"
+};
+```
+
+</CodeTab>
+
+**Note**: as said above, unlike for record, this `me` value does **not** try to find a conforming type declaration with the field `"age"` and `"name"`; rather, the type of `me` is inferred as `{"age": int, "name": string}`. This is convenient, but also means this code passes type checking without errors:
+
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+
+```re
+type person = {
+  .
+  "age": int
+};
+
+let me = {
+  "age": "hello!" // age is a string. No error.
+};
+```
+```js
+var me = {
+  "age": "hello!"
+};
+```
+
+</CodeTab>
+
+Since the type checker doesn't try to match `me` with the type `person`. If you ever want to force an object value to be of a predeclared object type, just annotate the value:
+
+```re
+let me: person = {
+  "age": "hello!"
+}
+```
+
+Now the type system will error properly.
+
+## Access
+
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+
+```re
+let age = me##age;
+```
+```js
+var age = me["age"];
+```
+
+</CodeTab>
+
+## Update
+
+Disallowed unless the object is a binding that comes from the JavaScript side. In that case, use `=`:
+
+<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+
+```re
+type student = {
+  [@bs.set] "age": int,
+  [@bs.set] "name": string,
+};
+[@bs.module "MyJSFile"] external student1: student = "student1";
+
+student1##name = "Mary";
+```
+```js
+var MyJSFile = require("MyJSFile");
+MyJSFile.student1.name = "Mary";
+```
+
+</CodeTab>
+
+<!-- TODO: connect to externals -->

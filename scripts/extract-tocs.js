@@ -4,6 +4,7 @@
  */
 const unified = require("unified");
 const markdown = require("remark-parse");
+const matter = require("gray-matter");
 const stringify = require("remark-stringify");
 const slug = require('remark-slug');
 const glob = require("glob");
@@ -53,7 +54,8 @@ const processor = unified()
   .use(headers);
 
 const processFile = filepath => {
-  const content = fs.readFileSync(filepath, "utf8");
+  const raw = fs.readFileSync(filepath, "utf8");
+  const { content, data } = matter(raw);
   const result = processor.processSync(content);
 
   const pagesPath = path.resolve("./pages");
@@ -84,7 +86,7 @@ const createTOC = result => {
   }, {});
 };
 
-const createManualToc = () => {
+const createLatestManualToc = () => {
   const MD_DIR = path.join(__dirname, "../pages/docs/manual/latest");
   const TARGET_FILE = path.join(__dirname, "../index_data/manual_toc.json");
 
@@ -104,7 +106,17 @@ const createReasonCompilerToc = () => {
   const toc = createTOC(result);
 
   fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
+};
 
+const createV800ManualToc = () => {
+  const MD_DIR = path.join(__dirname, "../pages/docs/manual/v8.0.0");
+  const TARGET_FILE = path.join(__dirname, "../index_data/manual_v800_toc.json");
+
+  const files = glob.sync(`${MD_DIR}/*.md?(x)`);
+  const result = files.map(processFile);
+  const toc = createTOC(result);
+
+  fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
 };
 
 const createReasonReactToc = () => {
@@ -156,7 +168,8 @@ debugToc();
 */
 
 // main
-createManualToc();
+createLatestManualToc();
+createV800ManualToc();
 createReasonCompilerToc();
 createReasonReactToc();
 createGenTypeToc();
