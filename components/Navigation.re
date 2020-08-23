@@ -12,6 +12,10 @@ let linkOrActiveLinkSubroute = (~target, ~route) => {
   Js.String2.startsWith(route, target) ? activeLink : link;
 };
 
+let githubHref = "https://github.com/rescript-lang/rescript-compiler";
+let twitterHref = "https://twitter.com/rescriptlang";
+let discourseHref = "https://forum.rescript-lang.org";
+
 module CollapsibleLink = {
   // KeepOpen = Menu has been opened and should stay open
   type state =
@@ -342,11 +346,20 @@ module MobileNav = {
         </li>
         <li className=base>
           <a
-            href="https://github.com/reason-association/rescript-lang.org"
+            href=githubHref
             rel="noopener noreferrer"
             target="_blank"
             className=extLink>
             "Github"->s
+          </a>
+        </li>
+        <li className=base>
+          <a
+            href=discourseHref
+            rel="noopener noreferrer"
+            target="_blank"
+            className=extLink>
+            "Forum"->s
           </a>
         </li>
       </ul>
@@ -550,7 +563,7 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
           </div>
         <div className="hidden sm:flex">
           <a
-            href="https://github.com/reason-association/rescript-lang.org"
+            href=githubHref
             rel="noopener noreferrer"
             target="_blank"
             className={"mr-5 " ++ link}
@@ -566,7 +579,7 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
             <Icon.Twitter className="w-6 h-6 opacity-50 hover:opacity-100" />
           </a>
           <a
-            href="https://forum.rescript-lang.org"
+            href=discourseHref
             rel="noopener noreferrer"
             target="_blank"
             className=link
