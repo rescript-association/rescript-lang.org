@@ -96,7 +96,7 @@ let jsInteropNavs = [|
   {name: "JSON", href: "/docs/manual/v8.0.0/json"},
   {
     name: "Use Illegal Identifier Names",
-    href: "/docs/manual/latest/use-illegal-identifier-names",
+    href: "/docs/manual/v8.0.0/use-illegal-identifier-names",
   },
   {
     name: "Browser Support & Polyfills",
