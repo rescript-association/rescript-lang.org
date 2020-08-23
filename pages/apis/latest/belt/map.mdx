@@ -514,7 +514,7 @@ let updateU: (t<'k, 'v, 'id>, 'k, (. option<'v>) => option<'v>) => t<'k, 'v, 'id
 let update: (t<'k, 'v, 'id>, 'k, option<'v> => option<'v>) => t<'k, 'v, 'id>
 ```
 
-`update(m, x, f)` returns a map containing the same bindings as `m`, except for the binding of `x`. Depending on the value of `y` where `y` is `f(get(x, m))`, the binding of `x` is added, removed or updated. If `y` is `None`, the binding is removed if it exists; otherwise, if `y` is `Some(z)` then `x` is associated to `z` in the resulting map.
+`update(m, x, f)` returns a map containing the same bindings as `m`, except for the binding of `x`. Depending on the value of `y` where `y` is `f(get(m, x))`, the binding of `x` is added, removed or updated. If `y` is `None`, the binding is removed if it exists; otherwise, if `y` is `Some(z)` then `x` is associated to `z` in the resulting map.
 
 ## mergeMany
 
