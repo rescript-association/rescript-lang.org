@@ -42,7 +42,7 @@ let default = () => {
 
   let ecosystem = [|
     ("GenType", "/docs/gentype/latest/introduction"),
-    ("ReasonReact", "/docs/reason-react/latest/introduction"),
+    ("ReasonReact", "https://reasonml.github.io/reason-react"),
     ("Reanalyze", "https://github.com/reason-association/reanalyze"),
   |];
 

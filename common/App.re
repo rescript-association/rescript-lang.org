@@ -72,8 +72,6 @@ let default = (props: props): React.element => {
     }
   | {base: [|"docs", "reason-compiler"|], version: Latest} =>
     <ReasonCompilerDocsLayout> content </ReasonCompilerDocsLayout>
-  | {base: [|"docs", "reason-react"|], version: Latest} =>
-    <ReasonReactDocsLayout> content </ReasonReactDocsLayout>
   | {base: [|"docs", "gentype"|], version: Latest} =>
     <GenTypeDocsLayout> content </GenTypeDocsLayout>
   // apis routes
