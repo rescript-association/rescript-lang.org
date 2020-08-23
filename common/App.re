@@ -84,6 +84,7 @@ let default = (props: props): React.element => {
     | (_, Some("js")) => <JsDocsLayout.Docs> content </JsDocsLayout.Docs>
     | (_, Some("belt")) =>
       <BeltDocsLayout.Docs> content </BeltDocsLayout.Docs>
+    | (_, Some("dom")) => <BeltDocsLayout.Docs> content </BeltDocsLayout.Docs>
     | _ => React.null
     }
   // common routes
