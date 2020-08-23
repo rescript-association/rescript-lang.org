@@ -95,6 +95,10 @@ let jsInteropNavs = [|
   },
   {name: "JSON", href: "/docs/manual/v8.0.0/json"},
   {
+    name: "Use Illegal Identifier Names",
+    href: "/docs/manual/latest/use-illegal-identifier-names",
+  },
+  {
     name: "Browser Support & Polyfills",
     href: "/docs/manual/v8.0.0/browser-support-polyfills",
   },
@@ -191,7 +195,7 @@ module Docs = {
               {(
                  "You are currently looking at the "
                  ++ version
-                 ++ " docs. You can find the latest manual page "
+                 ++ " docs (Reason v3.6 syntax edition). You can find the latest manual page "
                )
                ->s}
               <A href=latestUrl> "here"->s </A>

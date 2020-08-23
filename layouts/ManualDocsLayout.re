@@ -141,7 +141,12 @@ let categories = [|
 
 module Docs = {
   [@react.component]
-  let make = (~components=Markdown.default, ~children) => {
+  let make =
+      (
+        ~frontmatter: option(Js.Json.t)=?,
+        ~components=Markdown.default,
+        ~children,
+      ) => {
     let router = Next.Router.useRouter();
     let route = router.route;
 
@@ -188,6 +193,7 @@ module Docs = {
       title
       availableVersions=allManualVersions
       latestVersionLabel
+      ?frontmatter
       ?activeToc
       ?breadcrumbs>
       children
@@ -197,7 +203,7 @@ module Docs = {
 
 module Prose = {
   [@react.component]
-  let make = (~children) => {
-    <Docs components=Markdown.default> children </Docs>;
+  let make = (~frontmatter: option(Js.Json.t)=?, ~children) => {
+    <Docs ?frontmatter components=Markdown.default> children </Docs>;
   };
 };

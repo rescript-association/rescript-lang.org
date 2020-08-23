@@ -395,7 +395,6 @@ let make =
                ++ version
                ++ "/"
                ++ Js.Array2.joinWith(url.pagepath, "/");
-             Js.log2("targetUrl", targetUrl);
              router->Next.Router.push(targetUrl);
            };
            <VersionSelect
