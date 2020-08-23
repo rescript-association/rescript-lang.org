@@ -207,6 +207,7 @@ module Docs = {
       categories
       version
       availableVersions=ManualDocsLayout.allManualVersions
+      latestVersionLabel=ManualDocsLayout.latestVersionLabel
       ?frontmatter
       title
       ?activeToc

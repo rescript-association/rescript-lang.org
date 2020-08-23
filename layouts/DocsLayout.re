@@ -35,11 +35,21 @@ module Toc = {
 
 module VersionSelect = {
   [@react.component]
-  let make = (~onChange, ~version: string, ~availableVersions: array(string)) => {
+  let make =
+      (
+        ~onChange,
+        ~version: string,
+        ~latestVersionLabel: string,
+        ~availableVersions: array(string),
+      ) => {
     let children =
-      Belt.Array.map(availableVersions, ver => {
-        <option className="py-4" key=ver value=ver> ver->s </option>
-      });
+      Belt.Array.map(
+        availableVersions,
+        ver => {
+          let label = ver === "latest" ? latestVersionLabel : ver;
+          <option className="py-4" key=ver value=ver> label->s </option>;
+        },
+      );
     <select
       className="text-14 border border-fire inline-block rounded px-4 py-1  font-semibold "
       name="versionSelection"
@@ -329,6 +339,7 @@ let make =
       ~frontmatter: option(Js.Json.t)=?,
       ~version: option(string)=?,
       ~availableVersions: option(array(string))=?,
+      ~latestVersionLabel: string="latest",
       ~activeToc: option(Toc.t)=?,
       ~categories: array(Category.t),
       ~components=Markdown.default,
@@ -375,10 +386,8 @@ let make =
              open Url;
              ReactEvent.Form.preventDefault(evt);
              let version = evt->ReactEvent.Form.target##value;
-             Js.log2("selected version", version);
              let url = Url.parse(route);
 
-             Js.log2("url", url);
              let targetUrl =
                "/"
                ++ Js.Array2.joinWith(url.base, "/")
@@ -389,7 +398,12 @@ let make =
              Js.log2("targetUrl", targetUrl);
              router->Next.Router.push(targetUrl);
            };
-           <VersionSelect onChange version availableVersions />;
+           <VersionSelect
+             latestVersionLabel
+             onChange
+             version
+             availableVersions
+           />;
          | None => <span className="font-mono text-sm"> version->s </span>
          }
        | None => React.null
