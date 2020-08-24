@@ -1,7 +1,10 @@
 {
+  "$schema": "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/master/docs/docson/build-schema.json",
   "name": "rescript-lang.org",
   "namespace": false,
-  "reason": { "react-jsx": 3 },
+  "reason": {
+    "react-jsx": 3
+  },
   "refmt": 3,
   "bs-dependencies": [
     "reason-react",
@@ -11,12 +14,28 @@
   ],
   "ppx-flags": [],
   "sources": [
-    { "dir": "common" },
-    { "dir": "bindings" },
-    { "dir": "pages", "subdirs": true },
-    { "dir": "re_pages", "subdirs": true },
-    { "dir": "scripts", "subdirs": true },
-    { "dir": "components", "subdirs": true },
+    {
+      "dir": "common"
+    },
+    {
+      "dir": "bindings"
+    },
+    {
+      "dir": "pages",
+      "subdirs": true
+    },
+    {
+      "dir": "re_pages",
+      "subdirs": true
+    },
+    {
+      "dir": "scripts",
+      "subdirs": true
+    },
+    {
+      "dir": "components",
+      "subdirs": true
+    },
     "layouts"
   ],
   "package-specs": {
@@ -27,7 +46,11 @@
     "error": "+8"
   },
   "suffix": ".bs.js",
-  "bsc-flags": ["-bs-no-version-header", "-bs-super-errors", "-bs-g"],
+  "bsc-flags": [
+    "-bs-no-version-header",
+    "-bs-super-errors",
+    "-bs-g"
+  ],
   "gentypeconfig": {
     "language": "untyped",
     "shims": [],
