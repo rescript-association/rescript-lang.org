@@ -117,3 +117,11 @@ const jsFiles = glob.sync(`${JS_MD_DIR}/*.md?(x)`);
 const jsResult = jsFiles.map(processFile);
 const jsIndex = createIndex(jsResult);
 fs.writeFileSync(JS_INDEX_FILE, JSON.stringify(jsIndex), "utf8");
+
+const DOM_MD_DIR = path.join(__dirname, "../pages/apis/latest/dom");
+const DOM_INDEX_FILE = path.join(__dirname, "../index_data/dom_api_index.json");
+const domFiles = glob.sync(`${DOM_MD_DIR}/*.md?(x)`).concat(DOM_MD_DIR + ".mdx");
+const domResult = domFiles.map(processFile);
+const domIndex = createIndex(domResult);
+
+fs.writeFileSync(DOM_INDEX_FILE, JSON.stringify(domIndex), "utf8");

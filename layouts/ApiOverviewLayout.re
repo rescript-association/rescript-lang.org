@@ -19,6 +19,7 @@ module Docs = {
         items: [|
           {name: "Js Module", href: "/apis/latest/js"},
           {name: "Belt Stdlib", href: "/apis/latest/belt"},
+          {name: "Dom", href: "/apis/latest/dom"},
         |],
       },
     |];
