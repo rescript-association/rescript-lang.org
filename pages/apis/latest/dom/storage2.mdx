@@ -8,7 +8,7 @@ The same as [Dom.Storage](./storage2), but with `t` on first argument position f
 
 ## t
 
-```res sig
+```res prelude sig
 type t
 ```
 
@@ -45,11 +45,11 @@ external length: t => int = "length"
 ## localStorage
 
 ```res sig
-external localStorage: t = "localStorage"
+@bs.val external localStorage: t = "localStorage"
 ```
 
 ## sessionStorage
 
 ```res sig
-external sessionStorage: t = "sessionStorage"
+@bs.val external sessionStorage: t = "sessionStorage"
 ```
