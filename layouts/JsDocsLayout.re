@@ -12,7 +12,7 @@ let indexData:
         "href": string,
       }),
   }) = [%raw
-  "require('../index_data/js_api_index.json')"
+  "require('../index_data/latest_js_api_index.json')"
 ];
 
 // Retrieve package.json to access the version of bs-platform.
@@ -20,14 +20,11 @@ let package: {. "dependencies": {. "bs-platform": string}} = [%raw
   "require('../package.json')"
 ];
 
-module Sidebar = SidebarLayout.Sidebar;
 module UrlPath = SidebarLayout.UrlPath;
-module NavItem = Sidebar.NavItem;
-module Category = Sidebar.Category;
+module Category = ApiLayout.Sidebar.Category;
+module NavItem = ApiLayout.Sidebar.NavItem;
 
-let overviewNavs = [|
-  NavItem.{name: "Introduction", href: "/apis/latest/js"},
-|];
+let overviewNavs = [|NavItem.{name: "JS", href: "/apis/latest/js"}|];
 
 let apiNavs = [|
   NavItem.{name: "Array2", href: "/apis/latest/js/array-2"},
@@ -56,10 +53,7 @@ let apiNavs = [|
     name: "TypedArrayArrayBuffer",
     href: "/apis/latest/js/typed-array_array-buffer",
   },
-  {
-    name: "TypedArrayDataView",
-    href: "/apis/latest/js/typed-array_data-view",
-  },
+  {name: "TypedArrayDataView", href: "/apis/latest/js/typed-array_data-view"},
   {
     name: "TypedArrayFloat32Array",
     href: "/apis/latest/js/typed-array_float-32-array",
@@ -80,10 +74,7 @@ let apiNavs = [|
     name: "TypedArrayInt32Array",
     href: "/apis/latest/js/typed-array_int-32-array",
   },
-  {
-    name: "TypedArrayTypeS",
-    href: "/apis/latest/js/typed-array_type-s",
-  },
+  {name: "TypedArrayTypeS", href: "/apis/latest/js/typed-array_type-s"},
   {
     name: "TypedArrayUint8Array",
     href: "/apis/latest/js/typed-array_uint-8-array",
@@ -153,7 +144,7 @@ let apiNavs = [|
 
 let categories = [|
   Category.{name: "Overview", items: overviewNavs},
-  {name: "API", items: apiNavs},
+  {name: "Submodules", items: apiNavs},
 |];
 
 module Docs = {
@@ -180,8 +171,6 @@ module Docs = {
         ->getWithDefault("?")
       );
 
-    let (isSidebarOpen, setSidebarOpen) = React.useState(_ => false);
-    let toggleSidebar = () => setSidebarOpen(prev => !prev);
     let urlPath = UrlPath.parse(~base="/apis", route);
 
     let breadcrumbs =
@@ -194,47 +183,19 @@ module Docs = {
         },
       );
 
-    let toplevelNav =
-      switch (urlPath) {
-      | Some(urlPath) =>
-        let version = UrlPath.(urlPath.version);
-        let backHref = Some(UrlPath.fullUpLink(urlPath));
-        <Sidebar.ToplevelNav title="Js Module" version ?backHref />;
-      | None => React.null
+    let activeToc =
+      ApiLayout.Toc.{
+        title: moduleName,
+        entries:
+          Belt.Array.map(headers, ((name, href)) => {header: name, href}),
       };
 
-    // Todo: We need to introduce router state to be able to
-    //       listen to anchor changes (#get, #map,...)
-    let preludeSection =
-      route !== "/apis/latest/js"
-        ? <Sidebar.CollapsibleSection headers moduleName /> : React.null;
+    let title = "JS Module";
+    let version = "latest";
 
-    let sidebar =
-      <Sidebar
-        isOpen=isSidebarOpen
-        toggle=toggleSidebar
-        categories
-        route={router.route}
-        preludeSection
-        toplevelNav
-      />;
-
-    let pageTitle =
-      switch (breadcrumbs) {
-      | Some([_, {name}]) => name
-      | Some([_, _, {name}]) => "Js." ++ name
-      | _ => "Js"
-      };
-
-    <SidebarLayout
-      metaTitle={pageTitle ++ " | ReScript API"}
-      theme=`Reason
-      components
-      sidebarState=(isSidebarOpen, setSidebarOpen)
-      sidebar
-      ?breadcrumbs>
+    <ApiLayout components title version activeToc categories ?breadcrumbs>
       children
-    </SidebarLayout>;
+    </ApiLayout>;
   };
 };
 
