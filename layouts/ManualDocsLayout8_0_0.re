@@ -25,7 +25,7 @@ let overviewNavs = [|
   NavItem.{name: "Introduction", href: "/docs/manual/v8.0.0/introduction"},
   {
     name: "Migrate to New Syntax",
-    href: "/docs/manual/v8.0.0/migrate-from-bucklescript-reason.mdx",
+    href: "/docs/manual/v8.0.0/migrate-from-bucklescript-reason",
   },
   {name: "Installation", href: "/docs/manual/v8.0.0/installation"},
   {name: "Try", href: "/docs/manual/v8.0.0/try"},
