@@ -15,10 +15,10 @@ let tocData:
   "require('../index_data/gentype_toc.json')"
 ];
 
-module UrlPath = SidebarLayout.UrlPath;
-module NavItem = SidebarLayout.Sidebar.NavItem;
-module Category = SidebarLayout.Sidebar.Category;
-module Toc = SidebarLayout.Toc;
+module UrlPath = DocsLayout.UrlPath;
+module NavItem = DocsLayout.NavItem;
+module Category = DocsLayout.Category;
+module Toc = DocsLayout.Toc;
 
 let overviewNavs = [|
   NavItem.{name: "Introduction", href: "/docs/gentype/latest/introduction"},
