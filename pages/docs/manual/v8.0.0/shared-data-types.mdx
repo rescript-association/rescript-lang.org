@@ -17,10 +17,10 @@ This means that if you receive e.g. a string from the JS side, you can use it **
 - Tuple. Compiles to a JS array. You can treat a fixed-sized, heterogenous JS array as ReScript tuple too.
 - Boolean.
 - Record. Record compiles to JS object. Therefore you can also treat JS objects as records. If they're too dynamic, consider modeling them on the ReScript side as a hashmap/dictionary [`Js.Dict`](/apis/latest/js/dict) or a ReScript object.
+- Object. ReScript objects are JavaScript objects, vice-versa.
 - Unit. The `unit` type, which has a single value `()`, compiles to `undefined` too. Likewise, you can treat an incoming JS `undefined` as `()`.
 
 <!-- TODO: talk about poly variant -->
-<!-- TODO: talk about object -->
 
 **Types that are slightly different than JS, but that you can still use from JS**:
 - Int. **Ints are 32-bits**! Be careful, you can potentially treat them as JS numbers and vice-versa, but if the number's large, then you better treat JS numbers as floats. For example, we bind to Js.Date using `float`s.
