@@ -1,30 +1,48 @@
 module Link = Next.Link;
 
-module Sidebar = DocsLayout.Sidebar;
-
-let categories: array(Sidebar.Category.t) = [|
-  {
-    name: "Introduction",
-    items: [|{name: "Overview", href: "/apis/latest"}|],
-  },
-  {
-    name: "Modules",
-    items: [|
-      {name: "Js Module", href: "/apis/latest/js"},
-      {name: "Belt Stdlib", href: "/apis/latest/belt"},
-      {name: "Dom Module", href: "/apis/latest/dom"},
-    |],
-  },
-|];
+module Sidebar = SidebarLayout.Sidebar;
 
 /* Used for API docs (structured data) */
 module Docs = {
   [@react.component]
-  let make = (~components=ApiMarkdown.default, ~children) => {
-    let title = "API";
-    let version = "latest";
+  let make = (~theme=`Reason, ~components=ApiMarkdown.default, ~children) => {
+    let router = Next.Router.useRouter();
+    let theme = ColorTheme.toCN(`Js);
 
-    <ApiLayout title categories version components> children </ApiLayout>;
+    let categories: array(Sidebar.Category.t) = [|
+      {
+        name: "Introduction",
+        items: [|{name: "Overview", href: "/apis/latest"}|],
+      },
+      {
+        name: "JavaScript",
+        items: [|
+          {name: "Js Module", href: "/apis/latest/js"},
+          {name: "Belt Stdlib", href: "/apis/latest/belt"},
+          {name: "Dom", href: "/apis/latest/dom"},
+        |],
+      },
+    |];
+
+    let (isSidebarOpen, setSidebarOpen) = React.useState(_ => false);
+    let toggleSidebar = () => setSidebarOpen(prev => !prev);
+
+    let sidebar =
+      <Sidebar
+        isOpen=isSidebarOpen
+        toggle=toggleSidebar
+        categories
+        route={router.route}
+      />;
+
+    <SidebarLayout
+      metaTitle="ReScript API"
+      theme=`Reason
+      components
+      sidebarState=(isSidebarOpen, setSidebarOpen)
+      sidebar>
+      children
+    </SidebarLayout>;
   };
 };
 

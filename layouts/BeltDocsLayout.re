@@ -12,7 +12,7 @@ let indexData:
         "href": string,
       }),
   }) = [%raw
-  "require('../index_data/latest_belt_api_index.json')"
+  "require('../index_data/belt_api_index.json')"
 ];
 
 // Retrieve package.json to access the version of bs-platform.
@@ -20,9 +20,10 @@ let package: {. "dependencies": {. "bs-platform": string}} = [%raw
   "require('../package.json')"
 ];
 
+module Sidebar = SidebarLayout.Sidebar;
 module UrlPath = SidebarLayout.UrlPath;
-module Category = SidebarLayout.Sidebar.Category;
-module NavItem = SidebarLayout.Sidebar.NavItem;
+module NavItem = Sidebar.NavItem;
+module Category = Sidebar.Category;
 
 let overviewNavs = [|
   NavItem.{name: "Introduction", href: "/apis/latest/belt"},
@@ -114,6 +115,9 @@ module Docs = {
         ->getWithDefault("?")
       );
 
+    let (isSidebarOpen, setSidebarOpen) = React.useState(_ => false);
+    let toggleSidebar = () => setSidebarOpen(prev => !prev);
+
     let urlPath = UrlPath.parse(~base="/apis", route);
 
     let breadcrumbs =
@@ -126,19 +130,47 @@ module Docs = {
         },
       );
 
-    let activeToc =
-      ApiLayout.Toc.{
-        title: moduleName,
-        entries:
-          Belt.Array.map(headers, ((name, href)) => {header: name, href}),
+    let toplevelNav =
+      switch (urlPath) {
+      | Some(urlPath) =>
+        let version = UrlPath.(urlPath.version);
+        let backHref = Some(UrlPath.fullUpLink(urlPath));
+        <Sidebar.ToplevelNav title="Belt" version ?backHref />;
+      | None => React.null
       };
 
-    let title = "Belt";
-    let version = "latest";
+    // Todo: We need to introduce router state to be able to
+    //       listen to anchor changes (#get, #map,...)
+    let preludeSection =
+      route !== "/apis/latest/belt"
+        ? <Sidebar.CollapsibleSection headers moduleName /> : React.null;
 
-    <ApiLayout components title version activeToc categories ?breadcrumbs>
+    let sidebar =
+      <Sidebar
+        isOpen=isSidebarOpen
+        toggle=toggleSidebar
+        categories
+        route={router.route}
+        toplevelNav
+        preludeSection
+      />;
+
+    let pageTitle =
+      switch (breadcrumbs) {
+      | Some([_, {name}]) => name
+      | Some([_, _, {name}]) => "Belt." ++ name
+      | _ => "Belt"
+      };
+
+    <SidebarLayout
+      metaTitle={pageTitle ++ " | ReScript API"}
+      theme=`Reason
+      components
+      sidebarState=(isSidebarOpen, setSidebarOpen)
+      sidebar
+      ?breadcrumbs>
       children
-    </ApiLayout>;
+    </SidebarLayout>;
   };
 };
 
