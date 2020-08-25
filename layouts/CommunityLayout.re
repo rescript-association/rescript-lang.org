@@ -15,10 +15,10 @@ let tocData:
   "require('../index_data/community_toc.json')"
 ];
 
-module UrlPath = DocsLayout.UrlPath;
-module NavItem = DocsLayout.NavItem;
-module Category = DocsLayout.Category;
-module Toc = DocsLayout.Toc;
+module UrlPath = SidebarLayout.UrlPath;
+module NavItem = SidebarLayout.Sidebar.NavItem;
+module Category = SidebarLayout.Sidebar.Category;
+module Toc = SidebarLayout.Toc;
 
 let overviewNavs = [|
   NavItem.{name: "Overview", href: "/community"},
