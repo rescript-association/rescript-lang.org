@@ -103,7 +103,7 @@ const createIndex = result => {
 
 const extractApiIndex = version => {
   const versionLabel = version.replace(/\./g, "");
-  const VERSION_DIR = path.join(__dirname, "../pages/apis", version);
+  const VERSION_DIR = path.join(__dirname, "../pages/docs/manual", version, "api");
   const BELT_MD_DIR = path.join(VERSION_DIR, "belt");
   const BELT_INDEX_FILE = path.join(
     __dirname,
