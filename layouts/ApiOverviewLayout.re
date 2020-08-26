@@ -5,14 +5,14 @@ module Sidebar = DocsLayout.Sidebar;
 let categories: array(Sidebar.Category.t) = [|
   {
     name: "Introduction",
-    items: [|{name: "Overview", href: "/apis/latest"}|],
+    items: [|{name: "Overview", href: "/docs/manual/latest/api"}|],
   },
   {
     name: "Modules",
     items: [|
-      {name: "Js Module", href: "/apis/latest/js"},
-      {name: "Belt Stdlib", href: "/apis/latest/belt"},
-      {name: "Dom Module", href: "/apis/latest/dom"},
+      {name: "Js Module", href: "/docs/manual/latest/api/js"},
+      {name: "Belt Stdlib", href: "/docs/manual/latest/api/belt"},
+      {name: "Dom Module", href: "/docs/manual/latest/api/dom"},
     |],
   },
 |];

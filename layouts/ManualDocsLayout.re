@@ -21,7 +21,6 @@ let tocData:
   "require('../index_data/manual_toc.json')"
 ];
 
-module UrlPath = SidebarLayout.UrlPath;
 module NavItem = SidebarLayout.Sidebar.NavItem;
 module Category = SidebarLayout.Sidebar.Category;
 module Toc = SidebarLayout.Toc;
@@ -163,23 +162,30 @@ module Docs = {
           })
       );
 
-    let urlPath = UrlPath.parse(~base="/docs/manual", route);
+    let url = route->Url.parse;
+
+    let version =
+      switch (url.version) {
+      | Version(version) => version
+      | NoVersion => "latest"
+      | Latest => "latest"
+      };
+
+    let prefix = [
+      Url.{name: "Docs", href: "/docs/" ++ version},
+      Url.{
+        name: "Language Manual",
+        href: "/docs/manual/" ++ version ++ "/introduction",
+      },
+    ];
 
     let breadcrumbs =
-      Belt.Option.map(
-        urlPath,
-        v => {
-          let {UrlPath.version} = v;
-          let prefix =
-            UrlPath.[
-              {name: "Docs", href: "/docs/" ++ version},
-              {
-                name: "Language Manual",
-                href: "/docs/manual/" ++ version ++ "/introduction",
-              },
-            ];
-          UrlPath.toBreadCrumbs(~prefix, v);
-        },
+      Belt.List.concat(
+        prefix,
+        DocsLayout.makeBreadcrumbs(
+          ~basePath="/docs/manual/" ++ version,
+          route,
+        ),
       );
 
     let title = "Language Manual";
@@ -195,7 +201,7 @@ module Docs = {
       latestVersionLabel
       ?frontmatter
       ?activeToc
-      ?breadcrumbs>
+      breadcrumbs>
       children
     </DocsLayout>;
   };

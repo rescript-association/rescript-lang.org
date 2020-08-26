@@ -20,126 +20,125 @@ let package: {. "dependencies": {. "bs-platform": string}} = [%raw
   "require('../package.json')"
 ];
 
-module UrlPath = SidebarLayout.UrlPath;
 module Category = ApiLayout.Sidebar.Category;
 module NavItem = ApiLayout.Sidebar.NavItem;
 
-let overviewNavs = [|NavItem.{name: "JS", href: "/apis/latest/js"}|];
+let overviewNavs = [|NavItem.{name: "JS", href: "/docs/manual/latest/api/js"}|];
 
 let apiNavs = [|
-  NavItem.{name: "Array2", href: "/apis/latest/js/array-2"},
-  {name: "Array", href: "/apis/latest/js/array"},
-  {name: "Console", href: "/apis/latest/js/console"},
-  {name: "Date", href: "/apis/latest/js/date"},
-  {name: "Dict", href: "/apis/latest/js/dict"},
-  {name: "Exn", href: "/apis/latest/js/exn"},
-  {name: "Float", href: "/apis/latest/js/float"},
-  {name: "Global", href: "/apis/latest/js/global"},
-  {name: "Int", href: "/apis/latest/js/int"},
-  {name: "Json", href: "/apis/latest/js/json"},
-  {name: "List", href: "/apis/latest/js/list"},
-  {name: "Math", href: "/apis/latest/js/math"},
-  {name: "NullUndefined", href: "/apis/latest/js/null-undefined"},
-  {name: "Null", href: "/apis/latest/js/null"},
-  {name: "Nullable", href: "/apis/latest/js/nullable"},
-  {name: "Obj", href: "/apis/latest/js/obj"},
-  {name: "Option", href: "/apis/latest/js/option"},
-  {name: "Promise", href: "/apis/latest/js/promise"},
-  {name: "Re", href: "/apis/latest/js/re"},
-  {name: "Result", href: "/apis/latest/js/result"},
-  {name: "String2", href: "/apis/latest/js/string-2"},
-  {name: "String", href: "/apis/latest/js/string"},
+  NavItem.{name: "Array2", href: "/docs/manual/latest/api/js/array-2"},
+  {name: "Array", href: "/docs/manual/latest/api/js/array"},
+  {name: "Console", href: "/docs/manual/latest/api/js/console"},
+  {name: "Date", href: "/docs/manual/latest/api/js/date"},
+  {name: "Dict", href: "/docs/manual/latest/api/js/dict"},
+  {name: "Exn", href: "/docs/manual/latest/api/js/exn"},
+  {name: "Float", href: "/docs/manual/latest/api/js/float"},
+  {name: "Global", href: "/docs/manual/latest/api/js/global"},
+  {name: "Int", href: "/docs/manual/latest/api/js/int"},
+  {name: "Json", href: "/docs/manual/latest/api/js/json"},
+  {name: "List", href: "/docs/manual/latest/api/js/list"},
+  {name: "Math", href: "/docs/manual/latest/api/js/math"},
+  {name: "NullUndefined", href: "/docs/manual/latest/api/js/null-undefined"},
+  {name: "Null", href: "/docs/manual/latest/api/js/null"},
+  {name: "Nullable", href: "/docs/manual/latest/api/js/nullable"},
+  {name: "Obj", href: "/docs/manual/latest/api/js/obj"},
+  {name: "Option", href: "/docs/manual/latest/api/js/option"},
+  {name: "Promise", href: "/docs/manual/latest/api/js/promise"},
+  {name: "Re", href: "/docs/manual/latest/api/js/re"},
+  {name: "Result", href: "/docs/manual/latest/api/js/result"},
+  {name: "String2", href: "/docs/manual/latest/api/js/string-2"},
+  {name: "String", href: "/docs/manual/latest/api/js/string"},
   {
     name: "TypedArrayArrayBuffer",
-    href: "/apis/latest/js/typed-array_array-buffer",
+    href: "/docs/manual/latest/api/js/typed-array_array-buffer",
   },
-  {name: "TypedArrayDataView", href: "/apis/latest/js/typed-array_data-view"},
+  {name: "TypedArrayDataView", href: "/docs/manual/latest/api/js/typed-array_data-view"},
   {
     name: "TypedArrayFloat32Array",
-    href: "/apis/latest/js/typed-array_float-32-array",
+    href: "/docs/manual/latest/api/js/typed-array_float-32-array",
   },
   {
     name: "TypedArrayFloat64Array",
-    href: "/apis/latest/js/typed-array_float-64-array",
+    href: "/docs/manual/latest/api/js/typed-array_float-64-array",
   },
   {
     name: "TypedArrayInt8Array",
-    href: "/apis/latest/js/typed-array_int-8-array",
+    href: "/docs/manual/latest/api/js/typed-array_int-8-array",
   },
   {
     name: "TypedArrayInt16Array",
-    href: "/apis/latest/js/typed-array_int-16-array",
+    href: "/docs/manual/latest/api/js/typed-array_int-16-array",
   },
   {
     name: "TypedArrayInt32Array",
-    href: "/apis/latest/js/typed-array_int-32-array",
+    href: "/docs/manual/latest/api/js/typed-array_int-32-array",
   },
-  {name: "TypedArrayTypeS", href: "/apis/latest/js/typed-array_type-s"},
+  {name: "TypedArrayTypeS", href: "/docs/manual/latest/api/js/typed-array_type-s"},
   {
     name: "TypedArrayUint8Array",
-    href: "/apis/latest/js/typed-array_uint-8-array",
+    href: "/docs/manual/latest/api/js/typed-array_uint-8-array",
   },
   {
     name: "TypedArrayUint8ClampedArray",
-    href: "/apis/latest/js/typed-array_uint-8-clamped-array",
+    href: "/docs/manual/latest/api/js/typed-array_uint-8-clamped-array",
   },
   {
     name: "TypedArrayUint16Array",
-    href: "/apis/latest/js/typed-array_uint-16-array",
+    href: "/docs/manual/latest/api/js/typed-array_uint-16-array",
   },
   {
     name: "TypedArrayUint32Array",
-    href: "/apis/latest/js/typed-array_uint-32-array",
+    href: "/docs/manual/latest/api/js/typed-array_uint-32-array",
   },
   {
     name: "TypedArray2ArrayBuffer",
-    href: "/apis/latest/js/typed-array-2_array-buffer",
+    href: "/docs/manual/latest/api/js/typed-array-2_array-buffer",
   },
   {
     name: "TypedArray2DataView",
-    href: "/apis/latest/js/typed-array-2_data-view",
+    href: "/docs/manual/latest/api/js/typed-array-2_data-view",
   },
   {
     name: "TypedArray2Float32Array",
-    href: "/apis/latest/js/typed-array-2_float-32-array",
+    href: "/docs/manual/latest/api/js/typed-array-2_float-32-array",
   },
   {
     name: "TypedArray2Float64Array",
-    href: "/apis/latest/js/typed-array-2_float-64-array",
+    href: "/docs/manual/latest/api/js/typed-array-2_float-64-array",
   },
   {
     name: "TypedArray2Int8Array",
-    href: "/apis/latest/js/typed-array-2_int-8-array",
+    href: "/docs/manual/latest/api/js/typed-array-2_int-8-array",
   },
   {
     name: "TypedArray2Int16Array",
-    href: "/apis/latest/js/typed-array-2_int-16-array",
+    href: "/docs/manual/latest/api/js/typed-array-2_int-16-array",
   },
   {
     name: "TypedArray2Int32Array",
-    href: "/apis/latest/js/typed-array-2_int-32-array",
+    href: "/docs/manual/latest/api/js/typed-array-2_int-32-array",
   },
   {
     name: "TypedArray2Uint8Array",
-    href: "/apis/latest/js/typed-array-2_uint-8-array",
+    href: "/docs/manual/latest/api/js/typed-array-2_uint-8-array",
   },
   {
     name: "TypedArray2Uint8ClampedArray",
-    href: "/apis/latest/js/typed-array-2_uint-8-clamped-array",
+    href: "/docs/manual/latest/api/js/typed-array-2_uint-8-clamped-array",
   },
   {
     name: "TypedArray2Uint16Array",
-    href: "/apis/latest/js/typed-array-2_uint-16-array",
+    href: "/docs/manual/latest/api/js/typed-array-2_uint-16-array",
   },
   {
     name: "TypedArray2Uint32Array",
-    href: "/apis/latest/js/typed-array-2_uint-32-array",
+    href: "/docs/manual/latest/api/js/typed-array-2_uint-32-array",
   },
-  {name: "TypedArray2", href: "/apis/latest/js/typed-array-2"},
-  {name: "TypedArray", href: "/apis/latest/js/typed-array"},
-  {name: "Types", href: "/apis/latest/js/types"},
-  {name: "Undefined", href: "/apis/latest/js/undefined"},
-  {name: "Vector", href: "/apis/latest/js/vector"},
+  {name: "TypedArray2", href: "/docs/manual/latest/api/js/typed-array-2"},
+  {name: "TypedArray", href: "/docs/manual/latest/api/js/typed-array"},
+  {name: "Types", href: "/docs/manual/latest/api/js/types"},
+  {name: "Undefined", href: "/docs/manual/latest/api/js/undefined"},
+  {name: "Vector", href: "/docs/manual/latest/api/js/vector"},
 |];
 
 let categories = [|
@@ -171,17 +170,19 @@ module Docs = {
         ->getWithDefault("?")
       );
 
-    let urlPath = UrlPath.parse(~base="/apis", route);
+    let url = route->Url.parse;
 
-    let breadcrumbs =
-      Belt.Option.map(
-        urlPath,
-        v => {
-          let {UrlPath.version} = v;
-          let prefix = UrlPath.[{name: "API", href: "/apis/" ++ version}];
-          UrlPath.toBreadCrumbs(~prefix, v);
-        },
-      );
+    let version =
+      switch (url.version) {
+        | Version(version) => version
+        | NoVersion => "latest"
+        | Latest => "latest"
+        };
+
+    let prefix =
+      Url.{name: "API", href: "/docs/manual/" ++ version ++ "/api"};
+
+    let breadcrumbs = ApiLayout.makeBreadcrumbs(~prefix, route);
 
     let activeToc =
       ApiLayout.Toc.{
@@ -193,7 +194,7 @@ module Docs = {
     let title = "JS Module";
     let version = "latest";
 
-    <ApiLayout components title version activeToc categories ?breadcrumbs>
+    <ApiLayout components title version activeToc categories breadcrumbs>
       children
     </ApiLayout>;
   };

@@ -15,7 +15,6 @@ let tocData:
   "require('../index_data/gentype_toc.json')"
 ];
 
-module UrlPath = SidebarLayout.UrlPath;
 module NavItem = SidebarLayout.Sidebar.NavItem;
 module Category = SidebarLayout.Sidebar.Category;
 module Toc = SidebarLayout.Toc;
@@ -59,30 +58,37 @@ let make = (~components=Markdown.default, ~children) => {
         })
     );
 
-  let urlPath = UrlPath.parse(~base="/docs/gentype", route);
+  let url = route->Url.parse;
+
+  let version =
+    switch (url.version) {
+    | Version(version) => version
+    | NoVersion => "latest"
+    | Latest => "latest"
+    };
+
+  let prefix = [
+    Url.{name: "Docs", href: "/docs/latest"},
+    Url.{
+      name: "GenType",
+      href: "/docs/gentype/" ++ version ++ "/introduction",
+    },
+  ];
 
   let breadcrumbs =
-    Belt.Option.map(
-      urlPath,
-      v => {
-        let {UrlPath.version} = v;
-        let prefix =
-          UrlPath.[
-            {name: "Docs", href: "/docs/latest"},
-            {
-              name: "GenType",
-              href: "/docs/gentype/" ++ version ++ "/introduction",
-            },
-          ];
-        UrlPath.toBreadCrumbs(~prefix, v);
-      },
+    Belt.List.concat(
+      prefix,
+      DocsLayout.makeBreadcrumbs(
+        ~basePath="/docs/gentype/" ++ version,
+        route,
+      ),
     );
 
   let title = "GenType";
   let version = "v3";
 
   <DocsLayout
-    theme=`Reason components categories version title ?activeToc ?breadcrumbs>
+    theme=`Reason components categories version title ?activeToc breadcrumbs>
     children
   </DocsLayout>;
 };

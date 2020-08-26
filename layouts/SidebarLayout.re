@@ -191,108 +191,9 @@ module Sidebar = {
   };
 };
 
-module UrlPath = {
-  /*
-      Example base: /apis
-      Example route: /apis/latest/belt/something/mutable-map-int
-
-      would parse into following `t`:
-      {
-       base: "/apis",
-       version: "latest",
-       relPaths: [|"something"|],
-       up: Some("belt"),
-       current: "mutable-map-int"
-      }
-   */
-  type t = {
-    base: string,
-    version: string,
-    relPaths: array(string),
-    up: option(string),
-    current: option(string),
-  };
-
-  let parse = (~base: string, route: string): option(t) => {
-    let allPaths =
-      Js.String2.replace(route, base ++ "/", "")->Js.String2.split("/");
-
-    let total = Belt.Array.length(allPaths);
-    if (total < 2) {
-      None;
-    } else {
-      let version = Belt.Array.getExn(allPaths, 0);
-      let (up, current) =
-        switch (Js.Array2.slice(allPaths, ~end_=total, ~start=-2)) {
-        | [|up, current|] =>
-          let up = up === version ? None : Some(up);
-          (up, Some(current));
-        | _ => (None, None)
-        };
-
-      let relPaths = Js.Array.slice(allPaths, ~start=1, ~end_=-2);
-
-      Some({base, relPaths, version, up, current});
-    };
-  };
-
-  /* Beautifies current titles from the url representation */
-  let prettyString = (str: string) => {
-    Util.String.(str->camelCase->capitalize);
-  };
-
-  let fullUpLink = (urlPath: t): string => {
-    let {base, up, version} = urlPath;
-    base
-    ++ "/"
-    ++ version
-    ++ up->Belt.Option.mapWithDefault("", str => "/" ++ str);
-  };
-
-  type breadcrumb = {
-    name: string,
-    href: string,
-  };
-
-  /*
-      Example to represent:
-      Api / JavaScript / latest / Belt / Array
-
-      ~prefix=[{name: "API", href="apis"}, {name: "JavaScript", href="apis/latest"}]
-
-   */
-  let toBreadCrumbs =
-      (~prefix: list(breadcrumb)=[], urlPath: t): list(breadcrumb) => {
-    let {base, version, relPaths, up} = urlPath;
-
-    let upCrumb =
-      Belt.Option.mapWithDefault(up, [], up =>
-        [{name: prettyString(up), href: fullUpLink(urlPath)}]
-      );
-
-    let calculatedCrumbs =
-      Belt.List.(
-        concat(
-          fromArray(relPaths),
-          urlPath.current
-          ->Belt.Option.mapWithDefault([], current => [current]),
-        )
-        ->map(path => {
-            let upPath = Belt.Option.mapWithDefault(up, "", up => up ++ "/");
-            {
-              name: prettyString(path),
-              href: base ++ "/" ++ version ++ "/" ++ upPath ++ path,
-            };
-          })
-      );
-    Belt.List.(concatMany([|prefix, upCrumb, calculatedCrumbs|]));
-  };
-};
-
 module BreadCrumbs = {
-  // See UrlPath for more details on the parameters
   [@react.component]
-  let make = (~crumbs: list(UrlPath.breadcrumb)) => {
+  let make = (~crumbs: list(Url.breadcrumb)) => {
     <div
       className="w-full font-medium tracking-tight overflow-x-auto text-14 text-night">
       {Belt.List.mapWithIndex(
@@ -339,7 +240,7 @@ let make =
       ~sidebarState: (bool, (bool => bool) => unit),
       // (Sidebar, toggleSidebar) ... for toggling sidebar in mobile view
       ~sidebar: React.element,
-      ~breadcrumbs: option(list(UrlPath.breadcrumb))=?,
+      ~breadcrumbs: option(list(Url.breadcrumb))=?,
       ~children,
     ) => {
   let (isNavOpen, setNavOpen) = React.useState(() => false);

@@ -15,15 +15,14 @@ let indexData:
   "require('../index_data/latest_dom_api_index.json')"
 ];
 
-module UrlPath = SidebarLayout.UrlPath;
 module Category = ApiLayout.Sidebar.Category;
 module NavItem = ApiLayout.Sidebar.NavItem;
 
-let overviewNavs = [|NavItem.{name: "Dom", href: "/apis/latest/dom"}|];
+let overviewNavs = [|NavItem.{name: "Dom", href: "/docs/manual/latest/api/dom"}|];
 
 let moduleNavs = [|
-  NavItem.{name: "Storage", href: "/apis/latest/dom/storage"},
-  NavItem.{name: "Storage2", href: "/apis/latest/dom/storage2"},
+  NavItem.{name: "Storage", href: "/docs/manual/latest/api/dom/storage"},
+  NavItem.{name: "Storage2", href: "/docs/manual/latest/api/dom/storage2"},
 |];
 
 let categories = [|
@@ -55,17 +54,19 @@ module Docs = {
         ->getWithDefault("?")
       );
 
-    let urlPath = UrlPath.parse(~base="/apis", route);
+    let url = route->Url.parse;
 
-    let breadcrumbs =
-      Belt.Option.map(
-        urlPath,
-        v => {
-          let {UrlPath.version} = v;
-          let prefix = UrlPath.[{name: "API", href: "/apis/" ++ version}];
-          UrlPath.toBreadCrumbs(~prefix, v);
-        },
-      );
+    let version =
+      switch (url.version) {
+        | Version(version) => version
+        | NoVersion => "latest"
+        | Latest => "latest"
+        };
+
+    let prefix =
+      Url.{name: "API", href: "/docs/manual/" ++ version ++ "/api"};
+
+    let breadcrumbs = ApiLayout.makeBreadcrumbs(~prefix, route);
 
     let activeToc =
       ApiLayout.Toc.{
@@ -77,7 +78,7 @@ module Docs = {
     let title = "Dom Module";
     let version = "latest";
 
-    <ApiLayout components title version activeToc categories ?breadcrumbs>
+    <ApiLayout components title version activeToc categories breadcrumbs>
       children
     </ApiLayout>;
   };

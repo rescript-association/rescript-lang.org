@@ -6,14 +6,54 @@ module Link = Next.Link;
 
 module Sidebar = SidebarLayout.Sidebar;
 
-module UrlPath = SidebarLayout.UrlPath;
 module NavItem = Sidebar.NavItem;
 module Category = Sidebar.Category;
+
+let makeBreadcrumbsFromPaths =
+    (~basePath: string, paths: array(string)): list(Url.breadcrumb) => {
+      Js.log(paths);
+  let (_, rest) =
+    Belt.Array.reduce(
+      paths,
+      (basePath, [||]),
+      (acc, path) => {
+        let (baseHref, ret) = acc;
+
+        let href = baseHref ++ "/" ++ path;
+
+        Js.Array2.push(ret, Url.{name: prettyString(path), href})
+        ->ignore;
+        (href, ret);
+      },
+    );
+  rest->Belt.List.fromArray;
+};
+
+let makeBreadcrumbs =
+    (~basePath: string, route: string): list(Url.breadcrumb) => {
+  let url = route->Url.parse;
+
+  let (_, rest) =
+    url.pagepath
+    ->Belt.Array.reduce(
+        (basePath, [||]),
+        (acc, path) => {
+          let (baseHref, ret) = acc;
+
+          let href = baseHref ++ "/" ++ path;
+
+          Js.Array2.push(ret,Url.{name: prettyString(path), href})
+          ->ignore;
+          (href, ret);
+        },
+      );
+  rest->Belt.List.fromArray;
+};
 
 [@react.component]
 let make =
     (
-      ~breadcrumbs: option(list(UrlPath.breadcrumb))=?,
+      ~breadcrumbs: option(list(Url.breadcrumb))=?,
       ~title: string,
       ~frontmatter: option(Js.Json.t)=?,
       ~version: option(string)=?,

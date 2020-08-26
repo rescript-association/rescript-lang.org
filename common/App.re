@@ -58,55 +58,60 @@ let default = (props: props): React.element => {
 
   switch (url) {
   // docs routes
-  | {base: [|"docs", "manual"|], version} =>
-    switch (version) {
-    | Latest =>
-      <ManualDocsLayout.Prose frontmatter={component->frontmatter}>
-        content
-      </ManualDocsLayout.Prose>
-    | Version("v8.0.0") =>
-      <ManualDocsLayout8_0_0.Prose frontmatter={component->frontmatter}>
-        content
-      </ManualDocsLayout8_0_0.Prose>
-    | _ => React.null
+  | {base: [|"docs", "manual"|], pagepath, version} =>
+    // check if it's an api route
+    switch (Belt.Array.get(pagepath, 0)) {
+    | Some("api") =>
+      switch (version) {
+      | Latest =>
+        switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
+        | (1, _) => <ApiOverviewLayout.Docs> content </ApiOverviewLayout.Docs>
+        | (2, Some("js")) =>
+          <JsDocsLayout.Prose> content </JsDocsLayout.Prose>
+        | (2, Some("belt")) =>
+          <BeltDocsLayout.Prose> content </BeltDocsLayout.Prose>
+        | (_, Some("js")) => <JsDocsLayout.Docs> content </JsDocsLayout.Docs>
+        | (_, Some("belt")) =>
+          <BeltDocsLayout.Docs> content </BeltDocsLayout.Docs>
+        | (_, Some("dom")) =>
+          <DomDocsLayout.Docs> content </DomDocsLayout.Docs>
+        | _ => React.null
+        }
+      | Version("v8.0.0") =>
+        switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
+        | (1, _) =>
+          <ApiOverviewLayout8_0_0.Docs> content </ApiOverviewLayout8_0_0.Docs>
+        | (2, Some("js")) =>
+          <JsDocsLayout8_0_0.Prose> content </JsDocsLayout8_0_0.Prose>
+        | (2, Some("belt")) =>
+          <BeltDocsLayout8_0_0.Prose> content </BeltDocsLayout8_0_0.Prose>
+        | (_, Some("js")) =>
+          <JsDocsLayout8_0_0.Docs> content </JsDocsLayout8_0_0.Docs>
+        | (_, Some("belt")) =>
+          <BeltDocsLayout8_0_0.Docs> content </BeltDocsLayout8_0_0.Docs>
+        | (_, Some("dom")) =>
+          <DomDocsLayout8_0_0.Docs> content </DomDocsLayout8_0_0.Docs>
+        | _ => React.null
+        }
+      | _ => content
+      }
+    | _ =>
+      switch (version) {
+      | Latest =>
+        <ManualDocsLayout.Prose frontmatter={component->frontmatter}>
+          content
+        </ManualDocsLayout.Prose>
+      | Version("v8.0.0") =>
+        <ManualDocsLayout8_0_0.Prose frontmatter={component->frontmatter}>
+          content
+        </ManualDocsLayout8_0_0.Prose>
+      | _ => React.null
+      }
     }
   | {base: [|"docs", "reason-compiler"|], version: Latest} =>
     <ReasonCompilerDocsLayout> content </ReasonCompilerDocsLayout>
   | {base: [|"docs", "gentype"|], version: Latest} =>
     <GenTypeDocsLayout> content </GenTypeDocsLayout>
-  // apis routes
-  | {base: [|"apis"|], version, pagepath} =>
-    switch (version) {
-    | Latest =>
-      switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 0)) {
-      | (0, _) => <ApiOverviewLayout.Docs> content </ApiOverviewLayout.Docs>
-      | (1, Some("js")) => <JsDocsLayout.Prose> content </JsDocsLayout.Prose>
-      | (1, Some("belt")) =>
-        <BeltDocsLayout.Prose> content </BeltDocsLayout.Prose>
-      | (_, Some("js")) => <JsDocsLayout.Docs> content </JsDocsLayout.Docs>
-      | (_, Some("belt")) =>
-        <BeltDocsLayout.Docs> content </BeltDocsLayout.Docs>
-      | (_, Some("dom")) => <DomDocsLayout.Docs> content </DomDocsLayout.Docs>
-      | _ => React.null
-      }
-    | Version("v8.0.0") =>
-      switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 0)) {
-      | (0, _) =>
-        <ApiOverviewLayout8_0_0.Docs> content </ApiOverviewLayout8_0_0.Docs>
-      | (1, Some("js")) =>
-        <JsDocsLayout8_0_0.Prose> content </JsDocsLayout8_0_0.Prose>
-      | (1, Some("belt")) =>
-        <BeltDocsLayout8_0_0.Prose> content </BeltDocsLayout8_0_0.Prose>
-      | (_, Some("js")) =>
-        <JsDocsLayout8_0_0.Docs> content </JsDocsLayout8_0_0.Docs>
-      | (_, Some("belt")) =>
-        <BeltDocsLayout8_0_0.Docs> content </BeltDocsLayout8_0_0.Docs>
-      | (_, Some("dom")) => <DomDocsLayout8_0_0.Docs> content </DomDocsLayout8_0_0.Docs>
-      | _ => React.null
-      }
-    | _ => content
-    }
-
   // common routes
   | {base} =>
     switch (Belt.List.fromArray(base)) {

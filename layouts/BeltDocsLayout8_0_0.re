@@ -20,64 +20,90 @@ let package: {. "dependencies": {. "bs-platform": string}} = [%raw
   "require('../package.json')"
 ];
 
-module UrlPath = SidebarLayout.UrlPath;
 module Category = ApiLayout.Sidebar.Category;
 module NavItem = ApiLayout.Sidebar.NavItem;
 
 let overviewNavs = [|
-  NavItem.{name: "Introduction", href: "/apis/v8.0.0/belt"},
+  NavItem.{name: "Introduction", href: "/docs/manual/v8.0.0/api/belt"},
 |];
 
 let setNavs = [|
-  NavItem.{name: "HashSet", href: "/apis/v8.0.0/belt/hash-set"},
-  {name: "HashSetInt", href: "/apis/v8.0.0/belt/hash-set-int"},
-  {name: "HashSetString", href: "/apis/v8.0.0/belt/hash-set-string"},
-  {name: "Set", href: "/apis/v8.0.0/belt/set"},
-  {name: "SetDict", href: "/apis/v8.0.0/belt/set-dict"},
-  {name: "SetInt", href: "/apis/v8.0.0/belt/set-int"},
-  {name: "SetString", href: "/apis/v8.0.0/belt/set-string"},
+  NavItem.{name: "HashSet", href: "/docs/manual/v8.0.0/api/belt/hash-set"},
+  {name: "HashSetInt", href: "/docs/manual/v8.0.0/api/belt/hash-set-int"},
+  {
+    name: "HashSetString",
+    href: "/docs/manual/v8.0.0/api/belt/hash-set-string",
+  },
+  {name: "Set", href: "/docs/manual/v8.0.0/api/belt/set"},
+  {name: "SetDict", href: "/docs/manual/v8.0.0/api/belt/set-dict"},
+  {name: "SetInt", href: "/docs/manual/v8.0.0/api/belt/set-int"},
+  {name: "SetString", href: "/docs/manual/v8.0.0/api/belt/set-string"},
 |];
 
 let mapNavs = [|
-  NavItem.{name: "HashMap", href: "/apis/v8.0.0/belt/hash-map"},
-  {name: "HashMapInt", href: "/apis/v8.0.0/belt/hash-map-int"},
-  {name: "HashMapString", href: "/apis/v8.0.0/belt/hash-map-string"},
-  {name: "Map", href: "/apis/v8.0.0/belt/map"},
-  {name: "MapDict", href: "/apis/v8.0.0/belt/map-dict"},
-  {name: "MapInt", href: "/apis/v8.0.0/belt/map-int"},
-  {name: "MapString", href: "/apis/v8.0.0/belt/map-string"},
+  NavItem.{name: "HashMap", href: "/docs/manual/v8.0.0/api/belt/hash-map"},
+  {name: "HashMapInt", href: "/docs/manual/v8.0.0/api/belt/hash-map-int"},
+  {
+    name: "HashMapString",
+    href: "/docs/manual/v8.0.0/api/belt/hash-map-string",
+  },
+  {name: "Map", href: "/docs/manual/v8.0.0/api/belt/map"},
+  {name: "MapDict", href: "/docs/manual/v8.0.0/api/belt/map-dict"},
+  {name: "MapInt", href: "/docs/manual/v8.0.0/api/belt/map-int"},
+  {name: "MapString", href: "/docs/manual/v8.0.0/api/belt/map-string"},
 |];
 
 let mutableCollectionsNavs = [|
-  NavItem.{name: "MutableMap", href: "/apis/v8.0.0/belt/mutable-map"},
-  {name: "MutableMapInt", href: "/apis/v8.0.0/belt/mutable-map-int"},
-  {name: "MutableMapString", href: "/apis/v8.0.0/belt/mutable-map-string"},
-  {name: "MutableQueue", href: "/apis/v8.0.0/belt/mutable-queue"},
-  {name: "MutableSet", href: "/apis/v8.0.0/belt/mutable-set"},
-  {name: "MutableSetInt", href: "/apis/v8.0.0/belt/mutable-set-int"},
-  {name: "MutableSetString", href: "/apis/v8.0.0/belt/mutable-set-string"},
-  {name: "MutableStack", href: "/apis/v8.0.0/belt/mutable-stack"},
+  NavItem.{
+    name: "MutableMap",
+    href: "/docs/manual/v8.0.0/api/belt/mutable-map",
+  },
+  {
+    name: "MutableMapInt",
+    href: "/docs/manual/v8.0.0/api/belt/mutable-map-int",
+  },
+  {
+    name: "MutableMapString",
+    href: "/docs/manual/v8.0.0/api/belt/mutable-map-string",
+  },
+  {name: "MutableQueue", href: "/docs/manual/v8.0.0/api/belt/mutable-queue"},
+  {name: "MutableSet", href: "/docs/manual/v8.0.0/api/belt/mutable-set"},
+  {
+    name: "MutableSetInt",
+    href: "/docs/manual/v8.0.0/api/belt/mutable-set-int",
+  },
+  {
+    name: "MutableSetString",
+    href: "/docs/manual/v8.0.0/api/belt/mutable-set-string",
+  },
+  {name: "MutableStack", href: "/docs/manual/v8.0.0/api/belt/mutable-stack"},
 |];
 
 let basicNavs = [|
-  NavItem.{name: "Array", href: "/apis/v8.0.0/belt/array"},
-  {name: "List", href: "/apis/v8.0.0/belt/list"},
-  {name: "Float", href: "/apis/v8.0.0/belt/float"},
-  {name: "Int", href: "/apis/v8.0.0/belt/int"},
-  {name: "Range", href: "/apis/v8.0.0/belt/range"},
-  {name: "Id", href: "/apis/v8.0.0/belt/id"},
-  {name: "Option", href: "/apis/v8.0.0/belt/option"},
-  {name: "Result", href: "/apis/v8.0.0/belt/result"},
+  NavItem.{name: "Array", href: "/docs/manual/v8.0.0/api/belt/array"},
+  {name: "List", href: "/docs/manual/v8.0.0/api/belt/list"},
+  {name: "Float", href: "/docs/manual/v8.0.0/api/belt/float"},
+  {name: "Int", href: "/docs/manual/v8.0.0/api/belt/int"},
+  {name: "Range", href: "/docs/manual/v8.0.0/api/belt/range"},
+  {name: "Id", href: "/docs/manual/v8.0.0/api/belt/id"},
+  {name: "Option", href: "/docs/manual/v8.0.0/api/belt/option"},
+  {name: "Result", href: "/docs/manual/v8.0.0/api/belt/result"},
 |];
 
 let sortNavs = [|
-  NavItem.{name: "SortArray", href: "/apis/v8.0.0/belt/sort-array"},
-  {name: "SortArrayInt", href: "/apis/v8.0.0/belt/sort-array-int"},
-  {name: "SortArrayString", href: "/apis/v8.0.0/belt/sort-array-string"},
+  NavItem.{
+    name: "SortArray",
+    href: "/docs/manual/v8.0.0/api/belt/sort-array",
+  },
+  {name: "SortArrayInt", href: "/docs/manual/v8.0.0/api/belt/sort-array-int"},
+  {
+    name: "SortArrayString",
+    href: "/docs/manual/v8.0.0/api/belt/sort-array-string",
+  },
 |];
 
 let utilityNavs = [|
-  NavItem.{name: "Debug", href: "/apis/v8.0.0/belt/debug"},
+  NavItem.{name: "Debug", href: "/docs/manual/v8.0.0/api/belt/debug"},
 |];
 
 let categories = [|
@@ -114,17 +140,19 @@ module Docs = {
         ->getWithDefault("?")
       );
 
-    let urlPath = UrlPath.parse(~base="/apis", route);
+    let url = route->Url.parse;
 
-    let breadcrumbs =
-      Belt.Option.map(
-        urlPath,
-        v => {
-          let {UrlPath.version} = v;
-          let prefix = UrlPath.[{name: "API", href: "/apis/" ++ version}];
-          UrlPath.toBreadCrumbs(~prefix, v);
-        },
-      );
+    let version =
+      switch (url.version) {
+        | Version(version) => version
+        | NoVersion => "latest"
+        | Latest => "latest"
+        };
+
+    let prefix =
+      Url.{name: "API", href: "/docs/manual/" ++ version ++ "/api"};
+
+    let breadcrumbs = ApiLayout.makeBreadcrumbs(~prefix, route);
 
     let activeToc =
       ApiLayout.Toc.{
@@ -133,12 +161,12 @@ module Docs = {
           Belt.Array.map(headers, ((name, href)) => {header: name, href}),
       };
 
-    let title = "Belt";
+    let title = "Belt Stdlib";
     let version = "v8.0.0";
 
     let warnBanner = <ApiLayout.OldDocsWarning route version />;
 
-    <ApiLayout components title version activeToc categories ?breadcrumbs>
+    <ApiLayout components title version activeToc categories breadcrumbs>
       warnBanner
       children
     </ApiLayout>;

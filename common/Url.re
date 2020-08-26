@@ -43,9 +43,20 @@ type t = {
   pagepath: array(string),
 };
 
+// Moved here from original SidebarLayout.UrlPath
+type breadcrumb = {
+  name: string,
+  href: string,
+};
+
 let isVersion = str =>
   Js.String2.match(str, [%re "/latest|v\\d+(\\.\\d+)?(\\.\\d+)?/"])
   ->Belt.Option.isSome;
+
+/* Beautifies url based string to somewhat acceptable representation */
+let prettyString = (str: string) => {
+  Util.String.(str->camelCase->capitalize);
+};
 
 let parse = (route: string): t => {
   let fullpath =

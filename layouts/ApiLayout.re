@@ -38,6 +38,28 @@ module OldDocsWarning = {
   };
 };
 
+let makeBreadcrumbs =
+    (~prefix:Url.breadcrumb, route: string): list(Url.breadcrumb) => {
+  let url = route->Url.parse;
+
+  let (_, rest) =
+    // Strip the "api" part of the url before creating the rest of the breadcrumbs
+    Js.Array2.sliceFrom(url.pagepath, 1)
+    ->Belt.Array.reduce(
+        (prefix.href, [||]),
+        (acc, path) => {
+          let (baseHref, ret) = acc;
+
+          let href = baseHref ++ "/" ++ path;
+
+          Js.Array2.push(ret, Url.{name: prettyString(path), href})
+          ->ignore;
+          (href, ret);
+        },
+      );
+  Belt.Array.concat([|prefix|], rest)->Belt.List.fromArray;
+};
+
 [@react.component]
 let make =
     (
@@ -120,7 +142,7 @@ let make =
 
   let pageTitle =
     switch (breadcrumbs) {
-    | Some([_, {SidebarLayout.UrlPath.name}]) => name
+    | Some([_, {Url.name}]) => name
     | Some([_, _, {name}]) => "Js." ++ name
     | _ => "Js"
     };
