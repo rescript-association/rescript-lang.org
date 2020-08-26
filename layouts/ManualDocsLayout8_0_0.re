@@ -110,7 +110,7 @@ let jsInteropNavs = [|
 
 let guidesNavs = [|
   NavItem.{
-    name: "Converting from JS",
+    name: "Converting from JavaScript",
     href: "/docs/manual/v8.0.0/converting-from-js",
   },
   {name: "Libraries", href: "/docs/manual/v8.0.0/libraries"},
