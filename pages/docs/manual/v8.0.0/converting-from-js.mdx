@@ -9,7 +9,7 @@ canonical: "/docs/manual/latest/converting-from-js"
 ReScript offers a unique project conversion methodology which:
 - Ensures minimal disruption to your teammates (very important!).
 - Remove the typical friction of verifying conversion's correctness and performance guarantees.
-- **Does not** require you to search for pre-made binding libraries made by others. ReScript doesn't need the equivalent of TypeScript's `DefinitelyTyped`.
+- Doesn't force you to search for pre-made binding libraries made by others. **ReScript doesn't need the equivalent of TypeScript's `DefinitelyTyped`**.
 
 Enjoy!
 
@@ -287,7 +287,11 @@ We've:
 
 Check that the `.bs.js` output didn't change. How rigidly to type your JavaScript code is up to you; we recommend not typing them too elaborately; it's sometime an endless chase, and produces diminishing returns, especially considering that the elaborate-ness might turn off your potential teammates.
 
-The last impression you want your teammates to have of ReScript would be that converting your project takes too much effort. Everything in moderation!
+## Tips & Tricks
+
+In the same vein of idea, **resist the urge to write your own wrapper functions for the JS code you're converting**. Use `external`s, which are guaranteed to be erased in the output. And avoid trying to take the occasion to convert JS data structures into ReScript-specific data structures like variant or list. **This isn't the time for that**.
+
+The moment you produce extra conversion code in the output, your skeptical teammate's mental model might switch from "I recognize this output" to "this conversion might be introducing more problems than it solves. Why are we testing ReScript again?". Then you've lost.
 
 ## Conclusion
 
