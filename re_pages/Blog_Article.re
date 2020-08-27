@@ -89,7 +89,7 @@ module BlogHeader = {
         ~author: BlogFrontmatter.Author.t,
         ~co_authors: array(BlogFrontmatter.Author.t),
         ~title: string,
-        ~category: string,
+        ~category: option(string)=?,
         ~description: option(string),
         ~articleImg: option(string),
       ) => {
@@ -100,8 +100,10 @@ module BlogHeader = {
     <div className="flex flex-col items-center">
       <div className="w-full max-w-705">
         <div className="text-night-light text-lg mb-5">
-          category->s
-          middleDotSpacer->s
+          {switch (category) {
+           | Some(category) => <> category->s middleDotSpacer->s </>
+           | None => React.null
+           }}
           {Util.Date.toDayMonthYear(date)->s}
         </div>
         <h1 className=Text.H1.default> title->s </h1>
@@ -170,6 +172,11 @@ let default = (props: props) => {
         previewImg,
         category,
       }) =>
+      let category =
+        Js.Null.toOption(category)
+        ->Belt.Option.map(category => {
+            category->BlogFrontmatter.Category.toString
+          });
       <div className="w-full">
         <Meta
           title={title ++ " | Reason Blog"}
@@ -183,7 +190,7 @@ let default = (props: props) => {
             author
             co_authors
             title
-            category={category->BlogFrontmatter.Category.toString}
+            ?category
             description={description->Js.Null.toOption}
             articleImg={articleImg->Js.Null.toOption}
           />
@@ -218,7 +225,7 @@ let default = (props: props) => {
             </div>
           </div>
         </div>
-      </div>
+      </div>;
 
     | Error(msg) =>
       <div>

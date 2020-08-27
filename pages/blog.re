@@ -111,7 +111,7 @@ module BlogCard = {
         ~previewImg: option(string)=?,
         ~title: string="Unknown Title",
         ~author: BlogFrontmatter.Author.t,
-        ~category: string,
+        ~category: option(string)=?,
         ~badge: option(BlogFrontmatter.Badge.t)=?,
         ~date: Js.Date.t,
         ~slug: string,
@@ -140,8 +140,10 @@ module BlogCard = {
           <a> <h2 className=Text.H3.default> title->s </h2> </a>
         </Link>
         <div className="text-night-light text-sm">
-          category->s
-          {j| · |j}->s
+          {switch (category) {
+           | Some(category) => <> category->s {j| · |j}->s </>
+           | None => React.null
+           }}
           {date->Util.Date.toDayMonthYear->s}
         </div>
       </div>
@@ -158,7 +160,7 @@ module FeatureCard = {
         ~author: BlogFrontmatter.Author.t,
         ~badge: option(BlogFrontmatter.Badge.t)=?,
         ~date: Js.Date.t,
-        ~category: string,
+        ~category: option(string)=?,
         ~firstParagraph: string="",
         ~slug: string,
       ) => {
@@ -217,9 +219,11 @@ module FeatureCard = {
                    </a>
                  | None => displayName->s
                  }}
-                middleDotSpacer->s
-                category->s
-                middleDotSpacer->s
+                {switch (category) {
+                 | Some(category) =>
+                   <> middleDotSpacer->s category->s middleDotSpacer->s </>
+                 | None => middleDotSpacer->s
+                 }}
                 {date->Util.Date.toDayMonthYear->s}
               </div>
             </div>
@@ -324,7 +328,10 @@ let default = (props: props): React.element => {
         | All => posts
         | Category(selected) =>
           Belt.Array.keep(posts, ({frontmatter}) => {
-            frontmatter.category === selected
+            switch (Js.Null.toOption(frontmatter.category)) {
+            | Some(category) => category === selected
+            | None => false
+            }
           })
         };
 
@@ -334,6 +341,13 @@ let default = (props: props): React.element => {
         | _ =>
           let first = Belt.Array.getExn(filtered, 0);
           let rest = Js.Array2.sliceFrom(filtered, 1);
+
+          let category =
+            first.frontmatter.category
+            ->Js.Null.toOption
+            ->Belt.Option.map(category => {
+                category->BlogFrontmatter.Category.toString
+              });
 
           let featureBox =
             <div className="w-full mb-24 lg:px-8 xl:px-0">
@@ -346,9 +360,7 @@ let default = (props: props): React.element => {
                   first.frontmatter.description->Js.Null.toOption
                 }
                 date={first.frontmatter.date->DateStr.toDate}
-                category={
-                  first.frontmatter.category->BlogFrontmatter.Category.toString
-                }
+                ?category
                 slug={first.id}
               />
             </div>;
@@ -363,6 +375,13 @@ let default = (props: props): React.element => {
                    rest,
                    (i, post) => {
                      let badge = post.frontmatter.badge->Js.Null.toOption;
+                     let category =
+                       first.frontmatter.category
+                       ->Js.Null.toOption
+                       ->Belt.Option.map(category => {
+                           category->BlogFrontmatter.Category.toString
+                         });
+
                      <BlogCard
                        key={post.id ++ Belt.Int.toString(i)}
                        previewImg=?{
@@ -371,10 +390,7 @@ let default = (props: props): React.element => {
                        title={post.frontmatter.title}
                        author={post.frontmatter.author}
                        ?badge
-                       category={
-                         post.frontmatter.category
-                         ->BlogFrontmatter.Category.toString
-                       }
+                       ?category
                        date={post.frontmatter.date->DateStr.toDate}
                        slug={post.id}
                      />;
@@ -388,7 +404,8 @@ let default = (props: props): React.element => {
         };
 
       let catSelector =
-        if (Belt.Array.length(availableCategories) >= 2) {
+        // TODO: Reenable CategorySelector at some later point when it's useful
+        if (false && Belt.Array.length(availableCategories) >= 2) {
           /* We hide the Category Selector for mobile for now*/
           <div className="hidden sm:flex justify-center ">
             <div
@@ -458,24 +475,36 @@ let getStaticProps: Next.GetStaticProps.t(props, params) =
               let malformed = Belt.Array.concat(malformed, [|m|]);
               (posts, malformed, availableCategories);
             | Ok(frontmatter) =>
-              let p = {Post.id, frontmatter};
-              let posts = Belt.Array.concat(posts, [|p|]);
+              // TODO: Right now we completely remove archived posts
+              let posts =
+                if (postData.archived) {
+                  posts;
+                } else {
+                  let p = {Post.id, frontmatter};
+                  Belt.Array.concat(posts, [|p|]);
+                };
+
+              let category = Js.Null.toOption(frontmatter.category);
 
               let hasCategory =
                 Js.Array2.some(availableCategories, c =>
-                  c === frontmatter.category
+                  switch (category) {
+                  | Some(category) => c === category
+                  | None => false
+                  }
                 );
 
               // We will only add categories that are not yet
               // accumulated from previous post frontmatters
               let newAvailableCat =
-                if (hasCategory) {
-                  availableCategories;
-                } else {
-                  Belt.Array.concat(
-                    availableCategories,
-                    [|frontmatter.category|],
-                  );
+                switch (category) {
+                | Some(category) =>
+                  if (hasCategory) {
+                    availableCategories;
+                  } else {
+                    Belt.Array.concat(availableCategories, [|category|]);
+                  }
+                | None => availableCategories
                 };
 
               (posts, malformed, newAvailableCat);
@@ -483,13 +512,7 @@ let getStaticProps: Next.GetStaticProps.t(props, params) =
           },
         );
 
-    let props = {
-      //TODO: Undo this later as soon as blog migration is done
-      /*posts: Post.orderByDate(posts),*/
-      posts: [||],
-      malformed,
-      availableCategories,
-    };
+    let props = {posts, malformed, availableCategories};
 
     Promise.resolved({"props": props});
   };

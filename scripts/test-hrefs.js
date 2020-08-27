@@ -14,15 +14,20 @@ const path = require("path");
 const fs = require("fs");
 const urlModule = require("url");
 
-// Our blogposts are stored in a different directory than `pages`
-// So we need to function to map between pages <--> _blogposts
-// e.g. "./_blogposts/compiler/foo.mdx" => "./pages/blog/foo.mdx"
-// e.g. "./_blogposts/other.mdx" => "./pages/blog/other.mdx"
-const mapBlogFilePath = (path) => {
-  const match = path.match(/\.\/_blogposts\/(.*\/)*(.*\.mdx)/);
+const blog_index = require("../index_data/blog_posts.json");
 
-  if(match) {
-    return `./pages/blog/${match[2]}`;
+// Our blogpost urls are mapped via `index_data/blog_posts.json`
+// the blog_posts file has following structure: { [slug]: [filepath relative to _blogposts] }
+const mapBlogFilePath = path => {
+  const match = path.match(/\.\/_blogposts\/(.*\.mdx)/);
+
+  if (match) {
+    let relPath = match[1];
+    let slug = Object.keys(blog_index).find(key => blog_index[key] === relPath);
+    if (slug != null) {
+      return `./pages/blog/${slug}`;
+    }
+    return path;
   }
   return path;
 };
@@ -35,10 +40,12 @@ const createPageIndex = files => {
   return files.reduce((acc, path) => {
     // We need to consider all the different file formats used in pages
     // Calculate the website url by stripping .re, .bs.js, .md(x), etc.
-    let url = mapBlogFilePath(path).replace(/^\.\//, "/").replace(/\.re|\.bs\.js|\.js|\.md(x)?$/, "");
+    let url = mapBlogFilePath(path)
+      .replace(/^\.\//, "/")
+      .replace(/\.re|\.bs\.js|\.js|\.md(x)?$/, "");
 
     // For index we need to special case, since it can be referred as '/' as well
-    if(path.match(/\.\/pages\/index(\.re|\.bs\.js|\.js|\.md(x))?$/)) {
+    if (path.match(/\.\/pages\/index(\.re|\.bs\.js|\.js|\.md(x))?$/)) {
       url = "/pages/";
     }
 
@@ -159,7 +166,9 @@ const testFile = (pageMap, test) => {
       const { line, column } = r.link.position.start;
 
       if (status === "failed") {
-        console.log(`${filepath}:${line} => ${status} / Unknown href '${r.link.url}' in line ${line}:${column}`);
+        console.log(
+          `${filepath}:${line} => ${status} / Unknown href '${r.link.url}' in line ${line}:${column}`
+        );
       } else {
         console.log(`${filepath}:${line} => ${status}`);
       }
@@ -175,12 +184,17 @@ const testFile = (pageMap, test) => {
 const main = () => {
   const [, , pattern] = process.argv;
   const cwd = path.join(__dirname, "..");
-  const files = glob.sync(pattern ? pattern : `./{pages,_blogposts}/**/*.md?(x)`, { cwd });
+  const files = glob.sync(
+    pattern ? pattern : `./{pages,_blogposts}/**/*.md?(x)`,
+    { cwd }
+  );
 
   // We need to capture all files independently from the test file glob
   const pageMapFiles = glob.sync("./{pages,_blogposts}/**/*.{js,mdx}", { cwd });
   const pageMap = createPageIndex(pageMapFiles);
 
+  //console.log(pageMap);
+  //return;
   const processedFiles = files.map(processFile);
 
   const allTested = processedFiles.map(file => testFile(pageMap, file));
