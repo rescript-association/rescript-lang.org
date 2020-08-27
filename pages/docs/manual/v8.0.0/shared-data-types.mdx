@@ -6,9 +6,11 @@ canonical: "/docs/manual/latest/shared-data-types"
 
 # Shared Data Types
 
-ReScript's built-in values of type `string`, `float`, `array` and a few others have a rather interesting property: they "compile" to the exact same value in JavaScript! Thanks to this, there's close to no API to learn for these types.
+ReScript's built-in values of type `string`, `float`, `array` and a few others have a rather interesting property: they compile to the exact same value in JavaScript!
 
-This means that if you receive e.g. a string from the JS side, you can use it **without conversion** on the ReScript side, and vice-versa.
+This means that if you're passing e.g. a ReScript string to the JavaScript side, the JS side can directly use it as a native JS string. It also means that you can import a JS string and pretend it's a native ReScript string.
+
+Unlike most compiled-to-js languages, in ReScript, **you don't need to write data converters back and forth for most of our values**!
 
 **Shared, bidirectionally usable types**:
 - String. Backtick strings like `` `hello $(personName)` `` support interpolation. Normal `"hello"` strings don't.
