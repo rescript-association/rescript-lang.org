@@ -428,7 +428,7 @@ let matchFn = (_match, part1, _offset, _wholeString) => {
   part1 ++ "41"
 }
 
-Js.String.unsafeReplaceBy1(str, re, matchFn) == "Jony is 41"
+Js.String.unsafeReplaceBy1(re, matchFn, str) == "Jony is 41"
 ```
 
 ## unsafeReplaceBy2
@@ -450,7 +450,7 @@ let matchFn = (_match, p1, p2, _offset, _wholeString) => {
   }
 }
 
-Js.String.unsafeReplaceBy2(str, re, matchFn) == "42"
+Js.String.unsafeReplaceBy2(re, matchFn, str) == "42"
 ```
 
 ## unsafeReplaceBy3
