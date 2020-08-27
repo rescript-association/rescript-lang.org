@@ -326,7 +326,7 @@ For regular expressions with the g modifier, a matched expression returns `Some(
 ```res example
 Js.String2.match_("The better bats", %re("/b[aeiou]t/")) == Some(["bet"])
 Js.String2.match_("The better bats", %re("/b[aeiou]t/g")) == Some(["bet", "bat"])
-Js.String2.match_("Today is 2018-04-05.", %re("/(\\d+)-(\\d+)-(\\d+)/")) ==
+Js.String2.match_("Today is 2018-04-05.", %re("/(\d+)-(\d+)-(\d+)/")) ==
   Some(["2018-04-05", "2018", "04", "05"])
 Js.String2.match_("The large container.", %re("/b[aeiou]g/")) == None
 ```
@@ -392,7 +392,7 @@ let replaceByRe: (t, Js_re.t, t) => t
 
 ```res example
 Js.String2.replaceByRe("vowels be gone", %re("/[aeiou]/g"), "x") == "vxwxls bx gxnx"
-Js.String2.replaceByRe("Juan Fulano", %re("/(\\w+) (\\w+)/"), "$2, $1") == "Fulano, Juan"
+Js.String2.replaceByRe("Juan Fulano", %re("/(\w+) (\w+)/"), "$2, $1") == "Fulano, Juan"
 ```
 
 ## unsafeReplaceBy0
@@ -471,8 +471,8 @@ let search: (t, Js_re.t) => int
 `search(str, regexp)` returns the starting position of the first match of `regexp` in the given `str`, or -1 if there is no match. See [`String.search`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/search) on MDN.
 
 ```res example
-Js.String2.search("testing 1 2 3", %re("/\\d+/")) == 8
-Js.String2.search("no numbers", %re("/\\d+/")) == -1
+Js.String2.search("testing 1 2 3", %re("/\d+/")) == 8
+Js.String2.search("no numbers", %re("/\d+/")) == -1
 ```
 
 ## slice
@@ -558,7 +558,7 @@ let splitByRe: (t, Js_re.t) => array<option<t>>
 `splitByRe(str, regex)` splits the given `str` at every occurrence of `regex` and returns an array of the resulting substrings. See [`String.split`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split) on MDN.
 
 ```res example
-Js.String2.splitByRe("art; bed , cog ;dad", %re("/\\s*[,;]\\s*/")) == [
+Js.String2.splitByRe("art; bed , cog ;dad", %re("/\s*[,;]\s*/")) == [
     Some("art"),
     Some("bed"),
     Some("cog"),
@@ -576,15 +576,15 @@ let splitByReAtMost: (t, Js_re.t, ~limit: int) => array<option<t>>
 If `n` is negative or greater than the number of substrings, the array will contain all the substrings. See [`String.split`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split) on MDN.
 
 ```res example
-Js.String2.splitByReAtMost("one: two: three: four", %re("/\\s*:\\s*/"), ~limit=3) == [
+Js.String2.splitByReAtMost("one: two: three: four", %re("/\s*:\s*/"), ~limit=3) == [
     Some("one"),
     Some("two"),
     Some("three"),
   ]
 
-Js.String2.splitByReAtMost("one: two: three: four", %re("/\\s*:\\s*/"), ~limit=0) == []
+Js.String2.splitByReAtMost("one: two: three: four", %re("/\s*:\s*/"), ~limit=0) == []
 
-Js.String2.splitByReAtMost("one: two: three: four", %re("/\\s*:\\s*/"), ~limit=8) == [
+Js.String2.splitByReAtMost("one: two: three: four", %re("/\s*:\s*/"), ~limit=8) == [
     Some("one"),
     Some("two"),
     Some("three"),

@@ -62,21 +62,19 @@ let fromString: string => t
 ```
 
 Constructs a RegExp object (Js.Re.t) from a `string`.
-Regex literals ([%re "/.../"]) should generally be preferred, but fromString is very useful when you need to insert a string into a regex.
+Regex literals `%re("/.../")` should generally be preferred, but `fromString` is useful when you need to dynamically construct a regex using strings, exactly like when you do so in JavaScript.
 
 ```res example
-/* A function that extracts the content of the first element with the given tag */
+let firstReScriptFileExtension = (filename, content) => {
+  let result = Js.Re.fromString(filename ++ "\.(res|resi)")->Js.Re.exec_(content)
+  switch result {
+  | Some(r) => Js.Nullable.toOption(Js.Re.captures(r)[1])
+  | None => None
+  }
+}
 
-let contentOf = (tag, xmlString) =>
-  Js.Re.fromString("<" ++ (tag ++ (">(.*?)<\\/" ++ (tag ++ ">"))))
-  ->Js.Re.exec_(xmlString)
-  ->(
-    x =>
-      switch x {
-      | Some(result) => Js.Nullable.toOption(Js.Re.captures(result)[1])
-      | None => None
-      }
-  )
+// outputs "res"
+firstReScriptFileExtension("School", "School.res School.resi Main.js School.bs.js")
 ```
 
 ## fromStringWithFlags
