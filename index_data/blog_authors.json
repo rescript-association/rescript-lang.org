@@ -33,5 +33,12 @@
     "role": "Brand / UI / UX",
     "img_url": "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598547954/Reason%20Association/betty-blog-img_rmckam.jpg",
     "twitter": "made_by_betty"
+  },
+  {
+    "username": "rescript-team",
+    "fullname": "ReScript Team",
+    "role": "Core Team",
+    "img_url": null,
+    "twitter": null
   }
 ]
