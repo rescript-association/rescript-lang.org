@@ -15,10 +15,9 @@ let tocData:
   "require('../index_data/reason_compiler_toc.json')"
 ];
 
-module UrlPath = DocsLayout.UrlPath;
-module NavItem = DocsLayout.NavItem;
-module Category = DocsLayout.Category;
-module Toc = DocsLayout.Toc;
+module NavItem = SidebarLayout.Sidebar.NavItem;
+module Category = SidebarLayout.Sidebar.Category;
+module Toc = SidebarLayout.Toc;
 
 let interopNavs = [|
   NavItem.{
@@ -75,30 +74,34 @@ let make = (~components=Markdown.default, ~children) => {
         })
     );
 
-  let urlPath = UrlPath.parse(~base="/docs/reason-compiler", route);
+  let url = route->Url.parse;
+
+  let version =
+    switch (url.version) {
+    | Version(version) => version
+    | NoVersion => "latest"
+    | Latest => "latest"
+    };
+
+  let prefix = [
+    Url.{name: "Docs", href: "/docs/" ++ version},
+    Url.{
+      name: "Old Docs",
+      href: "/docs/reason-compiler/" ++ version ++ "/interop-overview",
+    },
+  ];
 
   let breadcrumbs =
-    Belt.Option.map(
-      urlPath,
-      v => {
-        let {UrlPath.version} = v;
-        let prefix =
-          UrlPath.[
-            {name: "Docs", href: "/docs"},
-            {
-              name: "Interop",
-              href: "/docs/reason-compiler/" ++ version ++ "/introduction",
-            },
-          ];
-        UrlPath.toBreadCrumbs(~prefix, v);
-      },
+    Belt.List.concat(
+      prefix,
+      DocsLayout.makeBreadcrumbs(~basePath="/docs/manual/" ++ version, route),
     );
 
   let title = "Old Docs";
   let version = "BS@8.2.0";
 
   <DocsLayout
-    theme=`Js components categories version title ?activeToc ?breadcrumbs>
+    theme=`Js components categories version title ?activeToc breadcrumbs>
     <Markdown.Warn>
       <div className="font-bold"> "IMPORTANT!"->React.string </div>
       "This section is still

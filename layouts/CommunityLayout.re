@@ -15,10 +15,9 @@ let tocData:
   "require('../index_data/community_toc.json')"
 ];
 
-module UrlPath = DocsLayout.UrlPath;
-module NavItem = DocsLayout.NavItem;
-module Category = DocsLayout.Category;
-module Toc = DocsLayout.Toc;
+module NavItem = SidebarLayout.Sidebar.NavItem;
+module Category = SidebarLayout.Sidebar.Category;
+module Toc = SidebarLayout.Toc;
 
 let overviewNavs = [|
   NavItem.{name: "Overview", href: "/community"},
@@ -48,25 +47,21 @@ let make = (~components=Markdown.default, ~children) => {
         })
     );
 
-  let urlPath = UrlPath.parse(~base="/docs/reason-react", route);
+  let url = Url.parse(route);
 
-  // Todo: improve this bit (UrlPath should go away at some point)
   let breadcrumbs =
     if (route === "/community") {
-      Some(
-        UrlPath.[
-          {name: "Community", href: "/community"},
-          {name: "Overview", href: ""},
-        ],
-      );
+      Url.[
+        {name: "Community", href: "/community"},
+        {name: "Overview", href: ""},
+      ];
     } else {
-      Belt.Option.map(urlPath, v => {UrlPath.toBreadCrumbs(~prefix=[], v)});
+      DocsLayout.makeBreadcrumbsFromPaths(~basePath="", url.base);
     };
 
   let title = "Community";
 
-  <DocsLayout
-    theme=`Reason components categories title ?activeToc ?breadcrumbs>
+  <DocsLayout theme=`Reason components categories title ?activeToc breadcrumbs>
     children
   </DocsLayout>;
 };

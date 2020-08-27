@@ -12,20 +12,23 @@ let indexData:
         "href": string,
       }),
   }) = [%raw
-  "require('../index_data/dom_api_index.json')"
+  "require('../index_data/latest_dom_api_index.json')"
 ];
 
-module Sidebar = SidebarLayout.Sidebar;
-module UrlPath = SidebarLayout.UrlPath;
-module NavItem = Sidebar.NavItem;
-module Category = Sidebar.Category;
+module Category = ApiLayout.Sidebar.Category;
+module NavItem = ApiLayout.Sidebar.NavItem;
+
+let overviewNavs = [|NavItem.{name: "Dom", href: "/docs/manual/latest/api/dom"}|];
 
 let moduleNavs = [|
-  NavItem.{name: "Storage", href: "/apis/latest/dom/storage"},
-  NavItem.{name: "Storage2", href: "/apis/latest/dom/storage2"},
+  NavItem.{name: "Storage", href: "/docs/manual/latest/api/dom/storage"},
+  NavItem.{name: "Storage2", href: "/docs/manual/latest/api/dom/storage2"},
 |];
 
-let categories = [|Category.{name: "Modules", items: moduleNavs}|];
+let categories = [|
+  Category.{name: "Overview", items: overviewNavs},
+  {name: "Submodules", items: moduleNavs},
+|];
 
 module Docs = {
   [@react.component]
@@ -51,61 +54,33 @@ module Docs = {
         ->getWithDefault("?")
       );
 
-    let (isSidebarOpen, setSidebarOpen) = React.useState(_ => false);
-    let toggleSidebar = () => setSidebarOpen(prev => !prev);
+    let url = route->Url.parse;
 
-    let urlPath = UrlPath.parse(~base="/apis", route);
+    let version =
+      switch (url.version) {
+        | Version(version) => version
+        | NoVersion => "latest"
+        | Latest => "latest"
+        };
 
-    let breadcrumbs =
-      Belt.Option.map(
-        urlPath,
-        v => {
-          let {UrlPath.version} = v;
-          let prefix =
-            UrlPath.[{name: "Modules", href: "/apis/" ++ version}];
-          UrlPath.toBreadCrumbs(~prefix, v);
-        },
-      );
+    let prefix =
+      Url.{name: "API", href: "/docs/manual/" ++ version ++ "/api"};
 
-    let toplevelNav =
-      switch (urlPath) {
-      | Some(urlPath) =>
-        let version = UrlPath.(urlPath.version);
-        let backHref = Some(UrlPath.fullUpLink(urlPath));
-        <Sidebar.ToplevelNav title="Dom" version ?backHref />;
-      | None => React.null
+    let breadcrumbs = ApiLayout.makeBreadcrumbs(~prefix, route);
+
+    let activeToc =
+      ApiLayout.Toc.{
+        title: moduleName,
+        entries:
+          Belt.Array.map(headers, ((name, href)) => {header: name, href}),
       };
 
-    // Todo: We need to introduce router state to be able to
-    //       listen to anchor changes (#get, #map,...)
-    let preludeSection = <Sidebar.CollapsibleSection headers moduleName />;
+    let title = "Dom Module";
+    let version = "latest";
 
-    let sidebar =
-      <Sidebar
-        isOpen=isSidebarOpen
-        toggle=toggleSidebar
-        categories
-        route={router.route}
-        toplevelNav
-        preludeSection
-      />;
-
-    let pageTitle =
-      switch (breadcrumbs) {
-      | Some([_, {name}]) => name
-      | Some([_, _, {name}]) => "Dom." ++ name
-      | _ => "Dom"
-      };
-
-    <SidebarLayout
-      metaTitle={pageTitle ++ " | ReScript API"}
-      theme=`Reason
-      components
-      sidebarState=(isSidebarOpen, setSidebarOpen)
-      sidebar
-      ?breadcrumbs>
+    <ApiLayout components title version activeToc categories breadcrumbs>
       children
-    </SidebarLayout>;
+    </ApiLayout>;
   };
 };
 

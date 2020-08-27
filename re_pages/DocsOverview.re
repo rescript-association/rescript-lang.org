@@ -22,22 +22,22 @@ module Card = {
 };
 
 [@react.component]
-let default = () => {
+let default = (~showVersionSelect=true) => {
   let router = Next.Router.useRouter();
   let url = router.route->Url.parse;
 
   let version =
     switch (url.version) {
-    | Url.Latest => "v8"
-    | NoVersion => "?"
-    | Version(other) => other
+    | Url.Latest => "latest"
+    | NoVersion => "latest"
+    | Version(version) => version
     };
 
   let languageManual = [|
-    ("Overview", "/docs/manual/latest/introduction"),
-    ("Language Features", "/docs/manual/latest/overview"),
-    ("JS Interop", "/docs/manual/latest/embed-raw-javascript"),
-    ("Build System", "/docs/manual/latest/build-overview"),
+    ("Overview", {j| /docs/manual/$version/introduction|j}),
+    ("Language Features", {j|/docs/manual/$version/overview|j}),
+    ("JS Interop", {j|/docs/manual/$version/embed-raw-javascript|j}),
+    ("Build System", {j|/docs/manual/$version/build-overview|j}),
   |];
 
   let ecosystem = [|
@@ -46,15 +46,40 @@ let default = () => {
     ("Reanalyze", "https://github.com/reason-association/reanalyze"),
   |];
 
+  let versionSelect =
+    if (showVersionSelect) {
+      let onChange = evt => {
+        open Url;
+        ReactEvent.Form.preventDefault(evt);
+        let version = evt->ReactEvent.Form.target##value;
+        let url = Url.parse(router.route);
+
+        let targetUrl =
+          "/"
+          ++ Js.Array2.joinWith(url.base, "/")
+          ++ "/"
+          ++ version
+          ++ "/"
+          ++ Js.Array2.joinWith(url.pagepath, "/");
+        router->Next.Router.push(targetUrl);
+      };
+      <div className="text-fire">
+        <VersionSelect
+          availableVersions=ManualDocsLayout.allManualVersions
+          latestVersionLabel=ManualDocsLayout.latestVersionLabel
+          onChange
+          version
+        />
+      </div>;
+    } else {
+      React.null;
+    };
+
   <>
     <Meta title="Overview | ReScript Documentation" />
     <div>
-      // <div
-      //   className="inline-block rounded px-2 bg-fire mb-4 tracking-tight overflow-x-auto text-14 text-white">
-      //   {("Revision: " ++ version)->s}
-      // </div>
-      <div className="mb-6">
-      </div>
+      versionSelect
+      <div className="mb-6" />
       <Markdown.H1> "Docs"->s </Markdown.H1>
     </div>
     <div className="grid grid-cols-1 xs:grid-cols-2 gap-8">

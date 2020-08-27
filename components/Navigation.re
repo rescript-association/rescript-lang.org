@@ -12,6 +12,28 @@ let linkOrActiveLinkSubroute = (~target, ~route) => {
   Js.String2.startsWith(route, target) ? activeLink : link;
 };
 
+let linkOrActiveApiSubroute = (~route) => {
+  let url = Url.parse(route);
+  switch (Belt.Array.get(url.pagepath, 0)) {
+  | Some("api") => activeLink
+  | _ => link
+  };
+};
+
+let linkOrActiveDocsSubroute = (~route) => {
+  let url = Url.parse(route);
+  switch (url) {
+  | {base: [|"docs"|]}
+  | {base: [|"docs", "gentype"|]}
+  | {base: [|"docs", "manual"|]} =>
+    switch (Belt.Array.get(url.pagepath, 0)) {
+    | Some("api") => link
+    | _ => activeLink
+    }
+  | _ => link
+  };
+};
+
 let githubHref = "https://github.com/rescript-lang/rescript-compiler";
 let twitterHref = "https://twitter.com/rescriptlang";
 let discourseHref = "https://forum.rescript-lang.org";
@@ -125,7 +147,8 @@ let useOutsideClick: (ReactDOMRe.Ref.t, unit => unit) => unit = [%raw
     }|j}
 ];
 
-let useWindowWidth: unit => option(int) = [%raw {j| () => {
+let useWindowWidth: unit => option(int) = [%raw
+  {j| () => {
   const isClient = typeof window === 'object';
 
   function getSize() {
@@ -514,20 +537,14 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
 
             <Link href="/docs/latest">
               <a
-                className={
-                  "mr-5 "
-                  ++ linkOrActiveLinkSubroute(~target="/docs/latest", ~route)
-                }
+                className={"mr-5 " ++ linkOrActiveDocsSubroute(~route)}
                 onMouseEnter=nonCollapsibleOnMouseEnter>
                 "Docs"->s
               </a>
             </Link>
-            <Link href="/apis/latest">
+            <Link href="/docs/manual/latest/api">
               <a
-                className={
-                  "mr-5 "
-                  ++ linkOrActiveLinkSubroute(~target="/apis/latest", ~route)
-                }
+                className={"mr-5 " ++ linkOrActiveApiSubroute(~route)}
                 onMouseEnter=nonCollapsibleOnMouseEnter>
                 "API"->s
               </a>
@@ -535,7 +552,8 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
             <Link href="/try">
               <a
                 className={
-                  "hidden xs:block mr-5 " ++ linkOrActiveLink(~target="/try", ~route)
+                  "hidden xs:block mr-5 "
+                  ++ linkOrActiveLink(~target="/try", ~route)
                 }
                 onMouseEnter=nonCollapsibleOnMouseEnter>
                 "Playground"->s
@@ -554,7 +572,8 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
             <Link href="/community">
               <a
                 className={
-                  "hidden xs:block " ++ linkOrActiveLink(~target="/community", ~route)
+                  "hidden xs:block "
+                  ++ linkOrActiveLink(~target="/community", ~route)
                 }
                 onMouseEnter=nonCollapsibleOnMouseEnter>
                 "Community"->s
