@@ -8,13 +8,13 @@ canonical: "/docs/manual/latest/introduction"
 
 **ReScript is the language for folks who don't necessarily love JavaScript, but who still acknowledge its importance**.
 
-ReScript looks like JavaScript, works like JavaScript, works _with_ JavaScript, and compiles to the highest quality of clean, readable and performant JavaScript, directly runnable in the browser and Node.js. 
+ReScript looks like JavaScript, works like JavaScript, works _with_ JavaScript, and compiles to the highest quality of clean, readable and performant JavaScript, directly runnable in the browser and Node.js.
 
 ## Difference vs TypeScript
 
 We respect TypeScript very much and think that it's a positive force in the JavaScript ecosystem. ReScript shares some of the same goals as TypeScript, but is different enough regarding some important nuances:
 
-- TypeScript's (admittedly noble) goal is to cover the entire JavaScript feature set and more. **ReScript covers only a curated subset of JavaScript**. For example, we emphasize plain data + functions over classes, clean [pattern matching](pattern-matching-destructuring.md) over fragile `if`s and dynamic object dispatches, [proper data modeling](variant.md) over string abuse, etc. JavaScript supersets will only grow larger over time; ReScript doesn't. \*
+- TypeScript's (admittedly noble) goal is to cover the entire JavaScript feature set and more. **ReScript covers only a curated subset of JavaScript**. For example, we emphasize plain data + functions over classes, clean [pattern matching](pattern-matching-destructuring.md) over fragile `if`s and virtual dispatches, [proper data modeling](variant.md) over string abuse, etc. JavaScript supersets will only grow larger over time; ReScript doesn't. \*
 
 - Consequently, TypeScript's type system is necessarily complex, pitfalls-ridden, potentially requires tweaking, sometime slow, and requires quite a bit of noisy annotations that often feel like manual bookkeeping rather than clear documentation. In contrast, ReScript's type system:
   - Is deliberately curated to be a simple subset most folks will have an easier time to use.
