@@ -426,7 +426,7 @@ The function receives as its parameters the matched string, the captured string,
 let str = "increment 23";
 let re = [%re "/increment (\\d+)/g"];
 let matchFn = (_matchPart, p1, _offset, wholeString) =>
-  wholeString ++ " is " ++ string_of_int(int_of_string(p1) + 1);
+  wholeString ++ " is " ++ Belt.Int.toString(int_of_string(p1) + 1);
 
 Js.String.unsafeReplaceBy1(re, matchFn, str)
   == "increment 23 is 24";
@@ -445,7 +445,7 @@ The function receives as its parameters the matched string, the captured strings
 let str = "7 times 6";
 let re = [%re "/(\\d+) times (\\d+)/"];
 let matchFn = (_matchPart, p1, p2, _offset, _wholeString) =>
-  string_of_int(int_of_string(p1) * int_of_string(p2));
+  Belt.Int.toString(int_of_string(p1) * int_of_string(p2));
 
 Js.String.unsafeReplaceBy2(re, matchFn, str) == "42";
 ```

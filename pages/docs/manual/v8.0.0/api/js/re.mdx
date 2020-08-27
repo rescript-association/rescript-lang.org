@@ -138,7 +138,7 @@ while (! break^) {
     Js.Nullable.iter(
       Js.Re.captures(result)[0],
       [@bs] match => {
-        let next = string_of_int(Js.Re.lastIndex(re));
+        let next = Belt.Int.toString(Js.Re.lastIndex(re));
         Js.log("Found " ++ match ++ ". Next match starts at " ++ next);
       },
     )
