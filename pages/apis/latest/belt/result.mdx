@@ -87,7 +87,7 @@ unchanged. Function `f` takes a value of the same type as `n` and returns an
 ordinary value.
 
 ```res example
-let f = (x) => sqrt(float_of_int(x))
+let f = (x) => sqrt(Belt.Int.toFloat(x))
 
 Belt.Result.map(Ok(64), f) == Ok(8.0)
 

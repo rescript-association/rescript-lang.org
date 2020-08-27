@@ -304,9 +304,9 @@ let updateErrors =
               CM.MarkTextOption.Attr.make(
                 ~id=
                   "text-marker_"
-                  ++ string_of_int(e.row)
+                  ++ Belt.Int.toString(e.row)
                   ++ "-"
-                  ++ string_of_int(e.column)
+                  ++ Belt.Int.toString(e.column)
                   ++ "",
                 (),
               ),

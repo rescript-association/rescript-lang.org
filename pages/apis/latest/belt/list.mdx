@@ -451,7 +451,7 @@ Function `f` takes two arguments: the index starting from 0 and the element from
 
 ```res example
 Belt.List.forEachWithIndex(list{"a", "b", "c"}, (index, x) => {
-  Js.log("Item " ++ string_of_int(index) ++ " is " ++ x)
+  Js.log("Item " ++ Belt.Int.toString(index) ++ " is " ++ x)
 })
 /*
   prints:

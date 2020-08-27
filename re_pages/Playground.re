@@ -141,7 +141,7 @@ module Pane = {
           let onClick = _ => ();
           let className = makeTabClass(active);
           <button
-            key={string_of_int(i) ++ "-" ++ title}
+            key={Belt.Int.toString(i) ++ "-" ++ title}
             onMouseDown
             onClick
             className
@@ -1584,7 +1584,7 @@ module Button = {
                      );
                    };
 
-                   let actionIndicatorKey = string_of_int(actionCount);
+                   let actionIndicatorKey = Belt.Int.toString(actionCount);
 
                    let isCompilerSwitching =
                      switch (compilerState) {

@@ -131,7 +131,7 @@ let charCodeAt: (t, int) => float
 The return type is `float` because this function returns NaN if `n` is less than zero or greater than the length of the string. See [`String.charCodeAt`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charCodeAt) on MDN.
 
 ```res example
-Js.String2.charCodeAt(`😺`, 0) == 0xd83d->float_of_int
+Js.String2.charCodeAt(`😺`, 0) == 0xd83d->Belt.Int.toFloat
 Js.String2.codePointAt(`😺`, 0) == Some(0x1f63a)
 ```
 
@@ -422,12 +422,13 @@ Returns a new `string` with some or all matches of a pattern with one set of cap
 The function receives as its parameters the matched string, the captured string, the offset at which the match begins, and the whole string being matched. See [`String.replace`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace) on MDN.
 
 ```res example
-let str = "increment 23"
-let re = %re("/increment (\\d+)/g")
-let matchFn = (_matchPart, p1, _offset, wholeString) =>
-  wholeString ++ (" is " ++ string_of_int(int_of_string(p1) + 1))
+let str = "Jony is 40"
+let re = %re("/(Jony is )\d+/g")
+let matchFn = (_match, part1, _offset, _wholeString) => {
+  part1 ++ "41"
+}
 
-Js.String2.unsafeReplaceBy1(str, re, matchFn) == "increment 23 is 24"
+Js.String2.unsafeReplaceBy1(str, re, matchFn) == "Jony is 41"
 ```
 
 ## unsafeReplaceBy2
@@ -441,9 +442,13 @@ The function receives as its parameters the matched string, the captured strings
 
 ```res example
 let str = "7 times 6"
-let re = %re("/(\\d+) times (\\d+)/")
-let matchFn = (matchPart, p1, p2, offset, wholeString) =>
-  string_of_int(int_of_string(p1) * int_of_string(p2))
+let re = %re("/(\d+) times (\d+)/")
+let matchFn = (_match, p1, p2, _offset, _wholeString) => {
+  switch (Belt.Int.fromString(p1), Belt.Int.fromString(p2)) {
+  | (Some(x), Some(y)) => Belt.Int.toString(x * y)
+  | _ => "???"
+  }
+}
 
 Js.String2.unsafeReplaceBy2(str, re, matchFn) == "42"
 ```

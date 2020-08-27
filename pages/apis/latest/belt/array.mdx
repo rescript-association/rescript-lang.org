@@ -634,7 +634,7 @@ The same as `Belt_Array.forEach`;
 except that `f` is supplied two arguments: the index starting from 0 and the element from `xs`.
 
 ```res example
-Belt.Array.forEachWithIndex(["a", "b", "c"], (i, x) => Js.log("Item " ++ string_of_int(i) ++ " is " ++ x))
+Belt.Array.forEachWithIndex(["a", "b", "c"], (i, x) => Js.log("Item " ++ Belt.Int.toString(i) ++ " is " ++ x))
 
 /*
   prints:

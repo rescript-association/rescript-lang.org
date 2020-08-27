@@ -94,7 +94,7 @@ module Toggle = {
               | None =>
                 switch (tab.lang) {
                 | Some(lang) => langShortname(lang)->Js.String2.toUpperCase
-                | None => string_of_int(i)
+                | None => Belt.Int.toString(i)
                 }
               };
 
@@ -105,7 +105,7 @@ module Toggle = {
               ReactEvent.Mouse.preventDefault(evt);
               setSelected(_ => i);
             };
-            let key = label ++ "-" ++ string_of_int(i);
+            let key = label ++ "-" ++ Belt.Int.toString(i);
 
             <span
               key

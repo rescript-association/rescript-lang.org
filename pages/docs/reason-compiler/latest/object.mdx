@@ -28,7 +28,7 @@ Js.Dict.set(myMap, "Allison", 10);
 [@bs.val] external studentAges : Js.Dict.t(int) = "student";
 switch (Js.Dict.get(studentAges, "Joe")) {
 | None => Js.log("Joe can't be found")
-| Some(age) => Js.log("Joe is " ++ string_of_int(age))
+| Some(age) => Js.log("Joe is " ++ Belt.Int.toString(age))
 };
 ```
 

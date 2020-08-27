@@ -95,7 +95,7 @@ let andThen: ((. 'a) => option<'b>, option<'a>) => option<'b>
 The first argument to `andThen()` is an uncurried function `f()` that takes a plain value and returns an `option` result. The second argument is an `option` value. If the second argument is `None`, the return value is `None`. If the second argument is `Some(v)`, the return value is `f(v)`.
 
 ```res example
-let reciprocal = (. x) => x == 0 ? None : Some(1.0 /. float_of_int(x))
+let reciprocal = (. x) => x == 0 ? None : Some(1.0 /. Belt.Int.toFloat(x))
 Js.Option.andThen(reciprocal, Some(5)) == Some(0.2)
 Js.Option.andThen(reciprocal, Some(0)) == None
 Js.Option.andThen(reciprocal, None) == None

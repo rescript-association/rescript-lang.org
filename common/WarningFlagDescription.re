@@ -240,7 +240,7 @@ module Parser = {
           } else {
             raise(
               InvalidInput(
-                "Expected '+' or '-' on pos " ++ string_of_int(pos^),
+                "Expected '+' or '-' on pos " ++ Belt.Int.toString(pos^),
               ),
             );
           }
@@ -256,7 +256,7 @@ module Parser = {
             raise(
               InvalidInput(
                 "'+' and '-' not allowed in flag name on pos "
-                ++ string_of_int(pos^),
+                ++ Belt.Int.toString(pos^),
               ),
             );
           } else if (next === "+" || next === "-" || pos^ >= last) {
@@ -281,7 +281,7 @@ module Parser = {
           "Expected flag name after '"
           ++ modifier
           ++ "' on pos "
-          ++ string_of_int(pos^),
+          ++ Belt.Int.toString(pos^),
         ),
       )
     | _ => ()

@@ -84,7 +84,7 @@ let count = ref(0)
 
 let tick = () => {
   count := count.contents + 1
-  Js.log(string_of_int(count.contents))
+  Js.log(Belt.Int.toString(count.contents))
 }
 
 Js.Global.setInterval(tick, 1000)
@@ -106,7 +106,7 @@ let count = ref(0)
 
 let tick = () => {
   count := count.contents + 1
-  Js.log(string_of_int(count.contents))
+  Js.log(Belt.Int.toString(count.contents))
 }
 
 Js.Global.setIntervalFloat(tick, 1000.0)
