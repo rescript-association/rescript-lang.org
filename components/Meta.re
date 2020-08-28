@@ -56,12 +56,24 @@ let make =
      | Some(href) => <link key="canonical" href rel="canonical" />
      | None => React.null
      }}
-    /*<link*/
-      /*key="icon"*/
-      /*rel="icon"*/
-      /*sizes="16x16 32x32 64x64"*/
-      /*href="/static/favicon.ico"*/
-    /*/>*/
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/static/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type_="image/png"
+      sizes="32x32"
+      href="/static/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type_="image/png"
+      sizes="16x16"
+      href="/static/favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/static/favicon/site.webmanifest" />
     /* OG link preview meta data */
     <meta key="og:site_name" property="og:site_name" content=ogSiteName />
     <meta key="og:locale" property="og:locale" content=ogLocale />
