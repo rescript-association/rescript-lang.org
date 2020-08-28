@@ -1,8 +1,6 @@
 open Util.ReactStuff;
 module Head = Next.Head;
 
-let ogImgDefault = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1588077512/Reason%20Association/reasonml.org/reasonml-org-social-default_re6vor.jpg";
-
 /*
     canonical: Set a canonical URL pointing to the original content.
  */
@@ -18,7 +16,7 @@ let make =
       ~ogSiteName=?,
       ~ogDescription=description,
       ~ogTitle=?,
-      ~ogImage=ogImgDefault,
+      ~ogImage=?,
     ) => {
   let title =
     switch (title) {
@@ -83,8 +81,11 @@ let make =
       property="og:description"
       content=ogDescription
     />
-    /*TODO: Undo this later */
-    /*<meta key="og:image" property="og:image" content=ogImage />*/
+    {switch (ogImage) {
+     | Some(ogImage) =>
+       <meta key="og:image" property="og:image" content=ogImage />
+     | None => React.null
+     }}
     /* Twitter Meta */
     <meta key="twitter:title" name="twitter:title" content=title />
     <meta
