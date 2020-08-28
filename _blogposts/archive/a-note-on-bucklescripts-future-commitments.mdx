@@ -6,13 +6,16 @@ date: "2020-07-06"
 category: compiler
 title: A Note on BuckleScript's New Syntax and Its Future Support Commitments
 description: |
-  This post clarifies the goals and commitments of the compiler toolchain
+  This post clarifies the goals and commitments of the BuckleScript compiler toolchain
   and gives more context on what to expect in the future.
 ---
 
+> **Update / August 13th 2020:**
+> BuckleScript is now called ReScript. More infos [here](/blog/bucklescript-is-rebranding)
+
 ## A Statement for the Future
 
-Our [new BuckleScript syntax announcement](/blog/bucklescript-8-1-new-syntax) generated lots of good feedback, but also raised some concerns from community members whose use-cases still align with our goal, but sometimes extend outside of it, and who are worried about further commitments to the ecosystem in the face of new unknowns.
+Our [new ReScript syntax announcement](/blog/bucklescript-8-1-new-syntax) generated lots of good feedback, but also raised some concerns from community members whose use-cases still align with our goal, but sometimes extend outside of it, and who are worried about further commitments to the ecosystem in the face of new unknowns.
 
 This post is dedicated to answer some commons questions regarding trust, breakages, and future investment.
 
@@ -20,13 +23,13 @@ This post is dedicated to answer some commons questions regarding trust, breakag
 
 **What is the new syntax called?**
 
-It's simply called "new BuckleScript syntax". The extension is `.res` and `.resi` (reminiscent of Reason) as to not overload various existing tools operating on `.ml` and `.re`.
+It's called ReScript. The extension is `.res` and `.resi` (reminiscent of Reason) as to not overload various existing tools operating on `.ml` and `.re`.
 
 **Will BuckleScript break my existing code?**
 
 No. This new syntax is purely additive. It sits beside the existing OCaml and Reason syntax inside BuckleScript. We **won't** remove OCaml and Reason support from BuckleScript for a long time, whatever the surface emphasis might be.
 
-**Will I be able to continue writing OCaml/Reason and compile to BuckleScript in the future?**
+**Will I be able to continue writing OCaml/Reason and compile to JS in the future?**
 
 It follows from our previous guarantee that yes, you will still be able to. If BuckleScript _ever_ starts removing language features, it'll be on the `.res` syntax level; this means that you can just keep writing in OCaml and Reason syntax to access the complete set of OCaml features that BuckleScript supports today.
 
@@ -76,4 +79,4 @@ We hope you can see how this is a net engineering & bus factor increase, and a g
 
 Hopefully this post helped assuage certain concerns regarding future support and investment. More importantly, let's not forget to enjoy all the awesome improvements in BuckleScript 8.1; let the code speak for itself! And let's continue shipping great products!
 
-Stay tuned and let us know in the [Discourse Forum](https://reasonml.chat) what you think!
+Stay tuned and let us know in the [Discourse Forum](https://forum.rescript-lang.org) what you think!

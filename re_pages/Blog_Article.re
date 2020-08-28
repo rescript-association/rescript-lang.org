@@ -165,12 +165,13 @@ let default = (props: props) => {
     archived
       ? Markdown.(
           <div className="mb-10">
-            <Info>
+            <Warn>
               <P>
-                "This is an archived blog post kept for historic reasons. Please note that this information might be terribly outdated."
+                <span className="font-bold"> "Important: "->s </span>
+                "This is an archived blog post, kept for historic reasons. Please note that this information might be terribly outdated."
                 ->s
               </P>
-            </Info>
+            </Warn>
           </div>
         )
       : React.null;
