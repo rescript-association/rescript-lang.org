@@ -477,11 +477,11 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
     className="fixed flex xs:justify-center z-20 top-0 w-full h-18 bg-night-dark shadow text-white-80 text-base">
     <div
       className="flex justify-between mx-4 md:mx-8 items-center h-full w-full max-w-1280">
-      <div className="h-10 w-10">
+      <div className="h-8 w-8">
         <a
           href="/"
-          className="block hover:cursor-pointer flex justify-center items-center border w-full h-full font-bold">
-          "RES"->s
+          className="block hover:cursor-pointer flex justify-center items-center w-full h-full font-bold">
+          <img src="/static/rescript-logo.svg" />
         </a>
       </div>
       /*<img*/
