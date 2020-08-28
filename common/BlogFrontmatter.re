@@ -87,7 +87,7 @@ type t = {
   previewImg: Js.null(string),
   articleImg: Js.null(string),
   title: string,
-  category: Category.t,
+  category: Js.null(Category.t),
   badge: Js.null(Badge.t),
   description: Js.null(string),
   canonical: Js.null(string),
@@ -161,7 +161,10 @@ let decode = (~authors: array(Author.t), json: Js.Json.t): result(t, string) => 
             )
           ->Belt.Option.getWithDefault([||]),
         date: json->field("date", string, _)->DateStr.fromString,
-        category: json->field("category", string, _)->decodeCategory,
+        category:
+          json
+          ->optional(j => {field("category", string, j)->decodeCategory}, _)
+          ->Js.Null.fromOption,
         badge:
           json
           ->optional(j => {field("badge", string, j)->decodeBadge}, _)

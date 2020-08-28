@@ -25,6 +25,13 @@
     See `pages/blog.re` for more context on why we need this API.
  */
 
+// Manual mapping between slugs and actual file
+// { [slug: string] : [filepath: string] }
+// The filepath is relative within _blogposts
+let index: Js.Dict.t(string) = [%raw
+  "require('../index_data/blog_posts.json')"
+];
+
 module GrayMatter = {
   type output = {
     data: Js.Json.t,
@@ -36,108 +43,54 @@ module GrayMatter = {
 
 let postsDirectory = Node.Path.join2(Node.Process.cwd(), "./_blogposts");
 
-let subdirs = [|"compiler", "community", "docs", "syntax", "ecosystem"|];
-
-type fileGroup = {
-  subdir: option(string),
-  mdxFiles: array(string),
-};
-
-let getGroupedFiles = (): array(fileGroup) => {
-  let dirs =
-    Belt.Array.map(subdirs, d => Some(d))->Js.Array.concat([|None|], _);
-
-  Belt.Array.reduce(
-    dirs,
-    [||],
-    (acc, subdir) => {
-      let fullpath =
-        Belt.Option.mapWithDefault(subdir, postsDirectory, sub => {
-          Node.Path.join2(postsDirectory, sub)
-        });
-
-      if (Node.Fs.existsSync(fullpath)) {
-        let mdxFiles =
-          Node.(
-            Fs.readdirSync(fullpath)
-            ->Belt.Array.keep(slug => Js.String2.endsWith(slug, ".mdx"))
-          );
-
-        if (Belt.Array.length(mdxFiles) > 0) {
-          Js.Array.concat(acc, [|{subdir, mdxFiles}|]);
-        } else {
-          acc;
-        };
-      } else {
-        acc;
-      };
-    },
-  );
-};
-
 type postData = {
   slug: string,
   content: string,
   fullslug: string,
+  archived: bool,
   frontmatter: Js.Json.t,
 };
 
-let getPostBySlug = (~subdir: option(string)=?, filepath: string): postData => {
-  let slug = Js.String2.replaceByRe(filepath, [%re "/\.mdx?/"], "");
+let getFullSlug = (slug: string) => {
+  Belt.Option.map(index->Js.Dict.get(slug), relPath => {
+    Js.String2.replaceByRe(relPath, [%re "/\\.mdx?/"], "")
+  });
+};
 
-  let fullslug =
-    switch (subdir) {
-    | Some(subdir) => subdir ++ "/" ++ slug
-    | None => slug
-    };
+let getPostBySlug = (slug: string) => {
+  let relPath = index->Js.Dict.unsafeGet(slug);
+
+  let fullslug = Js.String2.replaceByRe(relPath, [%re "/\\.mdx?/"], "");
 
   let fullPath = Node.Path.join2(postsDirectory, fullslug ++ ".mdx");
 
-  let fileContents = Node.Fs.readFileSync(fullPath, `utf8);
-  let {GrayMatter.data, content} = GrayMatter.matter(fileContents);
+  // TODO: We need to handle handle archived files differently later on
 
-  {slug, fullslug, content, frontmatter: data};
-};
+  if (Node.Fs.existsSync(fullPath)) {
+    let fileContents = Node.Fs.readFileSync(fullPath, `utf8);
+    let {GrayMatter.data, content} = GrayMatter.matter(fileContents);
 
-let getFullSlug = (slug: string) => {
-  // This function might be terribly inefficient
-  // and could be optimized
+    // We currently derive the archived state from the directory hierarchy
+    let archived = Js.String2.includes(fullPath, "/archive/");
 
-  let filepathEqualSlug = (filepath, slug) => {
-    slug === Js.String2.replaceByRe(filepath, [%re "/\\.mdx?/"], "");
+    Some({slug, fullslug, content, frontmatter: data, archived});
+  } else {
+    None;
   };
-
-  getGroupedFiles()
-  ->Js.Array2.find(({mdxFiles}) => {
-      Js.Array2.some(mdxFiles, filepath => {
-        filepathEqualSlug(filepath, slug)
-      })
-    })
-  ->Belt.Option.flatMap(({subdir, mdxFiles}) => {
-      Js.Array2.find(mdxFiles, filepath => {
-        filepathEqualSlug(filepath, slug)
-      })
-      ->Belt.Option.map(filepath => {
-          let slug = Js.String2.replaceByRe(filepath, [%re "/\\.mdx?/"], "");
-          let fullslug =
-            switch (subdir) {
-            | Some(subdir) => subdir ++ "/" ++ slug
-            | None => slug
-            };
-          fullslug;
-        })
-    });
 };
 
 let getAllPosts = () => {
-  let results = getGroupedFiles();
-
-  Belt.Array.reduce(results, [||], (acc, {subdir, mdxFiles}) => {
-    Belt.Array.concat(
-      acc,
-      Belt.Array.map(mdxFiles, filepath => getPostBySlug(~subdir?, filepath)),
-    )
-  });
+  Js.Dict.keys(index)
+  ->Belt.Array.reduce(
+      [||],
+      (acc, slug) => {
+        switch (getPostBySlug(slug)) {
+        | Some(post) => Js.Array2.push(acc, post)->ignore
+        | None => ()
+        };
+        acc;
+      },
+    );
 };
 
 module RssFeed = {
@@ -169,43 +122,45 @@ module RssFeed = {
   };
 
   // Retrieves the most recent [max] blog post feed items
-  let getLatest = (~max=10, ~baseUrl="https://rescript-lang.org", ()): array(item) => {
+  let getLatest =
+      (~max=10, ~baseUrl="https://rescript-lang.org", ()): array(item) => {
     let authors = BlogFrontmatter.Author.getAllAuthors();
-    let items = getAllPosts()
-    ->Belt.Array.reduce([||], (acc, next) => {
-        switch (BlogFrontmatter.decode(~authors, next.frontmatter)) {
-        | Ok(fm) =>
-          let description =
-            Js.Null.toOption(fm.description)->Belt.Option.getWithDefault("");
-          let item = {
-            title: fm.title,
-            href: baseUrl ++ "/blog/" ++ next.slug,
-            description,
-            pubDate: DateStr.toDate(fm.date),
-          };
+    let items =
+      getAllPosts()
+      ->Belt.Array.reduce([||], (acc, next) => {
+          switch (BlogFrontmatter.decode(~authors, next.frontmatter)) {
+          | Ok(fm) =>
+            let description =
+              Js.Null.toOption(fm.description)
+              ->Belt.Option.getWithDefault("");
+            let item = {
+              title: fm.title,
+              href: baseUrl ++ "/blog/" ++ next.slug,
+              description,
+              pubDate: DateStr.toDate(fm.date),
+            };
 
-          Belt.Array.concat(acc, [|item|]);
-        | Error(_) => acc
-        }
-      })
-    ->Js.Array2.sortInPlaceWith((item1, item2) => {
-        let v1 = item1.pubDate->Js.Date.valueOf;
-        let v2 = item2.pubDate->Js.Date.valueOf;
-        if (v1 === v2) {
-          0;
-        } else if (v1 > v2) {
-          (-1);
-        } else {
-          1;
-        };
-      })
-    ->Js.Array2.slice(~start=0, ~end_=max);
+            Belt.Array.concat(acc, [|item|]);
+          | Error(_) => acc
+          }
+        })
+      ->Js.Array2.sortInPlaceWith((item1, item2) => {
+          let v1 = item1.pubDate->Js.Date.valueOf;
+          let v2 = item2.pubDate->Js.Date.valueOf;
+          if (v1 === v2) {
+            0;
+          } else if (v1 > v2) {
+            (-1);
+          } else {
+            1;
+          };
+        })
+      ->Js.Array2.slice(~start=0, ~end_=max);
     items;
   };
 
-
   let toXmlString =
-      (~siteTitle="ReasonML Blog", ~siteDescription="", items: array(item)) => {
+      (~siteTitle="ReScript Blog", ~siteDescription="", items: array(item)) => {
     let latestPubDateElement =
       Belt.Array.get(items, 0)
       ->Belt.Option.map(item => {

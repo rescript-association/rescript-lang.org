@@ -23,8 +23,22 @@
   {
     "username": "rickyvetter",
     "fullname": "Ricky Vetter",
-    "role": "ReasonReact Team",
+    "role": "ReScript & React",
     "img_url": "https://pbs.twimg.com/profile_images/541111032207273984/DGsZmmfr_400x400.jpeg",
     "twitter": "rickyvetter"
+  },
+  {
+    "username": "made_by_betty",
+    "fullname": "Bettina Steinbrecher",
+    "role": "Brand / UI / UX",
+    "img_url": "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598547954/Reason%20Association/betty-blog-img_rmckam.jpg",
+    "twitter": "made_by_betty"
+  },
+  {
+    "username": "rescript-team",
+    "fullname": "ReScript Team",
+    "role": "Core Team",
+    "img_url": null,
+    "twitter": null
   }
 ]

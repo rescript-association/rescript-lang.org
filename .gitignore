@@ -13,6 +13,7 @@ node_modules/
 .next/
 index_data/*.json
 !index_data/blog_authors.json
+!index_data/blog_posts.json
 
 yarn-error.log
 

@@ -13,43 +13,33 @@ Open the [localhost:3000/blog](/blog) page to see the blog page.
 
 ## Create a new file
 
-Blogposts are located in the `./_blogposts` directory, which consists of
-subdirectories for each available blog category:
+Blogposts are located in the `./_blogposts` directory.
+Please stick to the following filename convention to maintain a natural sort order on every file-system:
 
-- community
-- compiler
-- docs
-- ecosystem
-- syntax
-
-### Filename Rules
-
-- The file needs to be put into the `_blogposts` directory (or in one of its
-  subdirectories)
-- The filename must be **unique across the whole `_blogposts` directory and
-  its subdirectories** (since filenames are mapped to the url `/blog/[filename]`)
-- File extension must be `.mdx`
-- Make sure to choose a meaningful filename (it will be used within the url)
-
-**Filename examples:**
-
-- ✅ `bucklescript-release-X-X-X.mdx`: Shows that the release is
-  BuckleScript related
-- ✅ `cool-thing-to-expect-in-bucklescript-8.mdx`: Here, the filename replicates the
-  title, context / version number is well communicated
-- ❌ `new-version.mdx`: Bad, since there's no context about the release
-  platform. Also `new-version` is very relative; we need more context on the
-  version number
-
-**Example for creating a file within the rescript-lang.org repository:**
-
-```sh
-touch _blogposts/compiler/bucklescript-release-1-0-0.mdx
-touch _blogposts/some-other-post.mdx
+```
+_blogposts/YYYY-MM-DD-[title].mdx
 ```
 
-After creating the file, refresh your browser on the [/blog](/blog) url.  You
-will see a warning because of malformed frontmatter data. Let's fix this!
+For example, let's create a new file:
+
+```sh
+touch _blogposts/2020-01-30-my-new-blog-post.mdx
+```
+
+### Map the file to a URL
+
+Open the `index_data/blog_posts.json` file and add a new mapping like this:
+
+```
+{
+  "my-new-blog-post": "2020-01-30-my-new-blog-post.mdx",
+}
+```
+
+The key describes the final slug (e.g. `/blog/my-new-blog-post`), while the value defines the relative filepath within the `_blogposts` directory.
+
+Save your changes within `index_data/blog_posts.json` and refresh your browser within [/blog](/blog).
+You should now see a warning for some malformed frontmatter data. Let's fix this!
 
 ## Add Frontmatter Data
 
@@ -89,8 +79,7 @@ canonical: https://rescript-lang.org/blog/2017/10/01/announcing-1-0
   posts are ordered ascending by date.
 - `previewImg`: The image shown in the blog overview, which will also be used
   as a link preview image
-- `category`: Categories as listed in [Creating a new
-  File](#creating-a-new-file)
+- `category` (optional): Categories allow filtering on the blog overview. Available categories are `compiler`, `syntax`, `ecosystem`, `docs`, `community`
 - `badge`: An additional badge on the blog, on top of the preview image.
   Available values are `release`, `testing`, `preview`, `roadmap`
 - `title`: The title of the article (h1 headline)
@@ -113,3 +102,9 @@ Check out our markdown guide to get an overview
 over all available UI components.
 
 </UrlBox>
+
+## Special `_blogposts/archive` directory
+
+All blog posts that are put into the `_blogposts/archive` directory will be flagged as *archived* and not show up on the blog overview page.
+
+We keep this directory around to hide old blog posts.
