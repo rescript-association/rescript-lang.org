@@ -150,6 +150,8 @@ let default = (props: props) => {
 
   let module_ = BlogComponent.require("../_blogposts/" ++ fullslug ++ ".mdx");
 
+  let archived = Js.String2.startsWith(fullslug, "archive/");
+
   let component = module_.default;
 
   let authors = BlogFrontmatter.Author.getAllAuthors();
@@ -158,6 +160,20 @@ let default = (props: props) => {
     component->BlogComponent.frontmatter->BlogFrontmatter.decode(~authors);
 
   let children = React.createElement(component, Js.Obj.empty());
+
+  let archivedNote =
+    archived
+      ? Markdown.(
+          <div className="mb-10">
+            <Info>
+              <P>
+                "This is an archived blog post kept for historic reasons. Please note that this information might be terribly outdated."
+                ->s
+              </P>
+            </Info>
+          </div>
+        )
+      : React.null;
 
   let content =
     switch (fm) {
@@ -197,6 +213,7 @@ let default = (props: props) => {
         </div>
         <div className="flex justify-center">
           <div className="max-w-705 w-full">
+            archivedNote
             children
             {switch (canonical->Js.Null.toOption) {
              | Some(canonical) =>
