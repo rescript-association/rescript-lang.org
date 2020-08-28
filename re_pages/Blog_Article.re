@@ -196,7 +196,7 @@ let default = (props: props) => {
           });
       <div className="w-full">
         <Meta
-          title={title ++ " | Reason Blog"}
+          title={title ++ " | ReScript Blog"}
           description=?{description->Js.Null.toOption}
           canonical=?{canonical->Js.Null.toOption}
           ogImage=?{previewImg->Js.Null.toOption}
