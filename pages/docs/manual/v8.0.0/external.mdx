@@ -13,10 +13,13 @@ canonical: "/docs/manual/latest/external"
 - The type for the binding is mandatory, since we need to know what the type of that JS value is.
 - Can only exist at the top level of a file or module.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.val] external setTimeout: (unit => unit, int) => float = "setTimeout";
+```
+```ml
+external setTimeout: (unit -> unit) -> int -> float = "setTimeout" [@@bs.val]
 ```
 ```js
 // Empty output
@@ -40,7 +43,7 @@ Once declared, you can use an `external` as a normal value, just like a let bind
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 // The type of document is just some random type 'a
 // that we won't bother to specify
 [@bs.val] external document: 'a = "document";
@@ -55,6 +58,22 @@ let loc = document##location;
 
 // set a property
 document##location##href = "rescript-lang.org";
+```
+```ml
+(* The type of document is just some random type 'a *)
+(* that we won't bother to specify *)
+external document: 'a = "document" [@@bs.val]
+
+(* call a method *)
+document##addEventListener "mouseup" (fun _event ->
+  Js.log "clicked!"
+)
+
+(* get a property *)
+let loc = document##location
+
+(* set a property *)
+document##location##href = "rescript-lang.org"
 ```
 ```js
 document.addEventListener("mouseup", function(_event) {

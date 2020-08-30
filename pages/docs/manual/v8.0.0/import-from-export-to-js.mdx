@@ -14,12 +14,17 @@ You've seen how ReScript's idiomatic [Import & Export](import-export.md) works. 
 
 Use the `bs.module` [external](external.md):
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 // Import nodejs' path.dirname
 [@bs.module "path"] external dirname: string => string = "dirname";
 let root = dirname("/User/github"); // returns "User"
+```
+```ml
+(* Import nodejs' path.dirname *)
+external dirname: string -> string = "dirname" [@@bs.module "path"]
+let root = dirname "/User/github" (* returns "User" *)
 ```
 ```js
 var Path = require("path");
@@ -40,11 +45,15 @@ Here's what the `external` does:
 
 By omitting the string argument to `bs.module`, you bind to the whole JS module:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module] external leftPad: string => int => string = "./leftPad";
 let paddedResult = leftPad("hi", 5);
+```
+```ml
+external leftPad: string -> int -> string = "./leftPad" [@@bs.module]
+let paddedResult = leftPad "hi" 5
 ```
 ```js
 var LeftPad = require("./leftPad");
@@ -57,11 +66,15 @@ var paddedResult = LeftPad("hi", 5);
 
 If your JS project is using ES6, you're likely using Babel to compile it to regular JavaScript. Babel's ES6 default export actually exports the default value under the name `default`. You'd bind to it like this:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module "./student"] external studentName: string = "default";
 Js.log(studentName);
+```
+```ml
+external studentName: string = "default" [@@bs.module "./student"]
+let () = Js.log studentName
 ```
 ```js
 var Student = require("./student");
@@ -97,10 +110,14 @@ import studentName from 'student.js';
 
 Technically, since a ReScript file maps to a module, there's no such thing as "default" export, only named ones. However, we've made an exception to support default module when you do the following:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 /* FavoriteStudent.re */
+let default = "Bob";
+```
+```re
+(* FavoriteStudent.re *)
 let default = "Bob"
 ```
 ```js

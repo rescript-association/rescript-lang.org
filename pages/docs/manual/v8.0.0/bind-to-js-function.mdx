@@ -8,12 +8,17 @@ canonical: "/docs/manual/latest/bind-to-js-function"
 
 Binding a JS function is like binding any other value:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 // Import nodejs' path.dirname
 [@bs.module "path"] external dirname: string => string = "dirname";
 let root = dirname("/User/github"); // returns "User"
+```
+```ml
+(* Import nodejs' path.dirname *)
+external dirname: string -> string = "dirname" [@@bs.module "path"]
+let root = dirname "/User/github" (* returns "User" *)
 ```
 ```js
 var Path = require("path");
@@ -40,7 +45,7 @@ draw(20, 20, true)
 
 It'd be nice if on ReScript's side, we can bind & call `draw` while labeling things a bit:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module "MyGame"]
@@ -48,6 +53,13 @@ external draw: (~x: int, ~y: int, ~border: bool=?, unit) => unit = "draw";
 
 draw(~x=10, ~y=20, ~border=true, ());
 draw(~x=10, ~y=20, ());
+```
+```ml
+external draw: x:int -> y:int -> ?border:bool -> unit -> unit = "draw"
+[@@bs.module "MyGame"]
+
+let () = draw ~x:10 ~y:20 ~border:true ()
+let () = draw ~x:10 ~y:20 ()
 ```
 ```js
 var MyGame = require("MyGame");
@@ -64,7 +76,7 @@ We've compiled to the same function, but now the usage is much clearer on the Re
 
 Note that you can change the order of labeled arguments on the ReScript side and BuckleScript will ensure that they appear the right way in the JavaScript output:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module "MyGame"]
@@ -72,6 +84,13 @@ external draw: (~x: int, ~y: int, ~border: bool=?, unit) => unit = "draw";
 
 draw(~x=10, ~y=20, ());
 draw(~y=20, ~x=10, ());
+```
+```ml
+external draw: x:int -> y:int -> ?border:bool -> unit -> unit = "draw"
+[@@bs.module "MyGame"]
+
+let () = draw ~x:10 ~y:20 ()
+let () = draw ~y:20 ~x:10 ()
 ```
 ```js
 var MyGame = require("MyGame");
@@ -84,7 +103,7 @@ MyGame.draw(10, 20, undefined);
 
 Functions attached to a JS objects (other than JS modules) require a special way of binding to them, using `bs.send`:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type document; // abstract type for a document object
@@ -92,6 +111,13 @@ type document; // abstract type for a document object
 [@bs.val] external doc: document = "document";
 
 let el = getElementById(doc, "myId");
+```
+```ml
+type document (* abstract type for a document object *)
+external getElementById: document -> string -> Dom.element = "getElementById" [@@bs.send]
+external doc: document = "document" [@@bs.val ]
+
+let el = getElementById doc "myId"
 ```
 ```js
 var el = document.getElementById("myId");
@@ -109,13 +135,19 @@ Ever used `foo().bar().baz()` chaining ("fluent api") in JS OOP? We can model th
 
 You might have JS functions that take an arbitrary amount of arguments. BuckleScript supports modeling those, under the condition that the arbitrary arguments part is homogenous (aka of the same type). If so, add `bs.variadic` to your `external`.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module "path"] [@bs.variadic]
 external join: array(string) => string = "join";
 
 let v = join([|"a", "b"|]);
+```
+```ml
+external join : string array -> string = "join"
+[@@bs.module "path"][@@bs.variadic]
+
+let v = join [|"a"; "b"|]
 ```
 ```js
 var Path = require("path");
@@ -134,12 +166,17 @@ Apart from the above special-case, JS function in general are often arbitrary ov
 
 If you can exhaustively enumerate the many forms an overloaded JS function can take, simply bind to each differently:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module "MyGame"] external drawCat: unit => unit = "draw";
 [@bs.module "MyGame"] external drawDog: (~giveName: string) => unit = "draw";
 [@bs.module "MyGame"] external draw: (string, ~useRandomAnimal: bool) => unit = "draw";
+```
+```ml
+external drawCat: unit -> unit = "draw" [@@bs.module "MyGame"]
+external drawDog: giveName:string -> unit = "draw" [@@bs.module "MyGame"]
+external draw: string -> useRandomAnimal:bool -> unit = "draw" [@@bs.module "MyGame"]
 ```
 ```js
 // Empty output
@@ -167,7 +204,7 @@ function padLeft(value, padding) {
 
 Here, `padding` is really conceptually a variant. Let's model it as such.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.val]
@@ -180,6 +217,17 @@ external padLeft: (
   => string = "padLeft";
 padLeft("Hello World", `Int(4));
 padLeft("Hello World", `Str("Message from ReScript: "));
+```
+```ml
+external padLeft:
+  string ->
+  (([
+    | `Str of string
+    | `Int of int
+  ]) [@bs.unwrap]) ->
+  string = "padLeft" [@@bs.val]
+let _ = padLeft "Hello World" (`Int 4)
+let _ = padLeft "Hello World" (`Str "Message from ReScript: ")
 ```
 ```js
 padLeft("Hello World", 4);
@@ -194,7 +242,7 @@ Obviously, the JS side couldn't have an argument that's a polymorphic variant! B
 
 Consider the Node `fs.readFileSync`'s second argument. It can take a string, but really only a defined set: `"ascii"`, `"utf8"`, etc. You can still bind it as a string, but we can use poly variants + `bs.string` to ensure that our usage's more correct:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module "fs"]
@@ -207,6 +255,18 @@ external readFileSync: (
 ) => string = "fs";
 
 readFileSync(~name="xx.txt", `useAscii);
+```
+```ml
+external readFileSync:
+  name:string ->
+  (([
+    | `utf8
+    | `useAscii [@bs.as "ascii"]
+  ]) [@bs.string]) ->
+  string = "fs"
+[@@bs.module "fs"]
+
+let _ = readFileSync ~name:"xx.txt" `useAscii
 ```
 ```js
 var Fs = require("fs");
@@ -222,7 +282,7 @@ And now, passing something like `"myOwnUnicode"` or other variant constructor na
 
 Aside from string, you can also compile an argument to an int, using `bs.int` instead of `bs.string` in a similar way:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.val]
@@ -234,6 +294,16 @@ external testIntType: (
   ])
   => int = "testIntType";
 testIntType(`inBinary);
+```
+```ml
+external testIntType: (([
+  | `onClosed
+  | `onOpen [@bs.as 20]
+  | `inBinary
+  ]) [@bs.int]) ->
+  int = "testIntType" [@@bs.val]
+
+let _ = testIntType `inBinary
 ```
 ```js
 testIntType(21);
@@ -247,10 +317,10 @@ testIntType(21);
 
 One last trick with polymorphic variants:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
-type readline
+type readline;
 
 [@bs.send]
 external on: (
@@ -266,6 +336,22 @@ let register = rl =>
   rl
   ->on(`close(event => ()))
   ->on(`line(line => Js.log(line)));
+```
+```ml
+type readline
+
+external on:
+  readline ->
+  (([
+    | `close of unit -> unit
+    | `line of string -> unit
+  ]) [@bs.string]) ->
+  readline = "on" [@@bs.send]
+
+let register rl =
+  rl
+  |. on (`close (fun event -> ()))
+  |. on (`line (fun line -> Js.log line))
 ```
 ```js
 function register(rl) {
@@ -285,7 +371,7 @@ function register(rl) {
 
 Sometimes it's convenient to bind to a function using an `external`, while passing predetermined argument values to the JS function:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.val]
@@ -293,9 +379,21 @@ external processOnExit: (
   [@bs.as "exit"] _,
   int => unit
 ) => unit = "process.on";
-let () = processOnExit(exitCode =>
+
+processOnExit(exitCode =>
   Js.log("error code: " ++ Js.Int.toString(exitCode))
 );
+```
+```ml
+external processOnExit:
+  (_ [@bs.as "exit"]) ->
+  (int -> unit) ->
+  unit = "process.on"
+[@@bs.val]
+
+let () = processOnExit (fun exitCode  ->
+ Js.log ("error code: " ^ (Js.Int.toString exitCode))
+)
 ```
 ```js
 process.on("exit", function (exitCode) {
@@ -313,11 +411,20 @@ Curry is a delicious Indian dish. More importantly, in the context of ReScript (
 
 See the `addFive` intermediate function? `add` takes in 3 arguments but received only 1. It's interpreted as "currying" the argument `5` and waiting for the next 2 arguments to be applied later on. Type signatures:
 
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
 ```rei
 let add: (int, int, int) => int;
 let addFive: (int, int) => int;
 let twelve: int;
 ```
+```mli
+val add: (int * int * int) => int
+val addFive: (int * int) => int
+val twelve: int
+```
+
+</CodeTab>
 
 (In a dynamic language such as JS, currying would be dangerous, since accidentally forgetting to pass an argument doesn't error at compile time).
 
@@ -341,13 +448,19 @@ ReScript tries to do #1 as much as it can. Even when it bails and uses #2's curr
 
 [Uncurried function](function.md#uncurried-function) annotation also works on `external`:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type timerId;
 [@bs.val] external setTimeout: ((. unit) => unit, int) => timerId = "setTimeout";
 
 let id = setTimeout((.) => Js.log("hello"), 1000);
+```
+```ml
+type timerId
+external setTimeout: ((unit -> unit) [@bs]) -> int -> timerId = "setTimeout" [@@bs.val]
+
+let id = setTimeout ((fun () -> Js.log "hello") [@bs]) 1000
 ```
 ```js
 var id = setTimeout(function () {
@@ -369,11 +482,15 @@ The above solution is safe, guaranteed, and performant, but sometimes visually a
 
 Then try `@bs.uncurry`:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.send] external map: (array('a), [@bs.uncurry] ('a => 'b)) => array('b) = "map";
 map([|1, 2, 3|], x => x + 1);
+```
+```ml
+external map: 'a array -> (('a -> 'b) [@bs.uncurry]) -> 'b array = "map" [@@bs.send]
+let _ = map [|1; 2; 3|] (fun x -> x + 1)
 ```
 ```js
 // Empty output
@@ -395,14 +512,21 @@ x.onload = function(v) {
 
 Here, `this` would point to `x` (actually, it depends on how `onload` is called, but we digress). It's not correct to declare `x.onload` of type `(. unit) -> unit`. Instead, we introduced a special attribute, `bs.this`, which allows us to type `x` as so:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
-type x
+type x;
 [@bs.val] external x: x = "x";
 [@bs.set] external setOnload: (x, [@bs.this] ((x, int) => unit)) => unit = "onload";
 [@bs.get] external resp: x => int = "response";
 setOnload(x, [@bs.this] ((o, v) => Js.log(resp(o) + v)));
+```
+```ml
+type x
+external x: x = "x" [@@bs.val]
+external setOnload: x -> ((x -> int -> unit) [@bs.this]) -> unit = "onload" [@@bs.set]
+external resp: x -> int = "response" [@@bs.get]
+let _ = setOnload x ((fun o v -> Js.log ((resp o) + v)) [@bs.this])
 ```
 ```js
 x.onload = function (v) {
@@ -419,13 +543,15 @@ x.onload = function (v) {
 
 For JS functions that return a value that can also be `undefined` or `null`, we provide `[@bs.return ...]`. To automatically convert that value to an `option` type (recall that ReScript `option` type's `None` value only compiles to `undefined` and not `null`).
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type element;
 type dom;
+
 [@bs.send] [@bs.return nullable]
 external getElementById: (dom, string) => option(element) = "getElementById";
+
 let test = dom => {
   let elem = dom->(getElementById("haha"))
   switch (elem) {
@@ -433,6 +559,18 @@ let test = dom => {
   | Some(_ui) => 2
   }
 };
+```
+```ml
+type element
+type dom
+external getElementById : dom -> string -> element option = "getElementById"
+[@@bs.send][@@bs.return nullable]
+
+let test dom =
+  let elem = dom |. (getElementById "haha") in
+  match elem with
+  | None -> 1
+  | Some _ui -> 2
 ```
 ```js
 function test(dom) {

@@ -10,11 +10,15 @@ canonical: "/docs/manual/latest/import-export"
 
 Unlike JavaScript, ReScript doesn't have or need import statements:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 // Inside School.re
 let studentMessage = Student.message;
+```
+```ml
+(* Inside School.re *)
+let studentMessage = Student.message
 ```
 ```js
 var Student = require("./Student.bs");

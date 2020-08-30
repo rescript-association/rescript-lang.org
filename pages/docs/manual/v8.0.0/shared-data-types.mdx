@@ -13,7 +13,7 @@ This means that if you're passing e.g. a ReScript string to the JavaScript side,
 Unlike most compiled-to-js languages, in ReScript, **you don't need to write data converters back and forth for most of our values**!
 
 **Shared, bidirectionally usable types**:
-- String. Backtick strings like `` `hello $(personName)` `` support interpolation. Normal `"hello"` strings don't.
+- String. Backtick strings like `` `hello $(personName)` `` (in old ML syntax: `{j|hello $(personName)|j}`) support interpolation. Normal `"hello"` strings don't.
 - Float. ReScript floats are JS numbers, vice-versa.
 - Array. In addition to the [JS Array API](api/js/array), we provide our own [Belt.Array](api/belt/array#set) API too.
 - Tuple. Compiles to a JS array. You can treat a fixed-sized, heterogenous JS array as ReScript tuple too.
