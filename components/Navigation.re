@@ -480,8 +480,8 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
       <div className="h-8 w-8">
         <a
           href="/"
-          className="block hover:cursor-pointer flex justify-center items-center w-full h-full font-bold">
-          <img src="/static/rescript-logo.svg" />
+          className="block hover:cursor-pointer w-full h-full flex justify-center items-center font-bold">
+          <img src="/static/nav-logo@2x.png"/>
         </a>
       </div>
       /*<img*/
