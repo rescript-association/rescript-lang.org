@@ -12,10 +12,12 @@ However, the **concept** of a potentially nonexistent value is still useful, and
 
 We represent the existence and nonexistence of a value by wrapping it with the `option` type. Here's its definition from the standard library:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type option('a) = None | Some('a);
+```
+type 'a option = | None | Some of 'a
 ```
 ```js
 // Empty output
@@ -31,10 +33,13 @@ It means "a value of type option is either None (representing nothing) or that a
 
 Here's a normal value:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let licenseNumber = 5;
+```
+```ml
+let licenseNumber = 5
 ```
 ```js
 var licenseNumber = 5;
@@ -44,7 +49,7 @@ var licenseNumber = 5;
 
 To represent the concept of "maybe null", you'd turn this into an `option` type by wrapping it. For the sake of a more illustrative example, we'll put a condition around it:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let licenseNumber =
@@ -54,6 +59,13 @@ let licenseNumber =
     None;
   };
 ```
+```ml
+let licenseNumber =
+  if personHasACar then
+    Some 5
+  else
+    None
+```
 ```js
 var licenseNumber = personHasACar ? 5 : undefined;
 ```
@@ -62,7 +74,7 @@ var licenseNumber = personHasACar ? 5 : undefined;
 
 Later on, when another piece of code receives such value, it'd be forced to handle both cases through [pattern matching](pattern-matching-destructuring.md):
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 switch (licenseNumber) {
@@ -71,6 +83,13 @@ switch (licenseNumber) {
 | Some(number) =>
   Js.log("The person's license number is " ++ Js.Int.toString(number));
 };
+```
+```ml
+let () = match licenseNumber with
+| None ->
+  Js.log "The person doesn't have a car"
+| Some number ->
+  Js.log ("The person's license number is " ^ (Js.Int.toString number))
 ```
 ```js
 var number = licenseNumber;
@@ -90,10 +109,13 @@ By turning your ordinary number into an `option` type, and by forcing you to han
 
 The `option` type is common enough that we special-case it when compiling to JavaScript:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let x = Some(5);
+```
+```ml
+let x = Some 5
 ```
 ```js
 var x = 5;
@@ -103,10 +125,13 @@ var x = 5;
 
 simply compiles down to `5`, and
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let x = None;
+```
+```ml
+let x = None
 ```
 ```js
 var x;
@@ -120,10 +145,13 @@ compiles to `undefined`! If you've got e.g. a string in JavaScript that you know
 
 The option-to-undefined translation isn't perfect, because on our side, `option` values can be composed:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let x = Some(Some(Some(5)));
+```
+```ml
+let x = Some (Some (Some 5))
 ```
 ```js
 var x = 5;
@@ -133,10 +161,13 @@ var x = 5;
 
 This still compiles to `5`, but this gets troublesome:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let x = Some(None);
+```
+```ml
+let x = Some None
 ```
 ```js
 var Caml_option = require("./stdlib/caml_option.js");
@@ -167,10 +198,13 @@ To create a JS `null`, use the value `Js.Nullable.null`. To create a JS `undefin
 
 If you're receiving, for example, a JS string that can be `null` and `undefined`, type it as:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module "MyConstant"] external myId: Js.Nullable.t(string) = "myId";
+```
+```ml
+external myId: string Js.Nullable.t = "myId" [@@bs.module "MyConstant"]
 ```
 ```js
 // Empty output
@@ -180,13 +214,19 @@ If you're receiving, for example, a JS string that can be `null` and `undefined`
 
 To create such a nullable string from our side (presumably to pass it to the JS side, for interop purpose), do:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module "MyIdValidator"] external validate: Js.Nullable.t(string) => bool = "validate";
 let personId: Js.Nullable.t(string) = Js.Nullable.return("abc123");
 
 let result = validate(personId);
+```
+```ml
+external validate: string Js.Nullable.t -> bool = "validate" [@@bs.module "MyIdValidator"]
+let personId: string Js.Nullable.t = Js.Nullable.return "abc123"
+
+let result = validate personId
 ```
 ```js
 var MyIdValidator = require("MyIdValidator");

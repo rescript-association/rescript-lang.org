@@ -19,11 +19,15 @@ The following sections explore more of our type system.
 
 This let-binding doesn't contain any written type:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let score = 10;
 let add = (a, b) => a + b;
+```
+```ml
+let score = 10
+let add a b = a + b
 ```
 ```js
 var score = 10;
@@ -40,10 +44,13 @@ ReScript knows that `score` is an `int`, judging by the value `10`. This is call
 
 But you can also optionally write down the type, aka annotate your value:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let score: int = 10;
+```
+```ml
+let score: int = 10
 ```
 ```js
 var score = 10;
@@ -55,7 +62,7 @@ If the type annotation for `score` doesn't correspond to our inferred type for i
 
 You can also wrap any expression in parentheses and annotate it:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let myInt = 5;
@@ -63,6 +70,13 @@ let myInt: int = 5;
 let myInt = (5: int) + (4: int);
 let add = (x: int, y: int) : int => x + y;
 let drawCircle = (~radius as r: int): circleType => /* code here */;
+```
+```ml
+let myInt = 5
+let myInt: int = 5
+let myInt = (5 : int) + (4 : int)
+let add (x : int) (y : int) = (x + y : int)
+let drawCircle ~radius:(r : int) : circleType = (* code here *)
 ```
 ```js
 var myInt = 9;
@@ -82,11 +96,15 @@ Note: in the last line, `(~radius as r: int)` is a labeled argument. More on thi
 
 You can refer to a type by a different name. They'll be equivalent:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type scoreType = int;
 let x: scoreType = 10;
+```
+```ml
+type scoreType = int
+let x: scoreType = 10
 ```
 ```js
 var x = 10;
@@ -100,7 +118,7 @@ Types can accept parameters, akin to generics in other languages. The parameters
 
 The use-case of a parameterized type is to kill duplications. Before:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 // this is a tuple of 3 items, explained next
@@ -109,6 +127,14 @@ type floatCoordinates = (float, float, float);
 
 let a: intCoordinates = (10, 20, 20);
 let b: floatCoordinates = (10.5, 20.5, 20.5);
+```
+```ml
+(* this is a tuple of 3 items, explained next *)
+type intCoordinates = (int, int, int)
+type floatCoordinates = (float, float, float)
+
+let a: intCoordinates = (10, 20, 20)
+let b: floatCoordinates = (10.5, 20.5, 20.5)
 ```
 ```js
 var a = [10, 20, 20];
@@ -119,13 +145,19 @@ var b = [10.5, 20.5, 20.5];
 
 After:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type coordinates('a) = ('a, 'a, 'a);
 
 let a: coordinates(int) = (10, 20, 20);
 let b: coordinates(float) = (10.5, 20.5, 20.5);
+```
+```ml
+type 'a coordinates = ('a * 'a * 'a)
+
+let a: int coordinates = (10, 20, 20)
+let b: float coordinates = (10.5, 20.5, 20.5)
 ```
 ```js
 var a = [10, 20, 20];
@@ -136,10 +168,13 @@ var b = [10.5, 20.5, 20.5];
 
 Note that the above codes are just contrived examples for illustration purposes. Since the types are inferred, you could have just written:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let buddy = (10, 20, 20);
+```
+```ml
+let buddy = (10, 20, 20)
 ```
 ```js
 var buddy = [10, 20, 20];
@@ -151,14 +186,17 @@ The type system infers that it's a `(int, int, int)`. Nothing else needed to be 
 
 Type arguments appear in many places. Our `array('a)` type is such a type that requires a type parameter
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 // inferred as `array(string)`
 let greetings = [|"hello", "world", "how are you"|];
 ```
+```ml
+(* inferred as `string array` *)
+let greetings = [|"hello"; "world"; "how are you"|]
+```
 ```js
-// inferred as `array(string)`
 var greetings = ["hello", "world", "how are you"];
 ```
 
@@ -170,7 +208,7 @@ Types can receive many arguments, and be composable.
 
 <!-- TODO: too early for this example -->
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type result('a, 'b) =
@@ -186,6 +224,23 @@ let payloadResults: myPayloadResults(string) = [|
   Ok({data: "bye"}),
   Error("Something wrong happened!")
 |];
+```
+```ml
+type ('a, 'b) result =
+  | Ok of 'a
+  | Error of 'b
+
+type myPayload = {
+  data: string;
+}
+
+type 'errorType myPayloadResults = (myPayload, 'errorType) result array
+
+let payloadResults: string myPayloadResults = [|
+  Ok({data = "hi"});
+  Ok({data = "bye"});
+  Error("Something wrong happaned!");
+|]
 ```
 ```js
 var payloadResults = [
@@ -210,12 +265,18 @@ var payloadResults = [
 
 Just like a functions, a type can reference itself within itself:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type person = {
   name: string,
   friends: array(person)
+}
+```
+```ml
+type person = {
+  name: string;
+  friends: person array;
 }
 ```
 ```js
@@ -230,11 +291,15 @@ To opt out of resursive type, use `type nonrec person = ...`.
 
 Types can also be _mutually_ recursive through `and`:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
-type student = {taughtBy: teacher};
+type student = {taughtBy: teacher}
 and teacher = {students: array(student)};
+```
+```ml
+type student = {taughtBy: teacher}
+and teacher = {students: student array}
 ```
 ```js
 // Empty output
@@ -246,10 +311,13 @@ and teacher = {students: array(student)};
 
 ReScript's type system is robust and does not allow dangerous, unsafe stuff like implicit type casting, randomly guessing a value's type, etc. However, out of pragmatism, we expose a single escape hatch for you to "lie" to the type system:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 external myShadyConversion : myType1 => myType2 = "%identity";
+```
+```ml
+external myShadyConversion : myType1 -> myType2 = "%identity"
 ```
 ```js
 // Empty output
@@ -259,12 +327,17 @@ external myShadyConversion : myType1 => myType2 = "%identity";
 
 This declaration converts a `myType1` of your choice to `myType2` of your choice. You can use it like so:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 external convertToFloat : int => float = "%identity";
 let age = 10;
 let gpa = 2.1 +. convertToFloat(age);
+```
+```ml
+external convertToFloat : int -> float = "%identity"
+let age = 10
+let gpa = 2.1 +. (convertToFloat age)
 ```
 ```js
 var age = 10;

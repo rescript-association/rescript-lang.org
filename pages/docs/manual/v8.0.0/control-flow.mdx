@@ -14,7 +14,7 @@ ReScript also supports our famous pattern matching, which will be covered in [it
 
 Unlike its JavaScript counterpart, ReScript's `if` is an expression; they evaluate to their body's content:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let message = if (isMorning) {
@@ -22,6 +22,13 @@ let message = if (isMorning) {
 } else {
   "Hello!"
 };
+```
+```ml
+let message =
+  if isMorning then
+    "Good morning!"
+  else
+    "Hello!"
 ```
 ```js
 var message = isMorning ? "Good morning!" : "Hello!";
@@ -31,12 +38,16 @@ var message = isMorning ? "Good morning!" : "Hello!";
 
 **Note:** an `if-else` expression without the final `else` branch implicitly gives `()` (aka the `unit` type). So this:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 if (showMenu) {
   displayMenu();
 };
+```
+```ml
+if showMenu then
+  displayMenu ()
 ```
 ```js
 if (showMenu) {
@@ -48,7 +59,7 @@ if (showMenu) {
 
 is basically the same as:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 if (showMenu) {
@@ -56,6 +67,12 @@ if (showMenu) {
 } else {
   ();
 };
+```
+```ml
+if showMenu then
+  displayMenu ()
+else
+  ()
 ```
 ```js
 if (showMenu) {
@@ -77,10 +94,13 @@ It'll give a type error, saying basically that the implicit `else` branch has th
 
 We also have ternary sugar, but **we encourage you to prefer if-else when possible**.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let message = isMorning ? "Good morning!" : "Hello!"
+```
+```ml
+(* Doesn't exist in older ML syntax *)
 ```
 ```js
 var message = isMorning ? "Good morning!" : "Hello!";
@@ -94,12 +114,17 @@ var message = isMorning ? "Good morning!" : "Hello!";
 
 For loops iterate from a starting value up to (and including) the ending value.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 for (i in startValueInclusive to endValueInclusive) {
   Js.log(i);
 };
+```
+```ml
+for i = startValueInclusive to endValueInclusive do
+  Js.log i
+done
 ```
 ```js
 for(var i = startValueInclusive; i <= endValueInclusive; ++i){
@@ -109,7 +134,7 @@ for(var i = startValueInclusive; i <= endValueInclusive; ++i){
 
 </CodeTab>
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 // prints: 1 2 3
@@ -117,6 +142,13 @@ for (x in 1 to 3) {
   Js.log(x);
   Js.log(" ");
 };
+```
+```ml
+(* prints: 1 2 3 *)
+for x = 1 to 3 do
+  Js.log x;
+  Js.log " "
+done
 ```
 ```js
 for(var x = 1; x <= 3; ++x){
@@ -129,12 +161,17 @@ for(var x = 1; x <= 3; ++x){
 
 You can make the `for` loop count in the opposite direction by using `downto`.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 for (i in startValueInclusive downto endValueInclusive) {
   Js.log(i);
 };
+```
+```ml
+for i = startValueInclusive downto endValueInclusive do
+  Js.log i
+done
 ```
 ```js
 for(var i = startValueInclusive; i >= endValueInclusive; --i){
@@ -144,7 +181,7 @@ for(var i = startValueInclusive; i >= endValueInclusive; --i){
 
 </CodeTab>
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 // prints: 3 2 1
@@ -152,6 +189,13 @@ for (x in 3 downto 1) {
   Js.log(x);
   Js.log(" ");
 };
+```
+```ml
+(* prints: 3 2 1 ()
+for x = 3 downto 1 do
+  Js.log x;
+  Js.log " "
+done
 ```
 ```js
 for(var x = 3; x >= 1; --x){
@@ -166,12 +210,17 @@ for(var x = 3; x >= 1; --x){
 
 While loops execute its body code block while its condition is true.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 while (testCondition) {
   // body here
 };
+```
+```ml
+while testCondition do
+  (* body here *)
+done
 ```
 ```js
 while (testCondition) {
@@ -185,7 +234,7 @@ while (testCondition) {
 
 There's no loop-breaking `break` keyword (nor early `return` from functions, for that matter) in ReScript. However, we can break out of a while loop easily through using a [mutable binding](mutation.md).
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let break = ref(false);
@@ -197,6 +246,15 @@ while (!break.contents) {
     Js.log("Still running");
   };
 };
+```
+```ml
+let () = break <- ref false
+let () = while not break.contents do
+  if (Js.Math.random ()) > 0.3 then
+    break := true
+  else
+    Js.log "Still running"
+done
 ```
 ```js
 var $$break = {

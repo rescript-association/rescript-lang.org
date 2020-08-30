@@ -10,10 +10,13 @@ _Cheat sheet for the full function syntax at the end_.
 
 Functions are declared with an arrow and return an expression.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let greet = (name) => "Hello " ++ name;
+```
+```ml
+let greet name = "Hello " ^ name
 ```
 ```js
 function greet(name) {
@@ -25,10 +28,13 @@ function greet(name) {
 
 This declares a function and assigns to it the name `greet`, which you can call like so:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 greet("world!"); // "Hello world!"
+```
+```ml
+greet "world!" (* "Hello world!" *)
 ```
 ```js
 greet("world!");
@@ -38,11 +44,15 @@ greet("world!");
 
 Multi-arguments functions have arguments separated by comma:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let add = (x, y, z) => x + y + z;
 add(1, 2, 3); // 6
+```
+```ml
+let add x y z = (x + y) + z
+let () = add 1 2 3
 ```
 ```js
 function add(x, y, z) {
@@ -54,13 +64,18 @@ function add(x, y, z) {
 
 For longer functions, you'd surround the body with a block:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let greetMore = (name) => {
   let part1 = "Hello";
   part1 ++ " " ++ name;
 };
+```
+```ml
+let greetMore name =
+  let part1 = "Hello" in
+  part1 ^ " " ^ name
 ```
 ```js
 function greetMore(name) {
@@ -76,7 +91,7 @@ If your function has no argument, just write `let greetMore = () => {...}`.
 
 Multi-arguments functions, especially those whose arguments are of the same type, can be confusing to call.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let addCoordinates = (x, y) => {
@@ -84,6 +99,12 @@ let addCoordinates = (x, y) => {
 };
 // ...
 addCoordinates(5, 6); // which is x, which is y?
+```
+```ml
+let addCoordinates x t =
+  (* use x and y here *)
+(* ... *)
+addCoordinates 5 6 (* which is x, which is y? *)
 ```
 ```js
 function addCoordinates(x, y) {
@@ -97,7 +118,7 @@ addCoordinates(5, 6);
 
 You can attach labels to an argument by prefixing the name with the `~` symbol:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let addCoordinates = (~x, ~y) => {
@@ -105,6 +126,12 @@ let addCoordinates = (~x, ~y) => {
 };
 // ...
 addCoordinates(~x=5, ~y=6);
+```
+```ml
+let addCoordinates ~x ~y =
+  (* use x and y here *)
+(* ... *)
+addCoordinates ~x=5 ~y=6
 ```
 ```js
 function addCoordinates(x, y) {
@@ -118,10 +145,13 @@ addCoordinates(5, 6);
 
 You can provide the arguments in **any order**:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 addCoordinates(~y=6, ~x=5);
+```
+```ml
+addCoordinates ~y=6 ~x=5
 ```
 ```js
 addCoordinates(6, 5);
@@ -131,7 +161,7 @@ addCoordinates(6, 5);
 
 The `~x` part in the declaration means the function accepts an argument labeled `x` and can refer to it in the function body by the same name. You can also refer to the arguments inside the function body by a different name for conciseness:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let drawCircle = (~radius as r, ~color as c) => {
@@ -141,6 +171,14 @@ let drawCircle = (~radius as r, ~color as c) => {
 };
 
 drawCircle(~radius=10, ~color="red");
+```
+```ml
+let drawCircle ~radius:r ~color:c =
+  setColor c;
+  startAt r r;
+  (* ... *)
+
+let () = drawCircle ~radius:10 ~color:"red"
 ```
 ```js
 function drawCircle(r, c) {
@@ -157,12 +195,16 @@ As a matter of fact, `(~radius)` is just a shorthand for `(~radius as radius)`.
 
 Here's the syntax for typing the arguments:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let drawCircle = (~radius as r: int, ~color as c: string) => {
   // code here
 };
+```
+```ml
+let drawCircle ~radius:(r : int) ~color:(c : string) =
+  (* code *)
 ```
 ```js
 function drawCircle(r, c) {
@@ -176,7 +218,7 @@ function drawCircle(r, c) {
 
 Labeled function arguments can be made optional during declaration. You can then omit them when calling the function.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 // radius can be omitted
@@ -187,6 +229,14 @@ let drawCircle = (~color, ~radius=?, ()) => {
   | Some(r_) => startAt(r_, r_)
   };
 };
+```
+```ml
+(* radius can be omitted *)
+let drawCircle ~color ?radius () =
+  setColor color;
+  let () = match radius with
+  | None -> startAt 1 1
+  | Some r_ -> startAt r_ r_
 ```
 ```js
 var Caml_option = require("./stdlib/caml_option.js");
@@ -215,7 +265,7 @@ Functions with optional labeled arguments can be confusing when it comes to sign
 
 If we get back to our previous example and both add a signature and type annotations to its argument, we get this:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let drawCircle: (~color: color, ~radius: int=?, unit) => unit =
@@ -226,6 +276,14 @@ let drawCircle: (~color: color, ~radius: int=?, unit) => unit =
     | Some(r_) => startAt(r_, r_)
     };
   };
+```
+```ml
+let drawCircle: color:color -> ?radius:int -> unit -> unit =
+  fun ~color:(color : color) ?radius:(radius : int option) () ->
+    setColor color;
+    let () = match radius with
+    | None -> startAt 1 1
+    | Some r_ -> startAt r_ r_
 ```
 ```js
 function drawCircle(color, radius, param) {
@@ -250,7 +308,7 @@ So if you happen to struggle when writing the signature of a function with optio
 
 Sometimes, you might want to forward a value to a function without knowing whether the value is `None` or `Some(a)`. Naively, you'd do:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let result =
@@ -258,6 +316,12 @@ let result =
   | None => drawCircle(~color, ())
   | Some(r) => drawCircle(~color, ~radius=r, ())
   };
+```
+```ml
+let result =
+  match payloadRadius with
+  | None -> drawCircle ~color ()
+  | Some r -> drawCircle ~color ~radius:r ()
 ```
 ```js
 var r = payloadRadius;
@@ -271,10 +335,13 @@ var result = r !== undefined
 
 This quickly gets tedious. We provide a shortcut:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let result = drawCircle(~color, ~radius=?payloadRadius, ());
+```
+```ml
+let result = drawCircle ~color ?radius:payloadRadius ()
 ```
 ```js
 var result = drawCircle(1, undefined, undefined);
@@ -288,13 +355,18 @@ This means "I understand `radius` is optional, and that when I pass it a value i
 
 Optional labeled arguments can also be provided a default value. In this case, they aren't wrapped in an `option` type.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let drawCircle = (~radius=1, ~color, ()) => {
   setColor(color);
   startAt(radius, radius);
 };
+```
+```ml
+let drawCircle ?(radius=1) ~color () =
+  setColor color;
+  startAt radius radius
 ```
 ```js
 function drawCircle(radiusOpt, color, param) {
@@ -310,10 +382,13 @@ function drawCircle(radiusOpt, color, param) {
 
 ReScript chooses the sane default of preventing a function to be called recursively within itself. To make a function recursive, add the `rec` keyword after the `let`:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let rec neverTerminate = () => neverTerminate()
+```
+```ml
+let rec neverTerminate () = neverTerminate ()
 ```
 ```js
 function neverTerminate(_param) {
@@ -328,7 +403,7 @@ function neverTerminate(_param) {
 
 A simple recursive function may look like this:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 // Recursively check every item on the list until one equals the `item`
@@ -338,6 +413,15 @@ let rec listHas = (list, item) =>
   | [] => false
   | [a, ...rest] => a === item || listHas(rest, item)
   };
+```
+```ml
+(* Recursively check every item on the list until one equals the `item` *)
+(* argument. If a match is found, return `true`, otherwise return `false` *)
+
+let rec listHas list item =
+  match list with
+  | [] -> false
+  | a::rest -> (a == item) || (listHas rest item)
 ```
 ```js
 function listHas(_list, item) {
@@ -364,11 +448,15 @@ Recursively calling a function is bad for performance and the call stack. Howeve
 Mutually recursive functions start like a single recursive function using the
 `rec` keyword, and then are chained together with `and`:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let rec callSecond = () => callFirst()
 and callFirst = () => callSecond();
+```
+```ml
+let rec callSecond () = callFirst ()
+and callFirst () = callSecond ()
 ```
 ```js
 function callSecond(_param) {
@@ -392,12 +480,16 @@ function callFirst(_param) {
 
 ReScript's functions are curried by default, which is one of the few performance penalties we pay in the compiled JS output. The compiler does a best-effort job at removing those currying whenever possible. However, in certain edge cases, you might want guaranteed uncurrying. In those cases, put a dot in the function's parameter list:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let add = (. x, y) => x + y;
 
 add(. 1, 2);
+```
+```ml
+let add = (fun x y -> x + y) [@bs]
+let () = add 1 2 [@bs]
 ```
 ```js
 function add(x, y) {
@@ -421,6 +513,8 @@ Cheat sheet for the function syntaxes:
 
 ### Declaration
 
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
 ```re
 // anonymous function
 (x, y) => 1;
@@ -442,8 +536,33 @@ let add = (~first as x=?, ~second as y=?) => switch (x) {...};
 // with punning
 let add = (~first=?, ~second=?) => switch (first) {...};
 ```
+```ml
+(* anonymous function *)
+fun x y -> 1
+(* bind to a name *)
+let add x y = 1
+
+(* labeled *)
+let add ~first:x ~second:y = x + y
+(* with punning sugar *)
+let add ~first ~second = first + second
+
+(* labeled with default value *)
+let add ?first:(x=1) ?second:(y=2) = x + y
+(* with punning *)
+let add ?(first=1) ?(second=2) = first + second
+
+(* optional *)
+let add ?first:x ?second:y = match x with ...
+(* with punning *)
+let add ?first ?second = match x with ...
+```
+
+</CodeTab>
 
 #### With Type Annotation
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
 
 ```re
 // anonymous function
@@ -468,8 +587,29 @@ let add = (~first as x: option(int)=?, ~second as y: option(int)=?) : int => swi
 // Inside the function, `first` and `second` are `option(int)`.
 let add = (~first: option(int)=?, ~second: option(int)=?) : int => switch (first) {...};
 ```
+```ml
+(* anonymous function *)
+fun (x: int) (y: int) : int -> 1
+(* bind to a name *)
+let add (x: int) (y: int) : int = 1
+
+(* labeled *)
+let add ~first:(x: int) ~second:(y: int) : int = x + y
+(* no punning sugar *)
+
+(* labeled with default value *)
+let add ?first:((x: int)=1) ?second:((y: int)=2) : int = x + y
+(* no punning sugar *)
+(* optional *)
+let add ?first:(x: int option) ?second:(y: int option) : int = match x with ...
+(* no punning sugar *)
+```
+
+</CodeTab>
 
 ### Application
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
 
 ```re
 add(x, y);
@@ -487,8 +627,28 @@ add(~first=?Some(1), ~second=?Some(2));
 // with punning
 add(~first?, ~second?);
 ```
+```ml
+add x y
+
+(* labeled *)
+add ~first:1 ~second:2
+(* with punning sugar *)
+add ~first ~second
+
+(* application with default value. Same as normal application *)
+add ~first:1 ~second:2
+
+(* explicit optional application *)
+add ?first:(Some 1) ?second:(Some 2)
+(* with punning *)
+add ?first ?second
+```
+
+</CodeTab>
 
 #### With Type Annotation
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
 
 ```re
 // labeled
@@ -503,8 +663,24 @@ add(~first=1: int, ~second=2: int);
 add(~first=?Some(1): option(int), ~second=?Some(2): option(int));
 // no punning sugar when you want to type annotate
 ```
+```ml
+(* labeled *)
+add ~first:(1: int) ~second:(2: int)
+(* no punning sugar *)
+
+(* application with default value. Same as normal application *)
+add ~first:(1: int) ~second:(2: int)
+
+(* explicit optional application *)
+add ?first:(Some 1: int option) ?second:(Some 2: int option)
+(* no punning sugar when you want to type annotate *)
+```
+
+</CodeTab>
 
 ### Standalone Type Signature
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
 
 ```re
 // first arg type, second arg type, return type
@@ -516,14 +692,33 @@ type add = (~first: int, ~second: int) => int;
 // labeled
 type add = (~first: int=?, ~second: int=?, unit) => int;
 ```
+```ml
+(* first arg type, second arg type, return type *)
+type add = int -> int -> int
+
+(* labeled *)
+type add = first:int -> second:int -> int
+
+(* labeled *)
+type add = ?first:int -> ?second:int -> unit -> int
+```
+
+</CodeTab>
 
 #### In Interface Files
 
 To annotate a function from the implementation file (`.re`) in your interface file (`.rei`):
 
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
 ```re
 let add: (int, int) => int;
 ```
+```ml
+val add: int -> int -> int
+```
+
+</CodeTab>
 
 The type annotation part is the same as the previous section on With Type Annotation.
 

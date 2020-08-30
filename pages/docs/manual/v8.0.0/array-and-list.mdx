@@ -10,10 +10,13 @@ canonical: "/docs/manual/latest/array-and-list"
 
 Arrays are our primary ordered data structure. They work the same way as JavaScript arrays.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let myArray = [|"hello", "world", "how are you"|];
+```
+```ml
+let myArray = [|"hello"; "world"; "how are you"|]
 ```
 ```js
 var myArray = ["hello", "world", "how are you"];
@@ -29,7 +32,7 @@ See the [Js.Array](api/js/array) API.
 
 Access & update an array item like so:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let myArray = [|"hello", "world", "how are you"|];
@@ -37,6 +40,13 @@ let myArray = [|"hello", "world", "how are you"|];
 let firstItem = myArray[0]; // "hello"
 
 myArray[0] = "hey"; // now [|"hey", "world", "how are you"|]
+```
+```ml
+let myArray = [|"hello"; "world"; "how are you"|]
+
+let firstItem = myArray(0)  (* "hello" *)
+
+let () = myArray.(0) <- "hey" (* now [|"hey"; "world"; "how are you"|] *)
 ```
 ```js
 var myArray = ["hello", "world", "how are you"];
@@ -57,10 +67,13 @@ ReScript provides a singly linked list too. Lists are:
 - fast at getting the tail
 - slow at everything else
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let myList = [1, 2, 3];
+```
+```ml
+let myList = [1; 2; 3]
 ```
 ```js
 var myList = {
@@ -91,11 +104,15 @@ The standard lib provides a [List module](api/belt/list).
 
 Use the spread syntax:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let myList = [1, 2, 3];
 let anotherList = [0, ...myList];
+```
+```ml
+let myList = [1; 2; 3]
+let anotherList = 0 :: myList
 ```
 ```js
 var myList = {
@@ -127,7 +144,7 @@ Updating an arbitrary item in the middle of a list is also discouraged, since it
 
 `switch` (described in the [pattern matching section](pattern-matching-destructuring.md)) is usually used to access list items:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let message =
@@ -135,6 +152,12 @@ let message =
   | [] => "This list is empty"
   | [a, ...rest] => "The head of the list is the string " ++ Js.Int.toString(a)
   };
+```
+```ml
+let message =
+  match myList with
+  | [] -> "This list is empty"
+  | a::rest -> "The head of the list is the string " ^ (Js.Int.toString a)
 ```
 ```js
 var message = myList

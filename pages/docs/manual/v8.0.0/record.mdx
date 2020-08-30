@@ -15,13 +15,19 @@ Records are like JavaScript objects but:
 
 A record needs a mandatory type declaration:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type person = {
   age: int,
   name: string
 };
+```
+```ml
+type person = {
+  age: int;
+  name: string;
+}
 ```
 ```js
 // Empty output
@@ -33,13 +39,19 @@ type person = {
 
 To create a `person` record (declared above):
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let me = {
   age: 5,
   name: "Big ReScript"
 };
+```
+```ml
+let me = {
+  age = 5;
+  name = "Big ReScript";
+}
 ```
 ```js
 var me = {
@@ -54,11 +66,15 @@ When you create a new record value, ReScript tries to find a record type declara
 
 The type is found by looking above the `me` value. **Note**: if the type instead resides in another file or module, you need to explicitly indicate which file or module it is:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 // School.re
 type person = {age: int, name: string};
+```
+```ml
+(* School.ml *)
+type person = {age: int; name: string}
 ```
 ```js
 // Empty output
@@ -66,7 +82,7 @@ type person = {age: int, name: string};
 
 </CodeTab>
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 // Example.re
@@ -74,6 +90,13 @@ type person = {age: int, name: string};
 let me: School.person = {age: 20, name: "Big ReScript"};
 /* or */
 let me2 = {School.age: 20, name: "Big ReScript"};
+```
+```ml
+(* Example.re *)
+
+let me: School.person = {age = 20; name = "Big ReScript"}
+(* or *)
+let me2 = {School.age = 20; name = "Big ReScript"}
 ```
 ```js
 var me = {
@@ -94,10 +117,13 @@ Either of the above 3 says "this record's definition is found in the School file
 
 Use the familiar dot notation:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let name = me.name;
+```
+```ml
+let name = me.name
 ```
 ```js
 var name = "Big ReScript";
@@ -109,10 +135,13 @@ var name = "Big ReScript";
 
 New records can be created from old records with the `...` spread operator. The original record isn't mutated.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let meNextYear = {...me, age: me.age + 1};
+```
+```ml
+let meNextYear = {me with age = me.age + 1}
 ```
 ```js
 var meNextYear = {
@@ -129,7 +158,7 @@ var meNextYear = {
 
 Record fields can optionally be mutable. This allows you to efficiently update those fields in-place with the `=` operator.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type person = {
@@ -139,6 +168,15 @@ type person = {
 
 let baby = {name: "Baby ReScript", age: 5};
 baby.age = baby.age + 1; // `baby.age` is now 6. Happy birthday!
+```
+```ml
+type person = {
+  name: string;
+  mutable age: int;
+}
+
+let baby = {name = "Baby ReScript"; age = 5}
+let () = baby.age <- baby.age + 1 (* `baby.age` is now 6. Happy birthday! *)
 ```
 ```js
 var baby = {
@@ -155,13 +193,19 @@ baby.age = baby.age + 1 | 0;
 
 **Record Types Are Found By Field Name**. With records, you **cannot** say "I'd like this function to take any record type, as long as they have the field `age`". The following **won't work as intended**:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type person = {age: int, name: string};
 type monster = {age: int, hasTentacles: bool};
 
 let getAge = (entity) => entity.age;
+```
+```ml
+type person = {age: int; name: string}
+type monster = {age: int; hasTentacles: bool}
+
+let getAge entity = entity.age
 ```
 ```js
 function getAge(entity) {
@@ -173,6 +217,8 @@ function getAge(entity) {
 
 Instead, `getAge` will infer that the parameter `entity` must be of type `monster`, the closest record type with the field `age`. The following code's last line fails:
 
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
 ```re
 let kraken = {age: 9999, hasTentacles: true};
 let me = {age: 5, name: "Baby ReScript"};
@@ -180,6 +226,15 @@ let me = {age: 5, name: "Baby ReScript"};
 getAge(kraken);
 getAge(me); // type error!
 ```
+```ml
+let kraken = {age = 9999; hasTentacles = true}
+let me = {age = 5; name = "Baby ReScript"}
+
+let () = getAge kraken
+let () = getAge me (* type error! *)
+```
+
+</CodeTab>
 
 The type system will complain that `me` is a `person`, and that `getAge` only works on `monster`. If you need such capability, use ReScript objects, described [here](object.md).
 

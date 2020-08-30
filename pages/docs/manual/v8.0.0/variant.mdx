@@ -10,7 +10,7 @@ So far, most of ReScript's data structures might look familiar to you. This sect
 
 Most data structures in most languages are about "this **and** that". A variant allows us to express "this **or** that".
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type myResponse =
@@ -19,6 +19,14 @@ type myResponse =
   | PrettyMuch;
 
 let areYouCrushingIt = Yes;
+```
+```ml
+type myResponse =
+  | Yes
+  | No
+  | PrettyMuch
+
+let areYouCrushingIt = Yes
 ```
 ```js
 var areYouCrushingIt = /* Yes */0;
@@ -34,11 +42,15 @@ var areYouCrushingIt = /* Yes */0;
 
 If the variant you're using is in a different file, bring it into scope like you'd do [for a record](record.md#record-needs-an-explicit-definition):
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 // Zoo.re
 type animal = Dog | Cat | Bird;
+```
+```ml
+(* Zoo.re *)
+type animal = Dog | Cat | Bird
 ```
 ```js
 // Empty output
@@ -46,13 +58,19 @@ type animal = Dog | Cat | Bird;
 
 </CodeTab>
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 // Example.re
 let pet: Zoo.animal = Dog; // preferred
 // or
 let pet2 = Zoo.Dog;
+```
+```ml
+(* Example.re *)
+let pet: Zoo.animal = Dog (* preferred *)
+(* or *)
+let pet2 = Zoo.Dog
 ```
 ```js
 var pet = /* Dog */0;
@@ -65,13 +83,19 @@ var pet2 = /* Dog */0;
 
 A variant's constructors can hold extra data separated by comma.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type account =
   | None
   | Instagram(string)
   | Facebook(string, int);
+```
+```ml
+type account =
+  | None
+  | Instagram of string
+  | Facebook of string * int
 ```
 ```js
 // Empty output
@@ -81,11 +105,17 @@ type account =
 
 Here, `Instagram` holds a `string`, and `Facebook` holds a `string` and an `int`. Usage:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let myAccount = Facebook("Josh", 26);
 let friendAccount = Instagram("Jenny");
+```
+```ml
+let myAccount =
+  Facebook ("Josh", 26)
+let friendAccount =
+  Instagram "Jenny"
 ```
 ```js
 var myAccount = {
@@ -105,7 +135,7 @@ var friendAccount = {
 
 You can use a record type in a variant:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type idType = {name: string, password: string};
@@ -113,6 +143,13 @@ type idType = {name: string, password: string};
 type user =
   | Number(int)
   | Id(idType);
+```
+```ml
+type idType = {name: string; password: string}
+
+type user =
+  | Number of int
+  | Id of idType
 ```
 ```js
 // Empty output
@@ -122,12 +159,17 @@ type user =
 
 If the record type is used only in the variant definition, you may put it in line:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type user =
   | Number(int)
   | Id({name: string, password: string});
+```
+```ml
+type user =
+  | Number of int
+  | Id of {name: string; password: string}
 ```
 ```js
 // Empty output
@@ -143,13 +185,19 @@ See the [Pattern Matching/Destructuring](pattern-matching-destructuring.md) sect
 
 **Be careful** not to confuse a constructor carrying 2 arguments with a constructor carrying a single tuple argument:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type account =
   | Facebook(string, int); // 2 arguments
 type account2 =
   | Instagram((string, int)); // 1 argument - happens to be a 2-tuple
+```
+```ml
+type account =
+  | Facebook of string * int (* 2 arguments *)
+type account2 =
+  | Instagram of (string * int) (* 1 argument - happens to be a 2-tuple *)
 ```
 ```js
 // Empty output
@@ -167,11 +215,11 @@ _This section assumes knowledge about our JavaScript interop. Skip this if you h
 
 Quite a few JS libraries use functions that can accept many types of arguments. In these cases, it's very tempting to model them as variants. For example, suppose there's a `myLibrary.draw` JS function that takes in either a `number` or a `string`. You might be tempted to bind it like so:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 // reserved for internal usage
-[@bs.module "myLibrary"] external draw : 'a => unit = "draw";
+[@bs.module "myLibrary"] external draw: 'a => unit = "draw";
 
 type animal =
   | MyFloat(float)
@@ -184,6 +232,21 @@ let betterDraw = (animal) =>
   };
 
 betterDraw(MyFloat(1.5));
+```
+```ml
+(* reserved for internal usage *)
+external draw: 'a => unit = "draw" [@@bs.module "myLibrary"]
+
+type animal =
+  | MyFloat of float
+  | MyString of string
+
+let betterDraw animal =
+  match animal with
+  | MyFloat f -> draw f
+  | MyString s -> draw s
+
+let () = betterDraw (MyFloat 1.5)
 ```
 ```js
 var MyLibrary = require("myLibrary");
@@ -202,11 +265,15 @@ betterDraw({
 
 You could definitely do that, but there are better ways! For example, define two `external`s that both compile to the same JS call:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module "myLibrary"] external drawFloat: float => unit = "draw";
 [@bs.module "myLibrary"] external drawString: string => unit = "draw";
+```
+```ml
+external drawFloat: float -> unit = "draw" [@@bs.module "myLibrary"]
+external drawString: string -> unit = "draw" [@@bs.module "myLibrary"]
 ```
 ```js
 // Empty output
@@ -241,7 +308,7 @@ if (data === 'dog') {
 
 There's a linear amount of branch checking here (`O(n)`). Compare this to using a ReScript variant:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type animal = Dog | Cat | Bird;
@@ -251,6 +318,15 @@ switch (data) {
 | Cat => Js.log("Meow")
 | Bird => Js.log("Kashiiin")
 }
+```
+```ml
+type animal = Dog | Cat | Bird
+let data = Dog
+let () =
+  match data with
+  | Dog -> Js.log "Wof"
+  | Cat -> Js.log "Meow"
+  | Bird -> Js.log "Kashiiin"
 ```
 ```js
 console.log("Wof");

@@ -8,12 +8,17 @@ canonical: "/docs/manual/latest/let-binding"
 
 A "let binding", in other languages, might be called a "variable declaration". `let` _binds_ values to names. They can be seen and referenced by code that comes _after_ them.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let greeting = "hello!";
 let score = 10;
 let newScore = 10 + score;
+```
+```ml
+let greeting = "hello!"
+let score = 10
+let newScore = 10 + score
 ```
 ```js
 var greeting = "hello!";
@@ -27,7 +32,7 @@ var newScore = 20;
 
 Bindings can be scoped through `{}`.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let message = {
@@ -36,6 +41,14 @@ let message = {
   part1 ++ " " ++ part2;
 };
 // `part1` and `part2` not accessible here!
+```
+```ml
+let message =
+  let part1 = "hello" in
+  let part2 = "world" in
+  part1 ++ " " ++ part2
+
+(* `part1` and `part2` not accessible here! *)
 ```
 ```js
 var message = "hello world";
@@ -49,7 +62,7 @@ The value of the last line of a scope is implicitly returned.
 
 ReScript's `if`, `while` and functions all use the same block scoping mecanism. The code below works **not** because of some special "if scope"; but simply because it's the same scope syntax and feature you just saw:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 if (displayGreeting) {
@@ -57,6 +70,12 @@ if (displayGreeting) {
   Js.log(message);
 }
 // `message` not accessible here!
+```
+```re
+if displayGreeting then
+  let message = "Enjoying the docs so far?" in
+  Js.log message
+(* `message` not accessible here! *)
 ```
 ```js
 if (displayGreeting) {
@@ -92,12 +111,17 @@ var result3 = calculateSomeMore(result2);
 
 In ReScript, this obviously works too:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let result1 = 0;
 let result2 = calculate(result1);
 let result3 = calculateSomeMore(result2);
+```
+```ml
+let result1 = 0
+let result2 = calculate result1
+let result3 = calculateSomeMore result2
 ```
 ```js
 var result1 = 0;
@@ -109,12 +133,17 @@ var result3 = calculateSomeMore(result2);
 
 Additionally, reusing the same let binding name overshadows the previous bindings with the same name. So you can write this too:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let result = 0;
 let result = calculate(result);
 let result = calculateSomeMore(result);
+```
+```ml
+let result = 0
+let result = calculate result
+let result = calculateSomeMore result
 ```
 ```js
 var result = calculate(0);
@@ -127,13 +156,19 @@ var result$1 = calculateSomeMore(result);
 
 As a matter of fact, even this is valid code:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let result = "hello";
 Js.log(result); // prints "hello"
 let result = 1;
 Js.log(result); // prints 1
+```
+```ml
+let result = "hello"
+let () = Js.log result (* prints "hello" *)
+let result = 1
+let () = Js.log result (* prints 1 *)
 ```
 ```js
 var result = 1;

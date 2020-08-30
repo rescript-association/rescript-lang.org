@@ -10,10 +10,13 @@ ReScript provides a tiny but surprisingly useful operator `->`, called the "pipe
 
 Why would you use it? Imagine you have the following:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 validateAge(getAge(parseData(person)));
+```
+```ml
+validateAge (getAge (parseData person))
 ```
 ```js
 validateAge(getAge(parseData(person)));
@@ -23,13 +26,19 @@ validateAge(getAge(parseData(person)));
 
 This is slightly hard to read, since you need to read the code from the innermost part, to the outer parts. Use pipe to streamline it:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 person
   ->parseData
   ->getAge
   ->validateAge;
+```
+```ml
+person
+  |. parseData
+  |. getAge
+  |. validateAge
 ```
 ```js
 validateAge(getAge(parseData(person)));
@@ -41,10 +50,13 @@ Basically, `parseData(person)` is transformed into `person->parseData`, and `get
 
 **This works when the function takes more than one argument too**.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 a(one, two, three);
+```
+```ml
+a one two three
 ```
 ```js
 a(one, two, three);
@@ -54,10 +66,13 @@ a(one, two, three);
 
 is the same as
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 one->a(two, three);
+```
+```ml
+one |. a two three
 ```
 ```js
 a(one, two, three);
@@ -89,7 +104,7 @@ asyncRequest()
 
 Assuming we don't need the chaining behavior above, we'd bind to each case this using `bs.send` from the previous section:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.send] external map: (array('a), 'a => 'b) => array('b) = "map";
@@ -100,6 +115,15 @@ type request;
 [@bs.send] external setWaitDuration: (request, int) => request = "setWaitDuration";
 [@bs.send] external send: request => unit = "send";
 ```
+```ml
+external map: 'a array -> ('a -> 'b) -> 'b array = "map" [@@bs.send]
+external filter: 'a array -> ('a -> bool) -> 'a array = "filter" [@@bs.send]
+
+type request
+external asyncRequest: unit -> request = "asyncRequest" [@@bs.val]
+external setWaitDuration: request -> int -> request = "setWaitDuration" [@@bs.send]
+external send: request -> unit = "send" [@@bs.send]
+```
 ```js
 // Empty output
 ```
@@ -108,12 +132,22 @@ type request;
 
 You'd use them like this:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
-let result = Js.Array2.filter(Js.Array2.map([|1, 2, 3|], a => a + 1), a => a mod 2 == 0);
+let result = Js.Array2.filter(
+  Js.Array2.map([|1, 2, 3|], a => a + 1),
+  a => a mod 2 == 0
+);
 
 send(setWaitDuration(asyncRequest(), 4000));
+```
+```ml
+let result = Js.Array2.filter
+  (Js.Array2.map [|1; 2; 3|] (fun a -> a + 1))
+  (fun a -> (a mod 2) = 0)
+
+let () = send (setWaitDuration (asyncRequest ()) 4000)
 ```
 ```js
 var result = [1, 2, 3].map(function(a) {
@@ -129,12 +163,19 @@ asyncRequest().setWaitDuration(4000).send();
 
 This looks much worse than the JS counterpart! Clean it up visually with pipe:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let result = [|1, 2, 3|]
   ->map(a => a + 1)
-  ->filter(a => a mod 2 === 0)
+  ->filter(a => a mod 2 == 0)
+
+asyncRequest()->setWaitDuration(4000)->send
+```
+```ml
+let result = [|1; 2; 3|]
+  |. map(fun a -> a + 1)
+  |. filter(fun a -> a mod 2 = 0)
 
 asyncRequest()->setWaitDuration(4000)->send
 ```
@@ -154,10 +195,13 @@ asyncRequest().setWaitDuration(4000).send();
 
 You can pipe into a variant's constructor as if it was a function:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let result = name->preprocess->Some;
+```
+```ml
+let result = name |. preprocess |. Some
 ```
 ```js
 var result = preprocess(name);
@@ -167,10 +211,13 @@ var result = preprocess(name);
 
 We turn this into:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let result = Some(preprocess(name));
+```
+```ml
+let result = Some (preprocess name)
 ```
 ```js
 var result = preprocess(name);
@@ -184,20 +231,31 @@ var result = preprocess(name);
 
 A placeholder is written as an underscore and it tells ReScript that you want to fill in an argument of a function later. These two have equivalent meaning:
 
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
 ```re
 let addTo7 = (x) => add3(3, x, 4);
 let addTo7 = add3(3, _, 4);
 ```
+```ml
+(* doesn't exist in old ML syntax *)
+```
+
+</CodeTab>
 
 Sometimes you don't want to pipe the value you have into the first position. In these cases you can mark a placeholder value to show which argument you would like to pipe into.
 
 Let's say you have a function `namePerson`, which takes a `person` then a `name` argument. If you are transforming a person then pipe will work as-is:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 makePerson(~age=47, ())
   ->namePerson("Jane");
+```
+```ml
+makePerson ~age=47 ()
+  |. namePerson("Jane")
 ```
 ```js
 namePerson(makePerson(47), "Jane");
@@ -207,11 +265,14 @@ namePerson(makePerson(47), "Jane");
 
 If you have a name that you want to apply to a person object, you can use a placeholder:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 getName(input)
   ->namePerson(personDetails, _);
+```
+```ml
+(* doesn't exist in old ML syntax *)
 ```
 ```js
 var __x = getName(input);
@@ -222,11 +283,14 @@ namePerson(personDetails, __x);
 
 This allows you to pipe into any positional argument. It also works for named arguments:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 getName(input)
   ->namePerson(~person=personDetails, ~name=_);
+```
+```ml
+(* doesn't exist in old ML syntax *)
 ```
 ```js
 var __x = getName(input);
