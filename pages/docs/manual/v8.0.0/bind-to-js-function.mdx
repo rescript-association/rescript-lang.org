@@ -215,6 +215,7 @@ external padLeft: (
     | `Int(int)
   ])
   => string = "padLeft";
+
 padLeft("Hello World", `Int(4));
 padLeft("Hello World", `Str("Message from ReScript: "));
 ```
@@ -226,6 +227,7 @@ external padLeft:
     | `Int of int
   ]) [@bs.unwrap]) ->
   string = "padLeft" [@@bs.val]
+
 let _ = padLeft "Hello World" (`Int 4)
 let _ = padLeft "Hello World" (`Str "Message from ReScript: ")
 ```

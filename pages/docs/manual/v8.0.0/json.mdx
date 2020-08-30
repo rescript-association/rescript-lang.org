@@ -10,7 +10,7 @@ canonical: "/docs/manual/latest/json"
 
 Bind to JavaScript's `JSON.parse` and type the return value as the type you're expecting:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 // declare the shape of the json you're binding to
@@ -22,6 +22,17 @@ external parseIntoMyData: string => data = "parse";
 
 let result = parseIntoMyData({|{"names": ["Luke", "Christine"]}|});
 let name1 = result.names[0];
+```
+```ml
+(* declare the shape of the json you're binding to *)
+type data = {names: string array}
+
+(* bind to JS' JSON.parse *)
+external parseIntoMyData: string -> data = "parse"
+[@@bs.scope "JSON"] [@@bs.val]
+
+let result = parseIntoMyData {|{"names": ["Luke", "Christine"]}|}
+let name1 = (result.names).(0)
 ```
 ```js
 var result = JSON.parse("{\"names\": [\"Luke\", \"Christine\"]}");
@@ -36,10 +47,13 @@ Where `data` can be any type you assume the JSON is. As you can see, this compil
 
 Use `Js.Json.stringify`:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 Js.log(Js.Json.stringifyAny([|"Amy", "Joe"|]));
+```
+```ml
+Js.log (Js.Json.stringifyAny [|"Amy"; "Joe"|])
 ```
 ```js
 console.log(JSON.stringify([

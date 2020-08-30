@@ -10,11 +10,15 @@ canonical: "/docs/manual/latest/bind-to-global-js-values"
 
 Some JS values, like `setTimeout`, live in the global scope. You can bind to them like so:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.val] external setTimeout: (unit => unit, int) => float = "setTimeout";
 [@bs.val] external clearTimeout: float => unit = "clearTimeout";
+```
+```ml
+external setTimeout: (unit -> unit) -> int -> float = "setTimeout" [@@bs.val]
+external clearTimeout: float -> unit = "clearTimeout" [@@bs.val]
 ```
 ```js
 // Empty output
@@ -36,7 +40,7 @@ This binds to the JavaScript [`setTimeout`](https://developer.mozilla.org/en-US/
 
 We're in a language with a great type system now! Let's leverage a popular feature to solve this problem: abstract types.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type timerId;
@@ -45,6 +49,14 @@ type timerId;
 
 let id = setTimeout(() => Js.log("hello"), 100);
 clearTimeout(id);
+```
+```ml
+type timerId
+external setTimeout: (unit -> unit) -> int -> timerId = "setTimeout" [@@bs.val]
+external clearTimeout: timerId -> unit = "clearTimeout" [@@bs.val]
+
+let id = setTimeout (fun () -> Js.log "hello") 100
+let () = clearTimeout id
 ```
 ```js
 var id = setTimeout(function (param) {
@@ -64,11 +76,15 @@ Since `external`s are inlined, we end up with JS output as readable as hand-writ
 
 If you want to bind to a value inside a global module, e.g. `Math.random`, attach a `bs.scope` to your `bs.val` external:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.scope "Math"] [@bs.val] external random: unit => float = "random";
 let someNumber = random();
+```
+```ml
+external random : unit -> float = "random" [@@bs.scope "Math"][@@bs.val]
+let someNumber = random ()
 ```
 ```js
 var someNumber = Math.random();
@@ -78,11 +94,15 @@ var someNumber = Math.random();
 
 you can bind to an arbitrarily deep object by passing a tuple to `bs.scope`:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.val] [@bs.scope ("window", "location", "ancestorOrigins")]
-external length : int = "length";
+external length: int = "length";
+```
+```ml
+external length: int = "length"
+[@@bs.val][@@bs.scope ("window", "location", "ancestorOrigins")]
 ```
 ```js
 // Empty output
@@ -98,13 +118,18 @@ Global values like `__filename` and `__DEV__` don't always exist; you can't even
 
 For these troublesome global values, ReScript provides a special approach: `%external(a_single_identifier)`.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 switch ([%external __DEV__]) {
 | Some(_) => Js.log("dev mode")
 | None => Js.log("production mode")
 };
+```
+```ml
+let () = match [%external __DEV__] with
+| Some _ -> Js.log "dev mode"
+| None -> Js.log "production mode"
 ```
 ```js
 var match = typeof __DEV__ === "undefined" ? undefined : __DEV__;
@@ -122,13 +147,18 @@ That first line's `typeof` check won't trigger a JS ReferenceError.
 
 Another example:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 switch ([%external __filename]) {
 | Some(f) => Js.log(f)
 | None => Js.log("non-node environment")
 };
+```
+```ml
+let () = match [%external __filename] with
+| Some f -> Js.log f
+| None -> Js.log "non-node environment"
 ```
 ```js
 var match = typeof (__filename) === "undefined" ? undefined : (__filename);

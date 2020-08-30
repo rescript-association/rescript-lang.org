@@ -14,7 +14,7 @@ This page is solely dedicated to Reason v3.6 related naming collisions and also 
 
 JavaScript has different naming conventions and has only very few limitations when it comes to naming variables, classes, functions, JS object attributes etc.
 
-Reason on the contrary has more restrictive naming rules which need to be considered whenever you define  a type, function, value, module, record attribute or similar. Here are a few typical naming restrictions which cause trouble with JS: 
+Reason on the contrary has more restrictive naming rules which need to be considered whenever you define  a type, function, value, module, record attribute or similar. Here are a few typical naming restrictions which cause trouble with JS:
 - Every name needs to start with a lowercase letter (uppercase is reserved for module names)
 - For the same reason, names can't be all caps  (very common for JS constants: `const MY_CONSTANT = "my_constant"`)
 - It's not possible to use [reserved keywords](/docs/manual/latest/reserved-keywords) for names
@@ -34,10 +34,17 @@ Many React components have a prop named `type` in JavaScript:
 
 If you're using a React component with a reserved keyword as a prop name, then simply prepend a underscore (so that it's a valid Reason name):
 
-```reason
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
+```re
 /* This works because `_type` is not a reserved keyword */
 <Component _type="title" />
 ```
+```ml
+(* Doesn't exist in old ML syntax *)
+```
+
+</CodeTab>
 
 The Reason compiler will remove the leading underscore when outputting JavaScript (so the JavaScript will have `<Component type="POST" />`).
 
@@ -58,51 +65,75 @@ const title = payload.PostTitle;
 
 In this case, when writing bindings to the JavaScript object, you can use the `[@bs.as "whatever-name-you-want-in-javascript"]` to tell the compiler exactly what the JavaScript attribute name should be in the compiled output:
 
-```reason
-type payload {
-  [@bs.as "PostTitle"]
-  postTitle: string
-}
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
+
+```re
+type payload = {
+  [@bs.as "PostTitle"] postTitle: string
+};
 
 let payload = {
   postTitle: "Welcome to Reason"
-}
+};
 
-/* Reason is happy since we're using the valid `postTitle` field name */
+/* ReScript is happy since we're using the valid `postTitle` field name */
 let title = payload.postTitle;
 ```
+```ml
+type payload = {
+  postTitle: string [@bs.as "PostTitle"]
+}
 
-The code above will be translated to following JS:
+let payload = {
+  postTitle = "Welcome to Reason"
+}
 
+(* ReScript is happy since we're using the valid `postTitle` field name *)
+let title = payload.postTitle
+```
 ```js
 /* The correct capitalized field name is output in the JavaScript! */
 var title = payload.PostTitle;
 ```
 
+</CodeTab>
+
 ## Accessing reserved keywords as JavaScript object attribute names
 
 Just like accessing attributes that start with a capital letter, we can use `[@bs.as "the-reserved-keyword-that-javascript-wants"]`. It's customary to append an underscore (unlike the JSX case, where we *prepend* the underscore) to the reserved keyword name:
 
-```reason
-type payload {
-  [@bs.as "type"]
-  type_: string
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
+
+```re
+type payload = {
+  [@bs.as "type"] type_: string
 }
 
 let payload = {
   type_: "Documentation"
 }
 
-/* Reason is happy since we're using the valid `type_` field name */
+/* ReScript is happy since we're using the valid `type_` field name */
 let payloadType = payload.type_;
 ```
+```ml
+type payload = {
+  type_: string [@bs.as "type"]
+}
 
-The code above will be translated to following JS:
+let payload = {
+  type_ = "Documentation"
+}
 
+(* ReScript is happy since we're using the valid `type_` field name *)
+let payloadType = payload.type_
+```
 ```js
 /* The reason compiler has correctly ouput `payload.type` even though *we* called the field `type_` */
 var payloadType = payload.type;
 ```
+
+</CodeTab>
 
 ## Special name mangling rules for JS object attribute names
 

@@ -54,7 +54,6 @@ let basicNavs = [|
   },
   {name: "Mutation", href: "/docs/manual/v8.0.0/mutation"},
   {name: "JSX", href: "/docs/manual/v8.0.0/jsx"},
-  {name: "External (Bind to Any JS Library)", href: "/docs/manual/v8.0.0/external"},
   {name: "Exception", href: "/docs/manual/v8.0.0/exception"},
   {name: "Lazy Values", href: "/docs/manual/v8.0.0/lazy-values"},
   {name: "Promise", href: "/docs/manual/v8.0.0/promise"},
@@ -79,6 +78,7 @@ let jsInteropNavs = [|
     href: "/docs/manual/v8.0.0/embed-raw-javascript",
   },
   {name: "Shared Data Types", href: "/docs/manual/v8.0.0/shared-data-types"},
+  {name: "External (Bind to Any JS Library)", href: "/docs/manual/v8.0.0/external"},
   {name: "Bind to JS Object", href: "/docs/manual/v8.0.0/bind-to-js-object"},
   {
     name: "Bind to JS Function",

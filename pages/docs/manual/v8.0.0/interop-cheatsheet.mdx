@@ -10,11 +10,15 @@ canonical: "/docs/manual/latest/interop-cheatsheet"
 
 ## Raw JS
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let add = [%raw "(a, b) => a + b"];
 [%%raw "const a = 1"];
+```
+```ml
+let add = [%raw "(a, b) => a + b"]
+[%%raw "const a = 1"]
 ```
 ```js
 var add = ((a, b) => a + b);
@@ -25,10 +29,13 @@ const a = 1
 
 ## Global Value
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.val] external setTimeout: (unit => unit, int) => float = "setTimeout";
+```
+```ml
+external setTimeout: (unit -> unit) -> int -> float = "setTimeout" [@@bs.val]
 ```
 ```js
 // Empty output
@@ -38,7 +45,7 @@ const a = 1
 
 ## Global Module's Value
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.val] [@bs.scope "Math"]
@@ -49,6 +56,15 @@ let someNumber = random();
 [@bs.val] [@bs.scope ("window", "location", "ancestorOrigins")]
 external length: int = "length";
 ```
+```ml
+external random: unit -> float = "random"
+[@@bs.val][@@bs.scope "Math"]
+
+let someNumber = random ()
+
+external length: int = "length"
+[@@bs.val][@@bs.scope ("window", "location", "ancestorOrigins")]
+```
 ```js
 var someNumber = Math.random();
 ```
@@ -57,11 +73,15 @@ var someNumber = Math.random();
 
 ## Nullable
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let a = Some(5); // compiles to 5
 let b = None; // compiles to undefined
+```
+```ml
+let a = Some 5 (* compiles to 5 *)
+let b = None (* compiles to undefined *)
 ```
 ```js
 var a = 5;
@@ -72,7 +92,7 @@ var b;
 
 Handling a value that can be `undefined` and `null`, by ditching the `option` type and using `Js.Nullable.t`:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let jsNull = Js.Nullable.null;
@@ -80,6 +100,13 @@ let jsUndefined = Js.Nullable.undefined;
 let result1: Js.Nullable.t(string) = Js.Nullable.return("hello");
 let result2: Js.Nullable.t(int) = Js.Nullable.fromOption(Some(10));
 let result3: option(int) = Js.Nullable.toOption(Js.Nullable.return(10));
+```
+```ml
+let jsNull = Js.Nullable.null
+let jsUndefined = Js.Nullable.undefined
+let result1: string Js.Nullable.t = Js.Nullable.return "hello"
+let result2: int Js.Nullable.t = Js.Nullable.fromOption (Some 10)
+let result3: int option = Js.Nullable.toOption (Js.Nullable.return 10)
 ```
 ```js
 var Caml_option = require("./stdlib/caml_option.js");
@@ -104,7 +131,7 @@ var result3 = Caml_option.nullable_to_opt(10);
 
 ### Object Method & Chaining
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.send] external map: (array('a), 'a => 'b) => array('b) = "map";
@@ -113,6 +140,14 @@ var result3 = Caml_option.nullable_to_opt(10);
   ->map(a => a + 1)
   ->filter(a => a mod 2 == 0)
   ->Js.log;
+```
+```ml
+external map: 'a array -> ('a -> 'b) -> 'b array = "map" [@@bs.send]
+external filter: 'a array -> ('a -> 'b) -> 'b array = "filter" [@@bs.send]
+[|1; 2; 3|]
+  |. map(fun a -> a + 1)
+  |. filter(fun a -> a mod 2 = 0)
+  |. Js.log
 ```
 ```js
 console.log(
@@ -130,11 +165,15 @@ console.log(
 
 ### Variadic Arguments
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module "path"] [@bs.variadic]
 external join: array(string) => string = "join";
+```
+```ml
+external join: string array -> string = "join"
+[@@bs.module "path"][@@bs.variadic]
 ```
 ```js
 // Empty output
@@ -144,11 +183,15 @@ external join: array(string) => string = "join";
 
 ### Polymorphic Function
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.module "Drawing"] external drawCat: unit => unit = "draw";
 [@bs.module "Drawing"] external drawDog: (~giveName: string) => unit = "draw";
+```
+```ml
+external drawCat: unit -> unit = "draw" [@@bs.module "Drawing"]
+external drawDog: giveName:string -> unit = "draw" [@@bs.module "Drawing"]
 ```
 ```js
 // Empty output
@@ -156,7 +199,7 @@ external join: array(string) => string = "join";
 
 </CodeTab>
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 [@bs.val]
@@ -170,6 +213,18 @@ external padLeft: (
 
 padLeft("Hello World", `Int(4));
 padLeft("Hello World", `Str("Message from ReScript: "));
+```
+```ml
+external padLeft:
+  string ->
+  (([
+    | `Str of string
+    | `Int of int
+  ]) [@bs.unwrap]) ->
+  string = "padLeft" [@@bs.val]
+
+let _ = padLeft "Hello World" (`Int 4)
+let _ = padLeft "Hello World" (`Str "Message from ReScript: ")
 ```
 ```js
 padLeft("Hello World", 4);
@@ -186,12 +241,17 @@ padLeft("Hello World", "Message from ReScript: ");
 
 Final escape hatch converter. Do not abuse.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
-external convertToFloat : int => float = "%identity";
+external convertToFloat: int => float = "%identity";
 let age = 10;
 let gpa = 2.1 +. convertToFloat(age);
+```
+```ml
+external convertToFloat: int => float = "%identity"
+let age = 10
+let gpa = 2.1 +. (convertToFloat age)
 ```
 ```js
 var age = 10;
