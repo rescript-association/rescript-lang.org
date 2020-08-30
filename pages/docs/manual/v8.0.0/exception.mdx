@@ -10,21 +10,33 @@ Exceptions are just a special kind of variant, thrown in **exceptional** cases (
 
 ## Usage
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let getItem = (items) =>
-  if callSomeFunctionThatThrows() {
+  if (callSomeFunctionThatThrows()) {
     // return the found item here
     1;
   } else {
     raise(Not_found);
-  }
+  };
 
 let result =
   try (getItem([|1, 2, 3|])) {
   | Not_found => 0 /* Default value if getItem throws */
   };
+```
+```ml
+let getItem items =
+  if callSomeFunctionThatThrows () then
+    (* return the found item here *)
+    1
+  else
+    raise Not_found
+
+let result =
+  try getItem [|1; 2; 3|] with
+  | Not_found -> 0 (* Default value if getItem throws *)
 ```
 ```js
 function getItem(items) {
@@ -57,13 +69,19 @@ Note that the above is just for demonstration purposes; in reality, you'd return
 
 You can directly match on exceptions _while_ getting another return value from a function:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 switch (List.find(i => i === theItem, myItems)) {
 | item => Js.log(item)
 | exception Not_found => Js.log("No such item found!")
 };
+```
+```ml
+let () = match List.find (fun i -> i == theItem) myItems with
+| item -> Js.log item
+| exception Not_found ->
+  Js.log "No such item found!"
 ```
 ```js
 var exit = 0;
@@ -94,12 +112,17 @@ if (exit === 1) {
 
 You can also make your own exceptions like you'd make a variant (exceptions need to be capitalized too).
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 exception InputClosed(string);
 // later on
 raise(InputClosed("The stream has closed!"));
+```
+```ml
+exception InputClosed of string
+(* later on *)
+raise(InputClosed "The stream has closed!")
 ```
 ```js
 var Caml_exceptions = require("./stdlib/caml_exceptions.js");
@@ -119,7 +142,7 @@ throw {
 
 To distinguish between JavaScript exceptions and ReScript exceptions, ReScript namespaces JS exceptions under the `Js.Exn.Error(payload)` variant. To catch an exception thrown from the JS side:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 try (someJSFunctionThatThrows()) {
@@ -129,6 +152,13 @@ try (someJSFunctionThatThrows()) {
   | None => ()
   }
 };
+```
+```ml
+let () = try someJSFunctionThatThrows () with
+| Js.Exn.Error obj ->
+  match Js.Exn.message obj with
+  | Some m -> Js.log ("Caught a JS exception! Message: " ^ m)
+  | None -> ()
 ```
 ```js
 var Js_exn = require("./stdlib/js_exn.js");
@@ -157,12 +187,16 @@ The `obj` here is of type `Js.Exn.t`, intentionally opaque to disallow illegal o
 
 `raise(MyException)` raises a ReScript exception. To raise a JavaScript exception (whatever your purpose is), use `Js.Exn.raiseError`:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let myTest = () => {
   Js.Exn.raiseError("Hello!");
 };
+```
+```ml
+let myTest () =
+  Js.Exn.raiseError "Hello!"
 ```
 ```js
 var Js_exn = require("./stdlib/js_exn.js");
@@ -189,7 +223,7 @@ try {
 
 The previous section is less useful than you think; to let your JS code work with your exception-throwing ReScript code, the latter doesn't actually need to throw a JS exception. ReScript exceptions can be used by JS code!
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 exception BadArgument({myMessage: string});
@@ -197,6 +231,12 @@ exception BadArgument({myMessage: string});
 let myTest = () => {
   raise(BadArgument({myMessage: "Oops!"}));
 };
+```
+```ml
+exception BadArgument of {myMessage: string}
+
+let myTest () =
+  raise(BadArgument {myMessage = "Oops!"})
 ```
 ```js
 var Caml_exceptions = require("./stdlib/caml_exceptions.js");
@@ -236,7 +276,7 @@ When you have ordinary variants, you often don't **need** exceptions. For exampl
 
 ### Catch Both ReScript and JS Exceptions in the Same `catch` Clause
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 try (someOtherJSFunctionThatThrows()) {
@@ -244,6 +284,12 @@ try (someOtherJSFunctionThatThrows()) {
 | Invalid_argument(_) =>  // catch a second ReScript exception
 | Js.Exn.Error(obj) => ... // catch the JS exception
 };
+```
+```ml
+try someOtherJSFunctionThatThrows() with
+| Not_found -> .. (* catch a ReScript exception *)
+| Invalid_argument _ -> (* catch a second ReScript exception *)
+| Js.Exn.Error obj -> ... (* catch the JS exception *)
 ```
 ```js
 var Js_exn = require("./stdlib/js_exn.js");

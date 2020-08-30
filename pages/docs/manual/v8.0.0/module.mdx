@@ -17,7 +17,7 @@ To create a module, use the `module` keyword. The module name must start with a
 **capital letter**. Whatever you could place in a `.re` file, you may place
 inside a module definition's `{}` block.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 module School = {
@@ -30,6 +30,17 @@ module School = {
     | Director => "A director"
     };
 };
+```
+```ml
+module School = struct
+  type profession = Teacher | Director
+
+  let person1 = Teacher
+  let getProfession person =
+    match person with
+    | Teacher -> "A teacher"
+    | Director -> "A director"
+end
 ```
 ```js
 function getProfession(person) {
@@ -51,11 +62,15 @@ var School = {
 A module's contents (including types!) can be accessed much like a record's,
 using the `.` notation. This demonstrates modules' utility for namespacing.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let anotherPerson: School.profession = School.Teacher;
 Js.log(School.getProfession(anotherPerson)); /* "A teacher" */
+```
+```ml
+let anotherPerson: School.profession = School.Teacher
+Js.log (School.getProfession anotherPerson) (* "A teacher" *)
 ```
 ```js
 var anotherPerson = /* Teacher */0;
@@ -66,7 +81,7 @@ console.log("A teacher");
 
 Nested modules work too.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 module MyModule = {
@@ -76,6 +91,15 @@ module MyModule = {
 };
 
 let message = MyModule.NestedModule.message;
+```
+```ml
+module MyModule = struct
+  module NestedModule = struct
+    let message = "hello"
+  end
+end
+
+let message = MyModule.NestedModule.message
 ```
 ```js
 var NestedModule = {
@@ -96,10 +120,13 @@ var message = MyModule.NestedModule.message;
 Constantly referring to a value/type in a module can be tedious. Instead, we can "open" a module and refer to its contents without always prepending them with the
 module's name. Instead of writing:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let p = School.getProfession(School.person1);
+```
+```ml
+let p = School.getProfession School.person1
 ```
 ```js
 var p = School.getProfession(School.person1);
@@ -109,11 +136,15 @@ var p = School.getProfession(School.person1);
 
 We can write:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 open School;
 let p = getProfession(person1);
+```
+```ml
+open School
+let p = getProfession person1
 ```
 ```js
 var p = School.getProfession(School.person1);
@@ -125,7 +156,7 @@ The content of `School` module are made visible (**not** copied into the file, b
 
 **Use `open` this sparingly, it's convenient, but makes it hard to know where some values come from**. You should usually use `open` in a local scope:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let p = {
@@ -133,6 +164,12 @@ let p = {
   getProfession(person1);
 };
 /* School's content isn't visible here anymore */
+```
+```ml
+let p =
+  let open School in
+  getProfession person1
+(* School's content isn't visible here anymore *)
 ```
 ```js
 var p = School.getProfession(School.person1);
@@ -146,7 +183,7 @@ Using `include` in a module statically "spreads" a module's content into a new o
 
 **Note**: this is equivalent to a compiler-level copy paste. **We heavily discourage `include`**. Use it as last resort!
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 module BaseComponent = {
@@ -161,6 +198,20 @@ module ActualComponent = {
   let defaultGreeting = "Hey";
   let render = () => defaultGreeting ++ " " ++ getAudience(~excited=true);
 };
+```
+```ml
+module BaseComponent = struct
+  let defaultGreeting = "Hello"
+  let getAudience ~excited = if excited then "world!" else "world"
+end
+
+module ActualComponent = struct
+  (* the content is copied over *)
+  include BaseComponent
+  (* overrides BaseComponent.defaultGreeting *)
+  let defaultGreeting = "Hey"
+  let render () = defaultGreeting ^ " " ^ (getAudience ~excited:true)
+end
 ```
 ```js
 function getAudience(excited) {
@@ -211,7 +262,7 @@ To create a signature, use the `module type` keyword. The signature name must st
 **capital letter**. Whatever you could place in a `.rei` file, you may place
 inside a signature definition's `{}` block.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 /* Picking up previous section's example */
@@ -219,6 +270,13 @@ module type EstablishmentType = {
   type profession;
   let getProfession: profession => string;
 };
+```
+```ml
+(* Picking up previous section's example *)
+module type EstablishmentType  = sig
+  type profession
+  val getProfession: profession -> string
+end
 ```
 ```js
 // Empty output
@@ -253,7 +311,7 @@ concrete type; it's saying "I don't care what the actual type is, but it's used
 as input to `getProfession`". This is useful to fit many modules under the same
 interface:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 module Company: EstablishmentType = {
@@ -263,6 +321,15 @@ module Company: EstablishmentType = {
   let person1 = ...
   let person2 = ...
 };
+```
+```ml
+module Company: EstablishmentType = struct
+  type profession = CEO | Designer | Engineer | ...
+
+  let getProfession person = ...
+  let person1 = ...
+  let person2 = ...
+end
 ```
 ```js
 function getProfession(person) {
@@ -290,7 +357,7 @@ exposing the variant, it'll only tell you "it's `Company.profession`".
 
 Like modules themselves, module signatures can also be extended by other module signatures using `include`. Again, **heavily discouraged**:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 module type BaseComponent = {
@@ -303,6 +370,18 @@ module type ActualComponent = {
   include BaseComponent;
   let render: unit => string;
 };
+```
+```ml
+module type BaseComponent = sig
+  val defaultGreeting: string
+  val getAudience: excited:bool -> string
+end
+
+module type ActualComponent = sig
+  (* the BaseComponent signature is copied over *)
+  include BaseComponent
+  val render: unit -> string
+end
 ```
 ```js
 // Empty output
@@ -317,13 +396,19 @@ using `include (module type of ActualModuleName)`. For example, we can extend th
 `List` module from the standard library, which does not define a module
 type.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 module type MyList = {
   include (module type of List);
   let myListFun: list('a) => list('a);
 };
+```
+```ml
+module type MyList = sig
+  include module type of List
+  val myListFun: 'a list -> 'a list
+end
 ```
 ```js
 // Empty output
@@ -339,12 +424,17 @@ provided, the signature of `React.re` defaults to exposing all the fields of the
 module. Because they don't contain implementation files, `.rei` files are used
 in the ecosystem to also document the public API of their corresponding modules.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 /* file React.re (implementation. Compiles to module React) */
 type state = int;
 let render = (str) => str;
+```
+```ml
+(* file React.ml (implementation. Compiles to module React) *)
+type state = int
+let render str = str
 ```
 ```js
 function render(str) {
@@ -354,11 +444,20 @@ function render(str) {
 
 </CodeTab>
 
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
+
 ```re
 /* file React.rei (interface. Compiles to the signature of React.re) */
 type state = int;
 let render: str => str;
 ```
+```ml
+(* file React.mli (interface. Compiles to the signature of React.re) *)
+type state = int
+val render: str -> str
+```
+
+</CodeTab>
 
 ## Module Functions (functors)
 
@@ -378,7 +477,7 @@ for defining and using regular functions. The primary differences are:
 Here's an example `MakeSet` functor, that takes in a module of the type
 `Comparable` and returns a new set that can contain such comparable items.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 module type Comparable = {
@@ -395,12 +494,30 @@ module MakeSet = (Item: Comparable) => {
     if (List.exists(x => Item.equal(x, newItem), currentSet)) {
       currentSet; // return the same (immutable) set (a list really)
     } else {
-      list{
+      [
         newItem,
         ...currentSet // prepend to the set and return it
-      };
+      ]
     };
 };
+```
+```ml
+module type Comparable = sig
+  type t
+  val equal: t -> t -> bool
+end
+
+module MakeSet (Item: Comparable) = struct
+  (* let's use a list as our naive backing data structure *)
+  type backingType = Item.t list
+  let empty = []
+  let add (currentSet: backingType) (newItem: Item.t) : backingType =
+    (* if item exists *)
+    if List.exists (fun x -> Item.equal x newItem) currentSet then
+      currentSet (* return the same (immutable) set (a list really) *)
+    else
+      newItem::currentSet (* prepend to the set and return it *)
+end
 ```
 ```js
 var List = require("./stdlib/list.js");
@@ -432,7 +549,7 @@ function MakeSet(Item) {
 Functors can be applied using function application syntax. In this case, we're
 creating a set, whose items are pairs of integers.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 module IntPair = {
@@ -443,6 +560,16 @@ module IntPair = {
 
 /* IntPair abides by the Comparable signature required by MakeSet */
 module SetOfIntPairs = MakeSet(IntPair);
+```
+```ml
+module IntPair = struct
+  type t = int * int
+  let equal ((x1: int), (y1: int)) (x2,y2) = (x1 = x2) && (y1 = y2)
+  let create x y = (x, y)
+end
+
+(* IntPair abides by the Comparable signature required by MakeSet *)
+module SetOfIntPairs = MakeSet(IntPair)
 ```
 ```js
 function equal(param, param$1) {
@@ -479,7 +606,7 @@ modules the functor accepts as arguments and return values. In the
 previous example, we're exposing the backing type of a set; by giving `MakeSet`
 a functor signature, we can hide the underlying data structure!
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 module type Comparable = ...
@@ -493,6 +620,19 @@ module type MakeSetType = (Item: Comparable) => {
 module MakeSet: MakeSetType = (Item: Comparable) => {
   ...
 };
+```
+```ml
+module type Comparable = ...
+
+module type MakeSetType = functor (Item : Comparable) -> sig
+  type backingType
+  val empty: backingType
+  val add: backingType -> Item.t -> backingType
+end
+
+module MakeSet: MakeSetType = functor (Item: Comparable) -> struct
+  ...
+end
 ```
 ```js
 // Empty output

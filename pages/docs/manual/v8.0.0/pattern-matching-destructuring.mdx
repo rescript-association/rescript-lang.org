@@ -18,12 +18,17 @@ We'll dive into each aspect below.
 
 Even JavaScript has destructuring, which is "opening up" a data structure to extract the parts we want and assign variable names to them:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let coordinates = (10, 20, 30);
 let (x, _, _) = coordinates;
 Js.log(x); // 10
+```
+```ml
+let coordinates = (10, 20, 30)
+let (x, _, _) = coordinates
+Js.log x (* 10 *)
 ```
 ```js
 var coordinates = [10, 20, 30];
@@ -35,7 +40,7 @@ console.log(10);
 
 Destructuring works with most built-in data structures:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 // Record
@@ -51,11 +56,31 @@ let Success(message) = myResult; // "You did it!" assigned to `message`
 
 // Array
 let myArray = [|1, 2, 3|];
-let [item1, item2] = myArray; // 1 assigned to `item1`, 2 assigned to `item2`
+let [|item1, item2|] = myArray; // 1 assigned to `item1`, 2 assigned to `item2`
 
 // List
 let myList = [1, 2, 3];
 let [head, ...tail] = myList; // 1 assigned to `head`, `[2, 3]` assigned to tail
+```
+```ml
+// Record
+type student = {name: string; age: int}
+let student1 = {name = "John"; age = 10}
+let {name} = student1; (* "John" assigned to `name` *)
+
+(* Variant *)
+type result =
+  | Success of string
+let myResult = Success "You did it!"
+let Success message = myResult (* "You did it!" assigned to `message` *)
+
+(* Array *)
+let myArray = [|1; 2; 3|]
+let [|item1; item2|] = myArray (* 1 assigned to `item1`, 2 assigned to `item2` *)
+
+(* List *)
+let myList = [1; 2; 3]
+let head::tail = myList (* 1 assigned to `head`, `[2, 3]` assigned to tail *)
 ```
 ```js
 var student1 = {
@@ -101,7 +126,7 @@ var myList = {
 
 You can also use destructuring anywhere you'd usually put a binding:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type result =
@@ -112,6 +137,16 @@ let displayMessage = (Success(m)) => {
   Js.log(m);
 }
 displayMessage(Success("You did it!"));
+```
+```ml
+type result =
+  | Success of string
+let displayMessage (Success m) =
+  (* we've directly extracted the success message *)
+  (* string by destructuring the parameter *)
+  Js.log m
+
+let () = displayMessage (Success "You did it!")
 ```
 ```js
 function displayMessage(m) {
@@ -127,10 +162,13 @@ displayMessage(/* Success */{
 
 For a record, you can rename the field while destructuring:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let {name: n} = student1; // "John" assigned to `n`
+```
+```ml
+let {name = n} = student1 (* "John" assigned to `n` *)
 ```
 ```js
 var n = "John";
@@ -144,13 +182,19 @@ While the destructuring aspect of pattern matching is nice, it doesn't really ch
 
 Consider a variant:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type payload =
   | BadResult(int)
   | GoodResult(string)
   | NoResult;
+```
+```ml
+type payload =
+  | BadResult of int
+  | GoodResult of string
+  | NoResult
 ```
 ```js
 // Empty output
@@ -162,7 +206,7 @@ We'd like to handle each of the 3 cases differently. For example, print a succes
 
 In other languages, you'd end up with a series of if-elses that are hard to read and error-prone. In ReScript, you can instead use the supercharged `switch` pattern matching facility to destructure the value while calling the right code based on what you destructured:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let data = GoodResult("Product shipped!");
@@ -174,6 +218,15 @@ switch (data) {
 | NoResult =>
   Js.log("Bah.")
 };
+```
+```ml
+let data = GoodResult ("Product shipped!")
+let () = match data with
+| GoodResult theMessage ->
+  Js.log ("Success! " ^ theMessage)
+| BadResult errorCode ->
+  Js.log ("Something's wrong. The error code is: " ^ (Js.Int.toString errorCode))
+| NoResult -> Js.log "Bah."
 ```
 ```js
 var data = {
@@ -200,7 +253,7 @@ Suddenly, your if-elses that messily checks some structure of the value got turn
 
 Here's a real-world scenario that'd be a headache to code in other languages. Given this data structure:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 type status = Vacations(int) | Sabbatical(int) | Sick | Present;
@@ -215,6 +268,20 @@ type person =
     status: status,
     reportCard: reportCard,
   });
+```
+```ml
+type status = Vacations of int | Sabbatical of int | Sick | Present
+type reportCard = {passing: bool; gpa: float}
+type person =
+  | Teacher of {
+    name: string;
+    age: int;
+  }
+  | Student of {
+    name: string;
+    status: status;
+    reportCard: reportCard;
+  }
 ```
 ```js
 // Empty output
@@ -232,7 +299,7 @@ Imagine this requirement:
 
 ReScript can do this easily!
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let message = switch (person1) {
@@ -253,6 +320,25 @@ let message = switch (person1) {
 | Student({name}) =>
   {j|Good luck next semester $(name)!|j}
 };
+```
+```ml
+let message = match person1 with
+| Teacher {name = "Mary" | "Joe"} ->
+  "Hey, still going to the party on Saturday?"
+| Teacher {name} ->
+  (* this is matched only if `name` isn't "Joe" *)
+  {j|Hello $(name).|j}
+| Student {name; reportCard = {passing = true; gpa}} ->
+  "Congrats " ++ name + ", nice GPA of " ++ Js.Float.toString(gpa) ++ " you got there!"
+| Student {
+    reportCard = {gpa = 0.0};
+    status = (Vacations daysLeft) | (Sabbatical daysLeft)
+  } ->
+  "Come back in " ++ (Js.Int.toString daysLeft) ++ " days!"
+| Student {status = Sick} ->
+  "How are you feeling?"
+| Student {name} ->
+  {j|Good luck next semester $(name)!|j}
 ```
 ```js
 var message;
@@ -297,10 +383,10 @@ if (person1.TAG) {
 
 Here's another example of pattern matching, this time on an inline tuple.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
-type animal = Dog | Cat | Bird
+type animal = Dog | Cat | Bird;
 let categoryId = switch (isBig, myAnimal) {
 | (true, Dog) => 1
 | (true, Cat) => 2
@@ -308,6 +394,15 @@ let categoryId = switch (isBig, myAnimal) {
 | (false, Dog | Cat) => 4
 | (false, Bird) => 5
 };
+```
+```ml
+type animal = Dog | Cat | Bird
+let categoryId = match (isBig, myAnimal) with
+| (true, Dog) -> 1
+| (true, Cat) -> 2
+| (true, Bird) -> 3
+| (false, (Dog | Cat)) -> 4
+| (false, Bird) -> 5
 ```
 ```js
 var categoryId = isBig ? (myAnimal + 1) | 0 : myAnimal >= 2 ? 5 : 4;
@@ -326,13 +421,18 @@ false            |  4  |  4  |  5
 
 If you have a value like `Teacher(payload)` where you just want to pattern match on the `Teacher` part and ignore the `payload` completely, you can use the `_` wildcard like this:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 switch (person) {
 | Teacher(_) => Js.log("Hi teacher")
 | Student(_) => Js.log("Hey student")
 };
+```
+```ml
+let () = match person with
+| Teacher _ -> Js.log "Hi teacher"
+| Student _ -> Js.log "Hey student"
 ```
 ```js
 if (person.TAG) {
@@ -350,7 +450,7 @@ if (person.TAG) {
 
 Sometime, you want to check more than the shape of a value. You want to also run some arbitrary check on it. You might be tempted to write this:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 switch (person) {
@@ -362,6 +462,15 @@ switch (person) {
     Js.log("Heyo")
   }
 };
+```
+```ml
+let () = match person with
+| Teacher _ -> () (* do nothing *)
+| Student {reportCard = {gpa}} ->
+  if gpa < 0.5 then
+    Js.log "What's happening"
+  else
+    Js.log "Heyo"
 ```
 ```js
 if (person.TAG) {
@@ -377,7 +486,7 @@ if (person.TAG) {
 
 `switch` patterns support a shortcut for the arbitrary `if` check, to keep your pattern linear-looking:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 switch (person) {
@@ -388,6 +497,15 @@ switch (person) {
   // fall-through, catch-all case
   Js.log("Heyo");
 }
+```
+```ml
+let () = match person with
+| Teacher _ -> () (* do nothing *)
+| Student {reportCard = {gpa}} when gpa < 0.5 ->
+  Js.log "What's happening"
+| Student _ ->
+  (* fall-through, catch-all case *)
+  Js.log "Heyo"
 ```
 ```js
 if (person.TAG) {
@@ -405,13 +523,18 @@ if (person.TAG) {
 
 If the function throws an exception (covered later), you can also match on _that_, in addition to the function's normally returned values.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 switch (List.find(i => i === theItem, myItems)) {
 | item => Js.log(item)
 | exception Not_found => Js.log("No such item found!")
 };
+```
+```ml
+let () = match List.find (fun i -> i == theItem) myItems with
+| item -> Js.log item
+| exception Not_found -> Js.log "No such item found!"
 ```
 ```js
 var exit = 0;
@@ -444,7 +567,7 @@ if (exit === 1) {
 
 **Note**: you can only pass literals (i.e. concrete values) as a pattern, not let-binding names or other things. The following doesn't work as expected:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let coordinates = (10, 20, 30)
@@ -452,6 +575,12 @@ let centerY = 20
 switch (coordinates) {
 | (x, centerY, _) => /* code */
 }
+```
+```ml
+let coordinates = (10, 20, 30)
+let centerY = 20
+let () = match coordinates with
+| (x, centerY, _) => (* code *)
 ```
 ```js
 var coordinates = [10, 20, 30];
@@ -470,7 +599,7 @@ As if the above features aren't enough, ReScript also provides arguably the most
 
 Let's revisit one of the above examples:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let message = switch (person) {
@@ -482,12 +611,28 @@ let message = switch (person) {
     reportCard: {gpa: 0.0},
     status: Vacations(daysLeft) | Sabbatical(daysLeft)
   }) =>
-  "Come back in " ++ Js.Int.toString(daysLeft) ++ " days!""
+  "Come back in " ++ Js.Int.toString(daysLeft) ++ " days!"
 | Student({status: Sick}) =>
   "How are you feeling?"
 | Student({name}) =>
   "Good luck next semester " ++ name ++ "!"
 }
+```
+```ml
+let message = match person with
+| Teacher {name = "Mary" | "Joe"} ->
+  "Hey, still going to the party on Saturday?"
+| Student {name; reportCard = {passing = true; gpa}} ->
+  "Congrats " ^ name ^ ", nice GPA of " ^ (Js.Float.toString gpa) ^ " you got there!"
+| Student {
+    reportCard = {gpa = 0.0};
+    status = (Vacations daysLeft) | (Sabbatical daysLeft)
+  } ->
+  "Come back in " ^ (Js.Int.toString daysLeft) ^ " days!"
+| Student {status = Sick} ->
+    "How are you feeling?"
+| Student {name} ->
+  "Good luck next semester "^ name ^ "!"
 ```
 ```js
 if (person.TAG) {
@@ -540,13 +685,18 @@ Some({name: ""})
 
 **BAM**! You've just erased an entire category of important bugs before you even ran the code. In fact, this is how most of nullable values is handled:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 switch (myNullableValue) {
 | Some(v) => Js.log("value is present")
 | None => Js.log("value is absent")
 };
+```
+```ml
+match myNullableValue with
+| Some v -> Js.log "value is present"
+| None -> Js.log "value is absent"
 ```
 ```js
 if (myNullableValue !== undefined) {
@@ -572,7 +722,7 @@ Use `when` clause sparingly.
 
 **Flatten your pattern-match whenever you can**. This is a real bug remover. Here's a series of examples, from worst to best:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let optionBoolToBool = opt => {
@@ -584,6 +734,14 @@ let optionBoolToBool = opt => {
     false
   }
 }
+```
+```ml
+let optionBoolToBool opt =
+  if opt = None
+    then false
+  else if opt == Some true then
+    true
+  else false
 ```
 ```js
 function optionBoolToBool(opt) {
@@ -599,7 +757,7 @@ function optionBoolToBool(opt) {
 
 Now that's just silly =). Let's turn it into pattern-matching:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let optionBoolToBool = opt => {
@@ -608,6 +766,12 @@ let optionBoolToBool = opt => {
   | Some(a) => a ? true : false
   }
 };
+```
+```ml
+let optionBoolToBool opt =
+  match opt with
+  | None -> false
+  | Some a -> if a then true else false
 ```
 ```js
 function optionBoolToBool(opt) {
@@ -623,7 +787,7 @@ function optionBoolToBool(opt) {
 
 Slightly better, but still nested. Pattern-matching allows you to do this:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let optionBoolToBool = opt => {
@@ -633,6 +797,13 @@ let optionBoolToBool = opt => {
   | Some(false) => false
   }
 };
+```
+```ml
+let optionBoolToBool opt =
+  match opt with
+  | None -> false
+  | Some true -> true
+  | Some false -> false
 ```
 ```js
 function optionBoolToBool(opt) {
@@ -648,7 +819,7 @@ function optionBoolToBool(opt) {
 
 Much more linear-looking! Now, you might be tempted to do this:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let optionBoolToBool = opt => {
@@ -657,6 +828,12 @@ let optionBoolToBool = opt => {
   | _ => false
   }
 };
+```
+```ml
+let optionBoolToBool opt =
+  match opt with
+  | Some true -> true
+  | _ -> false
 ```
 ```js
 function optionBoolToBool(opt) {
@@ -672,15 +849,13 @@ function optionBoolToBool(opt) {
 
 Which is much more concise, but kills the exhaustiveness check mentioned above; refrain from using that. This is the best:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
-let optionBoolToBool = opt => {
-  switch (opt) {
-  | Some(trueOrFalse) => trueOrFalse
-  | None => false
-  }
-};
+let optionBoolToBool opt =
+  match opt with
+  | Some trueOrFalse -> trueOrFalse
+  | None -> false
 ```
 ```js
 function optionBoolToBool(opt) {

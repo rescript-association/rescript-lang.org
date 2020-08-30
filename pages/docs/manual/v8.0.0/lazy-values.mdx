@@ -20,7 +20,7 @@ A lazy value has a type of `Lazy.t('a)`, where `'a` is the return value of the c
 
 Lazy values are part of the language. You can either use the `lazy` keyword to create a lazy value from an expression...
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re example
 // We only want getFiles to read the file system once,
@@ -36,6 +36,20 @@ Lazy.force(getFiles)->Js.log;
 
 // The second call will just return the already calculated files
 Lazy.force(getFiles)->Js.log;
+```
+```ml
+(* We only want getFiles to read the file system once, *)
+(* so we wrap it in a lazy value *)
+let getFiles = lazy (
+  Js.log "Reading dir";
+  Node.Fs.readdirSync "./pages"
+)
+
+(* On the first call, the computation takes place *)
+let () = (Lazy.force getFiles) |. Js.log
+
+(* The second call will just return the already calculated files *)
+let () = (Lazy.force getFiles) |. Js.log
 ```
 ```js
 var Fs = require("fs");
@@ -55,9 +69,9 @@ console.log(CamlinternalLazy.force(getFiles));
 
 </CodeTab>
 
-... or you can also wrap an existing function to make it lazy:
+...or you can also wrap an existing function to make it lazy:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re example
 // Example for wrapping a function with 0 parameters
@@ -67,6 +81,14 @@ let getFiles = () => {
 
 // Here we wrap our function in the lazy value
 let lazyGetFiles = Lazy.from_fun(getFiles);
+```
+```ml
+(* Example for wrapping a function with 0 parameters *)
+let getFiles () =
+  Node.Fs.readdirSync "./pages"
+
+(* Here we wrap our function in the lazy value *)
+let lazyGetFiles = Lazy.from_fun getFiles
 ```
 ```js
 var Fs = require("fs");
@@ -81,7 +103,7 @@ var lazyGetFiles = Lazy.from_fun(getFiles);
 
 </CodeTab>
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re example
 // Example for wrapping a function with parameters
@@ -92,6 +114,15 @@ let doesFileExist = name => {
 // Here we use the lazy syntax again
 // since we can't use Lazy.from_fun
 let lazyDoesFileExist = lazy(doesFileExist("blog.re"));
+```
+```ml
+(* Example for wrapping a function with parameters *)
+let doesFileExist name =
+  Node.Fs.readdirSync "./pages" |. Js.Array2.find(fun s -> name == s)
+
+(* Here we use the lazy syntax again *)
+(* since we can't use Lazy.from_fun *)
+let lazyDoesFileExist = lazy(doesFileExist "blog.re")
 ```
 ```js
 var Fs = require("fs");
@@ -121,13 +152,19 @@ Whenever we want to wrap a function `unit => 'a`, we use `Lazy.from_fun`, otherw
 
 Lazy values need to be explicitly executed to be able to return a value. Use the `Lazy.force`to start the execution:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re example
 let computation = lazy(1);
 
 // Returns 1
 Lazy.force(computation);
+```
+```ml
+let computation = lazy 1;
+
+(* Returns 1 *)
+Lazy.force computation
 ```
 ```js
 var CamlinternalLazy = require("./stdlib/camlinternalLazy.js");
@@ -144,7 +181,7 @@ CamlinternalLazy.force(computation);
 
 It is also possible to use pattern matching to force a lazy value to compute, this includes `switch` expressions and similar syntax such as tuple destructuring:
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re example
 // Extract a lazy value via pattern matching
@@ -154,6 +191,14 @@ switch computation {
 | lazy("computed") => Js.log("ok")
 | _ => Js.log("not ok")
 };
+```
+```ml
+(* Extract a lazy value via pattern matching *)
+let computation = lazy "computed"
+
+let () = match computation with
+| lazy "computed" -> Js.log "ok"
+| _ -> Js.log "not ok"
 ```
 ```js
 var CamlinternalLazy = require("./stdlib/camlinternalLazy.js");
@@ -174,7 +219,7 @@ if (match === "computed") {
 
 </CodeTab>
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re example
 // Destructuring a single value
@@ -184,6 +229,12 @@ let lazy(word) = lazy("hello");
 
 // Output: "hello"
 Js.log(word);
+```
+```ml
+let lazy word = lazy "hello"
+
+(* Output: "hello" *)
+Js.log word
 ```
 ```js
 var CamlinternalLazy = require("./stdlib/camlinternalLazy.js");
@@ -200,7 +251,7 @@ console.log(word);
 
 </CodeTab>
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re example
 // Destructing a tuple
@@ -210,6 +261,15 @@ let (lazy(word1), lazy(word2)) = lazyValues;
 // Output: "hello world"
 Js.log2(word1, word2);
 let lazy(word) = lazy("hello");
+```
+```ml
+(* Destructing a tuple *)
+let lazyValues = (lazy "hello", lazy "world")
+let (lazy word1, lazy word2) = lazyValues
+
+(* Output: "hello world" *)
+Js.log2(word1, word2)
+let lazy word = lazy "hello"
 ```
 ```js
 var CamlinternalLazy = require("./stdlib/camlinternalLazy.js");
@@ -248,19 +308,22 @@ As you can see, the `lazy` syntax is a really great way for creating and handlin
 
 Whenever a lazy value computation raises an exception, the same exception will be thrown by `Lazy.force`.
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re example
 let readFile =
-  lazy(
-    {
-      raise(Not_found)
-    }
-  );
+  lazy({
+    raise(Not_found)
+  });
 
 try (Lazy.force(readFile)) {
 | Not_found => Js.log("No file")
 };
+```
+```ml
+let readFile = lazy (raise Not_found)
+let () = try Lazy.force readFile with
+| Not_found -> Js.log "No file"
 ```
 ```js
 var CamlinternalLazy = require("./stdlib/camlinternalLazy.js");

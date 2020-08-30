@@ -14,6 +14,8 @@ ReScript has built-in support for [JavaScript promises](api/js/promise). The 3 f
 
 Additionally, here's the type signature for creating a promise on the ReScript side:
 
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
 ```rei
 Js.Promise.make: (
   (
@@ -22,6 +24,15 @@ Js.Promise.make: (
   ) => unit
 ) => Js.Promise.t('a);
 ```
+```mli
+Js.Promise.make: (
+  resolve:(('a -> unit) [@bs]) ->
+  reject:((exn -> unit) [@bs]) ->
+  unit
+) -> 'a Js.Promise.t
+```
+
+</CodeTab>
 
 This type signature means that `make` takes a callback that takes 2 named arguments, `resolve` and `reject`. Both arguments are themselves [uncurried callbacks](
 function.md#uncurried-function) (with a dot). `make` returns the created promise.
@@ -30,7 +41,7 @@ function.md#uncurried-function) (with a dot). `make` returns the created promise
 
 Using the [pipe operator](pipe.md):
 
-<CodeTab labels={["Reason (Old Syntax)", "JS Output"]}>
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
 ```re
 let myPromise = Js.Promise.make((~resolve, ~reject) => resolve(. 2));
@@ -48,6 +59,23 @@ myPromise
      Js.log2("Failure!!", err);
      Js.Promise.resolve(-2);
    });
+```
+```ml
+let myPromise = Js.Promise.make (fun ~resolve ~reject -> ((resolve 2) [@bs]))
+
+let () = myPromise
+|> Js.Promise.then_(fun value ->
+     Js.log value;
+     Js.Promise.resolve (value + 2)
+   )
+|> Js.Promise.then_(fun value ->
+     Js.log value;
+     Js.Promise.resolve (value + 3)
+   )
+|> Js.Promise.catch(fun err ->
+     Js.log2 "Failure!!", err;
+     Js.Promise.resolve -2
+   )
 ```
 ```js
 var myPromise = new Promise(function (resolve, reject) {
