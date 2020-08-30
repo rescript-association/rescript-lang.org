@@ -54,7 +54,7 @@ let basicNavs = [|
   },
   {name: "Mutation", href: "/docs/manual/v8.0.0/mutation"},
   {name: "JSX", href: "/docs/manual/v8.0.0/jsx"},
-  {name: "External", href: "/docs/manual/v8.0.0/external"},
+  {name: "External (Bind to Any JS Library)", href: "/docs/manual/v8.0.0/external"},
   {name: "Exception", href: "/docs/manual/v8.0.0/exception"},
   {name: "Lazy Values", href: "/docs/manual/v8.0.0/lazy-values"},
   {name: "Promise", href: "/docs/manual/v8.0.0/promise"},

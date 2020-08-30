@@ -225,7 +225,7 @@ exports.queryResult = queryResult;
 
 </CodeTab>
 
-We hurrily typed `school` as a polymorphic `'whatever` and let its type be inferred by its usage below. The inference is technically correct, but within the context of bringing it a value from JavaScript, slightly dangerous.
+We hurrily typed `school` as a polymorphic `'whatever` and let its type be inferred by its usage below. The inference is technically correct, but within the context of bringing it a value from JavaScript, slightly dangerous. This is just the interop trick we've shown in the [`external`](external) page.
 
 Anyway, the file passes the type checker again. Check the `.bs.js` output, diff with the original `.js`; we've now converted a file over to ReScript!
 
@@ -289,7 +289,7 @@ Check that the `.bs.js` output didn't change. How rigidly to type your JavaScrip
 
 ## Tips & Tricks
 
-In the same vein of idea, **resist the urge to write your own wrapper functions for the JS code you're converting**. Use `external`s, which are guaranteed to be erased in the output. And avoid trying to take the occasion to convert JS data structures into ReScript-specific data structures like variant or list. **This isn't the time for that**.
+In the same vein of idea, **resist the urge to write your own wrapper functions for the JS code you're converting**. Use [`external`s](external), which are guaranteed to be erased in the output. And avoid trying to take the occasion to convert JS data structures into ReScript-specific data structures like variant or list. **This isn't the time for that**.
 
 The moment you produce extra conversion code in the output, your skeptical teammate's mental model might switch from "I recognize this output" to "this conversion might be introducing more problems than it solves. Why are we testing ReScript again?". Then you've lost.
 

@@ -126,4 +126,36 @@ MyJSFile.student1.name = "Mary";
 
 </CodeTab>
 
-<!-- TODO: connect to externals -->
+## Tips & Tricks
+
+Since objects don't require type declarations, and since ReScript infers all the types for you, you get to very quickly and easily (and dangerously) bind to any JavaScript API. Check the JS output tab:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// The type of document is just some random type 'a
+// that we won't bother to specify
+[@bs.val] external document: 'a = "document";
+
+// call a method
+document##addEventListener("mouseup", _event => {
+  Js.log("clicked!");
+});
+
+// get a property
+let loc = document##location;
+
+// set a property
+document##location##href = "rescript-lang.org";
+```
+```js
+document.addEventListener("mouseup", function(_event) {
+  console.log("clicked!");
+});
+var loc = document.location;
+document.location.href = "rescript-lang.org";
+```
+
+</CodeTab>
+
+The `external` feature and the usage of this trick are also documented in the [external](external#tips--tricks) section later. It's an excellent way to start writing some ReScript code without worrying about whether bindings to a particular library exists.
