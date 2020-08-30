@@ -293,7 +293,8 @@ external processOnExit: (
   @bs.as("exit") _,
   int => unit
 ) => unit = "process.on"
-let () = processOnExit(exitCode =>
+
+processOnExit(exitCode =>
   Js.log("error code: " ++ Js.Int.toString(exitCode))
 );
 ```
@@ -424,8 +425,10 @@ For JS functions that return a value that can also be `undefined` or `null`, we 
 ```res
 type element
 type dom
+
 @bs.send @bs.return(nullable)
 external getElementById: (dom, string) => option<element> = "getElementById"
+
 let test = dom => {
   let elem = dom->(getElementById("haha"))
   switch (elem) {

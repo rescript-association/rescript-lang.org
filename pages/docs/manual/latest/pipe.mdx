@@ -111,7 +111,10 @@ You'd use them like this:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-let result = Js.Array2.filter(Js.Array2.map([1, 2, 3], a => a + 1), a => mod(a, 2) == 0)
+let result = Js.Array2.filter(
+  Js.Array2.map([1, 2, 3], a => a + 1),
+  a => mod(a, 2) == 0
+)
 
 send(setWaitDuration(asyncRequest(), 4000))
 ```
@@ -134,7 +137,7 @@ This looks much worse than the JS counterpart! Clean it up visually with pipe:
 ```res
 let result = [1, 2, 3]
   ->map(a => a + 1)
-  ->filter(a => mod(a, 2) === 0)
+  ->filter(a => mod(a, 2) == 0)
 
 asyncRequest()->setWaitDuration(4000)->send
 ```

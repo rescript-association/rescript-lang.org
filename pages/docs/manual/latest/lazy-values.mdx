@@ -55,7 +55,7 @@ console.log(CamlinternalLazy.force(getFiles));
 
 </CodeTab>
 
-... or you can also wrap an existing function to make it lazy:
+...or you can also wrap an existing function to make it lazy:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -252,11 +252,9 @@ Whenever a lazy value computation raises an exception, the same exception will b
 
 ```res example
 let readFile =
-  lazy(
-    {
-      raise(Not_found)
-    }
-  )
+  lazy({
+    raise(Not_found)
+  })
 
 try {
   Lazy.force(readFile)
