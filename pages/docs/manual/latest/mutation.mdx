@@ -14,7 +14,7 @@ Let-bindings are immutable, but you can wrap it with a `ref`, exposed as a recor
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res prelude
 let myValue = ref(5)
 ```
 ```js
@@ -31,7 +31,7 @@ You can get the actual value of a `ref` box through accessing its `contents` fie
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let five = myValue.contents // 5
 ```
 ```js
@@ -44,7 +44,7 @@ Assign a new value to `myValue` like so:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 myValue.contents = 6
 ```
 ```js
@@ -57,7 +57,7 @@ We provide a syntax sugar for this:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 myValue := 6
 ```
 ```js

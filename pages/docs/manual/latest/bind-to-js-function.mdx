@@ -10,7 +10,7 @@ Binding a JS function is like binding any other value:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 // Import nodejs' path.dirname
 @bs.module("path") external dirname: string => string = "dirname"
 let root = dirname("/User/github") // returns "User"
@@ -42,7 +42,7 @@ It'd be nice if on ReScript's side, we can bind & call `draw` while labeling thi
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.module("MyGame")
 external draw: (~x: int, ~y: int, ~border: bool=?, unit) => unit = "draw"
 
@@ -66,7 +66,7 @@ Note that you can change the order of labeled arguments on the ReScript side and
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.module("MyGame")
 external draw: (~x: int, ~y: int, ~border: bool=?, unit) => unit = "draw"
 
@@ -86,7 +86,7 @@ Functions attached to a JS objects (other than JS modules) require a special way
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type document // abstract type for a document object
 @bs.send external getElementById: (document, string) => Dom.element = "getElementById"
 @bs.val external doc: document = "document"
@@ -111,7 +111,7 @@ You might have JS functions that take an arbitrary amount of arguments. BuckleSc
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.module("path") @bs.variadic
 external join: array<string> => string = "join"
 
@@ -136,7 +136,7 @@ If you can exhaustively enumerate the many forms an overloaded JS function can t
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.module("MyGame") external drawCat: unit => unit = "draw"
 @bs.module("MyGame") external drawDog: (~giveName: string) => unit = "draw"
 @bs.module("MyGame") external draw: (string, ~useRandomAnimal: bool) => unit = "draw"
@@ -169,7 +169,7 @@ Here, `padding` is really conceptually a variant. Let's model it as such.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.val
 external padLeft: (
   string,
@@ -196,7 +196,7 @@ Consider the Node `fs.readFileSync`'s second argument. It can take a string, but
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.module("fs")
 external readFileSync: (
   ~name: string,
@@ -224,7 +224,7 @@ Aside from string, you can also compile an argument to an int, using `bs.int` in
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.val
 external testIntType: (
   @bs.int [
@@ -249,7 +249,7 @@ One last trick with polymorphic variants:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type readline
 
 @bs.send
@@ -287,7 +287,7 @@ Sometimes it's convenient to bind to a function using an `external`, while passi
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.val
 external processOnExit: (
   @bs.as("exit") _,
@@ -314,7 +314,7 @@ Curry is a delicious Indian dish. More importantly, in the context of ReScript (
 
 See the `addFive` intermediate function? `add` takes in 3 arguments but received only 1. It's interpreted as "currying" the argument `5` and waiting for the next 2 arguments to be applied later on. Type signatures:
 
-```resi
+```res sig
 let add: (int, int, int) => int
 let addFive: (int, int) => int
 let twelve: int
@@ -344,7 +344,7 @@ ReScript tries to do #1 as much as it can. Even when it bails and uses #2's curr
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type timerId
 @bs.val external setTimeout: ((. unit) => unit, int) => timerId = "setTimeout"
 
@@ -372,8 +372,8 @@ Then try `@bs.uncurry`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
-@bs.send external map: (array<'a>, @bs.uncurry('a => 'b)) => array<'b> = "map"
+```res example
+@bs.send external map: (array<'a>, @bs.uncurry ('a => 'b)) => array<'b> = "map"
 map([1, 2, 3], x => x + 1)
 ```
 ```js
@@ -398,7 +398,7 @@ Here, `this` would point to `x` (actually, it depends on how `onload` is called,
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type x
 @bs.val external x: x = "x"
 @bs.set external setOnload: (x, @bs.this ((x, int) => unit)) => unit = "onload"
@@ -422,7 +422,7 @@ For JS functions that return a value that can also be `undefined` or `null`, we 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type element
 type dom
 

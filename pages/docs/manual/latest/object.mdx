@@ -23,7 +23,7 @@ Although ReScript records compile to clean JavaScript objects, ReScript objects 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res prelude
 type person = {
   "age": int,
   "name": string
@@ -45,7 +45,7 @@ To create a new object:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let me = {
   "age": 5,
   "name": "Big ReScript"
@@ -110,7 +110,7 @@ Disallowed unless the object is a binding that comes from the JavaScript side. I
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type student = {
   @bs.set "age": int,
   @bs.set "name": string,
@@ -132,7 +132,7 @@ Since objects don't require type declarations, and since ReScript infers all the
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 // The type of document is just some random type 'a
 // that we won't bother to specify
 @bs.val external document: 'a = "document"

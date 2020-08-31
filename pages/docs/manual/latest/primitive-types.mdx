@@ -16,7 +16,7 @@ ReScript `string`s are delimited using **double** quotes (single quotes are rese
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let greeting = "Hello world!"
 let multilineGreeting = "Hello
  world!"
@@ -32,7 +32,7 @@ To concatenate strings, use `++`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let greetings = "Hello " ++ "world!"
 ```
 ```js
@@ -52,7 +52,9 @@ There's a special syntax for string that allows
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
+let name = "Joe"
+
 let greeting = `Hello
 World
 👋
@@ -60,6 +62,8 @@ ${name}
 `
 ```
 ```js
+var name = "Joe";
+
 var greeting = "Hello\nWorld\n👋\n" + name + "\n";
 ```
 
@@ -71,9 +75,9 @@ For interpolation, you'll have to convert the binding (`name` in the example) in
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let age = 10
-let message = j`Today I am ${age} years old.`
+let message = j`Today I am $age years old.`
 ```
 ```js
 var message = "Today I am " + 10 + " years old.";
@@ -103,7 +107,7 @@ ReScript has a type for a string with a single letter:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let firstLetterOfAlphabet = 'a'
 ```
 ```js
@@ -122,7 +126,7 @@ ReScript regular expressions compile cleanly to their JavaScript counterpart:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let r = %re("/b/g")
 ```
 ```js

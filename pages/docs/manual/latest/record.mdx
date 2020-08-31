@@ -17,7 +17,7 @@ A record needs a mandatory type declaration:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res prelude
 type person = {
   age: int,
   name: string
@@ -35,7 +35,7 @@ To create a `person` record (declared above):
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res prelude
 let me = {
   age: 5,
   name: "Big ReScript"
@@ -56,7 +56,7 @@ The type is found by looking above the `me` value. **Note**: if the type instead
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 // School.res
 type person = {age: int, name: string}
 ```
@@ -96,7 +96,7 @@ Use the familiar dot notation:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let name = me.name
 ```
 ```js
@@ -111,7 +111,7 @@ New records can be created from old records with the `...` spread operator. The 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let meNextYear = {...me, age: me.age + 1}
 ```
 ```js
@@ -131,7 +131,7 @@ Record fields can optionally be mutable. This allows you to efficiently update t
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type person = {
   name: string,
   mutable age: int

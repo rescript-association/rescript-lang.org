@@ -15,7 +15,7 @@ canonical: "/docs/manual/latest/external"
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.val external setTimeout: (unit => unit, int) => float = "setTimeout"
 ```
 ```js
@@ -40,7 +40,7 @@ Once declared, you can use an `external` as a normal value, just like a let bind
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 // The type of document is just some random type 'a
 // that we won't bother to specify
 @bs.val external document: 'a = "document"

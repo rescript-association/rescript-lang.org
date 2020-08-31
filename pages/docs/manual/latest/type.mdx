@@ -21,7 +21,7 @@ This let-binding doesn't contain any written type:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let score = 10
 let add = (a, b) => a + b
 ```
@@ -42,7 +42,7 @@ But you can also optionally write down the type, aka annotate your value:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let score: int = 10
 ```
 ```js
@@ -84,7 +84,7 @@ You can refer to a type by a different name. They'll be equivalent:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type scoreType = int
 let x: scoreType = 10
 ```
@@ -102,7 +102,7 @@ The use-case of a parameterized type is to kill duplications. Before:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 // this is a tuple of 3 items, explained next
 type intCoordinates = (int, int, int)
 type floatCoordinates = (float, float, float)
@@ -121,7 +121,7 @@ After:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type coordinates<'a> = ('a, 'a, 'a)
 
 let a: coordinates<int> = (10, 20, 20)
@@ -138,7 +138,7 @@ Note that the above codes are just contrived examples for illustration purposes.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let buddy = (10, 20, 20)
 ```
 ```js
@@ -153,7 +153,7 @@ Type arguments appear in many places. Our `array<'a>` type is such a type that r
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 // inferred as `array<string>`
 let greetings = ["hello", "world", "how are you"]
 ```
@@ -172,7 +172,7 @@ Types can receive many arguments, and be composable.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type result<'a, 'b> =
   | Ok('a)
   | Error('b)
@@ -212,7 +212,7 @@ Just like a functions, a type can reference itself within itself using `rec`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type rec person = {
   name: string,
   friends: array<person>
@@ -230,8 +230,8 @@ Types can also be _mutually_ recursive through `and`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
-type student = {taughtBy: teacher}
+```res example
+type rec student = {taughtBy: teacher}
 and teacher = {students: array<student>}
 ```
 ```js
@@ -247,7 +247,7 @@ ReScript's type system is robust and does not allow dangerous, unsafe stuff like
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-external myShadyConversion : myType1 => myType2 = "%identity"
+external myShadyConversion: myType1 => myType2 = "%identity"
 ```
 ```js
 // Empty output
@@ -259,7 +259,7 @@ This declaration converts a `myType1` of your choice to `myType2` of your choice
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 external convertToFloat : int => float = "%identity"
 let age = 10
 let gpa = 2.1 +. convertToFloat(age)

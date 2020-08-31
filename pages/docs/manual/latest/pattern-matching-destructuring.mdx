@@ -20,7 +20,7 @@ Even JavaScript has destructuring, which is "opening up" a data structure to ext
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let coordinates = (10, 20, 30)
 let (x, _, _) = coordinates
 Js.log(x) // 10
@@ -103,7 +103,7 @@ You can also use destructuring anywhere you'd usually put a binding:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type result =
   | Success(string)
 let displayMessage = (Success(m)) => {
@@ -146,7 +146,7 @@ Consider a variant:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res prelude
 type payload =
   | BadResult(int)
   | GoodResult(string)
@@ -164,7 +164,7 @@ In other languages, you'd end up with a series of if-elses that are hard to read
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let data = GoodResult("Product shipped!")
 switch data {
 | GoodResult(theMessage) =>
@@ -202,7 +202,7 @@ Here's a real-world scenario that'd be a headache to code in other languages. Gi
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res prelude
 type status = Vacations(int) | Sabbatical(int) | Sick | Present
 type reportCard = {passing: bool, gpa: float}
 type person =
@@ -234,7 +234,9 @@ ReScript can do this easily!
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res prelude
+let person1 = Teacher({name: "Jane", age: 35})
+
 let message = switch person1 {
 | Teacher({name: "Mary" | "Joe"}) =>
   `Hey, still going to the party on Saturday?`
@@ -255,6 +257,12 @@ let message = switch person1 {
 }
 ```
 ```js
+var person1 = {
+  TAG: /* Teacher */0,
+  name: "Jane",
+  age: 35
+};
+
 var message;
 
 if (person1.TAG) {
@@ -328,14 +336,14 @@ If you have a value like `Teacher(payload)` where you just want to pattern match
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
-switch person {
+```res example
+switch person1 {
 | Teacher(_) => Js.log("Hi teacher")
 | Student(_) => Js.log("Hey student")
 }
 ```
 ```js
-if (person.TAG) {
+if (person1.TAG) {
   console.log("Hey student");
 } else {
   console.log("Hi teacher");
@@ -352,8 +360,8 @@ Sometime, you want to check more than the shape of a value. You want to also run
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
-switch person {
+```res example
+switch person1 {
 | Teacher(_) => () // do nothing
 | Student({reportCard: {gpa}}) =>
   if gpa < 0.5 {
@@ -364,8 +372,8 @@ switch person {
 }
 ```
 ```js
-if (person.TAG) {
-  if (person.reportCard.gpa < 0.5) {
+if (person1.TAG) {
+  if (person1.reportCard.gpa < 0.5) {
     console.log("What's happening");
   } else {
     console.log("Heyo");
@@ -379,8 +387,8 @@ if (person.TAG) {
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
-switch person {
+```res example
+switch person1 {
 | Teacher(_) => () // do nothing
 | Student({reportCard: {gpa}}) when gpa < 0.5 =>
   Js.log("What's happening")
@@ -390,8 +398,8 @@ switch person {
 }
 ```
 ```js
-if (person.TAG) {
-  if (person.reportCard.gpa < 0.5) {
+if (person1.TAG) {
+  if (person1.reportCard.gpa < 0.5) {
     console.log("What's happening");
   } else {
     console.log("Heyo");
@@ -446,11 +454,11 @@ if (exit === 1) {
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let coordinates = (10, 20, 30)
 let centerY = 20
 switch coordinates {
-| (x, centerY, _) => /* code */
+| (x, centerY, _) => Js.log(x)
 }
 ```
 ```js
@@ -473,7 +481,7 @@ Let's revisit one of the above examples:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-let message = switch person {
+let message = switch person1 {
 | Teacher({name: "Mary" | "Joe"}) =>
   `Hey, still going to the party on Saturday?`
 | Student({name, reportCard: {passing: true, gpa}}) =>
@@ -490,10 +498,10 @@ let message = switch person {
 }
 ```
 ```js
-if (person.TAG) {
-  var match$1 = person.status;
-  var name = person.name;
-  var match$2 = person.reportCard;
+if (person1.TAG) {
+  var match$1 = person1.status;
+  var name = person1.name;
+  var match$2 = person1.reportCard;
   if (match$2.passing) {
     "Congrats " + name + ", nice GPA of " + match$2.gpa.toString() + " you got there!";
   } else if (typeof match$1 === "number") {
@@ -502,13 +510,13 @@ if (person.TAG) {
     } else {
       "How are you feeling?";
     }
-  } else if (person.reportCard.gpa !== 0.0) {
+  } else if (person1.reportCard.gpa !== 0.0) {
     "Good luck next semester " + name + "!";
   } else {
     "Come back in " + match$1._0.toString() + " days!";
   }
 } else {
-  switch (person.name) {
+  switch (person1.name) {
     case "Joe":
     case "Mary":
       break;
@@ -528,7 +536,7 @@ if (person.TAG) {
 
 </CodeTab>
 
-Did you see what we removed? This time, we've omitted the handling of the case where `person` is `Teacher({name})` when `name` isn't Mary or Joe.
+Did you see what we removed? This time, we've omitted the handling of the case where `person1` is `Teacher({name})` when `name` isn't Mary or Joe.
 
 Failing to handle every scenario of a value likely constitutes the majority of program bugs out there. This happens very often when you refactor a piece of code someone else wrote. Fortunately for ReScript, the compiler will tell you so:
 
@@ -542,13 +550,17 @@ Some({name: ""})
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
+let myNullableValue = Some(5)
+
 switch myNullableValue {
 | Some(v) => Js.log("value is present")
 | None => Js.log("value is absent")
 }
 ```
 ```js
+var myNullableValue = 5;
+
 if (myNullableValue !== undefined) {
   console.log("value is present");
 } else {
@@ -574,7 +586,7 @@ Use `when` clause sparingly.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let optionBoolToBool = opt => {
   if opt == None {
     false
@@ -601,7 +613,7 @@ Now that's just silly =). Let's turn it into pattern-matching:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let optionBoolToBool = opt => {
   switch opt {
   | None => false
@@ -625,7 +637,7 @@ Slightly better, but still nested. Pattern-matching allows you to do this:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let optionBoolToBool = opt => {
   switch opt {
   | None => false
@@ -650,7 +662,7 @@ Much more linear-looking! Now, you might be tempted to do this:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let optionBoolToBool = opt => {
   switch opt {
   | Some(true) => true
@@ -674,7 +686,7 @@ Which is much more concise, but kills the exhaustiveness check mentioned above; 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let optionBoolToBool = opt => {
   switch opt {
   | Some(trueOrFalse) => trueOrFalse

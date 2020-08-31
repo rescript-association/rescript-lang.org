@@ -19,7 +19,7 @@ inside a module definition's `{}` block.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 module School = {
   type profession = Teacher | Director
 
@@ -68,7 +68,7 @@ Nested modules work too.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 module MyModule = {
   module NestedModule = {
     let message = "hello"
@@ -148,7 +148,7 @@ Using `include` in a module statically "spreads" a module's content into a new o
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 module BaseComponent = {
   let defaultGreeting = "Hello"
   let getAudience = (~excited) => excited ? "world!" : "world"
@@ -213,7 +213,7 @@ inside a signature definition's `{}` block.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 /* Picking up previous section's example */
 module type EstablishmentType = {
   type profession
@@ -292,7 +292,7 @@ Like modules themselves, module signatures can also be extended by other module 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 module type BaseComponent = {
   let defaultGreeting: string
   let getAudience: (~excited: bool) => string
@@ -319,10 +319,10 @@ type.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 module type MyList = {
   include (module type of List)
-  let myListFun: list('a) => list('a)
+  let myListFun: list<'a> => list<'a>
 }
 ```
 ```js
@@ -341,7 +341,7 @@ in the ecosystem to also document the public API of their corresponding modules.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 /* file React.res (implementation. Compiles to module React) */
 type state = int
 let render = (str) => str
@@ -354,10 +354,10 @@ function render(str) {
 
 </CodeTab>
 
-```res
+```res sig
 /* file React.resi (interface. Compiles to the signature of React.res) */
 type state = int
-let render: str => str
+let render: string => string
 ```
 
 ## Module Functions (functors)
@@ -380,7 +380,7 @@ Here's an example `MakeSet` functor, that takes in a module of the type
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res prelude
 module type Comparable = {
   type t
   let equal: (t, t) => bool
@@ -434,7 +434,7 @@ creating a set, whose items are pairs of integers.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 module IntPair = {
   type t = (int, int)
   let equal = ((x1: int, y1: int), (x2, y2)) => x1 == x2 && y1 == y2

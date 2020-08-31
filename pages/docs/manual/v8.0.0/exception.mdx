@@ -280,15 +280,15 @@ When you have ordinary variants, you often don't **need** exceptions. For exampl
 
 ```re
 try (someOtherJSFunctionThatThrows()) {
-| Not_found => ..  // catch a ReScript exception
-| Invalid_argument(_) =>  // catch a second ReScript exception
+| Not_found => ...  // catch a ReScript exception
+| Invalid_argument(_) => ... // catch a second ReScript exception
 | Js.Exn.Error(obj) => ... // catch the JS exception
 };
 ```
 ```ml
 try someOtherJSFunctionThatThrows() with
-| Not_found -> .. (* catch a ReScript exception *)
-| Invalid_argument _ -> (* catch a second ReScript exception *)
+| Not_found -> ... (* catch a ReScript exception *)
+| Invalid_argument _ -> ... (* catch a second ReScript exception *)
 | Js.Exn.Error obj -> ... (* catch the JS exception *)
 ```
 ```js

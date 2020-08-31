@@ -12,7 +12,7 @@ Most data structures in most languages are about "this **and** that". A variant 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type myResponse =
   | Yes
   | No
@@ -36,7 +36,7 @@ If the variant you're using is in a different file, bring it into scope like you
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 // Zoo.res
 type animal = Dog | Cat | Bird
 ```
@@ -67,7 +67,7 @@ A variant's constructors can hold extra data separated by comma.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res prelude
 type account =
   | None
   | Instagram(string)
@@ -83,7 +83,7 @@ Here, `Instagram` holds a `string`, and `Facebook` holds a `string` and an `int`
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let myAccount = Facebook("Josh", 26)
 let friendAccount = Instagram("Jenny")
 ```
@@ -107,7 +107,7 @@ You can use a record type in a variant:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type idType = {name: string, password: string}
 
 type user =
@@ -124,7 +124,7 @@ If the record type is used only in the variant definition, you may put it in lin
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type user =
   | Number(int)
   | Id({name: string, password: string})
@@ -145,7 +145,7 @@ See the [Pattern Matching/Destructuring](pattern-matching-destructuring.md) sect
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type account =
   | Facebook(string, int) // 2 arguments
 type account2 =
@@ -169,7 +169,7 @@ Quite a few JS libraries use functions that can accept many types of arguments. 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 // reserved for internal usage
 @bs.module("myLibrary") external draw : 'a => unit = "draw"
 
@@ -204,7 +204,7 @@ You could definitely do that, but there are better ways! For example, define two
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.module("myLibrary") external drawFloat: float => unit = "draw"
 @bs.module("myLibrary") external drawString: string => unit = "draw"
 ```
@@ -243,7 +243,7 @@ There's a linear amount of branch checking here (`O(n)`). Compare this to using 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type animal = Dog | Cat | Bird
 let data = Dog
 switch data {

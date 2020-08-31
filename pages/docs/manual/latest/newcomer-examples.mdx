@@ -16,7 +16,7 @@ This section is dedicated to newcomers trying to figure out general idioms & con
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let possiblyNullValue1 = None
 let possiblyNullValue2 = Some("Hello")
 
@@ -43,7 +43,7 @@ if (possiblyNullValue2 !== undefined) {
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type universityStudent = {gpa: float}
 
 type response<'studentType> = {
@@ -61,7 +61,7 @@ type response<'studentType> = {
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let student1 = {
   "name": "John",
   "age": 30,
@@ -80,7 +80,7 @@ Or using [record](record.md):
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type payload = {
   name: string,
   age: int,
@@ -110,7 +110,7 @@ For a function whose argument is passed a JavaScript value that's potentially `n
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let greetByName = (possiblyNullName) => {
   let optionName = Js.Nullable.toOption(possiblyNullName)
   switch optionName {

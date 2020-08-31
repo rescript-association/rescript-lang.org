@@ -10,7 +10,7 @@ A "let binding", in other languages, might be called a "variable declaration". `
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let greeting = "hello!"
 let score = 10
 let newScore = 10 + score
@@ -29,7 +29,7 @@ Bindings can be scoped through `{}`.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let message = {
   let part1 = "hello"
   let part2 = "world"
@@ -129,7 +129,7 @@ As a matter of fact, even this is valid code:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let result = "hello"
 Js.log(result) // prints "hello"
 let result = 1

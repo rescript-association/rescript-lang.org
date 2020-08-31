@@ -25,7 +25,7 @@ If your JavaScript object has fixed fields, then it's conceptually like a ReScri
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type person = {
   name: string,
   friends: array<string>,
@@ -52,7 +52,7 @@ Alternatively, you can use [ReScript object](object.md) to model a JS object too
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type person = {
   "name": string,
   "friends": array<string>,
@@ -77,7 +77,7 @@ Alternatively, you can use `bs.get` and `bs.set` to bind to individual fields of
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type textarea
 @bs.set external setName: (textarea, string) => unit = "name"
 @bs.get external getName: textarea => string = "name"
@@ -91,7 +91,7 @@ You can also use `bs.get_index` and `bs.set_index` to access a dynamic property 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type t
 @bs.new external create: int => t = "Int32Array"
 @bs.get_index external get: (t, int) => int = ""
@@ -124,7 +124,7 @@ Use `bs.new` to emulate e.g. `new Date()`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type t
 @bs.new external createDate: unit => t = "Date"
 
@@ -140,7 +140,7 @@ You can chain `bs.new` and `bs.module` if the JS module you're importing is itse
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 type t
 @bs.new @bs.module external book: unit => t = "Book"
 let myBook = book()

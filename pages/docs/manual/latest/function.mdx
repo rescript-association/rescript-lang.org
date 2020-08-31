@@ -12,7 +12,7 @@ Functions are declared with an arrow and return an expression.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res prelude
 let greet = (name) => "Hello " ++ name
 ```
 ```js
@@ -27,7 +27,7 @@ This declares a function and assigns to it the name `greet`, which you can call 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 greet("world!") // "Hello world!"
 ```
 ```js
@@ -40,7 +40,7 @@ Multi-arguments functions have arguments separated by comma:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let add = (x, y, z) => x + y + z
 add(1, 2, 3) // 6
 ```
@@ -56,7 +56,7 @@ For longer functions, you'd surround the body with a block:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let greetMore = (name) => {
   let part1 = "Hello"
   part1 ++ " " ++ name
@@ -312,7 +312,7 @@ ReScript chooses the sane default of preventing a function to be called recursiv
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let rec neverTerminate = () => neverTerminate()
 ```
 ```js
@@ -330,7 +330,7 @@ A simple recursive function may look like this:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 // Recursively check every item on the list until one equals the `item`
 // argument. If a match is found, return `true`, otherwise return `false`
 let rec listHas = (list, item) =>
@@ -366,7 +366,7 @@ Mutually recursive functions start like a single recursive function using the
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let rec callSecond = () => callFirst()
 and callFirst = () => callSecond()
 ```
@@ -394,7 +394,7 @@ ReScript's functions are curried by default, which is one of the few performance
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let add = (. x, y) => x + y
 
 add(. 1, 2)
@@ -521,7 +521,7 @@ type add = (~first: int=?, ~second: int=?, unit) => int
 
 To annotate a function from the implementation file (`.res`) in your interface file (`.resi`):
 
-```res
+```res sig
 let add: (int, int) => int
 ```
 

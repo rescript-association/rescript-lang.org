@@ -98,7 +98,7 @@ You can also make your own exceptions like you'd make a variant (exceptions need
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 exception InputClosed(string)
 // later on
 raise(InputClosed("The stream has closed!"))
@@ -163,7 +163,7 @@ The `obj` here is of type `Js.Exn.t`, intentionally opaque to disallow illegal o
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let myTest = () => {
   Js.Exn.raiseError("Hello!")
 }
@@ -195,7 +195,7 @@ The previous section is less useful than you think; to let your JS code work wit
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 exception BadArgument({myMessage: string})
 
 let myTest = () => {
@@ -246,8 +246,8 @@ When you have ordinary variants, you often don't **need** exceptions. For exampl
 try {
   someOtherJSFunctionThatThrows()
 } catch {
-| Not_found => ..  // catch a ReScript exception
-| Invalid_argument(_) =>  // catch a second ReScript exception
+| Not_found => ... // catch a ReScript exception
+| Invalid_argument(_) => ... // catch a second ReScript exception
 | Js.Exn.Error(obj) => ... // catch the JS exception
 }
 ```

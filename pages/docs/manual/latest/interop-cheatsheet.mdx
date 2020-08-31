@@ -12,7 +12,7 @@ canonical: "/docs/manual/latest/interop-cheatsheet"
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let add = %raw("(a, b) => a + b")
 %%raw("const a = 1")
 ```
@@ -27,7 +27,7 @@ const a = 1
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.val external setTimeout: (unit => unit, int) => float = "setTimeout"
 ```
 ```js
@@ -40,7 +40,7 @@ const a = 1
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.val @bs.scope("Math")
 external random: unit => float = "random"
 
@@ -59,7 +59,7 @@ var someNumber = Math.random();
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let a = Some(5) // compiles to 5
 let b = None // compiles to undefined
 ```
@@ -74,7 +74,7 @@ Handling a value that can be `undefined` and `null`, by ditching the `option` ty
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let jsNull = Js.Nullable.null
 let jsUndefined = Js.Nullable.undefined
 let result1: Js.Nullable.t<string> = Js.Nullable.return("hello")
@@ -106,7 +106,7 @@ var result3 = Caml_option.nullable_to_opt(10);
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.send external map: (array<'a>, 'a => 'b) => array<'b> = "map"
 @bs.send external filter: (array<'a>, 'a => 'b) => array<'b> = "filter"
 [1, 2, 3]
@@ -132,7 +132,7 @@ console.log(
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.module("path") @bs.variadic
 external join: array<string> => string = "join"
 ```
@@ -146,7 +146,7 @@ external join: array<string> => string = "join"
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.module("Drawing") external drawCat: unit => unit = "draw"
 @bs.module("Drawing") external drawDog: (~giveName: string) => unit = "draw"
 ```
@@ -158,7 +158,7 @@ external join: array<string> => string = "join"
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.val
 external padLeft: (
   string,
@@ -188,7 +188,7 @@ Final escape hatch converter. Do not abuse.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 external convertToFloat: int => float = "%identity"
 let age = 10
 let gpa = 2.1 +. convertToFloat(age)

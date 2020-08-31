@@ -12,7 +12,7 @@ Bind to JavaScript's `JSON.parse` and type the return value as the type you're e
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 // declare the shape of the json you're binding to
 type data = {names: array<string>}
 
@@ -38,7 +38,7 @@ Use `Js.Json.stringify`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 Js.log(Js.Json.stringifyAny(["Amy", "Joe"]))
 ```
 ```js

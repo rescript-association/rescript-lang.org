@@ -20,7 +20,7 @@ ReScript has built-in support for [JavaScript promises](api/js/promise). The 3 f
 
 Additionally, here's the type signature for creating a promise on the ReScript side:
 
-```resi
+```res
 Js.Promise.make: (
   (
     ~resolve: (. 'a) => unit,
@@ -38,7 +38,7 @@ Using the [pipe operator](pipe.md):
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let myPromise = Js.Promise.make((~resolve, ~reject) => resolve(. 2))
 
 myPromise

@@ -12,7 +12,7 @@ Arrays are our primary ordered data structure. They work the same way as JavaScr
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let myArray = ["hello", "world", "how are you"]
 ```
 ```js
@@ -31,7 +31,7 @@ Access & update an array item like so:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let myArray = ["hello", "world", "how are you"]
 
 let firstItem = myArray[0] // "hello"
@@ -59,7 +59,7 @@ ReScript provides a singly linked list too. Lists are:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let myList = list{1, 2, 3}
 ```
 ```js
@@ -93,7 +93,7 @@ Use the spread syntax:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res prelude
 let myList = list{1, 2, 3}
 let anotherList = list{0, ...myList}
 ```
@@ -129,7 +129,7 @@ Updating an arbitrary item in the middle of a list is also discouraged, since it
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let message =
   switch myList {
   | list{} => "This list is empty"

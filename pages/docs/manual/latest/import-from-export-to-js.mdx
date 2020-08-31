@@ -16,7 +16,7 @@ Use the `bs.module` [external](external.md):
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 // Import nodejs' path.dirname
 @bs.module("path") external dirname: string => string = "dirname"
 let root = dirname("/User/github") // returns "User"
@@ -42,7 +42,7 @@ By omitting the string argument to `bs.module`, you bind to the whole JS module:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.module external leftPad: string => int => string = "./leftPad"
 let paddedResult = leftPad("hi", 5)
 ```
@@ -59,7 +59,7 @@ If your JS project is using ES6, you're likely using Babel to compile it to regu
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 @bs.module("./student") external studentName: string = "default"
 Js.log(studentName)
 ```
@@ -99,7 +99,7 @@ Technically, since a ReScript file maps to a module, there's no such thing as "d
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 /* FavoriteStudent.res */
 let default = "Bob"
 ```
