@@ -16,14 +16,14 @@ We respect TypeScript very much and think that it's a positive force in the Java
 
 - TypeScript's (admittedly noble) goal is to cover the entire JavaScript feature set and more. **ReScript covers only a curated subset of JavaScript**. For example, we emphasize plain data + functions over classes, clean [pattern matching](pattern-matching-destructuring.md) over fragile `if`s and virtual dispatches, [proper data modeling](variant.md) over string abuse, etc. JavaScript supersets will only grow larger over time; ReScript doesn't. \*
 
-- Consequently, TypeScript's type system is necessarily complex, pitfalls-ridden, potentially requires tweaking, sometime slow, and requires quite a bit of noisy annotations that often feel like manual bookkeeping rather than clear documentation. In contrast, ReScript's type system:
+- Consequently, TypeScript's type system is necessarily complex, pitfalls-ridden, potentially requires tweaking, sometimes slow, and requires quite a bit of noisy annotations that often feel like manual bookkeeping rather than clear documentation. In contrast, ReScript's type system:
   - Is deliberately curated to be a simple subset most folks will have an easier time to use.
   - Has **no** pitfalls, aka the type system is "sound" (the types will always be correct). E.g. If your value is not null, it'll never lie and slip through some `undefined` value. **ReScript code has no null errors**.
   - Is the same for everyone. No knobs, no bikeshedding opportunity.
   - Runs extremely fast precisely thanks to its simplicity and curation. We're one of the fastest compiler & build system for JavaScript development.
   - **Doesn't need type annotations**. Annotate as much or as little as you'd like. The types are inferred by the language (and, again, are guaranteed correct).
 
-- Migrating to TypeScript is done "breadth-first", whereas migrating to ReScript is done "depth-first". You can convert your codebase to TypeScript by "turning it on" for all files and annotate here and there; but how much type safety did you gain? How do you measure it? Type errors can still slip in and out of the converted pieces. For ReScript, our interop features draws clear boundaries: there's pure ReScript code, and there's JS interop code. Every piece of converted ReScript code is 100% clean. You'd convert file by file and each conversion increases your safety monotonically.
+- Migrating to TypeScript is done "breadth-first," whereas migrating to ReScript is done "depth-first." You can convert your codebase to TypeScript by "turning it on" for all files and annotate here and there; but how much type safety did you gain? How do you measure it? Type errors can still slip in and out of the converted pieces. For ReScript, our interop features draw clear boundaries: there's pure ReScript code, and there's JS interop code. Every piece of converted ReScript code is 100% clean. You'd convert file by file and each conversion increases your safety monotonically.
 
 \* When you absolutely need to write or interoperate with free-for-all JavaScript, we expose enough escape hatches for you.
 
@@ -33,7 +33,7 @@ Aside from the aforementioned simple, robust and fast type system, ReScript pres
 
 ### Faster than JavaScript
 
-JavaScript's been aggressively optimized by talented engineers over a long span. Unfortunately, even for seasoned JS devs, it can be hard to know how to properly leverage JS' performance. ReScript's type system and compiler naturally guides you toward writing code that's very often performant by default, with good leverage of various Just-In-Time optimizations (hidden classes, inline caching, avoiding deopts, etc.).
+JavaScript's been aggressively optimized by talented engineers over a long span. Unfortunately, even for seasoned JS devs, it can be hard to know how to properly leverage JS's performance. ReScript's type system and compiler naturally guides you toward writing code that's very often performant by default, with good leverage of various Just-In-Time optimizations (hidden classes, inline caching, avoiding deopts, etc).
 
 A widespread adage to write fast JavaScript code is to write as if there's a type system (in order to trigger JS engines' good optimization heuristics); ReScript gives you a real one and generates code that's friendly to optimizations by default.
 
@@ -41,17 +41,17 @@ A widespread adage to write fast JavaScript code is to write as if there's a typ
 
 The JavaScript ecosystem is very reliant on dependencies. Shipping the final product inevitably drags in a huge amount of code, lots of which the project doesn't actually use. These regions of dead code impact loading, parsing and interpretation speed. ReScript provides powerful dead code elimination at all levels:
 
-- Function and module level code elimination is facilitated by the well-engineered type system and purity analysis.
-- At the global level, ReScript generates code that are naturally friendly to dead code elimination done by bundling tools such as [Rollup](https://github.com/rollup/rollup) and [Closure Compiler](https://developers.google.com/closure/compiler/), after its own sophisticated elimination pass.
+- Function- and module-level code elimination is facilitated by the well-engineered type system and purity analysis.
+- At the global level, ReScript generates code that is naturally friendly to dead code elimination done by bundling tools such as [Rollup](https://github.com/rollup/rollup) and [Closure Compiler](https://developers.google.com/closure/compiler/), after its own sophisticated elimination pass.
 - The same applies for ReScript's own tiny runtime (which is written in ReScript itself).
 
 ### Tiny JS Output
 
-A `Hello world` ReScript program generates **20 bytes** JS code. Additionally, the standard library pieces you require in are only include when needed.
+A `Hello world` ReScript program generates **20 bytes** of JS code. Additionally, the standard library pieces you require in are only included when needed.
 
 ### Fast Iteration Loop
 
-ReScript's build time is **one or two orders of magnitude** faster than alternatives. In its watcher mode, the build system usually finishes before you switch screen from the editor to the terminal tab (two digits of milliseconds). A fast iteration cycle reduces need of keeping one's mental state around longer; this in turns allows one to stay in the flow longer and more often.
+ReScript's build time is **one or two orders of magnitude** faster than alternatives. In its watcher mode, the build system usually finishes before you switch screen from the editor to the terminal tab (two digits of milliseconds). A fast iteration cycle reduces the need of keeping one's mental state around longer; this in turn allows one to stay in the flow longer and more often.
 
 ### Readable Output & Great Interop
 
