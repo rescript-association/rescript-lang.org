@@ -106,12 +106,12 @@ Example:
 }
 ```
 
-Note that the command's path resolution is done through the following:
+Note that the path resolution for the command (`node` in this case) is done so:
 
 - `/myCommand` is resolved into `/myCommand`
-- `myCommand/` is resolved into `node_modules/myCommand`
+- `package/myCommand` is resolved into `node_modules/package/myCommand`
 - `./myCommand` is resolved into `myProjectRoot/myCommand`
-- `myCommand` is just called as `myCommand`. But note that Bsb doesn't read into your environment, so if you put `node`, it won't find it unless you specify an absolute path. Alternatively, point to a script that has the header `#!/usr/local/bin/node`.
+- `myCommand` is just called as `myCommand`, aka a globally available executable. But note that Bsb doesn't read into your shell's environment, so if you put e.g. `node`, it won't find it unless you specify an absolute path. Alternatively, add `#!/usr/local/bin/node` to the top of your script to directly call it without prepending `node`.
 
 The command itself is called from inside `lib/bs`.
 
