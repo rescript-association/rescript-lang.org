@@ -5,6 +5,7 @@
 @import './_markdown.css';
 @import './_theme.css';
 @import "./_fonts.css";
+@import "./_docsearch.css";
 
 body {
   @apply font-sans bg-white;

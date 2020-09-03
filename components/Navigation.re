@@ -335,6 +335,7 @@ module MobileNav = {
     let extLink = "block hover:cursor-pointer hover:text-white text-night-light";
     <div className="border-night border-t">
       <ul>
+        <li className=base> <DocSearch.Textbox id="docsearch-mobile" /> </li>
         <li className=base>
           <Link href="/try">
             <a className={linkOrActiveLink(~target="/try", ~route)}>
@@ -481,7 +482,7 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
         <a
           href="/"
           className="block hover:cursor-pointer w-full h-full flex justify-center items-center font-bold">
-          <img src="/static/nav-logo@2x.png"/>
+          <img src="/static/nav-logo@2x.png" />
         </a>
       </div>
       /*<img*/
@@ -490,97 +491,56 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
       /*/>*/
       /* Desktop horizontal navigation */
       <div
-        className="flex xs:justify-end w-full bg-night-dark sm:h-auto sm:relative">
+        className="flex items-center xs:justify-end w-full bg-night-dark sm:h-auto sm:relative">
         <div
           className="flex ml-10 w-full max-w-320"
           style={Style.make(~maxWidth="26rem", ())}>
-          /*<button*/
-          /*className="sm:hidden px-4 flex items-center justify-center h-full">*/
-          /*<Icon.MagnifierGlass className="w-5 h-5 hover:text-white" />*/
-          /*</button>*/
-          /*
-                       {Belt.Array.mapWithIndex(
-                          collapsibles,
-                          (idx, c) => {
-                            let {href, title, children, state} = c;
-                            let onStateChange = (~id, state) => {
-                              setCollapsibles(prev => {
-                                /* This is important to close the nav overlay, before showing the subnavigation */
-                                if (isOverlayOpen) {
-                                  toggleOverlay();
-                                };
-                                Belt.Array.map(prev, c =>
-                                  if (c.title === id) {
-                                    {...c, state};
-                                  } else {
-                                    {...c, state: Closed};
-                                  }
-                                );
-                              });
-                            };
-                            <div className="mr-5">
-                              <CollapsibleLink
-                                id=title
-                                onStateChange
-                                key={idx->Belt.Int.toString}
-                                allowHover
-                                title
-                                active={Js.String2.startsWith(route, href)}
-                                state>
-                                {children(route)}
-                              </CollapsibleLink>
-                            </div>;
-                          },
-                        )
-                        ->ate}
-           */
-
-            <Link href="/docs/latest">
-              <a
-                className={"mr-5 " ++ linkOrActiveDocsSubroute(~route)}
-                onMouseEnter=nonCollapsibleOnMouseEnter>
-                "Docs"->s
-              </a>
-            </Link>
-            <Link href="/docs/manual/latest/api">
-              <a
-                className={"mr-5 " ++ linkOrActiveApiSubroute(~route)}
-                onMouseEnter=nonCollapsibleOnMouseEnter>
-                "API"->s
-              </a>
-            </Link>
-            <Link href="/try">
-              <a
-                className={
-                  "hidden xs:block mr-5 "
-                  ++ linkOrActiveLink(~target="/try", ~route)
-                }
-                onMouseEnter=nonCollapsibleOnMouseEnter>
-                "Playground"->s
-              </a>
-            </Link>
-            <Link href="/blog">
-              <a
-                className={
-                  "hidden xs:block mr-5 "
-                  ++ linkOrActiveLinkSubroute(~target="/blog", ~route)
-                }
-                onMouseEnter=nonCollapsibleOnMouseEnter>
-                "Blog"->s
-              </a>
-            </Link>
-            <Link href="/community">
-              <a
-                className={
-                  "hidden xs:block "
-                  ++ linkOrActiveLink(~target="/community", ~route)
-                }
-                onMouseEnter=nonCollapsibleOnMouseEnter>
-                "Community"->s
-              </a>
-            </Link>
-          </div>
-        <div className="hidden sm:flex">
+          <Link href="/docs/latest">
+            <a
+              className={"mr-5 " ++ linkOrActiveDocsSubroute(~route)}
+              onMouseEnter=nonCollapsibleOnMouseEnter>
+              "Docs"->s
+            </a>
+          </Link>
+          <Link href="/docs/manual/latest/api">
+            <a
+              className={"mr-5 " ++ linkOrActiveApiSubroute(~route)}
+              onMouseEnter=nonCollapsibleOnMouseEnter>
+              "API"->s
+            </a>
+          </Link>
+          <Link href="/try">
+            <a
+              className={
+                "hidden xs:block mr-5 "
+                ++ linkOrActiveLink(~target="/try", ~route)
+              }
+              onMouseEnter=nonCollapsibleOnMouseEnter>
+              "Playground"->s
+            </a>
+          </Link>
+          <Link href="/blog">
+            <a
+              className={
+                "hidden xs:block mr-5 "
+                ++ linkOrActiveLinkSubroute(~target="/blog", ~route)
+              }
+              onMouseEnter=nonCollapsibleOnMouseEnter>
+              "Blog"->s
+            </a>
+          </Link>
+          <Link href="/community">
+            <a
+              className={
+                "hidden xs:block "
+                ++ linkOrActiveLink(~target="/community", ~route)
+              }
+              onMouseEnter=nonCollapsibleOnMouseEnter>
+              "Community"->s
+            </a>
+          </Link>
+        </div>
+        <div className="hidden sm:flex items-center">
           <a
             href=githubHref
             rel="noopener noreferrer"
@@ -606,6 +566,7 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
             <Icon.Discourse className="w-6 h-6 opacity-50 hover:opacity-100" />
           </a>
         </div>
+        <div className="hidden sm:block ml-8"> <DocSearch /> </div>
       </div>
     </div>
     /*<a*/

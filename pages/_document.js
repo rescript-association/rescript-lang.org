@@ -6,7 +6,16 @@ export default class extends Document {
     const isProduction = process.env.ENV === "production";
     return (
       <html>
-        <Head></Head>
+        <Head>
+          <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css"
+          />
+          <script
+            type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"
+          />
+        </Head>
         <body>
           <Main />
           <NextScript />
