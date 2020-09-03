@@ -60,10 +60,11 @@ let basicNavs = [|
   {name: "Mutation", href: "/docs/manual/latest/mutation"},
   {name: "JSX", href: "/docs/manual/latest/jsx"},
   {name: "Exception", href: "/docs/manual/latest/exception"},
-  {name: "Lazy Values", href: "/docs/manual/latest/lazy-values"},
+  {name: "Lazy Value", href: "/docs/manual/latest/lazy-values"},
   {name: "Async & Promise", href: "/docs/manual/latest/promise"},
   {name: "Module", href: "/docs/manual/latest/module"},
   {name: "Import & Export", href: "/docs/manual/latest/import-export"},
+  {name: "Attribute (Decorator)", href: "/docs/manual/latest/attribute"},
   {name: "Reserved Keywords", href: "/docs/manual/latest/reserved-keywords"},
 |];
 
