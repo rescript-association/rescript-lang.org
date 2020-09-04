@@ -67,7 +67,7 @@ module Sidebar = {
              let hidden = isHidden ? "hidden" : "block";
              let active =
                isItemActive(m)
-                 ? {j| bg-primary-15 text-primary-dark leading-5 rounded-sm -ml-2 pl-2 font-semibold block |j}
+                 ? {j| bg-fire-15 text-fire leading-5 -ml-2 pl-2 font-semibold block hover:bg-fire-15 |j}
                  : "";
 
              let activeToc =
@@ -80,7 +80,7 @@ module Sidebar = {
                <Link href={m.href}>
                  <a
                    className={
-                     "truncate block py-1 md:h-auto tracking-tight text-night-darker hover:text-primary "
+                     "truncate block py-1 md:h-auto tracking-tight text-night-darker rounded-sm  hover:bg-gray-5 hover:-ml-2 hover:py-1 hover:pl-2 "
                      ++ active
                    }>
                    m.name->s

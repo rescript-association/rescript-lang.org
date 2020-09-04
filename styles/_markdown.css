@@ -2,7 +2,7 @@
 /* Sometimes we cannot circumvent the cascade, especially for nested lists */
 
 .md-ul {
-  @apply mb-16;
+  @apply mb-4;
 }
 
 .md-ul ul {

@@ -48,18 +48,24 @@ let langShortname = (lang: string) => {
 };
 
 [@react.component]
-let make = (~highlightedLines=[||], ~code: string, ~lang="text") => {
+let make = (~highlightedLines=[||], ~code: string, ~showLabel=true, ~lang="text") => {
   let children = renderHLJS(~highlightedLines, ~code, ~lang, ());
 
-  let label = langShortname(lang);
-
-  <div
-    className="flex w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-snow-dark bg-snow-light px-5 py-2 text-night-dark">
+  let label = if(showLabel) {
+    let label = langShortname(lang);
     <div
-      className="flex self-end font-sans mb-4 text-sm font-bold text-night-light">
+      className="flex self-end font-sans mb-4 text-sm font-bold text-night-light px-4">
       {Js.String2.toUpperCase(label)->s}
     </div>
-    <div className="px-5 text-base pb-6 overflow-x-auto -mt-2"> children </div>
+  }
+  else {
+    <div className="mt-4"/>
+  };
+
+  <div
+    className="flex w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-snow-dark bg-snow-light py-2 text-night-dark">
+    label
+    <div className="px-4 text-base pb-2 overflow-x-auto -mt-2"> children </div>
   </div>;
 };
 
@@ -81,8 +87,10 @@ module Toggle = {
         "highlightedLines": tab.highlightedLines,
         "code": tab.code,
         "lang": tab.lang,
+        "showLabel": Some(true),
       })
     | multiple =>
+      let numberOfItems = Js.Array.length(multiple);
       let labels =
         Belt.Array.mapWithIndex(
           multiple,
@@ -99,7 +107,7 @@ module Toggle = {
               };
 
             let activeClass =
-              selected === i ? "text-fire-80" : "hover:cursor-pointer";
+              selected === i ? "font-bold text-gray-100 bg-snow-light" : "hover:cursor-pointer border-gray-20 border-r";
 
             let onClick = evt => {
               ReactEvent.Mouse.preventDefault(evt);
@@ -107,10 +115,16 @@ module Toggle = {
             };
             let key = label ++ "-" ++ Belt.Int.toString(i);
 
+            let paddingX = switch(numberOfItems) {
+              | 1
+              | 2 => "px-16"
+              | 3 => "px-8"
+              | _ => "px-4"
+            };
             <span
               key
               className={
-                "inline-block p-2 last:border-r-0 border-r " ++ activeClass
+                paddingX ++ " inline-block p-2 bg-gray-10 last:ml-auto rounded-sm " ++ activeClass
               }
               onClick>
               label->s
@@ -132,12 +146,12 @@ module Toggle = {
         ->Belt.Option.getWithDefault(React.null);
 
       <div
-        className="flex w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-snow-dark bg-snow-light px-5 pb-2 text-night-dark">
+        className="flex w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-snow-dark bg-snow-light pb-2 text-night-dark">
         <div
-          className="border-b border-l border-r flex self-end font-sans mb-6 md:mb-4 text-sm font-bold text-night-light">
+          className="font-sans mb-6 mb-4 text-sm bg-gray-10 text-gray-60-tr">
           labels->ate
         </div>
-        <div className="px-5 text-base pb-6 overflow-x-auto -mt-2">
+        <div className="px-4 text-base pb-2 overflow-x-auto -mt-2">
           <pre> children </pre>
         </div>
       </div>;
