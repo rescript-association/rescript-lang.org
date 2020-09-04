@@ -151,6 +151,12 @@ baby.age = baby.age + 1 | 0;
 
 </CodeTab>
 
+Fields not marked with `mutable` in the type declaration cannot be mutated.
+
+## JavaScript Output
+
+ReScript records compile to straightforward JavaScript objects; see the various JS output tabs above.
+
 ## Tips & Tricks
 
 **Record Types Are Found By Field Name**. With records, you **cannot** say "I'd like this function to take any record type, as long as they have the field `age`". The following **won't work as intended**:

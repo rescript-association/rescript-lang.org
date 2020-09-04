@@ -101,26 +101,9 @@ var friendAccount = {
 
 </CodeTab>
 
-### Records in Variants
+### Labeled Variant Payloads (Inline Record)
 
-You can use a record type in a variant:
-
-<CodeTab labels={["ReScript", "JS Output"]}>
-
-```res example
-type idType = {name: string, password: string}
-
-type user =
-  | Number(int)
-  | Id(idType)
-```
-```js
-// Empty output
-```
-
-</CodeTab>
-
-If the record type is used only in the variant definition, you may put it in line:
+If a variant payload has multiple fields, you can use a record-like syntax to label them for better readability:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -128,16 +111,125 @@ If the record type is used only in the variant definition, you may put it in lin
 type user =
   | Number(int)
   | Id({name: string, password: string})
+
+let me = Id({name: "Joe", password: "123"})
 ```
 ```js
-// Empty output
+var me = {
+  TAG: /* Id */1,
+  name: "Joe",
+  password: "123"
+};
 ```
 
 </CodeTab>
 
+This is technically called an "inline record", and only allowed within a variant constructor. You cannot inline a record type declaration anywhere else in ReScript.
+
+Of course, you can just put a regular record type in a variant too:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type u = {name: string, password: string}
+type user =
+  | Number(int)
+  | Id(u)
+
+let me = Id({name: "Joe", password: "123"})
+```
+```js
+var me = {
+  TAG: /* Id */1,
+  _0: {
+    name: "Joe",
+    password: "123"
+  }
+};
+```
+
+</CodeTab>
+
+The output is slightly uglier and less performant than the former.
+
 ### Pattern Matching On Variant
 
 See the [Pattern Matching/Destructuring](pattern-matching-destructuring.md) section later.
+
+## JavaScript Output
+
+A variant value compiles to 3 possible JavaScript outputs depending on its type declaration:
+
+- If the variant value is a constructor with no payload, it compiles to a number.
+- If it's a constructor with a payload, it compiles to an object with the field `TAG` and the field `_0` for the first payload, `_1` for the second payload, etc.
+- An exception to the above is a variant whose type declaration contains only a single constructor with payload. In that case, the constructor compiles to an object without the `TAG` field.
+- Labeled variant payloads (the inline record trick earlier) compile to an object with the label names instead of `_0`, `_1`, etc. The object might or might not have the `TAG` field as per previous rule.
+
+Check the output in these examples:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type greeting = Hello | Goodbye
+let g1 = Hello
+let g2 = Goodbye
+
+type outcome = Good | Error(string)
+let o1 = Good
+let o2 = Error("oops!")
+
+type family = Child | Mom(int, string) | Dad (int)
+let f1 = Child
+let f2 = Mom(30, "Jane")
+let f3 = Dad(32)
+
+type person = Teacher | Student({gpa: float})
+let p1 = Teacher
+let p2 = Student({gpa: 99.5})
+
+type s = {score: float}
+type adventurer = Warrior(s) | Wizard(string)
+let a1 = Warrior({score: 10.5})
+let a2 = Wizard("Joe")
+```
+```js
+var g1 = /* Hello */0;
+var g2 = /* Goodbye */1;
+
+var o1 = /* Good */0;
+var o2 = /* Error */{
+  _0: "oops!"
+};
+
+var f1 = /* Child */0;
+var f2 = {
+  TAG: /* Mom */0,
+  _0: 30,
+  _1: "Jane"
+};
+var f3 = {
+  TAG: /* Dad */1,
+  _0: 32
+};
+
+var p1 = /* Teacher */0;
+var p2 = /* Student */{
+  gpa: 99.5
+};
+
+var a1 = {
+  TAG: /* Warrior */0,
+  _0: {
+    score: 10.5
+  }
+};
+var a2 = {
+  TAG: /* Wizard */1,
+  _0: "Joe"
+};
+```
+
+</CodeTab>
 
 ## Tips & Tricks
 
@@ -155,9 +247,9 @@ type account2 =
 // Empty output
 ```
 
-### Variants Must Have Constructors
-
 </CodeTab>
+
+### Variants Must Have Constructors
 
 If you come from an untyped language, you might be tempted to try `type myType = int | string`. This isn't possible in ReScript; you'd have to give each branch a constructor: `type myType = Int(int) | String(string)`. The former looks nice, but causes lots of trouble down the line.
 
@@ -200,7 +292,7 @@ betterDraw({
 
 </CodeTab>
 
-You could definitely do that, but there are better ways! For example, define two `external`s that both compile to the same JS call:
+**Try not to do that**, as this generates extra noisy output. Alternatively, define two `external`s that both compile to the same JS call:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
