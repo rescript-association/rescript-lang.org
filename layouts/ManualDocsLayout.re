@@ -65,6 +65,7 @@ let basicNavs = [|
   {name: "Module", href: "/docs/manual/latest/module"},
   {name: "Import & Export", href: "/docs/manual/latest/import-export"},
   {name: "Attribute (Decorator)", href: "/docs/manual/latest/attribute"},
+  {name: "Unboxed", href: "/docs/manual/latest/unboxed"},
   {name: "Reserved Keywords", href: "/docs/manual/latest/reserved-keywords"},
 |];
 
