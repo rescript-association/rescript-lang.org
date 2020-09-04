@@ -117,14 +117,14 @@ module Toggle = {
 
             let paddingX = switch(numberOfItems) {
               | 1
-              | 2 => "px-16"
-              | 3 => "px-8"
-              | _ => "px-4"
+              | 2 => "sm:px-16"
+              | 3 => "lg:px-8"
+              | _ => ""
             };
             <span
               key
               className={
-                paddingX ++ " inline-block p-2 bg-gray-10 last:ml-auto rounded-sm " ++ activeClass
+                paddingX ++ " px-4 inline-block p-2 bg-gray-10 rounded-sm " ++ activeClass
               }
               onClick>
               label->s
@@ -148,7 +148,7 @@ module Toggle = {
       <div
         className="flex w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-snow-dark bg-snow-light pb-2 text-night-dark">
         <div
-          className="font-sans mb-6 mb-4 text-sm bg-gray-10 text-gray-60-tr">
+          className="flex overflow-auto scrolling-touch font-sans mb-6 mb-4 text-sm bg-gray-10 text-gray-60-tr">
           labels->ate
         </div>
         <div className="px-4 text-base pb-2 overflow-x-auto -mt-2">
