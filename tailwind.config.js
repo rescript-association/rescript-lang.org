@@ -52,6 +52,23 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        gray: {
+          "5": "#F4F4F5",
+          "10": "#E5E5E9",
+          "20": "#CDCDD6",
+          "40": "#979AAD",
+          "60": "#727489",
+          "80": "#3E4057",
+          "95": "#0A0D2F",
+          "100": "#010427",
+          "5-tr": "rgba(1, 4, 39, 0.05)",
+          "10-tr": "rgba(1, 4, 39, 0.1)",
+          "20-tr": "rgba(1, 4, 39, 0.2)",
+          "40-tr": "rgba(1, 4, 39, 0.4)",
+          "60-tr": "rgba(1, 4, 39, 0.6)",
+          "80-tr": "rgba(1, 4, 39, 0.8)",
+          "95-tr": "rgba(1, 4, 39, 0.95)",
+        },
         onyx: {
           default: "#010427",
           "80": "rgba(1, 4, 39, 0.8)",
@@ -268,7 +285,7 @@ module.exports = {
     border: ["hover", "responsive"],
     borderWidth: ["active", "responsive", "last"],
     padding: ["hover", "responsive", "last"],
-    margin: ["responsive", "first", "last"],
+    margin: ["hover", "responsive", "first", "last"],
     visibility: ["group-hover"],
     outline: ["focus"],
   },
