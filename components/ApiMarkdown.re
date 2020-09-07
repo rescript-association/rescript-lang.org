@@ -28,11 +28,10 @@ module H2 = {
   // We will currently hide the headline, to keep the structure,
   // but having an Elm like documentation
   [@react.component]
-  let make = (~id, ~children as _) => {
+  let make = (~id, ~children) => {
     <>
-      // Here we know that children is always a string (## headline)
-      <InvisibleAnchor id />
-      <div className="border-b border-gray-200 my-20" />
+      <div className="border-b border-gray-10 mb-10 mt-20" />
+      <Markdown.H2 id> children </Markdown.H2>
     </>;
   };
 };

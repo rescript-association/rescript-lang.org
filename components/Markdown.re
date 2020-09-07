@@ -154,11 +154,11 @@ module H2 = {
     <>
       // Here we know that children is always a string (## headline)
       <h2
-        className="group mt-12 mb-3 text-28 leading-1 font-sans font-semibold text-onyx">
-        <span className="pr-2" style={Style.make(~marginLeft="-2rem", ())}>
+        className="group mt-12 mb-3 text-28 leading-1 font-sans font-medium text-onyx">
+        children
+        <span className="ml-2">
           <Anchor id />
         </span>
-        children
       </h2>
     </>;
   };
@@ -169,10 +169,10 @@ module H3 = {
   let make = (~id, ~children) => {
     <h3
       className="group text-xl mt-12 mb-3 leading-3 font-sans font-semibold text-onyx">
-      <span className="pr-2" style={Style.make(~marginLeft="-1.6rem", ())}>
+      children
+      <span className="ml-2">
         <Anchor id />
       </span>
-      children
     </h3>;
   };
 };
@@ -186,6 +186,9 @@ module H4 = {
         <Anchor id />
       </span>
       children
+      <span className="ml-2">
+        <Anchor id />
+      </span>
     </h4>;
   };
 };
@@ -195,10 +198,10 @@ module H5 = {
   let make = (~id, ~children) => {
     <h5
       className="group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide text-onyx">
-      <span className="pr-2" style={Style.make(~marginLeft="-1.1rem", ())}>
+      children
+      <span className="ml-2">
         <Anchor id />
       </span>
-      children
     </h5>;
   };
 };
@@ -303,7 +306,7 @@ module Code = {
         if (Belt.List.has(metaSplits, "example", (==))) {
           <CodeExample code lang />;
         } else if (Belt.List.has(metaSplits, "sig", (==))) {
-          <CodeSignature code lang />;
+          <CodeExample code lang showLabel=false/>;
         } else {
           <CodeExample highlightedLines code lang />;
         };
@@ -429,7 +432,7 @@ module CodeTab = {
         },
       );
 
-    <div className="mt-4 mb-10">
+    <div className="mt-4 mb-10 -mx-6 xs:mx-0">
     <CodeExample.Toggle tabs />
     </div>
   };

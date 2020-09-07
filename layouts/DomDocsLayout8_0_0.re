@@ -90,6 +90,6 @@ module Docs = {
 module Prose = {
   [@react.component]
   let make = (~children) => {
-    <Docs components=Markdown.default> children </Docs>;
+    <Docs components=ApiMarkdown.default> children </Docs>;
   };
 };
