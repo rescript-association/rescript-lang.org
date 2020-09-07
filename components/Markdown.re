@@ -432,7 +432,7 @@ module CodeTab = {
         },
       );
 
-    <div className="mt-4 mb-10">
+    <div className="mt-4 mb-10 -mx-6 xs:mx-0">
     <CodeExample.Toggle tabs />
     </div>
   };

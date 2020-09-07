@@ -283,7 +283,7 @@ module.exports = {
     cursor: ["hover"],
     width: ["responsive"],
     border: ["hover", "responsive"],
-    borderWidth: ["active", "responsive", "last"],
+    borderWidth: ["active", "responsive", "last", "first"],
     padding: ["hover", "responsive", "last"],
     margin: ["hover", "responsive", "first", "last"],
     visibility: ["group-hover"],

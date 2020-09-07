@@ -91,7 +91,7 @@ module Toggle = {
       })
     | multiple =>
       let numberOfItems = Js.Array.length(multiple);
-      let labels =
+      let tabElements =
         Belt.Array.mapWithIndex(
           multiple,
           (i, tab) => {
@@ -107,7 +107,7 @@ module Toggle = {
               };
 
             let activeClass =
-              selected === i ? "font-bold text-gray-100 bg-snow-light" : "hover:cursor-pointer border-gray-20 border-r";
+              selected === i ? "font-bold text-gray-100 bg-snow-light border border-b-0 border-snow-dark border-gray-20" : "border-gray-20 border-b hover:cursor-pointer";
 
             let onClick = evt => {
               ReactEvent.Mouse.preventDefault(evt);
@@ -124,7 +124,7 @@ module Toggle = {
             <span
               key
               className={
-                paddingX ++ " px-4 inline-block p-2 bg-gray-10 rounded-sm " ++ activeClass
+                paddingX ++ " flex-none px-4 inline-block p-2 bg-gray-10 rounded-tl rounded-tr " ++ activeClass
               }
               onClick>
               label->s
@@ -146,12 +146,17 @@ module Toggle = {
         ->Belt.Option.getWithDefault(React.null);
 
       <div
-        className="flex w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-snow-dark bg-snow-light pb-2 text-night-dark">
+        className="flex w-full flex-col rounded-none text-night-dark">
         <div
-          className="flex overflow-auto scrolling-touch font-sans mb-6 mb-4 text-sm bg-gray-10 text-gray-60-tr">
-          labels->ate
+          className="flex w-full overflow-auto scrolling-touch font-sans bg-transparent text-sm text-gray-60-tr">
+          <div className="flex">
+          tabElements->ate
+          </div>
+          <div className="flex-1 border-b border-gray-20">
+            {j|\u00A0|j}->s
+          </div>
         </div>
-        <div className="px-4 text-base pb-2 overflow-x-auto -mt-2">
+        <div className="px-4 text-base pb-4 pt-4 overflow-x-auto bg-snow-light border-snow-dark xs:rounded-b border border-t-0">
           <pre> children </pre>
         </div>
       </div>;
