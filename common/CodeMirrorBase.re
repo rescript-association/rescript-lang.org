@@ -15,6 +15,7 @@ import "../styles/cm.css";
 
 if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
   require("codemirror/mode/javascript/javascript");
+  require("codemirror/addon/scroll/simplescrollbars");
   require("../plugins/cm-reason-mode");
 }
 |};
@@ -38,6 +39,10 @@ module CM = {
       readOnly: bool,
       [@bs.optional]
       lineWrapping: bool,
+      [@bs.optional]
+      fixedGutter: bool,
+      [@bs.optional]
+      scrollbarStyle: string,
     };
   };
 
@@ -385,9 +390,11 @@ let default = (props: Props.t): React.element => {
               cmOptions->CM.Options.lineWrapping,
               false,
             ),
+          ~fixedGutter=false,
           ~readOnly=
             Belt.Option.getWithDefault(cmOptions->CM.Options.readOnly, false),
           ~lineNumbers=true,
+          ~scrollbarStyle="overlay",
           (),
         );
       let cm = CM.fromTextArea(input, options);

@@ -62,5 +62,6 @@ let make =
       (),
     );
 
-  React.createElement(dynamicComponent, props);
+  /*React.createElement(dynamicComponent, props);*/
+  CodeMirrorBase.default(props);
 };
