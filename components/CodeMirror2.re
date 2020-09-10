@@ -176,30 +176,6 @@ module Error = {
   };
 };
 
-module Props = {
-  [@bs.deriving {abstract: light}]
-  type t = {
-    [@bs.optional]
-    errors: array(Error.t),
-    [@bs.optional]
-    minHeight: string, // minHeight of the scroller element
-    [@bs.optional]
-    maxHeight: string, // maxHeight of the scroller element
-    [@bs.optional]
-    className: string,
-    [@bs.optional]
-    style: ReactDOMRe.Style.t,
-    value: string,
-    [@bs.optional]
-    onChange: string => unit,
-    [@bs.optional]
-    onMarkerFocus: ((int, int)) => unit, // (row, column)
-    [@bs.optional]
-    onMarkerFocusLeave: ((int, int)) => unit, // (row, column)
-    options: CM.Options.t,
-  };
-};
-
 module GutterMarker = {
   // Note: this is not a React component
   let make =
@@ -269,7 +245,7 @@ let updateErrors =
 
   Belt.Array.forEachWithIndex(
     errors,
-    (idx, e) => {
+    (_idx, e) => {
       open DomUtil;
       open Error;
 
@@ -359,23 +335,30 @@ let updateErrors =
            );
 };
 
-let default = (props: Props.t): React.element => {
+[@react.component]
+let make =
+    // props relevant for the react wrapper
+    (
+      ~errors: array(Error.t)=[||],
+      ~minHeight: option(string)=?,
+      ~maxHeight: option(string)=?,
+      ~className: option(string)=?,
+      ~style: option(ReactDOMRe.Style.t)=?,
+      ~onChange: option(string => unit)=?,
+      ~onMarkerFocus: option(((int, int)) => unit)=?, // (row, column)
+      ~onMarkerFocusLeave: option(((int, int)) => unit)=?, // (row, column)
+      ~value: string,
+      // props for codemirror options
+      ~mode,
+      ~readOnly=false,
+      ~lineNumbers=true,
+      ~scrollbarStyle="overlay",
+      ~lineWrapping=false,
+    )
+    : React.element => {
   let inputElement = React.useRef(Js.Nullable.null);
   let cmRef: React.Ref.t(option(CM.t)) = React.useRef(None);
   let cmStateRef = React.useRef({marked: [||]});
-
-  // Destruct all our props here
-  let minHeight = props->Props.minHeight;
-  let maxHeight = props->Props.maxHeight;
-  let onChange = props->Props.onChange;
-  let value = props->Props.value;
-  let errors = Belt.Option.getWithDefault(props->Props.errors, [||]);
-  let className = props->Props.className;
-  let style = props->Props.style;
-  let cmOptions = props->Props.options;
-
-  let onMarkerFocus = props->Props.onMarkerFocus;
-  let onMarkerFocusLeave = props->Props.onMarkerFocusLeave;
 
   React.useEffect0(() => {
     switch (inputElement->React.Ref.current->Js.Nullable.toOption) {
@@ -384,17 +367,12 @@ let default = (props: Props.t): React.element => {
         CM.Options.t(
           ~theme="material",
           ~gutters=[|CM.errorGutterId, "CodeMirror-linenumbers"|],
-          ~mode=cmOptions->CM.Options.mode,
-          ~lineWrapping=
-            Belt.Option.getWithDefault(
-              cmOptions->CM.Options.lineWrapping,
-              false,
-            ),
+          ~mode,
+          ~lineWrapping,
           ~fixedGutter=false,
-          ~readOnly=
-            Belt.Option.getWithDefault(cmOptions->CM.Options.readOnly, false),
-          ~lineNumbers=true,
-          ~scrollbarStyle="overlay",
+          ~readOnly,
+          ~lineNumbers,
+          ~scrollbarStyle,
           (),
         );
       let cm = CM.fromTextArea(input, options);
@@ -419,7 +397,7 @@ let default = (props: Props.t): React.element => {
       React.Ref.setCurrent(cmRef, Some(cm));
 
       let cleanup = () => {
-        /*Js.log2("cleanup", options->CM.Options.mode);*/
+        Js.log2("cleanup", options->CM.Options.mode);
 
         // This will destroy the CM instance
         cm->CM.toTextArea;
@@ -458,7 +436,7 @@ let default = (props: Props.t): React.element => {
           ~state,
           ~cm,
           errors,
-        );
+        )
       });
       cm->CM.setValue(value);
     }
@@ -493,13 +471,28 @@ let default = (props: Props.t): React.element => {
             ~state,
             ~cm,
             errors,
-          );
+          )
         })
       | None => ()
       };
       None;
     },
     [|errorsFingerprint|],
+  );
+
+  /*
+      Needed in case the className visually hides / shows
+      a codemirror instance.
+   */
+  React.useEffect1(
+    () => {
+      switch (cmRef->React.Ref.current) {
+      | Some(cm) => cm->CM.refresh
+      | None => ()
+      };
+      None;
+    },
+    [|className|],
   );
 
   <div ?className ?style>

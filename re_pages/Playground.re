@@ -123,8 +123,28 @@ module Pane = {
   // tabClass: base class for bg color etc
   [@react.component]
   let make =
-      (~disabled=false, ~tabs: array(tab), ~makeTabClass=defaultMakeTabClass) => {
-    let (current, setCurrent) = React.useState(_ => 0);
+      (
+        ~disabled=false,
+        ~tabs: array(tab),
+        ~makeTabClass=defaultMakeTabClass,
+        ~selected=0,
+      ) => {
+    let (current, setCurrent) =
+      React.useState(_ =>
+        if (selected < 0 || selected >= Js.Array.length(tabs)) {
+          0;
+        } else {
+          selected;
+        }
+      );
+
+    React.useEffect1(
+      () => {
+        setCurrent(_ => selected);
+        None;
+      },
+      [|selected|],
+    );
 
     let headers =
       Belt.Array.mapWithIndex(
@@ -157,6 +177,16 @@ module Pane = {
       | None => React.null
       };
 
+    let body =
+      Belt.Array.mapWithIndex(
+        tabs,
+        (i, tab) => {
+          let className = current === i ? "block" : "hidden";
+
+          <div key={Belt.Int.toString(i)} className> {tab.content} </div>;
+        },
+      );
+
     <div>
       <div>
         <div
@@ -165,7 +195,7 @@ module Pane = {
           }>
           headers->ate
         </div>
-        <div> body </div>
+        <div> body->ate </div>
       </div>
     </div>;
   };
@@ -180,7 +210,80 @@ module SingleTabPane = {
   };
 };
 
-module ErrorPane = {
+module StatusPane = {
+  let renderTitle = result => {
+    let errClass = "text-fire";
+    let warnClass = "text-code-5";
+    let okClass = "text-dark-code-3";
+
+    let (className, text) =
+      switch (result) {
+      | FinalResult.Comp(Fail(result)) =>
+        switch (result) {
+        | SyntaxErr(_) => (errClass, "Syntax Errors")
+        | TypecheckErr(_) => (errClass, "Type Errors")
+        | WarningErr(_) => (warnClass, "Warning Errors")
+        | WarningFlagErr(_) => (errClass, "Config Error")
+        | OtherErr(_) => (errClass, "Errors")
+        }
+      | Conv(Fail(_)) => (errClass, "Syntax Errors")
+      | Comp(Success({warnings})) =>
+        if (Belt.Array.length(warnings) === 0) {
+          (okClass, "Compilation Successful");
+        } else {
+          (warnClass, "Success with Warnings");
+        }
+      | Conv(Success(_)) => (okClass, "Format Successful")
+      | Comp(UnexpectedError(_))
+      | Conv(UnexpectedError(_)) => (errClass, "Unexpected Error")
+      | Comp(Unknown(_))
+      | Conv(Unknown(_)) => (errClass, "Unknown Result")
+      | Nothing => (okClass, "Ready")
+      };
+
+    <span className> text->s </span>;
+  };
+
+  [@react.component]
+  let make =
+      (
+        ~actionIndicatorKey: string,
+        ~targetLang: Api.Lang.t,
+        ~result: FinalResult.t,
+      ) => {
+    let activityIndicatorColor =
+      switch (result) {
+      | FinalResult.Comp(Fail(_))
+      | Conv(Fail(_))
+      | Comp(UnexpectedError(_))
+      | Conv(UnexpectedError(_))
+      | Comp(Unknown(_))
+      | Conv(Unknown(_)) => "bg-fire-80"
+      | Conv(Success(_))
+      | Nothing => "bg-dark-code-3"
+      | Comp(Success({warnings})) =>
+        if (Array.length(warnings) === 0) {
+          "bg-dark-code-3";
+        } else {
+          "bg-code-5";
+        }
+      };
+
+    <div className="pt-4 bg-night-dark overflow-y-auto hide-scrollbar">
+      <div className="flex items-center text-16 font-medium px-4">
+        <div className="pr-4"> {renderTitle(result)} </div>
+        <div
+          key=actionIndicatorKey
+          className={
+            "animate-pulse block h-1 w-1 rounded-full "
+            ++ activityIndicatorColor
+          }
+        />
+      </div>
+    </div>;
+  };
+};
+module ResultPane = {
   module PreWrap = {
     [@react.component]
     let make = (~className="", ~children) => {
@@ -293,27 +396,31 @@ module ErrorPane = {
       | OtherErr(locMsgs)
       | SyntaxErr(locMsgs) =>
         filterHighlightedLocMsgs(~focusedRowCol, locMsgs)
-        ->Belt.Array.map(locMsg => {
-            compactErrorLine(
-              ~highlight=isHighlighted(~focusedRowCol?, locMsg),
-              ~prefix=`E,
-              locMsg,
-            )
+        ->Belt.Array.mapWithIndex((i, locMsg) => {
+            <div key={Belt.Int.toString(i)}>
+              {compactErrorLine(
+                 ~highlight=isHighlighted(~focusedRowCol?, locMsg),
+                 ~prefix=`E,
+                 locMsg,
+               )}
+            </div>
           })
         ->ate
       | WarningErr(warnings) =>
         filterHighlightedLocWarnings(~focusedRowCol, warnings)
-        ->Belt.Array.map(warning => {
+        ->Belt.Array.mapWithIndex((i, warning) => {
             let (prefix, details) =
               switch (warning) {
               | Api.Warning.Warn({details}) => (`W, details)
               | WarnErr({details}) => (`E, details)
               };
-            compactErrorLine(
-              ~highlight=isHighlighted(~focusedRowCol?, details),
-              ~prefix,
-              details,
-            );
+            <div key={Belt.Int.toString(i)}>
+              {compactErrorLine(
+                 ~highlight=isHighlighted(~focusedRowCol?, details),
+                 ~prefix,
+                 details,
+               )}
+            </div>;
           })
         ->ate
       | WarningFlagErr({msg}) =>
@@ -327,17 +434,19 @@ module ErrorPane = {
         <PreWrap> "0 Errors, 0 Warnings"->s </PreWrap>;
       } else {
         filterHighlightedLocWarnings(~focusedRowCol, warnings)
-        ->Belt.Array.map(warning => {
+        ->Belt.Array.mapWithIndex((i, warning) => {
             let (prefix, details) =
               switch (warning) {
               | Api.Warning.Warn({details}) => (`W, details)
               | WarnErr({details}) => (`E, details)
               };
-            compactErrorLine(
-              ~highlight=isHighlighted(~focusedRowCol?, details),
-              ~prefix,
-              details,
-            );
+            <div key={Belt.Int.toString(i)}>
+              {compactErrorLine(
+                 ~highlight=isHighlighted(~focusedRowCol?, details),
+                 ~prefix,
+                 details,
+               )}
+            </div>;
           })
         ->ate;
       }
@@ -353,12 +462,14 @@ module ErrorPane = {
     | Conv(Fail({fromLang, toLang, details})) =>
       let errs =
         filterHighlightedLocMsgs(~focusedRowCol, details)
-        ->Belt.Array.map(locMsg => {
-            compactErrorLine(
-              ~highlight=isHighlighted(~focusedRowCol?, locMsg),
-              ~prefix=`E,
-              locMsg,
-            )
+        ->Belt.Array.mapWithIndex((i, locMsg) => {
+            <div key={Belt.Int.toString(i)}>
+              {compactErrorLine(
+                 ~highlight=isHighlighted(~focusedRowCol?, locMsg),
+                 ~prefix=`E,
+                 locMsg,
+               )}
+            </div>
           })
         ->ate;
 
@@ -367,7 +478,7 @@ module ErrorPane = {
       let msg =
         if (fromLang === toLang) {
           let langStr = Api.Lang.toString(toLang);
-          {j|The code above is no valid $langStr syntax.|j};
+          {j|The code is not valid $langStr syntax.|j};
         } else {
           let fromStr = Api.Lang.toString(fromLang);
           let toStr = Api.Lang.toString(toLang);
@@ -472,13 +583,7 @@ module ErrorPane = {
         }
       };
 
-    <div
-      className="pt-4 bg-night-dark overflow-y-auto hide-scrollbar"
-      style={ReactDOMRe.Style.make(
-        ~minHeight="20rem",
-        ~maxHeight="20rem",
-        (),
-      )}>
+    <div className="pt-4 bg-night-dark overflow-y-auto hide-scrollbar">
       <div className="flex items-center text-16 font-medium px-4">
         <div className="pr-4"> {renderTitle(result)} </div>
         <div
@@ -1281,47 +1386,115 @@ module ControlPanel = {
 
 let locMsgToCmError =
     (~kind: CodeMirrorBase.Error.kind, locMsg: Api.LocMsg.t)
-    : CodeMirrorBase.Error.t => {
+    : CodeMirror2.Error.t => {
   let {Api.LocMsg.row, column, endColumn, endRow, shortMsg} = locMsg;
-  {CodeMirrorBase.Error.row, column, endColumn, endRow, text: shortMsg, kind};
+  {CodeMirror2.Error.row, column, endColumn, endRow, text: shortMsg, kind};
 };
 
 module OutputPanel = {
-  type output =
-    | JS(string);
+  let codeFromResult = (result: FinalResult.t): string => {
+    Api.(
+      switch (result) {
+      | FinalResult.Comp(comp) =>
+        switch (comp) {
+        | CompilationResult.Success({js_code}) => js_code
+        | UnexpectedError(_)
+        | Unknown(_, _)
+        | Fail(_) => "/* No JS code generated */"
+        }
+      | Nothing
+      | Conv(_) => "/* No JS code generated */"
+      }
+    );
+  };
 
   [@react.component]
   let make =
       (
-        ~output: output,
         ~actionIndicatorKey,
         ~compilerDispatch,
         ~compilerState: CompilerManagerHook.state,
       ) => {
-    let (title, mode, value) =
-      switch (output) {
-      | JS(code) => ("JavaScript", "javascript", code)
+    /*
+       We need the prevState to understand different
+       state transitions, and to be able to keep displaying
+       old results until those transitions are done.
+
+       Goal was to reduce the UI flickering during different
+       state transitions
+     */
+    let prevState = React.useRef(None);
+
+    let cmCode =
+      switch (React.Ref.current(prevState)) {
+      | Some(prev) =>
+        switch (prev, compilerState) {
+        | (_, Ready({result: Nothing})) => None
+        | (Ready(prevReady), Ready(ready)) =>
+          switch (prevReady.result, ready.result) {
+          | (_, Comp(Success(_))) => codeFromResult(ready.result)->Some
+          | _ => None
+          }
+        | (_, Ready({result: Comp(Success(_)) as result})) =>
+          codeFromResult(result)->Some
+        | (Ready({result: Comp(Success(_)) as result}), Compiling(_, _)) =>
+          codeFromResult(result)->Some
+        | _ => None
+        }
+      | None =>
+        switch (compilerState) {
+        | Ready(ready) => codeFromResult(ready.result)->Some
+        | _ => None
+        }
       };
+
+    React.Ref.setCurrent(prevState, Some(compilerState));
+
+    let resultPane =
+      switch (compilerState) {
+      | Compiling(ready, _)
+      | Ready(ready) =>
+        switch (ready.result) {
+        | Comp(Success(_))
+        | Conv(Success(_)) => React.null
+        | _ =>
+          <ResultPane
+            actionIndicatorKey
+            targetLang={ready.targetLang}
+            compilerVersion={ready.selected.compilerVersion}
+            result={ready.result}
+          />
+        }
+
+      | _ => React.null
+      };
+
+    let (code, showCm) =
+      switch (cmCode) {
+      | None => ("", false)
+      | Some(code) => (code, true)
+      };
+
+    let codeElement =
+      <pre
+        style={ReactDOMRe.Style.make(~maxHeight="calc(100vh - 9rem)", ())}
+        className={"overflow-y-auto p-4 " ++ (showCm ? "block" : "hidden")}>
+        {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="js", ())}
+      </pre>;
 
     let output =
       <div className="w-full bg-night-dark text-snow-darker">
-        <CodeMirror
-          className="w-full"
-          minHeight="calc(100vh - 17.5rem)"
-          maxHeight="calc(100vh - 17.5rem)"
-          mode
-          lineWrapping=true
-          value
-          readOnly=true
-        />
+        resultPane
+        codeElement
       </div>;
+    /*resultPane*/
 
     let errorPane =
       switch (compilerState) {
-      | Ready(ready)
       | Compiling(ready, _)
+      | Ready(ready)
       | SwitchingCompiler(ready, _, _) =>
-        <ErrorPane
+        <ResultPane
           actionIndicatorKey
           targetLang={ready.targetLang}
           compilerVersion={ready.selected.compilerVersion}
@@ -1345,8 +1518,24 @@ module OutputPanel = {
       | Init => <div> "Initalizing Playground..."->s </div>
       };
 
+    let prevSelected = React.useRef(0);
+
+    let selected =
+      switch (compilerState) {
+      | Compiling(_, _) => React.Ref.current(prevSelected)
+      | Ready(ready) =>
+        switch (ready.result) {
+        | Comp(Success(_))
+        | Conv(Success(_)) => 0
+        | _ => 1
+        }
+      | _ => 0
+      };
+
+    React.Ref.setCurrent(prevSelected, selected);
+
     let tabs = [|
-      {Pane.title, content: output},
+      {Pane.title: "JavaScript", content: output},
       {
         title: "Errors",
         content:
@@ -1371,7 +1560,7 @@ module OutputPanel = {
       "flex items-center h-12 px-4 pr-16 " ++ activeClass;
     };
 
-    <div className="h-full"> <Pane tabs makeTabClass /> </div>;
+    <div className="h-full bg-night-dark"> <Pane tabs makeTabClass /> </div>;
   };
 };
 
@@ -1413,45 +1602,45 @@ module Button = {
 
     <button> {msg->React.string} </button>
   }
+}
+
+module Button2 = {
+  @react.component
+  let make = (~count: int) => {
+    let times = switch count {
+    | 1 => "once"
+    | 2 => "twice"
+    | n => Belt.Int.toString(n) ++ " times"
+    }
+    let msg = "Click me " ++ times
+
+    <button> {msg->React.string} </button>
+  }
+}
+
+module Button3 = {
+  @react.component
+  let make = (~count: int) => {
+    let times = switch count {
+    | 1 => "once"
+    | 2 => "twice"
+    | n => Belt.Int.toString(n) ++ " times"
+    }
+    let msg = "Click me " ++ times
+
+    <button> {msg->React.string} </button>
+  }
 }|j};
-
-  let jsOutput =
-    Api.(
-      switch (compilerState) {
-      | Init => "/* Initializing Playground... */"
-      | Ready({result: FinalResult.Comp(comp)}) =>
-        switch (comp) {
-        | CompilationResult.Success({js_code}) => js_code
-        | UnexpectedError(msg)
-        | Unknown(msg, _) => {j|/* Unexpected Result: $msg */|j}
-        | Fail(_) => "/* Could not compile, check the error pane for details. */"
-        }
-      | Ready({result: Nothing})
-      | Ready({result: Conv(_)}) => "/* Compiler ready! Press the \"Compile\" button to see the JS output. */"
-      | Compiling(_, _) => "/* Compiling... */"
-      | SwitchingCompiler(_, version, libraries) =>
-        let appendix =
-          if (Js.Array.length(libraries) > 0) {
-            " (+" ++ Js.Array2.joinWith(libraries, ", ") ++ ")";
-          } else {
-            "";
-          };
-        "/* Switching to " ++ version ++ appendix ++ " ... */";
-      | _ => ""
-      }
-    );
-
-  let isReady =
-    switch (compilerState) {
-    | Ready(_) => true
-    | _ => false
-    };
 
   let editorCode = React.useRef(initialContent);
 
   /* In case the compiler did some kind of syntax conversion / reformatting,
      we take any success results and set the editor code to the new formatted code */
   switch (compilerState) {
+  | Ready({result: FinalResult.Nothing} as ready) =>
+    compilerDispatch(
+      CompileCode(ready.targetLang, React.Ref.current(editorCode)),
+    )
   | Ready({result: FinalResult.Conv(Api.ConversionResult.Success({code}))}) =>
     React.Ref.setCurrent(editorCode, code)
   | _ => ()
@@ -1623,9 +1812,9 @@ module Button = {
       title="ReScript Playground"
       description="Try ReScript in the browser"
     />
-    <div className="text-16 mt-16 pt-2 bg-night-dark">
+    <div className="text-16 pt-2 bg-night-dark">
       <div className="text-night text-14">
-        <Navigation overlayState />
+        <Navigation fixed=false overlayState />
         /* MOBILE PLACEHOLDER */
         <div className="block lg:hidden h-screen text-snow-darker text-center">
           <div className="font-bold mb-4">
@@ -1639,80 +1828,80 @@ module Button = {
         /* DESKTOP */
         <main
           className="hidden lg:block mt-4 bg-onyx overflow-y-hidden h-screen"
-          style={ReactDOMRe.Style.make(~maxHeight="calc(100vh - 8rem)", ())}>
-          <div className="flex justify-center">
-            <div className="w-full flex border-t-4 border-night">
-              <div
-                className="w-full border-r-4 border-b-0 border-night"
-                style={ReactDOMRe.Style.make(~maxWidth="65%", ())}>
-                <div className="bg-onyx text-snow-darker">
-                  <CodeMirror
-                    className="w-full hide-scrollbar"
-                    minHeight="calc(100vh - 15rem)"
-                    maxHeight="calc(100vh - 15rem)"
-                    mode="reason"
-                    errors=cmErrors
-                    value={React.Ref.current(editorCode)}
-                    onChange={value => {
-                      React.Ref.setCurrent(editorCode, value);
+          style={ReactDOMRe.Style.make(~maxHeight="calc(100vh - 6rem)", ())}>
 
-                      switch (React.Ref.current(typingTimer)) {
-                      | None => ()
-                      | Some(timer) => Js.Global.clearTimeout(timer)
-                      };
-                      let timer =
-                        Js.Global.setTimeout(
-                          () => {
-                            (React.Ref.current(timeoutCompile))();
-                            React.Ref.setCurrent(typingTimer, None);
-                          },
-                          1000,
-                        );
-                      React.Ref.setCurrent(typingTimer, Some(timer));
-                    }}
-                    onMarkerFocus={rowCol => {
-                      setFocusedRowCol(prev => {Some(rowCol)})
-                    }}
-                    onMarkerFocusLeave={_ => {setFocusedRowCol(_ => None)}}
+            <div className="flex justify-center">
+              <div className="w-full flex border-t-4 border-night">
+                <div
+                  className="w-full border-r-4 border-b-0 pl-2 border-night"
+                  style={ReactDOMRe.Style.make(~maxWidth="65%", ())}>
+                  <div className="bg-onyx text-snow-darker">
+                    <CodeMirror2
+                      className="w-full pb-4 hide-scrollbar"
+                      minHeight="calc(100vh - 10rem)"
+                      maxHeight="calc(100vh - 10rem)"
+                      mode="reason"
+                      errors=cmErrors
+                      value={React.Ref.current(editorCode)}
+                      onChange={value => {
+                        React.Ref.setCurrent(editorCode, value);
+
+                        switch (React.Ref.current(typingTimer)) {
+                        | None => ()
+                        | Some(timer) => Js.Global.clearTimeout(timer)
+                        };
+                        let timer =
+                          Js.Global.setTimeout(
+                            () => {
+                              (React.Ref.current(timeoutCompile))();
+                              React.Ref.setCurrent(typingTimer, None);
+                            },
+                            400,
+                          );
+                        React.Ref.setCurrent(typingTimer, Some(timer));
+                      }}
+                      onMarkerFocus={rowCol => {
+                        setFocusedRowCol(prev => {Some(rowCol)})
+                      }}
+                      onMarkerFocusLeave={_ => {setFocusedRowCol(_ => None)}}
+                    />
+                  </div>
+                </div>
+                <div
+                  className="w-1/2"
+                  style={ReactDOMRe.Style.make(~maxWidth="56rem", ())}>
+                  <OutputPanel
+                    actionIndicatorKey={Belt.Int.toString(actionCount)}
+                    compilerDispatch
+                    compilerState
                   />
+                  {switch (compilerState) {
+                   | Ready(ready)
+                   | Compiling(ready, _)
+                   | SwitchingCompiler(ready, _, _) =>
+                     let disabled =
+                       switch (compilerState) {
+                       | SwitchingCompiler(_, _, _) => true
+                       | _ => false
+                       };
+                     let config = ready.selected.config;
+                     let setConfig = config => {
+                       compilerDispatch(UpdateConfig(config));
+                     };
+
+                     <div />;
+                   /*<MiscPanel*/
+                   /*disabled*/
+                   /*className="border-t-4 border-night"*/
+                   /*/>;*/
+                   | Init
+                   | SetupFailed(_) => React.null
+                   }}
                 </div>
               </div>
-              <div
-                className="w-1/2"
-                style={ReactDOMRe.Style.make(~maxWidth="56rem", ())}>
-                <OutputPanel
-                  actionIndicatorKey={Belt.Int.toString(actionCount)}
-                  compilerDispatch
-                  compilerState
-                  output={OutputPanel.JS(jsOutput)}
-                />
-                {switch (compilerState) {
-                 | Ready(ready)
-                 | Compiling(ready, _)
-                 | SwitchingCompiler(ready, _, _) =>
-                   let disabled =
-                     switch (compilerState) {
-                     | SwitchingCompiler(_, _, _) => true
-                     | _ => false
-                     };
-                   let config = ready.selected.config;
-                   let setConfig = config => {
-                     compilerDispatch(UpdateConfig(config));
-                   };
-
-                   <div />;
-                 /*<MiscPanel*/
-                 /*disabled*/
-                 /*className="border-t-4 border-night"*/
-                 /*/>;*/
-                 | Init
-                 | SetupFailed(_) => React.null
-                 }}
-              </div>
             </div>
-          </div>
-          <div className="fixed bottom-0 left-0 w-full"> controlPanel </div>
-        </main>
+          </main>
+          /*<div className="fixed bottom-0 left-0 w-full"> controlPanel </div>*/
       </div>
     </div>
   </>;

@@ -393,7 +393,7 @@ module MobileNav = {
 
 /* isOverlayOpen: if the mobile overlay is toggled open */
 [@react.component]
-let make = (~overlayState: (bool, (bool => bool) => unit)) => {
+let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
   let minWidth = "20rem";
   let router = Next.Router.useRouter();
 
@@ -471,11 +471,16 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
     [||],
   );
 
+  let fixedNav = fixed ? "fixed z-20 top-0" : "";
+
   <nav
     ref={ReactDOMRe.Ref.domRef(outerRef)}
     id="header"
     style={Style.make(~minWidth, ())}
-    className="fixed flex xs:justify-center z-20 top-0 w-full h-18 bg-night-dark shadow text-white-80 text-base">
+    className={
+      fixedNav
+      ++ " flex xs:justify-center w-full h-18 bg-night-dark shadow text-white-80 text-base"
+    }>
     <div
       className="flex justify-between mx-4 md:mx-8 items-center h-full w-full max-w-1280">
       <div className="h-8 w-8">
@@ -569,18 +574,6 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
         <div className="hidden sm:block ml-8"> <DocSearch /> </div>
       </div>
     </div>
-    /*<a*/
-    /*href="https://discord.gg/reasonml"*/
-    /*rel="noopener noreferrer"*/
-    /*target="_blank"*/
-    /*className=link*/
-    /*onMouseEnter=nonCollapsibleOnMouseEnter>*/
-    /*<Icon.Discord className="w-5 h-5" />*/
-    /*</a>*/
-    /*<button*/
-    /*className="hidden sm:flex sm:px-4 sm:items-center sm:justify-center sm:border-l sm:border-r sm:border-night sm:h-full">*/
-    /*<Icon.MagnifierGlass className="w-5 h-5 hover:text-white" />*/
-    /*</button>*/
     /* Burger Button */
     <button
       className="h-full px-4 xs:hidden flex items-center hover:text-white"

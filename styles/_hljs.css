@@ -32,10 +32,6 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
   color: #38B790; /* TODO: add to TW */
 }
 
-.sig .hljs-keyword {
-  @apply text-berry;
-}
-
 .hljs-number,
 .hljs-string,
 .hljs-doctag {
@@ -56,7 +52,6 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 
 .hljs-title {
   color: #458;
-  font-weight: bold;
 }
 
 .hljs-tag,
@@ -88,7 +83,6 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 
 .hljs-meta {
   color: #999;
-  font-weight: bold;
 }
 
 .hljs-deletion {
@@ -122,6 +116,36 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 
 .hljs-line-highlight {
   @apply w-full inline-block bg-berry-15;
+}
+
+/* DARK MODE COLORS */
+
+.hljs.dark .hljs-comment {
+  color: #546E7A;
+}
+
+.hljs.dark .hljs-number,
+.hljs.dark .hljs-string,
+.hljs.dark .hljs-doctag {
+  @apply text-dark-code-3;
+  /*@apply text-code-2;*/
+}
+
+.hljs.dark .hljs-keyword {
+  @apply text-berry;
+}
+
+.hljs.dark .hljs-built_in,
+.hljs.dark .hljs-builtin-name {
+  @apply text-dark-code-2;
+}
+
+.hljs.dark .hljs-title {
+  color: inherit;
+}
+
+.hljs.dark .hljs-params {
+  color: inherit;
 }
 
 /* purgecss end ignore */

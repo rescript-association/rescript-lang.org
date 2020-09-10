@@ -5,4 +5,8 @@ const Playground = dynamic(() => import("../re_pages/Playground.bs"), {
   //loading: () => <div> Loading... </div>
 });
 
-export default Playground;
+function Try() {
+  return <Playground />;
+}
+
+export default Try;
