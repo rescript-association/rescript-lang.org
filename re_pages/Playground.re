@@ -1385,7 +1385,7 @@ module ControlPanel = {
 };
 
 let locMsgToCmError =
-    (~kind: CodeMirrorBase.Error.kind, locMsg: Api.LocMsg.t)
+    (~kind: CodeMirror2.Error.kind, locMsg: Api.LocMsg.t)
     : CodeMirror2.Error.t => {
   let {Api.LocMsg.row, column, endColumn, endRow, shortMsg} = locMsg;
   {CodeMirror2.Error.row, column, endColumn, endRow, text: shortMsg, kind};
