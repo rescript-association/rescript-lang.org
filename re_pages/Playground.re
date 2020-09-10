@@ -1856,7 +1856,7 @@ module Button3 = {
                               (React.Ref.current(timeoutCompile))();
                               React.Ref.setCurrent(typingTimer, None);
                             },
-                            400,
+                            100,
                           );
                         React.Ref.setCurrent(typingTimer, Some(timer));
                       }}
