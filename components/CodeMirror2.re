@@ -20,6 +20,47 @@ if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
 }
 |};
 
+let useWindowWidth: unit => option(int) = [%raw
+  {j| () => {
+  const isClient = typeof window === 'object';
+
+  function getSize() {
+    return {
+      width: isClient ? window.innerWidth : undefined,
+      height: isClient ? window.innerHeight : undefined
+    };
+  }
+
+  const [windowSize, setWindowSize] = React.useState(getSize);
+
+  let throttled = false;
+  React.useEffect(() => {
+    if (!isClient) {
+      return false;
+    }
+
+    function handleResize() {
+      if(!throttled) {
+        console.log("called resize");
+        setWindowSize(getSize());
+
+        throttled = true;
+        setTimeout(() => { throttled = false }, 300);
+      }
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []); // Empty array ensures that effect is only run on mount and unmount
+
+  if(windowSize) {
+    return windowSize.width;
+  }
+  return null;
+  }
+  |j}
+];
+
 /* The module for interacting with the imperative CodeMirror API */
 module CM = {
   type t;
@@ -207,10 +248,11 @@ module GutterMarker = {
   };
 };
 
-type state = {marked: array(CM.TextMarker.t)};
+type state = {mutable marked: array(CM.TextMarker.t)};
 
 let clearMarks = (state: state): unit => {
   Belt.Array.forEach(state.marked, mark => {mark->CM.TextMarker.clear});
+  state.marked = [||];
 };
 
 let extractRowColFromId = (id: string): option((int, int)) => {
@@ -360,6 +402,8 @@ let make =
   let cmRef: React.Ref.t(option(CM.t)) = React.useRef(None);
   let cmStateRef = React.useRef({marked: [||]});
 
+  let windowWidth = useWindowWidth();
+
   React.useEffect0(() => {
     switch (inputElement->React.Ref.current->Js.Nullable.toOption) {
     | Some(input) =>
@@ -397,7 +441,7 @@ let make =
       React.Ref.setCurrent(cmRef, Some(cm));
 
       let cleanup = () => {
-        Js.log2("cleanup", options->CM.Options.mode);
+        /*Js.log2("cleanup", options->CM.Options.mode);*/
 
         // This will destroy the CM instance
         cm->CM.toTextArea;
@@ -482,9 +526,9 @@ let make =
 
   /*
       Needed in case the className visually hides / shows
-      a codemirror instance.
+      a codemirror instance, or the window has been resized.
    */
-  React.useEffect1(
+  React.useEffect2(
     () => {
       switch (cmRef->React.Ref.current) {
       | Some(cm) => cm->CM.refresh
@@ -492,7 +536,7 @@ let make =
       };
       None;
     },
-    [|className|],
+    (className, windowWidth),
   );
 
   <div ?className ?style>
