@@ -100,6 +100,7 @@ let jsInteropNavs = [|
     href: "/docs/manual/latest/bind-to-global-js-values",
   },
   {name: "JSON", href: "/docs/manual/latest/json"},
+  {name: "Inlining Constants", href: "/docs/manual/latest/inlining-constants"},
   {
     name: "Use Illegal Identifier Names",
     href: "/docs/manual/latest/use-illegal-identifier-names",
