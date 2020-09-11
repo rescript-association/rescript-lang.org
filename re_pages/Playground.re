@@ -25,7 +25,7 @@ module DropdownSelect = {
     let opacity = disabled ? " opacity-50" : "";
     <select
       className={
-        "border border-night-light inline-block rounded px-4 py-1 bg-gray-100 appearance-none font-semibold "
+        "text-14 bg-transparent border border-night-light inline-block rounded px-4 py-1 font-semibold"
         ++ opacity
       }
       name
@@ -1228,9 +1228,33 @@ module Settings = {
       setConfig(defaultConfig);
     };
 
+    let onCompilerSelect = id => {
+      dispatch(
+        SwitchToCompiler({id, libraries: readyState.selected.libraries}),
+      );
+    };
+
     let titleClass = "text-18 font-bold mb-2";
     <div className="p-4 pt-8 bg-night-dark text-snow-darker">
       <div>
+        <div className=titleClass> "ReScript Version"->s </div>
+        <DropdownSelect
+          name="compilerVersions"
+          value={readyState.selected.id}
+          onChange={evt => {
+            ReactEvent.Form.preventDefault(evt);
+            let id = evt->ReactEvent.Form.target##value;
+            onCompilerSelect(id);
+          }}>
+          {Belt.Array.map(readyState.versions, version => {
+             <option className="py-4" key=version value=version>
+               version->s
+             </option>
+           })
+           ->ate}
+        </DropdownSelect>
+      </div>
+      <div className="mt-6">
         <div className=titleClass> "Syntax"->s </div>
         <ToggleSelection
           values=availableTargetLangs
@@ -1291,6 +1315,8 @@ module ControlPanel = {
     let children =
       switch (state) {
       | Init => "Initializing..."->s
+      | SwitchingCompiler(_, _, _) =>
+        ("Switching Compiler...")->s
       | Compiling(_ready, _)
       | Ready(_ready) =>
         let onFormatClick = evt => {
@@ -1579,7 +1605,9 @@ module OutputPanel = {
       "flex items-center h-12 px-4 pr-16 " ++ activeClass;
     };
 
-    <div className="h-full bg-night-dark"> <Pane tabs makeTabClass /> </div>;
+    <div className="h-full bg-night-dark">
+      <Pane selected=2 tabs makeTabClass />
+    </div>;
   };
 };
 
@@ -1741,6 +1769,76 @@ module Button3 = {
       | Nothing => [||]
       }
     | _ => [||]
+    };
+
+  let controlPanel =
+    switch (compilerState) {
+    | Ready(ready)
+    | Compiling(ready, _)
+    | SwitchingCompiler(ready, _, _) =>
+      let availableTargetLangs =
+        Api.Version.availableLanguages(ready.selected.apiVersion);
+
+      let selectedTargetLang =
+        switch (ready.targetLang) {
+        | Res => (Api.Lang.Res, ready.selected.compilerVersion)
+        | Reason => (Reason, ready.selected.reasonVersion)
+        | OCaml => (OCaml, ready.selected.ocamlVersion)
+        };
+
+      let onCompilerSelect = id => {
+        compilerDispatch(
+          SwitchToCompiler({id, libraries: ready.selected.libraries}),
+        );
+      };
+
+      let onTargetLangSelect = lang => {
+        compilerDispatch(
+          SwitchLanguage({lang, code: React.Ref.current(editorCode)}),
+        );
+      };
+
+      let onCompileClick = () => {
+        compilerDispatch(
+          CompileCode(ready.targetLang, React.Ref.current(editorCode)),
+        );
+      };
+
+      // When a new compiler version was selected, it should
+      // be shown in the control panel as the currently selected
+      // version, even when it is currently loading
+      let compilerVersion =
+        switch (compilerState) {
+        | SwitchingCompiler(_, version, _) => version
+        | _ => ready.selected.id
+        };
+
+      let onFormatClick = () => {
+        compilerDispatch(Format(React.Ref.current(editorCode)));
+      };
+
+      let isCompilerSwitching =
+        switch (compilerState) {
+        | SwitchingCompiler(_, _, _) => true
+        | _ => false
+        };
+
+      <>
+        <ControlPanelOld
+          isCompilerSwitching
+          compilerVersion
+          availableTargetLangs
+          availableCompilerVersions={ready.versions}
+          selectedTargetLang
+          loadedLibraries={ready.selected.libraries}
+          onCompilerSelect
+          onTargetLangSelect
+          onCompileClick
+          onFormatClick
+        />
+      </>;
+    | Init => "Initializing"->s
+    | SetupFailed(msg) => <> {("Setup failed: " ++ msg)->s} </>
     };
 
   <>
