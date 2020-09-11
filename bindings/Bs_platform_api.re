@@ -320,7 +320,6 @@ module Config = {
   type t = {
     module_system: string,
     warn_flags: string,
-    warn_error_flags: string,
   };
 };
 
@@ -409,9 +408,6 @@ module Compiler = {
 
   [@bs.send] external setWarnFlags: (t, string) => bool = "setWarnFlags";
 
-  [@bs.send]
-  external setWarnErrorFlags: (t, string) => bool = "setWarnErrorFlags";
-
   let setConfig = (t: t, config: Config.t): unit => {
     let moduleSystem =
       switch (config.module_system) {
@@ -425,7 +421,6 @@ module Compiler = {
     );
 
     t->setWarnFlags(config.warn_flags)->ignore;
-    t->setWarnErrorFlags(config.warn_error_flags)->ignore;
   };
 
   [@bs.send]

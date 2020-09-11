@@ -280,7 +280,8 @@ let updateErrors =
       ~cm: CM.t,
       errors,
     ) => {
-  clearMarks(state);
+  Belt.Array.forEach(state.marked, mark => {mark->CM.TextMarker.clear});
+  state.marked = [||];
   cm->CM.(clearGutter(errorGutterId));
 
   let wrapper = cm->CM.getWrapperElement;
