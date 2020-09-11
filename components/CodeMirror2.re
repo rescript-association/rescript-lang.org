@@ -20,14 +20,14 @@ if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
 }
 |};
 
-let useWindowWidth: unit => option(int) = [%raw
+let useWindowWidth: unit => int = [%raw
   {j| () => {
   const isClient = typeof window === 'object';
 
   function getSize() {
     return {
-      width: isClient ? window.innerWidth : undefined,
-      height: isClient ? window.innerHeight : undefined
+      width: isClient ? window.innerWidth : 0,
+      height: isClient ? window.innerHeight : 0
     };
   }
 

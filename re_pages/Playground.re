@@ -25,7 +25,7 @@ module DropdownSelect = {
     let opacity = disabled ? " opacity-50" : "";
     <select
       className={
-        "border border-night-light inline-block rounded px-4 py-1 bg-onyx appearance-none font-semibold "
+        "border border-night-light inline-block rounded px-4 py-1 bg-gray-100 appearance-none font-semibold "
         ++ opacity
       }
       name
@@ -114,7 +114,7 @@ module Pane = {
   let defaultMakeTabClass = (active: bool): string => {
     let rest =
       active
-        ? "text-fire font-medium bg-onyx hover:cursor-default"
+        ? "text-fire font-medium bg-gray-100 hover:cursor-default"
         : "hover:cursor-pointer";
 
     "flex items-center h-12 px-4 pr-24 " ++ rest;
@@ -181,7 +181,7 @@ module Pane = {
       Belt.Array.mapWithIndex(
         tabs,
         (i, tab) => {
-          let className = current === i ? "block" : "hidden";
+          let className = current === i ? "block h-full" : "hidden";
 
           <div key={Belt.Int.toString(i)} className> {tab.content} </div>;
         },
@@ -435,7 +435,7 @@ module ResultPane = {
     | Comp(Success({warnings, time})) =>
       if (Array.length(warnings) === 0) {
         let ms = Belt.Float.toInt(time)->Belt.Int.toString ++ " ms";
-        <PreWrap> {("0 Errors, 0 Warnings, built in " ++ ms)->s} </PreWrap>;
+        <PreWrap> "0 Errors, 0 Warnings"->s </PreWrap>;
       } else {
         filterHighlightedLocWarnings(~focusedRowCol, warnings)
         ->Belt.Array.mapWithIndex((i, warning) => {
@@ -1081,7 +1081,7 @@ module MiscPanel = {
         Belt.Option.map(suggestions, elements => {
           <div
             ref={ReactDOMRe.Ref.domRef(listboxRef)}
-            className="p-2 absolute overflow-auto z-50 border-b rounded border-l border-r block w-full bg-onyx"
+            className="p-2 absolute overflow-auto z-50 border-b rounded border-l border-r block w-full bg-gray-100"
             style={ReactDOMRe.Style.make(~maxHeight="15rem", ())}>
             elements
           </div>
@@ -1300,7 +1300,7 @@ module ControlPanel = {
       | None => None
       };
 
-    <div className="flex bg-onyx text-night-light px-6 text-14 w-full">
+    <div className="flex bg-gray-100 text-night-light px-6 text-14 w-full">
       <div
         className="flex justify-between items-center border-t py-4 border-night-60 w-full">
         <div>
@@ -1468,10 +1468,10 @@ module OutputPanel = {
         style={ReactDOMRe.Style.make(~height="calc(100vh - 9rem)", ())}>
         resultPane
         codeElement
-        <div className="absolute bottom-0 w-full">
-          <Statusbar actionIndicatorKey state=compilerState />
-        </div>
       </div>;
+    /*<div className="absolute bottom-0 w-full">*/
+    /*<Statusbar actionIndicatorKey state=compilerState />*/
+    /*</div>*/
     /*resultPane*/
 
     let errorPane =
@@ -1559,6 +1559,8 @@ let default = () => {
   let (compilerState, compilerDispatch) = useCompilerManager(~onAction, ());
 
   let overlayState = React.useState(() => false);
+
+  let windowWidth = CodeMirror2.useWindowWidth();
 
   // The user can focus an error / warning on a specific line & column
   // which is stored in this ref and triggered by hover / click states
@@ -1781,91 +1783,89 @@ module Button3 = {
       title="ReScript Playground"
       description="Try ReScript in the browser"
     />
-    <div className="text-16 pt-2 bg-night-dark">
+    <Next.Head>
+      <style> {j|body { background-color: #010427; } |j}->s </style>
+    </Next.Head>
+    <div className="text-16 bg-gray-100">
       <div className="text-night text-14">
         <Navigation fixed=false overlayState />
-        /* MOBILE PLACEHOLDER */
-        <div className="block lg:hidden h-screen text-snow-darker text-center">
-          <div className="font-bold mb-4">
-            "Mobile Playground version not available yet."->s
-          </div>
-          <div>
-            "Please use a screen with at least 1024px width for the desktop version"
-            ->s
-          </div>
-        </div>
-        /* DESKTOP */
         <main
-          className="hidden lg:block mt-4 bg-onyx overflow-hidden h-screen"
-          style={ReactDOMRe.Style.make(~maxHeight="calc(100vh - 6rem)", ())}>
-          <div className="flex justify-center">
-            <div className="w-full flex border-t-4 border-night">
-              <div
-                className="w-full border-r-4 pl-2 border-night"
-                style={ReactDOMRe.Style.make(~maxWidth="65%", ())}>
-                <div className="bg-onyx text-snow-darker">
-                  <CodeMirror2
-                    className="w-full pb-4"
-                    minHeight="calc(100vh - 10.5rem)"
-                    maxHeight="calc(100vh - 10.5rem)"
-                    mode="reason"
-                    errors=cmErrors
-                    value={React.Ref.current(editorCode)}
-                    onChange={value => {
-                      React.Ref.setCurrent(editorCode, value);
+          className="bg-gray-100 lg:overflow-hidden lg:h-screen"
+          style={ReactDOMRe.Style.make(~maxHeight="calc(100vh - 4.5rem)", ())}>
+          <div
+            className="w-full h-full flex flex-col lg:flex-row border-t-4 border-night">
+            <div className="w-full lg:border-r-4 pl-2 border-night">
+              <div className="bg-gray-100 text-snow-darker">
+                <CodeMirror2
+                  className="w-full py-4"
+                  minHeight="calc(100vh - 6rem)"
+                  maxHeight="calc(100vh - 6rem)"
+                  mode="reason"
+                  errors=cmErrors
+                  value={React.Ref.current(editorCode)}
+                  onChange={value => {
+                    React.Ref.setCurrent(editorCode, value);
 
-                      switch (React.Ref.current(typingTimer)) {
-                      | None => ()
-                      | Some(timer) => Js.Global.clearTimeout(timer)
-                      };
-                      let timer =
-                        Js.Global.setTimeout(
-                          () => {
-                            (React.Ref.current(timeoutCompile))();
-                            React.Ref.setCurrent(typingTimer, None);
-                          },
-                          100,
-                        );
-                      React.Ref.setCurrent(typingTimer, Some(timer));
-                    }}
-                    onMarkerFocus={rowCol => {
-                      setFocusedRowCol(prev => {Some(rowCol)})
-                    }}
-                    onMarkerFocusLeave={_ => {setFocusedRowCol(_ => None)}}
-                  />
-                </div>
-              </div>
-              <div
-                className="w-1/2"
-                style={ReactDOMRe.Style.make(~maxWidth="56rem", ())}>
-                <OutputPanel
-                  actionIndicatorKey={Belt.Int.toString(actionCount)}
-                  compilerDispatch
-                  compilerState
+                    switch (React.Ref.current(typingTimer)) {
+                    | None => ()
+                    | Some(timer) => Js.Global.clearTimeout(timer)
+                    };
+                    let timer =
+                      Js.Global.setTimeout(
+                        () => {
+                          (React.Ref.current(timeoutCompile))();
+                          React.Ref.setCurrent(typingTimer, None);
+                        },
+                        100,
+                      );
+                    React.Ref.setCurrent(typingTimer, Some(timer));
+                  }}
+                  onMarkerFocus={rowCol => {
+                    setFocusedRowCol(prev => {Some(rowCol)})
+                  }}
+                  onMarkerFocusLeave={_ => {setFocusedRowCol(_ => None)}}
                 />
-                {switch (compilerState) {
-                 | Ready(ready)
-                 | Compiling(ready, _)
-                 | SwitchingCompiler(ready, _, _) =>
-                   let disabled =
-                     switch (compilerState) {
-                     | SwitchingCompiler(_, _, _) => true
-                     | _ => false
-                     };
-                   let config = ready.selected.config;
-                   let setConfig = config => {
-                     compilerDispatch(UpdateConfig(config));
-                   };
-
-                   <div />;
-                 /*<MiscPanel*/
-                 /*disabled*/
-                 /*className="border-t-4 border-night"*/
-                 /*/>;*/
-                 | Init
-                 | SetupFailed(_) => React.null
-                 }}
               </div>
+            </div>
+            <div
+              className="relative w-full overflow-x-hidden h-screen lg:h-auto lg:w-1/2"
+              style={ReactDOMRe.Style.make(
+                ~maxWidth=windowWidth > 1024 ? "56rem" : "100%",
+                (),
+              )}>
+              <OutputPanel
+                actionIndicatorKey={Belt.Int.toString(actionCount)}
+                compilerDispatch
+                compilerState
+              />
+              <div className="absolute bottom-0 w-full">
+                <Statusbar
+                  actionIndicatorKey={Belt.Int.toString(actionCount)}
+                  state=compilerState
+                />
+              </div>
+              {switch (compilerState) {
+               | Ready(ready)
+               | Compiling(ready, _)
+               | SwitchingCompiler(ready, _, _) =>
+                 let disabled =
+                   switch (compilerState) {
+                   | SwitchingCompiler(_, _, _) => true
+                   | _ => false
+                   };
+                 let config = ready.selected.config;
+                 let setConfig = config => {
+                   compilerDispatch(UpdateConfig(config));
+                 };
+
+                 <div />;
+               /*<MiscPanel*/
+               /*disabled*/
+               /*className="border-t-4 border-night"*/
+               /*/>;*/
+               | Init
+               | SetupFailed(_) => React.null
+               }}
             </div>
           </div>
         </main>

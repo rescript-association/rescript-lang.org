@@ -22,7 +22,7 @@
 
 .cm-s-material.CodeMirror {
   /*background-color: #263238;*/
-  @apply font-mono py-8;
+  @apply font-mono; /*py-8;*/
 }
 
 .cm-s-material .CodeMirror-gutters {
@@ -32,10 +32,9 @@
   color: inherit;
 }
 
-.CodeMirror pre.CodeMirror-line,
-.CodeMirror pre.CodeMirror-line-like {
-  @apply pl-8 pr-2;
-}
+/*.CodeMirror pre.CodeMirror-line,*/
+/*.CodeMirror pre.CodeMirror-line-like {*/
+/*}*/
 
 .cm-s-material .CodeMirror-guttermarker,
 .cm-s-material .CodeMirror-guttermarker-subtle,
