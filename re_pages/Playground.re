@@ -25,7 +25,7 @@ module DropdownSelect = {
     let opacity = disabled ? " opacity-50" : "";
     <select
       className={
-        "border border-night-light inline-block rounded px-4 py-1 bg-onyx appearance-none font-semibold "
+        "text-14 bg-transparent border border-night-light inline-block rounded px-4 py-1 font-semibold"
         ++ opacity
       }
       name
@@ -37,13 +37,14 @@ module DropdownSelect = {
   };
 };
 
-module LanguageToggle = {
+module ToggleSelection = {
   [@react.component]
   let make =
       (
-        ~onChange: Api.Lang.t => unit,
-        ~values: array(Api.Lang.t),
-        ~selected: Api.Lang.t,
+        ~onChange: 'a => unit,
+        ~values: array('a),
+        ~toLabel: 'a => string,
+        ~selected: 'a,
         ~disabled=false,
       ) => {
     // We make sure that there's at least one element in the array
@@ -64,43 +65,41 @@ module LanguageToggle = {
     let elements =
       Belt.Array.mapWithIndex(
         values,
-        (i, lang) => {
-          let active = i === selectedIndex ? "text-fire" : "";
-          let ext = Api.Lang.toExt(lang)->Js.String2.toUpperCase;
+        (i, value) => {
+          let active =
+            i === selectedIndex
+              ? "bg-fire text-white font-bold" : "bg-gray-80 opacity-50";
+          let label = toLabel(value);
 
-          <span key=ext className={"mr-1 last:mr-0 " ++ active}>
-            ext->s
-          </span>;
+          let onMouseDown = evt => {
+            ReactEvent.Mouse.preventDefault(evt);
+            ReactEvent.Mouse.stopPropagation(evt);
+
+            if (i !== selectedIndex) {
+              switch (Belt.Array.get(values, i)) {
+              | Some(value) => onChange(value)
+              | None => ()
+              };
+            };
+          };
+
+          // Required for iOS Safari 12
+          let onClick = _ => ();
+
+          <button
+            disabled
+            onMouseDown
+            onClick
+            key=label
+            className={"mr-1 px-2 py-1 rounded inline-block  " ++ active}>
+            label->s
+          </button>;
         },
       );
 
-    let onMouseDown = evt => {
-      ReactEvent.Mouse.preventDefault(evt);
-      ReactEvent.Mouse.stopPropagation(evt);
-
-      // Rotate through the array
-      let nextIdx =
-        selectedIndex < Array.length(values) - 1 ? selectedIndex + 1 : 0;
-
-      switch (Belt.Array.get(values, nextIdx)) {
-      | Some(lang) => onChange(lang)
-      | None => ()
-      };
-    };
-
-    // Required for iOS Safari 12
-    let onClick = _ => ();
-
-    <button
-      className={
-        (disabled ? "opacity-25" : "")
-        ++ " border border-night-light inline-block rounded px-4 py-1 flex text-16"
-      }
-      disabled
-      onMouseDown
-      onClick>
+    <div className={(disabled ? "opacity-25" : "") ++ "flex w-full"}>
       elements->ate
-    </button>;
+    </div>;
   };
 };
 
@@ -114,17 +113,37 @@ module Pane = {
   let defaultMakeTabClass = (active: bool): string => {
     let rest =
       active
-        ? "text-fire font-medium bg-onyx hover:cursor-default"
+        ? "text-fire font-medium bg-gray-100 hover:cursor-default"
         : "hover:cursor-pointer";
 
-    "flex items-center text-16 h-12 px-4 pr-24 " ++ rest;
+    "flex items-center h-12 px-4 pr-24 " ++ rest;
   };
 
   // tabClass: base class for bg color etc
   [@react.component]
   let make =
-      (~disabled=false, ~tabs: array(tab), ~makeTabClass=defaultMakeTabClass) => {
-    let (current, setCurrent) = React.useState(_ => 0);
+      (
+        ~disabled=false,
+        ~tabs: array(tab),
+        ~makeTabClass=defaultMakeTabClass,
+        ~selected=0,
+      ) => {
+    let (current, setCurrent) =
+      React.useState(_ =>
+        if (selected < 0 || selected >= Js.Array.length(tabs)) {
+          0;
+        } else {
+          selected;
+        }
+      );
+
+    React.useEffect1(
+      () => {
+        setCurrent(_ => selected);
+        None;
+      },
+      [|selected|],
+    );
 
     let headers =
       Belt.Array.mapWithIndex(
@@ -157,6 +176,16 @@ module Pane = {
       | None => React.null
       };
 
+    let body =
+      Belt.Array.mapWithIndex(
+        tabs,
+        (i, tab) => {
+          let className = current === i ? "block h-full" : "hidden";
+
+          <div key={Belt.Int.toString(i)} className> {tab.content} </div>;
+        },
+      );
+
     <div>
       <div>
         <div
@@ -165,7 +194,7 @@ module Pane = {
           }>
           headers->ate
         </div>
-        <div> body </div>
+        <div> body->ate </div>
       </div>
     </div>;
   };
@@ -180,14 +209,83 @@ module SingleTabPane = {
   };
 };
 
-module ErrorPane = {
-  module ActionIndicator = {
-    [@react.component]
-    let make = () => {
-      <div className="animate-pulse"> "<!>"->s </div>;
-    };
+module Statusbar = {
+  let renderTitle = result => {
+    /*let errClass = "text-fire";*/
+    /*let warnClass = "text-code-5";*/
+    /*let okClass = "text-dark-code-3";*/
+    let errClass = "text-white-80";
+    let warnClass = "text-white-80";
+    let okClass = "text-white-80";
+
+    let (className, text) =
+      switch (result) {
+      | FinalResult.Comp(Fail(result)) =>
+        switch (result) {
+        | SyntaxErr(_) => (errClass, "Syntax Errors")
+        | TypecheckErr(_) => (errClass, "Type Errors")
+        | WarningErr(_) => (warnClass, "Warning Errors")
+        | WarningFlagErr(_) => (errClass, "Config Error")
+        | OtherErr(_) => (errClass, "Errors")
+        }
+      | Conv(Fail(_)) => (errClass, "Syntax Errors")
+      | Comp(Success({warnings, time})) =>
+        let ms = Belt.Float.toInt(time)->Belt.Int.toString ++ " ms";
+        if (Belt.Array.length(warnings) === 0) {
+          (okClass, "Compiled in " ++ ms);
+        } else {
+          (warnClass, "Compiled with Warnings in " ++ ms);
+        };
+      | Conv(Success(_)) => (okClass, "Format Successful")
+      | Comp(UnexpectedError(_))
+      | Conv(UnexpectedError(_)) => (errClass, "Unexpected Error")
+      | Comp(Unknown(_))
+      | Conv(Unknown(_)) => (errClass, "Unknown Result")
+      | Nothing => (okClass, "Ready")
+      };
+
+    <span className> text->s </span>;
   };
 
+  [@react.component]
+  let make = (~actionIndicatorKey: string, ~state: CompilerManagerHook.state) => {
+    switch (state) {
+    | Compiling(ready, _)
+    | Ready(ready) =>
+      let {result} = ready;
+      let activityIndicatorColor =
+        switch (result) {
+        | FinalResult.Comp(Fail(_))
+        | Conv(Fail(_))
+        | Comp(UnexpectedError(_))
+        | Conv(UnexpectedError(_))
+        | Comp(Unknown(_))
+        | Conv(Unknown(_)) => "bg-fire-80"
+        | Conv(Success(_))
+        | Nothing => "bg-dark-code-3"
+        | Comp(Success({warnings})) =>
+          if (Array.length(warnings) === 0) {
+            "bg-dark-code-3";
+          } else {
+            "bg-code-5";
+          }
+        };
+
+      <div
+        className={
+          "py-2 pb-3 flex items-center text-white " ++ activityIndicatorColor
+        }>
+        <div className="flex items-center font-medium px-4">
+          <div key=actionIndicatorKey className="pr-4 animate-pulse">
+            {renderTitle(result)}
+          </div>
+        </div>
+      </div>;
+    | _ => React.null
+    };
+  };
+};
+module ResultPane = {
   module PreWrap = {
     [@react.component]
     let make = (~className="", ~children) => {
@@ -287,7 +385,6 @@ module ErrorPane = {
 
   let renderResult =
       (
-        ~compilerVersionGitCommit: option(string)=?,
         ~focusedRowCol: option((int, int)),
         ~targetLang: Api.Lang.t,
         ~compilerVersion: string,
@@ -301,27 +398,31 @@ module ErrorPane = {
       | OtherErr(locMsgs)
       | SyntaxErr(locMsgs) =>
         filterHighlightedLocMsgs(~focusedRowCol, locMsgs)
-        ->Belt.Array.map(locMsg => {
-            compactErrorLine(
-              ~highlight=isHighlighted(~focusedRowCol?, locMsg),
-              ~prefix=`E,
-              locMsg,
-            )
+        ->Belt.Array.mapWithIndex((i, locMsg) => {
+            <div key={Belt.Int.toString(i)}>
+              {compactErrorLine(
+                 ~highlight=isHighlighted(~focusedRowCol?, locMsg),
+                 ~prefix=`E,
+                 locMsg,
+               )}
+            </div>
           })
         ->ate
       | WarningErr(warnings) =>
         filterHighlightedLocWarnings(~focusedRowCol, warnings)
-        ->Belt.Array.map(warning => {
+        ->Belt.Array.mapWithIndex((i, warning) => {
             let (prefix, details) =
               switch (warning) {
               | Api.Warning.Warn({details}) => (`W, details)
               | WarnErr({details}) => (`E, details)
               };
-            compactErrorLine(
-              ~highlight=isHighlighted(~focusedRowCol?, details),
-              ~prefix,
-              details,
-            );
+            <div key={Belt.Int.toString(i)}>
+              {compactErrorLine(
+                 ~highlight=isHighlighted(~focusedRowCol?, details),
+                 ~prefix,
+                 details,
+               )}
+            </div>;
           })
         ->ate
       | WarningFlagErr({msg}) =>
@@ -330,22 +431,25 @@ module ErrorPane = {
           msg->s
         </div>
       }
-    | Comp(Success({warnings})) =>
+    | Comp(Success({warnings, time})) =>
       if (Array.length(warnings) === 0) {
+        let ms = Belt.Float.toInt(time)->Belt.Int.toString ++ " ms";
         <PreWrap> "0 Errors, 0 Warnings"->s </PreWrap>;
       } else {
         filterHighlightedLocWarnings(~focusedRowCol, warnings)
-        ->Belt.Array.map(warning => {
+        ->Belt.Array.mapWithIndex((i, warning) => {
             let (prefix, details) =
               switch (warning) {
               | Api.Warning.Warn({details}) => (`W, details)
               | WarnErr({details}) => (`E, details)
               };
-            compactErrorLine(
-              ~highlight=isHighlighted(~focusedRowCol?, details),
-              ~prefix,
-              details,
-            );
+            <div key={Belt.Int.toString(i)}>
+              {compactErrorLine(
+                 ~highlight=isHighlighted(~focusedRowCol?, details),
+                 ~prefix,
+                 details,
+               )}
+            </div>;
           })
         ->ate;
       }
@@ -361,12 +465,14 @@ module ErrorPane = {
     | Conv(Fail({fromLang, toLang, details})) =>
       let errs =
         filterHighlightedLocMsgs(~focusedRowCol, details)
-        ->Belt.Array.map(locMsg => {
-            compactErrorLine(
-              ~highlight=isHighlighted(~focusedRowCol?, locMsg),
-              ~prefix=`E,
-              locMsg,
-            )
+        ->Belt.Array.mapWithIndex((i, locMsg) => {
+            <div key={Belt.Int.toString(i)}>
+              {compactErrorLine(
+                 ~highlight=isHighlighted(~focusedRowCol?, locMsg),
+                 ~prefix=`E,
+                 locMsg,
+               )}
+            </div>
           })
         ->ate;
 
@@ -375,7 +481,7 @@ module ErrorPane = {
       let msg =
         if (fromLang === toLang) {
           let langStr = Api.Lang.toString(toLang);
-          {j|The code above is no valid $langStr syntax.|j};
+          {j|The code is not valid $langStr syntax.|j};
         } else {
           let fromStr = Api.Lang.toString(fromLang);
           let toStr = Api.Lang.toString(toLang);
@@ -413,13 +519,8 @@ module ErrorPane = {
       </div>;
     | Nothing =>
       let syntax = Api.Lang.toString(targetLang);
-      let fullVersion =
-        switch (compilerVersionGitCommit) {
-        | Some(gitCommit) => compilerVersion ++ " (" ++ gitCommit ++ ")"
-        | None => compilerVersion
-        };
       <PreWrap>
-        {j|This playground is now running on compiler version $fullVersion with $syntax syntax|j}
+        {j|This playground is now running on compiler version $compilerVersion with $syntax syntax|j}
         ->s
       </PreWrap>;
     };
@@ -441,12 +542,13 @@ module ErrorPane = {
         | OtherErr(_) => (errClass, "Errors")
         }
       | Conv(Fail(_)) => (errClass, "Syntax Errors")
-      | Comp(Success({warnings})) =>
+      | Comp(Success({warnings, time})) =>
+        let ms = Belt.Float.toInt(time)->Belt.Int.toString ++ " ms";
         if (Belt.Array.length(warnings) === 0) {
-          (okClass, "Compilation Successful");
+          (okClass, "Compiled in " ++ ms);
         } else {
-          (warnClass, "Success with Warnings");
-        }
+          (warnClass, "Compiled with Warnings in " ++ ms);
+        };
       | Conv(Success(_)) => (okClass, "Format Successful")
       | Comp(UnexpectedError(_))
       | Conv(UnexpectedError(_)) => (errClass, "Unexpected Error")
@@ -461,74 +563,25 @@ module ErrorPane = {
   [@react.component]
   let make =
       (
-        ~actionIndicatorKey: string,
         ~targetLang: Api.Lang.t,
         ~compilerVersion: string,
-        ~compilerVersionGitCommit: option(string)=?,
         ~focusedRowCol: option((int, int))=?,
         ~result: FinalResult.t,
       ) => {
-    let activityIndicatorColor =
-      switch (result) {
-      | FinalResult.Comp(Fail(_))
-      | Conv(Fail(_))
-      | Comp(UnexpectedError(_))
-      | Conv(UnexpectedError(_))
-      | Comp(Unknown(_))
-      | Conv(Unknown(_)) => "bg-fire-80"
-      | Conv(Success(_))
-      | Nothing => "bg-dark-code-3"
-      | Comp(Success({warnings})) =>
-        if (Array.length(warnings) === 0) {
-          "bg-dark-code-3";
-        } else {
-          "bg-code-5";
-        }
-      };
-
-    <div
-      className="pt-4 bg-night-dark overflow-y-auto hide-scrollbar"
-      style={ReactDOMRe.Style.make(
-        ~minHeight="20rem",
-        ~maxHeight="20rem",
-        (),
-      )}>
+    <div className="pt-4 bg-night-dark overflow-y-auto hide-scrollbar">
       <div className="flex items-center text-16 font-medium px-4">
         <div className="pr-4"> {renderTitle(result)} </div>
-        <div
-          key=actionIndicatorKey
-          className={
-            "animate-pulse block h-1 w-1 rounded-full "
-            ++ activityIndicatorColor
-          }
-        />
       </div>
       <div className="">
         <div className="bg-night-dark text-snow-darker px-4 py-4">
-          {renderResult(
-             ~compilerVersionGitCommit?,
-             ~focusedRowCol,
-             ~compilerVersion,
-             ~targetLang,
-             result,
-           )}
+          {renderResult(~focusedRowCol, ~compilerVersion, ~targetLang, result)}
         </div>
       </div>
     </div>;
   };
 };
 
-// For console, settings etc
-module MiscPanel = {
-  module Console = {
-    [@react.component]
-    let make = () => {
-      <div className="p-4 pt-8">
-        <AnsiPre> "> console not implemented yet (coming soon)" </AnsiPre>
-      </div>;
-    };
-  };
-
+module WarningFlagsWidget = {
   [@bs.set] external scrollTop: (Dom.element, int) => unit = "scrollTop";
   [@bs.send] external focus: Dom.element => unit = "focus";
   [@bs.send]
@@ -559,568 +612,586 @@ module MiscPanel = {
       };
     };
 
-  module WarningFlagsWidget = {
-    type suggestion =
-      | NoSuggestion
-      | FuzzySuggestions({
-          modifier: string, // tells if the user is currently inputting a + / -
-          // All tokens without the suggestion token (last one)
-          precedingTokens: array(WarningFlagDescription.Parser.token),
-          results: array((string, string)),
-          selected: int,
-        })
-      | ErrorSuggestion(string);
+  type suggestion =
+    | NoSuggestion
+    | FuzzySuggestions({
+        modifier: string, // tells if the user is currently inputting a + / -
+        // All tokens without the suggestion token (last one)
+        precedingTokens: array(WarningFlagDescription.Parser.token),
+        results: array((string, string)),
+        selected: int,
+      })
+    | ErrorSuggestion(string);
 
-    type state =
-      | HideSuggestion({input: string})
-      | ShowTokenHint({
-          lastState: state, // For restoring the previous state
-          token: WarningFlagDescription.Parser.token,
-        }) // hover target
-      | Typing({
-          suggestion,
-          input: string,
-        });
+  type state =
+    | HideSuggestion({input: string})
+    | ShowTokenHint({
+        lastState: state, // For restoring the previous state
+        token: WarningFlagDescription.Parser.token,
+      }) // hover target
+    | Typing({
+        suggestion,
+        input: string,
+      });
 
-    let hide = (prev: state) => {
-      switch (prev) {
-      | Typing({input})
-      | ShowTokenHint({lastState: Typing({input})}) =>
-        HideSuggestion({input: input})
-      | ShowTokenHint(_) => HideSuggestion({input: ""})
-      | HideSuggestion(_) => prev
-      };
+  let hide = (prev: state) => {
+    switch (prev) {
+    | Typing({input})
+    | ShowTokenHint({lastState: Typing({input})}) =>
+      HideSuggestion({input: input})
+    | ShowTokenHint(_) => HideSuggestion({input: ""})
+    | HideSuggestion(_) => prev
     };
+  };
 
-    let updateInput = (prev: state, input: string) => {
-      let suggestion =
-        switch (input) {
-        | "" => NoSuggestion
+  let updateInput = (prev: state, input: string) => {
+    let suggestion =
+      switch (input) {
+      | "" => NoSuggestion
+      | _ =>
+        // Case: +
+        let last = input->Js.String2.length - 1;
+        switch (input->Js.String2.get(last)) {
+        | "+" as modifier
+        | "-" as modifier =>
+          let results = WarningFlagDescription.lookupAll();
+
+          let partial = input->Js.String2.substring(~from=0, ~to_=last);
+
+          let precedingTokens =
+            switch (WarningFlagDescription.Parser.parse(partial)) {
+            | Ok(tokens) => tokens
+            | Error(_) => [||]
+            };
+
+          FuzzySuggestions({modifier, precedingTokens, results, selected: 0});
         | _ =>
-          // Case: +
-          let last = input->Js.String2.length - 1;
-          switch (input->Js.String2.get(last)) {
-          | "+" as modifier
-          | "-" as modifier =>
-            let results = WarningFlagDescription.lookupAll();
+          // Case: +1...
+          let results = WarningFlagDescription.Parser.parse(input);
+          switch (results) {
+          | Ok(tokens) =>
+            let last = Belt.Array.get(tokens, Belt.Array.length(tokens) - 1);
 
-            let partial = input->Js.String2.substring(~from=0, ~to_=last);
-
-            let precedingTokens =
-              switch (WarningFlagDescription.Parser.parse(partial)) {
-              | Ok(tokens) => tokens
-              | Error(_) => [||]
-              };
-
-            FuzzySuggestions({
-              modifier,
-              precedingTokens,
-              results,
-              selected: 0,
-            });
-          | _ =>
-            // Case: +1...
-            let results = WarningFlagDescription.Parser.parse(input);
-            switch (results) {
-            | Ok(tokens) =>
-              let last =
-                Belt.Array.get(tokens, Belt.Array.length(tokens) - 1);
-
-              switch (last) {
-              | Some(token) =>
-                let results = WarningFlagDescription.fuzzyLookup(token.flag);
-                if (Belt.Array.length(results) === 0) {
-                  ErrorSuggestion("No results");
-                } else {
-                  let precedingTokens =
-                    Belt.Array.slice(
-                      tokens,
-                      ~offset=0,
-                      ~len=Belt.Array.length(tokens) - 1,
-                    );
-                  let modifier = token.enabled ? "+" : "-";
-                  FuzzySuggestions({
-                    modifier,
-                    precedingTokens,
-                    results,
-                    selected: 0,
-                  });
-                };
-              | None => NoSuggestion
-              };
-            | Error(msg) =>
-              // In case the user started with a + / -
-              // show all available flags
-              switch (input) {
-              | "+" as modifier
-              | "-" as modifier =>
-                let results = WarningFlagDescription.lookupAll();
-
+            switch (last) {
+            | Some(token) =>
+              let results = WarningFlagDescription.fuzzyLookup(token.flag);
+              if (Belt.Array.length(results) === 0) {
+                ErrorSuggestion("No results");
+              } else {
+                let precedingTokens =
+                  Belt.Array.slice(
+                    tokens,
+                    ~offset=0,
+                    ~len=Belt.Array.length(tokens) - 1,
+                  );
+                let modifier = token.enabled ? "+" : "-";
                 FuzzySuggestions({
                   modifier,
-                  precedingTokens: [||],
+                  precedingTokens,
                   results,
                   selected: 0,
                 });
-              | _ => ErrorSuggestion(msg)
-              }
+              };
+            | None => NoSuggestion
             };
+          | Error(msg) =>
+            // In case the user started with a + / -
+            // show all available flags
+            switch (input) {
+            | "+" as modifier
+            | "-" as modifier =>
+              let results = WarningFlagDescription.lookupAll();
+
+              FuzzySuggestions({
+                modifier,
+                precedingTokens: [||],
+                results,
+                selected: 0,
+              });
+            | _ => ErrorSuggestion(msg)
+            }
           };
         };
-
-      switch (prev) {
-      | ShowTokenHint(_)
-      | Typing(_) => Typing({suggestion, input})
-      | HideSuggestion(_) => Typing({suggestion, input})
       };
+
+    switch (prev) {
+    | ShowTokenHint(_)
+    | Typing(_) => Typing({suggestion, input})
+    | HideSuggestion(_) => Typing({suggestion, input})
+    };
+  };
+
+  let selectPrevious = (prev: state) => {
+    switch (prev) {
+    | Typing(
+        {suggestion: FuzzySuggestions({selected, results} as suggestion)} as typing,
+      ) =>
+      let nextIdx =
+        if (selected > 0) {
+          selected - 1;
+        } else {
+          Belt.Array.length(results) - 1;
+        };
+      Typing({
+        ...typing,
+        suggestion: FuzzySuggestions({...suggestion, selected: nextIdx}),
+      });
+    | ShowTokenHint(_)
+    | Typing(_)
+    | HideSuggestion(_) => prev
+    };
+  };
+
+  let selectNext = (prev: state) => {
+    switch (prev) {
+    | Typing(
+        {suggestion: FuzzySuggestions({selected, results} as suggestion)} as typing,
+      ) =>
+      let nextIdx =
+        if (selected < Belt.Array.length(results) - 1) {
+          selected + 1;
+        } else {
+          0;
+        };
+      Typing({
+        ...typing,
+        suggestion: FuzzySuggestions({...suggestion, selected: nextIdx}),
+      });
+    | ShowTokenHint(_)
+    | Typing(_)
+    | HideSuggestion(_) => prev
+    };
+  };
+
+  [@react.component]
+  let make =
+      (
+        ~onUpdate: array(WarningFlagDescription.Parser.token) => unit,
+        ~flags: array(WarningFlagDescription.Parser.token),
+      ) => {
+    let (state, setState) = React.useState(_ => HideSuggestion({input: ""}));
+
+    // Used for the suggestion box list
+    let listboxRef = React.useRef(Js.Nullable.null);
+
+    // Used for the text input
+    let inputRef = React.useRef(Js.Nullable.null);
+
+    let focusInput = () => {
+      React.Ref.current(inputRef)
+      ->Js.Nullable.toOption
+      ->Belt.Option.forEach(el => el->focus);
     };
 
-    let selectPrevious = (prev: state) => {
-      switch (prev) {
-      | Typing(
-          {suggestion: FuzzySuggestions({selected, results} as suggestion)} as typing,
-        ) =>
-        let nextIdx =
-          if (selected > 0) {
-            selected - 1;
-          } else {
-            Belt.Array.length(results) - 1;
+    let blurInput = () => {
+      React.Ref.current(inputRef)
+      ->Js.Nullable.toOption
+      ->Belt.Option.forEach(el => el->blur);
+    };
+
+    let chips =
+      Belt.Array.mapWithIndex(
+        flags,
+        (i, token) => {
+          let {WarningFlagDescription.Parser.flag, enabled} = token;
+
+          let isActive =
+            switch (state) {
+            | ShowTokenHint({token}) => token.flag === flag
+            | _ => false
+            };
+
+          let full = (enabled ? "+" : "-") ++ flag;
+          let color =
+            switch (enabled, isActive) {
+            | (true, false) => "text-dark-code-3"
+            | (false, false) => "text-fire"
+            | (true, true) => "bg-night-light text-dark-code-3"
+            | (false, true) => "bg-night-light text-fire"
+            };
+
+          let hoverEnabled =
+            switch (state) {
+            | ShowTokenHint(_)
+            | Typing(_) => true
+            | HideSuggestion(_) => false
+            };
+
+          let (onMouseEnter, onMouseLeave) =
+            if (hoverEnabled) {
+              let enter = evt => {
+                ReactEvent.Mouse.preventDefault(evt);
+                ReactEvent.Mouse.stopPropagation(evt);
+
+                setState(prev => {ShowTokenHint({token, lastState: prev})});
+              };
+
+              let leave = evt => {
+                ReactEvent.Mouse.preventDefault(evt);
+                ReactEvent.Mouse.stopPropagation(evt);
+
+                setState(prev => {
+                  switch (prev) {
+                  | ShowTokenHint({lastState}) => lastState
+                  | _ => prev
+                  }
+                });
+              };
+              (Some(enter), Some(leave));
+            } else {
+              (None, None);
+            };
+
+          let onClick = evt => {
+            // Removes clicked token from the current flags
+            ReactEvent.Mouse.preventDefault(evt);
+
+            let remaining = Belt.Array.keep(flags, t => {t.flag !== flag});
+            onUpdate(remaining);
           };
-        Typing({
-          ...typing,
-          suggestion: FuzzySuggestions({...suggestion, selected: nextIdx}),
-        });
-      | ShowTokenHint(_)
-      | Typing(_)
-      | HideSuggestion(_) => prev
-      };
-    };
 
-    let selectNext = (prev: state) => {
-      switch (prev) {
-      | Typing(
-          {suggestion: FuzzySuggestions({selected, results} as suggestion)} as typing,
-        ) =>
-        let nextIdx =
-          if (selected < Belt.Array.length(results) - 1) {
-            selected + 1;
-          } else {
-            0;
+          <span
+            onClick
+            ?onMouseEnter
+            ?onMouseLeave
+            className={
+              color
+              ++ " hover:cursor-default text-16 inline-block border border-night-light rounded-full px-2 mr-1"
+            }
+            key={Belt.Int.toString(i) ++ flag}>
+            full->s
+          </span>;
+        },
+      )
+      ->ate;
+
+    let onKeyDown = evt => {
+      let key = ReactEvent.Keyboard.key(evt);
+      let ctrlKey = ReactEvent.Keyboard.ctrlKey(evt);
+
+      let caretPosition = ReactEvent.Keyboard.target(evt)##selectionStart;
+      /*Js.log2("caretPosition", caretPosition);*/
+
+      let full = (ctrlKey ? "CTRL+" : "") ++ key;
+      switch (full) {
+      | "Enter" =>
+        switch (state) {
+        | Typing({
+            suggestion:
+              FuzzySuggestions({
+                precedingTokens,
+                modifier,
+                selected,
+                results,
+              }),
+          }) =>
+          // In case a selection was made correctly, add
+          // the flag to the current flags
+          switch (Belt.Array.get(results, selected)) {
+          | Some((num, _)) =>
+            let token = {
+              WarningFlagDescription.Parser.enabled: modifier === "+",
+              flag: num,
+            };
+
+            // TODO: merge tokens with flags
+            let newTokens = Belt.Array.concat(precedingTokens, [|token|]);
+
+            let all = WarningFlagDescription.Parser.merge(flags, newTokens);
+
+            onUpdate(all);
+            setState(prev => updateInput(prev, ""));
+          | None => ()
+          }
+        | _ => ()
+        };
+        ReactEvent.Keyboard.preventDefault(evt);
+      | "Escape" => blurInput()
+      | "Tab" =>
+        switch (state) {
+        | Typing({
+            suggestion:
+              FuzzySuggestions({
+                modifier,
+                precedingTokens,
+                selected,
+                results,
+              }),
+          }) =>
+          switch (Belt.Array.get(results, selected)) {
+          | Some((num, _)) =>
+            let flag = modifier ++ num;
+
+            let completed =
+              WarningFlagDescription.Parser.tokensToString(precedingTokens)
+              ++ flag;
+            setState(prev => updateInput(prev, completed));
+          | None => ()
           };
-        Typing({
-          ...typing,
-          suggestion: FuzzySuggestions({...suggestion, selected: nextIdx}),
-        });
-      | ShowTokenHint(_)
-      | Typing(_)
-      | HideSuggestion(_) => prev
+          // Prevents tab to change focus
+          ReactEvent.Keyboard.preventDefault(evt);
+        | _ => ()
+        }
+      | "ArrowDown"
+      | "CTRL+n" =>
+        setState(prev => selectNext(prev));
+        ReactEvent.Keyboard.preventDefault(evt);
+      | "ArrowUp"
+      | "CTRL+p" =>
+        setState(prev => selectPrevious(prev));
+        ReactEvent.Keyboard.preventDefault(evt);
+      | "ArrowRight"
+      | "ArrowLeft" => ()
+      | full =>
+        switch (state) {
+        | Typing({suggestion: ErrorSuggestion(_)}) =>
+          if (full !== "Backspace") {
+            ReactEvent.Keyboard.preventDefault(evt);
+          }
+        | _ => Js.log(full)
+        }
       };
     };
 
-    [@react.component]
-    let make =
-        (
-          ~onUpdate: array(WarningFlagDescription.Parser.token) => unit,
-          ~flags: array(WarningFlagDescription.Parser.token),
-        ) => {
-      let (state, setState) =
-        React.useState(_ => HideSuggestion({input: ""}));
-
-      // Used for the suggestion box list
-      let listboxRef = React.useRef(Js.Nullable.null);
-
-      // Used for the text input
-      let inputRef = React.useRef(Js.Nullable.null);
-
-      let focusInput = () => {
-        React.Ref.current(inputRef)
-        ->Js.Nullable.toOption
-        ->Belt.Option.forEach(el => el->focus);
-      };
-
-      let blurInput = () => {
-        React.Ref.current(inputRef)
-        ->Js.Nullable.toOption
-        ->Belt.Option.forEach(el => el->blur);
-      };
-
-      let chips =
-        Belt.Array.mapWithIndex(
-          flags,
-          (i, token) => {
-            let {WarningFlagDescription.Parser.flag, enabled} = token;
-
-            let isActive =
-              switch (state) {
-              | ShowTokenHint({token}) => token.flag === flag
-              | _ => false
+    let suggestions =
+      switch (state) {
+      | ShowTokenHint({token}) =>
+        WarningFlagDescription.lookup(token.flag)
+        ->Belt.Array.map(((num, description)) => {
+            let (modifier, color) =
+              if (token.enabled) {
+                ("(Enabled) ", "text-dark-code-3");
+              } else {
+                ("(Disabled) ", "text-fire");
               };
 
-            let full = (enabled ? "+" : "-") ++ flag;
-            let color =
-              switch (enabled, isActive) {
-              | (true, false) => "text-dark-code-3"
-              | (false, false) => "text-fire"
-              | (true, true) => "bg-night-light text-dark-code-3"
-              | (false, true) => "bg-night-light text-fire"
-              };
+            <div key=num>
+              <span className=color> modifier->s </span>
+              description->s
+            </div>;
+          })
+        ->ate
+        ->Some
+      | Typing(typing) =>
+        let suggestions =
+          switch (typing.suggestion) {
+          | NoSuggestion =>
+            "Type + / - followed by a number or letter (e.g. +a+1)"->s
+          | ErrorSuggestion(msg) => msg->s
+          | FuzzySuggestions({precedingTokens, selected, results, modifier}) =>
+            Belt.Array.mapWithIndex(
+              results,
+              (i, (flag, desc)) => {
+                let activeClass = selected === i ? "bg-night-light" : "";
 
-            let hoverEnabled =
-              switch (state) {
-              | ShowTokenHint(_)
-              | Typing(_) => true
-              | HideSuggestion(_) => false
-              };
+                let ref =
+                  if (selected === i) {
+                    ReactDOMRe.Ref.callbackDomRef(dom => {
+                      let el = Js.Nullable.toOption(dom);
+                      let parent =
+                        React.Ref.current(listboxRef)->Js.Nullable.toOption;
 
-            let (onMouseEnter, onMouseLeave) =
-              if (hoverEnabled) {
-                let enter = evt => {
+                      switch (parent, el) {
+                      | (Some(parent), Some(el)) =>
+                        scrollToElement(~parent, el)
+                      | _ => ()
+                      };
+                    })
+                    ->Some;
+                  } else {
+                    None;
+                  };
+
+                let onMouseEnter = evt => {
                   ReactEvent.Mouse.preventDefault(evt);
-                  ReactEvent.Mouse.stopPropagation(evt);
-
-                  setState(prev => {ShowTokenHint({token, lastState: prev})});
-                };
-
-                let leave = evt => {
-                  ReactEvent.Mouse.preventDefault(evt);
-                  ReactEvent.Mouse.stopPropagation(evt);
-
                   setState(prev => {
                     switch (prev) {
-                    | ShowTokenHint({lastState}) => lastState
+                    | Typing({suggestion: FuzzySuggestions(fuzzySuggestion)}) =>
+                      Typing({
+                        ...typing,
+                        suggestion:
+                          FuzzySuggestions({...fuzzySuggestion, selected: i}),
+                      })
                     | _ => prev
                     }
                   });
                 };
-                (Some(enter), Some(leave));
-              } else {
-                (None, None);
-              };
 
-            let onClick = evt => {
-              // Removes clicked token from the current flags
-              ReactEvent.Mouse.preventDefault(evt);
-
-              let remaining = Belt.Array.keep(flags, t => {t.flag !== flag});
-              onUpdate(remaining);
-            };
-
-            <span
-              onClick
-              ?onMouseEnter
-              ?onMouseLeave
-              className={
-                color
-                ++ " hover:cursor-default text-16 inline-block border border-night-light rounded-full px-2 mr-1"
-              }
-              key={Belt.Int.toString(i) ++ flag}>
-              full->s
-            </span>;
-          },
-        )
-        ->ate;
-
-      let onKeyDown = evt => {
-        let key = ReactEvent.Keyboard.key(evt);
-        let ctrlKey = ReactEvent.Keyboard.ctrlKey(evt);
-
-        let caretPosition = ReactEvent.Keyboard.target(evt)##selectionStart;
-        /*Js.log2("caretPosition", caretPosition);*/
-
-        let full = (ctrlKey ? "CTRL+" : "") ++ key;
-        switch (full) {
-        | "Enter" =>
-          switch (state) {
-          | Typing({
-              suggestion:
-                FuzzySuggestions({
-                  precedingTokens,
-                  modifier,
-                  selected,
-                  results,
-                }),
-            }) =>
-            // In case a selection was made correctly, add
-            // the flag to the current flags
-            switch (Belt.Array.get(results, selected)) {
-            | Some((num, _)) =>
-              let token = {
-                WarningFlagDescription.Parser.enabled: modifier === "+",
-                flag: num,
-              };
-
-              // TODO: merge tokens with flags
-              let newTokens = Belt.Array.concat(precedingTokens, [|token|]);
-
-              let all = WarningFlagDescription.Parser.merge(flags, newTokens);
-
-              onUpdate(all);
-              setState(prev => updateInput(prev, ""));
-            | None => ()
-            }
-          | _ => ()
-          };
-          ReactEvent.Keyboard.preventDefault(evt);
-        | "Escape" => blurInput()
-        | "Tab" =>
-          switch (state) {
-          | Typing({
-              suggestion:
-                FuzzySuggestions({
-                  modifier,
-                  precedingTokens,
-                  selected,
-                  results,
-                }),
-            }) =>
-            switch (Belt.Array.get(results, selected)) {
-            | Some((num, _)) =>
-              let flag = modifier ++ num;
-
-              let completed =
-                WarningFlagDescription.Parser.tokensToString(precedingTokens)
-                ++ flag;
-              setState(prev => updateInput(prev, completed));
-            | None => ()
-            };
-            // Prevents tab to change focus
-            ReactEvent.Keyboard.preventDefault(evt);
-          | _ => ()
-          }
-        | "ArrowDown"
-        | "CTRL+n" =>
-          setState(prev => selectNext(prev));
-          ReactEvent.Keyboard.preventDefault(evt);
-        | "ArrowUp"
-        | "CTRL+p" =>
-          setState(prev => selectPrevious(prev));
-          ReactEvent.Keyboard.preventDefault(evt);
-        | "ArrowRight"
-        | "ArrowLeft" => ()
-        | full =>
-          switch (state) {
-          | Typing({suggestion: ErrorSuggestion(_)}) =>
-            if (full !== "Backspace") {
-              ReactEvent.Keyboard.preventDefault(evt);
-            }
-          | _ => Js.log(full)
-          }
-        };
-      };
-
-      let suggestions =
-        switch (state) {
-        | ShowTokenHint({token}) =>
-          WarningFlagDescription.lookup(token.flag)
-          ->Belt.Array.map(((num, description)) => {
-              let (modifier, color) =
-                if (token.enabled) {
-                  ("(Enabled) ", "text-dark-code-3");
-                } else {
-                  ("(Disabled) ", "text-fire");
+                let onClick = evt => {
+                  ReactEvent.Mouse.preventDefault(evt);
+                  setState(prev => {
+                    switch (prev) {
+                    | Typing(_) =>
+                      let full = modifier ++ flag;
+                      let completed =
+                        WarningFlagDescription.Parser.tokensToString(
+                          precedingTokens,
+                        )
+                        ++ full;
+                      updateInput(prev, completed);
+                    | _ => prev
+                    }
+                  });
                 };
 
-              <div key=num>
-                <span className=color> modifier->s </span>
-                description->s
-              </div>;
-            })
-          ->ate
-          ->Some
-        | Typing(typing) =>
-          let suggestions =
-            switch (typing.suggestion) {
-            | NoSuggestion =>
-              "Type + / - followed by a number or letter (e.g. +a+1)"->s
-            | ErrorSuggestion(msg) => msg->s
-            | FuzzySuggestions({precedingTokens, selected, results, modifier}) =>
-              Belt.Array.mapWithIndex(
-                results,
-                (i, (flag, desc)) => {
-                  let activeClass = selected === i ? "bg-night-light" : "";
-
-                  let ref =
-                    if (selected === i) {
-                      ReactDOMRe.Ref.callbackDomRef(dom => {
-                        let el = Js.Nullable.toOption(dom);
-                        let parent =
-                          React.Ref.current(listboxRef)->Js.Nullable.toOption;
-
-                        switch (parent, el) {
-                        | (Some(parent), Some(el)) =>
-                          scrollToElement(~parent, el)
-                        | _ => ()
-                        };
-                      })
-                      ->Some;
-                    } else {
-                      None;
-                    };
-
-                  let onMouseEnter = evt => {
-                    ReactEvent.Mouse.preventDefault(evt);
-                    setState(prev => {
-                      switch (prev) {
-                      | Typing({
-                          suggestion: FuzzySuggestions(fuzzySuggestion),
-                        }) =>
-                        Typing({
-                          ...typing,
-                          suggestion:
-                            FuzzySuggestions({
-                              ...fuzzySuggestion,
-                              selected: i,
-                            }),
-                        })
-                      | _ => prev
-                      }
-                    });
-                  };
-
-                  let onClick = evt => {
-                    ReactEvent.Mouse.preventDefault(evt);
-                    setState(prev => {
-                      switch (prev) {
-                      | Typing(_) =>
-                        let full = modifier ++ flag;
-                        let completed =
-                          WarningFlagDescription.Parser.tokensToString(
-                            precedingTokens,
-                          )
-                          ++ full;
-                        updateInput(prev, completed);
-                      | _ => prev
-                      }
-                    });
-                  };
-
-                  <div
-                    ?ref
-                    onMouseEnter
-                    onMouseDown=onClick
-                    className=activeClass
-                    key=flag>
-                    {{
-                       modifier ++ flag ++ ": " ++ desc;
-                     }
-                     ->s}
-                  </div>;
-                },
-              )
-              ->ate
-            };
-          Some(suggestions);
-        | HideSuggestion(_) => None
-        };
-
-      let suggestionBox =
-        Belt.Option.map(suggestions, elements => {
-          <div
-            ref={ReactDOMRe.Ref.domRef(listboxRef)}
-            className="p-2 absolute overflow-auto z-50 border-b rounded border-l border-r block w-full bg-onyx"
-            style={ReactDOMRe.Style.make(~maxHeight="15rem", ())}>
-            elements
-          </div>
-        })
-        ->Belt.Option.getWithDefault(React.null);
-
-      let onChange = evt => {
-        ReactEvent.Form.preventDefault(evt);
-        let input = ReactEvent.Form.target(evt)##value;
-        setState(prev => {updateInput(prev, input)});
-      };
-
-      let onBlur = evt => {
-        ReactEvent.Focus.preventDefault(evt);
-        ReactEvent.Focus.stopPropagation(evt);
-        setState(prev => hide(prev));
-      };
-
-      let onFocus = evt => {
-        let input = ReactEvent.Focus.target(evt)##value;
-        setState(prev => updateInput(prev, input));
-      };
-
-      let isActive =
-        switch (state) {
-        | ShowTokenHint(_)
-        | Typing(_) => true
-        | HideSuggestion(_) => false
-        };
-
-      let deleteButton =
-        switch (flags) {
-        | [||]
-        | [|{enabled: false, flag: "a"}|] => React.null
-        | _ =>
-          let onMouseDown = evt => {
-            ReactEvent.Mouse.preventDefault(evt);
-            onUpdate([|
-              {WarningFlagDescription.Parser.enabled: false, flag: "a"},
-            |]);
+                <div
+                  ?ref
+                  onMouseEnter
+                  onMouseDown=onClick
+                  className=activeClass
+                  key=flag>
+                  {{
+                     modifier ++ flag ++ ": " ++ desc;
+                   }
+                   ->s}
+                </div>;
+              },
+            )
+            ->ate
           };
+        Some(suggestions);
+      | HideSuggestion(_) => None
+      };
 
-          // For iOS12 compat
-          let onClick = _ => ();
-          let onFocus = evt => {
-            ReactEvent.Focus.preventDefault(evt);
-            ReactEvent.Focus.stopPropagation(evt);
-          };
-
-          <button
-            onMouseDown
-            onClick
-            onFocus
-            tabIndex=0
-            className="focus:outline-none self-start focus:shadow-outline hover:cursor-pointer hover:bg-night-light p-2 rounded-full">
-            <Icon.Close />
-          </button>;
-        };
-
-      let activeClass =
-        if (isActive) {"border-white"} else {"border-night-light"};
-
-      let areaOnFocus = evt =>
-        if (!isActive) {
-          focusInput();
-        };
-
-      let inputValue =
-        switch (state) {
-        | ShowTokenHint({lastState: Typing({input})})
-        | Typing({input}) => input
-        | HideSuggestion({input}) => input
-        | ShowTokenHint(_) => ""
-        };
-
-      <div tabIndex=(-1) className="relative" onFocus=areaOnFocus onKeyDown>
-        <div className={"flex justify-between border p-2 " ++ activeClass}>
-          <div>
-            chips
-            <input
-              ref={ReactDOMRe.Ref.domRef(inputRef)}
-              className="outline-none bg-night-dark placeholder-snow-darker placeholder-opacity-50"
-              placeholder="Flags"
-              type_="text"
-              tabIndex=0
-              value=inputValue
-              onChange
-              onFocus
-              onBlur
-            />
-          </div>
-          deleteButton
+    let suggestionBox =
+      Belt.Option.map(suggestions, elements => {
+        <div
+          ref={ReactDOMRe.Ref.domRef(listboxRef)}
+          className="p-2 absolute overflow-auto z-50 border-b rounded border-l border-r block w-full bg-gray-100"
+          style={ReactDOMRe.Style.make(~maxHeight="15rem", ())}>
+          elements
         </div>
-        suggestionBox
-      </div>;
+      })
+      ->Belt.Option.getWithDefault(React.null);
+
+    let onChange = evt => {
+      ReactEvent.Form.preventDefault(evt);
+      let input = ReactEvent.Form.target(evt)##value;
+      setState(prev => {updateInput(prev, input)});
     };
+
+    let onBlur = evt => {
+      ReactEvent.Focus.preventDefault(evt);
+      ReactEvent.Focus.stopPropagation(evt);
+      setState(prev => hide(prev));
+    };
+
+    let onFocus = evt => {
+      let input = ReactEvent.Focus.target(evt)##value;
+      setState(prev => updateInput(prev, input));
+    };
+
+    let isActive =
+      switch (state) {
+      | ShowTokenHint(_)
+      | Typing(_) => true
+      | HideSuggestion(_) => false
+      };
+
+    let deleteButton =
+      switch (flags) {
+      | [||]
+      | [|{enabled: false, flag: "a"}|] => React.null
+      | _ =>
+        let onMouseDown = evt => {
+          ReactEvent.Mouse.preventDefault(evt);
+          onUpdate([|
+            {WarningFlagDescription.Parser.enabled: false, flag: "a"},
+          |]);
+        };
+
+        // For iOS12 compat
+        let onClick = _ => ();
+        let onFocus = evt => {
+          ReactEvent.Focus.preventDefault(evt);
+          ReactEvent.Focus.stopPropagation(evt);
+        };
+
+        <button
+          onMouseDown
+          onClick
+          onFocus
+          tabIndex=0
+          className="focus:outline-none self-start focus:shadow-outline hover:cursor-pointer hover:bg-night-light p-2 rounded-full">
+          <Icon.Close />
+        </button>;
+      };
+
+    let activeClass =
+      if (isActive) {"border-white"} else {"border-night-light"};
+
+    let areaOnFocus = evt =>
+      if (!isActive) {
+        focusInput();
+      };
+
+    let inputValue =
+      switch (state) {
+      | ShowTokenHint({lastState: Typing({input})})
+      | Typing({input}) => input
+      | HideSuggestion({input}) => input
+      | ShowTokenHint(_) => ""
+      };
+
+    <div tabIndex=(-1) className="relative" onFocus=areaOnFocus onKeyDown>
+      <div className={"flex justify-between border p-2 " ++ activeClass}>
+        <div>
+          chips
+          <input
+            ref={ReactDOMRe.Ref.domRef(inputRef)}
+            className="outline-none bg-night-dark placeholder-snow-darker placeholder-opacity-50"
+            placeholder="Flags"
+            type_="text"
+            tabIndex=0
+            value=inputValue
+            onChange
+            onFocus
+            onBlur
+          />
+        </div>
+        deleteButton
+      </div>
+      suggestionBox
+    </div>;
   };
+};
 
-  module Settings = {
-    [@react.component]
-    let make = (~setConfig: Api.Config.t => unit, ~config: Api.Config.t) => {
-      let {Api.Config.warn_flags, warn_error_flags} = config;
+module ConsolePane = {
+  [@react.component]
+  let make = () => {
+    <div className="p-4 pt-8">
+      <AnsiPre> "> console not implemented yet (coming soon)" </AnsiPre>
+    </div>;
+  };
+};
 
+module Settings = {
+  [@react.component]
+  let make =
+      (
+        ~readyState: CompilerManagerHook.ready,
+        ~dispatch: CompilerManagerHook.action => unit,
+        ~setConfig: Api.Config.t => unit,
+        ~editorCode: React.Ref.t(string),
+        ~config: Api.Config.t,
+      ) => {
+    let {Api.Config.warn_flags} = config;
+
+    let targetLangVersion =
+      switch (readyState.targetLang) {
+      | Res => (Api.Lang.Res, readyState.selected.compilerVersion)
+      | Reason => (Reason, readyState.selected.reasonVersion)
+      | OCaml => (OCaml, readyState.selected.ocamlVersion)
+      };
+
+    let availableTargetLangs =
+      Api.Version.availableLanguages(readyState.selected.apiVersion);
+
+    let onTargetLangSelect = lang => {
+      dispatch(SwitchLanguage({lang, code: React.Ref.current(editorCode)}));
+    };
+
+    let onWarningFlagsUpdate = flags => {
       let normalizeEmptyFlags = flags => {
         switch (flags) {
         | [||] => [|
@@ -1129,99 +1200,144 @@ module MiscPanel = {
         | other => other
         };
       };
-
-      let onWarningFlagsUpdate = flags => {
-        let config = {
-          ...config,
-          warn_flags:
-            flags
-            ->normalizeEmptyFlags
-            ->WarningFlagDescription.Parser.tokensToString,
-        };
-        setConfig(config);
+      let config = {
+        ...config,
+        warn_flags:
+          flags
+          ->normalizeEmptyFlags
+          ->WarningFlagDescription.Parser.tokensToString,
       };
+      setConfig(config);
+    };
 
-      let onWarnErrFlagsUpdate = flags => {
-        let config = {
-          ...config,
-          warn_error_flags:
-            flags
-            ->normalizeEmptyFlags
-            ->WarningFlagDescription.Parser.tokensToString,
-        };
-        setConfig(config);
+    let onModuleSystemUpdate = module_system => {
+      let config = {...config, module_system};
+      setConfig(config);
+    };
+
+    let warnFlagTokens =
+      WarningFlagDescription.Parser.parse(warn_flags)
+      ->Belt.Result.getWithDefault([||]);
+
+    let onResetClick = evt => {
+      ReactEvent.Mouse.preventDefault(evt);
+      let defaultConfig = {
+        Api.Config.module_system: "nodejs",
+        warn_flags: "+a-4-9-20-40-41-42-50-61-102",
       };
+      setConfig(defaultConfig);
+    };
 
-      let warnFlagTokens =
-        WarningFlagDescription.Parser.parse(warn_flags)
-        ->Belt.Result.getWithDefault([||]);
+    let onCompilerSelect = id => {
+      dispatch(
+        SwitchToCompiler({id, libraries: readyState.selected.libraries}),
+      );
+    };
 
-      let warnErrFlagTokens =
-        WarningFlagDescription.Parser.parse(warn_error_flags)
-        ->Belt.Result.getWithDefault([||]);
-
-      let onResetClick = evt => {
-        ReactEvent.Mouse.preventDefault(evt);
-        let defaultConfig = {
-          Api.Config.module_system: "nodejs",
-          warn_error_flags: "-a+5+6+101",
-          warn_flags: "+a-4-9-20-40-41-42-50-61-102",
-        };
-        setConfig(defaultConfig);
-      };
-
-      <div className="p-4 pt-8 text-snow-darker">
-        <div className="flex justify-end">
-          <button onMouseDown=onResetClick className=Text.Link.standalone>
-            "Reset"->s
-          </button>
-        </div>
-        <div>
-          <div> {("Module-System: " ++ config.module_system)->s} </div>
-          <div>
-            <div> "Warn-Flags: "->s </div>
+    let titleClass = "text-18 font-bold mb-2";
+    <div className="p-4 pt-8 bg-night-dark text-snow-darker">
+      <div>
+        <div className=titleClass> "ReScript Version"->s </div>
+        <DropdownSelect
+          name="compilerVersions"
+          value={readyState.selected.id}
+          onChange={evt => {
+            ReactEvent.Form.preventDefault(evt);
+            let id = evt->ReactEvent.Form.target##value;
+            onCompilerSelect(id);
+          }}>
+          {Belt.Array.map(readyState.versions, version => {
+             <option className="py-4" key=version value=version>
+               version->s
+             </option>
+           })
+           ->ate}
+        </DropdownSelect>
+      </div>
+      <div className="mt-6">
+        <div className=titleClass> "Syntax"->s </div>
+        <ToggleSelection
+          values=availableTargetLangs
+          toLabel={lang => lang->Api.Lang.toExt->Js.String2.toUpperCase}
+          selected={readyState.targetLang}
+          onChange=onTargetLangSelect
+        />
+      </div>
+      <div className="mt-6">
+        <div className=titleClass> "Module-System"->s </div>
+        <ToggleSelection
+          values=[|"nodejs", "es6"|]
+          toLabel={value => value}
+          selected={config.module_system}
+          onChange=onModuleSystemUpdate
+        />
+        <div className="mt-8">
+          <div className=titleClass>
+            "Warning Flags"->s
+            <button
+              onMouseDown=onResetClick
+              className={"ml-6 text-14 " ++ Text.Link.standalone}>
+              "[reset]"->s
+            </button>
+          </div>
+          <div className="flex justify-end" />
+          <div style={ReactDOMRe.Style.make(~maxWidth="40rem", ())}>
             <WarningFlagsWidget
               onUpdate=onWarningFlagsUpdate
               flags=warnFlagTokens
             />
           </div>
-          <div>
-            <div> "Warn-Error-Flags: "->s </div>
-            <WarningFlagsWidget
-              onUpdate=onWarnErrFlagsUpdate
-              flags=warnErrFlagTokens
-            />
-          </div>
         </div>
-      </div>;
-    };
-  };
-
-  [@react.component]
-  let make = (~disabled=false, ~setConfig, ~config, ~className=?) => {
-    let tabs = [|
-      {Pane.title: "Console", content: <Console />},
-      {title: "Settings", content: <Settings setConfig config />},
-    |];
-
-    let makeTabClass = (active: bool): string => {
-      let rest =
-        active
-          ? "text-fire font-medium bg-night-dark hover:cursor-default"
-          : "hover:cursor-pointer bg-night-10 text-night-light";
-
-      "flex items-center h-12 px-4 pr-24 " ++ rest;
-    };
-    <div ?className> <Pane disabled makeTabClass tabs /> </div>;
+      </div>
+    </div>;
   };
 };
 
 module ControlPanel = {
+  module Button = {
+    [@react.component]
+    let make = (~children, ~onClick=?) => {
+      <button
+        ?onClick
+        className="inline-block bg-sky hover:cursor-pointer text-white hover:text-white-80 rounded border active:bg-sky-80 border-sky-80 px-2 py-1 ">
+        children
+      </button>;
+    };
+  };
+
+  [@react.component]
+  let make =
+      (
+        ~state: CompilerManagerHook.state,
+        ~dispatch: CompilerManagerHook.action => unit,
+        ~editorCode: React.Ref.t(string),
+      ) => {
+    let children =
+      switch (state) {
+      | Init => "Initializing..."->s
+      | SwitchingCompiler(_, _, _) =>
+        ("Switching Compiler...")->s
+      | Compiling(_ready, _)
+      | Ready(_ready) =>
+        let onFormatClick = evt => {
+          ReactEvent.Mouse.preventDefault(evt);
+          dispatch(Format(React.Ref.current(editorCode)));
+        };
+        <Button onClick=onFormatClick> "Format"->s </Button>;
+      | _ => React.null
+      };
+
+    <div className="flex justify-end items-center h-12 bg-night-10 px-4">
+      children
+    </div>;
+  };
+};
+
+module ControlPanelOld = {
   [@react.component]
   let make =
       (
         ~isCompilerSwitching: bool,
-        ~langSelectionDisabled: bool, // In case a syntax conversion error occurred
         ~compilerVersion: string,
         ~availableCompilerVersions: array(string),
         ~availableTargetLangs: array(Api.Lang.t),
@@ -1229,7 +1345,6 @@ module ControlPanel = {
         ~loadedLibraries: array(string),
         ~onCompilerSelect: string => unit,
         ~onFormatClick: option(unit => unit)=?,
-        ~formatDisabled: bool=false,
         ~onCompileClick: unit => unit,
         ~onTargetLangSelect: Api.Lang.t => unit,
       ) => {
@@ -1248,7 +1363,7 @@ module ControlPanel = {
       | None => None
       };
 
-    <div className="flex bg-onyx text-night-light px-6 text-14 w-full">
+    <div className="flex bg-gray-100 text-night-light px-6 text-14 w-full">
       <div
         className="flex justify-between items-center border-t py-4 border-night-60 w-full">
         <div>
@@ -1270,12 +1385,6 @@ module ControlPanel = {
              ->ate}
           </DropdownSelect>
         </div>
-        <LanguageToggle
-          values=availableTargetLangs
-          selected=targetLang
-          disabled=isCompilerSwitching
-          onChange=onTargetLangSelect
-        />
         <button
           className={
             (isCompilerSwitching ? "opacity-25" : "")
@@ -1312,10 +1421,194 @@ module ControlPanel = {
 };
 
 let locMsgToCmError =
-    (~kind: CodeMirrorBase.Error.kind, locMsg: Api.LocMsg.t)
-    : CodeMirrorBase.Error.t => {
+    (~kind: CodeMirror2.Error.kind, locMsg: Api.LocMsg.t): CodeMirror2.Error.t => {
   let {Api.LocMsg.row, column, endColumn, endRow, shortMsg} = locMsg;
-  {CodeMirrorBase.Error.row, column, endColumn, endRow, text: shortMsg, kind};
+  {CodeMirror2.Error.row, column, endColumn, endRow, text: shortMsg, kind};
+};
+
+module OutputPanel = {
+  let codeFromResult = (result: FinalResult.t): string => {
+    Api.(
+      switch (result) {
+      | FinalResult.Comp(comp) =>
+        switch (comp) {
+        | CompilationResult.Success({js_code}) => js_code
+        | UnexpectedError(_)
+        | Unknown(_, _)
+        | Fail(_) => "/* No JS code generated */"
+        }
+      | Nothing
+      | Conv(_) => "/* No JS code generated */"
+      }
+    );
+  };
+
+  [@react.component]
+  let make =
+      (
+        ~actionIndicatorKey,
+        ~compilerDispatch,
+        ~compilerState: CompilerManagerHook.state,
+        ~editorCode: React.Ref.t(string),
+      ) => {
+    /*
+       We need the prevState to understand different
+       state transitions, and to be able to keep displaying
+       old results until those transitions are done.
+
+       Goal was to reduce the UI flickering during different
+       state transitions
+     */
+    let prevState = React.useRef(None);
+
+    let cmCode =
+      switch (React.Ref.current(prevState)) {
+      | Some(prev) =>
+        switch (prev, compilerState) {
+        | (_, Ready({result: Nothing})) => None
+        | (Ready(prevReady), Ready(ready)) =>
+          switch (prevReady.result, ready.result) {
+          | (_, Comp(Success(_))) => codeFromResult(ready.result)->Some
+          | _ => None
+          }
+        | (_, Ready({result: Comp(Success(_)) as result})) =>
+          codeFromResult(result)->Some
+        | (Ready({result: Comp(Success(_)) as result}), Compiling(_, _)) =>
+          codeFromResult(result)->Some
+        | _ => None
+        }
+      | None =>
+        switch (compilerState) {
+        | Ready(ready) => codeFromResult(ready.result)->Some
+        | _ => None
+        }
+      };
+
+    React.Ref.setCurrent(prevState, Some(compilerState));
+
+    let resultPane =
+      switch (compilerState) {
+      | Compiling(ready, _)
+      | Ready(ready) =>
+        switch (ready.result) {
+        | Comp(Success(_))
+        | Conv(Success(_)) => React.null
+        | _ =>
+          <ResultPane
+            targetLang={ready.targetLang}
+            compilerVersion={ready.selected.compilerVersion}
+            result={ready.result}
+          />
+        }
+
+      | _ => React.null
+      };
+
+    let (code, showCm) =
+      switch (cmCode) {
+      | None => ("", false)
+      | Some(code) => (code, true)
+      };
+
+    let codeElement =
+      <pre
+        style={ReactDOMRe.Style.make(~height="calc(100vh - 11.5rem)", ())}
+        className={
+          "whitespace-pre-wrap overflow-y-auto p-4 "
+          ++ (showCm ? "block" : "hidden")
+        }>
+        {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="js", ())}
+      </pre>;
+
+    let output =
+      <div
+        className="relative w-full bg-night-dark text-snow-darker"
+        style={ReactDOMRe.Style.make(~height="calc(100vh - 9rem)", ())}>
+        resultPane
+        codeElement
+      </div>;
+
+    let errorPane =
+      switch (compilerState) {
+      | Compiling(ready, _)
+      | Ready(ready)
+      | SwitchingCompiler(ready, _, _) =>
+        <ResultPane
+          targetLang={ready.targetLang}
+          compilerVersion={ready.selected.compilerVersion}
+          result={ready.result}
+        />
+      | SetupFailed(msg) => <div> {("Setup failed: " ++ msg)->s} </div>
+      | Init => <div> "Initalizing Playground..."->s </div>
+      };
+
+    let settingsPane =
+      switch (compilerState) {
+      | Ready(ready)
+      | Compiling(ready, _)
+      | SwitchingCompiler(ready, _, _) =>
+        let config = ready.selected.config;
+        let setConfig = config => {
+          compilerDispatch(UpdateConfig(config));
+        };
+
+        <Settings
+          readyState=ready
+          dispatch=compilerDispatch
+          editorCode
+          setConfig
+          config
+        />;
+      | SetupFailed(msg) => <div> {("Setup failed: " ++ msg)->s} </div>
+      | Init => <div> "Initalizing Playground..."->s </div>
+      };
+
+    let prevSelected = React.useRef(0);
+
+    let selected =
+      switch (compilerState) {
+      | Compiling(_, _) => React.Ref.current(prevSelected)
+      | Ready(ready) =>
+        switch (ready.result) {
+        | Comp(Success(_))
+        | Conv(Success(_)) => 0
+        | _ => 1
+        }
+      | _ => 0
+      };
+
+    React.Ref.setCurrent(prevSelected, selected);
+
+    let tabs = [|
+      {Pane.title: "JavaScript", content: output},
+      {
+        title: "Errors",
+        content:
+          <div style={ReactDOMRe.Style.make(~height="50%", ())}>
+            errorPane
+          </div>,
+      },
+      {
+        title: "Settings",
+        content:
+          <div style={ReactDOMRe.Style.make(~height="50%", ())}>
+            settingsPane
+          </div>,
+      },
+    |];
+
+    let makeTabClass = active => {
+      let activeClass =
+        active
+          ? "text-fire font-medium bg-night-dark hover:cursor-default" : "";
+
+      "flex items-center h-12 px-4 pr-16 " ++ activeClass;
+    };
+
+    <div className="h-full bg-night-dark">
+      <Pane tabs makeTabClass />
+    </div>;
+  };
 };
 
 [@react.component]
@@ -1330,20 +1623,12 @@ let default = () => {
 
   let overlayState = React.useState(() => false);
 
+  let windowWidth = CodeMirror2.useWindowWidth();
+
   // The user can focus an error / warning on a specific line & column
   // which is stored in this ref and triggered by hover / click states
   // in the CodeMirror editor
   let (focusedRowCol, setFocusedRowCol) = React.useState(_ => None);
-
-  let initialContent = {j|module A = {
-  let = 1;
-  let a = 1;
-}
-
-module B = {
-  let = 2
-  let b = 2
-}|j};
 
   let initialContent = {j|// Please note:
 // ---
@@ -1366,51 +1651,76 @@ module Button = {
 
     <button> {msg->React.string} </button>
   }
+}
+
+module Button2 = {
+  @react.component
+  let make = (~count: int) => {
+    let times = switch count {
+    | 1 => "once"
+    | 2 => "twice"
+    | n => Belt.Int.toString(n) ++ " times"
+    }
+    let msg = "Click me " ++ times
+
+    <button> {msg->React.string} </button>
+  }
+}
+
+module Button3 = {
+  @react.component
+  let make = (~count: int) => {
+    let times = switch count {
+    | 1 => "once"
+    | 2 => "twice"
+    | n => Belt.Int.toString(n) ++ " times"
+    }
+    let msg = "Click me " ++ times
+
+    <button> {msg->React.string} </button>
+  }
 }|j};
-
-  let jsOutput =
-    Api.(
-      switch (compilerState) {
-      | Init => "/* Initializing Playground... */"
-      | Ready({result: FinalResult.Comp(comp)}) =>
-        switch (comp) {
-        | CompilationResult.Success({js_code}) => js_code
-        | UnexpectedError(msg)
-        | Unknown(msg, _) => {j|/* Unexpected Result: $msg */|j}
-        | Fail(_) => "/* Could not compile, check the error pane for details. */"
-        }
-      | Ready({result: Nothing})
-      | Ready({result: Conv(_)}) => "/* Compiler ready! Press the \"Compile\" button to see the JS output. */"
-      | Compiling(_, _) => "/* Compiling... */"
-      | SwitchingCompiler(_, version, libraries) =>
-        let appendix =
-          if (Js.Array.length(libraries) > 0) {
-            " (+" ++ Js.Array2.joinWith(libraries, ", ") ++ ")";
-          } else {
-            "";
-          };
-        "/* Switching to " ++ version ++ appendix ++ " ... */";
-      | _ => ""
-      }
-    );
-
-  let isReady =
-    switch (compilerState) {
-    | Ready(_) => true
-    | _ => false
-    };
 
   let editorCode = React.useRef(initialContent);
 
   /* In case the compiler did some kind of syntax conversion / reformatting,
      we take any success results and set the editor code to the new formatted code */
   switch (compilerState) {
+  | Ready({result: FinalResult.Nothing} as ready) =>
+    compilerDispatch(
+      CompileCode(ready.targetLang, React.Ref.current(editorCode)),
+    )
   | Ready({result: FinalResult.Conv(Api.ConversionResult.Success({code}))}) =>
     React.Ref.setCurrent(editorCode, code)
   | _ => ()
   };
 
-  Js.log2("state", compilerState);
+  /*
+     The codemirror state and the compilerState are not dependent on eachother,
+     so we need to sync a timeoutCompiler function with our compilerState to be
+     able to do compilation on code changes.
+
+     The typingTimer is a debounce mechanism to prevent compilation during editing
+     and will be manipulated by the codemirror onChange function.
+   */
+  let typingTimer = React.useRef(None);
+  let timeoutCompile = React.useRef(() => ());
+
+  React.useEffect1(
+    () => {
+      React.Ref.setCurrent(timeoutCompile, () => {
+        switch (compilerState) {
+        | Ready(ready) =>
+          compilerDispatch(
+            CompileCode(ready.targetLang, React.Ref.current(editorCode)),
+          )
+        | _ => ()
+        }
+      });
+      None;
+    },
+    [|compilerState|],
+  );
 
   let cmErrors =
     switch (compilerState) {
@@ -1461,222 +1771,81 @@ module Button = {
     | _ => [||]
     };
 
-  let editorTitle =
-    switch (compilerState) {
-    | SwitchingCompiler(ready, _, _)
-    | Compiling(ready, _)
-    | Ready(ready) =>
-      switch (ready.targetLang) {
-      | Reason => "ReasonML"
-      | OCaml => "OCaml"
-      | Res => "ReScript"
-      }
-    | _ => "..."
-    };
-
   <>
     <Meta
       title="ReScript Playground"
       description="Try ReScript in the browser"
     />
-    <div className="text-16 mb-32 mt-16 pt-2 bg-night-dark">
-      <div className="text-night text-lg">
-        <Navigation overlayState />
-        <main className="mx-10 mt-4 pb-32 flex justify-center">
-          /* MOBILE PLACEHOLDER */
+    <Next.Head>
+      <style> {j|body { background-color: #010427; } |j}->s </style>
+    </Next.Head>
+    <div className="text-16 bg-gray-100">
+      <div className="text-night text-14">
+        <Navigation fixed=false overlayState />
+        <main
+          className="bg-gray-100 lg:overflow-hidden lg:h-screen"
+          style={ReactDOMRe.Style.make(~maxHeight="calc(100vh - 4.5rem)", ())}>
+          <div
+            className="w-full h-full flex flex-col lg:flex-row border-t-4 border-night">
+            <div className="w-full lg:border-r-4 pl-2 border-night">
+              <div className="bg-gray-100 text-snow-darker">
+                <ControlPanel
+                  state=compilerState
+                  dispatch=compilerDispatch
+                  editorCode
+                />
+                <CodeMirror2
+                  className="w-full py-4"
+                  minHeight="calc(100vh - 10rem)"
+                  maxHeight="calc(100vh - 10rem)"
+                  mode="reason"
+                  errors=cmErrors
+                  value={React.Ref.current(editorCode)}
+                  onChange={value => {
+                    React.Ref.setCurrent(editorCode, value);
 
-            <div className="block lg:hidden text-snow-darker text-center">
-              <div className="font-bold mb-4">
-                "Mobile Playground version not available yet."->s
-              </div>
-              <div>
-                "Please use a screen with at least 1024px width for the desktop version"
-                ->s
-              </div>
-            </div>
-            <div className="hidden w-full lg:flex border-4 border-night" style=ReactDOMRe.Style.make(~maxWidth="112rem",())>
-              <div
-                className="w-full border-r-4 border-night"
-                style={ReactDOMRe.Style.make(~maxWidth="56rem", ())}>
-                <SingleTabPane title=editorTitle>
-                  <div className="bg-onyx text-snow-darker">
-                    <CodeMirror
-                      className="w-full"
-                      minHeight="40vh"
-                      maxHeight="40vh"
-                      mode="reason"
-                      errors=cmErrors
-                      value={React.Ref.current(editorCode)}
-                      onChange={value => {
-                        React.Ref.setCurrent(editorCode, value)
-                      }}
-                      onMarkerFocus={rowCol => {
-                        setFocusedRowCol(prev => {Some(rowCol)})
-                      }}
-                      onMarkerFocusLeave={_ => {setFocusedRowCol(_ => None)}}
-                    />
-                  </div>
-                </SingleTabPane>
-                {switch (compilerState) {
-                 | Ready(ready)
-                 | Compiling(ready, _)
-                 | SwitchingCompiler(ready, _, _) =>
-                   let availableTargetLangs =
-                     Api.Version.availableLanguages(
-                       ready.selected.apiVersion,
-                     );
-
-                   let selectedTargetLang =
-                     switch (ready.targetLang) {
-                     | Res => (Api.Lang.Res, ready.selected.compilerVersion)
-                     | Reason => (Reason, ready.selected.reasonVersion)
-                     | OCaml => (OCaml, ready.selected.ocamlVersion)
-                     };
-
-                   let onCompilerSelect = id => {
-                     compilerDispatch(
-                       SwitchToCompiler({
-                         id,
-                         libraries: ready.selected.libraries,
-                       }),
-                     );
-                   };
-
-                   let onTargetLangSelect = lang => {
-                     compilerDispatch(
-                       SwitchLanguage({
-                         lang,
-                         code: React.Ref.current(editorCode),
-                       }),
-                     );
-                   };
-
-                   let onCompileClick = () => {
-                     compilerDispatch(
-                       CompileCode(
-                         ready.targetLang,
-                         React.Ref.current(editorCode),
-                       ),
-                     );
-                   };
-
-                   // When a new compiler version was selected, it should
-                   // be shown in the control panel as the currently selected
-                   // version, even when it is currently loading
-                   let compilerVersion =
-                     switch (compilerState) {
-                     | SwitchingCompiler(_, version, _) => version
-                     | _ => ready.selected.id
-                     };
-
-                   let langSelectionDisabled =
-                     Api.(
-                       switch (ready.result) {
-                       | FinalResult.Conv(ConversionResult.Fail(_))
-                       | Comp(CompilationResult.Fail(_)) => true
-                       | _ => false
-                       }
-                     );
-
-                   let onFormatClick = () => {
-                     compilerDispatch(
-                       Format(React.Ref.current(editorCode)),
-                     );
-                   };
-
-                   let actionIndicatorKey = Belt.Int.toString(actionCount);
-
-                   let isCompilerSwitching =
-                     switch (compilerState) {
-                     | SwitchingCompiler(_, _, _) => true
-                     | _ => false
-                     };
-
-                   let compilerVersionGitCommit =
-                     Api.Compiler.version_git_commit(ready.selected.instance);
-                   <>
-                     <ControlPanel
-                       isCompilerSwitching
-                       langSelectionDisabled
-                       compilerVersion
-                       availableTargetLangs
-                       availableCompilerVersions={ready.versions}
-                       selectedTargetLang
-                       loadedLibraries={ready.selected.libraries}
-                       onCompilerSelect
-                       onTargetLangSelect
-                       onCompileClick
-                       onFormatClick
-                     />
-                     <div className="border-fire border-t-4">
-                       <ErrorPane
-                         actionIndicatorKey
-                         targetLang={ready.targetLang}
-                         compilerVersion={ready.selected.compilerVersion}
-                         ?compilerVersionGitCommit
-                         ?focusedRowCol
-                         result={ready.result}
-                       />
-                     </div>
-                   </>;
-                 | Init => "Initializing"->s
-                 | SetupFailed(msg) =>
-                   let content = ("Setup failed: " ++ msg)->s;
-                   let tabs = [|{Pane.title: "Error", content}|];
-                   <> <Pane tabs /> </>;
-                 }}
-              </div>
-              <div
-                className="w-full"
-                style={ReactDOMRe.Style.make(~maxWidth="56rem", ())}>
-                <SingleTabPane
-                  title="JavaScript"
-                  makeTabClass={active => {
-                    let activeClass =
-                      active
-                        ? "text-fire font-medium bg-night-dark hover:cursor-default"
-                        : "";
-
-                    "flex items-center h-12 px-4 pr-16 " ++ activeClass;
-                  }}>
-                  <div className="w-full bg-night-dark text-snow-darker">
-                    <CodeMirror
-                      className="w-full"
-                      minHeight="40vh"
-                      maxHeight="40vh"
-                      mode="javascript"
-                      lineWrapping=true
-                      value=jsOutput
-                      readOnly=true
-                    />
-                  </div>
-                </SingleTabPane>
-                {switch (compilerState) {
-                 | Ready(ready)
-                 | Compiling(ready, _)
-                 | SwitchingCompiler(ready, _, _) =>
-                   let disabled =
-                     switch (compilerState) {
-                     | SwitchingCompiler(_, _, _) => true
-                     | _ => false
-                     };
-                   let config = ready.selected.config;
-                   let setConfig = config => {
-                     compilerDispatch(UpdateConfig(config));
-                   };
-
-                   <MiscPanel
-                     config
-                     setConfig
-                     disabled
-                     className="border-t-4 border-night"
-                   />;
-                 | Init
-                 | SetupFailed(_) => React.null
-                 }}
+                    switch (React.Ref.current(typingTimer)) {
+                    | None => ()
+                    | Some(timer) => Js.Global.clearTimeout(timer)
+                    };
+                    let timer =
+                      Js.Global.setTimeout(
+                        () => {
+                          (React.Ref.current(timeoutCompile))();
+                          React.Ref.setCurrent(typingTimer, None);
+                        },
+                        100,
+                      );
+                    React.Ref.setCurrent(typingTimer, Some(timer));
+                  }}
+                  onMarkerFocus={rowCol => {
+                    setFocusedRowCol(prev => {Some(rowCol)})
+                  }}
+                  onMarkerFocusLeave={_ => {setFocusedRowCol(_ => None)}}
+                />
               </div>
             </div>
-          </main>
+            <div
+              className="relative w-full overflow-x-hidden h-screen lg:h-auto lg:w-1/2"
+              style={ReactDOMRe.Style.make(
+                ~maxWidth=windowWidth > 1024 ? "56rem" : "100%",
+                (),
+              )}>
+              <OutputPanel
+                actionIndicatorKey={Belt.Int.toString(actionCount)}
+                compilerDispatch
+                compilerState
+                editorCode
+              />
+              <div className="absolute bottom-0 w-full">
+                <Statusbar
+                  actionIndicatorKey={Belt.Int.toString(actionCount)}
+                  state=compilerState
+                />
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
     </div>
   </>;

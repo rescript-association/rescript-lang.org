@@ -1,2 +1,2 @@
 [@react.component]
-let make: (~overlayState: (bool, (bool => bool) => unit)) => React.element;
+let make: (~fixed: bool=?, ~overlayState: (bool, (bool => bool) => unit)) => React.element;

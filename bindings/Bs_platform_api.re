@@ -6,6 +6,8 @@
 // has been loaded, so we'd prefer to protect this
 // API with the playground compiler manager state
 
+[@bs.val] [@bs.scope "performance"] external now: unit => float = "now";
+
 module Lang = {
   type t =
     | Reason
@@ -109,6 +111,32 @@ module LocMsg = {
 
     {j|[1;31m[$prefix] Line $row, $column:[0m $shortMsg|j};
   };
+
+  // Creates a somewhat unique id based on the rows / cols of the locMsg
+  let makeId = t => {
+    Belt.Int.(
+      toString(t.row)
+      ++ "-"
+      ++ toString(t.endRow)
+      ++ "-"
+      ++ toString(t.column)
+      ++ "-"
+      ++ toString(t.endColumn)
+    );
+  };
+
+  let dedupe = (arr: array(t)) => {
+    let result = Js.Dict.empty();
+
+    for (i in 0 to Js.Array.length(arr) - 1) {
+      let locMsg = Js.Array2.unsafe_get(arr, i);
+      let id = makeId(locMsg);
+
+      // The last element with the same id wins
+      result->Js.Dict.set(id, locMsg);
+    };
+    Js.Dict.values(result);
+  };
 };
 
 module Warning = {
@@ -173,12 +201,14 @@ module CompileSuccess = {
   type t = {
     js_code: string,
     warnings: array(Warning.t),
+    time: float // total compilation time
   };
 
-  let decode = (json): t => {
+  let decode = (~time: float, json): t => {
     Json.Decode.{
       js_code: field("js_code", string, json),
       warnings: field("warnings", array(Warning.decode), json),
+      time,
     };
   };
 };
@@ -213,7 +243,9 @@ module CompileFail = {
     switch (field("type", string, json)) {
     | "syntax_error" =>
       let locMsgs = field("errors", array(LocMsg.decode), json);
-      SyntaxErr(locMsgs);
+      // TODO: There seems to be a bug in the ReScript bundle that reports
+      //       back multiple LocMsgs of the same value
+      locMsgs->LocMsg.dedupe->SyntaxErr;
     | "type_error" =>
       let locMsgs = field("errors", array(LocMsg.decode), json);
       TypecheckErr(locMsgs);
@@ -241,12 +273,12 @@ module CompilationResult = {
     | Unknown(string, Js.Json.t);
 
   // TODO: We might change this specific api completely before launching
-  let decode = (json: Js.Json.t): t => {
+  let decode = (~time: float, json: Js.Json.t): t => {
     open! Json.Decode;
 
     try(
       switch (field("type", string, json)) {
-      | "success" => Success(CompileSuccess.decode(json))
+      | "success" => Success(CompileSuccess.decode(~time, json))
       | "unexpected_error" => UnexpectedError(field("msg", string, json))
       | _ => Fail(CompileFail.decode(json))
       }
@@ -288,7 +320,6 @@ module Config = {
   type t = {
     module_system: string,
     warn_flags: string,
-    warn_error_flags: string,
   };
 };
 
@@ -299,8 +330,6 @@ module Compiler = {
   [@bs.val] [@bs.scope "bs_platform"] external make: unit => t = "make";
 
   [@bs.get] external version: t => string = "version";
-  [@bs.get]
-  external version_git_commit: t => option(string) = "version_git_commit";
 
   /*
       Res compiler actions
@@ -311,7 +340,11 @@ module Compiler = {
   external resCompile: (t, string) => Js.Json.t = "compile";
 
   let resCompile = (t, code): CompilationResult.t => {
-    resCompile(t, code)->CompilationResult.decode;
+    let startTime = now();
+    let json = resCompile(t, code);
+    let stopTime = now();
+
+    CompilationResult.decode(~time=stopTime -. startTime, json);
   };
 
   [@bs.send] [@bs.scope "napkin"]
@@ -331,7 +364,11 @@ module Compiler = {
   [@bs.send] [@bs.scope "reason"]
   external reasonCompile: (t, string) => Js.Json.t = "compile";
   let reasonCompile = (t, code): CompilationResult.t => {
-    reasonCompile(t, code)->CompilationResult.decode;
+    let startTime = now();
+    let json = reasonCompile(t, code);
+    let stopTime = now();
+
+    CompilationResult.decode(~time=stopTime -. startTime, json);
   };
 
   [@bs.send] [@bs.scope "reason"]
@@ -351,7 +388,11 @@ module Compiler = {
   external ocamlCompile: (t, string) => Js.Json.t = "compile";
 
   let ocamlCompile = (t, code): CompilationResult.t => {
-    ocamlCompile(t, code)->CompilationResult.decode;
+    let startTime = now();
+    let json = ocamlCompile(t, code);
+    let stopTime = now();
+
+    CompilationResult.decode(~time=stopTime -. startTime, json);
   };
 
   /*
@@ -367,9 +408,6 @@ module Compiler = {
 
   [@bs.send] external setWarnFlags: (t, string) => bool = "setWarnFlags";
 
-  [@bs.send]
-  external setWarnErrorFlags: (t, string) => bool = "setWarnErrorFlags";
-
   let setConfig = (t: t, config: Config.t): unit => {
     let moduleSystem =
       switch (config.module_system) {
@@ -383,7 +421,6 @@ module Compiler = {
     );
 
     t->setWarnFlags(config.warn_flags)->ignore;
-    t->setWarnErrorFlags(config.warn_error_flags)->ignore;
   };
 
   [@bs.send]

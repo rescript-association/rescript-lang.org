@@ -1,41 +1,5 @@
 open Util.ReactStuff;
 
-let renderHLJS = (~highlightedLines=[||], ~code: string, ~lang: string, ()) => {
-  // If the language couldn't be parsed, we will fall back to text
-  let (lang, highlighted) =
-    try((lang, HighlightJs.(highlight(~lang, ~value=code)->valueGet))) {
-    | Js.Exn.Error(_) => ("text", code)
-    };
-
-  // Add line highlighting as well
-  let highlighted =
-    if (Belt.Array.length(highlightedLines) > 0) {
-      Js.String2.split(highlighted, "\n")
-      ->Belt.Array.mapWithIndex((i, line) =>
-          if (Js.Array2.find(highlightedLines, lnum => lnum === i + 1) !== None) {
-            "<span class=\"hljs-line-highlight\">" ++ line ++ "</span>";
-          } else {
-            line;
-          }
-        )
-      ->Js.Array2.joinWith("\n");
-    } else {
-      highlighted;
-    };
-
-  ReactDOMRe.createElementVariadic(
-    "code",
-    ~props=
-      ReactDOMRe.objToDOMProps({
-        "className": "wrap hljs lang-" ++ lang,
-        "dangerouslySetInnerHTML": {
-          "__html": highlighted,
-        },
-      }),
-    [||],
-  );
-};
-
 let langShortname = (lang: string) => {
   switch (lang) {
   | "ocaml" => "ml"
@@ -49,7 +13,7 @@ let langShortname = (lang: string) => {
 
 [@react.component]
 let make = (~highlightedLines=[||], ~code: string, ~showLabel=true, ~lang="text") => {
-  let children = renderHLJS(~highlightedLines, ~code, ~lang, ());
+  let children = HighlightJs.renderHLJS(~highlightedLines, ~code, ~lang, ());
 
   let label = if(showLabel) {
     let label = langShortname(lang);
@@ -136,7 +100,7 @@ module Toggle = {
         Belt.Array.get(multiple, selected)
         ->Belt.Option.map(tab => {
             let lang = Belt.Option.getWithDefault(tab.lang, "text");
-            renderHLJS(
+            HighlightJs.renderHLJS(
               ~highlightedLines=?tab.highlightedLines,
               ~code=tab.code,
               ~lang,

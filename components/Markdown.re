@@ -293,7 +293,7 @@ module Code = {
   };
 
   let makeCodeElement = (~code, ~metastring, ~lang) => {
-    let baseClass = "md-code font-mono w-full block leading-tight mt-4 mb-10";
+    let baseClass = "md-code font-mono w-full block  mt-4 mb-10";
     let codeElement =
       switch (metastring) {
       | None => <CodeExample code lang />

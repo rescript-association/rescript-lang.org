@@ -393,7 +393,7 @@ module MobileNav = {
 
 /* isOverlayOpen: if the mobile overlay is toggled open */
 [@react.component]
-let make = (~overlayState: (bool, (bool => bool) => unit)) => {
+let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
   let minWidth = "20rem";
   let router = Next.Router.useRouter();
 
@@ -471,11 +471,16 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
     [||],
   );
 
+  let fixedNav = fixed ? "fixed z-20 top-0" : "";
+
   <nav
     ref={ReactDOMRe.Ref.domRef(outerRef)}
     id="header"
     style={Style.make(~minWidth, ())}
-    className="fixed flex xs:justify-center z-20 top-0 w-full h-18 bg-night-dark shadow text-white-80 text-base">
+    className={
+      fixedNav
+      ++ " flex xs:justify-center w-full h-18 bg-gray-95 shadow text-white-80 text-base"
+    }>
     <div
       className="flex justify-between mx-4 md:mx-8 items-center h-full w-full max-w-1280">
       <div className="h-8 w-8">
@@ -485,13 +490,9 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
           <img src="/static/nav-logo@2x.png" />
         </a>
       </div>
-      /*<img*/
-      /*className="inline-block w-full h-full"*/
-      /*src="/static/reason_logo.svg"*/
-      /*/>*/
       /* Desktop horizontal navigation */
       <div
-        className="flex items-center xs:justify-end w-full bg-night-dark sm:h-auto sm:relative">
+        className="flex items-center xs:justify-end w-full bg-gray-95 sm:h-auto sm:relative">
         <div
           className="flex ml-10 w-full max-w-320"
           style={Style.make(~maxWidth="26rem", ())}>
@@ -569,18 +570,6 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
         <div className="hidden sm:block ml-8"> <DocSearch /> </div>
       </div>
     </div>
-    /*<a*/
-    /*href="https://discord.gg/reasonml"*/
-    /*rel="noopener noreferrer"*/
-    /*target="_blank"*/
-    /*className=link*/
-    /*onMouseEnter=nonCollapsibleOnMouseEnter>*/
-    /*<Icon.Discord className="w-5 h-5" />*/
-    /*</a>*/
-    /*<button*/
-    /*className="hidden sm:flex sm:px-4 sm:items-center sm:justify-center sm:border-l sm:border-r sm:border-night sm:h-full">*/
-    /*<Icon.MagnifierGlass className="w-5 h-5 hover:text-white" />*/
-    /*</button>*/
     /* Burger Button */
     <button
       className="h-full px-4 xs:hidden flex items-center hover:text-white"
@@ -598,7 +587,7 @@ let make = (~overlayState: (bool, (bool => bool) => unit)) => {
       style={Style.make(~minWidth, ~top="4.5rem", ())}
       className={
         (isOverlayOpen ? "flex" : "hidden")
-        ++ " sm:hidden flex-col fixed top-0 left-0 h-full w-full sm:w-9/12 bg-night-dark sm:h-auto sm:flex sm:relative sm:flex-row sm:justify-between"
+        ++ " sm:hidden flex-col fixed top-0 left-0 h-full w-full z-20 sm:w-9/12 bg-gray-100 sm:h-auto sm:flex sm:relative sm:flex-row sm:justify-between"
       }>
       <MobileNav route />
     </div>
