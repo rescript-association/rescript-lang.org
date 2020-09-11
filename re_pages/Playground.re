@@ -1606,7 +1606,7 @@ module OutputPanel = {
     };
 
     <div className="h-full bg-night-dark">
-      <Pane selected=2 tabs makeTabClass />
+      <Pane tabs makeTabClass />
     </div>;
   };
 };
