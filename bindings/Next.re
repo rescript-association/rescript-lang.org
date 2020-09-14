@@ -102,11 +102,13 @@ module Router = {
     route: string,
     asPath: string,
     events: Events.t,
+    query: Js.Dict.t(string),
   };
 
-  [@bs.send] external push: (router, string ) => unit = "push";
+  [@bs.send] external push: (router, string) => unit = "push";
 
   [@bs.module "next/router"] external useRouter: unit => router = "useRouter";
+  [@bs.send] external replace: (router, string) => unit = "replace";
 };
 
 module Head = {
