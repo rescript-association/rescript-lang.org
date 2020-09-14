@@ -430,10 +430,22 @@ module Compiler = {
   // General format function
   let convertSyntax =
       (t, ~fromLang: Lang.t, ~toLang: Lang.t, ~code: string)
-      : ConversionResult.t => {
-    convertSyntax(t, Lang.toExt(fromLang), Lang.toExt(toLang), code)
-    ->ConversionResult.decode(~fromLang, ~toLang);
-  };
+      : ConversionResult.t =>
+
+        // TODO: There is an issue where trying to convert an empty Reason code
+        //       to ReScript code would throw an unhandled JSOO exception
+        //       we'd either need to special case the empty Reason code parsing,
+        //       or handle the error on the JSOO bundle side more gracefully
+    try(
+      convertSyntax(t, Lang.toExt(fromLang), Lang.toExt(toLang), code)
+      ->ConversionResult.decode(~fromLang, ~toLang)
+    ) {
+    | Js.Exn.Error(obj) =>
+      switch (Js.Exn.message(obj)) {
+      | Some(m) => ConversionResult.UnexpectedError(m)
+      | None => UnexpectedError("")
+      }
+    };
 };
 
 [@bs.val] [@bs.scope "bs_platform"]
