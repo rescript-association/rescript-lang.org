@@ -1486,9 +1486,9 @@ module ControlPanel = {
 };
 
 let locMsgToCmError =
-    (~kind: CodeMirror2.Error.kind, locMsg: Api.LocMsg.t): CodeMirror2.Error.t => {
+    (~kind: CodeMirror.Error.kind, locMsg: Api.LocMsg.t): CodeMirror.Error.t => {
   let {Api.LocMsg.row, column, endColumn, endRow, shortMsg} = locMsg;
-  {CodeMirror2.Error.row, column, endColumn, endRow, text: shortMsg, kind};
+  {CodeMirror.Error.row, column, endColumn, endRow, text: shortMsg, kind};
 };
 
 module OutputPanel = {
@@ -1746,7 +1746,7 @@ let default = () => {
 
   let overlayState = React.useState(() => false);
 
-  let windowWidth = CodeMirror2.useWindowWidth();
+  let windowWidth = CodeMirror.useWindowWidth();
 
   // The user can focus an error / warning on a specific line & column
   // which is stored in this ref and triggered by hover / click states
@@ -1872,7 +1872,7 @@ let default = () => {
                   dispatch=compilerDispatch
                   editorCode
                 />
-                <CodeMirror2
+                <CodeMirror
                   className="w-full py-4"
                   minHeight="calc(100vh - 10rem)"
                   maxHeight="calc(100vh - 10rem)"
