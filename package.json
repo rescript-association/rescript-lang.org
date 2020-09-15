@@ -20,6 +20,7 @@
     "glob": "^7.1.4",
     "gray-matter": "^4.0.2",
     "highlight.js": "^9.15.10",
+    "lz-string": "^1.4.4",
     "next": "^9.5.1",
     "next-transpile-modules": "^2.3.1",
     "prettier": "^1.18.2",

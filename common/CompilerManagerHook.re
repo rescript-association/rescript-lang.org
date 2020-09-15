@@ -142,7 +142,7 @@ type ready = {
 type state =
   | Init
   | SetupFailed(string)
-  | SwitchingCompiler(ready, string, array(string))
+  | SwitchingCompiler(ready, string, array(string)) // (ready, targetId, libraries)
   | Ready(ready)
   | Compiling(ready, (Lang.t, string));
 
@@ -159,13 +159,19 @@ type action =
   | CompileCode(Lang.t, string)
   | UpdateConfig(Config.t);
 
-// onAction: This function is especially useful if you want to maintain
-//           state that depends on any action happening in the compiler, no
-//           matter if a state transition happened, or not.
-//           We need that for a ActivityIndicator component to give feedback
-//           to the user that an action happened (useful in cases where the output
-//           didn't visually change)
-let useCompilerManager = (~onAction: option(action => unit)=?, ()) => {
+// ~initialLang:
+// The target language the compiler should be set to during
+// playground initialization.  If the compiler doesn't support the language, it
+// will default to ReScript syntax
+//
+// ~onAction:
+//  This function is especially useful if you want to maintain state that
+//  depends on any action happening in the compiler, no matter if a state
+//  transition happened, or not.  We need that for a ActivityIndicator
+//  component to give feedback to the user that an action happened (useful in
+//  cases where the output didn't visually change)
+let useCompilerManager =
+    (~initialLang: Lang.t=Res, ~onAction: option(action => unit)=?, ()) => {
   let (state, setState) = React.useState(_ => Init);
 
   // Dispatch method for the public interface
@@ -365,10 +371,17 @@ let useCompilerManager = (~onAction: option(action => unit)=?, ()) => {
                       instance,
                     };
 
+                    let targetLang =
+                      Version.availableLanguages(apiVersion)
+                      ->Js.Array2.find(l => {l === initialLang})
+                      ->Belt.Option.getWithDefault(
+                          Version.defaultTargetLang(apiVersion),
+                        );
+
                     setState(_ => {
                       Ready({
                         selected,
-                        targetLang: Version.defaultTargetLang(apiVersion),
+                        targetLang,
                         versions,
                         errors: [||],
                         result: FinalResult.Nothing,

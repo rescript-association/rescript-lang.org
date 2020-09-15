@@ -17,6 +17,17 @@ open Util.ReactStuff;
 open CompilerManagerHook;
 module Api = Bs_platform_api;
 
+// Used for compressing / decompressing code for url sharing
+module LzString = {
+  [@bs.module "lz-string"]
+  external compressToEncodedURIComponent: string => string =
+    "compressToEncodedURIComponent";
+
+  [@bs.module "lz-string"]
+  external decompressToEncodedURIComponent: string => string =
+    "decompressFromEncodedURIComponent";
+};
+
 module DropdownSelect = {
   type style = [ | `Error | `Normal];
 
@@ -210,31 +221,37 @@ module SingleTabPane = {
 };
 
 module Statusbar = {
-  let renderTitle = result => {
+  let renderTitle = (~targetLang, result) => {
     /*let errClass = "text-fire";*/
     /*let warnClass = "text-code-5";*/
     /*let okClass = "text-dark-code-3";*/
     let errClass = "text-white-80";
-    let warnClass = "text-white-80";
+    let warnClass = "text-white font-bold";
     let okClass = "text-white-80";
 
     let (className, text) =
       switch (result) {
       | FinalResult.Comp(Fail(result)) =>
         switch (result) {
-        | SyntaxErr(_) => (errClass, "Syntax Errors")
+        | SyntaxErr(_) => (
+            errClass,
+            "Syntax Errors (" ++ Api.Lang.toString(targetLang) ++ ")",
+          )
         | TypecheckErr(_) => (errClass, "Type Errors")
         | WarningErr(_) => (warnClass, "Warning Errors")
         | WarningFlagErr(_) => (errClass, "Config Error")
         | OtherErr(_) => (errClass, "Errors")
         }
       | Conv(Fail(_)) => (errClass, "Syntax Errors")
-      | Comp(Success({warnings, time})) =>
-        let ms = Belt.Float.toInt(time)->Belt.Int.toString ++ " ms";
-        if (Belt.Array.length(warnings) === 0) {
-          (okClass, "Compiled in " ++ ms);
+      | Comp(Success({warnings})) =>
+        let warningNum = Belt.Array.length(warnings);
+        if (warningNum === 0) {
+          (okClass, "Compiled successfully");
         } else {
-          (warnClass, "Compiled with Warnings in " ++ ms);
+          (
+            warnClass,
+            "Compiled with " ++ Belt.Int.toString(warningNum) ++ " Warning(s)",
+          );
         };
       | Conv(Success(_)) => (okClass, "Format Successful")
       | Comp(UnexpectedError(_))
@@ -277,7 +294,7 @@ module Statusbar = {
         }>
         <div className="flex items-center font-medium px-4">
           <div key=actionIndicatorKey className="pr-4 animate-pulse">
-            {renderTitle(result)}
+            {renderTitle(~targetLang=ready.targetLang, result)}
           </div>
         </div>
       </div>;
@@ -431,9 +448,8 @@ module ResultPane = {
           msg->s
         </div>
       }
-    | Comp(Success({warnings, time})) =>
+    | Comp(Success({warnings})) =>
       if (Array.length(warnings) === 0) {
-        let ms = Belt.Float.toInt(time)->Belt.Int.toString ++ " ms";
         <PreWrap> "0 Errors, 0 Warnings"->s </PreWrap>;
       } else {
         filterHighlightedLocWarnings(~focusedRowCol, warnings)
@@ -542,12 +558,15 @@ module ResultPane = {
         | OtherErr(_) => (errClass, "Errors")
         }
       | Conv(Fail(_)) => (errClass, "Syntax Errors")
-      | Comp(Success({warnings, time})) =>
-        let ms = Belt.Float.toInt(time)->Belt.Int.toString ++ " ms";
-        if (Belt.Array.length(warnings) === 0) {
-          (okClass, "Compiled in " ++ ms);
+      | Comp(Success({warnings})) =>
+        let warningNum = Belt.Array.length(warnings);
+        if (warningNum === 0) {
+          (okClass, "Compiled successfully");
         } else {
-          (warnClass, "Compiled with Warnings in " ++ ms);
+          (
+            warnClass,
+            "Compiled with " ++ Belt.Int.toString(warningNum) ++ " Warning(s)",
+          );
         };
       | Conv(Success(_)) => (okClass, "Format Successful")
       | Comp(UnexpectedError(_))
@@ -1299,123 +1318,169 @@ module ControlPanel = {
     let make = (~children, ~onClick=?) => {
       <button
         ?onClick
-        className="inline-block bg-sky hover:cursor-pointer text-white hover:text-white-80 rounded border active:bg-sky-80 border-sky-80 px-2 py-1 ">
+        className="inline-block text-sky hover:cursor-pointer hover:bg-sky hover:text-white-80 rounded border active:bg-sky-80 border-sky-80 px-2 py-1 ">
         children
       </button>;
     };
   };
+  module ShareButton = {
+    let copyToClipboard: string => bool = [%raw
+      {j|
+    function(str) {
+      try {
+      const el = document.createElement('textarea');
+      el.value = str;
+      el.setAttribute('readonly', '');
+      el.style.position = 'absolute';
+      el.style.left = '-9999px';
+      document.body.appendChild(el);
+      const selected =
+        document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      if (selected) {
+        document.getSelection().removeAllRanges();
+        document.getSelection().addRange(selected);
+      }
+      return true;
+      } catch(e) {
+        return false;
+      }
+    }
+    |j}
+    ];
 
+    [@bs.val] [@bs.scope "document"]
+    external execCommand: [ | `copy] => unit = "execCommand";
+
+    [@bs.send] external select: Dom.element => unit = "select";
+    [@bs.send]
+    external setSelectionRange: (Dom.element, int, int) => unit =
+      "setSelectionRange";
+
+    [@bs.set] external setValue: (Dom.element, string) => unit = "value";
+    [@bs.get] external value: Dom.element => string = "value";
+
+    type state =
+      | Init
+      | CopySuccess
+      | CopyFailed;
+
+    [@react.component]
+    let make = (~createShareLink: unit => string, ~actionIndicatorKey: string) => {
+      let (state, setState) = React.useState(() => Init);
+
+      React.useEffect1(
+        () => {
+          setState(_ => Init);
+          None;
+        },
+        [|actionIndicatorKey|],
+      );
+
+      let onClick = evt => {
+        ReactEvent.Mouse.preventDefault(evt);
+        let url = createShareLink();
+        let ret = copyToClipboard(url);
+        if (ret) {
+          setState(_ => CopySuccess);
+        };
+      };
+
+      let (text, className) =
+        switch (state) {
+        | Init => (
+            "Copy Share Link",
+            " bg-sky active:bg-sky-80 border-sky-80",
+          )
+        | CopySuccess => (
+            "Copied to clipboard!",
+            "bg-dark-code-3 border-dark-code-3",
+          )
+        | CopyFailed => ("Copy failed...", "")
+        };
+
+      <>
+        <button
+          onClick
+          className={
+            className
+            ++ " w-40 transition-all duration-500 ease-in-out inline-block hover:cursor-pointer hover:text-white-80 text-white rounded border px-2 py-1 "
+          }>
+          text->s
+        </button>
+      </>;
+    };
+  };
+
+  [@bs.val] [@bs.scope "window.location"] external origin: string = "origin";
   [@react.component]
   let make =
       (
+        ~actionIndicatorKey: string,
         ~state: CompilerManagerHook.state,
         ~dispatch: CompilerManagerHook.action => unit,
         ~editorCode: React.Ref.t(string),
       ) => {
+    let router = Next.Router.useRouter();
     let children =
       switch (state) {
       | Init => "Initializing..."->s
-      | SwitchingCompiler(_, _, _) =>
-        ("Switching Compiler...")->s
-      | Compiling(_ready, _)
-      | Ready(_ready) =>
+      | SwitchingCompiler(_, _, _) => "Switching Compiler..."->s
+      | Compiling(ready, _)
+      | Ready(ready) =>
         let onFormatClick = evt => {
           ReactEvent.Mouse.preventDefault(evt);
           dispatch(Format(React.Ref.current(editorCode)));
         };
-        <Button onClick=onFormatClick> "Format"->s </Button>;
+
+        let createShareLink = () => {
+          let params =
+            switch (ready.targetLang) {
+            | Res => [||]
+            | lang => [|("ext", Api.Lang.toExt(lang))|]
+            };
+
+          Js.Array2.push(
+            params,
+            (
+              "code",
+              editorCode
+              ->React.Ref.current
+              ->LzString.compressToEncodedURIComponent,
+            ),
+          )
+          ->ignore;
+
+          let querystring =
+            Belt.Array.reduce(
+              params,
+              "",
+              (acc, next) => {
+                let (key, value) = next;
+
+                if (acc === "") {
+                  "?" ++ key ++ "=" ++ value;
+                } else {
+                  acc ++ "&" ++ key ++ "=" ++ value;
+                };
+              },
+            );
+
+          origin ++ router.route ++ querystring;
+        };
+        <>
+          <div className="mr-2">
+            <Button onClick=onFormatClick> "Format"->s </Button>
+          </div>
+          <ShareButton actionIndicatorKey createShareLink />
+        </>;
       | _ => React.null
       };
 
     <div className="flex justify-end items-center h-12 bg-night-10 px-4">
       children
-    </div>;
-  };
-};
-
-module ControlPanelOld = {
-  [@react.component]
-  let make =
-      (
-        ~isCompilerSwitching: bool,
-        ~compilerVersion: string,
-        ~availableCompilerVersions: array(string),
-        ~availableTargetLangs: array(Api.Lang.t),
-        ~selectedTargetLang: (Api.Lang.t, string), // (lang, version)
-        ~loadedLibraries: array(string),
-        ~onCompilerSelect: string => unit,
-        ~onFormatClick: option(unit => unit)=?,
-        ~onCompileClick: unit => unit,
-        ~onTargetLangSelect: Api.Lang.t => unit,
-      ) => {
-    let (targetLang, targetLangVersion) = selectedTargetLang;
-
-    let targetLangName = Api.Lang.toString(targetLang);
-
-    let formatClickHandler =
-      switch (onFormatClick) {
-      | Some(cb) =>
-        let handler = evt => {
-          ReactEvent.Mouse.preventDefault(evt);
-          cb();
-        };
-        Some(handler);
-      | None => None
-      };
-
-    <div className="flex bg-gray-100 text-night-light px-6 text-14 w-full">
-      <div
-        className="flex justify-between items-center border-t py-4 border-night-60 w-full">
-        <div>
-          <span className="font-semibold mr-2"> "REV: "->s </span>
-          <DropdownSelect
-            name="compilerVersions"
-            value=compilerVersion
-            disabled=isCompilerSwitching
-            onChange={evt => {
-              ReactEvent.Form.preventDefault(evt);
-              let id = evt->ReactEvent.Form.target##value;
-              onCompilerSelect(id);
-            }}>
-            {Belt.Array.map(availableCompilerVersions, version => {
-               <option className="py-4" key=version value=version>
-                 version->s
-               </option>
-             })
-             ->ate}
-          </DropdownSelect>
-        </div>
-        <button
-          className={
-            (isCompilerSwitching ? "opacity-25" : "")
-            ++ " font-semibold inline-block border border-night-light rounded py-1 px-4"
-          }
-          disabled=isCompilerSwitching
-          onClick=?formatClickHandler>
-          "Format"->s
-        </button>
-        /*
-         <div className="font-semibold">
-           "Bindings: "->s
-           {switch (loadedLibraries) {
-            | [||] => "No third party library loaded"->s
-            | arr => Js.Array2.joinWith(arr, ", ")->s
-            }}
-         </div>
-         */
-        <button
-          disabled=isCompilerSwitching
-          className={
-            (isCompilerSwitching ? "opacity-25" : "")
-            ++ " inline-block active:bg-sky-80 bg-sky text-16 text-white-80 rounded py-2 px-6"
-          }
-          onClick={evt => {
-            ReactEvent.Mouse.preventDefault(evt);
-            onCompileClick();
-          }}>
-          "Compile"->s
-        </button>
-      </div>
     </div>;
   };
 };
@@ -1582,7 +1647,7 @@ module OutputPanel = {
     let tabs = [|
       {Pane.title: "JavaScript", content: output},
       {
-        title: "Errors",
+        title: "Problems",
         content:
           <div style={ReactDOMRe.Style.make(~height="50%", ())}>
             errorPane
@@ -1605,36 +1670,15 @@ module OutputPanel = {
       "flex items-center h-12 px-4 pr-16 " ++ activeClass;
     };
 
-    <div className="h-full bg-night-dark">
-      <Pane tabs makeTabClass />
-    </div>;
+    <div className="h-full bg-night-dark"> <Pane tabs makeTabClass /> </div>;
   };
 };
 
-[@react.component]
-let default = () => {
-  // We don't count to infinity. This value is only required to trigger
-  // rerenders for specific components (ActivityIndicator)
-  let (actionCount, setActionCount) = React.useState(_ => 0);
-  let onAction = _ => {
-    setActionCount(prev => prev > 1000000 ? 0 : prev + 1);
-  };
-  let (compilerState, compilerDispatch) = useCompilerManager(~onAction, ());
-
-  let overlayState = React.useState(() => false);
-
-  let windowWidth = CodeMirror2.useWindowWidth();
-
-  // The user can focus an error / warning on a specific line & column
-  // which is stored in this ref and triggered by hover / click states
-  // in the CodeMirror editor
-  let (focusedRowCol, setFocusedRowCol) = React.useState(_ => None);
-
-  let initialContent = {j|// Please note:
+let initialResContent = {j|// Please note:
 // ---
 // The Playground is still a work in progress
 // ReScript / old Reason syntax should parse just
-// fine.
+// fine (go to the "Settings" panel for toggling syntax).
 //
 // Feel free to play around and compile some
 // ReScript code!
@@ -1652,34 +1696,62 @@ module Button = {
     <button> {msg->React.string} </button>
   }
 }
+|j};
 
-module Button2 = {
-  @react.component
-  let make = (~count: int) => {
-    let times = switch count {
-    | 1 => "once"
-    | 2 => "twice"
-    | n => Belt.Int.toString(n) ++ " times"
-    }
-    let msg = "Click me " ++ times
+let initialReContent = {j|Js.log("Hello Reason 3.6!");|j};
 
-    <button> {msg->React.string} </button>
-  }
-}
+[@react.component]
+let default = () => {
+  let router = Next.Router.useRouter();
 
-module Button3 = {
-  @react.component
-  let make = (~count: int) => {
-    let times = switch count {
-    | 1 => "once"
-    | 2 => "twice"
-    | n => Belt.Int.toString(n) ++ " times"
-    }
-    let msg = "Click me " ++ times
+  let initialLang =
+    switch (Js.Dict.get(router.query, "ext")) {
+    | Some("re") => Api.Lang.Reason
+    | _ => Api.Lang.Res
+    };
 
-    <button> {msg->React.string} </button>
-  }
-}|j};
+  let initialContent =
+    switch (Js.Dict.get(router.query, "code"), initialLang) {
+    | (Some(compressedCode), _) =>
+      LzString.decompressToEncodedURIComponent(compressedCode)
+    | (None, Reason) => initialReContent
+    | (None, Res)
+    | (None, _) => initialResContent
+    };
+
+  // We cleanup all the unwanted query attributes on load to make
+  // sure the url is not getting out of sync with the actual content
+  React.useEffect1(
+    () => {
+      // Clean out the url after loading all query params
+      if (router.asPath !== "/try") {
+        Next.Router.replace(router, "/try");
+      } else {
+        ();
+      };
+
+      None;
+    },
+    [|router.route|],
+  );
+
+  // We don't count to infinity. This value is only required to trigger
+  // rerenders for specific components (ActivityIndicator)
+  let (actionCount, setActionCount) = React.useState(_ => 0);
+  let onAction = _ => {
+    setActionCount(prev => prev > 1000000 ? 0 : prev + 1);
+  };
+  let (compilerState, compilerDispatch) =
+    useCompilerManager(~initialLang, ~onAction, ());
+
+  let overlayState = React.useState(() => false);
+
+  let windowWidth = CodeMirror2.useWindowWidth();
+
+  // The user can focus an error / warning on a specific line & column
+  // which is stored in this ref and triggered by hover / click states
+  // in the CodeMirror editor
+  let (focusedRowCol, setFocusedRowCol) = React.useState(_ => None);
 
   let editorCode = React.useRef(initialContent);
 
@@ -1787,9 +1859,15 @@ module Button3 = {
           style={ReactDOMRe.Style.make(~maxHeight="calc(100vh - 4.5rem)", ())}>
           <div
             className="w-full h-full flex flex-col lg:flex-row border-t-4 border-night">
-            <div className="w-full lg:border-r-4 pl-2 border-night">
+            <div
+              className="w-full lg:border-r-4 pl-2 border-night"
+              style=?{
+                windowWidth > 1024
+                  ? Some(ReactDOMRe.Style.make(~maxWidth="65%", ())) : None
+              }>
               <div className="bg-gray-100 text-snow-darker">
                 <ControlPanel
+                  actionIndicatorKey={Belt.Int.toString(actionCount)}
                   state=compilerState
                   dispatch=compilerDispatch
                   editorCode
