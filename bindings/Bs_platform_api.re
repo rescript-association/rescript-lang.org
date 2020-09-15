@@ -327,16 +327,16 @@ module Compiler = {
   type t;
 
   // Factory
-  [@bs.val] [@bs.scope "bs_platform"] external make: unit => t = "make";
+  [@bs.val] [@bs.scope "rescript_compiler"] external make: unit => t = "make";
 
   [@bs.get] external version: t => string = "version";
 
   /*
       Res compiler actions
    */
-  [@bs.get] [@bs.scope "napkin"] external resVersion: t => string = "version";
+  [@bs.get] [@bs.scope "rescript"] external resVersion: t => string = "version";
 
-  [@bs.send] [@bs.scope "napkin"]
+  [@bs.send] [@bs.scope "rescript"]
   external resCompile: (t, string) => Js.Json.t = "compile";
 
   let resCompile = (t, code): CompilationResult.t => {
@@ -347,7 +347,7 @@ module Compiler = {
     CompilationResult.decode(~time=stopTime -. startTime, json);
   };
 
-  [@bs.send] [@bs.scope "napkin"]
+  [@bs.send] [@bs.scope "rescript"]
   external resFormat: (t, string) => Js.Json.t = "format";
 
   let resFormat = (t, code): ConversionResult.t => {
@@ -448,5 +448,5 @@ module Compiler = {
     };
 };
 
-[@bs.val] [@bs.scope "bs_platform"]
+[@bs.val] [@bs.scope "rescript_compiler"]
 external apiVersion: string = "api_version";
