@@ -243,7 +243,7 @@ module Statusbar = {
         | OtherErr(_) => (errClass, "Errors")
         }
       | Conv(Fail(_)) => (errClass, "Syntax Errors")
-      | Comp(Success({warnings, time})) =>
+      | Comp(Success({warnings})) =>
         let warningNum = Belt.Array.length(warnings);
         if (warningNum === 0) {
           (okClass, "Compiled successfully");
@@ -448,9 +448,8 @@ module ResultPane = {
           msg->s
         </div>
       }
-    | Comp(Success({warnings, time})) =>
+    | Comp(Success({warnings})) =>
       if (Array.length(warnings) === 0) {
-        let ms = Belt.Float.toInt(time)->Belt.Int.toString ++ " ms";
         <PreWrap> "0 Errors, 0 Warnings"->s </PreWrap>;
       } else {
         filterHighlightedLocWarnings(~focusedRowCol, warnings)
@@ -559,7 +558,7 @@ module ResultPane = {
         | OtherErr(_) => (errClass, "Errors")
         }
       | Conv(Fail(_)) => (errClass, "Syntax Errors")
-      | Comp(Success({warnings, time})) =>
+      | Comp(Success({warnings})) =>
         let warningNum = Belt.Array.length(warnings);
         if (warningNum === 0) {
           (okClass, "Compiled successfully");
@@ -1648,7 +1647,7 @@ module OutputPanel = {
     let tabs = [|
       {Pane.title: "JavaScript", content: output},
       {
-        title: "Errors",
+        title: "Problems",
         content:
           <div style={ReactDOMRe.Style.make(~height="50%", ())}>
             errorPane
@@ -1679,7 +1678,7 @@ let initialResContent = {j|// Please note:
 // ---
 // The Playground is still a work in progress
 // ReScript / old Reason syntax should parse just
-// fine.
+// fine (go to the "Settings" panel for toggling syntax).
 //
 // Feel free to play around and compile some
 // ReScript code!
@@ -1697,34 +1696,7 @@ module Button = {
     <button> {msg->React.string} </button>
   }
 }
-
-module Button2 = {
-  @react.component
-  let make = (~count: int) => {
-    let times = switch count {
-    | 1 => "once"
-    | 2 => "twice"
-    | n => Belt.Int.toString(n) ++ " times"
-    }
-    let msg = "Click me " ++ times
-
-    <button> {msg->React.string} </button>
-  }
-}
-
-module Button3 = {
-  @react.component
-  let make = (~count: int) => {
-    let times = switch count {
-    | 1 => "once"
-    | 2 => "twice"
-    | n => Belt.Int.toString(n) ++ " times"
-    }
-    let msg = "Click me " ++ times
-
-    <button> {msg->React.string} </button>
-  }
-}|j};
+|j};
 
 let initialReContent = {j|Js.log("Hello Reason 3.6!");|j};
 
