@@ -41,7 +41,6 @@ let useWindowWidth: unit => int = [%raw
 
     function handleResize() {
       if(!throttled) {
-        console.log("called resize");
         setWindowSize(getSize());
 
         throttled = true;
