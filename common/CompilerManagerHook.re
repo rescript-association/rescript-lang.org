@@ -8,7 +8,7 @@
     The interface is defined with a finite state and action dispatcher.
  */
 
-open Bs_platform_api;
+open RescriptCompilerApi;
 
 module LoadScript = {
   type err;

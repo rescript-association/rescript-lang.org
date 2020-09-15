@@ -15,7 +15,7 @@ open Util.ReactStuff;
  */
 
 open CompilerManagerHook;
-module Api = Bs_platform_api;
+module Api = RescriptCompilerApi;
 
 // Used for compressing / decompressing code for url sharing
 module LzString = {
