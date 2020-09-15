@@ -498,8 +498,8 @@ let make =
     Belt.Array.map(
       errors,
       e => {
-        let {Error.row, column, text} = e;
-        {j|$row-$column-$text|j};
+        let {Error.row, column} = e;
+        {j|$row-$column|j};
       },
     )
     ->Js.Array2.joinWith(";");
