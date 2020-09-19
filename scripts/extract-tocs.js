@@ -153,6 +153,7 @@ const createReactToc = () => {
     "installation",
     "rendering-elements",
     "components-and-props",
+    "arrays-and-keys",
   ];
 
   const files = glob.sync(`${MD_DIR}/*.md?(x)`);
