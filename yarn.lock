@@ -5809,7 +5809,7 @@ randomfill@^1.0.3:
     randombytes "^2.0.5"
     safe-buffer "^5.1.0"
 
-react-dom@>=16.8.1, react-dom@^16.12.0:
+react-dom@^16.12.0:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.13.1.tgz#c1bd37331a0486c078ee54c4740720993b2e0e7f"
   integrity sha512-81PIMmVLnCNLO/fFOQxdQkvEq/+Hfpv24XNJfpyZhTRfO0QcmQIF/PgCa1zCOj2w1hrn12MFLyaJ/G0+Mxtfag==
@@ -5829,7 +5829,7 @@ react-refresh@0.8.3:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
 
-react@>=16.8.1, react@^16.12.0:
+react@^16.12.0:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
   integrity sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w==
@@ -5893,13 +5893,10 @@ reason-promise@^1.0.2:
   resolved "https://registry.yarnpkg.com/reason-promise/-/reason-promise-1.1.1.tgz#966133fed21e748a50ffb8839a1da04912bcf380"
   integrity sha512-xMXDiyzTjn7t9pq9aQrkgu8CLB5DILU70oWQ+LI20YecshypUwsw37TKOvCxgoFR3vo30ucF0/iWe2BZ181/jw==
 
-reason-react@^0.7.0:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/reason-react/-/reason-react-0.7.1.tgz#e6acea88542cd44398cd980093b8a2ab2722744e"
-  integrity sha512-Ssx4jZYohMHW9ZiW893IfbYdZw/muSmPFKigAgL+AORUgyiaphb0PP4yRGlx9A7JAxR3EeBn294XKUaClJQhbA==
-  dependencies:
-    react ">=16.8.1"
-    react-dom ">=16.8.1"
+reason-react@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/reason-react/-/reason-react-0.9.1.tgz#30a887158200b659aa03e2d75ff4cc54dc462bb0"
+  integrity sha512-nlH0O2TDy9KzOLOW+vlEQk4ExHOeciyzFdoLcsmmiit6hx6H5+CVDrwJ+8aiaLT/kqK5xFOjy4PS7PftWz4plA==
 
 reduce-css-calc@^2.1.6:
   version "2.1.7"
