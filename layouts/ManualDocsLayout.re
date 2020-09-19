@@ -200,6 +200,7 @@ module Docs = {
       categories
       version
       title
+      metaTitleCategory="ReScript Language Manual"
       availableVersions=allManualVersions
       latestVersionLabel
       ?frontmatter

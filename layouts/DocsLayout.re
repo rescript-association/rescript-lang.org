@@ -11,7 +11,6 @@ module Category = Sidebar.Category;
 
 let makeBreadcrumbsFromPaths =
     (~basePath: string, paths: array(string)): list(Url.breadcrumb) => {
-      Js.log(paths);
   let (_, rest) =
     Belt.Array.reduce(
       paths,
@@ -21,8 +20,7 @@ let makeBreadcrumbsFromPaths =
 
         let href = baseHref ++ "/" ++ path;
 
-        Js.Array2.push(ret, Url.{name: prettyString(path), href})
-        ->ignore;
+        Js.Array2.push(ret, Url.{name: prettyString(path), href})->ignore;
         (href, ret);
       },
     );
@@ -42,8 +40,7 @@ let makeBreadcrumbs =
 
           let href = baseHref ++ "/" ++ path;
 
-          Js.Array2.push(ret,Url.{name: prettyString(path), href})
-          ->ignore;
+          Js.Array2.push(ret, Url.{name: prettyString(path), href})->ignore;
           (href, ret);
         },
       );
@@ -55,6 +52,7 @@ let make =
     (
       ~breadcrumbs: option(list(Url.breadcrumb))=?,
       ~title: string,
+      ~metaTitleCategory: option(string)=?, // e.g. Introduction | My Meta Title Category
       ~frontmatter: option(Js.Json.t)=?,
       ~version: option(string)=?,
       ~availableVersions: option(array(string))=?,
@@ -139,7 +137,12 @@ let make =
       route
     />;
 
-  let metaTitle = title ++ " | ReScript Documentation";
+  let metaTitle =
+    switch (metaTitleCategory) {
+    | Some(titleCategory) =>
+      titleCategory ++ " | " ++ "ReScript Documentation"
+    | None => title
+    };
 
   let metaElement =
     switch (frontmatter) {
@@ -148,7 +151,11 @@ let make =
       | Ok(fm) =>
         let canonical = Js.Null.toOption(fm.canonical);
         let description = Js.Null.toOption(fm.description);
-        let title = fm.title ++ " | ReScript Language Manual";
+        let title =
+          switch (metaTitleCategory) {
+          | Some(titleCategory) => fm.title ++ " | " ++ titleCategory
+          | None => title
+          };
         <Meta title ?description ?canonical />;
       | Error(_) => React.null
       }
@@ -165,4 +172,93 @@ let make =
     metaElement
     children
   </SidebarLayout>;
+};
+
+module type StaticContent = {
+  /*let categories: array(SidebarLayout.Sidebar.Category.t);*/
+  let tocData: SidebarLayout.Toc.raw;
+};
+
+module Make = (Content: StaticContent) => {
+  [@react.component]
+  let make =
+      (
+        ~breadcrumbs: option(list(Url.breadcrumb))=?,
+        ~title: string,
+        ~metaTitleCategory: option(string)=?,
+        ~frontmatter: option(Js.Json.t)=?,
+        ~version: option(string)=?,
+        ~availableVersions: option(array(string))=?,
+        ~latestVersionLabel: option(string)=?,
+        /*~activeToc: option(SidebarLayout.Toc.t)=?,*/
+        ~components: option(Mdx.Components.t)=?,
+        ~theme: option(ColorTheme.t)=?,
+        ~children: React.element,
+      ) => {
+    let router = Next.Router.useRouter();
+    let route = router.route;
+
+    let activeToc: option(SidebarLayout.Toc.t) =
+      Belt.Option.(
+        Js.Dict.get(Content.tocData, route)
+        ->map(data => {
+            open SidebarLayout.Toc;
+            let title = data##title;
+            let entries =
+              Belt.Array.map(data##headers, header =>
+                {header: header##name, href: "#" ++ header##href}
+              );
+            {title, entries};
+          })
+      );
+
+    let categories = {
+      let groups =
+        Js.Dict.entries(Content.tocData)
+        ->Belt.Array.reduce(
+            Js.Dict.empty(),
+            (acc, next) => {
+              let (_, value) = next;
+              switch (Js.Nullable.toOption(value##category)) {
+              | Some(category) =>
+                switch (acc->Js.Dict.get(category)) {
+                | None => acc->Js.Dict.set(category, [|next|])
+                | Some(arr) =>
+                  Js.Array2.push(arr, next)->ignore;
+                  acc->Js.Dict.set(category, arr);
+                }
+              | None => 
+              Js.log2("has NO category", next);
+              ()
+              };
+              acc;
+            },
+          );
+      Js.Dict.entries(groups)
+      ->Belt.Array.map(((name, values)) => {
+          Category.{
+            name,
+            items:
+              Belt.Array.map(values, ((href, value)) => {
+                {NavItem.name: value##title, href}
+              }),
+          }
+        });
+    };
+
+    make({
+      "breadcrumbs": breadcrumbs,
+      "title": title,
+      "metaTitleCategory": metaTitleCategory,
+      "frontmatter": frontmatter,
+      "version": version,
+      "availableVersions": availableVersions,
+      "latestVersionLabel": latestVersionLabel,
+      "activeToc": activeToc,
+      "categories": categories,
+      "components": components,
+      "theme": theme,
+      "children": children,
+    });
+  };
 };

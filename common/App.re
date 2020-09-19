@@ -110,6 +110,10 @@ let default = (props: props): React.element => {
     }
   | {base: [|"docs", "reason-compiler"|], version: Latest} =>
     <ReasonCompilerDocsLayout> content </ReasonCompilerDocsLayout>
+  | {base: [|"docs", "react"|], version: Latest} =>
+    <ReactDocsLayout frontmatter={component->frontmatter}>
+      content
+    </ReactDocsLayout>
   | {base: [|"docs", "gentype"|], version: Latest} =>
     <GenTypeDocsLayout> content </GenTypeDocsLayout>
   // common routes
@@ -123,12 +127,17 @@ let default = (props: props): React.element => {
       // to keep the frontmatter parsing etc in one place
       content
     | _ =>
+      let title =
+        switch (url) {
+        | {base: [|"docs"|]} => Some("Overview | ReScript Documentation")
+        | _ => None
+        };
       <MainLayout>
-        <Meta />
+        <Meta ?title />
         <div className="flex justify-center">
           <div className="max-w-705 w-full"> content </div>
         </div>
-      </MainLayout>
+      </MainLayout>;
     }
   };
 };

@@ -8,6 +8,19 @@ open Util.ReactStuff;
 module Link = Next.Link;
 
 module Toc = {
+  type raw =
+    Js.Dict.t({
+      .
+      "title": string,
+      "category": Js.Nullable.t(string),
+      "headers":
+        array({
+          .
+          "name": string,
+          "href": string,
+        }),
+    });
+
   type entry = {
     header: string,
     href: string,
@@ -122,7 +135,6 @@ module Sidebar = {
       </div>;
     };
   };
-
 
   // subitems: list of functions inside given module (defined by route)
   [@react.component]
