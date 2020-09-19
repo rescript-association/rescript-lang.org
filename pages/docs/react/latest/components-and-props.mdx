@@ -90,12 +90,180 @@ var make = Article;
 
 ### Optional Props
 
+We can leverage the full power of labeled arguments to define optional props as well:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// Greeting.res
+@react.component
+let make = (~name: option<string>=?) => {
+  let greeting = switch name {
+    | Some(name) => "Hello " ++ name ++ "!"
+    | None => "Hello stranger!"
+  }
+  <div> {React.string(greeting)} </div>
+}
+```
+
+```js
+function Greeting(Props) {
+  var name = Props.name;
+  var greeting = name !== undefined ? "Hello " + name + "!" : "Hello stranger!";
+  return React.createElement("div", undefined, greeting);
+}
+```
+
+</CodeTab>
+
+**Note:** The `@react.component` attribute implicitly adds the last `()` parameter to our `make` function for us (no need to do it ourselves). 
+
+In JSX, you can apply optional props with some special syntax:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let name = Some("Andrea")
+
+<Greeting ?name />
+```
+
+```js
+var Caml_option = require("./stdlib/caml_option.js");
+var name = "Andrea";
+
+var tmp = {};
+
+if (name !== undefined) {
+  tmp.name = Caml_option.valFromOption(name);
+}
+
+var greeting = React.createElement(Playground$Greeting, tmp);
+```
+
+</CodeTab>
+
+### Children Props
+
+In React `props.children` is a special attribute to represent the nested elements within a parent element:
+
+```res
+let element = <div> child1 child2 </div>
+```
+
+By default, whenever you are passing children like in the expression above, `children` will be treated
+as a `React.element`:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+module MyList = {
+  @react.component
+  let make = (~children: React.element) => {
+    <ul>
+      children
+    </ul>
+  }
+}
+
+<MyList>
+  <li> {React.string("Item 1")} </li>
+  <li> {React.string("Item 2")} </li>
+</MyList>
+```
+
+```js
+
+function MyList(Props) {
+  var children = Props.children;
+  return React.createElement("ul", undefined, children);
+}
+
+var MyList = {
+  make: MyList
+};
+
+React.createElement(MyList, {
+      children: null
+    }, React.createElement("li", undefined, "Item 1"),
+        React.createElement("li", undefined, "Item 2"));
+```
+
+</CodeTab>
+
+Interestingly, it doesn't matter if you are passing just one element, or several, React will always collapse its children to a single `React.element`.
+
+It is also possible to redefine the `children` type as well. Here are some examples:
+
+**Component with a mandatory `string` as children:**
+
+```res
+module StringChildren = {
+  @react.component
+  let make = (~children: string) => {
+    <div>
+      {React.string(children)}
+    </div>
+  }
+}
+
+<StringChildren> "My Child" </StringChildren>
+
+// This will cause a type check error
+<StringChildren/>
+```
+
+**Component with an optional `React.element` as children:**
+
+```res
+module OptionalChildren = {
+  @react.component
+  let make = (~children: option<React.element>=?) => {
+    <div>
+      {switch children {
+      | Some(element) => element
+      | None => React.string("No children provided")
+      }}
+    </div>
+  }
+}
+
+<div>
+  <OptionalChildren />
+  <OptionalChildren> <div /> </OptionalChildren>
+</div>
+```
+
+**Component that doesn't allow children at all:**
+
+```res
+module NoChildren = {
+  @react.component
+  let make = () => {
+    <div>
+      {React.string("I don't accept any children params")}
+    </div>
+  }
+}
+
+// The compiler will raise a type error here
+<NoChildren> <div/> </NoChildren>
+```
+
+Children props are really tempting to be abused as a way to model hierarchies, e.g. `<List> <ListHeader/> <Item/> </List>` (`List` should only allow `Item` / `ListHeader` elements), but this kind of constraint is hard to enforce because all components end up being `React.element`, so it would require notorious runtime checking within `List` to verify that all children are in fact of type `Item` or `ListHeader`.
+
+The best way to approach this kind of issue is by using props instead of children, e.g. `<List header="..." items=[{id: "...", text: "..."}]/>`. This way it's easy to type check the constraints, and also spares us many hours debugging and remembering component constraints.
+
+**The best use-case for `children` is to pass down `React.element`s, no matter what kind of elements they are!**
+
+
+
 ### Type Inference
 
 The ReScript type system excels at computing the actual prop types through usage. We recommend to explicitly type your props (especially for exported components) to help your coworkers understand the types. For simple cases or experimentation, it's still fine to omit them:
 
 
-```
+```res
 // Button.res
 
 @react.component
