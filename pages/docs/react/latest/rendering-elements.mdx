@@ -40,14 +40,13 @@ wrapChildren(<div> React.string("Let's use React with ReScript") </div>)
 
 Understanding the definition of a `React.element` is essential since it is heavily used within the React APIs, such as `ReactDOM.render(element, ...)`, etc. Be aware that JSX doesn't do any automatic `string` to `React.element` conversion for you (ReScript forces explicit type conversion). For example `<div> Hello World </div>` will not type-check (which is actually a good thing because it's also a huge source for subtle bugs!), you need to convert your `"Hello World"` with the `React.string` function first.
 
-Our React bindings
-
+Fortunately our React bindings bring all necessary functionality to represent all relevant data types as `React.element`s.
 
 ## Creating Elements
 
 ### Creating Elements from `string`, `int`, `float`, `array`
 
-Apart from using JSX to create our React elements or React components (described later), the `React` module offers various functions to create elements from primitive data types:
+Apart from using JSX to create our React elements or React components, the `React` module offers various functions to create elements from primitive data types:
 
 ```res
 React.string("Hello") // new element representing "Hello"
