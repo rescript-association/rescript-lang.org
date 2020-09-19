@@ -1,0 +1,78 @@
+---
+title: ReScript React JSX Interface
+description: "Details on how ReScript transforms your React components for JSX usage"
+canonical: "/docs/react/latest/react-jsx-transformation"
+category: Advanced
+---
+
+# React JSX Transformation
+
+<Intro>
+
+ReScript uses the `@react.component` decorator attribute to make your components compatible for JSX usage. This page will explain the low-level details on what this transformation does and how you can manually emulate its behavior yourself.
+
+</Intro>
+
+
+## The `make` and `makeProps` interface
+
+A React component module needs to contain two functions:
+
+- `make`: A function that receives a single argument `props` and returns a `React.element`
+- `makeProps`: A function that receives multiple labeled arguments (according to prop names) and returns the value that is consumed by `make(props)`
+
+Let's look at a more concrete example and just check what code `@react.component` generates for the following component:
+
+```res
+// src/Article.res
+@react.component
+let make = (~title: string, ~subtitle: string, ~children: React.element) => {
+  <div>
+    <div> {React.string(title)} </div>
+    <div> {React.string(subtitle)} </div>
+    children
+  </div>
+}
+```
+
+After the transformation, the code will look something like this:
+
+```res
+// src/Article.res
+type props = {
+  "title": string,
+  "subtitle": string,
+  "key": option<string>, // Key is a React specific value that's optional
+  "children": React.element, // children value is mandatory
+}
+
+@bs.obj
+external makeProps: (
+    ~title: string,
+    ~subtitle: string,
+    ~key: option<string>=?,
+    ~children: React.element,
+    unit,
+    ) => props = ""
+
+let make = (props: props) => {
+  // The props attributes are mapped back to proper binding names (before they were labeled arguments)
+  let title = props["title"]
+  let subtitle = props["subtitle"]
+  let key = props["key"]
+  let children = props["children"]
+
+  // Now we do our component logic as we are used to
+  <div>
+    <div> {React.string(title)} </div>
+    <div> {React.string(subtitle)} </div>
+    children
+  </div>
+}
+```
+
+As you can see, the original `make` function has expanded into two different functions: `make(props)` and `makeProps(~title, ~subtitle, ~children)`.
+
+> **Note:** `bs.obj external makeProps` is an attribute for automatically mapping labeled arguments to a newly created object instance where the attributes match the label names.
+
+

@@ -42,7 +42,8 @@ let default = (~showVersionSelect=true) => {
 
   let ecosystem = [|
     ("GenType", "/docs/gentype/latest/introduction"),
-    ("ReasonReact", "https://reasonml.github.io/reason-react"),
+    ("ReasonReact (official)", "https://reasonml.github.io/reason-react"),
+    ("ReasonReact (new docs WIP)", "/docs/react/latest/introduction"),
     ("Reanalyze", "https://github.com/reason-association/reanalyze"),
   |];
 
@@ -76,7 +77,6 @@ let default = (~showVersionSelect=true) => {
     };
 
   <>
-    <Meta title="Overview | ReScript Documentation" />
     <div>
       versionSelect
       <div className="mb-6" />

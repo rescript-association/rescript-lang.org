@@ -1,0 +1,180 @@
+---
+title: Components and Props
+description: "Basic concepts for components and props in ReasonReact"
+canonical: "/docs/react/latest/components-and-props"
+category: "Main Concepts"
+---
+
+# Components and Props
+
+<Intro>
+
+Components let you split the UI into independent, reusable pieces, and think about each piece in isolation. This page provides an introduction to the idea of components. 
+
+</Intro>
+
+## What is a Component?
+
+A React component is a function describing a UI element that receives a `props` object as a parameter (data describing the dynamic parts of the UI) and returns a `React.element`. 
+
+The nice thing about this concept is that you can solely focus on the input and output. The component function receives some data and returns some opaque `React.element` that is managed by the React framework to render your UI.
+
+> If you want to know more about the low level details on how a component interface is implemented, refer to the advanced topic [React JSX Transformation](./react-jsx-transformation)
+
+## Component Example
+
+Let's start with a first example to see how a ReScript React component looks like:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// src/Greeting.res
+@react.component
+let make = () => {
+  <div>
+    {React.string("Hello ReScripters!")}
+  </div>
+}
+```
+```js
+var React = require("react");
+
+function Greeting(Props) {
+  return React.createElement("div", undefined, "Hello ReScripters!");
+}
+
+var make = Greeting;
+```
+
+</CodeTab>
+
+**Important:** Always make sure to name your component function `make` and don't forget to add the `@react.component` attribute.
+
+We've created a `Greeting.res` file that contains a `make` function that doesn't receive any props (the function doesn't receive any parameters), and returns a `React.element` that represents `<div> Hello ReScripters! </div>` in the rendered DOM.
+
+You can also see in the the JS output that the function we created was directly translated into the pure JS version of a ReactJS component. Note how a  `<div>` transforms into a `React.createElement("div",...)` call in JavaScript.
+
+## Defining Props
+
+In ReactJS, props are usually described as a single `props` object. In ReScript, we use [labeled arguments](docs/manual/latest/function#labeled-arguments) to define our props parameters instead. Here's an example:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// src/Article.res
+@react.component
+let make = (~title: string, ~visitorCount: int, ~children: React.element) => {
+  let visitorCountMsg = "You are visitor number: " ++ Belt.Int.toString(visitorCount);
+  <div>
+    <div> {React.string(title)} </div>
+    <div> {React.string(vistorCount)} </div>
+    children
+  </div>
+}
+```
+```js
+var React = require("react");
+
+function Article(Props) {
+  var title = Props.title;
+  var visitorCount = Props.visitorCount;
+  var children = Props.children;
+  var visitorCountMsg = "You are visitor number: " + String(visitorCount);
+  return React.createElement("div", undefined, React.createElement("div", undefined, title), React.createElement("div", undefined, visitorCountMsg), children);
+}
+
+var make = Article;
+```
+
+</CodeTab>
+
+### Optional Props
+
+### Type Inference
+
+The ReScript type system excels at computing the actual prop types through usage. We recommend to explicitly type your props (especially for exported components) to help your coworkers understand the types. For simple cases or experimentation, it's still fine to omit them:
+
+
+```
+// Button.res
+
+@react.component
+let make = (~onClick, ~msg, ~children) => {
+  <div onClick>
+    {React.string(msg)}
+    children
+  </div>
+}
+```
+
+In the example above, `onClick` will be inferred as `ReactEvent.Mouse.t => unit`, `msg` as `string` and `children` as `React.element`. Type inference is very useful to ommit a lot of annoying type annotations, especially for private functions that pass around values to other functions.
+
+
+## Using Components in JSX
+
+Every ReScript component can be used in JSX. For example, if we want to use our `Greeting` component within our `App` component, we can do this:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// src/App.re
+
+@react.component
+let make = () => {
+  <div>
+    <Greeting/>
+  </div>
+}
+```
+```js
+var React = require("react");
+var Greeting = require("./Greeting.js")
+
+function App(Props) {
+  return React.createElement("div", undefined, React.createElement(Greeting.make, {}));
+}
+
+var make = App;
+```
+
+</CodeTab>
+
+**Note:** React components are capitalized; primitive DOM elements like `div` or `button` are uncapitalized. More infos on the JSX specifics and code transformations can be found in our [JSX section](/docs/manual/latest/jsx#capitalized-tag) in our language manual.
+
+
+## Submodule Components
+
+We can also represent React components as submodules, which makes it very convenient to build more complex UI without the need to create multiple files for each composite component (that's probably only used by the parent component anyways): 
+
+```res
+// src/Button.res
+module Label = {
+  @react.component
+  let make = (~title: string) => {
+    <div className="myLabel"> {React.string(title)} </div>
+  }
+}
+
+@react.component
+let make = (~children) => {
+  <div>
+    <Label title="Getting Started" />
+    children
+  </div>
+}
+```
+
+The `Button.res` file defined in above is now containing a `Label` component, that can also be used by other components, either by writing the fully qualified module name (`<Button.Label title="My Button"/>`) or by using a module alias to shortcut the full qualifier:
+
+
+```res
+module Label = Button.Label
+
+let content = <Label title="Test"/>
+```
+
+
+## Tips & Tricks
+
+- Start with one component file and utilize submodule components as your component grows. Consider splitting up in multiple files when really necessary.
+- Keep your directory hierarchy flat. Instead of `article/Header.res` use `ArticleHeader.res` etc. Filenames are unique across the codebase, so filenames tend to be very specific `ArticleUserHeaderCard.res`, which is not necessarily a bad thing, since it clearly expresses the intent of the component within its name, and makes it also very easy to find, match and refactor across the whole codebase.

@@ -1,0 +1,202 @@
+---
+title: Rendering Elements
+description: "Basic concepts for React elements and how to render them"
+canonical: "/docs/react/latest/rendering-elements"
+category: "Main Concepts"
+---
+
+# Rendering Elements
+
+<Intro>
+
+Elements are the smallest building blocks of React apps. This page will explain how to handle `React.element`s in your React app and describes all important APIs to create, manipulate and render elements to the screen.
+
+</Intro>
+
+> **Note:** This page assumes your `bsconfig.json` to be set to `"reason": { "react-jsx": 3 }`, otherwise your JSX will not be transformed to its React specific form. 
+
+## Element Basics
+
+Let's start out by creating our first React element.
+
+```res
+let element = <h1> {React.string("Hello World")} </h1>
+```
+
+The binding `element` and the expression `{React.string("Hello World")}` are both of type `React.element`, the fundamental type for representing React elements within your React application.
+
+Let's say you want to create a function that handles another React element, such as `children`, you can annotate it as `React.element`:
+
+```res
+let wrapChildren = (children: React.element) => {
+  <div>
+    <h1> {React.string("Overview")} </h1>
+    children
+  </div>
+}
+
+wrapChildren(<div> React.string("Let's use React with ReScript") </div>)
+```
+
+Understanding the definition of a `React.element` is essential since it is heavily used within the React APIs, such as `ReactDOM.render(element, ...)`, etc. Be aware that JSX doesn't do any automatic `string` to `React.element` conversion for you (ReScript forces explicit type conversion). For example `<div> Hello World </div>` will not type-check (which is actually a good thing because it's also a huge source for subtle bugs!), you need to convert your `"Hello World"` with the `React.string` function first.
+
+Our React bindings
+
+
+## Creating Elements
+
+### Creating Elements from `string`, `int`, `float`, `array`
+
+Apart from using JSX to create our React elements or React components (described later), the `React` module offers various functions to create elements from primitive data types:
+
+```res
+React.string("Hello") // new element representing "Hello"
+
+React.int(1) // new element representing "1"
+
+React.float(1.0) // new element representing "1.0"
+```
+
+It also offers `React.array` to represent multiple elements as one single element (useful for rendering a list of data, or passing children):
+
+```res
+let element = React.array([
+  React.string("element 1"),
+  React.string("element 2"),
+  React.string("element 3")
+])
+```
+
+**Note:** We don't offer a `React.list` function because a `list` value would impose runtime overhead. ReasonReact cares about clean, idiomatic JS output. If you want to transform a `list` of elements to a single React element, combine the output of `Belt.List.toArray` with `React.array` instead.
+
+### Creating Elements from Component Functions
+
+**Note:** Details on components and props will be described in the [next chapter](./components-and-props).
+
+Sometimes it's necessary to pass around component functions to create `React.element`s from (Components are kinda like the template for an instantiated element so to speak). Use the `React.createElement` function to instantiate your elements:
+
+```res
+type props = {"name": string};
+
+let render = (myComp: props => React.element) => {
+  // Now let's create the element
+  <div>
+    {React.createElement(myComp, {"name": "Franz"})}
+  </div>
+}
+```
+
+**Note:** This feature is often used when interacting with existing JS / ReactJS code. In pure ReScript React applications, you would rather pass a function that does the rendering for you:
+
+```res
+let render = (renderMyComp: (~name: string) => React.element) => {
+  <div>
+    {renderMyComp("Franz")}
+  </div>
+}
+
+```
+
+### Creating Null Elements
+
+ReScript doesn't allow `element || null` constraints due to it's strongly typed nature. Whenever you are expressing conditional rendering where a value might, or might not be rendered, you will need the `React.null` constant to represent *Nothingness*:
+
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let name = Some("Andrea")
+
+let element = switch name {
+  | Some(name) => <div> {React.string("Hello " ++ name)} </div>
+  | None => React.null
+}
+
+<div> element </div>
+```
+```js
+var name = "Andrea";
+
+var element = name !== undefined ? React.createElement("div", undefined, "Hello " + name) : null;
+
+React.createElement("div", undefined, element);
+```
+
+</CodeTab>
+
+
+### Clone Elements
+
+**Note:** This is an escape hatch feature and will only be useful for interoping with existing JS code / libraries.
+
+Sometimes it's required to clone an existing element to set overwrite prop values or add props to a new instance. You can use `React.cloneElement` for that: 
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let original = <div className="hello"/>
+
+// Will return a new React.element with className set to "world"
+React.cloneElement(original, {"className": "world"});
+```
+```js
+var original = React.createElement("div", {
+      className: "hello"
+    });
+
+React.cloneElement(original, {
+      className: "world"
+    });
+```
+
+</CodeTab>
+
+The feature mentioned above could also replicate `props spreading`, a practise commonly used in ReactJS codebases, but we strongly discourage the usage due to its unsafe nature and its incorrectness (e.g. adding undefined extra props to a component doesn't make sense, and causes hard to find bugs).
+
+In ReScript, we rather pass down required props explicitly to leaf components or use a renderProp instead. We introduced [JSX punning](/docs/manual/latest/jsx#punning) syntax to make the process of passing down props more convenient.
+
+
+## Using Elements within JSX
+
+You can compose elements into more complex structures by using JSX:
+
+```res
+let greeting = React.string("Hello ")
+let name = React.string("Stranger");
+
+
+// element is also of type React.element
+let element = <div className="myElement"> greeting name </div>
+```
+
+JSX is the main way to express your React application as a tree of elements. We will discuss JSX specifics in more detail later on.
+
+## Rendering Elements to the DOM
+
+Now that we are able to create and manipulate a tree of React elements, it's time to tell React to render our actual DOM.
+
+First you'd need to find a DOM node to mount your app to. For this, you can use the `ReactDOM.querySelector` utility function to find your dom node that can later be used by `ReactDOM.render` to render the React tree:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// Dom access can actually fail. ResScript
+// is really explicit about handling edge cases!
+switch(ReactDOM.querySelector("#root")){
+  | Some(root) => ReactDOM.render(root, <div> React.string("Hello Andrea") </div>)
+  | None => () // do nothing
+}
+```
+```js
+var root = document.querySelector("#root");
+
+if (!(root == null)) {
+  ReactDom.render(React.createElement("div", undefined, "Hello Andrea"), root);
+}
+```
+
+</CodeTab>
+
+**Note:** The code above expects a dom element in your e.g. `index.html`, e.g. something like this: `<div id="root"/>`. This is the parent element React will render your React code into.
+
+
