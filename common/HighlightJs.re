@@ -37,15 +37,8 @@ let renderHLJS =
 
   let dark = darkmode ? "dark" : "";
 
-  ReactDOMRe.createElementVariadic(
-    "code",
-    ~props=
-      ReactDOMRe.objToDOMProps({
-        "className": "hljs lang-" ++ lang ++ " " ++ dark,
-        "dangerouslySetInnerHTML": {
-          "__html": highlighted,
-        },
-      }),
-    [||],
-  );
+  <code
+    className={"hljs lang-" ++ lang ++ " " ++ dark}
+    dangerouslySetInnerHTML={"__html": highlighted}
+  />;
 };
