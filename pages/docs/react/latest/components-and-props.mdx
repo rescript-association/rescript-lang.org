@@ -143,7 +143,13 @@ var greeting = React.createElement(Playground$Greeting, tmp);
 
 </CodeTab>
 
-### Children Props
+### Special Props `key` and `ref`
+
+You can't define any props called `key` or `ref`. React treats those props differently and the compiler will will yield an error whenever you try to define a `~key` or `~ref` argument in your component function.
+
+Check out the corresponding [Arrays and Keys](./arrays-and-keys) and [Forwarding React Refs](./forwarding-refs) sections for more details.
+
+## Children Props
 
 In React `props.children` is a special attribute to represent the nested elements within a parent element:
 
@@ -250,17 +256,18 @@ module NoChildren = {
 <NoChildren> <div/> </NoChildren>
 ```
 
-Children props are really tempting to be abused as a way to model hierarchies, e.g. `<List> <ListHeader/> <Item/> </List>` (`List` should only allow `Item` / `ListHeader` elements), but this kind of constraint is hard to enforce because all components end up being `React.element`, so it would require notorious runtime checking within `List` to verify that all children are in fact of type `Item` or `ListHeader`.
+Children props are really tempting to be abused as a way to model hierarchies, e.g. `<List> <ListHeader/> <Item/> </List>` (`List` should only allow `Item` / `ListHeader` elements), but this kind of constraint is hard to enforce because all components end up being a `React.element`, so it would require notorious runtime checking within `List` to verify that all children are in fact of type `Item` or `ListHeader`.
 
-The best way to approach this kind of issue is by using props instead of children, e.g. `<List header="..." items=[{id: "...", text: "..."}]/>`. This way it's easy to type check the constraints, and also spares us many hours debugging and remembering component constraints.
+The best way to approach this kind of issue is by using props instead of children, e.g. `<List header="..." items=[{id: "...", text: "..."}]/>`. This way it's easy to type check the constraints, and it also spares component consumers from memorizing and remembering component constraints.
 
-**The best use-case for `children` is to pass down `React.element`s, no matter what kind of elements they are!**
+**The best use-case for `children` is to pass down `React.element`s without any semantic order or implementation details!**
 
 
+## Props & Type Inference
 
-### Type Inference
+The ReScript type system is really good at inferring the prop types just by looking at its prop usage. 
 
-The ReScript type system excels at computing the actual prop types through usage. We recommend to explicitly type your props (especially for exported components) to help your coworkers understand the types. For simple cases or experimentation, it's still fine to omit them:
+For simple cases, well-scoped usage, or experimentation, it's still fine to omit type annotations:
 
 
 ```res
@@ -275,8 +282,9 @@ let make = (~onClick, ~msg, ~children) => {
 }
 ```
 
-In the example above, `onClick` will be inferred as `ReactEvent.Mouse.t => unit`, `msg` as `string` and `children` as `React.element`. Type inference is very useful to ommit a lot of annoying type annotations, especially for private functions that pass around values to other functions.
+In the example above, `onClick` will be inferred as `ReactEvent.Mouse.t => unit`, `msg` as `string` and `children` as `React.element`. Type inference is especially useful when you just forward values to some smaller (privately scoped) functions.
 
+Even tough type inference spares us a lot of keyboard typing, we still recommend to explicitly type your props (just like with any public API) for better type visibility and to prevent confusing type errors.
 
 ## Using Components in JSX
 
@@ -308,6 +316,8 @@ var make = App;
 </CodeTab>
 
 **Note:** React components are capitalized; primitive DOM elements like `div` or `button` are uncapitalized. More infos on the JSX specifics and code transformations can be found in our [JSX section](/docs/manual/latest/jsx#capitalized-tag) in our language manual.
+
+More details on the `@react.component` decorator and its generated interface can be found in our [Advanced React JSX Transformation](./react-jsx-transformation) page.
 
 
 ## Submodule Components

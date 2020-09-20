@@ -15,7 +15,7 @@ Whenever we are transforming data into an array of elements and put it in our Re
 
 ## Keys & Rendering Arrays
 
-Keys help React identify which items have changed, are added, or are removed. Keys should be given to the elements inside the array to give the elements a stable identity:
+Keys help React identify which elements have been changed, added, or removed throughout each render. Keys should be given to elements inside the array to give the elements a stable identity:
 
 ```res
 let numbers = [1, 2, 3, 4, 5];
@@ -40,7 +40,7 @@ let items = Belt.Array.map(todos, todo => {
 })
 ```
 
-When you don’t have stable IDs for rendered items, you may use the item index as a key as a last resort:
+If you don’t have stable IDs for rendered items, you may use the item index as a key as a last resort:
 
 ```res {2,3}
 let items = Belt.Array.mapWithIndex(todos, (todo, i) => {
@@ -119,5 +119,7 @@ let items =
 <div> {React.array(items)} </div>
 ```
 
-We used `Belt.List.toArray` to convert our list to an array before creating our `array<React.element>`. Please note that using `list` has a performance impact due to extra conversion costs.
+We use `Belt.List.toArray` to convert our list to an array before creating our `array<React.element>`. Please note that using `list` has performance impact due to extra conversion costs.
+
+In 99% you'll want to use arrays (seamless interop, faster JS code), but in some cases it might make sense to use a `list` to leverage advanced pattern matching features etc.
 
