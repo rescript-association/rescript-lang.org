@@ -123,6 +123,11 @@ React.createElement("div", undefined, element);
 
 </CodeTab>
 
+### Creating Variadic Elements
+
+
+
+
 ## Cloning Elements
 
 **Note:** This is an escape hatch feature and will only be useful for interoping with existing JS code / libraries.
@@ -181,7 +186,7 @@ First you'd need to find a DOM node to mount your app to. For this, you can use 
 // Dom access can actually fail. ResScript
 // is really explicit about handling edge cases!
 switch(ReactDOM.querySelector("#root")){
-  | Some(root) => ReactDOM.render(root, <div> React.string("Hello Andrea") </div>)
+  | Some(root) => ReactDOM.render(<div> React.string("Hello Andrea") </div>, root)
   | None => () // do nothing
 }
 ```
