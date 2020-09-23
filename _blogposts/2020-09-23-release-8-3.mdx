@@ -30,14 +30,16 @@ In this release, we make it optional to have `bs.` prefix it or not, this will m
 For example, the old externals for `readFileAsUtf8Sync` used to be written like this
 
 
-```ocaml
-external readFileAsUtf8Sync : string -> (_[@bs.as "utf8"]) -> string = "readFileSync" [@@bs.val] [@@bs.module "fs"]
+```res
+@bs.val @bs.module("fs")
+external readFileAsUtf8Sync: (string, @bs.as("utf8") _) => string = "readFileSync"
+
 ```
 
 Could be simplified as 
-```ocaml
-external readFileAsUtf8Sync : string -> (_[@as "utf8"]) -> string = "readFileSync" 
-[@@val] [@@module "fs"]
+```res
+@val @module("fs") external readFileAsUtf8Sync: (string, @as("utf8") _) => string = "readFileSync"
+
 ```
 
 Note almost all previous attributes with `bs.xx` can be simplified as `xx`, except such two that 
@@ -53,10 +55,11 @@ backward compatibility.
 
 If you use es6 module output, the default bindings will be compiled properly now:
 
-```ocaml
-external input : string -> string = "default" [@@module "hello"]
+```res
+@module("hello") external input: string => string = "default"
 
-let a = input "hello"
+let a = input("hello")
+
 ```
 
 Will now be compiled properly under es6 format as below:
@@ -92,15 +95,16 @@ To have better integration with other [JS infrastructures](https://github.com/re
 
 Previously for such piece of code:
 
-```ocaml
-module N = struct 
-    type t = {
-        x : int 
-    }
-end
+```res
+module N = {
+  type t = {x: int}
+}
 
-let f (u : N.t) = 
-    let {x } = u in x + 1 (* type error *)
+let f = (u: N.t) => {
+  let {x} = u
+  x + 1
+} /* type error */
+
 ```
 
 You will get a type error
