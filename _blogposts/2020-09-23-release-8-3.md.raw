@@ -30,36 +30,15 @@ In this release, we make it optional to have `bs.` prefix it or not, this will m
 For example, the old externals for `readFileAsUtf8Sync` used to be written like this
 
 
-<CodeTab labels={["ReScript", "Reason", "ML"]}>
-```res
-@bs.val @bs.module("fs")
-external readFileAsUtf8Sync: (string, @bs.as("utf8") _) => string = "readFileSync"
-```
-```reason
-[@bs.val] [@bs.module "fs"]
-external readFileAsUtf8Sync: (string, [@bs.as "utf8"] _) => string =
-  "readFileSync";
-```
 ```ocaml
 external readFileAsUtf8Sync : string -> (_[@bs.as "utf8"]) -> string = "readFileSync" [@@bs.val] [@@bs.module "fs"]
 ```
-</CodeTab>
 
 Could be simplified as 
-<CodeTab labels={["ReScript", "Reason", "ML"]}>
-```res
-@val @module("fs") external readFileAsUtf8Sync: (string, @as("utf8") _) => string = "readFileSync"
-```
-```reason
-[@val] [@module "fs"]
-external readFileAsUtf8Sync: (string, [@as "utf8"] _) => string =
-  "readFileSync";
-```
 ```ocaml
 external readFileAsUtf8Sync : string -> (_[@as "utf8"]) -> string = "readFileSync" 
 [@@val] [@@module "fs"]
 ```
-</CodeTab>
 
 Note almost all previous attributes with `bs.xx` can be simplified as `xx`, except such two that 
 we don't provide abbreviations:
@@ -74,23 +53,11 @@ backward compatibility.
 
 If you use es6 module output, the default bindings will be compiled properly now:
 
-<CodeTab labels={["ReScript", "Reason", "ML"]}>
-```res
-@module("hello") external input: string => string = "default"
-
-let a = input("hello")
-```
-```reason
-[@module "hello"] external input: string => string = "default";
-
-let a = input("hello");
-```
 ```ocaml
 external input : string -> string = "default" [@@module "hello"]
 
 let a = input "hello"
 ```
-</CodeTab>
 
 Will now be compiled properly under es6 format as below:
 
@@ -125,27 +92,6 @@ To have better integration with other [JS infrastructures](https://github.com/re
 
 Previously for such piece of code:
 
-<CodeTab labels={["ReScript", "Reason", "ML"]}>
-```res
-module N = {
-  type t = {x: int}
-}
-
-let f = (u: N.t) => {
-  let {x} = u
-  x + 1
-} /* type error */
-```
-```reason
-module N = {
-  type t = {x: int};
-};
-
-let f = (u: N.t) => {
-  let {x} = u;
-  x + 1;
-}; /* type error */
-```
 ```ocaml
 module N = struct 
     type t = {
@@ -156,7 +102,6 @@ end
 let f (u : N.t) = 
     let {x } = u in x + 1 (* type error *)
 ```
-</CodeTab>
 
 You will get a type error
 
