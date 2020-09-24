@@ -10,7 +10,9 @@ is currently **work in progress**.
 ## Setup
 
 ```sh
+# For first time clone / build
 yarn
+yarn run update-index
 
 # Initial build
 yarn bs:build
