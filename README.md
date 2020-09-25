@@ -4,13 +4,18 @@
 
 # rescript-lang.org
 
-This is the repository for [rescript-lang.org](https://rescript-lang.org) and
-is currently **work in progress**.
+This is the official documentation platform for the [ReScript](https://rescript-lang.org) programming language.
+
+**In case you want to report a technical issue, please refer to the appropriate repository:**
+- [rescript-compiler](https://github.com/rescript-lang/rescript-compiler): The compiler and build system
+- [rescript-syntax](https://github.com/rescript-lang/syntax): The ReScript syntax
 
 ## Setup
 
 ```sh
+# For first time clone / build
 yarn
+yarn run update-index
 
 # Initial build
 yarn bs:build
