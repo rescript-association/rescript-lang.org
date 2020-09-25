@@ -39,7 +39,7 @@ module OldDocsWarning = {
 };
 
 let makeBreadcrumbs =
-    (~prefix:Url.breadcrumb, route: string): list(Url.breadcrumb) => {
+    (~prefix: Url.breadcrumb, route: string): list(Url.breadcrumb) => {
   let url = route->Url.parse;
 
   let (_, rest) =
@@ -52,8 +52,7 @@ let makeBreadcrumbs =
 
           let href = baseHref ++ "/" ++ path;
 
-          Js.Array2.push(ret, Url.{name: prettyString(path), href})
-          ->ignore;
+          Js.Array2.push(ret, Url.{name: prettyString(path), href})->ignore;
           (href, ret);
         },
       );
@@ -143,8 +142,8 @@ let make =
   let pageTitle =
     switch (breadcrumbs) {
     | Some([_, {Url.name}]) => name
-    | Some([_, _, {name}]) => "Js." ++ name
-    | _ => "Js"
+    | Some([_, module_, {name}]) => module_.name ++ "." ++ name
+    | _ => "API"
     };
   <SidebarLayout
     ?breadcrumbs
