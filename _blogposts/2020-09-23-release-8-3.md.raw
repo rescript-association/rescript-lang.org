@@ -7,13 +7,12 @@ title: What's new in ReScript 8.3 (Part 1)
 description: |
 ---
 
+## Introduction
 
-# What's new in ReScript 8.3 (Part 1)
-
-ReScript is a soundly typed language with an optimizing compiler focused on JS platform. 
+ReScript is a soundly typed language with an optimizing compiler focused on the JS platform. 
 It's focused on type safety, performance and JS interop. It used to be called BuckleScript.
 
-ReScript@8.3 is available, people can try it via
+[ReScript@8.3](https://www.npmjs.com/package/bs-platform/v/8.3.0) is now available for testing, you can try it via
 
 ```
 npm i bs-platform@8.3.0

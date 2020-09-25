@@ -7,13 +7,12 @@ title: What's new in ReScript 8.3 (Part 1)
 description: |
 ---
 
+## Introduction
 
-# What's new in ReScript 8.3 (Part 1)
-
-ReScript is a soundly typed language with an optimizing compiler focused on JS platform. 
+ReScript is a soundly typed language with an optimizing compiler focused on the JS platform. 
 It's focused on type safety, performance and JS interop. It used to be called BuckleScript.
 
-ReScript@8.3 is available, people can try it via
+[ReScript@8.3](https://www.npmjs.com/package/bs-platform/v/8.3.0) is now available for testing, you can try it via
 
 ```
 npm i bs-platform@8.3.0
@@ -31,6 +30,7 @@ For example, the old externals for `readFileAsUtf8Sync` used to be written like 
 
 
 <CodeTab labels={["ReScript", "Reason", "ML"]}>
+
 ```res
 @bs.val @bs.module("fs")
 external readFileAsUtf8Sync: (string, @bs.as("utf8") _) => string = "readFileSync"
@@ -43,10 +43,13 @@ external readFileAsUtf8Sync: (string, [@bs.as "utf8"] _) => string =
 ```ocaml
 external readFileAsUtf8Sync : string -> (_[@bs.as "utf8"]) -> string = "readFileSync" [@@bs.val] [@@bs.module "fs"]
 ```
+
 </CodeTab>
 
 It can now be simplified as 
+
 <CodeTab labels={["ReScript", "Reason", "ML"]}>
+
 ```res
 @val @module("fs") external readFileAsUtf8Sync: (string, @as("utf8") _) => string = "readFileSync"
 ```
@@ -59,6 +62,7 @@ external readFileAsUtf8Sync: (string, [@as "utf8"] _) => string =
 external readFileAsUtf8Sync : string -> (_[@as "utf8"]) -> string = "readFileSync" 
 [@@val] [@@module "fs"]
 ```
+
 </CodeTab>
 
 Note almost all previous attributes with `bs.xx` can be simplified as `xx` 
@@ -75,6 +79,7 @@ backward compatibility.
 If you use es6 module output, the default bindings will be compiled properly now:
 
 <CodeTab labels={["ReScript", "Reason", "ML"]}>
+
 ```res
 @module("hello") external input: string => string = "default"
 
@@ -90,6 +95,7 @@ external input : string -> string = "default" [@@module "hello"]
 
 let a = input "hello"
 ```
+
 </CodeTab>
 
 Will now be compiled properly under es6 format as below:
@@ -128,6 +134,7 @@ for example, Next.js/React Native, we allow file names like `404.res`,
 Previously, for code like this:
 
 <CodeTab labels={["ReScript", "Reason", "ML"]}>
+
 ```res
 module N = {
   type t = {x: int}
@@ -158,6 +165,7 @@ end
 let f (u : N.t) = 
     let {x } = u in x + 1 (* type error *)
 ```
+
 </CodeTab>
 
 You will get a type error
