@@ -36,9 +36,9 @@
   },
   {
     "username": "rescript-team",
-    "fullname": "ReScript",
-    "role": "Core Team",
-    "img_url": null,
-    "twitter": null
+    "fullname": "ReScript Team",
+    "role": "Core Development",
+    "img_url": "https://pbs.twimg.com/profile_images/1299344534858469381/k4C9gapJ_400x400.jpg",
+    "twitter": "rescriptlang"
   }
 ]
