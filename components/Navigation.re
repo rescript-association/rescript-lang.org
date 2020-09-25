@@ -34,7 +34,7 @@ let linkOrActiveDocsSubroute = (~route) => {
   };
 };
 
-let githubHref = "https://github.com/rescript-lang";
+let githubHref = "https://github.com/reason-association/rescript-lang.org#rescript-langorg";
 let twitterHref = "https://twitter.com/rescriptlang";
 let discourseHref = "https://forum.rescript-lang.org";
 
