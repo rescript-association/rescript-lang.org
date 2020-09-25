@@ -17,8 +17,8 @@ open Util.ReactStuff;
 
 module Link = Next.Link;
 
-let rescriptDefaultImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598616442/reason%20association/rescript-lang.org/art-3-rescript-launch_ovoibg.jpg"
-let planetPreviewImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1587479463/Reason%20Association/reasonml.org/reasonml_art2_1280_vhzxnz.png"
+let rescriptDefaultImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598616442/reason%20association/rescript-lang.org/art-3-rescript-launch_ovoibg.jpg";
+let planetPreviewImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1587479463/Reason%20Association/reasonml.org/reasonml_art2_1280_vhzxnz.png";
 
 // For encoding reasons, see https://shripadk.github.io/react/docs/jsx-gotchas.html
 let middleDotSpacer = " " ++ Js.String.fromCharCode(183) ++ " ";
@@ -53,6 +53,7 @@ module Badge = {
 module CategorySelector = {
   type selection =
     | All
+    | Archived
     | Category(BlogFrontmatter.Category.t);
 
   let renderTab = (~text: string, ~isActive: bool, ~onClick) => {
@@ -76,7 +77,7 @@ module CategorySelector = {
         ~onSelected: selection => unit,
       ) => {
     let tabs =
-      [|All|]
+      [|All, Archived|]
       ->Js.Array2.concat(Belt.Array.map(categories, cat => {Category(cat)}));
 
     <div
@@ -95,6 +96,7 @@ module CategorySelector = {
            let text =
              switch (tab) {
              | All => "All"
+             | Archived => "Archived"
              | Category(cat) => BlogFrontmatter.Category.toString(cat)
              };
 
@@ -273,12 +275,13 @@ module Malformed = {
 
 type props = {
   posts: array(Post.t),
+  archived: array(Post.t),
   malformed: array(Malformed.t),
   availableCategories: array(BlogFrontmatter.Category.t),
 };
 
 let default = (props: props): React.element => {
-  let {availableCategories, posts, malformed} = props;
+  let {availableCategories, posts, malformed, archived} = props;
 
   let (currentSelection, setSelection) =
     React.useState(() => CategorySelector.All);
@@ -327,6 +330,7 @@ let default = (props: props): React.element => {
       let filtered =
         switch (currentSelection) {
         | All => posts
+        | Archived => archived
         | Category(selected) =>
           Belt.Array.keep(posts, ({frontmatter}) => {
             switch (Js.Null.toOption(frontmatter.category)) {
@@ -404,26 +408,20 @@ let default = (props: props): React.element => {
           <> featureBox postsBox </>;
         };
 
-      let catSelector =
-        // TODO: Reenable CategorySelector at some later point when it's useful
-        if (false && Belt.Array.length(availableCategories) >= 2) {
-          /* We hide the Category Selector for mobile for now*/
-          <div className="hidden sm:flex justify-center ">
-            <div
-              className="my-16 w-full"
-              style={Style.make(~maxWidth="32rem", ())}>
-              <CategorySelector
-                categories=availableCategories
-                onSelected={selection => setSelection(_ => selection)}
-                selected=currentSelection
-              />
-            </div>
-          </div>;
-        } else {
-          <div className="md:mt-32" />;
-        };
-
-      <> catSelector result </>;
+      <>
+        <div className="hidden sm:flex justify-center ">
+          <div
+            className="my-16 w-full"
+            style={Style.make(~maxWidth="12rem", ())}>
+            <CategorySelector
+              categories=availableCategories
+              onSelected={selection => setSelection(_ => selection)}
+              selected=currentSelection
+            />
+          </div>
+        </div>
+        result
+      </>;
     };
 
   let overlayState = React.useState(() => false);
@@ -459,12 +457,12 @@ let default = (props: props): React.element => {
 let getStaticProps: Next.GetStaticProps.t(props, params) =
   _ctx => {
     let authors = BlogFrontmatter.Author.getAllAuthors();
-    let (posts, malformed, availableCategories) =
+    let (posts, malformed, archived, availableCategories) =
       BlogApi.getAllPosts()
       ->Belt.Array.reduce(
-          ([||], [||], [||]),
+          ([||], [||], [||], [||]),
           (acc, postData) => {
-            let (posts, malformed, availableCategories) = acc;
+            let (posts, malformed, archived, availableCategories) = acc;
             let id = postData.slug;
 
             let decoded =
@@ -474,16 +472,13 @@ let getStaticProps: Next.GetStaticProps.t(props, params) =
             | Error(message) =>
               let m = {Malformed.id, message};
               let malformed = Belt.Array.concat(malformed, [|m|]);
-              (posts, malformed, availableCategories);
+              (posts, malformed, archived, availableCategories);
             | Ok(frontmatter) =>
-              // TODO: Right now we completely remove archived posts
-              let posts =
-                if (postData.archived) {
-                  posts;
-                } else {
-                  let p = {Post.id, frontmatter};
-                  Belt.Array.concat(posts, [|p|]);
-                };
+              if (postData.archived) {
+                Js.Array2.push(archived, {Post.id, frontmatter})->ignore;
+              } else {
+                Js.Array2.push(posts, {Post.id, frontmatter})->ignore;
+              };
 
               let category = Js.Null.toOption(frontmatter.category);
 
@@ -495,25 +490,30 @@ let getStaticProps: Next.GetStaticProps.t(props, params) =
                   }
                 );
 
-              // We will only add categories that are not yet
-              // accumulated from previous post frontmatters
+              // TODO: For now we ignore categories alltogether (only show All | Archived)
               let newAvailableCat =
-                switch (category) {
-                | Some(category) =>
-                  if (hasCategory) {
-                    availableCategories;
-                  } else {
-                    Belt.Array.concat(availableCategories, [|category|]);
-                  }
-                | None => availableCategories
+                if (true || postData.archived) {
+                  availableCategories;
+                } else {
+                  // We will only add categories that are not yet
+                  // accumulated from previous post frontmatters
+                  switch (category) {
+                  | Some(category) =>
+                    if (hasCategory) {
+                      availableCategories;
+                    } else {
+                      Belt.Array.concat(availableCategories, [|category|]);
+                    }
+                  | None => availableCategories
+                  };
                 };
 
-              (posts, malformed, newAvailableCat);
+              (posts, malformed, archived, newAvailableCat);
             };
           },
         );
 
-    let props = {posts, malformed, availableCategories};
+    let props = {posts, malformed, archived, availableCategories};
 
     Promise.resolved({"props": props});
   };
