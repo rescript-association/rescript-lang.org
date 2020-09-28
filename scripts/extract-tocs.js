@@ -154,10 +154,12 @@ const createReactToc = () => {
     "rendering-elements",
     "components-and-props",
     "arrays-and-keys",
+    "refs-and-the-dom",
     "hooks-overview",
     "hooks-state",
     "hooks-effect",
     "hooks-context",
+    "hooks-ref",
   ];
 
   const files = glob.sync(`${MD_DIR}/*.md?(x)`);
