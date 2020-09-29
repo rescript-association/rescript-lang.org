@@ -102,6 +102,7 @@ module Router = {
     route: string,
     asPath: string,
     events: Events.t,
+    pathname: string,
     query: Js.Dict.t(string),
   };
 
