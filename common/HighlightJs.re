@@ -25,9 +25,12 @@ let renderHLJS =
       Js.String2.split(highlighted, "\n")
       ->Belt.Array.mapWithIndex((i, line) =>
           if (Js.Array2.find(highlightedLines, lnum => lnum === i + 1) !== None) {
-            "<span class=\"hljs-line-highlight\">" ++ line ++ "</span>";
+            let content = line === "" ? "&nbsp;" : line;
+            "<span class=\"inline-block\">" ++ content ++ "</span>";
           } else {
-            line;
+            "<span class=\"inline-block text-inherit opacity-50\">"
+            ++ line
+            ++ "</span>";
           }
         )
       ->Js.Array2.joinWith("\n");

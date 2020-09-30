@@ -114,10 +114,6 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
   /*@apply text-code-1;*/
 }
 
-.hljs-line-highlight {
-  @apply w-full inline-block bg-berry-15;
-}
-
 /* DARK MODE COLORS */
 
 .hljs.dark .hljs-comment {
