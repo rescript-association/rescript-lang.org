@@ -31,7 +31,7 @@ In the last releases, we did lots of work for vertical integration into the bsb 
 For example, we replaced the dynamic dependency parser with a minimal specialized one for bsb.
 we also removed the static dependencies parser which is only used for parsing C++ compiler output.
 
-There're other various low-level hacks involved, the final outcome is quite impressive.
+Thanks to various other low-level improvements, the final outcome is quite impressive.
 For example, The binary size for [Mac platform](https://github.com/ninja-build/ninja/releases/tag/v1.10.1) is 270 KB
 while our vendored version is only 136KB. This is a non-trivial gain given that ninja is minimalist and already 
 optimized by top-level C++ experts.
