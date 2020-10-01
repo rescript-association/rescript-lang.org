@@ -68,37 +68,9 @@ let element = React.array([
 
 **Note:** We don't offer a `React.list` function because a `list` value would impose runtime overhead. ReasonReact cares about clean, idiomatic JS output. If you want to transform a `list` of elements to a single React element, combine the output of `Belt.List.toArray` with `React.array` instead.
 
-### Creating Elements from Component Functions
-
-**Note:** Details on components and props will be described in the [next chapter](./components-and-props).
-
-Sometimes it's necessary to pass around component functions to create `React.element`s from (Components are kinda like the template for an instantiated element so to speak). Use the `React.createElement` function to instantiate your elements:
-
-```res
-type props = {"name": string};
-
-let render = (myComp: props => React.element) => {
-  // Now let's create the element
-  <div>
-    {React.createElement(myComp, {"name": "Franz"})}
-  </div>
-}
-```
-
-**Note:** This feature is often used when interacting with existing JS / ReactJS code. In pure ReScript React applications, you would rather pass a function that does the rendering for you:
-
-```res
-let render = (renderMyComp: (~name: string) => React.element) => {
-  <div>
-    {renderMyComp("Franz")}
-  </div>
-}
-
-```
-
 ### Creating Null Elements
 
-ReScript doesn't allow `element || null` constraints due to it's strongly typed nature. Whenever you are expressing conditional rendering where a value might, or might not be rendered, you will need the `React.null` constant to represent *Nothingness*:
+ReScript doesn't allow `element || null` constraints due to it's strongly typed nature. Whenever you are expressing conditionals where a value might, or might not be rendered, you will need the `React.null` constant to represent *Nothingness*:
 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
@@ -122,6 +94,83 @@ React.createElement("div", undefined, element);
 ```
 
 </CodeTab>
+
+### Creating Elements from Component Functions
+
+**Note:** Details on components and props will be described in the [next chapter](./components-and-props).
+
+Sometimes it's necessary to pass around component functions to have more control over `React.element` creation. Use the `React.createElement` function to instantiate your elements:
+
+```res
+type props = {"name": string};
+
+let render = (myComp: props => React.element) => {
+  <div>
+    {React.createElement(myComp, {"name": "Franz"})}
+  </div>
+}
+```
+
+**Note:** This feature is often used when interacting with existing JS / ReactJS code. In pure ReScript React applications, you would rather pass a function that does the rendering for you (also called a "render prop"):
+
+```res
+let render = (renderMyComp: (~name: string) => React.element) => {
+  <div>
+    {renderMyComp("Franz")}
+  </div>
+}
+```
+
+#### Pass Variadic Children
+
+There is also a `React.createElementVariadic` function, which takes an array of children as a third parameter:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type props = {"title": string, "children": React.element};
+
+let render = (article: props => React.element) => {
+  let children = [React.string("Introduction"), React.string("Body")];
+
+  let props = {"title": "Article #1", "children": React.null};
+
+  {React.createElementVariadic(article, props, children)}
+}
+```
+```js
+function render(article) {
+  var children = ["Introduction"];
+  var props = {
+    title: "Article #1",
+    children: null
+  };
+  return Caml_splice_call.spliceApply(React.createElement, [
+              article,
+              props,
+              children
+            ]);
+}
+```
+
+</CodeTab>
+
+**Note:** Here we are passing a prop `"children": React.null` to satisfy the type checker. React will ignore the children prop in favor of the children array.
+
+This function is mostly used by our JSX transformations, so usually you want to use `React.createElement` and pass a children prop instead.
+
+### Creating DOM Elements
+
+**Note:** The following examples showcase low level APIs that in most cases will only be useful for situations where JSX doesn't work.
+
+To create DOM elements (`<div>`, `<span>`, etc.), use `ReactDOMRe.createDOMElementVariadic`:
+
+```res
+ReactDOMRe.createDOMElementVariadic("div", ~props=ReactDOM.domProps(~className="card", ()), []);
+```
+
+The function above requires the `ReactDOM.domProps` constructor function, so ReScript can make sure that we are only passing valid dom props. You can find an exhaustive list of all available props in the [ReactDOM](https://github.com/reasonml/reason-react/blob/master/src/ReactDOM.re#L61) module.
+
 
 ## Cloning Elements
 

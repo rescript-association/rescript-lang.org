@@ -1,7 +1,7 @@
 /* Markdown related stuff */
 /* Sometimes we cannot circumvent the cascade, especially for nested lists */
 
-.md-ul {
+.md-ul, .md-ol {
   @apply mb-4;
 }
 
