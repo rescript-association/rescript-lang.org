@@ -583,6 +583,8 @@ Do not abuse the wildcard `_` too much. This prevents the compiler from giving y
 If you're about to use a wildcard when matching on a large but finite set of possibilities because you have many possibilities that return the same thing, consider reaching for disjunctive patterns instead. That is, you can replace:
 
 ```res example
+type T = A | B | C | D | E
+let v = C
 switch v {
 | A => handleTheCaseICareAbout()
 | B => handleTheRest()
@@ -595,6 +597,8 @@ switch v {
 with:
 
 ```res example
+type T = A | B | C | D | E
+let v = C
 switch v {
 | A => handleTheCaseICareAbout()
 | B
