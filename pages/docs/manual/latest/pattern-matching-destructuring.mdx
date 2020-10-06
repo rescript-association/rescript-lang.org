@@ -580,17 +580,14 @@ Here are some advices.
 
 Do not abuse the wildcard `_` too much. This prevents the compiler from giving you better exhaustiveness check, which would be especially important after a refactoring where you add a new case to a variant. Try only using `_` against infinite possibilities, e.g. string, int, etc.
 
-If you're about to use a wildcard when matching on a large but finite set of possibilities because you have many possibilities that return the same thing, consider reaching for disjunctive patterns instead. That is, you can replace:
+Sometimes you want to pattern-match on a large but finite set of possibilities and many possibilities map to the expression. In these cases, wildcards can seem tempting because they reduce code duplication, but there's another option, often termed disjunctive patterns, that allows you to map multiple patterns to a single expression. That is, you can replace:
 
 ```res example
 type t = A | B | C | D | E
 let v = C
 switch v {
 | A => 1
-| B => 2
-| C => 2
-| D => 2
-| E => 2
+| _ => 2
 }
 ```
 
@@ -601,13 +598,21 @@ type t = A | B | C | D | E
 let v = C
 switch v {
 | A => 1
-| B
-| C
-| D
-| E => 2
+| B | C | D | E => 2
 }
 ```
-This still requires a bit more work than a wildcard, but we promise it'll be worth it.
+
+This still requires a bit more work than a wildcard, but it has the advantage of ensuring the compiler can enforce exhaustiveness, unlike a wildcard based solution. Additionally, unlike wildcards, you can easily refactor your code to have multiple pattern sets, like so:
+
+```res example
+type t = A | B | C | D | E
+let v = C
+switch v {
+| A => 1
+| B | C => 2
+| D | E => 3
+}
+```
 
 Use `when` clause sparingly.
 
