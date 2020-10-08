@@ -41,7 +41,7 @@ Note such vertical integration not only brings better performance, smaller sizes
 ## Build system enhancements for editor diagnostics
 
 When people are coding in their favorite editors, they expect to see syntax and type errors in real-time.
-There are multiple ways to achieve this. The most and reliable way is to always invoke the build system whenever the user saves a file. Due to not having an in-memory cache, our build system is very reliable. However we didn't yet optimize the build system for live feedback in editors.
+There are multiple ways to achieve this. The most reliable way is to always invoke the build system whenever the user saves a file. Due to not having an in-memory cache, our build system is very reliable. However we didn't yet optimize the build system for live feedback in editors.
 what syntax errors, type checking errors do they have when editing? There are multiple ways to achieve this, the most easy 
 and reliable way is to always invoke the build system whenever the user saves the files, since it's the same build system 
 without any in-memory cache, the reliability is very high, however, there's several challenges to use the build system output as editor diagnostics.
@@ -58,7 +58,7 @@ For a typical file based build system, if the file A is compiled successfully wi
 This is problematic if we use the build system output for editor diagnostics. Since the second build will not capture those warnings, we 
 could use some caching mechanism to cache previous build output. But… stateful systems are not reliable and come with a whole range of different problems.
 
-To solve such challenging problem, we did some innovations to co-ordinate the compiler and build system. When the file A is compiled with warnings, 
+To solve such a challenging problem, we did some innovations to co-ordinate the compiler and build system. When the file A is compiled with warnings, 
 the compiler will produce some marks to the build system, the build system will keep building but such marks are encoded in the build rules
 so that the second build will do the rebuild.
 
@@ -75,7 +75,7 @@ To get the build output, instead of communicating through IPC, we adopted a simp
 This makes the editor integration build-system agnostic, it does not need talk to the build system directly.
 
 It also makes our build tool work with other watchers including Facebook's [watchman](https://facebook.github.io/watchman/).
-Watchman is  a more scalable watcher tool for specific platform and less memory hungry, however, we still need a watchman-client to get the output of triggered job.
+Watchman is  a more scalable watcher tool for some specific platforms and less memory hungry, however, we still need a watchman-client to get the output of triggered job.
 We write the output to `.compiler.log` per each build, allowing clients to read compiler diagnostics when they want.
 
 ## A better algorithm for removing stale outputs
@@ -100,7 +100,7 @@ In general, strategy two is more reliable and efficient.
 - When we change the in-source build to out-source build, it will still do the pruning properly
 
 However, strategy one is easier for tooling like `genType`. Not every tool has knowledge of the build system.
-we employ a combination of the two strategies.
+
 
 Sometimes a combination of both strategies is needed.
 - When removing .cm* files, we use the first strategy.
