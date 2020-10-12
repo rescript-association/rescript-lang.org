@@ -572,15 +572,9 @@ if (myNullableValue !== undefined) {
 
 If you don't handle the `None` case, the compiler warns. No more `undefined` bugs in your code!
 
-## Conclusion & Tips & Tricks
+### Match multiple cases to one expression
 
-Hopefully you can see how pattern matching is a game changer for writing correct code, through the concise destructuring syntax, the proper conditions handling of `switch`, and the static exhaustiveness check.
-
-Here are some advices.
-
-Do not abuse the wildcard `_` too much. This prevents the compiler from giving you better exhaustiveness check, which would be especially important after a refactoring where you add a new case to a variant. Try only using `_` against infinite possibilities, e.g. string, int, etc.
-
-Sometimes you want to pattern-match on a large but finite set of possibilities and many possibilities map to the expression. In these cases, wildcards can seem tempting because they reduce code duplication, but there's another option, often termed disjunctive patterns, that allows you to map multiple patterns to a single expression. That is, you can replace:
+Now, sometimes you may want to pattern-match on large but finite sets of possibilities where many possibilities map to the same expression. In these cases, wildcards can seem tempting because they reduce code duplication, but there's another option, often termed disjunctive patterns, that allow you to map multiple patterns to a single expression. That is, you can replace:
 
 ```res example
 type t = A | B | C | D | E
@@ -613,6 +607,14 @@ switch v {
 | D | E => 3
 }
 ```
+
+## Conclusion & Tips & Tricks
+
+Hopefully you can see how pattern matching is a game changer for writing correct code, through the concise destructuring syntax, the proper conditions handling of `switch`, and the static exhaustiveness check.
+
+Here are some advices.
+
+Do not abuse the wildcard `_` too much. This prevents the compiler from giving you better exhaustiveness check, which would be especially important after a refactoring where you add a new case to a variant. Try only using `_` against infinite possibilities, e.g. string, int, etc.
 
 Use `when` clause sparingly.
 
