@@ -572,6 +572,42 @@ if (myNullableValue !== undefined) {
 
 If you don't handle the `None` case, the compiler warns. No more `undefined` bugs in your code!
 
+### Match multiple cases to one expression
+
+Now, sometimes you may want to pattern-match on large but finite sets of possibilities where many possibilities map to the same expression. In these cases, wildcards can seem tempting because they reduce code duplication, but there's another option, often termed disjunctive patterns, that allow you to map multiple patterns to a single expression. That is, you can replace:
+
+```res example
+type t = A | B | C | D | E
+let v = C
+switch v {
+| A => 1
+| _ => 2
+}
+```
+
+with:
+
+```res example
+type t = A | B | C | D | E
+let v = C
+switch v {
+| A => 1
+| B | C | D | E => 2
+}
+```
+
+This still requires a bit more work than a wildcard, but it has the advantage of ensuring the compiler can enforce exhaustiveness, unlike a wildcard based solution. Additionally, unlike wildcards, you can easily refactor your code to have multiple pattern sets, like so:
+
+```res example
+type t = A | B | C | D | E
+let v = C
+switch v {
+| A => 1
+| B | C => 2
+| D | E => 3
+}
+```
+
 ## Conclusion & Tips & Tricks
 
 Hopefully you can see how pattern matching is a game changer for writing correct code, through the concise destructuring syntax, the proper conditions handling of `switch`, and the static exhaustiveness check.
