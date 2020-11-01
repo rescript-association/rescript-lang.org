@@ -28,6 +28,7 @@ type t<'value> = { mutable current: 'value }
 
 There are a few good use cases for refs:
 
+- Managing state that *should not trigger* any re-render.
 - Managing focus, text selection, or media playback.
 - Triggering imperative animations.
 - Integrating with third-party DOM libraries.
