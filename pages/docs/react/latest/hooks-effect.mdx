@@ -295,7 +295,7 @@ React.useEffect1(() => {
 
 **Important:** If you use this optimization, make sure the array includes all values from the component scope (such as props and state) that change over time and that are used by the effect. Otherwise, your code will reference stale values from previous renders
 
-If you want to run an effect and clean it up only once (on mount and unmount), use `React.useEffect0`. This is essentially like comparing `[] === []`.
+If you want to run an effect and clean it up only once (on mount and unmount), use `React.useEffect0`.
 
 If you are interested in more performance optmization related topics, have a look at the ReactJS [Performance Optimization Docs](https://reactjs.org/docs/hooks-faq.html#performance-optimizations) for more detailed infos.
 
