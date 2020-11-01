@@ -151,6 +151,7 @@ const createReactToc = () => {
   const FILE_ORDER = [
     "introduction",
     "installation",
+    "elements-and-jsx",
     "rendering-elements",
     "components-and-props",
     "arrays-and-keys",
