@@ -78,12 +78,11 @@ client side code (to keep the bundle size small).
 ### Think about the target audience & UX
 
 The rescript-lang.org project aims to be the best documentation experience for
-Reason / BuckleScript users. We don't necessarily need to target OCaml users as
-well (at least for the start), so keeping the docs minimalistic is important.
+our ReScript users.
 
-Also check if there are any designs for certain UI components and always think
-about how to get the best user experience for the users. Jumpy UI, slow
-loading, bloaty JS bundles and bad accessibility is not what we stand for.
+Always check if there are any designs for certain UI components and think
+about how to get the most out for the users. Jumpy UI, slow
+loading, big assets and bad accessibility is not what we stand for.
 
 ### Comply to our CSS ways
 

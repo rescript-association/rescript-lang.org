@@ -32,6 +32,12 @@ const mapBlogFilePath = path => {
   return path;
 };
 
+// Static files are located in /public/static/img/somefile.png
+// within markdown files they are referenced as /static/img/somefile.png
+const mapStaticFilePath = path => {
+  return path.replace("./public", "");
+}
+
 // Creates a lookup table of all available pages within the website
 // It will also automatically map urls for dedicated directorys (such as _blogposts)
 // to the correct url
@@ -40,9 +46,18 @@ const createPageIndex = files => {
   return files.reduce((acc, path) => {
     // We need to consider all the different file formats used in pages
     // Calculate the website url by stripping .re, .bs.js, .md(x), etc.
-    let url = mapBlogFilePath(path)
-      .replace(/^\.\//, "/")
-      .replace(/\.re|\.bs\.js|\.js|\.md(x)?$/, "");
+    let url;
+    if(path.startsWith("./_blogposts")) {
+      url = mapBlogFilePath(path)
+    }
+    else if(path.startsWith("./public/static")) {
+      url = mapStaticFilePath(path);
+    }
+    else {
+      url = path;
+    }
+
+    url = url.replace(/^\.\//, "/").replace(/\.re|\.bs\.js|\.js|\.md(x)?$/, "");
 
     // For index we need to special case, since it can be referred as '/' as well
     if (path.match(/\.\/pages\/index(\.re|\.bs\.js|\.js|\.md(x))?$/)) {
@@ -133,9 +148,16 @@ const testFile = (pageMap, test) => {
       let resolved;
       if (!path.isAbsolute(url)) {
         resolved = path.join("/", path.dirname(filepath), parsed.pathname);
-      } else {
-        // e.g. /api/javascript/latest/js needs to be prefixed to actual pages dir
-        resolved = path.join("/pages", parsed.pathname);
+      }
+      else {
+        if(parsed.pathname.startsWith("/static")) {
+          console.log("Static");
+          resolved = path.join(parsed.pathname);
+        }
+        else {
+          // e.g. /api/javascript/latest/js needs to be prefixed to actual pages dir
+          resolved = path.join("/pages", parsed.pathname);
+        }
       }
 
       // If there's no page stated the relative link
@@ -191,7 +213,11 @@ const main = () => {
 
   // We need to capture all files independently from the test file glob
   const pageMapFiles = glob.sync("./{pages,_blogposts}/**/*.{js,mdx}", { cwd });
-  const pageMap = createPageIndex(pageMapFiles);
+  const staticFiles = glob.sync("./public/static/**/*.{svg,png,woff2}", { cwd });
+
+  const allFiles = pageMapFiles.concat(staticFiles);
+
+  const pageMap = createPageIndex(allFiles);
 
   //console.log(pageMap);
   //return;

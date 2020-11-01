@@ -29,7 +29,7 @@ In this release, we make the `bs.` prefix optional, this will make the FFI less 
 For example, the old externals for `readFileAsUtf8Sync` used to be written like this
 
 
-<CodeTab labels={["ReScript", "Reason (Old Syntax)", "ML (Older Syntax)"]}>
+<CodeTab labels={["ReScript", "Reason (Old Syntax)", "ML Syntax"]}>
 
 ```res
 @bs.val @bs.module("fs")
@@ -48,7 +48,7 @@ external readFileAsUtf8Sync : string -> (_[@bs.as "utf8"]) -> string = "readFile
 
 It can now be simplified as 
 
-<CodeTab labels={["ReScript", "Reason (Old Syntax)", "ML (Older Syntax)"]}>
+<CodeTab labels={["ReScript", "Reason (Old Syntax)", "ML Syntax"]}>
 
 ```res
 @val @module("fs") external readFileAsUtf8Sync: (string, @as("utf8") _) => string = "readFileSync"
@@ -78,7 +78,7 @@ backward compatibility.
 
 If you use es6 module output, the default bindings will be compiled properly now:
 
-<CodeTab labels={["ReScript", "Reason (Old Syntax)", "ML (Older Syntax)"]}>
+<CodeTab labels={["ReScript", "Reason (Old Syntax)", "ML Syntax"]}>
 
 ```res
 @module("hello") external input: string => string = "default"
@@ -133,7 +133,7 @@ for example, Next.js/React Native, we allow file names like `404.res`,
 
 Previously, for code like this:
 
-<CodeTab labels={["ReScript", "Reason (Old Syntax)", "ML (Older Syntax)"]}>
+<CodeTab labels={["ReScript", "Reason (Old Syntax)", "ML Syntax"]}>
 
 ```res
 module N = {
