@@ -1,0 +1,58 @@
+---
+title: Installation
+description: "Installation and Setup"
+canonical: "/docs/react/latest/installation"
+category: Overview
+---
+
+# Installation
+
+Add following dependency to your ReScript project (in case you don't have any project yet, check out the [installation instructions](/docs/manual/latest/installation) in the manual):
+
+```
+npm install reason-react --save
+```
+
+Then add the following setting to your existing `bsconfig.json`:
+
+```json
+{
+  "reason": { "react-jsx": 3 },
+  "bs-dependencies": ["reason-react"]
+}
+```
+
+To test your setup, create a new `.res` file in your source directory and add the following code:
+
+```res
+// src/Test.res
+@react.component
+let make = () => {
+  <div> {React.string("Hello World")} </div>
+}
+```
+
+Now rerun your build with `bsb -make-world` and you should see a successful build.
+
+## Exposed Modules 
+
+After a successful installation, ReasonReact will make following modules available in your project's global scope:
+
+- `React`: Bindings to React
+- `ReactDOM`: Bindings to the ReactDOM
+- `ReactDOMServer`: Bindings to the ReactDOMServer
+- `ReactEvent`: Bindings to React's synthetic events
+- `ReactDOMStyle`: Bindings to the inline style API
+- `ReasonReactRouter`: A simple, yet fully featured router with minimal memory allocations
+
+
+### Deprecated Modules
+
+ReasonReact has gone a long way, so we still keep around a few modules for legacy reasons. We will deprecate them in the future in favor of...
+
+- `ReasonReact` -> `React`
+- `ReactDOMRe` -> `ReactDOM`
+- `ReactDOMServerRe` -> `ReactDOMServer`
+- `ReasonReactCompat` -> no replacement needed
+
+Actual usage and for each module will be discussed in the rest of this documentation.
