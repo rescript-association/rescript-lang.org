@@ -179,6 +179,37 @@ const createV800ManualToc = () => {
   fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
 };
 
+
+const createReactToc = () => {
+  const MD_DIR = path.join(__dirname, "../pages/docs/react/latest");
+  const TARGET_FILE = path.join(__dirname, "../index_data/react_latest_toc.json");
+
+  const FILE_ORDER = [
+    "introduction",
+    "installation",
+    "elements-and-jsx",
+    "rendering-elements",
+    "components-and-props",
+    "arrays-and-keys",
+    "refs-and-the-dom",
+    "hooks-overview",
+    "hooks-state",
+    "hooks-reducer",
+    "hooks-effect",
+    "hooks-context",
+    "hooks-ref",
+    "hooks-custom",
+  ];
+
+  const files = glob.sync(`${MD_DIR}/*.md?(x)`);
+  const ordered = orderFiles(files, FILE_ORDER);
+
+  const result = ordered.map(processFile);
+  const toc = createTOC(result);
+
+  fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
+};
+
 const createGenTypeToc = () => {
   const MD_DIR = path.join(__dirname, "../pages/docs/gentype/latest");
   const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_gentype_latest.json");
@@ -238,5 +269,6 @@ debugToc();
 createLatestManualToc();
 createV800ManualToc();
 createReasonCompilerToc();
+createReactToc();
 createGenTypeToc();
 createCommunityToc();
