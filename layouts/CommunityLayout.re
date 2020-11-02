@@ -61,7 +61,7 @@ let make = (~components=Markdown.default, ~children) => {
 
   let title = "Community";
 
-  <DocsLayout theme=`Reason components categories title ?activeToc breadcrumbs>
+  <DocsLayout theme=`Reason components metaTitleCategory="ReScript Documentation" categories title ?activeToc breadcrumbs>
     children
   </DocsLayout>;
 };

@@ -18,6 +18,7 @@
   let res = require('../plugins/res-syntax-highlightjs');
   let bash = require('highlight.js/lib/languages/bash');
   let json = require('highlight.js/lib/languages/json');
+  let html = require('highlight.js/lib/languages/xml');
   let ts = require('highlight.js/lib/languages/typescript');
   let text = require('highlight.js/lib/languages/plaintext');
   let diff = require('highlight.js/lib/languages/diff');
@@ -30,6 +31,7 @@
   hljs.registerLanguage('sh', bash);
   hljs.registerLanguage('json', json);
   hljs.registerLanguage('text', text);
+  hljs.registerLanguage('html', html);
   hljs.registerLanguage('diff', diff);
 |};
 
@@ -123,12 +125,17 @@ let default = (props: props): React.element => {
       // to keep the frontmatter parsing etc in one place
       content
     | _ =>
+      let title =
+        switch (url) {
+        | {base: [|"docs"|]} => Some("Overview | ReScript Documentation")
+        | _ => None
+        };
       <MainLayout>
-        <Meta />
+        <Meta ?title />
         <div className="flex justify-center">
           <div className="max-w-705 w-full"> content </div>
         </div>
-      </MainLayout>
+      </MainLayout>;
     }
   };
 };

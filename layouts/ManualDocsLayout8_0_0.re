@@ -220,6 +220,7 @@ module Docs = {
       latestVersionLabel=ManualDocsLayout.latestVersionLabel
       ?frontmatter
       title
+      metaTitleCategory="ReScript Language Manual"
       ?activeToc
       breadcrumbs>
       warnBanner
