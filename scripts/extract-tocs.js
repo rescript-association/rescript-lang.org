@@ -11,6 +11,21 @@ const glob = require("glob");
 const path = require("path");
 const fs = require("fs");
 
+// orderArr: ["introduction", "overview",,...]
+const orderFiles = (filepaths, orderArr) => {
+  const order = orderArr.reduce((acc, next, i) => {
+    acc[next] = null;
+    return acc;
+  }, {});
+
+  filepaths.forEach((filepath) => {
+    const id = path.basename(filepath, path.extname(filepath));
+    order[id] = filepath;
+  });
+
+  return Object.values(order);
+};
+
 // Used for collapsing nested inlineCodes with the actual header text
 const collapseHeaderChildren = (children) => {
   return children.reduce((acc, node) => {
@@ -63,11 +78,18 @@ const processFile = filepath => {
   const parsedPath = path.parse(relFilepath);
   const filename = path.basename(filepath, path.extname(filepath));
 
+  let title = result.data.mainHeader || data.title || filename;
+
   const dataset = {
+    id: filename,
     headers: result.data.headers,
     href: path.join(parsedPath.dir, parsedPath.name),
-    title: result.data.mainHeader || filename
+    title,
   };
+
+  if(data.category != null) {
+    dataset.category = data.category;
+  }
   return dataset;
 };
 
@@ -76,10 +98,12 @@ const createTOC = result => {
   // reflected as the router pathname, as defined by the
   // NextJS router
   return result.reduce((acc, data) => {
-    const { title, headers } = data;
+    const { title, headers, category, id } = data;
     acc["/" + data.href] = {
+      id,
       title,
-      headers
+      headers,
+      category,
     };
 
     return acc;
@@ -111,17 +135,6 @@ const createReasonCompilerToc = () => {
 const createV800ManualToc = () => {
   const MD_DIR = path.join(__dirname, "../pages/docs/manual/v8.0.0");
   const TARGET_FILE = path.join(__dirname, "../index_data/manual_v800_toc.json");
-
-  const files = glob.sync(`${MD_DIR}/*.md?(x)`);
-  const result = files.map(processFile);
-  const toc = createTOC(result);
-
-  fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
-};
-
-const createReasonReactToc = () => {
-  const MD_DIR = path.join(__dirname, "../pages/docs/reason-react/latest");
-  const TARGET_FILE = path.join(__dirname, "../index_data/reason_react_toc.json");
 
   const files = glob.sync(`${MD_DIR}/*.md?(x)`);
   const result = files.map(processFile);
@@ -171,6 +184,5 @@ debugToc();
 createLatestManualToc();
 createV800ManualToc();
 createReasonCompilerToc();
-createReasonReactToc();
 createGenTypeToc();
 createCommunityToc();

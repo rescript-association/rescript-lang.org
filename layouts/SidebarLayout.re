@@ -8,6 +8,19 @@ open Util.ReactStuff;
 module Link = Next.Link;
 
 module Toc = {
+  type raw =
+    Js.Dict.t({
+      .
+      "title": string,
+      "category": Js.Nullable.t(string),
+      "headers":
+        array({
+          .
+          "name": string,
+          "href": string,
+        }),
+    });
+
   type entry = {
     header: string,
     href: string,
@@ -20,25 +33,16 @@ module Toc = {
 
   [@react.component]
   let make = (~entries: array(entry)) => {
-    let router = Next.Router.useRouter();
     <ul className="mt-2 py-1 mb-4 border-l border-primary">
-      {Belt.Array.map(
-         entries,
-         ({header, href}) => {
-           let isActive = router.pathname ++ href == router.asPath;
-           let activeClassName = isActive ? "text-fire" : "";
-           <li key=header className="pl-2 mt-3 first:mt-1">
-             <Link href>
-               <a
-                 className={
-                   "font-medium block text-sm text-night-light leading-tight tracking-tight hover:text-primary "
-                   ++ activeClassName
-                 }>
-                 header->s
-               </a>
-             </Link>
-           </li>;
-         },
+      {Belt.Array.map(entries, ({header, href}) =>
+         <li key=header className="pl-2 mt-3 first:mt-1">
+           <Link href>
+             <a
+               className="font-medium block text-sm text-night-light leading-tight tracking-tight hover:text-primary">
+               header->s
+             </a>
+           </Link>
+         </li>
        )
        ->ate}
     </ul>;
