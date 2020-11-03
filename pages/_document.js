@@ -1,11 +1,11 @@
 import React from "react";
-import Document, { Head, Main, NextScript } from "next/document";
+import Document, { Html, Head, Main, NextScript } from "next/document";
 
 export default class extends Document {
   render() {
     const isProduction = process.env.ENV === "production";
     return (
-      <html>
+      <Html>
         <Head>
           <link
             rel="stylesheet"
@@ -36,7 +36,7 @@ export default class extends Document {
             </React.Fragment>
           )}
         </body>
-      </html>
+      </Html>
     );
   }
 }

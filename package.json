@@ -21,7 +21,7 @@
     "gray-matter": "^4.0.2",
     "highlight.js": "^9.15.10",
     "lz-string": "^1.4.4",
-    "next": "^9.5.1",
+    "next": "10.0.0",
     "next-transpile-modules": "^2.3.1",
     "prettier": "^1.18.2",
     "react": "^16.12.0",
@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^9.5.1",
-    "bs-platform": "8.2.0",
+    "bs-platform": "8.3.2",
     "cssnano": "^4.1.10",
     "postcss-cli": "^7.1.1",
     "reanalyze": "^2.5.0",
