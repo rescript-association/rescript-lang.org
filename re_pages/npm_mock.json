@@ -1,0 +1,941 @@
+{
+  "objects": [
+    {
+      "package": {
+        "author": {
+          "email": "brnrdog@hey.com",
+          "name": "Bernardo Gurgel",
+          "username": "brnrdog"
+        },
+        "date": "2020-10-29T18:19:52.180Z",
+        "description": "![build](https://img.shields.io/github/workflow/status/brnrdog/listbox/Automated%20tests) ![npm](https://img.shields.io/npm/v/@brnrdog/listbox) ![codecov](https://img.shields.io/codecov/c/github/brnrdog/listbox)",
+        "keywords": [
+          "rescript",
+          "react",
+          "listbox",
+          "select",
+          "dropdown"
+        ],
+        "links": {
+          "bugs": "https://github.com/brnrdog/listbox/issues",
+          "homepage": "https://github.com/brnrdog/listbox#readme",
+          "npm": "https://www.npmjs.com/package/%40brnrdog%2Flistbox",
+          "repository": "https://github.com/brnrdog/listbox"
+        },
+        "maintainers": [
+          {
+            "email": "brnrdog@hey.com",
+            "username": "brnrdog"
+          }
+        ],
+        "name": "@brnrdog/listbox",
+        "publisher": {
+          "email": "brnrdog@hey.com",
+          "username": "brnrdog"
+        },
+        "scope": "brnrdog",
+        "version": "2.2.0"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.3333333333333333,
+          "popularity": 0.008668923060410599,
+          "quality": 0.82201738770121
+        },
+        "final": 0.36630600604817337
+      },
+      "searchScore": 1.599735e-07
+    },
+    {
+      "package": {
+        "author": {
+          "name": "Andrew Herron"
+        },
+        "date": "2020-11-03T06:46:14.122Z",
+        "description": "Fast-check bindings for ReScript",
+        "keywords": [
+          "BuckleScript",
+          "ReScript",
+          "Reason",
+          "ReasonML"
+        ],
+        "links": {
+          "bugs": "https://github.com/TheSpyder/rescript-fast-check/issues",
+          "homepage": "https://github.com/TheSpyder/rescript-fast-check",
+          "npm": "https://www.npmjs.com/package/rescript-fast-check",
+          "repository": "https://github.com/TheSpyder/rescript-fast-check"
+        },
+        "maintainers": [
+          {
+            "email": "thespyder@programmer.net",
+            "username": "thespyder"
+          }
+        ],
+        "name": "rescript-fast-check",
+        "publisher": {
+          "email": "thespyder@programmer.net",
+          "username": "thespyder"
+        },
+        "scope": "unscoped",
+        "version": "1.0.2"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.3333333333333333,
+          "popularity": 0.005252248683152754,
+          "quality": 0.82201738770121
+        },
+        "final": 0.3651101700161331
+      },
+      "searchScore": 1.4966334e-07
+    },
+    {
+      "package": {
+        "author": {
+          "name": "Hongbo Zhang"
+        },
+        "date": "2020-10-26T05:45:48.538Z",
+        "description": "ReScript compiler, OCaml standard libary by ReScript and its required runtime support",
+        "keywords": [
+          "ocaml",
+          "rescript",
+          "stdlib",
+          "functional programming"
+        ],
+        "links": {
+          "bugs": "https://github.com/rescript-lang/rescript-compiler/issues",
+          "homepage": "https://github.com/rescript-lang/rescript-compiler#readme",
+          "npm": "https://www.npmjs.com/package/bs-platform",
+          "repository": "https://github.com/rescript-lang/rescript-compiler"
+        },
+        "maintainers": [
+          {
+            "email": "bobzhang1988@gmail.com",
+            "username": "hongbo_zhang"
+          }
+        ],
+        "name": "bs-platform",
+        "publisher": {
+          "email": "bobzhang1988@gmail.com",
+          "username": "hongbo_zhang"
+        },
+        "scope": "unscoped",
+        "version": "8.3.2"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.3333333333333333,
+          "popularity": 0.15756672178025038,
+          "quality": 0.44472439798851837
+        },
+        "final": 0.3052323386863098
+      },
+      "searchScore": 3.948302e-08
+    },
+    {
+      "package": {
+        "author": {
+          "name": "parasrah"
+        },
+        "date": "2020-01-26T23:50:47.608Z",
+        "description": "Rescript package to support Elm files",
+        "keywords": [
+          "rescript",
+          "cra",
+          "elm",
+          "react"
+        ],
+        "links": {
+          "bugs": "https://github.com/Parasrah/rescript-elm/issues",
+          "homepage": "https://github.com/Parasrah/rescript-elm#readme",
+          "npm": "https://www.npmjs.com/package/%40elm-react%2Frescripts-elm",
+          "repository": "https://github.com/Parasrah/rescript-elm"
+        },
+        "maintainers": [
+          {
+            "email": "npm@parasrah.com",
+            "username": "right2drive"
+          }
+        ],
+        "name": "@elm-react/rescripts-elm",
+        "publisher": {
+          "email": "npm@parasrah.com",
+          "username": "right2drive"
+        },
+        "scope": "elm-react",
+        "version": "1.0.0"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.22322465233460356,
+          "popularity": 0.0020394014036460425,
+          "quality": 0.7769090993571235
+        },
+        "final": 0.3119151486155244
+      },
+      "searchScore": 1.8429123e-08
+    },
+    {
+      "flags": {
+        "unstable": true
+      },
+      "package": {
+        "date": "2020-10-16T13:35:23.587Z",
+        "description": "ReasonML / BuckleScript bindings for the Apollo Client ecosystem",
+        "keywords": [
+          "Apollo",
+          "BuckleScript",
+          "GraphQL",
+          "Reason",
+          "ReasonML",
+          "ReScript"
+        ],
+        "links": {
+          "bugs": "https://github.com/reasonml-community/reason-apollo-client/issues",
+          "homepage": "https://github.com/reasonml-community/reason-apollo-client#readme",
+          "npm": "https://www.npmjs.com/package/reason-apollo-client",
+          "repository": "https://github.com/reasonml-community/reason-apollo-client"
+        },
+        "maintainers": [
+          {
+            "email": "jeddeloh@gmail.com",
+            "username": "jeddeloh"
+          }
+        ],
+        "name": "reason-apollo-client",
+        "publisher": {
+          "email": "jeddeloh@gmail.com",
+          "username": "jeddeloh"
+        },
+        "scope": "unscoped",
+        "version": "1.0.0-beta.0"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.3333333333333333,
+          "popularity": 0.02552595404409279,
+          "quality": 0.6101518453010979
+        },
+        "final": 0.3086463041724285
+      },
+      "searchScore": 1.7422305e-08
+    },
+    {
+      "package": {
+        "author": {
+          "email": "alex.fedoseev@gmail.com",
+          "name": "Alex Fedoseev",
+          "username": "alex.fedoseev"
+        },
+        "date": "2020-09-11T12:59:48.194Z",
+        "description": "Logging implementation for ReScript",
+        "keywords": [
+          "log",
+          "logger",
+          "logging",
+          "rescript",
+          "reason",
+          "reasonml",
+          "ocaml",
+          "bucklescript"
+        ],
+        "links": {
+          "bugs": "https://github.com/MinimaHQ/res-logger/issues",
+          "homepage": "https://github.com/MinimaHQ/res-logger#readme",
+          "npm": "https://www.npmjs.com/package/res-logger",
+          "repository": "https://github.com/MinimaHQ/res-logger"
+        },
+        "maintainers": [
+          {
+            "email": "alex.fedoseev@gmail.com",
+            "username": "alex.fedoseev"
+          }
+        ],
+        "name": "res-logger",
+        "publisher": {
+          "email": "alex.fedoseev@gmail.com",
+          "username": "alex.fedoseev"
+        },
+        "scope": "unscoped",
+        "version": "2.0.0-beta.2"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.33323441002171106,
+          "popularity": 0.007176227720436676,
+          "quality": 0.6163490250917193
+        },
+        "final": 0.30404843073726745
+      },
+      "searchScore": 1.2343349e-08
+    },
+    {
+      "package": {
+        "author": {
+          "email": "jsiebern88@gmail.com",
+          "name": "Jonathan Siebern",
+          "username": "jsiebern"
+        },
+        "date": "2020-08-17T13:35:28.593Z",
+        "description": "This library provides Reason bindings for material-ui.",
+        "keywords": [
+          "bucklescript",
+          "bucklescript-bindings",
+          "reason",
+          "reasonml",
+          "reasonml-bindings",
+          "ocaml",
+          "material-ui",
+          "rescript",
+          "rescript-bindings",
+          "reason-react"
+        ],
+        "links": {
+          "bugs": "https://github.com/jsiebern/bs-material-ui/issues",
+          "homepage": "https://jsiebern.github.io/bs-material-ui",
+          "npm": "https://www.npmjs.com/package/%40jsiebern%2Fbs-material-ui",
+          "repository": "https://github.com/jsiebern/bs-material-ui"
+        },
+        "maintainers": [
+          {
+            "email": "jsiebern88@gmail.com",
+            "username": "jsiebern"
+          }
+        ],
+        "name": "@jsiebern/bs-material-ui",
+        "publisher": {
+          "email": "jsiebern88@gmail.com",
+          "username": "jsiebern"
+        },
+        "scope": "jsiebern",
+        "version": "2.0.2"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.3333333333333333,
+          "popularity": 0.059535280720635825,
+          "quality": 0.5142896960030733
+        },
+        "final": 0.29179092371981113
+      },
+      "searchScore": 1.0625074e-08
+    },
+    {
+      "package": {
+        "author": {
+          "email": "jsiebern88@gmail.com",
+          "name": "Jonathan Siebern",
+          "username": "jsiebern"
+        },
+        "date": "2020-08-16T20:24:21.347Z",
+        "description": "This library provides Reason bindings for material-ui-lab.",
+        "keywords": [
+          "bucklescript",
+          "bucklescript-bindings",
+          "reason",
+          "reasonml",
+          "reasonml-bindings",
+          "ocaml",
+          "material-ui",
+          "rescript",
+          "rescript-bindings",
+          "reason-react"
+        ],
+        "links": {
+          "bugs": "https://github.com/jsiebern/bs-material-ui/issues",
+          "homepage": "https://jsiebern.github.io/bs-material-ui",
+          "npm": "https://www.npmjs.com/package/%40jsiebern%2Fbs-material-ui-lab",
+          "repository": "https://github.com/jsiebern/bs-material-ui"
+        },
+        "maintainers": [
+          {
+            "email": "jsiebern88@gmail.com",
+            "username": "jsiebern"
+          }
+        ],
+        "name": "@jsiebern/bs-material-ui-lab",
+        "publisher": {
+          "email": "jsiebern88@gmail.com",
+          "username": "jsiebern"
+        },
+        "scope": "jsiebern",
+        "version": "2.0.3"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.33331704558741765,
+          "popularity": 0.027598886734135752,
+          "quality": 0.5160193370492304
+        },
+        "final": 0.28112637742731283
+      },
+      "searchScore": 4.9851363e-09
+    },
+    {
+      "package": {
+        "date": "2020-10-05T19:14:39.719Z",
+        "description": "Reason/OCaml PPX generating ReactIntl `id` from `defaultMessage`",
+        "keywords": [
+          "react-intl",
+          "ppx",
+          "reason-react",
+          "rescript"
+        ],
+        "links": {
+          "bugs": "https://github.com/SimonDegraeve/res-react-intl/issues",
+          "homepage": "https://github.com/SimonDegraeve/res-react-intl",
+          "npm": "https://www.npmjs.com/package/res-react-intl",
+          "repository": "https://github.com/SimonDegraeve/res-react-intl"
+        },
+        "maintainers": [
+          {
+            "email": "simon.degraeve@gmail.com",
+            "username": "simon.degraeve"
+          }
+        ],
+        "name": "res-react-intl",
+        "publisher": {
+          "email": "simon.degraeve@gmail.com",
+          "username": "simon.degraeve"
+        },
+        "scope": "unscoped",
+        "version": "3.1.2"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.3333333333333333,
+          "popularity": 0.01322656212044359,
+          "quality": 0.5212714373376286
+        },
+        "final": 0.2776773946101105
+      },
+      "searchScore": 3.73696e-09
+    },
+    {
+      "package": {
+        "author": {
+          "name": "linonetwo"
+        },
+        "date": "2020-06-26T13:21:30.028Z",
+        "description": "Enable web worker-loader for your create-react-app project.",
+        "keywords": [
+          "rescript",
+          "react",
+          "create-react-app",
+          "eject",
+          "eslint",
+          "cra",
+          "rewired"
+        ],
+        "links": {
+          "npm": "https://www.npmjs.com/package/rescript-disable-eslint"
+        },
+        "maintainers": [
+          {
+            "email": "linonetwo012@gmail.com",
+            "username": "linonetwo012"
+          }
+        ],
+        "name": "rescript-disable-eslint",
+        "publisher": {
+          "email": "linonetwo012@gmail.com",
+          "username": "linonetwo012"
+        },
+        "scope": "unscoped",
+        "version": "1.0.2"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.3276580724038447,
+          "popularity": 0.010324982631810803,
+          "quality": 0.5088541987505922
+        },
+        "final": 0.2709503288876571
+      },
+      "searchScore": 2.6185636e-09
+    },
+    {
+      "package": {
+        "author": {
+          "email": "cometkim.kr@gmail.com",
+          "name": "Hyeseong Kim",
+          "username": "cometkim"
+        },
+        "date": "2020-10-01T20:28:32.512Z",
+        "description": "ReScript + Reason React template for Create React App",
+        "keywords": [
+          "react",
+          "reason-react",
+          "create-react-app",
+          "template",
+          "rescript",
+          "bucklescript",
+          "reason",
+          "reasonml"
+        ],
+        "links": {
+          "npm": "https://www.npmjs.com/package/cra-template-rescript"
+        },
+        "maintainers": [
+          {
+            "email": "cometkim.kr@gmail.com",
+            "username": "cometkim"
+          }
+        ],
+        "name": "cra-template-rescript",
+        "publisher": {
+          "email": "cometkim.kr@gmail.com",
+          "username": "cometkim"
+        },
+        "scope": "unscoped",
+        "version": "1.1.0"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.3333333333333333,
+          "popularity": 0.00652500438509041,
+          "quality": 0.5088541987505922
+        },
+        "final": 0.27160667782662595
+      },
+      "searchScore": 2.6055773e-09
+    },
+    {
+      "flags": {
+        "unstable": true
+      },
+      "package": {
+        "author": {
+          "email": "linonetwo012@gmail.com",
+          "name": "linonetwo",
+          "url": "https://onetwo.ren",
+          "username": "linonetwo012"
+        },
+        "date": "2019-05-26T08:31:09.379Z",
+        "description": "Use create-react-app ( CRA ) with babel and typescript",
+        "keywords": [
+          "create-react-app",
+          "react",
+          "typescript",
+          "babel",
+          "tslint",
+          "rewired",
+          "rescript",
+          "without-eject",
+          "yeoman-generator"
+        ],
+        "links": {
+          "bugs": "https://github.com/linonetwo/create-react-app-rewired-babel-ts/issues",
+          "homepage": "https://github.com/linonetwo/create-react-app-rewired-babel-ts",
+          "npm": "https://www.npmjs.com/package/generator-create-react-app-rewired-babel-ts",
+          "repository": "https://github.com/linonetwo/create-react-app-rewired-babel-ts"
+        },
+        "maintainers": [
+          {
+            "email": "linonetwo012@gmail.com",
+            "username": "linonetwo012"
+          }
+        ],
+        "name": "generator-create-react-app-rewired-babel-ts",
+        "publisher": {
+          "email": "linonetwo012@gmail.com",
+          "username": "linonetwo012"
+        },
+        "scope": "unscoped",
+        "version": "0.2.1"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.1000540447769186,
+          "popularity": 0.001631761531632976,
+          "quality": 0.738334559339931
+        },
+        "final": 0.2570904000099723
+      },
+      "searchScore": 1.4708263e-09
+    },
+    {
+      "flags": {
+        "unstable": true
+      },
+      "package": {
+        "author": {
+          "name": "Eleanor",
+          "url": "https://webbureaucrat.gitlab.io"
+        },
+        "date": "2020-09-11T23:04:53.276Z",
+        "description": "a binding for the JavaScript Notifications API.",
+        "keywords": [
+          "pwa",
+          "BuckleScript",
+          "ReScript"
+        ],
+        "links": {
+          "bugs": "https://twitter.com/webbureaucrat",
+          "homepage": "https://gitlab.com/eleanorofs/bs-notifications",
+          "npm": "https://www.npmjs.com/package/bs-notifications",
+          "repository": "https://gitlab.com/eleanorofs/bs-notifications"
+        },
+        "maintainers": [
+          {
+            "email": "eleanor.holley@protonmail.com",
+            "username": "webbureaucrat"
+          }
+        ],
+        "name": "bs-notifications",
+        "publisher": {
+          "email": "eleanor.holley@protonmail.com",
+          "username": "webbureaucrat"
+        },
+        "scope": "unscoped",
+        "version": "0.0.9"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.3333333333333333,
+          "popularity": 0.0314387790513876,
+          "quality": 0.40070989532868295
+        },
+        "final": 0.2478832079332572
+      },
+      "searchScore": 9.363701e-10
+    },
+    {
+      "flags": {
+        "unstable": true
+      },
+      "package": {
+        "author": {
+          "name": "Armedi"
+        },
+        "date": "2020-10-25T02:37:34.146Z",
+        "description": "BlurHash implementation in ReScript language",
+        "keywords": [
+          "BuckleScript",
+          "ReScript",
+          "BlurHash"
+        ],
+        "links": {
+          "bugs": "https://github.com/armedi/rescript-blurhash/issues",
+          "homepage": "https://github.com/armedi/rescript-blurhash#readme",
+          "npm": "https://www.npmjs.com/package/rescript-blurhash",
+          "repository": "https://github.com/armedi/rescript-blurhash"
+        },
+        "maintainers": [
+          {
+            "email": "armedi@outlook.com",
+            "username": "armedi"
+          }
+        ],
+        "name": "rescript-blurhash",
+        "publisher": {
+          "email": "armedi@outlook.com",
+          "username": "armedi"
+        },
+        "scope": "unscoped",
+        "version": "0.3.2"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.3333333333333333,
+          "popularity": 0.011288535112183425,
+          "quality": 0.41953866264602685
+        },
+        "final": 0.24647925274973886
+      },
+      "searchScore": 7.1650497e-10
+    },
+    {
+      "flags": {
+        "unstable": true
+      },
+      "package": {
+        "author": {
+          "email": "austaras@outlook.com",
+          "name": "austaras",
+          "username": "austaras"
+        },
+        "date": "2020-10-17T18:56:52.651Z",
+        "description": "Elm task but for ReScript",
+        "keywords": [
+          "react",
+          "hook",
+          "elm",
+          "effects",
+          "rescript"
+        ],
+        "links": {
+          "bugs": "https://github.com/austaras/retask/issues",
+          "homepage": "https://github.com/austaras/retask",
+          "npm": "https://www.npmjs.com/package/%40wicke%2Fretask",
+          "repository": "https://github.com/austaras/retask"
+        },
+        "maintainers": [
+          {
+            "email": "austaras@outlook.com",
+            "username": "austaras"
+          }
+        ],
+        "name": "@wicke/retask",
+        "publisher": {
+          "email": "austaras@outlook.com",
+          "username": "austaras"
+        },
+        "scope": "wicke",
+        "version": "0.4.3"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.3333333333333333,
+          "popularity": 0.009298136261935729,
+          "quality": 0.41953866264602685
+        },
+        "final": 0.24578261315215222
+      },
+      "searchScore": 6.761877e-10
+    },
+    {
+      "flags": {
+        "unstable": true
+      },
+      "package": {
+        "date": "2020-09-29T23:48:23.877Z",
+        "description": "The Lukin Co. template for Create React App and ReScript",
+        "keywords": [
+          "react",
+          "create-react-app",
+          "template",
+          "reason-react",
+          "reason",
+          "reasonml",
+          "rescript-react",
+          "rescript"
+        ],
+        "links": {
+          "bugs": "https://github.com/lukinco/cra-rescript-template-lukin/issues",
+          "homepage": "https://github.com/lukinco/cra-rescript-template-lukin#readme",
+          "npm": "https://www.npmjs.com/package/%40lukinco%2Fcra-template-rescript-lukin",
+          "repository": "https://github.com/lukinco/cra-rescript-template-lukin"
+        },
+        "maintainers": [
+          {
+            "email": "edu.santos.brito@gmail.com",
+            "username": "esbrito"
+          },
+          {
+            "email": "marcosvcontato.mv@gmail.com",
+            "username": "vmarcosp"
+          },
+          {
+            "email": "vitormendrone@gmail.com",
+            "username": "vhmendrone"
+          },
+          {
+            "email": "f.daciuk+npmjs@gmail.com",
+            "username": "fdaciuk"
+          }
+        ],
+        "name": "@lukinco/cra-template-rescript-lukin",
+        "publisher": {
+          "email": "marcosvcontato.mv@gmail.com",
+          "username": "vmarcosp"
+        },
+        "scope": "lukinco",
+        "version": "0.0.7"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.3333333333333333,
+          "popularity": 0.009260978093698292,
+          "quality": 0.4143338907453972
+        },
+        "final": 0.24420817622308022
+      },
+      "searchScore": 6.1875804e-10
+    },
+    {
+      "flags": {
+        "unstable": true
+      },
+      "package": {
+        "author": {
+          "name": "Eleanor",
+          "url": "https://webbureaucrat.gitlab.io/"
+        },
+        "date": "2020-10-09T22:50:12.547Z",
+        "description": "bindings from BuckleScript to JavaScript service workers.",
+        "keywords": [
+          "BuckleScript",
+          "ReScript",
+          "pwa"
+        ],
+        "links": {
+          "bugs": "https://gitlab.com/eleanorofs/bs-service-worker/-/issues",
+          "homepage": "https://gitlab.com/eleanorofs/bs-service-worker",
+          "npm": "https://www.npmjs.com/package/bs-service-worker",
+          "repository": "https://gitlab.com/eleanorofs/bs-service-worker"
+        },
+        "maintainers": [
+          {
+            "email": "eleanor.holley@protonmail.com",
+            "username": "webbureaucrat"
+          }
+        ],
+        "name": "bs-service-worker",
+        "publisher": {
+          "email": "eleanor.holley@protonmail.com",
+          "username": "webbureaucrat"
+        },
+        "scope": "unscoped",
+        "version": "0.0.25"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.3333333333333333,
+          "popularity": 0.014791004698530511,
+          "quality": 0.40070989532868295
+        },
+        "final": 0.24205648690975723
+      },
+      "searchScore": 5.780268e-10
+    },
+    {
+      "flags": {
+        "unstable": true
+      },
+      "package": {
+        "author": {
+          "name": "cvr"
+        },
+        "date": "2020-10-04T00:56:17.881Z",
+        "description": "Rescript bindings for [rn-tailwind](https://github.com/vadimdemedes/tailwind-rn)",
+        "keywords": [
+          "ReScript",
+          "tailwind",
+          "react-native",
+          "react",
+          "bucklescript"
+        ],
+        "links": {
+          "npm": "https://www.npmjs.com/package/re-tailwind-rn"
+        },
+        "maintainers": [
+          {
+            "email": "seeve.c@gmail.com",
+            "username": "_cevr"
+          }
+        ],
+        "name": "re-tailwind-rn",
+        "publisher": {
+          "email": "seeve.c@gmail.com",
+          "username": "_cevr"
+        },
+        "scope": "unscoped",
+        "version": "0.1.1"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.3333333333333333,
+          "popularity": 0.006188451853261111,
+          "quality": 0.40070989532868295
+        },
+        "final": 0.2390455934139129
+      },
+      "searchScore": 4.4738857e-10
+    },
+    {
+      "flags": {
+        "unstable": true
+      },
+      "package": {
+        "author": {
+          "name": "Eleanor"
+        },
+        "date": "2020-10-09T17:22:20.472Z",
+        "description": "a stand-alone package for interoperation between Elm and ReScript compatible with es6 modules.",
+        "keywords": [
+          "BuckleScript",
+          "Elm",
+          "ReScript"
+        ],
+        "links": {
+          "bugs": "https://gitlab.com/eleanorofs/res-elm/-/issues",
+          "homepage": "https://gitlab.com/eleanorofs/res-elm/",
+          "npm": "https://www.npmjs.com/package/res-elm",
+          "repository": "https://gitlab.com/eleanorofs/res-elm"
+        },
+        "maintainers": [
+          {
+            "email": "eleanor.holley@protonmail.com",
+            "username": "webbureaucrat"
+          }
+        ],
+        "name": "res-elm",
+        "publisher": {
+          "email": "eleanor.holley@protonmail.com",
+          "username": "webbureaucrat"
+        },
+        "scope": "unscoped",
+        "version": "0.1.3"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.3333333333333333,
+          "popularity": 0.006188451853261111,
+          "quality": 0.40070989532868295
+        },
+        "final": 0.2390455934139129
+      },
+      "searchScore": 4.4738857e-10
+    },
+    {
+      "package": {
+        "author": {
+          "name": "linonetwo"
+        },
+        "date": "2019-12-22T12:17:49.826Z",
+        "description": "Enable web worker-loader for your create-react-app project.",
+        "keywords": [
+          "rescript",
+          "react",
+          "create-react-app",
+          "eject",
+          "web-worker",
+          "cra",
+          "rewired",
+          "worker"
+        ],
+        "links": {
+          "bugs": "https://github.com/linonetwo/rescript-worker-loader/issues",
+          "homepage": "https://github.com/linonetwo/rescript-worker-loader#readme",
+          "npm": "https://www.npmjs.com/package/rescript-worker-loader",
+          "repository": "https://github.com/linonetwo/rescript-worker-loader"
+        },
+        "maintainers": [
+          {
+            "email": "linonetwo012@gmail.com",
+            "username": "linonetwo012"
+          }
+        ],
+        "name": "rescript-worker-loader",
+        "publisher": {
+          "email": "linonetwo012@gmail.com",
+          "username": "linonetwo012"
+        },
+        "scope": "unscoped",
+        "version": "1.0.4"
+      },
+      "score": {
+        "detail": {
+          "maintenance": 0.22322465233460356,
+          "popularity": 0.0037756175094071608,
+          "quality": 0.5088541987505922
+        },
+        "final": 0.23210635407058144
+      },
+      "searchScore": 3.278965e-10
+    }
+  ],
+  "time": "Wed Nov 04 2020 17:12:09 GMT+0000 (UTC)",
+  "total": 30
+}
