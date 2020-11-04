@@ -241,7 +241,7 @@ let message = switch person1 {
 | Teacher({name: "Mary" | "Joe"}) =>
   `Hey, still going to the party on Saturday?`
 | Teacher({name}) =>
-  // this is matched only if `name` isn't "Joe"
+  // this is matched only if `name` isn't "Mary" or "Joe"
   `Hello ${name}.`
 | Student({name, reportCard: {passing: true, gpa}}) =>
   `Congrats ${name}, nice GPA of ${Js.Float.toString(gpa)} you got there!`
