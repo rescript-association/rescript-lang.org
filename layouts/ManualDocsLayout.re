@@ -72,6 +72,7 @@ let basicNavs = [|
 let buildsystemNavs = [|
   NavItem.{name: "Overview", href: "/docs/manual/latest/build-overview"},
   {name: "Configuration", href: "/docs/manual/latest/build-configuration"},
+  {name: "Configuration Schema", href: "/docs/manual/latest/build-configuration-schema"},
   {
     name: "Interop with JS Build System",
     href: "/docs/manual/latest/interop-with-js-build-systems",
