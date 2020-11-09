@@ -471,7 +471,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
     [||],
   );
 
-  let fixedNav = fixed ? "fixed z-20 top-0" : "";
+  let fixedNav = fixed ? "fixed z-30 top-0" : "";
 
   <nav
     ref={ReactDOMRe.Ref.domRef(outerRef)}
@@ -587,7 +587,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
       style={Style.make(~minWidth, ~top="4.5rem", ())}
       className={
         (isOverlayOpen ? "flex" : "hidden")
-        ++ " sm:hidden flex-col fixed top-0 left-0 h-full w-full z-20 sm:w-9/12 bg-gray-100 sm:h-auto sm:flex sm:relative sm:flex-row sm:justify-between"
+        ++ " sm:hidden flex-col fixed top-0 left-0 h-full w-full z-30 sm:w-9/12 bg-gray-100 sm:h-auto sm:flex sm:relative sm:flex-row sm:justify-between"
       }>
       <MobileNav route />
     </div>
