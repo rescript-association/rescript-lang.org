@@ -188,10 +188,10 @@ function lex(_accOpt, _stateOpt, p) {
         startPos: startPos$1,
         endPos: loc_endPos
       };
-      var result = /\[([0-9;]+)([\x40-\x7F])/.exec(raw);
+      var x = /\[([0-9;]+)([\x40-\x7F])/.exec(raw);
       var token$2;
-      if (result !== null) {
-        var str = Caml_array.get(result, 1);
+      if (x !== null) {
+        var str = Caml_array.get(x, 1);
         if (str == null) {
           token$2 = {
             TAG: 1,
@@ -380,8 +380,8 @@ function parse(input) {
 }
 
 function onlyText(tokens) {
-  return Belt_Array.keep(tokens, (function (param) {
-                switch (param.TAG | 0) {
+  return Belt_Array.keep(tokens, (function (x) {
+                switch (x.TAG | 0) {
                   case /* Text */0 :
                       return true;
                   case /* Sgr */1 :
@@ -516,10 +516,10 @@ function tokenString(t) {
 }
 
 function plainString(tokens) {
-  return Belt_Array.map(tokens, (function (param) {
-                  switch (param.TAG | 0) {
+  return Belt_Array.map(tokens, (function (x) {
+                  switch (x.TAG | 0) {
                     case /* Text */0 :
-                        return param.content;
+                        return x.content;
                     case /* Sgr */1 :
                     case /* ClearSgr */2 :
                         return "";

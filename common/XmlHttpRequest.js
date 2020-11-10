@@ -3,11 +3,11 @@
 
 var Upload = {};
 
-function decodeReadyState(param) {
-  if (param > 4 || param < 0) {
+function decodeReadyState(x) {
+  if (x > 4 || x < 0) {
     return /* Unknown */5;
   } else {
-    return param;
+    return x;
   }
 }
 

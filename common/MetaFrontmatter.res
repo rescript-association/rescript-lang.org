@@ -5,10 +5,6 @@
 // as Js.Null.t, since it will be used for JSON serialization
 // within Next's static generation
 
+type t
 
-type t;
-
-let decode = (json: Js.Json.t): result(t, string) => {
-
-  Error("Not implemented");
-};
+let decode = (json: Js.Json.t): result<t, string> => Error("Not implemented")

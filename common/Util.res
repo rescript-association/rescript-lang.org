@@ -1,86 +1,84 @@
+// This file was automatically converted to ReScript from 'Util.re'
+// Check the output and make sure to delete the original file
 module Debounce = {
   // See: https://davidwalsh.name/javascript-debounce-function
   let debounce = (~wait, fn) => {
-    let timeout = ref(None);
+    let timeout = ref(None)
 
     () => {
-      let unset = () => {
-        timeout := None;
-      };
+      let unset = () => timeout := None
 
-      switch (timeout^) {
+      switch timeout.contents {
       | Some(id) => Js.Global.clearTimeout(id)
       | None => fn()
-      };
-      timeout := Some(Js.Global.setTimeout(unset, wait));
-    };
-  };
+      }
+      timeout := Some(Js.Global.setTimeout(unset, wait))
+    }
+  }
 
   let debounce3 = (~wait, ~immediate=false, fn) => {
-    let timeout = ref(None);
+    let timeout = ref(None)
 
     (a1, a2, a3) => {
       let unset = () => {
-        timeout := None;
-        immediate ? fn(a1, a2, a3) : ();
-      };
+        timeout := None
+        immediate ? fn(a1, a2, a3) : ()
+      }
 
-      switch (timeout^) {
+      switch timeout.contents {
       | Some(id) => Js.Global.clearTimeout(id)
       | None => fn(a1, a2, a3)
-      };
-      timeout := Some(Js.Global.setTimeout(unset, wait));
+      }
+      timeout := Some(Js.Global.setTimeout(unset, wait))
 
-      if (immediate && timeout^ === None) {
-        fn(a1, a2, a3);
+      if immediate && timeout.contents === None {
+        fn(a1, a2, a3)
       } else {
-        ();
-      };
-    };
-  };
-};
+        ()
+      }
+    }
+  }
+}
 module ReactStuff = {
-  let s = ReasonReact.string;
-  let ate = ReasonReact.array;
+  let s = ReasonReact.string
+  let ate = ReasonReact.array
 
   module Unsafe = {
-    external elementAsString: React.element => string = "%identity";
-  };
-  module Style = ReactDOMRe.Style;
+    external elementAsString: React.element => string = "%identity"
+  }
+  module Style = ReactDOMRe.Style
 
-  [@bs.module "react"]
-  external lazy_: (unit => Js.Promise.t('a)) => 'a = "lazy";
+  @bs.module("react")
+  external lazy_: (unit => Js.Promise.t<'a>) => 'a = "lazy"
 
   module Suspense = {
-    [@bs.module "react"] [@react.component]
-    external make: (~children: React.element) => React.element = "Suspense";
-  };
-};
+    @bs.module("react") @react.component
+    external make: (~children: React.element) => React.element = "Suspense"
+  }
+}
 
 module String = {
-  let camelCase: string => string = [%raw
+  let camelCase: string => string = %raw(
     "str => {
      return str.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
     }"
-  ];
+  )
 
-  let capitalize: string => string = [%raw
+  let capitalize: string => string = %raw(
     "str => {
       return str && str.charAt(0).toUpperCase() + str.substring(1);
     }"
-  ];
-};
+  )
+}
 
 module Json = {
-  [@bs.val] [@bs.scope "JSON"]
-  external prettyStringify:
-    (Js.Json.t, [@bs.as {json|null|json}] _, [@bs.as 4] _) => string =
-    "stringify";
-};
+  @bs.val @bs.scope("JSON")
+  external prettyStringify: (Js.Json.t, @bs.as(json`null`) _, @bs.as(4) _) => string = "stringify"
+}
 
 module Url = {
-  let isAbsolute: string => bool = [%raw
-    {|
+  let isAbsolute: string => bool = %raw(
+    `
     function(str) {
       var r = new RegExp('^(?:[a-z]+:)?//', 'i');
       if (r.test(str))
@@ -89,9 +87,9 @@ module Url = {
       }
       return false;
     }
-  |}
-  ];
-};
+  ` //', 'i');
+  )
+}
 
 module Date = {
   /*
@@ -130,22 +128,19 @@ module Date = {
 
      {j|$month $day, $year|j};
    };
-   */
+ */
   let toDayMonthYear = (date: Js.Date.t) => {
-    IntlDateTimeFormat.(
-      Date.(
-        make(
-          ~locale=`US,
-          ~options=
-            options(
-              ~month=Month.make(`short),
-              ~day=Day.make(`numeric),
-              ~year=Year.make(`numeric),
-              (),
-            ),
-          date,
-        )
-      )
-    );
-  };
-};
+    open IntlDateTimeFormat
+    open Date
+    make(
+      ~locale=#US,
+      ~options=options(
+        ~month=Month.make(#short),
+        ~day=Day.make(#numeric),
+        ~year=Year.make(#numeric),
+        (),
+      ),
+      date,
+    )
+  }
+}

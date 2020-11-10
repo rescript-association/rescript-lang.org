@@ -1,6 +1,5 @@
 
 
-import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as Js_null from "bs-platform/lib/es6/js_null.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
@@ -149,11 +148,7 @@ function authorDecoder(fieldName, authors, json) {
                 }));
   };
   var single = function (j) {
-    var arg = Json_decode.string(j);
-    var func = function (param, param$1) {
-      return decodeAuthor(fieldName, param, param$1);
-    };
-    return [Curry._2(func, authors, arg)];
+    return [decodeAuthor(fieldName, authors, Json_decode.string(j))];
   };
   return Json_decode.either(single, multiple)(json);
 }
@@ -161,12 +156,8 @@ function authorDecoder(fieldName, authors, json) {
 function decode$1(authors, json) {
   var fm;
   try {
-    var arg = Json_decode.field("author", Json_decode.string, json);
-    var func = function (param, param$1) {
-      return decodeAuthor("author", param, param$1);
-    };
     fm = {
-      author: Curry._2(func, authors, arg),
+      author: decodeAuthor("author", authors, Json_decode.field("author", Json_decode.string, json)),
       co_authors: Belt_Option.getWithDefault(Json_decode.optional((function (param) {
                   return Json_decode.field("co-authors", (function (param) {
                                 return authorDecoder("co-authors", authors, param);
