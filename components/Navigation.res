@@ -32,7 +32,7 @@ let linkOrActiveDocsSubroute = (~route) => {
 }
 
 let githubHref = "https://github.com/reason-association/rescript-lang.org#rescript-langorg"
-let twitterHref = "https://twitter.com/rescriptlang"
+//let twitterHref = "https://twitter.com/rescriptlang"
 let discourseHref = "https://forum.rescript-lang.org"
 
 module CollapsibleLink = {
@@ -43,11 +43,11 @@ module CollapsibleLink = {
     | Closed
 
   @react.component
-  let make = (
+  let _make = (
     ~title: string,
     ~onStateChange: (~id: string, state) => unit,
     ~allowHover=true,
-    ~allowInteraction=true,
+    /* ~allowInteraction=true, */
     ~id: string,
     ~state: state,
     ~active=false,
@@ -165,7 +165,7 @@ let useWindowWidth: unit => option<int> = %raw(
   }
   return null;
   }
-  ` // Empty array ensures that effect is only run on mount and unmount
+  `
 )
 
 type collapsible = {
@@ -175,10 +175,12 @@ type collapsible = {
   state: CollapsibleLink.state,
 }
 
+@@warning("-60")
 module SubNav = {
+  @@warning("-60")
   module DocsLinks = {
     @react.component
-    let make = (~route: string) => {
+    let _make = (~route: string) => {
       let reTheme = ColorTheme.toCN(#Reason)
       let jsTheme = ColorTheme.toCN(#Js)
 
@@ -346,7 +348,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
 
   let route = router.route
 
-  let (collapsibles, setCollapsibles) = React.useState(_ => [/* { */
+  let (_collapsibles, setCollapsibles) = React.useState(_ => [/* { */
   /* title: "Docs", */
   /* href: "/docs", */
   /* children: route => { */
@@ -374,7 +376,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
   let windowWidth = useWindowWidth()
 
   // Don't allow hover behavior for collapsibles if mobile navigation is on
-  let allowHover = switch windowWidth {
+  let _allowHover = switch windowWidth {
   | Some(width) => width > 576 // Value noted in tailwind config
   | None => true
   }

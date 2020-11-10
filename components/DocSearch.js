@@ -29,7 +29,7 @@ function DocSearch(Props) {
                   
                 }));
   };
-  var onClick = function (evt) {
+  var onClick = function (param) {
     Curry._1(setState, (function (param) {
             return /* Active */0;
           }));
@@ -39,7 +39,7 @@ function DocSearch(Props) {
                   
                 }));
   };
-  var onBlur = function (evt) {
+  var onBlur = function (param) {
     clearInput(undefined);
     return Curry._1(setState, (function (param) {
                   return /* Inactive */1;
@@ -91,7 +91,7 @@ function DocSearch$Textbox(Props) {
         return /* Inactive */1;
       });
   var setState = match[1];
-  var onClick = function (evt) {
+  var onClick = function (param) {
     Curry._1(setState, (function (param) {
             return /* Active */0;
           }));
@@ -100,7 +100,7 @@ function DocSearch$Textbox(Props) {
                   
                 }));
   };
-  var onBlur = function (evt) {
+  var onBlur = function (param) {
     return Curry._1(setState, (function (param) {
                   return /* Inactive */1;
                 }));

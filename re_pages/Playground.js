@@ -148,10 +148,6 @@ function Playground$Pane(Props) {
                       onMouseDown: onMouseDown
                     }, Util.ReactStuff.s(title));
         }));
-  var tab = Belt_Array.get(tabs, current);
-  if (tab !== undefined) {
-    tab.content;
-  }
   var body = Belt_Array.mapWithIndex(tabs, (function (i, tab) {
           var className = current === i ? "block h-full" : "hidden";
           return React.createElement("div", {
@@ -1313,7 +1309,7 @@ function Playground$WarningFlagsWidget(Props) {
         }, React.createElement(Icon.Close.make, {}));
   }
   var activeClass = isActive ? "border-white" : "border-night-light";
-  var areaOnFocus = function (evt) {
+  var areaOnFocus = function (_evt) {
     if (!isActive) {
       return Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (el) {
                     el.focus();
@@ -1392,16 +1388,6 @@ function Playground$Settings(Props) {
   var setConfig = Props.setConfig;
   var editorCode = Props.editorCode;
   var config = Props.config;
-  var match = readyState.targetLang;
-  switch (match) {
-    case /* Reason */0 :
-        break;
-    case /* OCaml */1 :
-        break;
-    case /* Res */2 :
-        break;
-    
-  }
   var availableTargetLangs = RescriptCompilerApi.Version.availableLanguages(readyState.selected.apiVersion);
   var onTargetLangSelect = function (lang) {
     return Curry._1(dispatch, {
@@ -2134,7 +2120,7 @@ function Playground$default(Props) {
                                               
                                             }),
                                           onMarkerFocus: (function (rowCol) {
-                                              return Curry._1(setFocusedRowCol, (function (prev) {
+                                              return Curry._1(setFocusedRowCol, (function (_prev) {
                                                             return rowCol;
                                                           }));
                                             }),
@@ -2151,7 +2137,6 @@ function Playground$default(Props) {
                                     maxWidth: windowWidth > 1024 ? "56rem" : "100%"
                                   }
                                 }, React.createElement(Playground$OutputPanel, {
-                                      actionIndicatorKey: String(actionCount),
                                       compilerDispatch: compilerDispatch,
                                       compilerState: compilerState,
                                       editorCode: editorCode

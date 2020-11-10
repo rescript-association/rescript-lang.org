@@ -117,7 +117,7 @@ module Sidebar = {
     ~categories: array<Category.t>,
     ~route: string,
     ~toplevelNav=React.null,
-    ~title: option<string>=?,
+    ~title as _: option<string>=?,
     ~preludeSection=React.null,
     ~activeToc: option<Toc.t>=?,
     ~isOpen: bool,
@@ -223,7 +223,7 @@ let make = (
   let breadcrumbs =
     breadcrumbs->Belt.Option.mapWithDefault(React.null, crumbs => <BreadCrumbs crumbs />)
 
-  let (isSidebarOpen, setSidebarOpen) = sidebarState
+  let (_isSidebarOpen, setSidebarOpen) = sidebarState
   let toggleSidebar = () => setSidebarOpen(prev => !prev)
 
   React.useEffect1(() => {
