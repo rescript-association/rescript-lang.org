@@ -4,8 +4,6 @@ out
 *.swp
 *.swo
 
-*.bs.js
-
 # Generated via update-index script
 public/blog/feed.xml
 
@@ -24,3 +22,6 @@ lib/
 .vscode/
 
 .vercel
+
+# for IDE tooling tests
+bin.exe
