@@ -1,5 +1,3 @@
-// This file was automatically converted to ReScript from 'Blog_Article.re'
-// Check the output and make sure to delete the original file
 /*
       This module is responsible for statically prerendering each individual blog post.
  General concepts:

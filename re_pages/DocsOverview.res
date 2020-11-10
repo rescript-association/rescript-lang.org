@@ -1,5 +1,3 @@
-// This file was automatically converted to ReScript from 'DocsOverview.re'
-// Check the output and make sure to delete the original file
 open Util.ReactStuff
 module Link = Next.Link
 

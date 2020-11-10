@@ -1,5 +1,3 @@
-// This file was automatically converted to ReScript from 'Playground.re'
-// Check the output and make sure to delete the original file
 open Util.ReactStuff
 
 %%raw("require('../styles/main.css')")
