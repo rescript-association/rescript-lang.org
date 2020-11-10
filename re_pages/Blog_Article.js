@@ -139,10 +139,7 @@ function $$default(props) {
   var archived = fullslug.startsWith("archive/");
   var component = module_.default;
   var authors = BlogFrontmatter.Author.getAllAuthors(undefined);
-  var arg = frontmatter(component);
-  var fm = (function (param) {
-        return BlogFrontmatter.decode(param, arg);
-      })(authors);
+  var fm = BlogFrontmatter.decode(authors, frontmatter(component));
   var children = React.createElement(component, {});
   var archivedNote = archived ? React.createElement("div", {
           className: "mb-10"
