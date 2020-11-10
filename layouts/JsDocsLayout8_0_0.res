@@ -1,34 +1,32 @@
-module Link = Next.Link;
+module Link = Next.Link
 
 // Structure defined by `scripts/extract-indices.js`
-let indexData:
-  Js.Dict.t({
-    .
-    "moduleName": string,
-    "headers":
-      array({
-        .
-        "name": string,
-        "href": string,
-      }),
-  }) = [%raw
-  "require('../index_data/v800_js_api_index.json')"
-];
+let indexData: Js.Dict.t<{
+  "moduleName": string,
+  "headers": array<{
+    "name": string,
+    "href": string,
+  }>,
+}> = %raw("require('../index_data/v800_js_api_index.json')")
 
 // Retrieve package.json to access the version of bs-platform.
-let package: {. "dependencies": {. "bs-platform": string}} = [%raw
-  "require('../package.json')"
-];
+let package: {"dependencies": {"bs-platform": string}} = %raw("require('../package.json')")
 
-module Category = ApiLayout.Sidebar.Category;
-module NavItem = ApiLayout.Sidebar.NavItem;
+module Category = ApiLayout.Sidebar.Category
+module NavItem = ApiLayout.Sidebar.NavItem
 
-let overviewNavs = [|
-  NavItem.{name: "JS", href: "/docs/manual/v8.0.0/api/js"},
-|];
+let overviewNavs = [
+  {
+    open NavItem
+    {name: "JS", href: "/docs/manual/v8.0.0/api/js"}
+  },
+]
 
-let apiNavs = [|
-  NavItem.{name: "Array2", href: "/docs/manual/v8.0.0/api/js/array-2"},
+let apiNavs = [
+  {
+    open NavItem
+    {name: "Array2", href: "/docs/manual/v8.0.0/api/js/array-2"}
+  },
   {name: "Array", href: "/docs/manual/v8.0.0/api/js/array"},
   {name: "Console", href: "/docs/manual/v8.0.0/api/js/console"},
   {name: "Date", href: "/docs/manual/v8.0.0/api/js/date"},
@@ -147,72 +145,71 @@ let apiNavs = [|
   {name: "Types", href: "/docs/manual/v8.0.0/api/js/types"},
   {name: "Undefined", href: "/docs/manual/v8.0.0/api/js/undefined"},
   {name: "Vector", href: "/docs/manual/v8.0.0/api/js/vector"},
-|];
+]
 
-let categories = [|
-  Category.{name: "Overview", items: overviewNavs},
+let categories = [
+  {
+    open Category
+    {name: "Overview", items: overviewNavs}
+  },
   {name: "Submodules", items: apiNavs},
-|];
+]
 
 module Docs = {
-  [@react.component]
+  @react.component
   let make = (~components=ApiMarkdown.default, ~children) => {
-    let router = Next.Router.useRouter();
-    let route = router.route;
+    let router = Next.Router.useRouter()
+    let route = router.route
 
     // Gather data for the CollapsibleSection
-    let headers =
-      Belt.Option.(
-        Js.Dict.get(indexData, route)
-        ->map(data => {
-            data##headers
-            ->Belt.Array.map(header => (header##name, "#" ++ header##href))
-          })
-        ->getWithDefault([||])
-      );
+    let headers = {
+      open Belt.Option
+      Js.Dict.get(indexData, route)
+      ->map(data =>
+        data["headers"]->Belt.Array.map(header => (header["name"], "#" ++ header["href"]))
+      )
+      ->getWithDefault([])
+    }
 
-    let moduleName =
-      Belt.Option.(
-        Js.Dict.get(indexData, route)
-        ->map(data => data##moduleName)
-        ->getWithDefault("?")
-      );
+    let moduleName = {
+      open Belt.Option
+      Js.Dict.get(indexData, route)->map(data => data["moduleName"])->getWithDefault("?")
+    }
 
-    let url = route->Url.parse;
+    let url = route->Url.parse
 
-    let version =
-      switch (url.version) {
-      | Version(version) => version
-      | NoVersion => "latest"
-      | Latest => "latest"
-      };
+    let version = switch url.version {
+    | Version(version) => version
+    | NoVersion => "latest"
+    | Latest => "latest"
+    }
 
-    let prefix =
-      Url.{name: "API", href: "/docs/manual/" ++ version ++ "/api"};
+    let prefix = {
+      open Url
+      {name: "API", href: "/docs/manual/" ++ (version ++ "/api")}
+    }
 
-    let breadcrumbs = ApiLayout.makeBreadcrumbs(~prefix, route);
-    let activeToc =
-      ApiLayout.Toc.{
+    let breadcrumbs = ApiLayout.makeBreadcrumbs(~prefix, route)
+    let activeToc = {
+      open ApiLayout.Toc
+      {
         title: moduleName,
-        entries:
-          Belt.Array.map(headers, ((name, href)) => {header: name, href}),
-      };
+        entries: Belt.Array.map(headers, ((name, href)) => {header: name, href: href}),
+      }
+    }
 
-    let title = "JS Module";
-    let version = "v8.0.0";
+    let title = "JS Module"
+    let version = "v8.0.0"
 
-    let warnBanner = <ApiLayout.OldDocsWarning route version />;
+    let warnBanner = <ApiLayout.OldDocsWarning route version />
 
     <ApiLayout components title version activeToc categories breadcrumbs>
-      warnBanner
-      children
-    </ApiLayout>;
-  };
-};
+      warnBanner children
+    </ApiLayout>
+  }
+}
 
 module Prose = {
-  [@react.component]
-  let make = (~children) => {
-    <Docs components=ApiMarkdown.default> children </Docs>;
-  };
-};
+  @react.component
+  let make = (~children) => <Docs components=ApiMarkdown.default> children </Docs>
+}

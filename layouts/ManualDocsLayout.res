@@ -1,32 +1,29 @@
-module Link = Next.Link;
+module Link = Next.Link
 
 // This is used for the version dropdown in the manual layouts
-let allManualVersions = [|"latest", "v8.0.0"|];
+let allManualVersions = ["latest", "v8.0.0"]
 
 // Used for replacing "latest" with "vX.X.X" in the version dropdown
-let latestVersionLabel = "v8.2.0";
+let latestVersionLabel = "v8.2.0"
 
 // Structure defined by `scripts/extract-tocs.js`
-let tocData:
-  Js.Dict.t({
-    .
-    "title": string,
-    "headers":
-      array({
-        .
-        "name": string,
-        "href": string,
-      }),
-  }) = [%raw
-  "require('../index_data/manual_toc.json')"
-];
+let tocData: Js.Dict.t<{
+  "title": string,
+  "headers": array<{
+    "name": string,
+    "href": string,
+  }>,
+}> = %raw("require('../index_data/manual_toc.json')")
 
-module NavItem = SidebarLayout.Sidebar.NavItem;
-module Category = SidebarLayout.Sidebar.Category;
-module Toc = SidebarLayout.Toc;
+module NavItem = SidebarLayout.Sidebar.NavItem
+module Category = SidebarLayout.Sidebar.Category
+module Toc = SidebarLayout.Toc
 
-let overviewNavs = [|
-  NavItem.{name: "Introduction", href: "/docs/manual/latest/introduction"},
+let overviewNavs = [
+  {
+    open NavItem
+    {name: "Introduction", href: "/docs/manual/latest/introduction"}
+  },
   {
     name: "Migrate from BuckleScript/Reason",
     href: "/docs/manual/latest/migrate-from-bucklescript-reason",
@@ -34,10 +31,13 @@ let overviewNavs = [|
   {name: "Installation", href: "/docs/manual/latest/installation"},
   {name: "Try", href: "/docs/manual/latest/try"},
   {name: "Editor Plugins", href: "/docs/manual/latest/editor-plugins"},
-|];
+]
 
-let basicNavs = [|
-  NavItem.{name: "Overview", href: "/docs/manual/latest/overview"},
+let basicNavs = [
+  {
+    open NavItem
+    {name: "Overview", href: "/docs/manual/latest/overview"}
+  },
   {name: "Let Binding", href: "/docs/manual/latest/let-binding"},
   {name: "Type", href: "/docs/manual/latest/type"},
   {name: "Primitive Types", href: "/docs/manual/latest/primitive-types"},
@@ -67,10 +67,13 @@ let basicNavs = [|
   {name: "Attribute (Decorator)", href: "/docs/manual/latest/attribute"},
   {name: "Unboxed", href: "/docs/manual/latest/unboxed"},
   {name: "Reserved Keywords", href: "/docs/manual/latest/reserved-keywords"},
-|];
+]
 
-let buildsystemNavs = [|
-  NavItem.{name: "Overview", href: "/docs/manual/latest/build-overview"},
+let buildsystemNavs = [
+  {
+    open NavItem
+    {name: "Overview", href: "/docs/manual/latest/build-overview"}
+  },
   {name: "Configuration", href: "/docs/manual/latest/build-configuration"},
   {name: "Configuration Schema", href: "/docs/manual/latest/build-configuration-schema"},
   {
@@ -78,12 +81,15 @@ let buildsystemNavs = [|
     href: "/docs/manual/latest/interop-with-js-build-systems",
   },
   {name: "Performance", href: "/docs/manual/latest/build-performance"},
-|];
+]
 
-let jsInteropNavs = [|
-  NavItem.{
-    name: "Embed Raw JavaScript",
-    href: "/docs/manual/latest/embed-raw-javascript",
+let jsInteropNavs = [
+  {
+    open NavItem
+    {
+      name: "Embed Raw JavaScript",
+      href: "/docs/manual/latest/embed-raw-javascript",
+    }
   },
   {name: "Shared Data Types", href: "/docs/manual/latest/shared-data-types"},
   {name: "External (Bind to Any JS Library)", href: "/docs/manual/latest/external"},
@@ -114,89 +120,93 @@ let jsInteropNavs = [|
     name: "Interop Cheatsheet",
     href: "/docs/manual/latest/interop-cheatsheet",
   },
-|];
+]
 
-let guidesNavs = [|
-  NavItem.{
-    name: "Converting from JavaScript",
-    href: "/docs/manual/latest/converting-from-js",
+let guidesNavs = [
+  {
+    open NavItem
+    {
+      name: "Converting from JavaScript",
+      href: "/docs/manual/latest/converting-from-js",
+    }
   },
   {name: "Libraries", href: "/docs/manual/latest/libraries"},
-|];
+]
 
-let extraNavs = [|
-  NavItem.{
-    name: "Newcomer Examples",
-    href: "/docs/manual/latest/newcomer-examples",
+let extraNavs = [
+  {
+    open NavItem
+    {
+      name: "Newcomer Examples",
+      href: "/docs/manual/latest/newcomer-examples",
+    }
   },
   {name: "Project Structure", href: "/docs/manual/latest/project-structure"},
   {name: "FAQ", href: "/docs/manual/latest/faq"},
-|];
+]
 
-let categories = [|
-  Category.{name: "Overview", items: overviewNavs},
+let categories = [
+  {
+    open Category
+    {name: "Overview", items: overviewNavs}
+  },
   {name: "Language Features", items: basicNavs},
   {name: "JavaScript Interop", items: jsInteropNavs},
   {name: "Build System", items: buildsystemNavs},
   {name: "Guides", items: guidesNavs},
   {name: "Extra", items: extraNavs},
-|];
+]
 
 module Docs = {
-  [@react.component]
-  let make =
-      (
-        ~frontmatter: option(Js.Json.t)=?,
-        ~components=Markdown.default,
-        ~children,
-      ) => {
-    let router = Next.Router.useRouter();
-    let route = router.route;
+  @react.component
+  let make = (~frontmatter: option<Js.Json.t>=?, ~components=Markdown.default, ~children) => {
+    let router = Next.Router.useRouter()
+    let route = router.route
 
-    let activeToc: option(Toc.t) =
-      Belt.Option.(
-        Js.Dict.get(tocData, route)
-        ->map(data => {
-            let title = data##title;
-            let entries =
-              Belt.Array.map(data##headers, header =>
-                {Toc.header: header##name, href: "#" ++ header##href}
-              );
-            {Toc.title, entries};
-          })
-      );
+    let activeToc: option<Toc.t> = {
+      open Belt.Option
+      Js.Dict.get(tocData, route)->map(data => {
+        let title = data["title"]
+        let entries = Belt.Array.map(data["headers"], header => {
+          Toc.header: header["name"],
+          href: "#" ++ header["href"],
+        })
+        {Toc.title: title, entries: entries}
+      })
+    }
 
-    let url = route->Url.parse;
+    let url = route->Url.parse
 
-    let version =
-      switch (url.version) {
-      | Version(version) => version
-      | NoVersion => "latest"
-      | Latest => "latest"
-      };
+    let version = switch url.version {
+    | Version(version) => version
+    | NoVersion => "latest"
+    | Latest => "latest"
+    }
 
-    let prefix = [
-      Url.{name: "Docs", href: "/docs/" ++ version},
-      Url.{
-        name: "Language Manual",
-        href: "/docs/manual/" ++ version ++ "/introduction",
+    let prefix = list{
+      {
+        open Url
+        {name: "Docs", href: "/docs/" ++ version}
       },
-    ];
+      {
+        open Url
+        {
+          name: "Language Manual",
+          href: "/docs/manual/" ++ (version ++ "/introduction"),
+        }
+      },
+    }
 
-    let breadcrumbs =
-      Belt.List.concat(
-        prefix,
-        DocsLayout.makeBreadcrumbs(
-          ~basePath="/docs/manual/" ++ version,
-          route,
-        ),
-      );
+    let breadcrumbs = Belt.List.concat(
+      prefix,
+      DocsLayout.makeBreadcrumbs(~basePath="/docs/manual/" ++ version, route),
+    )
 
-    let title = "Language Manual";
-    let version = "latest";
+    let title = "Language Manual"
+    let version = "latest"
 
     <DocsLayout
-      theme=`Reason
+      theme=#Reason
       components
       categories
       version
@@ -208,13 +218,12 @@ module Docs = {
       ?activeToc
       breadcrumbs>
       children
-    </DocsLayout>;
-  };
-};
+    </DocsLayout>
+  }
+}
 
 module Prose = {
-  [@react.component]
-  let make = (~frontmatter: option(Js.Json.t)=?, ~children) => {
-    <Docs ?frontmatter components=Markdown.default> children </Docs>;
-  };
-};
+  @react.component
+  let make = (~frontmatter: option<Js.Json.t>=?, ~children) =>
+    <Docs ?frontmatter components=Markdown.default> children </Docs>
+}

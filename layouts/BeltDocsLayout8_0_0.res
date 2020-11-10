@@ -1,34 +1,32 @@
-module Link = Next.Link;
+module Link = Next.Link
 
 // Structure defined by `scripts/extract-indices.js`
-let indexData:
-  Js.Dict.t({
-    .
-    "moduleName": string,
-    "headers":
-      array({
-        .
-        "name": string,
-        "href": string,
-      }),
-  }) = [%raw
-  "require('../index_data/v800_belt_api_index.json')"
-];
+let indexData: Js.Dict.t<{
+  "moduleName": string,
+  "headers": array<{
+    "name": string,
+    "href": string,
+  }>,
+}> = %raw("require('../index_data/v800_belt_api_index.json')")
 
 // Retrieve package.json to access the version of bs-platform.
-let package: {. "dependencies": {. "bs-platform": string}} = [%raw
-  "require('../package.json')"
-];
+let package: {"dependencies": {"bs-platform": string}} = %raw("require('../package.json')")
 
-module Category = ApiLayout.Sidebar.Category;
-module NavItem = ApiLayout.Sidebar.NavItem;
+module Category = ApiLayout.Sidebar.Category
+module NavItem = ApiLayout.Sidebar.NavItem
 
-let overviewNavs = [|
-  NavItem.{name: "Introduction", href: "/docs/manual/v8.0.0/api/belt"},
-|];
+let overviewNavs = [
+  {
+    open NavItem
+    {name: "Introduction", href: "/docs/manual/v8.0.0/api/belt"}
+  },
+]
 
-let setNavs = [|
-  NavItem.{name: "HashSet", href: "/docs/manual/v8.0.0/api/belt/hash-set"},
+let setNavs = [
+  {
+    open NavItem
+    {name: "HashSet", href: "/docs/manual/v8.0.0/api/belt/hash-set"}
+  },
   {name: "HashSetInt", href: "/docs/manual/v8.0.0/api/belt/hash-set-int"},
   {
     name: "HashSetString",
@@ -38,10 +36,13 @@ let setNavs = [|
   {name: "SetDict", href: "/docs/manual/v8.0.0/api/belt/set-dict"},
   {name: "SetInt", href: "/docs/manual/v8.0.0/api/belt/set-int"},
   {name: "SetString", href: "/docs/manual/v8.0.0/api/belt/set-string"},
-|];
+]
 
-let mapNavs = [|
-  NavItem.{name: "HashMap", href: "/docs/manual/v8.0.0/api/belt/hash-map"},
+let mapNavs = [
+  {
+    open NavItem
+    {name: "HashMap", href: "/docs/manual/v8.0.0/api/belt/hash-map"}
+  },
   {name: "HashMapInt", href: "/docs/manual/v8.0.0/api/belt/hash-map-int"},
   {
     name: "HashMapString",
@@ -51,12 +52,15 @@ let mapNavs = [|
   {name: "MapDict", href: "/docs/manual/v8.0.0/api/belt/map-dict"},
   {name: "MapInt", href: "/docs/manual/v8.0.0/api/belt/map-int"},
   {name: "MapString", href: "/docs/manual/v8.0.0/api/belt/map-string"},
-|];
+]
 
-let mutableCollectionsNavs = [|
-  NavItem.{
-    name: "MutableMap",
-    href: "/docs/manual/v8.0.0/api/belt/mutable-map",
+let mutableCollectionsNavs = [
+  {
+    open NavItem
+    {
+      name: "MutableMap",
+      href: "/docs/manual/v8.0.0/api/belt/mutable-map",
+    }
   },
   {
     name: "MutableMapInt",
@@ -77,10 +81,13 @@ let mutableCollectionsNavs = [|
     href: "/docs/manual/v8.0.0/api/belt/mutable-set-string",
   },
   {name: "MutableStack", href: "/docs/manual/v8.0.0/api/belt/mutable-stack"},
-|];
+]
 
-let basicNavs = [|
-  NavItem.{name: "Array", href: "/docs/manual/v8.0.0/api/belt/array"},
+let basicNavs = [
+  {
+    open NavItem
+    {name: "Array", href: "/docs/manual/v8.0.0/api/belt/array"}
+  },
   {name: "List", href: "/docs/manual/v8.0.0/api/belt/list"},
   {name: "Float", href: "/docs/manual/v8.0.0/api/belt/float"},
   {name: "Int", href: "/docs/manual/v8.0.0/api/belt/int"},
@@ -88,94 +95,99 @@ let basicNavs = [|
   {name: "Id", href: "/docs/manual/v8.0.0/api/belt/id"},
   {name: "Option", href: "/docs/manual/v8.0.0/api/belt/option"},
   {name: "Result", href: "/docs/manual/v8.0.0/api/belt/result"},
-|];
+]
 
-let sortNavs = [|
-  NavItem.{
-    name: "SortArray",
-    href: "/docs/manual/v8.0.0/api/belt/sort-array",
+let sortNavs = [
+  {
+    open NavItem
+    {
+      name: "SortArray",
+      href: "/docs/manual/v8.0.0/api/belt/sort-array",
+    }
   },
   {name: "SortArrayInt", href: "/docs/manual/v8.0.0/api/belt/sort-array-int"},
   {
     name: "SortArrayString",
     href: "/docs/manual/v8.0.0/api/belt/sort-array-string",
   },
-|];
+]
 
-let utilityNavs = [|
-  NavItem.{name: "Debug", href: "/docs/manual/v8.0.0/api/belt/debug"},
-|];
+let utilityNavs = [
+  {
+    open NavItem
+    {name: "Debug", href: "/docs/manual/v8.0.0/api/belt/debug"}
+  },
+]
 
-let categories = [|
-  Category.{name: "Overview", items: overviewNavs},
+let categories = [
+  {
+    open Category
+    {name: "Overview", items: overviewNavs}
+  },
   {name: "Basics", items: basicNavs},
   {name: "Set", items: setNavs},
   {name: "Map", items: mapNavs},
   {name: "Mutable Collections", items: mutableCollectionsNavs},
   {name: "Sort Collections", items: sortNavs},
   {name: "Utilities", items: utilityNavs},
-|];
+]
 
 module Docs = {
-  [@react.component]
+  @react.component
   let make = (~components=ApiMarkdown.default, ~children) => {
-    let router = Next.Router.useRouter();
-    let route = router.route;
+    let router = Next.Router.useRouter()
+    let route = router.route
 
     // Gather data for the CollapsibleSection
-    let headers =
-      Belt.Option.(
-        Js.Dict.get(indexData, route)
-        ->map(data => {
-            data##headers
-            ->Belt.Array.map(header => (header##name, "#" ++ header##href))
-          })
-        ->getWithDefault([||])
-      );
+    let headers = {
+      open Belt.Option
+      Js.Dict.get(indexData, route)
+      ->map(data =>
+        data["headers"]->Belt.Array.map(header => (header["name"], "#" ++ header["href"]))
+      )
+      ->getWithDefault([])
+    }
 
-    let moduleName =
-      Belt.Option.(
-        Js.Dict.get(indexData, route)
-        ->map(data => data##moduleName)
-        ->getWithDefault("?")
-      );
+    let moduleName = {
+      open Belt.Option
+      Js.Dict.get(indexData, route)->map(data => data["moduleName"])->getWithDefault("?")
+    }
 
-    let url = route->Url.parse;
+    let url = route->Url.parse
 
-    let version =
-      switch (url.version) {
-        | Version(version) => version
-        | NoVersion => "latest"
-        | Latest => "latest"
-        };
+    let version = switch url.version {
+    | Version(version) => version
+    | NoVersion => "latest"
+    | Latest => "latest"
+    }
 
-    let prefix =
-      Url.{name: "API", href: "/docs/manual/" ++ version ++ "/api"};
+    let prefix = {
+      open Url
+      {name: "API", href: "/docs/manual/" ++ (version ++ "/api")}
+    }
 
-    let breadcrumbs = ApiLayout.makeBreadcrumbs(~prefix, route);
+    let breadcrumbs = ApiLayout.makeBreadcrumbs(~prefix, route)
 
-    let activeToc =
-      ApiLayout.Toc.{
+    let activeToc = {
+      open ApiLayout.Toc
+      {
         title: moduleName,
-        entries:
-          Belt.Array.map(headers, ((name, href)) => {header: name, href}),
-      };
+        entries: Belt.Array.map(headers, ((name, href)) => {header: name, href: href}),
+      }
+    }
 
-    let title = "Belt Stdlib";
-    let version = "v8.0.0";
+    let title = "Belt Stdlib"
+    let version = "v8.0.0"
 
-    let warnBanner = <ApiLayout.OldDocsWarning route version />;
+    let warnBanner = <ApiLayout.OldDocsWarning route version />
 
     <ApiLayout components title version activeToc categories breadcrumbs>
-      warnBanner
-      children
-    </ApiLayout>;
-  };
-};
+      warnBanner children
+    </ApiLayout>
+  }
+}
 
 module Prose = {
-  [@react.component]
-  let make = (~children) => {
-    <Docs components=ApiMarkdown.default> children </Docs>;
-  };
-};
+  @react.component
+  let make = (~children) => <Docs components=ApiMarkdown.default> children </Docs>
+}

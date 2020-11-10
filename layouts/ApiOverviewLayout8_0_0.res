@@ -1,40 +1,37 @@
-module Link = Next.Link;
+module Link = Next.Link
 
-module Sidebar = DocsLayout.Sidebar;
+module Sidebar = DocsLayout.Sidebar
 
-let categories: array(Sidebar.Category.t) = [|
+let categories: array<Sidebar.Category.t> = [
   {
     name: "Introduction",
-    items: [|{name: "Overview", href: "/docs/manual/v8.0.0/api"}|],
+    items: [{name: "Overview", href: "/docs/manual/v8.0.0/api"}],
   },
   {
     name: "Modules",
-    items: [|
+    items: [
       {name: "Js Module", href: "/docs/manual/v8.0.0/api/js"},
       {name: "Belt Stdlib", href: "/docs/manual/v8.0.0/api/belt"},
       {name: "Dom Module", href: "/docs/manual/v8.0.0/api/dom"},
-    |],
+    ],
   },
-|];
+]
 
 /* Used for API docs (structured data) */
 module Docs = {
-  [@react.component]
+  @react.component
   let make = (~components=ApiMarkdown.default, ~children) => {
-    let router = Next.Router.useRouter();
-    let route = router.route;
+    let router = Next.Router.useRouter()
+    let route = router.route
 
-    let title = "API";
-    let version = "v8.0.0";
+    let title = "API"
+    let version = "v8.0.0"
 
-    let warnBanner = <ApiLayout.OldDocsWarning route version />;
+    let warnBanner = <ApiLayout.OldDocsWarning route version />
 
-    <ApiLayout title categories version components>
-      warnBanner
-      children
-    </ApiLayout>;
-  };
-};
+    <ApiLayout title categories version components> warnBanner children </ApiLayout>
+  }
+}
 
 /*
  This layout is used for structured prose text with proper H2 headings.
@@ -43,8 +40,6 @@ module Docs = {
  of H2 nodes.
  */
 module Prose = {
-  [@react.component]
-  let make = (~children) => {
-    <Docs components=Markdown.default> children </Docs>;
-  };
-};
+  @react.component
+  let make = (~children) => <Docs components=Markdown.default> children </Docs>
+}
