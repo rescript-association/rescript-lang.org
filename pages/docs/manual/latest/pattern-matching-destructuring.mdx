@@ -241,7 +241,7 @@ let message = switch person1 {
 | Teacher({name: "Mary" | "Joe"}) =>
   `Hey, still going to the party on Saturday?`
 | Teacher({name}) =>
-  // this is matched only if `name` isn't "Joe"
+  // this is matched only if `name` isn't "Mary" or "Joe"
   `Hello ${name}.`
 | Student({name, reportCard: {passing: true, gpa}}) =>
   `Congrats ${name}, nice GPA of ${Js.Float.toString(gpa)} you got there!`
@@ -299,7 +299,7 @@ if (person1.TAG) {
 
 **Note** how we've:
 - drilled deep down into the value concisely
-- using a nested pattern check `"Mary" | "Joe"` and `Vacations | Sabbatical`
+- using a **nested pattern check** `"Mary" | "Joe"` and `Vacations | Sabbatical`
 - while extracting the `daysLeft` number from the latter case
 - and assigned the greeting to the binding `message`.
 
@@ -330,6 +330,39 @@ isBig \ myAnimal | Dog | Cat | Bird
 true             |  1  |  2  |  3
 false            |  4  |  4  |  5
 
+### Fall-Through Patterns
+
+The nested pattern check, demonstrated in the earlier `person` example, also works at the top level of a `switch`:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res prelude
+let myStatus = Vacations(10)
+
+switch myStatus {
+| Vacations(days)
+| Sabbatical(days) => Js.log(`Come back in ${Js.Int.toString(days)} days!`)
+| Sick
+| Present => Js.log("Hey! How are you?")
+}
+```
+```js
+var myStatus = {
+  TAG: /* Vacations */0,
+  _0: 10
+};
+
+if (typeof myStatus === "number") {
+  console.log("Hey! How are you?");
+} else {
+  console.log("Come back in " + (10).toString() + " days!");
+}
+```
+
+</CodeTab>
+
+Having multiple cases fall into the same handling can clean up certain types of logic.
+
 ### Ignore Part of a Value
 
 If you have a value like `Teacher(payload)` where you just want to pattern match on the `Teacher` part and ignore the `payload` completely, you can use the `_` wildcard like this:
@@ -352,7 +385,47 @@ if (person1.TAG) {
 
 </CodeTab>
 
-`_` also works at the top level of the pattern like `| _ => ...` if you want to execute catch-all condition.
+`_` also works at the top level of the `switch`, serving as a catch-all condition:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+switch myStatus {
+| Vacations(_) => Js.log("Have fun!")
+| _ => Js.log("Ok.")
+}
+```
+```js
+if (typeof myStatus === "number" || myStatus.TAG) {
+  console.log("Ok.");
+} else {
+  console.log("Have fun!");
+}
+```
+
+</CodeTab>
+
+**Do not** abuse a top-level catch-all condition. Instead, prefer writing out all the cases:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+switch myStatus {
+| Vacations(_) => Js.log("Have fun!")
+| Sabbatical(_) | Sick | Present => Js.log("Ok.")
+}
+```
+```js
+if (typeof myStatus === "number" || myStatus.TAG) {
+  console.log("Ok.");
+} else {
+  console.log("Have fun!");
+}
+```
+
+</CodeTab>
+
+Slightly more verbose, but a one-time writing effort. This helps when you add a new variant case e.g. `Quarantined` to the `status` type and need to update the places that pattern match on it. A top-level wildcard here would have accidentally and silently continued working, potentially causing bugs.
 
 ### When Clause
 

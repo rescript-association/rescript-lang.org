@@ -30,7 +30,8 @@
     },
     {
       "dir": "scripts",
-      "subdirs": true
+      "subdirs": true,
+      "type": "dev"
     },
     {
       "dir": "components",
@@ -45,9 +46,8 @@
   "warnings": {
     "error": "+8"
   },
-  "suffix": ".bs.js",
+  "suffix": ".js",
   "bsc-flags": [
-    "-bs-no-version-header",
     "-bs-super-errors",
     "-bs-g"
   ],

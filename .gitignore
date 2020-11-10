@@ -4,8 +4,6 @@ out
 *.swp
 *.swo
 
-*.bs.js
-
 # Generated via update-index script
 public/blog/feed.xml
 
@@ -14,6 +12,7 @@ node_modules/
 index_data/*.json
 !index_data/blog_authors.json
 !index_data/blog_posts.json
+!index_data/build-schema.json
 
 yarn-error.log
 
@@ -23,3 +22,6 @@ lib/
 .vscode/
 
 .vercel
+
+# for IDE tooling tests
+bin.exe

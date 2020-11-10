@@ -143,7 +143,6 @@ const createV800ManualToc = () => {
   fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
 };
 
-
 const createReactToc = () => {
   const MD_DIR = path.join(__dirname, "../pages/docs/react/latest");
   const TARGET_FILE = path.join(__dirname, "../index_data/react_latest_toc.json");

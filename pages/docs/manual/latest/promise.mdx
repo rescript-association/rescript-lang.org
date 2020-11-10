@@ -41,19 +41,16 @@ Using the [pipe operator](pipe.md):
 ```res example
 let myPromise = Js.Promise.make((~resolve, ~reject) => resolve(. 2))
 
-myPromise
-|> Js.Promise.then_(value => {
-     Js.log(value)
-     Js.Promise.resolve(value + 2)
-   })
-|> Js.Promise.then_(value => {
-     Js.log(value)
-     Js.Promise.resolve(value + 3)
-   })
-|> Js.Promise.catch(err => {
-     Js.log2("Failure!!", err)
-     Js.Promise.resolve(-2)
-   })
+myPromise->Js.Promise.then_(value => {
+  Js.log(value)
+  Js.Promise.resolve(value + 2)
+}, _)->Js.Promise.then_(value => {
+  Js.log(value)
+  Js.Promise.resolve(value + 3)
+}, _)->Js.Promise.catch(err => {
+  Js.log2("Failure!!", err)
+  Js.Promise.resolve(-2)
+}, _)
 ```
 ```js
 var myPromise = new Promise(function (resolve, reject) {
@@ -77,10 +74,4 @@ myPromise
 
 </CodeTab>
 
-## Tips & Tricks
 
-Promises aren't the best abstractions, especially in JavaScript. When used inside React or ReasonReact, [it is almost **always** wrong](https://twitter.com/search?q=(async%20OR%20promise)%20(from%3Asebmarkbage)&src=typed_query&f=live).
-
-For that reason, we actually recommend judicious usages of callback-based apis, [like so](https://gist.github.com/chenglou/b6cf738a5d7adbde2ee008eb93117b49).
-
-This applies to other leaky, slow and uncancellable, and [colored](https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/) promise abstractions like `fetch`. Prefer using them only for interop, not for your core logic.

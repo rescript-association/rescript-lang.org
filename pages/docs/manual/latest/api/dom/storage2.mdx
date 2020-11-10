@@ -18,6 +18,12 @@ type t
 external getItem: (t, string) => option<string> = "getItem"
 ```
 
+## setItem
+
+```res sig
+external setItem: (t, string, string) => unit = "setItem"
+```
+
 ## removeItem
 
 ```res sig
