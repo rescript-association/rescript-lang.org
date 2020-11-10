@@ -164,7 +164,7 @@ module Sidebar = {
       <div
         id="sidebar"
         className={
-          (isOpen ? "fixed w-full left-0 h-full z-10 min-w-320" : "hidden ")
+          (isOpen ? "fixed w-full left-0 h-full z-20 min-w-320" : "hidden ")
           ++ " md:block md:w-48 md:-ml-4 lg:w-1/4 md:h-auto md:relative overflow-y-visible bg-white md:relative"
         }
         style={Style.make(~minWidth="12.9375rem", ())}>
@@ -306,7 +306,7 @@ let make =
               <main
                 className="px-6 w-full md:ml-12 md:mx-8 pt-16 md:mt-2 md:pt-24 mb-32 text-lg max-w-705">
                 <div
-                  className="fixed border-b shadow top-18 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center">
+                  className="z-10 fixed border-b shadow top-18 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center">
                   <MobileDrawerButton
                     hidden=isNavOpen
                     onClick={evt => {

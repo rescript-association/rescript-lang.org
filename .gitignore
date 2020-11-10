@@ -14,6 +14,7 @@ node_modules/
 index_data/*.json
 !index_data/blog_authors.json
 !index_data/blog_posts.json
+!index_data/build-schema.json
 
 yarn-error.log
 
