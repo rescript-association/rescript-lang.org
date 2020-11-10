@@ -48,7 +48,6 @@
   },
   "suffix": ".js",
   "bsc-flags": [
-    "-bs-no-version-header",
     "-bs-super-errors",
     "-bs-g"
   ],
