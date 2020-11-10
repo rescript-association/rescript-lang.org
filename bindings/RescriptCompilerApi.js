@@ -427,12 +427,7 @@ function setConfig(t, config) {
 
 function convertSyntax(t, fromLang, toLang, code) {
   try {
-    var arg = t.convertSyntax(toExt(fromLang), toExt(toLang), code);
-    return (function (param) {
-                  return function (param$1) {
-                    return decode$8(param, param$1, arg);
-                  };
-                })(fromLang)(toLang);
+    return decode$8(fromLang, toLang, t.convertSyntax(toExt(fromLang), toExt(toLang), code));
   }
   catch (raw_obj){
     var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
