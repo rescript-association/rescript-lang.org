@@ -1,8 +1,8 @@
-open Util.ReactStuff;
+open Util.ReactStuff
 
 module Github = {
-  [@react.component]
-  let make = (~className: string) => {
+  @react.component
+  let make = (~className: string) =>
     <svg
       className={"fill-current " ++ className}
       width="18.236"
@@ -14,62 +14,49 @@ module Github = {
           transform="translate(-8 0)"
         />
       </g>
-    </svg>;
-  };
-};
+    </svg>
+}
 
 module Twitter = {
-  [@react.component]
-  let make = (~className: string) => {
+  @react.component
+  let make = (~className: string) =>
     <svg className={"fill-current " ++ className} viewBox="0 0 15.53 12.71">
       <path
         d="M5.794,12.711a13.325,13.325,0,0,1-2.058-.163A9.659,9.659,0,0,1,.92,11.523L0,11.02l1-.328c1.089-.358,1.751-.58,2.571-.928A3.421,3.421,0,0,1,1.809,7.726l-.232-.7.19.029a3.456,3.456,0,0,1-.433-.534A3.276,3.276,0,0,1,.779,4.57l.044-.614L1.19,4.1a3.437,3.437,0,0,1-.333-.934A3.552,3.552,0,0,1,1.235.774l.32-.588L1.984.7A7.883,7.883,0,0,0,7.091,3.575a3.054,3.054,0,0,1,.185-1.623A3.038,3.038,0,0,1,8.511.536,3.71,3.71,0,0,1,10.664.008a3.439,3.439,0,0,1,2.114.872,7.1,7.1,0,0,0,.774-.258c.17-.064.362-.136.6-.219L15.042.1l-.579,1.652.119-.008L15.53,1.7l-.56.765c-.032.044-.04.056-.052.073-.045.068-.1.153-.87,1.179a1.448,1.448,0,0,0-.271.943,8.916,8.916,0,0,1-.487,3.586,6.346,6.346,0,0,1-1.7,2.524,7.524,7.524,0,0,1-3.566,1.724A10.979,10.979,0,0,1,5.794,12.711Zm0,0"
         transform="translate(0 -0.001)"
       />
-    </svg>;
-  };
-};
+    </svg>
+}
 
 module MagnifierGlass = {
-  [@react.component]
-  let make = (~className: string) => {
+  @react.component
+  let make = (~className: string) =>
     <svg
       className={"stroke-current " ++ className}
       width="19.203"
       height="19.203"
       viewBox="0 0 19.203 19.203">
-      <g
-        fill="none"
-        strokeLinecap="round"
-        strokeWidth="2px"
-        transform="translate(-2 -2)">
+      <g fill="none" strokeLinecap="round" strokeWidth="2px" transform="translate(-2 -2)">
         <path
           d="M6.479,0A6.479,6.479,0,1,1,0,6.479,6.479,6.479,0,0,1,6.479,0Z"
           transform="translate(3 3)"
         />
-        <line
-          strokeLinejoin="round"
-          x1="5.734"
-          y1="5.734"
-          transform="translate(14.055 14.055)"
-        />
+        <line strokeLinejoin="round" x1="5.734" y1="5.734" transform="translate(14.055 14.055)" />
       </g>
-    </svg>;
-  };
-};
+    </svg>
+}
 
 module Caret = {
-  type direction = [ | `Up | `Down];
+  type direction = [#Up | #Down]
 
-  type size = [ | `Sm | `Md];
+  type size = [#Sm | #Md]
 
-  [@react.component]
-  let make = (~className: string="", ~size=`Sm, ~direction: direction) => {
-    let width =
-      switch (size) {
-      | `Sm => "10"
-      | `Md => "14"
-      };
+  @react.component
+  let make = (~className: string="", ~size=#Sm, ~direction: direction) => {
+    let width = switch size {
+    | #Sm => "10"
+    | #Md => "14"
+    }
     <svg
       className={"stroke-current " ++ className}
       viewBox="0 0 10 5"
@@ -77,17 +64,17 @@ module Caret = {
       fill="none"
       strokeMiterlimit="10"
       strokeWidth="2">
-      {switch (direction) {
-       | `Up => <path d="M.6,4.022,4.509.8,8.476,4.087" fill="none" />
-       | `Down => <path d="M.6.866,4.509,4.087,8.476.8" />
-       }}
-    </svg>;
-  };
-};
+      {switch direction {
+      | #Up => <path d="M.6,4.022,4.509.8,8.476,4.087" fill="none" />
+      | #Down => <path d="M.6.866,4.509,4.087,8.476.8" />
+      }}
+    </svg>
+  }
+}
 
 module DrawerDots = {
-  [@react.component]
-  let make = (~className: string="") => {
+  @react.component
+  let make = (~className: string="") =>
     <svg
       className={"fill-current " ++ className}
       stroke="none"
@@ -97,13 +84,12 @@ module DrawerDots = {
       <circle cx="2" cy="2" r="2" />
       <circle cx="2" cy="2" r="2" transform="translate(9)" />
       <circle cx="2" cy="2" r="2" transform="translate(18)" />
-    </svg>;
-  };
-};
+    </svg>
+}
 
 module CornerLeftUp = {
-  [@react.component]
-  let make = (~className: string="") => {
+  @react.component
+  let make = (~className: string="") =>
     <svg
       className={"stroke-current " ++ className}
       width="18.414"
@@ -112,68 +98,45 @@ module CornerLeftUp = {
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="2px">
-      <path d="M11.414 6l-5-5-5 5" />
-      <path d="M17.414 17h-7a4 4 0 01-4-4V1" />
-    </svg>;
-  };
-};
+      <path d="M11.414 6l-5-5-5 5" /> <path d="M17.414 17h-7a4 4 0 01-4-4V1" />
+    </svg>
+}
 
 module Table = {
-  [@react.component]
-  let make = (~className: string="") => {
+  @react.component
+  let make = (~className: string="") =>
     <svg className={"stroke-current " ++ className} width="25" height="23">
       <defs>
         <style>
-          ".prefix__a,.prefix__b,.prefix__d{fill:none}.prefix__a,.prefix__b{stroke-width:1.5px}.prefix__c{stroke:none}"
-          ->s
+          {".prefix__a,.prefix__b,.prefix__d{fill:none}.prefix__a,.prefix__b{stroke-width:1.5px}.prefix__c{stroke:none}"->s}
         </style>
       </defs>
       <g className="prefix__a">
         <rect className="prefix__c" width="10" height="23" rx="2" />
-        <rect
-          className="prefix__d"
-          x="0.75"
-          y="0.75"
-          width="8.5"
-          height="21.5"
-          rx="1.25"
-        />
+        <rect className="prefix__d" x="0.75" y="0.75" width="8.5" height="21.5" rx="1.25" />
       </g>
       <g className="prefix__a">
         <rect className="prefix__c" width="25" height="23" rx="2" />
-        <rect
-          className="prefix__d"
-          x="0.75"
-          y="0.75"
-          width="23.5"
-          height="21.5"
-          rx="1.25"
-        />
+        <rect className="prefix__d" x="0.75" y="0.75" width="23.5" height="21.5" rx="1.25" />
       </g>
       <path className="prefix__b" d="M2.5 6.5h5M2.5 10.5h5" />
-    </svg>;
-  };
-};
+    </svg>
+}
 
 module Close = {
-  [@react.component]
-  let make = (~className: string="") => {
-    <svg
-      className={"fill-current " ++ className} width="12.728" height="12.728">
+  @react.component
+  let make = (~className: string="") =>
+    <svg className={"fill-current " ++ className} width="12.728" height="12.728">
       <path d="M12.728 11.313l-1.414 1.414L0 1.414 1.414-.001z" />
       <path d="M11.314 0l1.414 1.414L1.415 12.728 0 11.314z" />
-    </svg>;
-  };
-};
+    </svg>
+}
 
 module ArrowRight = {
-  [@react.component]
-  let make = (~className: string="") => {
+  @react.component
+  let make = (~className: string="") =>
     <svg
-      className={"fill-current " ++ className}
-      width="18"
-      height="11.769"
-      viewBox="0 0 18 11.769">
+      className={"fill-current " ++ className} width="18" height="11.769" viewBox="0 0 18 11.769">
       <defs>
         <clipPath id="prefix__a">
           <path
@@ -193,30 +156,25 @@ module ArrowRight = {
       </defs>
       <g clipPath="url(#prefix__a)">
         <g transform="translate(-205.615 -357.923)" clipPath="url(#prefix__b)">
-          <path
-            className="prefix__b"
-            d="M202.154 354.462h24.923v18.692h-24.923z"
-          />
+          <path className="prefix__b" d="M202.154 354.462h24.923v18.692h-24.923z" />
         </g>
       </g>
-    </svg>;
-  };
-};
+    </svg>
+}
 
 module Discourse = {
-  [@react.component]
-  let make = (~className: string="") => {
+  @react.component
+  let make = (~className: string="") =>
     <svg className={"fill-current " ++ className} viewBox="0 0 24 24">
       <path
         d="M12.103 0C18.666 0 24 5.485 24 11.997c0 6.51-5.33 11.99-11.9 11.99L0 24V11.79C0 5.28 5.532 0 12.103 0zm.116 4.563a7.395 7.395 0 00-6.337 3.57 7.247 7.247 0 00-.148 7.22L4.4 19.61l4.794-1.074a7.424 7.424 0 008.136-1.39 7.256 7.256 0 001.737-7.997 7.375 7.375 0 00-6.84-4.585h-.008z"
       />
-    </svg>;
-  };
-};
+    </svg>
+}
 
 module Hyperlink = {
-  [@react.component]
-  let make = (~className: string="") => {
+  @react.component
+  let make = (~className: string="") =>
     <svg
       className={"fill-current " ++ className}
       width="0.8em"
@@ -228,19 +186,13 @@ module Hyperlink = {
       <path
         d="M8.076 12.036a4.822 4.822 0 003.967 1.3 5.089 5.089 0 002.922-1.509l3.568-3.568a4.818 4.818 0 00-.192-7.121 5 5 0 00-6.761.4l-3.7 3.777a.108.108 0 00.067.183s.648-.028 1.132-.006a10.151 10.151 0 011.35.226.3.3 0 00.243-.088l2.529-2.608a2.732 2.732 0 013.581-.319 2.638 2.638 0 01.249 3.95l-3.755 3.754a2.706 2.706 0 01-3.654.073.107.107 0 00-.15 0l-1.4 1.4a.113.113 0 00.004.156z"
       />
-    </svg>;
-  };
-};
+    </svg>
+}
 
 module TriangleDown = {
-  [@react.component]
-  let make = (~className: string="") => {
-    <svg
-      className={"fill-current " ++ className}
-      width="8"
-      height="5"
-      viewBox="0 0 8 5">
+  @react.component
+  let make = (~className: string="") =>
+    <svg className={"fill-current " ++ className} width="8" height="5" viewBox="0 0 8 5">
       <path d="M4,0,8,5H0Z" transform="translate(8 5) rotate(180)" />
-    </svg>;
-  };
-};
+    </svg>
+}
