@@ -254,7 +254,7 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = ctx => {
 
   let props = {fullslug: fullslug}
   let ret = {"props": props}
-  Promise.resolved(ret)
+  Js.Promise.resolve(ret);
 }
 
 let getStaticPaths: Next.GetStaticPaths.t<Params.t> = () => {

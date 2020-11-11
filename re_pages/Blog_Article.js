@@ -230,7 +230,7 @@ function getStaticProps(ctx) {
   var props = {
     fullslug: fullslug
   };
-  return $$Promise.resolved({
+  return Promise.resolve({
               props: props
             });
 }
