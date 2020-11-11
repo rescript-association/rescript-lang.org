@@ -13,12 +13,14 @@ This is the official documentation platform for the [ReScript](https://rescript-
 ## Setup
 
 ```sh
-# For first time clone / build
+# For first time clone / build (install dependencies)
 yarn
-yarn run update-index
 
 # Initial build
 yarn bs:build
+
+# Build the index data
+yarn run update-index
 
 # In a new tab
 yarn dev
