@@ -2,12 +2,12 @@
 
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
+import * as Js_null from "bs-platform/lib/es6/js_null.js";
 import FuseJs from "fuse.js";
 import * as Markdown from "../components/Markdown.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
-import Npm_mockJson from "./npm_mock.json";
-
-var mockupData = Npm_mockJson;
+import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
+import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 
 function applySearch(packages, pattern) {
   var fuseOpts = {
@@ -38,24 +38,13 @@ function Packages$SearchBox(Props) {
                 }));
 }
 
-var pkges = Belt_Array.map(mockupData.objects, (function (item) {
-        var pkg = item.package;
-        return {
-                name: pkg.name,
-                version: pkg.version,
-                keywords: pkg.keywords,
-                description: pkg.description,
-                repositoryHref: pkg.links.repository,
-                npmHref: pkg.links.npm
-              };
-      }));
-
-function $$default(param) {
+function $$default(props) {
   var match = React.useState(function () {
         return /* All */0;
       });
   var setState = match[1];
   var state = match[0];
+  var pkges = props.packages;
   var packages;
   if (state) {
     var matches = applySearch(pkges, state._0);
@@ -86,12 +75,13 @@ function $$default(param) {
                 }), React.createElement(Packages$SearchBox, {
                   onChange: onChange
                 }), Belt_Array.map(packages, (function (pkg) {
+                    var href = Belt_Option.getWithDefault(Caml_option.null_to_opt(pkg.repositoryHref), pkg.npmHref);
                     return React.createElement("li", {
                                 key: pkg.name,
                                 className: "mb-4"
                               }, React.createElement("a", {
                                     className: "font-bold",
-                                    href: pkg.repositoryHref,
+                                    href: href,
                                     target: "_blank"
                                   }, pkg.name), React.createElement("p", {
                                     className: "pl-6"
@@ -99,9 +89,37 @@ function $$default(param) {
                   })));
 }
 
+function getStaticProps(_ctx) {
+  var __x = fetch("https://registry.npmjs.org/-/v1/search?text=keywords:rescript");
+  var __x$1 = __x.then(function (response) {
+        return response.json();
+      });
+  return __x$1.then(function (data) {
+              var pkges = Belt_Array.map(data.objects, (function (item) {
+                      var pkg = item.package;
+                      return {
+                              name: pkg.name,
+                              version: pkg.version,
+                              keywords: pkg.keywords,
+                              description: pkg.description,
+                              repositoryHref: Js_null.fromOption(pkg.links.repository),
+                              npmHref: pkg.links.npm
+                            };
+                    }));
+              var props = {
+                packages: pkges
+              };
+              return Promise.resolve({
+                          props: props,
+                          revalidate: 43200
+                        });
+            });
+}
+
 export {
   $$default ,
   $$default as default,
+  getStaticProps ,
   
 }
-/* mockupData Not a pure module */
+/* react Not a pure module */

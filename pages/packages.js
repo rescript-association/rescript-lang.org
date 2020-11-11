@@ -1,5 +1,7 @@
-import Comp from "../re_pages/packages"
+import Comp from "re_pages/packages"
 
-export default function PackagesPage() {
-  return <Comp/>;
+export { getStaticProps } from "re_pages/packages"
+
+export default function PackagesPage(props) {
+  return <Comp {...props}/>;
 }
