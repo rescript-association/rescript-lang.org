@@ -82,7 +82,7 @@ var DomUtil = {
 
 var $$Error = {};
 
-function make(rowCol, kind, wrapper, param) {
+function make(rowCol, kind, param) {
   var marker = document.createElement("div");
   var colorClass = kind === "Error" ? "text-fire bg-fire-15" : "text-gold bg-gold-15";
   marker.id = "gutter-marker_" + rowCol[0] + "-" + rowCol[1];
@@ -139,7 +139,7 @@ function updateErrors(state, onMarkerFocus, onMarkerFocusLeave, cm, errors) {
           var marker = make([
                 e.row,
                 e.column
-              ], e.kind, wrapper, undefined);
+              ], e.kind, undefined);
           wrapper.appendChild(marker);
           var row = e.row - 1 | 0;
           var endRow = e.endRow - 1 | 0;

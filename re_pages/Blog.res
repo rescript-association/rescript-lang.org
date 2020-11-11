@@ -96,7 +96,7 @@ module BlogCard = {
   let make = (
     ~previewImg: option<string>=?,
     ~title: string="Unknown Title",
-    ~author: BlogFrontmatter.Author.t,
+    ~author as _: BlogFrontmatter.Author.t,
     ~category: option<string>=?,
     ~badge: option<BlogFrontmatter.Badge.t>=?,
     ~date: Js.Date.t,

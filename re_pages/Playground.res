@@ -150,11 +150,6 @@ module Pane = {
       </button>
     })
 
-    let body = switch Belt.Array.get(tabs, current) {
-    | Some(tab) => tab.content
-    | None => React.null
-    }
-
     let body = Belt.Array.mapWithIndex(tabs, (i, tab) => {
       let className = current === i ? "block h-full" : "hidden"
 
@@ -511,7 +506,7 @@ module ResultPane = {
 }
 
 module WarningFlagsWidget = {
-  @bs.set external scrollTop: (Dom.element, int) => unit = "scrollTop"
+  @bs.set external _scrollTop: (Dom.element, int) => unit = "scrollTop"
   @bs.send external focus: Dom.element => unit = "focus"
   @bs.send
   external scrollIntoView: (Dom.element, @bs.as(json`false`) _) => unit = "scrollIntoView"
@@ -693,10 +688,10 @@ module WarningFlagsWidget = {
     let inputRef = React.useRef(Js.Nullable.null)
 
     let focusInput = () =>
-      React.Ref.current(inputRef)->Js.Nullable.toOption->Belt.Option.forEach(el => el->focus)
+      inputRef.current->Js.Nullable.toOption->Belt.Option.forEach(el => el->focus)
 
     let blurInput = () =>
-      React.Ref.current(inputRef)->Js.Nullable.toOption->Belt.Option.forEach(el => el->blur)
+      inputRef.current->Js.Nullable.toOption->Belt.Option.forEach(el => el->blur)
 
     let chips = Belt.Array.mapWithIndex(flags, (i, token) => {
       let {WarningFlagDescription.Parser.flag: flag, enabled} = token
@@ -766,7 +761,7 @@ module WarningFlagsWidget = {
       let key = ReactEvent.Keyboard.key(evt)
       let ctrlKey = ReactEvent.Keyboard.ctrlKey(evt)
 
-      let caretPosition = ReactEvent.Keyboard.target(evt)["selectionStart"]
+      /* let caretPosition = ReactEvent.Keyboard.target(evt)["selectionStart"] */
       /* Js.log2("caretPosition", caretPosition); */
 
       let full = (ctrlKey ? "CTRL+" : "") ++ key
@@ -856,7 +851,7 @@ module WarningFlagsWidget = {
           let ref = if selected === i {
             ReactDOMRe.Ref.callbackDomRef(dom => {
               let el = Js.Nullable.toOption(dom)
-              let parent = React.Ref.current(listboxRef)->Js.Nullable.toOption
+              let parent = listboxRef.current->Js.Nullable.toOption
 
               switch (parent, el) {
               | (Some(parent), Some(el)) => scrollToElement(~parent, el)
@@ -969,7 +964,7 @@ module WarningFlagsWidget = {
       "border-night-light"
     }
 
-    let areaOnFocus = evt =>
+    let areaOnFocus = _evt =>
       if !isActive {
         focusInput()
       }
@@ -1018,21 +1013,15 @@ module Settings = {
     ~readyState: CompilerManagerHook.ready,
     ~dispatch: CompilerManagerHook.action => unit,
     ~setConfig: Api.Config.t => unit,
-    ~editorCode: React.Ref.t<string>,
+    ~editorCode: React.ref<string>,
     ~config: Api.Config.t,
   ) => {
     let {Api.Config.warn_flags: warn_flags} = config
 
-    let targetLangVersion = switch readyState.targetLang {
-    | Res => (Api.Lang.Res, readyState.selected.compilerVersion)
-    | Reason => (Reason, readyState.selected.reasonVersion)
-    | OCaml => (OCaml, readyState.selected.ocamlVersion)
-    }
-
     let availableTargetLangs = Api.Version.availableLanguages(readyState.selected.apiVersion)
 
     let onTargetLangSelect = lang =>
-      dispatch(SwitchLanguage({lang: lang, code: React.Ref.current(editorCode)}))
+      dispatch(SwitchLanguage({lang: lang, code: editorCode.current}))
 
     let onWarningFlagsUpdate = flags => {
       let normalizeEmptyFlags = flags =>
@@ -1211,7 +1200,7 @@ module ControlPanel = {
     ~actionIndicatorKey: string,
     ~state: CompilerManagerHook.state,
     ~dispatch: CompilerManagerHook.action => unit,
-    ~editorCode: React.Ref.t<string>,
+    ~editorCode: React.ref<string>,
   ) => {
     let router = Next.Router.useRouter()
     let children = switch state {
@@ -1221,7 +1210,7 @@ module ControlPanel = {
     | Ready(ready) =>
       let onFormatClick = evt => {
         ReactEvent.Mouse.preventDefault(evt)
-        dispatch(Format(React.Ref.current(editorCode)))
+        dispatch(Format(editorCode.current))
       }
 
       let createShareLink = () => {
@@ -1232,7 +1221,7 @@ module ControlPanel = {
 
         Js.Array2.push(
           params,
-          ("code", editorCode->React.Ref.current->LzString.compressToEncodedURIComponent),
+          ("code", editorCode.current->LzString.compressToEncodedURIComponent),
         )->ignore
 
         let querystring = Belt.Array.reduce(params, "", (acc, next) => {
@@ -1288,10 +1277,9 @@ module OutputPanel = {
 
   @react.component
   let make = (
-    ~actionIndicatorKey,
     ~compilerDispatch,
     ~compilerState: CompilerManagerHook.state,
-    ~editorCode: React.Ref.t<string>,
+    ~editorCode: React.ref<string>,
   ) => {
     /*
        We need the prevState to understand different
@@ -1303,7 +1291,7 @@ module OutputPanel = {
  */
     let prevState = React.useRef(None)
 
-    let cmCode = switch React.Ref.current(prevState) {
+    let cmCode = switch prevState.current {
     | Some(prev) =>
       switch (prev, compilerState) {
       | (_, Ready({result: Nothing})) => None
@@ -1324,7 +1312,7 @@ module OutputPanel = {
       }
     }
 
-    React.Ref.setCurrent(prevState, Some(compilerState))
+    prevState.current = Some(compilerState)
 
     let resultPane = switch compilerState {
     | Compiling(ready, _)
@@ -1390,7 +1378,7 @@ module OutputPanel = {
     let prevSelected = React.useRef(0)
 
     let selected = switch compilerState {
-    | Compiling(_, _) => React.Ref.current(prevSelected)
+    | Compiling(_, _) => prevSelected.current
     | Ready(ready) =>
       switch ready.result {
       | Comp(Success(_))
@@ -1400,7 +1388,7 @@ module OutputPanel = {
     | _ => 0
     }
 
-    React.Ref.setCurrent(prevSelected, selected)
+    prevSelected.current = selected
 
     let tabs = [
       {Pane.title: "JavaScript", content: output},
@@ -1499,7 +1487,7 @@ let default = () => {
   // The user can focus an error / warning on a specific line & column
   // which is stored in this ref and triggered by hover / click states
   // in the CodeMirror editor
-  let (focusedRowCol, setFocusedRowCol) = React.useState(_ => None)
+  let (_focusedRowCol, setFocusedRowCol) = React.useState(_ => None)
 
   let editorCode = React.useRef(initialContent)
 
@@ -1507,9 +1495,9 @@ let default = () => {
    we take any success results and set the editor code to the new formatted code */
   switch compilerState {
   | Ready({result: FinalResult.Nothing} as ready) =>
-    compilerDispatch(CompileCode(ready.targetLang, React.Ref.current(editorCode)))
+    compilerDispatch(CompileCode(ready.targetLang, editorCode.current))
   | Ready({result: FinalResult.Conv(Api.ConversionResult.Success({code}))}) =>
-    React.Ref.setCurrent(editorCode, code)
+    editorCode.current = code
   | _ => ()
   }
 
@@ -1525,13 +1513,12 @@ let default = () => {
   let timeoutCompile = React.useRef(() => ())
 
   React.useEffect1(() => {
-    React.Ref.setCurrent(timeoutCompile, () =>
+    timeoutCompile.current = () =>
       switch compilerState {
-      | Ready(ready) =>
-        compilerDispatch(CompileCode(ready.targetLang, React.Ref.current(editorCode)))
+      | Ready(ready) => compilerDispatch(CompileCode(ready.targetLang, editorCode.current))
       | _ => ()
       }
-    )
+
     None
   }, [compilerState])
 
@@ -1598,21 +1585,21 @@ let default = () => {
                   maxHeight="calc(100vh - 10rem)"
                   mode="reason"
                   errors=cmErrors
-                  value={React.Ref.current(editorCode)}
+                  value={editorCode.current}
                   onChange={value => {
-                    React.Ref.setCurrent(editorCode, value)
+                    editorCode.current = value
 
-                    switch React.Ref.current(typingTimer) {
+                    switch typingTimer.current {
                     | None => ()
                     | Some(timer) => Js.Global.clearTimeout(timer)
                     }
                     let timer = Js.Global.setTimeout(() => {
-                      React.Ref.current(timeoutCompile)()
-                      React.Ref.setCurrent(typingTimer, None)
+                      timeoutCompile.current()
+                      typingTimer.current = None
                     }, 100)
-                    React.Ref.setCurrent(typingTimer, Some(timer))
+                    typingTimer.current = Some(timer)
                   }}
-                  onMarkerFocus={rowCol => setFocusedRowCol(prev => Some(rowCol))}
+                  onMarkerFocus={rowCol => setFocusedRowCol(_prev => Some(rowCol))}
                   onMarkerFocusLeave={_ => setFocusedRowCol(_ => None)}
                 />
               </div>
@@ -1620,12 +1607,7 @@ let default = () => {
             <div
               className="relative w-full overflow-x-hidden h-screen lg:h-auto lg:w-1/2"
               style={ReactDOMRe.Style.make(~maxWidth=windowWidth > 1024 ? "56rem" : "100%", ())}>
-              <OutputPanel
-                actionIndicatorKey={Belt.Int.toString(actionCount)}
-                compilerDispatch
-                compilerState
-                editorCode
-              />
+              <OutputPanel compilerDispatch compilerState editorCode />
               <div className="absolute bottom-0 w-full">
                 <Statusbar
                   actionIndicatorKey={Belt.Int.toString(actionCount)} state=compilerState

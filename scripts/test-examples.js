@@ -5,7 +5,19 @@ const path = require("path");
 
 let tempFileName = path.join(__dirname, '..', '_tempFile.res')
 let tempFileNameRegex = /_tempFile\.res/g
-let bsc = path.join(__dirname, '..', 'node_modules', 'bs-platform', process.platform, 'bsc.exe')
+
+// TODO: In the future we need to use the appropriate rescript version for each doc version variant
+//       see the package.json on how to define another rescript version
+let compilersDir = path.join(__dirname, "..", "compilers")
+let bsc = path.join(compilersDir, 'node_modules', 'rescript-820', process.platform, 'bsc.exe')
+
+const prepareCompilers = () => {
+  if (fs.existsSync(bsc)) {
+    return;
+  }
+  console.log("compilers not installed. Installing compilers...");
+  child_process.execFileSync("npm", ['install'], {cwd: compilersDir})
+}
 
 let parseFile = content => {
   if (!/```res (example|prelude|sig)/.test(content)) {
@@ -50,6 +62,10 @@ let postprocessOutput = (file, error) => {
     })
 }
 
+
+prepareCompilers();
+
+console.log("Running tests...")
 fs.writeFileSync(tempFileName, '')
 
 let success = true

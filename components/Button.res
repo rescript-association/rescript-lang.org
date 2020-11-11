@@ -1,5 +1,3 @@
-open Util.ReactStuff
-
 @react.component
 let make = (~children) =>
   <button

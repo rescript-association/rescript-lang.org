@@ -1,7 +1,3 @@
-// This file was automatically converted to ReScript from 'ApiMarkdown.re'
-// Check the output and make sure to delete the original file
-open Util.ReactStuff
-
 /*
    This module is intended for the ODOC like documentation layout.
    It hides the h2 tags and does

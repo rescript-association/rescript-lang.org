@@ -58,7 +58,7 @@ let useWindowWidth: unit => int = %raw(
   }
   return null;
   }
-  ` // Empty array ensures that effect is only run on mount and unmount
+  `
 )
 
 /* The module for interacting with the imperative CodeMirror API */
@@ -112,7 +112,7 @@ module CM = {
   @bs.send
   external setGutterMarker: (t, int, string, Dom.element) => unit = "setGutterMarker"
 
-  @bs.send external clearGutter: (t, string) => unit = ""
+  @bs.send external clearGutter: (t, string) => unit = "clearGutter"
 
   type markPos = {
     line: int,
@@ -211,7 +211,8 @@ module Error = {
 
 module GutterMarker = {
   // Note: this is not a React component
-  let make = (~rowCol: (int, int), ~kind: Error.kind, ~wrapper: Dom.element, ()): Dom.element => { // row, col
+  let make = (~rowCol: (int, int), ~kind: Error.kind, ()): Dom.element => {
+    // row, col
     open DomUtil
 
     let marker = createElement("div")
@@ -269,7 +270,7 @@ let updateErrors = (~state: state, ~onMarkerFocus=?, ~onMarkerFocusLeave=?, ~cm:
     open DomUtil
     open Error
 
-    let marker = GutterMarker.make(~rowCol=(e.row, e.column), ~kind=e.kind, ~wrapper, ())
+    let marker = GutterMarker.make(~rowCol=(e.row, e.column), ~kind=e.kind, ())
 
     wrapper->appendChild(marker)
 
@@ -361,13 +362,13 @@ let make = // props relevant for the react wrapper
   ~lineWrapping=false,
 ): React.element => {
   let inputElement = React.useRef(Js.Nullable.null)
-  let cmRef: React.Ref.t<option<CM.t>> = React.useRef(None)
+  let cmRef: React.ref<option<CM.t>> = React.useRef(None)
   let cmStateRef = React.useRef({marked: []})
 
   let windowWidth = useWindowWidth()
 
   React.useEffect0(() =>
-    switch inputElement->React.Ref.current->Js.Nullable.toOption {
+    switch inputElement.current->Js.Nullable.toOption {
     | Some(input) =>
       let options = CM.Options.t(
         ~theme="material",
@@ -399,14 +400,14 @@ let make = // props relevant for the react wrapper
       // so we need to set the initial value imperatively
       cm->CM.setValue(value)
 
-      React.Ref.setCurrent(cmRef, Some(cm))
+      cmRef.current = Some(cm)
 
       let cleanup = () => {
         /* Js.log2("cleanup", options->CM.Options.mode); */
 
         // This will destroy the CM instance
         cm->CM.toTextArea
-        React.Ref.setCurrent(cmRef, None)
+        cmRef.current = None
       }
 
       Some(cleanup)
@@ -428,12 +429,12 @@ let make = // props relevant for the react wrapper
      By checking if the local state of the CM instance is different
      to the input value, we can sync up both states accordingly
  */
-  switch cmRef->React.Ref.current {
+  switch cmRef.current {
   | Some(cm) =>
     if CM.getValue(cm) === value {
       ()
     } else {
-      let state = cmStateRef->React.Ref.current
+      let state = cmStateRef.current
       cm->CM.operation(() =>
         updateErrors(~onMarkerFocus?, ~onMarkerFocusLeave?, ~state, ~cm, errors)
       )
@@ -454,8 +455,8 @@ let make = // props relevant for the react wrapper
   })->Js.Array2.joinWith(";")
 
   React.useEffect1(() => {
-    let state = cmStateRef->React.Ref.current
-    switch cmRef->React.Ref.current {
+    let state = cmStateRef.current
+    switch cmRef.current {
     | Some(cm) =>
       cm->CM.operation(() =>
         updateErrors(~onMarkerFocus?, ~onMarkerFocusLeave?, ~state, ~cm, errors)
@@ -470,7 +471,7 @@ let make = // props relevant for the react wrapper
       a codemirror instance, or the window has been resized.
  */
   React.useEffect2(() => {
-    switch cmRef->React.Ref.current {
+    switch cmRef.current {
     | Some(cm) => cm->CM.refresh
     | None => ()
     }

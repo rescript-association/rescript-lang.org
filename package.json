@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^9.5.1",
-    "bs-platform": "8.3.2",
+    "bs-platform": "8.3.3-dev.2",
     "cssnano": "^4.1.10",
     "postcss-cli": "^7.1.1",
     "reanalyze": "^2.5.0",

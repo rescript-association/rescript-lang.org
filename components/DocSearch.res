@@ -37,22 +37,21 @@ let make = () => {
   let (state, setState) = React.useState(_ => Inactive)
 
   let focusInput = () =>
-    React.Ref.current(inputRef)->Js.Nullable.toOption->Belt.Option.forEach(el => el->focus)
+    inputRef.current->Js.Nullable.toOption->Belt.Option.forEach(el => el->focus)
 
   let clearInput = () =>
-    React.Ref.current(inputRef)->Js.Nullable.toOption->Belt.Option.forEach(el => el->value(""))
+    inputRef.current->Js.Nullable.toOption->Belt.Option.forEach(el => el->value(""))
 
-  let blurInput = () =>
-    React.Ref.current(inputRef)->Js.Nullable.toOption->Belt.Option.forEach(el => el->blur)
+  let blurInput = () => inputRef.current->Js.Nullable.toOption->Belt.Option.forEach(el => el->blur)
 
-  let onClick = evt => {
+  let onClick = _ => {
     /* ReactEvent.Mouse.preventDefault(evt); */
     setState(_ => Active)
     clearInput()
     focusInput()
   }
 
-  let onBlur = evt => {
+  let onBlur = _ => {
     /* ReactEvent.Focus.preventDefault(evt); */
     /* ReactEvent.Focus.stopPropagation(evt); */
     clearInput()
@@ -113,21 +112,21 @@ module Textbox = {
     let (state, setState) = React.useState(_ => Inactive)
 
     let focusInput = () =>
-      React.Ref.current(inputRef)->Js.Nullable.toOption->Belt.Option.forEach(el => el->focus)
+      inputRef.current->Js.Nullable.toOption->Belt.Option.forEach(el => el->focus)
 
-    let clearInput = () =>
-      React.Ref.current(inputRef)->Js.Nullable.toOption->Belt.Option.forEach(el => el->value(""))
+    let _clearInput = () =>
+      inputRef.current->Js.Nullable.toOption->Belt.Option.forEach(el => el->value(""))
 
     let blurInput = () =>
-      React.Ref.current(inputRef)->Js.Nullable.toOption->Belt.Option.forEach(el => el->blur)
+      inputRef.current->Js.Nullable.toOption->Belt.Option.forEach(el => el->blur)
 
-    let onClick = evt => {
+    let onClick = _ => {
       /* ReactEvent.Mouse.preventDefault(evt); */
       setState(_ => Active)
       focusInput()
     }
 
-    let onBlur = evt =>
+    let onBlur = _ =>
       /* ReactEvent.Focus.preventDefault(evt); */
       /* ReactEvent.Focus.stopPropagation(evt); */
       setState(_ => Inactive)

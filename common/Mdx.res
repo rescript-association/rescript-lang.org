@@ -48,8 +48,7 @@ module MdxChildren: {
 } = {
   type unknown
 
-  @unboxed
-  type rec t = Any('a): t
+  type t
 
   type case =
     | String(string)
@@ -57,7 +56,7 @@ module MdxChildren: {
     | Array(array<mdxComponent>)
     | Unknown(unknown)
 
-  let classify = (Any(v): t): case =>
+  let classify = (v: t): case =>
     if %raw(`function (a) { return  a instanceof Array}`)(v) {
       Array((Obj.magic(v): array<mdxComponent>))
     } else if Js.typeof(v) == "string" {

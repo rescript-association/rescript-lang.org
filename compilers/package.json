@@ -1,0 +1,10 @@
+{
+  "name": "compilers",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "rescript-820": "npm:bs-platform@8.2.0"
+  }
+}
