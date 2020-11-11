@@ -5,7 +5,10 @@ const path = require("path");
 
 let tempFileName = path.join(__dirname, '..', '_tempFile.res')
 let tempFileNameRegex = /_tempFile\.res/g
-let bsc = path.join(__dirname, '..', 'node_modules', 'bs-platform', process.platform, 'bsc.exe')
+
+// TODO: In the future we need to use the appropriate rescript version for each doc version variant
+//       see the package.json on how to define another rescript version
+let bsc = path.join(__dirname, '..', 'node_modules', 'rescript-820', process.platform, 'bsc.exe')
 
 let parseFile = content => {
   if (!/```res (example|prelude|sig)/.test(content)) {
