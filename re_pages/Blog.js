@@ -435,8 +435,8 @@ function getStaticProps(_ctx) {
                   newAvailableCat
                 ];
         }));
-  var props_posts = match[0];
-  var props_archived = match[2];
+  var props_posts = orderByDate(match[0]);
+  var props_archived = orderByDate(match[2]);
   var props_malformed = match[1];
   var props_availableCategories = match[3];
   var props = {
