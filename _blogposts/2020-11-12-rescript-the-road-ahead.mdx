@@ -1,0 +1,36 @@
+---
+author: maxim
+date: "2020-11-12" 
+previewImg:
+category: syntax
+badge: roadmap
+title: "ReScript: The Road Ahead"
+description: |
+canonical: https://rescript-lang.org/blog/rescript-the-road-ahead
+---
+As we're entering a new chapter for ReScript, I keep hearing a question: What comes next? And this question has a simple answer: we'll keep growing. There's still a lot to create around the ReScript language.
+
+Here’s what the team is up to…
+
+Hongbo is tuning the compiler and build system for absurd scale and performance. Patrick is reimagining the React documentation, while building a solid baseline vim plugin. Cristiano and Cheng are rethinking the ReScript experience inside your favourite editor. Autocompletion, jump to definition and type hints are implemented:
+<p>
+<iframe src="https://player.vimeo.com/video/477758754" width="640" height="400" frameBorder="0" allow="autoplay; fullscreen" allowFullScreen></iframe>
+</p>
+
+Stay tuned, open beta is coming soon! Vim included!
+
+As for the syntax side, ReScript users have requested a roadmap for a long time. In an effort to increase transparency about our goals with the syntax, I’ll be sharing some thoughts on the road ahead for ReScript’s syntax.
+
+A lot of what we put into the syntax derives directly from the needs and aspirations of the developers building products with ReScript. We definitely do have some ideas of our own, but at the core of our philosophy is that our users need to ship fantastic products. If there's anything  we can do to make life easier for developers, we'll do it. Whether it’s [planning healthy meals](https://leiwand-kochen.at) or [online teaching](https://www.pupilfirst.com), our main goal is to empower developers to achieve success.
+
+Encouraged by that goal, we’ve asked developers from different companies about their needs and pain-points. The most requested feature was custom operators. As a team we need to judge each feature, what's its value, and whether it’s worth the cost. Throughout that process, a specific design question came up. Can we provide good error messages? During our last team meeting, we decided to add custom operators to our roadmap. A lot of problem solving is required, but this will be part of the ReScript language in the near future. Custom operators can make your code clearer in certain cases; `Vector.add(vector1, vector2)` could become `vector1 + vector2`. Less is definitely more here: defining `>?@!>` in your codebase is probably not the best idea.
+
+The second reason we’re introducing custom operators is to shorten the time to get developers up and running with the new `.res` syntax with `.re` files. The new `.res` printer offers vivid, crystal clear code. We don’t want you missing out on all the good stuff!
+
+Aside from the compiler and editor integration, there are other areas in which we can innovate and provide significant value for developers. It’s very important for the team to make shipping apps in a modern JS stack more intuitive. That’s why we’re exploring new ways to import and export values from JavaScript. Regardless of what the outcome might be, this is very high on our list to explore. Writing bindings will never disappear, but we can make it more enjoyable.
+
+Last but not least, there are some updates to jsx coming. Although React 17 doesn't ship with any new features, there is a new jsx transform. The new jsx improves bundle size, reduces the number of concepts you need to learn in React and improves the performance. It speaks for itself that this will be a part of ReScript.
+
+Fasten your seatbelt, all that good stuff is going to give you a head start and more time to focus on actually shipping your product.
+
+Stay safe!
