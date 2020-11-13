@@ -1,64 +1,80 @@
 ---
 author: maxim
-date: "2020-11-12" 
+date: "2020-11-12"
 previewImg:
 category: syntax
 badge: roadmap
 title: "Editor Support, Custom Operators and More"
 description: |
-  Quick update on what we did so far in Q4 2020 and what to expect in Q1 2021.
+  Update on what we're doing around the end of 2020 and early next year.
 canonical: https://rescript-lang.org/blog/rescript-the-road-ahead
 ---
 
 import Video from "components/Video"
 
-## Approaching the End of 2020...
+## Upcoming Improvements
 
-As we're entering a new chapter for ReScript, I keep hearing a question: What comes next? And this question has a simple answer: we'll keep growing. There's still a lot to create around the ReScript language.
+As we're approaching the end of 2020, we'd like to inform our community of our remaining tasks for the year and early next year.
 
-Here’s what the team is up to…
+## Editor Integration
 
-## Compiler, Docs and IDE integration
-
-Hongbo is tuning the compiler and build system for absurd scale and performance. Patrick is [reimagining the React documentation](https://github.com/reason-association/rescript-lang.org/pull/96), while building a solid baseline vim plugin. Cristiano and Cheng are rethinking the ReScript experience inside your favourite editor. Autocompletion, jump to definition and type hints are implemented:
+In the coming days, Cristiano and Cheng Lou will finally be ready to unveil the new VSCode ReScript experience, including diagnosis, autocompletion, jump to definition and type hints!
 
 <Video withShadow={true} src="https://player.vimeo.com/video/477758754" />
 
-Stay tuned, open beta for our new language server is coming soon! Vim included!
+Patrick and Maxim will also help polishing the same feature set for Vim and Sublime Text.
+
+## Compiler & Build
+
+Hongbo continues to fine tune the compiler and build system for performance and stability. There are several improvements coming down the line. Expect your build to keep getting faster and more robust!
+
+## Docs
+
+Patrick is [rearranging the React documentation](https://github.com/reason-association/rescript-lang.org/pull/96), and continues to improve the main documentation site with Cheng Lou.
 
 ## Syntax
 
-As for the syntax side, ReScript users have requested a roadmap for a long time. In an effort to increase transparency about our goals with the syntax, I’ll be sharing some thoughts on the road ahead for ReScript’s syntax.
-
-A lot of what we put into the syntax derives directly from the needs and aspirations of our developers building products with ReScript. We definitely do have some ideas of our own, but at the core of our philosophy is that our users need to ship fantastic products. If there's anything  we can do to make life easier for our developers without unnecessarily bloating the language, we'll do it. 
-
-Whether it’s [planning healthy meals](https://leiwand-kochen.at), [doing online teaching](https://www.pupilfirst.com) or [helping families spend more quality time together](https://familyfive.app/), our main goal is to empower developers to achieve success.
-
 ### Custom Operators
 
-Encouraged by that goal, we’ve asked developers from different companies about their needs and pain-points. The most requested feature was custom operators, otherwise they wouldn't be able to upgrade to the new ReScript syntax. As a team we need to carefully judge each feature we implement. What's its value, and whether it’s worth the cost. Throughout that process, specific design questions came up:
-- Can we provide good error messages?
-- Will this lead to complex and slow code?
-- Should we only support a subset of overridable operators (like +, -, /, *, ...)?
-- Would it be possible to postpone the decision a little bit longer?
-- Will this feature be abused?
+The team had a few discussions surrounding the issue of the new syntax disallowing custom infix operators. Two of our values collided here:
 
-As you can imagine, making such a fundamental feature decision may make or break a language. After several team meetings, we finally decided that the benefits outweigh the downsides. Even though a lot of problem solving is required to make this feature _feel nice_, it will be part of the ReScript language in the near future.
+- We'd like our community to focus on product discussions rather than FP idiosyncrasies, given that it is a common issue that the shiny corners of FP suck the air out of discussions. Many FP and OOP communities (the latter with their own noisy design pattern bickering) have seen the same pattern [played over and over](https://www.youtube.com/watch?v=46ypzDp2yDU&feature=emb_logo), and we'd like to avoid it. This was one of the primary motivations for the new ReScript syntax to disallow custom infix operators.
+- **However**, we also care about supporting our existing users, and providing a smooth transition path toward newer code, as we've shown over the years. Alas, it is a fact of life that many existing codebase on the older syntax use custom infix operators.
 
-We think custom operators are super helpful when used in the mathematical context, e.g. `Vector.add(vector1, vector2)` could be expressed as `vector1 + vector2`. We don't think they should be used for implementing your own mini language though (like `>>|` or `a >>= b`). We need to be aware that our coworkers need to read and understand the code we write, and we trust our users to not abuse this feature.
+After much debates, we've decided to re-enable the ability for users to define their infix operators, the same way they did in the old syntax. Note that this is only meant to provide a good upgrade path; we do **not** encourage the usages of infix operators and we hope that the community is responsible enough using them.
 
 ### Simpler Interop
 
-Aside from the compiler and editor integration, there are other areas in which we can innovate and provide significant value for developers. It’s very important for the team to make shipping apps in a modern JS stack more intuitive. That’s why we’re exploring new ways to import and export values from JavaScript. Regardless of what the outcome might be, this is very high on our list to explore. Writing bindings will never disappear, but we can make it more enjoyable.
+We're considering a lightweight, familiar syntax sugar for `@bs.module` for binding to JS code:
+
+```res
+@js
+import {
+  dirname: string => string,
+  relative: (~from: string, ~to: string) => string
+} from "path"
+```
+
+(Just a prototype syntax. Not set in stone.)
+
+This will mix well with the other existing `external` features that aren't about importing a module, such as `bs.send`.
+
+We will consider providing an automatic translation of your current `@bs.module` externals into the new format, so you can keep writing your bindings right now while expecting a potentially nice upgrade when the time comes.
+
+Hopefully this encourages more usages of zero-cost JavaScript interop! We value this very much.
 
 ### React 17
 
-Last but not least, there are some updates to JSX coming. 
+Last but not least, there are some updates to JSX coming.
 
-> Although React 17 doesn't ship with any new features, there is [a new JSX transform](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html). The new JSX improves bundle size, reduces the number of concepts you need to learn in React and improves the performance. 
+> Although React 17 doesn't ship with any new features, there is [a new JSX transform](https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html). The new JSX improves bundle size, reduces the number of concepts you need to learn in React and improves the performance.
 
-It speaks for itself that this will be a part of ReScript, and we will make sure that our users will have a smooth transition phase without any breaking changes.
+ReScript will be the first to adopt the new JSX spec, which we've deemed to be solid enough. Our own Ricky has had a hand in drafting it.
 
-Fasten your seatbelt, all that good stuff is going to give you a head start and more time to focus on actually shipping your product.
+It goes without saying that this will also have an upgrade path.
 
-Stay safe!
+## Wrapping Up
+
+2020 has been rather weird; hopefully these end-of-year changes brighten you up a bit!
+
+Stay safe and keep shipping products!
