@@ -1,10 +1,7 @@
 module Link = Next.Link
 
 // This is used for the version dropdown in the manual layouts
-let allManualVersions = ["latest", "v8.0.0"]
-
-// Used for replacing "latest" with "vX.X.X" in the version dropdown
-let latestVersionLabel = "v8.2.0"
+let allManualVersions = [("latest", "v8.2.0"), ("v8.0.0", "< v8.2.0")]
 
 // Structure defined by `scripts/extract-tocs.js`
 let tocData: Js.Dict.t<{
@@ -213,7 +210,6 @@ module Docs = {
       title
       metaTitleCategory="ReScript Language Manual"
       availableVersions=allManualVersions
-      latestVersionLabel
       ?frontmatter
       ?activeToc
       breadcrumbs>

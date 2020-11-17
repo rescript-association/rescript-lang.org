@@ -58,7 +58,6 @@ let default = (~showVersionSelect=true) => {
     <div className="text-fire">
       <VersionSelect
         availableVersions=ManualDocsLayout.allManualVersions
-        latestVersionLabel=ManualDocsLayout.latestVersionLabel
         onChange
         version
       />

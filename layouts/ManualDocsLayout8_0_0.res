@@ -204,14 +204,27 @@ module Docs = {
 
     let warnBanner = {
       open Markdown
+
+      let label = switch Js.Array2.find(ManualDocsLayout.allManualVersions, ((v, label)) => {
+        v === version
+      }) {
+      | Some((_, label)) => label
+      | None => version
+      }
+
+      let additionalText = switch version {
+      | "v8.0.0" => "(These docs cover all versions between v3 to v8 and are equivalent to the old BuckleScript docs before the rebrand)"
+      | _ => ""
+      }
       <div className="mb-10">
         <Info>
           <P>
             {("You are currently looking at the " ++
-            (version ++
+            (label ++
             " docs (Reason v3.6 syntax edition). You can find the latest manual page "))->s}
             <A href=latestUrl> {"here"->s} </A>
             {"."->s}
+            <p className="text-14 mt-2"> {React.string(additionalText)} </p>
           </P>
         </Info>
       </div>
@@ -223,7 +236,6 @@ module Docs = {
       categories
       version
       availableVersions=ManualDocsLayout.allManualVersions
-      latestVersionLabel=ManualDocsLayout.latestVersionLabel
       ?frontmatter
       title
       metaTitleCategory="ReScript Language Manual"

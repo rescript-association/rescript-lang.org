@@ -12,11 +12,15 @@ import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Router from "next/router";
 
 var allManualVersions = [
-  "latest",
-  "v8.0.0"
+  [
+    "latest",
+    "v8.2.0"
+  ],
+  [
+    "v8.0.0",
+    "< v8.2.0"
+  ]
 ];
-
-var latestVersionLabel = "v8.2.0";
 
 var tocData = (require('../index_data/manual_toc.json'));
 
@@ -314,7 +318,6 @@ function ManualDocsLayout$Docs(Props) {
     metaTitleCategory: "ReScript Language Manual",
     version: "latest",
     availableVersions: allManualVersions,
-    latestVersionLabel: latestVersionLabel,
     categories: categories,
     components: components,
     theme: "Reason",
@@ -361,7 +364,6 @@ var Toc;
 export {
   Link ,
   allManualVersions ,
-  latestVersionLabel ,
   tocData ,
   NavItem ,
   Category ,

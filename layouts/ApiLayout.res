@@ -2,10 +2,7 @@ module Link = Next.Link
 open Util.ReactStuff
 
 // This is used for the version dropdown in the api layouts
-let allApiVersions = ["latest", "v8.0.0"]
-
-// Used for replacing "latest" with "vX.X.X" in the version dropdown
-let latestVersionLabel = "v8.2.0"
+let allApiVersions = [("latest", "v8.2.0"), ("v8.0.0", "< v8.2.0")]
 
 module Sidebar = SidebarLayout.Sidebar
 module Toc = SidebarLayout.Toc
@@ -18,15 +15,30 @@ module OldDocsWarning = {
       "/" ++
       (Js.Array2.joinWith(url.base, "/") ++
       ("/latest/" ++ Js.Array2.joinWith(url.pagepath, "/")))
+
     open Markdown
+
+    let label = switch Js.Array2.find(allApiVersions, ((v, label)) => {
+      v === version
+    }) {
+    | Some((_, label)) => label
+    | None => version
+    }
+
+    let additionalText = switch version {
+    | "v8.0.0" => "(These docs cover all versions between v3 to v8 and are equivalent to the old BuckleScript docs before the rebrand)"
+    | _ => ""
+    }
+
     <div className="mb-10">
       <Info>
         <P>
           {("You are currently looking at the " ++
-          (version ++
+          (label ++
           " docs (Reason v3.6 syntax edition). You can find the latest API docs "))->s}
           <A href=latestUrl> {"here"->s} </A>
           {"."->s}
+          <p className="text-14 mt-2"> {React.string(additionalText)} </p>
         </P>
       </Info>
     </div>
@@ -104,7 +116,7 @@ let make = (
             ("/" ++ (version ++ ("/" ++ Js.Array2.joinWith(url.pagepath, "/")))))
           router->Next.Router.push(targetUrl)
         }
-        <VersionSelect latestVersionLabel onChange version availableVersions=allApiVersions />
+        <VersionSelect onChange version availableVersions=allApiVersions />
       | None => React.null
       }}
     </div>

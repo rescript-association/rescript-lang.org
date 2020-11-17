@@ -290,15 +290,22 @@ function ManualDocsLayout8_0_0$Docs(Props) {
   var version$2 = "v8.0.0";
   var url$1 = Url.parse(route);
   var latestUrl = "/" + (url$1.base.join("/") + ("/latest/" + url$1.pagepath.join("/")));
+  var match = ManualDocsLayout.allManualVersions.find(function (param) {
+        return param[0] === version$2;
+      });
+  var label = match !== undefined ? match[1] : version$2;
+  var additionalText = version$2 === "v8.0.0" ? "(These docs cover all versions between v3 to v8 and are equivalent to the old BuckleScript docs before the rebrand)" : "";
   var warnBanner = React.createElement("div", {
         className: "mb-10"
       }, React.createElement(Markdown.Info.make, {
             children: React.createElement(Markdown.P.make, {
                   children: null
-                }, Util.ReactStuff.s("You are currently looking at the v8.0.0 docs (Reason v3.6 syntax edition). You can find the latest manual page "), React.createElement(Markdown.A.make, {
+                }, Util.ReactStuff.s("You are currently looking at the " + (label + " docs (Reason v3.6 syntax edition). You can find the latest manual page ")), React.createElement(Markdown.A.make, {
                       href: latestUrl,
                       children: Util.ReactStuff.s("here")
-                    }), Util.ReactStuff.s("."))
+                    }), Util.ReactStuff.s("."), React.createElement("p", {
+                      className: "text-14 mt-2"
+                    }, additionalText))
           }));
   var tmp = {
     breadcrumbs: breadcrumbs,
@@ -306,7 +313,6 @@ function ManualDocsLayout8_0_0$Docs(Props) {
     metaTitleCategory: "ReScript Language Manual",
     version: version$2,
     availableVersions: ManualDocsLayout.allManualVersions,
-    latestVersionLabel: ManualDocsLayout.latestVersionLabel,
     categories: categories,
     components: components,
     theme: "Reason",
