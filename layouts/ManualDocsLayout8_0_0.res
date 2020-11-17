@@ -205,7 +205,7 @@ module Docs = {
     let warnBanner = {
       open Markdown
 
-      let label = switch Js.Array2.find(ManualDocsLayout.allManualVersions, ((v, label)) => {
+      let label = switch Js.Array2.find(ManualDocsLayout.allManualVersions, ((v, _)) => {
         v === version
       }) {
       | Some((_, label)) => label

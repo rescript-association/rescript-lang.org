@@ -18,7 +18,7 @@ module OldDocsWarning = {
 
     open Markdown
 
-    let label = switch Js.Array2.find(allApiVersions, ((v, label)) => {
+    let label = switch Js.Array2.find(allApiVersions, ((v, _)) => {
       v === version
     }) {
     | Some((_, label)) => label
