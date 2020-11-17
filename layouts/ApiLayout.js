@@ -14,26 +14,37 @@ import * as SidebarLayout from "./SidebarLayout.js";
 import * as VersionSelect from "../components/VersionSelect.js";
 
 var allApiVersions = [
-  "latest",
-  "v8.0.0"
+  [
+    "latest",
+    "v8.2.0"
+  ],
+  [
+    "v8.0.0",
+    "< v8.2.0"
+  ]
 ];
-
-var latestVersionLabel = "v8.2.0";
 
 function ApiLayout$OldDocsWarning(Props) {
   var version = Props.version;
   var route = Props.route;
   var url = Url.parse(route);
   var latestUrl = "/" + (url.base.join("/") + ("/latest/" + url.pagepath.join("/")));
+  var match = allApiVersions.find(function (param) {
+        return param[0] === version;
+      });
+  var label = match !== undefined ? match[1] : version;
+  var additionalText = version === "v8.0.0" ? "(These docs cover all versions between v3 to v8 and are equivalent to the old BuckleScript docs before the rebrand)" : "";
   return React.createElement("div", {
               className: "mb-10"
             }, React.createElement(Markdown.Info.make, {
                   children: React.createElement(Markdown.P.make, {
                         children: null
-                      }, Util.ReactStuff.s("You are currently looking at the " + (version + " docs (Reason v3.6 syntax edition). You can find the latest API docs ")), React.createElement(Markdown.A.make, {
+                      }, Util.ReactStuff.s("You are currently looking at the " + (label + " docs (Reason v3.6 syntax edition). You can find the latest API docs ")), React.createElement(Markdown.A.make, {
                             href: latestUrl,
                             children: Util.ReactStuff.s("here")
-                          }), Util.ReactStuff.s("."))
+                          }), Util.ReactStuff.s("."), React.createElement("p", {
+                            className: "text-14 mt-2"
+                          }, additionalText))
                 }));
 }
 
@@ -111,7 +122,6 @@ function ApiLayout(Props) {
     tmp = React.createElement(VersionSelect.make, {
           onChange: onChange,
           version: version,
-          latestVersionLabel: latestVersionLabel,
           availableVersions: allApiVersions
         });
   } else {
@@ -174,7 +184,6 @@ var make = ApiLayout;
 export {
   Link ,
   allApiVersions ,
-  latestVersionLabel ,
   Sidebar ,
   Toc ,
   OldDocsWarning ,

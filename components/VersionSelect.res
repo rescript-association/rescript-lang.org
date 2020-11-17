@@ -1,14 +1,10 @@
 open Util.ReactStuff
 
 @react.component
-let make = (
-  ~onChange,
-  ~version: string,
-  ~latestVersionLabel: string,
-  ~availableVersions: array<string>,
-) => {
-  let children = Belt.Array.map(availableVersions, ver => {
-    let label = ver === "latest" ? latestVersionLabel : ver
+let make = (~onChange, ~version: string, ~availableVersions: array<(string, string)>) => {
+  // array<(version, label)>
+
+  let children = Belt.Array.map(availableVersions, ((ver, label)) => {
     <option className="py-4" key=ver value=ver> {label->s} </option>
   })
   <select

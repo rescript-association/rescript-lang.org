@@ -62,13 +62,11 @@ function DocsLayout(Props) {
   var frontmatter = Props.frontmatter;
   var version = Props.version;
   var availableVersions = Props.availableVersions;
-  var latestVersionLabelOpt = Props.latestVersionLabel;
   var activeToc = Props.activeToc;
   var categories = Props.categories;
   var componentsOpt = Props.components;
   var themeOpt = Props.theme;
   var children = Props.children;
-  var latestVersionLabel = latestVersionLabelOpt !== undefined ? latestVersionLabelOpt : "latest";
   var components = componentsOpt !== undefined ? Caml_option.valFromOption(componentsOpt) : Markdown.$$default;
   var theme = themeOpt !== undefined ? themeOpt : "Reason";
   var router = Router.useRouter();
@@ -112,7 +110,6 @@ function DocsLayout(Props) {
       tmp = React.createElement(VersionSelect.make, {
             onChange: onChange,
             version: version,
-            latestVersionLabel: latestVersionLabel,
             availableVersions: availableVersions
           });
     } else {
@@ -190,7 +187,6 @@ function Make(Content) {
     var frontmatter = Props.frontmatter;
     var version = Props.version;
     var availableVersions = Props.availableVersions;
-    var latestVersionLabel = Props.latestVersionLabel;
     var components = Props.components;
     var theme = Props.theme;
     var children = Props.children;
@@ -242,7 +238,6 @@ function Make(Content) {
                 frontmatter: frontmatter,
                 version: version,
                 availableVersions: availableVersions,
-                latestVersionLabel: latestVersionLabel,
                 activeToc: activeToc,
                 categories: categories,
                 components: components,

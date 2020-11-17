@@ -54,8 +54,7 @@ let make = (
   ~metaTitleCategory: option<string>=?, // e.g. Introduction | My Meta Title Category
   ~frontmatter: option<Js.Json.t>=?,
   ~version: option<string>=?,
-  ~availableVersions: option<array<string>>=?,
-  ~latestVersionLabel: string="latest",
+  ~availableVersions: option<array<(string, string)>>=?,
   ~activeToc: option<SidebarLayout.Toc.t>=?,
   ~categories: array<Category.t>,
   ~components=Markdown.default,
@@ -104,7 +103,7 @@ let make = (
               ("/" ++ (version ++ ("/" ++ Js.Array2.joinWith(url.pagepath, "/")))))
             router->Next.Router.push(targetUrl)
           }
-          <VersionSelect latestVersionLabel onChange version availableVersions />
+          <VersionSelect onChange version availableVersions />
         | None => <span className="font-mono text-sm"> {version->s} </span>
         }
       | None => React.null
@@ -156,8 +155,7 @@ module Make = (Content: StaticContent) => {
     ~metaTitleCategory: option<string>=?,
     ~frontmatter: option<Js.Json.t>=?,
     ~version: option<string>=?,
-    ~availableVersions: option<array<string>>=?,
-    ~latestVersionLabel: option<string>=?,
+    ~availableVersions: option<array<(string, string)>>=?,
     /* ~activeToc: option(SidebarLayout.Toc.t)=?, */
     ~components: option<Mdx.Components.t>=?,
     ~theme: option<ColorTheme.t>=?,
@@ -216,7 +214,6 @@ module Make = (Content: StaticContent) => {
       "frontmatter": frontmatter,
       "version": version,
       "availableVersions": availableVersions,
-      "latestVersionLabel": latestVersionLabel,
       "activeToc": activeToc,
       "categories": categories,
       "components": components,

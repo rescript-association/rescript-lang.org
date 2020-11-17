@@ -91,7 +91,6 @@ function DocsOverview$default(Props) {
         }, React.createElement(VersionSelect.make, {
               onChange: onChange,
               version: version$1,
-              latestVersionLabel: ManualDocsLayout.latestVersionLabel,
               availableVersions: ManualDocsLayout.allManualVersions
             }));
   } else {
