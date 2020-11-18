@@ -1,0 +1,34 @@
+This decorator is used whenever you need to bind to a JS class constructor that requires the `new` keword for instantiation.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type t
+@bs.new external create: unit => t = "Date"
+
+create();
+```
+
+```js
+new Date();
+```
+
+</CodeTab>
+
+When the object is not available on the global scope, combine it with `@module`:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type t;
+@module @bs.new external book: unit => t = "Book";
+
+let myBook = book();
+```
+
+```js
+var Book = require("Book");
+var myBook = new Book();
+```
+
+</CodeTab>

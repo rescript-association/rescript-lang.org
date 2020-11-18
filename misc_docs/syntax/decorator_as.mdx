@@ -1,0 +1,26 @@
+---
+test: "foo"
+---
+
+Use this decorator on record types to alias record names to a different JS attribute name.
+
+This is mostly useful to map to JS attribute names that cannot be expressed in ReScript (such as keywords).
+
+### Example
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```reason
+type action = {
+  [@bs.as "type"] _type: string,
+};
+```
+
+```js
+var action = {
+  type: "ADD_USER"
+};
+```
+</CodeTab>
+
+Refer to the [Records as Objects](/docs/manual/latest/bind-to-js-object#bind-using-rescript-record) section for a more detailed explanation.
