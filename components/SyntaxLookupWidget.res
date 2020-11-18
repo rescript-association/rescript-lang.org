@@ -37,10 +37,10 @@ module Category = {
   @react.component
   let make = (~title, ~children) => {
     <div>
-      <h3 className="font-sans font-black text-night-light tracking-wide text-xs uppercase">
+      <h3 className="font-sans font-medium text-gray-100 tracking-wide text-14 uppercase mb-2">
         {React.string(title)}
       </h3>
-      children
+      <div> children </div>
     </div>
   }
 }
@@ -57,27 +57,32 @@ let allItems = [
   {
     keywords: ["@bs.module"],
     name: "@module",
-    summary: "This is the @module decorator.",
+    summary: "This is the `@module` decorator.",
     category: Decorators,
     component: decorator_module,
   },
   {
     keywords: ["@bs.as"],
     name: "@as",
-    summary: "This is the @as decorator.",
+    summary: "This is the `@as` decorator.",
     category: Decorators,
     component: decorator_as,
   },
   {
     keywords: ["if", "else", "if else"],
     name: "if / else",
-    summary: "This is the if / else control flow structure.",
+    summary: "This is the `if / else` control flow structure.",
     category: ControlFlow,
     component: controlflow_ifelse,
   },
+  {
+    keywords: ["uncurried"],
+    name: "(.) => {}",
+    summary: "This is an `uncurried` function.",
+    category: Other,
+    component: controlflow_ifelse,
+  },
 ]
-
-decorator_as->MdxComp.frontmatter->Js.log
 
 let fuseOpts = Fuse.Options.t(
   ~shouldSort=false,
@@ -100,10 +105,96 @@ let getAnchor = path => {
 }
 
 module SearchBox = {
+  @bs.send external focus: Dom.element => unit = "focus"
+
+  type state =
+    | Active
+    | Inactive
+
   @react.component
-  let make = (~onChange) => {
-    <div className="bg-">
-      <input onChange={onChange} className="border border-snow-dark bg-snow-light" type_="text" />
+  let make = (
+    ~completionValues: array<string>=[], // set of possible values
+    ~value: string,
+    ~onClear: unit => unit,
+    ~onValueChange: string => unit,
+  ) => {
+    let (state, setState) = React.useState(_ => Inactive)
+    let textInput = React.useRef(Js.Nullable.null)
+
+    let onMouseDownClear = evt => {
+      ReactEvent.Mouse.preventDefault(evt)
+      onClear()
+    }
+
+    let focusInput = () =>
+      textInput.current->Js.Nullable.toOption->Belt.Option.forEach(el => el->focus)
+
+    let onAreaFocus = _evt => {
+      if state === Inactive {
+        focusInput()
+      }
+    }
+
+    let onFocus = _ => {
+      setState(_ => Active)
+    }
+
+    let onBlur = _ => {
+      setState(_ => Inactive)
+    }
+
+    let onKeyDown = evt => {
+      let key = ReactEvent.Keyboard.key(evt)
+      let ctrlKey = ReactEvent.Keyboard.ctrlKey(evt)
+
+      let full = (ctrlKey ? "CTRL+" : "") ++ key
+
+      switch full {
+      | "Escape" => onClear()
+      | "Tab" =>
+        if Js.Array.length(completionValues) === 1 {
+          let targetValue = Belt.Array.getExn(completionValues, 0)
+
+          if targetValue !== value {
+            ReactEvent.Keyboard.preventDefault(evt)
+            onValueChange(targetValue)
+          } else {
+            ()
+          }
+        }
+      | _ => ()
+      }
+    }
+
+    let onChange = evt => {
+      ReactEvent.Form.preventDefault(evt)
+      let value = ReactEvent.Form.target(evt)["value"]
+      onValueChange(value)
+    }
+
+    <div
+      tabIndex={-1}
+      onFocus=onAreaFocus
+      className={(
+        state === Active ? "border-fire" : "border-fire-40"
+      ) ++ " flex items-center border rounded-lg py-4 px-5"}>
+      <Icon.MagnifierGlass
+        className={(state === Active ? "text-fire" : "text-fire-80") ++ " w-4 h-4"}
+      />
+      <input
+        value
+        ref={ReactDOM.Ref.domRef(textInput)}
+        onFocus
+        onBlur
+        onKeyDown
+        onChange={onChange}
+        placeholder="Enter keywords or syntax..."
+        className="text-16 outline-none ml-4 w-full"
+        type_="text"
+      />
+      <button className={value === "" ? "hidden" : "block"} onMouseDown=onMouseDownClear>
+        <Icon.Close className="w-4 h-4 text-fire" />
+      </button>
     </div>
   }
 }
@@ -111,7 +202,7 @@ module SearchBox = {
 module Tag = {
   @react.component
   let make = (~text: string) => {
-    <span className="bg-fire-15 p-1 px-2 font-semibold rounded-lg text-fire text-16">
+    <span className="bg-fire-10-tr py-1 px-3 rounded text-fire text-16">
       {React.string(text)}
     </span>
   }
@@ -119,17 +210,28 @@ module Tag = {
 
 module DetailBox = {
   @react.component
-  let make = (~summary, ~children) => {
+  let make = (~summary: string, ~children: React.element) => {
+    let summaryEl = switch Js.String2.split(summary, "`") {
+    | [] => React.null
+    | [first, second, third] =>
+      [
+        React.string(first),
+        <span className="text-fire"> {React.string(second)} </span>,
+        React.string(third),
+      ]->React.array
+    | more => Belt.Array.map(more, s => React.string(s))->React.array
+    }
+
     <div>
-      <div className="text-21 text-center mb-4 font-semibold"> {React.string(summary)} </div>
-      <div className="border rounded-lg shadow-xs p-4"> children </div>
+      <div className="text-21 border-b border-fire-40 pb-4 mb-4 font-semibold"> summaryEl </div>
+      <div className="mt-16"> children </div>
     </div>
   }
 }
 
 type state =
   | ShowAll
-  | ShowFiltered(array<item>)
+  | ShowFiltered(string, array<item>) // (search, filteredItems)
   | ShowDetails(item)
 
 @react.component
@@ -176,10 +278,7 @@ let make = () => {
     None
   }, [state])
 
-  let onChange = evt => {
-    ReactEvent.Form.preventDefault(evt)
-    let value = ReactEvent.Form.target(evt)["value"]
-
+  let onSearchValueChange = value => {
     setState(_ =>
       switch value {
       | "" => ShowAll
@@ -187,22 +286,23 @@ let make = () => {
         let filtered = fuse->Fuse.search(search)->Belt.Array.map(m => {
           m["item"]
         })
+
         if Js.Array.length(filtered) === 1 {
-          ShowDetails(Js.Array2.unsafe_get(filtered, 0))
+          let item = Belt.Array.getExn(filtered, 0)
+          if item.name === value {
+            ShowDetails(item)
+          } else {
+            ShowFiltered(value, filtered)
+          }
         } else {
-          ShowFiltered(filtered)
+          ShowFiltered(value, filtered)
         }
       }
     )
-    /* if value === "" { */
-    /* setState(_prev => All) */
-    /* } else { */
-    /* setState(_prev => Filtered(value)) */
-    /* } */
   }
 
   let details = switch state {
-  | ShowFiltered(_)
+  | ShowFiltered(_, _)
   | ShowAll => React.null
   | ShowDetails(item) =>
     <div className="mb-16">
@@ -222,7 +322,7 @@ let make = () => {
     let items = switch state {
     | ShowAll => allItems
     | ShowDetails(_) => []
-    | ShowFiltered(items) => items
+    | ShowFiltered(_, items) => items
     }
 
     Belt.Array.reduce(items, Js.Dict.fromArray(initial), (acc, item) => {
@@ -242,24 +342,46 @@ let make = () => {
             ReactEvent.Mouse.preventDefault(evt)
             setState(_ => ShowDetails(item))
           }
-          <span className="mr-2 cursor-pointer" onMouseDown key=item.name>
+          <span className="first:ml-0 ml-2 cursor-pointer" onMouseDown key=item.name>
             <Tag text={item.name} />
           </span>
         })
-        let el = <Category key=title title> {React.array(children)} </Category>
+        let el =
+          <div className="first:mt-0 mt-12">
+            <Category key=title title> {React.array(children)} </Category>
+          </div>
         Js.Array2.push(acc, el)->ignore
         acc
       }
     })
   }
 
+  let (searchValue, completionItems) = switch state {
+  | ShowFiltered(search, items) => (search, items)
+  | ShowAll => ("", allItems)
+  | ShowDetails(item) => (item.name, [item])
+  }
+
+  let onSearchClear = () => {
+    setState(_ => ShowAll)
+  }
+
   <div>
-    <div className="text-center">
-      <Markdown.H1> {React.string("Syntax Lookup")} </Markdown.H1>
-      <div className="mb-8">
-        {React.string("Enter some language construct you want to know more about.")}
+    <div className="flex flex-col items-center">
+      <div className="text-center" style={ReactDOM.Style.make(~maxWidth="21rem", ())}>
+        <Markdown.H1> {React.string("Syntax Lookup")} </Markdown.H1>
+        <div className="mb-8 text-gray-60-tr text-14">
+          {React.string("Enter some language construct you want to know more about.")}
+        </div>
       </div>
-      <div> <SearchBox onChange /> </div>
+      <div className="w-full" style={ReactDOM.Style.make(~maxWidth="34rem", ())}>
+        <SearchBox
+          completionValues={Belt.Array.map(completionItems, item => item.name)}
+          value=searchValue
+          onClear=onSearchClear
+          onValueChange=onSearchValueChange
+        />
+      </div>
     </div>
     <div className="mt-10"> {details} {React.array(categories)} </div>
   </div>
