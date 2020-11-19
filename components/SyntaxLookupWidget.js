@@ -116,8 +116,10 @@ function SyntaxLookupWidget$SearchBox(Props) {
     evt.preventDefault();
     return Curry._1(onClear, undefined);
   };
-  var onAreaFocus = function (_evt) {
-    if (state === /* Inactive */1) {
+  var onAreaFocus = function (evt) {
+    var el = evt.target;
+    var isDiv = (el.type == null);
+    if (isDiv && state === /* Inactive */1) {
       return Belt_Option.forEach(Caml_option.nullable_to_opt(textInput.current), (function (el) {
                     el.focus();
                     
@@ -168,7 +170,8 @@ function SyntaxLookupWidget$SearchBox(Props) {
                 state === /* Active */0 ? "border-fire" : "border-fire-40"
               ) + " flex items-center border rounded-lg py-4 px-5",
               tabIndex: -1,
-              onFocus: onAreaFocus
+              onFocus: onAreaFocus,
+              onBlur: onBlur
             }, React.createElement(Icon.MagnifierGlass.make, {
                   className: (
                     state === /* Active */0 ? "text-fire" : "text-fire-80"
@@ -181,10 +184,10 @@ function SyntaxLookupWidget$SearchBox(Props) {
                   value: value,
                   onKeyDown: onKeyDown,
                   onFocus: onFocus,
-                  onBlur: onBlur,
                   onChange: onChange
                 }), React.createElement("button", {
                   className: value === "" ? "hidden" : "block",
+                  onFocus: onFocus,
                   onMouseDown: onMouseDownClear
                 }, React.createElement(Icon.Close.make, {
                       className: "w-4 h-4 text-fire"
@@ -212,13 +215,17 @@ function SyntaxLookupWidget$DetailBox(Props) {
     var first = more[0];
     var second = more[1];
     var third = more[2];
-    summaryEl = [
-      first,
-      React.createElement("span", {
-            className: "text-fire"
-          }, second),
-      third
-    ];
+    summaryEl = Belt_Array.mapWithIndex([
+          first,
+          React.createElement("span", {
+                className: "text-fire"
+              }, second),
+          third
+        ], (function (i, el) {
+            return React.createElement("span", {
+                        key: String(i)
+                      }, el);
+          }));
   }
   return React.createElement("div", undefined, React.createElement("div", {
                   className: "text-21 border-b border-fire-40 pb-4 mb-4 font-semibold"
@@ -369,11 +376,11 @@ function SyntaxLookupWidget(Props) {
                                 }));
                 }));
           var el = React.createElement("div", {
+                key: title,
                 className: "first:mt-0 mt-12"
               }, React.createElement(SyntaxLookupWidget$Category, {
                     title: title,
-                    children: children,
-                    key: title
+                    children: children
                   }));
           acc.push(el);
           return acc;

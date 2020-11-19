@@ -10,8 +10,8 @@ module MdxComp = {
   `
   )
 
-  @bs.get
-  external frontmatter: t => Js.Json.t = "frontmatter"
+  /* @bs.get */
+  /* external frontmatter: t => Js.Json.t = "frontmatter" */
 }
 
 @module("misc_docs/syntax/decorator_module.mdx")
@@ -106,6 +106,9 @@ let getAnchor = path => {
 
 module SearchBox = {
   @bs.send external focus: Dom.element => unit = "focus"
+  @bs.send external blur: Dom.element => unit = "blur"
+
+  external toDomElement: Js.t<'a> => Dom.element = "%identity"
 
   type state =
     | Active
@@ -129,8 +132,11 @@ module SearchBox = {
     let focusInput = () =>
       textInput.current->Js.Nullable.toOption->Belt.Option.forEach(el => el->focus)
 
-    let onAreaFocus = _evt => {
-      if state === Inactive {
+    let onAreaFocus = evt => {
+      let el = ReactEvent.Focus.target(evt)
+      let isDiv = Js.Null_undefined.isNullable(el["type"])
+
+      if isDiv && state === Inactive {
         focusInput()
       }
     }
@@ -175,6 +181,7 @@ module SearchBox = {
     <div
       tabIndex={-1}
       onFocus=onAreaFocus
+      onBlur
       className={(
         state === Active ? "border-fire" : "border-fire-40"
       ) ++ " flex items-center border rounded-lg py-4 px-5"}>
@@ -185,14 +192,13 @@ module SearchBox = {
         value
         ref={ReactDOM.Ref.domRef(textInput)}
         onFocus
-        onBlur
         onKeyDown
         onChange={onChange}
         placeholder="Enter keywords or syntax..."
         className="text-16 outline-none ml-4 w-full"
         type_="text"
       />
-      <button className={value === "" ? "hidden" : "block"} onMouseDown=onMouseDownClear>
+      <button onFocus className={value === "" ? "hidden" : "block"} onMouseDown=onMouseDownClear>
         <Icon.Close className="w-4 h-4 text-fire" />
       </button>
     </div>
@@ -218,7 +224,11 @@ module DetailBox = {
         React.string(first),
         <span className="text-fire"> {React.string(second)} </span>,
         React.string(third),
-      ]->React.array
+      ]
+      ->Belt.Array.mapWithIndex((i, el) => {
+        <span key={Belt.Int.toString(i)}> el </span>
+      })
+      ->React.array
     | more => Belt.Array.map(more, s => React.string(s))->React.array
     }
 
@@ -347,8 +357,8 @@ let make = () => {
           </span>
         })
         let el =
-          <div className="first:mt-0 mt-12">
-            <Category key=title title> {React.array(children)} </Category>
+          <div key=title className="first:mt-0 mt-12">
+            <Category title> {React.array(children)} </Category>
           </div>
         Js.Array2.push(acc, el)->ignore
         acc
