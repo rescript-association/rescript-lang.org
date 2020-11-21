@@ -24,15 +24,13 @@ function LandingPageLayout(Props) {
                         }), React.createElement("div", {
                           className: "absolute top-18 w-full"
                         }, React.createElement("div", {
-                              className: "flex justify-center w-full",
+                              className: "relative overflow-hidden",
                               style: {
-                                backgroundColor: "#0E1529"
+                                backgroundColor: "#0E1529",
+                                paddingBottom: "23.54%"
                               }
                             }, React.createElement("img", {
-                                  className: "object-cover h-32 xs:h-auto w-full",
-                                  style: {
-                                    maxWidth: "87rem"
-                                  },
+                                  className: "absolute top-0 left-0 object-cover h-auto w-full",
                                   src: "/static/hero.jpg"
                                 })), React.createElement("div", {
                               className: "relative flex xs:justify-center overflow-hidden pb-32"

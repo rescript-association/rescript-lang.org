@@ -11,12 +11,10 @@ let make = (~children, ~components=Markdown.default) => {
         <Navigation overlayState />
         <div className="absolute top-18 w-full">
           <div
-            className="flex justify-center w-full"
-            style={ReactDOM.Style.make(~backgroundColor="#0E1529", ())}>
+            className="relative overflow-hidden"
+            style={ReactDOM.Style.make(~backgroundColor="#0E1529", ~paddingBottom="23.54%", ())}>
             <img
-              src="/static/hero.jpg"
-              style={ReactDOM.Style.make(~maxWidth="87rem", ())}
-              className="object-cover h-32 xs:h-auto w-full"
+              src="/static/hero.jpg" className="absolute top-0 left-0 object-cover h-auto w-full"
             />
           </div>
           <div className="relative flex xs:justify-center overflow-hidden pb-32">
@@ -38,7 +36,7 @@ let make = (~children, ~components=Markdown.default) => {
               </Mdx.Provider>
             </main>
           </div>
-          <Footer/>
+          <Footer />
         </div>
       </div>
     </div>
