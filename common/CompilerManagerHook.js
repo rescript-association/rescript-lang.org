@@ -53,11 +53,11 @@ function parseVersions(versions) {
 }
 
 function getCompilerUrl(version) {
-  return "https://cdn.jsdelivr.net/gh/ryyppy/bs-platform-js-releases@master/" + version + "/compiler.js";
+  return "https://cdn.rescript-lang.org/" + version + "/compiler.js";
 }
 
 function getLibraryCmijUrl(version, libraryName) {
-  return "https://cdn.jsdelivr.net/gh/ryyppy/bs-platform-js-releases@master/" + version + "/" + libraryName + "/cmij.js";
+  return "https://cdn.rescript-lang.org/" + version + "/" + libraryName + "/cmij.js";
 }
 
 var CdnMeta = {
@@ -432,7 +432,7 @@ function useCompilerManager(initialLangOpt, onAction, param) {
               }
               
             };
-            SimpleRequest.send(SimpleRequest.make(completed, undefined, /* Plain */1, "https://cdn.jsdelivr.net/gh/ryyppy/bs-platform-js-releases@latest/VERSIONS"));
+            SimpleRequest.send(SimpleRequest.make(completed, undefined, /* Plain */1, "https://cdn.rescript-lang.org/VERSIONS"));
           } else {
             switch (state.TAG | 0) {
               case /* SwitchingCompiler */1 :
