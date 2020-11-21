@@ -16,6 +16,7 @@ import * as ManualDocsLayout from "../layouts/ManualDocsLayout.js";
 import * as ApiOverviewLayout from "../layouts/ApiOverviewLayout.js";
 import * as GenTypeDocsLayout from "../layouts/GenTypeDocsLayout.js";
 import * as JsDocsLayout8_0_0 from "../layouts/JsDocsLayout8_0_0.js";
+import * as LandingPageLayout from "../layouts/LandingPageLayout.js";
 import * as DomDocsLayout8_0_0 from "../layouts/DomDocsLayout8_0_0.js";
 import * as BeltDocsLayout8_0_0 from "../layouts/BeltDocsLayout8_0_0.js";
 import * as ManualDocsLayout8_0_0 from "../layouts/ManualDocsLayout8_0_0.js";
@@ -57,180 +58,197 @@ function $$default(props) {
   var url = Url.parse(router.route);
   var base = url.base;
   var exit = 0;
-  if (base.length !== 2) {
+  var len = base.length;
+  if (len >= 3) {
     exit = 1;
   } else {
-    var match = base[0];
-    if (match === "docs") {
-      var match$1 = base[1];
-      switch (match$1) {
-        case "gentype" :
-            var match$2 = url.version;
-            if (typeof match$2 === "number") {
-              if (match$2 === 0) {
-                return React.createElement(GenTypeDocsLayout.make, {
-                            children: content
-                          });
-              }
-              exit = 1;
-            } else {
-              exit = 1;
-            }
-            break;
-        case "manual" :
-            var pagepath = url.pagepath;
-            var version = url.version;
-            var match$3 = Belt_Array.get(pagepath, 0);
-            var exit$1 = 0;
-            if (match$3 === "api") {
-              if (typeof version === "number") {
-                if (version !== 0) {
-                  return content;
-                }
-                var match$4 = pagepath.length;
-                var match$5 = Belt_Array.get(pagepath, 1);
-                var exit$2 = 0;
-                if (match$4 === 1) {
-                  return React.createElement(ApiOverviewLayout.Docs.make, {
-                              children: content
-                            });
-                }
-                if (match$4 !== 2) {
-                  exit$2 = 3;
-                } else {
-                  if (match$5 === undefined) {
-                    return null;
-                  }
-                  switch (match$5) {
-                    case "belt" :
-                        return React.createElement(BeltDocsLayout.Prose.make, {
-                                    children: content
-                                  });
-                    case "js" :
-                        return React.createElement(JsDocsLayout.Prose.make, {
-                                    children: content
-                                  });
-                    default:
-                      exit$2 = 3;
-                  }
-                }
-                if (exit$2 === 3) {
-                  if (match$5 === undefined) {
-                    return null;
-                  }
-                  switch (match$5) {
-                    case "belt" :
-                        return React.createElement(BeltDocsLayout.Docs.make, {
-                                    children: content
-                                  });
-                    case "dom" :
-                        return React.createElement(DomDocsLayout.Docs.make, {
-                                    children: content
-                                  });
-                    case "js" :
-                        return React.createElement(JsDocsLayout.Docs.make, {
-                                    children: content
-                                  });
-                    default:
-                      return null;
-                  }
-                }
-                
-              } else {
-                if (version._0 !== "v8.0.0") {
-                  return content;
-                }
-                var match$6 = pagepath.length;
-                var match$7 = Belt_Array.get(pagepath, 1);
-                var exit$3 = 0;
-                if (match$6 === 1) {
-                  return React.createElement(ApiOverviewLayout8_0_0.Docs.make, {
-                              children: content
-                            });
-                }
-                if (match$6 !== 2) {
-                  exit$3 = 3;
-                } else {
-                  if (match$7 === undefined) {
-                    return null;
-                  }
-                  switch (match$7) {
-                    case "belt" :
-                        return React.createElement(BeltDocsLayout8_0_0.Prose.make, {
-                                    children: content
-                                  });
-                    case "js" :
-                        return React.createElement(JsDocsLayout8_0_0.Prose.make, {
-                                    children: content
-                                  });
-                    default:
-                      exit$3 = 3;
-                  }
-                }
-                if (exit$3 === 3) {
-                  if (match$7 === undefined) {
-                    return null;
-                  }
-                  switch (match$7) {
-                    case "belt" :
-                        return React.createElement(BeltDocsLayout8_0_0.Docs.make, {
-                                    children: content
-                                  });
-                    case "dom" :
-                        return React.createElement(DomDocsLayout8_0_0.Docs.make, {
-                                    children: content
-                                  });
-                    case "js" :
-                        return React.createElement(JsDocsLayout8_0_0.Docs.make, {
-                                    children: content
-                                  });
-                    default:
-                      return null;
-                  }
-                }
-                
-              }
-            } else {
-              exit$1 = 2;
-            }
-            if (exit$1 === 2) {
-              if (typeof version === "number") {
-                if (version !== 0) {
-                  return null;
-                } else {
-                  return React.createElement(ManualDocsLayout.Prose.make, {
-                              frontmatter: component.frontmatter,
-                              children: content
-                            });
-                }
-              } else if (version._0 === "v8.0.0") {
-                return React.createElement(ManualDocsLayout8_0_0.Prose.make, {
-                            frontmatter: component.frontmatter,
-                            children: content
-                          });
-              } else {
-                return null;
-              }
-            }
-            break;
-        case "reason-compiler" :
-            var match$8 = url.version;
-            if (typeof match$8 === "number") {
-              if (match$8 === 0) {
-                return React.createElement(ReasonCompilerDocsLayout.make, {
-                            children: content
-                          });
-              }
-              exit = 1;
-            } else {
-              exit = 1;
-            }
-            break;
-        default:
+    switch (len) {
+      case 0 :
+          if (url.pagepath.length === 0) {
+            return React.createElement(LandingPageLayout.make, {
+                        children: content
+                      });
+          }
           exit = 1;
-      }
-    } else {
-      exit = 1;
+          break;
+      case 1 :
+          exit = 1;
+          break;
+      case 2 :
+          var match = base[0];
+          if (match === "docs") {
+            var match$1 = base[1];
+            switch (match$1) {
+              case "gentype" :
+                  var match$2 = url.version;
+                  if (typeof match$2 === "number") {
+                    if (match$2 === 0) {
+                      return React.createElement(GenTypeDocsLayout.make, {
+                                  children: content
+                                });
+                    }
+                    exit = 1;
+                  } else {
+                    exit = 1;
+                  }
+                  break;
+              case "manual" :
+                  var pagepath = url.pagepath;
+                  var version = url.version;
+                  var match$3 = Belt_Array.get(pagepath, 0);
+                  var exit$1 = 0;
+                  if (match$3 === "api") {
+                    if (typeof version === "number") {
+                      if (version !== 0) {
+                        return content;
+                      }
+                      var match$4 = pagepath.length;
+                      var match$5 = Belt_Array.get(pagepath, 1);
+                      var exit$2 = 0;
+                      if (match$4 === 1) {
+                        return React.createElement(ApiOverviewLayout.Docs.make, {
+                                    children: content
+                                  });
+                      }
+                      if (match$4 !== 2) {
+                        exit$2 = 3;
+                      } else {
+                        if (match$5 === undefined) {
+                          return null;
+                        }
+                        switch (match$5) {
+                          case "belt" :
+                              return React.createElement(BeltDocsLayout.Prose.make, {
+                                          children: content
+                                        });
+                          case "js" :
+                              return React.createElement(JsDocsLayout.Prose.make, {
+                                          children: content
+                                        });
+                          default:
+                            exit$2 = 3;
+                        }
+                      }
+                      if (exit$2 === 3) {
+                        if (match$5 === undefined) {
+                          return null;
+                        }
+                        switch (match$5) {
+                          case "belt" :
+                              return React.createElement(BeltDocsLayout.Docs.make, {
+                                          children: content
+                                        });
+                          case "dom" :
+                              return React.createElement(DomDocsLayout.Docs.make, {
+                                          children: content
+                                        });
+                          case "js" :
+                              return React.createElement(JsDocsLayout.Docs.make, {
+                                          children: content
+                                        });
+                          default:
+                            return null;
+                        }
+                      }
+                      
+                    } else {
+                      if (version._0 !== "v8.0.0") {
+                        return content;
+                      }
+                      var match$6 = pagepath.length;
+                      var match$7 = Belt_Array.get(pagepath, 1);
+                      var exit$3 = 0;
+                      if (match$6 === 1) {
+                        return React.createElement(ApiOverviewLayout8_0_0.Docs.make, {
+                                    children: content
+                                  });
+                      }
+                      if (match$6 !== 2) {
+                        exit$3 = 3;
+                      } else {
+                        if (match$7 === undefined) {
+                          return null;
+                        }
+                        switch (match$7) {
+                          case "belt" :
+                              return React.createElement(BeltDocsLayout8_0_0.Prose.make, {
+                                          children: content
+                                        });
+                          case "js" :
+                              return React.createElement(JsDocsLayout8_0_0.Prose.make, {
+                                          children: content
+                                        });
+                          default:
+                            exit$3 = 3;
+                        }
+                      }
+                      if (exit$3 === 3) {
+                        if (match$7 === undefined) {
+                          return null;
+                        }
+                        switch (match$7) {
+                          case "belt" :
+                              return React.createElement(BeltDocsLayout8_0_0.Docs.make, {
+                                          children: content
+                                        });
+                          case "dom" :
+                              return React.createElement(DomDocsLayout8_0_0.Docs.make, {
+                                          children: content
+                                        });
+                          case "js" :
+                              return React.createElement(JsDocsLayout8_0_0.Docs.make, {
+                                          children: content
+                                        });
+                          default:
+                            return null;
+                        }
+                      }
+                      
+                    }
+                  } else {
+                    exit$1 = 2;
+                  }
+                  if (exit$1 === 2) {
+                    if (typeof version === "number") {
+                      if (version !== 0) {
+                        return null;
+                      } else {
+                        return React.createElement(ManualDocsLayout.Prose.make, {
+                                    frontmatter: component.frontmatter,
+                                    children: content
+                                  });
+                      }
+                    } else if (version._0 === "v8.0.0") {
+                      return React.createElement(ManualDocsLayout8_0_0.Prose.make, {
+                                  frontmatter: component.frontmatter,
+                                  children: content
+                                });
+                    } else {
+                      return null;
+                    }
+                  }
+                  break;
+              case "reason-compiler" :
+                  var match$8 = url.version;
+                  if (typeof match$8 === "number") {
+                    if (match$8 === 0) {
+                      return React.createElement(ReasonCompilerDocsLayout.make, {
+                                  children: content
+                                });
+                    }
+                    exit = 1;
+                  } else {
+                    exit = 1;
+                  }
+                  break;
+              default:
+                exit = 1;
+            }
+          } else {
+            exit = 1;
+          }
+          break;
+      
     }
   }
   if (exit === 1) {

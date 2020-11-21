@@ -198,6 +198,8 @@ module.exports = {
       "28": "1.75rem",
       "42": "2.625rem",
       "48": "3rem",
+      "80": "5rem",
+      "100": "6.25rem",
       "smaller-1": "0.9em", // 18px => 16.2px (used for inlineCode)
       xs: ".75rem", // 12px
       sm: ".875rem", // 14px

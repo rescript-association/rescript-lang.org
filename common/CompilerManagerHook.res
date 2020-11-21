@@ -41,10 +41,10 @@ module CdnMeta = {
     Js.String2.split(versions, "\n")->Js.Array2.filter(v => v !== "")
 
   let getCompilerUrl = (version: string): string =>
-    j`https://cdn.jsdelivr.net/gh/ryyppy/bs-platform-js-releases@master/$version/compiler.js` //cdn.jsdelivr.net/gh/ryyppy/bs-platform-js-releases@master/$version/compiler.js|j};
+    j`https://cdn.rescript-lang.org/$version/compiler.js`
 
   let getLibraryCmijUrl = (version: string, libraryName: string): string =>
-    j`https://cdn.jsdelivr.net/gh/ryyppy/bs-platform-js-releases@master/$version/$libraryName/cmij.js` //cdn.jsdelivr.net/gh/ryyppy/bs-platform-js-releases@master/$version/$libraryName/cmij.js|j};
+    j`https://cdn.rescript-lang.org/$version/$libraryName/cmij.js`
 }
 
 module FinalResult = {
@@ -350,7 +350,7 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
       make(
         ~contentType=Plain,
         ~completed,
-        "https://cdn.jsdelivr.net/gh/ryyppy/bs-platform-js-releases@latest/VERSIONS",
+        "https://cdn.rescript-lang.org/VERSIONS",
       )->send
     | SwitchingCompiler(ready, version, libraries) =>
       attachCompilerAndLibraries(~version, ~libraries, ())->Promise.get(result =>

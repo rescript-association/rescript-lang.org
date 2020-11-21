@@ -4,11 +4,6 @@ open Util.ReactStuff
 
 @react.component
 let default = (~src: string, ~withShadow=false, ~caption: option<string>=?) => {
-  let shadow = if withShadow {
-    "shadow-lg"
-  } else {
-    ""
-  }
   <div className="mt-8 mb-12 md:-mx-16">
     <div className={"flex w-full justify-center"}>
       <div

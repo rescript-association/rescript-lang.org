@@ -5,6 +5,7 @@ import * as Util from "../common/Util.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Button from "../components/Button.js";
+import * as Footer from "../components/Footer.js";
 import * as BlogApi from "../common/BlogApi.js";
 import * as DateStr from "../common/DateStr.js";
 import * as $$Promise from "reason-promise/src/js/promise.js";
@@ -357,7 +358,7 @@ function $$default(props) {
                   description: "News, Announcements, Release Notes and more",
                   title: "Blog | ReScript Documentation"
                 }), React.createElement("div", {
-                  className: "mb-32 mt-16 pt-2"
+                  className: "mt-16 pt-2"
                 }, React.createElement("div", {
                       className: "text-night text-lg"
                     }, React.createElement(Navigation.make, {
@@ -365,7 +366,7 @@ function $$default(props) {
                         }), React.createElement("div", {
                           className: "flex justify-center overflow-hidden"
                         }, React.createElement("main", {
-                              className: "min-w-320 lg:align-center w-full lg:px-0 max-w-1280 "
+                              className: "min-w-320 lg:align-center w-full lg:px-0 max-w-1280 pb-48"
                             }, React.createElement(React$1.MDXProvider, {
                                   components: Markdown.$$default,
                                   children: React.createElement("div", {
@@ -376,7 +377,7 @@ function $$default(props) {
                                               maxWidth: "66.625rem"
                                             }
                                           }, errorBox, content))
-                                }))))));
+                                }))), React.createElement(Footer.make, {}))));
 }
 
 function getStaticProps(_ctx) {

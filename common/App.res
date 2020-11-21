@@ -54,6 +54,8 @@ let default = (props: props): React.element => {
   let url = router.route->Url.parse
 
   switch url {
+  // landing page
+  | {base: [], pagepath: []} => <LandingPageLayout> content </LandingPageLayout>
   // docs routes
   | {base: ["docs", "manual"], pagepath, version} =>
     // check if it's an api route

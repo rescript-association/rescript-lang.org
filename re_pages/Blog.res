@@ -374,11 +374,11 @@ let default = (props: props): React.element => {
       title="Blog | ReScript Documentation"
       description="News, Announcements, Release Notes and more"
     />
-    <div className="mb-32 mt-16 pt-2">
+    <div className="mt-16 pt-2">
       <div className="text-night text-lg">
         <Navigation overlayState />
         <div className="flex justify-center overflow-hidden">
-          <main className="min-w-320 lg:align-center w-full lg:px-0 max-w-1280 ">
+          <main className="min-w-320 lg:align-center w-full lg:px-0 max-w-1280 pb-48">
             <Mdx.Provider components=Markdown.default>
               <div className="flex justify-center">
                 <div className="w-full" style={Style.make(~maxWidth="66.625rem", ())}>
@@ -388,6 +388,7 @@ let default = (props: props): React.element => {
             </Mdx.Provider>
           </main>
         </div>
+        <Footer/>
       </div>
     </div>
   </>
