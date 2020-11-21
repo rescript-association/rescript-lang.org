@@ -6,6 +6,7 @@ import * as Meta from "../components/Meta.js";
 import * as Util from "../common/Util.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
+import * as Footer from "../components/Footer.js";
 import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
 import Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
@@ -293,7 +294,7 @@ function SidebarLayout(Props) {
                                         }, React.createElement(React$1.MDXProvider, {
                                               components: components,
                                               children: children
-                                            })))))))));
+                                            }))))))), React.createElement(Footer.make, {})));
 }
 
 var Link$1;
