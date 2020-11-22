@@ -3,7 +3,7 @@ open Util.ReactStuff
 // This component is representing a embedded video, mainly used for markdown content
 
 @react.component
-let default = (~src: string, ~withShadow=false, ~caption: option<string>=?) => {
+let default = (~src: string, ~caption: option<string>=?) => {
   <div className="mt-8 mb-12 md:-mx-16">
     <div className={"flex w-full justify-center"}>
       <div
