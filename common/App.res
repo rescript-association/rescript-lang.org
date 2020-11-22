@@ -110,12 +110,17 @@ let default = (props: props): React.element => {
       // to keep the frontmatter parsing etc in one place
       content
     | _ =>
+      let fm = switch component->frontmatter->DocFrontmatter.decode {
+      | Ok(fm) => Some(fm)
+      | Error(_) => None
+      }
       let title = switch url {
       | {base: ["docs"]} => Some("Overview | ReScript Documentation")
-      | _ => None
+      | _ => Belt.Option.map(fm, fm => fm.title)
       }
+      let description = Belt.Option.flatMap(fm, fm => Js.Null.toOption(fm.description))
       <MainLayout>
-        <Meta ?title />
+        <Meta ?title ?description />
         <div className="flex justify-center">
           <div className="max-w-705 w-full"> content </div>
         </div>
