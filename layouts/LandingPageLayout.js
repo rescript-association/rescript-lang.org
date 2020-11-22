@@ -4,9 +4,32 @@ import * as Meta from "../components/Meta.js";
 import * as React from "react";
 import * as Footer from "../components/Footer.js";
 import * as Markdown from "../components/Markdown.js";
+import Link from "next/link";
 import * as Navigation from "../components/Navigation.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as React$1 from "@mdx-js/react";
+
+function LandingPageLayout$CallToActionButton(Props) {
+  var children = Props.children;
+  return React.createElement("button", {
+              className: "transition-colors duration-200 inline-block text-base text-white hover:bg-fire-80 hover:text-white bg-fire rounded border border-fire-80 px-5 py-2"
+            }, children);
+}
+
+var CallToActionButton = {
+  make: LandingPageLayout$CallToActionButton
+};
+
+function LandingPageLayout$SubtleButton(Props) {
+  var children = Props.children;
+  return React.createElement("button", {
+              className: "transition-colors duration-200 inline-block text-base text-fire rounded border-2 border-fire-80 hover:bg-fire-10 px-5 py-2"
+            }, children);
+}
+
+var SubtleButton = {
+  make: LandingPageLayout$SubtleButton
+};
 
 function LandingPageLayout(Props) {
   var children = Props.children;
@@ -46,16 +69,37 @@ function LandingPageLayout(Props) {
                                                         className: "text-80 xs:text-100 font-semibold"
                                                       }, "ReScript"), React.createElement("p", {
                                                         className: "text-21 font-bold mb-2"
-                                                      }, "The JavaScript-like language you have been waiting for.")), children))
+                                                      }, "The JavaScript-like language you have been waiting for."), React.createElement("p", {
+                                                        className: "text-14 italic"
+                                                      }, "Previously known as BuckleScript and Reason (", React.createElement(Link, {
+                                                            href: "/bucklescript-rebranding",
+                                                            children: React.createElement("a", {
+                                                                  className: "text-fire hover:pointer hover:underline"
+                                                                }, "Learn more")
+                                                          }), ")")), React.createElement("div", {
+                                                    className: "mt-16 text-center flex space-y-4 flex-col xs:space-y-0 xs:flex-row xs:space-x-8"
+                                                  }, React.createElement(Link, {
+                                                        href: "/docs/manual/latest/installation",
+                                                        children: React.createElement("a", undefined, React.createElement(LandingPageLayout$CallToActionButton, {
+                                                                  children: "Getting started"
+                                                                }))
+                                                      }), React.createElement(Link, {
+                                                        href: "/docs/manual/latest/installation",
+                                                        children: React.createElement("a", undefined, React.createElement(LandingPageLayout$SubtleButton, {
+                                                                  children: "Read the Documentation"
+                                                                }))
+                                                      })), children))
                                     }))), React.createElement(Footer.make, {})))));
 }
 
-var Link;
+var Link$1;
 
 var make = LandingPageLayout;
 
 export {
-  Link ,
+  Link$1 as Link,
+  CallToActionButton ,
+  SubtleButton ,
   make ,
   
 }
