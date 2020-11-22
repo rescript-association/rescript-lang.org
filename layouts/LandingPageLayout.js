@@ -84,7 +84,7 @@ function LandingPageLayout(Props) {
                                                                   children: "Getting started"
                                                                 }))
                                                       }), React.createElement(Link, {
-                                                        href: "/docs/manual/latest/installation",
+                                                        href: "/docs/manual/latest/introduction",
                                                         children: React.createElement("a", undefined, React.createElement(LandingPageLayout$SubtleButton, {
                                                                   children: "Read the Documentation"
                                                                 }))

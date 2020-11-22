@@ -65,7 +65,7 @@ let make = (~children, ~components=Markdown.default) => {
                           </CallToActionButton>
                         </a>
                       </Link>
-                      <Link href="/docs/manual/latest/installation">
+                      <Link href="/docs/manual/latest/introduction">
                         <a>
                           <SubtleButton>
                             {React.string("Read the Documentation")}
