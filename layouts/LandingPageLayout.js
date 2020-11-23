@@ -16,10 +16,6 @@ function LandingPageLayout$CallToActionButton(Props) {
             }, children);
 }
 
-var CallToActionButton = {
-  make: LandingPageLayout$CallToActionButton
-};
-
 function LandingPageLayout$SubtleButton(Props) {
   var children = Props.children;
   return React.createElement("button", {
@@ -27,13 +23,9 @@ function LandingPageLayout$SubtleButton(Props) {
             }, children);
 }
 
-var SubtleButton = {
-  make: LandingPageLayout$SubtleButton
-};
-
 function LandingPageLayout(Props) {
-  var children = Props.children;
   var componentsOpt = Props.components;
+  var children = Props.children;
   var components = componentsOpt !== undefined ? Caml_option.valFromOption(componentsOpt) : Markdown.$$default;
   var overlayState = React.useState(function () {
         return false;
@@ -47,15 +39,21 @@ function LandingPageLayout(Props) {
                         }), React.createElement("div", {
                           className: "absolute top-18 w-full"
                         }, React.createElement("div", {
-                              className: "relative overflow-hidden",
+                              className: "flex justify-center overflow-hidden",
                               style: {
-                                backgroundColor: "#0E1529",
-                                paddingBottom: "23.54%"
+                                backgroundColor: "#0E1529"
                               }
-                            }, React.createElement("img", {
-                                  className: "absolute top-0 left-0 object-cover h-auto w-full",
-                                  src: "/static/hero.jpg"
-                                })), React.createElement("div", {
+                            }, React.createElement("div", {
+                                  className: "max-w-1280 w-full"
+                                }, React.createElement("div", {
+                                      className: "relative overflow-hidden w-full",
+                                      style: {
+                                        paddingBottom: "23.5587189%"
+                                      }
+                                    }, React.createElement("img", {
+                                          className: "absolute top-0 left-0 object-cover w-full h-full",
+                                          src: "/static/hero.jpg"
+                                        })))), React.createElement("div", {
                               className: "relative flex xs:justify-center overflow-hidden pb-32"
                             }, React.createElement("main", {
                                   className: "mt-10 min-w-320 lg:align-center w-full px-4 md:px-8 max-w-1280 "
@@ -77,7 +75,7 @@ function LandingPageLayout(Props) {
                                                                   className: "text-fire hover:pointer hover:underline"
                                                                 }, "Learn more")
                                                           }), ")")), React.createElement("div", {
-                                                    className: "mt-16 text-center flex space-y-4 flex-col xs:space-y-0 xs:flex-row xs:space-x-8"
+                                                    className: "mt-16 text-center flex space-y-4 flex-col xs:space-y-0 xs:flex-row xs:space-x-8 pb-48"
                                                   }, React.createElement(Link, {
                                                         href: "/docs/manual/latest/installation",
                                                         children: React.createElement("a", undefined, React.createElement(LandingPageLayout$CallToActionButton, {
@@ -92,14 +90,9 @@ function LandingPageLayout(Props) {
                                     }))), React.createElement(Footer.make, {})))));
 }
 
-var Link$1;
-
 var make = LandingPageLayout;
 
 export {
-  Link$1 as Link,
-  CallToActionButton ,
-  SubtleButton ,
   make ,
   
 }

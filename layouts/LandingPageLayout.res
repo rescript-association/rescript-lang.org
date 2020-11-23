@@ -19,7 +19,7 @@ module SubtleButton = {
 }
 
 @react.component
-let make = (~children, ~components=Markdown.default) => {
+let make = (~components=Markdown.default, ~children) => {
   let overlayState = React.useState(() => false)
 
   <>
@@ -29,11 +29,18 @@ let make = (~children, ~components=Markdown.default) => {
         <Navigation overlayState />
         <div className="absolute top-18 w-full">
           <div
-            className="relative overflow-hidden"
-            style={ReactDOM.Style.make(~backgroundColor="#0E1529", ~paddingBottom="23.54%", ())}>
-            <img
-              src="/static/hero.jpg" className="absolute top-0 left-0 object-cover h-auto w-full"
-            />
+            className="flex justify-center overflow-hidden"
+            style={ReactDOM.Style.make(~backgroundColor="#0E1529", ())}>
+            <div className="max-w-1280 w-full">
+              <div
+                className="relative overflow-hidden w-full"
+                style={ReactDOM.Style.make(~paddingBottom="23.5587189%", ())}>
+                <img
+                  src="/static/hero.jpg"
+                  className="absolute top-0 left-0 object-cover w-full h-full"
+                />
+              </div>
+            </div>
           </div>
           <div className="relative flex xs:justify-center overflow-hidden pb-32">
             <main className="mt-10 min-w-320 lg:align-center w-full px-4 md:px-8 max-w-1280 ">
@@ -57,7 +64,8 @@ let make = (~children, ~components=Markdown.default) => {
                         {React.string(")")}
                       </p>
                     </div>
-                    <div className="mt-16 text-center flex space-y-4 flex-col xs:space-y-0 xs:flex-row xs:space-x-8">
+                    <div
+                      className="mt-16 text-center flex space-y-4 flex-col xs:space-y-0 xs:flex-row xs:space-x-8 pb-48">
                       <Link href="/docs/manual/latest/installation">
                         <a>
                           <CallToActionButton>
@@ -67,9 +75,7 @@ let make = (~children, ~components=Markdown.default) => {
                       </Link>
                       <Link href="/docs/manual/latest/introduction">
                         <a>
-                          <SubtleButton>
-                            {React.string("Read the Documentation")}
-                          </SubtleButton>
+                          <SubtleButton> {React.string("Read the Documentation")} </SubtleButton>
                         </a>
                       </Link>
                     </div>
