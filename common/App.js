@@ -6,11 +6,13 @@ import * as React from "react";
 import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as MainLayout from "../layouts/MainLayout.js";
+import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Router from "next/router";
 import * as JsDocsLayout from "../layouts/JsDocsLayout.js";
 import * as DomDocsLayout from "../layouts/DomDocsLayout.js";
 import * as BeltDocsLayout from "../layouts/BeltDocsLayout.js";
+import * as DocFrontmatter from "./DocFrontmatter.js";
 import * as CommunityLayout from "../layouts/CommunityLayout.js";
 import * as ManualDocsLayout from "../layouts/ManualDocsLayout.js";
 import * as ApiOverviewLayout from "../layouts/ApiOverviewLayout.js";
@@ -50,7 +52,7 @@ let hljs = require('highlight.js/lib/highlight');
   hljs.registerLanguage('diff', diff);
 ;
 
-function $$default(props) {
+function make(props) {
   var component = props.Component;
   var pageProps = props.pageProps;
   var router = Router.useRouter();
@@ -275,15 +277,34 @@ function $$default(props) {
       exit$4 = 2;
     }
     if (exit$4 === 2) {
+      var fm = DocFrontmatter.decode(component.frontmatter);
+      var fm$1;
+      fm$1 = fm.TAG ? undefined : fm._0;
       var match$10 = url.base;
       var title;
+      var exit$5 = 0;
       if (match$10.length !== 1) {
-        title = undefined;
+        exit$5 = 3;
       } else {
         var match$11 = match$10[0];
-        title = match$11 === "docs" ? "Overview | ReScript Documentation" : undefined;
+        if (match$11 === "docs") {
+          title = "Overview | ReScript Documentation";
+        } else {
+          exit$5 = 3;
+        }
       }
+      if (exit$5 === 3) {
+        title = Belt_Option.map(fm$1, (function (fm) {
+                return fm.title;
+              }));
+      }
+      var description = Belt_Option.flatMap(fm$1, (function (fm) {
+              return Caml_option.null_to_opt(fm.description);
+            }));
       var tmp = {};
+      if (description !== undefined) {
+        tmp.description = Caml_option.valFromOption(description);
+      }
       if (title !== undefined) {
         tmp.title = Caml_option.valFromOption(title);
       }
@@ -301,8 +322,7 @@ function $$default(props) {
 }
 
 export {
-  $$default ,
-  $$default as default,
+  make ,
   
 }
 /*  Not a pure module */

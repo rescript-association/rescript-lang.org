@@ -6,6 +6,6 @@
   //return <Component {...pageProps} />
 //}
 
-import make from "common/App.js";
+import {make as App} from "common/App.js";
 
-export default make;
+export default App;

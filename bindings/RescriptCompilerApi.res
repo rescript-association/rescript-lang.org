@@ -385,7 +385,7 @@ module Compiler = {
   @bs.send external setFilename: (t, string) => bool = "setFilename"
 
   @bs.send
-  external setModuleSystem: (t, @bs.string [#es6 | #nodejs]) => bool = "setModuleSystem"
+  external setModuleSystem: (t, [#es6 | #nodejs]) => bool = "setModuleSystem"
 
   @bs.send external setWarnFlags: (t, string) => bool = "setWarnFlags"
 

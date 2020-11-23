@@ -26,6 +26,6 @@ module Make = (Config: Config) => {
     @bs.set
     external onMessage: (self, {"data": fromApp} => unit) => unit = "onmessage"
     @bs.val external self: self = "self"
-    @bs.val external importScripts: string => unit = ""
+    @bs.val external importScripts: string => unit = "importScripts"
   }
 }
