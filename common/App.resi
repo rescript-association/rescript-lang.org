@@ -1,3 +1,3 @@
 type props
 
-let default: props => React.element
+let make: props => React.element

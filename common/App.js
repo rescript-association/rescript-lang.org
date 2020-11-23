@@ -52,7 +52,7 @@ let hljs = require('highlight.js/lib/highlight');
   hljs.registerLanguage('diff', diff);
 ;
 
-function $$default(props) {
+function make(props) {
   var component = props.Component;
   var pageProps = props.pageProps;
   var router = Router.useRouter();
@@ -322,8 +322,7 @@ function $$default(props) {
 }
 
 export {
-  $$default ,
-  $$default as default,
+  make ,
   
 }
 /*  Not a pure module */

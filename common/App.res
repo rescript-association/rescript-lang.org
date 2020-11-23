@@ -43,7 +43,7 @@ type props = {"Component": pageComponent, "pageProps": pageProps}
 @bs.get
 external frontmatter: React.component<{.}> => Js.Json.t = "frontmatter"
 
-let default = (props: props): React.element => {
+let make = (props: props): React.element => {
   let component = props["Component"]
   let pageProps = props["pageProps"]
 
