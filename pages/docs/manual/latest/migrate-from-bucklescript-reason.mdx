@@ -25,7 +25,7 @@ Enjoy the improved experience!
 
 ### Upgrade an Entire Folder
 
-Please use this with caution. Migrating an entire codebase at once is an uncessary risk.
+Please use this with caution. Migrating an entire codebase at once is an unnecessary risk.
 It is recommended to migrate small portion of code to ensure correctness.
 That being said, for small codebases or some tiny folders that are safely versionned, you can try the following:
 
@@ -33,7 +33,7 @@ That being said, for small codebases or some tiny folders that are safely versio
 for f in your-folder/**/*.re; do; node_modules/.bin/bsc -format $f > ${f%.re}.res && rm $f; done;
 ```
 
-This command loop on the `.re` files from the `your-folder` folder, convert them with a proper `.res` extension, and ask you if you want to remove the previous file (check the newly created `.res` file first). If you are confident enough, you can add `-f` option to the `rm` command.
+This command loops on the `.re` files from the `your-folder` folder, converts them with a proper `.res` extension, and asks you if you want to remove the previous file (check the newly created `.res` file first). If you are confident enough, you can add `-f` option to the `rm` command.
 
 ## Difference With Old Reason
 
