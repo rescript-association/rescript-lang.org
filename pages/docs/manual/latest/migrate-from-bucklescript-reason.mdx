@@ -30,7 +30,7 @@ Enjoy the improved experience!
 
 Please use this with caution. Migrating an entire codebase at once is an unnecessary risk.
 It is recommended to migrate small portion of code to ensure correctness.
-That being said, for small codebases or some tiny folders that are safely versionned, you can try the following:
+That being said, for small codebases or some tiny folders that are safely versioned, you can try the following:
 
 ```console
 for f in your-folder/**/*.re; do; node_modules/.bin/bsc -format $f > ${f%.re}.res && rm $f; done;
