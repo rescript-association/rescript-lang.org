@@ -17,7 +17,7 @@ let PROJECT_DIR = path.join(__dirname, "..")
 const EDIT_PREFIX = "https://github.com/reason-association/rescript-lang.org/blob/master/"
 function createEditHref(filepath) {
   let rel = path.relative(PROJECT_DIR, filepath);
-  return path.join(EDIT_PREFIX, rel);
+  return EDIT_PREFIX + rel;
 }
 
 const loader = async function(raw) {
