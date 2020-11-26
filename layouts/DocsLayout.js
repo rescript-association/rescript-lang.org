@@ -136,11 +136,14 @@ function DocsLayout(Props) {
   }
   var sidebar = React.createElement(SidebarLayout.Sidebar.make, tmp$1);
   var metaTitle = metaTitleCategory !== undefined ? metaTitleCategory + " | ReScript Documentation" : title;
-  var metaElement;
+  var match$1;
   if (frontmatter !== undefined) {
     var fm = DocFrontmatter.decode(Caml_option.valFromOption(frontmatter));
     if (fm.TAG) {
-      metaElement = null;
+      match$1 = [
+        null,
+        undefined
+      ];
     } else {
       var fm$1 = fm._0;
       var canonical = fm$1.canonical;
@@ -157,10 +160,17 @@ function DocsLayout(Props) {
       if (tmp$4 !== undefined) {
         tmp$2.canonical = Caml_option.valFromOption(tmp$4);
       }
-      metaElement = React.createElement(Meta.make, tmp$2);
+      var meta = React.createElement(Meta.make, tmp$2);
+      match$1 = [
+        meta,
+        fm$1.ghEditHref
+      ];
     }
   } else {
-    metaElement = null;
+    match$1 = [
+      null,
+      undefined
+    ];
   }
   var tmp$5 = {
     metaTitle: metaTitle,
@@ -173,10 +183,14 @@ function DocsLayout(Props) {
     sidebar: sidebar,
     children: null
   };
+  var tmp$6 = match$1[1];
+  if (tmp$6 !== undefined) {
+    tmp$5.editHref = Caml_option.valFromOption(tmp$6);
+  }
   if (breadcrumbs !== undefined) {
     tmp$5.breadcrumbs = Caml_option.valFromOption(breadcrumbs);
   }
-  return React.createElement(SidebarLayout.make, tmp$5, metaElement, children);
+  return React.createElement(SidebarLayout.make, tmp$5, match$1[0], children);
 }
 
 function Make(Content) {

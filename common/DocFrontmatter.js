@@ -15,7 +15,8 @@ function decode(json) {
                         }), json)),
               canonical: Js_null.fromOption(Json_decode.optional((function (param) {
                           return Json_decode.field("canonical", Json_decode.string, param);
-                        }), json))
+                        }), json)),
+              ghEditHref: Json_decode.field("__ghEditHref", Json_decode.string, json)
             },
             [Symbol.for("name")]: "Ok"
           };

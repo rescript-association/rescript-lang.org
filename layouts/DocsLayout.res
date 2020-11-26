@@ -120,7 +120,7 @@ let make = (
   | None => title
   }
 
-  let metaElement = switch frontmatter {
+  let (metaElement, editHref) = switch frontmatter {
   | Some(frontmatter) =>
     switch DocFrontmatter.decode(frontmatter) {
     | Ok(fm) =>
@@ -130,14 +130,15 @@ let make = (
       | Some(titleCategory) => fm.title ++ (" | " ++ titleCategory)
       | None => title
       }
-      <Meta title ?description ?canonical />
-    | Error(_) => React.null
+      let meta = <Meta title ?description ?canonical />
+      (meta, Some(fm.ghEditHref))
+    | Error(_) => (React.null, None)
     }
-  | None => React.null
+  | None => (React.null, None)
   }
 
   <SidebarLayout
-    metaTitle theme components sidebarState=(isSidebarOpen, setSidebarOpen) sidebar ?breadcrumbs>
+    metaTitle theme components sidebarState=(isSidebarOpen, setSidebarOpen) sidebar ?breadcrumbs ?editHref>
     metaElement children
   </SidebarLayout>
 }
