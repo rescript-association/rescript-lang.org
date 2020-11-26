@@ -226,6 +226,7 @@ function SidebarLayout(Props) {
   var metaTitle = Props.metaTitle;
   var theme = Props.theme;
   var components = Props.components;
+  var editHref = Props.editHref;
   var sidebarState = Props.sidebarState;
   var sidebar = Props.sidebar;
   var breadcrumbs = Props.breadcrumbs;
@@ -258,6 +259,12 @@ function SidebarLayout(Props) {
                     
                   });
         }), []);
+  var editLinkEl = editHref !== undefined ? React.createElement("a", {
+          className: "inline text-14 hover:underline text-fire",
+          href: editHref,
+          rel: "noopener noreferrer",
+          target: "_blank"
+        }, "Edit") : null;
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, {
                   title: metaTitle
                 }), React.createElement("div", {
@@ -288,8 +295,8 @@ function SidebarLayout(Props) {
                                                               }));
                                                 })
                                             }), React.createElement("div", {
-                                              className: "truncate overflow-x-auto touch-scroll"
-                                            }, breadcrumbs$1)), React.createElement("div", {
+                                              className: "truncate overflow-x-auto touch-scroll flex items-center space-x-4 md:justify-between mr-4 w-full"
+                                            }, breadcrumbs$1, editLinkEl)), React.createElement("div", {
                                           className: hasBreadcrumbs ? "mt-10" : "-mt-4"
                                         }, React.createElement(React$1.MDXProvider, {
                                               components: components,

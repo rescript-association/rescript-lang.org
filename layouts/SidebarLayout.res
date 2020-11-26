@@ -204,6 +204,7 @@ let make = (
   ~metaTitle: string,
   ~theme: ColorTheme.t,
   ~components: Mdx.Components.t,
+  ~editHref: option<string>=?,
   ~sidebarState: (bool, (bool => bool) => unit),
   // (Sidebar, toggleSidebar) ... for toggling sidebar in mobile view
   ~sidebar: React.element,
@@ -243,6 +244,11 @@ let make = (
     )
   }, [])
 
+  let editLinkEl = switch editHref {
+  | Some(href) => <a href className="inline text-14 hover:underline text-fire" target="_blank" rel="noopener noreferrer"> {React.string("Edit")} </a>
+  | None => React.null
+  }
+
   <>
     <Meta title=metaTitle />
     <div className={"mt-16 min-w-320 " ++ theme}>
@@ -263,7 +269,9 @@ let make = (
                       toggleSidebar()
                     }}
                   />
-                  <div className="truncate overflow-x-auto touch-scroll"> breadcrumbs </div>
+                  <div className="truncate overflow-x-auto touch-scroll flex items-center space-x-4 md:justify-between mr-4 w-full">
+                    breadcrumbs editLinkEl
+                  </div>
                 </div>
                 <div className={hasBreadcrumbs ? "mt-10" : "-mt-4"}>
                   <Mdx.Provider components> children </Mdx.Provider>
@@ -273,7 +281,7 @@ let make = (
           </div>
         </div>
       </div>
-          <Footer/>
+      <Footer />
     </div>
   </>
 }
