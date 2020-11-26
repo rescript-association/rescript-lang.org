@@ -2,11 +2,23 @@ const { getOptions } = require("loader-utils");
 const mdx = require("@mdx-js/mdx");
 const matter = require("gray-matter");
 const stringifyObject = require("stringify-object");
+const path = require("path");
 
 const DEFAULT_RENDERER = `
 import React from 'react'
 import { mdx } from '@mdx-js/react'
 `;
+
+
+// This is used to inject some "Edit" link reference
+// so we can point our users to the correct resource
+// on github for editing
+let PROJECT_DIR = path.join(__dirname, "..")
+const EDIT_PREFIX = "https://github.com/reason-association/rescript-lang.org/blob/master/"
+function createEditHref(filepath) {
+  let rel = path.relative(PROJECT_DIR, filepath);
+  return path.join(EDIT_PREFIX, rel);
+}
 
 const loader = async function(raw) {
   const callback = this.async();
@@ -15,14 +27,17 @@ const loader = async function(raw) {
   });
 
   let result;
-
-  const { content, data } = matter(raw);
+  let data;
 
   try {
-    result = await mdx(content, options);
+    const m = matter(raw);
+    result = await mdx(m.content, options);
+    data = m.data;
   } catch (err) {
     return callback(err);
   }
+
+  data.__ghEditHref = createEditHref(this.resourcePath);
 
   const { renderer = DEFAULT_RENDERER } = options;
 
