@@ -2,7 +2,7 @@
   "name": "rescript-lang.org",
   "private": true,
   "version": "1.0.0",
-  "author": "Patrick Stapfer <ryyppy@users.noreply.github.com>",
+  "author": "Patrick Ecker <ryyppy@users.noreply.github.com>",
   "license": "MIT",
   "engines": {
     "node": ">=12.x"
