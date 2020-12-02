@@ -1,0 +1,16 @@
+[
+  {
+    "name": "XmlHttpRequest-Experimental",
+    "description": "Experimental XMLHttpRequest bindings",
+    "keywords": ["xmlhttprequest", "query", "fetch"],
+    "urlHref": "https://github.com/ryyppy/xmlhttprequest-experiments/blob/master/common/XmlHttpRequest.re",
+    "official": true
+  },
+  {
+    "name": "@reason-association/genType",
+    "description": "Better interop with JS & TS in ReScript",
+    "keywords": ["rescript", "typescript"],
+    "urlHref": "https://github.com/reason-association/genType",
+    "official": true
+  }
+]

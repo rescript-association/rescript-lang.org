@@ -1,4 +1,22 @@
-type package = {
+//
+// TODO:
+// - 
+// - Whitelist @reason-association
+// - filter bs- prefixed packages (!???)
+// - put official / non-official processing on the server side?
+//
+
+type urlResource = {
+  name: string,
+  keywords: array<string>,
+  description: string,
+  urlHref: string,
+  official: bool,
+}
+
+external unsafeToUrlResource: Js.Json.t => array<urlResource> = "%identity"
+
+type npmPackage = {
   name: string,
   version: string,
   keywords: array<string>,
@@ -7,21 +25,88 @@ type package = {
   npmHref: string,
 }
 
-let applySearch = (packages: array<package>, pattern: string): array<Fuse.match<package>> => {
-  let fuseOpts = Fuse.Options.t(
-    ~shouldSort=true,
-    ~includeScore=true,
-    ~threshold=0.2,
-    ~location=0,
-    ~distance=30,
-    ~minMatchCharLength=1,
-    ~keys=["meta.uid", "name", "keywords"],
-    (),
-  )
+module Resource = {
+  type t = Npm(npmPackage) | Url(urlResource)
 
-  let fuser = Fuse.make(packages, fuseOpts)
+  let getId = (res: t) => {
+    switch res {
+    | Npm({name})
+    | Url({name}) => name
+    }
+  }
+  let shouldFilter = (res: t) => {
+    switch res {
+    | Npm(pkg) =>
+      if pkg.name->Js.String2.startsWith("@elm-react") {
+        true
+      } else {
+        false
+      }
+    | Url(_) => false
+    }
+  }
 
-  fuser->Fuse.search(pattern)
+  let isOfficial = (res: t) => {
+    switch res {
+    | Npm(pkg) => pkg.name === "bs-platform" || pkg.name->Js.String2.startsWith("@rescript/")
+    | Url(urlRes) => urlRes.official
+    }
+  }
+
+  let applyNpmSearch = (packages: array<npmPackage>, pattern: string): array<
+    Fuse.match<npmPackage>,
+  > => {
+    let fuseOpts = Fuse.Options.t(
+      ~shouldSort=true,
+      ~includeScore=true,
+      ~threshold=0.2,
+      ~location=0,
+      ~distance=30,
+      ~minMatchCharLength=1,
+      ~keys=["meta.uid", "name", "keywords"],
+      (),
+    )
+
+    let fuser = Fuse.make(packages, fuseOpts)
+
+    fuser->Fuse.search(pattern)
+  }
+
+  let applyUrlResourceSearch = (urls: array<urlResource>, pattern: string): array<
+    Fuse.match<urlResource>,
+  > => {
+    let fuseOpts = Fuse.Options.t(
+      ~shouldSort=true,
+      ~includeScore=true,
+      ~threshold=0.2,
+      ~location=0,
+      ~distance=30,
+      ~minMatchCharLength=1,
+      ~keys=["name", "keywords"],
+      (),
+    )
+
+    let fuser = Fuse.make(urls, fuseOpts)
+
+    fuser->Fuse.search(pattern)
+  }
+
+  let applySearch = (resources: array<t>, pattern: string): array<t> => {
+    let (allNpms, allUrls) = Belt.Array.reduce(resources, ([], []), (acc, next) => {
+      let (npms, resources) = acc
+
+      switch next {
+      | Npm(pkg) => Js.Array2.push(npms, pkg)->ignore
+      | Url(res) => Js.Array2.push(resources, res)->ignore
+      }
+      (npms, resources)
+    })
+
+    let filteredNpm = applyNpmSearch(allNpms, pattern)->Belt.Array.map(m => Npm(m["item"]))
+    let filteredUrls = applyUrlResourceSearch(allUrls, pattern)->Belt.Array.map(m => Url(m["item"]))
+
+    Belt.Array.concat(filteredNpm, filteredUrls)
+  }
 }
 
 module SearchBox = {
@@ -123,36 +208,53 @@ module SearchBox = {
   }
 }
 
-module NpmCard = {
+module Card = {
   @react.component
-  let make = (
-    ~keywords: array<string>=[],
-    ~name: string,
-    ~description: string,
-    ~onKeywordSelect: option<string => unit>=?,
-    ~repositoryHref: option<string>=?,
-    ~npmHref,
-  ) => {
-    let repoEl = switch repositoryHref {
-    | Some(href) =>
-      let name = if Js.String2.startsWith(href, "https://github.com") {
-        "Github"
-      } else if Js.String2.startsWith(href, "https://gitlab.com") {
-        "Gitlab"
-      } else {
-        "Repository"
+  let make = (~value: Resource.t, ~onKeywordSelect: option<string => unit>=?) => {
+    let linkBox = switch value {
+    | Npm(pkg) =>
+      let repositoryHref = Js.Null.toOption(pkg.repositoryHref)
+      let repoEl = switch repositoryHref {
+      | Some(href) =>
+        let name = if Js.String2.startsWith(href, "https://github.com") {
+          "Github"
+        } else if Js.String2.startsWith(href, "https://gitlab.com") {
+          "Gitlab"
+        } else {
+          "Repository"
+        }
+        <>
+          <span> {React.string("|")} </span>
+          <a href rel="noopener noreferrer" className="hover:text-fire" target="_blank">
+            {React.string(name)}
+          </a>
+        </>
+      | None => React.null
       }
-      <a href rel="noopener noreferrer" target="_blank"> {React.string(name)} </a>
-    | None => React.null
+      <div className="text-14 space-x-2 mt-1">
+        <a className="hover:text-fire" href={pkg.npmHref} target="_blank">
+          {React.string("NPM")}
+        </a>
+        {repoEl}
+      </div>
+    | Url(_) => React.null
     }
 
-    let titleHref = Belt.Option.getWithDefault(repositoryHref, npmHref)
+    let titleHref = switch value {
+    | Npm(pkg) => pkg.repositoryHref->Js.Null.toOption->Belt.Option.getWithDefault(pkg.npmHref)
+    | Url(res) => res.urlHref
+    }
 
-    <div className="bg-gray-10 py-6 rounded-lg p-4">
-      <a className="font-bold" href=titleHref target="_blank"> {React.string(name)} </a>
-      <div className="space-x-2">
-        <a href=npmHref target="_blank"> {React.string("NPM")} </a> {repoEl}
-      </div>
+    let (title, description, keywords) = switch value {
+    | Npm({name, description, keywords})
+    | Url({name, description, keywords}) => (name, description, keywords)
+    }
+
+    <div className="bg-gray-5-tr py-6 rounded-lg p-4">
+      <a className="font-bold hover:text-fire text-18" href=titleHref target="_blank">
+        {React.string(title)}
+      </a>
+      {linkBox}
       <div className="mt-4 text-16"> {React.string(description)} </div>
       <div className="space-x-2 mt-4"> {Belt.Array.map(keywords, keyword => {
           let onMouseDown = Belt.Option.map(onKeywordSelect, cb => {
@@ -162,7 +264,9 @@ module NpmCard = {
             }
           })
           <button
-            ?onMouseDown className="hover:pointer px-2 rounded-lg bg-sky-15 text-14" key={keyword}>
+            ?onMouseDown
+            className="hover:pointer px-2 rounded-lg text-white bg-fire-80 text-14"
+            key={keyword}>
             {React.string(keyword)}
           </button>
         })->React.array} </div>
@@ -192,21 +296,7 @@ module Category = {
   }
 }
 
-module PackageFilter = {
-  let shouldPackageFilter = (pkg: package) => {
-    if pkg.name->Js.String2.startsWith("@elm-react") {
-      true
-    } else {
-      false
-    }
-  }
-
-  let isOfficialPackage = (pkg: package) => {
-    pkg.name === "bs-platform" || pkg.name->Js.String2.startsWith("@rescript/")
-  }
-}
-
-type props = {"packages": array<package>}
+type props = {"packages": array<npmPackage>, "urlResources": array<urlResource>}
 
 type state =
   | All
@@ -217,15 +307,16 @@ let default = (props: props) => {
 
   let (state, setState) = React.useState(_ => All)
 
-  let allPackages = props["packages"]
+  let allResources = {
+    let npms = props["packages"]->Belt.Array.map(pkg => Resource.Npm(pkg))
+    let urls = props["urlResources"]->Belt.Array.map(res => Resource.Url(res))
 
-  let packages = switch state {
-  | All => allPackages
-  | Filtered(pattern) =>
-    let matches = applySearch(allPackages, pattern)
+    Belt.Array.concat(npms, urls)
+  }
 
-    // TODO: filter by score if necessary
-    Belt.Array.map(matches, m => m["item"])
+  let resources = switch state {
+  | All => allResources
+  | Filtered(pattern) => Resource.applySearch(allResources, pattern)
   }
 
   let onValueChange = value => {
@@ -247,18 +338,19 @@ let default = (props: props) => {
     setState(_ => All)
   }
 
-  let (officialPackages, communityPackages) = Belt.Array.reduce(packages, ([], []), (acc, next) => {
-    let (official, community) = acc
-    if PackageFilter.isOfficialPackage(next) {
-      Js.Array2.push(official, next)->ignore
-    } else if (
-      // Community package filter
-      !PackageFilter.shouldPackageFilter(next)
-    ) {
-      Js.Array2.push(community, next)->ignore
-    }
-    (official, community)
-  })
+  let (officialResources, communityResources) = Belt.Array.reduce(
+    resources,
+    ([], []),
+    (acc, next) => {
+      let (official, community) = acc
+      if Resource.isOfficial(next) {
+        Js.Array2.push(official, next)->ignore
+      } else if !Resource.shouldFilter(next) {
+        Js.Array2.push(community, next)->ignore
+      }
+      (official, community)
+    },
+  )
 
   let onKeywordSelect = keyword => {
     setState(_ => {
@@ -266,28 +358,22 @@ let default = (props: props) => {
     })
   }
 
-  let officialCategory = switch officialPackages {
+  let officialCategory = switch officialResources {
   | [] => React.null
-  | pkges =>
+  | resources =>
     <Category title={Category.toString(Official)}>
-      <div className="space-y-4"> {Belt.Array.map(pkges, pkg => {
-          let repositoryHref = Js.Null.toOption(pkg.repositoryHref)
-          let {description, npmHref, name, keywords} = pkg
-
-          <NpmCard onKeywordSelect key={name} name ?repositoryHref keywords description npmHref />
+      <div className="space-y-4"> {Belt.Array.map(resources, res => {
+          <Card key={Resource.getId(res)} onKeywordSelect value={res} />
         })->React.array} </div>
     </Category>
   }
 
-  let communityCategory = switch communityPackages {
+  let communityCategory = switch communityResources {
   | [] => React.null
-  | pkges =>
+  | resources =>
     <Category title={Category.toString(Community)}>
-      <div className="space-y-4"> {Belt.Array.map(pkges, pkg => {
-          let repositoryHref = Js.Null.toOption(pkg.repositoryHref)
-          let {description, npmHref, name, keywords} = pkg
-
-          <NpmCard onKeywordSelect key={name} name ?repositoryHref keywords description npmHref />
+      <div className="space-y-4"> {Belt.Array.map(resources, res => {
+          <Card onKeywordSelect key={Resource.getId(res)} value={res} />
         })->React.array} </div>
     </Category>
   }
@@ -340,7 +426,18 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = _ctx => {
         npmHref: pkg["links"]["npm"],
       }
     })
-    let props: props = {"packages": pkges}
+
+    let index_data_dir = Node.Path.join2(Node.Process.cwd(), "./data")
+    let urlResources =
+      Node.Path.join2(index_data_dir, "packages_url_resources.json")
+      ->Node.Fs.readFileSync(#utf8)
+      ->Js.Json.parseExn
+      ->unsafeToUrlResource
+    Js.log(urlResources)
+    let props: props = {
+      "packages": pkges,
+      "urlResources": urlResources,
+    }
     let ret = {
       "props": props,
       "revalidate": 43200,
