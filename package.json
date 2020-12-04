@@ -20,7 +20,7 @@
     "gentype": "^3.1.0",
     "glob": "^7.1.4",
     "gray-matter": "^4.0.2",
-    "highlight.js": "^9.15.10",
+    "highlight.js": "^10.4.1",
     "lz-string": "^1.4.4",
     "next": "10.0.0",
     "next-transpile-modules": "^2.3.1",
