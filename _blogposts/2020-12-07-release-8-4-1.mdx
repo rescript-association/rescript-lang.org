@@ -45,8 +45,8 @@ package look like freshly built.
 
 In this release, we track the installation in the build graph as well, and we calculate the hash of the installation of dependencies and put it in the 
 dependent's command line flags for building binary artifacts. Such strategy benefits in three aspects: 
-- The calculatino of the hash of installation is almost free since it is just one stat, we don't need track all dependencies' artifacts.
-- The introducing of such hashing does not appear in parsing, so that the changes of dependencies will never trigger re-parsing.
+- The calculation of the hash of installation is almost free since it is just one stat, we don't need track all dependencies' artifacts.
+- The introducion of such hashing does not appear in parsing, so that the changes of dependencies will never trigger re-parsing.
 - Once the package installation is a nop, the transitive rebuild graph will be cut off so that we can save some unneeded rebuild.
 
 
@@ -60,7 +60,7 @@ In general, packages are classified as three categories:
   - warn-error respected
   - build dev dependency
   - run custom rules
-  - package-specs like es6/commonjs overrides its all dependencies
+  - package-specs like es6/commonjs overrides all its dependencies
 - pinned dependencies
   - warnings reported
   - warn-error respected
