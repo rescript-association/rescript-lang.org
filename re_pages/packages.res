@@ -1,6 +1,6 @@
 //
 // TODO:
-// - 
+// -
 // - Whitelist @reason-association
 // - filter bs- prefixed packages (!???)
 // - put official / non-official processing on the server side?
@@ -296,16 +296,128 @@ module Category = {
   }
 }
 
+module Filter = {
+  type t = {
+    searchterm: string,
+    includeOfficial: bool,
+    includeCommunity: bool,
+    includeNpm: bool,
+    includeUrlResource: bool,
+  }
+}
+
+module InfoSidebar = {
+  module Toggle = {
+    @react.component
+    let make = (~enabled, ~toggle, ~children) => {
+      let className = "block px-4 rounded-lg " ++ (enabled ? "bg-fire text-white" : " bg-gray-10")
+
+      let onMouseDown = evt => {
+        ReactEvent.Mouse.preventDefault(evt)
+        toggle()
+      }
+
+      <button onMouseDown className> children </button>
+    }
+  }
+
+  @react.component
+  let make = (~setFilter: (Filter.t => Filter.t) => unit, ~filter: Filter.t) => {
+    let h2 = "group mb-3 text-14 uppercase  leading-1 font-sans font-medium text-onyx"
+    let link = "hover:underline"
+
+    <aside className=" border-l-2 p-4 py-12 border-fire-30 space-y-16">
+      <div>
+        <h2 className=h2> {React.string("Filter for")} </h2>
+        <div className="space-y-2">
+          <Toggle
+            enabled={filter.includeOfficial}
+            toggle={() => {
+              setFilter(prev => {
+                {...prev, Filter.includeOfficial: !filter.includeOfficial}
+              })
+            }}>
+            {React.string("Official")}
+          </Toggle>
+          <Toggle
+            enabled={filter.includeCommunity}
+            toggle={() => {
+              setFilter(prev => {
+                {...prev, Filter.includeCommunity: !filter.includeCommunity}
+              })
+            }}>
+            {React.string("Community")}
+          </Toggle>
+          <Toggle
+            enabled={filter.includeNpm}
+            toggle={() => {
+              setFilter(prev => {
+                {...prev, Filter.includeNpm: !filter.includeNpm}
+              })
+            }}>
+            {React.string("NPM package")}
+          </Toggle>
+          <Toggle
+            enabled={filter.includeUrlResource}
+            toggle={() => {
+              setFilter(prev => {
+                {...prev, Filter.includeUrlResource: !filter.includeUrlResource}
+              })
+            }}>
+            {React.string("URL resources")}
+          </Toggle>
+        </div>
+      </div>
+      <div>
+        <h2 className=h2> {React.string("Guidelines")} </h2>
+        <ul className="space-y-4">
+          <Next.Link href="/docs/guidelines/publishing-npm-packages">
+            <a className=link> {React.string("Publishing ReScript npm packages")} </a>
+          </Next.Link>
+          <li>
+            <Next.Link href="/docs/guidelines/writing-bindings">
+              <a className=link> {React.string("Writing Bindings & Libraries")} </a>
+            </Next.Link>
+          </li>
+        </ul>
+      </div>
+    </aside>
+  }
+}
+
 type props = {"packages": array<npmPackage>, "urlResources": array<urlResource>}
 
 type state =
   | All
   | Filtered(string) // search term
 
+let scrollToTop: unit => unit = %raw(
+  `function() {
+  window.scroll({
+    top: 0, 
+    left: 0, 
+    behavior: 'smooth'
+  });
+}
+`
+)
+
+Js.log(scrollToTop)
+
 let default = (props: props) => {
   open Markdown
 
   let (state, setState) = React.useState(_ => All)
+
+  let (filter, setFilter) = React.useState(_ => {
+    Filter.searchterm: "",
+    includeOfficial: true,
+    includeCommunity: true,
+    includeNpm: true,
+    includeUrlResource: true,
+  })
+
+  Js.log2("filter", filter)
 
   let allResources = {
     let npms = props["packages"]->Belt.Array.map(pkg => Resource.Npm(pkg))
@@ -343,9 +455,15 @@ let default = (props: props) => {
     ([], []),
     (acc, next) => {
       let (official, community) = acc
-      if Resource.isOfficial(next) {
+      let isResourceIncluded = switch next {
+      | Npm(_) => filter.includeNpm
+      | Url(_) => filter.includeUrlResource
+      }
+      if !isResourceIncluded {
+        ()
+      } else if filter.includeOfficial && Resource.isOfficial(next) {
         Js.Array2.push(official, next)->ignore
-      } else if !Resource.shouldFilter(next) {
+      } else if filter.includeCommunity && !Resource.shouldFilter(next) {
         Js.Array2.push(community, next)->ignore
       }
       (official, community)
@@ -353,6 +471,7 @@ let default = (props: props) => {
   )
 
   let onKeywordSelect = keyword => {
+    scrollToTop()
     setState(_ => {
       Filtered(keyword)
     })
@@ -378,16 +497,39 @@ let default = (props: props) => {
     </Category>
   }
 
-  <div>
-    <H1> {React.string("Community Packages")} </H1>
-    <SearchBox
-      placeholder="Enter a search term, name, keyword, etc"
-      onValueChange
-      onClear
-      value={searchValue}
+  let overlayState = React.useState(() => false)
+  <>
+    <Meta
+      title="Blog | ReScript Documentation"
+      description="News, Announcements, Release Notes and more"
     />
-    <div className="mt-12 space-y-8"> officialCategory communityCategory </div>
-  </div>
+    <div className="mt-16 pt-2">
+      <div className="text-night text-lg">
+        <Navigation overlayState />
+        <div className="flex overflow-hidden">
+          <div
+            className="flex justify-between min-w-320 px-4 pt-16 lg:align-center w-full lg:px-8 pb-48">
+            <Mdx.Provider components=Markdown.default>
+              <main className="max-w-1280 w-full flex justify-center">
+                <div style={ReactDOM.Style.make(~maxWidth="44.0625rem", ())} className="w-full">
+                  <H1> {React.string("Libraries & Bindings")} </H1>
+                  <SearchBox
+                    placeholder="Enter a search term, name, keyword, etc"
+                    onValueChange
+                    onClear
+                    value={searchValue}
+                  />
+                  <div className="mt-12 space-y-8"> officialCategory communityCategory </div>
+                </div>
+              </main>
+              <div className="hidden lg:block h-full "> <InfoSidebar filter setFilter /> </div>
+            </Mdx.Provider>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    </div>
+  </>
 }
 
 type npmData = {

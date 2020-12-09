@@ -2,16 +2,21 @@
 
 import * as Fs from "fs";
 import * as Icon from "../components/Icon.js";
+import * as Meta from "../components/Meta.js";
 import * as Path from "path";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
+import * as Footer from "../components/Footer.js";
 import * as Js_null from "bs-platform/lib/es6/js_null.js";
 import FuseJs from "fuse.js";
 import * as Process from "process";
 import * as Markdown from "../components/Markdown.js";
+import Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
+import * as Navigation from "../components/Navigation.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
+import * as React$1 from "@mdx-js/react";
 
 function shouldFilter(res) {
   if (res.TAG || !res._0.name.startsWith("@elm-react")) {
@@ -286,12 +291,134 @@ function Packages$Category(Props) {
                 }, title), React.createElement("div", undefined, children));
 }
 
+function Packages$InfoSidebar$Toggle(Props) {
+  var enabled = Props.enabled;
+  var toggle = Props.toggle;
+  var children = Props.children;
+  var className = "block px-4 rounded-lg " + (
+    enabled ? "bg-fire text-white" : " bg-gray-10"
+  );
+  var onMouseDown = function (evt) {
+    evt.preventDefault();
+    return Curry._1(toggle, undefined);
+  };
+  return React.createElement("button", {
+              className: className,
+              onMouseDown: onMouseDown
+            }, children);
+}
+
+function Packages$InfoSidebar(Props) {
+  var setFilter = Props.setFilter;
+  var filter = Props.filter;
+  var h2 = "group mb-3 text-14 uppercase  leading-1 font-sans font-medium text-onyx";
+  var link = "hover:underline";
+  return React.createElement("aside", {
+              className: " border-l-2 p-4 py-12 border-fire-30 space-y-16"
+            }, React.createElement("div", undefined, React.createElement("h2", {
+                      className: h2
+                    }, "Filter for"), React.createElement("div", {
+                      className: "space-y-2"
+                    }, React.createElement(Packages$InfoSidebar$Toggle, {
+                          enabled: filter.includeOfficial,
+                          toggle: (function (param) {
+                              return Curry._1(setFilter, (function (prev) {
+                                            return {
+                                                    searchterm: prev.searchterm,
+                                                    includeOfficial: !filter.includeOfficial,
+                                                    includeCommunity: prev.includeCommunity,
+                                                    includeNpm: prev.includeNpm,
+                                                    includeUrlResource: prev.includeUrlResource
+                                                  };
+                                          }));
+                            }),
+                          children: "Official"
+                        }), React.createElement(Packages$InfoSidebar$Toggle, {
+                          enabled: filter.includeCommunity,
+                          toggle: (function (param) {
+                              return Curry._1(setFilter, (function (prev) {
+                                            return {
+                                                    searchterm: prev.searchterm,
+                                                    includeOfficial: prev.includeOfficial,
+                                                    includeCommunity: !filter.includeCommunity,
+                                                    includeNpm: prev.includeNpm,
+                                                    includeUrlResource: prev.includeUrlResource
+                                                  };
+                                          }));
+                            }),
+                          children: "Community"
+                        }), React.createElement(Packages$InfoSidebar$Toggle, {
+                          enabled: filter.includeNpm,
+                          toggle: (function (param) {
+                              return Curry._1(setFilter, (function (prev) {
+                                            return {
+                                                    searchterm: prev.searchterm,
+                                                    includeOfficial: prev.includeOfficial,
+                                                    includeCommunity: prev.includeCommunity,
+                                                    includeNpm: !filter.includeNpm,
+                                                    includeUrlResource: prev.includeUrlResource
+                                                  };
+                                          }));
+                            }),
+                          children: "NPM package"
+                        }), React.createElement(Packages$InfoSidebar$Toggle, {
+                          enabled: filter.includeUrlResource,
+                          toggle: (function (param) {
+                              return Curry._1(setFilter, (function (prev) {
+                                            return {
+                                                    searchterm: prev.searchterm,
+                                                    includeOfficial: prev.includeOfficial,
+                                                    includeCommunity: prev.includeCommunity,
+                                                    includeNpm: prev.includeNpm,
+                                                    includeUrlResource: !filter.includeUrlResource
+                                                  };
+                                          }));
+                            }),
+                          children: "URL resources"
+                        }))), React.createElement("div", undefined, React.createElement("h2", {
+                      className: h2
+                    }, "Guidelines"), React.createElement("ul", {
+                      className: "space-y-4"
+                    }, React.createElement(Link, {
+                          href: "/docs/guidelines/publishing-npm-packages",
+                          children: React.createElement("a", {
+                                className: link
+                              }, "Publishing ReScript npm packages")
+                        }), React.createElement("li", undefined, React.createElement(Link, {
+                              href: "/docs/guidelines/writing-bindings",
+                              children: React.createElement("a", {
+                                    className: link
+                                  }, "Writing Bindings & Libraries")
+                            })))));
+}
+
+var scrollToTop = (function() {
+  window.scroll({
+    top: 0, 
+    left: 0, 
+    behavior: 'smooth'
+  });
+});
+
+console.log(scrollToTop);
+
 function $$default(props) {
   var match = React.useState(function () {
         return /* All */0;
       });
   var setState = match[1];
   var state = match[0];
+  var match$1 = React.useState(function () {
+        return {
+                searchterm: "",
+                includeOfficial: true,
+                includeCommunity: true,
+                includeNpm: true,
+                includeUrlResource: true
+              };
+      });
+  var filter = match$1[0];
+  console.log("filter", filter);
   var npms = Belt_Array.map(props.packages, (function (pkg) {
           return {
                   TAG: 0,
@@ -327,25 +454,31 @@ function $$default(props) {
                   return /* All */0;
                 }));
   };
-  var match$1 = Belt_Array.reduce(resources, [
+  var match$2 = Belt_Array.reduce(resources, [
         [],
         []
       ], (function (acc, next) {
           var community = acc[1];
           var official = acc[0];
-          if (isOfficial(next)) {
-            official.push(next);
-          } else if (!shouldFilter(next)) {
-            community.push(next);
+          var isResourceIncluded;
+          isResourceIncluded = next.TAG ? filter.includeUrlResource : filter.includeNpm;
+          if (isResourceIncluded) {
+            if (filter.includeOfficial && isOfficial(next)) {
+              official.push(next);
+            } else if (filter.includeCommunity && !shouldFilter(next)) {
+              community.push(next);
+            }
+            
           }
           return [
                   official,
                   community
                 ];
         }));
-  var communityResources = match$1[1];
-  var officialResources = match$1[0];
+  var communityResources = match$2[1];
+  var officialResources = match$2[0];
   var onKeywordSelect = function (keyword) {
+    Curry._1(scrollToTop, undefined);
     return Curry._1(setState, (function (param) {
                   return {
                           _0: keyword,
@@ -377,16 +510,47 @@ function $$default(props) {
                                 });
                     })))
         }) : null;
-  return React.createElement("div", undefined, React.createElement(Markdown.H1.make, {
-                  children: "Community Packages"
-                }), React.createElement(Packages$SearchBox, {
-                  value: searchValue,
-                  onClear: onClear,
-                  placeholder: "Enter a search term, name, keyword, etc",
-                  onValueChange: onValueChange
+  var overlayState = React.useState(function () {
+        return false;
+      });
+  return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, {
+                  description: "News, Announcements, Release Notes and more",
+                  title: "Blog | ReScript Documentation"
                 }), React.createElement("div", {
-                  className: "mt-12 space-y-8"
-                }, officialCategory, communityCategory));
+                  className: "mt-16 pt-2"
+                }, React.createElement("div", {
+                      className: "text-night text-lg"
+                    }, React.createElement(Navigation.make, {
+                          overlayState: overlayState
+                        }), React.createElement("div", {
+                          className: "flex overflow-hidden"
+                        }, React.createElement("div", {
+                              className: "flex justify-between min-w-320 px-4 pt-16 lg:align-center w-full lg:px-8 pb-48"
+                            }, React.createElement(React$1.MDXProvider, {
+                                  components: Markdown.$$default,
+                                  children: null
+                                }, React.createElement("main", {
+                                      className: "max-w-1280 w-full flex justify-center"
+                                    }, React.createElement("div", {
+                                          className: "w-full",
+                                          style: {
+                                            maxWidth: "44.0625rem"
+                                          }
+                                        }, React.createElement(Markdown.H1.make, {
+                                              children: "Libraries & Bindings"
+                                            }), React.createElement(Packages$SearchBox, {
+                                              value: searchValue,
+                                              onClear: onClear,
+                                              placeholder: "Enter a search term, name, keyword, etc",
+                                              onValueChange: onValueChange
+                                            }), React.createElement("div", {
+                                              className: "mt-12 space-y-8"
+                                            }, officialCategory, communityCategory))), React.createElement("div", {
+                                      className: "hidden lg:block h-full "
+                                    }, React.createElement(Packages$InfoSidebar, {
+                                          setFilter: match$1[1],
+                                          filter: filter
+                                        }))))), React.createElement(Footer.make, {}))));
 }
 
 function getStaticProps(_ctx) {
@@ -426,4 +590,4 @@ export {
   getStaticProps ,
   
 }
-/* fs Not a pure module */
+/*  Not a pure module */
