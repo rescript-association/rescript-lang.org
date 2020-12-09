@@ -54,7 +54,7 @@ module GetStaticPaths = {
 module Link = {
   @bs.module("next/link") @react.component
   external make: (
-    ~href: string=?,
+    ~href: string,
     ~_as: string=?,
     ~prefetch: bool=?,
     ~replace: option<bool>=?,
