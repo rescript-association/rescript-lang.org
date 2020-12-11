@@ -12,10 +12,10 @@ description: |
 ReScript is a soundly typed language with an optimizing compiler focused on the JS platform. 
 It's focused on type safety, performance and JS interop. It used to be called BuckleScript.
 
-[ReScript@8.4](https://www.npmjs.com/package/bs-platform/v/8.4.1) is now available for testing, you can try it via
+[ReScript@8.4](https://www.npmjs.com/package/bs-platform/v/8.4.2) is now available for testing, you can try it via
 
 ```
-npm i bs-platform@8.4.1
+npm i bs-platform@8.4.2
 ```
 
 The changes are listed [here](https://github.com/rescript-lang/rescript-compiler/blob/master/Changes.md#841). 
@@ -44,11 +44,12 @@ To make things worse, each package comes with an installation process which is a
 package look like freshly built.
 
 In this release, we track the installation in the build graph as well, and we calculate the hash of the installation of dependencies and put it in the 
-dependent's command line flags for building binary artifacts. Such strategy benefits in three aspects: 
+dependent's command line flags for building binary artifacts. Such strategy benefits in such aspects: 
+
 - The calculation of the hash of installation is almost free since it is just one stat, we don't need track all dependencies' artifacts.
 - The introducion of such hashing does not appear in parsing, so that the changes of dependencies will never trigger re-parsing.
 - Once the package installation is a nop, the transitive rebuild graph will be cut off so that we can save some unneeded rebuild.
-
+- When people make changes to the depdendencies, if such changes don't change the package interface, it will not trigger the build of its dependents.
 
 ### Introducing `pinned-dependencies`
 
