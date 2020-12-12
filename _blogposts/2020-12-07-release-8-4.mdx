@@ -79,7 +79,7 @@ The usage is quite simple, add `pinned-dependencies` in the toplevel package's `
 Note such field only make sense in toplevel's configuration.
 
 
-### More robust hanlding of removal of staled output
+### More robust handling of removal of staled output
 
 When people delete or rename rescript files, it will introduce dangling staled output, for example, renaming `src/A.res` 
 into `src/B.res` will bring `src/A.cmi` (and more intemediate outputs) stale. This is worse than it sounds like, suppose you have a 
