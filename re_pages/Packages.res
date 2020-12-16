@@ -414,8 +414,6 @@ let scrollToTop: unit => unit = %raw(
 `
 )
 
-Js.log(scrollToTop)
-
 let default = (props: props) => {
   open Markdown
 
@@ -428,8 +426,6 @@ let default = (props: props) => {
     includeNpm: true,
     includeUrlResource: true,
   })
-
-  Js.log2("filter", filter)
 
   let allResources = {
     let npms = props["packages"]->Belt.Array.map(pkg => Resource.Npm(pkg))
@@ -587,7 +583,6 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = _ctx => {
       ->Node.Fs.readFileSync(#utf8)
       ->Js.Json.parseExn
       ->unsafeToUrlResource
-    Js.log(urlResources)
     let props: props = {
       "packages": pkges,
       "urlResources": urlResources,

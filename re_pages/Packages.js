@@ -404,8 +404,6 @@ var scrollToTop = (function() {
   });
 });
 
-console.log(scrollToTop);
-
 function $$default(props) {
   var match = React.useState(function () {
         return /* All */0;
@@ -422,7 +420,6 @@ function $$default(props) {
               };
       });
   var filter = match$1[0];
-  console.log("filter", filter);
   var npms = Belt_Array.map(props.packages, (function (pkg) {
           return {
                   TAG: 0,
@@ -576,7 +573,6 @@ function getStaticProps(_ctx) {
                     }));
               var index_data_dir = Path.join(Process.cwd(), "./data");
               var urlResources = JSON.parse(Fs.readFileSync(Path.join(index_data_dir, "packages_url_resources.json"), "utf8"));
-              console.log(urlResources);
               var props = {
                 packages: pkges,
                 urlResources: urlResources
@@ -594,4 +590,4 @@ export {
   getStaticProps ,
   
 }
-/*  Not a pure module */
+/* fs Not a pure module */
