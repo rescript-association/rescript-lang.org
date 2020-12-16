@@ -322,7 +322,6 @@ function Packages$InfoSidebar(Props) {
   var setFilter = Props.setFilter;
   var filter = Props.filter;
   var h2 = "group mb-3 text-14 uppercase  leading-1 font-sans font-medium text-onyx";
-  var link = "hover:underline";
   return React.createElement("aside", {
               className: " border-l-2 p-4 py-12 border-fire-30 space-y-16"
             }, React.createElement("div", undefined, React.createElement("h2", {
@@ -390,16 +389,11 @@ function Packages$InfoSidebar(Props) {
                     }, "Guidelines"), React.createElement("ul", {
                       className: "space-y-4"
                     }, React.createElement(Link, {
-                          href: "/docs/guidelines/publishing-npm-packages",
+                          href: "/docs/guidelines/publishing-packages",
                           children: React.createElement("a", {
-                                className: link
+                                className: "hover:underline"
                               }, "Publishing ReScript npm packages")
-                        }), React.createElement("li", undefined, React.createElement(Link, {
-                              href: "/docs/guidelines/writing-bindings",
-                              children: React.createElement("a", {
-                                    className: link
-                                  }, "Writing Bindings & Libraries")
-                            })))));
+                        }))));
 }
 
 var scrollToTop = (function() {
