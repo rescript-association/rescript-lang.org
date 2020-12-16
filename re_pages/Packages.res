@@ -512,8 +512,8 @@ let default = (props: props) => {
   let overlayState = React.useState(() => false)
   <>
     <Meta
-      title="Blog | ReScript Documentation"
-      description="News, Announcements, Release Notes and more"
+      title="Package Index | ReScript Documentation"
+      description="Official and unofficial resources, libraries and bindings for ReScript"
     />
     <div className="mt-16 pt-2">
       <div className="text-night text-lg">

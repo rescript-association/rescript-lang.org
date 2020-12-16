@@ -518,8 +518,8 @@ function $$default(props) {
         return false;
       });
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, {
-                  description: "News, Announcements, Release Notes and more",
-                  title: "Blog | ReScript Documentation"
+                  description: "Official and unofficial resources, libraries and bindings for ReScript",
+                  title: "Package Index | ReScript Documentation"
                 }), React.createElement("div", {
                   className: "mt-16 pt-2"
                 }, React.createElement("div", {
