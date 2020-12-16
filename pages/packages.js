@@ -1,4 +1,4 @@
-import Comp from "re_pages/packages"
+import Comp from "re_pages/Packages"
 
 export { getStaticProps } from "re_pages/packages"
 
