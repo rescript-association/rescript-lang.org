@@ -22,6 +22,24 @@ var Github = {
   make: Icon$Github
 };
 
+function Icon$Npm(Props) {
+  var className = Props.className;
+  return React.createElement("svg", {
+              className: "" + className,
+              viewBox: "0 0 18 7"
+            }, React.createElement("path", {
+                  d: "M0 0h18v6H9v1H5V6H0V0zm1 5h2V2h1v3h1V1H1v4zm5-4v5h2V5h2V1H6zm2 1h1v2H8V2zm3-1v4h2V2h1v3h1V2h1v3h1V1h-6z",
+                  fill: "#CB3837"
+                }), React.createElement("path", {
+                  d: "M1 5h2V2h1v3h1V1H1zM6 1v5h2V5h2V1H6zm3 3H8V2h1v2zM11 1v4h2V2h1v3h1V2h1v3h1V1z",
+                  fill: "#FFF"
+                }));
+}
+
+var Npm = {
+  make: Icon$Npm
+};
+
 function Icon$Twitter(Props) {
   var className = Props.className;
   return React.createElement("svg", {
@@ -295,6 +313,7 @@ var TriangleDown = {
 
 export {
   Github ,
+  Npm ,
   Twitter ,
   MagnifierGlass ,
   Caret ,

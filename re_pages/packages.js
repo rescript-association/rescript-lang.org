@@ -206,6 +206,14 @@ function Packages$SearchBox(Props) {
 function Packages$Card(Props) {
   var value = Props.value;
   var onKeywordSelect = Props.onKeywordSelect;
+  var icon;
+  icon = value.TAG ? React.createElement("span", {
+          className: "inline-flex justify-center items-center rounded-full bg-white px-2 w-16 h-8 text-fire"
+        }, React.createElement(Icon.Hyperlink.make, {
+              className: "w-6 h-6"
+            })) : React.createElement(Icon.Npm.make, {
+          className: "w-16"
+        });
   var linkBox;
   if (value.TAG) {
     linkBox = null;
@@ -259,11 +267,13 @@ function Packages$Card(Props) {
   }
   return React.createElement("div", {
               className: "bg-gray-5-tr py-6 rounded-lg p-4"
-            }, React.createElement("a", {
-                  className: "font-bold hover:text-fire text-18",
-                  href: titleHref,
-                  target: "_blank"
-                }, match[0]), linkBox, React.createElement("div", {
+            }, React.createElement("div", {
+                  className: "flex justify-between"
+                }, React.createElement("div", undefined, React.createElement("a", {
+                          className: "font-bold hover:text-fire text-18",
+                          href: titleHref,
+                          target: "_blank"
+                        }, React.createElement("span", undefined, match[0])), linkBox), React.createElement("div", undefined, icon)), React.createElement("div", {
                   className: "mt-4 text-16"
                 }, match[1]), React.createElement("div", {
                   className: "space-x-2 mt-4"

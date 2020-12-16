@@ -211,6 +211,10 @@ module SearchBox = {
 module Card = {
   @react.component
   let make = (~value: Resource.t, ~onKeywordSelect: option<string => unit>=?) => {
+    let icon = switch value {
+    | Npm(_) => <Icon.Npm className="w-16" />
+    | Url(_) => <span className="inline-flex justify-center items-center rounded-full bg-white px-2 w-16 h-8 text-fire"> <Icon.Hyperlink className="w-6 h-6" /> </span>
+    }
     let linkBox = switch value {
     | Npm(pkg) =>
       let repositoryHref = Js.Null.toOption(pkg.repositoryHref)
@@ -251,10 +255,18 @@ module Card = {
     }
 
     <div className="bg-gray-5-tr py-6 rounded-lg p-4">
-      <a className="font-bold hover:text-fire text-18" href=titleHref target="_blank">
-        {React.string(title)}
-      </a>
-      {linkBox}
+      <div className="flex justify-between">
+        <div>
+          <a
+            className="font-bold hover:text-fire text-18"
+            href=titleHref
+            target="_blank">
+            <span> {React.string(title)} </span>
+          </a>
+          {linkBox}
+        </div>
+        <div> {icon} </div>
+      </div>
       <div className="mt-4 text-16"> {React.string(description)} </div>
       <div className="space-x-2 mt-4"> {Belt.Array.map(keywords, keyword => {
           let onMouseDown = Belt.Option.map(onKeywordSelect, cb => {
