@@ -107,7 +107,7 @@ function applySearch(resources, pattern) {
   return Belt_Array.concat(filteredNpm, filteredUrls);
 }
 
-function Packages$SearchBox(Props) {
+function Packages2$SearchBox(Props) {
   var completionValuesOpt = Props.completionValues;
   var value = Props.value;
   var onClear = Props.onClear;
@@ -203,7 +203,7 @@ function Packages$SearchBox(Props) {
                     })));
 }
 
-function Packages$Card(Props) {
+function Packages2$Card(Props) {
   var value = Props.value;
   var onKeywordSelect = Props.onKeywordSelect;
   var icon;
@@ -293,7 +293,7 @@ function Packages$Card(Props) {
                       }))));
 }
 
-function Packages$Category(Props) {
+function Packages2$Category(Props) {
   var title = Props.title;
   var children = Props.children;
   return React.createElement("div", undefined, React.createElement("h3", {
@@ -301,7 +301,7 @@ function Packages$Category(Props) {
                 }, title), React.createElement("div", undefined, children));
 }
 
-function Packages$InfoSidebar$Toggle(Props) {
+function Packages2$InfoSidebar$Toggle(Props) {
   var enabled = Props.enabled;
   var toggle = Props.toggle;
   var children = Props.children;
@@ -318,7 +318,7 @@ function Packages$InfoSidebar$Toggle(Props) {
             }, children);
 }
 
-function Packages$InfoSidebar(Props) {
+function Packages2$InfoSidebar(Props) {
   var setFilter = Props.setFilter;
   var filter = Props.filter;
   var h2 = "group mb-3 text-14 uppercase  leading-1 font-sans font-medium text-onyx";
@@ -328,7 +328,7 @@ function Packages$InfoSidebar(Props) {
                       className: h2
                     }, "Filter for"), React.createElement("div", {
                       className: "space-y-2"
-                    }, React.createElement(Packages$InfoSidebar$Toggle, {
+                    }, React.createElement(Packages2$InfoSidebar$Toggle, {
                           enabled: filter.includeOfficial,
                           toggle: (function (param) {
                               return Curry._1(setFilter, (function (prev) {
@@ -342,7 +342,7 @@ function Packages$InfoSidebar(Props) {
                                           }));
                             }),
                           children: "Official"
-                        }), React.createElement(Packages$InfoSidebar$Toggle, {
+                        }), React.createElement(Packages2$InfoSidebar$Toggle, {
                           enabled: filter.includeCommunity,
                           toggle: (function (param) {
                               return Curry._1(setFilter, (function (prev) {
@@ -356,7 +356,7 @@ function Packages$InfoSidebar(Props) {
                                           }));
                             }),
                           children: "Community"
-                        }), React.createElement(Packages$InfoSidebar$Toggle, {
+                        }), React.createElement(Packages2$InfoSidebar$Toggle, {
                           enabled: filter.includeNpm,
                           toggle: (function (param) {
                               return Curry._1(setFilter, (function (prev) {
@@ -370,7 +370,7 @@ function Packages$InfoSidebar(Props) {
                                           }));
                             }),
                           children: "NPM package"
-                        }), React.createElement(Packages$InfoSidebar$Toggle, {
+                        }), React.createElement(Packages2$InfoSidebar$Toggle, {
                           enabled: filter.includeUrlResource,
                           toggle: (function (param) {
                               return Curry._1(setFilter, (function (prev) {
@@ -490,24 +490,24 @@ function $$default(props) {
                         };
                 }));
   };
-  var officialCategory = officialResources.length !== 0 ? React.createElement(Packages$Category, {
+  var officialCategory = officialResources.length !== 0 ? React.createElement(Packages2$Category, {
           title: "Official Resources",
           children: React.createElement("div", {
                 className: "space-y-4"
               }, Belt_Array.map(officialResources, (function (res) {
-                      return React.createElement(Packages$Card, {
+                      return React.createElement(Packages2$Card, {
                                   value: res,
                                   onKeywordSelect: onKeywordSelect,
                                   key: res._0.name
                                 });
                     })))
         }) : null;
-  var communityCategory = communityResources.length !== 0 ? React.createElement(Packages$Category, {
+  var communityCategory = communityResources.length !== 0 ? React.createElement(Packages2$Category, {
           title: "Community Resources",
           children: React.createElement("div", {
                 className: "space-y-4"
               }, Belt_Array.map(communityResources, (function (res) {
-                      return React.createElement(Packages$Card, {
+                      return React.createElement(Packages2$Card, {
                                   value: res,
                                   onKeywordSelect: onKeywordSelect,
                                   key: res._0.name
@@ -542,7 +542,7 @@ function $$default(props) {
                                           }
                                         }, React.createElement(Markdown.H1.make, {
                                               children: "Libraries & Bindings"
-                                            }), React.createElement(Packages$SearchBox, {
+                                            }), React.createElement(Packages2$SearchBox, {
                                               value: searchValue,
                                               onClear: onClear,
                                               placeholder: "Enter a search term, name, keyword, etc",
@@ -551,7 +551,7 @@ function $$default(props) {
                                               className: "mt-12 space-y-8"
                                             }, officialCategory, communityCategory))), React.createElement("div", {
                                       className: "hidden lg:block h-full "
-                                    }, React.createElement(Packages$InfoSidebar, {
+                                    }, React.createElement(Packages2$InfoSidebar, {
                                           setFilter: match$1[1],
                                           filter: filter
                                         }))))), React.createElement(Footer.make, {}))));
