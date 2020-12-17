@@ -26,6 +26,22 @@ function shouldFilter(res) {
   }
 }
 
+function filterKeywords(keywords) {
+  return Belt_Array.keep(keywords, (function (kw) {
+                var match = kw.toLowerCase();
+                switch (match) {
+                  case "bucklescript" :
+                  case "ocaml" :
+                  case "reason" :
+                  case "reasonml" :
+                  case "rescript" :
+                      return false;
+                  default:
+                    return true;
+                }
+              }));
+}
+
 function isOfficial(res) {
   if (res.TAG) {
     return res._0.official;
@@ -563,7 +579,7 @@ function getStaticProps(_ctx) {
                       return {
                               name: pkg.name,
                               version: pkg.version,
-                              keywords: pkg.keywords,
+                              keywords: filterKeywords(pkg.keywords),
                               description: pkg.description,
                               repositoryHref: Js_null.fromOption(pkg.links.repository),
                               npmHref: pkg.links.npm

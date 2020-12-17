@@ -34,6 +34,7 @@ module Resource = {
     | Url({name}) => name
     }
   }
+
   let shouldFilter = (res: t) => {
     switch res {
     | Npm(pkg) =>
@@ -44,6 +45,19 @@ module Resource = {
       }
     | Url(_) => false
     }
+  }
+
+  let filterKeywords = (keywords: array<string>): array<string> => {
+    Belt.Array.keep(keywords, kw => {
+      switch Js.String2.toLowerCase(kw) {
+      | "reasonml"
+      | "reason"
+      | "ocaml"
+      | "bucklescript"
+      | "rescript" => false
+      | _ => true
+      }
+    })
   }
 
   let isOfficial = (res: t) => {
@@ -213,10 +227,7 @@ module Card = {
   let make = (~value: Resource.t, ~onKeywordSelect: option<string => unit>=?) => {
     let icon = switch value {
     | Npm(_) => <Icon.Npm className="w-8 opacity-50" />
-    | Url(_) =>
-      <span>
-        <Icon.Hyperlink className="w-8 opacity-50" />
-        </span>
+    | Url(_) => <span> <Icon.Hyperlink className="w-8 opacity-50" /> </span>
     }
     let linkBox = switch value {
     | Npm(pkg) =>
@@ -570,7 +581,7 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = _ctx => {
       {
         name: pkg["name"],
         version: pkg["version"],
-        keywords: pkg["keywords"],
+        keywords: Resource.filterKeywords(pkg["keywords"]),
         description: pkg["description"],
         repositoryHref: Js.Null.fromOption(pkg["links"]["repository"]),
         npmHref: pkg["links"]["npm"],
