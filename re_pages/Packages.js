@@ -207,12 +207,10 @@ function Packages$Card(Props) {
   var value = Props.value;
   var onKeywordSelect = Props.onKeywordSelect;
   var icon;
-  icon = value.TAG ? React.createElement("span", {
-          className: "inline-flex justify-center items-center rounded-full bg-white px-2 w-16 h-8 text-fire"
-        }, React.createElement(Icon.Hyperlink.make, {
-              className: "w-6 h-6"
+  icon = value.TAG ? React.createElement("span", undefined, React.createElement(Icon.Hyperlink.make, {
+              className: "w-8 opacity-50"
             })) : React.createElement(Icon.Npm.make, {
-          className: "w-16"
+          className: "w-8 opacity-50"
         });
   var linkBox;
   if (value.TAG) {

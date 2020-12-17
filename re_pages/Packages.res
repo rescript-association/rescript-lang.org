@@ -212,8 +212,11 @@ module Card = {
   @react.component
   let make = (~value: Resource.t, ~onKeywordSelect: option<string => unit>=?) => {
     let icon = switch value {
-    | Npm(_) => <Icon.Npm className="w-16" />
-    | Url(_) => <span className="inline-flex justify-center items-center rounded-full bg-white px-2 w-16 h-8 text-fire"> <Icon.Hyperlink className="w-6 h-6" /> </span>
+    | Npm(_) => <Icon.Npm className="w-8 opacity-50" />
+    | Url(_) =>
+      <span>
+        <Icon.Hyperlink className="w-8 opacity-50" />
+        </span>
     }
     let linkBox = switch value {
     | Npm(pkg) =>
@@ -257,10 +260,7 @@ module Card = {
     <div className="bg-gray-5-tr py-6 rounded-lg p-4">
       <div className="flex justify-between">
         <div>
-          <a
-            className="font-bold hover:text-fire text-18"
-            href=titleHref
-            target="_blank">
+          <a className="font-bold hover:text-fire text-18" href=titleHref target="_blank">
             <span> {React.string(title)} </span>
           </a>
           {linkBox}
@@ -386,11 +386,11 @@ module InfoSidebar = {
           <Next.Link href="/docs/guidelines/publishing-packages">
             <a className=link> {React.string("Publishing ReScript npm packages")} </a>
           </Next.Link>
-          /*<li>*/
-            /*<Next.Link href="/docs/guidelines/writing-bindings">*/
-              /*<a className=link> {React.string("Writing Bindings & Libraries")} </a>*/
-            /*</Next.Link>*/
-          /*</li>*/
+          /* <li> */
+          /* <Next.Link href="/docs/guidelines/writing-bindings"> */
+          /* <a className=link> {React.string("Writing Bindings & Libraries")} </a> */
+          /* </Next.Link> */
+          /* </li> */
         </ul>
       </div>
     </aside>
