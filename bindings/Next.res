@@ -102,10 +102,18 @@ module Router = {
     query: Js.Dict.t<string>,
   }
 
+  type pathObj = {
+    pathname: string,
+    query: Js.Dict.t<string>,
+  }
+
   @bs.send external push: (router, string) => unit = "push"
+  @bs.send external pushObj: (router, pathObj) => unit = "push"
 
   @bs.module("next/router") external useRouter: unit => router = "useRouter"
+
   @bs.send external replace: (router, string) => unit = "replace"
+  @bs.send external replaceObj: (router, pathObj) => unit = "replace"
 }
 
 module Head = {

@@ -457,7 +457,6 @@ let default = (props: props) => {
       | value => Filtered(value)
       }
     })
-    ()
   }
 
   let searchValue = switch state {
@@ -515,6 +514,40 @@ let default = (props: props) => {
         })->React.array} </div>
     </Category>
   }
+
+  let router = Next.Router.useRouter()
+
+  // On first render, the router query is undefined so we set a flag.
+  let firstRenderDone = React.useRef(false)
+
+  React.useEffect0(() => {
+    firstRenderDone.current = true
+
+    None
+  })
+
+  // On second render, this hook runs one more time to actually trigger the search.
+  React.useEffect1(() => {
+    router.query->Js.Dict.get("search")->Belt.Option.forEach(onValueChange)
+
+    None
+  }, [firstRenderDone.current])
+
+  let updateQuery = value =>
+    router->Next.Router.replaceObj({
+      pathname: router.pathname,
+      query: value === "" ? Js.Dict.empty() : Js.Dict.fromArray([("search", value)]),
+    })
+
+  // When the search term changes, update the router query accordingly.
+  React.useEffect1(() => {
+    switch state {
+    | All => updateQuery("")
+    | Filtered(value) => updateQuery(value)
+    }
+
+    None
+  }, [state])
 
   let overlayState = React.useState(() => false)
   <>

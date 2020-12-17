@@ -7,6 +7,7 @@ import * as Path from "path";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Footer from "../components/Footer.js";
+import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
 import * as Js_null from "bs-platform/lib/es6/js_null.js";
 import FuseJs from "fuse.js";
 import * as Process from "process";
@@ -16,6 +17,7 @@ import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as Navigation from "../components/Navigation.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
+import * as Router from "next/router";
 import * as React$1 from "@mdx-js/react";
 
 function shouldFilter(res) {
@@ -451,17 +453,16 @@ function $$default(props) {
   var allResources = Belt_Array.concat(npms, urls);
   var resources = state ? applySearch(allResources, state._0) : allResources;
   var onValueChange = function (value) {
-    Curry._1(setState, (function (param) {
-            if (value === "") {
-              return /* All */0;
-            } else {
-              return {
-                      _0: value,
-                      [Symbol.for("name")]: "Filtered"
-                    };
-            }
-          }));
-    
+    return Curry._1(setState, (function (param) {
+                  if (value === "") {
+                    return /* All */0;
+                  } else {
+                    return {
+                            _0: value,
+                            [Symbol.for("name")]: "Filtered"
+                          };
+                  }
+                }));
   };
   var searchValue = state ? state._0 : "";
   var onClear = function (param) {
@@ -525,6 +526,34 @@ function $$default(props) {
                                 });
                     })))
         }) : null;
+  var router = Router.useRouter();
+  var firstRenderDone = React.useRef(false);
+  React.useEffect((function () {
+          firstRenderDone.current = true;
+          
+        }), []);
+  React.useEffect((function () {
+          Belt_Option.forEach(Js_dict.get(router.query, "search"), onValueChange);
+          
+        }), [firstRenderDone.current]);
+  var updateQuery = function (value) {
+    router.replace({
+          pathname: router.pathname,
+          query: value === "" ? ({}) : Js_dict.fromArray([[
+                    "search",
+                    value
+                  ]])
+        });
+    
+  };
+  React.useEffect((function () {
+          if (state) {
+            updateQuery(state._0);
+          } else {
+            updateQuery("");
+          }
+          
+        }), [state]);
   var overlayState = React.useState(function () {
         return false;
       });
