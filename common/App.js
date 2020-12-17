@@ -264,6 +264,7 @@ function make(props) {
             return React.createElement(CommunityLayout.make, {
                         children: content
                       });
+        case "packages" :
         case "try" :
             if (!match$9.tl) {
               return content;

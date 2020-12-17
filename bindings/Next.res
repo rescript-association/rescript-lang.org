@@ -30,7 +30,12 @@ module GetStaticProps = {
     req: Js.Nullable.t<Js.t<'props>>,
   }
 
-  type t<'props, 'params> = context<'props, 'params> => Promise.t<{"props": 'props}>
+  type t<'props, 'params> = context<'props, 'params> => Js.Promise.t<{"props": 'props}>
+
+  type revalidate<'props, 'params> = context<'props, 'params> => Js.Promise.t<{
+    "props": 'props,
+    "revalidate": int,
+  }>
 }
 
 module GetStaticPaths = {
@@ -49,7 +54,7 @@ module GetStaticPaths = {
 module Link = {
   @bs.module("next/link") @react.component
   external make: (
-    ~href: string=?,
+    ~href: string,
     ~_as: string=?,
     ~prefetch: bool=?,
     ~replace: option<bool>=?,

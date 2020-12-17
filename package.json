@@ -17,6 +17,7 @@
     "codemirror": "^5.54.0",
     "docson": "^2.1.0",
     "esm": "^3.2.25",
+    "fuse.js": "^6.4.3",
     "gentype": "^3.1.0",
     "glob": "^7.1.4",
     "gray-matter": "^4.0.2",

@@ -63,6 +63,10 @@ function DocsOverview$default(Props) {
   ];
   var ecosystem = [
     [
+      "Package Index",
+      "/packages"
+    ],
+    [
       "GenType",
       "/docs/gentype/latest/introduction"
     ],

@@ -452,5 +452,5 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = _ctx => {
     availableCategories: availableCategories,
   }
 
-  Promise.resolved({"props": props})
+  Js.Promise.resolve({"props": props})
 }
