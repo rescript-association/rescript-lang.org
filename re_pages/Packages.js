@@ -569,7 +569,7 @@ function $$default(props) {
 }
 
 function getStaticProps(_ctx) {
-  var __x = fetch("https://registry.npmjs.org/-/v1/search?text=keywords:rescript");
+  var __x = fetch("https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250");
   var __x$1 = __x.then(function (response) {
         return response.json();
       });
@@ -580,7 +580,7 @@ function getStaticProps(_ctx) {
                               name: pkg.name,
                               version: pkg.version,
                               keywords: filterKeywords(pkg.keywords),
-                              description: pkg.description,
+                              description: Belt_Option.getWithDefault(pkg.description, ""),
                               repositoryHref: Js_null.fromOption(pkg.links.repository),
                               npmHref: pkg.links.npm
                             };

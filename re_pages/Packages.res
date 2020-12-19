@@ -556,7 +556,7 @@ type npmData = {
     "package": {
       "name": string,
       "keywords": array<string>,
-      "description": string,
+      "description": option<string>,
       "version": string,
       "links": {"npm": string, "repository": option<string>},
     },
@@ -571,7 +571,7 @@ module Response = {
 @val external fetchNpmPackages: string => Js.Promise.t<Response.t> = "fetch"
 
 let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = _ctx => {
-  fetchNpmPackages("https://registry.npmjs.org/-/v1/search?text=keywords:rescript")
+  fetchNpmPackages("https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250")
   ->Js.Promise.then_(response => {
     Response.json(response)
   }, _)
@@ -582,7 +582,7 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = _ctx => {
         name: pkg["name"],
         version: pkg["version"],
         keywords: Resource.filterKeywords(pkg["keywords"]),
-        description: pkg["description"],
+        description: Belt.Option.getWithDefault(pkg["description"], ""),
         repositoryHref: Js.Null.fromOption(pkg["links"]["repository"]),
         npmHref: pkg["links"]["npm"],
       }
