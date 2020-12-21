@@ -1,0 +1,486 @@
+# Generate Converters & Helpers
+
+<!-- TODO: genType -->
+
+When using ReScript, you will sometimes come into situations where you want to
+
+- Automatically generate functions that convert between ReScript's internal and JS runtime values (e.g. variants).
+- Convert a record type into an abstract type with generated creation, accessor and method functions.
+- Generate some other helper functions, such as functions from record attribute names.
+
+You can use the `@bs.deriving` decorator to trigger code generation. All different options and configurations will be discussed on this page.
+
+
+**Note:** Please be aware that extensive use of code generation might make it harder to understand your programs (since the code being generated is not visible in the source code, and you just need to know what kind of functions / values a decorator generates).
+
+## Generate Functions & Plain Values for Variant
+
+Use `[@bs.deriving accessors]` on a variant type to create accessor functions for its constructors.
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
+
+```reason
+[@bs.deriving accessors]
+type action =
+  | Click
+  | Submit(string)
+  | Cancel;
+```
+
+```ocaml
+type action =
+  | Click
+  | Submit of string
+  | Cancel
+  [@@bs.deriving accessors]
+```
+
+```js
+function submit(param_0) {
+  return /* Submit */[param_0];
+}
+
+var click = /* Click */0;
+
+var cancel = /* Cancel */1;
+
+exports.click  = click;
+exports.submit = submit;
+exports.cancel = cancel;
+```
+
+</CodeTab>
+
+Variants constructors with payloads generate functions, payload-less constructors generate plain integers (the internal representation of variants).
+
+**Note**:
+- The generated accessors are lower-cased.
+- You can now use these helpers on the JavaScript side! But don't rely on their actual values please.
+- Doesn't work with polymorphic variants.
+
+### Usage
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
+```reason
+let s = submit("hello"); /* gives Submit("hello") */
+```
+
+```ocaml
+let s = submit "hello" (* gives Submit("hello") *)
+```
+
+</CodeTab>
+
+This is useful:
+
+- When you're passing the accessor function as a higher-order function (which plain variant constructors aren't).
+- When you'd like the JS side to use these values & functions opaquely and pass you back a variant constructor (since JS has no such thing).
+
+Please note that in case you just want to _pipe a payload into a constructor_, you don't need to generate functions for that. Use the `->` syntax instead, e.g. `"test"->Submit`.
+
+## Generate Field Accessors for Records
+
+Use `[@bs.deriving accessors]` on a record type to create accessors for its record field names.
+
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
+
+```reason
+[@bs.deriving accessors]
+type pet = {
+  name: string,
+};
+
+let pets = [|{name: "bob"}, {name: "bob2"}|];
+
+pets
+  ->Belt.Array.map(name)
+  ->Js.Array2.joinWith("&")
+  ->Js.log;
+```
+
+```ocaml
+type pet = {
+  name: string;
+}[@@bs.deriving accessors]
+
+let pets = [|{ name = ("bob") }; { name = ("bob2") }|]
+
+let _ =
+  ((((pets |. Belt.Array.map) name) |. Js.Array2.joinWith)
+     ("&"))
+    |. Js.log
+```
+
+```js
+function name(param) {
+  return param.name;
+}
+
+var pets = [
+  {
+    name: "bob"
+  },
+  {
+    name: "bob2"
+  }
+];
+
+console.log(Belt_Array.map(pets, name).join("&"));
+```
+
+</CodeTab>
+
+## Generate Converters for `Js.t` Object and Record
+
+> **Note:** In ReScript >= v7 [records are already compiled to JS
+> objects](bind-to-js-object#bind-to-record-like-js-objects). `[@bs.deriving jsConverter]` is therefore
+> obsolete and will generate a no-op function for compatibility instead.
+
+Use `[@bs.deriving jsConverter]` on a record type to create convertion functions between records / JS object runtime values.
+
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
+```reason
+[@bs.deriving jsConverter]
+type coordinates = {
+  x: int,
+  y: int
+};
+```
+
+```ocaml
+type coordinates = {
+  x: int;
+  y: int;
+}[@@bs.deriving jsConverter]
+```
+
+</CodeTab>
+
+Generates 2 functions of the following types:
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
+```reason
+let coordinatesToJs: coordinates => {. "x": int, "y": int};
+
+let coordinatesFromJs: {.. "x": int, "y": int} => coordinates;
+```
+
+```ocaml
+val coordinatesToJs : coordinates -> < x: int; y: int>  Js.t
+
+val coordinatesFromJs : < x: int; y: int ; .. >  Js.t -> coordinates
+```
+
+</CodeTab>
+
+**Note**:
+
+- `coordinatesFromJs` uses an open object type that accepts more fields, just to be more permissive.
+- The converters are shallow. They don't recursively drill into the fields and convert them. This preserves the speed and simplicity of output while satisfying 80% of use-cases.
+
+### Usage
+
+This exports a `jsCoordinates` JS object (not a record!) for JS files to use:
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
+```reason
+let jsCoordinates = coordinatesToJs({x: 1, y: 2});
+```
+
+```ocaml
+let jsCoordinates = coordinatesToJs { x = 1; y = 2 }
+```
+
+</CodeTab>
+
+This binds to a `jsCoordinates` record (not a JS object!) that exists on the JS side, presumably created by JS calling the function `coordinatesFromJs`:
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
+```reason
+[@bs.module "myGame"] external jsCoordinates : coordinates = "jsCoordinates";
+```
+
+```ocaml
+external jsCoordinates : coordinates = "jsCoordinates"[@@bs.module "myGame"]
+```
+
+</CodeTab>
+
+### More Safety
+
+The above generated functions use `Js.t` object types. You can also hide this implementation detail by making the object type **abstract** by using the `newType` option with `[@bs.deriving jsConverter]`:
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
+```reason
+[@bs.deriving {jsConverter: newType}]
+type coordinates = {
+  x: int,
+  y: int
+};
+```
+
+```ocaml
+type coordinates = {
+  x: int ;
+  y: int
+} [@@bs.deriving { jsConverter = newType }]
+```
+
+</CodeTab>
+
+Generates 2 functions of the following types:
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
+```reason
+let coordinatesToJs: coordinates => abs_coordinates;
+
+let coordinatesFromJs: abs_coordinates => coordinates;
+```
+
+```ocaml
+val coordinatesToJs : coordinates -> abs_coordinates
+
+val coordinatesFromJs : abs_coordinates -> coordinates
+```
+
+</CodeTab>
+
+#### Usage
+
+Using `newType`, you've now prevented consumers from inadvertently doing the following:
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
+```reason
+let myCoordinates = {
+  x: 10,
+  y: 20
+};
+let jsCoords = coordinatesToJs(myCoordinates);
+
+let x = jsCoords##x; /* disallowed! Don't access the object's internal details */
+```
+
+```ocaml
+let myCoordinates = {
+  x = 10;
+  y = 20
+}
+
+let jsCoords = coordinatesToJs myCoordinates
+
+let x = jsCoords ## x (* disallowed! Don't access the object's internal details *)
+```
+
+</CodeTab>
+
+Same generated output. Isn't it great that types prevent invalid accesses you'd otherwise have to encode at runtime?
+
+## Generate Converters for JS Integer Enums and Variants
+
+Use `[@bs.deriving jsConverter]` on a variant type to create converter functions that allow back and forth conversion between JS integer enum and ReScript variant values.
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
+```reason
+[@bs.deriving jsConverter]
+type fruit =
+  | Apple
+  | Orange
+  | Kiwi
+  | Watermelon;
+```
+
+```ocaml
+type fruit =
+  | Apple 
+  | Orange 
+  | Kiwi 
+  | Watermelon [@@bs.deriving jsConverter]
+```
+
+</CodeTab>
+
+This option causes `jsConverter` to, again, generate functions of the following types:
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
+```reason
+let fruitToJs: fruit => int;
+
+let fruitFromJs: int => option(fruit);
+```
+
+```ocaml
+val fruitToJs : fruit -> int
+
+val fruitFromJs : int -> fruit option
+```
+
+</CodeTab>
+
+For `fruitToJs`, each fruit variant constructor would map into an integer, starting at 0, in the order they're declared.
+
+For `fruitFromJs`, the return value is an `option`, because not every int maps to a constructor.
+
+You can also attach a `[@bs.as alternativeIntValue]` to each constructor to customize their output.
+
+### Usage
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
+```reason
+[@bs.deriving jsConverter]
+type fruit =
+  | Apple
+  | [@bs.as 10] Orange
+  | [@bs.as 100] Kiwi
+  | Watermelon;
+
+let zero = fruitToJs(Apple); /* 0 */
+
+switch (fruitFromJs(100)) {
+| Some(Kiwi) => Js.log("this is Kiwi")
+| _ => Js.log("received something wrong from the JS side")
+};
+```
+
+```ocaml
+type fruit =
+  | Apple 
+  | Orange [@bs.as 10]
+  | Kiwi [@bs.as 100]
+  | Watermelon [@@bs.deriving jsConverter]
+
+let zero = fruitToJs Apple;;
+
+match fruitFromJs 100 with
+  | ((Some (Kiwi))[@explicit_arity ]) -> Js.log "this is Kiwi"
+  | _ -> Js.log "received something wrong from the JS side"
+```
+
+</CodeTab>
+
+**Note**: by using `bs.as` here, all subsequent number encoding changes. `Apple` is still `0`, `Orange` is `10`, `Kiwi` is `100` and `Watermelon` is **`101`**!
+
+### More Safety
+
+Similar to the JS object <-> record deriving, you can hide the fact that the JS enum are ints by using the same `newType` option with `[@bs.deriving jsConverter]`:
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
+```reason
+[@bs.deriving {jsConverter: newType}]
+type fruit =
+  | Apple
+  | [@bs.as 100] Kiwi
+  | Watermelon;
+```
+
+```ocaml
+type fruit =
+  | Apple 
+  | Kiwi [@bs.as 100]
+  | Watermelon [@@bs.deriving { jsConverter = newType }]
+```
+
+</CodeTab>
+
+This option causes `jsConverter` to generate functions of the following types:
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
+```reason
+let fruitToJs: fruit => abs_fruit;
+
+let fruitFromJs: abs_fruit => fruit;
+```
+
+```ocaml
+val fruitToJs : fruit -> abs_fruit
+
+val fruitFromJs : abs_fruit -> fruit
+```
+
+</CodeTab>
+
+For `fruitFromJs`, the return value, unlike the previous non-abstract type case, doesn't contain an `option`, because there's no way a bad value can be passed into it; the only creator of `abs_fruit` values is `fruitToJs`!
+
+#### Usage
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
+```reason
+[@bs.deriving {jsConverter: newType}]
+type fruit =
+  | Apple
+  | [@bs.as 100] Kiwi
+  | Watermelon;
+
+let opaqueValue = fruitToJs(Apple);
+
+[@bs.module "myJSFruits"] external jsKiwi : abs_fruit = "iSwearThisIsAKiwi";
+let kiwi = fruitFromJs(jsKiwi);
+
+let error = fruitFromJs(100); /* nope, can't take a random int */
+```
+
+```ocaml
+type fruit =
+  | Apple 
+  | Kiwi [@bs.as 100]
+  | Watermelon [@@bs.deriving { jsConverter = newType }]
+
+let opaqueValue = fruitToJs Apple
+
+external jsKiwi : abs_fruit = "iSwearThisIsAKiwi"[@@bs.module "myJSFruits"]
+
+let kiwi = fruitFromJs jsKiwi
+let error = fruitFromJs 100
+```
+
+</CodeTab>
+
+## Generate Converters for JS String Enums and Polymorphic Variants
+
+Similarly as with [generating int converters](#generate-converters-between-js-integer-enums-and-variants), use `[@bs.deriving jsConverter]` on a polymorphic variant type to create converter functions for JS string and ReScript poly variant values.
+
+### Usage
+
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)"]}>
+
+```reason
+[@bs.deriving jsConverter]
+type fruit = [
+  | `Apple
+  | [@bs.as "miniCoconut"] `Kiwi
+  | `Watermelon
+];
+
+let appleString = fruitToJs(`Apple); /* "Apple" */
+let kiwiString = fruitToJs(`Kiwi); /* "miniCoconut" */
+```
+
+```ocaml
+type fruit = [
+  | `Apple 
+  | `Kiwi [@bs.as "miniCoconut"]
+  | `Watermelon
+] [@@bs.deriving jsConverter]
+
+let appleString = fruitToJs `Apple
+let kiwiString = fruitToJs `Kiwi
+```
+
+</CodeTab>
+
+You can also use `[@bs.deriving {jsConverter: newType}]` to generate abstract types instead.

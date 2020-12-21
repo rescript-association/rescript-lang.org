@@ -104,6 +104,10 @@ let jsInteropNavs = [
     href: "/docs/manual/v8.0.0/use-illegal-identifier-names",
   },
   {
+    name: "Generate Converters & Helpers",
+    href: "/docs/manual/v8.0.0/generate-converters-accessors",
+  },
+  {
     name: "Browser Support & Polyfills",
     href: "/docs/manual/v8.0.0/browser-support-polyfills",
   },
