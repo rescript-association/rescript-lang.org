@@ -218,14 +218,7 @@ function Markdown$H4(Props) {
   var children = Props.children;
   return React.createElement("h4", {
               className: "group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-onyx"
-            }, React.createElement("span", {
-                  className: "pr-2",
-                  style: {
-                    marginLeft: "-1.45rem"
-                  }
-                }, React.createElement(Markdown$Anchor, {
-                      id: id
-                    })), children, React.createElement("span", {
+            }, children, React.createElement("span", {
                   className: "ml-2"
                 }, React.createElement(Markdown$Anchor, {
                       id: id

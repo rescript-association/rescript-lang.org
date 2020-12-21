@@ -144,7 +144,6 @@ module H4 = {
   @react.component
   let make = (~id, ~children) =>
     <h4 className="group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-onyx">
-      <span className="pr-2" style={Style.make(~marginLeft="-1.45rem", ())}> <Anchor id /> </span>
       children
       <span className="ml-2"> <Anchor id /> </span>
     </h4>
