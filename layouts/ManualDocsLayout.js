@@ -211,6 +211,10 @@ var jsInteropNavs = [
     href: "/docs/manual/latest/use-illegal-identifier-names"
   },
   {
+    name: "Generate Converters & Helpers",
+    href: "/docs/manual/latest/generate-converters-accessors"
+  },
+  {
     name: "Browser Support & Polyfills",
     href: "/docs/manual/latest/browser-support-polyfills"
   },

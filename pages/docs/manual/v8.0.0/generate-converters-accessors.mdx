@@ -1,3 +1,9 @@
+---
+title: "Generate Converters & Helpers"
+description: "All about the @bs.deriving decorator, and how to generate code from types"
+canonical: "/docs/manual/latest/generate-converters-accessors"
+---
+
 # Generate Converters & Helpers
 
 <!-- TODO: genType -->
@@ -10,10 +16,9 @@ When using ReScript, you will sometimes come into situations where you want to
 
 You can use the `@bs.deriving` decorator to trigger code generation. All different options and configurations will be discussed on this page.
 
-
 **Note:** Please be aware that extensive use of code generation might make it harder to understand your programs (since the code being generated is not visible in the source code, and you just need to know what kind of functions / values a decorator generates).
 
-## Generate Functions & Plain Values for Variant
+## Generate Functions & Plain Values for Variants
 
 Use `[@bs.deriving accessors]` on a variant type to create accessor functions for its constructors.
 
@@ -485,7 +490,7 @@ let kiwiString = fruitToJs `Kiwi
 
 You can also use `[@bs.deriving {jsConverter: newType}]` to generate abstract types instead.
 
-## Generate Abstract Records
+## Convert Record Type to Abstract Record
 
 > **Note**: For ReScript >= v7, we recommend using [plain records to compile to JS objects](#records-as-objects). 
 > This feature might still be useful for certain scenarios, but the ergonomics might be worse 
@@ -627,7 +632,7 @@ Optional values that are not defined, will not show up as an attribute in the re
 
 **Note** that the `[@bs.optional]` tag turned the `name` field optional. Merely typing `name` as `option(string)` wouldn't work.
 
-**Note**: now that your creation function contains optional fields, we mandate an unlabeled `()` at the end to indicate that [you've finished applying the function](https://reasonml.github.io/docs/en/function.html#optional-labeled-arguments).
+**Note**: now that your creation function contains optional fields, we mandate an unlabeled `()` at the end to indicate that [you've finished applying the function](function#optional-labeled-arguments).
 
 ### Accessors
 
