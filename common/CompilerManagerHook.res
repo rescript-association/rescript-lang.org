@@ -36,9 +36,9 @@ module LoadScript = {
 }
 
 module CdnMeta = {
-  // Splits and sanitizes the content of the VERSIONS file
-  let parseVersions = (versions: string) =>
-    Js.String2.split(versions, "\n")->Js.Array2.filter(v => v !== "")
+  // Make sure versions exist on https://cdn.rescript-lang.org
+  // [0] = latest
+  let versions = ["v8.4.2", "v8.3.0-dev.2"]
 
   let getCompilerUrl = (version: string): string =>
     j`https://cdn.rescript-lang.org/$version/compiler.js`
@@ -291,67 +291,48 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
     | Init =>
       let libraries = ["reason-react"]
 
-      let completed = res => {
-        open SimpleRequest
-        switch res {
-        | Ok({text}) =>
-          switch CdnMeta.parseVersions(text) {
-          | [] => dispatchError(SetupError(j`No compiler versions found`))
-          | versions =>
-            // Fetching the initial compiler is different, since we
-            // don't have any running version downloaded yet
+      switch CdnMeta.versions {
+      | [] => dispatchError(SetupError(j`No compiler versions found`))
+      | versions =>
+        let latest = versions[0]
 
-            let latest = versions[0]
+        attachCompilerAndLibraries(~version=latest, ~libraries, ())->Promise.get(result =>
+          switch result {
+          | Ok() =>
+            let instance = Compiler.make()
+            let apiVersion = apiVersion->Version.fromString
+            let config = instance->Compiler.getConfig
 
-            attachCompilerAndLibraries(~version=latest, ~libraries, ())->Promise.get(result =>
-              switch result {
-              | Ok() =>
-                let instance = Compiler.make()
-                let apiVersion = apiVersion->Version.fromString
-                let config = instance->Compiler.getConfig
+            let selected = {
+              id: latest,
+              apiVersion: apiVersion,
+              compilerVersion: instance->Compiler.version,
+              ocamlVersion: instance->Compiler.ocamlVersion,
+              reasonVersion: instance->Compiler.reasonVersion,
+              config: config,
+              libraries: libraries,
+              instance: instance,
+            }
 
-                let selected = {
-                  id: latest,
-                  apiVersion: apiVersion,
-                  compilerVersion: instance->Compiler.version,
-                  ocamlVersion: instance->Compiler.ocamlVersion,
-                  reasonVersion: instance->Compiler.reasonVersion,
-                  config: config,
-                  libraries: libraries,
-                  instance: instance,
-                }
+            let targetLang =
+              Version.availableLanguages(apiVersion)
+              ->Js.Array2.find(l => l === initialLang)
+              ->Belt.Option.getWithDefault(Version.defaultTargetLang(apiVersion))
 
-                let targetLang =
-                  Version.availableLanguages(apiVersion)
-                  ->Js.Array2.find(l => l === initialLang)
-                  ->Belt.Option.getWithDefault(Version.defaultTargetLang(apiVersion))
+            setState(_ => Ready({
+              selected: selected,
+              targetLang: targetLang,
+              versions: versions,
+              errors: [],
+              result: FinalResult.Nothing,
+            }))
+          | Error(errs) =>
+            let msg = Js.Array2.joinWith(errs, "; ")
 
-                setState(_ => Ready({
-                  selected: selected,
-                  targetLang: targetLang,
-                  versions: versions,
-                  errors: [],
-                  result: FinalResult.Nothing,
-                }))
-              | Error(errs) =>
-                let msg = Js.Array2.joinWith(errs, "; ")
-
-                dispatchError(CompilerLoadingError(msg))
-              }
-            )
+            dispatchError(CompilerLoadingError(msg))
           }
-        | Error({text, status}) =>
-          dispatchError(SetupError(j`Error occurred: $text (status-code: $status)`))
-        }
-        ()
+        )
       }
-
-      open SimpleRequest
-      make(
-        ~contentType=Plain,
-        ~completed,
-        "https://cdn.rescript-lang.org/VERSIONS",
-      )->send
     | SwitchingCompiler(ready, version, libraries) =>
       attachCompilerAndLibraries(~version, ~libraries, ())->Promise.get(result =>
         switch result {
