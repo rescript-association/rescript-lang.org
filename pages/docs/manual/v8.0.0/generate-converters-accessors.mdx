@@ -138,7 +138,7 @@ console.log(Belt_Array.map(pets, name).join("&"));
 
 </CodeTab>
 
-## Generate Converters for `Js.t` Object and Record
+## Generate Converters for JS Object and Record
 
 > **Note:** In ReScript >= v7 [records are already compiled to JS
 > objects](bind-to-js-object#bind-to-record-like-js-objects). `[@bs.deriving jsConverter]` is therefore
@@ -495,7 +495,7 @@ You can also use `[@bs.deriving {jsConverter: newType}]` to generate abstract ty
 
 ## Convert Record Type to Abstract Record
 
-> **Note**: For ReScript >= v7, we recommend using [plain records to compile to JS objects](#records-as-objects). 
+> **Note**: For ReScript >= v7, we recommend using [plain records to compile to JS objects](bind-to-js-object#bind-to-record-like-js-objects). 
 > This feature might still be useful for certain scenarios, but the ergonomics might be worse 
 
 Use `[@bs.deriving abstract]` on a record type to expand the type into a creation, and a set of getter / setter functions for fields and methods.
@@ -928,7 +928,7 @@ let whisperCatName =
 
 </CodeTab>
 
-## Convert External into `Js.t` Object Creation Function
+## Convert External into JS Object Creation Function
 
 Use `@bs.obj` on an `external` binding to create a function that, when called, will evaluate to a `Js.t` object with fields corresponding to the function's parameter labels.
 

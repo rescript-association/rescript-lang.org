@@ -107,7 +107,7 @@ console.log(Belt_Array.map(pets, name).join("&"));
 
 </CodeTab>
 
-## Generate Converters for `Js.t` Object and Record
+## Generate Converters for JS Object and Record
 
 > **Note:** In ReScript >= v7 [records are already compiled to JS
 > objects](bind-to-js-object#bind-to-record-like-js-objects). `@bs.deriving(jsConverter)` is therefore
@@ -154,7 +154,7 @@ external jsCoordinates : coordinates = "jsCoordinates";
 
 ### More Safety
 
-The above generated functions use `Js.t` object types. You can also hide this implementation detail by making the object type **abstract** by using the `newType` option with `@bs.deriving(jsConverter)`:
+The above generated functions use JS object types. You can also hide this implementation detail by making the object type **abstract** by using the `newType` option with `@bs.deriving(jsConverter)`:
 
 ```res
 @bs.deriving({jsConverter: newType})
@@ -298,7 +298,7 @@ As in similar use-cases before, you can also use `@bs.deriving({jsConverter: new
 
 ## Convert Record Type to Abstract Record
 
-> **Note**: For ReScript >= v7, we recommend using [plain records to compile to JS objects](#records-as-objects). 
+> **Note**: For ReScript >= v7, we recommend using [plain records to compile to JS objects](bind-to-js-object#bind-to-record-like-js-objects). 
 > This feature might still be useful for certain scenarios, but the ergonomics might be worse 
 
 Use `@bs.deriving(abstract)` on a record type to expand the type into a creation, and a set of getter / setter functions for fields and methods.
@@ -567,9 +567,9 @@ let whisperCatName = {
 }
 ```
 
-## Convert External into `Js.t` Object Creation Function
+## Convert External into JS Object Creation Function
 
-Use `@bs.obj` on an `external` binding to create a function that, when called, will evaluate to a `Js.t` object with fields corresponding to the function's parameter labels.
+Use `@bs.obj` on an `external` binding to create a function that, when called, will evaluate to a JS object with fields corresponding to the function's parameter labels.
 
 This is very handy because you can make some of those labelled parameters optional and if you don't pass them in, the output object won't include the corresponding fields. Thus you can use it to dynamically create objects with the subset of fields you need at runtime.
 
@@ -602,7 +602,7 @@ external route: (
 
 This function has four labelled parameters (the fourth one optional), one unlabelled parameter at the end (which we mandate for functions with [optional parameters](function#optional-labeled-arguments), and one parameter (`_method`) that requires an underscore prefix to avoid confusion with the ReScript keyword `method`.
 
-Also of interest is the return type: `_`, which tells ReScript to automatically infer the full type of the `Js.t` object, sparing you the hassle of writing down the type manually!
+Also of interest is the return type: `_`, which tells ReScript to automatically infer the full type of the JS object, sparing you the hassle of writing down the type manually!
 
 The function is called like so:
 
