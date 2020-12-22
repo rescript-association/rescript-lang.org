@@ -7,24 +7,23 @@ import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as Caml_array from "bs-platform/lib/es6/caml_array.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
-import * as SimpleRequest from "./SimpleRequest.js";
-import * as LoadScript from "../ffi/loadScript";
-import LoadScript$1 from "../ffi/loadScript";
+import LoadScript from "../ffi/loadScript";
+import * as LoadScript$1 from "../ffi/loadScript";
 import * as RescriptCompilerApi from "../bindings/RescriptCompilerApi.js";
 
 function loadScript(prim, prim$1, prim$2) {
-  return LoadScript$1(prim, prim$1, prim$2);
+  return LoadScript(prim, prim$1, prim$2);
 }
 
 function removeScript(prim) {
-  LoadScript.removeScript(prim);
+  LoadScript$1.removeScript(prim);
   
 }
 
 function loadScriptPromise(url) {
   var match = $$Promise.pending(undefined);
   var resolve = match[1];
-  LoadScript$1(url, (function (param) {
+  LoadScript(url, (function (param) {
           return Curry._1(resolve, {
                       TAG: 0,
                       _0: undefined,
@@ -46,11 +45,10 @@ var LoadScript$2 = {
   loadScriptPromise: loadScriptPromise
 };
 
-function parseVersions(versions) {
-  return versions.split("\n").filter(function (v) {
-              return v !== "";
-            });
-}
+var versions = [
+  "v8.4.2",
+  "v8.3.0-dev.2"
+];
 
 function getCompilerUrl(version) {
   return "https://cdn.rescript-lang.org/" + version + "/compiler.js";
@@ -61,7 +59,7 @@ function getLibraryCmijUrl(version, libraryName) {
 }
 
 var CdnMeta = {
-  parseVersions: parseVersions,
+  versions: versions,
   getCompilerUrl: getCompilerUrl,
   getLibraryCmijUrl: getLibraryCmijUrl
 };
@@ -368,71 +366,57 @@ function useCompilerManager(initialLangOpt, onAction, param) {
   React.useEffect((function () {
           if (typeof state === "number") {
             var libraries = ["reason-react"];
-            var completed = function (res) {
-              if (res.TAG) {
-                var match = res._0;
-                dispatchError({
-                      TAG: 0,
-                      _0: "Error occurred: " + match.text + " (status-code: " + match.status + ")",
-                      [Symbol.for("name")]: "SetupError"
-                    });
-              } else {
-                var versions = parseVersions(res._0.text);
-                if (versions.length !== 0) {
-                  var latest = Caml_array.get(versions, 0);
-                  $$Promise.get(attachCompilerAndLibraries(latest, libraries, undefined), (function (result) {
-                          if (result.TAG) {
-                            var msg = result._0.join("; ");
-                            return dispatchError({
-                                        TAG: 1,
-                                        _0: msg,
-                                        [Symbol.for("name")]: "CompilerLoadingError"
-                                      });
-                          }
-                          var instance = rescript_compiler.make();
-                          var apiVersion = RescriptCompilerApi.Version.fromString(rescript_compiler.api_version);
-                          var config = instance.getConfig();
-                          var selected_compilerVersion = instance.version;
-                          var selected_ocamlVersion = instance.ocaml.version;
-                          var selected_reasonVersion = instance.reason.version;
-                          var selected = {
-                            id: latest,
-                            apiVersion: apiVersion,
-                            compilerVersion: selected_compilerVersion,
-                            ocamlVersion: selected_ocamlVersion,
-                            reasonVersion: selected_reasonVersion,
-                            libraries: libraries,
-                            config: config,
-                            instance: instance
-                          };
-                          var targetLang = Belt_Option.getWithDefault(Caml_option.undefined_to_opt(RescriptCompilerApi.Version.availableLanguages(apiVersion).find(function (l) {
-                                        return l === initialLang;
-                                      })), RescriptCompilerApi.Version.defaultTargetLang(apiVersion));
-                          return Curry._1(setState, (function (param) {
-                                        return {
-                                                TAG: 2,
-                                                _0: {
-                                                  versions: versions,
-                                                  selected: selected,
-                                                  targetLang: targetLang,
-                                                  errors: [],
-                                                  result: /* Nothing */0
-                                                },
-                                                [Symbol.for("name")]: "Ready"
-                                              };
-                                      }));
-                        }));
-                } else {
-                  dispatchError({
-                        TAG: 0,
-                        _0: "No compiler versions found",
-                        [Symbol.for("name")]: "SetupError"
-                      });
-                }
-              }
-              
-            };
-            SimpleRequest.send(SimpleRequest.make(completed, undefined, /* Plain */1, "https://cdn.rescript-lang.org/VERSIONS"));
+            if (versions.length !== 0) {
+              var latest = Caml_array.get(versions, 0);
+              $$Promise.get(attachCompilerAndLibraries(latest, libraries, undefined), (function (result) {
+                      if (result.TAG) {
+                        var msg = result._0.join("; ");
+                        return dispatchError({
+                                    TAG: 1,
+                                    _0: msg,
+                                    [Symbol.for("name")]: "CompilerLoadingError"
+                                  });
+                      }
+                      var instance = rescript_compiler.make();
+                      var apiVersion = RescriptCompilerApi.Version.fromString(rescript_compiler.api_version);
+                      var config = instance.getConfig();
+                      var selected_compilerVersion = instance.version;
+                      var selected_ocamlVersion = instance.ocaml.version;
+                      var selected_reasonVersion = instance.reason.version;
+                      var selected = {
+                        id: latest,
+                        apiVersion: apiVersion,
+                        compilerVersion: selected_compilerVersion,
+                        ocamlVersion: selected_ocamlVersion,
+                        reasonVersion: selected_reasonVersion,
+                        libraries: libraries,
+                        config: config,
+                        instance: instance
+                      };
+                      var targetLang = Belt_Option.getWithDefault(Caml_option.undefined_to_opt(RescriptCompilerApi.Version.availableLanguages(apiVersion).find(function (l) {
+                                    return l === initialLang;
+                                  })), RescriptCompilerApi.Version.defaultTargetLang(apiVersion));
+                      return Curry._1(setState, (function (param) {
+                                    return {
+                                            TAG: 2,
+                                            _0: {
+                                              versions: versions,
+                                              selected: selected,
+                                              targetLang: targetLang,
+                                              errors: [],
+                                              result: /* Nothing */0
+                                            },
+                                            [Symbol.for("name")]: "Ready"
+                                          };
+                                  }));
+                    }));
+            } else {
+              dispatchError({
+                    TAG: 0,
+                    _0: "No compiler versions found",
+                    [Symbol.for("name")]: "SetupError"
+                  });
+            }
           } else {
             switch (state.TAG | 0) {
               case /* SwitchingCompiler */1 :
@@ -449,10 +433,10 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                                       });
                           }
                           var prim = getCompilerUrl(ready.selected.id);
-                          LoadScript.removeScript(prim);
+                          LoadScript$1.removeScript(prim);
                           Belt_Array.forEach(ready.selected.libraries, (function (lib) {
                                   var prim = getLibraryCmijUrl(ready.selected.id, lib);
-                                  LoadScript.removeScript(prim);
+                                  LoadScript$1.removeScript(prim);
                                   
                                 }));
                           var instance = rescript_compiler.make();
