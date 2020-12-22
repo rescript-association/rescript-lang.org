@@ -18,6 +18,8 @@ You can use the `@bs.deriving` decorator for different code generation scenarios
 
 **Note:** Please be aware that extensive use of code generation might make it harder to understand your programs (since the code being generated is not visible in the source code, and you just need to know what kind of functions / values a decorator generates).
 
+**Another Note:** Since `v8.3` you can drop the `bs.` prefix for all our decorators (e.g. `@bs.deriving` => `@deriving`).
+
 ## Generate Functions & Plain Values for Variants
 
 Use `@bs.deriving(accessors)` on a variant type to create accessor functions for its constructors.
@@ -53,7 +55,6 @@ Variants constructors with payloads generate functions, payload-less constructor
 **Note**:
 - The generated accessors are lower-cased.
 - You can now use these helpers on the JavaScript side! But don't rely on their actual values please.
-- Doesn't work with polymorphic variants.
 
 ### Usage
 
@@ -274,6 +275,8 @@ let error = fruitFromJs(100) /* nope, can't take a random int */
 ```
 
 ## Generate Converters for JS String Enums and Polymorphic Variants
+
+> **Note**: Since ReScript v8.2, polymorphic variants are already compiled to strings, so this feature is getting deprecated at some point. It's currently still useful for aliasing JS output with `@bs.as`.
 
 Similarly as with [generating int converters](#generate-converters-between-js-integer-enums-and-variants), use `@bs.deriving(jsConverter)` on a polymorphic variant type to create converter functions for JS string and ReScript poly variant values.
 
@@ -562,4 +565,52 @@ let whisperCatName = {
   open Cat
   cat->nameGet->Js.String.toLowerCase
 }
+```
+
+## Convert External into `Js.t` Object Creation Function
+
+Use `@bs.obj` on an `external` binding to create a function that, when called, will evaluate to a `Js.t` object with fields corresponding to the function's parameter labels.
+
+This is very handy because you can make some of those labelled parameters optional and if you don't pass them in, the output object won't include the corresponding fields. Thus you can use it to dynamically create objects with the subset of fields you need at runtime.
+
+For example, suppose you need a JavaScript object like this:
+
+
+```js
+var homeRoute = {
+  method: "GET",
+  path: "/",
+  action: () => console.log("Home"),
+  // options: ...
+};
+```
+
+But only the first three fields are required; the options field is optional. You can declare the binding function like so:
+
+```res
+@bs.obj
+external route: (
+  ~_method: string,
+  ~path: string,
+  ~action: list<string> => unit,
+  ~options: {..}=?,
+  unit,
+) => _ = ""
+```
+
+**Note**: the ` = ""` part at the end is just a dummy placeholder, due to syntactic limitations. It serves no purpose currently.
+
+This function has four labelled parameters (the fourth one optional), one unlabelled parameter at the end (which we mandate for functions with [optional parameters](function#optional-labeled-arguments), and one parameter (`_method`) that requires an underscore prefix to avoid confusion with the ReScript keyword `method`.
+
+Also of interest is the return type: `_`, which tells ReScript to automatically infer the full type of the `Js.t` object, sparing you the hassle of writing down the type manually!
+
+The function is called like so:
+
+```res
+let homeRoute = route(
+  ~_method="GET",
+  ~path="/",
+  ~action=_ => Js.log("Home"),
+  (),
+)
 ```
