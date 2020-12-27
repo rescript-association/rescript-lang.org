@@ -39,8 +39,6 @@ let make = (~name: string, ~color: color) => {
 };
 ```
 
-> **Note:** We need to add a `@genType` annotation for `type color` as well, otherwise `genType` cannot create any type conversions for us.
-
 On a successful compile, `genType` will convert `src/MyComp.res` to a TS file called `src/MyComp.gen.ts` which will look something like this:
 
 ```ts
