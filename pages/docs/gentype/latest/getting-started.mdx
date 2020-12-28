@@ -83,7 +83,9 @@ structure:
 
 ## Adding Shims (TS & Flow)
 
-Configure your shim files in your `"gentypeconfig"` in [`bsconfig.json`](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/bsconfig.json), and add relevant `.shims.js` files in a directory which is visible by ReScript e.g.  [`src/shims/`](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/src/shims). An example shim to export ReactEvent can be found [here](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/src/shims/ReactEvent.shim.ts).
+A shim is a TS / Flow file that provides user-defined definitions for library types.
+
+Configure your shim files within `"gentypeconfig"` in your [`bsconfig.json`](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/bsconfig.json), and add relevant `.shims.js` files in a directory which is visible by ReScript e.g.  [`src/shims/`](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/src/shims). An example shim to export ReactEvent can be found [here](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/src/shims/ReactEvent.shim.ts).
 
 ## Testing the Whole Setup
 
