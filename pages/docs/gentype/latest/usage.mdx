@@ -111,7 +111,6 @@ If both `Foo.resi` and `Foo.res` exist, the annotations are taken from `Foo.resi
 
 The behaviour can be overridden by adding annotation `@genType.ignoreInterface` at the top of `Foo.resi`. Use case: expose implementation details to JS but not to ReScript.
 
-
 ## Type Expansion and @genType.opaque
 
 If an exported type `persons` references other types in its definition, those types are also exported by default, as long as they are defined in the same file:
@@ -199,14 +198,14 @@ let functionWithGenTypeAs =
   (~date: float) => @genType.as("type") (~type_: string) => ...
 ```
 
-**NOTE:** For technical reasons, it is not possible to use `@genType.as` on the first argument of a function (restriction lifted on OCaml 4.0.6).
+**NOTE:** For technical reasons, it is not possible to use `@genType.as` on the first argument of a function.
 
 ## Dependent Projects / Libraries
 
 ReScript dependencies are specified in `bs-dependencies`.
-For example, if the dependencies are `"bs-dependencies": ["somelibrary"]` and `somelibrary` contains `Common.re`, this looks up the types of `foo` in the library:
+For example, if the dependencies are `"bs-dependencies": ["somelibrary"]` and `somelibrary` contains `Common.res`, this looks up the types of `foo` in the library:
 
-```reason
+```res
 @genType
 let z = Common.foo;
 ```
