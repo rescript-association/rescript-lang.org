@@ -18,14 +18,13 @@
   let bash = require('highlight.js/lib/languages/bash');
   let json = require('highlight.js/lib/languages/json');
   let html = require('highlight.js/lib/languages/xml');
-  let ts = require('highlight.js/lib/languages/typescript');
   let text = require('highlight.js/lib/languages/plaintext');
   let diff = require('highlight.js/lib/languages/diff');
 
   hljs.registerLanguage('reason', reason);
   hljs.registerLanguage('res', res);
   hljs.registerLanguage('javascript', js);
-  hljs.registerLanguage('ts', ts);
+  hljs.registerLanguage('ts', js);
   hljs.registerLanguage('ocaml', ocaml);
   hljs.registerLanguage('sh', bash);
   hljs.registerLanguage('json', json);
