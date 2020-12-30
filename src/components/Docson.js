@@ -3,12 +3,10 @@
 import * as React from "react";
 import Docson from "docson";
 import * as Docson$1 from "docson";
-import BuildSchemaJson from "../index_data/build-schema.json";
+import BuildSchemaJson from "index_data/build-schema.json";
 
-import "../styles/docson.css";
+import "styles/docson.css";
 ;
-
-var schema = BuildSchemaJson;
 
 function Docson$2(Props) {
   var element = React.useRef(null);
@@ -16,7 +14,7 @@ function Docson$2(Props) {
           var _el = element.current;
           if (!(_el == null)) {
             Docson.templateBaseUrl = "/static/docson";
-            Docson$1.default.doc("docson-root", schema, undefined, "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/master/docs/docson/build-schema.json");
+            Docson$1.default.doc("docson-root", BuildSchemaJson, undefined, "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/master/docs/docson/build-schema.json");
           }
           
         }), []);
@@ -29,7 +27,6 @@ function Docson$2(Props) {
 var make = Docson$2;
 
 export {
-  schema ,
   make ,
   
 }
