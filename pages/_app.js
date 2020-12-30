@@ -6,6 +6,7 @@
   //return <Component {...pageProps} />
 //}
 
-import {make as App} from "common/App.js";
+import "styles/main.css";
+import {make as App} from "src/common/App.js";
 
 export default App;

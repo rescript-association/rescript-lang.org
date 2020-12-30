@@ -1,6 +1,6 @@
-import BlogRes from "re_pages/Blog";
+import BlogRes from "src/Blog";
 
-export { getStaticProps } from "re_pages/Blog";
+export { getStaticProps } from "src/Blog";
 
 export default function Blog(props) {
   return <BlogRes {...props} />
