@@ -31,17 +31,17 @@ var BlogComponent = {
   frontmatter: frontmatter
 };
 
-function Blog_Article$Line(Props) {
+function BlogArticle$Line(Props) {
   return React.createElement("div", {
               className: "block border-t border-snow-darker"
             });
 }
 
 var Line = {
-  make: Blog_Article$Line
+  make: BlogArticle$Line
 };
 
-function Blog_Article$AuthorBox(Props) {
+function BlogArticle$AuthorBox(Props) {
   var author = Props.author;
   var displayName = BlogFrontmatter.Author.getDisplayName(author);
   var src = author.imgUrl;
@@ -69,10 +69,10 @@ function Blog_Article$AuthorBox(Props) {
 }
 
 var AuthorBox = {
-  make: Blog_Article$AuthorBox
+  make: BlogArticle$AuthorBox
 };
 
-function Blog_Article$BlogHeader(Props) {
+function BlogArticle$BlogHeader(Props) {
   var date = Props.date;
   var author = Props.author;
   var co_authors = Props.co_authors;
@@ -111,7 +111,7 @@ function Blog_Article$BlogHeader(Props) {
                                         style: {
                                           minWidth: "8.1875rem"
                                         }
-                                      }, React.createElement(Blog_Article$AuthorBox, {
+                                      }, React.createElement(BlogArticle$AuthorBox, {
                                             author: author
                                           }));
                           })))), articleImg !== undefined ? React.createElement("div", {
@@ -124,11 +124,11 @@ function Blog_Article$BlogHeader(Props) {
                         src: articleImg
                       })) : React.createElement("div", {
                     className: "max-w-705 w-full"
-                  }, React.createElement(Blog_Article$Line, {})));
+                  }, React.createElement(BlogArticle$Line, {})));
 }
 
 var BlogHeader = {
-  make: Blog_Article$BlogHeader
+  make: BlogArticle$BlogHeader
 };
 
 var cwd = Process.cwd();
@@ -186,7 +186,7 @@ function $$default(props) {
           className: "w-full"
         }, React.createElement(Meta.make, tmp), React.createElement("div", {
               className: "mb-10 md:mb-20"
-            }, React.createElement(Blog_Article$BlogHeader, tmp$3)), React.createElement("div", {
+            }, React.createElement(BlogArticle$BlogHeader, tmp$3)), React.createElement("div", {
               className: "flex justify-center"
             }, React.createElement("div", {
                   className: "max-w-705 w-full"
@@ -198,7 +198,7 @@ function $$default(props) {
                             target: "_blank"
                           }, canonical)) : null, React.createElement("div", {
                       className: "mt-12"
-                    }, React.createElement(Blog_Article$Line, {}), React.createElement("div", {
+                    }, React.createElement(BlogArticle$Line, {}), React.createElement("div", {
                           className: "pt-20 flex flex-col items-center"
                         }, React.createElement("div", {
                               className: "text-3xl sm:text-4xl text-center text-night-dark font-medium"
