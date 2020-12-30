@@ -1,4 +1,3 @@
-open Util.ReactStuff
 module Link = Next.Link
 
 // Structure defined by `scripts/extract-tocs.js`
@@ -223,11 +222,13 @@ module Docs = {
       <div className="mb-10">
         <Info>
           <P>
-            {("You are currently looking at the " ++
-            (label ++
-            " docs (Reason v3.6 syntax edition). You can find the latest manual page "))->s}
-            <A href=latestUrl> {"here"->s} </A>
-            {"."->s}
+            {React.string(
+              "You are currently looking at the " ++
+              (label ++
+              " docs (Reason v3.6 syntax edition). You can find the latest manual page "),
+            )}
+            <A href=latestUrl> {React.string("here")} </A>
+            {React.string(".")}
             <p className="text-14 mt-2"> {React.string(additionalText)} </p>
           </P>
         </Info>

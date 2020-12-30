@@ -1,5 +1,3 @@
-open Util.ReactStuff
-
 // This component is representing a embedded image, mainly used for markdown content
 
 @react.component
@@ -15,7 +13,7 @@ let default = (~src: string, ~withShadow=false, ~caption: option<string>=?) => {
     </a>
     {switch caption {
     | None => React.null
-    | Some(caption) => <div className="mt-4 text-14 text-night-light md:ml-16"> {caption->s} </div>
+    | Some(caption) => <div className="mt-4 text-14 text-night-light md:ml-16"> {React.string(caption)} </div>
     }}
   </div>
 }

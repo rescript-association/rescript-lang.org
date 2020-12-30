@@ -1,6 +1,5 @@
 // This file was automatically converted to ReScript from 'AnsiPre.re'
 // Check the output and make sure to delete the original file
-open Util.ReactStuff
 open Ansi
 
 type colorTarget =
@@ -39,7 +38,7 @@ let renderSgrString = (~key: string, sgrStr: SgrString.t): React.element => {
     }
   )
 
-  <span key className> {content->s} </span>
+  <span key className> {React.string(content)} </span>
 }
 
 @react.component
@@ -50,5 +49,5 @@ let make = (~className=?, ~children: string) => {
   })
 
   // Note: pre is essential here, otherwise whitespace and newlines are not respected
-  <pre ?className> {spans->ate} </pre>
+  <pre ?className> {React.array(spans)} </pre>
 }

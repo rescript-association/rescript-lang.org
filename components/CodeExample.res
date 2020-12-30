@@ -1,5 +1,3 @@
-open Util.ReactStuff
-
 let langShortname = (lang: string) =>
   switch lang {
   | "ocaml" => "ml"
@@ -17,7 +15,7 @@ let make = (~highlightedLines=[], ~code: string, ~showLabel=true, ~lang="text") 
   let label = if showLabel {
     let label = langShortname(lang)
     <div className="flex self-end font-sans mb-4 text-sm font-bold text-night-light px-4">
-      {Js.String2.toUpperCase(label)->s}
+      {Js.String2.toUpperCase(label)->React.string}
     </div>
   } else {
     <div className="mt-4" />
@@ -85,7 +83,7 @@ module Toggle = {
           (" flex-none px-4 inline-block p-2 bg-gray-10 rounded-tl rounded-tr " ++
           activeClass)}
           onClick>
-          {label->s}
+          {React.string(label)}
         </span>
       })
 
@@ -97,8 +95,8 @@ module Toggle = {
       <div className="flex w-full flex-col rounded-none text-night-dark">
         <div
           className="flex w-full overflow-auto scrolling-touch font-sans bg-transparent text-sm text-gray-60-tr">
-          <div className="flex"> {tabElements->ate} </div>
-          <div className="flex-1 border-b border-gray-20"> {j`\\u00A0`->s} </div>
+          <div className="flex"> {React.array(tabElements)} </div>
+          <div className="flex-1 border-b border-gray-20"> {React.string(j`\\u00A0`)} </div>
         </div>
         <div
           className="px-4 text-base pb-4 pt-4 overflow-x-auto bg-snow-light border-snow-dark xs:rounded-b border border-t-0">

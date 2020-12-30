@@ -13,8 +13,6 @@
  we need right away.
  */
 
-open Util.ReactStuff
-
 module Link = Next.Link
 
 let rescriptDefaultImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598616442/reason%20association/rescript-lang.org/art-3-rescript-launch_ovoibg.jpg"
@@ -39,7 +37,8 @@ module Badge = {
 
     <div
       className={bgColor ++ " flex items-center h-6 font-medium tracking-tight text-onyx-80 text-14 px-2 rounded-sm"}>
-      <div> <img className="h-3 block mr-1" src="/static/star.svg" /> </div> <div> {text->s} </div>
+      <div> <img className="h-3 block mr-1" src="/static/star.svg" /> </div>
+      <div> {React.string(text)} </div>
     </div>
   }
 }
@@ -57,7 +56,7 @@ module CategorySelector = {
       className={(
         isActive ? active : "hover:cursor-pointer hover:text-onyx"
       ) ++ "  px-4 inline-block"}>
-      {text->s}
+      {React.string(text)}
     </div>
   }
 
@@ -86,7 +85,7 @@ module CategorySelector = {
         }
 
         renderTab(~isActive, ~text, ~onClick)
-      })->ate}
+      })->React.array}
     </div>
   }
 }
@@ -122,14 +121,14 @@ module BlogCard = {
       </div>
       <div className="px-2">
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
-          <a> <h2 className=Text.H3.default> {title->s} </h2> </a>
+          <a> <h2 className=Text.H3.default> {React.string(title)} </h2> </a>
         </Link>
         <div className="text-night-light text-sm">
           {switch category {
-          | Some(category) => <> {category->s} {j` · `->s} </>
+          | Some(category) => <> {React.string(category)} {React.string(j` · `)} </>
           | None => React.null
           }}
-          {date->Util.Date.toDayMonthYear->s}
+          {React.string(date->Util.Date.toDayMonthYear)}
         </div>
       </div>
     </section>
@@ -158,7 +157,7 @@ module FeatureCard = {
       className="flex sm:px-4 md:px-8 lg:px-0 flex-col justify-end lg:flex-row sm:items-center h-full">
       <div
         className="w-full h-full sm:self-start md:self-auto"
-        style={Style.make(
+        style={ReactDOMStyle.make(
           /* ~maxWidth="38.125rem", */
           ~maxHeight="25.4375rem",
           (),
@@ -183,7 +182,7 @@ module FeatureCard = {
       <div
         className="relative px-4 lg:self-auto sm:pt-12 md:px-20 sm:self-start md:-mt-20 mt-4 bg-white lg:w-full lg:pt-0 lg:mt-0 lg:px-0 lg:ml-12">
         <div className="max-w-400 ">
-          <h2 className=Text.H2.default> {title->s} </h2>
+          <h2 className=Text.H2.default> {React.string(title)} </h2>
           <div className="mb-6">
             <div className="flex items-center font-medium text-onyx-50 text-sm my-2">
               <div className="inline-block w-4 h-4 mr-2"> authorImg </div>
@@ -195,22 +194,26 @@ module FeatureCard = {
                     href={"https://twitter.com/" ++ handle}
                     rel="noopener noreferrer"
                     target="_blank">
-                    {displayName->s}
+                    {React.string(displayName)}
                   </a>
-                | None => displayName->s
+                | None => React.string(displayName)
                 }}
                 {switch category {
-                | Some(category) => <> {middleDotSpacer->s} {category->s} {middleDotSpacer->s} </>
-                | None => middleDotSpacer->s
+                | Some(category) => <>
+                    {React.string(middleDotSpacer)}
+                    {React.string(category)}
+                    {React.string(middleDotSpacer)}
+                  </>
+                | None => React.string(middleDotSpacer)
                 }}
-                {date->Util.Date.toDayMonthYear->s}
+                {date->Util.Date.toDayMonthYear->React.string}
               </div>
             </div>
-            <p className="text-night-dark text-16"> {firstParagraph->s} </p>
+            <p className="text-night-dark text-16"> {React.string(firstParagraph)} </p>
           </div>
         </div>
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
-          <a> <Button> {"Read Article"->s} </Button> </a>
+          <a> <Button> {React.string("Read Article")} </Button> </a>
         </Link>
       </div>
     </section>
@@ -262,17 +265,17 @@ let default = (props: props): React.element => {
     <div className="mb-12">
       <Markdown.Warn>
         <h2 className="font-bold text-night-dark text-2xl mb-2">
-          {"Some Blog Posts are Malformed!"->s}
+          {React.string("Some Blog Posts are Malformed!")}
         </h2>
-        <p> {"Any blog post with invalid data will not be displayed in production."->s} </p>
+        <p> {React.string("Any blog post with invalid data will not be displayed in production.")} </p>
         <div>
-          <p className="font-bold mt-4"> {"Errors:"->s} </p>
+          <p className="font-bold mt-4"> {React.string("Errors:")} </p>
           <ul>
             {Belt.Array.mapWithIndex(malformed, (i, m) =>
               <li key={i->Belt.Int.toString} className="list-disc ml-5">
-                {("pages/blog/" ++ (m.id ++ (".mdx: " ++ m.message)))->s}
+                {React.string("pages/blog/" ++ (m.id ++ (".mdx: " ++ m.message)))}
               </li>
-            )->ate}
+            )->React.array}
           </ul>
         </div>
       </Markdown.Warn>
@@ -282,10 +285,10 @@ let default = (props: props): React.element => {
   }
 
   let content = if Belt.Array.length(posts) === 0 {
-    /* <div> "Currently no posts available"->s </div>; */
+    /* <div> {React.string("Currently no posts available")} </div>; */
     <div className="mt-8">
-      <Markdown.H1> {"Blog not yet available"->s} </Markdown.H1>
-      <Markdown.Warn> {"This blog is currently in the works."->s} </Markdown.Warn>
+      <Markdown.H1> {React.string("Blog not yet available")} </Markdown.H1>
+      <Markdown.Warn> {React.string("This blog is currently in the works.")} </Markdown.Warn>
     </div>
   } else {
     let filtered = switch currentSelection {
@@ -300,7 +303,7 @@ let default = (props: props): React.element => {
     }
 
     let result = switch Belt.Array.length(filtered) {
-    | 0 => <div> {"No posts for this category available..."->s} </div>
+    | 0 => <div> {React.string("No posts for this category available...")} </div>
     | _ =>
       let first = Belt.Array.getExn(filtered, 0)
       let rest = Js.Array2.sliceFrom(filtered, 1)
@@ -346,7 +349,7 @@ let default = (props: props): React.element => {
               date={post.frontmatter.date->DateStr.toDate}
               slug=post.id
             />
-          })->ate}
+          })->React.array}
         </div>
       }
 
@@ -355,7 +358,7 @@ let default = (props: props): React.element => {
 
     <>
       <div className="hidden sm:flex justify-center ">
-        <div className="my-16 w-full" style={Style.make(~maxWidth="12rem", ())}>
+        <div className="my-16 w-full" style={ReactDOMStyle.make(~maxWidth="12rem", ())}>
           <CategorySelector
             categories=availableCategories
             onSelected={selection => setSelection(_ => selection)}
@@ -381,14 +384,14 @@ let default = (props: props): React.element => {
           <main className="min-w-320 lg:align-center w-full lg:px-0 max-w-1280 pb-48">
             <Mdx.Provider components=Markdown.default>
               <div className="flex justify-center">
-                <div className="w-full" style={Style.make(~maxWidth="66.625rem", ())}>
+                <div className="w-full" style={ReactDOMStyle.make(~maxWidth="66.625rem", ())}>
                   errorBox content
                 </div>
               </div>
             </Mdx.Provider>
           </main>
         </div>
-        <Footer/>
+        <Footer />
       </div>
     </div>
   </>

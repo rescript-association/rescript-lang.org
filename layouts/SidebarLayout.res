@@ -4,7 +4,6 @@
     in other API related layouts, such as the Markdown representation
     or the Sidebar component.
  */
-open Util.ReactStuff
 module Link = Next.Link
 
 module Toc = {
@@ -35,11 +34,11 @@ module Toc = {
           <Link href>
             <a
               className="font-medium block text-sm text-night-light leading-tight tracking-tight hover:text-primary">
-              {header->s}
+              {React.string(header)}
             </a>
           </Link>
         </li>
-      )->ate}
+      )->React.array}
     </ul>
 }
 
@@ -81,7 +80,7 @@ module Sidebar = {
               <a
                 className={"truncate block py-1 md:h-auto tracking-tight text-night-darker rounded-sm  hover:bg-gray-5 hover:-ml-2 hover:py-1 hover:pl-2 " ++
                 active}>
-                {m.name->s}
+                {React.string(m.name)}
               </a>
             </Link>
             {switch activeToc {
@@ -94,7 +93,7 @@ module Sidebar = {
             | None => React.null
             }}
           </li>
-        })->ate} </ul>
+        })->React.array} </ul>
   }
 
   module Category = {
@@ -106,7 +105,7 @@ module Sidebar = {
     @react.component
     let make = (~getActiveToc=?, ~isItemActive: option<NavItem.t => bool>=?, ~category: t) =>
       <div key=category.name className="my-12">
-        <Title> {category.name->s} </Title>
+        <Title> {React.string(category.name)} </Title>
         <NavItem ?isItemActive ?getActiveToc items=category.items />
       </div>
   }
@@ -138,11 +137,11 @@ module Sidebar = {
         className={(
           isOpen ? "fixed w-full left-0 h-full z-20 min-w-320" : "hidden "
         ) ++ " md:block md:w-48 md:-ml-4 lg:w-1/4 md:h-auto md:relative overflow-y-visible bg-white md:relative"}
-        style={Style.make(~minWidth="12.9375rem", ())}>
+        style={ReactDOMStyle.make(~minWidth="12.9375rem", ())}>
         <aside
           id="sidebar-content"
           className="relative top-0 px-4 w-full block md:top-18 md:pt-24 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24"
-          style={Style.make(~height="calc(100vh - 4.5rem", ())}>
+          style={ReactDOMStyle.make(~height="calc(100vh - 4.5rem", ())}>
           <div className="flex justify-between">
             <div className="w-3/4 md:w-full"> toplevelNav </div>
             <button
@@ -164,7 +163,7 @@ module Sidebar = {
             ->Belt.Array.map(category =>
               <div key=category.name> <Category getActiveToc isItemActive category /> </div>
             )
-            ->ate}
+            ->React.array}
           </div>
         </aside>
       </div>
@@ -178,16 +177,16 @@ module BreadCrumbs = {
     <div className="w-full font-medium tracking-tight overflow-x-auto text-14 text-night">
       {Belt.List.mapWithIndex(crumbs, (i, crumb) => {
         let item = if i === Belt.List.length(crumbs) - 1 {
-          <span key={Belt.Int.toString(i)}> {crumb.name->s} </span>
+          <span key={Belt.Int.toString(i)}> {React.string(crumb.name)} </span>
         } else {
-          <Link key={Belt.Int.toString(i)} href=crumb.href> <a> {crumb.name->s} </a> </Link>
+          <Link key={Belt.Int.toString(i)} href=crumb.href> <a> {React.string(crumb.name)} </a> </Link>
         }
         if i > 0 {
-          <span key={Belt.Int.toString(i)}> {" / "->s} item </span>
+          <span key={Belt.Int.toString(i)}> {React.string(" / ")} item </span>
         } else {
           item
         }
-      })->Belt.List.toArray->ate}
+      })->Belt.List.toArray->React.array}
     </div>
 }
 

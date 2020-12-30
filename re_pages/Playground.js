@@ -3,7 +3,6 @@
 import * as Icon from "../components/Icon.js";
 import * as Meta from "../components/Meta.js";
 import * as $$Text from "../components/Text.js";
-import * as Util from "../common/Util.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as AnsiPre from "../components/AnsiPre.js";
@@ -85,13 +84,13 @@ function Playground$ToggleSelection(Props) {
                       disabled: disabled,
                       onClick: onClick,
                       onMouseDown: onMouseDown
-                    }, Util.ReactStuff.s(label));
+                    }, label);
         }));
   return React.createElement("div", {
               className: (
                 disabled ? "opacity-25" : ""
               ) + "flex w-full"
-            }, Util.ReactStuff.ate(elements));
+            }, elements);
 }
 
 var ToggleSelection = {
@@ -146,7 +145,7 @@ function Playground$Pane(Props) {
                       disabled: disabled,
                       onClick: onClick,
                       onMouseDown: onMouseDown
-                    }, Util.ReactStuff.s(title));
+                    }, title);
         }));
   var body = Belt_Array.mapWithIndex(tabs, (function (i, tab) {
           var className = current === i ? "block h-full" : "hidden";
@@ -159,7 +158,7 @@ function Playground$Pane(Props) {
                       className: "flex bg-night-10 w-full " + (
                         disabled ? "opacity-50" : ""
                       )
-                    }, Util.ReactStuff.ate(headers)), React.createElement("div", undefined, Util.ReactStuff.ate(body))));
+                    }, headers), React.createElement("div", undefined, body)));
 }
 
 var Pane = {
@@ -291,7 +290,7 @@ function renderTitle(targetLang, result) {
   }
   return React.createElement("span", {
               className: match[0]
-            }, Util.ReactStuff.s(match[1]));
+            }, match[1]);
 }
 
 function Playground$Statusbar(Props) {
@@ -361,9 +360,9 @@ function compactErrorLine(highlightOpt, prefix, locMsg) {
                   className: "p-2 " + highlightClass
                 }, React.createElement("span", {
                       className: prefixColor
-                    }, Util.ReactStuff.s(prefixText)), React.createElement("span", {
+                    }, prefixText), React.createElement("span", {
                       className: "font-medium text-night-light"
-                    }, Util.ReactStuff.s(" Line " + locMsg.row + ", column " + locMsg.column + ":")), React.createElement(AnsiPre.make, {
+                    }, " Line " + locMsg.row + ", column " + locMsg.column + ":"), React.createElement(AnsiPre.make, {
                       className: "whitespace-pre-wrap ",
                       children: locMsg.shortMsg
                     })));
@@ -424,7 +423,7 @@ function renderResult(focusedRowCol, targetLang, compilerVersion, result) {
   if (typeof result === "number") {
     var syntax = RescriptCompilerApi.Lang.toString(targetLang);
     return React.createElement(Playground$ResultPane$PreWrap, {
-                children: Util.ReactStuff.s("This playground is now running on compiler version " + compilerVersion + " with " + syntax + " syntax")
+                children: "This playground is now running on compiler version " + compilerVersion + " with " + syntax + " syntax"
               });
   }
   if (result.TAG) {
@@ -434,37 +433,7 @@ function renderResult(focusedRowCol, targetLang, compilerVersion, result) {
           var result$2 = result$1._0;
           switch (result$2.TAG | 0) {
             case /* WarningErr */2 :
-                return Util.ReactStuff.ate(Belt_Array.mapWithIndex(filterHighlightedLocWarnings(focusedRowCol, result$2._0), (function (i, warning) {
-                                  var match;
-                                  match = warning.TAG ? [
-                                      "E",
-                                      warning.details
-                                    ] : [
-                                      "W",
-                                      warning.details
-                                    ];
-                                  var details = match[1];
-                                  return React.createElement("div", {
-                                              key: String(i)
-                                            }, compactErrorLine(isHighlighted(focusedRowCol, details), match[0], details));
-                                })));
-            case /* WarningFlagErr */3 :
-                return React.createElement("div", undefined, Util.ReactStuff.s("There are some issues with your compiler flag configuration:"), Util.ReactStuff.s(result$2._0.msg));
-            default:
-              return Util.ReactStuff.ate(Belt_Array.mapWithIndex(filterHighlightedLocMsgs(focusedRowCol, result$2._0), (function (i, locMsg) {
-                                return React.createElement("div", {
-                                            key: String(i)
-                                          }, compactErrorLine(isHighlighted(focusedRowCol, locMsg), "E", locMsg));
-                              })));
-          }
-      case /* Success */1 :
-          var warnings = result$1._0.warnings;
-          if (warnings.length === 0) {
-            return React.createElement(Playground$ResultPane$PreWrap, {
-                        children: Util.ReactStuff.s("0 Errors, 0 Warnings")
-                      });
-          } else {
-            return Util.ReactStuff.ate(Belt_Array.mapWithIndex(filterHighlightedLocWarnings(focusedRowCol, warnings), (function (i, warning) {
+                return Belt_Array.mapWithIndex(filterHighlightedLocWarnings(focusedRowCol, result$2._0), (function (i, warning) {
                               var match;
                               match = warning.TAG ? [
                                   "E",
@@ -477,10 +446,40 @@ function renderResult(focusedRowCol, targetLang, compilerVersion, result) {
                               return React.createElement("div", {
                                           key: String(i)
                                         }, compactErrorLine(isHighlighted(focusedRowCol, details), match[0], details));
-                            })));
+                            }));
+            case /* WarningFlagErr */3 :
+                return React.createElement("div", undefined, "There are some issues with your compiler flag configuration:", result$2._0.msg);
+            default:
+              return Belt_Array.mapWithIndex(filterHighlightedLocMsgs(focusedRowCol, result$2._0), (function (i, locMsg) {
+                            return React.createElement("div", {
+                                        key: String(i)
+                                      }, compactErrorLine(isHighlighted(focusedRowCol, locMsg), "E", locMsg));
+                          }));
+          }
+      case /* Success */1 :
+          var warnings = result$1._0.warnings;
+          if (warnings.length === 0) {
+            return React.createElement(Playground$ResultPane$PreWrap, {
+                        children: "0 Errors, 0 Warnings"
+                      });
+          } else {
+            return Belt_Array.mapWithIndex(filterHighlightedLocWarnings(focusedRowCol, warnings), (function (i, warning) {
+                          var match;
+                          match = warning.TAG ? [
+                              "E",
+                              warning.details
+                            ] : [
+                              "W",
+                              warning.details
+                            ];
+                          var details = match[1];
+                          return React.createElement("div", {
+                                      key: String(i)
+                                    }, compactErrorLine(isHighlighted(focusedRowCol, details), match[0], details));
+                        }));
           }
       case /* UnexpectedError */2 :
-          return Util.ReactStuff.s(result$1._0);
+          return result$1._0;
       case /* Unknown */3 :
           msg = result$1._0;
           json = result$1._1;
@@ -501,16 +500,16 @@ function renderResult(focusedRowCol, targetLang, compilerVersion, result) {
             msg$2 = "Switched to " + toStr + " with 0 errors";
           }
           return React.createElement(Playground$ResultPane$PreWrap, {
-                      children: Util.ReactStuff.s(msg$2)
+                      children: msg$2
                     });
       case /* Fail */1 :
           var toLang$1 = msg$1.toLang;
           var fromLang = msg$1.fromLang;
-          var errs = Util.ReactStuff.ate(Belt_Array.mapWithIndex(filterHighlightedLocMsgs(focusedRowCol, msg$1.details), (function (i, locMsg) {
-                      return React.createElement("div", {
-                                  key: String(i)
-                                }, compactErrorLine(isHighlighted(focusedRowCol, locMsg), "E", locMsg));
-                    })));
+          var errs = Belt_Array.mapWithIndex(filterHighlightedLocMsgs(focusedRowCol, msg$1.details), (function (i, locMsg) {
+                  return React.createElement("div", {
+                              key: String(i)
+                            }, compactErrorLine(isHighlighted(focusedRowCol, locMsg), "E", locMsg));
+                }));
           var msg$3;
           if (fromLang === toLang$1) {
             var langStr = RescriptCompilerApi.Lang.toString(toLang$1);
@@ -522,10 +521,10 @@ function renderResult(focusedRowCol, targetLang, compilerVersion, result) {
           }
           return React.createElement("div", undefined, React.createElement(Playground$ResultPane$PreWrap, {
                           className: "text-16 mb-4",
-                          children: Util.ReactStuff.s(msg$3)
+                          children: msg$3
                         }), errs);
       case /* UnexpectedError */2 :
-          return Util.ReactStuff.s(msg$1._0);
+          return msg$1._0;
       case /* Unknown */3 :
           msg = msg$1._0;
           json = msg$1._1;
@@ -536,23 +535,23 @@ function renderResult(focusedRowCol, targetLang, compilerVersion, result) {
   var subheader = "font-bold text-night-light text-16";
   return React.createElement("div", undefined, React.createElement(Playground$ResultPane$PreWrap, {
                   children: null
-                }, Util.ReactStuff.s("The compiler bundle API returned a result that couldn't be interpreted. Please open an issue on our "), React.createElement(Markdown.A.make, {
+                }, "The compiler bundle API returned a result that couldn't be interpreted. Please open an issue on our ", React.createElement(Markdown.A.make, {
                       href: "https://github.com/reason-association/rescript-lang.org/issues",
                       target: "_blank",
-                      children: Util.ReactStuff.s("issue tracker")
-                    }), Util.ReactStuff.s(".")), React.createElement("div", {
+                      children: "issue tracker"
+                    }), "."), React.createElement("div", {
                   className: "mt-4"
                 }, React.createElement(Playground$ResultPane$PreWrap, {
                       children: null
                     }, React.createElement("div", {
                           className: subheader
-                        }, Util.ReactStuff.s("Message: ")), Util.ReactStuff.s(msg))), React.createElement("div", {
+                        }, "Message: "), msg)), React.createElement("div", {
                   className: "mt-4"
                 }, React.createElement(Playground$ResultPane$PreWrap, {
                       children: null
                     }, React.createElement("span", {
                           className: subheader
-                        }, Util.ReactStuff.s("Received JSON payload:")), React.createElement("div", undefined, Util.ReactStuff.s(JSON.stringify(json, null, 4))))));
+                        }, "Received JSON payload:"), React.createElement("div", undefined, JSON.stringify(json, null, 4)))));
 }
 
 function renderTitle$1(result) {
@@ -658,7 +657,7 @@ function renderTitle$1(result) {
   }
   return React.createElement("span", {
               className: match[0]
-            }, Util.ReactStuff.s(match[1]));
+            }, match[1]);
 }
 
 function Playground$ResultPane(Props) {
@@ -917,98 +916,98 @@ function Playground$WarningFlagsWidget(Props) {
   var state = match[0];
   var listboxRef = React.useRef(null);
   var inputRef = React.useRef(null);
-  var chips = Util.ReactStuff.ate(Belt_Array.mapWithIndex(flags, (function (i, token) {
-              var flag = token.flag;
-              var enabled = token.enabled;
-              var isActive;
-              switch (state.TAG | 0) {
-                case /* ShowTokenHint */1 :
-                    isActive = state.token.flag === flag;
-                    break;
-                case /* HideSuggestion */0 :
-                case /* Typing */2 :
-                    isActive = false;
-                    break;
-                
-              }
-              var full = (
-                enabled ? "+" : "-"
-              ) + flag;
-              var color = enabled ? (
-                  isActive ? "bg-night-light text-dark-code-3" : "text-dark-code-3"
-                ) : (
-                  isActive ? "bg-night-light text-fire" : "text-fire"
-                );
-              var hoverEnabled;
-              switch (state.TAG | 0) {
-                case /* HideSuggestion */0 :
-                    hoverEnabled = false;
-                    break;
-                case /* ShowTokenHint */1 :
-                case /* Typing */2 :
-                    hoverEnabled = true;
-                    break;
-                
-              }
-              var match;
-              if (hoverEnabled) {
-                var enter = function (evt) {
-                  evt.preventDefault();
-                  evt.stopPropagation();
-                  return Curry._1(setState, (function (prev) {
-                                return {
-                                        TAG: 1,
-                                        lastState: prev,
-                                        token: token,
-                                        [Symbol.for("name")]: "ShowTokenHint"
-                                      };
-                              }));
-                };
-                var leave = function (evt) {
-                  evt.preventDefault();
-                  evt.stopPropagation();
-                  return Curry._1(setState, (function (prev) {
-                                switch (prev.TAG | 0) {
-                                  case /* ShowTokenHint */1 :
-                                      return prev.lastState;
-                                  case /* HideSuggestion */0 :
-                                  case /* Typing */2 :
-                                      return prev;
-                                  
-                                }
-                              }));
-                };
-                match = [
-                  enter,
-                  leave
-                ];
-              } else {
-                match = [
-                  undefined,
-                  undefined
-                ];
-              }
-              var onClick = function (evt) {
-                evt.preventDefault();
-                return Curry._1(onUpdate, Belt_Array.keep(flags, (function (t) {
-                                  return t.flag !== flag;
-                                })));
-              };
-              var tmp = {
-                key: String(i) + flag,
-                className: color + " hover:cursor-default text-16 inline-block border border-night-light rounded-full px-2 mr-1",
-                onClick: onClick
-              };
-              var tmp$1 = match[0];
-              if (tmp$1 !== undefined) {
-                tmp.onMouseEnter = Caml_option.valFromOption(tmp$1);
-              }
-              var tmp$2 = match[1];
-              if (tmp$2 !== undefined) {
-                tmp.onMouseLeave = Caml_option.valFromOption(tmp$2);
-              }
-              return React.createElement("span", tmp, Util.ReactStuff.s(full));
-            })));
+  var chips = Belt_Array.mapWithIndex(flags, (function (i, token) {
+          var flag = token.flag;
+          var enabled = token.enabled;
+          var isActive;
+          switch (state.TAG | 0) {
+            case /* ShowTokenHint */1 :
+                isActive = state.token.flag === flag;
+                break;
+            case /* HideSuggestion */0 :
+            case /* Typing */2 :
+                isActive = false;
+                break;
+            
+          }
+          var full = (
+            enabled ? "+" : "-"
+          ) + flag;
+          var color = enabled ? (
+              isActive ? "bg-night-light text-dark-code-3" : "text-dark-code-3"
+            ) : (
+              isActive ? "bg-night-light text-fire" : "text-fire"
+            );
+          var hoverEnabled;
+          switch (state.TAG | 0) {
+            case /* HideSuggestion */0 :
+                hoverEnabled = false;
+                break;
+            case /* ShowTokenHint */1 :
+            case /* Typing */2 :
+                hoverEnabled = true;
+                break;
+            
+          }
+          var match;
+          if (hoverEnabled) {
+            var enter = function (evt) {
+              evt.preventDefault();
+              evt.stopPropagation();
+              return Curry._1(setState, (function (prev) {
+                            return {
+                                    TAG: 1,
+                                    lastState: prev,
+                                    token: token,
+                                    [Symbol.for("name")]: "ShowTokenHint"
+                                  };
+                          }));
+            };
+            var leave = function (evt) {
+              evt.preventDefault();
+              evt.stopPropagation();
+              return Curry._1(setState, (function (prev) {
+                            switch (prev.TAG | 0) {
+                              case /* ShowTokenHint */1 :
+                                  return prev.lastState;
+                              case /* HideSuggestion */0 :
+                              case /* Typing */2 :
+                                  return prev;
+                              
+                            }
+                          }));
+            };
+            match = [
+              enter,
+              leave
+            ];
+          } else {
+            match = [
+              undefined,
+              undefined
+            ];
+          }
+          var onClick = function (evt) {
+            evt.preventDefault();
+            return Curry._1(onUpdate, Belt_Array.keep(flags, (function (t) {
+                              return t.flag !== flag;
+                            })));
+          };
+          var tmp = {
+            key: String(i) + flag,
+            className: color + " hover:cursor-default text-16 inline-block border border-night-light rounded-full px-2 mr-1",
+            onClick: onClick
+          };
+          var tmp$1 = match[0];
+          if (tmp$1 !== undefined) {
+            tmp.onMouseEnter = Caml_option.valFromOption(tmp$1);
+          }
+          var tmp$2 = match[1];
+          if (tmp$2 !== undefined) {
+            tmp.onMouseLeave = Caml_option.valFromOption(tmp$2);
+          }
+          return React.createElement("span", tmp, full);
+        }));
   var onKeyDown = function (evt) {
     var key = evt.key;
     var ctrlKey = evt.ctrlKey;
@@ -1132,98 +1131,98 @@ function Playground$WarningFlagsWidget(Props) {
         break;
     case /* ShowTokenHint */1 :
         var token = state.token;
-        suggestions = Caml_option.some(Util.ReactStuff.ate(Belt_Array.map(WarningFlagDescription.lookup(token.flag), (function (param) {
-                        var match = token.enabled ? [
-                            "(Enabled) ",
-                            "text-dark-code-3"
-                          ] : [
-                            "(Disabled) ",
-                            "text-fire"
-                          ];
-                        return React.createElement("div", {
-                                    key: param[0]
-                                  }, React.createElement("span", {
-                                        className: match[1]
-                                      }, Util.ReactStuff.s(match[0])), Util.ReactStuff.s(param[1]));
-                      }))));
+        suggestions = Caml_option.some(Belt_Array.map(WarningFlagDescription.lookup(token.flag), (function (param) {
+                    var match = token.enabled ? [
+                        "(Enabled) ",
+                        "text-dark-code-3"
+                      ] : [
+                        "(Disabled) ",
+                        "text-fire"
+                      ];
+                    return React.createElement("div", {
+                                key: param[0]
+                              }, React.createElement("span", {
+                                    className: match[1]
+                                  }, match[0]), param[1]);
+                  })));
         break;
     case /* Typing */2 :
         var msg = state.suggestion;
         var tmp;
         if (typeof msg === "number") {
-          tmp = Util.ReactStuff.s("Type + / - followed by a number or letter (e.g. +a+1)");
+          tmp = "Type + / - followed by a number or letter (e.g. +a+1)";
         } else if (msg.TAG) {
-          tmp = Util.ReactStuff.s(msg._0);
+          tmp = msg._0;
         } else {
           var selected = msg.selected;
           var precedingTokens = msg.precedingTokens;
           var modifier = msg.modifier;
-          tmp = Util.ReactStuff.ate(Belt_Array.mapWithIndex(msg.results, (function (i, param) {
-                      var flag = param[0];
-                      var activeClass = selected === i ? "bg-night-light" : "";
-                      var ref = selected === i ? Caml_option.some(function (dom) {
-                              var parent = listboxRef.current;
-                              if (!(parent == null) && !(dom == null)) {
-                                return scrollToElement(parent, dom);
-                              }
-                              
-                            }) : undefined;
-                      var onMouseEnter = function (evt) {
-                        evt.preventDefault();
-                        return Curry._1(setState, (function (prev) {
-                                      switch (prev.TAG | 0) {
-                                        case /* HideSuggestion */0 :
-                                        case /* ShowTokenHint */1 :
-                                            return prev;
-                                        case /* Typing */2 :
-                                            var fuzzySuggestion = prev.suggestion;
-                                            if (typeof fuzzySuggestion === "number" || fuzzySuggestion.TAG) {
-                                              return prev;
-                                            } else {
-                                              return {
-                                                      TAG: 2,
-                                                      suggestion: {
-                                                        TAG: 0,
-                                                        modifier: fuzzySuggestion.modifier,
-                                                        precedingTokens: fuzzySuggestion.precedingTokens,
-                                                        results: fuzzySuggestion.results,
-                                                        selected: i,
-                                                        [Symbol.for("name")]: "FuzzySuggestions"
-                                                      },
-                                                      input: state.input,
-                                                      [Symbol.for("name")]: "Typing"
-                                                    };
-                                            }
-                                        
-                                      }
-                                    }));
-                      };
-                      var onClick = function (evt) {
-                        evt.preventDefault();
-                        return Curry._1(setState, (function (prev) {
-                                      switch (prev.TAG | 0) {
-                                        case /* HideSuggestion */0 :
-                                        case /* ShowTokenHint */1 :
-                                            return prev;
-                                        case /* Typing */2 :
-                                            var full = modifier + flag;
-                                            var completed = WarningFlagDescription.Parser.tokensToString(precedingTokens) + full;
-                                            return updateInput(prev, completed);
-                                        
-                                      }
-                                    }));
-                      };
-                      var tmp = {
-                        key: flag,
-                        className: activeClass,
-                        onMouseDown: onClick,
-                        onMouseEnter: onMouseEnter
-                      };
-                      if (ref !== undefined) {
-                        tmp.ref = Caml_option.valFromOption(ref);
-                      }
-                      return React.createElement("div", tmp, Util.ReactStuff.s(modifier + (flag + (": " + param[1]))));
-                    })));
+          tmp = Belt_Array.mapWithIndex(msg.results, (function (i, param) {
+                  var flag = param[0];
+                  var activeClass = selected === i ? "bg-night-light" : "";
+                  var ref = selected === i ? Caml_option.some(function (dom) {
+                          var parent = listboxRef.current;
+                          if (!(parent == null) && !(dom == null)) {
+                            return scrollToElement(parent, dom);
+                          }
+                          
+                        }) : undefined;
+                  var onMouseEnter = function (evt) {
+                    evt.preventDefault();
+                    return Curry._1(setState, (function (prev) {
+                                  switch (prev.TAG | 0) {
+                                    case /* HideSuggestion */0 :
+                                    case /* ShowTokenHint */1 :
+                                        return prev;
+                                    case /* Typing */2 :
+                                        var fuzzySuggestion = prev.suggestion;
+                                        if (typeof fuzzySuggestion === "number" || fuzzySuggestion.TAG) {
+                                          return prev;
+                                        } else {
+                                          return {
+                                                  TAG: 2,
+                                                  suggestion: {
+                                                    TAG: 0,
+                                                    modifier: fuzzySuggestion.modifier,
+                                                    precedingTokens: fuzzySuggestion.precedingTokens,
+                                                    results: fuzzySuggestion.results,
+                                                    selected: i,
+                                                    [Symbol.for("name")]: "FuzzySuggestions"
+                                                  },
+                                                  input: state.input,
+                                                  [Symbol.for("name")]: "Typing"
+                                                };
+                                        }
+                                    
+                                  }
+                                }));
+                  };
+                  var onClick = function (evt) {
+                    evt.preventDefault();
+                    return Curry._1(setState, (function (prev) {
+                                  switch (prev.TAG | 0) {
+                                    case /* HideSuggestion */0 :
+                                    case /* ShowTokenHint */1 :
+                                        return prev;
+                                    case /* Typing */2 :
+                                        var full = modifier + flag;
+                                        var completed = WarningFlagDescription.Parser.tokensToString(precedingTokens) + full;
+                                        return updateInput(prev, completed);
+                                    
+                                  }
+                                }));
+                  };
+                  var tmp = {
+                    key: flag,
+                    className: activeClass,
+                    onMouseDown: onClick,
+                    onMouseEnter: onMouseEnter
+                  };
+                  if (ref !== undefined) {
+                    tmp.ref = Caml_option.valFromOption(ref);
+                  }
+                  return React.createElement("div", tmp, modifier + (flag + (": " + param[1])));
+                }));
         }
         suggestions = Caml_option.some(tmp);
         break;
@@ -1432,7 +1431,7 @@ function Playground$Settings(Props) {
               className: "p-4 pt-8 bg-night-dark text-snow-darker"
             }, React.createElement("div", undefined, React.createElement("div", {
                       className: titleClass
-                    }, Util.ReactStuff.s("ReScript Version")), React.createElement(Playground$DropdownSelect, {
+                    }, "ReScript Version"), React.createElement(Playground$DropdownSelect, {
                       onChange: (function (evt) {
                           evt.preventDefault();
                           var id = evt.target.value;
@@ -1445,18 +1444,18 @@ function Playground$Settings(Props) {
                         }),
                       name: "compilerVersions",
                       value: readyState.selected.id,
-                      children: Util.ReactStuff.ate(Belt_Array.map(readyState.versions, (function (version) {
-                                  return React.createElement("option", {
-                                              key: version,
-                                              className: "py-4",
-                                              value: version
-                                            }, Util.ReactStuff.s(version));
-                                })))
+                      children: Belt_Array.map(readyState.versions, (function (version) {
+                              return React.createElement("option", {
+                                          key: version,
+                                          className: "py-4",
+                                          value: version
+                                        }, version);
+                            }))
                     })), React.createElement("div", {
                   className: "mt-6"
                 }, React.createElement("div", {
                       className: titleClass
-                    }, Util.ReactStuff.s("Syntax")), React.createElement(Playground$ToggleSelection, {
+                    }, "Syntax"), React.createElement(Playground$ToggleSelection, {
                       onChange: onTargetLangSelect,
                       values: availableTargetLangs,
                       toLabel: (function (lang) {
@@ -1467,7 +1466,7 @@ function Playground$Settings(Props) {
                   className: "mt-6"
                 }, React.createElement("div", {
                       className: titleClass
-                    }, Util.ReactStuff.s("Module-System")), React.createElement(Playground$ToggleSelection, {
+                    }, "Module-System"), React.createElement(Playground$ToggleSelection, {
                       onChange: onModuleSystemUpdate,
                       values: [
                         "nodejs",
@@ -1481,10 +1480,10 @@ function Playground$Settings(Props) {
                       className: "mt-8"
                     }, React.createElement("div", {
                           className: titleClass
-                        }, Util.ReactStuff.s("Warning Flags"), React.createElement("button", {
+                        }, "Warning Flags", React.createElement("button", {
                               className: "ml-6 text-14 " + $$Text.Link.standalone,
                               onMouseDown: onResetClick
-                            }, Util.ReactStuff.s("[reset]"))), React.createElement("div", {
+                            }, "[reset]")), React.createElement("div", {
                           className: "flex justify-end"
                         }), React.createElement("div", {
                           style: {
@@ -1588,7 +1587,7 @@ function Playground$ControlPanel$ShareButton(Props) {
   return React.createElement(React.Fragment, undefined, React.createElement("button", {
                   className: match$1[1] + " w-40 transition-all duration-500 ease-in-out inline-block hover:cursor-pointer hover:text-white-80 text-white rounded border px-2 py-1 ",
                   onClick: onClick
-                }, Util.ReactStuff.s(match$1[0])));
+                }, match$1[0]));
 }
 
 var ShareButton = {
@@ -1605,14 +1604,14 @@ function Playground$ControlPanel(Props) {
   var children;
   var exit = 0;
   if (typeof state === "number") {
-    children = Util.ReactStuff.s("Initializing...");
+    children = "Initializing...";
   } else {
     switch (state.TAG | 0) {
       case /* SetupFailed */0 :
           children = null;
           break;
       case /* SwitchingCompiler */1 :
-          children = Util.ReactStuff.s("Switching Compiler...");
+          children = "Switching Compiler...";
           break;
       case /* Ready */2 :
       case /* Compiling */3 :
@@ -1655,7 +1654,7 @@ function Playground$ControlPanel(Props) {
     children = React.createElement(React.Fragment, undefined, React.createElement("div", {
               className: "mr-2"
             }, React.createElement(Playground$ControlPanel$Button, {
-                  children: Util.ReactStuff.s("Format"),
+                  children: "Format",
                   onClick: onFormatClick
                 })), React.createElement(Playground$ControlPanel$ShareButton, {
               createShareLink: createShareLink,
@@ -1823,7 +1822,7 @@ function Playground$OutputPanel(Props) {
       }, resultPane, codeElement);
   var errorPane;
   if (typeof compilerState === "number") {
-    errorPane = React.createElement("div", undefined, Util.ReactStuff.s("Initalizing Playground..."));
+    errorPane = React.createElement("div", undefined, "Initalizing Playground...");
   } else if (compilerState.TAG) {
     var ready$2 = compilerState._0;
     errorPane = React.createElement(Playground$ResultPane, {
@@ -1832,11 +1831,11 @@ function Playground$OutputPanel(Props) {
           result: ready$2.result
         });
   } else {
-    errorPane = React.createElement("div", undefined, Util.ReactStuff.s("Setup failed: " + compilerState._0));
+    errorPane = React.createElement("div", undefined, "Setup failed: " + compilerState._0);
   }
   var settingsPane;
   if (typeof compilerState === "number") {
-    settingsPane = React.createElement("div", undefined, Util.ReactStuff.s("Initalizing Playground..."));
+    settingsPane = React.createElement("div", undefined, "Initalizing Playground...");
   } else if (compilerState.TAG) {
     var ready$3 = compilerState._0;
     var config = ready$3.selected.config;
@@ -1855,7 +1854,7 @@ function Playground$OutputPanel(Props) {
           config: config
         });
   } else {
-    settingsPane = React.createElement("div", undefined, Util.ReactStuff.s("Setup failed: " + compilerState._0));
+    settingsPane = React.createElement("div", undefined, "Setup failed: " + compilerState._0);
   }
   var prevSelected = React.useRef(0);
   var selected;
@@ -2078,7 +2077,7 @@ function Playground$default(Props) {
                   description: "Try ReScript in the browser",
                   title: "ReScript Playground"
                 }), React.createElement(Head, {
-                  children: React.createElement("style", undefined, Util.ReactStuff.s("body { background-color: #010427; } "))
+                  children: React.createElement("style", undefined, "body { background-color: #010427; } ")
                 }), React.createElement("div", {
                   className: "text-16 bg-gray-100"
                 }, React.createElement("div", {

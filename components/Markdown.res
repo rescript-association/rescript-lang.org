@@ -1,8 +1,6 @@
 // This file was automatically converted to ReScript from 'Markdown.re'
 // Check the output and make sure to delete the original file
 
-open Util.ReactStuff
-
 module P = {
   @react.component
   let make = (~children) => <p className="md-p leading-5"> children </p>
@@ -25,7 +23,7 @@ module Cite = {
       style={ReactDOM.Style.make(~maxWidth="30rem", ())}>
       <blockquote className="text-3xl italic mb-2"> children </blockquote>
       {Belt.Option.mapWithDefault(author, React.null, author =>
-        <figcaption className="font-semibold text-sm"> {author->s} </figcaption>
+        <figcaption className="font-semibold text-sm"> {React.string(author)} </figcaption>
       )}
     </div>
 }
@@ -50,7 +48,7 @@ module UrlBox = {
   @react.component
   let make = (~text: string, ~href: string, ~children: Mdx.MdxChildren.t) => {
     let content = switch classify(children) {
-    | String(str) => <p> imgEl {str->s} </p>
+    | String(str) => <p> imgEl {React.string(str)} </p>
     | Element(el) =>
       let subChildren = el->getMdxChildren
       <p> imgEl {subChildren->toReactElement} </p>
@@ -81,11 +79,11 @@ module UrlBox = {
     // a plain <a> component when there is an absolute href
     let link = if Util.Url.isAbsolute(href) {
       <a href rel="noopener noreferrer" className="flex items-center">
-        {text->s} <Icon.ArrowRight className="ml-1" />
+        {React.string(text)} <Icon.ArrowRight className="ml-1" />
       </a>
     } else {
       <Next.Link href>
-        <a className="flex items-center"> {text->s} <Icon.ArrowRight className="ml-1" /> </a>
+        <a className="flex items-center"> {React.string(text)} <Icon.ArrowRight className="ml-1" /> </a>
       </Next.Link>
     }
     <div
@@ -277,7 +275,7 @@ module Code = {
     if isArray(children) {
       // Scenario 1
       let code = children->asStringArray->Js.Array2.joinWith("")
-      <InlineCode> {code->s} </InlineCode>
+      <InlineCode> {React.string(code)} </InlineCode>
     } else if isObject(children) {
       // Scenario 2
       children->asElement
@@ -449,14 +447,14 @@ module Li = {
           open Mdx
           first->fromReactElement->getMdxType
         } {
-        | "p" => <> {head->ate} last </>
-        | _ => <> <p> {head->ate} </p> last </>
+        | "p" => <> {React.array(head)} last </>
+        | _ => <> <p> {React.array(head)} </p> last </>
         }
       | _ => <p> children </p>
       /* Scenario 3 */
       }
     } else if typeOf(children) === "string" {
-      <p> {children->Unsafe.elementAsString->React.string} </p>
+      <p> {children->Util.Unsafe.elementAsString->React.string} </p>
     } else {
       switch {
         /* Unknown Scenario */

@@ -1,5 +1,3 @@
-open Util.ReactStuff
-
 %%raw("require('../styles/main.css')")
 
 /*
@@ -90,11 +88,11 @@ module ToggleSelection = {
         onClick
         key=label
         className={"mr-1 px-2 py-1 rounded inline-block  " ++ active}>
-        {label->s}
+        {React.string(label)}
       </button>
     })
 
-    <div className={(disabled ? "opacity-25" : "") ++ "flex w-full"}> {elements->ate} </div>
+    <div className={(disabled ? "opacity-25" : "") ++ "flex w-full"}> {React.array(elements)} </div>
   }
 }
 
@@ -146,7 +144,7 @@ module Pane = {
       let onClick = _ => ()
       let className = makeTabClass(active)
       <button key={Belt.Int.toString(i) ++ ("-" ++ title)} onMouseDown onClick className disabled>
-        {title->s}
+        {React.string(title)}
       </button>
     })
 
@@ -159,9 +157,9 @@ module Pane = {
     <div>
       <div>
         <div className={"flex bg-night-10 w-full " ++ (disabled ? "opacity-50" : "")}>
-          {headers->ate}
+          {React.array(headers)}
         </div>
-        <div> {body->ate} </div>
+        <div> {React.array(body)} </div>
       </div>
     </div>
   }
@@ -210,7 +208,7 @@ module Statusbar = {
     | Nothing => (okClass, "Ready")
     }
 
-    <span className> {text->s} </span>
+    <span className> {React.string(text)} </span>
   }
 
   @react.component
@@ -274,8 +272,10 @@ module ResultPane = {
     <div
       className="font-mono mb-4 pb-6 last:mb-0 last:pb-0 last:border-0 border-b border-night-light ">
       <div className={"p-2 " ++ highlightClass}>
-        <span className=prefixColor> {prefixText->s} </span>
-        <span className="font-medium text-night-light"> {j` Line $row, column $column:`->s} </span>
+        <span className=prefixColor> {React.string(prefixText)} </span>
+        <span className="font-medium text-night-light">
+          {React.string(j` Line $row, column $column:`)}
+        </span>
         <AnsiPre className="whitespace-pre-wrap "> shortMsg </AnsiPre>
       </div>
     </div>
@@ -356,7 +356,7 @@ module ResultPane = {
             )}
           </div>
         )
-        ->ate
+        ->React.array
       | WarningErr(warnings) =>
         filterHighlightedLocWarnings(~focusedRowCol, warnings)
         ->Belt.Array.mapWithIndex((i, warning) => {
@@ -368,13 +368,16 @@ module ResultPane = {
             {compactErrorLine(~highlight=isHighlighted(~focusedRowCol?, details), ~prefix, details)}
           </div>
         })
-        ->ate
+        ->React.array
       | WarningFlagErr({msg}) =>
-        <div> {"There are some issues with your compiler flag configuration:"->s} {msg->s} </div>
+        <div>
+          {React.string("There are some issues with your compiler flag configuration:")}
+          {React.string(msg)}
+        </div>
       }
     | Comp(Success({warnings})) =>
       if Array.length(warnings) === 0 {
-        <PreWrap> {"0 Errors, 0 Warnings"->s} </PreWrap>
+        <PreWrap> {React.string("0 Errors, 0 Warnings")} </PreWrap>
       } else {
         filterHighlightedLocWarnings(~focusedRowCol, warnings)
         ->Belt.Array.mapWithIndex((i, warning) => {
@@ -386,7 +389,7 @@ module ResultPane = {
             {compactErrorLine(~highlight=isHighlighted(~focusedRowCol?, details), ~prefix, details)}
           </div>
         })
-        ->ate
+        ->React.array
       }
     | Conv(Success({fromLang, toLang})) =>
       let msg = if fromLang === toLang {
@@ -395,7 +398,7 @@ module ResultPane = {
         let toStr = Api.Lang.toString(toLang)
         j`Switched to $toStr with 0 errors`
       }
-      <PreWrap> {msg->s} </PreWrap>
+      <PreWrap> {React.string(msg)} </PreWrap>
     | Conv(Fail({fromLang, toLang, details})) =>
       let errs =
         filterHighlightedLocMsgs(~focusedRowCol, details)
@@ -408,7 +411,7 @@ module ResultPane = {
             )}
           </div>
         )
-        ->ate
+        ->React.array
 
       // The way the UI is currently designed, there shouldn't be a case where fromLang !== toLang.
       // We keep both cases though in case we change things later
@@ -420,36 +423,42 @@ module ResultPane = {
         let toStr = Api.Lang.toString(toLang)
         j`Could not convert from "$fromStr" to "$toStr" due to malformed syntax:`
       }
-      <div> <PreWrap className="text-16 mb-4"> {msg->s} </PreWrap> errs </div>
+      <div> <PreWrap className="text-16 mb-4"> {React.string(msg)} </PreWrap> errs </div>
     | Comp(UnexpectedError(msg))
     | Conv(UnexpectedError(msg)) =>
-      msg->s
+      React.string(msg)
     | Comp(Unknown(msg, json))
     | Conv(Unknown(msg, json)) =>
       let subheader = "font-bold text-night-light text-16"
       <div>
         <PreWrap>
-          {"The compiler bundle API returned a result that couldn't be interpreted. Please open an issue on our "->s}
+          {React.string(
+            "The compiler bundle API returned a result that couldn't be interpreted. Please open an issue on our ",
+          )}
           <Markdown.A
             target="_blank" href="https://github.com/reason-association/rescript-lang.org/issues">
-            {"issue tracker"->s}
+            {React.string("issue tracker")}
           </Markdown.A>
-          {"."->s}
+          {React.string(".")}
         </PreWrap>
         <div className="mt-4">
-          <PreWrap> <div className=subheader> {"Message: "->s} </div> {msg->s} </PreWrap>
+          <PreWrap>
+            <div className=subheader> {React.string("Message: ")} </div> {React.string(msg)}
+          </PreWrap>
         </div>
         <div className="mt-4">
           <PreWrap>
-            <span className=subheader> {"Received JSON payload:"->s} </span>
-            <div> {Util.Json.prettyStringify(json)->s} </div>
+            <span className=subheader> {React.string("Received JSON payload:")} </span>
+            <div> {Util.Json.prettyStringify(json)->React.string} </div>
           </PreWrap>
         </div>
       </div>
     | Nothing =>
       let syntax = Api.Lang.toString(targetLang)
       <PreWrap>
-        {j`This playground is now running on compiler version $compilerVersion with $syntax syntax`->s}
+        {React.string(
+          j`This playground is now running on compiler version $compilerVersion with $syntax syntax`,
+        )}
       </PreWrap>
     }
 
@@ -483,7 +492,7 @@ module ResultPane = {
     | Nothing => (okClass, "Ready")
     }
 
-    <span className> {text->s} </span>
+    <span className> {React.string(text)} </span>
   }
 
   @react.component
@@ -753,9 +762,9 @@ module WarningFlagsWidget = {
         ?onMouseLeave
         className={color ++ " hover:cursor-default text-16 inline-block border border-night-light rounded-full px-2 mr-1"}
         key={Belt.Int.toString(i) ++ flag}>
-        {full->s}
+        {React.string(full)}
       </span>
-    })->ate
+    })->React.array
 
     let onKeyDown = evt => {
       let key = ReactEvent.Keyboard.key(evt)
@@ -838,12 +847,14 @@ module WarningFlagsWidget = {
           ("(Disabled) ", "text-fire")
         }
 
-        <div key=num> <span className=color> {modifier->s} </span> {description->s} </div>
-      })->ate->Some
+        <div key=num>
+          <span className=color> {React.string(modifier)} </span> {React.string(description)}
+        </div>
+      })->React.array->Some
     | Typing(typing) =>
       let suggestions = switch typing.suggestion {
-      | NoSuggestion => "Type + / - followed by a number or letter (e.g. +a+1)"->s
-      | ErrorSuggestion(msg) => msg->s
+      | NoSuggestion => React.string("Type + / - followed by a number or letter (e.g. +a+1)")
+      | ErrorSuggestion(msg) => React.string(msg)
       | FuzzySuggestions({precedingTokens, selected, results, modifier}) =>
         Belt.Array.mapWithIndex(results, (i, (flag, desc)) => {
           let activeClass = selected === i ? "bg-night-light" : ""
@@ -891,9 +902,9 @@ module WarningFlagsWidget = {
           }
 
           <div ?ref onMouseEnter onMouseDown=onClick className=activeClass key=flag>
-            {(modifier ++ (flag ++ (": " ++ desc)))->s}
+            {React.string(modifier ++ (flag ++ (": " ++ desc)))}
           </div>
-        })->ate
+        })->React.array
       }
       Some(suggestions)
     | HideSuggestion(_) => None
@@ -1059,7 +1070,7 @@ module Settings = {
     let titleClass = "text-18 font-bold mb-2"
     <div className="p-4 pt-8 bg-night-dark text-snow-darker">
       <div>
-        <div className=titleClass> {"ReScript Version"->s} </div>
+        <div className=titleClass> {React.string("ReScript Version")} </div>
         <DropdownSelect
           name="compilerVersions"
           value=readyState.selected.id
@@ -1069,12 +1080,12 @@ module Settings = {
             onCompilerSelect(id)
           }}>
           {Belt.Array.map(readyState.versions, version =>
-            <option className="py-4" key=version value=version> {version->s} </option>
-          )->ate}
+            <option className="py-4" key=version value=version> {React.string(version)} </option>
+          )->React.array}
         </DropdownSelect>
       </div>
       <div className="mt-6">
-        <div className=titleClass> {"Syntax"->s} </div>
+        <div className=titleClass> {React.string("Syntax")} </div>
         <ToggleSelection
           values=availableTargetLangs
           toLabel={lang => lang->Api.Lang.toExt->Js.String2.toUpperCase}
@@ -1083,7 +1094,7 @@ module Settings = {
         />
       </div>
       <div className="mt-6">
-        <div className=titleClass> {"Module-System"->s} </div>
+        <div className=titleClass> {React.string("Module-System")} </div>
         <ToggleSelection
           values=["nodejs", "es6"]
           toLabel={value => value}
@@ -1092,9 +1103,9 @@ module Settings = {
         />
         <div className="mt-8">
           <div className=titleClass>
-            {"Warning Flags"->s}
+            {React.string("Warning Flags")}
             <button onMouseDown=onResetClick className={"ml-6 text-14 " ++ Text.Link.standalone}>
-              {"[reset]"->s}
+              {React.string("[reset]")}
             </button>
           </div>
           <div className="flex justify-end" />
@@ -1188,7 +1199,7 @@ module ControlPanel = {
         <button
           onClick
           className={className ++ " w-40 transition-all duration-500 ease-in-out inline-block hover:cursor-pointer hover:text-white-80 text-white rounded border px-2 py-1 "}>
-          {text->s}
+          {React.string(text)}
         </button>
       </>
     }
@@ -1204,8 +1215,8 @@ module ControlPanel = {
   ) => {
     let router = Next.Router.useRouter()
     let children = switch state {
-    | Init => "Initializing..."->s
-    | SwitchingCompiler(_, _, _) => "Switching Compiler..."->s
+    | Init => React.string("Initializing...")
+    | SwitchingCompiler(_, _, _) => React.string("Switching Compiler...")
     | Compiling(ready, _)
     | Ready(ready) =>
       let onFormatClick = evt => {
@@ -1237,7 +1248,9 @@ module ControlPanel = {
         origin ++ (router.route ++ querystring)
       }
       <>
-        <div className="mr-2"> <Button onClick=onFormatClick> {"Format"->s} </Button> </div>
+        <div className="mr-2">
+          <Button onClick=onFormatClick> {React.string("Format")} </Button>
+        </div>
         <ShareButton actionIndicatorKey createShareLink />
       </>
     | _ => React.null
@@ -1359,8 +1372,8 @@ module OutputPanel = {
         compilerVersion=ready.selected.compilerVersion
         result=ready.result
       />
-    | SetupFailed(msg) => <div> {("Setup failed: " ++ msg)->s} </div>
-    | Init => <div> {"Initalizing Playground..."->s} </div>
+    | SetupFailed(msg) => <div> {React.string("Setup failed: " ++ msg)} </div>
+    | Init => <div> {React.string("Initalizing Playground...")} </div>
     }
 
     let settingsPane = switch compilerState {
@@ -1371,8 +1384,8 @@ module OutputPanel = {
       let setConfig = config => compilerDispatch(UpdateConfig(config))
 
       <Settings readyState=ready dispatch=compilerDispatch editorCode setConfig config />
-    | SetupFailed(msg) => <div> {("Setup failed: " ++ msg)->s} </div>
-    | Init => <div> {"Initalizing Playground..."->s} </div>
+    | SetupFailed(msg) => <div> {React.string("Setup failed: " ++ msg)} </div>
+    | Init => <div> {React.string("Initalizing Playground...")} </div>
     }
 
     let prevSelected = React.useRef(0)
@@ -1561,7 +1574,7 @@ let default = () => {
 
   <>
     <Meta title="ReScript Playground" description="Try ReScript in the browser" />
-    <Next.Head> <style> {j`body { background-color: #010427; } `->s} </style> </Next.Head>
+    <Next.Head> <style> {React.string(j`body { background-color: #010427; } `)} </style> </Next.Head>
     <div className="text-16 bg-gray-100">
       <div className="text-night text-14">
         <Navigation fixed=false overlayState />

@@ -32,7 +32,7 @@ function Blog$Badge(Props) {
             }, React.createElement("div", undefined, React.createElement("img", {
                       className: "h-3 block mr-1",
                       src: "/static/star.svg"
-                    })), React.createElement("div", undefined, Util.ReactStuff.s(text)));
+                    })), React.createElement("div", undefined, text));
 }
 
 var Badge = {
@@ -46,7 +46,7 @@ function renderTab(text, isActive, onClick) {
                 isActive ? "bg-snow-dark text-onyx rounded py-1" : "hover:cursor-pointer hover:text-onyx"
               ) + "  px-4 inline-block",
               onClick: onClick
-            }, Util.ReactStuff.s(text));
+            }, text);
 }
 
 function Blog$CategorySelector(Props) {
@@ -64,17 +64,17 @@ function Blog$CategorySelector(Props) {
             })));
   return React.createElement("div", {
               className: "text-16 w-full flex items-center justify-between text-onyx-50"
-            }, Util.ReactStuff.ate(Belt_Array.map(tabs, (function (tab) {
-                        var onClick = function (evt) {
-                          evt.preventDefault();
-                          return Curry._1(onSelected, tab);
-                        };
-                        var isActive = Caml_obj.caml_equal(selected, tab);
-                        var text = typeof tab === "number" ? (
-                            tab !== 0 ? "Archived" : "All"
-                          ) : BlogFrontmatter.Category.toString(tab._0);
-                        return renderTab(text, isActive, onClick);
-                      }))));
+            }, Belt_Array.map(tabs, (function (tab) {
+                    var onClick = function (evt) {
+                      evt.preventDefault();
+                      return Curry._1(onSelected, tab);
+                    };
+                    var isActive = Caml_obj.caml_equal(selected, tab);
+                    var text = typeof tab === "number" ? (
+                        tab !== 0 ? "Archived" : "All"
+                      ) : BlogFrontmatter.Category.toString(tab._0);
+                    return renderTab(text, isActive, onClick);
+                  })));
 }
 
 var CategorySelector = {
@@ -118,10 +118,10 @@ function Blog$BlogCard(Props) {
                       as: "/blog/" + slug,
                       children: React.createElement("a", undefined, React.createElement("h2", {
                                 className: "text-onyx font-semibold text-21 leading-2"
-                              }, Util.ReactStuff.s(title)))
+                              }, title))
                     }), React.createElement("div", {
                       className: "text-night-light text-sm"
-                    }, category !== undefined ? React.createElement(React.Fragment, undefined, Util.ReactStuff.s(category), Util.ReactStuff.s(" · ")) : null, Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date)))));
+                    }, category !== undefined ? React.createElement(React.Fragment, undefined, category, " · ") : null, Util.$$Date.toDayMonthYear(date))));
 }
 
 var BlogCard = {
@@ -178,7 +178,7 @@ function Blog$FeatureCard(Props) {
                       className: "max-w-400 "
                     }, React.createElement("h2", {
                           className: "text-onyx font-semibold text-42 leading-2"
-                        }, Util.ReactStuff.s(title)), React.createElement("div", {
+                        }, title), React.createElement("div", {
                           className: "mb-6"
                         }, React.createElement("div", {
                               className: "flex items-center font-medium text-onyx-50 text-sm my-2"
@@ -189,13 +189,13 @@ function Blog$FeatureCard(Props) {
                                         href: "https://twitter.com/" + handle,
                                         rel: "noopener noreferrer",
                                         target: "_blank"
-                                      }, Util.ReactStuff.s(displayName)) : Util.ReactStuff.s(displayName), category !== undefined ? React.createElement(React.Fragment, undefined, Util.ReactStuff.s(middleDotSpacer), Util.ReactStuff.s(category), Util.ReactStuff.s(middleDotSpacer)) : Util.ReactStuff.s(middleDotSpacer), Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date)))), React.createElement("p", {
+                                      }, displayName) : displayName, category !== undefined ? React.createElement(React.Fragment, undefined, middleDotSpacer, category, middleDotSpacer) : middleDotSpacer, Util.$$Date.toDayMonthYear(date))), React.createElement("p", {
                               className: "text-night-dark text-16"
-                            }, Util.ReactStuff.s(firstParagraph)))), React.createElement(Link, {
+                            }, firstParagraph))), React.createElement(Link, {
                       href: "/blog/[slug]",
                       as: "/blog/" + slug,
                       children: React.createElement("a", undefined, React.createElement(Button.make, {
-                                children: Util.ReactStuff.s("Read Article")
+                                children: "Read Article"
                               }))
                     })));
 }
@@ -238,22 +238,22 @@ function $$default(props) {
               children: null
             }, React.createElement("h2", {
                   className: "font-bold text-night-dark text-2xl mb-2"
-                }, Util.ReactStuff.s("Some Blog Posts are Malformed!")), React.createElement("p", undefined, Util.ReactStuff.s("Any blog post with invalid data will not be displayed in production.")), React.createElement("div", undefined, React.createElement("p", {
+                }, "Some Blog Posts are Malformed!"), React.createElement("p", undefined, "Any blog post with invalid data will not be displayed in production."), React.createElement("div", undefined, React.createElement("p", {
                       className: "font-bold mt-4"
-                    }, Util.ReactStuff.s("Errors:")), React.createElement("ul", undefined, Util.ReactStuff.ate(Belt_Array.mapWithIndex(malformed, (function (i, m) {
-                                return React.createElement("li", {
-                                            key: String(i),
-                                            className: "list-disc ml-5"
-                                          }, Util.ReactStuff.s("pages/blog/" + (m.id + (".mdx: " + m.message))));
-                              }))))))) : null;
+                    }, "Errors:"), React.createElement("ul", undefined, Belt_Array.mapWithIndex(malformed, (function (i, m) {
+                            return React.createElement("li", {
+                                        key: String(i),
+                                        className: "list-disc ml-5"
+                                      }, "pages/blog/" + (m.id + (".mdx: " + m.message)));
+                          })))))) : null;
   var content;
   if (posts.length === 0) {
     content = React.createElement("div", {
           className: "mt-8"
         }, React.createElement(Markdown.H1.make, {
-              children: Util.ReactStuff.s("Blog not yet available")
+              children: "Blog not yet available"
             }), React.createElement(Markdown.Warn.make, {
-              children: Util.ReactStuff.s("This blog is currently in the works.")
+              children: "This blog is currently in the works."
             }));
   } else {
     var filtered;
@@ -304,34 +304,34 @@ function $$default(props) {
           }, React.createElement(Blog$FeatureCard, tmp));
       var postsBox = rest.length !== 0 ? React.createElement("div", {
               className: "px-4 md:px-8 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full"
-            }, Util.ReactStuff.ate(Belt_Array.mapWithIndex(rest, (function (i, post) {
-                        var badge = post.frontmatter.badge;
-                        var category = Belt_Option.map(Caml_option.null_to_opt(first.frontmatter.category), (function (category) {
-                                return BlogFrontmatter.Category.toString(category);
-                              }));
-                        var tmp = {
-                          title: post.frontmatter.title,
-                          author: post.frontmatter.author,
-                          date: DateStr.toDate(post.frontmatter.date),
-                          slug: post.id,
-                          key: post.id + String(i)
-                        };
-                        var tmp$1 = Caml_option.null_to_opt(post.frontmatter.previewImg);
-                        if (tmp$1 !== undefined) {
-                          tmp.previewImg = Caml_option.valFromOption(tmp$1);
-                        }
-                        if (category !== undefined) {
-                          tmp.category = Caml_option.valFromOption(category);
-                        }
-                        var tmp$2 = badge === null ? undefined : Caml_option.some(badge);
-                        if (tmp$2 !== undefined) {
-                          tmp.badge = Caml_option.valFromOption(tmp$2);
-                        }
-                        return React.createElement(Blog$BlogCard, tmp);
-                      })))) : null;
+            }, Belt_Array.mapWithIndex(rest, (function (i, post) {
+                    var badge = post.frontmatter.badge;
+                    var category = Belt_Option.map(Caml_option.null_to_opt(first.frontmatter.category), (function (category) {
+                            return BlogFrontmatter.Category.toString(category);
+                          }));
+                    var tmp = {
+                      title: post.frontmatter.title,
+                      author: post.frontmatter.author,
+                      date: DateStr.toDate(post.frontmatter.date),
+                      slug: post.id,
+                      key: post.id + String(i)
+                    };
+                    var tmp$1 = Caml_option.null_to_opt(post.frontmatter.previewImg);
+                    if (tmp$1 !== undefined) {
+                      tmp.previewImg = Caml_option.valFromOption(tmp$1);
+                    }
+                    if (category !== undefined) {
+                      tmp.category = Caml_option.valFromOption(category);
+                    }
+                    var tmp$2 = badge === null ? undefined : Caml_option.some(badge);
+                    if (tmp$2 !== undefined) {
+                      tmp.badge = Caml_option.valFromOption(tmp$2);
+                    }
+                    return React.createElement(Blog$BlogCard, tmp);
+                  }))) : null;
       result = React.createElement(React.Fragment, undefined, featureBox, postsBox);
     } else {
-      result = React.createElement("div", undefined, Util.ReactStuff.s("No posts for this category available..."));
+      result = React.createElement("div", undefined, "No posts for this category available...");
     }
     content = React.createElement(React.Fragment, undefined, React.createElement("div", {
               className: "hidden sm:flex justify-center "

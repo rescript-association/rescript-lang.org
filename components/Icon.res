@@ -1,5 +1,3 @@
-open Util.ReactStuff
-
 module Github = {
   @react.component
   let make = (~className: string) =>
@@ -124,7 +122,7 @@ module Table = {
     <svg className={"stroke-current " ++ className} width="25" height="23">
       <defs>
         <style>
-          {".prefix__a,.prefix__b,.prefix__d{fill:none}.prefix__a,.prefix__b{stroke-width:1.5px}.prefix__c{stroke:none}"->s}
+          {React.string(".prefix__a,.prefix__b,.prefix__d{fill:none}.prefix__a,.prefix__b{stroke-width:1.5px}.prefix__c{stroke:none}")}
         </style>
       </defs>
       <g className="prefix__a">

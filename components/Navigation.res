@@ -1,4 +1,3 @@
-open Util.ReactStuff
 module Link = Next.Link
 
 let link = "no-underline block text-inherit hover:cursor-pointer hover:text-white text-white-80 mb-px"
@@ -99,7 +98,7 @@ module CollapsibleLink = {
           className={(active ? activeLink : link) ++
           (" border-none flex items-center hover:cursor-pointer " ++
           (isOpen ? " text-white" : ""))}>
-          <span className={active ? "border-b border-fire" : ""}> {title->s} </span>
+          <span className={active ? "border-b border-fire" : ""}> {React.string(title)} </span>
           <span className="fill-current flex-no-wrap inline-block ml-2 w-2">
             <Icon.Caret direction className={active ? "text-inherit" : "text-night-light"} />
           </span>
@@ -109,7 +108,7 @@ module CollapsibleLink = {
         className={(
           isOpen ? "flex" : "hidden"
         ) ++ " fixed left-0 border-night border-t bg-onyx min-w-320 w-full h-full sm:h-auto sm:justify-center"}
-        style={Style.make(~marginTop="1.375rem", ())}>
+        style={ReactDOMStyle.make(~marginTop="1.375rem", ())}>
         <div className="max-w-xl w-full"> children </div>
       </div>
     </div>
@@ -202,33 +201,33 @@ module SubNav = {
       <div className="lg:flex lg:flex-row px-4 max-w-xl">
         <div className={reTheme ++ (" " ++ sectionClass)}>
           <Link href="/docs/manual/latest/introduction">
-            <a className=overlineClass> {"Language Manual"->s} </a>
+            <a className=overlineClass> {React.string("Language Manual")} </a>
           </Link>
           <ul className=sectionUl> {languageItems->Belt.Array.mapWithIndex((idx, (title, href)) => {
               let active = route == href ? activeThemeLink ++ " hover:text-primary cursor-auto" : ""
               <li className="w-1/2 xs:w-1/2 h-10" key={Belt.Int.toString(idx)}>
                 <Link href>
                   <a className={"text-white-80 hover:text-white hover:cursor-pointer " ++ active}>
-                    {title->s}
+                    {React.string(title)}
                   </a>
                 </Link>
               </li>
-            })->ate} </ul>
+            })->React.array} </ul>
         </div>
         <div className={jsTheme ++ (" " ++ sectionClass)}>
           <Link href="/docs/reason-compiler/latest/interop-overview">
-            <a className=overlineClass> {"JavaScript & Interop"->s} </a>
+            <a className=overlineClass> {React.string("JavaScript & Interop")} </a>
           </Link>
           <ul className=sectionUl> {recompItems->Belt.Array.mapWithIndex((idx, (title, href)) => {
               let active = route == href ? activeThemeLink ++ " hover:text-primary cursor-auto" : ""
               <li className="w-1/2 xs:w-1/2 h-10" key={Belt.Int.toString(idx)}>
                 <Link href>
                   <a className={"text-white-80 hover:text-white hover:cursor-pointer " ++ active}>
-                    {title->s}
+                    {React.string(title)}
                   </a>
                 </Link>
               </li>
-            })->ate} </ul>
+            })->React.array} </ul>
         </div>
       </div>
     }
@@ -254,12 +253,12 @@ module SubNav = {
        <div className="lg:flex lg:flex-row px-4 max-w-xl">
          <div className={reTheme ++ " " ++ sectionClass}>
            <Link href="/apis">
-             <a className=overlineClass> "Overview"->s </a>
+             <a className=overlineClass> {React.string("Overview")} </a>
            </Link>
          </div>
          <div className={reTheme ++ " " ++ sectionClass}>
            <Link href="/apis/latest">
-             <a className=overlineClass> "JavaScript"->s </a>
+             <a className=overlineClass> {React.string("JavaScript")} </a>
            </Link>
            <ul className=sectionUl>
              {jsItems
@@ -275,7 +274,7 @@ module SubNav = {
                           "text-white-80 hover:text-white hover:cursor-pointer "
                           ++ active
                         }>
-                        title->s
+                        {React.string(title)}
                       </a>
                     </Link>
                   </li>;
@@ -299,19 +298,23 @@ module MobileNav = {
         <li className=base> <DocSearch.Textbox id="docsearch-mobile" /> </li>
         <li className=base>
           <Link href="/try">
-            <a className={linkOrActiveLink(~target="/try", ~route)}> {"Playground"->s} </a>
+            <a className={linkOrActiveLink(~target="/try", ~route)}>
+              {React.string("Playground")}
+            </a>
           </Link>
         </li>
         <li className=base>
           <Link href="/blog">
-            <a className={linkOrActiveLinkSubroute(~target="/blog", ~route)}> {"Blog"->s} </a>
+            <a className={linkOrActiveLinkSubroute(~target="/blog", ~route)}>
+              {React.string("Blog")}
+            </a>
           </Link>
         </li>
         /*
          <li className=base>
            <Link href="/community">
              <a className={linkOrActiveLink(~target="/community", ~route)}>
-               "Community"->s
+               {React.string("Community")}
              </a>
            </Link>
          </li>
@@ -322,17 +325,17 @@ module MobileNav = {
             rel="noopener noreferrer"
             target="_blank"
             className=extLink>
-            {"Twitter"->s}
+            {React.string("Twitter")}
           </a>
         </li>
         <li className=base>
           <a href=githubHref rel="noopener noreferrer" target="_blank" className=extLink>
-            {"Github"->s}
+            {React.string("Github")}
           </a>
         </li>
         <li className=base>
           <a href=discourseHref rel="noopener noreferrer" target="_blank" className=extLink>
-            {"Forum"->s}
+            {React.string("Forum")}
           </a>
         </li>
       </ul>
@@ -414,7 +417,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
   <nav
     ref={ReactDOM.Ref.domRef(outerRef)}
     id="header"
-    style={Style.make(~minWidth, ())}
+    style={ReactDOMStyle.make(~minWidth, ())}
     className={fixedNav ++ " flex xs:justify-center w-full h-18 bg-gray-95 shadow text-white-80 text-base"}>
     <div className="flex justify-between mx-4 md:mx-8 items-center h-full w-full max-w-1280">
       <div className="h-8 w-8">
@@ -426,26 +429,27 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
       </div>
       /* Desktop horizontal navigation */
       <div className="flex items-center xs:justify-end w-full bg-gray-95 sm:h-auto sm:relative">
-        <div className="flex ml-10 w-full max-w-320" style={Style.make(~maxWidth="26rem", ())}>
+        <div
+          className="flex ml-10 w-full max-w-320" style={ReactDOMStyle.make(~maxWidth="26rem", ())}>
           <Link href="/docs/latest">
             <a
               className={"mr-5 " ++ linkOrActiveDocsSubroute(~route)}
               onMouseEnter=nonCollapsibleOnMouseEnter>
-              {"Docs"->s}
+              {React.string("Docs")}
             </a>
           </Link>
           <Link href="/docs/manual/latest/api">
             <a
               className={"mr-5 " ++ linkOrActiveApiSubroute(~route)}
               onMouseEnter=nonCollapsibleOnMouseEnter>
-              {"API"->s}
+              {React.string("API")}
             </a>
           </Link>
           <Link href="/try">
             <a
               className={"hidden xs:block mr-5 " ++ linkOrActiveLink(~target="/try", ~route)}
               onMouseEnter=nonCollapsibleOnMouseEnter>
-              {"Playground"->s}
+              {React.string("Playground")}
             </a>
           </Link>
           <Link href="/blog">
@@ -453,14 +457,14 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
               className={"hidden xs:block mr-5 " ++
               linkOrActiveLinkSubroute(~target="/blog", ~route)}
               onMouseEnter=nonCollapsibleOnMouseEnter>
-              {"Blog"->s}
+              {React.string("Blog")}
             </a>
           </Link>
           <Link href="/community">
             <a
               className={"hidden xs:block " ++ linkOrActiveLink(~target="/community", ~route)}
               onMouseEnter=nonCollapsibleOnMouseEnter>
-              {"Community"->s}
+              {React.string("Community")}
             </a>
           </Link>
         </div>
@@ -505,7 +509,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
     </button>
     /* Mobile overlay */
     <div
-      style={Style.make(~minWidth, ~top="4.5rem", ())}
+      style={ReactDOMStyle.make(~minWidth, ~top="4.5rem", ())}
       className={(
         isOverlayOpen ? "flex" : "hidden"
       ) ++ " sm:hidden flex-col fixed top-0 left-0 h-full w-full z-30 sm:w-9/12 bg-gray-100 sm:h-auto sm:flex sm:relative sm:flex-row sm:justify-between"}>
