@@ -7,7 +7,7 @@ open Markdown
 module InvisibleAnchor = {
   @react.component
   let make = (~id: string) => {
-    let style = ReactDOMRe.Style.make(~position="absolute", ~top="-1rem", ())
+    let style = ReactDOM.Style.make(~position="absolute", ~top="-1rem", ())
     <span className="relative" ariaHidden=true> <a id style /> </span>
   }
 }

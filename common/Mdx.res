@@ -95,7 +95,7 @@ module MdxChildren: {
 }
 
 module Components = {
-  type props = {"children": ReasonReact.reactElement}
+  type props = {"children": React.element}
 
   type headerProps = {
     "id": string,
@@ -178,7 +178,7 @@ module Components = {
     pre: React.component<props>,
     @bs.optional
     a: React.component<{
-      "children": ReasonReact.reactElement,
+      "children": React.element,
       "target": option<string>,
       "href": string,
     }>,
@@ -189,6 +189,6 @@ module Provider = {
   @bs.module("@mdx-js/react") @react.component
   external make: (
     ~components: Components.t,
-    ~children: ReasonReact.reactElement=?,
+    ~children: React.element=?,
   ) => React.element = "MDXProvider"
 }

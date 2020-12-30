@@ -22,7 +22,7 @@ module Cite = {
     // https://css-tricks.com/quoting-in-html-quotations-citations-and-blockquotes/
     <div
       className="my-10 border-l-2 border-fire font-normal pl-10 py-1 text-fire"
-      style={ReactDOMRe.Style.make(~maxWidth="30rem", ())}>
+      style={ReactDOM.Style.make(~maxWidth="30rem", ())}>
       <blockquote className="text-3xl italic mb-2"> children </blockquote>
       {Belt.Option.mapWithDefault(author, React.null, author =>
         <figcaption className="font-semibold text-sm"> {author->s} </figcaption>
@@ -104,7 +104,7 @@ module Anchor = {
   /* Js.String2.(id->toLowerCase->Js.String2.replaceByRe([%re "/\\s/g"], "-")); */
   @react.component
   let make = (~id: string) => {
-    let style = ReactDOMRe.Style.make(~position="absolute", ~top="-7rem", ())
+    let style = ReactDOM.Style.make(~position="absolute", ~top="-7rem", ())
     <span className="inline group relative">
       <a
         className="invisible text-night-light opacity-50 text-inherit hover:opacity-100 hover:text-night-light hover:cursor-pointer group-hover:visible"
@@ -412,7 +412,7 @@ module Ol = {
 module Li = {
   let typeOf: 'a => string = %raw("thing => { return typeof thing; }")
   let isArray: 'a => bool = %raw("thing => { return thing instanceof Array; }")
-  external asArray: 'a => array<ReasonReact.reactElement> = "%identity"
+  external asArray: 'a => array<React.element> = "%identity"
 
   @react.component
   let make = (~children) => {
@@ -427,9 +427,9 @@ module Li = {
      We are iterating on these here with quite some bailout JS
  */
 
-    let elements: ReasonReact.reactElement = if isArray(children) {
+    let elements: React.element = if isArray(children) {
       let arr = children->asArray
-      let last: ReasonReact.reactElement = {
+      let last: React.element = {
         open Belt.Array
         arr->getExn(arr->length - 1)
       }
@@ -456,7 +456,7 @@ module Li = {
       /* Scenario 3 */
       }
     } else if typeOf(children) === "string" {
-      <p> {children->Unsafe.elementAsString->ReasonReact.string} </p>
+      <p> {children->Unsafe.elementAsString->React.string} </p>
     } else {
       switch {
         /* Unknown Scenario */

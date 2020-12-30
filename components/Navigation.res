@@ -116,7 +116,7 @@ module CollapsibleLink = {
   }
 }
 
-let useOutsideClick: (ReactDOMRe.Ref.t, unit => unit) => unit = %raw(
+let useOutsideClick: (ReactDOM.Ref.t, unit => unit) => unit = %raw(
   j`(outerRef, trigger) => {
       function handleClickOutside(event) {
         if (outerRef.current && !outerRef.current.contains(event.target)) {
@@ -371,7 +371,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
     setCollapsibles(prev => Belt.Array.map(prev, c => {...c, state: Closed}))
 
   let outerRef = React.useRef(Js.Nullable.null)
-  useOutsideClick(ReactDOMRe.Ref.domRef(outerRef), resetCollapsibles)
+  useOutsideClick(ReactDOM.Ref.domRef(outerRef), resetCollapsibles)
 
   let windowWidth = useWindowWidth()
 
@@ -412,7 +412,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
   let fixedNav = fixed ? "fixed z-30 top-0" : ""
 
   <nav
-    ref={ReactDOMRe.Ref.domRef(outerRef)}
+    ref={ReactDOM.Ref.domRef(outerRef)}
     id="header"
     style={Style.make(~minWidth, ())}
     className={fixedNav ++ " flex xs:justify-center w-full h-18 bg-gray-95 shadow text-white-80 text-base"}>

@@ -4,7 +4,7 @@ module Link = Next.Link
 module Card = {
   @react.component
   let make = (~title: string, ~hrefs: array<(string, string)>) => {
-    let style = ReactDOMRe.Style.make(~maxWidth="21rem", ())
+    let style = ReactDOM.Style.make(~maxWidth="21rem", ())
     <div style className="border border-snow-dark bg-snow-light px-5 py-8 rounded-lg">
       <h2 className="font-bold text-21 mb-4"> {title->s} </h2>
       <ul>

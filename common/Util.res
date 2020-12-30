@@ -40,13 +40,13 @@ module Debounce = {
   }
 }
 module ReactStuff = {
-  let s = ReasonReact.string
-  let ate = ReasonReact.array
+  let s = React.string
+  let ate = React.array
 
   module Unsafe = {
     external elementAsString: React.element => string = "%identity"
   }
-  module Style = ReactDOMRe.Style
+  module Style = ReactDOM.Style
 
   @bs.module("react")
   external lazy_: (unit => Js.Promise.t<'a>) => 'a = "lazy"

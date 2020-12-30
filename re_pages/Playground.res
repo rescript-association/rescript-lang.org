@@ -849,7 +849,7 @@ module WarningFlagsWidget = {
           let activeClass = selected === i ? "bg-night-light" : ""
 
           let ref = if selected === i {
-            ReactDOMRe.Ref.callbackDomRef(dom => {
+            ReactDOM.Ref.callbackDomRef(dom => {
               let el = Js.Nullable.toOption(dom)
               let parent = listboxRef.current->Js.Nullable.toOption
 
@@ -902,9 +902,9 @@ module WarningFlagsWidget = {
     let suggestionBox =
       Belt.Option.map(suggestions, elements =>
         <div
-          ref={ReactDOMRe.Ref.domRef(listboxRef)}
+          ref={ReactDOM.Ref.domRef(listboxRef)}
           className="p-2 absolute overflow-auto z-50 border-b rounded border-l border-r block w-full bg-gray-100"
-          style={ReactDOMRe.Style.make(~maxHeight="15rem", ())}>
+          style={ReactDOM.Style.make(~maxHeight="15rem", ())}>
           elements
         </div>
       )->Belt.Option.getWithDefault(React.null)
@@ -981,7 +981,7 @@ module WarningFlagsWidget = {
         <div>
           chips
           <input
-            ref={ReactDOMRe.Ref.domRef(inputRef)}
+            ref={ReactDOM.Ref.domRef(inputRef)}
             className="outline-none bg-night-dark placeholder-snow-darker placeholder-opacity-50"
             placeholder="Flags"
             type_="text"
@@ -1098,7 +1098,7 @@ module Settings = {
             </button>
           </div>
           <div className="flex justify-end" />
-          <div style={ReactDOMRe.Style.make(~maxWidth="40rem", ())}>
+          <div style={ReactDOM.Style.make(~maxWidth="40rem", ())}>
             <WarningFlagsWidget onUpdate=onWarningFlagsUpdate flags=warnFlagTokens />
           </div>
         </div>
@@ -1338,7 +1338,7 @@ module OutputPanel = {
 
     let codeElement =
       <pre
-        style={ReactDOMRe.Style.make(~height="calc(100vh - 11.5rem)", ())}
+        style={ReactDOM.Style.make(~height="calc(100vh - 11.5rem)", ())}
         className={"whitespace-pre-wrap overflow-y-auto p-4 " ++ (showCm ? "block" : "hidden")}>
         {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="js", ())}
       </pre>
@@ -1346,7 +1346,7 @@ module OutputPanel = {
     let output =
       <div
         className="relative w-full bg-night-dark text-snow-darker"
-        style={ReactDOMRe.Style.make(~height="calc(100vh - 9rem)", ())}>
+        style={ReactDOM.Style.make(~height="calc(100vh - 9rem)", ())}>
         resultPane codeElement
       </div>
 
@@ -1394,11 +1394,11 @@ module OutputPanel = {
       {Pane.title: "JavaScript", content: output},
       {
         title: "Problems",
-        content: <div style={ReactDOMRe.Style.make(~height="50%", ())}> errorPane </div>,
+        content: <div style={ReactDOM.Style.make(~height="50%", ())}> errorPane </div>,
       },
       {
         title: "Settings",
-        content: <div style={ReactDOMRe.Style.make(~height="50%", ())}> settingsPane </div>,
+        content: <div style={ReactDOM.Style.make(~height="50%", ())}> settingsPane </div>,
       },
     ]
 
@@ -1567,11 +1567,11 @@ let default = () => {
         <Navigation fixed=false overlayState />
         <main
           className="bg-gray-100 lg:overflow-hidden lg:h-screen"
-          style={ReactDOMRe.Style.make(~maxHeight="calc(100vh - 4.5rem)", ())}>
+          style={ReactDOM.Style.make(~maxHeight="calc(100vh - 4.5rem)", ())}>
           <div className="w-full h-full flex flex-col lg:flex-row border-t-4 border-night">
             <div
               className="w-full lg:border-r-4 pl-2 border-night"
-              style=?{windowWidth > 1024 ? Some(ReactDOMRe.Style.make(~maxWidth="65%", ())) : None}>
+              style=?{windowWidth > 1024 ? Some(ReactDOM.Style.make(~maxWidth="65%", ())) : None}>
               <div className="bg-gray-100 text-snow-darker">
                 <ControlPanel
                   actionIndicatorKey={Belt.Int.toString(actionCount)}
@@ -1606,7 +1606,7 @@ let default = () => {
             </div>
             <div
               className="relative w-full overflow-x-hidden h-screen lg:h-auto lg:w-1/2"
-              style={ReactDOMRe.Style.make(~maxWidth=windowWidth > 1024 ? "56rem" : "100%", ())}>
+              style={ReactDOM.Style.make(~maxWidth=windowWidth > 1024 ? "56rem" : "100%", ())}>
               <OutputPanel compilerDispatch compilerState editorCode />
               <div className="absolute bottom-0 w-full">
                 <Statusbar

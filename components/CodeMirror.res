@@ -349,7 +349,7 @@ let make = // props relevant for the react wrapper
   ~minHeight: option<string>=?,
   ~maxHeight: option<string>=?,
   ~className: option<string>=?,
-  ~style: option<ReactDOMRe.Style.t>=?,
+  ~style: option<ReactDOM.Style.t>=?,
   ~onChange: option<string => unit>=?,
   ~onMarkerFocus: option<((int, int)) => unit>=?, // (row, column)
   ~onMarkerFocusLeave: option<((int, int)) => unit>=?, // (row, column)
@@ -479,6 +479,6 @@ let make = // props relevant for the react wrapper
   }, (className, windowWidth))
 
   <div ?className ?style>
-    <textarea className="hidden" ref={ReactDOMRe.Ref.domRef(inputElement)} />
+    <textarea className="hidden" ref={ReactDOM.Ref.domRef(inputElement)} />
   </div>
 }
