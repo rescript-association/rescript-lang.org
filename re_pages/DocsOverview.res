@@ -1,18 +1,17 @@
-open Util.ReactStuff
 module Link = Next.Link
 
 module Card = {
   @react.component
   let make = (~title: string, ~hrefs: array<(string, string)>) => {
-    let style = ReactDOMRe.Style.make(~maxWidth="21rem", ())
+    let style = ReactDOM.Style.make(~maxWidth="21rem", ())
     <div style className="border border-snow-dark bg-snow-light px-5 py-8 rounded-lg">
-      <h2 className="font-bold text-21 mb-4"> {title->s} </h2>
+      <h2 className="font-bold text-21 mb-4"> {React.string(title)} </h2>
       <ul>
         {Belt.Array.map(hrefs, ((text, href)) =>
           <li key=text className="text-16 mb-1 last:mb-0">
-            <Markdown.A href> {text->s} </Markdown.A>
+            <Markdown.A href> {React.string(text)} </Markdown.A>
           </li>
-        )->ate}
+        )->React.array}
       </ul>
     </div>
   }
@@ -64,7 +63,7 @@ let default = (~showVersionSelect=true) => {
   }
 
   <>
-    <div> versionSelect <div className="mb-6" /> <Markdown.H1> {"Docs"->s} </Markdown.H1> </div>
+    <div> versionSelect <div className="mb-6" /> <Markdown.H1> {React.string("Docs")} </Markdown.H1> </div>
     <div className="grid grid-cols-1 xs:grid-cols-2 gap-8">
       <Card title="Language Manual" hrefs=languageManual />
       <Card title="Ecosystem" hrefs=ecosystem />

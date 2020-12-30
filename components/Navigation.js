@@ -2,7 +2,6 @@
 
 import * as Url from "../common/Url.js";
 import * as Icon from "./Icon.js";
-import * as Util from "../common/Util.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as DocSearch from "./DocSearch.js";
@@ -147,14 +146,14 @@ function Navigation$MobileNav(Props) {
                           href: "/try",
                           children: React.createElement("a", {
                                 className: linkOrActiveLink("/try", route)
-                              }, Util.ReactStuff.s("Playground"))
+                              }, "Playground")
                         })), React.createElement("li", {
                       className: base
                     }, React.createElement(Link, {
                           href: "/blog",
                           children: React.createElement("a", {
                                 className: linkOrActiveLinkSubroute("/blog", route)
-                              }, Util.ReactStuff.s("Blog"))
+                              }, "Blog")
                         })), React.createElement("li", {
                       className: base
                     }, React.createElement("a", {
@@ -162,21 +161,21 @@ function Navigation$MobileNav(Props) {
                           href: "https://twitter.com/rescriptlang",
                           rel: "noopener noreferrer",
                           target: "_blank"
-                        }, Util.ReactStuff.s("Twitter"))), React.createElement("li", {
+                        }, "Twitter")), React.createElement("li", {
                       className: base
                     }, React.createElement("a", {
                           className: extLink,
                           href: githubHref,
                           rel: "noopener noreferrer",
                           target: "_blank"
-                        }, Util.ReactStuff.s("Github"))), React.createElement("li", {
+                        }, "Github")), React.createElement("li", {
                       className: base
                     }, React.createElement("a", {
                           className: extLink,
                           href: discourseHref,
                           rel: "noopener noreferrer",
                           target: "_blank"
-                        }, Util.ReactStuff.s("Forum")))));
+                        }, "Forum"))));
 }
 
 function Navigation(Props) {
@@ -256,31 +255,31 @@ function Navigation(Props) {
                               children: React.createElement("a", {
                                     className: "mr-5 " + linkOrActiveDocsSubroute(route),
                                     onMouseEnter: nonCollapsibleOnMouseEnter
-                                  }, Util.ReactStuff.s("Docs"))
+                                  }, "Docs")
                             }), React.createElement(Link, {
                               href: "/docs/manual/latest/api",
                               children: React.createElement("a", {
                                     className: "mr-5 " + linkOrActiveApiSubroute(route),
                                     onMouseEnter: nonCollapsibleOnMouseEnter
-                                  }, Util.ReactStuff.s("API"))
+                                  }, "API")
                             }), React.createElement(Link, {
                               href: "/try",
                               children: React.createElement("a", {
                                     className: "hidden xs:block mr-5 " + linkOrActiveLink("/try", route),
                                     onMouseEnter: nonCollapsibleOnMouseEnter
-                                  }, Util.ReactStuff.s("Playground"))
+                                  }, "Playground")
                             }), React.createElement(Link, {
                               href: "/blog",
                               children: React.createElement("a", {
                                     className: "hidden xs:block mr-5 " + linkOrActiveLinkSubroute("/blog", route),
                                     onMouseEnter: nonCollapsibleOnMouseEnter
-                                  }, Util.ReactStuff.s("Blog"))
+                                  }, "Blog")
                             }), React.createElement(Link, {
                               href: "/community",
                               children: React.createElement("a", {
                                     className: "hidden xs:block " + linkOrActiveLink("/community", route),
                                     onMouseEnter: nonCollapsibleOnMouseEnter
-                                  }, Util.ReactStuff.s("Community"))
+                                  }, "Community")
                             })), React.createElement("div", {
                           className: "hidden sm:flex items-center"
                         }, React.createElement("a", {

@@ -16,8 +16,6 @@
       builds are taking too long.  I think we will be fine for now.
   Link to NextJS discussion: https://github.com/zeit/next.js/discussions/11728#discussioncomment-3501
  */
-open Util.ReactStuff
-
 let middleDotSpacer = " " ++ (Js.String.fromCharCode(183) ++ " ")
 
 module Params = {
@@ -66,11 +64,11 @@ module AuthorBox = {
             className="hover:text-night"
             rel="noopener noreferrer"
             target="_blank">
-            {displayName->s}
+            {React.string(displayName)}
           </a>
-        | None => displayName->s
+        | None => React.string(displayName)
         }}
-        <div className="text-night-light"> {author.role->s} </div>
+        <div className="text-night-light"> {React.string(author.role)} </div>
       </div>
     </div>
   }
@@ -95,28 +93,30 @@ module BlogHeader = {
       <div className="w-full max-w-705">
         <div className="text-night-light text-lg mb-5">
           {switch category {
-          | Some(category) => <> {category->s} {middleDotSpacer->s} </>
+          | Some(category) => <> {React.string(category)} {React.string(middleDotSpacer)} </>
           | None => React.null
           }}
-          {Util.Date.toDayMonthYear(date)->s}
+          {React.string(Util.Date.toDayMonthYear(date))}
         </div>
-        <h1 className=Text.H1.default> {title->s} </h1>
+        <h1 className=Text.H1.default> {React.string(title)} </h1>
         {description->Belt.Option.mapWithDefault(React.null, desc =>
           switch desc {
           | "" => <div className="mb-8" />
           | desc =>
-            <div className="my-8 text-onyx"> <Markdown.Intro> {desc->s} </Markdown.Intro> </div>
+            <div className="my-8 text-onyx">
+              <Markdown.Intro> {React.string(desc)} </Markdown.Intro>
+            </div>
           }
         )}
         <div className="flex flex-col md:flex-row mb-12">
           {Belt.Array.map(authors, author =>
             <div
               key=author.username
-              style={Style.make(~minWidth="8.1875rem", ())}
+              style={ReactDOMStyle.make(~minWidth="8.1875rem", ())}
               className="mt-4 md:mt-0 md:ml-8 first:ml-0">
               <AuthorBox author />
             </div>
-          )->ate}
+          )->React.array}
         </div>
       </div>
       {switch articleImg {
@@ -125,7 +125,7 @@ module BlogHeader = {
           <img
             className="h-full w-full object-cover"
             src=articleImg
-            style={Style.make(~maxHeight="33.625rem", ())}
+            style={ReactDOMStyle.make(~maxHeight="33.625rem", ())}
           />
         </div>
       | None => <div className="max-w-705 w-full"> <Line /> </div>
@@ -157,8 +157,10 @@ let default = (props: props) => {
         <div className="mb-10">
           <Warn>
             <P>
-              <span className="font-bold"> {"Important: "->s} </span>
-              {"This is an archived blog post, kept for historic reasons. Please note that this information might be terribly outdated."->s}
+              <span className="font-bold"> {React.string("Important: ")} </span>
+              {React.string(
+                "This is an archived blog post, kept for historic reasons. Please note that this information might be terribly outdated.",
+              )}
             </P>
           </Warn>
         </div>
@@ -206,8 +208,10 @@ let default = (props: props) => {
           {switch canonical->Js.Null.toOption {
           | Some(canonical) =>
             <div className="mt-12 text-14">
-              {"This article was originally released on "->s}
-              <a href=canonical target="_blank" rel="noopener noreferrer"> {canonical->s} </a>
+              {React.string("This article was originally released on ")}
+              <a href=canonical target="_blank" rel="noopener noreferrer">
+                {React.string(canonical)}
+              </a>
             </div>
           | None => React.null
           }}
@@ -215,11 +219,12 @@ let default = (props: props) => {
             <Line />
             <div className="pt-20 flex flex-col items-center">
               <div className="text-3xl sm:text-4xl text-center text-night-dark font-medium">
-                {"Want to read more?"->s}
+                {React.string("Want to read more?")}
               </div>
               <Next.Link href="/blog">
                 <a className="text-fire hover:text-fire-80">
-                  {"Back to Overview"->s} <Icon.ArrowRight className="ml-2 inline-block" />
+                  {React.string("Back to Overview")}
+                  <Icon.ArrowRight className="ml-2 inline-block" />
                 </a>
               </Next.Link>
             </div>
@@ -232,14 +237,16 @@ let default = (props: props) => {
     <div>
       <Markdown.Warn>
         <h2 className="font-bold text-night-dark text-2xl mb-2">
-          {("Could not parse file '_blogposts/" ++ (fullslug ++ ".mdx'"))->s}
+          {React.string("Could not parse file '_blogposts/" ++ (fullslug ++ ".mdx'"))}
         </h2>
         <p>
-          {"The content of this blog post will be displayed as soon as all
-            required frontmatter data has been added."->s}
+          {React.string(
+            "The content of this blog post will be displayed as soon as all
+            required frontmatter data has been added.",
+          )}
         </p>
-        <p className="font-bold mt-4"> {"Errors:"->s} </p>
-        {msg->s}
+        <p className="font-bold mt-4"> {React.string("Errors:")} </p>
+        {React.string(msg)}
       </Markdown.Warn>
     </div>
   }
@@ -254,7 +261,7 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = ctx => {
 
   let props = {fullslug: fullslug}
   let ret = {"props": props}
-  Js.Promise.resolve(ret);
+  Js.Promise.resolve(ret)
 }
 
 let getStaticPaths: Next.GetStaticPaths.t<Params.t> = () => {

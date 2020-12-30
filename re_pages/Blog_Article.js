@@ -63,9 +63,9 @@ function Blog_Article$AuthorBox(Props) {
                         href: "https://twitter.com/" + handle,
                         rel: "noopener noreferrer",
                         target: "_blank"
-                      }, Util.ReactStuff.s(displayName)) : Util.ReactStuff.s(displayName), React.createElement("div", {
+                      }, displayName) : displayName, React.createElement("div", {
                       className: "text-night-light"
-                    }, Util.ReactStuff.s(author.role))));
+                    }, author.role)));
 }
 
 var AuthorBox = {
@@ -88,9 +88,9 @@ function Blog_Article$BlogHeader(Props) {
                   className: "w-full max-w-705"
                 }, React.createElement("div", {
                       className: "text-night-light text-lg mb-5"
-                    }, category !== undefined ? React.createElement(React.Fragment, undefined, Util.ReactStuff.s(category), Util.ReactStuff.s(middleDotSpacer)) : null, Util.ReactStuff.s(Util.$$Date.toDayMonthYear(date$1))), React.createElement("h1", {
+                    }, category !== undefined ? React.createElement(React.Fragment, undefined, category, middleDotSpacer) : null, Util.$$Date.toDayMonthYear(date$1)), React.createElement("h1", {
                       className: "text-onyx font-semibold text-42 leading-2"
-                    }, Util.ReactStuff.s(title)), Belt_Option.mapWithDefault(description, null, (function (desc) {
+                    }, title), Belt_Option.mapWithDefault(description, null, (function (desc) {
                         if (desc === "") {
                           return React.createElement("div", {
                                       className: "mb-8"
@@ -99,22 +99,22 @@ function Blog_Article$BlogHeader(Props) {
                           return React.createElement("div", {
                                       className: "my-8 text-onyx"
                                     }, React.createElement(Markdown.Intro.make, {
-                                          children: Util.ReactStuff.s(desc)
+                                          children: desc
                                         }));
                         }
                       })), React.createElement("div", {
                       className: "flex flex-col md:flex-row mb-12"
-                    }, Util.ReactStuff.ate(Belt_Array.map(authors, (function (author) {
-                                return React.createElement("div", {
-                                            key: author.username,
-                                            className: "mt-4 md:mt-0 md:ml-8 first:ml-0",
-                                            style: {
-                                              minWidth: "8.1875rem"
-                                            }
-                                          }, React.createElement(Blog_Article$AuthorBox, {
-                                                author: author
-                                              }));
-                              }))))), articleImg !== undefined ? React.createElement("div", {
+                    }, Belt_Array.map(authors, (function (author) {
+                            return React.createElement("div", {
+                                        key: author.username,
+                                        className: "mt-4 md:mt-0 md:ml-8 first:ml-0",
+                                        style: {
+                                          minWidth: "8.1875rem"
+                                        }
+                                      }, React.createElement(Blog_Article$AuthorBox, {
+                                            author: author
+                                          }));
+                          })))), articleImg !== undefined ? React.createElement("div", {
                     className: "-mx-8 sm:mx-0 sm:w-full bg-night-10 md:mt-24"
                   }, React.createElement("img", {
                         className: "h-full w-full object-cover",
@@ -148,7 +148,7 @@ function $$default(props) {
                     children: null
                   }, React.createElement("span", {
                         className: "font-bold"
-                      }, Util.ReactStuff.s("Important: ")), Util.ReactStuff.s("This is an archived blog post, kept for historic reasons. Please note that this information might be terribly outdated."))
+                      }, "Important: "), "This is an archived blog post, kept for historic reasons. Please note that this information might be terribly outdated.")
             })) : null;
   var content;
   if (fm.TAG) {
@@ -156,9 +156,9 @@ function $$default(props) {
               children: null
             }, React.createElement("h2", {
                   className: "font-bold text-night-dark text-2xl mb-2"
-                }, Util.ReactStuff.s("Could not parse file '_blogposts/" + (fullslug + ".mdx'"))), React.createElement("p", undefined, Util.ReactStuff.s("The content of this blog post will be displayed as soon as all\n            required frontmatter data has been added.")), React.createElement("p", {
+                }, "Could not parse file '_blogposts/" + (fullslug + ".mdx'")), React.createElement("p", undefined, "The content of this blog post will be displayed as soon as all\n            required frontmatter data has been added."), React.createElement("p", {
                   className: "font-bold mt-4"
-                }, Util.ReactStuff.s("Errors:")), Util.ReactStuff.s(fm._0)));
+                }, "Errors:"), fm._0));
   } else {
     var match = fm._0;
     var canonical = match.canonical;
@@ -200,21 +200,21 @@ function $$default(props) {
                   className: "max-w-705 w-full"
                 }, archivedNote, children, canonical !== null ? React.createElement("div", {
                         className: "mt-12 text-14"
-                      }, Util.ReactStuff.s("This article was originally released on "), React.createElement("a", {
+                      }, "This article was originally released on ", React.createElement("a", {
                             href: canonical,
                             rel: "noopener noreferrer",
                             target: "_blank"
-                          }, Util.ReactStuff.s(canonical))) : null, React.createElement("div", {
+                          }, canonical)) : null, React.createElement("div", {
                       className: "mt-12"
                     }, React.createElement(Blog_Article$Line, {}), React.createElement("div", {
                           className: "pt-20 flex flex-col items-center"
                         }, React.createElement("div", {
                               className: "text-3xl sm:text-4xl text-center text-night-dark font-medium"
-                            }, Util.ReactStuff.s("Want to read more?")), React.createElement(Link, {
+                            }, "Want to read more?"), React.createElement(Link, {
                               href: "/blog",
                               children: React.createElement("a", {
                                     className: "text-fire hover:text-fire-80"
-                                  }, Util.ReactStuff.s("Back to Overview"), React.createElement(Icon.ArrowRight.make, {
+                                  }, "Back to Overview", React.createElement(Icon.ArrowRight.make, {
                                         className: "ml-2 inline-block"
                                       }))
                             }))))));

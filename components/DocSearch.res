@@ -79,7 +79,7 @@ let make = () => {
     className={activeClass ++ " bg-night hover:text-white hover:cursor-pointer flex justify-center p-2 px-3 rounded"}
     onClick>
     <input
-      ref={ReactDOMRe.Ref.domRef(inputRef)}
+      ref={ReactDOM.Ref.domRef(inputRef)}
       type_="text"
       id="docsearch"
       onBlur
@@ -153,7 +153,7 @@ module Textbox = {
       onClick>
       <Icon.MagnifierGlass className="w-5 h-5 mr-3" />
       <input
-        ref={ReactDOMRe.Ref.domRef(inputRef)}
+        ref={ReactDOM.Ref.domRef(inputRef)}
         type_="text"
         id
         onBlur

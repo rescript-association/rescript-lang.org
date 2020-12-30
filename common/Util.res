@@ -39,22 +39,9 @@ module Debounce = {
     }
   }
 }
-module ReactStuff = {
-  let s = ReasonReact.string
-  let ate = ReasonReact.array
 
-  module Unsafe = {
-    external elementAsString: React.element => string = "%identity"
-  }
-  module Style = ReactDOMRe.Style
-
-  @bs.module("react")
-  external lazy_: (unit => Js.Promise.t<'a>) => 'a = "lazy"
-
-  module Suspense = {
-    @bs.module("react") @react.component
-    external make: (~children: React.element) => React.element = "Suspense"
-  }
+module Unsafe = {
+  external elementAsString: React.element => string = "%identity"
 }
 
 module String = {

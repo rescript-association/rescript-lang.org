@@ -3,7 +3,6 @@
 import * as Icon from "../components/Icon.js";
 import * as List from "bs-platform/lib/es6/list.js";
 import * as Meta from "../components/Meta.js";
-import * as Util from "../common/Util.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Footer from "../components/Footer.js";
@@ -21,18 +20,18 @@ function SidebarLayout$Toc(Props) {
   var entries = Props.entries;
   return React.createElement("ul", {
               className: "mt-2 py-1 mb-4 border-l border-primary"
-            }, Util.ReactStuff.ate(Belt_Array.map(entries, (function (param) {
-                        var header = param.header;
-                        return React.createElement("li", {
-                                    key: header,
-                                    className: "pl-2 mt-3 first:mt-1"
-                                  }, React.createElement(Link, {
-                                        href: param.href,
-                                        children: React.createElement("a", {
-                                              className: "font-medium block text-sm text-night-light leading-tight tracking-tight hover:text-primary"
-                                            }, Util.ReactStuff.s(header))
-                                      }));
-                      }))));
+            }, Belt_Array.map(entries, (function (param) {
+                    var header = param.header;
+                    return React.createElement("li", {
+                                key: header,
+                                className: "pl-2 mt-3 first:mt-1"
+                              }, React.createElement(Link, {
+                                    href: param.href,
+                                    children: React.createElement("a", {
+                                          className: "font-medium block text-sm text-night-light leading-tight tracking-tight hover:text-primary"
+                                        }, header)
+                                  }));
+                  })));
 }
 
 var Toc = {
@@ -61,29 +60,29 @@ function SidebarLayout$Sidebar$NavItem(Props) {
   var isHidden = isHiddenOpt !== undefined ? isHiddenOpt : false;
   return React.createElement("ul", {
               className: "mt-2 text-sm font-medium"
-            }, Util.ReactStuff.ate(Belt_Array.map(items, (function (m) {
-                        var hidden = isHidden ? "hidden" : "block";
-                        var active = Curry._1(isItemActive, m) ? " bg-fire-15 text-fire leading-5 -ml-2 pl-2 font-semibold block hover:bg-fire-15 " : "";
-                        var activeToc = getActiveToc !== undefined ? Curry._1(getActiveToc, m) : undefined;
-                        var tmp;
-                        if (activeToc !== undefined) {
-                          var entries = activeToc.entries;
-                          tmp = entries.length === 0 ? null : React.createElement(SidebarLayout$Toc, {
-                                  entries: entries
-                                });
-                        } else {
-                          tmp = null;
-                        }
-                        return React.createElement("li", {
-                                    key: m.name,
-                                    className: hidden + " mt-1 leading-4"
-                                  }, React.createElement(Link, {
-                                        href: m.href,
-                                        children: React.createElement("a", {
-                                              className: "truncate block py-1 md:h-auto tracking-tight text-night-darker rounded-sm  hover:bg-gray-5 hover:-ml-2 hover:py-1 hover:pl-2 " + active
-                                            }, Util.ReactStuff.s(m.name))
-                                      }), tmp);
-                      }))));
+            }, Belt_Array.map(items, (function (m) {
+                    var hidden = isHidden ? "hidden" : "block";
+                    var active = Curry._1(isItemActive, m) ? " bg-fire-15 text-fire leading-5 -ml-2 pl-2 font-semibold block hover:bg-fire-15 " : "";
+                    var activeToc = getActiveToc !== undefined ? Curry._1(getActiveToc, m) : undefined;
+                    var tmp;
+                    if (activeToc !== undefined) {
+                      var entries = activeToc.entries;
+                      tmp = entries.length === 0 ? null : React.createElement(SidebarLayout$Toc, {
+                              entries: entries
+                            });
+                    } else {
+                      tmp = null;
+                    }
+                    return React.createElement("li", {
+                                key: m.name,
+                                className: hidden + " mt-1 leading-4"
+                              }, React.createElement(Link, {
+                                    href: m.href,
+                                    children: React.createElement("a", {
+                                          className: "truncate block py-1 md:h-auto tracking-tight text-night-darker rounded-sm  hover:bg-gray-5 hover:-ml-2 hover:py-1 hover:pl-2 " + active
+                                        }, m.name)
+                                  }), tmp);
+                  })));
 }
 
 var NavItem = {
@@ -107,7 +106,7 @@ function SidebarLayout$Sidebar$Category(Props) {
               key: category.name,
               className: "my-12"
             }, React.createElement(SidebarLayout$Sidebar$Title, {
-                  children: Util.ReactStuff.s(category.name)
+                  children: category.name
                 }), React.createElement(SidebarLayout$Sidebar$NavItem, tmp));
 }
 
@@ -160,15 +159,15 @@ function SidebarLayout$Sidebar(Props) {
                                 })
                             }, React.createElement(Icon.Close.make, {}))), preludeSection, React.createElement("div", {
                           className: "mb-56"
-                        }, Util.ReactStuff.ate(Belt_Array.map(categories, (function (category) {
-                                    return React.createElement("div", {
-                                                key: category.name
-                                              }, React.createElement(SidebarLayout$Sidebar$Category, {
-                                                    getActiveToc: getActiveToc,
-                                                    isItemActive: isItemActive,
-                                                    category: category
-                                                  }));
-                                  })))))));
+                        }, Belt_Array.map(categories, (function (category) {
+                                return React.createElement("div", {
+                                            key: category.name
+                                          }, React.createElement(SidebarLayout$Sidebar$Category, {
+                                                getActiveToc: getActiveToc,
+                                                isItemActive: isItemActive,
+                                                category: category
+                                              }));
+                              }))))));
 }
 
 var Sidebar = {
@@ -182,22 +181,22 @@ function SidebarLayout$BreadCrumbs(Props) {
   var crumbs = Props.crumbs;
   return React.createElement("div", {
               className: "w-full font-medium tracking-tight overflow-x-auto text-14 text-night"
-            }, Util.ReactStuff.ate(Belt_List.toArray(Belt_List.mapWithIndex(crumbs, (function (i, crumb) {
-                            var item = i === (Belt_List.length(crumbs) - 1 | 0) ? React.createElement("span", {
-                                    key: String(i)
-                                  }, Util.ReactStuff.s(crumb.name)) : React.createElement(Link, {
-                                    href: crumb.href,
-                                    children: React.createElement("a", undefined, Util.ReactStuff.s(crumb.name)),
-                                    key: String(i)
-                                  });
-                            if (i > 0) {
-                              return React.createElement("span", {
-                                          key: String(i)
-                                        }, Util.ReactStuff.s(" / "), item);
-                            } else {
-                              return item;
-                            }
-                          })))));
+            }, Belt_List.toArray(Belt_List.mapWithIndex(crumbs, (function (i, crumb) {
+                        var item = i === (Belt_List.length(crumbs) - 1 | 0) ? React.createElement("span", {
+                                key: String(i)
+                              }, crumb.name) : React.createElement(Link, {
+                                href: crumb.href,
+                                children: React.createElement("a", undefined, crumb.name),
+                                key: String(i)
+                              });
+                        if (i > 0) {
+                          return React.createElement("span", {
+                                      key: String(i)
+                                    }, " / ", item);
+                        } else {
+                          return item;
+                        }
+                      }))));
 }
 
 var BreadCrumbs = {

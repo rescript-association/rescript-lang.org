@@ -56,25 +56,7 @@ var Debounce = {
   debounce3: debounce3
 };
 
-function s(prim) {
-  return prim;
-}
-
-function ate(prim) {
-  return prim;
-}
-
 var Unsafe = {};
-
-var Suspense = {};
-
-var ReactStuff = {
-  s: s,
-  ate: ate,
-  Unsafe: Unsafe,
-  Style: undefined,
-  Suspense: Suspense
-};
 
 var camelCase = (str => {
      return str.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
@@ -118,7 +100,7 @@ var $$Date = {
 
 export {
   Debounce ,
-  ReactStuff ,
+  Unsafe ,
   $$String ,
   Json ,
   Url ,

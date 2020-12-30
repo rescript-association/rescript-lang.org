@@ -1,7 +1,6 @@
 // This module is used for all plain prose text related
 // Docs, mostly /docs/manual/latest and similar sections
 
-open Util.ReactStuff
 module Link = Next.Link
 
 module Sidebar = SidebarLayout.Sidebar
@@ -86,7 +85,7 @@ let make = (
 
   let preludeSection =
     <div className="flex justify-between text-primary font-medium items-baseline">
-      {title->s}
+      {React.string(title)}
       {switch version {
       | Some(version) =>
         switch availableVersions {
@@ -104,7 +103,7 @@ let make = (
             router->Next.Router.push(targetUrl)
           }
           <VersionSelect onChange version availableVersions />
-        | None => <span className="font-mono text-sm"> {version->s} </span>
+        | None => <span className="font-mono text-sm"> {React.string(version)} </span>
         }
       | None => React.null
       }}

@@ -1,5 +1,3 @@
-open Util.ReactStuff
-
 @react.component
 let make = (~displayName: string) => {
   let initials = switch Js.String2.split(displayName, " ")->Belt.List.fromArray {
@@ -10,6 +8,6 @@ let make = (~displayName: string) => {
   }
 
   <div className="block uppercase h-full w-full flex items-center justify-center rounded-full">
-    <span className="text-xl text-night"> {initials->s} </span>
+    <span className="text-xl text-night"> {React.string(initials)} </span>
   </div>
 }

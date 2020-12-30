@@ -48,7 +48,7 @@ function Markdown$Cite(Props) {
                 }, children), Belt_Option.mapWithDefault(author, null, (function (author) {
                     return React.createElement("figcaption", {
                                 className: "font-semibold text-sm"
-                              }, Util.ReactStuff.s(author));
+                              }, author);
                   })));
 }
 
@@ -91,7 +91,7 @@ function Markdown$UrlBox(Props) {
   var content;
   switch (str.TAG | 0) {
     case /* String */0 :
-        content = React.createElement("p", undefined, imgEl, Util.ReactStuff.s(str._0));
+        content = React.createElement("p", undefined, imgEl, str._0);
         break;
     case /* Element */1 :
         var subChildren = Mdx.MdxChildren.getMdxChildren(str._0);
@@ -120,13 +120,13 @@ function Markdown$UrlBox(Props) {
           className: "flex items-center",
           href: href,
           rel: "noopener noreferrer"
-        }, Util.ReactStuff.s(text), React.createElement(Icon.ArrowRight.make, {
+        }, text, React.createElement(Icon.ArrowRight.make, {
               className: "ml-1"
             })) : React.createElement(Link, {
           href: href,
           children: React.createElement("a", {
                 className: "flex items-center"
-              }, Util.ReactStuff.s(text), React.createElement(Icon.ArrowRight.make, {
+              }, text, React.createElement(Icon.ArrowRight.make, {
                     className: "ml-1"
                   }))
         });
@@ -399,7 +399,7 @@ function Markdown$Code(Props) {
   }
   var code = children.join("");
   return React.createElement(Markdown$InlineCode, {
-              children: Util.ReactStuff.s(code)
+              children: code
             });
 }
 
@@ -607,7 +607,7 @@ function Markdown$Li(Props) {
     }
     if (exit === 1) {
       var match$1 = Mdx.getMdxType(first);
-      elements = match$1 === "p" ? React.createElement(React.Fragment, undefined, Util.ReactStuff.ate(head), last) : React.createElement(React.Fragment, undefined, React.createElement("p", undefined, Util.ReactStuff.ate(head)), last);
+      elements = match$1 === "p" ? React.createElement(React.Fragment, undefined, head, last) : React.createElement(React.Fragment, undefined, React.createElement("p", undefined, head), last);
     }
     
   } else if (typeOf$1(children) === "string") {

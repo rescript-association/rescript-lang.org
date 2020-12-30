@@ -2,7 +2,6 @@
 
 import * as Url from "../common/Url.js";
 import * as Meta from "../components/Meta.js";
-import * as Util from "../common/Util.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
@@ -115,14 +114,14 @@ function DocsLayout(Props) {
     } else {
       tmp = React.createElement("span", {
             className: "font-mono text-sm"
-          }, Util.ReactStuff.s(version));
+          }, version);
     }
   } else {
     tmp = null;
   }
   var preludeSection = React.createElement("div", {
         className: "flex justify-between text-primary font-medium items-baseline"
-      }, Util.ReactStuff.s(title), tmp);
+      }, title, tmp);
   var tmp$1 = {
     categories: categories,
     route: route,

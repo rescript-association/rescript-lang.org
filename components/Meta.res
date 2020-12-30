@@ -1,4 +1,3 @@
-open Util.ReactStuff
 module Head = Next.Head
 
 /*
@@ -34,7 +33,7 @@ let make = (
   }
 
   <Head>
-    <title key="title"> {title->s} </title>
+    <title key="title"> {React.string(title)} </title>
     <meta charSet="utf-8" />
     <meta
       name="viewport"

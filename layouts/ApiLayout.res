@@ -1,5 +1,4 @@
 module Link = Next.Link
-open Util.ReactStuff
 
 // This is used for the version dropdown in the api layouts
 let allApiVersions = [("latest", "v8.2.0"), ("v8.0.0", "< v8.2.0")]
@@ -33,11 +32,13 @@ module OldDocsWarning = {
     <div className="mb-10">
       <Info>
         <P>
-          {("You are currently looking at the " ++
-          (label ++
-          " docs (Reason v3.6 syntax edition). You can find the latest API docs "))->s}
-          <A href=latestUrl> {"here"->s} </A>
-          {"."->s}
+          {React.string(
+            "You are currently looking at the " ++
+            (label ++
+            " docs (Reason v3.6 syntax edition). You can find the latest API docs "),
+          )}
+          <A href=latestUrl> {React.string("here")} </A>
+          {React.string(".")}
           <p className="text-14 mt-2"> {React.string(additionalText)} </p>
         </P>
       </Info>
@@ -101,7 +102,7 @@ let make = (
 
   let preludeSection =
     <div className="flex justify-between text-primary font-medium items-baseline">
-      {title->s}
+      {React.string(title)}
       {switch version {
       | Some(version) =>
         let onChange = evt => {
