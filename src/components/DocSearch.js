@@ -140,8 +140,8 @@ var Textbox = {
 var make = DocSearch;
 
 export {
-  make ,
   Textbox ,
+  make ,
   
 }
 /* Icon Not a pure module */

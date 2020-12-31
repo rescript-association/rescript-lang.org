@@ -43,7 +43,6 @@ type t = {
   pagepath: array<string>,
 }
 
-// Moved here from original SidebarLayout.UrlPath
 type breadcrumb = {
   name: string,
   href: string,

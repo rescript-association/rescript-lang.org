@@ -13,8 +13,6 @@ import * as BlogFrontmatter from "./BlogFrontmatter.js";
 
 var index = (require('../../index_data/blog_posts.json'));
 
-var GrayMatter$1 = {};
-
 var postsDirectory = Path.join(Process.cwd(), "./_blogposts");
 
 function getFullSlug(slug) {
@@ -109,18 +107,13 @@ function toXmlString(siteTitleOpt, siteDescriptionOpt, items) {
 }
 
 var RssFeed = {
-  dateToUTCString: dateToUTCString,
   getLatest: getLatest,
   toXmlString: toXmlString
 };
 
 export {
-  index ,
-  GrayMatter$1 as GrayMatter,
-  postsDirectory ,
-  getFullSlug ,
-  getPostBySlug ,
   getAllPosts ,
+  getFullSlug ,
   RssFeed ,
   
 }

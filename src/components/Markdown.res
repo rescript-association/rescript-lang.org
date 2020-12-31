@@ -98,8 +98,7 @@ module Anchor = {
   // Todo: Headers with nested components don't pass a string, we need to flatten
   // everything to a single string first before we are able to use this id transformation
   // function
-  let idFormat = (id: string): string => id
-  /* Js.String2.(id->toLowerCase->Js.String2.replaceByRe([%re "/\\s/g"], "-")); */
+
   @react.component
   let make = (~id: string) => {
     let style = ReactDOM.Style.make(~position="absolute", ~top="-7rem", ())
@@ -203,10 +202,8 @@ module Code = {
   // TODO: Might be refactorable with the new @unboxed feature
   type unknown = Mdx.Components.unknown
 
-  let typeOf: unknown => string = %raw("thing => { return typeof thing; }")
   let isArray: unknown => bool = %raw("thing => { return thing instanceof Array; }")
   let isObject: unknown => bool = %raw("thing => { return thing instanceof Object; }")
-  let isString: unknown => bool = %raw("thing => { return thing instanceof String; }")
   external asStringArray: unknown => array<string> = "%identity"
   external asElement: unknown => React.element = "%identity"
 

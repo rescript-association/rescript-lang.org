@@ -60,9 +60,8 @@ function parse(route) {
 }
 
 export {
-  isVersion ,
-  prettyString ,
   parse ,
+  prettyString ,
   
 }
 /* No side effect */

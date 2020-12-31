@@ -1,5 +1,3 @@
-module Link = Next.Link
-
 // Structure defined by `scripts/extract-indices.js`
 let indexData: Js.Dict.t<{
   "moduleName": string,
@@ -8,9 +6,6 @@ let indexData: Js.Dict.t<{
     "href": string,
   }>,
 }> = %raw("require('index_data/latest_belt_api_index.json')")
-
-// Retrieve package.json to access the version of bs-platform.
-let package: {"dependencies": {"bs-platform": string}} = %raw("require('package.json')")
 
 module Category = SidebarLayout.Sidebar.Category
 module NavItem = SidebarLayout.Sidebar.NavItem
@@ -142,7 +137,7 @@ module Docs = {
     let breadcrumbs = ApiLayout.makeBreadcrumbs(~prefix, route)
 
     let activeToc = {
-      open ApiLayout.Toc
+      open SidebarLayout.Toc
       {
         title: moduleName,
         entries: Belt.Array.map(headers, ((name, href)) => {header: name, href: href}),

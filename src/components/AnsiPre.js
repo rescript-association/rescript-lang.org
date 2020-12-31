@@ -47,33 +47,29 @@ function mapColor(target, c) {
   }
 }
 
-function renderSgrString(key, sgrStr) {
-  var className = Belt_Array.reduce(sgrStr.params, "", (function (acc, p) {
-          if (typeof p === "number") {
-            return acc + " bold";
-          }
-          switch (p.TAG | 0) {
-            case /* Fg */0 :
-                return acc + (" " + mapColor(/* Fg */0, p._0));
-            case /* Bg */1 :
-                return acc + (" " + mapColor(/* Bg */1, p._0));
-            case /* Unknown */2 :
-                return acc;
-            
-          }
-        }));
-  return React.createElement("span", {
-              key: key,
-              className: className
-            }, sgrStr.content);
-}
-
 function AnsiPre(Props) {
   var className = Props.className;
   var children = Props.children;
   var spans = Belt_Array.mapWithIndex(Ansi.SgrString.fromTokens(Ansi.parse(children)), (function (i, str) {
           var key = String(i);
-          return renderSgrString(key, str);
+          var className = Belt_Array.reduce(str.params, "", (function (acc, p) {
+                  if (typeof p === "number") {
+                    return acc + " bold";
+                  }
+                  switch (p.TAG | 0) {
+                    case /* Fg */0 :
+                        return acc + (" " + mapColor(/* Fg */0, p._0));
+                    case /* Bg */1 :
+                        return acc + (" " + mapColor(/* Bg */1, p._0));
+                    case /* Unknown */2 :
+                        return acc;
+                    
+                  }
+                }));
+          return React.createElement("span", {
+                      key: key,
+                      className: className
+                    }, str.content);
         }));
   var tmp = {};
   if (className !== undefined) {
@@ -85,8 +81,6 @@ function AnsiPre(Props) {
 var make = AnsiPre;
 
 export {
-  mapColor ,
-  renderSgrString ,
   make ,
   
 }

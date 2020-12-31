@@ -102,7 +102,7 @@ let letterAll = {
 }
 
 // we keep the original variable name `letter` like in warnings.ml
-let letter = l =>
+let _letter = l =>
   switch l {
   | "a" => letterAll
   /* | "b" => [||] */

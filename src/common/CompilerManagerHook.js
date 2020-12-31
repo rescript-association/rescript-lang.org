@@ -11,15 +11,6 @@ import LoadScript from "../ffi/loadScript";
 import * as LoadScript$1 from "../ffi/loadScript";
 import * as RescriptCompilerApi from "../bindings/RescriptCompilerApi.js";
 
-function loadScript(prim, prim$1, prim$2) {
-  return LoadScript(prim, prim$1, prim$2);
-}
-
-function removeScript(prim) {
-  LoadScript$1.removeScript(prim);
-  
-}
-
 function loadScriptPromise(url) {
   var match = $$Promise.pending(undefined);
   var resolve = match[1];
@@ -39,12 +30,6 @@ function loadScriptPromise(url) {
   return match[0];
 }
 
-var LoadScript$2 = {
-  loadScript: loadScript,
-  removeScript: removeScript,
-  loadScriptPromise: loadScriptPromise
-};
-
 var versions = [
   "v8.4.2",
   "v8.3.0-dev.2"
@@ -57,12 +42,6 @@ function getCompilerUrl(version) {
 function getLibraryCmijUrl(version, libraryName) {
   return "https://cdn.rescript-lang.org/" + version + "/" + libraryName + "/cmij.js";
 }
-
-var CdnMeta = {
-  versions: versions,
-  getCompilerUrl: getCompilerUrl,
-  getLibraryCmijUrl: getLibraryCmijUrl
-};
 
 var FinalResult = {};
 
@@ -171,13 +150,13 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                           var convResult;
                           switch (currentLang) {
                             case /* Reason */0 :
-                                convResult = lang >= 2 ? RescriptCompilerApi.Compiler.convertSyntax(instance, /* Reason */0, /* Res */2, code) : undefined;
+                                convResult = lang >= 2 ? RescriptCompilerApi.Compiler.convertSyntax(/* Reason */0, /* Res */2, code, instance) : undefined;
                                 break;
                             case /* OCaml */1 :
                                 convResult = undefined;
                                 break;
                             case /* Res */2 :
-                                convResult = lang !== 0 ? undefined : RescriptCompilerApi.Compiler.convertSyntax(instance, /* Res */2, /* Reason */0, code);
+                                convResult = lang !== 0 ? undefined : RescriptCompilerApi.Compiler.convertSyntax(/* Res */2, /* Reason */0, code, instance);
                                 break;
                             
                           }
@@ -192,7 +171,7 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                                 lang
                               ];
                             } else {
-                              var secondTry = RescriptCompilerApi.Compiler.convertSyntax(instance, lang, lang, code);
+                              var secondTry = RescriptCompilerApi.Compiler.convertSyntax(lang, lang, code, instance);
                               match$1 = [
                                 {
                                   TAG: 0,
@@ -372,10 +351,10 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                       if (result.TAG === /* Ok */0) {
                         var instance = rescript_compiler.make();
                         var apiVersion = RescriptCompilerApi.Version.fromString(rescript_compiler.api_version);
-                        var config = instance.getConfig();
-                        var selected_compilerVersion = instance.version;
-                        var selected_ocamlVersion = instance.ocaml.version;
-                        var selected_reasonVersion = instance.reason.version;
+                        var config = RescriptCompilerApi.Compiler.getConfig(instance);
+                        var selected_compilerVersion = RescriptCompilerApi.Compiler.version(instance);
+                        var selected_ocamlVersion = RescriptCompilerApi.Compiler.ocamlVersion(instance);
+                        var selected_reasonVersion = RescriptCompilerApi.Compiler.reasonVersion(instance);
                         var selected = {
                           id: latest,
                           apiVersion: apiVersion,
@@ -434,10 +413,10 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                                   }));
                             var instance = rescript_compiler.make();
                             var apiVersion = RescriptCompilerApi.Version.fromString(rescript_compiler.api_version);
-                            var config = instance.getConfig();
-                            var selected_compilerVersion = instance.version;
-                            var selected_ocamlVersion = instance.ocaml.version;
-                            var selected_reasonVersion = instance.reason.version;
+                            var config = RescriptCompilerApi.Compiler.getConfig(instance);
+                            var selected_compilerVersion = RescriptCompilerApi.Compiler.version(instance);
+                            var selected_ocamlVersion = RescriptCompilerApi.Compiler.ocamlVersion(instance);
+                            var selected_reasonVersion = RescriptCompilerApi.Compiler.reasonVersion(instance);
                             var selected = {
                               id: version,
                               apiVersion: apiVersion,
@@ -530,10 +509,7 @@ function useCompilerManager(initialLangOpt, onAction, param) {
 }
 
 export {
-  LoadScript$2 as LoadScript,
-  CdnMeta ,
   FinalResult ,
-  attachCompilerAndLibraries ,
   useCompilerManager ,
   
 }

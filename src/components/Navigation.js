@@ -2,12 +2,11 @@
 
 import * as Url from "../common/Url.js";
 import * as Icon from "./Icon.js";
+import * as Next from "../bindings/Next.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as DocSearch from "./DocSearch.js";
-import Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
-import * as Router from "next/router";
 
 var link = "no-underline block text-inherit hover:cursor-pointer hover:text-white text-white-80 mb-px";
 
@@ -142,14 +141,14 @@ function Navigation$MobileNav(Props) {
                           id: "docsearch-mobile"
                         })), React.createElement("li", {
                       className: base
-                    }, React.createElement(Link, {
+                    }, React.createElement(Next.Link.make, {
                           href: "/try",
                           children: React.createElement("a", {
                                 className: linkOrActiveLink("/try", route)
                               }, "Playground")
                         })), React.createElement("li", {
                       className: base
-                    }, React.createElement(Link, {
+                    }, React.createElement(Next.Link.make, {
                           href: "/blog",
                           children: React.createElement("a", {
                                 className: linkOrActiveLinkSubroute("/blog", route)
@@ -183,7 +182,7 @@ function Navigation(Props) {
   var overlayState = Props.overlayState;
   var fixed = fixedOpt !== undefined ? fixedOpt : true;
   var minWidth = "20rem";
-  var router = Router.useRouter();
+  var router = Next.Router.useRouter(undefined);
   var route = router.route;
   var match = React.useState(function () {
         return [];
@@ -218,12 +217,23 @@ function Navigation(Props) {
                           return false;
                         }));
           };
-          events.on("routeChangeComplete", onChangeComplete);
-          events.on("hashChangeComplete", onChangeComplete);
+          Curry._2(Next.Router.Events.on, events, {
+                NAME: "routeChangeComplete",
+                VAL: onChangeComplete
+              });
+          Curry._2(Next.Router.Events.on, events, {
+                NAME: "hashChangeComplete",
+                VAL: onChangeComplete
+              });
           return (function (param) {
-                    events.off("routeChangeComplete", onChangeComplete);
-                    events.off("hashChangeComplete", onChangeComplete);
-                    
+                    Curry._2(Next.Router.Events.off, events, {
+                          NAME: "routeChangeComplete",
+                          VAL: onChangeComplete
+                        });
+                    return Curry._2(Next.Router.Events.off, events, {
+                                NAME: "hashChangeComplete",
+                                VAL: onChangeComplete
+                              });
                   });
         }), []);
   var fixedNav = fixed ? "fixed z-30 top-0" : "";
@@ -250,31 +260,31 @@ function Navigation(Props) {
                           style: {
                             maxWidth: "26rem"
                           }
-                        }, React.createElement(Link, {
+                        }, React.createElement(Next.Link.make, {
                               href: "/docs/latest",
                               children: React.createElement("a", {
                                     className: "mr-5 " + linkOrActiveDocsSubroute(route),
                                     onMouseEnter: nonCollapsibleOnMouseEnter
                                   }, "Docs")
-                            }), React.createElement(Link, {
+                            }), React.createElement(Next.Link.make, {
                               href: "/docs/manual/latest/api",
                               children: React.createElement("a", {
                                     className: "mr-5 " + linkOrActiveApiSubroute(route),
                                     onMouseEnter: nonCollapsibleOnMouseEnter
                                   }, "API")
-                            }), React.createElement(Link, {
+                            }), React.createElement(Next.Link.make, {
                               href: "/try",
                               children: React.createElement("a", {
                                     className: "hidden xs:block mr-5 " + linkOrActiveLink("/try", route),
                                     onMouseEnter: nonCollapsibleOnMouseEnter
                                   }, "Playground")
-                            }), React.createElement(Link, {
+                            }), React.createElement(Next.Link.make, {
                               href: "/blog",
                               children: React.createElement("a", {
                                     className: "hidden xs:block mr-5 " + linkOrActiveLinkSubroute("/blog", route),
                                     onMouseEnter: nonCollapsibleOnMouseEnter
                                   }, "Blog")
-                            }), React.createElement(Link, {
+                            }), React.createElement(Next.Link.make, {
                               href: "/community",
                               children: React.createElement("a", {
                                     className: "hidden xs:block " + linkOrActiveLink("/community", route),

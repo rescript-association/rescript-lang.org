@@ -161,13 +161,13 @@ module DomUtil = {
   external setMaxHeight: (Dom.element, string) => unit = "maxHeight"
 
   @bs.set @bs.scope("style")
-  external setDisplay: (Dom.element, string) => unit = "display"
+  external _setDisplay: (Dom.element, string) => unit = "display"
 
   @bs.set @bs.scope("style")
-  external setTop: (Dom.element, string) => unit = "top"
+  external _setTop: (Dom.element, string) => unit = "top"
 
   @bs.set @bs.scope("style")
-  external setLeft: (Dom.element, string) => unit = "left"
+  external _setLeft: (Dom.element, string) => unit = "left"
 
   @bs.set external setInnerHTML: (Dom.element, string) => unit = "innerHTML"
 
@@ -178,7 +178,7 @@ module DomUtil = {
   external setOnMouseOver: (Dom.element, Event.t => unit) => unit = "onmouseover"
 
   @bs.set
-  external setOnMouseLeave: (Dom.element, Event.t => unit) => unit = "onmouseleave"
+  external _setOnMouseLeave: (Dom.element, Event.t => unit) => unit = "onmouseleave"
 
   @bs.set
   external setOnMouseOut: (Dom.element, Event.t => unit) => unit = "onmouseout"
@@ -193,7 +193,7 @@ module DomUtil = {
   }
 
   @bs.send
-  external getBoundingClientRect: Dom.element => clientRect = "getBoundingClientRect"
+  external _getBoundingClientRect: Dom.element => clientRect = "getBoundingClientRect"
 }
 
 module Error = {
@@ -235,7 +235,7 @@ module GutterMarker = {
 
 type state = {mutable marked: array<CM.TextMarker.t>}
 
-let clearMarks = (state: state): unit => {
+let _clearMarks = (state: state): unit => {
   Belt.Array.forEach(state.marked, mark => mark->CM.TextMarker.clear)
   state.marked = []
 }

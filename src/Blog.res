@@ -15,17 +15,13 @@
 
 module Link = Next.Link
 
-let rescriptDefaultImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598616442/reason%20association/rescript-lang.org/art-3-rescript-launch_ovoibg.jpg"
+let _rescriptDefaultImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598616442/reason%20association/rescript-lang.org/art-3-rescript-launch_ovoibg.jpg"
 let planetPreviewImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1587479463/Reason%20Association/reasonml.org/reasonml_art2_1280_vhzxnz.png"
 
 // For encoding reasons, see https://shripadk.github.io/react/docs/jsx-gotchas.html
 let middleDotSpacer = " " ++ (Js.String.fromCharCode(183) ++ " ")
 
 module Badge = {
-  type color =
-    | Turtle
-    | Orange
-
   @react.component
   let make = (~badge: BlogFrontmatter.Badge.t) => {
     let bgColor = switch badge {
@@ -229,7 +225,9 @@ module Post = {
   }
 
   let orderByDate = (posts: array<t>): array<t> =>
-    posts->Js.Array.copy->Js.Array2.sortInPlaceWith((a, b) => {
+    posts
+    ->Js.Array.copy
+    ->Js.Array2.sortInPlaceWith((a, b) => {
       let aV = a.frontmatter.date->DateStr.toDate->Js.Date.valueOf
       let bV = b.frontmatter.date->DateStr.toDate->Js.Date.valueOf
       if aV === bV {
@@ -267,7 +265,9 @@ let default = (props: props): React.element => {
         <h2 className="font-bold text-night-dark text-2xl mb-2">
           {React.string("Some Blog Posts are Malformed!")}
         </h2>
-        <p> {React.string("Any blog post with invalid data will not be displayed in production.")} </p>
+        <p>
+          {React.string("Any blog post with invalid data will not be displayed in production.")}
+        </p>
         <div>
           <p className="font-bold mt-4"> {React.string("Errors:")} </p>
           <ul>
@@ -294,7 +294,8 @@ let default = (props: props): React.element => {
     let filtered = switch currentSelection {
     | All => posts
     | Archived => archived
-    | Category(selected) => Belt.Array.keep(posts, ({frontmatter}) =>
+    | Category(selected) =>
+      Belt.Array.keep(posts, ({frontmatter}) =>
         switch Js.Null.toOption(frontmatter.category) {
         | Some(category) => category === selected
         | None => false
@@ -399,8 +400,9 @@ let default = (props: props): React.element => {
 
 let getStaticProps: Next.GetStaticProps.t<props, params> = _ctx => {
   let authors = BlogFrontmatter.Author.getAllAuthors()
-  let (posts, malformed, archived, availableCategories) =
-    BlogApi.getAllPosts()->Belt.Array.reduce(([], [], [], []), (acc, postData) => {
+  let (posts, malformed, archived, availableCategories) = BlogApi.getAllPosts()->Belt.Array.reduce(
+    ([], [], [], []),
+    (acc, postData) => {
       let (posts, malformed, archived, availableCategories) = acc
       let id = postData.slug
 
@@ -446,7 +448,8 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = _ctx => {
 
         (posts, malformed, archived, newAvailableCat)
       }
-    })
+    },
+  )
 
   let props = {
     posts: Post.orderByDate(posts),

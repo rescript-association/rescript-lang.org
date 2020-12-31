@@ -1,8 +1,6 @@
 // This module is used for all plain prose text related
 // Docs, mostly /docs/manual/latest and similar sections
 
-module Link = Next.Link
-
 module Sidebar = SidebarLayout.Sidebar
 
 module NavItem = Sidebar.NavItem

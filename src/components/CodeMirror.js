@@ -57,29 +57,6 @@ var useWindowWidth = (() => {
 
 var errorGutterId = "errors";
 
-var Options = {};
-
-var TextMarker = {};
-
-var $$Attr = {};
-
-var MarkTextOption = {
-  $$Attr: $$Attr
-};
-
-var CM = {
-  errorGutterId: errorGutterId,
-  Options: Options,
-  TextMarker: TextMarker,
-  MarkTextOption: MarkTextOption
-};
-
-var $$Event = {};
-
-var DomUtil = {
-  $$Event: $$Event
-};
-
 var $$Error = {};
 
 function make(rowCol, kind, param) {
@@ -89,19 +66,6 @@ function make(rowCol, kind, param) {
   marker.className = "flex items-center justify-center text-14 text-center ml-1 h-6 font-bold hover:cursor-pointer " + colorClass;
   marker.innerHTML = "!";
   return marker;
-}
-
-var GutterMarker = {
-  make: make
-};
-
-function clearMarks(state) {
-  Belt_Array.forEach(state.marked, (function (mark) {
-          mark.clear();
-          
-        }));
-  state.marked = [];
-  
 }
 
 function extractRowColFromId(id) {
@@ -319,17 +283,42 @@ function CodeMirror(Props) {
                 }));
 }
 
+var CM = {
+  Options: {
+    t: (function (prim, prim$1, prim$2, prim$3, prim$4, prim$5, prim$6, prim$7, prim$8) {
+        var tmp = {
+          theme: prim,
+          mode: prim$2
+        };
+        if (prim$1 !== undefined) {
+          tmp.gutters = Caml_option.valFromOption(prim$1);
+        }
+        if (prim$3 !== undefined) {
+          tmp.lineNumbers = Caml_option.valFromOption(prim$3);
+        }
+        if (prim$4 !== undefined) {
+          tmp.readOnly = Caml_option.valFromOption(prim$4);
+        }
+        if (prim$5 !== undefined) {
+          tmp.lineWrapping = Caml_option.valFromOption(prim$5);
+        }
+        if (prim$6 !== undefined) {
+          tmp.fixedGutter = Caml_option.valFromOption(prim$6);
+        }
+        if (prim$7 !== undefined) {
+          tmp.scrollbarStyle = Caml_option.valFromOption(prim$7);
+        }
+        return tmp;
+      })
+  }
+};
+
 var make$1 = CodeMirror;
 
 export {
-  useWindowWidth ,
-  CM ,
-  DomUtil ,
   $$Error ,
-  GutterMarker ,
-  clearMarks ,
-  extractRowColFromId ,
-  updateErrors ,
+  CM ,
+  useWindowWidth ,
   make$1 as make,
   
 }

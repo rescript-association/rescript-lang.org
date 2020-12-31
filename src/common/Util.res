@@ -1,5 +1,4 @@
-// This file was automatically converted to ReScript from 'Util.re'
-// Check the output and make sure to delete the original file
+/**
 module Debounce = {
   // See: https://davidwalsh.name/javascript-debounce-function
   let debounce = (~wait, fn) => {
@@ -39,6 +38,7 @@ module Debounce = {
     }
   }
 }
+**/
 
 module Unsafe = {
   external elementAsString: React.element => string = "%identity"

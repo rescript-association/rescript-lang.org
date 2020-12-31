@@ -1,5 +1,3 @@
-module Link = Next.Link
-
 // Structure defined by `scripts/extract-indices.js`
 let indexData: Js.Dict.t<{
   "moduleName": string,
@@ -9,8 +7,8 @@ let indexData: Js.Dict.t<{
   }>,
 }> = %raw("require('index_data/v800_dom_api_index.json')")
 
-module Category = ApiLayout.Sidebar.Category
-module NavItem = ApiLayout.Sidebar.NavItem
+module Category = SidebarLayout.Sidebar.Category
+module NavItem = SidebarLayout.Sidebar.NavItem
 
 let overviewNavs = [
   {
@@ -75,7 +73,7 @@ module Docs = {
     let breadcrumbs = ApiLayout.makeBreadcrumbs(~prefix, route)
 
     let activeToc = {
-      open ApiLayout.Toc
+      open SidebarLayout.Toc
       {
         title: moduleName,
         entries: Belt.Array.map(headers, ((name, href)) => {header: name, href: href}),

@@ -425,7 +425,7 @@ function setConfig(t, config) {
   
 }
 
-function convertSyntax(t, fromLang, toLang, code) {
+function convertSyntax(fromLang, toLang, code, t) {
   try {
     return decode$8(fromLang, toLang, t.convertSyntax(toExt(fromLang), toExt(toLang), code));
   }
@@ -451,12 +451,52 @@ function convertSyntax(t, fromLang, toLang, code) {
   }
 }
 
+function Compiler_version(prim) {
+  return prim.version;
+}
+
+function Compiler_resVersion(prim) {
+  return prim.rescript.version;
+}
+
+function Compiler_reasonVersion(prim) {
+  return prim.reason.version;
+}
+
+function Compiler_ocamlVersion(prim) {
+  return prim.ocaml.version;
+}
+
+function Compiler_getConfig(prim) {
+  return prim.getConfig();
+}
+
+function Compiler_setFilename(prim, prim$1) {
+  return prim.setFilename(prim$1);
+}
+
+function Compiler_setModuleSystem(prim, prim$1) {
+  return prim.setModuleSystem(prim$1);
+}
+
+function Compiler_setWarnFlags(prim, prim$1) {
+  return prim.setWarnFlags(prim$1);
+}
+
 var Compiler = {
+  version: Compiler_version,
+  resVersion: Compiler_resVersion,
   resCompile: resCompile,
   resFormat: resFormat,
+  reasonVersion: Compiler_reasonVersion,
   reasonCompile: reasonCompile,
   reasonFormat: reasonFormat,
+  ocamlVersion: Compiler_ocamlVersion,
   ocamlCompile: ocamlCompile,
+  getConfig: Compiler_getConfig,
+  setFilename: Compiler_setFilename,
+  setModuleSystem: Compiler_setModuleSystem,
+  setWarnFlags: Compiler_setWarnFlags,
   setConfig: setConfig,
   convertSyntax: convertSyntax
 };

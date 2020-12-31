@@ -1,16 +1,4 @@
-/*
-   This module is intended for the ODOC like documentation layout.
-   It hides the h2 tags and does
- */
 open Markdown
-
-module InvisibleAnchor = {
-  @react.component
-  let make = (~id: string) => {
-    let style = ReactDOM.Style.make(~position="absolute", ~top="-1rem", ())
-    <span className="relative" ariaHidden=true> <a id style /> </span>
-  }
-}
 
 module H1 = {
   @react.component

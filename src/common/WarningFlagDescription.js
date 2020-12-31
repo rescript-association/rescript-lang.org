@@ -297,73 +297,6 @@ for(var i = 1; i <= 108; ++i){
   ret.push(i);
 }
 
-function letter(l) {
-  switch (l) {
-    case "a" :
-        return ret;
-    case "c" :
-        return [
-                1,
-                2
-              ];
-    case "d" :
-        return [3];
-    case "e" :
-        return [4];
-    case "f" :
-        return [5];
-    case "k" :
-        return [
-                32,
-                33,
-                34,
-                35,
-                36,
-                37,
-                38,
-                39
-              ];
-    case "l" :
-        return [6];
-    case "m" :
-        return [7];
-    case "p" :
-        return [8];
-    case "r" :
-        return [9];
-    case "s" :
-        return [10];
-    case "u" :
-        return [
-                11,
-                12
-              ];
-    case "v" :
-        return [13];
-    case "x" :
-        return [
-                14,
-                15,
-                16,
-                17,
-                18,
-                19,
-                20,
-                21,
-                22,
-                23,
-                24,
-                30
-              ];
-    case "y" :
-        return [26];
-    case "z" :
-        return [27];
-    default:
-      return [];
-  }
-}
-
 var letterDescriptions = [[
     "a",
     "All flags"
@@ -553,29 +486,16 @@ function tokensToString(tokens) {
 }
 
 var Parser = {
-  InvalidInput: InvalidInput,
-  isModifier: isModifier,
-  parseExn: parseExn,
   parse: parse,
   merge: merge,
   tokensToString: tokensToString
 };
 
-var lastWarningNumber = 108;
-
-var letterAll = ret;
-
 export {
-  numeric ,
-  lastWarningNumber ,
-  letterAll ,
-  letter ,
-  letterDescriptions ,
-  getDescription ,
-  lookupAll ,
-  lookup ,
-  fuzzyLookup ,
   Parser ,
+  lookup ,
+  lookupAll ,
+  fuzzyLookup ,
   
 }
 /*  Not a pure module */

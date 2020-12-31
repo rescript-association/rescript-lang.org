@@ -2,13 +2,13 @@
 
 import * as Url from "./Url.js";
 import * as Meta from "../components/Meta.js";
+import * as Next from "../bindings/Next.js";
 import * as React from "react";
 import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as MainLayout from "../layouts/MainLayout.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
-import * as Router from "next/router";
 import * as JsDocsLayout from "../layouts/JsDocsLayout.js";
 import * as DomDocsLayout from "../layouts/DomDocsLayout.js";
 import * as BeltDocsLayout from "../layouts/BeltDocsLayout.js";
@@ -51,7 +51,7 @@ let hljs = require('highlight.js/lib/highlight');
 function make(props) {
   var component = props.Component;
   var pageProps = props.pageProps;
-  var router = Router.useRouter();
+  var router = Next.Router.useRouter(undefined);
   var content = React.createElement(component, pageProps);
   var url = Url.parse(router.route);
   var base = url.base;

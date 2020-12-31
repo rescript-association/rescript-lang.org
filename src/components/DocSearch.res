@@ -1,5 +1,3 @@
-type t
-
 type options = {
   apiKey: string,
   indexName: string,

@@ -2,6 +2,7 @@
 
 import * as Url from "../common/Url.js";
 import * as Meta from "../components/Meta.js";
+import * as Next from "../bindings/Next.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
@@ -10,7 +11,6 @@ import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
-import * as Router from "next/router";
 import * as SidebarLayout from "./SidebarLayout.js";
 import * as VersionSelect from "../components/VersionSelect.js";
 import * as DocFrontmatter from "../common/DocFrontmatter.js";
@@ -68,7 +68,7 @@ function DocsLayout(Props) {
   var children = Props.children;
   var components = componentsOpt !== undefined ? Caml_option.valFromOption(componentsOpt) : Markdown.$$default;
   var theme = themeOpt !== undefined ? themeOpt : "Reason";
-  var router = Router.useRouter();
+  var router = Next.Router.useRouter(undefined);
   var route = router.route;
   var match = React.useState(function () {
         return false;
@@ -87,12 +87,23 @@ function DocsLayout(Props) {
                           return false;
                         }));
           };
-          events.on("routeChangeComplete", onChangeComplete);
-          events.on("hashChangeComplete", onChangeComplete);
+          Curry._2(Next.Router.Events.on, events, {
+                NAME: "routeChangeComplete",
+                VAL: onChangeComplete
+              });
+          Curry._2(Next.Router.Events.on, events, {
+                NAME: "hashChangeComplete",
+                VAL: onChangeComplete
+              });
           return (function (param) {
-                    events.off("routeChangeComplete", onChangeComplete);
-                    events.off("hashChangeComplete", onChangeComplete);
-                    
+                    Curry._2(Next.Router.Events.off, events, {
+                          NAME: "routeChangeComplete",
+                          VAL: onChangeComplete
+                        });
+                    return Curry._2(Next.Router.Events.off, events, {
+                                NAME: "hashChangeComplete",
+                                VAL: onChangeComplete
+                              });
                   });
         }), []);
   var tmp;
@@ -103,8 +114,7 @@ function DocsLayout(Props) {
         var version = evt.target.value;
         var url = Url.parse(route);
         var targetUrl = "/" + (url.base.join("/") + ("/" + (version + ("/" + url.pagepath.join("/")))));
-        router.push(targetUrl);
-        
+        return Next.Router.push(router, targetUrl);
       };
       tmp = React.createElement(VersionSelect.make, {
             onChange: onChange,
@@ -203,7 +213,7 @@ function Make(Content) {
     var components = Props.components;
     var theme = Props.theme;
     var children = Props.children;
-    var router = Router.useRouter();
+    var router = Next.Router.useRouter(undefined);
     var route = router.route;
     var activeToc = Belt_Option.map(Js_dict.get(Content.tocData, route), (function (data) {
             var title = data.title;
@@ -263,21 +273,9 @@ function Make(Content) {
         };
 }
 
-var Link;
-
-var Sidebar;
-
-var NavItem;
-
-var Category;
-
 var make = DocsLayout;
 
 export {
-  Link ,
-  Sidebar ,
-  NavItem ,
-  Category ,
   makeBreadcrumbsFromPaths ,
   makeBreadcrumbs ,
   make ,

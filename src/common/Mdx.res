@@ -6,7 +6,6 @@
 type mdxComponent
 
 external fromReactElement: React.element => mdxComponent = "%identity"
-external toReactElement: mdxComponent => React.element = "%identity"
 
 external arrToReactElement: array<mdxComponent> => React.element = "%identity"
 
@@ -33,19 +32,7 @@ let getMdxClassName: mdxComponent => option<string> = %raw(
     }"
 )
 
-module MdxChildren: {
-  type unknown
-  type t
-  type case =
-    | String(string)
-    | Element(mdxComponent)
-    | Array(array<mdxComponent>)
-    | Unknown(unknown)
-  let classify: t => case
-  let getMdxChildren: mdxComponent => t
-  let flatten: mdxComponent => array<string>
-  let toReactElement: t => React.element
-} = {
+module MdxChildren = {
   type unknown
 
   type t

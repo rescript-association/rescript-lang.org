@@ -1,7 +1,5 @@
-module Link = Next.Link
-
 @react.component
-let make = (~children, ~components=Markdown.default) => {
+let make = (~components=Markdown.default, ~children) => {
   let overlayState = React.useState(() => false)
 
   <>
@@ -13,7 +11,7 @@ let make = (~children, ~components=Markdown.default) => {
             <Mdx.Provider components> children </Mdx.Provider>
           </main>
         </div>
-        <Footer/>
+        <Footer />
       </div>
     </div>
   </>

@@ -2,14 +2,15 @@
 
 import * as Icon from "./components/Icon.js";
 import * as Meta from "./components/Meta.js";
+import * as Next from "./bindings/Next.js";
 import * as $$Text from "./components/Text.js";
+import * as Util from "./common/Util.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as AnsiPre from "./components/AnsiPre.js";
 import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
 import * as Markdown from "./components/Markdown.js";
 import * as LzString from "lz-string";
-import Head from "next/head";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as CodeMirror from "./components/CodeMirror.js";
 import * as Navigation from "./components/Navigation.js";
@@ -17,15 +18,12 @@ import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Belt_Result from "bs-platform/lib/es6/belt_Result.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as HighlightJs from "./common/HighlightJs.js";
-import * as Router from "next/router";
 import * as CompilerManagerHook from "./common/CompilerManagerHook.js";
 import * as RescriptCompilerApi from "./bindings/RescriptCompilerApi.js";
 import * as WarningFlagDescription from "./common/WarningFlagDescription.js";
 
 require('../styles/main.css')
 ;
-
-var LzString$1 = {};
 
 function Playground$DropdownSelect(Props) {
   var onChange = Props.onChange;
@@ -43,10 +41,6 @@ function Playground$DropdownSelect(Props) {
               onChange: onChange
             }, children);
 }
-
-var DropdownSelect = {
-  make: Playground$DropdownSelect
-};
 
 function Playground$ToggleSelection(Props) {
   var onChange = Props.onChange;
@@ -92,10 +86,6 @@ function Playground$ToggleSelection(Props) {
               ) + "flex w-full"
             }, elements);
 }
-
-var ToggleSelection = {
-  make: Playground$ToggleSelection
-};
 
 function defaultMakeTabClass(active) {
   var rest = active ? "text-fire font-medium bg-gray-100 hover:cursor-default" : "hover:cursor-pointer";
@@ -160,32 +150,6 @@ function Playground$Pane(Props) {
                       )
                     }, headers), React.createElement("div", undefined, body)));
 }
-
-var Pane = {
-  defaultMakeTabClass: defaultMakeTabClass,
-  make: Playground$Pane
-};
-
-function Playground$SingleTabPane(Props) {
-  var title = Props.title;
-  var makeTabClass = Props.makeTabClass;
-  var children = Props.children;
-  var tabs = [{
-      title: title,
-      content: children
-    }];
-  var tmp = {
-    tabs: tabs
-  };
-  if (makeTabClass !== undefined) {
-    tmp.makeTabClass = Caml_option.valFromOption(makeTabClass);
-  }
-  return React.createElement(Playground$Pane, tmp);
-}
-
-var SingleTabPane = {
-  make: Playground$SingleTabPane
-};
 
 function renderTitle(targetLang, result) {
   var errClass = "text-white-80";
@@ -329,11 +293,6 @@ function Playground$Statusbar(Props) {
                     }, renderTitle(ready.targetLang, result))));
 }
 
-var Statusbar = {
-  renderTitle: renderTitle,
-  make: Playground$Statusbar
-};
-
 function Playground$ResultPane$PreWrap(Props) {
   var classNameOpt = Props.className;
   var children = Props.children;
@@ -342,10 +301,6 @@ function Playground$ResultPane$PreWrap(Props) {
               className: "whitespace-pre-wrap " + className
             }, children);
 }
-
-var PreWrap = {
-  make: Playground$ResultPane$PreWrap
-};
 
 function compactErrorLine(highlightOpt, prefix, locMsg) {
   var highlight = highlightOpt !== undefined ? highlightOpt : false;
@@ -551,7 +506,7 @@ function renderResult(focusedRowCol, targetLang, compilerVersion, result) {
                       children: null
                     }, React.createElement("span", {
                           className: subheader
-                        }, "Received JSON payload:"), React.createElement("div", undefined, JSON.stringify(json, null, 4)))));
+                        }, "Received JSON payload:"), React.createElement("div", undefined, Util.Json.prettyStringify(json)))));
 }
 
 function renderTitle$1(result) {
@@ -678,66 +633,6 @@ function Playground$ResultPane(Props) {
                     }, renderResult(focusedRowCol, targetLang, compilerVersion, result))));
 }
 
-var ResultPane = {
-  PreWrap: PreWrap,
-  compactErrorLine: compactErrorLine,
-  isHighlighted: isHighlighted,
-  filterHighlightedLocMsgs: filterHighlightedLocMsgs,
-  filterHighlightedLocWarnings: filterHighlightedLocWarnings,
-  renderResult: renderResult,
-  renderTitle: renderTitle$1,
-  make: Playground$ResultPane
-};
-
-function scrollToElement(parent, element) {
-  if (parent.scrollHeight <= parent.clientHeight) {
-    return ;
-  }
-  var scrollBottom = parent.clientHeight + parent.scrollTop | 0;
-  var elementBottom = element.offsetTop + element.offsetHeight | 0;
-  if (elementBottom > scrollBottom) {
-    parent.scrollTop = elementBottom - parent.clientHeight | 0;
-    return ;
-  } else if ((element.offsetTop - element.offsetHeight | 0) < parent.scrollTop) {
-    parent.scrollTop = element.offsetTop - element.offsetHeight | 0;
-    return ;
-  } else {
-    return ;
-  }
-}
-
-function hide(prev) {
-  switch (prev.TAG | 0) {
-    case /* HideSuggestion */0 :
-        return prev;
-    case /* ShowTokenHint */1 :
-        var match = prev.lastState;
-        switch (match.TAG | 0) {
-          case /* HideSuggestion */0 :
-          case /* ShowTokenHint */1 :
-              return {
-                      TAG: 0,
-                      input: "",
-                      [Symbol.for("name")]: "HideSuggestion"
-                    };
-          case /* Typing */2 :
-              return {
-                      TAG: 0,
-                      input: match.input,
-                      [Symbol.for("name")]: "HideSuggestion"
-                    };
-          
-        }
-    case /* Typing */2 :
-        return {
-                TAG: 0,
-                input: prev.input,
-                [Symbol.for("name")]: "HideSuggestion"
-              };
-    
-  }
-}
-
 function updateInput(prev, input) {
   var suggestion;
   if (input === "") {
@@ -832,70 +727,6 @@ function updateInput(prev, input) {
                 TAG: 2,
                 suggestion: suggestion,
                 input: input,
-                [Symbol.for("name")]: "Typing"
-              };
-    
-  }
-}
-
-function selectPrevious(prev) {
-  switch (prev.TAG | 0) {
-    case /* HideSuggestion */0 :
-    case /* ShowTokenHint */1 :
-        return prev;
-    case /* Typing */2 :
-        var suggestion = prev.suggestion;
-        if (typeof suggestion === "number") {
-          return prev;
-        }
-        if (suggestion.TAG !== /* FuzzySuggestions */0) {
-          return prev;
-        }
-        var selected = suggestion.selected;
-        var nextIdx = selected > 0 ? selected - 1 | 0 : suggestion.results.length - 1 | 0;
-        return {
-                TAG: 2,
-                suggestion: {
-                  TAG: 0,
-                  modifier: suggestion.modifier,
-                  precedingTokens: suggestion.precedingTokens,
-                  results: suggestion.results,
-                  selected: nextIdx,
-                  [Symbol.for("name")]: "FuzzySuggestions"
-                },
-                input: prev.input,
-                [Symbol.for("name")]: "Typing"
-              };
-    
-  }
-}
-
-function selectNext(prev) {
-  switch (prev.TAG | 0) {
-    case /* HideSuggestion */0 :
-    case /* ShowTokenHint */1 :
-        return prev;
-    case /* Typing */2 :
-        var suggestion = prev.suggestion;
-        if (typeof suggestion === "number") {
-          return prev;
-        }
-        if (suggestion.TAG !== /* FuzzySuggestions */0) {
-          return prev;
-        }
-        var selected = suggestion.selected;
-        var nextIdx = selected < (suggestion.results.length - 1 | 0) ? selected + 1 | 0 : 0;
-        return {
-                TAG: 2,
-                suggestion: {
-                  TAG: 0,
-                  modifier: suggestion.modifier,
-                  precedingTokens: suggestion.precedingTokens,
-                  results: suggestion.results,
-                  selected: nextIdx,
-                  [Symbol.for("name")]: "FuzzySuggestions"
-                },
-                input: prev.input,
                 [Symbol.for("name")]: "Typing"
               };
     
@@ -1114,11 +945,71 @@ function Playground$WarningFlagsWidget(Props) {
     }
     switch (exit) {
       case 1 :
-          Curry._1(setState, selectNext);
+          Curry._1(setState, (function (prev) {
+                  switch (prev.TAG | 0) {
+                    case /* HideSuggestion */0 :
+                    case /* ShowTokenHint */1 :
+                        return prev;
+                    case /* Typing */2 :
+                        var suggestion = prev.suggestion;
+                        if (typeof suggestion === "number") {
+                          return prev;
+                        }
+                        if (suggestion.TAG !== /* FuzzySuggestions */0) {
+                          return prev;
+                        }
+                        var selected = suggestion.selected;
+                        var nextIdx = selected < (suggestion.results.length - 1 | 0) ? selected + 1 | 0 : 0;
+                        return {
+                                TAG: 2,
+                                suggestion: {
+                                  TAG: 0,
+                                  modifier: suggestion.modifier,
+                                  precedingTokens: suggestion.precedingTokens,
+                                  results: suggestion.results,
+                                  selected: nextIdx,
+                                  [Symbol.for("name")]: "FuzzySuggestions"
+                                },
+                                input: prev.input,
+                                [Symbol.for("name")]: "Typing"
+                              };
+                    
+                  }
+                }));
           evt.preventDefault();
           return ;
       case 2 :
-          Curry._1(setState, selectPrevious);
+          Curry._1(setState, (function (prev) {
+                  switch (prev.TAG | 0) {
+                    case /* HideSuggestion */0 :
+                    case /* ShowTokenHint */1 :
+                        return prev;
+                    case /* Typing */2 :
+                        var suggestion = prev.suggestion;
+                        if (typeof suggestion === "number") {
+                          return prev;
+                        }
+                        if (suggestion.TAG !== /* FuzzySuggestions */0) {
+                          return prev;
+                        }
+                        var selected = suggestion.selected;
+                        var nextIdx = selected > 0 ? selected - 1 | 0 : suggestion.results.length - 1 | 0;
+                        return {
+                                TAG: 2,
+                                suggestion: {
+                                  TAG: 0,
+                                  modifier: suggestion.modifier,
+                                  precedingTokens: suggestion.precedingTokens,
+                                  results: suggestion.results,
+                                  selected: nextIdx,
+                                  [Symbol.for("name")]: "FuzzySuggestions"
+                                },
+                                input: prev.input,
+                                [Symbol.for("name")]: "Typing"
+                              };
+                    
+                  }
+                }));
           evt.preventDefault();
           return ;
       
@@ -1161,7 +1052,20 @@ function Playground$WarningFlagsWidget(Props) {
                   var ref = selected === i ? Caml_option.some(function (dom) {
                           var parent = listboxRef.current;
                           if (!(parent == null) && !(dom == null)) {
-                            return scrollToElement(parent, dom);
+                            if (parent.scrollHeight <= parent.clientHeight) {
+                              return ;
+                            }
+                            var scrollBottom = parent.clientHeight + parent.scrollTop | 0;
+                            var elementBottom = dom.offsetTop + dom.offsetHeight | 0;
+                            if (elementBottom > scrollBottom) {
+                              parent.scrollTop = elementBottom - parent.clientHeight | 0;
+                              return ;
+                            } else if ((dom.offsetTop - dom.offsetHeight | 0) < parent.scrollTop) {
+                              parent.scrollTop = dom.offsetTop - dom.offsetHeight | 0;
+                              return ;
+                            } else {
+                              return ;
+                            }
                           }
                           
                         }) : undefined;
@@ -1247,7 +1151,37 @@ function Playground$WarningFlagsWidget(Props) {
   var onBlur = function (evt) {
     evt.preventDefault();
     evt.stopPropagation();
-    return Curry._1(setState, hide);
+    return Curry._1(setState, (function (prev) {
+                  switch (prev.TAG | 0) {
+                    case /* HideSuggestion */0 :
+                        return prev;
+                    case /* ShowTokenHint */1 :
+                        var match = prev.lastState;
+                        switch (match.TAG | 0) {
+                          case /* HideSuggestion */0 :
+                          case /* ShowTokenHint */1 :
+                              return {
+                                      TAG: 0,
+                                      input: "",
+                                      [Symbol.for("name")]: "HideSuggestion"
+                                    };
+                          case /* Typing */2 :
+                              return {
+                                      TAG: 0,
+                                      input: match.input,
+                                      [Symbol.for("name")]: "HideSuggestion"
+                                    };
+                          
+                        }
+                    case /* Typing */2 :
+                        return {
+                                TAG: 0,
+                                input: prev.input,
+                                [Symbol.for("name")]: "HideSuggestion"
+                              };
+                    
+                  }
+                }));
   };
   var onFocus = function (evt) {
     var input = evt.target.value;
@@ -1359,27 +1293,6 @@ function Playground$WarningFlagsWidget(Props) {
                           onChange: onChange
                         })), deleteButton), suggestionBox);
 }
-
-var WarningFlagsWidget = {
-  scrollToElement: scrollToElement,
-  hide: hide,
-  updateInput: updateInput,
-  selectPrevious: selectPrevious,
-  selectNext: selectNext,
-  make: Playground$WarningFlagsWidget
-};
-
-function Playground$ConsolePane(Props) {
-  return React.createElement("div", {
-              className: "p-4 pt-8"
-            }, React.createElement(AnsiPre.make, {
-                  children: "> console not implemented yet (coming soon)"
-                }));
-}
-
-var ConsolePane = {
-  make: Playground$ConsolePane
-};
 
 function Playground$Settings(Props) {
   var readyState = Props.readyState;
@@ -1495,10 +1408,6 @@ function Playground$Settings(Props) {
                             })))));
 }
 
-var Settings = {
-  make: Playground$Settings
-};
-
 function Playground$ControlPanel$Button(Props) {
   var children = Props.children;
   var onClick = Props.onClick;
@@ -1510,10 +1419,6 @@ function Playground$ControlPanel$Button(Props) {
   }
   return React.createElement("button", tmp, children);
 }
-
-var Button = {
-  make: Playground$ControlPanel$Button
-};
 
 var copyToClipboard = (function(str) {
       try {
@@ -1562,45 +1467,25 @@ function Playground$ControlPanel$ShareButton(Props) {
     }
     
   };
-  var match$1;
-  switch (match[0]) {
-    case /* Init */0 :
-        match$1 = [
-          "Copy Share Link",
-          " bg-sky active:bg-sky-80 border-sky-80"
-        ];
-        break;
-    case /* CopySuccess */1 :
-        match$1 = [
-          "Copied to clipboard!",
-          "bg-dark-code-3 border-dark-code-3"
-        ];
-        break;
-    case /* CopyFailed */2 :
-        match$1 = [
-          "Copy failed...",
-          ""
-        ];
-        break;
-    
-  }
+  var match$1 = match[0] ? [
+      "Copied to clipboard!",
+      "bg-dark-code-3 border-dark-code-3"
+    ] : [
+      "Copy Share Link",
+      " bg-sky active:bg-sky-80 border-sky-80"
+    ];
   return React.createElement(React.Fragment, undefined, React.createElement("button", {
                   className: match$1[1] + " w-40 transition-all duration-500 ease-in-out inline-block hover:cursor-pointer hover:text-white-80 text-white rounded border px-2 py-1 ",
                   onClick: onClick
                 }, match$1[0]));
 }
 
-var ShareButton = {
-  copyToClipboard: copyToClipboard,
-  make: Playground$ControlPanel$ShareButton
-};
-
 function Playground$ControlPanel(Props) {
   var actionIndicatorKey = Props.actionIndicatorKey;
   var state = Props.state;
   var dispatch = Props.dispatch;
   var editorCode = Props.editorCode;
-  var router = Router.useRouter();
+  var router = Next.Router.useRouter(undefined);
   var children;
   var exit = 0;
   if (typeof state === "number") {
@@ -1665,12 +1550,6 @@ function Playground$ControlPanel(Props) {
               className: "flex justify-end items-center h-12 bg-night-10 px-4"
             }, children);
 }
-
-var ControlPanel = {
-  Button: Button,
-  ShareButton: ShareButton,
-  make: Playground$ControlPanel
-};
 
 function locMsgToCmError(kind, locMsg) {
   return {
@@ -1914,17 +1793,10 @@ function Playground$OutputPanel(Props) {
                 }));
 }
 
-var OutputPanel = {
-  codeFromResult: codeFromResult,
-  make: Playground$OutputPanel
-};
-
 var initialResContent = "// Please note:\n// ---\n// The Playground is still a work in progress\n// ReScript / old Reason syntax should parse just\n// fine (go to the \"Settings\" panel for toggling syntax).\n//\n// Feel free to play around and compile some\n// ReScript code!\n\nmodule Button = {\n  @react.component\n  let make = (~count: int) => {\n    let times = switch count {\n    | 1 => \"once\"\n    | 2 => \"twice\"\n    | n => Belt.Int.toString(n) ++ \" times\"\n    }\n    let msg = \"Click me \" ++ times\n\n    <button> {msg->React.string} </button>\n  }\n}\n";
 
-var initialReContent = "Js.log(\"Hello Reason 3.6!\");";
-
 function Playground$default(Props) {
-  var router = Router.useRouter();
+  var router = Next.Router.useRouter(undefined);
   var match = Js_dict.get(router.query, "ext");
   var initialLang = match === "re" ? /* Reason */0 : /* Res */2;
   var match$1 = Js_dict.get(router.query, "code");
@@ -1934,7 +1806,7 @@ function Playground$default(Props) {
   } else {
     switch (initialLang) {
       case /* Reason */0 :
-          initialContent = initialReContent;
+          initialContent = "Js.log(\"Hello Reason 3.6!\");";
           break;
       case /* OCaml */1 :
       case /* Res */2 :
@@ -1945,10 +1817,11 @@ function Playground$default(Props) {
   }
   React.useEffect((function () {
           if (router.asPath !== "/try") {
-            router.replace("/try");
+            Next.Router.replace(router, "/try");
           }
           
         }), [router.route]);
+  console.log("test");
   var match$2 = React.useState(function () {
         return 0;
       });
@@ -2076,7 +1949,7 @@ function Playground$default(Props) {
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, {
                   description: "Try ReScript in the browser",
                   title: "ReScript Playground"
-                }), React.createElement(Head, {
+                }), React.createElement(Next.Head.make, {
                   children: React.createElement("style", undefined, "body { background-color: #010427; } ")
                 }), React.createElement("div", {
                   className: "text-16 bg-gray-100"
@@ -2147,27 +2020,9 @@ function Playground$default(Props) {
                                         }))))))));
 }
 
-var Api;
-
 var $$default = Playground$default;
 
 export {
-  Api ,
-  LzString$1 as LzString,
-  DropdownSelect ,
-  ToggleSelection ,
-  Pane ,
-  SingleTabPane ,
-  Statusbar ,
-  ResultPane ,
-  WarningFlagsWidget ,
-  ConsolePane ,
-  Settings ,
-  ControlPanel ,
-  locMsgToCmError ,
-  OutputPanel ,
-  initialResContent ,
-  initialReContent ,
   $$default ,
   $$default as default,
   

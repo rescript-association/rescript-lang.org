@@ -3,14 +3,14 @@
 import * as Blog from "./Blog.js";
 import * as Icon from "./components/Icon.js";
 import * as Meta from "./components/Meta.js";
+import * as Next from "./bindings/Next.js";
+import * as $$Text from "./components/Text.js";
 import * as Util from "./common/Util.js";
 import * as React from "react";
 import * as BlogApi from "./common/BlogApi.js";
 import * as DateStr from "./common/DateStr.js";
 import * as $$Promise from "reason-promise/src/js/promise.js";
-import * as Process from "process";
 import * as Markdown from "./components/Markdown.js";
-import Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as MainLayout from "./layouts/MainLayout.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
@@ -27,19 +27,11 @@ var frontmatter = (function(component) {
         return {};
       });
 
-var BlogComponent = {
-  frontmatter: frontmatter
-};
-
 function BlogArticle$Line(Props) {
   return React.createElement("div", {
               className: "block border-t border-snow-darker"
             });
 }
-
-var Line = {
-  make: BlogArticle$Line
-};
 
 function BlogArticle$AuthorBox(Props) {
   var author = Props.author;
@@ -68,10 +60,6 @@ function BlogArticle$AuthorBox(Props) {
                     }, author.role)));
 }
 
-var AuthorBox = {
-  make: BlogArticle$AuthorBox
-};
-
 function BlogArticle$BlogHeader(Props) {
   var date = Props.date;
   var author = Props.author;
@@ -89,7 +77,7 @@ function BlogArticle$BlogHeader(Props) {
                 }, React.createElement("div", {
                       className: "text-night-light text-lg mb-5"
                     }, category !== undefined ? React.createElement(React.Fragment, undefined, category, middleDotSpacer) : null, Util.$$Date.toDayMonthYear(date$1)), React.createElement("h1", {
-                      className: "text-onyx font-semibold text-42 leading-2"
+                      className: $$Text.H1.$$default
                     }, title), Belt_Option.mapWithDefault(description, null, (function (desc) {
                         if (desc === "") {
                           return React.createElement("div", {
@@ -126,12 +114,6 @@ function BlogArticle$BlogHeader(Props) {
                     className: "max-w-705 w-full"
                   }, React.createElement(BlogArticle$Line, {})));
 }
-
-var BlogHeader = {
-  make: BlogArticle$BlogHeader
-};
-
-var cwd = Process.cwd();
 
 function $$default(props) {
   var fullslug = props.fullslug;
@@ -202,7 +184,7 @@ function $$default(props) {
                           className: "pt-20 flex flex-col items-center"
                         }, React.createElement("div", {
                               className: "text-3xl sm:text-4xl text-center text-night-dark font-medium"
-                            }, "Want to read more?"), React.createElement(Link, {
+                            }, "Want to read more?"), React.createElement(Next.Link.make, {
                               href: "/blog",
                               children: React.createElement("a", {
                                     className: "text-fire hover:text-fire-80"
@@ -250,13 +232,7 @@ function getStaticPaths(param) {
 }
 
 export {
-  middleDotSpacer ,
   Params ,
-  BlogComponent ,
-  Line ,
-  AuthorBox ,
-  BlogHeader ,
-  cwd ,
   $$default ,
   $$default as default,
   getStaticProps ,

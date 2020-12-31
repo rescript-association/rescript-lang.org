@@ -405,7 +405,7 @@ module Compiler = {
   external convertSyntax: (t, string, string, string) => Js.Json.t = "convertSyntax"
 
   // General format function
-  let convertSyntax = (t, ~fromLang: Lang.t, ~toLang: Lang.t, ~code: string): ConversionResult.t =>
+  let convertSyntax = (~fromLang: Lang.t, ~toLang: Lang.t, ~code: string, t): ConversionResult.t =>
     // TODO: There is an issue where trying to convert an empty Reason code
     //       to ReScript code would throw an unhandled JSOO exception
     //       we'd either need to special case the empty Reason code parsing,

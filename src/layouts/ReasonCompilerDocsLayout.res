@@ -1,5 +1,3 @@
-module Link = Next.Link
-
 // Structure defined by `scripts/extract-tocs.js`
 let tocData: Js.Dict.t<{
   "title": string,

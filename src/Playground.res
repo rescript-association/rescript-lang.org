@@ -24,8 +24,6 @@ module LzString = {
 }
 
 module DropdownSelect = {
-  type style = [#Error | #Normal]
-
   @react.component
   let make = (~onChange, ~name, ~value, ~disabled=false, ~children) => {
     let opacity = disabled ? " opacity-50" : ""
@@ -162,15 +160,6 @@ module Pane = {
         <div> {React.array(body)} </div>
       </div>
     </div>
-  }
-}
-
-module SingleTabPane = {
-  @react.component
-  let make = (~title: string, ~makeTabClass=?, ~children) => {
-    let tabs = [{Pane.title: title, content: children}]
-
-    <Pane tabs ?makeTabClass />
   }
 }
 
@@ -456,9 +445,7 @@ module ResultPane = {
     | Nothing =>
       let syntax = Api.Lang.toString(targetLang)
       <PreWrap>
-        {React.string(
-          j`This playground is now running on compiler version $compilerVersion with $syntax syntax`,
-        )}
+        {React.string(j`This playground is now running on compiler version $compilerVersion with $syntax syntax`)}
       </PreWrap>
     }
 
@@ -517,8 +504,6 @@ module ResultPane = {
 module WarningFlagsWidget = {
   @bs.set external _scrollTop: (Dom.element, int) => unit = "scrollTop"
   @bs.send external focus: Dom.element => unit = "focus"
-  @bs.send
-  external scrollIntoView: (Dom.element, @bs.as(json`false`) _) => unit = "scrollIntoView"
 
   @bs.send external blur: Dom.element => unit = "blur"
 
@@ -837,10 +822,9 @@ module WarningFlagsWidget = {
     }
 
     let suggestions = switch state {
-    | ShowTokenHint({token}) => WarningFlagDescription.lookup(token.flag)->Belt.Array.map(((
-        num,
-        description,
-      )) => {
+    | ShowTokenHint({token}) =>
+      WarningFlagDescription.lookup(token.flag)
+      ->Belt.Array.map(((num, description)) => {
         let (modifier, color) = if token.enabled {
           ("(Enabled) ", "text-dark-code-3")
         } else {
@@ -850,7 +834,9 @@ module WarningFlagsWidget = {
         <div key=num>
           <span className=color> {React.string(modifier)} </span> {React.string(description)}
         </div>
-      })->React.array->Some
+      })
+      ->React.array
+      ->Some
     | Typing(typing) =>
       let suggestions = switch typing.suggestion {
       | NoSuggestion => React.string("Type + / - followed by a number or letter (e.g. +a+1)")
@@ -1010,14 +996,6 @@ module WarningFlagsWidget = {
   }
 }
 
-module ConsolePane = {
-  @react.component
-  let make = () =>
-    <div className="p-4 pt-8">
-      <AnsiPre> "> console not implemented yet (coming soon)" </AnsiPre>
-    </div>
-}
-
 module Settings = {
   @react.component
   let make = (
@@ -1128,9 +1106,9 @@ module ControlPanel = {
         children
       </button>
   }
+
   module ShareButton = {
-    let copyToClipboard: string => bool = %raw(
-      j`
+    let copyToClipboard: string => bool = %raw(j`
     function(str) {
       try {
       const el = document.createElement('textarea');
@@ -1153,23 +1131,11 @@ module ControlPanel = {
         return false;
       }
     }
-    `
-    )
-
-    @bs.val @bs.scope("document")
-    external execCommand: [#copy] => unit = "execCommand"
-
-    @bs.send external select: Dom.element => unit = "select"
-    @bs.send
-    external setSelectionRange: (Dom.element, int, int) => unit = "setSelectionRange"
-
-    @bs.set external setValue: (Dom.element, string) => unit = "value"
-    @bs.get external value: Dom.element => string = "value"
+    `)
 
     type state =
       | Init
       | CopySuccess
-      | CopyFailed
 
     @react.component
     let make = (~createShareLink: unit => string, ~actionIndicatorKey: string) => {
@@ -1192,7 +1158,6 @@ module ControlPanel = {
       let (text, className) = switch state {
       | Init => ("Copy Share Link", " bg-sky active:bg-sky-80 border-sky-80")
       | CopySuccess => ("Copied to clipboard!", "bg-dark-code-3 border-dark-code-3")
-      | CopyFailed => ("Copy failed...", "")
       }
 
       <>
@@ -1487,6 +1452,7 @@ let default = () => {
     None
   }, [router.route])
 
+  Js.log("test")
   // We don't count to infinity. This value is only required to trigger
   // rerenders for specific components (ActivityIndicator)
   let (actionCount, setActionCount) = React.useState(_ => 0)
@@ -1544,7 +1510,8 @@ let default = () => {
       | TypecheckErr(locMsgs)
       | OtherErr(locMsgs) =>
         Belt.Array.map(locMsgs, locMsgToCmError(~kind=#Error))
-      | WarningErr(warnings) => Belt.Array.reduce(warnings, [], (acc, next) => {
+      | WarningErr(warnings) =>
+        Belt.Array.reduce(warnings, [], (acc, next) => {
           switch next {
           | Api.Warning.Warn({details})
           | WarnErr({details}) =>
@@ -1555,7 +1522,8 @@ let default = () => {
         })
       | WarningFlagErr(_) => []
       }
-    | Comp(Success({warnings})) => Belt.Array.reduce(warnings, [], (acc, next) => {
+    | Comp(Success({warnings})) =>
+      Belt.Array.reduce(warnings, [], (acc, next) => {
         switch next {
         | Api.Warning.Warn({details})
         | WarnErr({details}) =>
@@ -1574,7 +1542,9 @@ let default = () => {
 
   <>
     <Meta title="ReScript Playground" description="Try ReScript in the browser" />
-    <Next.Head> <style> {React.string(j`body { background-color: #010427; } `)} </style> </Next.Head>
+    <Next.Head>
+      <style> {React.string(j`body { background-color: #010427; } `)} </style>
+    </Next.Head>
     <div className="text-16 bg-gray-100">
       <div className="text-night text-14">
         <Navigation fixed=false overlayState />

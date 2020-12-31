@@ -2,11 +2,10 @@
 
 import * as Mdx from "../common/Mdx.js";
 import * as Icon from "./Icon.js";
+import * as Next from "../bindings/Next.js";
 import * as Util from "../common/Util.js";
-import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
-import Link from "next/link";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
@@ -95,7 +94,7 @@ function Markdown$UrlBox(Props) {
         break;
     case /* Element */1 :
         var subChildren = Mdx.MdxChildren.getMdxChildren(str._0);
-        content = React.createElement("p", undefined, imgEl, Curry._1(Mdx.MdxChildren.toReactElement, subChildren));
+        content = React.createElement("p", undefined, imgEl, Mdx.MdxChildren.toReactElement(subChildren));
         break;
     case /* Array */2 :
         var arr = str._0;
@@ -105,7 +104,7 @@ function Markdown$UrlBox(Props) {
           var headChildren = Mdx.MdxChildren.getMdxChildren(head);
           content = React.createElement(React.Fragment, undefined, React.createElement(Markdown$P, {
                     children: null
-                  }, imgEl, Curry._1(Mdx.MdxChildren.toReactElement, headChildren)), length > 1 ? arr.slice(1, length) : null);
+                  }, imgEl, Mdx.MdxChildren.toReactElement(headChildren)), length > 1 ? Mdx.arrToReactElement(arr.slice(1, length)) : null);
         } else {
           content = null;
         }
@@ -122,7 +121,7 @@ function Markdown$UrlBox(Props) {
           rel: "noopener noreferrer"
         }, text, React.createElement(Icon.ArrowRight.make, {
               className: "ml-1"
-            })) : React.createElement(Link, {
+            })) : React.createElement(Next.Link.make, {
           href: href,
           children: React.createElement("a", {
                 className: "flex items-center"
@@ -135,15 +134,6 @@ function Markdown$UrlBox(Props) {
             }, content, React.createElement("div", {
                   className: "mt-4 text-sky hover:text-sky-80"
                 }, link));
-}
-
-var UrlBox = {
-  imgEl: imgEl,
-  make: Markdown$UrlBox
-};
-
-function idFormat(id) {
-  return id;
 }
 
 function Markdown$Anchor(Props) {
@@ -166,7 +156,6 @@ function Markdown$Anchor(Props) {
 }
 
 var Anchor = {
-  idFormat: idFormat,
   make: Markdown$Anchor
 };
 
@@ -311,17 +300,9 @@ var Td = {
   make: Markdown$Td
 };
 
-function parseNumericRange(prim) {
-  return ParseNumericRangeJs.parsePart(prim);
-}
-
-var typeOf = (thing => { return typeof thing; });
-
 var isArray = (thing => { return thing instanceof Array; });
 
 var isObject = (thing => { return thing instanceof Object; });
-
-var isString = (thing => { return thing instanceof String; });
 
 function parseNumericRangeMeta(metastring) {
   return Belt_Option.getWithDefault(Belt_Option.map(Caml_option.undefined_to_opt(metastring.split(" ").find(function (s) {
@@ -333,40 +314,6 @@ function parseNumericRangeMeta(metastring) {
                         })), (function (str) {
                     return ParseNumericRangeJs.parsePart(str.replace(/[\{\}]/g, ""));
                   })), []);
-}
-
-function makeCodeElement(code, metastring, lang) {
-  var codeElement;
-  if (metastring !== undefined) {
-    var metaSplits = Belt_List.fromArray(metastring.split(" "));
-    var highlightedLines = parseNumericRangeMeta(metastring);
-    codeElement = Belt_List.has(metaSplits, "example", (function (prim, prim$1) {
-            return prim === prim$1;
-          })) ? React.createElement(CodeExample.make, {
-            code: code,
-            lang: lang
-          }) : (
-        Belt_List.has(metaSplits, "sig", (function (prim, prim$1) {
-                return prim === prim$1;
-              })) ? React.createElement(CodeExample.make, {
-                code: code,
-                showLabel: false,
-                lang: lang
-              }) : React.createElement(CodeExample.make, {
-                highlightedLines: highlightedLines,
-                code: code,
-                lang: lang
-              })
-      );
-  } else {
-    codeElement = React.createElement(CodeExample.make, {
-          code: code,
-          lang: lang
-        });
-  }
-  return React.createElement("div", {
-              className: "md-code font-mono w-full block  mt-4 mb-10"
-            }, codeElement);
 }
 
 function Markdown$Code(Props) {
@@ -394,7 +341,37 @@ function Markdown$Code(Props) {
     if (isObject(children)) {
       return children;
     } else {
-      return makeCodeElement(children, metastring, lang);
+      var codeElement;
+      if (metastring !== undefined) {
+        var metaSplits = Belt_List.fromArray(metastring.split(" "));
+        var highlightedLines = parseNumericRangeMeta(metastring);
+        codeElement = Belt_List.has(metaSplits, "example", (function (prim, prim$1) {
+                return prim === prim$1;
+              })) ? React.createElement(CodeExample.make, {
+                code: children,
+                lang: lang
+              }) : (
+            Belt_List.has(metaSplits, "sig", (function (prim, prim$1) {
+                    return prim === prim$1;
+                  })) ? React.createElement(CodeExample.make, {
+                    code: children,
+                    showLabel: false,
+                    lang: lang
+                  }) : React.createElement(CodeExample.make, {
+                    highlightedLines: highlightedLines,
+                    code: children,
+                    lang: lang
+                  })
+          );
+      } else {
+        codeElement = React.createElement(CodeExample.make, {
+              code: children,
+              lang: lang
+            });
+      }
+      return React.createElement("div", {
+                  className: "md-code font-mono w-full block  mt-4 mb-10"
+                }, codeElement);
     }
   }
   var code = children.join("");
@@ -402,17 +379,6 @@ function Markdown$Code(Props) {
               children: code
             });
 }
-
-var Code = {
-  parseNumericRange: parseNumericRange,
-  typeOf: typeOf,
-  isArray: isArray,
-  isObject: isObject,
-  isString: isString,
-  parseNumericRangeMeta: parseNumericRangeMeta,
-  makeCodeElement: makeCodeElement,
-  make: Markdown$Code
-};
 
 var getMdxMetastring = (element => {
       if(element == null || element.props == null) {
@@ -477,11 +443,6 @@ function Markdown$CodeTab(Props) {
                   tabs: tabs
                 }));
 }
-
-var CodeTab = {
-  getMdxMetastring: getMdxMetastring,
-  make: Markdown$CodeTab
-};
 
 function Markdown$Blockquote(Props) {
   var children = Props.children;
@@ -551,7 +512,7 @@ function Markdown$A(Props) {
   if (target !== undefined) {
     tmp$1.target = Caml_option.valFromOption(target);
   }
-  return React.createElement(Link, {
+  return React.createElement(Next.Link.make, {
               href: href$1,
               children: React.createElement("a", tmp$1, children)
             });
@@ -583,7 +544,7 @@ var Ol = {
   make: Markdown$Ol
 };
 
-var typeOf$1 = (thing => { return typeof thing; });
+var typeOf = (thing => { return typeof thing; });
 
 var isArray$1 = (thing => { return thing instanceof Array; });
 
@@ -594,7 +555,7 @@ function Markdown$Li(Props) {
     var last = Belt_Array.getExn(children, children.length - 1 | 0);
     var head = children.slice(0, children.length - 1 | 0);
     var first = Belt_Array.getExn(head, 0);
-    var match = Mdx.getMdxType(last);
+    var match = Mdx.getMdxType(Mdx.fromReactElement(last));
     var exit = 0;
     switch (match) {
       case "li" :
@@ -606,14 +567,14 @@ function Markdown$Li(Props) {
         elements = React.createElement("p", undefined, children);
     }
     if (exit === 1) {
-      var match$1 = Mdx.getMdxType(first);
+      var match$1 = Mdx.getMdxType(Mdx.fromReactElement(first));
       elements = match$1 === "p" ? React.createElement(React.Fragment, undefined, head, last) : React.createElement(React.Fragment, undefined, React.createElement("p", undefined, head), last);
     }
     
-  } else if (typeOf$1(children) === "string") {
-    elements = React.createElement("p", undefined, children);
+  } else if (typeOf(children) === "string") {
+    elements = React.createElement("p", undefined, Util.Unsafe.elementAsString(children));
   } else {
-    var match$2 = Mdx.getMdxType(children);
+    var match$2 = Mdx.getMdxType(Mdx.fromReactElement(children));
     switch (match$2) {
       case "p" :
       case "pre" :
@@ -628,12 +589,6 @@ function Markdown$Li(Props) {
             }, elements);
 }
 
-var Li = {
-  typeOf: typeOf$1,
-  isArray: isArray$1,
-  make: Markdown$Li
-};
-
 function Markdown$Strong(Props) {
   var children = Props.children;
   return React.createElement("strong", {
@@ -645,33 +600,22 @@ var Strong = {
   make: Markdown$Strong
 };
 
-var $$default = {
-  Cite: Markdown$Cite,
-  Info: Markdown$Info,
-  Warn: Markdown$Warn,
-  Intro: Markdown$Intro,
-  UrlBox: Markdown$UrlBox,
-  CodeTab: Markdown$CodeTab,
-  p: Markdown$P,
-  li: Markdown$Li,
-  h1: Markdown$H1,
-  h2: Markdown$H2,
-  h3: Markdown$H3,
-  h4: Markdown$H4,
-  h5: Markdown$H5,
-  ul: Markdown$Ul,
-  ol: Markdown$Ol,
-  table: Markdown$Table,
-  thead: Markdown$Thead,
-  th: Markdown$Th,
-  td: Markdown$Td,
-  blockquote: Markdown$Blockquote,
-  inlineCode: Markdown$InlineCode,
-  strong: Markdown$Strong,
-  hr: Markdown$Hr,
-  code: Markdown$Code,
-  pre: Markdown$Pre,
-  a: Markdown$A
+var $$default = Mdx.Components.t(Markdown$Cite, Markdown$Info, Markdown$Warn, Markdown$Intro, Markdown$UrlBox, Markdown$CodeTab, Markdown$P, Markdown$Li, Markdown$H1, Markdown$H2, Markdown$H3, Markdown$H4, Markdown$H5, Markdown$Ul, Markdown$Ol, Markdown$Table, Markdown$Thead, Markdown$Th, Markdown$Td, Markdown$Blockquote, Markdown$InlineCode, Markdown$Strong, Markdown$Hr, Markdown$Code, Markdown$Pre, Markdown$A, undefined);
+
+var UrlBox = {
+  make: Markdown$UrlBox
+};
+
+var Code = {
+  make: Markdown$Code
+};
+
+var CodeTab = {
+  make: Markdown$CodeTab
+};
+
+var Li = {
+  make: Markdown$Li
 };
 
 export {

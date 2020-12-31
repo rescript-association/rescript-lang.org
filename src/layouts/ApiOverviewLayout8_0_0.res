@@ -1,6 +1,4 @@
-module Link = Next.Link
-
-module Sidebar = DocsLayout.Sidebar
+module Sidebar = SidebarLayout.Sidebar
 
 let categories: array<Sidebar.Category.t> = [
   {
@@ -39,7 +37,7 @@ module Docs = {
  have different semantic styling and do things such as hiding the text
  of H2 nodes.
  */
-module Prose = {
-  @react.component
-  let make = (~children) => <Docs components=Markdown.default> children </Docs>
-}
+/*module Prose = {*/
+  /*@react.component*/
+  /*let make = (~children) => <Docs components=Markdown.default> children </Docs>*/
+/*}*/

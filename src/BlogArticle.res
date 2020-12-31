@@ -134,8 +134,6 @@ module BlogHeader = {
   }
 }
 
-let cwd = Node.Process.cwd()
-
 let default = (props: props) => {
   let {fullslug} = props
 

@@ -1,5 +1,3 @@
-module Link = Next.Link
-
 // This is used for the version dropdown in the api layouts
 let allApiVersions = [("latest", "v8.2.0"), ("v8.0.0", "< v8.2.0")]
 

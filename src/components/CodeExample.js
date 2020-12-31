@@ -118,7 +118,6 @@ var Toggle = {
 var make = CodeExample;
 
 export {
-  langShortname ,
   make ,
   Toggle ,
   
