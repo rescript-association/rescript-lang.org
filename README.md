@@ -10,6 +10,11 @@ This is the official documentation platform for the [ReScript](https://rescript-
 - [rescript-compiler](https://github.com/rescript-lang/rescript-compiler): The compiler and build system
 - [rescript-syntax](https://github.com/rescript-lang/syntax): The ReScript syntax
 
+**In case you are missing some specific documentation:**
+- Some language / compiler feature may not be documented yet
+- Create an issue to let us know what you are missing
+- In case you want to contribute missing docs, please refer to our [Contribution section](#contributing)
+
 ## Setup
 
 ```sh
@@ -131,7 +136,4 @@ posts](https://rescript-lang.org/blogpost-guide).
 
 ### Contributing
 
-Check out our [CONTRIBUTING.md](CONTRIBUTING.md) for how to get started working
-on this project.
-
-**TLDR:** Please read and comply to our [Code of Conduct](CODE_OF_CONDUCT.md).
+Please make sure to first read and comply to our [Code of Conduct](CODE_OF_CONDUCT.md) and check out our [CONTRIBUTING.md](CONTRIBUTING.md) file to learn how to get started with our contribution process!
