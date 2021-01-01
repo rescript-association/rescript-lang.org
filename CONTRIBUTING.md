@@ -6,7 +6,7 @@ Please make sure to check out our [Code of Conduct](CODE_OF_CONDUCT.md) and make
 
 ## Ways to contribute
 
-- Writing docs for the manual (Check for issues that are marked with a `manual` and `help wanted` tag)
+- Writing docs for the manual (Check for issues that are marked with a [`manual`](https://github.com/reason-association/rescript-lang.org/issues?q=is%3Aissue+is%3Aopen+label%3A"manual") and [`help wanted`](https://github.com/reason-association/rescript-lang.org/issues?q=is%3Aissue+is%3Aopen+label%3A"help+wanted") tag)
 - Joining in discussions on our [issue tracker](https://github.com/reason-association/rescript-lang.org/issues)
 - Give feedback for improvements (incomplete / missing docs, bad wording,
   search user experience / design, etc.)
@@ -24,7 +24,7 @@ If you can't find any relevant issues, feel free to create a new one to start a 
 
 The project follows very specific goals and tries to deliver the highest value with the least amount of resources. Please help us focus on the tasks at hand and don't submit any code / bigger refactorings without any proper discussion on the issue tracker. Otherwise your PR might not be accepted! 
 
-If you need inspiration on what to work on, you can check out issues tagged with [`good first issue`](https://github.com/reason-association/rescript-lang.org/issues?q=is%3Aissue+is%3Aopen+label%3A"good+first+issue").
+If you need inspiration on what to work on, you can check out issues tagged with [`good first issue`](https://github.com/reason-association/rescript-lang.org/issues?q=is%3Aissue+is%3Aopen+label%3A"good+first+issue") or [`help wanted`](https://github.com/reason-association/rescript-lang.org/issues?q=is%3Aissue+is%3Aopen+label%3A"help+wanted").
 
 ### Discuss an issue
 
@@ -32,18 +32,24 @@ We really appreciate all input from users, community members and potential contr
 
 **Most importantly: Keep it professional and be nice to eachother**
 
-There might be situations where others don't understand a proposed feature or architectural change. That's fine, discussions are always welcome! Communicate in clear actionables, make your plans clear and always to stick to the original topic.
+There might be situations where others don't understand a proposed feature or have different opinions on certain writing styles. That's fine, discussions are always welcome! Communicate in clear actionables, make your plans clear and always to stick to the original topic.
 
 If other contributors disagree with certain proposals and don't change their mind after longer discussions, please don't get discouraged when an issue gets closed / postponed. Everyone tries their best to make the platform better, and to look at it in another perspective: Closed issues are also a highly valuable resource for others to understand technical decisions later on.
+
+### Communicate your Time Commitment
+
+Open Source development can be a challenge to coordinate, so please make sure to block enough time to work on your tasks and show commitment when taking on some work. Let other contributors know if your time schedule changes significantly, and also let others know if you can't finish a task.
+
+We value your voluntary work, and of course it's fine to step back from a ticket for any reasons (we can also help you if you are getting stuck). Please talk to us in any case, otherwise we might re-assign the ticket to other contributors.
 
 ### Communication Channels
 
 - [Issue Tracker](https://github.com/reason-association/rescript-lang.org/issues)
 - [ReScript Discourse (General / mostly unrelated discussions)](http://forum.rescript-lang.org)
 
-## Working on the rescript-lang.org codebase
+## Working on the rescript-lang.org
 
-We try to keep our contribution guidelines to a minimum. Please keep following rules in mind whenever writing code.
+We try to keep our contribution guidelines to a minimum. Please keep following rules in mind whenever writing code or technical documentation.
 
 ### Keep it simple
 
@@ -57,7 +63,7 @@ The rescript-lang.org project aims to be the best documentation experience for o
 
 Always check if there are any designs for certain UI components and think about how to get the most out for the users. Jumpy UI, slow loading, big assets and bad accessibility is not what we stand for.
 
-### Doc Writing Notes
+### Technical Writing (Documentation)
 
 - Think and write in a JS friendly mindset when explaining concepts / showing examples.
 - No `foo` examples if somewhat possible. Try to establish practical context in your show case examples.
@@ -80,3 +86,4 @@ Most of the stuff we want to build can be built as components with Tailwind clas
 - Always run the page locally and verify your changes (especially when working on code examples)
 - When writing markdown with code examples, always run `yarn test` to prevent broken code
 - Feel free to open `Draft PRs` when you are working on bigger features (good for visibility and asking for feedback)
+- Improve code based on last feedback until the code is ready to be merged
