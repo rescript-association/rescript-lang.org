@@ -158,9 +158,13 @@ ReScript's `true/false` compiles into a JavaScript `true/false`.
 
 **Careful when you bind to JavaScript numbers**! Long ones might be truncated. Bind JS number (especially Dates) as **float** instead.
 
+To improve readability, you may place underscores in the middle of numeric literals such as `1_000_000`. Note that underscores can be placed anywhere within a number, not just every three digits.
+
 ## Floats
 
 Float requires other operators: `+.`, `-.`, `*.`, `/.`, etc. Like `0.5 +. 0.6`. See [Js.Float](api/js/float) for helper functions.
+
+As with integers, you may use underscores within literals to improve readability.
 
 ## Unit
 
