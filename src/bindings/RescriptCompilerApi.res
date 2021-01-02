@@ -1,11 +1,3 @@
-// This module establishes the communication to the
-// loaded bucklescript API exposed by the bs-platform-js
-// bundle
-
-// It is only safe to call these functions when a bundle
-// has been loaded, so we'd prefer to protect this
-// API with the playground compiler manager state
-
 @bs.val @bs.scope("performance") external now: unit => float = "now"
 
 module Lang = {
@@ -337,9 +329,6 @@ module Compiler = {
     ConversionResult.decode(~fromLang=Res, ~toLang=Res, json)
   }
 
-  /*
-      Reason compiler actions
- */
   @bs.get @bs.scope("reason")
   external reasonVersion: t => string = "version"
 
@@ -361,9 +350,6 @@ module Compiler = {
     ConversionResult.decode(~fromLang=Reason, ~toLang=Reason, json)
   }
 
-  /*
-      OCaml compiler actions (Note: no pretty print available for OCaml)
- */
   @bs.get @bs.scope("ocaml") external ocamlVersion: t => string = "version"
 
   @bs.send @bs.scope("ocaml")
@@ -377,9 +363,6 @@ module Compiler = {
     CompilationResult.decode(~time=stopTime -. startTime, json)
   }
 
-  /*
-      Config setter / getters
- */
   @bs.send external getConfig: t => Config.t = "getConfig"
 
   @bs.send external setFilename: (t, string) => bool = "setFilename"

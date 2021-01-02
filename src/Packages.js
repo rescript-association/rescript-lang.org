@@ -2,7 +2,6 @@
 
 import * as Fs from "fs";
 import * as Mdx from "./common/Mdx.js";
-import * as Fuse from "./bindings/Fuse.js";
 import * as Icon from "./components/Icon.js";
 import * as Meta from "./components/Meta.js";
 import * as Next from "./bindings/Next.js";
@@ -12,6 +11,7 @@ import * as React from "react";
 import * as Footer from "./components/Footer.js";
 import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
 import * as Js_null from "bs-platform/lib/es6/js_null.js";
+import FuseJs from "fuse.js";
 import * as Process from "process";
 import * as Markdown from "./components/Markdown.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
@@ -69,8 +69,8 @@ function applyNpmSearch(packages, pattern) {
       "keywords"
     ]
   };
-  var fuser = Fuse.make(packages, fuseOpts);
-  return Fuse.search(fuser, pattern);
+  var fuser = new FuseJs(packages, fuseOpts);
+  return fuser.search(pattern);
 }
 
 function applyUrlResourceSearch(urls, pattern) {
@@ -86,8 +86,8 @@ function applyUrlResourceSearch(urls, pattern) {
       "keywords"
     ]
   };
-  var fuser = Fuse.make(urls, fuseOpts);
-  return Fuse.search(fuser, pattern);
+  var fuser = new FuseJs(urls, fuseOpts);
+  return fuser.search(pattern);
 }
 
 function applySearch(resources, pattern) {

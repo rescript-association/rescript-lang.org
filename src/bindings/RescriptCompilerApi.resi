@@ -42,17 +42,17 @@ module LocMsg: {
     endColumn: int,
   }
 
-  let decode: Js.Json.t => t  
+  let decode: Js.Json.t => t
 
   type prefix = [#W | #E]
 
   // Useful for showing errors in a more compact format
-  let toCompactErrorLine: (~prefix: prefix, t) => string 
+  let toCompactErrorLine: (~prefix: prefix, t) => string
 
   // Creates a somewhat unique id based on the rows / cols of the locMsg
   let makeId: t => string
 
-  /*let dedupe: (array<t>) => array<t> */
+  /* let dedupe: (array<t>) => array<t> */
 }
 
 module Warning: {
@@ -63,7 +63,7 @@ module Warning: {
   let decode: Js.Json.t => t
 
   // Useful for showing errors in a more compact format
-  let toCompactErrorLine: (t) => string
+  let toCompactErrorLine: t => string
 }
 
 module WarningFlag: {
@@ -144,28 +144,28 @@ module Compiler: {
   let version: t => string
 
   /*
-  * Res compiler actions
-  */
+   * Res compiler actions
+   */
   let resVersion: t => string
-  let resCompile: (t, string) => CompilationResult.t 
+  let resCompile: (t, string) => CompilationResult.t
   let resFormat: (t, string) => ConversionResult.t
 
   /*
-  * Reason compiler actions
-  */
+   * Reason compiler actions
+   */
   let reasonVersion: t => string
   let reasonCompile: (t, string) => CompilationResult.t
-  let reasonFormat: (t, string) => ConversionResult.t 
+  let reasonFormat: (t, string) => ConversionResult.t
 
   /*
-  * OCaml compiler actions (Note: no pretty print available for OCaml)
-  */
+   * OCaml compiler actions (Note: no pretty print available for OCaml)
+   */
   let ocamlVersion: t => string
   let ocamlCompile: (t, string) => CompilationResult.t
 
   /*
-  * Config setter / getters
-  */
+   * Config setter / getters
+   */
   let getConfig: t => Config.t
   let setFilename: (t, string) => bool
   let setModuleSystem: (t, [#es6 | #nodejs]) => bool
