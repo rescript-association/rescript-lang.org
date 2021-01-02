@@ -92,9 +92,23 @@ const createIndex = result => {
   // NextJS router
   return result.reduce((acc, data) => {
     const { signatures = [], moduleName, headers } = data;
+
+    // Sort the headers, but keep type `t` as the first header.
+    const headersSorted = [...headers].sort(
+      (headerA, headerB) => {
+        if (headerA.name === 't') {
+          return -1
+        } else if (headerB.name === 't') {
+          return 1
+        } else {
+          return headerA.name.localeCompare(headerB.name)
+        }
+      }
+    );
+
     acc["/" + data.href] = {
       moduleName,
-      headers
+      headers: headersSorted
     };
 
     return acc;
