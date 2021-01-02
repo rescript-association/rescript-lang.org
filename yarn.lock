@@ -2161,10 +2161,10 @@ bs-fetch@^0.3.1:
   resolved "https://registry.yarnpkg.com/bs-fetch/-/bs-fetch-0.3.1.tgz#9c7d074b27e6bb2b9f2ec985964f32bcac49f79e"
   integrity sha512-MxwnuuXPldXnoCtlpeN5JNbbmb1tVgsqpLfVunvuMLAIQNyP0TqoImHiQRTz38PBSN8/iX+2yVlm+PFJfnHHiA==
 
-bs-platform@8.3.3-dev.2:
-  version "8.3.3-dev.2"
-  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-8.3.3-dev.2.tgz#af94cf48708899b02af76095d4197e20e6d12e97"
-  integrity sha512-2G2PPIFhUBoN1tzZW9PurjWgvCg+Lx/gIqkAjPaDIIA6S8GFPs/UcTyl4ZwJNvQdKv33Qgih2eYTiBp4hCM3MQ==
+bs-platform@8.4.2:
+  version "8.4.2"
+  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-8.4.2.tgz#778dabd1dfb3bc95e0086c58dabae74e4ebdee8a"
+  integrity sha512-9q7S4/LLV/a68CweN382NJdCCr/lOSsJR3oQYnmPK98ChfO/AdiA3lYQkQTp6T+U0I5Z5RypUAUprNstwDtMDQ==
 
 buffer-from@^1.0.0, buffer-from@^1.1.1:
   version "1.1.1"

@@ -1,3 +1,3 @@
-import make from "re_pages/DocsOverview.js";
+import make from "src/DocsOverview.js";
 
 export default make;

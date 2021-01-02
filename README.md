@@ -53,6 +53,20 @@ All the index data is stored in `index_data`, but will not be tracked by git.
 Make sure to build the index after a fresh clone, otherwise Next might not
 build specific pages (file `index_data/x.json` not found).
 
+## Project Structure Overview
+
+- `pages`: All Next pages. Those are written in JS / MDX, some pages are re-exporting ReScript based pages from `src/MyPage.res`
+- `styles`: Contains all extra CSS that cannot be expressed with Tailwind
+- `src`: Contains all ReScript related code for the UI
+  - `/`: Within `src`, you will find all ReScript based Next pages that are re-exported in the `pages` directory
+  - `/bindings`: (Zero-cost) bindings to JS libraries / apis
+  - `/common`: ReScript modules that are neither `bindings`, nor `components`
+  - `/components`: ReScript / React components used by multiple pages
+  - `/ffi`: (to be deprecated) Plain JS that some ReScript code binds to (use `raw` statements for that)
+  - `/layouts`: All Next layouts used in our pages. Check out `src/common/App.res` for mapping layouts to routes
+- `scripts`: Contains a mix of JS / ReScript based scripts that do all kind of code generation / code introspection logic
+- `tailwind.config.js`: Contains our Tailwind configuration for all the low level design tokens
+
 ## Run Tests
 
 ### Markdown Codeblock Tests
