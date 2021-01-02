@@ -1821,7 +1821,6 @@ function Playground$default(Props) {
           }
           
         }), [router.route]);
-  console.log("test");
   var match$2 = React.useState(function () {
         return 0;
       });

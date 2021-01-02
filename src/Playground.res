@@ -1452,7 +1452,6 @@ let default = () => {
     None
   }, [router.route])
 
-  Js.log("test")
   // We don't count to infinity. This value is only required to trigger
   // rerenders for specific components (ActivityIndicator)
   let (actionCount, setActionCount) = React.useState(_ => 0)
