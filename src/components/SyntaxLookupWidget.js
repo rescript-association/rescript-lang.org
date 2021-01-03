@@ -43,6 +43,7 @@ function SyntaxLookupWidget$Category(Props) {
 
 var allItems = [
   {
+    id: "module-decorator",
     keywords: ["@bs.module"],
     name: "@module",
     summary: "This is the `@module` decorator.",
@@ -50,6 +51,7 @@ var allItems = [
     component: Decorator_moduleMdx
   },
   {
+    id: "as-decorator",
     keywords: ["@bs.as"],
     name: "@as",
     summary: "This is the `@as` decorator.",
@@ -57,6 +59,7 @@ var allItems = [
     component: Decorator_asMdx
   },
   {
+    id: "if-else",
     keywords: [
       "if",
       "else",
@@ -68,6 +71,7 @@ var allItems = [
     component: Controlflow_ifelseMdx
   },
   {
+    id: "uncurried-function",
     keywords: ["uncurried"],
     name: "(.) => {}",
     summary: "This is an `uncurried` function.",
@@ -151,7 +155,7 @@ function SyntaxLookupWidget(Props) {
           var anchor = getAnchor(router.asPath);
           if (anchor !== undefined) {
             Belt_Option.forEach(Caml_option.undefined_to_opt(allItems.find(function (item) {
-                          return GithubSlugger.slug(item.name) === anchor;
+                          return GithubSlugger.slug(item.id) === anchor;
                         })), (function (item) {
                     return Curry._1(setState, (function (param) {
                                   return {
@@ -172,13 +176,13 @@ function SyntaxLookupWidget(Props) {
           } else {
             var item = state._0;
             if (match !== undefined) {
-              var slug = GithubSlugger.slug(item.name);
+              var slug = GithubSlugger.slug(item.id);
               if (slug !== match) {
                 Next.Router.replace(router, "syntax-lookup#" + match);
               }
               
             } else {
-              Next.Router.replace(router, "syntax-lookup#" + GithubSlugger.slug(item.name));
+              Next.Router.replace(router, "syntax-lookup#" + GithubSlugger.slug(item.id));
             }
           }
           if (exit === 1) {

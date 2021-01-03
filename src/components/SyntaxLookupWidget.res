@@ -46,6 +46,7 @@ module Category = {
 }
 
 type item = {
+  id: string,
   keywords: array<string>,
   name: string,
   summary: string,
@@ -55,6 +56,7 @@ type item = {
 
 let allItems = [
   {
+    id: "module-decorator",
     keywords: ["@bs.module"],
     name: "@module",
     summary: "This is the `@module` decorator.",
@@ -62,6 +64,7 @@ let allItems = [
     component: decorator_module,
   },
   {
+    id: "as-decorator",
     keywords: ["@bs.as"],
     name: "@as",
     summary: "This is the `@as` decorator.",
@@ -69,6 +72,7 @@ let allItems = [
     component: decorator_as,
   },
   {
+    id: "if-else",
     keywords: ["if", "else", "if else"],
     name: "if / else",
     summary: "This is the `if / else` control flow structure.",
@@ -76,6 +80,7 @@ let allItems = [
     component: controlflow_ifelse,
   },
   {
+    id: "uncurried-function",
     keywords: ["uncurried"],
     name: "(.) => {}",
     summary: "This is an `uncurried` function.",
@@ -152,7 +157,7 @@ let make = () => {
     switch getAnchor(router.asPath) {
     | Some(anchor) =>
       Js.Array2.find(allItems, item =>
-        GithubSlugger.slug(item.name) === anchor
+        GithubSlugger.slug(item.id) === anchor
       )->Belt.Option.forEach(item => {
         setState(_ => ShowDetails(item))
       })
@@ -172,7 +177,7 @@ let make = () => {
   React.useEffect1(() => {
     switch (state, getAnchor(router.asPath)) {
     | (ShowDetails(item), Some(anchor)) =>
-      let slug = GithubSlugger.slug(item.name)
+      let slug = GithubSlugger.slug(item.id)
 
       if slug !== anchor {
         router->Next.Router.replace("syntax-lookup#" ++ anchor)
@@ -180,7 +185,7 @@ let make = () => {
         ()
       }
     | (ShowDetails(item), None) =>
-      router->Next.Router.replace("syntax-lookup#" ++ GithubSlugger.slug(item.name))
+      router->Next.Router.replace("syntax-lookup#" ++ GithubSlugger.slug(item.id))
     | (_, Some(_)) => router->Next.Router.replace("syntax-lookup")
     | _ => ()
     }
