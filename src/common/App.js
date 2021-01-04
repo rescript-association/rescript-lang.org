@@ -81,6 +81,7 @@ function make(props) {
                   if (typeof match$2 === "number") {
                     if (match$2 === 0) {
                       return React.createElement(GenTypeDocsLayout.make, {
+                                  frontmatter: component.frontmatter,
                                   children: content
                                 });
                     }
@@ -257,6 +258,7 @@ function make(props) {
             return content;
         case "community" :
             return React.createElement(CommunityLayout.make, {
+                        frontmatter: component.frontmatter,
                         children: content
                       });
         case "packages" :

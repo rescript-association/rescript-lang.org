@@ -15,25 +15,6 @@ import * as SidebarLayout from "./SidebarLayout.js";
 import * as VersionSelect from "../components/VersionSelect.js";
 import * as DocFrontmatter from "../common/DocFrontmatter.js";
 
-function makeBreadcrumbsFromPaths(basePath, paths) {
-  var match = Belt_Array.reduce(paths, [
-        basePath,
-        []
-      ], (function (acc, path) {
-          var ret = acc[1];
-          var href = acc[0] + ("/" + path);
-          ret.push({
-                name: Url.prettyString(path),
-                href: href
-              });
-          return [
-                  href,
-                  ret
-                ];
-        }));
-  return Belt_List.fromArray(match[1]);
-}
-
 function makeBreadcrumbs(basePath, route) {
   var url = Url.parse(route);
   var match = Belt_Array.reduce(url.pagepath, [
@@ -222,7 +203,6 @@ function Make(Content) {
     var children = Props.children;
     var router = Next.Router.useRouter(undefined);
     var route = router.route;
-    console.log(Content.tocData);
     var breadcrumbs$1 = Belt_Option.mapWithDefault(Js_dict.get(Content.tocData, route), breadcrumbs, (function (data) {
             var title = data.title;
             return Belt_Option.map(breadcrumbs, (function (bc) {
@@ -296,7 +276,6 @@ function Make(Content) {
 var make = DocsLayout;
 
 export {
-  makeBreadcrumbsFromPaths ,
   makeBreadcrumbs ,
   make ,
   Make ,

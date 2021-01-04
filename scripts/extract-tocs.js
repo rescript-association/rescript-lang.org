@@ -181,10 +181,19 @@ const createV800ManualToc = () => {
 
 const createGenTypeToc = () => {
   const MD_DIR = path.join(__dirname, "../pages/docs/gentype/latest");
-  const TARGET_FILE = path.join(__dirname, "../index_data/gentype_toc.json");
+  const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_gentype_latest.json");
+  const TARGET_FILE = path.join(__dirname, "../index_data/gentype_latest_toc.json");
 
-  const files = glob.sync(`${MD_DIR}/*.md?(x)`);
-  const result = files.map(processFile);
+  const sidebarJson = JSON.parse(fs.readFileSync(SIDEBAR_JSON));
+
+  const FILE_ORDER = Object.values(sidebarJson).reduce((acc, items) => {
+    return acc.concat(items)
+  },[]);
+
+  const files = glob.sync(`${MD_DIR}/*.?(js|md?(x))`);
+  const ordered = orderFiles(files, FILE_ORDER);
+
+  const result = ordered.map((filepath) => processFile(filepath, sidebarJson));
   const toc = createTOC(result);
 
   fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
@@ -192,10 +201,19 @@ const createGenTypeToc = () => {
 
 const createCommunityToc = () => {
   const MD_DIR = path.join(__dirname, "../pages/community");
+  const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_community.json");
   const TARGET_FILE = path.join(__dirname, "../index_data/community_toc.json");
 
-  const files = glob.sync(`${MD_DIR}/*.md?(x)`);
-  const result = files.map(processFile);
+  const sidebarJson = JSON.parse(fs.readFileSync(SIDEBAR_JSON));
+
+  const FILE_ORDER = Object.values(sidebarJson).reduce((acc, items) => {
+    return acc.concat(items)
+  },[]);
+
+  const files = glob.sync(`${MD_DIR}/*.?(js|md?(x))`);
+  const ordered = orderFiles(files, FILE_ORDER);
+
+  const result = ordered.map((filepath) => processFile(filepath, sidebarJson));
   const toc = createTOC(result);
 
   fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");

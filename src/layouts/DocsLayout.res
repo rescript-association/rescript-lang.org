@@ -6,6 +6,7 @@ module Sidebar = SidebarLayout.Sidebar
 module NavItem = Sidebar.NavItem
 module Category = Sidebar.Category
 
+/*
 let makeBreadcrumbsFromPaths = (~basePath: string, paths: array<string>): list<Url.breadcrumb> => {
   let (_, rest) = Belt.Array.reduce(paths, (basePath, []), (acc, path) => {
     let (baseHref, ret) = acc
@@ -23,6 +24,7 @@ let makeBreadcrumbsFromPaths = (~basePath: string, paths: array<string>): list<U
   })
   rest->Belt.List.fromArray
 }
+*/
 
 let makeBreadcrumbs = (~basePath: string, route: string): list<Url.breadcrumb> => {
   let url = route->Url.parse
@@ -174,8 +176,6 @@ module Make = (Content: StaticContent) => {
   ) => {
     let router = Next.Router.useRouter()
     let route = router.route
-
-    Js.log(Content.tocData)
 
     // Extend breadcrumbs with document title
     let breadcrumbs = Js.Dict.get(Content.tocData, route)->Belt.Option.mapWithDefault(
