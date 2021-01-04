@@ -23,6 +23,33 @@ external decorator_as: MdxComp.t = "default"
 @module("misc_docs/syntax/controlflow_ifelse.mdx")
 external controlflow_ifelse: MdxComp.t = "default"
 
+@module("misc_docs/syntax/operators_integer_addition.mdx")
+external operators_integer_addition: MdxComp.t = "default"
+
+@module("misc_docs/syntax/operators_integer_subtraction.mdx")
+external operators_integer_subtraction: MdxComp.t = "default"
+
+@module("misc_docs/syntax/operators_integer_multiplication.mdx")
+external operators_integer_multiplication: MdxComp.t = "default"
+
+@module("misc_docs/syntax/operators_integer_division.mdx")
+external operators_integer_division: MdxComp.t = "default"
+
+@module("misc_docs/syntax/operators_float_addition.mdx")
+external operators_float_addition: MdxComp.t = "default"
+
+@module("misc_docs/syntax/operators_float_subtraction.mdx")
+external operators_float_subtraction: MdxComp.t = "default"
+
+@module("misc_docs/syntax/operators_float_multiplication.mdx")
+external operators_float_multiplication: MdxComp.t = "default"
+
+@module("misc_docs/syntax/operators_float_division.mdx")
+external operators_float_division: MdxComp.t = "default"
+
+@module("misc_docs/syntax/operators_string_concatenation.mdx")
+external operators_string_concatenation: MdxComp.t = "default"
+
 module Category = {
   type t = Decorators | ControlFlow | Operators | Other
 
@@ -86,6 +113,78 @@ let allItems = [
     summary: "This is an `uncurried` function.",
     category: Other,
     component: controlflow_ifelse,
+  },
+  {
+    id: "integer-addition",
+    keywords: ["plus", "add", "addition", "sum", "int", "integer"],
+    name: "+",
+    summary: "This is the `integer addition` operator.",
+    category: Operators,
+    component: operators_integer_addition,
+  },
+  {
+    id: "integer-subtraction",
+    keywords: ["subtract", "minus", "subtraction", "int", "integer"],
+    name: "-",
+    summary: "This is the `integer subtraction` operator.",
+    category: Operators,
+    component: operators_integer_subtraction,
+  },
+  {
+    id: "integer-multiplication",
+    keywords: ["multiply", "multiplication", "int", "integer"],
+    name: "*",
+    summary: "This is the `integer multiplication` operator.",
+    category: Operators,
+    component: operators_integer_multiplication,
+  },
+  {
+    id: "integer-division",
+    keywords: ["divide", "division", "int", "integer"],
+    name: "/",
+    summary: "This is the `integer division` operator.",
+    category: Operators,
+    component: operators_integer_division,
+  },
+  {
+    id: "float-addition",
+    keywords: ["plus", "add", "addition", "sum", "float"],
+    name: "+.",
+    summary: "This is the `floating point addition` operator.",
+    category: Operators,
+    component: operators_float_addition,
+  },
+  {
+    id: "float-subtraction",
+    keywords: ["subtract", "minus", "subtraction", "float"],
+    name: "-.",
+    summary: "This is the `floating point subtraction` operator.",
+    category: Operators,
+    component: operators_float_subtraction,
+  },
+  {
+    id: "float-multiplication",
+    keywords: ["multiply", "multiplication", "float"],
+    name: "*.",
+    summary: "This is the `floating point multiplication` operator.",
+    category: Operators,
+    component: operators_float_multiplication,
+  },
+  {
+    id: "float-division",
+    keywords: ["divide", "division", "float"],
+    name: "/.",
+    summary: "This is the `floating point division` operator.",
+    category: Operators,
+    component: operators_float_division,
+  },
+  {
+    id: "string-concatenation",
+    keywords: ["concat", "concatenation", "add", "string"],
+    name: "++",
+    summary: "This is the `string concatenation` operator.",
+    category: Operators,
+    component: operators_string_concatenation,
   },
 ]
 
