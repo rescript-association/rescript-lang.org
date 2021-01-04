@@ -409,6 +409,27 @@ add(1, 2);
 
 </CodeTab>
 
+If you need to call a curried function with a single unit `()` argument, you can use the `ignore()` function:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let echo = (. a) => a
+
+echo(. ignore())
+```
+
+```js
+function echo(a) {
+  return a;
+}
+
+echo(undefined);
+```
+
+</CodeTab>
+
+
 If you write down the uncurried function's type, you'll add a dot there as well.
 
 **Note**: both the declaration site and the call site need to have the uncurry annotation. That's part of the guarantee/requirement.
