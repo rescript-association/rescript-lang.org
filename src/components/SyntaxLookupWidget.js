@@ -14,6 +14,15 @@ import * as GithubSlugger from "github-slugger";
 import Decorator_asMdx from "misc_docs/syntax/decorator_as.mdx";
 import Decorator_moduleMdx from "misc_docs/syntax/decorator_module.mdx";
 import Controlflow_ifelseMdx from "misc_docs/syntax/controlflow_ifelse.mdx";
+import Operators_float_additionMdx from "misc_docs/syntax/operators_float_addition.mdx";
+import Operators_float_divisionMdx from "misc_docs/syntax/operators_float_division.mdx";
+import Operators_integer_additionMdx from "misc_docs/syntax/operators_integer_addition.mdx";
+import Operators_integer_divisionMdx from "misc_docs/syntax/operators_integer_division.mdx";
+import Operators_float_subtractionMdx from "misc_docs/syntax/operators_float_subtraction.mdx";
+import Operators_integer_subtractionMdx from "misc_docs/syntax/operators_integer_subtraction.mdx";
+import Operators_float_multiplicationMdx from "misc_docs/syntax/operators_float_multiplication.mdx";
+import Operators_string_concatenationMdx from "misc_docs/syntax/operators_string_concatenation.mdx";
+import Operators_integer_multiplicationMdx from "misc_docs/syntax/operators_integer_multiplication.mdx";
 
 var render = (function(c) {
       return React.createElement(c, {});
@@ -77,6 +86,125 @@ var allItems = [
     summary: "This is an `uncurried` function.",
     category: /* Other */3,
     component: Controlflow_ifelseMdx
+  },
+  {
+    id: "integer-addition",
+    keywords: [
+      "plus",
+      "add",
+      "addition",
+      "sum",
+      "int",
+      "integer"
+    ],
+    name: "+",
+    summary: "This is the `integer addition` operator.",
+    category: /* Operators */2,
+    component: Operators_integer_additionMdx
+  },
+  {
+    id: "integer-subtraction",
+    keywords: [
+      "subtract",
+      "minus",
+      "subtraction",
+      "int",
+      "integer"
+    ],
+    name: "-",
+    summary: "This is the `integer subtraction` operator.",
+    category: /* Operators */2,
+    component: Operators_integer_subtractionMdx
+  },
+  {
+    id: "integer-multiplication",
+    keywords: [
+      "multiply",
+      "multiplication",
+      "int",
+      "integer"
+    ],
+    name: "*",
+    summary: "This is the `integer multiplication` operator.",
+    category: /* Operators */2,
+    component: Operators_integer_multiplicationMdx
+  },
+  {
+    id: "integer-division",
+    keywords: [
+      "divide",
+      "division",
+      "int",
+      "integer"
+    ],
+    name: "/",
+    summary: "This is the `integer division` operator.",
+    category: /* Operators */2,
+    component: Operators_integer_divisionMdx
+  },
+  {
+    id: "float-addition",
+    keywords: [
+      "plus",
+      "add",
+      "addition",
+      "sum",
+      "float"
+    ],
+    name: "+.",
+    summary: "This is the `floating point addition` operator.",
+    category: /* Operators */2,
+    component: Operators_float_additionMdx
+  },
+  {
+    id: "float-subtraction",
+    keywords: [
+      "subtract",
+      "minus",
+      "subtraction",
+      "float"
+    ],
+    name: "-.",
+    summary: "This is the `floating point subtraction` operator.",
+    category: /* Operators */2,
+    component: Operators_float_subtractionMdx
+  },
+  {
+    id: "float-multiplication",
+    keywords: [
+      "multiply",
+      "multiplication",
+      "float"
+    ],
+    name: "*.",
+    summary: "This is the `floating point multiplication` operator.",
+    category: /* Operators */2,
+    component: Operators_float_multiplicationMdx
+  },
+  {
+    id: "float-division",
+    keywords: [
+      "divide",
+      "division",
+      "float"
+    ],
+    name: "/.",
+    summary: "This is the `floating point division` operator.",
+    category: /* Operators */2,
+    component: Operators_float_divisionMdx
+  },
+  {
+    id: "string-concatenation",
+    keywords: [
+      "concat",
+      "concatenation",
+      "add",
+      "string"
+    ],
+    name: "++",
+    summary: "This is the `string concatenation` operator.",
+    category: /* Operators */2,
+    component: Operators_string_concatenationMdx
   }
 ];
 
