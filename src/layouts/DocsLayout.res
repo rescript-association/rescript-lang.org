@@ -124,7 +124,13 @@ let make = (
       let canonical = Js.Null.toOption(fm.canonical)
       let description = Js.Null.toOption(fm.description)
       let title = switch metaTitleCategory {
-      | Some(titleCategory) => fm.title ++ (" | " ++ titleCategory)
+      | Some(titleCategory) =>
+        // We will prefer an existing metaTitle over just a title
+        let metaTitle = switch Js.Null.toOption(fm.metaTitle) {
+        | Some(metaTitle) => metaTitle
+        | None => fm.title
+        }
+        metaTitle ++ (" | " ++ titleCategory)
       | None => title
       }
       let meta = <Meta title ?description ?canonical />
@@ -135,7 +141,13 @@ let make = (
   }
 
   <SidebarLayout
-    metaTitle theme components sidebarState=(isSidebarOpen, setSidebarOpen) sidebar ?breadcrumbs ?editHref>
+    metaTitle
+    theme
+    components
+    sidebarState=(isSidebarOpen, setSidebarOpen)
+    sidebar
+    ?breadcrumbs
+    ?editHref>
     metaElement children
   </SidebarLayout>
 }
@@ -148,6 +160,7 @@ module type StaticContent = {
 module Make = (Content: StaticContent) => {
   @react.component
   let make = (
+    // base breadcrumbs without the very last element (the currently shown document)
     ~breadcrumbs: option<list<Url.breadcrumb>>=?,
     ~title: string,
     ~metaTitleCategory: option<string>=?,
@@ -161,6 +174,20 @@ module Make = (Content: StaticContent) => {
   ) => {
     let router = Next.Router.useRouter()
     let route = router.route
+
+    Js.log(Content.tocData)
+
+    // Extend breadcrumbs with document title
+    let breadcrumbs = Js.Dict.get(Content.tocData, route)->Belt.Option.mapWithDefault(
+      breadcrumbs,
+      data => {
+        let title = data["title"]
+
+        Belt.Option.map(breadcrumbs, bc =>
+          Belt.List.concat(bc, list{{Url.name: title, href: route}})
+        )
+      },
+    )
 
     let activeToc: option<SidebarLayout.Toc.t> = {
       open Belt.Option
@@ -176,23 +203,25 @@ module Make = (Content: StaticContent) => {
     }
 
     let categories = {
-      let groups =
-        Js.Dict.entries(Content.tocData)->Belt.Array.reduce(Js.Dict.empty(), (acc, next) => {
-          let (_, value) = next
-          switch Js.Nullable.toOption(value["category"]) {
-          | Some(category) =>
-            switch acc->Js.Dict.get(category) {
-            | None => acc->Js.Dict.set(category, [next])
-            | Some(arr) =>
-              Js.Array2.push(arr, next)->ignore
-              acc->Js.Dict.set(category, arr)
-            }
-          | None =>
-            Js.log2("has NO category", next)
-            ()
+      let groups = Js.Dict.entries(Content.tocData)->Belt.Array.reduce(Js.Dict.empty(), (
+        acc,
+        next,
+      ) => {
+        let (_, value) = next
+        switch Js.Nullable.toOption(value["category"]) {
+        | Some(category) =>
+          switch acc->Js.Dict.get(category) {
+          | None => acc->Js.Dict.set(category, [next])
+          | Some(arr) =>
+            Js.Array2.push(arr, next)->ignore
+            acc->Js.Dict.set(category, arr)
           }
-          acc
-        })
+        | None =>
+          Js.log2("has NO category", next)
+          ()
+        }
+        acc
+      })
       Js.Dict.entries(groups)->Belt.Array.map(((name, values)) => {
         open Category
         {

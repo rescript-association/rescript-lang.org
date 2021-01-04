@@ -21,7 +21,6 @@ import * as JsDocsLayout8_0_0 from "../layouts/JsDocsLayout8_0_0.js";
 import * as LandingPageLayout from "../layouts/LandingPageLayout.js";
 import * as DomDocsLayout8_0_0 from "../layouts/DomDocsLayout8_0_0.js";
 import * as BeltDocsLayout8_0_0 from "../layouts/BeltDocsLayout8_0_0.js";
-import * as ManualDocsLayout8_0_0 from "../layouts/ManualDocsLayout8_0_0.js";
 import * as ApiOverviewLayout8_0_0 from "../layouts/ApiOverviewLayout8_0_0.js";
 import * as ReasonCompilerDocsLayout from "../layouts/ReasonCompilerDocsLayout.js";
 
@@ -211,13 +210,13 @@ function make(props) {
                       if (version !== 0) {
                         return null;
                       } else {
-                        return React.createElement(ManualDocsLayout.Prose.make, {
+                        return React.createElement(ManualDocsLayout.Latest.make, {
                                     frontmatter: component.frontmatter,
                                     children: content
                                   });
                       }
                     } else if (version._0 === "v8.0.0") {
-                      return React.createElement(ManualDocsLayout8_0_0.Prose.make, {
+                      return React.createElement(ManualDocsLayout.V800.make, {
                                   frontmatter: component.frontmatter,
                                   children: content
                                 });

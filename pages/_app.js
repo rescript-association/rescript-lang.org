@@ -7,6 +7,8 @@
 //}
 
 import "styles/main.css";
-import {make as App} from "src/common/App.js";
+import {make as ResApp} from "src/common/App.js";
 
-export default App;
+export default function App(props) {
+  return <ResApp {...props} />
+};

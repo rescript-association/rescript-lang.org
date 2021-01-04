@@ -10,6 +10,9 @@ function decode(json) {
             TAG: 0,
             _0: {
               title: Json_decode.field("title", Json_decode.string, json),
+              metaTitle: Js_null.fromOption(Json_decode.optional((function (param) {
+                          return Json_decode.field("metaTitle", Json_decode.string, param);
+                        }), json)),
               description: Js_null.fromOption(Json_decode.optional((function (param) {
                           return Json_decode.field("description", Json_decode.string, param);
                         }), json)),

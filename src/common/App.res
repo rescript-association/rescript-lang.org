@@ -84,13 +84,13 @@ let make = (props: props): React.element => {
     | _ =>
       switch version {
       | Latest =>
-        <ManualDocsLayout.Prose frontmatter={component->frontmatter}>
+        <ManualDocsLayout.Latest frontmatter={component->frontmatter}>
           content
-        </ManualDocsLayout.Prose>
+        </ManualDocsLayout.Latest>
       | Version("v8.0.0") =>
-        <ManualDocsLayout8_0_0.Prose frontmatter={component->frontmatter}>
+        <ManualDocsLayout.V800 frontmatter={component->frontmatter}>
           content
-        </ManualDocsLayout8_0_0.Prose>
+        </ManualDocsLayout.V800>
       | _ => React.null
       }
     }
