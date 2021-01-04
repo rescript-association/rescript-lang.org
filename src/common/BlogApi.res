@@ -28,7 +28,7 @@
 // Manual mapping between slugs and actual file
 // { [slug: string] : [filepath: string] }
 // The filepath is relative within _blogposts
-let index: Js.Dict.t<string> = %raw("require('../../index_data/blog_posts.json')")
+let index: Js.Dict.t<string> = %raw("require('../../data/blog_posts.json')")
 
 module GrayMatter = {
   type output = {

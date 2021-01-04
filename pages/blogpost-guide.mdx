@@ -28,7 +28,7 @@ touch _blogposts/2020-01-30-my-new-blog-post.mdx
 
 ### Map the file to a URL
 
-Open the `index_data/blog_posts.json` file and add a new mapping like this:
+Open the `data/blog_posts.json` file and add a new mapping like this:
 
 ```
 {
@@ -38,7 +38,7 @@ Open the `index_data/blog_posts.json` file and add a new mapping like this:
 
 The key describes the final slug (e.g. `/blog/my-new-blog-post`), while the value defines the relative filepath within the `_blogposts` directory.
 
-Save your changes within `index_data/blog_posts.json` and refresh your browser within [/blog](/blog).
+Save your changes within `data/blog_posts.json` and refresh your browser within [/blog](/blog).
 You should now see a warning for some malformed frontmatter data. Let's fix this!
 
 ## Add Frontmatter Data
@@ -72,7 +72,7 @@ canonical: https://rescript-lang.org/blog/2017/10/01/announcing-1-0
 ---
 ```
 
-- `author`: An author alias as defined in `./index_data/blog_authors.json`
+- `author`: An author alias as defined in `./data/blog_authors.json`
 - `co-authors`: A list of co-author aliases (same aliases allowed as in the `author` field)
 - `date`: A **string** date (always make sure to use the `"`, otherwise yaml
   will parse it as a `date`). The date format is `"YYYY-MM-DD hh:mm"`. All blog

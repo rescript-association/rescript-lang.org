@@ -2,7 +2,7 @@
 Docson is a tool to render a json schema via client side JS.
 
 Here is a list of files needed by this component:
-- Build schema is found in index_data/build-schema.json
+- Build schema is found in data/build-schema.json
 - Templates for rendering the content can be found in public/static/docson/.
 - Styles can be found in styles/docson.css
 

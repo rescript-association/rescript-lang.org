@@ -15,7 +15,7 @@ module Author = {
   // author data from different sources, like twitter
   // or github, but decided against it for simplicity
   // reasons for now
-  let rawAuthors: Js.Json.t = %raw("require('../../index_data/blog_authors.json')")
+  let rawAuthors: Js.Json.t = %raw("require('../../data/blog_authors.json')")
 
   let getDisplayName = (author: t): string =>
     switch author.fullname->Js.Null.toOption {
