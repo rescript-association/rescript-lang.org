@@ -10,15 +10,15 @@ You've seen how ReScript's idiomatic [Import & Export](import-export.md) works. 
 
 ## Import From JavaScript
 
-### Import a JavaScript Module's Content
+### Import a single export from a JavaScript module
 
-Use the `bs.module` [external](external.md):
+Use [import](import.md):
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
 // Import nodejs' path.dirname
-@bs.module("path") external dirname: string => string = "dirname"
+import {dirname: string => string} from "path"
 let root = dirname("/User/github") // returns "User"
 ```
 ```js
@@ -28,22 +28,53 @@ var root = Path.dirname("/User/github");
 
 </CodeTab>
 
-Here's what the `external` does:
+Here's what happens:
 
-- `@bs.module("path")`: pass the name of the JS module as a string; in this case, `"path"`. The string can be anything: `"./src/myJsFile"`, `"@myNpmNamespace/myLib"`, etc.
-- `external`: the general keyword for declaring a value that exists on the JS side.
+- `import`: the general keyword for importing a value that exists on the JS side.
+- `{ ... }`: import a named export
 - `dirname`: the binding name you'll use on the ReScript side.
 - `string => string`: the type signature of `dirname`.
-- `= "dirname"`: the name of the variable inside the `path` JS module. There's repetition in writing the first and second `dirname`, because sometime the binding name you want to use on the ReScript side is different than the variable name the JS module exported.
+- `from "path"`: pass the name of the JS module as a string; in this case, `"path"`. The string can be anything: `"./src/myJsFile"`, `"@myNpmNamespace/myLib"`, etc.
 
-### Import a JavaScript Module Itself (CommonJS)
-
-By omitting the string argument to `bs.module`, you bind to the whole JS module:
+### Import multiple exports from a JavaScript Module
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-@bs.module external leftPad: string => int => string = "./leftPad"
+// Import nodejs' path.dirname
+import {isAbsolute: string => bool, dirname: string => string} from "path"
+let root = dirname("/User/github") // returns "User"
+let isAbsolutePath = isAbsolute("C:/foo/..") // true
+```
+```js
+var Path = require("path");
+var root = Path.dirname("/User/github");
+var isAbsolutePath = Path.isAbsolute("C:/foo/..");
+```
+</CodeTab>
+
+### Import an export with a more convenient alias
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+import {sep as platformSeperator: string} from "path"
+Js.log(platformSeperator) // `\` on Windows, `/` on POSIX
+```
+```js
+var Path = require("path");
+console.log(Path.sep);
+```
+</CodeTab>
+
+### Import an entire JavaScript Module contents
+
+you bind to the whole JS module by writing: `* as myModule`
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+import * as leftPad: (string, int) => string from "./leftPad"
 let paddedResult = leftPad("hi", 5)
 ```
 ```js
@@ -53,14 +84,14 @@ var paddedResult = LeftPad("hi", 5);
 
 </CodeTab>
 
-### Import a JavaScript Module Itself (ES6 Module Format)
+### Import a JavaScript Module default (ES6 Module Format)
 
 If your JS project is using ES6, you're likely using Babel to compile it to regular JavaScript. Babel's ES6 default export actually exports the default value under the name `default`. You'd bind to it like this:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-@bs.module("./student") external studentName: string = "default"
+import studentName: string from "./student"
 Js.log(studentName)
 ```
 ```js
@@ -69,6 +100,26 @@ console.log(Student.default);
 ```
 
 </CodeTab>
+
+### Import an export with variadic arguments
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+import {@variadic join: array<string> => string} from "path"
+let fullPath = join(["Users", "github"])
+```
+```js
+var Path = require("path");
+var fullPath = Path.join(["Users", "github"]);
+```
+</CodeTab>
+
+### Import an export with an illegal ReScript identifier
+
+```res example
+import {"Fragment" as make: component<{"children": element}>} from "react"
+```
 
 ## Export To JavaScript
 
