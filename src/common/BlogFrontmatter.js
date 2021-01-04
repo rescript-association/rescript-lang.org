@@ -7,7 +7,7 @@ import * as Json_decode from "@glennsl/bs-json/src/Json_decode.js";
 import * as Caml_exceptions from "bs-platform/lib/es6/caml_exceptions.js";
 import * as Caml_js_exceptions from "bs-platform/lib/es6/caml_js_exceptions.js";
 
-var rawAuthors = (require('../../index_data/blog_authors.json'));
+var rawAuthors = (require('../../data/blog_authors.json'));
 
 function getDisplayName(author) {
   var fullname = author.fullname;

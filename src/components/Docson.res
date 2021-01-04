@@ -9,7 +9,7 @@ type t
 @module("docson") @scope("default")
 external doc: (string, Js.Json.t, option<string>, string) => unit = "doc"
 
-@module("index_data/build-schema.json") external schema: Js.Json.t = "default"
+@module("data/build-schema.json") external schema: Js.Json.t = "default"
 
 @react.component
 let make = () => {

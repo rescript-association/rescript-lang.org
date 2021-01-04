@@ -15,25 +15,6 @@ import * as SidebarLayout from "./SidebarLayout.js";
 import * as VersionSelect from "../components/VersionSelect.js";
 import * as DocFrontmatter from "../common/DocFrontmatter.js";
 
-function makeBreadcrumbsFromPaths(basePath, paths) {
-  var match = Belt_Array.reduce(paths, [
-        basePath,
-        []
-      ], (function (acc, path) {
-          var ret = acc[1];
-          var href = acc[0] + ("/" + path);
-          ret.push({
-                name: Url.prettyString(path),
-                href: href
-              });
-          return [
-                  href,
-                  ret
-                ];
-        }));
-  return Belt_List.fromArray(match[1]);
-}
-
 function makeBreadcrumbs(basePath, route) {
   var url = Url.parse(route);
   var match = Belt_Array.reduce(url.pagepath, [
@@ -152,7 +133,14 @@ function DocsLayout(Props) {
       var fm$1 = fm._0;
       var canonical = fm$1.canonical;
       var description = fm$1.description;
-      var title$1 = metaTitleCategory !== undefined ? fm$1.title + (" | " + metaTitleCategory) : title;
+      var title$1;
+      if (metaTitleCategory !== undefined) {
+        var metaTitle$1 = fm$1.metaTitle;
+        var metaTitle$2 = metaTitle$1 !== null ? metaTitle$1 : fm$1.title;
+        title$1 = metaTitle$2 + (" | " + metaTitleCategory);
+      } else {
+        title$1 = title;
+      }
       var tmp$2 = {
         title: title$1
       };
@@ -215,6 +203,18 @@ function Make(Content) {
     var children = Props.children;
     var router = Next.Router.useRouter(undefined);
     var route = router.route;
+    var breadcrumbs$1 = Belt_Option.mapWithDefault(Js_dict.get(Content.tocData, route), breadcrumbs, (function (data) {
+            var title = data.title;
+            return Belt_Option.map(breadcrumbs, (function (bc) {
+                          return Belt_List.concat(bc, {
+                                      hd: {
+                                        name: title,
+                                        href: route
+                                      },
+                                      tl: /* [] */0
+                                    });
+                        }));
+          }));
     var activeToc = Belt_Option.map(Js_dict.get(Content.tocData, route), (function (data) {
             var title = data.title;
             var entries = Belt_Array.map(data.headers, (function (header) {
@@ -255,7 +255,7 @@ function Make(Content) {
                   };
           }));
     return DocsLayout({
-                breadcrumbs: breadcrumbs,
+                breadcrumbs: breadcrumbs$1,
                 title: title,
                 metaTitleCategory: metaTitleCategory,
                 frontmatter: frontmatter,
@@ -276,7 +276,6 @@ function Make(Content) {
 var make = DocsLayout;
 
 export {
-  makeBreadcrumbsFromPaths ,
   makeBreadcrumbs ,
   make ,
   Make ,

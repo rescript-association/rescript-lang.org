@@ -6,8 +6,7 @@
 // https://adamwathan.me/2019/10/17/persistent-layout-patterns-in-nextjs/
 
 // Register all the highlightjs stuff for the whole application
-%%raw(
-  `
+%%raw(`
   let hljs = require('highlight.js/lib/highlight');
   let js = require('highlight.js/lib/languages/javascript');
   let ocaml = require('highlight.js/lib/languages/ocaml');
@@ -29,8 +28,7 @@
   hljs.registerLanguage('text', text);
   hljs.registerLanguage('html', html);
   hljs.registerLanguage('diff', diff);
-`
-)
+`)
 
 type pageComponent = React.component<{.}>
 type pageProps = {.}
@@ -84,23 +82,25 @@ let make = (props: props): React.element => {
     | _ =>
       switch version {
       | Latest =>
-        <ManualDocsLayout.Prose frontmatter={component->frontmatter}>
+        <ManualDocsLayout.Latest frontmatter={component->frontmatter}>
           content
-        </ManualDocsLayout.Prose>
+        </ManualDocsLayout.Latest>
       | Version("v8.0.0") =>
-        <ManualDocsLayout8_0_0.Prose frontmatter={component->frontmatter}>
+        <ManualDocsLayout.V800 frontmatter={component->frontmatter}>
           content
-        </ManualDocsLayout8_0_0.Prose>
+        </ManualDocsLayout.V800>
       | _ => React.null
       }
     }
   | {base: ["docs", "reason-compiler"], version: Latest} =>
     <ReasonCompilerDocsLayout> content </ReasonCompilerDocsLayout>
-  | {base: ["docs", "gentype"], version: Latest} => <GenTypeDocsLayout> content </GenTypeDocsLayout>
+  | {base: ["docs", "gentype"], version: Latest} =>
+    <GenTypeDocsLayout frontmatter={component->frontmatter}> content </GenTypeDocsLayout>
   // common routes
   | {base} =>
     switch Belt.List.fromArray(base) {
-    | list{"community", ..._rest} => <CommunityLayout> content </CommunityLayout>
+    | list{"community", ..._rest} =>
+      <CommunityLayout frontmatter={component->frontmatter}> content </CommunityLayout>
     | list{"try"} => content
     | list{"blog"} => content // Blog implements its own layout as well
     | list{"packages"} => content

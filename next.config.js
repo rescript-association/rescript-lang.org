@@ -28,7 +28,16 @@ const config = {
       }
     }
     return config
-  }
+  },
+  async redirects() {
+    return [
+      {
+        source: '/community',
+        destination: '/community/overview',
+        permanent: true,
+      },
+    ]
+  },
 };
 
 module.exports = withMdx(withTM(withCSS(config)));

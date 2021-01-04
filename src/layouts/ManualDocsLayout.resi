@@ -1,7 +1,7 @@
 // array<(label, version)>
 let allManualVersions: array<(string, string)>
 
-module Docs: {
+module Latest: {
   @react.component
   let make: (
     ~frontmatter: Js.Json.t=?,
@@ -10,7 +10,11 @@ module Docs: {
   ) => React.element
 }
 
-module Prose: {
+module V800: {
   @react.component
-  let make: (~frontmatter: Js.Json.t=?, ~children: React.element) => React.element
+  let make: (
+    ~frontmatter: Js.Json.t=?,
+    ~components: Mdx.Components.t=?,
+    ~children: React.element,
+  ) => React.element
 }

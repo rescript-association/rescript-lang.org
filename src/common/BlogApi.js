@@ -11,7 +11,7 @@ import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import GrayMatter from "gray-matter";
 import * as BlogFrontmatter from "./BlogFrontmatter.js";
 
-var index = (require('../../index_data/blog_posts.json'));
+var index = (require('../../data/blog_posts.json'));
 
 var postsDirectory = Path.join(Process.cwd(), "./_blogposts");
 

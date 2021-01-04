@@ -3,7 +3,7 @@
 import * as React from "react";
 import Docson from "docson";
 import * as Docson$1 from "docson";
-import BuildSchemaJson from "index_data/build-schema.json";
+import BuildSchemaJson from "data/build-schema.json";
 
 import "styles/docson.css";
 ;
