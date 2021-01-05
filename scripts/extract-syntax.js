@@ -1,5 +1,4 @@
 const matter = require("gray-matter");
-const slug = require("remark-slug");
 const glob = require("glob");
 const path = require("path");
 const fs = require("fs");
