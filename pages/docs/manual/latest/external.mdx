@@ -78,6 +78,8 @@ However, if you want to more rigidly bind to the JavaScript library you want, ke
 
 Additionally, no extra ReScript-specific runtime is better for output readability.
 
+> **Note:** do also use `external`s and the `@bs.blabla` attributes in the interface files. Otherwise the inlining won't happen.
+
 ## Design Decisions
 
 ReScript takes interoperating with existing code very seriously. Our type system has very strong guarantees. However, such strong feature also means that, without a great interop system, it'd be very hard to gradually convert a codebase over to ReScript. Fortunately, our interop are comprehensive and cooperate very well with most existing JavaScript code.
