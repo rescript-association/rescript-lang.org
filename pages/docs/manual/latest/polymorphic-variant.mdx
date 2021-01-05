@@ -1,0 +1,273 @@
+---
+title: "Polymorphic Variant"
+description: "The Polymorphic Variant data structure in ReScript"
+canonical: "/docs/manual/latest/polymorphic-variant"
+---
+
+# Polymorphic Variant
+
+Now that we know what [variant types](./variant) are, let's dive into a more specific version, so called polymorphic variants (or poly variants).
+
+First off, here are some key features:
+
+- Poly variants are **structurally typed** (in comparison to **nominally typed** variants). They can be used without an explicit type definition.
+- They allow easier JavaScript interop (compile to strings / objects with predictable `NAME` and `VAL` attribute) and don't need explicit runtime conversions, unlike common variants.
+- Due their structural nature, they oftentimes cause tricky type checking errors when types don't match up, which makes them a more advanced feature.
+
+## Basics
+
+This is how you'd define a poly variant type with an exact set of constructors:
+
+```res
+// Note the surrounding square brackets, and # for constructors
+type color = [ #Red | #Green | #Blue ]
+```
+
+Here is how you'd construct a poly variant value:
+
+```res
+// This doesn't actually need any color type definition
+// beforehand
+let myColor = #Red
+```
+
+We can also use poly variant types in annotations without an explicit type definition:
+
+```res
+let render = (color: [#Red | #Green | #Blue]) => {
+  switch(color) {
+    | _ => Js.log("...")
+  }
+}
+
+let color: [#Red] = #Red
+```
+
+### Constructor Names
+
+Poly variant constructor names are less restrictive than in common variants (e.g. they don't need to be capitalized):
+
+```res
+type users = [ #admin | #moderator | #user ]
+
+let admin = #admin
+```
+
+In rare cases (mostly for JS interop reasons), it's also possible to define invalid identifiers, such as hypens or numbers:
+
+```res
+type numbers = [#\"1" | #\"2"]
+let one = #\"1"
+```
+
+### Constructor Arguments
+
+This is equivalent to what we've already learned with common variants:
+
+```res
+type account = [
+  | #Anonymous
+  | #Instagram(string)
+  | #Facebook(string, int)
+]
+
+let acc: account = #Instagram("test")
+```
+
+### Annotations with Upper / Lower Bound Constraints
+
+There's also a way to define an "upper" and "lower" bound constraint for a poly variant type (that's why they are called _Polymorphic Variants_). Here is what it looks like in type annotations:
+
+```res
+// Only #Red allowed, no upper / lower bound (= exact)
+let basic: [#Red] = #Red
+
+// May contain #Red, or any other value (open variant)
+// here, foreground will be an inferred type [> #Red | #Green]
+let foreground: [> #Red] = #Green
+
+// The value must be "one of" #Red | #Blue
+// Only #Red and #Blue are valid values
+let background: [< #Red | #Blue] = #Red
+```
+
+Don't worry about the upper / lower bound feature (aka polymorphism) just yet, since this is a very advanced topic that's often not really needed. For the sake of completeness, we mention a few details about it [later on](#lower--upper-bound-constraints).
+
+
+## Polymorphic Variants are Structurally Typed
+
+As we've already seen in the section above, poly variants are treated a little bit differently than common variants. Most notably, we don't need any explicit type definition to define a value.
+
+```res
+// inferred as [> #Red]
+let color = #Red
+```
+
+The compiler will automatically infer the `color` binding as a value of type `[> #Red]`, which means `color` will type check with any other poly variant type that defines `#Red` in its constructors.
+
+This means that you can essentially mix and match poly variant values from different sources, as long as all constructors are defined in the final interface. For example:
+
+```res
+type rgb = [#Red | #Green | #Blue]
+
+let colors: array<rgb> = [#Red]
+
+// `other` is inferred as a type of array<[> #Green]>
+let other = [#Green]
+
+// Because `other` is of type `array<[> Green]>`,
+// this will type check even though we didn't define
+// `other`to be of type rgb
+let all = Belt.Array.concat(colors, other)
+```
+
+As you can see in the example above, the type checker doesn't really care that `color` is not annotated as an `array<rgb>` type. As soon as it hits the first constraint (`Belt.Array.concat`), it will try to check if `colors` and `other` unify into one polymorphic type. If there's a mismatch, you will get an error on the `Belt.Array.concat` call.
+
+**That means that it is very easy to get confusing type errors on the wrong locations!**
+
+For instance, if I'd make a typo like this:
+
+```res
+let other = [#GreeN]
+
+let all = Belt.Array.concat(colors, other)
+```
+
+I'd get an error on the `concat` call, even thought he error actually stems from my typo in my `other` definition.
+
+## JavaScript Output
+
+Poly variants are a [shared data structure](./shared-data-types), so they are very useful to bind to JavaScript. It is safe to rely on its compiled JS structure.
+
+A value compiles to the following JavaScript output:
+
+- If the variant value is a constructor without any payload, it compiles to a string of the same name
+- Values with a payload get compiled to an object with a `NAME` attribute stating the name of the constructor, and a `VAL` attribute containing the JS representation of the payload.
+
+Check the output in these examples:
+
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let capitalized = #Hello
+let lowercased = #goodbye
+
+let err = #error("oops!")
+
+let num = #\"1"
+```
+
+```js
+var capitalized = "Hello";
+
+var lowercased = "goodbye";
+
+var err = {
+  NAME: "error",
+  VAL: "oops!"
+};
+
+var num = "1";
+```
+
+</CodeTab>
+
+
+**Note:** Poly variants play an important role for binding to JS functions in existing JavaScript. Check out the [Bind to JS Function page](bind-to-js-function#constrain-arguments-better) to learn more.
+
+
+### Bind to String Enums
+
+Let's assume we have a TypeScript module that expresses following (stringly typed) enum export:
+
+```js
+// direction.js
+enum Direction {
+  Up = "UP",
+  Down = "DOWN",
+  Left = "LEFT",
+  Right = "RIGHT",
+}
+
+export const myDirection = Direction.Up
+```
+
+For this particular example, we can use poly variants to design the type for the imported `myDirection` value:
+
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type direction = [ #UP | #DOWN | #LEFT | #RIGHT ]
+@bs.module("./direction.js") external myDirection: direction = "myDirection"
+```
+
+```js
+var DirectionJs = require("./direction.js");
+
+var myDirection = DirectionJs.myDirection;
+```
+
+</CodeTab>
+
+Since we were using poly variants, the JS Output is practically zero-cost and doesn't add any extra code!
+
+## Lower / Upper Bound Constraints
+
+There are a few different ways to define constraints on a poly variant type, such as `[>`, `[<` and `[]`. Some of them were briefly mentioned before, so in this section we will quickly explain what this syntax is about.
+
+**Note:** We added this info for educational purposes. In most cases you will not want to use any of this stuff, since it makes your APIs pretty unreadable / hard to use.
+
+### Exact (`[`)
+
+This is the simplest poly variant definition, and also the most practical one. Like a common variant type, this one defines an exact set of constructors.
+
+```res
+type rgb = [ #Red | #Green | #Blue ]
+
+let color: rgb = #Green
+```
+
+In the example above, `color` will only allow one of the three constructors that are defined in the `rgb` type. This is usually the way how poly variants should be defined.
+
+In case you want to define a type that is extensible in polymorphic ways (or in other words, subtyping allowed sets of constructors), you'll need to use the lower / upper bound syntax. 
+
+### Lower Bound (`[>`)
+
+A lower bound defines the minimum set of constructors a poly variant type is aware of. It is also considered an "open poly variant type", because it doesn't restrict any additional values.
+
+Here is an example on how to make a minimum set of `basicBlueTones` extensible in a new `colors` type:
+
+```res
+type basicBlueTone<'a> = [> #Blue | #DeepBlue | #Azuro ] as 'a
+type color = basicBlueTone<[#Blue | #DeepBlue | #Azuro | #Purple]>
+
+let color:  color = #Purple
+
+
+// This will fail due to missing minimum constructors:
+type notWorking = basicBlueTone<[#Purple]>
+```
+
+Here, the compiler will enforce the user to define `#Blue | #DeepBlue | #Azuro` as the minimum set of constructors when trying to extend `basicBlueTone<'a>`. 
+
+### Upper Bound (`[<`)
+
+The upper bound works in the exact opposite way: The extending type may only use constructors that are stated in the lower bound constraing.
+
+Same example:
+
+```res
+type validRed<'a> = [< #Fire | #Crimson | #Ash] as 'a
+type myReds = validRed<[#Ash]>
+
+// This will fail due to unlisted constructor not defined by the lower bound
+type notWorking = validRed<[#Purple]>
+```
+
+## Tips & Tricks
+
+- In most scenarios, you should prefer common variants over polymorphic variants, since they offer better error messages and easier to spot errors in your program.
+- Polymorphic variants are pretty useful for doing zero-cost interop, e.g. when binding to JavaScript string enums, or to bind seemlessly between a tagged union type in TypeScript and ReScript
+- Even though we expanded a little bit on the upper / lower bounds / polymorphism, these examples only 

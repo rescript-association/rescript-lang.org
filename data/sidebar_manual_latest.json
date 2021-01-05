@@ -15,6 +15,7 @@
     "record",
     "object",
     "variant",
+    "polymorphic-variant",
     "null-undefined-option",
     "array-and-list",
     "function",
