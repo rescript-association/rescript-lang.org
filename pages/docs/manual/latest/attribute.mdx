@@ -45,6 +45,12 @@ type student = {
   age: int,
   @bs.as("aria-label") ariaLabel: string,
 }
+
+@deprecated
+let customDouble = foo => foo * 2
+
+@deprecated("Do the math yourself!")
+let customTriple = foo => foo * 3 
 ```
 ```js
 ```
@@ -55,6 +61,8 @@ type student = {
 2. `@unboxed` annotates the type definition.
 3. `@bs.val` annotates the `external` statement.
 4. `@bs.as("aria-label")` annotates the `ariaLabel` record field.
+5. `@deprecated` annotates the `customDouble` expression. This shows a warning while compiling telling consumers to not rely on this method long-term.
+6. `@deprecated("Outdated")` annotates the `customTriple` expression with a string to describe the reason for deprecation.
 
 ## Extension Point
 
