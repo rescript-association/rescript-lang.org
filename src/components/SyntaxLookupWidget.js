@@ -11,22 +11,16 @@ import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as GithubSlugger from "github-slugger";
-import Decorator_asMdx from "misc_docs/syntax/decorator_as.mdx";
-import Decorator_moduleMdx from "misc_docs/syntax/decorator_module.mdx";
-import Controlflow_ifelseMdx from "misc_docs/syntax/controlflow_ifelse.mdx";
-import Operators_float_additionMdx from "misc_docs/syntax/operators_float_addition.mdx";
-import Operators_float_divisionMdx from "misc_docs/syntax/operators_float_division.mdx";
-import Operators_integer_additionMdx from "misc_docs/syntax/operators_integer_addition.mdx";
-import Operators_integer_divisionMdx from "misc_docs/syntax/operators_integer_division.mdx";
-import Operators_float_subtractionMdx from "misc_docs/syntax/operators_float_subtraction.mdx";
-import Operators_integer_subtractionMdx from "misc_docs/syntax/operators_integer_subtraction.mdx";
-import Operators_float_multiplicationMdx from "misc_docs/syntax/operators_float_multiplication.mdx";
-import Operators_string_concatenationMdx from "misc_docs/syntax/operators_string_concatenation.mdx";
-import Operators_integer_multiplicationMdx from "misc_docs/syntax/operators_integer_multiplication.mdx";
+
+var indexData = (require('index_data/syntax_index.json'));
 
 var render = (function(c) {
       return React.createElement(c, {});
     });
+
+var requireSyntaxFile = (function(name) {
+    return require("misc_docs/syntax/" + name + ".mdx").default
+  });
 
 function toString(t) {
   switch (t) {
@@ -50,163 +44,37 @@ function SyntaxLookupWidget$Category(Props) {
                 }, title), React.createElement("div", undefined, children));
 }
 
-var allItems = [
-  {
-    id: "module-decorator",
-    keywords: ["@bs.module"],
-    name: "@module",
-    summary: "This is the `@module` decorator.",
-    category: /* Decorators */0,
-    component: Decorator_moduleMdx
-  },
-  {
-    id: "as-decorator",
-    keywords: ["@bs.as"],
-    name: "@as",
-    summary: "This is the `@as` decorator.",
-    category: /* Decorators */0,
-    component: Decorator_asMdx
-  },
-  {
-    id: "if-else",
-    keywords: [
-      "if",
-      "else",
-      "if else"
-    ],
-    name: "if / else",
-    summary: "This is the `if / else` control flow structure.",
-    category: /* ControlFlow */1,
-    component: Controlflow_ifelseMdx
-  },
-  {
-    id: "uncurried-function",
-    keywords: ["uncurried"],
-    name: "(.) => {}",
-    summary: "This is an `uncurried` function.",
-    category: /* Other */3,
-    component: Controlflow_ifelseMdx
-  },
-  {
-    id: "integer-addition",
-    keywords: [
-      "plus",
-      "add",
-      "addition",
-      "sum",
-      "int",
-      "integer"
-    ],
-    name: "+",
-    summary: "This is the `integer addition` operator.",
-    category: /* Operators */2,
-    component: Operators_integer_additionMdx
-  },
-  {
-    id: "integer-subtraction",
-    keywords: [
-      "subtract",
-      "minus",
-      "subtraction",
-      "int",
-      "integer"
-    ],
-    name: "-",
-    summary: "This is the `integer subtraction` operator.",
-    category: /* Operators */2,
-    component: Operators_integer_subtractionMdx
-  },
-  {
-    id: "integer-multiplication",
-    keywords: [
-      "multiply",
-      "multiplication",
-      "int",
-      "integer"
-    ],
-    name: "*",
-    summary: "This is the `integer multiplication` operator.",
-    category: /* Operators */2,
-    component: Operators_integer_multiplicationMdx
-  },
-  {
-    id: "integer-division",
-    keywords: [
-      "divide",
-      "division",
-      "int",
-      "integer"
-    ],
-    name: "/",
-    summary: "This is the `integer division` operator.",
-    category: /* Operators */2,
-    component: Operators_integer_divisionMdx
-  },
-  {
-    id: "float-addition",
-    keywords: [
-      "plus",
-      "add",
-      "addition",
-      "sum",
-      "float"
-    ],
-    name: "+.",
-    summary: "This is the `floating point addition` operator.",
-    category: /* Operators */2,
-    component: Operators_float_additionMdx
-  },
-  {
-    id: "float-subtraction",
-    keywords: [
-      "subtract",
-      "minus",
-      "subtraction",
-      "float"
-    ],
-    name: "-.",
-    summary: "This is the `floating point subtraction` operator.",
-    category: /* Operators */2,
-    component: Operators_float_subtractionMdx
-  },
-  {
-    id: "float-multiplication",
-    keywords: [
-      "multiply",
-      "multiplication",
-      "float"
-    ],
-    name: "*.",
-    summary: "This is the `floating point multiplication` operator.",
-    category: /* Operators */2,
-    component: Operators_float_multiplicationMdx
-  },
-  {
-    id: "float-division",
-    keywords: [
-      "divide",
-      "division",
-      "float"
-    ],
-    name: "/.",
-    summary: "This is the `floating point division` operator.",
-    category: /* Operators */2,
-    component: Operators_float_divisionMdx
-  },
-  {
-    id: "string-concatenation",
-    keywords: [
-      "concat",
-      "concatenation",
-      "add",
-      "string"
-    ],
-    name: "++",
-    summary: "This is the `string concatenation` operator.",
-    category: /* Operators */2,
-    component: Operators_string_concatenationMdx
+function toCategory(s) {
+  switch (s) {
+    case "controlflow" :
+        return /* ControlFlow */1;
+    case "decorators" :
+        return /* Decorators */0;
+    case "operators" :
+        return /* Operators */2;
+    default:
+      return /* Other */3;
   }
-];
+}
+
+function toItem(syntaxData) {
+  var file = syntaxData.file;
+  var id = syntaxData.id;
+  var keywords = syntaxData.keywords;
+  var name = syntaxData.name;
+  var summary = syntaxData.summary;
+  var category = syntaxData.category;
+  return {
+          id: id,
+          keywords: keywords,
+          name: name,
+          summary: summary,
+          category: toCategory(category),
+          component: requireSyntaxFile(file)
+        };
+}
+
+var allItems = Belt_Array.map(indexData, toItem);
 
 var fuseOpts = {
   shouldSort: false,
@@ -481,4 +349,4 @@ export {
   make ,
   
 }
-/* allItems Not a pure module */
+/* indexData Not a pure module */
