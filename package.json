@@ -43,7 +43,7 @@
     "test": "node scripts/test-examples.js && node scripts/test-hrefs.js",
     "check-dead-code": "reanalyze -dce",
     "check-for-exceptions": "reanalyze -exception",
-    "update-index": "node scripts/extract-indices.js && node scripts/extract-tocs.js && node -r esm scripts/generate_feed.js > public/blog/feed.xml",
+    "update-index": "node scripts/extract-indices.js && node scripts/extract-tocs.js && node scripts/extract-syntax.js && node -r esm scripts/generate_feed.js > public/blog/feed.xml",
     "now-build": "yarn run build",
     "export": "next export",
     "start": "next start -p $PORT",
