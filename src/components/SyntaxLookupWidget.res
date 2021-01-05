@@ -1,3 +1,15 @@
+// Structure defined by `scripts/extract-syntax.js`
+type syntaxData = {
+  "file": string,
+  "id": string,
+  "keywords": array<string>,
+  "name": string,
+  "summary": string,
+  "category": string,
+}
+
+let indexData: array<syntaxData> = %raw("require('index_data/syntax_index.json')")
+
 module MdxComp = {
   type props
   type t = Js.t<props> => React.element
@@ -14,41 +26,11 @@ module MdxComp = {
   /* external frontmatter: t => Js.Json.t = "frontmatter" */
 }
 
-@module("misc_docs/syntax/decorator_module.mdx")
-external decorator_module: MdxComp.t = "default"
-
-@module("misc_docs/syntax/decorator_as.mdx")
-external decorator_as: MdxComp.t = "default"
-
-@module("misc_docs/syntax/controlflow_ifelse.mdx")
-external controlflow_ifelse: MdxComp.t = "default"
-
-@module("misc_docs/syntax/operators_integer_addition.mdx")
-external operators_integer_addition: MdxComp.t = "default"
-
-@module("misc_docs/syntax/operators_integer_subtraction.mdx")
-external operators_integer_subtraction: MdxComp.t = "default"
-
-@module("misc_docs/syntax/operators_integer_multiplication.mdx")
-external operators_integer_multiplication: MdxComp.t = "default"
-
-@module("misc_docs/syntax/operators_integer_division.mdx")
-external operators_integer_division: MdxComp.t = "default"
-
-@module("misc_docs/syntax/operators_float_addition.mdx")
-external operators_float_addition: MdxComp.t = "default"
-
-@module("misc_docs/syntax/operators_float_subtraction.mdx")
-external operators_float_subtraction: MdxComp.t = "default"
-
-@module("misc_docs/syntax/operators_float_multiplication.mdx")
-external operators_float_multiplication: MdxComp.t = "default"
-
-@module("misc_docs/syntax/operators_float_division.mdx")
-external operators_float_division: MdxComp.t = "default"
-
-@module("misc_docs/syntax/operators_string_concatenation.mdx")
-external operators_string_concatenation: MdxComp.t = "default"
+let requireSyntaxFile: string => MdxComp.t = %raw(`
+  function(name) {
+    return require("misc_docs/syntax/" + name + ".mdx").default
+  }
+`)
 
 module Category = {
   type t = Decorators | ControlFlow | Operators | Other
@@ -81,112 +63,34 @@ type item = {
   component: MdxComp.t,
 }
 
-let allItems = [
-  {
-    id: "module-decorator",
-    keywords: ["@bs.module"],
-    name: "@module",
-    summary: "This is the `@module` decorator.",
-    category: Decorators,
-    component: decorator_module,
-  },
-  {
-    id: "as-decorator",
-    keywords: ["@bs.as"],
-    name: "@as",
-    summary: "This is the `@as` decorator.",
-    category: Decorators,
-    component: decorator_as,
-  },
-  {
-    id: "if-else",
-    keywords: ["if", "else", "if else"],
-    name: "if / else",
-    summary: "This is the `if / else` control flow structure.",
-    category: ControlFlow,
-    component: controlflow_ifelse,
-  },
-  {
-    id: "uncurried-function",
-    keywords: ["uncurried"],
-    name: "(.) => {}",
-    summary: "This is an `uncurried` function.",
-    category: Other,
-    component: controlflow_ifelse,
-  },
-  {
-    id: "integer-addition",
-    keywords: ["plus", "add", "addition", "sum", "int", "integer"],
-    name: "+",
-    summary: "This is the `integer addition` operator.",
-    category: Operators,
-    component: operators_integer_addition,
-  },
-  {
-    id: "integer-subtraction",
-    keywords: ["subtract", "minus", "subtraction", "int", "integer"],
-    name: "-",
-    summary: "This is the `integer subtraction` operator.",
-    category: Operators,
-    component: operators_integer_subtraction,
-  },
-  {
-    id: "integer-multiplication",
-    keywords: ["multiply", "multiplication", "int", "integer"],
-    name: "*",
-    summary: "This is the `integer multiplication` operator.",
-    category: Operators,
-    component: operators_integer_multiplication,
-  },
-  {
-    id: "integer-division",
-    keywords: ["divide", "division", "int", "integer"],
-    name: "/",
-    summary: "This is the `integer division` operator.",
-    category: Operators,
-    component: operators_integer_division,
-  },
-  {
-    id: "float-addition",
-    keywords: ["plus", "add", "addition", "sum", "float"],
-    name: "+.",
-    summary: "This is the `floating point addition` operator.",
-    category: Operators,
-    component: operators_float_addition,
-  },
-  {
-    id: "float-subtraction",
-    keywords: ["subtract", "minus", "subtraction", "float"],
-    name: "-.",
-    summary: "This is the `floating point subtraction` operator.",
-    category: Operators,
-    component: operators_float_subtraction,
-  },
-  {
-    id: "float-multiplication",
-    keywords: ["multiply", "multiplication", "float"],
-    name: "*.",
-    summary: "This is the `floating point multiplication` operator.",
-    category: Operators,
-    component: operators_float_multiplication,
-  },
-  {
-    id: "float-division",
-    keywords: ["divide", "division", "float"],
-    name: "/.",
-    summary: "This is the `floating point division` operator.",
-    category: Operators,
-    component: operators_float_division,
-  },
-  {
-    id: "string-concatenation",
-    keywords: ["concat", "concatenation", "add", "string"],
-    name: "++",
-    summary: "This is the `string concatenation` operator.",
-    category: Operators,
-    component: operators_string_concatenation,
-  },
-]
+let toCategory = (s: string): Category.t => {
+  switch s {
+    | "decorators" => Decorators
+    | "controlflow" => ControlFlow
+    | "operators" => Operators
+    | _ => Other
+  }
+}
+
+let toItem = (syntaxData: syntaxData): item => {
+  let file = syntaxData["file"]
+  let id = syntaxData["id"]
+  let keywords = syntaxData["keywords"]
+  let name = syntaxData["name"]
+  let summary = syntaxData["summary"]
+  let category = syntaxData["category"]
+  let item: item = {
+    id: id,
+    keywords: keywords,
+    name: name,
+    summary: summary,
+    category: toCategory(category),
+    component: requireSyntaxFile(file) 
+  }
+  item
+}
+
+let allItems = indexData->Belt.Array.map(toItem)
 
 let fuseOpts = Fuse.Options.t(
   ~shouldSort=false,
