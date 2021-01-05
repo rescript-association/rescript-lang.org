@@ -133,7 +133,7 @@ let other = [#GreeN]
 let all = Belt.Array.concat(colors, other)
 ```
 
-I'd get an error on the `concat` call, even thought he error actually stems from my typo in my `other` definition.
+I'd get an error on the `concat` call, even thought the error was actually caused by the typo in the value assignment of `other`.
 
 ## JavaScript Output
 
@@ -215,7 +215,7 @@ Since we were using poly variants, the JS Output is practically zero-cost and do
 
 ## Lower / Upper Bound Constraints
 
-There are a few different ways to define constraints on a poly variant type, such as `[>`, `[<` and `[]`. Some of them were briefly mentioned before, so in this section we will quickly explain what this syntax is about.
+There are a few different ways to define constraints on a poly variant type, such as `[>`, `[<` and `[`. Some of them were briefly mentioned before, so in this section we will quickly explain what this syntax is about.
 
 **Note:** We added this info for educational purposes. In most cases you will not want to use any of this stuff, since it makes your APIs pretty unreadable / hard to use.
 
@@ -237,7 +237,7 @@ In case you want to define a type that is extensible in polymorphic ways (or in 
 
 A lower bound defines the minimum set of constructors a poly variant type is aware of. It is also considered an "open poly variant type", because it doesn't restrict any additional values.
 
-Here is an example on how to make a minimum set of `basicBlueTones` extensible in a new `colors` type:
+Here is an example on how to make a minimum set of `basicBlueTones` extensible for a new `colors` type:
 
 ```res
 type basicBlueTone<'a> = [> #Blue | #DeepBlue | #Azuro ] as 'a
@@ -254,9 +254,9 @@ Here, the compiler will enforce the user to define `#Blue | #DeepBlue | #Azuro` 
 
 ### Upper Bound (`[<`)
 
-The upper bound works in the exact opposite way: The extending type may only use constructors that are stated in the lower bound constraing.
+The upper bound works in the exact opposite way: The extending type may only use constructors that are stated in the lower bound constraint.
 
-Same example:
+Here another example, but with red colors:
 
 ```res
 type validRed<'a> = [< #Fire | #Crimson | #Ash] as 'a
