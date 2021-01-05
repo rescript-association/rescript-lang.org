@@ -34,4 +34,4 @@ const extractSyntax = async version => {
   fs.writeFileSync(SYNTAX_INDEX_FILE, JSON.stringify(syntaxIndex), "utf8");
 };
 
-extractSyntax().catch(console.error)
+extractSyntax()
