@@ -412,14 +412,13 @@ In case you want to define a type that is extensible in polymorphic ways (or in 
 
 A lower bound defines the minimum set of constructors a poly variant type is aware of. It is also considered an "open poly variant type", because it doesn't restrict any additional values.
 
-Here is an example on how to make a minimum set of `basicBlueTones` extensible for a new `colors` type:
+Here is an example on how to make a minimum set of `basicBlueTones` extensible for a new `color` type:
 
 ```res
 type basicBlueTone<'a> = [> #Blue | #DeepBlue | #LightBlue ] as 'a
 type color = basicBlueTone<[#Blue | #DeepBlue | #LightBlue | #Purple]>
 
 let color:  color = #Purple
-
 
 // This will fail due to missing minimum constructors:
 type notWorking = basicBlueTone<[#Purple]>
@@ -447,9 +446,9 @@ type notWorking = validRed<[#Purple]>
 
 One might think that polymorphic variants are fastly superior to common [variants](./variant). As always, it depends on the use case:
 
-- Variants allows better encapsulation for your APIs, since they require you to define a type definition that is coupled to a specific module.
+- Variants allow better encapsulation for your APIs, because they always come with a type definition that is coupled to a specific module.
 - Variants are conceptionally easier to understand, makes your code easy to refactor and provides better exhaustive pattern matching support
 - Variants usually deliver better type error messages, especially in recursive type definitions
 - Poly variants are useful for expressing strings in JS, and allow different type composition strategies. They can also be defined adhocly in your type definitions.
 
-In most scenarios, we'd recommend to use common variants over polymorphic variants, especially when you are writing plain ReScript code. In case you want to write zero-cost interop bindings, poly variants are a better option.
+In most scenarios, we'd recommend to use common variants over polymorphic variants, especially when you are writing plain ReScript code. In case you want to write zero-cost interop bindings or generate clean JS output, poly variants are oftentimes a better option.
