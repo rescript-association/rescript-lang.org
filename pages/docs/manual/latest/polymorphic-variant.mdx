@@ -10,7 +10,7 @@ Now that we know what [variant types](./variant) are, let's dive into a more spe
 
 First off, here are some key features:
 
-- Poly variants are structurally typed, which means they don't require any explicit type definition to be used as a value, and are not coupled to any specific module. The compiler will infer the type on demand, and compare poly variants by their value, instead of their type name (which is called nominal typing).
+- Poly variants are structurally typed, which means they don't require any explicit type definition to be used as a value, and are not coupled to any specific module. The compiler will infer the type on demand, and compare poly variants by their value, instead of their type name (which would be called nominal typing).
 - They allow easier JavaScript interop (compile to strings / objects with predictable `NAME` and `VAL` attribute) and don't need explicit runtime conversions, unlike common variants.
 - Due to their structural nature, poly variant types may cause tricky type checking errors when types don't match up.
 
@@ -81,7 +81,7 @@ var admin = "admin";
 
 </CodeTab>
 
-In rare cases (mostly for JS interop reasons), it's also possible to define invalid identifiers, such as hypens or numbers:
+In rare cases (mostly for JS interop reasons), it's also possible to define "invalid identifiers", such as hypens or numbers:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -98,9 +98,11 @@ var oneA = "1a";
 
 </CodeTab>
 
+**Note:** The `\` character will be dropped in future syntax versions (way cleaner look, e.g. `#"1"`).
+
 ### Constructor Arguments
 
-This is equivalent to what we've already learned with common variants:
+This is equivalent to what we've [already learned](variant#constructor-arguments) with common variants:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
