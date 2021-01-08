@@ -1,0 +1,29 @@
+---
+id: "int-decorator"
+keywords: ["int", "decorator", "polymorphic", "variant", "as", "external"]
+name: "@int"
+summary: "This is the `@int` decorator."
+category: "decorators"
+---
+
+The `@int` decorator can be used with polymorphic variants and the `@as` decorator on *externals* to modify the compiled JavaScript.
+
+For example:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+@val external setStatus: @int[
+  @as(0) #NotStarted |
+  @as(1) #Started |
+  @as(2) #Done 
+] => unit = "setStatus"
+
+setStatus(#Done)
+```
+
+```js
+setStatus(2);
+```
+
+</CodeTab>
