@@ -12,7 +12,7 @@ For example, consider the following code *without* the `@inline` decorator.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```re
+```res
 module Colors = {
   let green = "green"
   let red = "red"
@@ -43,7 +43,7 @@ And compare *with* the `@inline` decorator.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```re
+```res
 module Colors = {
   @inline
   let green = "green"
@@ -68,7 +68,7 @@ A more advanced, but common use-case is to inline the `NODE_ENV` strings:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```re
+```res
 module NodeEnv = {
   @val @scope("process.env") external env: string = "NODE_ENV"
 

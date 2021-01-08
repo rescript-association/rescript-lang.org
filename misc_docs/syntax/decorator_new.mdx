@@ -10,7 +10,7 @@ The `@new` decorator is used whenever you need to bind to a JavaScript class con
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```re
+```res
 type t
 
 @new external create: unit => t = "Date"
@@ -28,7 +28,7 @@ When the object is not available on the global scope, combine it with `@module`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```re
+```res
 type t
 
 @module @new external book: unit => t = "Book"

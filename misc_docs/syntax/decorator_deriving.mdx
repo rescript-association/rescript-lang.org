@@ -24,7 +24,7 @@ Example of **record** accessors:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```re
+```res
 @deriving(accessors)
 type person = {
   name: string,
@@ -74,7 +74,7 @@ Example of **variant** accessors:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```re
+```res
 @deriving(accessors)
 type action =
   | SetName(string)
@@ -146,7 +146,7 @@ Example of **abstract record** type:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```re
+```res
 @deriving(abstract)
 type person = {
   name: string,

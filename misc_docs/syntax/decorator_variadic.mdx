@@ -12,7 +12,7 @@ For example:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```re
+```res
 @val @variadic @scope("Math")
 external max: array<int> => int = "max"
 
@@ -29,7 +29,7 @@ If your function has mandatory arguments, you can use the `@as` decorator to add
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```re
+```res
 @val @variadic
 external warn: (@as(404) _, @as("NOT_FOUND") _, array<string>) => unit = "log"
 

@@ -12,7 +12,7 @@ For example, consider the following code:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```re
+```res
 type name = Name(string)
 let studentName = Name("Joe")
 
@@ -38,7 +38,7 @@ If we now add the `@unboxed` decorator, the object wrappers are removed from the
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```re
+```res
 @unboxed
 type name = Name(string)
 let studentName = Name("Joe")
