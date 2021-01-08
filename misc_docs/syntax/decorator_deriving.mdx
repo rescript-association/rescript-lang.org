@@ -1,0 +1,202 @@
+---
+id: "deriving-decorator"
+keywords: ["deriving", "decorator", "record", "variant"]
+name: "@deriving"
+summary: "This is the `@deriving` decorator."
+category: "decorators"
+---
+
+The `@deriving(accessors)` decorator can be used to either:
+
+* Generate getter functions for a decorated **record** type, or 
+* Generate creator functions for constructors of a **variant** type.
+
+The `@deriving(abstract)` decorator creates:
+
+* An abstract type representing the "abstract record".
+* A creator function for the new abstract type, where labeled arguments represent the attributes of the record.
+* A set of setter / getter functions for each record attribute
+
+Note that when using the `@deriving(abstract)` decorator, the original record type will be removed.
+You'll need to use the newly created functions to create / get / set values of this type.
+
+Example of **record** accessors:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```re
+@deriving(accessors)
+type person = {
+  name: string,
+  age: int,
+}
+
+// This generates functions with signatures:
+// let name: (person) => string;
+// let age: (person) => int;
+
+let toString = (person): string => {
+  name(person) ++ " " ++ Belt.Int.toString(age(person))
+}
+
+let misha = {
+  name: "Misha",
+  age: 20,
+}
+
+let result = toString(misha)
+```
+
+```js
+function name(param) {
+  return param.name;
+}
+
+function age(param) {
+  return param.age;
+}
+
+function toString(person) {
+  return person.name + " " + String(person.age);
+}
+
+var misha = {
+  name: "Misha",
+  age: 20,
+};
+
+var result = toString(misha);
+```
+
+</CodeTab>
+
+Example of **variant** accessors:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```re
+@deriving(accessors)
+type action =
+  | SetName(string)
+  | SetAge(int)
+  | ClearAll
+
+// This generates functions with signatures:
+// let setName: (string) => action;
+// let age: (person) => int;
+
+let dispatch = action => {
+  switch action {
+  | SetName(name) => Js.log2("SetName", name)
+  | SetAge(age) => Js.log2("SetAge", age)
+  | ClearAll => Js.log("ClearAll")
+  }
+}
+
+dispatch(setName("Hello"))
+dispatch(setAge(123))
+dispatch(clearAll)
+```
+
+```js
+function setName(param_0) {
+  return {
+    TAG: /* SetName */ 0,
+    _0: param_0,
+  }
+}
+
+function setAge(param_0) {
+  return {
+    TAG: /* SetAge */ 1,
+    _0: param_0,
+  }
+}
+
+function dispatch(action) {
+  if (typeof action === "number") {
+    console.log("ClearAll")
+    return
+  }
+  if (action.TAG === /* SetName */ 0) {
+    console.log("SetName", action._0)
+    return
+  }
+  console.log("SetAge", action._0)
+}
+
+dispatch({
+  TAG: /* SetName */ 0,
+  _0: "Hello",
+})
+
+dispatch({
+  TAG: /* SetAge */ 1,
+  _0: 123,
+})
+
+dispatch(/* ClearAll */ 0)
+
+var clearAll = /* ClearAll */ 0
+```
+
+</CodeTab>
+
+Example of **abstract record** type:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```re
+@deriving(abstract)
+type person = {
+  name: string,
+  mutable age: int, // Use the mutable keyword for generating setters
+}
+
+// Generates the following:
+//
+// An abstract type, replacing the original type:
+//
+//   type person
+//
+// A type constructor:
+//
+//   let person: (~name: string, ~age: int) => person
+//
+// Getters:
+//
+//   let nameGet: (person) => string;
+//   let ageGet: (person) => int
+//
+// Setters (only mutable attributes)
+//
+//   let ageSet: (person, int) => unit
+
+let friend = person(~name="Misha", ~age=20)
+
+Js.log(friend->nameGet) // => "Misha"
+
+// Increase age by 1 via mutation
+friend->ageSet(friend->ageGet + 1)
+
+Js.log(friend->ageGet) // => 21
+
+// This will NOT be possible (original type has been removed)
+// let misha = {name: "Misha", age: 20}
+
+```
+
+```js
+var friend = {
+  name: "Misha",
+  age: 20
+};
+
+console.log(friend.name);
+
+friend.age = friend.age + 1 | 0;
+
+console.log(friend.age);
+```
+
+</CodeTab>
