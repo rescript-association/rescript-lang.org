@@ -1,0 +1,40 @@
+---
+id: "scope-decorator"
+keywords: ["scope", "decorator", "bind", "global"]
+name: "@scope"
+summary: "This is the `@scope` decorator."
+category: "decorators"
+---
+
+The `@scope` decorator is used with other decorators such as `@val` and `@module` to declare a parent scope for the binding.
+
+For example:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+@scope("Math") @val
+external floor: float => int = "floor"
+
+@scope(("location", "origin")) @val
+external originLength: string = "length"
+
+@module("MyModule") @scope("CONSTANTS")
+external initialDays: int = "initialDays"
+
+Js.log(floor(3.4))
+Js.log(originLength)
+Js.log(initialDays)
+```
+
+```js
+var MyModule = require("MyModule")
+
+console.log(Math.floor(3.4))
+console.log(location.origin.length)
+console.log(MyModule.CONSTANTS.initialDays)
+```
+
+</CodeTab>
+
+Note that the order of the decorators doesn't matter.
