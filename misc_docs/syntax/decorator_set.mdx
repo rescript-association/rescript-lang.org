@@ -1,0 +1,36 @@
+---
+id: "set-decorator"
+keywords: ["set", "property", "object", "bind"]
+name: "@set"
+summary: "This is the `@set` decorator."
+category: "decorators"
+---
+
+The `@set` decorator is used to set a property of an object.
+
+For example:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type element
+
+@scope("document") @val
+external createElement: string => element = "createElement"
+
+@set
+external setScrollTop: (element, int) => unit = "scrollTop"
+
+let div = createElement("div")
+setScrollTop(div, 100)
+```
+
+```js
+var div = document.createElement("div")
+
+div.scrollTop = 100
+```
+
+</CodeTab>
+
+
