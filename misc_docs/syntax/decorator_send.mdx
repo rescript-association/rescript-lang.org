@@ -1,1 +1,40 @@
-This decorator is used to "send a value" to an instance of an object.
+---
+id: "send-decorator"
+keywords: ["send", "decorator", "object"]
+name: "@send"
+summary: "This is the `@send` decorator."
+category: "decorators"
+---
+
+The `@send` decorator is used to call a function on an object.
+
+For example:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type element
+
+@scope("document") @val
+external createElement: string => element = "createElement"
+
+@send
+external appendChild: (element, element) => element = "appendChild"
+
+let div = createElement("div")
+let button = createElement("button")
+
+let _ = appendChild(div, button)
+```
+
+```js
+var div = document.createElement("div");
+
+var button = document.createElement("button");
+
+div.appendChild(button);
+```
+
+</CodeTab>
+
+
