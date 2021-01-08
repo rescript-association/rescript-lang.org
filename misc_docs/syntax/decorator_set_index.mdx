@@ -1,6 +1,6 @@
 ---
 id: "set-index-decorator"
-keywords: ["set", "decorator", "array", "object"]
+keywords: ["set", "decorator", "array", "object", "index"]
 name: "@set_index"
 summary: "This is the `@set_index` decorator."
 category: "decorators"
@@ -12,7 +12,7 @@ For example with an Array:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type t
 
 @new external create: int => t = "Array"
@@ -43,7 +43,7 @@ And an example with an object:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type t
 
 @new external create: unit => t = "Object"
