@@ -1,16 +1,25 @@
-This decorator is used whenever you need to bind to a JS class constructor that requires the `new` keword for instantiation.
+---
+id: "new-decorator"
+keywords: ["new", "decorator", "object"]
+name: "@new"
+summary: "This is the `@new` decorator."
+category: "decorators"
+---
+
+The `@new` decorator is used whenever you need to bind to a JavaScript class constructor that requires the `new` keword for instantiation.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```re
 type t
-@bs.new external create: unit => t = "Date"
 
-create();
+@new external create: unit => t = "Date"
+
+let now = create()
 ```
 
 ```js
-new Date();
+var now = new Date();
 ```
 
 </CodeTab>
@@ -20,10 +29,11 @@ When the object is not available on the global scope, combine it with `@module`:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-type t;
-@module @bs.new external book: unit => t = "Book";
+type t
 
-let myBook = book();
+@module @new external book: unit => t = "Book"
+
+let myBook = book()
 ```
 
 ```js
