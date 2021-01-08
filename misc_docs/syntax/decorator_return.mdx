@@ -1,0 +1,87 @@
+---
+id: "return-decorator"
+keywords: ["return", "decorator", "null", "undefined"]
+name: "@return"
+summary: "This is the `@return` decorator."
+category: "decorators"
+---
+
+The `@return` decorator is used to control how `null` and `undefined` values are converted to `option` types in ReScript.
+
+Consider the following code *without* the `@return` decorator:
+
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```re
+type element
+type dom
+
+@send
+external getElementById: (dom, string) => option<element> = "getElementById"
+
+let test = dom => {
+  let elem = dom->getElementById("haha")
+  switch elem {
+  | None => "None: Only when value is undefined"
+  | Some(_) => "Some: When value is not undefined or is null"
+  }
+}
+```
+
+```js
+function test(dom) {
+  var elem = dom.getElementById("haha");
+  if (elem !== undefined) {
+    return "Some: When value is not undefined or is null";
+  } else {
+    return "None: Only when value is undefined";
+  }
+}
+```
+
+</CodeTab>
+
+Here, `Some` can include `null` values.
+
+The `@return` decorator can specify how `null` and `undefined` are handled.
+
+There are four versions of the decorator:
+
+1. `@return(nullable)` converts `null` and `undefined` to `None`.
+2. `@return(null_to_opt)` converts `null` to `None`.
+3. `@return(undefined_to_opt)` converts `undefined` to `None`.
+4. `@return(identity)` has the same behaviour as omitting the decorator. It is rarely used, but introduced here for debugging purposes.
+
+Example with `@return(nullable)`:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```re
+type element
+type dom
+
+@send @return(nullable)
+external getElementById: (dom, string) => option<element> = "getElementById"
+
+let test = dom => {
+  let elem = dom->getElementById("haha")
+  switch elem {
+  | None => "None: When value is undefined or null"
+  | Some(_) => "Some: When value is not undefined and not null"
+  }
+}
+```
+
+```js
+function test(dom) {
+  var elem = dom.getElementById("haha");
+  if (elem == null) {
+    return "None: When value is undefined or null";
+  } else {
+    return "Some: When value is not undefined and not null";
+  }
+}
+```
+
+</CodeTab>
