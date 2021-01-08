@@ -1,0 +1,45 @@
+---
+id: "meth-decorator"
+keywords: ["meth", "decorator", "object", "function"]
+name: "@meth"
+summary: "This is the `@meth` decorator."
+category: "decorators"
+---
+
+The `@meth` decorator is used to call a function on a JavaScript object, and avoid issues with currying.
+
+For example, consider the following JavaScript code:
+
+```js
+function say (a, b) {
+  console.log(a, b);
+};
+
+var john = { 
+  say
+};
+```
+
+The shape of the john object could be typed and accessed as follows:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```re
+type person = {@meth "say": (string, string) => unit}
+
+@val external john: person = "john"
+
+john["say"]("hey", "jude")
+```
+
+```js
+john.say("hey", "jude");
+```
+
+</CodeTab>
+
+Note that we are using the object property notation to access the method.
+
+If you omit the `@meth` decorator in the function signature, the type checker will error, because it is ensured by the compiler to enforce only fully applied functions in JavaScript objects.
+
+
