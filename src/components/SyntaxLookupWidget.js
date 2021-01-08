@@ -41,7 +41,9 @@ function SyntaxLookupWidget$Category(Props) {
   var children = Props.children;
   return React.createElement("div", undefined, React.createElement("h3", {
                   className: "font-sans font-medium text-gray-100 tracking-wide text-14 uppercase mb-2"
-                }, title), React.createElement("div", undefined, children));
+                }, title), React.createElement("div", {
+                  className: "flex flex-wrap"
+                }, children));
 }
 
 function toCategory(s) {
@@ -275,7 +277,7 @@ function SyntaxLookupWidget(Props) {
                   };
                   return React.createElement("span", {
                               key: item.name,
-                              className: "first:ml-0 ml-2 cursor-pointer",
+                              className: "mr-2 mb-2 cursor-pointer",
                               onMouseDown: onMouseDown
                             }, React.createElement(SyntaxLookupWidget$Tag, {
                                   text: item.name
