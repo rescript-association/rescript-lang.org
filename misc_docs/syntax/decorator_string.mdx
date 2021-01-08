@@ -1,0 +1,29 @@
+---
+id: "string-decorator"
+keywords: ["string", "decorator", "polymorphic", "variant", "as", "external"]
+name: "@string"
+summary: "This is the `@string` decorator."
+category: "decorators"
+---
+
+The `@string` decorator can be used with polymorphic variants and the `@as` decorator on *externals* to modify the compiled JavaScript.
+
+For example:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+@val external setStatus: @string[
+  @as("NOT_STARTED") #NotStarted |
+  @as("STARTED") #Started |
+  @as("DONE") #Done 
+] => unit = "setStatus"
+
+setStatus(#NotStarted)
+```
+
+```js
+setStatus("NOT_STARTED");
+```
+
+</CodeTab>
