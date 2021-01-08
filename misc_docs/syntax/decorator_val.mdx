@@ -1,3 +1,33 @@
-This decorator is used to bind to a value in global scope.
+---
+id: "val-decorator"
+keywords: ["val", "decorator", "bind", "global"]
+name: "@val"
+summary: "This is the `@val` decorator."
+category: "decorators"
+---
 
-**Also see:** `@bs.val`
+The `@val` decorator allows you to bind to JavaScript values that are on the global scope.
+
+For example:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type timeoutID
+
+@val
+external setTimeout: (unit => unit, int) => timeoutID = "setTimeout"
+
+let timeoutID = setTimeout(() => Js.log("Hello"), 1000)
+```
+
+```js
+var timeoutID = setTimeout(function (param) {
+  console.log("Hello")
+}, 1000)
+```
+
+</CodeTab>
+
+To access global values on another global object, such as `Date.now` or `location.origin.length` see the `@scope` decorator.
+
