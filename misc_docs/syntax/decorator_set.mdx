@@ -1,6 +1,6 @@
 ---
 id: "set-decorator"
-keywords: ["set", "property", "object", "bind"]
+keywords: ["set", "decorator"]
 name: "@set"
 summary: "This is the `@set` decorator."
 category: "decorators"
@@ -8,27 +8,20 @@ category: "decorators"
 
 The `@set` decorator is used to set a property of an object.
 
-For example:
+### Example
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-type element
+type window
+@bs.val external window: window = "window"
+@bs.set external setName: (window, string) => unit = "name"
 
-@scope("document") @val
-external createElement: string => element = "createElement"
-
-@set
-external setScrollTop: (element, int) => unit = "scrollTop"
-
-let div = createElement("div")
-setScrollTop(div, 100)
+setName(window, "MyWindow")
 ```
 
 ```js
-var div = document.createElement("div")
-
-div.scrollTop = 100
+window.name = "MyWindow";
 ```
 
 </CodeTab>
@@ -36,9 +29,3 @@ div.scrollTop = 100
 ### References
 
 - [Bind using Special `@bs` Getters & Setters](/docs/manual/latest/bind-to-js-object#bind-using-special-bs-getters--setters)
-
-### Related
-
-- `@get`
-- `@set_index`
-- `@get_index`
