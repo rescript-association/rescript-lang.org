@@ -206,8 +206,10 @@ const testFile = (pageMap, test) => {
 const main = () => {
   const [, , pattern] = process.argv;
   const cwd = path.join(__dirname, "..");
+
+  // All files that are going to be tested for broken links
   const files = glob.sync(
-    pattern ? pattern : `./{pages,_blogposts}/**/*.md?(x)`,
+    pattern ? pattern : `./{pages,_blogposts,misc_docs}/**/*.md?(x)`,
     { cwd }
   );
 

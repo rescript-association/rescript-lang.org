@@ -1,0 +1,11 @@
+---
+test: "foo"
+---
+
+The `(.) => { ... }` (uncurried) syntax defines a function type that is not curried by default. This is useful whenever you want to make sure that your function is not being curried unintentionally, or if you want to force the compiler to emit cleaner JS source code (JS doesn't have curried functions by default).
+
+```res
+let myFn = (cb: (. int) => unit) => {
+  cb(. 1)
+}
+```
