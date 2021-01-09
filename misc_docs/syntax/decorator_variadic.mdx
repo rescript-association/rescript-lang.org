@@ -8,7 +8,7 @@ category: "decorators"
 
 The `@variadic` decorator is used to model JavaScript functions that take a variable number of arguments, where all arguments are of the same type.
 
-For example:
+### Example
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -25,21 +25,6 @@ var result = Math.max(5, -2, 6, 1);
 
 </CodeTab>
 
-If your function has mandatory arguments, you can use the `@as` decorator to add them:
+### References
 
-<CodeTab labels={["ReScript", "JS Output"]}>
-
-```res
-@val @variadic
-external warn: (@as(404) _, @as("NOT_FOUND") _, array<string>) => unit = "log"
-
-warn([])
-warn(["this", "page", "is", "not", "found"])
-```
-
-```js
-log(404, "NOT_FOUND");
-log(404, "NOT_FOUND", "this", "page", "is", "not", "found");
-```
-
-</CodeTab>
+* [Variadic Function Arguments](/docs/manual/latest/bind-to-js-function#variadic-function-arguments)
