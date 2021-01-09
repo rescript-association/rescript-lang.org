@@ -8,52 +8,8 @@ category: "decorators"
 
 The `@return` decorator is used to control how `null` and `undefined` values are converted to `option` types in ReScript.
 
-Consider the following code *without* the `@return` decorator:
 
-
-<CodeTab labels={["ReScript", "JS Output"]}>
-
-```res
-type element
-type dom
-
-@send
-external getElementById: (dom, string) => option<element> = "getElementById"
-
-let test = dom => {
-  let elem = dom->getElementById("haha")
-  switch elem {
-  | None => "None: Only when value is undefined"
-  | Some(_) => "Some: When value is not undefined or is null"
-  }
-}
-```
-
-```js
-function test(dom) {
-  var elem = dom.getElementById("haha");
-  if (elem !== undefined) {
-    return "Some: When value is not undefined or is null";
-  } else {
-    return "None: Only when value is undefined";
-  }
-}
-```
-
-</CodeTab>
-
-Here, `Some` can include `null` values.
-
-The `@return` decorator can specify how `null` and `undefined` are handled.
-
-There are four versions of the decorator:
-
-1. `@return(nullable)` converts `null` and `undefined` to `None`.
-2. `@return(null_to_opt)` converts `null` to `None`.
-3. `@return(undefined_to_opt)` converts `undefined` to `None`.
-4. `@return(identity)` has the same behaviour as omitting the decorator. It is rarely used, but introduced here for debugging purposes.
-
-Example with `@return(nullable)`:
+### Example
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -67,8 +23,8 @@ external getElementById: (dom, string) => option<element> = "getElementById"
 let test = dom => {
   let elem = dom->getElementById("haha")
   switch elem {
-  | None => "None: When value is undefined or null"
-  | Some(_) => "Some: When value is not undefined and not null"
+  | None => 1
+  | Some(_) => 2
   }
 }
 ```
@@ -77,11 +33,15 @@ let test = dom => {
 function test(dom) {
   var elem = dom.getElementById("haha");
   if (elem == null) {
-    return "None: When value is undefined or null";
+    return 1;
   } else {
-    return "Some: When value is not undefined and not null";
+    return 2;
   }
 }
 ```
 
 </CodeTab>
+
+### References
+
+* [Function Nullable Return Value Wrapping](/docs/manual/latest/bind-to-js-function#function-nullable-return-value-wrapping)
