@@ -6,40 +6,10 @@ summary: "This is the `@inline` decorator."
 category: "decorators"
 ---
 
-The `@inline` decorator tells the compiler to copy (i.e. inline) its value in every place the binding is being used. This is especially useful for cases where string constants can't be used as variables, but need to be present as constant values.
+The `@inline` decorator tells the compiler to inline its value
+in every place the binding is being used, rather than use a variable.
 
-For example, consider the following code *without* the `@inline` decorator.
-
-<CodeTab labels={["ReScript", "JS Output"]}>
-
-```res
-module Colors = {
-  let green = "green"
-  let red = "red"
-}
-
-let allowedColors = [Colors.green, Colors.red]
-```
-
-```js
-var green = "green";
-var red = "red";
-
-var Colors = {
-  green: green,
-  red: red
-};
-
-var allowedColors = [
-  green,
-  red
-];
-```
-
-</CodeTab>
-
-
-And compare *with* the `@inline` decorator.
+### Example
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -64,34 +34,6 @@ var allowedColors = [
 
 </CodeTab>
 
-A more advanced, but common use-case is to inline the `NODE_ENV` strings:
-
-<CodeTab labels={["ReScript", "JS Output"]}>
-
-```res
-module NodeEnv = {
-  @val @scope("process.env") external env: string = "NODE_ENV"
-
-  @inline
-  let development = "development"
-
-  @inline
-  let production = "production"
-}
-
-if NodeEnv.env === NodeEnv.development {
-  Js.log("development")
-}
-```
-
-```js
-if (process.env.NODE_ENV === "development") {
-  console.log("development");
-}
-```
-
-</CodeTab>
-
 ### References
 
-- [Attribute (Decorator)](https://rescript-lang.org/docs/manual/latest/attribute)
+- [Inlining Constants](/docs/manual/latest/inlining-constants)
