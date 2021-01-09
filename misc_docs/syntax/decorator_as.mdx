@@ -6,9 +6,9 @@ summary: "This is the `@as` decorator."
 category: "decorators"
 ---
 
-The `@as` decorator may be used on record types to alias record field names to a different JavaScript attribute name.
+The `@as` decorator is commonly used on record types to alias record field names to a different JavaScript attribute name.
 
-This is mostly useful to map to JavaScript attribute names that cannot be expressed in ReScript (such as keywords).
+This is useful to map to JavaScript attribute names that cannot be expressed in ReScript (such as keywords).
 
 For example:
 
@@ -30,4 +30,13 @@ var action = {
 
 </CodeTab>
 
-It may also be used when declaring external [polymorphic variants](/docs/manual/latest/polymorphic-variant). See the `@string` and `@int` decorators for more details.
+### References
+
+* [Constrain Arguments Better](/docs/manual/latest/bind-to-js-function#constrain-arguments-better) describes aliasing polymorphic variants using the `@as` decorator.
+* [Fixed Arguments](/docs/manual/latest/bind-to-js-function#fixed-arguments) describes passing predetermined argument values to JavaScript functions using the `@as` decorator.
+
+### Related
+
+* `@int`
+* `@string`
+* `@variadic`
