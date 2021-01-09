@@ -6,24 +6,10 @@ summary: "This is the `@unwrap` decorator."
 category: "decorators"
 ---
 
-The `@unwrap` decorator may be used when binding to external functions that accept multiple types for an argument.
+The `@unwrap` decorator may be used when binding to external functions
+that accept multiple types for an argument.
 
-Consider the following JavaScript function:
-
-```js
-function padLeft(padding, str) {
-  if (typeof padding === "number") {
-    return " ".repeat(padding) + str;
-  }
-  if (typeof padding === "string") {
-    return padding + str;
-  }
-  throw new Error("Expected padding to be number or string");
-}
-```
-Note how `padding` can be either a number or a string.
-
-Here is how you'd bind to this function:
+### Example
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -33,16 +19,17 @@ Here is how you'd bind to this function:
   string
 ) => string = "padLeft";
 
-let _ = padLeft(#Int(7), "eleven");
-let _ = padLeft(#Str("7"), "eleven");
+let result1 = padLeft(#Int(7), "eleven");
+let result2 = padLeft(#Str("7"), "eleven");
 ```
 
 ```js
-padLeft(7, "eleven");
-
-padLeft("7", "eleven");
+var result1 = padLeft(7, "eleven");
+var result2 = padLeft("7", "eleven");
 ```
 
 </CodeTab>
 
-Review the JavaScript output and note how `@unwrap` simply unwraps the polymorphic variant constructor.
+### References
+
+* [Modeling Polymorphic Function](/docs/manual/latest/bind-to-js-function#modeling-polymorphic-function)
