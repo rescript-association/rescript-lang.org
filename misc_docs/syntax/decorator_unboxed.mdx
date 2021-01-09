@@ -6,35 +6,10 @@ summary: "This is the `@unboxed` decorator."
 category: "decorators"
 ---
 
-The `@unboxed` decorator provides a way to unwrap **variant** constructors that have a *single* argument, or **record** objects that have a *single* field.
+The `@unboxed` decorator provides a way to unwrap **variant** constructors
+that have a *single* argument, or **record** objects that have a *single* field.
 
-For example, consider the following code:
-
-<CodeTab labels={["ReScript", "JS Output"]}>
-
-```res
-type name = Name(string)
-let studentName = Name("Joe")
-
-type greeting = {message: string}
-let hi = {message: "hello!"}
-```
-
-```js
-var studentName = /* Name */{
-  _0: "Joe"
-};
-
-var hi = {
-  message: "hello!"
-};
-```
-
-</CodeTab>
-
-When compiled to JavaScript, these values are represented as objects.
-
-If we now add the `@unboxed` decorator, the object wrappers are removed from the JavaScript output:
+### Example
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -55,4 +30,6 @@ var hi = "hello!";
 
 </CodeTab>
 
-See the [Unboxed](/docs/manual/latest/unboxed) section for more details.
+### References
+
+* [Unboxed](/docs/manual/latest/unboxed)
