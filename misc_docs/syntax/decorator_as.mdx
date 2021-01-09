@@ -1,19 +1,25 @@
 ---
-test: "foo"
+id: "as-decorator"
+keywords: ["as", "decorator"]
+name: "@as"
+summary: "This is the `@as` decorator."
+category: "decorators"
 ---
 
-Use this decorator on record types to alias record names to a different JS attribute name.
+The `@as` decorator is commonly used on record types to alias record field names to a different JavaScript attribute name.
 
-This is mostly useful to map to JS attribute names that cannot be expressed in ReScript (such as keywords).
+This is useful to map to JavaScript attribute names that cannot be expressed in ReScript (such as keywords).
 
 ### Example
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```reason
+```res
 type action = {
-  [@bs.as "type"] _type: string,
-};
+  @as("type") type_: string
+}
+
+let action = {type_: "ADD_USER"}
 ```
 
 ```js
@@ -21,6 +27,10 @@ var action = {
   type: "ADD_USER"
 };
 ```
+
 </CodeTab>
 
-Refer to the [Records as Objects](/docs/manual/latest/bind-to-js-object#bind-using-rescript-record) section for a more detailed explanation.
+### References
+
+* [Constrain Arguments Better](/docs/manual/latest/bind-to-js-function#constrain-arguments-better)
+* [Fixed Arguments](/docs/manual/latest/bind-to-js-function#fixed-arguments)

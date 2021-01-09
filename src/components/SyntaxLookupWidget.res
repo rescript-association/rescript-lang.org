@@ -49,7 +49,7 @@ module Category = {
       <h3 className="font-sans font-medium text-gray-100 tracking-wide text-14 uppercase mb-2">
         {React.string(title)}
       </h3>
-      <div> children </div>
+      <div className="flex flex-wrap"> children </div>
     </div>
   }
 }
@@ -259,7 +259,7 @@ let make = () => {
             ReactEvent.Mouse.preventDefault(evt)
             setState(_ => ShowDetails(item))
           }
-          <span className="first:ml-0 ml-2 cursor-pointer" onMouseDown key=item.name>
+          <span className="mr-2 mb-2 cursor-pointer" onMouseDown key=item.name>
             <Tag text={item.name} />
           </span>
         })
