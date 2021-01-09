@@ -6,7 +6,10 @@ summary: "This is the `@new` decorator."
 category: "decorators"
 ---
 
-The `@new` decorator is used whenever you need to bind to a JavaScript class constructor that requires the `new` keword for instantiation.
+The `@new` decorator is used whenever you need to bind to a JavaScript
+class constructor that requires the `new` keword for instantiation.
+
+### Example
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -24,21 +27,6 @@ var now = new Date();
 
 </CodeTab>
 
-When the object is not available on the global scope, combine it with `@module`:
+### References
 
-<CodeTab labels={["ReScript", "JS Output"]}>
-
-```res
-type t
-
-@module @new external book: unit => t = "Book"
-
-let myBook = book()
-```
-
-```js
-var Book = require("Book");
-var myBook = new Book();
-```
-
-</CodeTab>
+* [Bind to a JS Object That's a Class](/docs/manual/latest/bind-to-js-object#bind-to-a-js-object-thats-a-class)
