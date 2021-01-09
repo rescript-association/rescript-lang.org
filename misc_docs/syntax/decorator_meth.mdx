@@ -6,9 +6,12 @@ summary: "This is the `@meth` decorator."
 category: "decorators"
 ---
 
-The `@meth` decorator is used to call a function on a JavaScript object, and avoid issues with currying.
+The `@meth` decorator is used to call a function on a JavaScript object,
+and avoid issues with currying.
 
-For example, consider the following JavaScript code:
+### Example
+
+Suppose we have the following JavaScript:
 
 ```js
 function say (a, b) {
@@ -20,7 +23,7 @@ var john = {
 };
 ```
 
-The shape of the john object could be typed and accessed as follows:
+We can model and bind to this object as follows.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -38,8 +41,5 @@ john.say("hey", "jude");
 
 </CodeTab>
 
-Note that we are using the object property notation to access the method.
-
-If you omit the `@meth` decorator in the function signature, the type checker will error, because it is ensured by the compiler to enforce only fully applied functions in JavaScript objects.
 
 
