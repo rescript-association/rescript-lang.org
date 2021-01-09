@@ -6,35 +6,26 @@ summary: "This is the `@send` decorator."
 category: "decorators"
 ---
 
-The `@send` decorator is used to call a function on an object.
+The `@send` decorator is used to bind to a method on an object.
 
-For example:
+### Example
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-type element
+type document
+@bs.send external getElementById: (document, string) => Dom.element = "getElementById"
+@bs.val external doc: document = "document"
 
-@scope("document") @val
-external createElement: string => element = "createElement"
-
-@send
-external appendChild: (element, element) => element = "appendChild"
-
-let div = createElement("div")
-let button = createElement("button")
-
-let _ = appendChild(div, button)
+let el = getElementById(doc, "myId")
 ```
 
 ```js
-var div = document.createElement("div");
-
-var button = document.createElement("button");
-
-div.appendChild(button);
+var el = document.getElementById("myId");
 ```
 
 </CodeTab>
 
+### References
 
+* [Bind to JS Function](/docs/manual/latest/bind-to-js-function)
