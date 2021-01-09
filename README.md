@@ -67,6 +67,7 @@ build specific pages (file `index_data/x.json` not found).
   - `/components`: ReScript / React components used by multiple pages
   - `/ffi`: (to be deprecated) Plain JS that some ReScript code binds to (use `raw` statements for that)
   - `/layouts`: All Next layouts used in our pages. Check out `src/common/App.res` for mapping layouts to routes
+- `plugins`: Contains plugins for all kinds of things: HighlightJS, MDX, webpack loader, etc.
 - `scripts`: Contains a mix of JS / ReScript based scripts that do all kind of code generation / code introspection logic
 - `tailwind.config.js`: Contains our Tailwind configuration for all the low level design tokens
 
