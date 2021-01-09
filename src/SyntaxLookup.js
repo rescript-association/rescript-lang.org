@@ -105,7 +105,7 @@ function getAnchor(path) {
 function SyntaxLookup$Tag(Props) {
   var text = Props.text;
   return React.createElement("span", {
-              className: "bg-fire-10-tr py-1 px-3 rounded text-fire text-16"
+              className: "hover:bg-fire hover:text-white bg-fire-10-tr py-1 px-3 rounded text-fire text-16"
             }, text);
 }
 
