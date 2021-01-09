@@ -8,7 +8,7 @@ category: "decorators"
 
 The `@scope` decorator is used with other decorators such as `@val` and `@module` to declare a parent scope for the binding.
 
-For example:
+### Example
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -16,25 +16,15 @@ For example:
 @scope("Math") @val
 external floor: float => int = "floor"
 
-@scope(("location", "origin")) @val
-external originLength: string = "length"
-
-@module("MyModule") @scope("CONSTANTS")
-external initialDays: int = "initialDays"
-
-Js.log(floor(3.4))
-Js.log(originLength)
-Js.log(initialDays)
+let result = floor(3.4)
 ```
 
 ```js
-var MyModule = require("MyModule")
-
-console.log(Math.floor(3.4))
-console.log(location.origin.length)
-console.log(MyModule.CONSTANTS.initialDays)
+var result = Math.floor(3.4);
 ```
 
 </CodeTab>
 
-Note that the order of the decorators doesn't matter.
+### References
+
+* [Global Modules](/docs/manual/latest/bind-to-global-js-values#global-modules)
