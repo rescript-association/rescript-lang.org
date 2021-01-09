@@ -14,13 +14,11 @@ module MdxComp = {
   type props
   type t = Js.t<props> => React.element
 
-  let render: t => React.element = %raw(
-    `
+  let render: t => React.element = %raw(`
     function(c) {
       return React.createElement(c, {});
     }
-  `
-  )
+  `)
 
   /* @bs.get */
   /* external frontmatter: t => Js.Json.t = "frontmatter" */
@@ -43,6 +41,15 @@ module Category = {
     | Other => "Other"
     }
 
+  let fromString = (s: string): t => {
+    switch s {
+    | "decorators" => Decorators
+    | "controlflow" => ControlFlow
+    | "operators" => Operators
+    | _ => Other
+    }
+  }
+
   @react.component
   let make = (~title, ~children) => {
     <div>
@@ -54,6 +61,8 @@ module Category = {
   }
 }
 
+// The data representing a syntax construct
+// handled in the widget
 type item = {
   id: string,
   keywords: array<string>,
@@ -61,15 +70,6 @@ type item = {
   summary: string,
   category: Category.t,
   component: MdxComp.t,
-}
-
-let toCategory = (s: string): Category.t => {
-  switch s {
-    | "decorators" => Decorators
-    | "controlflow" => ControlFlow
-    | "operators" => Operators
-    | _ => Other
-  }
 }
 
 let toItem = (syntaxData: syntaxData): item => {
@@ -84,8 +84,8 @@ let toItem = (syntaxData: syntaxData): item => {
     keywords: keywords,
     name: name,
     summary: summary,
-    category: toCategory(category),
-    component: requireSyntaxFile(file) 
+    category: Category.fromString(category),
+    component: requireSyntaxFile(file),
   }
   item
 }
@@ -200,9 +200,12 @@ let make = () => {
       switch value {
       | "" => ShowAll
       | search =>
-        let filtered = fuse->Fuse.search(search)->Belt.Array.map(m => {
-          m["item"]
-        })
+        let filtered =
+          fuse
+          ->Fuse.search(search)
+          ->Belt.Array.map(m => {
+            m["item"]
+          })
 
         if Js.Array.length(filtered) === 1 {
           let item = Belt.Array.getExn(filtered, 0)
@@ -249,7 +252,9 @@ let make = () => {
         Js.Dict.set(acc, key, items)
         acc
       })
-    })->Js.Dict.entries->Belt.Array.reduce([], (acc, entry) => {
+    })
+    ->Js.Dict.entries
+    ->Belt.Array.reduce([], (acc, entry) => {
       let (title, items) = entry
       if Js.Array.length(items) === 0 {
         acc
