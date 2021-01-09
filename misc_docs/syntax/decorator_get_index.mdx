@@ -6,40 +6,10 @@ summary: "This is the `@get_index` decorator."
 category: "decorators"
 ---
 
-The `@get_index` decorator is used to access a dynamic property or index.
+The `@get_index` decorator is used to access a dynamic property on an object,
+or an index of an array.
 
-For example with an Array:
-
-<CodeTab labels={["ReScript", "JS Output"]}>
-
-```res
-type t
-
-@new external create: int => t = "Array"
-@set_index external set: (t, int, string) => unit = ""
-@get_index external get: (t, int) => string = ""
-
-let a = create(3)
-a->set(0, "zero")
-a->set(1, "one")
-a->set(2, "two")
-
-let value = a->get(1)
-```
-
-```js
-var a = new Array(3);
-
-a[0] = "zero";
-a[1] = "one";
-a[2] = "two";
-
-var value = a[1];
-```
-
-</CodeTab>
-
-And an example with an object:
+### Example
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -69,5 +39,13 @@ var value = o["y"];
 ```
 
 </CodeTab>
+
 ### References
+
 - [Bind using Special `@bs` Getters & Setters](/docs/manual/latest/bind-to-js-object#bind-using-special-bs-getters--setters)
+
+### Related
+
+- `@get`
+- `@set`
+- `@set_index`
