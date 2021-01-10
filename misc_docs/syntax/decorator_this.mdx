@@ -22,7 +22,7 @@ type counter
 @set external setValue: (counter, int) => unit = "value"
 @get external getValue: counter => int = "value"
 
-// Functions that create an "increment" and "decrement" function properties which have access to "this"
+// Functions that create "increment" and "decrement" function properties which have access to "this"
 @set external setIncrement: (counter, @this (counter, int) => unit) => unit = "increment"
 @set external setDecrement: (counter, @this (counter, int) => unit) => unit = "decrement"
 
