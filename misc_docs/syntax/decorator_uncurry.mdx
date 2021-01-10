@@ -1,0 +1,34 @@
+---
+id: "uncurry-decorator"
+keywords: ["uncurry", "decorator"]
+name: "@uncurry"
+summary: "This is the `@uncurry` decorator."
+category: "decorators"
+---
+
+The `@uncurry` decorator allows you to annotate *external* function callback arguments
+so the callbacks may be declared as normal functions `() => { ... }` rather then needing
+the uncurried function syntax `(.) => { ... }`.
+
+### Example
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+@bs.send
+external map: (array<'a>, @uncurry ('a => 'b)) => array<'b> = "map"
+
+let result = map([1, 2, 3], x => x + 1)
+```
+
+```js
+var result = [1, 2, 3].map(function (x) {
+  return (x + 1) | 0
+})
+```
+
+</CodeTab>
+
+### References
+
+- [Curry & Uncurry](/docs/manual/latest/bind-to-js-function#curry--uncurry)
