@@ -261,7 +261,7 @@ let other = [#Green]
 let all = Belt.Array.concat(colors, other)
 ```
 
-As you can see in the example above, the type checker doesn't really care about the fact that `color` is not annotated as an `array<rgb>` type. 
+As you can see in the example above, the type checker doesn't really care about the fact that `other` is not annotated as an `array<rgb>` type. 
 
 As soon as it hits the first constraint (`Belt.Array.concat`), it will try to check if the structural types of `colors` and `other` unify into one poly variant type. If there's a mismatch, you will get an error on the `Belt.Array.concat` call.
 
