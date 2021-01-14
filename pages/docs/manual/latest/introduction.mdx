@@ -20,7 +20,7 @@ We respect TypeScript very much and think that it's a positive force in the Java
   - Is deliberately curated to be a simple subset most folks will have an easier time to use.
   - Has **no** pitfalls, aka the type system is "sound" (the types will always be correct). E.g. If a type isn't marked as nullable, its value will never lie and let through some `undefined` value silently. **ReScript code has no null/undefined errors**.
   - Is the same for everyone. No knobs, no bikeshedding opportunity.
-  - Runs extremely fast precisely thanks to its simplicity and curation. We're one of the fastest compiler & build system for JavaScript development.
+  - Runs extremely fast precisely thanks to its simplicity and curation. We're one of the fastest compiler & build systems for JavaScript development.
   - **Doesn't need type annotations**. Annotate as much or as little as you'd like. The types are inferred by the language (and, again, are guaranteed correct).
 
 - Migrating to TypeScript is done "breadth-first," whereas migrating to ReScript is done "depth-first." You can convert your codebase to TypeScript by "turning it on" for all files and annotate here and there; but how much type safety did you gain? How do you measure it? Type errors can still slip in and out of the converted pieces. For ReScript, our interop features draw clear boundaries: there's pure ReScript code, and there's JS interop code. Every piece of converted ReScript code is 100% clean. You'd convert file by file and each conversion increases your safety monotonically.
