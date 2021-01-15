@@ -206,7 +206,7 @@ external readFileSync: (
     | #utf8
     | @bs.as("ascii") #useAscii
   ],
-) => string = "fs"
+) => string = "readFileSync"
 
 readFileSync(~name="xx.txt", #useAscii)
 ```
