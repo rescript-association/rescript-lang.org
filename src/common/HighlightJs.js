@@ -5,7 +5,7 @@ import * as Js_exn from "bs-platform/lib/es6/js_exn.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as Caml_js_exceptions from "bs-platform/lib/es6/caml_js_exceptions.js";
-import * as Highlight from "highlight.js/lib/highlight";
+import * as Core from "highlight.js/lib/core";
 
 function renderHLJS(highlightedLinesOpt, darkmodeOpt, code, lang, param) {
   var highlightedLines = highlightedLinesOpt !== undefined ? highlightedLinesOpt : [];
@@ -14,7 +14,7 @@ function renderHLJS(highlightedLinesOpt, darkmodeOpt, code, lang, param) {
   try {
     match = [
       lang,
-      Highlight.highlight(lang, code).value
+      Core.highlight(lang, code).value
     ];
   }
   catch (raw_exn){
