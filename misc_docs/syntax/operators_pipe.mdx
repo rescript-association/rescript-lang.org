@@ -1,0 +1,45 @@
+---
+id: "pipe"
+keywords: ["pipe", "operator", "function", "argument"]
+name: "->"
+summary: "This is the `pipe` operator."
+category: "operators"
+---
+
+The `pipe` operator provides an convenient syntax for passing a value into a function. Typically it's used to pass a value into a function as its first argument. 
+
+### Example
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let dieRoll = size => {
+  Js.Math.random_int(1, size)
+}
+
+let dieRollMessage = (value, name) => {
+  "Hi " ++ name ++ ", you rolled a " ++ Js.Int.toString(value)
+}
+
+let message = dieRoll(6)->dieRollMessage("Marshall")
+```
+
+```js
+function dieRoll(size) {
+  return Js_math.random_int(1, size);
+}
+
+function dieRollMessage(value, name) {
+  return "Hi " + name + ", you rolled a " + value.toString();
+}
+
+var message = dieRollMessage(Js_math.random_int(1, 6), "Marshall");
+```
+
+</CodeTab>
+
+Which produces a message such as `Hello Marshall, you rolled a 3`.
+
+### References
+
+* [Pipe](/docs/manual/latest/pipe)
