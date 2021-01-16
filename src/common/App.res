@@ -7,7 +7,7 @@
 
 // Register all the highlightjs stuff for the whole application
 %%raw(`
-  let hljs = require('highlight.js/lib/highlight');
+  let hljs = require('highlight.js/lib/core');
   let js = require('highlight.js/lib/languages/javascript');
   let ocaml = require('highlight.js/lib/languages/ocaml');
   let reason = require('plugins/reason-highlightjs');

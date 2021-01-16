@@ -1,7 +1,7 @@
 @bs.deriving(abstract)
 type highlightResult = {value: string}
 
-@bs.module("highlight.js/lib/highlight")
+@bs.module("highlight.js/lib/core")
 external highlight: (~lang: string, ~value: string) => highlightResult = "highlight"
 
 let renderHLJS = (~highlightedLines=[], ~darkmode=false, ~code: string, ~lang: string, ()) => {

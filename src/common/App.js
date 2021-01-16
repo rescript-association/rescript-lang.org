@@ -24,7 +24,7 @@ import * as BeltDocsLayout8_0_0 from "../layouts/BeltDocsLayout8_0_0.js";
 import * as ApiOverviewLayout8_0_0 from "../layouts/ApiOverviewLayout8_0_0.js";
 import * as ReasonCompilerDocsLayout from "../layouts/ReasonCompilerDocsLayout.js";
 
-let hljs = require('highlight.js/lib/highlight');
+let hljs = require('highlight.js/lib/core');
   let js = require('highlight.js/lib/languages/javascript');
   let ocaml = require('highlight.js/lib/languages/ocaml');
   let reason = require('plugins/reason-highlightjs');
