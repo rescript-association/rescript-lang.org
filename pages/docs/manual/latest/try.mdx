@@ -14,7 +14,7 @@ You can compile a file directly via `bsc MyFile.res`:
 // MyFile.res
 let rec fib = n => {
   switch n {
-  | 0 | 1 => 1
+  | 0 | 1 => n
   | n => fib(n -1) + fib(n-2)
   }
 }
