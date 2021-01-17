@@ -70,6 +70,25 @@ console.log(Student.default);
 
 </CodeTab>
 
+### Import a JSON file content
+
+Use the `bs.module` [external](external.md):
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type dataType
+@bs.module external studentNames: dataType = "./students.json"
+Js.log(studentNames)
+```
+```js
+var StudentsJson = require("./students.json");
+var studentNames = StudentsJson;
+console.log(studentNames);
+```
+
+</CodeTab>
+
 ## Export To JavaScript
 
 As mentioned in ReScript's idiomatic [Import & Export](import-export.md), every let binding and module is exported by default to other ReScript modules. If you open up the compiled JS file, you'll see that these values can also directly be used by another _JavaScript_ file too.
