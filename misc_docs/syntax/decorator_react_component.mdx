@@ -1,0 +1,37 @@
+---
+id: "react-component-decorator"
+keywords: ["react", "component", "decorator"]
+name: "@react.component"
+summary: "This is the `@react.component` decorator."
+category: "decorators"
+---
+
+The `@react.component` decorator is used to annotate functions that are [ReasonReact](https://reasonml.github.io/reason-react/en/) components.
+
+### Example
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+@react.component
+let make = (~name) => {
+  <button> {ReasonReact.string("Hello " ++ name ++ "!")} </button>
+}
+```
+
+```js
+var React = require("react");
+
+function MyComponent(Props) {
+  var name = Props.name;
+  return React.createElement("button", undefined, "Hello " + name + "!");
+}
+
+var make = MyComponent;
+```
+
+</CodeTab>
+
+### References
+
+* [ReasonReact Components](https://reasonml.github.io/reason-react/docs/en/components)
