@@ -48,14 +48,6 @@ type result =
   | Success(string)
 let myResult = Success("You did it!")
 let Success(message) = myResult // "You did it!" assigned to `message`
-
-// Array
-let myArray = [1, 2, 3]
-let [item1, item2, _] = myArray // 1 assigned to `item1`, 2 assigned to `item2`, 3rd item ignored
-
-// List
-let myList = list{1, 2, 3}
-let list{head, ...tail} = myList // 1 assigned to `head`, `list{2, 3}` assigned to tail
 ```
 ```js
 var student1 = {
@@ -137,6 +129,20 @@ var n = "John";
 ```
 
 </CodeTab>
+
+You _can_ in theory destructure array and list at the top level too:
+
+```res
+let myArray = [1, 2, 3]
+let [item1, item2, _] = myArray
+// 1 assigned to `item1`, 2 assigned to `item2`, 3rd item ignored
+
+let myList = list{1, 2, 3}
+let list{head, ...tail} = myList
+// 1 assigned to `head`, `list{2, 3}` assigned to tail
+```
+
+But the array example is **highly disrecommended** (use tuple instead) and the list example will error on you. They're only there for completeness' sake. As you'll see below, the proper way of using destructuring array and list is using `switch`.
 
 ## `switch` Based on Shape of Data
 
