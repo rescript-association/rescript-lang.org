@@ -527,6 +527,92 @@ if (exit === 1) {
 
 </CodeTab>
 
+### Match on Array
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let students = ["Jane", "Harvey", "Patrick"]
+switch students {
+| [] => Js.log("There are no students")
+| [student1] =>
+  Js.log("There's a single student here: " ++ student1)
+| manyStudents =>
+  // display the array of names
+  Js.log2("The students are: ", manyStudents)
+}
+```
+```js
+var students = ["Jane", "Harvey", "Patrick"];
+
+var len = students.length;
+
+if (len !== 1) {
+  if (len !== 0) {
+    console.log("The students are: ", students);
+  } else {
+    console.log("There are no students");
+  }
+} else {
+  var student1 = students[0];
+  console.log("There's a single student here: " + student1);
+}
+```
+
+</CodeTab>
+
+### Match on List
+
+Pattern matching on list is similar to array, but with the extra feature of extracting the tail of a list (all elements except the first one):
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let rec printStudents = (students) => {
+  switch students {
+  | list{} => () // done
+  | list{student} => Js.log("Last student: " ++ student)
+  | list{student1, ...otherStudents} =>
+    Js.log(student1)
+    printStudents(otherStudents)
+  }
+}
+printStudents(list{"Jane", "Harvey", "Patrick"})
+```
+```js
+function printStudents(_students) {
+  while(true) {
+    var students = _students;
+    if (!students) {
+      return;
+    }
+    var otherStudents = students.tl;
+    var student = students.hd;
+    if (otherStudents) {
+      console.log(student);
+      _students = otherStudents;
+      continue;
+    }
+    console.log("Last student: " + student);
+    return;
+  };
+}
+
+printStudents({
+  hd: "Jane",
+  tl: {
+    hd: "Harvey",
+    tl: {
+      hd: "Patrick",
+      tl: /* [] */0
+    }
+  }
+});
+```
+
+</CodeTab>
+
+
 ### Small Pitfall
 
 **Note**: you can only pass literals (i.e. concrete values) as a pattern, not let-binding names or other things. The following doesn't work as expected:
