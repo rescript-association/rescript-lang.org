@@ -56,7 +56,7 @@ let Success(message) = myResult; // "You did it!" assigned to `message`
 
 // Array
 let myArray = [|1, 2, 3|];
-let [|item1, item2|] = myArray; // 1 assigned to `item1`, 2 assigned to `item2`
+let [|item1, item2, _|] = myArray; // 1 assigned to `item1`, 2 assigned to `item2`, 3rd item ignored
 
 // List
 let myList = [1, 2, 3];
@@ -76,7 +76,7 @@ let Success message = myResult (* "You did it!" assigned to `message` *)
 
 (* Array *)
 let myArray = [|1; 2; 3|]
-let [|item1; item2|] = myArray (* 1 assigned to `item1`, 2 assigned to `item2` *)
+let [|item1; item2; _|] = myArray (* 1 assigned to `item1`, 2 assigned to `item2`, 3rd item ignored *)
 
 (* List *)
 let myList = [1; 2; 3]
