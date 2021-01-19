@@ -44,57 +44,109 @@ let student1 = {name: "John", age: 10}
 let {name} = student1 // "John" assigned to `name`
 
 // Variant
-type result =
-  | Success(string)
+type result = Success(string)
 let myResult = Success("You did it!")
 let Success(message) = myResult // "You did it!" assigned to `message`
-
-// Array
-let myArray = [1, 2, 3]
-let [item1, item2] = myArray // 1 assigned to `item1`, 2 assigned to `item2`
-
-// List
-let myList = list{1, 2, 3}
-let list{head, ...tail} = myList // 1 assigned to `head`, `list{2, 3}` assigned to tail
 ```
+
 ```js
 var student1 = {
   name: "John",
   age: 10
 };
+
 var name = "John";
 
-var myResult = /* Success */{
+var myResult = /* Success */ {
   _0: "You did it!"
 };
-var message = "You did it!"
 
-var myArray = [1, 2, 3];
-if (myArray.length !== 2) {
-  throw {
-    RE_EXN_ID: "Match_failure",
-    _1: [
-      "playground.res",
-      14,
-      4
-    ],
-    Error: new Error()
-  };
-}
-var item1 = myArray[0];
-var item2 = myArray[1];
+var message = "You did it!";
+```
 
-var myList = {
-  hd: 1,
-  tl: {
-    hd: 2,
-    tl: {
-      hd: 3,
-      tl: /* [] */0
-    }
+</CodeTab>
+
+You can destructure Lists by pattern matching on list elements:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let myList = list{"Hello", "Goodbye"}
+let message = switch myList {
+| list{} => "Empty"
+| list{head, ...tail} => {
+    head ++ " and " ++ tail->Belt.List.length->Belt.Int.toString ++ " more"
   }
+}
+```
+
+```js
+var myList = {
+  hd: "Hello",
+  tl: {
+    hd: "Goodbye",
+    tl: /* [] */ 0,
+  },
 };
-// ...
+
+var message = myList
+  ? "Hello and " +
+    String(
+      Belt_List.length({
+        hd: "Goodbye",
+        tl: /* [] */ 0,
+      })
+    ) +
+    " more"
+  : "Empty";
+```
+
+</CodeTab>
+
+Similarly, you can destructure Arrays by pattern matching on their elements.
+
+Note that spread `...` is not supported for Array pattern matching.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let myArr = [1, 2]
+let (x, y) = switch myArr {
+| [x] => (x, 0) // Exactly one element
+| [x, y] => (x, y) // Exactly two elements
+| _ => (0, 0)
+}
+```
+
+```js
+var myArr = [1, 2];
+
+var len = myArr.length;
+
+var match;
+
+if (len >= 3) {
+  match = [0, 0];
+} else {
+  switch (len) {
+    case 0:
+      match = [0, 0];
+      break;
+    case 1:
+      var x = myArr[0];
+      match = [x, 0];
+      break;
+    case 2:
+      var x$1 = myArr[0];
+      var y = myArr[1];
+      match = [x$1, y];
+      break;
+  }
+}
+
+var x$2 = match[0];
+
+var y$1 = match[1];
 ```
 
 </CodeTab>
