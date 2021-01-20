@@ -8,6 +8,10 @@ category: "decorators"
 
 The `@react.component` decorator is used to annotate functions that are [ReasonReact](https://reasonml.github.io/reason-react/en/) components.
 
+You will need this decorator whenever you want to use a ReScript / React component in ReScript JSX expressions.
+
+**Note:** The `@react.component` decorator requires the [react-jsx config](/docs/manual/latest/build-configuration#reason-refmt-old) to be set in your `bsconfig.json` to enable the required React transformations. 
+
 ### Example
 
 <CodeTab labels={["ReScript", "JS Output"]}>
