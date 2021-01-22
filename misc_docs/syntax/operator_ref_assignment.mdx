@@ -1,0 +1,26 @@
+---
+id: "ref-assignment"
+keywords: ["ref", "assign"]
+name: ":="
+summary: "This is the `ref assignment` operator."
+category: "operators"
+---
+
+This operator is syntactic sugar for assigning to the `contents` value of a `ref`
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let total = ref(0)
+total := 1
+```
+
+```js
+var total = {
+  contents: 0
+};
+
+total.contents = 1;
+```
+
+</CodeTab>
