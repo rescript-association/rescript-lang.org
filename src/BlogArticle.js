@@ -9,7 +9,6 @@ import * as Util from "./common/Util.js";
 import * as React from "react";
 import * as BlogApi from "./common/BlogApi.js";
 import * as DateStr from "./common/DateStr.js";
-import * as $$Promise from "reason-promise/src/js/promise.js";
 import * as Markdown from "./components/Markdown.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as MainLayout from "./layouts/MainLayout.js";
@@ -225,7 +224,7 @@ function getStaticPaths(param) {
                   }
                 };
         }));
-  return $$Promise.resolved({
+  return Promise.resolve({
               paths: paths,
               fallback: false
             });

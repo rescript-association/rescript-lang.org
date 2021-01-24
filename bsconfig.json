@@ -10,7 +10,7 @@
     "reason-react",
     "bs-fetch",
     "@glennsl/bs-json",
-    "reason-promise"
+    "@ryyppy/rescript-promise"
   ],
   "ppx-flags": [],
   "sources": [

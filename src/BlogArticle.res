@@ -259,7 +259,7 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = ctx => {
 
   let props = {fullslug: fullslug}
   let ret = {"props": props}
-  Js.Promise.resolve(ret)
+  Promise.resolve(ret)
 }
 
 let getStaticPaths: Next.GetStaticPaths.t<Params.t> = () => {
@@ -271,5 +271,5 @@ let getStaticPaths: Next.GetStaticPaths.t<Params.t> = () => {
     },
   })
   let ret = {paths: paths, fallback: false}
-  Promise.resolved(ret)
+  Promise.resolve(ret)
 }

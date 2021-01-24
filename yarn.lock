@@ -1374,6 +1374,11 @@
   resolved "https://registry.yarnpkg.com/@octokit/graphql-schema/-/graphql-schema-7.7.1.tgz#47b541a68ce5f3a6de3c02534b012696702ca658"
   integrity sha512-Wj0WYFRiqTeD/F5WGtXShsEnnAdfDfwB/Gq2rxsntKg/LintKxECFYNMV5wLVOLLNaXBc1f2q8AXHGxQyEbPKg==
 
+"@ryyppy/rescript-promise@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@ryyppy/rescript-promise/-/rescript-promise-0.0.2.tgz#9b9dccd724b40b7836e52158bc34deed8a75dddf"
+  integrity sha512-kKW7rWbtW63CM25JodnCIbBPP8sIiqxLgY2EGLFc9yj9nJTuPMLq08k8QY2v+ZMCiiOGD0AmY2lE7T3NRJqySA==
+
 "@types/color-name@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
@@ -6612,11 +6617,6 @@ reanalyze@^2.5.0:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/reanalyze/-/reanalyze-2.10.0.tgz#bba9a73cc75c8c9ade6d1e993e3ccbff85dcd06b"
   integrity sha512-FJYDBOV7QNEeCco+lJxSYwc62BMTbR/CAEons5dccDZY7H9nBuVPN/uL0O2fbMGgELGU4yOUnaJSrWxe8c5rBA==
-
-reason-promise@^1.0.2:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/reason-promise/-/reason-promise-1.1.1.tgz#966133fed21e748a50ffb8839a1da04912bcf380"
-  integrity sha512-xMXDiyzTjn7t9pq9aQrkgu8CLB5DILU70oWQ+LI20YecshypUwsw37TKOvCxgoFR3vo30ucF0/iWe2BZ181/jw==
 
 reason-react@^0.9.1:
   version "0.9.1"
