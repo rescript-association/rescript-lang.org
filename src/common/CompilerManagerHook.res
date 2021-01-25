@@ -25,13 +25,13 @@ module LoadScript = {
   external removeScript: (~src: string) => unit = "removeScript"
 
   let loadScriptPromise = (url: string): Promise.t<result<unit, string>> => {
-    let (p, resolve) = Promise.pending()
-    loadScript(
-      ~src=url,
-      ~onSuccess=() => resolve(Ok()),
-      ~onError=_err => resolve(Error(j`Could not load script: $url`)),
-    )->ignore
-    p
+    Promise.make((resolve, _reject) => {
+      loadScript(
+        ~src=url,
+        ~onSuccess=() => resolve(. Ok()),
+        ~onError=_err => resolve(. Error(j`Could not load script: $url`)),
+      )->ignore
+    })
   }
 }
 
@@ -77,19 +77,29 @@ let attachCompilerAndLibraries = (~version: string, ~libraries: array<string>, (
   /* let compilerUrl = "/static/linked-bs-bundle.js"; */
 
   LoadScript.loadScriptPromise(compilerUrl)
-  ->Promise.mapError(_msg => j`Could not load compiler from url $compilerUrl`)
-  ->Promise.map(r =>
+  ->Promise.map(r => {
     switch r {
-    | Ok() => Belt.Array.map(libraries, lib => {
+    | Error(_) => Error(j`Could not load compiler from url $compilerUrl`)
+    | _ => r
+    }
+  })
+  ->Promise.then(r => {
+    let promises = switch r {
+    | Ok() =>
+      Belt.Array.map(libraries, lib => {
         let cmijUrl = CdnMeta.getLibraryCmijUrl(version, lib)
-        LoadScript.loadScriptPromise(cmijUrl)->Promise.mapError(_msg =>
-          j`Could not load cmij from url $cmijUrl`
+        LoadScript.loadScriptPromise(cmijUrl)->Promise.map(r =>
+          switch r {
+          | Error(_) => Error(j`Could not load cmij from url $cmijUrl`)
+          | _ => r
+          }
         )
       })
-    | Error(msg) => [Promise.resolved(Error(msg))]
+    | Error(msg) => [Promise.resolve(Error(msg))]
     }
-  )
-  ->Promise.flatMap(Promise.allArray)
+
+    Promise.all(promises)
+  })
   ->Promise.map(all => {
     // all: array(Promise.result(unit, string))
     let errors = Belt.Array.reduce(all, [], (acc, r) =>
@@ -275,7 +285,8 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
     }
   }
 
-  let dispatchError = (err: error) => setState(prev => {
+  let dispatchError = (err: error) =>
+    setState(prev => {
       let msg = switch err {
       | SetupError(msg) => msg
       | CompilerLoadingError(msg) => msg
@@ -296,7 +307,8 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
       | versions =>
         let latest = versions[0]
 
-        attachCompilerAndLibraries(~version=latest, ~libraries, ())->Promise.get(result =>
+        attachCompilerAndLibraries(~version=latest, ~libraries, ())
+        ->Promise.map(result =>
           switch result {
           | Ok() =>
             let instance = Compiler.make()
@@ -332,9 +344,10 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
             dispatchError(CompilerLoadingError(msg))
           }
         )
+        ->ignore
       }
     | SwitchingCompiler(ready, version, libraries) =>
-      attachCompilerAndLibraries(~version, ~libraries, ())->Promise.get(result =>
+      attachCompilerAndLibraries(~version, ~libraries, ())->Promise.map(result =>
         switch result {
         | Ok() =>
           // Make sure to remove the previous script from the DOM as well
@@ -371,7 +384,7 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
 
           dispatchError(CompilerLoadingError(msg))
         }
-      )
+      )->ignore
     | Compiling(ready, (lang, code)) =>
       let apiVersion = ready.selected.apiVersion
       let instance = ready.selected.instance
@@ -384,9 +397,7 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
         | Lang.Res => instance->Compiler.resCompile(code)
         }
       | UnknownVersion(apiVersion) =>
-        CompilationResult.UnexpectedError(
-          j`Can't handle result of compiler API version "$apiVersion"`,
-        )
+        CompilationResult.UnexpectedError(j`Can't handle result of compiler API version "$apiVersion"`)
       }
 
       setState(_ => Ready({...ready, result: FinalResult.Comp(compResult)}))
