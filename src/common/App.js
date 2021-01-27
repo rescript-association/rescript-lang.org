@@ -14,6 +14,7 @@ import * as DomDocsLayout from "../layouts/DomDocsLayout.js";
 import * as BeltDocsLayout from "../layouts/BeltDocsLayout.js";
 import * as DocFrontmatter from "./DocFrontmatter.js";
 import * as CommunityLayout from "../layouts/CommunityLayout.js";
+import * as ReactDocsLayout from "../layouts/ReactDocsLayout.js";
 import * as ManualDocsLayout from "../layouts/ManualDocsLayout.js";
 import * as ApiOverviewLayout from "../layouts/ApiOverviewLayout.js";
 import * as GenTypeDocsLayout from "../layouts/GenTypeDocsLayout.js";
@@ -226,10 +227,24 @@ function make(props) {
                     }
                   }
                   break;
-              case "reason-compiler" :
+              case "react" :
                   var match$8 = url.version;
                   if (typeof match$8 === "number") {
                     if (match$8 === 0) {
+                      return React.createElement(ReactDocsLayout.make, {
+                                  frontmatter: component.frontmatter,
+                                  children: content
+                                });
+                    }
+                    exit = 1;
+                  } else {
+                    exit = 1;
+                  }
+                  break;
+              case "reason-compiler" :
+                  var match$9 = url.version;
+                  if (typeof match$9 === "number") {
+                    if (match$9 === 0) {
                       return React.createElement(ReasonCompilerDocsLayout.make, {
                                   children: content
                                 });
@@ -250,10 +265,10 @@ function make(props) {
     }
   }
   if (exit === 1) {
-    var match$9 = Belt_List.fromArray(base);
+    var match$10 = Belt_List.fromArray(base);
     var exit$4 = 0;
-    if (match$9) {
-      switch (match$9.hd) {
+    if (match$10) {
+      switch (match$10.hd) {
         case "blog" :
             return content;
         case "community" :
@@ -263,7 +278,7 @@ function make(props) {
                       });
         case "packages" :
         case "try" :
-            if (!match$9.tl) {
+            if (!match$10.tl) {
               return content;
             }
             exit$4 = 2;
@@ -278,14 +293,14 @@ function make(props) {
       var fm = DocFrontmatter.decode(component.frontmatter);
       var fm$1;
       fm$1 = fm.TAG === /* Ok */0 ? fm._0 : undefined;
-      var match$10 = url.base;
+      var match$11 = url.base;
       var title;
       var exit$5 = 0;
-      if (match$10.length !== 1) {
+      if (match$11.length !== 1) {
         exit$5 = 3;
       } else {
-        var match$11 = match$10[0];
-        if (match$11 === "docs") {
+        var match$12 = match$11[0];
+        if (match$12 === "docs") {
           title = "Overview | ReScript Documentation";
         } else {
           exit$5 = 3;

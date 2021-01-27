@@ -92,6 +92,8 @@ let make = (props: props): React.element => {
       | _ => React.null
       }
     }
+  | {base: ["docs", "react"], version: Latest} =>
+    <ReactDocsLayout frontmatter={component->frontmatter}> content </ReactDocsLayout>
   | {base: ["docs", "reason-compiler"], version: Latest} =>
     <ReasonCompilerDocsLayout> content </ReasonCompilerDocsLayout>
   | {base: ["docs", "gentype"], version: Latest} =>
