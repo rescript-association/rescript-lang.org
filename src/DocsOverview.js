@@ -66,7 +66,7 @@ function DocsOverview$default(Props) {
       "/docs/gentype/latest/introduction"
     ],
     [
-      "rescript-react",
+      "rescript-react (coming soon)",
       "/docs/react/latest/introduction"
     ],
     [
