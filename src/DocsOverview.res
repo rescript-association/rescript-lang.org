@@ -36,7 +36,7 @@ let default = (~showVersionSelect=true) => {
   let ecosystem = [
     ("Package Index", "/packages"),
     ("GenType", "/docs/gentype/latest/introduction"),
-    ("ReasonReact", "https://reasonml.github.io/reason-react"),
+    ("rescript-react", "/docs/react/latest/introduction"),
     ("Reanalyze", "https://github.com/reason-association/reanalyze"),
   ]
   let tools = [("Syntax Lookup", "/syntax-lookup")]

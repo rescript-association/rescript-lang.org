@@ -66,8 +66,8 @@ function DocsOverview$default(Props) {
       "/docs/gentype/latest/introduction"
     ],
     [
-      "ReasonReact",
-      "https://reasonml.github.io/reason-react"
+      "rescript-react",
+      "/docs/react/latest/introduction"
     ],
     [
       "Reanalyze",
