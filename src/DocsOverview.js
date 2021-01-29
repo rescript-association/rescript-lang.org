@@ -62,12 +62,12 @@ function DocsOverview$default(Props) {
       "/packages"
     ],
     [
-      "GenType",
-      "/docs/gentype/latest/introduction"
+      "rescript-react",
+      "/docs/react/latest/introduction"
     ],
     [
-      "rescript-react (coming soon)",
-      "/docs/react/latest/introduction"
+      "GenType",
+      "/docs/gentype/latest/introduction"
     ],
     [
       "Reanalyze",

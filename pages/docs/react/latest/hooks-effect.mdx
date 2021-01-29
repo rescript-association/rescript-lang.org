@@ -68,7 +68,7 @@ React.useEffect((function () { }), [ prop1, prop2, prop3 ]);
 
 </CodeTab>
 
-`React.useEffect` receives a function that contains imperative, possibly effectful code, and returns a value `option(unit => unit)` as a potential cleanup function. 
+`React.useEffect` receives a function that contains imperative, possibly effectful code, and returns a value `option<unit => unit>` as a potential cleanup function. 
 
 A `useEffect` call may receive an additional array of dependencies (see `React.useEffect1` / `React.useEffect2...7`). The effect function will run whenever one of the provided dependencies has changed. More details on why this is useful [down below](#effect-dependencies).
 

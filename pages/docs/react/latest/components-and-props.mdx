@@ -330,14 +330,14 @@ var make = App;
 
 You don't need to use the `@react.component` decorator to write components that can be used in JSX. Instead you can write a pair of `make` and `makeProps` functions such that type `makeProps: 'a => props` and `make: props => React.element` and these will always work as React components.
 
-This works with your own version of `[@bs.obj]`, or any other function that takes named args and returns a single props structure. For example:
+This works with your own version of `@obj`, or any other function that takes named args and returns a single props structure. For example:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 module Link = {
   type props = {"href": string, "children": React.element};
-  @bs.obj external makeProps:(
+  @obj external makeProps:(
     ~href: string,
     ~children: React.element,
     unit) => props = ""
@@ -406,19 +406,19 @@ Because components are actually a pair of functions, they have to belong to a mo
 
 
 ```res
-// File.re
+// File.res
 
 // will be named `File` in dev tools
-[@react.component]
+@react.component
 let make = ...
 
 // will be named `File$component` in dev tools
-[@react.component]
+@react.component
 let component = ...
 
 module Nested = {
   // will be named `File$Nested` in dev tools
-  [@react.component]
+  @react.component
   let make = ...
 };
 ```

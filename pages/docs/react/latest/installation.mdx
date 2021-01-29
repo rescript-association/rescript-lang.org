@@ -6,16 +6,15 @@ canonical: "/docs/react/latest/installation"
 
 # Installation
 
-<Warn>
+**Requirements:** 
 
-**Important:** The `rescript-react` npm package has not been released yet. Please stay tuned for further announcements!
-
-</Warn>
+- `bs-platfrom@8.3` or later 
+- `react@16.8.1` or later
 
 Add following dependency to your ReScript project (in case you don't have any project yet, check out the [installation instructions](/docs/manual/latest/installation) in the manual):
 
 ```
-npm install @rescript/rescript-react --save
+npm install @rescript/react --save
 ```
 
 Then add the following setting to your existing `bsconfig.json`:
@@ -23,7 +22,7 @@ Then add the following setting to your existing `bsconfig.json`:
 ```json
 {
   "reason": { "react-jsx": 3 },
-  "bs-dependencies": ["@rescript/rescript-react"]
+  "bs-dependencies": ["@rescript/react"]
 }
 ```
 
@@ -37,11 +36,11 @@ let make = () => {
 }
 ```
 
-Now rerun your build with `bsb -make-world` and you should see a successful build.
+Now run `npx bsb -make-world` and you should see a successful build.
 
 ## Exposed Modules 
 
-After a successful installation, `rescript-react` will make following modules available in your project's global scope:
+After a successful installation, `@rescript/react` will make following modules available in your project's global scope:
 
 - `React`: Bindings to React
 - `ReactDOM`: Bindings to the ReactDOM

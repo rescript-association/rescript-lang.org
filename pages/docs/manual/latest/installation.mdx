@@ -30,7 +30,7 @@ That compiles your ReScript into JavaScript, then uses NodeJS to run said JavaSc
 
 During development, instead of running `npm run build` each time to compile, use `npm run start` to start a watcher that recompiles automatically after file changes.
 
-Alternatively, **to start a [ReasonReact](https://reasonml.github.io/reason-react/en/) app**, follow the instructions [here](https://reasonml.github.io/reason-react/docs/en/installation).
+Alternatively, **to start a [rescript-react](/docs/react/latest/introduction) app**, follow the instructions [here](/docs/react/installation).
 
 ## Integrate Into Existing JS Project
 
@@ -89,20 +89,20 @@ You may also like to add two scripts to your `package.json` to help with compili
 
 If you would like to enable React in your ReScript code, use the following additional steps:
 
-Install [Reason React](https://reasonml.github.io/reason-react/en/).
+Install [rescript-react](/docs/react/latest/introduction). Here's the quick version:
 
 ```sh
-npm install reason-react
+npm install @rescript/react --save
 ```
 
 Make the following changes to your `bsconfig.json` file:
 
 ```json
 "reason": { "react-jsx": 3 },
-"bs-dependencies": ["reason-react"],
+"bs-dependencies": ["@rescript/react"],
 ```
 
-### Using the compiled code
+### Integration with the Existing Code
 
 Since ReScript compiles to clean readable JS files the rest of your existing toolchain (e.g. Babel and Webpack) should just work.
 
