@@ -1374,6 +1374,11 @@
   resolved "https://registry.yarnpkg.com/@octokit/graphql-schema/-/graphql-schema-7.7.1.tgz#47b541a68ce5f3a6de3c02534b012696702ca658"
   integrity sha512-Wj0WYFRiqTeD/F5WGtXShsEnnAdfDfwB/Gq2rxsntKg/LintKxECFYNMV5wLVOLLNaXBc1f2q8AXHGxQyEbPKg==
 
+"@rescript/react@^0.10.1":
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/@rescript/react/-/react-0.10.1.tgz#ddce66ba664a104354d559c350ca4ebf17ab5a26"
+  integrity sha512-5eIfGnV1yhjv03ktK6fQ6iEfsZKXKXXrq5hx4+ngEY4R/RU8o/oH9ne375m9RJMugV/jsE8hMoEeSSg2YQy3Ag==
+
 "@ryyppy/rescript-promise@^0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@ryyppy/rescript-promise/-/rescript-promise-0.0.2.tgz#9b9dccd724b40b7836e52158bc34deed8a75dddf"
@@ -6617,11 +6622,6 @@ reanalyze@^2.5.0:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/reanalyze/-/reanalyze-2.10.0.tgz#bba9a73cc75c8c9ade6d1e993e3ccbff85dcd06b"
   integrity sha512-FJYDBOV7QNEeCco+lJxSYwc62BMTbR/CAEons5dccDZY7H9nBuVPN/uL0O2fbMGgELGU4yOUnaJSrWxe8c5rBA==
-
-reason-react@^0.9.1:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/reason-react/-/reason-react-0.9.1.tgz#30a887158200b659aa03e2d75ff4cc54dc462bb0"
-  integrity sha512-nlH0O2TDy9KzOLOW+vlEQk4ExHOeciyzFdoLcsmmiit6hx6H5+CVDrwJ+8aiaLT/kqK5xFOjy4PS7PftWz4plA==
 
 reduce-css-calc@^2.1.6:
   version "2.1.7"
