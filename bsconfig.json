@@ -7,7 +7,7 @@
   },
   "refmt": 3,
   "bs-dependencies": [
-    "reason-react",
+    "@rescript/react",
     "bs-fetch",
     "@glennsl/bs-json",
     "@ryyppy/rescript-promise"
