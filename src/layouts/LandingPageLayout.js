@@ -8,6 +8,7 @@ import * as Footer from "../components/Footer.js";
 import * as Markdown from "../components/Markdown.js";
 import * as Navigation from "../components/Navigation.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
+import * as PlaygroundWidget from "../components/PlaygroundWidget.js";
 
 function LandingPageLayout$CallToActionButton(Props) {
   var children = Props.children;
@@ -86,7 +87,9 @@ function LandingPageLayout(Props) {
                                                         children: React.createElement("a", undefined, React.createElement(LandingPageLayout$SubtleButton, {
                                                                   children: "Read the Documentation"
                                                                 }))
-                                                      })), children))
+                                                      })), React.createElement(PlaygroundWidget.make, {
+                                                    initialCode: "let a = 1"
+                                                  }), children))
                                     }))), React.createElement(Footer.make, {})))));
 }
 

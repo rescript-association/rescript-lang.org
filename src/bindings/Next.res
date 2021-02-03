@@ -138,5 +138,5 @@ module Dynamic = {
   @bs.module("next/dynamic")
   external dynamic: (unit => Js.Promise.t<'a>, options) => 'a = "default"
 
-  @bs.val external \"import": string => Js.Promise.t<'a> = "import"
+  @bs.val external import_: string => Js.Promise.t<'a> = "import"
 }

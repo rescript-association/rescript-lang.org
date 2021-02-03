@@ -130,5 +130,5 @@ module Dynamic: {
   external dynamic: (unit => Js.Promise.t<'a>, options) => 'a = "default"
 
   @bs.val
-  external \"import": string => Js.Promise.t<'a> = "import"
+  external import_: string => Js.Promise.t<'a> = "import"
 }

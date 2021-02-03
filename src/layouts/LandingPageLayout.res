@@ -79,6 +79,7 @@ let make = (~components=Markdown.default, ~children) => {
                         </a>
                       </Link>
                     </div>
+                    <PlaygroundWidget initialCode="let a = 1" />
                     children
                   </div>
                 </div>
