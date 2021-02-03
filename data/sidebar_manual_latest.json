@@ -33,6 +33,9 @@
     "unboxed",
     "reserved-keywords"
   ],
+  "Advanced Language Features": [
+    "extensible-variant"
+  ],
   "JavaScript Interop": [
     "embed-raw-javascript",
     "shared-data-types",
