@@ -31,12 +31,13 @@ let requireSyntaxFile: string => MdxComp.t = %raw(`
 `)
 
 module Category = {
-  type t = Decorators | ControlFlow | Operators | Other
+  type t = Decorators | ControlFlow | Operators | SpecialValues | Other
 
   let toString = t =>
     switch t {
     | Decorators => "Decorators"
     | Operators => "Operators"
+    | SpecialValues => "Special Values"
     | ControlFlow => "Control Flow"
     | Other => "Other"
     }
@@ -45,6 +46,7 @@ module Category = {
     switch s {
     | "decorators" => Decorators
     | "controlflow" => ControlFlow
+    | "specialvalues" => SpecialValues
     | "operators" => Operators
     | _ => Other
     }
@@ -115,7 +117,8 @@ let getAnchor = path => {
 module Tag = {
   @react.component
   let make = (~text: string) => {
-    <span className="hover:bg-fire hover:text-white bg-fire-10-tr py-1 px-3 rounded text-fire text-16">
+    <span
+      className="hover:bg-fire hover:text-white bg-fire-10-tr py-1 px-3 rounded text-fire text-16">
       {React.string(text)}
     </span>
   }
@@ -235,7 +238,13 @@ let make = () => {
  */
   let categories = {
     open Category
-    let initial = [Decorators, Operators, ControlFlow, Other]->Belt.Array.map(cat => {
+    let initial = [
+      Decorators,
+      Operators,
+      ControlFlow,
+      SpecialValues,
+      Other,
+    ]->Belt.Array.map(cat => {
       (cat->toString, [])
     })
 
