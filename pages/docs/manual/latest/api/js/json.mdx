@@ -312,7 +312,7 @@ let p: person = Js.Json.deserializeUnsafe(`{ "name": "Albert" }`)
 ## serializeExn
 
 ```res sig
-let serializeExn: a' => string
+let serializeExn: 'a => string
 ```
 
 Serialises any type to a JSON string.
