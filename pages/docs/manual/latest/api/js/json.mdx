@@ -298,9 +298,9 @@ Js.log(Js.Json.stringifyAny(["hello", "world"]))
 let deserializeUnsafe: string => 'a
 ```
 
-Deserialises a JSON string to a type you specify.
+Deserializes a JSON string without any type checks.
 
-Raises a `Js.Exn.Error` exception if the string parsing fails.
+Raises a `Js.Exn.Error` exception if the JSON string parsing fails.
 
 ```res
 type person = {name: string}
@@ -315,7 +315,7 @@ let p: person = Js.Json.deserializeUnsafe(`{ "name": "Albert" }`)
 let serializeExn: 'a => string
 ```
 
-Serialises any type to a JSON string.
+Serializes any type to a JSON string.
 
 Raises a `Js.Exn.Error` exception if the value cannot be serialised.
 
