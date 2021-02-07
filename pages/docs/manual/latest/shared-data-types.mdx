@@ -38,4 +38,6 @@ Unlike most compiled-to-js languages, in ReScript, **you don't need to write dat
 - Lazy values.
 - Everything else.
 
-The non-shared types need your manual conversions if you want to export them for JS consumption. For a seamless JS / TypeScript / Flow integration experience, you might want to use [genType](https://github.com/cristianoc/gentype) instead of doing conversions by hand.
+Many of these are stable, which means that you can still serialize/deserialize them as-is without manual conversions. But we discourage actively peeking into their structure otherwise.
+
+These types require manual conversions if you want to export them for JS consumption. For a seamless JS/TypeScript/Flow integration experience, you might want to use [genType](https://github.com/cristianoc/gentype) instead of doing conversions by hand.
