@@ -15,7 +15,7 @@ You can compile a file directly via `bsc MyFile.res`:
 let rec fib = n => {
   switch n {
   | 0 | 1 => n
-  | n => fib(n -1) + fib(n-2)
+  | n => fib(n - 1) + fib(n - 2)
   }
 }
 Js.log(fib(0))
@@ -27,7 +27,7 @@ Js.log(fib(0))
 'use strict';
 function fib(n) {
   if (n === 0 || n === 1) {
-    return 1;
+    return n;
   } else {
     return fib(n - 1 | 0) + fib(n - 2 | 0) | 0;
   }

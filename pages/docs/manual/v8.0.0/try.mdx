@@ -14,8 +14,8 @@ You can compile a file directly via `bsc MyFile.re` (or `bsc MyFile.ml`):
 // MyFile.re
 let rec fib = n => {
   switch (n) {
-  | 0 | 1 => 1
-  | n => fib(n -1) + fib(n-2)
+  | 0 | 1 => n
+  | n => fib(n - 1) + fib(n - 2)
   }
 };
 Js.log(fib(0));
@@ -24,7 +24,7 @@ Js.log(fib(0));
 // MyFile.ml
 let rec fib n =
   match n with
-  | 0 | 1 -> 1
+  | 0 | 1 -> n
   | n -> (fib (n - 1)) + (fib (n - 2))
 let _ = Js.log (fib 0)
 ```
