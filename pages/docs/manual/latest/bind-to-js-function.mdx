@@ -62,7 +62,7 @@ We've compiled to the same function, but now the usage is much clearer on the Re
 
 **Note**: in this particular case, you need a unit, `()` after `border`, since `border` is an [optional argument at the last position](function.md#optional-labeled-arguments). Not having a unit to indicate you've finished applying the function would generate a warning.
 
-Note that you can change the order of labeled arguments on the ReScript side and BuckleScript will ensure that they appear the right way in the JavaScript output:
+Note that you can freely reorder the labels on the ReScript side; they'll always correctly appear in their declaration order in the JavaScript output:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -105,11 +105,11 @@ In a `bs.send`, the object is always the first argument. Actual arguments of the
 
 ### Chaining
 
-Ever used `foo().bar().baz()` chaining ("fluent api") in JS OOP? We can model that in BuckleScript too, through the [pipe operator](pipe.md).
+Ever used `foo().bar().baz()` chaining ("fluent api") in JS OOP? We can model that in ReScript too, through the [pipe operator](pipe.md).
 
 ## Variadic Function Arguments
 
-You might have JS functions that take an arbitrary amount of arguments. BuckleScript supports modeling those, under the condition that the arbitrary arguments part is homogenous (aka of the same type). If so, add `bs.variadic` to your `external`.
+You might have JS functions that take an arbitrary amount of arguments. ReScript supports modeling those, under the condition that the arbitrary arguments part is homogenous (aka of the same type). If so, add `bs.variadic` to your `external`.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
