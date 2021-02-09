@@ -10,7 +10,7 @@ If you have some expensive computations you'd like to **defer and cache** subseq
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res example
+```res prelude
 // Read the directory, only once
 let expensiveFilesRead = lazy({
   Js.log("Reading dir")
@@ -60,7 +60,7 @@ The first time `Lazy.force` is called, the expensive computation happens and the
 
 **You can't re-trigger the computation after the first `force` call**. Make sure you only use a lazy value with computations whose results don't change (e.g. an expensive server request whose response is always the same).
 
-Instead of using `Lazy.force`, you can also use [pattern matching](/pattern-matching-destructuring.mdx) to trigger the computation:
+Instead of using `Lazy.force`, you can also use [pattern matching](pattern-matching-destructuring.md) to trigger the computation:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
