@@ -1,0 +1,134 @@
+---
+author: hongbo
+date: "2020-02-09" 
+previewImg:
+category: compiler
+title: ReScript 9.0
+description: |
+---
+
+## Introduction
+
+ReScript is a soundly typed language with an optimizing compiler focused on the JS platform. 
+It's focused on type safety, performance and JS interop. It used to be called BuckleScript.
+
+[ReScript@9.0.0](https://www.npmjs.com/package/bs-platform/v/9.0.0) is now available, you can try it via
+
+```
+npm i bs-platform@9.0.0
+```
+
+The changes are listed [here](https://github.com/rescript-lang/rescript-compiler/blob/master/Changes.md#90). 
+
+We will go through some highlighted user visible changes.
+
+### Customized light weight stdlib
+
+This is a long-awaited [feature request](https://github.com/rescript-lang/rescript-compiler/pull/2171). 
+
+Since this release, users can add such lines in bsconfig.json to make our compiler pakcage a dev dependency.
+
+```json
+"external-stdlib" : "@rescript/std"
+```
+
+Our current compiler package is quite large since it ships both prebuilt compilers for 3 major platforms 
+and the standard library. With this configuration, the compiler will generate js files on top of `@rescript/std` so that
+the compiler package is not needed after the JS files are generated. This is helpful if you want to export ReScript based 
+libraries to JS users while not asking JS users to install a large dependency.
+
+Caveat: make sure the version of `@rescript/std` is the same as `bs-platform`, use this configuration only when the package size 
+is indeed a problem for you.
+
+### Zero-cost bundle size when adding ReScript 
+
+We keep generating code that is friendly for tree-shaking during each releases. 
+We believe we reach a milestone that ReScript adds close to zero cost to your bundler 
+size unlike many other programming languages compiled into JS; the bundled code is almost ReScript runtime free and 
+the generated library code is fits the tree-shaking principle very well.
+
+To demonstrate what we achieved, we made a [repo](https://github.com/bobzhang/zero-cost-rescript) so that 
+you can try it and see how good the bundled code is.
+
+
+### Improved code generation for pattern match
+
+We continue improving the quality of generated code in this release.
+
+Take this [issue](https://github.com/rescript-lang/rescript-compiler/issues/4924) for example, for pattern match as below:
+
+```res
+let test = x =>
+  switch x {
+  | NoArg => true
+  | _ => false
+  }
+```
+
+It used to generate code as below:
+
+```js
+function test(x) {
+  if (typeof x === "number") {
+    return x === 0;
+  } else {
+    return false;
+  }
+}
+
+```
+Now it is simplified as 
+```js
+function test(x){
+  return x === 0
+}
+```
+
+This is possible is that our optimizer will try to analyze several predicates and get rid of redundant predicates, 
+more diffs could be found [here](https://github.com/rescript-lang/rescript-compiler/pull/4927/files?file-filters%5B%5D=.js).
+
+Another important improvement is that we fixed the pattern match offset issue, the consequence is that
+ magic number will not be generated
+for complex pattern matches any more, below is a represenative diff thanks to this clean up:
+
+```diff
+function is_space(param){
+- var switcher = param - 9 | 0;
+- if (switcher > 4 || switcher < 0) {
+-    return switcher == 23 ; 
++ if (param > 13 || param < 9) {
++    return param === 32;
+  } else {
+-    return switcher !== 2;     
++    return param != 11;
+  }    
+}
+```
+
+### Syntax changes
+
+We introduced two minor tweaks for the concrete syntax.
+
+- guard in pattern matching is recommended to use `if` instead of `when`
+
+```res
+switch expr {
+  | pat if predicate => // was: pat when predicate  
+}
+```
+
+`when` is still supported but it will be deprecated in the future.
+
+- explicit nested object literal syntax
+
+
+`{"keya" : {keyb : 3 } }` used to be interpreted as `{"keya" : {"keyb" : 3 } } `, such implicity makes 
+us not able to embed regular records inside JS object literals. Since this release, 
+user has to write JS object literals explicitly and `{"keya" : {keyb : 3}}` will be interpreted as a regular 
+record inside a js object literal. More discussions can be found [here](https://forum.rescript-lang.org/t/fixing-the-semantics-of-nested-objects-breaking-changes/976).
+
+
+Note there are some pretty interesting internal changes in this release -- for example, using WASM to replace Camlp4 and a 
+generalized visitor pattern without using objects -- that we will discuss in a separate post
+
+Happy Hacking! -- Hongbo Zhang
