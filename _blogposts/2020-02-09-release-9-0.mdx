@@ -4,6 +4,7 @@ date: "2020-02-09"
 previewImg:
 category: compiler
 title: ReScript 9.0
+badge: release
 description: |
 ---
 
@@ -42,10 +43,10 @@ is indeed a problem for you.
 
 ### Zero-cost bundle size when adding ReScript 
 
-We keep generating code that is friendly for tree-shaking during each releases. 
-We believe we reach a milestone that ReScript adds close to zero cost to your bundler 
-size unlike many other programming languages compiled into JS; the bundled code is almost ReScript runtime free and 
-the generated library code is fits the tree-shaking principle very well.
+With each release, we keep a close eye on generating code that is optimized for tree-shaking. 
+We believe we reached a milestone that ReScript adds close to zero cost to your bundle-size.
+Unlike many other programming languages compiled into JS, the bundled code is almost ReScript runtime free and 
+the generated library code fits the tree-shaking principle very well.
 
 To demonstrate what we achieved, we made a [repo](https://github.com/bobzhang/zero-cost-rescript) so that 
 you can try it and see how good the bundled code is.
@@ -55,7 +56,7 @@ you can try it and see how good the bundled code is.
 
 We continue improving the quality of generated code in this release.
 
-Take this [issue](https://github.com/rescript-lang/rescript-compiler/issues/4924) for example, for pattern match as below:
+Take this [issue](https://github.com/rescript-lang/rescript-compiler/issues/4924) for example:
 
 ```res
 let test = x =>
@@ -65,7 +66,7 @@ let test = x =>
   }
 ```
 
-It used to generate code as below:
+It used to generate the following code:
 
 ```js
 function test(x) {
@@ -77,19 +78,18 @@ function test(x) {
 }
 
 ```
-Now it is simplified as 
+which now gets optimized to: 
 ```js
 function test(x){
   return x === 0
 }
 ```
 
-This is possible is that our optimizer will try to analyze several predicates and get rid of redundant predicates, 
-more diffs could be found [here](https://github.com/rescript-lang/rescript-compiler/pull/4927/files?file-filters%5B%5D=.js).
+This is possible because our optimizer will try to analyze several predicates and get rid of redundant ones. 
+More diffs can be found [here](https://github.com/rescript-lang/rescript-compiler/pull/4927/files?file-filters%5B%5D=.js).
 
-Another important improvement is that we fixed the pattern match offset issue, the consequence is that
- magic number will not be generated
-for complex pattern matches any more, below is a represenative diff thanks to this clean up:
+Another important improvement is that we fixed the pattern match offset issue, which leads to the consequence, that magic numbers will not be generated for complex pattern matches anymore. 
+Below is a representative diff resulting from this cleanup:
 
 ```diff
 function is_space(param){
@@ -109,7 +109,7 @@ function is_space(param){
 
 We introduced two minor tweaks for the concrete syntax.
 
-- guard in pattern matching is recommended to use `if` instead of `when`
+- It is now recommended to use `if` instead of `when` in pattern match guards
 
 ```res
 switch expr {
@@ -122,13 +122,13 @@ switch expr {
 - explicit nested object literal syntax
 
 
-`{"keya" : {keyb : 3 } }` used to be interpreted as `{"keya" : {"keyb" : 3 } } `, such implicity makes 
-us not able to embed regular records inside JS object literals. Since this release, 
-user has to write JS object literals explicitly and `{"keya" : {keyb : 3}}` will be interpreted as a regular 
-record inside a js object literal. More discussions can be found [here](https://forum.rescript-lang.org/t/fixing-the-semantics-of-nested-objects-breaking-changes/976).
+`{ "keya": { keyb: 3 } }` used to be interpreted as `{ "keya": { "keyb": 3 } } `, such implicity makes 
+us not able to embed regular records inside JS object literals. With this release, 
+JS object literals have to be written explicitly and `{ "keya": { keyb: 3 } }` will be interpreted as a regular 
+record inside a JS object literal. More discussions can be found [here](https://forum.rescript-lang.org/t/fixing-the-semantics-of-nested-objects-breaking-changes/976).
 
 
-Note there are some pretty interesting internal changes in this release -- for example, using WASM to replace Camlp4 and a 
-generalized visitor pattern without using objects -- that we will discuss in a separate post
+There are also some pretty interesting internal changes in this release.
+For example, using WASM to replace Camlp4 and a generalized visitor pattern without using objects, which we will discuss in a separate post.
 
 Happy Hacking! -- Hongbo Zhang
