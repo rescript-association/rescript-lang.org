@@ -186,7 +186,7 @@ let default = (props: props) => {
         title={title ++ " | ReScript Blog"}
         description=?{description->Js.Null.toOption}
         canonical=?{canonical->Js.Null.toOption}
-        ogImage={previewImg->Js.Null.toOption->Belt.Option.getWithDefault(Blog.planetPreviewImg)}
+        ogImage={previewImg->Js.Null.toOption->Belt.Option.getWithDefault(Blog.defaultPreviewImg)}
       />
       <div className="mb-10 md:mb-20">
         <BlogHeader

@@ -1389,23 +1389,32 @@ function Playground$Settings(Props) {
                           return value;
                         }),
                       selected: config.module_system
+                    })), React.createElement("div", {
+                  className: "mt-6"
+                }, React.createElement("div", {
+                      className: titleClass
+                    }, "Enabled Libraries"), React.createElement("ul", undefined, Belt_Array.map(readyState.selected.libraries, (function (lib) {
+                            return React.createElement("li", {
+                                        key: lib,
+                                        className: "ml-2"
+                                      }, lib);
+                          })))), React.createElement("div", {
+                  className: "mt-8"
+                }, React.createElement("div", {
+                      className: titleClass
+                    }, "Warning Flags", React.createElement("button", {
+                          className: "ml-6 text-14 " + $$Text.Link.standalone,
+                          onMouseDown: onResetClick
+                        }, "[reset]")), React.createElement("div", {
+                      className: "flex justify-end"
                     }), React.createElement("div", {
-                      className: "mt-8"
-                    }, React.createElement("div", {
-                          className: titleClass
-                        }, "Warning Flags", React.createElement("button", {
-                              className: "ml-6 text-14 " + $$Text.Link.standalone,
-                              onMouseDown: onResetClick
-                            }, "[reset]")), React.createElement("div", {
-                          className: "flex justify-end"
-                        }), React.createElement("div", {
-                          style: {
-                            maxWidth: "40rem"
-                          }
-                        }, React.createElement(Playground$WarningFlagsWidget, {
-                              onUpdate: onWarningFlagsUpdate,
-                              flags: warnFlagTokens
-                            })))));
+                      style: {
+                        maxWidth: "40rem"
+                      }
+                    }, React.createElement(Playground$WarningFlagsWidget, {
+                          onUpdate: onWarningFlagsUpdate,
+                          flags: warnFlagTokens
+                        }))));
 }
 
 function Playground$ControlPanel$Button(Props) {

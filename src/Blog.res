@@ -16,7 +16,9 @@
 module Link = Next.Link
 
 let _rescriptDefaultImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598616442/reason%20association/rescript-lang.org/art-3-rescript-launch_ovoibg.jpg"
-let planetPreviewImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1587479463/Reason%20Association/reasonml.org/reasonml_art2_1280_vhzxnz.png"
+let _planetPreviewImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1587479463/Reason%20Association/reasonml.org/reasonml_art2_1280_vhzxnz.png"
+
+let defaultPreviewImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598616442/Reason%20Association/rescript-lang.org/Art-3-rescript-launch_ovoibg.jpg"
 
 // For encoding reasons, see https://shripadk.github.io/react/docs/jsx-gotchas.html
 let middleDotSpacer = " " ++ (Js.String.fromCharCode(183) ++ " ")
@@ -109,7 +111,7 @@ module BlogCard = {
               let className = "absolute top-0 h-full w-full object-cover"
               switch previewImg {
               | Some(src) => <img className src />
-              | None => <img className src=planetPreviewImg />
+              | None => <img className src=defaultPreviewImg />
               }
             }
           </a>
@@ -169,7 +171,7 @@ module FeatureCard = {
               let className = "absolute top-0 h-full w-full object-cover"
               switch previewImg {
               | Some(src) => <img className src />
-              | None => <img className src=planetPreviewImg />
+              | None => <img className src=defaultPreviewImg />
               }
             }
           </a>

@@ -38,7 +38,7 @@ module LoadScript = {
 module CdnMeta = {
   // Make sure versions exist on https://cdn.rescript-lang.org
   // [0] = latest
-  let versions = ["v8.4.2", "v8.3.0-dev.2"]
+  let versions = ["v9.0.0", "v8.4.2", "v8.3.0-dev.2"]
 
   let getCompilerUrl = (version: string): string =>
     j`https://cdn.rescript-lang.org/$version/compiler.js`
@@ -53,6 +53,31 @@ module FinalResult = {
     | Conv(ConversionResult.t)
     | Comp(CompilationResult.t)
     | Nothing
+}
+
+// This will a given list of libraries to a specific target version of the compiler.
+// E.g. starting from v9, @rescript/react instead of reason-react is used.
+let migrateLibraries = (~version: string, libraries: array<string>): array<string> => {
+  switch Js.String2.split(version, ".")->Belt.List.fromArray {
+  | list{major, ..._rest} =>
+    let version =
+      Js.String2.replace(major, "v", "")->Belt.Int.fromString->Belt.Option.getWithDefault(0)
+
+    Belt.Array.map(libraries, library => {
+      if version >= 9 {
+        switch library {
+        | "reason-react" => "@rescript/react"
+        | _ => library
+        }
+      } else {
+        switch library {
+        | "@rescript/react" => "reason-react"
+        | _ => library
+        }
+      }
+    })
+  | _ => libraries
+  }
 }
 
 /*
@@ -300,12 +325,13 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
   React.useEffect1(() => {
     switch state {
     | Init =>
-      let libraries = ["reason-react"]
-
       switch CdnMeta.versions {
       | [] => dispatchError(SetupError(j`No compiler versions found`))
       | versions =>
         let latest = versions[0]
+
+        // Latest version is already running on @rescript/react
+        let libraries = ["@rescript/react"]
 
         attachCompilerAndLibraries(~version=latest, ~libraries, ())
         ->Promise.map(result =>
@@ -347,12 +373,16 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
         ->ignore
       }
     | SwitchingCompiler(ready, version, libraries) =>
-      attachCompilerAndLibraries(~version, ~libraries, ())->Promise.map(result =>
+      let migratedLibraries = libraries->migrateLibraries(~version)
+
+      attachCompilerAndLibraries(~version, ~libraries=migratedLibraries, ())
+      ->Promise.map(result =>
         switch result {
         | Ok() =>
           // Make sure to remove the previous script from the DOM as well
           LoadScript.removeScript(~src=CdnMeta.getCompilerUrl(ready.selected.id))
 
+          // We are removing the previous libraries, therefore we use ready.selected here
           Belt.Array.forEach(ready.selected.libraries, lib =>
             LoadScript.removeScript(~src=CdnMeta.getLibraryCmijUrl(ready.selected.id, lib))
           )
@@ -368,7 +398,7 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
             ocamlVersion: instance->Compiler.ocamlVersion,
             reasonVersion: instance->Compiler.reasonVersion,
             config: config,
-            libraries: libraries,
+            libraries: migratedLibraries,
             instance: instance,
           }
 
@@ -384,7 +414,8 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
 
           dispatchError(CompilerLoadingError(msg))
         }
-      )->ignore
+      )
+      ->ignore
     | Compiling(ready, (lang, code)) =>
       let apiVersion = ready.selected.apiVersion
       let instance = ready.selected.instance
