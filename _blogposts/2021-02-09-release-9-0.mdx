@@ -6,13 +6,14 @@ category: compiler
 title: ReScript 9.0
 badge: release
 description: |
+  Featuring a new external stdlib configuration, some syntax improvements and a small breaking change for nested records.
 ---
 
 ## Introduction
 
 We are happy to announce ReScript 9.0!
 
-ReScript is a strongly typed language that compiles to efficient, fully-typed and human-readable JavaScript. It comes with one of the fastest JS compiler toolchains available today and offers first class support for ReactJS development.
+ReScript is a robustly typed language that compiles to efficient and human-readable JavaScript. It comes with one of the fastest build toolchains and offers first class support for interoperating with ReactJS and other existing JavaScript code.
 
 Use `npm` to install the newest [9.0.0 release](https://www.npmjs.com/package/bs-platform/v/9.0.0) with the following command:
 
@@ -48,7 +49,7 @@ With this configuration set, compiled JS code will now point to the defined `ext
 <CodeTab labels={["ReScript", "JavaScript"]}>
 
 ```res
-Belt.Array.forEach([1,2,3], (num) => Js.log(num))
+Belt.Array.forEach([1, 2, 3], (num) => Js.log(num))
 ```
 
 ```js
@@ -100,7 +101,7 @@ let test = x =>
   }
 ```
 
-Now let's have a look at how the JS output would look like in comparison to older versions:
+The snippet above will compile to the following JS output:
 
 <CodeTab labels={["9.0 Output", "8.4 Output" ]}>
 
@@ -151,6 +152,8 @@ function is_space(param){
 
 Starting from 9.0, [`when` clauses](/docs/manual/latest/pattern-matching-destructuring#when-clause) within a `switch` statement will automatically convert to the `if` keyword instead.
 
+<CodeTab labels={["New (9.0)", "Old (8.4)"]}>
+
 ```res
 switch person1 {
 | Student({reportCard: {gpa}}) if gpa < 0.5 =>
@@ -159,8 +162,17 @@ switch person1 {
 }
 ```
 
-The syntax parser and printer will automatically take care of older code, so no action required for existing codebases. The `when` keyword is deprecated.
+```res
+switch person1 {
+| Student({reportCard: {gpa}}) when gpa < 0.5 =>
+  Js.log("What's happening")
+| _ => () // do nothing
+}
+```
 
+</CodeTab>
+
+The `when` keyword is deprecated. The syntax will continue supporting it and the formatter will automatically convert to `if`, for a pain-free upgrade.
 
 ### Cleaner Polyvariant Syntax
 
@@ -227,7 +239,6 @@ let age = data["user"]["age"]
 </CodeTab>
 
 More discussions on this change can be found [here](https://forum.rescript-lang.org/t/fixing-the-semantics-of-nested-objects-breaking-changes/976).
-
 
 ## Closing Note
 
