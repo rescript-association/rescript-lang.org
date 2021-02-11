@@ -4,34 +4,76 @@ import * as Next from "../bindings/Next.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
-import * as CodeExample from "./CodeExample.js";
 import Dynamic from "next/dynamic";
+import * as CompilerManagerHook from "../common/CompilerManagerHook.js";
+import * as RescriptCompilerApi from "../bindings/RescriptCompilerApi.js";
+
+function PlaygroundWidget$Button(Props) {
+  var children = Props.children;
+  var onClick = Props.onClick;
+  var tmp = {
+    className: "inline-block text-sky hover:cursor-pointer hover:bg-sky hover:text-white-80 rounded border active:bg-sky-80 border-sky-80 px-2 py-1 "
+  };
+  if (onClick !== undefined) {
+    tmp.onClick = Caml_option.valFromOption(onClick);
+  }
+  return React.createElement("button", tmp, children);
+}
+
+var Button = {
+  make: PlaygroundWidget$Button
+};
 
 function PlaygroundWidget(Props) {
   var initialCodeOpt = Props.initialCode;
   var heightOpt = Props.height;
   var initialCode = initialCodeOpt !== undefined ? initialCodeOpt : "";
   var height = heightOpt !== undefined ? heightOpt : "10rem";
-  var match = React.useState(function () {
-        return /* Init */0;
-      });
-  var setState = match[1];
+  var match = CompilerManagerHook.useCompilerManager(/* Res */2, undefined, undefined);
+  var compilerState = match[0];
+  var cmRef = React.useRef(undefined);
   var editorCode = React.useRef(initialCode);
   var typingTimer = React.useRef(undefined);
   var timeoutCompile = React.useRef(function (param) {
         
       });
+  React.useEffect((function () {
+          console.log(compilerState);
+          timeoutCompile.current = (function (param) {
+              if (typeof compilerState === "number") {
+                return ;
+              }
+              if (compilerState.TAG !== /* Ready */2) {
+                return ;
+              }
+              console.log("test", compilerState._0);
+              
+            });
+          
+        }), [compilerState]);
   var codeMirrorComponent = Dynamic((function (param) {
-          return import("src/components/CodeMirror.js").then(function (m) {
+          return import("src/components/CodeMirror2.js").then(function (m) {
                       return m.make;
                     });
-        }), Next.Dynamic.options(false, (function (param) {
-              return React.createElement(CodeExample.make, {
-                          code: "Loading compiler...",
-                          showLabel: false,
-                          lang: "text"
-                        });
-            }), undefined));
+        }), Next.Dynamic.options(false, undefined, undefined));
+  var setCMValue = function (code) {
+    var cm = cmRef.current;
+    if (cm !== undefined) {
+      Caml_option.valFromOption(cm).setValue(code);
+      return ;
+    }
+    
+  };
+  if (typeof compilerState !== "number" && compilerState.TAG === /* Ready */2) {
+    var ready = compilerState._0;
+    console.log(ready.selected);
+    var match$1 = ready.result;
+    if (typeof match$1 !== "number" && match$1.TAG === /* Conv */0) {
+      var result = match$1._0;
+      result.TAG === /* Success */0;
+    }
+    
+  }
   var codeMirrorEl = React.createElement(codeMirrorComponent, {
         errors: [],
         minHeight: height,
@@ -52,28 +94,42 @@ function PlaygroundWidget(Props) {
             
           }),
         value: editorCode.current,
-        mode: "reason"
+        cmRef: cmRef,
+        mode: "reason",
+        lineNumbers: false
       });
+  var formatButton;
+  if (typeof compilerState === "number" || compilerState.TAG !== /* Ready */2) {
+    formatButton = null;
+  } else {
+    var match$2 = compilerState._0.selected;
+    var instance = match$2.instance;
+    var onClick = function (evt) {
+      evt.preventDefault();
+      var code = editorCode.current;
+      var result = RescriptCompilerApi.Compiler.resFormat(instance, code);
+      if (result.TAG === /* Success */0) {
+        setCMValue(result._0.code);
+      }
+      
+    };
+    formatButton = React.createElement(PlaygroundWidget$Button, {
+          children: "Format",
+          onClick: onClick
+        });
+  }
   return React.createElement("div", undefined, React.createElement("div", {
+                  className: "bg-gray-100 text-white-80",
                   style: {
                     height: height
                   }
-                }, match[0] ? codeMirrorEl : React.createElement("div", undefined, React.createElement(CodeExample.make, {
-                            code: initialCode,
-                            showLabel: false,
-                            lang: "res"
-                          }), React.createElement("button", {
-                            onClick: (function (evt) {
-                                return Curry._1(setState, (function (param) {
-                                              return /* Edit */1;
-                                            }));
-                              })
-                          }, "Edit"))));
+                }, codeMirrorEl), React.createElement("div", undefined, formatButton));
 }
 
 var make = PlaygroundWidget;
 
 export {
+  Button ,
   make ,
   
 }
