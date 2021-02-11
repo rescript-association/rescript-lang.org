@@ -1079,17 +1079,25 @@ module Settings = {
           selected=config.module_system
           onChange=onModuleSystemUpdate
         />
-        <div className="mt-8">
-          <div className=titleClass>
-            {React.string("Warning Flags")}
-            <button onMouseDown=onResetClick className={"ml-6 text-14 " ++ Text.Link.standalone}>
-              {React.string("[reset]")}
-            </button>
-          </div>
-          <div className="flex justify-end" />
-          <div style={ReactDOM.Style.make(~maxWidth="40rem", ())}>
-            <WarningFlagsWidget onUpdate=onWarningFlagsUpdate flags=warnFlagTokens />
-          </div>
+      </div>
+      <div className="mt-6">
+        <div className=titleClass> {React.string("Enabled Libraries")} </div>
+        <ul>
+          {Belt.Array.map(readyState.selected.libraries, lib => {
+            <li className="ml-2" key=lib> {React.string(lib)} </li>
+          })->React.array}
+        </ul>
+      </div>
+      <div className="mt-8">
+        <div className=titleClass>
+          {React.string("Warning Flags")}
+          <button onMouseDown=onResetClick className={"ml-6 text-14 " ++ Text.Link.standalone}>
+            {React.string("[reset]")}
+          </button>
+        </div>
+        <div className="flex justify-end" />
+        <div style={ReactDOM.Style.make(~maxWidth="40rem", ())}>
+          <WarningFlagsWidget onUpdate=onWarningFlagsUpdate flags=warnFlagTokens />
         </div>
       </div>
     </div>

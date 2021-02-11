@@ -2,17 +2,19 @@
 
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
+import * as Belt_Int from "bs-platform/lib/es6/belt_Int.js";
+import * as Belt_List from "bs-platform/lib/es6/belt_List.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as Caml_array from "bs-platform/lib/es6/caml_array.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
-import LoadScript from "../ffi/loadScript";
-import * as LoadScript$1 from "../ffi/loadScript";
+import * as LoadScript from "../ffi/loadScript";
+import LoadScript$1 from "../ffi/loadScript";
 import * as RescriptCompilerApi from "../bindings/RescriptCompilerApi.js";
 
 function loadScriptPromise(url) {
   return new Promise((function (resolve, _reject) {
-                LoadScript(url, (function (param) {
+                LoadScript$1(url, (function (param) {
                         return resolve({
                                     TAG: 0,
                                     _0: undefined,
@@ -30,6 +32,7 @@ function loadScriptPromise(url) {
 }
 
 var versions = [
+  "v9.0.0",
   "v8.4.2",
   "v8.3.0-dev.2"
 ];
@@ -43,6 +46,27 @@ function getLibraryCmijUrl(version, libraryName) {
 }
 
 var FinalResult = {};
+
+function migrateLibraries(version, libraries) {
+  var match = Belt_List.fromArray(version.split("."));
+  if (!match) {
+    return libraries;
+  }
+  var version$1 = Belt_Option.getWithDefault(Belt_Int.fromString(match.hd.replace("v", "")), 0);
+  return Belt_Array.map(libraries, (function (library) {
+                if (version$1 >= 9) {
+                  if (library === "reason-react") {
+                    return "@rescript/react";
+                  } else {
+                    return library;
+                  }
+                } else if (library === "@rescript/react") {
+                  return "reason-react";
+                } else {
+                  return library;
+                }
+              }));
+}
 
 function attachCompilerAndLibraries(version, libraries, param) {
   var compilerUrl = getCompilerUrl(version);
@@ -357,9 +381,9 @@ function useCompilerManager(initialLangOpt, onAction, param) {
   };
   React.useEffect((function () {
           if (typeof state === "number") {
-            var libraries = ["reason-react"];
             if (versions.length !== 0) {
               var latest = Caml_array.get(versions, 0);
+              var libraries = ["@rescript/react"];
               attachCompilerAndLibraries(latest, libraries, undefined).then(function (result) {
                     if (result.TAG === /* Ok */0) {
                       var instance = rescript_compiler.make();
@@ -412,16 +436,16 @@ function useCompilerManager(initialLangOpt, onAction, param) {
           } else {
             switch (state.TAG | 0) {
               case /* SwitchingCompiler */1 :
-                  var libraries$1 = state._2;
                   var version = state._1;
                   var ready = state._0;
-                  attachCompilerAndLibraries(version, libraries$1, undefined).then(function (result) {
+                  var migratedLibraries = migrateLibraries(version, state._2);
+                  attachCompilerAndLibraries(version, migratedLibraries, undefined).then(function (result) {
                         if (result.TAG === /* Ok */0) {
                           var prim = getCompilerUrl(ready.selected.id);
-                          LoadScript$1.removeScript(prim);
+                          LoadScript.removeScript(prim);
                           Belt_Array.forEach(ready.selected.libraries, (function (lib) {
                                   var prim = getLibraryCmijUrl(ready.selected.id, lib);
-                                  LoadScript$1.removeScript(prim);
+                                  LoadScript.removeScript(prim);
                                   
                                 }));
                           var instance = rescript_compiler.make();
@@ -436,7 +460,7 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                             compilerVersion: selected_compilerVersion,
                             ocamlVersion: selected_ocamlVersion,
                             reasonVersion: selected_reasonVersion,
-                            libraries: libraries$1,
+                            libraries: migratedLibraries,
                             config: config,
                             instance: instance
                           };
