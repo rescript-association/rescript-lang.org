@@ -10,55 +10,89 @@ description: |
 
 ## Introduction
 
-ReScript is a soundly typed language with an optimizing compiler focused on the JS platform. 
-It's focused on type safety, performance and JS interop. It used to be called BuckleScript.
+We are happy to announce ReScript 9.0!
 
-[ReScript@9.0.0](https://www.npmjs.com/package/bs-platform/v/9.0.0) is now available, you can try it via
+ReScript is a strongly typed language that compiles to efficient, fully-typed and human-readable JavaScript. It comes with one of the fastest JS compiler toolchains available today and offers first class support for ReactJS development.
+
+Use `npm` to install the newest [9.0.0 release](https://www.npmjs.com/package/bs-platform/v/9.0.0) with the following command:
 
 ```
-npm i bs-platform@9.0.0
+npm install bs-platform@9.0.0 --save-dev
 ```
 
-The changes are listed [here](https://github.com/rescript-lang/rescript-compiler/blob/master/Changes.md#90). 
+In this post we will highlight the most notable changes. The full changelog for this release can be found [here](https://github.com/rescript-lang/rescript-compiler/blob/master/Changes.md#90). 
 
-We will go through some highlighted user visible changes.
+## Compiler Improvements
 
-### Customized light weight stdlib
+### New External Stdlib Configuration
 
 This is a long-awaited [feature request](https://github.com/rescript-lang/rescript-compiler/pull/2171). 
 
-Since this release, users can add such lines in bsconfig.json to make our compiler pakcage a dev dependency.
+Our compiler comes with a set of stdlib modules (such as `Belt`, `Pervasives`, etc.) for core functionality. Compiled ReScript code relies on the JS runtime version of these stdlib modules.
+
+In previous versions, users couldn't ship their compiled JS code without defining a `package.json` dependency on `bs-platform`. Whenever a ReScript developer wanted to publish a package just for pure JS consumption / lean container deployment, they were required to use a bundler to bundle up their library / stdlib code, which made things way more complex and harder to understand.
+
+To fix this problem, we now publish our pre-compiled stdlib JS files as a separate npm package called [`@rescript/std`](https://www.npmjs.com/package/@rescript/std). Each new `bs-platform` release has a matching `@rescript/std` release for runtime compatibility.
+
+We also introduced a new configuration within our `bsconfig.json` file to tell the compiler to use our pre-compiled package instead:
 
 ```json
-"external-stdlib" : "@rescript/std"
+{
+  /* ... */
+  "external-stdlib" : "@rescript/std"
+}
 ```
 
-Our current compiler package is quite large since it ships both prebuilt compilers for 3 major platforms 
-and the standard library. With this configuration, the compiler will generate js files on top of `@rescript/std` so that
-the compiler package is not needed after the JS files are generated. This is helpful if you want to export ReScript based 
-libraries to JS users while not asking JS users to install a large dependency.
+With this configuration set, compiled JS code will now point to the defined `external-stdlib` path:
 
-Caveat: make sure the version of `@rescript/std` is the same as `bs-platform`, use this configuration only when the package size 
-is indeed a problem for you.
-
-### Zero-cost bundle size when adding ReScript 
-
-With each release, we keep a close eye on generating code that is optimized for tree-shaking. 
-We believe we reached a milestone that ReScript adds close to zero cost to your bundle-size.
-Unlike many other programming languages compiled into JS, the bundled code is almost ReScript runtime free and 
-the generated library code fits the tree-shaking principle very well.
-
-To demonstrate what we achieved, we made a [repo](https://github.com/bobzhang/zero-cost-rescript) so that 
-you can try it and see how good the bundled code is.
-
-
-### Improved code generation for pattern match
-
-We continue improving the quality of generated code in this release.
-
-Take this [issue](https://github.com/rescript-lang/rescript-compiler/issues/4924) for example:
+<CodeTab labels={["ReScript", "JavaScript"]}>
 
 ```res
+Belt.Array.forEach([1,2,3], (num) => Js.log(num))
+```
+
+```js
+// Note the import path starting with "@rescript/std"
+import * as Array from "@rescript/std/lib/es6/belt_Array.mjs";
+
+Belt_Array.forEach([
+      1,
+      2,
+      3
+    ], (function (num) {
+        console.log(num);
+        
+      }));
+```
+
+</CodeTab>
+
+The JavaScript output above was compiled with an `es6` target, but will also work with `commonjs`.
+
+**Important:** When using this option, you need to make sure that the version number of `bs-platform` and `@rescript/std` matches with the same version number in your `package.json` file, otherwise you'll eventually run into runtime problems due to mismatching stdlib behavior!
+
+To prevent unnecessary complications, only use this feature when...
+- You want to ship a library for JS / TS consumers without making them depend on `bs-platform`
+- You can't depend on `bs-platform` due to toolchain size (docker containers, low-storage deployment devices, etc)
+
+### Less Bundle Bloat when Adding ReScript 
+
+With each release, we keep a close eye on generating code that is optimized for tree-shaking. We believe we reached a milestone where ReScript doesn't add any bloat to your bundle-size (this is what we call our "zero-cost" philosophy).
+
+Unlike many other compile-to-js languages, the bundled code is almost ReScript runtime free and the generated library code fits the tree-shaking principle very well.
+
+We made a small [demo repo](https://github.com/bobzhang/zero-cost-rescript) and added the precompiled JS bundles to demonstrate what we've achieved. Check it out!
+
+### Improved Code Generation for Pattern Matching
+
+We fine-tuned our pattern matching engine to optimize the JS output even more. Here is an example of a pretty substantial optimization, based on [this issue](https://github.com/rescript-lang/rescript-compiler/issues/4924):
+
+```res
+type test =
+  | NoArg
+  | AnotherNoArg
+  | OtherArg(int)
+
 let test = x =>
   switch x {
   | NoArg => true
@@ -66,7 +100,15 @@ let test = x =>
   }
 ```
 
-It used to generate the following code:
+Now let's have a look at how the JS output would look like in comparison to older versions:
+
+<CodeTab labels={["9.0 Output", "8.4 Output" ]}>
+
+```js
+function test(x){
+  return x === 0
+}
+```
 
 ```js
 function test(x) {
@@ -76,20 +118,18 @@ function test(x) {
     return false;
   }
 }
-
-```
-which now gets optimized to: 
-```js
-function test(x){
-  return x === 0
-}
 ```
 
-This is possible because our optimizer will try to analyze several predicates and get rid of redundant ones. 
-More diffs can be found [here](https://github.com/rescript-lang/rescript-compiler/pull/4927/files?file-filters%5B%5D=.js).
 
-Another important improvement is that we fixed the pattern match offset issue, which leads to the consequence, that magic numbers will not be generated for complex pattern matches anymore. 
-Below is a representative diff resulting from this cleanup:
+</CodeTab>
+
+As you can see, the 9.0 compiler removes all the unnecessary `typeof` checks!
+
+This is possible because our optimizer will try to analyze several predicates and get rid of redundant ones. More diffs can be found [here](https://github.com/rescript-lang/rescript-compiler/pull/4927/files?file-filters%5B%5D=.js).
+
+Another important improvement is that we fixed the pattern match offset issue, which lead to the consequence that magic numbers will not be generated for complex pattern matches anymore.
+
+For those interested in the details, here is a representative diff resulting from this cleanup:
 
 ```diff
 function is_space(param){
@@ -105,30 +145,97 @@ function is_space(param){
 }
 ```
 
-### Syntax changes
+## Syntax Improvements
 
-We introduced two minor tweaks for the concrete syntax.
+### `when` -> `if`
 
-- It is now recommended to use `if` instead of `when` in pattern match guards
+Starting from 9.0, [`when` clauses](/docs/manual/latest/pattern-matching-destructuring#when-clause) within a `switch` statement will automatically convert to the `if` keyword instead.
 
 ```res
-switch expr {
-  | pat if predicate => // was: pat when predicate  
+switch person1 {
+| Student({reportCard: {gpa}}) if gpa < 0.5 =>
+  Js.log("What's happening")
+| _ => () // do nothing
 }
 ```
 
-`when` is still supported but it will be deprecated in the future.
-
-- explicit nested object literal syntax
+The syntax parser and printer will automatically take care of older code, so no action required for existing codebases. The `when` keyword is deprecated.
 
 
-`{ "keya": { keyb: 3 } }` used to be interpreted as `{ "keya": { "keyb": 3 } } `, such implicity makes 
-us not able to embed regular records inside JS object literals. With this release, 
-JS object literals have to be written explicitly and `{ "keya": { keyb: 3 } }` will be interpreted as a regular 
-record inside a JS object literal. More discussions can be found [here](https://forum.rescript-lang.org/t/fixing-the-semantics-of-nested-objects-breaking-changes/976).
+### Cleaner Polyvariant Syntax
+
+Polyvariants with invalid identifier names (e.g. names including hypens `-`), don't require any special escaping syntax anymore:
+
+<CodeTab labels={["New (9.0)", "Old (8.4)"]}>
+
+```res
+type animation = [ #"ease-in" | #"ease-out" ]
+```
+
+```res
+type animation = [ #\"ease-in" | #\"ease-out" ]
+```
+
+</CodeTab>
+
+We introduced this change to allow easier interop with existing JS string enums. In pure ReScript code, we'd still recommend our users to stick with valid identifier names instead (e.g. `easeIn` instead of `ease-in`).
 
 
-There are also some pretty interesting internal changes in this release.
-For example, using WASM to replace Camlp4 and a generalized visitor pattern without using objects, which we will discuss in a separate post.
+## Breaking Changes
 
-Happy Hacking! -- Hongbo Zhang
+This release comes with a minor breaking change that shouldn't have much impact on the upgrade of existing codebases.
+
+### Nested Records within Objects
+
+Previously, if you wrote `{"user": {age: 10}}`, the inner record was interpreted as an object instead of a record (`{"user": {"age": 10}}`); this is a byproduct of some internal interop transformation details; with the ReScript syntax, this went from understandable to confusing, so we're changing it so that the inner record is indeed now treated as a record. This is an obvious fix, but a breaking change if you were accidentally leveraging that nested record as object.
+
+Here is a code example before and after the change. Note how the `user` record secretly turns into a ReScipt object in the previous version:
+
+<CodeTab labels={["9.0 Example", "8.4 Example" ]}>
+
+```res
+type user = {
+  age: int 
+}
+
+let data = {
+  "user": {
+    age: 1 
+  }
+}
+
+// This is the way: `age` should be usable via record accessor
+let age = data["user"].age
+```
+
+```res
+type user = {
+  age: int 
+}
+
+let data = {
+  "user": {
+    age: 1 
+  }
+}
+
+// This was the problem: The record implicitly turned
+// into a ReScript object (which is confusing)
+let age = data["user"]["age"]
+```
+
+</CodeTab>
+
+More discussions on this change can be found [here](https://forum.rescript-lang.org/t/fixing-the-semantics-of-nested-objects-breaking-changes/976).
+
+
+## Closing Note
+
+We only highlighted a few user-facing features, but there are also some pretty interesting internal changes happening right now.
+
+For example, we are tinkering with the idea on using WASM to replace Camlp4, and we are also working on a generalized visitor pattern that doesn't require objects.
+
+We will discuss these topics in a separate development post, but we are already excited about the new possibilities this will bring within the compiler toolchain.
+
+
+Happy Hacking!
