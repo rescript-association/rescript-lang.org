@@ -78,9 +78,9 @@ To prevent unnecessary complications, only use this feature when...
 
 ### Less Bundle Bloat when Adding ReScript 
 
-With each release, we keep a close eye on generating code that is optimized for tree-shaking. We believe we reached a milestone where ReScript doesn't add any bloat to your bundle-size (this is what we call our "zero-cost" philosophy).
+With each release we keep a close eye on generating code that is optimized for tree-shaking. We also believe that we reached a milestone where ReScript reliably produces output that has almost no impact on our final JS bundle-sizes (this is what we call our "zero-cost" philosophy).
 
-Unlike many other compile-to-js languages, the bundled code is almost ReScript runtime free and the generated library code fits the tree-shaking principle very well.
+The bundled code is almost ReScript runtime free because our generated library code fits the tree-shaking principle really well. Tools like `esbuild` can easily drop unnecessary code and make sure that the final code stays lean.
 
 We made a small [demo repo](https://github.com/bobzhang/zero-cost-rescript) and added the precompiled JS bundles to demonstrate what we've achieved. Check it out!
 
