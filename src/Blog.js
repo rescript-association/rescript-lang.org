@@ -21,7 +21,7 @@ import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as BlogFrontmatter from "./common/BlogFrontmatter.js";
 import * as NameInitialsAvatar from "./components/NameInitialsAvatar.js";
 
-var planetPreviewImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1587479463/Reason%20Association/reasonml.org/reasonml_art2_1280_vhzxnz.png";
+var defaultPreviewImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598616442/Reason%20Association/rescript-lang.org/Art-3-rescript-launch_ovoibg.jpg";
 
 var middleDotSpacer = " " + (String.fromCharCode(183) + " ");
 
@@ -98,7 +98,7 @@ function Blog$BlogCard(Props) {
                                   src: previewImg
                                 }) : React.createElement("img", {
                                   className: className,
-                                  src: planetPreviewImg
+                                  src: defaultPreviewImg
                                 }))
                     })), React.createElement("div", {
                   className: "px-2"
@@ -155,7 +155,7 @@ function Blog$FeatureCard(Props) {
                                   src: previewImg
                                 }) : React.createElement("img", {
                                   className: className,
-                                  src: planetPreviewImg
+                                  src: defaultPreviewImg
                                 }))
                     })), React.createElement("div", {
                   className: "relative px-4 lg:self-auto sm:pt-12 md:px-20 sm:self-start md:-mt-20 mt-4 bg-white lg:w-full lg:pt-0 lg:mt-0 lg:px-0 lg:ml-12"
@@ -432,7 +432,7 @@ var Post = {};
 export {
   Post ,
   Malformed ,
-  planetPreviewImg ,
+  defaultPreviewImg ,
   $$default ,
   $$default as default,
   getStaticProps ,

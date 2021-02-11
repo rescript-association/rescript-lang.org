@@ -12,7 +12,7 @@ module Malformed: {
   }
 }
 
-let planetPreviewImg: string
+let defaultPreviewImg: string
 
 type params = {slug: string}
 type props = {

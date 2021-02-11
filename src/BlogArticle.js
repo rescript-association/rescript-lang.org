@@ -142,7 +142,7 @@ function $$default(props) {
           }));
     var tmp = {
       title: title + " | ReScript Blog",
-      ogImage: Belt_Option.getWithDefault(Caml_option.null_to_opt(match.previewImg), Blog.planetPreviewImg)
+      ogImage: Belt_Option.getWithDefault(Caml_option.null_to_opt(match.previewImg), Blog.defaultPreviewImg)
     };
     var tmp$1 = description === null ? undefined : Caml_option.some(description);
     if (tmp$1 !== undefined) {
