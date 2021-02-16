@@ -41,10 +41,10 @@ let items = Belt.Array.map(todos, todo => {
 
 If you don’t have stable IDs for rendered items, you may use the item index as a key as a last resort:
 
-```res {2,3}
-let items = Belt.Array.mapWithIndex(todos, (todo, i) => {
+```res {1..3}
+let items = Belt.Array.mapWithIndex(todos, (i, todo) => {
   // Only do this if items have no stable id
-  <li key={i}>
+  <li key={Belt.Int.toString(i)}>
     {todo.text}
   </li>
 });
