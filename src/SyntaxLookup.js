@@ -30,7 +30,9 @@ function toString(t) {
         return "Control Flow";
     case /* Operators */2 :
         return "Operators";
-    case /* Other */3 :
+    case /* SpecialValues */3 :
+        return "Special Values";
+    case /* Other */4 :
         return "Other";
     
   }
@@ -44,8 +46,10 @@ function fromString(s) {
         return /* Decorators */0;
     case "operators" :
         return /* Operators */2;
+    case "specialvalues" :
+        return /* SpecialValues */3;
     default:
-      return /* Other */3;
+      return /* Other */4;
   }
 }
 
@@ -240,7 +244,8 @@ function SyntaxLookup(Props) {
         /* Decorators */0,
         /* Operators */2,
         /* ControlFlow */1,
-        /* Other */3
+        /* SpecialValues */3,
+        /* Other */4
       ], (function (cat) {
           return [
                   toString(cat),
