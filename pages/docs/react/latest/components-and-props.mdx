@@ -53,6 +53,38 @@ We've created a `Greeting.res` file that contains a `make` function that doesn't
 
 You can also see in the the JS output that the function we created was directly translated into the pure JS version of a ReactJS component. Note how a  `<div>` transforms into a `React.createElement("div",...)` call in JavaScript.
 
+## Rendering Components
+
+You can render a component by using the JSX syntax for that component. For e.g. to render Greeting, you would use something like this:
+
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// src/App.res
+switch ReactDOM.querySelector("#root") {
+| Some(root) => ReactDOM.render(<Greeting />, root)
+| None => () // do nothing
+}
+```
+```js
+import * as React from "react";
+import * as ReactDom from "react-dom";
+import * as Greeting$RescriptReact from "./Greeting.bs.js";
+
+var root = document.querySelector("#root");
+
+if (!(root == null)) {
+  ReactDom.render(React.createElement(Greeting$RescriptReact.make, {}), root);
+}
+```
+
+Note that Rescript automatically takes care of importing the Greeting component in the generated JavaScript, you do not need to import anything manually. Components can also be composed within other components, just like regular React & JSX.
+
+</CodeTab>
+
+
+
 ## Defining Props
 
 In ReactJS, props are usually described as a single `props` object. In ReScript, we use [labeled arguments](/docs/manual/latest/function#labeled-arguments) to define our props parameters instead. Here's an example:
