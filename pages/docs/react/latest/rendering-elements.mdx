@@ -44,8 +44,8 @@ Here is a full example rendering our application in our `root` div:
 // Dom access can actually fail. ResScript
 // is really explicit about handling edge cases!
 switch(ReactDOM.querySelector("#root")){
-  | Some(root) => ReactDOM.render(<div> React.string("Hello Andrea") </div>, root)
-  | None => () // do nothing
+| Some(root) => ReactDOM.render(<div> {React.string("Hello Andrea")} </div>, root)
+| None => () // do nothing
 }
 ```
 ```js
