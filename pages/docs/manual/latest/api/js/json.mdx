@@ -292,37 +292,38 @@ let stringifyAny: 'a => option<string>
 Js.log(Js.Json.stringifyAny(["hello", "world"]))
 ```
 
-## deserializeUnsafe
-
-```res sig
-let deserializeUnsafe: string => 'a
-```
-
-Deserializes a JSON string without any type checks.
-
-Raises a `Js.Exn.Error` exception if the JSON string parsing fails.
-
-```res
-type person = {name: string}
-let p: person = Js.Json.deserializeUnsafe(`{ "name": "Albert" }`)
-```
-
-> **Note:** This function may change or be removed in a future version of ReScript.
-
 ## serializeExn
 
 ```res sig
 let serializeExn: 'a => string
 ```
 
-Serializes any type to a JSON string.
+Serializes a ReScript record into to a JSON compliant string.
 
-Raises a `Js.Exn.Error` exception if the value cannot be serialised.
+Raises a `Js.Exn.Error` exception if the record cannot be serialised.
 
 ```res
 type person = {name: string}
 let p: person = {name: "Albert"}
 let s: string = Js.Json.serializeExn(p)
+```
+
+> **Note:** This function may change or be removed in a future version of ReScript.
+
+
+## deserializeUnsafe
+
+```res sig
+let deserializeUnsafe: string => 'a
+```
+
+Deserializes JSON strings created by `serializeExn()` into a ReScript record.
+
+Raises a `Js.Exn.Error` exception if the string cannot be deserialized.
+
+```res
+type person = {name: string}
+let p: person = Js.Json.deserializeUnsafe(`{ "name": "Albert" }`)
 ```
 
 > **Note:** This function may change or be removed in a future version of ReScript.
