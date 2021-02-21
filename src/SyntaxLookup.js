@@ -30,9 +30,11 @@ function toString(t) {
         return "Control Flow";
     case /* Operators */2 :
         return "Operators";
-    case /* SpecialValues */3 :
+    case /* LanguageConstructs */3 :
+        return "Language Constructs";
+    case /* SpecialValues */4 :
         return "Special Values";
-    case /* Other */4 :
+    case /* Other */5 :
         return "Other";
     
   }
@@ -44,12 +46,14 @@ function fromString(s) {
         return /* ControlFlow */1;
     case "decorators" :
         return /* Decorators */0;
+    case "languageconstructs" :
+        return /* LanguageConstructs */3;
     case "operators" :
         return /* Operators */2;
     case "specialvalues" :
-        return /* SpecialValues */3;
+        return /* SpecialValues */4;
     default:
-      return /* Other */4;
+      return /* Other */5;
   }
 }
 
@@ -243,9 +247,10 @@ function SyntaxLookup(Props) {
   var initial = Belt_Array.map([
         /* Decorators */0,
         /* Operators */2,
+        /* LanguageConstructs */3,
         /* ControlFlow */1,
-        /* SpecialValues */3,
-        /* Other */4
+        /* SpecialValues */4,
+        /* Other */5
       ], (function (cat) {
           return [
                   toString(cat),
