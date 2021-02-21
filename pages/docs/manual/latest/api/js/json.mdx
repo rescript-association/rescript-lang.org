@@ -317,7 +317,7 @@ let s: string = Js.Json.serializeExn(p)
 let deserializeUnsafe: string => 'a
 ```
 
-Deserializes JSON strings created by `serializeExn()` into a ReScript record.
+Deserializes a JSON string created by `serializeExn()` into a ReScript record.
 
 Raises a `Js.Exn.Error` exception if the string cannot be deserialized.
 
