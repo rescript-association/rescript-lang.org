@@ -34,6 +34,7 @@
     "reserved-keywords"
   ],
   "JavaScript Interop": [
+    "interop-cheatsheet",
     "embed-raw-javascript",
     "shared-data-types",
     "external",
@@ -45,8 +46,7 @@
     "inlining-constants",
     "use-illegal-identifier-names",
     "generate-converters-accessors",
-    "browser-support-polyfills",
-    "interop-cheatsheet"
+    "browser-support-polyfills"
   ],
   "Build System": [
     "build-overview",
