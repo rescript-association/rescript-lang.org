@@ -157,7 +157,7 @@ let default = (props: props) => {
             <P>
               <span className="font-bold"> {React.string("Important: ")} </span>
               {React.string(
-                "This is an archived blog post, kept for historic reasons. Please note that this information might be terribly outdated.",
+                "This is an archived blog post, kept for historical reasons. Please note that this information might be outdated.",
               )}
             </P>
           </Warn>
