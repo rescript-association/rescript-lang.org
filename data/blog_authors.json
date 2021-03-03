@@ -47,5 +47,12 @@
     "role": "Core Development",
     "img_url": "https://pbs.twimg.com/profile_images/1358354824660541440/YMKNWE1V_400x400.png",
     "twitter": "rescriptlang"
+  },
+  {
+    "username": "rescript-association",
+    "fullname": "ReScript Association",
+    "role": "Foundation",
+    "img_url": "https://pbs.twimg.com/profile_images/1045362176117100545/MioTQoTp_400x400.jpg",
+    "twitter": "ReScriptAssoc"
   }
 ]

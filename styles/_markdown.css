@@ -20,7 +20,11 @@
 
 .md-ul > .md-li p::before {
   content: "•";
-  @apply inline-block w-4 -ml-4 pr-2;
+  @apply inline-block w-5 -ml-5 pr-2;
+}
+
+.md-li > p {
+  @apply ml-5
 }
 
 .md-p + .md-p {
