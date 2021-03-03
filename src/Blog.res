@@ -338,7 +338,7 @@ let default = (props: props): React.element => {
           {Belt.Array.mapWithIndex(rest, (i, post) => {
             let badge = post.frontmatter.badge->Js.Null.toOption
             let category =
-              first.frontmatter.category
+              post.frontmatter.category
               ->Js.Null.toOption
               ->Belt.Option.map(category => category->BlogFrontmatter.Category.toString)
 

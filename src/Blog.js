@@ -283,7 +283,7 @@ function $$default(props) {
               className: "px-4 md:px-8 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full"
             }, Belt_Array.mapWithIndex(rest, (function (i, post) {
                     var badge = post.frontmatter.badge;
-                    var category = Belt_Option.map(Caml_option.null_to_opt(first.frontmatter.category), (function (category) {
+                    var category = Belt_Option.map(Caml_option.null_to_opt(post.frontmatter.category), (function (category) {
                             return BlogFrontmatter.Category.toString(category);
                           }));
                     var tmp = {
