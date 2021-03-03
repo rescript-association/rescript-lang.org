@@ -56,7 +56,7 @@ let make = (~components=Markdown.default, ~children) => {
                       </p>
                       <p className="text-14 italic">
                         {React.string("Previously known as BuckleScript and Reason (")}
-                        <Next.Link href="/bucklescript-rebranding">
+                        <Next.Link href="/blog/bucklescript-is-rebranding">
                           <a className="text-fire hover:pointer hover:underline">
                             {React.string("Learn more")}
                           </a>

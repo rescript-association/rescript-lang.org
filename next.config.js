@@ -36,6 +36,11 @@ const config = {
         destination: '/community/overview',
         permanent: true,
       },
+      {
+        source: '/bucklescript-rebranding',
+        destination: '/blog/bucklescript-is-rebranding',
+        permanent: true,
+      }
     ]
   },
 };

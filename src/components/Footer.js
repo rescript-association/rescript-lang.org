@@ -42,9 +42,9 @@ function Footer(Props) {
                                             }, "Team")
                                       })), React.createElement("li", undefined, React.createElement("a", {
                                         className: linkClass,
-                                        href: "https://reason-association.org/imprint",
+                                        href: "https://rescript-association.org/imprint",
                                         target: "_blank"
-                                      }, "Reason Association")))
+                                      }, "ReScript Association")))
                         }), React.createElement(Footer$Section, {
                           title: "Find us on",
                           children: React.createElement("div", {

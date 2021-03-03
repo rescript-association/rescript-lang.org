@@ -129,7 +129,7 @@ function $$default(props) {
                     children: null
                   }, React.createElement("span", {
                         className: "font-bold"
-                      }, "Important: "), "This is an archived blog post, kept for historic reasons. Please note that this information might be terribly outdated.")
+                      }, "Important: "), "This is an archived blog post, kept for historical reasons. Please note that this information might be outdated.")
             })) : null;
   var content;
   if (fm.TAG === /* Ok */0) {

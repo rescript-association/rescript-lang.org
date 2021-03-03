@@ -70,7 +70,7 @@ function LandingPageLayout(Props) {
                                                       }, "The JavaScript-like language you have been waiting for."), React.createElement("p", {
                                                         className: "text-14 italic"
                                                       }, "Previously known as BuckleScript and Reason (", React.createElement(Next.Link.make, {
-                                                            href: "/bucklescript-rebranding",
+                                                            href: "/blog/bucklescript-is-rebranding",
                                                             children: React.createElement("a", {
                                                                   className: "text-fire hover:pointer hover:underline"
                                                                 }, "Learn more")

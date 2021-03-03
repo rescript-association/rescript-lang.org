@@ -38,8 +38,8 @@ let make = () => {
               </Next.Link>
             </li>
             <li>
-              <a href="https://reason-association.org/imprint" target="_blank" className=linkClass>
-                {React.string("Reason Association")}
+              <a href="https://rescript-association.org/imprint" target="_blank" className=linkClass>
+                {React.string("ReScript Association")}
               </a>
             </li>
           </ul>
