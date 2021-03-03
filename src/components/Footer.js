@@ -32,7 +32,7 @@ function Footer(Props) {
                                 }), "."))), React.createElement("div", {
                       className: "flex flex-col space-y-16 md:flex-row mt-16 md:mt-0 md:ml-16 md:space-y-0 md:space-x-16"
                     }, React.createElement(Footer$Section, {
-                          title: "Legal",
+                          title: "About",
                           children: React.createElement("ul", {
                                 className: "text-16 text-gray-80-tr space-y-2"
                               }, React.createElement("li", undefined, React.createElement(Next.Link.make, {

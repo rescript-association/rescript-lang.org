@@ -30,7 +30,7 @@ let make = () => {
         </div>
       </div>
       <div className="flex flex-col space-y-16 md:flex-row mt-16 md:mt-0 md:ml-16 md:space-y-0 md:space-x-16">
-        <Section title="Legal">
+        <Section title="About">
           <ul className="text-16 text-gray-80-tr space-y-2">
             <li>
               <Next.Link href="/community#core-team">
