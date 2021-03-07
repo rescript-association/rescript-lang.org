@@ -1,0 +1,33 @@
+---
+id: "let-binding-invalid"
+keywords: ["let", "variable"]
+name: "let \\\"\""
+summary: "This is the `let binding` for invalid identifier names."
+category: "languageconstructs"
+---
+
+`let \""` is used to bind values to names that are invalid in ReScript, including capitalized names, names with special characters, and reserved keywords.
+
+### Example
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let \"ComponentName" = "Header"
+let \"min-width" = 640
+let \"exception" = true
+```
+
+```js
+var ComponentName = "Header";
+var min$width = 640;
+var exception = true;
+```
+
+</CodeTab>
+
+### References
+
+* [Use Illegal Identifier Names](/docs/manual/latest/use-illegal-identifier-names)
+* [Let binding](/docs/manual/latest/let-binding)
+* [Reserved Keywords](/docs/manual/latest/reserved-keywords)
