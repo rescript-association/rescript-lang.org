@@ -26,15 +26,13 @@ function toString(t) {
   switch (t) {
     case /* Decorators */0 :
         return "Decorators";
-    case /* ControlFlow */1 :
-        return "Control Flow";
-    case /* Operators */2 :
+    case /* Operators */1 :
         return "Operators";
-    case /* LanguageConstructs */3 :
+    case /* LanguageConstructs */2 :
         return "Language Constructs";
-    case /* SpecialValues */4 :
+    case /* SpecialValues */3 :
         return "Special Values";
-    case /* Other */5 :
+    case /* Other */4 :
         return "Other";
     
   }
@@ -42,18 +40,16 @@ function toString(t) {
 
 function fromString(s) {
   switch (s) {
-    case "controlflow" :
-        return /* ControlFlow */1;
     case "decorators" :
         return /* Decorators */0;
     case "languageconstructs" :
-        return /* LanguageConstructs */3;
+        return /* LanguageConstructs */2;
     case "operators" :
-        return /* Operators */2;
+        return /* Operators */1;
     case "specialvalues" :
-        return /* SpecialValues */4;
+        return /* SpecialValues */3;
     default:
-      return /* Other */5;
+      return /* Other */4;
   }
 }
 
@@ -246,11 +242,10 @@ function SyntaxLookup(Props) {
   }
   var initial = Belt_Array.map([
         /* Decorators */0,
-        /* Operators */2,
-        /* LanguageConstructs */3,
-        /* ControlFlow */1,
-        /* SpecialValues */4,
-        /* Other */5
+        /* Operators */1,
+        /* LanguageConstructs */2,
+        /* SpecialValues */3,
+        /* Other */4
       ], (function (cat) {
           return [
                   toString(cat),
