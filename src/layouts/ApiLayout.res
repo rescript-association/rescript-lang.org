@@ -99,7 +99,7 @@ let make = (
   }, [])
 
   let preludeSection =
-    <div className="flex justify-between text-primary font-medium items-baseline">
+    <div className="flex justify-between text-gray-90 font-medium items-baseline">
       {React.string(title)}
       {switch version {
       | Some(version) =>

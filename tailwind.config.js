@@ -56,6 +56,7 @@ module.exports = {
           "40": "#979AAD",
           "60": "#727489",
           "80": "#3E4057",
+          "90": "#010427",
           "95": "#0A0D2F",
           "100": "#010427",
           "5-tr": "rgba(1, 4, 39, 0.05)",
@@ -65,11 +66,6 @@ module.exports = {
           "60-tr": "rgba(1, 4, 39, 0.6)",
           "80-tr": "rgba(1, 4, 39, 0.8)",
           "95-tr": "rgba(1, 4, 39, 0.95)",
-        },
-        onyx: {
-          default: "#010427",
-          "80": "rgba(1, 4, 39, 0.8)",
-          "50": "rgba(1, 4, 39, 0.5)"
         },
         night: {
           darker: "#010427",
@@ -155,9 +151,6 @@ module.exports = {
       inset: {
         "18": "4.5rem"
       },
-      letterSpacing: {
-        tight: "0.02em"
-      },
       spacing: {
         "2/3": "66.666667%",
         "9/16": "56.25%"
@@ -191,6 +184,7 @@ module.exports = {
      so we added the Tailwind default values here for
      convenience */
     fontSize: {
+      "12": "0.75rem",
       "14": "0.875rem",
       "16": "1rem",
       "18": "1.125rem",
@@ -236,7 +230,8 @@ module.exports = {
       "5": 1.75
     },
     letterSpacing: {
-      tight: "-0.03em",
+      tighter: "-0.045em",
+      tight: "-0.025em",
       normal: "0",
       wide: "0.075em"
     },
@@ -244,7 +239,7 @@ module.exports = {
       "320": "20rem",
       "400": "25rem",
       "1280": "80rem",
-      "705": "44.0625rem",
+      "740": "46.25rem",
       xs: "20rem", //  320px
       sm: "30rem", //  480px
       md: "40rem", //  640px

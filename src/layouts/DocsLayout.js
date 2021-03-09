@@ -111,7 +111,7 @@ function DocsLayout(Props) {
     tmp = null;
   }
   var preludeSection = React.createElement("div", {
-        className: "flex justify-between text-primary font-medium items-baseline"
+        className: "flex justify-between text-fire font-medium items-baseline"
       }, title, tmp);
   var tmp$1 = {
     categories: categories,

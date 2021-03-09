@@ -72,9 +72,9 @@ function BlogArticle$BlogHeader(Props) {
   return React.createElement("div", {
               className: "flex flex-col items-center"
             }, React.createElement("div", {
-                  className: "w-full max-w-705"
+                  className: "w-full max-w-740"
                 }, React.createElement("div", {
-                      className: "text-night-light text-lg mb-5"
+                      className: "text-gray-60 text-lg mb-5"
                     }, category !== undefined ? React.createElement(React.Fragment, undefined, category, middleDotSpacer) : null, Util.$$Date.toDayMonthYear(date$1)), React.createElement("h1", {
                       className: $$Text.H1.$$default
                     }, title), Belt_Option.mapWithDefault(description, null, (function (desc) {
@@ -84,7 +84,7 @@ function BlogArticle$BlogHeader(Props) {
                                     });
                         } else {
                           return React.createElement("div", {
-                                      className: "my-8 text-onyx"
+                                      className: "my-8 text-gray-95"
                                     }, React.createElement(Markdown.Intro.make, {
                                           children: desc
                                         }));
@@ -110,7 +110,7 @@ function BlogArticle$BlogHeader(Props) {
                         },
                         src: articleImg
                       })) : React.createElement("div", {
-                    className: "max-w-705 w-full"
+                    className: "max-w-740 w-full"
                   }, React.createElement(BlogArticle$Line, {})));
 }
 
@@ -170,7 +170,7 @@ function $$default(props) {
             }, React.createElement(BlogArticle$BlogHeader, tmp$3)), React.createElement("div", {
               className: "flex justify-center"
             }, React.createElement("div", {
-                  className: "max-w-705 w-full"
+                  className: "max-w-740 w-full"
                 }, archivedNote, children, canonical !== null ? React.createElement("div", {
                         className: "mt-12 text-14"
                       }, "This article was originally released on ", React.createElement("a", {

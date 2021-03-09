@@ -7,15 +7,15 @@ module Link = {
 
 module H1 = {
   @bs.inline
-  let default = "text-onyx font-semibold text-42 leading-2"
+  let default = "text-gray-95 font-medium tracking-tighter text-42 leading-2"
 }
 
 module H2 = {
   @bs.inline
-  let default = "text-onyx font-semibold text-42 leading-2"
+  let default = "text-gray-95 font-semibold text-42 leading-2"
 }
 
 module H3 = {
   @bs.inline
-  let default = "text-onyx font-semibold text-21 leading-2"
+  let default = "text-gray-95 font-semibold text-21 leading-2"
 }

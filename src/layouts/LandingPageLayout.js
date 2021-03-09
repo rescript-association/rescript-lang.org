@@ -62,11 +62,11 @@ function LandingPageLayout(Props) {
                                       children: React.createElement("div", {
                                             className: "flex justify-center"
                                           }, React.createElement("div", {
-                                                className: "w-full max-w-705"
+                                                className: "w-full max-w-740"
                                               }, React.createElement("div", undefined, React.createElement("h1", {
-                                                        className: "text-80 xs:text-100 font-semibold"
+                                                        className: "text-80 xs:text-100 text-gray-95 font-semibold"
                                                       }, "ReScript"), React.createElement("p", {
-                                                        className: "text-21 font-bold mb-2"
+                                                        className: "text-21 text-gray-95 font-bold mb-2"
                                                       }, "The JavaScript-like language you have been waiting for."), React.createElement("p", {
                                                         className: "text-14 italic"
                                                       }, "Previously known as BuckleScript and Reason (", React.createElement(Next.Link.make, {

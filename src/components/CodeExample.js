@@ -35,7 +35,7 @@ function CodeExample(Props) {
   if (showLabel) {
     var label$1 = langShortname(lang);
     label = React.createElement("div", {
-          className: "flex self-end font-sans mb-4 text-sm font-bold text-night-light px-4"
+          className: "flex self-end font-sans mb-4 text-12 font-bold text-gray-60 px-4"
         }, label$1.toUpperCase());
   } else {
     label = React.createElement("div", {
@@ -43,9 +43,9 @@ function CodeExample(Props) {
         });
   }
   return React.createElement("div", {
-              className: "flex w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-snow-dark bg-snow-light py-2 text-night-dark"
+              className: "flex w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-gray-10 bg-gray-5 py-2 text-gray-90"
             }, label, React.createElement("div", {
-                  className: "px-4 text-base pb-2 overflow-x-auto -mt-2"
+                  className: "px-4 text-14 pb-2 overflow-x-auto -mt-2"
                 }, children));
 }
 
@@ -67,7 +67,7 @@ function CodeExample$Toggle(Props) {
               var lang = tab.lang;
               label$1 = lang !== undefined ? langShortname(lang).toUpperCase() : String(i);
             }
-            var activeClass = selected === i ? "font-bold text-gray-100 bg-snow-light border border-b-0 border-snow-dark border-gray-20" : "border-gray-20 border-b hover:cursor-pointer";
+            var activeClass = selected === i ? "font-semibold text-gray-90 bg-snow-light border border-b-0 border-snow-dark border-gray-20" : "border-gray-20 border-b hover:cursor-pointer";
             var onClick = function (evt) {
               evt.preventDefault();
               return Curry._1(setSelected, (function (param) {
@@ -91,7 +91,7 @@ function CodeExample$Toggle(Props) {
                 return HighlightJs.renderHLJS(tab.highlightedLines, undefined, tab.code, lang, undefined);
               })), null);
     return React.createElement("div", {
-                className: "flex w-full flex-col rounded-none text-night-dark"
+                className: "flex w-full flex-col rounded-none text-grasy-80"
               }, React.createElement("div", {
                     className: "flex w-full overflow-auto scrolling-touch font-sans bg-transparent text-sm text-gray-60-tr"
                   }, React.createElement("div", {
@@ -99,7 +99,7 @@ function CodeExample$Toggle(Props) {
                       }, tabElements), React.createElement("div", {
                         className: "flex-1 border-b border-gray-20"
                       }, "\u00A0")), React.createElement("div", {
-                    className: "px-4 text-base pb-4 pt-4 overflow-x-auto bg-snow-light border-snow-dark xs:rounded-b border border-t-0"
+                    className: "px-4 text-base pb-4 pt-4 overflow-x-auto bg-snow-light border-gray-10 xs:rounded-b border border-t-0"
                   }, React.createElement("pre", undefined, children)));
   }
   var tab = tabs[0];

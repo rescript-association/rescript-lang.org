@@ -30,7 +30,7 @@ function Blog$Badge(Props) {
   var bgColor = badge !== 1 ? "bg-turtle" : "bg-code-1";
   var text = BlogFrontmatter.Badge.toString(badge);
   return React.createElement("div", {
-              className: bgColor + " flex items-center h-6 font-medium tracking-tight text-onyx-80 text-14 px-2 rounded-sm"
+              className: bgColor + " flex items-center h-6 font-medium tracking-tight text-gray-80-tr text-14 px-2 rounded-sm"
             }, React.createElement("div", undefined, React.createElement("img", {
                       className: "h-3 block mr-1",
                       src: "/static/star.svg"
@@ -51,7 +51,7 @@ function Blog$CategorySelector(Props) {
                     };
             })));
   return React.createElement("div", {
-              className: "text-16 w-full flex items-center justify-between text-onyx-50"
+              className: "text-16 w-full flex items-center justify-between text-gray-60"
             }, Belt_Array.map(tabs, (function (tab) {
                     var onClick = function (evt) {
                       evt.preventDefault();
@@ -64,7 +64,7 @@ function Blog$CategorySelector(Props) {
                     return React.createElement("div", {
                                 key: text,
                                 className: (
-                                  isActive ? "bg-snow-dark text-onyx rounded py-1" : "hover:cursor-pointer hover:text-onyx"
+                                  isActive ? "bg-gray-10 text-gray-80 rounded py-1" : "hover:cursor-pointer hover:text-gray-80"
                                 ) + "  px-4 inline-block",
                                 onClick: onClick
                               }, text);
@@ -166,16 +166,16 @@ function Blog$FeatureCard(Props) {
                         }, title), React.createElement("div", {
                           className: "mb-6"
                         }, React.createElement("div", {
-                              className: "flex items-center font-medium text-onyx-50 text-sm my-2"
+                              className: "flex items-center font-medium text-gray-40 text-sm mt-2 mb-5"
                             }, React.createElement("div", {
                                   className: "inline-block w-4 h-4 mr-2"
                                 }, authorImg), React.createElement("div", undefined, handle !== null ? React.createElement("a", {
-                                        className: "hover:text-onyx-80",
+                                        className: "hover:text-gray-80",
                                         href: "https://twitter.com/" + handle,
                                         rel: "noopener noreferrer",
                                         target: "_blank"
                                       }, displayName) : displayName, category !== undefined ? React.createElement(React.Fragment, undefined, middleDotSpacer, category, middleDotSpacer) : middleDotSpacer, Util.$$Date.toDayMonthYear(date))), React.createElement("p", {
-                              className: "text-night-dark text-16"
+                              className: "text-gray-90 antialiased tracking-tight text-16"
                             }, firstParagraph))), React.createElement(Next.Link.make, {
                       href: "/blog/[slug]",
                       as: "/blog/" + slug,

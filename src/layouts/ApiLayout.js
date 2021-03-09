@@ -137,7 +137,7 @@ function ApiLayout(Props) {
     tmp = null;
   }
   var preludeSection = React.createElement("div", {
-        className: "flex justify-between text-primary font-medium items-baseline"
+        className: "flex justify-between text-gray-90 font-medium items-baseline"
       }, title, tmp);
   var tmp$1 = {
     categories: categories,

@@ -15,7 +15,7 @@ import * as ParseNumericRangeJs from "../ffi/parse-numeric-range.js";
 function Markdown$P(Props) {
   var children = Props.children;
   return React.createElement("p", {
-              className: "md-p leading-5"
+              className: "md-p leading-4 text-gray-80 text-16"
             }, children);
 }
 
@@ -162,7 +162,7 @@ var Anchor = {
 function Markdown$H1(Props) {
   var children = Props.children;
   return React.createElement("h1", {
-              className: "text-6xl leading-1 mb-5 font-sans font-semibold text-night-dark"
+              className: "text-42 tracking-tight leading-1 mb-5 font-sans font-medium text-gray-95"
             }, children);
 }
 
@@ -174,7 +174,7 @@ function Markdown$H2(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement(React.Fragment, undefined, React.createElement("h2", {
-                  className: "group mt-12 mb-3 text-28 leading-1 font-sans font-medium text-onyx"
+                  className: "group mt-12 mb-3 text-28 tracking-tight leading-1 font-sans font-medium text-gray-95"
                 }, children, React.createElement("span", {
                       className: "ml-2"
                     }, React.createElement(Markdown$Anchor, {
@@ -190,7 +190,7 @@ function Markdown$H3(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h3", {
-              className: "group text-xl mt-12 mb-3 leading-3 font-sans font-semibold text-onyx"
+              className: "group text-xl mt-12 mb-3 tracking-tight leading-3 font-sans font-semibold text-gray-95"
             }, children, React.createElement("span", {
                   className: "ml-2"
                 }, React.createElement(Markdown$Anchor, {
@@ -206,7 +206,7 @@ function Markdown$H4(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h4", {
-              className: "group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-onyx"
+              className: "group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-gray-95"
             }, children, React.createElement("span", {
                   className: "ml-2"
                 }, React.createElement(Markdown$Anchor, {
@@ -222,7 +222,7 @@ function Markdown$H5(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h5", {
-              className: "group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide text-onyx"
+              className: "group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide text-gray-95"
             }, children, React.createElement("span", {
                   className: "ml-2"
                 }, React.createElement(Markdown$Anchor, {
@@ -248,7 +248,7 @@ var Pre = {
 function Markdown$InlineCode(Props) {
   var children = Props.children;
   return React.createElement("code", {
-              className: "md-inline-code px-1 text-smaller-1 rounded-sm font-mono bg-snow"
+              className: "md-inline-code p-1 text-smaller-1 rounded-sm font-mono bg-snow"
             }, children);
 }
 
@@ -370,7 +370,7 @@ function Markdown$Code(Props) {
             });
       }
       return React.createElement("div", {
-                  className: "md-code font-mono w-full block  mt-4 mb-10"
+                  className: "md-code font-mono w-full block  mt-5 mb-5"
                 }, codeElement);
     }
   }
@@ -438,7 +438,7 @@ function Markdown$CodeTab(Props) {
           return acc;
         }));
   return React.createElement("div", {
-              className: "mt-4 mb-10 -mx-6 xs:mx-0"
+              className: "mt-5 mb-5 -mx-6 xs:mx-0"
             }, React.createElement(CodeExample.Toggle.make, {
                   tabs: tabs
                 }));
@@ -585,14 +585,14 @@ function Markdown$Li(Props) {
     }
   }
   return React.createElement("li", {
-              className: "md-li mt-3 leading-4 ml-4 text-lg"
+              className: "md-li mt-3 leading-4 ml-4 text-16"
             }, elements);
 }
 
 function Markdown$Strong(Props) {
   var children = Props.children;
   return React.createElement("strong", {
-              className: "font-semibold"
+              className: "font-semibold text-gray-90"
             }, children);
 }
 

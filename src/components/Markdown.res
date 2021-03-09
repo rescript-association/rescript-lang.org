@@ -3,7 +3,7 @@
 
 module P = {
   @react.component
-  let make = (~children) => <p className="md-p leading-5"> children </p>
+  let make = (~children) => <p className="md-p leading-4 text-gray-80 text-16"> children </p>
 }
 
 // Used for hero like introduction text in
@@ -112,18 +112,18 @@ module Anchor = {
     </span>
   }
 }
-
+// HEADLINES //
 module H1 = {
   @react.component
   let make = (~children) =>
-    <h1 className="text-6xl leading-1 mb-5 font-sans font-semibold text-night-dark"> children </h1>
+    <h1 className="text-42 tracking-tight leading-1 mb-5 font-sans font-medium text-gray-95"> children </h1>
 }
 
 module H2 = {
   @react.component
   let make = (~id, ~children) => <>
     // Here we know that children is always a string (## headline)
-    <h2 className="group mt-12 mb-3 text-28 leading-1 font-sans font-medium text-onyx">
+    <h2 className="group mt-12 mb-3 text-28 tracking-tight leading-1 font-sans font-medium text-gray-95">
       children <span className="ml-2"> <Anchor id /> </span>
     </h2>
   </>
@@ -132,7 +132,7 @@ module H2 = {
 module H3 = {
   @react.component
   let make = (~id, ~children) =>
-    <h3 className="group text-xl mt-12 mb-3 leading-3 font-sans font-semibold text-onyx">
+    <h3 className="group text-xl mt-12 mb-3 tracking-tight leading-3 font-sans font-semibold text-gray-95">
       children <span className="ml-2"> <Anchor id /> </span>
     </h3>
 }
@@ -140,7 +140,7 @@ module H3 = {
 module H4 = {
   @react.component
   let make = (~id, ~children) =>
-    <h4 className="group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-onyx">
+    <h4 className="group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-gray-95">
       children
       <span className="ml-2"> <Anchor id /> </span>
     </h4>
@@ -150,7 +150,7 @@ module H5 = {
   @react.component
   let make = (~id, ~children) =>
     <h5
-      className="group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide text-onyx">
+      className="group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide text-gray-95">
       children <span className="ml-2"> <Anchor id /> </span>
     </h5>
 }
@@ -163,7 +163,7 @@ module Pre = {
 module InlineCode = {
   @react.component
   let make = (~children) =>
-    <code className="md-inline-code px-1 text-smaller-1 rounded-sm font-mono bg-snow">
+    <code className="md-inline-code p-1 text-smaller-1 rounded-sm font-mono bg-snow">
       children
     </code>
 }
@@ -219,7 +219,7 @@ module Code = {
     ->Belt.Option.getWithDefault([])
 
   let makeCodeElement = (~code, ~metastring, ~lang) => {
-    let baseClass = "md-code font-mono w-full block  mt-4 mb-10"
+    let baseClass = "md-code font-mono w-full block  mt-5 mb-5"
     let codeElement = switch metastring {
     | None => <CodeExample code lang />
     | Some(metastring) =>
@@ -336,7 +336,7 @@ module CodeTab = {
       acc
     })
 
-    <div className="mt-4 mb-10 -mx-6 xs:mx-0"> <CodeExample.Toggle tabs /> </div>
+    <div className="mt-5 mb-5 -mx-6 xs:mx-0"> <CodeExample.Toggle tabs /> </div>
   }
 }
 
@@ -464,13 +464,13 @@ module Li = {
       }
     }
 
-    <li className="md-li mt-3 leading-4 ml-4 text-lg"> elements </li>
+    <li className="md-li mt-3 leading-4 ml-4 text-16"> elements </li>
   }
 }
 
 module Strong = {
   @react.component
-  let make = (~children) => <strong className="font-semibold"> children </strong>
+  let make = (~children) => <strong className="font-semibold text-gray-90"> children </strong>
 }
 
 // Useful for debugging injected values in props

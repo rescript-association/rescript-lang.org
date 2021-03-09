@@ -8,7 +8,7 @@
 @import "./_docsearch.css";
 
 body {
-  @apply font-sans bg-white;
+  @apply font-sans bg-white antialiased;
 }
 
 .hide-scrollbar::-webkit-scrollbar {

@@ -107,7 +107,7 @@ module CollapsibleLink = {
       <div
         className={(
           isOpen ? "flex" : "hidden"
-        ) ++ " fixed left-0 border-night border-t bg-onyx min-w-320 w-full h-full sm:h-auto sm:justify-center"}
+        ) ++ " fixed left-0 border-night border-t bg-gray-100 min-w-320 w-full h-full sm:h-auto sm:justify-center"}
         style={ReactDOMStyle.make(~marginTop="1.375rem", ())}>
         <div className="max-w-xl w-full"> children </div>
       </div>

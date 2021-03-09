@@ -90,8 +90,8 @@ module BlogHeader = {
     let authors = Belt.Array.concat([author], co_authors)
 
     <div className="flex flex-col items-center">
-      <div className="w-full max-w-705">
-        <div className="text-night-light text-lg mb-5">
+      <div className="w-full max-w-740">
+        <div className="text-gray-60 text-lg mb-5">
           {switch category {
           | Some(category) => <> {React.string(category)} {React.string(middleDotSpacer)} </>
           | None => React.null
@@ -103,7 +103,7 @@ module BlogHeader = {
           switch desc {
           | "" => <div className="mb-8" />
           | desc =>
-            <div className="my-8 text-onyx">
+            <div className="my-8 text-gray-95">
               <Markdown.Intro> {React.string(desc)} </Markdown.Intro>
             </div>
           }
@@ -128,7 +128,7 @@ module BlogHeader = {
             style={ReactDOMStyle.make(~maxHeight="33.625rem", ())}
           />
         </div>
-      | None => <div className="max-w-705 w-full"> <Line /> </div>
+      | None => <div className="max-w-740 w-full"> <Line /> </div>
       }}
     </div>
   }
@@ -200,7 +200,7 @@ let default = (props: props) => {
         />
       </div>
       <div className="flex justify-center">
-        <div className="max-w-705 w-full">
+        <div className="max-w-740 w-full">
           archivedNote
           children
           {switch canonical->Js.Null.toOption {

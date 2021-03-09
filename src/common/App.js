@@ -326,7 +326,7 @@ function make(props) {
                 }, React.createElement(Meta.make, tmp), React.createElement("div", {
                       className: "flex justify-center"
                     }, React.createElement("div", {
-                          className: "max-w-705 w-full"
+                          className: "max-w-740 w-full"
                         }, content)));
     }
     

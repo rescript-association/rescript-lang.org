@@ -241,7 +241,7 @@ function Packages$InfoSidebar$Toggle(Props) {
 function Packages$InfoSidebar(Props) {
   var setFilter = Props.setFilter;
   var filter = Props.filter;
-  var h2 = "group mb-3 text-14 uppercase  leading-1 font-sans font-medium text-onyx";
+  var h2 = "group mb-3 text-14 uppercase  leading-1 font-sans font-medium text-gray-95";
   return React.createElement("aside", {
               className: " border-l-2 p-4 py-12 border-fire-30 space-y-16"
             }, React.createElement("div", undefined, React.createElement("h2", {

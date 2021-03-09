@@ -7,7 +7,7 @@ import * as Markdown from "./Markdown.js";
 function ApiMarkdown$H1(Props) {
   var children = Props.children;
   return React.createElement("h1", {
-              className: "text-6xl leading-1 mb-2 font-sans font-medium text-night-dark"
+              className: "text-42 tracking-tight leading-1 mb-2 font-sans font-medium text-gray-95"
             }, children);
 }
 
