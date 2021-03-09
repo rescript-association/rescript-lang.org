@@ -1,3 +1,6 @@
+// NOTE: This file will later be important to document our
+//       design tokens etc.
+
 module ColorSquare = {
   @react.component
   let make = (~className="") => {
