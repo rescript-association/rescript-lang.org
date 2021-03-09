@@ -31,7 +31,7 @@ let requireSyntaxFile: string => MdxComp.t = %raw(`
 `)
 
 module Category = {
-  type t = Decorators | ControlFlow | Operators | LanguageConstructs | SpecialValues | Other
+  type t = Decorators | Operators | LanguageConstructs | SpecialValues | Other
 
   let toString = t =>
     switch t {
@@ -39,14 +39,12 @@ module Category = {
     | Operators => "Operators"
     | LanguageConstructs => "Language Constructs"
     | SpecialValues => "Special Values"
-    | ControlFlow => "Control Flow"
     | Other => "Other"
     }
 
   let fromString = (s: string): t => {
     switch s {
     | "decorators" => Decorators
-    | "controlflow" => ControlFlow
     | "specialvalues" => SpecialValues
     | "operators" => Operators
     | "languageconstructs" => LanguageConstructs
@@ -244,7 +242,6 @@ let make = () => {
       Decorators,
       Operators,
       LanguageConstructs,
-      ControlFlow,
       SpecialValues,
       Other,
     ]->Belt.Array.map(cat => {
