@@ -8,22 +8,22 @@ type colorTarget =
 
 let mapColor = (~target: colorTarget, c: Color.t): string =>
   switch (target, c) {
-  | (Fg, Black) => "text-black"
-  | (Fg, Red) => "text-fire"
-  | (Fg, Green) => "text-dark-code-3"
-  | (Fg, Yellow) => "text-dark-code-1"
-  | (Fg, Blue) => "text-dark-code-2"
+  | (Fg, Black) => "text-gray-100"
+  | (Fg, Red) => "text-fire-70"
+  | (Fg, Green) => "text-turtle-dark"
+  | (Fg, Yellow) => "text-orange-dark"
+  | (Fg, Blue) => "text-water-dark"
   | (Fg, Magenta) => "text-berry"
-  | (Fg, Cyan) => "text-dark-code-2"
-  | (Fg, White) => "text-snow-dark"
-  | (Bg, Black) => "bg-black"
+  | (Fg, Cyan) => "text-water-dark"
+  | (Fg, White) => "text-gray-10"
+  | (Bg, Black) => "bg-gray-100"
   | (Bg, Red) => "bg-fire"
-  | (Bg, Green) => "bg-dark-code-3"
-  | (Bg, Yellow) => "bg-dark-code-1"
-  | (Bg, Blue) => "bg-dark-code-2"
+  | (Bg, Green) => "bg-turtle-dark"
+  | (Bg, Yellow) => "bg-orange-dark"
+  | (Bg, Blue) => "bg-water-dark"
   | (Bg, Magenta) => "bg-berry"
-  | (Bg, Cyan) => "bg-dark-code-2"
-  | (Bg, White) => "bg-snow-dark"
+  | (Bg, Cyan) => "bg-water-dark"
+  | (Bg, White) => "bg-gray-10"
   }
 
 let renderSgrString = (~key: string, sgrStr: SgrString.t): React.element => {

@@ -10,7 +10,7 @@ module P = {
 // e.g Doc sections
 module Intro = {
   @react.component
-  let make = (~children) => <div className="text-xl mt-8 mb-4"> children </div>
+  let make = (~children) => <div className="text-21 mt-8 mb-4"> children </div>
 }
 
 module Cite = {
@@ -21,7 +21,7 @@ module Cite = {
     <div
       className="my-10 border-l-2 border-fire font-normal pl-10 py-1 text-fire"
       style={ReactDOM.Style.make(~maxWidth="30rem", ())}>
-      <blockquote className="text-3xl italic mb-2"> children </blockquote>
+      <blockquote className="text-32 italic mb-2"> children </blockquote>
       {Belt.Option.mapWithDefault(author, React.null, author =>
         <figcaption className="font-semibold text-sm"> {React.string(author)} </figcaption>
       )}
@@ -37,7 +37,7 @@ module Info = {
 module Warn = {
   @react.component
   let make = (~children) =>
-    <div className="border-l-2 border-gold my-6 py-6 pl-8 pr-10 bg-gold-10"> children </div>
+    <div className="border-l-2 border-orange my-6 py-6 pl-8 pr-10 bg-orange-10"> children </div>
 }
 
 module UrlBox = {
@@ -87,8 +87,8 @@ module UrlBox = {
       </Next.Link>
     }
     <div
-      className="md-url-box text-base border-l-2 border-night-light my-6 py-6 pl-8 pr-10 bg-snow">
-      content <div className="mt-4 text-sky hover:text-sky-80"> link </div>
+      className="md-url-box text-base border-l-2 border-gray-60 my-6 py-6 pl-8 pr-10 bg-gray-5">
+      content <div className="mt-4 text-sky hover:text-sky-30"> link </div>
     </div>
   }
 }
@@ -104,9 +104,9 @@ module Anchor = {
     let style = ReactDOM.Style.make(~position="absolute", ~top="-7rem", ())
     <span className="inline group relative">
       <a
-        className="invisible text-night-light opacity-50 text-inherit hover:opacity-100 hover:text-night-light hover:cursor-pointer group-hover:visible"
+        className="invisible text-gray-60 opacity-50 text-inherit hover:opacity-100 hover:text-gray-60 hover:cursor-pointer group-hover:visible"
         href={"#" ++ id}>
-        <Icon.Hyperlink className="inline-block align-middle text-snow-darker" />
+        <Icon.Hyperlink className="inline-block align-middle text-gray-20" />
       </a>
       <a style id />
     </span>
@@ -123,7 +123,7 @@ module H2 = {
   @react.component
   let make = (~id, ~children) => <>
     // Here we know that children is always a string (## headline)
-    <h2 className="group mt-12 mb-3 text-28 tracking-tight leading-1 font-sans font-medium text-gray-95">
+    <h2 className="group mt-12 mb-3 text-28 tracking-tight leading-1 font-sans font-semibold text-gray-95">
       children <span className="ml-2"> <Anchor id /> </span>
     </h2>
   </>
@@ -150,7 +150,7 @@ module H5 = {
   @react.component
   let make = (~id, ~children) =>
     <h5
-      className="group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide text-gray-95">
+      className="group mt-12 mb-3 text-12 leading-2 font-sans font-semibold uppercase tracking-wide text-gray-95">
       children <span className="ml-2"> <Anchor id /> </span>
     </h5>
 }
@@ -163,7 +163,7 @@ module Pre = {
 module InlineCode = {
   @react.component
   let make = (~children) =>
-    <code className="md-inline-code p-1 text-smaller-1 rounded-sm font-mono bg-snow">
+    <code className="md-inline-code py-1 px-2 text-smaller-1 rounded-sm font-mono text-gray-95 bg-gray-5-tr">
       children
     </code>
 }
@@ -185,14 +185,14 @@ module Th = {
   @react.component
   let make = (~children) =>
     <th
-      className="py-2 pr-8 text-sm uppercase font-medium tracking-wide text-left border-b-2 border-snow-darker">
+      className="py-2 pr-8 text-sm uppercase font-medium tracking-wide text-left border-b-2 border-gray-20">
       children
     </th>
 }
 
 module Td = {
   @react.component
-  let make = (~children) => <td className="border-b border-snow-darker py-3 pr-8"> children </td>
+  let make = (~children) => <td className="border-b border-gray-20 py-3 pr-8"> children </td>
 }
 
 module Code = {

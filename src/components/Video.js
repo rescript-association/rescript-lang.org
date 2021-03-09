@@ -20,7 +20,7 @@ function Video$default(Props) {
                           allowFullScreen: true,
                           src: src
                         }))), caption !== undefined ? React.createElement("div", {
-                    className: "mt-4 text-14 text-night-light md:ml-16"
+                    className: "mt-4 text-14 text-gray-80 md:ml-16"
                   }, caption) : null);
 }
 

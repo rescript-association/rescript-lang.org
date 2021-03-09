@@ -79,10 +79,10 @@ let make = (
     onFocus=onAreaFocus
     onBlur
     className={(
-      state === Active ? "border-fire" : "border-fire-40"
+      state === Active ? "border-fire" : "border-fire-30"
     ) ++ " flex items-center border rounded-lg py-4 px-5"}>
     <Icon.MagnifierGlass
-      className={(state === Active ? "text-fire" : "text-fire-80") ++ " w-4 h-4"}
+      className={(state === Active ? "text-fire" : "text-fire-70") ++ " w-4 h-4"}
     />
     <input
       value

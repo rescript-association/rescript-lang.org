@@ -2,7 +2,7 @@ module Section = {
   @react.component
   let make = (~title, ~children) => {
     <div>
-      <span className="block text-night-light tracking-wide text-14 uppercase mb-4">
+      <span className="block text-gray-60 tracking-wide text-14 uppercase mb-4">
         {React.string(title)}
       </span>
       children

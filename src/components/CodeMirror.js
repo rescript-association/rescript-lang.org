@@ -61,7 +61,7 @@ var $$Error = {};
 
 function make(rowCol, kind, param) {
   var marker = document.createElement("div");
-  var colorClass = kind === "Error" ? "text-fire bg-fire-15" : "text-gold bg-gold-15";
+  var colorClass = kind === "Error" ? "text-fire bg-fire-10" : "text-orange bg-orange-15";
   marker.id = "gutter-marker_" + rowCol[0] + "-" + rowCol[1];
   marker.className = "flex items-center justify-center text-14 text-center ml-1 h-6 font-bold hover:cursor-pointer " + colorClass;
   marker.innerHTML = "!";
@@ -119,7 +119,7 @@ function updateErrors(state, onMarkerFocus, onMarkerFocusLeave, cm, errors) {
             ch: to__ch
           };
           var match = e.kind;
-          var markTextColor = match === "Error" ? "border-fire" : "border-gold";
+          var markTextColor = match === "Error" ? "border-fire" : "border-orange";
           var __x = cm.markText(from, to_, {
                 className: "border-b border-dotted hover:cursor-pointer " + markTextColor,
                 attributes: {

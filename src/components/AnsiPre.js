@@ -9,39 +9,39 @@ function mapColor(target, c) {
   if (target) {
     switch (c) {
       case /* Black */0 :
-          return "bg-black";
+          return "bg-gray-100";
       case /* Red */1 :
           return "bg-fire";
       case /* Green */2 :
-          return "bg-dark-code-3";
+          return "bg-turtle-dark";
       case /* Yellow */3 :
-          return "bg-dark-code-1";
+          return "bg-orange-dark";
       case /* Magenta */5 :
           return "bg-berry";
       case /* Blue */4 :
       case /* Cyan */6 :
-          return "bg-dark-code-2";
+          return "bg-water-dark";
       case /* White */7 :
-          return "bg-snow-dark";
+          return "bg-gray-10";
       
     }
   } else {
     switch (c) {
       case /* Black */0 :
-          return "text-black";
+          return "text-gray-100";
       case /* Red */1 :
-          return "text-fire";
+          return "text-fire-70";
       case /* Green */2 :
-          return "text-dark-code-3";
+          return "text-turtle-dark";
       case /* Yellow */3 :
-          return "text-dark-code-1";
+          return "text-orange-dark";
       case /* Magenta */5 :
           return "text-berry";
       case /* Blue */4 :
       case /* Cyan */6 :
-          return "text-dark-code-2";
+          return "text-water-dark";
       case /* White */7 :
-          return "text-snow-dark";
+          return "text-gray-10";
       
     }
   }

@@ -26,7 +26,7 @@ var P = {
 function Markdown$Intro(Props) {
   var children = Props.children;
   return React.createElement("div", {
-              className: "text-xl mt-8 mb-4"
+              className: "text-21 mt-8 mb-4"
             }, children);
 }
 
@@ -43,7 +43,7 @@ function Markdown$Cite(Props) {
                 maxWidth: "30rem"
               }
             }, React.createElement("blockquote", {
-                  className: "text-3xl italic mb-2"
+                  className: "text-32 italic mb-2"
                 }, children), Belt_Option.mapWithDefault(author, null, (function (author) {
                     return React.createElement("figcaption", {
                                 className: "font-semibold text-sm"
@@ -69,7 +69,7 @@ var Info = {
 function Markdown$Warn(Props) {
   var children = Props.children;
   return React.createElement("div", {
-              className: "border-l-2 border-gold my-6 py-6 pl-8 pr-10 bg-gold-10"
+              className: "border-l-2 border-orange my-6 py-6 pl-8 pr-10 bg-orange-10"
             }, children);
 }
 
@@ -130,9 +130,9 @@ function Markdown$UrlBox(Props) {
                   }))
         });
   return React.createElement("div", {
-              className: "md-url-box text-base border-l-2 border-night-light my-6 py-6 pl-8 pr-10 bg-snow"
+              className: "md-url-box text-base border-l-2 border-gray-60 my-6 py-6 pl-8 pr-10 bg-gray-5"
             }, content, React.createElement("div", {
-                  className: "mt-4 text-sky hover:text-sky-80"
+                  className: "mt-4 text-sky hover:text-sky-30"
                 }, link));
 }
 
@@ -145,10 +145,10 @@ function Markdown$Anchor(Props) {
   return React.createElement("span", {
               className: "inline group relative"
             }, React.createElement("a", {
-                  className: "invisible text-night-light opacity-50 text-inherit hover:opacity-100 hover:text-night-light hover:cursor-pointer group-hover:visible",
+                  className: "invisible text-gray-60 opacity-50 text-inherit hover:opacity-100 hover:text-gray-60 hover:cursor-pointer group-hover:visible",
                   href: "#" + id
                 }, React.createElement(Icon.Hyperlink.make, {
-                      className: "inline-block align-middle text-snow-darker"
+                      className: "inline-block align-middle text-gray-20"
                     })), React.createElement("a", {
                   id: id,
                   style: style
@@ -174,7 +174,7 @@ function Markdown$H2(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement(React.Fragment, undefined, React.createElement("h2", {
-                  className: "group mt-12 mb-3 text-28 tracking-tight leading-1 font-sans font-medium text-gray-95"
+                  className: "group mt-12 mb-3 text-28 tracking-tight leading-1 font-sans font-semibold text-gray-95"
                 }, children, React.createElement("span", {
                       className: "ml-2"
                     }, React.createElement(Markdown$Anchor, {
@@ -222,7 +222,7 @@ function Markdown$H5(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h5", {
-              className: "group mt-12 mb-3 text-xs leading-2 font-sans font-semibold uppercase tracking-wide text-gray-95"
+              className: "group mt-12 mb-3 text-12 leading-2 font-sans font-semibold uppercase tracking-wide text-gray-95"
             }, children, React.createElement("span", {
                   className: "ml-2"
                 }, React.createElement(Markdown$Anchor, {
@@ -248,7 +248,7 @@ var Pre = {
 function Markdown$InlineCode(Props) {
   var children = Props.children;
   return React.createElement("code", {
-              className: "md-inline-code p-1 text-smaller-1 rounded-sm font-mono bg-snow"
+              className: "md-inline-code py-1 px-2 text-smaller-1 rounded-sm font-mono text-gray-95 bg-gray-5-tr"
             }, children);
 }
 
@@ -281,7 +281,7 @@ var Thead = {
 function Markdown$Th(Props) {
   var children = Props.children;
   return React.createElement("th", {
-              className: "py-2 pr-8 text-sm uppercase font-medium tracking-wide text-left border-b-2 border-snow-darker"
+              className: "py-2 pr-8 text-sm uppercase font-medium tracking-wide text-left border-b-2 border-gray-20"
             }, children);
 }
 
@@ -292,7 +292,7 @@ var Th = {
 function Markdown$Td(Props) {
   var children = Props.children;
   return React.createElement("td", {
-              className: "border-b border-snow-darker py-3 pr-8"
+              className: "border-b border-gray-20 py-3 pr-8"
             }, children);
 }
 

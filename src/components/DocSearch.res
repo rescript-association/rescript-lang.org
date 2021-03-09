@@ -74,7 +74,7 @@ let make = () => {
   let activeInput = isActive ? "w-32 mr-3" : "w-0"
 
   <div
-    className={activeClass ++ " bg-night hover:text-white hover:cursor-pointer flex justify-center p-2 px-3 rounded"}
+    className={activeClass ++ " bg-gray-80 hover:text-white hover:cursor-pointer flex justify-center p-2 px-3 rounded"}
     onClick>
     <input
       ref={ReactDOM.Ref.domRef(inputRef)}
@@ -82,7 +82,7 @@ let make = () => {
       id="docsearch"
       onBlur
       onKeyDown
-      className={"transition-all ease-in-out duration-150 text-white bg-night border-none focus:outline-none " ++
+      className={"transition-all ease-in-out duration-150 text-white bg-gray-80 border-none focus:outline-none " ++
       activeInput}
     />
     <Icon.MagnifierGlass className="w-5 h-5" />
@@ -147,7 +147,7 @@ module Textbox = {
     let activeInput = isActive ? "" : ""
 
     <div
-      className={activeClass ++ " hover:text-white hover:cursor-pointer bg-night flex items-center p-2 px-3 rounded"}
+      className={activeClass ++ " hover:text-white hover:cursor-pointer bg-gray-80 flex items-center p-2 px-3 rounded"}
       onClick>
       <Icon.MagnifierGlass className="w-5 h-5 mr-3" />
       <input
@@ -156,7 +156,7 @@ module Textbox = {
         id
         onBlur
         onKeyDown
-        className={"w-32 bg-night focus:outline-none " ++ activeInput}
+        className={"w-32 bg-gray-80 focus:outline-none " ++ activeInput}
       />
     </div>
   }

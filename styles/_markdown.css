@@ -2,7 +2,7 @@
 /* Sometimes we cannot circumvent the cascade, especially for nested lists */
 
 .md-ul, .md-ol {
-  @apply mb-4;
+  @apply mb-8;
 }
 
 .md-ul ul {
@@ -15,7 +15,7 @@
 
 .md-ol > .md-li p::before {
   content: counter(li) ".";
-  @apply text-night-dark font-semibold inline-block w-6 -ml-6;
+  @apply font-semibold inline-block w-6 -ml-6;
 }
 
 .md-ul > .md-li p::before {

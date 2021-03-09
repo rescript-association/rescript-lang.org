@@ -18,7 +18,7 @@ import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 function SidebarLayout$Toc(Props) {
   var entries = Props.entries;
   return React.createElement("ul", {
-              className: "mt-2 py-1 mb-4 border-l border-primary"
+              className: "mt-2 py-1 mb-4 border-l border-fire"
             }, Belt_Array.map(entries, (function (param) {
                     var header = param.header;
                     return React.createElement("li", {

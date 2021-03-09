@@ -34,7 +34,7 @@ function Playground$DropdownSelect(Props) {
   var disabled = disabledOpt !== undefined ? disabledOpt : false;
   var opacity = disabled ? " opacity-50" : "";
   return React.createElement("select", {
-              className: "text-14 bg-transparent border border-night-light inline-block rounded px-4 py-1 font-semibold" + opacity,
+              className: "text-14 bg-transparent border border-gray-80 inline-block rounded px-4 py-1 font-semibold" + opacity,
               disabled: disabled,
               name: name,
               value: value,
@@ -145,7 +145,7 @@ function Playground$Pane(Props) {
                     }, tab.content);
         }));
   return React.createElement("div", undefined, React.createElement("div", undefined, React.createElement("div", {
-                      className: "flex bg-night-10 w-full " + (
+                      className: "flex bg-gray-100 w-full " + (
                         disabled ? "opacity-50" : ""
                       )
                     }, headers), React.createElement("div", undefined, body)));
@@ -274,14 +274,14 @@ function Playground$Statusbar(Props) {
   var result = ready.result;
   var activityIndicatorColor;
   if (typeof result === "number") {
-    activityIndicatorColor = "bg-dark-code-3";
+    activityIndicatorColor = "bg-turtle-dark";
   } else if (result.TAG === /* Conv */0) {
-    activityIndicatorColor = result._0.TAG === /* Success */0 ? "bg-dark-code-3" : "bg-fire-80";
+    activityIndicatorColor = result._0.TAG === /* Success */0 ? "bg-turtle-dark" : "bg-fire-70";
   } else {
     var match = result._0;
     activityIndicatorColor = match.TAG === /* Success */1 ? (
-        match._0.warnings.length === 0 ? "bg-dark-code-3" : "bg-code-5"
-      ) : "bg-fire-80";
+        match._0.warnings.length === 0 ? "bg-turtle-dark" : "bg-orange-dark"
+      ) : "bg-fire-70";
   }
   return React.createElement("div", {
               className: "py-2 pb-3 flex items-center text-white " + activityIndicatorColor
@@ -304,19 +304,19 @@ function Playground$ResultPane$PreWrap(Props) {
 
 function compactErrorLine(highlightOpt, prefix, locMsg) {
   var highlight = highlightOpt !== undefined ? highlightOpt : false;
-  var prefixColor = prefix === "W" ? "text-code-5" : "text-fire";
+  var prefixColor = prefix === "W" ? "text-orange-dark" : "text-fire";
   var prefixText = prefix === "W" ? "[W]" : "[E]";
   var highlightClass = highlight ? (
-      prefix === "W" ? "bg-gold-15" : "bg-fire-15 rounded"
+      prefix === "W" ? "bg-orange-15" : "bg-fire-10 rounded"
     ) : "";
   return React.createElement("div", {
-              className: "font-mono mb-4 pb-6 last:mb-0 last:pb-0 last:border-0 border-b border-night-light "
+              className: "font-mono mb-4 pb-6 last:mb-0 last:pb-0 last:border-0 border-b border-gray-80 "
             }, React.createElement("div", {
                   className: "p-2 " + highlightClass
                 }, React.createElement("span", {
                       className: prefixColor
                     }, prefixText), React.createElement("span", {
-                      className: "font-medium text-night-light"
+                      className: "font-medium text-gray-40"
                     }, " Line " + locMsg.row + ", column " + locMsg.column + ":"), React.createElement(AnsiPre.make, {
                       className: "whitespace-pre-wrap ",
                       children: locMsg.shortMsg
@@ -487,7 +487,7 @@ function renderResult(focusedRowCol, targetLang, compilerVersion, result) {
       
     }
   }
-  var subheader = "font-bold text-night-light text-16";
+  var subheader = "font-bold text-gray-40 text-16";
   return React.createElement("div", undefined, React.createElement(Playground$ResultPane$PreWrap, {
                   children: null
                 }, "The compiler bundle API returned a result that couldn't be interpreted. Please open an issue on our ", React.createElement(Markdown.A.make, {
@@ -511,8 +511,8 @@ function renderResult(focusedRowCol, targetLang, compilerVersion, result) {
 
 function renderTitle$1(result) {
   var errClass = "text-fire";
-  var warnClass = "text-code-5";
-  var okClass = "text-dark-code-3";
+  var warnClass = "text-orange-dark";
+  var okClass = "text-turtle-dark";
   var match;
   if (typeof result === "number") {
     match = [
@@ -621,7 +621,7 @@ function Playground$ResultPane(Props) {
   var focusedRowCol = Props.focusedRowCol;
   var result = Props.result;
   return React.createElement("div", {
-              className: "pt-4 bg-night-dark overflow-y-auto hide-scrollbar"
+              className: "pt-4 bg-gray-95 overflow-y-auto hide-scrollbar"
             }, React.createElement("div", {
                   className: "flex items-center text-16 font-medium px-4"
                 }, React.createElement("div", {
@@ -629,7 +629,7 @@ function Playground$ResultPane(Props) {
                     }, renderTitle$1(result))), React.createElement("div", {
                   className: ""
                 }, React.createElement("div", {
-                      className: "bg-night-dark text-snow-darker px-4 py-4"
+                      className: "bg-gray-95 text-gray-10 px-4 py-4"
                     }, renderResult(focusedRowCol, targetLang, compilerVersion, result))));
 }
 
@@ -765,9 +765,9 @@ function Playground$WarningFlagsWidget(Props) {
             enabled ? "+" : "-"
           ) + flag;
           var color = enabled ? (
-              isActive ? "bg-night-light text-dark-code-3" : "text-dark-code-3"
+              isActive ? "bg-gray-40 text-turtle-dark" : "text-turtle-dark"
             ) : (
-              isActive ? "bg-night-light text-fire" : "text-fire"
+              isActive ? "bg-gray-40 text-fire" : "text-fire"
             );
           var hoverEnabled;
           switch (state.TAG | 0) {
@@ -826,7 +826,7 @@ function Playground$WarningFlagsWidget(Props) {
           };
           var tmp = {
             key: String(i) + flag,
-            className: color + " hover:cursor-default text-16 inline-block border border-night-light rounded-full px-2 mr-1",
+            className: color + " hover:cursor-default text-16 inline-block border border-gray-40 rounded-full px-2 mr-1",
             onClick: onClick
           };
           var tmp$1 = match[0];
@@ -1025,7 +1025,7 @@ function Playground$WarningFlagsWidget(Props) {
         suggestions = Caml_option.some(Belt_Array.map(WarningFlagDescription.lookup(token.flag), (function (param) {
                     var match = token.enabled ? [
                         "(Enabled) ",
-                        "text-dark-code-3"
+                        "text-turtle-dark"
                       ] : [
                         "(Disabled) ",
                         "text-fire"
@@ -1048,7 +1048,7 @@ function Playground$WarningFlagsWidget(Props) {
           var modifier = msg.modifier;
           tmp = Belt_Array.mapWithIndex(msg.results, (function (i, param) {
                   var flag = param[0];
-                  var activeClass = selected === i ? "bg-night-light" : "";
+                  var activeClass = selected === i ? "bg-gray-40" : "";
                   var ref = selected === i ? Caml_option.some(function (dom) {
                           var parent = listboxRef.current;
                           if (!(parent == null) && !(dom == null)) {
@@ -1234,14 +1234,14 @@ function Playground$WarningFlagsWidget(Props) {
       
     };
     deleteButton = React.createElement("button", {
-          className: "focus:outline-none self-start focus:shadow-outline hover:cursor-pointer hover:bg-night-light p-2 rounded-full",
+          className: "focus:outline-none self-start focus:shadow-outline hover:cursor-pointer hover:bg-gray-40 p-2 rounded-full",
           tabIndex: 0,
           onFocus: onFocus$1,
           onClick: onClick,
           onMouseDown: onMouseDown
         }, React.createElement(Icon.Close.make, {}));
   }
-  var activeClass = isActive ? "border-white" : "border-night-light";
+  var activeClass = isActive ? "border-white" : "border-gray-60";
   var areaOnFocus = function (_evt) {
     if (!isActive) {
       return Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (el) {
@@ -1283,7 +1283,7 @@ function Playground$WarningFlagsWidget(Props) {
                   className: "flex justify-between border p-2 " + activeClass
                 }, React.createElement("div", undefined, chips, React.createElement("input", {
                           ref: inputRef,
-                          className: "outline-none bg-night-dark placeholder-snow-darker placeholder-opacity-50",
+                          className: "outline-none bg-gray-90 placeholder-gray-20 placeholder-opacity-50",
                           tabIndex: 0,
                           placeholder: "Flags",
                           type: "text",
@@ -1341,7 +1341,7 @@ function Playground$Settings(Props) {
   };
   var titleClass = "text-18 font-bold mb-2";
   return React.createElement("div", {
-              className: "p-4 pt-8 bg-night-dark text-snow-darker"
+              className: "p-4 pt-8 bg-gray-95 text-gray-20"
             }, React.createElement("div", undefined, React.createElement("div", {
                       className: titleClass
                     }, "ReScript Version"), React.createElement(Playground$DropdownSelect, {
@@ -1421,7 +1421,7 @@ function Playground$ControlPanel$Button(Props) {
   var children = Props.children;
   var onClick = Props.onClick;
   var tmp = {
-    className: "inline-block text-sky hover:cursor-pointer hover:bg-sky hover:text-white-80 rounded border active:bg-sky-80 border-sky-80 px-2 py-1 "
+    className: "inline-block text-sky hover:cursor-pointer hover:bg-sky hover:text-white-80 rounded border active:bg-sky-70 border-sky-70 px-2 py-1 "
   };
   if (onClick !== undefined) {
     tmp.onClick = Caml_option.valFromOption(onClick);
@@ -1478,10 +1478,10 @@ function Playground$ControlPanel$ShareButton(Props) {
   };
   var match$1 = match[0] ? [
       "Copied to clipboard!",
-      "bg-dark-code-3 border-dark-code-3"
+      "bg-turtle-dark border-turtle-dark"
     ] : [
       "Copy Share Link",
-      " bg-sky active:bg-sky-80 border-sky-80"
+      " bg-sky active:bg-sky-70 border-sky-70"
     ];
   return React.createElement(React.Fragment, undefined, React.createElement("button", {
                   className: match$1[1] + " w-40 transition-all duration-500 ease-in-out inline-block hover:cursor-pointer hover:text-white-80 text-white rounded border px-2 py-1 ",
@@ -1556,7 +1556,7 @@ function Playground$ControlPanel(Props) {
             }));
   }
   return React.createElement("div", {
-              className: "flex justify-end items-center h-12 bg-night-10 px-4"
+              className: "flex justify-end items-center h-12 bg-gray-100 px-4"
             }, children);
 }
 
@@ -1703,7 +1703,7 @@ function Playground$OutputPanel(Props) {
         }
       }, HighlightJs.renderHLJS(undefined, true, match$2[0], "js", undefined));
   var output = React.createElement("div", {
-        className: "relative w-full bg-night-dark text-snow-darker",
+        className: "relative w-full bg-gray-95 text-gray-20",
         style: {
           height: "calc(100vh - 9rem)"
         }
@@ -1791,11 +1791,11 @@ function Playground$OutputPanel(Props) {
     }
   ];
   var makeTabClass = function (active) {
-    var activeClass = active ? "text-fire font-medium bg-night-dark hover:cursor-default" : "";
+    var activeClass = active ? "text-fire font-medium bg-gray-95 hover:cursor-default" : "";
     return "flex items-center h-12 px-4 pr-16 " + activeClass;
   };
   return React.createElement("div", {
-              className: "h-full bg-night-dark"
+              className: "h-full bg-gray-95"
             }, React.createElement(Playground$Pane, {
                   tabs: tabs,
                   makeTabClass: makeTabClass
@@ -1946,7 +1946,7 @@ function Playground$default(Props) {
     cmErrors = [];
   }
   var tmp = {
-    className: "w-full lg:border-r-4 pl-2 border-night"
+    className: "w-full lg:border-r-2 pl-2 border-gray-80"
   };
   var tmp$1 = windowWidth > 1024 ? ({
         maxWidth: "65%"
@@ -1962,7 +1962,7 @@ function Playground$default(Props) {
                 }), React.createElement("div", {
                   className: "text-16 bg-gray-100"
                 }, React.createElement("div", {
-                      className: "text-night text-14"
+                      className: "text-gray-60 text-14"
                     }, React.createElement(Navigation.make, {
                           fixed: false,
                           overlayState: overlayState
@@ -1972,9 +1972,9 @@ function Playground$default(Props) {
                             maxHeight: "calc(100vh - 4.5rem)"
                           }
                         }, React.createElement("div", {
-                              className: "w-full h-full flex flex-col lg:flex-row border-t-4 border-night"
+                              className: "w-full h-full flex flex-col lg:flex-row border-t-2 border-gray-80"
                             }, React.createElement("div", tmp, React.createElement("div", {
-                                      className: "bg-gray-100 text-snow-darker"
+                                      className: "bg-gray-100 text-gray-20"
                                     }, React.createElement(Playground$ControlPanel, {
                                           actionIndicatorKey: String(actionCount),
                                           state: compilerState,

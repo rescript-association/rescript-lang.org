@@ -4,7 +4,7 @@ module CallToActionButton = {
   @react.component
   let make = (~children) =>
     <button
-      className="transition-colors duration-200 inline-block text-base text-white hover:bg-fire-80 hover:text-white bg-fire rounded border border-fire-80 px-5 py-2">
+      className="transition-colors duration-200 inline-block text-base text-white hover:bg-fire-70 hover:text-white hover:border-fire-70 bg-fire rounded border border-fire px-5 py-2">
       children
     </button>
 }
@@ -13,7 +13,7 @@ module SubtleButton = {
   @react.component
   let make = (~children) =>
     <button
-      className="transition-colors duration-200 inline-block text-base text-fire rounded border-2 border-fire-80 hover:bg-fire-10 px-5 py-2">
+      className="transition-colors duration-200 inline-block text-base text-fire rounded border-2 border-fire-10 hover:bg-fire-10 px-5 py-2">
       children
     </button>
 }
@@ -25,7 +25,7 @@ let make = (~components=Markdown.default, ~children) => {
   <>
     <Meta />
     <div className="mt-4 xs:mt-16">
-      <div className="text-night text-lg">
+      <div className="text-gray-80 text-lg">
         <Navigation overlayState />
         <div className="absolute top-18 w-full">
           <div

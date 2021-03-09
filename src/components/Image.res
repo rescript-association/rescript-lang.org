@@ -13,7 +13,7 @@ let default = (~src: string, ~withShadow=false, ~caption: option<string>=?) => {
     </a>
     {switch caption {
     | None => React.null
-    | Some(caption) => <div className="mt-4 text-14 text-night-light md:ml-16"> {React.string(caption)} </div>
+    | Some(caption) => <div className="mt-4 text-14 text-gray-60 md:ml-16"> {React.string(caption)} </div>
     }}
   </div>
 }

@@ -76,14 +76,14 @@ function SearchBox(Props) {
   };
   return React.createElement("div", {
               className: (
-                state === /* Active */0 ? "border-fire" : "border-fire-40"
+                state === /* Active */0 ? "border-fire" : "border-fire-30"
               ) + " flex items-center border rounded-lg py-4 px-5",
               tabIndex: -1,
               onFocus: onAreaFocus,
               onBlur: onBlur
             }, React.createElement(Icon.MagnifierGlass.make, {
                   className: (
-                    state === /* Active */0 ? "text-fire" : "text-fire-80"
+                    state === /* Active */0 ? "text-fire" : "text-fire-70"
                   ) + " w-4 h-4"
                 }), React.createElement("input", {
                   ref: textInput,

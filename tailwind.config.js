@@ -67,80 +67,46 @@ module.exports = {
           "80-tr": "rgba(1, 4, 39, 0.8)",
           "95-tr": "rgba(1, 4, 39, 0.95)",
         },
-        night: {
-          darker: "#010427",
-          dark: "#0A0D2F",
-          default: "#3E4057",
-          light: "#727489",
-          "10": "rgba(62, 64, 87, 0.10)",
-          "60": "rgba(62, 64, 87, 0.60)"
-        },
-        snow: {
-          light: "#FAFAFA",
-          default: "#F4F4F5",
-          dark: "#EAEBED",
-          darker: "#BCBEC9"
-        },
         white: {
           default: "#FFFFFF",
           "80": "rgba(255,255,255,0.8)"
         },
+        //primary, secondary:
         fire: {
-          default: "#E6484F",
-          "80": "rgba(230,72,79, 0.8)",
-          "40": "rgba(230,72,79, 0.4)",
+          default: "#E6484F", //"50"
+          "90": "#790C10",
+          "70": "#C3373d",
           "30": "#EDA7AA",
-          "15": "rgba(230, 72, 79, 0.15)",
           "10": "#FDE7E8",
-          "10-tr": "rgba(230, 72, 79, 0.1)"
         },
         sky: {
-          default: "#376FDD",
-          "80": "rgba(55, 111, 221, 0.8)",
-          "40": "rgba(55, 111, 221, 0.4)",
-          "15": "rgba(55, 111, 221, 0.15)",
-          "10": "rgba(55, 111, 221, 0.10)"
+          default: "#376FDD", //"50"
+          "90": "#0C2E6F",
+          "70": "#2258C3",
+          "30": "#638FE6",
+          "10": "#DDE8FD",
         },
+        //code-colors start:
         berry: {
-          default: "#AB5EA3",
-          "80": "rgba(171, 94, 163, 0.8)",
-          "40": "rgba(171, 94, 163, 0.4)",
+          default: "#B151DD",
+          "40": "#A766D0",
           "15": "rgba(171, 94, 163, 0.15)"
         },
-        turtle: {
-          default: "#38B790"
+        water: {
+          default: "#5E5EDE",
+          dark: "#637CC1",
         },
-        gold: {
+        turtle: {
+          default: "#30CB9B",
+          dark: "#388B72",
+        },
+        orange: {
           light: "#FFC833",
-          default: "#E0AC00",
-          dark: "#C19400",
+          default: "#EA9743",
+          dark: "#D59B74",
           "15": "rgba(224, 172, 0, 0.15)",
           "10": "rgba(224, 172, 0, 0.10)"
         },
-        primary: {
-          dark: "var(--color-text-primary-dark)",
-          default: "var(--color-text-primary)",
-          light: "var(--color-text-primary-light)",
-          "15": "var(--color-text-primary-15)",
-          "40": "var(--color-text-primary-40)",
-          "80": "var(--color-text-primary-80)"
-        },
-        "dark-code": {
-          "1": "#DE935F",
-          "2": "#81A2BE",
-          "3": "#60915F",
-          "4": "#999999"
-        },
-        code: {
-          "1": "#DE935F",
-          "2": "#81A2BE",
-          "3": "#60915F",
-          "4": "#999999",
-          "5": "#D1BC72"
-        },
-        "light-grey": "rgba(245, 245, 245, 0.5)",
-        "light-grey-20": "rgba(245, 245, 245, 0.2)",
-        "ghost-white": "#F8F7F9"
       },
       height: {
         "18": "4.5rem" // 72px
@@ -190,6 +156,7 @@ module.exports = {
       "18": "1.125rem",
       "21": "1.3125rem",
       "28": "1.75rem",
+      "32": "2rem",
       "42": "2.625rem",
       "48": "3rem",
       "80": "5rem",

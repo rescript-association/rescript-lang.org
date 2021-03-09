@@ -27,7 +27,7 @@ var middleDotSpacer = " " + (String.fromCharCode(183) + " ");
 
 function Blog$Badge(Props) {
   var badge = Props.badge;
-  var bgColor = badge !== 1 ? "bg-turtle" : "bg-code-1";
+  var bgColor = badge !== 1 ? "bg-turtle" : "bg-orange";
   var text = BlogFrontmatter.Badge.toString(badge);
   return React.createElement("div", {
               className: bgColor + " flex items-center h-6 font-medium tracking-tight text-gray-80-tr text-14 px-2 rounded-sm"
@@ -109,7 +109,7 @@ function Blog$BlogCard(Props) {
                                 className: $$Text.H3.$$default
                               }, title))
                     }), React.createElement("div", {
-                      className: "text-night-light text-sm"
+                      className: "text-gray-60 text-14"
                     }, category !== undefined ? React.createElement(React.Fragment, undefined, category, " · ") : null, Util.$$Date.toDayMonthYear(date))));
 }
 
@@ -214,7 +214,7 @@ function $$default(props) {
         }, React.createElement(Markdown.Warn.make, {
               children: null
             }, React.createElement("h2", {
-                  className: "font-bold text-night-dark text-2xl mb-2"
+                  className: "font-bold text-gray-95 text-2xl mb-2"
                 }, "Some Blog Posts are Malformed!"), React.createElement("p", undefined, "Any blog post with invalid data will not be displayed in production."), React.createElement("div", undefined, React.createElement("p", {
                       className: "font-bold mt-4"
                     }, "Errors:"), React.createElement("ul", undefined, Belt_Array.mapWithIndex(malformed, (function (i, m) {
@@ -336,7 +336,7 @@ function $$default(props) {
                 }), React.createElement("div", {
                   className: "mt-16 pt-2"
                 }, React.createElement("div", {
-                      className: "text-night text-lg"
+                      className: "text-gray-80 text-lg"
                     }, React.createElement(Navigation.make, {
                           overlayState: overlayState
                         }), React.createElement("div", {

@@ -28,7 +28,7 @@ module Badge = {
   let make = (~badge: BlogFrontmatter.Badge.t) => {
     let bgColor = switch badge {
     | Preview | Roadmap | Release => "bg-turtle"
-    | Testing => "bg-code-1"
+    | Testing => "bg-orange"
     }
 
     let text = badge->BlogFrontmatter.Badge.toString
@@ -121,7 +121,7 @@ module BlogCard = {
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
           <a> <h2 className=Text.H3.default> {React.string(title)} </h2> </a>
         </Link>
-        <div className="text-night-light text-sm">
+        <div className="text-gray-60 text-14">
           {switch category {
           | Some(category) => <> {React.string(category)} {React.string(j` · `)} </>
           | None => React.null
@@ -264,7 +264,7 @@ let default = (props: props): React.element => {
   let errorBox = if ProcessEnv.env === ProcessEnv.development && Belt.Array.length(malformed) > 0 {
     <div className="mb-12">
       <Markdown.Warn>
-        <h2 className="font-bold text-night-dark text-2xl mb-2">
+        <h2 className="font-bold text-gray-95 text-2xl mb-2">
           {React.string("Some Blog Posts are Malformed!")}
         </h2>
         <p>
@@ -381,7 +381,7 @@ let default = (props: props): React.element => {
       description="News, Announcements, Release Notes and more"
     />
     <div className="mt-16 pt-2">
-      <div className="text-night text-lg">
+      <div className="text-gray-80 text-lg">
         <Navigation overlayState />
         <div className="flex justify-center overflow-hidden">
           <main className="min-w-320 lg:align-center w-full lg:px-0 max-w-1280 pb-48">

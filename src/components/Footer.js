@@ -9,7 +9,7 @@ function Footer$Section(Props) {
   var title = Props.title;
   var children = Props.children;
   return React.createElement("div", undefined, React.createElement("span", {
-                  className: "block text-night-light tracking-wide text-14 uppercase mb-4"
+                  className: "block text-gray-60 tracking-wide text-14 uppercase mb-4"
                 }, title), children);
 }
 

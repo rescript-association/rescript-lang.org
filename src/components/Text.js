@@ -2,7 +2,7 @@
 
 
 var Link = {
-  inline: "no-underline border-b border-night-dark hover:border-bs-purple text-inherit",
+  inline: "no-underline border-b border-gray-95 hover:border-bs-purple text-inherit",
   standalone: "no-underline text-fire"
 };
 

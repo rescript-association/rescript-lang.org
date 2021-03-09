@@ -131,10 +131,10 @@ var useWindowWidth = (() => {
 
 function Navigation$MobileNav(Props) {
   var route = Props.route;
-  var base = "font-light mx-4 py-5 text-white-80 border-b border-night";
-  var extLink = "block hover:cursor-pointer hover:text-white text-night-light";
+  var base = "font-light mx-4 py-5 text-white-80 border-b border-gray-80";
+  var extLink = "block hover:cursor-pointer hover:text-white text-gray-60";
   return React.createElement("div", {
-              className: "border-night border-t"
+              className: "border-gray-80 border-t"
             }, React.createElement("ul", undefined, React.createElement("li", {
                       className: base
                     }, React.createElement(DocSearch.Textbox.make, {

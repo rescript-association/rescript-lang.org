@@ -28,7 +28,7 @@ module Toc = {
 
   @react.component
   let make = (~entries: array<entry>) =>
-    <ul className="mt-2 py-1 mb-4 border-l border-primary">
+    <ul className="mt-2 py-1 mb-4 border-l border-fire">
       {Belt.Array.map(entries, ({header, href}) =>
         <li key=header className="pl-2 mt-3 first:mt-1">
           <Link href>

@@ -14,8 +14,9 @@ let make = (~highlightedLines=[], ~code: string, ~showLabel=true, ~lang="text") 
 
   let label = if showLabel {
     let label = langShortname(lang)
-    <div className="flex self-end font-sans mb-4 text-12 font-bold text-gray-60 px-4"> //RES or JS Label
-      {Js.String2.toUpperCase(label)->React.string}
+    <div className="flex self-end font-sans mb-4 text-12 font-bold text-gray-60 px-4">
+      {//RES or JS Label
+      Js.String2.toUpperCase(label)->React.string}
     </div>
   } else {
     <div className="mt-4" />
@@ -23,7 +24,7 @@ let make = (~highlightedLines=[], ~code: string, ~showLabel=true, ~lang="text") 
 
   <div //normal code-text without tabs
     className="flex w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-gray-10 bg-gray-5 py-2 text-gray-90">
-    label <div className="px-4 text-14 pb-2 overflow-x-auto -mt-2"> children </div> 
+    label <div className="px-4 text-14 pb-2 overflow-x-auto -mt-2"> children </div>
   </div>
 }
 
@@ -60,10 +61,11 @@ module Toggle = {
           }
         }
 
-        let activeClass =
-          selected === i
-            ? "font-semibold text-gray-90 bg-snow-light border border-b-0 border-snow-dark border-gray-20"
-            : "border-gray-20 border-b hover:cursor-pointer"
+        let activeClass = if selected === i {
+          "font-semibold text-gray-90 bg-gray-5 border border-b-0 border-gray-10"
+        } else {
+          "border-gray-10 border-b bg-gray-10 hover:cursor-pointer"
+        }
 
         let onClick = evt => {
           ReactEvent.Mouse.preventDefault(evt)
@@ -80,26 +82,29 @@ module Toggle = {
         <span
           key
           className={paddingX ++
-          (" flex-none px-4 inline-block p-2 bg-gray-10 rounded-tl rounded-tr " ++
+          (" flex-none px-4 inline-block p-2 rounded-tl rounded-tr " ++
           activeClass)}
           onClick>
           {React.string(label)}
         </span>
       })
 
-      let children = Belt.Array.get(multiple, selected)->Belt.Option.map(tab => {
-        let lang = Belt.Option.getWithDefault(tab.lang, "text")
-        HighlightJs.renderHLJS(~highlightedLines=?tab.highlightedLines, ~code=tab.code, ~lang, ())
-      })->Belt.Option.getWithDefault(React.null)
+      let children =
+        Belt.Array.get(multiple, selected)
+        ->Belt.Option.map(tab => {
+          let lang = Belt.Option.getWithDefault(tab.lang, "text")
+          HighlightJs.renderHLJS(~highlightedLines=?tab.highlightedLines, ~code=tab.code, ~lang, ())
+        })
+        ->Belt.Option.getWithDefault(React.null)
 
-      <div className="flex w-full flex-col rounded-none text-grasy-80">
+      <div className="flex w-full flex-col rounded-none text-gray-80">
         <div
           className="flex w-full overflow-auto scrolling-touch font-sans bg-transparent text-sm text-gray-60-tr">
           <div className="flex"> {React.array(tabElements)} </div>
-          <div className="flex-1 border-b border-gray-20"> {React.string(j`\\u00A0`)} </div>
+          <div className="flex-1 border-b border-gray-10"> {React.string(j`\\u00A0`)} </div>
         </div>
         <div
-          className="px-4 text-base pb-4 pt-4 overflow-x-auto bg-snow-light border-gray-10 xs:rounded-b border border-t-0">
+          className="px-4 text-14 pb-4 pt-4 overflow-x-auto bg-gray-5 border-gray-10 xs:rounded-b border border-t-0">
           <pre> children </pre>
         </div>
       </div>
