@@ -17,7 +17,7 @@ function MainLayout(Props) {
   return React.createElement(React.Fragment, undefined, React.createElement("div", {
                   className: "mt-4 xs:mt-16"
                 }, React.createElement("div", {
-                      className: "text-gray-80 text-lg"
+                      className: "text-gray-80"
                     }, React.createElement(Navigation.make, {
                           overlayState: overlayState
                         }), React.createElement("div", {

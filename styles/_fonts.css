@@ -96,7 +96,7 @@ $ pyftsubset <path_to_font> --unicodes="U+0000-00FF, U+0131, U+0152-0153, U+02BB
 /* latin */
 @font-face {
   font-family: 'Roboto Mono';
-  font-style: normal;
+  font-style: bold;
   font-weight: 700;
   font-display: swap;
   src: local('Roboto Mono Bold'), local('RobotoMono-Bold'), url(/static/fonts/roboto-mono-700.woff2) format('woff2');

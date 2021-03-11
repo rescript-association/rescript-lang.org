@@ -269,7 +269,7 @@ function SidebarLayout(Props) {
                             }, React.createElement("div", {
                                   className: "flex"
                                 }, sidebar, React.createElement("main", {
-                                      className: "px-6 w-full md:ml-12 md:mx-8 md:mt-2 md:pt-24 mb-32 text-lg max-w-740"
+                                      className: "px-4 w-full pt-16 md:ml-12 md:mx-8 md:mt-2 md:pt-24 mb-32 max-w-740"
                                     }, React.createElement("div", {
                                           className: "z-10 fixed border-b shadow top-18 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center"
                                         }, React.createElement(SidebarLayout$MobileDrawerButton, {

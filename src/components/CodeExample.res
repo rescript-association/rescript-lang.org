@@ -14,17 +14,17 @@ let make = (~highlightedLines=[], ~code: string, ~showLabel=true, ~lang="text") 
 
   let label = if showLabel {
     let label = langShortname(lang)
-    <div className="flex self-end font-sans mb-4 text-12 font-bold text-gray-60 px-4">
+    <div className="absolute right-0 px-4 pb-4 bg-gray-5 font-sans text-12 font-bold text-gray-60 ">
       {//RES or JS Label
       Js.String2.toUpperCase(label)->React.string}
     </div>
   } else {
-    <div className="mt-4" />
+    React.null
   }
 
   <div //normal code-text without tabs
-    className="flex w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-gray-10 bg-gray-5 py-2 text-gray-90">
-    label <div className="px-4 text-14 pb-2 overflow-x-auto -mt-2"> children </div>
+    className="relative w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-gray-10 bg-gray-5 py-2 text-gray-90">
+    label <div className="px-4 text-14 pt-4 pb-2 overflow-x-auto -mt-2"> children </div>
   </div>
 }
 
@@ -62,9 +62,9 @@ module Toggle = {
         }
 
         let activeClass = if selected === i {
-          "font-semibold text-gray-90 bg-gray-5 border border-b-0 border-gray-10"
+          "font-medium text-gray-90 bg-gray-5 border-t-2 border-l border-r"
         } else {
-          "border-gray-10 border-b bg-gray-10 hover:cursor-pointer"
+          "font-medium hover:text-gray-60 border-t-2 border-gray-20 bg-gray-10 hover:cursor-pointer"
         }
 
         let onClick = evt => {
@@ -75,14 +75,22 @@ module Toggle = {
 
         let paddingX = switch numberOfItems {
         | 1
-        | 2 => "sm:px-16"
+        | 2 => "sm:px-4"
         | 3 => "lg:px-8"
         | _ => ""
         }
+
+        let style = if selected === i {
+          ReactDOM.Style.make(~borderColor="#f4646a #EDF0F2", ())->Some
+        } else {
+          None
+        }
+        
         <span
           key
+          ?style
           className={paddingX ++
-          (" flex-none px-4 inline-block p-2 rounded-tl rounded-tr " ++
+          (" flex-none px-4 first:ml-6 xs:first:ml-0 inline-block p-1 rounded-tl rounded-tr " ++
           activeClass)}
           onClick>
           {React.string(label)}
@@ -97,14 +105,14 @@ module Toggle = {
         })
         ->Belt.Option.getWithDefault(React.null)
 
-      <div className="flex w-full flex-col rounded-none text-gray-80">
+      <div className="relative pt-6 w-full rounded-none text-gray-80"> //text within code-box
         <div
-          className="flex w-full overflow-auto scrolling-touch font-sans bg-transparent text-sm text-gray-60-tr">
-          <div className="flex"> {React.array(tabElements)} </div>
+          className="absolute flex w-full overflow-auto scrolling-touch font-sans bg-transparent text-14 text-gray-40 " style={ReactDOM.Style.make(~marginTop="-30px", ())}>
+          <div className="flex space-x-2" > {React.array(tabElements)} </div>
           <div className="flex-1 border-b border-gray-10"> {React.string(j`\\u00A0`)} </div>
         </div>
         <div
-          className="px-4 text-14 pb-4 pt-4 overflow-x-auto bg-gray-5 border-gray-10 xs:rounded-b border border-t-0">
+          className="px-4 text-14 pb-4 pt-4 overflow-x-auto bg-gray-5 border-gray-10 xs:rounded-b border border-t-1">
           <pre> children </pre>
         </div>
       </div>

@@ -280,7 +280,7 @@ function Playground$Statusbar(Props) {
   } else {
     var match = result._0;
     activityIndicatorColor = match.TAG === /* Success */1 ? (
-        match._0.warnings.length === 0 ? "bg-turtle-dark" : "bg-orange-dark"
+        match._0.warnings.length === 0 ? "bg-turtle-dark" : "bg-orange"
       ) : "bg-fire-70";
   }
   return React.createElement("div", {
@@ -304,10 +304,10 @@ function Playground$ResultPane$PreWrap(Props) {
 
 function compactErrorLine(highlightOpt, prefix, locMsg) {
   var highlight = highlightOpt !== undefined ? highlightOpt : false;
-  var prefixColor = prefix === "W" ? "text-orange-dark" : "text-fire";
+  var prefixColor = prefix === "W" ? "text-orange" : "text-fire";
   var prefixText = prefix === "W" ? "[W]" : "[E]";
   var highlightClass = highlight ? (
-      prefix === "W" ? "bg-orange-15" : "bg-fire-10 rounded"
+      prefix === "W" ? "bg-orange-15" : "bg-fire-90 rounded"
     ) : "";
   return React.createElement("div", {
               className: "font-mono mb-4 pb-6 last:mb-0 last:pb-0 last:border-0 border-b border-gray-80 "
@@ -511,7 +511,7 @@ function renderResult(focusedRowCol, targetLang, compilerVersion, result) {
 
 function renderTitle$1(result) {
   var errClass = "text-fire";
-  var warnClass = "text-orange-dark";
+  var warnClass = "text-orange";
   var okClass = "text-turtle-dark";
   var match;
   if (typeof result === "number") {

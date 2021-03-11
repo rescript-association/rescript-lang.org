@@ -13,23 +13,10 @@
  * Categorizing colors w/ modifiers:
  * --------
  *
- * night
- *  night-lighter -> even lighter version
- *  night-light -> lighter version (obviously)
- *  night -> base color
- *  night-dark -> darker version
- *  night-darker -> even darker version
- *
  *  -> If we run out of modifiers, we need to define a new
  *     color name!
  *
  * In case with opacity:
- * night-80
- *  night-80-lighter
- *  night-80-light
- *  night-80
- *  night-80-dark
- *  night-80-darker
  *
  *
  */
@@ -50,8 +37,8 @@ module.exports = {
     extend: {
       colors: {
         gray: {
-          "5": "#F4F4F5",
-          "10": "#E5E5E9",
+          "5": "#FAFBFC",
+          "10": "#EDF0F2",
           "20": "#CDCDD6",
           "40": "#979AAD",
           "60": "#727489",
@@ -59,7 +46,7 @@ module.exports = {
           "90": "#010427",
           "95": "#0A0D2F",
           "100": "#010427",
-          "5-tr": "rgba(1, 4, 39, 0.05)",
+          "5-tr": "rgba(1, 20, 29, 0.02)",
           "10-tr": "rgba(1, 4, 39, 0.1)",
           "20-tr": "rgba(1, 4, 39, 0.2)",
           "40-tr": "rgba(1, 4, 39, 0.4)",
@@ -74,6 +61,7 @@ module.exports = {
         //primary, secondary:
         fire: {
           default: "#E6484F", //"50"
+          "100": "#211332",
           "90": "#790C10",
           "70": "#C3373d",
           "30": "#EDA7AA",
@@ -85,6 +73,7 @@ module.exports = {
           "70": "#2258C3",
           "30": "#638FE6",
           "10": "#DDE8FD",
+          "5": "#ECF1FC",
         },
         //code-colors start:
         berry: {
@@ -97,15 +86,15 @@ module.exports = {
           dark: "#637CC1",
         },
         turtle: {
-          default: "#30CB9B",
+          default: "#02A875",
           dark: "#388B72",
         },
         orange: {
           light: "#FFC833",
-          default: "#EA9743",
+          default: "#DD8C1B",
           dark: "#D59B74",
-          "15": "rgba(224, 172, 0, 0.15)",
-          "10": "rgba(224, 172, 0, 0.10)"
+          "15": "rgba(224, 172, 0, 0.15)", //old, change
+          "10": "rgba(224, 172, 0, 0.10)" //old
         },
       },
       height: {
@@ -119,7 +108,8 @@ module.exports = {
       },
       spacing: {
         "2/3": "66.666667%",
-        "9/16": "56.25%"
+        "9/16": "56.25%",
+        "0.75": "0.1875rem"
       },
       animation: {
         pulse: 'pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1)',
@@ -153,9 +143,9 @@ module.exports = {
       "12": "0.75rem",
       "14": "0.875rem",
       "16": "1rem",
-      "18": "1.125rem",
+      "18": "1rem",
       "21": "1.3125rem",
-      "28": "1.75rem",
+      "28": "1.5rem",
       "32": "2rem",
       "42": "2.625rem",
       "48": "3rem",
@@ -175,15 +165,10 @@ module.exports = {
       "7xl": "4.875rem" // 78px
     },
     fontWeight: {
-      hairline: 100,
-      thin: 200,
-      light: 300,
       normal: 400,
       medium: 500,
       semibold: 600,
       bold: 700,
-      extrabold: 800,
-      black: 900
     },
     lineHeight: {
       none: 1,
@@ -232,9 +217,9 @@ module.exports = {
         "sans-serif"
       ],
       mono: [
-        "Menlo",
-        "Roboto Mono",
         "SFMono-Regular",
+        "Roboto Mono",
+        "Menlo",
         "Segoe UI",
         "Courier",
         "monospace"

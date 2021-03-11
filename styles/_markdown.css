@@ -6,7 +6,7 @@
 }
 
 .md-ul ul {
-  @apply mb-0;
+  @apply mb-0 ;
 }
 
 .md-ol > li {
@@ -24,9 +24,9 @@
 }
 
 .md-li > p {
-  @apply ml-5
+  @apply ml-5 text-gray-80;
 }
 
 .md-p + .md-p {
-  @apply mt-3;
+  @apply mt-6;
 }

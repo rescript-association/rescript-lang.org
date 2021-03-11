@@ -15,7 +15,7 @@ import * as ParseNumericRangeJs from "../ffi/parse-numeric-range.js";
 function Markdown$P(Props) {
   var children = Props.children;
   return React.createElement("p", {
-              className: "md-p leading-4 text-gray-80 text-16"
+              className: "md-p leading-5 text-gray-80 text-16"
             }, children);
 }
 
@@ -174,7 +174,7 @@ function Markdown$H2(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement(React.Fragment, undefined, React.createElement("h2", {
-                  className: "group mt-12 mb-3 text-28 tracking-tight leading-1 font-sans font-semibold text-gray-95"
+                  className: "group mt-12 mb-3 text-28 tracking-tight leading-1 font-sans font-bold text-gray-95"
                 }, children, React.createElement("span", {
                       className: "ml-2"
                     }, React.createElement(Markdown$Anchor, {
@@ -190,7 +190,7 @@ function Markdown$H3(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h3", {
-              className: "group text-xl mt-12 mb-3 tracking-tight leading-3 font-sans font-semibold text-gray-95"
+              className: "group text-21 mt-12 mb-3 tracking-tight leading-3 font-sans font-bold text-gray-95"
             }, children, React.createElement("span", {
                   className: "ml-2"
                 }, React.createElement(Markdown$Anchor, {
@@ -206,7 +206,7 @@ function Markdown$H4(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h4", {
-              className: "group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-gray-95"
+              className: "group text-18 mt-12 mb-3 leading-2 font-sans font-semibold text-gray-95"
             }, children, React.createElement("span", {
                   className: "ml-2"
                 }, React.createElement(Markdown$Anchor, {
@@ -248,7 +248,7 @@ var Pre = {
 function Markdown$InlineCode(Props) {
   var children = Props.children;
   return React.createElement("code", {
-              className: "md-inline-code py-1 px-2 text-smaller-1 rounded-sm font-mono text-gray-95 bg-gray-5-tr"
+              className: "md-inline-code py-0.75 px-2 text-smaller-1 rounded border-gray-100 font-mono bg-gray-10"
             }, children);
 }
 
@@ -281,7 +281,7 @@ var Thead = {
 function Markdown$Th(Props) {
   var children = Props.children;
   return React.createElement("th", {
-              className: "py-2 pr-8 text-sm uppercase font-medium tracking-wide text-left border-b-2 border-gray-20"
+              className: "py-2 pr-8 text-12 text-gray-60 uppercase font-medium tracking-wide text-left border-b-2 border-gray-20"
             }, children);
 }
 
@@ -292,7 +292,7 @@ var Th = {
 function Markdown$Td(Props) {
   var children = Props.children;
   return React.createElement("td", {
-              className: "border-b border-gray-20 py-3 pr-8"
+              className: "border-b border-gray-10 py-3 pr-8"
             }, children);
 }
 
@@ -473,7 +473,7 @@ function Markdown$A(Props) {
   var children = Props.children;
   if (Util.Url.isAbsolute(href)) {
     var tmp = {
-      className: "no-underline text-fire hover:underline",
+      className: "no-underline text-fire-70 hover:underline",
       href: href,
       rel: "noopener noreferrer"
     };
@@ -585,7 +585,7 @@ function Markdown$Li(Props) {
     }
   }
   return React.createElement("li", {
-              className: "md-li mt-3 leading-4 ml-4 text-16"
+              className: "md-li mt-3 leading-4 ml-4 text-current"
             }, elements);
 }
 

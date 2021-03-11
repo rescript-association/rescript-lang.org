@@ -3,7 +3,7 @@
 
 module P = {
   @react.component
-  let make = (~children) => <p className="md-p leading-4 text-gray-80 text-16"> children </p>
+  let make = (~children) => <p className="md-p leading-5 text-gray-80 text-16"> children </p>
 }
 
 // Used for hero like introduction text in
@@ -123,7 +123,7 @@ module H2 = {
   @react.component
   let make = (~id, ~children) => <>
     // Here we know that children is always a string (## headline)
-    <h2 className="group mt-12 mb-3 text-28 tracking-tight leading-1 font-sans font-semibold text-gray-95">
+    <h2 className="group mt-12 mb-3 text-28 tracking-tight leading-1 font-sans font-bold text-gray-95">
       children <span className="ml-2"> <Anchor id /> </span>
     </h2>
   </>
@@ -132,7 +132,7 @@ module H2 = {
 module H3 = {
   @react.component
   let make = (~id, ~children) =>
-    <h3 className="group text-xl mt-12 mb-3 tracking-tight leading-3 font-sans font-semibold text-gray-95">
+    <h3 className="group text-21 mt-12 mb-3 tracking-tight leading-3 font-sans font-bold text-gray-95">
       children <span className="ml-2"> <Anchor id /> </span>
     </h3>
 }
@@ -140,7 +140,7 @@ module H3 = {
 module H4 = {
   @react.component
   let make = (~id, ~children) =>
-    <h4 className="group text-lg mt-12 mb-3 leading-2 font-sans font-semibold text-gray-95">
+    <h4 className="group text-18 mt-12 mb-3 leading-2 font-sans font-semibold text-gray-95">
       children
       <span className="ml-2"> <Anchor id /> </span>
     </h4>
@@ -163,7 +163,7 @@ module Pre = {
 module InlineCode = {
   @react.component
   let make = (~children) =>
-    <code className="md-inline-code py-1 px-2 text-smaller-1 rounded-sm font-mono text-gray-95 bg-gray-5-tr">
+    <code className="md-inline-code py-0.75 px-2 text-smaller-1 rounded border-gray-100 font-mono bg-gray-10">
       children
     </code>
 }
@@ -185,14 +185,14 @@ module Th = {
   @react.component
   let make = (~children) =>
     <th
-      className="py-2 pr-8 text-sm uppercase font-medium tracking-wide text-left border-b-2 border-gray-20">
+      className="py-2 pr-8 text-12 text-gray-60 uppercase font-medium tracking-wide text-left border-b-2 border-gray-20">
       children
     </th>
 }
 
 module Td = {
   @react.component
-  let make = (~children) => <td className="border-b border-gray-20 py-3 pr-8"> children </td>
+  let make = (~children) => <td className="border-b border-gray-10 py-3 pr-8"> children </td>
 }
 
 module Code = {
@@ -372,7 +372,7 @@ module A = {
   let make = (~href, ~target=?, ~children) =>
     // In case we are handling a relative URL, we will use the Next routing
     if Util.Url.isAbsolute(href) {
-      <a href rel="noopener noreferrer" className="no-underline text-fire hover:underline" ?target>
+      <a href rel="noopener noreferrer" className="no-underline text-fire-70 hover:underline" ?target>
         children
       </a>
     } else {
@@ -464,7 +464,7 @@ module Li = {
       }
     }
 
-    <li className="md-li mt-3 leading-4 ml-4 text-16"> elements </li>
+    <li className="md-li mt-3 leading-4 ml-4 text-current"> elements </li>
   }
 }
 

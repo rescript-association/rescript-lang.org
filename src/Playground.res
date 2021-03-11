@@ -219,7 +219,7 @@ module Statusbar = {
         if Array.length(warnings) === 0 {
           "bg-turtle-dark"
         } else {
-          "bg-orange-dark"
+          "bg-orange"
         }
       }
 
@@ -243,7 +243,7 @@ module ResultPane = {
   let compactErrorLine = (~highlight=false, ~prefix: prefix, locMsg: Api.LocMsg.t) => {
     let {Api.LocMsg.row: row, column, shortMsg} = locMsg
     let prefixColor = switch prefix {
-    | #W => "text-orange-dark"
+    | #W => "text-orange"
     | #E => "text-fire"
     }
 
@@ -255,7 +255,7 @@ module ResultPane = {
     let highlightClass = switch (highlight, prefix) {
     | (false, _) => ""
     | (true, #W) => "bg-orange-15"
-    | (true, #E) => "bg-fire-10 rounded"
+    | (true, #E) => "bg-fire-90 rounded"
     }
 
     <div className="font-mono mb-4 pb-6 last:mb-0 last:pb-0 last:border-0 border-b border-gray-80 ">
@@ -450,7 +450,7 @@ module ResultPane = {
 
   let renderTitle = result => {
     let errClass = "text-fire"
-    let warnClass = "text-orange-dark"
+    let warnClass = "text-orange"
     let okClass = "text-turtle-dark"
 
     let (className, text) = switch result {

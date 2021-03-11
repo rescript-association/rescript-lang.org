@@ -218,7 +218,7 @@ module GutterMarker = {
     let marker = createElement("div")
     let colorClass = switch kind {
     | #Warning => "text-orange bg-orange-15"
-    | #Error => "text-fire bg-fire-10"
+    | #Error => "text-fire bg-fire-100"
     }
 
     let (row, col) = rowCol
