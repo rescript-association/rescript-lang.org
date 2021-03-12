@@ -132,7 +132,7 @@
 }
 
 .cm-s-material .cm-comment {
-  @apply text-gray-80;
+  @apply text-gray-60;
 }
 
 .cm-s-material .cm-variable {

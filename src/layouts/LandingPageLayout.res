@@ -27,7 +27,7 @@ let make = (~components=Markdown.default, ~children) => {
     <div className="mt-4 xs:mt-16">
       <div className="text-gray-80 text-lg">
         <Navigation overlayState />
-        <div className="absolute top-18 w-full">
+        <div className="absolute top-16 w-full">
           <div
             className="flex justify-center overflow-hidden"
             style={ReactDOM.Style.make(~backgroundColor="#0E1529", ())}>

@@ -128,12 +128,9 @@ function SidebarLayout$Sidebar(Props) {
                   className: (
                     isOpen ? "fixed w-full left-0 h-full z-20 min-w-320" : "hidden "
                   ) + " md:block md:w-48 md:-ml-4 lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white md:relative",
-                  id: "sidebar",
-                  style: {
-                    minWidth: "12.9375rem"
-                  }
+                  id: "sidebar"
                 }, React.createElement("aside", {
-                      className: "relative top-0 px-4 w-full block md:top-18 md:pt-24 md:sticky border-r border-gray-5 overflow-y-auto scrolling-touch pb-24",
+                      className: "relative top-0 px-4 w-full block md:top-16 md:pt-16 md:sticky border-r border-gray-5 overflow-y-auto scrolling-touch pb-24",
                       id: "sidebar-content",
                       style: {
                         height: "calc(100vh - 4.5rem"
@@ -263,31 +260,29 @@ function SidebarLayout(Props) {
                             match[1]
                           ]
                         }), React.createElement("div", {
-                          className: "flex justify-center"
+                          className: "flex lg:justify-center"
                         }, React.createElement("div", {
-                              className: "w-full max-w-1280 md:mx-8"
-                            }, React.createElement("div", {
-                                  className: "flex"
-                                }, sidebar, React.createElement("main", {
-                                      className: "px-4 w-full pt-16 md:ml-12 md:mx-8 md:mt-2 md:pt-24 mb-32 max-w-740"
-                                    }, React.createElement("div", {
-                                          className: "z-10 fixed border-b shadow top-18 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center"
-                                        }, React.createElement(SidebarLayout$MobileDrawerButton, {
-                                              hidden: isNavOpen,
-                                              onClick: (function (evt) {
-                                                  evt.preventDefault();
-                                                  return Curry._1(setSidebarOpen, (function (prev) {
-                                                                return !prev;
-                                                              }));
-                                                })
-                                            }), React.createElement("div", {
-                                              className: "truncate overflow-x-auto touch-scroll flex items-center space-x-4 md:justify-between mr-4 w-full"
-                                            }, breadcrumbs$1, editLinkEl)), React.createElement("div", {
-                                          className: hasBreadcrumbs ? "mt-10" : "-mt-4"
-                                        }, React.createElement(Mdx.Provider.make, {
-                                              components: components,
-                                              children: children
-                                            }))))))), React.createElement(Footer.make, {})));
+                              className: "flex w-full max-w-1280 md:mx-8"
+                            }, sidebar, React.createElement("main", {
+                                  className: "px-4 w-full pt-16 md:ml-12 lg:mr-8 mb-32 md:max-w-576 lg:max-w-740"
+                                }, React.createElement("div", {
+                                      className: "z-10 fixed border-b shadow top-16 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center"
+                                    }, React.createElement(SidebarLayout$MobileDrawerButton, {
+                                          hidden: isNavOpen,
+                                          onClick: (function (evt) {
+                                              evt.preventDefault();
+                                              return Curry._1(setSidebarOpen, (function (prev) {
+                                                            return !prev;
+                                                          }));
+                                            })
+                                        }), React.createElement("div", {
+                                          className: "truncate overflow-x-auto touch-scroll flex items-center space-x-4 md:justify-between mr-4 w-full"
+                                        }, breadcrumbs$1, editLinkEl)), React.createElement("div", {
+                                      className: hasBreadcrumbs ? "mt-10" : "-mt-4"
+                                    }, React.createElement(Mdx.Provider.make, {
+                                          components: components,
+                                          children: children
+                                        })))))), React.createElement(Footer.make, {})));
 }
 
 var Toc = {};

@@ -418,13 +418,14 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
     ref={ReactDOM.Ref.domRef(outerRef)}
     id="header"
     style={ReactDOMStyle.make(~minWidth, ())}
-    className={fixedNav ++ " flex xs:justify-center w-full h-18 bg-gray-95 shadow text-white-80 text-base"}>
+    className={fixedNav ++ " flex xs:justify-center w-full h-16 bg-gray-95 shadow text-white-80 text-base"}>
     <div className="flex justify-between mx-4 md:mx-8 items-center h-full w-full max-w-1280">
-      <div className="h-8 w-8">
+      <div className="h-8 w-8 lg:h-10 lg:w-32">
         <a
           href="/"
           className="block hover:cursor-pointer w-full h-full flex justify-center items-center font-bold">
-          <img src="/static/nav-logo@2x.png" />
+          <img src="/static/nav-logo@2x.png" className="lg:hidden" />
+          <img src="/static/nav-logo-full@2x.png" className="hidden lg:block" />
         </a>
       </div>
       /* Desktop horizontal navigation */
@@ -468,7 +469,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
             </a>
           </Link>
         </div>
-        <div className="hidden sm:flex items-center">
+        <div className="hidden md:flex items-center">
           <a
             href=githubHref
             rel="noopener noreferrer"
@@ -509,7 +510,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
     </button>
     /* Mobile overlay */
     <div
-      style={ReactDOMStyle.make(~minWidth, ~top="4.5rem", ())}
+      style={ReactDOMStyle.make(~minWidth, ~top="4rem", ())}
       className={(
         isOverlayOpen ? "flex" : "hidden"
       ) ++ " sm:hidden flex-col fixed top-0 left-0 h-full w-full z-30 sm:w-9/12 bg-gray-100 sm:h-auto sm:flex sm:relative sm:flex-row sm:justify-between"}>

@@ -14,6 +14,7 @@ import "styles/cm.css";
 if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
   require("codemirror/mode/javascript/javascript");
   require("codemirror/addon/scroll/simplescrollbars");
+  require("plugins/cm-rescript-mode");
   require("plugins/cm-reason-mode");
 }
 ;
@@ -260,6 +261,11 @@ function CodeMirror(Props) {
           }
           
         }), [errorsFingerprint]);
+  React.useEffect((function () {
+          var cm = Belt_Option.getExn(cmRef.current);
+          cm.setOption("mode", mode);
+          
+        }), [mode]);
   React.useEffect((function () {
           var cm = cmRef.current;
           if (cm !== undefined) {

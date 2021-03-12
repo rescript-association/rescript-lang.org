@@ -8,21 +8,19 @@
     This file is providing the core functionality and logic of our CodeMirror instances.
  */
 
-%%raw(
-  `
+%%raw(`
 import "codemirror/lib/codemirror.css";
 import "styles/cm.css";
 
 if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
   require("codemirror/mode/javascript/javascript");
   require("codemirror/addon/scroll/simplescrollbars");
+  require("plugins/cm-rescript-mode");
   require("plugins/cm-reason-mode");
 }
-`
-)
+`)
 
-let useWindowWidth: unit => int = %raw(
-  j` () => {
+let useWindowWidth: unit => int = %raw(j` () => {
   const isClient = typeof window === 'object';
 
   function getSize() {
@@ -58,8 +56,7 @@ let useWindowWidth: unit => int = %raw(
   }
   return null;
   }
-  `
-)
+  `)
 
 /* The module for interacting with the imperative CodeMirror API */
 module CM = {
@@ -89,6 +86,9 @@ module CM = {
 
   @bs.module("codemirror")
   external fromTextArea: (Dom.element, Options.t) => t = "fromTextArea"
+
+  @bs.send
+  external setMode: (t, @bs.as("mode") _, string) => unit = "setOption"
 
   @bs.send
   external getScrollerElement: t => Dom.element = "getScrollerElement"
@@ -465,6 +465,12 @@ let make = // props relevant for the react wrapper
     }
     None
   }, [errorsFingerprint])
+
+  React.useEffect1(() => {
+    let cm = Belt.Option.getExn(cmRef.current);
+    cm->CM.setMode(mode)
+    None
+  }, [mode])
 
   /*
       Needed in case the className visually hides / shows

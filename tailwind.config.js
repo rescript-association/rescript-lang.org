@@ -104,6 +104,7 @@ module.exports = {
         "320": "20rem"
       },
       inset: {
+        "16": "4rem",
         "18": "4.5rem"
       },
       spacing: {
@@ -190,6 +191,7 @@ module.exports = {
     maxWidth: {
       "320": "20rem",
       "400": "25rem",
+      "576": "36rem",
       "1280": "80rem",
       "740": "46.25rem",
       xs: "20rem", //  320px
