@@ -169,7 +169,7 @@ module InlineCode = {
   @react.component
   let make = (~children) =>
     <code
-      className="md-inline-code py-0.75 px-2 text-14 font-medium rounded font-mono bg-gray-10-tr">
+      className="md-inline-code py-0.75 px-2 text-smaller-1 font-medium rounded font-mono bg-gray-10-tr">
       //text-smaller-1
       children
     </code>
