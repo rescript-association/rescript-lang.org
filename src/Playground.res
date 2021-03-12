@@ -424,7 +424,7 @@ module ResultPane = {
             "The compiler bundle API returned a result that couldn't be interpreted. Please open an issue on our ",
           )}
           <Markdown.A
-            target="_blank" href="https://github.com/reason-association/rescript-lang.org/issues">
+            target="_blank" href="https://github.com/rescript-association/rescript-lang.org/issues">
             {React.string("issue tracker")}
           </Markdown.A>
           {React.string(".")}
@@ -1397,14 +1397,12 @@ module OutputPanel = {
   }
 }
 
-let initialResContent = j`// Please note:
-// ---
-// The Playground is still a work in progress
-// ReScript / old Reason syntax should parse just
-// fine (go to the "Settings" panel for toggling syntax).
-//
-// Feel free to play around and compile some
-// ReScript code!
+let initialResContent = j`
+
+let world = "world"
+let a = \`
+Hello ${"${world}"}
+\`
 
 module Button = {
   @react.component
@@ -1546,6 +1544,12 @@ let default = () => {
   | _ => []
   }
 
+  let mode = switch compilerState {
+    | Ready({ targetLang: Reason }) => "reason"
+    | Ready({ targetLang: Res }) => "rescript"
+    | _ => "rescript"
+  }
+
   <>
     <Meta title="ReScript Playground" description="Try ReScript in the browser" />
     <Next.Head>
@@ -1572,7 +1576,7 @@ let default = () => {
                   className="w-full py-4"
                   minHeight="calc(100vh - 10rem)"
                   maxHeight="calc(100vh - 10rem)"
-                  mode="reason"
+                  mode
                   errors=cmErrors
                   value={editorCode.current}
                   onChange={value => {

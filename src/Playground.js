@@ -491,7 +491,7 @@ function renderResult(focusedRowCol, targetLang, compilerVersion, result) {
   return React.createElement("div", undefined, React.createElement(Playground$ResultPane$PreWrap, {
                   children: null
                 }, "The compiler bundle API returned a result that couldn't be interpreted. Please open an issue on our ", React.createElement(Markdown.A.make, {
-                      href: "https://github.com/reason-association/rescript-lang.org/issues",
+                      href: "https://github.com/rescript-association/rescript-lang.org/issues",
                       target: "_blank",
                       children: "issue tracker"
                     }), "."), React.createElement("div", {
@@ -1802,7 +1802,7 @@ function Playground$OutputPanel(Props) {
                 }));
 }
 
-var initialResContent = "// Please note:\n// ---\n// The Playground is still a work in progress\n// ReScript / old Reason syntax should parse just\n// fine (go to the \"Settings\" panel for toggling syntax).\n//\n// Feel free to play around and compile some\n// ReScript code!\n\nmodule Button = {\n  @react.component\n  let make = (~count: int) => {\n    let times = switch count {\n    | 1 => \"once\"\n    | 2 => \"twice\"\n    | n => Belt.Int.toString(n) ++ \" times\"\n    }\n    let msg = \"Click me \" ++ times\n\n    <button> {msg->React.string} </button>\n  }\n}\n";
+var initialResContent = "\n\nlet world = \"world\"\nlet a = `\nHello " + "${world}" + "\n`\n\nmodule Button = {\n  @react.component\n  let make = (~count: int) => {\n    let times = switch count {\n    | 1 => \"once\"\n    | 2 => \"twice\"\n    | n => Belt.Int.toString(n) ++ \" times\"\n    }\n    let msg = \"Click me \" ++ times\n\n    <button> {msg->React.string} </button>\n  }\n}\n";
 
 function Playground$default(Props) {
   var router = Next.Router.useRouter(undefined);
@@ -1945,6 +1945,21 @@ function Playground$default(Props) {
   } else {
     cmErrors = [];
   }
+  var mode;
+  if (typeof compilerState === "number" || compilerState.TAG !== /* Ready */2) {
+    mode = "rescript";
+  } else {
+    switch (compilerState._0.targetLang) {
+      case /* Reason */0 :
+          mode = "reason";
+          break;
+      case /* OCaml */1 :
+      case /* Res */2 :
+          mode = "rescript";
+          break;
+      
+    }
+  }
   var tmp = {
     className: "w-full lg:border-r-2 pl-2 border-gray-80"
   };
@@ -2010,7 +2025,7 @@ function Playground$default(Props) {
                                                           }));
                                             }),
                                           value: editorCode.current,
-                                          mode: "reason"
+                                          mode: mode
                                         }))), React.createElement("div", {
                                   className: "relative w-full overflow-x-hidden h-screen lg:h-auto lg:w-1/2",
                                   style: {
