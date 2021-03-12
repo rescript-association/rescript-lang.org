@@ -1397,14 +1397,7 @@ module OutputPanel = {
   }
 }
 
-let initialResContent = j`
-
-let world = "world"
-let a = \`
-Hello ${"${world}"}
-\`
-
-module Button = {
+let initialResContent = `module Button = {
   @react.component
   let make = (~count: int) => {
     let times = switch count {

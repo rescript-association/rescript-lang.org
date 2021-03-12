@@ -1802,7 +1802,7 @@ function Playground$OutputPanel(Props) {
                 }));
 }
 
-var initialResContent = "\n\nlet world = \"world\"\nlet a = `\nHello " + "${world}" + "\n`\n\nmodule Button = {\n  @react.component\n  let make = (~count: int) => {\n    let times = switch count {\n    | 1 => \"once\"\n    | 2 => \"twice\"\n    | n => Belt.Int.toString(n) ++ \" times\"\n    }\n    let msg = \"Click me \" ++ times\n\n    <button> {msg->React.string} </button>\n  }\n}\n";
+var initialResContent = "module Button = {\n  @react.component\n  let make = (~count: int) => {\n    let times = switch count {\n    | 1 => \"once\"\n    | 2 => \"twice\"\n    | n => Belt.Int.toString(n) ++ \" times\"\n    }\n    let msg = \"Click me \" ++ times\n\n    <button> {msg->React.string} </button>\n  }\n}\n";
 
 function Playground$default(Props) {
   var router = Next.Router.useRouter(undefined);
