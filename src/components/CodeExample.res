@@ -64,7 +64,7 @@ module Toggle = {
         let activeClass = if selected === i {
           "font-medium text-gray-90 bg-gray-5 border-t-2 border-l border-r"
         } else {
-          "font-medium hover:text-gray-60 border-t-2 border-gray-20 bg-gray-10 hover:cursor-pointer"
+          "font-medium hover:text-gray-60 border-t-2 border-l border-r bg-gray-10 hover:cursor-pointer"
         }
 
         let onClick = evt => {
@@ -80,15 +80,15 @@ module Toggle = {
         | _ => ""
         }
 
-        let style = if selected === i {
-          ReactDOM.Style.make(~borderColor="#f4646a #EDF0F2", ())->Some
+        let borderColor = if selected === i {
+          "#f4646a #EDF0F2"
         } else {
-          None
+          "#CDCDD6 #EDF0F2"
         }
-        
+
         <span
           key
-          ?style
+          style={ReactDOM.Style.make(~borderColor, ())}
           className={paddingX ++
           (" flex-none px-4 first:ml-6 xs:first:ml-0 inline-block p-1 rounded-tl rounded-tr " ++
           activeClass)}
@@ -105,10 +105,12 @@ module Toggle = {
         })
         ->Belt.Option.getWithDefault(React.null)
 
-      <div className="relative pt-6 w-full rounded-none text-gray-80"> //text within code-box
+      <div className="relative pt-6 w-full rounded-none text-gray-80">
+        //text within code-box
         <div
-          className="absolute flex w-full overflow-auto scrolling-touch font-sans bg-transparent text-14 text-gray-40 " style={ReactDOM.Style.make(~marginTop="-30px", ())}>
-          <div className="flex space-x-2" > {React.array(tabElements)} </div>
+          className="absolute flex w-full overflow-auto scrolling-touch font-sans bg-transparent text-14 text-gray-40 "
+          style={ReactDOM.Style.make(~marginTop="-30px", ())}>
+          <div className="flex space-x-2"> {React.array(tabElements)} </div>
           <div className="flex-1 border-b border-gray-10"> {React.string(j`\\u00A0`)} </div>
         </div>
         <div

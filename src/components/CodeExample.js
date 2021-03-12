@@ -4,7 +4,6 @@ import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
-import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as HighlightJs from "../common/HighlightJs.js";
 
 function langShortname(lang) {
@@ -66,7 +65,7 @@ function CodeExample$Toggle(Props) {
               var lang = tab.lang;
               label$1 = lang !== undefined ? langShortname(lang).toUpperCase() : String(i);
             }
-            var activeClass = selected === i ? "font-medium text-gray-90 bg-gray-5 border-t-2 border-l border-r" : "font-medium hover:text-gray-60 border-t-2 border-gray-20 bg-gray-10 hover:cursor-pointer";
+            var activeClass = selected === i ? "font-medium text-gray-90 bg-gray-5 border-t-2 border-l border-r" : "font-medium hover:text-gray-60 border-t-2 border-l border-r bg-gray-10 hover:cursor-pointer";
             var onClick = function (evt) {
               evt.preventDefault();
               return Curry._1(setSelected, (function (param) {
@@ -79,18 +78,15 @@ function CodeExample$Toggle(Props) {
               ) : (
                 numberOfItems > 0 ? "sm:px-4" : ""
               );
-            var style = selected === i ? ({
-                  borderColor: "#f4646a #EDF0F2"
-                }) : undefined;
-            var tmp = {
-              key: key,
-              className: paddingX + (" flex-none px-4 first:ml-6 xs:first:ml-0 inline-block p-1 rounded-tl rounded-tr " + activeClass),
-              onClick: onClick
-            };
-            if (style !== undefined) {
-              tmp.style = Caml_option.valFromOption(style);
-            }
-            return React.createElement("span", tmp, label$1);
+            var borderColor = selected === i ? "#f4646a #EDF0F2" : "#CDCDD6 #EDF0F2";
+            return React.createElement("span", {
+                        key: key,
+                        className: paddingX + (" flex-none px-4 first:ml-6 xs:first:ml-0 inline-block p-1 rounded-tl rounded-tr " + activeClass),
+                        style: {
+                          borderColor: borderColor
+                        },
+                        onClick: onClick
+                      }, label$1);
           }));
     var children = Belt_Option.getWithDefault(Belt_Option.map(Belt_Array.get(tabs, selected), (function (tab) {
                 var lang = Belt_Option.getWithDefault(tab.lang, "text");
