@@ -42,7 +42,7 @@ function Footer(Props) {
                                             }, "Team")
                                       })), React.createElement("li", undefined, React.createElement("a", {
                                         className: linkClass,
-                                        href: "https://rescript-association.org/imprint",
+                                        href: "https://rescript-association.org",
                                         target: "_blank"
                                       }, "ReScript Association")))
                         }), React.createElement(Footer$Section, {
