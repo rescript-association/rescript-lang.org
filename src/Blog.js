@@ -214,7 +214,7 @@ function $$default(props) {
         }, React.createElement(Markdown.Warn.make, {
               children: null
             }, React.createElement("h2", {
-                  className: "font-bold text-gray-95 text-2xl mb-2"
+                  className: "font-bold text-gray-95 text-32 mb-2"
                 }, "Some Blog Posts are Malformed!"), React.createElement("p", undefined, "Any blog post with invalid data will not be displayed in production."), React.createElement("div", undefined, React.createElement("p", {
                       className: "font-bold mt-4"
                     }, "Errors:"), React.createElement("ul", undefined, Belt_Array.mapWithIndex(malformed, (function (i, m) {

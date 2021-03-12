@@ -47,7 +47,7 @@ module.exports = {
           "95": "#0A0D2F",
           "100": "#010427",
           "5-tr": "rgba(1, 20, 29, 0.02)",
-          "10-tr": "rgba(1, 4, 39, 0.1)",
+          "10-tr": "rgba(1, 16, 39, 0.05)",
           "20-tr": "rgba(1, 4, 39, 0.2)",
           "40-tr": "rgba(1, 4, 39, 0.4)",
           "60-tr": "rgba(1, 4, 39, 0.6)",
@@ -110,7 +110,7 @@ module.exports = {
       spacing: {
         "2/3": "66.666667%",
         "9/16": "56.25%",
-        "0.75": "0.1875rem"
+        "0.75": "0.135rem"
       },
       animation: {
         pulse: 'pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1)',
@@ -144,26 +144,17 @@ module.exports = {
       "12": "0.75rem",
       "14": "0.875rem",
       "16": "1rem",
-      "18": "1rem",
+      "18": "1.125rem",
       "21": "1.3125rem",
       "28": "1.5rem",
       "32": "2rem",
       "42": "2.625rem",
-      "48": "3rem",
-      "80": "5rem",
-      "100": "6.25rem",
+      "56": "3.5rem",
+      "96": "6rem",
       "smaller-1": "0.9em", // 18px => 16.2px (used for inlineCode)
-      xs: ".75rem", // 12px
       sm: ".875rem", // 14px
       base: "1rem", // 16px
       lg: "1.125rem", // 18px
-      xl: "1.3125rem", // 21px
-      "2xl": "1.5rem", // 24px
-      "3xl": "2rem", // 32px
-      "4xl": "2.125rem", // 34px
-      "5xl": "2.25rem", // 36px
-      "6xl": "2.625rem", // 42px
-      "7xl": "4.875rem" // 78px
     },
     fontWeight: {
       normal: 400,

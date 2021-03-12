@@ -64,7 +64,7 @@ function LandingPageLayout(Props) {
                                           }, React.createElement("div", {
                                                 className: "w-full max-w-740"
                                               }, React.createElement("div", undefined, React.createElement("h1", {
-                                                        className: "text-80 xs:text-100 text-gray-95 font-semibold"
+                                                        className: "text-56 xs:text-96 text-gray-95 tracking-tight font-semibold"
                                                       }, "ReScript"), React.createElement("p", {
                                                         className: "text-21 text-gray-95 font-bold mb-2"
                                                       }, "The JavaScript-like language you have been waiting for."), React.createElement("p", {

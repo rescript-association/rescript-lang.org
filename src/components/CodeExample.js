@@ -41,9 +41,9 @@ function CodeExample(Props) {
     label = null;
   }
   return React.createElement("div", {
-              className: "relative w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-gray-10 bg-gray-5 py-2 text-gray-90"
+              className: "relative w-full flex-col rounded-none xs:rounded-lg border-t border-b xs:border border-gray-10 bg-gray-5 py-2 text-gray-80"
             }, label, React.createElement("div", {
-                  className: "px-4 text-14 pt-4 pb-2 overflow-x-auto -mt-2"
+                  className: "px-5 text-14 pt-4 pb-2 overflow-x-auto -mt-2"
                 }, children));
 }
 
@@ -100,11 +100,11 @@ function CodeExample$Toggle(Props) {
                       marginTop: "-30px"
                     }
                   }, React.createElement("div", {
-                        className: "flex space-x-2"
+                        className: "flex space-x-1"
                       }, tabElements), React.createElement("div", {
                         className: "flex-1 border-b border-gray-10"
                       }, "\u00A0")), React.createElement("div", {
-                    className: "px-4 text-14 pb-4 pt-4 overflow-x-auto bg-gray-5 border-gray-10 xs:rounded-b border border-t-1"
+                    className: "px-4 lg:px-5 text-14 pb-4 pt-4 overflow-x-auto bg-gray-5 border-gray-10 xs:rounded-b-lg border"
                   }, React.createElement("pre", undefined, children)));
   }
   var tab = tabs[0];
