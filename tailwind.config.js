@@ -104,6 +104,7 @@ module.exports = {
         "320": "20rem"
       },
       inset: {
+        "16": "4rem",
         "18": "4.5rem"
       },
       spacing: {

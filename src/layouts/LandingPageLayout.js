@@ -37,7 +37,7 @@ function LandingPageLayout(Props) {
                     }, React.createElement(Navigation.make, {
                           overlayState: overlayState
                         }), React.createElement("div", {
-                          className: "absolute top-18 w-full"
+                          className: "absolute top-16 w-full"
                         }, React.createElement("div", {
                               className: "flex justify-center overflow-hidden",
                               style: {

@@ -142,7 +142,7 @@ module Sidebar = {
         ) ++ " md:block md:w-48 md:-ml-4 lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white md:relative"}>
         <aside
           id="sidebar-content"
-          className="relative top-0 px-4 w-full block md:top-18 md:pt-24 md:sticky border-r border-gray-5 overflow-y-auto scrolling-touch pb-24"
+          className="relative top-0 px-4 w-full block md:top-16 md:pt-16 md:sticky border-r border-gray-5 overflow-y-auto scrolling-touch pb-24"
           style={ReactDOMStyle.make(~height="calc(100vh - 4.5rem", ())}>
           <div className="flex justify-between">
             <div className="w-3/4 md:w-full"> toplevelNav </div>
@@ -270,10 +270,10 @@ let make = (
           <div className="flex w-full max-w-1280 md:mx-8">
             sidebar
             <main
-              className="px-4 w-full pt-16 md:ml-12 lg:mr-8 md:mt-2 md:pt-24 mb-32 md:max-w-576 lg:max-w-740">
+              className="px-4 w-full pt-16 md:ml-12 lg:mr-8 mb-32 md:max-w-576 lg:max-w-740">
               //width of the right content part
               <div
-                className="z-10 fixed border-b shadow top-18 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center">
+                className="z-10 fixed border-b shadow top-16 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center">
                 <MobileDrawerButton
                   hidden=isNavOpen
                   onClick={evt => {

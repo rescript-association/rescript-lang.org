@@ -239,7 +239,7 @@ function Navigation(Props) {
   var fixedNav = fixed ? "fixed z-30 top-0" : "";
   return React.createElement("nav", {
               ref: outerRef,
-              className: fixedNav + " flex xs:justify-center w-full h-18 bg-gray-95 shadow text-white-80 text-base",
+              className: fixedNav + " flex xs:justify-center w-full h-16 bg-gray-95 shadow text-white-80 text-base",
               id: "header",
               style: {
                 minWidth: minWidth
@@ -247,12 +247,16 @@ function Navigation(Props) {
             }, React.createElement("div", {
                   className: "flex justify-between mx-4 md:mx-8 items-center h-full w-full max-w-1280"
                 }, React.createElement("div", {
-                      className: "h-8 w-8"
+                      className: "h-8 w-8 lg:h-10 lg:w-32"
                     }, React.createElement("a", {
                           className: "block hover:cursor-pointer w-full h-full flex justify-center items-center font-bold",
                           href: "/"
                         }, React.createElement("img", {
+                              className: "lg:hidden",
                               src: "/static/nav-logo@2x.png"
+                            }), React.createElement("img", {
+                              className: "hidden lg:block",
+                              src: "/static/nav-logo-full@2x.png"
                             }))), React.createElement("div", {
                       className: "flex items-center xs:justify-end w-full bg-gray-95 sm:h-auto sm:relative"
                     }, React.createElement("div", {
@@ -291,7 +295,7 @@ function Navigation(Props) {
                                     onMouseEnter: nonCollapsibleOnMouseEnter
                                   }, "Community")
                             })), React.createElement("div", {
-                          className: "hidden sm:flex items-center"
+                          className: "hidden md:flex items-center"
                         }, React.createElement("a", {
                               className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-white text-white-80 mb-px",
                               href: githubHref,
@@ -337,7 +341,7 @@ function Navigation(Props) {
                   ) + " sm:hidden flex-col fixed top-0 left-0 h-full w-full z-30 sm:w-9/12 bg-gray-100 sm:h-auto sm:flex sm:relative sm:flex-row sm:justify-between",
                   style: {
                     minWidth: minWidth,
-                    top: "4.5rem"
+                    top: "4rem"
                   }
                 }, React.createElement(Navigation$MobileNav, {
                       route: route
