@@ -100,14 +100,14 @@ module CollapsibleLink = {
           (isOpen ? " text-white" : ""))}>
           <span className={active ? "border-b border-fire" : ""}> {React.string(title)} </span>
           <span className="fill-current flex-no-wrap inline-block ml-2 w-2">
-            <Icon.Caret direction className={active ? "text-inherit" : "text-night-light"} />
+            <Icon.Caret direction className={active ? "text-inherit" : "text-gry-60"} />
           </span>
         </a>
       </div>
       <div
         className={(
           isOpen ? "flex" : "hidden"
-        ) ++ " fixed left-0 border-night border-t bg-onyx min-w-320 w-full h-full sm:h-auto sm:justify-center"}
+        ) ++ " fixed left-0 border-gray-80 border-t bg-gray-100 min-w-320 w-full h-full sm:h-auto sm:justify-center"}
         style={ReactDOMStyle.make(~marginTop="1.375rem", ())}>
         <div className="max-w-xl w-full"> children </div>
       </div>
@@ -191,12 +191,12 @@ module SubNav = {
         ("GenType", "/docs/gentype/latest/introduction"),
       ]
 
-      let activeThemeLink = "font-normal text-primary border-b border-primary"
+      let activeThemeLink = "font-normal text-fire border-b border-fire"
 
-      let sectionClass = "pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/3"
-      let overlineClass = "font-black uppercase text-sm tracking-wide text-primary-80"
+      let sectionClass = "pb-12 mt-12 border-b border-gray-80 last:border-b-0 lg:w-1/3"
+      let overlineClass = "font-black uppercase text-sm tracking-wide text-fire-70"
 
-      let sectionUl = "flex flex-wrap mt-8 list-primary list-inside lg:w-auto max-w-md"
+      let sectionUl = "flex flex-wrap mt-8 list-fire list-inside lg:w-auto max-w-md"
 
       <div className="lg:flex lg:flex-row px-4 max-w-xl">
         <div className={reTheme ++ (" " ++ sectionClass)}>
@@ -204,7 +204,7 @@ module SubNav = {
             <a className=overlineClass> {React.string("Language Manual")} </a>
           </Link>
           <ul className=sectionUl> {languageItems->Belt.Array.mapWithIndex((idx, (title, href)) => {
-              let active = route == href ? activeThemeLink ++ " hover:text-primary cursor-auto" : ""
+              let active = route == href ? activeThemeLink ++ " hover:text-fire cursor-auto" : ""
               <li className="w-1/2 xs:w-1/2 h-10" key={Belt.Int.toString(idx)}>
                 <Link href>
                   <a className={"text-white-80 hover:text-white hover:cursor-pointer " ++ active}>
@@ -219,7 +219,7 @@ module SubNav = {
             <a className=overlineClass> {React.string("JavaScript & Interop")} </a>
           </Link>
           <ul className=sectionUl> {recompItems->Belt.Array.mapWithIndex((idx, (title, href)) => {
-              let active = route == href ? activeThemeLink ++ " hover:text-primary cursor-auto" : ""
+              let active = route == href ? activeThemeLink ++ " hover:text-fire cursor-auto" : ""
               <li className="w-1/2 xs:w-1/2 h-10" key={Belt.Int.toString(idx)}>
                 <Link href>
                   <a className={"text-white-80 hover:text-white hover:cursor-pointer " ++ active}>
@@ -245,10 +245,10 @@ module SubNav = {
          /*("Module 4", "/apis/latest/mod4"),*/
        |];
 
-       let sectionClass = "pb-12 mt-12 border-b border-night last:border-b-0 lg:w-1/4";
-       let overlineClass = "font-black uppercase text-sm tracking-wide text-primary-80";
+       let sectionClass = "pb-12 mt-12 border-b border-gray-80 last:border-b-0 lg:w-1/4";
+       let overlineClass = "font-black uppercase text-sm tracking-wide text-fire-70";
 
-       let sectionUl = "flex flex-wrap mt-8 list-primary list-inside lg:w-auto max-w-md";
+       let sectionUl = "flex flex-wrap mt-8 list-fire list-inside lg:w-auto max-w-md";
 
        <div className="lg:flex lg:flex-row px-4 max-w-xl">
          <div className={reTheme ++ " " ++ sectionClass}>
@@ -264,7 +264,7 @@ module SubNav = {
              {jsItems
               ->Belt.Array.mapWithIndex((idx, (title, href)) => {
                   let active =
-                    Js.String2.startsWith(route, href) ? "text-primary" : "";
+                    Js.String2.startsWith(route, href) ? "text-fire" : "";
                   <li
                     className="w-1/2 xs:w-1/2 h-10"
                     key={Belt.Int.toString(idx)}>
@@ -291,9 +291,9 @@ module SubNav = {
 module MobileNav = {
   @react.component
   let make = (~route: string) => {
-    let base = "font-light mx-4 py-5 text-white-80 border-b border-night"
-    let extLink = "block hover:cursor-pointer hover:text-white text-night-light"
-    <div className="border-night border-t">
+    let base = "font-light mx-4 py-5 text-white-80 border-b border-gray-80"
+    let extLink = "block hover:cursor-pointer hover:text-white text-gray-60"
+    <div className="border-gray-80 border-t">
       <ul>
         <li className=base> <DocSearch.Textbox id="docsearch-mobile" /> </li>
         <li className=base>

@@ -217,8 +217,8 @@ module GutterMarker = {
 
     let marker = createElement("div")
     let colorClass = switch kind {
-    | #Warning => "text-gold bg-gold-15"
-    | #Error => "text-fire bg-fire-15"
+    | #Warning => "text-orange bg-orange-15"
+    | #Error => "text-fire bg-fire-100"
     }
 
     let (row, col) = rowCol
@@ -285,7 +285,7 @@ let updateErrors = (~state: state, ~onMarkerFocus=?, ~onMarkerFocusLeave=?, ~cm:
 
     let markTextColor = switch e.kind {
     | #Error => "border-fire"
-    | #Warning => "border-gold"
+    | #Warning => "border-orange"
     }
 
     cm

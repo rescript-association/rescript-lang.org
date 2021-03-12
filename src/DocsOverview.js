@@ -15,7 +15,7 @@ function DocsOverview$Card(Props) {
     maxWidth: "21rem"
   };
   return React.createElement("div", {
-              className: "border border-snow-dark bg-snow-light px-5 py-8 rounded-lg",
+              className: "border border-gray-10 bg-gray-5 px-5 py-8 rounded-lg",
               style: style
             }, React.createElement("h2", {
                   className: "font-bold text-21 mb-4"

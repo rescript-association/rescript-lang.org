@@ -8,6 +8,6 @@ let make = (~displayName: string) => {
   }
 
   <div className="block uppercase h-full w-full flex items-center justify-center rounded-full">
-    <span className="text-xl text-night"> {React.string(initials)} </span>
+    <span className="text-xl text-gray-80"> {React.string(initials)} </span>
   </div>
 }

@@ -122,7 +122,7 @@ let make = (props: props): React.element => {
       <MainLayout>
         <Meta ?title ?description />
         <div className="flex justify-center">
-          <div className="max-w-705 w-full"> content </div>
+          <div className="max-w-740 w-full"> content </div>
         </div>
       </MainLayout>
     }

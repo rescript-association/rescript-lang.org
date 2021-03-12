@@ -41,7 +41,7 @@ module BlogComponent = {
 
 module Line = {
   @react.component
-  let make = () => <div className="block border-t border-snow-darker" />
+  let make = () => <div className="block border-t border-gray-20" />
 }
 
 module AuthorBox = {
@@ -56,19 +56,19 @@ module AuthorBox = {
 
     <div className="flex items-center">
       <div className="w-12 h-12 bg-berry-40 block rounded-full mr-3"> authorImg </div>
-      <div className="text-14 font-medium text-night-dark">
+      <div className="text-14 font-medium text-gray-95">
         {switch author.twitter->Js.Null.toOption {
         | Some(handle) =>
           <a
             href={"https://twitter.com/" ++ handle}
-            className="hover:text-night"
+            className="hover:text-gray-80"
             rel="noopener noreferrer"
             target="_blank">
             {React.string(displayName)}
           </a>
         | None => React.string(displayName)
         }}
-        <div className="text-night-light"> {React.string(author.role)} </div>
+        <div className="text-gray-60"> {React.string(author.role)} </div>
       </div>
     </div>
   }
@@ -90,8 +90,8 @@ module BlogHeader = {
     let authors = Belt.Array.concat([author], co_authors)
 
     <div className="flex flex-col items-center">
-      <div className="w-full max-w-705">
-        <div className="text-night-light text-lg mb-5">
+      <div className="w-full max-w-740">
+        <div className="text-gray-60 text-lg mb-5">
           {switch category {
           | Some(category) => <> {React.string(category)} {React.string(middleDotSpacer)} </>
           | None => React.null
@@ -103,7 +103,7 @@ module BlogHeader = {
           switch desc {
           | "" => <div className="mb-8" />
           | desc =>
-            <div className="my-8 text-onyx">
+            <div className="my-8 text-gray-95">
               <Markdown.Intro> {React.string(desc)} </Markdown.Intro>
             </div>
           }
@@ -121,14 +121,14 @@ module BlogHeader = {
       </div>
       {switch articleImg {
       | Some(articleImg) =>
-        <div className="-mx-8 sm:mx-0 sm:w-full bg-night-10 md:mt-24">
+        <div className="-mx-8 sm:mx-0 sm:w-full bg-gray-5-tr md:mt-24">
           <img
             className="h-full w-full object-cover"
             src=articleImg
             style={ReactDOMStyle.make(~maxHeight="33.625rem", ())}
           />
         </div>
-      | None => <div className="max-w-705 w-full"> <Line /> </div>
+      | None => <div className="max-w-740 w-full"> <Line /> </div>
       }}
     </div>
   }
@@ -200,7 +200,7 @@ let default = (props: props) => {
         />
       </div>
       <div className="flex justify-center">
-        <div className="max-w-705 w-full">
+        <div className="max-w-740 w-full">
           archivedNote
           children
           {switch canonical->Js.Null.toOption {
@@ -216,11 +216,11 @@ let default = (props: props) => {
           <div className="mt-12">
             <Line />
             <div className="pt-20 flex flex-col items-center">
-              <div className="text-3xl sm:text-4xl text-center text-night-dark font-medium">
+              <div className="text-3xl sm:text-4xl text-center text-gray-95 font-medium">
                 {React.string("Want to read more?")}
               </div>
               <Next.Link href="/blog">
-                <a className="text-fire hover:text-fire-80">
+                <a className="text-fire hover:text-fire-70">
                   {React.string("Back to Overview")}
                   <Icon.ArrowRight className="ml-2 inline-block" />
                 </a>
@@ -234,7 +234,7 @@ let default = (props: props) => {
   | Error(msg) =>
     <div>
       <Markdown.Warn>
-        <h2 className="font-bold text-night-dark text-2xl mb-2">
+        <h2 className="font-bold text-gray-95 text-28 mb-2">
           {React.string("Could not parse file '_blogposts/" ++ (fullslug ++ ".mdx'"))}
         </h2>
         <p>

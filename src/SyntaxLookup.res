@@ -118,7 +118,7 @@ module Tag = {
   @react.component
   let make = (~text: string) => {
     <span
-      className="hover:bg-fire hover:text-white bg-fire-10-tr py-1 px-3 rounded text-fire text-16">
+      className="hover:bg-fire hover:text-white bg-fire-10 py-1 px-3 rounded text-fire text-16">
       {React.string(text)}
     </span>
   }
@@ -143,7 +143,7 @@ module DetailBox = {
     }
 
     <div>
-      <div className="text-21 border-b border-fire-40 pb-4 mb-4 font-semibold"> summaryEl </div>
+      <div className="text-21 border-b border-gray-40 pb-4 mb-4 font-semibold"> summaryEl </div>
       <div className="mt-16"> children </div>
     </div>
   }

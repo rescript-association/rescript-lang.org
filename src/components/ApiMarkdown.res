@@ -1,19 +1,20 @@
 open Markdown
-
+/*
 module H1 = {
   @react.component
   let make = (~children) =>
-    <h1 className="text-6xl leading-1 mb-2 font-sans font-medium text-night-dark"> children </h1>
-}
+    <h1 className="text-42 tracking-tight leading-1 mb-2 font-sans font-medium text-gray-95"> children </h1>
+}*/
 
 module H2 = {
   // We will currently hide the headline, to keep the structure,
   // but having an Elm like documentation
   @react.component
   let make = (~id, ~children) => <>
-    <div className="border-b border-gray-10 mb-10 mt-20" /> <Markdown.H2 id> children </Markdown.H2>
+    <div className="mb-10 mt-20" /> <Markdown.H2 id> children </Markdown.H2>
   </>
 }
+
 
 let default = Mdx.Components.t(
   ~intro=Intro.make,

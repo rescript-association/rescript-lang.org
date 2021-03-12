@@ -28,7 +28,7 @@ module DropdownSelect = {
   let make = (~onChange, ~name, ~value, ~disabled=false, ~children) => {
     let opacity = disabled ? " opacity-50" : ""
     <select
-      className={"text-14 bg-transparent border border-night-light inline-block rounded px-4 py-1 font-semibold" ++
+      className={"text-14 bg-transparent border border-gray-80 inline-block rounded px-4 py-1 font-semibold" ++
       opacity}
       name
       value
@@ -154,7 +154,7 @@ module Pane = {
 
     <div>
       <div>
-        <div className={"flex bg-night-10 w-full " ++ (disabled ? "opacity-50" : "")}>
+        <div className={"flex bg-gray-100 w-full " ++ (disabled ? "opacity-50" : "")}>
           {React.array(headers)}
         </div>
         <div> {React.array(body)} </div>
@@ -166,8 +166,8 @@ module Pane = {
 module Statusbar = {
   let renderTitle = (~targetLang, result) => {
     /* let errClass = "text-fire"; */
-    /* let warnClass = "text-code-5"; */
-    /* let okClass = "text-dark-code-3"; */
+    /* let warnClass = "text-orange-dark"; */
+    /* let okClass = "text-turtle-dark"; */
     let errClass = "text-white-80"
     let warnClass = "text-white font-bold"
     let okClass = "text-white-80"
@@ -212,14 +212,14 @@ module Statusbar = {
       | Comp(UnexpectedError(_))
       | Conv(UnexpectedError(_))
       | Comp(Unknown(_))
-      | Conv(Unknown(_)) => "bg-fire-80"
+      | Conv(Unknown(_)) => "bg-fire-70"
       | Conv(Success(_))
-      | Nothing => "bg-dark-code-3"
+      | Nothing => "bg-turtle-dark"
       | Comp(Success({warnings})) =>
         if Array.length(warnings) === 0 {
-          "bg-dark-code-3"
+          "bg-turtle-dark"
         } else {
-          "bg-code-5"
+          "bg-orange"
         }
       }
 
@@ -243,7 +243,7 @@ module ResultPane = {
   let compactErrorLine = (~highlight=false, ~prefix: prefix, locMsg: Api.LocMsg.t) => {
     let {Api.LocMsg.row: row, column, shortMsg} = locMsg
     let prefixColor = switch prefix {
-    | #W => "text-code-5"
+    | #W => "text-orange"
     | #E => "text-fire"
     }
 
@@ -254,15 +254,14 @@ module ResultPane = {
 
     let highlightClass = switch (highlight, prefix) {
     | (false, _) => ""
-    | (true, #W) => "bg-gold-15"
-    | (true, #E) => "bg-fire-15 rounded"
+    | (true, #W) => "bg-orange-15"
+    | (true, #E) => "bg-fire-90 rounded"
     }
 
-    <div
-      className="font-mono mb-4 pb-6 last:mb-0 last:pb-0 last:border-0 border-b border-night-light ">
+    <div className="font-mono mb-4 pb-6 last:mb-0 last:pb-0 last:border-0 border-b border-gray-80 ">
       <div className={"p-2 " ++ highlightClass}>
         <span className=prefixColor> {React.string(prefixText)} </span>
-        <span className="font-medium text-night-light">
+        <span className="font-medium text-gray-40">
           {React.string(j` Line $row, column $column:`)}
         </span>
         <AnsiPre className="whitespace-pre-wrap "> shortMsg </AnsiPre>
@@ -418,7 +417,7 @@ module ResultPane = {
       React.string(msg)
     | Comp(Unknown(msg, json))
     | Conv(Unknown(msg, json)) =>
-      let subheader = "font-bold text-night-light text-16"
+      let subheader = "font-bold text-gray-40 text-16"
       <div>
         <PreWrap>
           {React.string(
@@ -451,8 +450,8 @@ module ResultPane = {
 
   let renderTitle = result => {
     let errClass = "text-fire"
-    let warnClass = "text-code-5"
-    let okClass = "text-dark-code-3"
+    let warnClass = "text-orange"
+    let okClass = "text-turtle-dark"
 
     let (className, text) = switch result {
     | FinalResult.Comp(Fail(result)) =>
@@ -489,12 +488,12 @@ module ResultPane = {
     ~focusedRowCol: option<(int, int)>=?,
     ~result: FinalResult.t,
   ) =>
-    <div className="pt-4 bg-night-dark overflow-y-auto hide-scrollbar">
+    <div className="pt-4 bg-gray-95 overflow-y-auto hide-scrollbar">
       <div className="flex items-center text-16 font-medium px-4">
         <div className="pr-4"> {renderTitle(result)} </div>
       </div>
       <div className="">
-        <div className="bg-night-dark text-snow-darker px-4 py-4">
+        <div className="bg-gray-95 text-gray-10 px-4 py-4">
           {renderResult(~focusedRowCol, ~compilerVersion, ~targetLang, result)}
         </div>
       </div>
@@ -697,10 +696,10 @@ module WarningFlagsWidget = {
 
       let full = (enabled ? "+" : "-") ++ flag
       let color = switch (enabled, isActive) {
-      | (true, false) => "text-dark-code-3"
+      | (true, false) => "text-turtle-dark"
       | (false, false) => "text-fire"
-      | (true, true) => "bg-night-light text-dark-code-3"
-      | (false, true) => "bg-night-light text-fire"
+      | (true, true) => "bg-gray-40 text-turtle-dark"
+      | (false, true) => "bg-gray-40 text-fire"
       }
 
       let hoverEnabled = switch state {
@@ -745,7 +744,7 @@ module WarningFlagsWidget = {
         onClick
         ?onMouseEnter
         ?onMouseLeave
-        className={color ++ " hover:cursor-default text-16 inline-block border border-night-light rounded-full px-2 mr-1"}
+        className={color ++ " hover:cursor-default text-16 inline-block border border-gray-40 rounded-full px-2 mr-1"}
         key={Belt.Int.toString(i) ++ flag}>
         {React.string(full)}
       </span>
@@ -826,7 +825,7 @@ module WarningFlagsWidget = {
       WarningFlagDescription.lookup(token.flag)
       ->Belt.Array.map(((num, description)) => {
         let (modifier, color) = if token.enabled {
-          ("(Enabled) ", "text-dark-code-3")
+          ("(Enabled) ", "text-turtle-dark")
         } else {
           ("(Disabled) ", "text-fire")
         }
@@ -843,7 +842,7 @@ module WarningFlagsWidget = {
       | ErrorSuggestion(msg) => React.string(msg)
       | FuzzySuggestions({precedingTokens, selected, results, modifier}) =>
         Belt.Array.mapWithIndex(results, (i, (flag, desc)) => {
-          let activeClass = selected === i ? "bg-night-light" : ""
+          let activeClass = selected === i ? "bg-gray-40" : ""
 
           let ref = if selected === i {
             ReactDOM.Ref.callbackDomRef(dom => {
@@ -950,7 +949,7 @@ module WarningFlagsWidget = {
         onClick
         onFocus
         tabIndex=0
-        className="focus:outline-none self-start focus:shadow-outline hover:cursor-pointer hover:bg-night-light p-2 rounded-full">
+        className="focus:outline-none self-start focus:shadow-outline hover:cursor-pointer hover:bg-gray-40 p-2 rounded-full">
         <Icon.Close />
       </button>
     }
@@ -958,7 +957,7 @@ module WarningFlagsWidget = {
     let activeClass = if isActive {
       "border-white"
     } else {
-      "border-night-light"
+      "border-gray-60"
     }
 
     let areaOnFocus = _evt =>
@@ -979,7 +978,7 @@ module WarningFlagsWidget = {
           chips
           <input
             ref={ReactDOM.Ref.domRef(inputRef)}
-            className="outline-none bg-night-dark placeholder-snow-darker placeholder-opacity-50"
+            className="outline-none bg-gray-90 placeholder-gray-20 placeholder-opacity-50"
             placeholder="Flags"
             type_="text"
             tabIndex=0
@@ -1046,7 +1045,7 @@ module Settings = {
       dispatch(SwitchToCompiler({id: id, libraries: readyState.selected.libraries}))
 
     let titleClass = "text-18 font-bold mb-2"
-    <div className="p-4 pt-8 bg-night-dark text-snow-darker">
+    <div className="p-4 pt-8 bg-gray-95 text-gray-20">
       <div>
         <div className=titleClass> {React.string("ReScript Version")} </div>
         <DropdownSelect
@@ -1110,7 +1109,7 @@ module ControlPanel = {
     let make = (~children, ~onClick=?) =>
       <button
         ?onClick
-        className="inline-block text-sky hover:cursor-pointer hover:bg-sky hover:text-white-80 rounded border active:bg-sky-80 border-sky-80 px-2 py-1 ">
+        className="inline-block text-sky hover:cursor-pointer hover:bg-sky hover:text-white-80 rounded border active:bg-sky-70 border-sky-70 px-2 py-1 ">
         children
       </button>
   }
@@ -1164,8 +1163,8 @@ module ControlPanel = {
       }
 
       let (text, className) = switch state {
-      | Init => ("Copy Share Link", " bg-sky active:bg-sky-80 border-sky-80")
-      | CopySuccess => ("Copied to clipboard!", "bg-dark-code-3 border-dark-code-3")
+      | Init => ("Copy Share Link", " bg-sky active:bg-sky-70 border-sky-70")
+      | CopySuccess => ("Copied to clipboard!", "bg-turtle-dark border-turtle-dark")
       }
 
       <>
@@ -1229,7 +1228,7 @@ module ControlPanel = {
     | _ => React.null
     }
 
-    <div className="flex justify-end items-center h-12 bg-night-10 px-4"> children </div>
+    <div className="flex justify-end items-center h-12 bg-gray-100 px-4"> children </div>
   }
 }
 
@@ -1331,7 +1330,7 @@ module OutputPanel = {
 
     let output =
       <div
-        className="relative w-full bg-night-dark text-snow-darker"
+        className="relative w-full bg-gray-95 text-gray-20"
         style={ReactDOM.Style.make(~height="calc(100vh - 9rem)", ())}>
         resultPane codeElement
       </div>
@@ -1389,12 +1388,12 @@ module OutputPanel = {
     ]
 
     let makeTabClass = active => {
-      let activeClass = active ? "text-fire font-medium bg-night-dark hover:cursor-default" : ""
+      let activeClass = active ? "text-fire font-medium bg-gray-95 hover:cursor-default" : ""
 
       "flex items-center h-12 px-4 pr-16 " ++ activeClass
     }
 
-    <div className="h-full bg-night-dark"> <Pane tabs makeTabClass /> </div>
+    <div className="h-full bg-gray-95"> <Pane tabs makeTabClass /> </div>
   }
 }
 
@@ -1553,16 +1552,16 @@ let default = () => {
       <style> {React.string(j`body { background-color: #010427; } `)} </style>
     </Next.Head>
     <div className="text-16 bg-gray-100">
-      <div className="text-night text-14">
+      <div className="text-gray-60 text-14">
         <Navigation fixed=false overlayState />
         <main
           className="bg-gray-100 lg:overflow-hidden lg:h-screen"
           style={ReactDOM.Style.make(~maxHeight="calc(100vh - 4.5rem)", ())}>
-          <div className="w-full h-full flex flex-col lg:flex-row border-t-4 border-night">
+          <div className="w-full h-full flex flex-col lg:flex-row border-t-2 border-gray-80">
             <div
-              className="w-full lg:border-r-4 pl-2 border-night"
+              className="w-full lg:border-r-2 pl-2 border-gray-80"
               style=?{windowWidth > 1024 ? Some(ReactDOM.Style.make(~maxWidth="65%", ())) : None}>
-              <div className="bg-gray-100 text-snow-darker">
+              <div className="bg-gray-100 text-gray-20">
                 <ControlPanel
                   actionIndicatorKey={Belt.Int.toString(actionCount)}
                   state=compilerState

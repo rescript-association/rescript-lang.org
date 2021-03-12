@@ -4,7 +4,7 @@ module CallToActionButton = {
   @react.component
   let make = (~children) =>
     <button
-      className="transition-colors duration-200 inline-block text-base text-white hover:bg-fire-80 hover:text-white bg-fire rounded border border-fire-80 px-5 py-2">
+      className="transition-colors duration-200 inline-block text-base text-white hover:bg-fire-70 hover:text-white hover:border-fire-70 bg-fire rounded border border-fire px-5 py-2">
       children
     </button>
 }
@@ -13,7 +13,7 @@ module SubtleButton = {
   @react.component
   let make = (~children) =>
     <button
-      className="transition-colors duration-200 inline-block text-base text-fire rounded border-2 border-fire-80 hover:bg-fire-10 px-5 py-2">
+      className="transition-colors duration-200 inline-block text-base text-fire rounded border-2 border-fire-10 hover:bg-fire-10 px-5 py-2">
       children
     </button>
 }
@@ -25,7 +25,7 @@ let make = (~components=Markdown.default, ~children) => {
   <>
     <Meta />
     <div className="mt-4 xs:mt-16">
-      <div className="text-night text-lg">
+      <div className="text-gray-80 text-lg">
         <Navigation overlayState />
         <div className="absolute top-18 w-full">
           <div
@@ -46,12 +46,12 @@ let make = (~components=Markdown.default, ~children) => {
             <main className="mt-10 min-w-320 lg:align-center w-full px-4 md:px-8 max-w-1280 ">
               <Mdx.Provider components>
                 <div className="flex justify-center">
-                  <div className="w-full max-w-705">
+                  <div className="w-full max-w-740">
                     <div>
-                      <h1 className="text-80 xs:text-100 font-semibold">
+                      <h1 className="text-80 xs:text-100 text-gray-95 font-semibold">
                         {React.string("ReScript")}
                       </h1>
-                      <p className="text-21 font-bold mb-2">
+                      <p className="text-21 text-gray-95 font-bold mb-2">
                         {React.string("The JavaScript-like language you have been waiting for.")}
                       </p>
                       <p className="text-14 italic">

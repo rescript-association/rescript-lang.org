@@ -189,7 +189,7 @@ module Card = {
           })
           <button
             ?onMouseDown
-            className="hover:pointer px-2 rounded-lg text-white bg-fire-80 text-14"
+            className="hover:pointer px-2 rounded-lg text-white bg-fire-70 text-14"
             key={keyword}>
             {React.string(keyword)}
           </button>
@@ -247,7 +247,7 @@ module InfoSidebar = {
 
   @react.component
   let make = (~setFilter: (Filter.t => Filter.t) => unit, ~filter: Filter.t) => {
-    let h2 = "group mb-3 text-14 uppercase  leading-1 font-sans font-medium text-onyx"
+    let h2 = "group mb-3 text-14 uppercase  leading-1 font-sans font-medium text-gray-95"
     let link = "hover:underline"
 
     <aside className=" border-l-2 p-4 py-12 border-fire-30 space-y-16">
@@ -457,7 +457,7 @@ let default = (props: props) => {
       description="Official and unofficial resources, libraries and bindings for ReScript"
     />
     <div className="mt-16 pt-2">
-      <div className="text-night text-lg">
+      <div className="text-gray-80 text-lg">
         <Navigation overlayState />
         <div className="flex overflow-hidden">
           <div

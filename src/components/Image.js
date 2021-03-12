@@ -18,7 +18,7 @@ function Image$default(Props) {
                       className: "w-full " + shadow,
                       src: src
                     })), caption !== undefined ? React.createElement("div", {
-                    className: "mt-4 text-14 text-night-light md:ml-16"
+                    className: "mt-4 text-14 text-gray-60 md:ml-16"
                   }, caption) : null);
 }
 

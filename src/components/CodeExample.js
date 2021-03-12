@@ -35,17 +35,15 @@ function CodeExample(Props) {
   if (showLabel) {
     var label$1 = langShortname(lang);
     label = React.createElement("div", {
-          className: "flex self-end font-sans mb-4 text-sm font-bold text-night-light px-4"
+          className: "absolute right-0 px-4 pb-4 bg-gray-5 font-sans text-12 font-bold text-gray-60 "
         }, label$1.toUpperCase());
   } else {
-    label = React.createElement("div", {
-          className: "mt-4"
-        });
+    label = null;
   }
   return React.createElement("div", {
-              className: "flex w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-snow-dark bg-snow-light py-2 text-night-dark"
+              className: "relative w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-gray-10 bg-gray-5 py-2 text-gray-90"
             }, label, React.createElement("div", {
-                  className: "px-4 text-base pb-2 overflow-x-auto -mt-2"
+                  className: "px-4 text-14 pt-4 pb-2 overflow-x-auto -mt-2"
                 }, children));
 }
 
@@ -67,7 +65,7 @@ function CodeExample$Toggle(Props) {
               var lang = tab.lang;
               label$1 = lang !== undefined ? langShortname(lang).toUpperCase() : String(i);
             }
-            var activeClass = selected === i ? "font-bold text-gray-100 bg-snow-light border border-b-0 border-snow-dark border-gray-20" : "border-gray-20 border-b hover:cursor-pointer";
+            var activeClass = selected === i ? "font-medium text-gray-90 bg-gray-5 border-t-2 border-l border-r" : "font-medium hover:text-gray-60 border-t-2 border-l border-r bg-gray-10 hover:cursor-pointer";
             var onClick = function (evt) {
               evt.preventDefault();
               return Curry._1(setSelected, (function (param) {
@@ -78,11 +76,15 @@ function CodeExample$Toggle(Props) {
             var paddingX = numberOfItems >= 3 ? (
                 numberOfItems >= 4 ? "" : "lg:px-8"
               ) : (
-                numberOfItems > 0 ? "sm:px-16" : ""
+                numberOfItems > 0 ? "sm:px-4" : ""
               );
+            var borderColor = selected === i ? "#f4646a #EDF0F2" : "#CDCDD6 #EDF0F2";
             return React.createElement("span", {
                         key: key,
-                        className: paddingX + (" flex-none px-4 inline-block p-2 bg-gray-10 rounded-tl rounded-tr " + activeClass),
+                        className: paddingX + (" flex-none px-4 first:ml-6 xs:first:ml-0 inline-block p-1 rounded-tl rounded-tr " + activeClass),
+                        style: {
+                          borderColor: borderColor
+                        },
                         onClick: onClick
                       }, label$1);
           }));
@@ -91,15 +93,18 @@ function CodeExample$Toggle(Props) {
                 return HighlightJs.renderHLJS(tab.highlightedLines, undefined, tab.code, lang, undefined);
               })), null);
     return React.createElement("div", {
-                className: "flex w-full flex-col rounded-none text-night-dark"
+                className: "relative pt-6 w-full rounded-none text-gray-80"
               }, React.createElement("div", {
-                    className: "flex w-full overflow-auto scrolling-touch font-sans bg-transparent text-sm text-gray-60-tr"
+                    className: "absolute flex w-full overflow-auto scrolling-touch font-sans bg-transparent text-14 text-gray-40 ",
+                    style: {
+                      marginTop: "-30px"
+                    }
                   }, React.createElement("div", {
-                        className: "flex"
+                        className: "flex space-x-2"
                       }, tabElements), React.createElement("div", {
-                        className: "flex-1 border-b border-gray-20"
+                        className: "flex-1 border-b border-gray-10"
                       }, "\u00A0")), React.createElement("div", {
-                    className: "px-4 text-base pb-4 pt-4 overflow-x-auto bg-snow-light border-snow-dark xs:rounded-b border border-t-0"
+                    className: "px-4 text-14 pb-4 pt-4 overflow-x-auto bg-gray-5 border-gray-10 xs:rounded-b border border-t-1"
                   }, React.createElement("pre", undefined, children)));
   }
   var tab = tabs[0];

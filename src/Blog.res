@@ -28,13 +28,13 @@ module Badge = {
   let make = (~badge: BlogFrontmatter.Badge.t) => {
     let bgColor = switch badge {
     | Preview | Roadmap | Release => "bg-turtle"
-    | Testing => "bg-code-1"
+    | Testing => "bg-orange"
     }
 
     let text = badge->BlogFrontmatter.Badge.toString
 
     <div
-      className={bgColor ++ " flex items-center h-6 font-medium tracking-tight text-onyx-80 text-14 px-2 rounded-sm"}>
+      className={bgColor ++ " flex items-center h-6 font-medium tracking-tight text-gray-80-tr text-14 px-2 rounded-sm"}>
       <div> <img className="h-3 block mr-1" src="/static/star.svg" /> </div>
       <div> {React.string(text)} </div>
     </div>
@@ -47,12 +47,12 @@ module CategorySelector = {
     | Category(BlogFrontmatter.Category.t)
 
   let renderTab = (~text: string, ~isActive: bool, ~onClick) => {
-    let active = "bg-snow-dark text-onyx rounded py-1"
+    let active = "bg-gray-10 text-gray-80 rounded py-1"
     <div
       key=text
       onClick
       className={(
-        isActive ? active : "hover:cursor-pointer hover:text-onyx"
+        isActive ? active : "hover:cursor-pointer hover:text-gray-80"
       ) ++ "  px-4 inline-block"}>
       {React.string(text)}
     </div>
@@ -66,7 +66,7 @@ module CategorySelector = {
   ) => {
     let tabs = [All, Archived]->Js.Array2.concat(Belt.Array.map(categories, cat => Category(cat)))
 
-    <div className="text-16 w-full flex items-center justify-between text-onyx-50">
+    <div className="text-16 w-full flex items-center justify-between text-gray-60">
       {Belt.Array.map(tabs, tab => {
         let onClick = evt => {
           evt->ReactEvent.Mouse.preventDefault
@@ -121,7 +121,7 @@ module BlogCard = {
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
           <a> <h2 className=Text.H3.default> {React.string(title)} </h2> </a>
         </Link>
-        <div className="text-night-light text-sm">
+        <div className="text-gray-60 text-14">
           {switch category {
           | Some(category) => <> {React.string(category)} {React.string(j` · `)} </>
           | None => React.null
@@ -182,13 +182,13 @@ module FeatureCard = {
         <div className="max-w-400 ">
           <h2 className=Text.H2.default> {React.string(title)} </h2>
           <div className="mb-6">
-            <div className="flex items-center font-medium text-onyx-50 text-sm my-2">
+            <div className="flex items-center font-medium text-gray-40 text-sm mt-2 mb-5">
               <div className="inline-block w-4 h-4 mr-2"> authorImg </div>
               <div>
                 {switch author.twitter->Js.Null.toOption {
                 | Some(handle) =>
                   <a
-                    className="hover:text-onyx-80"
+                    className="hover:text-gray-80"
                     href={"https://twitter.com/" ++ handle}
                     rel="noopener noreferrer"
                     target="_blank">
@@ -207,7 +207,7 @@ module FeatureCard = {
                 {date->Util.Date.toDayMonthYear->React.string}
               </div>
             </div>
-            <p className="text-night-dark text-16"> {React.string(firstParagraph)} </p>
+            <p className="text-gray-90 antialiased tracking-tight text-16"> {React.string(firstParagraph)} </p>
           </div>
         </div>
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
@@ -264,7 +264,7 @@ let default = (props: props): React.element => {
   let errorBox = if ProcessEnv.env === ProcessEnv.development && Belt.Array.length(malformed) > 0 {
     <div className="mb-12">
       <Markdown.Warn>
-        <h2 className="font-bold text-night-dark text-2xl mb-2">
+        <h2 className="font-bold text-gray-95 text-2xl mb-2">
           {React.string("Some Blog Posts are Malformed!")}
         </h2>
         <p>
@@ -381,7 +381,7 @@ let default = (props: props): React.element => {
       description="News, Announcements, Release Notes and more"
     />
     <div className="mt-16 pt-2">
-      <div className="text-night text-lg">
+      <div className="text-gray-80 text-lg">
         <Navigation overlayState />
         <div className="flex justify-center overflow-hidden">
           <main className="min-w-320 lg:align-center w-full lg:px-0 max-w-1280 pb-48">

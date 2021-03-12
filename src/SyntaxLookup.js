@@ -109,7 +109,7 @@ function getAnchor(path) {
 function SyntaxLookup$Tag(Props) {
   var text = Props.text;
   return React.createElement("span", {
-              className: "hover:bg-fire hover:text-white bg-fire-10-tr py-1 px-3 rounded text-fire text-16"
+              className: "hover:bg-fire hover:text-white bg-fire-10 py-1 px-3 rounded text-fire text-16"
             }, text);
 }
 
@@ -140,7 +140,7 @@ function SyntaxLookup$DetailBox(Props) {
           }));
   }
   return React.createElement("div", undefined, React.createElement("div", {
-                  className: "text-21 border-b border-fire-40 pb-4 mb-4 font-semibold"
+                  className: "text-21 border-b border-gray-40 pb-4 mb-4 font-semibold"
                 }, summaryEl), React.createElement("div", {
                   className: "mt-16"
                 }, children));

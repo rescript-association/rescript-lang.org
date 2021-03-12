@@ -28,7 +28,7 @@ var frontmatter = (function(component) {
 
 function BlogArticle$Line(Props) {
   return React.createElement("div", {
-              className: "block border-t border-snow-darker"
+              className: "block border-t border-gray-20"
             });
 }
 
@@ -48,14 +48,14 @@ function BlogArticle$AuthorBox(Props) {
             }, React.createElement("div", {
                   className: "w-12 h-12 bg-berry-40 block rounded-full mr-3"
                 }, authorImg), React.createElement("div", {
-                  className: "text-14 font-medium text-night-dark"
+                  className: "text-14 font-medium text-gray-95"
                 }, handle !== null ? React.createElement("a", {
-                        className: "hover:text-night",
+                        className: "hover:text-gray-80",
                         href: "https://twitter.com/" + handle,
                         rel: "noopener noreferrer",
                         target: "_blank"
                       }, displayName) : displayName, React.createElement("div", {
-                      className: "text-night-light"
+                      className: "text-gray-60"
                     }, author.role)));
 }
 
@@ -72,9 +72,9 @@ function BlogArticle$BlogHeader(Props) {
   return React.createElement("div", {
               className: "flex flex-col items-center"
             }, React.createElement("div", {
-                  className: "w-full max-w-705"
+                  className: "w-full max-w-740"
                 }, React.createElement("div", {
-                      className: "text-night-light text-lg mb-5"
+                      className: "text-gray-60 text-lg mb-5"
                     }, category !== undefined ? React.createElement(React.Fragment, undefined, category, middleDotSpacer) : null, Util.$$Date.toDayMonthYear(date$1)), React.createElement("h1", {
                       className: $$Text.H1.$$default
                     }, title), Belt_Option.mapWithDefault(description, null, (function (desc) {
@@ -84,7 +84,7 @@ function BlogArticle$BlogHeader(Props) {
                                     });
                         } else {
                           return React.createElement("div", {
-                                      className: "my-8 text-onyx"
+                                      className: "my-8 text-gray-95"
                                     }, React.createElement(Markdown.Intro.make, {
                                           children: desc
                                         }));
@@ -102,7 +102,7 @@ function BlogArticle$BlogHeader(Props) {
                                             author: author
                                           }));
                           })))), articleImg !== undefined ? React.createElement("div", {
-                    className: "-mx-8 sm:mx-0 sm:w-full bg-night-10 md:mt-24"
+                    className: "-mx-8 sm:mx-0 sm:w-full bg-gray-5-tr md:mt-24"
                   }, React.createElement("img", {
                         className: "h-full w-full object-cover",
                         style: {
@@ -110,7 +110,7 @@ function BlogArticle$BlogHeader(Props) {
                         },
                         src: articleImg
                       })) : React.createElement("div", {
-                    className: "max-w-705 w-full"
+                    className: "max-w-740 w-full"
                   }, React.createElement(BlogArticle$Line, {})));
 }
 
@@ -170,7 +170,7 @@ function $$default(props) {
             }, React.createElement(BlogArticle$BlogHeader, tmp$3)), React.createElement("div", {
               className: "flex justify-center"
             }, React.createElement("div", {
-                  className: "max-w-705 w-full"
+                  className: "max-w-740 w-full"
                 }, archivedNote, children, canonical !== null ? React.createElement("div", {
                         className: "mt-12 text-14"
                       }, "This article was originally released on ", React.createElement("a", {
@@ -182,11 +182,11 @@ function $$default(props) {
                     }, React.createElement(BlogArticle$Line, {}), React.createElement("div", {
                           className: "pt-20 flex flex-col items-center"
                         }, React.createElement("div", {
-                              className: "text-3xl sm:text-4xl text-center text-night-dark font-medium"
+                              className: "text-3xl sm:text-4xl text-center text-gray-95 font-medium"
                             }, "Want to read more?"), React.createElement(Next.Link.make, {
                               href: "/blog",
                               children: React.createElement("a", {
-                                    className: "text-fire hover:text-fire-80"
+                                    className: "text-fire hover:text-fire-70"
                                   }, "Back to Overview", React.createElement(Icon.ArrowRight.make, {
                                         className: "ml-2 inline-block"
                                       }))
@@ -195,7 +195,7 @@ function $$default(props) {
     content = React.createElement("div", undefined, React.createElement(Markdown.Warn.make, {
               children: null
             }, React.createElement("h2", {
-                  className: "font-bold text-night-dark text-2xl mb-2"
+                  className: "font-bold text-gray-95 text-28 mb-2"
                 }, "Could not parse file '_blogposts/" + (fullslug + ".mdx'")), React.createElement("p", undefined, "The content of this blog post will be displayed as soon as all\n            required frontmatter data has been added."), React.createElement("p", {
                   className: "font-bold mt-4"
                 }, "Errors:"), fm._0));

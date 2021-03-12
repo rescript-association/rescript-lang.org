@@ -28,12 +28,12 @@ module Toc = {
 
   @react.component
   let make = (~entries: array<entry>) =>
-    <ul className="mt-2 py-1 mb-4 border-l border-primary">
+    <ul className="mt-2 py-1 mb-4 border-l border-fire">
       {Belt.Array.map(entries, ({header, href}) =>
         <li key=header className="pl-2 mt-3 first:mt-1">
           <Link href>
             <a
-              className="font-medium block text-sm text-night-light leading-tight tracking-tight hover:text-primary">
+              className="font-medium block text-sm text-gray-40 leading-tight hover:text-gray-80"> //links, nested
               {React.string(header)}
             </a>
           </Link>
@@ -46,7 +46,7 @@ module Sidebar = {
   module Title = {
     @react.component
     let make = (~children) => {
-      let className = "font-sans font-black text-night-light tracking-wide text-xs uppercase mt-5"
+      let className = "font-sans font-bold text-gray-40 tracking-wide text-12 uppercase mt-5" //overline
 
       <div className> children </div>
     }
@@ -64,10 +64,10 @@ module Sidebar = {
       ~isItemActive: t => bool=_nav => false,
       ~isHidden=false,
       ~items: array<t>,
-    ) => <ul className="mt-2 text-sm font-medium"> {Belt.Array.map(items, m => {
+    ) => <ul className="mt-2 text-14 font-medium"> {Belt.Array.map(items, m => {
           let hidden = isHidden ? "hidden" : "block"
           let active = isItemActive(m)
-            ? j` bg-fire-15 text-fire leading-5 -ml-2 pl-2 font-semibold block hover:bg-fire-15 `
+            ? j` bg-fire-10 text-fire leading-5 -ml-2 pl-2 font-medium block hover:bg-fire-10 `
             : ""
 
           let activeToc = switch getActiveToc {
@@ -78,7 +78,7 @@ module Sidebar = {
           <li key=m.name className={hidden ++ " mt-1 leading-4"}>
             <Link href=m.href>
               <a
-                className={"truncate block py-1 md:h-auto tracking-tight text-night-darker rounded-sm  hover:bg-gray-5 hover:-ml-2 hover:py-1 hover:pl-2 " ++
+                className={"truncate block py-1 md:h-auto tracking-tight text-gray-80 rounded-sm  hover:bg-gray-5 hover:-ml-2 hover:py-1 hover:pl-2 " ++
                 active}>
                 {React.string(m.name)}
               </a>
@@ -104,7 +104,7 @@ module Sidebar = {
 
     @react.component
     let make = (~getActiveToc=?, ~isItemActive: option<NavItem.t => bool>=?, ~category: t) =>
-      <div key=category.name className="my-12">
+      <div key=category.name className="my-10">
         <Title> {React.string(category.name)} </Title>
         <NavItem ?isItemActive ?getActiveToc items=category.items />
       </div>
@@ -136,11 +136,11 @@ module Sidebar = {
         id="sidebar"
         className={(
           isOpen ? "fixed w-full left-0 h-full z-20 min-w-320" : "hidden "
-        ) ++ " md:block md:w-48 md:-ml-4 lg:w-1/4 md:h-auto md:relative overflow-y-visible bg-white md:relative"}
+        ) ++ " md:block md:w-48 md:-ml-4 lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white md:relative"}
         style={ReactDOMStyle.make(~minWidth="12.9375rem", ())}>
         <aside
           id="sidebar-content"
-          className="relative top-0 px-4 w-full block md:top-18 md:pt-24 md:sticky border-r border-snow-dark overflow-y-auto scrolling-touch pb-24"
+          className="relative top-0 px-4 w-full block md:top-18 md:pt-24 md:sticky border-r border-gray-5 overflow-y-auto scrolling-touch pb-24"
           style={ReactDOMStyle.make(~height="calc(100vh - 4.5rem", ())}>
           <div className="flex justify-between">
             <div className="w-3/4 md:w-full"> toplevelNav </div>
@@ -174,7 +174,7 @@ module Sidebar = {
 module BreadCrumbs = {
   @react.component
   let make = (~crumbs: list<Url.breadcrumb>) =>
-    <div className="w-full font-medium tracking-tight overflow-x-auto text-14 text-night">
+    <div className="w-full font-medium overflow-x-auto text-14 text-gray-60">
       {Belt.List.mapWithIndex(crumbs, (i, crumb) => {
         let item = if i === Belt.List.length(crumbs) - 1 {
           <span key={Belt.Int.toString(i)}> {React.string(crumb.name)} </span>
@@ -251,14 +251,14 @@ let make = (
   <>
     <Meta title=metaTitle />
     <div className={"mt-16 min-w-320 " ++ theme}>
-      <div className="w-full text-night font-base">
+      <div className="w-full">
         <Navigation overlayState=(isNavOpen, setNavOpen) />
         <div className="flex justify-center">
           <div className="w-full max-w-1280 md:mx-8">
             <div className="flex">
               sidebar
               <main
-                className="px-6 w-full md:ml-12 md:mx-8 pt-16 md:mt-2 md:pt-24 mb-32 text-lg max-w-705">
+                className="px-4 w-full pt-16 md:ml-12 md:mx-8 md:mt-2 md:pt-24 mb-32 max-w-740"> //width of the right content part
                 <div
                   className="z-10 fixed border-b shadow top-18 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center">
                   <MobileDrawerButton

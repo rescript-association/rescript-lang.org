@@ -59,11 +59,11 @@ function DocSearch(Props) {
   var activeClass = isActive ? "text-white border border-white-80" : "";
   var activeInput = isActive ? "w-32 mr-3" : "w-0";
   return React.createElement("div", {
-              className: activeClass + " bg-night hover:text-white hover:cursor-pointer flex justify-center p-2 px-3 rounded",
+              className: activeClass + " bg-gray-80 hover:text-white hover:cursor-pointer flex justify-center p-2 px-3 rounded",
               onClick: onClick
             }, React.createElement("input", {
                   ref: inputRef,
-                  className: "transition-all ease-in-out duration-150 text-white bg-night border-none focus:outline-none " + activeInput,
+                  className: "transition-all ease-in-out duration-150 text-white bg-gray-80 border-none focus:outline-none " + activeInput,
                   id: "docsearch",
                   type: "text",
                   onKeyDown: onKeyDown,
@@ -119,13 +119,13 @@ function DocSearch$Textbox(Props) {
   var activeClass = isActive ? "text-white border border-white-80" : "opacity-75";
   var activeInput = "";
   return React.createElement("div", {
-              className: activeClass + " hover:text-white hover:cursor-pointer bg-night flex items-center p-2 px-3 rounded",
+              className: activeClass + " hover:text-white hover:cursor-pointer bg-gray-80 flex items-center p-2 px-3 rounded",
               onClick: onClick
             }, React.createElement(Icon.MagnifierGlass.make, {
                   className: "w-5 h-5 mr-3"
                 }), React.createElement("input", {
                   ref: inputRef,
-                  className: "w-32 bg-night focus:outline-none " + activeInput,
+                  className: "w-32 bg-gray-80 focus:outline-none " + activeInput,
                   id: id,
                   type: "text",
                   onKeyDown: onKeyDown,

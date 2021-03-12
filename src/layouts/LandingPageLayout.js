@@ -12,14 +12,14 @@ import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 function LandingPageLayout$CallToActionButton(Props) {
   var children = Props.children;
   return React.createElement("button", {
-              className: "transition-colors duration-200 inline-block text-base text-white hover:bg-fire-80 hover:text-white bg-fire rounded border border-fire-80 px-5 py-2"
+              className: "transition-colors duration-200 inline-block text-base text-white hover:bg-fire-70 hover:text-white hover:border-fire-70 bg-fire rounded border border-fire px-5 py-2"
             }, children);
 }
 
 function LandingPageLayout$SubtleButton(Props) {
   var children = Props.children;
   return React.createElement("button", {
-              className: "transition-colors duration-200 inline-block text-base text-fire rounded border-2 border-fire-80 hover:bg-fire-10 px-5 py-2"
+              className: "transition-colors duration-200 inline-block text-base text-fire rounded border-2 border-fire-10 hover:bg-fire-10 px-5 py-2"
             }, children);
 }
 
@@ -33,7 +33,7 @@ function LandingPageLayout(Props) {
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, {}), React.createElement("div", {
                   className: "mt-4 xs:mt-16"
                 }, React.createElement("div", {
-                      className: "text-night text-lg"
+                      className: "text-gray-80 text-lg"
                     }, React.createElement(Navigation.make, {
                           overlayState: overlayState
                         }), React.createElement("div", {
@@ -62,11 +62,11 @@ function LandingPageLayout(Props) {
                                       children: React.createElement("div", {
                                             className: "flex justify-center"
                                           }, React.createElement("div", {
-                                                className: "w-full max-w-705"
+                                                className: "w-full max-w-740"
                                               }, React.createElement("div", undefined, React.createElement("h1", {
-                                                        className: "text-80 xs:text-100 font-semibold"
+                                                        className: "text-80 xs:text-100 text-gray-95 font-semibold"
                                                       }, "ReScript"), React.createElement("p", {
-                                                        className: "text-21 font-bold mb-2"
+                                                        className: "text-21 text-gray-95 font-bold mb-2"
                                                       }, "The JavaScript-like language you have been waiting for."), React.createElement("p", {
                                                         className: "text-14 italic"
                                                       }, "Previously known as BuckleScript and Reason (", React.createElement(Next.Link.make, {

@@ -204,7 +204,7 @@ function Packages$Card(Props) {
                               }));
                         var tmp = {
                           key: keyword,
-                          className: "hover:pointer px-2 rounded-lg text-white bg-fire-80 text-14"
+                          className: "hover:pointer px-2 rounded-lg text-white bg-fire-70 text-14"
                         };
                         if (onMouseDown !== undefined) {
                           tmp.onMouseDown = Caml_option.valFromOption(onMouseDown);
@@ -241,7 +241,7 @@ function Packages$InfoSidebar$Toggle(Props) {
 function Packages$InfoSidebar(Props) {
   var setFilter = Props.setFilter;
   var filter = Props.filter;
-  var h2 = "group mb-3 text-14 uppercase  leading-1 font-sans font-medium text-onyx";
+  var h2 = "group mb-3 text-14 uppercase  leading-1 font-sans font-medium text-gray-95";
   return React.createElement("aside", {
               className: " border-l-2 p-4 py-12 border-fire-30 space-y-16"
             }, React.createElement("div", undefined, React.createElement("h2", {
@@ -466,7 +466,7 @@ function $$default(props) {
                 }), React.createElement("div", {
                   className: "mt-16 pt-2"
                 }, React.createElement("div", {
-                      className: "text-night text-lg"
+                      className: "text-gray-80 text-lg"
                     }, React.createElement(Navigation.make, {
                           overlayState: overlayState
                         }), React.createElement("div", {
