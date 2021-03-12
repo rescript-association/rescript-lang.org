@@ -32,9 +32,9 @@ module Toc = {
       {Belt.Array.map(entries, ({header, href}) =>
         <li key=header className="pl-2 mt-3 first:mt-1">
           <Link href>
-            <a
-              className="font-medium block text-sm text-gray-40 leading-tight hover:text-gray-80"> //links, nested
-              {React.string(header)}
+            <a className="font-medium block text-sm text-gray-40 leading-tight hover:text-gray-80">
+              {//links, nested
+              React.string(header)}
             </a>
           </Link>
         </li>
@@ -64,7 +64,9 @@ module Sidebar = {
       ~isItemActive: t => bool=_nav => false,
       ~isHidden=false,
       ~items: array<t>,
-    ) => <ul className="mt-2 text-14 font-medium"> {Belt.Array.map(items, m => {
+    ) =>
+      <ul className="mt-2 text-14 font-medium">
+        {Belt.Array.map(items, m => {
           let hidden = isHidden ? "hidden" : "block"
           let active = isItemActive(m)
             ? j` bg-fire-10 text-fire leading-5 -ml-2 pl-2 font-medium block hover:bg-fire-10 `
@@ -93,7 +95,8 @@ module Sidebar = {
             | None => React.null
             }}
           </li>
-        })->React.array} </ul>
+        })->React.array}
+      </ul>
   }
 
   module Category = {
@@ -136,8 +139,7 @@ module Sidebar = {
         id="sidebar"
         className={(
           isOpen ? "fixed w-full left-0 h-full z-20 min-w-320" : "hidden "
-        ) ++ " md:block md:w-48 md:-ml-4 lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white md:relative"}
-        style={ReactDOMStyle.make(~minWidth="12.9375rem", ())}>
+        ) ++ " md:block md:w-48 md:-ml-4 lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white md:relative"}>
         <aside
           id="sidebar-content"
           className="relative top-0 px-4 w-full block md:top-18 md:pt-24 md:sticky border-r border-gray-5 overflow-y-auto scrolling-touch pb-24"
@@ -179,14 +181,18 @@ module BreadCrumbs = {
         let item = if i === Belt.List.length(crumbs) - 1 {
           <span key={Belt.Int.toString(i)}> {React.string(crumb.name)} </span>
         } else {
-          <Link key={Belt.Int.toString(i)} href=crumb.href> <a> {React.string(crumb.name)} </a> </Link>
+          <Link key={Belt.Int.toString(i)} href=crumb.href>
+            <a> {React.string(crumb.name)} </a>
+          </Link>
         }
         if i > 0 {
           <span key={Belt.Int.toString(i)}> {React.string(" / ")} item </span>
         } else {
           item
         }
-      })->Belt.List.toArray->React.array}
+      })
+      ->Belt.List.toArray
+      ->React.array}
     </div>
 }
 
@@ -244,7 +250,14 @@ let make = (
   }, [])
 
   let editLinkEl = switch editHref {
-  | Some(href) => <a href className="inline text-14 hover:underline text-fire" target="_blank" rel="noopener noreferrer"> {React.string("Edit")} </a>
+  | Some(href) =>
+    <a
+      href
+      className="inline text-14 hover:underline text-fire"
+      target="_blank"
+      rel="noopener noreferrer">
+      {React.string("Edit")}
+    </a>
   | None => React.null
   }
 
@@ -253,30 +266,30 @@ let make = (
     <div className={"mt-16 min-w-320 " ++ theme}>
       <div className="w-full">
         <Navigation overlayState=(isNavOpen, setNavOpen) />
-        <div className="flex justify-center">
-          <div className="w-full max-w-1280 md:mx-8">
-            <div className="flex">
-              sidebar
-              <main
-                className="px-4 w-full pt-16 md:ml-12 md:mx-8 md:mt-2 md:pt-24 mb-32 max-w-740"> //width of the right content part
+        <div className="flex lg:justify-center">
+          <div className="flex w-full max-w-1280 md:mx-8">
+            sidebar
+            <main
+              className="px-4 w-full pt-16 md:ml-12 lg:mr-8 md:mt-2 md:pt-24 mb-32 md:max-w-576 lg:max-w-740">
+              //width of the right content part
+              <div
+                className="z-10 fixed border-b shadow top-18 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center">
+                <MobileDrawerButton
+                  hidden=isNavOpen
+                  onClick={evt => {
+                    ReactEvent.Mouse.preventDefault(evt)
+                    toggleSidebar()
+                  }}
+                />
                 <div
-                  className="z-10 fixed border-b shadow top-18 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center">
-                  <MobileDrawerButton
-                    hidden=isNavOpen
-                    onClick={evt => {
-                      ReactEvent.Mouse.preventDefault(evt)
-                      toggleSidebar()
-                    }}
-                  />
-                  <div className="truncate overflow-x-auto touch-scroll flex items-center space-x-4 md:justify-between mr-4 w-full">
-                    breadcrumbs editLinkEl
-                  </div>
+                  className="truncate overflow-x-auto touch-scroll flex items-center space-x-4 md:justify-between mr-4 w-full">
+                  breadcrumbs editLinkEl
                 </div>
-                <div className={hasBreadcrumbs ? "mt-10" : "-mt-4"}>
-                  <Mdx.Provider components> children </Mdx.Provider>
-                </div>
-              </main>
-            </div>
+              </div>
+              <div className={hasBreadcrumbs ? "mt-10" : "-mt-4"}>
+                <Mdx.Provider components> children </Mdx.Provider>
+              </div>
+            </main>
           </div>
         </div>
       </div>
