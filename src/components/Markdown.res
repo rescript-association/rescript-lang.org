@@ -3,7 +3,7 @@
 
 module P = {
   @react.component
-  let make = (~children) => <p className="md-p leading-5 text-gray-80 text-16"> children </p>
+  let make = (~children) => <p className="md-p md:leading-5 text-gray-80 md:text-16"> children </p>
 }
 
 // Used for hero like introduction text in
@@ -83,11 +83,12 @@ module UrlBox = {
       </a>
     } else {
       <Next.Link href>
-        <a className="flex items-center"> {React.string(text)} <Icon.ArrowRight className="ml-1" /> </a>
+        <a className="flex items-center">
+          {React.string(text)} <Icon.ArrowRight className="ml-1" />
+        </a>
       </Next.Link>
     }
-    <div
-      className="md-url-box text-base border-l-2 border-gray-60 my-6 py-6 pl-8 pr-10 bg-gray-5">
+    <div className="md-url-box text-base border-l-2 border-gray-60 my-6 py-6 pl-8 pr-10 bg-gray-5">
       content <div className="mt-4 text-sky hover:text-sky-30"> link </div>
     </div>
   }
@@ -113,17 +114,21 @@ module Anchor = {
   }
 }
 // HEADLINES //
+
 module H1 = {
   @react.component
   let make = (~children) =>
-    <h1 className="text-42 tracking-tight leading-1 mb-5 font-sans font-medium text-gray-95"> children </h1>
+    <h1 className="text-42 tracking-tight leading-1 mb-5 font-sans font-medium text-gray-95">
+      children
+    </h1>
 }
 
 module H2 = {
   @react.component
   let make = (~id, ~children) => <>
     // Here we know that children is always a string (## headline)
-    <h2 className="group mt-12 mb-3 text-28 tracking-tight leading-1 font-sans font-bold text-gray-95">
+    <h2
+      className="group mt-12 mb-3 text-28 tracking-tight leading-1 font-sans font-bold text-gray-95">
       children <span className="ml-2"> <Anchor id /> </span>
     </h2>
   </>
@@ -132,7 +137,8 @@ module H2 = {
 module H3 = {
   @react.component
   let make = (~id, ~children) =>
-    <h3 className="group text-21 mt-12 mb-3 tracking-tight leading-3 font-sans font-bold text-gray-95">
+    <h3
+      className="group text-21 mt-12 mb-3 tracking-tight leading-3 font-sans font-bold text-gray-95">
       children <span className="ml-2"> <Anchor id /> </span>
     </h3>
 }
@@ -141,8 +147,7 @@ module H4 = {
   @react.component
   let make = (~id, ~children) =>
     <h4 className="group text-18 mt-12 mb-3 leading-2 font-sans font-semibold text-gray-95">
-      children
-      <span className="ml-2"> <Anchor id /> </span>
+      children <span className="ml-2"> <Anchor id /> </span>
     </h4>
 }
 
@@ -150,7 +155,7 @@ module H5 = {
   @react.component
   let make = (~id, ~children) =>
     <h5
-      className="group mt-12 mb-3 text-12 leading-2 font-sans font-semibold uppercase tracking-wide text-gray-95">
+      className="group mt-12 mb-3 text-12 leading-2 font-sans font-semibold uppercase tracking-wide text-gray-80">
       children <span className="ml-2"> <Anchor id /> </span>
     </h5>
 }
@@ -163,7 +168,9 @@ module Pre = {
 module InlineCode = {
   @react.component
   let make = (~children) =>
-    <code className="md-inline-code py-0.75 px-2 text-smaller-1 rounded border-gray-100 font-mono bg-gray-10">
+    <code
+      className="md-inline-code py-0.75 px-2 text-14 font-medium rounded font-mono bg-gray-10-tr">
+      //text-smaller-1
       children
     </code>
 }
@@ -285,14 +292,12 @@ module Code = {
 }
 
 module CodeTab = {
-  let getMdxMetastring: Mdx.mdxComponent => option<string> = %raw(
-    "element => {
+  let getMdxMetastring: Mdx.mdxComponent => option<string> = %raw("element => {
       if(element == null || element.props == null) {
         return;
       }
       return element.props.metastring;
-    }"
-  )
+    }")
   @react.component
   let make = (~children: Mdx.MdxChildren.t, ~labels: array<string>=[]) => {
     let mdxElements = switch Mdx.MdxChildren.classify(children) {
@@ -372,7 +377,7 @@ module A = {
   let make = (~href, ~target=?, ~children) =>
     // In case we are handling a relative URL, we will use the Next routing
     if Util.Url.isAbsolute(href) {
-      <a href rel="noopener noreferrer" className="no-underline text-fire-70 hover:underline" ?target>
+      <a href rel="noopener noreferrer" className="no-underline text-fire hover:underline" ?target>
         children
       </a>
     } else {

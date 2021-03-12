@@ -23,8 +23,8 @@ let make = (~highlightedLines=[], ~code: string, ~showLabel=true, ~lang="text") 
   }
 
   <div //normal code-text without tabs
-    className="relative w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-gray-10 bg-gray-5 py-2 text-gray-90">
-    label <div className="px-4 text-14 pt-4 pb-2 overflow-x-auto -mt-2"> children </div>
+    className="relative w-full flex-col rounded-none xs:rounded-lg border-t border-b xs:border border-gray-10 bg-gray-5 py-2 text-gray-80">
+    label <div className="px-5 text-14 pt-4 pb-2 overflow-x-auto -mt-2"> children </div>
   </div>
 }
 
@@ -110,11 +110,11 @@ module Toggle = {
         <div
           className="absolute flex w-full overflow-auto scrolling-touch font-sans bg-transparent text-14 text-gray-40 "
           style={ReactDOM.Style.make(~marginTop="-30px", ())}>
-          <div className="flex space-x-2"> {React.array(tabElements)} </div>
+          <div className="flex space-x-1"> {React.array(tabElements)} </div>
           <div className="flex-1 border-b border-gray-10"> {React.string(j`\\u00A0`)} </div>
         </div>
         <div
-          className="px-4 text-14 pb-4 pt-4 overflow-x-auto bg-gray-5 border-gray-10 xs:rounded-b border border-t-1">
+          className="px-4 lg:px-5 text-14 pb-4 pt-4 overflow-x-auto bg-gray-5 border-gray-10 xs:rounded-b-lg border">
           <pre> children </pre>
         </div>
       </div>

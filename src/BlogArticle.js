@@ -182,7 +182,7 @@ function $$default(props) {
                     }, React.createElement(BlogArticle$Line, {}), React.createElement("div", {
                           className: "pt-20 flex flex-col items-center"
                         }, React.createElement("div", {
-                              className: "text-3xl sm:text-4xl text-center text-gray-95 font-medium"
+                              className: "text-3xl sm:text-32 text-center text-gray-95 font-medium"
                             }, "Want to read more?"), React.createElement(Next.Link.make, {
                               href: "/blog",
                               children: React.createElement("a", {

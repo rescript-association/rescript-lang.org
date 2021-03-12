@@ -31,7 +31,7 @@ function NameInitialsAvatar(Props) {
   return React.createElement("div", {
               className: "block uppercase h-full w-full flex items-center justify-center rounded-full"
             }, React.createElement("span", {
-                  className: "text-xl text-gray-80"
+                  className: "text-21 text-gray-80"
                 }, initials));
 }
 

@@ -15,7 +15,7 @@ import * as ParseNumericRangeJs from "../ffi/parse-numeric-range.js";
 function Markdown$P(Props) {
   var children = Props.children;
   return React.createElement("p", {
-              className: "md-p leading-5 text-gray-80 text-16"
+              className: "md-p md:leading-5 text-gray-80 md:text-16"
             }, children);
 }
 
@@ -222,7 +222,7 @@ function Markdown$H5(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h5", {
-              className: "group mt-12 mb-3 text-12 leading-2 font-sans font-semibold uppercase tracking-wide text-gray-95"
+              className: "group mt-12 mb-3 text-12 leading-2 font-sans font-semibold uppercase tracking-wide text-gray-80"
             }, children, React.createElement("span", {
                   className: "ml-2"
                 }, React.createElement(Markdown$Anchor, {
@@ -248,7 +248,7 @@ var Pre = {
 function Markdown$InlineCode(Props) {
   var children = Props.children;
   return React.createElement("code", {
-              className: "md-inline-code py-0.75 px-2 text-smaller-1 rounded border-gray-100 font-mono bg-gray-10"
+              className: "md-inline-code py-0.75 px-2 text-14 font-medium rounded font-mono bg-gray-10-tr"
             }, children);
 }
 
@@ -473,7 +473,7 @@ function Markdown$A(Props) {
   var children = Props.children;
   if (Util.Url.isAbsolute(href)) {
     var tmp = {
-      className: "no-underline text-fire-70 hover:underline",
+      className: "no-underline text-fire hover:underline",
       href: href,
       rel: "noopener noreferrer"
     };

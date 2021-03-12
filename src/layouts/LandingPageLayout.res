@@ -48,7 +48,7 @@ let make = (~components=Markdown.default, ~children) => {
                 <div className="flex justify-center">
                   <div className="w-full max-w-740">
                     <div>
-                      <h1 className="text-80 xs:text-100 text-gray-95 font-semibold">
+                      <h1 className="text-56 xs:text-96 text-gray-95 tracking-tight font-semibold">
                         {React.string("ReScript")}
                       </h1>
                       <p className="text-21 text-gray-95 font-bold mb-2">
