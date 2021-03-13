@@ -70,11 +70,11 @@ let make = () => {
   | Inactive => false
   }
 
-  let activeClass = isActive ? "text-white border border-white-80" : ""
+  let activeClass = isActive ? "text-white border border-gray-60" : ""
   let activeInput = isActive ? "w-32 mr-3" : "w-0"
 
   <div
-    className={activeClass ++ " bg-gray-80 hover:text-white hover:cursor-pointer flex justify-center p-2 px-3 rounded"}
+    className={activeClass ++ " bg-gray-100 border border-gray-80 hover:text-white hover:cursor-pointer flex justify-center p-2 px-3 rounded-lg"}
     onClick>
     <input
       ref={ReactDOM.Ref.domRef(inputRef)}
@@ -82,7 +82,7 @@ let make = () => {
       id="docsearch"
       onBlur
       onKeyDown
-      className={"transition-all ease-in-out duration-150 text-white bg-gray-80 border-none focus:outline-none " ++
+      className={"transition-all ease-in-out duration-150 text-white bg-gray-100 border-none focus:outline-none " ++
       activeInput}
     />
     <Icon.MagnifierGlass className="w-5 h-5" />

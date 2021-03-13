@@ -8,9 +8,9 @@ import * as React from "react";
 import * as DocSearch from "./DocSearch.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 
-var link = "no-underline block text-inherit hover:cursor-pointer hover:text-white text-white-80 mb-px";
+var link = "no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px";
 
-var activeLink = "text-inherit font-normal border-b border-fire";
+var activeLink = "text-inherit font-medium text-fire-30 border-b border-fire";
 
 function linkOrActiveLink(target, route) {
   if (target === route) {
@@ -131,7 +131,7 @@ var useWindowWidth = (() => {
 
 function Navigation$MobileNav(Props) {
   var route = Props.route;
-  var base = "font-light mx-4 py-5 text-white-80 border-b border-gray-80";
+  var base = "font-normal mx-4 py-5 text-gray-20 border-b border-gray-80";
   var extLink = "block hover:cursor-pointer hover:text-white text-gray-60";
   return React.createElement("div", {
               className: "border-gray-80 border-t"
@@ -239,7 +239,7 @@ function Navigation(Props) {
   var fixedNav = fixed ? "fixed z-30 top-0" : "";
   return React.createElement("nav", {
               ref: outerRef,
-              className: fixedNav + " flex xs:justify-center w-full h-16 bg-gray-95 shadow text-white-80 text-base",
+              className: fixedNav + " flex xs:justify-center w-full h-16 bg-gray-95 shadow text-white-80 text-14",
               id: "header",
               style: {
                 minWidth: minWidth
@@ -258,7 +258,7 @@ function Navigation(Props) {
                               className: "hidden lg:block",
                               src: "/static/nav-logo-full@2x.png"
                             }))), React.createElement("div", {
-                      className: "flex items-center xs:justify-end w-full bg-gray-95 sm:h-auto sm:relative"
+                      className: "flex items-center xs:justify-between w-full bg-gray-95 sm:h-auto sm:relative"
                     }, React.createElement("div", {
                           className: "flex ml-10 w-full max-w-320",
                           style: {
@@ -296,8 +296,10 @@ function Navigation(Props) {
                                   }, "Community")
                             })), React.createElement("div", {
                           className: "hidden md:flex items-center"
-                        }, React.createElement("a", {
-                              className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-white text-white-80 mb-px",
+                        }, React.createElement("div", {
+                              className: "hidden sm:block mr-6"
+                            }, React.createElement(DocSearch.make, {})), React.createElement("a", {
+                              className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px",
                               href: githubHref,
                               rel: "noopener noreferrer",
                               target: "_blank",
@@ -305,7 +307,7 @@ function Navigation(Props) {
                             }, React.createElement(Icon.Github.make, {
                                   className: "w-6 h-6 opacity-50 hover:opacity-100"
                                 })), React.createElement("a", {
-                              className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-white text-white-80 mb-px",
+                              className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px",
                               href: "https://twitter.com/rescriptlang",
                               rel: "noopener noreferrer",
                               target: "_blank",
@@ -320,9 +322,7 @@ function Navigation(Props) {
                               onMouseEnter: nonCollapsibleOnMouseEnter
                             }, React.createElement(Icon.Discourse.make, {
                                   className: "w-6 h-6 opacity-50 hover:opacity-100"
-                                }))), React.createElement("div", {
-                          className: "hidden sm:block ml-8"
-                        }, React.createElement(DocSearch.make, {})))), React.createElement("button", {
+                                }))))), React.createElement("button", {
                   className: "h-full px-4 xs:hidden flex items-center hover:text-white",
                   onClick: (function (evt) {
                       evt.preventDefault();

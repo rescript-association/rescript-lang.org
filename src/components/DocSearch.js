@@ -56,14 +56,14 @@ function DocSearch(Props) {
     
   };
   var isActive = match[0] ? false : true;
-  var activeClass = isActive ? "text-white border border-white-80" : "";
+  var activeClass = isActive ? "text-white border border-gray-60" : "";
   var activeInput = isActive ? "w-32 mr-3" : "w-0";
   return React.createElement("div", {
-              className: activeClass + " bg-gray-80 hover:text-white hover:cursor-pointer flex justify-center p-2 px-3 rounded",
+              className: activeClass + " bg-gray-100 border border-gray-80 hover:text-white hover:cursor-pointer flex justify-center p-2 px-3 rounded-lg",
               onClick: onClick
             }, React.createElement("input", {
                   ref: inputRef,
-                  className: "transition-all ease-in-out duration-150 text-white bg-gray-80 border-none focus:outline-none " + activeInput,
+                  className: "transition-all ease-in-out duration-150 text-white bg-gray-100 border-none focus:outline-none " + activeInput,
                   id: "docsearch",
                   type: "text",
                   onKeyDown: onKeyDown,

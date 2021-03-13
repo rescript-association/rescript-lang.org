@@ -1,7 +1,7 @@
 module Link = Next.Link
 
-let link = "no-underline block text-inherit hover:cursor-pointer hover:text-white text-white-80 mb-px"
-let activeLink = "text-inherit font-normal border-b border-fire"
+let link = "no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px"
+let activeLink = "text-inherit font-medium text-fire-30 border-b border-fire"
 
 let linkOrActiveLink = (~target, ~route) => target === route ? activeLink : link
 
@@ -97,10 +97,10 @@ module CollapsibleLink = {
           onClick
           className={(active ? activeLink : link) ++
           (" border-none flex items-center hover:cursor-pointer " ++
-          (isOpen ? " text-white" : ""))}>
+          (isOpen ? " text-gray-20" : ""))}>
           <span className={active ? "border-b border-fire" : ""}> {React.string(title)} </span>
           <span className="fill-current flex-no-wrap inline-block ml-2 w-2">
-            <Icon.Caret direction className={active ? "text-inherit" : "text-gry-60"} />
+            <Icon.Caret direction className={active ? "text-inherit" : "text-gray-60"} />
           </span>
         </a>
       </div>
@@ -291,7 +291,7 @@ module SubNav = {
 module MobileNav = {
   @react.component
   let make = (~route: string) => {
-    let base = "font-light mx-4 py-5 text-white-80 border-b border-gray-80"
+    let base = "font-normal mx-4 py-5 text-gray-20 border-b border-gray-80"
     let extLink = "block hover:cursor-pointer hover:text-white text-gray-60"
     <div className="border-gray-80 border-t">
       <ul>
@@ -418,7 +418,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
     ref={ReactDOM.Ref.domRef(outerRef)}
     id="header"
     style={ReactDOMStyle.make(~minWidth, ())}
-    className={fixedNav ++ " flex xs:justify-center w-full h-16 bg-gray-95 shadow text-white-80 text-base"}>
+    className={fixedNav ++ " flex xs:justify-center w-full h-16 bg-gray-95 shadow text-white-80 text-14"}>
     <div className="flex justify-between mx-4 md:mx-8 items-center h-full w-full max-w-1280">
       <div className="h-8 w-8 lg:h-10 lg:w-32">
         <a
@@ -429,7 +429,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
         </a>
       </div>
       /* Desktop horizontal navigation */
-      <div className="flex items-center xs:justify-end w-full bg-gray-95 sm:h-auto sm:relative">
+      <div className="flex items-center xs:justify-between w-full bg-gray-95 sm:h-auto sm:relative">
         <div
           className="flex ml-10 w-full max-w-320" style={ReactDOMStyle.make(~maxWidth="26rem", ())}>
           <Link href="/docs/latest">
@@ -470,6 +470,8 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
           </Link>
         </div>
         <div className="hidden md:flex items-center">
+        <div className="hidden sm:block mr-6"> <DocSearch /> </div>
+
           <a
             href=githubHref
             rel="noopener noreferrer"
@@ -495,7 +497,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
             <Icon.Discourse className="w-6 h-6 opacity-50 hover:opacity-100" />
           </a>
         </div>
-        <div className="hidden sm:block ml-8"> <DocSearch /> </div>
+        
       </div>
     </div>
     /* Burger Button */
