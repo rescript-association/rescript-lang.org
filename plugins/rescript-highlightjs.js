@@ -27,8 +27,8 @@ module.exports = function(hljs) {
   var KEYWORDS = {
     // See: https://github.com/rescript-lang/syntax/blob/4872b983eb023f78a972063eb367339e6897bf16/src/res_token.ml#L166
     keyword:
-      'and as assert catch constraint downto else exception export external false for' +
-      'if import in include lazy let module mutable of open private rec switch' +
+      'and as assert catch constraint downto else exception export external false for ' +
+      'if import in include lazy let module mutable of open private rec switch ' +
       'to true try type when while with',
     // not reliable
      //built_in:
