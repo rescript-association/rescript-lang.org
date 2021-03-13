@@ -11,7 +11,7 @@
   let js = require('highlight.js/lib/languages/javascript');
   let ocaml = require('highlight.js/lib/languages/ocaml');
   let reason = require('plugins/reason-highlightjs');
-  let res = require('plugins/res-syntax-highlightjs');
+  let rescript = require('plugins/rescript-highlightjs');
   let bash = require('highlight.js/lib/languages/bash');
   let json = require('highlight.js/lib/languages/json');
   let html = require('highlight.js/lib/languages/xml');
@@ -19,7 +19,7 @@
   let diff = require('highlight.js/lib/languages/diff');
 
   hljs.registerLanguage('reason', reason);
-  hljs.registerLanguage('res', res);
+  hljs.registerLanguage('rescript', rescript);
   hljs.registerLanguage('javascript', js);
   hljs.registerLanguage('ts', js);
   hljs.registerLanguage('ocaml', ocaml);

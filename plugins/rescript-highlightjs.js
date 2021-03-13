@@ -1,7 +1,7 @@
 /*
-Language: New BS Syntax
-Author: Gidi Meir Morris <oss@gidi.io>, Cheng Lou
-Category: functional
+Language: ReScript
+Author: Gidi Meir Morris <oss@gidi.io>, Cheng Lou, Patrick Ecker
+Category: common
 */
 
 // Note: Extracted and adapted from the reason-highlightjs package:
@@ -25,19 +25,14 @@ module.exports = function(hljs) {
   var RE_MODULE_IDENT = '[A-Z_][0-9a-zA-Z_]*';
 
   var KEYWORDS = {
-    /* https://github.com/facebook/reason/blob/79e67d5334ef181fdb54bd57bd9e7729f9fe46e7/src/reason-parser/reason_lexer.mll#L94-L154 */
+    // See: https://github.com/rescript-lang/syntax/blob/4872b983eb023f78a972063eb367339e6897bf16/src/res_token.ml#L166
     keyword:
-      'and as assert begin class constraint done downto exception external fun ' +
-      'functor include inherit lazy let pub mutable new nonrec ' +
-      'object of open or pri rec then to type val virtual ' +
-      'try catch finally do else for if switch while import library export ' +
-      'module in raise ' +
-      // invalid
-      'private',
-
+      'and as assert catch constraint downto else exception export external false for' +
+      'if import in include lazy let module mutable of open private rec switch' +
+      'to true try type when while with',
     // not reliable
-    // built_in:
-    //   'array bool bytes char exn|5 float int int32 int64 list lazy_t|5 nativeint|5 ref string unit',
+     //built_in:
+       //'array bool bytes char exn|5 float int int32 int64 list lazy_t|5 nativeint|5 ref string unit',
     literal:
       'true false'
   };
@@ -119,13 +114,13 @@ module.exports = function(hljs) {
     className: 'literal',
     variants: [
       {
-        begin: 'list\\[',
+        begin: 'list\\{',
       },
       {
-        begin: '\\[',
+        begin: '\\{',
       },
       {
-        begin: '\\]',
+        begin: '\\}',
       },
     ]
   };

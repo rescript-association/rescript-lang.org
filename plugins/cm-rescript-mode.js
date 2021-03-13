@@ -7,6 +7,7 @@
 import "codemirror/addon/mode/simple";
 import CodeMirror from "codemirror/lib/codemirror";
 
+
 CodeMirror.defineSimpleMode("rescript", {
   start: [
     // string and byte string
@@ -35,11 +36,11 @@ CodeMirror.defineSimpleMode("rescript", {
       token: ["keyword", "keyword2", null, "def"]
     },
     {
-      regex: /(?:switch|module|as|else|external|for|if|in|mod|ref|type|while|open|open\!)\b/,
+      regex: /(?:and|as|assert|catch|constraint|downto|else|exception|export|external|false|for|if|import|in|include|lazy|let|module|mutable|of|open|private|switch|to|true|try|type|when|while|with\!)\b/,
       token: "keyword"
     },
     {
-      regex: /(?:rec)\b/,
+      regex: /(?:rec|list)\b/,
       token: "keyword2"
     },
     {
@@ -47,10 +48,6 @@ CodeMirror.defineSimpleMode("rescript", {
       token: "atom"
     },
     { regex: /\b(?:true|false)\b/, token: "builtin" },
-    {
-      regex: /\b(fun)(\s+)([a-zA-Z_\|][a-zA-Z0-9_]*)/,
-      token: ["keyword", null, "def"]
-    },
     {
       regex: /\b([A-Z][a-zA-Z0-9_]*)(\.)/,
       token: ["module", null]
@@ -86,6 +83,10 @@ CodeMirror.defineSimpleMode("rescript", {
     //{ regex: /"#+/, token: "string", next: "start" },
     //{ regex: /(?:[^"]|"(?!#))*/, token: "string" }
   //],
+  list: [
+    { regex: /list{/, token: "keyword2", next: "start" },
+    { regex: /[^`]*/, token: "string" }
+  ],
   string_interpolation: [
     { regex: /`/, token: "string", next: "start" },
     { regex: /[^`]*/, token: "string" }
