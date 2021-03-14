@@ -122,7 +122,9 @@ module Table = {
     <svg className={"stroke-current " ++ className} width="25" height="23">
       <defs>
         <style>
-          {React.string(".prefix__a,.prefix__b,.prefix__d{fill:none}.prefix__a,.prefix__b{stroke-width:1.5px}.prefix__c{stroke:none}")}
+          {React.string(
+            ".prefix__a,.prefix__b,.prefix__d{fill:none}.prefix__a,.prefix__b{stroke-width:1.5px}.prefix__c{stroke:none}",
+          )}
         </style>
       </defs>
       <g className="prefix__a">
@@ -208,5 +210,52 @@ module TriangleDown = {
   let make = (~className: string="") =>
     <svg className={"fill-current " ++ className} width="8" height="5" viewBox="0 0 8 5">
       <path d="M4,0,8,5H0Z" transform="translate(8 5) rotate(180)" />
+    </svg>
+}
+
+module ExternalLink = {
+  @react.component
+  let make = (~className="") =>
+    <svg
+      className={"stroke-current " ++ className}
+      xmlns="http://www.w3.org/2000/svg"
+      width="16.098"
+      height="16.122"
+      viewBox="0 0 16.098 16.122">
+      <g transform="translate(-1046.283 -564.299)">
+        <path
+          d="M1987.235-1783.927h-4.849v11.17h11.164v-5.113"
+          transform="translate(-935.353 2352.43)"
+          fill="none"
+          strokeWidth="1.5"
+        />
+        <g transform="translate(1051.72 570.607) rotate(-45)">
+          <path d="M0,0H7.467" transform="translate(0 3.128)" fill="none" strokeWidth="1.5" />
+          <path
+            d="M0,0,3.078,3.078,0,6.156"
+            transform="translate(4.252 0)"
+            fill="none"
+            strokeWidth="1.5"
+          />
+        </g>
+      </g>
+    </svg>
+}
+
+module Copy = {
+  @react.component
+  let make = (~className="") =>
+    <svg
+      className={"stroke-current " ++ className}
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      viewBox="0 0 14 14">
+      <g transform="rotate(180 98.375 84.763)" fill="none" strokeLinejoin="round" strokeWidth="1.5">
+        <path
+          d="M186.571 159.35v-1.636a1.715 1.715 0 011.715-1.714h6a1.715 1.715 0 011.714 1.714v6a1.715 1.715 0 01-1.714 1.715H192.9"
+        />
+        <rect width="9.429" height="9.429" rx="2" transform="translate(183.255 159.347)" />
+      </g>
     </svg>
 }

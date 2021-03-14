@@ -63,3 +63,13 @@ module TriangleDown: {
   @react.component
   let make: (~className: string=?) => React.element
 }
+
+module ExternalLink: {
+  @react.component
+  let make: (~className: string=?) => React.element
+}
+
+module Copy: {
+  @react.component
+  let make: (~className: string=?) => React.element
+}
