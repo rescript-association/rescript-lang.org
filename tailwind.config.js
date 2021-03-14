@@ -226,6 +226,7 @@ module.exports = {
     width: ["responsive"],
     border: ["hover", "responsive"],
     borderWidth: ["active", "responsive", "last", "first"],
+    borderRadius: ["first", "responsive"],
     padding: ["hover", "responsive", "last"],
     margin: ["hover", "responsive", "first", "last"],
     visibility: ["group-hover"],

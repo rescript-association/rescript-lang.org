@@ -310,6 +310,69 @@ var TriangleDown = {
   make: Icon$TriangleDown
 };
 
+function Icon$ExternalLink(Props) {
+  var classNameOpt = Props.className;
+  var className = classNameOpt !== undefined ? classNameOpt : "";
+  return React.createElement("svg", {
+              className: "stroke-current " + className,
+              height: "16.122",
+              width: "16.098",
+              viewBox: "0 0 16.098 16.122",
+              xmlns: "http://www.w3.org/2000/svg"
+            }, React.createElement("g", {
+                  transform: "translate(-1046.283 -564.299)"
+                }, React.createElement("path", {
+                      d: "M1987.235-1783.927h-4.849v11.17h11.164v-5.113",
+                      fill: "none",
+                      strokeWidth: "1.5",
+                      transform: "translate(-935.353 2352.43)"
+                    }), React.createElement("g", {
+                      transform: "translate(1051.72 570.607) rotate(-45)"
+                    }, React.createElement("path", {
+                          d: "M0,0H7.467",
+                          fill: "none",
+                          strokeWidth: "1.5",
+                          transform: "translate(0 3.128)"
+                        }), React.createElement("path", {
+                          d: "M0,0,3.078,3.078,0,6.156",
+                          fill: "none",
+                          strokeWidth: "1.5",
+                          transform: "translate(4.252 0)"
+                        }))));
+}
+
+var ExternalLink = {
+  make: Icon$ExternalLink
+};
+
+function Icon$Copy(Props) {
+  var classNameOpt = Props.className;
+  var className = classNameOpt !== undefined ? classNameOpt : "";
+  return React.createElement("svg", {
+              className: "stroke-current " + className,
+              height: "14",
+              width: "14",
+              viewBox: "0 0 14 14",
+              xmlns: "http://www.w3.org/2000/svg"
+            }, React.createElement("g", {
+                  fill: "none",
+                  strokeLinejoin: "round",
+                  strokeWidth: "1.5",
+                  transform: "rotate(180 98.375 84.763)"
+                }, React.createElement("path", {
+                      d: "M186.571 159.35v-1.636a1.715 1.715 0 011.715-1.714h6a1.715 1.715 0 011.714 1.714v6a1.715 1.715 0 01-1.714 1.715H192.9"
+                    }), React.createElement("rect", {
+                      height: "9.429",
+                      width: "9.429",
+                      rx: "2",
+                      transform: "translate(183.255 159.347)"
+                    })));
+}
+
+var Copy = {
+  make: Icon$Copy
+};
+
 export {
   Github ,
   Npm ,
@@ -324,6 +387,8 @@ export {
   Discourse ,
   Hyperlink ,
   TriangleDown ,
+  ExternalLink ,
+  Copy ,
   
 }
 /* react Not a pure module */
