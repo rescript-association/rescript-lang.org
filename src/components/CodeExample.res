@@ -13,6 +13,26 @@ module LzString = {
   external compressToEncodedURIComponent: string => string = "compressToEncodedURIComponent"
 }
 
+module DomUtil = {
+  @scope("document") @val external createElement: string => Dom.element = "createElement"
+  @scope("document") @val external createTextNode: string => Dom.element = "createTextNode"
+  @send external appendChild: (Dom.element, Dom.element) => unit = "appendChild"
+  @send external removeChild: (Dom.element, Dom.element) => unit = "removeChild"
+
+  @set external setClassName: (Dom.element, string) => unit = "className"
+
+  type classList
+  @get external classList: Dom.element => classList = "classList"
+  @send external toggle: (classList, string) => unit = "toggle"
+
+  type animationFrameId
+  @scope("window") @val
+  external requestAnimationFrame: (unit => unit) => animationFrameId = "requestAnimationFrame"
+
+  @scope("window") @val
+  external cancelAnimationFrame: animationFrameId => unit = "cancelAnimationFrame"
+}
+
 module CopyButton = {
   let copyToClipboard: string => bool = %raw(j`
   function(str) {
@@ -48,6 +68,8 @@ module CopyButton = {
   let make = (~code) => {
     let (state, setState) = React.useState(_ => Init)
 
+    let buttonRef = React.useRef(Js.Nullable.null)
+
     let onClick = evt => {
       ReactEvent.Mouse.preventDefault(evt)
       if copyToClipboard(code) {
@@ -60,12 +82,35 @@ module CopyButton = {
     React.useEffect1(() => {
       switch state {
       | Copied =>
+        open DomUtil
+        let buttonEl = Js.Nullable.toOption(buttonRef.current)->Belt.Option.getExn
+
+        // Note on this imperative DOM nonsense:
+        // For Tailwind transitions to behave correctly, we need to first paint the DOM element in the tree,
+        // and in the next tick, add the opacity-100 class, so the transition animation actually takes place.
+        // If we don't do that, the banner will essentially pop up without any animation
+        let bannerEl = createElement("div")
+        bannerEl->setClassName(
+          "foobar opacity-0 absolute top-0 -mt-1 -mr-1 px-2 rounded right-0 bg-turtle text-gray-80-tr transition-all duration-500 ease-in-out ",
+        )
+        let textNode = createTextNode("Copied!")
+
+        bannerEl->appendChild(textNode)
+        buttonEl->appendChild(bannerEl)
+
+        let nextFrameId = requestAnimationFrame(() => {
+          bannerEl->classList->toggle("opacity-0")
+          bannerEl->classList->toggle("opacity-100")
+        })
+
         let timeoutId = Js.Global.setTimeout(() => {
+          buttonEl->removeChild(bannerEl)
           setState(_ => Init)
         }, 2000)
 
         Some(
           () => {
+            cancelAnimationFrame(nextFrameId)
             Js.Global.clearTimeout(timeoutId)
           },
         )
@@ -85,8 +130,10 @@ module CopyButton = {
         {React.string("Copied!")}
       </div>
 
-    <button disabled={state === Copied} className="relative" onClick>
-      banner <Icon.Copy className="text-gray-20 mt-px hover:cursor-pointer hover:text-gray-80" />
+    <button
+      ref={ReactDOM.Ref.domRef(buttonRef)} disabled={state === Copied} className="relative" onClick>
+      /* banner */
+      <Icon.Copy className="text-gray-20 mt-px hover:cursor-pointer hover:text-gray-80" />
     </button>
   }
 }

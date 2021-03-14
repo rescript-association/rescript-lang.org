@@ -7,6 +7,7 @@ import * as React from "react";
 import * as LzString from "lz-string";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
+import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 import * as HighlightJs from "../common/HighlightJs.js";
 
 function langShortname(lang) {
@@ -55,6 +56,7 @@ function CodeExample$CopyButton(Props) {
       });
   var setState = match[1];
   var state = match[0];
+  var buttonRef = React.useRef(null);
   var onClick = function (evt) {
     evt.preventDefault();
     if (copyToClipboard(code)) {
@@ -71,25 +73,39 @@ function CodeExample$CopyButton(Props) {
           if (state !== 1) {
             return ;
           }
+          var buttonEl = Belt_Option.getExn(Caml_option.nullable_to_opt(buttonRef.current));
+          var bannerEl = document.createElement("div");
+          bannerEl.className = "foobar opacity-0 absolute top-0 -mt-1 -mr-1 px-2 rounded right-0 bg-turtle text-gray-80-tr transition-all duration-500 ease-in-out ";
+          var textNode = document.createTextNode("Copied!");
+          bannerEl.appendChild(textNode);
+          buttonEl.appendChild(bannerEl);
+          var nextFrameId = window.requestAnimationFrame(function (param) {
+                bannerEl.classList.toggle("opacity-0");
+                bannerEl.classList.toggle("opacity-100");
+                
+              });
           var timeoutId = setTimeout((function (param) {
+                  buttonEl.removeChild(bannerEl);
                   return Curry._1(setState, (function (param) {
                                 return /* Init */0;
                               }));
                 }), 2000);
           return (function (param) {
+                    window.cancelAnimationFrame(nextFrameId);
                     clearTimeout(timeoutId);
                     
                   });
         }), [state]);
   var activeClass = state !== 1 ? "opacity-0 hidden" : "opacity-100";
-  var banner = React.createElement("div", {
+  React.createElement("div", {
         className: "absolute top-0 -mt-1 -mr-1 px-2 rounded right-0 bg-turtle text-gray-80-tr transition-all duration-500 ease-in-out " + activeClass
       }, "Copied!");
   return React.createElement("button", {
+              ref: buttonRef,
               className: "relative",
               disabled: state === /* Copied */1,
               onClick: onClick
-            }, banner, React.createElement(Icon.Copy.make, {
+            }, React.createElement(Icon.Copy.make, {
                   className: "text-gray-20 mt-px hover:cursor-pointer hover:text-gray-80"
                 }));
 }
