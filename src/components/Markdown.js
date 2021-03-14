@@ -370,7 +370,7 @@ function Markdown$Code(Props) {
             });
       }
       return React.createElement("div", {
-                  className: "md-code font-mono w-full block  mt-5 mb-5"
+                  className: "md-code font-mono w-full block mt-5 mb-5"
                 }, codeElement);
     }
   }
@@ -438,7 +438,7 @@ function Markdown$CodeTab(Props) {
           return acc;
         }));
   return React.createElement("div", {
-              className: "mt-5 mb-5 -mx-6 xs:mx-0"
+              className: "md-codetab mt-8 mb-8 -mx-6 xs:mx-0"
             }, React.createElement(CodeExample.Toggle.make, {
                   tabs: tabs
                 }));

@@ -226,7 +226,7 @@ module Code = {
     ->Belt.Option.getWithDefault([])
 
   let makeCodeElement = (~code, ~metastring, ~lang) => {
-    let baseClass = "md-code font-mono w-full block  mt-5 mb-5"
+    let baseClass = "md-code font-mono w-full block mt-5 mb-5"
     let codeElement = switch metastring {
     | None => <CodeExample code lang />
     | Some(metastring) =>
@@ -341,7 +341,7 @@ module CodeTab = {
       acc
     })
 
-    <div className="mt-5 mb-5 -mx-6 xs:mx-0"> <CodeExample.Toggle tabs /> </div>
+    <div className="md-codetab mt-8 mb-8 -mx-6 xs:mx-0"> <CodeExample.Toggle tabs /> </div>
   }
 }
 
