@@ -100,7 +100,7 @@
 }
 
 .cm-s-material .cm-builtin {
-  color: #FFCB6B;
+  @apply text-orange-dark;
 }
 
 .cm-s-material .cm-decorator {
