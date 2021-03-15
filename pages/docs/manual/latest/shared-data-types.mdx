@@ -20,6 +20,7 @@ Unlike most compiled-to-js languages, in ReScript, **you don't need to write dat
 - Boolean.
 - Record. Record compiles to JS object. Therefore you can also treat JS objects as records. If they're too dynamic, consider modeling them on the ReScript side as a hashmap/dictionary [`Js.Dict`](api/js/dict) or a ReScript object.
 - Object. ReScript objects are JavaScript objects, vice-versa.
+- Function. They compile to clean JS functions.
 - Unit. The `unit` type, which has a single value `()`, compiles to `undefined` too. Likewise, you can treat an incoming JS `undefined` as `()`.
 
 <!-- TODO: talk about poly variant -->
