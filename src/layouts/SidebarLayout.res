@@ -139,7 +139,7 @@ module Sidebar = {
         id="sidebar"
         className={(
           isOpen ? "fixed w-full left-0 h-full z-20 min-w-320" : "hidden "
-        ) ++ " md:block md:w-48 md:-ml-4 lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white md:relative"}>
+        ) ++ " md:block md:w-48 md:-ml-4 lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white"}>
         <aside
           id="sidebar-content"
           className="relative top-0 px-4 w-full block md:top-16 md:pt-16 md:sticky border-r border-gray-5 overflow-y-auto scrolling-touch pb-24"
@@ -176,7 +176,7 @@ module Sidebar = {
 module BreadCrumbs = {
   @react.component
   let make = (~crumbs: list<Url.breadcrumb>) =>
-    <div className="w-full font-medium overflow-x-auto text-14 text-gray-60">
+    <div className="w-full font-medium overflow-x-auto text-12 text-gray-60">
       {Belt.List.mapWithIndex(crumbs, (i, crumb) => {
         let item = if i === Belt.List.length(crumbs) - 1 {
           <span key={Belt.Int.toString(i)}> {React.string(crumb.name)} </span>

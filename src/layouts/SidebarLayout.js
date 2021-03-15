@@ -127,7 +127,7 @@ function SidebarLayout$Sidebar(Props) {
   return React.createElement(React.Fragment, undefined, React.createElement("div", {
                   className: (
                     isOpen ? "fixed w-full left-0 h-full z-20 min-w-320" : "hidden "
-                  ) + " md:block md:w-48 md:-ml-4 lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white md:relative",
+                  ) + " md:block md:w-48 md:-ml-4 lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white",
                   id: "sidebar"
                 }, React.createElement("aside", {
                       className: "relative top-0 px-4 w-full block md:top-16 md:pt-16 md:sticky border-r border-gray-5 overflow-y-auto scrolling-touch pb-24",

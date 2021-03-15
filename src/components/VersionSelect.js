@@ -16,7 +16,7 @@ function VersionSelect(Props) {
                     }, param[1]);
         }));
   return React.createElement("select", {
-              className: "text-14 border border-fire text-fire inline-block rounded px-4 py-1  font-semibold ",
+              className: "text-12 border border-gray-10 text-gray-80 inline-block rounded px-4 py-1 font-semibold ",
               name: "versionSelection",
               value: version,
               onChange: onChange
