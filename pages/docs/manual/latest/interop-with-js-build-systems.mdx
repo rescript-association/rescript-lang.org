@@ -46,11 +46,11 @@ This will:
 
 "What if my build system uses a CSS/png/whatever loader and I'd like to use it in ReScript?"
 
-Loaders are indeed troublesome; in the meantime, please use e.g. `%raw(`require('./myStyles.css')`)` at the top of your file. This just uses [`raw`](embed-raw-javascript.md) to compile the snippet into an actual JS require.
+Loaders are indeed troublesome; in the meantime, please use e.g. `%raw("require('./myStyles.css')")` at the top of your file. This just uses [`raw`](embed-raw-javascript.md) to compile the snippet into an actual JS require.
 
 ## Getting Project's Dependencies
 
-`bsb` generates one `MyFile.mlast.d` file per `MyFile` source file; you'll find them in `lib/bs`. These are human readable, machine-friendly list of the dependencies of said `MyFile`. You can read into them for your purpose (though mind the IO overhead). Use these files instead of creating your own dependency graph; we did the hard work of tracking the dependencies as best as possible (including inner modules, `open`s, module names overlap, etc).
+`bsb` generates one `MyFile.d` file per `MyFile` source file; you'll find them in `lib/bs`. These are human readable, machine-friendly list of the dependencies of said `MyFile`. You can read into them for your purpose (though mind the IO overhead). Use these files instead of creating your own dependency graph; we did the hard work of tracking the dependencies as best as possible (including inner modules, `open`s, module names overlap, etc).
 
 ## Run Script Per File Built
 
