@@ -6,9 +6,9 @@ canonical: "/docs/react/latest/installation"
 
 # Installation
 
-**Requirements:** 
+**Requirements:**
 
-- `bs-platform@8.3` or later 
+- `bs-platform@8.3` or later
 - `react@16.8.1` or later
 
 Add following dependency to your ReScript project (in case you don't have any project yet, check out the [installation instructions](/docs/manual/latest/installation) in the manual):
@@ -38,7 +38,7 @@ let make = () => {
 
 Now run `npx bsb -make-world` and you should see a successful build.
 
-## Exposed Modules 
+## Exposed Modules
 
 After a successful installation, `@rescript/react` will make following modules available in your project's global scope:
 
@@ -48,12 +48,3 @@ After a successful installation, `@rescript/react` will make following modules a
 - `ReactEvent`: Bindings to React's synthetic events
 - `ReactDOMStyle`: Bindings to the inline style API
 - `RescriptReactRouter`: A simple, yet fully featured router with minimal memory allocations
-
-
-### Deprecated Modules
-
-`rescript-react` has gone a long way, so we still keep around a few modules for legacy reasons. We will deprecate them in the future in favor of...
-
-- `ReactDOMRe` -> `ReactDOM`
-
-Actual usage and for each module will be discussed in the rest of this documentation.

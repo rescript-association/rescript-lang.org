@@ -1,7 +1,8 @@
 {
   "Overview": [
     "introduction",
-    "installation"
+    "installation",
+    "migrate-from-reason-react"
   ],
   "Main Concepts": [
     "elements-and-jsx",
