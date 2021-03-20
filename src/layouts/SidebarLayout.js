@@ -161,7 +161,7 @@ function SidebarLayout$Sidebar(Props) {
 function SidebarLayout$BreadCrumbs(Props) {
   var crumbs = Props.crumbs;
   return React.createElement("div", {
-              className: "w-full font-medium overflow-x-auto text-14 text-gray-60"
+              className: "w-full font-medium overflow-x-auto text-12 text-gray-60"
             }, Belt_List.toArray(Belt_List.mapWithIndex(crumbs, (function (i, crumb) {
                         var item = i === (Belt_List.length(crumbs) - 1 | 0) ? React.createElement("span", {
                                 key: String(i)
