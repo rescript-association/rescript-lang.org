@@ -33,12 +33,14 @@ The above `Style.make` API will safely type check every style field! However, we
 
 ```reason
 let myStyle = ReactDOM.Style.make(~color="#444444", ~fontSize="68px", ());
+```
 
 ## Global CSS
 
-Use a `%%raw()` expression to import CSS files within your ReScript / React component code:
+Use a `%%raw` expression to import CSS files within your ReScript / React component code:
 
 ```rescript
+// in a CommonJS setup
 %%raw("require('./styles/main.css')")
 
 // or with ES6
