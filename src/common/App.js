@@ -27,6 +27,7 @@ import * as ReasonCompilerDocsLayout from "../layouts/ReasonCompilerDocsLayout.j
 
 let hljs = require('highlight.js/lib/core');
   let js = require('highlight.js/lib/languages/javascript');
+  let css = require('highlight.js/lib/languages/css');
   let ocaml = require('highlight.js/lib/languages/ocaml');
   let reason = require('plugins/reason-highlightjs');
   let rescript = require('plugins/rescript-highlightjs');
@@ -39,6 +40,7 @@ let hljs = require('highlight.js/lib/core');
   hljs.registerLanguage('reason', reason);
   hljs.registerLanguage('rescript', rescript);
   hljs.registerLanguage('javascript', js);
+  hljs.registerLanguage('css', css);
   hljs.registerLanguage('ts', js);
   hljs.registerLanguage('ocaml', ocaml);
   hljs.registerLanguage('sh', bash);
