@@ -10,7 +10,8 @@
     "components-and-props",
     "arrays-and-keys",
     "refs-and-the-dom",
-    "context"
+    "context",
+    "styling"
   ],
   "Hooks & State Management": [
     "hooks-overview",
