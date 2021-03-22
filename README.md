@@ -33,7 +33,7 @@ yarn dev
 # then open localhost:3000
 ```
 
-In case you want to run BuckleScript in watchmode:
+In case you want to run ReScript in watchmode:
 
 ```sh
 yarn run bs:start
