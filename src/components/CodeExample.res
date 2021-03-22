@@ -118,21 +118,8 @@ module CopyButton = {
       }
     }, [state])
 
-    let activeClass = switch state {
-    | Copied => "opacity-100"
-    | _ => "opacity-0 hidden"
-    }
-
-    let banner =
-      <div
-        className={"absolute top-0 -mt-1 -mr-1 px-2 rounded right-0 bg-turtle text-gray-80-tr transition-all duration-500 ease-in-out " ++
-        activeClass}>
-        {React.string("Copied!")}
-      </div>
-
     <button
       ref={ReactDOM.Ref.domRef(buttonRef)} disabled={state === Copied} className="relative" onClick>
-      /* banner */
       <Icon.Copy className="text-gray-20 mt-px hover:cursor-pointer hover:text-gray-80" />
     </button>
   }

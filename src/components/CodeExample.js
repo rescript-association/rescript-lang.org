@@ -96,10 +96,6 @@ function CodeExample$CopyButton(Props) {
                     
                   });
         }), [state]);
-  var activeClass = state !== 1 ? "opacity-0 hidden" : "opacity-100";
-  React.createElement("div", {
-        className: "absolute top-0 -mt-1 -mr-1 px-2 rounded right-0 bg-turtle text-gray-80-tr transition-all duration-500 ease-in-out " + activeClass
-      }, "Copied!");
   return React.createElement("button", {
               ref: buttonRef,
               className: "relative",
