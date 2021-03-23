@@ -13,9 +13,12 @@ There are many different approaches on how to do styling in React, such as:
 - CSS utility libraries (`tailwindcss`, `tachyons`, etc.)
 - CSS-in-JS (such as `styled-components`, `emotion`, etc.)
 
+There's no right or wrong when choosing a styling strategy, and each method has its up- and downsides. This page will give you some pointers on how to style your ReScript React components in your preferred style.
+
+
 ## Inline Styles
 
-You can apply a `style` attribute to any DOM element with our `ReactDOM.Style.make` API:
+This is the most basic form of styling, coming straight from the 90ies. You can apply a `style` attribute to any DOM element with our `ReactDOM.Style.make` API:
 
 ```rescript
 <div style=(
@@ -23,7 +26,7 @@ You can apply a `style` attribute to any DOM element with our `ReactDOM.Style.ma
 )/>
 ```
 
-It's a labeled (typed!) function call that maps to the familiar style object `{color: '#444444', fontSize: '68px'}`.
+It's a labeled (therefore typed) function call that maps to the familiar style object `{color: '#444444', fontSize: '68px'}`. For every CSS attribute in the CSS specfication, there is a camelCased label in our `make` function.
 
 **Note** that `make` returns an opaque `ReactDOM.Style.t` type that you can't read into. We also expose a `ReactDOM.Style.combine` that takes in two `style`s and combine them.
 
@@ -49,7 +52,7 @@ Use a `%%raw` expression to import CSS files within your ReScript / React compon
 
 ## CSS Modules
 
-CSS modules can be imported like any other JS module. The imported value is a JS object, with each key mapping to a classname within the imported CSS file.
+[CSS modules](https://github.com/css-modules/css-modules) can be imported like any other JS module. The imported value is a JS object, with attributes equivalent to each classname defined in the CSS file.
 
 As an example, let's say we have a CSS module like this:
 
@@ -61,13 +64,14 @@ As an example, let's say we have a CSS module like this:
 }
 ```
 
-We now need to create a module binding that imports our styles: 
+We now need to create a module binding that imports our styles as a JS object: 
 
 ```res
 // {..} means we are handling a JS object with an unknown
 // set of attributes
 @module external styles: {..} = "./styles.module.css"
 
+// Use the obj["key"] syntax to access any classname within our object
 let app = <div className={styles["root"]} />
 ```
 
@@ -119,7 +123,7 @@ let make = (~active: bool) => {
 
 When using the [Tailwind VSCode plugin](https://tailwindcss.com/docs/intellisense), make sure to include ReScript as a target language to get autocompletion:
 
-- Open the VSCode settings
+- Open your VSCode settings
 - Search for `Tailwind CSS: Include Languages`
 - Add a new item with following settings:
   - Item: `rescript`
@@ -131,7 +135,7 @@ When using the [Tailwind VSCode plugin](https://tailwindcss.com/docs/intellisens
 
 ## CSS-in-JS
 
-Currently there are no official recommendations for CSS-in-JS yet due to the wildly different approaches on how to bind to CSS-in-JS (going from simple to very advanced).
+Currently there are no official recommendations for CSS-in-JS yet due to the wildly different approaches on how to bind to CSS-in-JS libraries (going from simple to very advanced).
 
 The most minimalistic approach is to create simple bindings to e.g. [`emotion`](https://emotion.sh/docs/introduction) (as described [here](https://github.com/bloodyowl/rescript-react-starter-kit/blob/eca7055c59ba578b2d1994fc928d8f541a423e74/src/shared/Emotion.res)):
 
@@ -172,7 +176,7 @@ module Styles = {
 let app = <div className={Styles.container} />
 ```
 
-Please note that this approach will not be type-checking for valid css attribute names. If you e.g. want to make sure that only valid CSS attributes are being passed, you could define your `css` function like this as well:
+Please note that this approach will not typecheck for invalid css attribute names. If you e.g. want to make sure that only valid CSS attributes are being passed, you could define your `css` function like this as well:
 
 ```res
 @module("@emotion/css") external css: React.Style.t => string = "css"
@@ -185,7 +189,9 @@ let app = <div
 />
 ```
 
-In the example above we used the already existing `React.Style.t` type to enforce valid CSS attribute names. There's a spectrum on how type-safe an API might be, so choose a solution that fits your team's needs.
+Here we used the already existing `React.Style.t` type to enforce valid CSS attribute names. 
+
+**Rule of thumb:** There's a spectrum on how type-safe an API might be, so choose a solution that fits to your team's needs.
 
 Last but not least, you can also bind to functions that let you use raw CSS directly:
 
@@ -198,4 +204,4 @@ let container = Emotion.rawCss(`
 let app = <div className={container} />
 ```
 
-For more CSS-in-JS ideas, you can also check out related discussions on our [forum](https://forum.rescript-lang.org), or start a new topic.
+For more CSS-in-JS ideas, you can also check out related discussions, or start a new topic on our [forum](https://forum.rescript-lang.org).
