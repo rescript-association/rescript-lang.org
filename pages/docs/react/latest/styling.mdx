@@ -139,6 +139,7 @@ The most minimalistic approach is to create simple bindings to e.g. [`emotion`](
 // src/Emotion.res
 
 @module("@emotion/css") external css: {..} => string = "css"
+@module("@emotion/css") external rawCss: string => string = "css"
 @module("@emotion/css") external keyframes: {..} => string = "css"
 @module("@emotion/css") external cx: array<string> => string = "cx"
 
@@ -148,12 +149,27 @@ The most minimalistic approach is to create simple bindings to e.g. [`emotion`](
 This will give you straight-forward access to the `emotion` apis. Here's how you'd use them in your app code:
 
 ```res
-let app = <div
-  className={Emotion.css({
+let container = Emotion.css({
+  "color": "#fff",
+  "backgroundColor": "red"
+})
+
+let app = <div className={container} />
+```
+
+You can organize your module stylesheet in a React Native fashion using first-class modules!
+
+```res
+module Styles = {
+  open Emotion
+  let container = css({
     "color": "#fff",
     "backgroundColor": "red"
-  })}
-/>
+  })
+  // your other declarations
+}
+
+let app = <div className={Styles.container} />
 ```
 
 Please note that this approach will not be type-checking for valid css attribute names. If you e.g. want to make sure that only valid CSS attributes are being passed, you could define your `css` function like this as well:
@@ -162,11 +178,24 @@ Please note that this approach will not be type-checking for valid css attribute
 @module("@emotion/css") external css: React.Style.t => string = "css"
 
 // Usage is slightly different (and probably less ergonomic)
+let container = ReactDOM.Style.make(~padding="20px", ())->css;
+
 let app = <div
-  className={ReactDOM.Style.make(~padding="20px", ())->css}
+  className={container}
 />
 ```
 
 In the example above we used the already existing `React.Style.t` type to enforce valid CSS attribute names. There's a spectrum on how type-safe an API might be, so choose a solution that fits your team's needs.
+
+Last but not least, you can also bind to functions that let you use raw CSS directly:
+
+```res
+let container = Emotion.rawCss(`
+  color: #fff;
+  background-color: red;
+`)
+
+let app = <div className={container} />
+```
 
 For more CSS-in-JS ideas, you can also check out related discussions on our [forum](https://forum.rescript-lang.org), or start a new topic.
