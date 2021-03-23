@@ -11,7 +11,8 @@
     "arrays-and-keys",
     "refs-and-the-dom",
     "context",
-    "styling"
+    "styling",
+    "router"
   ],
   "Hooks & State Management": [
     "hooks-overview",
