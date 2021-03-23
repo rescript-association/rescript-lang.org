@@ -6,14 +6,13 @@ canonical: "/docs/react/latest/styling"
 
 # Styling
 
-There are many different approaches on how to do styling in React, such as:
+React comes with builtin support for inline styles, but there are also a number of third party libraries for styling React components. You might be comfortable with a specific setup, like:
 
-- Inline Styles (`style=...`)
 - Global CSS / CSS modules
-- CSS utility libraries (`tailwindcss`, `tachyons`, etc.)
-- CSS-in-JS (such as `styled-components`, `emotion`, etc.)
+- CSS utility libraries (`tailwindcss`, `tachyons`, `bootstrap` etc.)
+- CSS-in-JS (`styled-components`, `emotion`, etc.)
 
-There's no right or wrong when choosing a styling strategy, and each method has its up- and downsides. This page will give you some pointers on how to style your ReScript React components in your preferred style.
+If they work in JS then they almost certainly work in ReScript. In the next few sections, we've shared some ideas for working with popular libraries. If you're interested in working with one you don't see here, search the [package index](https://rescript-lang.org/packages) or post in [the forum](https://forum.rescript-lang.org).
 
 
 ## Inline Styles
@@ -80,10 +79,7 @@ let app = <div className={styles["root"]} />
 
 ## CSS Utility Libraries
 
-There are a number of third party libraries for styling React components and you might be comfortable with a specific setup. If they work in JS then they almost certainly work in ReScript. Below, we've shared some ideas for working with popular libraries. If you're interested in working with one you don't see here, search the [package index](https://rescript-lang.org/packages) or post in [the forum](https://forum.rescript-lang.org)
-
 ### Tailwind
-
 
 CSS utility libraries like [TailwindCSS](https://tailwindcss.com) usually require some globally imported CSS.
 
@@ -137,9 +133,9 @@ When using the [Tailwind VSCode plugin](https://tailwindcss.com/docs/intellisens
 
 ## CSS-in-JS
 
-Currently there are no official recommendations for CSS-in-JS yet due to the wildly different approaches on how to bind to CSS-in-JS libraries (going from simple to very advanced).
+There's no way we could recommend a definitive CSS-in-JS workflow, since there are many different approaches on how to bind to CSS-in-JS libraries (going from simple to very advanced).
 
-The most minimalistic approach is to create simple bindings to e.g. [`emotion`](https://emotion.sh/docs/introduction) (as described [here](https://github.com/bloodyowl/rescript-react-starter-kit/blob/eca7055c59ba578b2d1994fc928d8f541a423e74/src/shared/Emotion.res)):
+For demonstration purposes, let's create some simple bindings to e.g. [`emotion`](https://emotion.sh/docs/introduction) (as described [here](https://github.com/bloodyowl/rescript-react-starter-kit/blob/eca7055c59ba578b2d1994fc928d8f541a423e74/src/shared/Emotion.res)):
 
 ```res
 // src/Emotion.res
@@ -152,7 +148,7 @@ The most minimalistic approach is to create simple bindings to e.g. [`emotion`](
 @module("@emotion/css") external injectGlobal: string => unit = "injectGlobal"
 ```
 
-This will give you straight-forward access to the `emotion` apis. Here's how you'd use them in your app code:
+This will give you straight-forward access to `emotion`'s apis. Here's how you'd use them in your app code:
 
 ```res
 let container = Emotion.css({
@@ -178,7 +174,7 @@ module Styles = {
 let app = <div className={Styles.container} />
 ```
 
-Please note that this approach will not typecheck for invalid css attribute names. If you e.g. want to make sure that only valid CSS attributes are being passed, you could define your `css` function like this as well:
+Please note that this approach will not check for invalid css attribute names. If you e.g. want to make sure that only valid CSS attributes are being passed, you could define your `css` function like this as well:
 
 ```res
 @module("@emotion/css") external css: React.Style.t => string = "css"
@@ -192,9 +188,6 @@ let app = <div
 ```
 
 Here we used the already existing `React.Style.t` type to enforce valid CSS attribute names. 
-
-**Rule of thumb:** There's a spectrum on how type-safe an API might be, so choose a solution that fits to your team's needs.
-
 Last but not least, you can also bind to functions that let you use raw CSS directly:
 
 ```res
@@ -206,4 +199,4 @@ let container = Emotion.rawCss(`
 let app = <div className={container} />
 ```
 
-For more CSS-in-JS ideas, you can also check out related discussions, or start a new topic on our [forum](https://forum.rescript-lang.org).
+Please keep in mind that there's a spectrum on how type-safe an API can be (while being more / less complex to handle), so choose a solution that fits to your team's needs.
