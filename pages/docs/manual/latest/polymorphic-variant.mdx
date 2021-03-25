@@ -86,9 +86,9 @@ In rare cases (mostly for JS interop reasons), it's also possible to define "inv
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-type numbers = [#\"1" | #\"2"]
-let one = #\"1"
-let oneA = #\"1a"
+type numbers = [#"1" | #"2"]
+let one = #"1"
+let oneA = #"1a"
 ```
 
 ```js
@@ -298,7 +298,7 @@ let lowercased = #goodbye
 
 let err = #error("oops!")
 
-let num = #\"1"
+let num = #"1"
 ```
 
 ```js
@@ -328,7 +328,7 @@ For example, let's assume we want to bind to `Intl.NumberFormat` and want to mak
 type t
 
 @bs.val
-external make: ([#\"de-DE" | #\"en-GB" | #\"en-US" ]) => t = "Intl.NumberFormat"
+external make: ([#"de-DE" | #"en-GB" | #"en-US" ]) => t = "Intl.NumberFormat"
 ```
 
 We could later use our newly created bindings like this:
@@ -338,7 +338,7 @@ We could later use our newly created bindings like this:
 ```res
 // MyApp.res
 
-let intl = IntlNumberFormat.make(#\"de-DE")
+let intl = IntlNumberFormat.make(#"de-DE")
 ```
 
 ```js
