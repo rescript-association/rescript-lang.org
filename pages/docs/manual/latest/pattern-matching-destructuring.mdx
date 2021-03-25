@@ -433,7 +433,7 @@ if (typeof myStatus === "number" || myStatus.TAG) {
 
 Slightly more verbose, but a one-time writing effort. This helps when you add a new variant case e.g. `Quarantined` to the `status` type and need to update the places that pattern match on it. A top-level wildcard here would have accidentally and silently continued working, potentially causing bugs.
 
-### When Clause
+### If Clause
 
 Sometime, you want to check more than the shape of a value. You want to also run some arbitrary check on it. You might be tempted to write this:
 
@@ -469,7 +469,7 @@ if (person1.TAG) {
 ```res example
 switch person1 {
 | Teacher(_) => () // do nothing
-| Student({reportCard: {gpa}}) when gpa < 0.5 =>
+| Student({reportCard: {gpa}}) if gpa < 0.5 =>
   Js.log("What's happening")
 | Student(_) =>
   // fall-through, catch-all case
