@@ -354,7 +354,7 @@ function fuzzyLookup(str) {
   return Belt_Array.concat(letters, numbers);
 }
 
-var InvalidInput = Caml_exceptions.create("WarningFlagDescription.Parser.InvalidInput");
+var InvalidInput = /* @__PURE__ */Caml_exceptions.create("WarningFlagDescription.Parser.InvalidInput");
 
 function isModifier(str) {
   if (str === "+") {

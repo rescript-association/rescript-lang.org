@@ -76,7 +76,7 @@ var Badge = {
   toString: toString$1
 };
 
-var AuthorNotFound = Caml_exceptions.create("BlogFrontmatter.AuthorNotFound");
+var AuthorNotFound = /* @__PURE__ */Caml_exceptions.create("BlogFrontmatter.AuthorNotFound");
 
 function decodeAuthor(fieldName, authors, username) {
   var author = authors.find(function (a) {
@@ -87,7 +87,7 @@ function decodeAuthor(fieldName, authors, username) {
   }
   throw {
         RE_EXN_ID: AuthorNotFound,
-        _1: "Couldn\'t find author \"" + username + "\" in field " + fieldName,
+        _1: "Couldn't find author \"" + username + "\" in field " + fieldName,
         Error: new Error()
       };
 }

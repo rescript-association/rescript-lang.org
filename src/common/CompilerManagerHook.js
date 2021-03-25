@@ -500,7 +500,7 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                   if (apiVersion) {
                     compResult = {
                       TAG: 2,
-                      _0: "Can\'t handle result of compiler API version \"" + apiVersion._0 + "\"",
+                      _0: "Can't handle result of compiler API version \"" + apiVersion._0 + "\"",
                       [Symbol.for("name")]: "UnexpectedError"
                     };
                   } else {
