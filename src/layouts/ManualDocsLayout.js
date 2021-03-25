@@ -10,7 +10,7 @@ import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 var allManualVersions = [
   [
     "latest",
-    "v8.2.0"
+    "v9.0.1"
   ],
   [
     "v8.0.0",

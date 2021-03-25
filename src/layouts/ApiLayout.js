@@ -15,7 +15,7 @@ import * as VersionSelect from "../components/VersionSelect.js";
 var allApiVersions = [
   [
     "latest",
-    "v8.2.0"
+    "v9.0.1"
   ],
   [
     "v8.0.0",
