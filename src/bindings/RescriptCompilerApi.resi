@@ -76,10 +76,31 @@ module WarningFlag: {
   let decode: Js.Json.t => t
 }
 
+module TypeHint: {
+  type position = {
+    line: int,
+    col: int,
+  }
+  type data = {
+    start: position,
+    end: position,
+    hint: string
+  }
+
+  type t =
+    | TypeDeclaration(data)
+    | Expression(data)
+    | Binding(data)
+    | CoreType(data)
+
+  let decode: Js.Json.t => t
+}
+
 module CompileSuccess: {
   type t = {
     js_code: string,
     warnings: array<Warning.t>,
+    type_hints: array<TypeHint.t>, // Not supported in older versions <= 9.0.1 (will always be [])
     time: float, // total compilation time
   }
 

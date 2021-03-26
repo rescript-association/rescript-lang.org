@@ -60,7 +60,106 @@ var errorGutterId = "errors";
 
 var $$Error = {};
 
-function make(rowCol, kind, param) {
+var HoverHint = {};
+
+var make = (function() {
+    const tooltip = document.createElement("div");
+    tooltip.id = "hover-tooltip"
+    tooltip.className = "absolute hidden font-mono text-12 z-10 bg-sky-10 py-1 px-2 rounded"
+    tooltip.innerHTML = "Test"
+
+    return tooltip
+  });
+
+var hide = (function(tooltip){
+    tooltip.classList.add("hidden")
+  });
+
+var update = (function(tooltip, top, left, text){
+    tooltip.style.left = left + "px";
+    tooltip.style.top = top + "px";
+
+    tooltip.classList.remove("hidden");
+    tooltip.innerHTML = text;
+  });
+
+var attach = (function(tooltip) {
+    document.body.appendChild(tooltip);
+  });
+
+var clear = (function(tooltip) {
+    tooltip.remove()
+  });
+
+var tooltip = Curry._1(make, undefined);
+
+function useHoverTooltip(hoverHints, cmRef, param) {
+  var currentMarkerRef = React.useRef(undefined);
+  React.useEffect((function () {
+          attach(tooltip);
+          return (function (param) {
+                    return clear(tooltip);
+                  });
+        }), []);
+  var onMouseOver = function (evt) {
+    var pageX = evt.pageX;
+    var pageY = evt.pageY;
+    var cur = currentMarkerRef.current;
+    if (cur !== undefined) {
+      Caml_option.valFromOption(cur).clear();
+    }
+    var cm = cmRef.current;
+    if (cm !== undefined) {
+      var cm$1 = Caml_option.valFromOption(cm);
+      var coords = cm$1.coordsChar({
+            top: pageY,
+            left: pageX
+          });
+      var col = coords.ch;
+      var line = coords.line + 1 | 0;
+      var found = hoverHints.find(function (item) {
+            var end = item.end;
+            var start = item.start;
+            if (line >= start.line && line <= end.line && col >= start.col) {
+              return col <= end.col;
+            } else {
+              return false;
+            }
+          });
+      if (found !== undefined) {
+        update(tooltip, pageY - 35 | 0, pageX, found.hint);
+        var from_line = found.start.line - 1 | 0;
+        var from_ch = found.start.col;
+        var from = {
+          line: from_line,
+          ch: from_ch
+        };
+        var to__line = found.end.line - 1 | 0;
+        var to__ch = found.end.col;
+        var to_ = {
+          line: to__line,
+          ch: to__ch
+        };
+        var marker = cm$1.markText(from, to_, {
+              className: "border-b"
+            });
+        currentMarkerRef.current = Caml_option.some(marker);
+      } else {
+        hide(tooltip);
+      }
+    }
+    
+  };
+  var onMouseLeave = function (_evt) {
+    
+  };
+  return [
+          onMouseOver,
+          onMouseLeave
+        ];
+}
+
+function make$1(rowCol, kind, param) {
   var marker = document.createElement("div");
   var colorClass = kind === "Error" ? "text-fire bg-fire-100" : "text-orange bg-orange-15";
   marker.id = "gutter-marker_" + rowCol[0] + "-" + rowCol[1];
@@ -101,7 +200,7 @@ function updateErrors(state, onMarkerFocus, onMarkerFocusLeave, cm, errors) {
   cm.clearGutter(errorGutterId);
   var wrapper = cm.getWrapperElement();
   Belt_Array.forEachWithIndex(errors, (function (_idx, e) {
-          var marker = make([
+          var marker = make$1([
                 e.row,
                 e.column
               ], e.kind, undefined);
@@ -170,6 +269,7 @@ function updateErrors(state, onMarkerFocus, onMarkerFocusLeave, cm, errors) {
 
 function CodeMirror(Props) {
   var errorsOpt = Props.errors;
+  var hoverHintsOpt = Props.hoverHints;
   var minHeight = Props.minHeight;
   var maxHeight = Props.maxHeight;
   var className = Props.className;
@@ -184,6 +284,7 @@ function CodeMirror(Props) {
   var scrollbarStyleOpt = Props.scrollbarStyle;
   var lineWrappingOpt = Props.lineWrapping;
   var errors = errorsOpt !== undefined ? errorsOpt : [];
+  var hoverHints = hoverHintsOpt !== undefined ? hoverHintsOpt : [];
   var readOnly = readOnlyOpt !== undefined ? readOnlyOpt : false;
   var lineNumbers = lineNumbersOpt !== undefined ? lineNumbersOpt : true;
   var scrollbarStyle = scrollbarStyleOpt !== undefined ? scrollbarStyleOpt : "overlay";
@@ -276,7 +377,11 @@ function CodeMirror(Props) {
         className,
         windowWidth
       ]);
-  var tmp = {};
+  var match = useHoverTooltip(hoverHints, cmRef, undefined);
+  var tmp = {
+    onMouseLeave: match[1],
+    onMouseOver: match[0]
+  };
   if (className !== undefined) {
     tmp.className = Caml_option.valFromOption(className);
   }
@@ -319,13 +424,14 @@ var CM = {
   }
 };
 
-var make$1 = CodeMirror;
+var make$2 = CodeMirror;
 
 export {
   $$Error ,
+  HoverHint ,
   CM ,
   useWindowWidth ,
-  make$1 as make,
+  make$2 as make,
   
 }
 /*  Not a pure module */

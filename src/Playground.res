@@ -1537,10 +1537,33 @@ let default = () => {
   | _ => []
   }
 
+  let cmHoverHints = switch compilerState {
+  | Ready({result: FinalResult.Comp(Success({type_hints}))}) =>
+    Js.Array2.map(type_hints, hint => {
+      switch hint {
+      | TypeDeclaration({start, end, hint})
+      | Binding({start, end, hint})
+      | CoreType({start, end, hint})
+      | Expression({start, end, hint}) => {
+          CodeMirror.HoverHint.start: {
+            line: start.line,
+            col: start.col,
+          },
+          end: {
+            line: end.line,
+            col: end.col,
+          },
+          hint: hint,
+        }
+      }
+    })
+  | _ => []
+  }
+
   let mode = switch compilerState {
-    | Ready({ targetLang: Reason }) => "reason"
-    | Ready({ targetLang: Res }) => "rescript"
-    | _ => "rescript"
+  | Ready({targetLang: Reason}) => "reason"
+  | Ready({targetLang: Res}) => "rescript"
+  | _ => "rescript"
   }
 
   <>
@@ -1570,6 +1593,7 @@ let default = () => {
                   minHeight="calc(100vh - 10rem)"
                   maxHeight="calc(100vh - 10rem)"
                   mode
+                  hoverHints=cmHoverHints
                   errors=cmErrors
                   value={editorCode.current}
                   onChange={value => {

@@ -134,56 +134,65 @@ module CM = {
     }
 
     @bs.obj
-    external make: (~className: string=?, ~attributes: Attr.t, unit) => t = ""
+    external make: (~className: string=?, ~attributes: Attr.t=?, unit) => t = ""
   }
 
   @bs.send
   external markText: (t, markPos, markPos, MarkTextOption.t) => TextMarker.t = "markText"
+
+  @send
+  external coordsChar: (t, {"top": int, "left": int}) => {"line": int, "ch": int} = "coordsChar"
 }
 
 module DomUtil = {
   module Event = {
     type t
 
-    @bs.get external target: t => Dom.element = "target"
+    @get external target: t => Dom.element = "target"
   }
 
-  @bs.val @bs.scope("document")
+  @val @scope("document")
   external createElement: string => Dom.element = "createElement"
 
-  @bs.send
+  @send @scope("classList")
+  external addClass: (Dom.element, string) => unit = "add"
+
+  @send @scope("classList")
+  external removeClass: (Dom.element, string) => unit = "remove"
+
+  @send
   external appendChild: (Dom.element, Dom.element) => unit = "appendChild"
 
-  @bs.set @bs.scope("style")
+  @set @scope("style")
   external setMinHeight: (Dom.element, string) => unit = "minHeight"
 
-  @bs.set @bs.scope("style")
+  @set @scope("style")
   external setMaxHeight: (Dom.element, string) => unit = "maxHeight"
 
-  @bs.set @bs.scope("style")
+  @set @scope("style")
   external _setDisplay: (Dom.element, string) => unit = "display"
 
-  @bs.set @bs.scope("style")
+  @set @scope("style")
   external _setTop: (Dom.element, string) => unit = "top"
 
-  @bs.set @bs.scope("style")
+  @set @scope("style")
   external _setLeft: (Dom.element, string) => unit = "left"
 
-  @bs.set external setInnerHTML: (Dom.element, string) => unit = "innerHTML"
+  @set external setInnerHTML: (Dom.element, string) => unit = "innerHTML"
 
-  @bs.set external setId: (Dom.element, string) => unit = "id"
-  @bs.set external setClassName: (Dom.element, string) => unit = "className"
+  @set external setId: (Dom.element, string) => unit = "id"
+  @set external setClassName: (Dom.element, string) => unit = "className"
 
-  @bs.set
+  @set
   external setOnMouseOver: (Dom.element, Event.t => unit) => unit = "onmouseover"
 
-  @bs.set
+  @set
   external _setOnMouseLeave: (Dom.element, Event.t => unit) => unit = "onmouseleave"
 
-  @bs.set
+  @set
   external setOnMouseOut: (Dom.element, Event.t => unit) => unit = "onmouseout"
 
-  @bs.get external getId: Dom.element => string = "id"
+  @get external getId: Dom.element => string = "id"
 
   type clientRect = {
     x: int,
@@ -192,8 +201,10 @@ module DomUtil = {
     height: int,
   }
 
-  @bs.send
+  @send
   external _getBoundingClientRect: Dom.element => clientRect = "getBoundingClientRect"
+
+  external unsafeObjToDomElement: {..} => Dom.element = "%identity"
 }
 
 module Error = {
@@ -207,6 +218,124 @@ module Error = {
     text: string,
     kind: kind,
   }
+}
+
+module HoverHint = {
+  type position = {
+    line: int,
+    col: int,
+  }
+
+  type t = {
+    start: position,
+    end: position,
+    hint: string,
+  }
+}
+
+module HoverTooltip = {
+  type t
+
+  let make: unit => t = %raw(`
+  function() {
+    const tooltip = document.createElement("div");
+    tooltip.id = "hover-tooltip"
+    tooltip.className = "absolute hidden font-mono text-12 z-10 bg-sky-10 py-1 px-2 rounded"
+    tooltip.innerHTML = "Test"
+
+    return tooltip
+  }
+  `)
+
+  let hide: t => unit = %raw(`
+  function(tooltip){
+    tooltip.classList.add("hidden")
+  }`)
+
+  let update: (
+    t,
+    ~top: int,
+    ~left: int,
+    ~text: string,
+  ) => unit = %raw(`function(tooltip, top, left, text){
+    tooltip.style.left = left + "px";
+    tooltip.style.top = top + "px";
+
+    tooltip.classList.remove("hidden");
+    tooltip.innerHTML = text;
+  }`)
+
+  let attach: t => unit = %raw(`function(tooltip) {
+    document.body.appendChild(tooltip);
+  }`)
+
+  let clear: t => unit = %raw(`function(tooltip) {
+    tooltip.remove()
+  }`)
+}
+
+// We'll keep this tooltip instance outside the
+// hook, so we don't need to use a React.ref to
+// keep the instance around
+let tooltip = HoverTooltip.make()
+
+let useHoverTooltip = (~hoverHints: array<HoverHint.t>, ~cmRef: React.ref<option<CM.t>>, ()) => {
+  let currentMarkerRef: React.ref<option<CM.TextMarker.t>> = React.useRef(None)
+
+  React.useEffect0(() => {
+    tooltip->HoverTooltip.attach
+
+    Some(
+      () => {
+        tooltip->HoverTooltip.clear
+      },
+    )
+  })
+
+  let onMouseOver = evt => {
+    let pageX = evt->ReactEvent.Mouse.pageX
+    let pageY = evt->ReactEvent.Mouse.pageY
+
+    switch currentMarkerRef.current {
+    | Some(cur) => CM.TextMarker.clear(cur)
+    | _ => ()
+    }
+    switch cmRef.current {
+    | Some(cm) =>
+      let coords = cm->CM.coordsChar({"top": pageY, "left": pageX})
+
+      let col = coords["ch"]
+      let line = coords["line"] + 1
+
+      let found = hoverHints->Js.Array2.find(item => {
+        let {start, end} = item
+        line >= start.line && line <= end.line && col >= start.col && col <= end.col
+      })
+
+      switch found {
+      | Some(hoverHint) =>
+        tooltip->HoverTooltip.update(~top=pageY - 35, ~left=pageX, ~text=hoverHint.hint)
+
+        let from = {CM.line: hoverHint.start.line - 1, ch: hoverHint.start.col}
+        let to_ = {CM.line: hoverHint.end.line - 1, ch: hoverHint.end.col}
+
+        let marker =
+          cm->CM.markText(from, to_, CM.MarkTextOption.make(~className="border-b", ()))
+
+        currentMarkerRef.current = Some(marker)
+      | None => tooltip->HoverTooltip.hide
+      }
+    | _ => ()
+    }
+
+    ()
+  }
+
+  let onMouseLeave = _evt => {
+    ()
+  }
+
+  (onMouseOver, onMouseLeave)
 }
 
 module GutterMarker = {
@@ -346,6 +475,7 @@ let updateErrors = (~state: state, ~onMarkerFocus=?, ~onMarkerFocusLeave=?, ~cm:
 let make = // props relevant for the react wrapper
 (
   ~errors: array<Error.t>=[],
+  ~hoverHints: array<HoverHint.t>=[],
   ~minHeight: option<string>=?,
   ~maxHeight: option<string>=?,
   ~className: option<string>=?,
@@ -467,14 +597,14 @@ let make = // props relevant for the react wrapper
   }, [errorsFingerprint])
 
   React.useEffect1(() => {
-    let cm = Belt.Option.getExn(cmRef.current);
+    let cm = Belt.Option.getExn(cmRef.current)
     cm->CM.setMode(mode)
     None
   }, [mode])
 
   /*
-      Needed in case the className visually hides / shows
-      a codemirror instance, or the window has been resized.
+    Needed in case the className visually hides / shows
+    a codemirror instance, or the window has been resized.
  */
   React.useEffect2(() => {
     switch cmRef.current {
@@ -484,7 +614,9 @@ let make = // props relevant for the react wrapper
     None
   }, (className, windowWidth))
 
-  <div ?className ?style>
+  let (onMouseOver, onMouseLeave) = useHoverTooltip(~hoverHints, ~cmRef, ())
+
+  <div ?className ?style onMouseOver onMouseLeave>
     <textarea className="hidden" ref={ReactDOM.Ref.domRef(inputElement)} />
   </div>
 }
