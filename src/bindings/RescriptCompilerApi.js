@@ -247,8 +247,10 @@ function decode$5(time, json) {
           warnings: Json_decode.field("warnings", (function (param) {
                   return Json_decode.array(decode$2, param);
                 }), json),
-          type_hints: Json_decode.field("type_hints", (function (param) {
-                  return Json_decode.array(decode$4, param);
+          type_hints: Json_decode.withDefault([], (function (param) {
+                  return Json_decode.field("type_hints", (function (param) {
+                                return Json_decode.array(decode$4, param);
+                              }), param);
                 }), json),
           time: time
         };

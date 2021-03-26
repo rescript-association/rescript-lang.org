@@ -235,7 +235,7 @@ module CompileSuccess = {
     {
       js_code: field("js_code", string, json),
       warnings: field("warnings", array(Warning.decode), json),
-      type_hints: field("type_hints", array(TypeHint.decode), json),
+      type_hints: withDefault([], field("type_hints", array(TypeHint.decode)), json),
       time: time,
     }
   }
