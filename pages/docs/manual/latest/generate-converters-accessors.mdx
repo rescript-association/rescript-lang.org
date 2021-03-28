@@ -298,8 +298,8 @@ As in similar use-cases before, you can also use `@bs.deriving({jsConverter: new
 
 ## Convert Record Type to Abstract Record
 
-> **Note**: For ReScript >= v7, we recommend using [plain records to compile to JS objects](bind-to-js-object#bind-to-record-like-js-objects). 
-> This feature might still be useful for certain scenarios, but the ergonomics might be worse 
+> **Note**: For ReScript >= v7, we recommend using [plain records to compile to JS objects](bind-to-js-object#bind-to-record-like-js-objects).
+> This feature might still be useful for certain scenarios, but the ergonomics might be worse
 
 Use `@bs.deriving(abstract)` on a record type to expand the type into a creation, and a set of getter / setter functions for fields and methods.
 
@@ -578,7 +578,7 @@ For example, suppose you need a JavaScript object like this:
 
 ```js
 var homeRoute = {
-  method: "GET",
+  type: "GET",
   path: "/",
   action: () => console.log("Home"),
   // options: ...
@@ -590,7 +590,7 @@ But only the first three fields are required; the options field is optional. You
 ```res
 @bs.obj
 external route: (
-  ~_method: string,
+  ~\"type": string,
   ~path: string,
   ~action: list<string> => unit,
   ~options: {..}=?,
@@ -600,7 +600,7 @@ external route: (
 
 **Note**: the ` = ""` part at the end is just a dummy placeholder, due to syntactic limitations. It serves no purpose currently.
 
-This function has four labelled parameters (the fourth one optional), one unlabelled parameter at the end (which we mandate for functions with [optional parameters](function#optional-labeled-arguments), and one parameter (`_method`) that requires an underscore prefix to avoid confusion with the ReScript keyword `method`.
+This function has four labelled parameters (the fourth one optional), one unlabelled parameter at the end (which we mandate for functions with [optional parameters](function#optional-labeled-arguments), and one parameter (`\"type"`) that required quoting to [avoid clashing](use-illegal-identifier-names) with the reserved `type` keyword.
 
 Also of interest is the return type: `_`, which tells ReScript to automatically infer the full type of the JS object, sparing you the hassle of writing down the type manually!
 
@@ -608,7 +608,7 @@ The function is called like so:
 
 ```res
 let homeRoute = route(
-  ~_method="GET",
+  ~\"type"="GET",
   ~path="/",
   ~action=_ => Js.log("Home"),
   (),
