@@ -46,7 +46,8 @@
     "inlining-constants",
     "use-illegal-identifier-names",
     "generate-converters-accessors",
-    "browser-support-polyfills"
+    "browser-support-polyfills",
+    "libraries"
   ],
   "Build System": [
     "build-overview",
@@ -56,8 +57,7 @@
     "build-performance"
   ],
   "Guides": [
-    "converting-from-js",
-    "libraries"
+    "converting-from-js"
   ],
   "Extra": [
     "newcomer-examples",
