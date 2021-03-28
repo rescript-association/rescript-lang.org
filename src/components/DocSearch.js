@@ -7,6 +7,11 @@ import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 
 function DocSearch(Props) {
+  var inputRef = React.useRef(null);
+  var match = React.useState(function () {
+        return /* Inactive */1;
+      });
+  var setState = match[1];
   React.useEffect((function () {
           var init = window.docsearch;
           if (init !== undefined) {
@@ -16,13 +21,27 @@ function DocSearch(Props) {
                   inputSelector: "#docsearch"
                 });
           }
-          
+          var handleKeyDown = function (e) {
+            if (e.key === "/") {
+              Curry._1(setState, (function (param) {
+                      return /* Active */0;
+                    }));
+              setTimeout((function (param) {
+                      return Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (prim) {
+                                    prim.focus();
+                                    
+                                  }));
+                    }), 0);
+              return ;
+            }
+            
+          };
+          window.addEventListener("keydown", handleKeyDown);
+          return (function (param) {
+                    window.addEventListener("keydown", handleKeyDown);
+                    
+                  });
         }), []);
-  var inputRef = React.useRef(null);
-  var match = React.useState(function () {
-        return /* Inactive */1;
-      });
-  var setState = match[1];
   var clearInput = function (param) {
     return Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (el) {
                   el.value = "";

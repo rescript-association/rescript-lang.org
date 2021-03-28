@@ -7,6 +7,15 @@ type options = {
 @bs.val @bs.scope("window")
 external docsearch: option<options => unit> = "docsearch"
 
+type keyboardEventLike = {key: string}
+
+@bs.val @bs.scope("window")
+external addKeyboardEventListener: (string, keyboardEventLike => unit) => unit = "addEventListener"
+
+@bs.val @bs.scope("window")
+external removeKeyboardEventListener: (string, keyboardEventLike => unit) => unit =
+  "addEventListener"
+
 type state =
   | Active
   | Inactive
@@ -17,6 +26,10 @@ type state =
 
 @react.component
 let make = () => {
+  // Used for the text input
+  let inputRef = React.useRef(Js.Nullable.null)
+  let (state, setState) = React.useState(_ => Inactive)
+
   React.useEffect1(() => {
     switch docsearch {
     | Some(init) =>
@@ -27,12 +40,21 @@ let make = () => {
       })
     | None => ()
     }
-    None
-  }, [])
 
-  // Used for the text input
-  let inputRef = React.useRef(Js.Nullable.null)
-  let (state, setState) = React.useState(_ => Inactive)
+    let handleKeyDown = e => {
+      if e.key == "/" {
+        setState(_ => Active)
+
+        Js.Global.setTimeout(() => {
+          // execture focus in the next tick to avoid setting / inside input
+          inputRef.current->Js.Nullable.toOption->Belt.Option.forEach(focus)
+        }, 0)->ignore
+      }
+    }
+
+    addKeyboardEventListener("keydown", handleKeyDown)
+    Some(() => removeKeyboardEventListener("keydown", handleKeyDown))
+  }, [])
 
   let focusInput = () =>
     inputRef.current->Js.Nullable.toOption->Belt.Option.forEach(el => el->focus)
