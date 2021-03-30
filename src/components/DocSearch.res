@@ -4,19 +4,40 @@ type options = {
   inputSelector: string,
 }
 
+@bs.val @bs.scope("document")
+external activeElement: option<Dom.element> = "activeElement"
+
 @bs.val @bs.scope("window")
 external docsearch: option<options => unit> = "docsearch"
+
+type keyboardEventLike = {key: string, ctrlKey: bool, metaKey: bool}
+
+@bs.val @bs.scope("window")
+external addKeyboardEventListener: (string, keyboardEventLike => unit) => unit = "addEventListener"
+
+@bs.val @bs.scope("window")
+external removeKeyboardEventListener: (string, keyboardEventLike => unit) => unit =
+  "addEventListener"
+
+@bs.send
+external keyboardEventPreventDefault: keyboardEventLike => unit = "preventDefault"
 
 type state =
   | Active
   | Inactive
 
+@bs.get external isContentEditable: Dom.element => bool = "isContentEditable"
+@bs.get external tagName: Dom.element => string = "tagName"
 @bs.send external focus: Dom.element => unit = "focus"
 @bs.send external blur: Dom.element => unit = "blur"
 @bs.set external value: (Dom.element, string) => unit = "value"
 
 @react.component
 let make = () => {
+  // Used for the text input
+  let inputRef = React.useRef(Js.Nullable.null)
+  let (state, setState) = React.useState(_ => Inactive)
+
   React.useEffect1(() => {
     switch docsearch {
     | Some(init) =>
@@ -27,12 +48,41 @@ let make = () => {
       })
     | None => ()
     }
+
     None
   }, [])
 
-  // Used for the text input
-  let inputRef = React.useRef(Js.Nullable.null)
-  let (state, setState) = React.useState(_ => Inactive)
+  React.useEffect1(() => {
+    let isEditableTag = el =>
+      switch el->tagName {
+      | "TEXTAREA" | "SELECT" | "INPUT" => true
+      | _ => false
+      }
+
+    let focusSearch = e => {
+      switch activeElement {
+      | Some(el) when el->isEditableTag => ()
+      | Some(el) when el->isContentEditable => ()
+      | _ => {
+          setState(_ => Active)
+          inputRef.current->Js.Nullable.toOption->Belt.Option.forEach(focus)
+
+          e->keyboardEventPreventDefault
+        }
+      }
+    }
+
+    let handleGlobalKeyDown = e => {
+      switch e.key {
+      | "/" => focusSearch(e)
+      | "k" when e.ctrlKey || e.metaKey => focusSearch(e)
+      | _ => ()
+      }
+    }
+
+    addKeyboardEventListener("keydown", handleGlobalKeyDown)
+    Some(() => removeKeyboardEventListener("keydown", handleGlobalKeyDown))
+  }, [setState])
 
   let focusInput = () =>
     inputRef.current->Js.Nullable.toOption->Belt.Option.forEach(el => el->focus)

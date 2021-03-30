@@ -7,6 +7,11 @@ import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
 
 function DocSearch(Props) {
+  var inputRef = React.useRef(null);
+  var match = React.useState(function () {
+        return /* Inactive */1;
+      });
+  var setState = match[1];
   React.useEffect((function () {
           var init = window.docsearch;
           if (init !== undefined) {
@@ -18,11 +23,61 @@ function DocSearch(Props) {
           }
           
         }), []);
-  var inputRef = React.useRef(null);
-  var match = React.useState(function () {
-        return /* Inactive */1;
-      });
-  var setState = match[1];
+  React.useEffect((function () {
+          var isEditableTag = function (el) {
+            var match = el.tagName;
+            switch (match) {
+              case "INPUT" :
+              case "SELECT" :
+              case "TEXTAREA" :
+                  return true;
+              default:
+                return false;
+            }
+          };
+          var focusSearch = function (e) {
+            var el = document.activeElement;
+            if (el !== undefined) {
+              var el$1 = Caml_option.valFromOption(el);
+              if (isEditableTag(el$1)) {
+                return ;
+              }
+              if (el$1.isContentEditable) {
+                return ;
+              }
+              
+            }
+            Curry._1(setState, (function (param) {
+                    return /* Active */0;
+                  }));
+            Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (prim) {
+                    prim.focus();
+                    
+                  }));
+            e.preventDefault();
+            
+          };
+          var handleGlobalKeyDown = function (e) {
+            var match = e.key;
+            switch (match) {
+              case "/" :
+                  return focusSearch(e);
+              case "k" :
+                  if (e.ctrlKey || e.metaKey) {
+                    return focusSearch(e);
+                  } else {
+                    return ;
+                  }
+              default:
+                return ;
+            }
+          };
+          window.addEventListener("keydown", handleGlobalKeyDown);
+          return (function (param) {
+                    window.addEventListener("keydown", handleGlobalKeyDown);
+                    
+                  });
+        }), [setState]);
   var clearInput = function (param) {
     return Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (el) {
                   el.value = "";
