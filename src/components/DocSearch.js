@@ -21,27 +21,63 @@ function DocSearch(Props) {
                   inputSelector: "#docsearch"
                 });
           }
-          var handleKeyDown = function (e) {
-            if (e.key === "/") {
-              Curry._1(setState, (function (param) {
-                      return /* Active */0;
-                    }));
-              setTimeout((function (param) {
-                      return Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (prim) {
-                                    prim.focus();
-                                    
-                                  }));
-                    }), 0);
-              return ;
+          
+        }), []);
+  React.useEffect((function () {
+          var isEditableTag = function (el) {
+            var match = el.tagName;
+            switch (match) {
+              case "INPUT" :
+              case "SELECT" :
+              case "TEXTAREA" :
+                  return true;
+              default:
+                return false;
             }
+          };
+          var focusSearch = function (e) {
+            var el = document.activeElement;
+            if (el !== undefined) {
+              var el$1 = Caml_option.valFromOption(el);
+              if (isEditableTag(el$1)) {
+                return ;
+              }
+              if (el$1.isContentEditable) {
+                return ;
+              }
+              
+            }
+            Curry._1(setState, (function (param) {
+                    return /* Active */0;
+                  }));
+            Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (prim) {
+                    prim.focus();
+                    
+                  }));
+            e.preventDefault();
             
           };
-          window.addEventListener("keydown", handleKeyDown);
+          var handleGlobalKeyDown = function (e) {
+            var match = e.key;
+            switch (match) {
+              case "/" :
+                  return focusSearch(e);
+              case "k" :
+                  if (e.ctrlKey || e.metaKey) {
+                    return focusSearch(e);
+                  } else {
+                    return ;
+                  }
+              default:
+                return ;
+            }
+          };
+          window.addEventListener("keydown", handleGlobalKeyDown);
           return (function (param) {
-                    window.addEventListener("keydown", handleKeyDown);
+                    window.addEventListener("keydown", handleGlobalKeyDown);
                     
                   });
-        }), []);
+        }), [setState]);
   var clearInput = function (param) {
     return Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (el) {
                   el.value = "";
