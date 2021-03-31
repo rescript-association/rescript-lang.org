@@ -39,6 +39,7 @@ let default = (~showVersionSelect=true) => {
     ("GenType", "/docs/gentype/latest/introduction"),
     ("Reanalyze", "https://github.com/reason-association/reanalyze"),
   ]
+
   let tools = [("Syntax Lookup", "/syntax-lookup")]
 
   let versionSelect = if showVersionSelect {
@@ -55,7 +56,7 @@ let default = (~showVersionSelect=true) => {
       router->Next.Router.push(targetUrl)
     }
     <div className="text-fire">
-      <VersionSelect availableVersions=ManualDocsLayout.allManualVersions onChange version />
+      <VersionSelect availableVersions=Constants.allManualVersions onChange version />
     </div>
   } else {
     React.null

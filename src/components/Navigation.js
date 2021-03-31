@@ -5,8 +5,10 @@ import * as Icon from "./Icon.js";
 import * as Next from "../bindings/Next.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
+import * as Constants from "../common/Constants.js";
 import * as DocSearch from "./DocSearch.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
+import * as VersionSelect from "./VersionSelect.js";
 
 var link = "no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px";
 
@@ -38,49 +40,62 @@ function linkOrActiveApiSubroute(route) {
   }
 }
 
-function linkOrActiveDocsSubroute(route) {
-  var url = Url.parse(route);
-  var match = url.base;
-  var len = match.length;
-  if (len >= 3) {
-    return link;
-  }
-  switch (len) {
-    case 0 :
-        return link;
-    case 1 :
-        var match$1 = match[0];
-        if (match$1 !== "docs") {
-          return link;
-        }
-        break;
-    case 2 :
-        var match$2 = match[0];
-        if (match$2 !== "docs") {
-          return link;
-        }
-        var match$3 = match[1];
-        switch (match$3) {
-          case "gentype" :
-          case "manual" :
-              break;
-          default:
-            return link;
-        }
-        break;
-    
-  }
-  var match$4 = Belt_Array.get(url.pagepath, 0);
-  if (match$4 === "api") {
-    return link;
-  } else {
-    return activeLink;
-  }
-}
-
 var githubHref = "https://github.com/reason-association/rescript-lang.org#rescript-langorg";
 
 var discourseHref = "https://forum.rescript-lang.org";
+
+function Navigation$CollapsibleLink(Props) {
+  var title = Props.title;
+  var onStateChange = Props.onStateChange;
+  var allowHoverOpt = Props.allowHover;
+  var id = Props.id;
+  var state = Props.state;
+  var activeOpt = Props.active;
+  var children = Props.children;
+  var allowHover = allowHoverOpt !== undefined ? allowHoverOpt : true;
+  var active = activeOpt !== undefined ? activeOpt : false;
+  var onMouseDown = function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    return Curry._2(onStateChange, id, state >= 2 ? /* KeepOpen */0 : /* Closed */2);
+  };
+  var onMouseEnter = function (evt) {
+    evt.preventDefault();
+    if (allowHover) {
+      return Curry._2(onStateChange, id, /* HoverOpen */1);
+    }
+    
+  };
+  var isOpen = state < 2;
+  var onClick = function (param) {
+    
+  };
+  return React.createElement("div", {
+              className: "relative",
+              onMouseEnter: onMouseEnter
+            }, React.createElement("div", {
+                  className: "flex items-center"
+                }, React.createElement("a", {
+                      className: (
+                        active ? activeLink : link
+                      ) + (" border-none flex items-center hover:cursor-pointer " + (
+                          isOpen ? " text-gray-20" : ""
+                        )),
+                      onClick: onClick,
+                      onMouseDown: onMouseDown
+                    }, React.createElement("span", {
+                          className: active ? "border-b border-fire" : ""
+                        }, title))), React.createElement("div", {
+                  className: (
+                    isOpen ? "flex" : "hidden"
+                  ) + " fixed left-0 border-gray-80 border-t bg-white rounded-bl-xl rounded-br-xl shadow-sm min-w-320 w-full h-full sm:h-auto sm:justify-center",
+                  style: {
+                    marginTop: "1rem"
+                  }
+                }, React.createElement("div", {
+                      className: "w-full"
+                    }, children)));
+}
 
 var useOutsideClick = ((outerRef, trigger) => {
       function handleClickOutside(event) {
@@ -128,6 +143,71 @@ var useWindowWidth = (() => {
   }
   return null;
   });
+
+function Navigation$DocsSection(Props) {
+  var router = Next.Router.useRouter(undefined);
+  var url = Url.parse(router.route);
+  var match = React.useState(function () {
+        var version = url.version;
+        if (typeof version === "number") {
+          return "latest";
+        } else {
+          return version._0;
+        }
+      });
+  var setVersion = match[1];
+  var version = match[0];
+  var languageManual = Constants.languageManual(version);
+  var column = function (title, children) {
+    return React.createElement("div", {
+                className: ""
+              }, React.createElement("div", {
+                    className: "text-12 font-medium text-gray-100 tracking-wide uppercase"
+                  }, title), React.createElement("div", undefined, children));
+  };
+  var onVersionChange = function (evt) {
+    evt.preventDefault();
+    var version = evt.target.value;
+    "/" + (url.base.join("/") + ("/" + (version + ("/" + url.pagepath.join("/")))));
+    return Curry._1(setVersion, (function (param) {
+                  return version;
+                }));
+  };
+  var tmp = version === "latest" ? React.createElement("span", {
+          className: "text-gray-40 text-12"
+        }, "This is the latest docs version") : null;
+  return React.createElement("div", {
+              className: "w-full bg-white text-gray-40 text-14"
+            }, React.createElement("div", {
+                  className: "flex justify-center w-full py-2 border-b border-gray-10"
+                }, React.createElement("div", {
+                      className: "w-full space-x-2 max-w-1280 "
+                    }, React.createElement(VersionSelect.make, {
+                          onChange: onVersionChange,
+                          version: version,
+                          availableVersions: Constants.allManualVersions
+                        }), tmp)), React.createElement("div", {
+                  className: "flex justify-center pt-8 pb-10"
+                }, React.createElement("div", {
+                      className: "w-full grid grid-cols-3 max-w-1280"
+                    }, column("Language Manual", React.createElement("ul", {
+                              className: "space-y-1 ml-2 mt-4"
+                            }, languageManual.map(function (item) {
+                                  var href = item[1];
+                                  var text = item[0];
+                                  var linkClass = router.route === href ? "text-fire" : "hover:text-fire";
+                                  return React.createElement("li", {
+                                              key: text
+                                            }, React.createElement("span", {
+                                                  className: "text-fire mr-2"
+                                                }, "-"), React.createElement(Next.Link.make, {
+                                                  href: href,
+                                                  children: React.createElement("a", {
+                                                        className: linkClass
+                                                      }, text)
+                                                }));
+                                }))), column("Ecosystem", React.createElement("ul", undefined)), column("Tools", React.createElement("ul", undefined)))));
+}
 
 function Navigation$MobileNav(Props) {
   var route = Props.route;
@@ -185,7 +265,51 @@ function Navigation(Props) {
   var router = Next.Router.useRouter(undefined);
   var route = router.route;
   var match = React.useState(function () {
-        return [];
+        return [{
+                  title: "Docs",
+                  children: React.createElement(Navigation$DocsSection, {}),
+                  isActiveRoute: (function (route) {
+                      var url = Url.parse(route);
+                      var match = url.base;
+                      var len = match.length;
+                      if (len >= 3) {
+                        return false;
+                      }
+                      switch (len) {
+                        case 0 :
+                            return false;
+                        case 1 :
+                            var match$1 = match[0];
+                            if (match$1 !== "docs") {
+                              return false;
+                            }
+                            break;
+                        case 2 :
+                            var match$2 = match[0];
+                            if (match$2 !== "docs") {
+                              return false;
+                            }
+                            var match$3 = match[1];
+                            switch (match$3) {
+                              case "gentype" :
+                              case "manual" :
+                                  break;
+                              default:
+                                return false;
+                            }
+                            break;
+                        
+                      }
+                      var match$4 = Belt_Array.get(url.pagepath, 0);
+                      if (match$4 === "api") {
+                        return false;
+                      } else {
+                        return true;
+                      }
+                    }),
+                  href: "/docs/manual/latest/api",
+                  state: /* KeepOpen */0
+                }];
       });
   var setOverlayOpen = overlayState[1];
   var isOverlayOpen = overlayState[0];
@@ -196,6 +320,7 @@ function Navigation(Props) {
                                 return {
                                         title: c.title,
                                         children: c.children,
+                                        isActiveRoute: c.isActiveRoute,
                                         href: c.href,
                                         state: /* Closed */2
                                       };
@@ -204,7 +329,8 @@ function Navigation(Props) {
   };
   var outerRef = React.useRef(null);
   useOutsideClick(outerRef, resetCollapsibles);
-  Curry._1(useWindowWidth, undefined);
+  var windowWidth = Curry._1(useWindowWidth, undefined);
+  var allowHover = windowWidth !== undefined ? windowWidth > 576 : true;
   var nonCollapsibleOnMouseEnter = function (evt) {
     evt.preventDefault();
     return resetCollapsibles(undefined);
@@ -237,6 +363,35 @@ function Navigation(Props) {
                   });
         }), []);
   var fixedNav = fixed ? "fixed z-30 top-0" : "";
+  var onStateChange = function (id, state) {
+    Curry._1(setCollapsibles, (function (prev) {
+            return prev.reduce((function (acc, next) {
+                          if (next.title === id) {
+                            acc.push({
+                                  title: next.title,
+                                  children: next.children,
+                                  isActiveRoute: next.isActiveRoute,
+                                  href: next.href,
+                                  state: state
+                                });
+                          }
+                          return acc;
+                        }), []);
+          }));
+    
+  };
+  var collapsibleElements = match[0].map(function (coll) {
+        return React.createElement(Navigation$CollapsibleLink, {
+                    title: coll.title,
+                    onStateChange: onStateChange,
+                    allowHover: allowHover,
+                    id: coll.title,
+                    state: coll.state,
+                    active: Curry._1(coll.isActiveRoute, route),
+                    children: coll.children,
+                    key: coll.title
+                  });
+      });
   return React.createElement("nav", {
               ref: outerRef,
               className: fixedNav + " flex xs:justify-center w-full h-16 bg-gray-95 shadow text-white-80 text-14",
@@ -260,32 +415,26 @@ function Navigation(Props) {
                             }))), React.createElement("div", {
                       className: "flex items-center xs:justify-between w-full bg-gray-95 sm:h-auto sm:relative"
                     }, React.createElement("div", {
-                          className: "flex ml-10 w-full max-w-320",
+                          className: "flex ml-10 space-x-5 w-full max-w-320",
                           style: {
                             maxWidth: "26rem"
                           }
-                        }, React.createElement(Next.Link.make, {
-                              href: "/docs/latest",
-                              children: React.createElement("a", {
-                                    className: "mr-5 " + linkOrActiveDocsSubroute(route),
-                                    onMouseEnter: nonCollapsibleOnMouseEnter
-                                  }, "Docs")
-                            }), React.createElement(Next.Link.make, {
+                        }, collapsibleElements, React.createElement(Next.Link.make, {
                               href: "/docs/manual/latest/api",
                               children: React.createElement("a", {
-                                    className: "mr-5 " + linkOrActiveApiSubroute(route),
+                                    className: linkOrActiveApiSubroute(route),
                                     onMouseEnter: nonCollapsibleOnMouseEnter
                                   }, "API")
                             }), React.createElement(Next.Link.make, {
                               href: "/try",
                               children: React.createElement("a", {
-                                    className: "hidden xs:block mr-5 " + linkOrActiveLink("/try", route),
+                                    className: "hidden xs:block " + linkOrActiveLink("/try", route),
                                     onMouseEnter: nonCollapsibleOnMouseEnter
                                   }, "Playground")
                             }), React.createElement(Next.Link.make, {
                               href: "/blog",
                               children: React.createElement("a", {
-                                    className: "hidden xs:block mr-5 " + linkOrActiveLinkSubroute("/blog", route),
+                                    className: "hidden xs:block " + linkOrActiveLinkSubroute("/blog", route),
                                     onMouseEnter: nonCollapsibleOnMouseEnter
                                   }, "Blog")
                             }), React.createElement(Next.Link.make, {

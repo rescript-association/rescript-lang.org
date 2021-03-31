@@ -16,6 +16,20 @@ let linkOrActiveApiSubroute = (~route) => {
   }
 }
 
+let isDocsSubroute = route => {
+  let url = Url.parse(route)
+  switch url {
+  | {base: ["docs"]}
+  | {base: ["docs", "gentype"]}
+  | {base: ["docs", "manual"]} =>
+    switch Belt.Array.get(url.pagepath, 0) {
+    | Some("api") => false
+    | _ => true
+    }
+  | _ => false
+  }
+}
+
 let linkOrActiveDocsSubroute = (~route) => {
   let url = Url.parse(route)
   switch url {
@@ -42,7 +56,7 @@ module CollapsibleLink = {
     | Closed
 
   @react.component
-  let _make = (
+  let make = (
     ~title: string,
     ~onStateChange: (~id: string, state) => unit,
     ~allowHover=true,
@@ -88,8 +102,6 @@ module CollapsibleLink = {
     // DO NOT REMOVE, OTHERWISE THE COLLAPSIBLE WON'T WORK
     let onClick = _ => ()
 
-    let direction = isOpen ? #Up : #Down
-
     <div className="relative" onMouseEnter>
       <div className="flex items-center">
         <a
@@ -99,24 +111,20 @@ module CollapsibleLink = {
           (" border-none flex items-center hover:cursor-pointer " ++
           (isOpen ? " text-gray-20" : ""))}>
           <span className={active ? "border-b border-fire" : ""}> {React.string(title)} </span>
-          <span className="fill-current flex-no-wrap inline-block ml-2 w-2">
-            <Icon.Caret direction className={active ? "text-inherit" : "text-gray-60"} />
-          </span>
         </a>
       </div>
       <div
         className={(
           isOpen ? "flex" : "hidden"
-        ) ++ " fixed left-0 border-gray-80 border-t bg-gray-100 min-w-320 w-full h-full sm:h-auto sm:justify-center"}
-        style={ReactDOMStyle.make(~marginTop="1.375rem", ())}>
-        <div className="max-w-xl w-full"> children </div>
+        ) ++ " fixed left-0 border-gray-80 border-t bg-white rounded-bl-xl rounded-br-xl shadow-sm min-w-320 w-full h-full sm:h-auto sm:justify-center"}
+        style={ReactDOMStyle.make(~marginTop="1rem", ())}>
+        <div className="w-full"> children </div>
       </div>
     </div>
   }
 }
 
-let useOutsideClick: (ReactDOM.Ref.t, unit => unit) => unit = %raw(
-  j`(outerRef, trigger) => {
+let useOutsideClick: (ReactDOM.Ref.t, unit => unit) => unit = %raw(j`(outerRef, trigger) => {
       function handleClickOutside(event) {
         if (outerRef.current && !outerRef.current.contains(event.target)) {
           trigger();
@@ -130,11 +138,9 @@ let useOutsideClick: (ReactDOM.Ref.t, unit => unit) => unit = %raw(
         };
       });
 
-    }`
-)
+    }`)
 
-let useWindowWidth: unit => option<int> = %raw(
-  j` () => {
+let useWindowWidth: unit => option<int> = %raw(j` () => {
   const isClient = typeof window === 'object';
 
   function getSize() {
@@ -164,128 +170,96 @@ let useWindowWidth: unit => option<int> = %raw(
   }
   return null;
   }
-  `
-)
+  `)
 
 type collapsible = {
   title: string,
-  children: string => React.element,
+  children: React.element,
+  isActiveRoute: string => bool,
   href: string,
   state: CollapsibleLink.state,
 }
 
-@@warning("-60")
-module SubNav = {
-  @@warning("-60")
-  module DocsLinks = {
-    @react.component
-    let _make = (~route: string) => {
-      let reTheme = ColorTheme.toCN(#Reason)
-      let jsTheme = ColorTheme.toCN(#Js)
+module DocsSection = {
+  @react.component
+  let make = () => {
+    let router = Next.Router.useRouter()
+    let url = router.route->Url.parse
 
-      let languageItems = [("Introduction", "/docs/manual/latest/introduction")]
+    let (version, setVersion) = React.useState(_ =>
+      switch url.version {
+      | Url.Latest => "latest"
+      | NoVersion => "latest"
+      | Version(version) => version
+      }
+    )
 
-      let recompItems = [
-        ("Overview", "/docs/reason-compiler/latest/interop-overview"),
-        ("ReasonReact", "/docs/reason-react/latest/introduction"),
-        ("GenType", "/docs/gentype/latest/introduction"),
-      ]
+    let languageManual = Constants.languageManual(version)
 
-      let activeThemeLink = "font-normal text-fire border-b border-fire"
-
-      let sectionClass = "pb-12 mt-12 border-b border-gray-80 last:border-b-0 lg:w-1/3"
-      let overlineClass = "font-black uppercase text-sm tracking-wide text-fire-70"
-
-      let sectionUl = "flex flex-wrap mt-8 list-fire list-inside lg:w-auto max-w-md"
-
-      <div className="lg:flex lg:flex-row px-4 max-w-xl">
-        <div className={reTheme ++ (" " ++ sectionClass)}>
-          <Link href="/docs/manual/latest/introduction">
-            <a className=overlineClass> {React.string("Language Manual")} </a>
-          </Link>
-          <ul className=sectionUl> {languageItems->Belt.Array.mapWithIndex((idx, (title, href)) => {
-              let active = route == href ? activeThemeLink ++ " hover:text-fire cursor-auto" : ""
-              <li className="w-1/2 xs:w-1/2 h-10" key={Belt.Int.toString(idx)}>
-                <Link href>
-                  <a className={"text-white-80 hover:text-white hover:cursor-pointer " ++ active}>
-                    {React.string(title)}
-                  </a>
-                </Link>
-              </li>
-            })->React.array} </ul>
+    let column = (~title: string, children: React.element) => {
+      <div className="">
+        <div className="text-12 font-medium text-gray-100 tracking-wide uppercase">
+          {React.string(title)}
         </div>
-        <div className={jsTheme ++ (" " ++ sectionClass)}>
-          <Link href="/docs/reason-compiler/latest/interop-overview">
-            <a className=overlineClass> {React.string("JavaScript & Interop")} </a>
-          </Link>
-          <ul className=sectionUl> {recompItems->Belt.Array.mapWithIndex((idx, (title, href)) => {
-              let active = route == href ? activeThemeLink ++ " hover:text-fire cursor-auto" : ""
-              <li className="w-1/2 xs:w-1/2 h-10" key={Belt.Int.toString(idx)}>
-                <Link href>
-                  <a className={"text-white-80 hover:text-white hover:cursor-pointer " ++ active}>
-                    {React.string(title)}
-                  </a>
-                </Link>
-              </li>
-            })->React.array} </ul>
-        </div>
+        <div> {children} </div>
       </div>
     }
+
+    let onVersionChange = evt => {
+      open Url
+      ReactEvent.Form.preventDefault(evt)
+      let version = (evt->ReactEvent.Form.target)["value"]
+
+      let targetUrl =
+        "/" ++
+        (Js.Array2.joinWith(url.base, "/") ++
+        ("/" ++ (version ++ ("/" ++ Js.Array2.joinWith(url.pagepath, "/")))))
+
+      setVersion(_ => version)
+      /* router->Next.Router.push(targetUrl) */
+    }
+
+    <div className="w-full bg-white text-gray-40 text-14">
+      <div className={"flex justify-center w-full py-2 border-b border-gray-10"}>
+        <div className="w-full space-x-2 max-w-1280 ">
+          <VersionSelect
+            availableVersions=Constants.allManualVersions onChange=onVersionChange version
+          />
+          {switch version {
+          | "latest" =>
+            <span className="text-gray-40 text-12">
+              {React.string("This is the latest docs version")}
+            </span>
+          | _ => React.null
+          }}
+        </div>
+      </div>
+      <div className="flex justify-center pt-8 pb-10">
+        <div className="w-full grid grid-cols-3 max-w-1280">
+          {<ul className="space-y-1 ml-2 mt-4">
+            {languageManual
+            ->Js.Array2.map(item => {
+              let (text, href) = item
+
+              let linkClass = if router.route === href {
+                "text-fire"
+              } else {
+                "hover:text-fire"
+              }
+
+              <li key=text>
+                <span className="text-fire mr-2"> {React.string(`-`)} </span>
+                <Link href> <a className=linkClass> {React.string(text)} </a> </Link>
+              </li>
+            })
+            ->React.array}
+          </ul>->column(~title="Language Manual")}
+          {<ul />->column(~title="Ecosystem")}
+          {<ul />->column(~title="Tools")}
+        </div>
+      </div>
+    </div>
   }
-  /*
-   module ApiLinks = {
-     [@react.component]
-     let make = (~route: string) => {
-       let reTheme = ColorTheme.toCN(`Reason);
-
-       let jsItems = [|
-         ("Belt Stdlib", "/apis/latest/belt"),
-         ("Js Module", "/apis/latest/js"),
-         /*("Module 3", "/apis/latest/mod3"),*/
-         /*("Module 4", "/apis/latest/mod4"),*/
-       |];
-
-       let sectionClass = "pb-12 mt-12 border-b border-gray-80 last:border-b-0 lg:w-1/4";
-       let overlineClass = "font-black uppercase text-sm tracking-wide text-fire-70";
-
-       let sectionUl = "flex flex-wrap mt-8 list-fire list-inside lg:w-auto max-w-md";
-
-       <div className="lg:flex lg:flex-row px-4 max-w-xl">
-         <div className={reTheme ++ " " ++ sectionClass}>
-           <Link href="/apis">
-             <a className=overlineClass> {React.string("Overview")} </a>
-           </Link>
-         </div>
-         <div className={reTheme ++ " " ++ sectionClass}>
-           <Link href="/apis/latest">
-             <a className=overlineClass> {React.string("JavaScript")} </a>
-           </Link>
-           <ul className=sectionUl>
-             {jsItems
-              ->Belt.Array.mapWithIndex((idx, (title, href)) => {
-                  let active =
-                    Js.String2.startsWith(route, href) ? "text-fire" : "";
-                  <li
-                    className="w-1/2 xs:w-1/2 h-10"
-                    key={Belt.Int.toString(idx)}>
-                    <Link href>
-                      <a
-                        className={
-                          "text-white-80 hover:text-white hover:cursor-pointer "
-                          ++ active
-                        }>
-                        {React.string(title)}
-                      </a>
-                    </Link>
-                  </li>;
-                })
-              ->ate}
-           </ul>
-         </div>
-       </div>;
-     };
-   };
- */
 }
 
 module MobileNav = {
@@ -351,20 +325,17 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
 
   let route = router.route
 
-  let (_collapsibles, setCollapsibles) = React.useState(_ => [/* { */
-  /* title: "Docs", */
-  /* href: "/docs", */
-  /* children: route => { */
-  /* <SubNav.DocsLinks route />; */
-  /* }, */
-  /* state: Closed, */
-  /* }, */
-  /* { */
-  /* title: "API", */
-  /* href: "/apis", */
-  /* children: route => <SubNav.ApiLinks route />, */
-  /* state: Closed, */
-  /* }, */])
+  let (collapsibles, setCollapsibles) = React.useState(_ => [
+    {
+      title: "Docs",
+      href: "/docs/manual/latest/api",
+      isActiveRoute: route => {
+        isDocsSubroute(route)
+      },
+      state: KeepOpen,
+      children: <DocsSection />,
+    },
+  ])
 
   let (isOverlayOpen, setOverlayOpen) = overlayState
 
@@ -379,7 +350,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
   let windowWidth = useWindowWidth()
 
   // Don't allow hover behavior for collapsibles if mobile navigation is on
-  let _allowHover = switch windowWidth {
+  let allowHover = switch windowWidth {
   | Some(width) => width > 576 // Value noted in tailwind config
   | None => true
   }
@@ -414,6 +385,43 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
 
   let fixedNav = fixed ? "fixed z-30 top-0" : ""
 
+  let onStateChange = (~id, state) => {
+    setCollapsibles(prev => {
+      Js.Array2.reduce(
+        prev,
+        (acc, next) => {
+          if next.title === id {
+            acc
+            ->Js.Array2.push({
+              ...next,
+              state: state,
+            })
+            ->ignore
+          } else {
+            ()
+          }
+
+          acc
+        },
+        [],
+      )
+    })
+    ()
+  }
+
+  let collapsibleElements = Js.Array2.map(collapsibles, coll => {
+    <CollapsibleLink
+      key={coll.title}
+      title={coll.title}
+      state={coll.state}
+      id={coll.title}
+      allowHover={allowHover}
+      active={coll.isActiveRoute(route)}
+      onStateChange>
+      {coll.children}
+    </CollapsibleLink>
+  })
+
   <nav
     ref={ReactDOM.Ref.domRef(outerRef)}
     id="header"
@@ -431,32 +439,31 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
       /* Desktop horizontal navigation */
       <div className="flex items-center xs:justify-between w-full bg-gray-95 sm:h-auto sm:relative">
         <div
-          className="flex ml-10 w-full max-w-320" style={ReactDOMStyle.make(~maxWidth="26rem", ())}>
-          <Link href="/docs/latest">
-            <a
-              className={"mr-5 " ++ linkOrActiveDocsSubroute(~route)}
-              onMouseEnter=nonCollapsibleOnMouseEnter>
-              {React.string("Docs")}
-            </a>
-          </Link>
+          className="flex ml-10 space-x-5 w-full max-w-320"
+          style={ReactDOMStyle.make(~maxWidth="26rem", ())}>
+          {collapsibleElements->React.array}
+          /* <Link href="/docs/latest"> */
+          /* <a */
+          /* className={"mr-5 " ++ linkOrActiveDocsSubroute(~route)} */
+          /* onMouseEnter=nonCollapsibleOnMouseEnter> */
+          /* {React.string("Docs")} */
+          /* </a> */
+          /* </Link> */
           <Link href="/docs/manual/latest/api">
-            <a
-              className={"mr-5 " ++ linkOrActiveApiSubroute(~route)}
-              onMouseEnter=nonCollapsibleOnMouseEnter>
+            <a className={linkOrActiveApiSubroute(~route)} onMouseEnter=nonCollapsibleOnMouseEnter>
               {React.string("API")}
             </a>
           </Link>
           <Link href="/try">
             <a
-              className={"hidden xs:block mr-5 " ++ linkOrActiveLink(~target="/try", ~route)}
+              className={"hidden xs:block " ++ linkOrActiveLink(~target="/try", ~route)}
               onMouseEnter=nonCollapsibleOnMouseEnter>
               {React.string("Playground")}
             </a>
           </Link>
           <Link href="/blog">
             <a
-              className={"hidden xs:block mr-5 " ++
-              linkOrActiveLinkSubroute(~target="/blog", ~route)}
+              className={"hidden xs:block " ++ linkOrActiveLinkSubroute(~target="/blog", ~route)}
               onMouseEnter=nonCollapsibleOnMouseEnter>
               {React.string("Blog")}
             </a>
@@ -470,8 +477,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
           </Link>
         </div>
         <div className="hidden md:flex items-center">
-        <div className="hidden sm:block mr-6"> <DocSearch /> </div>
-
+          <div className="hidden sm:block mr-6"> <DocSearch /> </div>
           <a
             href=githubHref
             rel="noopener noreferrer"
@@ -497,7 +503,6 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
             <Icon.Discourse className="w-6 h-6 opacity-50 hover:opacity-100" />
           </a>
         </div>
-        
       </div>
     </div>
     /* Burger Button */

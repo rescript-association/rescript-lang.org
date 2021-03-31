@@ -4,9 +4,9 @@ import * as Url from "./common/Url.js";
 import * as Next from "./bindings/Next.js";
 import * as React from "react";
 import * as Markdown from "./components/Markdown.js";
+import * as Constants from "./common/Constants.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as VersionSelect from "./components/VersionSelect.js";
-import * as ManualDocsLayout from "./layouts/ManualDocsLayout.js";
 
 function DocsOverview$Card(Props) {
   var title = Props.title;
@@ -92,7 +92,7 @@ function DocsOverview$default(Props) {
         }, React.createElement(VersionSelect.make, {
               onChange: onChange,
               version: version$1,
-              availableVersions: ManualDocsLayout.allManualVersions
+              availableVersions: Constants.allManualVersions
             }));
   } else {
     versionSelect = null;

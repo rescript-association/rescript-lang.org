@@ -1,6 +1,3 @@
-// This is used for the version dropdown in the manual layouts
-let allManualVersions = [("latest", "v8.2.0"), ("v8.0.0", "< v8.2.0")]
-
 module LatestLayout = DocsLayout.Make({
   // Structure defined by `scripts/extract-tocs.js`
   let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_latest_toc.json')")
@@ -48,7 +45,7 @@ module Latest = {
       version
       title
       metaTitleCategory="ReScript Language Manual"
-      availableVersions=allManualVersions
+      availableVersions=Constants.allManualVersions
       ?frontmatter
       breadcrumbs>
       children
@@ -95,7 +92,7 @@ module V800 = {
         (Js.Array2.joinWith(url.base, "/") ++
         ("/latest/" ++ Js.Array2.joinWith(url.pagepath, "/")))
 
-      let label = switch Js.Array2.find(allManualVersions, ((v, _)) => {
+      let label = switch Js.Array2.find(Constants.allManualVersions, ((v, _)) => {
         v === version
       }) {
       | Some((_, label)) => label
@@ -128,7 +125,7 @@ module V800 = {
       version
       title
       metaTitleCategory="ReScript Language Manual"
-      availableVersions=allManualVersions
+      availableVersions=Constants.allManualVersions
       ?frontmatter
       breadcrumbs>
       warnBanner children
