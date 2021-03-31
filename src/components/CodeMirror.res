@@ -84,6 +84,48 @@ module CM = {
     }
   }
 
+  @module("codemirror")
+  external onMouseOver: (
+    Dom.element,
+    @bs.as("mouseover") _,
+    @bs.uncurry (ReactEvent.Mouse.t => unit),
+  ) => unit = "on"
+
+  @module("codemirror")
+  external onMouseMove: (
+    Dom.element,
+    @bs.as("mousemove") _,
+    @bs.uncurry (ReactEvent.Mouse.t => unit),
+  ) => unit = "on"
+
+  @module("codemirror")
+  external offMouseOver: (
+    Dom.element,
+    @bs.as("mouseover") _,
+    @bs.uncurry (ReactEvent.Mouse.t => unit),
+  ) => unit = "off"
+
+  @module("codemirror")
+  external offMouseOut: (
+    Dom.element,
+    @bs.as("mouseout") _,
+    @bs.uncurry (ReactEvent.Mouse.t => unit),
+  ) => unit = "off"
+
+  @module("codemirror")
+  external offMouseMove: (
+    Dom.element,
+    @bs.as("mousemove") _,
+    @bs.uncurry (ReactEvent.Mouse.t => unit),
+  ) => unit = "off"
+
+  @module("codemirror")
+  external onMouseOut: (
+    Dom.element,
+    @as("mouseout") _,
+    @uncurry (ReactEvent.Mouse.t => unit),
+  ) => unit = "on"
+
   @bs.module("codemirror")
   external fromTextArea: (Dom.element, Options.t) => t = "fromTextArea"
 
@@ -100,6 +142,7 @@ module CM = {
 
   @bs.send
   external onChange: (t, @bs.as("change") _, @bs.uncurry (t => unit)) => unit = "on"
+
   @bs.send external toTextArea: t => unit = "toTextArea"
 
   @bs.send external setValue: (t, string) => unit = "setValue"
@@ -154,12 +197,6 @@ module DomUtil = {
   @val @scope("document")
   external createElement: string => Dom.element = "createElement"
 
-  @send @scope("classList")
-  external addClass: (Dom.element, string) => unit = "add"
-
-  @send @scope("classList")
-  external removeClass: (Dom.element, string) => unit = "remove"
-
   @send
   external appendChild: (Dom.element, Dom.element) => unit = "appendChild"
 
@@ -185,9 +222,6 @@ module DomUtil = {
 
   @set
   external setOnMouseOver: (Dom.element, Event.t => unit) => unit = "onmouseover"
-
-  @set
-  external _setOnMouseLeave: (Dom.element, Event.t => unit) => unit = "onmouseleave"
 
   @set
   external setOnMouseOut: (Dom.element, Event.t => unit) => unit = "onmouseout"
@@ -236,12 +270,20 @@ module HoverHint = {
 module HoverTooltip = {
   type t
 
+  type state =
+    | Hidden
+    | Shown({
+        el: Dom.element,
+        marker: CM.TextMarker.t,
+        hoverHint: HoverHint.t,
+        hideTimer: option<Js.Global.timeoutId>,
+      })
+
   let make: unit => t = %raw(`
   function() {
     const tooltip = document.createElement("div");
     tooltip.id = "hover-tooltip"
-    tooltip.className = "absolute hidden font-mono text-12 z-10 bg-sky-10 py-1 px-2 rounded"
-    tooltip.innerHTML = "Test"
+    tooltip.className = "absolute hidden select-none font-mono text-12 z-10 bg-sky-10 py-1 px-2 rounded"
 
     return tooltip
   }
@@ -262,6 +304,7 @@ module HoverTooltip = {
     tooltip.style.top = top + "px";
 
     tooltip.classList.remove("hidden");
+
     tooltip.innerHTML = text;
   }`)
 
@@ -279,8 +322,18 @@ module HoverTooltip = {
 // keep the instance around
 let tooltip = HoverTooltip.make()
 
-let useHoverTooltip = (~hoverHints: array<HoverHint.t>, ~cmRef: React.ref<option<CM.t>>, ()) => {
-  let currentMarkerRef: React.ref<option<CM.TextMarker.t>> = React.useRef(None)
+type state = {mutable marked: array<CM.TextMarker.t>, mutable hoverHints: array<HoverHint.t>}
+
+let isSpanToken: Dom.element => bool = %raw(`
+function(el) {
+  return el.tagName.toUpperCase() === "SPAN" && el.getAttribute("role") !== "presentation"
+}
+`)
+
+let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<CM.t>>, ()) => {
+  let stateRef = React.useRef(HoverTooltip.Hidden)
+
+  let markerRef = React.useRef(None)
 
   React.useEffect0(() => {
     tooltip->HoverTooltip.attach
@@ -292,50 +345,118 @@ let useHoverTooltip = (~hoverHints: array<HoverHint.t>, ~cmRef: React.ref<option
     )
   })
 
-  let onMouseOver = evt => {
-    let pageX = evt->ReactEvent.Mouse.pageX
-    let pageY = evt->ReactEvent.Mouse.pageY
+  let checkIfTextMarker: Dom.element => bool = %raw(`
+  function(el) {
+    let isToken = el.tagName.toUpperCase() === "SPAN" && el.getAttribute("role") !== "presentation";
+    return isToken && /CodeMirror-hover-hint-marker/.test(el.className)
+  }
+  `)
 
-    switch currentMarkerRef.current {
-    | Some(cur) => CM.TextMarker.clear(cur)
-    | _ => ()
-    }
+  let onMouseOver = evt => {
     switch cmRef.current {
     | Some(cm) =>
-      let coords = cm->CM.coordsChar({"top": pageY, "left": pageX})
+      let target = ReactEvent.Mouse.target(evt)->DomUtil.unsafeObjToDomElement
 
-      let col = coords["ch"]
-      let line = coords["line"] + 1
+      // If mouseover is triggered for a text marker, we don't want to trigger any logic
+      if checkIfTextMarker(target) {
+        ()
+      } else if isSpanToken(target) {
+        let {hoverHints} = cmStateRef.current
+        let pageX = evt->ReactEvent.Mouse.pageX
+        let pageY = evt->ReactEvent.Mouse.pageY
 
-      let found = hoverHints->Js.Array2.find(item => {
-        let {start, end} = item
-        line >= start.line && line <= end.line && col >= start.col && col <= end.col
-      })
+        let coords = cm->CM.coordsChar({"top": pageY, "left": pageX})
 
-      switch found {
-      | Some(hoverHint) =>
-        tooltip->HoverTooltip.update(~top=pageY - 35, ~left=pageX, ~text=hoverHint.hint)
+        let col = coords["ch"]
+        let line = coords["line"] + 1
 
-        let from = {CM.line: hoverHint.start.line - 1, ch: hoverHint.start.col}
-        let to_ = {CM.line: hoverHint.end.line - 1, ch: hoverHint.end.col}
+        let found = hoverHints->Js.Array2.find(item => {
+          let {start, end} = item
+          line >= start.line && line <= end.line && col >= start.col && col <= end.col
+        })
 
-        let marker =
-          cm->CM.markText(from, to_, CM.MarkTextOption.make(~className="border-b", ()))
+        switch found {
+        | Some(hoverHint) =>
+          tooltip->HoverTooltip.update(~top=pageY - 35, ~left=pageX, ~text=hoverHint.hint)
 
-        currentMarkerRef.current = Some(marker)
-      | None => tooltip->HoverTooltip.hide
+          let from = {CM.line: hoverHint.start.line - 1, ch: hoverHint.start.col}
+          let to_ = {CM.line: hoverHint.end.line - 1, ch: hoverHint.end.col}
+
+          let markerObj = CM.MarkTextOption.make(
+            ~className="CodeMirror-hover-hint-marker border-b",
+            (),
+          )
+
+          switch stateRef.current {
+          | Hidden =>
+            let marker = cm->CM.markText(from, to_, markerObj)
+            markerRef.current = Some(marker)
+            stateRef.current = Shown({
+              el: target,
+              marker: marker,
+              hoverHint: hoverHint,
+              hideTimer: None,
+            })
+          | Shown({el, marker: prevMarker, hideTimer}) =>
+            switch hideTimer {
+            | Some(timerId) => Js.Global.clearTimeout(timerId)
+            | None => ()
+            }
+            CM.TextMarker.clear(prevMarker)
+            let marker = cm->CM.markText(from, to_, markerObj)
+
+            stateRef.current = Shown({
+              el: el,
+              marker: marker,
+              hoverHint: hoverHint,
+              hideTimer: None,
+            })
+          }
+        | None => ()
+        }
       }
     | _ => ()
     }
-
     ()
   }
 
-  let onMouseLeave = _evt => {
-    ()
+  let onMouseOut = _evt => {
+    switch stateRef.current {
+    | Shown({el, hoverHint, marker, hideTimer}) =>
+      switch hideTimer {
+      | Some(timerId) => Js.Global.clearTimeout(timerId)
+      | None => ()
+      }
+
+      marker->CM.TextMarker.clear
+      let timerId = Js.Global.setTimeout(() => {
+        stateRef.current = Hidden
+        tooltip->HoverTooltip.hide
+      }, 200)
+
+      stateRef.current = Shown({
+        el: el,
+        hoverHint: hoverHint,
+        marker: marker,
+        hideTimer: Some(timerId),
+      })
+    | _ => ()
+    }
   }
 
-  (onMouseOver, onMouseLeave)
+  let onMouseMove = evt => {
+    switch stateRef.current {
+    | Shown({hoverHint}) =>
+      let pageX = evt->ReactEvent.Mouse.pageX
+      let pageY = evt->ReactEvent.Mouse.pageY
+
+      tooltip->HoverTooltip.update(~top=pageY - 35, ~left=pageX, ~text=hoverHint.hint)
+      ()
+    | _ => ()
+    }
+  }
+
+  (onMouseOver, onMouseOut, onMouseMove)
 }
 
 module GutterMarker = {
@@ -361,8 +482,6 @@ module GutterMarker = {
     marker
   }
 }
-
-type state = {mutable marked: array<CM.TextMarker.t>}
 
 let _clearMarks = (state: state): unit => {
   Belt.Array.forEach(state.marked, mark => mark->CM.TextMarker.clear)
@@ -493,9 +612,10 @@ let make = // props relevant for the react wrapper
 ): React.element => {
   let inputElement = React.useRef(Js.Nullable.null)
   let cmRef: React.ref<option<CM.t>> = React.useRef(None)
-  let cmStateRef = React.useRef({marked: []})
+  let cmStateRef = React.useRef({marked: [], hoverHints: hoverHints})
 
   let windowWidth = useWindowWidth()
+  let (onMouseOver, onMouseOut, onMouseMove) = useHoverTooltip(~cmStateRef, ~cmRef, ())
 
   React.useEffect0(() =>
     switch inputElement.current->Js.Nullable.toOption {
@@ -512,7 +632,6 @@ let make = // props relevant for the react wrapper
         (),
       )
       let cm = CM.fromTextArea(input, options)
-      /* Js.log2("cm", cm); */
 
       Belt.Option.forEach(minHeight, minHeight =>
         cm->CM.getScrollerElement->DomUtil.setMinHeight(minHeight)
@@ -530,10 +649,18 @@ let make = // props relevant for the react wrapper
       // so we need to set the initial value imperatively
       cm->CM.setValue(value)
 
+      let wrapper = cm->CM.getWrapperElement
+      wrapper->CM.onMouseOver(onMouseOver)
+      wrapper->CM.onMouseOut(onMouseOut)
+      wrapper->CM.onMouseMove(onMouseMove)
+
       cmRef.current = Some(cm)
 
       let cleanup = () => {
         /* Js.log2("cleanup", options->CM.Options.mode); */
+        CM.offMouseOver(wrapper, onMouseOver)
+        CM.offMouseOut(wrapper, onMouseOut)
+        CM.offMouseMove(wrapper, onMouseMove)
 
         // This will destroy the CM instance
         cm->CM.toTextArea
@@ -544,6 +671,11 @@ let make = // props relevant for the react wrapper
     | None => None
     }
   )
+
+  React.useEffect1(() => {
+    cmStateRef.current.hoverHints = hoverHints
+    None
+  }, [hoverHints])
 
   /*
      Previously we did this in a useEffect([|value|) setup, but
@@ -614,9 +746,7 @@ let make = // props relevant for the react wrapper
     None
   }, (className, windowWidth))
 
-  let (onMouseOver, onMouseLeave) = useHoverTooltip(~hoverHints, ~cmRef, ())
-
-  <div ?className ?style onMouseOver onMouseLeave>
+  <div ?className ?style>
     <textarea className="hidden" ref={ReactDOM.Ref.domRef(inputElement)} />
   </div>
 }
