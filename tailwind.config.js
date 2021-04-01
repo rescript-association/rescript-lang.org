@@ -64,6 +64,8 @@ module.exports = {
           "100": "#211332",
           "90": "#790C10",
           "70": "#C3373d",
+          "50": "#E6484F",
+          "40": "#F4646A",
           "30": "#EDA7AA",
           "10": "#FDE7E8",
         },
@@ -127,7 +129,7 @@ module.exports = {
       sm: ".125rem",
       default: "0.25rem",
       lg: "0.5rem",
-      xl: "1rem",
+      xl: "1.5rem",
       full: "9999px",
       large: "0.75rem"
     },

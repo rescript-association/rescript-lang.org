@@ -3,11 +3,14 @@
 import * as Url from "../common/Url.js";
 import * as Icon from "./Icon.js";
 import * as Next from "../bindings/Next.js";
+import * as Util from "../common/Util.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as React from "react";
 import * as Constants from "../common/Constants.js";
 import * as DocSearch from "./DocSearch.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
+import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
+import * as ReactDOMStyle from "@rescript/react/src/ReactDOMStyle.js";
 import * as VersionSelect from "./VersionSelect.js";
 
 var link = "no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px";
@@ -70,31 +73,31 @@ function Navigation$CollapsibleLink(Props) {
   var onClick = function (param) {
     
   };
-  return React.createElement("div", {
-              className: "relative",
-              onMouseEnter: onMouseEnter
-            }, React.createElement("div", {
-                  className: "flex items-center"
-                }, React.createElement("a", {
-                      className: (
-                        active ? activeLink : link
-                      ) + (" border-none flex items-center hover:cursor-pointer " + (
-                          isOpen ? " text-gray-20" : ""
-                        )),
-                      onClick: onClick,
-                      onMouseDown: onMouseDown
-                    }, React.createElement("span", {
-                          className: active ? "border-b border-fire" : ""
-                        }, title))), React.createElement("div", {
-                  className: (
-                    isOpen ? "flex" : "hidden"
-                  ) + " fixed left-0 border-gray-80 border-t bg-white rounded-bl-xl rounded-br-xl shadow-sm min-w-320 w-full h-full sm:h-auto sm:justify-center",
-                  style: {
-                    marginTop: "1rem"
-                  }
+  return React.createElement(React.Fragment, undefined, React.createElement("div", {
+                  className: "relative",
+                  onMouseEnter: onMouseEnter
                 }, React.createElement("div", {
-                      className: "w-full"
-                    }, children)));
+                      className: "flex items-center"
+                    }, React.createElement("a", {
+                          className: (
+                            active ? activeLink : link
+                          ) + (" border-none flex items-center hover:cursor-pointer " + (
+                              isOpen ? " text-fire-30" : ""
+                            )),
+                          onClick: onClick,
+                          onMouseDown: onMouseDown
+                        }, React.createElement("span", {
+                              className: active ? "border-b border-fire" : ""
+                            }, title))), React.createElement("div", {
+                      className: (
+                        isOpen ? "flex" : "hidden"
+                      ) + " fixed left-0 overflow-y-scroll border-gray-80 border-gray-40 min-w-320 w-full h-full bg-white sm:bg-transparent sm:h-auto sm:justify-center sm:rounded-bl-xl sm:rounded-br-xl sm:shadow",
+                      style: {
+                        marginTop: "1rem"
+                      }
+                    }, React.createElement("div", {
+                          className: "w-full"
+                        }, children))));
 }
 
 var useOutsideClick = ((outerRef, trigger) => {
@@ -144,6 +147,110 @@ var useWindowWidth = (() => {
   return null;
   });
 
+function Navigation$DocsSection$LinkCard(Props) {
+  var icon = Props.icon;
+  var title = Props.title;
+  var description = Props.description;
+  var href = Props.href;
+  var content = React.createElement("div", {
+        key: title,
+        className: "hover:bg-gray-5 hover:shadow hover:-mx-8 hover:px-8 hover:cursor-pointer py-4 flex space-x-4 items-start rounded-xl"
+      }, icon, React.createElement("div", undefined, React.createElement("span", {
+                className: "block text-16 font-medium text-gray-95"
+              }, title), React.createElement("span", {
+                className: "block text-14  text-gray-60"
+              }, description)));
+  if (Util.Url.isAbsolute(href)) {
+    return React.createElement("a", {
+                className: "",
+                href: href,
+                rel: "noopener noreferrer",
+                target: "_blank"
+              }, content);
+  } else {
+    return React.createElement(Next.Link.make, {
+                href: href,
+                children: React.createElement("a", {
+                      className: ""
+                    }, content)
+              });
+  }
+}
+
+var ecosystem = [
+  {
+    imgSrc: "/static/ic_package.svg",
+    title: "Packages",
+    description: "Explore third party libraries and bindings",
+    href: "/packages",
+    isActive: (function (url) {
+        var match = url.base;
+        if (match.length !== 1) {
+          return false;
+        }
+        var match$1 = match[0];
+        if (match$1 === "packages") {
+          return true;
+        } else {
+          return false;
+        }
+      })
+  },
+  {
+    imgSrc: "/static/ic_package.svg",
+    title: "ReScript & React",
+    description: "First class bindings for ReactJS",
+    href: "/docs/react/latest/introduction",
+    isActive: (function (url) {
+        var match = url.base;
+        if (match.length !== 2) {
+          return false;
+        }
+        var match$1 = match[0];
+        if (match$1 !== "docs") {
+          return false;
+        }
+        var match$2 = match[1];
+        if (match$2 === "react") {
+          return true;
+        } else {
+          return false;
+        }
+      })
+  },
+  {
+    imgSrc: "/static/ic_package.svg",
+    title: "GenType",
+    description: "Seamless TypeScript & Flow interop",
+    href: "/docs/gentype/latest/introduction",
+    isActive: (function (url) {
+        var match = url.base;
+        if (match.length !== 2) {
+          return false;
+        }
+        var match$1 = match[0];
+        if (match$1 !== "docs") {
+          return false;
+        }
+        var match$2 = match[1];
+        if (match$2 === "gentype") {
+          return true;
+        } else {
+          return false;
+        }
+      })
+  },
+  {
+    imgSrc: "/static/ic_package.svg",
+    title: "Reanalyze",
+    description: "Dead Code & Termination analysis",
+    href: "https://github.com/reason-association/reanalyze",
+    isActive: (function (param) {
+        return false;
+      })
+  }
+];
+
 function Navigation$DocsSection(Props) {
   var router = Next.Router.useRouter(undefined);
   var url = Url.parse(router.route);
@@ -158,17 +265,101 @@ function Navigation$DocsSection(Props) {
   var setVersion = match[1];
   var version = match[0];
   var languageManual = Constants.languageManual(version);
-  var column = function (title, children) {
-    return React.createElement("div", {
-                className: ""
-              }, React.createElement("div", {
-                    className: "text-12 font-medium text-gray-100 tracking-wide uppercase"
-                  }, title), React.createElement("div", undefined, children));
-  };
+  var languageManualColumn = React.createElement("div", {
+        className: "flex px-4 sm:justify-center border-r border-gray-10 pt-8 pb-10 last:border-0"
+      }, React.createElement("div", undefined, React.createElement("div", {
+                className: "text-12 font-medium text-gray-100 tracking-wide uppercase subpixel-antialiased"
+              }, "Language Manual"), React.createElement("div", undefined, React.createElement("ul", {
+                    className: "space-y-2 ml-2 mt-6"
+                  }, languageManual.map(function (item) {
+                        var href = item[1];
+                        var text = item[0];
+                        var linkClass = router.route === href ? "text-fire-50" : "hover:text-fire-50";
+                        return React.createElement("li", {
+                                    key: text
+                                  }, React.createElement("span", {
+                                        className: "text-fire-40 mr-2"
+                                      }, "-"), React.createElement(Next.Link.make, {
+                                        href: href,
+                                        children: React.createElement("a", {
+                                              className: linkClass
+                                            }, text)
+                                      }));
+                      })))));
+  var ecosystemColumn = React.createElement("div", {
+        className: "flex px-4 sm:justify-center border-r border-gray-10 pt-8 pb-10 last:border-0"
+      }, React.createElement("div", {
+            className: "w-full",
+            style: {
+              maxWidth: "19.625rem"
+            }
+          }, React.createElement("div", {
+                className: "text-12 font-medium text-gray-100 tracking-wide uppercase subpixel-antialiased"
+              }, "Ecosystem"), React.createElement("div", undefined, React.createElement("div", {
+                    className: "mt-6"
+                  }, ecosystem.map(function (item) {
+                        var icon = React.createElement("div", {
+                              className: "w-6 h-6"
+                            }, React.createElement("img", {
+                                  className: "w-full",
+                                  src: item.imgSrc
+                                }));
+                        return React.createElement(Navigation$DocsSection$LinkCard, {
+                                    icon: icon,
+                                    title: item.title,
+                                    description: item.description,
+                                    href: item.href,
+                                    active: Curry._1(item.isActive, url)
+                                  });
+                      })))));
+  var match$1 = url.base;
+  var active;
+  if (match$1.length !== 1) {
+    active = false;
+  } else {
+    var match$2 = match$1[0];
+    active = match$2 === "syntax-lookup" ? true : false;
+  }
+  var icon = React.createElement("div", {
+        className: "-mr-2 flex w-6 h-6 justify-center items-center"
+      }, React.createElement("img", {
+            className: "w-4 h-4",
+            src: "/static/ic_search.svg"
+          }));
+  var quickReferenceColumn = React.createElement("div", {
+        className: "flex px-4 sm:justify-center border-r border-gray-10 pt-8 pb-10 last:border-0"
+      }, React.createElement("div", {
+            className: "w-full",
+            style: {
+              maxWidth: "19.625rem"
+            }
+          }, React.createElement("div", {
+                className: "text-12 font-medium text-gray-100 tracking-wide uppercase subpixel-antialiased"
+              }, "Exploration"), React.createElement("div", {
+                className: "mt-6"
+              }, React.createElement(Navigation$DocsSection$LinkCard, {
+                    icon: icon,
+                    title: "Syntax Lookup",
+                    description: "Discover all syntax constructs",
+                    href: "/syntax-lookup",
+                    active: active
+                  }))));
   var onVersionChange = function (evt) {
     evt.preventDefault();
     var version = evt.target.value;
-    "/" + (url.base.join("/") + ("/" + (version + ("/" + url.pagepath.join("/")))));
+    var match = url.base;
+    if (match.length === 2) {
+      var match$1 = match[0];
+      if (match$1 === "docs") {
+        var match$2 = match[1];
+        if (match$2 === "manual") {
+          var targetUrl = "/" + (url.base.join("/") + ("/" + (version + ("/" + url.pagepath.join("/")))));
+          Next.Router.push(router, targetUrl);
+        }
+        
+      }
+      
+    }
     return Curry._1(setVersion, (function (param) {
                   return version;
                 }));
@@ -177,36 +368,25 @@ function Navigation$DocsSection(Props) {
           className: "text-gray-40 text-12"
         }, "This is the latest docs version") : null;
   return React.createElement("div", {
-              className: "w-full bg-white text-gray-40 text-14"
+              className: "w-full bg-white h-full text-gray-60 text-14 rounded-bl-xl rounded-br-xl"
             }, React.createElement("div", {
                   className: "flex justify-center w-full py-2 border-b border-gray-10"
                 }, React.createElement("div", {
-                      className: "w-full space-x-2 max-w-1280 "
+                      className: "px-4 w-full space-x-2 max-w-1280 "
                     }, React.createElement(VersionSelect.make, {
                           onChange: onVersionChange,
                           version: version,
                           availableVersions: Constants.allManualVersions
                         }), tmp)), React.createElement("div", {
-                  className: "flex justify-center pt-8 pb-10"
+                  className: "flex justify-center"
                 }, React.createElement("div", {
-                      className: "w-full grid grid-cols-3 max-w-1280"
-                    }, column("Language Manual", React.createElement("ul", {
-                              className: "space-y-1 ml-2 mt-4"
-                            }, languageManual.map(function (item) {
-                                  var href = item[1];
-                                  var text = item[0];
-                                  var linkClass = router.route === href ? "text-fire" : "hover:text-fire";
-                                  return React.createElement("li", {
-                                              key: text
-                                            }, React.createElement("span", {
-                                                  className: "text-fire mr-2"
-                                                }, "-"), React.createElement(Next.Link.make, {
-                                                  href: href,
-                                                  children: React.createElement("a", {
-                                                        className: linkClass
-                                                      }, text)
-                                                }));
-                                }))), column("Ecosystem", React.createElement("ul", undefined)), column("Tools", React.createElement("ul", undefined)))));
+                      className: "w-full grid grid-cols-1 sm:grid-cols-3 max-w-1280"
+                    }, languageManualColumn, ecosystemColumn, React.createElement("div", {
+                          className: "relative"
+                        }, quickReferenceColumn, React.createElement("img", {
+                              className: "absolute bottom-0 right-0 -mr-32",
+                              src: "/static/illu_index_rescript@2x.png"
+                            })))));
 }
 
 function Navigation$MobileNav(Props) {
@@ -311,9 +491,13 @@ function Navigation(Props) {
                   state: /* KeepOpen */0
                 }];
       });
+  var setCollapsibles = match[1];
+  var collapsibles = match[0];
+  var isSubnavOpen = Caml_option.undefined_to_opt(collapsibles.find(function (c) {
+            return c.state !== /* Closed */2;
+          })) !== undefined;
   var setOverlayOpen = overlayState[1];
   var isOverlayOpen = overlayState[0];
-  var setCollapsibles = match[1];
   var resetCollapsibles = function (param) {
     return Curry._1(setCollapsibles, (function (prev) {
                   return Belt_Array.map(prev, (function (c) {
@@ -362,7 +546,7 @@ function Navigation(Props) {
                               });
                   });
         }), []);
-  var fixedNav = fixed ? "fixed z-30 top-0" : "";
+  var fixedNav = fixed ? "fixed top-0" : "relative";
   var onStateChange = function (id, state) {
     Curry._1(setCollapsibles, (function (prev) {
             return prev.reduce((function (acc, next) {
@@ -380,7 +564,7 @@ function Navigation(Props) {
           }));
     
   };
-  var collapsibleElements = match[0].map(function (coll) {
+  var collapsibleElements = collapsibles.map(function (coll) {
         return React.createElement(Navigation$CollapsibleLink, {
                     title: coll.title,
                     onStateChange: onStateChange,
@@ -392,109 +576,114 @@ function Navigation(Props) {
                     key: coll.title
                   });
       });
-  return React.createElement("nav", {
-              ref: outerRef,
-              className: fixedNav + " flex xs:justify-center w-full h-16 bg-gray-95 shadow text-white-80 text-14",
-              id: "header",
-              style: {
-                minWidth: minWidth
-              }
-            }, React.createElement("div", {
-                  className: "flex justify-between mx-4 md:mx-8 items-center h-full w-full max-w-1280"
-                }, React.createElement("div", {
-                      className: "h-8 w-8 lg:h-10 lg:w-32"
-                    }, React.createElement("a", {
-                          className: "block hover:cursor-pointer w-full h-full flex justify-center items-center font-bold",
-                          href: "/"
-                        }, React.createElement("img", {
-                              className: "lg:hidden",
-                              src: "/static/nav-logo@2x.png"
-                            }), React.createElement("img", {
-                              className: "hidden lg:block",
-                              src: "/static/nav-logo-full@2x.png"
-                            }))), React.createElement("div", {
-                      className: "flex items-center xs:justify-between w-full bg-gray-95 sm:h-auto sm:relative"
-                    }, React.createElement("div", {
-                          className: "flex ml-10 space-x-5 w-full max-w-320",
-                          style: {
-                            maxWidth: "26rem"
-                          }
-                        }, collapsibleElements, React.createElement(Next.Link.make, {
-                              href: "/docs/manual/latest/api",
-                              children: React.createElement("a", {
-                                    className: linkOrActiveApiSubroute(route),
-                                    onMouseEnter: nonCollapsibleOnMouseEnter
-                                  }, "API")
-                            }), React.createElement(Next.Link.make, {
-                              href: "/try",
-                              children: React.createElement("a", {
-                                    className: "hidden xs:block " + linkOrActiveLink("/try", route),
-                                    onMouseEnter: nonCollapsibleOnMouseEnter
-                                  }, "Playground")
-                            }), React.createElement(Next.Link.make, {
-                              href: "/blog",
-                              children: React.createElement("a", {
-                                    className: "hidden xs:block " + linkOrActiveLinkSubroute("/blog", route),
-                                    onMouseEnter: nonCollapsibleOnMouseEnter
-                                  }, "Blog")
-                            }), React.createElement(Next.Link.make, {
-                              href: "/community",
-                              children: React.createElement("a", {
-                                    className: "hidden xs:block " + linkOrActiveLink("/community", route),
-                                    onMouseEnter: nonCollapsibleOnMouseEnter
-                                  }, "Community")
-                            })), React.createElement("div", {
-                          className: "hidden md:flex items-center"
-                        }, React.createElement("div", {
-                              className: "hidden sm:block mr-6"
-                            }, React.createElement(DocSearch.make, {})), React.createElement("a", {
-                              className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px",
-                              href: githubHref,
-                              rel: "noopener noreferrer",
-                              target: "_blank",
-                              onMouseEnter: nonCollapsibleOnMouseEnter
-                            }, React.createElement(Icon.Github.make, {
-                                  className: "w-6 h-6 opacity-50 hover:opacity-100"
-                                })), React.createElement("a", {
-                              className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px",
-                              href: "https://twitter.com/rescriptlang",
-                              rel: "noopener noreferrer",
-                              target: "_blank",
-                              onMouseEnter: nonCollapsibleOnMouseEnter
-                            }, React.createElement(Icon.Twitter.make, {
-                                  className: "w-6 h-6 opacity-50 hover:opacity-100"
-                                })), React.createElement("a", {
-                              className: link,
-                              href: discourseHref,
-                              rel: "noopener noreferrer",
-                              target: "_blank",
-                              onMouseEnter: nonCollapsibleOnMouseEnter
-                            }, React.createElement(Icon.Discourse.make, {
-                                  className: "w-6 h-6 opacity-50 hover:opacity-100"
-                                }))))), React.createElement("button", {
-                  className: "h-full px-4 xs:hidden flex items-center hover:text-white",
-                  onClick: (function (evt) {
-                      evt.preventDefault();
-                      resetCollapsibles(undefined);
-                      return Curry._1(setOverlayOpen, (function (prev) {
-                                    return !prev;
-                                  }));
-                    })
-                }, React.createElement(Icon.DrawerDots.make, {
-                      className: "h-1 w-auto block " + (
-                        isOverlayOpen ? "text-fire" : ""
-                      )
-                    })), React.createElement("div", {
-                  className: (
-                    isOverlayOpen ? "flex" : "hidden"
-                  ) + " sm:hidden flex-col fixed top-0 left-0 h-full w-full z-30 sm:w-9/12 bg-gray-100 sm:h-auto sm:flex sm:relative sm:flex-row sm:justify-between",
+  return React.createElement(React.Fragment, undefined, React.createElement("nav", {
+                  ref: outerRef,
+                  className: fixedNav + " z-50 px-4 flex xs:justify-center w-full h-16 bg-gray-95 shadow text-white-80 text-14",
+                  id: "header",
                   style: {
-                    minWidth: minWidth,
-                    top: "4rem"
+                    minWidth: minWidth
                   }
-                }, React.createElement(Navigation$MobileNav, {
-                      route: route
-                    })));
+                }, React.createElement("div", {
+                      className: "flex justify-between items-center h-full w-full max-w-1280"
+                    }, React.createElement("div", {
+                          className: "h-8 w-8 lg:h-10 lg:w-32"
+                        }, React.createElement("a", {
+                              className: "block hover:cursor-pointer w-full h-full flex justify-center items-center font-bold",
+                              href: "/"
+                            }, React.createElement("img", {
+                                  className: "lg:hidden",
+                                  src: "/static/nav-logo@2x.png"
+                                }), React.createElement("img", {
+                                  className: "hidden lg:block",
+                                  src: "/static/nav-logo-full@2x.png"
+                                }))), React.createElement("div", {
+                          className: "flex items-center xs:justify-between w-full bg-gray-95 sm:h-auto sm:relative"
+                        }, React.createElement("div", {
+                              className: "flex ml-10 space-x-5 w-full max-w-320",
+                              style: {
+                                maxWidth: "26rem"
+                              }
+                            }, collapsibleElements, React.createElement(Next.Link.make, {
+                                  href: "/docs/manual/latest/api",
+                                  children: React.createElement("a", {
+                                        className: linkOrActiveApiSubroute(route),
+                                        onMouseEnter: nonCollapsibleOnMouseEnter
+                                      }, "API")
+                                }), React.createElement(Next.Link.make, {
+                                  href: "/try",
+                                  children: React.createElement("a", {
+                                        className: "hidden xs:block " + linkOrActiveLink("/try", route),
+                                        onMouseEnter: nonCollapsibleOnMouseEnter
+                                      }, "Playground")
+                                }), React.createElement(Next.Link.make, {
+                                  href: "/blog",
+                                  children: React.createElement("a", {
+                                        className: "hidden xs:block " + linkOrActiveLinkSubroute("/blog", route),
+                                        onMouseEnter: nonCollapsibleOnMouseEnter
+                                      }, "Blog")
+                                }), React.createElement(Next.Link.make, {
+                                  href: "/community",
+                                  children: React.createElement("a", {
+                                        className: "hidden xs:block " + linkOrActiveLink("/community", route),
+                                        onMouseEnter: nonCollapsibleOnMouseEnter
+                                      }, "Community")
+                                })), React.createElement("div", {
+                              className: "hidden md:flex items-center"
+                            }, React.createElement("div", {
+                                  className: "hidden sm:block mr-6"
+                                }, React.createElement(DocSearch.make, {})), React.createElement("a", {
+                                  className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px",
+                                  href: githubHref,
+                                  rel: "noopener noreferrer",
+                                  target: "_blank",
+                                  onMouseEnter: nonCollapsibleOnMouseEnter
+                                }, React.createElement(Icon.Github.make, {
+                                      className: "w-6 h-6 opacity-50 hover:opacity-100"
+                                    })), React.createElement("a", {
+                                  className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px",
+                                  href: "https://twitter.com/rescriptlang",
+                                  rel: "noopener noreferrer",
+                                  target: "_blank",
+                                  onMouseEnter: nonCollapsibleOnMouseEnter
+                                }, React.createElement(Icon.Twitter.make, {
+                                      className: "w-6 h-6 opacity-50 hover:opacity-100"
+                                    })), React.createElement("a", {
+                                  className: link,
+                                  href: discourseHref,
+                                  rel: "noopener noreferrer",
+                                  target: "_blank",
+                                  onMouseEnter: nonCollapsibleOnMouseEnter
+                                }, React.createElement(Icon.Discourse.make, {
+                                      className: "w-6 h-6 opacity-50 hover:opacity-100"
+                                    }))))), React.createElement("button", {
+                      className: "h-full px-4 xs:hidden flex items-center hover:text-white",
+                      onClick: (function (evt) {
+                          evt.preventDefault();
+                          resetCollapsibles(undefined);
+                          return Curry._1(setOverlayOpen, (function (prev) {
+                                        return !prev;
+                                      }));
+                        })
+                    }, React.createElement(Icon.DrawerDots.make, {
+                          className: "h-1 w-auto block " + (
+                            isOverlayOpen ? "text-fire" : ""
+                          )
+                        })), React.createElement("div", {
+                      className: (
+                        isOverlayOpen ? "flex" : "hidden"
+                      ) + " sm:hidden flex-col fixed top-0 left-0 h-full w-full z-50 sm:w-9/12 bg-gray-100 sm:h-auto sm:flex sm:relative sm:flex-row sm:justify-between",
+                      style: {
+                        minWidth: minWidth,
+                        top: "4rem"
+                      }
+                    }, React.createElement(Navigation$MobileNav, {
+                          route: route
+                        }))), React.createElement("div", {
+                  className: (
+                    isSubnavOpen ? "fixed" : "hidden"
+                  ) + " z-40 bg-gray-10-tr w-full h-full bottom-0",
+                  style: ReactDOMStyle.unsafeAddProp({}, "backdropFilter", "blur(2px)")
+                }));
 }
 
 var make = Navigation;
