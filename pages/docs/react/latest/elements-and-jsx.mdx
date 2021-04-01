@@ -34,7 +34,7 @@ let wrapChildren = (children: React.element) => {
   </div>
 }
 
-wrapChildren(<div> React.string("Let's use React with ReScript") </div>)
+wrapChildren(<div> {React.string("Let's use React with ReScript")} </div>)
 ```
 
 Understanding the definition of a `React.element` is essential since it is heavily used within the React APIs, such as `ReactDOM.render(element, ...)`, etc. Be aware that JSX doesn't do any automatic `string` to `React.element` conversion for you (ReScript forces explicit type conversion). For example `<div> Hello World </div>` will not type-check (which is actually a good thing because it's also a huge source for subtle bugs!), you need to convert your `"Hello World"` with the `React.string` function first.
