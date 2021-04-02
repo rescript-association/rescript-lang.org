@@ -150,7 +150,7 @@ function Navigation$DocsSection(Props) {
   var languageManual = Constants.languageManual(version);
   var documentation = [
     {
-      imgSrc: "/static/ic_package.svg",
+      imgSrc: "/static/ic_manual@2x.png",
       title: "Language Manual",
       description: "Reference for all language features",
       href: "/docs/manual/" + version + "/introduction",
@@ -168,7 +168,7 @@ function Navigation$DocsSection(Props) {
         })
     },
     {
-      imgSrc: "/static/ic_package.svg",
+      imgSrc: "/static/ic_rescript_react@2x.png",
       title: "ReScript & React",
       description: "First class bindings for ReactJS",
       href: "/docs/react/latest/introduction",
@@ -190,7 +190,7 @@ function Navigation$DocsSection(Props) {
         })
     },
     {
-      imgSrc: "/static/ic_package.svg",
+      imgSrc: "/static/ic_gentype@2x.png",
       title: "GenType",
       description: "Seamless TypeScript & Flow interop",
       href: "/docs/gentype/latest/introduction",
@@ -212,7 +212,7 @@ function Navigation$DocsSection(Props) {
         })
     },
     {
-      imgSrc: "/static/ic_package.svg",
+      imgSrc: "/static/ic_reanalyze@2x.png",
       title: "Reanalyze",
       description: "Dead Code & Termination analysis",
       href: "https://github.com/reason-association/reanalyze",
@@ -255,12 +255,12 @@ function Navigation$DocsSection(Props) {
                     className: "mt-6"
                   }, documentation.map(function (item) {
                         var title = item.title;
-                        var icon = React.createElement("div", {
-                              className: "w-6 h-6"
-                            }, React.createElement("img", {
-                                  className: "w-full",
-                                  src: item.imgSrc
-                                }));
+                        var icon = React.createElement("img", {
+                              style: {
+                                width: "2.1875rem"
+                              },
+                              src: item.imgSrc
+                            });
                         return React.createElement(Navigation$DocsSection$LinkCard, {
                                     icon: icon,
                                     title: title,
