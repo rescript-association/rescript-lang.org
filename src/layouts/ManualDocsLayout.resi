@@ -1,6 +1,3 @@
-// array<(label, version)>
-let allManualVersions: array<(string, string)>
-
 module Latest: {
   @react.component
   let make: (

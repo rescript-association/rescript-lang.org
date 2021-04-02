@@ -4,19 +4,9 @@ import * as Url from "../common/Url.js";
 import * as Next from "../bindings/Next.js";
 import * as React from "react";
 import * as Markdown from "../components/Markdown.js";
+import * as Constants from "../common/Constants.js";
 import * as DocsLayout from "./DocsLayout.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
-
-var allManualVersions = [
-  [
-    "latest",
-    "v8.2.0"
-  ],
-  [
-    "v8.0.0",
-    "< v8.2.0"
-  ]
-];
 
 var tocData = (require('index_data/manual_latest_toc.json'));
 
@@ -60,7 +50,7 @@ function ManualDocsLayout$Latest(Props) {
     title: "Language Manual",
     metaTitleCategory: "ReScript Language Manual",
     version: "latest",
-    availableVersions: allManualVersions,
+    availableVersions: Constants.allManualVersions,
     components: components,
     theme: "Reason",
     children: children
@@ -102,7 +92,7 @@ function ManualDocsLayout$V800(Props) {
   };
   var version$2 = "v8.0.0";
   var latestUrl = "/" + (url.base.join("/") + ("/latest/" + url.pagepath.join("/")));
-  var match = allManualVersions.find(function (param) {
+  var match = Constants.allManualVersions.find(function (param) {
         return param[0] === version$2;
       });
   var label = match !== undefined ? match[1] : version$2;
@@ -124,7 +114,7 @@ function ManualDocsLayout$V800(Props) {
     title: "Language Manual",
     metaTitleCategory: "ReScript Language Manual",
     version: version$2,
-    availableVersions: allManualVersions,
+    availableVersions: Constants.allManualVersions,
     components: components,
     theme: "Reason",
     children: null
@@ -140,7 +130,6 @@ var V800 = {
 };
 
 export {
-  allManualVersions ,
   Latest ,
   V800 ,
   
