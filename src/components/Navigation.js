@@ -243,7 +243,7 @@ function Navigation$DocsSection(Props) {
                                       }));
                       })))));
   var ecosystemColumn = React.createElement("div", {
-        className: "flex px-4 h-full sm:justify-center border-r border-gray-10 pt-8"
+        className: "flex px-4 sm:h-full sm:justify-center border-r border-gray-10 pt-8"
       }, React.createElement("div", {
             className: "w-full pb-16",
             style: {
@@ -313,7 +313,7 @@ function Navigation$DocsSection(Props) {
         active: active$1
       });
   var quickReferenceColumn = React.createElement("div", {
-        className: "flex px-4 h-full sm:justify-center pb-12 pt-8 pb-10"
+        className: "flex px-4 sm:h-full sm:justify-center pb-12 pt-8 pb-10"
       }, React.createElement("div", {
             className: "w-full",
             style: {
@@ -348,7 +348,7 @@ function Navigation$DocsSection(Props) {
           className: "text-gray-40 text-12"
         }, "This is the latest docs version") : null;
   return React.createElement("div", {
-              className: "relative w-full bg-white h-full text-gray-60 text-14 rounded-bl-xl rounded-br-xl"
+              className: "relative w-full bg-white pb-32 min-h-full sm:pb-0 text-gray-60 text-14 rounded-bl-xl rounded-br-xl"
             }, React.createElement("div", {
                   className: "flex justify-center w-full py-2 border-b border-gray-10"
                 }, React.createElement("div", {
@@ -360,7 +360,7 @@ function Navigation$DocsSection(Props) {
                         }), tmp)), React.createElement("div", {
                   className: "flex justify-center"
                 }, React.createElement("div", {
-                      className: "w-full grid grid-cols-1 sm:grid-cols-3 max-w-1280"
+                      className: "w-full sm:grid sm:grid-cols-3 max-w-1280"
                     }, languageManualColumn, ecosystemColumn, quickReferenceColumn)), React.createElement("img", {
                   className: "hidden xl:block absolute bottom-0 right-0",
                   style: {

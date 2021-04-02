@@ -240,7 +240,7 @@ module DocsSection = {
       </div>
 
     let ecosystemColumn = {
-      <div className="flex px-4 h-full sm:justify-center border-r border-gray-10 pt-8">
+      <div className="flex px-4 sm:h-full sm:justify-center border-r border-gray-10 pt-8">
         <div className="w-full pb-16" style={ReactDOM.Style.make(~maxWidth="19.625rem", ())}>
           <div
             className="text-12 font-medium text-gray-100 tracking-wide uppercase subpixel-antialiased">
@@ -261,7 +261,7 @@ module DocsSection = {
     }
 
     let quickReferenceColumn =
-      <div className="flex px-4 h-full sm:justify-center pb-12 pt-8 pb-10">
+      <div className="flex px-4 sm:h-full sm:justify-center pb-12 pt-8 pb-10">
         <div className="w-full" style={ReactDOM.Style.make(~maxWidth="19.625rem", ())}>
           <div
             className="text-12 font-medium text-gray-100 tracking-wide uppercase subpixel-antialiased">
@@ -331,7 +331,7 @@ module DocsSection = {
     }
 
     <div
-      className="relative w-full bg-white h-full text-gray-60 text-14 rounded-bl-xl rounded-br-xl">
+      className="relative w-full bg-white pb-32 min-h-full sm:pb-0 text-gray-60 text-14 rounded-bl-xl rounded-br-xl">
       <div className={"flex justify-center w-full py-2 border-b border-gray-10"}>
         <div className="px-4 w-full space-x-2 max-w-1280 ">
           <VersionSelect
@@ -347,7 +347,7 @@ module DocsSection = {
         </div>
       </div>
       <div className="flex justify-center">
-        <div className="w-full grid grid-cols-1 sm:grid-cols-3 max-w-1280">
+        <div className="w-full sm:grid sm:grid-cols-3 max-w-1280">
           languageManualColumn ecosystemColumn quickReferenceColumn
         </div>
       </div>
