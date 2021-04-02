@@ -156,11 +156,15 @@ function Navigation$DocsSection(Props) {
       href: "/docs/manual/" + version + "/introduction",
       isActive: (function (url) {
           var match = url.base;
-          if (match.length !== 1) {
+          if (match.length !== 2) {
             return false;
           }
           var match$1 = match[0];
-          if (match$1 === "packages") {
+          if (match$1 !== "docs") {
+            return false;
+          }
+          var match$2 = match[1];
+          if (match$2 === "manual") {
             return true;
           } else {
             return false;
@@ -192,7 +196,7 @@ function Navigation$DocsSection(Props) {
     {
       imgSrc: "/static/ic_gentype@2x.png",
       title: "GenType",
-      description: "Seamless TypeScript & Flow interop",
+      description: "Seamless TypeScript & Flow integration",
       href: "/docs/gentype/latest/introduction",
       isActive: (function (url) {
           var match = url.base;

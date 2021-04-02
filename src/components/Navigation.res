@@ -169,7 +169,7 @@ module DocsSection = {
         href: `/docs/manual/${version}/introduction`,
         isActive: url => {
           switch url.base {
-          | ["packages"] => true
+          | ["docs", "manual"] => true
           | _ => false
           }
         },
@@ -189,7 +189,7 @@ module DocsSection = {
       {
         imgSrc: "/static/ic_gentype@2x.png",
         title: "GenType",
-        description: "Seamless TypeScript & Flow interop",
+        description: "Seamless TypeScript & Flow integration",
         href: "/docs/gentype/latest/introduction",
         isActive: url => {
           switch url.base {
