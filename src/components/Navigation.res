@@ -16,34 +16,6 @@ let linkOrActiveApiSubroute = (~route) => {
   }
 }
 
-let isDocsSubroute = route => {
-  let url = Url.parse(route)
-  switch url {
-  | {base: ["docs"]}
-  | {base: ["docs", "gentype"]}
-  | {base: ["docs", "manual"]} =>
-    switch Belt.Array.get(url.pagepath, 0) {
-    | Some("api") => false
-    | _ => true
-    }
-  | _ => false
-  }
-}
-
-let linkOrActiveDocsSubroute = (~route) => {
-  let url = Url.parse(route)
-  switch url {
-  | {base: ["docs"]}
-  | {base: ["docs", "gentype"]}
-  | {base: ["docs", "manual"]} =>
-    switch Belt.Array.get(url.pagepath, 0) {
-    | Some("api") => link
-    | _ => activeLink
-    }
-  | _ => link
-  }
-}
-
 let githubHref = "https://github.com/reason-association/rescript-lang.org#rescript-langorg"
 //let twitterHref = "https://twitter.com/rescriptlang"
 let discourseHref = "https://forum.rescript-lang.org"
@@ -66,11 +38,9 @@ module CollapsibleLink = {
     ~active=false,
     ~children,
   ) => {
-    // This is not onClick, because we want to prevent
-    // text selection on multiple clicks
-    let onMouseDown = evt => {
-      ReactEvent.Mouse.preventDefault(evt)
-      ReactEvent.Mouse.stopPropagation(evt)
+    let onClick = _evt => {
+      /* ReactEvent.Mouse.preventDefault(evt) */
+      /* ReactEvent.Mouse.stopPropagation(evt) */
 
       onStateChange(
         ~id,
@@ -95,29 +65,22 @@ module CollapsibleLink = {
     | HoverOpen => true
     }
 
-    // This onClick is required for iOS12 safari.
-    // There seems to be a bug where mouse events
-    // won't be registered, unless an onClick event
-    // is attached
-    // DO NOT REMOVE, OTHERWISE THE COLLAPSIBLE WON'T WORK
-    let onClick = _ => ()
-
     <>
       <div className="relative" onMouseEnter>
         <div className="flex items-center">
-          <a
-            onMouseDown
+          <button
+            tabIndex={0}
             onClick
             className={(active ? activeLink : link) ++
             (" border-none flex items-center hover:cursor-pointer " ++
             (isOpen ? " text-fire-30" : ""))}>
             <span className={active ? "border-b border-fire" : ""}> {React.string(title)} </span>
-          </a>
+          </button>
         </div>
         <div
           className={(
             isOpen ? "flex" : "hidden"
-          ) ++ " fixed left-0 overflow-y-scroll border-gray-80 border-gray-40 min-w-320 w-full h-full bg-white sm:bg-transparent sm:h-auto sm:justify-center sm:rounded-bl-xl sm:rounded-br-xl sm:shadow"}
+          ) ++ " fixed left-0 overflow-y-scroll overflow-x-hidden border-gray-80 border-gray-40 min-w-320 w-full h-full bg-white sm:overflow-y-auto sm:bg-transparent sm:h-auto sm:justify-center sm:rounded-bl-xl sm:rounded-br-xl sm:shadow"}
           style={ReactDOMStyle.make(~marginTop="1rem", ())}>
           <div className="w-full"> children </div>
         </div>
@@ -125,54 +88,6 @@ module CollapsibleLink = {
     </>
   }
 }
-
-let useOutsideClick: (ReactDOM.Ref.t, unit => unit) => unit = %raw(j`(outerRef, trigger) => {
-      function handleClickOutside(event) {
-        if (outerRef.current && !outerRef.current.contains(event.target)) {
-          trigger();
-        }
-      }
-
-      React.useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-          document.removeEventListener("mousedown", handleClickOutside);
-        };
-      });
-
-    }`)
-
-let useWindowWidth: unit => option<int> = %raw(j` () => {
-  const isClient = typeof window === 'object';
-
-  function getSize() {
-    return {
-      width: isClient ? window.innerWidth : undefined,
-      height: isClient ? window.innerHeight : undefined
-    };
-  }
-
-  const [windowSize, setWindowSize] = React.useState(getSize);
-
-  React.useEffect(() => {
-    if (!isClient) {
-      return false;
-    }
-
-    function handleResize() {
-      setWindowSize(getSize());
-    }
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []); // Empty array ensures that effect is only run on mount and unmount
-
-  if(windowSize) {
-    return windowSize.width;
-  }
-  return null;
-  }
-  `)
 
 type collapsible = {
   title: string,
@@ -200,73 +115,37 @@ module DocsSection = {
       ~href: string,
       ~active=false,
     ) => {
-      let activeClass = ""
-      let hoverClass = "hover:bg-gray-5 hover:shadow hover:-mx-8 hover:px-8 hover:cursor-pointer"
-
+      let isAbsolute = Util.Url.isAbsolute(href)
       let content =
-        <div key={title} className={hoverClass ++ " py-4 flex space-x-4 items-start rounded-xl"}>
+        <div
+          className={`hover:bg-gray-5 hover:shadow hover:-mx-8 hover:px-8 hover:cursor-pointer active:bg-gray-10 py-4 flex space-x-4 items-start rounded-xl`}>
           icon
           <div>
-            <span className="block text-16 font-medium text-gray-95"> {React.string(title)} </span>
-            <span className="block text-14  text-gray-60"> {React.string(description)} </span>
+            <div
+              className={`flex items-center text-16 font-medium ${active
+                  ? "text-fire-40"
+                  : "text-gray-95"}`}>
+              <span> {React.string(title)} </span>
+              {if isAbsolute {
+                <Icon.ExternalLink className="inline-block ml-2 w-4 h-4" />
+              } else {
+                React.null
+              }}
+            </div>
+            <div
+              className={`block text-14 text-gray-60 ${active ? "text-fire-40" : "text-gray-60"}`}>
+              {React.string(description)}
+            </div>
           </div>
         </div>
 
-      if Util.Url.isAbsolute(href) {
+      if isAbsolute {
         <a href rel="noopener noreferrer" target="_blank" className=""> content </a>
       } else {
         <Next.Link href> <a className=""> content </a> </Next.Link>
       }
     }
   }
-
-  let ecosystem = [
-    {
-      imgSrc: "/static/ic_package.svg",
-      title: "Packages",
-      description: "Explore third party libraries and bindings",
-      href: "/packages",
-      isActive: url => {
-        switch url.base {
-        | ["packages"] => true
-        | _ => false
-        }
-      },
-    },
-    {
-      imgSrc: "/static/ic_package.svg",
-      title: "ReScript & React",
-      description: "First class bindings for ReactJS",
-      href: "/docs/react/latest/introduction",
-      isActive: url => {
-        switch url.base {
-        | ["docs", "react"] => true
-        | _ => false
-        }
-      },
-    },
-    {
-      imgSrc: "/static/ic_package.svg",
-      title: "GenType",
-      description: "Seamless TypeScript & Flow interop",
-      href: "/docs/gentype/latest/introduction",
-      isActive: url => {
-        switch url.base {
-        | ["docs", "gentype"] => true
-        | _ => false
-        }
-      },
-    },
-    {
-      imgSrc: "/static/ic_package.svg",
-      title: "Reanalyze",
-      description: "Dead Code & Termination analysis",
-      href: "https://github.com/reason-association/reanalyze",
-      isActive: _ => {
-        false
-      },
-    },
-  ]
 
   @react.component
   let make = () => {
@@ -282,13 +161,60 @@ module DocsSection = {
     )
 
     let languageManual = Constants.languageManual(version)
+    let documentation = [
+      {
+        imgSrc: "/static/ic_package.svg",
+        title: "Language Manual",
+        description: "Reference for all language features",
+        href: `/docs/manual/${version}/introduction`,
+        isActive: url => {
+          switch url.base {
+          | ["packages"] => true
+          | _ => false
+          }
+        },
+      },
+      {
+        imgSrc: "/static/ic_package.svg",
+        title: "ReScript & React",
+        description: "First class bindings for ReactJS",
+        href: "/docs/react/latest/introduction",
+        isActive: url => {
+          switch url.base {
+          | ["docs", "react"] => true
+          | _ => false
+          }
+        },
+      },
+      {
+        imgSrc: "/static/ic_package.svg",
+        title: "GenType",
+        description: "Seamless TypeScript & Flow interop",
+        href: "/docs/gentype/latest/introduction",
+        isActive: url => {
+          switch url.base {
+          | ["docs", "gentype"] => true
+          | _ => false
+          }
+        },
+      },
+      {
+        imgSrc: "/static/ic_package.svg",
+        title: "Reanalyze",
+        description: "Dead Code & Termination analysis",
+        href: "https://github.com/reason-association/reanalyze",
+        isActive: _ => {
+          false
+        },
+      },
+    ]
 
     let languageManualColumn =
-      <div className="flex px-4 sm:justify-center border-r border-gray-10 pt-8 pb-10 last:border-0">
+      <div className="flex px-4 sm:justify-center border-r border-gray-10 pt-8 pb-10">
         <div>
           <div
             className="text-12 font-medium text-gray-100 tracking-wide uppercase subpixel-antialiased">
-            {React.string("Language Manual")}
+            {React.string("Quick Links")}
           </div>
           <div>
             <ul className="space-y-2 ml-2 mt-6">
@@ -314,19 +240,19 @@ module DocsSection = {
       </div>
 
     let ecosystemColumn = {
-      <div className="flex px-4 sm:justify-center border-r border-gray-10 pt-8 pb-10 last:border-0">
-        <div className="w-full" style={ReactDOM.Style.make(~maxWidth="19.625rem", ())}>
+      <div className="flex px-4 h-full sm:justify-center border-r border-gray-10 pt-8">
+        <div className="w-full pb-16" style={ReactDOM.Style.make(~maxWidth="19.625rem", ())}>
           <div
             className="text-12 font-medium text-gray-100 tracking-wide uppercase subpixel-antialiased">
-            {React.string("Ecosystem")}
+            {React.string("Documentation")}
           </div>
           <div>
             <div className="mt-6">
-              {Js.Array2.map(ecosystem, item => {
+              {Js.Array2.map(documentation, item => {
                 let {imgSrc, title, href, description, isActive} = item
 
                 let icon = <div className="w-6 h-6"> <img className="w-full" src={imgSrc} /> </div>
-                <LinkCard icon title href description active={isActive(url)} />
+                <LinkCard key={title} icon title href description active={isActive(url)} />
               })->React.array}
             </div>
           </div>
@@ -335,7 +261,7 @@ module DocsSection = {
     }
 
     let quickReferenceColumn =
-      <div className="flex px-4 sm:justify-center border-r border-gray-10 pt-8 pb-10 last:border-0">
+      <div className="flex px-4 h-full sm:justify-center pb-12 pt-8 pb-10">
         <div className="w-full" style={ReactDOM.Style.make(~maxWidth="19.625rem", ())}>
           <div
             className="text-12 font-medium text-gray-100 tracking-wide uppercase subpixel-antialiased">
@@ -343,22 +269,44 @@ module DocsSection = {
           </div>
           <div className="mt-6">
             {
-              let active = switch url {
-              | {base: ["syntax-lookup"]} => true
-              | _ => false
-              }
-              let icon =
-                <div className="-mr-2 flex w-6 h-6 justify-center items-center">
-                  <img className="w-4 h-4" src="/static/ic_search.svg" />
-                </div>
+              let packageLink = {
+                let icon =
+                  <div className="w-6 h-6">
+                    <img className="w-full" src={"/static/ic_package.svg"} />
+                  </div>
+                let active = switch url {
+                | {base: ["packages"]} => true
+                | _ => false
+                }
 
-              <LinkCard
-                icon
-                title="Syntax Lookup"
-                href="/syntax-lookup"
-                description="Discover all syntax constructs"
-                active
-              />
+                <LinkCard
+                  icon
+                  active
+                  title="Packages"
+                  href="/packages"
+                  description="Explore third party libraries and bindings"
+                />
+              }
+              let syntaxLookupLink = {
+                let active = switch url {
+                | {base: ["syntax-lookup"]} => true
+                | _ => false
+                }
+                let icon =
+                  <div className="-mr-2 flex w-6 h-6 justify-center items-center">
+                    <img className="w-4 h-4" src="/static/ic_search.svg" />
+                  </div>
+
+                <LinkCard
+                  icon
+                  title="Syntax Lookup"
+                  href="/syntax-lookup"
+                  description="Discover all syntax constructs"
+                  active
+                />
+              }
+
+              <> packageLink syntaxLookupLink </>
             }
           </div>
         </div>
@@ -382,7 +330,8 @@ module DocsSection = {
       setVersion(_ => version)
     }
 
-    <div className="w-full bg-white h-full text-gray-60 text-14 rounded-bl-xl rounded-br-xl">
+    <div
+      className="relative w-full bg-white h-full text-gray-60 text-14 rounded-bl-xl rounded-br-xl">
       <div className={"flex justify-center w-full py-2 border-b border-gray-10"}>
         <div className="px-4 w-full space-x-2 max-w-1280 ">
           <VersionSelect
@@ -399,16 +348,14 @@ module DocsSection = {
       </div>
       <div className="flex justify-center">
         <div className="w-full grid grid-cols-1 sm:grid-cols-3 max-w-1280">
-          languageManualColumn
-          ecosystemColumn
-          <div className="relative">
-            quickReferenceColumn
-            <img
-              className="absolute bottom-0 right-0 -mr-32" src="/static/illu_index_rescript@2x.png"
-            />
-          </div>
+          languageManualColumn ecosystemColumn quickReferenceColumn
         </div>
       </div>
+      <img
+        className="hidden xl:block absolute bottom-0 right-0"
+        style={ReactDOM.Style.make(~maxWidth="27.8rem", ())}
+        src="/static/illu_index_rescript@2x.png"
+      />
     </div>
   }
 }
@@ -473,7 +420,6 @@ module MobileNav = {
 let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
   let minWidth = "20rem"
   let router = Next.Router.useRouter()
-
   let route = router.route
 
   let (collapsibles, setCollapsibles) = React.useState(_ => [
@@ -481,9 +427,19 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
       title: "Docs",
       href: "/docs/manual/latest/api",
       isActiveRoute: route => {
-        isDocsSubroute(route)
+        let url = Url.parse(route)
+        switch url {
+        | {base: ["docs"]}
+        | {base: ["docs", "gentype"]}
+        | {base: ["docs", "manual"]} =>
+          switch Belt.Array.get(url.pagepath, 0) {
+          | Some("api") => false
+          | _ => true
+          }
+        | _ => false
+        }
       },
-      state: KeepOpen,
+      state: Closed,
       children: <DocsSection />,
     },
   ])
@@ -497,21 +453,18 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
   let resetCollapsibles = () =>
     setCollapsibles(prev => Belt.Array.map(prev, c => {...c, state: Closed}))
 
-  let outerRef = React.useRef(Js.Nullable.null)
-  useOutsideClick(ReactDOM.Ref.domRef(outerRef), resetCollapsibles)
+  let navRef = React.useRef(Js.Nullable.null)
+  Hooks.useOutsideClick(ReactDOM.Ref.domRef(navRef), resetCollapsibles)
 
-  let windowWidth = useWindowWidth()
+  /* let windowWidth = useWindowWidth() */
 
+  /*
   // Don't allow hover behavior for collapsibles if mobile navigation is on
-  let allowHover = switch windowWidth {
+  let _allowHover = switch windowWidth {
   | Some(width) => width > 576 // Value noted in tailwind config
   | None => true
   }
-
-  let nonCollapsibleOnMouseEnter = evt => {
-    ReactEvent.Mouse.preventDefault(evt)
-    resetCollapsibles()
-  }
+ */
 
   // Client side navigation requires us to reset the collapsibles
   // whenever a route change had occurred, otherwise the collapsible
@@ -568,7 +521,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
       title={coll.title}
       state={coll.state}
       id={coll.title}
-      allowHover={allowHover}
+      allowHover={false}
       active={coll.isActiveRoute(route)}
       onStateChange>
       {coll.children}
@@ -577,7 +530,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
 
   <>
     <nav
-      ref={ReactDOM.Ref.domRef(outerRef)}
+      ref={ReactDOM.Ref.domRef(navRef)}
       id="header"
       style={ReactDOMStyle.make(~minWidth, ())}
       className={fixedNav ++ " z-50 px-4 flex xs:justify-center w-full h-16 bg-gray-95 shadow text-white-80 text-14"}>
@@ -597,37 +550,22 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
             className="flex ml-10 space-x-5 w-full max-w-320"
             style={ReactDOMStyle.make(~maxWidth="26rem", ())}>
             {collapsibleElements->React.array}
-            /* <Link href="/docs/latest"> */
-            /* <a */
-            /* className={"mr-5 " ++ linkOrActiveDocsSubroute(~route)} */
-            /* onMouseEnter=nonCollapsibleOnMouseEnter> */
-            /* {React.string("Docs")} */
-            /* </a> */
-            /* </Link> */
             <Link href="/docs/manual/latest/api">
-              <a
-                className={linkOrActiveApiSubroute(~route)} onMouseEnter=nonCollapsibleOnMouseEnter>
-                {React.string("API")}
-              </a>
+              <a className={linkOrActiveApiSubroute(~route)}> {React.string("API")} </a>
             </Link>
             <Link href="/try">
-              <a
-                className={"hidden xs:block " ++ linkOrActiveLink(~target="/try", ~route)}
-                onMouseEnter=nonCollapsibleOnMouseEnter>
+              <a className={"hidden xs:block " ++ linkOrActiveLink(~target="/try", ~route)}>
                 {React.string("Playground")}
               </a>
             </Link>
             <Link href="/blog">
               <a
-                className={"hidden xs:block " ++ linkOrActiveLinkSubroute(~target="/blog", ~route)}
-                onMouseEnter=nonCollapsibleOnMouseEnter>
+                className={"hidden xs:block " ++ linkOrActiveLinkSubroute(~target="/blog", ~route)}>
                 {React.string("Blog")}
               </a>
             </Link>
             <Link href="/community">
-              <a
-                className={"hidden xs:block " ++ linkOrActiveLink(~target="/community", ~route)}
-                onMouseEnter=nonCollapsibleOnMouseEnter>
+              <a className={"hidden xs:block " ++ linkOrActiveLink(~target="/community", ~route)}>
                 {React.string("Community")}
               </a>
             </Link>
@@ -635,27 +573,17 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
           <div className="hidden md:flex items-center">
             <div className="hidden sm:block mr-6"> <DocSearch /> </div>
             <a
-              href=githubHref
-              rel="noopener noreferrer"
-              target="_blank"
-              className={"mr-5 " ++ link}
-              onMouseEnter=nonCollapsibleOnMouseEnter>
+              href=githubHref rel="noopener noreferrer" target="_blank" className={"mr-5 " ++ link}>
               <Icon.Github className="w-6 h-6 opacity-50 hover:opacity-100" />
             </a>
             <a
               href="https://twitter.com/rescriptlang"
               rel="noopener noreferrer"
               target="_blank"
-              className={"mr-5 " ++ link}
-              onMouseEnter=nonCollapsibleOnMouseEnter>
+              className={"mr-5 " ++ link}>
               <Icon.Twitter className="w-6 h-6 opacity-50 hover:opacity-100" />
             </a>
-            <a
-              href=discourseHref
-              rel="noopener noreferrer"
-              target="_blank"
-              className=link
-              onMouseEnter=nonCollapsibleOnMouseEnter>
+            <a href=discourseHref rel="noopener noreferrer" target="_blank" className=link>
               <Icon.Discourse className="w-6 h-6 opacity-50 hover:opacity-100" />
             </a>
           </div>
@@ -686,7 +614,12 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
       } else {
         "hidden"
       } ++ " z-40 bg-gray-10-tr w-full h-full bottom-0"}
-      style={ReactDOM.Style.make()->ReactDOM.Style.unsafeAddProp("backdropFilter", "blur(2px)")}
+      style={
+        open ReactDOM.Style
+        make()
+        ->unsafeAddProp("backdropFilter", "blur(2px)")
+        ->unsafeAddProp("WebkitBackdropFilter", "blur(2px)")
+      }
     />
   </>
 }
