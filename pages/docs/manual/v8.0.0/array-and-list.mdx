@@ -8,7 +8,7 @@ canonical: "/docs/manual/latest/array-and-list"
 
 ## Array
 
-Arrays are our primary ordered data structure. They work the same way as JavaScript arrays.
+Arrays are our main ordered data structure. They work the same way as JavaScript arrays: they can be randomly accessed, dynamically resized, updated, etc.
 
 <CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
@@ -40,6 +40,8 @@ let myArray = [|"hello", "world", "how are you"|];
 let firstItem = myArray[0]; // "hello"
 
 myArray[0] = "hey"; // now [|"hey", "world", "how are you"|]
+
+let pushedValue = Js.Array2.push(myArray, "bye");
 ```
 ```ml
 let myArray = [|"hello"; "world"; "how are you"|]
@@ -54,6 +56,8 @@ var myArray = ["hello", "world", "how are you"];
 var firstItem = myArray[0];
 
 myArray[0] = "hey";
+
+var pushedValue = myArray.push("bye");
 ```
 
 </CodeTab>
