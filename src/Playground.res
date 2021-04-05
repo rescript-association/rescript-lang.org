@@ -1177,7 +1177,7 @@ module ControlPanel = {
     }
   }
 
-  @bs.val @bs.scope("window.location") external origin: string = "origin"
+  @bs.val @bs.scope(("window", "location")) external origin: string = "origin"
   @react.component
   let make = (
     ~actionIndicatorKey: string,
@@ -1217,7 +1217,9 @@ module ControlPanel = {
           }
         })
 
-        origin ++ (router.route ++ querystring)
+        let url = origin ++ (router.route ++ querystring)
+        Next.Router.replace(router, url)
+        url
       }
       <>
         <div className="mr-2">
@@ -1436,19 +1438,6 @@ let default = () => {
   | (None, Res)
   | (None, _) => initialResContent
   }
-
-  // We cleanup all the unwanted query attributes on load to make
-  // sure the url is not getting out of sync with the actual content
-  React.useEffect1(() => {
-    // Clean out the url after loading all query params
-    if router.asPath !== "/try" {
-      Next.Router.replace(router, "/try")
-    } else {
-      ()
-    }
-
-    None
-  }, [router.route])
 
   // We don't count to infinity. This value is only required to trigger
   // rerenders for specific components (ActivityIndicator)
