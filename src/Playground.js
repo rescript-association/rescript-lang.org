@@ -1543,7 +1543,9 @@ function Playground$ControlPanel(Props) {
                 return acc + ("&" + (key + ("=" + value)));
               }
             }));
-      return window.location.origin + (router.route + querystring);
+      var url = window.location.origin + (router.route + querystring);
+      Next.Router.replace(router, url);
+      return url;
     };
     children = React.createElement(React.Fragment, undefined, React.createElement("div", {
               className: "mr-2"
@@ -1824,12 +1826,6 @@ function Playground$default(Props) {
       
     }
   }
-  React.useEffect((function () {
-          if (router.asPath !== "/try") {
-            Next.Router.replace(router, "/try");
-          }
-          
-        }), [router.route]);
   var match$2 = React.useState(function () {
         return 0;
       });
