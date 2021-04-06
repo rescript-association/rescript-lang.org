@@ -8,13 +8,26 @@ canonical: "/docs/manual/latest/import-from-export-to-js"
 
 You've seen how ReScript's idiomatic [Import & Export](import-export.md) works. This section describes how we work with importing stuff from JavaScript and exporting stuff for JavaScript consumption.
 
+**Note**: due to JS ecosystem's module compatibility issues, our advice of keeping your ReScript file's compiled JS output open in a tab applies here **more than ever**, as you don't want to subtly output the wrong JS module import/export code, on top of having to deal with Babel/Webpack/Jest/Node's CommonJS<->ES6 compatibility shims.
+
+In short: **make sure your bindings below output what you'd have manually written in JS**.
+
+## Output Format
+
+We support 2 JavaScript import/export formats:
+
+- CommonJS: `require('myFile')` and `module.export = ...`.
+- ES6 modules: `import * from 'MyReScriptFile'` and `export let ...`.
+
+The format is [configurable in bsb](build-configuration.md#package-specs).
+
 ## Import From JavaScript
 
-### Import a JavaScript Module's Content
+### Import a JavaScript Module's Named Export
 
 Use the `bs.module` [external](external.md):
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["ReScript", "JS Output (CommonJS)", "JS Output (ES6)"]}>
 
 ```res example
 // Import nodejs' path.dirname
@@ -25,22 +38,26 @@ let root = dirname("/User/github") // returns "User"
 var Path = require("path");
 var root = Path.dirname("/User/github");
 ```
+```js
+import * as Path from "path";
+var root = Path.dirname("/User/github");
+```
 
 </CodeTab>
 
 Here's what the `external` does:
 
-- `@bs.module("path")`: pass the name of the JS module as a string; in this case, `"path"`. The string can be anything: `"./src/myJsFile"`, `"@myNpmNamespace/myLib"`, etc.
+- `@bs.module("path")`: pass the name of the JS module; in this case, `"path"`. The string can be anything: `"./src/myJsFile"`, `"@myNpmNamespace/myLib"`, etc.
 - `external`: the general keyword for declaring a value that exists on the JS side.
 - `dirname`: the binding name you'll use on the ReScript side.
-- `string => string`: the type signature of `dirname`.
+- `string => string`: the type signature of `dirname`. Mandatory for `external`s.
 - `= "dirname"`: the name of the variable inside the `path` JS module. There's repetition in writing the first and second `dirname`, because sometime the binding name you want to use on the ReScript side is different than the variable name the JS module exported.
 
-### Import a JavaScript Module Itself (CommonJS)
+### Import a JavaScript Module As a Single Value
 
 By omitting the string argument to `bs.module`, you bind to the whole JS module:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["ReScript", "JS Output (CommonJS)", "JS Output (ES6)"]}>
 
 ```res example
 @bs.module external leftPad: string => int => string = "./leftPad"
@@ -50,40 +67,41 @@ let paddedResult = leftPad("hi", 5)
 var LeftPad = require("./leftPad");
 var paddedResult = LeftPad("hi", 5);
 ```
+```js
+import * as LeftPad from "./leftPad";
+var paddedResult = LeftPad("hi", 5);
+```
 
 </CodeTab>
 
-### Import a JavaScript Module Itself (ES6 Module Format)
+Depending on whether you're compiling ReScript to CommonJS or ES6 module, **this feature will generate subtly different code**. Please check both output tabs to see the difference. The ES6 output here would be wrong!
 
-If your JS project is using ES6, you're likely using Babel to compile it to regular JavaScript. Babel's ES6 default export actually exports the default value under the name `default`. You'd bind to it like this:
+### Import an ES6 Default Export (Since >= 8.3.0)
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+Use the value `"default"` on the right hand side:
+
+<CodeTab labels={["ReScript", "JS Output (ES6)"]}>
 
 ```res example
 @bs.module("./student") external studentName: string = "default"
 Js.log(studentName)
 ```
 ```js
-var Student = require("./student");
-console.log(Student.default);
+import Student from "./student";
+var studentName = Student;
 ```
 
 </CodeTab>
 
 ## Export To JavaScript
 
-As mentioned in ReScript's idiomatic [Import & Export](import-export.md), every let binding and module is exported by default to other ReScript modules. If you open up the compiled JS file, you'll see that these values can also directly be used by another _JavaScript_ file too.
+### Export a Named Value
 
-We support 2 JS export formats:
+As mentioned in ReScript's idiomatic [Import & Export](import-export.md), every let binding and module is exported by default to other ReScript modules (unless you use a `.resi` [interface file](module#signatures)). If you open up the compiled JS file, you'll see that these values can also directly be used by a _JavaScript_ file too.
 
-- CommonJS (usable from JS as `require('myFile')`).
-- ES6 modules (usable from JS as `import * from 'myFile'`).
+### Export an ES6 Default Value
 
-The output format is [configurable in bsb](build-configuration.md#package-specs).
-
-### Export an ES6 default value
-
-If your JS project is using ES6 modules, you're likely exporting & importing some default values:
+If your JS project uses ES6 modules, you're likely exporting & importing some default values:
 
 ```js
 // student.js
@@ -95,12 +113,12 @@ export default name = "Al";
 import studentName from 'student.js';
 ```
 
-Technically, since a ReScript file maps to a module, there's no such thing as "default" export, only named ones. However, we've made an exception to support default module when you do the following:
+A JavaScript default export is really just syntax sugar for a named export implicitly called `default` (now you know!). So to export a default value from ReScript, you can just do:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+<CodeTab labels={["ReScript", "JS Output (CommonJS)", "JS Output (ES6)"]}>
 
 ```res example
-/* FavoriteStudent.res */
+// ReScriptStudent.res
 let default = "Bob"
 ```
 ```js
@@ -108,20 +126,25 @@ var $$default = "Bob";
 
 exports.$$default = $$default;
 exports.default = $$default;
+// informal transpiler-compatible marker of a default export compiled from ES6
 exports.__esModule = true;
+```
+```js
+var $$default = "Bob";
+
+export {
+  $$default,
+  $$default as default,
+}
 ```
 
 </CodeTab>
 
-You can then require the default as normal JS side:
+You can then import this default export as usual on the JS side:
 
 ```js
 // teacher2.js
-import studentName from 'FavoriteStudent.js';
+import studentName from 'ReScriptStudent.js';
 ```
 
-**Note**: the above JS snippet _only_ works if you're using that ES6 import/export syntax in JS. If you're still using `require`, you'd need to do:
-
-```js
-let studentName = require('FavoriteStudent').default;
-```
+If your JavaScript's ES6 default import is transpiled by Babel/Webpack/Jest into CommonJS `require`s, we've taken care of that too! See the CommonJS output tab for `__esModule`.
