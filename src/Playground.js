@@ -1336,7 +1336,7 @@ function Playground$Settings(Props) {
     evt.preventDefault();
     return Curry._1(setConfig, {
                 module_system: "nodejs",
-                warn_flags: "+a-4-9-20-40-41-42-50-61-102"
+                warn_flags: "+a-4-9-20-40-41-42-50-61-102-109"
               });
   };
   var titleClass = "text-18 font-bold mb-2";

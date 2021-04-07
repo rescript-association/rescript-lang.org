@@ -1036,7 +1036,7 @@ module Settings = {
       ReactEvent.Mouse.preventDefault(evt)
       let defaultConfig = {
         Api.Config.module_system: "nodejs",
-        warn_flags: "+a-4-9-20-40-41-42-50-61-102",
+        warn_flags: "+a-4-9-20-40-41-42-50-61-102-109",
       }
       setConfig(defaultConfig)
     }
