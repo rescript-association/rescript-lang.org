@@ -517,6 +517,17 @@ module MakeSet: MakeSetType = (Item: Comparable) => {
 
 </CodeTab>
 
+## Exotic Module Filenames
+
+**Since 8.3**
+
+It is possible to use non-conventional characters in your filenames (which is sometimes needed for specific JS frameworks). Here are some examples:
+
+- `src/Button.ios.res`
+- `pages/[id].res`
+
+Please note that modules with an exotic filename will not be accessible from other ReScript modules.
+
 ## Tips & Tricks
 
 Modules and functors are at a different "layer" of language than the rest (functions, let bindings, data structures, etc.). For example, you can't easily pass them into a tuple or record. Use them judiciously, if ever! Lots of times, just a record or a function is enough.
