@@ -1,5 +1,5 @@
 // This is used for the version dropdown in the manual layouts
-let allManualVersions = [("latest", "v8.2.0"), ("v8.0.0", "< v8.2.0")]
+let allManualVersions = [("latest", "v8.4.0"), ("v8.0.0", "< v8.2.0")]
 
 // Used for the DocsOverview and collapsible navigation
 let languageManual = version => {

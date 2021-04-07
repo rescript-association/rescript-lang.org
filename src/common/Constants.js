@@ -4,7 +4,7 @@
 var allManualVersions = [
   [
     "latest",
-    "v8.2.0"
+    "v8.4.0"
   ],
   [
     "v8.0.0",
