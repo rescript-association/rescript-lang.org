@@ -170,7 +170,7 @@ If you're receiving, for example, a JS string that can be `null` and `undefined`
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-@bs.module("MyConstant") external myId: Js.Nullable.t<string> = "myId"
+@module("MyConstant") external myId: Js.Nullable.t<string> = "myId"
 ```
 ```js
 // Empty output
@@ -183,7 +183,7 @@ To create such a nullable string from our side (presumably to pass it to the JS 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-@bs.module("MyIdValidator") external validate: Js.Nullable.t<string> => bool = "validate"
+@module("MyIdValidator") external validate: Js.Nullable.t<string> => bool = "validate"
 let personId: Js.Nullable.t<string> = Js.Nullable.return("abc123")
 
 let result = validate(personId)

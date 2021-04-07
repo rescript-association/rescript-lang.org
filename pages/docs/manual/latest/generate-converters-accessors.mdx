@@ -1,6 +1,6 @@
 ---
 title: "Generate Converters & Helpers"
-description: "All about the @bs.deriving decorator, and how to generate code from types"
+description: "All about the @deriving decorator, and how to generate code from types"
 canonical: "/docs/manual/latest/generate-converters-accessors"
 ---
 
@@ -14,20 +14,18 @@ When using ReScript, you will sometimes come into situations where you want to
 - Convert a record type into an abstract type with generated creation, accessor and method functions.
 - Generate some other helper functions, such as functions from record attribute names.
 
-You can use the `@bs.deriving` decorator for different code generation scenarios. All different options and configurations will be discussed on this page.
+You can use the `@deriving` decorator for different code generation scenarios. All different options and configurations will be discussed on this page.
 
 **Note:** Please be aware that extensive use of code generation might make it harder to understand your programs (since the code being generated is not visible in the source code, and you just need to know what kind of functions / values a decorator generates).
 
-**Another Note:** Since `v8.3` you can drop the `bs.` prefix for all our decorators (e.g. `@bs.deriving` => `@deriving`).
-
 ## Generate Functions & Plain Values for Variants
 
-Use `@bs.deriving(accessors)` on a variant type to create accessor functions for its constructors.
+Use `@deriving(accessors)` on a variant type to create accessor functions for its constructors.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-@bs.deriving(accessors)
+@deriving(accessors)
 type action =
   | Click
   | Submit(string)
@@ -71,13 +69,13 @@ Please note that in case you just want to _pipe a payload into a constructor_, y
 
 ## Generate Field Accessors for Records
 
-Use `@bs.deriving(accessors)` on a record type to create accessors for its record field names.
+Use `@deriving(accessors)` on a record type to create accessors for its record field names.
 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-@bs.deriving(accessors)
+@deriving(accessors)
 type pet = {name: string}
 
 let pets = [{name: "bob"}, {name: "bob2"}]
@@ -110,14 +108,14 @@ console.log(Belt_Array.map(pets, name).join("&"));
 ## Generate Converters for JS Object and Record
 
 > **Note:** In ReScript >= v7 [records are already compiled to JS
-> objects](bind-to-js-object#bind-to-record-like-js-objects). `@bs.deriving(jsConverter)` is therefore
+> objects](bind-to-js-object#bind-to-record-like-js-objects). `@deriving(jsConverter)` is therefore
 > obsolete and will generate a no-op function for compatibility instead.
 
-Use `@bs.deriving(jsConverter)` on a record type to create convertion functions between records / JS object runtime values.
+Use `@deriving(jsConverter)` on a record type to create convertion functions between records / JS object runtime values.
 
 
 ```res
-@bs.deriving(jsConverter)
+@deriving(jsConverter)
 type coordinates = {
   x: int,
   y: int
@@ -148,16 +146,16 @@ let jsCoordinates = coordinatesToJs({x: 1, y: 2});
 This binds to a `jsCoordinates` record (not a JS object!) that exists on the JS side, presumably created by JS calling the function `coordinatesFromJs`:
 
 ```res
-@bs.module("myGame")
+@module("myGame")
 external jsCoordinates : coordinates = "jsCoordinates";
 ```
 
 ### More Safety
 
-The above generated functions use JS object types. You can also hide this implementation detail by making the object type **abstract** by using the `newType` option with `@bs.deriving(jsConverter)`:
+The above generated functions use JS object types. You can also hide this implementation detail by making the object type **abstract** by using the `newType` option with `@deriving(jsConverter)`:
 
 ```res
-@bs.deriving({jsConverter: newType})
+@deriving({jsConverter: newType})
 type coordinates = {
   x: int,
   y: int,
@@ -190,10 +188,10 @@ Same generated output. Isn't it great that types prevent invalid accesses you'd 
 
 ## Generate Converters for JS Integer Enums and Variants
 
-Use `@bs.deriving(jsConverter)` on a variant type to create converter functions that allow back and forth conversion between JS integer enum and ReScript variant values.
+Use `@deriving(jsConverter)` on a variant type to create converter functions that allow back and forth conversion between JS integer enum and ReScript variant values.
 
 ```res
-@bs.deriving(jsConverter)
+@deriving(jsConverter)
 type fruit =
   | Apple
   | Orange
@@ -213,16 +211,16 @@ For `fruitToJs`, each fruit variant constructor would map into an integer, start
 
 For `fruitFromJs`, the return value is an `option`, because not every int maps to a constructor.
 
-You can also attach a `@bs.as(1234)` to each constructor to customize their output.
+You can also attach a `@as(1234)` to each constructor to customize their output.
 
 ### Usage
 
 ```res
-@bs.deriving(jsConverter)
+@deriving(jsConverter)
 type fruit =
   | Apple
-  | @bs.as(10) Orange
-  | @bs.as(100) Kiwi
+  | @as(10) Orange
+  | @as(100) Kiwi
   | Watermelon
 
 let zero = fruitToJs(Apple) /* 0 */
@@ -233,21 +231,21 @@ switch fruitFromJs(100) {
 }
 ```
 
-**Note**: by using `@bs.as` here, all subsequent number encoding changes. `Apple` is still `0`, `Orange` is `10`, `Kiwi` is `100` and `Watermelon` is **`101`**!
+**Note**: by using `@as` here, all subsequent number encoding changes. `Apple` is still `0`, `Orange` is `10`, `Kiwi` is `100` and `Watermelon` is **`101`**!
 
 ### More Safety
 
-Similar to the JS object <-> record deriving, you can hide the fact that the JS enum are ints by using the same `newType` option with `@bs.deriving(jsConverter)`:
+Similar to the JS object <-> record deriving, you can hide the fact that the JS enum are ints by using the same `newType` option with `@deriving(jsConverter)`:
 
 ```res
-@bs.deriving({jsConverter: newType})
+@deriving({jsConverter: newType})
 type fruit =
   | Apple
-  | @bs.as(100) Kiwi
+  | @as(100) Kiwi
   | Watermelon;
 ```
 
-This option causes `@bs.deriving(jsConverter)` to generate functions of the following types:
+This option causes `@deriving(jsConverter)` to generate functions of the following types:
 
 ```resi
 let fruitToJs: fruit => abs_fruit;
@@ -260,15 +258,15 @@ For `fruitFromJs`, the return value, unlike the previous non-abstract type case,
 #### Usage
 
 ```res
-@bs.deriving({jsConverter: newType})
+@deriving({jsConverter: newType})
 type fruit =
   | Apple
-  | @bs.as(100) Kiwi
+  | @as(100) Kiwi
   | Watermelon
 
 let opaqueValue = fruitToJs(Apple)
 
-@bs.module("myJSFruits") external jsKiwi: abs_fruit = "iSwearThisIsAKiwi"
+@module("myJSFruits") external jsKiwi: abs_fruit = "iSwearThisIsAKiwi"
 let kiwi = fruitFromJs(jsKiwi)
 
 let error = fruitFromJs(100) /* nope, can't take a random int */
@@ -276,17 +274,17 @@ let error = fruitFromJs(100) /* nope, can't take a random int */
 
 ## Generate Converters for JS String Enums and Polymorphic Variants
 
-> **Note**: Since ReScript v8.2, polymorphic variants are already compiled to strings, so this feature is getting deprecated at some point. It's currently still useful for aliasing JS output with `@bs.as`.
+> **Note**: Since ReScript v8.2, polymorphic variants are already compiled to strings, so this feature is getting deprecated at some point. It's currently still useful for aliasing JS output with `@as`.
 
-Similarly as with [generating int converters](#generate-converters-between-js-integer-enums-and-variants), use `@bs.deriving(jsConverter)` on a polymorphic variant type to create converter functions for JS string and ReScript poly variant values.
+Similarly as with [generating int converters](#generate-converters-between-js-integer-enums-and-variants), use `@deriving(jsConverter)` on a polymorphic variant type to create converter functions for JS string and ReScript poly variant values.
 
 ### Usage
 
 ```res
-@bs.deriving(jsConverter)
+@deriving(jsConverter)
 type fruit = [
   | #Apple
-  | @bs.as("miniCoconut") #Kiwi
+  | @as("miniCoconut") #Kiwi
   | #Watermelon
 ]
 
@@ -294,39 +292,39 @@ let appleString = fruitToJs(#Apple); /* "Apple" */
 let kiwiString = fruitToJs(#Kiwi); /* "miniCoconut" */
 ```
 
-As in similar use-cases before, you can also use `@bs.deriving({jsConverter: newType})` to generate abstract types instead.
+As in similar use-cases before, you can also use `@deriving({jsConverter: newType})` to generate abstract types instead.
 
 ## Convert Record Type to Abstract Record
 
 > **Note**: For ReScript >= v7, we recommend using [plain records to compile to JS objects](bind-to-js-object#bind-to-record-like-js-objects).
 > This feature might still be useful for certain scenarios, but the ergonomics might be worse
 
-Use `@bs.deriving(abstract)` on a record type to expand the type into a creation, and a set of getter / setter functions for fields and methods.
+Use `@deriving(abstract)` on a record type to expand the type into a creation, and a set of getter / setter functions for fields and methods.
 
-Usually you'd just use ReScript records to compile to JS objects of the same shape. There is still one particular use-case left where the `@bs.deriving(abstract)` convertion is still useful: Whenever you need compile a record with an optional field where the JS object attribute shouldn't show up in the resulting JS when undefined (e.g. `{name: "Carl", age: undefined}` vs `{name: "Carl"}`). Check the [Optional Labels](#optional-labels) section for more infos on this particular scenario.
+Usually you'd just use ReScript records to compile to JS objects of the same shape. There is still one particular use-case left where the `@deriving(abstract)` convertion is still useful: Whenever you need compile a record with an optional field where the JS object attribute shouldn't show up in the resulting JS when undefined (e.g. `{name: "Carl", age: undefined}` vs `{name: "Carl"}`). Check the [Optional Labels](#optional-labels) section for more infos on this particular scenario.
 
 ### Usage Example
 
 ```res
-@bs.deriving(abstract)
+@deriving(abstract)
 type person = {
   name: string,
   age: int,
   job: string,
 };
 
-@bs.val external john : person = "john";
+@val external john : person = "john";
 ```
 
-**Note**: the `person` type is **not** a record! It's a record-looking type that uses the record's syntax and type-checking. The `@bs.deriving(abstract)` decorator turns it into an "abstract type" (aka you don't know what the actual value's shape).
+**Note**: the `person` type is **not** a record! It's a record-looking type that uses the record's syntax and type-checking. The `@deriving(abstract)` decorator turns it into an "abstract type" (aka you don't know what the actual value's shape).
 
 ### Creation
 
 You don't have to bind to an existing `person` object from the JS side. You can also create such `person` JS object from ReScript's side.
 
-Since `@bs.deriving(abstract)` turns the above `person` record into an abstract type, you can't directly create a person record as you would usually. This doesn't work: `{name: "Joe", age: 20, job: "teacher"}`.
+Since `@deriving(abstract)` turns the above `person` record into an abstract type, you can't directly create a person record as you would usually. This doesn't work: `{name: "Joe", age: 20, job: "teacher"}`.
 
-Instead, you'd use the **creation function** of the same name as the record type, implicitly generated by the `@bs.deriving(abstract)` annotation:
+Instead, you'd use the **creation function** of the same name as the record type, implicitly generated by the `@deriving(abstract)` annotation:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -348,15 +346,15 @@ Note how in the example above there is no JS runtime overhead.
 
 #### Rename Fields
 
-Sometimes you might be binding to a JS object with field names that are invalid in ReScript. Two examples would be `{type: "foo"}` (reserved keyword in ReScript) and `{"aria-checked": true}`. Choose a valid field name then use `@bs.as` to circumvent this:
+Sometimes you might be binding to a JS object with field names that are invalid in ReScript. Two examples would be `{type: "foo"}` (reserved keyword in ReScript) and `{"aria-checked": true}`. Choose a valid field name then use `@as` to circumvent this:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-@bs.deriving(abstract)
+@deriving(abstract)
 type data = {
-  @bs.as("type") type_: string,
-  @bs.as("aria-label") ariaLabel: string,
+  @as("type") type_: string,
+  @as("aria-label") ariaLabel: string,
 };
 
 let d = data(~type_="message", ~ariaLabel="hello");
@@ -378,9 +376,9 @@ You can omit fields during the creation of the object:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-@bs.deriving(abstract)
+@deriving(abstract)
 type person = {
-  @bs.optional name: string,
+  @optional name: string,
   age: int,
   job: string,
 };
@@ -399,17 +397,17 @@ var joe = {
 
 Optional values that are not defined, will not show up as an attribute in the resulting JS object. In the example above, you will see that `name` was omitted.
 
-**Note** that the `@bs.optional` tag turned the `name` field optional. Merely typing `name` as `option<string>` wouldn't work.
+**Note** that the `@optional` tag turned the `name` field optional. Merely typing `name` as `option<string>` wouldn't work.
 
 **Note**: now that your creation function contains optional fields, we mandate an unlabeled `()` at the end to indicate that [you've finished applying the function](function#optional-labeled-arguments).
 
 ### Accessors
 
-Again, since `@bs.deriving(abstract)` hides the actual record shape, you can't access a field using e.g. `joe.age`. We remediate this by generating getter and setters.
+Again, since `@deriving(abstract)` hides the actual record shape, you can't access a field using e.g. `joe.age`. We remediate this by generating getter and setters.
 
 #### Read
 
-One getter function is generated per `@bs.deriving(abstract)` record type field. In the above example, you'd get 3 functions: `nameGet`, `ageGet`, `jobGet`. They take in a `person` value and return `string`, `int`, `string` respectively:
+One getter function is generated per `@deriving(abstract)` record type field. In the above example, you'd get 3 functions: `nameGet`, `ageGet`, `jobGet`. They take in a `person` value and return `string`, `int`, `string` respectively:
 
 ```res
 let twenty = ageGet(joe)
@@ -424,7 +422,7 @@ let twenty = joe->ageGet
 If you prefer shorter names for the getter functions, we also support a `light` setting:
 
 ```res
-@bs.deriving({abstract: light})
+@deriving({abstract: light})
 type person = {
   name: string,
   age: int,
@@ -438,10 +436,10 @@ The getter functions will now have the same names as the object fields themselve
 
 #### Write
 
-A `@bs.deriving(abstract)` value is immutable by default. To mutate such value, you need to first mark one of the abstract record field as `mutable`, the same way you'd mark a normal record as mutable:
+A `@deriving(abstract)` value is immutable by default. To mutate such value, you need to first mark one of the abstract record field as `mutable`, the same way you'd mark a normal record as mutable:
 
 ```res
-@bs.deriving(abstract)
+@deriving(abstract)
 type person = {
   name: string,
   mutable age: int,
@@ -464,11 +462,11 @@ joe->ageSet(21)
 
 ### Methods
 
-You can attach arbitrary methods onto a type (_any_ type, as a matter of fact. Not just `@bs.deriving(abstract)` record types). See [Object Method](bind-to-js-function#object-method) in the "Bind to JS Function" section for more infos.
+You can attach arbitrary methods onto a type (_any_ type, as a matter of fact. Not just `@deriving(abstract)` record types). See [Object Method](bind-to-js-function#object-method) in the "Bind to JS Function" section for more infos.
 
 ### Tips & Tricks
 
-You can leverage `@bs.deriving(abstract)` for finer-grained access control.
+You can leverage `@deriving(abstract)` for finer-grained access control.
 
 #### Mutability
 
@@ -476,18 +474,18 @@ You can mark a field as mutable in the implementation (`.res`) file, while _hidi
 
 ```res
 /* test.res */
-@bs.deriving(abstract)
+@deriving(abstract)
 type cord = {
-  @bs.optional mutable x: int,
+  @optional mutable x: int,
   y: int,
 };
 ```
 
 ```resi
 /* test.resi */
-@bs.deriving(abstract)
+@deriving(abstract)
 type cord = {
-  @bs.optional x: int,
+  @optional x: int,
   y: int,
 };
 ```
@@ -499,9 +497,9 @@ Tada! Now you can mutate inside your own file as much as you want, and prevent o
 Mark the record as `private` to disable the creation function:
 
 ```res
-@bs.deriving(abstract)
+@deriving(abstract)
 type cord = private {
-  @bs.optional x: int,
+  @optional x: int,
   y: int,
 }
 ```
@@ -517,10 +515,10 @@ same scope where the type is defined, you will eventually run into value shadowi
 **For example:**
 
 ```res
-@bs.deriving(abstract)
+@deriving(abstract)
 type person = {name: string}
 
-@bs.deriving(abstract)
+@deriving(abstract)
 type cat = {
   name: string,
   isLazy: bool,
@@ -538,12 +536,12 @@ functions and later use them via local open statements:
 
 ```res
 module Person = {
-  @bs.deriving(abstract)
+  @deriving(abstract)
   type t = {name: string}
 }
 
 module Cat = {
-  @bs.deriving(abstract)
+  @deriving(abstract)
   type t = {
     name: string,
     isLazy: bool,
@@ -569,7 +567,7 @@ let whisperCatName = {
 
 ## Convert External into JS Object Creation Function
 
-Use `@bs.obj` on an `external` binding to create a function that, when called, will evaluate to a JS object with fields corresponding to the function's parameter labels.
+Use `@obj` on an `external` binding to create a function that, when called, will evaluate to a JS object with fields corresponding to the function's parameter labels.
 
 This is very handy because you can make some of those labelled parameters optional and if you don't pass them in, the output object won't include the corresponding fields. Thus you can use it to dynamically create objects with the subset of fields you need at runtime.
 
@@ -588,7 +586,7 @@ var homeRoute = {
 But only the first three fields are required; the options field is optional. You can declare the binding function like so:
 
 ```res
-@bs.obj
+@obj
 external route: (
   ~\"type": string,
   ~path: string,
