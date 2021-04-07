@@ -86,9 +86,9 @@ In rare cases (mostly for JS interop reasons), it's also possible to define "inv
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-type numbers = [#\"1" | #\"2"]
-let one = #\"1"
-let oneA = #\"1a"
+type numbers = [#"1" | #"2"]
+let one = #"1"
+let oneA = #"1a"
 ```
 
 ```js
@@ -98,7 +98,7 @@ var oneA = "1a";
 
 </CodeTab>
 
-**Note:** The `\` character will be dropped in future ReScript versions for a cleaner look (`#"1"`).
+**Note:** For ReScript versions < 9.0 you'll need to use the `\` character as an escape sequence to represent invalid identifiers (e.g. `#\"1"`).
 
 ### Constructor Arguments
 
