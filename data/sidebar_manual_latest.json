@@ -53,6 +53,7 @@
     "build-overview",
     "build-configuration",
     "build-configuration-schema",
+    "build-monorepos",
     "interop-with-js-build-systems",
     "build-performance"
   ],
