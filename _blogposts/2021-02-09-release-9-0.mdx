@@ -35,48 +35,8 @@ Our compiler comes with a set of stdlib modules (such as `Belt`, `Pervasives`, e
 
 In previous versions, users couldn't ship their compiled JS code without defining a `package.json` dependency on `bs-platform`. Whenever a ReScript developer wanted to publish a package just for pure JS consumption / lean container deployment, they were required to use a bundler to bundle up their library / stdlib code, which made things way more complex and harder to understand.
 
-To fix this problem, we now publish our pre-compiled stdlib JS files as a separate npm package called [`@rescript/std`](https://www.npmjs.com/package/@rescript/std). Each new `bs-platform` release has a matching `@rescript/std` release for runtime compatibility.
 
-We also introduced a new configuration within our `bsconfig.json` file to tell the compiler to use our pre-compiled package instead:
-
-```json
-{
-  /* ... */
-  "external-stdlib" : "@rescript/std"
-}
-```
-
-With this configuration set, compiled JS code will now point to the defined `external-stdlib` path:
-
-<CodeTab labels={["ReScript", "JavaScript"]}>
-
-```res
-Belt.Array.forEach([1, 2, 3], (num) => Js.log(num))
-```
-
-```js
-// Note the import path starting with "@rescript/std"
-import * as Belt_Array from "@rescript/std/lib/es6/belt_Array.js";
-
-Belt_Array.forEach([
-      1,
-      2,
-      3
-    ], (function (num) {
-        console.log(num);
-        
-      }));
-```
-
-</CodeTab>
-
-The JavaScript output above was compiled with an `es6` target, but will also work with `commonjs`.
-
-**Important:** When using this option, you need to make sure that the version number of `bs-platform` and `@rescript/std` matches with the same version number in your `package.json` file, otherwise you'll eventually run into runtime problems due to mismatching stdlib behavior!
-
-To prevent unnecessary complications, only use this feature when...
-- You want to ship a library for JS / TS consumers without making them depend on `bs-platform`
-- You can't depend on `bs-platform` due to toolchain size (docker containers, low-storage deployment devices, etc)
+To fix this problem, we introduced an `external-stdlib` configuration that allows specifying a pre-compiled stdlib npm package (`@rescript/std`). More details on how to use that feature can be found in our [External Stdlib](/docs/manual/latest/build-external-stdlib) documentation.
 
 ### Less Bundle Bloat when Adding ReScript 
 

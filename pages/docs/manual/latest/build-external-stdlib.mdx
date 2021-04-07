@@ -1,0 +1,66 @@
+---
+title: "External Stdlib"
+metaTitle: "External Stdlib"
+description: "Configuring an external ReScript stdlib package"
+canonical: "/docs/manual/latest/build-external-stdlib"
+---
+
+# External Stdlib
+
+**Since 9.0**
+
+In a typical ReScript application, you'd ship a package with an npm dependency to `bs-platform` (`rescript`), which means downloading several tens of megabytes of executables.
+
+Whenever a ReScript developer wants to publish a package just for pure JS consumption / lean container deployment, they would be required to use a bundler to bundle up their library / stdlib code, which is not ideal. 
+
+To fix this problem, you can just depend on our pre-compiled stdlib JS files, published as a separate npm package called [`@rescript/std`](https://www.npmjs.com/package/@rescript/std). Each new ReScript release has a matching `@rescript/std` release for runtime compatibility.
+
+## Configuration
+
+For example, let's assume we want to build a JS package that is built on ReScript 9.0. We'd first install our `@rescript/std` package:
+
+```
+npm install bs-platform@9.0.0 --save-dev
+npm install @rescript/std@9.0.0 --save
+```
+
+In your `bsconfig.json`, set up following configuration:
+
+```json
+{
+  /* ... */
+  "external-stdlib" : "@rescript/std"
+}
+```
+
+With this configuration set, compiled JS code will now point to the defined external-stdlib path:
+
+<CodeTab labels={["ReScript", "JavaScript"]}>
+
+```res
+Belt.Array.forEach([1, 2, 3], (num) => Js.log(num))
+```
+
+```js
+// Note the import path starting with "@rescript/std"
+import * as Belt_Array from "@rescript/std/lib/es6/belt_Array.js";
+
+Belt_Array.forEach([
+      1,
+      2,
+      3
+    ], (function (num) {
+        console.log(num);
+        
+      }));
+```
+
+</CodeTab>
+
+The JavaScript output above was compiled with an `es6` target, but will also work with `commonjs`.
+
+**Important:** When using this option, you need to make sure that the version number of `bs-platform` and `@rescript/std` matches with the same version number in your `package.json` file, otherwise you'll eventually run into runtime problems due to mismatching stdlib behavior!
+
+To prevent unnecessary complications, only use this feature when...
+- You want to ship a library for JS / TS consumers without making them depend on `bs-platform`
+- You can't depend on `bs-platform` due to toolchain size (docker containers, low-storage deployment devices, etc)
