@@ -55,9 +55,9 @@ dependent's command line flags for building binary artifacts. Such strategy bene
 
 ### Introducing `pinned-dependencies`
 
-To make `bsb -make-world` more practical for e.g. monorepo setups (`lerna`, `yarn workspaces`, etc.), we introduced a new concept called `pinned-dependencies`. A pinned dependency allows us to automatically rebuild packages that are pinned by a toplevel package, like your final webapp.
+To make `bsb -make-world` more practical for e.g. multi-package setups (`lerna`, `yarn workspaces`, etc.), we introduced a new concept called `pinned-dependencies`. A pinned dependency allows you to automatically rebuild packages that are pinned by a toplevel package, like your final webapp.
 
-Please refer to our [Monorepo Setup](/docs/manual/latest/build-monorepos) docs for more information on how to use `pinned-dependencies` with different monorepo setups.
+Please refer to our [pinned dependencies](/docs/manual/latest/build-pinned-dependencies) docs for more details.
 
 ### More robust handling of removal of staled output
 
