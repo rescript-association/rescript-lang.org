@@ -1,17 +1,22 @@
 ---
-title: "Monorepo Setup"
-metaTitle: "Monorepo Setup"
-description: "Configuring ReScript in a monorepo like setup"
-canonical: "/docs/manual/latest/build-monorepos"
+title: "Pinned Dependencies"
+metaTitle: "Pinned Dependencies"
+description: "Handling multiple packages within one ReScript project with pinned dependencies"
+canonical: "/docs/manual/latest/build-pinned-dependencies"
 ---
 
-# Monorepo Setup
+# Pinned Dependencies
 
 **Since 8.4**
 
-We usually recommend using ReScript in a single-codebase style, where there is only one `bsconfig.json` file for the whole codebase. Many JavaScript libraries maintain multiple packages in one single codebase though, and use `yarn workspaces` to cross-link packages locally for development.
+Usually we'd recommend to use ReScript in a single-codebase style: One `bsconfig.json` file for the whole codebase.
 
-This workflow is not straightforward for ReScript usage, so we need to explain some additional concepts to make this work. There are three different kinds of packages:
+There are scenarios where you still want to connect and build multiple independent ReScript packages for one main project though. This is where `pinned-dependencies` come into play.
+
+
+### Package Types
+
+Before we go into detail, let's first explain all the different package types recognized by the build system:
 
 - Toplevel (this is usually the final app you are building, which has dependencies to other packages)
 - Pinned dependencies (these are your local packages that should always rebuild when you build your toplevel, those should be listed in `bs-dependencies` and `pinned-dependencies`)
@@ -19,7 +24,7 @@ This workflow is not straightforward for ReScript usage, so we need to explain s
 
 Whenever a package is being built (`bsb -make-world`), the build system will build the toplevel package with its pinned-dependencies. So any changes made in a pinned dependency will automatically be reflected in the final app.
 
-## Build System Package Rules
+### Build System Package Rules
 
 The build system respects the following rules for each package type:
 
@@ -43,6 +48,8 @@ The build system respects the following rules for each package type:
 - Ignores dev directories
 - Ignores pinned dependencies
 - Ignores custom generator rules
+
+So with that knowledge in mind, let's dive into some more concrete examples to see our `pinned dependencies` in action.
 
 ## Examples
 
