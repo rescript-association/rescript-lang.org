@@ -25,13 +25,13 @@ The format is [configurable in bsb](build-configuration.md#package-specs).
 
 ### Import a JavaScript Module's Named Export
 
-Use the `bs.module` [external](external.md):
+Use the `module` [external](external.md):
 
 <CodeTab labels={["ReScript", "JS Output (CommonJS)", "JS Output (ES6)"]}>
 
 ```res example
 // Import nodejs' path.dirname
-@bs.module("path") external dirname: string => string = "dirname"
+@module("path") external dirname: string => string = "dirname"
 let root = dirname("/User/github") // returns "User"
 ```
 ```js
@@ -47,7 +47,7 @@ var root = Path.dirname("/User/github");
 
 Here's what the `external` does:
 
-- `@bs.module("path")`: pass the name of the JS module; in this case, `"path"`. The string can be anything: `"./src/myJsFile"`, `"@myNpmNamespace/myLib"`, etc.
+- `@module("path")`: pass the name of the JS module; in this case, `"path"`. The string can be anything: `"./src/myJsFile"`, `"@myNpmNamespace/myLib"`, etc.
 - `external`: the general keyword for declaring a value that exists on the JS side.
 - `dirname`: the binding name you'll use on the ReScript side.
 - `string => string`: the type signature of `dirname`. Mandatory for `external`s.
@@ -55,12 +55,12 @@ Here's what the `external` does:
 
 ### Import a JavaScript Module As a Single Value
 
-By omitting the string argument to `bs.module`, you bind to the whole JS module:
+By omitting the string argument to `module`, you bind to the whole JS module:
 
 <CodeTab labels={["ReScript", "JS Output (CommonJS)", "JS Output (ES6)"]}>
 
 ```res example
-@bs.module external leftPad: string => int => string = "./leftPad"
+@module external leftPad: string => int => string = "./leftPad"
 let paddedResult = leftPad("hi", 5)
 ```
 ```js
@@ -83,7 +83,7 @@ Use the value `"default"` on the right hand side:
 <CodeTab labels={["ReScript", "JS Output (ES6)"]}>
 
 ```res example
-@bs.module("./student") external studentName: string = "default"
+@module("./student") external studentName: string = "default"
 Js.log(studentName)
 ```
 ```js

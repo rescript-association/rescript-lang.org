@@ -15,7 +15,7 @@ JavaScript objects are a combination of several use-cases:
 
 ReScript cleanly separates the binding methods for JS object based on these 4 use-cases. This page documents the first three. Binding to JS module objects is described in the [Import from/Export to JS](import-from-export-to-js.md) section.
 
-<!-- TODO: mention bs.scope here too? -->
+<!-- TODO: mention scope here too? -->
 
 ## Bind to Record-like JS Objects
 
@@ -32,7 +32,7 @@ type person = {
   age: int,
 }
 
-@bs.module("MySchool") external john: person = "john"
+@module("MySchool") external john: person = "john"
 
 let johnName = john.name
 ```
@@ -44,7 +44,7 @@ var johnName = MySchool.john.name;
 
 </CodeTab>
 
-External is documented [here](external.md). `@bs.module` is documented [here](import-from-export-to-js.md).
+External is documented [here](external.md). `@module` is documented [here](import-from-export-to-js.md).
 
 ### Bind Using ReScript Object
 
@@ -59,7 +59,7 @@ type person = {
   "age": int,
 }
 
-@bs.module("MySchool") external john: person = "john"
+@module("MySchool") external john: person = "john"
 
 let johnName = john["name"]
 ```
@@ -71,31 +71,31 @@ var johnName = MySchool.john.name;
 
 </CodeTab>
 
-### Bind Using Special `@bs` Getters & Setters
+### Bind Using Special Getter and Setter Attributes
 
-Alternatively, you can use `bs.get` and `bs.set` to bind to individual fields of a JS object:
+Alternatively, you can use `get` and `set` to bind to individual fields of a JS object:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
 type textarea
-@bs.set external setName: (textarea, string) => unit = "name"
-@bs.get external getName: textarea => string = "name"
+@set external setName: (textarea, string) => unit = "name"
+@get external getName: textarea => string = "name"
 ```
 ```js
 ```
 
 </CodeTab>
 
-You can also use `bs.get_index` and `bs.set_index` to access a dynamic property or an index:
+You can also use `get_index` and `set_index` to access a dynamic property or an index:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
 type t
-@bs.new external create: int => t = "Int32Array"
-@bs.get_index external get: (t, int) => int = ""
-@bs.set_index external set: (t, int, int) => unit = ""
+@new external create: int => t = "Int32Array"
+@get_index external get: (t, int) => int = ""
+@set_index external set: (t, int, int) => unit = ""
 
 let i32arr = create(3)
 i32arr->set(0, 42)
@@ -120,13 +120,13 @@ Then it's not really an object, it's a hash map. Use [Js.Dict](api/js/dict), whi
 
 ## Bind to a JS Object That's a Class
 
-Use `bs.new` to emulate e.g. `new Date()`:
+Use `new` to emulate e.g. `new Date()`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
 type t
-@bs.new external createDate: unit => t = "Date"
+@new external createDate: unit => t = "Date"
 
 let date = createDate()
 ```
@@ -136,13 +136,13 @@ var date = new Date();
 
 </CodeTab>
 
-You can chain `bs.new` and `bs.module` if the JS module you're importing is itself a class:
+You can chain `new` and `module` if the JS module you're importing is itself a class:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
 type t
-@bs.new @bs.module external book: unit => t = "Book"
+@new @module external book: unit => t = "Book"
 let myBook = book()
 ```
 ```js

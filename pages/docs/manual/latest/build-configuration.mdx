@@ -80,6 +80,18 @@ List of ReScript dependencies. Just like `package.json`'s dependencies, they'll 
 
 Note that only sources marked with `"type":"dev"` will be able to resolve modules from `bs-dev-dependencies`.
 
+## pinned-dependencies
+
+**Since 8.4**: List of pinned dependencies. A pinned dependency will always be rebuilt whenever you build a toplevel package (e.g. your main app) with `bsb -make-world`.
+
+This is useful for working on multiple independent ReScript packages simultaneously. More usage details can be found in our dedicated [pinned dependencies](./build-pinned-dependencies) page.
+
+## external-stdlib
+
+**Since 9.0**: This setting allows depending on an externally built stdlib package (instead of a locally built stdlib runtime). Useful for shipping packages that are only consumed in JS or TS without any dependencies to the ReScript development toolchain.
+
+More details can be found on our [external stdlib](./build-external-stdlib) page.
+
 ## reason, refmt (old)
 
 `reason` config is enabled by default. To turn on JSX for [ReasonReact](https://reasonml.github.io/reason-react/), specify:
@@ -136,7 +148,7 @@ This configuration only applies to you, when you develop the project. When the p
 
 ## suffix
 
-Either `".js"` or `".bs.js"`. Strongly prefer the latter.
+Either `".js"`, `".mjs"`, `".cjs"` or `".bs.js"`. Currently prefer `bs.js` for now.
 
 ### Design Decisions
 
@@ -145,7 +157,7 @@ Generating JS files with the `.bs.js` suffix means that, on the JS side, you can
 - It's immediately clear that we're dealing with a generated JS file here.
 - It avoids clashes with a potential `theFile.js` file in the same folder.
 - It avoids the need of using a build system loader for ReScript files. This + in-source build means integrating a ReScript project into your pure JS codebase **basically doesn't touch anything in your build pipeline at all**.
-- The `.bs.js` suffix [lets bsb track JS artifacts much better](build-overview.md#tips-tricks).
+- [genType](/docs/gentype/latest/introduction) requires `bs.js` for compiled JS artifacts. If you are using `genType`, you need to use `bs.js` for now.
 
 ## warnings
 

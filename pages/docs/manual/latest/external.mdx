@@ -16,7 +16,7 @@ canonical: "/docs/manual/latest/external"
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-@bs.val external setTimeout: (unit => unit, int) => float = "setTimeout"
+@val external setTimeout: (unit => unit, int) => float = "setTimeout"
 ```
 ```js
 // Empty output
@@ -26,9 +26,9 @@ canonical: "/docs/manual/latest/external"
 
 There are several kinds of `external`s, differentiated and/or augmented through the `@bs` notation they carry. This page deals with the general, shared mechanism behind most `external`s. The different `@bs` annotations are documented in their respective pages later. A few notable ones:
 
-- `@bs.val`, `@bs.scope`: [bind to global JS values](bind-to-global-js-values).
-- `@bs.module`: [bind to JS imported/exported values](import-from-export-to-js).
-- `@bs.send`: [bind to JS methods](bind-to-js-function).
+- `@val`, `@scope`: [bind to global JS values](bind-to-global-js-values).
+- `@module`: [bind to JS imported/exported values](import-from-export-to-js).
+- `@send`: [bind to JS methods](bind-to-js-function).
 
 ## Usage
 
@@ -43,7 +43,7 @@ Once declared, you can use an `external` as a normal value, just like a let bind
 ```res example
 // The type of document is just some random type 'a
 // that we won't bother to specify
-@bs.val external document: 'a = "document"
+@val external document: 'a = "document"
 
 // call a method
 document["addEventListener"]("mouseup", _event => {
@@ -78,7 +78,7 @@ However, if you want to more rigidly bind to the JavaScript library you want, ke
 
 Additionally, no extra ReScript-specific runtime is better for output readability.
 
-> **Note:** do also use `external`s and the `@bs.blabla` attributes in the interface files. Otherwise the inlining won't happen.
+> **Note:** do also use `external`s and the `@blabla` attributes in the interface files. Otherwise the inlining won't happen.
 
 ## Design Decisions
 

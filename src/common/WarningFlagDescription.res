@@ -1,6 +1,3 @@
-// This file was automatically converted to ReScript from 'WarningFlagDescription.re'
-// Check the output and make sure to delete the original file
-
 let numeric = [
   (1, "Suspicious-looking start-of-comment mark."),
   (2, "Suspicious-looking end-of-comment mark."),
@@ -90,6 +87,7 @@ let numeric = [
     "BuckleScript warning: Integer literal exceeds the range of representable integers of type int",
   ),
   (108, "BuckleScript warning: Uninterpreted delimiters (for unicode)"),
+  (109, "Toplevel expression has unit type"),
 ]
 
 let lastWarningNumber = 108

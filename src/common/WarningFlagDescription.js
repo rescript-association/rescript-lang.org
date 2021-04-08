@@ -288,6 +288,10 @@ var numeric = [
   [
     108,
     "BuckleScript warning: Uninterpreted delimiters (for unicode)"
+  ],
+  [
+    109,
+    "Toplevel expression has unit type"
   ]
 ];
 

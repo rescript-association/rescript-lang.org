@@ -55,30 +55,9 @@ dependent's command line flags for building binary artifacts. Such strategy bene
 
 ### Introducing `pinned-dependencies`
 
-To make `bsb -make-world` more practical, we also introduce a new concept called: `pinned-dependencies`.
-In general, packages are classified as three categories:
+To make `bsb -make-world` more practical for e.g. multi-package setups (`lerna`, `yarn workspaces`, etc.), we introduced a new concept called `pinned-dependencies`. A pinned dependency allows you to automatically rebuild packages that are pinned by a toplevel package, like your final webapp.
 
-- toplevel
-  - warnings reported
-  - warn-error respected
-  - build dev dependency
-  - run custom rules
-  - package-specs like ES6/CommonJS overrides all its dependencies
-- pinned dependencies
-  - warnings reported
-  - warn-error respected
-  - build dev dependency
-  - run custom rules
-- normal dependencies
-  - warnings, warn-error ignored
-  - ignore dev directories
-  - ignore custom generator rules
-
-Previously, we only had `toplevel` and `normal dependencies`, by introducing `pinned-dependencies`,
-such package will be built mostly like `toplevel` packages.
-
-The usage is quite simple, add `pinned-dependencies` in the toplevel package's `bsconfig.json`.
-Note such field only make sense in toplevel's configuration.
+Please refer to our [pinned dependencies](/docs/manual/latest/build-pinned-dependencies) docs for more details.
 
 ### More robust handling of removal of staled output
 

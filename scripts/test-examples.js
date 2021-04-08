@@ -9,7 +9,7 @@ let tempFileNameRegex = /_tempFile\.res/g
 // TODO: In the future we need to use the appropriate rescript version for each doc version variant
 //       see the package.json on how to define another rescript version
 let compilersDir = path.join(__dirname, "..", "compilers")
-let bsc = path.join(compilersDir, 'node_modules', 'rescript-820', process.platform, 'bsc.exe')
+let bsc = path.join(compilersDir, 'node_modules', 'rescript-902', process.platform, 'bsc.exe')
 
 const prepareCompilers = () => {
   if (fs.existsSync(bsc)) {
@@ -76,7 +76,8 @@ glob.sync(__dirname + '/../pages/docs/manual/latest/**/*.mdx').forEach((file) =>
   if (parsedResult != null) {
     fs.writeFileSync(tempFileName, parsedResult)
     try {
-      child_process.execFileSync(bsc, ['-i', tempFileName], {stdio: 'pipe'})
+      // -109 for suppressing `Toplevel expression is expected to have unit type.`
+      child_process.execFileSync(bsc, ['-i', tempFileName, '-w', '-109'], {stdio: 'pipe'})
     } catch (e) {
       process.stdout.write(postprocessOutput(file, e))
       success = false
