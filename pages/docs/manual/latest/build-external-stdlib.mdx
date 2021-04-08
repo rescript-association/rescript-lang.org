@@ -11,20 +11,26 @@ canonical: "/docs/manual/latest/build-external-stdlib"
 
 In a typical ReScript application, you'd ship a package with an npm dependency to `bs-platform` (`rescript`), which means downloading several tens of megabytes of executables.
 
-Whenever a ReScript developer wants to publish a package just for pure JS consumption / lean container deployment, they would be required to use a bundler to bundle up their library / stdlib code, which is not ideal. 
+Whenever you'd want to publish a package just for pure JS consumption / lean container deployment (package MB sizes), you'd be required to use a bundler to bundle up all the required stdlib runtime modules with your package source, which is not ideal. 
 
-To fix this problem, you can just depend on our pre-compiled stdlib JS files, published as a separate npm package called [`@rescript/std`](https://www.npmjs.com/package/@rescript/std). Each new ReScript release has a matching `@rescript/std` release for runtime compatibility.
+To fix this problem, you can configure your ReScript project to use our external stdlib package ([`@rescript/std`](https://www.npmjs.com/package/@rescript/std)) and make `bs-platform` a dev-only dependency.
+
+Every ReScript package release has a matching `@rescript/std` release for runtime compatibility.
+
+**Important:** To prevent unnecessary complications, only use this feature when...
+- You want to ship a library for JS / TS consumers without making them depend on `bs-platform`
+- You can't depend on `bs-platform` due to toolchain size (docker containers, low-storage deployment devices, etc)
 
 ## Configuration
 
-For example, let's assume we want to build a JS package that is built on ReScript 9.0. We'd first install our `@rescript/std` package:
+For example, let's assume we want to build a JS-only package that is built with ReScript 9.0. First, we would set up our dependencies like this:
 
 ```
 npm install bs-platform@9.0.0 --save-dev
 npm install @rescript/std@9.0.0 --save
 ```
 
-In your `bsconfig.json`, set up following configuration:
+In our `bsconfig.json`, we set up the following configuration:
 
 ```json
 {
@@ -33,7 +39,7 @@ In your `bsconfig.json`, set up following configuration:
 }
 ```
 
-With this configuration set, compiled JS code will now point to the defined external-stdlib path:
+Now our compiled JS code will point to the defined external-stdlib path (check the JS output of the following code snippet):
 
 <CodeTab labels={["ReScript", "JavaScript"]}>
 
@@ -42,7 +48,7 @@ Belt.Array.forEach([1, 2, 3], (num) => Js.log(num))
 ```
 
 ```js
-// Note the import path starting with "@rescript/std"
+// Note the import path starting with "@rescript/std".
 import * as Belt_Array from "@rescript/std/lib/es6/belt_Array.js";
 
 Belt_Array.forEach([
@@ -57,10 +63,5 @@ Belt_Array.forEach([
 
 </CodeTab>
 
-The JavaScript output above was compiled with an `es6` target, but will also work with `commonjs`.
+**Important:** When using the `external-stdlib` configuration, always make sure the version numbers of `bs-platform` and `@rescript/std` match in your `package.json` file. Otherwise you might run into runtime problems due to mismatching stdlib behavior.
 
-**Important:** When using this option, you need to make sure that the version number of `bs-platform` and `@rescript/std` matches with the same version number in your `package.json` file, otherwise you'll eventually run into runtime problems due to mismatching stdlib behavior!
-
-To prevent unnecessary complications, only use this feature when...
-- You want to ship a library for JS / TS consumers without making them depend on `bs-platform`
-- You can't depend on `bs-platform` due to toolchain size (docker containers, low-storage deployment devices, etc)
