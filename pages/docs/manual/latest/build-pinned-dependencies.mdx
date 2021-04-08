@@ -14,7 +14,7 @@ Usually we'd recommend to use ReScript in a single-codebase style: One `bsconfig
 There are scenarios where you still want to connect and build multiple independent ReScript packages for one main project though. This is where `pinned-dependencies` come into play.
 
 
-### Package Types
+## Package Types
 
 Before we go into detail, let's first explain all the different package types recognized by the build system:
 
@@ -24,7 +24,7 @@ Before we go into detail, let's first explain all the different package types re
 
 Whenever a package is being built (`bsb -make-world`), the build system will build the toplevel package with its pinned-dependencies. So any changes made in a pinned dependency will automatically be reflected in the final app.
 
-### Build System Package Rules
+## Build System Package Rules
 
 The build system respects the following rules for each package type:
 
