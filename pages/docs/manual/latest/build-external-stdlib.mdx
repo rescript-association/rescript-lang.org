@@ -9,59 +9,51 @@ canonical: "/docs/manual/latest/build-external-stdlib"
 
 **Since 9.0**
 
-In a typical ReScript application, you'd ship a package with an npm dependency to `bs-platform` (`rescript`), which means downloading several tens of megabytes of executables.
+Your ReScript project depends on the `bs-platform` (soon `rescript`) package as a [`devDependency`](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file), which includes our compiler, build system and runtime like `Belt`. However, you had to move it to `dependency` in `package.json` if you publish your code:
+- To Docker or other low-storage deployment devices.
+- For pure JS/TS consumers who probably won't install `bs-platform` in their own project.
 
-Whenever you'd want to publish a package just for pure JS consumption / lean container deployment (package MB sizes), you'd be required to use a bundler to bundle up all the required stdlib runtime modules with your package source, which is not ideal. 
+In these cases, the size or mere presence of `bs-platform` can be troublesome, since it includes not just our necessary runtime like `Belt`, but also our compiler and build system.
 
-To fix this problem, you can configure your ReScript project to use our external stdlib package ([`@rescript/std`](https://www.npmjs.com/package/@rescript/std)) and make `bs-platform` a dev-only dependency.
+To solve that, we now publish our runtime as a standalone package at [`@rescript/std`](https://www.npmjs.com/package/@rescript/std), whose versions mirror `bs-platform`'s. Now you can keep `bs-platform` as a `devDependency` and have only `@rescript/std` as your runtime `dependency`.
 
-Every ReScript package release has a matching `@rescript/std` release for runtime compatibility.
-
-**Important:** To prevent unnecessary complications, only use this feature when...
-- You want to ship a library for JS / TS consumers without making them depend on `bs-platform`
-- You can't depend on `bs-platform` due to toolchain size (docker containers, low-storage deployment devices, etc)
+**This is an advanced feature**. Please only use it in the aforementioned scenarios. If you already use a JS bundler with dead code elimination, you might not need this feature.
 
 ## Configuration
 
-For example, let's assume we want to build a JS-only package that is built with ReScript 9.0. First, we would set up our dependencies like this:
+Say you want to publish a JS-only ReScript 9.0 library. Install the packages like this:
 
-```
+```sh
 npm install bs-platform@9.0.0 --save-dev
 npm install @rescript/std@9.0.0 --save
 ```
 
-In our `bsconfig.json`, we set up the following configuration:
+Then add this to `bsconfig.json`:
 
 ```json
 {
-  /* ... */
+  // ...
   "external-stdlib" : "@rescript/std"
 }
 ```
 
-Now our compiled JS code will point to the defined external-stdlib path (check the JS output of the following code snippet):
+Now the compiled JS code will import using the path defined by `external-stdlib`. Check the JS output tab:
 
-<CodeTab labels={["ReScript", "JavaScript"]}>
+<CodeTab labels={["ReScript", "JS output"]}>
 
 ```res
-Belt.Array.forEach([1, 2, 3], (num) => Js.log(num))
+Belt.Array.forEach([1, 2, 3], num => Js.log(num))
 ```
 
 ```js
-// Note the import path starting with "@rescript/std".
-import * as Belt_Array from "@rescript/std/lib/es6/belt_Array.js";
+// Note the require path starting with "@rescript/std".
+var Belt_Array = require("@rescript/std/lib/js/belt_Array.js");
 
-Belt_Array.forEach([
-      1,
-      2,
-      3
-    ], (function (num) {
-        console.log(num);
-        
-      }));
+Belt_Array.forEach([1, 2, 3], function (num) {
+  console.log(num);
+});
 ```
 
 </CodeTab>
 
-**Important:** When using the `external-stdlib` configuration, always make sure the version numbers of `bs-platform` and `@rescript/std` match in your `package.json` file. Otherwise you might run into runtime problems due to mismatching stdlib behavior.
-
+**Make sure the version number of `bs-platform` and `@rescript/std` match in your `package.json`** to avoid running into runtime issues due to mismatching stdlib assumptions.
