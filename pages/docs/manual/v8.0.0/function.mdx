@@ -8,7 +8,7 @@ canonical: "/docs/manual/latest/function"
 
 _Cheat sheet for the full function syntax at the end_.
 
-Functions are declared with an arrow and return an expression.
+ReScript functions are declared with an arrow and return an expression, just like JS functions. They compile to clean JS functions too.
 
 <CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
@@ -154,7 +154,7 @@ addCoordinates(~y=6, ~x=5);
 addCoordinates ~y=6 ~x=5
 ```
 ```js
-addCoordinates(6, 5);
+addCoordinates(5, 6);
 ```
 
 </CodeTab>

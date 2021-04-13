@@ -48,14 +48,6 @@ type result =
   | Success(string)
 let myResult = Success("You did it!")
 let Success(message) = myResult // "You did it!" assigned to `message`
-
-// Array
-let myArray = [1, 2, 3]
-let [item1, item2] = myArray // 1 assigned to `item1`, 2 assigned to `item2`
-
-// List
-let myList = list{1, 2, 3}
-let list{head, ...tail} = myList // 1 assigned to `head`, `list{2, 3}` assigned to tail
 ```
 ```js
 var student1 = {
@@ -137,6 +129,20 @@ var n = "John";
 ```
 
 </CodeTab>
+
+You _can_ in theory destructure array and list at the top level too:
+
+```res
+let myArray = [1, 2, 3]
+let [item1, item2, _] = myArray
+// 1 assigned to `item1`, 2 assigned to `item2`, 3rd item ignored
+
+let myList = list{1, 2, 3}
+let list{head, ...tail} = myList
+// 1 assigned to `head`, `list{2, 3}` assigned to tail
+```
+
+But the array example is **highly disrecommended** (use tuple instead) and the list example will error on you. They're only there for completeness' sake. As you'll see below, the proper way of using destructuring array and list is using `switch`.
 
 ## `switch` Based on Shape of Data
 
@@ -427,7 +433,7 @@ if (typeof myStatus === "number" || myStatus.TAG) {
 
 Slightly more verbose, but a one-time writing effort. This helps when you add a new variant case e.g. `Quarantined` to the `status` type and need to update the places that pattern match on it. A top-level wildcard here would have accidentally and silently continued working, potentially causing bugs.
 
-### When Clause
+### If Clause
 
 Sometime, you want to check more than the shape of a value. You want to also run some arbitrary check on it. You might be tempted to write this:
 
@@ -463,7 +469,7 @@ if (person1.TAG) {
 ```res example
 switch person1 {
 | Teacher(_) => () // do nothing
-| Student({reportCard: {gpa}}) when gpa < 0.5 =>
+| Student({reportCard: {gpa}}) if gpa < 0.5 =>
   Js.log("What's happening")
 | Student(_) =>
   // fall-through, catch-all case
@@ -481,6 +487,8 @@ if (person1.TAG) {
 ```
 
 </CodeTab>
+
+**Note:** In ReScript version < 9.0, the `if` clause is denoted as a `when`, but will be reformatted to `if` in newer versions.
 
 ### Match on Exceptions
 
@@ -520,6 +528,92 @@ if (exit === 1) {
 ```
 
 </CodeTab>
+
+### Match on Array
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let students = ["Jane", "Harvey", "Patrick"]
+switch students {
+| [] => Js.log("There are no students")
+| [student1] =>
+  Js.log("There's a single student here: " ++ student1)
+| manyStudents =>
+  // display the array of names
+  Js.log2("The students are: ", manyStudents)
+}
+```
+```js
+var students = ["Jane", "Harvey", "Patrick"];
+
+var len = students.length;
+
+if (len !== 1) {
+  if (len !== 0) {
+    console.log("The students are: ", students);
+  } else {
+    console.log("There are no students");
+  }
+} else {
+  var student1 = students[0];
+  console.log("There's a single student here: " + student1);
+}
+```
+
+</CodeTab>
+
+### Match on List
+
+Pattern matching on list is similar to array, but with the extra feature of extracting the tail of a list (all elements except the first one):
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let rec printStudents = (students) => {
+  switch students {
+  | list{} => () // done
+  | list{student} => Js.log("Last student: " ++ student)
+  | list{student1, ...otherStudents} =>
+    Js.log(student1)
+    printStudents(otherStudents)
+  }
+}
+printStudents(list{"Jane", "Harvey", "Patrick"})
+```
+```js
+function printStudents(_students) {
+  while(true) {
+    var students = _students;
+    if (!students) {
+      return;
+    }
+    var otherStudents = students.tl;
+    var student = students.hd;
+    if (otherStudents) {
+      console.log(student);
+      _students = otherStudents;
+      continue;
+    }
+    console.log("Last student: " + student);
+    return;
+  };
+}
+
+printStudents({
+  hd: "Jane",
+  tl: {
+    hd: "Harvey",
+    tl: {
+      hd: "Patrick",
+      tl: /* [] */0
+    }
+  }
+});
+```
+
+</CodeTab>
+
 
 ### Small Pitfall
 

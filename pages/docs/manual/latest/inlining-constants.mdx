@@ -29,7 +29,7 @@ So, in ReScript, producing that example `if (process.env.mode === 'development')
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-@bs.val external process: 'a = "process"
+@val external process: 'a = "process"
 
 let mode = "development"
 
@@ -47,14 +47,14 @@ if (process.env.mode === mode) {
 
 </CodeTab>
 
-The JS output shows `if (process.env.mode === mode)`, which isn't what we wanted. To inline `mode`'s value, use `@bs.inline`:
+The JS output shows `if (process.env.mode === mode)`, which isn't what we wanted. To inline `mode`'s value, use `@inline`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-@bs.val external process: 'a = "process"
+@val external process: 'a = "process"
 
-@bs.inline
+@inline
 let mode = "development"
 
 if (process["env"]["mode"] === mode) {

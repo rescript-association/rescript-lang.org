@@ -8,7 +8,7 @@ canonical: "/docs/manual/latest/function"
 
 _Cheat sheet for the full function syntax at the end_.
 
-Functions are declared with an arrow and return an expression.
+ReScript functions are declared with an arrow and return an expression, just like JS functions. They compile to clean JS functions too.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -124,7 +124,7 @@ You can provide the arguments in **any order**:
 addCoordinates(~y=6, ~x=5)
 ```
 ```js
-addCoordinates(6, 5);
+addCoordinates(5, 6);
 ```
 
 </CodeTab>
@@ -408,6 +408,27 @@ add(1, 2);
 ```
 
 </CodeTab>
+
+If you need to call a curried function with a single unit `()` argument, you can use the `ignore()` function:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let echo = (. a) => a
+
+echo(. ignore())
+```
+
+```js
+function echo(a) {
+  return a;
+}
+
+echo(undefined);
+```
+
+</CodeTab>
+
 
 If you write down the uncurried function's type, you'll add a dot there as well.
 

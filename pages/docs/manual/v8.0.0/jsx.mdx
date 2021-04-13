@@ -1,6 +1,6 @@
 ---
 title: "JSX"
-description: "JSX syntax in ReScript and ReasonReact"
+description: "JSX syntax in ReScript and React"
 canonical: "/docs/manual/latest/jsx"
 ---
 
@@ -263,7 +263,7 @@ React.createElement(
 
 "Punning" refers to the syntax shorthand for when a label and a value are the same. For example, in JavaScript, instead of doing `return {name: name}`, you can do `return {name}`.
 
-Reason JSX supports punning. `<input checked />` is just a shorthand for `<input checked=checked />`. The formatter will help you format to the latter whenever possible. This is convenient in the cases where there are lots of props to pass down:
+Reason JSX supports punning. `<input checked />` is just a shorthand for `<input checked=checked />`. The formatter will help you format to the punned syntax whenever possible. This is convenient in the cases where there are lots of props to pass down:
 
 <CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 

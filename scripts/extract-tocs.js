@@ -23,6 +23,15 @@ const orderFiles = (filepaths, orderArr) => {
     order[id] = filepath;
   });
 
+  // last sanity check if there's an unmatched filepath
+  Object.entries(order).forEach(([name, filepath]) => {
+    // may happen e.g. due to invalid file paths within
+    // sidebar json
+    if(filepath == null) {
+      throw new Error(`Cannot find file for "${name}". Does it exist in the pages folder?`);
+    }
+  });
+
   return Object.values(order);
 };
 
@@ -68,7 +77,8 @@ const processor = unified()
   .use(stringify)
   .use(headers);
 
-const processFile = filepath => {
+// sidebarJson: { [category: string]: array<plain_filename_without_ext> }
+const processFile = (filepath, sidebarJson={}) => {
   const raw = fs.readFileSync(filepath, "utf8");
   const { content, data } = matter(raw);
   const result = processor.processSync(content);
@@ -78,7 +88,15 @@ const processFile = filepath => {
   const parsedPath = path.parse(relFilepath);
   const filename = path.basename(filepath, path.extname(filepath));
 
-  let title = result.data.mainHeader || data.title || filename;
+  const title =  data.title || result.data.mainHeader || filename;
+
+  let category;
+  for (const [categoryName, items] of Object.entries(sidebarJson)) {
+    if(items.find((item) => filename === item)){
+      category = categoryName;
+      break;
+    }
+  }
 
   const dataset = {
     id: filename,
@@ -87,8 +105,8 @@ const processFile = filepath => {
     title,
   };
 
-  if(data.category != null) {
-    dataset.category = data.category;
+  if(category != null) {
+    dataset.category = category;
   }
   return dataset;
 };
@@ -112,10 +130,19 @@ const createTOC = result => {
 
 const createLatestManualToc = () => {
   const MD_DIR = path.join(__dirname, "../pages/docs/manual/latest");
-  const TARGET_FILE = path.join(__dirname, "../index_data/manual_toc.json");
+  const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_manual_latest.json");
+  const TARGET_FILE = path.join(__dirname, "../index_data/manual_latest_toc.json");
 
-  const files = glob.sync(`${MD_DIR}/*.md?(x)`);
-  const result = files.map(processFile);
+  const sidebarJson = JSON.parse(fs.readFileSync(SIDEBAR_JSON));
+
+  const FILE_ORDER = Object.values(sidebarJson).reduce((acc, items) => {
+    return acc.concat(items)
+  },[]);
+
+  const files = glob.sync(`${MD_DIR}/*.?(js|md?(x))`);
+  const ordered = orderFiles(files, FILE_ORDER);
+
+  const result = ordered.map((filepath) => processFile(filepath, sidebarJson));
   const toc = createTOC(result);
 
   fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
@@ -134,10 +161,40 @@ const createReasonCompilerToc = () => {
 
 const createV800ManualToc = () => {
   const MD_DIR = path.join(__dirname, "../pages/docs/manual/v8.0.0");
+  const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_manual_v800.json");
   const TARGET_FILE = path.join(__dirname, "../index_data/manual_v800_toc.json");
 
+  const sidebarJson = JSON.parse(fs.readFileSync(SIDEBAR_JSON));
+
+  const FILE_ORDER = Object.values(sidebarJson).reduce((acc, items) => {
+    return acc.concat(items)
+  },[]);
+
+  const files = glob.sync(`${MD_DIR}/*.?(js|md?(x))`);
+  const ordered = orderFiles(files, FILE_ORDER);
+
+  const result = ordered.map((filepath) => processFile(filepath, sidebarJson));
+  const toc = createTOC(result);
+
+  fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
+};
+
+
+const createReactToc = () => {
+  const MD_DIR = path.join(__dirname, "../pages/docs/react/latest");
+  const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_react_latest.json");
+  const TARGET_FILE = path.join(__dirname, "../index_data/react_latest_toc.json");
+
+  const sidebarJson = JSON.parse(fs.readFileSync(SIDEBAR_JSON));
+
+  const FILE_ORDER = Object.values(sidebarJson).reduce((acc, items) => {
+    return acc.concat(items)
+  },[]);
+
   const files = glob.sync(`${MD_DIR}/*.md?(x)`);
-  const result = files.map(processFile);
+  const ordered = orderFiles(files, FILE_ORDER);
+
+  const result = ordered.map((filepath) => processFile(filepath, sidebarJson));
   const toc = createTOC(result);
 
   fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
@@ -145,10 +202,19 @@ const createV800ManualToc = () => {
 
 const createGenTypeToc = () => {
   const MD_DIR = path.join(__dirname, "../pages/docs/gentype/latest");
-  const TARGET_FILE = path.join(__dirname, "../index_data/gentype_toc.json");
+  const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_gentype_latest.json");
+  const TARGET_FILE = path.join(__dirname, "../index_data/gentype_latest_toc.json");
 
-  const files = glob.sync(`${MD_DIR}/*.md?(x)`);
-  const result = files.map(processFile);
+  const sidebarJson = JSON.parse(fs.readFileSync(SIDEBAR_JSON));
+
+  const FILE_ORDER = Object.values(sidebarJson).reduce((acc, items) => {
+    return acc.concat(items)
+  },[]);
+
+  const files = glob.sync(`${MD_DIR}/*.?(js|md?(x))`);
+  const ordered = orderFiles(files, FILE_ORDER);
+
+  const result = ordered.map((filepath) => processFile(filepath, sidebarJson));
   const toc = createTOC(result);
 
   fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
@@ -156,10 +222,19 @@ const createGenTypeToc = () => {
 
 const createCommunityToc = () => {
   const MD_DIR = path.join(__dirname, "../pages/community");
+  const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_community.json");
   const TARGET_FILE = path.join(__dirname, "../index_data/community_toc.json");
 
-  const files = glob.sync(`${MD_DIR}/*.md?(x)`);
-  const result = files.map(processFile);
+  const sidebarJson = JSON.parse(fs.readFileSync(SIDEBAR_JSON));
+
+  const FILE_ORDER = Object.values(sidebarJson).reduce((acc, items) => {
+    return acc.concat(items)
+  },[]);
+
+  const files = glob.sync(`${MD_DIR}/*.?(js|md?(x))`);
+  const ordered = orderFiles(files, FILE_ORDER);
+
+  const result = ordered.map((filepath) => processFile(filepath, sidebarJson));
   const toc = createTOC(result);
 
   fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
@@ -184,5 +259,6 @@ debugToc();
 createLatestManualToc();
 createV800ManualToc();
 createReasonCompilerToc();
+createReactToc();
 createGenTypeToc();
 createCommunityToc();

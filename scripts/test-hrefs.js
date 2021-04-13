@@ -14,9 +14,9 @@ const path = require("path");
 const fs = require("fs");
 const urlModule = require("url");
 
-const blog_index = require("../index_data/blog_posts.json");
+const blog_index = require("../data/blog_posts.json");
 
-// Our blogpost urls are mapped via `index_data/blog_posts.json`
+// Our blogpost urls are mapped via `data/blog_posts.json`
 // the blog_posts file has following structure: { [slug]: [filepath relative to _blogposts] }
 const mapBlogFilePath = path => {
   const match = path.match(/\.\/_blogposts\/(.*\.mdx)/);
@@ -206,8 +206,10 @@ const testFile = (pageMap, test) => {
 const main = () => {
   const [, , pattern] = process.argv;
   const cwd = path.join(__dirname, "..");
+
+  // All files that are going to be tested for broken links
   const files = glob.sync(
-    pattern ? pattern : `./{pages,_blogposts}/**/*.md?(x)`,
+    pattern ? pattern : `./{pages,_blogposts,misc_docs}/**/*.md?(x)`,
     { cwd }
   );
 

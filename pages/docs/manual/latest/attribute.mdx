@@ -11,7 +11,7 @@ Like many other languages, ReScript allows annotating a piece of code to express
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-@bs.inline
+@inline
 let mode = "dev"
 
 let mode2 = mode
@@ -22,7 +22,7 @@ var mode2 = "dev";
 
 </CodeTab>
 
-The `@bs.inline` annotation tells `mode`'s value to be inlined into its usage sites (see output). We call such annotation "attribute" (or "decorator" in JavaScript).
+The `@inline` annotation tells `mode`'s value to be inlined into its usage sites (see output). We call such annotation "attribute" (or "decorator" in JavaScript).
 
 An attribute starts with `@` and goes before the item it annotates. In the above example, it's hooked onto the let binding.
 
@@ -39,12 +39,18 @@ You can put an attribute almost anywhere. You can even add extra data to them by
 @unboxed
 type a = Name(string)
 
-@bs.val external message: string = "message"
+@val external message: string = "message"
 
 type student = {
   age: int,
-  @bs.as("aria-label") ariaLabel: string,
+  @as("aria-label") ariaLabel: string,
 }
+
+@deprecated
+let customDouble = foo => foo * 2
+
+@deprecated("Use SomeOther.customTriple instead")
+let customTriple = foo => foo * 3 
 ```
 ```js
 ```
@@ -53,8 +59,10 @@ type student = {
 
 1. `@@warning("-27")` is a standalone attribute that annotates the entire file. Those attributes start with `@@`. Here, it carries the data `"-27"`.
 2. `@unboxed` annotates the type definition.
-3. `@bs.val` annotates the `external` statement.
-4. `@bs.as("aria-label")` annotates the `ariaLabel` record field.
+3. `@val` annotates the `external` statement.
+4. `@as("aria-label")` annotates the `ariaLabel` record field.
+5. `@deprecated` annotates the `customDouble` expression. This shows a warning while compiling telling consumers to not rely on this method long-term.
+6. `@deprecated("Use SomeOther.customTriple instead")` annotates the `customTriple` expression with a string to describe the reason for deprecation.
 
 ## Extension Point
 

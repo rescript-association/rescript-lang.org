@@ -140,6 +140,23 @@ var p = School.getProfession(School.person1);
 
 </CodeTab>
 
+### Use `open!` to ignore shadow warnings
+
+There are situations where `open` will cause a warning due to existing identifiers (bindings, types) being redefined. Use `open!` to explicitly tell the compiler that this is desired behavior.
+
+```res
+let map = (arr, value) => {
+  value
+}
+
+// opening Js.Array2 would shadow our previously defined `map`
+// `open!` will explicitly turn off the automatic warning
+open! Js.Array2
+let arr = map([1,2,3], (a) => { a + 1})
+```
+
+**Note:** Same as with `open`, don't overuse `open!` statements if not necessary. Use (sub)modules to prevent shadowing issues.
+
 ### Extending modules
 
 Using `include` in a module statically "spreads" a module's content into a new one, thus often fulfill the role of "inheritance" or "mixin".
@@ -499,6 +516,17 @@ module MakeSet: MakeSetType = (Item: Comparable) => {
 ```
 
 </CodeTab>
+
+## Exotic Module Filenames
+
+**Since 8.3**
+
+It is possible to use non-conventional characters in your filenames (which is sometimes needed for specific JS frameworks). Here are some examples:
+
+- `src/Button.ios.res`
+- `pages/[id].res`
+
+Please note that modules with an exotic filename will not be accessible from other ReScript modules.
 
 ## Tips & Tricks
 

@@ -1,14 +1,18 @@
 ---
-title: "ReScript Introduction"
+title: "Introduction"
 description: "The hows and whys of ReScript"
 canonical: "/docs/manual/latest/introduction"
 ---
 
 # ReScript
 
-**ReScript is the language for folks who don't necessarily love JavaScript, but who still acknowledge its importance**.
+Ever wanted a language like JavaScript, but without the warts, with a great type system, and with a lean build toolchain that doesn't waste your time?
 
-ReScript looks like JavaScript, works like JavaScript, works _with_ JavaScript, and compiles to the highest quality of clean, readable and performant JavaScript, directly runnable in the browser and Node.js.
+ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node.
+
+**This means you can pick up ReScript and access the vast JavaScript ecosystem and tooling as if you've known ReScript for a long time**!
+
+**ReScript is the language for folks who don't necessarily love JavaScript, but who still acknowledge its importance**.
 
 ## Difference vs TypeScript
 
@@ -20,7 +24,7 @@ We respect TypeScript very much and think that it's a positive force in the Java
   - Is deliberately curated to be a simple subset most folks will have an easier time to use.
   - Has **no** pitfalls, aka the type system is "sound" (the types will always be correct). E.g. If a type isn't marked as nullable, its value will never lie and let through some `undefined` value silently. **ReScript code has no null/undefined errors**.
   - Is the same for everyone. No knobs, no bikeshedding opportunity.
-  - Runs extremely fast precisely thanks to its simplicity and curation. We're one of the fastest compiler & build system for JavaScript development.
+  - Runs extremely fast precisely thanks to its simplicity and curation. It's one of the fastest compiler & build system toolchains for JavaScript development.
   - **Doesn't need type annotations**. Annotate as much or as little as you'd like. The types are inferred by the language (and, again, are guaranteed correct).
 
 - Migrating to TypeScript is done "breadth-first," whereas migrating to ReScript is done "depth-first." You can convert your codebase to TypeScript by "turning it on" for all files and annotate here and there; but how much type safety did you gain? How do you measure it? Type errors can still slip in and out of the converted pieces. For ReScript, our interop features draw clear boundaries: there's pure ReScript code, and there's JS interop code. Every piece of converted ReScript code is 100% clean. You'd convert file by file and each conversion increases your safety monotonically.
@@ -68,7 +72,7 @@ This characteristic, combined with a fully-featured JS interop system, allows Re
 
 ### Preservation of Code Structure
 
-ReScript maps one source file to one JavaScript output file. This eases the integration of existing tools such as bundlers and test runners. You can even start writing a single file without much change your build setup. Each file's code structure is approximately preserved, too.
+ReScript maps one source file to one JavaScript output file. This eases the integration of existing tools such as bundlers and test runners. You can even start writing a single file without much change to your build setup. Each file's code structure is approximately preserved, too.
 
 ## Conclusion
 

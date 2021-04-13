@@ -8,7 +8,7 @@
 @import "./_docsearch.css";
 
 body {
-  @apply font-sans bg-white;
+  @apply font-sans bg-white subpixel-antialiased;
 }
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -20,5 +20,6 @@ body {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none;  /* IE 10+ */
 }
+
 
 @tailwind utilities;

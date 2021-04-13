@@ -20,6 +20,8 @@ Unlike most compiled-to-js languages, in ReScript, **you don't need to write dat
 - Boolean.
 - Record. Record compiles to JS object. Therefore you can also treat JS objects as records. If they're too dynamic, consider modeling them on the ReScript side as a hashmap/dictionary [`Js.Dict`](api/js/dict) or a ReScript object.
 - Object. ReScript objects are JavaScript objects, vice-versa.
+- Function. They compile to clean JS functions.
+- Module. ReScript files are considered top-level modules, and are compiled to JS files 1 to 1. Nested modules are compiled to JavaScript objects.
 - Unit. The `unit` type, which has a single value `()`, compiles to `undefined` too. Likewise, you can treat an incoming JS `undefined` as `()`.
 
 <!-- TODO: talk about poly variant -->
@@ -38,4 +40,6 @@ Unlike most compiled-to-js languages, in ReScript, **you don't need to write dat
 - Lazy values.
 - Everything else.
 
-The non-shared types need your manual conversions if you want to export them for JS consumption. For a seamless JS / TypeScript / Flow integration experience, you might want to use [genType](https://github.com/cristianoc/gentype) instead of doing conversions by hand.
+Many of these are stable, which means that you can still serialize/deserialize them as-is without manual conversions. But we discourage actively peeking into their structure otherwise.
+
+These types require manual conversions if you want to export them for JS consumption. For a seamless JS/TypeScript/Flow integration experience, you might want to use [genType](https://github.com/cristianoc/gentype) instead of doing conversions by hand.

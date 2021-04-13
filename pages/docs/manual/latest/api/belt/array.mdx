@@ -684,9 +684,9 @@ let partition: (array<'a>, 'a => bool) => (array<'a>, array<'a>)
 `partition(f, a)` split array into tuple of two arrays based on predicate `f`; first of tuple where predicate cause true, second where predicate cause false
 
 ```res example
-Belt.Array.partition([1, 2, 3, 4, 5], (x) => mod(x, 2) == 0) == ([2, 4], [1, 2, 3])
+Belt.Array.partition([1, 2, 3, 4, 5], (x) => mod(x, 2) == 0) == ([2, 4], [1, 3, 5])
 
-Belt.Array.partition([1, 2, 3, 4, 5], (x) => mod(x, 2) != 0) == ([1, 2, 3], [2, 4])
+Belt.Array.partition([1, 2, 3, 4, 5], (x) => mod(x, 2) != 0) == ([1, 3, 5], [2, 4])
 ```
 
 ## reduceU

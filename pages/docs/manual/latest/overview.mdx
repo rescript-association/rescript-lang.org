@@ -1,5 +1,6 @@
 ---
-title: "Language Features Overview"
+title: "Overview"
+metaTitle: "Language Features Overview"
 description: "A quick overview on ReScript's syntax"
 canonical: "/docs/manual/latest/overview"
 ---
@@ -10,20 +11,20 @@ canonical: "/docs/manual/latest/overview"
 
 ### Semicolon
 
-| JavaScript                           | Us                   |
+| JavaScript                           | ReScript             |
 | ------------------------------------ | -------------------- |
-| Rules encorced by linter/formatter   | No semicolon needed! |
+| Rules enforced by linter/formatter   | No semicolon needed! |
 
 ### Comments
 
-| JavaScript        | Us          |
+| JavaScript        | ReScript    |
 | ----------------- | ----------- |
 | `/* Comment */`   | Same        |
 | `// Line comment` | Same        |
 
 ### Variable
 
-| JavaScript              | Us                             |
+| JavaScript              | ReScript                       |
 | ----------------------- | ------------------------------ |
 | `const x = 5;`          | `let x = 5`                    |
 | `var x = y;`            | No equivalent (thankfully)     |
@@ -31,7 +32,7 @@ canonical: "/docs/manual/latest/overview"
 
 ### String & Character
 
-| JavaScript                | Us                    |
+| JavaScript                | ReScript              |
 | --------------------------| --------------------- |
 | `"Hello world!"`          | Same                  |
 | `'Hello world!'`          | Strings must use `"`  |
@@ -40,7 +41,7 @@ canonical: "/docs/manual/latest/overview"
 
 ### Boolean
 
-| JavaScript                                            | Us                                             |
+| JavaScript                                            | ReScript                                       |
 | ----------------------------------------------------- | ---------------------------------------------- |
 | `true`, `false`                                       | Same                                           |
 | `!true`                                               | Same                                           |
@@ -51,7 +52,7 @@ canonical: "/docs/manual/latest/overview"
 
 ### Number
 
-| JavaScript  | Us           |
+| JavaScript  | ReScript     |
 | ----------- | ------------ |
 | `3`         | Same \*      |
 | `3.1415`    | Same         |
@@ -63,7 +64,7 @@ canonical: "/docs/manual/latest/overview"
 
 ### Object/Record
 
-| JavaScript          | Us                                      |
+| JavaScript          | ReScript                                |
 | ------------------- | --------------------------------------- |
 | no types            | `type point = {x: int, mutable y: int}` |
 | `{x: 30, y: 20}`    | Same                                    |
@@ -73,7 +74,7 @@ canonical: "/docs/manual/latest/overview"
 
 ### Array
 
-| JavaScript            | Us                                 |
+| JavaScript            | ReScript                           |
 | --------------------- | ---------------------------------- |
 | `[1, 2, 3]`           | Same                               |
 | `myArray[1] = 10`     | Same                               |
@@ -83,7 +84,7 @@ canonical: "/docs/manual/latest/overview"
 
 ### Null
 
-| JavaScript          | Us        |
+| JavaScript          | ReScript  |
 | ------------------- | --------- |
 | `null`, `undefined` | `None` \* |
 
@@ -91,7 +92,7 @@ canonical: "/docs/manual/latest/overview"
 
 ### Function
 
-| JavaScript                      | Us                           |
+| JavaScript                      | ReScript                     |
 | ------------------------------- | ---------------------------- |
 | `arg => retVal`                 | Same                         |
 | `function named(arg) {...}`     | `let named = (arg) => {...}` |
@@ -104,7 +105,7 @@ canonical: "/docs/manual/latest/overview"
   <thead>
     <tr>
       <th>JavaScript</th>
-      <th>Us    </th>
+      <th>ReScript  </th>
     </tr>
   </thead>
   <tbody>
@@ -129,7 +130,7 @@ canonical: "/docs/manual/latest/overview"
 
 ### If-else
 
-| JavaScript            | Us                                                                  |
+| JavaScript            | ReScript                                                            |
 | --------------------- | ------------------------------------------------------------------- |
 | `if (a) {b} else {c}` | `if a {b} else {c}` \*                                              |
 | `a ? b : c`           | Same                                                                |
@@ -139,7 +140,7 @@ canonical: "/docs/manual/latest/overview"
 
 ### Destructuring
 
-| JavaScript                    | Us                                            |
+| JavaScript                    | ReScript                                      |
 | ----------------------------- | --------------------------------------------- |
 | `const {a, b} = data`         | `let {a, b} = data`                           |
 | `const [a, b] = data`         | <code>let [a, b] = data</code> \*             |
@@ -149,7 +150,7 @@ canonical: "/docs/manual/latest/overview"
 
 ### Loop
 
-| JavaScript                            | Us                             |
+| JavaScript                            | ReScript                       |
 | ------------------------------------- | ------------------------------ |
 | `for (let i = 0; i <= 10; i++) {...}` | `for i in 0 to 10 {...}`       |
 | `for (let i = 10; i >= 0; i--) {...}` | `for i in 10 downto 0 {...}`   |
@@ -157,10 +158,10 @@ canonical: "/docs/manual/latest/overview"
 
 ### JSX
 
-| JavaScript                                | Us                         |
+| JavaScript                                | ReScript                   |
 | ----------------------------------------- | -------------------------- |
 | `<Comp message="hi" onClick={handler} />` | Same                       |
-| `<Comp message=message />`                | `<Comp message />` \*      |
+| `<Comp message={message} />`              | `<Comp message />` \*      |
 | `<input checked />`                       | `<input checked=true />`   |
 | No children spread                        | `<Comp>...children</Comp>` |
 
@@ -168,7 +169,7 @@ canonical: "/docs/manual/latest/overview"
 
 ### Exception
 
-| JavaScript                                      | Us                                         |
+| JavaScript                                      | ReScript                                   |
 | ----------------------------------------------- | ------------------------------------------ |
 | `throw new SomeError(...)`                      | `raise(SomeError(...))`                    |
 | `try {a} catch (Err) {...} finally {...}`       | <code>try a catch { &#124; Err => ...}</code> \* |
@@ -183,7 +184,7 @@ The last expression of a block delimited by `{}` implicitly returns (including f
   <thead>
     <tr>
       <th>JavaScript</th>
-      <th>Us</th>
+      <th>ReScript</th>
     </tr>
   </thead>
   <tbody>
@@ -219,7 +220,7 @@ Integer Addition                | `23 + 1`                             | `23 + 1
 Float Addition                  | `23.0 +. 1.0`                        | `23.0 + 1.0`
 Integer Division/Multiplication | `2 / 23 * 1`                         | `2 / 23 * 1`
 Float Division/Multiplication   | `2.0 /. 23.0 *. 1.0`                 | `2.0 / 23.0 * 1.0`
-Float Exponentiation            | `2.0 ** 3.0`                         | `Math.pow(3, 4)`
+Float Exponentiation            | `2.0 ** 3.0`                         | `Math.pow(2.0, 3.0)`
 String Concatenation            | `"Hello " ++ "World"`                | `"Hello " + "World"`
 Comparison                      | `>`, `<`, `>=`, `<=`                 | `>`, `<`, `>=`, `<=`
 Boolean operation               | `!`, `&&`, <code>&#124;&#124;</code> | `!`, `&&`, <code>&#124;&#124;</code>
@@ -230,3 +231,5 @@ Array                           | `[1, 2, 3]`                          | `[1, 2,
 Record                          | `type t = {b: int}; let a = {b: 10}` | `var a = {b: 10}`
 Multiline Comment               | `/* Comment here */`                 | Not in output
 Single line Comment             | `// Comment here`                    | Not in output
+
+_Note that this is a cleaned-up comparison table; a few examples' JavaScript output are slightly different in reality._

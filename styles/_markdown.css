@@ -2,11 +2,11 @@
 /* Sometimes we cannot circumvent the cascade, especially for nested lists */
 
 .md-ul, .md-ol {
-  @apply mb-4;
+  @apply mb-8;
 }
 
 .md-ul ul {
-  @apply mb-0;
+  @apply mb-0 ;
 }
 
 .md-ol > li {
@@ -15,14 +15,18 @@
 
 .md-ol > .md-li p::before {
   content: counter(li) ".";
-  @apply text-night-dark font-semibold inline-block w-6 -ml-6;
+  @apply font-semibold inline-block w-6 -ml-6;
 }
 
 .md-ul > .md-li p::before {
   content: "•";
-  @apply inline-block w-4 -ml-4 pr-2;
+  @apply inline-block w-5 -ml-5 pr-2;
+}
+
+.md-li > p {
+  @apply ml-5 text-gray-80;
 }
 
 .md-p + .md-p {
-  @apply mt-3;
+  @apply mt-6;
 }

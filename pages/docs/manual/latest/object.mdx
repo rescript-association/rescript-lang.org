@@ -19,7 +19,7 @@ Although ReScript records compile to clean JavaScript objects, ReScript objects 
 
 ## Type Declaration
 
-**Optional**, unlike for records. The type of an object is inferred from the value, so you never really need to write down is type definition. Nevertheless, here's its type declaration syntax:
+**Optional**, unlike for records. The type of an object is inferred from the value, so you never really need to write down its type definition. Nevertheless, here's its type declaration syntax:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -112,10 +112,10 @@ Disallowed unless the object is a binding that comes from the JavaScript side. I
 
 ```res example
 type student = {
-  @bs.set "age": int,
-  @bs.set "name": string,
+  @set "age": int,
+  @set "name": string,
 }
-@bs.module("MyJSFile") external student1: student = "student1"
+@module("MyJSFile") external student1: student = "student1"
 
 student1["name"] = "Mary"
 ```
@@ -135,7 +135,7 @@ Since objects don't require type declarations, and since ReScript infers all the
 ```res example
 // The type of document is just some random type 'a
 // that we won't bother to specify
-@bs.val external document: 'a = "document"
+@val external document: 'a = "document"
 
 // call a method
 document["addEventListener"]("mouseup", _event => {

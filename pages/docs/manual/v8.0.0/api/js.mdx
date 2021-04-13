@@ -1,6 +1,6 @@
 # Js
 
-The Js module mostly contains Reason bindings to _standard JavaScript APIs_
+The Js module mostly contains ReScript bindings to _standard JavaScript APIs_
 like [console.log](https://developer.mozilla.org/en-US/docs/Web/API/Console/log),
 or the JavaScript
 [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String),
@@ -8,16 +8,7 @@ or the JavaScript
 [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 classes.
 
-It is meant as a zero-abstraction interop layer and directly exposes
-JavaScript functions as they are, even when their behavior should be considered unsafe
-(e.g. modifying an array in place using [Js.Array.push](./js/array#push)).
-
-Therefore, when a correpsonding module is available in the [Belt](./belt) standard library,
-it is recommended to use the Belt version rather than the Js version.
-For example, you should prefer [Belt.Array](./belt/array)
-to [Js.Array](./js/array)
-and [Belt.Map.String](./belt/map-string)
-to [Js.Dict](./js/dict).
+It is meant as a zero-abstraction interop layer and directly exposes JavaScript functions as they are. If you can find your API in this module, prefer this over an equivalent Belt helper. For example, prefer [Js.Array2](js/array-2) over [Belt.Array](belt/array)
 
 ## Argument Order
 
@@ -34,23 +25,20 @@ In the meantime, there are several options for dealing with the data-last APIs:
 ```re example
 /* Js.String (data-last API used with pipe last operator) */
 Js.log("2019-11-10" |> Js.String.split("-"));
-Js.log("Reason" |> Js.String.startsWith("Re"));
+Js.log("ReScript" |> Js.String.startsWith("Re"));
 
 /* Js.String (data-last API used with pipe first operator) */
 Js.log("2019-11-10"->Js.String.split("-", _));
-Js.log("Reason"->Js.String.startsWith("Re", _));
+Js.log("ReScript"->Js.String.startsWith("Re", _));
 
 /* Js.String (data-last API used without any piping) */
 Js.log(Js.String.split("-", "2019-11-10"));
-Js.log(Js.String.startsWith("Re", "Reason"));
+Js.log(Js.String.startsWith("Re", "ReScript"));
 ```
 
 ## Js.Xxx2 Modules
 
-For some modules with data-last argument order (e.g. [Js.String](./js/string)),
-there currently exists a matching module suffixed with "2" (e.g. [Js.String2](./js/string-2))
-that uses data-first argument order.
-These `Js.Xxx2` modules are non-public API, so their use is discouraged.
+Prefer `Js.Array2` over `Js.Array`, `Js.String2` over `Js.String`, etc. The latters are old modules.
 
 ## Object
 

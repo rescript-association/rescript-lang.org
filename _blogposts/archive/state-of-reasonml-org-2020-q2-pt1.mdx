@@ -10,7 +10,7 @@ description: |
   to expect in the future. The first part is an introduction to our project.
 ---
 
-import Image from "components/Image.bs";
+import Image from "src/components/Image";
 
 ## Hello World!
 
@@ -73,7 +73,7 @@ Our goal is to have a properly curated, well structured and streamlined overview
 
 <Image withShadow={true} src="https://res.cloudinary.com/dmm9n7v9f/image/upload/v1588605830/Reason%20Association/reasonml.org/reasonml-org-structure-retina_rjhvta.jpg" caption="First hand-sketches of the reasonml.org structure"/>
 
-It didn't take long until we realized that we can't just keep the upstream version in its original form, so we started to make adaptations where it made sense. We also accepted new additions from the community, such as explanations about [function signatures on optional arguments](/docs/manual/latest/function#signatures-and-type-annotations) in the Reason manual, or a new [decorator overview](/docs/reason-compiler/latest/decorators) in the BuckleScript section.
+It didn't take long until we realized that we can't just keep the upstream version in its original form, so we started to make adaptations where it made sense. We also accepted new additions from the community, such as explanations about [function signatures on optional arguments](/docs/manual/latest/function#signatures-and-type-annotations) in the Reason manual, or a new decorator overview in the BuckleScript section.
 
 
 That said, we do keep track of new changes on the upstream sources and cherry-pick changes if necessary. To make this process more transparent, we introduced a version table on our [startpage](/) to make it easier to see the latest cherry-pick commit for each resource (ReasonML, BuckleScript, etc.).

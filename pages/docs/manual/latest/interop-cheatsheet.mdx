@@ -6,7 +6,55 @@ canonical: "/docs/manual/latest/interop-cheatsheet"
 
 # Interop Cheatsheet
 
-<!-- TODO: this should be a glossary instead -->
+This is a glossary with examples. All the features are described by later pages.
+
+## List of Decorators
+
+> **Note:** In previous versions (< 8.3) all our attributes started with a `bs.` prefix. Our formatter will automatically drop them in newer ReScript versions.
+
+<!-- Synced from https://github.com/rescript-lang/syntax/blob/123760c5a264da5288eeee5213ddd25eb86d62fe/src/res_printer.ml#L19-L51 -->
+
+### Attributes
+
+- `@as`: [here](attribute#usage), [here](bind-to-js-function#fixed-arguments), [here](bind-to-js-function#constrain-arguments-better) and [here](generate-converters-accessors#usage-3)
+- [`@deriving`](generate-converters-accessors#generate-functions--plain-values-for-variants)
+- [`@get`](bind-to-js-object#bind-using-special-bs-getters--setters)
+- [`@get_index`](bind-to-js-object#bind-using-special-bs-getters--setters)
+<!-- - `@ignore` -->
+- [`@inline`](inlining-constants)
+- [`@int`](bind-to-js-function#constrain-arguments-better)
+<!-- - `@meth` -->
+- [`@module`](import-from-export-to-js#import-a-javascript-modules-content)
+- [`@new`](bind-to-js-object#bind-to-a-js-object-thats-a-class)
+- [`@obj`](generate-converters-accessors#convert-external-into-js-object-creation-function)
+- [`@optional`](generate-converters-accessors#optional-labels)
+- [`@return`](bind-to-js-function#function-nullable-return-value-wrapping)
+- `@send`: [here](bind-to-js-function#object-method) and [here](pipe#js-method-chaining)
+- [`@scope`](bind-to-global-js-values#global-modules)
+- [`@set`](bind-to-js-object#bind-using-special-bs-getters--setters)
+- [`@set_index`](bind-to-js-object#bind-using-special-bs-getters--setters)
+- [`@variadic`](bind-to-js-function#variadic-function-arguments)
+- [`@string`](bind-to-js-function#constrain-arguments-better)
+- [`@this`](bind-to-js-function#modeling-this-based-callbacks)
+- [`@uncurry`](bind-to-js-function#extra-solution)
+- [`@unwrap`](bind-to-js-function#trick-2-polymorphic-variant--bsunwrap)
+- [`@val`](bind-to-global-js-values#global-modules)
+
+- [`@deprecated`](attribute#usage)
+- [`genType`](https://github.com/reason-association/genType)
+- [`@JSX`](jsx)
+- `@react.component`: [here](/docs/react/latest/introduction) and [here](https://github.com/reasonml/reason-react)
+- [`@warning`](attribute#usage)
+- [`@unboxed`](unboxed)
+
+### Extension Points
+
+- [`%debugger`](embed-raw-javascript#debugger)
+- [`%external`](bind-to-global-js-values#special-global-values)
+<!-- - `%node` -->
+<!-- - `%obj` -->
+- [`%raw`](embed-raw-javascript#paste-raw-js-code)
+- [`%re`](primitive-types#regular-expression)
 
 ## Raw JS
 
@@ -28,7 +76,7 @@ const a = 1
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-@bs.val external setTimeout: (unit => unit, int) => float = "setTimeout"
+@val external setTimeout: (unit => unit, int) => float = "setTimeout"
 ```
 ```js
 // Empty output
@@ -41,12 +89,12 @@ const a = 1
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-@bs.val @bs.scope("Math")
+@val @scope("Math")
 external random: unit => float = "random"
 
 let someNumber = random()
 
-@bs.val @bs.scope(("window", "location", "ancestorOrigins"))
+@val @scope(("window", "location", "ancestorOrigins"))
 external length: int = "length"
 ```
 ```js
@@ -107,8 +155,8 @@ var result3 = Caml_option.nullable_to_opt(10);
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-@bs.send external map: (array<'a>, 'a => 'b) => array<'b> = "map"
-@bs.send external filter: (array<'a>, 'a => 'b) => array<'b> = "filter"
+@send external map: (array<'a>, 'a => 'b) => array<'b> = "map"
+@send external filter: (array<'a>, 'a => 'b) => array<'b> = "filter"
 [1, 2, 3]
   ->map(a => a + 1)
   ->filter(a => mod(a, 2) == 0)
@@ -133,7 +181,7 @@ console.log(
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-@bs.module("path") @bs.variadic
+@module("path") @variadic
 external join: array<string> => string = "join"
 ```
 ```js
@@ -147,8 +195,8 @@ external join: array<string> => string = "join"
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-@bs.module("Drawing") external drawCat: unit => unit = "draw"
-@bs.module("Drawing") external drawDog: (~giveName: string) => unit = "draw"
+@module("Drawing") external drawCat: unit => unit = "draw"
+@module("Drawing") external drawDog: (~giveName: string) => unit = "draw"
 ```
 ```js
 // Empty output
@@ -159,10 +207,10 @@ external join: array<string> => string = "join"
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-@bs.val
+@val
 external padLeft: (
   string,
-  @bs.unwrap [
+  @unwrap [
     | #Str(string)
     | #Int(int)
   ])
@@ -199,25 +247,3 @@ var gpa = 2.1 + 10;
 ```
 
 </CodeTab>
-
-## List of `@bs` Decorators
-
-- `@bs.as`
-- `@bs.get`
-- `@bs.get_index`
-- `@bs.inline`
-- `@bs.int`
-- `@bs.meth`
-- `@bs.module`
-- `@bs.new`
-- `@bs.return`
-- `@bs.scope`
-- `@bs.send`
-- `@bs.set`
-- `@bs.set_index`
-- `@bs.string`
-- `@bs.this`
-- `@bs.uncurry`
-- `@bs.unwrap`
-- `@bs.val`
-- `@bs.variadic`

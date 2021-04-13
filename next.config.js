@@ -28,7 +28,21 @@ const config = {
       }
     }
     return config
-  }
+  },
+  async redirects() {
+    return [
+      {
+        source: '/community',
+        destination: '/community/overview',
+        permanent: true,
+      },
+      {
+        source: '/bucklescript-rebranding',
+        destination: '/blog/bucklescript-is-rebranding',
+        permanent: true,
+      }
+    ]
+  },
 };
 
 module.exports = withMdx(withTM(withCSS(config)));

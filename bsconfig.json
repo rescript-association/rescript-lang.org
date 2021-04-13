@@ -7,36 +7,22 @@
   },
   "refmt": 3,
   "bs-dependencies": [
-    "reason-react",
+    "@rescript/react",
     "bs-fetch",
     "@glennsl/bs-json",
-    "reason-promise"
+    "@ryyppy/rescript-promise"
   ],
   "ppx-flags": [],
   "sources": [
     {
-      "dir": "common"
-    },
-    {
-      "dir": "bindings"
-    },
-    {
-      "dir": "pages",
-      "subdirs": true
-    },
-    {
-      "dir": "re_pages",
+      "dir": "src",
       "subdirs": true
     },
     {
       "dir": "scripts",
-      "subdirs": true
-    },
-    {
-      "dir": "components",
-      "subdirs": true
-    },
-    "layouts"
+      "subdirs": true,
+      "type": "dev"
+    }
   ],
   "package-specs": {
     "module": "es6",
@@ -45,9 +31,8 @@
   "warnings": {
     "error": "+8"
   },
-  "suffix": ".bs.js",
+  "suffix": ".js",
   "bsc-flags": [
-    "-bs-no-version-header",
     "-bs-super-errors",
     "-bs-g"
   ],

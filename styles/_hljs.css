@@ -5,6 +5,7 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 /* purgecss start ignore */
 .hljs {
   display: block;
+  
   /*overflow-x: auto;*/
   /*background: #f8f8ff;*/
 }
@@ -15,12 +16,11 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 }
 
 .hljs-operator, .hljs-literal {
-  color: #A766D0; /* TODO: add to TW */
-  /*@apply text-code-5  */
+  @apply text-berry;
 }
 
 .hljs-comment {
-  @apply text-code-4;
+  @apply text-gray-40;
 }
 
 .hljs-selector-tag,
@@ -29,14 +29,13 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 }
 
 .hljs-keyword {
-  color: #38B790; /* TODO: add to TW */
+  @apply text-turtle;
 }
 
 .hljs-number,
 .hljs-string,
 .hljs-doctag {
-  color: #1A8AD3; /* TODO: add to TW */
-  /*@apply text-code-2;*/
+  @apply text-water;
 }
 
 .hljs-selector-id,
@@ -82,7 +81,7 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 }
 
 .hljs-meta {
-  color: #999;
+  @apply text-gray-60;
 }
 
 .hljs-deletion {
@@ -104,17 +103,20 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 /* tweaks to syntax highlighting, assuming atom-one-light theme */
 
 .hljs-character {
-  color: #50a14f;
+  @apply text-turtle-dark;
 }
 .hljs-module-identifier {
   @apply text-berry;
 }
 .hljs-constructor {
-  color: #EB523E; /* TODO: add to TW */
-  /*@apply text-code-1;*/
+@apply text-orange
 }
 
 /* DARK MODE COLORS */
+
+.hljs.dark {
+  @apply text-gray-20
+}
 
 .hljs.dark .hljs-comment {
   color: #546E7A;
@@ -123,17 +125,16 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 .hljs.dark .hljs-number,
 .hljs.dark .hljs-string,
 .hljs.dark .hljs-doctag {
-  @apply text-dark-code-3;
-  /*@apply text-code-2;*/
+  @apply text-turtle-dark;
 }
 
 .hljs.dark .hljs-keyword {
-  @apply text-berry;
+  @apply text-berry-40;
 }
 
 .hljs.dark .hljs-built_in,
 .hljs.dark .hljs-builtin-name {
-  @apply text-dark-code-2;
+  @apply text-water-dark;
 }
 
 .hljs.dark .hljs-title {

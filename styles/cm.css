@@ -26,7 +26,7 @@
 }
 
 .cm-s-material .CodeMirror-gutters {
-  /*@apply  text-night;*/
+  /*@apply  text-gray-80;*/
   border: none;
   background-color: inherit;
   color: inherit;
@@ -39,7 +39,7 @@
 .cm-s-material .CodeMirror-guttermarker,
 .cm-s-material .CodeMirror-guttermarker-subtle,
 .cm-s-material .CodeMirror-linenumber {
-  @apply text-night;
+  @apply text-gray-80;
 }
 
 .cm-s-material .CodeMirror-cursor {
@@ -71,19 +71,19 @@
 }
 
 .cm-s-material .cm-keyword {
-  @apply text-berry;
+  @apply text-berry-40;
 }
 
 .cm-s-material .cm-keyword2 {
-  @apply text-dark-code-2;
+  @apply text-water-dark;
 }
 
 .cm-s-material .cm-variant-constructor {
-  @apply text-dark-code-1;
+  @apply text-orange-dark;
 }
 
 .cm-s-material .cm-module {
-  @apply text-dark-code-2;
+  @apply text-water-dark;
 }
 
 .cm-s-material .cm-operator {
@@ -100,43 +100,43 @@
 }
 
 .cm-s-material .cm-builtin {
-  color: #FFCB6B;
+  @apply text-orange-dark;
 }
 
 .cm-s-material .cm-decorator {
-  @apply text-dark-code-2;
+  @apply text-water-dark;
 }
 
 .cm-s-material .cm-type-annotation {
-  @apply text-dark-code-4;
+  @apply text-gray-40;
 }
 
 .cm-s-material .cm-atom {
-  @apply text-dark-code-1;
+  @apply text-orange-dark;
 }
 
 .cm-s-material .cm-number {
-  @apply text-dark-code-3;
+  @apply text-turtle-dark;
 }
 
 .cm-s-material .cm-def {
-  /*color: #DE935F; [> TODO: add to TW <]*/
+  @apply text-gray-20;
 }
 
 .cm-s-material .cm-string {
-  @apply text-dark-code-3;
+  @apply text-turtle-dark;
 }
 
 .cm-s-material .cm-string-2 {
-  @apply text-dark-code-3;
+  @apply text-turtle-dark;
 }
 
 .cm-s-material .cm-comment {
-  color: #546E7A;
+  @apply text-gray-60;
 }
 
 .cm-s-material .cm-variable {
-  color: text-dark-code-1;
+  @apply text-gray-20;
 }
 
 .cm-s-material .cm-tag {

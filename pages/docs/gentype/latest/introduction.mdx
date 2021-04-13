@@ -1,56 +1,45 @@
+---
+title: "Introduction"
+description: "GenType - Interoperability between ReScript and TypeScript / Flow"
+canonical: "/docs/gentype/latest/introduction"
+---
+
 # GenType
 
-`genType` lets you export [Reason](/docs/manual/latest/introduction) values and
-types to use in JavaScript, and import JavaScript values and types into Reason,
-idiomatically. Converter functions between the two representations are
-generated based on the type of the value. The converters can be generated in
-vanilla JavaScript, or in [TypeScript](https://www.typescriptlang.org/) /
-[Flow](https://flow.org/en/) for a type-safe idiomatic interface. In
-particular, conversion of [ReasonReact](https://reasonml.github.io/reason-react/)
-components both ways is supported, with automatic generation of the wrappers.
+`genType` is a code generation tool that lets you export ReScript values and types to use in JavaScript, and import JavaScript values and types into ReScript.
 
-Here's an article describing how to use `genType` as part of a migration
-strategy where a tree of components is gradually converted to Reason bottom-up:
-[Adopting Reason: strategies, dual sources of truth, and why genType is a big
-deal](https://www.javierchavarri.com/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal/).
+Converter functions between the two representations are generated based on the type of the value. The converters can be generated in vanilla JavaScript, or in [TypeScript](https://www.typescriptlang.org/) / [Flow](https://flow.org/en/) for a type-safe idiomatic interface.
+In particular, conversion of [rescript-react](/docs/react/latest/introduction) components both ways is supported, with automatic generation of the wrappers.
 
-The implementation of [@genType] performs a type-directed transformation of
-Reason programs after ReScript compilation. The
-transformed programs operate on data types idiomatic to JS. For example, a
-Reason function operating on a Reason variant `type t  = | A(int) | B(string)`
-(which is represented as custom blocks at runtime) is exported to a JS function
-operating on the corresponding JS object of type `{ tag: "A"; value: number }
+Here's an article describing how to use `genType` as part of a migration strategy where a tree of components is gradually converted to ReScript bottom-up (old article containing Reason / BuckleScript): [Adopting Reason: strategies, dual sources of truth, and why genType is a big deal](https://medium.com/p/c514265b466d).
+
+The implementation of genType performs a type-directed transformation of ReScript programs after ReScript source code compilation. The transformed programs operate on data types idiomatic to JS.
+
+For example, a ReScript function operating on a ReScript variant `type t  = | A(int) | B(string)` (which is represented as custom blocks at runtime) is exported to a JS function operating on the corresponding JS object of type `{ tag: "A"; value: number }
   | { tag: "B"; value: string }`.
 
-The output of `genType` can be configured by using one of 3 back-ends:
-`untyped` to generate wrappers in vanilla JS, `typescript` to generate
-[TypeScript](https://www.typescriptlang.org/), and `flow` to generate JS with
-[Flow](https://flow.org/en/) type annotations.
+The output of genType can be configured by using one of 3 back-ends: `untyped` to generate wrappers in vanilla JS, `typescript` to generate [TypeScript](https://www.typescriptlang.org/), and `flow` to generate JS with [Flow](https://flow.org/en/) type annotations.
 
-## A More Concrete Example
+## A Quick Example
 
-Let's assume we are working on a TypeScript (TS) codebase and we want to
-integrate a single ReasonReact component.
+Let's assume we are working on a TypeScript (TS) codebase and we want to integrate a single rescript-react component.
 
-Firstly we want to be able to import the ReasonReact component like any other
-React component, secondly we also want to preserve all the Reason types in the
-TS type system (and convert incompatible values if necessary). **That's what's
-`genType` was made for!**
+We want to be able to import the rescript-react component like any other React component in our existing TS code, but we also want to preserve all the ReScript types in the TS type system (and convert incompatible values if necessary).
 
+**That's exactly what genType was made for!**
 
-First we'll set up a ReasonReact component just like this (we will assume that
-`genType` and `bs-platform` is already configured correctly):
+First we'll set up a rescript-react component:
 
-```re
-/* src/MyComp.re */
+```res
+/* src/MyComp.res */
 
-[@genType]
+@genType
 type color =
   | Red
   | Blue;
 
-[@genType]
-[@react.component]
+@genType
+@react.component
 let make = (~name: string, ~color: color) => {
   let colorStr =
     switch (color) {
@@ -58,20 +47,16 @@ let make = (~name: string, ~color: color) => {
     | Blue => "blue"
     };
 
-  <div className={"color-" ++ colorStr}> name->React.string </div>;
+  <div className={"color-" ++ colorStr}> {React.string(name)} </div>;
 };
 ```
 
-> **Note:** We need to add a `[@genType]` annotation for `type color` as well,
-otherwise `genType` cannot create any type conversions for us.
-
-On a successful compile, `genType` will convert `MyComp.re` to a TS file called
-`src/MyComp.gen.ts` which will look something like this:
+On a successful compile, `genType` will convert `src/MyComp.res` to a TS file called `src/MyComp.gen.ts` which will look something like this:
 
 ```ts
 // src/MyComp.gen.tsx
 
-/* TypeScript file generated from MyComp.re by genType. */
+/* TypeScript file generated from MyComp.res by genType. */
 /* eslint-disable import/first */
 
 
@@ -95,27 +80,28 @@ export const make: React.ComponentType<{ readonly color: color; readonly name: s
 };
 ```
 
+genType automatically maps the `color` variant to TS via a string union type `color = "Red" | "Blue"`, and also provides all the converters to convert between the ReScript & TS representation as well.
 
-Note how `genType` automatically maps the `color` variant to TS via a string
-union type `color = "Red" | "Blue"`.  We can seamlessly use Reason specific
-data structures within TS without doing any manual transformations!
+Therefore way we can seamlessly use ReScript specific data structures within TS without writing the converter code by hand!
 
-Now, within our TypeScript application, we can now import and use the React
-component in following manner:
+Within our TypeScript application, we can now import and use the React component in the following manner:
 
 ```ts
 // src/App.ts
 import { make as MyComp } from "./MyComp.gen.tsx";
 
 const App = () => {
-  <div>
+  return (<div>
     <h1> My Component </h1>
-    <MyComp color="Blue" name="Reason & TypeScript" />
-  </div>
+    <MyComp color="Blue" name="ReScript & TypeScript" />
+  </div>);
 };
 ```
 
-We are only scratching the surface on what `genType` can actually do. For more
-information, head to the [Getting Started](getting-started) section, or find relevant
-topics from the sidebar !
+That's it for our quick example.
 
+For detailed information, head to the [Getting Started](getting-started) or [Usage](usage) section.
+
+## Development
+
+For contributions, issues or questions, please refer to the [Github repository](https://github.com/reason-association/genType) or our [ReScript forum](https://forum.rescript-lang.org).

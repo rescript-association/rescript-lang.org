@@ -6,6 +6,9 @@
   //return <Component {...pageProps} />
 //}
 
-import make from "../common/App.bs";
+import "styles/main.css";
+import {make as ResApp} from "src/common/App.js";
 
-export default make;
+export default function App(props) {
+  return <ResApp {...props} />
+};

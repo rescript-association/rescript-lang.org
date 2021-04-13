@@ -16,11 +16,28 @@ ReScript is a rebranding and cleanup of BuckleScript (since `v8.2.0`) & Reason (
 There are lots of exciting improvements in the new syntax (features, speed, error messages, etc.). The upgrade is trivial, backward-compatible and can be done on a per-file basis:
 
 - Upgrade your project to `bs-platform 8.2.0` or later.
-- `node_modules/.bin/bsc -format MyFile.re > MyFile.res`
+- Choose a file to convert, for example `MyFile.re`
+- Compile your project and keep the generated JavaScript file around (probably `MyFile.bs.js` but might depend on your `bsconfig.json` config).
+- Run `node_modules/.bin/bsc -format MyFile.re > MyFile.res`.
+- If your new `MyFile.res` looks good, you can delete (or move/rename) `MyFile.re` before compiling again your project (otherwise you will have an error `Invalid bsconfig.json implementation and interface have different path names or different cases MyFile vs MyFile` because 2 files with the same module name (file basename)  cannot coexist in your project).
+- Last thing you can do to ensure conversion is correct: build your project with the new `MyFile.res` file to compare the newly generated JavaScript file with the old one. You should get almost identical generated JavaScript code.
 
 **That's it**! `MyFile.re` could be any `.re`, `.rei`, `.ml` and `.mli` file.
 
 Enjoy the improved experience!
+
+### Upgrade an Entire Folder
+
+Please use this with caution. Migrating an entire codebase at once is an unnecessary risk.
+It is recommended to migrate small portion of code to ensure correctness.
+That being said, for small codebases or some tiny folders that are safely versioned, you can try the following:
+
+```console
+for f in your-folder/**/*.re; do; node_modules/.bin/bsc -format $f > ${f%.re}.res && rm $f; done;
+```
+
+This command loops on the `.re` files from the `your-folder` folder, converts them with a proper `.res` extension, and asks you if you want to remove the previous file (check the newly created `.res` file first and refer to instructions above to follow the check to do on your generated JavaScript).
+If you are confident enough, you can add `-f` option to the `rm` command to avoid all checks. This will convert your entire folder without any confirmations.
 
 ## Difference With Old Reason
 
