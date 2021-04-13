@@ -135,9 +135,7 @@ This feature is often used when interacting with existing JS / ReactJS code. In 
 
 ```res
 let render = (renderMyComp: (~name: string) => React.element) => {
-  <div>
-    {renderMyComp("Franz")}
-  </div>
+  <div> {renderMyComp(~name="Franz")} </div>
 }
 ```
 
