@@ -14,11 +14,104 @@ import * as Js_null from "bs-platform/lib/es6/js_null.js";
 import FuseJs from "fuse.js";
 import * as Process from "process";
 import * as Markdown from "./components/Markdown.js";
-import * as SearchBox from "./components/SearchBox.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as Navigation from "./components/Navigation.js";
 import * as Belt_Option from "bs-platform/lib/es6/belt_Option.js";
 import * as Caml_option from "bs-platform/lib/es6/caml_option.js";
+
+function Packages$SearchBox(Props) {
+  var completionValuesOpt = Props.completionValues;
+  var value = Props.value;
+  var onClear = Props.onClear;
+  var placeholderOpt = Props.placeholder;
+  var onValueChange = Props.onValueChange;
+  var completionValues = completionValuesOpt !== undefined ? completionValuesOpt : [];
+  var placeholder = placeholderOpt !== undefined ? placeholderOpt : "";
+  var match = React.useState(function () {
+        return /* Inactive */1;
+      });
+  var setState = match[1];
+  var state = match[0];
+  var textInput = React.useRef(null);
+  var onMouseDownClear = function (evt) {
+    evt.preventDefault();
+    return Curry._1(onClear, undefined);
+  };
+  var onAreaFocus = function (evt) {
+    var el = evt.target;
+    var isDiv = (el.type == null);
+    if (isDiv && state === /* Inactive */1) {
+      return Belt_Option.forEach(Caml_option.nullable_to_opt(textInput.current), (function (el) {
+                    el.focus();
+                    
+                  }));
+    }
+    
+  };
+  var onFocus = function (param) {
+    return Curry._1(setState, (function (param) {
+                  return /* Active */0;
+                }));
+  };
+  var onBlur = function (param) {
+    return Curry._1(setState, (function (param) {
+                  return /* Inactive */1;
+                }));
+  };
+  var onKeyDown = function (evt) {
+    var key = evt.key;
+    var ctrlKey = evt.ctrlKey;
+    var full = (
+      ctrlKey ? "CTRL+" : ""
+    ) + key;
+    switch (full) {
+      case "Escape" :
+          return Curry._1(onClear, undefined);
+      case "Tab" :
+          if (completionValues.length !== 1) {
+            return ;
+          }
+          var targetValue = Belt_Array.getExn(completionValues, 0);
+          if (targetValue !== value) {
+            evt.preventDefault();
+            return Curry._1(onValueChange, targetValue);
+          } else {
+            return ;
+          }
+      default:
+        return ;
+    }
+  };
+  var onChange = function (evt) {
+    evt.preventDefault();
+    return Curry._1(onValueChange, evt.target.value);
+  };
+  return React.createElement("div", {
+              className: " flex bg-white items-center rounded-lg py-4 px-5",
+              tabIndex: -1,
+              onFocus: onAreaFocus,
+              onBlur: onBlur
+            }, React.createElement(Icon.MagnifierGlass.make, {
+                  className: (
+                    state === /* Active */0 ? "text-gray-100" : "text-gray-60"
+                  ) + " w-5 h-5"
+                }), React.createElement("input", {
+                  ref: textInput,
+                  className: "text-16 font-medium text-gray-95 outline-none ml-4 w-full",
+                  placeholder: placeholder,
+                  type: "text",
+                  value: value,
+                  onKeyDown: onKeyDown,
+                  onFocus: onFocus,
+                  onChange: onChange
+                }), React.createElement("button", {
+                  className: value === "" ? "hidden" : "block",
+                  onFocus: onFocus,
+                  onMouseDown: onMouseDownClear
+                }, React.createElement(Icon.Close.make, {
+                      className: "w-4 h-4 text-gray-60 hover:text-gray-100"
+                    })));
+}
 
 function shouldFilter(res) {
   if (res.TAG === /* Npm */0 && res._0.name.startsWith("@elm-react")) {
@@ -153,7 +246,7 @@ function Packages$Card(Props) {
       repoEl = null;
     }
     linkBox = React.createElement("div", {
-          className: "text-14 space-x-2 mt-1"
+          className: "text-12 text-gray-40 space-x-2 mt-1"
         }, React.createElement("a", {
               className: "hover:text-fire",
               href: pkg.npmHref,
@@ -185,16 +278,24 @@ function Packages$Card(Props) {
       match$2.keywords
     ];
   }
+  var versionEl;
+  versionEl = value.TAG === /* Npm */0 ? React.createElement("span", {
+          className: "text-12 text-gray-40 font-medium"
+        }, value._0.version) : null;
   return React.createElement("div", {
-              className: "bg-gray-5-tr py-6 rounded-lg p-4"
+              className: "bg-white py-6 shadow-xs rounded-lg p-4"
             }, React.createElement("div", {
                   className: "flex justify-between"
-                }, React.createElement("div", undefined, React.createElement("a", {
-                          className: "font-bold hover:text-fire text-18",
-                          href: titleHref,
-                          target: "_blank"
-                        }, React.createElement("span", undefined, match[0])), linkBox), React.createElement("div", undefined, icon)), React.createElement("div", {
-                  className: "mt-4 text-16"
+                }, React.createElement("div", undefined, React.createElement("div", {
+                          className: "space-x-2"
+                        }, React.createElement("a", {
+                              className: "font-bold hover:text-fire font-semibold text-18",
+                              href: titleHref,
+                              target: "_blank"
+                            }, React.createElement("span", undefined, match[0])), versionEl), linkBox), React.createElement("div", {
+                      className: "text-gray-90"
+                    }, icon)), React.createElement("div", {
+                  className: "mt-4 text-14"
                 }, match[1]), React.createElement("div", {
                   className: "space-x-2 mt-4"
                 }, Belt_Array.map(match[2], (function (keyword) {
@@ -204,21 +305,13 @@ function Packages$Card(Props) {
                               }));
                         var tmp = {
                           key: keyword,
-                          className: "hover:pointer px-2 rounded-lg text-white bg-fire-70 text-14"
+                          className: "hover:pointer border border-fire-40 hover:border-gray-100 px-2 rounded text-gray-60-tr hover:text-gray-95 bg-fire-40 text-12"
                         };
                         if (onMouseDown !== undefined) {
                           tmp.onMouseDown = Caml_option.valFromOption(onMouseDown);
                         }
                         return React.createElement("button", tmp, keyword);
                       }))));
-}
-
-function Packages$Category(Props) {
-  var title = Props.title;
-  var children = Props.children;
-  return React.createElement("div", undefined, React.createElement("h3", {
-                  className: "font-sans font-medium text-gray-100 tracking-wide text-14 uppercase mb-2"
-                }, title), React.createElement("div", undefined, children));
 }
 
 function Packages$InfoSidebar$Toggle(Props) {
@@ -331,6 +424,10 @@ function $$default(props) {
   var setState = match[1];
   var state = match[0];
   var match$1 = React.useState(function () {
+        return /* Official */0;
+      });
+  var selectedCategory = match$1[0];
+  var match$2 = React.useState(function () {
         return {
                 searchterm: "",
                 includeOfficial: true,
@@ -339,7 +436,7 @@ function $$default(props) {
                 includeUrlResource: true
               };
       });
-  var filter = match$1[0];
+  var filter = match$2[0];
   var npms = Belt_Array.map(props.packages, (function (pkg) {
           return {
                   TAG: 0,
@@ -374,7 +471,7 @@ function $$default(props) {
                   return /* All */0;
                 }));
   };
-  var match$2 = Belt_Array.reduce(resources, [
+  var match$3 = Belt_Array.reduce(resources, [
         [],
         []
       ], (function (acc, next) {
@@ -395,8 +492,8 @@ function $$default(props) {
                   community
                 ];
         }));
-  var communityResources = match$2[1];
-  var officialResources = match$2[0];
+  var communityResources = match$3[1];
+  var officialResources = match$3[0];
   var onKeywordSelect = function (keyword) {
     Curry._1(scrollToTop, undefined);
     return Curry._1(setState, (function (param) {
@@ -406,30 +503,54 @@ function $$default(props) {
                         };
                 }));
   };
-  var officialCategory = officialResources.length !== 0 ? React.createElement(Packages$Category, {
-          title: "Official Resources",
-          children: React.createElement("div", {
-                className: "space-y-4"
-              }, Belt_Array.map(officialResources, (function (res) {
-                      return React.createElement(Packages$Card, {
-                                  value: res,
-                                  onKeywordSelect: onKeywordSelect,
-                                  key: res._0.name
-                                });
-                    })))
-        }) : null;
-  var communityCategory = communityResources.length !== 0 ? React.createElement(Packages$Category, {
-          title: "Community Resources",
-          children: React.createElement("div", {
-                className: "space-y-4"
-              }, Belt_Array.map(communityResources, (function (res) {
-                      return React.createElement(Packages$Card, {
-                                  value: res,
-                                  onKeywordSelect: onKeywordSelect,
-                                  key: res._0.name
-                                });
-                    })))
-        }) : null;
+  var officialCategory = officialResources.length !== 0 ? React.createElement("div", {
+          className: "space-y-4"
+        }, Belt_Array.map(officialResources, (function (res) {
+                return React.createElement(Packages$Card, {
+                            value: res,
+                            onKeywordSelect: onKeywordSelect,
+                            key: res._0.name
+                          });
+              }))) : null;
+  var communityCategory = communityResources.length !== 0 ? React.createElement("div", {
+          className: "space-y-4"
+        }, Belt_Array.map(communityResources, (function (res) {
+                return React.createElement(Packages$Card, {
+                            value: res,
+                            onKeywordSelect: onKeywordSelect,
+                            key: res._0.name
+                          });
+              }))) : null;
+  var searchOverview;
+  if (state) {
+    var match$4 = selectedCategory ? [
+        communityResources.length,
+        "\"" + (
+          selectedCategory ? "Community Resources" : "Official Resources"
+        ) + "\""
+      ] : [
+        officialResources.length,
+        "\"" + (
+          selectedCategory ? "Community Resources" : "Official Resources"
+        ) + "\""
+      ];
+    var numOfPackages = match$4[0];
+    var packagePluralSingular = numOfPackages > 1 || numOfPackages === 0 ? "packages" : "package";
+    searchOverview = React.createElement("div", {
+          className: "font-medium"
+        }, React.createElement("div", {
+              className: "text-42 text-gray-95"
+            }, state._0), React.createElement("div", {
+              className: "text-gray-60-tr"
+            }, React.createElement("span", {
+                  className: "text-gray-95"
+                }, numOfPackages), " " + packagePluralSingular + " found in ", React.createElement("span", {
+                  className: "text-gray-95"
+                }, match$4[1])));
+  } else {
+    searchOverview = null;
+  }
+  var searchResult = selectedCategory ? communityCategory : officialCategory;
   var router = Next.Router.useRouter(undefined);
   var firstRenderDone = React.useRef(false);
   React.useEffect((function () {
@@ -464,7 +585,7 @@ function $$default(props) {
                   description: "Official and unofficial resources, libraries and bindings for ReScript",
                   title: "Package Index | ReScript Documentation"
                 }), React.createElement("div", {
-                  className: "mt-16 pt-2"
+                  className: "mt-16"
                 }, React.createElement("div", {
                       className: "text-gray-80 text-lg"
                     }, React.createElement(Navigation.make, {
@@ -472,32 +593,43 @@ function $$default(props) {
                         }), React.createElement("div", {
                           className: "flex overflow-hidden"
                         }, React.createElement("div", {
-                              className: "flex justify-between min-w-320 px-4 pt-16 lg:align-center w-full lg:px-8 pb-48"
+                              className: "flex justify-between min-w-320 lg:align-center w-full"
                             }, React.createElement(Mdx.Provider.make, {
                                   components: Markdown.$$default,
-                                  children: null
-                                }, React.createElement("main", {
-                                      className: "max-w-1280 w-full flex justify-center"
-                                    }, React.createElement("div", {
-                                          className: "w-full",
-                                          style: {
-                                            maxWidth: "44.0625rem"
-                                          }
-                                        }, React.createElement(Markdown.H1.make, {
-                                              children: "Libraries & Bindings"
-                                            }), React.createElement(SearchBox.make, {
-                                              value: searchValue,
-                                              onClear: onClear,
-                                              placeholder: "Enter a search term, name, keyword, etc",
-                                              onValueChange: onValueChange
-                                            }), React.createElement("div", {
-                                              className: "mt-12 space-y-8"
-                                            }, officialCategory, communityCategory))), React.createElement("div", {
-                                      className: "hidden lg:block h-full "
-                                    }, React.createElement(Packages$InfoSidebar, {
-                                          setFilter: match$1[1],
-                                          filter: filter
-                                        }))))), React.createElement(Footer.make, {}))));
+                                  children: React.createElement("main", {
+                                        className: "w-full"
+                                      }, React.createElement("div", {
+                                            className: "relative w-full bg-gray-100 py-16"
+                                          }, React.createElement("div", {
+                                                className: "px-4 relative z-10 max-w-1280 flex justify-center"
+                                              }, React.createElement("div", {
+                                                    className: "w-full",
+                                                    style: {
+                                                      maxWidth: "47.5625rem"
+                                                    }
+                                                  }, React.createElement("h1", {
+                                                        className: "text-white mb-10 md:mb-2 text-42 leading-1 font-medium antialiased"
+                                                      }, "Libraries and Bindings"), React.createElement(Packages$SearchBox, {
+                                                        value: searchValue,
+                                                        onClear: onClear,
+                                                        placeholder: "Enter a search term, keyword, etc",
+                                                        onValueChange: onValueChange
+                                                      }))), React.createElement("img", {
+                                                className: "h-48 absolute bottom-0 right-0",
+                                                src: "/static/illu_index_rescript@2x.png"
+                                              })), React.createElement("div", {
+                                            className: "bg-gray-5 px-4 lg:px-8 pb-48"
+                                          }, React.createElement("div", {
+                                                className: "pt-6"
+                                              }, searchOverview), React.createElement("div", {
+                                                className: "mt-12 space-y-8"
+                                              }, searchResult), React.createElement("div", {
+                                                className: "hidden lg:block h-full "
+                                              }, React.createElement(Packages$InfoSidebar, {
+                                                    setFilter: match$2[1],
+                                                    filter: filter
+                                                  }))))
+                                }))), React.createElement(Footer.make, {}))));
 }
 
 function getStaticProps(_ctx) {
