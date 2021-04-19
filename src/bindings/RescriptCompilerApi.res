@@ -178,10 +178,55 @@ module WarningFlag = {
   }
 }
 
+module TypeHint = {
+  type position = {
+    line: int,
+    col: int,
+  }
+
+  type data = {
+    start: position,
+    end: position,
+    hint: string,
+  }
+
+  type t =
+    | TypeDeclaration(data)
+    | Expression(data)
+    | Binding(data)
+    | CoreType(data)
+
+  let decodePosition = json => {
+    open Json.Decode
+    {
+      line: field("line", int, json),
+      col: field("col", int, json),
+    }
+  }
+
+  let decode = (json): t => {
+    open Json.Decode
+    let data = {
+      start: field("start", decodePosition, json),
+      end: field("end", decodePosition, json),
+      hint: field("hint", string, json),
+    }
+
+    switch field("kind", string, json) {
+    | "expression" => Expression(data)
+    | "type_declaration" => TypeDeclaration(data)
+    | "binding" => Binding(data)
+    | "core_type" => CoreType(data)
+    | other => raise(DecodeError(`Unknown kind "${other}" type hint`))
+    }
+  }
+}
+
 module CompileSuccess = {
   type t = {
     js_code: string,
     warnings: array<Warning.t>,
+    type_hints: array<TypeHint.t>,
     time: float, // total compilation time
   }
 
@@ -190,6 +235,7 @@ module CompileSuccess = {
     {
       js_code: field("js_code", string, json),
       warnings: field("warnings", array(Warning.decode), json),
+      type_hints: withDefault([], field("type_hints", array(TypeHint.decode)), json),
       time: time,
     }
   }

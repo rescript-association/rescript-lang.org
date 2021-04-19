@@ -1941,6 +1941,36 @@ function Playground$default(Props) {
   } else {
     cmErrors = [];
   }
+  var cmHoverHints;
+  if (typeof compilerState === "number") {
+    cmHoverHints = [];
+  } else if (compilerState.TAG === /* Ready */2) {
+    var match$8 = compilerState._0.result;
+    if (typeof match$8 === "number") {
+      cmHoverHints = [];
+    } else if (match$8.TAG === /* Conv */0) {
+      cmHoverHints = [];
+    } else {
+      var match$9 = match$8._0;
+      cmHoverHints = match$9.TAG === /* Success */1 ? match$9._0.type_hints.map(function (hint) {
+              var start = hint._0.start;
+              var end = hint._0.end;
+              return {
+                      start: {
+                        line: start.line,
+                        col: start.col
+                      },
+                      end: {
+                        line: end.line,
+                        col: end.col
+                      },
+                      hint: hint._0.hint
+                    };
+            }) : [];
+    }
+  } else {
+    cmHoverHints = [];
+  }
   var mode;
   if (typeof compilerState === "number" || compilerState.TAG !== /* Ready */2) {
     mode = "rescript";
@@ -1993,6 +2023,7 @@ function Playground$default(Props) {
                                           editorCode: editorCode
                                         }), React.createElement(CodeMirror.make, {
                                           errors: cmErrors,
+                                          hoverHints: cmHoverHints,
                                           minHeight: "calc(100vh - 10rem)",
                                           maxHeight: "calc(100vh - 10rem)",
                                           className: "w-full py-4",

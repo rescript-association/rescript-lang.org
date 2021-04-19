@@ -11,6 +11,19 @@ module Error: {
   }
 }
 
+module HoverHint: {
+  type position = {
+    line: int,
+    col: int,
+  }
+
+  type t = {
+    start: position,
+    end: position,
+    hint: string,
+  }
+}
+
 /* The module for interacting with the imperative CodeMirror API */
 module CM: {
   module Options: {
@@ -35,6 +48,7 @@ let useWindowWidth: unit => int
 @react.component
 let make: (
   ~errors: array<Error.t>=?,
+  ~hoverHints: array<HoverHint.t>=?,
   ~minHeight: string=?,
   ~maxHeight: string=?,
   ~className: string=?,

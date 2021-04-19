@@ -190,21 +190,77 @@ var WarningFlag = {
   decode: decode$3
 };
 
-function decode$4(time, json) {
+function decodePosition(json) {
+  return {
+          line: Json_decode.field("line", Json_decode.$$int, json),
+          col: Json_decode.field("col", Json_decode.$$int, json)
+        };
+}
+
+function decode$4(json) {
+  var data_start = Json_decode.field("start", decodePosition, json);
+  var data_end = Json_decode.field("end", decodePosition, json);
+  var data_hint = Json_decode.field("hint", Json_decode.string, json);
+  var data = {
+    start: data_start,
+    end: data_end,
+    hint: data_hint
+  };
+  var other = Json_decode.field("kind", Json_decode.string, json);
+  switch (other) {
+    case "binding" :
+        return {
+                TAG: 2,
+                _0: data,
+                [Symbol.for("name")]: "Binding"
+              };
+    case "core_type" :
+        return {
+                TAG: 3,
+                _0: data,
+                [Symbol.for("name")]: "CoreType"
+              };
+    case "expression" :
+        return {
+                TAG: 1,
+                _0: data,
+                [Symbol.for("name")]: "Expression"
+              };
+    case "type_declaration" :
+        return {
+                TAG: 0,
+                _0: data,
+                [Symbol.for("name")]: "TypeDeclaration"
+              };
+    default:
+      throw {
+            RE_EXN_ID: Json_decode.DecodeError,
+            _1: "Unknown kind \"" + other + "\" type hint",
+            Error: new Error()
+          };
+  }
+}
+
+function decode$5(time, json) {
   return {
           js_code: Json_decode.field("js_code", Json_decode.string, json),
           warnings: Json_decode.field("warnings", (function (param) {
                   return Json_decode.array(decode$2, param);
+                }), json),
+          type_hints: Json_decode.withDefault([], (function (param) {
+                  return Json_decode.field("type_hints", (function (param) {
+                                return Json_decode.array(decode$4, param);
+                              }), param);
                 }), json),
           time: time
         };
 }
 
 var CompileSuccess = {
-  decode: decode$4
+  decode: decode$5
 };
 
-function decode$5(json) {
+function decode$6(json) {
   return {
           code: Json_decode.field("code", Json_decode.string, json),
           fromLang: Json_decode.field("fromLang", decode, json),
@@ -213,10 +269,10 @@ function decode$5(json) {
 }
 
 var ConvertSuccess = {
-  decode: decode$5
+  decode: decode$6
 };
 
-function decode$6(json) {
+function decode$7(json) {
   var other = Json_decode.field("type", Json_decode.string, json);
   switch (other) {
     case "other_error" :
@@ -272,17 +328,17 @@ function decode$6(json) {
 }
 
 var CompileFail = {
-  decode: decode$6
+  decode: decode$7
 };
 
-function decode$7(time, json) {
+function decode$8(time, json) {
   try {
     var match = Json_decode.field("type", Json_decode.string, json);
     switch (match) {
       case "success" :
           return {
                   TAG: 1,
-                  _0: decode$4(time, json),
+                  _0: decode$5(time, json),
                   [Symbol.for("name")]: "Success"
                 };
       case "unexpected_error" :
@@ -294,7 +350,7 @@ function decode$7(time, json) {
       default:
         return {
                 TAG: 0,
-                _0: decode$6(json),
+                _0: decode$7(json),
                 [Symbol.for("name")]: "Fail"
               };
     }
@@ -314,17 +370,17 @@ function decode$7(time, json) {
 }
 
 var CompilationResult = {
-  decode: decode$7
+  decode: decode$8
 };
 
-function decode$8(fromLang, toLang, json) {
+function decode$9(fromLang, toLang, json) {
   try {
     var other = Json_decode.field("type", Json_decode.string, json);
     switch (other) {
       case "success" :
           return {
                   TAG: 0,
-                  _0: decode$5(json),
+                  _0: decode$6(json),
                   [Symbol.for("name")]: "Success"
                 };
       case "syntax_error" :
@@ -368,7 +424,7 @@ function decode$8(fromLang, toLang, json) {
 }
 
 var ConversionResult = {
-  decode: decode$8
+  decode: decode$9
 };
 
 var Config = {};
@@ -377,31 +433,31 @@ function resCompile(t, code) {
   var startTime = performance.now();
   var json = t.rescript.compile(code);
   var stopTime = performance.now();
-  return decode$7(stopTime - startTime, json);
+  return decode$8(stopTime - startTime, json);
 }
 
 function resFormat(t, code) {
   var json = t.rescript.format(code);
-  return decode$8(/* Res */2, /* Res */2, json);
+  return decode$9(/* Res */2, /* Res */2, json);
 }
 
 function reasonCompile(t, code) {
   var startTime = performance.now();
   var json = t.reason.compile(code);
   var stopTime = performance.now();
-  return decode$7(stopTime - startTime, json);
+  return decode$8(stopTime - startTime, json);
 }
 
 function reasonFormat(t, code) {
   var json = t.reason.format(code);
-  return decode$8(/* Reason */0, /* Reason */0, json);
+  return decode$9(/* Reason */0, /* Reason */0, json);
 }
 
 function ocamlCompile(t, code) {
   var startTime = performance.now();
   var json = t.ocaml.compile(code);
   var stopTime = performance.now();
-  return decode$7(stopTime - startTime, json);
+  return decode$8(stopTime - startTime, json);
 }
 
 function setConfig(t, config) {
@@ -427,7 +483,7 @@ function setConfig(t, config) {
 
 function convertSyntax(fromLang, toLang, code, t) {
   try {
-    return decode$8(fromLang, toLang, t.convertSyntax(toExt(fromLang), toExt(toLang), code));
+    return decode$9(fromLang, toLang, t.convertSyntax(toExt(fromLang), toExt(toLang), code));
   }
   catch (raw_obj){
     var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
@@ -450,6 +506,10 @@ function convertSyntax(fromLang, toLang, code, t) {
     throw obj;
   }
 }
+
+var TypeHint = {
+  decode: decode$4
+};
 
 function Compiler_version(prim) {
   return prim.version;
@@ -507,6 +567,7 @@ export {
   LocMsg ,
   Warning ,
   WarningFlag ,
+  TypeHint ,
   CompileSuccess ,
   ConvertSuccess ,
   CompileFail ,

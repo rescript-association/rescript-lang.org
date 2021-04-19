@@ -60,7 +60,173 @@ var errorGutterId = "errors";
 
 var $$Error = {};
 
-function make(rowCol, kind, param) {
+var HoverHint = {};
+
+var make = (function() {
+    const tooltip = document.createElement("div");
+    tooltip.id = "hover-tooltip"
+    tooltip.className = "absolute hidden select-none font-mono text-12 z-10 bg-sky-10 py-1 px-2 rounded"
+
+    return tooltip
+  });
+
+var hide = (function(tooltip){
+    tooltip.classList.add("hidden")
+  });
+
+var update = (function(tooltip, top, left, text){
+    tooltip.style.left = left + "px";
+    tooltip.style.top = top + "px";
+
+    tooltip.classList.remove("hidden");
+
+    tooltip.innerHTML = text;
+  });
+
+var attach = (function(tooltip) {
+    document.body.appendChild(tooltip);
+  });
+
+var clear = (function(tooltip) {
+    tooltip.remove()
+  });
+
+var tooltip = Curry._1(make, undefined);
+
+var isSpanToken = (function(el) {
+  return el.tagName.toUpperCase() === "SPAN" && el.getAttribute("role") !== "presentation"
+});
+
+function useHoverTooltip(cmStateRef, cmRef, param) {
+  var stateRef = React.useRef(/* Hidden */0);
+  var markerRef = React.useRef(undefined);
+  React.useEffect((function () {
+          attach(tooltip);
+          return (function (param) {
+                    return clear(tooltip);
+                  });
+        }), []);
+  var checkIfTextMarker = (function(el) {
+    let isToken = el.tagName.toUpperCase() === "SPAN" && el.getAttribute("role") !== "presentation";
+    return isToken && /CodeMirror-hover-hint-marker/.test(el.className)
+  });
+  var onMouseOver = function (evt) {
+    var cm = cmRef.current;
+    if (cm !== undefined) {
+      var cm$1 = Caml_option.valFromOption(cm);
+      var target = evt.target;
+      if (!checkIfTextMarker(target) && isSpanToken(target)) {
+        var match = cmStateRef.current;
+        var hoverHints = match.hoverHints;
+        var pageX = evt.pageX;
+        var pageY = evt.pageY;
+        var coords = cm$1.coordsChar({
+              top: pageY,
+              left: pageX
+            });
+        var col = coords.ch;
+        var line = coords.line + 1 | 0;
+        var found = hoverHints.find(function (item) {
+              var end = item.end;
+              var start = item.start;
+              if (line >= start.line && line <= end.line && col >= start.col) {
+                return col <= end.col;
+              } else {
+                return false;
+              }
+            });
+        if (found !== undefined) {
+          update(tooltip, pageY - 35 | 0, pageX, found.hint);
+          var from_line = found.start.line - 1 | 0;
+          var from_ch = found.start.col;
+          var from = {
+            line: from_line,
+            ch: from_ch
+          };
+          var to__line = found.end.line - 1 | 0;
+          var to__ch = found.end.col;
+          var to_ = {
+            line: to__line,
+            ch: to__ch
+          };
+          var markerObj = {
+            className: "CodeMirror-hover-hint-marker border-b"
+          };
+          var match$1 = stateRef.current;
+          if (match$1) {
+            var hideTimer = match$1.hideTimer;
+            if (hideTimer !== undefined) {
+              clearTimeout(Caml_option.valFromOption(hideTimer));
+            }
+            match$1.marker.clear();
+            var marker = cm$1.markText(from, to_, markerObj);
+            stateRef.current = {
+              el: match$1.el,
+              marker: marker,
+              hoverHint: found,
+              hideTimer: undefined,
+              [Symbol.for("name")]: "Shown"
+            };
+          } else {
+            var marker$1 = cm$1.markText(from, to_, markerObj);
+            markerRef.current = Caml_option.some(marker$1);
+            stateRef.current = {
+              el: target,
+              marker: marker$1,
+              hoverHint: found,
+              hideTimer: undefined,
+              [Symbol.for("name")]: "Shown"
+            };
+          }
+        }
+        
+      }
+      
+    }
+    
+  };
+  var onMouseOut = function (_evt) {
+    var match = stateRef.current;
+    if (!match) {
+      return ;
+    }
+    var hideTimer = match.hideTimer;
+    var marker = match.marker;
+    if (hideTimer !== undefined) {
+      clearTimeout(Caml_option.valFromOption(hideTimer));
+    }
+    marker.clear();
+    var timerId = setTimeout((function (param) {
+            stateRef.current = /* Hidden */0;
+            return hide(tooltip);
+          }), 200);
+    stateRef.current = {
+      el: match.el,
+      marker: marker,
+      hoverHint: match.hoverHint,
+      hideTimer: Caml_option.some(timerId),
+      [Symbol.for("name")]: "Shown"
+    };
+    
+  };
+  var onMouseMove = function (evt) {
+    var match = stateRef.current;
+    if (!match) {
+      return ;
+    }
+    var pageX = evt.pageX;
+    var pageY = evt.pageY;
+    update(tooltip, pageY - 35 | 0, pageX, match.hoverHint.hint);
+    
+  };
+  return [
+          onMouseOver,
+          onMouseOut,
+          onMouseMove
+        ];
+}
+
+function make$1(rowCol, kind, param) {
   var marker = document.createElement("div");
   var colorClass = kind === "Error" ? "text-fire bg-fire-100" : "text-orange bg-orange-15";
   marker.id = "gutter-marker_" + rowCol[0] + "-" + rowCol[1];
@@ -101,7 +267,7 @@ function updateErrors(state, onMarkerFocus, onMarkerFocusLeave, cm, errors) {
   cm.clearGutter(errorGutterId);
   var wrapper = cm.getWrapperElement();
   Belt_Array.forEachWithIndex(errors, (function (_idx, e) {
-          var marker = make([
+          var marker = make$1([
                 e.row,
                 e.column
               ], e.kind, undefined);
@@ -170,6 +336,7 @@ function updateErrors(state, onMarkerFocus, onMarkerFocusLeave, cm, errors) {
 
 function CodeMirror(Props) {
   var errorsOpt = Props.errors;
+  var hoverHintsOpt = Props.hoverHints;
   var minHeight = Props.minHeight;
   var maxHeight = Props.maxHeight;
   var className = Props.className;
@@ -184,6 +351,7 @@ function CodeMirror(Props) {
   var scrollbarStyleOpt = Props.scrollbarStyle;
   var lineWrappingOpt = Props.lineWrapping;
   var errors = errorsOpt !== undefined ? errorsOpt : [];
+  var hoverHints = hoverHintsOpt !== undefined ? hoverHintsOpt : [];
   var readOnly = readOnlyOpt !== undefined ? readOnlyOpt : false;
   var lineNumbers = lineNumbersOpt !== undefined ? lineNumbersOpt : true;
   var scrollbarStyle = scrollbarStyleOpt !== undefined ? scrollbarStyleOpt : "overlay";
@@ -191,9 +359,14 @@ function CodeMirror(Props) {
   var inputElement = React.useRef(null);
   var cmRef = React.useRef(undefined);
   var cmStateRef = React.useRef({
-        marked: []
+        marked: [],
+        hoverHints: hoverHints
       });
   var windowWidth = Curry._1(useWindowWidth, undefined);
+  var match = useHoverTooltip(cmStateRef, cmRef, undefined);
+  var onMouseMove = match[2];
+  var onMouseOut = match[1];
+  var onMouseOver = match[0];
   React.useEffect((function () {
           var input = inputElement.current;
           if (input == null) {
@@ -228,13 +401,24 @@ function CodeMirror(Props) {
                   
                 }));
           cm.setValue(value);
+          var wrapper = cm.getWrapperElement();
+          Codemirror.on(wrapper, "mouseover", Curry.__1(onMouseOver));
+          Codemirror.on(wrapper, "mouseout", Curry.__1(onMouseOut));
+          Codemirror.on(wrapper, "mousemove", Curry.__1(onMouseMove));
           cmRef.current = Caml_option.some(cm);
           return (function (param) {
+                    Codemirror.off(wrapper, "mouseover", Curry.__1(onMouseOver));
+                    Codemirror.off(wrapper, "mouseout", Curry.__1(onMouseOut));
+                    Codemirror.off(wrapper, "mousemove", Curry.__1(onMouseMove));
                     cm.toTextArea();
                     cmRef.current = undefined;
                     
                   });
         }), []);
+  React.useEffect((function () {
+          cmStateRef.current.hoverHints = hoverHints;
+          
+        }), [hoverHints]);
   var cm = cmRef.current;
   if (cm !== undefined) {
     var cm$1 = Caml_option.valFromOption(cm);
@@ -319,13 +503,14 @@ var CM = {
   }
 };
 
-var make$1 = CodeMirror;
+var make$2 = CodeMirror;
 
 export {
   $$Error ,
+  HoverHint ,
   CM ,
   useWindowWidth ,
-  make$1 as make,
+  make$2 as make,
   
 }
 /*  Not a pure module */
