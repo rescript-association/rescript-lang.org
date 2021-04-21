@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@glennsl/bs-json": "^3.0.0",
+    "@headlessui/react": "^1.0.0",
     "@mdx-js/loader": "^1.5.5",
     "@next/mdx": "^8.1.0",
     "@octokit/graphql-schema": "^7.4.0",

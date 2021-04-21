@@ -373,6 +373,26 @@ var Copy = {
   make: Icon$Copy
 };
 
+function Icon$Check(Props) {
+  var classNameOpt = Props.className;
+  var className = classNameOpt !== undefined ? classNameOpt : "";
+  return React.createElement("svg", {
+              className: "stroke-current " + className,
+              height: "9.111",
+              width: "12.513",
+              viewBox: "0 0 12.513 9.111",
+              xmlns: "http://www.w3.org/2000/svg"
+            }, React.createElement("path", {
+                  d: "M.703 3.588l4.108 4.109 6.99-6.99",
+                  fill: "none",
+                  strokeWidth: "2"
+                }));
+}
+
+var Check = {
+  make: Icon$Check
+};
+
 export {
   Github ,
   Npm ,
@@ -389,6 +409,7 @@ export {
   TriangleDown ,
   ExternalLink ,
   Copy ,
+  Check ,
   
 }
 /* react Not a pure module */

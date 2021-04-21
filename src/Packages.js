@@ -13,6 +13,7 @@ import * as Js_dict from "bs-platform/lib/es6/js_dict.js";
 import * as Js_null from "bs-platform/lib/es6/js_null.js";
 import FuseJs from "fuse.js";
 import * as Process from "process";
+import * as Dropdown from "./components/Dropdown.js";
 import * as Markdown from "./components/Markdown.js";
 import * as Belt_Array from "bs-platform/lib/es6/belt_Array.js";
 import * as Navigation from "./components/Navigation.js";
@@ -314,6 +315,14 @@ function Packages$Card(Props) {
                       }))));
 }
 
+function toString(t) {
+  if (t) {
+    return "Community Resources";
+  } else {
+    return "Official Resources";
+  }
+}
+
 function Packages$InfoSidebar$Toggle(Props) {
   var enabled = Props.enabled;
   var toggle = Props.toggle;
@@ -342,41 +351,12 @@ function Packages$InfoSidebar(Props) {
                     }, "Filter for"), React.createElement("div", {
                       className: "space-y-2"
                     }, React.createElement(Packages$InfoSidebar$Toggle, {
-                          enabled: filter.includeOfficial,
-                          toggle: (function (param) {
-                              return Curry._1(setFilter, (function (prev) {
-                                            return {
-                                                    searchterm: prev.searchterm,
-                                                    includeOfficial: !filter.includeOfficial,
-                                                    includeCommunity: prev.includeCommunity,
-                                                    includeNpm: prev.includeNpm,
-                                                    includeUrlResource: prev.includeUrlResource
-                                                  };
-                                          }));
-                            }),
-                          children: "Official"
-                        }), React.createElement(Packages$InfoSidebar$Toggle, {
-                          enabled: filter.includeCommunity,
-                          toggle: (function (param) {
-                              return Curry._1(setFilter, (function (prev) {
-                                            return {
-                                                    searchterm: prev.searchterm,
-                                                    includeOfficial: prev.includeOfficial,
-                                                    includeCommunity: !filter.includeCommunity,
-                                                    includeNpm: prev.includeNpm,
-                                                    includeUrlResource: prev.includeUrlResource
-                                                  };
-                                          }));
-                            }),
-                          children: "Community"
-                        }), React.createElement(Packages$InfoSidebar$Toggle, {
                           enabled: filter.includeNpm,
                           toggle: (function (param) {
                               return Curry._1(setFilter, (function (prev) {
                                             return {
                                                     searchterm: prev.searchterm,
-                                                    includeOfficial: prev.includeOfficial,
-                                                    includeCommunity: prev.includeCommunity,
+                                                    category: prev.category,
                                                     includeNpm: !filter.includeNpm,
                                                     includeUrlResource: prev.includeUrlResource
                                                   };
@@ -389,8 +369,7 @@ function Packages$InfoSidebar(Props) {
                               return Curry._1(setFilter, (function (prev) {
                                             return {
                                                     searchterm: prev.searchterm,
-                                                    includeOfficial: prev.includeOfficial,
-                                                    includeCommunity: prev.includeCommunity,
+                                                    category: prev.category,
                                                     includeNpm: prev.includeNpm,
                                                     includeUrlResource: !filter.includeUrlResource
                                                   };
@@ -424,19 +403,15 @@ function $$default(props) {
   var setState = match[1];
   var state = match[0];
   var match$1 = React.useState(function () {
-        return /* Official */0;
-      });
-  var selectedCategory = match$1[0];
-  var match$2 = React.useState(function () {
         return {
                 searchterm: "",
-                includeOfficial: true,
-                includeCommunity: true,
+                category: /* Official */0,
                 includeNpm: true,
                 includeUrlResource: true
               };
       });
-  var filter = match$2[0];
+  var setFilter = match$1[1];
+  var filter = match$1[0];
   var npms = Belt_Array.map(props.packages, (function (pkg) {
           return {
                   TAG: 0,
@@ -471,7 +446,7 @@ function $$default(props) {
                   return /* All */0;
                 }));
   };
-  var match$3 = Belt_Array.reduce(resources, [
+  var match$2 = Belt_Array.reduce(resources, [
         [],
         []
       ], (function (acc, next) {
@@ -480,9 +455,9 @@ function $$default(props) {
           var isResourceIncluded;
           isResourceIncluded = next.TAG === /* Npm */0 ? filter.includeNpm : filter.includeUrlResource;
           if (isResourceIncluded) {
-            if (filter.includeOfficial && isOfficial(next)) {
+            if (filter.category === /* Official */0 && isOfficial(next)) {
               official.push(next);
-            } else if (filter.includeCommunity && !shouldFilter(next)) {
+            } else if (filter.category === /* Community */1 && !shouldFilter(next)) {
               community.push(next);
             }
             
@@ -492,8 +467,8 @@ function $$default(props) {
                   community
                 ];
         }));
-  var communityResources = match$3[1];
-  var officialResources = match$3[0];
+  var communityResources = match$2[1];
+  var officialResources = match$2[0];
   var onKeywordSelect = function (keyword) {
     Curry._1(scrollToTop, undefined);
     return Curry._1(setState, (function (param) {
@@ -523,15 +498,16 @@ function $$default(props) {
               }))) : null;
   var searchOverview;
   if (state) {
-    var match$4 = selectedCategory ? [
+    var match$3 = filter.category;
+    var match$4 = match$3 ? [
         communityResources.length,
         "\"" + (
-          selectedCategory ? "Community Resources" : "Official Resources"
+          filter.category ? "Community Resources" : "Official Resources"
         ) + "\""
       ] : [
         officialResources.length,
         "\"" + (
-          selectedCategory ? "Community Resources" : "Official Resources"
+          filter.category ? "Community Resources" : "Official Resources"
         ) + "\""
       ];
     var numOfPackages = match$4[0];
@@ -550,7 +526,8 @@ function $$default(props) {
   } else {
     searchOverview = null;
   }
-  var searchResult = selectedCategory ? communityCategory : officialCategory;
+  var match$5 = filter.category;
+  var searchResult = match$5 ? communityCategory : officialCategory;
   var router = Next.Router.useRouter(undefined);
   var firstRenderDone = React.useRef(false);
   React.useEffect((function () {
@@ -621,12 +598,29 @@ function $$default(props) {
                                             className: "bg-gray-5 px-4 lg:px-8 pb-48"
                                           }, React.createElement("div", {
                                                 className: "pt-6"
-                                              }, searchOverview), React.createElement("div", {
+                                              }, searchOverview), React.createElement("div", undefined, React.createElement(Dropdown.make, {
+                                                    value: filter.category,
+                                                    itemToString: toString,
+                                                    onChange: (function (category) {
+                                                        return Curry._1(setFilter, (function (prev) {
+                                                                      return {
+                                                                              searchterm: prev.searchterm,
+                                                                              category: category,
+                                                                              includeNpm: prev.includeNpm,
+                                                                              includeUrlResource: prev.includeUrlResource
+                                                                            };
+                                                                    }));
+                                                      }),
+                                                    items: [
+                                                      /* Official */0,
+                                                      /* Community */1
+                                                    ]
+                                                  })), React.createElement("div", {
                                                 className: "mt-12 space-y-8"
                                               }, searchResult), React.createElement("div", {
                                                 className: "hidden lg:block h-full "
                                               }, React.createElement(Packages$InfoSidebar, {
-                                                    setFilter: match$2[1],
+                                                    setFilter: setFilter,
                                                     filter: filter
                                                   }))))
                                 }))), React.createElement(Footer.make, {}))));

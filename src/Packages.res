@@ -325,8 +325,7 @@ module Category = {
 module Filter = {
   type t = {
     searchterm: string,
-    includeOfficial: bool,
-    includeCommunity: bool,
+    category: Category.t,
     includeNpm: bool,
     includeUrlResource: bool,
   }
@@ -356,24 +355,6 @@ module InfoSidebar = {
       <div>
         <h2 className=h2> {React.string("Filter for")} </h2>
         <div className="space-y-2">
-          <Toggle
-            enabled={filter.includeOfficial}
-            toggle={() => {
-              setFilter(prev => {
-                {...prev, Filter.includeOfficial: !filter.includeOfficial}
-              })
-            }}>
-            {React.string("Official")}
-          </Toggle>
-          <Toggle
-            enabled={filter.includeCommunity}
-            toggle={() => {
-              setFilter(prev => {
-                {...prev, Filter.includeCommunity: !filter.includeCommunity}
-              })
-            }}>
-            {React.string("Community")}
-          </Toggle>
           <Toggle
             enabled={filter.includeNpm}
             toggle={() => {
@@ -429,14 +410,9 @@ let scrollToTop: unit => unit = %raw(`function() {
 let default = (props: props) => {
   let (state, setState) = React.useState(_ => All)
 
-  let (selectedCategory, setSelectedCategory) = React.useState(_ => {
-    Category.Official
-  })
-
   let (filter, setFilter) = React.useState(_ => {
     Filter.searchterm: "",
-    includeOfficial: true,
-    includeCommunity: true,
+    category: Category.Official,
     includeNpm: true,
     includeUrlResource: true,
   })
@@ -482,9 +458,9 @@ let default = (props: props) => {
     }
     if !isResourceIncluded {
       ()
-    } else if filter.includeOfficial && Resource.isOfficial(next) {
+    } else if filter.category === Category.Official && Resource.isOfficial(next) {
       Js.Array2.push(official, next)->ignore
-    } else if filter.includeCommunity && !Resource.shouldFilter(next) {
+    } else if filter.category === Category.Community && !Resource.shouldFilter(next) {
       Js.Array2.push(community, next)->ignore
     }
     (official, community)
@@ -519,12 +495,9 @@ let default = (props: props) => {
 
   let searchOverview = switch state {
   | Filtered(search) =>
-    let (numOfPackages, categoryName) = switch selectedCategory {
-    | Official => (officialResources->Js.Array2.length, `"${Category.toString(selectedCategory)}"`)
-    | Community => (
-        communityResources->Js.Array2.length,
-        `"${Category.toString(selectedCategory)}"`,
-      )
+    let (numOfPackages, categoryName) = switch filter.category {
+    | Official => (officialResources->Js.Array2.length, `"${Category.toString(filter.category)}"`)
+    | Community => (communityResources->Js.Array2.length, `"${Category.toString(filter.category)}"`)
     }
 
     let packagePluralSingular = if numOfPackages > 1 || numOfPackages === 0 {
@@ -543,7 +516,7 @@ let default = (props: props) => {
   | All => React.null
   }
 
-  let searchResult = switch selectedCategory {
+  let searchResult = switch filter.category {
   | Official => officialCategory
   | Community => communityCategory
   }
@@ -619,6 +592,20 @@ let default = (props: props) => {
                 // Actual content
                 <div className="bg-gray-5 px-4 lg:px-8 pb-48">
                   <div className="pt-6"> searchOverview </div>
+                  // Box for the filter
+                  <div>
+                    <Dropdown
+                      value={filter.category}
+                      onChange={category => {
+                        setFilter(prev => {
+                          ...prev,
+                          category: category,
+                        })
+                      }}
+                      items=[Category.Official, Community]
+                      itemToString=Category.toString
+                    />
+                  </div>
                   // Box for the results
                   <div className="mt-12 space-y-8"> searchResult </div>
                   <div className="hidden lg:block h-full "> <InfoSidebar filter setFilter /> </div>
