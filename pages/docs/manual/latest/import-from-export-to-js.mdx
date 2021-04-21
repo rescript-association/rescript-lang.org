@@ -93,6 +93,23 @@ var studentName = Student;
 
 </CodeTab>
 
+### Import a JSX element from a JavaScript module
+
+Sometimes you need to use a library that requires you to insert an element in your JSX.
+This example shows how you would import the JSX element needed from [react-hot-toast](https://react-hot-toast.com/).
+
+<CodeTab labels={["ReScript"]}>
+
+```res example
+@react.component @module("react-hot-toast")
+external make: unit => React.element = "Toaster"
+```
+
+</CodeTab>
+
+Put the above in a file called `Toaster.res` and then you can use it in you JSX as `<Toaster/>`
+
+
 ## Export To JavaScript
 
 ### Export a Named Value
