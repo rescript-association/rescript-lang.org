@@ -189,10 +189,10 @@ var data = {
 
 if (typeof data === "number") {
   console.log("Bah.");
-} else if (data.TAG) {
-  console.log("Success! Product shipped!");
-} else {
+} else if (data.TAG === /* BadResult */ 0) {
   console.log("Something's wrong. The error code is: " + "Product shipped!".toString());
+} else {
+  console.log("Success! Product shipped!");
 }
 ```
 
