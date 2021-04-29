@@ -89,7 +89,7 @@ let flatMap: (option<'a>, 'a => option<'b>) => option<'b>
 
 If `optionValue` is `Some(value)`, returns `f(value)`, otherwise returns
 `None`.<br/>
-The function `f` must have a return type of `option<'a>`.
+The function `f` must have a return type of `option<'b>`.
 
 ```res example
 let addIfAboveOne = value =>
