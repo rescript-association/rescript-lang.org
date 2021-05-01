@@ -259,3 +259,17 @@ module Copy = {
       </g>
     </svg>
 }
+
+module Check = {
+  @react.component
+  let make = (~className: string="") => {
+    <svg
+      className={"stroke-current " ++ className}
+      xmlns="http://www.w3.org/2000/svg"
+      width={"12.513"}
+      height={"9.111"}
+      viewBox="0 0 12.513 9.111">
+      <path d="M.703 3.588l4.108 4.109 6.99-6.99" fill="none" strokeWidth={"2"} />
+    </svg>
+  }
+}

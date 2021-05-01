@@ -25,6 +25,104 @@ type npmPackage = {
   npmHref: string,
 }
 
+module SearchBox = {
+  @bs.send external focus: Dom.element => unit = "focus"
+
+  type state =
+    | Active
+    | Inactive
+
+  @react.component
+  let make = (
+    ~completionValues: array<string>=[], // set of possible values
+    ~value: string,
+    ~onClear: unit => unit,
+    ~placeholder: string="",
+    ~onValueChange: string => unit,
+  ) => {
+    let (state, setState) = React.useState(_ => Inactive)
+    let textInput = React.useRef(Js.Nullable.null)
+
+    let onMouseDownClear = evt => {
+      ReactEvent.Mouse.preventDefault(evt)
+      onClear()
+    }
+
+    let focusInput = () =>
+      textInput.current->Js.Nullable.toOption->Belt.Option.forEach(el => el->focus)
+
+    let onAreaFocus = evt => {
+      let el = ReactEvent.Focus.target(evt)
+      let isDiv = Js.Null_undefined.isNullable(el["type"])
+
+      if isDiv && state === Inactive {
+        focusInput()
+      }
+    }
+
+    let onFocus = _ => {
+      setState(_ => Active)
+    }
+
+    let onBlur = _ => {
+      setState(_ => Inactive)
+    }
+
+    let onKeyDown = evt => {
+      let key = ReactEvent.Keyboard.key(evt)
+      let ctrlKey = ReactEvent.Keyboard.ctrlKey(evt)
+
+      let full = (ctrlKey ? "CTRL+" : "") ++ key
+
+      switch full {
+      | "Escape" => onClear()
+      | "Tab" =>
+        if Js.Array.length(completionValues) === 1 {
+          let targetValue = Belt.Array.getExn(completionValues, 0)
+
+          if targetValue !== value {
+            ReactEvent.Keyboard.preventDefault(evt)
+            onValueChange(targetValue)
+          } else {
+            ()
+          }
+        }
+      | _ => ()
+      }
+    }
+
+    let onChange = evt => {
+      ReactEvent.Form.preventDefault(evt)
+      let value = ReactEvent.Form.target(evt)["value"]
+      onValueChange(value)
+    }
+
+    <div
+      tabIndex={-1}
+      onFocus=onAreaFocus
+      onBlur
+      className={(
+        state === Active ? "" : ""
+      ) ++ " flex bg-white items-center rounded-lg py-4 px-5"}>
+      <Icon.MagnifierGlass
+        className={(state === Active ? "text-gray-100" : "text-gray-60") ++ " w-5 h-5"}
+      />
+      <input
+        value
+        ref={ReactDOM.Ref.domRef(textInput)}
+        onFocus
+        onKeyDown
+        onChange={onChange}
+        placeholder
+        className="text-16 font-medium text-gray-95 outline-none ml-4 w-full"
+        type_="text"
+      />
+      <button onFocus className={value === "" ? "hidden" : "block"} onMouseDown=onMouseDownClear>
+        <Icon.Close className="w-4 h-4 text-gray-60 hover:text-gray-100" />
+      </button>
+    </div>
+  }
+}
 module Resource = {
   type t = Npm(npmPackage) | Url(urlResource)
 
@@ -150,7 +248,7 @@ module Card = {
         </>
       | None => React.null
       }
-      <div className="text-14 space-x-2 mt-1">
+      <div className="text-12 text-gray-40 space-x-2 mt-1">
         <a className="hover:text-fire" href={pkg.npmHref} target="_blank">
           {React.string("NPM")}
         </a>
@@ -169,18 +267,31 @@ module Card = {
     | Url({name, description, keywords}) => (name, description, keywords)
     }
 
-    <div className="bg-gray-5-tr py-6 rounded-lg p-4">
+    let versionEl = switch value {
+    | Resource.Npm({version}) =>
+      <span className="text-12 text-gray-40 font-medium"> {React.string(version)} </span>
+    | _ => React.null
+    }
+
+    <div className="bg-white py-6 shadow-xs rounded-lg p-4">
       <div className="flex justify-between">
         <div>
-          <a className="font-bold hover:text-fire text-18" href=titleHref target="_blank">
-            <span> {React.string(title)} </span>
-          </a>
+          <div className="space-x-2">
+            <a
+              className="font-bold hover:text-fire font-semibold text-18"
+              href=titleHref
+              target="_blank">
+              <span> {React.string(title)} </span>
+            </a>
+            versionEl
+          </div>
           {linkBox}
         </div>
-        <div> {icon} </div>
+        <div className="text-gray-90"> {icon} </div>
       </div>
-      <div className="mt-4 text-16"> {React.string(description)} </div>
-      <div className="space-x-2 mt-4"> {Belt.Array.map(keywords, keyword => {
+      <div className="mt-4 text-14"> {React.string(description)} </div>
+      <div className="space-x-2 mt-4">
+        {Belt.Array.map(keywords, keyword => {
           let onMouseDown = Belt.Option.map(onKeywordSelect, cb => {
             evt => {
               ReactEvent.Mouse.preventDefault(evt)
@@ -189,11 +300,12 @@ module Card = {
           })
           <button
             ?onMouseDown
-            className="hover:pointer px-2 rounded-lg text-white bg-fire-70 text-14"
+            className="hover:pointer border border-fire-40 hover:border-gray-100 px-2 rounded text-gray-60-tr hover:text-gray-95 bg-fire-40 text-12"
             key={keyword}>
             {React.string(keyword)}
           </button>
-        })->React.array} </div>
+        })->React.array}
+      </div>
     </div>
   }
 }
@@ -208,23 +320,12 @@ module Category = {
     | Official => "Official Resources"
     | Community => "Community Resources"
     }
-
-  @react.component
-  let make = (~title: string, ~children) => {
-    <div>
-      <h3 className="font-sans font-medium text-gray-100 tracking-wide text-14 uppercase mb-2">
-        {React.string(title)}
-      </h3>
-      <div> children </div>
-    </div>
-  }
 }
 
 module Filter = {
   type t = {
     searchterm: string,
-    includeOfficial: bool,
-    includeCommunity: bool,
+    category: Category.t,
     includeNpm: bool,
     includeUrlResource: bool,
   }
@@ -254,24 +355,6 @@ module InfoSidebar = {
       <div>
         <h2 className=h2> {React.string("Filter for")} </h2>
         <div className="space-y-2">
-          <Toggle
-            enabled={filter.includeOfficial}
-            toggle={() => {
-              setFilter(prev => {
-                {...prev, Filter.includeOfficial: !filter.includeOfficial}
-              })
-            }}>
-            {React.string("Official")}
-          </Toggle>
-          <Toggle
-            enabled={filter.includeCommunity}
-            toggle={() => {
-              setFilter(prev => {
-                {...prev, Filter.includeCommunity: !filter.includeCommunity}
-              })
-            }}>
-            {React.string("Community")}
-          </Toggle>
           <Toggle
             enabled={filter.includeNpm}
             toggle={() => {
@@ -315,26 +398,21 @@ type state =
   | All
   | Filtered(string) // search term
 
-let scrollToTop: unit => unit = %raw(
-  `function() {
+let scrollToTop: unit => unit = %raw(`function() {
   window.scroll({
     top: 0, 
     left: 0, 
     behavior: 'smooth'
   });
 }
-`
-)
+`)
 
 let default = (props: props) => {
-  open Markdown
-
   let (state, setState) = React.useState(_ => All)
 
   let (filter, setFilter) = React.useState(_ => {
     Filter.searchterm: "",
-    includeOfficial: true,
-    includeCommunity: true,
+    category: Category.Official,
     includeNpm: true,
     includeUrlResource: true,
   })
@@ -369,25 +447,24 @@ let default = (props: props) => {
     setState(_ => All)
   }
 
-  let (officialResources, communityResources) = Belt.Array.reduce(
-    resources,
-    ([], []),
-    (acc, next) => {
-      let (official, community) = acc
-      let isResourceIncluded = switch next {
-      | Npm(_) => filter.includeNpm
-      | Url(_) => filter.includeUrlResource
-      }
-      if !isResourceIncluded {
-        ()
-      } else if filter.includeOfficial && Resource.isOfficial(next) {
-        Js.Array2.push(official, next)->ignore
-      } else if filter.includeCommunity && !Resource.shouldFilter(next) {
-        Js.Array2.push(community, next)->ignore
-      }
-      (official, community)
-    },
-  )
+  let (officialResources, communityResources) = Belt.Array.reduce(resources, ([], []), (
+    acc,
+    next,
+  ) => {
+    let (official, community) = acc
+    let isResourceIncluded = switch next {
+    | Npm(_) => filter.includeNpm
+    | Url(_) => filter.includeUrlResource
+    }
+    if !isResourceIncluded {
+      ()
+    } else if filter.category === Category.Official && Resource.isOfficial(next) {
+      Js.Array2.push(official, next)->ignore
+    } else if filter.category === Category.Community && !Resource.shouldFilter(next) {
+      Js.Array2.push(community, next)->ignore
+    }
+    (official, community)
+  })
 
   let onKeywordSelect = keyword => {
     scrollToTop()
@@ -399,21 +476,49 @@ let default = (props: props) => {
   let officialCategory = switch officialResources {
   | [] => React.null
   | resources =>
-    <Category title={Category.toString(Official)}>
-      <div className="space-y-4"> {Belt.Array.map(resources, res => {
-          <Card key={Resource.getId(res)} onKeywordSelect value={res} />
-        })->React.array} </div>
-    </Category>
+    <div className="space-y-4">
+      {Belt.Array.map(resources, res => {
+        <Card key={Resource.getId(res)} onKeywordSelect value={res} />
+      })->React.array}
+    </div>
   }
 
   let communityCategory = switch communityResources {
   | [] => React.null
   | resources =>
-    <Category title={Category.toString(Community)}>
-      <div className="space-y-4"> {Belt.Array.map(resources, res => {
-          <Card onKeywordSelect key={Resource.getId(res)} value={res} />
-        })->React.array} </div>
-    </Category>
+    <div className="space-y-4">
+      {Belt.Array.map(resources, res => {
+        <Card onKeywordSelect key={Resource.getId(res)} value={res} />
+      })->React.array}
+    </div>
+  }
+
+  let searchOverview = switch state {
+  | Filtered(search) =>
+    let (numOfPackages, categoryName) = switch filter.category {
+    | Official => (officialResources->Js.Array2.length, `"${Category.toString(filter.category)}"`)
+    | Community => (communityResources->Js.Array2.length, `"${Category.toString(filter.category)}"`)
+    }
+
+    let packagePluralSingular = if numOfPackages > 1 || numOfPackages === 0 {
+      "packages"
+    } else {
+      "package"
+    }
+    <div className="font-medium">
+      <div className="text-42 text-gray-95"> {React.string(search)} </div>
+      <div className="text-gray-60-tr">
+        <span className="text-gray-95"> {React.int(numOfPackages)} </span>
+        {React.string(` ${packagePluralSingular} found in `)}
+        <span className="text-gray-95"> {categoryName->React.string} </span>
+      </div>
+    </div>
+  | All => React.null
+  }
+
+  let searchResult = switch filter.category {
+  | Official => officialCategory
+  | Community => communityCategory
   }
 
   let router = Next.Router.useRouter()
@@ -456,26 +561,56 @@ let default = (props: props) => {
       title="Package Index | ReScript Documentation"
       description="Official and unofficial resources, libraries and bindings for ReScript"
     />
-    <div className="mt-16 pt-2">
+    <div className="mt-16">
       <div className="text-gray-80 text-lg">
         <Navigation overlayState />
         <div className="flex overflow-hidden">
-          <div
-            className="flex justify-between min-w-320 px-4 pt-16 lg:align-center w-full lg:px-8 pb-48">
+          <div className="flex justify-between min-w-320 lg:align-center w-full">
             <Mdx.Provider components=Markdown.default>
-              <main className="max-w-1280 w-full flex justify-center">
-                <div style={ReactDOM.Style.make(~maxWidth="44.0625rem", ())} className="w-full">
-                  <H1> {React.string("Libraries & Bindings")} </H1>
-                  <SearchBox
-                    placeholder="Enter a search term, name, keyword, etc"
-                    onValueChange
-                    onClear
-                    value={searchValue}
+              <main className="w-full">
+                <div className="relative w-full bg-gray-100 py-16">
+                  <div className="px-4 relative z-10 max-w-1280 flex justify-center">
+                    // Centered Searchbox header thing
+                    <div style={ReactDOM.Style.make(~maxWidth="47.5625rem", ())} className="w-full">
+                      <h1
+                        className="text-white mb-10 md:mb-2 text-42 leading-1 font-medium antialiased">
+                        {React.string("Libraries and Bindings")}
+                      </h1>
+                      <SearchBox
+                        placeholder="Enter a search term, keyword, etc"
+                        onValueChange
+                        onClear
+                        value={searchValue}
+                      />
+                    </div>
+                  </div>
+                  <img
+                    className="h-48 absolute bottom-0 right-0"
+                    src="/static/illu_index_rescript@2x.png"
                   />
-                  <div className="mt-12 space-y-8"> officialCategory communityCategory </div>
+                </div>
+                // Actual content
+                <div className="bg-gray-5 px-4 lg:px-8 pb-48">
+                  <div className="pt-6"> searchOverview </div>
+                  // Box for the filter
+                  <div>
+                    <Dropdown
+                      value={filter.category}
+                      onChange={category => {
+                        setFilter(prev => {
+                          ...prev,
+                          category: category,
+                        })
+                      }}
+                      items=[Category.Official, Community]
+                      itemToString=Category.toString
+                    />
+                  </div>
+                  // Box for the results
+                  <div className="mt-12 space-y-8"> searchResult </div>
+                  <div className="hidden lg:block h-full "> <InfoSidebar filter setFilter /> </div>
                 </div>
               </main>
-              <div className="hidden lg:block h-full "> <InfoSidebar filter setFilter /> </div>
             </Mdx.Provider>
           </div>
         </div>

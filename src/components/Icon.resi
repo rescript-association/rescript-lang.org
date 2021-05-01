@@ -73,3 +73,8 @@ module Copy: {
   @react.component
   let make: (~className: string=?) => React.element
 }
+
+module Check: {
+  @react.component
+  let make: (~className: string=?) => React.element
+}
