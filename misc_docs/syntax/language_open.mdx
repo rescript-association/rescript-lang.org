@@ -1,0 +1,35 @@
+---
+id: "open"
+keywords: ["open", "module"]
+name: "open"
+summary: "This is the `open` keyword."
+category: "languageconstructs"
+---
+
+`open` is used to "open" a module so  we can refer to the module's contents without needing to prepending the module's name.
+
+In some cases, `open` will cause a warning due to existing identifiers and types being redefined by the opened module. In these cases, we can use `open!` instead which will suppress the warnings. 
+
+### Example
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+open Js.Math
+
+// Use _PI and pow_float from the Js.Math module
+let area = radius => _PI *. pow_float(~base=radius, ~exp=2.0)
+```
+
+```js
+function area(radius) {
+  return Math.PI * Math.pow(radius, 2.0);
+}
+```
+
+</CodeTab>
+
+### References
+
+* [Opening a module](/docs/manual/latest/module#opening-a-module)
+* [Use open! to ignore shadow warnings](/docs/manual/latest/module#use-open-to-ignore-shadow-warnings)
