@@ -8,18 +8,6 @@
     This file is providing the core functionality and logic of our CodeMirror instances.
  */
 
-%%raw(`
-import "codemirror/lib/codemirror.css";
-import "styles/cm.css";
-
-if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
-  require("codemirror/mode/javascript/javascript");
-  require("codemirror/addon/scroll/simplescrollbars");
-  require("plugins/cm-rescript-mode");
-  require("plugins/cm-reason-mode");
-}
-`)
-
 let useWindowWidth: unit => int = %raw(j` () => {
   const isClient = typeof window === 'object';
 

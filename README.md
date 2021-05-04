@@ -15,6 +15,11 @@ This is the official documentation platform for the [ReScript](https://rescript-
 - Create an issue to let us know what you are missing
 - In case you want to contribute missing docs, please refer to our [Contribution section](#contributing)
 
+## System Requirements
+
+- `node@12.22.1` or higher (for ES6 module compat)
+- `npm@6` (package-lock v1)
+
 ## Setup
 
 ```sh
@@ -149,7 +154,7 @@ posts](https://rescript-lang.org/blogpost-guide).
 **Quick-takeaways:**
 
 - Blogposts are located in `_blogposts`
-- Author metadata is located in `data/blog_authors.json`
+- Author metadata is located in `data/blog_authors.mjs`
 - Make sure to follow the file naming rules
 
 ### Contributing

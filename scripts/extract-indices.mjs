@@ -5,13 +5,16 @@
  * - Module names (h1)
  *   - function names (```res sig)
  */
-const unified = require("unified");
-const markdown = require("remark-parse");
-const stringify = require("remark-stringify");
-const slug = require("remark-slug");
-const glob = require("glob");
-const path = require("path");
-const fs = require("fs");
+import unified from "unified";
+import markdown from "remark-parse";
+import stringify from "remark-stringify";
+import slug from "remark-slug";
+import glob from "glob";
+import path from "path";
+import fs from "fs";
+import { URL } from 'url';
+
+const __dirname = new URL('.', import.meta.url).pathname;
 
 const headers = options => (tree, file) => {
   const headers = [];

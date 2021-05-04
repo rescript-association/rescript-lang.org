@@ -1,4 +1,3 @@
-%%raw("require('../styles/main.css')")
 
 /*
     TODO / Idea list:
@@ -10,6 +9,15 @@
     - Fix syntax convertion issue where comments are stripped on Reason <-> Res convertion
     - Try to get Reason's recoverable errors working
  */
+
+%%raw(`
+if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
+  require("codemirror/mode/javascript/javascript");
+  require("codemirror/addon/scroll/simplescrollbars");
+  require("plugins/cm-rescript-mode");
+  require("plugins/cm-reason-mode");
+}
+`)
 
 open CompilerManagerHook
 module Api = RescriptCompilerApi

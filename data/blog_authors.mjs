@@ -1,4 +1,4 @@
-[
+export default [
   {
     "username": "hongbo",
     "fullname": "Hongbo Zhang",

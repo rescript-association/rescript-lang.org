@@ -8,7 +8,6 @@
   "refmt": 3,
   "bs-dependencies": [
     "@rescript/react",
-    "bs-fetch",
     "@glennsl/bs-json",
     "@ryyppy/rescript-promise"
   ],
@@ -31,7 +30,7 @@
   "warnings": {
     "error": "+8"
   },
-  "suffix": ".js",
+  "suffix": ".mjs",
   "bsc-flags": [
     "-bs-super-errors",
     "-bs-g"
