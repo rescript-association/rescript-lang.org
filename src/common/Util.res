@@ -55,8 +55,8 @@ module String = {
 }
 
 module Json = {
-  @bs.val @bs.scope("JSON")
-  external prettyStringify: (Js.Json.t, @bs.as(json`null`) _, @bs.as(4) _) => string = "stringify"
+  @val @scope("JSON")
+  external prettyStringify: (Js.Json.t, @as(json`null`) _, @as(4) _) => string = "stringify"
 }
 
 module Url = {
@@ -79,7 +79,7 @@ module Date = {
   external dateTimeFormat: (string, {"month": string, "day": string, "year": string}) => intl =
     "DateTimeFormat"
 
-  @bs.send external format: (intl, Js.Date.t) => string = "format"
+  @send external format: (intl, Js.Date.t) => string = "format"
 
   let toDayMonthYear = (date: Js.Date.t) => {
     dateTimeFormat("en-US", {"month": "short", "day": "numeric", "year": "numeric"})->format(date)

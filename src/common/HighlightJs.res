@@ -1,7 +1,7 @@
-@bs.deriving(abstract)
+@deriving(abstract)
 type highlightResult = {value: string}
 
-@bs.module("highlight.js/lib/core")
+@module("highlight.js/lib/core")
 external highlight: (~lang: string, ~value: string) => highlightResult = "highlight"
 
 let renderHLJS = (~highlightedLines=[], ~darkmode=false, ~code: string, ~lang: string, ()) => {
@@ -12,14 +12,16 @@ let renderHLJS = (~highlightedLines=[], ~darkmode=false, ~code: string, ~lang: s
 
   // Add line highlighting as well
   let highlighted = if Belt.Array.length(highlightedLines) > 0 {
-    Js.String2.split(highlighted, "\n")->Belt.Array.mapWithIndex((i, line) =>
+    Js.String2.split(highlighted, "\n")
+    ->Belt.Array.mapWithIndex((i, line) =>
       if Js.Array2.find(highlightedLines, lnum => lnum === i + 1) !== None {
         let content = line === "" ? "&nbsp;" : line
         "<span class=\"inline-block\">" ++ (content ++ "</span>")
       } else {
         "<span class=\"inline-block text-inherit opacity-50\">" ++ (line ++ "</span>")
       }
-    )->Js.Array2.joinWith("\n")
+    )
+    ->Js.Array2.joinWith("\n")
   } else {
     highlighted
   }

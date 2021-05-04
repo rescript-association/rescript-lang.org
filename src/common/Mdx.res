@@ -14,23 +14,19 @@ external arrToReactElement: array<mdxComponent> => React.element = "%identity"
 
    Will return "unknown" if either given element is not an mdx component,
    or if there is no mdxType property found */
-let getMdxType: mdxComponent => string = %raw(
-  "element => {
+let getMdxType: mdxComponent => string = %raw("element => {
       if(element == null || element.props == null) {
         return 'unknown';
       }
       return element.props.mdxType;
-    }"
-)
+    }")
 
-let getMdxClassName: mdxComponent => option<string> = %raw(
-  "element => {
+let getMdxClassName: mdxComponent => option<string> = %raw("element => {
       if(element == null || element.props == null) {
         return;
       }
       return element.props.className;
-    }"
-)
+    }")
 
 module MdxChildren = {
   type unknown
@@ -59,8 +55,7 @@ module MdxChildren = {
   // Sometimes an mdxComponent element can be a string
   // which means it doesn't have any children.
   // We will return the element as its own child then
-  let getMdxChildren: mdxComponent => t = %raw(
-    "element => {
+  let getMdxChildren: mdxComponent => t = %raw("element => {
       if(typeof element === 'string') {
         return element;
       }
@@ -68,8 +63,7 @@ module MdxChildren = {
         return;
       }
       return element.props.children;
-    }"
-  )
+    }")
 
   // Flattens a tree of a mdx component to an array of leaf strings
   let rec flatten = (mdxComp: mdxComponent): array<string> =>
@@ -95,75 +89,75 @@ module Components = {
   // with runtime reflection
   type unknown
 
-  @bs.deriving(abstract)
+  @deriving(abstract)
   type t = {
     /* MDX shortnames for more advanced components */
-    @bs.as("Cite") @bs.optional
+    @as("Cite") @optional
     cite: React.component<{
       "author": option<string>,
       "children": React.element,
     }>,
-    @bs.as("Info") @bs.optional
+    @as("Info") @optional
     info: React.component<props>,
-    @bs.as("Warn") @bs.optional
+    @as("Warn") @optional
     warn: React.component<props>,
-    @bs.as("Intro") @bs.optional
+    @as("Intro") @optional
     intro: React.component<props>,
-    @bs.as("UrlBox") @bs.optional
+    @as("UrlBox") @optional
     urlBox: React.component<{
       "text": string,
       "href": string,
       "children": MdxChildren.t,
     }>,
-    @bs.as("CodeTab") @bs.optional
+    @as("CodeTab") @optional
     codeTab: React.component<{
       "children": MdxChildren.t,
       "labels": option<array<string>>,
     }>,
     /* Common markdown elements */
-    @bs.optional
+    @optional
     p: React.component<props>,
-    @bs.optional
+    @optional
     li: React.component<props>,
-    @bs.optional
+    @optional
     h1: React.component<props>,
-    @bs.optional
+    @optional
     h2: React.component<headerProps>,
-    @bs.optional
+    @optional
     h3: React.component<headerProps>,
-    @bs.optional
+    @optional
     h4: React.component<headerProps>,
-    @bs.optional
+    @optional
     h5: React.component<headerProps>,
-    @bs.optional
+    @optional
     ul: React.component<props>,
-    @bs.optional
+    @optional
     ol: React.component<props>,
-    @bs.optional
+    @optional
     table: React.component<props>,
-    @bs.optional
+    @optional
     thead: React.component<props>,
-    @bs.optional
+    @optional
     th: React.component<props>,
-    @bs.optional
+    @optional
     td: React.component<props>,
-    @bs.optional
+    @optional
     blockquote: React.component<props>,
-    @bs.optional
+    @optional
     inlineCode: React.component<props>,
-    @bs.optional
+    @optional
     strong: React.component<props>,
-    @bs.optional
+    @optional
     hr: React.component<{.}>,
-    @bs.optional
+    @optional
     code: React.component<{
       "className": option<string>,
       "metastring": option<string>,
       "children": unknown,
     }>,
-    @bs.optional
+    @optional
     pre: React.component<props>,
-    @bs.optional
+    @optional
     a: React.component<{
       "children": React.element,
       "target": option<string>,
@@ -173,9 +167,7 @@ module Components = {
 }
 
 module Provider = {
-  @bs.module("@mdx-js/react") @react.component
-  external make: (
-    ~components: Components.t,
-    ~children: React.element=?,
-  ) => React.element = "MDXProvider"
+  @module("@mdx-js/react") @react.component
+  external make: (~components: Components.t, ~children: React.element=?) => React.element =
+    "MDXProvider"
 }

@@ -117,8 +117,7 @@ let getAnchor = path => {
 module Tag = {
   @react.component
   let make = (~text: string) => {
-    <span
-      className="hover:bg-fire hover:text-white bg-fire-10 py-1 px-3 rounded text-fire text-16">
+    <span className="hover:bg-fire hover:text-white bg-fire-10 py-1 px-3 rounded text-fire text-16">
       {React.string(text)}
     </span>
   }

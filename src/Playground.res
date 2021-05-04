@@ -1,4 +1,3 @@
-
 /*
     TODO / Idea list:
     - Fix issue with Reason where a comment on the last line causes a infinite loop
@@ -24,10 +23,10 @@ module Api = RescriptCompilerApi
 
 // Used for compressing / decompressing code for url sharing
 module LzString = {
-  @bs.module("lz-string")
+  @module("lz-string")
   external compressToEncodedURIComponent: string => string = "compressToEncodedURIComponent"
 
-  @bs.module("lz-string")
+  @module("lz-string")
   external decompressToEncodedURIComponent: string => string = "decompressFromEncodedURIComponent"
 }
 
@@ -509,18 +508,18 @@ module ResultPane = {
 }
 
 module WarningFlagsWidget = {
-  @bs.set external _scrollTop: (Dom.element, int) => unit = "scrollTop"
-  @bs.send external focus: Dom.element => unit = "focus"
+  @set external _scrollTop: (Dom.element, int) => unit = "scrollTop"
+  @send external focus: Dom.element => unit = "focus"
 
-  @bs.send external blur: Dom.element => unit = "blur"
+  @send external blur: Dom.element => unit = "blur"
 
-  @bs.get external scrollHeight: Dom.element => int = "scrollHeight"
-  @bs.get external clientHeight: Dom.element => int = "clientHeight"
-  @bs.get external scrollTop: Dom.element => int = "scrollTop"
-  @bs.get external offsetTop: Dom.element => int = "offsetTop"
-  @bs.get external offsetHeight: Dom.element => int = "offsetHeight"
+  @get external scrollHeight: Dom.element => int = "scrollHeight"
+  @get external clientHeight: Dom.element => int = "clientHeight"
+  @get external scrollTop: Dom.element => int = "scrollTop"
+  @get external offsetTop: Dom.element => int = "offsetTop"
+  @get external offsetHeight: Dom.element => int = "offsetHeight"
 
-  @bs.set external setScrollTop: (Dom.element, int) => unit = "scrollTop"
+  @set external setScrollTop: (Dom.element, int) => unit = "scrollTop"
 
   // Inspired by MUI (who got inspired by WAI best practise examples)
   // https://github.com/mui-org/material-ui/blob/next/packages/material-ui-lab/src/useAutocomplete/useAutocomplete.js#L327
@@ -1185,7 +1184,7 @@ module ControlPanel = {
     }
   }
 
-  @bs.val @bs.scope(("window", "location")) external origin: string = "origin"
+  @val @scope(("window", "location")) external origin: string = "origin"
   @react.component
   let make = (
     ~actionIndicatorKey: string,

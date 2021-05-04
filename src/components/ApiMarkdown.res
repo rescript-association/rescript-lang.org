@@ -15,7 +15,6 @@ module H2 = {
   </>
 }
 
-
 let default = Mdx.Components.t(
   ~intro=Intro.make,
   ~p=P.make,

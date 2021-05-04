@@ -180,7 +180,8 @@ module Card = {
         <div> {icon} </div>
       </div>
       <div className="mt-4 text-16"> {React.string(description)} </div>
-      <div className="space-x-2 mt-4"> {Belt.Array.map(keywords, keyword => {
+      <div className="space-x-2 mt-4">
+        {Belt.Array.map(keywords, keyword => {
           let onMouseDown = Belt.Option.map(onKeywordSelect, cb => {
             evt => {
               ReactEvent.Mouse.preventDefault(evt)
@@ -193,7 +194,8 @@ module Card = {
             key={keyword}>
             {React.string(keyword)}
           </button>
-        })->React.array} </div>
+        })->React.array}
+      </div>
     </div>
   }
 }
@@ -315,16 +317,14 @@ type state =
   | All
   | Filtered(string) // search term
 
-let scrollToTop: unit => unit = %raw(
-  `function() {
+let scrollToTop: unit => unit = %raw(`function() {
   window.scroll({
     top: 0, 
     left: 0, 
     behavior: 'smooth'
   });
 }
-`
-)
+`)
 
 let default = (props: props) => {
   open Markdown
@@ -369,25 +369,24 @@ let default = (props: props) => {
     setState(_ => All)
   }
 
-  let (officialResources, communityResources) = Belt.Array.reduce(
-    resources,
-    ([], []),
-    (acc, next) => {
-      let (official, community) = acc
-      let isResourceIncluded = switch next {
-      | Npm(_) => filter.includeNpm
-      | Url(_) => filter.includeUrlResource
-      }
-      if !isResourceIncluded {
-        ()
-      } else if filter.includeOfficial && Resource.isOfficial(next) {
-        Js.Array2.push(official, next)->ignore
-      } else if filter.includeCommunity && !Resource.shouldFilter(next) {
-        Js.Array2.push(community, next)->ignore
-      }
-      (official, community)
-    },
-  )
+  let (officialResources, communityResources) = Belt.Array.reduce(resources, ([], []), (
+    acc,
+    next,
+  ) => {
+    let (official, community) = acc
+    let isResourceIncluded = switch next {
+    | Npm(_) => filter.includeNpm
+    | Url(_) => filter.includeUrlResource
+    }
+    if !isResourceIncluded {
+      ()
+    } else if filter.includeOfficial && Resource.isOfficial(next) {
+      Js.Array2.push(official, next)->ignore
+    } else if filter.includeCommunity && !Resource.shouldFilter(next) {
+      Js.Array2.push(community, next)->ignore
+    }
+    (official, community)
+  })
 
   let onKeywordSelect = keyword => {
     scrollToTop()
@@ -400,9 +399,11 @@ let default = (props: props) => {
   | [] => React.null
   | resources =>
     <Category title={Category.toString(Official)}>
-      <div className="space-y-4"> {Belt.Array.map(resources, res => {
+      <div className="space-y-4">
+        {Belt.Array.map(resources, res => {
           <Card key={Resource.getId(res)} onKeywordSelect value={res} />
-        })->React.array} </div>
+        })->React.array}
+      </div>
     </Category>
   }
 
@@ -410,9 +411,11 @@ let default = (props: props) => {
   | [] => React.null
   | resources =>
     <Category title={Category.toString(Community)}>
-      <div className="space-y-4"> {Belt.Array.map(resources, res => {
+      <div className="space-y-4">
+        {Belt.Array.map(resources, res => {
           <Card onKeywordSelect key={Resource.getId(res)} value={res} />
-        })->React.array} </div>
+        })->React.array}
+      </div>
     </Category>
   }
 

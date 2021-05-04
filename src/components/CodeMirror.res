@@ -53,21 +53,21 @@ module CM = {
   let errorGutterId = "errors"
 
   module Options = {
-    @bs.deriving({abstract: light})
+    @deriving({abstract: light})
     type t = {
       theme: string,
-      @bs.optional
+      @optional
       gutters: array<string>,
       mode: string,
-      @bs.optional
+      @optional
       lineNumbers: bool,
-      @bs.optional
+      @optional
       readOnly: bool,
-      @bs.optional
+      @optional
       lineWrapping: bool,
-      @bs.optional
+      @optional
       fixedGutter: bool,
-      @bs.optional
+      @optional
       scrollbarStyle: string,
     }
   }
@@ -75,36 +75,36 @@ module CM = {
   @module("codemirror")
   external onMouseOver: (
     Dom.element,
-    @bs.as("mouseover") _,
-    @bs.uncurry (ReactEvent.Mouse.t => unit),
+    @as("mouseover") _,
+    @uncurry (ReactEvent.Mouse.t => unit),
   ) => unit = "on"
 
   @module("codemirror")
   external onMouseMove: (
     Dom.element,
-    @bs.as("mousemove") _,
-    @bs.uncurry (ReactEvent.Mouse.t => unit),
+    @as("mousemove") _,
+    @uncurry (ReactEvent.Mouse.t => unit),
   ) => unit = "on"
 
   @module("codemirror")
   external offMouseOver: (
     Dom.element,
-    @bs.as("mouseover") _,
-    @bs.uncurry (ReactEvent.Mouse.t => unit),
+    @as("mouseover") _,
+    @uncurry (ReactEvent.Mouse.t => unit),
   ) => unit = "off"
 
   @module("codemirror")
   external offMouseOut: (
     Dom.element,
-    @bs.as("mouseout") _,
-    @bs.uncurry (ReactEvent.Mouse.t => unit),
+    @as("mouseout") _,
+    @uncurry (ReactEvent.Mouse.t => unit),
   ) => unit = "off"
 
   @module("codemirror")
   external offMouseMove: (
     Dom.element,
-    @bs.as("mousemove") _,
-    @bs.uncurry (ReactEvent.Mouse.t => unit),
+    @as("mousemove") _,
+    @uncurry (ReactEvent.Mouse.t => unit),
   ) => unit = "off"
 
   @module("codemirror")
@@ -114,36 +114,36 @@ module CM = {
     @uncurry (ReactEvent.Mouse.t => unit),
   ) => unit = "on"
 
-  @bs.module("codemirror")
+  @module("codemirror")
   external fromTextArea: (Dom.element, Options.t) => t = "fromTextArea"
 
-  @bs.send
-  external setMode: (t, @bs.as("mode") _, string) => unit = "setOption"
+  @send
+  external setMode: (t, @as("mode") _, string) => unit = "setOption"
 
-  @bs.send
+  @send
   external getScrollerElement: t => Dom.element = "getScrollerElement"
 
-  @bs.send
+  @send
   external getWrapperElement: t => Dom.element = "getWrapperElement"
 
-  @bs.send external refresh: t => unit = "refresh"
+  @send external refresh: t => unit = "refresh"
 
-  @bs.send
-  external onChange: (t, @bs.as("change") _, @bs.uncurry (t => unit)) => unit = "on"
+  @send
+  external onChange: (t, @as("change") _, @uncurry (t => unit)) => unit = "on"
 
-  @bs.send external toTextArea: t => unit = "toTextArea"
+  @send external toTextArea: t => unit = "toTextArea"
 
-  @bs.send external setValue: (t, string) => unit = "setValue"
+  @send external setValue: (t, string) => unit = "setValue"
 
-  @bs.send external getValue: t => string = "getValue"
+  @send external getValue: t => string = "getValue"
 
-  @bs.send
-  external operation: (t, @bs.uncurry (unit => unit)) => unit = "operation"
+  @send
+  external operation: (t, @uncurry (unit => unit)) => unit = "operation"
 
-  @bs.send
+  @send
   external setGutterMarker: (t, int, string, Dom.element) => unit = "setGutterMarker"
 
-  @bs.send external clearGutter: (t, string) => unit = "clearGutter"
+  @send external clearGutter: (t, string) => unit = "clearGutter"
 
   type markPos = {
     line: int,
@@ -153,7 +153,7 @@ module CM = {
   module TextMarker = {
     type t
 
-    @bs.send external clear: t => unit = "clear"
+    @send external clear: t => unit = "clear"
   }
 
   module MarkTextOption = {
@@ -161,14 +161,14 @@ module CM = {
 
     module Attr = {
       type t
-      @bs.obj external make: (~id: string=?, unit) => t = ""
+      @obj external make: (~id: string=?, unit) => t = ""
     }
 
-    @bs.obj
+    @obj
     external make: (~className: string=?, ~attributes: Attr.t=?, unit) => t = ""
   }
 
-  @bs.send
+  @send
   external markText: (t, markPos, markPos, MarkTextOption.t) => TextMarker.t = "markText"
 
   @send

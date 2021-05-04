@@ -6,9 +6,9 @@ module GetServerSideProps = {
   module Res = {
     type t
 
-    @bs.send external setHeader: (t, string, string) => unit = "setHeader"
-    @bs.send external write: (t, string) => unit = "write"
-    @bs.send external end_: t => unit = "end"
+    @send external setHeader: (t, string, string) => unit = "setHeader"
+    @send external write: (t, string) => unit = "write"
+    @send external end_: t => unit = "end"
   }
 
   // See: https://github.com/zeit/next.js/blob/canary/packages/next/types/index.d.ts
@@ -52,7 +52,7 @@ module GetStaticPaths = {
 }
 
 module Link = {
-  @bs.module("next/link") @react.component
+  @module("next/link") @react.component
   external make: (
     ~href: string,
     ~_as: string=?,
@@ -71,10 +71,10 @@ module Router = {
   module Events = {
     type t
 
-    @bs.send
+    @send
     external on: (
       t,
-      @bs.string
+      @string
       [
         | #routeChangeStart(string => unit)
         | #routeChangeComplete(string => unit)
@@ -82,10 +82,10 @@ module Router = {
       ],
     ) => unit = "on"
 
-    @bs.send
+    @send
     external off: (
       t,
-      @bs.string
+      @string
       [
         | #routeChangeStart(string => unit)
         | #routeChangeComplete(string => unit)
@@ -107,36 +107,36 @@ module Router = {
     query: Js.Dict.t<string>,
   }
 
-  @bs.send external push: (router, string) => unit = "push"
-  @bs.send external pushObj: (router, pathObj) => unit = "push"
+  @send external push: (router, string) => unit = "push"
+  @send external pushObj: (router, pathObj) => unit = "push"
 
-  @bs.module("next/router") external useRouter: unit => router = "useRouter"
+  @module("next/router") external useRouter: unit => router = "useRouter"
 
-  @bs.send external replace: (router, string) => unit = "replace"
-  @bs.send external replaceObj: (router, pathObj) => unit = "replace"
+  @send external replace: (router, string) => unit = "replace"
+  @send external replaceObj: (router, pathObj) => unit = "replace"
 }
 
 module Head = {
-  @bs.module("next/head") @react.component
+  @module("next/head") @react.component
   external make: (~children: React.element) => React.element = "default"
 }
 
 module Error = {
-  @bs.module("next/error") @react.component
+  @module("next/error") @react.component
   external make: (~statusCode: int, ~children: React.element) => React.element = "default"
 }
 
 module Dynamic = {
-  @bs.deriving(abstract)
+  @deriving(abstract)
   type options = {
-    @bs.optional
+    @optional
     ssr: bool,
-    @bs.optional
+    @optional
     loading: unit => React.element,
   }
 
-  @bs.module("next/dynamic")
+  @module("next/dynamic")
   external dynamic: (unit => Js.Promise.t<'a>, options) => 'a = "default"
 
-  @bs.val external \"import": string => Js.Promise.t<'a> = "import"
+  @val external \"import": string => Js.Promise.t<'a> = "import"
 }
