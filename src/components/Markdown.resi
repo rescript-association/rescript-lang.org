@@ -95,7 +95,11 @@ module Td: {
 
 module Code: {
   @react.component
-  let make: (~className: string=?, ~metastring: option<string>, ~children: Mdx.Components.unknown) => React.element
+  let make: (
+    ~className: string=?,
+    ~metastring: option<string>,
+    ~children: Mdx.Components.unknown,
+  ) => React.element
 }
 
 module CodeTab: {

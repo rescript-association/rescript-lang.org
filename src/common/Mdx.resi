@@ -69,8 +69,5 @@ module Components: {
 
 module Provider: {
   @react.component
-  let make: (
-    ~components: Components.t,
-    ~children: React.element=?,
-  ) => React.element
+  let make: (~components: Components.t, ~children: React.element=?) => React.element
 }

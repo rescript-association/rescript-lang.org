@@ -15,10 +15,7 @@ type npmPackage = {
   npmHref: string,
 }
 
-type props = {
-  "packages": array<npmPackage>,
-  "urlResources": array<urlResource>,
-}
+type props = {"packages": array<npmPackage>, "urlResources": array<urlResource>}
 
 let default: props => React.element
 

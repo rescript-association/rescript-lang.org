@@ -25,7 +25,7 @@ module Sgr: {
 
 let esc: string
 
-let isAscii: (string) => bool 
+let isAscii: string => bool
 
 module Location: {
   type t = {
@@ -40,7 +40,7 @@ module Location: {
 
   let fromString: string => t
 
-  let isDone: t => bool 
+  let isDone: t => bool
 
   let next: t => string
 
@@ -62,10 +62,10 @@ module Lexer: {
     | ReadSgr({startPos: int, content: string}) // contains collected data
     | ReadText({startPos: int, content: string})
 
-  let lex: (Location.t) => array<token>
+  let lex: Location.t => array<token>
 }
 
-let parse: (string) => array<Lexer.token> 
+let parse: string => array<Lexer.token>
 
 let onlyText: array<Lexer.token> => array<Lexer.token>
 
@@ -78,7 +78,7 @@ module SgrString: {
     params: array<Sgr.param>,
   }
 
-  let fromTokens: (array<token>) => array<t>
+  let fromTokens: array<token> => array<t>
 
   let toString: t => string
 }
