@@ -24,16 +24,19 @@ This is the official documentation platform for the [ReScript](https://rescript-
 
 ```sh
 # For first time clone / build (install dependencies)
-yarn
+npm i
+
+# Only needed for initial clone (or content H2 changes)
+npm run update-index
 
 # Initial build
-yarn bs:build
+npm run res:build
 
 # Build the index data
-yarn run update-index
+npm run update-index
 
 # In a new tab
-yarn dev
+npm run dev
 
 # then open localhost:3000
 ```
@@ -41,7 +44,7 @@ yarn dev
 In case you want to run ReScript in watchmode:
 
 ```sh
-yarn run bs:start
+npm run res:start
 ```
 
 ## Build Index Data
@@ -51,7 +54,7 @@ search terms we need for searching inside the `Belt` docs). You can create your
 index by running following command:
 
 ```sh
-yarn run update-index
+npm run update-index
 ```
 
 All the index data is stored in `index_data`, but will not be tracked by git.
