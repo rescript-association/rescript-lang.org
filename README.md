@@ -30,7 +30,7 @@ npm i
 npm run update-index
 
 # Initial build
-npm run res:build
+npx rescript
 
 # Build the index data
 npm run update-index
@@ -38,13 +38,13 @@ npm run update-index
 # In a new tab
 npm run dev
 
-# then open localhost:3000
+open localhost:3000
 ```
 
 In case you want to run ReScript in watchmode:
 
 ```sh
-npm run res:start
+npx rescript build -w
 ```
 
 ## Build Index Data

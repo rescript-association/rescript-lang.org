@@ -37,15 +37,8 @@
     "dev": "next",
     "build": "rescript && yarn run update-index && next build",
     "test": "node scripts/test-examples.mjs && node scripts/test-hrefs.mjs",
-    "check-dead-code": "reanalyze -dce",
-    "check-for-exceptions": "reanalyze -exception",
-    "update-index": "node scripts/extract-indices.mjs && node scripts/extract-tocs.mjs && node scripts/extract-syntax.mjs && node scripts/generate_feed.mjs > public/blog/feed.xml",
-    "now-build": "yarn run build",
-    "export": "next export",
-    "start": "next start -p $PORT",
-    "res:build": "rescript",
-    "res:clean": "rescript clean",
-    "res:start": "rescript build -w"
+    "reanalyze": "reanalyze -all-cmt .",
+    "update-index": "node scripts/extract-indices.mjs && node scripts/extract-tocs.mjs && node scripts/extract-syntax.mjs && node scripts/generate_feed.mjs > public/blog/feed.xml"
   },
   "devDependencies": {
     "autoprefixer": "^9.5.1",

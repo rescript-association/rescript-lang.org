@@ -3,7 +3,7 @@
 import * as Js_null from "rescript/lib/es6/js_null.js";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
-import * as Json_decode from "@glennsl/bs-json/src/Json_decode.mjs";
+import * as Json_decode from "@glennsl/bs-json/src/Json_decode.js";
 import * as Caml_exceptions from "rescript/lib/es6/caml_exceptions.js";
 import * as Caml_js_exceptions from "rescript/lib/es6/caml_js_exceptions.js";
 import Blog_authorsMjs from "../../data/blog_authors.mjs";
