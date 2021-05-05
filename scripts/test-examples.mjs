@@ -12,7 +12,8 @@ let tempFileNameRegex = /_tempFile\.res/g
 // TODO: In the future we need to use the appropriate rescript version for each doc version variant
 //       see the package.json on how to define another rescript version
 let compilersDir = path.join(__dirname, "..", "compilers")
-let bsc = path.join(compilersDir, 'node_modules', 'rescript-902', process.platform, 'bsc.exe')
+
+let bsc = path.join(compilersDir, 'node_modules', 'rescript-912', process.platform, 'bsc.exe')
 
 const prepareCompilers = () => {
   if (fs.existsSync(bsc)) {
