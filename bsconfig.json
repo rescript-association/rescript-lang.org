@@ -1,11 +1,9 @@
 {
-  "$schema": "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/master/docs/docson/build-schema.json",
   "name": "rescript-lang.org",
   "namespace": false,
   "reason": {
     "react-jsx": 3
   },
-  "refmt": 3,
   "bs-dependencies": [
     "@rescript/react",
     "@glennsl/bs-json",
@@ -32,7 +30,6 @@
   },
   "suffix": ".mjs",
   "bsc-flags": [
-    "-bs-super-errors",
     "-bs-g"
   ],
   "gentypeconfig": {
