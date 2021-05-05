@@ -12,6 +12,7 @@ node_modules/
 index_data/*.json
 
 pages/docs/manual/v8.0.0/
+pages/docs/manual/v9.0.0/
 
 yarn-error.log
 
