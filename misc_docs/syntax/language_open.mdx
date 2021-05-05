@@ -6,7 +6,7 @@ summary: "This is the `open` keyword."
 category: "languageconstructs"
 ---
 
-`open` is used to "open" a module so  we can refer to the module's contents without needing to prepending the module's name.
+`open` is used to expose all values, types, modules, etc of a module in the current scope. This is useful whenever you want to use a module's functionality without typing out the module name over and over again.
 
 In some cases, `open` will cause a "shadow warning" due to existing identifiers and types being redefined by an `open`ed module. You can explicitly ignore that warning by using an `open!` statement instead.
 
