@@ -49,10 +49,10 @@
   },
   "devDependencies": {
     "autoprefixer": "^9.5.1",
-    "rescript": "9.1.2",
     "cssnano": "^4.1.10",
     "postcss-cli": "^7.1.1",
     "reanalyze": "^2.5.0",
+    "rescript": "9.1.2",
     "tailwindcss": "^1.6.0"
   }
 }
