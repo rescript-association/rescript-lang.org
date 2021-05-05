@@ -507,6 +507,7 @@ function Markdown$A(Props) {
   }
   var tmp$1 = {
     className: "no-underline text-fire hover:underline",
+    href: href$1,
     rel: "noopener noreferrer"
   };
   if (target !== undefined) {
