@@ -7,7 +7,7 @@ canonical: "/docs/manual/latest/build-configuration"
 
 # Configuration
 
-`bsconfig.json` is the single, mandatory build meta file needed for bsb.
+`bsconfig.json` is the single, mandatory build meta file needed for `rescript`.
 
 **The complete configuration schema is [here](./build-configuration-schema)**. We'll _non-exhaustively_ highlight the important parts in prose below.
 
@@ -25,11 +25,11 @@ If you're using an editor like VSCode, put the following code as your first fiel
 
 **Explanation**: by default, your files, once used as a third-party dependency, are available globally to the consumer. E.g. if you have an `Util.re` and the consumer also has a file of the same name, they will clash. Turning on `namespace` avoids this by wrapping all your own project's files into an extra module layer; instead of a global `Util` module, the consumer will see you as `MyProject.Util`. **The namespacing affects your consumers, not yourself**.
 
-Aka, in Bsb, "namespace" is just a fancy term for an auto-generated module that wraps all your project's files (efficiently and correctly, of course!) for third-party consumption.
+Aka, in ReScript, "namespace" is just a fancy term for an auto-generated module that wraps all your project's files (efficiently and correctly, of course!) for third-party consumption.
 
 We don't do folder-level namespacing for your own project; all your own file names must be unique. This is a constraint that enables several features such as fast search and easier project reorganization.
 
-**Note**: the `bsconfig.json` `name` should be the same as the `package.json` `name`, to avoid confusing corner-cases. However, this means that you can't use a camelCased names such as `MyProject`, since `package.json` and npm forbid you to do so (some file systems are case-insensitive). To have the namespace/module as `MyProject`, write `"name": "my-project"`. Bsb will turn that into the camelCased name correctly.
+**Note**: the `bsconfig.json` `name` should be the same as the `package.json` `name`, to avoid confusing corner-cases. However, this means that you can't use a camelCased names such as `MyProject`, since `package.json` and npm forbid you to do so (some file systems are case-insensitive). To have the namespace/module as `MyProject`, write `"name": "my-project"`. ReScript will turn that into the camelCased name correctly.
 
 **Note on custom namespacing**: if for some reason, you need a namespace that is different from what your `name` will produce, you can directly send a string to the `namespace` option. For example, if your package is a binding named `bs-some-thing`, you can use `"namespace": "some-thing"` to get `SomeThing` namespace instead of `BsSomeThing`.
 
@@ -82,7 +82,7 @@ Note that only sources marked with `"type":"dev"` will be able to resolve module
 
 ## pinned-dependencies
 
-**Since 8.4**: List of pinned dependencies. A pinned dependency will always be rebuilt whenever you build a toplevel package (e.g. your main app) with `bsb -make-world`.
+**Since 8.4**: List of pinned dependencies. A pinned dependency will always be rebuilt whenever you build a toplevel package (e.g. your main app) with `rescript`.
 
 This is useful for working on multiple independent ReScript packages simultaneously. More usage details can be found in our dedicated [pinned dependencies](./build-pinned-dependencies) page.
 
@@ -124,7 +124,7 @@ Note that the path resolution for the command (`node` in this case) is done so:
 - `/myCommand` is resolved into `/myCommand`
 - `package/myCommand` is resolved into `node_modules/package/myCommand`
 - `./myCommand` is resolved into `myProjectRoot/myCommand`
-- `myCommand` is just called as `myCommand`, aka a globally available executable. But note that Bsb doesn't read into your shell's environment, so if you put e.g. `node`, it won't find it unless you specify an absolute path. Alternatively, add `#!/usr/local/bin/node` to the top of your script to directly call it without prepending `node`.
+- `myCommand` is just called as `myCommand`, aka a globally available executable. But note that ReScript doesn't read into your shell's environment, so if you put e.g. `node`, it won't find it unless you specify an absolute path. Alternatively, add `#!/usr/local/bin/node` to the top of your script to directly call it without prepending `node`.
 
 The command itself is called from inside `lib/bs`.
 
@@ -186,10 +186,10 @@ We heavily disrecommend the usage of environment variables, but for certain case
 
 ### Error Output Coloring: `NINJA_ANSI_FORCED`
 
-This is mostly for other programmatic usage of `bsb` where outputting colors is not desired.
+This is mostly for other programmatic usage of `rescript` where outputting colors is not desired.
 
-When `NINJA_ANSI_FORCED` is set to `1`: `bsb` produces color.
-When `NINJA_ANSI_FORCED` is set to `0`: `bsb` doesn't produce color.
-When `NINJA_ANSI_FORCED` is not set: `bsb` might or might not produce color, depending on a smart detection of where it's outputted.
+When `NINJA_ANSI_FORCED` is set to `1`: `rescript` produces color.
+When `NINJA_ANSI_FORCED` is set to `0`: `rescript` doesn't produce color.
+When `NINJA_ANSI_FORCED` is not set: `rescript` might or might not produce color, depending on a smart detection of where it's outputted.
 
 > Note that bsc, the barebone compiler, will always be passed `-color always`. See more details in [this issue](https://github.com/rescript-lang/rescript-compiler/issues/2984#issuecomment-410669163).

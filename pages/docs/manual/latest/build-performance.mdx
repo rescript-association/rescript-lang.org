@@ -25,9 +25,9 @@ import Image from "src/components/Image";
 
 ## Under the Hood
 
-Bsb itself uses a build system under the hood, called [Ninja](https://ninja-build.org). Ninja is like Make, but cross-platform, minimal, focuses in perf and destined to be more of a low-level building block than a full-blown build system. In this regard, Ninja's a great implementation detail for bsb.
+ReScript itself uses a build system under the hood, called [Ninja](https://ninja-build.org). Ninja is like Make, but cross-platform, minimal, focuses in perf and destined to be more of a low-level building block than a full-blown build system. In this regard, Ninja's a great implementation detail for bsb.
 
-Bsb reads into `bsconfig.json` and generates the Ninja build file in `lib/bs`. The file contains the low-level `bsc`-related commands, namespacing rules, intermediate artifacts generation & others. It then runs `ninja` for the actual build.
+ReScript reads into `bsconfig.json` and generates the Ninja build file in `lib/bs`. The file contains the low-level `bsc`-related commands, namespacing rules, intermediate artifacts generation & others. It then runs `ninja` for the actual build.
 
 ## The JS Wrapper
 
@@ -64,7 +64,7 @@ Note that bsb is a file-based build system. We don't do in-memory build, even if
 
 ## Incrementality
 
-Bsb doesn't take whole seconds to run every time. The bulk of the build performance comes from incremental build, aka re-building a previously built project when a few files changed.
+ReScript doesn't take whole seconds to run every time. The bulk of the build performance comes from incremental build, aka re-building a previously built project when a few files changed.
 
 In short, thanks to our bsc compiler and bsb build system's architecture, we're able to **only build what's needed**. E.g. if `MyFile.res` isn't changed, then it's not recompiled. You can roughly emulate such incrementality in languages like JavaScript, but the degree of correctness is unfortunately low. For example, if you rename or move a JS file, then the watcher might get confused and not pick up the "new" file or fail to clean things up correctly, resulting in you needing to clean your build and restart anew, which defeats the purpose.
 
