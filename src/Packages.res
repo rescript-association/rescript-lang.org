@@ -40,6 +40,13 @@ module Resource = {
     | Npm(pkg) =>
       if pkg.name->Js.String2.startsWith("@elm-react") {
         true
+      } else if pkg.name->Js.String2.startsWith("bs-") {
+        true
+      } else if (
+        pkg.name->Js.String2.startsWith("@reason-react-native") ||
+          pkg.name->Js.String2.startsWith("reason-react-native")
+      ) {
+        true
       } else {
         false
       }
@@ -62,7 +69,10 @@ module Resource = {
 
   let isOfficial = (res: t) => {
     switch res {
-    | Npm(pkg) => pkg.name === "bs-platform" || pkg.name->Js.String2.startsWith("@rescript/")
+    | Npm(pkg) =>
+      pkg.name === "rescript" ||
+      pkg.name->Js.String2.startsWith("@rescript/") ||
+      pkg.name === "gentype"
     | Url(urlRes) => urlRes.official
     }
   }
@@ -524,6 +534,8 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = _ctx => {
         npmHref: pkg["links"]["npm"],
       }
     })
+
+    Js.log(pkges)
 
     let index_data_dir = Node.Path.join2(Node.Process.cwd(), "./data")
     let urlResources =

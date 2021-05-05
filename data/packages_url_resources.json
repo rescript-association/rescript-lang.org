@@ -7,7 +7,7 @@
     "official": true
   },
   {
-    "name": "@reason-association/genType",
+    "name": "genType",
     "description": "Better interop with JS & TS in ReScript",
     "keywords": ["rescript", "typescript"],
     "urlHref": "https://github.com/reason-association/genType",
