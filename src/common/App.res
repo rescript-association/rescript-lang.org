@@ -91,6 +91,10 @@ let make = (props: props): React.element => {
         <ManualDocsLayout.V800 frontmatter={component->frontmatter}>
           content
         </ManualDocsLayout.V800>
+      | Version("v9.0.0") =>
+        <ManualDocsLayout.V900 frontmatter={component->frontmatter}>
+          content
+        </ManualDocsLayout.V900>
       | _ => React.null
       }
     }

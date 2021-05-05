@@ -162,6 +162,26 @@ const createReasonCompilerToc = () => {
   fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
 };
 
+const createV900ManualToc = () => {
+  const MD_DIR = path.join(__dirname, "../pages/docs/manual/v9.0.0");
+  const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_manual_v900.json");
+  const TARGET_FILE = path.join(__dirname, "../index_data/manual_v900_toc.json");
+
+  const sidebarJson = JSON.parse(fs.readFileSync(SIDEBAR_JSON));
+
+  const FILE_ORDER = Object.values(sidebarJson).reduce((acc, items) => {
+    return acc.concat(items)
+  },[]);
+
+  const files = glob.sync(`${MD_DIR}/*.?(js|md?(x))`);
+  const ordered = orderFiles(files, FILE_ORDER);
+
+  const result = ordered.map((filepath) => processFile(filepath, sidebarJson));
+  const toc = createTOC(result);
+
+  fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
+};
+
 const createV800ManualToc = () => {
   const MD_DIR = path.join(__dirname, "../pages/docs/manual/v8.0.0");
   const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_manual_v800.json");
@@ -260,6 +280,7 @@ debugToc();
 
 // main
 createLatestManualToc();
+createV900ManualToc();
 createV800ManualToc();
 createReasonCompilerToc();
 createReactToc();

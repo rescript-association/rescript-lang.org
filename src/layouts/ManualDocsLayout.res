@@ -8,6 +8,11 @@ module V800Layout = DocsLayout.Make({
   let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_v800_toc.json')")
 })
 
+module V900Layout = DocsLayout.Make({
+  // Structure defined by `scripts/extract-tocs.js`
+  let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_v900_toc.json')")
+})
+
 module Latest = {
   @react.component
   let make = (~frontmatter=?, ~components=Markdown.default, ~children) => {
@@ -50,6 +55,50 @@ module Latest = {
       breadcrumbs>
       children
     </LatestLayout>
+  }
+}
+
+module V900 = {
+  @react.component
+  let make = (~frontmatter: option<Js.Json.t>=?, ~components=Markdown.default, ~children) => {
+    let router = Next.Router.useRouter()
+    let route = router.route
+
+    let url = route->Url.parse
+
+    let version = switch url.version {
+    | Version(version) => version
+    | NoVersion => "latest"
+    | Latest => "latest"
+    }
+
+    let breadcrumbs = list{
+      {
+        open Url
+        {name: "Docs", href: "/docs/" ++ version}
+      },
+      {
+        open Url
+        {
+          name: "Language Manual",
+          href: "/docs/manual/" ++ (version ++ "/introduction"),
+        }
+      },
+    }
+
+    let title = "Language Manual"
+
+    <V900Layout
+      theme=#Reason
+      components
+      version
+      title
+      metaTitleCategory="ReScript Language Manual"
+      availableVersions=Constants.allManualVersions
+      ?frontmatter
+      breadcrumbs>
+      children
+    </V900Layout>
   }
 }
 
@@ -100,9 +149,10 @@ module V800 = {
       }
 
       let additionalText = switch version {
-      | "v8.0.0" => "(These docs cover all versions between v3 to v8 and are equivalent to the old BuckleScript docs before the rebrand)"
+      | "v8.0.0" => "(These docs are equivalent to the old BuckleScript docs before the ReScript rebrand)"
       | _ => ""
       }
+
       <div className="mb-10">
         <Info>
           <P>
