@@ -1,9 +1,9 @@
 /*
-* This SearchBox is used for fuzzy-find search scenarios, such as the syntax widget tool or
-* the package index
-*/
+ * This SearchBox is used for fuzzy-find search scenarios, such as the syntax widget tool or
+ * the package index
+ */
 
-@bs.send external focus: Dom.element => unit = "focus"
+@send external focus: Dom.element => unit = "focus"
 
 type state =
   | Active

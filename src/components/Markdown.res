@@ -203,7 +203,7 @@ module Td = {
 }
 
 module Code = {
-  @bs.module("../ffi/parse-numeric-range.js")
+  @module("../ffi/parse-numeric-range.js")
   external parseNumericRange: string => array<int> = "parsePart"
 
   // TODO: Might be refactorable with the new @unboxed feature

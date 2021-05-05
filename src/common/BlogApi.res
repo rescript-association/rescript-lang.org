@@ -28,7 +28,28 @@
 // Manual mapping between slugs and actual file
 // { [slug: string] : [filepath: string] }
 // The filepath is relative within _blogposts
-let index: Js.Dict.t<string> = %raw("require('../../data/blog_posts.json')")
+
+external unsafeToStringDict: Js.Json.t => Js.Dict.t<string> = "%identity"
+
+// We keep that index lazy, since we use that component in frontend code,
+// so we can't execute code that uses fs or path
+let index = ref(None)
+
+let getIndex = (): Js.Dict.t<string> => {
+  switch index.contents {
+  | None =>
+    // based on the cwd of the server
+    let indexPath = "./data/blog_posts.json"
+    let data = if Node.Fs.existsSync(indexPath) {
+      Node.Fs.readFileSync(indexPath, #utf8)->Js.Json.parseExn->unsafeToStringDict
+    } else {
+      Js.Dict.empty()
+    }
+    index := Some(data)
+    data
+  | Some(data) => data
+  }
+}
 
 module GrayMatter = {
   type output = {
@@ -36,10 +57,8 @@ module GrayMatter = {
     content: string,
   }
 
-  @bs.module("gray-matter") external matter: string => output = "default"
+  @module("gray-matter") external matter: string => output = "default"
 }
-
-let postsDirectory = Node.Path.join2(Node.Process.cwd(), "./_blogposts")
 
 type postData = {
   slug: string,
@@ -50,12 +69,13 @@ type postData = {
 }
 
 let getFullSlug = (slug: string) =>
-  Belt.Option.map(index->Js.Dict.get(slug), relPath =>
+  Belt.Option.map(getIndex()->Js.Dict.get(slug), relPath =>
     Js.String2.replaceByRe(relPath, %re("/\\.mdx?/"), "")
   )
 
 let getPostBySlug = (slug: string) => {
-  let relPath = index->Js.Dict.unsafeGet(slug)
+  let postsDirectory = Node.Path.join2(Node.Process.cwd(), "./_blogposts")
+  let relPath = getIndex()->Js.Dict.unsafeGet(slug)
 
   let fullslug = Js.String2.replaceByRe(relPath, %re("/\\.mdx?/"), "")
 
@@ -76,14 +96,17 @@ let getPostBySlug = (slug: string) => {
   }
 }
 
-let getAllPosts = () => Js.Dict.keys(index)->Belt.Array.reduce([], (acc, slug) => {
+let getAllPosts = () => {
+  getIndex()
+  ->Js.Dict.keys
+  ->Belt.Array.reduce([], (acc, slug) => {
     switch getPostBySlug(slug) {
     | Some(post) => Js.Array2.push(acc, post)->ignore
     | None => ()
     }
     acc
   })
-
+}
 module RssFeed = {
   // Module inspired by
   // https://gist.github.com/fredrikbergqvist/36704828353ebf5379a5c08c7583fe2d
@@ -115,39 +138,46 @@ module RssFeed = {
   // Retrieves the most recent [max] blog post feed items
   let getLatest = (~max=10, ~baseUrl="https://rescript-lang.org", ()): array<item> => {
     let authors = BlogFrontmatter.Author.getAllAuthors()
-    let items = getAllPosts()->Belt.Array.reduce([], (acc, next) =>
-      switch BlogFrontmatter.decode(~authors, next.frontmatter) {
-      | Ok(fm) =>
-        let description = Js.Null.toOption(fm.description)->Belt.Option.getWithDefault("")
-        let item = {
-          title: fm.title,
-          href: baseUrl ++ ("/blog/" ++ next.slug),
-          description: description,
-          pubDate: DateStr.toDate(fm.date),
-        }
+    let items =
+      getAllPosts()
+      ->Belt.Array.reduce([], (acc, next) =>
+        switch BlogFrontmatter.decode(~authors, next.frontmatter) {
+        | Ok(fm) =>
+          let description = Js.Null.toOption(fm.description)->Belt.Option.getWithDefault("")
+          let item = {
+            title: fm.title,
+            href: baseUrl ++ ("/blog/" ++ next.slug),
+            description: description,
+            pubDate: DateStr.toDate(fm.date),
+          }
 
-        Belt.Array.concat(acc, [item])
-      | Error(_) => acc
-      }
-    )->Js.Array2.sortInPlaceWith((item1, item2) => {
-      let v1 = item1.pubDate->Js.Date.valueOf
-      let v2 = item2.pubDate->Js.Date.valueOf
-      if v1 === v2 {
-        0
-      } else if v1 > v2 {
-        -1
-      } else {
-        1
-      }
-    })->Js.Array2.slice(~start=0, ~end_=max)
+          Belt.Array.concat(acc, [item])
+        | Error(_) => acc
+        }
+      )
+      ->Js.Array2.sortInPlaceWith((item1, item2) => {
+        let v1 = item1.pubDate->Js.Date.valueOf
+        let v2 = item2.pubDate->Js.Date.valueOf
+        if v1 === v2 {
+          0
+        } else if v1 > v2 {
+          -1
+        } else {
+          1
+        }
+      })
+      ->Js.Array2.slice(~start=0, ~end_=max)
     items
   }
 
   let toXmlString = (~siteTitle="ReScript Blog", ~siteDescription="", items: array<item>) => {
-    let latestPubDateElement = Belt.Array.get(items, 0)->Belt.Option.map(item => {
-      let latestPubDateStr = item.pubDate->dateToUTCString
-      j`<lastBuildDate>$latestPubDateStr</lastBuildDate>`
-    })->Belt.Option.getWithDefault("")
+    let latestPubDateElement =
+      Belt.Array.get(items, 0)
+      ->Belt.Option.map(item => {
+        let latestPubDateStr = item.pubDate->dateToUTCString
+        j`<lastBuildDate>$latestPubDateStr</lastBuildDate>`
+      })
+      ->Belt.Option.getWithDefault("")
 
     let itemsStr = Belt.Array.reduce(items, "", (acc, item) => {
       let {title, pubDate, description, href} = item

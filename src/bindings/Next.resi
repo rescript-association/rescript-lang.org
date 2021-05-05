@@ -126,9 +126,9 @@ module Dynamic: {
   type options
   let options: (~ssr: bool=?, ~loading: unit => React.element=?, unit) => options
 
-  @bs.module("next/dynamic")
+  @module("next/dynamic")
   external dynamic: (unit => Js.Promise.t<'a>, options) => 'a = "default"
 
-  @bs.val
+  @val
   external \"import": string => Js.Promise.t<'a> = "import"
 }

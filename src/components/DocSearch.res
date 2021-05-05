@@ -4,33 +4,33 @@ type options = {
   inputSelector: string,
 }
 
-@bs.val @bs.scope("document")
+@val @scope("document")
 external activeElement: option<Dom.element> = "activeElement"
 
-@bs.val @bs.scope("window")
+@val @scope("window")
 external docsearch: option<options => unit> = "docsearch"
 
 type keyboardEventLike = {key: string, ctrlKey: bool, metaKey: bool}
 
-@bs.val @bs.scope("window")
+@val @scope("window")
 external addKeyboardEventListener: (string, keyboardEventLike => unit) => unit = "addEventListener"
 
-@bs.val @bs.scope("window")
+@val @scope("window")
 external removeKeyboardEventListener: (string, keyboardEventLike => unit) => unit =
   "addEventListener"
 
-@bs.send
+@send
 external keyboardEventPreventDefault: keyboardEventLike => unit = "preventDefault"
 
 type state =
   | Active
   | Inactive
 
-@bs.get external isContentEditable: Dom.element => bool = "isContentEditable"
-@bs.get external tagName: Dom.element => string = "tagName"
-@bs.send external focus: Dom.element => unit = "focus"
-@bs.send external blur: Dom.element => unit = "blur"
-@bs.set external value: (Dom.element, string) => unit = "value"
+@get external isContentEditable: Dom.element => bool = "isContentEditable"
+@get external tagName: Dom.element => string = "tagName"
+@send external focus: Dom.element => unit = "focus"
+@send external blur: Dom.element => unit = "blur"
+@set external value: (Dom.element, string) => unit = "value"
 
 @react.component
 let make = () => {
@@ -61,8 +61,8 @@ let make = () => {
 
     let focusSearch = e => {
       switch activeElement {
-      | Some(el) when el->isEditableTag => ()
-      | Some(el) when el->isContentEditable => ()
+      | Some(el) if el->isEditableTag => ()
+      | Some(el) if el->isContentEditable => ()
       | _ => {
           setState(_ => Active)
           inputRef.current->Js.Nullable.toOption->Belt.Option.forEach(focus)
@@ -75,7 +75,7 @@ let make = () => {
     let handleGlobalKeyDown = e => {
       switch e.key {
       | "/" => focusSearch(e)
-      | "k" when e.ctrlKey || e.metaKey => focusSearch(e)
+      | "k" if e.ctrlKey || e.metaKey => focusSearch(e)
       | _ => ()
       }
     }

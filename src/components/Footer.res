@@ -15,7 +15,8 @@ let make = () => {
   let linkClass = "hover:underline hover:pointer"
   let iconLink = "hover:pointer hover:text-gray-60-tr"
   <footer className="flex justify-center border-t border-gray-10">
-    <div className="flex flex-col md:flex-row justify-between max-w-1280 w-full px-8 py-16 text-gray-95 ">
+    <div
+      className="flex flex-col md:flex-row justify-between max-w-1280 w-full px-8 py-16 text-gray-95 ">
       <div>
         <img className="w-40 mb-5" src="/static/rescript_logo_black.svg" />
         <div className="text-16">
@@ -29,7 +30,8 @@ let make = () => {
           </p>
         </div>
       </div>
-      <div className="flex flex-col space-y-16 md:flex-row mt-16 md:mt-0 md:ml-16 md:space-y-0 md:space-x-16">
+      <div
+        className="flex flex-col space-y-16 md:flex-row mt-16 md:mt-0 md:ml-16 md:space-y-0 md:space-x-16">
         <Section title="About">
           <ul className="text-16 text-gray-80-tr space-y-2">
             <li>

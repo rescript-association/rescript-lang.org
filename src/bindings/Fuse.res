@@ -1,19 +1,19 @@
 module Options = {
-  @bs.deriving(abstract)
+  @deriving(abstract)
   type t = {
-    @bs.optional
+    @optional
     shouldSort: bool,
-    @bs.optional
+    @optional
     includeScore: bool,
-    @bs.optional
+    @optional
     threshold: float,
-    @bs.optional
+    @optional
     location: int,
-    @bs.optional
+    @optional
     distance: int,
-    @bs.optional
+    @optional
     minMatchCharLength: int,
-    @bs.optional
+    @optional
     keys: array<string>,
   }
 }
@@ -22,8 +22,7 @@ type t<'data>
 
 type match<'data> = {"item": 'data, "score": float}
 
-@bs.new @bs.module("fuse.js")
+@new @module("fuse.js")
 external make: (array<'data>, Options.t) => t<'a> = "default"
 
-
-@bs.send external search: (t<'data>, string) => array<match<'data>> = "search"
+@send external search: (t<'data>, string) => array<match<'data>> = "search"

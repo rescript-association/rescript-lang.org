@@ -9,6 +9,12 @@ import React from 'react'
 import { mdx } from '@mdx-js/react'
 `;
 
+const pragma = `
+/* @jsxRuntime classic */
+/* @jsx mdx */
+/* @jsxFrag mdx.Fragment */
+`;
+
 
 // This is used to inject some "Edit" link reference
 // so we can point our users to the correct resource
@@ -44,7 +50,7 @@ const loader = async function(raw) {
   /* We need to attach frontmatter to the MDXContent component function to be able
      to access the frontmatter within the App.re module without the need of writing
      custom getStaticProps etc to do the frontmatter handling and injection */
-  const code = `${renderer}\n${result}
+  const code = `${renderer}${pragma}\n${result}
 MDXContent.frontmatter = ${stringifyObject(data)};`;
 
   return callback(null, code);

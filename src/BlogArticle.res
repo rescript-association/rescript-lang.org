@@ -27,16 +27,14 @@ type props = {fullslug: string}
 module BlogComponent = {
   type t = {default: React.component<{.}>}
 
-  @bs.val external require: string => t = "require"
+  @val external require: string => t = "require"
 
-  let frontmatter: React.component<{.}> => Js.Json.t = %raw(
-    `
+  let frontmatter: React.component<{.}> => Js.Json.t = %raw(`
       function(component) {
         if(typeof component.frontmatter === "object") { return component.frontmatter; }
         return {};
       }
-    `
-  )
+    `)
 }
 
 module Line = {
@@ -238,10 +236,8 @@ let default = (props: props) => {
           {React.string("Could not parse file '_blogposts/" ++ (fullslug ++ ".mdx'"))}
         </h2>
         <p>
-          {React.string(
-            "The content of this blog post will be displayed as soon as all
-            required frontmatter data has been added.",
-          )}
+          {React.string("The content of this blog post will be displayed as soon as all
+            required frontmatter data has been added.")}
         </p>
         <p className="font-bold mt-4"> {React.string("Errors:")} </p>
         {React.string(msg)}

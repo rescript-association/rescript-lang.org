@@ -1,4 +1,4 @@
-/*let makeBreadcrumbsFromPaths: (~basePath: string, array<string>) => list<Url.breadcrumb>*/
+/* let makeBreadcrumbsFromPaths: (~basePath: string, array<string>) => list<Url.breadcrumb> */
 let makeBreadcrumbs: (~basePath: string, string) => list<Url.breadcrumb>
 
 @react.component

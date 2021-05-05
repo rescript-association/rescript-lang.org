@@ -14,4 +14,3 @@ module H2: {
 module H3: {
   let default: string
 }
-

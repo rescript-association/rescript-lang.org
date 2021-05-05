@@ -1,4 +1,3 @@
-
 module Params: {
   type t = {slug: string}
 }

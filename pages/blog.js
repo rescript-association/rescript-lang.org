@@ -1,6 +1,6 @@
-import BlogRes from "src/Blog";
+import BlogRes from "src/Blog.mjs";
 
-export { getStaticProps } from "src/Blog";
+export { getStaticProps } from "src/Blog.mjs";
 
 export default function Blog(props) {
   return <BlogRes {...props} />

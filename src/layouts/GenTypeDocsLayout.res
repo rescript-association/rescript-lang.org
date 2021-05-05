@@ -33,8 +33,14 @@ let make = (~frontmatter: option<Js.Json.t>=?, ~components=Markdown.default, ~ch
   let title = "GenType"
   let version = "v3"
 
-  <LatestLayout theme=#Reason components 
-
+  <LatestLayout
+    theme=#Reason
+    components
     metaTitleCategory="ReScript GenType"
-  version title breadcrumbs ?frontmatter> children </LatestLayout>
+    version
+    title
+    breadcrumbs
+    ?frontmatter>
+    children
+  </LatestLayout>
 }

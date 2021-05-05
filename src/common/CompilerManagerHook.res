@@ -13,7 +13,7 @@ open RescriptCompilerApi
 module LoadScript = {
   type err
 
-  @bs.module("../ffi/loadScript")
+  @module("../ffi/loadScript")
   external loadScript: (
     ~src: string,
     ~onSuccess: unit => unit,
@@ -21,7 +21,7 @@ module LoadScript = {
     . unit,
   ) => unit = "default"
 
-  @bs.module("../ffi/loadScript")
+  @module("../ffi/loadScript")
   external removeScript: (~src: string) => unit = "removeScript"
 
   let loadScriptPromise = (url: string): Promise.t<result<unit, string>> => {

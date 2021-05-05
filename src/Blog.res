@@ -207,7 +207,9 @@ module FeatureCard = {
                 {date->Util.Date.toDayMonthYear->React.string}
               </div>
             </div>
-            <p className="text-gray-90 antialiased tracking-tight text-16"> {React.string(firstParagraph)} </p>
+            <p className="text-gray-90 antialiased tracking-tight text-16">
+              {React.string(firstParagraph)}
+            </p>
           </div>
         </div>
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
