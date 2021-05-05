@@ -5,9 +5,6 @@ import Docson from "docson";
 import * as Docson$1 from "docson";
 import BuildSchemaJson from "data/build-schema.json";
 
-import "styles/docson.css";
-;
-
 function Docson$2(Props) {
   var element = React.useRef(null);
   React.useEffect((function () {
@@ -30,4 +27,4 @@ export {
   make ,
   
 }
-/*  Not a pure module */
+/* react Not a pure module */

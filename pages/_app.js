@@ -9,6 +9,7 @@
 import "styles/main.css";
 import "codemirror/lib/codemirror.css";
 import "styles/cm.css";
+import "styles/docson.css";
 
 import {make as ResApp} from "src/common/App.mjs";
 

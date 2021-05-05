@@ -1,5 +1,3 @@
-%%raw(`import "styles/docson.css";`)
-
 type t
 
 @module("docson") external docson: t = "default"
