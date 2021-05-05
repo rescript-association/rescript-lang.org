@@ -15,20 +15,28 @@ This is the official documentation platform for the [ReScript](https://rescript-
 - Create an issue to let us know what you are missing
 - In case you want to contribute missing docs, please refer to our [Contribution section](#contributing)
 
+## System Requirements
+
+- `node@12.22.1` or higher (for ES6 module compat)
+- `npm@6` (package-lock v1)
+
 ## Setup
 
 ```sh
 # For first time clone / build (install dependencies)
-yarn
+npm i
+
+# Only needed for initial clone (or content H2 changes)
+npm run update-index
 
 # Initial build
-yarn bs:build
+npm run res:build
 
 # Build the index data
-yarn run update-index
+npm run update-index
 
 # In a new tab
-yarn dev
+npm run dev
 
 # then open localhost:3000
 ```
@@ -36,7 +44,7 @@ yarn dev
 In case you want to run ReScript in watchmode:
 
 ```sh
-yarn run bs:start
+npm run res:start
 ```
 
 ## Build Index Data
@@ -46,7 +54,7 @@ search terms we need for searching inside the `Belt` docs). You can create your
 index by running following command:
 
 ```sh
-yarn run update-index
+npm run update-index
 ```
 
 All the index data is stored in `index_data`, but will not be tracked by git.
@@ -149,7 +157,7 @@ posts](https://rescript-lang.org/blogpost-guide).
 **Quick-takeaways:**
 
 - Blogposts are located in `_blogposts`
-- Author metadata is located in `data/blog_authors.json`
+- Author metadata is located in `data/blog_authors.mjs`
 - Make sure to follow the file naming rules
 
 ### Contributing

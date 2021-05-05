@@ -43,10 +43,13 @@ let renderSgrString = (~key: string, sgrStr: SgrString.t): React.element => {
 
 @react.component
 let make = (~className=?, ~children: string) => {
-  let spans = Ansi.parse(children)->SgrString.fromTokens->Belt.Array.mapWithIndex((i, str) => {
-    let key = Belt.Int.toString(i)
-    renderSgrString(~key, str)
-  })
+  let spans =
+    Ansi.parse(children)
+    ->SgrString.fromTokens
+    ->Belt.Array.mapWithIndex((i, str) => {
+      let key = Belt.Int.toString(i)
+      renderSgrString(~key, str)
+    })
 
   // Note: pre is essential here, otherwise whitespace and newlines are not respected
   <pre ?className> {React.array(spans)} </pre>

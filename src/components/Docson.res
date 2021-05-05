@@ -1,5 +1,3 @@
-%%raw(`import "styles/docson.css";`)
-
 type t
 
 @module("docson") external docson: t = "default"
@@ -29,5 +27,5 @@ let make = () => {
     }
     None
   })
-  <div ref={ReactDOM.Ref.domRef(element)} id="docson-root"> </div>
+  <div ref={ReactDOM.Ref.domRef(element)} id="docson-root" />
 }

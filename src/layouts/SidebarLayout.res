@@ -33,8 +33,10 @@ module Toc = {
         <li key=header className="pl-2 mt-3 first:mt-1">
           <Link href>
             <a className="font-medium block text-sm text-gray-40 leading-tight hover:text-gray-80">
-              {//links, nested
-              React.string(header)}
+              {
+                //links, nested
+                React.string(header)
+              }
             </a>
           </Link>
         </li>
@@ -269,8 +271,7 @@ let make = (
         <div className="flex lg:justify-center">
           <div className="flex w-full max-w-1280 md:mx-8">
             sidebar
-            <main
-              className="px-4 w-full pt-16 md:ml-12 lg:mr-8 mb-32 md:max-w-576 lg:max-w-740">
+            <main className="px-4 w-full pt-16 md:ml-12 lg:mr-8 mb-32 md:max-w-576 lg:max-w-740">
               //width of the right content part
               <div
                 className="z-10 fixed border-b shadow top-16 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center">

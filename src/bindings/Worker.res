@@ -1,6 +1,6 @@
 type worker
 
-@bs.new external make: string => worker = "Worker"
+@new external make: string => worker = "Worker"
 
 module type Config = {
   type fromApp
@@ -12,20 +12,20 @@ module Make = (Config: Config) => {
   include Config
 
   module App = {
-    @bs.send external postMessage: (worker, fromApp) => unit = "postMessage"
-    @bs.set
+    @send external postMessage: (worker, fromApp) => unit = "postMessage"
+    @set
     external onMessage: (worker, {"data": fromWorker} => unit) => unit = "onmessage"
-    @bs.set
+    @set
     external onError: (worker, Js.t<'a> => unit) => unit = "onerror"
-    @bs.send external terminate: worker => unit = "terminate"
+    @send external terminate: worker => unit = "terminate"
   }
 
   module Worker = {
     type self
-    @bs.val external postMessage: fromWorker => unit = "postMessage"
-    @bs.set
+    @val external postMessage: fromWorker => unit = "postMessage"
+    @set
     external onMessage: (self, {"data": fromApp} => unit) => unit = "onmessage"
-    @bs.val external self: self = "self"
-    @bs.val external importScripts: string => unit = "importScripts"
+    @val external self: self = "self"
+    @val external importScripts: string => unit = "importScripts"
   }
 }

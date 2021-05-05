@@ -1,4 +1,4 @@
-@bs.val @bs.scope("performance") external now: unit => float = "now"
+@val @scope("performance") external now: unit => float = "now"
 
 module Lang = {
   type t =
@@ -347,16 +347,16 @@ module Compiler = {
   type t
 
   // Factory
-  @bs.val @bs.scope("rescript_compiler") external make: unit => t = "make"
+  @val @scope("rescript_compiler") external make: unit => t = "make"
 
-  @bs.get external version: t => string = "version"
+  @get external version: t => string = "version"
 
   /*
       Res compiler actions
  */
-  @bs.get @bs.scope("rescript") external resVersion: t => string = "version"
+  @get @scope("rescript") external resVersion: t => string = "version"
 
-  @bs.send @bs.scope("rescript")
+  @send @scope("rescript")
   external resCompile: (t, string) => Js.Json.t = "compile"
 
   let resCompile = (t, code): CompilationResult.t => {
@@ -367,7 +367,7 @@ module Compiler = {
     CompilationResult.decode(~time=stopTime -. startTime, json)
   }
 
-  @bs.send @bs.scope("rescript")
+  @send @scope("rescript")
   external resFormat: (t, string) => Js.Json.t = "format"
 
   let resFormat = (t, code): ConversionResult.t => {
@@ -375,10 +375,10 @@ module Compiler = {
     ConversionResult.decode(~fromLang=Res, ~toLang=Res, json)
   }
 
-  @bs.get @bs.scope("reason")
+  @get @scope("reason")
   external reasonVersion: t => string = "version"
 
-  @bs.send @bs.scope("reason")
+  @send @scope("reason")
   external reasonCompile: (t, string) => Js.Json.t = "compile"
   let reasonCompile = (t, code): CompilationResult.t => {
     let startTime = now()
@@ -388,7 +388,7 @@ module Compiler = {
     CompilationResult.decode(~time=stopTime -. startTime, json)
   }
 
-  @bs.send @bs.scope("reason")
+  @send @scope("reason")
   external reasonFormat: (t, string) => Js.Json.t = "format"
 
   let reasonFormat = (t, code): ConversionResult.t => {
@@ -396,9 +396,9 @@ module Compiler = {
     ConversionResult.decode(~fromLang=Reason, ~toLang=Reason, json)
   }
 
-  @bs.get @bs.scope("ocaml") external ocamlVersion: t => string = "version"
+  @get @scope("ocaml") external ocamlVersion: t => string = "version"
 
-  @bs.send @bs.scope("ocaml")
+  @send @scope("ocaml")
   external ocamlCompile: (t, string) => Js.Json.t = "compile"
 
   let ocamlCompile = (t, code): CompilationResult.t => {
@@ -409,14 +409,14 @@ module Compiler = {
     CompilationResult.decode(~time=stopTime -. startTime, json)
   }
 
-  @bs.send external getConfig: t => Config.t = "getConfig"
+  @send external getConfig: t => Config.t = "getConfig"
 
-  @bs.send external setFilename: (t, string) => bool = "setFilename"
+  @send external setFilename: (t, string) => bool = "setFilename"
 
-  @bs.send
+  @send
   external setModuleSystem: (t, [#es6 | #nodejs]) => bool = "setModuleSystem"
 
-  @bs.send external setWarnFlags: (t, string) => bool = "setWarnFlags"
+  @send external setWarnFlags: (t, string) => bool = "setWarnFlags"
 
   let setConfig = (t: t, config: Config.t): unit => {
     let moduleSystem = switch config.module_system {
@@ -430,7 +430,7 @@ module Compiler = {
     t->setWarnFlags(config.warn_flags)->ignore
   }
 
-  @bs.send
+  @send
   external convertSyntax: (t, string, string, string) => Js.Json.t = "convertSyntax"
 
   // General format function
@@ -451,5 +451,5 @@ module Compiler = {
     }
 }
 
-@bs.val @bs.scope("rescript_compiler")
+@val @scope("rescript_compiler")
 external apiVersion: string = "api_version"

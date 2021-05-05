@@ -1,7 +1,7 @@
-@bs.val @bs.scope("process.env") external env: string = "ENV"
+@val @scope("process.env") external env: string = "ENV"
 
-@bs.inline
+@inline
 let development = "development"
 
-@bs.inline
+@inline
 let production = "production"

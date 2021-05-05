@@ -63,7 +63,9 @@ let default = (~showVersionSelect=true) => {
   }
 
   <>
-    <div> versionSelect <div className="mb-6" /> <Markdown.H1> {React.string("Docs")} </Markdown.H1> </div>
+    <div>
+      versionSelect <div className="mb-6" /> <Markdown.H1> {React.string("Docs")} </Markdown.H1>
+    </div>
     <div className="grid grid-cols-1 xs:grid-cols-2 gap-8">
       <Card title="Language Manual" hrefs=languageManual />
       <Card title="Ecosystem" hrefs=ecosystem />

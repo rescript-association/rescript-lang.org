@@ -4,8 +4,7 @@ module NavItem = SidebarLayout.Sidebar.NavItem
 module Category = SidebarLayout.Sidebar.Category
 module Toc = SidebarLayout.Toc
 
-module Latest = 
-DocsLayout.Make({
+module Latest = DocsLayout.Make({
   // Structure defined by `scripts/extract-tocs.js`
   let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/react_latest_toc.json')")
 })

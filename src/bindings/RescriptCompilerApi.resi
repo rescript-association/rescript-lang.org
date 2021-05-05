@@ -84,7 +84,7 @@ module TypeHint: {
   type data = {
     start: position,
     end: position,
-    hint: string
+    hint: string,
   }
 
   type t =
@@ -160,7 +160,7 @@ module Compiler: {
   type t
 
   // Factory
-  @bs.val @bs.scope("rescript_compiler") external make: unit => t = "make"
+  @val @scope("rescript_compiler") external make: unit => t = "make"
 
   let version: t => string
 
@@ -200,5 +200,5 @@ module Compiler: {
 
 // This needs to be an external, otherwise the JS tries to access the value
 // on load
-@bs.val @bs.scope("rescript_compiler")
+@val @scope("rescript_compiler")
 external apiVersion: string = "api_version"

@@ -1,6 +1,6 @@
 module Textbox: {
   @react.component
-  let make: (~id: string) => React.element 
+  let make: (~id: string) => React.element
 }
 
 @react.component

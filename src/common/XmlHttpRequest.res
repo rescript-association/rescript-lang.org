@@ -7,82 +7,82 @@
 module Upload = {
   type t
 
-  @bs.set
+  @set
   external onAbort: (t, Dom.progressEvent => unit) => unit = "onabort"
 
-  @bs.set
+  @set
   external onError: (t, Dom.progressEvent => unit) => unit = "onerror"
 
-  @bs.set external onLoad: (t, Dom.progressEvent => unit) => unit = "onload"
+  @set external onLoad: (t, Dom.progressEvent => unit) => unit = "onload"
 
-  @bs.set
+  @set
   external onLoadEnd: (t, Dom.progressEvent => unit) => unit = "onloadend"
 
-  @bs.set
+  @set
   external onLoadStart: (t, Dom.progressEvent => unit) => unit = "onloadstart"
 
-  @bs.set
+  @set
   external onProgress: (t, Dom.progressEvent => unit) => unit = "onprogress"
 
-  @bs.set
+  @set
   external onTimeout: (t, Dom.progressEvent => unit) => unit = "ontimeout"
 
-  @bs.send
+  @send
   external addEventListener: (
     t,
-    @bs.string
+    @string
     [
       | #abort(Dom.progressEvent => unit)
       | #error(Dom.progressEvent => unit)
       | #load(Dom.progressEvent => unit)
-      | @bs.as("loadend") #loadEnd(Dom.progressEvent => unit)
-      | @bs.as("loadstart") #loadStart(Dom.progressEvent => unit)
+      | @as("loadend") #loadEnd(Dom.progressEvent => unit)
+      | @as("loadstart") #loadStart(Dom.progressEvent => unit)
       | #progress(Dom.progressEvent => unit)
       | #timeout(Dom.progressEvent => unit)
     ],
   ) => unit = "addEventListener"
 
-  @bs.send
+  @send
   external addEventListenerWithOptions: (
     t,
-    @bs.string
+    @string
     [
       | #abort(Dom.progressEvent => unit)
       | #error(Dom.progressEvent => unit)
       | #load(Dom.progressEvent => unit)
-      | @bs.as("loadend") #loadEnd(Dom.progressEvent => unit)
-      | @bs.as("loadstart") #loadStart(Dom.progressEvent => unit)
+      | @as("loadend") #loadEnd(Dom.progressEvent => unit)
+      | @as("loadstart") #loadStart(Dom.progressEvent => unit)
       | #progress(Dom.progressEvent => unit)
       | #timeout(Dom.progressEvent => unit)
     ],
     {"capture": bool, "once": bool, "passive": bool},
   ) => unit = "addEventListener"
 
-  @bs.send
+  @send
   external removeEventListener: (
     t,
-    @bs.string
+    @string
     [
       | #abort(Dom.progressEvent => unit)
       | #error(Dom.progressEvent => unit)
       | #load(Dom.progressEvent => unit)
-      | @bs.as("loadend") #loadEnd(Dom.progressEvent => unit)
-      | @bs.as("loadstart") #loadStart(Dom.progressEvent => unit)
+      | @as("loadend") #loadEnd(Dom.progressEvent => unit)
+      | @as("loadstart") #loadStart(Dom.progressEvent => unit)
       | #progress(Dom.progressEvent => unit)
       | #timeout(Dom.progressEvent => unit)
     ],
   ) => unit = "removeEventListener"
 
-  @bs.send
+  @send
   external removeEventListenerWithOptions: (
     t,
-    @bs.string
+    @string
     [
       | #abort(Dom.progressEvent => unit)
       | #error(Dom.progressEvent => unit)
       | #load(Dom.progressEvent => unit)
-      | @bs.as("loadend") #loadEnd(Dom.progressEvent => unit)
-      | @bs.as("loadstart") #loadStart(Dom.progressEvent => unit)
+      | @as("loadend") #loadEnd(Dom.progressEvent => unit)
+      | @as("loadstart") #loadStart(Dom.progressEvent => unit)
       | #progress(Dom.progressEvent => unit)
       | #timeout(Dom.progressEvent => unit)
     ],
@@ -110,150 +110,150 @@ let decodeReadyState = x =>
   | _ => Unknown
   }
 
-@bs.new external make: unit => t = "XMLHttpRequest"
+@new external make: unit => t = "XMLHttpRequest"
 
 // The original readyState representation
-@bs.get external readyStateNum: t => int = "readyState"
+@get external readyStateNum: t => int = "readyState"
 
 let readyState = (xhr: t) => decodeReadyState(readyStateNum(xhr))
 
-@bs.get
+@get
 external responseArrayBuffer: t => Js.Nullable.t<Js.Typed_array.array_buffer> = "response"
 
 // Response property with different encodings
-@bs.get
+@get
 external responseDocument: t => Js.Nullable.t<Dom.document> = "response"
-@bs.get external responseJson: t => Js.Nullable.t<Js.Json.t> = "response"
-@bs.get external responseText: t => Js.Nullable.t<string> = "responseText"
-@bs.get external responseType: t => string = "responseType"
-@bs.get external responseUrl: t => Js.Nullable.t<string> = "responseUrl"
-@bs.get
+@get external responseJson: t => Js.Nullable.t<Js.Json.t> = "response"
+@get external responseText: t => Js.Nullable.t<string> = "responseText"
+@get external responseType: t => string = "responseType"
+@get external responseUrl: t => Js.Nullable.t<string> = "responseUrl"
+@get
 external responseXml: t => Js.Nullable.t<Dom.xmlDocument> = "responseXml"
 
-@bs.set
+@set
 external setResponseType: (
   t,
-  @bs.string [@bs.as("arraybuffer") #arrayBuffer | #document | #json | #text],
+  @string [@as("arraybuffer") #arrayBuffer | #document | #json | #text],
 ) => string = "responseType"
 
-@bs.get external status: t => int = "status"
+@get external status: t => int = "status"
 
-@bs.get external statusText: t => string = "statusText"
+@get external statusText: t => string = "statusText"
 
-@bs.get external timeout: t => int = "timeout"
+@get external timeout: t => int = "timeout"
 
-@bs.get external upload: t => Upload.t = "upload"
+@get external upload: t => Upload.t = "upload"
 
-@bs.set external setTimeout: (t, int) => int = "timeout"
+@set external setTimeout: (t, int) => int = "timeout"
 
-@bs.get external withCredentials: t => bool = "withCredentials"
+@get external withCredentials: t => bool = "withCredentials"
 
-@bs.set external setWithCredentials: (t, bool) => bool = "withCredentials"
+@set external setWithCredentials: (t, bool) => bool = "withCredentials"
 
-@bs.send external abort: t => unit = "abort"
+@send external abort: t => unit = "abort"
 
-@bs.send
+@send
 external getAllResponseHeaders: t => Js.Nullable.t<string> = "getAllResponseHeaders"
 
-@bs.send
+@send
 external getResponseHeader: (t, string) => Js.Nullable.t<string> = "getResponseHeader"
 
-@bs.send external open_: (t, ~method: string, ~url: string) => unit = "open"
+@send external open_: (t, ~method: string, ~url: string) => unit = "open"
 
-@bs.send external overrideMimeType: (t, string) => unit = "overrideMimeType"
+@send external overrideMimeType: (t, string) => unit = "overrideMimeType"
 
-@bs.send external send: t => unit = "send"
+@send external send: t => unit = "send"
 
-@bs.send
+@send
 external sendArrayBuffer: (t, Js.Typed_array.array_buffer) => unit = "send"
 
-@bs.send external sendDocument: (t, Dom.document) => unit = "send"
+@send external sendDocument: (t, Dom.document) => unit = "send"
 
-@bs.send external sendString: (t, string) => unit = "send"
+@send external sendString: (t, string) => unit = "send"
 
-@bs.send
+@send
 external setRequestHeader: (t, string, string) => unit = "setRequestHeader"
 
-@bs.set
+@set
 external onReadyStateChange: (t, Dom.event => unit) => unit = "onreadystatechange"
 
-@bs.set external onAbort: (t, Dom.progressEvent => unit) => unit = "onabort"
-@bs.set external onError: (t, Dom.progressEvent => unit) => unit = "onerror"
-@bs.set external onLoad: (t, Dom.progressEvent => unit) => unit = "onload"
+@set external onAbort: (t, Dom.progressEvent => unit) => unit = "onabort"
+@set external onError: (t, Dom.progressEvent => unit) => unit = "onerror"
+@set external onLoad: (t, Dom.progressEvent => unit) => unit = "onload"
 
-@bs.set
+@set
 external onLoadEnd: (t, Dom.progressEvent => unit) => unit = "onloadend"
 
-@bs.set
+@set
 external onLoadStart: (t, Dom.progressEvent => unit) => unit = "onloadstart"
 
-@bs.set
+@set
 external onProgress: (t, Dom.progressEvent => unit) => unit = "onprogress"
 
-@bs.set
+@set
 external onTimeout: (t, Dom.progressEvent => unit) => unit = "ontimeout"
 
-@bs.send
+@send
 external addEventListener: (
   t,
-  @bs.string
+  @string
   [
     | #abort(Dom.progressEvent => unit)
     | #error(Dom.progressEvent => unit)
     | #load(Dom.progressEvent => unit)
-    | @bs.as("loadend") #loadEnd(Dom.progressEvent => unit)
-    | @bs.as("loadstart") #loadStart(Dom.progressEvent => unit)
+    | @as("loadend") #loadEnd(Dom.progressEvent => unit)
+    | @as("loadstart") #loadStart(Dom.progressEvent => unit)
     | #progress(Dom.progressEvent => unit)
-    | @bs.as("readystatechange") #readyStateChange(Dom.event => unit)
+    | @as("readystatechange") #readyStateChange(Dom.event => unit)
     | #timeout(Dom.progressEvent => unit)
   ],
 ) => unit = "addEventListener"
 
-@bs.send
+@send
 external addEventListenerWithOptions: (
   t,
-  @bs.string
+  @string
   [
     | #abort(Dom.progressEvent => unit)
     | #error(Dom.progressEvent => unit)
     | #load(Dom.progressEvent => unit)
-    | @bs.as("loadend") #loadEnd(Dom.progressEvent => unit)
-    | @bs.as("loadstart") #loadStart(Dom.progressEvent => unit)
+    | @as("loadend") #loadEnd(Dom.progressEvent => unit)
+    | @as("loadstart") #loadStart(Dom.progressEvent => unit)
     | #progress(Dom.progressEvent => unit)
-    | @bs.as("readystatechange") #readyStateChange(Dom.event => unit)
+    | @as("readystatechange") #readyStateChange(Dom.event => unit)
     | #timeout(Dom.progressEvent => unit)
   ],
   {"capture": bool, "once": bool, "passive": bool},
 ) => unit = "addEventListener"
 
-@bs.send
+@send
 external removeEventListener: (
   t,
-  @bs.string
+  @string
   [
     | #abort(Dom.progressEvent => unit)
     | #error(Dom.progressEvent => unit)
     | #load(Dom.progressEvent => unit)
-    | @bs.as("loadend") #loadEnd(Dom.progressEvent => unit)
-    | @bs.as("loadstart") #loadStart(Dom.progressEvent => unit)
+    | @as("loadend") #loadEnd(Dom.progressEvent => unit)
+    | @as("loadstart") #loadStart(Dom.progressEvent => unit)
     | #progress(Dom.progressEvent => unit)
-    | @bs.as("readystatechange") #readyStateChange(Dom.event => unit)
+    | @as("readystatechange") #readyStateChange(Dom.event => unit)
     | #timeout(Dom.progressEvent => unit)
   ],
 ) => unit = "removeEventListener"
 
-@bs.send
+@send
 external removeEventListenerWithOptions: (
   t,
-  @bs.string
+  @string
   [
     | #abort(Dom.progressEvent => unit)
     | #error(Dom.progressEvent => unit)
     | #load(Dom.progressEvent => unit)
-    | @bs.as("loadend") #loadEnd(Dom.progressEvent => unit)
-    | @bs.as("loadstart") #loadStart(Dom.progressEvent => unit)
+    | @as("loadend") #loadEnd(Dom.progressEvent => unit)
+    | @as("loadstart") #loadStart(Dom.progressEvent => unit)
     | #progress(Dom.progressEvent => unit)
-    | @bs.as("readystatechange") #readyStateChange(Dom.event => unit)
+    | @as("readystatechange") #readyStateChange(Dom.event => unit)
     | #timeout(Dom.progressEvent => unit)
   ],
   {"capture": bool, "passive": bool},

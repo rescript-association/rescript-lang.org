@@ -275,22 +275,21 @@ module SgrString = {
         }
       | Sgr(data) =>
         // merge together specific sgr params
-        let (fg, bg, rest) =
-          Belt.Array.concat(params.contents, data.params)->Belt.Array.reduce(
-            (None, None, []),
-            (acc, next) => {
-              let (fg, bg, other) = acc
-              switch next {
-              | Fg(_) => (Some(next), bg, other)
-              | Bg(_) => (fg, Some(next), other)
-              | o =>
-                if Js.Array2.find(other, o2 => o === o2) === None {
-                  Js.Array2.push(other, next)->ignore
-                }
-                (fg, bg, other)
+        let (fg, bg, rest) = Belt.Array.concat(params.contents, data.params)->Belt.Array.reduce(
+          (None, None, []),
+          (acc, next) => {
+            let (fg, bg, other) = acc
+            switch next {
+            | Fg(_) => (Some(next), bg, other)
+            | Bg(_) => (fg, Some(next), other)
+            | o =>
+              if Js.Array2.find(other, o2 => o === o2) === None {
+                Js.Array2.push(other, next)->ignore
               }
-            },
-          )
+              (fg, bg, other)
+            }
+          },
+        )
 
         if content.contents !== "" {
           let element = {content: content.contents, params: params.contents}
@@ -349,7 +348,8 @@ module Printer = {
       j`Clear Sgr "$raw" ($startPos to $endPos)`
     }
 
-  let plainString = (tokens: array<token>): string => Belt.Array.map(tokens, x =>
+  let plainString = (tokens: array<token>): string =>
+    Belt.Array.map(tokens, x =>
       switch x {
       | Lexer.Text({content}) => content
       | _ => ""

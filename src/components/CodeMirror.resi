@@ -38,7 +38,7 @@ module CM: {
       ~lineWrapping: bool=?,
       ~fixedGutter: bool=?,
       ~scrollbarStyle: string=?,
-      unit
+      unit,
     ) => t
   }
 }
