@@ -11,7 +11,7 @@ import * as Constants from "../common/Constants.mjs";
 import * as DocSearch from "./DocSearch.mjs";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
-import * as ReactDOMStyle from "@rescript/react/src/ReactDOMStyle.js";
+import * as ReactDOMStyle from "@rescript/react/src/ReactDOMStyle.mjs";
 import * as VersionSelect from "./VersionSelect.mjs";
 
 var link = "no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px";
