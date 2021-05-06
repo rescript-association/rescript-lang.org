@@ -5,8 +5,8 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "rescript-912": "npm:rescript@9.1.2",
+    "rescript-820": "npm:bs-platform@8.2.0",
     "rescript-902": "npm:bs-platform@9.0.2",
-    "rescript-820": "npm:bs-platform@8.2.0"
+    "rescript-912": "npm:rescript@9.1.2"
   }
 }
