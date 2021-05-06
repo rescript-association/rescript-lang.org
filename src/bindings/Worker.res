@@ -16,7 +16,7 @@ module Make = (Config: Config) => {
     @set
     external onMessage: (worker, {"data": fromWorker} => unit) => unit = "onmessage"
     @set
-    external onError: (worker, Js.t<'a> => unit) => unit = "onerror"
+    external onError: (worker, 'a => unit) => unit = "onerror"
     @send external terminate: worker => unit = "terminate"
   }
 

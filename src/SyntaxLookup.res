@@ -12,7 +12,7 @@ let indexData: array<syntaxData> = %raw("require('index_data/syntax_index.json')
 
 module MdxComp = {
   type props
-  type t = Js.t<props> => React.element
+  type t = props => React.element
 
   let render: t => React.element = %raw(`
     function(c) {
