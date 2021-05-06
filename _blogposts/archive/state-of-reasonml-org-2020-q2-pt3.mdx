@@ -2,11 +2,10 @@
 author: ryyppy
 date: "2020-05-12"
 previewImg: https://res.cloudinary.com/dmm9n7v9f/image/upload/v1588759056/Reason%20Association/reasonml.org/state-of-reasonml-org-q2-2020_ngvmtc.jpg
-category: docs
 title: State of reasonml.org 2020-Q2 / Pt. 3
 description: |
   A report on recent achievements in the reasonml.org project. In this part we
-  talk about upcoming tools and features. 
+  talk about upcoming tools and features.
 ---
 
 import Image from "src/components/Image";
@@ -23,7 +22,7 @@ This article will cover some features and exciting ideas we have been working on
 As we already mentioned in our previous posts, the API documentation is currently maintained by hand, and we only offer documentation for the `Js` and `Belt` module, since they are the most relevant for BuckleScript development.
 
 This will change as soon as our [doc-tools](https://github.com/reason-association/doc-tools) are ready to be used.
- 
+
 The `doc-tools` project includes a CLI that enables us to easily run the odoc toolchain on the BuckleScript repository to generate JSON data, which will be our foundation for statically generated, good looking, and interactive doc pages within NextJS (see [SSG](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation)). The project is managed and developed by [rizo](https://github.com/rizo). You can find more information about it [here](https://www.reason-association.org/projects/doc-tools).
 
 We are aware that there is more software doing similar things, such as `redoc` or `bs-doc`, the latter acting as the driver for odoc within a BuckleScript project. Since our goal is to have a battle-tested, well-integrated and easy to use tool for odoc JSON generation, we will first start testing `doc-tools` by generating the API docs for `reasonml.org` before making it available to the broader community.
@@ -44,7 +43,7 @@ We did the ground work for our search feature and we will get into more detail a
 
 ## Playground
 
-We also invested a lot of time into thinking about the future of the Reason playground from a UX perspective. Our most important goal is to make it possible to switch BuckleScript versions on demand. We also wanted the relevant Reason version to be part of the playground bundle. 
+We also invested a lot of time into thinking about the future of the Reason playground from a UX perspective. Our most important goal is to make it possible to switch BuckleScript versions on demand. We also wanted the relevant Reason version to be part of the playground bundle.
 
 <Image src="https://res.cloudinary.com/dmm9n7v9f/image/upload/v1589268285/Reason%20Association/reasonml.org/playground-mockup_symtzn.jpg" withShadow={true} caption="UI mockup for the new playground (Desktop version)" />
 

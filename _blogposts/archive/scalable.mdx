@@ -1,8 +1,7 @@
 ---
 author: hongbo
-date: "2019-01-11" 
+date: "2019-01-11"
 previewImg:
-category: compiler
 title: In search of lightning feedback loop in a large codebase
 description: |
 ---
@@ -11,7 +10,7 @@ description: |
 
 As software developers, when we touch a codebase, we want the edit-compile
 cycle, to be as short as possible. Studies show that feedback loop less than
-1s, or 100ms will prevent devleopers getting distracted. 
+1s, or 100ms will prevent devleopers getting distracted.
 
 This seems to be possible in a small project, but as project grows to 10k
 files, or even more, 100k files in a large company like Google, Facebook, this
@@ -24,19 +23,19 @@ The edit-build cycle in BuckleScript consists of two components: the compiler
 which does type checking and code generation and the scheduler which figures
 out what to rebuild and how to do it concurrently.
 
-## The importance of compiler's cold performance 
+## The importance of compiler's cold performance
 
 In order to reduce the edit-build latency, some languages adopt an approach of
 in memory compiler + watch mode. We think this is not a scalable or reliable
-approach. 
+approach.
 
 A compiler is a complex piece of software, the chance that a compiler has
 memory leak is not low. It is not observed in real world since compiler is used
-mostly in a short-lived setting, it starts up fast and dies off quickly. 
+mostly in a short-lived setting, it starts up fast and dies off quickly.
 
 However, this is decimated when compiler is put in server mode. When we have
 10k or 100k files held in memory, it is very easy to observe OOM (out of memory
-issues). 
+issues).
 
 We figured that to deliver a scalable and reliable system, it is better to
 decouple the compiler's complexity from the scheduler. When the compiler cold
@@ -56,7 +55,7 @@ test>cat fib.ml
 let rec fib = function
   | 0 | 1 -> 1
   | n -> fib (n - 1) + fib (n - 2)
-```  
+```
 
 ```
 test>time /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-cmi -bs-cmj -c fib.ml
@@ -84,7 +83,7 @@ In a statically typed language, suppose we have two compilation units A , B,
 and B depends on A. Whenever A changes, B gets recompiled, to make it worse,
 the recompilation propogates, all dependencies of B get recompiled, which will
 result in a snowball effect. In this model, whenever we touch the non-leaf
-compilation unit, the latency would be large. 
+compilation unit, the latency would be large.
 
 The key observation here for BuckleScript is that B does not really depend on
 the last modified time of A, it depends on the intermediate output of A (e.g,
@@ -95,10 +94,10 @@ propagation as early as possible.
 
 In BuckleScript, each compilation unit is composed of two files, the
 implementation file and interface file which are compiled to intermediate
-output .cmj and .cmi separately. 
+output .cmj and .cmi separately.
 
 The interface builds are completely separate from implemetation, it does not
-depend on .cmj (implementation intermediate output) at all. 
+depend on .cmj (implementation intermediate output) at all.
 
 Suppose the interface is not changed, whenever we touch the implementation
 file, BuckleScript designs the data structure of `.cmj` in a way that the
@@ -112,7 +111,7 @@ Suppose the `.cmj` file is still changed (P = 0.05), A's dependency B would get
 recompiled. Note `B.cmi` only depends on `A.cmi`, so it will not get compiled,
 only `B.cmj` will get recompiled, its chances that `B.cmj` gets changed will be
 even lower. In practice, the probabiity of the length of propagation chain is
-more than two is less than 
+more than two is less than
 
 ```
 0.05 * 0.05 = 0.0025
@@ -177,13 +176,13 @@ even more.
 
 Our synthetic bench is borrowed from
 [OMake](http://blog.camlcity.org/blog/omake1.html) and public available
-[here](https://github.com/bucklescript/bsb-bench). 
+[here](https://github.com/bucklescript/bsb-bench).
 
 >The benchmark has these characteristics: The task is to build n^2 libraries
 >with n^2 modules each (for a given small number n), and the dependencies
 >between the modules are created in a way so that we can stress both the
 >dependency analyzer of the build utility and the ability to run commands in
->parallel. 
+>parallel.
 
 We modified the benchmark to add interface file for each implementation file.
 
@@ -197,8 +196,8 @@ Below is what we get for a cold build from scratch:
 
 | Source size | Clean build (ms) |
 |-------------|------------------|
-| 0162        |     684          | 
-| 1250        |    5,100         | 
+| 0162        |     684          |
+| 1250        |    5,100         |
 | 4802        |   24,112         |
 | 13122       |  125,248         |
 
@@ -226,7 +225,7 @@ test9>ninja -C lib/bs -v
 ninja: Entering directory `lib/bs'
 [1/2] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe    -w -30-40+6+7+27+32..39+44+45+101 -nostdlib -I '/Users/hongbozhang/git/bsb-bench/test9/node_modules/bs-platform/lib/ocaml' -color always -c -o src/dir_1_1/m_1_1_1_1.mlast -bs-syntax-only -bs-binary-ast /Users/hongbozhang/git/bsb-bench/test9/src/dir_1_1/m_1_1_1_1.ml
 [2/2] /usr/local/lib/node_modules/bs-platform/lib/bsb_helper.exe  -g 0 -MD src/dir_1_1/m_1_1_1_1.mlast
-[1/5905] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I src/dir_4_6 -I src/dir_4_1 -I src/dir_4_8 -I src/dir_6_5 -I src/dir_6_2 -I src/dir_8_3 -I src/dir_8_4 -I src/dir_2_3 -I src/dir_2_4 -I src/dir_6_3 -I src/dir_4_9 -I src/dir_6_4 -I src/dir_4_7 -I src/dir_2_5 -I src/dir_2_2 -I src/dir_8_5 -I src/dir_8_2 -I src/dir_9_9 -I src/dir_3_7 -I src/dir_1_3 -I src/dir_9_7 -I src/dir_3_9 -I src/dir_1_4 -I src/dir_7_6 -I src/dir_7_1 -I src/dir_5_5 -I src/dir_7_8 -I src/dir_5_2 -I src/dir_3_8 -I src/dir_9_6 -I src/dir_1_5 -I src/dir_9_1 -I src/dir_1_2 -I src/dir_3_6 -I src/dir_9_8 -I src/dir_3_1 -I src/dir_5_3 -I src/dir_5_4 -I src/dir_7_9 -I src/dir_7_7 -I src/dir_8_7 -I src/dir_2_9 -I src/dir_8_9 -I src/dir_2_7 -I src/dir_4_2 -I src/dir_6_8 -I src/dir_4_5 -I src/dir_6_1 -I src/dir_6_6 -I src/dir_2_1 -I src/dir_2_6 -I src/dir_8_8 -I src/dir_8_1 -I src/dir_2_8 -I src/dir_8_6 -I src/dir_6_7 -I src/dir_6_9 -I src/dir_4_4 -I src/dir_4_3 -I src/dir_7_2 -I src/dir_7_5 -I src/dir_5_8 -I src/dir_5_1 -I src/dir_5_6 -I src/dir_1_9 -I src/dir_3_4 -I src/dir_3_3 -I src/dir_9_4 -I src/dir_1_7 -I src/dir_9_3 -I src/dir_5_7 -I src/dir_7_4 -I src/dir_5_9 -I src/dir_7_3 -I src/dir_9_2 -I src/dir_1_1 -I src/dir_9_5 -I src/dir_1_6 -I src/dir_3_2 -I src/dir_1_8 -I src/dir_3_5  -w -30-40+6+7+27+32..39+44+45+101 -nostdlib -I '/Users/hongbozhang/git/bsb-bench/test9/node_modules/bs-platform/lib/ocaml' -color always -o src/dir_1_1/m_1_1_1_1.cmj -c  src/dir_1_1/m_1_1_1_1.mlast 
+[1/5905] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I src/dir_4_6 -I src/dir_4_1 -I src/dir_4_8 -I src/dir_6_5 -I src/dir_6_2 -I src/dir_8_3 -I src/dir_8_4 -I src/dir_2_3 -I src/dir_2_4 -I src/dir_6_3 -I src/dir_4_9 -I src/dir_6_4 -I src/dir_4_7 -I src/dir_2_5 -I src/dir_2_2 -I src/dir_8_5 -I src/dir_8_2 -I src/dir_9_9 -I src/dir_3_7 -I src/dir_1_3 -I src/dir_9_7 -I src/dir_3_9 -I src/dir_1_4 -I src/dir_7_6 -I src/dir_7_1 -I src/dir_5_5 -I src/dir_7_8 -I src/dir_5_2 -I src/dir_3_8 -I src/dir_9_6 -I src/dir_1_5 -I src/dir_9_1 -I src/dir_1_2 -I src/dir_3_6 -I src/dir_9_8 -I src/dir_3_1 -I src/dir_5_3 -I src/dir_5_4 -I src/dir_7_9 -I src/dir_7_7 -I src/dir_8_7 -I src/dir_2_9 -I src/dir_8_9 -I src/dir_2_7 -I src/dir_4_2 -I src/dir_6_8 -I src/dir_4_5 -I src/dir_6_1 -I src/dir_6_6 -I src/dir_2_1 -I src/dir_2_6 -I src/dir_8_8 -I src/dir_8_1 -I src/dir_2_8 -I src/dir_8_6 -I src/dir_6_7 -I src/dir_6_9 -I src/dir_4_4 -I src/dir_4_3 -I src/dir_7_2 -I src/dir_7_5 -I src/dir_5_8 -I src/dir_5_1 -I src/dir_5_6 -I src/dir_1_9 -I src/dir_3_4 -I src/dir_3_3 -I src/dir_9_4 -I src/dir_1_7 -I src/dir_9_3 -I src/dir_5_7 -I src/dir_7_4 -I src/dir_5_9 -I src/dir_7_3 -I src/dir_9_2 -I src/dir_1_1 -I src/dir_9_5 -I src/dir_1_6 -I src/dir_3_2 -I src/dir_1_8 -I src/dir_3_5  -w -30-40+6+7+27+32..39+44+45+101 -nostdlib -I '/Users/hongbozhang/git/bsb-bench/test9/node_modules/bs-platform/lib/ocaml' -color always -o src/dir_1_1/m_1_1_1_1.cmj -c  src/dir_1_1/m_1_1_1_1.mlast
 File "/Users/hongbozhang/git/bsb-bench/test9/src/dir_1_1/m_1_1_1_1.ml", line 4, characters 4-5:
 Warning 32: unused value a.
 ```
@@ -245,15 +244,15 @@ ninja: Entering directory `lib/bs'
 [1/2] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe    -w -30-40+6+7+27+32..39+44+45+101 -nostdlib -I '/Users/hongbozhang/git/bsb-bench/test9/node_modules/bs-platform/lib/ocaml' -color always -c -o src/dir_1_1/m_1_1_1_1.mliast -bs-syntax-only -bs-binary-ast /Users/hongbozhang/git/bsb-bench/test9/src/dir_1_1/m_1_1_1_1.mli
 [2/2] /usr/local/lib/node_modules/bs-platform/lib/bsb_helper.exe  -g 0 -MD src/dir_1_1/m_1_1_1_1.mliast
 [1/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-no-builtin-ppx-mli -bs-no-implicit-include  -I src/dir_4_6 -I src/dir_4_1 -I src/dir_4_8 -I src/dir_6_5 -I src/dir_6_2 -I src/dir_8_3 -I src/dir_8_4 -I src/dir_2_3 -I src/dir_2_4 -I src/dir_6_3 -I src/dir_4_9 -I src/dir_6_4 -I src/dir_4_7 -I src/dir_2_5 -I src/dir_2_2 -I src/dir_8_5 -I src/dir_8_2 -I src/dir_9_9 -I src/dir_3_7 -I src/dir_1_3 -I src/dir_9_7 -I src/dir_3_9 -I src/dir_1_4 -I src/dir_7_6 -I src/dir_7_1 -I src/dir_5_5 -I src/dir_7_8 -I src/dir_5_2 -I src/dir_3_8 -I src/dir_9_6 -I src/dir_1_5 -I src/dir_9_1 -I src/dir_1_2 -I src/dir_3_6 -I src/dir_9_8 -I src/dir_3_1 -I src/dir_5_3 -I src/dir_5_4 -I src/dir_7_9 -I src/dir_7_7 -I src/dir_8_7 -I src/dir_2_9 -I src/dir_8_9 -I src/dir_2_7 -I src/dir_4_2 -I src/dir_6_8 -I src/dir_4_5 -I src/dir_6_1 -I src/dir_6_6 -I src/dir_2_1 -I src/dir_2_6 -I src/dir_8_8 -I src/dir_8_1 -I src/dir_2_8 -I src/dir_8_6 -I src/dir_6_7 -I src/dir_6_9 -I src/dir_4_4 -I src/dir_4_3 -I src/dir_7_2 -I src/dir_7_5 -I src/dir_5_8 -I src/dir_5_1 -I src/dir_5_6 -I src/dir_1_9 -I src/dir_3_4 -I src/dir_3_3 -I src/dir_9_4 -I src/dir_1_7 -I src/dir_9_3 -I src/dir_5_7 -I src/dir_7_4 -I src/dir_5_9 -I src/dir_7_3 -I src/dir_9_2 -I src/dir_1_1 -I src/dir_9_5 -I src/dir_1_6 -I src/dir_3_2 -I src/dir_1_8 -I src/dir_3_5  -w -30-40+6+7+27+32..39+44+45+101 -nostdlib -I '/Users/hongbozhang/git/bsb-bench/test9/node_modules/bs-platform/lib/ocaml' -color always -o src/dir_1_1/m_1_1_1_1.cmi -c  src/dir_1_1/m_1_1_1_1.mliast
-[2/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ...  -color always -o src/dir_1_1/m_1_1_1_1.cmj -c  src/dir_1_1/m_1_1_1_1.mlast 
-[3/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ...  -w -30-40+6+7+27+32..39+44+45+101 -nostdlib -I '/Users/hongbozhang/git/bsb-bench/test9/node_modules/bs-platform/lib/ocaml' -color always -o src/dir_1_1/m_1_1_2_2.cmj -c  src/dir_1_1/m_1_1_2_2.mlast 
-[4/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ... -color always -o src/dir_1_1/m_1_1_2_1.cmj -c  src/dir_1_1/m_1_1_2_1.mlast 
-[5/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ... -color always -o src/dir_1_1/m_1_1_2_3.cmj -c  src/dir_1_1/m_1_1_2_3.mlast 
-[6/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ... -color always -o src/dir_1_1/m_1_1_2_9.cmj -c  src/dir_1_1/m_1_1_2_9.mlast 
-[7/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ... -color always -o src/dir_1_1/m_1_1_2_4.cmj -c  src/dir_1_1/m_1_1_2_4.mlast 
-[8/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ... -color always -o src/dir_1_1/m_1_1_2_5.cmj -c  src/dir_1_1/m_1_1_2_5.mlast 
-[9/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ... -color always -o src/dir_1_1/m_1_1_2_6.cmj -c  src/dir_1_1/m_1_1_2_6.mlast 
-[10/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ... -color always -o src/dir_1_1/m_1_1_2_7.cmj -c  src/dir_1_1/m_1_1_2_7.mlast 
+[2/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ...  -color always -o src/dir_1_1/m_1_1_1_1.cmj -c  src/dir_1_1/m_1_1_1_1.mlast
+[3/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ...  -w -30-40+6+7+27+32..39+44+45+101 -nostdlib -I '/Users/hongbozhang/git/bsb-bench/test9/node_modules/bs-platform/lib/ocaml' -color always -o src/dir_1_1/m_1_1_2_2.cmj -c  src/dir_1_1/m_1_1_2_2.mlast
+[4/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ... -color always -o src/dir_1_1/m_1_1_2_1.cmj -c  src/dir_1_1/m_1_1_2_1.mlast
+[5/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ... -color always -o src/dir_1_1/m_1_1_2_3.cmj -c  src/dir_1_1/m_1_1_2_3.mlast
+[6/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ... -color always -o src/dir_1_1/m_1_1_2_9.cmj -c  src/dir_1_1/m_1_1_2_9.mlast
+[7/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ... -color always -o src/dir_1_1/m_1_1_2_4.cmj -c  src/dir_1_1/m_1_1_2_4.mlast
+[8/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ... -color always -o src/dir_1_1/m_1_1_2_5.cmj -c  src/dir_1_1/m_1_1_2_5.mlast
+[9/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ... -color always -o src/dir_1_1/m_1_1_2_6.cmj -c  src/dir_1_1/m_1_1_2_6.mlast
+[10/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ... -color always -o src/dir_1_1/m_1_1_2_7.cmj -c  src/dir_1_1/m_1_1_2_7.mlast
 [11/5906] /usr/local/lib/node_modules/bs-platform/lib/bsc.exe -bs-package-name test  -bs-package-output commonjs:lib/js/src/dir_1_1 -bs-assume-has-mli -bs-no-builtin-ppx-ml -bs-no-implicit-include   -I ... -color always -o src/dir_1_1/m_1_1_2_8.cmj -c  src/dir_1_1/m_1_1_2_8.mlast
 ```
 
@@ -275,4 +274,4 @@ too difficult to scale it to 100K files or even more. To reach such enormous
 scalability in a reliable way, we propose to have a long-lived scheduler and
 fast cold compiler. The language interface design and the design of the data
 structure for the implementation will make the longest rebuild propogation
-chain bounded by two in most cases. 
+chain bounded by two in most cases.

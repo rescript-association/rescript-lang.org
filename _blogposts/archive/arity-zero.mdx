@@ -1,8 +1,7 @@
 ---
 author: hongbo
-date: "2018-11-13" 
+date: "2018-11-13"
 previewImg:
-category: compiler
 title: A Change of Undefined Behavior in BuckleScript 4.0.7
 description: |
 ---
@@ -82,7 +81,7 @@ let f: unit => int = [%bs.raw {|function(param) {
 }|}];
 ```
 
-Or 
+Or
 
 ```reason
 let f: (. unit) => int = [%bs.raw {|function() {

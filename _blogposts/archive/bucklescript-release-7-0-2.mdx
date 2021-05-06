@@ -1,8 +1,7 @@
 ---
 author: hongbo
-date: "2019-12-20" 
+date: "2019-12-20"
 previewImg:
-category: compiler
 badge: release
 title: Announcing BuckleScript 7.0.2-dev.1
 description: |
@@ -48,7 +47,7 @@ the maximum value with less confusing error messages!
 
 The exciting thing about this feature is that we will now have more ways of
 expressing our programs in our typical type safe records and variants without
-sacrificing on runtime performance ("zero cost interop"). 
+sacrificing on runtime performance ("zero cost interop").
 
 The best way to understand this feature is by looking at the following
 examples:
@@ -115,14 +114,14 @@ to get a better idea of how the example data structure is defined.
 
 ```reason
 [@unboxed]
-type t = 
-  | Any ('a) : t; 
+type t =
+  | Any ('a) : t;
 
 let array = [|Any(3), Any("a")|];
 ```
 ```ocaml
 (* OCaml *)
-type t = 
+type t =
   | Any : 'a -> t
 [@@unboxed]
 

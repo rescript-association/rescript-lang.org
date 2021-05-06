@@ -1,8 +1,7 @@
 ---
 author: hongbo
-date: "2018-11-19" 
+date: "2018-11-19"
 previewImg:
-category: compiler
 badge: roadmap
 title: BuckleScript Plans for the Second Half of 2018
 description: |
@@ -44,7 +43,7 @@ toolchain, we can make better use of OCaml toolchain after such upgrade.
 ### Making better use of the new compiler internals
 
 The upgrade is divided into two stage, the first stage is focused on `no
-regression` so that we can ship it. 
+regression` so that we can ship it.
 
 Afterwards, we have plans to make better use of the more info rich IR in the
 new release. Thanks to the flambda introduced after OCaml 4.03, more
@@ -58,14 +57,14 @@ representation for OCaml datatype.
 
 Another interesting direction is to see if we can encode module in a consistent
 style: as an JS dictionary for both global modules and local modules.
- 
+
 ### Improving the usability of BuckleScript toolchain
 
 BuckleScript is focused on making better use of JS ecosystem and provide
-values to ship JS code in production (produced by BuckleScript). 
+values to ship JS code in production (produced by BuckleScript).
 
 <!-- There are still bunch of things to address, most importantly -->
- 
+
 #### Making Bucklescript toolchain more lightweight
 
 Currently it is still too heavy for users to provide JS libraries from
@@ -82,4 +81,4 @@ Currently the bsb is restricted by the npm directory layout, the generated JS
 artifacts is also restricted by it, we will see if we can relocate the JS
 artifacts or provide more flexibility for users.
 
- 
+

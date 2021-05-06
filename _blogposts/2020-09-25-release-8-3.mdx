@@ -1,15 +1,14 @@
 ---
 author: hongbo
-date: "2020-09-25" 
+date: "2020-09-25"
 previewImg:
-category: compiler
 title: What's new in ReScript 8.3 (Part 1)
 description: |
 ---
 
 ## Introduction
 
-ReScript is a soundly typed language with an optimizing compiler focused on the JS platform. 
+ReScript is a soundly typed language with an optimizing compiler focused on the JS platform.
 It's focused on type safety, performance and JS interop. It used to be called BuckleScript.
 
 [ReScript@8.3](https://www.npmjs.com/package/bs-platform/v/8.3.0) is now available for testing, you can try it via
@@ -46,7 +45,7 @@ external readFileAsUtf8Sync : string -> (_[@bs.as "utf8"]) -> string = "readFile
 
 </CodeTab>
 
-It can now be simplified as 
+It can now be simplified as
 
 <CodeTab labels={["ReScript", "Reason (Old Syntax)", "ML Syntax"]}>
 
@@ -59,18 +58,18 @@ external readFileAsUtf8Sync: (string, [@as "utf8"] _) => string =
   "readFileSync";
 ```
 ```ocaml
-external readFileAsUtf8Sync : string -> (_[@as "utf8"]) -> string = "readFileSync" 
+external readFileAsUtf8Sync : string -> (_[@as "utf8"]) -> string = "readFileSync"
 [@@val] [@@module "fs"]
 ```
 
 </CodeTab>
 
-Note almost all previous attributes with `bs.xx` can be simplified as `xx` 
+Note almost all previous attributes with `bs.xx` can be simplified as `xx`
 with the exception of the following two that don't have abbreviations:
 
 - `bs.send.pipe` : this attribute was deprecated in favor of `bs.send`; you can still use the existing one for backward compatibility.
 
-- `bs.splice` : this attribute was deprecated in favor of `bs.variadic`; you can still use the existing one for 
+- `bs.splice` : this attribute was deprecated in favor of `bs.variadic`; you can still use the existing one for
 backward compatibility.
 
 
@@ -118,13 +117,13 @@ Now user can pick up their js file extension support per module format:
     "module": "commonjs",
     "suffix": ".cjs"
   }],
-  
+
 ```
 
 ## More flexible filename support
 
-To have better integration with other [JS infrastructures](https://github.com/rescript-lang/rescript-compiler/issues/4624), 
-for example, Next.js/React Native, we allow file names like `404.res`, 
+To have better integration with other [JS infrastructures](https://github.com/rescript-lang/rescript-compiler/issues/4624),
+for example, Next.js/React Native, we allow file names like `404.res`,
 `Button.Android.res` so that it can just be picked up by those tools
 
 
@@ -156,13 +155,13 @@ let f = (u: N.t) => {
 }; /* type error */
 ```
 ```ocaml
-module N = struct 
+module N = struct
     type t = {
-        x : int 
+        x : int
     }
 end
 
-let f (u : N.t) = 
+let f (u : N.t) =
     let {x } = u in x + 1 (* type error *)
 ```
 
@@ -174,11 +173,11 @@ You will get a type error
 Error: Unbound record field x
 ```
 
-However, since the compiler already knows the type of `u`, it is capable of looking up the label `x` properly. 
-In this release, we make the original code style work out of the box without a work-around such as adding a module prefix 
+However, since the compiler already knows the type of `u`, it is capable of looking up the label `x` properly.
+In this release, we make the original code style work out of the box without a work-around such as adding a module prefix
 like `let {N.x} = ..`
 
-## Build system enhancement 
+## Build system enhancement
 
 A lot of work is put in improving the build system, we will expand on this topic in the next post!
 

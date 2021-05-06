@@ -2,10 +2,9 @@
 author: hongbo
 date: "2020-07-28 18:00"
 previewImg:
-category: compiler
 title: Introducing string literal types in BuckleScript version 8.2
 description: |
-  Highlights of our newest changes to the internal representation 
+  Highlights of our newest changes to the internal representation
   and how they will benefit our users.
 ---
 
@@ -19,7 +18,7 @@ pattern matching and can be attached to data.
 
 ## Vanilla string literal types
 
-The notation in Reason for string literal types is like this: \``hello`, which will be compiled into "hello". 
+The notation in Reason for string literal types is like this: \``hello`, which will be compiled into "hello".
 The difference is that \``hello` is given a type so that you can not mix it with other strings.
 
 Take the following code snippet as an example:
@@ -87,7 +86,7 @@ function encoding(en) {
 
 ## Declaring types for string literal types
 
-Note that all string literal types can be inferred. 
+Note that all string literal types can be inferred.
 This is very convenient for you when you are doing development. When things get more stable, it would be nice to give string literal types a name as below:
 
 ```reasonml
@@ -141,7 +140,7 @@ function classify(enc) {
 
 ## String literal types in bindings
 
-Since string literal types are just strings after type checking, you can use them to 
+Since string literal types are just strings after type checking, you can use them to
 bind to js libraries directly without any conversion, as follows:
 
 ```reasonml
@@ -161,7 +160,7 @@ external readFileSync: (string, encoding) => string = "readFileSync";
 ```
 ## String literal types attached to data
 
-Since Reason is a typed language, you can not mix data of different types in a collection. 
+Since Reason is a typed language, you can not mix data of different types in a collection.
 
 For example, you will get a type error when writing code like this: `[ 3, "3" ]`.
 
@@ -214,14 +213,14 @@ To conclude, string literal types give users a convenient way to mix data with d
 Type inference is great during development. Users can also write down the formal types for string literal types attached to data:
 
 ```reasonml
-type number_or_string = [ 
-  | `Int(int) 
+type number_or_string = [
+  | `Int(int)
   | `String(string)
 ];
 ```
 
 ## Further reading
 
-Here we only cover most daily usage of string literal types. 
-For more advanced usage, see [here](https://caml.inria.fr/pub/docs/manual-ocaml/lablexamples.html#s%3Apolymorphic-variants). 
+Here we only cover most daily usage of string literal types.
+For more advanced usage, see [here](https://caml.inria.fr/pub/docs/manual-ocaml/lablexamples.html#s%3Apolymorphic-variants).
 The type theory is almost the same, however, we adapt it to make sure it is compiled into string literals to match the JS runtime.
