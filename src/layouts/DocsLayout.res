@@ -51,7 +51,7 @@ let make = (
   ~breadcrumbs: option<list<Url.breadcrumb>>=?,
   ~title: string,
   ~metaTitleCategory: option<string>=?, // e.g. Introduction | My Meta Title Category
-  ~frontmatter: option<Js.Json.t>=?,
+  ~frontmatter=?,
   ~version: option<string>=?,
   ~availableVersions: option<array<(string, string)>>=?,
   ~activeToc: option<SidebarLayout.Toc.t>=?,
@@ -166,7 +166,7 @@ module Make = (Content: StaticContent) => {
     ~breadcrumbs: option<list<Url.breadcrumb>>=?,
     ~title: string,
     ~metaTitleCategory: option<string>=?,
-    ~frontmatter: option<Js.Json.t>=?,
+    ~frontmatter=?,
     ~version: option<string>=?,
     ~availableVersions: option<array<(string, string)>>=?,
     /* ~activeToc: option(SidebarLayout.Toc.t)=?, */

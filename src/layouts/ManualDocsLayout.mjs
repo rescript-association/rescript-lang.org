@@ -130,6 +130,8 @@ var V800 = {
 };
 
 export {
+  LatestLayout ,
+  V800Layout ,
   Latest ,
   V800 ,
   

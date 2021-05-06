@@ -10,7 +10,7 @@ module V800Layout = DocsLayout.Make({
 
 module Latest = {
   @react.component
-  let make = (~frontmatter: option<Js.Json.t>=?, ~components=Markdown.default, ~children) => {
+  let make = (~frontmatter=?, ~components=Markdown.default, ~children) => {
     let router = Next.Router.useRouter()
     let route = router.route
 
@@ -55,7 +55,7 @@ module Latest = {
 
 module V800 = {
   @react.component
-  let make = (~frontmatter: option<Js.Json.t>=?, ~components=Markdown.default, ~children) => {
+  let make = (~frontmatter=?, ~components=Markdown.default, ~children) => {
     let router = Next.Router.useRouter()
     let route = router.route
 

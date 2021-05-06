@@ -39,6 +39,13 @@ function getAllAuthors(param) {
   return Json_decode.array(decode, rawAuthors);
 }
 
+var Author = {
+  rawAuthors: rawAuthors,
+  getDisplayName: getDisplayName,
+  decode: decode,
+  getAllAuthors: getAllAuthors
+};
+
 function toString(c) {
   switch (c) {
     case /* Compiler */0 :
@@ -77,6 +84,48 @@ var Badge = {
   toString: toString$1
 };
 
+function decodeCategory(str) {
+  var str$1 = str.toLowerCase();
+  switch (str$1) {
+    case "community" :
+        return /* Community */4;
+    case "compiler" :
+        return /* Compiler */0;
+    case "docs" :
+        return /* Docs */3;
+    case "ecosystem" :
+        return /* Ecosystem */2;
+    case "syntax" :
+        return /* Syntax */1;
+    default:
+      throw {
+            RE_EXN_ID: Json_decode.DecodeError,
+            _1: "Unknown category \"" + str$1 + "\"",
+            Error: new Error()
+          };
+  }
+}
+
+function decodeBadge(str) {
+  var str$1 = str.toLowerCase();
+  switch (str$1) {
+    case "preview" :
+        return /* Preview */2;
+    case "release" :
+        return /* Release */0;
+    case "roadmap" :
+        return /* Roadmap */3;
+    case "testing" :
+        return /* Testing */1;
+    default:
+      throw {
+            RE_EXN_ID: Json_decode.DecodeError,
+            _1: "Unknown category \"" + str$1 + "\"",
+            Error: new Error()
+          };
+  }
+}
+
 var AuthorNotFound = /* @__PURE__ */Caml_exceptions.create("BlogFrontmatter.AuthorNotFound");
 
 function decodeAuthor(fieldName, authors, username) {
@@ -93,6 +142,18 @@ function decodeAuthor(fieldName, authors, username) {
       };
 }
 
+function authorDecoder(fieldName, authors, json) {
+  var multiple = function (j) {
+    return Belt_Array.map(Json_decode.array(Json_decode.string, j), (function (param) {
+                  return decodeAuthor(fieldName, authors, param);
+                }));
+  };
+  var single = function (j) {
+    return [decodeAuthor(fieldName, authors, Json_decode.string(j))];
+  };
+  return Json_decode.either(single, multiple)(json);
+}
+
 function decode$1(authors, json) {
   var fm;
   try {
@@ -100,16 +161,7 @@ function decode$1(authors, json) {
       author: decodeAuthor("author", authors, Json_decode.field("author", Json_decode.string, json)),
       co_authors: Belt_Option.getWithDefault(Json_decode.optional((function (param) {
                   return Json_decode.field("co-authors", (function (param) {
-                                var fieldName = "co-authors";
-                                var multiple = function (j) {
-                                  return Belt_Array.map(Json_decode.array(Json_decode.string, j), (function (param) {
-                                                return decodeAuthor(fieldName, authors, param);
-                                              }));
-                                };
-                                var single = function (j) {
-                                  return [decodeAuthor(fieldName, authors, Json_decode.string(j))];
-                                };
-                                return Json_decode.either(single, multiple)(param);
+                                return authorDecoder("co-authors", authors, param);
                               }), param);
                 }), json), []),
       date: Json_decode.field("date", Json_decode.string, json),
@@ -121,46 +173,10 @@ function decode$1(authors, json) {
                 }), json)),
       title: Json_decode.field("title", Json_decode.string, json),
       category: Js_null.fromOption(Json_decode.optional((function (j) {
-                  var str = Json_decode.field("category", Json_decode.string, j);
-                  var str$1 = str.toLowerCase();
-                  switch (str$1) {
-                    case "community" :
-                        return /* Community */4;
-                    case "compiler" :
-                        return /* Compiler */0;
-                    case "docs" :
-                        return /* Docs */3;
-                    case "ecosystem" :
-                        return /* Ecosystem */2;
-                    case "syntax" :
-                        return /* Syntax */1;
-                    default:
-                      throw {
-                            RE_EXN_ID: Json_decode.DecodeError,
-                            _1: "Unknown category \"" + str$1 + "\"",
-                            Error: new Error()
-                          };
-                  }
+                  return decodeCategory(Json_decode.field("category", Json_decode.string, j));
                 }), json)),
       badge: Js_null.fromOption(Json_decode.optional((function (j) {
-                  var str = Json_decode.field("badge", Json_decode.string, j);
-                  var str$1 = str.toLowerCase();
-                  switch (str$1) {
-                    case "preview" :
-                        return /* Preview */2;
-                    case "release" :
-                        return /* Release */0;
-                    case "roadmap" :
-                        return /* Roadmap */3;
-                    case "testing" :
-                        return /* Testing */1;
-                    default:
-                      throw {
-                            RE_EXN_ID: Json_decode.DecodeError,
-                            _1: "Unknown category \"" + str$1 + "\"",
-                            Error: new Error()
-                          };
-                  }
+                  return decodeBadge(Json_decode.field("badge", Json_decode.string, j));
                 }), json)),
       description: Json_decode.nullable((function (param) {
               return Json_decode.field("description", Json_decode.string, param);
@@ -195,16 +211,15 @@ function decode$1(authors, json) {
         };
 }
 
-var Author = {
-  getAllAuthors: getAllAuthors,
-  getDisplayName: getDisplayName
-};
-
 export {
-  AuthorNotFound ,
   Author ,
   Category ,
   Badge ,
+  decodeCategory ,
+  decodeBadge ,
+  AuthorNotFound ,
+  decodeAuthor ,
+  authorDecoder ,
   decode$1 as decode,
   
 }
