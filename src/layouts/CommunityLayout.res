@@ -4,7 +4,7 @@ module CommunityLayout = DocsLayout.Make({
 })
 
 @react.component
-let make = (~frontmatter: option<Js.Json.t>=?, ~components=Markdown.default, ~children) => {
+let make = (~frontmatter=?, ~components=Markdown.default, ~children) => {
   let breadcrumbs = list{{Url.name: "Community", href: "/community"}}
 
   let title = "Community"

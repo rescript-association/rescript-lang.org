@@ -4,7 +4,7 @@ module LatestLayout = DocsLayout.Make({
 })
 
 @react.component
-let make = (~frontmatter: option<Js.Json.t>=?, ~components=Markdown.default, ~children) => {
+let make = (~frontmatter=?, ~components=Markdown.default, ~children) => {
   let router = Next.Router.useRouter()
   let route = router.route
 
