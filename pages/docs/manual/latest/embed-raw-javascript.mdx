@@ -40,7 +40,7 @@ While `%%raw` lets you embed top-level raw JS code, `%raw` lets you embed expres
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-let add = %raw(`
+let add: (int, int) => unit = %raw(`
   function(a, b) {
     console.log("hello from raw JavaScript!");
     return a + b
@@ -50,10 +50,10 @@ let add = %raw(`
 Js.log(add(1, 2))
 ```
 ```js
-var add = function(a, b) {
-  console.log("hello from raw JavaScript!");
-  return a + b
-};
+var add = (function(a, b) {
+    console.log("hello from raw JavaScript!");
+    return a + b
+  });
 
 console.log(add(1, 2));
 ```
