@@ -5,7 +5,7 @@ import * as Js_dict from "rescript/lib/es6/js_dict.js";
 import * as Belt_Int from "rescript/lib/es6/belt_Int.js";
 import * as Belt_List from "rescript/lib/es6/belt_List.js";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
-import * as Json_decode from "@glennsl/bs-json/src/Json_decode.js";
+import * as Json_decode from "../vendor/Json_decode.mjs";
 import * as Caml_js_exceptions from "rescript/lib/es6/caml_js_exceptions.js";
 
 function toString(t) {
