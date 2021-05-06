@@ -6,45 +6,65 @@ import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Json_decode from "../vendor/Json_decode.mjs";
 import * as Caml_exceptions from "rescript/lib/es6/caml_exceptions.js";
 import * as Caml_js_exceptions from "rescript/lib/es6/caml_js_exceptions.js";
-import Blog_authorsMjs from "../../data/blog_authors.mjs";
 
-var rawAuthors = Blog_authorsMjs;
-
-function getDisplayName(author) {
-  var fullname = author.fullname;
-  if (fullname !== null) {
-    return fullname;
-  } else {
-    return "@" + author.username;
+var authors = [
+  {
+    username: "hongbo",
+    fullname: "Hongbo Zhang",
+    role: "Compiler & Build System",
+    imgUrl: "https://pbs.twimg.com/profile_images/1369548222314598400/E2y46vrB_400x400.jpg",
+    twitter: "bobzhang1988"
+  },
+  {
+    username: "chenglou",
+    fullname: "Cheng Lou",
+    role: "Syntax & Tools",
+    imgUrl: "https://pbs.twimg.com/profile_images/554199709909131265/Y5qUDaCB_400x400.jpeg",
+    twitter: "_chenglou"
+  },
+  {
+    username: "maxim",
+    fullname: "Maxim Valcke",
+    role: "Syntax Lead",
+    imgUrl: "https://pbs.twimg.com/profile_images/970271048812974080/Xrr8Ob6J_400x400.jpg",
+    twitter: "_binary_search"
+  },
+  {
+    username: "ryyppy",
+    fullname: "Patrick Ecker",
+    role: "Documentation",
+    imgUrl: "https://pbs.twimg.com/profile_images/1185576475837304839/hvCe6M2r_400x400.jpg",
+    twitter: "ryyppy"
+  },
+  {
+    username: "rickyvetter",
+    fullname: "Ricky Vetter",
+    role: "ReScript & React",
+    imgUrl: "https://pbs.twimg.com/profile_images/541111032207273984/DGsZmmfr_400x400.jpeg",
+    twitter: "rickyvetter"
+  },
+  {
+    username: "made_by_betty",
+    fullname: "Bettina Steinbrecher",
+    role: "Brand / UI / UX",
+    imgUrl: "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598547954/Reason%20Association/betty-blog-img_rmckam.jpg",
+    twitter: "made_by_betty"
+  },
+  {
+    username: "rescript-team",
+    fullname: "ReScript Team",
+    role: "Core Development",
+    imgUrl: "https://pbs.twimg.com/profile_images/1358354824660541440/YMKNWE1V_400x400.png",
+    twitter: "rescriptlang"
+  },
+  {
+    username: "rescript-association",
+    fullname: "ReScript Association",
+    role: "Foundation",
+    imgUrl: "https://pbs.twimg.com/profile_images/1045362176117100545/MioTQoTp_400x400.jpg",
+    twitter: "ReScriptAssoc"
   }
-}
-
-function decode(json) {
-  return {
-          username: Json_decode.field("username", Json_decode.string, json),
-          fullname: Js_null.fromOption(Json_decode.optional((function (param) {
-                      return Json_decode.field("fullname", Json_decode.string, param);
-                    }), json)),
-          role: Json_decode.field("role", Json_decode.string, json),
-          imgUrl: Js_null.fromOption(Json_decode.optional((function (param) {
-                      return Json_decode.field("img_url", Json_decode.string, param);
-                    }), json)),
-          twitter: Js_null.fromOption(Json_decode.optional((function (param) {
-                      return Json_decode.field("twitter", Json_decode.string, param);
-                    }), json))
-        };
-}
-
-function getAllAuthors(param) {
-  return Json_decode.array(decode, rawAuthors);
-}
-
-var Author = {
-  rawAuthors: rawAuthors,
-  getDisplayName: getDisplayName,
-  decode: decode,
-  getAllAuthors: getAllAuthors
-};
+];
 
 function toString(c) {
   switch (c) {
@@ -112,7 +132,7 @@ function authorDecoder(fieldName, authors, json) {
   return Json_decode.either(single, multiple)(json);
 }
 
-function decode$1(authors, json) {
+function decode(authors, json) {
   var fm;
   try {
     fm = {
@@ -167,13 +187,13 @@ function decode$1(authors, json) {
 }
 
 export {
-  Author ,
+  authors ,
   Badge ,
   decodeBadge ,
   AuthorNotFound ,
   decodeAuthor ,
   authorDecoder ,
-  decode$1 as decode,
+  decode ,
   
 }
-/* rawAuthors Not a pure module */
+/* No side effect */

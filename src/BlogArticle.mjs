@@ -15,7 +15,6 @@ import * as MainLayout from "./layouts/MainLayout.mjs";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as BlogFrontmatter from "./common/BlogFrontmatter.mjs";
-import * as NameInitialsAvatar from "./components/NameInitialsAvatar.mjs";
 
 var middleDotSpacer = " " + (String.fromCharCode(183) + " ");
 
@@ -34,27 +33,22 @@ function BlogArticle$Line(Props) {
 
 function BlogArticle$AuthorBox(Props) {
   var author = Props.author;
-  var displayName = BlogFrontmatter.Author.getDisplayName(author);
-  var src = author.imgUrl;
-  var authorImg = src !== null ? React.createElement("img", {
-          className: "h-full w-full rounded-full",
-          src: src
-        }) : React.createElement(NameInitialsAvatar.make, {
-          displayName: displayName
-        });
-  var handle = author.twitter;
+  var authorImg = React.createElement("img", {
+        className: "h-full w-full rounded-full",
+        src: author.imgUrl
+      });
   return React.createElement("div", {
               className: "flex items-center"
             }, React.createElement("div", {
                   className: "w-12 h-12 bg-berry-40 block rounded-full mr-3"
                 }, authorImg), React.createElement("div", {
                   className: "text-14 font-medium text-gray-95"
-                }, handle !== null ? React.createElement("a", {
-                        className: "hover:text-gray-80",
-                        href: "https://twitter.com/" + handle,
-                        rel: "noopener noreferrer",
-                        target: "_blank"
-                      }, displayName) : displayName, React.createElement("div", {
+                }, React.createElement("a", {
+                      className: "hover:text-gray-80",
+                      href: "https://twitter.com/" + author.twitter,
+                      rel: "noopener noreferrer",
+                      target: "_blank"
+                    }, author.fullname), React.createElement("div", {
                       className: "text-gray-60"
                     }, author.role)));
 }
@@ -119,8 +113,7 @@ function $$default(props) {
   var module_ = require("../_blogposts/" + (fullslug + ".mdx"));
   var archived = fullslug.startsWith("archive/");
   var component = module_.default;
-  var authors = BlogFrontmatter.Author.getAllAuthors(undefined);
-  var fm = BlogFrontmatter.decode(authors, frontmatter(component));
+  var fm = BlogFrontmatter.decode(BlogFrontmatter.authors, frontmatter(component));
   var children = React.createElement(component, {});
   var archivedNote = archived ? React.createElement("div", {
           className: "mb-10"

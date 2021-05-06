@@ -1,41 +1,69 @@
-// Note: Every optional value in here must be encoded
-// as Js.Null.t, since it will be used for JSON serialization
-// within Next's static generation
-
-module Author = {
-  type t = {
-    username: string,
-    fullname: Js.null<string>,
-    role: string,
-    imgUrl: Js.null<string>,
-    twitter: Js.null<string>,
-  }
-
-  // We could *theoratically* query most of the
-  // author data from different sources, like twitter
-  // or github, but decided against it for simplicity
-  // reasons for now
-  @module("../../data/blog_authors.mjs") external rawAuthors: Js.Json.t = "default"
-
-  let getDisplayName = (author: t): string =>
-    switch author.fullname->Js.Null.toOption {
-    | Some(fullname) => fullname
-    | None => "@" ++ author.username
-    }
-
-  let decode = (json: Js.Json.t) => {
-    open Json.Decode
-    {
-      username: json->field("username", string, _),
-      fullname: json->optional(field("fullname", string), _)->Js.Null.fromOption,
-      role: json->field("role", string, _),
-      imgUrl: json->optional(field("img_url", string), _)->Js.Null.fromOption,
-      twitter: json->optional(field("twitter", string), _)->Js.Null.fromOption,
-    }
-  }
-
-  let getAllAuthors = (): array<t> => rawAuthors->Json.Decode.array(decode, _)
+type author = {
+  username: string,
+  fullname: string,
+  role: string,
+  imgUrl: string,
+  twitter: string,
 }
+
+let authors = [
+  {
+    username: "hongbo",
+    fullname: "Hongbo Zhang",
+    role: "Compiler & Build System",
+    imgUrl: "https://pbs.twimg.com/profile_images/1369548222314598400/E2y46vrB_400x400.jpg",
+    twitter: "bobzhang1988",
+  },
+  {
+    username: "chenglou",
+    fullname: "Cheng Lou",
+    role: "Syntax & Tools",
+    imgUrl: "https://pbs.twimg.com/profile_images/554199709909131265/Y5qUDaCB_400x400.jpeg",
+    twitter: "_chenglou",
+  },
+  {
+    username: "maxim",
+    fullname: "Maxim Valcke",
+    role: "Syntax Lead",
+    imgUrl: "https://pbs.twimg.com/profile_images/970271048812974080/Xrr8Ob6J_400x400.jpg",
+    twitter: "_binary_search",
+  },
+  {
+    username: "ryyppy",
+    fullname: "Patrick Ecker",
+    role: "Documentation",
+    imgUrl: "https://pbs.twimg.com/profile_images/1185576475837304839/hvCe6M2r_400x400.jpg",
+    twitter: "ryyppy",
+  },
+  {
+    username: "rickyvetter",
+    fullname: "Ricky Vetter",
+    role: "ReScript & React",
+    imgUrl: "https://pbs.twimg.com/profile_images/541111032207273984/DGsZmmfr_400x400.jpeg",
+    twitter: "rickyvetter",
+  },
+  {
+    username: "made_by_betty",
+    fullname: "Bettina Steinbrecher",
+    role: "Brand / UI / UX",
+    imgUrl: "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598547954/Reason%20Association/betty-blog-img_rmckam.jpg",
+    twitter: "made_by_betty",
+  },
+  {
+    username: "rescript-team",
+    fullname: "ReScript Team",
+    role: "Core Development",
+    imgUrl: "https://pbs.twimg.com/profile_images/1358354824660541440/YMKNWE1V_400x400.png",
+    twitter: "rescriptlang",
+  },
+  {
+    username: "rescript-association",
+    fullname: "ReScript Association",
+    role: "Foundation",
+    imgUrl: "https://pbs.twimg.com/profile_images/1045362176117100545/MioTQoTp_400x400.jpg",
+    twitter: "ReScriptAssoc",
+  },
+]
 
 module Badge = {
   type t =
@@ -54,8 +82,8 @@ module Badge = {
 }
 
 type t = {
-  author: Author.t,
-  co_authors: array<Author.t>,
+  author: author,
+  co_authors: array<author>,
   date: DateStr.t,
   previewImg: Js.null<string>,
   articleImg: Js.null<string>,
@@ -76,7 +104,7 @@ let decodeBadge = (str: string): Badge.t =>
 
 exception AuthorNotFound(string)
 
-let decodeAuthor = (~fieldName: string, ~authors: array<Author.t>, username) =>
+let decodeAuthor = (~fieldName: string, ~authors, username) =>
   switch Js.Array2.find(authors, a => a.username === username) {
   | Some(author) => author
   | None => raise(AuthorNotFound(j`Couldn't find author "$username" in field $fieldName`))
@@ -92,7 +120,7 @@ let authorDecoder = (~fieldName: string, ~authors, json) => {
   either(single, multiple, json)
 }
 
-let decode = (~authors: array<Author.t>, json: Js.Json.t): result<t, string> => {
+let decode = (~authors, json: Js.Json.t): result<t, string> => {
   open Json.Decode
   switch {
     author: json->field("author", string, _)->decodeAuthor(~fieldName="author", ~authors),

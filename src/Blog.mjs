@@ -17,7 +17,6 @@ import * as Navigation from "./components/Navigation.mjs";
 import * as ProcessEnv from "./common/ProcessEnv.mjs";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as BlogFrontmatter from "./common/BlogFrontmatter.mjs";
-import * as NameInitialsAvatar from "./components/NameInitialsAvatar.mjs";
 
 var defaultPreviewImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598616442/Reason%20Association/rescript-lang.org/Art-3-rescript-launch_ovoibg.jpg";
 
@@ -114,16 +113,11 @@ function Blog$FeatureCard(Props) {
   var slug = Props.slug;
   var title = titleOpt !== undefined ? titleOpt : "Unknown Title";
   var firstParagraph = firstParagraphOpt !== undefined ? firstParagraphOpt : "";
-  var displayName = BlogFrontmatter.Author.getDisplayName(author);
-  var src = author.imgUrl;
-  var authorImg = src !== null ? React.createElement("img", {
-          className: "h-full w-full rounded-full",
-          src: src
-        }) : React.createElement(NameInitialsAvatar.make, {
-          displayName: displayName
-        });
+  var authorImg = React.createElement("img", {
+        className: "h-full w-full rounded-full",
+        src: author.imgUrl
+      });
   var className = "absolute top-0 h-full w-full object-cover";
-  var handle = author.twitter;
   return React.createElement("section", {
               className: "flex sm:px-4 md:px-8 lg:px-0 flex-col justify-end lg:flex-row sm:items-center h-full"
             }, React.createElement("div", {
@@ -159,12 +153,12 @@ function Blog$FeatureCard(Props) {
                               className: "flex items-center font-medium text-gray-40 text-sm mt-2 mb-5"
                             }, React.createElement("div", {
                                   className: "inline-block w-4 h-4 mr-2"
-                                }, authorImg), React.createElement("div", undefined, handle !== null ? React.createElement("a", {
-                                        className: "hover:text-gray-80",
-                                        href: "https://twitter.com/" + handle,
-                                        rel: "noopener noreferrer",
-                                        target: "_blank"
-                                      }, displayName) : displayName, category !== undefined ? React.createElement(React.Fragment, undefined, middleDotSpacer, category, middleDotSpacer) : middleDotSpacer, Util.$$Date.toDayMonthYear(date))), React.createElement("p", {
+                                }, authorImg), React.createElement("div", undefined, React.createElement("a", {
+                                      className: "hover:text-gray-80",
+                                      href: "https://twitter.com/" + author.twitter,
+                                      rel: "noopener noreferrer",
+                                      target: "_blank"
+                                    }, author.fullname), category !== undefined ? React.createElement(React.Fragment, undefined, middleDotSpacer, category, middleDotSpacer) : middleDotSpacer, Util.$$Date.toDayMonthYear(date))), React.createElement("p", {
                               className: "text-gray-90 antialiased tracking-tight text-16"
                             }, firstParagraph))), React.createElement(Next.Link.make, {
                       href: "/blog/[slug]",
@@ -321,7 +315,6 @@ function $$default(props) {
 }
 
 function getStaticProps(_ctx) {
-  var authors = BlogFrontmatter.Author.getAllAuthors(undefined);
   var match = Belt_Array.reduce(BlogApi.getAllPosts(undefined), [
         [],
         [],
@@ -331,7 +324,7 @@ function getStaticProps(_ctx) {
           var malformed = acc[1];
           var posts = acc[0];
           var id = postData.slug;
-          var decoded = BlogFrontmatter.decode(authors, postData.frontmatter);
+          var decoded = BlogFrontmatter.decode(BlogFrontmatter.authors, postData.frontmatter);
           if (decoded.TAG === /* Ok */0) {
             var frontmatter = decoded._0;
             if (postData.archived) {
