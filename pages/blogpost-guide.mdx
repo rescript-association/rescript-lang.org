@@ -28,18 +28,15 @@ touch _blogposts/2020-01-30-my-new-blog-post.mdx
 
 ### Map the file to a URL
 
-Open the `data/blog_posts.json` file and add a new mapping like this:
+Open the `src/BlogData.res` file and add a new mapping like this:
 
-```
-{
-  "my-new-blog-post": "2020-01-30-my-new-blog-post.mdx",
-}
+```res
+("my-new-blog-post", "2020-01-30-my-new-blog-post.mdx")
 ```
 
-The key describes the final slug (e.g. `/blog/my-new-blog-post`), while the value defines the relative filepath within the `_blogposts` directory.
+The first item describes the final slug (e.g. `/blog/my-new-blog-post`), while the second defines the relative filepath within the `_blogposts` directory, without the extension.
 
-Save your changes within `data/blog_posts.json` and refresh your browser within [/blog](/blog).
-You should now see a warning for some malformed frontmatter data. Let's fix this!
+Save your changes within and refresh your browser within [/blog](/blog). You should now see a warning for some malformed frontmatter data. Let's fix this!
 
 ## Add Frontmatter Data
 

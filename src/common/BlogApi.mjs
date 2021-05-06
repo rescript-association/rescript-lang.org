@@ -3,62 +3,42 @@
 import * as Fs from "fs";
 import * as Path from "path";
 import * as DateStr from "./DateStr.mjs";
-import * as Js_dict from "rescript/lib/es6/js_dict.js";
 import * as Process from "process";
+import * as BlogData from "../BlogData.mjs";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import GrayMatter from "gray-matter";
 import * as BlogFrontmatter from "./BlogFrontmatter.mjs";
 
-var index = {
-  contents: undefined
-};
-
-function getIndex(param) {
-  var data = index.contents;
-  if (data !== undefined) {
-    return Caml_option.valFromOption(data);
-  }
-  var indexPath = "./data/blog_posts.json";
-  var data$1 = Fs.existsSync(indexPath) ? JSON.parse(Fs.readFileSync(indexPath, "utf8")) : ({});
-  index.contents = Caml_option.some(data$1);
-  return data$1;
-}
-
 function getFullSlug(slug) {
-  return Belt_Option.map(Js_dict.get(getIndex(undefined), slug), (function (relPath) {
-                return relPath.replace(/\.mdx?/, "");
-              }));
-}
-
-function getPostBySlug(slug) {
-  var postsDirectory = Path.join(Process.cwd(), "./_blogposts");
-  var relPath = getIndex(undefined)[slug];
-  var fullslug = relPath.replace(/\.mdx?/, "");
-  var fullPath = Path.join(postsDirectory, fullslug + ".mdx");
-  if (!Fs.existsSync(fullPath)) {
-    return ;
+  var match = BlogData.data.find(function (param) {
+        return slug === param.slug;
+      });
+  if (match !== undefined) {
+    return match.fullslug;
   }
-  var fileContents = Fs.readFileSync(fullPath, "utf8");
-  var match = GrayMatter(fileContents);
-  var archived = fullPath.includes("/archive/");
-  return {
-          slug: slug,
-          content: match.content,
-          fullslug: fullslug,
-          archived: archived,
-          frontmatter: match.data
-        };
+  
 }
 
 function getAllPosts(param) {
-  return Belt_Array.reduce(Object.keys(getIndex(undefined)), [], (function (acc, slug) {
-                var post = getPostBySlug(slug);
-                if (post !== undefined) {
-                  acc.push(post);
+  var postsDirectory = Path.join(Process.cwd(), "./_blogposts");
+  return Belt_Array.keepMap(BlogData.data, (function (param) {
+                var fullslug = param.fullslug;
+                var fullPath = Path.join(postsDirectory, fullslug + ".mdx");
+                if (!Fs.existsSync(fullPath)) {
+                  return ;
                 }
-                return acc;
+                var fileContents = Fs.readFileSync(fullPath, "utf8");
+                var match = GrayMatter(fileContents);
+                var archived = fullPath.includes("/archive/");
+                return {
+                        slug: param.slug,
+                        content: match.content,
+                        fullslug: fullslug,
+                        archived: archived,
+                        frontmatter: match.data
+                      };
               }));
 }
 

@@ -25,32 +25,6 @@
     See `pages/blog.re` for more context on why we need this API.
  */
 
-// Manual mapping between slugs and actual file
-// { [slug: string] : [filepath: string] }
-// The filepath is relative within _blogposts
-
-external unsafeToStringDict: Js.Json.t => Js.Dict.t<string> = "%identity"
-
-// We keep that index lazy, since we use that component in frontend code,
-// so we can't execute code that uses fs or path
-let index = ref(None)
-
-let getIndex = (): Js.Dict.t<string> => {
-  switch index.contents {
-  | None =>
-    // based on the cwd of the server
-    let indexPath = "./data/blog_posts.json"
-    let data = if Node.Fs.existsSync(indexPath) {
-      Node.Fs.readFileSync(indexPath, #utf8)->Js.Json.parseExn->unsafeToStringDict
-    } else {
-      Js.Dict.empty()
-    }
-    index := Some(data)
-    data
-  | Some(data) => data
-  }
-}
-
 module GrayMatter = {
   type output = {
     data: Js.Json.t,
@@ -68,45 +42,40 @@ type postData = {
   frontmatter: Js.Json.t,
 }
 
-let getFullSlug = (slug: string) =>
-  Belt.Option.map(getIndex()->Js.Dict.get(slug), relPath =>
-    Js.String2.replaceByRe(relPath, %re("/\\.mdx?/"), "")
-  )
-
-let getPostBySlug = (slug: string) => {
-  let postsDirectory = Node.Path.join2(Node.Process.cwd(), "./_blogposts")
-  let relPath = getIndex()->Js.Dict.unsafeGet(slug)
-
-  let fullslug = Js.String2.replaceByRe(relPath, %re("/\\.mdx?/"), "")
-
-  let fullPath = Node.Path.join2(postsDirectory, fullslug ++ ".mdx")
-
-  // TODO: We need to handle handle archived files differently later on
-
-  if Node.Fs.existsSync(fullPath) {
-    let fileContents = Node.Fs.readFileSync(fullPath, #utf8)
-    let {GrayMatter.data: data, content} = GrayMatter.matter(fileContents)
-
-    // We currently derive the archived state from the directory hierarchy
-    let archived = Js.String2.includes(fullPath, "/archive/")
-
-    Some({slug: slug, fullslug: fullslug, content: content, frontmatter: data, archived: archived})
-  } else {
-    None
+let getFullSlug = slug => {
+  switch BlogData.data->Js.Array2.find(({slug: s}) => slug === s) {
+  | None => None
+  | Some({fullslug}) => Some(fullslug)
   }
 }
 
 let getAllPosts = () => {
-  getIndex()
-  ->Js.Dict.keys
-  ->Belt.Array.reduce([], (acc, slug) => {
-    switch getPostBySlug(slug) {
-    | Some(post) => Js.Array2.push(acc, post)->ignore
-    | None => ()
+  let postsDirectory = Node.Path.join2(Node.Process.cwd(), "./_blogposts")
+
+  BlogData.data->Belt.Array.keepMap(({slug, fullslug}) => {
+    let fullPath = Node.Path.join2(postsDirectory, fullslug ++ ".mdx")
+
+    if Node.Fs.existsSync(fullPath) {
+      let fileContents = Node.Fs.readFileSync(fullPath, #utf8)
+      let {GrayMatter.data: data, content} = GrayMatter.matter(fileContents)
+
+      // We currently derive the archived state from the directory hierarchy
+      // TODO: We need to handle archived files differently later on
+      let archived = Js.String2.includes(fullPath, "/archive/")
+
+      Some({
+        slug: slug,
+        fullslug: fullslug,
+        content: content,
+        frontmatter: data,
+        archived: archived,
+      })
+    } else {
+      None
     }
-    acc
   })
 }
+
 module RssFeed = {
   // Module inspired by
   // https://gist.github.com/fredrikbergqvist/36704828353ebf5379a5c08c7583fe2d
