@@ -19,7 +19,6 @@ type props = {
   posts: array<Post.t>,
   archived: array<Post.t>,
   malformed: array<Malformed.t>,
-  availableCategories: array<BlogFrontmatter.Category.t>,
 }
 
 let default: props => React.element

@@ -11,12 +11,10 @@ import * as Button from "./components/Button.mjs";
 import * as Footer from "./components/Footer.mjs";
 import * as BlogApi from "./common/BlogApi.mjs";
 import * as DateStr from "./common/DateStr.mjs";
-import * as Caml_obj from "rescript/lib/es6/caml_obj.js";
 import * as Markdown from "./components/Markdown.mjs";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as Navigation from "./components/Navigation.mjs";
 import * as ProcessEnv from "./common/ProcessEnv.mjs";
-import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as BlogFrontmatter from "./common/BlogFrontmatter.mjs";
 import * as NameInitialsAvatar from "./components/NameInitialsAvatar.mjs";
@@ -38,18 +36,12 @@ function Blog$Badge(Props) {
 }
 
 function Blog$CategorySelector(Props) {
-  var categories = Props.categories;
   var selected = Props.selected;
   var onSelected = Props.onSelected;
   var tabs = [
-      /* All */0,
-      /* Archived */1
-    ].concat(Belt_Array.map(categories, (function (cat) {
-              return {
-                      _0: cat,
-                      [Symbol.for("name")]: "Category"
-                    };
-            })));
+    /* All */0,
+    /* Archived */1
+  ];
   return React.createElement("div", {
               className: "text-16 w-full flex items-center justify-between text-gray-60"
             }, Belt_Array.map(tabs, (function (tab) {
@@ -57,10 +49,8 @@ function Blog$CategorySelector(Props) {
                       evt.preventDefault();
                       return Curry._1(onSelected, tab);
                     };
-                    var isActive = Caml_obj.caml_equal(selected, tab);
-                    var text = typeof tab === "number" ? (
-                        tab !== 0 ? "Archived" : "All"
-                      ) : BlogFrontmatter.Category.toString(tab._0);
+                    var isActive = selected === tab;
+                    var text = tab ? "Archived" : "All";
                     return React.createElement("div", {
                                 key: text,
                                 className: (
@@ -233,28 +223,12 @@ function $$default(props) {
               children: "This blog is currently in the works."
             }));
   } else {
-    var filtered;
-    if (typeof currentSelection === "number") {
-      filtered = currentSelection !== 0 ? props.archived : posts;
-    } else {
-      var selected = currentSelection._0;
-      filtered = Belt_Array.keep(posts, (function (param) {
-              var category = param.frontmatter.category;
-              if (category !== null) {
-                return category === selected;
-              } else {
-                return false;
-              }
-            }));
-    }
+    var filtered = currentSelection ? props.archived : posts;
     var match$1 = filtered.length;
     var result;
     if (match$1 !== 0) {
       var first = Belt_Array.getExn(filtered, 0);
       var rest = filtered.slice(1);
-      var category = Belt_Option.map(Caml_option.null_to_opt(first.frontmatter.category), (function (category) {
-              return BlogFrontmatter.Category.toString(category);
-            }));
       var tmp = {
         title: first.frontmatter.title,
         author: first.frontmatter.author,
@@ -269,9 +243,6 @@ function $$default(props) {
       if (tmp$2 !== undefined) {
         tmp.badge = Caml_option.valFromOption(tmp$2);
       }
-      if (category !== undefined) {
-        tmp.category = category;
-      }
       var tmp$3 = Caml_option.null_to_opt(first.frontmatter.description);
       if (tmp$3 !== undefined) {
         tmp.firstParagraph = tmp$3;
@@ -283,9 +254,6 @@ function $$default(props) {
               className: "px-4 md:px-8 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full"
             }, Belt_Array.mapWithIndex(rest, (function (i, post) {
                     var badge = post.frontmatter.badge;
-                    var category = Belt_Option.map(Caml_option.null_to_opt(post.frontmatter.category), (function (category) {
-                            return BlogFrontmatter.Category.toString(category);
-                          }));
                     var tmp = {
                       title: post.frontmatter.title,
                       author: post.frontmatter.author,
@@ -296,9 +264,6 @@ function $$default(props) {
                     var tmp$1 = Caml_option.null_to_opt(post.frontmatter.previewImg);
                     if (tmp$1 !== undefined) {
                       tmp.previewImg = tmp$1;
-                    }
-                    if (category !== undefined) {
-                      tmp.category = category;
                     }
                     var tmp$2 = badge === null ? undefined : Caml_option.some(badge);
                     if (tmp$2 !== undefined) {
@@ -318,7 +283,6 @@ function $$default(props) {
                     maxWidth: "12rem"
                   }
                 }, React.createElement(Blog$CategorySelector, {
-                      categories: props.availableCategories,
                       selected: currentSelection,
                       onSelected: (function (selection) {
                           return Curry._1(setSelection, (function (param) {
@@ -361,10 +325,8 @@ function getStaticProps(_ctx) {
   var match = Belt_Array.reduce(BlogApi.getAllPosts(undefined), [
         [],
         [],
-        [],
         []
       ], (function (acc, postData) {
-          var availableCategories = acc[3];
           var archived = acc[2];
           var malformed = acc[1];
           var posts = acc[0];
@@ -383,20 +345,10 @@ function getStaticProps(_ctx) {
                     frontmatter: frontmatter
                   });
             }
-            var category = frontmatter.category;
-            var hasCategory = availableCategories.some(function (c) {
-                  if (category !== null) {
-                    return c === category;
-                  } else {
-                    return false;
-                  }
-                });
-            var newAvailableCat = true || postData.archived || !(category !== null && !hasCategory) ? availableCategories : Belt_Array.concat(availableCategories, [category]);
             return [
                     posts,
                     malformed,
-                    archived,
-                    newAvailableCat
+                    archived
                   ];
           }
           var m_message = decoded._0;
@@ -408,19 +360,16 @@ function getStaticProps(_ctx) {
           return [
                   posts,
                   malformed$1,
-                  archived,
-                  availableCategories
+                  archived
                 ];
         }));
   var props_posts = orderByDate(match[0]);
   var props_archived = orderByDate(match[2]);
   var props_malformed = match[1];
-  var props_availableCategories = match[3];
   var props = {
     posts: props_posts,
     archived: props_archived,
-    malformed: props_malformed,
-    availableCategories: props_availableCategories
+    malformed: props_malformed
   };
   return Promise.resolve({
               props: props

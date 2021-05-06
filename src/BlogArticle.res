@@ -173,12 +173,7 @@ let default = (props: props) => {
       canonical,
       articleImg,
       previewImg,
-      category,
     }) =>
-    let category =
-      Js.Null.toOption(category)->Belt.Option.map(category =>
-        category->BlogFrontmatter.Category.toString
-      )
     <div className="w-full">
       <Meta
         title={title ++ " | ReScript Blog"}
@@ -192,7 +187,6 @@ let default = (props: props) => {
           author
           co_authors
           title
-          ?category
           description={description->Js.Null.toOption}
           articleImg={articleImg->Js.Null.toOption}
         />

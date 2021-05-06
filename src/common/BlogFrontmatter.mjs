@@ -48,26 +48,6 @@ var Author = {
 
 function toString(c) {
   switch (c) {
-    case /* Compiler */0 :
-        return "Compiler";
-    case /* Syntax */1 :
-        return "Syntax";
-    case /* Ecosystem */2 :
-        return "Ecosystem";
-    case /* Docs */3 :
-        return "Docs";
-    case /* Community */4 :
-        return "Community";
-    
-  }
-}
-
-var Category = {
-  toString: toString
-};
-
-function toString$1(c) {
-  switch (c) {
     case /* Release */0 :
         return "Release";
     case /* Testing */1 :
@@ -81,30 +61,8 @@ function toString$1(c) {
 }
 
 var Badge = {
-  toString: toString$1
+  toString: toString
 };
-
-function decodeCategory(str) {
-  var str$1 = str.toLowerCase();
-  switch (str$1) {
-    case "community" :
-        return /* Community */4;
-    case "compiler" :
-        return /* Compiler */0;
-    case "docs" :
-        return /* Docs */3;
-    case "ecosystem" :
-        return /* Ecosystem */2;
-    case "syntax" :
-        return /* Syntax */1;
-    default:
-      throw {
-            RE_EXN_ID: Json_decode.DecodeError,
-            _1: "Unknown category \"" + str$1 + "\"",
-            Error: new Error()
-          };
-  }
-}
 
 function decodeBadge(str) {
   var str$1 = str.toLowerCase();
@@ -172,9 +130,6 @@ function decode$1(authors, json) {
                   return Json_decode.field("articleImg", Json_decode.string, param);
                 }), json)),
       title: Json_decode.field("title", Json_decode.string, json),
-      category: Js_null.fromOption(Json_decode.optional((function (j) {
-                  return decodeCategory(Json_decode.field("category", Json_decode.string, j));
-                }), json)),
       badge: Js_null.fromOption(Json_decode.optional((function (j) {
                   return decodeBadge(Json_decode.field("badge", Json_decode.string, j));
                 }), json)),
@@ -213,9 +168,7 @@ function decode$1(authors, json) {
 
 export {
   Author ,
-  Category ,
   Badge ,
-  decodeCategory ,
   decodeBadge ,
   AuthorNotFound ,
   decodeAuthor ,

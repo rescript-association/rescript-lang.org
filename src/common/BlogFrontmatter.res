@@ -37,24 +37,6 @@ module Author = {
   let getAllAuthors = (): array<t> => rawAuthors->Json.Decode.array(decode, _)
 }
 
-module Category = {
-  type t =
-    | Compiler
-    | Syntax
-    | Ecosystem
-    | Docs
-    | Community
-
-  let toString = (c: t): string =>
-    switch c {
-    | Compiler => "Compiler"
-    | Syntax => "Syntax"
-    | Ecosystem => "Ecosystem"
-    | Docs => "Docs"
-    | Community => "Community"
-    }
-}
-
 module Badge = {
   type t =
     | Release
@@ -78,21 +60,10 @@ type t = {
   previewImg: Js.null<string>,
   articleImg: Js.null<string>,
   title: string,
-  category: Js.null<Category.t>,
   badge: Js.null<Badge.t>,
   description: Js.null<string>,
   canonical: Js.null<string>,
 }
-
-let decodeCategory = (str: string): Category.t =>
-  switch Js.String2.toLowerCase(str) {
-  | "compiler" => Compiler
-  | "syntax" => Syntax
-  | "ecosystem" => Ecosystem
-  | "docs" => Docs
-  | "community" => Community
-  | str => raise(Json.Decode.DecodeError(j`Unknown category "$str"`))
-  }
 
 let decodeBadge = (str: string): Badge.t =>
   switch Js.String2.toLowerCase(str) {
@@ -129,9 +100,6 @@ let decode = (~authors: array<Author.t>, json: Js.Json.t): result<t, string> => 
     ->optional(field("co-authors", authorDecoder(~fieldName="co-authors", ~authors)), _)
     ->Belt.Option.getWithDefault([]),
     date: json->field("date", string, _)->DateStr.fromString,
-    category: json
-    ->optional(j => field("category", string, j)->decodeCategory, _)
-    ->Js.Null.fromOption,
     badge: json->optional(j => field("badge", string, j)->decodeBadge, _)->Js.Null.fromOption,
     previewImg: json->optional(field("previewImg", string), _)->Js.Null.fromOption,
     articleImg: json->optional(field("articleImg", string), _)->Js.Null.fromOption,
