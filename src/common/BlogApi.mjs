@@ -71,7 +71,7 @@ function getLatest(maxOpt, baseUrlOpt, param) {
   var max = maxOpt !== undefined ? maxOpt : 10;
   var baseUrl = baseUrlOpt !== undefined ? baseUrlOpt : "https://rescript-lang.org";
   return Belt_Array.reduce(getAllPosts(undefined), [], (function (acc, next) {
-                    var fm = BlogFrontmatter.decode(BlogFrontmatter.authors, next.frontmatter);
+                    var fm = BlogFrontmatter.decode(next.frontmatter);
                     if (fm.TAG !== /* Ok */0) {
                       return acc;
                     }

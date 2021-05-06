@@ -113,7 +113,7 @@ function $$default(props) {
   var module_ = require("../_blogposts/" + (fullslug + ".mdx"));
   var archived = fullslug.startsWith("archive/");
   var component = module_.default;
-  var fm = BlogFrontmatter.decode(BlogFrontmatter.authors, frontmatter(component));
+  var fm = BlogFrontmatter.decode(frontmatter(component));
   var children = React.createElement(component, {});
   var archivedNote = archived ? React.createElement("div", {
           className: "mb-10"

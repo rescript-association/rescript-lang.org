@@ -132,7 +132,7 @@ function authorDecoder(fieldName, authors, json) {
   return Json_decode.either(single, multiple)(json);
 }
 
-function decode(authors, json) {
+function decode(json) {
   var fm;
   try {
     fm = {
