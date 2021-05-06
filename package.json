@@ -10,7 +10,7 @@
   "dependencies": {
     "@mdx-js/loader": "^1.5.5",
     "@next/mdx": "^8.1.0",
-    "@rescript/react": "^0.10.1",
+    "@rescript/react": "^0.10.3",
     "@ryyppy/rescript-promise": "^0.0.2",
     "codemirror": "^5.54.0",
     "docson": "^2.1.0",
