@@ -70,9 +70,8 @@ function dateToUTCString(date) {
 function getLatest(maxOpt, baseUrlOpt, param) {
   var max = maxOpt !== undefined ? maxOpt : 10;
   var baseUrl = baseUrlOpt !== undefined ? baseUrlOpt : "https://rescript-lang.org";
-  var authors = BlogFrontmatter.Author.getAllAuthors(undefined);
   return Belt_Array.reduce(getAllPosts(undefined), [], (function (acc, next) {
-                    var fm = BlogFrontmatter.decode(authors, next.frontmatter);
+                    var fm = BlogFrontmatter.decode(BlogFrontmatter.authors, next.frontmatter);
                     if (fm.TAG !== /* Ok */0) {
                       return acc;
                     }

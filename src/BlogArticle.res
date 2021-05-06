@@ -44,28 +44,19 @@ module Line = {
 
 module AuthorBox = {
   @react.component
-  let make = (~author: BlogFrontmatter.Author.t) => {
-    let displayName = BlogFrontmatter.Author.getDisplayName(author)
-
-    let authorImg = switch author.imgUrl->Js.Null.toOption {
-    | Some(src) => <img className="h-full w-full rounded-full" src />
-    | None => <NameInitialsAvatar displayName />
-    }
+  let make = (~author: BlogFrontmatter.author) => {
+    let authorImg = <img className="h-full w-full rounded-full" src=author.imgUrl />
 
     <div className="flex items-center">
       <div className="w-12 h-12 bg-berry-40 block rounded-full mr-3"> authorImg </div>
       <div className="text-14 font-medium text-gray-95">
-        {switch author.twitter->Js.Null.toOption {
-        | Some(handle) =>
-          <a
-            href={"https://twitter.com/" ++ handle}
-            className="hover:text-gray-80"
-            rel="noopener noreferrer"
-            target="_blank">
-            {React.string(displayName)}
-          </a>
-        | None => React.string(displayName)
-        }}
+        <a
+          href={"https://twitter.com/" ++ author.twitter}
+          className="hover:text-gray-80"
+          rel="noopener noreferrer"
+          target="_blank">
+          {React.string(author.fullname)}
+        </a>
         <div className="text-gray-60"> {React.string(author.role)} </div>
       </div>
     </div>
@@ -76,8 +67,8 @@ module BlogHeader = {
   @react.component
   let make = (
     ~date: DateStr.t,
-    ~author: BlogFrontmatter.Author.t,
-    ~co_authors: array<BlogFrontmatter.Author.t>,
+    ~author: BlogFrontmatter.author,
+    ~co_authors: array<BlogFrontmatter.author>,
     ~title: string,
     ~category: option<string>=?,
     ~description: option<string>,
@@ -141,9 +132,7 @@ let default = (props: props) => {
 
   let component = module_.default
 
-  let authors = BlogFrontmatter.Author.getAllAuthors()
-
-  let fm = component->BlogComponent.frontmatter->BlogFrontmatter.decode(~authors)
+  let fm = component->BlogComponent.frontmatter->BlogFrontmatter.decode(~authors=BlogFrontmatter.authors)
 
   let children = React.createElement(component, Js.Obj.empty())
 

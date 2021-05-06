@@ -90,7 +90,7 @@ module BlogCard = {
   let make = (
     ~previewImg: option<string>=?,
     ~title: string="Unknown Title",
-    ~author as _: BlogFrontmatter.Author.t,
+    ~author as _: BlogFrontmatter.author,
     ~category: option<string>=?,
     ~badge: option<BlogFrontmatter.Badge.t>=?,
     ~date: Js.Date.t,
@@ -134,19 +134,14 @@ module FeatureCard = {
   let make = (
     ~previewImg: option<string>=?,
     ~title: string="Unknown Title",
-    ~author: BlogFrontmatter.Author.t,
+    ~author: BlogFrontmatter.author,
     ~badge: option<BlogFrontmatter.Badge.t>=?,
     ~date: Js.Date.t,
     ~category: option<string>=?,
     ~firstParagraph: string="",
     ~slug: string,
   ) => {
-    let displayName = BlogFrontmatter.Author.getDisplayName(author)
-
-    let authorImg = switch author.imgUrl->Js.Null.toOption {
-    | Some(src) => <img className="h-full w-full rounded-full" src />
-    | None => <NameInitialsAvatar displayName />
-    }
+    let authorImg = <img className="h-full w-full rounded-full" src=author.imgUrl />
 
     <section
       className="flex sm:px-4 md:px-8 lg:px-0 flex-col justify-end lg:flex-row sm:items-center h-full">
@@ -182,17 +177,13 @@ module FeatureCard = {
             <div className="flex items-center font-medium text-gray-40 text-sm mt-2 mb-5">
               <div className="inline-block w-4 h-4 mr-2"> authorImg </div>
               <div>
-                {switch author.twitter->Js.Null.toOption {
-                | Some(handle) =>
-                  <a
-                    className="hover:text-gray-80"
-                    href={"https://twitter.com/" ++ handle}
-                    rel="noopener noreferrer"
-                    target="_blank">
-                    {React.string(displayName)}
-                  </a>
-                | None => React.string(displayName)
-                }}
+                <a
+                  className="hover:text-gray-80"
+                  href={"https://twitter.com/" ++ author.twitter}
+                  rel="noopener noreferrer"
+                  target="_blank">
+                  {React.string(author.fullname)}
+                </a>
                 {switch category {
                 | Some(category) => <>
                     {React.string(middleDotSpacer)}
@@ -380,7 +371,7 @@ let default = (props: props): React.element => {
 }
 
 let getStaticProps: Next.GetStaticProps.t<props, params> = _ctx => {
-  let authors = BlogFrontmatter.Author.getAllAuthors()
+  let authors = BlogFrontmatter.authors
   let (posts, malformed, archived) = BlogApi.getAllPosts()->Belt.Array.reduce(
     ([], [], []),
     (acc, postData) => {
