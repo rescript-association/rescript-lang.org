@@ -137,9 +137,6 @@ function $$default(props) {
     var canonical = match.canonical;
     var description = match.description;
     var title = match.title;
-    var category = Belt_Option.map(Caml_option.null_to_opt(match.category), (function (category) {
-            return BlogFrontmatter.Category.toString(category);
-          }));
     var tmp = {
       title: title + " | ReScript Blog",
       ogImage: Belt_Option.getWithDefault(Caml_option.null_to_opt(match.previewImg), Blog.defaultPreviewImg)
@@ -152,22 +149,18 @@ function $$default(props) {
     if (tmp$2 !== undefined) {
       tmp.canonical = tmp$2;
     }
-    var tmp$3 = {
-      date: match.date,
-      author: match.author,
-      co_authors: match.co_authors,
-      title: title,
-      description: description === null ? undefined : Caml_option.some(description),
-      articleImg: Caml_option.null_to_opt(match.articleImg)
-    };
-    if (category !== undefined) {
-      tmp$3.category = category;
-    }
     content = React.createElement("div", {
           className: "w-full"
         }, React.createElement(Meta.make, tmp), React.createElement("div", {
               className: "mb-10 md:mb-20"
-            }, React.createElement(BlogArticle$BlogHeader, tmp$3)), React.createElement("div", {
+            }, React.createElement(BlogArticle$BlogHeader, {
+                  date: match.date,
+                  author: match.author,
+                  co_authors: match.co_authors,
+                  title: title,
+                  description: description === null ? undefined : Caml_option.some(description),
+                  articleImg: Caml_option.null_to_opt(match.articleImg)
+                })), React.createElement("div", {
               className: "flex justify-center"
             }, React.createElement("div", {
                   className: "max-w-740 w-full"

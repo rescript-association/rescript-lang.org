@@ -44,7 +44,6 @@ module CategorySelector = {
   type selection =
     | All
     | Archived
-    | Category(BlogFrontmatter.Category.t)
 
   let renderTab = (~text: string, ~isActive: bool, ~onClick) => {
     let active = "bg-gray-10 text-gray-80 rounded py-1"
@@ -60,11 +59,10 @@ module CategorySelector = {
 
   @react.component
   let make = (
-    ~categories: array<BlogFrontmatter.Category.t>,
     ~selected: selection,
     ~onSelected: selection => unit,
   ) => {
-    let tabs = [All, Archived]->Js.Array2.concat(Belt.Array.map(categories, cat => Category(cat)))
+    let tabs = [All, Archived]
 
     <div className="text-16 w-full flex items-center justify-between text-gray-60">
       {Belt.Array.map(tabs, tab => {
@@ -79,7 +77,6 @@ module CategorySelector = {
         let text = switch tab {
         | All => "All"
         | Archived => "Archived"
-        | Category(cat) => BlogFrontmatter.Category.toString(cat)
         }
 
         renderTab(~isActive, ~text, ~onClick)
@@ -255,11 +252,10 @@ type props = {
   posts: array<Post.t>,
   archived: array<Post.t>,
   malformed: array<Malformed.t>,
-  availableCategories: array<BlogFrontmatter.Category.t>,
 }
 
 let default = (props: props): React.element => {
-  let {availableCategories, posts, malformed, archived} = props
+  let {posts, malformed, archived} = props
 
   let (currentSelection, setSelection) = React.useState(() => CategorySelector.All)
 
@@ -298,13 +294,6 @@ let default = (props: props): React.element => {
     let filtered = switch currentSelection {
     | All => posts
     | Archived => archived
-    | Category(selected) =>
-      Belt.Array.keep(posts, ({frontmatter}) =>
-        switch Js.Null.toOption(frontmatter.category) {
-        | Some(category) => category === selected
-        | None => false
-        }
-      )
     }
 
     let result = switch Belt.Array.length(filtered) {
@@ -312,11 +301,6 @@ let default = (props: props): React.element => {
     | _ =>
       let first = Belt.Array.getExn(filtered, 0)
       let rest = Js.Array2.sliceFrom(filtered, 1)
-
-      let category =
-        first.frontmatter.category
-        ->Js.Null.toOption
-        ->Belt.Option.map(category => category->BlogFrontmatter.Category.toString)
 
       let featureBox =
         <div className="w-full mb-24 lg:px-8 xl:px-0">
@@ -327,7 +311,6 @@ let default = (props: props): React.element => {
             author=first.frontmatter.author
             firstParagraph=?{first.frontmatter.description->Js.Null.toOption}
             date={first.frontmatter.date->DateStr.toDate}
-            ?category
             slug=first.id
           />
         </div>
@@ -339,10 +322,6 @@ let default = (props: props): React.element => {
           className="px-4 md:px-8 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full">
           {Belt.Array.mapWithIndex(rest, (i, post) => {
             let badge = post.frontmatter.badge->Js.Null.toOption
-            let category =
-              post.frontmatter.category
-              ->Js.Null.toOption
-              ->Belt.Option.map(category => category->BlogFrontmatter.Category.toString)
 
             <BlogCard
               key={post.id ++ Belt.Int.toString(i)}
@@ -350,7 +329,6 @@ let default = (props: props): React.element => {
               title=post.frontmatter.title
               author=post.frontmatter.author
               ?badge
-              ?category
               date={post.frontmatter.date->DateStr.toDate}
               slug=post.id
             />
@@ -365,7 +343,6 @@ let default = (props: props): React.element => {
       <div className="hidden sm:flex justify-center ">
         <div className="my-16 w-full" style={ReactDOMStyle.make(~maxWidth="12rem", ())}>
           <CategorySelector
-            categories=availableCategories
             onSelected={selection => setSelection(_ => selection)}
             selected=currentSelection
           />
@@ -404,10 +381,10 @@ let default = (props: props): React.element => {
 
 let getStaticProps: Next.GetStaticProps.t<props, params> = _ctx => {
   let authors = BlogFrontmatter.Author.getAllAuthors()
-  let (posts, malformed, archived, availableCategories) = BlogApi.getAllPosts()->Belt.Array.reduce(
-    ([], [], [], []),
+  let (posts, malformed, archived) = BlogApi.getAllPosts()->Belt.Array.reduce(
+    ([], [], []),
     (acc, postData) => {
-      let (posts, malformed, archived, availableCategories) = acc
+      let (posts, malformed, archived) = acc
       let id = postData.slug
 
       let decoded = BlogFrontmatter.decode(~authors, postData.frontmatter)
@@ -416,41 +393,14 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = _ctx => {
       | Error(message) =>
         let m = {Malformed.id: id, message: message}
         let malformed = Belt.Array.concat(malformed, [m])
-        (posts, malformed, archived, availableCategories)
+        (posts, malformed, archived)
       | Ok(frontmatter) =>
         if postData.archived {
           Js.Array2.push(archived, {Post.id: id, frontmatter: frontmatter})->ignore
         } else {
           Js.Array2.push(posts, {Post.id: id, frontmatter: frontmatter})->ignore
         }
-
-        let category = Js.Null.toOption(frontmatter.category)
-
-        let hasCategory = Js.Array2.some(availableCategories, c =>
-          switch category {
-          | Some(category) => c === category
-          | None => false
-          }
-        )
-
-        // TODO: For now we ignore categories alltogether (only show All | Archived)
-        let newAvailableCat = if true || postData.archived {
-          availableCategories
-        } else {
-          switch // We will only add categories that are not yet
-          // accumulated from previous post frontmatters
-          category {
-          | Some(category) =>
-            if hasCategory {
-              availableCategories
-            } else {
-              Belt.Array.concat(availableCategories, [category])
-            }
-          | None => availableCategories
-          }
-        }
-
-        (posts, malformed, archived, newAvailableCat)
+        (posts, malformed, archived)
       }
     },
   )
@@ -459,7 +409,6 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = _ctx => {
     posts: Post.orderByDate(posts),
     malformed: malformed,
     archived: Post.orderByDate(archived),
-    availableCategories: availableCategories,
   }
 
   Js.Promise.resolve({"props": props})
