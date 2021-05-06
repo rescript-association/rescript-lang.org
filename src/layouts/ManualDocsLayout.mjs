@@ -183,6 +183,7 @@ var V800 = {
 export {
   LatestLayout ,
   V800Layout ,
+  V900Layout ,
   Latest ,
   V900 ,
   V800 ,
