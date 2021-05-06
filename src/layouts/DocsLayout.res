@@ -122,7 +122,7 @@ let make = (
   let (metaElement, editHref) = switch frontmatter {
   | Some(frontmatter) =>
     switch DocFrontmatter.decode(frontmatter) {
-    | Ok(fm) =>
+    | Some(fm) =>
       let canonical = Js.Null.toOption(fm.canonical)
       let description = Js.Null.toOption(fm.description)
       let title = switch metaTitleCategory {
@@ -137,7 +137,7 @@ let make = (
       }
       let meta = <Meta title ?description ?canonical />
       (meta, Some(fm.ghEditHref))
-    | Error(_) => (React.null, None)
+    | None => (React.null, None)
     }
   | None => (React.null, None)
   }

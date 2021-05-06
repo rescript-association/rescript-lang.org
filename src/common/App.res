@@ -112,10 +112,7 @@ let make = (props: props): React.element => {
       // to keep the frontmatter parsing etc in one place
       content
     | _ =>
-      let fm = switch component->frontmatter->DocFrontmatter.decode {
-      | Ok(fm) => Some(fm)
-      | Error(_) => None
-      }
+      let fm = component->frontmatter->DocFrontmatter.decode
       let title = switch url {
       | {base: ["docs"]} => Some("Overview | ReScript Documentation")
       | _ => Belt.Option.map(fm, fm => fm.title)

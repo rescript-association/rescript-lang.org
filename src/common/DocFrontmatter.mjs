@@ -7,33 +7,25 @@ import * as Caml_js_exceptions from "rescript/lib/es6/caml_js_exceptions.js";
 function decode(json) {
   try {
     return {
-            TAG: 0,
-            _0: {
-              title: Json_decode.field("title", Json_decode.string, json),
-              metaTitle: Js_null.fromOption(Json_decode.optional((function (param) {
-                          return Json_decode.field("metaTitle", Json_decode.string, param);
-                        }), json)),
-              description: Js_null.fromOption(Json_decode.optional((function (param) {
-                          return Json_decode.field("description", Json_decode.string, param);
-                        }), json)),
-              canonical: Js_null.fromOption(Json_decode.optional((function (param) {
-                          return Json_decode.field("canonical", Json_decode.string, param);
-                        }), json)),
-              ghEditHref: Json_decode.field("__ghEditHref", Json_decode.string, json)
-            },
-            [Symbol.for("name")]: "Ok"
+            title: Json_decode.field("title", Json_decode.string, json),
+            metaTitle: Js_null.fromOption(Json_decode.optional((function (param) {
+                        return Json_decode.field("metaTitle", Json_decode.string, param);
+                      }), json)),
+            description: Js_null.fromOption(Json_decode.optional((function (param) {
+                        return Json_decode.field("description", Json_decode.string, param);
+                      }), json)),
+            canonical: Js_null.fromOption(Json_decode.optional((function (param) {
+                        return Json_decode.field("canonical", Json_decode.string, param);
+                      }), json)),
+            ghEditHref: Json_decode.field("__ghEditHref", Json_decode.string, json)
           };
   }
-  catch (raw_errMsg){
-    var errMsg = Caml_js_exceptions.internalToOCamlException(raw_errMsg);
-    if (errMsg.RE_EXN_ID === Json_decode.DecodeError) {
-      return {
-              TAG: 1,
-              _0: errMsg._1,
-              [Symbol.for("name")]: "Error"
-            };
+  catch (raw__errMsg){
+    var _errMsg = Caml_js_exceptions.internalToOCamlException(raw__errMsg);
+    if (_errMsg.RE_EXN_ID === Json_decode.DecodeError) {
+      return ;
     }
-    throw errMsg;
+    throw _errMsg;
   }
 }
 

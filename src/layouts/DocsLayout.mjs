@@ -129,14 +129,13 @@ function DocsLayout(Props) {
   var match$1;
   if (frontmatter !== undefined) {
     var fm = DocFrontmatter.decode(Caml_option.valFromOption(frontmatter));
-    if (fm.TAG === /* Ok */0) {
-      var fm$1 = fm._0;
-      var canonical = fm$1.canonical;
-      var description = fm$1.description;
+    if (fm !== undefined) {
+      var canonical = fm.canonical;
+      var description = fm.description;
       var title$1;
       if (metaTitleCategory !== undefined) {
-        var metaTitle$1 = fm$1.metaTitle;
-        var metaTitle$2 = metaTitle$1 !== null ? metaTitle$1 : fm$1.title;
+        var metaTitle$1 = fm.metaTitle;
+        var metaTitle$2 = metaTitle$1 !== null ? metaTitle$1 : fm.title;
         title$1 = metaTitle$2 + (" | " + metaTitleCategory);
       } else {
         title$1 = title;
@@ -155,7 +154,7 @@ function DocsLayout(Props) {
       var meta = React.createElement(Meta.make, tmp$2);
       match$1 = [
         meta,
-        fm$1.ghEditHref
+        fm.ghEditHref
       ];
     } else {
       match$1 = [
