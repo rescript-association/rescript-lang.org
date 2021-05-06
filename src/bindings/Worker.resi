@@ -15,7 +15,7 @@ module Make: (Config: Config) =>
   module App: {
     let postMessage: (worker, fromApp) => unit
     let onMessage: (worker, {"data": fromWorker} => unit) => unit
-    let onError: (worker, Js.t<'a> => unit) => unit
+    let onError: (worker, 'a => unit) => unit
     let terminate: worker => unit
   }
 

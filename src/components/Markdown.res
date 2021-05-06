@@ -479,16 +479,12 @@ module Strong = {
 }
 
 // Useful for debugging injected values in props
-/*
- let mdxTestComponent: React.component(Js.t({.})) = [%raw
-   {|
- function(children) {
-   console.log(children);
-   return React.createElement("div");
- }
- |}
- ];
- */
+//  let mdxTestComponent: React.component<{.}> = %raw(`
+//  function(children) {
+//    console.log(children);
+//    return React.createElement("div");
+//  }
+// `)
 
 // Used for the MdxJS Provider
 
