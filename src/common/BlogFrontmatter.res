@@ -32,7 +32,7 @@ let authors = [
     username: "ryyppy",
     fullname: "Patrick Ecker",
     role: "Documentation",
-    imgUrl: "https://pbs.twimg.com/profile_images/1185576475837304839/hvCe6M2r_400x400.jpg",
+    imgUrl: "https://pbs.twimg.com/profile_images/1388426717006544897/B_a7D4GF_400x400.jpg",
     twitter: "ryyppy",
   },
   {
