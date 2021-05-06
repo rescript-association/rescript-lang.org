@@ -278,8 +278,6 @@ function make(props) {
     }
     if (exit$4 === 2) {
       var fm = DocFrontmatter.decode(component.frontmatter);
-      var fm$1;
-      fm$1 = fm.TAG === /* Ok */0 ? fm._0 : undefined;
       var match$8 = url.base;
       var title;
       var exit$5 = 0;
@@ -294,11 +292,11 @@ function make(props) {
         }
       }
       if (exit$5 === 3) {
-        title = Belt_Option.map(fm$1, (function (fm) {
+        title = Belt_Option.map(fm, (function (fm) {
                 return fm.title;
               }));
       }
-      var description = Belt_Option.flatMap(fm$1, (function (fm) {
+      var description = Belt_Option.flatMap(fm, (function (fm) {
               return Caml_option.null_to_opt(fm.description);
             }));
       var tmp = {};

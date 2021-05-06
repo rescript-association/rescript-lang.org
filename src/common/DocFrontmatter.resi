@@ -6,4 +6,4 @@ type t = {
   ghEditHref: string,
 }
 
-let decode: Js.Json.t => result<t, string>
+let decode: Js.Json.t => option<t>

@@ -6,15 +6,15 @@ type t = {
   ghEditHref: string,
 }
 
-let decode = (json): result<t, string> => {
+let decode = (json) => {
   open! Json.Decode
-  try Ok({
+  try Some({
     title: field("title", string, json),
     metaTitle: optional(field("metaTitle", string), json)->Js.Null.fromOption,
     description: optional(field("description", string), json)->Js.Null.fromOption,
     canonical: optional(field("canonical", string), json)->Js.Null.fromOption,
     ghEditHref: field("__ghEditHref", string, json),
   }) catch {
-  | DecodeError(errMsg) => Error(errMsg)
+  | DecodeError(_errMsg) => None
   }
 }
