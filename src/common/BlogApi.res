@@ -137,11 +137,10 @@ module RssFeed = {
 
   // Retrieves the most recent [max] blog post feed items
   let getLatest = (~max=10, ~baseUrl="https://rescript-lang.org", ()): array<item> => {
-    let authors = BlogFrontmatter.authors
     let items =
       getAllPosts()
       ->Belt.Array.reduce([], (acc, next) =>
-        switch BlogFrontmatter.decode(~authors, next.frontmatter) {
+        switch BlogFrontmatter.decode(next.frontmatter) {
         | Ok(fm) =>
           let description = Js.Null.toOption(fm.description)->Belt.Option.getWithDefault("")
           let item = {

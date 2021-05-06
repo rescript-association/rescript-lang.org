@@ -120,7 +120,7 @@ let authorDecoder = (~fieldName: string, ~authors, json) => {
   either(single, multiple, json)
 }
 
-let decode = (~authors, json: Js.Json.t): result<t, string> => {
+let decode = (json: Js.Json.t): result<t, string> => {
   open Json.Decode
   switch {
     author: json->field("author", string, _)->decodeAuthor(~fieldName="author", ~authors),

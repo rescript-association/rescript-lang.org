@@ -371,14 +371,13 @@ let default = (props: props): React.element => {
 }
 
 let getStaticProps: Next.GetStaticProps.t<props, params> = _ctx => {
-  let authors = BlogFrontmatter.authors
   let (posts, malformed, archived) = BlogApi.getAllPosts()->Belt.Array.reduce(
     ([], [], []),
     (acc, postData) => {
       let (posts, malformed, archived) = acc
       let id = postData.slug
 
-      let decoded = BlogFrontmatter.decode(~authors, postData.frontmatter)
+      let decoded = BlogFrontmatter.decode(postData.frontmatter)
 
       switch decoded {
       | Error(message) =>

@@ -132,7 +132,7 @@ let default = (props: props) => {
 
   let component = module_.default
 
-  let fm = component->BlogComponent.frontmatter->BlogFrontmatter.decode(~authors=BlogFrontmatter.authors)
+  let fm = component->BlogComponent.frontmatter->BlogFrontmatter.decode
 
   let children = React.createElement(component, Js.Obj.empty())
 
