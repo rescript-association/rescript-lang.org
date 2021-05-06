@@ -1,8 +1,7 @@
 ---
 author: hongbo
-date: "2019-09-23" 
+date: "2019-09-23"
 previewImg:
-category: compiler
 badge: release
 title: Announcing BuckleScript 5.2.0 / 6.2.0
 description: |
@@ -11,7 +10,7 @@ description: |
 ## New Release
 
 `bs-platform` 5.2.0/6.2.0 is released, it contains several major enhancement
-that we would like to share with you. 
+that we would like to share with you.
 
 You can install it via `npm i -g bs-platform@5.2.0`
 
@@ -21,11 +20,11 @@ OCaml has an [advanced module
 system](https://people.mpi-sws.org/~dreyer/thesis/old/thesis050405.pdf) for
 people to structure large scale applications, it supports first class module
 and higher-order module system which is unique compared to other ML-like
-languages such as F# and Haskell. 
+languages such as F# and Haskell.
 
 In previous versions, BuckleScript compiled local modules into a JS array
 whereby global modules (module produced by a file)were transformed into JS
-objects. 
+objects.
 
 When a local module is compiled into a JS array, the field name is stripped
 away, which makes debugging and JS interop difficult. To make the debugging
@@ -37,7 +36,7 @@ In this release, the compiler generates uniform representation for global
 module and local module -- idiomatic JS object, this makes OCaml's module
 system more valuable to JS target.
 
-Below is an image showing the diff in this release 
+Below is an image showing the diff in this release
 
 <img src="https://bucklescript.github.io/img/functor.png"/>
 
@@ -45,7 +44,7 @@ As you can see, the `id` module changed from an array into an JS object.
 
 ## Pattern match code generation with annotations
 
-BuckleScript aims to generate readable code. 
+BuckleScript aims to generate readable code.
 
 OCaml has a sophiscated pattern match compiler, it generates well optimized
 code, however, for complex pattern matching, the constructor name is lost on
@@ -56,7 +55,7 @@ complex pattern match.
 In this release, we made such information available to JS backend so that we
 annotate the generated JS code with its names.
 
-Below is an image showing the diff in this release 
+Below is an image showing the diff in this release
 
 <img src="https://bucklescript.github.io/img/pattern-match.png"/>
 
@@ -65,7 +64,7 @@ In the future, we will explore if we can produce such annotation in the runtime 
 ## Code generation improvement in various places
 
 We care about the generated code quality, and will always keep improving it
-regardless how good it is. 
+regardless how good it is.
 
 In this release, we improved the code generation in quite a lot of places
 including lazy evaluation, if branches and pattern match.

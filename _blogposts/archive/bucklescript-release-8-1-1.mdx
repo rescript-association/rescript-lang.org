@@ -1,7 +1,6 @@
 ---
 author: chenglou
 date: "2020-07-17"
-category: compiler
 badge: release
 title: "BuckleScript 8.1.1 released"
 description: New Syntax Tweaks, Formatter and Converter
@@ -30,7 +29,7 @@ We added a new experimental flag `-fmt`, which allows you to  format any `.res`/
 
 To convert any Reason or OCaml file, just pipe the output to a new `res` file: `node_modules/.bin/bsc -fmt src/Button.re > src/Button.res`
 
-Please note that this CLI flag is still experimental until we settle on the final API (e.g. we want to add support for passing additional parameters to the formatter, such as accepting stdin). 
+Please note that this CLI flag is still experimental until we settle on the final API (e.g. we want to add support for passing additional parameters to the formatter, such as accepting stdin).
 
 We are happy for feedback! Make sure to use [this forum post](https://reasonml.chat/t/the-formatter-converter-for-the-new-syntax-is-available-for-testing/2423) for general discussions, or the [new syntax](https://github.com/BuckleScript/syntax) issue trackers for bug reports.
 

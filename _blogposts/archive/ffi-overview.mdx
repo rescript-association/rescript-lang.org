@@ -1,8 +1,7 @@
 ---
 author: hongbo
-date: "2019-05-21" 
+date: "2019-05-21"
 previewImg:
-category: compiler
 title: A High Level Overview of BuckleScript Interop with JS
 description: |
 ---
@@ -10,7 +9,7 @@ description: |
 ## JS Interop in BuckleScript
 
 When users start to use BuckleScript to develop applications targeting JS, they
-have to interop with various APIs provided by the JS platform. 
+have to interop with various APIs provided by the JS platform.
 
 In theory, like [Elm](https://elm-lang.org/), BuckleScript could ship a
 comprehensive library which contains what most people would like to use daily.
@@ -72,7 +71,7 @@ Here the raw extension node asks the user to list the parameters and function
 statement in raw JS syntax. The generated JS code is as follows:
 
 ```js
-function getSafe (a,b){ 
+function getSafe (a,b){
 	if (b>=0 && b < a.length) {
     	return a [b]
      }
@@ -180,7 +179,7 @@ function getDate (d){return d.getDate()};
 
 function setDate (d,v){
    d.setDate(v);
-   return 0; // ocaml representation of unit 
+   return 0; // ocaml representation of unit
 };
 
 var date = fromFloat(10000);

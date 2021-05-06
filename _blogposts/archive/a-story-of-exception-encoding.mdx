@@ -1,8 +1,7 @@
 ---
 author: hongbo
-date: "2020-05-06 18:00" 
+date: "2020-05-06 18:00"
 previewImg:
-category: compiler
 title: New Exception Encoding in BuckleScript
 description: |
   Highlights of our newest changes to the internal representation of exceptions
@@ -15,7 +14,7 @@ We just recently made some significant improvements with our new exception encod
 
 The new encoding allows us to provide proper, clear stacktrace information whenever a Reason/OCaml exception is thrown. This is particularly important when you have some code running in production that needs to collect those stacktrace for diagnostics.
 
-What's the difference? 
+What's the difference?
 
 ```reason
 exception My_exception { x : int};
@@ -33,7 +32,7 @@ loop ();
 When we compile and run this piece of code with the old exception encoding, this is what we'd get:
 
 ```
-exn_demo$node src/exn_demo.bs.js 
+exn_demo$node src/exn_demo.bs.js
 
 /Users/hongbozhang/git/exn_demo/src/exn_demo.bs.js:11
       throw [
@@ -82,7 +81,7 @@ exception B
 
 `exception B` is just the identity block.
 
-The identity block is an array of 2 slots. The first slot is a string like "B", while the second slot is a unique integer. 
+The identity block is an array of 2 slots. The first slot is a string like "B", while the second slot is a unique integer.
 In more detail, the native array will also have a magic tag 248 attached which is not relevant for our purposes though.
 
 ## What's the new exception encoding?
@@ -129,7 +128,7 @@ Here is an example on how you'd access the exception value within a Reason `try`
 
 ```reason
 try (someJSFunctionThrowing()) {
-| Not_found => ..  // catch  reasonml exception 1 
+| Not_found => ..  // catch  reasonml exception 1
 | Invalid_argument =>  // catch  reasonml exception 2
 | Js.Exn.Error (obj) => ... // catch js exception
 }
@@ -146,6 +145,6 @@ The `obj` value in the `Js.Exn.Error` branch is an opaque type to maintain type 
 ## Bonus
 
 Now with our new exception encoding in place, a hidden feature called [extensible variant](https://caml.inria.fr/pub/docs/manual-ocaml/extensiblevariants.html) suddenly got way more interesting as well. Practically speaking, native exceptions are actually a special form of an extensible variant, so both are benefiting from the same representation changes!
- 
+
 
 Happy hacking and we would like your feedback!

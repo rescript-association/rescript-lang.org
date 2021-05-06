@@ -1,8 +1,7 @@
 ---
 author: hongbo
-date: "2017-10-07" 
+date: "2017-10-07"
 previewImg:
-category: compiler
 badge: release
 title: Announcing BuckleScript 1.7.0
 description: |
@@ -39,7 +38,7 @@ let f = (g, x) => g(. x);
 ```
 
 `f` is curried function, `g` is an uncurried function due to `[@bs]` annotation.
-In Reason, the dot in `g(. x)` is equivalent to `[@bs]`. 
+In Reason, the dot in `g(. x)` is equivalent to `[@bs]`.
 
 When we evaluate the program with the `bsc` command...
 
@@ -65,7 +64,7 @@ function (`(. 'a) => 'b`) while `f` is still a curried function.
 The compiler will also yield following JS output:
 
 ```js
-function f (g,x){ 
+function f (g,x){
     return g (x)
 }
 ```

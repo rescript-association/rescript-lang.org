@@ -2,14 +2,13 @@
 author: hongbo
 date: "2020-03-12"
 previewImg:
-category: compiler
 tags:
   - Release
 title: Announcing BuckleScript 7.2
 description: |
   This release will give us some small quality of life improvements for tool
   builders, better performance, and a new let %private modifier for hiding
-  module functionality. 
+  module functionality.
 ---
 
 ## About the Release
@@ -35,7 +34,7 @@ installation time.
 
 However, with this release the installation is so fast that  we recommend
 installing it locally instead - per project - instead, as there's no additional
-cost, and it provides better isolation. 
+cost, and it provides better isolation.
 
 You can use it with a nice tool called
 [npx](https://www.npmjs.com/package/npx), for example, `npx bsb`.
@@ -55,7 +54,7 @@ In OCaml's module system, everything is public by default, the only way to hide 
 ```reason
 module A : { let b : int} = {
     let a = 3 ;
-    let b = 4 ; 
+    let b = 4 ;
 }
 
 ```
@@ -86,7 +85,7 @@ We responded to this, and after some hard work - but _without_ changing the unde
 A micro-benchmark for comparison:
 ```
 running on 7.1
-Int64.to_string: 367.788ms # super positive number 
+Int64.to_string: 367.788ms # super positive number
 Int64.to_string: 140.451ms # median number
 Int64.to_string: 375.471ms # super negative number
 

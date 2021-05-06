@@ -1,8 +1,7 @@
 ---
 author: hongbo
-date: "2021-02-09" 
+date: "2021-02-09"
 previewImg: https://res.cloudinary.com/dmm9n7v9f/image/upload/v1612974395/Reason%20Association/rescript-lang.org/compiler_release_9_0_szd11o.jpg
-category: compiler
 title: ReScript 9.0
 badge: release
 description: |
@@ -23,13 +22,13 @@ npm install bs-platform@9.0.1 --save-dev
 
 You can also try our new release in the [Online Playground](/try).
 
-In this post we will highlight the most notable changes. The full changelog for this release can be found [here](https://github.com/rescript-lang/rescript-compiler/blob/master/Changes.md#90). 
+In this post we will highlight the most notable changes. The full changelog for this release can be found [here](https://github.com/rescript-lang/rescript-compiler/blob/master/Changes.md#90).
 
 ## Compiler Improvements
 
 ### New External Stdlib Configuration
 
-This is a long-awaited [feature request](https://github.com/rescript-lang/rescript-compiler/pull/2171). 
+This is a long-awaited [feature request](https://github.com/rescript-lang/rescript-compiler/pull/2171).
 
 Our compiler comes with a set of stdlib modules (such as `Belt`, `Pervasives`, etc.) for core functionality. Compiled ReScript code relies on the JS runtime version of these stdlib modules.
 
@@ -38,7 +37,7 @@ In previous versions, users couldn't ship their compiled JS code without definin
 
 To fix this problem, we introduced an `external-stdlib` configuration that allows specifying a pre-compiled stdlib npm package (`@rescript/std`). More details on how to use that feature can be found in our [External Stdlib](/docs/manual/latest/build-external-stdlib) documentation.
 
-### Less Bundle Bloat when Adding ReScript 
+### Less Bundle Bloat when Adding ReScript
 
 With each release we keep a close eye on generating code that is optimized for tree-shaking. We also believe that we reached a milestone where ReScript reliably produces output that has almost no impact on our final JS bundle-sizes (this is what we call our "zero-cost" philosophy).
 
@@ -98,13 +97,13 @@ For those interested in the details, here is a representative diff resulting fro
 function is_space(param){
 - var switcher = param - 9 | 0;
 - if (switcher > 4 || switcher < 0) {
--    return switcher == 23 ; 
+-    return switcher == 23 ;
 + if (param > 13 || param < 9) {
 +    return param === 32;
   } else {
--    return switcher !== 2;     
+-    return switcher !== 2;
 +    return param != 11;
-  }    
+  }
 }
 ```
 
@@ -169,12 +168,12 @@ Here is a code example before and after the change. Note how the `user` record s
 
 ```res
 type user = {
-  age: int 
+  age: int
 }
 
 let data = {
   "user": {
-    age: 1 
+    age: 1
   }
 }
 
@@ -184,12 +183,12 @@ let age = data["user"].age
 
 ```res
 type user = {
-  age: int 
+  age: int
 }
 
 let data = {
   "user": {
-    age: 1 
+    age: 1
   }
 }
 

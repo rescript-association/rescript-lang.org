@@ -2,7 +2,6 @@
 author: hongbo
 date: "2020-03-26"
 previewImg:
-category: compiler
 title: Generalized Uncurry Support in 7.3
 description: |
 ---
@@ -34,7 +33,7 @@ BuckleScript does tons of optimizations and very aggressive arity inference so t
 However, such optimization does not apply to high order functions:
 
 ```reason
-let highOrder = (f,a,b)=> f (a, b) 
+let highOrder = (f,a,b)=> f (a, b)
 // can not infer the arity of `f` since we know
 // nothing about the arity of `f`, unless
 // we do the whole program optimization
@@ -49,7 +48,7 @@ When we create bindings for high order functions in the JS world, we would like 
 
 ## Generalized uncurried calling convention in this release
 
-Before release 7.3, we had introduced uncurried calling convention, however, it has serious limitations -- uncurried functions can not be polymorphic, it does not support labels, the error 
+Before release 7.3, we had introduced uncurried calling convention, however, it has serious limitations -- uncurried functions can not be polymorphic, it does not support labels, the error
 message leaks the underlying encoding -- now all those limitations are gone!
 
 **Previously:**
@@ -60,7 +59,7 @@ message leaks the underlying encoding -- now all those limitations are gone!
 
 <img src="https://bucklescript.github.io/img/recursive-error.png"/>
 
-The error messages above are cryptic and hard to understand. And the limitation of not supporting recursive functions make uncurried support pretty weak. 
+The error messages above are cryptic and hard to understand. And the limitation of not supporting recursive functions make uncurried support pretty weak.
 
 Now those limitations are all gone, you can have polymorphic uncurried recursive functions and it support labels.
 
@@ -112,7 +111,7 @@ The new error message:
 Error: This function is a curried function where an uncurried function is expected
 ```
 
-### When arity mismatch 
+### When arity mismatch
 
 ```reason
 let add = (. x, y ) => x + y;

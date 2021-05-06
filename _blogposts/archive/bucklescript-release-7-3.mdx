@@ -3,7 +3,6 @@ author: hongbo
 date: "2020-04-13"
 previewImg: https://res.cloudinary.com/dmm9n7v9f/image/upload/v1587472539/Reason%20Association/reasonml.org/reasonml_art1_1280_zfwnyo.png
 articleImg: https://res.cloudinary.com/dmm9n7v9f/image/upload/v1587024325/Reason%20Association/reasonml.org/jessica-knowlden-WVC6iAZHP0k-unsplash_t86jzt.jpg
-category: compiler
 badge: release
 title: Announcing BuckleScript 7.3
 description: |
@@ -36,7 +35,7 @@ For uncurried support, we also fixed a long standing
 inference follows naturally using the new encoding.
 
 ```reason
-bar 
+bar
  -> Belt.Array.mapU((.b)=>b.foo /*no type annotation needed */)
 ```
 
@@ -56,7 +55,7 @@ enhancement.
 let log = x => Js.log(x)
 ```
 
-The generated code used to be 
+The generated code used to be
 
 ```js
 function log(x){
@@ -65,7 +64,7 @@ function log(x){
 }
 ```
 
-It's now 
+It's now
 
 ```js
 function log(x){
@@ -79,7 +78,7 @@ We have increased the readability of the generated code in several common
 places, we believe that we reached *an important milestone* that if you write
 code using features that have counterparts in JS, the generated code is
 readable. This is not a small achievement given that quite a lot of the
-compiler code base is shared between native backend and JS backend. 
+compiler code base is shared between native backend and JS backend.
 
 There are some features that are not available in JS, for example, complex
 pattern matches, the readability of those pieces of generated code will
@@ -110,7 +109,7 @@ function popUndefined(s) {
 +    s.root = x.tail;
 +    return x.head;
    }
-   
+
  }
 ```
 
@@ -216,7 +215,7 @@ Below are similar diffs benefiting from such enhancement:
      swapUnsafe(xs, i, Js_math.random_int(i, len));
    }
 -  return /* () */0;
-+  
++
  }
 ```
 

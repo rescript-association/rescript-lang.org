@@ -1,15 +1,14 @@
 ---
 author: hongbo
-date: "2020-09-26" 
+date: "2020-09-26"
 previewImg:
-category: compiler
 title: What's new in ReScript 8.3 (Part 2)
 description: |
 ---
 
 ## Introduction
 
-ReScript is a soundly typed language with an optimizing compiler focused on the JS platform. 
+ReScript is a soundly typed language with an optimizing compiler focused on the JS platform.
 It's focused on type safety, performance and JS interop. It used to be called BuckleScript.
 
 [ReScript@8.3](https://www.npmjs.com/package/bs-platform/v/8.3.0) is now available for testing, you can try it via
@@ -18,47 +17,47 @@ It's focused on type safety, performance and JS interop. It used to be called Bu
 npm i bs-platform@8.3.1
 ```
 
-Following the [previous post](/blog/release-8-3-pt1), in this post we will go through 
+Following the [previous post](/blog/release-8-3-pt1), in this post we will go through
 the enhancement over the build system.
 
 ## Performance enhancement
 
-The underlying build engine for `bsb` is [ninja](https://ninja-build.org/), it is famous for 
+The underlying build engine for `bsb` is [ninja](https://ninja-build.org/), it is famous for
 [being fast](https://www.aosabook.org/en/posa/ninja.html)
 to build large C++ repos.
 
-In the last releases, we did lots of work for vertical integration into the bsb build chain. 
+In the last releases, we did lots of work for vertical integration into the bsb build chain.
 For example, we replaced the dynamic dependency parser with a minimal specialized one for bsb.
 we also removed the static dependencies parser which is only used for parsing C++ compiler output.
 
 Thanks to various other low-level improvements, the final outcome is quite impressive.
 For example, The binary size for [Mac platform](https://github.com/ninja-build/ninja/releases/tag/v1.10.1) is 270 KB
-while our vendored version is only 136KB. This is a non-trivial gain given that ninja is minimalist and already 
+while our vendored version is only 136KB. This is a non-trivial gain given that ninja is minimalist and already
 optimized by top-level C++ experts.
 
-Note such vertical integration not only brings better performance, smaller sizes, it also brings new features 
+Note such vertical integration not only brings better performance, smaller sizes, it also brings new features
 
 ## Build system enhancements for editor diagnostics
 
 When people are coding in their favorite editors, they expect to see syntax and type errors in real-time.
 There are multiple ways to achieve this. The most reliable way is to always invoke the build system whenever the user saves a file. Due to not having an in-memory cache, our build system is very reliable. However we didn't yet optimize the build system for live feedback in editors.
-what syntax errors, type checking errors do they have when editing? There are multiple ways to achieve this, the most easy 
-and reliable way is to always invoke the build system whenever the user saves the files, since it's the same build system 
+what syntax errors, type checking errors do they have when editing? There are multiple ways to achieve this, the most easy
+and reliable way is to always invoke the build system whenever the user saves the files, since it's the same build system
 without any in-memory cache, the reliability is very high, however, there's several challenges to use the build system output as editor diagnostics.
 
 ### The build system/compiler has to be fast to deliver real-time feedback
 
 Our build system is fast enough to deliver feedback for reasonable sized projects in less than 100ms.
-thanks to our previous [hard work](/blog/scalable). We continue improving 
+thanks to our previous [hard work](/blog/scalable). We continue improving
 Pushing the limits of performance in the build system allows us to provide real-time feedback in editors.
 
 ### The warnings for each file should not be flushed during a rebuild
 
 For a typical file based build system, if the file A is compiled successfully with some warnings, the rebuild will not build A anymore.
-This is problematic if we use the build system output for editor diagnostics. Since the second build will not capture those warnings, we 
+This is problematic if we use the build system output for editor diagnostics. Since the second build will not capture those warnings, we
 could use some caching mechanism to cache previous build output. But… stateful systems are not reliable and come with a whole range of different problems.
 
-To solve such a challenging problem, we did some innovations to co-ordinate the compiler and build system. When the file A is compiled with warnings, 
+To solve such a challenging problem, we did some innovations to co-ordinate the compiler and build system. When the file A is compiled with warnings,
 the compiler will produce some marks to the build system, the build system will keep building but such marks are encoded in the build rules
 so that the second build will do the rebuild.
 
@@ -80,15 +79,15 @@ We write the output to `.compiler.log` per each build, allowing clients to read 
 
 ## A better algorithm for removing stale outputs
 
-Whenever we rename a file, e.g. `a.res` to `b.res`, will lead to the output of `a.res` being stale. Thanks to the deeper integration of the build system and compiler, 
+Whenever we rename a file, e.g. `a.res` to `b.res`, will lead to the output of `a.res` being stale. Thanks to the deeper integration of the build system and compiler,
 we employ a more advanced strategy to remove stale outputs in this release. Pruning stale outputs is done in the beginning of each build.
 
 There are two ways of removing staled artifacts, the second one is introduced in this release:
 
 - Based on live analysis and prebuilt-in knowledge
 
-We scan `lib/bs` directory and check some dangling cm{i,t,j,ti} files, if it does not exist in 
-the current build set, it is considered stale artifacts. If it is `cmt` file, it would trigger some hooks of `genType`, notably -cmt-rm. 
+We scan `lib/bs` directory and check some dangling cm{i,t,j,ti} files, if it does not exist in
+the current build set, it is considered stale artifacts. If it is `cmt` file, it would trigger some hooks of `genType`, notably -cmt-rm.
 
 - Based on previous build logs
 We store previous compilation stats.  If a file is in the previous compiler output, but no longer in the output of the new build, it is considered stale and can be removed.

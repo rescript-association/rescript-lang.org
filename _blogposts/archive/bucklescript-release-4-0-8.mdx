@@ -1,8 +1,7 @@
 ---
 author: hongbo
-date: "2018-12-05" 
+date: "2018-12-05"
 previewImg:
-category: compiler
 badge: release
 title: BuckleScript 4.0.8 (Part One)
 description: |
@@ -17,7 +16,7 @@ A detailed list of changes is available
 Most user-facing changes are bug fixes and small enhancements, while quite a
 lot of work has been done behind the scenes towards the more fundamental
 improvements coming down the line. This blog post refers to the BuckleScript
-runtime and some of the work we are doing to improve it. 
+runtime and some of the work we are doing to improve it.
 
 The design goal of BuckleScript is to make the runtime as small as possible.
 This runtime is divided into two parts: the C shims, and the fundamental
@@ -73,7 +72,7 @@ catching JS exceptions exposed the concrete representation of the exception
 encoding, in particular:
 
 ```ocaml
-match ... with 
+match ... with
 | OCamlException exn -> ..
 | Js.Exn.Error e -> ...
 ```
@@ -81,10 +80,10 @@ match ... with
 In this release, we introduced a function to avoid exposing such exception constructors:
 
 ```ocaml
-match ... with 
+match ... with
 | OCamlException exn -> ...
-| e -> 
-    match Js.asJsExn e with 
+| e ->
+    match Js.asJsExn e with
     | Some jserror -> ..
     | None -> ...
 ```
