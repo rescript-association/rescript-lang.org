@@ -21,10 +21,14 @@ import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 
 function shouldFilter(res) {
-  if (res.TAG === /* Npm */0 && res._0.name.startsWith("@elm-react")) {
+  if (res.TAG !== /* Npm */0) {
+    return false;
+  }
+  var pkg = res._0;
+  if (pkg.name.startsWith("@elm-react") || pkg.name.startsWith("bs-") || pkg.name.startsWith("@reason-react-native")) {
     return true;
   } else {
-    return false;
+    return pkg.name.startsWith("reason-react-native");
   }
 }
 
@@ -49,10 +53,10 @@ function isOfficial(res) {
     return res._0.official;
   }
   var pkg = res._0;
-  if (pkg.name === "bs-platform") {
+  if (pkg.name === "rescript" || pkg.name.startsWith("@rescript/")) {
     return true;
   } else {
-    return pkg.name.startsWith("@rescript/");
+    return pkg.name === "gentype";
   }
 }
 
@@ -517,6 +521,7 @@ function getStaticProps(_ctx) {
                               npmHref: pkg.links.npm
                             };
                     }));
+              console.log(pkges);
               var index_data_dir = Path.join(Process.cwd(), "./data");
               var urlResources = JSON.parse(Fs.readFileSync(Path.join(index_data_dir, "packages_url_resources.json"), "utf8"));
               var props = {

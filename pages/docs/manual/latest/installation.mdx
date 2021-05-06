@@ -8,12 +8,6 @@ canonical: "/docs/manual/latest/installation"
 
 Prerequisite: NPM, which comes with [NodeJS](https://nodejs.org/en/). [Yarn](https://yarnpkg.com/en/) also works.
 
-To install ReScript globally:
-
-```sh
-npm install -g bs-platform
-```
-
 ## New Project
 
 ```sh
@@ -28,13 +22,13 @@ That compiles your ReScript into JavaScript, then uses NodeJS to run said JavaSc
 
 During development, instead of running `npm run build` each time to compile, use `npm run start` to start a watcher that recompiles automatically after file changes.
 
-## Integrate Into Existing JS Project
+## Integrate Into an Existing JS Project
 
 If you already have a JavaScript project into which you'd like to add ReScript:
 
 - Install ReScript locally as a [devDependency](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file):
   ```sh
-  npm install --save-dev bs-platform
+  npm install rescript --save-dev 
   ```
 - Create a ReScript build configuration at the root:
   ```json
@@ -60,8 +54,8 @@ If you already have a JavaScript project into which you'd like to add ReScript:
 - Add convenience `npm` scripts to `package.json`:
   ```json
   "scripts": {
-    "re:build": "bsb -make-world -clean-world",
-    "re:start": "bsb -make-world -clean-world -w"
+    "re:build": "rescript",
+    "re:start": "rescript build -w"
   }
   ```
 

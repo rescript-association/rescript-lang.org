@@ -214,13 +214,20 @@ function make(props) {
                                     children: content
                                   });
                       }
-                    } else if (version._0 === "v8.0.0") {
-                      return React.createElement(ManualDocsLayout.V800.make, {
-                                  frontmatter: component.frontmatter,
-                                  children: content
-                                });
-                    } else {
-                      return null;
+                    }
+                    switch (version._0) {
+                      case "v8.0.0" :
+                          return React.createElement(ManualDocsLayout.V800.make, {
+                                      frontmatter: component.frontmatter,
+                                      children: content
+                                    });
+                      case "v9.0.0" :
+                          return React.createElement(ManualDocsLayout.V900.make, {
+                                      frontmatter: component.frontmatter,
+                                      children: content
+                                    });
+                      default:
+                        return null;
                     }
                   }
                   break;
