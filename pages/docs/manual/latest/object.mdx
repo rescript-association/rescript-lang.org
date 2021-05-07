@@ -126,6 +126,40 @@ MyJSFile.student1.name = "Mary";
 
 </CodeTab>
 
+## Combine Types
+
+You can spread one object type definition into another using `...`:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type point2d = {
+  "x": float,
+  "y": float,
+}
+type point3d = {
+  ...point2d,
+  "z": float,
+}
+
+let myPoint: point3d = {
+  "x": 1.0,
+  "y": 2.0,
+  "z": 3.0,
+}
+```
+```js
+var myPoint = {
+  x: 1.0,
+  y: 2.0,
+  z: 3.0
+};
+```
+
+</CodeTab>
+
+This only works with object types, not object values!
+
 ## Tips & Tricks
 
 Since objects don't require type declarations, and since ReScript infers all the types for you, you get to very quickly and easily (and dangerously) bind to any JavaScript API. Check the JS output tab:
