@@ -358,7 +358,7 @@ Here is an example on how to make a minimum set of `basicBlueTones` extensible f
 type basicBlueTone<'a> = [> #Blue | #DeepBlue | #LightBlue ] as 'a
 type color = basicBlueTone<[#Blue | #DeepBlue | #LightBlue | #Purple]>
 
-let color:  color = #Purple
+let color: color = #Purple
 
 // This will fail due to missing minimum constructors:
 type notWorking = basicBlueTone<[#Purple]>
@@ -402,7 +402,7 @@ var message = "Hello " + theCompany;
 
 </CodeTab>
 
-**Note**: for the coercion to work, the poly variant type needs to be closed. You'd need to annotate it, since an automatically inferred type ends up being open with a lower bound `[>`.
+**Note**: for the coercion to work, the poly variant type needs to be closed; you'd need to annotate it, since otherwise, `theCompany` would be inferred as `[> #Apple]`.
 
 ## Tips & Tricks
 
