@@ -56,7 +56,7 @@ npx rescript convert -all
 - First class module: from `(module S: Student)` to `module(S: Student)`.
 - No custom infix operator for now (including `mod`).
 - Object access: from `settings##visible #= true` to `settings["visible"] = true`. Rejoice!
-- Object: from `Js.t({"age": int})` to just `{"age": int}`. The `Js.t` part is now implicit.
+- Object: from `Js.t({"age": int})` to just `{"age": int}`. The `Js.t` part is now uneeded.
 - Attribute: from `[@myAttribute "hello"]` to `@myAttribute("hello")`. From `[%re bla]` to `%re(bla)`.
 - Removed dereference syntax `result^`. Just use `result.contents`.
 - `fun` pattern matching syntax removed.

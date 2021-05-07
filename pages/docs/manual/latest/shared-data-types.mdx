@@ -22,15 +22,14 @@ Unlike most compiled-to-js languages, in ReScript, **you don't need to write dat
 - Object. ReScript objects are JavaScript objects, vice-versa.
 - Function. They compile to clean JS functions.
 - Module. ReScript files are considered top-level modules, and are compiled to JS files 1 to 1. Nested modules are compiled to JavaScript objects.
-- Unit. The `unit` type, which has a single value `()`, compiles to `undefined` too. Likewise, you can treat an incoming JS `undefined` as `()`.
-
-<!-- TODO: talk about poly variant -->
+- Polymorphic variants.
+- Unit. The `unit` type, which has a single value `()`, compiles to `undefined` too. Likewise, you can treat an incoming JS `undefined` as `()` if that's the only value it'll ever be.
 
 **Types that are slightly different than JS, but that you can still use from JS**:
 - Int. **Ints are 32-bits**! Be careful, you can potentially treat them as JS numbers and vice-versa, but if the number's large, then you better treat JS numbers as floats. For example, we bind to Js.Date using `float`s.
 - Option. The `option` type's `None` value compiles into JS `undefined`. The `Some` value, e.g. `Some(5)`, compiles to `5`. Likewise, you can treat an incoming JS `undefined` as `None`. **JS `null` isn't handled here**. If your JS value can be `null`, use [Js.Nullable](api/js/nullable) helpers.
 - Exception.
-- Variant. Check the compiled JavaScript output of variant to see its shape. We don't recommend exporting a ReScript variant for pure JS usage, but you can do that if you have some interop needs.
+- Variant. Check the compiled JavaScript output of variant to see its shape. We don't recommend exporting a ReScript variant for pure JS usage, since they're harder to read as plain JS code, but you can do it.
 - List, which is just a regular variant.
 
 **Non-shared types (aka internal types)**:

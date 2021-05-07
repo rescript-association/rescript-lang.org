@@ -747,7 +747,7 @@ Here are some advices.
 
 Do not abuse the wildcard `_` too much. This prevents the compiler from giving you better exhaustiveness check, which would be especially important after a refactoring where you add a new case to a variant. Try only using `_` against infinite possibilities, e.g. string, int, etc.
 
-Use `when` clause sparingly.
+Use `if` clause sparingly.
 
 **Flatten your pattern-match whenever you can**. This is a real bug remover. Here's a series of examples, from worst to best:
 
