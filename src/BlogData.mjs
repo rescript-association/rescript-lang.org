@@ -255,6 +255,6 @@ var data = [
 
 export {
   data ,
-
+  
 }
 /* data Not a pure module */
