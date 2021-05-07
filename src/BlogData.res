@@ -3,6 +3,7 @@ type pair = {slug: string, fullslug: string}
 
 let data = Js.Array2.map(
   [
+    ("release-9-1", "2021-05-07-release-9-1"),
     ("rescript-association-rebranding", "2021-03-03-rescript-association-rebranding"),
     ("release-9-0", "2021-02-09-release-9-0"),
     ("release-8-3-pt2", "2020-09-25-release-8-3-2"),
