@@ -11,8 +11,7 @@ canonical: "/docs/manual/latest/build-pinned-dependencies"
 
 Usually we'd recommend to use ReScript in a single-codebase style by using one `bsconfig.json` file for your whole codebase.
 
-There are scenarios where you still want to connect and build multiple independent ReScript packages for one main project though (`yarn workspaces`-like "monorepos"). This is where `pinned-dependencies` come into play.
-
+There are scenarios where you still want to connect and build multiple independent ReScript packages for one main project though (`npm` workspaces-like "monorepos"). This is where `pinned-dependencies` come into play.
 
 ## Package Types
 
@@ -22,7 +21,7 @@ Before we go into detail, let's first explain all the different package types re
 - Pinned dependencies (these are your local packages that should always rebuild when you build your toplevel, those should be listed in `bs-dependencies` and `pinned-dependencies`)
 - Normal dependencies (these are packages that are consumed from npm and listed via `bs-dependencies`)
 
-Whenever a package is being built (`bsb -make-world`), the build system will build the toplevel package with its pinned-dependencies. So any changes made in a pinned dependency will automatically be reflected in the final app.
+Whenever a package is being built (`rescript build`), the build system will build the toplevel package with its pinned-dependencies. So any changes made in a pinned dependency will automatically be reflected in the final app.
 
 ## Build System Package Rules
 
@@ -108,7 +107,6 @@ Our `app` folder would be our toplevel package, consuming our `common` and `mypl
 }
 ```
 
-Now, whenever we are running `npx bsb -make-world` within our `app` package, the compiler would always rebuild any changes within its pinned dependencies as well.
+Now, whenever we are running `rescript build` within our `app` package, the compiler would always rebuild any changes within its pinned dependencies as well.
 
-**Important:** ReScript will not rebuild any `pinned-dependencies` in watch mode! This is due to the complexity of file watching, so you'd need to set up your own file-watcher process that runs `bsb -make-world` on specific file changes. E.g. you could use [`watchman-make`](https://facebook.github.io/watchman/docs/watchman-make.html) to automatically run the build task when a file in `common` or `myplugin` has been changed.
-
+**Important:** ReScript will not rebuild any `pinned-dependencies` in watch mode! This is due to the complexity of file watching, so you'd need to set up your own file-watcher process that runs `rescript build` on specific file changes.
