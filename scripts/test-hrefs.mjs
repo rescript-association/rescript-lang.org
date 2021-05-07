@@ -14,25 +14,18 @@ import path from "path";
 import fs from "fs";
 import urlModule from "url";
 import { URL } from 'url';
+import {data as blogIndex} from '../src/BlogData.mjs'
 
 const __dirname = new URL('.', import.meta.url).pathname;
 
-const blog_index = JSON.parse(fs.readFileSync(path.join(__dirname, "../data/blog_posts.json"), "utf8"))
-
-//const blog_index = require("../data/blog_posts.json");
-
-
-
-// Our blogpost urls are mapped via `data/blog_posts.json`
-// the blog_posts file has following structure: { [slug]: [filepath relative to _blogposts] }
 const mapBlogFilePath = path => {
-  const match = path.match(/\.\/_blogposts\/(.*\.mdx)/);
+  const match = path.match(/\.\/_blogposts\/(.*)\.mdx/);
 
   if (match) {
     let relPath = match[1];
-    let slug = Object.keys(blog_index).find(key => blog_index[key] === relPath);
-    if (slug != null) {
-      return `./pages/blog/${slug}`;
+    let slugAndFullslug = blogIndex.find(({fullslug}) => fullslug === relPath);
+    if (slugAndFullslug != null) {
+      return `./pages/blog/${slugAndFullslug.slug}`;
     }
     return path;
   }
