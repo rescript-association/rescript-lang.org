@@ -3,6 +3,10 @@
 
 var data = [
     [
+      "release-9-1",
+      "2021-05-07-release-9-1"
+    ],
+    [
       "rescript-association-rebranding",
       "2021-03-03-rescript-association-rebranding"
     ],
@@ -251,6 +255,6 @@ var data = [
 
 export {
   data ,
-  
+
 }
 /* data Not a pure module */
