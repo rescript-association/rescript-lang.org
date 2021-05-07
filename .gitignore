@@ -10,7 +10,6 @@ node_modules/
 index_data/*.json
 
 # these docs are checked in, but we consider them frozen.
-# git add -f file to update them
 pages/docs/manual/v8.0.0/
 pages/docs/manual/v9.0.0/
 
