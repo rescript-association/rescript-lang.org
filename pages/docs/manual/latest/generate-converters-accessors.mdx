@@ -6,6 +6,13 @@ canonical: "/docs/manual/latest/generate-converters-accessors"
 
 # Generate Converters & Helpers
 
+**Note**: if you're looking for:
+- `@deriving(jsConverter)` for records
+- `@deriving({jsConverter: newType})` for records
+- `@deriving(jsConverter)` for polymorphic variants
+
+These particular ones are no longer needed. Select a doc version lower than `9.0` in the sidebar to see their old docs.
+
 <!-- TODO: genType -->
 
 When using ReScript, you will sometimes come into situations where you want to
@@ -105,87 +112,6 @@ console.log(Belt_Array.map(pets, name).join("&"));
 
 </CodeTab>
 
-## Generate Converters for JS Object and Record
-
-> **Note:** In ReScript >= v7 [records are already compiled to JS
-> objects](bind-to-js-object#bind-to-record-like-js-objects). `@deriving(jsConverter)` is therefore
-> obsolete and will generate a no-op function for compatibility instead.
-
-Use `@deriving(jsConverter)` on a record type to create convertion functions between records / JS object runtime values.
-
-
-```res
-@deriving(jsConverter)
-type coordinates = {
-  x: int,
-  y: int
-};
-```
-
-Generates 2 functions of the following types:
-
-```res
-let coordinatesToJs: coordinates => {"x": int, "y": int};
-
-let coordinatesFromJs: {.. "x": int, "y": int} => coordinates;
-```
-
-**Note**:
-
-- `coordinatesFromJs` uses an open object type that accepts more fields, just to be more permissive.
-- The converters are shallow. They don't recursively drill into the fields and convert them. This preserves the speed and simplicity of output while satisfying 80% of use-cases.
-
-### Usage
-
-This exports a `jsCoordinates` JS object (not a record!) for JS files to use:
-
-```res
-let jsCoordinates = coordinatesToJs({x: 1, y: 2});
-```
-
-This binds to a `jsCoordinates` record (not a JS object!) that exists on the JS side, presumably created by JS calling the function `coordinatesFromJs`:
-
-```res
-@module("myGame")
-external jsCoordinates : coordinates = "jsCoordinates";
-```
-
-### More Safety
-
-The above generated functions use JS object types. You can also hide this implementation detail by making the object type **abstract** by using the `newType` option with `@deriving(jsConverter)`:
-
-```res
-@deriving({jsConverter: newType})
-type coordinates = {
-  x: int,
-  y: int,
-}
-```
-
-Generates 2 functions of the following types:
-
-```resi
-let coordinatesToJs: coordinates => abs_coordinates;
-
-let coordinatesFromJs: abs_coordinates => coordinates;
-```
-
-#### Usage
-
-Using `newType`, you've now prevented consumers from inadvertently doing the following:
-
-```res
-let myCoordinates = {
-  x: 10,
-  y: 20
-};
-let jsCoords = coordinatesToJs(myCoordinates);
-
-let x = jsCoords["x"]; /* disallowed! Don't access the object's internal details */
-```
-
-Same generated output. Isn't it great that types prevent invalid accesses you'd otherwise have to encode at runtime?
-
 ## Generate Converters for JS Integer Enums and Variants
 
 Use `@deriving(jsConverter)` on a variant type to create converter functions that allow back and forth conversion between JS integer enum and ReScript variant values.
@@ -271,28 +197,6 @@ let kiwi = fruitFromJs(jsKiwi)
 
 let error = fruitFromJs(100) /* nope, can't take a random int */
 ```
-
-## Generate Converters for JS String Enums and Polymorphic Variants
-
-> **Note**: Since ReScript v8.2, polymorphic variants are already compiled to strings, so this feature is getting deprecated at some point. It's currently still useful for aliasing JS output with `@as`.
-
-Similarly as with [generating int converters](#generate-converters-between-js-integer-enums-and-variants), use `@deriving(jsConverter)` on a polymorphic variant type to create converter functions for JS string and ReScript poly variant values.
-
-### Usage
-
-```res
-@deriving(jsConverter)
-type fruit = [
-  | #Apple
-  | @as("miniCoconut") #Kiwi
-  | #Watermelon
-]
-
-let appleString = fruitToJs(#Apple); /* "Apple" */
-let kiwiString = fruitToJs(#Kiwi); /* "miniCoconut" */
-```
-
-As in similar use-cases before, you can also use `@deriving({jsConverter: newType})` to generate abstract types instead.
 
 ## Convert Record Type to Abstract Record
 
