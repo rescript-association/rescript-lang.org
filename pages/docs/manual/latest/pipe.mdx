@@ -92,13 +92,13 @@ Assuming we don't need the chaining behavior above, we'd bind to each case this 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res prelude
-@bs.send external map: (array<'a>, 'a => 'b) => array<'b> = "map"
-@bs.send external filter: (array<'a>, 'a => bool) => array<'a> = "filter"
+@send external map: (array<'a>, 'a => 'b) => array<'b> = "map"
+@send external filter: (array<'a>, 'a => bool) => array<'a> = "filter"
 
 type request
-@bs.val external asyncRequest: unit => request = "asyncRequest"
-@bs.send external setWaitDuration: (request, int) => request = "setWaitDuration"
-@bs.send external send: request => unit = "send"
+@val external asyncRequest: unit => request = "asyncRequest"
+@send external setWaitDuration: (request, int) => request = "setWaitDuration"
+@send external send: request => unit = "send"
 ```
 ```js
 // Empty output

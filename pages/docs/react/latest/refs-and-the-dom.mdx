@@ -79,7 +79,7 @@ This code uses a `React.ref` to store a reference to an `input` DOM node to put 
 ```res
 // CustomTextInput.res
 
-@bs.send external focus: Dom.element => unit = "focus"
+@send external focus: Dom.element => unit = "focus"
 
 @react.component
 let make = () => {
@@ -109,7 +109,7 @@ function CustomTextInput(Props) {
       dom.focus();
       return ;
     }
-    
+
   };
   return React.createElement("div", undefined, React.createElement("input", {
                   ref: textInput,
@@ -157,7 +157,7 @@ let make = () => {
 
 ```js
 // Compiler Error:
-// Ref cannot be passed as a normal prop. Please use `forwardRef` 
+// Ref cannot be passed as a normal prop. Please use `forwardRef`
 // API instead
 ```
 
@@ -189,7 +189,7 @@ The example below implements a common pattern: using the ref callback to store a
 ```res
 // CustomTextInput.re
 
-@bs.send external focus: Dom.element => unit = "focus"
+@send external focus: Dom.element => unit = "focus"
 
 @react.component
 let make = () => {
@@ -218,12 +218,12 @@ function CustomTextInput(Props) {
   var textInput = React.useRef(null);
   var setTextInputRef = function (element) {
     textInput.current = element;
-    
+
   };
   var focusTextInput = function (param) {
     return Belt_Option.forEach(Caml_option.nullable_to_opt(textInput.current), (function (input) {
                   input.focus();
-                  
+
                 }));
   };
   return React.createElement("div", undefined, React.createElement("input", {
@@ -248,7 +248,7 @@ You can pass callback refs between components like you can with object refs that
 ```res
 // Parent.res
 
-@bs.send external focus: Dom.element => unit = "focus"
+@send external focus: Dom.element => unit = "focus"
 
 module CustomTextInput = {
   @react.component
@@ -285,7 +285,7 @@ function Parent(Props) {
   var textInput = React.useRef(null);
   var setInputRef = function (element) {
     textInput.current = element;
-    
+
   };
   return React.createElement(CustomTextInput, {
               setInputRef: setInputRef

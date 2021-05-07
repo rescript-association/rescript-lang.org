@@ -14,8 +14,8 @@ The `@set` decorator is used to set a property of an object.
 
 ```res
 type window
-@bs.val external window: window = "window"
-@bs.set external setName: (window, string) => unit = "name"
+@val external window: window = "window"
+@set external setName: (window, string) => unit = "name"
 
 setName(window, "MyWindow")
 ```

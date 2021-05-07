@@ -51,7 +51,7 @@ If one field of the ReScript record has option type, this is exported to an opti
 ReScript object values of type e.g. `{. "x":int}` such as `{"x": 0}`, `{"x": 1}`, `{"x": 2}`, are exported as identical JS object values `{x:0}`, `{x:1}`, `{x:2}`. This requires no conversion. So they are exported to JS values of type `{x:number}`.
 A conversion is required only when the type of some field requires conversions.
 
-Since objects are immutable by default, their fields will be exported to readonly property types in Flow/TS. Mutable fields are specified in ReScript by e.g. `{. [@bs.set] "mutableField": string }`.
+Since objects are immutable by default, their fields will be exported to readonly property types in Flow/TS. Mutable fields are specified in ReScript by e.g. `{ @set "mutableField": string }`.
 
 It is possible to mix object and option types, so for example the ReScript type `{. "x":int, "y":option(string)}` exports to JS type `{x:number, ?y: string}`, requires no conversion, and allows option pattern matching on the ReScript side.
 

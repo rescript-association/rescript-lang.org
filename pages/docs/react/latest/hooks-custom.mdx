@@ -26,8 +26,8 @@ Let's go back to a previous example from our [React.useEffect section](./hooks-e
 module ChatAPI = {
   // Imaginary globally available ChatAPI for demo purposes
   type status = { isOnline: bool };
-  @bs.val external subscribeToFriendStatus: (string, status => unit) => unit = "subscribeToFriendStatus";
-  @bs.val external unsubscribeFromFriendStatus: (string, status => unit) => unit = "unsubscribeFromFriendStatus";
+  @val external subscribeToFriendStatus: (string, status => unit) => unit = "subscribeToFriendStatus";
+  @val external unsubscribeFromFriendStatus: (string, status => unit) => unit = "unsubscribeFromFriendStatus";
 }
 
 type state = Offline | Loading | Online;
@@ -43,7 +43,7 @@ let make = (~friendId: string) => {
       })
     }
 
-    ChatAPI.subscribeToFriendStatus(friendId, handleStatusChange); 
+    ChatAPI.subscribeToFriendStatus(friendId, handleStatusChange);
     setState(_ => Loading);
 
     let cleanup = () => {
@@ -52,13 +52,13 @@ let make = (~friendId: string) => {
 
     Some(cleanup)
   })
-  
+
   let text = switch(state) {
     | Offline => friendId ++ " is offline"
     | Online => friendId ++ " is online"
     | Loading => "loading..."
   }
-  
+
   <div>
   	{React.string(text)}
   </div>
@@ -89,7 +89,7 @@ function FriendStatus(Props) {
               }));
         return (function (param) {
                   unsubscribeFromFriendStatus(friendId, handleStatusChange);
-                  
+
                 });
       });
   var text;
@@ -103,7 +103,7 @@ function FriendStatus(Props) {
     case /* Online */2 :
         text = friendId + " is online";
         break;
-    
+
   }
   return React.createElement("div", undefined, text);
 }
@@ -119,7 +119,7 @@ Now let’s say that our chat application also has a contact list, and we want t
 // FriendListItem.res
 type state = Offline | Loading | Online;
 
-// module ChatAPI = {...} 
+// module ChatAPI = {...}
 
 type friend = {
   id: string,
@@ -137,7 +137,7 @@ let make = (~friend: friend) => {
       })
     }
 
-    ChatAPI.subscribeToFriendStatus(friend.id, handleStatusChange); 
+    ChatAPI.subscribeToFriendStatus(friend.id, handleStatusChange);
     setState(_ => Loading);
 
     let cleanup = () => {
@@ -146,13 +146,13 @@ let make = (~friend: friend) => {
 
     Some(cleanup)
   })
-  
+
   let color = switch(state) {
     | Offline => "red"
     | Online => "green"
     | Loading => "grey"
   }
-  
+
   <li style={ReactDOMStyle.make(~color,())}>
       {React.string(friend.name)}
   </li>
@@ -182,7 +182,7 @@ function FriendListItem(Props) {
               }));
         return (function (param) {
                   unsubscribeFromFriendStatus(friend.id, handleStatusChange);
-                  
+
                 });
       });
   var color;
@@ -196,7 +196,7 @@ function FriendListItem(Props) {
     case /* Online */2 :
         color = "green";
         break;
-    
+
   }
   return React.createElement("li", {
               style: {
@@ -275,7 +275,7 @@ function useFriendStatus(friendId) {
               }));
         return (function (param) {
                   unsubscribeFromFriendStatus(friendId, handleStatusChange);
-                  
+
                 });
       });
   return match[0];
@@ -345,7 +345,7 @@ function FriendStatus(Props) {
     case /* Online */2 :
         color = "green";
         break;
-    
+
   }
   return React.createElement("li", {
               style: {
@@ -370,7 +370,7 @@ let make = (~friend: friend) => {
     | Online => "green"
     | Loading => "grey"
   }
-  
+
   <li style={ReactDOMStyle.make(~color,())}>
       {React.string(friend.name)}
   </li>
@@ -392,7 +392,7 @@ function FriendListItem(Props) {
     case /* Online */2 :
         color = "green";
         break;
-    
+
   }
   return React.createElement("li", {
               style: {
@@ -495,7 +495,7 @@ function Playground(Props) {
     case /* Online */2 :
         color = /* Green */1;
         break;
-    
+
   }
   var onChange = function (evt) {
     return Curry._1(setRecipientId, evt.target.value);

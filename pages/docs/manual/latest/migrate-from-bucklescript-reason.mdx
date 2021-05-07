@@ -57,7 +57,7 @@ npx rescript convert -all
 - No custom infix operator for now (including `mod`).
 - Object access: from `settings##visible #= true` to `settings["visible"] = true`. Rejoice!
 - Object: from `Js.t({"age": int})` to just `{"age": int}`. The `Js.t` part is now implicit.
-- Attribute: from `[@bs.deriving accessors]` to `@bs.deriving(accessors)`. From `[%re bla]` to `%re(bla)`.
+- Attribute: from `[@myAttribute "hello"]` to `@myAttribute("hello")`. From `[%re bla]` to `%re(bla)`.
 - Removed dereference syntax `result^`. Just use `result.contents`.
 - `fun` pattern matching syntax removed.
 - Type declaration is non-recursive by default, consistent with let bindings. To have recursive types, use `type rec myList<'a> = Nil | Cons('a, myList<'a>)`.

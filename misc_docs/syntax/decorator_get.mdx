@@ -14,8 +14,8 @@ The `@get` decorator is used to bind to a property of an object.
 
 ```res
 type window
-@bs.val external window: window = "window"
-@bs.get external getName: window => string = "name"
+@val external window: window = "window"
+@get external getName: window => string = "name"
 
 let name = getName(window)
 ```

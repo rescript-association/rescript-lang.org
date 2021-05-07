@@ -20,7 +20,7 @@ module MdxComp = {
     }
   `)
 
-  /* @bs.get */
+  /* @get */
   /* external frontmatter: t => Js.Json.t = "frontmatter" */
 }
 

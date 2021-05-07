@@ -263,7 +263,7 @@ Quite a few JS libraries use functions that can accept many types of arguments. 
 
 ```res example
 // reserved for internal usage
-@bs.module("myLibrary") external draw : 'a => unit = "draw"
+@module("myLibrary") external draw : 'a => unit = "draw"
 
 type animal =
   | MyFloat(float)
@@ -297,8 +297,8 @@ betterDraw({
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-@bs.module("myLibrary") external drawFloat: float => unit = "draw"
-@bs.module("myLibrary") external drawString: string => unit = "draw"
+@module("myLibrary") external drawFloat: float => unit = "draw"
+@module("myLibrary") external drawString: string => unit = "draw"
 ```
 ```js
 // Empty output

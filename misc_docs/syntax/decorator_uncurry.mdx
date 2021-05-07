@@ -15,7 +15,7 @@ In the following example we are binding to a function `map(arr, callback)` and u
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-@bs.send
+@send
 external map: (array<'a>, @uncurry ('a => 'b)) => array<'b> = "map"
 
 let result = map([1, 2, 3], x => x + 1)

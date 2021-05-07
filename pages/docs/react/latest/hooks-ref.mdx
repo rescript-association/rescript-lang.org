@@ -52,7 +52,7 @@ More infos on direct DOM manipulation can be found in the [Refs and the DOM](./r
 ```res
 // TextInputWithFocusButton.re
 
-@bs.send external focus: Dom.element => unit = "focus"
+@send external focus: Dom.element => unit = "focus"
 
 @react.component
 let make = () => {
@@ -77,7 +77,7 @@ function TextInputWithFocusButton(Props) {
   var onClick = function (param) {
     return Belt_Option.forEach(Caml_option.nullable_to_opt(inputEl.current), (function (input) {
                   input.focus();
-                  
+
                 }));
   };
   return React.createElement(React.Fragment, undefined, React.createElement("input", {
@@ -100,7 +100,7 @@ Reusing the example from our [Refs and the DOM](./refs-and-the-dom#callback-refs
 ```res
 // CustomTextInput.re
 
-@bs.send external focus: Dom.element => unit = "focus"
+@send external focus: Dom.element => unit = "focus"
 
 @react.component
 let make = () => {
@@ -129,12 +129,12 @@ function CustomTextInput(Props) {
   var textInput = React.useRef(null);
   var setTextInputRef = function (element) {
     textInput.current = element;
-    
+
   };
   var focusTextInput = function (param) {
     return Belt_Option.forEach(Caml_option.nullable_to_opt(textInput.current), (function (input) {
                   input.focus();
-                  
+
                 }));
   };
   return React.createElement("div", undefined, React.createElement("input", {

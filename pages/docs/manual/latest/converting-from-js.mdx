@@ -188,7 +188,7 @@ Now this triggers the next type error, that `school` isn't found. Let's use [`ex
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-@bs.module external school: 'whatever = "school"
+@module external school: 'whatever = "school"
 
 let defaultId = 10
 
@@ -242,8 +242,8 @@ type payload = {
   student: student
 }
 
-@bs.module external school: school = "school"
-@bs.send external getStudentById: (school, int) => student = "getStudentById"
+@module external school: school = "school"
+@send external getStudentById: (school, int) => student = "getStudentById"
 
 let defaultId = 10
 

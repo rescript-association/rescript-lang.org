@@ -1,5 +1,5 @@
 ---
-title: Forwarding Refs 
+title: Forwarding Refs
 description: "Forwarding Ref values in ReScript and React"
 canonical: "/docs/react/latest/forwarding-refs"
 ---
@@ -52,7 +52,7 @@ module FancyInput = {
     <div> <input type_="text" ref=inputRef /> children </div>
 }
 
-@bs.send external focus: Dom.element => unit = "focus"
+@send external focus: Dom.element => unit = "focus"
 
 @react.component
 let make = () => {
@@ -105,7 +105,7 @@ module FancyInput = {
   )
 }
 
-@bs.send external focus: Dom.element => unit = "focus"
+@send external focus: Dom.element => unit = "focus"
 
 @react.component
 let make = () => {
@@ -158,7 +158,7 @@ function App(Props) {
   var onClick = function (param) {
     return Belt_Option.forEach(Caml_option.nullable_to_opt(input.current), (function (input) {
                   input.focus();
-                  
+
                 }));
   };
   return React.createElement("div", undefined, React.createElement(make, {
