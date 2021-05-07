@@ -39,13 +39,12 @@ For running `gentype` with ReScript via `npm` workflow, add following script in 
 
 ```
 scripts: {
-  "build": "bsb -make-world",
-  "clean": "bsb -clean-world"
+  "build": "rescript",
+  "clean": "rescript clean"
 }
 ```
 
-> **Note:** `bsb` will automatically
-> detect your installed `genType` version.
+> **Note:** `rescript` will automatically detect your installed `genType` version.
 
 ## Configuration
 
@@ -84,7 +83,7 @@ Configure your shim files within `"gentypeconfig"` in your [`bsconfig.json`](htt
 
 Open any relevant `*.res` file and add `@genType` annotations to any bindings / values / functions to be used from JavaScript. If an annotated value uses a type, the type must be annotated too. See e.g.  [Hooks.res](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/src/Hooks.res).
 
-Save the file and rebuild the project via `npm run bs:build` or similar. You should now see a `*.gen.tsx` (for TypeScript, or `*.gen.js` for Flow) file with the same name (e.g. `MyComponent.res` -> `MyComponent.gen.tsx`).  
+Save the file and rebuild the project via `npm run bs:build` or similar. You should now see a `*.gen.tsx` (for TypeScript, or `*.gen.js` for Flow) file with the same name (e.g. `MyComponent.res` -> `MyComponent.gen.tsx`).
 
 Any values exported from `MyComponent.res` can then be imported from JS. For example:
 

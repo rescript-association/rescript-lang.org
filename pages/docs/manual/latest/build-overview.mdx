@@ -7,41 +7,66 @@ canonical: "/docs/manual/latest/build-overview"
 
 # Build System Overview
 
-ReScript comes with a build system, bsb, that's meant to be fast, lean and used as the authoritative build system of the community.
+ReScript comes with a build system, [`rescript`](https://www.npmjs.com/package/rescript), that's fast, lean and used as the authoritative build system of the community.
 
-The build description file is called `bsconfig.json`. Every ReScript project needs one.
+Every ReScript project needs a build description file, `bsconfig.json`.
 
-## Build Project 
+## Options
+
+See `rescript -help`:
+
+```
+❯ rescript -help
+Available flags
+-v, -version  display version number
+-h, -help     display help
+Subcommands:
+    build
+    clean
+    format
+    convert
+    help
+Run rescript subcommand -h for more details,
+For example:
+    rescript build -h
+    rescript format -h
+The default `rescript` is equivalent to `rescript build` subcommand
+```
+
+## Build Project
 
 Each build will create build artifacts from your project's source files.
 
 **To build a project (including its dependencies / pinned-dependencies)**, run:
 
 ```sh
-bsb -make-world
+rescript
 ```
 
-Add `-w` to keep the built-in watcher running. Any new file change will be picked up and the build will re-run.
+Which is an alias for `rescript build`.
+
+To keep a build watcher, run:
+
+```sh
+rescript build -w
+```
+
+Any new file change will be picked up and the build will re-run.
 
 **Note**: third-party libraries (in `node_modules`, or via `pinned-dependencies`) aren't watched, as doing so may exceed the node.js watcher count limit.
 
-**Note 2**: In case you want to set up a project in a JS-monorepo-esque approach (`yarn workspaces` / `lerna`) where changes in your sub packages should be noticed by the compiler (`bsb -make-world`), you will need to define pinned dependencies in your main project's `bsconfig.json`. More details [here](./build-pinned-dependencies).
-
-**To build only your project's files (without dependencies)**, run:
-
-
-```sh
-bsb
-```
+**Note 2**: In case you want to set up a project in a JS-monorepo-esque approach (`npm` and `yarn` workspaces) where changes in your sub packages should be noticed by the build, you will need to define pinned dependencies in your main project's `bsconfig.json`. More details [here](./build-pinned-dependencies).
 
 ## Clean Project
 
 If you ever get into a stale build for edge-case reasons, use:
 
 ```sh
-bsb -clean-world
+rescript clean
 ```
 
-This will clean all your project's build artifacts, including those in your dependencies. Alternatively you can run `bsb -clean` to clean your project's build artifacts only.
+This will clean your own project's build artifacts. To also clean the dependencies' artifacts:
 
-For more infos, run `bsb -help` to see all the available options.
+```sh
+rescript clean -with-deps
+```
