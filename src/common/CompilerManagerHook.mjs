@@ -32,6 +32,7 @@ function loadScriptPromise(url) {
 }
 
 var versions = [
+  "v9.1.2",
   "v9.0.2",
   "v9.0.1",
   "v9.0.0",
