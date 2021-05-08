@@ -1,0 +1,30 @@
+---
+id: "warning-decorator"
+keywords: ["warning", "decorator"]
+name: "@@warning"
+summary: "This is the `@@warning` decorator."
+category: "decorators"
+---
+
+The `@@warning` decorator is used to selectively turn compiler warnings on or off.
+
+### Example
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// Turn off warning 44
+@@warning("-44")
+
+// Turn off warnings 44 and 102
+@@warning("-44-102")
+```
+
+```js
+```
+
+</CodeTab>
+
+### References
+
+* [Build configuration warnings](/docs/manual/latest/build-configuration#warnings)
