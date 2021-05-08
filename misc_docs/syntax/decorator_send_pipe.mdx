@@ -25,7 +25,7 @@ let el = getElementById("myId", doc)
 // Bind to a method on an array
 @bs.send.pipe(: array<'a>)
 external fillInPlace: 'a => array<'a> = "fill"
-let a = fillInPlace2([1, 2, 3], 99)
+let a = fillInPlace(99, [1, 2, 3])
 ```
 
 ```js
