@@ -58,10 +58,7 @@ module CategorySelector = {
   }
 
   @react.component
-  let make = (
-    ~selected: selection,
-    ~onSelected: selection => unit,
-  ) => {
+  let make = (~selected: selection, ~onSelected: selection => unit) => {
     let tabs = [All, Archived]
 
     <div className="text-16 w-full flex items-center justify-between text-gray-60">
@@ -334,8 +331,7 @@ let default = (props: props): React.element => {
       <div className="hidden sm:flex justify-center ">
         <div className="my-16 w-full" style={ReactDOMStyle.make(~maxWidth="12rem", ())}>
           <CategorySelector
-            onSelected={selection => setSelection(_ => selection)}
-            selected=currentSelection
+            onSelected={selection => setSelection(_ => selection)} selected=currentSelection
           />
         </div>
       </div>
@@ -371,29 +367,29 @@ let default = (props: props): React.element => {
 }
 
 let getStaticProps: Next.GetStaticProps.t<props, params> = _ctx => {
-  let (posts, malformed, archived) = BlogApi.getAllPosts()->Belt.Array.reduce(
-    ([], [], []),
-    (acc, postData) => {
-      let (posts, malformed, archived) = acc
-      let id = postData.slug
+  let (posts, malformed, archived) = BlogApi.getAllPosts()->Belt.Array.reduce(([], [], []), (
+    acc,
+    postData,
+  ) => {
+    let (posts, malformed, archived) = acc
+    let id = postData.slug
 
-      let decoded = BlogFrontmatter.decode(postData.frontmatter)
+    let decoded = BlogFrontmatter.decode(postData.frontmatter)
 
-      switch decoded {
-      | Error(message) =>
-        let m = {Malformed.id: id, message: message}
-        let malformed = Belt.Array.concat(malformed, [m])
-        (posts, malformed, archived)
-      | Ok(frontmatter) =>
-        if postData.archived {
-          Js.Array2.push(archived, {Post.id: id, frontmatter: frontmatter})->ignore
-        } else {
-          Js.Array2.push(posts, {Post.id: id, frontmatter: frontmatter})->ignore
-        }
-        (posts, malformed, archived)
+    switch decoded {
+    | Error(message) =>
+      let m = {Malformed.id: id, message: message}
+      let malformed = Belt.Array.concat(malformed, [m])
+      (posts, malformed, archived)
+    | Ok(frontmatter) =>
+      if postData.archived {
+        Js.Array2.push(archived, {Post.id: id, frontmatter: frontmatter})->ignore
+      } else {
+        Js.Array2.push(posts, {Post.id: id, frontmatter: frontmatter})->ignore
       }
-    },
-  )
+      (posts, malformed, archived)
+    }
+  })
 
   let props = {
     posts: Post.orderByDate(posts),

@@ -10,7 +10,10 @@ let data = Js.Array2.map(
     ("release-8-3-pt1", "2020-09-25-release-8-3"),
     ("new-rescript-logo", "2020-08-28-new-rescript-logo"),
     ("bucklescript-is-rebranding", "2020-08-10-bucklescript-is-rebranding"),
-    ("a-note-on-bucklescripts-future-commitments", "archive/a-note-on-bucklescripts-future-commitments"),
+    (
+      "a-note-on-bucklescripts-future-commitments",
+      "archive/a-note-on-bucklescripts-future-commitments",
+    ),
     ("a-small-step-for-bucklescript", "archive/a-small-step-for-bucklescript"),
     ("a-story-of-exception-encoding", "archive/a-story-of-exception-encoding"),
     ("a-story-of-lazy-encoding", "archive/a-story-of-lazy-encoding"),
@@ -61,7 +64,10 @@ let data = Js.Array2.map(
     ("union-types-in-bucklescript", "archive/union-types-in-bucklescript"),
     ("whats-new-in-7-pt1", "archive/whats-new-in-7-pt1"),
     ("whats-new-in-7-pt2", "archive/whats-new-in-7-pt2"),
-    ("editor-support-custom-operators-and-more", "2020-11-17-editor-support-custom-operators-and-more"),
+    (
+      "editor-support-custom-operators-and-more",
+      "2020-11-17-editor-support-custom-operators-and-more",
+    ),
     ("editor-support-release-1-0", "2020-11-26-editor-support-release-1-0"),
     ("bucklescript-release-8-4", "2020-12-07-release-8-4"),
   ],

@@ -153,16 +153,7 @@ let default = (props: props) => {
     : React.null
 
   let content = switch fm {
-  | Ok({
-      date,
-      author,
-      co_authors,
-      title,
-      description,
-      canonical,
-      articleImg,
-      previewImg,
-    }) =>
+  | Ok({date, author, co_authors, title, description, canonical, articleImg, previewImg}) =>
     <div className="w-full">
       <Meta
         title={title ++ " | ReScript Blog"}

@@ -6,7 +6,7 @@ type t = {
   ghEditHref: string,
 }
 
-let decode = (json) => {
+let decode = json => {
   open! Json.Decode
   try Some({
     title: field("title", string, json),
