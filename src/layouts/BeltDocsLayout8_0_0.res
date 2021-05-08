@@ -22,15 +22,15 @@ let setNavs = [
     open NavItem
     {name: "HashSet", href: "/docs/manual/v8.0.0/api/belt/hash-set"}
   },
-  {name: "HashSetInt", href: "/docs/manual/v8.0.0/api/belt/hash-set-int"},
+  {name: "HashSet.Int", href: "/docs/manual/v8.0.0/api/belt/hash-set-int"},
   {
-    name: "HashSetString",
+    name: "HashSet.String",
     href: "/docs/manual/v8.0.0/api/belt/hash-set-string",
   },
   {name: "Set", href: "/docs/manual/v8.0.0/api/belt/set"},
-  {name: "SetDict", href: "/docs/manual/v8.0.0/api/belt/set-dict"},
-  {name: "SetInt", href: "/docs/manual/v8.0.0/api/belt/set-int"},
-  {name: "SetString", href: "/docs/manual/v8.0.0/api/belt/set-string"},
+  {name: "Set.Dict", href: "/docs/manual/v8.0.0/api/belt/set-dict"},
+  {name: "Set.Int", href: "/docs/manual/v8.0.0/api/belt/set-int"},
+  {name: "Set.String", href: "/docs/manual/v8.0.0/api/belt/set-string"},
 ]
 
 let mapNavs = [
@@ -38,15 +38,15 @@ let mapNavs = [
     open NavItem
     {name: "HashMap", href: "/docs/manual/v8.0.0/api/belt/hash-map"}
   },
-  {name: "HashMapInt", href: "/docs/manual/v8.0.0/api/belt/hash-map-int"},
+  {name: "HashMap.Int", href: "/docs/manual/v8.0.0/api/belt/hash-map-int"},
   {
-    name: "HashMapString",
+    name: "HashMap.String",
     href: "/docs/manual/v8.0.0/api/belt/hash-map-string",
   },
   {name: "Map", href: "/docs/manual/v8.0.0/api/belt/map"},
-  {name: "MapDict", href: "/docs/manual/v8.0.0/api/belt/map-dict"},
-  {name: "MapInt", href: "/docs/manual/v8.0.0/api/belt/map-int"},
-  {name: "MapString", href: "/docs/manual/v8.0.0/api/belt/map-string"},
+  {name: "Map.Dict", href: "/docs/manual/v8.0.0/api/belt/map-dict"},
+  {name: "Map.Int", href: "/docs/manual/v8.0.0/api/belt/map-int"},
+  {name: "Map.String", href: "/docs/manual/v8.0.0/api/belt/map-string"},
 ]
 
 let mutableCollectionsNavs = [
@@ -58,21 +58,21 @@ let mutableCollectionsNavs = [
     }
   },
   {
-    name: "MutableMapInt",
+    name: "MutableMap.Int",
     href: "/docs/manual/v8.0.0/api/belt/mutable-map-int",
   },
   {
-    name: "MutableMapString",
+    name: "MutableMap.String",
     href: "/docs/manual/v8.0.0/api/belt/mutable-map-string",
   },
   {name: "MutableQueue", href: "/docs/manual/v8.0.0/api/belt/mutable-queue"},
   {name: "MutableSet", href: "/docs/manual/v8.0.0/api/belt/mutable-set"},
   {
-    name: "MutableSetInt",
+    name: "MutableSet.Int",
     href: "/docs/manual/v8.0.0/api/belt/mutable-set-int",
   },
   {
-    name: "MutableSetString",
+    name: "MutableSet.String",
     href: "/docs/manual/v8.0.0/api/belt/mutable-set-string",
   },
   {name: "MutableStack", href: "/docs/manual/v8.0.0/api/belt/mutable-stack"},
@@ -100,9 +100,9 @@ let sortNavs = [
       href: "/docs/manual/v8.0.0/api/belt/sort-array",
     }
   },
-  {name: "SortArrayInt", href: "/docs/manual/v8.0.0/api/belt/sort-array-int"},
+  {name: "SortArray.Int", href: "/docs/manual/v8.0.0/api/belt/sort-array-int"},
   {
-    name: "SortArrayString",
+    name: "SortArray.String",
     href: "/docs/manual/v8.0.0/api/belt/sort-array-string",
   },
 ]

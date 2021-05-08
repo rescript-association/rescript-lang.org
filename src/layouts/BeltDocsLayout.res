@@ -22,12 +22,12 @@ let setNavs = [
     open NavItem
     {name: "HashSet", href: "/docs/manual/latest/api/belt/hash-set"}
   },
-  {name: "HashSetInt", href: "/docs/manual/latest/api/belt/hash-set-int"},
-  {name: "HashSetString", href: "/docs/manual/latest/api/belt/hash-set-string"},
+  {name: "HashSet.Int", href: "/docs/manual/latest/api/belt/hash-set-int"},
+  {name: "HashSet.String", href: "/docs/manual/latest/api/belt/hash-set-string"},
   {name: "Set", href: "/docs/manual/latest/api/belt/set"},
-  {name: "SetDict", href: "/docs/manual/latest/api/belt/set-dict"},
-  {name: "SetInt", href: "/docs/manual/latest/api/belt/set-int"},
-  {name: "SetString", href: "/docs/manual/latest/api/belt/set-string"},
+  {name: "Set.Dict", href: "/docs/manual/latest/api/belt/set-dict"},
+  {name: "Set.Int", href: "/docs/manual/latest/api/belt/set-int"},
+  {name: "Set.String", href: "/docs/manual/latest/api/belt/set-string"},
 ]
 
 let mapNavs = [
@@ -35,12 +35,12 @@ let mapNavs = [
     open NavItem
     {name: "HashMap", href: "/docs/manual/latest/api/belt/hash-map"}
   },
-  {name: "HashMapInt", href: "/docs/manual/latest/api/belt/hash-map-int"},
-  {name: "HashMapString", href: "/docs/manual/latest/api/belt/hash-map-string"},
+  {name: "HashMap.Int", href: "/docs/manual/latest/api/belt/hash-map-int"},
+  {name: "HashMap.String", href: "/docs/manual/latest/api/belt/hash-map-string"},
   {name: "Map", href: "/docs/manual/latest/api/belt/map"},
-  {name: "MapDict", href: "/docs/manual/latest/api/belt/map-dict"},
-  {name: "MapInt", href: "/docs/manual/latest/api/belt/map-int"},
-  {name: "MapString", href: "/docs/manual/latest/api/belt/map-string"},
+  {name: "Map.Dict", href: "/docs/manual/latest/api/belt/map-dict"},
+  {name: "Map.Int", href: "/docs/manual/latest/api/belt/map-int"},
+  {name: "Map.String", href: "/docs/manual/latest/api/belt/map-string"},
 ]
 
 let mutableCollectionsNavs = [
@@ -48,12 +48,12 @@ let mutableCollectionsNavs = [
     open NavItem
     {name: "MutableMap", href: "/docs/manual/latest/api/belt/mutable-map"}
   },
-  {name: "MutableMapInt", href: "/docs/manual/latest/api/belt/mutable-map-int"},
-  {name: "MutableMapString", href: "/docs/manual/latest/api/belt/mutable-map-string"},
+  {name: "MutableMap.Int", href: "/docs/manual/latest/api/belt/mutable-map-int"},
+  {name: "MutableMap.String", href: "/docs/manual/latest/api/belt/mutable-map-string"},
   {name: "MutableQueue", href: "/docs/manual/latest/api/belt/mutable-queue"},
   {name: "MutableSet", href: "/docs/manual/latest/api/belt/mutable-set"},
-  {name: "MutableSetInt", href: "/docs/manual/latest/api/belt/mutable-set-int"},
-  {name: "MutableSetString", href: "/docs/manual/latest/api/belt/mutable-set-string"},
+  {name: "MutableSet.Int", href: "/docs/manual/latest/api/belt/mutable-set-int"},
+  {name: "MutableSet.String", href: "/docs/manual/latest/api/belt/mutable-set-string"},
   {name: "MutableStack", href: "/docs/manual/latest/api/belt/mutable-stack"},
 ]
 
@@ -76,8 +76,8 @@ let sortNavs = [
     open NavItem
     {name: "SortArray", href: "/docs/manual/latest/api/belt/sort-array"}
   },
-  {name: "SortArrayInt", href: "/docs/manual/latest/api/belt/sort-array-int"},
-  {name: "SortArrayString", href: "/docs/manual/latest/api/belt/sort-array-string"},
+  {name: "SortArray.Int", href: "/docs/manual/latest/api/belt/sort-array-int"},
+  {name: "SortArray.String", href: "/docs/manual/latest/api/belt/sort-array-string"},
 ]
 
 let utilityNavs = [

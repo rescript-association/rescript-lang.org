@@ -23,11 +23,11 @@ var setNavs = [
     href: "/docs/manual/latest/api/belt/hash-set"
   },
   {
-    name: "HashSetInt",
+    name: "HashSet.Int",
     href: "/docs/manual/latest/api/belt/hash-set-int"
   },
   {
-    name: "HashSetString",
+    name: "HashSet.String",
     href: "/docs/manual/latest/api/belt/hash-set-string"
   },
   {
@@ -35,15 +35,15 @@ var setNavs = [
     href: "/docs/manual/latest/api/belt/set"
   },
   {
-    name: "SetDict",
+    name: "Set.Dict",
     href: "/docs/manual/latest/api/belt/set-dict"
   },
   {
-    name: "SetInt",
+    name: "Set.Int",
     href: "/docs/manual/latest/api/belt/set-int"
   },
   {
-    name: "SetString",
+    name: "Set.String",
     href: "/docs/manual/latest/api/belt/set-string"
   }
 ];
@@ -54,11 +54,11 @@ var mapNavs = [
     href: "/docs/manual/latest/api/belt/hash-map"
   },
   {
-    name: "HashMapInt",
+    name: "HashMap.Int",
     href: "/docs/manual/latest/api/belt/hash-map-int"
   },
   {
-    name: "HashMapString",
+    name: "HashMap.String",
     href: "/docs/manual/latest/api/belt/hash-map-string"
   },
   {
@@ -66,15 +66,15 @@ var mapNavs = [
     href: "/docs/manual/latest/api/belt/map"
   },
   {
-    name: "MapDict",
+    name: "Map.Dict",
     href: "/docs/manual/latest/api/belt/map-dict"
   },
   {
-    name: "MapInt",
+    name: "Map.Int",
     href: "/docs/manual/latest/api/belt/map-int"
   },
   {
-    name: "MapString",
+    name: "Map.String",
     href: "/docs/manual/latest/api/belt/map-string"
   }
 ];
@@ -85,11 +85,11 @@ var mutableCollectionsNavs = [
     href: "/docs/manual/latest/api/belt/mutable-map"
   },
   {
-    name: "MutableMapInt",
+    name: "MutableMap.Int",
     href: "/docs/manual/latest/api/belt/mutable-map-int"
   },
   {
-    name: "MutableMapString",
+    name: "MutableMap.String",
     href: "/docs/manual/latest/api/belt/mutable-map-string"
   },
   {
@@ -101,11 +101,11 @@ var mutableCollectionsNavs = [
     href: "/docs/manual/latest/api/belt/mutable-set"
   },
   {
-    name: "MutableSetInt",
+    name: "MutableSet.Int",
     href: "/docs/manual/latest/api/belt/mutable-set-int"
   },
   {
-    name: "MutableSetString",
+    name: "MutableSet.String",
     href: "/docs/manual/latest/api/belt/mutable-set-string"
   },
   {
@@ -155,11 +155,11 @@ var sortNavs = [
     href: "/docs/manual/latest/api/belt/sort-array"
   },
   {
-    name: "SortArrayInt",
+    name: "SortArray.Int",
     href: "/docs/manual/latest/api/belt/sort-array-int"
   },
   {
-    name: "SortArrayString",
+    name: "SortArray.String",
     href: "/docs/manual/latest/api/belt/sort-array-string"
   }
 ];
