@@ -17,8 +17,8 @@ function getSlugFromPath(path) {
 
 function getAllPosts(param) {
   var postsDirectory = Path.join(Process.cwd(), "./_blogposts");
-  return Belt_Array.keepMap(BlogData.data, (function (fullslug) {
-                var fullPath = Path.join(postsDirectory, fullslug + ".mdx");
+  return Belt_Array.keepMap(BlogData.data, (function (path) {
+                var fullPath = Path.join(postsDirectory, path + ".mdx");
                 if (!Fs.existsSync(fullPath)) {
                   return ;
                 }
@@ -27,7 +27,7 @@ function getAllPosts(param) {
                 var archived = fullPath.includes("/archive/");
                 return {
                         content: match.content,
-                        fullslug: fullslug,
+                        path: path,
                         archived: archived,
                         frontmatter: match.data
                       };
@@ -50,7 +50,7 @@ function getLatest(maxOpt, baseUrlOpt, param) {
                     var fm$1 = fm._0;
                     var description = Belt_Option.getWithDefault(Caml_option.null_to_opt(fm$1.description), "");
                     var item_title = fm$1.title;
-                    var item_href = baseUrl + ("/blog/" + getSlugFromPath(next.fullslug));
+                    var item_href = baseUrl + ("/blog/" + getSlugFromPath(next.path));
                     var item_pubDate = DateStr.toDate(fm$1.date);
                     var item = {
                       title: item_title,

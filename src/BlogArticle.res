@@ -22,7 +22,7 @@ module Params = {
   type t = {slug: string}
 }
 
-type props = {fullslug: string}
+type props = {path: string}
 
 module BlogComponent = {
   type t = {default: React.component<{.}>}
@@ -124,11 +124,11 @@ module BlogHeader = {
 }
 
 let default = (props: props) => {
-  let {fullslug} = props
+  let {path} = props
 
-  let module_ = BlogComponent.require("../_blogposts/" ++ (fullslug ++ ".mdx"))
+  let module_ = BlogComponent.require("../_blogposts/" ++ (path ++ ".mdx"))
 
-  let archived = Js.String2.startsWith(fullslug, "archive/")
+  let archived = Js.String2.startsWith(path, "archive/")
 
   let component = module_.default
 
@@ -207,7 +207,7 @@ let default = (props: props) => {
     <div>
       <Markdown.Warn>
         <h2 className="font-bold text-gray-95 text-28 mb-2">
-          {React.string("Could not parse file '_blogposts/" ++ (fullslug ++ ".mdx'"))}
+          {React.string("Could not parse file '_blogposts/" ++ (path ++ ".mdx'"))}
         </h2>
         <p>
           {React.string("The content of this blog post will be displayed as soon as all
@@ -225,14 +225,14 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = ctx => {
   open Next.GetStaticProps
   let {params} = ctx
 
-  let fullslug = switch BlogData.data->Js.Array2.find(path =>
-    BlogApi.getSlugFromPath(path) == params.slug
+  let path = switch BlogData.data->Js.Array2.find(path2 =>
+    BlogApi.getSlugFromPath(path2) == params.slug
   ) {
   | None => params.slug
   | Some(slug) => slug
   }
 
-  let props = {fullslug: fullslug}
+  let props = {path: path}
   let ret = {"props": props}
   Promise.resolve(ret)
 }
@@ -242,7 +242,7 @@ let getStaticPaths: Next.GetStaticPaths.t<Params.t> = () => {
 
   let paths = BlogApi.getAllPosts()->Belt.Array.map(postData => {
     params: {
-      Params.slug: BlogApi.getSlugFromPath(postData.fullslug),
+      Params.slug: BlogApi.getSlugFromPath(postData.path),
     },
   })
   let ret = {paths: paths, fallback: false}

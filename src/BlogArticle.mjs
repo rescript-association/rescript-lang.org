@@ -110,9 +110,9 @@ function BlogArticle$BlogHeader(Props) {
 }
 
 function $$default(props) {
-  var fullslug = props.fullslug;
-  var module_ = require("../_blogposts/" + (fullslug + ".mdx"));
-  var archived = fullslug.startsWith("archive/");
+  var path = props.path;
+  var module_ = require("../_blogposts/" + (path + ".mdx"));
+  var archived = path.startsWith("archive/");
   var component = module_.default;
   var fm = BlogFrontmatter.decode(frontmatter(component));
   var children = React.createElement(component, {});
@@ -183,7 +183,7 @@ function $$default(props) {
               children: null
             }, React.createElement("h2", {
                   className: "font-bold text-gray-95 text-28 mb-2"
-                }, "Could not parse file '_blogposts/" + (fullslug + ".mdx'")), React.createElement("p", undefined, "The content of this blog post will be displayed as soon as all\n            required frontmatter data has been added."), React.createElement("p", {
+                }, "Could not parse file '_blogposts/" + (path + ".mdx'")), React.createElement("p", undefined, "The content of this blog post will be displayed as soon as all\n            required frontmatter data has been added."), React.createElement("p", {
                   className: "font-bold mt-4"
                 }, "Errors:"), fm._0));
   }
@@ -194,12 +194,12 @@ function $$default(props) {
 
 function getStaticProps(ctx) {
   var params = ctx.params;
-  var slug = BlogData.data.find(function (path) {
-        return BlogApi.getSlugFromPath(path) === params.slug;
+  var slug = BlogData.data.find(function (path2) {
+        return BlogApi.getSlugFromPath(path2) === params.slug;
       });
-  var fullslug = slug !== undefined ? slug : params.slug;
+  var path = slug !== undefined ? slug : params.slug;
   var props = {
-    fullslug: fullslug
+    path: path
   };
   return Promise.resolve({
               props: props
@@ -210,7 +210,7 @@ function getStaticPaths(param) {
   var paths = Belt_Array.map(BlogApi.getAllPosts(undefined), (function (postData) {
           return {
                   params: {
-                    slug: BlogApi.getSlugFromPath(postData.fullslug)
+                    slug: BlogApi.getSlugFromPath(postData.path)
                   }
                 };
         }));

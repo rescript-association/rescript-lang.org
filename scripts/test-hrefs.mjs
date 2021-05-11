@@ -24,9 +24,9 @@ const mapBlogFilePath = path => {
 
   if (match) {
     let relPath = match[1];
-    let fullslug = blogIndex.find((fullslug) => fullslug === relPath);
-    if (fullslug != null) {
-      return `./pages/blog/${getSlugFromPath(fullslug)}`;
+    let path = blogIndex.find((path) => path === relPath);
+    if (path != null) {
+      return `./pages/blog/${getSlugFromPath(path)}`;
     }
     return path;
   }

@@ -323,7 +323,7 @@ function getStaticProps(_ctx) {
           var archived = acc[2];
           var malformed = acc[1];
           var posts = acc[0];
-          var id = BlogApi.getSlugFromPath(postData.fullslug);
+          var id = BlogApi.getSlugFromPath(postData.path);
           var decoded = BlogFrontmatter.decode(postData.frontmatter);
           if (decoded.TAG === /* Ok */0) {
             var frontmatter = decoded._0;

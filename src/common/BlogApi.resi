@@ -1,6 +1,6 @@
 type postData = {
   content: string,
-  fullslug: string,
+  path: string,
   archived: bool,
   frontmatter: Js.Json.t,
 }
