@@ -151,14 +151,7 @@ NODE_ENV=production npx postcss styles/main.css -o test.css
 
 ## Writing Blog Posts
 
-In case you are a blog author, please refer to our [guide on writing blog
-posts](https://rescript-lang.org/blogpost-guide).
-
-**Quick-takeaways:**
-
-- Blogposts are located in `_blogposts`
-- Author metadata is located in `data/blog_authors.mjs`
-- Make sure to follow the file naming rules
+In case you are a blog author, please refer to our [guide on writing blog posts](https://rescript-lang.org/blogpost-guide).
 
 ### Contributing
 
