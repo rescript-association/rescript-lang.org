@@ -1,5 +1,5 @@
 type postData = {
-  slug: string,
+  // slug: string,
   content: string,
   fullslug: string,
   archived: bool,
@@ -7,7 +7,8 @@ type postData = {
 }
 
 let getAllPosts: unit => array<postData>
-let getFullSlug: string => option<string>
+// let getFullSlug: string => option<string>
+let getSlugFromPath: string => string
 
 module RssFeed: {
   type item = {

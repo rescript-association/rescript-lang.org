@@ -9,6 +9,7 @@ import * as Util from "./common/Util.mjs";
 import * as React from "react";
 import * as BlogApi from "./common/BlogApi.mjs";
 import * as DateStr from "./common/DateStr.mjs";
+import * as BlogData from "./BlogData.mjs";
 import * as Markdown from "./components/Markdown.mjs";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as MainLayout from "./layouts/MainLayout.mjs";
@@ -193,7 +194,10 @@ function $$default(props) {
 
 function getStaticProps(ctx) {
   var params = ctx.params;
-  var fullslug = Belt_Option.getWithDefault(BlogApi.getFullSlug(params.slug), params.slug);
+  var slug = BlogData.data.find(function (path) {
+        return BlogApi.getSlugFromPath(path) === params.slug;
+      });
+  var fullslug = slug !== undefined ? slug : params.slug;
   var props = {
     fullslug: fullslug
   };
@@ -204,9 +208,11 @@ function getStaticProps(ctx) {
 
 function getStaticPaths(param) {
   var paths = Belt_Array.map(BlogApi.getAllPosts(undefined), (function (postData) {
+          var asd = BlogApi.getSlugFromPath(postData.fullslug);
+          console.log("======", asd);
           return {
                   params: {
-                    slug: postData.slug
+                    slug: asd
                   }
                 };
         }));

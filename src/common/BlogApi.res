@@ -35,24 +35,30 @@ module GrayMatter = {
 }
 
 type postData = {
-  slug: string,
+  // slug: string,
   content: string,
   fullslug: string,
   archived: bool,
   frontmatter: Js.Json.t,
 }
 
-let getFullSlug = slug => {
-  switch BlogData.data->Js.Array2.find(({slug: s}) => slug === s) {
-  | None => None
-  | Some({fullslug}) => Some(fullslug)
-  }
+let getSlugFromPath = path => {
+  path->Js.String2.replaceByRe(%re(`/(archive\/)?\d\d\d\d-\d\d-\d\d-/`), "")
 }
+
+
+
+// let getFullSlug = slug => {
+//   switch BlogData.data->Js.Array2.find((path) => slug === s) {
+//   | None => None
+//   | Some({fullslug}) => Some(fullslug)
+//   }
+// }
 
 let getAllPosts = () => {
   let postsDirectory = Node.Path.join2(Node.Process.cwd(), "./_blogposts")
 
-  BlogData.data->Belt.Array.keepMap(({slug, fullslug}) => {
+  BlogData.data->Belt.Array.keepMap((fullslug) => {
     let fullPath = Node.Path.join2(postsDirectory, fullslug ++ ".mdx")
 
     if Node.Fs.existsSync(fullPath) {
@@ -64,7 +70,7 @@ let getAllPosts = () => {
       let archived = Js.String2.includes(fullPath, "/archive/")
 
       Some({
-        slug: slug,
+        // slug: slug,
         fullslug: fullslug,
         content: content,
         frontmatter: data,
@@ -114,7 +120,7 @@ module RssFeed = {
           let description = Js.Null.toOption(fm.description)->Belt.Option.getWithDefault("")
           let item = {
             title: fm.title,
-            href: baseUrl ++ ("/blog/" ++ next.slug),
+            href: baseUrl ++ ("/blog/" ++ getSlugFromPath(next.fullslug)),
             description: description,
             pubDate: DateStr.toDate(fm.date),
           }

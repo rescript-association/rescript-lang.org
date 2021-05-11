@@ -11,20 +11,13 @@ import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import GrayMatter from "gray-matter";
 import * as BlogFrontmatter from "./BlogFrontmatter.mjs";
 
-function getFullSlug(slug) {
-  var match = BlogData.data.find(function (param) {
-        return slug === param.slug;
-      });
-  if (match !== undefined) {
-    return match.fullslug;
-  }
-  
+function getSlugFromPath(path) {
+  return path.replace(/(archive\/)?\d\d\d\d-\d\d-\d\d-/, "");
 }
 
 function getAllPosts(param) {
   var postsDirectory = Path.join(Process.cwd(), "./_blogposts");
-  return Belt_Array.keepMap(BlogData.data, (function (param) {
-                var fullslug = param.fullslug;
+  return Belt_Array.keepMap(BlogData.data, (function (fullslug) {
                 var fullPath = Path.join(postsDirectory, fullslug + ".mdx");
                 if (!Fs.existsSync(fullPath)) {
                   return ;
@@ -33,7 +26,6 @@ function getAllPosts(param) {
                 var match = GrayMatter(fileContents);
                 var archived = fullPath.includes("/archive/");
                 return {
-                        slug: param.slug,
                         content: match.content,
                         fullslug: fullslug,
                         archived: archived,
@@ -58,7 +50,7 @@ function getLatest(maxOpt, baseUrlOpt, param) {
                     var fm$1 = fm._0;
                     var description = Belt_Option.getWithDefault(Caml_option.null_to_opt(fm$1.description), "");
                     var item_title = fm$1.title;
-                    var item_href = baseUrl + ("/blog/" + next.slug);
+                    var item_href = baseUrl + ("/blog/" + getSlugFromPath(next.fullslug));
                     var item_pubDate = DateStr.toDate(fm$1.date);
                     var item = {
                       title: item_title,
@@ -104,7 +96,7 @@ var RssFeed = {
 
 export {
   getAllPosts ,
-  getFullSlug ,
+  getSlugFromPath ,
   RssFeed ,
   
 }
