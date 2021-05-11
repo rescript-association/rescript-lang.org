@@ -1,13 +1,12 @@
 type postData = {
-  slug: string,
   content: string,
-  fullslug: string,
+  path: string,
   archived: bool,
   frontmatter: Js.Json.t,
 }
 
 let getAllPosts: unit => array<postData>
-let getFullSlug: string => option<string>
+let getSlugFromPath: string => string
 
 module RssFeed: {
   type item = {

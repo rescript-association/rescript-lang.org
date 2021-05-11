@@ -2,7 +2,7 @@ module Params: {
   type t = {slug: string}
 }
 
-type props = {fullslug: string}
+type props = {path: string}
 
 let default: props => React.element
 

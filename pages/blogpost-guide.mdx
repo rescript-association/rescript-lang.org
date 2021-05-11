@@ -13,8 +13,7 @@ Open the [localhost:3000/blog](/blog) page to see the blog page.
 
 ## Create a new file
 
-Blogposts are located in the `./_blogposts` directory.
-Please stick to the following filename convention to maintain a natural sort order on every file-system:
+Blogposts are located in the `./_blogposts` directory. File name starts with the date to maintain a natural sort order:
 
 ```
 _blogposts/YYYY-MM-DD-[title].mdx
@@ -28,13 +27,15 @@ touch _blogposts/2020-01-30-my-new-blog-post.mdx
 
 ### Map the file to a URL
 
-Open the `src/BlogData.res` file and add a new mapping like this:
+Open the `src/BlogData.res` file and add the path to `data`:
 
 ```res
-("my-new-blog-post", "2020-01-30-my-new-blog-post.mdx")
+let data = [
+  // ...
+  "2020-01-30-my-new-blog-post",
+  // ...
+]
 ```
-
-The first item describes the final slug (e.g. `/blog/my-new-blog-post`), while the second defines the relative filepath within the `_blogposts` directory, without the extension.
 
 Save your changes within and refresh your browser within [/blog](/blog). You should now see a warning for some malformed frontmatter data. Let's fix this!
 

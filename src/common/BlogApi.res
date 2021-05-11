@@ -10,9 +10,7 @@
 
     Every filename within _blogposts must be unique, even when nested in
     different directories. The filename will be sluggified, that means that e.g.
-    for the filepath "_blogposts/compiler/my-post.mdx":
-    - slug = "my-post"
-    - fullslug = "compiler/my-post"
+    for the filepath "_blogposts/compiler/2021-03-12-my-post.mdx", slug = "my-post"
 
     The reason for the flat hierarchy is that we want to keep a flat URL
     hierarchy with `https://rescript-lang.org/blog/[some-slug]`, without carrying
@@ -35,25 +33,21 @@ module GrayMatter = {
 }
 
 type postData = {
-  slug: string,
   content: string,
-  fullslug: string,
+  path: string,
   archived: bool,
   frontmatter: Js.Json.t,
 }
 
-let getFullSlug = slug => {
-  switch BlogData.data->Js.Array2.find(({slug: s}) => slug === s) {
-  | None => None
-  | Some({fullslug}) => Some(fullslug)
-  }
+let getSlugFromPath = path => {
+  path->Js.String2.replaceByRe(%re(`/(archive\/)?\d\d\d\d-\d\d-\d\d-/`), "")
 }
 
 let getAllPosts = () => {
   let postsDirectory = Node.Path.join2(Node.Process.cwd(), "./_blogposts")
 
-  BlogData.data->Belt.Array.keepMap(({slug, fullslug}) => {
-    let fullPath = Node.Path.join2(postsDirectory, fullslug ++ ".mdx")
+  BlogData.data->Belt.Array.keepMap((path) => {
+    let fullPath = Node.Path.join2(postsDirectory, path ++ ".mdx")
 
     if Node.Fs.existsSync(fullPath) {
       let fileContents = Node.Fs.readFileSync(fullPath, #utf8)
@@ -64,8 +58,7 @@ let getAllPosts = () => {
       let archived = Js.String2.includes(fullPath, "/archive/")
 
       Some({
-        slug: slug,
-        fullslug: fullslug,
+        path: path,
         content: content,
         frontmatter: data,
         archived: archived,
@@ -114,7 +107,7 @@ module RssFeed = {
           let description = Js.Null.toOption(fm.description)->Belt.Option.getWithDefault("")
           let item = {
             title: fm.title,
-            href: baseUrl ++ ("/blog/" ++ next.slug),
+            href: baseUrl ++ ("/blog/" ++ getSlugFromPath(next.path)),
             description: description,
             pubDate: DateStr.toDate(fm.date),
           }

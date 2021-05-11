@@ -372,7 +372,7 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = _ctx => {
     postData,
   ) => {
     let (posts, malformed, archived) = acc
-    let id = postData.slug
+    let id = BlogApi.getSlugFromPath(postData.path)
 
     let decoded = BlogFrontmatter.decode(postData.frontmatter)
 
