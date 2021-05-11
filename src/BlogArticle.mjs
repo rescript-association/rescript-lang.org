@@ -9,7 +9,6 @@ import * as Util from "./common/Util.mjs";
 import * as React from "react";
 import * as BlogApi from "./common/BlogApi.mjs";
 import * as DateStr from "./common/DateStr.mjs";
-import * as BlogData from "./BlogData.mjs";
 import * as Markdown from "./components/Markdown.mjs";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as MainLayout from "./layouts/MainLayout.mjs";
@@ -111,7 +110,7 @@ function BlogArticle$BlogHeader(Props) {
 
 function $$default(props) {
   var path = props.path;
-  var module_ = require("../_blogposts/" + (path + ".mdx"));
+  var module_ = require("../_blogposts/" + path);
   var archived = path.startsWith("archive/");
   var component = module_.default;
   var fm = BlogFrontmatter.decode(frontmatter(component));
@@ -194,10 +193,10 @@ function $$default(props) {
 
 function getStaticProps(ctx) {
   var params = ctx.params;
-  var slug = BlogData.data.find(function (path2) {
-        return BlogApi.blogPathToSlug(path2) === params.slug;
+  var match = BlogApi.getAllPosts(undefined).find(function (param) {
+        return BlogApi.blogPathToSlug(param.path) === params.slug;
       });
-  var path = slug !== undefined ? slug : params.slug;
+  var path = match !== undefined ? match.path : params.slug;
   var props = {
     path: path
   };

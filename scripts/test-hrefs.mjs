@@ -14,19 +14,18 @@ import path from "path";
 import fs from "fs";
 import urlModule from "url";
 import { URL } from 'url';
-import {data as blogIndex} from '../src/BlogData.mjs'
-import {blogPathToSlug} from '../src/common/BlogApi.mjs'
+import {getAllPosts, blogPathToSlug} from '../src/common/BlogApi.mjs'
 
 const __dirname = new URL('.', import.meta.url).pathname;
 
 const mapBlogFilePath = path => {
-  const match = path.match(/\.\/_blogposts\/(.*)\.mdx/);
+  const match = path.match(/\.\/_blogposts\/(.*\.mdx)/);
 
   if (match) {
     let relPath = match[1];
-    let path = blogIndex.find((path) => path === relPath);
-    if (path != null) {
-      return `./pages/blog/${blogPathToSlug(path)}`;
+    let data = getAllPosts().find(({path}) => path === relPath);
+    if (data != null) {
+      return `./pages/blog/${blogPathToSlug(data.path)}`;
     }
     return path;
   }

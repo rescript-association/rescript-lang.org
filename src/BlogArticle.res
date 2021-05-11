@@ -126,7 +126,7 @@ module BlogHeader = {
 let default = (props: props) => {
   let {path} = props
 
-  let module_ = BlogComponent.require("../_blogposts/" ++ (path ++ ".mdx"))
+  let module_ = BlogComponent.require("../_blogposts/" ++ path)
 
   let archived = Js.String2.startsWith(path, "archive/")
 
@@ -225,11 +225,11 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = ctx => {
   open Next.GetStaticProps
   let {params} = ctx
 
-  let path = switch BlogData.data->Js.Array2.find(path2 =>
-    BlogApi.blogPathToSlug(path2) == params.slug
+  let path = switch BlogApi.getAllPosts()->Js.Array2.find(({path}) =>
+    BlogApi.blogPathToSlug(path) == params.slug
   ) {
   | None => params.slug
-  | Some(slug) => slug
+  | Some({path}) => path
   }
 
   let props = {path: path}
