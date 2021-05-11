@@ -35,7 +35,6 @@ module GrayMatter = {
 }
 
 type postData = {
-  // slug: string,
   content: string,
   fullslug: string,
   archived: bool,
@@ -45,15 +44,6 @@ type postData = {
 let getSlugFromPath = path => {
   path->Js.String2.replaceByRe(%re(`/(archive\/)?\d\d\d\d-\d\d-\d\d-/`), "")
 }
-
-
-
-// let getFullSlug = slug => {
-//   switch BlogData.data->Js.Array2.find((path) => slug === s) {
-//   | None => None
-//   | Some({fullslug}) => Some(fullslug)
-//   }
-// }
 
 let getAllPosts = () => {
   let postsDirectory = Node.Path.join2(Node.Process.cwd(), "./_blogposts")

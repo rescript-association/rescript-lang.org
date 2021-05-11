@@ -225,7 +225,6 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = ctx => {
   open Next.GetStaticProps
   let {params} = ctx
 
-  // let fullslug = BlogApi.getFullSlug(params.slug)->Belt.Option.getWithDefault(params.slug)
   let fullslug = switch BlogData.data->Js.Array2.find(path =>
     BlogApi.getSlugFromPath(path) == params.slug
   ) {
@@ -242,13 +241,9 @@ let getStaticPaths: Next.GetStaticPaths.t<Params.t> = () => {
   open Next.GetStaticPaths
 
   let paths = BlogApi.getAllPosts()->Belt.Array.map(postData => {
-    let asd = BlogApi.getSlugFromPath(postData.fullslug)
-    Js.log2("======", asd)
-    {
-      params: {
-        Params.slug: asd,
-      },
-    }
+    params: {
+      Params.slug: BlogApi.getSlugFromPath(postData.fullslug),
+    },
   })
   let ret = {paths: paths, fallback: false}
   Promise.resolve(ret)

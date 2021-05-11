@@ -208,11 +208,9 @@ function getStaticProps(ctx) {
 
 function getStaticPaths(param) {
   var paths = Belt_Array.map(BlogApi.getAllPosts(undefined), (function (postData) {
-          var asd = BlogApi.getSlugFromPath(postData.fullslug);
-          console.log("======", asd);
           return {
                   params: {
-                    slug: asd
+                    slug: BlogApi.getSlugFromPath(postData.fullslug)
                   }
                 };
         }));
