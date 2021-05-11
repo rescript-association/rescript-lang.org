@@ -392,7 +392,8 @@ module A = {
       | _ => href
       }
       <Next.Link href>
-        <a href rel="noopener noreferrer" className="no-underline text-fire hover:underline" ?target>
+        <a
+          href rel="noopener noreferrer" className="no-underline text-fire hover:underline" ?target>
           children
         </a>
       </Next.Link>
