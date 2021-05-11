@@ -39,7 +39,7 @@ type postData = {
   frontmatter: Js.Json.t,
 }
 
-let getSlugFromPath = path => {
+let blogPathToSlug = path => {
   path->Js.String2.replaceByRe(%re(`/(archive\/)?\d\d\d\d-\d\d-\d\d-/`), "")
 }
 
@@ -107,7 +107,7 @@ module RssFeed = {
           let description = Js.Null.toOption(fm.description)->Belt.Option.getWithDefault("")
           let item = {
             title: fm.title,
-            href: baseUrl ++ ("/blog/" ++ getSlugFromPath(next.path)),
+            href: baseUrl ++ ("/blog/" ++ blogPathToSlug(next.path)),
             description: description,
             pubDate: DateStr.toDate(fm.date),
           }

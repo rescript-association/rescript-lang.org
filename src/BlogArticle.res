@@ -226,7 +226,7 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = ctx => {
   let {params} = ctx
 
   let path = switch BlogData.data->Js.Array2.find(path2 =>
-    BlogApi.getSlugFromPath(path2) == params.slug
+    BlogApi.blogPathToSlug(path2) == params.slug
   ) {
   | None => params.slug
   | Some(slug) => slug
@@ -242,7 +242,7 @@ let getStaticPaths: Next.GetStaticPaths.t<Params.t> = () => {
 
   let paths = BlogApi.getAllPosts()->Belt.Array.map(postData => {
     params: {
-      Params.slug: BlogApi.getSlugFromPath(postData.path),
+      Params.slug: BlogApi.blogPathToSlug(postData.path),
     },
   })
   let ret = {paths: paths, fallback: false}

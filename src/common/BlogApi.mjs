@@ -11,7 +11,7 @@ import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import GrayMatter from "gray-matter";
 import * as BlogFrontmatter from "./BlogFrontmatter.mjs";
 
-function getSlugFromPath(path) {
+function blogPathToSlug(path) {
   return path.replace(/(archive\/)?\d\d\d\d-\d\d-\d\d-/, "");
 }
 
@@ -50,7 +50,7 @@ function getLatest(maxOpt, baseUrlOpt, param) {
                     var fm$1 = fm._0;
                     var description = Belt_Option.getWithDefault(Caml_option.null_to_opt(fm$1.description), "");
                     var item_title = fm$1.title;
-                    var item_href = baseUrl + ("/blog/" + getSlugFromPath(next.path));
+                    var item_href = baseUrl + ("/blog/" + blogPathToSlug(next.path));
                     var item_pubDate = DateStr.toDate(fm$1.date);
                     var item = {
                       title: item_title,
@@ -96,7 +96,7 @@ var RssFeed = {
 
 export {
   getAllPosts ,
-  getSlugFromPath ,
+  blogPathToSlug ,
   RssFeed ,
   
 }
