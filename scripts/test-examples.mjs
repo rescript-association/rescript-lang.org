@@ -81,6 +81,7 @@ glob.sync(__dirname + '/../pages/docs/manual/latest/**/*.mdx').forEach((file) =>
     fs.writeFileSync(tempFileName, parsedResult)
     try {
       // -109 for suppressing `Toplevel expression is expected to have unit type.`
+      // Most doc snippets do e.g. `Belt.Array.length(["test"])`, which triggers this
       child_process.execFileSync(bsc, ['-i', tempFileName, '-w', '-109'], {stdio: 'pipe'})
     } catch (e) {
       process.stdout.write(postprocessOutput(file, e))
