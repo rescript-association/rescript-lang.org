@@ -110,13 +110,16 @@ module RssFeed = {
   let getLatest = (~max=10, ~baseUrl="https://rescript-lang.org", ()): array<item> => {
     let items =
       getAllPosts()
+      ->Js.Array2.sortInPlaceWith((a, b) => {
+        String.compare(Node.Path.basename(b.path), Node.Path.basename(a.path))
+      })
       ->Belt.Array.reduce([], (acc, next) =>
         switch BlogFrontmatter.decode(next.frontmatter) {
         | Ok(fm) =>
           let description = Js.Null.toOption(fm.description)->Belt.Option.getWithDefault("")
           let item = {
             title: fm.title,
-            href: baseUrl ++ ("/blog/" ++ blogPathToSlug(next.path)),
+            href: baseUrl ++ "/blog/" ++ blogPathToSlug(next.path),
             description: description,
             pubDate: DateStr.toDate(fm.date),
           }
@@ -125,17 +128,6 @@ module RssFeed = {
         | Error(_) => acc
         }
       )
-      ->Js.Array2.sortInPlaceWith((item1, item2) => {
-        let v1 = item1.pubDate->Js.Date.valueOf
-        let v2 = item2.pubDate->Js.Date.valueOf
-        if v1 === v2 {
-          0
-        } else if v1 > v2 {
-          -1
-        } else {
-          1
-        }
-      })
       ->Js.Array2.slice(~start=0, ~end_=max)
     items
   }
