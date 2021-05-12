@@ -40,33 +40,42 @@ type postData = {
 }
 
 let blogPathToSlug = path => {
-  path->Js.String2.replaceByRe(%re(`/(archive\/)?\d\d\d\d-\d\d-\d\d-/`), "")
+  path->Js.String2.replaceByRe(%re(`/^(archive\/)?\d\d\d\d-\d\d-\d\d-(.+)\.mdx$/`), "$2")
 }
 
+@module("path") external extname: string => string = "extname"
+
 let getAllPosts = () => {
-  let postsDirectory = Node.Path.join2(Node.Process.cwd(), "./_blogposts")
+  let postsDirectory = Node.Path.join2(Node.Process.cwd(), "_blogposts")
+  let archivedPostsDirectory = Node.Path.join2(postsDirectory, "archive")
 
-  BlogData.data->Belt.Array.keepMap((path) => {
-    let fullPath = Node.Path.join2(postsDirectory, path ++ ".mdx")
+  let mdxFiles = dir => {
+    Node.Fs.readdirSync(dir)->Js.Array2.filter(path => extname(path) === ".mdx")
+  }
 
-    if Node.Fs.existsSync(fullPath) {
-      let fileContents = Node.Fs.readFileSync(fullPath, #utf8)
-      let {GrayMatter.data: data, content} = GrayMatter.matter(fileContents)
-
-      // We currently derive the archived state from the directory hierarchy
-      // TODO: We need to handle archived files differently later on
-      let archived = Js.String2.includes(fullPath, "/archive/")
-
-      Some({
-        path: path,
-        content: content,
-        frontmatter: data,
-        archived: archived,
-      })
-    } else {
-      None
+  let nonArchivedPosts = mdxFiles(postsDirectory)->Js.Array2.map(path => {
+    let {GrayMatter.data: data, content} =
+      Node.Path.join2(postsDirectory, path)->Node.Fs.readFileSync(#utf8)->GrayMatter.matter
+    {
+      path: path,
+      content: content,
+      frontmatter: data,
+      archived: false,
     }
   })
+
+  let archivedPosts = mdxFiles(archivedPostsDirectory)->Js.Array2.map(path => {
+    let {GrayMatter.data: data, content} =
+      Node.Path.join2(archivedPostsDirectory, path)->Node.Fs.readFileSync(#utf8)->GrayMatter.matter
+    {
+      path: Node.Path.join2("archive", path),
+      content: content,
+      frontmatter: data,
+      archived: true,
+    }
+  })
+
+  Js.Array2.concat(nonArchivedPosts, archivedPosts)
 }
 
 module RssFeed = {

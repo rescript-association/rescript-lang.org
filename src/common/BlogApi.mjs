@@ -4,7 +4,6 @@ import * as Fs from "fs";
 import * as Path from "path";
 import * as DateStr from "./DateStr.mjs";
 import * as Process from "process";
-import * as BlogData from "../BlogData.mjs";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
@@ -12,26 +11,36 @@ import GrayMatter from "gray-matter";
 import * as BlogFrontmatter from "./BlogFrontmatter.mjs";
 
 function blogPathToSlug(path) {
-  return path.replace(/(archive\/)?\d\d\d\d-\d\d-\d\d-/, "");
+  return path.replace(/^(archive\/)?\d\d\d\d-\d\d-\d\d-(.+)\.mdx$/, "$2");
 }
 
 function getAllPosts(param) {
-  var postsDirectory = Path.join(Process.cwd(), "./_blogposts");
-  return Belt_Array.keepMap(BlogData.data, (function (path) {
-                var fullPath = Path.join(postsDirectory, path + ".mdx");
-                if (!Fs.existsSync(fullPath)) {
-                  return ;
-                }
-                var fileContents = Fs.readFileSync(fullPath, "utf8");
-                var match = GrayMatter(fileContents);
-                var archived = fullPath.includes("/archive/");
-                return {
-                        content: match.content,
-                        path: path,
-                        archived: archived,
-                        frontmatter: match.data
-                      };
-              }));
+  var postsDirectory = Path.join(Process.cwd(), "_blogposts");
+  var archivedPostsDirectory = Path.join(postsDirectory, "archive");
+  var mdxFiles = function (dir) {
+    return Fs.readdirSync(dir).filter(function (path) {
+                return Path.extname(path) === ".mdx";
+              });
+  };
+  var nonArchivedPosts = mdxFiles(postsDirectory).map(function (path) {
+        var match = GrayMatter(Fs.readFileSync(Path.join(postsDirectory, path), "utf8"));
+        return {
+                content: match.content,
+                path: path,
+                archived: false,
+                frontmatter: match.data
+              };
+      });
+  var archivedPosts = mdxFiles(archivedPostsDirectory).map(function (path) {
+        var match = GrayMatter(Fs.readFileSync(Path.join(archivedPostsDirectory, path), "utf8"));
+        return {
+                content: match.content,
+                path: Path.join("archive", path),
+                archived: true,
+                frontmatter: match.data
+              };
+      });
+  return nonArchivedPosts.concat(archivedPosts);
 }
 
 function dateToUTCString(date) {
