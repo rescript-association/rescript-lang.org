@@ -2,7 +2,7 @@
 
 import * as Mdx from "../common/Mdx.mjs";
 import * as Meta from "../components/Meta.mjs";
-import * as Next from "../bindings/Next.mjs";
+import * as Curry from "rescript/lib/es6/curry.js";
 import * as React from "react";
 import * as Footer from "../components/Footer.mjs";
 import * as Markdown from "../components/Markdown.mjs";
@@ -12,15 +12,99 @@ import * as Caml_option from "rescript/lib/es6/caml_option.js";
 function LandingPageLayout$CallToActionButton(Props) {
   var children = Props.children;
   return React.createElement("button", {
-              className: "transition-colors duration-200 inline-block text-base text-white hover:bg-fire-70 hover:text-white hover:border-fire-70 bg-fire rounded border border-fire px-5 py-2"
+              className: "transition-colors duration-200 inline-block text-base text-white hover:bg-water-70 hover:text-white hover:border-water-70 bg-water rounded border border-water px-5 py-2"
             }, children);
 }
 
-function LandingPageLayout$SubtleButton(Props) {
-  var children = Props.children;
-  return React.createElement("button", {
-              className: "transition-colors duration-200 inline-block text-base text-fire rounded border-2 border-fire-10 hover:bg-fire-10 px-5 py-2"
-            }, children);
+function LandingPageLayout$Intro(Props) {
+  return React.createElement("div", {
+              className: "flex flex-col items-center"
+            }, React.createElement("h1", {
+                  className: "text-56 text-gray-95 tracking-tight leading-2 font-semibold text-center",
+                  style: {
+                    maxWidth: "54rem"
+                  }
+                }, "A simple and fast language for JavaScript developers"), React.createElement("h2", {
+                  className: "text-gray-40 text-center my-4"
+                }, "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node."), React.createElement(LandingPageLayout$CallToActionButton, {
+                  children: "Get started"
+                }));
+}
+
+function LandingPageLayout$PlaygroundHero(Props) {
+  return React.createElement("section", {
+              className: "relative flex justify-center px-12 bg-gray-10",
+              style: {
+                height: "35rem"
+              }
+            }, React.createElement("div", {
+                  className: "bg-gray-90 max-w-740 w-full -mt-12",
+                  style: {
+                    height: "30rem"
+                  }
+                }, "Playground Widget etc."));
+}
+
+function LandingPageLayout$MainUSP$Item(Props) {
+  var title = Props.title;
+  var paragraph = Props.paragraph;
+  return React.createElement("div", {
+              className: "w-full",
+              style: {
+                maxWidth: "30rem"
+              }
+            }, React.createElement("h3", {
+                  className: "text-gray-10 mt-16 mb-6 text-32 leading-1 font-semibold",
+                  style: {
+                    maxWidth: "25rem"
+                  }
+                }, title), React.createElement("div", {
+                  className: "text-gray-60 text-16"
+                }, paragraph));
+}
+
+var item1 = React.createElement(LandingPageLayout$MainUSP$Item, {
+      title: "The fastest build system on the web",
+      paragraph: "ReScript cares about a consistent and fast feedback loop for any\n            codebase size. No need for memory hungry build processes, and no\n            corrupted caches. Switch branches as you please without worrying\n            about stale caches or wrong type information."
+    });
+
+var item2 = React.createElement(LandingPageLayout$MainUSP$Item, {
+      title: "Robust Type System",
+      paragraph: " Every ReScript app is fully typed and provides\n      correct type information to any given value. We prioritize simpler types\n      / discourage complex types for the sake of clarity and easy debugability.\n      No `any`, no magic types, no surprise `undefined`.\n      "
+    });
+
+var item3 = React.createElement(LandingPageLayout$MainUSP$Item, {
+      title: "Seamless JS Integration",
+      paragraph: "Use any library from javascript, export rescript\n      libraries to javascript, generate typescript and flow types, etc. It's\n      like you've never left the good parts of javascript at all."
+    });
+
+function LandingPageLayout$MainUSP(Props) {
+  var match = React.useState(function () {
+        return item1;
+      });
+  var setSelected = match[1];
+  var createTab = function (text, selectedItem) {
+    return React.createElement("button", {
+                className: "text-fire-50 text-21",
+                onClick: (function (_evt) {
+                    return Curry._1(setSelected, (function (param) {
+                                  return selectedItem;
+                                }));
+                  })
+              }, text);
+  };
+  return React.createElement("section", {
+              className: "flex h-full w-full"
+            }, React.createElement("div", {
+                  className: "flex justify-center bg-gray-90 pb-32 w-full space-y-4 text-white-80"
+                }, React.createElement("div", undefined, React.createElement("div", {
+                          className: "flex space-x-4"
+                        }, createTab("Fast and Simple", item1), createTab("Robust Type System", item2), createTab("Seamless JS Integration", item3)), match[0])), React.createElement("div", {
+                  className: "bg-fire-40 h-full w-full",
+                  style: {
+                    maxWidth: "18.5rem"
+                  }
+                }));
 }
 
 function LandingPageLayout(Props) {
@@ -39,53 +123,23 @@ function LandingPageLayout(Props) {
                         }), React.createElement("div", {
                           className: "absolute top-16 w-full"
                         }, React.createElement("div", {
-                              className: "flex justify-center overflow-hidden",
-                              style: {
-                                backgroundColor: "#0E1529"
-                              }
-                            }, React.createElement("div", {
-                                  className: "max-w-1280 w-full"
-                                }, React.createElement("div", {
-                                      className: "relative overflow-hidden w-full",
-                                      style: {
-                                        paddingBottom: "23.5587189%"
-                                      }
-                                    }, React.createElement("img", {
-                                          className: "absolute top-0 left-0 object-cover w-full h-full",
-                                          src: "/static/hero.jpg"
-                                        })))), React.createElement("div", {
                               className: "relative flex xs:justify-center overflow-hidden pb-32"
                             }, React.createElement("main", {
-                                  className: "mt-10 min-w-320 lg:align-center w-full px-4 md:px-8 max-w-1280 "
+                                  className: "mt-10 min-w-320 lg:align-center w-full"
                                 }, React.createElement(Mdx.Provider.make, {
                                       components: components,
                                       children: React.createElement("div", {
                                             className: "flex justify-center"
                                           }, React.createElement("div", {
-                                                className: "w-full max-w-740"
-                                              }, React.createElement("div", undefined, React.createElement("h1", {
-                                                        className: "text-56 xs:text-96 text-gray-95 tracking-tight font-semibold"
-                                                      }, "ReScript"), React.createElement("p", {
-                                                        className: "text-21 text-gray-95 font-bold mb-2"
-                                                      }, "The JavaScript-like language you have been waiting for."), React.createElement("p", {
-                                                        className: "text-14 italic"
-                                                      }, "Previously known as BuckleScript and Reason (", React.createElement(Next.Link.make, {
-                                                            href: "/blog/bucklescript-is-rebranding",
-                                                            children: React.createElement("a", {
-                                                                  className: "text-fire hover:pointer hover:underline"
-                                                                }, "Learn more")
-                                                          }), ")")), React.createElement("div", {
-                                                    className: "mt-16 text-center flex space-y-4 flex-col xs:space-y-0 xs:flex-row xs:space-x-8 pb-48"
-                                                  }, React.createElement(Next.Link.make, {
-                                                        href: "/docs/manual/latest/installation",
-                                                        children: React.createElement("a", undefined, React.createElement(LandingPageLayout$CallToActionButton, {
-                                                                  children: "Getting started"
-                                                                }))
-                                                      }), React.createElement(Next.Link.make, {
-                                                        href: "/docs/manual/latest/introduction",
-                                                        children: React.createElement("a", undefined, React.createElement(LandingPageLayout$SubtleButton, {
-                                                                  children: "Read the Documentation"
-                                                                }))
+                                                className: "w-full flex flex-col"
+                                              }, React.createElement("div", {
+                                                    className: "mt-12 max-w-740 self-center"
+                                                  }, React.createElement(LandingPageLayout$Intro, {})), React.createElement("div", {
+                                                    className: "mt-16 w-full self-center"
+                                                  }, React.createElement(LandingPageLayout$PlaygroundHero, {})), React.createElement("div", {
+                                                    className: "mt-16"
+                                                  }, React.createElement(LandingPageLayout$MainUSP, {
+                                                        children: "test"
                                                       })), children))
                                     }))), React.createElement(Footer.make, {})))));
 }
@@ -96,4 +150,4 @@ export {
   make ,
   
 }
-/* Mdx Not a pure module */
+/* item1 Not a pure module */

@@ -86,6 +86,7 @@ module.exports = {
         water: {
           default: "#5E5EDE",
           dark: "#637CC1",
+          '70': "rgba(94, 94, 222, 0.7)",
         },
         turtle: {
           default: "#02A875",
