@@ -212,21 +212,6 @@ module Post = {
     id: string,
     frontmatter: BlogFrontmatter.t,
   }
-
-  let orderByDate = (posts: array<t>): array<t> =>
-    posts
-    ->Js.Array.copy
-    ->Js.Array2.sortInPlaceWith((a, b) => {
-      let aV = a.frontmatter.date->DateStr.toDate->Js.Date.valueOf
-      let bV = b.frontmatter.date->DateStr.toDate->Js.Date.valueOf
-      if aV === bV {
-        0
-      } else if aV > bV {
-        -1
-      } else {
-        1
-      }
-    })
 }
 
 module Malformed = {
@@ -367,34 +352,36 @@ let default = (props: props): React.element => {
 }
 
 let getStaticProps: Next.GetStaticProps.t<props, params> = _ctx => {
-  let (posts, malformed, archived) = BlogApi.getAllPosts()->Belt.Array.reduce(([], [], []), (
-    acc,
-    postData,
-  ) => {
-    let (posts, malformed, archived) = acc
-    let id = BlogApi.blogPathToSlug(postData.path)
+  let (posts, malformed, archived) =
+    BlogApi.getAllPosts()
+    ->Js.Array2.sortInPlaceWith((a, b) => {
+      String.compare(b.path, a.path)
+    })
+    ->Belt.Array.reduce(([], [], []), (acc, postData) => {
+      let (posts, malformed, archived) = acc
+      let id = BlogApi.blogPathToSlug(postData.path)
 
-    let decoded = BlogFrontmatter.decode(postData.frontmatter)
+      let decoded = BlogFrontmatter.decode(postData.frontmatter)
 
-    switch decoded {
-    | Error(message) =>
-      let m = {Malformed.id: id, message: message}
-      let malformed = Belt.Array.concat(malformed, [m])
-      (posts, malformed, archived)
-    | Ok(frontmatter) =>
-      if postData.archived {
-        Js.Array2.push(archived, {Post.id: id, frontmatter: frontmatter})->ignore
-      } else {
-        Js.Array2.push(posts, {Post.id: id, frontmatter: frontmatter})->ignore
+      switch decoded {
+      | Error(message) =>
+        let m = {Malformed.id: id, message: message}
+        let malformed = Belt.Array.concat(malformed, [m])
+        (posts, malformed, archived)
+      | Ok(frontmatter) =>
+        if postData.archived {
+          Js.Array2.push(archived, {Post.id: id, frontmatter: frontmatter})->ignore
+        } else {
+          Js.Array2.push(posts, {Post.id: id, frontmatter: frontmatter})->ignore
+        }
+        (posts, malformed, archived)
       }
-      (posts, malformed, archived)
-    }
-  })
+    })
 
   let props = {
-    posts: Post.orderByDate(posts),
+    posts: posts,
     malformed: malformed,
-    archived: Post.orderByDate(archived),
+    archived: archived,
   }
 
   Js.Promise.resolve({"props": props})

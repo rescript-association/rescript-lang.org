@@ -2,6 +2,7 @@
 
 import * as Fs from "fs";
 import * as Path from "path";
+import * as $$String from "rescript/lib/es6/string.js";
 import * as DateStr from "./DateStr.mjs";
 import * as Process from "process";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
@@ -51,34 +52,26 @@ function dateToUTCString(date) {
 function getLatest(maxOpt, baseUrlOpt, param) {
   var max = maxOpt !== undefined ? maxOpt : 10;
   var baseUrl = baseUrlOpt !== undefined ? baseUrlOpt : "https://rescript-lang.org";
-  return Belt_Array.reduce(getAllPosts(undefined), [], (function (acc, next) {
-                    var fm = BlogFrontmatter.decode(next.frontmatter);
-                    if (fm.TAG !== /* Ok */0) {
-                      return acc;
-                    }
-                    var fm$1 = fm._0;
-                    var description = Belt_Option.getWithDefault(Caml_option.null_to_opt(fm$1.description), "");
-                    var item_title = fm$1.title;
-                    var item_href = baseUrl + ("/blog/" + blogPathToSlug(next.path));
-                    var item_pubDate = DateStr.toDate(fm$1.date);
-                    var item = {
-                      title: item_title,
-                      href: item_href,
-                      description: description,
-                      pubDate: item_pubDate
-                    };
-                    return Belt_Array.concat(acc, [item]);
-                  })).sort(function (item1, item2) {
-                var v1 = item1.pubDate.valueOf();
-                var v2 = item2.pubDate.valueOf();
-                if (v1 === v2) {
-                  return 0;
-                } else if (v1 > v2) {
-                  return -1;
-                } else {
-                  return 1;
-                }
-              }).slice(0, max);
+  return Belt_Array.reduce(getAllPosts(undefined).sort(function (a, b) {
+                    return $$String.compare(Path.basename(b.path), Path.basename(a.path));
+                  }), [], (function (acc, next) {
+                  var fm = BlogFrontmatter.decode(next.frontmatter);
+                  if (fm.TAG !== /* Ok */0) {
+                    return acc;
+                  }
+                  var fm$1 = fm._0;
+                  var description = Belt_Option.getWithDefault(Caml_option.null_to_opt(fm$1.description), "");
+                  var item_title = fm$1.title;
+                  var item_href = baseUrl + "/blog/" + blogPathToSlug(next.path);
+                  var item_pubDate = DateStr.toDate(fm$1.date);
+                  var item = {
+                    title: item_title,
+                    href: item_href,
+                    description: description,
+                    pubDate: item_pubDate
+                  };
+                  return Belt_Array.concat(acc, [item]);
+                })).slice(0, max);
 }
 
 function toXmlString(siteTitleOpt, siteDescriptionOpt, items) {

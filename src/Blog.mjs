@@ -9,6 +9,7 @@ import * as Curry from "rescript/lib/es6/curry.js";
 import * as React from "react";
 import * as Button from "./components/Button.mjs";
 import * as Footer from "./components/Footer.mjs";
+import * as $$String from "rescript/lib/es6/string.js";
 import * as BlogApi from "./common/BlogApi.mjs";
 import * as DateStr from "./common/DateStr.mjs";
 import * as Markdown from "./components/Markdown.mjs";
@@ -169,19 +170,7 @@ function Blog$FeatureCard(Props) {
                     })));
 }
 
-function orderByDate(posts) {
-  return posts.slice().sort(function (a, b) {
-              var aV = DateStr.toDate(a.frontmatter.date).valueOf();
-              var bV = DateStr.toDate(b.frontmatter.date).valueOf();
-              if (aV === bV) {
-                return 0;
-              } else if (aV > bV) {
-                return -1;
-              } else {
-                return 1;
-              }
-            });
-}
+var Post = {};
 
 var Malformed = {};
 
@@ -315,7 +304,9 @@ function $$default(props) {
 }
 
 function getStaticProps(_ctx) {
-  var match = Belt_Array.reduce(BlogApi.getAllPosts(undefined), [
+  var match = Belt_Array.reduce(BlogApi.getAllPosts(undefined).sort(function (a, b) {
+            return $$String.compare(b.path, a.path);
+          }), [
         [],
         [],
         []
@@ -356,8 +347,8 @@ function getStaticProps(_ctx) {
                   archived
                 ];
         }));
-  var props_posts = orderByDate(match[0]);
-  var props_archived = orderByDate(match[2]);
+  var props_posts = match[0];
+  var props_archived = match[2];
   var props_malformed = match[1];
   var props = {
     posts: props_posts,
@@ -368,8 +359,6 @@ function getStaticProps(_ctx) {
               props: props
             });
 }
-
-var Post = {};
 
 export {
   Post ,
