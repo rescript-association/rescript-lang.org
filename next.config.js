@@ -44,6 +44,9 @@ const config = {
           path: false,
         };
       }
+
+      // We need this additional rule to make sure that mjs files are
+      // correctly detected within our src/ folder
       config.module.rules.push({
         test: /\.m?js$/,
         use: options.defaultLoaders.babel,
