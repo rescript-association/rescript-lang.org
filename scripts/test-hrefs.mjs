@@ -15,7 +15,7 @@ import fs from "fs";
 import urlModule from "url";
 import { URL } from 'url';
 import {data as blogIndex} from '../src/BlogData.mjs'
-import {getSlugFromPath} from '../src/common/BlogApi.mjs'
+import {blogPathToSlug} from '../src/common/BlogApi.mjs'
 
 const __dirname = new URL('.', import.meta.url).pathname;
 
@@ -26,7 +26,7 @@ const mapBlogFilePath = path => {
     let relPath = match[1];
     let path = blogIndex.find((path) => path === relPath);
     if (path != null) {
-      return `./pages/blog/${getSlugFromPath(path)}`;
+      return `./pages/blog/${blogPathToSlug(path)}`;
     }
     return path;
   }

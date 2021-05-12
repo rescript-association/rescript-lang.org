@@ -195,7 +195,7 @@ function $$default(props) {
 function getStaticProps(ctx) {
   var params = ctx.params;
   var slug = BlogData.data.find(function (path2) {
-        return BlogApi.getSlugFromPath(path2) === params.slug;
+        return BlogApi.blogPathToSlug(path2) === params.slug;
       });
   var path = slug !== undefined ? slug : params.slug;
   var props = {
@@ -210,7 +210,7 @@ function getStaticPaths(param) {
   var paths = Belt_Array.map(BlogApi.getAllPosts(undefined), (function (postData) {
           return {
                   params: {
-                    slug: BlogApi.getSlugFromPath(postData.path)
+                    slug: BlogApi.blogPathToSlug(postData.path)
                   }
                 };
         }));

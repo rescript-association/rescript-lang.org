@@ -6,7 +6,7 @@ type postData = {
 }
 
 let getAllPosts: unit => array<postData>
-let getSlugFromPath: string => string
+let blogPathToSlug: string => string
 
 module RssFeed: {
   type item = {
