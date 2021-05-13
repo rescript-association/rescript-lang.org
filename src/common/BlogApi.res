@@ -33,7 +33,6 @@ module GrayMatter = {
 }
 
 type postData = {
-  content: string,
   path: string,
   archived: bool,
   frontmatter: Js.Json.t,
@@ -54,22 +53,20 @@ let getAllPosts = () => {
   }
 
   let nonArchivedPosts = mdxFiles(postsDirectory)->Js.Array2.map(path => {
-    let {GrayMatter.data: data, content} =
+    let {GrayMatter.data: data} =
       Node.Path.join2(postsDirectory, path)->Node.Fs.readFileSync(#utf8)->GrayMatter.matter
     {
       path: path,
-      content: content,
       frontmatter: data,
       archived: false,
     }
   })
 
   let archivedPosts = mdxFiles(archivedPostsDirectory)->Js.Array2.map(path => {
-    let {GrayMatter.data: data, content} =
+    let {GrayMatter.data: data} =
       Node.Path.join2(archivedPostsDirectory, path)->Node.Fs.readFileSync(#utf8)->GrayMatter.matter
     {
       path: Node.Path.join2("archive", path),
-      content: content,
       frontmatter: data,
       archived: true,
     }
