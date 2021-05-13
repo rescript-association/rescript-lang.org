@@ -9,7 +9,6 @@ import * as Curry from "rescript/lib/es6/curry.js";
 import * as React from "react";
 import * as Button from "./components/Button.mjs";
 import * as Footer from "./components/Footer.mjs";
-import * as $$String from "rescript/lib/es6/string.js";
 import * as BlogApi from "./common/BlogApi.mjs";
 import * as DateStr from "./common/DateStr.mjs";
 import * as Markdown from "./components/Markdown.mjs";
@@ -304,9 +303,7 @@ function $$default(props) {
 }
 
 function getStaticProps(_ctx) {
-  var match = Belt_Array.reduce(BlogApi.getAllPosts(undefined).sort(function (a, b) {
-            return $$String.compare(b.path, a.path);
-          }), [
+  var match = Belt_Array.reduce(BlogApi.getAllPosts(undefined), [
         [],
         [],
         []
