@@ -49,7 +49,6 @@ module PlaygroundHero = {
 
 // Main unique selling points
 module MainUSP = {
-  
   module Item = {
     @react.component
     let make = (~title: string, ~paragraph: React.element) => {
@@ -132,6 +131,26 @@ module MainUSP = {
 /* </button> */
 /* } */
 
+module TrustedBy = {
+  @react.component
+  let make = () => {
+    <section className="mt-20">
+      <h3
+        className="text-42 text-gray-42 tracking-tight leading-2 font-semibold text-center max-w-576 mx-auto">
+        {React.string("Trusted by developers around the world")}
+      </h3>
+      <div className="flex justify-between max-w-lg mx-auto mt-16">
+        {["Facebook", "Rohea", "Beop", "Travel World", "Pupilfirst", "NomadicLabs"]
+        ->Js.Array2.map(company => {
+          <div key=company> {React.string(company)} </div>
+        })
+        ->React.array}
+      </div>
+      <div className="text-center mt-16 text-sm"> {React.string(`and many more…`)} </div>
+    </section>
+  }
+}
+
 @react.component
 let make = (~components=Markdown.default, ~children) => {
   let overlayState = React.useState(() => false)
@@ -150,6 +169,7 @@ let make = (~components=Markdown.default, ~children) => {
                     <div className="mt-12 max-w-740 self-center"> <Intro /> </div>
                     <div className="mt-16 w-full self-center"> <PlaygroundHero /> </div>
                     <div className="mt-16"> <MainUSP> {React.string("test")} </MainUSP> </div>
+                    <div> <TrustedBy /> </div>
                     children
                   </div>
                 </div>

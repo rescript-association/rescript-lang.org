@@ -107,6 +107,29 @@ function LandingPageLayout$MainUSP(Props) {
                 }));
 }
 
+function LandingPageLayout$TrustedBy(Props) {
+  return React.createElement("section", {
+              className: "mt-20"
+            }, React.createElement("h3", {
+                  className: "text-42 text-gray-42 tracking-tight leading-2 font-semibold text-center max-w-576 mx-auto"
+                }, "Trusted by developers around the world"), React.createElement("div", {
+                  className: "flex justify-between max-w-lg mx-auto mt-16"
+                }, [
+                    "Facebook",
+                    "Rohea",
+                    "Beop",
+                    "Travel World",
+                    "Pupilfirst",
+                    "NomadicLabs"
+                  ].map(function (company) {
+                      return React.createElement("div", {
+                                  key: company
+                                }, company);
+                    })), React.createElement("div", {
+                  className: "text-center mt-16 text-sm"
+                }, "and many more…"));
+}
+
 function LandingPageLayout(Props) {
   var componentsOpt = Props.components;
   var children = Props.children;
@@ -140,7 +163,7 @@ function LandingPageLayout(Props) {
                                                     className: "mt-16"
                                                   }, React.createElement(LandingPageLayout$MainUSP, {
                                                         children: "test"
-                                                      })), children))
+                                                      })), React.createElement("div", undefined, React.createElement(LandingPageLayout$TrustedBy, {})), children))
                                     }))), React.createElement(Footer.make, {})))));
 }
 
