@@ -142,4 +142,36 @@ if (match !== undefined) {
 
 </CodeTab>
 
+This approach may also be used for JS class feature detection.
+
+Note that here we are using the `\""` syntax which allows us to [use a capitalized identifier name](./use-illegal-identifier-names).
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type audioContext
+
+@new external createAudioContext: unit => audioContext = "AudioContext"
+
+let createAudioContext: unit => option<audioContext> = () => {
+  switch %external(\"AudioContext") {
+  | Some(_) => createAudioContext()->Some
+  | None => None
+  }
+}
+```
+
+```js
+var Caml_option = require("rescript/lib/js/caml_option.js");
+
+function createAudioContext(param) {
+  var match = typeof AudioContext === "undefined" ? undefined : AudioContext;
+  if (match !== undefined) {
+    return Caml_option.some(new AudioContext());
+  }
+}
+```
+
+</CodeTab>
+
 <!-- TODO: revamp this page. Not good. Tell to use globalThis["foo"], and look in our stdlib -->
