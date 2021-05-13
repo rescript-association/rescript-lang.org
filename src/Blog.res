@@ -293,11 +293,11 @@ let default = (props: props): React.element => {
       | rest =>
         <div
           className="px-4 md:px-8 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full">
-          {Belt.Array.mapWithIndex(rest, (i, post) => {
+          {Js.Array2.map(rest, post => {
             let badge = post.frontmatter.badge->Js.Null.toOption
 
             <BlogCard
-              key={post.id ++ Belt.Int.toString(i)}
+              key={post.id}
               previewImg=?{post.frontmatter.previewImg->Js.Null.toOption}
               title=post.frontmatter.title
               author=post.frontmatter.author
