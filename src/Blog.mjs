@@ -168,8 +168,6 @@ function Blog$FeatureCard(Props) {
                     })));
 }
 
-var Malformed = {};
-
 function $$default(props) {
   var posts = props.posts;
   var match = React.useState(function () {
@@ -313,7 +311,6 @@ function getStaticProps(_ctx) {
 }
 
 export {
-  Malformed ,
   defaultPreviewImg ,
   $$default ,
   $$default as default,

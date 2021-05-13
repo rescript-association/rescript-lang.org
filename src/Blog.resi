@@ -1,17 +1,7 @@
-module Malformed: {
-  type t = {
-    id: string,
-    message: string,
-  }
-}
-
 let defaultPreviewImg: string
 
-type params = {slug: string}
-type props = {
-  posts: array<BlogApi.post>,
-  archived: array<BlogApi.post>,
-}
+type params
+type props
 
 let default: props => React.element
 

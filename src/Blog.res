@@ -207,13 +207,6 @@ module FeatureCard = {
 
 type params = {slug: string}
 
-module Malformed = {
-  type t = {
-    id: string,
-    message: string,
-  }
-}
-
 type props = {
   posts: array<BlogApi.post>,
   archived: array<BlogApi.post>,
