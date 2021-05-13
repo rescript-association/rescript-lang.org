@@ -41,7 +41,9 @@ function getAllPosts(param) {
                 frontmatter: match.data
               };
       });
-  return nonArchivedPosts.concat(archivedPosts);
+  return nonArchivedPosts.concat(archivedPosts).sort(function (a, b) {
+              return $$String.compare(Path.basename(b.path), Path.basename(a.path));
+            });
 }
 
 function dateToUTCString(date) {
@@ -52,9 +54,7 @@ function dateToUTCString(date) {
 function getLatest(maxOpt, baseUrlOpt, param) {
   var max = maxOpt !== undefined ? maxOpt : 10;
   var baseUrl = baseUrlOpt !== undefined ? baseUrlOpt : "https://rescript-lang.org";
-  return Belt_Array.reduce(getAllPosts(undefined).sort(function (a, b) {
-                    return $$String.compare(Path.basename(b.path), Path.basename(a.path));
-                  }), [], (function (acc, next) {
+  return Belt_Array.reduce(getAllPosts(undefined), [], (function (acc, next) {
                   var fm = BlogFrontmatter.decode(next.frontmatter);
                   if (fm.TAG !== /* Ok */0) {
                     return acc;

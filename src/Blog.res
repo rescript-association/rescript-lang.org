@@ -354,9 +354,6 @@ let default = (props: props): React.element => {
 let getStaticProps: Next.GetStaticProps.t<props, params> = _ctx => {
   let (posts, malformed, archived) =
     BlogApi.getAllPosts()
-    ->Js.Array2.sortInPlaceWith((a, b) => {
-      String.compare(b.path, a.path)
-    })
     ->Belt.Array.reduce(([], [], []), (acc, postData) => {
       let (posts, malformed, archived) = acc
       let id = BlogApi.blogPathToSlug(postData.path)

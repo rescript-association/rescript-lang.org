@@ -75,7 +75,9 @@ let getAllPosts = () => {
     }
   })
 
-  Js.Array2.concat(nonArchivedPosts, archivedPosts)
+  Js.Array2.concat(nonArchivedPosts, archivedPosts)->Js.Array2.sortInPlaceWith((a, b) => {
+    String.compare(Node.Path.basename(b.path), Node.Path.basename(a.path))
+  })
 }
 
 module RssFeed = {
@@ -110,9 +112,6 @@ module RssFeed = {
   let getLatest = (~max=10, ~baseUrl="https://rescript-lang.org", ()): array<item> => {
     let items =
       getAllPosts()
-      ->Js.Array2.sortInPlaceWith((a, b) => {
-        String.compare(Node.Path.basename(b.path), Node.Path.basename(a.path))
-      })
       ->Belt.Array.reduce([], (acc, next) =>
         switch BlogFrontmatter.decode(next.frontmatter) {
         | Ok(fm) =>
