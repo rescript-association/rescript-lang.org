@@ -234,25 +234,25 @@ function $$default(props) {
           }, React.createElement(Blog$FeatureCard, tmp));
       var postsBox = rest.length !== 0 ? React.createElement("div", {
               className: "px-4 md:px-8 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full"
-            }, Belt_Array.mapWithIndex(rest, (function (i, post) {
-                    var badge = post.frontmatter.badge;
-                    var tmp = {
-                      title: post.frontmatter.title,
-                      author: post.frontmatter.author,
-                      date: DateStr.toDate(post.frontmatter.date),
-                      slug: post.id,
-                      key: post.id + String(i)
-                    };
-                    var tmp$1 = Caml_option.null_to_opt(post.frontmatter.previewImg);
-                    if (tmp$1 !== undefined) {
-                      tmp.previewImg = tmp$1;
-                    }
-                    var tmp$2 = badge === null ? undefined : Caml_option.some(badge);
-                    if (tmp$2 !== undefined) {
-                      tmp.badge = Caml_option.valFromOption(tmp$2);
-                    }
-                    return React.createElement(Blog$BlogCard, tmp);
-                  }))) : null;
+            }, rest.map(function (post) {
+                  var badge = post.frontmatter.badge;
+                  var tmp = {
+                    title: post.frontmatter.title,
+                    author: post.frontmatter.author,
+                    date: DateStr.toDate(post.frontmatter.date),
+                    slug: post.id,
+                    key: post.id
+                  };
+                  var tmp$1 = Caml_option.null_to_opt(post.frontmatter.previewImg);
+                  if (tmp$1 !== undefined) {
+                    tmp.previewImg = tmp$1;
+                  }
+                  var tmp$2 = badge === null ? undefined : Caml_option.some(badge);
+                  if (tmp$2 !== undefined) {
+                    tmp.badge = Caml_option.valFromOption(tmp$2);
+                  }
+                  return React.createElement(Blog$BlogCard, tmp);
+                })) : null;
       result = React.createElement(React.Fragment, undefined, featureBox, postsBox);
     } else {
       result = React.createElement("div", undefined, "No posts for this category available...");
