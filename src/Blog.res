@@ -207,55 +207,15 @@ module FeatureCard = {
 
 type params = {slug: string}
 
-module Post = {
-  type t = {
-    id: string,
-    frontmatter: BlogFrontmatter.t,
-  }
-}
-
-module Malformed = {
-  type t = {
-    id: string,
-    message: string,
-  }
-}
-
 type props = {
-  posts: array<Post.t>,
-  archived: array<Post.t>,
-  malformed: array<Malformed.t>,
+  posts: array<BlogApi.post>,
+  archived: array<BlogApi.post>,
 }
 
 let default = (props: props): React.element => {
-  let {posts, malformed, archived} = props
+  let {posts, archived} = props
 
   let (currentSelection, setSelection) = React.useState(() => CategorySelector.All)
-
-  let errorBox = if ProcessEnv.env === ProcessEnv.development && Belt.Array.length(malformed) > 0 {
-    <div className="mb-12">
-      <Markdown.Warn>
-        <h2 className="font-bold text-gray-95 text-32 mb-2">
-          {React.string("Some Blog Posts are Malformed!")}
-        </h2>
-        <p>
-          {React.string("Any blog post with invalid data will not be displayed in production.")}
-        </p>
-        <div>
-          <p className="font-bold mt-4"> {React.string("Errors:")} </p>
-          <ul>
-            {Belt.Array.mapWithIndex(malformed, (i, m) =>
-              <li key={i->Belt.Int.toString} className="list-disc ml-5">
-                {React.string("pages/blog/" ++ (m.id ++ (".mdx: " ++ m.message)))}
-              </li>
-            )->React.array}
-          </ul>
-        </div>
-      </Markdown.Warn>
-    </div>
-  } else {
-    React.null
-  }
 
   let content = if Belt.Array.length(posts) === 0 {
     /* <div> {React.string("Currently no posts available")} </div>; */
@@ -284,7 +244,7 @@ let default = (props: props): React.element => {
             author=first.frontmatter.author
             firstParagraph=?{first.frontmatter.description->Js.Null.toOption}
             date={first.frontmatter.date->DateStr.toDate}
-            slug=first.id
+            slug=BlogApi.blogPathToSlug(first.path)
           />
         </div>
 
@@ -297,13 +257,13 @@ let default = (props: props): React.element => {
             let badge = post.frontmatter.badge->Js.Null.toOption
 
             <BlogCard
-              key={post.id}
+              key={post.path}
               previewImg=?{post.frontmatter.previewImg->Js.Null.toOption}
               title=post.frontmatter.title
               author=post.frontmatter.author
               ?badge
               date={post.frontmatter.date->DateStr.toDate}
-              slug=post.id
+              slug=BlogApi.blogPathToSlug(post.path)
             />
           })->React.array}
         </div>
@@ -339,7 +299,7 @@ let default = (props: props): React.element => {
             <Mdx.Provider components=Markdown.default>
               <div className="flex justify-center">
                 <div className="w-full" style={ReactDOMStyle.make(~maxWidth="66.625rem", ())}>
-                  errorBox content
+                  content
                 </div>
               </div>
             </Mdx.Provider>
@@ -352,32 +312,21 @@ let default = (props: props): React.element => {
 }
 
 let getStaticProps: Next.GetStaticProps.t<props, params> = _ctx => {
-  let (posts, malformed, archived) =
-    BlogApi.getAllPosts()
-    ->Belt.Array.reduce(([], [], []), (acc, postData) => {
-      let (posts, malformed, archived) = acc
-      let id = BlogApi.blogPathToSlug(postData.path)
-
-      let decoded = BlogFrontmatter.decode(postData.frontmatter)
-
-      switch decoded {
-      | Error(message) =>
-        let m = {Malformed.id: id, message: message}
-        let malformed = Belt.Array.concat(malformed, [m])
-        (posts, malformed, archived)
-      | Ok(frontmatter) =>
-        if postData.archived {
-          Js.Array2.push(archived, {Post.id: id, frontmatter: frontmatter})->ignore
-        } else {
-          Js.Array2.push(posts, {Post.id: id, frontmatter: frontmatter})->ignore
-        }
-        (posts, malformed, archived)
-      }
-    })
+  let (posts, archived) = BlogApi.getAllPosts()->Belt.Array.reduce(([], []), (
+    acc,
+    postData,
+  ) => {
+    let (posts, archived) = acc
+    if postData.archived {
+      Js.Array2.push(archived, postData)->ignore
+    } else {
+      Js.Array2.push(posts, postData)->ignore
+    }
+    (posts, archived)
+  })
 
   let props = {
     posts: posts,
-    malformed: malformed,
     archived: archived,
   }
 
