@@ -1,10 +1,3 @@
-module Post: {
-  type t = {
-    id: string,
-    frontmatter: BlogFrontmatter.t,
-  }
-}
-
 module Malformed: {
   type t = {
     id: string,
@@ -16,9 +9,8 @@ let defaultPreviewImg: string
 
 type params = {slug: string}
 type props = {
-  posts: array<Post.t>,
-  archived: array<Post.t>,
-  malformed: array<Malformed.t>,
+  posts: array<BlogApi.post>,
+  archived: array<BlogApi.post>,
 }
 
 let default: props => React.element

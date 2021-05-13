@@ -32,7 +32,7 @@ module GrayMatter = {
   @module("gray-matter") external matter: string => output = "default"
 }
 
-type postData = {
+type post = {
   path: string,
   archived: bool,
   frontmatter: BlogFrontmatter.t,
@@ -115,21 +115,16 @@ module RssFeed = {
   let getLatest = (~max=10, ~baseUrl="https://rescript-lang.org", ()): array<item> => {
     let items =
       getAllPosts()
-      ->Belt.Array.reduce([], (acc, next) =>
-        switch BlogFrontmatter.decode(next.frontmatter) {
-        | Ok(fm) =>
-          let description = Js.Null.toOption(fm.description)->Belt.Option.getWithDefault("")
-          let item = {
-            title: fm.title,
-            href: baseUrl ++ "/blog/" ++ blogPathToSlug(next.path),
-            description: description,
-            pubDate: DateStr.toDate(fm.date),
-          }
-
-          Belt.Array.concat(acc, [item])
-        | Error(_) => acc
+      ->Js.Array2.map(post => {
+        let fm = post.frontmatter
+        let description = Js.Null.toOption(fm.description)->Belt.Option.getWithDefault("")
+        {
+          title: fm.title,
+          href: baseUrl ++ "/blog/" ++ blogPathToSlug(post.path),
+          description: description,
+          pubDate: DateStr.toDate(fm.date),
         }
-      )
+      })
       ->Js.Array2.slice(~start=0, ~end_=max)
     items
   }

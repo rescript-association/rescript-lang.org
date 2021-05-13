@@ -14,7 +14,6 @@ import * as DateStr from "./common/DateStr.mjs";
 import * as Markdown from "./components/Markdown.mjs";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as Navigation from "./components/Navigation.mjs";
-import * as ProcessEnv from "./common/ProcessEnv.mjs";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as BlogFrontmatter from "./common/BlogFrontmatter.mjs";
 
@@ -169,32 +168,15 @@ function Blog$FeatureCard(Props) {
                     })));
 }
 
-var Post = {};
-
 var Malformed = {};
 
 function $$default(props) {
-  var malformed = props.malformed;
   var posts = props.posts;
   var match = React.useState(function () {
         return /* All */0;
       });
   var setSelection = match[1];
   var currentSelection = match[0];
-  var errorBox = ProcessEnv.env === ProcessEnv.development && malformed.length !== 0 ? React.createElement("div", {
-          className: "mb-12"
-        }, React.createElement(Markdown.Warn.make, {
-              children: null
-            }, React.createElement("h2", {
-                  className: "font-bold text-gray-95 text-32 mb-2"
-                }, "Some Blog Posts are Malformed!"), React.createElement("p", undefined, "Any blog post with invalid data will not be displayed in production."), React.createElement("div", undefined, React.createElement("p", {
-                      className: "font-bold mt-4"
-                    }, "Errors:"), React.createElement("ul", undefined, Belt_Array.mapWithIndex(malformed, (function (i, m) {
-                            return React.createElement("li", {
-                                        key: String(i),
-                                        className: "list-disc ml-5"
-                                      }, "pages/blog/" + (m.id + (".mdx: " + m.message)));
-                          })))))) : null;
   var content;
   if (posts.length === 0) {
     content = React.createElement("div", {
@@ -215,7 +197,7 @@ function $$default(props) {
         title: first.frontmatter.title,
         author: first.frontmatter.author,
         date: DateStr.toDate(first.frontmatter.date),
-        slug: first.id
+        slug: BlogApi.blogPathToSlug(first.path)
       };
       var tmp$1 = Caml_option.null_to_opt(first.frontmatter.previewImg);
       if (tmp$1 !== undefined) {
@@ -240,8 +222,8 @@ function $$default(props) {
                     title: post.frontmatter.title,
                     author: post.frontmatter.author,
                     date: DateStr.toDate(post.frontmatter.date),
-                    slug: post.id,
-                    key: post.id
+                    slug: BlogApi.blogPathToSlug(post.path),
+                    key: post.path
                   };
                   var tmp$1 = Caml_option.null_to_opt(post.frontmatter.previewImg);
                   if (tmp$1 !== undefined) {
@@ -298,59 +280,32 @@ function $$default(props) {
                                             style: {
                                               maxWidth: "66.625rem"
                                             }
-                                          }, errorBox, content))
+                                          }, content))
                                 }))), React.createElement(Footer.make, {}))));
 }
 
 function getStaticProps(_ctx) {
   var match = Belt_Array.reduce(BlogApi.getAllPosts(undefined), [
         [],
-        [],
         []
       ], (function (acc, postData) {
-          var archived = acc[2];
-          var malformed = acc[1];
+          var archived = acc[1];
           var posts = acc[0];
-          var id = BlogApi.blogPathToSlug(postData.path);
-          var decoded = BlogFrontmatter.decode(postData.frontmatter);
-          if (decoded.TAG === /* Ok */0) {
-            var frontmatter = decoded._0;
-            if (postData.archived) {
-              archived.push({
-                    id: id,
-                    frontmatter: frontmatter
-                  });
-            } else {
-              posts.push({
-                    id: id,
-                    frontmatter: frontmatter
-                  });
-            }
-            return [
-                    posts,
-                    malformed,
-                    archived
-                  ];
+          if (postData.archived) {
+            archived.push(postData);
+          } else {
+            posts.push(postData);
           }
-          var m_message = decoded._0;
-          var m = {
-            id: id,
-            message: m_message
-          };
-          var malformed$1 = Belt_Array.concat(malformed, [m]);
           return [
                   posts,
-                  malformed$1,
                   archived
                 ];
         }));
   var props_posts = match[0];
-  var props_archived = match[2];
-  var props_malformed = match[1];
+  var props_archived = match[1];
   var props = {
     posts: props_posts,
-    archived: props_archived,
-    malformed: props_malformed
+    archived: props_archived
   };
   return Promise.resolve({
               props: props
@@ -358,7 +313,6 @@ function getStaticProps(_ctx) {
 }
 
 export {
-  Post ,
   Malformed ,
   defaultPreviewImg ,
   $$default ,
