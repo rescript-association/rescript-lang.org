@@ -26,7 +26,6 @@ function getAllPosts(param) {
   var nonArchivedPosts = mdxFiles(postsDirectory).map(function (path) {
         var match = GrayMatter(Fs.readFileSync(Path.join(postsDirectory, path), "utf8"));
         return {
-                content: match.content,
                 path: path,
                 archived: false,
                 frontmatter: match.data
@@ -35,7 +34,6 @@ function getAllPosts(param) {
   var archivedPosts = mdxFiles(archivedPostsDirectory).map(function (path) {
         var match = GrayMatter(Fs.readFileSync(Path.join(archivedPostsDirectory, path), "utf8"));
         return {
-                content: match.content,
                 path: Path.join("archive", path),
                 archived: true,
                 frontmatter: match.data
