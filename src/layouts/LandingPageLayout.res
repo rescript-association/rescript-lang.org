@@ -134,7 +134,7 @@ module MainUSP = {
 module TrustedBy = {
   @react.component
   let make = () => {
-    <section className="mt-20">
+    <section className="my-20">
       <h3
         className="text-42 text-gray-42 tracking-tight leading-2 font-semibold text-center max-w-576 mx-auto">
         {React.string("Trusted by developers around the world")}
@@ -147,6 +147,73 @@ module TrustedBy = {
         ->React.array}
       </div>
       <div className="text-center mt-16 text-sm"> {React.string(`and many more…`)} </div>
+    </section>
+  }
+}
+
+module CuratedResources = {
+  // TODO: is this overkill, should we just inline this as jsx?
+  type card = {
+    imgSrc: string,
+    title: string,
+    descr: string,
+    link: string,
+  }
+
+  let cards = [
+    {
+      imgSrc: "/static/ic_manual@2x.png",
+      title: "Language Manual",
+      descr: "Look up the basics: reference for all language features",
+      link: "/",
+    },
+    {
+      imgSrc: "/static/ic_rescript_react@2x.png",
+      title: "ReScript + React",
+      descr: "First Class bindings for ReactJS. Developed for small and big ass scale projects.",
+      link: "/",
+    },
+    {
+      imgSrc: "/static/ic_manual@2x.png",
+      title: "Add ReScript to an existing project",
+      descr: "This guide will help you to transfer your project without hassle.",
+      link: "/",
+    },
+    {
+      imgSrc: "/static/ic_gentype@2x.png",
+      title: "TypeScript Integration",
+      descr: "Integrate TypeScript and Flow seamlessly and with ease.",
+      link: "/",
+    },
+  ]
+
+  @react.component
+  let make = () => {
+    <section className="bg-gray-90 w-full pb-40">
+      <h2
+        className="text-gray-10 my-20 text-32 leading-2 font-semibold max-w-md mx-auto text-center">
+        {React.string("Carefully curated resources to start or advance your ReScript projects")}
+      </h2>
+      <div>
+        <div className="uppercase text-sm text-center mb-20">
+          {React.string("guides and docs")}
+        </div>
+        <div className="flex justify-between max-w-2xl mx-auto">
+          {cards
+          ->Js.Array2.map(card =>
+            <div
+              className="bg-gray-95 px-5 pb-8 relative rounded-xl"
+              style={ReactDOM.Style.make(~maxWidth="250px", ())}>
+              <img className="h-12 absolute mt-5" src=card.imgSrc />
+              <h5 className="text-gray-10 font-semibold mt-32 h-12">
+                {React.string(card.title)}
+              </h5>
+              <div className="text-gray-40 mt-8 text-sm"> {React.string(card.descr)} </div>
+            </div>
+          )
+          ->React.array}
+        </div>
+      </div>
     </section>
   }
 }
@@ -169,7 +236,8 @@ let make = (~components=Markdown.default, ~children) => {
                     <div className="mt-12 max-w-740 self-center"> <Intro /> </div>
                     <div className="mt-16 w-full self-center"> <PlaygroundHero /> </div>
                     <div className="mt-16"> <MainUSP> {React.string("test")} </MainUSP> </div>
-                    <div> <TrustedBy /> </div>
+                    <TrustedBy />
+                    <CuratedResources />
                     children
                   </div>
                 </div>

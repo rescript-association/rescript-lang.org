@@ -109,7 +109,7 @@ function LandingPageLayout$MainUSP(Props) {
 
 function LandingPageLayout$TrustedBy(Props) {
   return React.createElement("section", {
-              className: "mt-20"
+              className: "my-20"
             }, React.createElement("h3", {
                   className: "text-42 text-gray-42 tracking-tight leading-2 font-semibold text-center max-w-576 mx-auto"
                 }, "Trusted by developers around the world"), React.createElement("div", {
@@ -128,6 +128,59 @@ function LandingPageLayout$TrustedBy(Props) {
                     })), React.createElement("div", {
                   className: "text-center mt-16 text-sm"
                 }, "and many more…"));
+}
+
+var cards = [
+  {
+    imgSrc: "/static/ic_manual@2x.png",
+    title: "Language Manual",
+    descr: "Look up the basics: reference for all language features",
+    link: "/"
+  },
+  {
+    imgSrc: "/static/ic_rescript_react@2x.png",
+    title: "ReScript + React",
+    descr: "First Class bindings for ReactJS. Developed for small and big ass scale projects.",
+    link: "/"
+  },
+  {
+    imgSrc: "/static/ic_manual@2x.png",
+    title: "Add ReScript to an existing project",
+    descr: "This guide will help you to transfer your project without hassle.",
+    link: "/"
+  },
+  {
+    imgSrc: "/static/ic_gentype@2x.png",
+    title: "TypeScript Integration",
+    descr: "Integrate TypeScript and Flow seamlessly and with ease.",
+    link: "/"
+  }
+];
+
+function LandingPageLayout$CuratedResources(Props) {
+  return React.createElement("section", {
+              className: "bg-gray-90 w-full pb-40"
+            }, React.createElement("h2", {
+                  className: "text-gray-10 my-20 text-32 leading-2 font-semibold max-w-md mx-auto text-center"
+                }, "Carefully curated resources to start or advance your ReScript projects"), React.createElement("div", undefined, React.createElement("div", {
+                      className: "uppercase text-sm text-center mb-20"
+                    }, "guides and docs"), React.createElement("div", {
+                      className: "flex justify-between max-w-2xl mx-auto"
+                    }, cards.map(function (card) {
+                          return React.createElement("div", {
+                                      className: "bg-gray-95 px-5 pb-8 relative rounded-xl",
+                                      style: {
+                                        maxWidth: "250px"
+                                      }
+                                    }, React.createElement("img", {
+                                          className: "h-12 absolute mt-5",
+                                          src: card.imgSrc
+                                        }), React.createElement("h5", {
+                                          className: "text-gray-10 font-semibold mt-32 h-12"
+                                        }, card.title), React.createElement("div", {
+                                          className: "text-gray-40 mt-8 text-sm"
+                                        }, card.descr));
+                        }))));
 }
 
 function LandingPageLayout(Props) {
@@ -163,7 +216,7 @@ function LandingPageLayout(Props) {
                                                     className: "mt-16"
                                                   }, React.createElement(LandingPageLayout$MainUSP, {
                                                         children: "test"
-                                                      })), React.createElement("div", undefined, React.createElement(LandingPageLayout$TrustedBy, {})), children))
+                                                      })), React.createElement(LandingPageLayout$TrustedBy, {}), React.createElement(LandingPageLayout$CuratedResources, {}), children))
                                     }))), React.createElement(Footer.make, {})))));
 }
 
