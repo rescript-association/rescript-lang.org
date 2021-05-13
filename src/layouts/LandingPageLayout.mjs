@@ -100,7 +100,10 @@ function LandingPageLayout$MainUSP(Props) {
   var setSelectedIndex = match[1];
   var selectedIndex = match[0];
   return React.createElement("section", {
-              className: "flex items-stretch w-full"
+              className: "flex items-stretch w-full",
+              style: {
+                height: "37rem"
+              }
             }, React.createElement("div", {
                   className: "pl-32 bg-gray-90 pb-32 w-full text-white-80"
                 }, React.createElement("div", {
@@ -203,6 +206,22 @@ function LandingPageLayout$CuratedResources(Props) {
                         }))));
 }
 
+function LandingPageLayout$QuickInstall(Props) {
+  return React.createElement("div", {
+              className: "mt-24"
+            }, React.createElement("h2", {
+                  className: "font-semibold text-42 text-gray-95 text-center"
+                }, "Quick Install"));
+}
+
+function LandingPageLayout$Sponsors(Props) {
+  return React.createElement("div", {
+              className: "mt-24"
+            }, React.createElement("h2", {
+                  className: "font-semibold text-42 text-gray-95 text-center"
+                }, "Sponsors"));
+}
+
 function LandingPageLayout(Props) {
   var componentsOpt = Props.components;
   var children = Props.children;
@@ -230,7 +249,7 @@ function LandingPageLayout(Props) {
                                                 className: "w-full flex flex-col"
                                               }, React.createElement("div", {
                                                     className: "mt-12 mb-12 max-w-740 self-center"
-                                                  }, React.createElement(LandingPageLayout$Intro, {})), React.createElement(LandingPageLayout$PlaygroundHero, {}), React.createElement(LandingPageLayout$MainUSP, {}), React.createElement(LandingPageLayout$TrustedBy, {}), React.createElement(LandingPageLayout$CuratedResources, {}), children))
+                                                  }, React.createElement(LandingPageLayout$Intro, {})), React.createElement(LandingPageLayout$PlaygroundHero, {}), React.createElement(LandingPageLayout$MainUSP, {}), React.createElement(LandingPageLayout$TrustedBy, {}), React.createElement(LandingPageLayout$CuratedResources, {}), React.createElement(LandingPageLayout$QuickInstall, {}), React.createElement(LandingPageLayout$Sponsors, {}), children))
                                     }))), React.createElement(Footer.make, {})))));
 }
 

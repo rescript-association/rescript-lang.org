@@ -102,7 +102,7 @@ module MainUSP = {
   let make = () => {
     let (selectedIndex, setSelectedIndex) = React.useState(_ => 0)
 
-    <section className="flex items-stretch w-full">
+    <section className="flex items-stretch w-full" style={ReactDOM.Style.make(~height="37rem", ())}>
       <div className="pl-32 bg-gray-90 pb-32 w-full text-white-80">
         <div className="flex justify-between mt-6 pr-20 w-full">
           {tabs
@@ -225,6 +225,26 @@ module CuratedResources = {
   }
 }
 
+module QuickInstall = {
+  @react.component
+  let make = () =>
+    <div className="mt-24">
+      <h2 className="font-semibold text-42 text-gray-95 text-center">
+        {React.string("Quick Install")}
+      </h2>
+    </div>
+}
+
+module Sponsors = {
+  @react.component
+  let make = () =>
+    <div className="mt-24">
+      <h2 className="font-semibold text-42 text-gray-95 text-center">
+        {React.string("Sponsors")}
+      </h2>
+    </div>
+}
+
 @react.component
 let make = (~components=Markdown.default, ~children) => {
   let overlayState = React.useState(() => false)
@@ -245,6 +265,8 @@ let make = (~components=Markdown.default, ~children) => {
                     <MainUSP />
                     <TrustedBy />
                     <CuratedResources />
+                    <QuickInstall />
+                    <Sponsors />
                     children
                   </div>
                 </div>
