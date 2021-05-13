@@ -78,33 +78,50 @@ var item3 = React.createElement(LandingPageLayout$MainUSP$Item, {
       paragraph: "Use any library from javascript, export rescript\n      libraries to javascript, generate typescript and flow types, etc. It's\n      like you've never left the good parts of javascript at all."
     });
 
+var items = [
+  item1,
+  item2,
+  item3
+];
+
+var tabs = [
+  "Fast and Simple",
+  "Robust Type System",
+  "Seamless JS Integration"
+];
+
 function LandingPageLayout$MainUSP(Props) {
   var match = React.useState(function () {
-        return item1;
+        return 0;
       });
-  var setSelected = match[1];
-  var createTab = function (text, selectedItem) {
-    return React.createElement("button", {
-                className: "text-fire-50 text-21",
-                onClick: (function (_evt) {
-                    return Curry._1(setSelected, (function (param) {
-                                  return selectedItem;
-                                }));
-                  })
-              }, text);
-  };
+  var setSelectedIndex = match[1];
+  var selectedIndex = match[0];
   return React.createElement("section", {
-              className: "flex h-full w-full"
+              className: "flex items-stretch w-full"
             }, React.createElement("div", {
-                  className: "flex justify-center bg-gray-90 pb-32 w-full space-y-4 text-white-80"
-                }, React.createElement("div", undefined, React.createElement("div", {
-                          className: "flex space-x-4"
-                        }, createTab("Fast and Simple", item1), createTab("Robust Type System", item2), createTab("Seamless JS Integration", item3)), match[0])), React.createElement("div", {
-                  className: "bg-fire-40 h-full w-full",
+                  className: "pl-32 bg-gray-90 pb-32 w-full text-white-80"
+                }, React.createElement("div", {
+                      className: "flex justify-between mt-6 pr-20 w-full"
+                    }, tabs.map(function (tabTitle, i) {
+                          var className = i === selectedIndex ? "text-fire-50 text-xl border-b-2 border-fire-50" : "text-xl text-gray-80";
+                          return React.createElement("button", {
+                                      className: className,
+                                      onClick: (function (_evt) {
+                                          return Curry._1(setSelectedIndex, (function (param) {
+                                                        return i;
+                                                      }));
+                                        })
+                                    }, tabTitle);
+                        })), React.createElement("div", {
+                      className: "mt-20"
+                    }, items[selectedIndex])), React.createElement("div", {
+                  className: "bg-fire-40 h-full w-full flex flex-col",
                   style: {
                     maxWidth: "18.5rem"
                   }
-                }));
+                }, React.createElement("div", {
+                      className: "flex-grow"
+                    })));
 }
 
 function LandingPageLayout$TrustedBy(Props) {

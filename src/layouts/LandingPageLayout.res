@@ -90,34 +90,36 @@ module MainUSP = {
       like you've never left the good parts of javascript at all.`)}
     />
 
+  let items = [item1, item2, item3]
+  let tabs = ["Fast and Simple", "Robust Type System", "Seamless JS Integration"]
+
   @react.component
   let make = (~children as _) => {
-    let (selected, setSelected) = React.useState(_ => item1)
+    let (selectedIndex, setSelectedIndex) = React.useState(_ => 0)
 
-    let createTab = (text, selectedItem) => {
-      <button
-        className="text-fire-50 text-21"
-        onClick={_evt => {
-          setSelected(_ => selectedItem)
-        }}>
-        {React.string(text)}
-      </button>
-    }
-
-    <section className="flex h-full w-full">
-      <div className="flex justify-center bg-gray-90 pb-32 w-full space-y-4 text-white-80">
-        <div>
-          <div className="flex space-x-4">
-            {createTab("Fast and Simple", item1)}
-            {createTab("Robust Type System", item2)}
-            {createTab("Seamless JS Integration", item3)}
-          </div>
-          selected
+    <section className="flex items-stretch w-full">
+      <div className="pl-32 bg-gray-90 pb-32 w-full text-white-80">
+        <div className="flex justify-between mt-6 pr-20 w-full">
+          {tabs
+          ->Js.Array2.mapi((tabTitle, i) => {
+            let className = if i === selectedIndex {
+              "text-fire-50 text-xl border-b-2 border-fire-50"
+            } else {
+              "text-xl text-gray-80"
+            }
+            <button className onClick={_evt => setSelectedIndex(_ => i)}>
+              {React.string(tabTitle)}
+            </button>
+          })
+          ->React.array}
         </div>
+        <div className="mt-20"> {items->Js.Array2.unsafe_get(selectedIndex)} </div>
       </div>
       <div
-        className="bg-fire-40 h-full w-full" style={ReactDOM.Style.make(~maxWidth="18.5rem", ())}
-      />
+        className="bg-fire-40 h-full w-full flex flex-col"
+        style={ReactDOM.Style.make(~maxWidth="18.5rem", ())}>
+        <div className="flex-grow" />
+      </div>
     </section>
   }
 }
