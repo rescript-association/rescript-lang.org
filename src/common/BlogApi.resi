@@ -1,7 +1,7 @@
 type postData = {
   path: string,
   archived: bool,
-  frontmatter: Js.Json.t,
+  frontmatter: BlogFrontmatter.t,
 }
 
 let getAllPosts: unit => array<postData>

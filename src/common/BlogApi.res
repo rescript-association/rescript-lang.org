@@ -35,7 +35,7 @@ module GrayMatter = {
 type postData = {
   path: string,
   archived: bool,
-  frontmatter: Js.Json.t,
+  frontmatter: BlogFrontmatter.t,
 }
 
 let blogPathToSlug = path => {
@@ -55,20 +55,26 @@ let getAllPosts = () => {
   let nonArchivedPosts = mdxFiles(postsDirectory)->Js.Array2.map(path => {
     let {GrayMatter.data: data} =
       Node.Path.join2(postsDirectory, path)->Node.Fs.readFileSync(#utf8)->GrayMatter.matter
-    {
-      path: path,
-      frontmatter: data,
-      archived: false,
+    switch BlogFrontmatter.decode(data) {
+    | Error(msg) => Js.Exn.raiseError(msg)
+    | Ok(d) => {
+        path: path,
+        frontmatter: d,
+        archived: false,
+      }
     }
   })
 
   let archivedPosts = mdxFiles(archivedPostsDirectory)->Js.Array2.map(path => {
     let {GrayMatter.data: data} =
       Node.Path.join2(archivedPostsDirectory, path)->Node.Fs.readFileSync(#utf8)->GrayMatter.matter
-    {
-      path: Node.Path.join2("archive", path),
-      frontmatter: data,
-      archived: true,
+    switch BlogFrontmatter.decode(data) {
+    | Error(msg) => Js.Exn.raiseError(msg)
+    | Ok(d) => {
+        path: Node.Path.join2("archive", path),
+        frontmatter: d,
+        archived: true,
+      }
     }
   })
 
