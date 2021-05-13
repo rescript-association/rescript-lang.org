@@ -26,7 +26,9 @@ module Intro = {
           "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node.",
         )}
       </h2>
-      <CallToActionButton> {React.string("Get started")} </CallToActionButton>
+      <div className="my-10">
+        <CallToActionButton> {React.string("Get started")} </CallToActionButton>
+      </div>
     </div>
   }
 }
@@ -34,14 +36,17 @@ module Intro = {
 module PlaygroundHero = {
   @react.component
   let make = () => {
-    <section
-      className="relative flex justify-center px-12 bg-gray-10"
-      style={ReactDOM.Style.make(~height="35rem", ())}>
+    <section className="relative mt-20 bg-gray-10">
       // Playground widget
       <div
-        className="bg-gray-90 max-w-740 w-full -mt-12"
-        style={ReactDOM.Style.make(~height="30rem", ())}>
-        {React.string("Playground Widget etc.")}
+        className="-mt-12 bg-gray-90 max-w-740 mx-auto rounded-xl"
+        style={ReactDOM.Style.make(~height="30rem", ())}
+      />
+      <div>
+        <h2 className="my-32 text-center max-w-576 mx-auto font-semibold text-28">
+          <span className="text-fire-40"> {React.string("We strongly believe")} </span>
+          {React.string(` that every aspect of the language should be fast, correct and shouldn’t rely on caches. Every ReScript program is fully typed and provides correct type information to any given value in your app.`)}
+        </h2>
       </div>
     </section>
   }
@@ -94,7 +99,7 @@ module MainUSP = {
   let tabs = ["Fast and Simple", "Robust Type System", "Seamless JS Integration"]
 
   @react.component
-  let make = (~children as _) => {
+  let make = () => {
     let (selectedIndex, setSelectedIndex) = React.useState(_ => 0)
 
     <section className="flex items-stretch w-full">
@@ -116,7 +121,7 @@ module MainUSP = {
         <div className="mt-20"> {items->Js.Array2.unsafe_get(selectedIndex)} </div>
       </div>
       <div
-        className="bg-fire-40 h-full w-full flex flex-col"
+        className="bg-fire-40 w-full flex flex-col"
         style={ReactDOM.Style.make(~maxWidth="18.5rem", ())}>
         <div className="flex-grow" />
       </div>
@@ -235,9 +240,9 @@ let make = (~components=Markdown.default, ~children) => {
               <Mdx.Provider components>
                 <div className="flex justify-center">
                   <div className="w-full flex flex-col">
-                    <div className="mt-12 max-w-740 self-center"> <Intro /> </div>
-                    <div className="mt-16 w-full self-center"> <PlaygroundHero /> </div>
-                    <div className="mt-16"> <MainUSP> {React.string("test")} </MainUSP> </div>
+                    <div className="mt-12 mb-12 max-w-740 self-center"> <Intro /> </div>
+                    <PlaygroundHero />
+                    <MainUSP />
                     <TrustedBy />
                     <CuratedResources />
                     children

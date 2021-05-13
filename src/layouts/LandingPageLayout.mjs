@@ -26,23 +26,26 @@ function LandingPageLayout$Intro(Props) {
                   }
                 }, "A simple and fast language for JavaScript developers"), React.createElement("h2", {
                   className: "text-gray-40 text-center my-4"
-                }, "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node."), React.createElement(LandingPageLayout$CallToActionButton, {
-                  children: "Get started"
-                }));
+                }, "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node."), React.createElement("div", {
+                  className: "my-10"
+                }, React.createElement(LandingPageLayout$CallToActionButton, {
+                      children: "Get started"
+                    })));
 }
 
 function LandingPageLayout$PlaygroundHero(Props) {
   return React.createElement("section", {
-              className: "relative flex justify-center px-12 bg-gray-10",
-              style: {
-                height: "35rem"
-              }
+              className: "relative mt-20 bg-gray-10"
             }, React.createElement("div", {
-                  className: "bg-gray-90 max-w-740 w-full -mt-12",
+                  className: "-mt-12 bg-gray-90 max-w-740 mx-auto rounded-xl",
                   style: {
                     height: "30rem"
                   }
-                }, "Playground Widget etc."));
+                }), React.createElement("div", undefined, React.createElement("h2", {
+                      className: "my-32 text-center max-w-576 mx-auto font-semibold text-28"
+                    }, React.createElement("span", {
+                          className: "text-fire-40"
+                        }, "We strongly believe"), " that every aspect of the language should be fast, correct and shouldn’t rely on caches. Every ReScript program is fully typed and provides correct type information to any given value in your app.")));
 }
 
 function LandingPageLayout$MainUSP$Item(Props) {
@@ -115,7 +118,7 @@ function LandingPageLayout$MainUSP(Props) {
                         })), React.createElement("div", {
                       className: "mt-20"
                     }, items[selectedIndex])), React.createElement("div", {
-                  className: "bg-fire-40 h-full w-full flex flex-col",
+                  className: "bg-fire-40 w-full flex flex-col",
                   style: {
                     maxWidth: "18.5rem"
                   }
@@ -226,14 +229,8 @@ function LandingPageLayout(Props) {
                                           }, React.createElement("div", {
                                                 className: "w-full flex flex-col"
                                               }, React.createElement("div", {
-                                                    className: "mt-12 max-w-740 self-center"
-                                                  }, React.createElement(LandingPageLayout$Intro, {})), React.createElement("div", {
-                                                    className: "mt-16 w-full self-center"
-                                                  }, React.createElement(LandingPageLayout$PlaygroundHero, {})), React.createElement("div", {
-                                                    className: "mt-16"
-                                                  }, React.createElement(LandingPageLayout$MainUSP, {
-                                                        children: "test"
-                                                      })), React.createElement(LandingPageLayout$TrustedBy, {}), React.createElement(LandingPageLayout$CuratedResources, {}), children))
+                                                    className: "mt-12 mb-12 max-w-740 self-center"
+                                                  }, React.createElement(LandingPageLayout$Intro, {})), React.createElement(LandingPageLayout$PlaygroundHero, {}), React.createElement(LandingPageLayout$MainUSP, {}), React.createElement(LandingPageLayout$TrustedBy, {}), React.createElement(LandingPageLayout$CuratedResources, {}), children))
                                     }))), React.createElement(Footer.make, {})))));
 }
 
