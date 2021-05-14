@@ -1216,7 +1216,6 @@ module ControlPanel = {
 
         let querystring =
           params->Js.Array2.map(((key, value)) => key ++ "=" ++ value)->Js.Array2.joinWith("&")
-          Js.log(querystring)
 
         let url = origin ++ router.route ++ "?" ++ querystring
         Next.Router.replace(router, url)
