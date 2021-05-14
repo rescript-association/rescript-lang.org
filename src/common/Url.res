@@ -21,7 +21,7 @@ type version =
   Results in:
   fullpath: ["apis"]
   base: ["apis"]
-  version: None
+  version: NoVersion
   pagepath: []
  */
 
@@ -48,9 +48,6 @@ type breadcrumb = {
   href: string,
 }
 
-let isVersion = str =>
-  Js.String2.match_(str, %re("/latest|v\\d+(\\.\\d+)?(\\.\\d+)?/"))->Belt.Option.isSome
-
 /* Beautifies url based string to somewhat acceptable representation */
 let prettyString = (str: string) => {
   open Util.String
@@ -58,32 +55,24 @@ let prettyString = (str: string) => {
 }
 
 let parse = (route: string): t => {
-  let fullpath = {
-    open Js.String2
-    route->split("/")->Belt.Array.keep(s => s !== "")
-  }
-
-  let (base, version, pagepath) = Belt.Array.reduce(fullpath, ([], NoVersion, []), (acc, next) => {
-    let (base, version, pagepath) = acc
-
-    if version === NoVersion {
-      if isVersion(next) {
-        let version = if next === "latest" {
-          Latest
-        } else {
-          Version(next)
-        }
-        (base, version, pagepath)
-      } else {
-        let base = Belt.Array.concat(base, [next])
-        (base, version, pagepath)
-      }
-    } else {
-      let pagepath = Belt.Array.concat(pagepath, [next])
-
-      (base, version, pagepath)
-    }
+  let fullpath = route->Js.String2.split("/")->Belt.Array.keep(s => s !== "")
+  let foundVersionIndex = Js.Array2.findIndex(fullpath, chunk => {
+    Js.Re.test_(%re(`/latest|v\d+(\.\d+)?(\.\d+)?/`), chunk)
   })
+
+  let (version, base, pagepath) = if foundVersionIndex == -1 {
+    (NoVersion, fullpath, [])
+  } else {
+    let version = switch fullpath[foundVersionIndex] {
+    | "latest" => Latest
+    | v => Version(v)
+    }
+    (
+      version,
+      fullpath->Js.Array2.slice(~start=0, ~end_=foundVersionIndex),
+      fullpath->Js.Array2.slice(~start=foundVersionIndex + 1, ~end_=Js.Array2.length(fullpath)),
+    )
+  }
 
   {fullpath: fullpath, base: base, version: version, pagepath: pagepath}
 }
