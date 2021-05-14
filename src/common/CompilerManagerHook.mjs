@@ -105,11 +105,11 @@ function attachCompilerAndLibraries(version, libraries, param) {
                         })];
                 return Promise.all(tmp);
               }).then(function (all) {
-              var errors = Belt_Array.reduce(all, [], (function (acc, r) {
+              var errors = Belt_Array.keepMap(all, (function (r) {
                       if (r.TAG === /* Ok */0) {
-                        return acc;
+                        return ;
                       } else {
-                        return acc.concat([r._0]);
+                        return r._0;
                       }
                     }));
               if (errors.length !== 0) {

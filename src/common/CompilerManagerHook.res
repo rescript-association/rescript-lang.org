@@ -126,13 +126,12 @@ let attachCompilerAndLibraries = (~version: string, ~libraries: array<string>, (
     Promise.all(promises)
   })
   ->Promise.map(all => {
-    // all: array(Promise.result(unit, string))
-    let errors = Belt.Array.reduce(all, [], (acc, r) =>
+    let errors = Belt.Array.keepMap(all, r => {
       switch r {
-      | Error(msg) => Js.Array2.concat(acc, [msg])
-      | _ => acc
+      | Error(msg) => Some(msg)
+      | _ => None
       }
-    )
+    })
 
     switch errors {
     | [] => Ok()
