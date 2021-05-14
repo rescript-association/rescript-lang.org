@@ -483,10 +483,10 @@ function merge(base, other) {
 }
 
 function tokensToString(tokens) {
-  return Belt_Array.reduce(tokens, "", (function (acc, token) {
+  return tokens.map(function (token) {
                 var modifier = token.enabled ? "+" : "-";
-                return acc + (modifier + token.flag);
-              }));
+                return modifier + token.flag;
+              }).join("");
 }
 
 var Parser = {

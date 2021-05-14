@@ -280,10 +280,12 @@ module Parser = {
   }
 
   // Creates a compiler compatible warning flag string
-  let tokensToString = (tokens: array<token>): string =>
-    Belt.Array.reduce(tokens, "", (acc, token) => {
+  let tokensToString = tokens => {
+    tokens
+    ->Js.Array2.map(token => {
       let modifier = token.enabled ? "+" : "-"
-
-      acc ++ (modifier ++ token.flag)
+      modifier ++ token.flag
     })
+    ->Js.Array2.joinWith("")
+  }
 }
