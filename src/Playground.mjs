@@ -1542,7 +1542,6 @@ function Playground$ControlPanel(Props) {
       var querystring = params.map(function (param) {
               return param[0] + "=" + param[1];
             }).join("&");
-      console.log(querystring);
       var url = window.location.origin + router.route + "?" + querystring;
       Next.Router.replace(router, url);
       return url;
