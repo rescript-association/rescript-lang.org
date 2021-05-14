@@ -82,14 +82,14 @@ function toXmlString(siteTitleOpt, siteDescriptionOpt, items) {
               var latestPubDateStr = dateToUTCString(item.pubDate);
               return "<lastBuildDate>" + latestPubDateStr + "</lastBuildDate>";
             })), "");
-  var itemsStr = Belt_Array.reduce(items, "", (function (acc, item) {
-          var description = item.description;
-          var href = item.href;
-          var descriptionElement = description === "" ? "" : "<description>\n          <![CDATA[" + description + "]]>\n        </description>";
-          var dateStr = dateToUTCString(item.pubDate);
-          return acc + ("\n      <item>\n        <title> <![CDATA[" + item.title + "]]></title>\n        <link> " + href + " </link>\n        <guid> " + href + " </guid>\n        " + descriptionElement + "\n        <pubDate>" + dateStr + "</pubDate>\n      </item>");
-        }));
-  return "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n  <rss version=\"2.0\">\n    <channel>\n        <title>" + siteTitle + "</title>\n        <link>https://rescript-lang.org</link>\n        <description>" + siteDescription + "</description>\n        <language>en</language>\n        " + latestPubDateElement + "\n" + itemsStr + "\n    </channel>\n  </rss>";
+  var itemsStr = items.map(function (param) {
+          var description = param.description;
+          var href = param.href;
+          var descriptionElement = description === "" ? "" : "<description>\n            <![CDATA[" + description + "]]>\n          </description>";
+          var dateStr = dateToUTCString(param.pubDate);
+          return "\n        <item>\n          <title> <![CDATA[" + param.title + "]]></title>\n          <link> " + href + " </link>\n          <guid> " + href + " </guid>\n          " + descriptionElement + "\n          <pubDate>" + dateStr + "</pubDate>\n        </item>";
+        }).join("\n");
+  return "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n  <rss version=\"2.0\">\n    <channel>\n      <title>" + siteTitle + "</title>\n      <link>https://rescript-lang.org</link>\n      <description>" + siteDescription + "</description>\n      <language>en</language>\n      " + latestPubDateElement + "\n" + itemsStr + "\n    </channel>\n  </rss>";
 }
 
 var RssFeed = {
