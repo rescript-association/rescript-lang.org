@@ -64,15 +64,6 @@ module MdxChildren = {
       }
       return element.props.children;
     }")
-
-  // Flattens a tree of a mdx component to an array of leaf strings
-  let rec flatten = (mdxComp: mdxComponent): array<string> =>
-    switch getMdxChildren(mdxComp)->classify {
-    | String(str) => [str]
-    | Array(arr) => Belt.Array.reduce(arr, [], (acc, next) => Belt.Array.concat(acc, flatten(next)))
-    | Element(el) => flatten(el)
-    | Unknown(_) => []
-    }
 }
 
 module Components = {
