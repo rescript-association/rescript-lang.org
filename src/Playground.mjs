@@ -1539,16 +1539,11 @@ function Playground$ControlPanel(Props) {
             "code",
             LzString.compressToEncodedURIComponent(editorCode.current)
           ]);
-      var querystring = Belt_Array.reduce(params, "", (function (acc, next) {
-              var value = next[1];
-              var key = next[0];
-              if (acc === "") {
-                return "?" + (key + ("=" + value));
-              } else {
-                return acc + ("&" + (key + ("=" + value)));
-              }
-            }));
-      var url = window.location.origin + (router.route + querystring);
+      var querystring = params.map(function (param) {
+              return param[0] + "=" + param[1];
+            }).join("&");
+      console.log(querystring);
+      var url = window.location.origin + router.route + "?" + querystring;
       Next.Router.replace(router, url);
       return url;
     };

@@ -1214,17 +1214,11 @@ module ControlPanel = {
           ("code", editorCode.current->LzString.compressToEncodedURIComponent),
         )->ignore
 
-        let querystring = Belt.Array.reduce(params, "", (acc, next) => {
-          let (key, value) = next
+        let querystring =
+          params->Js.Array2.map(((key, value)) => key ++ "=" ++ value)->Js.Array2.joinWith("&")
+          Js.log(querystring)
 
-          if acc === "" {
-            "?" ++ (key ++ ("=" ++ value))
-          } else {
-            acc ++ ("&" ++ (key ++ ("=" ++ value)))
-          }
-        })
-
-        let url = origin ++ (router.route ++ querystring)
+        let url = origin ++ router.route ++ "?" ++ querystring
         Next.Router.replace(router, url)
         url
       }
