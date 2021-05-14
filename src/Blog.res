@@ -244,7 +244,7 @@ let default = (props: props): React.element => {
             author=first.frontmatter.author
             firstParagraph=?{first.frontmatter.description->Js.Null.toOption}
             date={first.frontmatter.date->DateStr.toDate}
-            slug=BlogApi.blogPathToSlug(first.path)
+            slug={BlogApi.blogPathToSlug(first.path)}
           />
         </div>
 
@@ -263,7 +263,7 @@ let default = (props: props): React.element => {
               author=post.frontmatter.author
               ?badge
               date={post.frontmatter.date->DateStr.toDate}
-              slug=BlogApi.blogPathToSlug(post.path)
+              slug={BlogApi.blogPathToSlug(post.path)}
             />
           })->React.array}
         </div>
@@ -312,21 +312,10 @@ let default = (props: props): React.element => {
 }
 
 let getStaticProps: Next.GetStaticProps.t<props, params> = _ctx => {
-  let (posts, archived) = BlogApi.getAllPosts()->Belt.Array.reduce(([], []), (
-    acc,
-    postData,
-  ) => {
-    let (posts, archived) = acc
-    if postData.archived {
-      Js.Array2.push(archived, postData)->ignore
-    } else {
-      Js.Array2.push(posts, postData)->ignore
-    }
-    (posts, archived)
-  })
+  let (archived, nonArchived) = BlogApi.getAllPosts()->Belt.Array.partition(data => data.archived)
 
   let props = {
-    posts: posts,
+    posts: nonArchived,
     archived: archived,
   }
 
