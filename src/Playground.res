@@ -1496,30 +1496,26 @@ let default = () => {
       | SyntaxErr(locMsgs)
       | TypecheckErr(locMsgs)
       | OtherErr(locMsgs) =>
-        Belt.Array.map(locMsgs, locMsgToCmError(~kind=#Error))
+        Js.Array2.map(locMsgs, locMsgToCmError(~kind=#Error))
       | WarningErr(warnings) =>
-        Belt.Array.reduce(warnings, [], (acc, next) => {
-          switch next {
+        Js.Array2.map(warnings, warning => {
+          switch warning {
           | Api.Warning.Warn({details})
           | WarnErr({details}) =>
-            let warn = locMsgToCmError(~kind=#Warning, details)
-            Js.Array2.push(acc, warn)->ignore
+            locMsgToCmError(~kind=#Warning, details)
           }
-          acc
         })
       | WarningFlagErr(_) => []
       }
     | Comp(Success({warnings})) =>
-      Belt.Array.reduce(warnings, [], (acc, next) => {
-        switch next {
+      Js.Array2.map(warnings, warning => {
+        switch warning {
         | Api.Warning.Warn({details})
         | WarnErr({details}) =>
-          let warn = locMsgToCmError(~kind=#Warning, details)
-          Js.Array2.push(acc, warn)->ignore
+          locMsgToCmError(~kind=#Warning, details)
         }
-        acc
       })
-    | Conv(Fail({details})) => Belt.Array.map(details, locMsgToCmError(~kind=#Error))
+    | Conv(Fail({details})) => Js.Array2.map(details, locMsgToCmError(~kind=#Error))
     | Comp(_)
     | Conv(_)
     | Nothing => []
