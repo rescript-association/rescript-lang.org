@@ -493,26 +493,14 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
 
   let onStateChange = (~id, state) => {
     setCollapsibles(prev => {
-      Js.Array2.reduce(
-        prev,
-        (acc, next) => {
-          if next.title === id {
-            acc
-            ->Js.Array2.push({
-              ...next,
-              state: state,
-            })
-            ->ignore
-          } else {
-            ()
-          }
-
-          acc
-        },
-        [],
-      )
+      Belt.Array.keepMap(prev, next=> {
+        if next.title === id {
+          Some({...next, state: state})
+        } else {
+          None
+        }
+      })
     })
-    ()
   }
 
   let collapsibleElements = Js.Array2.map(collapsibles, coll => {
