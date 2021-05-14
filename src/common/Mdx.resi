@@ -18,7 +18,6 @@ module MdxChildren: {
     | Unknown(unknown)
   let classify: t => case
   let getMdxChildren: mdxComponent => t
-  let flatten: mdxComponent => array<string>
   let toReactElement: t => React.element
 }
 
