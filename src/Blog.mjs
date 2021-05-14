@@ -283,24 +283,11 @@ function $$default(props) {
 }
 
 function getStaticProps(_ctx) {
-  var match = Belt_Array.reduce(BlogApi.getAllPosts(undefined), [
-        [],
-        []
-      ], (function (acc, postData) {
-          var archived = acc[1];
-          var posts = acc[0];
-          if (postData.archived) {
-            archived.push(postData);
-          } else {
-            posts.push(postData);
-          }
-          return [
-                  posts,
-                  archived
-                ];
+  var match = Belt_Array.partition(BlogApi.getAllPosts(undefined), (function (data) {
+          return data.archived;
         }));
-  var props_posts = match[0];
-  var props_archived = match[1];
+  var props_posts = match[1];
+  var props_archived = match[0];
   var props = {
     posts: props_posts,
     archived: props_archived
