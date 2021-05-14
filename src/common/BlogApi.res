@@ -144,9 +144,8 @@ module RssFeed = {
       let descriptionElement = switch description {
       | "" => ""
       | desc => j`<description>
-        <![CDATA[$desc]]>
-        </description>
-          `
+          <![CDATA[$desc]]>
+        </description>`
       }
 
       // TODO: convert pubdate to string
@@ -157,10 +156,8 @@ module RssFeed = {
         <link> $href </link>
         <guid> $href </guid>
         $descriptionElement
-
         <pubDate>$dateStr</pubDate>
-
-    </item>`
+      </item>`
     })
 
     let ret = j`<?xml version="1.0" encoding="utf-8" ?>
@@ -171,8 +168,7 @@ module RssFeed = {
         <description>$siteDescription</description>
         <language>en</language>
         $latestPubDateElement
-        $itemsStr
-
+$itemsStr
     </channel>
   </rss>` //rescript-lang.org</link>
 

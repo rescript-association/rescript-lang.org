@@ -85,11 +85,11 @@ function toXmlString(siteTitleOpt, siteDescriptionOpt, items) {
   var itemsStr = Belt_Array.reduce(items, "", (function (acc, item) {
           var description = item.description;
           var href = item.href;
-          var descriptionElement = description === "" ? "" : "<description>\n        <![CDATA[" + description + "]]>\n        </description>\n          ";
+          var descriptionElement = description === "" ? "" : "<description>\n          <![CDATA[" + description + "]]>\n        </description>";
           var dateStr = dateToUTCString(item.pubDate);
-          return acc + ("\n      <item>\n        <title> <![CDATA[" + item.title + "]]></title>\n        <link> " + href + " </link>\n        <guid> " + href + " </guid>\n        " + descriptionElement + "\n\n        <pubDate>" + dateStr + "</pubDate>\n\n    </item>");
+          return acc + ("\n      <item>\n        <title> <![CDATA[" + item.title + "]]></title>\n        <link> " + href + " </link>\n        <guid> " + href + " </guid>\n        " + descriptionElement + "\n        <pubDate>" + dateStr + "</pubDate>\n      </item>");
         }));
-  return "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n  <rss version=\"2.0\">\n    <channel>\n        <title>" + siteTitle + "</title>\n        <link>https://rescript-lang.org</link>\n        <description>" + siteDescription + "</description>\n        <language>en</language>\n        " + latestPubDateElement + "\n        " + itemsStr + "\n\n    </channel>\n  </rss>";
+  return "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n  <rss version=\"2.0\">\n    <channel>\n        <title>" + siteTitle + "</title>\n        <link>https://rescript-lang.org</link>\n        <description>" + siteDescription + "</description>\n        <language>en</language>\n        " + latestPubDateElement + "\n" + itemsStr + "\n    </channel>\n  </rss>";
 }
 
 var RssFeed = {
