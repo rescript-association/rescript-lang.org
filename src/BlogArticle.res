@@ -153,12 +153,11 @@ let default = (props: props) => {
     : React.null
 
   let content = switch fm {
-  | Ok({date, author, co_authors, title, description, canonical, articleImg, previewImg}) =>
+  | Ok({date, author, co_authors, title, description, articleImg, previewImg}) =>
     <div className="w-full">
       <Meta
         title={title ++ " | ReScript Blog"}
         description=?{description->Js.Null.toOption}
-        canonical=?{canonical->Js.Null.toOption}
         ogImage={previewImg->Js.Null.toOption->Belt.Option.getWithDefault(Blog.defaultPreviewImg)}
       />
       <div className="mb-10 md:mb-20">
@@ -175,16 +174,6 @@ let default = (props: props) => {
         <div className="max-w-740 w-full">
           archivedNote
           children
-          {switch canonical->Js.Null.toOption {
-          | Some(canonical) =>
-            <div className="mt-12 text-14">
-              {React.string("This article was originally released on ")}
-              <a href=canonical target="_blank" rel="noopener noreferrer">
-                {React.string(canonical)}
-              </a>
-            </div>
-          | None => React.null
-          }}
           <div className="mt-12">
             <Line />
             <div className="pt-20 flex flex-col items-center">

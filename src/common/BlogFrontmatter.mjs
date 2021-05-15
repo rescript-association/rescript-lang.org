@@ -155,10 +155,7 @@ function decode(json) {
                 }), json)),
       description: Json_decode.nullable((function (param) {
               return Json_decode.field("description", Json_decode.string, param);
-            }), json),
-      canonical: Js_null.fromOption(Json_decode.optional((function (param) {
-                  return Json_decode.field("canonical", Json_decode.string, param);
-                }), json))
+            }), json)
     };
   }
   catch (raw_str){
