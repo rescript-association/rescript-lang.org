@@ -139,6 +139,29 @@ module MainUSP = {
 /* } */
 
 module TrustedBy = {
+  // TODO: is this data structure too fancy?
+  type company =
+    | Logo({name: string, path: string, /* TODO: get rid of style */ style: ReactDOM.Style.t})
+    | Name(string)
+
+  let companies = [
+    Logo({
+      name: "Facebook Messenger",
+      path: "/static/messenger-logo-64@2x.png",
+      style: ReactDOM.Style.make(~height="64px", ()),
+    }),
+    Name("Facebook"),
+    Name("Rohea"),
+    Name("Beop"),
+    Name("Travel World"),
+    Logo({
+      name: "Pupilfirst",
+      path: "/static/pupilfirst-logo.png",
+      style: ReactDOM.Style.make(~height="42px", ()),
+    }),
+    Name("NomadicLabs"),
+  ]
+
   @react.component
   let make = () => {
     <section className="my-20">
@@ -146,14 +169,21 @@ module TrustedBy = {
         className="text-42 text-gray-42 tracking-tight leading-2 font-semibold text-center max-w-576 mx-auto">
         {React.string("Trusted by developers around the world")}
       </h3>
-      <div className="flex justify-between max-w-lg mx-auto mt-16">
-        {["Facebook", "Rohea", "Beop", "Travel World", "Pupilfirst", "NomadicLabs"]
+      <div className="flex justify-between items-center max-w-xl mx-auto mt-16">
+        {companies
         ->Js.Array2.map(company => {
-          <div key=company> {React.string(company)} </div>
+          let (companyKey, renderedCompany) = switch company {
+          | Name(name) => (name, React.string(name))
+          | Logo({name, path, style}) => (name, <img className="max-w-sm" style src=path />)
+          }
+          <div key=companyKey> renderedCompany </div>
         })
         ->React.array}
       </div>
       <div className="text-center mt-16 text-sm"> {React.string(`and many more…`)} </div>
+      <div className="relative mt-10 mb-20">
+        <img className="absolute max-w-xs" src="/static/Rectangle 514@2x.png" />
+      </div>
     </section>
   }
 }

@@ -130,27 +130,88 @@ function LandingPageLayout$MainUSP(Props) {
                     })));
 }
 
+var companies = [
+  {
+    TAG: 0,
+    name: "Facebook Messenger",
+    path: "/static/messenger-logo-64@2x.png",
+    style: {
+      height: "64px"
+    },
+    [Symbol.for("name")]: "Logo"
+  },
+  {
+    TAG: 1,
+    _0: "Facebook",
+    [Symbol.for("name")]: "Name"
+  },
+  {
+    TAG: 1,
+    _0: "Rohea",
+    [Symbol.for("name")]: "Name"
+  },
+  {
+    TAG: 1,
+    _0: "Beop",
+    [Symbol.for("name")]: "Name"
+  },
+  {
+    TAG: 1,
+    _0: "Travel World",
+    [Symbol.for("name")]: "Name"
+  },
+  {
+    TAG: 0,
+    name: "Pupilfirst",
+    path: "/static/pupilfirst-logo.png",
+    style: {
+      height: "42px"
+    },
+    [Symbol.for("name")]: "Logo"
+  },
+  {
+    TAG: 1,
+    _0: "NomadicLabs",
+    [Symbol.for("name")]: "Name"
+  }
+];
+
 function LandingPageLayout$TrustedBy(Props) {
   return React.createElement("section", {
               className: "my-20"
             }, React.createElement("h3", {
                   className: "text-42 text-gray-42 tracking-tight leading-2 font-semibold text-center max-w-576 mx-auto"
                 }, "Trusted by developers around the world"), React.createElement("div", {
-                  className: "flex justify-between max-w-lg mx-auto mt-16"
-                }, [
-                    "Facebook",
-                    "Rohea",
-                    "Beop",
-                    "Travel World",
-                    "Pupilfirst",
-                    "NomadicLabs"
-                  ].map(function (company) {
+                  className: "flex justify-between items-center max-w-xl mx-auto mt-16"
+                }, companies.map(function (company) {
+                      var match;
+                      if (company.TAG === /* Logo */0) {
+                        match = [
+                          company.name,
+                          React.createElement("img", {
+                                className: "max-w-sm",
+                                style: company.style,
+                                src: company.path
+                              })
+                        ];
+                      } else {
+                        var name = company._0;
+                        match = [
+                          name,
+                          name
+                        ];
+                      }
                       return React.createElement("div", {
-                                  key: company
-                                }, company);
+                                  key: match[0]
+                                }, match[1]);
                     })), React.createElement("div", {
                   className: "text-center mt-16 text-sm"
-                }, "and many more…"));
+                }, "and many more…"), React.createElement("div", {
+                  className: "relative mt-10 mb-20"
+                }, React.createElement("img", {
+                      className: "absolute max-w-xs",
+                      src: "/static/Rectangle 514@2x.png"
+                    })));
 }
 
 var cards = [
