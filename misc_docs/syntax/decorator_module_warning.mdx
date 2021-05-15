@@ -2,7 +2,7 @@
 id: "module-warning-decorator"
 keywords: ["warning", "decorator"]
 name: "@@warning"
-summary: "This is the `module warning` decorator."
+summary: "This is the `@@warning` decorator."
 category: "decorators"
 ---
 
@@ -15,11 +15,11 @@ See the `@warning` decorator to control warnings for _expressions_.
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-// Turn off warning 44
+// Disable warning 44
 @@warning("-44")
 
-// Turn off warnings 44 and 102
-@@warning("-44-102")
+// Enable warning 44 and disable warning 102
+@@warning("+44-102")
 ```
 
 ```js
