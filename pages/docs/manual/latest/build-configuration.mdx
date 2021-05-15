@@ -11,14 +11,6 @@ canonical: "/docs/manual/latest/build-configuration"
 
 **The complete configuration schema is [here](./build-configuration-schema)**. We'll _non-exhaustively_ highlight the important parts in prose below.
 
-## Tips & Tricks
-
-If you're using an editor like VSCode, put the following code as your first field in `bsconfig.json` to get schema autocompletion!
-
-```json
-"$schema": "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/master/docs/docson/build-schema.json"
-```
-
 ## name, namespace
 
 `name` is the name of the library, used as its "namespace". You can activate namespacing through `"namespace": true` in your `bsconfig.json`. Namespacing is almost **mandatory**; we haven't turned it on by default yet to preserve backward-compatibility.
