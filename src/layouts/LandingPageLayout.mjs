@@ -40,7 +40,8 @@ function LandingPageLayout$PlaygroundHero(Props) {
                   className: "-mt-12 bg-gray-90 mx-auto rounded-xl p-10 flex justify-center items-center text-center z-10",
                   style: {
                     height: "30rem",
-                    maxWidth: "1124px"
+                    maxWidth: "1124px",
+                    boxShadow: "0px 10px 50px #E6484F"
                   }
                 }, React.createElement("h1", {
                       className: "text-gray-10 text-28 leading-1 font-semibold max-w-740"

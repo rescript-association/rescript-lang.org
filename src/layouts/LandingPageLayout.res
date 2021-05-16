@@ -40,7 +40,12 @@ module PlaygroundHero = {
       // Playground widget
       <div
         className="-mt-12 bg-gray-90 mx-auto rounded-xl p-10 flex justify-center items-center text-center z-10"
-        style={ReactDOM.Style.make(~height="30rem", ~maxWidth="1124px", ())}>
+        style={ReactDOM.Style.make(
+          ~height="30rem",
+          ~maxWidth="1124px",
+          ~boxShadow="0px 10px 50px #E6484F",
+          (),
+        )}>
         <h1 className="text-gray-10 text-28 leading-1 font-semibold max-w-740">
           {React.string(
             "ReScript elevates the most advanced products in the world to a new level of power and beauty.",
