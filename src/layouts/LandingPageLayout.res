@@ -39,8 +39,29 @@ module PlaygroundHero = {
     <section className="relative mt-20 bg-gray-10">
       // Playground widget
       <div
-        className="-mt-12 bg-gray-90 max-w-740 mx-auto rounded-xl"
-        style={ReactDOM.Style.make(~height="30rem", ())}
+        className="-mt-12 bg-gray-90 mx-auto rounded-xl p-10 flex justify-center items-center text-center z-10"
+        style={ReactDOM.Style.make(~height="30rem", ~maxWidth="1124px", ())}>
+        <h1 className="text-gray-10 text-28 leading-1 font-semibold max-w-740">
+          {React.string(
+            "ReScript elevates the most advanced products in the world to a new level of power and beauty.",
+          )}
+        </h1>
+      </div>
+      <img
+        className="absolute z-0 top-0"
+        src="/static/Rectangle_534@2x.png"
+        style={ReactDOM.Style.make(~height="300px", ~width="300px", ~opacity="0.3", ())}
+      />
+      <img
+        className="absolute z-0 right-0"
+        src="/static/Rectangle_499@2x.png"
+        style={ReactDOM.Style.make(
+          ~height="300px",
+          ~width="300px",
+          ~opacity="0.3",
+          ~top="9.5rem",
+          (),
+        )}
       />
       <div>
         <h2 className="my-32 text-center max-w-576 mx-auto font-semibold text-28">

@@ -37,10 +37,30 @@ function LandingPageLayout$PlaygroundHero(Props) {
   return React.createElement("section", {
               className: "relative mt-20 bg-gray-10"
             }, React.createElement("div", {
-                  className: "-mt-12 bg-gray-90 max-w-740 mx-auto rounded-xl",
+                  className: "-mt-12 bg-gray-90 mx-auto rounded-xl p-10 flex justify-center items-center text-center z-10",
                   style: {
-                    height: "30rem"
+                    height: "30rem",
+                    maxWidth: "1124px"
                   }
+                }, React.createElement("h1", {
+                      className: "text-gray-10 text-28 leading-1 font-semibold max-w-740"
+                    }, "ReScript elevates the most advanced products in the world to a new level of power and beauty.")), React.createElement("img", {
+                  className: "absolute z-0 top-0",
+                  style: {
+                    height: "300px",
+                    width: "300px",
+                    opacity: "0.3"
+                  },
+                  src: "/static/Rectangle_534@2x.png"
+                }), React.createElement("img", {
+                  className: "absolute z-0 right-0",
+                  style: {
+                    height: "300px",
+                    top: "9.5rem",
+                    width: "300px",
+                    opacity: "0.3"
+                  },
+                  src: "/static/Rectangle_499@2x.png"
                 }), React.createElement("div", undefined, React.createElement("h2", {
                       className: "my-32 text-center max-w-576 mx-auto font-semibold text-28"
                     }, React.createElement("span", {
