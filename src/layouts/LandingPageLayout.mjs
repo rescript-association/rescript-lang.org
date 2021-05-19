@@ -2,6 +2,7 @@
 
 import * as Mdx from "../common/Mdx.mjs";
 import * as Meta from "../components/Meta.mjs";
+import * as Next from "../bindings/Next.mjs";
 import * as Curry from "rescript/lib/es6/curry.js";
 import * as React from "react";
 import * as Footer from "../components/Footer.mjs";
@@ -37,32 +38,42 @@ function LandingPageLayout$PlaygroundHero(Props) {
   return React.createElement("section", {
               className: "relative mt-20 bg-gray-10"
             }, React.createElement("div", {
-                  className: "-mt-12 bg-gray-90 mx-auto rounded-xl p-10 flex justify-center items-center text-center z-10",
-                  style: {
-                    height: "30rem",
-                    maxWidth: "1124px",
-                    boxShadow: "0px 10px 50px #E6484F"
-                  }
-                }, React.createElement("h1", {
-                      className: "text-gray-10 text-28 leading-1 font-semibold max-w-740"
-                    }, "ReScript elevates the most advanced products in the world to a new level of power and beauty.")), React.createElement("img", {
-                  className: "absolute z-0 top-0",
-                  style: {
-                    height: "300px",
-                    width: "300px",
-                    opacity: "0.3"
-                  },
-                  src: "/static/Rectangle_534@2x.png"
-                }), React.createElement("img", {
-                  className: "absolute z-0 right-0",
-                  style: {
-                    height: "300px",
-                    top: "9.5rem",
-                    width: "300px",
-                    opacity: "0.3"
-                  },
-                  src: "/static/Rectangle_499@2x.png"
-                }), React.createElement("div", undefined, React.createElement("h2", {
+                  className: "relative flex justify-center w-full"
+                }, React.createElement("div", {
+                      className: "relative rounded-b-xl pb-8 px-16 w-full",
+                      style: {
+                        maxWidth: "1160px"
+                      }
+                    }, React.createElement("div", {
+                          className: "relative -mt-24 bg-gray-90 mx-auto rounded-xl p-10 flex justify-center items-center text-center z-10",
+                          style: {
+                            height: "30rem",
+                            maxWidth: "1124px",
+                            zIndex: "2"
+                          }
+                        }, React.createElement("h1", {
+                              className: "text-gray-10 text-28 leading-1 font-semibold max-w-740"
+                            }, "ReScript elevates the most advanced products in the world to a new level of power and beauty.")), React.createElement("div", {
+                          className: "gradientShadow absolute bottom-0 left-0 right-0 top-0 -mt-6 w-full",
+                          style: {
+                            zIndex: "1"
+                          }
+                        }, ""), React.createElement("img", {
+                          className: "absolute opacity-25 z-0 left-0 top-0 -mr-4",
+                          style: {
+                            height: "300px",
+                            width: "300px"
+                          },
+                          src: "/static/Rectangle_499.svg"
+                        }), React.createElement("img", {
+                          className: "absolute z-0 right-0 top-0 mt-24 -mr-2",
+                          style: {
+                            height: "300px",
+                            width: "300px",
+                            opacity: "0.3"
+                          },
+                          src: "/static/Rectangle_499.svg"
+                        }))), React.createElement("div", undefined, React.createElement("h2", {
                       className: "my-32 text-center max-w-576 mx-auto font-semibold text-28"
                     }, React.createElement("span", {
                           className: "text-fire-40"
@@ -199,7 +210,7 @@ var companies = [
 
 function LandingPageLayout$TrustedBy(Props) {
   return React.createElement("section", {
-              className: "my-20"
+              className: "mt-20"
             }, React.createElement("h3", {
                   className: "text-42 text-gray-42 tracking-tight leading-2 font-semibold text-center max-w-576 mx-auto"
                 }, "Trusted by developers around the world"), React.createElement("div", {
@@ -228,10 +239,13 @@ function LandingPageLayout$TrustedBy(Props) {
                     })), React.createElement("div", {
                   className: "text-center mt-16 text-sm"
                 }, "and many more…"), React.createElement("div", {
-                  className: "relative mt-10 mb-20"
+                  className: "mt-10 max-w-xs overflow-hidden opacity-50",
+                  style: {
+                    maxHeight: "6rem"
+                  }
                 }, React.createElement("img", {
-                      className: "absolute max-w-xs",
-                      src: "/static/Rectangle 514@2x.png"
+                      className: "w-full h-full",
+                      src: "/static/Rectangle_499.svg"
                     })));
 }
 
@@ -240,25 +254,57 @@ var cards = [
     imgSrc: "/static/ic_manual@2x.png",
     title: "Language Manual",
     descr: "Look up the basics: reference for all language features",
-    link: "/"
+    href: "/docs/manual/latest/introduction"
   },
   {
     imgSrc: "/static/ic_rescript_react@2x.png",
     title: "ReScript + React",
     descr: "First Class bindings for ReactJS. Developed for small and big ass scale projects.",
-    link: "/"
+    href: "/docs/react/latest/introduction"
   },
   {
     imgSrc: "/static/ic_manual@2x.png",
     title: "Add ReScript to an existing project",
     descr: "This guide will help you to transfer your project without hassle.",
-    link: "/"
+    href: "/docs/manual/latest/installation#integrate-into-an-existing-js-project"
   },
   {
     imgSrc: "/static/ic_gentype@2x.png",
     title: "TypeScript Integration",
     descr: "Integrate TypeScript and Flow seamlessly and with ease.",
-    link: "/"
+    href: "/docs/gentype/latest/introduction"
+  }
+];
+
+var templates = [
+  {
+    imgSrc: "/static/nextjs_starter_logo.svg",
+    title: React.createElement(React.Fragment, undefined, React.createElement("div", undefined, "ReScript & "), React.createElement("div", {
+              className: "text-gray-40"
+            }, "NextJS")),
+    descr: "Get started with our our NextJS starter template.",
+    href: "https://github.com/ryyppy/rescript-nextjs-template"
+  },
+  {
+    imgSrc: "/static/vitejs_starter_logo.svg",
+    title: React.createElement(React.Fragment, undefined, React.createElement("div", undefined, "ReScript & "), React.createElement("div", {
+              style: {
+                color: "#6571FB"
+              }
+            }, "ViteJS")),
+    descr: "Get started with ViteJS and ReScript.",
+    href: "/"
+  },
+  {
+    imgSrc: "/static/nodejs_starter_logo.svg",
+    title: React.createElement(React.Fragment, undefined, React.createElement("div", undefined, "ReScript & "), React.createElement("div", {
+              className: "text-gray-40",
+              style: {
+                color: "#699D65"
+              }
+            }, "NodeJS")),
+    descr: "Get started with ReScript targeting the Node platform.",
+    href: "/"
   }
 ];
 
@@ -272,11 +318,34 @@ function LandingPageLayout$CuratedResources(Props) {
                     }, "guides and docs"), React.createElement("div", {
                       className: "flex justify-between max-w-2xl mx-auto"
                     }, cards.map(function (card) {
-                          return React.createElement("div", {
+                          return React.createElement(Next.Link.make, {
+                                      href: card.href,
+                                      children: React.createElement("a", {
+                                            className: "bg-gray-95 px-5 pb-8 relative rounded-xl",
+                                            style: {
+                                              maxWidth: "250px"
+                                            }
+                                          }, React.createElement("img", {
+                                                className: "h-12 absolute mt-5",
+                                                src: card.imgSrc
+                                              }), React.createElement("h5", {
+                                                className: "text-gray-10 font-semibold mt-32 h-12"
+                                              }, card.title), React.createElement("div", {
+                                                className: "text-gray-40 mt-8 text-sm"
+                                              }, card.descr))
+                                    });
+                        })), React.createElement("div", {
+                      className: "uppercase text-sm text-center mb-20 mt-20"
+                    }, "templates"), React.createElement("div", {
+                      className: "flex justify-between max-w-2xl mx-auto"
+                    }, templates.map(function (card) {
+                          return React.createElement("a", {
                                       className: "bg-gray-95 px-5 pb-8 relative rounded-xl",
                                       style: {
                                         maxWidth: "250px"
-                                      }
+                                      },
+                                      href: card.href,
+                                      target: "_blank"
                                     }, React.createElement("img", {
                                           className: "h-12 absolute mt-5",
                                           src: card.imgSrc

@@ -38,36 +38,36 @@ module PlaygroundHero = {
   let make = () => {
     <section className="relative mt-20 bg-gray-10">
       // Playground widget
-      <div
-        className="-mt-12 bg-gray-90 mx-auto rounded-xl p-10 flex justify-center items-center text-center z-10"
-        style={ReactDOM.Style.make(
-          ~height="30rem",
-          ~maxWidth="1124px",
-          ~boxShadow="0px 10px 50px #E6484F",
-          (),
-        )}>
-        <h1 className="text-gray-10 text-28 leading-1 font-semibold max-w-740">
-          {React.string(
-            "ReScript elevates the most advanced products in the world to a new level of power and beauty.",
-          )}
-        </h1>
+      <div className="relative flex justify-center w-full">
+        <div
+          className="relative rounded-b-xl pb-8 px-16 w-full"
+          style={ReactDOM.Style.make(~maxWidth="1160px", ())}>
+          <div
+            className="relative -mt-24 bg-gray-90 mx-auto rounded-xl p-10 flex justify-center items-center text-center z-10"
+            style={ReactDOM.Style.make(~zIndex="2", ~height="30rem", ~maxWidth="1124px", ())}>
+            <h1 className="text-gray-10 text-28 leading-1 font-semibold max-w-740">
+              {React.string(
+                "ReScript elevates the most advanced products in the world to a new level of power and beauty.",
+              )}
+            </h1>
+          </div>
+          <div
+            className="gradientShadow absolute bottom-0 left-0 right-0 top-0 -mt-6 w-full"
+            style={ReactDOM.Style.make(~zIndex="1", ())}>
+            {React.string("")}
+          </div>
+          <img
+            className="absolute opacity-25 z-0 left-0 top-0 -mr-4"
+            src="/static/Rectangle_499.svg"
+            style={ReactDOM.Style.make(~height="300px", ~width="300px", ())}
+          />
+          <img
+            className="absolute z-0 right-0 top-0 mt-24 -mr-2"
+            src="/static/Rectangle_499.svg"
+            style={ReactDOM.Style.make(~height="300px", ~width="300px", ~opacity="0.3", ())}
+          />
+        </div>
       </div>
-      <img
-        className="absolute z-0 top-0"
-        src="/static/Rectangle_534@2x.png"
-        style={ReactDOM.Style.make(~height="300px", ~width="300px", ~opacity="0.3", ())}
-      />
-      <img
-        className="absolute z-0 right-0"
-        src="/static/Rectangle_499@2x.png"
-        style={ReactDOM.Style.make(
-          ~height="300px",
-          ~width="300px",
-          ~opacity="0.3",
-          ~top="9.5rem",
-          (),
-        )}
-      />
       <div>
         <h2 className="my-32 text-center max-w-576 mx-auto font-semibold text-28">
           <span className="text-fire-40"> {React.string("We strongly believe")} </span>
@@ -190,7 +190,7 @@ module TrustedBy = {
 
   @react.component
   let make = () => {
-    <section className="my-20">
+    <section className="mt-20">
       <h3
         className="text-42 text-gray-42 tracking-tight leading-2 font-semibold text-center max-w-576 mx-auto">
         {React.string("Trusted by developers around the world")}
@@ -207,8 +207,10 @@ module TrustedBy = {
         ->React.array}
       </div>
       <div className="text-center mt-16 text-sm"> {React.string(`and many more…`)} </div>
-      <div className="relative mt-10 mb-20">
-        <img className="absolute max-w-xs" src="/static/Rectangle 514@2x.png" />
+      <div
+        className="mt-10 max-w-xs overflow-hidden opacity-50"
+        style={ReactDOM.Style.make(~maxHeight="6rem", ())}>
+        <img className="w-full h-full" src="/static/Rectangle_499.svg" />
       </div>
     </section>
   }
@@ -218,35 +220,67 @@ module CuratedResources = {
   // TODO: is this overkill, should we just inline this as jsx?
   type card = {
     imgSrc: string,
-    title: string,
+    title: React.element,
     descr: string,
-    link: string,
+    href: string,
   }
 
   let cards = [
     {
       imgSrc: "/static/ic_manual@2x.png",
-      title: "Language Manual",
+      title: React.string("Language Manual"),
       descr: "Look up the basics: reference for all language features",
-      link: "/",
+      href: "/docs/manual/latest/introduction",
     },
     {
       imgSrc: "/static/ic_rescript_react@2x.png",
-      title: "ReScript + React",
+      title: React.string("ReScript + React"),
       descr: "First Class bindings for ReactJS. Developed for small and big ass scale projects.",
-      link: "/",
+      href: "/docs/react/latest/introduction",
     },
     {
       imgSrc: "/static/ic_manual@2x.png",
-      title: "Add ReScript to an existing project",
+      title: React.string("Add ReScript to an existing project"),
       descr: "This guide will help you to transfer your project without hassle.",
-      link: "/",
+      href: "/docs/manual/latest/installation#integrate-into-an-existing-js-project",
     },
     {
       imgSrc: "/static/ic_gentype@2x.png",
-      title: "TypeScript Integration",
+      title: React.string("TypeScript Integration"),
       descr: "Integrate TypeScript and Flow seamlessly and with ease.",
-      link: "/",
+      href: "/docs/gentype/latest/introduction",
+    },
+  ]
+
+  let templates = [
+    {
+      imgSrc: "/static/nextjs_starter_logo.svg",
+      title: <>
+        <div> {React.string("ReScript & ")} </div>
+        <div className="text-gray-40"> {React.string("NextJS")} </div>
+      </>,
+      descr: "Get started with our our NextJS starter template.",
+      href: "https://github.com/ryyppy/rescript-nextjs-template",
+    },
+    {
+      imgSrc: "/static/vitejs_starter_logo.svg",
+      title: <>
+        <div> {React.string("ReScript & ")} </div>
+        <div style={ReactDOM.Style.make(~color="#6571FB", ())}> {React.string("ViteJS")} </div>
+      </>,
+      descr: "Get started with ViteJS and ReScript.",
+      href: "/",
+    },
+    {
+      imgSrc: "/static/nodejs_starter_logo.svg",
+      title: <>
+        <div> {React.string("ReScript & ")} </div>
+        <div className="text-gray-40" style={ReactDOM.Style.make(~color="#699D65", ())}>
+          {React.string("NodeJS")}
+        </div>
+      </>,
+      descr: "Get started with ReScript targeting the Node platform.",
+      href: "/",
     },
   ]
 
@@ -264,15 +298,33 @@ module CuratedResources = {
         <div className="flex justify-between max-w-2xl mx-auto">
           {cards
           ->Js.Array2.map(card =>
-            <div
+            <Next.Link href={card.href}>
+              <a
+                className="bg-gray-95 px-5 pb-8 relative rounded-xl"
+                style={ReactDOM.Style.make(~maxWidth="250px", ())}>
+                <img className="h-12 absolute mt-5" src=card.imgSrc />
+                <h5 className="text-gray-10 font-semibold mt-32 h-12"> {card.title} </h5>
+                <div className="text-gray-40 mt-8 text-sm"> {React.string(card.descr)} </div>
+              </a>
+            </Next.Link>
+          )
+          ->React.array}
+        </div>
+        <div className="uppercase text-sm text-center mb-20 mt-20">
+          {React.string("templates")}
+        </div>
+        <div className="flex justify-between max-w-2xl mx-auto">
+          {templates
+          ->Js.Array2.map(card =>
+            <a
+              href={card.href}
+              target="_blank"
               className="bg-gray-95 px-5 pb-8 relative rounded-xl"
               style={ReactDOM.Style.make(~maxWidth="250px", ())}>
               <img className="h-12 absolute mt-5" src=card.imgSrc />
-              <h5 className="text-gray-10 font-semibold mt-32 h-12">
-                {React.string(card.title)}
-              </h5>
+              <h5 className="text-gray-10 font-semibold mt-32 h-12"> {card.title} </h5>
               <div className="text-gray-40 mt-8 text-sm"> {React.string(card.descr)} </div>
-            </div>
+            </a>
           )
           ->React.array}
         </div>
