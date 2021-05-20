@@ -24,7 +24,7 @@ function patchResDeps() {
     );
   });
 }
-patchResDeps(); // update package.json and create empty `index.js` before transpiling
+// patchResDeps(); // update package.json and create empty `index.js` before transpiling
 
 const isWebpack5 = true;
 const config = {
