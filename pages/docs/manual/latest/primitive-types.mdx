@@ -10,6 +10,21 @@ ReScript comes with the familiar primitive types like `string`, `int`, `float`, 
 
 <!-- TODO: doc unit -->
 
+## Unicode compatibility
+
+⚠ **NOTE:** Strings in ReScript only support unicode in UTF-8 formatted files properly when wrapped in backticks:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let wrong = "I ♥ Günther"
+let right = `I ♥ Günther`
+```
+```js
+var wrong = "I \xe2\x99\xa5 G\xc3\xbcnther";
+var right = "I ♥ Günther";
+```
+
 ## String
 
 ReScript `string`s are delimited using **double** quotes (single quotes are reserved for the character type below).
