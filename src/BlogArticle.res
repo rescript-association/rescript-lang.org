@@ -206,7 +206,7 @@ let default = (props: props) => {
   | Error(msg) =>
     <div>
       <Markdown.Warn>
-        <h2 className="font-bold text-gray-95 text-28 mb-2">
+        <h2 className="font-bold text-gray-95 text-24 mb-2">
           {React.string("Could not parse file '_blogposts/" ++ (path ++ ".mdx'"))}
         </h2>
         <p>

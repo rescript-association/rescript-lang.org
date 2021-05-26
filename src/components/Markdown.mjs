@@ -174,7 +174,7 @@ function Markdown$H2(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement(React.Fragment, undefined, React.createElement("h2", {
-                  className: "group mt-12 mb-3 text-28 tracking-tight leading-1 font-sans font-bold text-gray-95"
+                  className: "group mt-12 mb-3 text-24 tracking-tight leading-1 font-sans font-bold text-gray-95"
                 }, children, React.createElement("span", {
                       className: "ml-2"
                     }, React.createElement(Markdown$Anchor, {

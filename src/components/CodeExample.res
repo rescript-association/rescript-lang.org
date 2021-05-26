@@ -8,11 +8,6 @@ let langShortname = (lang: string) =>
   | rest => rest
   }
 
-module LzString = {
-  @module("lz-string")
-  external compressToEncodedURIComponent: string => string = "compressToEncodedURIComponent"
-}
-
 module DomUtil = {
   @scope("document") @val external createElement: string => Dom.element = "createElement"
   @scope("document") @val external createTextNode: string => Dom.element = "createTextNode"

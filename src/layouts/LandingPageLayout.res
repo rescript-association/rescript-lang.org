@@ -7,7 +7,7 @@ module CallToActionButton = {
   @react.component
   let make = (~children) =>
     <button
-      className="transition-colors duration-200 inline-block text-base text-white hover:bg-water-70 hover:text-white hover:border-water-70 bg-water rounded border border-water px-5 py-2">
+      className="transition-colors duration-200 text-16 inline-block text-base text-white hover:bg-fire-70 hover:text-white hover:border-fire-70 bg-fire rounded-lg border border-fire px-8 py-3">
       children
     </button>
 }
@@ -17,11 +17,13 @@ module Intro = {
   let make = () => {
     <div className="flex flex-col items-center">
       <h1
-        className="text-56 text-gray-95 tracking-tight leading-2 font-semibold text-center"
-        style={ReactDOM.Style.make(~maxWidth="54rem", ())}>
+        className="text-68 text-gray-80 tracking-tight leading-2 font-semibold text-center"
+        style={ReactDOM.Style.make(~maxWidth="53rem", ())}>
         {React.string("A simple and fast language for JavaScript developers")}
       </h1>
-      <h2 className="text-gray-40 text-center my-4">
+      <h2
+        className="text-gray-40 text-center my-4"
+        style={ReactDOM.Style.make(~maxWidth="42rem", ())}>
         {React.string(
           "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node.",
         )}
@@ -34,45 +36,253 @@ module Intro = {
 }
 
 module PlaygroundHero = {
+  type example = {
+    res: string,
+    js: string,
+  }
+
+  let examples = [
+    {
+      res: `module Button = {
+  @react.component
+  let make = (~count: int) => {
+    let times = switch count {
+    | 1 => "once"
+    | 2 => "twice"
+    | n => Belt.Int.toString(n) ++ " times"
+    }
+    let msg = "Click me " ++ times
+
+    <button> {msg->React.string} </button>
+  }
+}`,
+      js: `var React = require("react");
+
+function Playground$Button(Props) {
+  var count = Props.count;
+  var times = count !== 1 ? (
+      count !== 2 ? String(count) + " times" : "twice"
+    ) : "once";
+  var msg = "Click me " + times;
+  return React.createElement("button", undefined, msg);
+}
+
+var Button = {
+  make: Playground$Button
+};
+
+exports.Button = Button;`,
+    },
+  ]
+
   @react.component
   let make = () => {
-    <section className="relative mt-20 bg-gray-10">
-      // Playground widget
+    let (example, setExample) = React.useState(_ => examples->Js.Array2.unsafe_get(0))
+
+    //TODO: Replace background color with real tailwind color
+    <section
+      className="relative mt-20 bg-gray-10"
+      style={ReactDOM.Style.make(~backgroundColor="#FAFBFC", ())}>
       <div className="relative flex justify-center w-full">
         <div
-          className="relative rounded-b-xl pb-8 px-16 w-full"
+          className="relative rounded-b-xl pt-6 pb-8 px-16 w-full"
           style={ReactDOM.Style.make(~maxWidth="1160px", ())}>
+          // Playground widget
           <div
-            className="relative -mt-24 bg-gray-90 mx-auto rounded-xl p-10 flex justify-center items-center text-center z-10"
-            style={ReactDOM.Style.make(~zIndex="2", ~height="30rem", ~maxWidth="1124px", ())}>
-            <h1 className="text-gray-10 text-28 leading-1 font-semibold max-w-740">
-              {React.string(
-                "ReScript elevates the most advanced products in the world to a new level of power and beauty.",
-              )}
-            </h1>
+            className="relative z-2 flex pt-3 pb-16 bg-gray-90 mx-auto rounded-md"
+            style={ReactDOM.Style.make(~maxWidth="1124px", ())}>
+            <div className="w-1/2">
+              <div className="text-14 text-gray-40 text-center">
+                {React.string("Written in ReScript")}
+              </div>
+              <pre className="text-15 pl-8 pt-12 whitespace-pre-wrap">
+                {HighlightJs.renderHLJS(~darkmode=true, ~code=example.res, ~lang="res", ())}
+              </pre>
+            </div>
+            <div className="w-1/2">
+              <div className="text-14 text-gray-40 text-center">
+                {React.string("Compiled to JavaScript")}
+              </div>
+              <pre className="text-15 pr-8 pt-12 whitespace-pre-wrap">
+                {HighlightJs.renderHLJS(~darkmode=true, ~code=example.js, ~lang="js", ())}
+              </pre>
+            </div>
           </div>
-          <div
-            className="gradientShadow absolute bottom-0 left-0 right-0 top-0 -mt-6 w-full"
-            style={ReactDOM.Style.make(~zIndex="1", ())}>
-            {React.string("")}
+          <div>
+            <Next.Link href={`/try?code=${LzString.compressToEncodedURIComponent(example.res)}}`}>
+              <a className="text-12 underline text-gray-60" target="_blank">
+                {React.string("Edit this example in Playground")}
+              </a>
+            </Next.Link>
           </div>
-          <img
-            className="absolute opacity-25 z-0 left-0 top-0 -mr-4"
-            src="/static/Rectangle_499.svg"
-            style={ReactDOM.Style.make(~height="300px", ~width="300px", ())}
-          />
-          <img
-            className="absolute z-0 right-0 top-0 mt-24 -mr-2"
-            src="/static/Rectangle_499.svg"
-            style={ReactDOM.Style.make(~height="300px", ~width="300px", ~opacity="0.3", ())}
-          />
+          <div>
+            <img
+              className="absolute z-0 left-0 top-0 -ml-10 -mt-6"
+              src="/static/lp/grid.svg"
+              style={ReactDOM.Style.make(~height="24rem", ~width="24rem", ())}
+            />
+            <img
+              className="absolute z-0 left-0 top-0 -ml-10 mt-10" src="/static/lp/illu_left.png"
+            />
+          </div>
+          <div>
+            <img
+              className="absolute z-0 right-0 bottom-0 -mb-10 mt-24 -mr-10"
+              src="/static/lp/grid.svg"
+              style={ReactDOM.Style.make(~height="24rem", ~width="24rem", ())}
+            />
+            <img
+              className="absolute z-3 right-0 bottom-0 -mr-2 mb-10" src="/static/lp/illu_right.png"
+            />
+          </div>
         </div>
       </div>
-      <div>
-        <h2 className="my-32 text-center max-w-576 mx-auto font-semibold text-28">
-          <span className="text-fire-40"> {React.string("We strongly believe")} </span>
-          {React.string(` that every aspect of the language should be fast, correct and shouldn’t rely on caches. Every ReScript program is fully typed and provides correct type information to any given value in your app.`)}
-        </h2>
+    </section>
+  }
+}
+
+module QuickInstall = {
+  module CopyButton = {
+    let copyToClipboard: string => bool = %raw(j`
+  function(str) {
+    try {
+      const el = document.createElement('textarea');
+      el.value = str;
+      el.setAttribute('readonly', '');
+      el.style.position = 'absolute';
+      el.style.left = '-9999px';
+      document.body.appendChild(el);
+      const selected =
+        document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        if (selected) {
+          document.getSelection().removeAllRanges();
+          document.getSelection().addRange(selected);
+        }
+        return true;
+      } catch(e) {
+        return false;
+      }
+    }
+    `)
+
+    type state =
+      | Init
+      | Copied
+      | Failed
+
+    @react.component
+    let make = (~code) => {
+      let (state, setState) = React.useState(_ => Init)
+
+      let buttonRef = React.useRef(Js.Nullable.null)
+
+      let onClick = evt => {
+        ReactEvent.Mouse.preventDefault(evt)
+        if copyToClipboard(code) {
+          setState(_ => Copied)
+        } else {
+          setState(_ => Failed)
+        }
+      }
+
+      React.useEffect1(() => {
+        switch state {
+        | Copied =>
+          open Webapi
+          let buttonEl = Js.Nullable.toOption(buttonRef.current)->Belt.Option.getExn
+
+          // Note on this imperative DOM nonsense:
+          // For Tailwind transitions to behave correctly, we need to first paint the DOM element in the tree,
+          // and in the next tick, add the opacity-100 class, so the transition animation actually takes place.
+          // If we don't do that, the banner will essentially pop up without any animation
+          let bannerEl = Document.createElement("div")
+          bannerEl->Element.setClassName(
+            "foobar opacity-0 absolute top-0 -mt-1 -mr-1 px-2 rounded right-0 bg-turtle text-gray-80-tr transition-all duration-500 ease-in-out ",
+          )
+          let textNode = Document.createTextNode("Copied!")
+
+          bannerEl->Element.appendChild(textNode)
+          buttonEl->Element.appendChild(bannerEl)
+
+          let nextFrameId = requestAnimationFrame(() => {
+            bannerEl->Element.classList->ClassList.toggle("opacity-0")
+            bannerEl->Element.classList->ClassList.toggle("opacity-100")
+          })
+
+          let timeoutId = Js.Global.setTimeout(() => {
+            buttonEl->Element.removeChild(bannerEl)
+            setState(_ => Init)
+          }, 2000)
+
+          Some(
+            () => {
+              cancelAnimationFrame(nextFrameId)
+              Js.Global.clearTimeout(timeoutId)
+            },
+          )
+        | _ => None
+        }
+      }, [state])
+
+      <button
+        ref={ReactDOM.Ref.domRef(buttonRef)}
+        disabled={state === Copied}
+        className="relative"
+        onClick>
+        <Icon.Copy className="text-gray-40 w-4 h-4 mt-px hover:cursor-pointer hover:text-gray-80" />
+      </button>
+    }
+  }
+
+  module Instructions = {
+    let copyBox = text => {
+      //TODO: Replace backgroundColor with tailwind equivalent
+      <div
+        className="flex justify-between p-4 w-full bg-gray-20 border border-gray-10 rounded"
+        style={ReactDOM.Style.make(~backgroundColor="#FAFBFC", ())}>
+        <span className="font-mono text-14 text-gray-80"> {React.string(text)} </span>
+        <CopyButton code=text />
+      </div>
+    }
+    @react.component
+    let make = () => {
+      <div className="w-full">
+        <h2 className="font-bold text-24"> {React.string("Quick Install")} </h2>
+        <div className="text-12 text-gray-40 my-2 leading-2">
+          {React.string(
+            "You can quickly add ReScript to your existing JavaScript codebase via npm / yarn:",
+          )}
+        </div>
+        <div className="w-full space-y-2">
+          {copyBox("npm install rescript --save-dev")} {copyBox("npx rescript init .")}
+        </div>
+      </div>
+    }
+  }
+
+  @react.component
+  let make = () => {
+    <section className="my-32 max-w-1280 flex justify-center">
+      <div className="relative">
+        <div
+          className="relative z-1 space-y-12 text-gray-80 font-semibold text-32 leading-2"
+          style={ReactDOM.Style.make(~maxWidth="29rem", ())}>
+          <p>
+            <span className="bg-fire-5 rounded-md border-2 border-fire-10 h-10 w-full">{React.string(`Everything you wan`)}</span>
+            {React.string(`t from JavaScript, minus the parts
+          you don't need.`)}
+          </p>
+          <p>
+            {React.string(`ReScript is easy to pick up for JavaScript developers,
+          and helps them shipping their products with confidence.`)}
+          </p>
+        </div>
+      </div>
+      <div className="w-full" style={ReactDOM.Style.make(~maxWidth="22rem", ())}>
+        <Instructions />
       </div>
     </section>
   }
@@ -138,7 +348,7 @@ module MainUSP = {
             } else {
               "text-xl text-gray-80"
             }
-            <button className onClick={_evt => setSelectedIndex(_ => i)}>
+            <button key={Belt.Int.toString(i)} className onClick={_evt => setSelectedIndex(_ => i)}>
               {React.string(tabTitle)}
             </button>
           })
@@ -210,7 +420,7 @@ module TrustedBy = {
       <div
         className="mt-10 max-w-xs overflow-hidden opacity-50"
         style={ReactDOM.Style.make(~maxHeight="6rem", ())}>
-        <img className="w-full h-full" src="/static/Rectangle_499.svg" />
+        <img className="w-full h-full" src="/static/lp/grid.svg" />
       </div>
     </section>
   }
@@ -297,8 +507,8 @@ module CuratedResources = {
         </div>
         <div className="flex justify-between max-w-2xl mx-auto">
           {cards
-          ->Js.Array2.map(card =>
-            <Next.Link href={card.href}>
+          ->Belt.Array.mapWithIndex((i, card) =>
+            <Next.Link key={Belt.Int.toString(i)} href={card.href}>
               <a
                 className="bg-gray-95 px-5 pb-8 relative rounded-xl"
                 style={ReactDOM.Style.make(~maxWidth="250px", ())}>
@@ -315,8 +525,9 @@ module CuratedResources = {
         </div>
         <div className="flex justify-between max-w-2xl mx-auto">
           {templates
-          ->Js.Array2.map(card =>
+          ->Belt.Array.mapWithIndex((i, card) =>
             <a
+              key={Belt.Int.toString(i)}
               href={card.href}
               target="_blank"
               className="bg-gray-95 px-5 pb-8 relative rounded-xl"
@@ -331,16 +542,6 @@ module CuratedResources = {
       </div>
     </section>
   }
-}
-
-module QuickInstall = {
-  @react.component
-  let make = () =>
-    <div className="mt-24">
-      <h2 className="font-semibold text-42 text-gray-95 text-center">
-        {React.string("Quick Install")}
-      </h2>
-    </div>
 }
 
 module Sponsors = {
@@ -368,12 +569,12 @@ let make = (~components=Markdown.default, ~children) => {
               <Mdx.Provider components>
                 <div className="flex justify-center">
                   <div className="w-full flex flex-col">
-                    <div className="mt-12 mb-12 max-w-740 self-center"> <Intro /> </div>
+                    <div className="mt-12 mb-12 self-center"> <Intro /> </div>
                     <PlaygroundHero />
+                    <QuickInstall />
                     <MainUSP />
                     <TrustedBy />
                     <CuratedResources />
-                    <QuickInstall />
                     <Sponsors />
                     children
                   </div>

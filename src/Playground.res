@@ -21,15 +21,6 @@ if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
 open CompilerManagerHook
 module Api = RescriptCompilerApi
 
-// Used for compressing / decompressing code for url sharing
-module LzString = {
-  @module("lz-string")
-  external compressToEncodedURIComponent: string => string = "compressToEncodedURIComponent"
-
-  @module("lz-string")
-  external decompressToEncodedURIComponent: string => string = "decompressFromEncodedURIComponent"
-}
-
 module DropdownSelect = {
   @react.component
   let make = (~onChange, ~name, ~value, ~disabled=false, ~children) => {

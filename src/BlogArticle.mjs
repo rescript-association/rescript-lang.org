@@ -181,7 +181,7 @@ function $$default(props) {
     content = React.createElement("div", undefined, React.createElement(Markdown.Warn.make, {
               children: null
             }, React.createElement("h2", {
-                  className: "font-bold text-gray-95 text-28 mb-2"
+                  className: "font-bold text-gray-95 text-24 mb-2"
                 }, "Could not parse file '_blogposts/" + (path + ".mdx'")), React.createElement("p", undefined, "The content of this blog post will be displayed as soon as all\n            required frontmatter data has been added."), React.createElement("p", {
                   className: "font-bold mt-4"
                 }, "Errors:"), fm._0));

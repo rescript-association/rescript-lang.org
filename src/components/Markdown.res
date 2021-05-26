@@ -128,7 +128,7 @@ module H2 = {
   let make = (~id, ~children) => <>
     // Here we know that children is always a string (## headline)
     <h2
-      className="group mt-12 mb-3 text-28 tracking-tight leading-1 font-sans font-bold text-gray-95">
+      className="group mt-12 mb-3 text-24 tracking-tight leading-1 font-sans font-bold text-gray-95">
       children <span className="ml-2"> <Anchor id /> </span>
     </h2>
   </>

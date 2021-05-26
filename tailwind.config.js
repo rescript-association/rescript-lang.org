@@ -68,6 +68,7 @@ module.exports = {
           "40": "#F4646A",
           "30": "#EDA7AA",
           "10": "#FDE7E8",
+          "5": "#fcf1f1",
         },
         sky: {
           default: "#376FDD", //"50"
@@ -129,6 +130,7 @@ module.exports = {
       none: "0",
       sm: ".125rem",
       default: "0.25rem",
+      md: "0.35rem",
       lg: "0.5rem",
       xl: "1.5rem",
       full: "9999px",
@@ -147,13 +149,16 @@ module.exports = {
     fontSize: {
       "12": "0.75rem",
       "14": "0.875rem",
+      "15": "0.9375rem",
       "16": "1rem",
       "18": "1.125rem",
       "21": "1.3125rem",
-      "28": "1.5rem",
+      "24": "1.5rem",
+      "28": "1.75rem",
       "32": "2rem",
       "42": "2.625rem",
       "56": "3.5rem",
+      "68": "4.25rem",
       "96": "6rem",
       "smaller-1": "0.9em", // 18px => 16.2px (used for inlineCode)
       sm: ".875rem", // 14px
@@ -200,6 +205,24 @@ module.exports = {
       "5xl": "100rem", // 1600px
       none: "none",
       full: "100%"
+    },
+    zIndex: {
+      '0': 0,
+      '1': 1,
+      '2': 2,
+      '3': 3,
+      '4': 4,
+      '5': 5,
+      '10': 10,
+      '20': 20,
+      '30': 30,
+      '40': 40,
+      '50': 50,
+      '25': 25,
+      '50': 50,
+      '75': 75,
+      '100': 100,
+      'auto': 'auto',
     },
     /* We override the default font-families with our own default prefs  */
     fontFamily: {
