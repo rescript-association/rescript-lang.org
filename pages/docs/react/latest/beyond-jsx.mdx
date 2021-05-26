@@ -18,7 +18,7 @@ JSX is a syntax sugar that allows us to use React components in an HTML like man
 
 ## Component Types
 
-A plain React component is defined as a `('props) => React.element` function. You can also express a component more efficiently with our shorthand type `React.component('props)`. 
+A plain React component is defined as a `('props) => React.element` function. You can also express a component more efficiently with our shorthand type `React.component<'props>`. 
 
 Here are some examples on how to define your own component types (often useful when interoping with existing JS code, or passing around components):
 
@@ -30,10 +30,10 @@ type friendComp =
 // Equivalent to
 // ({"padding": string, "children": React.element}) => React.element
 type containerComp =
-  React.component({
+  React.component<{
     "padding": string,
     "children": React.element
-  });
+  }>;
 ```
 The types above are pretty low level (basically the JS representation of a React component), but since ReScript React has its own ways of defining React components in a more language specific way, let's have a closer look on the anatomy of such a construct.
 
