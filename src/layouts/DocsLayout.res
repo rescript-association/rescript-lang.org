@@ -103,7 +103,7 @@ let make = (
             router->Next.Router.push(targetUrl)
           }
           <VersionSelect onChange version availableVersions />
-        | None => <span className="font-mono text-sm"> {React.string(version)} </span>
+        | None => <span className="font-mono text-14"> {React.string(version)} </span>
         }
       | None => React.null
       }}

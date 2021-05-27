@@ -18,7 +18,7 @@ import * as HighlightJs from "../common/HighlightJs.mjs";
 function LandingPageLayout$CallToActionButton(Props) {
   var children = Props.children;
   return React.createElement("button", {
-              className: "transition-colors duration-200 text-16 inline-block text-base text-white hover:bg-fire-70 hover:text-white hover:border-fire-70 bg-fire rounded-lg border border-fire px-8 py-3"
+              className: "transition-colors duration-200 text-16 inline-block text-white hover:bg-fire-70 hover:text-white hover:border-fire-70 bg-fire rounded-lg border border-fire px-8 py-3"
             }, children);
 }
 
@@ -74,13 +74,13 @@ function LandingPageLayout$PlaygroundHero(Props) {
                             }, React.createElement("div", {
                                   className: "text-14 text-gray-40 text-center"
                                 }, "Written in ReScript"), React.createElement("pre", {
-                                  className: "text-15 pl-8 pt-12 whitespace-pre-wrap"
+                                  className: "text-14 pl-8 pt-12 whitespace-pre-wrap"
                                 }, HighlightJs.renderHLJS(undefined, true, example.res, "res", undefined))), React.createElement("div", {
                               className: "w-1/2"
                             }, React.createElement("div", {
                                   className: "text-14 text-gray-40 text-center"
                                 }, "Compiled to JavaScript"), React.createElement("pre", {
-                                  className: "text-15 pr-8 pt-12 whitespace-pre-wrap"
+                                  className: "text-14 pr-8 pt-12 whitespace-pre-wrap"
                                 }, HighlightJs.renderHLJS(undefined, true, example.js, "js", undefined)))), React.createElement("div", undefined, React.createElement(Next.Link.make, {
                               href: "/try?code=" + LzString.compressToEncodedURIComponent(example.res) + "}",
                               children: React.createElement("a", {
@@ -368,7 +368,7 @@ function LandingPageLayout$TrustedBy(Props) {
   return React.createElement("section", {
               className: "mt-20"
             }, React.createElement("h3", {
-                  className: "text-42 text-gray-42 tracking-tight leading-2 font-semibold text-center max-w-576 mx-auto"
+                  className: "text-48 text-gray-42 tracking-tight leading-2 font-semibold text-center max-w-576 mx-auto"
                 }, "Trusted by developers around the world"), React.createElement("div", {
                   className: "flex justify-between items-center max-w-xl mx-auto mt-16"
                 }, companies.map(function (company) {
@@ -393,7 +393,7 @@ function LandingPageLayout$TrustedBy(Props) {
                                   key: match[0]
                                 }, match[1]);
                     })), React.createElement("div", {
-                  className: "text-center mt-16 text-sm"
+                  className: "text-center mt-16 text-14"
                 }, "and many more…"), React.createElement("div", {
                   className: "mt-10 max-w-xs overflow-hidden opacity-50",
                   style: {
@@ -470,7 +470,7 @@ function LandingPageLayout$CuratedResources(Props) {
             }, React.createElement("h2", {
                   className: "text-gray-10 my-20 text-32 leading-2 font-semibold max-w-md mx-auto text-center"
                 }, "Carefully curated resources to start or advance your ReScript projects"), React.createElement("div", undefined, React.createElement("div", {
-                      className: "uppercase text-sm text-center mb-20"
+                      className: "uppercase text-14 text-center mb-20"
                     }, "guides and docs"), React.createElement("div", {
                       className: "flex justify-between max-w-2xl mx-auto"
                     }, Belt_Array.mapWithIndex(cards, (function (i, card) {
@@ -487,12 +487,12 @@ function LandingPageLayout$CuratedResources(Props) {
                                                 }), React.createElement("h5", {
                                                   className: "text-gray-10 font-semibold mt-32 h-12"
                                                 }, card.title), React.createElement("div", {
-                                                  className: "text-gray-40 mt-8 text-sm"
+                                                  className: "text-gray-40 mt-8 text-14"
                                                 }, card.descr)),
                                         key: String(i)
                                       });
                           }))), React.createElement("div", {
-                      className: "uppercase text-sm text-center mb-20 mt-20"
+                      className: "uppercase text-14 text-center mb-20 mt-20"
                     }, "templates"), React.createElement("div", {
                       className: "flex justify-between max-w-2xl mx-auto"
                     }, Belt_Array.mapWithIndex(templates, (function (i, card) {
@@ -510,7 +510,7 @@ function LandingPageLayout$CuratedResources(Props) {
                                           }), React.createElement("h5", {
                                             className: "text-gray-10 font-semibold mt-32 h-12"
                                           }, card.title), React.createElement("div", {
-                                            className: "text-gray-40 mt-8 text-sm"
+                                            className: "text-gray-40 mt-8 text-14"
                                           }, card.descr));
                           })))));
 }
@@ -519,7 +519,7 @@ function LandingPageLayout$Sponsors(Props) {
   return React.createElement("div", {
               className: "mt-24"
             }, React.createElement("h2", {
-                  className: "font-semibold text-42 text-gray-95 text-center"
+                  className: "font-semibold text-48 text-gray-95 text-center"
                 }, "Sponsors"));
 }
 
@@ -533,7 +533,7 @@ function LandingPageLayout(Props) {
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, {}), React.createElement("div", {
                   className: "mt-4 xs:mt-16"
                 }, React.createElement("div", {
-                      className: "text-gray-80 text-lg"
+                      className: "text-gray-80 text-18"
                     }, React.createElement(Navigation.make, {
                           overlayState: overlayState
                         }), React.createElement("div", {

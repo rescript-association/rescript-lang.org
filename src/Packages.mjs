@@ -470,7 +470,7 @@ function $$default(props) {
                 }), React.createElement("div", {
                   className: "mt-16 pt-2"
                 }, React.createElement("div", {
-                      className: "text-gray-80 text-lg"
+                      className: "text-gray-80 text-18"
                     }, React.createElement(Navigation.make, {
                           overlayState: overlayState
                         }), React.createElement("div", {

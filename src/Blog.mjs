@@ -151,7 +151,7 @@ function Blog$FeatureCard(Props) {
                         }, title), React.createElement("div", {
                           className: "mb-6"
                         }, React.createElement("div", {
-                              className: "flex items-center font-medium text-gray-40 text-sm mt-2 mb-5"
+                              className: "flex items-center font-medium text-gray-40 text-14 mt-2 mb-5"
                             }, React.createElement("div", {
                                   className: "inline-block w-4 h-4 mr-2"
                                 }, authorImg), React.createElement("div", undefined, React.createElement("a", {
@@ -283,7 +283,7 @@ function $$default(props) {
                 }), React.createElement("div", {
                   className: "mt-16 pt-2"
                 }, React.createElement("div", {
-                      className: "text-gray-80 text-lg"
+                      className: "text-gray-80 text-18"
                     }, React.createElement(Navigation.make, {
                           overlayState: overlayState
                         }), React.createElement("div", {

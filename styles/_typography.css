@@ -1,0 +1,9 @@
+ 
+
+.hl-1 {
+    @apply font-medium tracking-tighter text-48 leading-2
+}
+
+.hl-2 {
+    @apply font-semibold tracking-tighter text-32
+}

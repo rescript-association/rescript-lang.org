@@ -470,7 +470,7 @@ let default = (props: props) => {
       description="Official and unofficial resources, libraries and bindings for ReScript"
     />
     <div className="mt-16 pt-2">
-      <div className="text-gray-80 text-lg">
+      <div className="text-gray-80 text-18">
         <Navigation overlayState />
         <div className="flex overflow-hidden">
           <div

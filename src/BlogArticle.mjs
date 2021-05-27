@@ -68,7 +68,7 @@ function BlogArticle$BlogHeader(Props) {
             }, React.createElement("div", {
                   className: "w-full max-w-740"
                 }, React.createElement("div", {
-                      className: "text-gray-60 text-lg mb-5"
+                      className: "text-gray-60 text-18 mb-5"
                     }, category !== undefined ? React.createElement(React.Fragment, undefined, category, middleDotSpacer) : null, Util.$$Date.toDayMonthYear(date$1)), React.createElement("h1", {
                       className: $$Text.H1.$$default
                     }, title), Belt_Option.mapWithDefault(description, null, (function (desc) {

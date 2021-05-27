@@ -80,7 +80,7 @@ module BlogHeader = {
 
     <div className="flex flex-col items-center">
       <div className="w-full max-w-740">
-        <div className="text-gray-60 text-lg mb-5">
+        <div className="text-gray-60 text-18 mb-5">
           {switch category {
           | Some(category) => <> {React.string(category)} {React.string(middleDotSpacer)} </>
           | None => React.null

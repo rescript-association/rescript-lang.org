@@ -142,7 +142,7 @@ module DetailBox = {
     }
 
     <div>
-      <div className="text-21 border-b border-gray-40 pb-4 mb-4 font-semibold"> summaryEl </div>
+      <div className="text-24 border-b border-gray-40 pb-4 mb-4 font-semibold"> summaryEl </div>
       <div className="mt-16"> children </div>
     </div>
   }

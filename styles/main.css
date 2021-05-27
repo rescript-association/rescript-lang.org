@@ -6,6 +6,7 @@
 @import './_theme.css';
 @import "./_fonts.css";
 @import "./_docsearch.css";
+@import "./_typography.css";
 
 body {
   @apply font-sans bg-white subpixel-antialiased;

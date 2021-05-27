@@ -26,7 +26,7 @@ var P = {
 function Markdown$Intro(Props) {
   var children = Props.children;
   return React.createElement("div", {
-              className: "text-21 mt-8 mb-4"
+              className: "text-24 mt-8 mb-4"
             }, children);
 }
 
@@ -46,7 +46,7 @@ function Markdown$Cite(Props) {
                   className: "text-32 italic mb-2"
                 }, children), Belt_Option.mapWithDefault(author, null, (function (author) {
                     return React.createElement("figcaption", {
-                                className: "font-semibold text-sm"
+                                className: "font-semibold text-14"
                               }, author);
                   })));
 }
@@ -130,7 +130,7 @@ function Markdown$UrlBox(Props) {
                   }))
         });
   return React.createElement("div", {
-              className: "md-url-box text-base border-l-2 border-gray-60 my-6 py-6 pl-8 pr-10 bg-gray-5"
+              className: "md-url-box text-16 border-l-2 border-gray-60 my-6 py-6 pl-8 pr-10 bg-gray-5"
             }, content, React.createElement("div", {
                   className: "mt-4 text-sky hover:text-sky-30"
                 }, link));
@@ -162,7 +162,7 @@ var Anchor = {
 function Markdown$H1(Props) {
   var children = Props.children;
   return React.createElement("h1", {
-              className: "text-42 tracking-tight leading-1 mb-5 font-sans font-medium text-gray-95"
+              className: "text-48 tracking-tight leading-1 mb-5 font-sans font-medium text-gray-95"
             }, children);
 }
 
@@ -190,7 +190,7 @@ function Markdown$H3(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h3", {
-              className: "group text-21 mt-12 mb-3 tracking-tight leading-3 font-sans font-bold text-gray-95"
+              className: "group text-24 mt-12 mb-3 tracking-tight leading-3 font-sans font-bold text-gray-95"
             }, children, React.createElement("span", {
                   className: "ml-2"
                 }, React.createElement(Markdown$Anchor, {
@@ -248,7 +248,7 @@ var Pre = {
 function Markdown$InlineCode(Props) {
   var children = Props.children;
   return React.createElement("code", {
-              className: "md-inline-code py-0.75 px-2 text-smaller-1 font-medium rounded font-mono bg-gray-10-tr"
+              className: "md-inline-code py-0.5 px-1  font-medium rounded font-mono bg-gray-10-tr"
             }, children);
 }
 

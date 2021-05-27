@@ -10,7 +10,7 @@ module P = {
 // e.g Doc sections
 module Intro = {
   @react.component
-  let make = (~children) => <div className="text-21 mt-8 mb-4"> children </div>
+  let make = (~children) => <div className="text-24 mt-8 mb-4"> children </div>
 }
 
 module Cite = {
@@ -23,7 +23,7 @@ module Cite = {
       style={ReactDOM.Style.make(~maxWidth="30rem", ())}>
       <blockquote className="text-32 italic mb-2"> children </blockquote>
       {Belt.Option.mapWithDefault(author, React.null, author =>
-        <figcaption className="font-semibold text-sm"> {React.string(author)} </figcaption>
+        <figcaption className="font-semibold text-14"> {React.string(author)} </figcaption>
       )}
     </div>
 }
@@ -88,7 +88,7 @@ module UrlBox = {
         </a>
       </Next.Link>
     }
-    <div className="md-url-box text-base border-l-2 border-gray-60 my-6 py-6 pl-8 pr-10 bg-gray-5">
+    <div className="md-url-box text-16 border-l-2 border-gray-60 my-6 py-6 pl-8 pr-10 bg-gray-5">
       content <div className="mt-4 text-sky hover:text-sky-30"> link </div>
     </div>
   }
@@ -118,7 +118,7 @@ module Anchor = {
 module H1 = {
   @react.component
   let make = (~children) =>
-    <h1 className="text-42 tracking-tight leading-1 mb-5 font-sans font-medium text-gray-95">
+    <h1 className="text-48 tracking-tight leading-1 mb-5 font-sans font-medium text-gray-95">
       children
     </h1>
 }
@@ -138,7 +138,7 @@ module H3 = {
   @react.component
   let make = (~id, ~children) =>
     <h3
-      className="group text-21 mt-12 mb-3 tracking-tight leading-3 font-sans font-bold text-gray-95">
+      className="group text-24 mt-12 mb-3 tracking-tight leading-3 font-sans font-bold text-gray-95">
       children <span className="ml-2"> <Anchor id /> </span>
     </h3>
 }
@@ -169,8 +169,7 @@ module InlineCode = {
   @react.component
   let make = (~children) =>
     <code
-      className="md-inline-code py-0.75 px-2 text-smaller-1 font-medium rounded font-mono bg-gray-10-tr">
-      //text-smaller-1
+      className="md-inline-code py-0.5 px-1  font-medium rounded font-mono bg-gray-10-tr">
       children
     </code>
 }

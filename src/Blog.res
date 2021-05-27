@@ -171,7 +171,7 @@ module FeatureCard = {
         <div className="max-w-400 ">
           <h2 className=Text.H2.default> {React.string(title)} </h2>
           <div className="mb-6">
-            <div className="flex items-center font-medium text-gray-40 text-sm mt-2 mb-5">
+            <div className="flex items-center font-medium text-gray-40 text-14 mt-2 mb-5">
               <div className="inline-block w-4 h-4 mr-2"> authorImg </div>
               <div>
                 <a
@@ -332,7 +332,7 @@ let default = (props: props): React.element => {
       description="News, Announcements, Release Notes and more"
     />
     <div className="mt-16 pt-2">
-      <div className="text-gray-80 text-lg">
+      <div className="text-gray-80 text-18">
         <Navigation overlayState />
         <div className="flex justify-center overflow-hidden">
           <main className="min-w-320 lg:align-center w-full lg:px-0 max-w-1280 pb-48">

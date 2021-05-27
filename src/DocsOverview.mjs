@@ -18,7 +18,7 @@ function DocsOverview$Card(Props) {
               className: "border border-gray-10 bg-gray-5 px-5 py-8 rounded-lg",
               style: style
             }, React.createElement("h2", {
-                  className: "font-bold text-21 mb-4"
+                  className: "font-bold text-24 mb-4"
                 }, title), React.createElement("ul", undefined, Belt_Array.map(hrefs, (function (param) {
                         var text = param[0];
                         return React.createElement("li", {

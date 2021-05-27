@@ -32,7 +32,7 @@ module Toc = {
       {Belt.Array.map(entries, ({header, href}) =>
         <li key=header className="pl-2 mt-3 first:mt-1">
           <Link href>
-            <a className="font-medium block text-sm text-gray-40 leading-tight hover:text-gray-80">
+            <a className="font-medium block text-14 text-gray-40 leading-tight hover:text-gray-80">
               {
                 //links, nested
                 React.string(header)

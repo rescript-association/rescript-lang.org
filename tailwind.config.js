@@ -42,7 +42,7 @@ module.exports = {
           "20": "#CDCDD6",
           "40": "#979AAD",
           "60": "#727489",
-          "80": "#3E4057",
+          "80": "#232538",
           "90": "#010427",
           "95": "#0A0D2F",
           "100": "#010427",
@@ -128,20 +128,18 @@ module.exports = {
     },
     borderRadius: {
       none: "0",
-      sm: ".125rem",
-      default: "0.25rem",
-      md: "0.35rem",
-      lg: "0.5rem",
-      xl: "1.5rem",
-      full: "9999px",
-      large: "0.75rem"
+      sm: ".125rem", //2px
+      default: "0.25rem", //4px
+      lg: "0.5rem", //8px
+      xl: "1rem", //16px
+      full: "9999px", //round
     },
     screens: {
       xs: "510px",
       sm: "576px",
       md: "768px",
       lg: "1024px",
-      xl: "1200px"
+      xl: "1280px"
     },
     /* Most of the time we customize the font-sizes,
      so we added the Tailwind default values here for
@@ -149,21 +147,12 @@ module.exports = {
     fontSize: {
       "12": "0.75rem",
       "14": "0.875rem",
-      "15": "0.9375rem",
       "16": "1rem",
       "18": "1.125rem",
-      "21": "1.3125rem",
       "24": "1.5rem",
-      "28": "1.75rem",
       "32": "2rem",
-      "42": "2.625rem",
-      "56": "3.5rem",
+      "48": "3rem",
       "68": "4.25rem",
-      "96": "6rem",
-      "smaller-1": "0.9em", // 18px => 16.2px (used for inlineCode)
-      sm: ".875rem", // 14px
-      base: "1rem", // 16px
-      lg: "1.125rem", // 18px
     },
     fontWeight: {
       normal: 400,

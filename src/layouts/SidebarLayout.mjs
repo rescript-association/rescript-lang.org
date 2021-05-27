@@ -27,7 +27,7 @@ function SidebarLayout$Toc(Props) {
                               }, React.createElement(Next.Link.make, {
                                     href: param.href,
                                     children: React.createElement("a", {
-                                          className: "font-medium block text-sm text-gray-40 leading-tight hover:text-gray-80"
+                                          className: "font-medium block text-14 text-gray-40 leading-tight hover:text-gray-80"
                                         }, header)
                                   }));
                   })));
