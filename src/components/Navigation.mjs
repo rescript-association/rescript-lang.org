@@ -108,7 +108,7 @@ function Navigation$DocsSection$LinkCard(Props) {
         className: "hover:bg-gray-5 hover:shadow hover:-mx-8 hover:px-8 hover:cursor-pointer active:bg-gray-10 py-4 flex space-x-4 items-start rounded-xl"
       }, icon, React.createElement("div", undefined, React.createElement("div", {
                 className: "flex items-center text-16 font-medium " + (
-                  active ? "text-fire-40" : "text-gray-95"
+                  active ? "text-fire-40" : "text80"
                 )
               }, React.createElement("span", undefined, title), isAbsolute ? React.createElement(Icon.ExternalLink.make, {
                       className: "inline-block ml-2 w-4 h-4"
@@ -557,7 +557,7 @@ function Navigation(Props) {
       });
   return React.createElement(React.Fragment, undefined, React.createElement("nav", {
                   ref: navRef,
-                  className: fixedNav + " z-50 px-4 flex xs:justify-center w-full h-16 bg-gray-95 shadow text-white-80 text-14",
+                  className: fixedNav + " z-50 px-4 flex xs:justify-center w-full h-16 bg-gray-90 shadow text-white-80 text-14",
                   id: "header",
                   style: {
                     minWidth: minWidth
@@ -576,7 +576,7 @@ function Navigation(Props) {
                                   className: "hidden lg:block",
                                   src: "/static/nav-logo-full@2x.png"
                                 }))), React.createElement("div", {
-                          className: "flex items-center xs:justify-between w-full bg-gray-95 sm:h-auto sm:relative"
+                          className: "flex items-center xs:justify-between w-full bg-gray-90 sm:h-auto sm:relative"
                         }, React.createElement("div", {
                               className: "flex ml-10 space-x-5 w-full max-w-320",
                               style: {

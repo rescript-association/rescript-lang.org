@@ -235,7 +235,7 @@ let default = (props: props): React.element => {
   let errorBox = if ProcessEnv.env === ProcessEnv.development && Belt.Array.length(malformed) > 0 {
     <div className="mb-12">
       <Markdown.Warn>
-        <h2 className="font-bold text-gray-95 text-32 mb-2">
+        <h2 className="font-bold text-gray-80 text-32 mb-2">
           {React.string("Some Blog Posts are Malformed!")}
         </h2>
         <p>

@@ -3,7 +3,7 @@ open Markdown
 module H1 = {
   @react.component
   let make = (~children) =>
-    <h1 className="text-48 tracking-tight leading-tight mb-2 font-sans font-medium text-gray-95"> children </h1>
+    <h1 className="text-48 tracking-tight leading-tight mb-2 font-sans font-medium text-gray-90"> children </h1>
 }*/
 
 module H2 = {

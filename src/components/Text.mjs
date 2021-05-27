@@ -2,20 +2,20 @@
 
 
 var Link = {
-  inline: "no-underline border-b border-gray-95 hover:border-bs-purple text-inherit",
+  inline: "no-underline border-b border-gray-80 hover:border-bs-purple text-inherit",
   standalone: "no-underline text-fire"
 };
 
 var H1 = {
-  $$default: "text-gray-95 font-medium tracking-tighter text-48 leading-2"
+  $$default: "text-gray-80 font-medium tracking-tighter text-48 leading-2"
 };
 
 var H2 = {
-  $$default: "text-gray-95 font-semibold text-48 leading-2"
+  $$default: "text-gray-80 font-semibold text-48 leading-2"
 };
 
 var H3 = {
-  $$default: "text-gray-95 font-semibold text-24 leading-2"
+  $$default: "text-gray-80 font-semibold text-24 leading-2"
 };
 
 export {

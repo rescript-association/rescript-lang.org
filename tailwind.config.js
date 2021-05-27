@@ -38,21 +38,21 @@ module.exports = {
       colors: {
         gray: {
           "5": "#FAFBFC",
-          "10": "#EDF0F2",
-          "20": "#CDCDD6",
+          "10": "#FAFBFC",
+          "20": "#EDF0F2",
+          "30": "#CDCDD6",
           "40": "#979AAD",
-          "60": "#727489",
+          "60": "#696B7D",
+          "70": "#3C3D4E",
           "80": "#232538",
-          "90": "#010427",
-          "95": "#0A0D2F",
-          "100": "#010427",
+          "90": "#14162C",
+          "95": "#14162C",
+          "100": "#0B0D22",
           "5-tr": "rgba(1, 20, 29, 0.02)",
           "10-tr": "rgba(1, 16, 39, 0.05)",
-          "20-tr": "rgba(1, 4, 39, 0.2)",
-          "40-tr": "rgba(1, 4, 39, 0.4)",
           "60-tr": "rgba(1, 4, 39, 0.6)",
           "80-tr": "rgba(1, 4, 39, 0.8)",
-          "95-tr": "rgba(1, 4, 39, 0.95)",
+          "90-tr": "rgba(1, 4, 39, 0.95)",
         },
         white: {
           default: "#FFFFFF",
@@ -101,11 +101,25 @@ module.exports = {
           "10": "rgba(224, 172, 0, 0.10)" //old
         },
       },
+      /*--- SPACING ---*/
       height: {
         "18": "4.5rem" // 72px
       },
       minWidth: {
         "320": "20rem"
+      },
+      maxWidth: {
+        "320": "20rem",
+        "400": "25rem",
+        sm: "30rem", //  480px
+        "576": "36rem",
+        md: "40rem", //  640px
+        "740": "46.25rem",
+        xl: "66.25rem", // 1080px
+        "1060": "66.25rem",
+        "1280": "80rem",
+        none: "none",
+        full: "100%"
       },
       inset: {
         "16": "4rem",
@@ -139,12 +153,15 @@ module.exports = {
       sm: "576px",
       md: "768px",
       lg: "1024px",
-      xl: "1280px"
+      xl: "1440px"
     },
+
+    /*--- TYPOGRAPHY ---*/
     /* Most of the time we customize the font-sizes,
      so we added the Tailwind default values here for
      convenience */
     fontSize: {
+      "11": "0.6875rem",
       "12": "0.75rem",
       "14": "0.875rem",
       "16": "1rem",
@@ -168,23 +185,13 @@ module.exports = {
       "5": 1.75
     },
     letterSpacing: {
-      tighter: "-0.045em",
-      tight: "-0.025em",
+      tighter: "-0.03em",
+      tight: "-0.02em",
       normal: "0",
-      wide: "0.075em"
+      wide: "0.075em",
+      widest: "0.15em",
     },
-    maxWidth: {
-      "320": "20rem",
-      "400": "25rem",
-      "576": "36rem",
-      "740": "46.25rem",
-      "1280": "80rem",
-      sm: "30rem", //  480px
-      md: "40rem", //  640px
-      xl: "67.5rem", // 1080px
-      none: "none",
-      full: "100%"
-    },
+
     zIndex: {
       '0': 0,
       '1': 1,
@@ -216,8 +223,8 @@ module.exports = {
         "sans-serif"
       ],
       mono: [
-        "SFMono-Regular",
         "Roboto Mono",
+        "SFMono-Regular",
         "Menlo",
         "Segoe UI",
         "Courier",

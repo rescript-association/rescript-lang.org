@@ -7,7 +7,7 @@ module CallToActionButton = {
   @react.component
   let make = (~children) =>
     <button
-      className="transition-colors duration-200 text-16 inline-block text-white hover:bg-fire-70 hover:text-white hover:border-fire-70 bg-fire rounded-lg border border-fire px-8 py-3">
+      className="rounded-lg px-8 py-4 inline-block transition-colors duration-300 body-button text-white hover:bg-fire-70  bg-fire  focus:outline-none">
       children
     </button>
 }
@@ -17,18 +17,18 @@ module Intro = {
   let make = () => {
     <div className="flex flex-col items-center">
       <h1
-        className="text-68 text-gray-80 tracking-tight leading-2 font-semibold text-center"
+        className="hl-title text-center"
         style={ReactDOM.Style.make(~maxWidth="53rem", ())}>
         {React.string("A simple and fast language for JavaScript developers")}
       </h1>
       <h2
-        className="text-gray-40 text-center my-4"
+        className="text-gray-60 body-lg my-4"
         style={ReactDOM.Style.make(~maxWidth="42rem", ())}>
         {React.string(
           "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node.",
         )}
       </h2>
-      <div className="my-10">
+      <div className="my-4">
         <CallToActionButton> {React.string("Get started")} </CallToActionButton>
       </div>
     </div>
@@ -86,13 +86,13 @@ exports.Button = Button;`,
       <div className="relative flex justify-center w-full">
         <div
           className="relative rounded-b-xl pt-6 pb-8 px-16 w-full"
-          style={ReactDOM.Style.make(~maxWidth="1160px", ())}>
+          style={ReactDOM.Style.make(~maxWidth="1400px", ())}>
           // Playground widget
           <div
-            className="relative z-2 flex pt-3 pb-16 bg-gray-90 mx-auto rounded-md"
-            style={ReactDOM.Style.make(~maxWidth="1124px", ())}>
+            className="relative z-2 flex pt-3 pb-16 bg-gray-90 mx-auto rounded-lg"
+            style={ReactDOM.Style.make(~maxWidth="1400px", ())}>
             <div className="w-1/2">
-              <div className="text-14 text-gray-40 text-center">
+              <div className="text-14 text-gray-40 text-center bg-gray-100">
                 {React.string("Written in ReScript")}
               </div>
               <pre className="text-14 pl-8 pt-12 whitespace-pre-wrap">
@@ -496,7 +496,7 @@ module CuratedResources = {
 
   @react.component
   let make = () => {
-    <section className="bg-gray-90 w-full pb-40">
+    <section className="bg-gray-100 w-full pb-40">
       <h2
         className="text-gray-10 my-20 text-32 leading-2 font-semibold max-w-md mx-auto text-center">
         {React.string("Carefully curated resources to start or advance your ReScript projects")}
@@ -510,7 +510,7 @@ module CuratedResources = {
           ->Belt.Array.mapWithIndex((i, card) =>
             <Next.Link key={Belt.Int.toString(i)} href={card.href}>
               <a
-                className="bg-gray-95 px-5 pb-8 relative rounded-xl"
+                className="bg-gray-90 px-5 pb-8 relative rounded-xl"
                 style={ReactDOM.Style.make(~maxWidth="296px", ())}>
                 <img className="h-12 absolute mt-5" src=card.imgSrc />
                 <h5 className="text-gray-10 font-semibold mt-32 h-12"> {card.title} </h5>
@@ -530,7 +530,7 @@ module CuratedResources = {
               key={Belt.Int.toString(i)}
               href={card.href}
               target="_blank"
-              className="bg-gray-95 px-5 pb-8 relative rounded-xl"
+              className="bg-gray-90 px-5 pb-8 relative rounded-xl"
               style={ReactDOM.Style.make(~maxWidth="406px", ())}>
               <img className="h-12 absolute mt-5" src=card.imgSrc />
               <h5 className="text-gray-10 font-semibold mt-32 h-12"> {card.title} </h5>
@@ -548,7 +548,7 @@ module Sponsors = {
   @react.component
   let make = () =>
     <div className="mt-24">
-      <h2 className="font-semibold text-48 text-gray-95 text-center">
+      <h2 className="hl-1 text-center">
         {React.string("Sponsors")}
       </h2>
     </div>
@@ -569,7 +569,8 @@ let make = (~components=Markdown.default, ~children) => {
               <Mdx.Provider components>
                 <div className="flex justify-center">
                   <div className="w-full flex flex-col">
-                    <div className="mt-12 mb-12 self-center"> <Intro /> </div>
+                    <div className="mt-12 mb-12 self-center"> 
+                    <Intro /> </div>
                     <PlaygroundHero />
                     <QuickInstall />
                     <MainUSP />

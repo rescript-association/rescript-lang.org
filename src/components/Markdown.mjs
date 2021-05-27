@@ -15,7 +15,7 @@ import * as ParseNumericRangeJs from "../ffi/parse-numeric-range.js";
 function Markdown$P(Props) {
   var children = Props.children;
   return React.createElement("p", {
-              className: "md-p md:leading-5 text-gray-80 md:text-16"
+              className: "md-p md:leading-5 text-gray-70 md:text-16"
             }, children);
 }
 
@@ -148,7 +148,7 @@ function Markdown$Anchor(Props) {
                   className: "invisible text-gray-60 opacity-50 text-inherit hover:opacity-100 hover:text-gray-60 hover:cursor-pointer group-hover:visible",
                   href: "#" + id
                 }, React.createElement(Icon.Hyperlink.make, {
-                      className: "inline-block align-middle text-gray-20"
+                      className: "inline-block align-middle text-gray-40"
                     })), React.createElement("a", {
                   id: id,
                   style: style
@@ -162,7 +162,7 @@ var Anchor = {
 function Markdown$H1(Props) {
   var children = Props.children;
   return React.createElement("h1", {
-              className: "text-48 tracking-tight leading-tight mb-5 font-sans font-medium text-gray-95"
+              className: "hl-1 mb-6 "
             }, children);
 }
 
@@ -174,7 +174,7 @@ function Markdown$H2(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement(React.Fragment, undefined, React.createElement("h2", {
-                  className: "group mt-12 mb-3 text-24 tracking-tight leading-tight font-sans font-bold text-gray-95"
+                  className: "group mt-16 mb-3 hl-3"
                 }, children, React.createElement("span", {
                       className: "ml-2"
                     }, React.createElement(Markdown$Anchor, {
@@ -190,7 +190,7 @@ function Markdown$H3(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h3", {
-              className: "group text-24 mt-12 mb-3 tracking-tight leading-2 font-sans font-bold text-gray-95"
+              className: "group mt-12 mb-3 hl-4"
             }, children, React.createElement("span", {
                   className: "ml-2"
                 }, React.createElement(Markdown$Anchor, {
@@ -206,7 +206,7 @@ function Markdown$H4(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h4", {
-              className: "group text-18 mt-12 mb-3 leading-2 font-sans font-semibold text-gray-95"
+              className: "group mt-12 hl-5"
             }, children, React.createElement("span", {
                   className: "ml-2"
                 }, React.createElement(Markdown$Anchor, {
@@ -248,7 +248,7 @@ var Pre = {
 function Markdown$InlineCode(Props) {
   var children = Props.children;
   return React.createElement("code", {
-              className: "md-inline-code py-0.5 px-1  font-medium rounded font-mono bg-gray-10-tr"
+              className: "md-inline-code px-0.75 font-normal rounded-sm font-mono bg-fire-5"
             }, children);
 }
 
@@ -292,7 +292,7 @@ var Th = {
 function Markdown$Td(Props) {
   var children = Props.children;
   return React.createElement("td", {
-              className: "border-b border-gray-10 py-3 pr-8"
+              className: "border-b border-gray-20 py-3 pr-8"
             }, children);
 }
 
@@ -593,7 +593,7 @@ function Markdown$Li(Props) {
 function Markdown$Strong(Props) {
   var children = Props.children;
   return React.createElement("strong", {
-              className: "font-semibold text-gray-90"
+              className: "font-semibold text-gray-80"
             }, children);
 }
 

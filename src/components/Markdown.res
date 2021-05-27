@@ -3,7 +3,7 @@
 
 module P = {
   @react.component
-  let make = (~children) => <p className="md-p md:leading-5 text-gray-80 md:text-16"> children </p>
+  let make = (~children) => <p className="md-p md:leading-5 text-gray-70 md:text-16"> children </p>
 }
 
 // Used for hero like introduction text in
@@ -107,18 +107,18 @@ module Anchor = {
       <a
         className="invisible text-gray-60 opacity-50 text-inherit hover:opacity-100 hover:text-gray-60 hover:cursor-pointer group-hover:visible"
         href={"#" ++ id}>
-        <Icon.Hyperlink className="inline-block align-middle text-gray-20" />
+        <Icon.Hyperlink className="inline-block align-middle text-gray-40" />
       </a>
       <a style id />
     </span>
   }
 }
-// HEADLINES //
+//*--- HEADLINES ---*//
 
 module H1 = {
   @react.component
   let make = (~children) =>
-    <h1 className="text-48 tracking-tight leading-tight mb-5 font-sans font-medium text-gray-95">
+    <h1 className="hl-1 mb-6 ">
       children
     </h1>
 }
@@ -128,7 +128,7 @@ module H2 = {
   let make = (~id, ~children) => <>
     // Here we know that children is always a string (## headline)
     <h2
-      className="group mt-12 mb-3 text-24 tracking-tight leading-tight font-sans font-bold text-gray-95">
+      className="group mt-16 mb-3 hl-3">
       children <span className="ml-2"> <Anchor id /> </span>
     </h2>
   </>
@@ -138,7 +138,7 @@ module H3 = {
   @react.component
   let make = (~id, ~children) =>
     <h3
-      className="group text-24 mt-12 mb-3 tracking-tight leading-2 font-sans font-bold text-gray-95">
+      className="group mt-12 mb-3 hl-4">
       children <span className="ml-2"> <Anchor id /> </span>
     </h3>
 }
@@ -146,7 +146,7 @@ module H3 = {
 module H4 = {
   @react.component
   let make = (~id, ~children) =>
-    <h4 className="group text-18 mt-12 mb-3 leading-2 font-sans font-semibold text-gray-95">
+    <h4 className="group mt-12 hl-5">
       children <span className="ml-2"> <Anchor id /> </span>
     </h4>
 }
@@ -169,7 +169,7 @@ module InlineCode = {
   @react.component
   let make = (~children) =>
     <code
-      className="md-inline-code py-0.5 px-1  font-medium rounded font-mono bg-gray-10-tr">
+      className="md-inline-code px-0.75 font-normal rounded-sm font-mono bg-fire-5">
       children
     </code>
 }
@@ -198,7 +198,7 @@ module Th = {
 
 module Td = {
   @react.component
-  let make = (~children) => <td className="border-b border-gray-10 py-3 pr-8"> children </td>
+  let make = (~children) => <td className="border-b border-gray-20 py-3 pr-8"> children </td>
 }
 
 module Code = {
@@ -475,7 +475,7 @@ module Li = {
 
 module Strong = {
   @react.component
-  let make = (~children) => <strong className="font-semibold text-gray-90"> children </strong>
+  let make = (~children) => <strong className="font-semibold text-gray-80"> children </strong>
 }
 
 // Useful for debugging injected values in props

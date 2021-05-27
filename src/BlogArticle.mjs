@@ -42,7 +42,7 @@ function BlogArticle$AuthorBox(Props) {
             }, React.createElement("div", {
                   className: "w-12 h-12 bg-berry-40 block rounded-full mr-3"
                 }, authorImg), React.createElement("div", {
-                  className: "text-14 font-medium text-gray-95"
+                  className: "text-14 font-medium text-80"
                 }, React.createElement("a", {
                       className: "hover:text-gray-80",
                       href: "https://twitter.com/" + author.twitter,
@@ -78,7 +78,7 @@ function BlogArticle$BlogHeader(Props) {
                                     });
                         } else {
                           return React.createElement("div", {
-                                      className: "my-8 text-gray-95"
+                                      className: "my-8 text-gray-80"
                                     }, React.createElement(Markdown.Intro.make, {
                                           children: desc
                                         }));
@@ -168,7 +168,7 @@ function $$default(props) {
                     }, React.createElement(BlogArticle$Line, {}), React.createElement("div", {
                           className: "pt-20 flex flex-col items-center"
                         }, React.createElement("div", {
-                              className: "text-3xl sm:text-32 text-center text-gray-95 font-medium"
+                              className: "text-3xl sm:text-32 text-center text-gray-80 font-medium"
                             }, "Want to read more?"), React.createElement(Next.Link.make, {
                               href: "/blog",
                               children: React.createElement("a", {
@@ -181,7 +181,7 @@ function $$default(props) {
     content = React.createElement("div", undefined, React.createElement(Markdown.Warn.make, {
               children: null
             }, React.createElement("h2", {
-                  className: "font-bold text-gray-95 text-24 mb-2"
+                  className: "font-bold text-gray-80 text-24 mb-2"
                 }, "Could not parse file '_blogposts/" + (path + ".mdx'")), React.createElement("p", undefined, "The content of this blog post will be displayed as soon as all\n            required frontmatter data has been added."), React.createElement("p", {
                   className: "font-bold mt-4"
                 }, "Errors:"), fm._0));
