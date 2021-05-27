@@ -163,11 +163,7 @@ module.exports = {
     lineHeight: {
       none: 1,
       tight: 1.25,
-      normal: 1.875,
-      loose: 2,
-      "1": 1.15,
-      "2": 1.3,
-      "3": 1.4,
+      "2": 1.35,
       "4": 1.5,
       "5": 1.75
     },
@@ -183,15 +179,9 @@ module.exports = {
       "576": "36rem",
       "740": "46.25rem",
       "1280": "80rem",
-      xs: "20rem", //  320px
       sm: "30rem", //  480px
       md: "40rem", //  640px
-      lg: "50rem", //  800px
       xl: "67.5rem", // 1080px
-      "2xl": "70rem", // 1120px
-      "3xl": "80rem", // 1280px
-      "4xl": "90rem", // 1440px
-      "5xl": "100rem", // 1600px
       none: "none",
       full: "100%"
     },
