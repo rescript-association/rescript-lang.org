@@ -118,7 +118,7 @@ module Anchor = {
 module H1 = {
   @react.component
   let make = (~children) =>
-    <h1 className="text-48 tracking-tight leading-1 mb-5 font-sans font-medium text-gray-95">
+    <h1 className="text-48 tracking-tight leading-tight mb-5 font-sans font-medium text-gray-95">
       children
     </h1>
 }
@@ -128,7 +128,7 @@ module H2 = {
   let make = (~id, ~children) => <>
     // Here we know that children is always a string (## headline)
     <h2
-      className="group mt-12 mb-3 text-24 tracking-tight leading-1 font-sans font-bold text-gray-95">
+      className="group mt-12 mb-3 text-24 tracking-tight leading-tight font-sans font-bold text-gray-95">
       children <span className="ml-2"> <Anchor id /> </span>
     </h2>
   </>
@@ -138,7 +138,7 @@ module H3 = {
   @react.component
   let make = (~id, ~children) =>
     <h3
-      className="group text-24 mt-12 mb-3 tracking-tight leading-3 font-sans font-bold text-gray-95">
+      className="group text-24 mt-12 mb-3 tracking-tight leading-2 font-sans font-bold text-gray-95">
       children <span className="ml-2"> <Anchor id /> </span>
     </h3>
 }

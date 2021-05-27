@@ -244,7 +244,7 @@ function LandingPageLayout$MainUSP$Item(Props) {
                 maxWidth: "30rem"
               }
             }, React.createElement("h3", {
-                  className: "text-gray-10 mt-16 mb-6 text-32 leading-1 font-semibold",
+                  className: "text-gray-10 mt-16 mb-6 text-32 font-semibold",
                   style: {
                     maxWidth: "25rem"
                   }
@@ -395,7 +395,7 @@ function LandingPageLayout$TrustedBy(Props) {
                     })), React.createElement("div", {
                   className: "text-center mt-16 text-14"
                 }, "and many more…"), React.createElement("div", {
-                  className: "mt-10 max-w-xs overflow-hidden opacity-50",
+                  className: "mt-10 max-w-320 overflow-hidden opacity-50",
                   style: {
                     maxHeight: "6rem"
                   }
@@ -472,14 +472,14 @@ function LandingPageLayout$CuratedResources(Props) {
                 }, "Carefully curated resources to start or advance your ReScript projects"), React.createElement("div", undefined, React.createElement("div", {
                       className: "uppercase text-14 text-center mb-20"
                     }, "guides and docs"), React.createElement("div", {
-                      className: "flex justify-between max-w-2xl mx-auto"
+                      className: "flex justify-between max-w-1280 mx-auto"
                     }, Belt_Array.mapWithIndex(cards, (function (i, card) {
                             return React.createElement(Next.Link.make, {
                                         href: card.href,
                                         children: React.createElement("a", {
                                               className: "bg-gray-95 px-5 pb-8 relative rounded-xl",
                                               style: {
-                                                maxWidth: "250px"
+                                                maxWidth: "296px"
                                               }
                                             }, React.createElement("img", {
                                                   className: "h-12 absolute mt-5",
@@ -494,13 +494,13 @@ function LandingPageLayout$CuratedResources(Props) {
                           }))), React.createElement("div", {
                       className: "uppercase text-14 text-center mb-20 mt-20"
                     }, "templates"), React.createElement("div", {
-                      className: "flex justify-between max-w-2xl mx-auto"
+                      className: "flex justify-between max-w-1280 mx-auto"
                     }, Belt_Array.mapWithIndex(templates, (function (i, card) {
                             return React.createElement("a", {
                                         key: String(i),
                                         className: "bg-gray-95 px-5 pb-8 relative rounded-xl",
                                         style: {
-                                          maxWidth: "250px"
+                                          maxWidth: "406px"
                                         },
                                         href: card.href,
                                         target: "_blank"

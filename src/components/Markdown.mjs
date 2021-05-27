@@ -162,7 +162,7 @@ var Anchor = {
 function Markdown$H1(Props) {
   var children = Props.children;
   return React.createElement("h1", {
-              className: "text-48 tracking-tight leading-1 mb-5 font-sans font-medium text-gray-95"
+              className: "text-48 tracking-tight leading-tight mb-5 font-sans font-medium text-gray-95"
             }, children);
 }
 
@@ -174,7 +174,7 @@ function Markdown$H2(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement(React.Fragment, undefined, React.createElement("h2", {
-                  className: "group mt-12 mb-3 text-24 tracking-tight leading-1 font-sans font-bold text-gray-95"
+                  className: "group mt-12 mb-3 text-24 tracking-tight leading-tight font-sans font-bold text-gray-95"
                 }, children, React.createElement("span", {
                       className: "ml-2"
                     }, React.createElement(Markdown$Anchor, {
@@ -190,7 +190,7 @@ function Markdown$H3(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h3", {
-              className: "group text-24 mt-12 mb-3 tracking-tight leading-3 font-sans font-bold text-gray-95"
+              className: "group text-24 mt-12 mb-3 tracking-tight leading-2 font-sans font-bold text-gray-95"
             }, children, React.createElement("span", {
                   className: "ml-2"
                 }, React.createElement(Markdown$Anchor, {

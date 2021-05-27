@@ -295,7 +295,7 @@ module MainUSP = {
     let make = (~title: string, ~paragraph: React.element) => {
       <div className="w-full" style={ReactDOM.Style.make(~maxWidth="30rem", ())}>
         <h3
-          className="text-gray-10 mt-16 mb-6 text-32 leading-1 font-semibold"
+          className="text-gray-10 mt-16 mb-6 text-32 font-semibold"
           style={ReactDOM.Style.make(~maxWidth="25rem", ())}>
           {React.string(title)}
         </h3>
@@ -418,7 +418,7 @@ module TrustedBy = {
       </div>
       <div className="text-center mt-16 text-14"> {React.string(`and many more…`)} </div>
       <div
-        className="mt-10 max-w-xs overflow-hidden opacity-50"
+        className="mt-10 max-w-320 overflow-hidden opacity-50"
         style={ReactDOM.Style.make(~maxHeight="6rem", ())}>
         <img className="w-full h-full" src="/static/lp/grid.svg" />
       </div>
@@ -505,13 +505,13 @@ module CuratedResources = {
         <div className="uppercase text-14 text-center mb-20">
           {React.string("guides and docs")}
         </div>
-        <div className="flex justify-between max-w-2xl mx-auto">
+        <div className="flex justify-between max-w-1280 mx-auto">
           {cards
           ->Belt.Array.mapWithIndex((i, card) =>
             <Next.Link key={Belt.Int.toString(i)} href={card.href}>
               <a
                 className="bg-gray-95 px-5 pb-8 relative rounded-xl"
-                style={ReactDOM.Style.make(~maxWidth="250px", ())}>
+                style={ReactDOM.Style.make(~maxWidth="296px", ())}>
                 <img className="h-12 absolute mt-5" src=card.imgSrc />
                 <h5 className="text-gray-10 font-semibold mt-32 h-12"> {card.title} </h5>
                 <div className="text-gray-40 mt-8 text-14"> {React.string(card.descr)} </div>
@@ -523,7 +523,7 @@ module CuratedResources = {
         <div className="uppercase text-14 text-center mb-20 mt-20">
           {React.string("templates")}
         </div>
-        <div className="flex justify-between max-w-2xl mx-auto">
+        <div className="flex justify-between max-w-1280 mx-auto">
           {templates
           ->Belt.Array.mapWithIndex((i, card) =>
             <a
@@ -531,7 +531,7 @@ module CuratedResources = {
               href={card.href}
               target="_blank"
               className="bg-gray-95 px-5 pb-8 relative rounded-xl"
-              style={ReactDOM.Style.make(~maxWidth="250px", ())}>
+              style={ReactDOM.Style.make(~maxWidth="406px", ())}>
               <img className="h-12 absolute mt-5" src=card.imgSrc />
               <h5 className="text-gray-10 font-semibold mt-32 h-12"> {card.title} </h5>
               <div className="text-gray-40 mt-8 text-14"> {React.string(card.descr)} </div>
