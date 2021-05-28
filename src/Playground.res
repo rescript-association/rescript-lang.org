@@ -1304,18 +1304,14 @@ module OutputPanel = {
                     const mainWindow = event.source;
                     let result = "all good";
                     try {
-                      eval(\`
-                          ${event.data}
-                          const root = document.getElementById("root");
-                          ReactDOM.render(Test.make(), root);
-                    })();\`);
+                      eval(event.data);
                   } catch (err) {
                     console.log(err);
                     result = "eval() threw an exception.";
                   }
                   mainWindow.postMessage(result, event.origin);
-      });
-    </script>
+                 });
+              </script>
   </body>
 </html>
       `
@@ -1332,7 +1328,14 @@ module OutputPanel = {
     let runCode = () => {
       let iframeWin = Transpiler.getElementById(Transpiler.doc, "iframe-eval").contentWindow
       switch iframeWin {
-      | Some(win) => win.postMessage(. Transpiler.transpile(code), "*")
+      | Some(win) => {
+          let codeToRun = `(function () {
+          ${Transpiler.transpile(code)}
+          const root = document.getElementById("root");
+          ReactDOM.render(App.make(), root);
+        })();`
+          win.postMessage(. codeToRun, "*")
+        }
       | None => ()
       }
     }
@@ -1436,9 +1439,15 @@ module InitialContent = {
     <button> {msg->React.string} </button>
   }
 }
-`
 
-  let since_10_1 = `@@jsxConfig({ version: 4, mode: "automatic" })
+module App = {
+  @react.component
+  let make = () => {
+    <Button count=2 />
+  }
+}
+`
+  let since_10_1 = `@@jsxConfig({ version: 4, mode: "classic" })
 
 module CounterMessage = {
   @react.component
@@ -1489,7 +1498,6 @@ module App = {
 }
 `
 }
-
 // Please note:
 // ---
 // The Playground is still a work in progress
