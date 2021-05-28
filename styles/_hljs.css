@@ -16,7 +16,7 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 }
 
 .hljs-operator, .hljs-literal {
-  @apply text-berry;
+  @apply text-water;
 }
 
 .hljs-comment {
@@ -29,20 +29,20 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 }
 
 .hljs-keyword {
-  @apply text-turtle;
+  @apply text-berry;
 }
 
 .hljs-number,
 .hljs-string,
 .hljs-doctag {
-  @apply text-water;
+  @apply text-orange;
 }
 
 .hljs-selector-id,
 .hljs-selector-class,
 .hljs-section,
 .hljs-type {
-  color: #19469d;
+  @apply text-turtle;
 }
 
 .hljs-params {
@@ -129,7 +129,7 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 }
 
 .hljs.dark .hljs-keyword {
-  @apply text-berry-40;
+  @apply text-berry-dark50;
 }
 
 .hljs.dark .hljs-built_in,
