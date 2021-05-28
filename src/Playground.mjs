@@ -21,6 +21,7 @@ import * as HighlightJs from "./common/HighlightJs.mjs";
 import * as CompilerManagerHook from "./common/CompilerManagerHook.mjs";
 import * as RescriptCompilerApi from "./bindings/RescriptCompilerApi.mjs";
 import * as WarningFlagDescription from "./common/WarningFlagDescription.mjs";
+import TranspileToEval from "./ffi/transpile-to-eval";
 
 if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
   require("codemirror/mode/javascript/javascript");
@@ -1695,6 +1696,7 @@ function Playground$OutputPanel(Props) {
       "",
       false
     ];
+  var code = match$2[0];
   var codeElement = React.createElement("pre", {
         className: "whitespace-pre-wrap overflow-y-auto p-4 " + (
           match$2[1] ? "block" : "hidden"
@@ -1702,7 +1704,57 @@ function Playground$OutputPanel(Props) {
         style: {
           height: "calc(100vh - 11.5rem)"
         }
-      }, HighlightJs.renderHLJS(undefined, true, match$2[0], "js", undefined));
+      }, HighlightJs.renderHLJS(undefined, true, code, "js", undefined));
+  var outputPane;
+  var exit$4 = 0;
+  if (typeof compilerState === "number") {
+    outputPane = React.createElement("div", undefined);
+  } else {
+    switch (compilerState.TAG | 0) {
+      case /* Ready */2 :
+      case /* Compiling */3 :
+          exit$4 = 1;
+          break;
+      default:
+        outputPane = React.createElement("div", undefined);
+    }
+  }
+  if (exit$4 === 1) {
+    var match$3 = compilerState._0.result;
+    var exit$5 = 0;
+    if (typeof match$3 === "number") {
+      outputPane = React.createElement("div", undefined);
+    } else if (match$3.TAG === /* Conv */0) {
+      if (match$3._0.TAG === /* Success */0) {
+        exit$5 = 2;
+      } else {
+        outputPane = React.createElement("div", undefined);
+      }
+    } else if (match$3._0.TAG === /* Success */1) {
+      exit$5 = 2;
+    } else {
+      outputPane = React.createElement("div", undefined);
+    }
+    if (exit$5 === 2) {
+      outputPane = React.createElement(React.Fragment, {
+            children: null
+          }, React.createElement("button", {
+                onClick: (function (param) {
+                    var iframeWin = document.getElementById("iframe-eval").contentWindow;
+                    if (iframeWin !== undefined) {
+                      return iframeWin.postMessage(TranspileToEval(code), "*");
+                    }
+                    
+                  })
+              }, "Run"), React.createElement("iframe", {
+                id: "iframe-eval",
+                height: "300px",
+                srcDoc: "\n        <!DOCTYPE html>\n          <html lang=\"en\">\n            <head>\n              <meta charset=\"UTF-8\" />\n              <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n              <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\" />\n              <title>Document</title>\n            </head>\n\n            <body>\n              <div id=\"root\"></div>\n                <script\n                  src=\"https://unpkg.com/react@17/umd/react.production.min.js\"\n                  crossorigin\n                ></script>\n                <script\n                  src=\"https://unpkg.com/react-dom@17/umd/react-dom.production.min.js\"\n                  crossorigin\n                ></script>\n                <script>\n                  window.addEventListener(\"message\", (event) => {\n                    const mainWindow = event.source;\n                    let result = \"all good\";\n                    try {\n                      eval(`\n                        (function () {'use strict';\n                           function Playground$Button(Props) {\n                              var count = Props.count;\n                              var times = count !== 1 ? count !== 2 ? String(count) + ' times' : 'twice' : 'once';\n                              var msg = 'Click me ' + times;\n                              return React.createElement('button', undefined, msg);\n                          }\n                          var Button = { make: Playground$Button };\n                          function Playground$Test(Props) {\n                              return React.createElement(Playground$Button, { count: 1 });\n                          }\n                          var Test = { make: Playground$Test };\n\n                          const root = document.getElementById(\"root\");\n                          ReactDOM.render(Test.make(), root);\n                    })();`);\n                  } catch (err) {\n                    console.log(err);\n                    result = \"eval() threw an exception.\";\n                  }\n                  mainWindow.postMessage(result, event.origin);\n      });\n    </script>\n  </body>\n</html>\n      ",
+                width: "250px"
+              }));
+    }
+    
+  }
   var output = React.createElement("div", {
         className: "relative w-full bg-gray-95 text-gray-20",
         style: {
@@ -1752,12 +1804,12 @@ function Playground$OutputPanel(Props) {
   } else {
     switch (compilerState.TAG | 0) {
       case /* Ready */2 :
-          var match$3 = compilerState._0.result;
-          selected = typeof match$3 === "number" ? 1 : (
-              match$3.TAG === /* Conv */0 ? (
-                  match$3._0.TAG === /* Success */0 ? 0 : 1
+          var match$4 = compilerState._0.result;
+          selected = typeof match$4 === "number" ? 1 : (
+              match$4.TAG === /* Conv */0 ? (
+                  match$4._0.TAG === /* Success */0 ? 0 : 1
                 ) : (
-                  match$3._0.TAG === /* Success */1 ? 0 : 1
+                  match$4._0.TAG === /* Success */1 ? 0 : 1
                 )
             );
           break;
@@ -1789,6 +1841,14 @@ function Playground$OutputPanel(Props) {
               height: "50%"
             }
           }, settingsPane)
+    },
+    {
+      title: "Result",
+      content: React.createElement("div", {
+            style: {
+              height: "50%"
+            }
+          }, outputPane)
     }
   ];
   var makeTabClass = function (active) {
