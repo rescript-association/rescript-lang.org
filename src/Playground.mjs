@@ -626,7 +626,7 @@ function Playground$ResultPane(Props) {
   var focusedRowCol = Props.focusedRowCol;
   var result = Props.result;
   return React.createElement("div", {
-              className: "pt-4 bg-gray-95 overflow-y-auto hide-scrollbar"
+              className: "pt-4 bg-0 overflow-y-auto hide-scrollbar"
             }, React.createElement("div", {
                   className: "flex items-center text-16 font-medium px-4"
                 }, React.createElement("div", {
@@ -634,7 +634,7 @@ function Playground$ResultPane(Props) {
                     }, renderTitle$1(result))), React.createElement("div", {
                   className: ""
                 }, React.createElement("div", {
-                      className: "bg-gray-95 text-gray-10 px-4 py-4"
+                      className: "bg-gray-90 text-gray-20 px-4 py-4"
                     }, renderResult(focusedRowCol, targetLang, compilerVersion, result))));
 }
 
@@ -1344,9 +1344,9 @@ function Playground$Settings(Props) {
                 warn_flags: "+a-4-9-20-40-41-42-50-61-102-109"
               });
   };
-  var titleClass = "text-18 font-bold mb-2";
+  var titleClass = "hl-5 text-gray-20 mb-2";
   return React.createElement("div", {
-              className: "p-4 pt-8 bg-gray-95 text-gray-20"
+              className: "p-4 pt-8 bg-gray-90 text-gray-20"
             }, React.createElement("div", undefined, React.createElement("div", {
                       className: titleClass
                     }, "ReScript Version"), React.createElement(Playground$DropdownSelect, {
@@ -1408,7 +1408,7 @@ function Playground$Settings(Props) {
                 }, React.createElement("div", {
                       className: titleClass
                     }, "Warning Flags", React.createElement("button", {
-                          className: "ml-6 text-14 " + $$Text.Link.standalone,
+                          className: "ml-6 text-12 " + $$Text.Link.standalone,
                           onMouseDown: onResetClick
                         }, "[reset]")), React.createElement("div", {
                       className: "flex justify-end"
@@ -1486,7 +1486,7 @@ function Playground$ControlPanel$ShareButton(Props) {
       "bg-turtle-dark border-turtle-dark"
     ] : [
       "Copy Share Link",
-      " bg-sky active:bg-sky-70 border-sky-70"
+      " bg-sky body-xs active:bg-sky-70 border-sky-70"
     ];
   return React.createElement(React.Fragment, undefined, React.createElement("button", {
                   className: match$1[1] + " w-40 transition-all duration-500 ease-in-out inline-block hover:cursor-pointer hover:text-white-80 text-white rounded border px-2 py-1 ",
@@ -1710,7 +1710,7 @@ function Playground$OutputPanel(Props) {
         }
       }, HighlightJs.renderHLJS(undefined, true, match$2[0], "js", undefined));
   var output = React.createElement("div", {
-        className: "relative w-full bg-gray-95 text-gray-20",
+        className: "relative w-full bg-gray-90 text-gray-20",
         style: {
           height: "calc(100vh - 9rem)"
         }
@@ -1798,11 +1798,11 @@ function Playground$OutputPanel(Props) {
     }
   ];
   var makeTabClass = function (active) {
-    var activeClass = active ? "text-fire font-medium bg-gray-95 hover:cursor-default" : "";
+    var activeClass = active ? "text-white font-medium bg-gray-90 hover:cursor-default" : "";
     return "flex items-center h-12 px-4 pr-16 " + activeClass;
   };
   return React.createElement("div", {
-              className: "h-full bg-gray-95"
+              className: "h-full bg-gray-90"
             }, React.createElement(Playground$Pane, {
                   tabs: tabs,
                   makeTabClass: makeTabClass
@@ -1992,10 +1992,10 @@ function Playground$default(Props) {
     }
   }
   var tmp = {
-    className: "w-full lg:border-r-2 pl-2 border-gray-80"
+    className: "w-full lg:border-r pl-2 border-gray-80"
   };
   var tmp$1 = windowWidth > 1024 ? ({
-        maxWidth: "65%"
+        maxWidth: "60%"
       }) : undefined;
   if (tmp$1 !== undefined) {
     tmp.style = Caml_option.valFromOption(tmp$1);
@@ -2008,7 +2008,7 @@ function Playground$default(Props) {
                 }), React.createElement("div", {
                   className: "text-16 bg-gray-100"
                 }, React.createElement("div", {
-                      className: "text-gray-60 text-14"
+                      className: "text-gray-40 text-14"
                     }, React.createElement(Navigation.make, {
                           fixed: false,
                           overlayState: overlayState
@@ -2018,7 +2018,7 @@ function Playground$default(Props) {
                             maxHeight: "calc(100vh - 4.5rem)"
                           }
                         }, React.createElement("div", {
-                              className: "w-full h-full flex flex-col lg:flex-row border-t-2 border-gray-80"
+                              className: "w-full h-full flex flex-col lg:flex-row border-t border-gray-80"
                             }, React.createElement("div", tmp, React.createElement("div", {
                                       className: "bg-gray-100 text-gray-20"
                                     }, React.createElement(Playground$ControlPanel, {

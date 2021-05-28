@@ -259,7 +259,7 @@ module InfoSidebar = {
 
   @react.component
   let make = (~setFilter: (Filter.t => Filter.t) => unit, ~filter: Filter.t) => {
-    let h2 = "group mb-3 text-14 uppercase  leading-1 font-sans font-medium text-gray-95"
+    let h2 = "group mb-3 text-14 uppercase  leading-tight font-sans font-medium text-gray-80"
     let link = "hover:underline"
 
     <aside className=" border-l-2 p-4 py-12 border-fire-30 space-y-16">
@@ -470,7 +470,7 @@ let default = (props: props) => {
       description="Official and unofficial resources, libraries and bindings for ReScript"
     />
     <div className="mt-16 pt-2">
-      <div className="text-gray-80 text-lg">
+      <div className="text-gray-80 text-18">
         <Navigation overlayState />
         <div className="flex overflow-hidden">
           <div

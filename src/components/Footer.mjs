@@ -19,7 +19,7 @@ function Footer(Props) {
   return React.createElement("footer", {
               className: "flex justify-center border-t border-gray-10"
             }, React.createElement("div", {
-                  className: "flex flex-col md:flex-row justify-between max-w-1280 w-full px-8 py-16 text-gray-95 "
+                  className: "flex flex-col md:flex-row justify-between max-w-1280 w-full px-8 py-16 text-gray-80 "
                 }, React.createElement("div", undefined, React.createElement("img", {
                           className: "w-40 mb-5",
                           src: "/static/rescript_logo_black.svg"

@@ -49,7 +49,7 @@ module AuthorBox = {
 
     <div className="flex items-center">
       <div className="w-12 h-12 bg-berry-40 block rounded-full mr-3"> authorImg </div>
-      <div className="text-14 font-medium text-gray-95">
+      <div className="text-14 font-medium text-80">
         <a
           href={"https://twitter.com/" ++ author.twitter}
           className="hover:text-gray-80"
@@ -80,7 +80,7 @@ module BlogHeader = {
 
     <div className="flex flex-col items-center">
       <div className="w-full max-w-740">
-        <div className="text-gray-60 text-lg mb-5">
+        <div className="text-gray-60 text-18 mb-5">
           {switch category {
           | Some(category) => <> {React.string(category)} {React.string(middleDotSpacer)} </>
           | None => React.null
@@ -92,7 +92,7 @@ module BlogHeader = {
           switch desc {
           | "" => <div className="mb-8" />
           | desc =>
-            <div className="my-8 text-gray-95">
+            <div className="my-8 text-gray-80">
               <Markdown.Intro> {React.string(desc)} </Markdown.Intro>
             </div>
           }
@@ -188,7 +188,7 @@ let default = (props: props) => {
           <div className="mt-12">
             <Line />
             <div className="pt-20 flex flex-col items-center">
-              <div className="text-3xl sm:text-32 text-center text-gray-95 font-medium">
+              <div className="text-3xl sm:text-32 text-center text-gray-80 font-medium">
                 {React.string("Want to read more?")}
               </div>
               <Next.Link href="/blog">
@@ -206,7 +206,7 @@ let default = (props: props) => {
   | Error(msg) =>
     <div>
       <Markdown.Warn>
-        <h2 className="font-bold text-gray-95 text-24 mb-2">
+        <h2 className="font-bold text-gray-80 text-24 mb-2">
           {React.string("Could not parse file '_blogposts/" ++ (path ++ ".mdx'"))}
         </h2>
         <p>

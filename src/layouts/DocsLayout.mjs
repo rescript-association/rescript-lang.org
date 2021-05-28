@@ -104,7 +104,7 @@ function DocsLayout(Props) {
           });
     } else {
       tmp = React.createElement("span", {
-            className: "font-mono text-sm"
+            className: "font-mono text-14"
           }, version);
     }
   } else {

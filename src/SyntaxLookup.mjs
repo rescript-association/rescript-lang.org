@@ -140,7 +140,7 @@ function SyntaxLookup$DetailBox(Props) {
           }));
   }
   return React.createElement("div", undefined, React.createElement("div", {
-                  className: "text-21 border-b border-gray-40 pb-4 mb-4 font-semibold"
+                  className: "text-24 border-b border-gray-40 pb-4 mb-4 font-semibold"
                 }, summaryEl), React.createElement("div", {
                   className: "mt-16"
                 }, children));

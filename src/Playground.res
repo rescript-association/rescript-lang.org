@@ -486,12 +486,12 @@ module ResultPane = {
     ~focusedRowCol: option<(int, int)>=?,
     ~result: FinalResult.t,
   ) =>
-    <div className="pt-4 bg-gray-95 overflow-y-auto hide-scrollbar">
+    <div className="pt-4 bg-0 overflow-y-auto hide-scrollbar">
       <div className="flex items-center text-16 font-medium px-4">
         <div className="pr-4"> {renderTitle(result)} </div>
       </div>
       <div className="">
-        <div className="bg-gray-95 text-gray-10 px-4 py-4">
+        <div className="bg-gray-90 text-gray-20 px-4 py-4">
           {renderResult(~focusedRowCol, ~compilerVersion, ~targetLang, result)}
         </div>
       </div>
@@ -1042,8 +1042,8 @@ module Settings = {
     let onCompilerSelect = id =>
       dispatch(SwitchToCompiler({id: id, libraries: readyState.selected.libraries}))
 
-    let titleClass = "text-18 font-bold mb-2"
-    <div className="p-4 pt-8 bg-gray-95 text-gray-20">
+    let titleClass = "hl-5 text-gray-20 mb-2"
+    <div className="p-4 pt-8 bg-gray-90 text-gray-20">
       <div>
         <div className=titleClass> {React.string("ReScript Version")} </div>
         <DropdownSelect
@@ -1088,7 +1088,7 @@ module Settings = {
       <div className="mt-8">
         <div className=titleClass>
           {React.string("Warning Flags")}
-          <button onMouseDown=onResetClick className={"ml-6 text-14 " ++ Text.Link.standalone}>
+          <button onMouseDown=onResetClick className={"ml-6 text-12 " ++ Text.Link.standalone}>
             {React.string("[reset]")}
           </button>
         </div>
@@ -1161,7 +1161,7 @@ module ControlPanel = {
       }
 
       let (text, className) = switch state {
-      | Init => ("Copy Share Link", " bg-sky active:bg-sky-70 border-sky-70")
+      | Init => ("Copy Share Link", " bg-sky body-xs active:bg-sky-70 border-sky-70")
       | CopySuccess => ("Copied to clipboard!", "bg-turtle-dark border-turtle-dark")
       }
 
@@ -1330,7 +1330,7 @@ module OutputPanel = {
 
     let output =
       <div
-        className="relative w-full bg-gray-95 text-gray-20"
+        className="relative w-full bg-gray-90 text-gray-20"
         style={ReactDOM.Style.make(~height="calc(100vh - 9rem)", ())}>
         resultPane codeElement
       </div>
@@ -1388,12 +1388,12 @@ module OutputPanel = {
     ]
 
     let makeTabClass = active => {
-      let activeClass = active ? "text-fire font-medium bg-gray-95 hover:cursor-default" : ""
+      let activeClass = active ? "text-white font-medium bg-gray-90 hover:cursor-default" : ""
 
       "flex items-center h-12 px-4 pr-16 " ++ activeClass
     }
 
-    <div className="h-full bg-gray-95"> <Pane tabs makeTabClass /> </div>
+    <div className="h-full bg-gray-90"> <Pane tabs makeTabClass /> </div>
   }
 }
 
@@ -1559,15 +1559,15 @@ let default = () => {
       <style> {React.string(j`body { background-color: #010427; } `)} </style>
     </Next.Head>
     <div className="text-16 bg-gray-100">
-      <div className="text-gray-60 text-14">
+      <div className="text-gray-40 text-14">
         <Navigation fixed=false overlayState />
         <main
           className="bg-gray-100 lg:overflow-hidden lg:h-screen"
           style={ReactDOM.Style.make(~maxHeight="calc(100vh - 4.5rem)", ())}>
-          <div className="w-full h-full flex flex-col lg:flex-row border-t-2 border-gray-80">
+          <div className="w-full h-full flex flex-col lg:flex-row border-t border-gray-80">
             <div
-              className="w-full lg:border-r-2 pl-2 border-gray-80"
-              style=?{windowWidth > 1024 ? Some(ReactDOM.Style.make(~maxWidth="65%", ())) : None}>
+              className="w-full lg:border-r pl-2 border-gray-80"
+              style=?{windowWidth > 1024 ? Some(ReactDOM.Style.make(~maxWidth="60%", ())) : None}>
               <div className="bg-gray-100 text-gray-20">
                 <ControlPanel
                   actionIndicatorKey={Belt.Int.toString(actionCount)}

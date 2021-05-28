@@ -86,7 +86,7 @@ module CopyButton = {
         // If we don't do that, the banner will essentially pop up without any animation
         let bannerEl = createElement("div")
         bannerEl->setClassName(
-          "foobar opacity-0 absolute top-0 -mt-1 -mr-1 px-2 rounded right-0 bg-turtle text-gray-80-tr transition-all duration-500 ease-in-out ",
+          "foobar opacity-0 absolute top-0 -mt-1 -mr-1 px-2 rounded text-12 right-0 bg-turtle text-gray-80-tr transition-all duration-500 ease-in-out ",
         )
         let textNode = createTextNode("Copied!")
 
@@ -115,7 +115,7 @@ module CopyButton = {
 
     <button
       ref={ReactDOM.Ref.domRef(buttonRef)} disabled={state === Copied} className="relative" onClick>
-      <Icon.Copy className="text-gray-20 mt-px hover:cursor-pointer hover:text-gray-80" />
+      <Icon.Copy className="text-gray-40 mt-px hover:cursor-pointer hover:text-gray-60" />
     </button>
   }
 }
@@ -137,7 +137,7 @@ let make = (~highlightedLines=[], ~code: string, ~showLabel=true, ~lang="text") 
   }
 
   <div //normal code-text without tabs
-    className="relative w-full flex-col rounded-none xs:rounded-lg border-t border-b xs:border border-gray-10 bg-gray-5 py-2 text-gray-80">
+    className="relative w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-gray-20 bg-gray-10 py-2 text-gray-80">
     label <div className="px-5 text-14 pt-4 pb-2 overflow-x-auto -mt-2"> children </div>
   </div>
 }
@@ -176,9 +176,9 @@ module Toggle = {
         }
 
         let activeClass = if selected === i {
-          "font-medium text-gray-90 bg-gray-5 border-t-2 first:border-l"
+          "font-medium text-gray-80 bg-gray-5 border-t-2 first:border-l"
         } else {
-          "font-medium hover:text-gray-60 border-t-2 bg-gray-10 hover:cursor-pointer"
+          "font-medium hover:text-gray-60 border-t-2 bg-gray-20 hover:cursor-pointer"
         }
 
         let onClick = evt => {
@@ -230,7 +230,7 @@ module Toggle = {
         let playgroundLinkButton =
           <Next.Link href={`/try?code=${LzString.compressToEncodedURIComponent(tab.code)}}`}>
             <a target="_blank">
-              <Icon.ExternalLink className="text-gray-20 hover:cursor-pointer hover:text-gray-80" />
+              <Icon.ExternalLink className="text-gray-40 hover:cursor-pointer hover:text-gray-60" />
             </a>
           </Next.Link>
 
@@ -248,12 +248,12 @@ module Toggle = {
           className="absolute flex w-full overflow-auto scrolling-touch font-sans bg-transparent text-14 text-gray-40 "
           style={ReactDOM.Style.make(~marginTop="-30px", ())}>
           <div className="flex ml-2 xs:ml-0"> {React.array(tabElements)} </div>
-          <div className="flex-1 w-full bg-gray-10 border-b rounded-tr border-gray-10 items-center">
+          <div className="flex-1 w-full bg-gray-20 border-b rounded-tr border-gray-20 items-center">
             buttonDiv
           </div>
         </div>
         <div
-          className="px-4 lg:px-5 text-14 pb-4 pt-4 overflow-x-auto bg-gray-5 border-gray-10 xs:rounded-b-lg border">
+          className="px-4 lg:px-5 text-14 pb-4 pt-4 overflow-x-auto bg-gray-10 border-gray-20 xs:rounded-b border">
           <pre> children </pre>
         </div>
       </div>

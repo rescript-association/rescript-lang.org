@@ -75,7 +75,7 @@ function CodeExample$CopyButton(Props) {
           }
           var buttonEl = Belt_Option.getExn(Caml_option.nullable_to_opt(buttonRef.current));
           var bannerEl = document.createElement("div");
-          bannerEl.className = "foobar opacity-0 absolute top-0 -mt-1 -mr-1 px-2 rounded right-0 bg-turtle text-gray-80-tr transition-all duration-500 ease-in-out ";
+          bannerEl.className = "foobar opacity-0 absolute top-0 -mt-1 -mr-1 px-2 rounded text-12 right-0 bg-turtle text-gray-80-tr transition-all duration-500 ease-in-out ";
           var textNode = document.createTextNode("Copied!");
           bannerEl.appendChild(textNode);
           buttonEl.appendChild(bannerEl);
@@ -102,7 +102,7 @@ function CodeExample$CopyButton(Props) {
               disabled: state === /* Copied */1,
               onClick: onClick
             }, React.createElement(Icon.Copy.make, {
-                  className: "text-gray-20 mt-px hover:cursor-pointer hover:text-gray-80"
+                  className: "text-gray-40 mt-px hover:cursor-pointer hover:text-gray-60"
                 }));
 }
 
@@ -125,7 +125,7 @@ function CodeExample(Props) {
     label = null;
   }
   return React.createElement("div", {
-              className: "relative w-full flex-col rounded-none xs:rounded-lg border-t border-b xs:border border-gray-10 bg-gray-5 py-2 text-gray-80"
+              className: "relative w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-gray-20 bg-gray-10 py-2 text-gray-80"
             }, label, React.createElement("div", {
                   className: "px-5 text-14 pt-4 pb-2 overflow-x-auto -mt-2"
                 }, children));
@@ -149,7 +149,7 @@ function CodeExample$Toggle(Props) {
               var lang = tab.lang;
               label$1 = lang !== undefined ? langShortname(lang).toUpperCase() : String(i);
             }
-            var activeClass = selected === i ? "font-medium text-gray-90 bg-gray-5 border-t-2 first:border-l" : "font-medium hover:text-gray-60 border-t-2 bg-gray-10 hover:cursor-pointer";
+            var activeClass = selected === i ? "font-medium text-gray-80 bg-gray-5 border-t-2 first:border-l" : "font-medium hover:text-gray-60 border-t-2 bg-gray-20 hover:cursor-pointer";
             var onClick = function (evt) {
               evt.preventDefault();
               return Curry._1(setSelected, (function (param) {
@@ -196,7 +196,7 @@ function CodeExample$Toggle(Props) {
             children: React.createElement("a", {
                   target: "_blank"
                 }, React.createElement(Icon.ExternalLink.make, {
-                      className: "text-gray-20 hover:cursor-pointer hover:text-gray-80"
+                      className: "text-gray-40 hover:cursor-pointer hover:text-gray-60"
                     }))
           });
       var copyButton = React.createElement(CodeExample$CopyButton, {
@@ -218,9 +218,9 @@ function CodeExample$Toggle(Props) {
                   }, React.createElement("div", {
                         className: "flex ml-2 xs:ml-0"
                       }, tabElements), React.createElement("div", {
-                        className: "flex-1 w-full bg-gray-10 border-b rounded-tr border-gray-10 items-center"
+                        className: "flex-1 w-full bg-gray-20 border-b rounded-tr border-gray-20 items-center"
                       }, buttonDiv)), React.createElement("div", {
-                    className: "px-4 lg:px-5 text-14 pb-4 pt-4 overflow-x-auto bg-gray-5 border-gray-10 xs:rounded-b-lg border"
+                    className: "px-4 lg:px-5 text-14 pb-4 pt-4 overflow-x-auto bg-gray-10 border-gray-20 xs:rounded-b border"
                   }, React.createElement("pre", undefined, children)));
   }
   var tab$1 = tabs[0];
