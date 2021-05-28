@@ -22,7 +22,7 @@ open CompilerManagerHook
 module Api = RescriptCompilerApi
 
 type layout = Column | Row
-type tab = JavaScript | Problems | Settings
+type tab = JavaScript | Problems | Settings | Result
 let breakingPoint = 1024
 
 module DropdownSelect = {
@@ -1276,6 +1276,82 @@ module OutputPanel = {
         {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="js", ())}
       </pre>
 
+    module Transpiler = {
+      @module("./ffi/transpile-to-eval") external transpile: string => string = "default"
+
+      let srcdoc = `
+        <!DOCTYPE html>
+          <html lang="en">
+            <head>
+              <meta charset="UTF-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+              <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+              <title>Document</title>
+            </head>
+
+            <body>
+              <div id="root"></div>
+                <script
+                  src="https://unpkg.com/react@17/umd/react.production.min.js"
+                  crossorigin
+                ></script>
+                <script
+                  src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
+                  crossorigin
+                ></script>
+                <script>
+                  window.addEventListener("message", (event) => {
+                    const mainWindow = event.source;
+                    let result = "all good";
+                    try {
+                      eval(\`
+                          ${event.data}
+                          const root = document.getElementById("root");
+                          ReactDOM.render(Test.make(), root);
+                    })();\`);
+                  } catch (err) {
+                    console.log(err);
+                    result = "eval() threw an exception.";
+                  }
+                  mainWindow.postMessage(result, event.origin);
+      });
+    </script>
+  </body>
+</html>
+      `
+      type document
+      type contentWindow = {
+        @uncurry
+        postMessage: (. string, string) => unit,
+      }
+      type element = {contentWindow: option<contentWindow>}
+      @send external getElementById: (document, string) => element = "getElementById"
+      @val external doc: document = "document"
+    }
+
+    let runCode = () => {
+      let iframeWin = Transpiler.getElementById(Transpiler.doc, "iframe-eval").contentWindow
+      switch iframeWin {
+      | Some(win) => win.postMessage(. Transpiler.transpile(code), "*")
+      | None => ()
+      }
+    }
+
+    let outputPane: React.element = switch compilerState {
+    | Compiling(ready, _)
+    | Ready(ready) =>
+      switch ready.result {
+      | Comp(Success(_))
+      | Conv(Success(_)) =>
+        <React.Fragment>
+          <button onClick={_ => runCode()}> {React.string("Run")} </button>
+          <iframe width="250px" height="300px" id="iframe-eval" srcDoc=Transpiler.srcdoc />
+        </React.Fragment>
+      | _ => <div />
+      }
+    | _ => <div />
+    }
+
     let output =
       <div className="text-gray-20">
         resultPane
@@ -1322,7 +1398,12 @@ module OutputPanel = {
 
     prevSelected.current = selected
 
-    let tabs = [(JavaScript, output), (Problems, errorPane), (Settings, settingsPane)]
+    let tabs = [
+      (JavaScript, output),
+      (Problems, errorPane),
+      (Settings, settingsPane),
+      (Result, outputPane),
+    ]
 
     let body = Belt.Array.mapWithIndex(tabs, (i, (tab, content)) => {
       let className = currentTab == tab ? "block h-inherit" : "hidden"
@@ -1711,6 +1792,7 @@ let default = (~props: Try.props) => {
     | JavaScript => "JavaScript"
     | Problems => "Problems"
     | Settings => "Settings"
+    | Result => "Render Output"
     }
     let onMouseDown = evt => {
       ReactEvent.Mouse.preventDefault(evt)
