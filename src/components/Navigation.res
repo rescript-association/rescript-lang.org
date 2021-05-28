@@ -118,13 +118,13 @@ module DocsSection = {
       let isAbsolute = Util.Url.isAbsolute(href)
       let content =
         <div
-          className={`hover:bg-gray-5 hover:shadow hover:-mx-8 hover:px-8 hover:cursor-pointer active:bg-gray-10 py-4 flex space-x-4 items-start rounded-xl`}>
+          className={`hover:bg-gray-5 hover:shadow hover:-mx-8 hover:px-8 hover:cursor-pointer active:bg-gray-20 py-4 flex space-x-4 items-start rounded-xl`}>
           icon
           <div>
             <div
               className={`flex items-center text-16 font-medium ${active
                   ? "text-fire-40"
-                  : "text80"}`}>
+                  : "text-gray-80"}`}>
               <span> {React.string(title)} </span>
               {if isAbsolute {
                 <Icon.ExternalLink className="inline-block ml-2 w-4 h-4" />

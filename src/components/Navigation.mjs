@@ -105,10 +105,10 @@ function Navigation$DocsSection$LinkCard(Props) {
   var active = activeOpt !== undefined ? activeOpt : false;
   var isAbsolute = Util.Url.isAbsolute(href);
   var content = React.createElement("div", {
-        className: "hover:bg-gray-5 hover:shadow hover:-mx-8 hover:px-8 hover:cursor-pointer active:bg-gray-10 py-4 flex space-x-4 items-start rounded-xl"
+        className: "hover:bg-gray-5 hover:shadow hover:-mx-8 hover:px-8 hover:cursor-pointer active:bg-gray-20 py-4 flex space-x-4 items-start rounded-xl"
       }, icon, React.createElement("div", undefined, React.createElement("div", {
                 className: "flex items-center text-16 font-medium " + (
-                  active ? "text-fire-40" : "text80"
+                  active ? "text-fire-40" : "text-gray-80"
                 )
               }, React.createElement("span", undefined, title), isAbsolute ? React.createElement(Icon.ExternalLink.make, {
                       className: "inline-block ml-2 w-4 h-4"
