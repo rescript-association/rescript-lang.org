@@ -1358,38 +1358,39 @@ module OutputPanel = {
                     const mainWindow = event.source;
                     let result = "all good";
                     try {
-                      eval(\`
-                          ${event.data}
-                          const root = document.getElementById("root");
-                          ReactDOM.render(Test.make(), root);
-                    })();\`);
+                      eval(event.data);
                   } catch (err) {
                     console.log(err);
                     result = "eval() threw an exception.";
                   }
                   mainWindow.postMessage(result, event.origin);
-      });
-    </script>
+                 });
+              </script>
   </body>
 </html>
       `
-          type document
-          type contentWindow = {
-            @uncurry
-            postMessage: (. string, string) => unit
-          }
-          type element = {
-            contentWindow: option<contentWindow>
-          }
-          @send external getElementById: (document, string) => element = "getElementById"
-          @val external doc: document = "document"
+      type document
+      type contentWindow = {
+        @uncurry
+        postMessage: (. string, string) => unit,
+      }
+      type element = {contentWindow: option<contentWindow>}
+      @send external getElementById: (document, string) => element = "getElementById"
+      @val external doc: document = "document"
     }
 
     let runCode = () => {
       let iframeWin = Transpiler.getElementById(Transpiler.doc, "iframe-eval").contentWindow
       switch iframeWin {
-        | Some(win) => win.postMessage(. Transpiler.transpile(code), "*")
-        | None => ()
+      | Some(win) => {
+          let codeToRun = `(function () {
+          ${Transpiler.transpile(code)}
+          const root = document.getElementById("root");
+          ReactDOM.render(App.make(), root);
+        })();`
+          win.postMessage(. codeToRun, "*")
+        }
+      | None => ()
       }
     }
 
@@ -1398,12 +1399,11 @@ module OutputPanel = {
     | Ready(ready) =>
       switch ready.result {
       | Comp(Success(_))
-      | Conv(Success(_)) => {
+      | Conv(Success(_)) =>
         <React.Fragment>
-          <button onClick={_ => runCode()}>{React.string("Run")}</button>
+          <button onClick={_ => runCode()}> {React.string("Run")} </button>
           <iframe width="250px" height="300px" id="iframe-eval" srcDoc=Transpiler.srcdoc />
         </React.Fragment>
-      }
       | _ => <div />
       }
     | _ => <div />
@@ -1493,6 +1493,13 @@ let initialResContent = `module Button = {
     let msg = "Click me " ++ times
 
     <button> {msg->React.string} </button>
+  }
+}
+
+module App = {
+  @react.component
+  let make = () => {
+    <Button count=2 />
   }
 }
 ` // Please note:
