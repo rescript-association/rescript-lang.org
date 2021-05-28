@@ -83,7 +83,7 @@ module.exports = {
         //code-colors start:
         berry: {
           default: "#B151DD",
-          dark50: "B984DB",
+          "dark-50": "#B984DB",
           "40": "#A766D0",
           "15": "rgba(171, 94, 163, 0.15)"
         },
