@@ -24,14 +24,14 @@ function LandingPageLayout$CallToActionButton(Props) {
 
 function LandingPageLayout$Intro(Props) {
   return React.createElement("div", {
-              className: "flex flex-col items-center"
+              className: "px-4 md:px-0 flex flex-col items-center"
             }, React.createElement("h1", {
                   className: "hl-title text-center",
                   style: {
                     maxWidth: "53rem"
                   }
                 }, "A simple and fast language for JavaScript developers"), React.createElement("h2", {
-                  className: "text-gray-60 body-lg my-4",
+                  className: "body-lg text-center text-gray-60 my-4",
                   style: {
                     maxWidth: "42rem"
                   }
@@ -60,34 +60,36 @@ function LandingPageLayout$PlaygroundHero(Props) {
             }, React.createElement("div", {
                   className: "relative flex justify-center w-full"
                 }, React.createElement("div", {
-                      className: "relative rounded-b-xl pt-6 pb-8 px-16 w-full",
+                      className: "relative sm:rounded-b-xl pt-6 pb-8 sm:px-8 md:px-16 w-full",
                       style: {
                         maxWidth: "1400px"
                       }
                     }, React.createElement("div", {
-                          className: "relative z-2 flex pt-3 pb-16 bg-gray-90 mx-auto rounded-lg",
+                          className: "relative z-2 flex flex-col md:flex-row pb-16 bg-gray-90 mx-auto sm:rounded-lg",
                           style: {
                             maxWidth: "1400px"
                           }
                         }, React.createElement("div", {
-                              className: "w-1/2"
+                              className: "md:w-1/2"
                             }, React.createElement("div", {
-                                  className: "text-14 text-gray-40 text-center bg-gray-100"
+                                  className: "text-14 text-gray-40 text-center py-3 bg-gray-100"
                                 }, "Written in ReScript"), React.createElement("pre", {
-                                  className: "text-14 pl-8 pt-12 whitespace-pre-wrap"
+                                  className: "text-14 px-8 pt-6 pb-12 whitespace-pre-wrap"
                                 }, HighlightJs.renderHLJS(undefined, true, example.res, "res", undefined))), React.createElement("div", {
-                              className: "w-1/2"
+                              className: "md:w-1/2"
                             }, React.createElement("div", {
-                                  className: "text-14 text-gray-40 text-center"
-                                }, "Compiled to JavaScript"), React.createElement("pre", {
-                                  className: "text-14 pr-8 pt-12 whitespace-pre-wrap"
+                                  className: "text-14 text-gray-40 py-3 text-center bg-gray-100 sm:rounded-lg"
+                                }, "Compiles to JavaScript"), React.createElement("pre", {
+                                  className: "text-14 px-8 pt-6 pb-12 whitespace-pre-wrap"
                                 }, HighlightJs.renderHLJS(undefined, true, example.js, "js", undefined)))), React.createElement("div", undefined, React.createElement(Next.Link.make, {
                               href: "/try?code=" + LzString.compressToEncodedURIComponent(example.res) + "}",
                               children: React.createElement("a", {
                                     className: "text-12 underline text-gray-60",
                                     target: "_blank"
                                   }, "Edit this example in Playground")
-                            })), React.createElement("div", undefined, React.createElement("img", {
+                            })), React.createElement("div", {
+                          className: "hidden md:block"
+                        }, React.createElement("img", {
                               className: "absolute z-0 left-0 top-0 -ml-10 -mt-6",
                               style: {
                                 height: "24rem",
@@ -97,7 +99,9 @@ function LandingPageLayout$PlaygroundHero(Props) {
                             }), React.createElement("img", {
                               className: "absolute z-0 left-0 top-0 -ml-10 mt-10",
                               src: "/static/lp/illu_left.png"
-                            })), React.createElement("div", undefined, React.createElement("img", {
+                            })), React.createElement("div", {
+                          className: "hidden md:block"
+                        }, React.createElement("img", {
                               className: "absolute z-0 right-0 bottom-0 -mb-10 mt-24 -mr-10",
                               style: {
                                 height: "24rem",
@@ -194,7 +198,8 @@ function copyBox(text) {
   return React.createElement("div", {
               className: "flex justify-between p-4 w-full bg-gray-20 border border-gray-10 rounded",
               style: {
-                backgroundColor: "#FAFBFC"
+                backgroundColor: "#FAFBFC",
+                maxWidth: "22rem"
               }
             }, React.createElement("span", {
                   className: "font-mono text-14 text-gray-80"
@@ -209,7 +214,7 @@ function LandingPageLayout$QuickInstall$Instructions(Props) {
             }, React.createElement("h2", {
                   className: "font-bold text-24"
                 }, "Quick Install"), React.createElement("div", {
-                  className: "text-12 text-gray-40 my-2 leading-2"
+                  className: "text-12 pr-10 text-gray-40 my-2 leading-2"
                 }, "You can quickly add ReScript to your existing JavaScript codebase via npm / yarn:"), React.createElement("div", {
                   className: "w-full space-y-2"
                 }, copyBox("npm install rescript --save-dev"), copyBox("npx rescript init .")));
@@ -217,104 +222,103 @@ function LandingPageLayout$QuickInstall$Instructions(Props) {
 
 function LandingPageLayout$QuickInstall(Props) {
   return React.createElement("section", {
-              className: "my-32 max-w-1280 flex justify-center"
+              className: "my-32 sm:px-4 sm:flex sm:justify-center"
             }, React.createElement("div", {
-                  className: "relative"
+                  className: "max-w-1280 flex flex-col w-full"
                 }, React.createElement("div", {
-                      className: "relative z-1 space-y-12 text-gray-80 font-semibold text-32 leading-2",
-                      style: {
-                        maxWidth: "29rem"
-                      }
-                    }, React.createElement("p", undefined, React.createElement("span", {
-                              className: "bg-fire-5 rounded-md border-2 border-fire-10 h-10 w-full"
-                            }, "Everything you wan"), "t from JavaScript, minus the parts\n          you don't need."), React.createElement("p", undefined, "ReScript is easy to pick up for JavaScript developers,\n          and helps them shipping their products with confidence."))), React.createElement("div", {
-                  className: "w-full",
-                  style: {
-                    maxWidth: "22rem"
-                  }
-                }, React.createElement(LandingPageLayout$QuickInstall$Instructions, {})));
+                      className: "relative px-12"
+                    }, React.createElement("div", {
+                          style: {
+                            maxWidth: "29rem"
+                          }
+                        }, React.createElement("p", {
+                              className: "relative z-1 space-y-12 text-gray-80 font-semibold text-24 md:text-32 leading-2"
+                            }, React.createElement("span", {
+                                  className: "bg-fire-5 rounded-md border-2 border-fire-10 h-10 w-full"
+                                }, "Everything you wan"), "t from JavaScript, minus the parts\n          you don't need."))), React.createElement("div", {
+                      className: "w-full pl-12 mt-12 flex flex-col lg:flex-row justify-between"
+                    }, React.createElement("p", {
+                          className: "relative z-1 text-gray-80 font-semibold text-24 md:text-32 leading-2",
+                          style: {
+                            maxWidth: "29rem"
+                          }
+                        }, "ReScript is easy to pick up for JavaScript developers,\n          and helps shipping products with confidence."), React.createElement("div", {
+                          className: "mt-16 lg:mt-0 self-end",
+                          style: {
+                            maxWidth: "25rem"
+                          }
+                        }, React.createElement(LandingPageLayout$QuickInstall$Instructions, {})))));
 }
 
 function LandingPageLayout$MainUSP$Item(Props) {
+  var caption = Props.caption;
   var title = Props.title;
   var paragraph = Props.paragraph;
   return React.createElement("div", {
-              className: "w-full",
-              style: {
-                maxWidth: "30rem"
-              }
-            }, React.createElement("h3", {
-                  className: "text-gray-10 mt-16 mb-6 text-32 font-semibold",
+              className: "flex flex-col lg:flex-row lg:justify-between w-full"
+            }, React.createElement("div", {
                   style: {
-                    maxWidth: "25rem"
+                    maxWidth: "30rem"
                   }
-                }, title), React.createElement("div", {
-                  className: "text-gray-60 text-16"
-                }, paragraph));
+                }, React.createElement("div", {
+                      className: "hl-overline text-gray-20 mb-4"
+                    }, caption), React.createElement("h3", {
+                      className: "text-gray-10 mb-4 text-32 font-semibold",
+                      style: {
+                        maxWidth: "25rem"
+                      }
+                    }, title), React.createElement("div", {
+                      className: "flex"
+                    }, React.createElement("div", {
+                          className: "text-gray-30 text-16 pr-8"
+                        }, paragraph))), React.createElement("div", {
+                  className: "w-full bg-gray-90 rounded-lg flex mt-16 lg:mt-0 items-center justify-center",
+                  style: {
+                    maxWidth: "31rem",
+                    minHeight: "10rem",
+                    borderRadius: "8px",
+                    boxShadow: "-11px 3px 30px -5px rgba(244,100,106,0.15)"
+                  }
+                }, "video of a fast build"));
 }
 
 var item1 = React.createElement(LandingPageLayout$MainUSP$Item, {
+      caption: "Fast and simple",
       title: "The fastest build system on the web",
       paragraph: "ReScript cares about a consistent and fast feedback loop for any\n            codebase size. No need for memory hungry build processes, and no\n            corrupted caches. Switch branches as you please without worrying\n            about stale caches or wrong type information."
     });
 
 var item2 = React.createElement(LandingPageLayout$MainUSP$Item, {
-      title: "Robust Type System",
+      caption: "A robust type system",
+      title: React.createElement("span", {
+            className: "text-transparent bg-clip-text bg-gradient-to-r from-berry-dark-50 to-fire-50"
+          }, "Type Better"),
       paragraph: " Every ReScript app is fully typed and provides\n      correct type information to any given value. We prioritize simpler types\n      / discourage complex types for the sake of clarity and easy debugability.\n      No `any`, no magic types, no surprise `undefined`.\n      "
     });
 
 var item3 = React.createElement(LandingPageLayout$MainUSP$Item, {
-      title: "Seamless JS Integration",
+      caption: "Seamless JS Integration",
+      title: React.createElement(React.Fragment, undefined, React.createElement("span", {
+                className: "text-orange-dark"
+              }, "The familiar JS ecosystem"), " at your fingertips"),
       paragraph: "Use any library from javascript, export rescript\n      libraries to javascript, generate typescript and flow types, etc. It's\n      like you've never left the good parts of javascript at all."
     });
 
-var items = [
-  item1,
-  item2,
-  item3
-];
-
-var tabs = [
-  "Fast and Simple",
-  "Robust Type System",
-  "Seamless JS Integration"
-];
-
 function LandingPageLayout$MainUSP(Props) {
-  var match = React.useState(function () {
-        return 0;
-      });
-  var setSelectedIndex = match[1];
-  var selectedIndex = match[0];
   return React.createElement("section", {
-              className: "flex items-stretch w-full",
+              className: "relative flex justify-center w-full bg-gray-90 px-4 sm:px-32 pb-32 overflow-hidden",
               style: {
-                height: "37rem"
+                minHeight: "37rem"
               }
             }, React.createElement("div", {
-                  className: "pl-32 bg-gray-90 pb-32 w-full text-white-80"
-                }, React.createElement("div", {
-                      className: "flex justify-between mt-6 pr-20 w-full"
-                    }, tabs.map(function (tabTitle, i) {
-                          var className = i === selectedIndex ? "text-fire-50 text-xl border-b-2 border-fire-50" : "text-xl text-gray-80";
-                          return React.createElement("button", {
-                                      key: String(i),
-                                      className: className,
-                                      onClick: (function (_evt) {
-                                          return Curry._1(setSelectedIndex, (function (param) {
-                                                        return i;
-                                                      }));
-                                        })
-                                    }, tabTitle);
-                        })), React.createElement("div", {
-                      className: "mt-20"
-                    }, items[selectedIndex])), React.createElement("div", {
-                  className: "bg-fire-40 w-full flex flex-col",
-                  style: {
-                    maxWidth: "18.5rem"
-                  }
-                }, React.createElement("div", {
-                      className: "flex-grow"
+                  className: "relative max-w-1280 z-2 pt-24 w-full space-y-32"
+                }, item1, item2, item3), React.createElement("svg", {
+                  className: "absolute z-1 right-0 top-0 text-fire-30",
+                  preserveAspectRatio: "none",
+                  viewBox: "0 0 100 100"
+                }, React.createElement("polygon", {
+                      className: "fill-current",
+                      points: "80,0 100,0 100,100"
                     })));
 }
 
@@ -468,8 +472,8 @@ function LandingPageLayout$CuratedResources(Props) {
   return React.createElement("section", {
               className: "bg-gray-100 w-full pb-40"
             }, React.createElement("h2", {
-                  className: "text-gray-10 my-20 text-32 leading-2 font-semibold max-w-md mx-auto text-center"
-                }, "Carefully curated resources to start or advance your ReScript projects"), React.createElement("div", undefined, React.createElement("div", {
+                  className: "text-gray-10 my-20 text-48 leading-2 font-semibold max-w-md mx-auto text-center"
+                }, "Carefully curated resources"), React.createElement("div", undefined, React.createElement("div", {
                       className: "uppercase text-14 text-center mb-20"
                     }, "guides and docs"), React.createElement("div", {
                       className: "flex justify-between max-w-1280 mx-auto"
@@ -539,17 +543,17 @@ function LandingPageLayout(Props) {
                         }), React.createElement("div", {
                           className: "absolute top-16 w-full"
                         }, React.createElement("div", {
-                              className: "relative flex xs:justify-center overflow-hidden pb-32"
+                              className: "relative overflow-hidden pb-32"
                             }, React.createElement("main", {
                                   className: "mt-10 min-w-320 lg:align-center w-full"
                                 }, React.createElement(Mdx.Provider.make, {
                                       components: components,
                                       children: React.createElement("div", {
-                                            className: "flex justify-center"
+                                            className: ""
                                           }, React.createElement("div", {
-                                                className: "w-full flex flex-col"
+                                                className: "w-full"
                                               }, React.createElement("div", {
-                                                    className: "mt-12 mb-12 self-center"
+                                                    className: "mt-12 mb-12"
                                                   }, React.createElement(LandingPageLayout$Intro, {})), React.createElement(LandingPageLayout$PlaygroundHero, {}), React.createElement(LandingPageLayout$QuickInstall, {}), React.createElement(LandingPageLayout$MainUSP, {}), React.createElement(LandingPageLayout$TrustedBy, {}), React.createElement(LandingPageLayout$CuratedResources, {}), React.createElement(LandingPageLayout$Sponsors, {}), children))
                                     }))), React.createElement(Footer.make, {})))));
 }

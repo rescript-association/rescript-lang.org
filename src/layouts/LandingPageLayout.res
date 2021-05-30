@@ -15,14 +15,12 @@ module CallToActionButton = {
 module Intro = {
   @react.component
   let make = () => {
-    <div className="flex flex-col items-center">
-      <h1
-        className="hl-title text-center"
-        style={ReactDOM.Style.make(~maxWidth="53rem", ())}>
+    <div className="px-4 md:px-0 flex flex-col items-center">
+      <h1 className="hl-title text-center" style={ReactDOM.Style.make(~maxWidth="53rem", ())}>
         {React.string("A simple and fast language for JavaScript developers")}
       </h1>
       <h2
-        className="text-gray-60 body-lg my-4"
+        className="body-lg text-center text-gray-60 my-4"
         style={ReactDOM.Style.make(~maxWidth="42rem", ())}>
         {React.string(
           "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node.",
@@ -85,25 +83,25 @@ exports.Button = Button;`,
       style={ReactDOM.Style.make(~backgroundColor="#FAFBFC", ())}>
       <div className="relative flex justify-center w-full">
         <div
-          className="relative rounded-b-xl pt-6 pb-8 px-16 w-full"
+          className="relative sm:rounded-b-xl pt-6 pb-8 sm:px-8 md:px-16 w-full"
           style={ReactDOM.Style.make(~maxWidth="1400px", ())}>
           // Playground widget
           <div
-            className="relative z-2 flex pt-3 pb-16 bg-gray-90 mx-auto rounded-lg"
+            className="relative z-2 flex flex-col md:flex-row pb-16 bg-gray-90 mx-auto sm:rounded-lg"
             style={ReactDOM.Style.make(~maxWidth="1400px", ())}>
-            <div className="w-1/2">
-              <div className="text-14 text-gray-40 text-center bg-gray-100">
+            <div className="md:w-1/2">
+              <div className="text-14 text-gray-40 text-center py-3 bg-gray-100">
                 {React.string("Written in ReScript")}
               </div>
-              <pre className="text-14 pl-8 pt-12 whitespace-pre-wrap">
+              <pre className="text-14 px-8 pt-6 pb-12 whitespace-pre-wrap">
                 {HighlightJs.renderHLJS(~darkmode=true, ~code=example.res, ~lang="res", ())}
               </pre>
             </div>
-            <div className="w-1/2">
-              <div className="text-14 text-gray-40 text-center">
-                {React.string("Compiled to JavaScript")}
+            <div className="md:w-1/2">
+              <div className="text-14 text-gray-40 py-3 text-center bg-gray-100 sm:rounded-lg">
+                {React.string("Compiles to JavaScript")}
               </div>
-              <pre className="text-14 pr-8 pt-12 whitespace-pre-wrap">
+              <pre className="text-14 px-8 pt-6 pb-12 whitespace-pre-wrap">
                 {HighlightJs.renderHLJS(~darkmode=true, ~code=example.js, ~lang="js", ())}
               </pre>
             </div>
@@ -115,7 +113,7 @@ exports.Button = Button;`,
               </a>
             </Next.Link>
           </div>
-          <div>
+          <div className="hidden md:block">
             <img
               className="absolute z-0 left-0 top-0 -ml-10 -mt-6"
               src="/static/lp/grid.svg"
@@ -125,7 +123,7 @@ exports.Button = Button;`,
               className="absolute z-0 left-0 top-0 -ml-10 mt-10" src="/static/lp/illu_left.png"
             />
           </div>
-          <div>
+          <div className="hidden md:block">
             <img
               className="absolute z-0 right-0 bottom-0 -mb-10 mt-24 -mr-10"
               src="/static/lp/grid.svg"
@@ -242,7 +240,7 @@ module QuickInstall = {
       //TODO: Replace backgroundColor with tailwind equivalent
       <div
         className="flex justify-between p-4 w-full bg-gray-20 border border-gray-10 rounded"
-        style={ReactDOM.Style.make(~backgroundColor="#FAFBFC", ())}>
+        style={ReactDOM.Style.make(~maxWidth="22rem", ~backgroundColor="#FAFBFC", ())}>
         <span className="font-mono text-14 text-gray-80"> {React.string(text)} </span>
         <CopyButton code=text />
       </div>
@@ -251,7 +249,7 @@ module QuickInstall = {
     let make = () => {
       <div className="w-full">
         <h2 className="font-bold text-24"> {React.string("Quick Install")} </h2>
-        <div className="text-12 text-gray-40 my-2 leading-2">
+        <div className="text-12 pr-10 text-gray-40 my-2 leading-2">
           {React.string(
             "You can quickly add ReScript to your existing JavaScript codebase via npm / yarn:",
           )}
@@ -265,24 +263,32 @@ module QuickInstall = {
 
   @react.component
   let make = () => {
-    <section className="my-32 max-w-1280 flex justify-center">
-      <div className="relative">
-        <div
-          className="relative z-1 space-y-12 text-gray-80 font-semibold text-32 leading-2"
-          style={ReactDOM.Style.make(~maxWidth="29rem", ())}>
-          <p>
-            <span className="bg-fire-5 rounded-md border-2 border-fire-10 h-10 w-full">{React.string(`Everything you wan`)}</span>
-            {React.string(`t from JavaScript, minus the parts
+    <section className="my-32 sm:px-4 sm:flex sm:justify-center">
+      <div className="max-w-1280 flex flex-col w-full">
+        <div className="relative px-12">
+          <div style={ReactDOM.Style.make(~maxWidth="29rem", ())}>
+            <p
+              className="relative z-1 space-y-12 text-gray-80 font-semibold text-24 md:text-32 leading-2">
+              <span className="bg-fire-5 rounded-md border-2 border-fire-10 h-10 w-full">
+                {React.string(`Everything you wan`)}
+              </span>
+              {React.string(`t from JavaScript, minus the parts
           you don't need.`)}
-          </p>
-          <p>
-            {React.string(`ReScript is easy to pick up for JavaScript developers,
-          and helps them shipping their products with confidence.`)}
-          </p>
+            </p>
+          </div>
         </div>
-      </div>
-      <div className="w-full" style={ReactDOM.Style.make(~maxWidth="22rem", ())}>
-        <Instructions />
+        <div className="w-full pl-12 mt-12 flex flex-col lg:flex-row justify-between">
+          <p
+            style={ReactDOM.Style.make(~maxWidth="29rem", ())}
+            className="relative z-1 text-gray-80 font-semibold text-24 md:text-32 leading-2">
+            {React.string(`ReScript is easy to pick up for JavaScript developers,
+          and helps shipping products with confidence.`)}
+          </p>
+          <div
+            className="mt-16 lg:mt-0 self-end" style={ReactDOM.Style.make(~maxWidth="25rem", ())}>
+            <Instructions />
+          </div>
+        </div>
       </div>
     </section>
   }
@@ -292,21 +298,36 @@ module QuickInstall = {
 module MainUSP = {
   module Item = {
     @react.component
-    let make = (~title: string, ~paragraph: React.element) => {
-      <div className="w-full" style={ReactDOM.Style.make(~maxWidth="30rem", ())}>
-        <h3
-          className="text-gray-10 mt-16 mb-6 text-32 font-semibold"
-          style={ReactDOM.Style.make(~maxWidth="25rem", ())}>
-          {React.string(title)}
-        </h3>
-        <div className="text-gray-60 text-16"> paragraph </div>
+    let make = (~caption: string, ~title: React.element, ~paragraph: React.element) => {
+      <div className="flex flex-col lg:flex-row lg:justify-between w-full">
+        <div style={ReactDOM.Style.make(~maxWidth="30rem", ())}>
+          <div className="hl-overline text-gray-20 mb-4"> {React.string(caption)} </div>
+          <h3
+            className="text-gray-10 mb-4 text-32 font-semibold"
+            style={ReactDOM.Style.make(~maxWidth="25rem", ())}>
+            title
+          </h3>
+          <div className="flex"> <div className="text-gray-30 text-16 pr-8"> paragraph </div> </div>
+        </div>
+        <div
+          className="w-full bg-gray-90 rounded-lg flex mt-16 lg:mt-0 items-center justify-center"
+          style={ReactDOM.Style.make(
+            ~maxWidth="31rem",
+            ~borderRadius="8px",
+            ~minHeight="10rem",
+            ~boxShadow="-11px 3px 30px -5px rgba(244,100,106,0.15)",
+            (),
+          )}>
+          {React.string("video of a fast build")}
+        </div>
       </div>
     }
   }
 
   let item1 =
     <Item
-      title={"The fastest build system on the web"}
+      caption="Fast and simple"
+      title={React.string("The fastest build system on the web")}
       paragraph={React.string(`ReScript cares about a consistent and fast feedback loop for any
             codebase size. No need for memory hungry build processes, and no
             corrupted caches. Switch branches as you please without worrying
@@ -315,7 +336,11 @@ module MainUSP = {
 
   let item2 =
     <Item
-      title={"Robust Type System"}
+      caption="A robust type system"
+      title={<span
+        className="text-transparent bg-clip-text bg-gradient-to-r from-berry-dark-50 to-fire-50">
+        {React.string("Type Better")}
+      </span>}
       paragraph={React.string(` Every ReScript app is fully typed and provides
       correct type information to any given value. We prioritize simpler types
       / discourage complex types for the sake of clarity and easy debugability.
@@ -325,42 +350,30 @@ module MainUSP = {
 
   let item3 =
     <Item
-      title={"Seamless JS Integration"}
+      caption="Seamless JS Integration"
+      title={<>
+        <span className="text-orange-dark"> {React.string("The familiar JS ecosystem")} </span>
+        {React.string(" at your fingertips")}
+      </>}
       paragraph={React.string(`Use any library from javascript, export rescript
       libraries to javascript, generate typescript and flow types, etc. It's
       like you've never left the good parts of javascript at all.`)}
     />
 
-  let items = [item1, item2, item3]
-  let tabs = ["Fast and Simple", "Robust Type System", "Seamless JS Integration"]
-
   @react.component
   let make = () => {
-    let (selectedIndex, setSelectedIndex) = React.useState(_ => 0)
-
-    <section className="flex items-stretch w-full" style={ReactDOM.Style.make(~height="37rem", ())}>
-      <div className="pl-32 bg-gray-90 pb-32 w-full text-white-80">
-        <div className="flex justify-between mt-6 pr-20 w-full">
-          {tabs
-          ->Js.Array2.mapi((tabTitle, i) => {
-            let className = if i === selectedIndex {
-              "text-fire-50 text-xl border-b-2 border-fire-50"
-            } else {
-              "text-xl text-gray-80"
-            }
-            <button key={Belt.Int.toString(i)} className onClick={_evt => setSelectedIndex(_ => i)}>
-              {React.string(tabTitle)}
-            </button>
-          })
-          ->React.array}
-        </div>
-        <div className="mt-20"> {items->Js.Array2.unsafe_get(selectedIndex)} </div>
+    <section
+      className="relative flex justify-center w-full bg-gray-90 px-4 sm:px-32 pb-32 overflow-hidden"
+      style={ReactDOM.Style.make(~minHeight="37rem", ())}>
+      <div className="relative max-w-1280 z-2 pt-24 w-full space-y-32">
+        item1 item2 item3
       </div>
-      <div
-        className="bg-fire-40 w-full flex flex-col"
-        style={ReactDOM.Style.make(~maxWidth="18.5rem", ())}>
-        <div className="flex-grow" />
-      </div>
+      <svg
+        className="absolute z-1 right-0 top-0 text-fire-30"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none">
+        <polygon className="fill-current" points="80,0 100,0 100,100" />
+      </svg>
     </section>
   }
 }
@@ -498,8 +511,8 @@ module CuratedResources = {
   let make = () => {
     <section className="bg-gray-100 w-full pb-40">
       <h2
-        className="text-gray-10 my-20 text-32 leading-2 font-semibold max-w-md mx-auto text-center">
-        {React.string("Carefully curated resources to start or advance your ReScript projects")}
+        className="text-gray-10 my-20 text-48 leading-2 font-semibold max-w-md mx-auto text-center">
+        {React.string("Carefully curated resources")}
       </h2>
       <div>
         <div className="uppercase text-14 text-center mb-20">
@@ -548,9 +561,7 @@ module Sponsors = {
   @react.component
   let make = () =>
     <div className="mt-24">
-      <h2 className="hl-1 text-center">
-        {React.string("Sponsors")}
-      </h2>
+      <h2 className="hl-1 text-center"> {React.string("Sponsors")} </h2>
     </div>
 }
 
@@ -564,13 +575,12 @@ let make = (~components=Markdown.default, ~children) => {
       <div className="text-gray-80 text-18">
         <Navigation overlayState />
         <div className="absolute top-16 w-full">
-          <div className="relative flex xs:justify-center overflow-hidden pb-32">
+          <div className="relative overflow-hidden pb-32">
             <main className="mt-10 min-w-320 lg:align-center w-full">
               <Mdx.Provider components>
-                <div className="flex justify-center">
-                  <div className="w-full flex flex-col">
-                    <div className="mt-12 mb-12 self-center"> 
-                    <Intro /> </div>
+                <div className="">
+                  <div className="w-full">
+                    <div className="mt-12 mb-12"> <Intro /> </div>
                     <PlaygroundHero />
                     <QuickInstall />
                     <MainUSP />
