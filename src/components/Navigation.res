@@ -123,7 +123,7 @@ module DocsSection = {
           <div>
             <div
               className={`flex items-center text-16 font-medium ${active
-                  ? "text-fire-40"
+                  ? "text-fire"
                   : "text-gray-80"}`}>
               <span> {React.string(title)} </span>
               {if isAbsolute {
@@ -133,7 +133,7 @@ module DocsSection = {
               }}
             </div>
             <div
-              className={`block text-14 text-gray-60 ${active ? "text-fire-40" : "text-gray-60"}`}>
+              className={`block text-14 text-gray-60 ${active ? "text-fire-50" : "text-gray-60"}`}>
               {React.string(description)}
             </div>
           </div>
@@ -229,7 +229,7 @@ module DocsSection = {
                 }
 
                 <li key=text>
-                  <span className="text-fire-40 mr-2"> {React.string(`-`)} </span>
+                  <span className="text-fire mr-2"> {React.string(`-`)} </span>
                   <Link href> <a className=linkClass> {React.string(text)} </a> </Link>
                 </li>
               })

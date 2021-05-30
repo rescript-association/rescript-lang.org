@@ -1,7 +1,20 @@
  
 .hl-title {
-    @apply text-68 font-bold tracking-tighter leading-tight text-gray-80
+    @apply text-48 tracking-tighter leading-tight font-semibold text-gray-80
 }
+
+@screen md {
+  .hl-title {
+    @apply text-68
+  }
+}
+
+@screen lg {
+  .hl-title {
+    @apply font-bold
+  }
+}
+
 .hl-1 {
     @apply text-48 font-semibold tracking-tighter leading-tight text-gray-80
 }

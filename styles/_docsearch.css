@@ -30,7 +30,7 @@
 
 /* Highlighted text */
 .algolia-autocomplete .algolia-docsearch-suggestion--highlight {
-  @apply text-fire bg-fire-10 shadow-none !important;
+  @apply text-fire bg-fire-5 shadow-none !important;
 }
 
 @media (max-width: 576px) {

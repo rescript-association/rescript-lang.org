@@ -108,13 +108,13 @@ function Navigation$DocsSection$LinkCard(Props) {
         className: "hover:bg-gray-5 hover:shadow hover:-mx-8 hover:px-8 hover:cursor-pointer active:bg-gray-20 py-4 flex space-x-4 items-start rounded-xl"
       }, icon, React.createElement("div", undefined, React.createElement("div", {
                 className: "flex items-center text-16 font-medium " + (
-                  active ? "text-fire-40" : "text-gray-80"
+                  active ? "text-fire" : "text-gray-80"
                 )
               }, React.createElement("span", undefined, title), isAbsolute ? React.createElement(Icon.ExternalLink.make, {
                       className: "inline-block ml-2 w-4 h-4"
                     }) : null), React.createElement("div", {
                 className: "block text-14 text-gray-60 " + (
-                  active ? "text-fire-40" : "text-gray-60"
+                  active ? "text-fire-50" : "text-gray-60"
                 )
               }, description)));
   if (isAbsolute) {
@@ -238,7 +238,7 @@ function Navigation$DocsSection(Props) {
                         return React.createElement("li", {
                                     key: text
                                   }, React.createElement("span", {
-                                        className: "text-fire-40 mr-2"
+                                        className: "text-fire mr-2"
                                       }, "-"), React.createElement(Next.Link.make, {
                                         href: href,
                                         children: React.createElement("a", {
