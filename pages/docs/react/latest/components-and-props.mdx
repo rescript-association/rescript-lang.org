@@ -152,7 +152,7 @@ Check out the corresponding [Arrays and Keys](./arrays-and-keys) and [Forwarding
 
 Prop names like `type` (as in `<input type="text" />`) aren't syntactically valid; `type` is a reserved keyword in ReScript. Use `<input type_="text" />` instead. 
 
-For `aria-*` use camelCasing, e.g., `ariaLabel`. For DOM components, we'll translate it to `aria-label` under the hood.
+For `aria-*` use camelCasing, e.g., `ariaLabel`. For DOM components, we'll translate it to `aria-label` under the hood. For Non DOM components passing `aria-*` needs to be done like `data-*`.
 
 For `data-*` this is a bit trickier; words with `-` in them aren't valid in ReScript. When you do want to write them, e.g., `<div data-name="click me" />`, check out the [React.cloneElement](./elements-and-jsx#cloning-elements) or [React.createDOMElementVariadic](./elements-and-jsx#creating-dom-elements) section.
 
