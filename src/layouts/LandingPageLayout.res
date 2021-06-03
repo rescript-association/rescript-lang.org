@@ -336,7 +336,7 @@ module MainUSP = {
               <div className="text-gray-30 text-16 pr-8"> paragraph </div>
             </div>
           </div>
-          <div className="relative w-full" style={ReactDOM.Style.make(~maxWidth="36rem",())}>
+          <div className="relative w-full" style={ReactDOM.Style.make(~maxWidth="36rem", ())}>
             <div
               className="relative w-full bg-gray-90 rounded-lg flex mt-16 lg:mt-0 items-center justify-center"
               style={ReactDOM.Style.make(
@@ -350,7 +350,7 @@ module MainUSP = {
             </div>
             <img
               className="absolute z-1 bottom-0 right-0 -mb-12 -mr-12"
-              style={ReactDOM.Style.make(~maxWidth="20rem",())}
+              style={ReactDOM.Style.make(~maxWidth="20rem", ())}
               src="/static/lp/grid2.svg"
             />
           </div>
@@ -416,6 +416,62 @@ module MainUSP = {
       className="w-full bg-gray-90 overflow-hidden"
       style={ReactDOM.Style.make(~minHeight="37rem", ())}>
       item1 item2 item3
+    </section>
+  }
+}
+
+module OtherSellingPoints = {
+  @react.component
+  let make = () => {
+    <section className="flex justify-center w-full bg-gray-80 ">
+      <div className="max-w-1280 flex flex-col lg:flex-row lg:space-x-8 px-4 lg:px-16 pt-24 pb-20">
+        <div className="pb-24 md:pb-32" style={ReactDOM.Style.make(~maxWidth="39.125rem", ())}>
+          // TODO: Gallery swiper component for community images
+          <div
+            className="bg-gray-10 w-full rounded-lg"
+            style={ReactDOM.Style.make(~minHeight="16.8rem", ())}
+          />
+          <h3 className="hl-4 text-gray-20 my-6">
+            {React.string(`A community of programmers who value getting things done`)}
+          </h3>
+          <p className="body-md text-gray-40">
+            {React.string(`No language can be popular without a solid community. A
+        great type system isn't useful if library authors abuse it. Performance
+        doesn't show if all the libraries are slow. Join the ReScript community
+        of programmers who all care about simplicity, speed and practicality.
+        `)}
+          </p>
+        </div>
+        <div className="flex lg:flex-col space-x-4 lg:space-x-0 lg:space-y-4">
+          <div style={ReactDOM.Style.make(~maxWidth="24.875rem", ())}>
+            <div
+              className="bg-turtle-dark w-full rounded-lg"
+              style={ReactDOM.Style.make(~minHeight="5.625rem", ())}
+            />
+            <h3 className="hl-4 text-gray-20 my-6">
+              {React.string(`Tooling that finally lets a good language shine`)}
+            </h3>
+            <p className="body-md text-gray-40">
+              {React.string(`Some languages have great features, some other
+            languages have great tooling. ReScript has both.`)}
+            </p>
+          </div>
+          <div style={ReactDOM.Style.make(~maxWidth="24.875rem", ())}>
+            <div
+              className="bg-gray-10 w-full rounded-lg"
+              style={ReactDOM.Style.make(~minHeight="5.625rem", ())}
+            />
+            <h3 className="hl-4 text-gray-20 my-6">
+              {React.string(`The only language you can easily un-adopt`)}
+            </h3>
+            <p className="body-md text-gray-40">
+              {React.string(`ReScript allows you to remove the source files and
+            keep its clean javascript output. Tell your coworkers that your
+            project will keep functioning with or without ReScript!`)}
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
   }
 }
@@ -626,6 +682,7 @@ let make = (~components=Markdown.default, ~children) => {
                     <PlaygroundHero />
                     <QuickInstall />
                     <MainUSP />
+                    <OtherSellingPoints />
                     <TrustedBy />
                     <CuratedResources />
                     <Sponsors />

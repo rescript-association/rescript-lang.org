@@ -346,6 +346,56 @@ function LandingPageLayout$MainUSP(Props) {
             }, item1, item2, item3);
 }
 
+function LandingPageLayout$OtherSellingPoints(Props) {
+  return React.createElement("section", {
+              className: "flex justify-center w-full bg-gray-80 "
+            }, React.createElement("div", {
+                  className: "max-w-1280 flex flex-col lg:flex-row lg:space-x-8 px-4 lg:px-16 pt-24 pb-20"
+                }, React.createElement("div", {
+                      className: "pb-24 md:pb-32",
+                      style: {
+                        maxWidth: "39.125rem"
+                      }
+                    }, React.createElement("div", {
+                          className: "bg-gray-10 w-full rounded-lg",
+                          style: {
+                            minHeight: "16.8rem"
+                          }
+                        }), React.createElement("h3", {
+                          className: "hl-4 text-gray-20 my-6"
+                        }, "A community of programmers who value getting things done"), React.createElement("p", {
+                          className: "body-md text-gray-40"
+                        }, "No language can be popular without a solid community. A\n        great type system isn't useful if library authors abuse it. Performance\n        doesn't show if all the libraries are slow. Join the ReScript community\n        of programmers who all care about simplicity, speed and practicality.\n        ")), React.createElement("div", {
+                      className: "flex lg:flex-col space-x-4 lg:space-x-0 lg:space-y-4"
+                    }, React.createElement("div", {
+                          style: {
+                            maxWidth: "24.875rem"
+                          }
+                        }, React.createElement("div", {
+                              className: "bg-turtle-dark w-full rounded-lg",
+                              style: {
+                                minHeight: "5.625rem"
+                              }
+                            }), React.createElement("h3", {
+                              className: "hl-4 text-gray-20 my-6"
+                            }, "Tooling that finally lets a good language shine"), React.createElement("p", {
+                              className: "body-md text-gray-40"
+                            }, "Some languages have great features, some other\n            languages have great tooling. ReScript has both.")), React.createElement("div", {
+                          style: {
+                            maxWidth: "24.875rem"
+                          }
+                        }, React.createElement("div", {
+                              className: "bg-gray-10 w-full rounded-lg",
+                              style: {
+                                minHeight: "5.625rem"
+                              }
+                            }), React.createElement("h3", {
+                              className: "hl-4 text-gray-20 my-6"
+                            }, "The only language you can easily un-adopt"), React.createElement("p", {
+                              className: "body-md text-gray-40"
+                            }, "ReScript allows you to remove the source files and\n            keep its clean javascript output. Tell your coworkers that your\n            project will keep functioning with or without ReScript!")))));
+}
+
 var companies = [
   {
     TAG: 0,
@@ -578,7 +628,7 @@ function LandingPageLayout(Props) {
                                                 className: "w-full"
                                               }, React.createElement("div", {
                                                     className: "mt-12 mb-12"
-                                                  }, React.createElement(LandingPageLayout$Intro, {})), React.createElement(LandingPageLayout$PlaygroundHero, {}), React.createElement(LandingPageLayout$QuickInstall, {}), React.createElement(LandingPageLayout$MainUSP, {}), React.createElement(LandingPageLayout$TrustedBy, {}), React.createElement(LandingPageLayout$CuratedResources, {}), React.createElement(LandingPageLayout$Sponsors, {}), children))
+                                                  }, React.createElement(LandingPageLayout$Intro, {})), React.createElement(LandingPageLayout$PlaygroundHero, {}), React.createElement(LandingPageLayout$QuickInstall, {}), React.createElement(LandingPageLayout$MainUSP, {}), React.createElement(LandingPageLayout$OtherSellingPoints, {}), React.createElement(LandingPageLayout$TrustedBy, {}), React.createElement(LandingPageLayout$CuratedResources, {}), React.createElement(LandingPageLayout$Sponsors, {}), children))
                                     }))), React.createElement(Footer.make, {})))));
 }
 
