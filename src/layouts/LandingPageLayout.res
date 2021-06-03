@@ -108,7 +108,7 @@ exports.Button = Button;`,
           </div>
           <div>
             <Next.Link href={`/try?code=${LzString.compressToEncodedURIComponent(example.res)}}`}>
-              <a className="text-12 underline text-gray-60" target="_blank">
+              <a className="text-12 px-4 md:px-0 underline text-gray-60" target="_blank">
                 {React.string("Edit this example in Playground")}
               </a>
             </Next.Link>

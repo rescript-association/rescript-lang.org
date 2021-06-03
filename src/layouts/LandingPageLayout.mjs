@@ -84,7 +84,7 @@ function LandingPageLayout$PlaygroundHero(Props) {
                                 }, HighlightJs.renderHLJS(undefined, true, example.js, "js", undefined)))), React.createElement("div", undefined, React.createElement(Next.Link.make, {
                               href: "/try?code=" + LzString.compressToEncodedURIComponent(example.res) + "}",
                               children: React.createElement("a", {
-                                    className: "text-12 underline text-gray-60",
+                                    className: "text-12 px-4 md:px-0 underline text-gray-60",
                                     target: "_blank"
                                   }, "Edit this example in Playground")
                             })), React.createElement("div", {
