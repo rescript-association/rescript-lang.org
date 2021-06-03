@@ -627,7 +627,7 @@ function LandingPageLayout(Props) {
                                           }, React.createElement("div", {
                                                 className: "w-full"
                                               }, React.createElement("div", {
-                                                    className: "mt-12 mb-12"
+                                                    className: "mt-16 md:mt-32 lg:mt-40 mb-12"
                                                   }, React.createElement(LandingPageLayout$Intro, {})), React.createElement(LandingPageLayout$PlaygroundHero, {}), React.createElement(LandingPageLayout$QuickInstall, {}), React.createElement(LandingPageLayout$MainUSP, {}), React.createElement(LandingPageLayout$OtherSellingPoints, {}), React.createElement(LandingPageLayout$TrustedBy, {}), React.createElement(LandingPageLayout$CuratedResources, {}), React.createElement(LandingPageLayout$Sponsors, {}), children))
                                     }))), React.createElement(Footer.make, {})))));
 }

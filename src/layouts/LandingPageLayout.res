@@ -678,7 +678,7 @@ let make = (~components=Markdown.default, ~children) => {
               <Mdx.Provider components>
                 <div className="">
                   <div className="w-full">
-                    <div className="mt-12 mb-12"> <Intro /> </div>
+                    <div className="mt-16 md:mt-32 lg:mt-40 mb-12"> <Intro /> </div>
                     <PlaygroundHero />
                     <QuickInstall />
                     <MainUSP />
