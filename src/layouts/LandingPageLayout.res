@@ -297,29 +297,78 @@ module QuickInstall = {
 // Main unique selling points
 module MainUSP = {
   module Item = {
+    type polygonDirection = Up | Down
+
     @react.component
-    let make = (~caption: string, ~title: React.element, ~paragraph: React.element) => {
-      <div className="flex flex-col lg:flex-row lg:justify-between w-full">
-        <div style={ReactDOM.Style.make(~maxWidth="30rem", ())}>
-          <div className="hl-overline text-gray-20 mb-4"> {React.string(caption)} </div>
-          <h3
-            className="text-gray-10 mb-4 text-32 font-semibold"
-            style={ReactDOM.Style.make(~maxWidth="25rem", ())}>
-            title
-          </h3>
-          <div className="flex"> <div className="text-gray-30 text-16 pr-8"> paragraph </div> </div>
-        </div>
+    let make = (
+      ~caption: string,
+      ~title: React.element,
+      ~polygonDirection: polygonDirection=Down,
+      ~paragraph: React.element,
+    ) => {
+      let polyPointsLg = switch polygonDirection {
+      | Down => "80,0 85,100 100,100 100,0"
+      | Up => "85,0 80,100 100,100 100,0"
+      }
+
+      let polyPointsMobile = switch polygonDirection {
+      | Down => "0,100 100,100 100,70 0,80"
+      | Up => "0,100 100,100 100,78 0,72"
+      }
+
+      let polyColor = switch polygonDirection {
+      | Up => "text-fire"
+      | Down => "text-fire-30"
+      }
+
+      <div className="relative flex justify-center w-full bg-gray-90 px-4 sm:px-32 overflow-hidden">
+        // Content
         <div
-          className="w-full bg-gray-90 rounded-lg flex mt-16 lg:mt-0 items-center justify-center"
-          style={ReactDOM.Style.make(
-            ~maxWidth="31rem",
-            ~borderRadius="8px",
-            ~minHeight="10rem",
-            ~boxShadow="-11px 3px 30px -5px rgba(244,100,106,0.15)",
-            (),
-          )}>
-          {React.string("video of a fast build")}
+          className="relative max-w-1280 z-3 flex pb-16 pt-20 md:pb-20 md:pt-32 lg:pb-40 md:space-x-4 flex-col lg:flex-row lg:justify-between w-full">
+          <div style={ReactDOM.Style.make(~maxWidth="30rem", ())}>
+            <div className="hl-overline text-gray-20 mb-4"> {React.string(caption)} </div>
+            <h3
+              className="text-gray-10 mb-4 text-32 font-semibold"
+              style={ReactDOM.Style.make(~maxWidth="25rem", ())}>
+              title
+            </h3>
+            <div className="flex">
+              <div className="text-gray-30 text-16 pr-8"> paragraph </div>
+            </div>
+          </div>
+          <div className="relative w-full" style={ReactDOM.Style.make(~maxWidth="36rem",())}>
+            <div
+              className="relative w-full bg-gray-90 rounded-lg flex mt-16 lg:mt-0 items-center justify-center"
+              style={ReactDOM.Style.make(
+                ~maxWidth="35rem",
+                ~borderRadius="8px",
+                ~minHeight="20rem",
+                ~boxShadow="-11px 3px 30px -5px rgba(244,100,106,0.15)",
+                (),
+              )}>
+              {React.string("video of a fast build")}
+            </div>
+            <img
+              className="absolute z-1 bottom-0 right-0 -mb-12 -mr-12"
+              style={ReactDOM.Style.make(~maxWidth="20rem",())}
+              src="/static/lp/grid2.svg"
+            />
+          </div>
         </div>
+        // Mobile SVG
+        <svg
+          className={`md:hidden absolute z-1 w-full h-full bottom-0 left-0 ${polyColor}`}
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none">
+          <polygon className="fill-current" points=polyPointsMobile />
+        </svg>
+        // Tabled / Desktop SVG
+        <svg
+          className={`hidden md:block absolute z-1 w-full h-full right-0 top-0 ${polyColor}`}
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none">
+          <polygon className="fill-current" points=polyPointsLg />
+        </svg>
       </div>
     }
   }
@@ -341,6 +390,7 @@ module MainUSP = {
         className="text-transparent bg-clip-text bg-gradient-to-r from-berry-dark-50 to-fire-50">
         {React.string("Type Better")}
       </span>}
+      polygonDirection=Up
       paragraph={React.string(` Every ReScript app is fully typed and provides
       correct type information to any given value. We prioritize simpler types
       / discourage complex types for the sake of clarity and easy debugability.
@@ -363,17 +413,9 @@ module MainUSP = {
   @react.component
   let make = () => {
     <section
-      className="relative flex justify-center w-full bg-gray-90 px-4 sm:px-32 pb-32 overflow-hidden"
+      className="w-full bg-gray-90 overflow-hidden"
       style={ReactDOM.Style.make(~minHeight="37rem", ())}>
-      <div className="relative max-w-1280 z-2 pt-24 w-full space-y-32">
-        item1 item2 item3
-      </div>
-      <svg
-        className="absolute z-1 right-0 top-0 text-fire-30"
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none">
-        <polygon className="fill-current" points="80,0 100,0 100,100" />
-      </svg>
+      item1 item2 item3
     </section>
   }
 }

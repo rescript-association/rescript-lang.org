@@ -253,33 +253,65 @@ function LandingPageLayout$QuickInstall(Props) {
 function LandingPageLayout$MainUSP$Item(Props) {
   var caption = Props.caption;
   var title = Props.title;
+  var polygonDirectionOpt = Props.polygonDirection;
   var paragraph = Props.paragraph;
+  var polygonDirection = polygonDirectionOpt !== undefined ? polygonDirectionOpt : /* Down */1;
+  var polyPointsLg = polygonDirection ? "80,0 85,100 100,100 100,0" : "85,0 80,100 100,100 100,0";
+  var polyPointsMobile = polygonDirection ? "0,100 100,100 100,70 0,80" : "0,100 100,100 100,78 0,72";
+  var polyColor = polygonDirection ? "text-fire-30" : "text-fire";
   return React.createElement("div", {
-              className: "flex flex-col lg:flex-row lg:justify-between w-full"
+              className: "relative flex justify-center w-full bg-gray-90 px-4 sm:px-32 overflow-hidden"
             }, React.createElement("div", {
-                  style: {
-                    maxWidth: "30rem"
-                  }
+                  className: "relative max-w-1280 z-3 flex pb-16 pt-20 md:pb-20 md:pt-32 lg:pb-40 md:space-x-4 flex-col lg:flex-row lg:justify-between w-full"
                 }, React.createElement("div", {
-                      className: "hl-overline text-gray-20 mb-4"
-                    }, caption), React.createElement("h3", {
-                      className: "text-gray-10 mb-4 text-32 font-semibold",
                       style: {
-                        maxWidth: "25rem"
+                        maxWidth: "30rem"
                       }
-                    }, title), React.createElement("div", {
-                      className: "flex"
                     }, React.createElement("div", {
-                          className: "text-gray-30 text-16 pr-8"
-                        }, paragraph))), React.createElement("div", {
-                  className: "w-full bg-gray-90 rounded-lg flex mt-16 lg:mt-0 items-center justify-center",
-                  style: {
-                    maxWidth: "31rem",
-                    minHeight: "10rem",
-                    borderRadius: "8px",
-                    boxShadow: "-11px 3px 30px -5px rgba(244,100,106,0.15)"
-                  }
-                }, "video of a fast build"));
+                          className: "hl-overline text-gray-20 mb-4"
+                        }, caption), React.createElement("h3", {
+                          className: "text-gray-10 mb-4 text-32 font-semibold",
+                          style: {
+                            maxWidth: "25rem"
+                          }
+                        }, title), React.createElement("div", {
+                          className: "flex"
+                        }, React.createElement("div", {
+                              className: "text-gray-30 text-16 pr-8"
+                            }, paragraph))), React.createElement("div", {
+                      className: "relative w-full",
+                      style: {
+                        maxWidth: "36rem"
+                      }
+                    }, React.createElement("div", {
+                          className: "relative w-full bg-gray-90 rounded-lg flex mt-16 lg:mt-0 items-center justify-center",
+                          style: {
+                            maxWidth: "35rem",
+                            minHeight: "20rem",
+                            borderRadius: "8px",
+                            boxShadow: "-11px 3px 30px -5px rgba(244,100,106,0.15)"
+                          }
+                        }, "video of a fast build"), React.createElement("img", {
+                          className: "absolute z-1 bottom-0 right-0 -mb-12 -mr-12",
+                          style: {
+                            maxWidth: "20rem"
+                          },
+                          src: "/static/lp/grid2.svg"
+                        }))), React.createElement("svg", {
+                  className: "md:hidden absolute z-1 w-full h-full bottom-0 left-0 " + polyColor,
+                  preserveAspectRatio: "none",
+                  viewBox: "0 0 100 100"
+                }, React.createElement("polygon", {
+                      className: "fill-current",
+                      points: polyPointsMobile
+                    })), React.createElement("svg", {
+                  className: "hidden md:block absolute z-1 w-full h-full right-0 top-0 " + polyColor,
+                  preserveAspectRatio: "none",
+                  viewBox: "0 0 100 100"
+                }, React.createElement("polygon", {
+                      className: "fill-current",
+                      points: polyPointsLg
+                    })));
 }
 
 var item1 = React.createElement(LandingPageLayout$MainUSP$Item, {
@@ -293,6 +325,7 @@ var item2 = React.createElement(LandingPageLayout$MainUSP$Item, {
       title: React.createElement("span", {
             className: "text-transparent bg-clip-text bg-gradient-to-r from-berry-dark-50 to-fire-50"
           }, "Type Better"),
+      polygonDirection: /* Up */0,
       paragraph: " Every ReScript app is fully typed and provides\n      correct type information to any given value. We prioritize simpler types\n      / discourage complex types for the sake of clarity and easy debugability.\n      No `any`, no magic types, no surprise `undefined`.\n      "
     });
 
@@ -306,20 +339,11 @@ var item3 = React.createElement(LandingPageLayout$MainUSP$Item, {
 
 function LandingPageLayout$MainUSP(Props) {
   return React.createElement("section", {
-              className: "relative flex justify-center w-full bg-gray-90 px-4 sm:px-32 pb-32 overflow-hidden",
+              className: "w-full bg-gray-90 overflow-hidden",
               style: {
                 minHeight: "37rem"
               }
-            }, React.createElement("div", {
-                  className: "relative max-w-1280 z-2 pt-24 w-full space-y-32"
-                }, item1, item2, item3), React.createElement("svg", {
-                  className: "absolute z-1 right-0 top-0 text-fire-30",
-                  preserveAspectRatio: "none",
-                  viewBox: "0 0 100 100"
-                }, React.createElement("polygon", {
-                      className: "fill-current",
-                      points: "80,0 100,0 100,100"
-                    })));
+            }, item1, item2, item3);
 }
 
 var companies = [
