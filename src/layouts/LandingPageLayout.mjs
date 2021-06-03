@@ -544,10 +544,14 @@ var templates = [
 
 function LandingPageLayout$CuratedResources(Props) {
   return React.createElement("section", {
-              className: "bg-gray-100 w-full pb-40"
-            }, React.createElement("h2", {
-                  className: "text-gray-10 my-20 text-48 leading-2 font-semibold max-w-md mx-auto text-center"
-                }, "Carefully curated resources"), React.createElement("div", undefined, React.createElement("div", {
+              className: "bg-gray-100 w-full pb-40 pt-20"
+            }, React.createElement("div", {
+                  className: "mb-20 flex flex-col justify-center items-center"
+                }, React.createElement("div", {
+                      className: "body-sm md:body-lg text-gray-40 w-40 mb-4 xs:w-auto"
+                    }, "To start or advance your ReScript projects"), React.createElement("h2", {
+                      className: "hl-2 md:hl-1 text-gray-20 max-w-md mx-auto text-center"
+                    }, "Carefully curated resources")), React.createElement("div", undefined, React.createElement("div", {
                       className: "uppercase text-14 text-center mb-20"
                     }, "guides and docs"), React.createElement("div", {
                       className: "flex justify-between max-w-1280 mx-auto"

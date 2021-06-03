@@ -607,11 +607,15 @@ module CuratedResources = {
 
   @react.component
   let make = () => {
-    <section className="bg-gray-100 w-full pb-40">
-      <h2
-        className="text-gray-10 my-20 text-48 leading-2 font-semibold max-w-md mx-auto text-center">
-        {React.string("Carefully curated resources")}
-      </h2>
+    <section className="bg-gray-100 w-full pb-40 pt-20">
+      <div className="mb-20 flex flex-col justify-center items-center">
+        <div className="body-sm md:body-lg text-gray-40 w-40 mb-4 xs:w-auto">
+          {React.string("To start or advance your ReScript projects")}
+        </div>
+        <h2 className="hl-2 md:hl-1 text-gray-20 max-w-md mx-auto text-center">
+          {React.string("Carefully curated resources")}
+        </h2>
+      </div>
       <div>
         <div className="uppercase text-14 text-center mb-20">
           {React.string("guides and docs")}
