@@ -405,9 +405,9 @@ module MainUSP = {
         <span className="text-orange-dark"> {React.string("The familiar JS ecosystem")} </span>
         {React.string(" at your fingertips")}
       </>}
-      paragraph={React.string(`Use any library from javascript, export rescript
-      libraries to javascript, generate typescript and flow types, etc. It's
-      like you've never left the good parts of javascript at all.`)}
+      paragraph={React.string(`Use any library from JavaScript, export ReScript
+      libraries to JavaScript, automatically generate TypeScript types, etc. It's
+      like you've never left the good parts of JavaScript at all.`)}
     />
 
   @react.component
@@ -449,11 +449,12 @@ module OtherSellingPoints = {
               style={ReactDOM.Style.make(~minHeight="5.625rem", ())}
             />
             <h3 className="hl-4 text-gray-20 my-6">
-              {React.string(`Tooling that finally lets a good language shine`)}
+              {React.string(`Tooling that lets our language shine`)}
             </h3>
             <p className="body-md text-gray-40">
               {React.string(`Some languages have great features, some other
-            languages have great tooling. ReScript has both.`)}
+              languages have great tooling. ReScript brings everything you need
+              to get up and running quickly without tricky configuration.`)}
             </p>
           </div>
           <div style={ReactDOM.Style.make(~maxWidth="24.875rem", ())}>
@@ -466,7 +467,7 @@ module OtherSellingPoints = {
             </h3>
             <p className="body-md text-gray-40">
               {React.string(`ReScript allows you to remove the source files and
-            keep its clean javascript output. Tell your coworkers that your
+            keep its clean JavaScript output. Tell your coworkers that your
             project will keep functioning with or without ReScript!`)}
             </p>
           </div>

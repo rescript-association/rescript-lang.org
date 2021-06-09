@@ -334,7 +334,7 @@ var item3 = React.createElement(LandingPageLayout$MainUSP$Item, {
       title: React.createElement(React.Fragment, undefined, React.createElement("span", {
                 className: "text-orange-dark"
               }, "The familiar JS ecosystem"), " at your fingertips"),
-      paragraph: "Use any library from javascript, export rescript\n      libraries to javascript, generate typescript and flow types, etc. It's\n      like you've never left the good parts of javascript at all."
+      paragraph: "Use any library from JavaScript, export ReScript\n      libraries to JavaScript, automatically generate TypeScript types, etc. It's\n      like you've never left the good parts of JavaScript at all."
     });
 
 function LandingPageLayout$MainUSP(Props) {
@@ -378,9 +378,9 @@ function LandingPageLayout$OtherSellingPoints(Props) {
                               }
                             }), React.createElement("h3", {
                               className: "hl-4 text-gray-20 my-6"
-                            }, "Tooling that finally lets a good language shine"), React.createElement("p", {
+                            }, "Tooling that lets our language shine"), React.createElement("p", {
                               className: "body-md text-gray-40"
-                            }, "Some languages have great features, some other\n            languages have great tooling. ReScript has both.")), React.createElement("div", {
+                            }, "Some languages have great features, some other\n              languages have great tooling. ReScript brings everything you need\n              to get up and running quickly without tricky configuration.")), React.createElement("div", {
                           style: {
                             maxWidth: "24.875rem"
                           }
@@ -393,7 +393,7 @@ function LandingPageLayout$OtherSellingPoints(Props) {
                               className: "hl-4 text-gray-20 my-6"
                             }, "The only language you can easily un-adopt"), React.createElement("p", {
                               className: "body-md text-gray-40"
-                            }, "ReScript allows you to remove the source files and\n            keep its clean javascript output. Tell your coworkers that your\n            project will keep functioning with or without ReScript!")))));
+                            }, "ReScript allows you to remove the source files and\n            keep its clean JavaScript output. Tell your coworkers that your\n            project will keep functioning with or without ReScript!")))));
 }
 
 var companies = [
