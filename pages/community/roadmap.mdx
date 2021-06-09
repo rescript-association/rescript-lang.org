@@ -1,0 +1,95 @@
+---
+title: "Roadmap"
+description: "Development & Release Cycle Plans"
+canonical: "/community/roadmap"
+---
+
+import Image from "src/components/Image";
+
+# Roadmap & Release Cycle Plans
+
+*(Last update: June 9th, 2021)*
+
+This is a living document that defines our current roadmap and explains our future release cycle plans for the upcoming years.
+
+**TL;DR:**
+
+- Stable (LTS) & Unstable release channel
+- Always use stable releases for libraries!
+- You may want to use unstable if you want to test new features in your applications
+- Unstable will be useful to prepare your codebase / libraries for an upcoming stable release
+
+## Definition Stable / LTS / Unstable
+
+We will follow a similar approach to the NodeJS project and consider even version numbers to be stable LTS (Long Term Support) releases (v10, v12, v14,...), and uneven version numbers as unstable / experimental (v11, v13, v15,...) releases.
+
+The goal of the new release system is to have a slower and easier to manage upgrading experience for our users, with a proper grace-period to discuss and refine feature proposals.
+
+The unstable release channel will be useful for gathering feedback / testing out migrations without the fear of breaking our existing userbase whenever more intrusive changes have been made. We want to guarantee a certain grace-period where library maintainers and users can preview and adapt to the newest changes.
+
+### Stable / LTS release:
+
+- Even version number (v10, v12, v14,...)
+- A stable version is guaranteed to be supported for a 1 year lifespan, splitting up in an active development phase, and an LTS phase. The LTS phase starts as soon as the work for the next unstable release has been started and will mostly cover critical bugfixes.
+- A stable release will eventually require some initial migration. We will provide proper upgrade guides between each stable version.
+- During active development, there are no breaking changes within the compiler (no changes in runtime representation, behavior of the build system, configuration names etc.). 
+- No removal of language features
+- During the active development phase, there may be non-breaking minor releases (e.g. v10.1.0). For example:
+  - Opt-in configuration flag `stdlib-future` to disable OCaml related stdlib code (for writing future proof code)
+  - Stdlib additions / Library enhancements
+- Regular bugfix releases for the compiler, build system, stdlib, etc.
+- Docs will be synced up with the latest stable release
+- Whenever a new stable release is being published, the previous stable release reaches end-of-life (EOL), and therefore will only receive bugfix updates in a best effort service. After 1 year LTS, we expect the retired version to be pretty stable though, so in practise, users will be able to stay on that version indefinitely until they decide to upgrade to the newest stable
+
+### Unstable / experimental release:
+
+- Uneven number (v11, v13, v15,....)
+- Development phase of around 6 months. After that it will potentially turn into the next stable release (e.g. v11 -> v12)
+- Introduces a planned set of breaking changes based on the previous stable release
+- They are supposed to be a stepping stone to reach more ambitious goals in a next stable release
+- The list of breaking changes will be discussed before the work is being started
+- No guaranteed stability / support during unstable development. The compiler toolchain will be reliable as always, but the proposed feature set might change
+- Docs might or might not be available during experimental changes
+
+### How to install relevant releases:
+
+- Latest stable: `npm install rescript` (aka `@latest`)
+- Latest unstable (in case we are in an “unstable” dev phase): `npm install rescript@next`
+
+### Estimated Release plan for v10 - v15
+
+<Image withShadow={false} src="/static/img/roadmap_2021.jpg" caption="Release cycle for the upcoming versions"/>
+
+### Feature Discussions and Proposals
+
+All our discussions and proposals for the roadmap happen in the [ReScript Forum](https://forum.rescript-lang.org).
+
+## Stable Release v10
+
+**Planned Changes for v10:**
+
+- Add M1 support
+- Add support for unicode strings (e.g `"Hallöle"` will work like in JavaScript)
+- (breaking) Remove OCaml’s Format module (should have no impact on the majority of ReScript users)
+- Infix operator support (only for a dedicated set of math operators `+`, `-`, `-.`, `/`, `%`, etc.)
+- Docstring syntax support (`/** */` instead of `@ocaml.doc("My docstring")`)
+- Convert stdlib files (`Js`, `Belt`, etc) to ReScript syntax
+- Some other less prominent enhancements (will be mentioned in the Changelog later on)
+- We will eventually announce additional breaking changes in late 2021 if necessary
+
+**Estimated release date for v10:** Mid of January 2022
+
+## Planned Changes for v11 (which will end up as v12 stable)
+
+**Important:** These changes are currently listed on the roadmap, but may be subject of change before development starts.
+
+- Removal of ocaml stdlib
+- PPX only allowed on top level packages?
+- Removal of recursive modules?
+
+**Estimated start of development:** May 2022<br/>
+**Estimated switch to v12:** Mid of January 2023
+
+## Planned Changes for v13 (ultimately v14)
+
+Feature set of v13 / v14 will be discussed and finalized in 2023
