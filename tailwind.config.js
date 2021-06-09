@@ -30,7 +30,7 @@ module.exports = {
       "./pages/**/*.mdx",
     ],
     options: {
-      whitelist: ["html", "body"]
+      safelist: ["html", "body"]
     }
   },
   theme: {
@@ -55,14 +55,14 @@ module.exports = {
           "90-tr": "rgba(1, 4, 39, 0.95)",
         },
         white: {
-          default: "#FFFFFF",
+          DEFAULT: "#FFFFFF",
           "80-tr": "rgba(255,255,255,0.8)",
           "60-tr": "rgba(255,255,255,0.6)",
           "40-tr": "rgba(255,255,255,0.4)",
         },
         //primary, secondary:
         fire: {
-          default: "#E6484F", //"50"
+          DEFAULT: "#E6484F", //"50"
           "100": "#211332",
           "90": "#790C10",
           "70": "#C3373d",
@@ -72,7 +72,7 @@ module.exports = {
           "5": "#fcf1f1",
         },
         sky: {
-          default: "#376FDD", //"50"
+          DEFAULT: "#376FDD", //"50"
           "90": "#0C2E6F",
           "70": "#2258C3",
           "30": "#638FE6",
@@ -81,21 +81,21 @@ module.exports = {
         },
         //code-colors start:
         berry: {
-          default: "#B151DD",
+          DEFAULT: "#B151DD",
           "dark-50": "#B984DB",
           "40": "#A766D0",
           "15": "rgba(171, 94, 163, 0.15)"
         },
         water: {
-          default: "#5E5EDE",
+          DEFAULT: "#5E5EDE",
           dark: "#637CC1",
         },
         turtle: {
-          default: "#02A875",
+          DEFAULT: "#02A875",
           dark: "#388B72",
         },
         orange: {
-          default: "#DD8C1B",
+          DEFAULT: "#DD8C1B",
           dark: "#D59B74",
           "15": "rgba(224, 172, 0, 0.15)", //old, change
           "10": "rgba(224, 172, 0, 0.10)" //old
@@ -143,7 +143,7 @@ module.exports = {
     borderRadius: {
       none: "0",
       sm: ".125rem", //2px
-      default: "0.25rem", //4px
+      DEFAULT: "0.25rem", //4px
       lg: "0.5rem", //8px
       xl: "1rem", //16px
       full: "9999px", //round
@@ -235,6 +235,7 @@ module.exports = {
   variants: {
     color: ["hover"],
     backgroundColor: ["hover", "active"],
+    fontWeight: ['hover', 'focus'],
     cursor: ["hover"],
     width: ["responsive"],
     border: ["hover", "responsive"],

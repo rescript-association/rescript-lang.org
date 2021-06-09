@@ -71,7 +71,7 @@ module Sidebar = {
         {Belt.Array.map(items, m => {
           let hidden = isHidden ? "hidden" : "block"
           let active = isItemActive(m)
-            ? j` bg-fire-10 text-fire leading-5 -ml-2 pl-2 font-medium block hover:bg-fire-10 `
+            ? ` bg-fire-5 text-fire leading-5 -ml-2 pl-2 font-medium block hover:bg-fire-5 `
             : ""
 
           let activeToc = switch getActiveToc {
@@ -144,7 +144,7 @@ module Sidebar = {
         ) ++ " md:block md:w-48 md:-ml-4 lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white"}>
         <aside
           id="sidebar-content"
-          className="relative top-0 px-4 w-full block md:top-16 md:pt-16 md:sticky border-r border-gray-5 overflow-y-auto scrolling-touch pb-24"
+          className="relative top-0 px-4 w-full block md:top-16 md:pt-16 md:sticky border-r border-gray-5 overflow-y-auto pb-24"
           style={ReactDOMStyle.make(~height="calc(100vh - 4.5rem", ())}>
           <div className="flex justify-between">
             <div className="w-3/4 md:w-full"> toplevelNav </div>

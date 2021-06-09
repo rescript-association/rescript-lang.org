@@ -234,7 +234,7 @@ function $$default(props) {
             className: "w-full mb-24 lg:px-8 xl:px-0"
           }, React.createElement(Blog$FeatureCard, tmp));
       var postsBox = rest.length !== 0 ? React.createElement("div", {
-              className: "px-4 md:px-8 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full"
+              className: "px-4 md:px-8 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 gap-y-12 md:gap-y-24 w-full"
             }, Belt_Array.mapWithIndex(rest, (function (i, post) {
                     var badge = post.frontmatter.badge;
                     var tmp = {

@@ -75,7 +75,7 @@ exports.Button = Button;`,
 
   @react.component
   let make = () => {
-    let (example, setExample) = React.useState(_ => examples->Js.Array2.unsafe_get(0))
+    let (example, _setExample) = React.useState(_ => examples->Js.Array2.unsafe_get(0))
 
     //TODO: Replace background color with real tailwind color
     <section

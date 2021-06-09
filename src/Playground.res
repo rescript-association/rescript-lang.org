@@ -947,7 +947,7 @@ module WarningFlagsWidget = {
         onClick
         onFocus
         tabIndex=0
-        className="focus:outline-none self-start focus:shadow-outline hover:cursor-pointer hover:bg-gray-40 p-2 rounded-full">
+        className="focus:outline-none self-start focus:ring hover:cursor-pointer hover:bg-gray-40 p-2 rounded-full">
         <Icon.Close />
       </button>
     }

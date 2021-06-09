@@ -245,7 +245,7 @@ module Toggle = {
       <div className="relative pt-6 w-full rounded-none text-gray-80">
         //text within code-box
         <div
-          className="absolute flex w-full overflow-auto scrolling-touch font-sans bg-transparent text-14 text-gray-40 "
+          className="absolute flex w-full overflow-auto font-sans bg-transparent text-14 text-gray-40 "
           style={ReactDOM.Style.make(~marginTop="-30px", ())}>
           <div className="flex ml-2 xs:ml-0"> {React.array(tabElements)} </div>
           <div className="flex-1 w-full bg-gray-20 border-b rounded-tr border-gray-20 items-center">

@@ -211,7 +211,7 @@ function CodeExample$Toggle(Props) {
     return React.createElement("div", {
                 className: "relative pt-6 w-full rounded-none text-gray-80"
               }, React.createElement("div", {
-                    className: "absolute flex w-full overflow-auto scrolling-touch font-sans bg-transparent text-14 text-gray-40 ",
+                    className: "absolute flex w-full overflow-auto font-sans bg-transparent text-14 text-gray-40 ",
                     style: {
                       marginTop: "-30px"
                     }

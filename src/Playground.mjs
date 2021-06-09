@@ -1239,7 +1239,7 @@ function Playground$WarningFlagsWidget(Props) {
       
     };
     deleteButton = React.createElement("button", {
-          className: "focus:outline-none self-start focus:shadow-outline hover:cursor-pointer hover:bg-gray-40 p-2 rounded-full",
+          className: "focus:outline-none self-start focus:ring hover:cursor-pointer hover:bg-gray-40 p-2 rounded-full",
           tabIndex: 0,
           onFocus: onFocus$1,
           onClick: onClick,
