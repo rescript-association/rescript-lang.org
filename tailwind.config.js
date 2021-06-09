@@ -21,18 +21,11 @@
  *
  */
 module.exports = {
-  purge: {
-    // Specify the paths to all of the template files in your project
-    content: [
-      "src/**/*.res",
-      "src/ffi/*.js",
-      "./pages/**/*.js",
-      "./pages/**/*.mdx",
-    ],
-    options: {
-      safelist: ["html", "body"]
-    }
-  },
+  mode: "jit",
+  purge: [
+    "./src/**/*.{js,res}",
+    "./pages/**/*.{js,mdx}",
+  ],
   theme: {
     extend: {
       colors: {
