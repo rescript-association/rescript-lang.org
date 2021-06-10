@@ -185,13 +185,13 @@ let make = () => {
       let slug = GithubSlugger.slug(item.id)
 
       if slug !== anchor {
-        router->Next.Router.replace("syntax-lookup#" ++ anchor)
+        router->Next.Router.push("syntax-lookup#" ++ anchor)
       } else {
         ()
       }
     | (ShowDetails(item), None) =>
-      router->Next.Router.replace("syntax-lookup#" ++ GithubSlugger.slug(item.id))
-    | (_, Some(_)) => router->Next.Router.replace("syntax-lookup")
+      router->Next.Router.push("syntax-lookup#" ++ GithubSlugger.slug(item.id))
+    | (_, Some(_)) => router->Next.Router.push("syntax-lookup")
     | _ => ()
     }
     None

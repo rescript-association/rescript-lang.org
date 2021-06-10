@@ -180,16 +180,16 @@ function SyntaxLookup(Props) {
             if (match !== undefined) {
               var slug = GithubSlugger.slug(item.id);
               if (slug !== match) {
-                Next.Router.replace(router, "syntax-lookup#" + match);
+                Next.Router.push(router, "syntax-lookup#" + match);
               }
               
             } else {
-              Next.Router.replace(router, "syntax-lookup#" + GithubSlugger.slug(item.id));
+              Next.Router.push(router, "syntax-lookup#" + GithubSlugger.slug(item.id));
             }
           }
           if (exit === 1) {
             if (match !== undefined) {
-              Next.Router.replace(router, "syntax-lookup");
+              Next.Router.push(router, "syntax-lookup");
             }
             
           }
