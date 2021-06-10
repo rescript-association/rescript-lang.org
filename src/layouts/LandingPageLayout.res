@@ -8,14 +8,14 @@ module Intro = {
   let make = () => {
     <div className="px-4 md:px-0 flex flex-col items-center">
       <h1 className="hl-title text-center max-w-[53rem]">
-        {React.string("A simple and fast language for JavaScript developers")}
+        {React.string("A simple and fast language for JavaScript")}
       </h1>
-      <h2 className="body-lg text-center text-gray-60 my-4 max-w-[42rem]">
+      <h2 className="body-lg text-center text-gray-60 my-4 max-w-[40rem]">
         {React.string(
           "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node.",
         )}
       </h2>
-      <padding className="my-20"> <Button> {React.string("Get started")} </Button> </padding>
+      <padding className="mt-4 mb-12"> <Button> {React.string("Get started")} </Button> </padding>
     </div>
   }
 }
@@ -93,13 +93,17 @@ exports.Button = Button;`,
               </pre>
             </div>
           </div>
+          /* ---Link to Playground--- */
           <div>
             <Next.Link href={`/try?code=${LzString.compressToEncodedURIComponent(example.res)}}`}>
-              <a className="text-12 px-4 md:px-0 underline text-gray-60" target="_blank">
+              <a
+                className="captions px-4 md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60"
+                target="_blank">
                 {React.string("Edit this example in Playground")}
               </a>
             </Next.Link>
           </div>
+          //
           <div className="hidden md:block">
             <img
               className="absolute z-0 left-0 top-0 -ml-10 -mt-6"
@@ -185,7 +189,9 @@ module QuickInstall = {
           // If we don't do that, the banner will essentially pop up without any animation
           let bannerEl = Document.createElement("div")
           bannerEl->Element.setClassName(
-            "foobar opacity-0 absolute top-0 -mt-1 -mr-1 px-2 rounded right-0 bg-turtle text-gray-80-tr transition-all duration-500 ease-in-out ",
+            "foobar opacity-0 absolute top-0 mt-4 -mr-1 px-2 rounded right-0 
+            bg-turtle text-gray-80-tr body-sm
+            transition-all duration-500 ease-in-out ",
           )
           let textNode = Document.createTextNode("Copied!")
 
@@ -215,26 +221,26 @@ module QuickInstall = {
       <button
         ref={ReactDOM.Ref.domRef(buttonRef)}
         disabled={state === Copied}
-        className="relative"
+        className="relative h-10 w-10 flex justify-center	items-center "
         onClick>
-        <Icon.Copy className="text-gray-40 w-4 h-4 mt-px hover:cursor-pointer hover:text-gray-80" />
+        <Icon.Copy className="w-6 h-6 mt-px text-gray-40 hover:cursor-pointer hover:text-gray-80" />
       </button>
     }
   }
 
   module Instructions = {
     let copyBox = text => {
-      <copyBox
-        className="flex justify-between p-4 w-full bg-gray-10 border border-gray-20 rounded max-w-[22rem]">
-        <span className="font-mono text-14 text-gray-80"> {React.string(text)} </span>
+      <div
+        className="flex justify-between items-center pl-6 pr-3 py-3 w-full bg-gray-10 border border-gray-20 rounded max-w-[25rem]">
+        <span className="font-mono text-14  text-gray-70"> {React.string(text)} </span>
         <CopyButton code=text />
-      </copyBox>
+      </div>
     }
     @react.component
     let make = () => {
-      <div className="w-full">
-        <h2 className="font-bold text-24"> {React.string("Quick Install")} </h2>
-        <div className="text-12 pr-10 text-gray-40 my-2 leading-2">
+      <div className="w-full max-w-[400px]">
+        <h2 className="hl-3 lg:mt-12"> {React.string("Quick Install")} </h2>
+        <div className="captions x text-gray-40 mb-2 mt-1">
           {React.string(
             "You can quickly add ReScript to your existing JavaScript codebase via npm / yarn:",
           )}
@@ -249,23 +255,21 @@ module QuickInstall = {
   @react.component
   let make = () => {
     <section className="my-32 sm:px-4 sm:flex sm:justify-center">
-      <div className="max-w-1280 flex flex-col w-full">
-        <div className="relative px-12">
-          <div style={ReactDOM.Style.make(~maxWidth="29rem", ())}>
+      <div className="max-w-1060 flex flex-col w-full px-5 md:px-8 lg:px-8 lg:box-content ">
+      //---Textblock on the left side---
+        <div className="relative max-w-[28rem]">
             <p
               className="relative z-1 space-y-12 text-gray-80 font-semibold text-24 md:text-32 leading-2">
-              <span className="bg-fire-5 rounded-md border-2 border-fire-10 h-10 w-full">
-                {React.string(`Everything you wan`)}
+              <span className="bg-fire-5 rounded-lg border border-fire-10 p-1 ">
+                {React.string(`Everything you want`)}
               </span>
-              {React.string(`t from JavaScript, minus the parts
-          you don't need.`)}
+              {React.string(` from JavaScript, minus the parts you don't need.`)}
             </p>
-          </div>
         </div>
-        <div className="w-full pl-12 mt-12 flex flex-col lg:flex-row justify-between">
+        //spacing between columns
+        <div className="w-full mt-12 md:flex flex-col lg:flex-row md:justify-between ">
           <p
-            style={ReactDOM.Style.make(~maxWidth="29rem", ())}
-            className="relative z-1 text-gray-80 font-semibold text-24 md:text-32 leading-2">
+            className="relative z-1 text-gray-80 font-semibold text-24 md:text-32 leading-2 max-w-[32rem]">
             {React.string(`ReScript is easy to pick up for JavaScript developers,
           and helps shipping products with confidence.`)}
           </p>

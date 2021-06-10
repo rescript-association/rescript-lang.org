@@ -8,7 +8,7 @@
 /*@import "./_typography.css";*/
 
 body {
-  @apply font-sans bg-white subpixel-antialiased;
+  @apply font-sans bg-white sm:subpixel-antialiased md:antialiased;
 }
 
 .hide-scrollbar::-webkit-scrollbar {

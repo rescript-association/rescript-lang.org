@@ -242,20 +242,30 @@ module ExternalLink = {
     </svg>
 }
 
+
 module Copy = {
   @react.component
   let make = (~className="") =>
     <svg
       className={"stroke-current " ++ className}
-      xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="14"
-      viewBox="0 0 14 14">
-      <g transform="rotate(180 98.375 84.763)" fill="none" strokeLinejoin="round" strokeWidth="1.5">
-        <path
-          d="M186.571 159.35v-1.636a1.715 1.715 0 011.715-1.714h6a1.715 1.715 0 011.714 1.714v6a1.715 1.715 0 01-1.714 1.715H192.9"
-        />
-        <rect width="9.429" height="9.429" rx="2" transform="translate(183.255 159.347)" />
-      </g>
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <rect
+        x="8.00012"
+        y="8.3175"
+        width="12"
+        height="12"
+        rx="2"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M16.0001 4.3175H7.00012C5.34327 4.3175 4.00012 5.66065 4.00012 7.3175V16.3175"
+        strokeWidth="2"
+        strokeLinecap="square"
+      />
     </svg>
 }
