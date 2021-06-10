@@ -6,6 +6,7 @@ import * as Meta from "../components/Meta.mjs";
 import * as Next from "../bindings/Next.mjs";
 import * as Curry from "rescript/lib/es6/curry.js";
 import * as React from "react";
+import * as Button from "../components/Button.mjs";
 import * as Footer from "../components/Footer.mjs";
 import * as Markdown from "../components/Markdown.mjs";
 import * as LzString from "lz-string";
@@ -15,29 +16,16 @@ import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as HighlightJs from "../common/HighlightJs.mjs";
 
-function LandingPageLayout$CallToActionButton(Props) {
-  var children = Props.children;
-  return React.createElement("button", {
-              className: "rounded-lg px-8 py-4 inline-block transition-colors duration-300 body-button text-white hover:bg-fire-70  bg-fire  focus:outline-none"
-            }, children);
-}
-
 function LandingPageLayout$Intro(Props) {
   return React.createElement("div", {
               className: "px-4 md:px-0 flex flex-col items-center"
             }, React.createElement("h1", {
-                  className: "hl-title text-center",
-                  style: {
-                    maxWidth: "53rem"
-                  }
+                  className: "hl-title text-center max-w-[53rem]"
                 }, "A simple and fast language for JavaScript developers"), React.createElement("h2", {
-                  className: "body-lg text-center text-gray-60 my-4",
-                  style: {
-                    maxWidth: "42rem"
-                  }
-                }, "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node."), React.createElement("div", {
-                  className: "my-4"
-                }, React.createElement(LandingPageLayout$CallToActionButton, {
+                  className: "body-lg text-center text-gray-60 my-4 max-w-[42rem]"
+                }, "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node."), React.createElement("padding", {
+                  className: "my-20"
+                }, React.createElement(Button.make, {
                       children: "Get started"
                     })));
 }
@@ -195,12 +183,8 @@ function LandingPageLayout$QuickInstall$CopyButton(Props) {
 }
 
 function copyBox(text) {
-  return React.createElement("div", {
-              className: "flex justify-between p-4 w-full bg-gray-20 border border-gray-10 rounded",
-              style: {
-                backgroundColor: "#FAFBFC",
-                maxWidth: "22rem"
-              }
+  return React.createElement("copyBox", {
+              className: "flex justify-between p-4 w-full bg-gray-10 border border-gray-20 rounded max-w-[22rem]"
             }, React.createElement("span", {
                   className: "font-mono text-14 text-gray-80"
                 }, text), React.createElement(LandingPageLayout$QuickInstall$CopyButton, {
@@ -602,7 +586,13 @@ function LandingPageLayout$Sponsors(Props) {
               className: "mt-24"
             }, React.createElement("h2", {
                   className: "hl-1 text-center"
-                }, "Sponsors"));
+                }, "Sponsors"), React.createElement(Button.make, {
+                  children: "test"
+                }), React.createElement(Button.make, {
+                  kind: /* PrimaryBlue */1,
+                  size: /* Small */0,
+                  children: "test2"
+                }));
 }
 
 function LandingPageLayout(Props) {

@@ -3,32 +3,19 @@
 // Copy Brainstorming Gist:
 // https://gist.github.com/chenglou/3624a93d63dbd32c4a3d087f9c9e06bc
 
-module CallToActionButton = {
-  @react.component
-  let make = (~children) =>
-    <button
-      className="rounded-lg px-8 py-4 inline-block transition-colors duration-300 body-button text-white hover:bg-fire-70  bg-fire  focus:outline-none">
-      children
-    </button>
-}
-
 module Intro = {
   @react.component
   let make = () => {
     <div className="px-4 md:px-0 flex flex-col items-center">
-      <h1 className="hl-title text-center" style={ReactDOM.Style.make(~maxWidth="53rem", ())}>
+      <h1 className="hl-title text-center max-w-[53rem]">
         {React.string("A simple and fast language for JavaScript developers")}
       </h1>
-      <h2
-        className="body-lg text-center text-gray-60 my-4"
-        style={ReactDOM.Style.make(~maxWidth="42rem", ())}>
+      <h2 className="body-lg text-center text-gray-60 my-4 max-w-[42rem]">
         {React.string(
           "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node.",
         )}
       </h2>
-      <div className="my-4">
-        <CallToActionButton> {React.string("Get started")} </CallToActionButton>
-      </div>
+      <padding className="my-20"> <Button> {React.string("Get started")} </Button> </padding>
     </div>
   }
 }
@@ -237,13 +224,11 @@ module QuickInstall = {
 
   module Instructions = {
     let copyBox = text => {
-      //TODO: Replace backgroundColor with tailwind equivalent
-      <div
-        className="flex justify-between p-4 w-full bg-gray-20 border border-gray-10 rounded"
-        style={ReactDOM.Style.make(~maxWidth="22rem", ~backgroundColor="#FAFBFC", ())}>
+      <copyBox
+        className="flex justify-between p-4 w-full bg-gray-10 border border-gray-20 rounded max-w-[22rem]">
         <span className="font-mono text-14 text-gray-80"> {React.string(text)} </span>
         <CopyButton code=text />
-      </div>
+      </copyBox>
     }
     @react.component
     let make = () => {
@@ -665,6 +650,8 @@ module Sponsors = {
   let make = () =>
     <div className="mt-24">
       <h2 className="hl-1 text-center"> {React.string("Sponsors")} </h2>
+      <Button> {React.string("test")} </Button>
+      <Button kind=PrimaryBlue size=Small> {React.string("test2")} </Button>
     </div>
 }
 
