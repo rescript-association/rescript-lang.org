@@ -75,7 +75,8 @@ exports.Button = Button;`,
             className="relative z-2 flex flex-col md:flex-row bg-gray-90 mx-auto sm:rounded-lg max-w-[1280px]">
             //Left Side (ReScript)
             <div className="md:w-1/2">
-              <div className="body-sm text-gray-40 text-center py-3 sm:rounded-t-lg md:rounded-tl-lg bg-gray-100">
+              <div
+                className="body-sm text-gray-40 text-center py-3 sm:rounded-t-lg md:rounded-tl-lg bg-gray-100">
                 {React.string("Written in ReScript")}
               </div>
               <pre className="text-14 px-8 pt-6 pb-12 whitespace-pre-wrap">
@@ -84,10 +85,12 @@ exports.Button = Button;`,
             </div>
             //Right Side (JavaScript)
             <div className="md:w-1/2 ">
-              <div className="body-sm text-gray-40 py-3 text-center md:border-l border-gray-80 bg-gray-100 sm:rounded-tr-lg">
+              <div
+                className="body-sm text-gray-40 py-3 text-center md:border-l border-gray-80 bg-gray-100 sm:rounded-tr-lg">
                 {React.string("Compiles to JavaScript")}
               </div>
-              <pre className="text-14 px-8 pt-6 pb-14 md:border-l border-gray-80 whitespace-pre-wrap">
+              <pre
+                className="text-14 px-8 pt-6 pb-14 md:border-l border-gray-80 whitespace-pre-wrap">
                 {HighlightJs.renderHLJS(~darkmode=true, ~code=example.js, ~lang="js", ())}
               </pre>
             </div>
@@ -307,29 +310,27 @@ module MainUSP = {
       | Down => "text-fire-30"
       }
 
-      <div className="relative flex justify-center w-full bg-gray-90 px-4 sm:px-32 overflow-hidden">
+      <div
+        className="relative flex justify-center w-full bg-gray-90 px-5 sm:px-8 lg:px-14 overflow-hidden">
         // Content
         <div
-          className="relative max-w-1280 z-3 flex pb-16 pt-20 md:pb-20 md:pt-32 lg:pb-40 md:space-x-4 flex-col lg:flex-row lg:justify-between w-full">
-          <div style={ReactDOM.Style.make(~maxWidth="30rem", ())}>
+          className="relative max-w-1060 z-3 flex flex-wrap justify-center lg:justify-between pb-16 pt-20 md:pb-20 md:pt-32 lg:pb-40 md:space-x-4 w-full">
+          <div className="max-w-[24rem] flex flex-col justify-center mb-6 lg:mb-2">
             <div className="hl-overline text-gray-20 mb-4"> {React.string(caption)} </div>
-            <h3
-              className="text-gray-10 mb-4 text-32 font-semibold"
-              style={ReactDOM.Style.make(~maxWidth="25rem", ())}>
-              title
-            </h3>
+            <h3 className="text-gray-10 mb-4 hl-2 font-semibold"> title </h3>
             <div className="flex">
-              <div className="text-gray-30 text-16 pr-8"> paragraph </div>
+              <div className="text-gray-30 body-md pr-8"> paragraph </div>
             </div>
           </div>
-          <div className="relative w-full" style={ReactDOM.Style.make(~maxWidth="36rem", ())}>
+          //image (right)
+          <div className="relative w-full max-w-[32rem]">
             <div
-              className="relative w-full bg-gray-90 rounded-lg flex mt-16 lg:mt-0 items-center justify-center"
+              className="relative w-full bg-gray-90 rounded-lg flex md:mt-0 items-center justify-center"
               style={ReactDOM.Style.make(
                 ~maxWidth="35rem",
                 ~borderRadius="8px",
                 ~minHeight="20rem",
-                ~boxShadow="-11px 3px 30px -5px rgba(244,100,106,0.15)",
+                ~boxShadow="0px 4px 55px 0px rgba(230,72,79,0.10)",
                 (),
               )}>
               {React.string("video of a fast build")}
@@ -409,15 +410,20 @@ module MainUSP = {
 module OtherSellingPoints = {
   @react.component
   let make = () => {
-    <section className="flex justify-center w-full bg-gray-80 ">
-      <div className="max-w-1280 flex flex-col lg:flex-row lg:space-x-8 px-4 lg:px-16 pt-24 pb-20">
-        <div className="pb-24 md:pb-32" style={ReactDOM.Style.make(~maxWidth="39.125rem", ())}>
+    <section className="flex justify-center w-full bg-gray-90 border-t border-gray-80 ">
+      //section 
+      <div
+        className="max-w-1060 grid grid-cols-10 grid-rows-2 md:grid-rows-1 gap-8
+      lg:space-x-8 px-4 sm:px-8 lg:px-16 pt-24 pb-20"> //defining the grid //ignore: flex flex-col lg:flex-row
+         
+          //Large Item
+        <div className="pb-24 md:pb-32 col-span-6">
           // TODO: Gallery swiper component for community images
           <div
             className="bg-gray-10 w-full rounded-lg"
             style={ReactDOM.Style.make(~minHeight="16.8rem", ())}
           />
-          <h3 className="hl-4 text-gray-20 my-6">
+          <h3 className="hl-3 text-gray-20 mt-6 mb-2">
             {React.string(`A community of programmers who value getting things done`)}
           </h3>
           <p className="body-md text-gray-40">
@@ -428,13 +434,15 @@ module OtherSellingPoints = {
         `)}
           </p>
         </div>
-        <div className="flex lg:flex-col space-x-4 lg:space-x-0 lg:space-y-4">
-          <div style={ReactDOM.Style.make(~maxWidth="24.875rem", ())}>
+        // 2 small items
+        // Item 2
+        <div className="col-span-4 flex lg:flex-col lg:space-y-4">
+          <div>
             <div
               className="bg-turtle-dark w-full rounded-lg"
               style={ReactDOM.Style.make(~minHeight="5.625rem", ())}
             />
-            <h3 className="hl-4 text-gray-20 my-6">
+            <h3 className="hl-3 text-gray-20 mt-6 mb-2">
               {React.string(`Tooling that lets our language shine`)}
             </h3>
             <p className="body-md text-gray-40">
@@ -443,12 +451,13 @@ module OtherSellingPoints = {
               to get up and running quickly without tricky configuration.`)}
             </p>
           </div>
-          <div style={ReactDOM.Style.make(~maxWidth="24.875rem", ())}>
+          // Item 3
+          <div>
             <div
               className="bg-gray-10 w-full rounded-lg"
               style={ReactDOM.Style.make(~minHeight="5.625rem", ())}
             />
-            <h3 className="hl-4 text-gray-20 my-6">
+            <h3 className="hl-3 text-gray-20 mt-6 mb-2">
               {React.string(`The only language you can easily un-adopt`)}
             </h3>
             <p className="body-md text-gray-40">

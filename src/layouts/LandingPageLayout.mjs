@@ -230,36 +230,28 @@ function LandingPageLayout$MainUSP$Item(Props) {
   var polyPointsMobile = polygonDirection ? "0,100 100,100 100,70 0,80" : "0,100 100,100 100,78 0,72";
   var polyColor = polygonDirection ? "text-fire-30" : "text-fire";
   return React.createElement("div", {
-              className: "relative flex justify-center w-full bg-gray-90 px-4 sm:px-32 overflow-hidden"
+              className: "relative flex justify-center w-full bg-gray-90 px-5 sm:px-8 lg:px-14 overflow-hidden"
             }, React.createElement("div", {
-                  className: "relative max-w-1280 z-3 flex pb-16 pt-20 md:pb-20 md:pt-32 lg:pb-40 md:space-x-4 flex-col lg:flex-row lg:justify-between w-full"
+                  className: "relative max-w-1060 z-3 flex flex-wrap justify-center lg:justify-between pb-16 pt-20 md:pb-20 md:pt-32 lg:pb-40 md:space-x-4 w-full"
                 }, React.createElement("div", {
-                      style: {
-                        maxWidth: "30rem"
-                      }
+                      className: "max-w-[24rem] flex flex-col justify-center mb-6 lg:mb-2"
                     }, React.createElement("div", {
                           className: "hl-overline text-gray-20 mb-4"
                         }, caption), React.createElement("h3", {
-                          className: "text-gray-10 mb-4 text-32 font-semibold",
-                          style: {
-                            maxWidth: "25rem"
-                          }
+                          className: "text-gray-10 mb-4 hl-2 font-semibold"
                         }, title), React.createElement("div", {
                           className: "flex"
                         }, React.createElement("div", {
-                              className: "text-gray-30 text-16 pr-8"
+                              className: "text-gray-30 body-md pr-8"
                             }, paragraph))), React.createElement("div", {
-                      className: "relative w-full",
-                      style: {
-                        maxWidth: "36rem"
-                      }
+                      className: "relative w-full max-w-[32rem]"
                     }, React.createElement("div", {
-                          className: "relative w-full bg-gray-90 rounded-lg flex mt-16 lg:mt-0 items-center justify-center",
+                          className: "relative w-full bg-gray-90 rounded-lg flex md:mt-0 items-center justify-center",
                           style: {
                             maxWidth: "35rem",
                             minHeight: "20rem",
                             borderRadius: "8px",
-                            boxShadow: "-11px 3px 30px -5px rgba(244,100,106,0.15)"
+                            boxShadow: "0px 4px 55px 0px rgba(230,72,79,0.10)"
                           }
                         }, "video of a fast build"), React.createElement("img", {
                           className: "absolute z-1 bottom-0 right-0 -mb-12 -mr-12",
@@ -318,49 +310,38 @@ function LandingPageLayout$MainUSP(Props) {
 
 function LandingPageLayout$OtherSellingPoints(Props) {
   return React.createElement("section", {
-              className: "flex justify-center w-full bg-gray-80 "
+              className: "flex justify-center w-full bg-gray-90 border-t border-gray-80 "
             }, React.createElement("div", {
-                  className: "max-w-1280 flex flex-col lg:flex-row lg:space-x-8 px-4 lg:px-16 pt-24 pb-20"
+                  className: "max-w-1060 grid grid-cols-10 grid-rows-2 md:grid-rows-1 gap-8\n      lg:space-x-8 px-4 sm:px-8 lg:px-16 pt-24 pb-20"
                 }, React.createElement("div", {
-                      className: "pb-24 md:pb-32",
-                      style: {
-                        maxWidth: "39.125rem"
-                      }
+                      className: "pb-24 md:pb-32 col-span-6"
                     }, React.createElement("div", {
                           className: "bg-gray-10 w-full rounded-lg",
                           style: {
                             minHeight: "16.8rem"
                           }
                         }), React.createElement("h3", {
-                          className: "hl-4 text-gray-20 my-6"
+                          className: "hl-3 text-gray-20 mt-6 mb-2"
                         }, "A community of programmers who value getting things done"), React.createElement("p", {
                           className: "body-md text-gray-40"
                         }, "No language can be popular without a solid community. A\n        great type system isn't useful if library authors abuse it. Performance\n        doesn't show if all the libraries are slow. Join the ReScript community\n        of programmers who all care about simplicity, speed and practicality.\n        ")), React.createElement("div", {
-                      className: "flex lg:flex-col space-x-4 lg:space-x-0 lg:space-y-4"
-                    }, React.createElement("div", {
-                          style: {
-                            maxWidth: "24.875rem"
-                          }
-                        }, React.createElement("div", {
+                      className: "col-span-4 flex lg:flex-col lg:space-y-4"
+                    }, React.createElement("div", undefined, React.createElement("div", {
                               className: "bg-turtle-dark w-full rounded-lg",
                               style: {
                                 minHeight: "5.625rem"
                               }
                             }), React.createElement("h3", {
-                              className: "hl-4 text-gray-20 my-6"
+                              className: "hl-3 text-gray-20 mt-6 mb-2"
                             }, "Tooling that lets our language shine"), React.createElement("p", {
                               className: "body-md text-gray-40"
-                            }, "Some languages have great features, some other\n              languages have great tooling. ReScript brings everything you need\n              to get up and running quickly without tricky configuration.")), React.createElement("div", {
-                          style: {
-                            maxWidth: "24.875rem"
-                          }
-                        }, React.createElement("div", {
+                            }, "Some languages have great features, some other\n              languages have great tooling. ReScript brings everything you need\n              to get up and running quickly without tricky configuration.")), React.createElement("div", undefined, React.createElement("div", {
                               className: "bg-gray-10 w-full rounded-lg",
                               style: {
                                 minHeight: "5.625rem"
                               }
                             }), React.createElement("h3", {
-                              className: "hl-4 text-gray-20 my-6"
+                              className: "hl-3 text-gray-20 mt-6 mb-2"
                             }, "The only language you can easily un-adopt"), React.createElement("p", {
                               className: "body-md text-gray-40"
                             }, "ReScript allows you to remove the source files and\n            keep its clean JavaScript output. Tell your coworkers that your\n            project will keep functioning with or without ReScript!")))));
