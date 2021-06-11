@@ -75,7 +75,7 @@ exports.Button = Button;`,
             className="relative z-2 flex flex-col md:flex-row bg-gray-90 mx-auto sm:rounded-lg max-w-[1440px]">
             //Left Side (ReScript)
             <div className="md:w-1/2">
-              <div className="text-14 text-gray-40 text-center py-3 sm:rounded-tl-lg bg-gray-100">
+              <div className="body-sm text-gray-40 text-center py-3 sm:rounded-tl-lg bg-gray-100">
                 {React.string("Written in ReScript")}
               </div>
               <pre className="text-14 px-8 pt-6 pb-12 whitespace-pre-wrap">
@@ -84,7 +84,7 @@ exports.Button = Button;`,
             </div>
             //Right Side (JavaScript)
             <div className="md:w-1/2 ">
-              <div className="text-14 text-gray-40 py-3 text-center md:border-l border-gray-80 bg-gray-100 sm:rounded-tr-lg">
+              <div className="body-sm text-gray-40 py-3 text-center md:border-l border-gray-80 bg-gray-100 sm:rounded-tr-lg">
                 {React.string("Compiles to JavaScript")}
               </div>
               <pre className="text-14 px-8 pt-6 pb-14 md:border-l border-gray-80 whitespace-pre-wrap">
