@@ -16,7 +16,7 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 }
 
 .hljs-operator, .hljs-literal {
-  @apply text-water;
+  @apply text-[#8AAEC8];
 }
 
 .hljs-comment {
@@ -56,7 +56,7 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 .hljs-tag,
 .hljs-name,
 .hljs-attribute {
-  color: #376fdd;
+  @apply text-water-dark;
   font-weight: normal;
 }
 
@@ -100,14 +100,19 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
   font-weight: bold;
 }
 
+.hljs-function {
+  color: #8AAEC8;
+}
+
 /* tweaks to syntax highlighting, assuming atom-one-light theme */
 
 .hljs-character {
   @apply text-turtle-dark;
 }
+/* change to text-fire-dark-30 */
 .hljs-module-identifier {
-  @apply text-berry;
-}
+  @apply text-[#E06C75]
+} 
 .hljs-constructor {
 @apply text-orange
 }
@@ -125,7 +130,7 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 .hljs.dark .hljs-number,
 .hljs.dark .hljs-string,
 .hljs.dark .hljs-doctag {
-  @apply text-turtle-dark;
+  @apply text-orange-dark;
 }
 
 .hljs.dark .hljs-keyword {

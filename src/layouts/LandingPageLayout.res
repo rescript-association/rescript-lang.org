@@ -7,7 +7,7 @@ module Intro = {
   @react.component
   let make = () => {
     <section className="flex justify-center">
-      <div className="max-w-1060 flex flex-col items-center px-5 md:px-8 lg:box-content">
+      <div className="max-w-1060 flex flex-col items-center px-5 sm:px-8 lg:box-content">
         <h1 className="hl-title text-center max-w-[53rem]">
           {React.string("A simple and fast language for JavaScript")}
         </h1>
@@ -69,13 +69,13 @@ exports.Button = Button;`,
     //Playground Section & Background
     <section className="relative mt-20 bg-gray-10">
       <div className="relative flex justify-center w-full">
-        <div className="relative w-full pt-6 pb-8 sm:px-8 md:px-16 max-w-[1440px]">
+        <div className="relative w-full pt-6 pb-8 sm:px-8 md:px-16 max-w-[1400px]">
           // Playground widget
           <div
-            className="relative z-2 flex flex-col md:flex-row bg-gray-90 mx-auto sm:rounded-lg max-w-[1440px]">
+            className="relative z-2 flex flex-col md:flex-row bg-gray-90 mx-auto sm:rounded-lg max-w-[1280px]">
             //Left Side (ReScript)
             <div className="md:w-1/2">
-              <div className="body-sm text-gray-40 text-center py-3 sm:rounded-tl-lg bg-gray-100">
+              <div className="body-sm text-gray-40 text-center py-3 sm:rounded-t-lg md:rounded-tl-lg bg-gray-100">
                 {React.string("Written in ReScript")}
               </div>
               <pre className="text-14 px-8 pt-6 pb-12 whitespace-pre-wrap">
@@ -96,7 +96,7 @@ exports.Button = Button;`,
           <div>
             <Next.Link href={`/try?code=${LzString.compressToEncodedURIComponent(example.res)}}`}>
               <a
-                className="captions px-4 md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60"
+                className="captions md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60"
                 target="_blank">
                 {React.string("Edit this example in Playground")}
               </a>

@@ -20,7 +20,7 @@ function LandingPageLayout$Intro(Props) {
   return React.createElement("section", {
               className: "flex justify-center"
             }, React.createElement("div", {
-                  className: "max-w-1060 flex flex-col items-center px-5 md:px-8 lg:box-content"
+                  className: "max-w-1060 flex flex-col items-center px-5 sm:px-8 lg:box-content"
                 }, React.createElement("h1", {
                       className: "hl-title text-center max-w-[53rem]"
                     }, "A simple and fast language for JavaScript"), React.createElement("h2", {
@@ -47,13 +47,13 @@ function LandingPageLayout$PlaygroundHero(Props) {
             }, React.createElement("div", {
                   className: "relative flex justify-center w-full"
                 }, React.createElement("div", {
-                      className: "relative w-full pt-6 pb-8 sm:px-8 md:px-16 max-w-[1440px]"
+                      className: "relative w-full pt-6 pb-8 sm:px-8 md:px-16 max-w-[1400px]"
                     }, React.createElement("div", {
-                          className: "relative z-2 flex flex-col md:flex-row bg-gray-90 mx-auto sm:rounded-lg max-w-[1440px]"
+                          className: "relative z-2 flex flex-col md:flex-row bg-gray-90 mx-auto sm:rounded-lg max-w-[1280px]"
                         }, React.createElement("div", {
                               className: "md:w-1/2"
                             }, React.createElement("div", {
-                                  className: "body-sm text-gray-40 text-center py-3 sm:rounded-tl-lg bg-gray-100"
+                                  className: "body-sm text-gray-40 text-center py-3 sm:rounded-t-lg md:rounded-tl-lg bg-gray-100"
                                 }, "Written in ReScript"), React.createElement("pre", {
                                   className: "text-14 px-8 pt-6 pb-12 whitespace-pre-wrap"
                                 }, HighlightJs.renderHLJS(undefined, true, example.res, "res", undefined))), React.createElement("div", {
@@ -65,7 +65,7 @@ function LandingPageLayout$PlaygroundHero(Props) {
                                 }, HighlightJs.renderHLJS(undefined, true, example.js, "js", undefined)))), React.createElement("div", undefined, React.createElement(Next.Link.make, {
                               href: "/try?code=" + LzString.compressToEncodedURIComponent(example.res) + "}",
                               children: React.createElement("a", {
-                                    className: "captions px-4 md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60",
+                                    className: "captions md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60",
                                     target: "_blank"
                                   }, "Edit this example in Playground")
                             })), React.createElement("div", {

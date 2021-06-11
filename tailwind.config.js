@@ -63,6 +63,7 @@ module.exports = {
           "30": "#f4646a",
           "10": "#fbb8bb",
           "5": "#fcf1f1",
+          "dark": "#E06C75",
         },
         sky: {
           DEFAULT: "#376FDD", //"50"
