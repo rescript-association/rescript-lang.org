@@ -17,17 +17,19 @@ import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as HighlightJs from "../common/HighlightJs.mjs";
 
 function LandingPageLayout$Intro(Props) {
-  return React.createElement("div", {
-              className: "px-4 md:px-0 flex flex-col items-center"
-            }, React.createElement("h1", {
-                  className: "hl-title text-center max-w-[53rem]"
-                }, "A simple and fast language for JavaScript"), React.createElement("h2", {
-                  className: "body-lg text-center text-gray-60 my-4 max-w-[40rem]"
-                }, "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node."), React.createElement("padding", {
-                  className: "mt-4 mb-12"
-                }, React.createElement(Button.make, {
-                      children: "Get started"
-                    })));
+  return React.createElement("section", {
+              className: "flex justify-center"
+            }, React.createElement("div", {
+                  className: "max-w-1060 flex flex-col items-center px-5 md:px-8 lg:box-content"
+                }, React.createElement("h1", {
+                      className: "hl-title text-center max-w-[53rem]"
+                    }, "A simple and fast language for JavaScript"), React.createElement("h2", {
+                      className: "body-lg text-center text-gray-60 my-4 max-w-[40rem]"
+                    }, "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node."), React.createElement("padding", {
+                      className: "mt-4 mb-2"
+                    }, React.createElement(Button.make, {
+                          children: "Get started"
+                        }))));
 }
 
 var examples = [{
@@ -41,34 +43,25 @@ function LandingPageLayout$PlaygroundHero(Props) {
       });
   var example = match[0];
   return React.createElement("section", {
-              className: "relative mt-20 bg-gray-10",
-              style: {
-                backgroundColor: "#FAFBFC"
-              }
+              className: "relative mt-20 bg-gray-10"
             }, React.createElement("div", {
                   className: "relative flex justify-center w-full"
                 }, React.createElement("div", {
-                      className: "relative sm:rounded-b-xl pt-6 pb-8 sm:px-8 md:px-16 w-full",
-                      style: {
-                        maxWidth: "1400px"
-                      }
+                      className: "relative w-full pt-6 pb-8 sm:px-8 md:px-16 max-w-[1440px]"
                     }, React.createElement("div", {
-                          className: "relative z-2 flex flex-col md:flex-row pb-16 bg-gray-90 mx-auto sm:rounded-lg",
-                          style: {
-                            maxWidth: "1400px"
-                          }
+                          className: "relative z-2 flex flex-col md:flex-row bg-gray-90 mx-auto sm:rounded-lg max-w-[1440px]"
                         }, React.createElement("div", {
                               className: "md:w-1/2"
                             }, React.createElement("div", {
-                                  className: "text-14 text-gray-40 text-center py-3 bg-gray-100"
+                                  className: "text-14 text-gray-40 text-center py-3 sm:rounded-tl-lg bg-gray-100"
                                 }, "Written in ReScript"), React.createElement("pre", {
                                   className: "text-14 px-8 pt-6 pb-12 whitespace-pre-wrap"
                                 }, HighlightJs.renderHLJS(undefined, true, example.res, "res", undefined))), React.createElement("div", {
-                              className: "md:w-1/2"
+                              className: "md:w-1/2 "
                             }, React.createElement("div", {
-                                  className: "text-14 text-gray-40 py-3 text-center bg-gray-100 sm:rounded-lg"
+                                  className: "text-14 text-gray-40 py-3 text-center md:border-l border-gray-80 bg-gray-100 sm:rounded-tr-lg"
                                 }, "Compiles to JavaScript"), React.createElement("pre", {
-                                  className: "text-14 px-8 pt-6 pb-12 whitespace-pre-wrap"
+                                  className: "text-14 px-8 pt-6 pb-14 md:border-l border-gray-80 whitespace-pre-wrap"
                                 }, HighlightJs.renderHLJS(undefined, true, example.js, "js", undefined)))), React.createElement("div", undefined, React.createElement(Next.Link.make, {
                               href: "/try?code=" + LzString.compressToEncodedURIComponent(example.res) + "}",
                               children: React.createElement("a", {

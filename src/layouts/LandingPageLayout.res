@@ -6,17 +6,19 @@
 module Intro = {
   @react.component
   let make = () => {
-    <div className="px-4 md:px-0 flex flex-col items-center">
-      <h1 className="hl-title text-center max-w-[53rem]">
-        {React.string("A simple and fast language for JavaScript")}
-      </h1>
-      <h2 className="body-lg text-center text-gray-60 my-4 max-w-[40rem]">
-        {React.string(
-          "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node.",
-        )}
-      </h2>
-      <padding className="mt-4 mb-12"> <Button> {React.string("Get started")} </Button> </padding>
-    </div>
+    <section className="flex justify-center">
+      <div className="max-w-1060 flex flex-col items-center px-5 md:px-8 lg:box-content">
+        <h1 className="hl-title text-center max-w-[53rem]">
+          {React.string("A simple and fast language for JavaScript")}
+        </h1>
+        <h2 className="body-lg text-center text-gray-60 my-4 max-w-[40rem]">
+          {React.string(
+            "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node.",
+          )}
+        </h2>
+        <padding className="mt-4 mb-2"> <Button> {React.string("Get started")} </Button> </padding>
+      </div>
+    </section>
   }
 }
 
@@ -64,31 +66,28 @@ exports.Button = Button;`,
   let make = () => {
     let (example, _setExample) = React.useState(_ => examples->Js.Array2.unsafe_get(0))
 
-    //TODO: Replace background color with real tailwind color
-    <section
-      className="relative mt-20 bg-gray-10"
-      style={ReactDOM.Style.make(~backgroundColor="#FAFBFC", ())}>
+    //Playground Section & Background
+    <section className="relative mt-20 bg-gray-10">
       <div className="relative flex justify-center w-full">
-        <div
-          className="relative sm:rounded-b-xl pt-6 pb-8 sm:px-8 md:px-16 w-full"
-          style={ReactDOM.Style.make(~maxWidth="1400px", ())}>
+        <div className="relative w-full pt-6 pb-8 sm:px-8 md:px-16 max-w-[1440px]">
           // Playground widget
           <div
-            className="relative z-2 flex flex-col md:flex-row pb-16 bg-gray-90 mx-auto sm:rounded-lg"
-            style={ReactDOM.Style.make(~maxWidth="1400px", ())}>
+            className="relative z-2 flex flex-col md:flex-row bg-gray-90 mx-auto sm:rounded-lg max-w-[1440px]">
+            //Left Side (ReScript)
             <div className="md:w-1/2">
-              <div className="text-14 text-gray-40 text-center py-3 bg-gray-100">
+              <div className="text-14 text-gray-40 text-center py-3 sm:rounded-tl-lg bg-gray-100">
                 {React.string("Written in ReScript")}
               </div>
               <pre className="text-14 px-8 pt-6 pb-12 whitespace-pre-wrap">
                 {HighlightJs.renderHLJS(~darkmode=true, ~code=example.res, ~lang="res", ())}
               </pre>
             </div>
-            <div className="md:w-1/2">
-              <div className="text-14 text-gray-40 py-3 text-center bg-gray-100 sm:rounded-lg">
+            //Right Side (JavaScript)
+            <div className="md:w-1/2 ">
+              <div className="text-14 text-gray-40 py-3 text-center md:border-l border-gray-80 bg-gray-100 sm:rounded-tr-lg">
                 {React.string("Compiles to JavaScript")}
               </div>
-              <pre className="text-14 px-8 pt-6 pb-12 whitespace-pre-wrap">
+              <pre className="text-14 px-8 pt-6 pb-14 md:border-l border-gray-80 whitespace-pre-wrap">
                 {HighlightJs.renderHLJS(~darkmode=true, ~code=example.js, ~lang="js", ())}
               </pre>
             </div>
@@ -188,11 +187,9 @@ module QuickInstall = {
           // and in the next tick, add the opacity-100 class, so the transition animation actually takes place.
           // If we don't do that, the banner will essentially pop up without any animation
           let bannerEl = Document.createElement("div")
-          bannerEl->Element.setClassName(
-            "foobar opacity-0 absolute top-0 mt-4 -mr-1 px-2 rounded right-0 
+          bannerEl->Element.setClassName("foobar opacity-0 absolute top-0 mt-4 -mr-1 px-2 rounded right-0 
             bg-turtle text-gray-80-tr body-sm
-            transition-all duration-500 ease-in-out ",
-          )
+            transition-all duration-500 ease-in-out ")
           let textNode = Document.createTextNode("Copied!")
 
           bannerEl->Element.appendChild(textNode)
@@ -256,15 +253,15 @@ module QuickInstall = {
   let make = () => {
     <section className="my-32 sm:px-4 sm:flex sm:justify-center">
       <div className="max-w-1060 flex flex-col w-full px-5 md:px-8 lg:px-8 lg:box-content ">
-      //---Textblock on the left side---
+        //---Textblock on the left side---
         <div className="relative max-w-[28rem]">
-            <p
-              className="relative z-1 space-y-12 text-gray-80 font-semibold text-24 md:text-32 leading-2">
-              <span className="bg-fire-5 rounded-lg border border-fire-10 p-1 ">
-                {React.string(`Everything you want`)}
-              </span>
-              {React.string(` from JavaScript, minus the parts you don't need.`)}
-            </p>
+          <p
+            className="relative z-1 space-y-12 text-gray-80 font-semibold text-24 md:text-32 leading-2">
+            <span className="bg-fire-5 rounded-lg border border-fire-10 p-1 ">
+              {React.string(`Everything you want`)}
+            </span>
+            {React.string(` from JavaScript, minus the parts you don't need.`)}
+          </p>
         </div>
         //spacing between columns
         <div className="w-full mt-12 md:flex flex-col lg:flex-row md:justify-between ">
