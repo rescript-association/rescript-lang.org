@@ -110,6 +110,12 @@ module Router: {
 
   let replace: (router, string) => unit
   let replaceObj: (router, pathObj) => unit
+
+  type beforePopStateArgs = {
+    url: string,
+    @as("as") asUrl: string,
+  }
+  let beforePopState: (router, beforePopStateArgs => bool) => unit
 }
 
 module Head: {

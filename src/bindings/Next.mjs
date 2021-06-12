@@ -71,13 +71,19 @@ function Router_replaceObj(prim0, prim1) {
   
 }
 
+function Router_beforePopState(prim0, prim1) {
+  prim0.beforePopState(prim1);
+  
+}
+
 var Router$1 = {
   Events: Router_Events,
   push: Router_push,
   pushObj: Router_pushObj,
   useRouter: Router_useRouter,
   replace: Router_replace,
-  replaceObj: Router_replaceObj
+  replaceObj: Router_replaceObj,
+  beforePopState: Router_beforePopState
 };
 
 var Head$1 = {

@@ -114,6 +114,12 @@ module Router = {
 
   @send external replace: (router, string) => unit = "replace"
   @send external replaceObj: (router, pathObj) => unit = "replace"
+
+  type beforePopStateArgs = {
+    url: string,
+    @as("as") asUrl: string,
+  }
+  @send external beforePopState: (router, beforePopStateArgs => bool) => unit = "beforePopState"
 }
 
 module Head = {

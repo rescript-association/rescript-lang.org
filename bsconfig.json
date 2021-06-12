@@ -6,7 +6,8 @@
   },
   "bs-dependencies": [
     "@rescript/react",
-    "@ryyppy/rescript-promise"
+    "@ryyppy/rescript-promise",
+    "rescript-react-update"
   ],
   "ppx-flags": [],
   "sources": [

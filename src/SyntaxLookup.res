@@ -153,75 +153,64 @@ type state =
   | ShowFiltered(string, array<item>) // (search, filteredItems)
   | ShowDetails(item)
 
+type action =
+  | URLChanged(string)
+  | SearchValueChanged(string)
+  | ItemSelected(item)
+
+let stateFromPath = path =>
+  getAnchor(path)
+  ->Belt.Option.flatMap(anchor =>
+    Js.Array2.find(allItems, item => GithubSlugger.slug(item.id) === anchor)
+  )
+  ->Belt.Option.map(item => ShowDetails(item))
+  ->Belt.Option.getWithDefault(ShowAll)
+
 @react.component
 let make = () => {
   let router = Next.Router.useRouter()
-  let (state, setState) = React.useState(_ => ShowAll)
-
-  React.useEffect0(() => {
-    switch getAnchor(router.asPath) {
-    | Some(anchor) =>
-      Js.Array2.find(allItems, item =>
-        GithubSlugger.slug(item.id) === anchor
-      )->Belt.Option.forEach(item => {
-        setState(_ => ShowDetails(item))
-      })
-    | None => ()
-    }
-    None
-  })
-
-  /*
-  This effect syncs the url anchor with the currently shown final match
-  within the fuzzy finder. If there is a new match that doesn't align with
-  the current anchor, the url will be rewritten with the correct anchor.
-
-  In case a selection got removed, it will also remove the anchor from the url.
-  We don't replace on every state change, because replacing the url is expensive
- */
-  React.useEffect1(() => {
-    switch (state, getAnchor(router.asPath)) {
-    | (ShowDetails(item), Some(anchor)) =>
-      let slug = GithubSlugger.slug(item.id)
-
-      if slug !== anchor {
-        router->Next.Router.push("syntax-lookup#" ++ anchor)
-      } else {
-        ()
-      }
-    | (ShowDetails(item), None) =>
-      router->Next.Router.push("syntax-lookup#" ++ GithubSlugger.slug(item.id))
-    | (_, Some(_)) => router->Next.Router.push("syntax-lookup")
-    | _ => ()
-    }
-    None
-  }, [state])
-
-  let onSearchValueChange = value => {
-    setState(_ =>
-      switch value {
-      | "" => ShowAll
-      | search =>
+  let (state, dispatch) = ReactUpdate.useReducerWithMapState(
+    (_state, action) => {
+      let noCancel = () => None
+      switch action {
+      | URLChanged(path) => Update(stateFromPath(path))
+      | SearchValueChanged("") =>
+        UpdateWithSideEffects(ShowAll, _ => router->Next.Router.push("syntax-lookup")->noCancel)
+      | SearchValueChanged(search) =>
         let filtered =
           fuse
           ->Fuse.search(search)
           ->Belt.Array.map(m => {
             m["item"]
           })
-
-        if Js.Array.length(filtered) === 1 {
-          let item = Belt.Array.getExn(filtered, 0)
-          if item.name === value {
-            ShowDetails(item)
-          } else {
-            ShowFiltered(value, filtered)
-          }
-        } else {
-          ShowFiltered(value, filtered)
+        switch filtered {
+        | [item] if item.name == search =>
+          UpdateWithSideEffects(
+            ShowDetails(item),
+            _ =>
+              router->Next.Router.push("syntax-lookup#" ++ GithubSlugger.slug(item.id))->noCancel,
+          )
+        | _ => Update(ShowFiltered(search, filtered))
         }
+      | ItemSelected(item) =>
+        UpdateWithSideEffects(
+          ShowDetails(item),
+          _ => router->Next.Router.push("syntax-lookup#" ++ GithubSlugger.slug(item.id))->noCancel,
+        )
       }
-    )
-  }
+    },
+    // Build initial state from URL
+    () => stateFromPath(router.asPath),
+  )
+
+  // When the back button is used, re-build the state from the new URL.
+  React.useEffect0(() => {
+    router->Next.Router.beforePopState(({url}) => {
+      dispatch(URLChanged(url))
+      true
+    })
+    None
+  })
 
   let details = switch state {
   | ShowFiltered(_, _)
@@ -270,7 +259,7 @@ let make = () => {
         let children = Belt.Array.map(items, item => {
           let onMouseDown = evt => {
             ReactEvent.Mouse.preventDefault(evt)
-            setState(_ => ShowDetails(item))
+            dispatch(ItemSelected(item))
           }
           <span className="mr-2 mb-2 cursor-pointer" onMouseDown key=item.name>
             <Tag text={item.name} />
@@ -292,10 +281,6 @@ let make = () => {
   | ShowDetails(item) => (item.name, [item])
   }
 
-  let onSearchClear = () => {
-    setState(_ => ShowAll)
-  }
-
   <div>
     <div className="flex flex-col items-center">
       <div className="text-center" style={ReactDOM.Style.make(~maxWidth="21rem", ())}>
@@ -309,8 +294,8 @@ let make = () => {
           placeholder="Enter keywords or syntax..."
           completionValues={Belt.Array.map(completionItems, item => item.name)}
           value=searchValue
-          onClear=onSearchClear
-          onValueChange=onSearchValueChange
+          onClear={() => dispatch(SearchValueChanged(""))}
+          onValueChange={value => dispatch(SearchValueChanged(value))}
         />
       </div>
     </div>

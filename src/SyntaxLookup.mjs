@@ -10,6 +10,7 @@ import * as SearchBox from "./components/SearchBox.mjs";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
+import * as ReactUpdate from "rescript-react-update/src/ReactUpdate.mjs";
 import * as GithubSlugger from "github-slugger";
 
 var indexData = (require('index_data/syntax_index.json'));
@@ -146,88 +147,118 @@ function SyntaxLookup$DetailBox(Props) {
                 }, children));
 }
 
-function SyntaxLookup(Props) {
-  var router = Next.Router.useRouter(undefined);
-  var match = React.useState(function () {
-        return /* ShowAll */0;
-      });
-  var setState = match[1];
-  var state = match[0];
-  React.useEffect((function () {
-          var anchor = getAnchor(router.asPath);
-          if (anchor !== undefined) {
-            Belt_Option.forEach(Caml_option.undefined_to_opt(allItems.find(function (item) {
-                          return GithubSlugger.slug(item.id) === anchor;
-                        })), (function (item) {
-                    return Curry._1(setState, (function (param) {
-                                  return {
-                                          TAG: 1,
-                                          _0: item,
-                                          [Symbol.for("name")]: "ShowDetails"
-                                        };
-                                }));
-                  }));
-          }
-          
-        }), []);
-  React.useEffect((function () {
-          var match = getAnchor(router.asPath);
-          var exit = 0;
-          if (typeof state === "number" || state.TAG === /* ShowFiltered */0) {
-            exit = 1;
-          } else {
-            var item = state._0;
-            if (match !== undefined) {
-              var slug = GithubSlugger.slug(item.id);
-              if (slug !== match) {
-                Next.Router.push(router, "syntax-lookup#" + match);
-              }
-              
-            } else {
-              Next.Router.push(router, "syntax-lookup#" + GithubSlugger.slug(item.id));
-            }
-          }
-          if (exit === 1) {
-            if (match !== undefined) {
-              Next.Router.push(router, "syntax-lookup");
-            }
-            
-          }
-          
-        }), [state]);
-  var onSearchValueChange = function (value) {
-    return Curry._1(setState, (function (param) {
-                  if (value === "") {
-                    return /* ShowAll */0;
-                  }
-                  var filtered = Belt_Array.map(fuse.search(value), (function (m) {
-                          return m.item;
-                        }));
-                  if (filtered.length !== 1) {
-                    return {
-                            TAG: 0,
-                            _0: value,
-                            _1: filtered,
-                            [Symbol.for("name")]: "ShowFiltered"
-                          };
-                  }
-                  var item = Belt_Array.getExn(filtered, 0);
-                  if (item.name === value) {
+function stateFromPath(path) {
+  return Belt_Option.getWithDefault(Belt_Option.map(Belt_Option.flatMap(getAnchor(path), (function (anchor) {
+                        return Caml_option.undefined_to_opt(allItems.find(function (item) {
+                                        return GithubSlugger.slug(item.id) === anchor;
+                                      }));
+                      })), (function (item) {
                     return {
                             TAG: 1,
                             _0: item,
                             [Symbol.for("name")]: "ShowDetails"
                           };
-                  } else {
-                    return {
+                  })), /* ShowAll */0);
+}
+
+function SyntaxLookup(Props) {
+  var router = Next.Router.useRouter(undefined);
+  var match = ReactUpdate.useReducerWithMapState((function (_state, action) {
+          switch (action.TAG | 0) {
+            case /* URLChanged */0 :
+                return {
+                        TAG: 0,
+                        _0: stateFromPath(action._0),
+                        [Symbol.for("name")]: "Update"
+                      };
+            case /* SearchValueChanged */1 :
+                var search = action._0;
+                if (search === "") {
+                  return {
+                          TAG: 1,
+                          _0: /* ShowAll */0,
+                          _1: (function (param) {
+                              Next.Router.push(router, "syntax-lookup");
+                              
+                            }),
+                          [Symbol.for("name")]: "UpdateWithSideEffects"
+                        };
+                }
+                var filtered = Belt_Array.map(fuse.search(search), (function (m) {
+                        return m.item;
+                      }));
+                if (filtered.length !== 1) {
+                  return {
+                          TAG: 0,
+                          _0: {
                             TAG: 0,
-                            _0: value,
+                            _0: search,
                             _1: filtered,
                             [Symbol.for("name")]: "ShowFiltered"
-                          };
-                  }
+                          },
+                          [Symbol.for("name")]: "Update"
+                        };
+                }
+                var item = filtered[0];
+                if (item.name === search) {
+                  return {
+                          TAG: 1,
+                          _0: {
+                            TAG: 1,
+                            _0: item,
+                            [Symbol.for("name")]: "ShowDetails"
+                          },
+                          _1: (function (param) {
+                              Next.Router.push(router, "syntax-lookup#" + GithubSlugger.slug(item.id));
+                              
+                            }),
+                          [Symbol.for("name")]: "UpdateWithSideEffects"
+                        };
+                } else {
+                  return {
+                          TAG: 0,
+                          _0: {
+                            TAG: 0,
+                            _0: search,
+                            _1: filtered,
+                            [Symbol.for("name")]: "ShowFiltered"
+                          },
+                          [Symbol.for("name")]: "Update"
+                        };
+                }
+            case /* ItemSelected */2 :
+                var item$1 = action._0;
+                return {
+                        TAG: 1,
+                        _0: {
+                          TAG: 1,
+                          _0: item$1,
+                          [Symbol.for("name")]: "ShowDetails"
+                        },
+                        _1: (function (param) {
+                            Next.Router.push(router, "syntax-lookup#" + GithubSlugger.slug(item$1.id));
+                            
+                          }),
+                        [Symbol.for("name")]: "UpdateWithSideEffects"
+                      };
+            
+          }
+        }), (function (param) {
+          return stateFromPath(router.asPath);
+        }));
+  var dispatch = match[1];
+  var state = match[0];
+  React.useEffect((function () {
+          Next.Router.beforePopState(router, (function (param) {
+                  Curry._1(dispatch, {
+                        TAG: 0,
+                        _0: param.url,
+                        [Symbol.for("name")]: "URLChanged"
+                      });
+                  return true;
                 }));
-  };
+          
+        }), []);
   var details;
   if (typeof state === "number" || state.TAG === /* ShowFiltered */0) {
     details = null;
@@ -272,13 +303,11 @@ function SyntaxLookup(Props) {
           var children = Belt_Array.map(items, (function (item) {
                   var onMouseDown = function (evt) {
                     evt.preventDefault();
-                    return Curry._1(setState, (function (param) {
-                                  return {
-                                          TAG: 1,
-                                          _0: item,
-                                          [Symbol.for("name")]: "ShowDetails"
-                                        };
-                                }));
+                    return Curry._1(dispatch, {
+                                TAG: 2,
+                                _0: item,
+                                [Symbol.for("name")]: "ItemSelected"
+                              });
                   };
                   return React.createElement("span", {
                               key: item.name,
@@ -316,11 +345,6 @@ function SyntaxLookup(Props) {
       [item$1]
     ];
   }
-  var onSearchClear = function (param) {
-    return Curry._1(setState, (function (param) {
-                  return /* ShowAll */0;
-                }));
-  };
   return React.createElement("div", undefined, React.createElement("div", {
                   className: "flex flex-col items-center"
                 }, React.createElement("div", {
@@ -342,9 +366,21 @@ function SyntaxLookup(Props) {
                                   return item.name;
                                 })),
                           value: match$1[0],
-                          onClear: onSearchClear,
+                          onClear: (function (param) {
+                              return Curry._1(dispatch, {
+                                          TAG: 1,
+                                          _0: "",
+                                          [Symbol.for("name")]: "SearchValueChanged"
+                                        });
+                            }),
                           placeholder: "Enter keywords or syntax...",
-                          onValueChange: onSearchValueChange
+                          onValueChange: (function (value) {
+                              return Curry._1(dispatch, {
+                                          TAG: 1,
+                                          _0: value,
+                                          [Symbol.for("name")]: "SearchValueChanged"
+                                        });
+                            })
                         }))), React.createElement("div", {
                   className: "mt-10"
                 }, details, categories));
