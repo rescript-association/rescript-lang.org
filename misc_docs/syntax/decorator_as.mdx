@@ -10,7 +10,9 @@ The `@as` decorator is commonly used on record types to alias record field names
 
 This is useful to map to JavaScript attribute names that cannot be expressed in ReScript (such as keywords).
 
-### Example
+It is also possible to map a ReScript record to a JavaScript array by passing indices to the `@as` decorator.
+
+### Examples
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -26,6 +28,26 @@ let action = {type_: "ADD_USER"}
 var action = {
   type: "ADD_USER"
 };
+```
+
+</CodeTab>
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type t = {
+  @as("0") foo: int,
+  @as("1") bar: string,
+}
+
+let value = {foo: 7, bar: "baz"}
+```
+
+```js
+var value = [
+  7,
+  "baz"
+];
 ```
 
 </CodeTab>
