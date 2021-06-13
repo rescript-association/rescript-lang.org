@@ -46,6 +46,28 @@ var johnName = MySchool.john.name;
 
 External is documented [here](external.md). `@module` is documented [here](import-from-export-to-js.md).
 
+If you want or need to use different field names on the ReScript and the JavaScript side, you can use the `@as` decorator:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type action = {
+  @as("type") type_: string
+}
+
+let action = {type_: "ADD_USER"}
+```
+```js
+var action = {
+  type: "ADD_USER"
+};
+```
+
+</CodeTab>
+
+This is useful to map to JavaScript attribute names that cannot be expressed in ReScript (such as keywords).
+
+
 ### Bind Using ReScript Object
 
 Alternatively, you can use [ReScript object](object.md) to model a JS object too:
