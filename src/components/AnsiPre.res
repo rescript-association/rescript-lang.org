@@ -29,14 +29,17 @@ let mapColor = (~target: colorTarget, c: Color.t): string =>
 let renderSgrString = (~key: string, sgrStr: SgrString.t): React.element => {
   let {SgrString.content: content, params} = sgrStr
 
-  let className = params->Js.Array2.map(p =>
-    switch p {
-    | Sgr.Bold => "bold"
-    | Fg(c) => mapColor(~target=Fg, c)
-    | Bg(c) => mapColor(~target=Bg, c)
-    | _ => ""
-    }
-  )->Js.Array2.joinWith(" ")
+  let className =
+    params
+    ->Js.Array2.map(p =>
+      switch p {
+      | Sgr.Bold => "bold"
+      | Fg(c) => mapColor(~target=Fg, c)
+      | Bg(c) => mapColor(~target=Bg, c)
+      | _ => ""
+      }
+    )
+    ->Js.Array2.joinWith(" ")
 
   <span key className> {React.string(content)} </span>
 }

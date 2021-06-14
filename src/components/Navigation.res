@@ -469,7 +469,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
   // Client side navigation requires us to reset the collapsibles
   // whenever a route change had occurred, otherwise the collapsible
   // will stay open, even though you clicked a link
-  React.useEffect1(() => {
+  React.useEffect0(() => {
     open Next.Router.Events
     let {Next.Router.events: events} = router
 
@@ -487,13 +487,13 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
         events->off(#hashChangeComplete(onChangeComplete))
       },
     )
-  }, [])
+  })
 
   let fixedNav = fixed ? "fixed top-0" : "relative"
 
   let onStateChange = (~id, state) => {
     setCollapsibles(prev => {
-      Belt.Array.keepMap(prev, next=> {
+      Belt.Array.keepMap(prev, next => {
         if next.title === id {
           Some({...next, state: state})
         } else {

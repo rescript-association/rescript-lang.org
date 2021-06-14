@@ -38,7 +38,7 @@ let make = () => {
   let inputRef = React.useRef(Js.Nullable.null)
   let (state, setState) = React.useState(_ => Inactive)
 
-  React.useEffect1(() => {
+  React.useEffect0(() => {
     switch docsearch {
     | Some(init) =>
       init({
@@ -50,7 +50,7 @@ let make = () => {
     }
 
     None
-  }, [])
+  })
 
   React.useEffect1(() => {
     let isEditableTag = el =>
@@ -142,7 +142,7 @@ let make = () => {
 module Textbox = {
   @react.component
   let make = (~id: string) => {
-    React.useEffect1(() => {
+    React.useEffect0(() => {
       switch docsearch {
       | Some(init) =>
         init({
@@ -153,7 +153,7 @@ module Textbox = {
       | None => ()
       }
       None
-    }, [])
+    })
 
     // Used for the text input
     let inputRef = React.useRef(Js.Nullable.null)
