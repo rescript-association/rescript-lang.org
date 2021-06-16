@@ -1,0 +1,103 @@
+---
+title: "Roadmap"
+description: "Development & Release Cycle Plans"
+canonical: "/community/roadmap"
+---
+
+import Image from "src/components/Image";
+
+# Roadmap & Release Cycle Plans
+
+*(Last update: June 16th, 2021)*
+
+This is a living document that defines our current roadmap and explains our future release cycle plans for the upcoming years.
+
+## Roadmap
+
+Please be aware that our roadmap will only discuss major changes, and might be adapted during planning phases.
+
+All roadmap related discussions, proposals and changes for specific roadmap tasks can either be found in the [ReScript Forum](https://forum.rescript-lang.org), or in dedicated Github PRs / issues.
+
+### Stable Release v10
+
+- Add M1 support (see [first call for testing](https://forum.rescript-lang.org/t/rescript-m1-native-binares-call-for-testing/1797))
+- Add support for unicode strings (e.g `"Hallöle"` will work like in JavaScript; see [PR](https://github.com/rescript-lang/syntax/pull/433))
+- Add opt-in configuration flag `stdlib-future` to disable OCaml related stdlib code (for writing future proof code; see [discussion](https://forum.rescript-lang.org/t/roles-for-belt-js-and-pervasives-in-rescript/1683))
+- (breaking) Remove OCaml’s Format module (should have no impact on the majority of ReScript users; see [discussion](https://forum.rescript-lang.org/t/what-stable-type-system-features-we-are-going-to-preserve-from-ocaml/1251))
+- Infix operator support (only for a dedicated set of math operators `+`, `-`, `-.`, `/`, `%`, etc.; see the [tracking issue](https://github.com/rescript-lang/syntax/issues/440))
+- Docstring syntax support: `/** */` instead of `@ocaml.doc("My docstring")` ([tracking issue](https://github.com/rescript-lang/syntax/issues/439))
+- Convert stdlib files (`Js`, `Belt`, etc) to ReScript syntax ([tracking issue](https://github.com/rescript-lang/rescript-compiler/issues/4872))
+- Make `bsconfig.json` json compliant ([Proposal](https://forum.rescript-lang.org/t/proposed-changes-make-bsconfig-json-standard-compilant/1859))
+- Some other less prominent enhancements (will be mentioned in the Changelog later on)
+- (Non exhaustive list of changes; goals may be adapted)
+
+**Estimated release date for v10:** Mid of January 2022
+
+### Experimental Release v11
+
+**Important:** These changes are currently listed on the roadmap, but may be subject to change before development starts.
+
+- Removal of ocaml stdlib
+- PPX only allowed on top level packages?
+- Removal of recursive modules?
+
+**Estimated start of development:** May 2022<br/>
+**Estimated switch to v12:** Mid of January 2023
+
+### Stable Release v12
+
+- Feature set of `v11`
+- Additional features will be discussed during the `v11` development phase
+
+### Experimental Release v13
+
+Will be discussed during `v12` development.
+
+## Release Cycle Plan
+
+We will follow a similar approach to the NodeJS project and consider even version numbers to be stable releases (v10, v12, v14,...), and uneven version numbers as experimental (v11, v13, v15,...) releases.
+
+<Image withShadow={false} src="/static/img/roadmap_2021.jpg" caption="Release cycle for the upcoming versions"/>
+
+The goal of the new release system is to have a slower and easier to manage upgrade experience for our users / library maintainers, with a proper grace-period to discuss and refine feature proposals.
+
+The experimental release channel will be useful for gathering feedback / testing out migrations without the fear of breaking our existing userbase whenever more intrusive changes have been made.
+
+### Stable release:
+
+- Even version number (v10, v12, v14,...)
+- A stable version is guaranteed to be supported for a 1 year lifespan, splitting up in an **active** development phase, and an **maintenance** phase. The maintenance phase starts as soon as the work for the next experimental release has been started and will mostly cover critical bugfixes.
+- A stable release will eventually require some initial migration. We will provide proper upgrade guides between each stable version.
+- During active development, there are no breaking changes within the compiler (no changes in runtime representation, behavior of the build system, configuration names etc.). 
+- No removal of language features
+- During the active development phase, there may be non-breaking minor releases (e.g. v10.1.0). For example:
+  - Syntax additions
+  - New configuration flags
+  - Stdlib additions / Library enhancements
+- Regular bugfix releases for the compiler, build system, stdlib, etc.
+- Docs will be synced up with the latest stable release
+
+### Experimental release:
+
+- Uneven number (v11, v13, v15,....)
+- Development phase of around 6 months. After that it will potentially turn into the next stable release (e.g. v11 -> v12)
+- Introduces a planned set of breaking changes based on the previous stable release
+- Acts as a stepping stone to reach more ambitious goals in a next stable release
+- The list of breaking changes will be discussed before the work is being started
+- No guaranteed stability / support during experimental development. The compiler toolchain will be reliable as always, but the proposed feature set might change
+- Docs might or might not be available during experimental changes
+
+### How to install relevant releases:
+
+- Latest stable: `npm install rescript@latest`
+- Latest experimental (in case we are in an "experimental" dev phase): `npm install rescript@next`
+
+
+### Long term support / End of life
+
+On every new stable release, the previous stable release will be frozen and will only receive critical bugfix updates in a best effort service.
+
+That doesn't mean that older stable versions go stale; in practise those releases will be pretty robust and reliable, so upgrading codebases can be done at your own pace.
+
+We will make sure that there are well documented upgrade paths between each stable release.
+
