@@ -84,6 +84,9 @@ module.exports = {
           DEFAULT: "#5E5EDE",
           dark: "#637CC1",
         },
+        ocean: {
+          dark: "#8AAEC8",
+        },
         turtle: {
           DEFAULT: "#02A875",
           dark: "#388B72",
