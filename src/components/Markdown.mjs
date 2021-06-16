@@ -248,7 +248,7 @@ var Pre = {
 function Markdown$InlineCode(Props) {
   var children = Props.children;
   return React.createElement("code", {
-              className: "md-inline-code px-0.75 font-normal rounded-sm font-mono bg-fire-5"
+              className: "md-inline-code px-0.75 font-normal rounded-sm font-mono bg-[rgba(196,186,186,0.1)]"
             }, children);
 }
 

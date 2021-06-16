@@ -8,7 +8,7 @@
 /*@import "./_typography.css";*/
 
 body {
-  @apply font-sans bg-white subpixel-antialiased;
+  @apply font-sans bg-white sm:subpixel-antialiased md:antialiased;
 }
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -69,7 +69,7 @@ body {
       @apply text-16 font-semibold tracking-normal leading-2
     }
     .body-md {
-      @apply text-16 font-normal tracking-normal leading-2
+      @apply text-16 font-normal tracking-normal leading-4
     }
     .body-sm {
       @apply text-14 font-medium tracking-normal leading-2

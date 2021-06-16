@@ -63,6 +63,7 @@ module.exports = {
           "30": "#f4646a",
           "10": "#fbb8bb",
           "5": "#fcf1f1",
+          "dark": "#E06C75",
         },
         sky: {
           DEFAULT: "#376FDD", //"50"
@@ -142,9 +143,9 @@ module.exports = {
       full: "9999px", //round
     },
     screens: {
-      xs: "510px",
-      sm: "576px",
-      md: "768px",
+      xs: "599px", 
+      sm: "576px", //don't use this
+      md: "768px", //try to avoid this
       lg: "1024px",
       xl: "1440px"
     },

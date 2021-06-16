@@ -1,7 +1,7 @@
 /*
  TODO: The way the blog works right now is very rough.
  We don't do any webpack magic to extract content, title preview or frontmatter, and
- don't do any pagination... for now it's not really needed I guess, it would
+ don't do any pagination... for now it's not really needed I, it would
  still be good to rethink the ways the blog works in a later point of time.
 
  Docusaurus does a lot of webpack / remark magic in that regard. For my taste,
@@ -46,17 +46,17 @@ module CategorySelector = {
     | Archived
 
   let renderTab = (~text: string, ~isActive: bool, ~onClick) => {
-    let active = "bg-gray-10 text-gray-80 rounded py-1"
+    let active = "bg-gray-20 text-gray-80 rounded py-1"
     <div
       key=text
       onClick
       className={(
-        isActive ? active : "hover:cursor-pointer hover:text-gray-80"
+        isActive ? active : "hover:cursor-pointer bg-white hover:text-gray-80"
       ) ++ "  px-4 inline-block"}>
       {React.string(text)}
     </div>
   }
-
+/*---- TABS ---*/
   @react.component
   let make = (~selected: selection, ~onSelected: selection => unit) => {
     let tabs = [All, Archived]
@@ -100,7 +100,7 @@ module BlogCard = {
         | Some(badge) => <div className="absolute z-10 bottom-0 mb-4 -ml-2"> <Badge badge /> </div>
         }}
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
-          <a className="relative block mb-4 pt-9/16">
+          <a className="relative hl-title block mb-4 pt-9/16">
             {
               let className = "absolute top-0 h-full w-full object-cover"
               switch previewImg {
@@ -111,11 +111,12 @@ module BlogCard = {
           </a>
         </Link>
       </div>
+      //---CARD TEXT---//
       <div className="px-2">
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
-          <a> <h2 className=Text.H3.default> {React.string(title)} </h2> </a>
+          <a> <h2 className="hl-4"> {React.string(title)} </h2> </a>
         </Link>
-        <div className="text-gray-60 text-14">
+        <div className="captions text-gray-40 pt-1">
           {switch category {
           | Some(category) => <> {React.string(category)} {React.string(j` · `)} </>
           | None => React.null
@@ -166,16 +167,17 @@ module FeatureCard = {
           </a>
         </Link>
       </div>
+      /*---TITLE CARD TEXT ---*/
       <div
         className="relative px-4 lg:self-auto sm:pt-12 md:px-20 sm:self-start md:-mt-20 mt-4 bg-white lg:w-full lg:pt-0 lg:mt-0 lg:px-0 lg:ml-12">
         <div className="max-w-400 ">
-          <h2 className=Text.H2.default> {React.string(title)} </h2>
+          <h2 className="hl-1"> {React.string(title)} </h2>
           <div className="mb-6">
-            <div className="flex items-center font-medium text-gray-40 text-14 mt-2 mb-5">
+            <div className="flex items-center body-sm text-gray-40 mt-2 mb-5">
               <div className="inline-block w-4 h-4 mr-2"> authorImg </div>
               <div>
                 <a
-                  className="hover:text-gray-80"
+                  className="hover:text-gray-60"
                   href={"https://twitter.com/" ++ author.twitter}
                   rel="noopener noreferrer"
                   target="_blank">
@@ -192,7 +194,7 @@ module FeatureCard = {
                 {date->Util.Date.toDayMonthYear->React.string}
               </div>
             </div>
-            <p className="text-gray-90 antialiased tracking-tight text-16">
+            <p className="body-md text-gray-70">
               {React.string(firstParagraph)}
             </p>
           </div>

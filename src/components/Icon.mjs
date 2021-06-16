@@ -350,23 +350,24 @@ function Icon$Copy(Props) {
   var className = classNameOpt !== undefined ? classNameOpt : "";
   return React.createElement("svg", {
               className: "stroke-current " + className,
-              height: "14",
-              width: "14",
-              viewBox: "0 0 14 14",
+              height: "24",
+              width: "24",
+              fill: "none",
+              viewBox: "0 0 24 24",
               xmlns: "http://www.w3.org/2000/svg"
-            }, React.createElement("g", {
-                  fill: "none",
-                  strokeLinejoin: "round",
-                  strokeWidth: "1.5",
-                  transform: "rotate(180 98.375 84.763)"
-                }, React.createElement("path", {
-                      d: "M186.571 159.35v-1.636a1.715 1.715 0 011.715-1.714h6a1.715 1.715 0 011.714 1.714v6a1.715 1.715 0 01-1.714 1.715H192.9"
-                    }), React.createElement("rect", {
-                      height: "9.429",
-                      width: "9.429",
-                      rx: "2",
-                      transform: "translate(183.255 159.347)"
-                    })));
+            }, React.createElement("rect", {
+                  height: "12",
+                  width: "12",
+                  rx: "2",
+                  strokeLinecap: "round",
+                  strokeWidth: "2",
+                  x: "8.00012",
+                  y: "8.3175"
+                }), React.createElement("path", {
+                  d: "M16.0001 4.3175H7.00012C5.34327 4.3175 4.00012 5.66065 4.00012 7.3175V16.3175",
+                  strokeLinecap: "square",
+                  strokeWidth: "2"
+                }));
 }
 
 var Copy = {

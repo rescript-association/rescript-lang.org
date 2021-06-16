@@ -4,7 +4,6 @@ import * as Blog from "./Blog.mjs";
 import * as Icon from "./components/Icon.mjs";
 import * as Meta from "./components/Meta.mjs";
 import * as Next from "./bindings/Next.mjs";
-import * as $$Text from "./components/Text.mjs";
 import * as Util from "./common/Util.mjs";
 import * as React from "react";
 import * as BlogApi from "./common/BlogApi.mjs";
@@ -40,9 +39,9 @@ function BlogArticle$AuthorBox(Props) {
   return React.createElement("div", {
               className: "flex items-center"
             }, React.createElement("div", {
-                  className: "w-12 h-12 bg-berry-40 block rounded-full mr-3"
+                  className: "w-10 h-10 bg-berry-40 block rounded-full mr-3"
                 }, authorImg), React.createElement("div", {
-                  className: "text-14 font-medium text-80"
+                  className: "body-sm"
                 }, React.createElement("a", {
                       className: "hover:text-gray-80",
                       href: "https://twitter.com/" + author.twitter,
@@ -68,9 +67,9 @@ function BlogArticle$BlogHeader(Props) {
             }, React.createElement("div", {
                   className: "w-full max-w-740"
                 }, React.createElement("div", {
-                      className: "text-gray-60 text-18 mb-5"
+                      className: "text-gray-60 body-sm mb-5"
                     }, category !== undefined ? React.createElement(React.Fragment, undefined, category, middleDotSpacer) : null, Util.$$Date.toDayMonthYear(date$1)), React.createElement("h1", {
-                      className: $$Text.H1.$$default
+                      className: "hl-title"
                     }, title), Belt_Option.mapWithDefault(description, null, (function (desc) {
                         if (desc === "") {
                           return React.createElement("div", {
@@ -78,10 +77,10 @@ function BlogArticle$BlogHeader(Props) {
                                     });
                         } else {
                           return React.createElement("div", {
-                                      className: "my-8 text-gray-80"
-                                    }, React.createElement(Markdown.Intro.make, {
-                                          children: desc
-                                        }));
+                                      className: "text-gray-80 mt-1 mb-8"
+                                    }, React.createElement("p", {
+                                          className: "body-lg"
+                                        }, desc));
                         }
                       })), React.createElement("div", {
                       className: "flex flex-col md:flex-row mb-12"

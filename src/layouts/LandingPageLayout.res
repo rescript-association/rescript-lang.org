@@ -3,33 +3,22 @@
 // Copy Brainstorming Gist:
 // https://gist.github.com/chenglou/3624a93d63dbd32c4a3d087f9c9e06bc
 
-module CallToActionButton = {
-  @react.component
-  let make = (~children) =>
-    <button
-      className="rounded-lg px-8 py-4 inline-block transition-colors duration-300 body-button text-white hover:bg-fire-70  bg-fire  focus:outline-none">
-      children
-    </button>
-}
-
 module Intro = {
   @react.component
   let make = () => {
-    <div className="px-4 md:px-0 flex flex-col items-center">
-      <h1 className="hl-title text-center" style={ReactDOM.Style.make(~maxWidth="53rem", ())}>
-        {React.string("A simple and fast language for JavaScript developers")}
-      </h1>
-      <h2
-        className="body-lg text-center text-gray-60 my-4"
-        style={ReactDOM.Style.make(~maxWidth="42rem", ())}>
-        {React.string(
-          "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node.",
-        )}
-      </h2>
-      <div className="my-4">
-        <CallToActionButton> {React.string("Get started")} </CallToActionButton>
+    <section className="flex justify-center">
+      <div className="max-w-1060 flex flex-col items-center px-5 sm:px-8 lg:box-content">
+        <h1 className="hl-title text-center max-w-[53rem]">
+          {React.string("A simple and fast language for JavaScript")}
+        </h1>
+        <h2 className="body-lg text-center text-gray-60 my-4 max-w-[40rem]">
+          {React.string(
+            "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node.",
+          )}
+        </h2>
+        <padding className="mt-4 mb-2"> <Button> {React.string("Get started")} </Button> </padding>
       </div>
-    </div>
+    </section>
   }
 }
 
@@ -77,42 +66,46 @@ exports.Button = Button;`,
   let make = () => {
     let (example, _setExample) = React.useState(_ => examples->Js.Array2.unsafe_get(0))
 
-    //TODO: Replace background color with real tailwind color
-    <section
-      className="relative mt-20 bg-gray-10"
-      style={ReactDOM.Style.make(~backgroundColor="#FAFBFC", ())}>
+    //Playground Section & Background
+    <section className="relative mt-20 bg-gray-10">
       <div className="relative flex justify-center w-full">
-        <div
-          className="relative sm:rounded-b-xl pt-6 pb-8 sm:px-8 md:px-16 w-full"
-          style={ReactDOM.Style.make(~maxWidth="1400px", ())}>
+        <div className="relative w-full pt-6 pb-8 sm:px-8 md:px-16 max-w-[1400px]">
           // Playground widget
           <div
-            className="relative z-2 flex flex-col md:flex-row pb-16 bg-gray-90 mx-auto sm:rounded-lg"
-            style={ReactDOM.Style.make(~maxWidth="1400px", ())}>
+            className="relative z-2 flex flex-col md:flex-row bg-gray-90 mx-auto sm:rounded-lg max-w-[1280px]">
+            //Left Side (ReScript)
             <div className="md:w-1/2">
-              <div className="text-14 text-gray-40 text-center py-3 bg-gray-100">
+              <div
+                className="body-sm text-gray-40 text-center py-3 sm:rounded-t-lg md:rounded-tl-lg bg-gray-100">
                 {React.string("Written in ReScript")}
               </div>
               <pre className="text-14 px-8 pt-6 pb-12 whitespace-pre-wrap">
                 {HighlightJs.renderHLJS(~darkmode=true, ~code=example.res, ~lang="res", ())}
               </pre>
             </div>
-            <div className="md:w-1/2">
-              <div className="text-14 text-gray-40 py-3 text-center bg-gray-100 sm:rounded-lg">
+            //Right Side (JavaScript)
+            <div className="md:w-1/2 ">
+              <div
+                className="body-sm text-gray-40 py-3 text-center md:border-l border-gray-80 bg-gray-100 sm:rounded-tr-lg">
                 {React.string("Compiles to JavaScript")}
               </div>
-              <pre className="text-14 px-8 pt-6 pb-12 whitespace-pre-wrap">
+              <pre
+                className="text-14 px-8 pt-6 pb-14 md:border-l border-gray-80 whitespace-pre-wrap">
                 {HighlightJs.renderHLJS(~darkmode=true, ~code=example.js, ~lang="js", ())}
               </pre>
             </div>
           </div>
+          /* ---Link to Playground--- */
           <div>
             <Next.Link href={`/try?code=${LzString.compressToEncodedURIComponent(example.res)}}`}>
-              <a className="text-12 px-4 md:px-0 underline text-gray-60" target="_blank">
+              <a
+                className="captions md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60"
+                target="_blank">
                 {React.string("Edit this example in Playground")}
               </a>
             </Next.Link>
           </div>
+          //
           <div className="hidden md:block">
             <img
               className="absolute z-0 left-0 top-0 -ml-10 -mt-6"
@@ -197,9 +190,9 @@ module QuickInstall = {
           // and in the next tick, add the opacity-100 class, so the transition animation actually takes place.
           // If we don't do that, the banner will essentially pop up without any animation
           let bannerEl = Document.createElement("div")
-          bannerEl->Element.setClassName(
-            "foobar opacity-0 absolute top-0 -mt-1 -mr-1 px-2 rounded right-0 bg-turtle text-gray-80-tr transition-all duration-500 ease-in-out ",
-          )
+          bannerEl->Element.setClassName("foobar opacity-0 absolute top-0 mt-4 -mr-1 px-2 rounded right-0 
+            bg-turtle text-gray-80-tr body-sm
+            transition-all duration-500 ease-in-out ")
           let textNode = Document.createTextNode("Copied!")
 
           bannerEl->Element.appendChild(textNode)
@@ -228,28 +221,26 @@ module QuickInstall = {
       <button
         ref={ReactDOM.Ref.domRef(buttonRef)}
         disabled={state === Copied}
-        className="relative"
+        className="relative h-10 w-10 flex justify-center	items-center "
         onClick>
-        <Icon.Copy className="text-gray-40 w-4 h-4 mt-px hover:cursor-pointer hover:text-gray-80" />
+        <Icon.Copy className="w-6 h-6 mt-px text-gray-40 hover:cursor-pointer hover:text-gray-80" />
       </button>
     }
   }
 
   module Instructions = {
     let copyBox = text => {
-      //TODO: Replace backgroundColor with tailwind equivalent
       <div
-        className="flex justify-between p-4 w-full bg-gray-20 border border-gray-10 rounded"
-        style={ReactDOM.Style.make(~maxWidth="22rem", ~backgroundColor="#FAFBFC", ())}>
-        <span className="font-mono text-14 text-gray-80"> {React.string(text)} </span>
+        className="flex justify-between items-center pl-6 pr-3 py-3 w-full bg-gray-10 border border-gray-20 rounded max-w-[25rem]">
+        <span className="font-mono text-14  text-gray-70"> {React.string(text)} </span>
         <CopyButton code=text />
       </div>
     }
     @react.component
     let make = () => {
-      <div className="w-full">
-        <h2 className="font-bold text-24"> {React.string("Quick Install")} </h2>
-        <div className="text-12 pr-10 text-gray-40 my-2 leading-2">
+      <div className="w-full max-w-[400px]">
+        <h2 className="hl-3 lg:mt-12"> {React.string("Quick Install")} </h2>
+        <div className="captions x text-gray-40 mb-2 mt-1">
           {React.string(
             "You can quickly add ReScript to your existing JavaScript codebase via npm / yarn:",
           )}
@@ -264,23 +255,21 @@ module QuickInstall = {
   @react.component
   let make = () => {
     <section className="my-32 sm:px-4 sm:flex sm:justify-center">
-      <div className="max-w-1280 flex flex-col w-full">
-        <div className="relative px-12">
-          <div style={ReactDOM.Style.make(~maxWidth="29rem", ())}>
-            <p
-              className="relative z-1 space-y-12 text-gray-80 font-semibold text-24 md:text-32 leading-2">
-              <span className="bg-fire-5 rounded-md border-2 border-fire-10 h-10 w-full">
-                {React.string(`Everything you wan`)}
-              </span>
-              {React.string(`t from JavaScript, minus the parts
-          you don't need.`)}
-            </p>
-          </div>
-        </div>
-        <div className="w-full pl-12 mt-12 flex flex-col lg:flex-row justify-between">
+      <div className="max-w-1060 flex flex-col w-full px-5 md:px-8 lg:px-8 lg:box-content ">
+        //---Textblock on the left side---
+        <div className="relative max-w-[28rem]">
           <p
-            style={ReactDOM.Style.make(~maxWidth="29rem", ())}
-            className="relative z-1 text-gray-80 font-semibold text-24 md:text-32 leading-2">
+            className="relative z-1 space-y-12 text-gray-80 font-semibold text-24 md:text-32 leading-2">
+            <span className="bg-fire-5 rounded-lg border border-fire-10 p-1 ">
+              {React.string(`Everything you want`)}
+            </span>
+            {React.string(` from JavaScript, minus the parts you don't need.`)}
+          </p>
+        </div>
+        //spacing between columns
+        <div className="w-full mt-12 md:flex flex-col lg:flex-row md:justify-between ">
+          <p
+            className="relative z-1 text-gray-80 font-semibold text-24 md:text-32 leading-2 max-w-[32rem]">
             {React.string(`ReScript is easy to pick up for JavaScript developers,
           and helps shipping products with confidence.`)}
           </p>
@@ -321,29 +310,27 @@ module MainUSP = {
       | Down => "text-fire-30"
       }
 
-      <div className="relative flex justify-center w-full bg-gray-90 px-4 sm:px-32 overflow-hidden">
+      <div
+        className="relative flex justify-center w-full bg-gray-90 px-5 sm:px-8 lg:px-14 overflow-hidden">
         // Content
         <div
-          className="relative max-w-1280 z-3 flex pb-16 pt-20 md:pb-20 md:pt-32 lg:pb-40 md:space-x-4 flex-col lg:flex-row lg:justify-between w-full">
-          <div style={ReactDOM.Style.make(~maxWidth="30rem", ())}>
+          className="relative max-w-1060 z-3 flex flex-wrap justify-center lg:justify-between pb-16 pt-20 md:pb-20 md:pt-32 lg:pb-40 md:space-x-4 w-full">
+          <div className="max-w-[24rem] flex flex-col justify-center mb-6 lg:mb-2">
             <div className="hl-overline text-gray-20 mb-4"> {React.string(caption)} </div>
-            <h3
-              className="text-gray-10 mb-4 text-32 font-semibold"
-              style={ReactDOM.Style.make(~maxWidth="25rem", ())}>
-              title
-            </h3>
+            <h3 className="text-gray-10 mb-4 hl-2 font-semibold"> title </h3>
             <div className="flex">
-              <div className="text-gray-30 text-16 pr-8"> paragraph </div>
+              <div className="text-gray-30 body-md pr-8"> paragraph </div>
             </div>
           </div>
-          <div className="relative w-full" style={ReactDOM.Style.make(~maxWidth="36rem", ())}>
+          //image (right)
+          <div className="relative w-full max-w-[32rem]">
             <div
-              className="relative w-full bg-gray-90 rounded-lg flex mt-16 lg:mt-0 items-center justify-center"
+              className="relative w-full bg-gray-90 rounded-lg flex md:mt-0 items-center justify-center"
               style={ReactDOM.Style.make(
                 ~maxWidth="35rem",
                 ~borderRadius="8px",
                 ~minHeight="20rem",
-                ~boxShadow="-11px 3px 30px -5px rgba(244,100,106,0.15)",
+                ~boxShadow="0px 4px 55px 0px rgba(230,72,79,0.10)",
                 (),
               )}>
               {React.string("video of a fast build")}
@@ -423,15 +410,16 @@ module MainUSP = {
 module OtherSellingPoints = {
   @react.component
   let make = () => {
-    <section className="flex justify-center w-full bg-gray-80 ">
-      <div className="max-w-1280 flex flex-col lg:flex-row lg:space-x-8 px-4 lg:px-16 pt-24 pb-20">
-        <div className="pb-24 md:pb-32" style={ReactDOM.Style.make(~maxWidth="39.125rem", ())}>
+    <section
+      className="flex justify-center w-full bg-gray-90 border-t border-gray-80
+            px-4 sm:px-8 lg:px-16 pt-24 pb-20 ">
+      //defines the grid
+      <div className="max-w-1060 grid grid-cols-4 md:grid-cols-10 grid-rows-2 gap-8">
+        //Large Item
+        <div className="pb-24 md:pb-32 row-span-2 row-start-1 col-start-1 col-span-4 md:col-span-6">
           // TODO: Gallery swiper component for community images
-          <div
-            className="bg-gray-10 w-full rounded-lg"
-            style={ReactDOM.Style.make(~minHeight="16.8rem", ())}
-          />
-          <h3 className="hl-4 text-gray-20 my-6">
+          <div className="bg-gray-10 w-full rounded-lg min-h-[20rem]" />
+          <h3 className="hl-3 text-gray-20 mt-6 mb-2">
             {React.string(`A community of programmers who value getting things done`)}
           </h3>
           <p className="body-md text-gray-40">
@@ -442,36 +430,32 @@ module OtherSellingPoints = {
         `)}
           </p>
         </div>
-        <div className="flex lg:flex-col space-x-4 lg:space-x-0 lg:space-y-4">
-          <div style={ReactDOM.Style.make(~maxWidth="24.875rem", ())}>
-            <div
-              className="bg-turtle-dark w-full rounded-lg"
-              style={ReactDOM.Style.make(~minHeight="5.625rem", ())}
-            />
-            <h3 className="hl-4 text-gray-20 my-6">
-              {React.string(`Tooling that lets our language shine`)}
-            </h3>
-            <p className="body-md text-gray-40">
-              {React.string(`Some languages have great features, some other
+        // 2 small items
+        // Item 2
+        <div className="col-span-4 lg:row-start-1">
+          <div className="bg-turtle-dark w-full rounded-lg min-h-[10rem]" />
+          <h3 className="hl-3 text-gray-20 mt-6 mb-2">
+            {React.string(`Tooling that lets our language shine`)}
+          </h3>
+          <p className="body-md text-gray-40">
+            {React.string(`Some languages have great features, some other
               languages have great tooling. ReScript brings everything you need
               to get up and running quickly without tricky configuration.`)}
-            </p>
-          </div>
-          <div style={ReactDOM.Style.make(~maxWidth="24.875rem", ())}>
-            <div
-              className="bg-gray-10 w-full rounded-lg"
-              style={ReactDOM.Style.make(~minHeight="5.625rem", ())}
-            />
-            <h3 className="hl-4 text-gray-20 my-6">
-              {React.string(`The only language you can easily un-adopt`)}
-            </h3>
-            <p className="body-md text-gray-40">
-              {React.string(`ReScript allows you to remove the source files and
+          </p>
+        </div>
+        // Item 3
+        <div className="col-span-4 lg:row-start-2">
+          <div className="bg-gray-10 w-full rounded-lg min-h-[10rem]" />
+          <h3 className="hl-3 text-gray-20 mt-6 mb-2">
+            {React.string(`The only language you can easily un-adopt`)}
+          </h3>
+          <p className="body-md text-gray-40">
+            {React.string(`ReScript allows you to remove the source files and
             keep its clean JavaScript output. Tell your coworkers that your
             project will keep functioning with or without ReScript!`)}
-            </p>
-          </div>
+          </p>
         </div>
+        // </div>
       </div>
     </section>
   }
@@ -488,41 +472,50 @@ module OtherSellingPoints = {
 
 module TrustedBy = {
   // TODO: is this data structure too fancy?
-  type company =
-    | Logo({name: string, path: string, /* TODO: get rid of style */ style: ReactDOM.Style.t})
-    | Name(string)
+  type company = Logo({name: string, path: string}) /* TODO: get rid of style */
 
   let companies = [
     Logo({
       name: "Facebook Messenger",
-      path: "/static/messenger-logo-64@2x.png",
-      style: ReactDOM.Style.make(~height="64px", ()),
+      path: "/static/lp/messenger.svg",
     }),
-    Name("Facebook"),
-    Name("Rohea"),
-    Name("Beop"),
-    Name("Travel World"),
+    Logo({
+      name: "Facebook",
+      path: "/static/lp/facebook.svg",
+    }),
+    Logo({
+      name: "Rohea",
+      path: "/static/lp/rohea.svg",
+    }),
+    Logo({
+      name: "CCA",
+      path: "/static/lp/cca-io.svg",
+    }),
+    Logo({
+      name: "Nomadic Labs",
+      path: "/static/lp/nomadic_labs.svg",
+    }),
+    Logo({
+      name: "Draftbit",
+      path: "/static/lp/draftbit.svg",
+    }),
     Logo({
       name: "Pupilfirst",
-      path: "/static/pupilfirst-logo.png",
-      style: ReactDOM.Style.make(~height="42px", ()),
+      path: "/static/lp/pupilfirst.svg",
     }),
-    Name("NomadicLabs"),
   ]
 
   @react.component
   let make = () => {
     <section className="mt-20">
-      <h3
-        className="text-48 text-gray-42 tracking-tight leading-2 font-semibold text-center max-w-576 mx-auto">
-        {React.string("Trusted by developers around the world")}
+      <h3 className="hl-1 text-gray-80 text-center max-w-576 mx-auto">
+        {React.string("Trusted by our users")}
       </h3>
-      <div className="flex justify-between items-center max-w-xl mx-auto mt-16">
+      <div className="flex justify-between items-center max-w-xl mx-auto mt-16 h-[48px]">
         {companies
         ->Js.Array2.map(company => {
           let (companyKey, renderedCompany) = switch company {
-          | Name(name) => (name, React.string(name))
-          | Logo({name, path, style}) => (name, <img className="max-w-sm" style src=path />)
+          | Logo({name, path}) => (name, <img className="max-w-sm" src=path />)
           }
           <div key=companyKey> renderedCompany </div>
         })
@@ -609,24 +602,26 @@ module CuratedResources = {
   @react.component
   let make = () => {
     <section className="bg-gray-100 w-full pb-40 pt-20">
-      <div className="mb-20 flex flex-col justify-center items-center">
+      //headline
+      <div className="mb-20 flex flex-col justify-center items-center"> //headline container
         <div className="body-sm md:body-lg text-gray-40 w-40 mb-4 xs:w-auto">
           {React.string("To start or advance your ReScript projects")}
         </div>
-        <h2 className="hl-2 md:hl-1 text-gray-20 max-w-md mx-auto text-center">
+        <h2 className="hl-1 text-gray-20 mx-auto text-center">
           {React.string("Carefully curated resources")}
         </h2>
       </div>
       <div>
-        <div className="uppercase text-14 text-center mb-20">
+        <div className="uppercase body-sm text-center text-gray-40 mb-20">
           {React.string("guides and docs")}
         </div>
-        <div className="flex justify-between max-w-1280 mx-auto">
+        //container for guides
+        <div className="flex justify-between max-w-1280 px-5 mx-auto">
           {cards
           ->Belt.Array.mapWithIndex((i, card) =>
             <Next.Link key={Belt.Int.toString(i)} href={card.href}>
               <a
-                className="bg-gray-90 px-5 pb-8 relative rounded-xl"
+                className="bg-gray-90 mx-4 px-4 pb-8 relative rounded-xl"
                 style={ReactDOM.Style.make(~maxWidth="296px", ())}>
                 <img className="h-12 absolute mt-5" src=card.imgSrc />
                 <h5 className="text-gray-10 font-semibold mt-32 h-12"> {card.title} </h5>
@@ -636,6 +631,7 @@ module CuratedResources = {
           )
           ->React.array}
         </div>
+        //Container for templates
         <div className="uppercase text-14 text-center mb-20 mt-20">
           {React.string("templates")}
         </div>
@@ -665,6 +661,8 @@ module Sponsors = {
   let make = () =>
     <div className="mt-24">
       <h2 className="hl-1 text-center"> {React.string("Sponsors")} </h2>
+      <Button> {React.string("test")} </Button>
+      <Button kind=PrimaryBlue size=Small> {React.string("test2")} </Button>
     </div>
 }
 
