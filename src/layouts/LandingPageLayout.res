@@ -410,18 +410,20 @@ module MainUSP = {
 module OtherSellingPoints = {
   @react.component
   let make = () => {
-    <section className="flex justify-center w-full bg-gray-90 border-t border-gray-80 ">
-      //section 
+    <section
+      className="flex justify-center w-full bg-gray-90 border-t border-gray-80
+            px-4 sm:px-8 lg:px-16 pt-24 pb-20 ">
+      //section
       <div
-        className="max-w-1060 grid grid-cols-10 grid-rows-2 md:grid-rows-1 gap-8
-      lg:space-x-8 px-4 sm:px-8 lg:px-16 pt-24 pb-20"> //defining the grid //ignore: flex flex-col lg:flex-row
-         
-          //Large Item
-        <div className="pb-24 md:pb-32 col-span-6">
+        className="max-w-1060 grid grid-cols-4 md:grid-cols-10 grid-rows-2 gap-8">
+        //defining the grid //ignore: flex flex-col lg:flex-row
+
+        //Large Item
+        <div
+          className="pb-24 md:pb-32 row-span-2 row-start-1 col-start-1 col-span-4 md:col-span-6">
           // TODO: Gallery swiper component for community images
           <div
-            className="bg-gray-10 w-full rounded-lg"
-            style={ReactDOM.Style.make(~minHeight="16.8rem", ())}
+            className="bg-gray-10 w-full rounded-lg min-h-[20rem]"
           />
           <h3 className="hl-3 text-gray-20 mt-6 mb-2">
             {React.string(`A community of programmers who value getting things done`)}
@@ -436,37 +438,34 @@ module OtherSellingPoints = {
         </div>
         // 2 small items
         // Item 2
-        <div className="col-span-4 flex lg:flex-col lg:space-y-4">
-          <div>
-            <div
-              className="bg-turtle-dark w-full rounded-lg"
-              style={ReactDOM.Style.make(~minHeight="5.625rem", ())}
-            />
-            <h3 className="hl-3 text-gray-20 mt-6 mb-2">
-              {React.string(`Tooling that lets our language shine`)}
-            </h3>
-            <p className="body-md text-gray-40">
-              {React.string(`Some languages have great features, some other
+        <div className="col-span-4 lg:row-start-1">
+          <div
+            className="bg-turtle-dark w-full rounded-lg min-h-[10rem]"
+          />
+          <h3 className="hl-3 text-gray-20 mt-6 mb-2">
+            {React.string(`Tooling that lets our language shine`)}
+          </h3>
+          <p className="body-md text-gray-40">
+            {React.string(`Some languages have great features, some other
               languages have great tooling. ReScript brings everything you need
               to get up and running quickly without tricky configuration.`)}
-            </p>
-          </div>
-          // Item 3
-          <div>
-            <div
-              className="bg-gray-10 w-full rounded-lg"
-              style={ReactDOM.Style.make(~minHeight="5.625rem", ())}
-            />
-            <h3 className="hl-3 text-gray-20 mt-6 mb-2">
-              {React.string(`The only language you can easily un-adopt`)}
-            </h3>
-            <p className="body-md text-gray-40">
-              {React.string(`ReScript allows you to remove the source files and
+          </p>
+        </div>
+        // Item 3
+        <div className="col-span-4 lg:row-start-2">
+          <div
+            className="bg-gray-10 w-full rounded-lg min-h-[10rem]"
+          />
+          <h3 className="hl-3 text-gray-20 mt-6 mb-2">
+            {React.string(`The only language you can easily un-adopt`)}
+          </h3>
+          <p className="body-md text-gray-40">
+            {React.string(`ReScript allows you to remove the source files and
             keep its clean JavaScript output. Tell your coworkers that your
             project will keep functioning with or without ReScript!`)}
-            </p>
-          </div>
+          </p>
         </div>
+        // </div>
       </div>
     </section>
   }
