@@ -413,18 +413,12 @@ module OtherSellingPoints = {
     <section
       className="flex justify-center w-full bg-gray-90 border-t border-gray-80
             px-4 sm:px-8 lg:px-16 pt-24 pb-20 ">
-      //section
-      <div
-        className="max-w-1060 grid grid-cols-4 md:grid-cols-10 grid-rows-2 gap-8">
-        //defining the grid //ignore: flex flex-col lg:flex-row
-
+      //defines the grid
+      <div className="max-w-1060 grid grid-cols-4 md:grid-cols-10 grid-rows-2 gap-8">
         //Large Item
-        <div
-          className="pb-24 md:pb-32 row-span-2 row-start-1 col-start-1 col-span-4 md:col-span-6">
+        <div className="pb-24 md:pb-32 row-span-2 row-start-1 col-start-1 col-span-4 md:col-span-6">
           // TODO: Gallery swiper component for community images
-          <div
-            className="bg-gray-10 w-full rounded-lg min-h-[20rem]"
-          />
+          <div className="bg-gray-10 w-full rounded-lg min-h-[20rem]" />
           <h3 className="hl-3 text-gray-20 mt-6 mb-2">
             {React.string(`A community of programmers who value getting things done`)}
           </h3>
@@ -439,9 +433,7 @@ module OtherSellingPoints = {
         // 2 small items
         // Item 2
         <div className="col-span-4 lg:row-start-1">
-          <div
-            className="bg-turtle-dark w-full rounded-lg min-h-[10rem]"
-          />
+          <div className="bg-turtle-dark w-full rounded-lg min-h-[10rem]" />
           <h3 className="hl-3 text-gray-20 mt-6 mb-2">
             {React.string(`Tooling that lets our language shine`)}
           </h3>
@@ -453,9 +445,7 @@ module OtherSellingPoints = {
         </div>
         // Item 3
         <div className="col-span-4 lg:row-start-2">
-          <div
-            className="bg-gray-10 w-full rounded-lg min-h-[10rem]"
-          />
+          <div className="bg-gray-10 w-full rounded-lg min-h-[10rem]" />
           <h3 className="hl-3 text-gray-20 mt-6 mb-2">
             {React.string(`The only language you can easily un-adopt`)}
           </h3>
@@ -482,41 +472,50 @@ module OtherSellingPoints = {
 
 module TrustedBy = {
   // TODO: is this data structure too fancy?
-  type company =
-    | Logo({name: string, path: string, /* TODO: get rid of style */ style: ReactDOM.Style.t})
-    | Name(string)
+  type company = Logo({name: string, path: string}) /* TODO: get rid of style */
 
   let companies = [
     Logo({
       name: "Facebook Messenger",
-      path: "/static/messenger-logo-64@2x.png",
-      style: ReactDOM.Style.make(~height="64px", ()),
+      path: "/static/lp/messenger.svg",
     }),
-    Name("Facebook"),
-    Name("Rohea"),
-    Name("Beop"),
-    Name("Travel World"),
+    Logo({
+      name: "Facebook",
+      path: "/static/lp/facebook.svg",
+    }),
+    Logo({
+      name: "Rohea",
+      path: "/static/lp/rohea.svg",
+    }),
+    Logo({
+      name: "CCA",
+      path: "/static/lp/cca-io.svg",
+    }),
+    Logo({
+      name: "Nomadic Labs",
+      path: "/static/lp/nomadic_labs.svg",
+    }),
+    Logo({
+      name: "Draftbit",
+      path: "/static/lp/draftbit.svg",
+    }),
     Logo({
       name: "Pupilfirst",
-      path: "/static/pupilfirst-logo.png",
-      style: ReactDOM.Style.make(~height="42px", ()),
+      path: "/static/lp/pupilfirst.svg",
     }),
-    Name("NomadicLabs"),
   ]
 
   @react.component
   let make = () => {
     <section className="mt-20">
-      <h3
-        className="text-48 text-gray-42 tracking-tight leading-2 font-semibold text-center max-w-576 mx-auto">
-        {React.string("Trusted by developers around the world")}
+      <h3 className="hl-1 text-gray-80 text-center max-w-576 mx-auto">
+        {React.string("Trusted by our users")}
       </h3>
-      <div className="flex justify-between items-center max-w-xl mx-auto mt-16">
+      <div className="flex justify-between items-center max-w-xl mx-auto mt-16 h-[48px]">
         {companies
         ->Js.Array2.map(company => {
           let (companyKey, renderedCompany) = switch company {
-          | Name(name) => (name, React.string(name))
-          | Logo({name, path, style}) => (name, <img className="max-w-sm" style src=path />)
+          | Logo({name, path}) => (name, <img className="max-w-sm" src=path />)
           }
           <div key=companyKey> renderedCompany </div>
         })
@@ -603,24 +602,26 @@ module CuratedResources = {
   @react.component
   let make = () => {
     <section className="bg-gray-100 w-full pb-40 pt-20">
-      <div className="mb-20 flex flex-col justify-center items-center">
+      //headline
+      <div className="mb-20 flex flex-col justify-center items-center"> //headline container
         <div className="body-sm md:body-lg text-gray-40 w-40 mb-4 xs:w-auto">
           {React.string("To start or advance your ReScript projects")}
         </div>
-        <h2 className="hl-2 md:hl-1 text-gray-20 max-w-md mx-auto text-center">
+        <h2 className="hl-1 text-gray-20 mx-auto text-center">
           {React.string("Carefully curated resources")}
         </h2>
       </div>
       <div>
-        <div className="uppercase text-14 text-center mb-20">
+        <div className="uppercase body-sm text-center text-gray-40 mb-20">
           {React.string("guides and docs")}
         </div>
-        <div className="flex justify-between max-w-1280 mx-auto">
+        //container for guides
+        <div className="flex justify-between max-w-1280 px-5 mx-auto">
           {cards
           ->Belt.Array.mapWithIndex((i, card) =>
             <Next.Link key={Belt.Int.toString(i)} href={card.href}>
               <a
-                className="bg-gray-90 px-5 pb-8 relative rounded-xl"
+                className="bg-gray-90 mx-4 px-4 pb-8 relative rounded-xl"
                 style={ReactDOM.Style.make(~maxWidth="296px", ())}>
                 <img className="h-12 absolute mt-5" src=card.imgSrc />
                 <h5 className="text-gray-10 font-semibold mt-32 h-12"> {card.title} </h5>
@@ -630,6 +631,7 @@ module CuratedResources = {
           )
           ->React.array}
         </div>
+        //Container for templates
         <div className="uppercase text-14 text-center mb-20 mt-20">
           {React.string("templates")}
         </div>

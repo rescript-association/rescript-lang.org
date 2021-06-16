@@ -342,47 +342,39 @@ function LandingPageLayout$OtherSellingPoints(Props) {
 
 var companies = [
   {
-    TAG: 0,
     name: "Facebook Messenger",
-    path: "/static/messenger-logo-64@2x.png",
-    style: {
-      height: "64px"
-    },
+    path: "/static/lp/messenger.svg",
     [Symbol.for("name")]: "Logo"
   },
   {
-    TAG: 1,
-    _0: "Facebook",
-    [Symbol.for("name")]: "Name"
+    name: "Facebook",
+    path: "/static/lp/facebook.svg",
+    [Symbol.for("name")]: "Logo"
   },
   {
-    TAG: 1,
-    _0: "Rohea",
-    [Symbol.for("name")]: "Name"
+    name: "Rohea",
+    path: "/static/lp/rohea.svg",
+    [Symbol.for("name")]: "Logo"
   },
   {
-    TAG: 1,
-    _0: "Beop",
-    [Symbol.for("name")]: "Name"
+    name: "CCA",
+    path: "/static/lp/cca-io.svg",
+    [Symbol.for("name")]: "Logo"
   },
   {
-    TAG: 1,
-    _0: "Travel World",
-    [Symbol.for("name")]: "Name"
+    name: "Nomadic Labs",
+    path: "/static/lp/nomadic_labs.svg",
+    [Symbol.for("name")]: "Logo"
   },
   {
-    TAG: 0,
+    name: "Draftbit",
+    path: "/static/lp/draftbit.svg",
+    [Symbol.for("name")]: "Logo"
+  },
+  {
     name: "Pupilfirst",
-    path: "/static/pupilfirst-logo.png",
-    style: {
-      height: "42px"
-    },
+    path: "/static/lp/pupilfirst.svg",
     [Symbol.for("name")]: "Logo"
-  },
-  {
-    TAG: 1,
-    _0: "NomadicLabs",
-    [Symbol.for("name")]: "Name"
   }
 ];
 
@@ -390,30 +382,17 @@ function LandingPageLayout$TrustedBy(Props) {
   return React.createElement("section", {
               className: "mt-20"
             }, React.createElement("h3", {
-                  className: "text-48 text-gray-42 tracking-tight leading-2 font-semibold text-center max-w-576 mx-auto"
-                }, "Trusted by developers around the world"), React.createElement("div", {
-                  className: "flex justify-between items-center max-w-xl mx-auto mt-16"
+                  className: "hl-1 text-gray-80 text-center max-w-576 mx-auto"
+                }, "Trusted by our users"), React.createElement("div", {
+                  className: "flex justify-between items-center max-w-xl mx-auto mt-16 h-[48px]"
                 }, companies.map(function (company) {
-                      var match;
-                      if (company.TAG === /* Logo */0) {
-                        match = [
-                          company.name,
-                          React.createElement("img", {
-                                className: "max-w-sm",
-                                style: company.style,
-                                src: company.path
-                              })
-                        ];
-                      } else {
-                        var name = company._0;
-                        match = [
-                          name,
-                          name
-                        ];
-                      }
+                      var renderedCompany = React.createElement("img", {
+                            className: "max-w-sm",
+                            src: company.path
+                          });
                       return React.createElement("div", {
-                                  key: match[0]
-                                }, match[1]);
+                                  key: company.name
+                                }, renderedCompany);
                     })), React.createElement("div", {
                   className: "text-center mt-16 text-14"
                 }, "and many more…"), React.createElement("div", {
@@ -494,16 +473,16 @@ function LandingPageLayout$CuratedResources(Props) {
                 }, React.createElement("div", {
                       className: "body-sm md:body-lg text-gray-40 w-40 mb-4 xs:w-auto"
                     }, "To start or advance your ReScript projects"), React.createElement("h2", {
-                      className: "hl-2 md:hl-1 text-gray-20 max-w-md mx-auto text-center"
+                      className: "hl-1 text-gray-20 mx-auto text-center"
                     }, "Carefully curated resources")), React.createElement("div", undefined, React.createElement("div", {
-                      className: "uppercase text-14 text-center mb-20"
+                      className: "uppercase body-sm text-center text-gray-40 mb-20"
                     }, "guides and docs"), React.createElement("div", {
-                      className: "flex justify-between max-w-1280 mx-auto"
+                      className: "flex justify-between max-w-1280 px-5 mx-auto"
                     }, Belt_Array.mapWithIndex(cards, (function (i, card) {
                             return React.createElement(Next.Link.make, {
                                         href: card.href,
                                         children: React.createElement("a", {
-                                              className: "bg-gray-90 px-5 pb-8 relative rounded-xl",
+                                              className: "bg-gray-90 mx-4 px-4 pb-8 relative rounded-xl",
                                               style: {
                                                 maxWidth: "296px"
                                               }
