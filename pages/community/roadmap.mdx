@@ -12,19 +12,56 @@ import Image from "src/components/Image";
 
 This is a living document that defines our current roadmap and explains our future release cycle plans for the upcoming years.
 
-**TL;DR:**
+## Roadmap
 
-- Stable (active / maintenance) & Experimental release channel
-- Always use stable releases for libraries!
-- You may want to use the experimental release if you want to test new features in your applications and prepare your codebase for the upcoming stable version
+Please be aware that our roadmap will only discuss major changes, and might be adapted during planning phases.
 
-## Definition for our Release Channels
+All roadmap related discussions, proposals and changes for specific roadmap tasks can either be found in the [ReScript Forum](https://forum.rescript-lang.org), or in dedicated Github PRs / issues.
+
+### Stable Release v10
+
+- Add M1 support (see [first call for testing](https://forum.rescript-lang.org/t/rescript-m1-native-binares-call-for-testing/1797))
+- Add support for unicode strings (e.g `"Hallöle"` will work like in JavaScript; see [PR](https://github.com/rescript-lang/syntax/pull/433))
+- Add opt-in configuration flag `stdlib-future` to disable OCaml related stdlib code (for writing future proof code; see [discussion](https://forum.rescript-lang.org/t/roles-for-belt-js-and-pervasives-in-rescript/1683))
+- (breaking) Remove OCaml’s Format module (should have no impact on the majority of ReScript users; see [discussion](https://forum.rescript-lang.org/t/what-stable-type-system-features-we-are-going-to-preserve-from-ocaml/1251))
+- Infix operator support (only for a dedicated set of math operators `+`, `-`, `-.`, `/`, `%`, etc.; see the [tracking issue](https://github.com/rescript-lang/syntax/issues/440))
+- Docstring syntax support: `/** */` instead of `@ocaml.doc("My docstring")` ([tracking issue](https://github.com/rescript-lang/syntax/issues/439))
+- Convert stdlib files (`Js`, `Belt`, etc) to ReScript syntax ([tracking issue](https://github.com/rescript-lang/rescript-compiler/issues/4872))
+- Make `bsconfig.json` json compliant ([Proposal](https://forum.rescript-lang.org/t/proposed-changes-make-bsconfig-json-standard-compilant/1859))
+- Some other less prominent enhancements (will be mentioned in the Changelog later on)
+- (Non exhaustive list of changes; goals may be adapted)
+
+**Estimated release date for v10:** Mid of January 2022
+
+### Experimental Release v11
+
+**Important:** These changes are currently listed on the roadmap, but may be subject to change before development starts.
+
+- Removal of ocaml stdlib
+- PPX only allowed on top level packages?
+- Removal of recursive modules?
+
+**Estimated start of development:** May 2022<br/>
+**Estimated switch to v12:** Mid of January 2023
+
+### Stable Release v12
+
+- Feature set of `v11`
+- Additional features will be discussed during the `v11` development phase
+
+### Experimental Release v13
+
+Will be discussed during `v12` development.
+
+## Release Cycle Plan
 
 We will follow a similar approach to the NodeJS project and consider even version numbers to be stable releases (v10, v12, v14,...), and uneven version numbers as experimental (v11, v13, v15,...) releases.
 
-The goal of the new release system is to have a slower and easier to manage upgrade experience for our users, with a proper grace-period to discuss and refine feature proposals.
+<Image withShadow={false} src="/static/img/roadmap_2021.jpg" caption="Release cycle for the upcoming versions"/>
 
-The experimental release channel will be useful for gathering feedback / testing out migrations without the fear of breaking our existing userbase whenever more intrusive changes have been made. We want to guarantee a certain grace-period where library maintainers and users can preview and adapt to the newest changes.
+The goal of the new release system is to have a slower and easier to manage upgrade experience for our users / library maintainers, with a proper grace-period to discuss and refine feature proposals.
+
+The experimental release channel will be useful for gathering feedback / testing out migrations without the fear of breaking our existing userbase whenever more intrusive changes have been made.
 
 ### Stable release:
 
@@ -64,48 +101,3 @@ That doesn't mean that older stable versions go stale; in practise those release
 
 We will make sure that there are well documented upgrade paths between each stable release.
 
-
-### Feature Discussions and Proposals
-
-Please be aware that our roadmap will only discuss major changes, and might be adapted during planning phases.
-
-All roadmap related discussions, proposals and changes for specific roadmap tasks can either be found in the [ReScript Forum](https://forum.rescript-lang.org), or in dedicated Github PRs / issues.
-
-## Release Plan (v10 - v15)
-
-<Image withShadow={false} src="/static/img/roadmap_2021.jpg" caption="Release cycle for the upcoming versions"/>
-
-### Stable Release v10
-
-- Add M1 support (see [first call for testing](https://forum.rescript-lang.org/t/rescript-m1-native-binares-call-for-testing/1797))
-- Add support for unicode strings (e.g `"Hallöle"` will work like in JavaScript; see [PR](https://github.com/rescript-lang/syntax/pull/433))
-- Add opt-in configuration flag `stdlib-future` to disable OCaml related stdlib code (for writing future proof code; see [discussion](https://forum.rescript-lang.org/t/roles-for-belt-js-and-pervasives-in-rescript/1683))
-- (breaking) Remove OCaml’s Format module (should have no impact on the majority of ReScript users; see [discussion](https://forum.rescript-lang.org/t/what-stable-type-system-features-we-are-going-to-preserve-from-ocaml/1251))
-- Infix operator support (only for a dedicated set of math operators `+`, `-`, `-.`, `/`, `%`, etc.; see the [tracking issue](https://github.com/rescript-lang/syntax/issues/440))
-- Docstring syntax support: `/** */` instead of `@ocaml.doc("My docstring")` ([tracking issue](https://github.com/rescript-lang/syntax/issues/439))
-- Convert stdlib files (`Js`, `Belt`, etc) to ReScript syntax ([tracking issue](https://github.com/rescript-lang/rescript-compiler/issues/4872))
-- Make `bsconfig.json` json compliant ([Proposal](https://forum.rescript-lang.org/t/proposed-changes-make-bsconfig-json-standard-compilant/1859))
-- Some other less prominent enhancements (will be mentioned in the Changelog later on)
-- (Non exhaustive list of changes; goals may be adapted)
-
-**Estimated release date for v10:** Mid of January 2022
-
-### Experimental Release v11
-
-**Important:** These changes are currently listed on the roadmap, but may be subject to change before development starts.
-
-- Removal of ocaml stdlib
-- PPX only allowed on top level packages?
-- Removal of recursive modules?
-
-**Estimated start of development:** May 2022<br/>
-**Estimated switch to v12:** Mid of January 2023
-
-### Stable Release v12
-
-- Feature set of `v11`
-- Additional features will be discussed during the `v11` development phase
-
-### Experimental Release v13
-
-Will be discussed during `v12` development.
