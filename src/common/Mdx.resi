@@ -38,6 +38,7 @@ module Components: {
     ~intro: React.component<props>=?,
     ~urlBox: React.component<{"text": string, "href": string, "children": MdxChildren.t}>=?,
     ~codeTab: React.component<{"children": MdxChildren.t, "labels": option<array<string>>}>=?,
+    ~warningTable: React.component<props>=?,
     ~p: React.component<props>=?,
     ~li: React.component<props>=?,
     ~h1: React.component<props>=?,

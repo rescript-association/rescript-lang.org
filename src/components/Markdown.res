@@ -343,6 +343,24 @@ module CodeTab = {
   }
 }
 
+module WarningTable = {
+  @react.component
+  let make = (~children) => {
+    <Table>
+      <Thead>
+        <tr> <Th> {React.string("#")} </Th> <Th> {React.string("Description")} </Th> </tr>
+      </Thead>
+      <tbody>
+        {WarningFlagDescription.lookupAll()
+        ->Belt.Array.map(((number, description)) =>
+          <tr> <Td> {React.string(number)} </Td> <Td> {React.string(description)} </Td> </tr>
+        )
+        ->React.array}
+      </tbody>
+    </Table>
+  }
+}
+
 module Blockquote = {
   @react.component
   let make = (~children) =>
@@ -497,6 +515,7 @@ let default = Mdx.Components.t(
   ~warn=Warn.make,
   ~urlBox=UrlBox.make,
   ~codeTab=CodeTab.make,
+  ~warningTable=WarningTable.make,
   ~p=P.make,
   ~li=Li.make,
   ~h1=H1.make,

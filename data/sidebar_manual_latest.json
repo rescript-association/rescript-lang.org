@@ -56,7 +56,8 @@
     "build-external-stdlib",
     "build-pinned-dependencies",
     "interop-with-js-build-systems",
-    "build-performance"
+    "build-performance",
+    "compiler-warnings"
   ],
   "Guides": [
     "converting-from-js"
