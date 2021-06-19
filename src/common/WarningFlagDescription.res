@@ -90,14 +90,7 @@ let numeric = [
   (109, "Toplevel expression has unit type"),
 ]
 
-let lastWarningNumber = 108
-let letterAll = {
-  let ret = []
-  for i in 1 to lastWarningNumber {
-    Js.Array2.push(ret, i)->ignore
-  }
-  ret
-}
+let letterAll = numeric->Belt.Array.map(fst)
 
 // we keep the original variable name `letter` like in warnings.ml
 let _letter = l =>

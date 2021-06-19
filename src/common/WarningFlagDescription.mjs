@@ -295,11 +295,9 @@ var numeric = [
   ]
 ];
 
-var ret = [];
-
-for(var i = 1; i <= 108; ++i){
-  ret.push(i);
-}
+Belt_Array.map(numeric, (function (prim) {
+        return prim[0];
+      }));
 
 var letterDescriptions = [[
     "a",
