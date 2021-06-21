@@ -42,8 +42,7 @@ For running `genType` with ReScript via `npm` workflow, no special setup is requ
 ## Configuration
 
 Every `genType` powered project requires a configuration item `"gentypeconfig"`
-at top level in the project's `bsconfig.json`. (The use of a separate file
-`gentypeconfig.json` is being deprecated). The configuration has following
+at top level in the project's `bsconfig.json`. The configuration has following
 structure:
 
 ```js
@@ -63,12 +62,12 @@ structure:
   - `"untyped"`: Generate `*.gen.js` files in vanilla JavaScript.
 
 - **shims**
-  - e.g. `Array<string>` with format: `"RescriptModule=JavaScriptModule"`
-  - Required to export certain basic ReScript data types to JS when one cannot modify the sources to add annotations (e.g. exporting ReScript lists)
+  - Required only if one needs to export certain basic ReScript data types to JS when one cannot modify the sources to add annotations (e.g. exporting ReScript lists), and if the types are not first-classed in genType.
+  - Example: `Array<string>` with format: `"RescriptModule=JavaScriptModule"`
 
 ## Adding Shims (TS & Flow)
 
-A shim is a TS / Flow file that provides user-defined definitions for library types.
+A shim is a TS / Flow file that provides user-provided definitions for library types.
 
 Configure your shim files within `"gentypeconfig"` in your [`bsconfig.json`](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/bsconfig.json), and add relevant `.shims.js` files in a directory which is visible by ReScript e.g.  [`src/shims/`](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/src/shims). An example shim to export ReactEvent can be found [here](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/src/shims/ReactEvent.shim.ts).
 
@@ -90,8 +89,8 @@ We prepared some examples to give you an idea on how to integrate `genType` in y
 
 **Please make sure to build genType before trying to build the examples.**
 
-- [flow-react-example](https://github.com/reason-association/genType/tree/master/examples/flow-react-example)
 - [typescript-react-example](https://github.com/reason-association/genType/tree/master/examples/typescript-react-example)
+- [flow-react-example](https://github.com/reason-association/genType/tree/master/examples/flow-react-example)
 - [untyped-react-example](https://github.com/reason-association/genType/tree/master/examples/untyped-react-example)
 
 ## Experimental features
