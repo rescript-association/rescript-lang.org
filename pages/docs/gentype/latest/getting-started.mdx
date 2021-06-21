@@ -6,8 +6,6 @@ canonical: "/docs/gentype/latest/getting-started"
 
 # Getting Started
 
-<!-- @cristianoc: start here -->
-
 `genType` is tightly integrated in the ReScript Compiler. It only requires minimal setup.
 
 ## Setup
@@ -28,7 +26,7 @@ Add a `gentypeconfig` section to your `bsconfig.json` (See [Configuration](#conf
 
 ```
 "gentypeconfig": {
-    "language": "untyped",
+    "language": "typescript",
     "shims": {},
     "debug": {
       "all": false,
@@ -37,14 +35,7 @@ Add a `gentypeconfig` section to your `bsconfig.json` (See [Configuration](#conf
 }
 ```
 
-For running `gentype` with ReScript via `npm` workflow, add following script in your `package.json`:
-
-```
-scripts: {
-  "build": "rescript",
-  "clean": "rescript clean"
-}
-```
+For running `genType` with ReScript via `npm` workflow, no special setup is required in `package.json`.
 
 > **Note:** `rescript` will automatically detect your installed `genType` version.
 
