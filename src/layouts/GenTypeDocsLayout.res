@@ -31,7 +31,7 @@ let make = (~frontmatter=?, ~components=Markdown.default, ~children) => {
   }
 
   let title = "GenType"
-  let version = "v3"
+  let version = "v4"
 
   <LatestLayout
     theme=#Reason
