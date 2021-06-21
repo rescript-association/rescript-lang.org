@@ -57,7 +57,7 @@
     "build-pinned-dependencies",
     "interop-with-js-build-systems",
     "build-performance",
-    "compiler-warnings"
+    "warning-numbers"
   ],
   "Guides": [
     "converting-from-js"
