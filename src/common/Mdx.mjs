@@ -74,7 +74,7 @@ var MdxChildren = {
 };
 
 var Components = {
-  t: (function (prim0, prim1, prim2, prim3, prim4, prim5, prim6, prim7, prim8, prim9, prim10, prim11, prim12, prim13, prim14, prim15, prim16, prim17, prim18, prim19, prim20, prim21, prim22, prim23, prim24, prim25, prim26) {
+  t: (function (prim0, prim1, prim2, prim3, prim4, prim5, prim6, prim7, prim8, prim9, prim10, prim11, prim12, prim13, prim14, prim15, prim16, prim17, prim18, prim19, prim20, prim21, prim22, prim23, prim24, prim25, prim26, prim27) {
       var tmp = {};
       if (prim0 !== undefined) {
         tmp.Cite = Caml_option.valFromOption(prim0);
@@ -95,64 +95,67 @@ var Components = {
         tmp.CodeTab = Caml_option.valFromOption(prim5);
       }
       if (prim6 !== undefined) {
-        tmp.p = Caml_option.valFromOption(prim6);
+        tmp.WarningTable = Caml_option.valFromOption(prim6);
       }
       if (prim7 !== undefined) {
-        tmp.li = Caml_option.valFromOption(prim7);
+        tmp.p = Caml_option.valFromOption(prim7);
       }
       if (prim8 !== undefined) {
-        tmp.h1 = Caml_option.valFromOption(prim8);
+        tmp.li = Caml_option.valFromOption(prim8);
       }
       if (prim9 !== undefined) {
-        tmp.h2 = Caml_option.valFromOption(prim9);
+        tmp.h1 = Caml_option.valFromOption(prim9);
       }
       if (prim10 !== undefined) {
-        tmp.h3 = Caml_option.valFromOption(prim10);
+        tmp.h2 = Caml_option.valFromOption(prim10);
       }
       if (prim11 !== undefined) {
-        tmp.h4 = Caml_option.valFromOption(prim11);
+        tmp.h3 = Caml_option.valFromOption(prim11);
       }
       if (prim12 !== undefined) {
-        tmp.h5 = Caml_option.valFromOption(prim12);
+        tmp.h4 = Caml_option.valFromOption(prim12);
       }
       if (prim13 !== undefined) {
-        tmp.ul = Caml_option.valFromOption(prim13);
+        tmp.h5 = Caml_option.valFromOption(prim13);
       }
       if (prim14 !== undefined) {
-        tmp.ol = Caml_option.valFromOption(prim14);
+        tmp.ul = Caml_option.valFromOption(prim14);
       }
       if (prim15 !== undefined) {
-        tmp.table = Caml_option.valFromOption(prim15);
+        tmp.ol = Caml_option.valFromOption(prim15);
       }
       if (prim16 !== undefined) {
-        tmp.thead = Caml_option.valFromOption(prim16);
+        tmp.table = Caml_option.valFromOption(prim16);
       }
       if (prim17 !== undefined) {
-        tmp.th = Caml_option.valFromOption(prim17);
+        tmp.thead = Caml_option.valFromOption(prim17);
       }
       if (prim18 !== undefined) {
-        tmp.td = Caml_option.valFromOption(prim18);
+        tmp.th = Caml_option.valFromOption(prim18);
       }
       if (prim19 !== undefined) {
-        tmp.blockquote = Caml_option.valFromOption(prim19);
+        tmp.td = Caml_option.valFromOption(prim19);
       }
       if (prim20 !== undefined) {
-        tmp.inlineCode = Caml_option.valFromOption(prim20);
+        tmp.blockquote = Caml_option.valFromOption(prim20);
       }
       if (prim21 !== undefined) {
-        tmp.strong = Caml_option.valFromOption(prim21);
+        tmp.inlineCode = Caml_option.valFromOption(prim21);
       }
       if (prim22 !== undefined) {
-        tmp.hr = Caml_option.valFromOption(prim22);
+        tmp.strong = Caml_option.valFromOption(prim22);
       }
       if (prim23 !== undefined) {
-        tmp.code = Caml_option.valFromOption(prim23);
+        tmp.hr = Caml_option.valFromOption(prim23);
       }
       if (prim24 !== undefined) {
-        tmp.pre = Caml_option.valFromOption(prim24);
+        tmp.code = Caml_option.valFromOption(prim24);
       }
       if (prim25 !== undefined) {
-        tmp.a = Caml_option.valFromOption(prim25);
+        tmp.pre = Caml_option.valFromOption(prim25);
+      }
+      if (prim26 !== undefined) {
+        tmp.a = Caml_option.valFromOption(prim26);
       }
       return tmp;
     })

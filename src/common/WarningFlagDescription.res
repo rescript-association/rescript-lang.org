@@ -73,31 +73,21 @@ let numeric = [
   (60, "Unused module declaration"),
   (61, "Unboxable type in primitive declaration"),
   (62, "Type constraint on GADT type declaration"),
-  (101, "BuckleScript warning: Unused bs attributes"),
-  (102, "BuckleScript warning: polymorphic comparison introduced (maybe unsafe)"),
-  (103, "BuckleScript warning: about fragile FFI definitions"),
-  (104, "BuckleScript warning: bs.deriving warning with customized message "),
+  (101, "Unused bs attributes"),
+  (102, "Polymorphic comparison introduced (maybe unsafe)"),
+  (103, "Fragile FFI definitions"),
+  (104, "bs.deriving warning with customized message "),
   (
     105,
-    "BuckleScript warning: the external name is inferred from val name is unsafe from refactoring when changing value name",
+    "External name is inferred from val name is unsafe from refactoring when changing value name",
   ),
-  (106, "BuckleScript warning: Unimplemented primitive used:"),
-  (
-    107,
-    "BuckleScript warning: Integer literal exceeds the range of representable integers of type int",
-  ),
-  (108, "BuckleScript warning: Uninterpreted delimiters (for unicode)"),
+  (106, "Unimplemented primitive used:"),
+  (107, "Integer literal exceeds the range of representable integers of type int"),
+  (108, "Uninterpreted delimiters (for unicode)"),
   (109, "Toplevel expression has unit type"),
 ]
 
-let lastWarningNumber = 108
-let letterAll = {
-  let ret = []
-  for i in 1 to lastWarningNumber {
-    Js.Array2.push(ret, i)->ignore
-  }
-  ret
-}
+let letterAll = numeric->Belt.Array.map(fst)
 
 // we keep the original variable name `letter` like in warnings.ml
 let _letter = l =>
