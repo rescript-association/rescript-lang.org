@@ -353,7 +353,9 @@ module WarningTable = {
       <tbody>
         {WarningFlagDescription.lookupAll()
         ->Belt.Array.map(((number, description)) =>
-          <tr> <Td> {React.string(number)} </Td> <Td> {React.string(description)} </Td> </tr>
+          <tr key=number>
+            <Td> {React.string(number)} </Td> <Td> {React.string(description)} </Td>
+          </tr>
         )
         ->React.array}
       </tbody>

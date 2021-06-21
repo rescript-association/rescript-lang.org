@@ -455,8 +455,11 @@ function Markdown$WarningTable(Props) {
                             children: "Description"
                           }))
                 }), React.createElement("tbody", undefined, Belt_Array.map(WarningFlagDescription.lookupAll(undefined), (function (param) {
-                        return React.createElement("tr", undefined, React.createElement(Markdown$Td, {
-                                        children: param[0]
+                        var number = param[0];
+                        return React.createElement("tr", {
+                                    key: number
+                                  }, React.createElement(Markdown$Td, {
+                                        children: number
                                       }), React.createElement(Markdown$Td, {
                                         children: param[1]
                                       }));
