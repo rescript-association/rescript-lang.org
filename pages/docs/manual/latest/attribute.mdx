@@ -59,14 +59,12 @@ let customTriple = foo => foo * 3
 
 </CodeTab>
 
-1. `@@warning("-27")` is a standalone attribute that annotates the entire file. Those attributes start with `@@`. Here, it carries the data `"-27"`.
+1. `@@warning("-27")` is a standalone attribute that annotates the entire file. Those attributes start with `@@`. Here, it carries the data `"-27"`. You can find a full list of all available warnings [here](./warning-numbers).
 2. `@unboxed` annotates the type definition.
 3. `@val` annotates the `external` statement.
 4. `@as("aria-label")` annotates the `ariaLabel` record field.
 5. `@deprecated` annotates the `customDouble` expression. This shows a warning while compiling telling consumers to not rely on this method long-term.
 6. `@deprecated("Use SomeOther.customTriple instead")` annotates the `customTriple` expression with a string to describe the reason for deprecation.
-
-You can find a full list of all available warnings [here](./warning-numbers).
 
 ## Extension Point
 
