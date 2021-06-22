@@ -105,8 +105,6 @@ module Components = {
       "children": MdxChildren.t,
       "labels": option<array<string>>,
     }>,
-    @as("WarningTable") @optional
-    warningTable: React.component<props>,
     /* Common markdown elements */
     @optional
     p: React.component<props>,

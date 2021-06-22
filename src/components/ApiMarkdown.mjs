@@ -15,7 +15,7 @@ function ApiMarkdown$H2(Props) {
                 }));
 }
 
-var $$default = Mdx.Components.t(undefined, undefined, undefined, Markdown.Intro.make, undefined, undefined, undefined, Markdown.P.make, Markdown.Li.make, Markdown.H1.make, ApiMarkdown$H2, Markdown.H3.make, Markdown.H4.make, Markdown.H5.make, Markdown.Ul.make, Markdown.Ol.make, undefined, Markdown.Thead.make, Markdown.Th.make, Markdown.Td.make, undefined, Markdown.InlineCode.make, undefined, undefined, Markdown.Code.make, Markdown.Pre.make, Markdown.A.make, undefined);
+var $$default = Mdx.Components.t(undefined, undefined, undefined, Markdown.Intro.make, undefined, undefined, Markdown.P.make, Markdown.Li.make, Markdown.H1.make, ApiMarkdown$H2, Markdown.H3.make, Markdown.H4.make, Markdown.H5.make, Markdown.Ul.make, Markdown.Ol.make, undefined, Markdown.Thead.make, Markdown.Th.make, Markdown.Td.make, undefined, Markdown.InlineCode.make, undefined, undefined, Markdown.Code.make, Markdown.Pre.make, Markdown.A.make, undefined);
 
 export {
   $$default ,

@@ -10,7 +10,6 @@ import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as CodeExample from "./CodeExample.mjs";
-import * as WarningFlagDescription from "../common/WarningFlagDescription.mjs";
 import * as ParseNumericRangeJs from "../ffi/parse-numeric-range.js";
 
 function Markdown$P(Props) {
@@ -445,27 +444,6 @@ function Markdown$CodeTab(Props) {
                 }));
 }
 
-function Markdown$WarningTable(Props) {
-  return React.createElement(Markdown$Table, {
-              children: null
-            }, React.createElement(Markdown$Thead, {
-                  children: React.createElement("tr", undefined, React.createElement(Markdown$Th, {
-                            children: "#"
-                          }), React.createElement(Markdown$Th, {
-                            children: "Description"
-                          }))
-                }), React.createElement("tbody", undefined, Belt_Array.map(WarningFlagDescription.lookupAll(undefined), (function (param) {
-                        var number = param[0];
-                        return React.createElement("tr", {
-                                    key: number
-                                  }, React.createElement(Markdown$Td, {
-                                        children: number
-                                      }), React.createElement(Markdown$Td, {
-                                        children: param[1]
-                                      }));
-                      }))));
-}
-
 function Markdown$Blockquote(Props) {
   var children = Props.children;
   return React.createElement("blockquote", {
@@ -623,7 +601,7 @@ var Strong = {
   make: Markdown$Strong
 };
 
-var $$default = Mdx.Components.t(Markdown$Cite, Markdown$Info, Markdown$Warn, Markdown$Intro, Markdown$UrlBox, Markdown$CodeTab, Markdown$WarningTable, Markdown$P, Markdown$Li, Markdown$H1, Markdown$H2, Markdown$H3, Markdown$H4, Markdown$H5, Markdown$Ul, Markdown$Ol, Markdown$Table, Markdown$Thead, Markdown$Th, Markdown$Td, Markdown$Blockquote, Markdown$InlineCode, Markdown$Strong, Markdown$Hr, Markdown$Code, Markdown$Pre, Markdown$A, undefined);
+var $$default = Mdx.Components.t(Markdown$Cite, Markdown$Info, Markdown$Warn, Markdown$Intro, Markdown$UrlBox, Markdown$CodeTab, Markdown$P, Markdown$Li, Markdown$H1, Markdown$H2, Markdown$H3, Markdown$H4, Markdown$H5, Markdown$Ul, Markdown$Ol, Markdown$Table, Markdown$Thead, Markdown$Th, Markdown$Td, Markdown$Blockquote, Markdown$InlineCode, Markdown$Strong, Markdown$Hr, Markdown$Code, Markdown$Pre, Markdown$A, undefined);
 
 var UrlBox = {
   make: Markdown$UrlBox
