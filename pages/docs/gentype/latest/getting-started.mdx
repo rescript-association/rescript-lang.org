@@ -28,6 +28,7 @@ Add a `gentypeconfig` section to your `bsconfig.json` (See [Configuration](#conf
 "gentypeconfig": {
     "language": "typescript",
     "shims": {},
+    "generatedFileExtension": ".gen.tsx",
     "debug": {
       "all": false,
       "basic": false
@@ -49,14 +50,17 @@ structure:
   //...
   "gentypeconfig": {
     "language": "typescript" | "flow" | "untyped",
+    "generatedFileExtension": ".gen.tsx",
     "shims": {
       "ReasonReact": "ReactShim"
     }
   }
 ```
 
-- **language**
+- **generatedFileExtension**
+  - File extension used for genType generated files (defaults to `.gen.tsx`)
 
+- **language**
   - `"typescript"` : Generate `*.gen.tsx` files written in TypeScript.
   - `"flow"`: Generate `*.gen.js` files with Flow type annotations.
   - `"untyped"`: Generate `*.gen.js` files in vanilla JavaScript.
