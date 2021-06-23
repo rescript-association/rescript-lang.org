@@ -223,8 +223,10 @@ function LandingPageLayout$QuickInstall(Props) {
 function LandingPageLayout$MainUSP$Item(Props) {
   var caption = Props.caption;
   var title = Props.title;
+  var mediaOpt = Props.media;
   var polygonDirectionOpt = Props.polygonDirection;
   var paragraph = Props.paragraph;
+  var media = mediaOpt !== undefined ? Caml_option.valFromOption(mediaOpt) : "Placeholder";
   var polygonDirection = polygonDirectionOpt !== undefined ? polygonDirectionOpt : /* Down */1;
   var polyPointsLg = polygonDirection ? "80,0 85,100 100,100 100,0" : "85,0 80,100 100,100 100,0";
   var polyPointsMobile = polygonDirection ? "0,100 100,100 100,70 0,80" : "0,100 100,100 100,78 0,72";
@@ -244,16 +246,14 @@ function LandingPageLayout$MainUSP$Item(Props) {
                         }, React.createElement("div", {
                               className: "text-gray-30 body-md pr-8"
                             }, paragraph))), React.createElement("div", {
-                      className: "relative w-full max-w-[32rem]"
+                      className: "relative"
                     }, React.createElement("div", {
-                          className: "relative w-full bg-gray-90 rounded-lg flex md:mt-0 items-center justify-center",
+                          className: "relative w-full z-2 bg-gray-90 rounded-lg flex md:mt-0 items-center justify-center rounded-lg",
                           style: {
                             maxWidth: "35rem",
-                            minHeight: "20rem",
-                            borderRadius: "8px",
                             boxShadow: "0px 4px 55px 0px rgba(230,72,79,0.10)"
                           }
-                        }, "video of a fast build"), React.createElement("img", {
+                        }, media), React.createElement("img", {
                           className: "absolute z-1 bottom-0 right-0 -mb-12 -mr-12",
                           style: {
                             maxWidth: "20rem"
@@ -279,6 +279,13 @@ function LandingPageLayout$MainUSP$Item(Props) {
 var item1 = React.createElement(LandingPageLayout$MainUSP$Item, {
       caption: "Fast and simple",
       title: "The fastest build system on the web",
+      media: React.createElement("video", {
+            className: "rounded-lg",
+            controls: true
+          }, React.createElement("source", {
+                src: "https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624459663/Reason%20Association/rescript-lang.org/landingpage/fast-build-3_y6y2nt.mp4",
+                type: "video/mp4"
+              })),
       paragraph: "ReScript cares about a consistent and fast feedback loop for any\n            codebase size. No need for memory hungry build processes, and no\n            corrupted caches. Switch branches as you please without worrying\n            about stale caches or wrong type information."
     });
 
@@ -287,6 +294,13 @@ var item2 = React.createElement(LandingPageLayout$MainUSP$Item, {
       title: React.createElement("span", {
             className: "text-transparent bg-clip-text bg-gradient-to-r from-berry-dark-50 to-fire-50"
           }, "Type Better"),
+      media: React.createElement("video", {
+            className: "rounded-lg",
+            controls: true
+          }, React.createElement("source", {
+                src: "https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624459181/Reason%20Association/rescript-lang.org/landingpage/type-better-3_hdvouf.mp4",
+                type: "video/mp4"
+              })),
       polygonDirection: /* Up */0,
       paragraph: " Every ReScript app is fully typed and provides\n      correct type information to any given value. We prioritize simpler types\n      / discourage complex types for the sake of clarity and easy debugability.\n      No `any`, no magic types, no surprise `undefined`.\n      "
     });
@@ -296,6 +310,13 @@ var item3 = React.createElement(LandingPageLayout$MainUSP$Item, {
       title: React.createElement(React.Fragment, undefined, React.createElement("span", {
                 className: "text-orange-dark"
               }, "The familiar JS ecosystem"), " at your fingertips"),
+      media: React.createElement("video", {
+            className: "rounded-lg",
+            controls: true
+          }, React.createElement("source", {
+                src: "https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624458286/Reason%20Association/rescript-lang.org/landingpage/interop-example-2_xfklyi.mp4",
+                type: "video/mp4"
+              })),
       paragraph: "Use any library from JavaScript, export ReScript\n      libraries to JavaScript, automatically generate TypeScript types, etc. It's\n      like you've never left the good parts of JavaScript at all."
     });
 

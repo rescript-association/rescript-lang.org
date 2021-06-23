@@ -292,6 +292,7 @@ module MainUSP = {
     let make = (
       ~caption: string,
       ~title: React.element,
+      ~media: React.element=React.string("Placeholder"),
       ~polygonDirection: polygonDirection=Down,
       ~paragraph: React.element,
     ) => {
@@ -323,17 +324,15 @@ module MainUSP = {
             </div>
           </div>
           //image (right)
-          <div className="relative w-full max-w-[32rem]">
+          <div className="relative">
             <div
-              className="relative w-full bg-gray-90 rounded-lg flex md:mt-0 items-center justify-center"
+              className="relative w-full z-2 bg-gray-90 rounded-lg flex md:mt-0 items-center justify-center rounded-lg"
               style={ReactDOM.Style.make(
                 ~maxWidth="35rem",
-                ~borderRadius="8px",
-                ~minHeight="20rem",
                 ~boxShadow="0px 4px 55px 0px rgba(230,72,79,0.10)",
                 (),
               )}>
-              {React.string("video of a fast build")}
+              media
             </div>
             <img
               className="absolute z-1 bottom-0 right-0 -mb-12 -mr-12"
@@ -364,6 +363,12 @@ module MainUSP = {
     <Item
       caption="Fast and simple"
       title={React.string("The fastest build system on the web")}
+      media={<video className="rounded-lg" controls={true}>
+        <source
+          src="https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624459663/Reason%20Association/rescript-lang.org/landingpage/fast-build-3_y6y2nt.mp4"
+          type_="video/mp4"
+        />
+      </video>}
       paragraph={React.string(`ReScript cares about a consistent and fast feedback loop for any
             codebase size. No need for memory hungry build processes, and no
             corrupted caches. Switch branches as you please without worrying
@@ -377,6 +382,12 @@ module MainUSP = {
         className="text-transparent bg-clip-text bg-gradient-to-r from-berry-dark-50 to-fire-50">
         {React.string("Type Better")}
       </span>}
+      media={<video className="rounded-lg" controls={true}>
+        <source
+          src="https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624459181/Reason%20Association/rescript-lang.org/landingpage/type-better-3_hdvouf.mp4"
+          type_="video/mp4"
+        />
+      </video>}
       polygonDirection=Up
       paragraph={React.string(` Every ReScript app is fully typed and provides
       correct type information to any given value. We prioritize simpler types
@@ -392,6 +403,12 @@ module MainUSP = {
         <span className="text-orange-dark"> {React.string("The familiar JS ecosystem")} </span>
         {React.string(" at your fingertips")}
       </>}
+      media={<video className="rounded-lg" controls={true}>
+        <source
+          src="https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624458286/Reason%20Association/rescript-lang.org/landingpage/interop-example-2_xfklyi.mp4"
+          type_="video/mp4"
+        />
+      </video>}
       paragraph={React.string(`Use any library from JavaScript, export ReScript
       libraries to JavaScript, automatically generate TypeScript types, etc. It's
       like you've never left the good parts of JavaScript at all.`)}
@@ -603,7 +620,8 @@ module CuratedResources = {
   let make = () => {
     <section className="bg-gray-100 w-full pb-40 pt-20">
       //headline
-      <div className="mb-20 flex flex-col justify-center items-center"> //headline container
+      <div className="mb-20 flex flex-col justify-center items-center">
+        //headline container
         <div className="body-sm md:body-lg text-gray-40 w-40 mb-4 xs:w-auto">
           {React.string("To start or advance your ReScript projects")}
         </div>
