@@ -460,8 +460,6 @@ function LandingPageLayout$TrustedBy(Props) {
                                   key: company.name
                                 }, renderedCompany);
                     })), React.createElement("div", {
-                  className: "text-center mt-16 text-14"
-                }, "and many more…"), React.createElement("div", {
                   className: "mt-10 max-w-320 overflow-hidden opacity-50",
                   style: {
                     maxHeight: "6rem"

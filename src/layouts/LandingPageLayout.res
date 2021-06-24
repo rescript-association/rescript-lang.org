@@ -576,7 +576,6 @@ module TrustedBy = {
         })
         ->React.array}
       </div>
-      <div className="text-center mt-16 text-14"> {React.string(`and many more…`)} </div>
       <div
         className="mt-10 max-w-320 overflow-hidden opacity-50"
         style={ReactDOM.Style.make(~maxHeight="6rem", ())}>
