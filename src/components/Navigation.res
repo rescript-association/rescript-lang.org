@@ -585,7 +585,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
           resetCollapsibles()
           toggleOverlay()
         }}>
-        <Icon.DrawerDots className={"h-1 w-auto block " ++ (isOverlayOpen ? "text-fire" : "")} />
+        <Icon.DrawerDots className={"h-1 w-auto block " ++ (isOverlayOpen ? "text-fire" : "text-gray-60")} />
       </button>
       /* Mobile overlay */
       <div

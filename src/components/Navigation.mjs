@@ -637,7 +637,7 @@ function Navigation(Props) {
                         })
                     }, React.createElement(Icon.DrawerDots.make, {
                           className: "h-1 w-auto block " + (
-                            isOverlayOpen ? "text-fire" : ""
+                            isOverlayOpen ? "text-fire" : "text-gray-60"
                           )
                         })), React.createElement("div", {
                       className: (
