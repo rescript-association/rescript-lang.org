@@ -32,11 +32,6 @@ Refresh your browser within [/blog](/blog). You should now see a warning for som
 Each blogpost requires a certain set of meta information (so called
 "frontmatter"), otherwise it can't be displayed in the blog.
 
-In
-development mode, you will see error messages for invalid frontmatter on the
-`localhost:3000/blog` url. Blogposts with invalid frontmatter will not be
-rendered and displayed in production, so make sure to fix those errors.
-
 Frontmatter is put **on the top of your file**. Here is a fully working example
 of all available attributes:
 
@@ -53,7 +48,6 @@ title: Bloomberg announces BuckleScript 1.0
 description: |
   some multiline
   description
-canonical: https://rescript-lang.org/blog/2017/10/01/announcing-1-0
 ---
 ```
 
@@ -69,8 +63,6 @@ canonical: https://rescript-lang.org/blog/2017/10/01/announcing-1-0
 - `title`: The title of the article (h1 headline)
 - `description`: A description, which will be shown in the Featured blog post
   in the blog overview, and also as an introductory text in the blog article
-- `canonical`: This is used to point to a canonical url (mostly for refering to
-  the original source of a post, in case it is duplicated content)
 
 > **For Maintainers:** The implementation for the frontmatter logic can be found in the
 `common/BlogFrontmatter.res` module.

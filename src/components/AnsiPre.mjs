@@ -52,20 +52,20 @@ function AnsiPre(Props) {
   var children = Props.children;
   var spans = Belt_Array.mapWithIndex(Ansi.SgrString.fromTokens(Ansi.parse(children)), (function (i, str) {
           var key = String(i);
-          var className = Belt_Array.reduce(str.params, "", (function (acc, p) {
+          var className = str.params.map(function (p) {
                   if (typeof p === "number") {
-                    return acc + " bold";
+                    return "bold";
                   }
                   switch (p.TAG | 0) {
                     case /* Fg */0 :
-                        return acc + (" " + mapColor(/* Fg */0, p._0));
+                        return mapColor(/* Fg */0, p._0);
                     case /* Bg */1 :
-                        return acc + (" " + mapColor(/* Bg */1, p._0));
+                        return mapColor(/* Bg */1, p._0);
                     case /* Unknown */2 :
-                        return acc;
+                        return "";
                     
                   }
-                }));
+                }).join(" ");
           return React.createElement("span", {
                       key: key,
                       className: className

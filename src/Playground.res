@@ -1205,17 +1205,10 @@ module ControlPanel = {
           ("code", editorCode.current->LzString.compressToEncodedURIComponent),
         )->ignore
 
-        let querystring = Belt.Array.reduce(params, "", (acc, next) => {
-          let (key, value) = next
+        let querystring =
+          params->Js.Array2.map(((key, value)) => key ++ "=" ++ value)->Js.Array2.joinWith("&")
 
-          if acc === "" {
-            "?" ++ (key ++ ("=" ++ value))
-          } else {
-            acc ++ ("&" ++ (key ++ ("=" ++ value)))
-          }
-        })
-
-        let url = origin ++ (router.route ++ querystring)
+        let url = origin ++ router.route ++ "?" ++ querystring
         Next.Router.replace(router, url)
         url
       }
@@ -1493,30 +1486,26 @@ let default = () => {
       | SyntaxErr(locMsgs)
       | TypecheckErr(locMsgs)
       | OtherErr(locMsgs) =>
-        Belt.Array.map(locMsgs, locMsgToCmError(~kind=#Error))
+        Js.Array2.map(locMsgs, locMsgToCmError(~kind=#Error))
       | WarningErr(warnings) =>
-        Belt.Array.reduce(warnings, [], (acc, next) => {
-          switch next {
+        Js.Array2.map(warnings, warning => {
+          switch warning {
           | Api.Warning.Warn({details})
           | WarnErr({details}) =>
-            let warn = locMsgToCmError(~kind=#Warning, details)
-            Js.Array2.push(acc, warn)->ignore
+            locMsgToCmError(~kind=#Warning, details)
           }
-          acc
         })
       | WarningFlagErr(_) => []
       }
     | Comp(Success({warnings})) =>
-      Belt.Array.reduce(warnings, [], (acc, next) => {
-        switch next {
+      Js.Array2.map(warnings, warning => {
+        switch warning {
         | Api.Warning.Warn({details})
         | WarnErr({details}) =>
-          let warn = locMsgToCmError(~kind=#Warning, details)
-          Js.Array2.push(acc, warn)->ignore
+          locMsgToCmError(~kind=#Warning, details)
         }
-        acc
       })
-    | Conv(Fail({details})) => Belt.Array.map(details, locMsgToCmError(~kind=#Error))
+    | Conv(Fail({details})) => Js.Array2.map(details, locMsgToCmError(~kind=#Error))
     | Comp(_)
     | Conv(_)
     | Nothing => []

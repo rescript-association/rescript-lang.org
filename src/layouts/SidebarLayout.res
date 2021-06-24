@@ -234,7 +234,7 @@ let make = (
   let (_isSidebarOpen, setSidebarOpen) = sidebarState
   let toggleSidebar = () => setSidebarOpen(prev => !prev)
 
-  React.useEffect1(() => {
+  React.useEffect0(() => {
     open Next.Router.Events
     let {Next.Router.events: events} = router
 
@@ -249,7 +249,7 @@ let make = (
         events->off(#hashChangeComplete(onChangeComplete))
       },
     )
-  }, [])
+  })
 
   let editLinkEl = switch editHref {
   | Some(href) =>

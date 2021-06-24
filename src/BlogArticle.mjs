@@ -126,7 +126,6 @@ function $$default(props) {
   var content;
   if (fm.TAG === /* Ok */0) {
     var match = fm._0;
-    var canonical = match.canonical;
     var description = match.description;
     var title = match.title;
     var tmp = {
@@ -136,10 +135,6 @@ function $$default(props) {
     var tmp$1 = description === null ? undefined : Caml_option.some(description);
     if (tmp$1 !== undefined) {
       tmp.description = tmp$1;
-    }
-    var tmp$2 = canonical === null ? undefined : Caml_option.some(canonical);
-    if (tmp$2 !== undefined) {
-      tmp.canonical = tmp$2;
     }
     content = React.createElement("div", {
           className: "w-full"
@@ -156,13 +151,7 @@ function $$default(props) {
               className: "flex justify-center"
             }, React.createElement("div", {
                   className: "max-w-740 w-full"
-                }, archivedNote, children, canonical !== null ? React.createElement("div", {
-                        className: "mt-12 text-14"
-                      }, "This article was originally released on ", React.createElement("a", {
-                            href: canonical,
-                            rel: "noopener noreferrer",
-                            target: "_blank"
-                          }, canonical)) : null, React.createElement("div", {
+                }, archivedNote, children, React.createElement("div", {
                       className: "mt-12"
                     }, React.createElement(BlogArticle$Line, {}), React.createElement("div", {
                           className: "pt-20 flex flex-col items-center"

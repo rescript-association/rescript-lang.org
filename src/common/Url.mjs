@@ -2,12 +2,7 @@
 
 import * as Util from "./Util.mjs";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
-import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
-import * as Caml_option from "rescript/lib/es6/caml_option.js";
-
-function isVersion(str) {
-  return Belt_Option.isSome(Caml_option.null_to_opt(str.match(/latest|v\d+(\.\d+)?(\.\d+)?/)));
-}
+import * as Caml_array from "rescript/lib/es6/caml_array.js";
 
 function prettyString(str) {
   return Util.$$String.capitalize(Util.$$String.camelCase(str));
@@ -17,44 +12,32 @@ function parse(route) {
   var fullpath = Belt_Array.keep(route.split("/"), (function (s) {
           return s !== "";
         }));
-  var match = Belt_Array.reduce(fullpath, [
-        [],
-        /* NoVersion */1,
-        []
-      ], (function (acc, next) {
-          var pagepath = acc[2];
-          var version = acc[1];
-          var base = acc[0];
-          if (version === /* NoVersion */1) {
-            if (isVersion(next)) {
-              var version$1 = next === "latest" ? /* Latest */0 : ({
-                    _0: next,
-                    [Symbol.for("name")]: "Version"
-                  });
-              return [
-                      base,
-                      version$1,
-                      pagepath
-                    ];
-            }
-            var base$1 = Belt_Array.concat(base, [next]);
-            return [
-                    base$1,
-                    version,
-                    pagepath
-                  ];
-          }
-          var pagepath$1 = Belt_Array.concat(pagepath, [next]);
-          return [
-                  base,
-                  version,
-                  pagepath$1
-                ];
-        }));
+  var foundVersionIndex = fullpath.findIndex(function (chunk) {
+        return /latest|v\d+(\.\d+)?(\.\d+)?/.test(chunk);
+      });
+  var match;
+  if (foundVersionIndex === -1) {
+    match = [
+      /* NoVersion */1,
+      fullpath,
+      []
+    ];
+  } else {
+    var v = Caml_array.get(fullpath, foundVersionIndex);
+    var version = v === "latest" ? /* Latest */0 : ({
+          _0: v,
+          [Symbol.for("name")]: "Version"
+        });
+    match = [
+      version,
+      fullpath.slice(0, foundVersionIndex),
+      fullpath.slice(foundVersionIndex + 1 | 0, fullpath.length)
+    ];
+  }
   return {
           fullpath: fullpath,
-          base: match[0],
-          version: match[1],
+          base: match[1],
+          version: match[0],
           pagepath: match[2]
         };
 }

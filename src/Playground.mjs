@@ -1539,16 +1539,10 @@ function Playground$ControlPanel(Props) {
             "code",
             LzString.compressToEncodedURIComponent(editorCode.current)
           ]);
-      var querystring = Belt_Array.reduce(params, "", (function (acc, next) {
-              var value = next[1];
-              var key = next[0];
-              if (acc === "") {
-                return "?" + (key + ("=" + value));
-              } else {
-                return acc + ("&" + (key + ("=" + value)));
-              }
-            }));
-      var url = window.location.origin + (router.route + querystring);
+      var querystring = params.map(function (param) {
+              return param[0] + "=" + param[1];
+            }).join("&");
+      var url = window.location.origin + router.route + "?" + querystring;
       Next.Router.replace(router, url);
       return url;
     };
@@ -1904,9 +1898,9 @@ function Playground$default(Props) {
       cmErrors = [];
     } else if (result.TAG === /* Conv */0) {
       var match$7 = result._0;
-      cmErrors = match$7.TAG === /* Fail */1 ? Belt_Array.map(match$7.details, (function (param) {
-                return locMsgToCmError("Error", param);
-              })) : [];
+      cmErrors = match$7.TAG === /* Fail */1 ? match$7.details.map(function (param) {
+              return locMsgToCmError("Error", param);
+            }) : [];
     } else {
       var result$1 = result._0;
       switch (result$1.TAG | 0) {
@@ -1914,27 +1908,23 @@ function Playground$default(Props) {
             var result$2 = result$1._0;
             switch (result$2.TAG | 0) {
               case /* WarningErr */2 :
-                  cmErrors = Belt_Array.reduce(result$2._0, [], (function (acc, next) {
-                          var warn = locMsgToCmError("Warning", next.details);
-                          acc.push(warn);
-                          return acc;
-                        }));
+                  cmErrors = result$2._0.map(function (warning) {
+                        return locMsgToCmError("Warning", warning.details);
+                      });
                   break;
               case /* WarningFlagErr */3 :
                   cmErrors = [];
                   break;
               default:
-                cmErrors = Belt_Array.map(result$2._0, (function (param) {
-                        return locMsgToCmError("Error", param);
-                      }));
+                cmErrors = result$2._0.map(function (param) {
+                      return locMsgToCmError("Error", param);
+                    });
             }
             break;
         case /* Success */1 :
-            cmErrors = Belt_Array.reduce(result$1._0.warnings, [], (function (acc, next) {
-                    var warn = locMsgToCmError("Warning", next.details);
-                    acc.push(warn);
-                    return acc;
-                  }));
+            cmErrors = result$1._0.warnings.map(function (warning) {
+                  return locMsgToCmError("Warning", warning.details);
+                });
             break;
         case /* UnexpectedError */2 :
         case /* Unknown */3 :

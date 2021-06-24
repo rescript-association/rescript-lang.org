@@ -321,9 +321,7 @@ module CodeTab = {
           | _ => None
           }
 
-          // codeEl should actually be a String only mdxComponent
-          let code = Mdx.MdxChildren.flatten(codeEl)->Js.Array2.joinWith("")
-
+          let code = Js.String2.make(Mdx.MdxChildren.getMdxChildren(codeEl))
           let label = Belt.Array.get(labels, i)
           let tab = {
             CodeExample.Toggle.lang: lang,

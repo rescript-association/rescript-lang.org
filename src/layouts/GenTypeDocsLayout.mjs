@@ -42,7 +42,7 @@ function GenTypeDocsLayout(Props) {
     breadcrumbs: breadcrumbs,
     title: "GenType",
     metaTitleCategory: "ReScript GenType",
-    version: "v3",
+    version: "v4",
     components: components,
     theme: "Reason",
     children: children

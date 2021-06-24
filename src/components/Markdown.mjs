@@ -422,7 +422,7 @@ function Markdown$CodeTab(Props) {
                 var match$2 = match$1[0];
                 lang = match$2 === "language" ? match$1[1] : undefined;
               }
-              var code = Mdx.MdxChildren.flatten(codeEl).join("");
+              var code = String(Mdx.MdxChildren.getMdxChildren(codeEl));
               var label = Belt_Array.get(labels, i);
               var tab_highlightedLines = parseNumericRangeMeta(metastring);
               var tab = {

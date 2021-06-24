@@ -102,7 +102,7 @@ let attachCompilerAndLibraries = (~version: string, ~libraries: array<string>, (
   /* let compilerUrl = "/static/linked-bs-bundle.js"; */
 
   LoadScript.loadScriptPromise(compilerUrl)
-  ->Promise.map(r => {
+  ->Promise.thenResolve(r => {
     switch r {
     | Error(_) => Error(j`Could not load compiler from url $compilerUrl`)
     | _ => r
@@ -113,7 +113,7 @@ let attachCompilerAndLibraries = (~version: string, ~libraries: array<string>, (
     | Ok() =>
       Belt.Array.map(libraries, lib => {
         let cmijUrl = CdnMeta.getLibraryCmijUrl(version, lib)
-        LoadScript.loadScriptPromise(cmijUrl)->Promise.map(r =>
+        LoadScript.loadScriptPromise(cmijUrl)->Promise.thenResolve(r =>
           switch r {
           | Error(_) => Error(j`Could not load cmij from url $cmijUrl`)
           | _ => r
@@ -125,14 +125,13 @@ let attachCompilerAndLibraries = (~version: string, ~libraries: array<string>, (
 
     Promise.all(promises)
   })
-  ->Promise.map(all => {
-    // all: array(Promise.result(unit, string))
-    let errors = Belt.Array.reduce(all, [], (acc, r) =>
+  ->Promise.thenResolve(all => {
+    let errors = Belt.Array.keepMap(all, r => {
       switch r {
-      | Error(msg) => Js.Array2.concat(acc, [msg])
-      | _ => acc
+      | Error(msg) => Some(msg)
+      | _ => None
       }
-    )
+    })
 
     switch errors {
     | [] => Ok()
@@ -334,7 +333,7 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
         let libraries = ["@rescript/react"]
 
         attachCompilerAndLibraries(~version=latest, ~libraries, ())
-        ->Promise.map(result =>
+        ->Promise.thenResolve(result =>
           switch result {
           | Ok() =>
             let instance = Compiler.make()
@@ -376,7 +375,7 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
       let migratedLibraries = libraries->migrateLibraries(~version)
 
       attachCompilerAndLibraries(~version, ~libraries=migratedLibraries, ())
-      ->Promise.map(result =>
+      ->Promise.thenResolve(result =>
         switch result {
         | Ok() =>
           // Make sure to remove the previous script from the DOM as well

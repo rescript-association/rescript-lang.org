@@ -1,11 +1,10 @@
-type postData = {
-  content: string,
+type post = {
   path: string,
   archived: bool,
-  frontmatter: Js.Json.t,
+  frontmatter: BlogFrontmatter.t,
 }
 
-let getAllPosts: unit => array<postData>
+let getAllPosts: unit => array<post>
 let blogPathToSlug: string => string
 
 module RssFeed: {

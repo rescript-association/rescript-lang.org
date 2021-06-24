@@ -527,21 +527,20 @@ function Navigation(Props) {
         }), []);
   var fixedNav = fixed ? "fixed top-0" : "relative";
   var onStateChange = function (id, state) {
-    Curry._1(setCollapsibles, (function (prev) {
-            return prev.reduce((function (acc, next) {
-                          if (next.title === id) {
-                            acc.push({
-                                  title: next.title,
-                                  children: next.children,
-                                  isActiveRoute: next.isActiveRoute,
-                                  href: next.href,
-                                  state: state
-                                });
-                          }
-                          return acc;
-                        }), []);
-          }));
-    
+    return Curry._1(setCollapsibles, (function (prev) {
+                  return Belt_Array.keepMap(prev, (function (next) {
+                                if (next.title === id) {
+                                  return {
+                                          title: next.title,
+                                          children: next.children,
+                                          isActiveRoute: next.isActiveRoute,
+                                          href: next.href,
+                                          state: state
+                                        };
+                                }
+                                
+                              }));
+                }));
   };
   var collapsibleElements = collapsibles.map(function (coll) {
         return React.createElement(Navigation$CollapsibleLink, {

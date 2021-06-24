@@ -90,7 +90,6 @@ type t = {
   title: string,
   badge: Js.null<Badge.t>,
   description: Js.null<string>,
-  canonical: Js.null<string>,
 }
 
 let decodeBadge = (str: string): Badge.t =>
@@ -133,7 +132,6 @@ let decode = (json: Js.Json.t): result<t, string> => {
     articleImg: json->optional(field("articleImg", string), _)->Js.Null.fromOption,
     title: json->field("title", string, _),
     description: json->nullable(field("description", string), _),
-    canonical: json->optional(field("canonical", string), _)->Js.Null.fromOption,
   } {
   | fm => Ok(fm)
   | exception DecodeError(str) => Error(str)

@@ -2,6 +2,7 @@
 
 import * as Fs from "fs";
 import * as Path from "path";
+import * as Js_exn from "rescript/lib/es6/js_exn.js";
 import * as $$String from "rescript/lib/es6/string.js";
 import * as DateStr from "./DateStr.mjs";
 import * as Process from "process";
@@ -25,23 +26,33 @@ function getAllPosts(param) {
   };
   var nonArchivedPosts = mdxFiles(postsDirectory).map(function (path) {
         var match = GrayMatter(Fs.readFileSync(Path.join(postsDirectory, path), "utf8"));
-        return {
-                content: match.content,
-                path: path,
-                archived: false,
-                frontmatter: match.data
-              };
+        var msg = BlogFrontmatter.decode(match.data);
+        if (msg.TAG === /* Ok */0) {
+          return {
+                  path: path,
+                  archived: false,
+                  frontmatter: msg._0
+                };
+        } else {
+          return Js_exn.raiseError(msg._0);
+        }
       });
   var archivedPosts = mdxFiles(archivedPostsDirectory).map(function (path) {
         var match = GrayMatter(Fs.readFileSync(Path.join(archivedPostsDirectory, path), "utf8"));
-        return {
-                content: match.content,
-                path: Path.join("archive", path),
-                archived: true,
-                frontmatter: match.data
-              };
+        var msg = BlogFrontmatter.decode(match.data);
+        if (msg.TAG === /* Ok */0) {
+          return {
+                  path: Path.join("archive", path),
+                  archived: true,
+                  frontmatter: msg._0
+                };
+        } else {
+          return Js_exn.raiseError(msg._0);
+        }
       });
-  return nonArchivedPosts.concat(archivedPosts);
+  return nonArchivedPosts.concat(archivedPosts).sort(function (a, b) {
+              return $$String.compare(Path.basename(b.path), Path.basename(a.path));
+            });
 }
 
 function dateToUTCString(date) {
@@ -52,26 +63,16 @@ function dateToUTCString(date) {
 function getLatest(maxOpt, baseUrlOpt, param) {
   var max = maxOpt !== undefined ? maxOpt : 10;
   var baseUrl = baseUrlOpt !== undefined ? baseUrlOpt : "https://rescript-lang.org";
-  return Belt_Array.reduce(getAllPosts(undefined).sort(function (a, b) {
-                    return $$String.compare(Path.basename(b.path), Path.basename(a.path));
-                  }), [], (function (acc, next) {
-                  var fm = BlogFrontmatter.decode(next.frontmatter);
-                  if (fm.TAG !== /* Ok */0) {
-                    return acc;
-                  }
-                  var fm$1 = fm._0;
-                  var description = Belt_Option.getWithDefault(Caml_option.null_to_opt(fm$1.description), "");
-                  var item_title = fm$1.title;
-                  var item_href = baseUrl + "/blog/" + blogPathToSlug(next.path);
-                  var item_pubDate = DateStr.toDate(fm$1.date);
-                  var item = {
-                    title: item_title,
-                    href: item_href,
-                    description: description,
-                    pubDate: item_pubDate
-                  };
-                  return Belt_Array.concat(acc, [item]);
-                })).slice(0, max);
+  return getAllPosts(undefined).map(function (post) {
+                var fm = post.frontmatter;
+                var description = Belt_Option.getWithDefault(Caml_option.null_to_opt(fm.description), "");
+                return {
+                        title: fm.title,
+                        href: baseUrl + "/blog/" + blogPathToSlug(post.path),
+                        description: description,
+                        pubDate: DateStr.toDate(fm.date)
+                      };
+              }).slice(0, max);
 }
 
 function toXmlString(siteTitleOpt, siteDescriptionOpt, items) {
@@ -81,14 +82,14 @@ function toXmlString(siteTitleOpt, siteDescriptionOpt, items) {
               var latestPubDateStr = dateToUTCString(item.pubDate);
               return "<lastBuildDate>" + latestPubDateStr + "</lastBuildDate>";
             })), "");
-  var itemsStr = Belt_Array.reduce(items, "", (function (acc, item) {
-          var description = item.description;
-          var href = item.href;
-          var descriptionElement = description === "" ? "" : "<description>\n        <![CDATA[" + description + "]]>\n        </description>\n          ";
-          var dateStr = dateToUTCString(item.pubDate);
-          return acc + ("\n      <item>\n        <title> <![CDATA[" + item.title + "]]></title>\n        <link> " + href + " </link>\n        <guid> " + href + " </guid>\n        " + descriptionElement + "\n\n        <pubDate>" + dateStr + "</pubDate>\n\n    </item>");
-        }));
-  return "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n  <rss version=\"2.0\">\n    <channel>\n        <title>" + siteTitle + "</title>\n        <link>https://rescript-lang.org</link>\n        <description>" + siteDescription + "</description>\n        <language>en</language>\n        " + latestPubDateElement + "\n        " + itemsStr + "\n\n    </channel>\n  </rss>";
+  var itemsStr = items.map(function (param) {
+          var description = param.description;
+          var href = param.href;
+          var descriptionElement = description === "" ? "" : "<description>\n            <![CDATA[" + description + "]]>\n          </description>";
+          var dateStr = dateToUTCString(param.pubDate);
+          return "\n        <item>\n          <title> <![CDATA[" + param.title + "]]></title>\n          <link> " + href + " </link>\n          <guid> " + href + " </guid>\n          " + descriptionElement + "\n          <pubDate>" + dateStr + "</pubDate>\n        </item>";
+        }).join("\n");
+  return "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n  <rss version=\"2.0\">\n    <channel>\n      <title>" + siteTitle + "</title>\n      <link>https://rescript-lang.org</link>\n      <description>" + siteDescription + "</description>\n      <language>en</language>\n      " + latestPubDateElement + "\n" + itemsStr + "\n    </channel>\n  </rss>";
 }
 
 var RssFeed = {

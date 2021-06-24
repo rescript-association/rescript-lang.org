@@ -32,11 +32,10 @@ module GrayMatter = {
   @module("gray-matter") external matter: string => output = "default"
 }
 
-type postData = {
-  content: string,
+type post = {
   path: string,
   archived: bool,
-  frontmatter: Js.Json.t,
+  frontmatter: BlogFrontmatter.t,
 }
 
 let blogPathToSlug = path => {
@@ -54,28 +53,34 @@ let getAllPosts = () => {
   }
 
   let nonArchivedPosts = mdxFiles(postsDirectory)->Js.Array2.map(path => {
-    let {GrayMatter.data: data, content} =
+    let {GrayMatter.data: data} =
       Node.Path.join2(postsDirectory, path)->Node.Fs.readFileSync(#utf8)->GrayMatter.matter
-    {
-      path: path,
-      content: content,
-      frontmatter: data,
-      archived: false,
+    switch BlogFrontmatter.decode(data) {
+    | Error(msg) => Js.Exn.raiseError(msg)
+    | Ok(d) => {
+        path: path,
+        frontmatter: d,
+        archived: false,
+      }
     }
   })
 
   let archivedPosts = mdxFiles(archivedPostsDirectory)->Js.Array2.map(path => {
-    let {GrayMatter.data: data, content} =
+    let {GrayMatter.data: data} =
       Node.Path.join2(archivedPostsDirectory, path)->Node.Fs.readFileSync(#utf8)->GrayMatter.matter
-    {
-      path: Node.Path.join2("archive", path),
-      content: content,
-      frontmatter: data,
-      archived: true,
+    switch BlogFrontmatter.decode(data) {
+    | Error(msg) => Js.Exn.raiseError(msg)
+    | Ok(d) => {
+        path: Node.Path.join2("archive", path),
+        frontmatter: d,
+        archived: true,
+      }
     }
   })
 
-  Js.Array2.concat(nonArchivedPosts, archivedPosts)
+  Js.Array2.concat(nonArchivedPosts, archivedPosts)->Js.Array2.sortInPlaceWith((a, b) => {
+    String.compare(Node.Path.basename(b.path), Node.Path.basename(a.path))
+  })
 }
 
 module RssFeed = {
@@ -110,24 +115,16 @@ module RssFeed = {
   let getLatest = (~max=10, ~baseUrl="https://rescript-lang.org", ()): array<item> => {
     let items =
       getAllPosts()
-      ->Js.Array2.sortInPlaceWith((a, b) => {
-        String.compare(Node.Path.basename(b.path), Node.Path.basename(a.path))
-      })
-      ->Belt.Array.reduce([], (acc, next) =>
-        switch BlogFrontmatter.decode(next.frontmatter) {
-        | Ok(fm) =>
-          let description = Js.Null.toOption(fm.description)->Belt.Option.getWithDefault("")
-          let item = {
-            title: fm.title,
-            href: baseUrl ++ "/blog/" ++ blogPathToSlug(next.path),
-            description: description,
-            pubDate: DateStr.toDate(fm.date),
-          }
-
-          Belt.Array.concat(acc, [item])
-        | Error(_) => acc
+      ->Js.Array2.map(post => {
+        let fm = post.frontmatter
+        let description = Js.Null.toOption(fm.description)->Belt.Option.getWithDefault("")
+        {
+          title: fm.title,
+          href: baseUrl ++ "/blog/" ++ blogPathToSlug(post.path),
+          description: description,
+          pubDate: DateStr.toDate(fm.date),
         }
-      )
+      })
       ->Js.Array2.slice(~start=0, ~end_=max)
     items
   }
@@ -141,41 +138,38 @@ module RssFeed = {
       })
       ->Belt.Option.getWithDefault("")
 
-    let itemsStr = Belt.Array.reduce(items, "", (acc, item) => {
-      let {title, pubDate, description, href} = item
+    let itemsStr =
+      items
+      ->Js.Array2.map(({title, pubDate, description, href}) => {
+        let descriptionElement = switch description {
+        | "" => ""
+        | desc => j`<description>
+            <![CDATA[$desc]]>
+          </description>`
+        }
 
-      let descriptionElement = switch description {
-      | "" => ""
-      | desc => j`<description>
-        <![CDATA[$desc]]>
-        </description>
-          `
-      }
-
-      // TODO: convert pubdate to string
-      let dateStr = pubDate->dateToUTCString
-      j`${acc}
-      <item>
-        <title> <![CDATA[$title]]></title>
-        <link> $href </link>
-        <guid> $href </guid>
-        $descriptionElement
-
-        <pubDate>$dateStr</pubDate>
-
-    </item>`
-    })
+        // TODO: convert pubdate to string
+        let dateStr = pubDate->dateToUTCString
+        j`
+        <item>
+          <title> <![CDATA[$title]]></title>
+          <link> $href </link>
+          <guid> $href </guid>
+          $descriptionElement
+          <pubDate>$dateStr</pubDate>
+        </item>`
+      })
+      ->Js.Array2.joinWith("\n")
 
     let ret = j`<?xml version="1.0" encoding="utf-8" ?>
   <rss version="2.0">
     <channel>
-        <title>$siteTitle</title>
-        <link>https://rescript-lang.org</link>
-        <description>$siteDescription</description>
-        <language>en</language>
-        $latestPubDateElement
-        $itemsStr
-
+      <title>$siteTitle</title>
+      <link>https://rescript-lang.org</link>
+      <description>$siteDescription</description>
+      <language>en</language>
+      $latestPubDateElement
+$itemsStr
     </channel>
   </rss>` //rescript-lang.org</link>
 
