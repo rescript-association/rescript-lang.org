@@ -488,55 +488,57 @@ var templates = [
 
 function LandingPageLayout$CuratedResources(Props) {
   return React.createElement("section", {
-              className: "bg-gray-100 w-full pb-40 pt-20"
+              className: "bg-gray-100 w-full pb-40 pt-20 "
             }, React.createElement("div", {
-                  className: "mb-20 flex flex-col justify-center items-center"
+                  className: "mb-10 max-w-1280 flex flex-col justify-center items-center mx-5 md:mx-8 lg:mx-auto"
                 }, React.createElement("div", {
-                      className: "body-sm md:body-lg text-gray-40 w-40 mb-4 xs:w-auto"
+                      className: "body-sm md:body-lg text-gray-40 w-40 mb-4 xs:w-auto text-center"
                     }, "To start or advance your ReScript projects"), React.createElement("h2", {
-                      className: "hl-1 text-gray-20 mx-auto text-center"
-                    }, "Carefully curated resources")), React.createElement("div", undefined, React.createElement("div", {
-                      className: "uppercase body-sm text-center text-gray-40 mb-20"
-                    }, "guides and docs"), React.createElement("div", {
-                      className: "flex justify-between max-w-1280 px-5 mx-auto"
+                      className: "hl-1 text-gray-20 text-center"
+                    }, "Curated resources")), React.createElement("div", {
+                  className: "px-5 md:px-8 max-w-1280 mx-auto my-20"
+                }, React.createElement("div", {
+                      className: "body-lg text-center z-2 relative text-gray-40 max-w-[12rem] mx-auto bg-gray-100"
+                    }, "Guides and Docs"), React.createElement("hr", {
+                      className: "bg-gray-80 h-px border-0 relative top-[-12px]"
+                    })), React.createElement("div", undefined, React.createElement("div", {
+                      className: "grid grid-flow-col grid-cols-2 grid-rows-2 lg:grid-cols-4 lg:grid-rows-1 gap-2 md:gap-4 lg:gap-8 max-w-1280 px-5 md:px-8 mx-auto"
                     }, Belt_Array.mapWithIndex(cards, (function (i, card) {
                             return React.createElement(Next.Link.make, {
                                         href: card.href,
                                         children: React.createElement("a", {
-                                              className: "bg-gray-90 mx-4 px-4 pb-8 relative rounded-xl",
-                                              style: {
-                                                maxWidth: "296px"
-                                              }
+                                              className: "bg-gray-90 px-4 md:px-8 pb-0 md:pb-8 relative rounded-xl md:min-w-[196px] overflow-scroll"
                                             }, React.createElement("img", {
-                                                  className: "h-12 absolute mt-5",
+                                                  className: "h-[53px] absolute mt-6",
                                                   src: card.imgSrc
                                                 }), React.createElement("h5", {
-                                                  className: "text-gray-10 font-semibold mt-32 h-12"
+                                                  className: "text-gray-10 hl-4 mt-32 h-12"
                                                 }, card.title), React.createElement("div", {
-                                                  className: "text-gray-40 mt-8 text-14"
+                                                  className: "text-gray-40 mt-2 mb-8 body-sm"
                                                 }, card.descr)),
                                         key: String(i)
                                       });
                           }))), React.createElement("div", {
-                      className: "uppercase text-14 text-center mb-20 mt-20"
-                    }, "templates"), React.createElement("div", {
-                      className: "flex justify-between max-w-1280 mx-auto"
+                      className: "px-5 md:px-8 max-w-1280 mx-auto my-20"
+                    }, React.createElement("div", {
+                          className: "body-lg text-center z-2 relative text-gray-40 w-[8rem] mx-auto bg-gray-100"
+                        }, "Templates"), React.createElement("hr", {
+                          className: "bg-gray-80 h-px border-0 relative top-[-12px]"
+                        })), React.createElement("div", {
+                      className: "grid grid-flow-col grid-cols-2 grid-rows-2 lg:grid-cols-3 lg:grid-rows-1 gap-2 md:gap-4 lg:gap-8 max-w-1280 px-5 md:px-8 mx-auto"
                     }, Belt_Array.mapWithIndex(templates, (function (i, card) {
                             return React.createElement("a", {
                                         key: String(i),
-                                        className: "bg-gray-90 px-5 pb-8 relative rounded-xl",
-                                        style: {
-                                          maxWidth: "406px"
-                                        },
+                                        className: "bg-gray-90 px-5 pb-8 relative rounded-xl min-w-[200px]",
                                         href: card.href,
                                         target: "_blank"
                                       }, React.createElement("img", {
                                             className: "h-12 absolute mt-5",
                                             src: card.imgSrc
                                           }), React.createElement("h5", {
-                                            className: "text-gray-10 font-semibold mt-32 h-12"
+                                            className: "text-gray-10 hl-4 mt-32 h-12"
                                           }, card.title), React.createElement("div", {
-                                            className: "text-gray-40 mt-8 text-14"
+                                            className: "text-gray-40 mt-4 body-sm"
                                           }, card.descr));
                           })))));
 }
@@ -546,13 +548,7 @@ function LandingPageLayout$Sponsors(Props) {
               className: "mt-24"
             }, React.createElement("h2", {
                   className: "hl-1 text-center"
-                }, "Sponsors"), React.createElement(Button.make, {
-                  children: "test"
-                }), React.createElement(Button.make, {
-                  kind: /* PrimaryBlue */1,
-                  size: /* Small */0,
-                  children: "test2"
-                }));
+                }, "Sponsors"));
 }
 
 function LandingPageLayout(Props) {

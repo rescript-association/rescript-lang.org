@@ -618,53 +618,63 @@ module CuratedResources = {
 
   @react.component
   let make = () => {
-    <section className="bg-gray-100 w-full pb-40 pt-20">
-      //headline
-      <div className="mb-20 flex flex-col justify-center items-center">
-        //headline container
-        <div className="body-sm md:body-lg text-gray-40 w-40 mb-4 xs:w-auto">
+    <section className="bg-gray-100 w-full pb-40 pt-20 ">
+      //headline container
+      <div
+        className="mb-10 max-w-1280 flex flex-col justify-center items-center mx-5 md:mx-8 lg:mx-auto">
+        <div className="body-sm md:body-lg text-gray-40 w-40 mb-4 xs:w-auto text-center">
+
           {React.string("To start or advance your ReScript projects")}
         </div>
-        <h2 className="hl-1 text-gray-20 mx-auto text-center">
-          {React.string("Carefully curated resources")}
-        </h2>
+        <h2 className="hl-1 text-gray-20 text-center"> {React.string("Curated resources")} </h2>
       </div>
-      <div>
-        <div className="uppercase body-sm text-center text-gray-40 mb-20">
-          {React.string("guides and docs")}
+      <div className="px-5 md:px-8 max-w-1280 mx-auto my-20">
+        <div className="body-lg text-center z-2 relative text-gray-40 max-w-[12rem] mx-auto bg-gray-100">
+          {React.string("Guides and Docs")}
         </div>
-        //container for guides
-        <div className="flex justify-between max-w-1280 px-5 mx-auto">
+        <hr className="bg-gray-80 h-px border-0 relative top-[-12px]" />
+      </div>
+      //divider
+
+      //
+      //
+      //container for guides
+      <div>
+        <div
+          className="grid grid-flow-col grid-cols-2 grid-rows-2 lg:grid-cols-4 lg:grid-rows-1 gap-2 md:gap-4 lg:gap-8 max-w-1280 px-5 md:px-8 mx-auto">
           {cards
           ->Belt.Array.mapWithIndex((i, card) =>
             <Next.Link key={Belt.Int.toString(i)} href={card.href}>
               <a
-                className="bg-gray-90 mx-4 px-4 pb-8 relative rounded-xl"
-                style={ReactDOM.Style.make(~maxWidth="296px", ())}>
-                <img className="h-12 absolute mt-5" src=card.imgSrc />
-                <h5 className="text-gray-10 font-semibold mt-32 h-12"> {card.title} </h5>
-                <div className="text-gray-40 mt-8 text-14"> {React.string(card.descr)} </div>
+                className="bg-gray-90 px-4 md:px-8 pb-0 md:pb-8 relative rounded-xl md:min-w-[196px] overflow-scroll">
+                <img className="h-[53px] absolute mt-6" src=card.imgSrc />
+                <h5 className="text-gray-10 hl-4 mt-32 h-12"> {card.title} </h5>
+                <div className="text-gray-40 mt-2 mb-8 body-sm"> {React.string(card.descr)} </div>
               </a>
             </Next.Link>
           )
           ->React.array}
         </div>
         //Container for templates
-        <div className="uppercase text-14 text-center mb-20 mt-20">
-          {React.string("templates")}
+        <div className="px-5 md:px-8 max-w-1280 mx-auto my-20">
+          <div
+            className="body-lg text-center z-2 relative text-gray-40 w-[8rem] mx-auto bg-gray-100">
+            {React.string("Templates")}
+          </div>
+          <hr className="bg-gray-80 h-px border-0 relative top-[-12px]" />
         </div>
-        <div className="flex justify-between max-w-1280 mx-auto">
+        <div
+          className="grid grid-flow-col grid-cols-2 grid-rows-2 lg:grid-cols-3 lg:grid-rows-1 gap-2 md:gap-4 lg:gap-8 max-w-1280 px-5 md:px-8 mx-auto">
           {templates
           ->Belt.Array.mapWithIndex((i, card) =>
             <a
               key={Belt.Int.toString(i)}
               href={card.href}
               target="_blank"
-              className="bg-gray-90 px-5 pb-8 relative rounded-xl"
-              style={ReactDOM.Style.make(~maxWidth="406px", ())}>
+              className="bg-gray-90 px-5 pb-8 relative rounded-xl min-w-[200px]">
               <img className="h-12 absolute mt-5" src=card.imgSrc />
-              <h5 className="text-gray-10 font-semibold mt-32 h-12"> {card.title} </h5>
-              <div className="text-gray-40 mt-8 text-14"> {React.string(card.descr)} </div>
+              <h5 className="text-gray-10 hl-4 mt-32 h-12"> {card.title} </h5>
+              <div className="text-gray-40 mt-4 body-sm"> {React.string(card.descr)} </div>
             </a>
           )
           ->React.array}
@@ -679,8 +689,6 @@ module Sponsors = {
   let make = () =>
     <div className="mt-24">
       <h2 className="hl-1 text-center"> {React.string("Sponsors")} </h2>
-      <Button> {React.string("test")} </Button>
-      <Button kind=PrimaryBlue size=Small> {React.string("test2")} </Button>
     </div>
 }
 
