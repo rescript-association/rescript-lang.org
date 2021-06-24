@@ -8,7 +8,9 @@ module Intro = {
         </h1>
         <h2 className="body-lg text-center text-gray-60 my-4 max-w-[40rem]">
           {React.string(
-            "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node.",
+            `ReScript is a robustly typed language that compiles to efficient
+            and human-readable JavaScript. It comes with a lightning fast
+            compiler toolchain that scales to any codebase size.`
           )}
         </h2>
         <div className="mt-4 mb-2">
@@ -608,13 +610,13 @@ module CuratedResources = {
     },
     {
       imgSrc: "/static/ic_manual@2x.png",
-      title: React.string("Integrate ReScript in your existing Codebase"),
+      title: React.string("Gradually Adopt ReScript"),
       descr: "Learn how to start using ReScript in your current projects. Try before you buy!",
       href: "/docs/manual/latest/installation#integrate-into-an-existing-js-project",
     },
     {
       imgSrc: "/static/ic_gentype@2x.png",
-      title: React.string("TypeScript Integration with genType"),
+      title: React.string("TypeScript Integration"),
       descr: "Learn how to integrate ReScript in your existing TypeScript codebases.",
       href: "/docs/gentype/latest/introduction",
     },

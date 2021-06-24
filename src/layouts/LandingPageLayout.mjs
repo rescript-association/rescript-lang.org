@@ -26,7 +26,7 @@ function LandingPageLayout$Intro(Props) {
                       className: "hl-title text-center max-w-[53rem]"
                     }, "A simple and fast language for JavaScript"), React.createElement("h2", {
                       className: "body-lg text-center text-gray-60 my-4 max-w-[40rem]"
-                    }, "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node."), React.createElement("div", {
+                    }, "ReScript is a robustly typed language that compiles to efficient\n            and human-readable JavaScript. It comes with a lightning fast\n            compiler toolchain that scales to any codebase size."), React.createElement("div", {
                       className: "mt-4 mb-2"
                     }, React.createElement(Next.Link.make, {
                           href: "/docs/manual/latest/installation",
@@ -485,13 +485,13 @@ var cards = [
   },
   {
     imgSrc: "/static/ic_manual@2x.png",
-    title: "Integrate ReScript in your existing Codebase",
+    title: "Gradually Adopt ReScript",
     descr: "Learn how to start using ReScript in your current projects. Try before you buy!",
     href: "/docs/manual/latest/installation#integrate-into-an-existing-js-project"
   },
   {
     imgSrc: "/static/ic_gentype@2x.png",
-    title: "TypeScript Integration with genType",
+    title: "TypeScript Integration",
     descr: "Learn how to integrate ReScript in your existing TypeScript codebases.",
     href: "/docs/gentype/latest/introduction"
   }
