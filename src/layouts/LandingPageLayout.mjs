@@ -213,11 +213,11 @@ function LandingPageLayout$QuickInstall(Props) {
                           className: "relative z-1 space-y-12 text-gray-80 font-semibold text-24 md:text-32 leading-2"
                         }, React.createElement("span", {
                               className: "bg-fire-5 rounded-lg border border-fire-10 p-1 "
-                            }, "Everything you love"), " about JavaScript, with a robustly typed language and a reliably fast toolchain that fits right in.")), React.createElement("div", {
+                            }, "Leverage the full power"), " of JavaScript in a robustly typed language without the fear of `any` types.")), React.createElement("div", {
                       className: "w-full mt-12 md:flex flex-col lg:flex-row md:justify-between "
                     }, React.createElement("p", {
                           className: "relative z-1 text-gray-80 font-semibold text-24 md:text-32 leading-2 max-w-[32rem]"
-                        }, "ReScript was made to maintain and ship complex products with confidence."), React.createElement("div", {
+                        }, "ReScript is used to ship and maintain mission-critical products with good UI and UX."), React.createElement("div", {
                           className: "mt-16 lg:mt-0 self-end",
                           style: {
                             maxWidth: "25rem"
@@ -381,7 +381,7 @@ function LandingPageLayout$OtherSellingPoints(Props) {
                           src: "/static/lp/editor-tooling-1.jpg"
                         }), React.createElement("h3", {
                           className: "hl-3 text-gray-20 mt-6 mb-2"
-                        }, "Tooling that lets your language shine"), React.createElement("p", {
+                        }, "Tooling that just works out of the box"), React.createElement("p", {
                           className: "body-md text-gray-40"
                         }, "A builtin pretty printer, memory friendly\n            VSCode & Vim plugins, a stable type system and compiler that doesn't require lots\n            of extra configuration. ReScript brings all the tools you need to\n            build reliable JavaScript, Node and ReactJS applications.")), React.createElement("div", {
                       className: "col-span-4 lg:row-start-2"
@@ -390,7 +390,7 @@ function LandingPageLayout$OtherSellingPoints(Props) {
                           src: "/static/lp/easy-to-unadopt.jpg"
                         }), React.createElement("h3", {
                           className: "hl-3 text-gray-20 mt-6 mb-2"
-                        }, "The only language you can easily un-adopt"), React.createElement("p", {
+                        }, "Easy to adopt — without any lock-in"), React.createElement("p", {
                           className: "body-md text-gray-40"
                         }, "ReScript was made with gradual adoption in mind.  If\n            you ever want to go back to plain JavaScript, just remove all\n            source files and keep its clean JavaScript output. Tell\n            your coworkers that your project will keep functioning with or\n            without ReScript!"))));
 }

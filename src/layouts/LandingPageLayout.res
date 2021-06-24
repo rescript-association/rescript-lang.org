@@ -260,16 +260,16 @@ module QuickInstall = {
           <p
             className="relative z-1 space-y-12 text-gray-80 font-semibold text-24 md:text-32 leading-2">
             <span className="bg-fire-5 rounded-lg border border-fire-10 p-1 ">
-              {React.string(`Everything you love`)}
+              {React.string(`Leverage the full power`)}
             </span>
-            {React.string(` about JavaScript, with a robustly typed language and a reliably fast toolchain that fits right in.`)}
+            {React.string(` of JavaScript in a robustly typed language without the fear of \`any\` types.`)}
           </p>
         </div>
         //spacing between columns
         <div className="w-full mt-12 md:flex flex-col lg:flex-row md:justify-between ">
           <p
             className="relative z-1 text-gray-80 font-semibold text-24 md:text-32 leading-2 max-w-[32rem]">
-            {React.string(`ReScript was made to maintain and ship complex products with confidence.`)}
+            {React.string(`ReScript is used to ship and maintain mission-critical products with good UI and UX.`)}
           </p>
           <div
             className="mt-16 lg:mt-0 self-end" style={ReactDOM.Style.make(~maxWidth="25rem", ())}>
@@ -482,7 +482,7 @@ module OtherSellingPoints = {
             src="/static/lp/editor-tooling-1.jpg"
           />
           <h3 className="hl-3 text-gray-20 mt-6 mb-2">
-            {React.string(`Tooling that lets your language shine`)}
+            {React.string(`Tooling that just works out of the box`)}
           </h3>
           <p className="body-md text-gray-40">
             {React.string(`A builtin pretty printer, memory friendly
@@ -498,7 +498,7 @@ module OtherSellingPoints = {
             src="/static/lp/easy-to-unadopt.jpg"
           />
           <h3 className="hl-3 text-gray-20 mt-6 mb-2">
-            {React.string(`The only language you can easily un-adopt`)}
+            {React.string(`Easy to adopt — without any lock-in`)}
           </h3>
           <p className="body-md text-gray-40">
             {React.string(`ReScript was made with gradual adoption in mind.  If
@@ -515,8 +515,7 @@ module OtherSellingPoints = {
 }
 
 module TrustedBy = {
-  // TODO: is this data structure too fancy?
-  type company = Logo({name: string, url: string, path: string}) /* TODO: get rid of style */
+  type company = Logo({name: string, url: string, path: string}) 
 
   let companies = [
     Logo({
