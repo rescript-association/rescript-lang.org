@@ -15,6 +15,7 @@ import * as Navigation from "../components/Navigation.mjs";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as HighlightJs from "../common/HighlightJs.mjs";
+import * as ImageGallery from "../components/ImageGallery.mjs";
 
 function LandingPageLayout$Intro(Props) {
   return React.createElement("section", {
@@ -25,10 +26,14 @@ function LandingPageLayout$Intro(Props) {
                       className: "hl-title text-center max-w-[53rem]"
                     }, "A simple and fast language for JavaScript"), React.createElement("h2", {
                       className: "body-lg text-center text-gray-60 my-4 max-w-[40rem]"
-                    }, "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node."), React.createElement("padding", {
+                    }, "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node."), React.createElement("div", {
                       className: "mt-4 mb-2"
-                    }, React.createElement(Button.make, {
-                          children: "Get started"
+                    }, React.createElement(Next.Link.make, {
+                          href: "/docs/manual/latest/installation",
+                          passHref: true,
+                          children: React.createElement(Button.make, {
+                                children: "Get started"
+                              })
                         }))));
 }
 
@@ -208,11 +213,11 @@ function LandingPageLayout$QuickInstall(Props) {
                           className: "relative z-1 space-y-12 text-gray-80 font-semibold text-24 md:text-32 leading-2"
                         }, React.createElement("span", {
                               className: "bg-fire-5 rounded-lg border border-fire-10 p-1 "
-                            }, "Everything you want"), " from JavaScript, minus the parts you don't need.")), React.createElement("div", {
+                            }, "Everything you love"), " about JavaScript, with a robustly typed language and a reliably fast toolchain that fits right in.")), React.createElement("div", {
                       className: "w-full mt-12 md:flex flex-col lg:flex-row md:justify-between "
                     }, React.createElement("p", {
                           className: "relative z-1 text-gray-80 font-semibold text-24 md:text-32 leading-2 max-w-[32rem]"
-                        }, "ReScript is easy to pick up for JavaScript developers,\n          and helps shipping products with confidence."), React.createElement("div", {
+                        }, "ReScript was made to maintain and ship complex products with confidence."), React.createElement("div", {
                           className: "mt-16 lg:mt-0 self-end",
                           style: {
                             maxWidth: "25rem"
@@ -286,7 +291,17 @@ var item1 = React.createElement(LandingPageLayout$MainUSP$Item, {
                 src: "https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624459663/Reason%20Association/rescript-lang.org/landingpage/fast-build-3_y6y2nt.mp4",
                 type: "video/mp4"
               })),
-      paragraph: "ReScript cares about a consistent and fast feedback loop for any\n            codebase size. No need for memory hungry build processes, and no\n            corrupted caches. Switch branches as you please without worrying\n            about stale caches or wrong type information."
+      paragraph: React.createElement(React.Fragment, undefined, React.createElement("p", undefined, "ReScript cares about a consistent and fast\n      feedback loop for any codebase size. Refactor code, pull complex changes,\n      or switch to feature branches as you please. No sluggish CI builds, stale\n      caches, wrong type hints, or memory hungry language servers that slow you\n      down."), React.createElement("p", {
+                className: "mt-6"
+              }, React.createElement(Next.Link.make, {
+                    href: "/docs/manual/latest/build-performance",
+                    passHref: true,
+                    children: React.createElement(Button.make, {
+                          kind: /* PrimaryBlue */1,
+                          size: /* Small */0,
+                          children: "Learn more"
+                        })
+                  })))
     });
 
 var item2 = React.createElement(LandingPageLayout$MainUSP$Item, {
@@ -302,7 +317,7 @@ var item2 = React.createElement(LandingPageLayout$MainUSP$Item, {
                 type: "video/mp4"
               })),
       polygonDirection: /* Up */0,
-      paragraph: " Every ReScript app is fully typed and provides\n      correct type information to any given value. We prioritize simpler types\n      / discourage complex types for the sake of clarity and easy debugability.\n      No `any`, no magic types, no surprise `undefined`.\n      "
+      paragraph: "Every ReScript app is fully typed and provides\n      reliable type information for any given value in your program. We\n      prioritize simpler types over complex types for the sake of\n      clarity and easy debugability. No `any`, no magic types, no surprise\n      `undefined`.\n      "
     });
 
 var item3 = React.createElement(LandingPageLayout$MainUSP$Item, {
@@ -317,7 +332,7 @@ var item3 = React.createElement(LandingPageLayout$MainUSP$Item, {
                 src: "https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624458286/Reason%20Association/rescript-lang.org/landingpage/interop-example-2_xfklyi.mp4",
                 type: "video/mp4"
               })),
-      paragraph: "Use any library from JavaScript, export ReScript\n      libraries to JavaScript, automatically generate TypeScript types, etc. It's\n      like you've never left the good parts of JavaScript at all."
+      paragraph: "Use any library from JavaScript, export ReScript\n      libraries to JavaScript, automatically generate TypeScript types. It's\n      like you've never left the good parts of JavaScript at all."
     });
 
 function LandingPageLayout$MainUSP(Props) {
@@ -336,64 +351,87 @@ function LandingPageLayout$OtherSellingPoints(Props) {
                   className: "max-w-1060 grid grid-cols-4 md:grid-cols-10 grid-rows-2 gap-8"
                 }, React.createElement("div", {
                       className: "pb-24 md:pb-32 row-span-2 row-start-1 col-start-1 col-span-4 md:col-span-6"
-                    }, React.createElement("div", {
-                          className: "bg-gray-10 w-full rounded-lg min-h-[20rem]"
+                    }, React.createElement(ImageGallery.make, {
+                          className: "w-full ",
+                          imgClassName: "w-full h-[25.9rem] object-cover rounded-lg",
+                          imgSrcs: [
+                            "/static/lp/community-3.jpg",
+                            "/static/lp/community-2.jpg",
+                            "/static/lp/community-1.jpg"
+                          ]
                         }), React.createElement("h3", {
-                          className: "hl-3 text-gray-20 mt-6 mb-2"
+                          className: "hl-3 text-gray-20 mt-4 mb-2"
                         }, "A community of programmers who value getting things done"), React.createElement("p", {
                           className: "body-md text-gray-40"
-                        }, "No language can be popular without a solid community. A\n        great type system isn't useful if library authors abuse it. Performance\n        doesn't show if all the libraries are slow. Join the ReScript community\n        of programmers who all care about simplicity, speed and practicality.\n        ")), React.createElement("div", {
+                        }, "No language can be popular without a solid\n            community. A great type system isn't useful if library authors\n            abuse it. Performance doesn't show if all the libraries are slow.\n            Join the ReScript community — A group of companies and individuals\n            who deeply care about simplicity, speed and practicality."), React.createElement("div", {
+                          className: "mt-6"
+                        }, React.createElement(Button.make, {
+                              href: "https://forum.rescript-lang.org",
+                              target: "_blank",
+                              kind: /* PrimaryBlue */1,
+                              size: /* Small */0,
+                              children: "Join our Forum"
+                            }))), React.createElement("div", {
                       className: "col-span-4 lg:row-start-1"
-                    }, React.createElement("div", {
-                          className: "bg-turtle-dark w-full rounded-lg min-h-[10rem]"
+                    }, React.createElement("img", {
+                          className: "w-full rounded-lg border-2 border-turtle-dark",
+                          src: "/static/lp/editor-tooling-1.jpg"
                         }), React.createElement("h3", {
                           className: "hl-3 text-gray-20 mt-6 mb-2"
-                        }, "Tooling that lets our language shine"), React.createElement("p", {
+                        }, "Tooling that lets your language shine"), React.createElement("p", {
                           className: "body-md text-gray-40"
-                        }, "Some languages have great features, some other\n              languages have great tooling. ReScript brings everything you need\n              to get up and running quickly without tricky configuration.")), React.createElement("div", {
+                        }, "A builtin pretty printer, memory friendly\n            VSCode & Vim plugins, a stable type system and compiler that doesn't require lots\n            of extra configuration. ReScript brings all the tools you need to\n            build reliable JavaScript, Node and ReactJS applications.")), React.createElement("div", {
                       className: "col-span-4 lg:row-start-2"
-                    }, React.createElement("div", {
-                          className: "bg-gray-10 w-full rounded-lg min-h-[10rem]"
+                    }, React.createElement("img", {
+                          className: "w-full rounded-lg border-2 border-fire-30",
+                          src: "/static/lp/easy-to-unadopt.jpg"
                         }), React.createElement("h3", {
                           className: "hl-3 text-gray-20 mt-6 mb-2"
                         }, "The only language you can easily un-adopt"), React.createElement("p", {
                           className: "body-md text-gray-40"
-                        }, "ReScript allows you to remove the source files and\n            keep its clean JavaScript output. Tell your coworkers that your\n            project will keep functioning with or without ReScript!"))));
+                        }, "ReScript was made with gradual adoption in mind.  If\n            you ever want to go back to plain JavaScript, just remove all\n            source files and keep its clean JavaScript output. Tell\n            your coworkers that your project will keep functioning with or\n            without ReScript!"))));
 }
 
 var companies = [
   {
     name: "Facebook Messenger",
+    url: "https://messenger.com",
     path: "/static/lp/messenger.svg",
     [Symbol.for("name")]: "Logo"
   },
   {
     name: "Facebook",
+    url: "https://messenger.com",
     path: "/static/lp/facebook.svg",
     [Symbol.for("name")]: "Logo"
   },
   {
     name: "Rohea",
+    url: "https://rohea.com",
     path: "/static/lp/rohea.svg",
     [Symbol.for("name")]: "Logo"
   },
   {
     name: "CCA",
+    url: "https://cca.io",
     path: "/static/lp/cca-io.svg",
     [Symbol.for("name")]: "Logo"
   },
   {
     name: "Nomadic Labs",
+    url: "https://nomadic-labs.com",
     path: "/static/lp/nomadic_labs.svg",
     [Symbol.for("name")]: "Logo"
   },
   {
     name: "Draftbit",
+    url: "https://draftbit.com",
     path: "/static/lp/draftbit.svg",
     [Symbol.for("name")]: "Logo"
   },
   {
     name: "Pupilfirst",
+    url: "https://pupilfirst.com",
     path: "/static/lp/pupilfirst.svg",
     [Symbol.for("name")]: "Logo"
   }
@@ -407,10 +445,14 @@ function LandingPageLayout$TrustedBy(Props) {
                 }, "Trusted by our users"), React.createElement("div", {
                   className: "flex justify-between items-center max-w-xl mx-auto mt-16 h-[48px]"
                 }, companies.map(function (company) {
-                      var renderedCompany = React.createElement("img", {
-                            className: "max-w-sm",
-                            src: company.path
-                          });
+                      var renderedCompany = React.createElement("a", {
+                            href: company.url,
+                            rel: "noopener noreferrer",
+                            target: "_blank"
+                          }, React.createElement("img", {
+                                className: "hover:opacity-75 max-w-sm",
+                                src: company.path
+                              }));
                       return React.createElement("div", {
                                   key: company.name
                                 }, renderedCompany);
@@ -431,60 +473,37 @@ var cards = [
   {
     imgSrc: "/static/ic_manual@2x.png",
     title: "Language Manual",
-    descr: "Look up the basics: reference for all language features",
+    descr: "Look up the basics: Reference for all our language features",
     href: "/docs/manual/latest/introduction"
   },
   {
     imgSrc: "/static/ic_rescript_react@2x.png",
     title: "ReScript + React",
-    descr: "First Class bindings for ReactJS. Developed for small and big ass scale projects.",
+    descr: "First Class bindings for ReactJS used by production users all over the world.",
     href: "/docs/react/latest/introduction"
   },
   {
     imgSrc: "/static/ic_manual@2x.png",
-    title: "Add ReScript to an existing project",
-    descr: "This guide will help you to transfer your project without hassle.",
+    title: "Integrate ReScript in your existing Codebase",
+    descr: "Learn how to start using ReScript in your current projects. Try before you buy!",
     href: "/docs/manual/latest/installation#integrate-into-an-existing-js-project"
   },
   {
     imgSrc: "/static/ic_gentype@2x.png",
-    title: "TypeScript Integration",
-    descr: "Integrate TypeScript and Flow seamlessly and with ease.",
+    title: "TypeScript Integration with genType",
+    descr: "Learn how to integrate ReScript in your existing TypeScript codebases.",
     href: "/docs/gentype/latest/introduction"
   }
 ];
 
-var templates = [
-  {
+var templates = [{
     imgSrc: "/static/nextjs_starter_logo.svg",
     title: React.createElement(React.Fragment, undefined, React.createElement("div", undefined, "ReScript & "), React.createElement("div", {
               className: "text-gray-40"
             }, "NextJS")),
-    descr: "Get started with our our NextJS starter template.",
+    descr: "Get started with our NextJS starter template.",
     href: "https://github.com/ryyppy/rescript-nextjs-template"
-  },
-  {
-    imgSrc: "/static/vitejs_starter_logo.svg",
-    title: React.createElement(React.Fragment, undefined, React.createElement("div", undefined, "ReScript & "), React.createElement("div", {
-              style: {
-                color: "#6571FB"
-              }
-            }, "ViteJS")),
-    descr: "Get started with ViteJS and ReScript.",
-    href: "/"
-  },
-  {
-    imgSrc: "/static/nodejs_starter_logo.svg",
-    title: React.createElement(React.Fragment, undefined, React.createElement("div", undefined, "ReScript & "), React.createElement("div", {
-              className: "text-gray-40",
-              style: {
-                color: "#699D65"
-              }
-            }, "NodeJS")),
-    descr: "Get started with ReScript targeting the Node platform.",
-    href: "/"
-  }
-];
+  }];
 
 function LandingPageLayout$CuratedResources(Props) {
   return React.createElement("section", {
@@ -493,7 +512,7 @@ function LandingPageLayout$CuratedResources(Props) {
                   className: "mb-10 max-w-1280 flex flex-col justify-center items-center mx-5 md:mx-8 lg:mx-auto"
                 }, React.createElement("div", {
                       className: "body-sm md:body-lg text-gray-40 w-40 mb-4 xs:w-auto text-center"
-                    }, "To start or advance your ReScript projects"), React.createElement("h2", {
+                    }, "Get up and running with ReScript"), React.createElement("h2", {
                       className: "hl-1 text-gray-20 text-center"
                     }, "Curated resources")), React.createElement("div", {
                   className: "px-5 md:px-8 max-w-1280 mx-auto my-20"
@@ -507,7 +526,7 @@ function LandingPageLayout$CuratedResources(Props) {
                             return React.createElement(Next.Link.make, {
                                         href: card.href,
                                         children: React.createElement("a", {
-                                              className: "bg-gray-90 px-4 md:px-8 pb-0 md:pb-8 relative rounded-xl md:min-w-[196px] overflow-scroll"
+                                              className: "hover:bg-gray-80 bg-gray-90 px-4 md:px-8 pb-0 md:pb-8 relative rounded-xl md:min-w-[196px]"
                                             }, React.createElement("img", {
                                                   className: "h-[53px] absolute mt-6",
                                                   src: card.imgSrc
@@ -529,7 +548,7 @@ function LandingPageLayout$CuratedResources(Props) {
                     }, Belt_Array.mapWithIndex(templates, (function (i, card) {
                             return React.createElement("a", {
                                         key: String(i),
-                                        className: "bg-gray-90 px-5 pb-8 relative rounded-xl min-w-[200px]",
+                                        className: "hover:bg-gray-80 bg-gray-90 px-5 pb-8 relative rounded-xl min-w-[200px]",
                                         href: card.href,
                                         target: "_blank"
                                       }, React.createElement("img", {
@@ -541,14 +560,6 @@ function LandingPageLayout$CuratedResources(Props) {
                                             className: "text-gray-40 mt-4 body-sm"
                                           }, card.descr));
                           })))));
-}
-
-function LandingPageLayout$Sponsors(Props) {
-  return React.createElement("div", {
-              className: "mt-24"
-            }, React.createElement("h2", {
-                  className: "hl-1 text-center"
-                }, "Sponsors"));
 }
 
 function LandingPageLayout(Props) {
@@ -578,7 +589,7 @@ function LandingPageLayout(Props) {
                                                 className: "w-full"
                                               }, React.createElement("div", {
                                                     className: "mt-16 md:mt-32 lg:mt-40 mb-12"
-                                                  }, React.createElement(LandingPageLayout$Intro, {})), React.createElement(LandingPageLayout$PlaygroundHero, {}), React.createElement(LandingPageLayout$QuickInstall, {}), React.createElement(LandingPageLayout$MainUSP, {}), React.createElement(LandingPageLayout$OtherSellingPoints, {}), React.createElement(LandingPageLayout$TrustedBy, {}), React.createElement(LandingPageLayout$CuratedResources, {}), React.createElement(LandingPageLayout$Sponsors, {}), children))
+                                                  }, React.createElement(LandingPageLayout$Intro, {})), React.createElement(LandingPageLayout$PlaygroundHero, {}), React.createElement(LandingPageLayout$QuickInstall, {}), React.createElement(LandingPageLayout$MainUSP, {}), React.createElement(LandingPageLayout$OtherSellingPoints, {}), React.createElement(LandingPageLayout$TrustedBy, {}), React.createElement(LandingPageLayout$CuratedResources, {}), children))
                                     }))), React.createElement(Footer.make, {})))));
 }
 

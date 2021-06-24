@@ -23,8 +23,8 @@
 module.exports = {
   mode: "jit",
   purge: [
-    "./src/**/*.{js,res}",
-    "./pages/**/*.{js,mdx}",
+    "./src/**/*.{mjs,js,res}",
+    "./pages/**/*.{mjs,js,mdx}",
   ],
   theme: {
     extend: {

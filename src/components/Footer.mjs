@@ -25,7 +25,7 @@ function Footer(Props) {
                           src: "/static/rescript_logo_black.svg"
                         }), React.createElement("div", {
                           className: "text-16"
-                        }, React.createElement("p", undefined, "© 2020 The ReScript Project"), React.createElement("p", undefined, "Software distribution powered by ", React.createElement(Markdown.A.make, {
+                        }, React.createElement("p", undefined, "© 2021 The ReScript Project"), React.createElement("p", undefined, "Software distribution powered by ", React.createElement(Markdown.A.make, {
                                   href: "https://www.keycdn.com/",
                                   target: "_blank",
                                   children: "KeyCDN"

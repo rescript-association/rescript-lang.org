@@ -60,6 +60,7 @@ module Listbox = {
 module Transition = {
   @module("@headlessui/react") @react.component
   external make: (
+    ~appear: bool=?,
     ~show: bool,
     ~enter: string=?,
     ~enterFrom: string=?,

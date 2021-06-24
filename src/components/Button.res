@@ -3,7 +3,7 @@ type size = Small | Large
 /* type theme = Light | Dark */
 
 @react.component
-let make = (~kind: kind=PrimaryRed, ~size: size=Large, ~children) => {
+let make = (~href=?, ~target=?, ~kind: kind=PrimaryRed, ~size: size=Large, ~children) => {
   let bgColor = switch kind {
   | PrimaryRed => "bg-fire hover:bg-fire-70 text-white"
   | PrimaryBlue => "bg-sky hover:bg-sky-70 text-white"
@@ -15,8 +15,17 @@ let make = (~kind: kind=PrimaryRed, ~size: size=Large, ~children) => {
   | Small => "px-4 py-2 captions rounded"
   }
 
-  <button
-    className={`transition-colors duration-200 body-button focus:outline-none ${bgColor} ${padding}`}>
+  let rel = switch target {
+  | Some("_blank") => "noopener noreferrer"->Some
+  | _ => None
+  }
+
+  <a
+    ?href
+    ?target
+    ?rel
+    role="button"
+    className={`select-none hover:cursor-pointer transition-colors duration-200 body-button focus:outline-none ${bgColor} ${padding}`}>
     children
-  </button>
+  </a>
 }

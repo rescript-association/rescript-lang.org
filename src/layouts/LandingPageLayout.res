@@ -1,8 +1,3 @@
-/* module Link = Next.Link */
-
-// Copy Brainstorming Gist:
-// https://gist.github.com/chenglou/3624a93d63dbd32c4a3d087f9c9e06bc
-
 module Intro = {
   @react.component
   let make = () => {
@@ -16,7 +11,11 @@ module Intro = {
             "ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node.",
           )}
         </h2>
-        <padding className="mt-4 mb-2"> <Button> {React.string("Get started")} </Button> </padding>
+        <div className="mt-4 mb-2">
+          <Next.Link href="/docs/manual/latest/installation" passHref={true}>
+            <Button> {React.string("Get started")} </Button>
+          </Next.Link>
+        </div>
       </div>
     </section>
   }
@@ -261,17 +260,16 @@ module QuickInstall = {
           <p
             className="relative z-1 space-y-12 text-gray-80 font-semibold text-24 md:text-32 leading-2">
             <span className="bg-fire-5 rounded-lg border border-fire-10 p-1 ">
-              {React.string(`Everything you want`)}
+              {React.string(`Everything you love`)}
             </span>
-            {React.string(` from JavaScript, minus the parts you don't need.`)}
+            {React.string(` about JavaScript, with a robustly typed language and a reliably fast toolchain that fits right in.`)}
           </p>
         </div>
         //spacing between columns
         <div className="w-full mt-12 md:flex flex-col lg:flex-row md:justify-between ">
           <p
             className="relative z-1 text-gray-80 font-semibold text-24 md:text-32 leading-2 max-w-[32rem]">
-            {React.string(`ReScript is easy to pick up for JavaScript developers,
-          and helps shipping products with confidence.`)}
+            {React.string(`ReScript was made to maintain and ship complex products with confidence.`)}
           </p>
           <div
             className="mt-16 lg:mt-0 self-end" style={ReactDOM.Style.make(~maxWidth="25rem", ())}>
@@ -369,10 +367,22 @@ module MainUSP = {
           type_="video/mp4"
         />
       </video>}
-      paragraph={React.string(`ReScript cares about a consistent and fast feedback loop for any
-            codebase size. No need for memory hungry build processes, and no
-            corrupted caches. Switch branches as you please without worrying
-            about stale caches or wrong type information.`)}
+      paragraph={<>
+        <p>
+          {React.string(`ReScript cares about a consistent and fast
+      feedback loop for any codebase size. Refactor code, pull complex changes,
+      or switch to feature branches as you please. No sluggish CI builds, stale
+      caches, wrong type hints, or memory hungry language servers that slow you
+      down.`)}
+        </p>
+        <p className="mt-6">
+          <Next.Link href="/docs/manual/latest/build-performance" passHref={true}>
+            <Button size={Button.Small} kind={Button.PrimaryBlue}>
+              {React.string("Learn more")}
+            </Button>
+          </Next.Link>
+        </p>
+      </>}
     />
 
   let item2 =
@@ -389,10 +399,11 @@ module MainUSP = {
         />
       </video>}
       polygonDirection=Up
-      paragraph={React.string(` Every ReScript app is fully typed and provides
-      correct type information to any given value. We prioritize simpler types
-      / discourage complex types for the sake of clarity and easy debugability.
-      No \`any\`, no magic types, no surprise \`undefined\`.
+      paragraph={React.string(`Every ReScript app is fully typed and provides
+      reliable type information for any given value in your program. We
+      prioritize simpler types over complex types for the sake of
+      clarity and easy debugability. No \`any\`, no magic types, no surprise
+      \`undefined\`.
       `)}
     />
 
@@ -410,7 +421,7 @@ module MainUSP = {
         />
       </video>}
       paragraph={React.string(`Use any library from JavaScript, export ReScript
-      libraries to JavaScript, automatically generate TypeScript types, etc. It's
+      libraries to JavaScript, automatically generate TypeScript types. It's
       like you've never left the good parts of JavaScript at all.`)}
     />
 
@@ -434,42 +445,67 @@ module OtherSellingPoints = {
       <div className="max-w-1060 grid grid-cols-4 md:grid-cols-10 grid-rows-2 gap-8">
         //Large Item
         <div className="pb-24 md:pb-32 row-span-2 row-start-1 col-start-1 col-span-4 md:col-span-6">
-          // TODO: Gallery swiper component for community images
-          <div className="bg-gray-10 w-full rounded-lg min-h-[20rem]" />
-          <h3 className="hl-3 text-gray-20 mt-6 mb-2">
+          <ImageGallery
+            className="w-full "
+            imgClassName="w-full h-[25.9rem] object-cover rounded-lg"
+            imgSrcs={[
+              "/static/lp/community-3.jpg",
+              "/static/lp/community-2.jpg",
+              "/static/lp/community-1.jpg",
+            ]}
+          />
+          <h3 className="hl-3 text-gray-20 mt-4 mb-2">
             {React.string(`A community of programmers who value getting things done`)}
           </h3>
           <p className="body-md text-gray-40">
-            {React.string(`No language can be popular without a solid community. A
-        great type system isn't useful if library authors abuse it. Performance
-        doesn't show if all the libraries are slow. Join the ReScript community
-        of programmers who all care about simplicity, speed and practicality.
-        `)}
+            {React.string(`No language can be popular without a solid
+            community. A great type system isn't useful if library authors
+            abuse it. Performance doesn't show if all the libraries are slow.
+            Join the ReScript community — A group of companies and individuals
+            who deeply care about simplicity, speed and practicality.`)}
           </p>
+          <div className="mt-6">
+            <Button
+              href="https://forum.rescript-lang.org"
+              target="_blank"
+              size={Button.Small}
+              kind={Button.PrimaryBlue}>
+              {React.string("Join our Forum")}
+            </Button>
+          </div>
         </div>
         // 2 small items
         // Item 2
         <div className="col-span-4 lg:row-start-1">
-          <div className="bg-turtle-dark w-full rounded-lg min-h-[10rem]" />
+          <img
+            className="w-full rounded-lg border-2 border-turtle-dark"
+            src="/static/lp/editor-tooling-1.jpg"
+          />
           <h3 className="hl-3 text-gray-20 mt-6 mb-2">
-            {React.string(`Tooling that lets our language shine`)}
+            {React.string(`Tooling that lets your language shine`)}
           </h3>
           <p className="body-md text-gray-40">
-            {React.string(`Some languages have great features, some other
-              languages have great tooling. ReScript brings everything you need
-              to get up and running quickly without tricky configuration.`)}
+            {React.string(`A builtin pretty printer, memory friendly
+            VSCode & Vim plugins, a stable type system and compiler that doesn't require lots
+            of extra configuration. ReScript brings all the tools you need to
+            build reliable JavaScript, Node and ReactJS applications.`)}
           </p>
         </div>
         // Item 3
         <div className="col-span-4 lg:row-start-2">
-          <div className="bg-gray-10 w-full rounded-lg min-h-[10rem]" />
+          <img
+            className="w-full rounded-lg border-2 border-fire-30"
+            src="/static/lp/easy-to-unadopt.jpg"
+          />
           <h3 className="hl-3 text-gray-20 mt-6 mb-2">
             {React.string(`The only language you can easily un-adopt`)}
           </h3>
           <p className="body-md text-gray-40">
-            {React.string(`ReScript allows you to remove the source files and
-            keep its clean JavaScript output. Tell your coworkers that your
-            project will keep functioning with or without ReScript!`)}
+            {React.string(`ReScript was made with gradual adoption in mind.  If
+            you ever want to go back to plain JavaScript, just remove all
+            source files and keep its clean JavaScript output. Tell
+            your coworkers that your project will keep functioning with or
+            without ReScript!`)}
           </p>
         </div>
         // </div>
@@ -489,35 +525,42 @@ module OtherSellingPoints = {
 
 module TrustedBy = {
   // TODO: is this data structure too fancy?
-  type company = Logo({name: string, path: string}) /* TODO: get rid of style */
+  type company = Logo({name: string, url: string, path: string}) /* TODO: get rid of style */
 
   let companies = [
     Logo({
       name: "Facebook Messenger",
+      url: "https://messenger.com",
       path: "/static/lp/messenger.svg",
     }),
     Logo({
       name: "Facebook",
+      url: "https://messenger.com",
       path: "/static/lp/facebook.svg",
     }),
     Logo({
       name: "Rohea",
+      url: "https://rohea.com",
       path: "/static/lp/rohea.svg",
     }),
     Logo({
       name: "CCA",
+      url: "https://cca.io",
       path: "/static/lp/cca-io.svg",
     }),
     Logo({
       name: "Nomadic Labs",
+      url: "https://nomadic-labs.com",
       path: "/static/lp/nomadic_labs.svg",
     }),
     Logo({
       name: "Draftbit",
+      url: "https://draftbit.com",
       path: "/static/lp/draftbit.svg",
     }),
     Logo({
       name: "Pupilfirst",
+      url: "https://pupilfirst.com",
       path: "/static/lp/pupilfirst.svg",
     }),
   ]
@@ -532,7 +575,12 @@ module TrustedBy = {
         {companies
         ->Js.Array2.map(company => {
           let (companyKey, renderedCompany) = switch company {
-          | Logo({name, path}) => (name, <img className="max-w-sm" src=path />)
+          | Logo({name, path, url}) => (
+              name,
+              <a href=url target="_blank" rel="noopener noreferrer">
+                <img className="hover:opacity-75 max-w-sm" src=path />
+              </a>,
+            )
           }
           <div key=companyKey> renderedCompany </div>
         })
@@ -549,7 +597,6 @@ module TrustedBy = {
 }
 
 module CuratedResources = {
-  // TODO: is this overkill, should we just inline this as jsx?
   type card = {
     imgSrc: string,
     title: React.element,
@@ -561,25 +608,25 @@ module CuratedResources = {
     {
       imgSrc: "/static/ic_manual@2x.png",
       title: React.string("Language Manual"),
-      descr: "Look up the basics: reference for all language features",
+      descr: "Look up the basics: Reference for all our language features",
       href: "/docs/manual/latest/introduction",
     },
     {
       imgSrc: "/static/ic_rescript_react@2x.png",
       title: React.string("ReScript + React"),
-      descr: "First Class bindings for ReactJS. Developed for small and big ass scale projects.",
+      descr: "First Class bindings for ReactJS used by production users all over the world.",
       href: "/docs/react/latest/introduction",
     },
     {
       imgSrc: "/static/ic_manual@2x.png",
-      title: React.string("Add ReScript to an existing project"),
-      descr: "This guide will help you to transfer your project without hassle.",
+      title: React.string("Integrate ReScript in your existing Codebase"),
+      descr: "Learn how to start using ReScript in your current projects. Try before you buy!",
       href: "/docs/manual/latest/installation#integrate-into-an-existing-js-project",
     },
     {
       imgSrc: "/static/ic_gentype@2x.png",
-      title: React.string("TypeScript Integration"),
-      descr: "Integrate TypeScript and Flow seamlessly and with ease.",
+      title: React.string("TypeScript Integration with genType"),
+      descr: "Learn how to integrate ReScript in your existing TypeScript codebases.",
       href: "/docs/gentype/latest/introduction",
     },
   ]
@@ -591,9 +638,10 @@ module CuratedResources = {
         <div> {React.string("ReScript & ")} </div>
         <div className="text-gray-40"> {React.string("NextJS")} </div>
       </>,
-      descr: "Get started with our our NextJS starter template.",
+      descr: "Get started with our NextJS starter template.",
       href: "https://github.com/ryyppy/rescript-nextjs-template",
     },
+    /*
     {
       imgSrc: "/static/vitejs_starter_logo.svg",
       title: <>
@@ -614,6 +662,7 @@ module CuratedResources = {
       descr: "Get started with ReScript targeting the Node platform.",
       href: "/",
     },
+ */
   ]
 
   @react.component
@@ -623,21 +672,19 @@ module CuratedResources = {
       <div
         className="mb-10 max-w-1280 flex flex-col justify-center items-center mx-5 md:mx-8 lg:mx-auto">
         <div className="body-sm md:body-lg text-gray-40 w-40 mb-4 xs:w-auto text-center">
-
-          {React.string("To start or advance your ReScript projects")}
+          {React.string("Get up and running with ReScript")}
         </div>
         <h2 className="hl-1 text-gray-20 text-center"> {React.string("Curated resources")} </h2>
       </div>
       <div className="px-5 md:px-8 max-w-1280 mx-auto my-20">
-        <div className="body-lg text-center z-2 relative text-gray-40 max-w-[12rem] mx-auto bg-gray-100">
+        <div
+          className="body-lg text-center z-2 relative text-gray-40 max-w-[12rem] mx-auto bg-gray-100">
           {React.string("Guides and Docs")}
         </div>
         <hr className="bg-gray-80 h-px border-0 relative top-[-12px]" />
       </div>
       //divider
 
-      //
-      //
       //container for guides
       <div>
         <div
@@ -646,7 +693,7 @@ module CuratedResources = {
           ->Belt.Array.mapWithIndex((i, card) =>
             <Next.Link key={Belt.Int.toString(i)} href={card.href}>
               <a
-                className="bg-gray-90 px-4 md:px-8 pb-0 md:pb-8 relative rounded-xl md:min-w-[196px] overflow-scroll">
+                className="hover:bg-gray-80 bg-gray-90 px-4 md:px-8 pb-0 md:pb-8 relative rounded-xl md:min-w-[196px]">
                 <img className="h-[53px] absolute mt-6" src=card.imgSrc />
                 <h5 className="text-gray-10 hl-4 mt-32 h-12"> {card.title} </h5>
                 <div className="text-gray-40 mt-2 mb-8 body-sm"> {React.string(card.descr)} </div>
@@ -671,7 +718,7 @@ module CuratedResources = {
               key={Belt.Int.toString(i)}
               href={card.href}
               target="_blank"
-              className="bg-gray-90 px-5 pb-8 relative rounded-xl min-w-[200px]">
+              className="hover:bg-gray-80 bg-gray-90 px-5 pb-8 relative rounded-xl min-w-[200px]">
               <img className="h-12 absolute mt-5" src=card.imgSrc />
               <h5 className="text-gray-10 hl-4 mt-32 h-12"> {card.title} </h5>
               <div className="text-gray-40 mt-4 body-sm"> {React.string(card.descr)} </div>
@@ -684,6 +731,7 @@ module CuratedResources = {
   }
 }
 
+/*
 module Sponsors = {
   @react.component
   let make = () =>
@@ -691,6 +739,7 @@ module Sponsors = {
       <h2 className="hl-1 text-center"> {React.string("Sponsors")} </h2>
     </div>
 }
+*/
 
 @react.component
 let make = (~components=Markdown.default, ~children) => {
@@ -714,7 +763,6 @@ let make = (~components=Markdown.default, ~children) => {
                     <OtherSellingPoints />
                     <TrustedBy />
                     <CuratedResources />
-                    <Sponsors />
                     children
                   </div>
                 </div>
