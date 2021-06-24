@@ -322,7 +322,7 @@ module MainUSP = {
             </div>
           </div>
           //image (right)
-          <div className="relative">
+          <div className="relative mt-10 lg:mt-0">
             <div
               className="relative w-full z-2 bg-gray-90 rounded-lg flex md:mt-0 items-center justify-center rounded-lg"
               style={ReactDOM.Style.make(
@@ -346,7 +346,7 @@ module MainUSP = {
           preserveAspectRatio="none">
           <polygon className="fill-current" points=polyPointsMobile />
         </svg>
-        // Tabled / Desktop SVG
+        // Tablet / Desktop SVG
         <svg
           className={`hidden md:block absolute z-1 w-full h-full right-0 top-0 ${polyColor}`}
           viewBox="0 0 100 100"
@@ -361,7 +361,7 @@ module MainUSP = {
     <Item
       caption="Fast and simple"
       title={React.string("The fastest build system on the web")}
-      media={<video className="rounded-lg" controls={true}>
+      media={<video className="rounded-lg" controls={true} poster={"/static/lp/fast-build-preview.jpg"}>
         <source
           src="https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624459663/Reason%20Association/rescript-lang.org/landingpage/fast-build-3_y6y2nt.mp4"
           type_="video/mp4"
@@ -392,7 +392,7 @@ module MainUSP = {
         className="text-transparent bg-clip-text bg-gradient-to-r from-berry-dark-50 to-fire-50">
         {React.string("Type Better")}
       </span>}
-      media={<video className="rounded-lg" controls={true}>
+      media={<video className="rounded-lg" controls={true} poster={"/static/lp/type-better-preview.jpg"}>
         <source
           src="https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624459181/Reason%20Association/rescript-lang.org/landingpage/type-better-3_hdvouf.mp4"
           type_="video/mp4"
@@ -414,7 +414,7 @@ module MainUSP = {
         <span className="text-orange-dark"> {React.string("The familiar JS ecosystem")} </span>
         {React.string(" at your fingertips")}
       </>}
-      media={<video className="rounded-lg" controls={true}>
+      media={<video className="rounded-lg" controls={true} poster={"/static/lp/interop-example-preview.jpg"}>
         <source
           src="https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624458286/Reason%20Association/rescript-lang.org/landingpage/interop-example-2_xfklyi.mp4"
           type_="video/mp4"
@@ -513,15 +513,6 @@ module OtherSellingPoints = {
     </section>
   }
 }
-
-/* module SubtleButton = { */
-/* @react.component */
-/* let make = (~children) => */
-/* <button */
-/* className="transition-colors duration-200 inline-block text-16 text-fire rounded border-2 border-fire-10 hover:bg-fire-10 px-5 py-2"> */
-/* children */
-/* </button> */
-/* } */
 
 module TrustedBy = {
   // TODO: is this data structure too fancy?

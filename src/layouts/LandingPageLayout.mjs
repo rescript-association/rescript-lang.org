@@ -251,7 +251,7 @@ function LandingPageLayout$MainUSP$Item(Props) {
                         }, React.createElement("div", {
                               className: "text-gray-30 body-md pr-8"
                             }, paragraph))), React.createElement("div", {
-                      className: "relative"
+                      className: "relative mt-10 lg:mt-0"
                     }, React.createElement("div", {
                           className: "relative w-full z-2 bg-gray-90 rounded-lg flex md:mt-0 items-center justify-center rounded-lg",
                           style: {
@@ -286,7 +286,8 @@ var item1 = React.createElement(LandingPageLayout$MainUSP$Item, {
       title: "The fastest build system on the web",
       media: React.createElement("video", {
             className: "rounded-lg",
-            controls: true
+            controls: true,
+            poster: "/static/lp/fast-build-preview.jpg"
           }, React.createElement("source", {
                 src: "https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624459663/Reason%20Association/rescript-lang.org/landingpage/fast-build-3_y6y2nt.mp4",
                 type: "video/mp4"
@@ -311,7 +312,8 @@ var item2 = React.createElement(LandingPageLayout$MainUSP$Item, {
           }, "Type Better"),
       media: React.createElement("video", {
             className: "rounded-lg",
-            controls: true
+            controls: true,
+            poster: "/static/lp/type-better-preview.jpg"
           }, React.createElement("source", {
                 src: "https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624459181/Reason%20Association/rescript-lang.org/landingpage/type-better-3_hdvouf.mp4",
                 type: "video/mp4"
@@ -327,7 +329,8 @@ var item3 = React.createElement(LandingPageLayout$MainUSP$Item, {
               }, "The familiar JS ecosystem"), " at your fingertips"),
       media: React.createElement("video", {
             className: "rounded-lg",
-            controls: true
+            controls: true,
+            poster: "/static/lp/interop-example-preview.jpg"
           }, React.createElement("source", {
                 src: "https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624458286/Reason%20Association/rescript-lang.org/landingpage/interop-example-2_xfklyi.mp4",
                 type: "video/mp4"
