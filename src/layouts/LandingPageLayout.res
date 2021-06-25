@@ -4,7 +4,7 @@ module Intro = {
     <section className="flex justify-center">
       <div className="max-w-1060 flex flex-col items-center px-5 sm:px-8 lg:box-content">
         <h1 className="hl-title text-center max-w-[53rem]">
-          {React.string("A simple and fast language for JavaScript")}
+          {React.string("Fast, Simple, Fully Typed JavaScript from the Future")}
         </h1>
         <h2 className="body-lg text-center text-gray-60 my-4 max-w-[40rem]">
           {React.string(
@@ -78,7 +78,7 @@ exports.Button = Button;`,
             <div className="md:w-1/2">
               <div
                 className="body-sm text-gray-40 text-center py-3 sm:rounded-t-lg md:rounded-tl-lg bg-gray-100">
-                {React.string("Written in ReScript")}
+                {React.string("Write in ReScript")}
               </div>
               <pre className="text-14 px-8 pt-6 pb-12 whitespace-pre-wrap">
                 {HighlightJs.renderHLJS(~darkmode=true, ~code=example.res, ~lang="res", ())}
@@ -88,7 +88,7 @@ exports.Button = Button;`,
             <div className="md:w-1/2 ">
               <div
                 className="body-sm text-gray-40 py-3 text-center md:border-l border-gray-80 bg-gray-100 sm:rounded-tr-lg">
-                {React.string("Compiles to JavaScript")}
+                {React.string("Compile to JavaScript")}
               </div>
               <pre
                 className="text-14 px-8 pt-6 pb-14 md:border-l border-gray-80 whitespace-pre-wrap">
@@ -411,7 +411,7 @@ module MainUSP = {
 
   let item3 =
     <Item
-      caption="Seamless JS Integration"
+      caption="Seamless Integration"
       title={<>
         <span className="text-orange-dark"> {React.string("The familiar JS ecosystem")} </span>
         {React.string(" at your fingertips")}

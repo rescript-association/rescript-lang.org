@@ -24,7 +24,7 @@ function LandingPageLayout$Intro(Props) {
                   className: "max-w-1060 flex flex-col items-center px-5 sm:px-8 lg:box-content"
                 }, React.createElement("h1", {
                       className: "hl-title text-center max-w-[53rem]"
-                    }, "A simple and fast language for JavaScript"), React.createElement("h2", {
+                    }, "Fast, Simple, Fully Typed JavaScript from the Future"), React.createElement("h2", {
                       className: "body-lg text-center text-gray-60 my-4 max-w-[40rem]"
                     }, "ReScript is a robustly typed language that compiles to efficient\n            and human-readable JavaScript. It comes with a lightning fast\n            compiler toolchain that scales to any codebase size."), React.createElement("div", {
                       className: "mt-4 mb-2"
@@ -59,13 +59,13 @@ function LandingPageLayout$PlaygroundHero(Props) {
                               className: "md:w-1/2"
                             }, React.createElement("div", {
                                   className: "body-sm text-gray-40 text-center py-3 sm:rounded-t-lg md:rounded-tl-lg bg-gray-100"
-                                }, "Written in ReScript"), React.createElement("pre", {
+                                }, "Write in ReScript"), React.createElement("pre", {
                                   className: "text-14 px-8 pt-6 pb-12 whitespace-pre-wrap"
                                 }, HighlightJs.renderHLJS(undefined, true, example.res, "res", undefined))), React.createElement("div", {
                               className: "md:w-1/2 "
                             }, React.createElement("div", {
                                   className: "body-sm text-gray-40 py-3 text-center md:border-l border-gray-80 bg-gray-100 sm:rounded-tr-lg"
-                                }, "Compiles to JavaScript"), React.createElement("pre", {
+                                }, "Compile to JavaScript"), React.createElement("pre", {
                                   className: "text-14 px-8 pt-6 pb-14 md:border-l border-gray-80 whitespace-pre-wrap"
                                 }, HighlightJs.renderHLJS(undefined, true, example.js, "js", undefined)))), React.createElement("div", undefined, React.createElement(Next.Link.make, {
                               href: "/try?code=" + LzString.compressToEncodedURIComponent(example.res) + "}",
@@ -323,7 +323,7 @@ var item2 = React.createElement(LandingPageLayout$MainUSP$Item, {
     });
 
 var item3 = React.createElement(LandingPageLayout$MainUSP$Item, {
-      caption: "Seamless JS Integration",
+      caption: "Seamless Integration",
       title: React.createElement(React.Fragment, undefined, React.createElement("span", {
                 className: "text-orange-dark"
               }, "The familiar JS ecosystem"), " at your fingertips"),
