@@ -7,11 +7,9 @@ module Intro = {
           {React.string("Fast, Simple, Fully Typed JavaScript from the Future")}
         </h1>
         <h2 className="body-lg text-center text-gray-60 my-4 max-w-[40rem]">
-          {React.string(
-            `ReScript is a robustly typed language that compiles to efficient
+          {React.string(`ReScript is a robustly typed language that compiles to efficient
             and human-readable JavaScript. It comes with a lightning fast
-            compiler toolchain that scales to any codebase size.`
-          )}
+            compiler toolchain that scales to any codebase size.`)}
         </h2>
         <div className="mt-4 mb-2">
           <Next.Link href="/docs/manual/latest/installation" passHref={true}>
@@ -363,7 +361,8 @@ module MainUSP = {
     <Item
       caption="Fast and simple"
       title={React.string("The fastest build system on the web")}
-      media={<video className="rounded-lg" controls={true} poster={"/static/lp/fast-build-preview.jpg"}>
+      media={<video
+        className="rounded-lg" controls={true} poster={"/static/lp/fast-build-preview.jpg"}>
         <source
           src="https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624459663/Reason%20Association/rescript-lang.org/landingpage/fast-build-3_y6y2nt.mp4"
           type_="video/mp4"
@@ -394,7 +393,8 @@ module MainUSP = {
         className="text-transparent bg-clip-text bg-gradient-to-r from-berry-dark-50 to-fire-50">
         {React.string("Type Better")}
       </span>}
-      media={<video className="rounded-lg" controls={true} poster={"/static/lp/type-better-preview.jpg"}>
+      media={<video
+        className="rounded-lg" controls={true} poster={"/static/lp/type-better-preview.jpg"}>
         <source
           src="https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624459181/Reason%20Association/rescript-lang.org/landingpage/type-better-3_hdvouf.mp4"
           type_="video/mp4"
@@ -416,7 +416,8 @@ module MainUSP = {
         <span className="text-orange-dark"> {React.string("The familiar JS ecosystem")} </span>
         {React.string(" at your fingertips")}
       </>}
-      media={<video className="rounded-lg" controls={true} poster={"/static/lp/interop-example-preview.jpg"}>
+      media={<video
+        className="rounded-lg" controls={true} poster={"/static/lp/interop-example-preview.jpg"}>
         <source
           src="https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624458286/Reason%20Association/rescript-lang.org/landingpage/interop-example-2_xfklyi.mp4"
           type_="video/mp4"
@@ -517,7 +518,7 @@ module OtherSellingPoints = {
 }
 
 module TrustedBy = {
-  type company = Logo({name: string, url: string, path: string}) 
+  type company = Logo({name: string, url: string, path: string})
 
   let companies = [
     Logo({
@@ -737,7 +738,12 @@ let make = (~components=Markdown.default, ~children) => {
   let overlayState = React.useState(() => false)
 
   <>
-    <Meta />
+    <Meta
+      title="The ReScript Programming Language"
+      description="Fast, Simple, Fully Typed JavaScript from the Future"
+      keywords=["ReScript", "rescriptlang", "JavaScript", "JS", "TypeScript"]
+      ogImage="https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598616442/Reason%20Association/rescript-lang.org/Art-3-rescript-launch_ovoibg.jpg"
+    />
     <div className="mt-4 xs:mt-16">
       <div className="text-gray-80 text-18">
         <Navigation overlayState />

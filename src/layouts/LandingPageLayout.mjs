@@ -570,7 +570,18 @@ function LandingPageLayout(Props) {
   var overlayState = React.useState(function () {
         return false;
       });
-  return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, {}), React.createElement("div", {
+  return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, {
+                  keywords: [
+                    "ReScript",
+                    "rescriptlang",
+                    "JavaScript",
+                    "JS",
+                    "TypeScript"
+                  ],
+                  description: "Fast, Simple, Fully Typed JavaScript from the Future",
+                  title: "The ReScript Programming Language",
+                  ogImage: "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598616442/Reason%20Association/rescript-lang.org/Art-3-rescript-launch_ovoibg.jpg"
+                }), React.createElement("div", {
                   className: "mt-4 xs:mt-16"
                 }, React.createElement("div", {
                       className: "text-gray-80 text-18"
