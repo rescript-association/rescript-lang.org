@@ -118,13 +118,13 @@ module DocsSection = {
       let isAbsolute = Util.Url.isAbsolute(href)
       let content =
         <div
-          className={`hover:bg-gray-5 hover:shadow hover:-mx-8 hover:px-8 hover:cursor-pointer active:bg-gray-10 py-4 flex space-x-4 items-start rounded-xl`}>
+          className={`hover:bg-gray-5 hover:shadow hover:-mx-8 hover:px-8 hover:cursor-pointer active:bg-gray-20 py-4 flex space-x-4 items-start rounded-xl`}>
           icon
           <div>
             <div
               className={`flex items-center text-16 font-medium ${active
-                  ? "text-fire-40"
-                  : "text-gray-95"}`}>
+                  ? "text-fire"
+                  : "text-gray-80"}`}>
               <span> {React.string(title)} </span>
               {if isAbsolute {
                 <Icon.ExternalLink className="inline-block ml-2 w-4 h-4" />
@@ -133,7 +133,7 @@ module DocsSection = {
               }}
             </div>
             <div
-              className={`block text-14 text-gray-60 ${active ? "text-fire-40" : "text-gray-60"}`}>
+              className={`block text-14 text-gray-60 ${active ? "text-fire-50" : "text-gray-60"}`}>
               {React.string(description)}
             </div>
           </div>
@@ -229,7 +229,7 @@ module DocsSection = {
                 }
 
                 <li key=text>
-                  <span className="text-fire-40 mr-2"> {React.string(`-`)} </span>
+                  <span className="text-fire mr-2"> {React.string(`-`)} </span>
                   <Link href> <a className=linkClass> {React.string(text)} </a> </Link>
                 </li>
               })
@@ -521,7 +521,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
       ref={ReactDOM.Ref.domRef(navRef)}
       id="header"
       style={ReactDOMStyle.make(~minWidth, ())}
-      className={fixedNav ++ " z-50 px-4 flex xs:justify-center w-full h-16 bg-gray-95 shadow text-white-80 text-14"}>
+      className={fixedNav ++ " z-50 px-4 flex xs:justify-center w-full h-16 bg-gray-90 shadow text-white-80 text-14"}>
       <div className="flex justify-between items-center h-full w-full max-w-1280">
         <div className="h-8 w-8 lg:h-10 lg:w-32">
           <a
@@ -533,7 +533,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
         </div>
         /* Desktop horizontal navigation */
         <div
-          className="flex items-center xs:justify-between w-full bg-gray-95 sm:h-auto sm:relative">
+          className="flex items-center xs:justify-between w-full bg-gray-90 sm:h-auto sm:relative">
           <div
             className="flex ml-10 space-x-5 w-full max-w-320"
             style={ReactDOMStyle.make(~maxWidth="26rem", ())}>
@@ -585,7 +585,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
           resetCollapsibles()
           toggleOverlay()
         }}>
-        <Icon.DrawerDots className={"h-1 w-auto block " ++ (isOverlayOpen ? "text-fire" : "")} />
+        <Icon.DrawerDots className={"h-1 w-auto block " ++ (isOverlayOpen ? "text-fire" : "text-gray-60")} />
       </button>
       /* Mobile overlay */
       <div

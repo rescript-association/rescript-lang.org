@@ -16,11 +16,11 @@ let make = () => {
   let iconLink = "hover:pointer hover:text-gray-60-tr"
   <footer className="flex justify-center border-t border-gray-10">
     <div
-      className="flex flex-col md:flex-row justify-between max-w-1280 w-full px-8 py-16 text-gray-95 ">
+      className="flex flex-col md:flex-row justify-between max-w-1280 w-full px-8 py-16 text-gray-80 ">
       <div>
         <img className="w-40 mb-5" src="/static/rescript_logo_black.svg" />
         <div className="text-16">
-          <p> {React.string(`© 2020 The ReScript Project`)} </p>
+          <p> {React.string(`© 2021 The ReScript Project`)} </p>
           <p>
             {React.string("Software distribution powered by ")}
             <Markdown.A href="https://www.keycdn.com/" target="_blank">

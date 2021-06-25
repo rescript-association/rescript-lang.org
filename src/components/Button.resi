@@ -1,2 +1,11 @@
+type kind = PrimaryRed | PrimaryBlue | SecondaryRed
+type size = Small | Large
+
 @react.component
-let make: (~children: React.element) => React.element
+let make: (
+  ~href: string=?,
+  ~target: string=?,
+  ~kind: kind=?,
+  ~size: size=?,
+  ~children: React.element,
+) => React.element

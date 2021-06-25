@@ -71,7 +71,7 @@
 }
 
 .cm-s-material .cm-keyword {
-  @apply text-berry-40;
+  @apply text-berry-dark-50;
 }
 
 .cm-s-material .cm-keyword2 {
@@ -87,7 +87,7 @@
 }
 
 .cm-s-material .cm-operator {
-  @apply text-berry;
+  @apply text-berry-dark-50;
 }
 
 .cm-s-material .cm-variable-2 {
@@ -120,7 +120,7 @@
 }
 
 .cm-s-material .cm-def {
-  @apply text-gray-20;
+  @apply text-gray-30;
 }
 
 .cm-s-material .cm-string {
@@ -136,7 +136,7 @@
 }
 
 .cm-s-material .cm-variable {
-  @apply text-gray-20;
+  @apply text-gray-30;
 }
 
 .cm-s-material .cm-tag {

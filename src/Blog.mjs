@@ -3,7 +3,6 @@
 import * as Mdx from "./common/Mdx.mjs";
 import * as Meta from "./components/Meta.mjs";
 import * as Next from "./bindings/Next.mjs";
-import * as $$Text from "./components/Text.mjs";
 import * as Util from "./common/Util.mjs";
 import * as Curry from "rescript/lib/es6/curry.js";
 import * as React from "react";
@@ -52,7 +51,7 @@ function Blog$CategorySelector(Props) {
                     return React.createElement("div", {
                                 key: text,
                                 className: (
-                                  isActive ? "bg-gray-10 text-gray-80 rounded py-1" : "hover:cursor-pointer hover:text-gray-80"
+                                  isActive ? "bg-gray-20 text-gray-80 rounded py-1" : "hover:cursor-pointer bg-white hover:text-gray-80"
                                 ) + "  px-4 inline-block",
                                 onClick: onClick
                               }, text);
@@ -80,7 +79,7 @@ function Blog$BlogCard(Props) {
                       href: "/blog/[slug]",
                       as: "/blog/" + slug,
                       children: React.createElement("a", {
-                            className: "relative block mb-4 pt-9/16"
+                            className: "relative hl-title block mb-4 pt-9/16"
                           }, previewImg !== undefined ? React.createElement("img", {
                                   className: className,
                                   src: previewImg
@@ -94,10 +93,10 @@ function Blog$BlogCard(Props) {
                       href: "/blog/[slug]",
                       as: "/blog/" + slug,
                       children: React.createElement("a", undefined, React.createElement("h2", {
-                                className: $$Text.H3.$$default
+                                className: "hl-4"
                               }, title))
                     }), React.createElement("div", {
-                      className: "text-gray-60 text-14"
+                      className: "captions text-gray-40 pt-1"
                     }, category !== undefined ? React.createElement(React.Fragment, undefined, category, " · ") : null, Util.$$Date.toDayMonthYear(date))));
 }
 
@@ -145,20 +144,20 @@ function Blog$FeatureCard(Props) {
                 }, React.createElement("div", {
                       className: "max-w-400 "
                     }, React.createElement("h2", {
-                          className: $$Text.H2.$$default
+                          className: "hl-1"
                         }, title), React.createElement("div", {
                           className: "mb-6"
                         }, React.createElement("div", {
-                              className: "flex items-center font-medium text-gray-40 text-sm mt-2 mb-5"
+                              className: "flex items-center body-sm text-gray-40 mt-2 mb-5"
                             }, React.createElement("div", {
                                   className: "inline-block w-4 h-4 mr-2"
                                 }, authorImg), React.createElement("div", undefined, React.createElement("a", {
-                                      className: "hover:text-gray-80",
+                                      className: "hover:text-gray-60",
                                       href: "https://twitter.com/" + author.twitter,
                                       rel: "noopener noreferrer",
                                       target: "_blank"
                                     }, author.fullname), category !== undefined ? React.createElement(React.Fragment, undefined, middleDotSpacer, category, middleDotSpacer) : middleDotSpacer, Util.$$Date.toDayMonthYear(date))), React.createElement("p", {
-                              className: "text-gray-90 antialiased tracking-tight text-16"
+                              className: "body-md text-gray-70"
                             }, firstParagraph))), React.createElement(Next.Link.make, {
                       href: "/blog/[slug]",
                       as: "/blog/" + slug,
@@ -213,7 +212,7 @@ function $$default(props) {
             className: "w-full mb-24 lg:px-8 xl:px-0"
           }, React.createElement(Blog$FeatureCard, tmp));
       var postsBox = rest.length !== 0 ? React.createElement("div", {
-              className: "px-4 md:px-8 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 row-gap-12 md:row-gap-24 w-full"
+              className: "px-4 md:px-8 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 gap-y-12 md:gap-y-24 w-full"
             }, rest.map(function (post) {
                   var badge = post.frontmatter.badge;
                   var tmp = {
@@ -262,7 +261,7 @@ function $$default(props) {
                 }), React.createElement("div", {
                   className: "mt-16 pt-2"
                 }, React.createElement("div", {
-                      className: "text-gray-80 text-lg"
+                      className: "text-gray-80 text-18"
                     }, React.createElement(Navigation.make, {
                           overlayState: overlayState
                         }), React.createElement("div", {
