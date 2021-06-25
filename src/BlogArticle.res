@@ -177,7 +177,7 @@ let default = (props: props) => {
           <div className="mt-12">
             <Line />
             <div className="pt-20 flex flex-col items-center">
-              <div className="text-3xl sm:text-32 text-center text-gray-80 font-medium">
+              <div className="text-24 sm:text-32 text-center text-gray-80 font-medium">
                 {React.string("Want to read more?")}
               </div>
               <Next.Link href="/blog">
