@@ -446,14 +446,14 @@ function LandingPageLayout$TrustedBy(Props) {
             }, React.createElement("h3", {
                   className: "hl-1 text-gray-80 text-center max-w-576 mx-auto"
                 }, "Trusted by our users"), React.createElement("div", {
-                  className: "flex justify-between items-center max-w-xl mx-auto mt-16 h-[48px]"
+                  className: "flex flex-wrap mx-4 space-y-4 justify-center items-center max-w-xl lg:mx-auto mt-16 "
                 }, companies.map(function (company) {
                       var renderedCompany = React.createElement("a", {
                             href: company.url,
                             rel: "noopener noreferrer",
                             target: "_blank"
                           }, React.createElement("img", {
-                                className: "hover:opacity-75 max-w-sm",
+                                className: "hover:opacity-75 max-w-sm h-12",
                                 src: company.path
                               }));
                       return React.createElement("div", {
@@ -545,7 +545,7 @@ function LandingPageLayout$CuratedResources(Props) {
                         }, "Templates"), React.createElement("hr", {
                           className: "bg-gray-80 h-px border-0 relative top-[-12px]"
                         })), React.createElement("div", {
-                      className: "grid grid-flow-col grid-cols-2 grid-rows-2 lg:grid-cols-3 lg:grid-rows-1 gap-2 md:gap-4 lg:gap-8 max-w-1280 px-5 md:px-8 mx-auto"
+                      className: "grid grid-flow-col grid-cols-2 lg:grid-cols-3 lg:grid-rows-1 gap-2 md:gap-4 lg:gap-8 max-w-1280 px-5 md:px-8 mx-auto"
                     }, Belt_Array.mapWithIndex(templates, (function (i, card) {
                             return React.createElement("a", {
                                         key: String(i),

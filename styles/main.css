@@ -25,7 +25,13 @@ body {
 
 @layer components { 
   .hl-title {
-    @apply text-48 tracking-tighter leading-tight font-semibold text-gray-80
+    @apply text-[2.5rem] tracking-tighter leading-tight font-semibold text-gray-80
+  }
+
+  @screen xs {
+    .hl-title {
+      @apply text-48
+    }
   }
 
   @screen md {

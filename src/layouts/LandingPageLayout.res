@@ -564,14 +564,14 @@ module TrustedBy = {
       <h3 className="hl-1 text-gray-80 text-center max-w-576 mx-auto">
         {React.string("Trusted by our users")}
       </h3>
-      <div className="flex justify-between items-center max-w-xl mx-auto mt-16 h-[48px]">
+      <div className="flex flex-wrap mx-4 space-y-4 justify-center items-center max-w-xl lg:mx-auto mt-16 ">
         {companies
         ->Js.Array2.map(company => {
           let (companyKey, renderedCompany) = switch company {
           | Logo({name, path, url}) => (
               name,
               <a href=url target="_blank" rel="noopener noreferrer">
-                <img className="hover:opacity-75 max-w-sm" src=path />
+                <img className="hover:opacity-75 max-w-sm h-12" src=path />
               </a>,
             )
           }
@@ -703,7 +703,7 @@ module CuratedResources = {
           <hr className="bg-gray-80 h-px border-0 relative top-[-12px]" />
         </div>
         <div
-          className="grid grid-flow-col grid-cols-2 grid-rows-2 lg:grid-cols-3 lg:grid-rows-1 gap-2 md:gap-4 lg:gap-8 max-w-1280 px-5 md:px-8 mx-auto">
+          className="grid grid-flow-col grid-cols-2 lg:grid-cols-3 lg:grid-rows-1 gap-2 md:gap-4 lg:gap-8 max-w-1280 px-5 md:px-8 mx-auto">
           {templates
           ->Belt.Array.mapWithIndex((i, card) =>
             <a
