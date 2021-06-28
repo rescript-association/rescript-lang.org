@@ -364,7 +364,7 @@ module MainUSP = {
       media={<video
         className="rounded-lg" controls={true} poster={"/static/lp/fast-build-preview.jpg"}>
         <source
-          src="https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624459663/Reason%20Association/rescript-lang.org/landingpage/fast-build-3_y6y2nt.mp4"
+          src="https://assets-17077.kxcdn.com/videos/fast-build-3.mp4"
           type_="video/mp4"
         />
       </video>}
@@ -396,7 +396,7 @@ module MainUSP = {
       media={<video
         className="rounded-lg" controls={true} poster={"/static/lp/type-better-preview.jpg"}>
         <source
-          src="https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624459181/Reason%20Association/rescript-lang.org/landingpage/type-better-3_hdvouf.mp4"
+          src="https://assets-17077.kxcdn.com/videos/type-better-3.mp4"
           type_="video/mp4"
         />
       </video>}
@@ -419,7 +419,7 @@ module MainUSP = {
       media={<video
         className="rounded-lg" controls={true} poster={"/static/lp/interop-example-preview.jpg"}>
         <source
-          src="https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624458286/Reason%20Association/rescript-lang.org/landingpage/interop-example-2_xfklyi.mp4"
+          src="https://assets-17077.kxcdn.com/videos/interop-example-2.mp4"
           type_="video/mp4"
         />
       </video>}
