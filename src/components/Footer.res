@@ -22,7 +22,7 @@ let make = () => {
         <div className="text-16">
           <p> {React.string(`© 2021 The ReScript Project`)} </p>
           <p>
-            {React.string("Software distribution powered by ")}
+            {React.string("Software and assets distribution powered by ")}
             <Markdown.A href="https://www.keycdn.com/" target="_blank">
               {React.string("KeyCDN")}
             </Markdown.A>

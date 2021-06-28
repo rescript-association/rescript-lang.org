@@ -289,7 +289,7 @@ var item1 = React.createElement(LandingPageLayout$MainUSP$Item, {
             controls: true,
             poster: "/static/lp/fast-build-preview.jpg"
           }, React.createElement("source", {
-                src: "https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624459663/Reason%20Association/rescript-lang.org/landingpage/fast-build-3_y6y2nt.mp4",
+                src: "https://assets-17077.kxcdn.com/videos/fast-build-3.mp4",
                 type: "video/mp4"
               })),
       paragraph: React.createElement(React.Fragment, undefined, React.createElement("p", undefined, "ReScript cares about a consistent and fast\n      feedback loop for any codebase size. Refactor code, pull complex changes,\n      or switch to feature branches as you please. No sluggish CI builds, stale\n      caches, wrong type hints, or memory hungry language servers that slow you\n      down."), React.createElement("p", {
@@ -315,7 +315,7 @@ var item2 = React.createElement(LandingPageLayout$MainUSP$Item, {
             controls: true,
             poster: "/static/lp/type-better-preview.jpg"
           }, React.createElement("source", {
-                src: "https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624459181/Reason%20Association/rescript-lang.org/landingpage/type-better-3_hdvouf.mp4",
+                src: "https://assets-17077.kxcdn.com/videos/type-better-3.mp4",
                 type: "video/mp4"
               })),
       polygonDirection: /* Up */0,
@@ -332,7 +332,7 @@ var item3 = React.createElement(LandingPageLayout$MainUSP$Item, {
             controls: true,
             poster: "/static/lp/interop-example-preview.jpg"
           }, React.createElement("source", {
-                src: "https://res.cloudinary.com/dmm9n7v9f/video/upload/v1624458286/Reason%20Association/rescript-lang.org/landingpage/interop-example-2_xfklyi.mp4",
+                src: "https://assets-17077.kxcdn.com/videos/interop-example-2.mp4",
                 type: "video/mp4"
               })),
       paragraph: "Use any library from JavaScript, export ReScript\n      libraries to JavaScript, automatically generate TypeScript types. It's\n      like you've never left the good parts of JavaScript at all."
