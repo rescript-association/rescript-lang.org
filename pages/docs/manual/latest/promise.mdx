@@ -8,9 +8,31 @@ canonical: "/docs/manual/latest/promise"
 
 ReScript's primary mechanism for async programming is the same as JavaScript's (callbacks and promises), since we compile cleanly to JavaScript and would like to avoid dragging in a heavy custom runtime.
 
-However, it is planned for us to introduce a coroutine-like feature in the future; for that reason, we're postponing introducing the keywords `async` and `await` into the language; though our (upcoming) Promise API bindings revamp + [pipe](pipe) will make your async code already look better than otherwise.
+There is currently no support for `async` and `await` keywords in ReScript; though our new Promise API bindings revamp + [pipe](pipe) will make your async code already look better than otherwise.
 
-## Promise
+## Promise (new)
+
+Our up to date Promise bindings are currently not part of the the standard library. For now, please install them separately:
+
+```sh
+npm install @ryyppy/rescript-promise --save
+```
+
+In your `bsconfig.json`:
+
+```json
+{
+  "bs-dependencies": ["@ryyppy/rescript-promise"]
+}
+```
+
+_Alternatively you may vendor the [`Promise.res` / `Promise.resi` files](https://github.com/ryyppy/rescript-promise/tree/master/src) files in your app codebase if you want to have more control._
+
+You can find the APIs and full usage examples [here](https://github.com/ryyppy/rescript-promise#usage).
+
+## Promise (legacy)
+
+> **Note:** The `Js.Promise` bindings are following the outdated data-last convention from a few years ago. We kept those APIs for backwards compatibility, so for now please use [`rescript-promise`](https://github.com/ryyppy/rescript-promise) until we upstream the new bindings to our standard library.
 
 ReScript has built-in support for [JavaScript promises](api/js/promise). The 3 functions you generally need are:
 
@@ -32,7 +54,7 @@ Js.Promise.make: (
 This type signature means that `make` takes a callback that takes 2 named arguments, `resolve` and `reject`. Both arguments are themselves [uncurried callbacks](
 function.md#uncurried-function) (with a dot). `make` returns the created promise.
 
-## Usage
+### Usage
 
 Using the [pipe operator](pipe.md):
 
@@ -73,5 +95,3 @@ myPromise
 ```
 
 </CodeTab>
-
-
