@@ -1529,6 +1529,29 @@ function Playground$ControlPanel(Props) {
                   [Symbol.for("name")]: "Format"
                 });
     };
+    var onRunClick = function (evt) {
+      evt.preventDefault();
+      var getSuccessCompilationResult = function (result) {
+        if (result.TAG === /* Success */1) {
+          return result._0;
+        }
+        
+      };
+      var x = ready.result;
+      if (typeof x === "number") {
+        console.log("nothing");
+        return ;
+      }
+      if (x.TAG === /* Conv */0) {
+        console.log("conv");
+        return ;
+      }
+      Belt_Option.map(getSuccessCompilationResult(x._0), (function (r) {
+              eval(r.js_code);
+              
+            }));
+      
+    };
     var createShareLink = function (param) {
       var lang = ready.targetLang;
       var params = lang >= 2 ? [] : [[
@@ -1551,6 +1574,11 @@ function Playground$ControlPanel(Props) {
             }, React.createElement(Playground$ControlPanel$Button, {
                   children: "Format",
                   onClick: onFormatClick
+                })), React.createElement("div", {
+              className: "mr-2"
+            }, React.createElement(Playground$ControlPanel$Button, {
+                  children: "Run",
+                  onClick: onRunClick
                 })), React.createElement(Playground$ControlPanel$ShareButton, {
               createShareLink: createShareLink,
               actionIndicatorKey: actionIndicatorKey

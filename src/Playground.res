@@ -1176,6 +1176,7 @@ module ControlPanel = {
   }
 
   @val @scope(("window", "location")) external origin: string = "origin"
+  @val external eval: string => unit = "eval"
   @react.component
   let make = (
     ~actionIndicatorKey: string,
@@ -1192,6 +1193,23 @@ module ControlPanel = {
       let onFormatClick = evt => {
         ReactEvent.Mouse.preventDefault(evt)
         dispatch(Format(editorCode.current))
+      }
+
+      let onRunClick = evt => {
+        ReactEvent.Mouse.preventDefault(evt)
+
+        let getSuccessCompilationResult = result =>
+          switch result {
+          | RescriptCompilerApi.CompilationResult.Success(r) => Some(r)
+          | _ => None
+          }
+
+        switch ready.result {
+        | FinalResult.Nothing => Js.log("nothing")
+        | FinalResult.Comp(x) =>
+          getSuccessCompilationResult(x)->Belt.Option.map(r => eval(r.js_code))->ignore
+        | FinalResult.Conv(_) => Js.log("conv")
+        }
       }
 
       let createShareLink = () => {
@@ -1216,6 +1234,7 @@ module ControlPanel = {
         <div className="mr-2">
           <Button onClick=onFormatClick> {React.string("Format")} </Button>
         </div>
+        <div className="mr-2"> <Button onClick=onRunClick> {React.string("Run")} </Button> </div>
         <ShareButton actionIndicatorKey createShareLink />
       </>
     | _ => React.null
