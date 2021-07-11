@@ -1,6 +1,7 @@
 type evalResult = result<string, string>
 
 module Config = {
+  // TODO: Worker should send two events: LogMessage and ExceptionMessage
   type fromWorker = ResultMessage({forCode: string, result: evalResult})
   type fromApp = EvalMessage(string)
   let make = () => Worker.make("./EvalWorker.mjs")
