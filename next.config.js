@@ -55,7 +55,7 @@ const config = {
         test: /\.m?js$/,
         // v-- currently using an experimental setting with esbuild-loader
         //use: options.defaultLoaders.babel,
-        use: [{loader: 'esbuild-loader', options: { loader: 'jsx'}}],
+        use: [{loader: 'esbuild-loader', options: { loader: 'jsx', target: 'es2020' }}],
         exclude: /node_modules/,
         type: "javascript/auto",
         resolve: {
