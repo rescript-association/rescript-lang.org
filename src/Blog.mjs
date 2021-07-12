@@ -16,7 +16,7 @@ import * as Navigation from "./components/Navigation.mjs";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as BlogFrontmatter from "./common/BlogFrontmatter.mjs";
 
-var defaultPreviewImg = "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598616442/Reason%20Association/rescript-lang.org/Art-3-rescript-launch_ovoibg.jpg";
+var defaultPreviewImg = "/static/Art-3-rescript-launch.jpg";
 
 var middleDotSpacer = " " + (String.fromCharCode(183) + " ");
 

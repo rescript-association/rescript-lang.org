@@ -580,7 +580,7 @@ function LandingPageLayout(Props) {
                   ],
                   description: "Fast, Simple, Fully Typed JavaScript from the Future",
                   title: "The ReScript Programming Language",
-                  ogImage: "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598616442/Reason%20Association/rescript-lang.org/Art-3-rescript-launch_ovoibg.jpg"
+                  ogImage: "/static/Art-3-rescript-launch.jpg"
                 }), React.createElement("div", {
                   className: "mt-4 xs:mt-16"
                 }, React.createElement("div", {
