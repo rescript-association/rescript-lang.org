@@ -1,28 +1,16 @@
 type evalResult = result<string, string>
 
+@val external importMetaUrl: string = "import.meta.url"
+
 module Config = {
   // TODO: Worker should send two events: LogMessage and ExceptionMessage
   type fromWorker = ResultMessage({forCode: string, result: evalResult})
   type fromApp = EvalMessage(string)
-  let make = () => Worker.make("./EvalWorker.mjs")
+  let make = () =>
+    Worker.make(Webapi.Url.makeWithBase("./EvalWorker.mjs", importMetaUrl)->Webapi.Url.toString)
 }
 
 module EvalWorker = Worker.Make(Config)
-
-let worker = EvalWorker.make()
-
-let eventListeners = ref([])
-
-worker->EvalWorker.App.onMessage(msg =>
-  eventListeners.contents->Js.Array2.forEach(listener => listener(msg))
-)
-
-let addEventListener = listener => {
-  eventListeners.contents->Js.Array2.push(listener)->ignore
-}
-let removeEventListener = listener => {
-  eventListeners := eventListeners.contents->Js.Array2.filter(l => l !== listener)
-}
 
 type state = Idle | Evaluating(string) | Evaluated(string) | Error(string)
 type action =
@@ -50,17 +38,23 @@ let reducer = (state, action) =>
 
 let useEval = () => {
   let (state, dispatch) = React.useReducer(reducer, Idle)
+  let workerRef = React.useRef(None)
 
   React.useEffect1(() => {
-    let listener = message => message["data"]->workerMessageToAction->dispatch
-    addEventListener(listener)
+    workerRef.current = Some(EvalWorker.make())
 
-    Some(() => removeEventListener(listener))
+    Some(
+      () => workerRef.current->Belt.Option.map(worker => worker->EvalWorker.App.terminate)->ignore,
+    )
   }, [])
 
   React.useEffect1(() => {
+    let maybeWorker = workerRef.current
     switch state {
-    | Evaluating(code) => worker->EvalWorker.App.postMessage(Config.EvalMessage(code))
+    | Evaluating(code) =>
+      maybeWorker
+      ->Belt.Option.map(worker => worker->EvalWorker.App.postMessage(Config.EvalMessage(code)))
+      ->ignore
     | _ => ()
     }
 

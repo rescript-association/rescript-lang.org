@@ -3,9 +3,11 @@
 import * as Curry from "rescript/lib/es6/curry.js";
 import * as React from "react";
 import * as $$Worker from "../bindings/Worker.mjs";
+import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
+import * as Caml_option from "rescript/lib/es6/caml_option.js";
 
 function make(param) {
-  return $$Worker.make("./EvalWorker.mjs");
+  return $$Worker.make(new URL("./EvalWorker.mjs", import.meta.url).toString());
 }
 
 var Config = {
@@ -13,31 +15,6 @@ var Config = {
 };
 
 var EvalWorker = $$Worker.Make(Config);
-
-var worker = Curry._1(EvalWorker.make, undefined);
-
-var eventListeners = {
-  contents: []
-};
-
-Curry._2(EvalWorker.App.onMessage, worker, (function (msg) {
-        eventListeners.contents.forEach(function (listener) {
-              return Curry._1(listener, msg);
-            });
-        
-      }));
-
-function addEventListener(listener) {
-  eventListeners.contents.push(listener);
-  
-}
-
-function removeEventListener(listener) {
-  eventListeners.contents = eventListeners.contents.filter(function (l) {
-        return l !== listener;
-      });
-  
-}
 
 function workerMessageToAction(message) {
   var message$1 = message.result;
@@ -137,21 +114,26 @@ function useEval(param) {
   var match = React.useReducer(reducer, /* Idle */0);
   var dispatch = match[1];
   var state = match[0];
+  var workerRef = React.useRef(undefined);
   React.useEffect((function () {
-          var listener = function (message) {
-            return Curry._1(dispatch, workerMessageToAction(message.data));
-          };
-          addEventListener(listener);
+          workerRef.current = Caml_option.some(Curry._1(EvalWorker.make, undefined));
           return (function (param) {
-                    return removeEventListener(listener);
+                    Belt_Option.map(workerRef.current, (function (worker) {
+                            return Curry._1(EvalWorker.App.terminate, worker);
+                          }));
+                    
                   });
         }), []);
   React.useEffect((function () {
+          var maybeWorker = workerRef.current;
           if (typeof state !== "number" && state.TAG === /* Evaluating */0) {
-            Curry._2(EvalWorker.App.postMessage, worker, {
-                  _0: state._0,
-                  [Symbol.for("name")]: "EvalMessage"
-                });
+            var code = state._0;
+            Belt_Option.map(maybeWorker, (function (worker) {
+                    return Curry._2(EvalWorker.App.postMessage, worker, {
+                                _0: code,
+                                [Symbol.for("name")]: "EvalMessage"
+                              });
+                  }));
           }
           
         }), [state]);
@@ -170,10 +152,6 @@ function useEval(param) {
 export {
   Config ,
   EvalWorker ,
-  worker ,
-  eventListeners ,
-  addEventListener ,
-  removeEventListener ,
   workerMessageToAction ,
   reducer ,
   useEval ,

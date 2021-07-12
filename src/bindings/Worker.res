@@ -27,5 +27,6 @@ module Make = (Config: Config) => {
     external onMessage: (self, {"data": fromApp} => unit) => unit = "onmessage"
     @val external self: self = "self"
     @val external importScripts: string => unit = "importScripts"
+    @val external addEventListener: ({"data": fromApp} => unit) => unit = "addEventListener"
   }
 }

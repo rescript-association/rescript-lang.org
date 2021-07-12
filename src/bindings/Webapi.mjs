@@ -7,10 +7,13 @@ var ClassList = {};
 
 var $$Element = {};
 
+var Url = {};
+
 export {
   $$Document ,
   ClassList ,
   $$Element ,
+  Url ,
   
 }
 /* No side effect */

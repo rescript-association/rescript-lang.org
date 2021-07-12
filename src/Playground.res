@@ -1176,7 +1176,6 @@ module ControlPanel = {
   }
 
   @val @scope(("window", "location")) external origin: string = "origin"
-  @val external eval: string => unit = "eval"
   @react.component
   let make = (
     ~actionIndicatorKey: string,
@@ -1185,6 +1184,7 @@ module ControlPanel = {
     ~editorCode: React.ref<string>,
   ) => {
     let router = Next.Router.useRouter()
+    let (evalState, dispatchEval) = Eval.useEval()
     let children = switch state {
     | Init => React.string("Initializing...")
     | SwitchingCompiler(_, _, _) => React.string("Switching Compiler...")
@@ -1207,7 +1207,7 @@ module ControlPanel = {
         switch ready.result {
         | FinalResult.Nothing => Js.log("nothing")
         | FinalResult.Comp(x) =>
-          getSuccessCompilationResult(x)->Belt.Option.map(r => eval(r.js_code))->ignore
+          getSuccessCompilationResult(x)->Belt.Option.map(r => dispatchEval(r.js_code))->ignore
         | FinalResult.Conv(_) => Js.log("conv")
         }
       }

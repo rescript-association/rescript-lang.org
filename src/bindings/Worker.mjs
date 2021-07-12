@@ -39,6 +39,10 @@ function Make(funarg) {
             importScripts: (function (prim) {
                 importScripts(prim);
                 
+              }),
+            addEventListener: (function (prim) {
+                addEventListener(prim);
+                
               })
           }
         };
