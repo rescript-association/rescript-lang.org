@@ -25,6 +25,5 @@ module Make: (Config: Config) =>
     let onMessage: (self, {"data": Config.fromApp} => unit) => unit
     let self: self
     let importScripts: string => unit
-    let addEventListener: ({"data": fromApp} => unit) => unit
   }
 }

@@ -3,12 +3,22 @@
 import * as Eval from "./Eval.mjs";
 import * as Curry from "rescript/lib/es6/curry.js";
 
-Curry._1(Eval.EvalWorker.$$Worker.addEventListener, (function (msg) {
-        console.log(msg);
-        
+function ignoreOtherMessages(message, f) {
+  if (message.data.source === Eval.source) {
+    return Curry._1(f, message.data);
+  }
+  
+}
+
+Curry._2(Eval.EvalWorker.$$Worker.onMessage, Eval.EvalWorker.$$Worker.self, (function (msg) {
+        return ignoreOtherMessages(msg, (function (prim) {
+                      console.log(prim);
+                      
+                    }));
       }));
 
 export {
+  ignoreOtherMessages ,
   
 }
 /*  Not a pure module */

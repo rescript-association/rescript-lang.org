@@ -2,10 +2,14 @@ type evalResult = result<string, string>
 
 @val external importMetaUrl: string = "import.meta.url"
 
+type workerMessage = ResultMessage({forCode: string, result: evalResult})
+type appMessage = EvalMessage(string)
+let source = "EvalSource"
+
 module Config = {
   // TODO: Worker should send two events: LogMessage and ExceptionMessage
-  type fromWorker = ResultMessage({forCode: string, result: evalResult})
-  type fromApp = EvalMessage(string)
+  type fromWorker = {source: string, payload: workerMessage}
+  type fromApp = {source: string, payload: appMessage}
   let make = () =>
     Worker.make(Webapi.Url.makeWithBase("./EvalWorker.mjs", importMetaUrl)->Webapi.Url.toString)
 }
@@ -20,10 +24,8 @@ type action =
 
 let workerMessageToAction = message =>
   switch message {
-  | Config.ResultMessage({forCode, result: Ok(message)}) =>
-    Success({forCode: forCode, message: message})
-  | Config.ResultMessage({forCode, result: Error(message)}) =>
-    Fail({forCode: forCode, message: message})
+  | ResultMessage({forCode, result: Ok(message)}) => Success({forCode: forCode, message: message})
+  | ResultMessage({forCode, result: Error(message)}) => Fail({forCode: forCode, message: message})
   }
 
 let reducer = (state, action) =>
@@ -53,7 +55,9 @@ let useEval = () => {
     switch state {
     | Evaluating(code) =>
       maybeWorker
-      ->Belt.Option.map(worker => worker->EvalWorker.App.postMessage(Config.EvalMessage(code)))
+      ->Belt.Option.map(worker =>
+        worker->EvalWorker.App.postMessage({source: source, payload: EvalMessage(code)})
+      )
       ->ignore
     | _ => ()
     }

@@ -6,6 +6,8 @@ import * as $$Worker from "../bindings/Worker.mjs";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 
+var source = "EvalSource";
+
 function make(param) {
   return $$Worker.make(new URL("./EvalWorker.mjs", import.meta.url).toString());
 }
@@ -130,8 +132,11 @@ function useEval(param) {
             var code = state._0;
             Belt_Option.map(maybeWorker, (function (worker) {
                     return Curry._2(EvalWorker.App.postMessage, worker, {
-                                _0: code,
-                                [Symbol.for("name")]: "EvalMessage"
+                                source: source,
+                                payload: {
+                                  _0: code,
+                                  [Symbol.for("name")]: "EvalMessage"
+                                }
                               });
                   }));
           }
@@ -150,6 +155,7 @@ function useEval(param) {
 }
 
 export {
+  source ,
   Config ,
   EvalWorker ,
   workerMessageToAction ,
