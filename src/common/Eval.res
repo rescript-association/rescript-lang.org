@@ -10,8 +10,7 @@ module Config = {
   // TODO: Worker should send two events: LogMessage and ExceptionMessage
   type fromWorker = {source: string, payload: workerMessage}
   type fromApp = {source: string, payload: appMessage}
-  let make = () =>
-    Worker.make(Webapi.Url.makeWithBase("./EvalWorker.mjs", importMetaUrl)->Webapi.Url.toString)
+  let make = () => %raw(`new Worker(new URL("./EvalWorker.mjs", import.meta.url))`)
 }
 
 module EvalWorker = Worker.Make(Config)

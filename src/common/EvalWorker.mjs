@@ -4,6 +4,7 @@ import * as Eval from "./Eval.mjs";
 import * as Curry from "rescript/lib/es6/curry.js";
 
 function ignoreOtherMessages(message, f) {
+  console.log("ffffff", message);
   if (message.data.source === Eval.source) {
     return Curry._1(f, message.data);
   }
@@ -16,6 +17,8 @@ Curry._2(Eval.EvalWorker.$$Worker.onMessage, Eval.EvalWorker.$$Worker.self, (fun
                       
                     }));
       }));
+
+console.log("hello");
 
 export {
   ignoreOtherMessages ,

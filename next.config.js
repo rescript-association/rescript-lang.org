@@ -48,21 +48,18 @@ const config = {
           path: false,
         };
       }
-      useEsbuildMinify(config);
+
       // We need this additional rule to make sure that mjs files are
       // correctly detected within our src/ folder
       config.module.rules.push({
         test: /\.m?js$/,
-        // v-- currently using an experimental setting with esbuild-loader
-        //use: options.defaultLoaders.babel,
-        use: [{loader: 'esbuild-loader', options: { loader: 'jsx', target: 'es2020' }}],
+        use: options.defaultLoaders.babel,
         exclude: /node_modules/,
         type: "javascript/auto",
         resolve: {
           fullySpecified: false,
         }
       });
-      config.plugins.push(new ProvidePlugin({ React: "react" }));
     }
     return config;
   },

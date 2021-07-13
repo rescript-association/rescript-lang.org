@@ -9,7 +9,7 @@ import * as Caml_option from "rescript/lib/es6/caml_option.js";
 var source = "EvalSource";
 
 function make(param) {
-  return $$Worker.make(new URL("./EvalWorker.mjs", import.meta.url).toString());
+  return (new Worker(new URL("./EvalWorker.mjs", import.meta.url)));
 }
 
 var Config = {
