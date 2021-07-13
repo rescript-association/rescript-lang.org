@@ -60,6 +60,7 @@ const config = {
           fullySpecified: false,
         }
       });
+      config.plugins.push(new ProvidePlugin({ React: "react" }));
     }
     return config;
   },
