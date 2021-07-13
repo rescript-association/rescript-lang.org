@@ -1,4 +1,4 @@
-type evalResult = result<string, string>
+type evalResult = result<unit, string>
 
 @val external importMetaUrl: string = "import.meta.url"
 
@@ -15,25 +15,37 @@ module Config = {
 
 module EvalWorker = Worker.Make(Config)
 
-type state = Idle | Evaluating(string) | Evaluated(string) | Error(string)
+type state =
+  | Idle
+  | Evaluating({code: string, logs: array<string>})
+  | Evaluated({logs: array<string>})
+  | Error({logs: array<string>})
 type action =
   | Evaluate(string)
-  | Success({forCode: string, message: string})
-  | Fail({forCode: string, message: string})
+  | Success({forCode: string})
+  | Exception({forCode: string, message: string})
+  | Log({forCode: string, message: string})
 
 let workerMessageToAction = message =>
   switch message {
-  | ResultMessage({forCode, result: Ok(message)}) => Success({forCode: forCode, message: message})
-  | ResultMessage({forCode, result: Error(message)}) => Fail({forCode: forCode, message: message})
+  | ResultMessage({forCode, result: Ok()}) => Success({forCode: forCode})
+  | ResultMessage({forCode, result: Error(message)}) =>
+    Exception({forCode: forCode, message: message})
   }
 
 let reducer = (state, action) =>
   switch (state, action) {
-  | (Idle, Evaluate(code)) => Evaluating(code)
-  | (Evaluating(code), Success({forCode, message})) if forCode === code => Evaluated(message)
-  | (Evaluating(code), Fail({forCode, message})) if forCode === code => Error(message)
-  | (Error(_), Evaluate(code)) => Evaluating(code)
-  | (Evaluated(_), Evaluate(code)) => Evaluating(code)
+  | (Idle, Evaluate(code)) => Evaluating({code: code, logs: []})
+  | (Evaluating({code, logs}), Success({forCode})) if forCode === code => Evaluated({logs: logs})
+  | (Evaluating({code, logs}), Exception({forCode, message})) if forCode === code =>
+    Error({logs: logs->Js.Array2.concat([message])})
+  | (Evaluating({code, logs}), Log({forCode, message})) if forCode === code =>
+    Evaluating({
+      code: code,
+      logs: logs->Js.Array2.concat([message]),
+    })
+  | (Error(_), Evaluate(code)) => Evaluating({code: code, logs: []})
+  | (Evaluated(_), Evaluate(code)) => Evaluating({code: code, logs: []})
   | _ => state
   }
 
@@ -52,9 +64,10 @@ let useEval = () => {
   React.useEffect1(() => {
     let maybeWorker = workerRef.current
     switch state {
-    | Evaluating(code) =>
+    | Evaluating({code}) =>
       maybeWorker
-      ->Belt.Option.map(worker =>
+      ->Belt.Option.forEach(worker =>
+        // TODO: Either posting EvalMessage needs to be idempotent or we need a way of not posting this message when we are already in the Evaluating state
         worker->EvalWorker.App.postMessage({source: source, payload: EvalMessage(code)})
       )
       ->ignore

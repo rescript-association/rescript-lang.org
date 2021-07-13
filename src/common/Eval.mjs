@@ -25,7 +25,6 @@ function workerMessageToAction(message) {
     return {
             TAG: 1,
             forCode: forCode,
-            message: message$1._0,
             [Symbol.for("name")]: "Success"
           };
   } else {
@@ -33,82 +32,87 @@ function workerMessageToAction(message) {
             TAG: 2,
             forCode: forCode,
             message: message$1._0,
-            [Symbol.for("name")]: "Fail"
+            [Symbol.for("name")]: "Exception"
           };
   }
 }
 
 function reducer(state, action) {
   if (typeof state === "number") {
-    switch (action.TAG | 0) {
-      case /* Evaluate */0 :
+    if (action.TAG === /* Evaluate */0) {
+      return {
+              TAG: 0,
+              code: action._0,
+              logs: [],
+              [Symbol.for("name")]: "Evaluating"
+            };
+    } else {
+      return state;
+    }
+  }
+  switch (state.TAG | 0) {
+    case /* Evaluating */0 :
+        var logs = state.logs;
+        var code = state.code;
+        switch (action.TAG | 0) {
+          case /* Evaluate */0 :
+              return state;
+          case /* Success */1 :
+              if (action.forCode === code) {
+                return {
+                        TAG: 1,
+                        logs: logs,
+                        [Symbol.for("name")]: "Evaluated"
+                      };
+              } else {
+                return state;
+              }
+          case /* Exception */2 :
+              if (action.forCode === code) {
+                return {
+                        TAG: 2,
+                        logs: logs.concat([action.message]),
+                        [Symbol.for("name")]: "Error"
+                      };
+              } else {
+                return state;
+              }
+          case /* Log */3 :
+              if (action.forCode === code) {
+                return {
+                        TAG: 0,
+                        code: code,
+                        logs: logs.concat([action.message]),
+                        [Symbol.for("name")]: "Evaluating"
+                      };
+              } else {
+                return state;
+              }
+          
+        }
+    case /* Evaluated */1 :
+        if (action.TAG === /* Evaluate */0) {
           return {
                   TAG: 0,
-                  _0: action._0,
+                  code: action._0,
+                  logs: [],
                   [Symbol.for("name")]: "Evaluating"
                 };
-      case /* Success */1 :
-      case /* Fail */2 :
+        } else {
           return state;
-      
-    }
-  } else {
-    switch (state.TAG | 0) {
-      case /* Evaluating */0 :
-          var code = state._0;
-          switch (action.TAG | 0) {
-            case /* Evaluate */0 :
-                return state;
-            case /* Success */1 :
-                if (action.forCode === code) {
-                  return {
-                          TAG: 1,
-                          _0: action.message,
-                          [Symbol.for("name")]: "Evaluated"
-                        };
-                } else {
-                  return state;
-                }
-            case /* Fail */2 :
-                if (action.forCode === code) {
-                  return {
-                          TAG: 2,
-                          _0: action.message,
-                          [Symbol.for("name")]: "Error"
-                        };
-                } else {
-                  return state;
-                }
-            
-          }
-      case /* Evaluated */1 :
-          switch (action.TAG | 0) {
-            case /* Evaluate */0 :
-                return {
-                        TAG: 0,
-                        _0: action._0,
-                        [Symbol.for("name")]: "Evaluating"
-                      };
-            case /* Success */1 :
-            case /* Fail */2 :
-                return state;
-            
-          }
-      case /* Error */2 :
-          switch (action.TAG | 0) {
-            case /* Evaluate */0 :
-                return {
-                        TAG: 0,
-                        _0: action._0,
-                        [Symbol.for("name")]: "Evaluating"
-                      };
-            case /* Success */1 :
-            case /* Fail */2 :
-                return state;
-            
-          }
-      
-    }
+        }
+    case /* Error */2 :
+        if (action.TAG === /* Evaluate */0) {
+          return {
+                  TAG: 0,
+                  code: action._0,
+                  logs: [],
+                  [Symbol.for("name")]: "Evaluating"
+                };
+        } else {
+          return state;
+        }
+    
   }
 }
 
@@ -129,8 +133,8 @@ function useEval(param) {
   React.useEffect((function () {
           var maybeWorker = workerRef.current;
           if (typeof state !== "number" && state.TAG === /* Evaluating */0) {
-            var code = state._0;
-            Belt_Option.map(maybeWorker, (function (worker) {
+            var code = state.code;
+            Belt_Option.forEach(maybeWorker, (function (worker) {
                     return Curry._2(EvalWorker.App.postMessage, worker, {
                                 source: source,
                                 payload: {
