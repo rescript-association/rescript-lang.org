@@ -18,25 +18,6 @@ var Config = {
 
 var EvalWorker = $$Worker.Make(Config);
 
-function workerMessageToAction(message) {
-  var message$1 = message.result;
-  var forCode = message.forCode;
-  if (message$1.TAG === /* Ok */0) {
-    return {
-            TAG: 1,
-            forCode: forCode,
-            [Symbol.for("name")]: "Success"
-          };
-  } else {
-    return {
-            TAG: 2,
-            forCode: forCode,
-            message: message$1._0,
-            [Symbol.for("name")]: "Exception"
-          };
-  }
-}
-
 function reducer(state, action) {
   if (typeof state === "number") {
     if (action.TAG === /* Evaluate */0) {
@@ -68,21 +49,21 @@ function reducer(state, action) {
                 return state;
               }
           case /* Exception */2 :
-              if (action.forCode === code) {
-                return {
-                        TAG: 2,
-                        logs: logs.concat([action.message]),
-                        [Symbol.for("name")]: "Error"
-                      };
-              } else {
+              if (action.forCode !== code) {
                 return state;
               }
+              var message = action.exn.message;
+              return {
+                      TAG: 2,
+                      logs: logs.concat([message !== undefined ? message : ""]),
+                      [Symbol.for("name")]: "Error"
+                    };
           case /* Log */3 :
               if (action.forCode === code) {
                 return {
                         TAG: 0,
                         code: code,
-                        logs: logs.concat([action.message]),
+                        logs: logs.concat(action.logArgs),
                         [Symbol.for("name")]: "Evaluating"
                       };
               } else {
@@ -119,10 +100,13 @@ function reducer(state, action) {
 function useEval(param) {
   var match = React.useReducer(reducer, /* Idle */0);
   var dispatch = match[1];
-  var state = match[0];
   var workerRef = React.useRef(undefined);
   React.useEffect((function () {
-          workerRef.current = Caml_option.some(Curry._1(EvalWorker.make, undefined));
+          var worker = Curry._1(EvalWorker.make, undefined);
+          workerRef.current = Caml_option.some(worker);
+          Curry._2(EvalWorker.App.onMessage, worker, (function (message) {
+                  return Curry._1(dispatch, message.data.payload);
+                }));
           return (function (param) {
                     Belt_Option.map(workerRef.current, (function (worker) {
                             return Curry._1(EvalWorker.App.terminate, worker);
@@ -130,30 +114,21 @@ function useEval(param) {
                     
                   });
         }), []);
-  React.useEffect((function () {
-          var maybeWorker = workerRef.current;
-          if (typeof state !== "number" && state.TAG === /* Evaluating */0) {
-            var code = state.code;
-            Belt_Option.forEach(maybeWorker, (function (worker) {
-                    return Curry._2(EvalWorker.App.postMessage, worker, {
-                                source: source,
-                                payload: {
-                                  _0: code,
-                                  [Symbol.for("name")]: "EvalMessage"
-                                }
-                              });
-                  }));
-          }
-          
-        }), [state]);
   return [
-          state,
+          match[0],
           (function (code) {
-              return Curry._1(dispatch, {
-                          TAG: 0,
-                          _0: code,
-                          [Symbol.for("name")]: "Evaluate"
-                        });
+              var evaluateAction = {
+                TAG: 0,
+                _0: code,
+                [Symbol.for("name")]: "Evaluate"
+              };
+              Curry._1(dispatch, evaluateAction);
+              return Belt_Option.forEach(workerRef.current, (function (worker) {
+                            return Curry._2(EvalWorker.App.postMessage, worker, {
+                                        source: source,
+                                        payload: evaluateAction
+                                      });
+                          }));
             })
         ];
 }
@@ -162,7 +137,6 @@ export {
   source ,
   Config ,
   EvalWorker ,
-  workerMessageToAction ,
   reducer ,
   useEval ,
   
