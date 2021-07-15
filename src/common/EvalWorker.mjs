@@ -3,14 +3,6 @@
 import * as Eval from "./Eval.mjs";
 import * as Curry from "rescript/lib/es6/curry.js";
 
-function ignoreOtherMessages(message, f) {
-  console.log("Worker received message: ", message.data);
-  if (message.data.source === Eval.source) {
-    return Curry._1(f, message.data);
-  }
-  
-}
-
 var evaluateCode = (function (code, handlers) {
     console.log("Evaluating code...")
     const originalConsole = console;
@@ -29,66 +21,58 @@ var evaluateCode = (function (code, handlers) {
     }
   });
 
-function dispatch(action) {
-  return Curry._1(Eval.EvalWorker.$$Worker.postMessage, {
-              source: Eval.source,
-              payload: action
-            });
-}
+var dispatch = Eval.EvalWorker.$$Worker.postMessage;
 
 Curry._2(Eval.EvalWorker.$$Worker.onMessage, Eval.EvalWorker.$$Worker.self, (function (msg) {
-        return ignoreOtherMessages(msg, (function (fromApp) {
-                      var code = fromApp.payload;
-                      if (code.TAG !== /* Evaluate */0) {
-                        return ;
-                      }
-                      var code$1 = code._0;
-                      return evaluateCode(code$1, {
-                                  onConsoleLog: (function (logArgs) {
-                                      return dispatch({
-                                                  TAG: 3,
-                                                  forCode: code$1,
-                                                  logArgs: logArgs,
-                                                  [Symbol.for("name")]: "Log"
-                                                });
-                                    }),
-                                  onConsoleWarn: (function (logArgs) {
-                                      return dispatch({
-                                                  TAG: 3,
-                                                  forCode: code$1,
-                                                  logArgs: logArgs,
-                                                  [Symbol.for("name")]: "Log"
-                                                });
-                                    }),
-                                  onConsoleError: (function (logArgs) {
-                                      return dispatch({
-                                                  TAG: 3,
-                                                  forCode: code$1,
-                                                  logArgs: logArgs,
-                                                  [Symbol.for("name")]: "Log"
-                                                });
-                                    }),
-                                  onException: (function (exn) {
-                                      return dispatch({
-                                                  TAG: 2,
-                                                  forCode: code$1,
-                                                  exn: exn,
-                                                  [Symbol.for("name")]: "Exception"
-                                                });
-                                    }),
-                                  onDone: (function (param) {
-                                      return dispatch({
-                                                  TAG: 1,
-                                                  forCode: code$1,
-                                                  [Symbol.for("name")]: "Success"
-                                                });
-                                    })
-                                });
-                    }));
+        var code = msg.data;
+        if (code.TAG !== /* Evaluate */0) {
+          return ;
+        }
+        var code$1 = code._0;
+        return evaluateCode(code$1, {
+                    onConsoleLog: (function (logArgs) {
+                        return Curry._1(dispatch, {
+                                    TAG: 3,
+                                    forCode: code$1,
+                                    logArgs: logArgs,
+                                    [Symbol.for("name")]: "Log"
+                                  });
+                      }),
+                    onConsoleWarn: (function (logArgs) {
+                        return Curry._1(dispatch, {
+                                    TAG: 3,
+                                    forCode: code$1,
+                                    logArgs: logArgs,
+                                    [Symbol.for("name")]: "Log"
+                                  });
+                      }),
+                    onConsoleError: (function (logArgs) {
+                        return Curry._1(dispatch, {
+                                    TAG: 3,
+                                    forCode: code$1,
+                                    logArgs: logArgs,
+                                    [Symbol.for("name")]: "Log"
+                                  });
+                      }),
+                    onException: (function (exn) {
+                        return Curry._1(dispatch, {
+                                    TAG: 2,
+                                    forCode: code$1,
+                                    exn: exn,
+                                    [Symbol.for("name")]: "Exception"
+                                  });
+                      }),
+                    onDone: (function (param) {
+                        return Curry._1(dispatch, {
+                                    TAG: 1,
+                                    forCode: code$1,
+                                    [Symbol.for("name")]: "Success"
+                                  });
+                      })
+                  });
       }));
 
 export {
-  ignoreOtherMessages ,
   evaluateCode ,
   dispatch ,
   

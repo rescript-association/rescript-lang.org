@@ -1,12 +1,3 @@
-// Required because workers may receive messages intended for other workers eg. react dev tools
-// See https://github.com/facebook/react-devtools/issues/812
-let ignoreOtherMessages = (message: {"data": Eval.Config.fromApp}, f) => {
-  Js.log2("Worker received message: ", message["data"])
-  if message["data"].source == Eval.source {
-    f(message["data"])
-  }
-}
-
 type evaluationHandlers = {
   onConsoleLog: array<Js.Json.t> => unit,
   onConsoleWarn: array<Js.Json.t> => unit,
@@ -35,23 +26,21 @@ let evaluateCode: (string, evaluationHandlers) => unit = %raw(`
   }
 `)
 
-let dispatch = action => Eval.EvalWorker.Worker.postMessage({source: Eval.source, payload: action})
+let dispatch = Eval.EvalWorker.Worker.postMessage
 
 Eval.EvalWorker.Worker.self->Eval.EvalWorker.Worker.onMessage(msg =>
-  msg->ignoreOtherMessages(fromApp =>
-    switch fromApp.payload {
-    | Eval.Evaluate(code) =>
-      evaluateCode(
-        code,
-        {
-          onConsoleLog: logArgs => dispatch(Eval.Log({forCode: code, logArgs: logArgs})),
-          onConsoleWarn: logArgs => dispatch(Eval.Log({forCode: code, logArgs: logArgs})),
-          onConsoleError: logArgs => dispatch(Eval.Log({forCode: code, logArgs: logArgs})),
-          onException: exn => dispatch(Eval.Exception({forCode: code, exn: exn})),
-          onDone: () => dispatch(Eval.Success({forCode: code})),
-        },
-      )
-    | _ => ()
-    }
-  )
+  switch msg["data"] {
+  | Eval.Evaluate(code) =>
+    evaluateCode(
+      code,
+      {
+        onConsoleLog: logArgs => dispatch(Eval.Log({forCode: code, logArgs: logArgs})),
+        onConsoleWarn: logArgs => dispatch(Eval.Log({forCode: code, logArgs: logArgs})),
+        onConsoleError: logArgs => dispatch(Eval.Log({forCode: code, logArgs: logArgs})),
+        onException: exn => dispatch(Eval.Exception({forCode: code, exn: exn})),
+        onDone: () => dispatch(Eval.Success({forCode: code})),
+      },
+    )
+  | _ => ()
+  }
 )

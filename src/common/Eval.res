@@ -11,11 +11,9 @@ type action =
   | Exception({forCode: string, exn: Js.Exn.t})
   | Log({forCode: string, logArgs: array<Js.Json.t>})
 
-let source = "EvalSource"
-
 module Config = {
-  type fromWorker = {source: string, payload: action}
-  type fromApp = {source: string, payload: action}
+  type fromWorker = action
+  type fromApp = action
   let make = () => %raw(`new Worker(new URL("./EvalWorker.mjs", import.meta.url))`)
 }
 
@@ -52,7 +50,7 @@ let useEval = () => {
     let worker = EvalWorker.make()
     workerRef.current = Some(worker)
 
-    worker->EvalWorker.App.onMessage(message => dispatch(message["data"].payload))
+    worker->EvalWorker.App.onMessage(message => dispatch(message["data"]))
 
     Some(
       () => workerRef.current->Belt.Option.map(worker => worker->EvalWorker.App.terminate)->ignore,
@@ -65,7 +63,7 @@ let useEval = () => {
       let evaluateAction = Evaluate(code)
       evaluateAction->dispatch
       workerRef.current->Belt.Option.forEach(worker =>
-        worker->EvalWorker.App.postMessage({source: source, payload: evaluateAction})
+        worker->EvalWorker.App.postMessage(evaluateAction)
       )
     },
   )

@@ -6,8 +6,6 @@ import * as $$Worker from "../bindings/Worker.mjs";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 
-var source = "EvalSource";
-
 function make(param) {
   return (new Worker(new URL("./EvalWorker.mjs", import.meta.url)));
 }
@@ -105,7 +103,7 @@ function useEval(param) {
           var worker = Curry._1(EvalWorker.make, undefined);
           workerRef.current = Caml_option.some(worker);
           Curry._2(EvalWorker.App.onMessage, worker, (function (message) {
-                  return Curry._1(dispatch, message.data.payload);
+                  return Curry._1(dispatch, message.data);
                 }));
           return (function (param) {
                     Belt_Option.map(workerRef.current, (function (worker) {
@@ -124,17 +122,13 @@ function useEval(param) {
               };
               Curry._1(dispatch, evaluateAction);
               return Belt_Option.forEach(workerRef.current, (function (worker) {
-                            return Curry._2(EvalWorker.App.postMessage, worker, {
-                                        source: source,
-                                        payload: evaluateAction
-                                      });
+                            return Curry._2(EvalWorker.App.postMessage, worker, evaluateAction);
                           }));
             })
         ];
 }
 
 export {
-  source ,
   Config ,
   EvalWorker ,
   reducer ,
