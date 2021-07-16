@@ -4,21 +4,21 @@ import * as Eval from "./Eval.mjs";
 import * as Curry from "rescript/lib/es6/curry.js";
 
 var evaluateCode = (function (code, handlers) {
-    console.log("Evaluating code...")
-    const originalConsole = console;
-    // TODO: For some reason this isn't capturing logs...
-    let console = {
-      ...originalConsole,
-      log: (...args) => handlers.onConsoleLog(args),
-      warn: (...args) => handlers.onConsoleWarn(args),
-      error: (...args) => handlers.onConsoleError(args)
-    };
+    const rawConsole = console;
     try {
+      // TODO: For some reason this isn't capturing logs...
+      const replace = {
+        log: function (...args) { handlers.onConsoleLog(args) },
+        warn: function (...args) { handlers.onConsoleWarn(args) },
+        error: function (...args) { handlers.onConsoleError(args) }
+      };
+      self.console = Object.assign({}, rawConsole, replace);
       eval(code);
       handlers.onDone()
     } catch (exn) {
       handlers.onException(exn);
     }
+    self.console = rawConsole
   });
 
 var dispatch = Eval.EvalWorker.$$Worker.postMessage;

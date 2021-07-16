@@ -1423,6 +1423,15 @@ function Playground$Settings(Props) {
                         }))));
 }
 
+function Playground$Logs(Props) {
+  var logs = Props.logs;
+  return React.createElement("ul", undefined, logs.map(function (log, i) {
+                  return React.createElement("li", {
+                              key: i.toString()
+                            }, JSON.stringify(log));
+                }));
+}
+
 function Playground$ControlPanel$Button(Props) {
   var children = Props.children;
   var onClick = Props.onClick;
@@ -1500,9 +1509,8 @@ function Playground$ControlPanel(Props) {
   var state = Props.state;
   var dispatch = Props.dispatch;
   var editorCode = Props.editorCode;
+  var dispatchEval = Props.dispatchEval;
   var router = Next.Router.useRouter(undefined);
-  var match = Eval.useEval(undefined);
-  var dispatchEval = match[1];
   var children;
   var exit = 0;
   if (typeof state === "number") {
@@ -1621,6 +1629,7 @@ function Playground$OutputPanel(Props) {
   var compilerDispatch = Props.compilerDispatch;
   var compilerState = Props.compilerState;
   var editorCode = Props.editorCode;
+  var evalState = Props.evalState;
   var prevState = React.useRef(undefined);
   var prev = prevState.current;
   var cmCode;
@@ -1798,6 +1807,21 @@ function Playground$OutputPanel(Props) {
         selected = 0;
     }
   }
+  var logs;
+  if (typeof evalState === "number") {
+    logs = [];
+  } else {
+    switch (evalState.TAG | 0) {
+      case /* Evaluating */0 :
+          logs = [];
+          break;
+      case /* Evaluated */1 :
+      case /* Error */2 :
+          logs = evalState.logs;
+          break;
+      
+    }
+  }
   prevSelected.current = selected;
   var tabs = [
     {
@@ -1811,6 +1835,12 @@ function Playground$OutputPanel(Props) {
               height: "50%"
             }
           }, errorPane)
+    },
+    {
+      title: "Logs",
+      content: React.createElement(Playground$Logs, {
+            logs: logs
+          })
     },
     {
       title: "Settings",
@@ -1837,12 +1867,13 @@ var initialResContent = "module Button = {\n  @react.component\n  let make = (~c
 
 function Playground$default(Props) {
   var router = Next.Router.useRouter(undefined);
-  var match = Js_dict.get(router.query, "ext");
-  var initialLang = match === "re" ? /* Reason */0 : /* Res */2;
-  var match$1 = Js_dict.get(router.query, "code");
+  var match = Eval.useEval(undefined);
+  var match$1 = Js_dict.get(router.query, "ext");
+  var initialLang = match$1 === "re" ? /* Reason */0 : /* Res */2;
+  var match$2 = Js_dict.get(router.query, "code");
   var initialContent;
-  if (match$1 !== undefined) {
-    initialContent = LzString.decompressFromEncodedURIComponent(match$1);
+  if (match$2 !== undefined) {
+    initialContent = LzString.decompressFromEncodedURIComponent(match$2);
   } else {
     switch (initialLang) {
       case /* Reason */0 :
@@ -1855,11 +1886,11 @@ function Playground$default(Props) {
       
     }
   }
-  var match$2 = React.useState(function () {
+  var match$3 = React.useState(function () {
         return 0;
       });
-  var setActionCount = match$2[1];
-  var actionCount = match$2[0];
+  var setActionCount = match$3[1];
+  var actionCount = match$3[0];
   var onAction = function (param) {
     return Curry._1(setActionCount, (function (prev) {
                   if (prev > 1000000) {
@@ -1869,32 +1900,32 @@ function Playground$default(Props) {
                   }
                 }));
   };
-  var match$3 = CompilerManagerHook.useCompilerManager(initialLang, onAction, undefined);
-  var compilerDispatch = match$3[1];
-  var compilerState = match$3[0];
+  var match$4 = CompilerManagerHook.useCompilerManager(initialLang, onAction, undefined);
+  var compilerDispatch = match$4[1];
+  var compilerState = match$4[0];
   var overlayState = React.useState(function () {
         return false;
       });
   var windowWidth = CodeMirror.useWindowWidth(undefined);
-  var match$4 = React.useState(function () {
+  var match$5 = React.useState(function () {
         
       });
-  var setFocusedRowCol = match$4[1];
+  var setFocusedRowCol = match$5[1];
   var editorCode = React.useRef(initialContent);
   if (typeof compilerState !== "number" && compilerState.TAG === /* Ready */2) {
     var ready = compilerState._0;
-    var match$5 = ready.result;
-    if (typeof match$5 === "number") {
+    var match$6 = ready.result;
+    if (typeof match$6 === "number") {
       Curry._1(compilerDispatch, {
             TAG: 3,
             _0: ready.targetLang,
             _1: editorCode.current,
             [Symbol.for("name")]: "CompileCode"
           });
-    } else if (match$5.TAG === /* Conv */0) {
-      var match$6 = match$5._0;
-      if (match$6.TAG === /* Success */0) {
-        editorCode.current = match$6._0.code;
+    } else if (match$6.TAG === /* Conv */0) {
+      var match$7 = match$6._0;
+      if (match$7.TAG === /* Success */0) {
+        editorCode.current = match$7._0.code;
       }
       
     }
@@ -1927,8 +1958,8 @@ function Playground$default(Props) {
     if (typeof result === "number") {
       cmErrors = [];
     } else if (result.TAG === /* Conv */0) {
-      var match$7 = result._0;
-      cmErrors = match$7.TAG === /* Fail */1 ? match$7.details.map(function (param) {
+      var match$8 = result._0;
+      cmErrors = match$8.TAG === /* Fail */1 ? match$8.details.map(function (param) {
               return locMsgToCmError("Error", param);
             }) : [];
     } else {
@@ -1970,14 +2001,14 @@ function Playground$default(Props) {
   if (typeof compilerState === "number") {
     cmHoverHints = [];
   } else if (compilerState.TAG === /* Ready */2) {
-    var match$8 = compilerState._0.result;
-    if (typeof match$8 === "number") {
+    var match$9 = compilerState._0.result;
+    if (typeof match$9 === "number") {
       cmHoverHints = [];
-    } else if (match$8.TAG === /* Conv */0) {
+    } else if (match$9.TAG === /* Conv */0) {
       cmHoverHints = [];
     } else {
-      var match$9 = match$8._0;
-      cmHoverHints = match$9.TAG === /* Success */1 ? match$9._0.type_hints.map(function (hint) {
+      var match$10 = match$9._0;
+      cmHoverHints = match$10.TAG === /* Success */1 ? match$10._0.type_hints.map(function (hint) {
               var start = hint._0.start;
               var end = hint._0.end;
               return {
@@ -2045,7 +2076,8 @@ function Playground$default(Props) {
                                           actionIndicatorKey: String(actionCount),
                                           state: compilerState,
                                           dispatch: compilerDispatch,
-                                          editorCode: editorCode
+                                          editorCode: editorCode,
+                                          dispatchEval: match[1]
                                         }), React.createElement(CodeMirror.make, {
                                           errors: cmErrors,
                                           hoverHints: cmHoverHints,
@@ -2086,7 +2118,8 @@ function Playground$default(Props) {
                                 }, React.createElement(Playground$OutputPanel, {
                                       compilerDispatch: compilerDispatch,
                                       compilerState: compilerState,
-                                      editorCode: editorCode
+                                      editorCode: editorCode,
+                                      evalState: match[0]
                                     }), React.createElement("div", {
                                       className: "absolute bottom-0 w-full"
                                     }, React.createElement(Playground$Statusbar, {

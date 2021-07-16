@@ -1101,6 +1101,18 @@ module Settings = {
   }
 }
 
+module Logs = {
+  @react.component
+  let make = (~logs) =>
+    <ul>
+      {logs
+      ->Js.Array2.mapi((log, i) =>
+        <li key={i->Js.Int.toString}> {log->Js.Json.stringify->React.string} </li>
+      )
+      ->React.array}
+    </ul>
+}
+
 module ControlPanel = {
   module Button = {
     @react.component
@@ -1182,9 +1194,9 @@ module ControlPanel = {
     ~state: CompilerManagerHook.state,
     ~dispatch: CompilerManagerHook.action => unit,
     ~editorCode: React.ref<string>,
+    ~dispatchEval: string => unit,
   ) => {
     let router = Next.Router.useRouter()
-    let (evalState, dispatchEval) = Eval.useEval()
     let children = switch state {
     | Init => React.string("Initializing...")
     | SwitchingCompiler(_, _, _) => React.string("Switching Compiler...")
@@ -1277,6 +1289,7 @@ module OutputPanel = {
     ~compilerDispatch,
     ~compilerState: CompilerManagerHook.state,
     ~editorCode: React.ref<string>,
+    ~evalState: Eval.state,
   ) => {
     /*
        We need the prevState to understand different
@@ -1385,6 +1398,13 @@ module OutputPanel = {
     | _ => 0
     }
 
+    let logs = switch evalState {
+    | Eval.Error({logs})
+    | Eval.Evaluated({logs}) => logs
+    | Eval.Evaluating(_)
+    | Idle => []
+    }
+
     prevSelected.current = selected
 
     let tabs = [
@@ -1392,6 +1412,10 @@ module OutputPanel = {
       {
         title: "Problems",
         content: <div style={ReactDOM.Style.make(~height="50%", ())}> errorPane </div>,
+      },
+      {
+        title: "Logs",
+        content: <Logs logs={logs} />,
       },
       {
         title: "Settings",
@@ -1436,6 +1460,7 @@ let initialReContent = j`Js.log("Hello Reason 3.6!");`
 @react.component
 let default = () => {
   let router = Next.Router.useRouter()
+  let (evalState, dispatchEval) = Eval.useEval()
 
   let initialLang = switch Js.Dict.get(router.query, "ext") {
   | Some("re") => Api.Lang.Reason
@@ -1582,6 +1607,7 @@ let default = () => {
                   state=compilerState
                   dispatch=compilerDispatch
                   editorCode
+                  dispatchEval
                 />
                 <CodeMirror
                   className="w-full py-4"
@@ -1612,7 +1638,7 @@ let default = () => {
             <div
               className="relative w-full overflow-x-hidden h-screen lg:h-auto lg:w-1/2"
               style={ReactDOM.Style.make(~maxWidth=windowWidth > 1024 ? "56rem" : "100%", ())}>
-              <OutputPanel compilerDispatch compilerState editorCode />
+              <OutputPanel compilerDispatch compilerState editorCode evalState />
               <div className="absolute bottom-0 w-full">
                 <Statusbar
                   actionIndicatorKey={Belt.Int.toString(actionCount)} state=compilerState

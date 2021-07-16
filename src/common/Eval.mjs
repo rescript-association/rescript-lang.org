@@ -50,10 +50,12 @@ function reducer(state, action) {
               if (action.forCode !== code) {
                 return state;
               }
-              var message = action.exn.message;
+              var exn = action.exn;
+              var message = exn.message;
               return {
                       TAG: 2,
                       logs: logs.concat([message !== undefined ? message : ""]),
+                      exn: exn,
                       [Symbol.for("name")]: "Error"
                     };
           case /* Log */3 :

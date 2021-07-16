@@ -4,7 +4,7 @@ type state =
   | Idle
   | Evaluating({code: string, logs: array<Js.Json.t>})
   | Evaluated({logs: array<Js.Json.t>})
-  | Error({logs: array<Js.Json.t>})
+  | Error({logs: array<Js.Json.t>, exn: Js.Exn.t})
 type action =
   | Evaluate(string)
   | Success({forCode: string})
@@ -31,6 +31,7 @@ let reducer = (state, action) =>
         | None => ""->Js.Json.string
         },
       ]),
+      exn: exn,
     })
   | (Evaluating({code, logs}), Log({forCode, logArgs})) if forCode === code =>
     Evaluating({
