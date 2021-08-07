@@ -12,7 +12,6 @@ function transpileToEval(code) {
       const isImport =
         node.type === "ImportDeclaration" ||
         (node.type === "VariableDeclaration" &&
-          node.declarations[0].id.name === "React" &&
           node.declarations[0].init.type === "CallExpression" &&
           node.declarations[0].init.callee.name === "require");
       const isExport =
