@@ -137,12 +137,6 @@ For example:
 let exampleFunction = (~_type) => "type: " ++ _type
 ```
 
-## Record Components
-
-ReasonReact record components with props of ReScript types `t1`, `t2`, `t3` are exported as reactjs components with props of the JS types corresponding to `t1`, `t2`, `t3`. The annotation is on the `make` function: `[@genType] let make ...`.
-
-A file can export many components by defining them in sub-modules. The toplevel component is also exported as default.
-
 ## Imported Types
 
 It's possible to import an existing TS/Flow type as an opaque type in ReScript. For example,

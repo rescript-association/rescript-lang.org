@@ -50,7 +50,7 @@ Once declared, you can use an `external` as a normal value, just like a let bind
 @val external document: 'a = "document"
 
 // call a method
-document["addEventListener"]("mouseup", _event => {
+document["addEventListener"](."mouseup", _event => {
   Js.log("clicked!")
 })
 

@@ -7,6 +7,7 @@
 //}
 
 import "styles/main.css";
+import "styles/utils.css";
 import "codemirror/lib/codemirror.css";
 import "styles/cm.css";
 import "styles/docson.css";

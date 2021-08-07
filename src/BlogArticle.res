@@ -48,8 +48,8 @@ module AuthorBox = {
     let authorImg = <img className="h-full w-full rounded-full" src=author.imgUrl />
 
     <div className="flex items-center">
-      <div className="w-12 h-12 bg-berry-40 block rounded-full mr-3"> authorImg </div>
-      <div className="text-14 font-medium text-gray-95">
+      <div className="w-10 h-10 bg-berry-40 block rounded-full mr-3"> authorImg </div>
+      <div className="body-sm">
         <a
           href={"https://twitter.com/" ++ author.twitter}
           className="hover:text-gray-80"
@@ -80,20 +80,20 @@ module BlogHeader = {
 
     <div className="flex flex-col items-center">
       <div className="w-full max-w-740">
-        <div className="text-gray-60 text-lg mb-5">
+        <div className="text-gray-60 body-sm mb-5">
           {switch category {
           | Some(category) => <> {React.string(category)} {React.string(middleDotSpacer)} </>
           | None => React.null
           }}
           {React.string(Util.Date.toDayMonthYear(date))}
         </div>
-        <h1 className=Text.H1.default> {React.string(title)} </h1>
+        <h1 className="hl-title"> {React.string(title)} </h1>
         {description->Belt.Option.mapWithDefault(React.null, desc =>
           switch desc {
           | "" => <div className="mb-8" />
           | desc =>
-            <div className="my-8 text-gray-95">
-              <Markdown.Intro> {React.string(desc)} </Markdown.Intro>
+            <div className="text-gray-80 mt-1 mb-8">
+              <p className="body-lg"> {React.string(desc)} </p>
             </div>
           }
         )}
@@ -177,7 +177,7 @@ let default = (props: props) => {
           <div className="mt-12">
             <Line />
             <div className="pt-20 flex flex-col items-center">
-              <div className="text-3xl sm:text-32 text-center text-gray-95 font-medium">
+              <div className="text-24 sm:text-32 text-center text-gray-80 font-medium">
                 {React.string("Want to read more?")}
               </div>
               <Next.Link href="/blog">
@@ -195,7 +195,7 @@ let default = (props: props) => {
   | Error(msg) =>
     <div>
       <Markdown.Warn>
-        <h2 className="font-bold text-gray-95 text-28 mb-2">
+        <h2 className="font-bold text-gray-80 text-24 mb-2">
           {React.string("Could not parse file '_blogposts/" ++ (path ++ ".mdx'"))}
         </h2>
         <p>

@@ -105,16 +105,16 @@ function Navigation$DocsSection$LinkCard(Props) {
   var active = activeOpt !== undefined ? activeOpt : false;
   var isAbsolute = Util.Url.isAbsolute(href);
   var content = React.createElement("div", {
-        className: "hover:bg-gray-5 hover:shadow hover:-mx-8 hover:px-8 hover:cursor-pointer active:bg-gray-10 py-4 flex space-x-4 items-start rounded-xl"
+        className: "hover:bg-gray-5 hover:shadow hover:-mx-8 hover:px-8 hover:cursor-pointer active:bg-gray-20 py-4 flex space-x-4 items-start rounded-xl"
       }, icon, React.createElement("div", undefined, React.createElement("div", {
                 className: "flex items-center text-16 font-medium " + (
-                  active ? "text-fire-40" : "text-gray-95"
+                  active ? "text-fire" : "text-gray-80"
                 )
               }, React.createElement("span", undefined, title), isAbsolute ? React.createElement(Icon.ExternalLink.make, {
                       className: "inline-block ml-2 w-4 h-4"
                     }) : null), React.createElement("div", {
                 className: "block text-14 text-gray-60 " + (
-                  active ? "text-fire-40" : "text-gray-60"
+                  active ? "text-fire-50" : "text-gray-60"
                 )
               }, description)));
   if (isAbsolute) {
@@ -238,7 +238,7 @@ function Navigation$DocsSection(Props) {
                         return React.createElement("li", {
                                     key: text
                                   }, React.createElement("span", {
-                                        className: "text-fire-40 mr-2"
+                                        className: "text-fire mr-2"
                                       }, "-"), React.createElement(Next.Link.make, {
                                         href: href,
                                         children: React.createElement("a", {
@@ -556,7 +556,7 @@ function Navigation(Props) {
       });
   return React.createElement(React.Fragment, undefined, React.createElement("nav", {
                   ref: navRef,
-                  className: fixedNav + " z-50 px-4 flex xs:justify-center w-full h-16 bg-gray-95 shadow text-white-80 text-14",
+                  className: fixedNav + " z-50 px-4 flex xs:justify-center w-full h-16 bg-gray-90 shadow text-white-80 text-14",
                   id: "header",
                   style: {
                     minWidth: minWidth
@@ -575,7 +575,7 @@ function Navigation(Props) {
                                   className: "hidden lg:block",
                                   src: "/static/nav-logo-full@2x.png"
                                 }))), React.createElement("div", {
-                          className: "flex items-center xs:justify-between w-full bg-gray-95 sm:h-auto sm:relative"
+                          className: "flex items-center xs:justify-between w-full bg-gray-90 sm:h-auto sm:relative"
                         }, React.createElement("div", {
                               className: "flex ml-10 space-x-5 w-full max-w-320",
                               style: {
@@ -637,7 +637,7 @@ function Navigation(Props) {
                         })
                     }, React.createElement(Icon.DrawerDots.make, {
                           className: "h-1 w-auto block " + (
-                            isOverlayOpen ? "text-fire" : ""
+                            isOverlayOpen ? "text-fire" : "text-gray-60"
                           )
                         })), React.createElement("div", {
                       className: (

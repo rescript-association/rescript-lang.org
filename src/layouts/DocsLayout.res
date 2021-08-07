@@ -66,7 +66,7 @@ let make = (
   let (isSidebarOpen, setSidebarOpen) = React.useState(_ => false)
   let toggleSidebar = () => setSidebarOpen(prev => !prev)
 
-  React.useEffect1(() => {
+  React.useEffect0(() => {
     open Next.Router.Events
     let {Next.Router.events: events} = router
 
@@ -81,7 +81,7 @@ let make = (
         events->off(#hashChangeComplete(onChangeComplete))
       },
     )
-  }, [])
+  })
 
   let preludeSection =
     <div className="flex justify-between text-fire font-medium items-baseline">
@@ -103,7 +103,7 @@ let make = (
             router->Next.Router.push(targetUrl)
           }
           <VersionSelect onChange version availableVersions />
-        | None => <span className="font-mono text-sm"> {React.string(version)} </span>
+        | None => <span className="font-mono text-14"> {React.string(version)} </span>
         }
       | None => React.null
       }}

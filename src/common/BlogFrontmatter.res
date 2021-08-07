@@ -46,7 +46,7 @@ let authors = [
     username: "made_by_betty",
     fullname: "Bettina Steinbrecher",
     role: "Brand / UI / UX",
-    imgUrl: "https://res.cloudinary.com/dmm9n7v9f/image/upload/v1598547954/Reason%20Association/betty-blog-img_rmckam.jpg",
+    imgUrl: "https://pbs.twimg.com/profile_images/1366785342704136195/3IGyRhV1_400x400.jpg",
     twitter: "made_by_betty",
   },
   {

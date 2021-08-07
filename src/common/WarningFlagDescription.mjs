@@ -259,35 +259,35 @@ var numeric = [
   ],
   [
     101,
-    "BuckleScript warning: Unused bs attributes"
+    "Unused bs attributes"
   ],
   [
     102,
-    "BuckleScript warning: polymorphic comparison introduced (maybe unsafe)"
+    "Polymorphic comparison introduced (maybe unsafe)"
   ],
   [
     103,
-    "BuckleScript warning: about fragile FFI definitions"
+    "Fragile FFI definitions"
   ],
   [
     104,
-    "BuckleScript warning: bs.deriving warning with customized message "
+    "bs.deriving warning with customized message "
   ],
   [
     105,
-    "BuckleScript warning: the external name is inferred from val name is unsafe from refactoring when changing value name"
+    "External name is inferred from val name is unsafe from refactoring when changing value name"
   ],
   [
     106,
-    "BuckleScript warning: Unimplemented primitive used:"
+    "Unimplemented primitive used:"
   ],
   [
     107,
-    "BuckleScript warning: Integer literal exceeds the range of representable integers of type int"
+    "Integer literal exceeds the range of representable integers of type int"
   ],
   [
     108,
-    "BuckleScript warning: Uninterpreted delimiters (for unicode)"
+    "Uninterpreted delimiters (for unicode)"
   ],
   [
     109,
@@ -295,11 +295,9 @@ var numeric = [
   ]
 ];
 
-var ret = [];
-
-for(var i = 1; i <= 108; ++i){
-  ret.push(i);
-}
+Belt_Array.map(numeric, (function (prim) {
+        return prim[0];
+      }));
 
 var letterDescriptions = [[
     "a",

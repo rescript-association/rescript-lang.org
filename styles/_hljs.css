@@ -16,7 +16,7 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 }
 
 .hljs-operator, .hljs-literal {
-  @apply text-berry;
+  @apply text-water;
 }
 
 .hljs-comment {
@@ -29,20 +29,20 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 }
 
 .hljs-keyword {
-  @apply text-turtle;
+  @apply text-berry;
 }
 
 .hljs-number,
 .hljs-string,
 .hljs-doctag {
-  @apply text-water;
+  @apply text-orange;
 }
 
 .hljs-selector-id,
 .hljs-selector-class,
 .hljs-section,
 .hljs-type {
-  color: #19469d;
+  @apply text-turtle;
 }
 
 .hljs-params {
@@ -56,7 +56,7 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 .hljs-tag,
 .hljs-name,
 .hljs-attribute {
-  color: #376fdd;
+  @apply text-sky;
   font-weight: normal;
 }
 
@@ -100,14 +100,20 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
   font-weight: bold;
 }
 
+.hljs-function {
+  color: #8AAEC8;
+}
+
+.hljs-module-identifier {
+  @apply text-water
+}
+
 /* tweaks to syntax highlighting, assuming atom-one-light theme */
 
 .hljs-character {
   @apply text-turtle-dark;
 }
-.hljs-module-identifier {
-  @apply text-berry;
-}
+
 .hljs-constructor {
 @apply text-orange
 }
@@ -115,21 +121,34 @@ Docco style used in http://jashkenas.github.com/docco/ converted by Simon Madine
 /* DARK MODE COLORS */
 
 .hljs.dark {
-  @apply text-gray-20
+  @apply text-gray-30
+}
+
+.hljs.dark .hljs-module-identifier {
+  @apply text-fire-dark
 }
 
 .hljs.dark .hljs-comment {
   color: #546E7A;
 }
 
+.hljs.dark .hljs-operator, .hljs.dark .hljs-literal {
+  @apply text-ocean-dark;
+}
+
+.hljs.dark .hljs-tag, .hljs.dark .hljs-name, .hljs.dark .hljs-attribute {
+  @apply text-water-dark;
+  font-weight: normal;
+}
+
 .hljs.dark .hljs-number,
 .hljs.dark .hljs-string,
 .hljs.dark .hljs-doctag {
-  @apply text-turtle-dark;
+  @apply text-orange-dark;
 }
 
 .hljs.dark .hljs-keyword {
-  @apply text-berry-40;
+  @apply text-berry-dark-50;
 }
 
 .hljs.dark .hljs-built_in,

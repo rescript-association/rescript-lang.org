@@ -114,7 +114,7 @@ function DocSearch(Props) {
   var activeClass = isActive ? "text-white border border-gray-60" : "";
   var activeInput = isActive ? "w-32 mr-3" : "w-0";
   return React.createElement("div", {
-              className: activeClass + " bg-gray-100 border border-gray-80 hover:text-white hover:cursor-pointer flex justify-center p-2 px-3 rounded-lg",
+              className: activeClass + " bg-gray-100 border border-gray-70 hover:text-white hover:cursor-pointer flex justify-center p-2 px-3 rounded-lg",
               onClick: onClick
             }, React.createElement("input", {
                   ref: inputRef,
@@ -124,7 +124,7 @@ function DocSearch(Props) {
                   onKeyDown: onKeyDown,
                   onBlur: onBlur
                 }), React.createElement(Icon.MagnifierGlass.make, {
-                  className: "w-5 h-5"
+                  className: "text-gray-60 w-5 h-5"
                 }));
 }
 

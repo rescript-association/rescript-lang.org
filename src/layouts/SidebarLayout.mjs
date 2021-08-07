@@ -27,7 +27,7 @@ function SidebarLayout$Toc(Props) {
                               }, React.createElement(Next.Link.make, {
                                     href: param.href,
                                     children: React.createElement("a", {
-                                          className: "font-medium block text-sm text-gray-40 leading-tight hover:text-gray-80"
+                                          className: "font-medium block text-14 text-gray-40 leading-tight hover:text-gray-80"
                                         }, header)
                                   }));
                   })));
@@ -53,7 +53,7 @@ function SidebarLayout$Sidebar$NavItem(Props) {
               className: "mt-2 text-14 font-medium"
             }, Belt_Array.map(items, (function (m) {
                     var hidden = isHidden ? "hidden" : "block";
-                    var active = Curry._1(isItemActive, m) ? " bg-fire-10 text-fire leading-5 -ml-2 pl-2 font-medium block hover:bg-fire-10 " : "";
+                    var active = Curry._1(isItemActive, m) ? " bg-fire-5 text-fire leading-5 -ml-2 pl-2 font-medium block hover:bg-fire-5 " : "";
                     var activeToc = getActiveToc !== undefined ? Curry._1(getActiveToc, m) : undefined;
                     var tmp;
                     if (activeToc !== undefined) {
@@ -130,7 +130,7 @@ function SidebarLayout$Sidebar(Props) {
                   ) + " md:block md:w-48 md:-ml-4 lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white",
                   id: "sidebar"
                 }, React.createElement("aside", {
-                      className: "relative top-0 px-4 w-full block md:top-16 md:pt-16 md:sticky border-r border-gray-5 overflow-y-auto scrolling-touch pb-24",
+                      className: "relative top-0 px-4 w-full block md:top-16 md:pt-16 md:sticky border-r border-gray-5 overflow-y-auto pb-24",
                       id: "sidebar-content",
                       style: {
                         height: "calc(100vh - 4.5rem"

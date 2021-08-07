@@ -6,7 +6,10 @@ canonical: "/docs/manual/latest/installation"
 
 # Installation
 
-Prerequisite: NPM, which comes with [NodeJS](https://nodejs.org/en/). [Yarn](https://yarnpkg.com/en/) also works.
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) version >= 10
+- [npm](https://docs.npmjs.com/cli/) (which comes with Node.js) or [Yarn](https://yarnpkg.com/)
 
 ## New Project
 
@@ -18,7 +21,7 @@ npm run build
 node src/Demo.bs.js
 ```
 
-That compiles your ReScript into JavaScript, then uses NodeJS to run said JavaScript. **We recommend you use our unique workflow of keeping a tab open for the generated `.bs.js` file**, so that you can learn how ReScript transforms into JavaScript. Not many languages output clean JavaScript code you can inspect and learn from!
+That compiles your ReScript into JavaScript, then uses Node.js to run said JavaScript. **We recommend you use our unique workflow of keeping a tab open for the generated `.bs.js` file**, so that you can learn how ReScript transforms into JavaScript. Not many languages output clean JavaScript code you can inspect and learn from!
 
 During development, instead of running `npm run build` each time to compile, use `npm run start` to start a watcher that recompiles automatically after file changes.
 

@@ -1,3 +1,6 @@
+const { ProvidePlugin } = require('webpack');
+const { ESBuildMinifyPlugin } = require('esbuild-loader');
+
 const bsconfig = require("./bsconfig.json");
 const path = require("path");
 const remarkSlug = require("remark-slug");
@@ -13,18 +16,19 @@ const withMdx = require("./plugins/next-mdx")({
   },
 });
 
-function patchResDeps() {
-  ["rescript"].concat(bsconfig["bs-dependencies"]).forEach((bsDep) => {
-    fs.writeFileSync(`./node_modules/${bsDep}/index.js`, "");
-    const json = require(`./node_modules/${bsDep}/package.json`);
-    json.main = "index.js";
-    fs.writeFileSync(
-      `./node_modules/${bsDep}/package.json`,
-      JSON.stringify(json, null, 2)
+
+// esbuild-loader specific features
+// See: https://github.com/privatenumber/esbuild-loader-examples/blob/master/examples/next/next.config.js
+function useEsbuildMinify(config, options) {
+  const terserIndex = config.optimization.minimizer.findIndex(minimizer => (minimizer.constructor.name === 'TerserPlugin'));
+  if (terserIndex > -1) {
+    config.optimization.minimizer.splice(
+      terserIndex,
+      1,
+      new ESBuildMinifyPlugin(options),
     );
-  });
+  }
 }
-patchResDeps(); // update package.json and create empty `index.js` before transpiling
 
 const isWebpack5 = true;
 const config = {
@@ -44,18 +48,21 @@ const config = {
           path: false,
         };
       }
-
+      useEsbuildMinify(config);
       // We need this additional rule to make sure that mjs files are
       // correctly detected within our src/ folder
       config.module.rules.push({
         test: /\.m?js$/,
-        use: options.defaultLoaders.babel,
+        // v-- currently using an experimental setting with esbuild-loader
+        //use: options.defaultLoaders.babel,
+        use: [{loader: 'esbuild-loader', options: { loader: 'jsx'}}],
         exclude: /node_modules/,
         type: "javascript/auto",
         resolve: {
           fullySpecified: false,
         }
       });
+      config.plugins.push(new ProvidePlugin({ React: "react" }));
     }
     return config;
   },

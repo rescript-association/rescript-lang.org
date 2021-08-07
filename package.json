@@ -8,17 +8,16 @@
     "node": ">=12.x"
   },
   "dependencies": {
+    "@headlessui/react": "^1.2.0",
     "@mdx-js/loader": "^1.5.5",
     "@next/mdx": "^8.1.0",
     "@rescript/react": "^0.10.3",
-    "@ryyppy/rescript-promise": "^0.0.2",
+    "@ryyppy/rescript-promise": "2.1.0",
     "codemirror": "^5.54.0",
     "docson": "^2.1.0",
     "@zeit/next-css": "^1.0.1",
     "acorn": "^8.2.4",
     "bs-fetch": "^0.3.1",
-    "codemirror": "^5.54.0",
-    "docson": "^2.1.0",
     "escodegen": "^2.0.0",
     "esm": "^3.2.25",
     "estree-walker": "^3.0.0",
@@ -28,14 +27,13 @@
     "gray-matter": "^4.0.2",
     "highlight.js": "^10.5.0",
     "lz-string": "^1.4.4",
-    "next": "10.2.0",
-    "next-transpile-modules": "7.0.0",
+    "next": "10.2.3",
+    "next-transpile-modules": "7.1.2",
+    "postcss": "^8.3.0",
     "prettier": "^1.18.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
     "react-live": "^2.2.3",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
     "remark-parse": "^7.0.1",
     "remark-slug": "^5.1.2",
     "remark-stringify": "^7.0.3",
@@ -51,11 +49,12 @@
     "update-index": "node scripts/extract-indices.mjs && node scripts/extract-tocs.mjs && node scripts/extract-syntax.mjs && node scripts/generate_feed.mjs > public/blog/feed.xml"
   },
   "devDependencies": {
-    "autoprefixer": "^9.5.1",
+    "autoprefixer": "^10.2.6",
     "cssnano": "^4.1.10",
-    "postcss-cli": "^7.1.1",
+    "esbuild-loader": "^2.13.1",
+    "postcss-cli": "^8.3.0",
     "reanalyze": "^2.16.0",
     "rescript": "9.1.2",
-    "tailwindcss": "^1.6.0"
+    "tailwindcss": "^2.1.4"
   }
 }

@@ -38,7 +38,7 @@ let make = () => {
   let inputRef = React.useRef(Js.Nullable.null)
   let (state, setState) = React.useState(_ => Inactive)
 
-  React.useEffect1(() => {
+  React.useEffect0(() => {
     switch docsearch {
     | Some(init) =>
       init({
@@ -50,7 +50,7 @@ let make = () => {
     }
 
     None
-  }, [])
+  })
 
   React.useEffect1(() => {
     let isEditableTag = el =>
@@ -124,7 +124,7 @@ let make = () => {
   let activeInput = isActive ? "w-32 mr-3" : "w-0"
 
   <div
-    className={activeClass ++ " bg-gray-100 border border-gray-80 hover:text-white hover:cursor-pointer flex justify-center p-2 px-3 rounded-lg"}
+    className={activeClass ++ " bg-gray-100 border border-gray-70 hover:text-white hover:cursor-pointer flex justify-center p-2 px-3 rounded-lg"}
     onClick>
     <input
       ref={ReactDOM.Ref.domRef(inputRef)}
@@ -135,14 +135,14 @@ let make = () => {
       className={"transition-all ease-in-out duration-150 text-white bg-gray-100 border-none focus:outline-none " ++
       activeInput}
     />
-    <Icon.MagnifierGlass className="w-5 h-5" />
+    <Icon.MagnifierGlass className="text-gray-60 w-5 h-5" />
   </div>
 }
 
 module Textbox = {
   @react.component
   let make = (~id: string) => {
-    React.useEffect1(() => {
+    React.useEffect0(() => {
       switch docsearch {
       | Some(init) =>
         init({
@@ -153,7 +153,7 @@ module Textbox = {
       | None => ()
       }
       None
-    }, [])
+    })
 
     // Used for the text input
     let inputRef = React.useRef(Js.Nullable.null)
