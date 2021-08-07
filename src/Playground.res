@@ -1344,6 +1344,10 @@ module OutputPanel = {
                   src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
                   crossorigin
                 ></script>
+                <script
+                  src="https://bundleplayground.s3.sa-east-1.amazonaws.com/bundle.js"
+                  crossorigin
+                ></script>
                 <script>
                   window.addEventListener("message", (event) => {
                     const mainWindow = event.source;
@@ -1366,20 +1370,24 @@ module OutputPanel = {
         postMessage: (. string, string) => unit,
       }
       type element = {contentWindow: option<contentWindow>}
-      @send external getElementById: (document, string) => element = "getElementById"
+      @send external getElementById: (document, string) => Js.nullable<element> = "getElementById"
       @val external doc: document = "document"
     }
 
     let runCode = () => {
-      let iframeWin = Transpiler.getElementById(Transpiler.doc, "iframe-eval").contentWindow
+      let iframeWin = Js.toOption(Transpiler.getElementById(Transpiler.doc, "iframe-eval"))
       switch iframeWin {
-      | Some(win) => {
-          let codeToRun = `(function () {
+      | Some(element) =>
+        switch element.contentWindow {
+        | Some(win) => {
+            let codeToRun = `(function () {
           ${Transpiler.transpile(code)}
           const root = document.getElementById("root");
           ReactDOM.render(App.make(), root);
         })();`
-          win.postMessage(. codeToRun, "*")
+            win.postMessage(. codeToRun, "*")
+          }
+        | None => ()
         }
       | None => ()
       }
@@ -1392,8 +1400,14 @@ module OutputPanel = {
       | Comp(Success(_))
       | Conv(Success(_)) =>
         <React.Fragment>
-          <button onClick={_ => runCode()}> {React.string("Run")} </button>
-          <iframe width="250px" height="300px" id="iframe-eval" srcDoc=Transpiler.srcdoc />
+          <button onClick={_ => runCode()}> {"Run"->React.string} </button>
+          <iframe
+            width="100%"
+            height="730px"
+            id="iframe-eval"
+            style={ReactDOMStyle.make(~backgroundColor="#fff", ())}
+            srcDoc=Transpiler.srcdoc
+          />
         </React.Fragment>
       | _ => <div />
       }
@@ -1450,16 +1464,16 @@ module OutputPanel = {
     let tabs = [
       {Pane.title: "JavaScript", content: output},
       {
+        title: "Render",
+        content: <div style={ReactDOM.Style.make(~height="50%", ())}> outputPane </div>,
+      },
+      {
         title: "Problems",
         content: <div style={ReactDOM.Style.make(~height="50%", ())}> errorPane </div>,
       },
       {
         title: "Settings",
         content: <div style={ReactDOM.Style.make(~height="50%", ())}> settingsPane </div>,
-      },
-      {
-        title: "Result",
-        content: <div style={ReactDOM.Style.make(~height="50%", ())}> outputPane </div>,
       },
     ]
 
@@ -1475,7 +1489,8 @@ module OutputPanel = {
 
 let initialResContent = `module Button = {
   @react.component
-  let make = (~count: int) => {
+  let make = () => {
+    let (count, setCount) = React.useState(_ => 0)
     let times = switch count {
     | 1 => "once"
     | 2 => "twice"
@@ -1483,14 +1498,14 @@ let initialResContent = `module Button = {
     }
     let msg = "Click me " ++ times
 
-    <button> {msg->React.string} </button>
+    <button onClick={_ => setCount(c => c + 1)}> {msg->React.string} </button>
   }
 }
 
 module App = {
   @react.component
   let make = () => {
-    <Button count=2 />
+    <Button />
   }
 }
 ` // Please note:

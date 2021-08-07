@@ -1740,18 +1740,25 @@ function Playground$OutputPanel(Props) {
             children: null
           }, React.createElement("button", {
                 onClick: (function (param) {
-                    var iframeWin = document.getElementById("iframe-eval").contentWindow;
-                    if (iframeWin === undefined) {
+                    var iframeWin = document.getElementById("iframe-eval");
+                    if (iframeWin == null) {
+                      return ;
+                    }
+                    var win = iframeWin.contentWindow;
+                    if (win === undefined) {
                       return ;
                     }
                     var codeToRun = "(function () {\n          " + TranspileToEval(code) + "\n          const root = document.getElementById(\"root\");\n          ReactDOM.render(App.make(), root);\n        })();";
-                    return iframeWin.postMessage(codeToRun, "*");
+                    return win.postMessage(codeToRun, "*");
                   })
               }, "Run"), React.createElement("iframe", {
                 id: "iframe-eval",
-                height: "300px",
-                srcDoc: "\n        <!DOCTYPE html>\n          <html lang=\"en\">\n            <head>\n              <meta charset=\"UTF-8\" />\n              <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n              <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\" />\n              <title>Document</title>\n            </head>\n\n            <body>\n              <div id=\"root\"></div>\n                <script\n                  src=\"https://unpkg.com/react@17/umd/react.production.min.js\"\n                  crossorigin\n                ></script>\n                <script\n                  src=\"https://unpkg.com/react-dom@17/umd/react-dom.production.min.js\"\n                  crossorigin\n                ></script>\n                <script>\n                  window.addEventListener(\"message\", (event) => {\n                    const mainWindow = event.source;\n                    let result = \"all good\";\n                    try {\n                      eval(event.data);\n                  } catch (err) {\n                    console.log(err);\n                    result = \"eval() threw an exception.\";\n                  }\n                  mainWindow.postMessage(result, event.origin);\n                 });\n              </script>\n  </body>\n</html>\n      ",
-                width: "250px"
+                style: {
+                  backgroundColor: "#fff"
+                },
+                height: "730px",
+                srcDoc: "\n        <!DOCTYPE html>\n          <html lang=\"en\">\n            <head>\n              <meta charset=\"UTF-8\" />\n              <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n              <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\" />\n              <title>Document</title>\n            </head>\n\n            <body>\n              <div id=\"root\"></div>\n                <script\n                  src=\"https://unpkg.com/react@17/umd/react.production.min.js\"\n                  crossorigin\n                ></script>\n                <script\n                  src=\"https://unpkg.com/react-dom@17/umd/react-dom.production.min.js\"\n                  crossorigin\n                ></script>\n                <script\n                  src=\"https://bundleplayground.s3.sa-east-1.amazonaws.com/bundle.js\"\n                  crossorigin\n                ></script>\n                <script>\n                  window.addEventListener(\"message\", (event) => {\n                    const mainWindow = event.source;\n                    let result = \"all good\";\n                    try {\n                      eval(event.data);\n                  } catch (err) {\n                    console.log(err);\n                    result = \"eval() threw an exception.\";\n                  }\n                  mainWindow.postMessage(result, event.origin);\n                 });\n              </script>\n  </body>\n</html>\n      ",
+                width: "100%"
               }));
     }
     
@@ -1828,6 +1835,14 @@ function Playground$OutputPanel(Props) {
       content: output
     },
     {
+      title: "Render",
+      content: React.createElement("div", {
+            style: {
+              height: "50%"
+            }
+          }, outputPane)
+    },
+    {
       title: "Problems",
       content: React.createElement("div", {
             style: {
@@ -1842,14 +1857,6 @@ function Playground$OutputPanel(Props) {
               height: "50%"
             }
           }, settingsPane)
-    },
-    {
-      title: "Result",
-      content: React.createElement("div", {
-            style: {
-              height: "50%"
-            }
-          }, outputPane)
     }
   ];
   var makeTabClass = function (active) {
@@ -1864,7 +1871,7 @@ function Playground$OutputPanel(Props) {
                 }));
 }
 
-var initialResContent = "module Button = {\n  @react.component\n  let make = (~count: int) => {\n    let times = switch count {\n    | 1 => \"once\"\n    | 2 => \"twice\"\n    | n => Belt.Int.toString(n) ++ \" times\"\n    }\n    let msg = \"Click me \" ++ times\n\n    <button> {msg->React.string} </button>\n  }\n}\n\nmodule App = {\n  @react.component\n  let make = () => {\n    <Button count=2 />\n  }\n}\n";
+var initialResContent = "module Button = {\n  @react.component\n  let make = () => {\n    let (count, setCount) = React.useState(_ => 0)\n    let times = switch count {\n    | 1 => \"once\"\n    | 2 => \"twice\"\n    | n => Belt.Int.toString(n) ++ \" times\"\n    }\n    let msg = \"Click me \" ++ times\n\n    <button onClick={_ => setCount(c => c + 1)}> {msg->React.string} </button>\n  }\n}\n\nmodule App = {\n  @react.component\n  let make = () => {\n    <Button />\n  }\n}\n";
 
 function Playground$default(Props) {
   var router = Next.Router.useRouter(undefined);
