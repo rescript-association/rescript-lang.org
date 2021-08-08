@@ -2,7 +2,7 @@
 
 <Intro>
 
-This module separates identity from data, it is a bit more verbose but slightly more efficient due to the fact that there is no need to pack identity and data back after each operation
+This module separates identity from data. It is a bit more verbose but slightly more efficient due to the fact that there is no need to pack identity and data back after each operation.
 
 </Intro>
 
@@ -88,7 +88,7 @@ Belt.Set.Dict.isEmpty(notEmpty) /* false */
 let has: (t<'value, 'id>, 'value, ~cmp: cmp<'value, 'id>) => bool
 ```
 
-Checks if element exists in set.
+Checks if an element exists in the set.
 
 ```res example
 module IntCmp = Belt.Id.MakeComparable({
@@ -98,8 +98,8 @@ module IntCmp = Belt.Id.MakeComparable({
 
 let set = Belt.Set.Dict.fromArray([1, 4, 2, 5], ~cmp=IntCmp.cmp)
 
-set->Belt.Set.Dict.has(3) /* false */
-set->Belt.Set.Dict.has(1) /* true */
+set->Belt.Set.Dict.has(3, ~cmp=IntCmp.cmp) /* false */
+set->Belt.Set.Dict.has(1, ~cmp=IntCmp.cmp) /* true */
 ```
 
 ## add
