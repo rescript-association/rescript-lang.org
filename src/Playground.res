@@ -1104,7 +1104,7 @@ module Transpiler = {
   @send external getElementById: (document, string) => Js.nullable<element> = "getElementById"
   @val external doc: document = "document"
 
-  let runCode = (~code: string) => {
+  let run = (~code: string) => {
     let iframeWin = Js.toOption(getElementById(doc, "iframe-eval"))
     switch iframeWin {
     | Some(element) =>
@@ -1270,8 +1270,7 @@ module ControlPanel = {
           <Button onClick=onFormatClick> {React.string("Format")} </Button>
         </div>
         <div className="mr-2">
-          <Button
-            onClick={_ => Transpiler.runCode(~code=Belt.Option.getWithDefault(compiledCode, ""))}>
+          <Button onClick={_ => Transpiler.run(~code=Belt.Option.getWithDefault(compiledCode, ""))}>
             {React.string("Run")}
           </Button>
         </div>
