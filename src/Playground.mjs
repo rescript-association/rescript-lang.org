@@ -1770,9 +1770,9 @@ function Playground$OutputPanel(Props) {
             children: React.createElement("iframe", {
                   id: "iframe-eval",
                   style: {
-                    backgroundColor: "#fff"
+                    backgroundColor: "#fff",
+                    height: "calc(100vh - 11.5rem)"
                   },
-                  height: "730px",
                   srcDoc: "\n        <!DOCTYPE html>\n          <html lang=\"en\">\n            <head>\n              <meta charset=\"UTF-8\" />\n              <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n              <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\" />\n              <title>Document</title>\n            </head>\n\n            <body>\n              <div id=\"root\"></div>\n                <script\n                  src=\"https://unpkg.com/react@17/umd/react.production.min.js\"\n                  crossorigin\n                ></script>\n                <script\n                  src=\"https://unpkg.com/react-dom@17/umd/react-dom.production.min.js\"\n                  crossorigin\n                ></script>\n                <script\n                  src=\"https://bundleplayground.s3.sa-east-1.amazonaws.com/bundle.js\"\n                  crossorigin\n                ></script>\n                <script>\n                  window.addEventListener(\"message\", (event) => {\n                    const mainWindow = event.source;\n                    let result = \"all good\";\n                    try {\n                      eval(event.data);\n                  } catch (err) {\n                    console.log(err);\n                    result = \"eval() threw an exception.\";\n                  }\n                  mainWindow.postMessage(result, event.origin);\n                 });\n              </script>\n  </body>\n</html>\n      ",
                   width: "100%"
                 })
