@@ -1373,9 +1373,8 @@ module OutputPanel = {
         <React.Fragment>
           <iframe
             width="100%"
-            height="730px"
             id="iframe-eval"
-            style={ReactDOMStyle.make(~backgroundColor="#fff", ())}
+            style={ReactDOMStyle.make(~backgroundColor="#fff", ~height="calc(100vh - 11.5rem)", ())}
             srcDoc=Transpiler.srcdoc
           />
         </React.Fragment>
