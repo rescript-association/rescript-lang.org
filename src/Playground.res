@@ -1100,8 +1100,93 @@ module Settings = {
     </div>
   }
 }
+module Transpiler = {
+  @module("./ffi/transpile-to-eval") external transpile: string => string = "default"
+
+  let srcdoc = `
+        <!DOCTYPE html>
+          <html lang="en">
+            <head>
+              <meta charset="UTF-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+              <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+              <title>Document</title>
+            </head>
+
+            <body>
+              <div id="root"></div>
+                <script
+                  src="https://unpkg.com/react@17/umd/react.production.min.js"
+                  crossorigin
+                ></script>
+                <script
+                  src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
+                  crossorigin
+                ></script>
+                <script
+                  src="https://bundleplayground.s3.sa-east-1.amazonaws.com/bundle.js"
+                  crossorigin
+                ></script>
+                <script>
+                  window.addEventListener("message", (event) => {
+                    const mainWindow = event.source;
+                    let result = "all good";
+                    try {
+                      eval(event.data);
+                  } catch (err) {
+                    console.log(err);
+                    result = "eval() threw an exception.";
+                  }
+                  mainWindow.postMessage(result, event.origin);
+                 });
+              </script>
+  </body>
+</html>
+      `
+  type document
+  type contentWindow = {
+    @uncurry
+    postMessage: (. string, string) => unit,
+  }
+  type element = {contentWindow: option<contentWindow>}
+  @send external getElementById: (document, string) => Js.nullable<element> = "getElementById"
+  @val external doc: document = "document"
+
+  let runCode = (~code: string) => {
+    let iframeWin = Js.toOption(getElementById(doc, "iframe-eval"))
+    switch iframeWin {
+    | Some(element) =>
+      switch element.contentWindow {
+      | Some(win) => {
+          let codeToRun = `(function () {
+          ${transpile(code)}
+          const root = document.getElementById("root");
+          ReactDOM.render(App.make(), root);
+        })();`
+          win.postMessage(. codeToRun, "*")
+        }
+      | None => ()
+      }
+    | None => ()
+    }
+  }
+}
 
 module ControlPanel = {
+  let codeFromResult = (result: FinalResult.t): string => {
+    open Api
+    switch result {
+    | FinalResult.Comp(comp) =>
+      switch comp {
+      | CompilationResult.Success({js_code}) => js_code
+      | UnexpectedError(_)
+      | Unknown(_, _)
+      | Fail(_) => "/* No JS code generated */"
+      }
+    | Nothing
+    | Conv(_) => "/* No JS code generated */"
+    }
+  }
   module Button = {
     @react.component
     let make = (~children, ~onClick=?) =>
@@ -1212,9 +1297,27 @@ module ControlPanel = {
         Next.Router.replace(router, url)
         url
       }
+
+      let compiledCode = switch state {
+      | Ready(ready) =>
+        switch ready.result {
+        | Comp(Success(_))
+        | Conv(Success(_)) =>
+          codeFromResult(ready.result)->Some
+        | _ => None
+        }
+      | _ => None
+      }
+
       <>
         <div className="mr-2">
           <Button onClick=onFormatClick> {React.string("Format")} </Button>
+        </div>
+        <div className="mr-2">
+          <Button
+            onClick={_ => Transpiler.runCode(~code=Belt.Option.getWithDefault(compiledCode, ""))}>
+            {React.string("Run")}
+          </Button>
         </div>
         <ShareButton actionIndicatorKey createShareLink />
       </>
@@ -1238,21 +1341,6 @@ let locMsgToCmError = (~kind: CodeMirror.Error.kind, locMsg: Api.LocMsg.t): Code
 }
 
 module OutputPanel = {
-  let codeFromResult = (result: FinalResult.t): string => {
-    open Api
-    switch result {
-    | FinalResult.Comp(comp) =>
-      switch comp {
-      | CompilationResult.Success({js_code}) => js_code
-      | UnexpectedError(_)
-      | Unknown(_, _)
-      | Fail(_) => "/* No JS code generated */"
-      }
-    | Nothing
-    | Conv(_) => "/* No JS code generated */"
-    }
-  }
-
   @react.component
   let make = (
     ~compilerDispatch,
@@ -1275,17 +1363,18 @@ module OutputPanel = {
       | (_, Ready({result: Nothing})) => None
       | (Ready(prevReady), Ready(ready)) =>
         switch (prevReady.result, ready.result) {
-        | (_, Comp(Success(_))) => codeFromResult(ready.result)->Some
+        | (_, Comp(Success(_))) => ControlPanel.codeFromResult(ready.result)->Some
         | _ => None
         }
-      | (_, Ready({result: Comp(Success(_)) as result})) => codeFromResult(result)->Some
+      | (_, Ready({result: Comp(Success(_)) as result})) =>
+        ControlPanel.codeFromResult(result)->Some
       | (Ready({result: Comp(Success(_)) as result}), Compiling(_, _)) =>
-        codeFromResult(result)->Some
+        ControlPanel.codeFromResult(result)->Some
       | _ => None
       }
     | None =>
       switch compilerState {
-      | Ready(ready) => codeFromResult(ready.result)->Some
+      | Ready(ready) => ControlPanel.codeFromResult(ready.result)->Some
       | _ => None
       }
     }
@@ -1321,78 +1410,6 @@ module OutputPanel = {
         {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="js", ())}
       </pre>
 
-    module Transpiler = {
-      @module("./ffi/transpile-to-eval") external transpile: string => string = "default"
-
-      let srcdoc = `
-        <!DOCTYPE html>
-          <html lang="en">
-            <head>
-              <meta charset="UTF-8" />
-              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-              <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-              <title>Document</title>
-            </head>
-
-            <body>
-              <div id="root"></div>
-                <script
-                  src="https://unpkg.com/react@17/umd/react.production.min.js"
-                  crossorigin
-                ></script>
-                <script
-                  src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
-                  crossorigin
-                ></script>
-                <script
-                  src="https://bundleplayground.s3.sa-east-1.amazonaws.com/bundle.js"
-                  crossorigin
-                ></script>
-                <script>
-                  window.addEventListener("message", (event) => {
-                    const mainWindow = event.source;
-                    let result = "all good";
-                    try {
-                      eval(event.data);
-                  } catch (err) {
-                    console.log(err);
-                    result = "eval() threw an exception.";
-                  }
-                  mainWindow.postMessage(result, event.origin);
-                 });
-              </script>
-  </body>
-</html>
-      `
-      type document
-      type contentWindow = {
-        @uncurry
-        postMessage: (. string, string) => unit,
-      }
-      type element = {contentWindow: option<contentWindow>}
-      @send external getElementById: (document, string) => Js.nullable<element> = "getElementById"
-      @val external doc: document = "document"
-    }
-
-    let runCode = () => {
-      let iframeWin = Js.toOption(Transpiler.getElementById(Transpiler.doc, "iframe-eval"))
-      switch iframeWin {
-      | Some(element) =>
-        switch element.contentWindow {
-        | Some(win) => {
-            let codeToRun = `(function () {
-          ${Transpiler.transpile(code)}
-          const root = document.getElementById("root");
-          ReactDOM.render(App.make(), root);
-        })();`
-            win.postMessage(. codeToRun, "*")
-          }
-        | None => ()
-        }
-      | None => ()
-      }
-    }
-
     let outputPane: React.element = switch compilerState {
     | Compiling(ready, _)
     | Ready(ready) =>
@@ -1400,7 +1417,6 @@ module OutputPanel = {
       | Comp(Success(_))
       | Conv(Success(_)) =>
         <React.Fragment>
-          <button onClick={_ => runCode()}> {"Run"->React.string} </button>
           <iframe
             width="100%"
             height="730px"

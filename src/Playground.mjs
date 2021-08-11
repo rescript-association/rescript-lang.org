@@ -1423,6 +1423,21 @@ function Playground$Settings(Props) {
                         }))));
 }
 
+function codeFromResult(result) {
+  if (typeof result === "number") {
+    return "/* No JS code generated */";
+  }
+  if (result.TAG === /* Conv */0) {
+    return "/* No JS code generated */";
+  }
+  var comp = result._0;
+  if (comp.TAG === /* Success */1) {
+    return comp._0.js_code;
+  } else {
+    return "/* No JS code generated */";
+  }
+}
+
 function Playground$ControlPanel$Button(Props) {
   var children = Props.children;
   var onClick = Props.onClick;
@@ -1547,11 +1562,42 @@ function Playground$ControlPanel(Props) {
       Next.Router.replace(router, url);
       return url;
     };
+    var compiledCode;
+    if (typeof state === "number" || state.TAG !== /* Ready */2) {
+      compiledCode = undefined;
+    } else {
+      var ready$1 = state._0;
+      var match = ready$1.result;
+      compiledCode = typeof match === "number" ? undefined : (
+          match.TAG === /* Conv */0 ? (
+              match._0.TAG === /* Success */0 ? codeFromResult(ready$1.result) : undefined
+            ) : (
+              match._0.TAG === /* Success */1 ? codeFromResult(ready$1.result) : undefined
+            )
+        );
+    }
     children = React.createElement(React.Fragment, undefined, React.createElement("div", {
               className: "mr-2"
             }, React.createElement(Playground$ControlPanel$Button, {
                   children: "Format",
                   onClick: onFormatClick
+                })), React.createElement("div", {
+              className: "mr-2"
+            }, React.createElement(Playground$ControlPanel$Button, {
+                  children: "Run",
+                  onClick: (function (param) {
+                      var code = Belt_Option.getWithDefault(compiledCode, "");
+                      var iframeWin = document.getElementById("iframe-eval");
+                      if (iframeWin == null) {
+                        return ;
+                      }
+                      var win = iframeWin.contentWindow;
+                      if (win === undefined) {
+                        return ;
+                      }
+                      var codeToRun = "(function () {\n          " + TranspileToEval(code) + "\n          const root = document.getElementById(\"root\");\n          ReactDOM.render(App.make(), root);\n        })();";
+                      return win.postMessage(codeToRun, "*");
+                    })
                 })), React.createElement(Playground$ControlPanel$ShareButton, {
               createShareLink: createShareLink,
               actionIndicatorKey: actionIndicatorKey
@@ -1571,21 +1617,6 @@ function locMsgToCmError(kind, locMsg) {
           text: locMsg.shortMsg,
           kind: kind
         };
-}
-
-function codeFromResult(result) {
-  if (typeof result === "number") {
-    return "/* No JS code generated */";
-  }
-  if (result.TAG === /* Conv */0) {
-    return "/* No JS code generated */";
-  }
-  var comp = result._0;
-  if (comp.TAG === /* Success */1) {
-    return comp._0.js_code;
-  } else {
-    return "/* No JS code generated */";
-  }
 }
 
 function Playground$OutputPanel(Props) {
@@ -1696,7 +1727,6 @@ function Playground$OutputPanel(Props) {
       "",
       false
     ];
-  var code = match$2[0];
   var codeElement = React.createElement("pre", {
         className: "whitespace-pre-wrap overflow-y-auto p-4 " + (
           match$2[1] ? "block" : "hidden"
@@ -1704,7 +1734,7 @@ function Playground$OutputPanel(Props) {
         style: {
           height: "calc(100vh - 11.5rem)"
         }
-      }, HighlightJs.renderHLJS(undefined, true, code, "js", undefined));
+      }, HighlightJs.renderHLJS(undefined, true, match$2[0], "js", undefined));
   var outputPane;
   var exit$4 = 0;
   if (typeof compilerState === "number") {
@@ -1737,29 +1767,16 @@ function Playground$OutputPanel(Props) {
     }
     if (exit$5 === 2) {
       outputPane = React.createElement(React.Fragment, {
-            children: null
-          }, React.createElement("button", {
-                onClick: (function (param) {
-                    var iframeWin = document.getElementById("iframe-eval");
-                    if (iframeWin == null) {
-                      return ;
-                    }
-                    var win = iframeWin.contentWindow;
-                    if (win === undefined) {
-                      return ;
-                    }
-                    var codeToRun = "(function () {\n          " + TranspileToEval(code) + "\n          const root = document.getElementById(\"root\");\n          ReactDOM.render(App.make(), root);\n        })();";
-                    return win.postMessage(codeToRun, "*");
-                  })
-              }, "Run"), React.createElement("iframe", {
-                id: "iframe-eval",
-                style: {
-                  backgroundColor: "#fff"
-                },
-                height: "730px",
-                srcDoc: "\n        <!DOCTYPE html>\n          <html lang=\"en\">\n            <head>\n              <meta charset=\"UTF-8\" />\n              <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n              <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\" />\n              <title>Document</title>\n            </head>\n\n            <body>\n              <div id=\"root\"></div>\n                <script\n                  src=\"https://unpkg.com/react@17/umd/react.production.min.js\"\n                  crossorigin\n                ></script>\n                <script\n                  src=\"https://unpkg.com/react-dom@17/umd/react-dom.production.min.js\"\n                  crossorigin\n                ></script>\n                <script\n                  src=\"https://bundleplayground.s3.sa-east-1.amazonaws.com/bundle.js\"\n                  crossorigin\n                ></script>\n                <script>\n                  window.addEventListener(\"message\", (event) => {\n                    const mainWindow = event.source;\n                    let result = \"all good\";\n                    try {\n                      eval(event.data);\n                  } catch (err) {\n                    console.log(err);\n                    result = \"eval() threw an exception.\";\n                  }\n                  mainWindow.postMessage(result, event.origin);\n                 });\n              </script>\n  </body>\n</html>\n      ",
-                width: "100%"
-              }));
+            children: React.createElement("iframe", {
+                  id: "iframe-eval",
+                  style: {
+                    backgroundColor: "#fff"
+                  },
+                  height: "730px",
+                  srcDoc: "\n        <!DOCTYPE html>\n          <html lang=\"en\">\n            <head>\n              <meta charset=\"UTF-8\" />\n              <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n              <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\" />\n              <title>Document</title>\n            </head>\n\n            <body>\n              <div id=\"root\"></div>\n                <script\n                  src=\"https://unpkg.com/react@17/umd/react.production.min.js\"\n                  crossorigin\n                ></script>\n                <script\n                  src=\"https://unpkg.com/react-dom@17/umd/react-dom.production.min.js\"\n                  crossorigin\n                ></script>\n                <script\n                  src=\"https://bundleplayground.s3.sa-east-1.amazonaws.com/bundle.js\"\n                  crossorigin\n                ></script>\n                <script>\n                  window.addEventListener(\"message\", (event) => {\n                    const mainWindow = event.source;\n                    let result = \"all good\";\n                    try {\n                      eval(event.data);\n                  } catch (err) {\n                    console.log(err);\n                    result = \"eval() threw an exception.\";\n                  }\n                  mainWindow.postMessage(result, event.origin);\n                 });\n              </script>\n  </body>\n</html>\n      ",
+                  width: "100%"
+                })
+          });
     }
     
   }
