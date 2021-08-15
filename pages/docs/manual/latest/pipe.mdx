@@ -71,13 +71,13 @@ Pipes are used to emulate object-oriented programming, e.g. what's `myStudent.ge
 
 ## Tips & Tricks
 
-Do **not** to abuse pipes; they're a means to an end. Inexperienced engineers sometimes shape a library's API to take advantage of the pipe. This is backward.
+Do **not** abuse pipes; they're a means to an end. Inexperienced engineers sometimes shape a library's API to take advantage of the pipe. This is backwards.
 
 ## JS Method Chaining
 
 _This section requires understanding of [our binding API](bind-to-js-function.md#object-method)_.
 
-JavaScript's APIs are often attached to objects, and often chainable, like so:
+JavaScript's APIs are often attached to objects, and are often chainable, like so:
 
 ```js
 const result = [1, 2, 3].map(a => a + 1).filter(a => a % 2 === 0);
