@@ -21,7 +21,7 @@
     "gray-matter": "^4.0.2",
     "highlight.js": "^10.5.0",
     "lz-string": "^1.4.4",
-    "next": "10.2.3",
+    "next": "11.1.1",
     "next-transpile-modules": "7.1.2",
     "postcss": "^8.3.0",
     "prettier": "^1.18.2",
