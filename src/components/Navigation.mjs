@@ -641,7 +641,7 @@ function Navigation(Props) {
                           )
                         })), React.createElement("div", {
                       className: (
-                        isOverlayOpen ? "flex" : "hidden"
+                        isOverlayOpen && !isSubnavOpen ? "flex" : "hidden"
                       ) + " sm:hidden flex-col fixed top-0 left-0 h-full w-full z-50 sm:w-9/12 bg-gray-100 sm:h-auto sm:flex sm:relative sm:flex-row sm:justify-between",
                       style: {
                         minWidth: minWidth,
