@@ -38,7 +38,6 @@ The `..` in the type declaration above defines an extensible variant `type t`. T
 ## Pattern Matching Caveats
 
 Extensible variants are open-ended, so the compiler will not be able to exhaustively pattern match all available cases. You will always need to provide a default `_` case for every `switch` expression. 
-With extensible variants, the possibility to check for exhaustiveness vanishes, you always need a default case `_` here.
 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
