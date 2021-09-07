@@ -6,7 +6,9 @@ canonical: "/docs/manual/latest/extensible-variant"
 
 # Extensible Variant
 
-Variants can be made extensible by defining a type using `..` and adding new variant constructors using `+=`.
+Variant types are usually constraint to a fixed set of constructors that are defined in its type declaration. There may be very rare cases where you still want to be able to add constructors to a variant type (e.g. in different places of your program). For this, we offer extensible variant types.
+
+## Definition and Usage
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
