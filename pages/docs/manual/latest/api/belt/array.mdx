@@ -763,7 +763,7 @@ let reduceWithIndexU: (array<'a>, 'b, (. 'b, 'a, int) => 'b) => 'b
 let reduceWithIndex: (array<'a>, 'b, ('b, 'a, int) => 'b) => 'b
 ```
 
-`reduceWithIndex(xs, f)`
+`reduceWithIndex(arr, init, f)`
 
 Applies `f` to each element of `xs` from beginning to end. Function `f` has three parameters: an “accumulator”, which starts with a value of `init` and the item from the array and the index of each element. `reduceWithIndex` returns the final value of the accumulator.
 
