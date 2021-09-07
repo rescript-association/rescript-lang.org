@@ -466,6 +466,7 @@ let default = (props: props) => {
   let overlayState = React.useState(() => false)
   <>
     <Meta
+      siteName="ReScript Packages"
       title="Package Index | ReScript Documentation"
       description="Official and unofficial resources, libraries and bindings for ReScript"
     />

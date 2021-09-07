@@ -129,6 +129,7 @@ function $$default(props) {
     var description = match.description;
     var title = match.title;
     var tmp = {
+      siteName: "ReScript Blog",
       title: title + " | ReScript Blog",
       ogImage: Belt_Option.getWithDefault(Caml_option.null_to_opt(match.previewImg), Blog.defaultPreviewImg)
     };
