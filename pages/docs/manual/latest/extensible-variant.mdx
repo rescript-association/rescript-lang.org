@@ -65,3 +65,7 @@ function print(v) {
 ```
 
 </CodeTab>
+
+## Tips & Tricks
+
+**Fun fact:** In ReScript, [exceptions](./exception) are actually implemented as Extensible Variants under the hood, so `exception UserError(string)` is equivalent to `type exn += UserError(string)`. It's probably one of the few use-cases were Extensible Variants make sense. We usually recommend sticking with common [Variants](./variant) as much as possible to reap the benefits of exhaustive pattern matching.
