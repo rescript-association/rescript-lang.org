@@ -465,6 +465,7 @@ function $$default(props) {
         return false;
       });
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, {
+                  siteName: "ReScript Packages",
                   description: "Official and unofficial resources, libraries and bindings for ReScript",
                   title: "Package Index | ReScript Documentation"
                 }), React.createElement("div", {

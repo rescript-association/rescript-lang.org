@@ -156,6 +156,7 @@ let default = (props: props) => {
   | Ok({date, author, co_authors, title, description, articleImg, previewImg}) =>
     <div className="w-full">
       <Meta
+        siteName="ReScript Blog"
         title={title ++ " | ReScript Blog"}
         description=?{description->Js.Null.toOption}
         ogImage={previewImg->Js.Null.toOption->Belt.Option.getWithDefault(Blog.defaultPreviewImg)}

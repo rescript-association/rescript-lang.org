@@ -256,6 +256,7 @@ function $$default(props) {
         return false;
       });
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, {
+                  siteName: "ReScript Blog",
                   description: "News, Announcements, Release Notes and more",
                   title: "Blog | ReScript Documentation"
                 }), React.createElement("div", {
