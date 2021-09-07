@@ -35,7 +35,9 @@ var Line = Caml_exceptions.create("Playground.Line");
 
 The `..` in the type declaration above defines an extensible variant `type t`. The `+=` operator is then used to add constructors to the given type. 
 
-Pattern-matching is possible the same way as with normal variants but there is one caveat:
+## Pattern Matching Caveats
+
+Extensible variants are open-ended, so the compiler will not be able to exhaustively pattern match all available cases. You will always need to provide a default `_` case for every `switch` expression. 
 With extensible variants, the possibility to check for exhaustiveness vanishes, you always need a default case `_` here.
 
 
