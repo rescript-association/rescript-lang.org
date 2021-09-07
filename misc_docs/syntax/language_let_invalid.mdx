@@ -8,6 +8,8 @@ category: "languageconstructs"
 
 `let \""` is used to bind values to names that are invalid in ReScript, including capitalized names, names with special characters, and reserved keywords.
 
+**Warning: ** This escape hatch is almost exclusively used for interop with JavaScript. If you abuse this, many of the compiler guarantees will go away.
+
 ### Example
 
 <CodeTab labels={["ReScript", "JS Output"]}>
