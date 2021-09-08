@@ -701,9 +701,13 @@ let reduceU: (array<'b>, 'a, (. 'a, 'b) => 'a) => 'a
 let reduce: (array<'b>, 'a, ('a, 'b) => 'a) => 'a
 ```
 
-`reduce(xs, init, f)`
+`reduce(arr, init, f)`
 
-Applies `f` to each element of `xs` from beginning to end. Function `f` has two parameters: an “accumulator” ; which starts with a value of `init` and the item from the list. `reduce` returns the final value of the accumulator.
+Applies `f` to each element of `arr`.
+
+Function `f` has two parameters: an "accumulator" which starts with a value of `init` and the next `value` from the array. 
+
+It returns the final value of the accumulator.
 
 ```res example
 Belt.Array.reduce([2, 3, 4], 1, (a, b) => a + b) == 10
