@@ -157,6 +157,42 @@ let arr = map([1,2,3], (a) => { a + 1})
 
 **Note:** Same as with `open`, don't overuse `open!` statements if not necessary. Use (sub)modules to prevent shadowing issues.
 
+### Destructuring modules
+
+**Since 9.0.2**
+
+As an alternative to `open`ing a module, you can also destructure a module's functions and values into separate let bindings (similarly on how we'd destructure an object in JavaScript).
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+module User = {
+  let user1 = "Anna"
+  let user2 = "Franz"
+}
+
+// Destructure by name
+let {user1, user2} = module(User)
+
+// Destructure with different alias
+let {user1: anna, user2: franz} = module(User)
+```
+
+```js
+var user1 = "Anna";
+
+var user2 = "Franz";
+
+var User = {
+  user1: user1,
+  user2: user2
+};
+```
+
+</CodeTab>
+
+**Note:** You can't extract types with module destructuring — use a type alias instead (`type user = User.myUserType`).
+
 ### Extending modules
 
 Using `include` in a module statically "spreads" a module's content into a new one, thus often fulfill the role of "inheritance" or "mixin".
