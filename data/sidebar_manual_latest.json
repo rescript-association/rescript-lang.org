@@ -33,7 +33,7 @@
     "unboxed",
     "reserved-keywords"
   ],
-  "Advanced Language Features": [
+  "Advanced Features": [
     "extensible-variant"
   ],
   "JavaScript Interop": [
