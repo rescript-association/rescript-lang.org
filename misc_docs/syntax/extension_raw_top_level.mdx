@@ -34,6 +34,20 @@ greet(message);
 
 </CodeTab>
 
+It's also very useful to do imports with side-effects like this:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+%%raw(`import "main.css"`)
+```
+
+```js
+import "main.css";
+```
+
+</CodeTab>
+
 See `%raw` for embedding JavaScript expressions rather than top level blocks of code.
 
 ### References
