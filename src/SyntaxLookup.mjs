@@ -30,9 +30,11 @@ function toString(t) {
         return "Operators";
     case /* LanguageConstructs */2 :
         return "Language Constructs";
-    case /* SpecialValues */3 :
+    case /* ExtensionPoints */3 :
+        return "Extension Points";
+    case /* SpecialValues */4 :
         return "Special Values";
-    case /* Other */4 :
+    case /* Other */5 :
         return "Other";
     
   }
@@ -42,14 +44,16 @@ function fromString(s) {
   switch (s) {
     case "decorators" :
         return /* Decorators */0;
+    case "extensionpoints" :
+        return /* ExtensionPoints */3;
     case "languageconstructs" :
         return /* LanguageConstructs */2;
     case "operators" :
         return /* Operators */1;
     case "specialvalues" :
-        return /* SpecialValues */3;
+        return /* SpecialValues */4;
     default:
-      return /* Other */4;
+      return /* Other */5;
   }
 }
 
@@ -244,8 +248,9 @@ function SyntaxLookup(Props) {
         /* Decorators */0,
         /* Operators */1,
         /* LanguageConstructs */2,
-        /* SpecialValues */3,
-        /* Other */4
+        /* ExtensionPoints */3,
+        /* SpecialValues */4,
+        /* Other */5
       ], (function (cat) {
           return [
                   toString(cat),
