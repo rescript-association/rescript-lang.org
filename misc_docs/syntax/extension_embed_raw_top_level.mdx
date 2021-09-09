@@ -1,0 +1,43 @@
+---
+id: "embed-raw-top-level"
+keywords: ["javascript", "embed", "raw"]
+name: "%%raw"
+summary: "This is the `embed top level JavaScript` extension point."
+category: "extensionpoints"
+---
+
+`%%raw` is used to embed top level JavaScript code.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+%%raw(`
+  const message = "hello";
+
+  function greet(m) {
+    console.log(m)
+  }
+
+  greet(message)
+`)
+```
+
+```js
+const message = "hello";
+
+function greet(m) {
+  console.log(m);
+}
+
+greet(message);
+```
+
+</CodeTab>
+
+See `%raw` for embedding JavaScript expressions rather than top level blocks of code.
+
+### References
+
+* [Embed Raw JavaScript](/docs/manual/latest/embed-raw-javascript)
+* [Extension Point Attributes](/docs/manual/latest/attribute#extension-point)
+* [Converting from JS](/docs/manual/latest/converting-from-js)
