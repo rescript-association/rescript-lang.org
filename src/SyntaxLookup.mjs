@@ -10,7 +10,6 @@ import * as SearchBox from "./components/SearchBox.mjs";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
-import * as GithubSlugger from "github-slugger";
 
 var indexData = (require('index_data/syntax_index.json'));
 
@@ -150,6 +149,24 @@ function SyntaxLookup$DetailBox(Props) {
                 }, children));
 }
 
+function findItemById(id) {
+  return Caml_option.undefined_to_opt(allItems.find(function (item) {
+                  return item.id === id;
+                }));
+}
+
+function findItemByExactName(name) {
+  return Caml_option.undefined_to_opt(allItems.find(function (item) {
+                  return item.name === name;
+                }));
+}
+
+function searchItems(value) {
+  return Belt_Array.map(fuse.search(value), (function (m) {
+                return m.item;
+              }));
+}
+
 function SyntaxLookup(Props) {
   var router = Next.Router.useRouter(undefined);
   var match = React.useState(function () {
@@ -160,76 +177,44 @@ function SyntaxLookup(Props) {
   React.useEffect((function () {
           var anchor = getAnchor(router.asPath);
           if (anchor !== undefined) {
-            Belt_Option.forEach(Caml_option.undefined_to_opt(allItems.find(function (item) {
-                          return GithubSlugger.slug(item.id) === anchor;
-                        })), (function (item) {
-                    return Curry._1(setState, (function (param) {
-                                  return {
-                                          TAG: 1,
-                                          _0: item,
-                                          [Symbol.for("name")]: "ShowDetails"
-                                        };
-                                }));
+            var item = findItemById(anchor);
+            if (item !== undefined) {
+              Curry._1(setState, (function (param) {
+                      return {
+                              TAG: 1,
+                              _0: item,
+                              [Symbol.for("name")]: "ShowDetails"
+                            };
+                    }));
+              window.scrollTo(0, 0);
+            } else {
+              Curry._1(setState, (function (param) {
+                      return /* ShowAll */0;
+                    }));
+            }
+          } else {
+            Curry._1(setState, (function (param) {
+                    return /* ShowAll */0;
                   }));
           }
           
-        }), []);
-  React.useEffect((function () {
-          var match = getAnchor(router.asPath);
-          var exit = 0;
-          if (typeof state === "number" || state.TAG === /* ShowFiltered */0) {
-            exit = 1;
-          } else {
-            var item = state._0;
-            if (match !== undefined) {
-              var slug = GithubSlugger.slug(item.id);
-              if (slug !== match) {
-                Next.Router.replace(router, "syntax-lookup#" + match);
-              }
-              
-            } else {
-              Next.Router.replace(router, "syntax-lookup#" + GithubSlugger.slug(item.id));
-            }
-          }
-          if (exit === 1) {
-            if (match !== undefined) {
-              Next.Router.replace(router, "syntax-lookup");
-            }
-            
-          }
-          
-        }), [state]);
+        }), [router]);
   var onSearchValueChange = function (value) {
+    if (value === "") {
+      return Next.Router.push(router, "/syntax-lookup");
+    }
+    var item = findItemByExactName(value);
+    if (item !== undefined) {
+      return Next.Router.push(router, "/syntax-lookup#" + item.id);
+    }
+    var filtered = searchItems(value);
     return Curry._1(setState, (function (param) {
-                  if (value === "") {
-                    return /* ShowAll */0;
-                  }
-                  var filtered = Belt_Array.map(fuse.search(value), (function (m) {
-                          return m.item;
-                        }));
-                  if (filtered.length !== 1) {
-                    return {
-                            TAG: 0,
-                            _0: value,
-                            _1: filtered,
-                            [Symbol.for("name")]: "ShowFiltered"
-                          };
-                  }
-                  var item = Belt_Array.getExn(filtered, 0);
-                  if (item.name === value) {
-                    return {
-                            TAG: 1,
-                            _0: item,
-                            [Symbol.for("name")]: "ShowDetails"
-                          };
-                  } else {
-                    return {
-                            TAG: 0,
-                            _0: value,
-                            _1: filtered,
-                            [Symbol.for("name")]: "ShowFiltered"
-                          };
-                  }
+                  return {
+                          TAG: 0,
+                          _0: value,
+                          _1: filtered,
+                          [Symbol.for("name")]: "ShowFiltered"
+                        };
                 }));
   };
   var details;
@@ -277,13 +262,7 @@ function SyntaxLookup(Props) {
           var children = Belt_Array.map(items, (function (item) {
                   var onMouseDown = function (evt) {
                     evt.preventDefault();
-                    return Curry._1(setState, (function (param) {
-                                  return {
-                                          TAG: 1,
-                                          _0: item,
-                                          [Symbol.for("name")]: "ShowDetails"
-                                        };
-                                }));
+                    return onSearchValueChange(item.name);
                   };
                   return React.createElement("span", {
                               key: item.name,
@@ -322,9 +301,7 @@ function SyntaxLookup(Props) {
     ];
   }
   var onSearchClear = function (param) {
-    return Curry._1(setState, (function (param) {
-                  return /* ShowAll */0;
-                }));
+    return onSearchValueChange("");
   };
   return React.createElement("div", undefined, React.createElement("div", {
                   className: "flex flex-col items-center"
