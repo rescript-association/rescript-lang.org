@@ -48,6 +48,8 @@ function filterKeywords(keywords) {
               }));
 }
 
+var uniqueKeywords = ((keywords) => [...new Set(keywords)]);
+
 function isOfficial(res) {
   if (res.TAG !== /* Npm */0) {
     return res._0.official;
@@ -65,8 +67,7 @@ function applyNpmSearch(packages, pattern) {
     shouldSort: true,
     includeScore: true,
     threshold: 0.2,
-    location: 0,
-    distance: 30,
+    ignoreLocation: true,
     minMatchCharLength: 1,
     keys: [
       "meta.uid",
@@ -83,8 +84,7 @@ function applyUrlResourceSearch(urls, pattern) {
     shouldSort: true,
     includeScore: true,
     threshold: 0.2,
-    location: 0,
-    distance: 30,
+    ignoreLocation: true,
     minMatchCharLength: 1,
     keys: [
       "name",
@@ -516,13 +516,12 @@ function getStaticProps(_ctx) {
                       return {
                               name: pkg.name,
                               version: pkg.version,
-                              keywords: filterKeywords(pkg.keywords),
+                              keywords: uniqueKeywords(filterKeywords(pkg.keywords)),
                               description: Belt_Option.getWithDefault(pkg.description, ""),
                               repositoryHref: Js_null.fromOption(pkg.links.repository),
                               npmHref: pkg.links.npm
                             };
                     }));
-              console.log(pkges);
               var index_data_dir = Path.join(Process.cwd(), "./data");
               var urlResources = JSON.parse(Fs.readFileSync(Path.join(index_data_dir, "packages_url_resources.json"), "utf8"));
               var props = {

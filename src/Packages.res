@@ -67,6 +67,8 @@ module Resource = {
     })
   }
 
+  let uniqueKeywords: array<string> => array<string> = %raw(`(keywords) => [...new Set(keywords)]`)
+
   let isOfficial = (res: t) => {
     switch res {
     | Npm(pkg) =>
@@ -84,8 +86,7 @@ module Resource = {
       ~shouldSort=true,
       ~includeScore=true,
       ~threshold=0.2,
-      ~location=0,
-      ~distance=30,
+      ~ignoreLocation=true,
       ~minMatchCharLength=1,
       ~keys=["meta.uid", "name", "keywords"],
       (),
@@ -103,8 +104,7 @@ module Resource = {
       ~shouldSort=true,
       ~includeScore=true,
       ~threshold=0.2,
-      ~location=0,
-      ~distance=30,
+      ~ignoreLocation=true,
       ~minMatchCharLength=1,
       ~keys=["name", "keywords"],
       (),
@@ -529,14 +529,12 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = _ctx => {
       {
         name: pkg["name"],
         version: pkg["version"],
-        keywords: Resource.filterKeywords(pkg["keywords"]),
+        keywords: Resource.filterKeywords(pkg["keywords"])->Resource.uniqueKeywords,
         description: Belt.Option.getWithDefault(pkg["description"], ""),
         repositoryHref: Js.Null.fromOption(pkg["links"]["repository"]),
         npmHref: pkg["links"]["npm"],
       }
     })
-
-    Js.log(pkges)
 
     let index_data_dir = Node.Path.join2(Node.Process.cwd(), "./data")
     let urlResources =
