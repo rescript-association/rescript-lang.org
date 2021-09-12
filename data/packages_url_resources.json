@@ -12,12 +12,5 @@
     "keywords": ["rescript", "typescript"],
     "urlHref": "https://github.com/reason-association/genType",
     "official": true
-  },
-  {
-    "name": "re-schema-form",
-    "description": "Re-schema-form is a meta based render.",
-    "keywords": ["rescript"],
-    "urlHref": "https://github.com/jongleb/re-schema-form",
-    "official": false
   }
 ]
