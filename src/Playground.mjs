@@ -21,7 +21,7 @@ import * as HighlightJs from "./common/HighlightJs.mjs";
 import * as CompilerManagerHook from "./common/CompilerManagerHook.mjs";
 import * as RescriptCompilerApi from "./bindings/RescriptCompilerApi.mjs";
 import * as WarningFlagDescription from "./common/WarningFlagDescription.mjs";
-import TranspileToEval from "./ffi/transpile-to-eval";
+import RemoveImportsAndExports from "./ffi/removeImportsAndExports";
 
 if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
   require("codemirror/mode/javascript/javascript");
@@ -1595,7 +1595,7 @@ function Playground$ControlPanel(Props) {
                       if (win === undefined) {
                         return ;
                       }
-                      var codeToRun = "(function () {\n          " + TranspileToEval(code) + "\n          const root = document.getElementById(\"root\");\n          ReactDOM.render(App.make(), root);\n        })();";
+                      var codeToRun = "(function () {\n          " + RemoveImportsAndExports(code) + "\n          const root = document.getElementById(\"root\");\n          ReactDOM.render(App.make(), root);\n        })();";
                       return win.postMessage(codeToRun, "*");
                     })
                 })), React.createElement(Playground$ControlPanel$ShareButton, {

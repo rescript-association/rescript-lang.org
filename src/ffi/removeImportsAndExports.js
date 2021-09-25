@@ -2,7 +2,7 @@ import * as acorn from "acorn";
 import { walk } from "estree-walker";
 import * as escodegen from "escodegen";
 
-function transpileToEval(code) {
+function removeImportsAndExports(code) {
   const ast = acorn.parse(code, {
     ecmaVersion: 9,
   });
@@ -33,4 +33,4 @@ function transpileToEval(code) {
   return escodegen.generate(ast);
 }
 
-export default transpileToEval;
+export default removeImportsAndExports;
