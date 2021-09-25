@@ -1053,7 +1053,7 @@ module Settings = {
   }
 }
 module Transpiler = {
-  @module("./ffi/transpile-to-eval") external transpile: string => string = "default"
+  @module("./ffi/removeImportsAndExports") external transpile: string => string = "default"
 
   let srcdoc = `
         <!DOCTYPE html>
