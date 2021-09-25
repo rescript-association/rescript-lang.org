@@ -189,9 +189,7 @@ module FeatureCard = {
                 {date->Util.Date.toDayMonthYear->React.string}
               </div>
             </div>
-            <p className="body-md text-gray-70">
-              {React.string(firstParagraph)}
-            </p>
+            <p className="body-md text-gray-70"> {React.string(firstParagraph)} </p>
           </div>
         </div>
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
@@ -282,11 +280,11 @@ let default = (props: props): React.element => {
   }
 
   let overlayState = React.useState(() => false)
+  let title = "Blog | ReScript Documentation"
 
   <>
     <Meta
-      title="Blog | ReScript Documentation"
-      description="News, Announcements, Release Notes and more"
+      siteName="ReScript Blog" title description="News, Announcements, Release Notes and more"
     />
     <div className="mt-16 pt-2">
       <div className="text-gray-80 text-18">

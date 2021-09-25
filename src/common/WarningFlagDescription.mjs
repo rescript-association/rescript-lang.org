@@ -34,10 +34,6 @@ var numeric = [
     "Label omitted in function application."
   ],
   [
-    7,
-    "Method overridden."
-  ],
-  [
     8,
     "Partial match: missing cases in pattern-matching."
   ],
@@ -58,32 +54,12 @@ var numeric = [
     "Redundant sub-pattern in a pattern-matching."
   ],
   [
-    13,
-    "Instance variable overridden."
-  ],
-  [
     14,
     "Illegal backslash escape in a string constant."
   ],
   [
-    15,
-    "Private method made public implicitly."
-  ],
-  [
     16,
     "Unerasable optional argument."
-  ],
-  [
-    17,
-    "Undeclared virtual method."
-  ],
-  [
-    18,
-    "Non-principal type."
-  ],
-  [
-    19,
-    "Type without principality."
   ],
   [
     20,
@@ -94,20 +70,12 @@ var numeric = [
     "Non-returning statement."
   ],
   [
-    22,
-    "Preprocessor warning."
-  ],
-  [
     23,
     "Useless record \"with\" clause."
   ],
   [
     24,
-    "Bad module name: the source file name is not a valid OCaml module name."
-  ],
-  [
-    25,
-    "Deprecated: now part of warning 8."
+    "Bad module name: the source file name is not a valid ReScript module name."
   ],
   [
     26,
@@ -128,10 +96,6 @@ var numeric = [
   [
     30,
     "Two labels or constructors of the same name are defined in two mutually recursive types."
-  ],
-  [
-    31,
-    "A module is linked twice in the same executable."
   ],
   [
     32,
@@ -166,18 +130,6 @@ var numeric = [
     "Unused rec flag."
   ],
   [
-    40,
-    "Constructor or label name used out of scope."
-  ],
-  [
-    41,
-    "Ambiguous constructor or label name."
-  ],
-  [
-    42,
-    "Disambiguated constructor or label name (compatibility warning)."
-  ],
-  [
     43,
     "Nonoptional label applied as optional."
   ],
@@ -210,10 +162,6 @@ var numeric = [
     "Unexpected documentation comment."
   ],
   [
-    51,
-    "Warning on non-tail calls if @tailcall present."
-  ],
-  [
     52,
     "Fragile constant pattern."
   ],
@@ -226,20 +174,12 @@ var numeric = [
     "Attribute used more than once on an expression"
   ],
   [
-    55,
-    "Inlining impossible"
-  ],
-  [
     56,
     "Unreachable case in a pattern-matching (based on type information)."
   ],
   [
     57,
     "Ambiguous or-pattern variables under guard"
-  ],
-  [
-    58,
-    "Missing cmx file"
   ],
   [
     59,

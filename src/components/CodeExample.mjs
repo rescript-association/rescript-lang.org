@@ -119,7 +119,7 @@ function CodeExample(Props) {
   if (showLabel) {
     var label$1 = langShortname(lang);
     label = React.createElement("div", {
-          className: "absolute right-0 px-4 pb-4 bg-gray-5 font-sans text-12 font-bold text-gray-60 "
+          className: "absolute right-0 px-4 pb-4 font-sans text-12 font-bold text-gray-60 "
         }, label$1.toUpperCase());
   } else {
     label = null;

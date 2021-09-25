@@ -31,12 +31,13 @@ let requireSyntaxFile: string => MdxComp.t = %raw(`
 `)
 
 module Category = {
-  type t = Decorators | Operators | LanguageConstructs | SpecialValues | Other
+  type t = Decorators | Operators | LanguageConstructs | ExtensionPoints | SpecialValues | Other
 
   let toString = t =>
     switch t {
     | Decorators => "Decorators"
     | Operators => "Operators"
+    | ExtensionPoints => "Extension Points"
     | LanguageConstructs => "Language Constructs"
     | SpecialValues => "Special Values"
     | Other => "Other"
@@ -48,6 +49,7 @@ module Category = {
     | "specialvalues" => SpecialValues
     | "operators" => Operators
     | "languageconstructs" => LanguageConstructs
+    | "extensionpoints" => ExtensionPoints
     | _ => Other
     }
   }
@@ -153,74 +155,68 @@ type state =
   | ShowFiltered(string, array<item>) // (search, filteredItems)
   | ShowDetails(item)
 
+@val @scope("window")
+external scrollTo: (int, int) => unit = "scrollTo"
+
+let scrollToTop = () => scrollTo(0, 0)
+
+let findItemById = id => allItems->Js.Array2.find(item => item.id === id)
+
+let findItemByExactName = name => allItems->Js.Array2.find(item => item.name === name)
+
+let searchItems = value =>
+  fuse
+  ->Fuse.search(value)
+  ->Belt.Array.map(m => {
+    m["item"]
+  })
+
 @react.component
 let make = () => {
   let router = Next.Router.useRouter()
   let (state, setState) = React.useState(_ => ShowAll)
 
-  React.useEffect0(() => {
-    switch getAnchor(router.asPath) {
-    | Some(anchor) =>
-      Js.Array2.find(allItems, item =>
-        GithubSlugger.slug(item.id) === anchor
-      )->Belt.Option.forEach(item => {
-        setState(_ => ShowDetails(item))
-      })
-    | None => ()
-    }
-    None
-  })
-
-  /*
-  This effect syncs the url anchor with the currently shown final match
-  within the fuzzy finder. If there is a new match that doesn't align with
-  the current anchor, the url will be rewritten with the correct anchor.
-
-  In case a selection got removed, it will also remove the anchor from the url.
-  We don't replace on every state change, because replacing the url is expensive
- */
+  // This effect is responsible for updating the view state when the router anchor changes.
+  // This effect is triggered when:
+  // [A] The page first loads.
+  // [B] The search box is cleared.
+  // [C] The search box value exactly matches an item name.
   React.useEffect1(() => {
-    switch (state, getAnchor(router.asPath)) {
-    | (ShowDetails(item), Some(anchor)) =>
-      let slug = GithubSlugger.slug(item.id)
-
-      if slug !== anchor {
-        router->Next.Router.replace("syntax-lookup#" ++ anchor)
-      } else {
-        ()
-      }
-    | (ShowDetails(item), None) =>
-      router->Next.Router.replace("syntax-lookup#" ++ GithubSlugger.slug(item.id))
-    | (_, Some(_)) => router->Next.Router.replace("syntax-lookup")
-    | _ => ()
-    }
-    None
-  }, [state])
-
-  let onSearchValueChange = value => {
-    setState(_ =>
-      switch value {
-      | "" => ShowAll
-      | search =>
-        let filtered =
-          fuse
-          ->Fuse.search(search)
-          ->Belt.Array.map(m => {
-            m["item"]
-          })
-
-        if Js.Array.length(filtered) === 1 {
-          let item = Belt.Array.getExn(filtered, 0)
-          if item.name === value {
-            ShowDetails(item)
-          } else {
-            ShowFiltered(value, filtered)
-          }
-        } else {
-          ShowFiltered(value, filtered)
+    switch getAnchor(router.asPath) {
+    | None => setState(_ => ShowAll)
+    | Some(anchor) =>
+      switch findItemById(anchor) {
+      | None => setState(_ => ShowAll)
+      | Some(item) => {
+          setState(_ => ShowDetails(item))
+          scrollToTop()
         }
       }
-    )
+    }
+    None
+  }, [router])
+
+  // onSearchValueChange() is called when:
+  // [A] The search value changes.
+  // [B] The search is cleared.
+  // [C] One of the tags is selected.
+  //
+  // We then handle three cases:
+  // [1] Search is empty - trigger a route change, and allow the EFFECT to update the view state.
+  // [2] Search exactly matches an item - trigger a route change, and allow the EFFECT to update the view state.
+  // [3] Search does not match an item - immediately update the view state to show filtered items.
+  let onSearchValueChange = value => {
+    switch value {
+    | "" => router->Next.Router.push("/syntax-lookup")
+    | value =>
+      switch findItemByExactName(value) {
+      | None => {
+          let filtered = searchItems(value)
+          setState(_ => ShowFiltered(value, filtered))
+        }
+      | Some(item) => router->Next.Router.push("/syntax-lookup#" ++ item.id)
+      }
+    }
   }
 
   let details = switch state {
@@ -241,6 +237,7 @@ let make = () => {
       Decorators,
       Operators,
       LanguageConstructs,
+      ExtensionPoints,
       SpecialValues,
       Other,
     ]->Belt.Array.map(cat => {
@@ -270,7 +267,7 @@ let make = () => {
         let children = Belt.Array.map(items, item => {
           let onMouseDown = evt => {
             ReactEvent.Mouse.preventDefault(evt)
-            setState(_ => ShowDetails(item))
+            onSearchValueChange(item.name)
           }
           <span className="mr-2 mb-2 cursor-pointer" onMouseDown key=item.name>
             <Tag text={item.name} />
@@ -293,7 +290,7 @@ let make = () => {
   }
 
   let onSearchClear = () => {
-    setState(_ => ShowAll)
+    onSearchValueChange("")
   }
 
   <div>

@@ -591,7 +591,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
       <div
         style={ReactDOMStyle.make(~minWidth, ~top="4rem", ())}
         className={(
-          isOverlayOpen ? "flex" : "hidden"
+          isOverlayOpen && !isSubnavOpen ? "flex" : "hidden"
         ) ++ " sm:hidden flex-col fixed top-0 left-0 h-full w-full z-50 sm:w-9/12 bg-gray-100 sm:h-auto sm:flex sm:relative sm:flex-row sm:justify-between"}>
         <MobileNav route />
       </div>

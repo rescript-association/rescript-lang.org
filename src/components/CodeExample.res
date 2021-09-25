@@ -126,7 +126,7 @@ let make = (~highlightedLines=[], ~code: string, ~showLabel=true, ~lang="text") 
 
   let label = if showLabel {
     let label = langShortname(lang)
-    <div className="absolute right-0 px-4 pb-4 bg-gray-5 font-sans text-12 font-bold text-gray-60 ">
+    <div className="absolute right-0 px-4 pb-4 font-sans text-12 font-bold text-gray-60 ">
       {
         //RES or JS Label
         Js.String2.toUpperCase(label)->React.string

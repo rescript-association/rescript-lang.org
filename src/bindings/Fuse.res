@@ -12,6 +12,8 @@ module Options = {
     @optional
     distance: int,
     @optional
+    ignoreLocation: bool,
+    @optional
     minMatchCharLength: int,
     @optional
     keys: array<string>,

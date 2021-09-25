@@ -30,7 +30,7 @@ This is useful for per-directory convertions:
 
 ```console
 # *.rei, *.ml, *.mli,....
-for f in your-folder/**/*.re; do; node_modules/rescript convert $f && rm $f; done;
+for f in your-folder/**/*.re; do; node_modules/.bin/rescript convert $f && rm $f; done;
 ```
 
 ### Upgrade an Entire Codebase

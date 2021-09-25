@@ -681,7 +681,7 @@ let partitionU: (array<'a>, (. 'a) => bool) => (array<'a>, array<'a>)
 let partition: (array<'a>, 'a => bool) => (array<'a>, array<'a>)
 ```
 
-`partition(f, a)` split array into tuple of two arrays based on predicate `f`; first of tuple where predicate cause true, second where predicate cause false
+`partition(xs, p)` split array into tuple of two arrays based on predicate `p`; first of tuple where predicate cause true, second where predicate cause false.
 
 ```res example
 Belt.Array.partition([1, 2, 3, 4, 5], (x) => mod(x, 2) == 0) == ([2, 4], [1, 3, 5])
@@ -701,12 +701,16 @@ let reduceU: (array<'b>, 'a, (. 'a, 'b) => 'a) => 'a
 let reduce: (array<'b>, 'a, ('a, 'b) => 'a) => 'a
 ```
 
-`reduce(xs, init, f)`
+`reduce(arr, init, f)`
 
-Applies `f` to each element of `xs` from beginning to end. Function `f` has two parameters: the item from the list and an “accumulator”; which starts with a value of `init`. `reduce` returns the final value of the accumulator.
+Applies `f` to each element of `arr`.
+
+Function `f` has two parameters: an "accumulator" which starts with a value of `init` and the next value from the array. 
+
+It returns the final value of the accumulator.
 
 ```res example
-Belt.Array.reduce([2, 3, 4], 1, (a, b) => a + b) == 10
+Belt.Array.reduce([2, 3, 4], 1, (acc, value) => acc + value) == 10
 
 Belt.Array.reduce(["a", "b", "c", "d"], "", (a, b) => a ++ b) == "abcd"
 ```
@@ -763,12 +767,12 @@ let reduceWithIndexU: (array<'a>, 'b, (. 'b, 'a, int) => 'b) => 'b
 let reduceWithIndex: (array<'a>, 'b, ('b, 'a, int) => 'b) => 'b
 ```
 
-`reduceWithIndex(xs, f)`
+`reduceWithIndex(arr, init, f)`
 
-Applies `f` to each element of `xs` from beginning to end. Function `f` has three parameters: the item from the array and an “accumulator”, which starts with a value of `init` and the index of each element. `reduceWithIndex` returns the final value of the accumulator.
+Applies `f` to each element of `arr` from beginning to end. Function `f` has three parameters: an "accumulator", which starts with a value of `init` and the item from the array and the index of each element. `reduceWithIndex` returns the final value of the accumulator.
 
 ```res example
-Belt.Array.reduceWithIndex([1, 2, 3, 4], 0, (acc, x, i) => acc + x + i) == 16
+Belt.Array.reduceWithIndex([1, 2, 3, 4], 0, (acc, value, i) => acc + value + i) == 16
 ```
 
 ## someU

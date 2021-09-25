@@ -29,6 +29,7 @@ Add a `gentypeconfig` section to your `bsconfig.json` (See [Configuration](#conf
     "language": "typescript",
     "shims": {},
     "generatedFileExtension": ".gen.tsx",
+    "module": "es6",
     "debug": {
       "all": false,
       "basic": false
@@ -51,6 +52,7 @@ structure:
   "gentypeconfig": {
     "language": "typescript" | "flow" | "untyped",
     "generatedFileExtension": ".gen.tsx",
+    "module": "es6" | "commonjs",
     "shims": {
       "ReasonReact": "ReactShim"
     }
@@ -64,6 +66,9 @@ structure:
   - `"typescript"` : Generate `*.gen.tsx` files written in TypeScript.
   - `"flow"`: Generate `*.gen.js` files with Flow type annotations.
   - `"untyped"`: Generate `*.gen.js` files in vanilla JavaScript.
+ 
+- **module**
+  - Module format used for the generated `*.gen.tsx` files (supports `"es6"` and `"commonjs"`)
 
 - **shims**
   - Required only if one needs to export certain basic ReScript data types to JS when one cannot modify the sources to add annotations (e.g. exporting ReScript lists), and if the types are not first-classed in genType.

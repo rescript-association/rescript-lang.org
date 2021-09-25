@@ -310,6 +310,27 @@ process.on("exit", function (exitCode) {
 
 The `@as("exit")` and the placeholder `_` argument together indicates that you want the first argument to compile to the string `"exit"`. You can also use any JSON literal with `as`: `` @as(json`true`) ``, `` @as(json`{"name": "John"}`) ``, etc.
 
+## Ignore arguments
+
+You can also explicitly "hide" `external` function parameters in the JS output, which may be useful if you want to add type constraints to other parameters without impacting the JS side:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+@val external doSomething: (@ignore 'a, 'a) => unit = "doSomething"
+
+doSomething("this only shows up in ReScript code", "test")
+```
+
+```js
+doSomething("test");
+```
+
+</CodeTab>
+
+**Note:** It's a pretty niche feature, mostly used to map to polymorphic JS APIs.
+
+
 ## Curry & Uncurry
 
 Curry is a delicious Indian dish. More importantly, in the context of ReScript (and functional programming in general), currying means that function taking multiple arguments can be applied a few arguments at time, until all the arguments are applied.

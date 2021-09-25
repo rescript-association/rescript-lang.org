@@ -33,6 +33,9 @@
     "unboxed",
     "reserved-keywords"
   ],
+  "Advanced Features": [
+    "extensible-variant"
+  ],
   "JavaScript Interop": [
     "interop-cheatsheet",
     "embed-raw-javascript",
