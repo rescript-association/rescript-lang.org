@@ -15,7 +15,7 @@ import * as ParseNumericRangeJs from "../ffi/parse-numeric-range.js";
 function Markdown$P(Props) {
   var children = Props.children;
   return React.createElement("p", {
-              className: "md-p md:leading-5 text-gray-70 md:text-16"
+              className: "md-p md:leading-5 tracking-[-0.015em] text-gray-80 md:text-16"
             }, children);
 }
 
@@ -190,7 +190,7 @@ function Markdown$H3(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h3", {
-              className: "group mt-12 mb-3 hl-4"
+              className: "group mt-8 mb-3 hl-4"
             }, children, React.createElement("span", {
                   className: "ml-2"
                 }, React.createElement(Markdown$Anchor, {
@@ -206,7 +206,7 @@ function Markdown$H4(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h4", {
-              className: "group mt-12 hl-5"
+              className: "group mt-8 hl-5"
             }, children, React.createElement("span", {
                   className: "ml-2"
                 }, React.createElement(Markdown$Anchor, {
@@ -248,7 +248,7 @@ var Pre = {
 function Markdown$InlineCode(Props) {
   var children = Props.children;
   return React.createElement("code", {
-              className: "md-inline-code px-0.75 font-normal rounded-sm font-mono bg-[rgba(196,186,186,0.1)]"
+              className: "md-inline-code px-2 py-0.5 text-14 text-gray-60 font-mono rounded-sm bg-gray-10-tr border border-gray-90 border-opacity-5"
             }, children);
 }
 
@@ -526,7 +526,7 @@ var A = {
 function Markdown$Ul(Props) {
   var children = Props.children;
   return React.createElement("ul", {
-              className: "md-ul"
+              className: "md-ul my-10"
             }, children);
 }
 
@@ -586,7 +586,7 @@ function Markdown$Li(Props) {
     }
   }
   return React.createElement("li", {
-              className: "md-li mt-3 leading-4 ml-4 text-current"
+              className: "md-li mt-3 leading-4 ml-4"
             }, elements);
 }
 

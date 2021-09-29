@@ -24,7 +24,7 @@
 }
 
 .md-li > p {
-  @apply ml-5 text-gray-80;
+  @apply ml-4 text-gray-80 my-6;
 }
 
 .md-p + .md-p {
