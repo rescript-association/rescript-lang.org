@@ -190,7 +190,7 @@ function Markdown$H3(Props) {
   var id = Props.id;
   var children = Props.children;
   return React.createElement("h3", {
-              className: "group mt-8 mb-3 hl-4"
+              className: "group mt-8 mb-1 hl-4"
             }, children, React.createElement("span", {
                   className: "ml-2"
                 }, React.createElement(Markdown$Anchor, {
@@ -526,7 +526,7 @@ var A = {
 function Markdown$Ul(Props) {
   var children = Props.children;
   return React.createElement("ul", {
-              className: "md-ul my-10"
+              className: "md-ul mt-12 mb-16"
             }, children);
 }
 

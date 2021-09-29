@@ -14,14 +14,24 @@
 }
 
 .md-ol > .md-li p::before {
-  content: counter(li) ".";
+  content: counter(li) "•";
   @apply font-semibold inline-block w-6 -ml-6;
 }
 
 .md-ul > .md-li p::before {
-  content: "•";
-  @apply inline-block w-5 -ml-5 pr-2;
+  content: "—";
+  @apply inline-block w-6 -ml-6 pr-2;
 }
+
+.md-ul > .md-li > ul > li p::before {
+  content: "•";
+  @apply inline-block w-4 -ml-4 pr-2;
+}
+
+.md-ul > .md-li > ul{
+  @apply mb-14;
+}
+
 
 .md-li > p {
   @apply ml-4 text-gray-80 my-6;

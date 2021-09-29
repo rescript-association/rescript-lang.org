@@ -138,7 +138,7 @@ module H3 = {
   @react.component
   let make = (~id, ~children) =>
     <h3
-      className="group mt-8 mb-3 hl-4">
+      className="group mt-8 mb-1 hl-4">
       children <span className="ml-2"> <Anchor id /> </span>
     </h3>
 }
@@ -399,7 +399,7 @@ module A = {
 
 module Ul = {
   @react.component
-  let make = (~children) => <ul className="md-ul my-10"> children </ul>
+  let make = (~children) => <ul className="md-ul mt-12 mb-16"> children </ul>
 }
 
 module Ol = {
