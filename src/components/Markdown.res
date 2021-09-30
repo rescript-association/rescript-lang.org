@@ -31,13 +31,14 @@ module Cite = {
 module Info = {
   @react.component
   let make = (~children) =>
-    <div className="border-l-2 border-sky my-5 py-6 pl-8 pr-10 bg-sky-10"> children </div>
+    <div className="infobox my-5 py-6 pl-8 pr-10 rounded-lg bg-sky-5"> children 
+    </div>
 }
 
 module Warn = {
   @react.component
   let make = (~children) =>
-    <div className="border-l-2 border-orange my-6 py-6 pl-8 pr-10 bg-orange-10"> children </div>
+    <div className="my-6 py-6 pl-8 pr-10 rounded-lg bg-orange-10"> children </div>
 }
 
 module UrlBox = {
@@ -473,7 +474,7 @@ module Li = {
 
 module Strong = {
   @react.component
-  let make = (~children) => <strong className="font-semibold text-gray-80"> children </strong>
+  let make = (~children) => <strong className="font-semibold"> children </strong>
 }
 
 // Useful for debugging injected values in props

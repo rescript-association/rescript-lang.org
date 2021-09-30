@@ -58,7 +58,7 @@ var Cite = {
 function Markdown$Info(Props) {
   var children = Props.children;
   return React.createElement("div", {
-              className: "border-l-2 border-sky my-5 py-6 pl-8 pr-10 bg-sky-10"
+              className: "infobox my-5 py-6 pl-8 pr-10 rounded-lg bg-sky-5"
             }, children);
 }
 
@@ -69,7 +69,7 @@ var Info = {
 function Markdown$Warn(Props) {
   var children = Props.children;
   return React.createElement("div", {
-              className: "border-l-2 border-orange my-6 py-6 pl-8 pr-10 bg-orange-10"
+              className: "my-6 py-6 pl-8 pr-10 rounded-lg bg-orange-10"
             }, children);
 }
 
@@ -593,7 +593,7 @@ function Markdown$Li(Props) {
 function Markdown$Strong(Props) {
   var children = Props.children;
   return React.createElement("strong", {
-              className: "font-semibold text-gray-80"
+              className: "font-semibold"
             }, children);
 }
 

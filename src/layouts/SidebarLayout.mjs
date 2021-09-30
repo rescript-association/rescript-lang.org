@@ -18,16 +18,16 @@ import * as Caml_option from "rescript/lib/es6/caml_option.js";
 function SidebarLayout$Toc(Props) {
   var entries = Props.entries;
   return React.createElement("ul", {
-              className: "mt-2 py-1 mb-4 border-l border-fire"
+              className: "mt-3 py-1 mb-4 border-l border-fire-10"
             }, Belt_Array.map(entries, (function (param) {
                     var header = param.header;
                     return React.createElement("li", {
                                 key: header,
-                                className: "pl-2 mt-3 first:mt-1"
+                                className: "pl-2 mt-2 first:mt-1"
                               }, React.createElement(Next.Link.make, {
                                     href: param.href,
                                     children: React.createElement("a", {
-                                          className: "font-medium block text-14 text-gray-40 leading-tight hover:text-gray-80"
+                                          className: "font-normal block text-14 text-gray-40 leading-tight hover:text-gray-80"
                                         }, header)
                                   }));
                   })));
@@ -36,7 +36,7 @@ function SidebarLayout$Toc(Props) {
 function SidebarLayout$Sidebar$Title(Props) {
   var children = Props.children;
   return React.createElement("div", {
-              className: "font-sans font-bold text-gray-40 tracking-wide text-12 uppercase mt-5"
+              className: "hl-overline text-gray-80 mt-5"
             }, children);
 }
 
@@ -70,7 +70,7 @@ function SidebarLayout$Sidebar$NavItem(Props) {
                               }, React.createElement(Next.Link.make, {
                                     href: m.href,
                                     children: React.createElement("a", {
-                                          className: "truncate block py-1 md:h-auto tracking-tight text-gray-80 rounded-sm  hover:bg-gray-5 hover:-ml-2 hover:py-1 hover:pl-2 " + active
+                                          className: "truncate block py-1 md:h-auto tracking-tight text-gray-60 rounded-sm hover:bg-gray-20 hover:-ml-2 hover:py-1 hover:pl-2 " + active
                                         }, m.name)
                                   }), tmp);
                   })));
@@ -130,7 +130,7 @@ function SidebarLayout$Sidebar(Props) {
                   ) + " md:block md:w-48 md:-ml-4 lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white",
                   id: "sidebar"
                 }, React.createElement("aside", {
-                      className: "relative top-0 px-4 w-full block md:top-16 md:pt-16 md:sticky border-r border-gray-5 overflow-y-auto pb-24",
+                      className: "relative top-0 px-4 w-full block md:top-16 md:pt-16 md:sticky border-r border-gray-20 overflow-y-auto pb-24",
                       id: "sidebar-content",
                       style: {
                         height: "calc(100vh - 4.5rem"
@@ -161,7 +161,7 @@ function SidebarLayout$Sidebar(Props) {
 function SidebarLayout$BreadCrumbs(Props) {
   var crumbs = Props.crumbs;
   return React.createElement("div", {
-              className: "w-full font-medium overflow-x-auto text-12 text-gray-60"
+              className: "w-full captions overflow-x-auto text-gray-60"
             }, Belt_List.toArray(Belt_List.mapWithIndex(crumbs, (function (i, crumb) {
                         var item = i === (Belt_List.length(crumbs) - 1 | 0) ? React.createElement("span", {
                                 key: String(i)

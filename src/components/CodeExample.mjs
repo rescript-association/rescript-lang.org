@@ -75,8 +75,8 @@ function CodeExample$CopyButton(Props) {
           }
           var buttonEl = Belt_Option.getExn(Caml_option.nullable_to_opt(buttonRef.current));
           var bannerEl = document.createElement("div");
-          bannerEl.className = "foobar opacity-0 absolute top-0 -mt-1 -mr-1 px-2 rounded text-12 right-0 bg-turtle text-gray-80-tr transition-all duration-500 ease-in-out ";
-          var textNode = document.createTextNode("Copied!");
+          bannerEl.className = "opacity-0 absolute -top-6 right-0 -mt-5 -mr-4 px-4 py-2 w-40 rounded-lg captions text-white bg-gray-100 text-gray-80-tr transition-all duration-1000 ease-in-out ";
+          var textNode = document.createTextNode("Copied to clipboard");
           bannerEl.appendChild(textNode);
           buttonEl.appendChild(bannerEl);
           var nextFrameId = window.requestAnimationFrame(function (param) {
@@ -89,7 +89,7 @@ function CodeExample$CopyButton(Props) {
                   return Curry._1(setState, (function (param) {
                                 return /* Init */0;
                               }));
-                }), 2000);
+                }), 3000);
           return (function (param) {
                     window.cancelAnimationFrame(nextFrameId);
                     clearTimeout(timeoutId);
@@ -101,8 +101,8 @@ function CodeExample$CopyButton(Props) {
               className: "relative",
               disabled: state === /* Copied */1,
               onClick: onClick
-            }, React.createElement(Icon.Copy.make, {
-                  className: "text-gray-40 mt-px hover:cursor-pointer hover:text-gray-60"
+            }, React.createElement(Icon.Clipboard.make, {
+                  className: "text-gray-30 mt-px hover:cursor-pointer hover:text-gray-60 hover:bg-gray-30 w-6 h-6 p-1 rounded transition-all duration-300 ease-in-out"
                 }));
 }
 
@@ -119,7 +119,7 @@ function CodeExample(Props) {
   if (showLabel) {
     var label$1 = langShortname(lang);
     label = React.createElement("div", {
-          className: "absolute right-0 px-4 pb-4 font-sans text-12 font-bold text-gray-60 "
+          className: "absolute right-0 px-4 pb-4 font-sans text-12 font-bold text-gray-30"
         }, label$1.toUpperCase());
   } else {
     label = null;
@@ -149,7 +149,7 @@ function CodeExample$Toggle(Props) {
               var lang = tab.lang;
               label$1 = lang !== undefined ? langShortname(lang).toUpperCase() : String(i);
             }
-            var activeClass = selected === i ? "font-medium text-gray-80 bg-gray-5 border-t-2 first:border-l" : "font-medium hover:text-gray-60 border-t-2 bg-gray-20 hover:cursor-pointer";
+            var activeClass = selected === i ? "font-medium text-12 text-gray-40 bg-gray-5 border-t-2 first:border-l" : "font-medium text-12 hover:text-gray-60 border-t-2 bg-gray-20 hover:cursor-pointer";
             var onClick = function (evt) {
               evt.preventDefault();
               return Curry._1(setSelected, (function (param) {
@@ -162,10 +162,10 @@ function CodeExample$Toggle(Props) {
               ) : (
                 numberOfItems > 0 ? "sm:px-4" : ""
               );
-            var borderColor = selected === i ? "#f4646a #EDF0F2" : "transparent";
+            var borderColor = selected === i ? "#696B7D #EDF0F2" : "transparent";
             return React.createElement("span", {
                         key: key,
-                        className: paddingX + (" flex-none px-4 inline-block p-1 first:rounded-tl " + activeClass),
+                        className: paddingX + (" flex-none px-5 inline-block p-1 first:rounded-tl " + activeClass),
                         style: {
                           borderColor: borderColor
                         },
@@ -196,14 +196,14 @@ function CodeExample$Toggle(Props) {
             children: React.createElement("a", {
                   target: "_blank"
                 }, React.createElement(Icon.ExternalLink.make, {
-                      className: "text-gray-40 hover:cursor-pointer hover:text-gray-60"
+                      className: "text-gray-30 mt-px hover:cursor-pointer hover:text-gray-60 hover:bg-gray-30 w-6 h-6 p-1 rounded transition-all duration-300 ease-in-out"
                     }))
           });
       var copyButton = React.createElement(CodeExample$CopyButton, {
             code: tab.code
           });
       buttonDiv = React.createElement("div", {
-            className: "flex items-center justify-end h-full pr-4 space-x-3"
+            className: "flex items-center justify-end h-full pr-4 space-x-2"
           }, playgroundLinkButton, copyButton);
     } else {
       buttonDiv = null;
@@ -211,9 +211,9 @@ function CodeExample$Toggle(Props) {
     return React.createElement("div", {
                 className: "relative pt-6 w-full rounded-none text-gray-80"
               }, React.createElement("div", {
-                    className: "absolute flex w-full overflow-auto font-sans bg-transparent text-14 text-gray-40 ",
+                    className: "absolute flex w-full font-sans bg-transparent text-14 text-gray-40 ",
                     style: {
-                      marginTop: "-30px"
+                      marginTop: "-26px"
                     }
                   }, React.createElement("div", {
                         className: "flex ml-2 xs:ml-0"

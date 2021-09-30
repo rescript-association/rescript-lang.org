@@ -28,11 +28,11 @@ module Toc = {
 
   @react.component
   let make = (~entries: array<entry>) =>
-    <ul className="mt-2 py-1 mb-4 border-l border-fire">
+    <ul className="mt-3 py-1 mb-4 border-l border-fire-10">
       {Belt.Array.map(entries, ({header, href}) =>
-        <li key=header className="pl-2 mt-3 first:mt-1">
+        <li key=header className="pl-2 mt-2 first:mt-1">
           <Link href>
-            <a className="font-medium block text-14 text-gray-40 leading-tight hover:text-gray-80">
+            <a className="font-normal block text-14 text-gray-40 leading-tight hover:text-gray-80">
               {
                 //links, nested
                 React.string(header)
@@ -48,7 +48,7 @@ module Sidebar = {
   module Title = {
     @react.component
     let make = (~children) => {
-      let className = "font-sans font-bold text-gray-40 tracking-wide text-12 uppercase mt-5" //overline
+      let className = "hl-overline text-gray-80 mt-5" //overline
 
       <div className> children </div>
     }
@@ -82,7 +82,7 @@ module Sidebar = {
           <li key=m.name className={hidden ++ " mt-1 leading-4"}>
             <Link href=m.href>
               <a
-                className={"truncate block py-1 md:h-auto tracking-tight text-gray-80 rounded-sm  hover:bg-gray-5 hover:-ml-2 hover:py-1 hover:pl-2 " ++
+                className={"truncate block py-1 md:h-auto tracking-tight text-gray-60 rounded-sm hover:bg-gray-20 hover:-ml-2 hover:py-1 hover:pl-2 " ++
                 active}>
                 {React.string(m.name)}
               </a>
@@ -144,7 +144,7 @@ module Sidebar = {
         ) ++ " md:block md:w-48 md:-ml-4 lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white"}>
         <aside
           id="sidebar-content"
-          className="relative top-0 px-4 w-full block md:top-16 md:pt-16 md:sticky border-r border-gray-5 overflow-y-auto pb-24"
+          className="relative top-0 px-4 w-full block md:top-16 md:pt-16 md:sticky border-r border-gray-20 overflow-y-auto pb-24"
           style={ReactDOMStyle.make(~height="calc(100vh - 4.5rem", ())}>
           <div className="flex justify-between">
             <div className="w-3/4 md:w-full"> toplevelNav </div>
@@ -178,7 +178,7 @@ module Sidebar = {
 module BreadCrumbs = {
   @react.component
   let make = (~crumbs: list<Url.breadcrumb>) =>
-    <div className="w-full font-medium overflow-x-auto text-12 text-gray-60">
+    <div className="w-full captions overflow-x-auto text-gray-60">
       {Belt.List.mapWithIndex(crumbs, (i, crumb) => {
         let item = if i === Belt.List.length(crumbs) - 1 {
           <span key={Belt.Int.toString(i)}> {React.string(crumb.name)} </span>
