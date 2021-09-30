@@ -586,7 +586,7 @@ function Markdown$Li(Props) {
     }
   }
   return React.createElement("li", {
-              className: "md-li mt-3 leading-4 ml-4"
+              className: "md-li mt-3 leading-4 ml-2"
             }, elements);
 }
 

@@ -29,7 +29,7 @@
 }
 
 .md-ul > .md-li > ul{
-  @apply mb-14;
+  @apply mb-14 ml-6;
 }
 
 
