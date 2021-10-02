@@ -29,7 +29,10 @@ function Footer(Props) {
                                   href: "https://www.keycdn.com/",
                                   target: "_blank",
                                   children: "KeyCDN"
-                                }), "."))), React.createElement("div", {
+                                }), "."), React.createElement("p", undefined, React.createElement("img", {
+                                  className: "h-[2.25rem] mt-6",
+                                  src: "https://simpleanalyticsbadge.com/rescript-lang.org?counter=true&radius=13"
+                                })))), React.createElement("div", {
                       className: "flex flex-col space-y-16 md:flex-row mt-16 md:mt-0 md:ml-16 md:space-y-0 md:space-x-16"
                     }, React.createElement(Footer$Section, {
                           title: "About",
