@@ -556,6 +556,12 @@ module TrustedBy = {
       url: "https://pupilfirst.com",
       path: "/static/lp/pupilfirst.svg",
     }),
+    Logo({
+      name: "Solvuu",
+      url: "https://solvuu.com",
+      path: "/static/lp/solvuu.svg",
+    }),
+    
   ]
 
   @react.component
