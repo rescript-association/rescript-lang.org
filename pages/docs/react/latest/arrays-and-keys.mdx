@@ -101,21 +101,24 @@ In case you ever want to render a `list` of items, you can do something like thi
 
 ```res
 type todo = {id: string, text: string}
-let todoList = list{
-  {id: "todo1", text: "Todo 1"},
-  {id: "todo2", text: "Todo 2"}
+
+@react.component
+let make = () => {
+  let todoList = list{
+    {id: "todo1", text: "Todo 1"},
+    {id: "todo2", text: "Todo 2"},
+  }
+
+  let items =
+    todoList
+    ->Belt.List.toArray
+    ->Belt.Array.map(todo => {
+      <li key={todo.id}> {React.string(todo.text)} </li>
+    })
+
+  <div> {React.array(items)} </div>
 }
 
-let items =
-  todoList
-  ->Belt.List.toArray
-  ->Belt.List.map((todo) => {
-  <li key={todo.id}>
-    {React.string(todo.text)}
-  </li>
-})
-
-<div> {React.array(items)} </div>
 ```
 
 We use `Belt.List.toArray` to convert our list to an array before creating our `array<React.element>`. Please note that using `list` has performance impact due to extra conversion costs.
