@@ -1,0 +1,55 @@
+---
+title: "JavaScript Interop"
+description: "Working with React module content in ReScript"
+canonical: "/docs/react/latest/javascript-interop"
+---
+
+# JavaScript Interop
+
+This section complements the general [Import from / Export to JS](../../manual/latest/import-from-export-to-js.md)
+section with React-specific guidance.
+
+## Import from JavaScript
+
+### Importing a JS-based React Component
+
+This is especially useful for 3rd-party components.
+
+<CodeTab labels={["ReScript", "JS Output (ES6)"]}>
+
+```res example
+module DatePicker = {
+  @module("react-datepicker") @react.component
+  external make: (~date: Js.Date.t, ~onChange: (Js.Date.t) => unit) => React.element = "default"
+}
+
+@react.component
+let make = () => {
+  let (date, setDate) = React.useState(Js.Date.make)
+  <DatePicker date=date onChange={date => setDate(_ => date)} />
+}
+```
+```js
+import * as Curry from "./stdlib/curry.js";
+import * as React from "react";
+import ReactDatepicker from "react-datepicker";
+
+var DatePicker = {};
+
+function Playground(Props) {
+  var match = React.useState(function () {
+        return new Date();
+      });
+  var setDate = match[1];
+  return React.createElement(ReactDatepicker, {
+              date: match[0],
+              onChange: (function (date) {
+                  return Curry._1(setDate, (function (param) {
+                                return date;
+                              }));
+                })
+            });
+}
+```
+
+</CodeTab>
