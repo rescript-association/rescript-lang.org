@@ -28,6 +28,17 @@ let make = () => {
             </Markdown.A>
             {React.string(".")}
           </p>
+          <p>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://simpleanalytics.com/rescript-lang.org">
+              <img
+                className="h-[2.25rem] mt-6"
+                src="https://simpleanalyticsbadge.com/rescript-lang.org?counter=true&radius=13"
+              />
+            </a>
+          </p>
         </div>
       </div>
       <div

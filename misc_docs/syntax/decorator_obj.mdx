@@ -17,15 +17,13 @@ with properties that match the function's parameter labels.
 @obj
 external action: (~name: string, unit) => _ = ""
 
-let helloAction = action(~name="Hello")
+let helloAction = action(~name="Hello", ())
 ```
 
 ```js
-function helloAction(param) {
-  return {
-    name: "Hello",
-  }
-}
+var helloAction = {
+  name: "Hello"
+};
 ```
 
 </CodeTab>
