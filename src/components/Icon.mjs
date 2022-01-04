@@ -315,30 +315,18 @@ function Icon$ExternalLink(Props) {
   var className = classNameOpt !== undefined ? classNameOpt : "";
   return React.createElement("svg", {
               className: "stroke-current " + className,
-              height: "16.122",
-              width: "16.098",
-              viewBox: "0 0 16.098 16.122",
+              height: "16",
+              width: "16",
+              fill: "none",
+              stroke: "currentColor",
+              strokeLinecap: "round",
+              strokeLinejoin: "round",
+              strokeWidth: "2",
+              viewBox: "0 0 24 24",
               xmlns: "http://www.w3.org/2000/svg"
-            }, React.createElement("g", {
-                  transform: "translate(-1046.283 -564.299)"
-                }, React.createElement("path", {
-                      d: "M1987.235-1783.927h-4.849v11.17h11.164v-5.113",
-                      fill: "none",
-                      strokeWidth: "1.5",
-                      transform: "translate(-935.353 2352.43)"
-                    }), React.createElement("g", {
-                      transform: "translate(1051.72 570.607) rotate(-45)"
-                    }, React.createElement("path", {
-                          d: "M0,0H7.467",
-                          fill: "none",
-                          strokeWidth: "1.5",
-                          transform: "translate(0 3.128)"
-                        }), React.createElement("path", {
-                          d: "M0,0,3.078,3.078,0,6.156",
-                          fill: "none",
-                          strokeWidth: "1.5",
-                          transform: "translate(4.252 0)"
-                        }))));
+            }, React.createElement("path", {
+                  d: "M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"
+                }));
 }
 
 var ExternalLink = {
@@ -374,6 +362,35 @@ var Copy = {
   make: Icon$Copy
 };
 
+function Icon$Clipboard(Props) {
+  var classNameOpt = Props.className;
+  var className = classNameOpt !== undefined ? classNameOpt : "";
+  return React.createElement("svg", {
+              className: "stroke-current " + className,
+              height: "16",
+              width: "16",
+              fill: "none",
+              strokeLinecap: "round",
+              strokeLinejoin: "round",
+              strokeWidth: "2",
+              viewBox: "0 0 24 24",
+              xmlns: "http://www.w3.org/2000/svg"
+            }, React.createElement("path", {
+                  d: "M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"
+                }), React.createElement("rect", {
+                  height: "4",
+                  width: "8",
+                  rx: "1",
+                  ry: "1",
+                  x: "8",
+                  y: "2"
+                }));
+}
+
+var Clipboard = {
+  make: Icon$Clipboard
+};
+
 export {
   Github ,
   Npm ,
@@ -390,6 +407,7 @@ export {
   TriangleDown ,
   ExternalLink ,
   Copy ,
+  Clipboard ,
   
 }
 /* react Not a pure module */

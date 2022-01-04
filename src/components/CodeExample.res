@@ -86,9 +86,9 @@ module CopyButton = {
         // If we don't do that, the banner will essentially pop up without any animation
         let bannerEl = createElement("div")
         bannerEl->setClassName(
-          "foobar opacity-0 absolute top-0 -mt-1 -mr-1 px-2 rounded text-12 right-0 bg-turtle text-gray-80-tr transition-all duration-500 ease-in-out ",
+          "opacity-0 absolute -top-6 right-0 -mt-5 -mr-4 px-4 py-2 w-40 rounded-lg captions text-white bg-gray-100 text-gray-80-tr transition-all duration-1000 ease-in-out ",
         )
-        let textNode = createTextNode("Copied!")
+        let textNode = createTextNode("Copied to clipboard")
 
         bannerEl->appendChild(textNode)
         buttonEl->appendChild(bannerEl)
@@ -101,7 +101,7 @@ module CopyButton = {
         let timeoutId = Js.Global.setTimeout(() => {
           buttonEl->removeChild(bannerEl)
           setState(_ => Init)
-        }, 2000)
+        }, 3000)
 
         Some(
           () => {
@@ -112,10 +112,10 @@ module CopyButton = {
       | _ => None
       }
     }, [state])
-
+//Copy-Button
     <button
       ref={ReactDOM.Ref.domRef(buttonRef)} disabled={state === Copied} className="relative" onClick>
-      <Icon.Copy className="text-gray-40 mt-px hover:cursor-pointer hover:text-gray-60" />
+      <Icon.Clipboard className="text-gray-30 mt-px hover:cursor-pointer hover:text-gray-60 hover:bg-gray-30 w-6 h-6 p-1 rounded transition-all duration-300 ease-in-out" />
     </button>
   }
 }
@@ -126,7 +126,7 @@ let make = (~highlightedLines=[], ~code: string, ~showLabel=true, ~lang="text") 
 
   let label = if showLabel {
     let label = langShortname(lang)
-    <div className="absolute right-0 px-4 pb-4 font-sans text-12 font-bold text-gray-60 ">
+    <div className="absolute right-0 px-4 pb-4 font-sans text-12 font-bold text-gray-30">
       {
         //RES or JS Label
         Js.String2.toUpperCase(label)->React.string
@@ -176,9 +176,9 @@ module Toggle = {
         }
 
         let activeClass = if selected === i {
-          "font-medium text-gray-80 bg-gray-5 border-t-2 first:border-l"
+          "font-medium text-12 text-gray-40 bg-gray-5 border-t-2 first:border-l"
         } else {
-          "font-medium hover:text-gray-60 border-t-2 bg-gray-20 hover:cursor-pointer"
+          "font-medium text-12 hover:text-gray-60 border-t-2 bg-gray-20 hover:cursor-pointer"
         }
 
         let onClick = evt => {
@@ -195,7 +195,7 @@ module Toggle = {
         }
 
         let borderColor = if selected === i {
-          "#f4646a #EDF0F2"
+          "#696B7D #EDF0F2"
         } else {
           "transparent"
         }
@@ -204,7 +204,7 @@ module Toggle = {
           key
           style={ReactDOM.Style.make(~borderColor, ())}
           className={paddingX ++
-          (" flex-none px-4 inline-block p-1 first:rounded-tl " ++
+          (" flex-none px-5 inline-block p-1 first:rounded-tl " ++
           activeClass)}
           onClick>
           {React.string(label)}
@@ -229,14 +229,14 @@ module Toggle = {
       | Some(tab) =>
         let playgroundLinkButton =
           <Next.Link href={`/try?code=${LzString.compressToEncodedURIComponent(tab.code)}}`}>
-            <a target="_blank">
-              <Icon.ExternalLink className="text-gray-40 hover:cursor-pointer hover:text-gray-60" />
+            <a target="_blank"> // ICON Link to PLAYGROUND
+              <Icon.ExternalLink className="text-gray-30 mt-px hover:cursor-pointer hover:text-gray-60 hover:bg-gray-30 w-6 h-6 p-1 rounded transition-all duration-300 ease-in-out" />
             </a>
           </Next.Link>
 
         let copyButton = <CopyButton code={tab.code} />
 
-        <div className="flex items-center justify-end h-full pr-4 space-x-3">
+        <div className="flex items-center justify-end h-full pr-4 space-x-2">
           playgroundLinkButton copyButton
         </div>
       | None => React.null
@@ -245,8 +245,8 @@ module Toggle = {
       <div className="relative pt-6 w-full rounded-none text-gray-80">
         //text within code-box
         <div
-          className="absolute flex w-full overflow-auto font-sans bg-transparent text-14 text-gray-40 "
-          style={ReactDOM.Style.make(~marginTop="-30px", ())}>
+          className="absolute flex w-full font-sans bg-transparent text-14 text-gray-40 "
+          style={ReactDOM.Style.make(~marginTop="-26px", ())}>
           <div className="flex ml-2 xs:ml-0"> {React.array(tabElements)} </div>
           <div className="flex-1 w-full bg-gray-20 border-b rounded-tr border-gray-20 items-center">
             buttonDiv

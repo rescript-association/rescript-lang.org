@@ -3,7 +3,7 @@
 
 module P = {
   @react.component
-  let make = (~children) => <p className="md-p md:leading-5 text-gray-70 md:text-16"> children </p>
+  let make = (~children) => <p className="md-p md:leading-5 tracking-[-0.015em] text-gray-80 md:text-16"> children </p>
 }
 
 // Used for hero like introduction text in
@@ -31,13 +31,14 @@ module Cite = {
 module Info = {
   @react.component
   let make = (~children) =>
-    <div className="border-l-2 border-sky my-5 py-6 pl-8 pr-10 bg-sky-10"> children </div>
+    <div className="infobox my-5 py-6 pl-8 pr-10 rounded-lg bg-sky-5"> children 
+    </div>
 }
 
 module Warn = {
   @react.component
   let make = (~children) =>
-    <div className="border-l-2 border-orange my-6 py-6 pl-8 pr-10 bg-orange-10"> children </div>
+    <div className="my-6 py-6 pl-8 pr-10 rounded-lg bg-orange-10"> children </div>
 }
 
 module UrlBox = {
@@ -138,7 +139,7 @@ module H3 = {
   @react.component
   let make = (~id, ~children) =>
     <h3
-      className="group mt-12 mb-3 hl-4">
+      className="group mt-8 mb-1 hl-4">
       children <span className="ml-2"> <Anchor id /> </span>
     </h3>
 }
@@ -146,7 +147,7 @@ module H3 = {
 module H4 = {
   @react.component
   let make = (~id, ~children) =>
-    <h4 className="group mt-12 hl-5">
+    <h4 className="group mt-8 hl-5">
       children <span className="ml-2"> <Anchor id /> </span>
     </h4>
 }
@@ -169,7 +170,7 @@ module InlineCode = {
   @react.component
   let make = (~children) =>
     <code
-      className="md-inline-code px-0.75 font-normal rounded-sm font-mono bg-[rgba(196,186,186,0.1)]">
+      className="md-inline-code px-2 py-0.5 text-14 text-gray-60 font-mono rounded-sm bg-gray-10-tr border border-gray-90 border-opacity-5">
       children
     </code>
 }
@@ -399,7 +400,7 @@ module A = {
 
 module Ul = {
   @react.component
-  let make = (~children) => <ul className="md-ul"> children </ul>
+  let make = (~children) => <ul className="md-ul mt-12 mb-16"> children </ul>
 }
 
 module Ol = {
@@ -467,13 +468,13 @@ module Li = {
       }
     }
 
-    <li className="md-li mt-3 leading-4 ml-4 text-current"> elements </li>
+    <li className="md-li mt-3 leading-4 ml-2"> elements </li>
   }
 }
 
 module Strong = {
   @react.component
-  let make = (~children) => <strong className="font-semibold text-gray-80"> children </strong>
+  let make = (~children) => <strong className="font-semibold"> children </strong>
 }
 
 // Useful for debugging injected values in props

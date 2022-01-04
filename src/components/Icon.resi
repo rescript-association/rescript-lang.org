@@ -73,3 +73,8 @@ module Copy: {
   @react.component
   let make: (~className: string=?) => React.element
 }
+
+module Clipboard: {
+  @react.component
+  let make: (~className: string=?) => React.element
+}
