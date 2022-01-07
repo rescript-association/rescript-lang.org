@@ -1426,7 +1426,7 @@ function Playground$ControlPanel$Button(Props) {
   var children = Props.children;
   var onClick = Props.onClick;
   var tmp = {
-    className: "inline-block text-sky hover:cursor-pointer hover:bg-sky hover:text-white-80 rounded border active:bg-sky-70 border-sky-70 px-2 py-1 "
+    className: "inline-block text-sky hover:cursor-pointer hover:bg-sky hover:text-white-80-tr rounded border active:bg-sky-70 border-sky-70 px-2 py-1 "
   };
   if (onClick !== undefined) {
     tmp.onClick = Caml_option.valFromOption(onClick);
