@@ -492,8 +492,16 @@ let extractRowColFromId = (id: string): option<(int, int)> =>
   | _ => None
   }
 
+module ErrorHash = Belt.Id.MakeHashable({
+  type t = int
+  let hash = a => a
+  let eq = (a, b) => a == b
+})
+
 let updateErrors = (~state: state, ~onMarkerFocus=?, ~onMarkerFocusLeave=?, ~cm: CM.t, errors) => {
   Belt.Array.forEach(state.marked, mark => mark->CM.TextMarker.clear)
+
+  let errorsMap = Belt.HashMap.make(~hintSize=Belt.Array.length(errors), ~id=module(ErrorHash))
   state.marked = []
   cm->{
     open CM
@@ -502,46 +510,48 @@ let updateErrors = (~state: state, ~onMarkerFocus=?, ~onMarkerFocusLeave=?, ~cm:
 
   let wrapper = cm->CM.getWrapperElement
 
-  Belt.Array.forEachWithIndex(errors, (_idx, e) => {
+  Belt.Array.forEachWithIndex(errors, (idx, e) => {
     open DomUtil
     open Error
 
-    let marker = GutterMarker.make(~rowCol=(e.row, e.column), ~kind=e.kind, ())
+    if !Belt.HashMap.has(errorsMap, e.row) {
+      let marker = GutterMarker.make(~rowCol=(e.row, e.column), ~kind=e.kind, ())
+      Belt.HashMap.set(errorsMap, e.row, idx)
+      wrapper->appendChild(marker)
 
-    wrapper->appendChild(marker)
+      // CodeMirrors line numbers are (strangely enough) zero based
+      let row = e.row - 1
+      let endRow = e.endRow - 1
 
-    // CodeMirrors line numbers are (strangely enough) zero based
-    let row = e.row - 1
-    let endRow = e.endRow - 1
+      cm->CM.setGutterMarker(row, CM.errorGutterId, marker)
 
-    cm->CM.setGutterMarker(row, CM.errorGutterId, marker)
+      let from = {CM.line: row, ch: e.column}
+      let to_ = {CM.line: endRow, ch: e.endColumn}
 
-    let from = {CM.line: row, ch: e.column}
-    let to_ = {CM.line: endRow, ch: e.endColumn}
+      let markTextColor = switch e.kind {
+      | #Error => "border-fire"
+      | #Warning => "border-orange"
+      }
 
-    let markTextColor = switch e.kind {
-    | #Error => "border-fire"
-    | #Warning => "border-orange"
-    }
-
-    cm
-    ->CM.markText(
-      from,
-      to_,
-      CM.MarkTextOption.make(
-        ~className="border-b border-dotted hover:cursor-pointer " ++ markTextColor,
-        ~attributes=CM.MarkTextOption.Attr.make(
-          ~id="text-marker_" ++
-          (Belt.Int.toString(e.row) ++
-          ("-" ++ (Belt.Int.toString(e.column) ++ ""))),
+      cm
+      ->CM.markText(
+        from,
+        to_,
+        CM.MarkTextOption.make(
+          ~className="border-b border-dotted hover:cursor-pointer " ++ markTextColor,
+          ~attributes=CM.MarkTextOption.Attr.make(
+            ~id="text-marker_" ++
+            (Belt.Int.toString(e.row) ++
+            ("-" ++ (Belt.Int.toString(e.column) ++ ""))),
+            (),
+          ),
           (),
         ),
-        (),
-      ),
-    )
-    ->Js.Array2.push(state.marked, _)
-    ->ignore
-    ()
+      )
+      ->Js.Array2.push(state.marked, _)
+      ->ignore
+      ()
+    }
   })
 
   let isMarkerId = id =>

@@ -2,11 +2,14 @@
 
 import * as Curry from "rescript/lib/es6/curry.js";
 import * as React from "react";
+import * as Belt_Id from "rescript/lib/es6/belt_Id.js";
 import * as Belt_Int from "rescript/lib/es6/belt_Int.js";
+import * as Caml_obj from "rescript/lib/es6/caml_obj.js";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as Codemirror from "codemirror";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
+import * as Belt_HashMap from "rescript/lib/es6/belt_HashMap.js";
 
 var useWindowWidth = (() => {
   const isClient = typeof window === 'object';
@@ -247,19 +250,35 @@ function extractRowColFromId(id) {
   
 }
 
+function hash(a) {
+  return a;
+}
+
+var eq = Caml_obj.caml_equal;
+
+var ErrorHash = Belt_Id.MakeHashable({
+      hash: hash,
+      eq: eq
+    });
+
 function updateErrors(state, onMarkerFocus, onMarkerFocusLeave, cm, errors) {
   Belt_Array.forEach(state.marked, (function (mark) {
           mark.clear();
           
         }));
+  var errorsMap = Belt_HashMap.make(errors.length, ErrorHash);
   state.marked = [];
   cm.clearGutter(errorGutterId);
   var wrapper = cm.getWrapperElement();
-  Belt_Array.forEachWithIndex(errors, (function (_idx, e) {
+  Belt_Array.forEachWithIndex(errors, (function (idx, e) {
+          if (Belt_HashMap.has(errorsMap, e.row)) {
+            return ;
+          }
           var marker = make$1([
                 e.row,
                 e.column
               ], e.kind, undefined);
+          Belt_HashMap.set(errorsMap, e.row, idx);
           wrapper.appendChild(marker);
           var row = e.row - 1 | 0;
           var endRow = e.endRow - 1 | 0;
