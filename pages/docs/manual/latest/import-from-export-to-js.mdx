@@ -31,7 +31,7 @@ Use the `module` [external](external.md):
 
 ```res example
 // Import nodejs' path.dirname
-@module("path") external dirname: string => string = "dirname"
+@module("path") external dirname: (string => string) = "dirname"
 let root = dirname("/User/github") // returns "User"
 ```
 ```js
@@ -50,7 +50,7 @@ Here's what the `external` does:
 - `@module("path")`: pass the name of the JS module; in this case, `"path"`. The string can be anything: `"./src/myJsFile"`, `"@myNpmNamespace/myLib"`, etc.
 - `external`: the general keyword for declaring a value that exists on the JS side.
 - `dirname`: the binding name you'll use on the ReScript side.
-- `string => string`: the type signature of `dirname`. Mandatory for `external`s.
+- `(string => string)`: the type signature of `dirname`. Mandatory for `external`s.
 - `= "dirname"`: the name of the variable inside the `path` JS module. There's repetition in writing the first and second `dirname`, because sometime the binding name you want to use on the ReScript side is different than the variable name the JS module exported.
 
 ### Import a JavaScript Module As a Single Value
@@ -60,7 +60,7 @@ By omitting the string argument to `module`, you bind to the whole JS module:
 <CodeTab labels={["ReScript", "JS Output (CommonJS)", "JS Output (ES6)"]}>
 
 ```res example
-@module external leftPad: string => int => string = "./leftPad"
+@module external leftPad: (string => int => string) = "./leftPad"
 let paddedResult = leftPad("hi", 5)
 ```
 ```js
