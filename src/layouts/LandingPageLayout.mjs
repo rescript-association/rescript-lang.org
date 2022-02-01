@@ -437,6 +437,12 @@ var companies = [
     url: "https://pupilfirst.com",
     path: "/static/lp/pupilfirst.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Aivero",
+    url: "https://aivero.com",
+    path: "/static/lp/aivero.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
