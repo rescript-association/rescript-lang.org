@@ -153,9 +153,9 @@ NODE_ENV=production npx postcss styles/main.css -o test.css
 
 In case you are a blog author, please refer to our [guide on writing blog posts](https://rescript-lang.org/blogpost-guide).
 
-## Adding a Company Logo on Our Front Page
+## How to Add Your Company Logo to Our Front Page
 
-In case your company is a user of ReScript and wants to be shown on our front page, do the following:
+In case your company is a user of ReScript and wants to be displayed on our front page ("Trusted by our users" section), do the following:
 
 - Get your logo as a black / white `.svg` version and use `#979AAD` as a fill color (check out the existing logos on our front page).
 - Put your logo into the [`public/static/lp`](./public/static/lp) folder; the file should be named after your company.
