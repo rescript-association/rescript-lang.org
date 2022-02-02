@@ -46,4 +46,9 @@ let companies = [
     url: "https://walnut.io",
     path: "/static/lp/walnut.svg",
   }),
+  Logo({
+    name: "Arizon",
+    url: "https://arizon.se",
+    path: "/static/lp/arizon.svg",
+  }),
 ]
