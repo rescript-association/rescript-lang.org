@@ -511,56 +511,6 @@ module OtherSellingPoints = {
 }
 
 module TrustedBy = {
-  type company = Logo({name: string, url: string, path: string})
-
-  let companies = [
-    Logo({
-      name: "Facebook Messenger",
-      url: "https://messenger.com",
-      path: "/static/lp/messenger.svg",
-    }),
-    Logo({
-      name: "Facebook",
-      url: "https://messenger.com",
-      path: "/static/lp/facebook.svg",
-    }),
-    Logo({
-      name: "Rohea",
-      url: "https://rohea.com",
-      path: "/static/lp/rohea.svg",
-    }),
-    Logo({
-      name: "CCA",
-      url: "https://cca.io",
-      path: "/static/lp/cca-io.svg",
-    }),
-    Logo({
-      name: "Nomadic Labs",
-      url: "https://nomadic-labs.com",
-      path: "/static/lp/nomadic_labs.svg",
-    }),
-    Logo({
-      name: "Draftbit",
-      url: "https://draftbit.com",
-      path: "/static/lp/draftbit.svg",
-    }),
-    Logo({
-      name: "Pupilfirst",
-      url: "https://pupilfirst.com",
-      path: "/static/lp/pupilfirst.svg",
-    }),
-    Logo({
-      name: "Aivero",
-      url: "https://aivero.com",
-      path: "/static/lp/aivero.svg",
-    }),
-    Logo({
-      name: "Walnut",
-      url: "https://walnut.io",
-      path: "/static/lp/walnut.svg",
-    }),
-  ]
-
   @react.component
   let make = () => {
     <section className="mt-20">
@@ -569,7 +519,7 @@ module TrustedBy = {
       </h3>
       <div
         className="flex flex-wrap mx-4 space-y-4 justify-center items-center max-w-xl lg:mx-auto mt-16 ">
-        {companies
+        {OurUsers.companies
         ->Js.Array2.map(company => {
           let (companyKey, renderedCompany) = switch company {
           | Logo({name, path, url}) => (

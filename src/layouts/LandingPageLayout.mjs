@@ -9,6 +9,7 @@ import * as React from "react";
 import * as Button from "../components/Button.mjs";
 import * as Footer from "../components/Footer.mjs";
 import * as Markdown from "../components/Markdown.mjs";
+import * as OurUsers from "../common/OurUsers.mjs";
 import * as LzString from "lz-string";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as Navigation from "../components/Navigation.mjs";
@@ -395,63 +396,6 @@ function LandingPageLayout$OtherSellingPoints(Props) {
                         }, "ReScript was made with gradual adoption in mind.  If\n            you ever want to go back to plain JavaScript, just remove all\n            source files and keep its clean JavaScript output. Tell\n            your coworkers that your project will keep functioning with or\n            without ReScript!"))));
 }
 
-var companies = [
-  {
-    name: "Facebook Messenger",
-    url: "https://messenger.com",
-    path: "/static/lp/messenger.svg",
-    [Symbol.for("name")]: "Logo"
-  },
-  {
-    name: "Facebook",
-    url: "https://messenger.com",
-    path: "/static/lp/facebook.svg",
-    [Symbol.for("name")]: "Logo"
-  },
-  {
-    name: "Rohea",
-    url: "https://rohea.com",
-    path: "/static/lp/rohea.svg",
-    [Symbol.for("name")]: "Logo"
-  },
-  {
-    name: "CCA",
-    url: "https://cca.io",
-    path: "/static/lp/cca-io.svg",
-    [Symbol.for("name")]: "Logo"
-  },
-  {
-    name: "Nomadic Labs",
-    url: "https://nomadic-labs.com",
-    path: "/static/lp/nomadic_labs.svg",
-    [Symbol.for("name")]: "Logo"
-  },
-  {
-    name: "Draftbit",
-    url: "https://draftbit.com",
-    path: "/static/lp/draftbit.svg",
-    [Symbol.for("name")]: "Logo"
-  },
-  {
-    name: "Pupilfirst",
-    url: "https://pupilfirst.com",
-    path: "/static/lp/pupilfirst.svg",
-    [Symbol.for("name")]: "Logo"
-  },
-  {
-    name: "Aivero",
-    url: "https://aivero.com",
-    path: "/static/lp/aivero.svg",
-    [Symbol.for("name")]: "Logo"
-  },
-  {
-    name: "Walnut",
-    url: "https://walnut.io",
-    path: "/static/lp/walnut.svg",
-    [Symbol.for("name")]: "Logo"
-  }
-];
-
 function LandingPageLayout$TrustedBy(Props) {
   return React.createElement("section", {
               className: "mt-20"
@@ -459,7 +403,7 @@ function LandingPageLayout$TrustedBy(Props) {
                   className: "hl-1 text-gray-80 text-center max-w-576 mx-auto"
                 }, "Trusted by our users"), React.createElement("div", {
                   className: "flex flex-wrap mx-4 space-y-4 justify-center items-center max-w-xl lg:mx-auto mt-16 "
-                }, companies.map(function (company) {
+                }, OurUsers.companies.map(function (company) {
                       var renderedCompany = React.createElement("a", {
                             href: company.url,
                             rel: "noopener noreferrer",
