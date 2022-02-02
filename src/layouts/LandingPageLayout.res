@@ -363,10 +363,7 @@ module MainUSP = {
       title={React.string("The fastest build system on the web")}
       media={<video
         className="rounded-lg" controls={true} poster={"/static/lp/fast-build-preview.jpg"}>
-        <source
-          src="https://assets-17077.kxcdn.com/videos/fast-build-3.mp4"
-          type_="video/mp4"
-        />
+        <source src="https://assets-17077.kxcdn.com/videos/fast-build-3.mp4" type_="video/mp4" />
       </video>}
       paragraph={<>
         <p>
@@ -395,10 +392,7 @@ module MainUSP = {
       </span>}
       media={<video
         className="rounded-lg" controls={true} poster={"/static/lp/type-better-preview.jpg"}>
-        <source
-          src="https://assets-17077.kxcdn.com/videos/type-better-3.mp4"
-          type_="video/mp4"
-        />
+        <source src="https://assets-17077.kxcdn.com/videos/type-better-3.mp4" type_="video/mp4" />
       </video>}
       polygonDirection=Up
       paragraph={React.string(`Every ReScript app is fully typed and provides
@@ -419,8 +413,7 @@ module MainUSP = {
       media={<video
         className="rounded-lg" controls={true} poster={"/static/lp/interop-example-preview.jpg"}>
         <source
-          src="https://assets-17077.kxcdn.com/videos/interop-example-2.mp4"
-          type_="video/mp4"
+          src="https://assets-17077.kxcdn.com/videos/interop-example-2.mp4" type_="video/mp4"
         />
       </video>}
       paragraph={React.string(`Use any library from JavaScript, export ReScript
@@ -561,6 +554,11 @@ module TrustedBy = {
       url: "https://aivero.com",
       path: "/static/lp/aivero.svg",
     }),
+    Logo({
+      name: "Walnut",
+      url: "https://walnut.io",
+      path: "/static/lp/walnut.svg",
+    }),
   ]
 
   @react.component
@@ -569,7 +567,8 @@ module TrustedBy = {
       <h3 className="hl-1 text-gray-80 text-center max-w-576 mx-auto">
         {React.string("Trusted by our users")}
       </h3>
-      <div className="flex flex-wrap mx-4 space-y-4 justify-center items-center max-w-xl lg:mx-auto mt-16 ">
+      <div
+        className="flex flex-wrap mx-4 space-y-4 justify-center items-center max-w-xl lg:mx-auto mt-16 ">
         {companies
         ->Js.Array2.map(company => {
           let (companyKey, renderedCompany) = switch company {

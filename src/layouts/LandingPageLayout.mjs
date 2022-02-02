@@ -443,6 +443,12 @@ var companies = [
     url: "https://aivero.com",
     path: "/static/lp/aivero.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Walnut",
+    url: "https://walnut.io",
+    path: "/static/lp/walnut.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
