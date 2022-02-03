@@ -55,6 +55,12 @@ var companies = [
     url: "https://walnut.io",
     path: "/static/lp/walnut.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "ohne-makler.net",
+    url: "https://www.ohne-makler.net",
+    path: "/static/lp/ohne-makler.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
