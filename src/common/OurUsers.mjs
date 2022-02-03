@@ -55,6 +55,12 @@ var companies = [
     url: "https://walnut.io",
     path: "/static/lp/walnut.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Humaans",
+    url: "https://humaans.io",
+    path: "/static/lp/humaans.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
