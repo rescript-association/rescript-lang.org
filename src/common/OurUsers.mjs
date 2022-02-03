@@ -55,11 +55,17 @@ var companies = [
     url: "https://walnut.io",
     path: "/static/lp/walnut.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Stencil",
+    url: "https://usestencil.com",
+    path: "/static/lp/stencil.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
 export {
   companies ,
-  
+
 }
 /* No side effect */
