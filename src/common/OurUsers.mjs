@@ -85,6 +85,12 @@ var companies = [
     url: "https://tiny.cloud",
     path: "/static/lp/tiny.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Komplio",
+    url: "https://kompl.io",
+    path: "/static/lp/komplio.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
