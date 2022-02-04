@@ -51,4 +51,9 @@ let companies = [
     url: "https://beop.io",
     path: "/static/lp/beop.svg",
   }),
+  Logo({
+    name: "Portolab",
+    url: "https://portolab.com.br",
+    path: "/static/lp/portolab.svg",
+  }),
 ]
