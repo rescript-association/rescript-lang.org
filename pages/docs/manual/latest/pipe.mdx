@@ -132,6 +132,29 @@ This looks much worse than the JS counterpart! Clean it up visually with pipe:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
+let result = [1, 2, 3]
+  ->Js.Array2.map(a => a + 1)
+  ->Js.Array2.filter(a => mod(a, 2) == 0)
+
+asyncRequest()->setWaitDuration(4000)->send
+```
+```js
+var result = [1, 2, 3].map(function(a) {
+  return a + 1 | 0;
+}).filter(function(a) {
+  return a % 2 === 0;
+});
+
+asyncRequest().setWaitDuration(4000).send();
+```
+
+</CodeTab>
+
+You could make it even more beautiful by [opening a module](https://rescript-lang.org/docs/manual/latest/module#opening-a-module):
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
 open  Js.Array2
 let result = [1, 2, 3]
   ->map(a => a + 1)
@@ -150,6 +173,8 @@ asyncRequest().setWaitDuration(4000).send();
 ```
 
 </CodeTab>
+
+But we won't dive into opening modules right now.
 
 ## Pipe Into Variants
 
