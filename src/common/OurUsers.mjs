@@ -91,6 +91,12 @@ var companies = [
     url: "https://kompl.io",
     path: "/static/lp/komplio.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "ohne-makler.net",
+    url: "https://www.ohne-makler.net",
+    path: "/static/lp/ohne-makler.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
