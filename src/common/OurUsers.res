@@ -81,4 +81,9 @@ let companies = [
     url: "https://www.ohne-makler.net",
     path: "/static/lp/ohne-makler.svg",
   }),
+  Logo({
+    name: "Wino",
+    url: "https://wino.fr",
+    path: "/static/lp/wino.svg",
+  }),
 ]
