@@ -91,4 +91,9 @@ let companies = [
     url: "https://humaans.io",
     path: "/static/lp/humaans.svg",
   }),
+  Logo({
+    name: "SeaMonster Studios",
+    url: "https://seamonsterstudios.com",
+    path: "/static/lp/seamonster-studios.svg",
+  }),
 ]

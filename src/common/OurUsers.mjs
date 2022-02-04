@@ -109,6 +109,12 @@ var companies = [
     url: "https://humaans.io",
     path: "/static/lp/humaans.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "SeaMonster Studios",
+    url: "https://seamonsterstudios.com",
+    path: "/static/lp/seamonster-studios.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
