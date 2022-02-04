@@ -30,9 +30,14 @@ During development, instead of running `npm run build` each time to compile, use
 If you already have a JavaScript project into which you'd like to add ReScript:
 
 - Install ReScript locally as a [devDependency](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file):
-  ```sh
+  ```shhttps://github.com/coleea/rescript-lang.org
   npm install rescript --save-dev 
   ```
+  
+  If you use M1-based Mac Device, error might be occur. If so, try installing `npm@6.14` via `npm i -g npm@6.14`, then try again `npm install rescript --save-dev`.
+   
+
+
 - Create a ReScript build configuration at the root:
   ```json
   {
