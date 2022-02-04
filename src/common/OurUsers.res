@@ -56,4 +56,9 @@ let companies = [
     url: "https://arizon.se",
     path: "/static/lp/arizon.svg",
   }),
+  Logo({
+    name: "Stencil",
+    url: "https://usestencil.com",
+    path: "/static/lp/stencil.svg",
+  }),
 ]
