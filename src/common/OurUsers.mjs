@@ -67,6 +67,12 @@ var companies = [
     url: "https://arizon.se",
     path: "/static/lp/arizon.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Stencil",
+    url: "https://usestencil.com",
+    path: "/static/lp/stencil.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
