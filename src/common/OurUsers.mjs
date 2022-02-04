@@ -97,6 +97,12 @@ var companies = [
     url: "https://www.ohne-makler.net",
     path: "/static/lp/ohne-makler.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Wino",
+    url: "https://wino.fr",
+    path: "/static/lp/wino.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
