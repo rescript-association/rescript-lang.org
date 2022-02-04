@@ -61,6 +61,12 @@ var companies = [
     url: "https://beop.io",
     path: "/static/lp/beop.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Arizon",
+    url: "https://arizon.se",
+    path: "/static/lp/arizon.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 

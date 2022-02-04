@@ -51,4 +51,9 @@ let companies = [
     url: "https://beop.io",
     path: "/static/lp/beop.svg",
   }),
+  Logo({
+    name: "Arizon",
+    url: "https://arizon.se",
+    path: "/static/lp/arizon.svg",
+  }),
 ]
