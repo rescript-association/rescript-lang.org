@@ -103,6 +103,12 @@ var companies = [
     url: "https://wino.fr",
     path: "/static/lp/wino.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Humaans",
+    url: "https://humaans.io",
+    path: "/static/lp/humaans.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
