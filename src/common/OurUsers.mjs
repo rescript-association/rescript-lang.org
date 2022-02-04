@@ -73,6 +73,12 @@ var companies = [
     url: "https://usestencil.com",
     path: "/static/lp/stencil.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Portolab",
+    url: "https://portolab.com.br",
+    path: "/static/lp/portolab.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
