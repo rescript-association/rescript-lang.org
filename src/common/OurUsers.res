@@ -71,4 +71,9 @@ let companies = [
     url: "https://tiny.cloud",
     path: "/static/lp/tiny.svg",
   }),
+  Logo({
+    name: "Komplio",
+    url: "https://kompl.io",
+    path: "/static/lp/komplio.svg",
+  }),
 ]
