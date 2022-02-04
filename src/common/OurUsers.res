@@ -66,4 +66,9 @@ let companies = [
     url: "https://portolab.com.br",
     path: "/static/lp/portolab.svg",
   }),
+  Logo({
+    name: "Tiny",
+    url: "https://tiny.cloud",
+    path: "/static/lp/tiny.svg",
+  }),
 ]

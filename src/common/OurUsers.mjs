@@ -79,6 +79,12 @@ var companies = [
     url: "https://portolab.com.br",
     path: "/static/lp/portolab.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Tiny",
+    url: "https://tiny.cloud",
+    path: "/static/lp/tiny.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
