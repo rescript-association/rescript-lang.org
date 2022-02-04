@@ -61,4 +61,9 @@ let companies = [
     url: "https://usestencil.com",
     path: "/static/lp/stencil.svg",
   }),
+  Logo({
+    name: "Portolab",
+    url: "https://portolab.com.br",
+    path: "/static/lp/portolab.svg",
+  }),
 ]
