@@ -115,6 +115,12 @@ var companies = [
     url: "https://seamonsterstudios.com",
     path: "/static/lp/seamonster-studios.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Camelo",
+    url: "https://camelohq.com",
+    path: "/static/lp/camelo.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
