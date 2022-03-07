@@ -402,7 +402,7 @@ module MobileNav = {
         </li>
         <li className=base>
           <a href=githubHref rel="noopener noreferrer" target="_blank" className=extLink>
-            {React.string("Github")}
+            {React.string("GitHub")}
           </a>
         </li>
         <li className=base>
@@ -562,7 +562,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
             <div className="hidden sm:block mr-6"> <DocSearch /> </div>
             <a
               href=githubHref rel="noopener noreferrer" target="_blank" className={"mr-5 " ++ link}>
-              <Icon.Github className="w-6 h-6 opacity-50 hover:opacity-100" />
+              <Icon.GitHub className="w-6 h-6 opacity-50 hover:opacity-100" />
             </a>
             <a
               href="https://twitter.com/rescriptlang"

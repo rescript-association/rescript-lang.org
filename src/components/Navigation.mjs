@@ -412,7 +412,7 @@ function Navigation$MobileNav(Props) {
                           href: githubHref,
                           rel: "noopener noreferrer",
                           target: "_blank"
-                        }, "Github")), React.createElement("li", {
+                        }, "GitHub")), React.createElement("li", {
                       className: base
                     }, React.createElement("a", {
                           className: extLink,
@@ -610,7 +610,7 @@ function Navigation(Props) {
                                   href: githubHref,
                                   rel: "noopener noreferrer",
                                   target: "_blank"
-                                }, React.createElement(Icon.Github.make, {
+                                }, React.createElement(Icon.GitHub.make, {
                                       className: "w-6 h-6 opacity-50 hover:opacity-100"
                                     })), React.createElement("a", {
                                   className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px",

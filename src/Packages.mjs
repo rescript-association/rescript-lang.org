@@ -144,8 +144,8 @@ function Packages$Card(Props) {
     var repositoryHref = pkg.repositoryHref;
     var repoEl;
     if (repositoryHref !== null) {
-      var name = repositoryHref.startsWith("https://github.com") ? "Github" : (
-          repositoryHref.startsWith("https://gitlab.com") ? "Gitlab" : "Repository"
+      var name = repositoryHref.startsWith("https://github.com") ? "GitHub" : (
+          repositoryHref.startsWith("https://gitlab.com") ? "GitLab" : "Repository"
         );
       repoEl = React.createElement(React.Fragment, undefined, React.createElement("span", undefined, "|"), React.createElement("a", {
                 className: "hover:text-fire",

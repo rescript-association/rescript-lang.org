@@ -64,7 +64,7 @@ let make = () => {
               target="_blank"
               rel="noopener noreferrer"
               href="https://github.com/rescript-lang">
-              <Icon.Github className="w-6 h-6" />
+              <Icon.GitHub className="w-6 h-6" />
             </a>
             <a
               className=iconLink

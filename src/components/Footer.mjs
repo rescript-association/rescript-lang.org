@@ -61,7 +61,7 @@ function Footer(Props) {
                                     href: "https://github.com/rescript-lang",
                                     rel: "noopener noreferrer",
                                     target: "_blank"
-                                  }, React.createElement(Icon.Github.make, {
+                                  }, React.createElement(Icon.GitHub.make, {
                                         className: "w-6 h-6"
                                       })), React.createElement("a", {
                                     className: iconLink,

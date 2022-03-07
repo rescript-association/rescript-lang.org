@@ -146,9 +146,9 @@ module Card = {
       let repoEl = switch repositoryHref {
       | Some(href) =>
         let name = if Js.String2.startsWith(href, "https://github.com") {
-          "Github"
+          "GitHub"
         } else if Js.String2.startsWith(href, "https://gitlab.com") {
-          "Gitlab"
+          "GitLab"
         } else {
           "Repository"
         }
