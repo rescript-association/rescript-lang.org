@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-function Icon$Github(Props) {
+function Icon$GitHub(Props) {
   var className = Props.className;
   return React.createElement("svg", {
               className: "fill-current " + className,
@@ -17,8 +17,8 @@ function Icon$Github(Props) {
                     })));
 }
 
-var Github = {
-  make: Icon$Github
+var GitHub = {
+  make: Icon$GitHub
 };
 
 function Icon$Npm(Props) {
@@ -392,7 +392,7 @@ var Clipboard = {
 };
 
 export {
-  Github ,
+  GitHub ,
   Npm ,
   Twitter ,
   MagnifierGlass ,
