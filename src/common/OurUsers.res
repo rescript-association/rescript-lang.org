@@ -101,4 +101,9 @@ let companies = [
     url: "https://camelohq.com",
     path: "/static/lp/camelo.svg",
   }),
+  Logo({
+    name: "DevIT Jobs",
+    url: "https://devitjobs.us",
+    path: "/static/lp/dev-it-jobs.svg",
+  }),
 ]
