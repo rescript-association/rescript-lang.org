@@ -121,6 +121,18 @@ var companies = [
     url: "https://camelohq.com",
     path: "/static/lp/camelo.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "DevIT Jobs",
+    url: "https://devitjobs.us",
+    path: "/static/lp/dev-it-jobs.svg",
+    [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Sanjagh",
+    url: "https://sanjagh.pro",
+    path: "/static/lp/sanjagh.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 

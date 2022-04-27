@@ -106,4 +106,9 @@ let companies = [
     url: "https://devitjobs.us",
     path: "/static/lp/dev-it-jobs.svg",
   }),
+  Logo({
+    name: "Sanjagh",
+    url: "https://sanjagh.pro",
+    path: "/static/lp/sanjagh.svg",
+  }),
 ]
