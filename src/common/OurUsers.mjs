@@ -133,6 +133,12 @@ var companies = [
     url: "https://sanjagh.pro",
     path: "/static/lp/sanjagh.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Carla",
+    url: "https://carla.se",
+    path: "/static/lp/carla.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
