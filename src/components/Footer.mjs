@@ -27,7 +27,6 @@ function Footer(Props) {
                           className: "text-16"
                         }, React.createElement("p", undefined, "© 2021 The ReScript Project"), React.createElement("p", undefined, "Software and assets distribution powered by ", React.createElement(Markdown.A.make, {
                                   href: "https://www.keycdn.com/",
-                                  target: "_blank",
                                   children: "KeyCDN"
                                 }), "."), React.createElement("p", undefined, React.createElement("a", {
                                   href: "https://simpleanalytics.com/rescript-lang.org",
@@ -49,8 +48,7 @@ function Footer(Props) {
                                             }, "Team")
                                       })), React.createElement("li", undefined, React.createElement("a", {
                                         className: linkClass,
-                                        href: "https://rescript-association.org",
-                                        target: "_blank"
+                                        href: "https://rescript-association.org"
                                       }, "ReScript Association")))
                         }), React.createElement(Footer$Section, {
                           title: "Find us on",
@@ -59,22 +57,19 @@ function Footer(Props) {
                               }, React.createElement("a", {
                                     className: iconLink,
                                     href: "https://github.com/rescript-lang",
-                                    rel: "noopener noreferrer",
-                                    target: "_blank"
+                                    rel: "noopener noreferrer"
                                   }, React.createElement(Icon.GitHub.make, {
                                         className: "w-6 h-6"
                                       })), React.createElement("a", {
                                     className: iconLink,
                                     href: "https://twitter.com/rescriptlang",
-                                    rel: "noopener noreferrer",
-                                    target: "_blank"
+                                    rel: "noopener noreferrer"
                                   }, React.createElement(Icon.Twitter.make, {
                                         className: "w-6 h-6"
                                       })), React.createElement("a", {
                                     className: iconLink,
                                     href: "https://forum.rescript-lang.org",
-                                    rel: "noopener noreferrer",
-                                    target: "_blank"
+                                    rel: "noopener noreferrer"
                                   }, React.createElement(Icon.Discourse.make, {
                                         className: "w-6 h-6"
                                       })))

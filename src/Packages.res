@@ -154,17 +154,12 @@ module Card = {
         }
         <>
           <span> {React.string("|")} </span>
-          <a href rel="noopener noreferrer" className="hover:text-fire" target="_blank">
-            {React.string(name)}
-          </a>
+          <a href rel="noopener noreferrer" className="hover:text-fire"> {React.string(name)} </a>
         </>
       | None => React.null
       }
       <div className="text-14 space-x-2 mt-1">
-        <a className="hover:text-fire" href={pkg.npmHref} target="_blank">
-          {React.string("NPM")}
-        </a>
-        {repoEl}
+        <a className="hover:text-fire" href={pkg.npmHref}> {React.string("NPM")} </a> {repoEl}
       </div>
     | Url(_) => React.null
     }
@@ -182,7 +177,7 @@ module Card = {
     <div className="bg-gray-5-tr py-6 rounded-lg p-4">
       <div className="flex justify-between">
         <div>
-          <a className="font-bold hover:text-fire text-18" href=titleHref target="_blank">
+          <a className="font-bold hover:text-fire text-18" href=titleHref>
             <span> {React.string(title)} </span>
           </a>
           {linkBox}

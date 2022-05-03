@@ -245,8 +245,7 @@ function SidebarLayout(Props) {
   var editLinkEl = editHref !== undefined ? React.createElement("a", {
           className: "inline text-14 hover:underline text-fire",
           href: editHref,
-          rel: "noopener noreferrer",
-          target: "_blank"
+          rel: "noopener noreferrer"
         }, "Edit") : null;
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, {
                   title: metaTitle

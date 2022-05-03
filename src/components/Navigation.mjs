@@ -121,8 +121,7 @@ function Navigation$DocsSection$LinkCard(Props) {
     return React.createElement("a", {
                 className: "",
                 href: href,
-                rel: "noopener noreferrer",
-                target: "_blank"
+                rel: "noopener noreferrer"
               }, content);
   } else {
     return React.createElement(Next.Link.make, {
@@ -403,22 +402,19 @@ function Navigation$MobileNav(Props) {
                     }, React.createElement("a", {
                           className: extLink,
                           href: "https://twitter.com/rescriptlang",
-                          rel: "noopener noreferrer",
-                          target: "_blank"
+                          rel: "noopener noreferrer"
                         }, "Twitter")), React.createElement("li", {
                       className: base
                     }, React.createElement("a", {
                           className: extLink,
                           href: githubHref,
-                          rel: "noopener noreferrer",
-                          target: "_blank"
+                          rel: "noopener noreferrer"
                         }, "GitHub")), React.createElement("li", {
                       className: base
                     }, React.createElement("a", {
                           className: extLink,
                           href: discourseHref,
-                          rel: "noopener noreferrer",
-                          target: "_blank"
+                          rel: "noopener noreferrer"
                         }, "Forum"))));
 }
 
@@ -608,22 +604,19 @@ function Navigation(Props) {
                                 }, React.createElement(DocSearch.make, {})), React.createElement("a", {
                                   className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px",
                                   href: githubHref,
-                                  rel: "noopener noreferrer",
-                                  target: "_blank"
+                                  rel: "noopener noreferrer"
                                 }, React.createElement(Icon.GitHub.make, {
                                       className: "w-6 h-6 opacity-50 hover:opacity-100"
                                     })), React.createElement("a", {
                                   className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px",
                                   href: "https://twitter.com/rescriptlang",
-                                  rel: "noopener noreferrer",
-                                  target: "_blank"
+                                  rel: "noopener noreferrer"
                                 }, React.createElement(Icon.Twitter.make, {
                                       className: "w-6 h-6 opacity-50 hover:opacity-100"
                                     })), React.createElement("a", {
                                   className: link,
                                   href: discourseHref,
-                                  rel: "noopener noreferrer",
-                                  target: "_blank"
+                                  rel: "noopener noreferrer"
                                 }, React.createElement(Icon.Discourse.make, {
                                       className: "w-6 h-6 opacity-50 hover:opacity-100"
                                     }))))), React.createElement("button", {

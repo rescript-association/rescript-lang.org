@@ -421,8 +421,7 @@ module ResultPane = {
           {React.string(
             "The compiler bundle API returned a result that couldn't be interpreted. Please open an issue on our ",
           )}
-          <Markdown.A
-            target="_blank" href="https://github.com/rescript-association/rescript-lang.org/issues">
+          <Markdown.A href="https://github.com/rescript-association/rescript-lang.org/issues">
             {React.string("issue tracker")}
           </Markdown.A>
           {React.string(".")}

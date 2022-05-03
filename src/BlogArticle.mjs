@@ -45,8 +45,7 @@ function BlogArticle$AuthorBox(Props) {
                 }, React.createElement("a", {
                       className: "hover:text-gray-80",
                       href: "https://twitter.com/" + author.twitter,
-                      rel: "noopener noreferrer",
-                      target: "_blank"
+                      rel: "noopener noreferrer"
                     }, author.fullname), React.createElement("div", {
                       className: "text-gray-60"
                     }, author.role)));

@@ -150,8 +150,7 @@ function Packages$Card(Props) {
       repoEl = React.createElement(React.Fragment, undefined, React.createElement("span", undefined, "|"), React.createElement("a", {
                 className: "hover:text-fire",
                 href: repositoryHref,
-                rel: "noopener noreferrer",
-                target: "_blank"
+                rel: "noopener noreferrer"
               }, name));
     } else {
       repoEl = null;
@@ -160,8 +159,7 @@ function Packages$Card(Props) {
           className: "text-14 space-x-2 mt-1"
         }, React.createElement("a", {
               className: "hover:text-fire",
-              href: pkg.npmHref,
-              target: "_blank"
+              href: pkg.npmHref
             }, "NPM"), repoEl);
   } else {
     linkBox = null;
@@ -195,8 +193,7 @@ function Packages$Card(Props) {
                   className: "flex justify-between"
                 }, React.createElement("div", undefined, React.createElement("a", {
                           className: "font-bold hover:text-fire text-18",
-                          href: titleHref,
-                          target: "_blank"
+                          href: titleHref
                         }, React.createElement("span", undefined, match[0])), linkBox), React.createElement("div", undefined, icon)), React.createElement("div", {
                   className: "mt-4 text-16"
                 }, match[1]), React.createElement("div", {

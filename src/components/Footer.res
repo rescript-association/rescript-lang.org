@@ -23,9 +23,7 @@ let make = () => {
           <p> {React.string(`© 2021 The ReScript Project`)} </p>
           <p>
             {React.string("Software and assets distribution powered by ")}
-            <Markdown.A href="https://www.keycdn.com/" target="_blank">
-              {React.string("KeyCDN")}
-            </Markdown.A>
+            <Markdown.A href="https://www.keycdn.com/"> {React.string("KeyCDN")} </Markdown.A>
             {React.string(".")}
           </p>
           <p>
@@ -51,7 +49,7 @@ let make = () => {
               </Next.Link>
             </li>
             <li>
-              <a href="https://rescript-association.org" target="_blank" className=linkClass>
+              <a href="https://rescript-association.org" className=linkClass>
                 {React.string("ReScript Association")}
               </a>
             </li>
@@ -61,23 +59,14 @@ let make = () => {
           <div className="flex space-x-3 text-gray-100">
             <a
               className=iconLink
-              target="_blank"
               rel="noopener noreferrer"
               href="https://github.com/rescript-lang">
               <Icon.GitHub className="w-6 h-6" />
             </a>
-            <a
-              className=iconLink
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://twitter.com/rescriptlang">
+            <a className=iconLink rel="noopener noreferrer" href="https://twitter.com/rescriptlang">
               <Icon.Twitter className="w-6 h-6" />
             </a>
-            <a
-              className=iconLink
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://forum.rescript-lang.org">
+            <a className=iconLink rel="noopener noreferrer" href="https://forum.rescript-lang.org">
               <Icon.Discourse className="w-6 h-6" />
             </a>
           </div>
