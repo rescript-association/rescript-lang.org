@@ -10,6 +10,8 @@ module Section = {
   }
 }
 
+let getFullYear = () => Js.String2.make(Js.Date.getFullYear(Js.Date.make()))
+
 @react.component
 let make = () => {
   let linkClass = "hover:underline hover:pointer"
@@ -20,7 +22,7 @@ let make = () => {
       <div>
         <img className="w-40 mb-5" src="/static/rescript_logo_black.svg" />
         <div className="text-16">
-          <p> {React.string(`© 2021 The ReScript Project`)} </p>
+          <p> {React.string(`© ${getFullYear()} The ReScript Project`)} </p>
           <p>
             {React.string("Software and assets distribution powered by ")}
             <Markdown.A href="https://www.keycdn.com/" target="_blank">
