@@ -20,7 +20,7 @@ let make = () => {
       <div>
         <img className="w-40 mb-5" src="/static/rescript_logo_black.svg" />
         <div className="text-16">
-          <p> {React.string(`© 2022 The ReScript Project`)} </p>
+          <p>{React.string(`©`)} {new Date().getFullYear()} {React.string(`The ReScript Project`)} </p>
           <p>
             {React.string("Software and assets distribution powered by ")}
             <Markdown.A href="https://www.keycdn.com/" target="_blank">
