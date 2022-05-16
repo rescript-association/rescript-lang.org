@@ -101,4 +101,19 @@ let companies = [
     url: "https://camelohq.com",
     path: "/static/lp/camelo.svg",
   }),
+  Logo({
+    name: "DevIT Jobs",
+    url: "https://devitjobs.us",
+    path: "/static/lp/dev-it-jobs.svg",
+  }),
+  Logo({
+    name: "Sanjagh",
+    url: "https://sanjagh.pro",
+    path: "/static/lp/sanjagh.svg",
+  }),
+  Logo({
+    name: "Carla",
+    url: "https://carla.se",
+    path: "/static/lp/carla.svg",
+  }),
 ]
