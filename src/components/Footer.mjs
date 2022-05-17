@@ -16,6 +16,7 @@ function Footer$Section(Props) {
 function Footer(Props) {
   var linkClass = "hover:underline hover:pointer";
   var iconLink = "hover:pointer hover:text-gray-60-tr";
+  var copyrightYear = new Date().getFullYear().toString();
   return React.createElement("footer", {
               className: "flex justify-center border-t border-gray-10"
             }, React.createElement("div", {
@@ -25,7 +26,7 @@ function Footer(Props) {
                           src: "/static/rescript_logo_black.svg"
                         }), React.createElement("div", {
                           className: "text-16"
-                        }, React.createElement("p", undefined, "© 2021 The ReScript Project"), React.createElement("p", undefined, "Software and assets distribution powered by ", React.createElement(Markdown.A.make, {
+                        }, React.createElement("p", undefined, "© " + copyrightYear + " The ReScript Project"), React.createElement("p", undefined, "Software and assets distribution powered by ", React.createElement(Markdown.A.make, {
                                   href: "https://www.keycdn.com/",
                                   target: "_blank",
                                   children: "KeyCDN"

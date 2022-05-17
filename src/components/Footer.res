@@ -14,13 +14,15 @@ module Section = {
 let make = () => {
   let linkClass = "hover:underline hover:pointer"
   let iconLink = "hover:pointer hover:text-gray-60-tr"
+  let copyrightYear = Js.Date.make() -> Js.Date.getFullYear -> Js.Float.toString
+
   <footer className="flex justify-center border-t border-gray-10">
     <div
       className="flex flex-col md:flex-row justify-between max-w-1280 w-full px-8 py-16 text-gray-80 ">
       <div>
         <img className="w-40 mb-5" src="/static/rescript_logo_black.svg" />
         <div className="text-16">
-          <p> {React.string(`© 2021 The ReScript Project`)} </p>
+          <p> {React.string(`© ${copyrightYear} The ReScript Project`)} </p>
           <p>
             {React.string("Software and assets distribution powered by ")}
             <Markdown.A href="https://www.keycdn.com/" target="_blank">
