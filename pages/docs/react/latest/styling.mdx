@@ -171,7 +171,7 @@ let app = <div className={Styles.container} />
 Please note that this approach will not check for invalid css attribute names. If you e.g. want to make sure that only valid CSS attributes are being passed, you could define your `css` function like this as well:
 
 ```res
-@module("@emotion/css") external css: React.Style.t => string = "css"
+@module("@emotion/css") external css: ReactDOM.Style.t => string = "css"
 
 // Usage is slightly different (and probably less ergonomic)
 let container = ReactDOM.Style.make(~padding="20px", ())->css;
