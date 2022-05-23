@@ -13,25 +13,35 @@
   counter-increment: li;
 }
 
-.md-ol > .md-li::marker {
+.md-ul .md-li {
+  @apply relative my-6;
+}
+
+.md-ol > .md-li::before {
   content: counter(li) ".";
+  @apply font-semibold;
 }
 
-.md-ul > .md-li::marker {
+.md-ul > .md-li::before{
   content: "•";
+  @apply absolute;
 }
 
-.md-ul > .md-li > ul > li::marker {
+.md-ul > .md-li > ul > li::before{
   content: "—";
+  @apply absolute;
 }
 
-.md-ul > .md-li > ul{
-  @apply mb-14 ml-6;
+.md-ul > .md-li > ul {
+  @apply mb-14 ml-4;
 }
-
 
 .md-li > p {
-  @apply ml-4 text-gray-80 my-6;
+  @apply text-gray-80 ml-4;
+}
+
+.md-li > ul > li p {
+  @apply ml-6;
 }
 
 .md-p + .md-p {
