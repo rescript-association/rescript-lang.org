@@ -139,6 +139,12 @@ var companies = [
     url: "https://carla.se",
     path: "/static/lp/carla.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Reka.Market",
+    url: "https://reka.market",
+    path: "/static/lp/reka_market.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
