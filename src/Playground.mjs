@@ -497,7 +497,6 @@ function renderResult(focusedRowCol, targetLang, compilerVersion, result) {
                   children: null
                 }, "The compiler bundle API returned a result that couldn't be interpreted. Please open an issue on our ", React.createElement(Markdown.A.make, {
                       href: "https://github.com/rescript-association/rescript-lang.org/issues",
-                      target: "_blank",
                       children: "issue tracker"
                     }), "."), React.createElement("div", {
                   className: "mt-4"

@@ -71,8 +71,7 @@ function LandingPageLayout$PlaygroundHero(Props) {
                                 }, HighlightJs.renderHLJS(undefined, true, example.js, "js", undefined)))), React.createElement("div", undefined, React.createElement(Next.Link.make, {
                               href: "/try?code=" + LzString.compressToEncodedURIComponent(example.res) + "}",
                               children: React.createElement("a", {
-                                    className: "captions md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60",
-                                    target: "_blank"
+                                    className: "captions md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60"
                                   }, "Edit this example in Playground")
                             })), React.createElement("div", {
                           className: "hidden md:block"
@@ -371,7 +370,6 @@ function LandingPageLayout$OtherSellingPoints(Props) {
                           className: "mt-6"
                         }, React.createElement(Button.make, {
                               href: "https://forum.rescript-lang.org",
-                              target: "_blank",
                               kind: /* PrimaryBlue */1,
                               size: /* Small */0,
                               children: "Join our Forum"
@@ -406,8 +404,7 @@ function LandingPageLayout$TrustedBy(Props) {
                 }, OurUsers.companies.map(function (company) {
                       var renderedCompany = React.createElement("a", {
                             href: company.url,
-                            rel: "noopener noreferrer",
-                            target: "_blank"
+                            rel: "noopener noreferrer"
                           }, React.createElement("img", {
                                 className: "hover:opacity-75 max-w-sm h-12",
                                 src: company.path
@@ -506,8 +503,7 @@ function LandingPageLayout$CuratedResources(Props) {
                             return React.createElement("a", {
                                         key: String(i),
                                         className: "hover:bg-gray-80 bg-gray-90 px-5 pb-8 relative rounded-xl min-w-[200px]",
-                                        href: card.href,
-                                        target: "_blank"
+                                        href: card.href
                                       }, React.createElement("img", {
                                             className: "h-12 absolute mt-5",
                                             src: card.imgSrc

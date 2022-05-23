@@ -140,7 +140,7 @@ module DocsSection = {
         </div>
 
       if isAbsolute {
-        <a href rel="noopener noreferrer" target="_blank" className=""> content </a>
+        <a href rel="noopener noreferrer" className=""> content </a>
       } else {
         <Next.Link href> <a className=""> content </a> </Next.Link>
       }
@@ -395,18 +395,17 @@ module MobileNav = {
           <a
             href="https://twitter.com/rescriptlang"
             rel="noopener noreferrer"
-            target="_blank"
             className=extLink>
             {React.string("Twitter")}
           </a>
         </li>
         <li className=base>
-          <a href=githubHref rel="noopener noreferrer" target="_blank" className=extLink>
+          <a href=githubHref rel="noopener noreferrer" className=extLink>
             {React.string("GitHub")}
           </a>
         </li>
         <li className=base>
-          <a href=discourseHref rel="noopener noreferrer" target="_blank" className=extLink>
+          <a href=discourseHref rel="noopener noreferrer" className=extLink>
             {React.string("Forum")}
           </a>
         </li>
@@ -561,17 +560,17 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
           <div className="hidden md:flex items-center">
             <div className="hidden sm:block mr-6"> <DocSearch /> </div>
             <a
-              href=githubHref rel="noopener noreferrer" target="_blank" className={"mr-5 " ++ link}>
+
+              href=githubHref rel="noopener noreferrer" className={"mr-5 " ++ link}>
               <Icon.GitHub className="w-6 h-6 opacity-50 hover:opacity-100" />
             </a>
             <a
               href="https://twitter.com/rescriptlang"
               rel="noopener noreferrer"
-              target="_blank"
               className={"mr-5 " ++ link}>
               <Icon.Twitter className="w-6 h-6 opacity-50 hover:opacity-100" />
             </a>
-            <a href=discourseHref rel="noopener noreferrer" target="_blank" className=link>
+            <a href=discourseHref rel="noopener noreferrer" className=link>
               <Icon.Discourse className="w-6 h-6 opacity-50 hover:opacity-100" />
             </a>
           </div>

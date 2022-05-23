@@ -253,11 +253,7 @@ let make = (
 
   let editLinkEl = switch editHref {
   | Some(href) =>
-    <a
-      href
-      className="inline text-14 hover:underline text-fire"
-      target="_blank"
-      rel="noopener noreferrer">
+    <a href className="inline text-14 hover:underline text-fire" rel="noopener noreferrer">
       {React.string("Edit")}
     </a>
   | None => React.null

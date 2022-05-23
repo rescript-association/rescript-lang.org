@@ -154,8 +154,7 @@ function Blog$FeatureCard(Props) {
                                 }, authorImg), React.createElement("div", undefined, React.createElement("a", {
                                       className: "hover:text-gray-60",
                                       href: "https://twitter.com/" + author.twitter,
-                                      rel: "noopener noreferrer",
-                                      target: "_blank"
+                                      rel: "noopener noreferrer"
                                     }, author.fullname), category !== undefined ? React.createElement(React.Fragment, undefined, middleDotSpacer, category, middleDotSpacer) : middleDotSpacer, Util.$$Date.toDayMonthYear(date))), React.createElement("p", {
                               className: "body-md text-gray-70"
                             }, firstParagraph))), React.createElement(Next.Link.make, {

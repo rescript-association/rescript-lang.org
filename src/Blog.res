@@ -174,8 +174,7 @@ module FeatureCard = {
                 <a
                   className="hover:text-gray-60"
                   href={"https://twitter.com/" ++ author.twitter}
-                  rel="noopener noreferrer"
-                  target="_blank">
+                  rel="noopener noreferrer">
                   {React.string(author.fullname)}
                 </a>
                 {switch category {

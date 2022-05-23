@@ -53,8 +53,7 @@ module AuthorBox = {
         <a
           href={"https://twitter.com/" ++ author.twitter}
           className="hover:text-gray-80"
-          rel="noopener noreferrer"
-          target="_blank">
+          rel="noopener noreferrer">
           {React.string(author.fullname)}
         </a>
         <div className="text-gray-60"> {React.string(author.role)} </div>

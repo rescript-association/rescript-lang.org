@@ -98,8 +98,7 @@ exports.Button = Button;`,
           <div>
             <Next.Link href={`/try?code=${LzString.compressToEncodedURIComponent(example.res)}}`}>
               <a
-                className="captions md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60"
-                target="_blank">
+                className="captions md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60">
                 {React.string("Edit this example in Playground")}
               </a>
             </Next.Link>
@@ -462,10 +461,7 @@ module OtherSellingPoints = {
           </p>
           <div className="mt-6">
             <Button
-              href="https://forum.rescript-lang.org"
-              target="_blank"
-              size={Button.Small}
-              kind={Button.PrimaryBlue}>
+              href="https://forum.rescript-lang.org" size={Button.Small} kind={Button.PrimaryBlue}>
               {React.string("Join our Forum")}
             </Button>
           </div>
@@ -524,7 +520,7 @@ module TrustedBy = {
           let (companyKey, renderedCompany) = switch company {
           | Logo({name, path, url}) => (
               name,
-              <a href=url target="_blank" rel="noopener noreferrer">
+              <a href=url rel="noopener noreferrer">
                 <img className="hover:opacity-75 max-w-sm h-12" src=path />
               </a>,
             )
@@ -663,7 +659,6 @@ module CuratedResources = {
             <a
               key={Belt.Int.toString(i)}
               href={card.href}
-              target="_blank"
               className="hover:bg-gray-80 bg-gray-90 px-5 pb-8 relative rounded-xl min-w-[200px]">
               <img className="h-12 absolute mt-5" src=card.imgSrc />
               <h5 className="text-gray-10 hl-4 mt-32 h-12"> {card.title} </h5>

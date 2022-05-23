@@ -12,8 +12,7 @@ function Image$default(Props) {
               className: "mt-8 mb-12 md:-mx-16"
             }, React.createElement("a", {
                   href: src,
-                  rel: "noopener noreferrer",
-                  target: "_blank"
+                  rel: "noopener noreferrer"
                 }, React.createElement("img", {
                       className: "w-full " + shadow,
                       src: src
