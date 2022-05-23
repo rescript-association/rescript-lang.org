@@ -121,4 +121,9 @@ let companies = [
     url: "https://reka.market",
     path: "/static/lp/reka_market.svg",
   }),
+  Logo({
+    name: "Better Cart",
+    url: "https://getbettercart.com",
+    path: "/static/lp/bettercart.svg",
+  }),
 ]
