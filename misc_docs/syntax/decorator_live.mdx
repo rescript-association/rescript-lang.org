@@ -6,9 +6,9 @@ summary: "This is the `@live` decorator."
 category: "decorators"
 ---
 
-The `@live` decorator is for [`reanalyze`](https://github.com/rescript-association/reanalyze), a static analysis tool for ReScript that can do dead code analysis.
+> This decorator requires [`reanalyze`](https://github.com/rescript-association/reanalyze), a code analysis tool for ReScript, to be installed. [Click here to read about how you get started with reanalyze.](https://github.com/rescript-association/reanalyze).
 
-`@live` tells the dead code analysis that the value should be considered live, even though it might appear to be dead. This is typically used in case of FFI where there are indirect ways to access values.
+`@live` tells reanalyze's dead code analysis that the value should be considered live, even though it might appear to be dead. This is typically used in case of FFI where there are indirect ways to access values.
 It can be added to everything that could otherwise be considered unused by the dead code analysis - values, functions, arguments, records, individual record fields, and so on.
 
 ### References
