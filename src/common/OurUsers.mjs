@@ -145,6 +145,12 @@ var companies = [
     url: "https://reka.market",
     path: "/static/lp/reka_market.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Better Cart",
+    url: "https://getbettercart.com",
+    path: "/static/lp/bettercart.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
