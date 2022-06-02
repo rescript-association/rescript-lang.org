@@ -23,6 +23,8 @@ This is the first community-powered release. See the [May 2022 Meeting Notes](ht
 - Add support for unicode strings (e.g `"Hallöle"` will work like in JavaScript; see [PR](https://github.com/rescript-lang/syntax/pull/433))
 - (breaking) Remove OCaml’s Format module (should have no impact on the majority of ReScript users; see [discussion](https://forum.rescript-lang.org/t/what-stable-type-system-features-we-are-going-to-preserve-from-ocaml/1251))
 - (breaking) Remove / deprecate several unused / unsupported functions from Pervasives (should not have any impact on existing ReScript code)
+- (breaking) Remove functionality for reprinting Reason to ReScript (users may use `rescript@9.1.4` to upgrade their `.re` files)
+- (breaking) Remove deprecated `@bs.send.pipe` decorator (existing code needs to be migrated to `@send` instead)
 - Bugfixes etc.
 
 ## Future
@@ -31,9 +33,9 @@ This is the first community-powered release. See the [May 2022 Meeting Notes](ht
 
 - Add opt-in configuration flag `stdlib-future` to disable OCaml related stdlib code (for writing future proof code; see [discussion](https://forum.rescript-lang.org/t/roles-for-belt-js-and-pervasives-in-rescript/1683))
 - Convert stdlib files (`Js`, `Belt`, etc) to ReScript syntax ([tracking issue](https://github.com/rescript-lang/rescript-compiler/issues/4872))
-- Make `bsconfig.json` json compliant ([Proposal](https://forum.rescript-lang.org/t/proposed-changes-make-bsconfig-json-standard-compilant/1859))
+- Make `bsconfig.json` json compliant ([proposal](https://forum.rescript-lang.org/t/proposed-changes-make-bsconfig-json-standard-compilant/1859))
+- Add option to use `rescript.json` instead of `bsconfig.json`
 - Infix operator support (only for a dedicated set of math operators `+`, `-`, `-.`, `/`, `%`, etc.; see the [tracking issue](https://github.com/rescript-lang/syntax/issues/440))
 - Docstring syntax support: `/** */` instead of `@ocaml.doc("My docstring")` ([tracking issue](https://github.com/rescript-lang/syntax/issues/439))
-- Removal of the ocaml stdlib (removes globally accessible modules like `Array`, `List`, etc.)
 - PPX only allowed on top level packages?
 - Removal of recursive modules?
