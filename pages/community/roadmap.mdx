@@ -21,15 +21,16 @@ This is the first community-powered release. See the [May 2022 Meeting Notes](ht
 ### Notable changes
 - Add M1 support
 - Add support for unicode strings (e.g `"Hallöle"` will work like in JavaScript; see [PR](https://github.com/rescript-lang/syntax/pull/433))
-- Add opt-in configuration flag `stdlib-future` to disable OCaml related stdlib code (for writing future proof code; see [discussion](https://forum.rescript-lang.org/t/roles-for-belt-js-and-pervasives-in-rescript/1683))
 - (breaking) Remove OCaml’s Format module (should have no impact on the majority of ReScript users; see [discussion](https://forum.rescript-lang.org/t/what-stable-type-system-features-we-are-going-to-preserve-from-ocaml/1251))
-- Convert stdlib files (`Js`, `Belt`, etc) to ReScript syntax ([tracking issue](https://github.com/rescript-lang/rescript-compiler/issues/4872))
-
+- (breaking) Remove / deprecate several unused / unsupported functions from Pervasives (should not have any impact on existing ReScript code)
+- Bugfixes etc.
 
 ## Future
 
 > **Important:** This list helps to set expectations, so it may change in the future.
 
+- Add opt-in configuration flag `stdlib-future` to disable OCaml related stdlib code (for writing future proof code; see [discussion](https://forum.rescript-lang.org/t/roles-for-belt-js-and-pervasives-in-rescript/1683))
+- Convert stdlib files (`Js`, `Belt`, etc) to ReScript syntax ([tracking issue](https://github.com/rescript-lang/rescript-compiler/issues/4872))
 - Make `bsconfig.json` json compliant ([Proposal](https://forum.rescript-lang.org/t/proposed-changes-make-bsconfig-json-standard-compilant/1859))
 - Infix operator support (only for a dedicated set of math operators `+`, `-`, `-.`, `/`, `%`, etc.; see the [tracking issue](https://github.com/rescript-lang/syntax/issues/440))
 - Docstring syntax support: `/** */` instead of `@ocaml.doc("My docstring")` ([tracking issue](https://github.com/rescript-lang/syntax/issues/439))
