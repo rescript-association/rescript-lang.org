@@ -126,4 +126,9 @@ let companies = [
     url: "https://getbettercart.com",
     path: "/static/lp/bettercart.svg",
   }),
+  Logo({
+    name: "Greenlabs",
+    url: "https://greenlabs.co.kr/",
+    path: "/static/lp/greenlabs.svg",
+  }),
 ]
