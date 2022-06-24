@@ -60,6 +60,21 @@ module Json = {
 }
 
 module Url = {
+  type t = {
+    hash: string,
+    host: string,
+    hostname: string,
+    href: string,
+    origin: string,
+    password: string,
+    pathname: string,
+    port: string,
+    protocol: string,
+    search: string
+  }
+  @new external interfaceURL: string => t = "URL"
+  let make = url => interfaceURL(url)
+
   let isAbsolute: string => bool = %raw(`
     function(str) {
       var r = new RegExp('^(?:[a-z]+:)?//', 'i');

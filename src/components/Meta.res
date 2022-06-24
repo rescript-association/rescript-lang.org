@@ -68,5 +68,19 @@ let make = (
     /* TODO: Undo this later */
     /* <meta key="twitter:image" property="twitter:image" content=ogImage /> */
     <link rel="alternate" type_="application/rss+xml" title="ReScript Blog" href="/blog/feed.xml" />
+
+    /* DocSearch Metatags */
+    {
+
+      let url = Next.Router.useRouter().route->Url.parse
+
+      let version = switch url.version {
+      | Version(version) => version
+      | NoVersion => "latest"
+      | Latest => "latest"
+      }
+
+      <meta name="docsearch:version" content={version} />
+    }
   </Head>
 }

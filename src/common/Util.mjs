@@ -14,6 +14,10 @@ var $$String = {
   capitalize: capitalize
 };
 
+function make(url) {
+  return new URL(url);
+}
+
 var isAbsolute = (function(str) {
       var r = new RegExp('^(?:[a-z]+:)?//', 'i');
       if (r.test(str))
@@ -22,10 +26,6 @@ var isAbsolute = (function(str) {
       }
       return false;
     });
-
-var Url = {
-  isAbsolute: isAbsolute
-};
 
 function toDayMonthYear(date) {
   return new (Intl.DateTimeFormat)("en-US", {
@@ -37,6 +37,11 @@ function toDayMonthYear(date) {
 
 var $$Date = {
   toDayMonthYear: toDayMonthYear
+};
+
+var Url = {
+  isAbsolute: isAbsolute,
+  make: make
 };
 
 var Unsafe = {

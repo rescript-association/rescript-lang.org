@@ -7,8 +7,8 @@ import * as Util from "../common/Util.mjs";
 import * as Curry from "rescript/lib/es6/curry.js";
 import * as Hooks from "../common/Hooks.mjs";
 import * as React from "react";
+import * as Search from "./Search.mjs";
 import * as Constants from "../common/Constants.mjs";
-import * as DocSearch from "./DocSearch.mjs";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as ReactDOMStyle from "@rescript/react/src/ReactDOMStyle.mjs";
@@ -381,10 +381,6 @@ function Navigation$MobileNav(Props) {
               className: "border-gray-80 border-t"
             }, React.createElement("ul", undefined, React.createElement("li", {
                       className: base
-                    }, React.createElement(DocSearch.Textbox.make, {
-                          id: "docsearch-mobile"
-                        })), React.createElement("li", {
-                      className: base
                     }, React.createElement(Next.Link.make, {
                           href: "/try",
                           children: React.createElement("a", {
@@ -552,7 +548,7 @@ function Navigation(Props) {
       });
   return React.createElement(React.Fragment, undefined, React.createElement("nav", {
                   ref: navRef,
-                  className: fixedNav + " z-50 px-4 flex xs:justify-center w-full h-16 bg-gray-90 shadow text-white-80 text-14",
+                  className: fixedNav + " items-center z-50 px-4 flex xs:justify-center w-full h-16 bg-gray-90 shadow text-white-80 text-14",
                   id: "header",
                   style: {
                     minWidth: minWidth
@@ -598,28 +594,28 @@ function Navigation(Props) {
                                         className: "hidden xs:block " + linkOrActiveLink("/community", route)
                                       }, "Community")
                                 })), React.createElement("div", {
-                              className: "hidden md:flex items-center"
-                            }, React.createElement("div", {
-                                  className: "hidden sm:block mr-6"
-                                }, React.createElement(DocSearch.make, {})), React.createElement("a", {
-                                  className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px",
-                                  href: githubHref,
-                                  rel: "noopener noreferrer"
-                                }, React.createElement(Icon.GitHub.make, {
-                                      className: "w-6 h-6 opacity-50 hover:opacity-100"
-                                    })), React.createElement("a", {
-                                  className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px",
-                                  href: "https://twitter.com/rescriptlang",
-                                  rel: "noopener noreferrer"
-                                }, React.createElement(Icon.Twitter.make, {
-                                      className: "w-6 h-6 opacity-50 hover:opacity-100"
-                                    })), React.createElement("a", {
-                                  className: link,
-                                  href: discourseHref,
-                                  rel: "noopener noreferrer"
-                                }, React.createElement(Icon.Discourse.make, {
-                                      className: "w-6 h-6 opacity-50 hover:opacity-100"
-                                    }))))), React.createElement("button", {
+                              className: "md:flex"
+                            }, React.createElement(Search.make, {}), React.createElement("div", {
+                                  className: "hidden md:flex items-center ml-5"
+                                }, React.createElement("a", {
+                                      className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px",
+                                      href: githubHref,
+                                      rel: "noopener noreferrer"
+                                    }, React.createElement(Icon.GitHub.make, {
+                                          className: "w-6 h-6 opacity-50 hover:opacity-100"
+                                        })), React.createElement("a", {
+                                      className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px",
+                                      href: "https://twitter.com/rescriptlang",
+                                      rel: "noopener noreferrer"
+                                    }, React.createElement(Icon.Twitter.make, {
+                                          className: "w-6 h-6 opacity-50 hover:opacity-100"
+                                        })), React.createElement("a", {
+                                      className: link,
+                                      href: discourseHref,
+                                      rel: "noopener noreferrer"
+                                    }, React.createElement(Icon.Discourse.make, {
+                                          className: "w-6 h-6 opacity-50 hover:opacity-100"
+                                        })))))), React.createElement("button", {
                       className: "h-full px-4 xs:hidden flex items-center hover:text-white",
                       onClick: (function (evt) {
                           evt.preventDefault();
