@@ -514,7 +514,7 @@ module TrustedBy = {
         {React.string("Trusted by our users")}
       </h3>
       <div
-        className="flex flex-wrap mx-4 space-y-4 justify-center items-center max-w-xl lg:mx-auto mt-16 ">
+        className="flex flex-wrap mx-4 gap-8 justify-center items-center max-w-xl lg:mx-auto mt-16 ">
         {OurUsers.companies
         ->Js.Array2.map(company => {
           let (companyKey, renderedCompany) = switch company {
