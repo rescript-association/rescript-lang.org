@@ -468,7 +468,7 @@ module Li = {
       }
     }
 
-    <li className="md-li flex mt-3 leading-4 ml-2"> elements </li>
+    <li className="md-li mt-3 leading-4 ml-2"> elements </li>
   }
 }
 
