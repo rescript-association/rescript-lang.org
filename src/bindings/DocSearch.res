@@ -1,3 +1,4 @@
+// https://docsearch.algolia.com/docs/api
 type contentType =
   | Content
   | Lvl0
@@ -39,7 +40,11 @@ type item = {
 }
 
 type navigator = {
-  navigate: @uncurry (item => unit)
+  navigate: item => unit
+}
+
+type searchParameters = {
+  facetFilters: array<string>
 }
 
 @module("@docsearch/react") @react.component
@@ -47,7 +52,8 @@ external make: (
   ~appId: string,
   ~indexName: string,
   ~apiKey: string,
-  ~transformItems: @uncurry transformItems => transformItems=?,
-  ~hitComponent: @uncurry hitComponent => React.element=?,
-  ~navigator: navigator=?
+  ~transformItems: transformItems => transformItems=?,
+  ~hitComponent: hitComponent => React.element=?,
+  ~navigator: navigator=?,
+  ~searchParameters: searchParameters=?
 ) => React.element = "DocSearch"
