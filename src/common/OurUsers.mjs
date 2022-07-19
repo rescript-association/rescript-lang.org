@@ -151,6 +151,18 @@ var companies = [
     url: "https://getbettercart.com",
     path: "/static/lp/bettercart.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Greenlabs",
+    url: "https://greenlabs.co.kr/",
+    path: "/static/lp/greenlabs.svg",
+    [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Maker",
+    url: "https://maker.co/",
+    path: "/static/lp/maker.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
