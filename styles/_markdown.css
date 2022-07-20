@@ -19,7 +19,7 @@
 
 .md-ol > .md-li::before {
   content: counter(li) ".";
-  @apply font-semibold;
+  @apply absolute font-semibold;
 }
 
 .md-ul > .md-li::before{
@@ -37,7 +37,7 @@
 }
 
 .md-li > p {
-  @apply text-gray-80 ml-4;
+  @apply text-gray-80 ml-5;
 }
 
 .md-li > ul > li p {
