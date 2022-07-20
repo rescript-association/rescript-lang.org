@@ -131,4 +131,9 @@ let companies = [
     url: "https://greenlabs.co.kr/",
     path: "/static/lp/greenlabs.svg",
   }),
+  Logo({
+    name: "Maker",
+    url: "https://maker.co/",
+    path: "/static/lp/maker.svg",
+  }),
 ]
