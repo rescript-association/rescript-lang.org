@@ -97,7 +97,7 @@ module FancyInput = {
         type_="text"
         ?className
         ref=?{Js.Nullable.toOption(ref_)->Belt.Option.map(
-          ReactDOMRe.Ref.domRef,
+          ReactDOM.Ref.domRef,
         )}
       />
       children
