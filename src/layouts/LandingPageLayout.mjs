@@ -400,7 +400,7 @@ function LandingPageLayout$TrustedBy(Props) {
             }, React.createElement("h3", {
                   className: "hl-1 text-gray-80 text-center max-w-576 mx-auto"
                 }, "Trusted by our users"), React.createElement("div", {
-                  className: "flex flex-wrap mx-4 space-y-4 justify-center items-center max-w-xl lg:mx-auto mt-16 "
+                  className: "flex flex-wrap mx-4 gap-8 justify-center items-center max-w-xl lg:mx-auto mt-16 "
                 }, OurUsers.companies.map(function (company) {
                       var renderedCompany = React.createElement("a", {
                             href: company.url,
