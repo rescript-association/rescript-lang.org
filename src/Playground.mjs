@@ -19,9 +19,9 @@ import * as Belt_Result from "rescript/lib/es6/belt_Result.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as HighlightJs from "./common/HighlightJs.mjs";
 import * as CompilerManagerHook from "./common/CompilerManagerHook.mjs";
+import * as RenderOutputManager from "./common/RenderOutputManager.mjs";
 import * as RescriptCompilerApi from "./bindings/RescriptCompilerApi.mjs";
 import * as WarningFlagDescription from "./common/WarningFlagDescription.mjs";
-import RemoveImportsAndExports from "./ffi/removeImportsAndExports";
 
 if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
   require("codemirror/mode/javascript/javascript");
@@ -1568,27 +1568,11 @@ function Playground$ControlPanel(Props) {
     } else {
       var ready$1 = state._0;
       var match = ready$1.result;
-      compiledCode = typeof match === "number" ? undefined : (
-          match.TAG === /* Conv */0 ? (
-              match._0.TAG === /* Success */0 ? codeFromResult(ready$1.result) : undefined
-            ) : (
-              match._0.TAG === /* Success */1 ? codeFromResult(ready$1.result) : undefined
-            )
-        );
+      compiledCode = typeof match === "number" || match.TAG === /* Conv */0 || match._0.TAG !== /* Success */1 ? undefined : codeFromResult(ready$1.result);
     }
     var onRunOutputClick = function (evt) {
       evt.preventDefault();
-      var code = Belt_Option.getWithDefault(compiledCode, "");
-      var iframeWin = document.getElementById("iframe-eval");
-      if (iframeWin == null) {
-        return ;
-      }
-      var win = iframeWin.contentWindow;
-      if (win === undefined) {
-        return ;
-      }
-      var codeToRun = "(function () {\n          " + RemoveImportsAndExports(code) + "\n          const root = document.getElementById(\"root\");\n          ReactDOM.render(App.make(), root);\n        })();";
-      return win.postMessage(codeToRun, "*");
+      return RenderOutputManager.renderOutput(compiledCode);
     };
     children = React.createElement(React.Fragment, undefined, React.createElement("div", {
               className: "mr-2"
@@ -1737,10 +1721,10 @@ function Playground$OutputPanel(Props) {
           height: "calc(100vh - 11.5rem)"
         }
       }, HighlightJs.renderHLJS(undefined, true, match$2[0], "js", undefined));
-  var outputPane;
+  var renderOutputPane;
   var exit$4 = 0;
   if (typeof compilerState === "number") {
-    outputPane = null;
+    renderOutputPane = null;
   } else {
     switch (compilerState.TAG | 0) {
       case /* Ready */2 :
@@ -1748,18 +1732,18 @@ function Playground$OutputPanel(Props) {
           exit$4 = 1;
           break;
       default:
-        outputPane = null;
+        renderOutputPane = null;
     }
   }
   if (exit$4 === 1) {
     var match$3 = compilerState._0.result;
-    outputPane = typeof match$3 === "number" || match$3.TAG === /* Conv */0 || match$3._0.TAG !== /* Success */1 ? null : React.createElement("iframe", {
+    renderOutputPane = typeof match$3 === "number" || match$3.TAG === /* Conv */0 || match$3._0.TAG !== /* Success */1 ? null : React.createElement("iframe", {
+            className: "relative w-full bg-gray-90 text-gray-20",
             id: "iframe-eval",
             style: {
-              backgroundColor: "#fff",
-              height: "calc(100vh - 11.5rem)"
+              height: "calc(100vh - 9rem)"
             },
-            srcDoc: "\n      <html lang=\"en\">\n        <head>\n          <meta charset=\"UTF-8\" />\n          <title>Playground Output</title>\n        </head>\n\n        <body>\n          <div id=\"root\"></div>\n          <script\n            src=\"https://unpkg.com/react@17/umd/react.production.min.js\"\n            crossorigin\n          ></script>\n          <script\n            src=\"https://unpkg.com/react-dom@17/umd/react-dom.production.min.js\"\n            crossorigin\n          ></script>\n          <script\n            src=\"https://bundleplayground.s3.sa-east-1.amazonaws.com/bundle.js\"\n            crossorigin\n          ></script>\n          <script>\n            window.addEventListener(\"message\", (event) => {\n              try {\n                eval(event.data);\n              } catch (err) {\n                console.log(err);\n              }\n            });\n          </script>\n        </body>\n      </html>\n    ",
+            srcDoc: RenderOutputManager.Frame.srcdoc,
             width: "100%"
           });
   }
@@ -1840,7 +1824,7 @@ function Playground$OutputPanel(Props) {
             style: {
               height: "50%"
             }
-          }, outputPane)
+          }, renderOutputPane)
     },
     {
       title: "Problems",

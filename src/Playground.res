@@ -1100,70 +1100,6 @@ module Settings = {
     </div>
   }
 }
-module Transpiler = {
-  @module("./ffi/removeImportsAndExports") external transpile: string => string = "default"
-
-  let srcdoc = `
-      <html lang="en">
-        <head>
-          <meta charset="UTF-8" />
-          <title>Playground Output</title>
-        </head>
-
-        <body>
-          <div id="root"></div>
-          <script
-            src="https://unpkg.com/react@17/umd/react.production.min.js"
-            crossorigin
-          ></script>
-          <script
-            src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
-            crossorigin
-          ></script>
-          <script
-            src="https://bundleplayground.s3.sa-east-1.amazonaws.com/bundle.js"
-            crossorigin
-          ></script>
-          <script>
-            window.addEventListener("message", (event) => {
-              try {
-                eval(event.data);
-              } catch (err) {
-                console.log(err);
-              }
-            });
-          </script>
-        </body>
-      </html>
-    `
-  type document
-  type contentWindow = {
-    @uncurry
-    postMessage: (. string, string) => unit,
-  }
-  type element = {contentWindow: option<contentWindow>}
-  @send external getElementById: (document, string) => Js.nullable<element> = "getElementById"
-  @val external doc: document = "document"
-
-  let run = (~code: string) => {
-    let iframeWin = Js.toOption(getElementById(doc, "iframe-eval"))
-    switch iframeWin {
-    | Some(element) =>
-      switch element.contentWindow {
-      | Some(win) => {
-          let codeToRun = `(function () {
-          ${transpile(code)}
-          const root = document.getElementById("root");
-          ReactDOM.render(App.make(), root);
-        })();`
-          win.postMessage(. codeToRun, "*")
-        }
-      | None => ()
-      }
-    | None => ()
-    }
-  }
-}
 
 module ControlPanel = {
   let codeFromResult = (result: FinalResult.t): string => {
@@ -1294,9 +1230,7 @@ module ControlPanel = {
       let compiledCode = switch state {
       | Ready(ready) =>
         switch ready.result {
-        | Comp(Success(_))
-        | Conv(Success(_)) =>
-          codeFromResult(ready.result)->Some
+        | Comp(Success(_)) => codeFromResult(ready.result)->Some
         | _ => None
         }
       | _ => None
@@ -1304,7 +1238,7 @@ module ControlPanel = {
 
       let onRunOutputClick = evt => {
         ReactEvent.Mouse.preventDefault(evt)
-        Transpiler.run(~code=Belt.Option.getWithDefault(compiledCode, ""))
+        RenderOutputManager.renderOutput(compiledCode)
       }
 
       <>
@@ -1405,7 +1339,7 @@ module OutputPanel = {
         {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="js", ())}
       </pre>
 
-    let outputPane: React.element = switch compilerState {
+    let renderOutputPane: React.element = switch compilerState {
     | Compiling(ready, _)
     | Ready(ready) =>
       switch ready.result {
@@ -1413,8 +1347,9 @@ module OutputPanel = {
         <iframe
           width="100%"
           id="iframe-eval"
-          style={ReactDOMStyle.make(~backgroundColor="#fff", ~height="calc(100vh - 11.5rem)", ())}
-          srcDoc=Transpiler.srcdoc
+          className="relative w-full bg-gray-90 text-gray-20"
+          style={ReactDOMStyle.make(~height="calc(100vh - 9rem)", ())}
+          srcDoc=RenderOutputManager.Frame.srcdoc
         />
       | _ => React.null
       }
@@ -1472,7 +1407,7 @@ module OutputPanel = {
       {Pane.title: "JavaScript", content: output},
       {
         title: "Render",
-        content: <div style={ReactDOM.Style.make(~height="50%", ())}> outputPane </div>,
+        content: <div style={ReactDOM.Style.make(~height="50%", ())}> renderOutputPane </div>,
       },
       {
         title: "Problems",
