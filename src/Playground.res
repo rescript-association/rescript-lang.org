@@ -1104,45 +1104,38 @@ module Transpiler = {
   @module("./ffi/removeImportsAndExports") external transpile: string => string = "default"
 
   let srcdoc = `
-        <!DOCTYPE html>
-          <html lang="en">
-            <head>
-              <meta charset="UTF-8" />
-              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-              <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-              <title>Document</title>
-            </head>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8" />
+          <title>Playground Output</title>
+        </head>
 
-            <body>
-              <div id="root"></div>
-                <script
-                  src="https://unpkg.com/react@17/umd/react.production.min.js"
-                  crossorigin
-                ></script>
-                <script
-                  src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
-                  crossorigin
-                ></script>
-                <script
-                  src="https://bundleplayground.s3.sa-east-1.amazonaws.com/bundle.js"
-                  crossorigin
-                ></script>
-                <script>
-                  window.addEventListener("message", (event) => {
-                    const mainWindow = event.source;
-                    let result = "all good";
-                    try {
-                      eval(event.data);
-                  } catch (err) {
-                    console.log(err);
-                    result = "eval() threw an exception.";
-                  }
-                  mainWindow.postMessage(result, event.origin);
-                 });
-              </script>
-  </body>
-</html>
-      `
+        <body>
+          <div id="root"></div>
+          <script
+            src="https://unpkg.com/react@17/umd/react.production.min.js"
+            crossorigin
+          ></script>
+          <script
+            src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
+            crossorigin
+          ></script>
+          <script
+            src="https://bundleplayground.s3.sa-east-1.amazonaws.com/bundle.js"
+            crossorigin
+          ></script>
+          <script>
+            window.addEventListener("message", (event) => {
+              try {
+                eval(event.data);
+              } catch (err) {
+                console.log(err);
+              }
+            });
+          </script>
+        </body>
+      </html>
+    `
   type document
   type contentWindow = {
     @uncurry
@@ -1309,14 +1302,17 @@ module ControlPanel = {
       | _ => None
       }
 
+      let onRunOutputClick = evt => {
+        ReactEvent.Mouse.preventDefault(evt)
+        Transpiler.run(~code=Belt.Option.getWithDefault(compiledCode, ""))
+      }
+
       <>
         <div className="mr-2">
           <Button onClick=onFormatClick> {React.string("Format")} </Button>
         </div>
         <div className="mr-2">
-          <Button onClick={_ => Transpiler.run(~code=Belt.Option.getWithDefault(compiledCode, ""))}>
-            {React.string("Run")}
-          </Button>
+          <Button onClick={onRunOutputClick}> {React.string("Run")} </Button>
         </div>
         <ShareButton actionIndicatorKey createShareLink />
       </>
@@ -1413,19 +1409,16 @@ module OutputPanel = {
     | Compiling(ready, _)
     | Ready(ready) =>
       switch ready.result {
-      | Comp(Success(_))
-      | Conv(Success(_)) =>
-        <React.Fragment>
-          <iframe
-            width="100%"
-            id="iframe-eval"
-            style={ReactDOMStyle.make(~backgroundColor="#fff", ~height="calc(100vh - 11.5rem)", ())}
-            srcDoc=Transpiler.srcdoc
-          />
-        </React.Fragment>
-      | _ => <div />
+      | Comp(Success(_)) =>
+        <iframe
+          width="100%"
+          id="iframe-eval"
+          style={ReactDOMStyle.make(~backgroundColor="#fff", ~height="calc(100vh - 11.5rem)", ())}
+          srcDoc=Transpiler.srcdoc
+        />
+      | _ => React.null
       }
-    | _ => <div />
+    | _ => React.null
     }
 
     let output =

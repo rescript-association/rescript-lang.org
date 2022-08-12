@@ -1576,6 +1576,20 @@ function Playground$ControlPanel(Props) {
             )
         );
     }
+    var onRunOutputClick = function (evt) {
+      evt.preventDefault();
+      var code = Belt_Option.getWithDefault(compiledCode, "");
+      var iframeWin = document.getElementById("iframe-eval");
+      if (iframeWin == null) {
+        return ;
+      }
+      var win = iframeWin.contentWindow;
+      if (win === undefined) {
+        return ;
+      }
+      var codeToRun = "(function () {\n          " + RemoveImportsAndExports(code) + "\n          const root = document.getElementById(\"root\");\n          ReactDOM.render(App.make(), root);\n        })();";
+      return win.postMessage(codeToRun, "*");
+    };
     children = React.createElement(React.Fragment, undefined, React.createElement("div", {
               className: "mr-2"
             }, React.createElement(Playground$ControlPanel$Button, {
@@ -1585,19 +1599,7 @@ function Playground$ControlPanel(Props) {
               className: "mr-2"
             }, React.createElement(Playground$ControlPanel$Button, {
                   children: "Run",
-                  onClick: (function (param) {
-                      var code = Belt_Option.getWithDefault(compiledCode, "");
-                      var iframeWin = document.getElementById("iframe-eval");
-                      if (iframeWin == null) {
-                        return ;
-                      }
-                      var win = iframeWin.contentWindow;
-                      if (win === undefined) {
-                        return ;
-                      }
-                      var codeToRun = "(function () {\n          " + RemoveImportsAndExports(code) + "\n          const root = document.getElementById(\"root\");\n          ReactDOM.render(App.make(), root);\n        })();";
-                      return win.postMessage(codeToRun, "*");
-                    })
+                  onClick: onRunOutputClick
                 })), React.createElement(Playground$ControlPanel$ShareButton, {
               createShareLink: createShareLink,
               actionIndicatorKey: actionIndicatorKey
@@ -1738,7 +1740,7 @@ function Playground$OutputPanel(Props) {
   var outputPane;
   var exit$4 = 0;
   if (typeof compilerState === "number") {
-    outputPane = React.createElement("div", undefined);
+    outputPane = null;
   } else {
     switch (compilerState.TAG | 0) {
       case /* Ready */2 :
@@ -1746,39 +1748,20 @@ function Playground$OutputPanel(Props) {
           exit$4 = 1;
           break;
       default:
-        outputPane = React.createElement("div", undefined);
+        outputPane = null;
     }
   }
   if (exit$4 === 1) {
     var match$3 = compilerState._0.result;
-    var exit$5 = 0;
-    if (typeof match$3 === "number") {
-      outputPane = React.createElement("div", undefined);
-    } else if (match$3.TAG === /* Conv */0) {
-      if (match$3._0.TAG === /* Success */0) {
-        exit$5 = 2;
-      } else {
-        outputPane = React.createElement("div", undefined);
-      }
-    } else if (match$3._0.TAG === /* Success */1) {
-      exit$5 = 2;
-    } else {
-      outputPane = React.createElement("div", undefined);
-    }
-    if (exit$5 === 2) {
-      outputPane = React.createElement(React.Fragment, {
-            children: React.createElement("iframe", {
-                  id: "iframe-eval",
-                  style: {
-                    backgroundColor: "#fff",
-                    height: "calc(100vh - 11.5rem)"
-                  },
-                  srcDoc: "\n        <!DOCTYPE html>\n          <html lang=\"en\">\n            <head>\n              <meta charset=\"UTF-8\" />\n              <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n              <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\" />\n              <title>Document</title>\n            </head>\n\n            <body>\n              <div id=\"root\"></div>\n                <script\n                  src=\"https://unpkg.com/react@17/umd/react.production.min.js\"\n                  crossorigin\n                ></script>\n                <script\n                  src=\"https://unpkg.com/react-dom@17/umd/react-dom.production.min.js\"\n                  crossorigin\n                ></script>\n                <script\n                  src=\"https://bundleplayground.s3.sa-east-1.amazonaws.com/bundle.js\"\n                  crossorigin\n                ></script>\n                <script>\n                  window.addEventListener(\"message\", (event) => {\n                    const mainWindow = event.source;\n                    let result = \"all good\";\n                    try {\n                      eval(event.data);\n                  } catch (err) {\n                    console.log(err);\n                    result = \"eval() threw an exception.\";\n                  }\n                  mainWindow.postMessage(result, event.origin);\n                 });\n              </script>\n  </body>\n</html>\n      ",
-                  width: "100%"
-                })
+    outputPane = typeof match$3 === "number" || match$3.TAG === /* Conv */0 || match$3._0.TAG !== /* Success */1 ? null : React.createElement("iframe", {
+            id: "iframe-eval",
+            style: {
+              backgroundColor: "#fff",
+              height: "calc(100vh - 11.5rem)"
+            },
+            srcDoc: "\n      <html lang=\"en\">\n        <head>\n          <meta charset=\"UTF-8\" />\n          <title>Playground Output</title>\n        </head>\n\n        <body>\n          <div id=\"root\"></div>\n          <script\n            src=\"https://unpkg.com/react@17/umd/react.production.min.js\"\n            crossorigin\n          ></script>\n          <script\n            src=\"https://unpkg.com/react-dom@17/umd/react-dom.production.min.js\"\n            crossorigin\n          ></script>\n          <script\n            src=\"https://bundleplayground.s3.sa-east-1.amazonaws.com/bundle.js\"\n            crossorigin\n          ></script>\n          <script>\n            window.addEventListener(\"message\", (event) => {\n              try {\n                eval(event.data);\n              } catch (err) {\n                console.log(err);\n              }\n            });\n          </script>\n        </body>\n      </html>\n    ",
+            width: "100%"
           });
-    }
-    
   }
   var output = React.createElement("div", {
         className: "relative w-full bg-gray-90 text-gray-20",
