@@ -13,7 +13,6 @@ type selected = {
   apiVersion: Version.t, // The playground API version in use
   compilerVersion: string,
   ocamlVersion: string,
-  reasonVersion: string,
   libraries: array<string>,
   config: Config.t,
   instance: Compiler.t,

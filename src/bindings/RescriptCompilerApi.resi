@@ -175,7 +175,6 @@ module Compiler: {
   /*
    * Reason compiler actions
    */
-  let reasonVersion: t => string
   let reasonCompile: (t, string) => CompilationResult.t
   let reasonFormat: (t, string) => ConversionResult.t
 

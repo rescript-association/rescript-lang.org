@@ -149,7 +149,6 @@ type selected = {
   apiVersion: Version.t, // The playground API version in use
   compilerVersion: string,
   ocamlVersion: string,
-  reasonVersion: string,
   libraries: array<string>,
   config: Config.t,
   instance: Compiler.t,
@@ -345,7 +344,6 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
               apiVersion: apiVersion,
               compilerVersion: instance->Compiler.version,
               ocamlVersion: instance->Compiler.ocamlVersion,
-              reasonVersion: apiVersion == V2 ? "" : instance->Compiler.reasonVersion,
               config: config,
               libraries: libraries,
               instance: instance,
@@ -395,7 +393,6 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
             apiVersion: apiVersion,
             compilerVersion: instance->Compiler.version,
             ocamlVersion: instance->Compiler.ocamlVersion,
-            reasonVersion: apiVersion == V2 ? "" : instance->Compiler.reasonVersion,
             config: config,
             libraries: migratedLibraries,
             instance: instance,

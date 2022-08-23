@@ -378,9 +378,6 @@ module Compiler = {
     ConversionResult.decode(~fromLang=Res, ~toLang=Res, json)
   }
 
-  @get @scope("reason")
-  external reasonVersion: t => string = "version"
-
   @send @scope("reason")
   external reasonCompile: (t, string) => Js.Json.t = "compile"
   let reasonCompile = (t, code): CompilationResult.t => {

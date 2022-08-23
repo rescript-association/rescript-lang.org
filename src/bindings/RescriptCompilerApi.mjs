@@ -524,10 +524,6 @@ function Compiler_resVersion(prim) {
   return prim.rescript.version;
 }
 
-function Compiler_reasonVersion(prim) {
-  return prim.reason.version;
-}
-
 function Compiler_ocamlVersion(prim) {
   return prim.ocaml.version;
 }
@@ -553,7 +549,6 @@ var Compiler = {
   resVersion: Compiler_resVersion,
   resCompile: resCompile,
   resFormat: resFormat,
-  reasonVersion: Compiler_reasonVersion,
   reasonCompile: reasonCompile,
   reasonFormat: reasonFormat,
   ocamlVersion: Compiler_ocamlVersion,
