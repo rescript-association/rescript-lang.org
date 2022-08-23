@@ -395,12 +395,13 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                       var config = RescriptCompilerApi.Compiler.getConfig(instance);
                       var selected_compilerVersion = RescriptCompilerApi.Compiler.version(instance);
                       var selected_ocamlVersion = RescriptCompilerApi.Compiler.ocamlVersion(instance);
+                      var selected_reasonVersion = apiVersion === /* V2 */1 ? "" : RescriptCompilerApi.Compiler.reasonVersion(instance);
                       var selected = {
                         id: latest,
                         apiVersion: apiVersion,
                         compilerVersion: selected_compilerVersion,
                         ocamlVersion: selected_ocamlVersion,
-                        reasonVersion: "",
+                        reasonVersion: selected_reasonVersion,
                         libraries: libraries,
                         config: config,
                         instance: instance
@@ -456,7 +457,7 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                           var config = RescriptCompilerApi.Compiler.getConfig(instance);
                           var selected_compilerVersion = RescriptCompilerApi.Compiler.version(instance);
                           var selected_ocamlVersion = RescriptCompilerApi.Compiler.ocamlVersion(instance);
-                          var selected_reasonVersion = RescriptCompilerApi.Compiler.reasonVersion(instance);
+                          var selected_reasonVersion = apiVersion === /* V2 */1 ? "" : RescriptCompilerApi.Compiler.reasonVersion(instance);
                           var selected = {
                             id: version,
                             apiVersion: apiVersion,
