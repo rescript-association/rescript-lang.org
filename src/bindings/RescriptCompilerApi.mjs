@@ -64,16 +64,21 @@ function fromString(apiVersion) {
             [Symbol.for("name")]: "UnknownVersion"
           };
   }
+  var maj = match.hd;
   var match$1 = match.tl;
   if (!match$1) {
-    return {
-            _0: apiVersion,
-            [Symbol.for("name")]: "UnknownVersion"
-          };
+    if (maj === "2") {
+      return /* V2 */1;
+    } else {
+      return {
+              _0: apiVersion,
+              [Symbol.for("name")]: "UnknownVersion"
+            };
+    }
   }
-  var maj = Belt_Int.fromString(match.hd);
+  var maj$1 = Belt_Int.fromString(maj);
   Belt_Int.fromString(match$1.hd);
-  if (maj !== undefined && maj >= 1) {
+  if (maj$1 !== undefined && maj$1 >= 1) {
     return /* V1 */0;
   } else {
     return {
@@ -83,28 +88,20 @@ function fromString(apiVersion) {
   }
 }
 
-function defaultTargetLang(t) {
-  if (t) {
-    return /* Reason */0;
-  } else {
-    return /* Res */2;
-  }
-}
-
 function availableLanguages(t) {
-  if (t) {
-    return [/* Res */2];
-  } else {
+  if (t === 0) {
     return [
             /* Reason */0,
             /* Res */2
           ];
+  } else {
+    return [/* Res */2];
   }
 }
 
 var Version = {
   fromString: fromString,
-  defaultTargetLang: defaultTargetLang,
+  defaultTargetLang: /* Res */2,
   availableLanguages: availableLanguages
 };
 
@@ -519,10 +516,6 @@ function Compiler_resVersion(prim) {
   return prim.rescript.version;
 }
 
-function Compiler_reasonVersion(prim) {
-  return prim.reason.version;
-}
-
 function Compiler_ocamlVersion(prim) {
   return prim.ocaml.version;
 }
@@ -548,7 +541,6 @@ var Compiler = {
   resVersion: Compiler_resVersion,
   resCompile: resCompile,
   resFormat: resFormat,
-  reasonVersion: Compiler_reasonVersion,
   reasonCompile: reasonCompile,
   reasonFormat: reasonFormat,
   ocamlVersion: Compiler_ocamlVersion,

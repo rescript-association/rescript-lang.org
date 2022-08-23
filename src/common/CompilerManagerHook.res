@@ -38,7 +38,7 @@ module LoadScript = {
 module CdnMeta = {
   // Make sure versions exist on https://cdn.rescript-lang.org
   // [0] = latest
-  let versions = ["v9.1.2", "v9.0.2", "v9.0.1", "v9.0.0", "v8.4.2", "v8.3.0-dev.2"]
+  let versions = ["v10.0.0", "v9.1.2", "v9.0.2", "v9.0.1", "v9.0.0", "v8.4.2", "v8.3.0-dev.2"]
 
   let getCompilerUrl = (version: string): string =>
     j`https://cdn.rescript-lang.org/$version/compiler.js`
@@ -149,7 +149,6 @@ type selected = {
   apiVersion: Version.t, // The playground API version in use
   compilerVersion: string,
   ocamlVersion: string,
-  reasonVersion: string,
   libraries: array<string>,
   config: Config.t,
   instance: Compiler.t,
@@ -345,7 +344,6 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
               apiVersion: apiVersion,
               compilerVersion: instance->Compiler.version,
               ocamlVersion: instance->Compiler.ocamlVersion,
-              reasonVersion: instance->Compiler.reasonVersion,
               config: config,
               libraries: libraries,
               instance: instance,
@@ -354,7 +352,7 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
             let targetLang =
               Version.availableLanguages(apiVersion)
               ->Js.Array2.find(l => l === initialLang)
-              ->Belt.Option.getWithDefault(Version.defaultTargetLang(apiVersion))
+              ->Belt.Option.getWithDefault(Version.defaultTargetLang)
 
             setState(_ => Ready({
               selected: selected,
@@ -395,7 +393,6 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
             apiVersion: apiVersion,
             compilerVersion: instance->Compiler.version,
             ocamlVersion: instance->Compiler.ocamlVersion,
-            reasonVersion: instance->Compiler.reasonVersion,
             config: config,
             libraries: migratedLibraries,
             instance: instance,
@@ -403,7 +400,7 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
 
           setState(_ => Ready({
             selected: selected,
-            targetLang: Version.defaultTargetLang(apiVersion),
+            targetLang: Version.defaultTargetLang,
             versions: ready.versions,
             errors: [],
             result: FinalResult.Nothing,
@@ -424,6 +421,13 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
         switch lang {
         | Lang.OCaml => instance->Compiler.ocamlCompile(code)
         | Lang.Reason => instance->Compiler.reasonCompile(code)
+        | Lang.Res => instance->Compiler.resCompile(code)
+        }
+      | Version.V2 =>
+        switch lang {
+        | Lang.OCaml => instance->Compiler.ocamlCompile(code)
+        | Lang.Reason =>
+          CompilationResult.UnexpectedError(j`Reason not supported with API version "$apiVersion"`)
         | Lang.Res => instance->Compiler.resCompile(code)
         }
       | UnknownVersion(apiVersion) =>
