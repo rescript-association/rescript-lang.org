@@ -28,7 +28,7 @@ module Version: {
   // Helps finding the right API version
   let fromString: string => t
 
-  let defaultTargetLang: t => Lang.t
+  let defaultTargetLang: Lang.t
 
   let availableLanguages: t => array<Lang.t>
 }

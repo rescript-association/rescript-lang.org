@@ -88,14 +88,6 @@ function fromString(apiVersion) {
   }
 }
 
-function defaultTargetLang(t) {
-  if (t === 0) {
-    return /* Res */2;
-  } else {
-    return /* Reason */0;
-  }
-}
-
 function availableLanguages(t) {
   if (t === 0) {
     return [
@@ -109,7 +101,7 @@ function availableLanguages(t) {
 
 var Version = {
   fromString: fromString,
-  defaultTargetLang: defaultTargetLang,
+  defaultTargetLang: /* Res */2,
   availableLanguages: availableLanguages
 };
 

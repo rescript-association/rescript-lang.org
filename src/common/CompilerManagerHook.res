@@ -352,7 +352,7 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
             let targetLang =
               Version.availableLanguages(apiVersion)
               ->Js.Array2.find(l => l === initialLang)
-              ->Belt.Option.getWithDefault(Version.defaultTargetLang(apiVersion))
+              ->Belt.Option.getWithDefault(Version.defaultTargetLang)
 
             setState(_ => Ready({
               selected: selected,
@@ -400,7 +400,7 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
 
           setState(_ => Ready({
             selected: selected,
-            targetLang: Version.defaultTargetLang(apiVersion),
+            targetLang: Version.defaultTargetLang,
             versions: ready.versions,
             errors: [],
             result: FinalResult.Nothing,
@@ -428,7 +428,6 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
         | Lang.OCaml => instance->Compiler.ocamlCompile(code)
         | Lang.Reason =>
           CompilationResult.UnexpectedError(j`Reason not supported with API version "$apiVersion"`)
-
         | Lang.Res => instance->Compiler.resCompile(code)
         }
       | UnknownVersion(apiVersion) =>

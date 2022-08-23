@@ -404,7 +404,7 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                       };
                       var targetLang = Belt_Option.getWithDefault(Caml_option.undefined_to_opt(RescriptCompilerApi.Version.availableLanguages(apiVersion).find(function (l) {
                                     return l === initialLang;
-                                  })), RescriptCompilerApi.Version.defaultTargetLang(apiVersion));
+                                  })), RescriptCompilerApi.Version.defaultTargetLang);
                       return Curry._1(setState, (function (param) {
                                     return {
                                             TAG: 2,
@@ -468,7 +468,7 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                                                 _0: {
                                                   versions: ready.versions,
                                                   selected: selected,
-                                                  targetLang: RescriptCompilerApi.Version.defaultTargetLang(apiVersion),
+                                                  targetLang: RescriptCompilerApi.Version.defaultTargetLang,
                                                   errors: [],
                                                   result: /* Nothing */0
                                                 },
