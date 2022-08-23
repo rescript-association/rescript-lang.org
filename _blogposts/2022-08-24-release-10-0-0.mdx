@@ -1,0 +1,100 @@
+---
+author: rescript-team
+date: "2022-08-24"
+previewImg: static/blog/rescript-launch/ReScript-3.jpg
+title: ReScript 10.0.0
+badge: release
+description: |
+  The first community-driven release.
+---
+
+**Compiler**
+
+#### :boom: Breaking Change
+
+- `bsconfig.json` does not support `// line` comments anymore.
+  - Example: `"suffix": ".bs.js" // determine the suffix`
+  - Fix: remove the comment and use standard json.
+- Changed return type of `Js.String.match_` as it was wrong. [#5070](https://github.com/rescript-lang/rescript-compiler/pull/5070)
+  - Example: any use of `Js.String.match_` and `Js.String2.match_`
+  - Fix: follow the type errors
+
+#### :rocket: New Feature
+
+- New records with optional fields e.g. `type opt = {x: int, y?: string}` were added as an experimental feature [#5423](https://github.com/rescript-lang/rescript-compiler/pull/5423) [#5452](https://github.com/rescript-lang/rescript-compiler/issues/5452) [New Syntax](https://github.com/rescript-lang/syntax/pull/589/files)
+- Add support for `@new @variadic` (see https://github.com/rescript-lang/rescript-compiler/pull/5364)
+
+#### :bug: Bug Fix
+
+- Classify bigint correctly [#5351](https://github.com/rescript-lang/rescript-compiler/pull/5351)
+- Fixed crash in `rescript build` on Windows [#5516](https://github.com/rescript-lang/rescript-compiler/pull/5516)
+- Fixed `rescript init` command not working [#5526](https://github.com/rescript-lang/rescript-compiler/pull/5526)
+- Fix issue with compiler log not terminated that causes problems with editor extension not clearing issues when fixed [#5545](https://github.com/rescript-lang/rescript-compiler/issues/5545)
+
+##### :nail_care: Polish
+
+- Changed Linux build to depend on GLIBC 2.28 again for compatibility with Debian 10.
+
+- Proper M1 support (CI now supports M1 native builds)
+
+**Syntax**
+
+#### :boom: Breaking Change
+
+- `@bs.send.pipe` is now removed. Earlier it was deprecated.
+- Missing labels in function application is now an error (https://forum.rescript-lang.org/t/ann-more-strict-checks-in-missed-labels/2117).
+  - Example: `let f = (x, ~z) => x + z; f(1, 2)`
+  - Fix: do `let f = (x, ~z) => x + z; f(1, ~z=2)` instead
+- Externals without `@val` annotations do not work anymore, and externals with `= ""` give an error.
+  - Example: `external setTimeout: (unit => unit, int) => float = "setTimeout"` is not supported anymore.
+  - Fix: use `@val external setTimeout: (unit => unit, int) => float = "setTimeout"` instead.
+  - Example2: `@val external setTimeout: (unit => unit, int) => float = ""` is not supported anymore.
+  - Fix2: use `@val external setTimeout: (unit => unit, int) => float = "setTimeout"` instead.
+- Strings processed at compile-time don't need escaping anymore.
+  - Example: `let blockCommentsRe = %re("/\\/\\*([^*]|[\\r\\n]|(\\*+([^*/]|[\\r\\n])))*\\*+\\//g")`.
+  - Fix: use `let blockCommentsRe = %re("/\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//g")` instead.
+- Remove parsing of "import" and "export" which was never officially supported https://github.com/rescript-lang/syntax/pull/597 https://github.com/rescript-lang/syntax/pull/599
+  - Example: `export type t = int`
+  - Fix: `@genType type t = int`
+  - Example2: `import realValue: complexNumber => float from "./MyMath"`
+  - Fix2: `@genType.import("./MyMath") external realValue: complexNumber => float = "realValue"`
+
+#### :rocket: New Feature
+
+- Doc comments `/** ... */` are now supported. Inernally, they are attributes, so are only valid at positions where `@foo` is allowed, or a syntax error is given. Similarly for module-level `/*** comments */` that can go where `@@attributes` go.
+
+#### :bug: Bug Fix
+
+- Fix printing for inline nullary functor types [#477](https://github.com/rescript-lang/syntax/pull/477)
+- Fix stripping of quotes for empty poly variants [#474](https://github.com/rescript-lang/syntax/pull/474)
+- Implement syntax for arity zero vs arity one in uncurried application in [#139](https://github.com/rescript-lang/syntax/pull/139)
+- Fix parsing of first class module exprs as part of binary/ternary expr in [#256](https://github.com/rescript-lang/syntax/pull/256)
+- Fix formatter hanging on deeply nested function calls [#261](https://github.com/rescript-lang/syntax/issues/261)
+
+**Libraries**
+
+#### :boom: Breaking Change
+
+- **"Attributes not allowed here"**. If you see this error chances are you're using a ppx that needs updating to a new version.
+  See an exampe of how to [update a ppx](https://github.com/zth/rescript-relay/pull/372)
+  - Example: for `rescript-relay` 0.23.0 is not supported.
+  - Fix: use `rescript-relay@beta` or the new version when released.
+- Removed printing modules (Printf, Format etc) and related functions. Details of files added/removed: https://github.com/rescript-lang/rescript-compiler/commit/0fd8bb0e77c4b0e96a9647ac8af614305057003f.
+
+#### :bug: Bug Fix
+
+- Fix library issue with missing `bytes_to_string` https://github.com/rescript-lang/rescript-compiler/issues/5573 https://github.com/rescript-lang/rescript-compiler/pull/5589
+
+#### :nail_care: Polish
+
+- Several Belt / Js libraries are now converted to ReScript syntax, with corresponding comments in Markdown format suitable for hovering. See [#5361](https://github.com/rescript-lang/rescript-compiler/pull/5361).
+
+**Playground**
+
+#### :house: Internal
+
+- Added `jsoo_playground_main.ml` as the rescript-lang.org playground bundle entrypoint
+
+#### :boom: Breaking Change
+
+- Removed Reason syntax support for the playground experience. See https://github.com/rescript-lang/rescript-compiler/pull/5375
