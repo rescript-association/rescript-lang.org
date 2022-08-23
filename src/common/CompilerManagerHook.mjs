@@ -182,12 +182,7 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                             })), (function (lang) {
                         var match = ready$1.selected.apiVersion;
                         var match$1;
-                        if (match) {
-                          match$1 = [
-                            /* Nothing */0,
-                            lang
-                          ];
-                        } else {
+                        if (match === 0) {
                           var convResult;
                           switch (currentLang) {
                             case /* Reason */0 :
@@ -228,6 +223,11 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                               lang
                             ];
                           }
+                        } else {
+                          match$1 = [
+                            /* Nothing */0,
+                            lang
+                          ];
                         }
                         var targetLang = match$1[1];
                         var result = match$1[0];
@@ -395,13 +395,12 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                       var config = RescriptCompilerApi.Compiler.getConfig(instance);
                       var selected_compilerVersion = RescriptCompilerApi.Compiler.version(instance);
                       var selected_ocamlVersion = RescriptCompilerApi.Compiler.ocamlVersion(instance);
-                      var selected_reasonVersion = RescriptCompilerApi.Compiler.reasonVersion(instance);
                       var selected = {
                         id: latest,
                         apiVersion: apiVersion,
                         compilerVersion: selected_compilerVersion,
                         ocamlVersion: selected_ocamlVersion,
-                        reasonVersion: selected_reasonVersion,
+                        reasonVersion: "",
                         libraries: libraries,
                         config: config,
                         instance: instance
@@ -496,29 +495,49 @@ function useCompilerManager(initialLangOpt, onAction, param) {
               case /* Compiling */3 :
                   var match = state._1;
                   var code = match[1];
+                  var lang = match[0];
                   var ready$1 = state._0;
                   var apiVersion = ready$1.selected.apiVersion;
                   var instance = ready$1.selected.instance;
                   var compResult;
-                  if (apiVersion) {
+                  if (typeof apiVersion === "number") {
+                    if (apiVersion !== 0) {
+                      switch (lang) {
+                        case /* Reason */0 :
+                            compResult = {
+                              TAG: 2,
+                              _0: "Reason not supported with API version \"" + apiVersion + "\"",
+                              [Symbol.for("name")]: "UnexpectedError"
+                            };
+                            break;
+                        case /* OCaml */1 :
+                            compResult = RescriptCompilerApi.Compiler.ocamlCompile(instance, code);
+                            break;
+                        case /* Res */2 :
+                            compResult = RescriptCompilerApi.Compiler.resCompile(instance, code);
+                            break;
+                        
+                      }
+                    } else {
+                      switch (lang) {
+                        case /* Reason */0 :
+                            compResult = RescriptCompilerApi.Compiler.reasonCompile(instance, code);
+                            break;
+                        case /* OCaml */1 :
+                            compResult = RescriptCompilerApi.Compiler.ocamlCompile(instance, code);
+                            break;
+                        case /* Res */2 :
+                            compResult = RescriptCompilerApi.Compiler.resCompile(instance, code);
+                            break;
+                        
+                      }
+                    }
+                  } else {
                     compResult = {
                       TAG: 2,
                       _0: "Can't handle result of compiler API version \"" + apiVersion._0 + "\"",
                       [Symbol.for("name")]: "UnexpectedError"
                     };
-                  } else {
-                    switch (match[0]) {
-                      case /* Reason */0 :
-                          compResult = RescriptCompilerApi.Compiler.reasonCompile(instance, code);
-                          break;
-                      case /* OCaml */1 :
-                          compResult = RescriptCompilerApi.Compiler.ocamlCompile(instance, code);
-                          break;
-                      case /* Res */2 :
-                          compResult = RescriptCompilerApi.Compiler.resCompile(instance, code);
-                          break;
-                      
-                    }
                   }
                   Curry._1(setState, (function (param) {
                           return {

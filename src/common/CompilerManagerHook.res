@@ -345,7 +345,7 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
               apiVersion: apiVersion,
               compilerVersion: instance->Compiler.version,
               ocamlVersion: instance->Compiler.ocamlVersion,
-              reasonVersion: instance->Compiler.reasonVersion,
+              reasonVersion: "",
               config: config,
               libraries: libraries,
               instance: instance,
@@ -424,6 +424,14 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
         switch lang {
         | Lang.OCaml => instance->Compiler.ocamlCompile(code)
         | Lang.Reason => instance->Compiler.reasonCompile(code)
+        | Lang.Res => instance->Compiler.resCompile(code)
+        }
+      | Version.V2 =>
+        switch lang {
+        | Lang.OCaml => instance->Compiler.ocamlCompile(code)
+        | Lang.Reason =>
+          CompilationResult.UnexpectedError(j`Reason not supported with API version "$apiVersion"`)
+
         | Lang.Res => instance->Compiler.resCompile(code)
         }
       | UnknownVersion(apiVersion) =>

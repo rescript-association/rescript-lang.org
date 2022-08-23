@@ -34,6 +34,7 @@ module Lang = {
 module Version = {
   type t =
     | V1
+    | V2
     | UnknownVersion(string)
 
   // Helps finding the right API version
@@ -53,6 +54,7 @@ module Version = {
         }
       | _ => UnknownVersion(apiVersion)
       }
+    | list{"2"} => V2
     | _ => UnknownVersion(apiVersion)
     }
 
@@ -65,6 +67,7 @@ module Version = {
   let availableLanguages = t =>
     switch t {
     | V1 => [Lang.Reason, Res]
+    | V2 => [Lang.Res]
     | UnknownVersion(_) => [Res]
     }
 }

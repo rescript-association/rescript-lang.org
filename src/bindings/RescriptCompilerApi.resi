@@ -22,6 +22,7 @@ module Lang: {
 module Version: {
   type t =
     | V1
+    | V2
     | UnknownVersion(string)
 
   // Helps finding the right API version
