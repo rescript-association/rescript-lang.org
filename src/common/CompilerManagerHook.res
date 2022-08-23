@@ -38,7 +38,7 @@ module LoadScript = {
 module CdnMeta = {
   // Make sure versions exist on https://cdn.rescript-lang.org
   // [0] = latest
-  let versions = ["v9.1.2", "v9.0.2", "v9.0.1", "v9.0.0", "v8.4.2", "v8.3.0-dev.2"]
+  let versions = ["v10.0.0", "v9.1.2", "v9.0.2", "v9.0.1", "v9.0.0", "v8.4.2", "v8.3.0-dev.2"]
 
   let getCompilerUrl = (version: string): string =>
     j`https://cdn.rescript-lang.org/$version/compiler.js`
