@@ -29,9 +29,11 @@ The detailed changes are listed [here](https://github.com/rescript-lang/rescript
 
 ** Upgrade guide **
 
-Please see the detailed [changelog](https://github.com/rescript-lang/rescript-compiler/blob/10.0_release/CHANGELOG.md) for breaking changes.
+Please see the detailed [changelog](https://github.com/rescript-lang/rescript-compiler/blob/10.0_release/CHANGELOG.md) for a list of breaking changes.
+Each breaking change lists suggestions on how to upgrade your project.
+This can be out of your control in case of dependencies. In that case, please raise issues with the maintainers of those libraries.
 
-*TODO*
+One special word for PPXs, in particular for PPX authors. As mentioned in the changelog, some PPXs may give an error `"Attributes not allowed here"`. The solution is to adapt the PPXs following the example of `rescript-relay` in https://github.com/zth/rescript-relay/pull/372.
 
 ** What's next **
 
