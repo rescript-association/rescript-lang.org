@@ -38,12 +38,12 @@ type user = {
 }
 
 let userWithoutAge = {
-  name: "Some Name",
+  name: "Name",
   age: None,
 }
 
 let userWithAge = {
-  name: "Some Name",
+  name: "Name",
   age: Some(34),
 }
 ```
@@ -57,17 +57,17 @@ type user = {
 
 // No need to set `age` unless it should have a value
 let userWithoutAge = {
-  name: "Some Name",
+  name: "Name",
 }
 
 let userWithAge = {
-  name: "Some Name",
+  name: "Name",
   age: 34
 }
 ```
 
-Other than drastically improving the experience when working with large records with optional fields, this also has implications for bindings. For example, binding to JS API:s with large configuration objects is now more ergonomic.
-This feature also paves the way for other exciting features coming in the next release.
+Other than drastically improving the experience when working with large records with optional fields, this also has implications for bindings. For example, binding to JS APIs with large configuration objects is now more ergonomic.
+This feature also paves the way for other exciting features coming in the next release, such as a mode idiomatic representation of React components.
 
 ## What's next
 
