@@ -472,10 +472,8 @@ function setConfig(t, config) {
   }
   Belt_Option.forEach(moduleSystem, (function (moduleSystem) {
           t.setModuleSystem(moduleSystem);
-          
         }));
   t.setWarnFlags(config.warn_flags);
-  
 }
 
 function convertSyntax(fromLang, toLang, code, t) {
@@ -567,6 +565,5 @@ export {
   ConversionResult ,
   Config ,
   Compiler ,
-  
 }
 /* No side effect */

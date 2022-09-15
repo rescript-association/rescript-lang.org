@@ -16,6 +16,7 @@ import * as Process from "process";
 import * as Markdown from "./components/Markdown.mjs";
 import * as SearchBox from "./components/SearchBox.mjs";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
+import * as Js_promise from "rescript/lib/es6/js_promise.js";
 import * as Navigation from "./components/Navigation.mjs";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
@@ -201,7 +202,7 @@ function Packages$Card(Props) {
                 }, Belt_Array.map(match[2], (function (keyword) {
                         var onMouseDown = Belt_Option.map(onKeywordSelect, (function (cb, evt) {
                                 evt.preventDefault();
-                                return Curry._1(cb, keyword);
+                                Curry._1(cb, keyword);
                               }));
                         var tmp = {
                           key: keyword,
@@ -231,7 +232,7 @@ function Packages$InfoSidebar$Toggle(Props) {
   );
   var onMouseDown = function (evt) {
     evt.preventDefault();
-    return Curry._1(toggle, undefined);
+    Curry._1(toggle, undefined);
   };
   return React.createElement("button", {
               className: className,
@@ -252,57 +253,57 @@ function Packages$InfoSidebar(Props) {
                     }, React.createElement(Packages$InfoSidebar$Toggle, {
                           enabled: filter.includeOfficial,
                           toggle: (function (param) {
-                              return Curry._1(setFilter, (function (prev) {
-                                            return {
-                                                    searchterm: prev.searchterm,
-                                                    includeOfficial: !filter.includeOfficial,
-                                                    includeCommunity: prev.includeCommunity,
-                                                    includeNpm: prev.includeNpm,
-                                                    includeUrlResource: prev.includeUrlResource
-                                                  };
-                                          }));
+                              Curry._1(setFilter, (function (prev) {
+                                      return {
+                                              searchterm: prev.searchterm,
+                                              includeOfficial: !filter.includeOfficial,
+                                              includeCommunity: prev.includeCommunity,
+                                              includeNpm: prev.includeNpm,
+                                              includeUrlResource: prev.includeUrlResource
+                                            };
+                                    }));
                             }),
                           children: "Official"
                         }), React.createElement(Packages$InfoSidebar$Toggle, {
                           enabled: filter.includeCommunity,
                           toggle: (function (param) {
-                              return Curry._1(setFilter, (function (prev) {
-                                            return {
-                                                    searchterm: prev.searchterm,
-                                                    includeOfficial: prev.includeOfficial,
-                                                    includeCommunity: !filter.includeCommunity,
-                                                    includeNpm: prev.includeNpm,
-                                                    includeUrlResource: prev.includeUrlResource
-                                                  };
-                                          }));
+                              Curry._1(setFilter, (function (prev) {
+                                      return {
+                                              searchterm: prev.searchterm,
+                                              includeOfficial: prev.includeOfficial,
+                                              includeCommunity: !filter.includeCommunity,
+                                              includeNpm: prev.includeNpm,
+                                              includeUrlResource: prev.includeUrlResource
+                                            };
+                                    }));
                             }),
                           children: "Community"
                         }), React.createElement(Packages$InfoSidebar$Toggle, {
                           enabled: filter.includeNpm,
                           toggle: (function (param) {
-                              return Curry._1(setFilter, (function (prev) {
-                                            return {
-                                                    searchterm: prev.searchterm,
-                                                    includeOfficial: prev.includeOfficial,
-                                                    includeCommunity: prev.includeCommunity,
-                                                    includeNpm: !filter.includeNpm,
-                                                    includeUrlResource: prev.includeUrlResource
-                                                  };
-                                          }));
+                              Curry._1(setFilter, (function (prev) {
+                                      return {
+                                              searchterm: prev.searchterm,
+                                              includeOfficial: prev.includeOfficial,
+                                              includeCommunity: prev.includeCommunity,
+                                              includeNpm: !filter.includeNpm,
+                                              includeUrlResource: prev.includeUrlResource
+                                            };
+                                    }));
                             }),
                           children: "NPM package"
                         }), React.createElement(Packages$InfoSidebar$Toggle, {
                           enabled: filter.includeUrlResource,
                           toggle: (function (param) {
-                              return Curry._1(setFilter, (function (prev) {
-                                            return {
-                                                    searchterm: prev.searchterm,
-                                                    includeOfficial: prev.includeOfficial,
-                                                    includeCommunity: prev.includeCommunity,
-                                                    includeNpm: prev.includeNpm,
-                                                    includeUrlResource: !filter.includeUrlResource
-                                                  };
-                                          }));
+                              Curry._1(setFilter, (function (prev) {
+                                      return {
+                                              searchterm: prev.searchterm,
+                                              includeOfficial: prev.includeOfficial,
+                                              includeCommunity: prev.includeCommunity,
+                                              includeNpm: prev.includeNpm,
+                                              includeUrlResource: !filter.includeUrlResource
+                                            };
+                                    }));
                             }),
                           children: "URL resources"
                         }))), React.createElement("div", undefined, React.createElement("h2", {
@@ -358,22 +359,22 @@ function $$default(props) {
   var allResources = Belt_Array.concat(npms, urls);
   var resources = state ? applySearch(allResources, state._0) : allResources;
   var onValueChange = function (value) {
-    return Curry._1(setState, (function (param) {
-                  if (value === "") {
-                    return /* All */0;
-                  } else {
-                    return {
-                            _0: value,
-                            [Symbol.for("name")]: "Filtered"
-                          };
-                  }
-                }));
+    Curry._1(setState, (function (param) {
+            if (value === "") {
+              return /* All */0;
+            } else {
+              return {
+                      _0: value,
+                      [Symbol.for("name")]: "Filtered"
+                    };
+            }
+          }));
   };
   var searchValue = state ? state._0 : "";
   var onClear = function (param) {
-    return Curry._1(setState, (function (param) {
-                  return /* All */0;
-                }));
+    Curry._1(setState, (function (param) {
+            return /* All */0;
+          }));
   };
   var match$2 = Belt_Array.reduce(resources, [
         [],
@@ -400,12 +401,12 @@ function $$default(props) {
   var officialResources = match$2[0];
   var onKeywordSelect = function (keyword) {
     Curry._1(scrollToTop, undefined);
-    return Curry._1(setState, (function (param) {
-                  return {
-                          _0: keyword,
-                          [Symbol.for("name")]: "Filtered"
-                        };
-                }));
+    Curry._1(setState, (function (param) {
+            return {
+                    _0: keyword,
+                    [Symbol.for("name")]: "Filtered"
+                  };
+          }));
   };
   var officialCategory = officialResources.length !== 0 ? React.createElement(Packages$Category, {
           title: "Official Resources",
@@ -435,20 +436,18 @@ function $$default(props) {
   var firstRenderDone = React.useRef(false);
   React.useEffect((function () {
           firstRenderDone.current = true;
-          
         }), []);
   React.useEffect((function () {
           Belt_Option.forEach(Js_dict.get(router.query, "search"), onValueChange);
-          
         }), [firstRenderDone.current]);
   var updateQuery = function (value) {
-    return Next.Router.replaceObj(router, {
-                pathname: router.pathname,
-                query: value === "" ? ({}) : Js_dict.fromArray([[
-                          "search",
-                          value
-                        ]])
-              });
+    Next.Router.replaceObj(router, {
+          pathname: router.pathname,
+          query: value === "" ? ({}) : Js_dict.fromArray([[
+                    "search",
+                    value
+                  ]])
+        });
   };
   React.useEffect((function () {
           if (state) {
@@ -456,7 +455,6 @@ function $$default(props) {
           } else {
             updateQuery("");
           }
-          
         }), [state]);
   var overlayState = React.useState(function () {
         return false;
@@ -504,38 +502,37 @@ function $$default(props) {
 
 function getStaticProps(_ctx) {
   var __x = fetch("https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250");
-  var __x$1 = __x.then(function (response) {
-        return response.json();
-      });
-  return __x$1.then(function (data) {
-              var pkges = Belt_Array.map(data.objects, (function (item) {
-                      var pkg = item.package;
-                      return {
-                              name: pkg.name,
-                              version: pkg.version,
-                              keywords: uniqueKeywords(filterKeywords(pkg.keywords)),
-                              description: Belt_Option.getWithDefault(pkg.description, ""),
-                              repositoryHref: Js_null.fromOption(pkg.links.repository),
-                              npmHref: pkg.links.npm
-                            };
-                    }));
-              var index_data_dir = Path.join(Process.cwd(), "./data");
-              var urlResources = JSON.parse(Fs.readFileSync(Path.join(index_data_dir, "packages_url_resources.json"), "utf8"));
-              var props = {
-                packages: pkges,
-                urlResources: urlResources
-              };
-              return Promise.resolve({
-                          props: props,
-                          revalidate: 43200
-                        });
-            });
+  var __x$1 = Js_promise.then_((function (response) {
+          return response.json();
+        }), __x);
+  return Js_promise.then_((function (data) {
+                var pkges = Belt_Array.map(data.objects, (function (item) {
+                        var pkg = item.package;
+                        return {
+                                name: pkg.name,
+                                version: pkg.version,
+                                keywords: uniqueKeywords(filterKeywords(pkg.keywords)),
+                                description: Belt_Option.getWithDefault(pkg.description, ""),
+                                repositoryHref: Js_null.fromOption(pkg.links.repository),
+                                npmHref: pkg.links.npm
+                              };
+                      }));
+                var index_data_dir = Path.join(Process.cwd(), "./data");
+                var urlResources = JSON.parse(Fs.readFileSync(Path.join(index_data_dir, "packages_url_resources.json"), "utf8"));
+                var props = {
+                  packages: pkges,
+                  urlResources: urlResources
+                };
+                return Promise.resolve({
+                            props: props,
+                            revalidate: 43200
+                          });
+              }), __x$1);
 }
 
 export {
   $$default ,
   $$default as default,
   getStaticProps ,
-  
 }
 /* fs Not a pure module */

@@ -40,6 +40,5 @@ var make = CommunityLayout$1;
 
 export {
   make ,
-  
 }
 /* CommunityLayout Not a pure module */

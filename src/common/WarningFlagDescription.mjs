@@ -399,7 +399,6 @@ function merge(base, other) {
             })));
   Belt_Array.forEach(other, (function (token) {
           dict[token.flag] = token;
-          
         }));
   return Js_dict.values(dict).sort(function (t1, t2) {
               var f1 = t1.flag;
@@ -438,6 +437,5 @@ export {
   lookup ,
   lookupAll ,
   fuzzyLookup ,
-  
 }
 /*  Not a pure module */

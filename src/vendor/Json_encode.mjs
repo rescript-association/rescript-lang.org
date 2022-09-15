@@ -88,6 +88,5 @@ export {
   object_ ,
   array ,
   list ,
-  
 }
 /* No side effect */

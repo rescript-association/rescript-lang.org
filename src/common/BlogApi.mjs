@@ -101,6 +101,5 @@ export {
   getAllPosts ,
   blogPathToSlug ,
   RssFeed ,
-  
 }
 /* fs Not a pure module */

@@ -95,7 +95,7 @@ function useHoverTooltip(cmStateRef, cmRef, param) {
   React.useEffect((function () {
           attach(tooltip);
           return (function (param) {
-                    return clear(tooltip);
+                    clear(tooltip);
                   });
         }), []);
   var checkIfTextMarker = (function(el) {
@@ -190,7 +190,7 @@ function useHoverTooltip(cmStateRef, cmRef, param) {
     marker.clear();
     var timerId = setTimeout((function (param) {
             stateRef.current = /* Hidden */0;
-            return hide(tooltip);
+            hide(tooltip);
           }), 200);
     stateRef.current = {
       el: match.el,
@@ -199,7 +199,6 @@ function useHoverTooltip(cmStateRef, cmRef, param) {
       hideTimer: Caml_option.some(timerId),
       [Symbol.for("name")]: "Shown"
     };
-    
   };
   var onMouseMove = function (evt) {
     var match = stateRef.current;
@@ -209,7 +208,6 @@ function useHoverTooltip(cmStateRef, cmRef, param) {
     var pageX = evt.pageX;
     var pageY = evt.pageY;
     update(tooltip, pageY - 35 | 0, pageX, match.hoverHint.hint);
-    
   };
   return [
           onMouseOver,
@@ -254,7 +252,7 @@ function hash(a) {
   return a;
 }
 
-var eq = Caml_obj.caml_equal;
+var eq = Caml_obj.equal;
 
 var ErrorHash = Belt_Id.MakeHashable({
       hash: hash,
@@ -264,7 +262,6 @@ var ErrorHash = Belt_Id.MakeHashable({
 function updateErrors(state, onMarkerFocus, onMarkerFocusLeave, cm, errors) {
   Belt_Array.forEach(state.marked, (function (mark) {
           mark.clear();
-          
         }));
   var errorsMap = Belt_HashMap.make(errors.length, ErrorHash);
   state.marked = [];
@@ -302,7 +299,6 @@ function updateErrors(state, onMarkerFocus, onMarkerFocusLeave, cm, errors) {
                 }
               });
           state.marked.push(__x);
-          
         }));
   var isMarkerId = function (id) {
     if (id.startsWith("gutter-marker")) {
@@ -320,7 +316,7 @@ function updateErrors(state, onMarkerFocus, onMarkerFocusLeave, cm, errors) {
       var rowCol = extractRowColFromId(id);
       if (rowCol !== undefined) {
         return Belt_Option.forEach(onMarkerFocus, (function (cb) {
-                      return Curry._1(cb, rowCol);
+                      Curry._1(cb, rowCol);
                     }));
       }
       
@@ -334,12 +330,11 @@ function updateErrors(state, onMarkerFocus, onMarkerFocusLeave, cm, errors) {
       var rowCol = extractRowColFromId(id);
       if (rowCol !== undefined) {
         return Belt_Option.forEach(onMarkerFocusLeave, (function (cb) {
-                      return Curry._1(cb, rowCol);
+                      Curry._1(cb, rowCol);
                     }));
       }
       
     });
-  
 }
 
 function CodeMirror(Props) {
@@ -396,17 +391,14 @@ function CodeMirror(Props) {
           var cm = Codemirror.fromTextArea(input, options);
           Belt_Option.forEach(minHeight, (function (minHeight) {
                   cm.getScrollerElement().style.minHeight = minHeight;
-                  
                 }));
           Belt_Option.forEach(maxHeight, (function (maxHeight) {
                   cm.getScrollerElement().style.maxHeight = maxHeight;
-                  
                 }));
           Belt_Option.forEach(onChange, (function (onValueChange) {
                   cm.on("change", (function (instance) {
-                          return Curry._1(onValueChange, instance.getValue());
+                          Curry._1(onValueChange, instance.getValue());
                         }));
-                  
                 }));
           cm.setValue(value);
           var wrapper = cm.getWrapperElement();
@@ -420,12 +412,10 @@ function CodeMirror(Props) {
                     Codemirror.off(wrapper, "mousemove", Curry.__1(onMouseMove));
                     cm.toTextArea();
                     cmRef.current = undefined;
-                    
                   });
         }), []);
   React.useEffect((function () {
           cmStateRef.current.hoverHints = hoverHints;
-          
         }), [hoverHints]);
   var cm = cmRef.current;
   if (cm !== undefined) {
@@ -456,7 +446,6 @@ function CodeMirror(Props) {
   React.useEffect((function () {
           var cm = Belt_Option.getExn(cmRef.current);
           cm.setOption("mode", mode);
-          
         }), [mode]);
   React.useEffect((function () {
           var cm = cmRef.current;
@@ -519,6 +508,5 @@ export {
   CM ,
   useWindowWidth ,
   make$2 as make,
-  
 }
 /* tooltip Not a pure module */

@@ -75,6 +75,5 @@ export {
   Toc ,
   Latest ,
   make ,
-  
 }
 /* Latest Not a pure module */
