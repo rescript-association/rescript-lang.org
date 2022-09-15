@@ -19,6 +19,5 @@ export {
   Upload ,
   decodeReadyState ,
   readyState ,
-  
 }
 /* No side effect */

@@ -143,7 +143,7 @@ function SidebarLayout$Sidebar(Props) {
                               className: "md:hidden h-16",
                               onClick: (function (evt) {
                                   evt.preventDefault();
-                                  return Curry._1(toggle, undefined);
+                                  Curry._1(toggle, undefined);
                                 })
                             }, React.createElement(Icon.Close.make, {}))), preludeSection, React.createElement("div", {
                           className: "mb-56"
@@ -219,9 +219,9 @@ function SidebarLayout(Props) {
   React.useEffect((function () {
           var events = router.events;
           var onChangeComplete = function (_url) {
-            return Curry._1(setSidebarOpen, (function (param) {
-                          return false;
-                        }));
+            Curry._1(setSidebarOpen, (function (param) {
+                    return false;
+                  }));
           };
           Curry._2(Next.Router.Events.on, events, {
                 NAME: "routeChangeComplete",
@@ -236,10 +236,10 @@ function SidebarLayout(Props) {
                           NAME: "routeChangeComplete",
                           VAL: onChangeComplete
                         });
-                    return Curry._2(Next.Router.Events.off, events, {
-                                NAME: "hashChangeComplete",
-                                VAL: onChangeComplete
-                              });
+                    Curry._2(Next.Router.Events.off, events, {
+                          NAME: "hashChangeComplete",
+                          VAL: onChangeComplete
+                        });
                   });
         }), []);
   var editLinkEl = editHref !== undefined ? React.createElement("a", {
@@ -270,9 +270,9 @@ function SidebarLayout(Props) {
                                           hidden: isNavOpen,
                                           onClick: (function (evt) {
                                               evt.preventDefault();
-                                              return Curry._1(setSidebarOpen, (function (prev) {
-                                                            return !prev;
-                                                          }));
+                                              Curry._1(setSidebarOpen, (function (prev) {
+                                                      return !prev;
+                                                    }));
                                             })
                                         }), React.createElement("div", {
                                           className: "truncate overflow-x-auto touch-scroll flex items-center space-x-4 md:justify-between mr-4 w-full"
@@ -298,6 +298,5 @@ export {
   Toc ,
   Sidebar ,
   make ,
-  
 }
 /* Mdx Not a pure module */

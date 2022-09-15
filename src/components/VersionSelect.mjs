@@ -27,6 +27,5 @@ var make = VersionSelect;
 
 export {
   make ,
-  
 }
 /* react Not a pure module */

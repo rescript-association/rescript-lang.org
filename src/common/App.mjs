@@ -328,6 +328,5 @@ function make(props) {
 
 export {
   make ,
-  
 }
 /*  Not a pure module */

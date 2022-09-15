@@ -59,7 +59,7 @@ function Navigation$CollapsibleLink(Props) {
   var allowHover = allowHoverOpt !== undefined ? allowHoverOpt : true;
   var active = activeOpt !== undefined ? activeOpt : false;
   var onClick = function (_evt) {
-    return Curry._2(onStateChange, id, state >= 2 ? /* KeepOpen */0 : /* Closed */2);
+    Curry._2(onStateChange, id, state >= 2 ? /* KeepOpen */0 : /* Closed */2);
   };
   var onMouseEnter = function (evt) {
     evt.preventDefault();
@@ -109,13 +109,13 @@ function Navigation$DocsSection$LinkCard(Props) {
       }, icon, React.createElement("div", undefined, React.createElement("div", {
                 className: "flex items-center text-16 font-medium " + (
                   active ? "text-fire" : "text-gray-80"
-                )
+                ) + ""
               }, React.createElement("span", undefined, title), isAbsolute ? React.createElement(Icon.ExternalLink.make, {
                       className: "inline-block ml-2 w-4 h-4"
                     }) : null), React.createElement("div", {
                 className: "block text-14 text-gray-60 " + (
                   active ? "text-fire-50" : "text-gray-60"
-                )
+                ) + ""
               }, description)));
   if (isAbsolute) {
     return React.createElement("a", {
@@ -343,9 +343,9 @@ function Navigation$DocsSection(Props) {
       }
       
     }
-    return Curry._1(setVersion, (function (param) {
-                  return version;
-                }));
+    Curry._1(setVersion, (function (param) {
+            return version;
+          }));
   };
   var tmp = version === "latest" ? React.createElement("span", {
           className: "text-gray-40 text-12"
@@ -480,17 +480,17 @@ function Navigation(Props) {
   var setOverlayOpen = overlayState[1];
   var isOverlayOpen = overlayState[0];
   var resetCollapsibles = function (param) {
-    return Curry._1(setCollapsibles, (function (prev) {
-                  return Belt_Array.map(prev, (function (c) {
-                                return {
-                                        title: c.title,
-                                        children: c.children,
-                                        isActiveRoute: c.isActiveRoute,
-                                        href: c.href,
-                                        state: /* Closed */2
-                                      };
-                              }));
-                }));
+    Curry._1(setCollapsibles, (function (prev) {
+            return Belt_Array.map(prev, (function (c) {
+                          return {
+                                  title: c.title,
+                                  children: c.children,
+                                  isActiveRoute: c.isActiveRoute,
+                                  href: c.href,
+                                  state: /* Closed */2
+                                };
+                        }));
+          }));
   };
   var navRef = React.useRef(null);
   Hooks.useOutsideClick(navRef, resetCollapsibles);
@@ -498,9 +498,9 @@ function Navigation(Props) {
           var events = router.events;
           var onChangeComplete = function (_url) {
             resetCollapsibles(undefined);
-            return Curry._1(setOverlayOpen, (function (param) {
-                          return false;
-                        }));
+            Curry._1(setOverlayOpen, (function (param) {
+                    return false;
+                  }));
           };
           Curry._2(Next.Router.Events.on, events, {
                 NAME: "routeChangeComplete",
@@ -515,28 +515,28 @@ function Navigation(Props) {
                           NAME: "routeChangeComplete",
                           VAL: onChangeComplete
                         });
-                    return Curry._2(Next.Router.Events.off, events, {
-                                NAME: "hashChangeComplete",
-                                VAL: onChangeComplete
-                              });
+                    Curry._2(Next.Router.Events.off, events, {
+                          NAME: "hashChangeComplete",
+                          VAL: onChangeComplete
+                        });
                   });
         }), []);
   var fixedNav = fixed ? "fixed top-0" : "relative";
   var onStateChange = function (id, state) {
-    return Curry._1(setCollapsibles, (function (prev) {
-                  return Belt_Array.keepMap(prev, (function (next) {
-                                if (next.title === id) {
-                                  return {
-                                          title: next.title,
-                                          children: next.children,
-                                          isActiveRoute: next.isActiveRoute,
-                                          href: next.href,
-                                          state: state
-                                        };
-                                }
-                                
-                              }));
-                }));
+    Curry._1(setCollapsibles, (function (prev) {
+            return Belt_Array.keepMap(prev, (function (next) {
+                          if (next.title === id) {
+                            return {
+                                    title: next.title,
+                                    children: next.children,
+                                    isActiveRoute: next.isActiveRoute,
+                                    href: next.href,
+                                    state: state
+                                  };
+                          }
+                          
+                        }));
+          }));
   };
   var collapsibleElements = collapsibles.map(function (coll) {
         return React.createElement(Navigation$CollapsibleLink, {
@@ -602,13 +602,13 @@ function Navigation(Props) {
                             }, React.createElement("div", {
                                   className: "hidden sm:block mr-6"
                                 }, React.createElement(DocSearch.make, {})), React.createElement("a", {
-                                  className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px",
+                                  className: "mr-5 " + link,
                                   href: githubHref,
                                   rel: "noopener noreferrer"
                                 }, React.createElement(Icon.GitHub.make, {
                                       className: "w-6 h-6 opacity-50 hover:opacity-100"
                                     })), React.createElement("a", {
-                                  className: "mr-5 no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px",
+                                  className: "mr-5 " + link,
                                   href: "https://twitter.com/rescriptlang",
                                   rel: "noopener noreferrer"
                                 }, React.createElement(Icon.Twitter.make, {
@@ -624,9 +624,9 @@ function Navigation(Props) {
                       onClick: (function (evt) {
                           evt.preventDefault();
                           resetCollapsibles(undefined);
-                          return Curry._1(setOverlayOpen, (function (prev) {
-                                        return !prev;
-                                      }));
+                          Curry._1(setOverlayOpen, (function (prev) {
+                                  return !prev;
+                                }));
                         })
                     }, React.createElement(Icon.DrawerDots.make, {
                           className: "h-1 w-auto block " + (
@@ -654,6 +654,5 @@ var make = Navigation;
 
 export {
   make ,
-  
 }
 /* Icon Not a pure module */

@@ -27,7 +27,7 @@ function Button(Props) {
   var padding = size ? "px-8 py-4 rounded-lg" : "px-4 py-2 captions rounded";
   var rel = target === "_blank" ? "noopener noreferrer" : undefined;
   var tmp = {
-    className: "select-none hover:cursor-pointer transition-colors duration-200 body-button focus:outline-none " + bgColor + " " + padding,
+    className: "select-none hover:cursor-pointer transition-colors duration-200 body-button focus:outline-none " + bgColor + " " + padding + "",
     role: "button"
   };
   if (href !== undefined) {
@@ -46,6 +46,5 @@ var make = Button;
 
 export {
   make ,
-  
 }
 /* react Not a pure module */

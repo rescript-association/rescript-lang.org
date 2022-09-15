@@ -71,6 +71,32 @@
                 }
             ]
         },
+        "reanalyze": {
+            "type": "object",
+            "properties": {
+                "analysis": {
+                    "type": "array",
+                    "items": {
+                        "enum": ["dce", "exception", "termination"]
+                    },
+                    "description": "The types of analysis to activate. `dce` means dead code analysis, `exception` means exception analysis, and `termination` is to check for infinite loops."
+                },
+                "suppress": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Paths for any folders you'd like to exclude from analysis. Useful for bindings and similar. Example: `[\"src/bindings\"]`."
+                },
+                "unsuppress": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Any specific paths inside suppressed folders that you want to unsuppress. Example: [\"src/bindings/SomeBinding.res\"]."
+                }
+            }
+        },
         "react-jsx-version": {
             "title": "jsx-version",
             "type": "number",
@@ -313,14 +339,14 @@
                     "type" : "string"
                 }
             },
-            "description": "path to gentype, path resolution is similar to reason"
+            "description": "path to gentype, path resolution is similar to ReScript"
         },
         "reason-specs": {
             "type": "object",
             "properties": {
                 "react-jsx": {
                     "$ref": "#/definitions/react-jsx-version",
-                    "description": "Whether to apply the [Reason-React](https://github.com/reasonml/reason-react)-specific JSX PPX transformation."
+                    "description": "Whether to apply the [RescriptReact](https://github.com/rescript-lang/rescript-react)-specific JSX PPX transformation."
                 }
             }
         },
@@ -374,7 +400,7 @@
     "properties": {
         "version": {
             "type": "string",
-            "description": "The semantic version of the OCaml library"
+            "description": "The semantic version of the ReScript library"
         },
         "name": {
             "type": "string",
@@ -397,11 +423,11 @@
         },
         "bs-dependencies": {
             "$ref": "#/definitions/dependencies",
-            "description": "OCaml/Reason dependencies of the library, like in package.json. Currently searches in `node_modules`"
+            "description": "ReScript dependencies of the library, like in package.json. Currently searches in `node_modules`"
         },
         "bs-dev-dependencies": {
             "$ref": "#/definitions/dependencies",
-            "description": "OCaml/Reason dev dependencies of the library, like in package.json. Currently searches in `node_modules`"
+            "description": "ReScript dev dependencies of the library, like in package.json. Currently searches in `node_modules`"
         },
         "pinned-dependencies" : {
             "$ref": "#/definitions/dependencies",
@@ -493,6 +519,10 @@
         },
         "suffix" : {
             "$ref" : "#/definitions/suffix-spec"
+        },
+        "reanalyze": {
+            "$ref": "#/definitions/reanalyze",
+            "description": "Configure reanalyze, a static code analysis tool for ReScript."
         }
     },
     "additionalProperties": false,

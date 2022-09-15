@@ -156,23 +156,21 @@ function LandingPageLayout$QuickInstall$CopyButton(Props) {
           var nextFrameId = window.requestAnimationFrame(function (param) {
                 bannerEl.classList.toggle("opacity-0");
                 bannerEl.classList.toggle("opacity-100");
-                
               });
           var timeoutId = setTimeout((function (param) {
                   buttonEl.removeChild(bannerEl);
-                  return Curry._1(setState, (function (param) {
-                                return /* Init */0;
-                              }));
+                  Curry._1(setState, (function (param) {
+                          return /* Init */0;
+                        }));
                 }), 2000);
           return (function (param) {
                     window.cancelAnimationFrame(nextFrameId);
                     clearTimeout(timeoutId);
-                    
                   });
         }), [state]);
   return React.createElement("button", {
               ref: buttonRef,
-              className: "relative h-10 w-10 flex justify-center\titems-center ",
+              className: "relative h-10 w-10 flex justify-center	items-center ",
               disabled: state === /* Copied */1,
               onClick: onClick
             }, React.createElement(Icon.Copy.make, {
@@ -213,7 +211,7 @@ function LandingPageLayout$QuickInstall(Props) {
                           className: "relative z-1 space-y-12 text-gray-80 font-semibold text-24 md:text-32 leading-2"
                         }, React.createElement("span", {
                               className: "bg-fire-5 rounded-lg border border-fire-10 p-1 "
-                            }, "Leverage the full power"), " of JavaScript in a robustly typed language without the fear of `any` types.")), React.createElement("div", {
+                            }, "Leverage the full power"), " of JavaScript in a robustly typed language without the fear of \`any\` types.")), React.createElement("div", {
                       className: "w-full mt-12 md:flex flex-col lg:flex-row md:justify-between "
                     }, React.createElement("p", {
                           className: "relative z-1 text-gray-80 font-semibold text-24 md:text-32 leading-2 max-w-[32rem]"
@@ -265,14 +263,14 @@ function LandingPageLayout$MainUSP$Item(Props) {
                           },
                           src: "/static/lp/grid2.svg"
                         }))), React.createElement("svg", {
-                  className: "md:hidden absolute z-1 w-full h-full bottom-0 left-0 " + polyColor,
+                  className: "md:hidden absolute z-1 w-full h-full bottom-0 left-0 " + polyColor + "",
                   preserveAspectRatio: "none",
                   viewBox: "0 0 100 100"
                 }, React.createElement("polygon", {
                       className: "fill-current",
                       points: polyPointsMobile
                     })), React.createElement("svg", {
-                  className: "hidden md:block absolute z-1 w-full h-full right-0 top-0 " + polyColor,
+                  className: "hidden md:block absolute z-1 w-full h-full right-0 top-0 " + polyColor + "",
                   preserveAspectRatio: "none",
                   viewBox: "0 0 100 100"
                 }, React.createElement("polygon", {
@@ -319,7 +317,7 @@ var item2 = React.createElement(LandingPageLayout$MainUSP$Item, {
                 type: "video/mp4"
               })),
       polygonDirection: /* Up */0,
-      paragraph: "Every ReScript app is fully typed and provides\n      reliable type information for any given value in your program. We\n      prioritize simpler types over complex types for the sake of\n      clarity and easy debugability. No `any`, no magic types, no surprise\n      `undefined`.\n      "
+      paragraph: "Every ReScript app is fully typed and provides\n      reliable type information for any given value in your program. We\n      prioritize simpler types over complex types for the sake of\n      clarity and easy debugability. No \`any\`, no magic types, no surprise\n      \`undefined\`.\n      "
     });
 
 var item3 = React.createElement(LandingPageLayout$MainUSP$Item, {
@@ -561,6 +559,5 @@ var make = LandingPageLayout;
 
 export {
   make ,
-  
 }
 /* item1 Not a pure module */

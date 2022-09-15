@@ -11,34 +11,27 @@ function Make(funarg) {
           App: {
             postMessage: (function (prim0, prim1) {
                 prim0.postMessage(prim1);
-                
               }),
             onMessage: (function (prim0, prim1) {
                 prim0.onmessage = prim1;
-                
               }),
             onError: (function (prim0, prim1) {
                 prim0.onerror = prim1;
-                
               }),
             terminate: (function (prim) {
                 prim.terminate();
-                
               })
           },
           $$Worker: {
             postMessage: (function (prim) {
                 postMessage(prim);
-                
               }),
             onMessage: (function (prim0, prim1) {
                 prim0.onmessage = prim1;
-                
               }),
             self: self,
             importScripts: (function (prim) {
                 importScripts(prim);
-                
               })
           }
         };
@@ -47,6 +40,5 @@ function Make(funarg) {
 export {
   make ,
   Make ,
-  
 }
 /* No side effect */

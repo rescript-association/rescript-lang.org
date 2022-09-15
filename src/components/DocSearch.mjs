@@ -52,10 +52,8 @@ function DocSearch(Props) {
                   }));
             Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (prim) {
                     prim.focus();
-                    
                   }));
             e.preventDefault();
-            
           };
           var handleGlobalKeyDown = function (e) {
             var match = e.key;
@@ -75,37 +73,33 @@ function DocSearch(Props) {
           window.addEventListener("keydown", handleGlobalKeyDown);
           return (function (param) {
                     window.addEventListener("keydown", handleGlobalKeyDown);
-                    
                   });
         }), [setState]);
   var clearInput = function (param) {
-    return Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (el) {
-                  el.value = "";
-                  
-                }));
+    Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (el) {
+            el.value = "";
+          }));
   };
   var onClick = function (param) {
     Curry._1(setState, (function (param) {
             return /* Active */0;
           }));
     clearInput(undefined);
-    return Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (el) {
-                  el.focus();
-                  
-                }));
+    Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (el) {
+            el.focus();
+          }));
   };
   var onBlur = function (param) {
     clearInput(undefined);
-    return Curry._1(setState, (function (param) {
-                  return /* Inactive */1;
-                }));
+    Curry._1(setState, (function (param) {
+            return /* Inactive */1;
+          }));
   };
   var onKeyDown = function (evt) {
     var key = evt.key;
     if (key === "Escape") {
       return Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (el) {
                     el.blur();
-                    
                   }));
     }
     
@@ -150,22 +144,20 @@ function DocSearch$Textbox(Props) {
     Curry._1(setState, (function (param) {
             return /* Active */0;
           }));
-    return Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (el) {
-                  el.focus();
-                  
-                }));
+    Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (el) {
+            el.focus();
+          }));
   };
   var onBlur = function (param) {
-    return Curry._1(setState, (function (param) {
-                  return /* Inactive */1;
-                }));
+    Curry._1(setState, (function (param) {
+            return /* Inactive */1;
+          }));
   };
   var onKeyDown = function (evt) {
     var key = evt.key;
     if (key === "Escape") {
       return Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (el) {
                     el.blur();
-                    
                   }));
     }
     
@@ -197,6 +189,5 @@ var make = DocSearch;
 export {
   Textbox ,
   make ,
-  
 }
 /* Icon Not a pure module */
