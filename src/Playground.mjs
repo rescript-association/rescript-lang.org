@@ -118,15 +118,16 @@ function Playground$Pane(Props) {
           Curry._1(setCurrent, (function (param) {
                   return selected;
                 }));
+          
         }), [selected]);
   var headers = Belt_Array.mapWithIndex(tabs, (function (i, tab) {
           var title = tab.title;
           var onMouseDown = function (evt) {
             evt.preventDefault();
             evt.stopPropagation();
-            Curry._1(setCurrent, (function (param) {
-                    return i;
-                  }));
+            return Curry._1(setCurrent, (function (param) {
+                          return i;
+                        }));
           };
           var active = current === i;
           var onClick = function (param) {
@@ -788,28 +789,28 @@ function Playground$WarningFlagsWidget(Props) {
             var enter = function (evt) {
               evt.preventDefault();
               evt.stopPropagation();
-              Curry._1(setState, (function (prev) {
-                      return {
-                              TAG: 1,
-                              lastState: prev,
-                              token: token,
-                              [Symbol.for("name")]: "ShowTokenHint"
-                            };
-                    }));
+              return Curry._1(setState, (function (prev) {
+                            return {
+                                    TAG: 1,
+                                    lastState: prev,
+                                    token: token,
+                                    [Symbol.for("name")]: "ShowTokenHint"
+                                  };
+                          }));
             };
             var leave = function (evt) {
               evt.preventDefault();
               evt.stopPropagation();
-              Curry._1(setState, (function (prev) {
-                      switch (prev.TAG | 0) {
-                        case /* ShowTokenHint */1 :
-                            return prev.lastState;
-                        case /* HideSuggestion */0 :
-                        case /* Typing */2 :
-                            return prev;
-                        
-                      }
-                    }));
+              return Curry._1(setState, (function (prev) {
+                            switch (prev.TAG | 0) {
+                              case /* ShowTokenHint */1 :
+                                  return prev.lastState;
+                              case /* HideSuggestion */0 :
+                              case /* Typing */2 :
+                                  return prev;
+                              
+                            }
+                          }));
             };
             match = [
               enter,
@@ -823,9 +824,9 @@ function Playground$WarningFlagsWidget(Props) {
           }
           var onClick = function (evt) {
             evt.preventDefault();
-            Curry._1(onUpdate, Belt_Array.keep(flags, (function (t) {
-                        return t.flag !== flag;
-                      })));
+            return Curry._1(onUpdate, Belt_Array.keep(flags, (function (t) {
+                              return t.flag !== flag;
+                            })));
           };
           var tmp = {
             key: String(i) + flag,
@@ -894,6 +895,7 @@ function Playground$WarningFlagsWidget(Props) {
       case "Escape" :
           return Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (el) {
                         el.blur();
+                        
                       }));
       case "Tab" :
           switch (state.TAG | 0) {
@@ -1073,48 +1075,48 @@ function Playground$WarningFlagsWidget(Props) {
                         }) : undefined;
                   var onMouseEnter = function (evt) {
                     evt.preventDefault();
-                    Curry._1(setState, (function (prev) {
-                            switch (prev.TAG | 0) {
-                              case /* HideSuggestion */0 :
-                              case /* ShowTokenHint */1 :
-                                  return prev;
-                              case /* Typing */2 :
-                                  var fuzzySuggestion = prev.suggestion;
-                                  if (typeof fuzzySuggestion === "number" || fuzzySuggestion.TAG !== /* FuzzySuggestions */0) {
-                                    return prev;
-                                  } else {
-                                    return {
-                                            TAG: 2,
-                                            suggestion: {
-                                              TAG: 0,
-                                              modifier: fuzzySuggestion.modifier,
-                                              precedingTokens: fuzzySuggestion.precedingTokens,
-                                              results: fuzzySuggestion.results,
-                                              selected: i,
-                                              [Symbol.for("name")]: "FuzzySuggestions"
-                                            },
-                                            input: state.input,
-                                            [Symbol.for("name")]: "Typing"
-                                          };
+                    return Curry._1(setState, (function (prev) {
+                                  switch (prev.TAG | 0) {
+                                    case /* HideSuggestion */0 :
+                                    case /* ShowTokenHint */1 :
+                                        return prev;
+                                    case /* Typing */2 :
+                                        var fuzzySuggestion = prev.suggestion;
+                                        if (typeof fuzzySuggestion === "number" || fuzzySuggestion.TAG !== /* FuzzySuggestions */0) {
+                                          return prev;
+                                        } else {
+                                          return {
+                                                  TAG: 2,
+                                                  suggestion: {
+                                                    TAG: 0,
+                                                    modifier: fuzzySuggestion.modifier,
+                                                    precedingTokens: fuzzySuggestion.precedingTokens,
+                                                    results: fuzzySuggestion.results,
+                                                    selected: i,
+                                                    [Symbol.for("name")]: "FuzzySuggestions"
+                                                  },
+                                                  input: state.input,
+                                                  [Symbol.for("name")]: "Typing"
+                                                };
+                                        }
+                                    
                                   }
-                              
-                            }
-                          }));
+                                }));
                   };
                   var onClick = function (evt) {
                     evt.preventDefault();
-                    Curry._1(setState, (function (prev) {
-                            switch (prev.TAG | 0) {
-                              case /* HideSuggestion */0 :
-                              case /* ShowTokenHint */1 :
-                                  return prev;
-                              case /* Typing */2 :
-                                  var full = modifier + flag;
-                                  var completed = WarningFlagDescription.Parser.tokensToString(precedingTokens) + full;
-                                  return updateInput(prev, completed);
-                              
-                            }
-                          }));
+                    return Curry._1(setState, (function (prev) {
+                                  switch (prev.TAG | 0) {
+                                    case /* HideSuggestion */0 :
+                                    case /* ShowTokenHint */1 :
+                                        return prev;
+                                    case /* Typing */2 :
+                                        var full = modifier + flag;
+                                        var completed = WarningFlagDescription.Parser.tokensToString(precedingTokens) + full;
+                                        return updateInput(prev, completed);
+                                    
+                                  }
+                                }));
                   };
                   var tmp = {
                     key: flag,
@@ -1146,50 +1148,50 @@ function Playground$WarningFlagsWidget(Props) {
   var onChange = function (evt) {
     evt.preventDefault();
     var input = evt.target.value;
-    Curry._1(setState, (function (prev) {
-            return updateInput(prev, input);
-          }));
+    return Curry._1(setState, (function (prev) {
+                  return updateInput(prev, input);
+                }));
   };
   var onBlur = function (evt) {
     evt.preventDefault();
     evt.stopPropagation();
-    Curry._1(setState, (function (prev) {
-            switch (prev.TAG | 0) {
-              case /* HideSuggestion */0 :
-                  return prev;
-              case /* ShowTokenHint */1 :
-                  var match = prev.lastState;
-                  switch (match.TAG | 0) {
+    return Curry._1(setState, (function (prev) {
+                  switch (prev.TAG | 0) {
                     case /* HideSuggestion */0 :
+                        return prev;
                     case /* ShowTokenHint */1 :
-                        return {
-                                TAG: 0,
-                                input: "",
-                                [Symbol.for("name")]: "HideSuggestion"
-                              };
+                        var match = prev.lastState;
+                        switch (match.TAG | 0) {
+                          case /* HideSuggestion */0 :
+                          case /* ShowTokenHint */1 :
+                              return {
+                                      TAG: 0,
+                                      input: "",
+                                      [Symbol.for("name")]: "HideSuggestion"
+                                    };
+                          case /* Typing */2 :
+                              return {
+                                      TAG: 0,
+                                      input: match.input,
+                                      [Symbol.for("name")]: "HideSuggestion"
+                                    };
+                          
+                        }
                     case /* Typing */2 :
                         return {
                                 TAG: 0,
-                                input: match.input,
+                                input: prev.input,
                                 [Symbol.for("name")]: "HideSuggestion"
                               };
                     
                   }
-              case /* Typing */2 :
-                  return {
-                          TAG: 0,
-                          input: prev.input,
-                          [Symbol.for("name")]: "HideSuggestion"
-                        };
-              
-            }
-          }));
+                }));
   };
   var onFocus = function (evt) {
     var input = evt.target.value;
-    Curry._1(setState, (function (prev) {
-            return updateInput(prev, input);
-          }));
+    return Curry._1(setState, (function (prev) {
+                  return updateInput(prev, input);
+                }));
   };
   var isActive;
   switch (state.TAG | 0) {
@@ -1222,10 +1224,10 @@ function Playground$WarningFlagsWidget(Props) {
   if (exit === 1) {
     var onMouseDown = function (evt) {
       evt.preventDefault();
-      Curry._1(onUpdate, [{
-              enabled: false,
-              flag: "a"
-            }]);
+      return Curry._1(onUpdate, [{
+                    enabled: false,
+                    flag: "a"
+                  }]);
     };
     var onClick = function (param) {
       
@@ -1233,6 +1235,7 @@ function Playground$WarningFlagsWidget(Props) {
     var onFocus$1 = function (evt) {
       evt.preventDefault();
       evt.stopPropagation();
+      
     };
     deleteButton = React.createElement("button", {
           className: "focus:outline-none self-start focus:ring hover:cursor-pointer hover:bg-gray-40 p-2 rounded-full",
@@ -1247,6 +1250,7 @@ function Playground$WarningFlagsWidget(Props) {
     if (!isActive) {
       return Belt_Option.forEach(Caml_option.nullable_to_opt(inputRef.current), (function (el) {
                     el.focus();
+                    
                   }));
     }
     
@@ -1302,12 +1306,12 @@ function Playground$Settings(Props) {
   var config = Props.config;
   var availableTargetLangs = RescriptCompilerApi.Version.availableLanguages(readyState.selected.apiVersion);
   var onTargetLangSelect = function (lang) {
-    Curry._1(dispatch, {
-          TAG: 1,
-          lang: lang,
-          code: editorCode.current,
-          [Symbol.for("name")]: "SwitchLanguage"
-        });
+    return Curry._1(dispatch, {
+                TAG: 1,
+                lang: lang,
+                code: editorCode.current,
+                [Symbol.for("name")]: "SwitchLanguage"
+              });
   };
   var onWarningFlagsUpdate = function (flags) {
     var normalizeEmptyFlags = function (flags) {
@@ -1320,24 +1324,24 @@ function Playground$Settings(Props) {
                 }];
       }
     };
-    Curry._1(setConfig, {
-          module_system: config.module_system,
-          warn_flags: WarningFlagDescription.Parser.tokensToString(normalizeEmptyFlags(flags))
-        });
+    return Curry._1(setConfig, {
+                module_system: config.module_system,
+                warn_flags: WarningFlagDescription.Parser.tokensToString(normalizeEmptyFlags(flags))
+              });
   };
   var onModuleSystemUpdate = function (module_system) {
-    Curry._1(setConfig, {
-          module_system: module_system,
-          warn_flags: config.warn_flags
-        });
+    return Curry._1(setConfig, {
+                module_system: module_system,
+                warn_flags: config.warn_flags
+              });
   };
   var warnFlagTokens = Belt_Result.getWithDefault(WarningFlagDescription.Parser.parse(config.warn_flags), []);
   var onResetClick = function (evt) {
     evt.preventDefault();
-    Curry._1(setConfig, {
-          module_system: "nodejs",
-          warn_flags: "+a-4-9-20-40-41-42-50-61-102-109"
-        });
+    return Curry._1(setConfig, {
+                module_system: "nodejs",
+                warn_flags: "+a-4-9-20-40-41-42-50-61-102-109"
+              });
   };
   var titleClass = "hl-5 text-gray-20 mb-2";
   return React.createElement("div", {
@@ -1348,12 +1352,12 @@ function Playground$Settings(Props) {
                       onChange: (function (evt) {
                           evt.preventDefault();
                           var id = evt.target.value;
-                          Curry._1(dispatch, {
-                                TAG: 0,
-                                id: id,
-                                libraries: readyState.selected.libraries,
-                                [Symbol.for("name")]: "SwitchToCompiler"
-                              });
+                          return Curry._1(dispatch, {
+                                      TAG: 0,
+                                      id: id,
+                                      libraries: readyState.selected.libraries,
+                                      [Symbol.for("name")]: "SwitchToCompiler"
+                                    });
                         }),
                       name: "compilerVersions",
                       value: readyState.selected.id,
@@ -1463,6 +1467,7 @@ function Playground$ControlPanel$ShareButton(Props) {
           Curry._1(setState, (function (param) {
                   return /* Init */0;
                 }));
+          
         }), [actionIndicatorKey]);
   var onClick = function (evt) {
     evt.preventDefault();
@@ -1517,11 +1522,11 @@ function Playground$ControlPanel(Props) {
     var ready = state._0;
     var onFormatClick = function (evt) {
       evt.preventDefault();
-      Curry._1(dispatch, {
-            TAG: 2,
-            _0: editorCode.current,
-            [Symbol.for("name")]: "Format"
-          });
+      return Curry._1(dispatch, {
+                  TAG: 2,
+                  _0: editorCode.current,
+                  [Symbol.for("name")]: "Format"
+                });
     };
     var createShareLink = function (param) {
       var lang = ready.targetLang;
@@ -1725,11 +1730,11 @@ function Playground$OutputPanel(Props) {
     var ready$3 = compilerState._0;
     var config = ready$3.selected.config;
     var setConfig = function (config) {
-      Curry._1(compilerDispatch, {
-            TAG: 4,
-            _0: config,
-            [Symbol.for("name")]: "UpdateConfig"
-          });
+      return Curry._1(compilerDispatch, {
+                  TAG: 4,
+                  _0: config,
+                  [Symbol.for("name")]: "UpdateConfig"
+                });
     };
     settingsPane = React.createElement(Playground$Settings, {
           readyState: ready$3,
@@ -1825,13 +1830,13 @@ function Playground$default(Props) {
   var setActionCount = match$2[1];
   var actionCount = match$2[0];
   var onAction = function (param) {
-    Curry._1(setActionCount, (function (prev) {
-            if (prev > 1000000) {
-              return 0;
-            } else {
-              return prev + 1 | 0;
-            }
-          }));
+    return Curry._1(setActionCount, (function (prev) {
+                  if (prev > 1000000) {
+                    return 0;
+                  } else {
+                    return prev + 1 | 0;
+                  }
+                }));
   };
   var match$3 = CompilerManagerHook.useCompilerManager(initialLang, onAction, undefined);
   var compilerDispatch = match$3[1];
@@ -1881,6 +1886,7 @@ function Playground$default(Props) {
                           });
               }
             });
+          
         }), [compilerState]);
   var cmErrors;
   if (typeof compilerState === "number") {
@@ -2024,18 +2030,20 @@ function Playground$default(Props) {
                                               var timer$1 = setTimeout((function (param) {
                                                       Curry._1(timeoutCompile.current, undefined);
                                                       typingTimer.current = undefined;
+                                                      
                                                     }), 100);
                                               typingTimer.current = Caml_option.some(timer$1);
+                                              
                                             }),
                                           onMarkerFocus: (function (rowCol) {
-                                              Curry._1(setFocusedRowCol, (function (_prev) {
-                                                      return rowCol;
-                                                    }));
+                                              return Curry._1(setFocusedRowCol, (function (_prev) {
+                                                            return rowCol;
+                                                          }));
                                             }),
                                           onMarkerFocusLeave: (function (param) {
-                                              Curry._1(setFocusedRowCol, (function (param) {
-                                                      
-                                                    }));
+                                              return Curry._1(setFocusedRowCol, (function (param) {
+                                                            
+                                                          }));
                                             }),
                                           value: editorCode.current,
                                           mode: mode
@@ -2061,5 +2069,6 @@ var $$default = Playground$default;
 export {
   $$default ,
   $$default as default,
+  
 }
 /*  Not a pure module */

@@ -15,18 +15,19 @@ import * as RescriptCompilerApi from "../bindings/RescriptCompilerApi.mjs";
 function loadScriptPromise(url) {
   return new Promise((function (resolve, _reject) {
                 LoadScript$1(url, (function (param) {
-                        resolve({
-                              TAG: 0,
-                              _0: undefined,
-                              [Symbol.for("name")]: "Ok"
-                            });
+                        return resolve({
+                                    TAG: 0,
+                                    _0: undefined,
+                                    [Symbol.for("name")]: "Ok"
+                                  });
                       }), (function (_err) {
-                        resolve({
-                              TAG: 1,
-                              _0: "Could not load script: " + url,
-                              [Symbol.for("name")]: "Error"
-                            });
+                        return resolve({
+                                    TAG: 1,
+                                    _0: "Could not load script: " + url,
+                                    [Symbol.for("name")]: "Error"
+                                  });
                       }));
+                
               }));
 }
 
@@ -137,7 +138,7 @@ function useCompilerManager(initialLangOpt, onAction, param) {
   var state = match[0];
   var dispatch = function (action) {
     Belt_Option.forEach(onAction, (function (cb) {
-            Curry._1(cb, action);
+            return Curry._1(cb, action);
           }));
     switch (action.TAG | 0) {
       case /* SwitchToCompiler */0 :
@@ -230,19 +231,19 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                         }
                         var targetLang = match$1[1];
                         var result = match$1[0];
-                        Curry._1(setState, (function (param) {
-                                return {
-                                        TAG: 2,
-                                        _0: {
-                                          versions: ready$1.versions,
-                                          selected: ready$1.selected,
-                                          targetLang: targetLang,
-                                          errors: [],
-                                          result: result
-                                        },
-                                        [Symbol.for("name")]: "Ready"
-                                      };
-                              }));
+                        return Curry._1(setState, (function (param) {
+                                      return {
+                                              TAG: 2,
+                                              _0: {
+                                                versions: ready$1.versions,
+                                                selected: ready$1.selected,
+                                                targetLang: targetLang,
+                                                errors: [],
+                                                result: result
+                                              },
+                                              [Symbol.for("name")]: "Ready"
+                                            };
+                                    }));
                       }));
       case /* Format */2 :
           var code$1 = action._0;
@@ -350,35 +351,35 @@ function useCompilerManager(initialLangOpt, onAction, param) {
     }
   };
   var dispatchError = function (err) {
-    Curry._1(setState, (function (prev) {
-            var msg = err._0;
-            if (typeof prev === "number") {
-              return {
-                      TAG: 0,
-                      _0: msg,
-                      [Symbol.for("name")]: "SetupFailed"
-                    };
-            }
-            if (prev.TAG !== /* Ready */2) {
-              return {
-                      TAG: 0,
-                      _0: msg,
-                      [Symbol.for("name")]: "SetupFailed"
-                    };
-            }
-            var ready = prev._0;
-            return {
-                    TAG: 2,
-                    _0: {
-                      versions: ready.versions,
-                      selected: ready.selected,
-                      targetLang: ready.targetLang,
-                      errors: ready.errors.concat([msg]),
-                      result: ready.result
-                    },
-                    [Symbol.for("name")]: "Ready"
-                  };
-          }));
+    return Curry._1(setState, (function (prev) {
+                  var msg = err._0;
+                  if (typeof prev === "number") {
+                    return {
+                            TAG: 0,
+                            _0: msg,
+                            [Symbol.for("name")]: "SetupFailed"
+                          };
+                  }
+                  if (prev.TAG !== /* Ready */2) {
+                    return {
+                            TAG: 0,
+                            _0: msg,
+                            [Symbol.for("name")]: "SetupFailed"
+                          };
+                  }
+                  var ready = prev._0;
+                  return {
+                          TAG: 2,
+                          _0: {
+                            versions: ready.versions,
+                            selected: ready.selected,
+                            targetLang: ready.targetLang,
+                            errors: ready.errors.concat([msg]),
+                            result: ready.result
+                          },
+                          [Symbol.for("name")]: "Ready"
+                        };
+                }));
   };
   React.useEffect((function () {
           if (typeof state === "number") {
@@ -419,11 +420,11 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                                   }));
                     }
                     var msg = result._0.join("; ");
-                    dispatchError({
-                          TAG: 1,
-                          _0: msg,
-                          [Symbol.for("name")]: "CompilerLoadingError"
-                        });
+                    return dispatchError({
+                                TAG: 1,
+                                _0: msg,
+                                [Symbol.for("name")]: "CompilerLoadingError"
+                              });
                   });
             } else {
               dispatchError({
@@ -445,6 +446,7 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                           Belt_Array.forEach(ready.selected.libraries, (function (lib) {
                                   var prim = getLibraryCmijUrl(ready.selected.id, lib);
                                   LoadScript.removeScript(prim);
+                                  
                                 }));
                           var instance = rescript_compiler.make();
                           var apiVersion = RescriptCompilerApi.Version.fromString(rescript_compiler.api_version);
@@ -475,11 +477,11 @@ function useCompilerManager(initialLangOpt, onAction, param) {
                                       }));
                         }
                         var msg = result._0.join("; ");
-                        dispatchError({
-                              TAG: 1,
-                              _0: msg,
-                              [Symbol.for("name")]: "CompilerLoadingError"
-                            });
+                        return dispatchError({
+                                    TAG: 1,
+                                    _0: msg,
+                                    [Symbol.for("name")]: "CompilerLoadingError"
+                                  });
                       });
                   break;
               case /* SetupFailed */0 :
@@ -553,6 +555,7 @@ function useCompilerManager(initialLangOpt, onAction, param) {
               
             }
           }
+          
         }), [state]);
   return [
           state,
@@ -563,5 +566,6 @@ function useCompilerManager(initialLangOpt, onAction, param) {
 export {
   FinalResult ,
   useCompilerManager ,
+  
 }
 /* react Not a pure module */

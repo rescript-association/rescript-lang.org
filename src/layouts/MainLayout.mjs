@@ -34,5 +34,6 @@ var make = MainLayout;
 
 export {
   make ,
+  
 }
 /* Mdx Not a pure module */

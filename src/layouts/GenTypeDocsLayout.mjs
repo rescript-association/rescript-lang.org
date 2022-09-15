@@ -57,5 +57,6 @@ var make = GenTypeDocsLayout;
 
 export {
   make ,
+  
 }
 /* LatestLayout Not a pure module */

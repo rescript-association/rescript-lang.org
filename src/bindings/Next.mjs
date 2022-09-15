@@ -15,12 +15,15 @@ var GetStaticPaths = {};
 var GetServerSideProps_Res = {
   setHeader: (function (prim0, prim1, prim2) {
       prim0.setHeader(prim1, prim2);
+      
     }),
   write: (function (prim0, prim1) {
       prim0.write(prim1);
+      
     }),
   end_: (function (prim) {
       prim.end();
+      
     })
 };
 
@@ -36,18 +39,22 @@ var Link$1 = {
 var Router_Events = {
   on: (function (prim0, prim1) {
       prim0.on(prim1.NAME, prim1.VAL);
+      
     }),
   off: (function (prim0, prim1) {
       prim0.off(prim1.NAME, prim1.VAL);
+      
     })
 };
 
 function Router_push(prim0, prim1) {
   prim0.push(prim1);
+  
 }
 
 function Router_pushObj(prim0, prim1) {
   prim0.push(prim1);
+  
 }
 
 function Router_useRouter(prim) {
@@ -56,10 +63,12 @@ function Router_useRouter(prim) {
 
 function Router_replace(prim0, prim1) {
   prim0.replace(prim1);
+  
 }
 
 function Router_replaceObj(prim0, prim1) {
   prim0.replace(prim1);
+  
 }
 
 var Router$1 = {
@@ -101,5 +110,6 @@ export {
   Head$1 as Head,
   $$Error$1 as $$Error,
   Dynamic ,
+  
 }
 /* Link Not a pure module */

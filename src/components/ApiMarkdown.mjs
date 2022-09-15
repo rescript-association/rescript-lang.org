@@ -20,5 +20,6 @@ var $$default = Mdx.Components.t(undefined, undefined, undefined, Markdown.Intro
 export {
   $$default ,
   $$default as default,
+  
 }
 /* default Not a pure module */

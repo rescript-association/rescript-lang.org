@@ -6,7 +6,6 @@ import * as Next from "../bindings/Next.mjs";
 import * as Util from "../common/Util.mjs";
 import * as React from "react";
 import * as Belt_List from "rescript/lib/es6/belt_List.js";
-import * as Js_string from "rescript/lib/es6/js_string.js";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
@@ -323,7 +322,7 @@ function Markdown$Code(Props) {
   var children = Props.children;
   var lang;
   if (className !== undefined) {
-    var match = Js_string.split("-", className);
+    var match = className.split("-");
     if (match.length !== 2) {
       lang = "text";
     } else {
@@ -344,7 +343,7 @@ function Markdown$Code(Props) {
     } else {
       var codeElement;
       if (metastring !== undefined) {
-        var metaSplits = Belt_List.fromArray(Js_string.split(" ", metastring));
+        var metaSplits = Belt_List.fromArray(metastring.split(" "));
         var highlightedLines = parseNumericRangeMeta(metastring);
         codeElement = Belt_List.has(metaSplits, "example", (function (prim0, prim1) {
                 return prim0 === prim1;
@@ -483,7 +482,7 @@ function Markdown$A(Props) {
     }
     return React.createElement("a", tmp, children);
   }
-  var regex = /\\.md(x)?|\\.html$/;
+  var regex = /\.md(x)?|\.html$/;
   var match = href.split("#");
   var len = match.length;
   var href$1;
@@ -650,5 +649,6 @@ export {
   Strong ,
   $$default ,
   $$default as default,
+  
 }
 /* imgEl Not a pure module */

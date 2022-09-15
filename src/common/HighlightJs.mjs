@@ -49,5 +49,6 @@ function renderHLJS(highlightedLinesOpt, darkmodeOpt, code, lang, param) {
 
 export {
   renderHLJS ,
+  
 }
 /* react Not a pure module */

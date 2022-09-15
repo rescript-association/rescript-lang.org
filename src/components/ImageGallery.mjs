@@ -23,16 +23,17 @@ function ImageGallery(Props) {
             return ;
           }
           var timerId = setInterval((function (param) {
-                  Curry._1(setIndex, (function (prev) {
-                          if (prev === (imgSrcs.length - 1 | 0)) {
-                            return 0;
-                          } else {
-                            return prev + 1 | 0;
-                          }
-                        }));
+                  return Curry._1(setIndex, (function (prev) {
+                                if (prev === (imgSrcs.length - 1 | 0)) {
+                                  return 0;
+                                } else {
+                                  return prev + 1 | 0;
+                                }
+                              }));
                 }), mode._0);
           return (function (param) {
                     clearInterval(timerId);
+                    
                   });
         }), []);
   var src = Belt_Array.getExn(imgSrcs, index);
@@ -40,27 +41,27 @@ function ImageGallery(Props) {
           var bgColor = i === index ? "bg-gray-40" : "bg-gray-70";
           var onClick = function (evt) {
             evt.preventDefault();
-            Curry._1(setIndex, (function (param) {
-                    return i;
-                  }));
+            return Curry._1(setIndex, (function (param) {
+                          return i;
+                        }));
           };
           return React.createElement("div", {
                       key: src,
                       className: "group flex items-center hover:cursor-pointer h-8 w-8",
                       onClick: onClick
                     }, React.createElement("div", {
-                          className: "h-[1px] group-hover:bg-gray-40 w-full " + bgColor + ""
+                          className: "h-[1px] group-hover:bg-gray-40 w-full " + bgColor
                         }));
         }));
   var onClick = function (evt) {
     evt.preventDefault();
-    Curry._1(setIndex, (function (prev) {
-            if (prev === (imgSrcs.length - 1 | 0)) {
-              return 0;
-            } else {
-              return prev + 1 | 0;
-            }
-          }));
+    return Curry._1(setIndex, (function (prev) {
+                  if (prev === (imgSrcs.length - 1 | 0)) {
+                    return 0;
+                  } else {
+                    return prev + 1 | 0;
+                  }
+                }));
   };
   return React.createElement("div", {
               className: className
@@ -90,5 +91,6 @@ var make = ImageGallery;
 
 export {
   make ,
+  
 }
 /* react Not a pure module */

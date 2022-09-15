@@ -89,16 +89,16 @@ function ApiLayout(Props) {
   var setSidebarOpen = match[1];
   var isSidebarOpen = match[0];
   var toggleSidebar = function (param) {
-    Curry._1(setSidebarOpen, (function (prev) {
-            return !prev;
-          }));
+    return Curry._1(setSidebarOpen, (function (prev) {
+                  return !prev;
+                }));
   };
   React.useEffect((function () {
           var events = router.events;
           var onChangeComplete = function (_url) {
-            Curry._1(setSidebarOpen, (function (param) {
-                    return false;
-                  }));
+            return Curry._1(setSidebarOpen, (function (param) {
+                          return false;
+                        }));
           };
           Curry._2(Next.Router.Events.on, events, {
                 NAME: "routeChangeComplete",
@@ -113,10 +113,10 @@ function ApiLayout(Props) {
                           NAME: "routeChangeComplete",
                           VAL: onChangeComplete
                         });
-                    Curry._2(Next.Router.Events.off, events, {
-                          NAME: "hashChangeComplete",
-                          VAL: onChangeComplete
-                        });
+                    return Curry._2(Next.Router.Events.off, events, {
+                                NAME: "hashChangeComplete",
+                                VAL: onChangeComplete
+                              });
                   });
         }), []);
   var tmp;
@@ -126,7 +126,7 @@ function ApiLayout(Props) {
       var version = evt.target.value;
       var url = Url.parse(route);
       var targetUrl = "/" + (url.base.join("/") + ("/" + (version + ("/" + url.pagepath.join("/")))));
-      Next.Router.push(router, targetUrl);
+      return Next.Router.push(router, targetUrl);
     };
     tmp = React.createElement(VersionSelect.make, {
           onChange: onChange,
@@ -188,5 +188,6 @@ export {
   OldDocsWarning ,
   makeBreadcrumbs ,
   make ,
+  
 }
 /* Next Not a pure module */

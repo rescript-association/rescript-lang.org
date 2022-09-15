@@ -82,16 +82,18 @@ function CodeExample$CopyButton(Props) {
           var nextFrameId = window.requestAnimationFrame(function (param) {
                 bannerEl.classList.toggle("opacity-0");
                 bannerEl.classList.toggle("opacity-100");
+                
               });
           var timeoutId = setTimeout((function (param) {
                   buttonEl.removeChild(bannerEl);
-                  Curry._1(setState, (function (param) {
-                          return /* Init */0;
-                        }));
+                  return Curry._1(setState, (function (param) {
+                                return /* Init */0;
+                              }));
                 }), 3000);
           return (function (param) {
                     window.cancelAnimationFrame(nextFrameId);
                     clearTimeout(timeoutId);
+                    
                   });
         }), [state]);
   return React.createElement("button", {
@@ -150,9 +152,9 @@ function CodeExample$Toggle(Props) {
             var activeClass = selected === i ? "font-medium text-12 text-gray-40 bg-gray-5 border-t-2 first:border-l" : "font-medium text-12 hover:text-gray-60 border-t-2 bg-gray-20 hover:cursor-pointer";
             var onClick = function (evt) {
               evt.preventDefault();
-              Curry._1(setSelected, (function (param) {
-                      return i;
-                    }));
+              return Curry._1(setSelected, (function (param) {
+                            return i;
+                          }));
             };
             var key = label$1 + ("-" + String(i));
             var paddingX = numberOfItems >= 3 ? (
@@ -239,5 +241,6 @@ var make = CodeExample;
 export {
   make ,
   Toggle ,
+  
 }
 /* Icon Not a pure module */

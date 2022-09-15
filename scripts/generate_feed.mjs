@@ -8,5 +8,6 @@ console.log(content);
 
 export {
   content ,
+  
 }
 /* content Not a pure module */

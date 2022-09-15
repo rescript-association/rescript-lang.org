@@ -147,8 +147,7 @@ function ManualDocsLayout$V800(Props) {
         return param[0] === version$2;
       });
   var label = match !== undefined ? match[1] : version$2;
-  var additionalText;
-  additionalText = "(These docs are equivalent to the old BuckleScript docs before the ReScript rebrand)";
+  var additionalText = version$2 === "v8.0.0" ? "(These docs are equivalent to the old BuckleScript docs before the ReScript rebrand)" : "";
   var warnBanner = React.createElement("div", {
         className: "mb-10"
       }, React.createElement(Markdown.Info.make, {
@@ -188,5 +187,6 @@ export {
   Latest ,
   V900 ,
   V800 ,
+  
 }
 /* LatestLayout Not a pure module */

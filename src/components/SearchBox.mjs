@@ -23,7 +23,7 @@ function SearchBox(Props) {
   var textInput = React.useRef(null);
   var onMouseDownClear = function (evt) {
     evt.preventDefault();
-    Curry._1(onClear, undefined);
+    return Curry._1(onClear, undefined);
   };
   var onAreaFocus = function (evt) {
     var el = evt.target;
@@ -31,19 +31,20 @@ function SearchBox(Props) {
     if (isDiv && state === /* Inactive */1) {
       return Belt_Option.forEach(Caml_option.nullable_to_opt(textInput.current), (function (el) {
                     el.focus();
+                    
                   }));
     }
     
   };
   var onFocus = function (param) {
-    Curry._1(setState, (function (param) {
-            return /* Active */0;
-          }));
+    return Curry._1(setState, (function (param) {
+                  return /* Active */0;
+                }));
   };
   var onBlur = function (param) {
-    Curry._1(setState, (function (param) {
-            return /* Inactive */1;
-          }));
+    return Curry._1(setState, (function (param) {
+                  return /* Inactive */1;
+                }));
   };
   var onKeyDown = function (evt) {
     var key = evt.key;
@@ -71,7 +72,7 @@ function SearchBox(Props) {
   };
   var onChange = function (evt) {
     evt.preventDefault();
-    Curry._1(onValueChange, evt.target.value);
+    return Curry._1(onValueChange, evt.target.value);
   };
   return React.createElement("div", {
               className: (
@@ -106,5 +107,6 @@ var make = SearchBox;
 
 export {
   make ,
+  
 }
 /* Icon Not a pure module */
