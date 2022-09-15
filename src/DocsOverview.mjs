@@ -85,7 +85,7 @@ function DocsOverview$default(Props) {
       var version = evt.target.value;
       var url = Url.parse(router.route);
       var targetUrl = "/" + (url.base.join("/") + ("/" + (version + ("/" + url.pagepath.join("/")))));
-      Next.Router.push(router, targetUrl);
+      return Next.Router.push(router, targetUrl);
     };
     versionSelect = React.createElement("div", {
           className: "text-fire"
@@ -120,5 +120,6 @@ var $$default = DocsOverview$default;
 export {
   $$default ,
   $$default as default,
+  
 }
 /* Next Not a pure module */

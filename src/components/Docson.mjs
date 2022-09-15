@@ -25,5 +25,6 @@ var make = Docson$2;
 
 export {
   make ,
+  
 }
 /* react Not a pure module */

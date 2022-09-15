@@ -197,6 +197,7 @@ function SyntaxLookup(Props) {
                     return /* ShowAll */0;
                   }));
           }
+          
         }), [router]);
   var onSearchValueChange = function (value) {
     if (value === "") {
@@ -207,14 +208,14 @@ function SyntaxLookup(Props) {
       return Next.Router.push(router, "/syntax-lookup#" + item.id);
     }
     var filtered = searchItems(value);
-    Curry._1(setState, (function (param) {
-            return {
-                    TAG: 0,
-                    _0: value,
-                    _1: filtered,
-                    [Symbol.for("name")]: "ShowFiltered"
-                  };
-          }));
+    return Curry._1(setState, (function (param) {
+                  return {
+                          TAG: 0,
+                          _0: value,
+                          _1: filtered,
+                          [Symbol.for("name")]: "ShowFiltered"
+                        };
+                }));
   };
   var details;
   if (typeof state === "number" || state.TAG === /* ShowFiltered */0) {
@@ -261,7 +262,7 @@ function SyntaxLookup(Props) {
           var children = Belt_Array.map(items, (function (item) {
                   var onMouseDown = function (evt) {
                     evt.preventDefault();
-                    onSearchValueChange(item.name);
+                    return onSearchValueChange(item.name);
                   };
                   return React.createElement("span", {
                               key: item.name,
@@ -300,7 +301,7 @@ function SyntaxLookup(Props) {
     ];
   }
   var onSearchClear = function (param) {
-    onSearchValueChange("");
+    return onSearchValueChange("");
   };
   return React.createElement("div", undefined, React.createElement("div", {
                   className: "flex flex-col items-center"
@@ -335,5 +336,6 @@ var make = SyntaxLookup;
 
 export {
   make ,
+  
 }
 /* indexData Not a pure module */
