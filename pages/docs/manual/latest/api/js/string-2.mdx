@@ -321,6 +321,7 @@ let match_: (t, Js_re.t) => option<array<option<t>>>
 `match(regexp, str)` matches a `string` against the given `regexp`. If there is no match, it returns `None`. For regular expressions without the g modifier, if there is a match, the return value is `Some(array)` where the array contains:
 - The entire matched string
 - Any capture groups if the regexp had parentheses
+
 For regular expressions with the g modifier, a matched expression returns `Some(array)` with all the matched substrings and no capture groups. Javscript String.prototype.match can return `undefined`  for optional capture groups that are not found, thus the element of the returned array is typed `option<t>`. See [`String.match`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match) on MDN.
 
 ```res example
