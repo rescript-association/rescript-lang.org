@@ -6,36 +6,4 @@ canonical: "/community/roadmap"
 
 # Roadmap
 
-*(Last update: June 2nd, 2022)*
-
-This is a living document that defines our current roadmap, goals and ambitions.
-
-All roadmap related discussions, proposals and changes can either be found in the [ReScript Forum](https://forum.rescript-lang.org), or in dedicated GitHub PRs / issues.
-
-## v10 "First Community Release"
-
-This is the first community-powered release. See the [May 2022 Meeting Notes](https://forum.rescript-lang.org/t/community-meeting-may-2022/3280) for more details.
-
-**Estimated release date:** Mid 2022
-
-### Notable changes
-- Add M1 support
-- Add support for unicode strings (e.g `"Hallöle"` will work like in JavaScript; see [PR](https://github.com/rescript-lang/syntax/pull/433))
-- (breaking) Remove OCaml’s Format module (should have no impact on the majority of ReScript users; see [discussion](https://forum.rescript-lang.org/t/what-stable-type-system-features-we-are-going-to-preserve-from-ocaml/1251))
-- (breaking) Remove / deprecate several unused / unsupported functions from Pervasives (should not have any impact on existing ReScript code)
-- (breaking) Remove functionality for reprinting Reason to ReScript (users may use `rescript@9.1.4` to upgrade their `.re` files)
-- (breaking) Remove deprecated `@bs.send.pipe` decorator (existing code needs to be migrated to `@send` instead)
-- Bugfixes etc.
-
-## Future
-
-> **Important:** This list helps to set expectations, so it may change in the future.
-
-- Add opt-in configuration flag `stdlib-future` to disable OCaml related stdlib code (for writing future proof code; see [discussion](https://forum.rescript-lang.org/t/roles-for-belt-js-and-pervasives-in-rescript/1683))
-- Convert stdlib files (`Js`, `Belt`, etc) to ReScript syntax ([tracking issue](https://github.com/rescript-lang/rescript-compiler/issues/4872))
-- Make `bsconfig.json` json compliant ([proposal](https://forum.rescript-lang.org/t/proposed-changes-make-bsconfig-json-standard-compilant/1859))
-- Add option to use `rescript.json` instead of `bsconfig.json`
-- Infix operator support (only for a dedicated set of math operators `+`, `-`, `-.`, `/`, `%`, etc.; see the [tracking issue](https://github.com/rescript-lang/syntax/issues/440))
-- Docstring syntax support: `/** */` instead of `@ocaml.doc("My docstring")` ([tracking issue](https://github.com/rescript-lang/syntax/issues/439))
-- PPX only allowed on top level packages?
-- Removal of recursive modules?
+TODO
