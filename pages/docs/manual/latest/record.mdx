@@ -20,7 +20,7 @@ A record needs a mandatory type declaration:
 ```res prelude
 type person = {
   age: int,
-  name: string
+  name: string,
 }
 ```
 ```js
@@ -28,6 +28,28 @@ type person = {
 ```
 
 </CodeTab>
+
+The value of the record fields can be declared as `option`, just like you'd expect. In addition, the presence of the record fields themselves can also be specified as optional, by putting a `?` after the field name:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res prelude
+type person = {
+  age: int,
+  name?: string
+}
+```
+```js
+// Empty output
+```
+
+</CodeTab>
+
+This has 2 effects, both of which we'll dive deeper into later:
+1. You don't need to specify the field when creating the record
+2. Its type is automatically option, and the value defaults to `None` when the field is not specified
+
+The resulting type of the `name` field above will therefore be `option<string>`.
 
 ## Creation
 
@@ -90,6 +112,41 @@ var me2 = {
 
 Either of the above 3 says "this record's definition is found in the School file". The first one, the regular type annotation, is preferred.
 
+### Optional Fields
+For records with optional fields, just set the fields you're interested in:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res prelude
+type person = {
+  age: int,
+  name?: string
+}
+
+let me = {
+  age: 5,
+  name: "Big ReScript"
+}
+
+let friend = {
+  age: 7
+}
+```
+```js
+var me = {
+  age: 5,
+  name: "Big ReScript"
+};
+
+var friend = {
+  age: 7
+};
+```
+
+</CodeTab>
+
+Notice how the fields not set will also not end up in the JavaScript output.
+
 ## Access
 
 Use the familiar dot notation:
@@ -125,6 +182,44 @@ var meNextYear = {
 
 **Note**: spread cannot add new fields to the record value, as a record's shape is fixed by its type.
 
+### Optional Fields
+Updating an optional field in the scenario above works just like any other field provided you want to set a new value. However, if you want to _remove_ the value of that field, you'll need to use a special syntax. Note that to remove a field here means to set its value to `None`. It looks like this:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type person = {
+  age: int,
+  name?: string
+}
+
+let me = {
+  age: 123,
+  name: "Hello"
+}
+
+let withoutName = {
+  ...me,
+  name: ?None
+}
+```
+```js
+import * as Caml_obj from "./stdlib/caml_obj.js";
+
+var me = {
+  age: 123,
+  name: "Hello"
+};
+
+var newrecord = Caml_obj.obj_dup(me);
+
+newrecord.name = undefined;
+
+var withoutName = newrecord;
+```
+
+</CodeTab>
+
 ## Mutable Update
 
 Record fields can optionally be mutable. This allows you to efficiently update those fields in-place with the `=` operator.
@@ -159,7 +254,8 @@ ReScript records compile to straightforward JavaScript objects; see the various 
 
 ## Tips & Tricks
 
-**Record Types Are Found By Field Name**. With records, you **cannot** say "I'd like this function to take any record type, as long as they have the field `age`". The following **won't work as intended**:
+### Record Types Are Found By Field Name
+With records, you **cannot** say "I'd like this function to take any record type, as long as they have the field `age`". The following **won't work as intended**:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -188,6 +284,112 @@ getAge(me) // type error!
 ```
 
 The type system will complain that `me` is a `person`, and that `getAge` only works on `monster`. If you need such capability, use ReScript objects, described [here](object.md).
+
+### Optional Fields in Records Can Be Useful for Bindings
+Many JavaScript APIs tend to have large configuration objects that can be a bit annoying to model as records, since you previously always needed to specify all record fields when creating a record. 
+
+Optional record fields, introduced in [`v10`](/blog/release-10-0-0#experimental-optional-record-fields), is intended to help with this. Optional fields will let you avoid having to specify all fields, and let you just specify the one's you care about. A significant improvement in ergonomics for bindings and other APIs with for example large configuration objects.
+
+### Pattern Matching on Optional Fields
+[Pattern matching](pattern-matching-destructuring), one of ReScript's most important features, has two caveats when you deal with optional fields.
+
+When matching on the field directly, the value of the field is always treated as `option`. Example:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type person = {
+  age: int,
+  name?: string,
+}
+
+let me = {
+  age: 123,
+  name: "Hello",
+}
+
+let isRescript = switch me.name {
+| Some("ReScript") => true
+| Some(_) | None => false
+}
+```
+```js
+var isRescript;
+
+isRescript = "Hello" === "ReScript" ? true : false;
+
+var me = {
+  age: 123,
+  name: "Hello"
+};
+```
+
+</CodeTab>
+
+But, when matching on the field as part of the general record structure, it's treated as the underlying, non-optional value:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type person = {
+  age: int,
+  name?: string,
+}
+
+let me = {
+  age: 123,
+  name: "Hello",
+}
+
+let isRescript = switch me {
+| {name: "ReScript"} => true
+| _ => false
+}
+
+```
+```js
+var isRescript;
+
+isRescript = "Hello" === "ReScript" ? true : false;
+
+var me = {
+  age: 123,
+  name: "Hello"
+};
+```
+
+</CodeTab>
+
+Sometimes you _do_ want to know whether the field was set or not. You can tell the pattern matching engine about that by prefixing your option match with `?`, like this:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type person = {
+  age: int,
+  name?: string,
+}
+
+let me = {
+  age: 123,
+  name: "Hello",
+}
+
+let nameWasSet = switch me {
+| {name: ?None} => false
+| {name: ?Some(_)} => true
+}
+```
+```js
+var nameWasSet = false;
+
+var me = {
+  age: 123,
+  name: "Hello"
+};
+```
+
+</CodeTab>
 
 ## Design Decisions
 
