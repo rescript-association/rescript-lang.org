@@ -31,13 +31,21 @@ let requireSyntaxFile: string => MdxComp.t = %raw(`
 `)
 
 module Category = {
-  type t = Decorators | Operators | LanguageConstructs | ExtensionPoints | SpecialValues | Other
+  type t =
+    | Decorators
+    | Operators
+    | LanguageConstructs
+    | BuiltInFunctions
+    | ExtensionPoints
+    | SpecialValues
+    | Other
 
   let toString = t =>
     switch t {
     | Decorators => "Decorators"
     | Operators => "Operators"
     | ExtensionPoints => "Extension Points"
+    | BuiltInFunctions => "Built In Functions"
     | LanguageConstructs => "Language Constructs"
     | SpecialValues => "Special Values"
     | Other => "Other"
@@ -46,10 +54,11 @@ module Category = {
   let fromString = (s: string): t => {
     switch s {
     | "decorators" => Decorators
-    | "specialvalues" => SpecialValues
     | "operators" => Operators
     | "languageconstructs" => LanguageConstructs
+    | "builtinfunctions" => BuiltInFunctions
     | "extensionpoints" => ExtensionPoints
+    | "specialvalues" => SpecialValues
     | _ => Other
     }
   }
@@ -237,6 +246,7 @@ let make = () => {
       Decorators,
       Operators,
       LanguageConstructs,
+      BuiltInFunctions,
       ExtensionPoints,
       SpecialValues,
       Other,

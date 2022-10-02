@@ -409,32 +409,35 @@ add(1, 2);
 
 </CodeTab>
 
-If you need to call a curried function with a single unit `()` argument, you can use the `ignore()` function:
-
-<CodeTab labels={["ReScript", "JS Output"]}>
-
-```res example
-let echo = (. a) => a
-
-echo(. ignore())
-```
-
-```js
-function echo(a) {
-  return a;
-}
-
-echo(undefined);
-```
-
-</CodeTab>
-
-
 If you write down the uncurried function's type, you'll add a dot there as well.
 
 **Note**: both the declaration site and the call site need to have the uncurry annotation. That's part of the guarantee/requirement.
 
 **This feature seems trivial**, but is actually one of our most important features, as a primarily functional language. We encourage you to use it if you'd like to remove any mention of `Curry` runtime in the JS output.
+
+## The ignore() Function
+
+Occasionally you may want to ignore the return value of a function. ReScript provides an `ignore()` function that discards the value of its argument and returns `()`:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+mySideEffect()->Promise.catch(handleError)->ignore
+
+Js.Global.setTimeout(myFunc, 1000)->ignore
+```
+
+```js
+$$Promise.$$catch(mySideEffect(), function (prim) {
+  return handleError(prim);
+});
+
+setTimeout(function (prim) {
+  myFunc();
+}, 1000);
+```
+
+</CodeTab>
 
 ## Tips & Tricks
 
