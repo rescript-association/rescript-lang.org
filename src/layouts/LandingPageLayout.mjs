@@ -199,7 +199,7 @@ function LandingPageLayout$QuickInstall$Instructions(Props) {
                   className: "captions x text-gray-40 mb-2 mt-1"
                 }, "You can quickly add ReScript to your existing JavaScript codebase via npm / yarn:"), React.createElement("div", {
                   className: "w-full space-y-2"
-                }, copyBox("npm install rescript --save-dev"), copyBox("npx rescript init .")));
+                }, copyBox("npm install rescript"), copyBox("npx rescript init .")));
 }
 
 function LandingPageLayout$QuickInstall(Props) {
