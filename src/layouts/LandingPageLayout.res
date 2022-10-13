@@ -244,7 +244,7 @@ module QuickInstall = {
           )}
         </div>
         <div className="w-full space-y-2">
-          {copyBox("npm install rescript --save-dev")} {copyBox("npx rescript init .")}
+          {copyBox("npm install rescript")} {copyBox("npx rescript init .")}
         </div>
       </div>
     }
