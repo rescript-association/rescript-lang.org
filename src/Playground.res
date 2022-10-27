@@ -1100,6 +1100,18 @@ module Settings = {
   }
 }
 
+module Logs = {
+  @react.component
+  let make = (~logs) =>
+    <ul>
+      {logs
+      ->Js.Array2.mapi((log, i) =>
+        <li key={i->Js.Int.toString}> {log->Js.Json.stringify->React.string} </li>
+      )
+      ->React.array}
+    </ul>
+}
+
 module ControlPanel = {
   module Button = {
     @react.component
@@ -1181,6 +1193,7 @@ module ControlPanel = {
     ~state: CompilerManagerHook.state,
     ~dispatch: CompilerManagerHook.action => unit,
     ~editorCode: React.ref<string>,
+    ~dispatchEval: string => unit,
   ) => {
     let router = Next.Router.useRouter()
     let children = switch state {
@@ -1191,6 +1204,23 @@ module ControlPanel = {
       let onFormatClick = evt => {
         ReactEvent.Mouse.preventDefault(evt)
         dispatch(Format(editorCode.current))
+      }
+
+      let onRunClick = evt => {
+        ReactEvent.Mouse.preventDefault(evt)
+
+        let getSuccessCompilationResult = result =>
+          switch result {
+          | RescriptCompilerApi.CompilationResult.Success(r) => Some(r)
+          | _ => None
+          }
+
+        switch ready.result {
+        | FinalResult.Nothing => Js.log("nothing")
+        | FinalResult.Comp(x) =>
+          getSuccessCompilationResult(x)->Belt.Option.map(r => dispatchEval(r.js_code))->ignore
+        | FinalResult.Conv(_) => Js.log("conv")
+        }
       }
 
       let createShareLink = () => {
@@ -1215,6 +1245,7 @@ module ControlPanel = {
         <div className="mr-2">
           <Button onClick=onFormatClick> {React.string("Format")} </Button>
         </div>
+        <div className="mr-2"> <Button onClick=onRunClick> {React.string("Run")} </Button> </div>
         <ShareButton actionIndicatorKey createShareLink />
       </>
     | _ => React.null
@@ -1257,6 +1288,7 @@ module OutputPanel = {
     ~compilerDispatch,
     ~compilerState: CompilerManagerHook.state,
     ~editorCode: React.ref<string>,
+    ~evalState: Eval.state,
   ) => {
     /*
        We need the prevState to understand different
@@ -1365,6 +1397,13 @@ module OutputPanel = {
     | _ => 0
     }
 
+    let logs = switch evalState {
+    | Eval.Error({logs})
+    | Eval.Evaluated({logs}) => logs
+    | Eval.Evaluating(_)
+    | Idle => []
+    }
+
     prevSelected.current = selected
 
     let tabs = [
@@ -1372,6 +1411,10 @@ module OutputPanel = {
       {
         title: "Problems",
         content: <div style={ReactDOM.Style.make(~height="50%", ())}> errorPane </div>,
+      },
+      {
+        title: "Logs",
+        content: <Logs logs={logs} />,
       },
       {
         title: "Settings",
@@ -1416,6 +1459,7 @@ let initialReContent = j`Js.log("Hello Reason 3.6!");`
 @react.component
 let default = () => {
   let router = Next.Router.useRouter()
+  let (evalState, dispatchEval) = Eval.useEval()
 
   let initialLang = switch Js.Dict.get(router.query, "ext") {
   | Some("re") => Api.Lang.Reason
@@ -1562,6 +1606,7 @@ let default = () => {
                   state=compilerState
                   dispatch=compilerDispatch
                   editorCode
+                  dispatchEval
                 />
                 <CodeMirror
                   className="w-full py-4"
@@ -1592,7 +1637,7 @@ let default = () => {
             <div
               className="relative w-full overflow-x-hidden h-screen lg:h-auto lg:w-1/2"
               style={ReactDOM.Style.make(~maxWidth=windowWidth > 1024 ? "56rem" : "100%", ())}>
-              <OutputPanel compilerDispatch compilerState editorCode />
+              <OutputPanel compilerDispatch compilerState editorCode evalState />
               <div className="absolute bottom-0 w-full">
                 <Statusbar
                   actionIndicatorKey={Belt.Int.toString(actionCount)} state=compilerState

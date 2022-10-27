@@ -4,7 +4,7 @@ module Document = {
 }
 
 module ClassList = {
-  type t;
+  type t
   @send external toggle: (t, string) => unit = "toggle"
 }
 
@@ -15,7 +15,6 @@ module Element = {
   @get external classList: Dom.element => ClassList.t = "classList"
 }
 
-
 type animationFrameId
 
 @scope("window") @val
@@ -23,3 +22,11 @@ external requestAnimationFrame: (unit => unit) => animationFrameId = "requestAni
 
 @scope("window") @val
 external cancelAnimationFrame: animationFrameId => unit = "cancelAnimationFrame"
+
+module Url = {
+  type t
+  @new external make: string => t = "URL"
+  @new external makeWithBase: (string, string) => t = "URL"
+
+  @send external toString: t => string = "toString"
+}
