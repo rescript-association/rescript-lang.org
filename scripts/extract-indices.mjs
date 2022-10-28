@@ -14,7 +14,8 @@ import path from "path";
 import fs from "fs";
 import { URL } from 'url';
 
-const __dirname = new URL('.', import.meta.url).pathname;
+const pathname = new URL('.', import.meta.url).pathname;
+const __dirname = process.platform !== 'win32' ? pathname : pathname.substring(1)
 
 const headers = options => (tree, file) => {
   const headers = [];

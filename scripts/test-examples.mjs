@@ -4,7 +4,8 @@ import child_process from "child_process";
 import path from "path";
 import { URL } from 'url';
 
-const __dirname = new URL('.', import.meta.url).pathname;
+const pathname = new URL('.', import.meta.url).pathname;
+const __dirname = process.platform !== 'win32' ? pathname : pathname.substring(1)
 
 let tempFileName = path.join(__dirname, '..', '_tempFile.res')
 let tempFileNameRegex = /_tempFile\.res/g
