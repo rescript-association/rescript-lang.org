@@ -320,7 +320,7 @@ module SgrString = {
   let toString = (e: t): string => {
     let content = {
       open Js.String2
-      replaceByRe(e.content, %re("/\n/g"), "\n")->replace(esc, "")
+      replaceByRe(e.content, %re("/\n/g"), "\\n")->replace(esc, "")
     }
     let params = Belt.Array.map(e.params, Sgr.paramToString)->Js.Array2.joinWith(", ")
 
@@ -336,7 +336,7 @@ module Printer = {
     | Text({content, loc: {startPos, endPos}}) =>
       let content = {
         open Js.String2
-        replaceByRe(content, %re("/\n/g"), "\n")->replace(esc, "")
+        replaceByRe(content, %re("/\n/g"), "\\n")->replace(esc, "")
       }
       j`Text "$content" ($startPos to $endPos)`
     | Sgr({params, raw, loc: {startPos, endPos}}) =>

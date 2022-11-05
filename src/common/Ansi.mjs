@@ -486,7 +486,7 @@ function fromTokens(tokens) {
 }
 
 function toString$1(e) {
-  var content = e.content.replace(/\n/g, "\n").replace(esc, "");
+  var content = e.content.replace(/\n/g, "\\n").replace(esc, "");
   var params = Belt_Array.map(e.params, paramToString).join(", ");
   return "SgrString params: " + params + " | content: " + content;
 }
@@ -500,7 +500,7 @@ function tokenString(t) {
   switch (t.TAG | 0) {
     case /* Text */0 :
         var match = t.loc;
-        var content = t.content.replace(/\n/g, "\n").replace(esc, "");
+        var content = t.content.replace(/\n/g, "\\n").replace(esc, "");
         return "Text \"" + content + "\" (" + match.startPos + " to " + match.endPos + ")";
     case /* Sgr */1 :
         var match$1 = t.loc;
