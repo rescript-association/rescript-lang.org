@@ -42,7 +42,7 @@ module Warn = {
 }
 
 module UrlBox = {
-  open Mdx.MdxChildren
+  open! Mdx.MdxChildren
 
   let imgEl = <img src="/static/hyperlink.svg" className="mr-2 inline-block" />
 

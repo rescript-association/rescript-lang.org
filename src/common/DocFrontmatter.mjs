@@ -31,6 +31,5 @@ function decode(json) {
 
 export {
   decode ,
-  
 }
 /* No side effect */

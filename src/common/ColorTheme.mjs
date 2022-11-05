@@ -9,6 +9,5 @@ function toCN(value) {
 
 export {
   toCN ,
-  
 }
 /* No side effect */

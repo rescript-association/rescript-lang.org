@@ -503,10 +503,8 @@ let updateErrors = (~state: state, ~onMarkerFocus=?, ~onMarkerFocusLeave=?, ~cm:
 
   let errorsMap = Belt.HashMap.make(~hintSize=Belt.Array.length(errors), ~id=module(ErrorHash))
   state.marked = []
-  cm->{
-    open CM
-    clearGutter(errorGutterId)
-  }
+  cm->CM.clearGutter(CM.errorGutterId)
+  
 
   let wrapper = cm->CM.getWrapperElement
 
@@ -558,11 +556,10 @@ let updateErrors = (~state: state, ~onMarkerFocus=?, ~onMarkerFocusLeave=?, ~cm:
     Js.String2.startsWith(id, "gutter-marker") || Js.String2.startsWith(id, "text-marker")
 
   wrapper->{
-    open DomUtil
-    setOnMouseOver(evt => {
-      let target = Event.target(evt)
+    DomUtil.setOnMouseOver(evt => {
+      let target = DomUtil.Event.target(evt)
 
-      let id = getId(target)
+      let id = DomUtil.getId(target)
       if isMarkerId(id) {
         switch extractRowColFromId(id) {
         | Some(rowCol) => Belt.Option.forEach(onMarkerFocus, cb => cb(rowCol))
@@ -573,11 +570,10 @@ let updateErrors = (~state: state, ~onMarkerFocus=?, ~onMarkerFocusLeave=?, ~cm:
   }
 
   wrapper->{
-    open DomUtil
-    setOnMouseOut(evt => {
-      let target = Event.target(evt)
+    DomUtil.setOnMouseOut(evt => {
+      let target = DomUtil.Event.target(evt)
 
-      let id = getId(target)
+      let id = DomUtil.getId(target)
       if isMarkerId(id) {
         switch extractRowColFromId(id) {
         | Some(rowCol) => Belt.Option.forEach(onMarkerFocusLeave, cb => cb(rowCol))

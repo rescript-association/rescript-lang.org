@@ -52,6 +52,5 @@ var useWindowWidth = (() => {
 export {
   useOutsideClick ,
   useWindowWidth ,
-  
 }
 /* No side effect */

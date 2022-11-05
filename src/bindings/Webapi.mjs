@@ -11,6 +11,5 @@ export {
   $$Document ,
   ClassList ,
   $$Element ,
-  
 }
 /* No side effect */

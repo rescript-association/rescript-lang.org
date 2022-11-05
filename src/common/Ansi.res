@@ -109,7 +109,7 @@ module Location = {
 
 module Lexer = {
   open Location
-  open Sgr
+  open! Sgr
 
   type token =
     | Text({loc: Location.loc, content: string})

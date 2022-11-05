@@ -47,7 +47,7 @@
     "esbuild-loader": "^2.13.1",
     "postcss-cli": "^8.3.0",
     "reanalyze": "^2.16.0",
-    "rescript": "9.1.2",
+    "rescript": "^10.1.0-rc.4",
     "tailwindcss": "^2.1.4"
   }
 }

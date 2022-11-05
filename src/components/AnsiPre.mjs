@@ -82,6 +82,5 @@ var make = AnsiPre;
 
 export {
   make ,
-  
 }
 /* react Not a pure module */
