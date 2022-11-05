@@ -482,7 +482,7 @@ function Markdown$A(Props) {
     }
     return React.createElement("a", tmp, children);
   }
-  var regex = /\\.md(x)?|\\.html$/;
+  var regex = /\.md(x)?|\.html$/;
   var match = href.split("#");
   var len = match.length;
   var href$1;
