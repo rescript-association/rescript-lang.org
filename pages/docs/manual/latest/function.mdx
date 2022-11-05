@@ -423,6 +423,8 @@ The outpul looks like idiomatic JS:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
+let getUserName = async (userId) => userId
+
 let greetUser = async (userId) => {
   let name = await getUserName(userId)  
   "Hello " ++ name ++ "!"
@@ -449,6 +451,8 @@ Both JS exceptions and exceptions defined in ReScript can be caught. The compile
 
 ```res example
 exception SomeReScriptException
+
+let somethingThatMightThrow = async () => raise(SomeReScriptException)
 
 let someAsyncFn = async () => {
   switch await somethingThatMightThrow() {
