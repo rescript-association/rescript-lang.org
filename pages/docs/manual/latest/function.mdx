@@ -415,10 +415,10 @@ If you write down the uncurried function's type, you'll add a dot there as well.
 
 **This feature seems trivial**, but is actually one of our most important features, as a primarily functional language. We encourage you to use it if you'd like to remove any mention of `Curry` runtime in the JS output.
 
-## Async/Await (from version v10.1)
+## Async/Await (from v10.1)
 
 Just as in JS, an async function can be declared by adding `async` before the definition, and `await` can be used in the body of such functions.
-The outpul looks like idiomatic JS:
+The output looks like idiomatic JS:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -438,7 +438,7 @@ async function greetUser(userId) {
 ```
 </CodeTab>
 
-The return type of `getUser` is inferred to be `promise<string>`, where type `promise` is now a built-in of the language.
+The return type of `getUser` is inferred to be `promise<string>`.
 Similarly, `await getUserName(userId)` returns a `string` when the function returns `promise<string>`.
 Using `await` outside of an `async` function (including in a non-async callback to an async function) is an error.
 
@@ -463,7 +463,7 @@ let someAsyncFn = async () => {
 }
 ```
 ```js
-var SomeReScriptException = /* @__PURE__ */Caml_exceptions.create("JsxV4.SomeReScriptException");
+var SomeReScriptException = /* @__PURE__ */Caml_exceptions.create("Example.SomeReScriptException");
 
 async function someAsyncFn(param) {
   var data;
