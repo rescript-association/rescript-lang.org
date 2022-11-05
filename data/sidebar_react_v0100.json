@@ -2,7 +2,7 @@
   "Overview": [
     "introduction",
     "installation",
-    "jsx-v3-v4"
+    "migrate-from-reason-react"
   ],
   "Main Concepts": [
     "elements-and-jsx",

@@ -207,7 +207,7 @@ const createV800ManualToc = () => {
 const createReactToc = version => {
   const versionLabel = version.replace(/\./g, "");
   const MD_DIR = path.join(__dirname, "../pages/docs/react");
-  const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_react_latest.json");
+  const SIDEBAR_JSON = path.join(__dirname, `../data/sidebar_react_${versionLabel}.json`);
   const TARGET_FILE = path.join(__dirname, `../index_data/react_${versionLabel}_toc.json`);
 
   const sidebarJson = JSON.parse(fs.readFileSync(SIDEBAR_JSON));
