@@ -230,7 +230,7 @@ module Code = {
     let codeElement = switch metastring {
     | None => <CodeExample code lang />
     | Some(metastring) =>
-      let metaSplits = Js.String.split(" ", metastring)->Belt.List.fromArray
+      let metaSplits = Js.String2.split(metastring, " ")->Belt.List.fromArray
 
       let highlightedLines = parseNumericRangeMeta(metastring)
 
@@ -251,7 +251,7 @@ module Code = {
     let lang = switch className {
     | None => "text"
     | Some(str) =>
-      switch Js.String.split("-", str) {
+      switch Js.String2.split(str, "-") {
       | ["language", ""] => "text"
       | ["language", lang] => lang
       | _ => "text"
