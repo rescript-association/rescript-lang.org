@@ -14,7 +14,7 @@ let tempFileNameRegex = /_tempFile\.res/g
 //       see the package.json on how to define another rescript version
 let compilersDir = path.join(__dirname, "..", "compilers")
 
-let bsc = path.join(compilersDir, 'node_modules', 'rescript-1000', process.platform, 'bsc.exe')
+let bsc = path.join(compilersDir, 'node_modules', 'rescript-1010', process.platform, 'bsc.exe')
 
 const prepareCompilers = () => {
   if (fs.existsSync(bsc)) {
