@@ -232,14 +232,24 @@ function make(props) {
                   }
                   break;
               case "react" :
-                  if (url.version === 0) {
-                    return React.createElement(ReactDocsLayout.make, {
+                  var version$1 = url.version;
+                  if (typeof version$1 === "number") {
+                    if (version$1 !== 0) {
+                      return null;
+                    } else {
+                      return React.createElement(ReactDocsLayout.Latest.make, {
+                                  frontmatter: component.frontmatter,
+                                  children: content
+                                });
+                    }
+                  } else if (version$1._0 === "v0.10.0") {
+                    return React.createElement(ReactDocsLayout.V0100.make, {
                                 frontmatter: component.frontmatter,
                                 children: content
                               });
+                  } else {
+                    return null;
                   }
-                  exit = 1;
-                  break;
               case "reason-compiler" :
                   if (url.version === 0) {
                     return React.createElement(ReasonCompilerDocsLayout.make, {
