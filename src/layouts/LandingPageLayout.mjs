@@ -170,7 +170,7 @@ function LandingPageLayout$QuickInstall$CopyButton(Props) {
         }), [state]);
   return React.createElement("button", {
               ref: buttonRef,
-              className: "relative h-10 w-10 flex justify-center	items-center ",
+              className: "relative h-10 w-10 flex justify-center items-center ",
               disabled: state === /* Copied */1,
               onClick: onClick
             }, React.createElement(Icon.Copy.make, {
