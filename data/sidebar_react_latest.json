@@ -25,6 +25,7 @@
   ],
   "Guides": [
     "beyond-jsx",
-    "forwarding-refs"
+    "forwarding-refs",
+    "extensions-of-props"
   ]
 }
