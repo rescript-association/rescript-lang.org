@@ -45,6 +45,5 @@ function parse(route) {
 export {
   parse ,
   prettyString ,
-  
 }
 /* No side effect */

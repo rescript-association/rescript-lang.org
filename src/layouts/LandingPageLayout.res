@@ -219,7 +219,7 @@ module QuickInstall = {
       <button
         ref={ReactDOM.Ref.domRef(buttonRef)}
         disabled={state === Copied}
-        className="relative h-10 w-10 flex justify-center	items-center "
+        className="relative h-10 w-10 flex justify-center items-center "
         onClick>
         <Icon.Copy className="w-6 h-6 mt-px text-gray-40 hover:cursor-pointer hover:text-gray-80" />
       </button>

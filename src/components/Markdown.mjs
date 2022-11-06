@@ -649,6 +649,5 @@ export {
   Strong ,
   $$default ,
   $$default as default,
-  
 }
 /* imgEl Not a pure module */

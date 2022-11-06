@@ -415,6 +415,78 @@ If you write down the uncurried function's type, you'll add a dot there as well.
 
 **This feature seems trivial**, but is actually one of our most important features, as a primarily functional language. We encourage you to use it if you'd like to remove any mention of `Curry` runtime in the JS output.
 
+## Async/Await (from v10.1)
+
+Just as in JS, an async function can be declared by adding `async` before the definition, and `await` can be used in the body of such functions.
+The output looks like idiomatic JS:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let getUserName = async (userId) => userId
+
+let greetUser = async (userId) => {
+  let name = await getUserName(userId)  
+  "Hello " ++ name ++ "!"
+}
+```
+```js
+async function greetUser(userId) {
+  var name = await getUserName(userId);
+  return "Hello " + name + "!";
+}
+```
+</CodeTab>
+
+The return type of `getUser` is inferred to be `promise<string>`.
+Similarly, `await getUserName(userId)` returns a `string` when the function returns `promise<string>`.
+Using `await` outside of an `async` function (including in a non-async callback to an async function) is an error.
+
+### Ergonomic error handling
+
+Error handling is done by simply using `try`/`catch`, or a switch with an `exception` case, just as in functions that are not async.
+Both JS exceptions and exceptions defined in ReScript can be caught. The compiler takes care of packaging JS exceptions into the builtin `JsError` exception:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+exception SomeReScriptException
+
+let somethingThatMightThrow = async () => raise(SomeReScriptException)
+
+let someAsyncFn = async () => {
+  switch await somethingThatMightThrow() {
+  | data => Some(data)
+  | exception JsError(_) => None
+  | exception SomeReScriptException => None
+  }
+}
+```
+```js
+var SomeReScriptException = /* @__PURE__ */Caml_exceptions.create("Example.SomeReScriptException");
+
+async function someAsyncFn(param) {
+  var data;
+  try {
+    data = await somethingThatMightThrow(undefined);
+  }
+  catch (raw_exn){
+    var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+    if (exn.RE_EXN_ID === "JsError") {
+      return ;
+    }
+    if (exn.RE_EXN_ID === SomeReScriptException) {
+      return ;
+    }
+    throw exn;
+  }
+  return data;
+}
+```
+</CodeTab>
+
+
+
 ## The ignore() Function
 
 Occasionally you may want to ignore the return value of a function. ReScript provides an `ignore()` function that discards the value of its argument and returns `()`:

@@ -3,7 +3,8 @@
 
 module P = {
   @react.component
-  let make = (~children) => <p className="md-p md:leading-5 tracking-[-0.015em] text-gray-80 md:text-16"> children </p>
+  let make = (~children) =>
+    <p className="md-p md:leading-5 tracking-[-0.015em] text-gray-80 md:text-16"> children </p>
 }
 
 // Used for hero like introduction text in
@@ -31,8 +32,7 @@ module Cite = {
 module Info = {
   @react.component
   let make = (~children) =>
-    <div className="infobox my-5 py-6 pl-8 pr-10 rounded-lg bg-sky-5"> children 
-    </div>
+    <div className="infobox my-5 py-6 pl-8 pr-10 rounded-lg bg-sky-5"> children </div>
 }
 
 module Warn = {
@@ -42,17 +42,24 @@ module Warn = {
 }
 
 module UrlBox = {
-  open Mdx.MdxChildren
+  open! Mdx.MdxChildren
 
   let imgEl = <img src="/static/hyperlink.svg" className="mr-2 inline-block" />
 
   @react.component
   let make = (~text: string, ~href: string, ~children: Mdx.MdxChildren.t) => {
     let content = switch classify(children) {
-    | String(str) => <p> imgEl {React.string(str)} </p>
+    | String(str) =>
+      <p>
+        imgEl
+        {React.string(str)}
+      </p>
     | Element(el) =>
       let subChildren = el->getMdxChildren
-      <p> imgEl {subChildren->toReactElement} </p>
+      <p>
+        imgEl
+        {subChildren->toReactElement}
+      </p>
     | Array(arr) =>
       // Scenario: Take the first element, rewrap its children with the hyperlink img
       let length = Belt.Array.length(arr)
@@ -61,7 +68,10 @@ module UrlBox = {
         let headChildren = head->getMdxChildren
 
         <>
-          <P> imgEl {headChildren->toReactElement} </P>
+          <P>
+            imgEl
+            {headChildren->toReactElement}
+          </P>
           {if length > 1 {
             arr->Js.Array2.slice(~start=1, ~end_=length)->Mdx.arrToReactElement
           } else {
@@ -80,17 +90,20 @@ module UrlBox = {
     // a plain <a> component when there is an absolute href
     let link = if Util.Url.isAbsolute(href) {
       <a href rel="noopener noreferrer" className="flex items-center">
-        {React.string(text)} <Icon.ArrowRight className="ml-1" />
+        {React.string(text)}
+        <Icon.ArrowRight className="ml-1" />
       </a>
     } else {
       <Next.Link href>
         <a className="flex items-center">
-          {React.string(text)} <Icon.ArrowRight className="ml-1" />
+          {React.string(text)}
+          <Icon.ArrowRight className="ml-1" />
         </a>
       </Next.Link>
     }
     <div className="md-url-box text-16 border-l-2 border-gray-60 my-6 py-6 pl-8 pr-10 bg-gray-5">
-      content <div className="mt-4 text-sky hover:text-sky-30"> link </div>
+      content
+      <div className="mt-4 text-sky hover:text-sky-30"> link </div>
     </div>
   }
 }
@@ -118,19 +131,18 @@ module Anchor = {
 
 module H1 = {
   @react.component
-  let make = (~children) =>
-    <h1 className="hl-1 mb-6 ">
-      children
-    </h1>
+  let make = (~children) => <h1 className="hl-1 mb-6 "> children </h1>
 }
 
 module H2 = {
   @react.component
   let make = (~id, ~children) => <>
     // Here we know that children is always a string (## headline)
-    <h2
-      className="group mt-16 mb-3 hl-3">
-      children <span className="ml-2"> <Anchor id /> </span>
+    <h2 className="group mt-16 mb-3 hl-3">
+      children
+      <span className="ml-2">
+        <Anchor id />
+      </span>
     </h2>
   </>
 }
@@ -138,9 +150,11 @@ module H2 = {
 module H3 = {
   @react.component
   let make = (~id, ~children) =>
-    <h3
-      className="group mt-8 mb-1 hl-4">
-      children <span className="ml-2"> <Anchor id /> </span>
+    <h3 className="group mt-8 mb-1 hl-4">
+      children
+      <span className="ml-2">
+        <Anchor id />
+      </span>
     </h3>
 }
 
@@ -148,7 +162,10 @@ module H4 = {
   @react.component
   let make = (~id, ~children) =>
     <h4 className="group mt-8 hl-5">
-      children <span className="ml-2"> <Anchor id /> </span>
+      children
+      <span className="ml-2">
+        <Anchor id />
+      </span>
     </h4>
 }
 
@@ -157,7 +174,10 @@ module H5 = {
   let make = (~id, ~children) =>
     <h5
       className="group mt-12 mb-3 text-12 leading-2 font-sans font-semibold uppercase tracking-wide text-gray-80">
-      children <span className="ml-2"> <Anchor id /> </span>
+      children
+      <span className="ml-2">
+        <Anchor id />
+      </span>
     </h5>
 }
 
@@ -230,7 +250,7 @@ module Code = {
     let codeElement = switch metastring {
     | None => <CodeExample code lang />
     | Some(metastring) =>
-      let metaSplits = Js.String.split(" ", metastring)->Belt.List.fromArray
+      let metaSplits = Js.String2.split(metastring, " ")->Belt.List.fromArray
 
       let highlightedLines = parseNumericRangeMeta(metastring)
 
@@ -251,7 +271,7 @@ module Code = {
     let lang = switch className {
     | None => "text"
     | Some(str) =>
-      switch Js.String.split("-", str) {
+      switch Js.String2.split(str, "-") {
       | ["language", ""] => "text"
       | ["language", lang] => lang
       | _ => "text"
@@ -325,9 +345,9 @@ module CodeTab = {
           let code = Js.String2.make(Mdx.MdxChildren.getMdxChildren(codeEl))
           let label = Belt.Array.get(labels, i)
           let tab = {
-            CodeExample.Toggle.lang: lang,
-            code: code,
-            label: label,
+            CodeExample.Toggle.lang,
+            code,
+            label,
             highlightedLines: Some(Code.parseNumericRangeMeta(metastring)),
           }
           Js.Array2.push(acc, tab)->ignore
@@ -339,14 +359,18 @@ module CodeTab = {
       acc
     })
 
-    <div className="md-codetab mt-8 mb-8 -mx-6 xs:mx-0"> <CodeExample.Toggle tabs /> </div>
+    <div className="md-codetab mt-8 mb-8 -mx-6 xs:mx-0">
+      <CodeExample.Toggle tabs />
+    </div>
   }
 }
 
 module Blockquote = {
   @react.component
   let make = (~children) =>
-    <blockquote className="md-blockquote"> <Info> children </Info> </blockquote>
+    <blockquote className="md-blockquote">
+      <Info> children </Info>
+    </blockquote>
 }
 
 module Hr = {
@@ -383,7 +407,7 @@ module A = {
       // Ideally one would check if this link is relative first,
       // but it's very unlikely we'd refer to an absolute URL ending
       // with .md
-      let regex = %re("/\\.md(x)?|\\.html$/")
+      let regex = %re("/\.md(x)?|\.html$/")
       let href = switch Js.String2.split(href, "#") {
       | [pathname, anchor] => Js.String2.replaceByRe(pathname, regex, "") ++ ("#" ++ anchor)
       | [pathname] => Js.String2.replaceByRe(pathname, regex, "")
@@ -448,8 +472,16 @@ module Li = {
           open Mdx
           first->fromReactElement->getMdxType
         } {
-        | "p" => <> {React.array(head)} last </>
-        | _ => <> <p> {React.array(head)} </p> last </>
+        | "p" =>
+          <>
+            {React.array(head)}
+            last
+          </>
+        | _ =>
+          <>
+            <p> {React.array(head)} </p>
+            last
+          </>
         }
       | _ => <p> children </p>
       /* Scenario 3 */

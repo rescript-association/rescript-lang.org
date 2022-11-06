@@ -123,6 +123,5 @@ var make = ReasonCompilerDocsLayout;
 
 export {
   make ,
-  
 }
 /* tocData Not a pure module */

@@ -381,8 +381,8 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
             markerRef.current = Some(marker)
             stateRef.current = Shown({
               el: target,
-              marker: marker,
-              hoverHint: hoverHint,
+              marker,
+              hoverHint,
               hideTimer: None,
             })
           | Shown({el, marker: prevMarker, hideTimer}) =>
@@ -394,9 +394,9 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
             let marker = cm->CM.markText(from, to_, markerObj)
 
             stateRef.current = Shown({
-              el: el,
-              marker: marker,
-              hoverHint: hoverHint,
+              el,
+              marker,
+              hoverHint,
               hideTimer: None,
             })
           }
@@ -423,9 +423,9 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
       }, 200)
 
       stateRef.current = Shown({
-        el: el,
-        hoverHint: hoverHint,
-        marker: marker,
+        el,
+        hoverHint,
+        marker,
         hideTimer: Some(timerId),
       })
     | _ => ()
@@ -503,10 +503,7 @@ let updateErrors = (~state: state, ~onMarkerFocus=?, ~onMarkerFocusLeave=?, ~cm:
 
   let errorsMap = Belt.HashMap.make(~hintSize=Belt.Array.length(errors), ~id=module(ErrorHash))
   state.marked = []
-  cm->{
-    open CM
-    clearGutter(errorGutterId)
-  }
+  cm->CM.clearGutter(CM.errorGutterId)
 
   let wrapper = cm->CM.getWrapperElement
 
@@ -557,35 +554,29 @@ let updateErrors = (~state: state, ~onMarkerFocus=?, ~onMarkerFocusLeave=?, ~cm:
   let isMarkerId = id =>
     Js.String2.startsWith(id, "gutter-marker") || Js.String2.startsWith(id, "text-marker")
 
-  wrapper->{
-    open DomUtil
-    setOnMouseOver(evt => {
-      let target = Event.target(evt)
+  wrapper->DomUtil.setOnMouseOver(evt => {
+    let target = DomUtil.Event.target(evt)
 
-      let id = getId(target)
-      if isMarkerId(id) {
-        switch extractRowColFromId(id) {
-        | Some(rowCol) => Belt.Option.forEach(onMarkerFocus, cb => cb(rowCol))
-        | None => ()
-        }
+    let id = DomUtil.getId(target)
+    if isMarkerId(id) {
+      switch extractRowColFromId(id) {
+      | Some(rowCol) => Belt.Option.forEach(onMarkerFocus, cb => cb(rowCol))
+      | None => ()
       }
-    })
-  }
+    }
+  })
 
-  wrapper->{
-    open DomUtil
-    setOnMouseOut(evt => {
-      let target = Event.target(evt)
+  wrapper->DomUtil.setOnMouseOut(evt => {
+    let target = DomUtil.Event.target(evt)
 
-      let id = getId(target)
-      if isMarkerId(id) {
-        switch extractRowColFromId(id) {
-        | Some(rowCol) => Belt.Option.forEach(onMarkerFocusLeave, cb => cb(rowCol))
-        | None => ()
-        }
+    let id = DomUtil.getId(target)
+    if isMarkerId(id) {
+      switch extractRowColFromId(id) {
+      | Some(rowCol) => Belt.Option.forEach(onMarkerFocusLeave, cb => cb(rowCol))
+      | None => ()
       }
-    })
-  }
+    }
+  })
 }
 
 @react.component
@@ -610,7 +601,7 @@ let make = // props relevant for the react wrapper
 ): React.element => {
   let inputElement = React.useRef(Js.Nullable.null)
   let cmRef: React.ref<option<CM.t>> = React.useRef(None)
-  let cmStateRef = React.useRef({marked: [], hoverHints: hoverHints})
+  let cmStateRef = React.useRef({marked: [], hoverHints})
 
   let windowWidth = useWindowWidth()
   let (onMouseOver, onMouseOut, onMouseMove) = useHoverTooltip(~cmStateRef, ~cmRef, ())

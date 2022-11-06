@@ -544,6 +544,5 @@ export {
   onlyText ,
   SgrString ,
   Printer ,
-  
 }
 /* No side effect */
