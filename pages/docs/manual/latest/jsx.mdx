@@ -162,12 +162,12 @@ React.createElement(MyComponent, {
 ## Departures From JS JSX
 
 - Attributes and children don't mandate `{}`, but we show them anyway for ease of learning. Once you format your file, some of them go away and some turn into parentheses.
-- The spread props is supported, but there are some restrictions.
+- Props spread is supported, but there are some restrictions (see below).
 - Punning!
 
-### Spread props
+### Spread Props (from v10.1)
 
-The JSX spread props is supported.
+JSX props spread is supported now, but in a stricter way than in JS.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -183,7 +183,7 @@ React.createElement(Comp, {
 
 </CodeTab>
 
-The multiple spreads are not allowed:
+Multiple spreads are not allowed:
 
 <CodeTab labels={["ReScript"]}>
 
@@ -193,7 +193,7 @@ The multiple spreads are not allowed:
 
 </CodeTab>
 
-The spread must be the first position followed by other props:
+The spread must be at the first position, followed by other props:
 
 <CodeTab labels={["ReScript"]}>
 
