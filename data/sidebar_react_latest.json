@@ -1,9 +1,5 @@
 {
-  "Overview": [
-    "introduction",
-    "installation",
-    "migrate-from-reason-react"
-  ],
+  "Overview": ["introduction", "installation", "migrate-from-reason-react"],
   "Main Concepts": [
     "elements-and-jsx",
     "rendering-elements",
@@ -12,7 +8,8 @@
     "refs-and-the-dom",
     "context",
     "styling",
-    "router"
+    "router",
+    "javascript-interop"
   ],
   "Hooks & State Management": [
     "hooks-overview",
@@ -23,8 +20,5 @@
     "hooks-ref",
     "hooks-custom"
   ],
-  "Guides": [
-    "beyond-jsx",
-    "forwarding-refs"
-  ]
+  "Guides": ["beyond-jsx", "forwarding-refs"]
 }
