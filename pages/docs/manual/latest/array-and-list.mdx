@@ -123,7 +123,7 @@ var anotherList = {
 
 `myList` didn't mutate. `anotherList` is now `list{0, 1, 2, 3}`. This is efficient (constant time, not linear). `anotherList`'s last 3 elements are shared with `myList`!
 
-**Note that `list{a, ...b, ...c}` is a syntax error** in compiler v10.0 or earlier. In general, the pattern should be used with care as its performance and allocation overhead are linear (`O(n)`).
+**Note that `list{a, ...b, ...c}` was a syntax error** before compiler v10.1. In general, the pattern should be used with care as its performance and allocation overhead are linear (`O(n)`).
 
 #### Access
 
