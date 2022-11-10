@@ -12,9 +12,9 @@ JSX is a syntax sugar that allows us to use React components in an HTML like man
 
 </Intro>
 
-**Note:** This section requires knowledge about the low level apis for [creating elements](./elements-and-jsx#creating-elements-from-component-functions), such as `React.createElement` or `ReactDOMRe.createDOMElementVariadic`.
+**Note:** This section requires knowledge about the low level apis for [creating elements](./elements-and-jsx#creating-elements-from-component-functions), such as `React.createElement` or `ReactDOM.createDOMElementVariadic`.
 
-> **Note:** This page assumes your `bsconfig.json` to be set to `"reason": { "react-jsx": 3 }` to apply the right JSX transformations. 
+> **Note:** This page assumes your `bsconfig.json` to be set to `"jsx": { "version": 4 }` to apply the right JSX transformations. 
 
 ## Component Types
 
@@ -24,22 +24,19 @@ Here are some examples on how to define your own component types (often useful w
 
 ```res
 // Plain function type
-type friendComp =
-  ({"name": string, "online": bool}) => React.element;
+type friend = {name: string, online: bool}
+type friendComp = friend => React.element
 
 // Equivalent to
-// ({"padding": string, "children": React.element}) => React.element
-type containerComp =
-  React.component<{
-    "padding": string,
-    "children": React.element
-  }>;
+// ({padding: string, children: React.element}) => React.element
+type props = {padding: string, children: React.element}
+type containerComp = React.component<props>
 ```
 The types above are pretty low level (basically the JS representation of a React component), but since ReScript React has its own ways of defining React components in a more language specific way, let's have a closer look on the anatomy of such a construct.
 
 ## JSX Component Interface
 
-A ReScript React component needs to be a (sub-)module with a `make` and `makeProps` function to be usable in JSX. To make things easier, we provide a `@react.component` decorator to create those functions for you:
+A ReScript React component needs to be a (sub-)module with a `make` function and `props` type to be usable in JSX. To make things easier, we provide a `@react.component` decorator to create those functions for you:
 
 <CodeTab labels={["Decorated", "Expanded"]}>
 
@@ -73,10 +70,8 @@ module Friend = {
 
 In the expanded output:
 
-- `makeProps`: A function that receives multiple labeled arguments (according to prop names) and returns the value that is consumed by make(props)
+- `props`: A generated record type that has fields according to the labeled arguments of `make` function
 - `make`: A converted `make` function that complies to the component interface `(props) => React.element`
-
-**Note:** The `makeProps` function will also always contain a `~key` prop.
 
 ### Special Case React.forwardRef
 
@@ -88,7 +83,7 @@ The `@react.component` decorator also works for `React.forwardRef` calls:
 ```res
 module FancyInput = {
   @react.component
-  let make = React.forwardRef((~className=?, ~children, ref_) =>
+  let make = React.forwardRef((~className=?, ~children, ref) =>
     <div>
       // use ref_ here
     </div>
@@ -98,32 +93,23 @@ module FancyInput = {
 
 ```res
 // Simplified Output
-module FancyInput = {
-  @obj
-  external makeProps: (
-    ~className: 'className=?,
-    ~children: 'children,
-    ~key: string=?,
-    ~ref: 'ref=?,
-    unit,
-  ) => {"className": option<'className>, "children": 'children} = ""
-
-  let make =
-    (~className=?, ~children) => ref_ => ReactDOMRe.createDOMElementVariadic("div", [])
-
-  let make = React.forwardRef(
-    (props: {"className": option<'className>, "children": 'children}, ref_,) => {
-      make(
-        ~className=props["className"],
-        ~children=props["children"],
-        ref_)
-    })
+type props<'className, 'children, 'ref> = {
+  className?: 'className,
+  children: 'children,
+  ref?: 'ref,
 }
+
+@react.component
+let make = (
+  {?className, children, _}: props<'className, 'children, ReactRef.currentDomRef>,
+  ref: Js.Nullable.t<ReactRef.currentDomRef>,
+) =>
+  make(~className, ~children, ~ref, ())
 ```
 
 </CodeTab>
 
-As shown in the expanded output above, our decorator desugars the function passed to `React.forwardRef` in the same manner as a typical component `make` function. It also creates a `makeProps` function with a `ref` prop, so we can use it in our JSX call (`<FancyInput ref=.../>`).
+As shown in the expanded output above, our decorator desugars the function passed to `React.forwardRef` in the same manner as a typical component `make` function. It also creates a `props` type with an optional `ref` field, so we can use it in our JSX call (`<FancyInput ref=.../>`).
 
 So now that we know how the ReScript React component transformation works, let's have a look on how ReScript transforms our JSX constructs.
 
@@ -134,10 +120,10 @@ Whenever we are using JSX with a custom component ("capitalized JSX"), we are ac
 <CodeTab labels={["JSX", "Without JSX"]}>
 
 ```res
-<Friend name="Fred" age=1 />
+<Friend name="Fred" age=20 />
 ```
 ```res
-React.createElement(Friend.make, Friend.makeProps(~name="Fred", ~age=1, ()))
+React.createElement(Friend.make, {name: "Fred", age:20})
 ```
 ```js
 React.createElement(Playground$Friend, { name: "Fred", age: 20 });
@@ -145,7 +131,7 @@ React.createElement(Playground$Friend, { name: "Fred", age: 20 });
 
 </CodeTab>
 
-As you can see, it uses `Friend.make` and `Friend.makeProps` to call the `React.createElement` API. In case you are providing children, it will use `React.createElementVariadic` instead (which is just a different binding for `React.createElement`):
+As you can see, it uses `Friend.make` to call the `React.createElement` API. In case you are providing children, it will use `React.createElementVariadic` instead (which is just a different binding for `React.createElement`):
 
 <CodeTab labels={["JSX", "Without JSX", "JS Output"]}>
 
@@ -159,7 +145,7 @@ As you can see, it uses `Friend.make` and `Friend.makeProps` to call the `React.
 ```res
 React.createElementVariadic(
   Container.make,
-  Container.makeProps(~width=200, ~children=React.null, ()),
+  {width: 200, children: React.null},
   [{React.string("Hello")}, {React.string("World")}],
 )
 ```
@@ -170,12 +156,12 @@ React.createElement(Container, { width: 200, children: null }, "Hello", "World")
 
 </CodeTab>
 
-Note that the `~children=React.null` prop has no relevance since React will only care about the children array passed as a third argument.
+Note that the `children: React.null` field has no relevance since React will only care about the children array passed as a third argument.
 
 
 ### Dom Elements
 
-"Uncapitalized JSX" expressions are treated as DOM elements and will be converted to `ReactDOMRe.createDOMElementVariadic` calls: 
+"Uncapitalized JSX" expressions are treated as DOM elements and will be converted to `ReactDOM.createDOMElementVariadic` calls: 
 
 <CodeTab labels={["JSX", "Without JSX", "JS Output"]}>
 
@@ -184,11 +170,11 @@ Note that the `~children=React.null` prop has no relevance since React will only
 ```
 
 ```res
-ReactDOMRe.createDOMElementVariadic("div", ~props=ReactDOMRe.domProps(~title="test", ()), [])
+ReactDOM.createDOMElementVariadic("div", ~props={title: "test"}, [])
 ```
 
 ```js
- React.createElement("div", { title: "test" });
+React.createElement("div", { title: "test" });
 ```
 
 </CodeTab>
@@ -204,10 +190,10 @@ The same goes for uncapitalized JSX with children:
 ```
 
 ```res
-ReactDOMRe.createDOMElementVariadic(
+ReactDOM.createDOMElementVariadic(
   "div",
-  ~props=ReactDOMRe.domProps(~title="test", ()),
-  [ReactDOMRe.createDOMElementVariadic("span", [])],
+  ~props={title: "test"},
+  [ReactDOM.createDOMElementVariadic("span", [])],
 )
 ```
 
