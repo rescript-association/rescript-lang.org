@@ -66,30 +66,27 @@ let make = () => {
 ```
 
 ```js
-function Button(Props) {
-  var theme = Props.theme;
-  var className = theme ? "theme-black" : "theme-light";
+function Button(props) {
+  var className = props.theme ? "theme-black" : "theme-light";
   return React.createElement("button", {
               className: className
             }, "Click me");
 }
 
-function ThemedButton(Props) {
-  var theme = Props.theme;
-  return React.createElement(Button, {
-              theme: theme
+function ThemedButton(props) {
+  return React.createElement(App$Button, {
+              theme: props.theme
             });
 }
 
-function Toolbar(Props) {
-  var theme = Props.theme;
-  return React.createElement("div", undefined, React.createElement(ThemedButton, {
-                  theme: theme
+function Toolbar(props) {
+  return React.createElement("div", undefined, React.createElement(App$ThemedButton, {
+                  theme: props.theme
                 }));
 }
 
-function Playground(Props) {
-  return React.createElement(Toolbar, {
+function App(props) {
+  return React.createElement(App$Toolbar, {
               theme: /* Dark */1
             });
 }
@@ -104,16 +101,11 @@ Using context, we can avoid passing props through intermediate elements:
 // src/App.res
 
 module ThemeContext = {
-  type theme = Light | Dark;
+  type theme = Light | Dark
   let context = React.createContext(Light)
 
   module Provider = {
-    let provider = React.Context.provider(context)
-
-    @react.component
-    let make = (~value, ~children) => {
-      React.createElement(provider, {"value": value, "children": children})
-    }
+    let make = React.Context.provider(context)
   }
 }
 
@@ -121,9 +113,9 @@ module Button = {
   @react.component
   let make = (~theme) => {
     let className = switch theme {
-      | ThemeContext.Light => "theme-light"
-      | Dark => "theme-black"
-    };
+    | ThemeContext.Light => "theme-light"
+    | Dark => "theme-black"
+    }
     <button className> {React.string("Click me")} </button>
   }
 }
@@ -133,73 +125,76 @@ module ThemedButton = {
   let make = () => {
     let theme = React.useContext(ThemeContext.context)
 
-    <Button theme/>
+    <Button theme />
   }
 }
 
 module Toolbar = {
   @react.component
   let make = () => {
-    <div> <ThemedButton /> </div>
+    <div>
+      <ThemedButton />
+    </div>
   }
 }
 
 @react.component
 let make = () => {
   <ThemeContext.Provider value=ThemeContext.Dark>
-    <div> <Toolbar /> </div>
+    <div>
+      <Toolbar />
+    </div>
   </ThemeContext.Provider>
 }
 ```
 ```js
 var context = React.createContext(/* Light */0);
 
-var provider = context.Provider;
+var make = context.Provider;
 
-function ThemeContext$Provider(Props) {
-  var value = Props.value;
-  var children = Props.children;
-  return React.createElement(provider, {
-              value: value,
-              children: children
-            });
-}
+var Provider = {
+  make: make
+};
 
-function Button(Props) {
-  var theme = Props.theme;
-  var className = theme ? "theme-black" : "theme-light";
+var ThemeContext = {
+  context: context,
+  Provider: Provider
+};
+
+function App$Button(props) {
+  var className = props.theme ? "theme-black" : "theme-light";
   return React.createElement("button", {
               className: className
             }, "Click me");
 }
 
 var Button = {
-  make: Button
+  make: App$Button
 };
 
-function ThemedButton(Props) {
+function App$ThemedButton(props) {
   var theme = React.useContext(context);
-  return React.createElement(Button, {
+  return React.createElement(App$Button, {
               theme: theme
             });
 }
 
 var ThemedButton = {
-  make: ThemedButton
+  make: App$ThemedButton
 };
 
-function Toolbar(Props) {
-  return React.createElement("div", undefined, React.createElement(ThemedButton, {}));
+function App$Toolbar(props) {
+  return React.createElement("div", undefined, React.createElement(App$ThemedButton, {}));
 }
 
 var Toolbar = {
-  make: Toolbar
+  make: App$Toolbar
 };
 
-function Playground(Props) {
-  return React.createElement(ThemeContext$Provider, {
+function App(props) {
+  return React.createElement(make, {
               value: /* Dark */1,
-              children: React.createElement("div", undefined, React.createElement(Toolbar, {}))
+              children: React.createElement("div", undefined, React.createElement(App$Toolbar, {}))
             });
 }
 ```
