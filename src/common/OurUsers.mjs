@@ -163,6 +163,12 @@ var companies = [
     url: "https://maker.co/",
     path: "/static/lp/maker.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Darklang",
+    url: "https://darklang.com/",
+    path: "/static/lp/darklang.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 

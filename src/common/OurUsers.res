@@ -136,4 +136,9 @@ let companies = [
     url: "https://maker.co/",
     path: "/static/lp/maker.svg",
   }),
+  Logo({
+    name: "Darklang",
+    url: "https://darklang.com/",
+    path: "/static/lp/darklang.svg",
+  }),
 ]
