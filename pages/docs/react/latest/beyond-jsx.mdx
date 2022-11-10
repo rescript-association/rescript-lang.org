@@ -53,15 +53,14 @@ module Friend = {
 ```
 ```res
 module Friend = {
-  @obj
-  external makeProps: (
-    ~name: string,
-    ~children: 'children,
-    ~key: string=?,
-    unit) => {"name": string, "children": 'children} = "";
+  type props<'name, 'children> = {
+    name: 'name,
+    children: 'children,
+  }
 
-  let make = (props: {"name": string, "children": 'children}) => {
-    // React element creation from the original make function
+  @react.component
+  let make = ({name, children, _}: props<string, 'children>) => {
+    ReactDOM.createDOMElementVariadic("div", [{React.string(name)}, children])
   }
 }
 ```
