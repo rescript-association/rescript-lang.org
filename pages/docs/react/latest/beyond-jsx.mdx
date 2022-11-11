@@ -97,7 +97,6 @@ type props<'className, 'children, 'ref> = {
   ref?: 'ref,
 }
 
-@react.component
 let make = (
   {?className, children, _}: props<'className, 'children, ReactRef.currentDomRef>,
   ref: Js.Nullable.t<ReactRef.currentDomRef>,
