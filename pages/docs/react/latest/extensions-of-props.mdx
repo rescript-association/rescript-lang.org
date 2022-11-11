@@ -93,3 +93,49 @@ module C3 = {
 ```
 
 </CodeTab>
+
+This feature can be used when the nominally different components are passed to the prop of `Screen` component in [ReScript React Native Navigation](https://github.com/rescript-react-native/rescript-react-navigation).
+
+```res
+type screenProps = { navigation: navigation, route: route }
+
+module Screen: {
+  @react.component
+  let make: (
+    ~name: string,
+    ~component: React.component<screenProps>,
+    ...
+  ) => React.element
+}
+
+<Screen
+  name="SomeScreen"
+  component={A.make} // This will cause a type check error
+  ...
+/>
+<Screen
+  name="SomeScreen"
+  component={B.make} // This will cause a type check error
+  ...
+/>
+```
+
+This example cann't pass the type checker, because the props types of both components are nominally different. You can make the both components having the same props type by passing `screenProps` type as argument to `@react.component`.
+
+```res
+module A = {
+  @react.component(:screenProps)
+  let make = (
+    ~navigation: navigation,
+    ~route: route
+  ) => ...
+}
+
+module B = {
+  @react.component(:screenProps)
+  let make = (
+    ~navigation: navigation,
+    ~route: route
+  ) => ...
+}
+```
