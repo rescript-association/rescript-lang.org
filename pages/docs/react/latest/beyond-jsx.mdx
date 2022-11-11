@@ -114,13 +114,17 @@ So now that we know how the ReScript React component transformation works, let's
 
 Whenever we are using JSX with a custom component ("capitalized JSX"), we are actually using `React.createElement` to create a new element. Here is an example of a React component without children: 
 
-<CodeTab labels={["JSX", "Without JSX"]}>
+<CodeTab labels={["JSX", "Without JSX", "JS Output"]}>
 
 ```res
 <Friend name="Fred" age=20 />
 ```
 ```res
+// classic
 React.createElement(Friend.make, {name: "Fred", age:20})
+
+// automatic
+React.jsx(Friend.make, {name: "Fred", age: 20})
 ```
 ```js
 React.createElement(Playground$Friend, { name: "Fred", age: 20 });
@@ -140,10 +144,17 @@ As you can see, it uses `Friend.make` to call the `React.createElement` API. In 
 ```
 
 ```res
+// classic
 React.createElementVariadic(
   Container.make,
   {width: 200, children: React.null},
   [{React.string("Hello")}, {React.string("World")}],
+)
+
+// automatic
+React.jsxs(
+  Container.make,
+  {width: 200, children: React.array([{React.string("Hello")}, {React.string("World")}])},
 )
 ```
 
@@ -167,7 +178,11 @@ Note that the `children: React.null` field has no relevance since React will onl
 ```
 
 ```res
+// classic
 ReactDOM.createDOMElementVariadic("div", ~props={title: "test"}, [])
+
+// automatic
+ReactDOM.jsx("div", {title: "test"})
 ```
 
 ```js
@@ -187,11 +202,15 @@ The same goes for uncapitalized JSX with children:
 ```
 
 ```res
+// classic
 ReactDOM.createDOMElementVariadic(
   "div",
   ~props={title: "test"},
   [ReactDOM.createDOMElementVariadic("span", [])],
 )
+
+// automatic
+ReactDOM.jsx("div", {title: "test", children: ?ReactDOM.someElement(ReactDOM.jsx("span", {}))})
 ```
 
 ```js
