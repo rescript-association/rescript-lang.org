@@ -58,7 +58,6 @@ module Friend = {
     children: 'children,
   }
 
-  @react.component
   let make = ({name, children, _}: props<string, 'children>) => {
     ReactDOM.createDOMElementVariadic("div", [{React.string(name)}, children])
   }
