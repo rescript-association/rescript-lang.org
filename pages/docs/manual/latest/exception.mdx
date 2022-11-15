@@ -12,9 +12,9 @@ Exceptions are just a special kind of variant, thrown in **exceptional** cases (
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
-let getItem = (items) =>
-  if callSomeFunctionThatThrows() {
+```res prelude
+let getItem = (item: int) =>
+  if (item === 3) {
     // return the found item here
     1
   } else {
@@ -23,14 +23,16 @@ let getItem = (items) =>
 
 let result =
   try {
-    getItem([1, 2, 3])
+    getItem(2)
   } catch {
   | Not_found => 0 // Default value if getItem throws
   }
 ```
 ```js
-function getItem(items) {
-  if (callSomeFunctionThatThrows()) {
+var Caml_js_exceptions = require("./stdlib/caml_js_exceptions.js");
+
+function getItem(item) {
+  if (item === 3) {
     return 1;
   }
   throw {
@@ -42,8 +44,9 @@ function getItem(items) {
 var result;
 
 try {
-  result = getItem([1, 2, 3]);
-} catch (raw_exn) {
+  result = getItem(2);
+}
+catch (raw_exn){
   var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
   if (exn.RE_EXN_ID === "Not_found") {
     result = 0;
@@ -61,21 +64,33 @@ You can directly match on exceptions _while_ getting another return value from a
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
-switch List.find(i => i === theItem, myItems) {
+```res prelude
+switch List.find(i => i === 4, list{1, 2, 3}) {
 | item => Js.log(item)
 | exception Not_found => Js.log("No such item found!")
 }
 ```
 ```js
+var List = require("./stdlib/list.js");
+var Caml_js_exceptions = require("./stdlib/caml_js_exceptions.js");
+
 var exit = 0;
 
 var item;
 
 try {
-  item = List.find(function(i) {
-    return i === theItem;
-  }, myItems);
+  item = List.find((function (i) {
+          return i === 4;
+        }), {
+        hd: 1,
+        tl: {
+          hd: 2,
+          tl: {
+            hd: 3,
+            tl: /* [] */0
+          }
+        }
+      });
   exit = 1;
 }
 catch (raw_exn){
@@ -121,10 +136,26 @@ throw {
 
 To distinguish between JavaScript exceptions and ReScript exceptions, ReScript namespaces JS exceptions under the `Js.Exn.Error(payload)` variant. To catch an exception thrown from the JS side:
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+
+Throw an exception from JS:
+
+```js
+// Example.js
+
+exports.someJsFunctionThatThrows = () => {
+    throw new Error("A Glitch in the Matrix!");
+}
+```
+
+Then catch it from ReScript:
 
 ```res
+// import the method in Example.js
+@module("./Example") 
+external someJsFunctionThatThrows: () => unit = "someJsFunctionThatThrows"
+
 try {
+  // call the external method
   someJSFunctionThatThrows()
 } catch {
 | Js.Exn.Error(obj) =>
@@ -134,26 +165,6 @@ try {
   }
 }
 ```
-```js
-var Js_exn = require("./stdlib/js_exn.js");
-var Caml_js_exceptions = require("./stdlib/caml_js_exceptions.js");
-
-try {
-  someJSFunctionThatThrows();
-} catch (raw_obj) {
-  var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-  if (obj.RE_EXN_ID === Js_exn.$$Error) {
-    var m = obj._1.message;
-    if (m !== undefined) {
-      console.log("Caught a JS exception! Message: " + m);
-    }
-  } else {
-    throw obj;
-  }
-}
-```
-
-</CodeTab>
 
 The `obj` here is of type `Js.Exn.t`, intentionally opaque to disallow illegal operations. To operate on `obj`, do like the code above by using the standard library's [`Js.Exn`](api/js/exn) module's helpers.
 
@@ -240,8 +251,6 @@ When you have ordinary variants, you often don't **need** exceptions. For exampl
 
 ### Catch Both ReScript and JS Exceptions in the Same `catch` Clause
 
-<CodeTab labels={["ReScript", "JS Output"]}>
-
 ```res
 try {
   someOtherJSFunctionThatThrows()
@@ -251,24 +260,5 @@ try {
 | Js.Exn.Error(obj) => ... // catch the JS exception
 }
 ```
-```js
-var Js_exn = require("./stdlib/js_exn.js");
-var Caml_js_exceptions = require("./stdlib/caml_js_exceptions.js");
-
-try {
-  someOtherJSFunctionThatThrows();
-} catch (raw_obj) {
-  var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-  if (
-    obj.RE_EXN_ID !== "Not_found" &&
-    obj.RE_EXN_ID !== "Invalid_argument" &&
-    obj.RE_EXN_ID !== Js_exn.$$Error
-  ) {
-    throw obj;
-  }
-}
-```
-
-</CodeTab>
 
 This technically works, but hopefully you don't ever have to work with such code...
