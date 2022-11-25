@@ -16,6 +16,17 @@ var allManualVersions = [
   ]
 ];
 
+var allReactVersions = [
+  [
+    "latest",
+    "v0.11.0"
+  ],
+  [
+    "v0.10.0",
+    "v0.10.0"
+  ]
+];
+
 function languageManual(version) {
   return [
           [
@@ -63,6 +74,7 @@ var tools = [[
 
 export {
   allManualVersions ,
+  allReactVersions ,
   languageManual ,
   ecosystem ,
   tools ,

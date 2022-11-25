@@ -36,9 +36,9 @@ let make = () => {
 }
 ```
 ```js
-import * as React from "react";
+var React = require("react");
 
-function Greeting(props) {
+function Greeting(Props) {
   return React.createElement("div", undefined, "Hello ReScripters!");
 }
 
@@ -47,7 +47,7 @@ var make = Greeting;
 
 </CodeTab>
 
-**Important:** Always make sure to name your component function `make`.
+**Important:** Always make sure to name your component function `make` and don't forget to add the `@react.component` attribute.
 
 We've created a `Greeting.res` file that contains a `make` function that doesn't receive any props (the function doesn't receive any parameters), and returns a `React.element` that represents `<div> Hello ReScripters! </div>` in the rendered DOM.
 
@@ -55,7 +55,7 @@ You can also see in the the JS output that the function we created was directly 
 
 ## Defining Props
 
-In ReactJS, props are usually described as a single `props` record. In ReScript, we use [labeled arguments](/docs/manual/latest/function#labeled-arguments) to define our props parameters instead. Here's an example:
+In ReactJS, props are usually described as a single `props` object. In ReScript, we use [labeled arguments](/docs/manual/latest/function#labeled-arguments) to define our props parameters instead. Here's an example:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -72,11 +72,14 @@ let make = (~title: string, ~visitorCount: int, ~children: React.element) => {
 }
 ```
 ```js
-import * as React from "react";
+var React = require("react");
 
-function Article(props) {
-  var visitorCountMsg = "You are visitor number: " + String(props.visitorCount);
-  return React.createElement("div", undefined, React.createElement("div", undefined, props.title), React.createElement("div", undefined, visitorCountMsg), props.children);
+function Article(Props) {
+  var title = Props.title;
+  var visitorCount = Props.visitorCount;
+  var children = Props.children;
+  var visitorCountMsg = "You are visitor number: " + String(visitorCount);
+  return React.createElement("div", undefined, React.createElement("div", undefined, title), React.createElement("div", undefined, visitorCountMsg), children);
 }
 
 var make = Article;
@@ -95,16 +98,16 @@ We can leverage the full power of labeled arguments to define optional props as 
 @react.component
 let make = (~name: option<string>=?) => {
   let greeting = switch name {
-  | Some(name) => "Hello " ++ name ++ "!"
-  | None => "Hello stranger!"
+    | Some(name) => "Hello " ++ name ++ "!"
+    | None => "Hello stranger!"
   }
   <div> {React.string(greeting)} </div>
 }
 ```
 
 ```js
-function Greeting(props) {
-  var name = props.name;
+function Greeting(Props) {
+  var name = Props.name;
   var greeting = name !== undefined ? "Hello " + name + "!" : "Hello stranger!";
   return React.createElement("div", undefined, greeting);
 }
@@ -125,11 +128,16 @@ let name = Some("Andrea")
 ```
 
 ```js
+var Caml_option = require("./stdlib/caml_option.js");
 var name = "Andrea";
 
-React.createElement(Greeting, {
-  name: name
-});
+var tmp = {};
+
+if (name !== undefined) {
+  tmp.name = Caml_option.valFromOption(name);
+}
+
+var greeting = React.createElement(Playground$Greeting, tmp);
 ```
 
 </CodeTab>
@@ -179,8 +187,10 @@ module MyList = {
 ```
 
 ```js
-function MyList(props) {
-  return React.createElement("ul", undefined, props.children);
+
+function MyList(Props) {
+  var children = Props.children;
+  return React.createElement("ul", undefined, children);
 }
 
 var MyList = {
@@ -188,9 +198,9 @@ var MyList = {
 };
 
 React.createElement(MyList, {
-    children: null
-  }, React.createElement("li", undefined, "Item 1"),
-    React.createElement("li", undefined, "Item 2"));
+      children: null
+    }, React.createElement("li", undefined, "Item 1"),
+        React.createElement("li", undefined, "Item 2"));
 ```
 
 </CodeTab>
@@ -318,19 +328,23 @@ var make = App;
 
 ### Handwritten Components
 
-You don't need to use the `@react.component` decorator to write components that can be used in JSX. Instead you can write the `make` function with type `props` and these will always work as React components. But then you will have the issue with the component name being "make" in the React dev tools.
+You don't need to use the `@react.component` decorator to write components that can be used in JSX. Instead you can write a pair of `make` and `makeProps` functions such that type `makeProps: 'a => props` and `make: props => React.element` and these will always work as React components.
 
-For example:
+This works with your own version of `@obj`, or any other function that takes named args and returns a single props structure. For example:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 module Link = {
-  type props = {href: string, children: React.element};
-  
+  type props = {"href": string, "children": React.element};
+  @obj external makeProps:(
+    ~href: string,
+    ~children: React.element,
+    unit) => props = ""
+
   let make = (props: props) => { 
-    <a href={props.href}>
-     {props.children}
+    <a href={props["href"]}>
+     {props["children"]}
     </a>
   }
 }
@@ -338,22 +352,16 @@ module Link = {
 <Link href="/docs"> {React.string("Docs")} </Link>
 ```
 ```js
-function make(props) {
-  return React.createElement(
-    "a",
-    { href: props.href },
-    props.children
-  );
+function Link(props) {
+  return React.createElement("a", {
+              href: props.href
+            }, props.children);
 }
 
-var Link = {
-  make: make,
-};
-
-React.createElement(make, {
-  href: "/docs",
-  children: "Docs",
-});
+React.createElement(Link, {
+      href: "/docs",
+      children: "Docs"
+    });
 ```
 
 </CodeTab>
