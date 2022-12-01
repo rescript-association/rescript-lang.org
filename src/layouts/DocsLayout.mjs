@@ -177,6 +177,7 @@ function DocsLayout(Props) {
       setSidebarOpen
     ],
     sidebar: sidebar,
+    categories: categories,
     children: null
   };
   var tmp$6 = match$1[1];
