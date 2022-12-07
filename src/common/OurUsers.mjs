@@ -169,6 +169,12 @@ var companies = [
     url: "https://darklang.com/",
     path: "/static/lp/darklang.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Better Vim",
+    url: "https://bettervim.com/",
+    path: "/static/lp/bettervim.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
