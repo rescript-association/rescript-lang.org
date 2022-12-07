@@ -269,29 +269,27 @@ let make = (
     | i =>
       let previous = switch items->Belt.Array.get(i - 1) {
       | Some({name, href}) =>
-        <li className={"flex items-center text-fire hover:text-fire-70"}>
-          <Icon.ArrowRight className={"rotate-180 mr-2"} />
-          <Link href>
-            <a> {React.string(name)} </a>
-          </Link>
-        </li>
+        <Link href>
+          <a className={"flex items-center text-fire hover:text-fire-70 border-2 border-red-300 rounded py-1.5 px-3"}>
+            <Icon.ArrowRight className={"rotate-180 mr-2"} />
+            {React.string(name)}
+          </a>
+        </Link>
       | None => React.null
       }
       let next = switch items->Belt.Array.get(i + 1) {
       | Some({name, href}) =>
-        <li className={"flex items-center text-fire hover:text-fire-70 ml-auto"}>
-          <Link href>
-            <a> {React.string(name)} </a>
-          </Link>
-          <Icon.ArrowRight className={"ml-2"} />
-        </li>
+        <Link href>
+          <a className={"flex items-center text-fire hover:text-fire-70 ml-auto border-2 border-red-300 rounded py-1.5 px-3"}>
+            {React.string(name)}
+            <Icon.ArrowRight className={"ml-2"} />
+          </a>
+        </Link>
       | None => React.null
       }
-      <div className={"mt-9"}>
-        <ul className={"flex justify-between"}>
-          previous
-          next
-        </ul>
+      <div className={"flex justify-between mt-9"}>
+        previous
+        next
       </div>
     }
   | None => React.null

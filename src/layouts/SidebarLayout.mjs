@@ -258,28 +258,26 @@ function SidebarLayout(Props) {
         });
     if (i !== -1) {
       var match$1 = Belt_Array.get(items, i - 1 | 0);
-      var previous = match$1 !== undefined ? React.createElement("li", {
-              className: "flex items-center text-fire hover:text-fire-70"
-            }, React.createElement(Icon.ArrowRight.make, {
-                  className: "rotate-180 mr-2"
-                }), React.createElement(Next.Link.make, {
-                  href: match$1.href,
-                  children: React.createElement("a", undefined, match$1.name)
-                })) : null;
+      var previous = match$1 !== undefined ? React.createElement(Next.Link.make, {
+              href: match$1.href,
+              children: React.createElement("a", {
+                    className: "flex items-center text-fire hover:text-fire-70 border-2 border-red-300 rounded py-1.5 px-3"
+                  }, React.createElement(Icon.ArrowRight.make, {
+                        className: "rotate-180 mr-2"
+                      }), match$1.name)
+            }) : null;
       var match$2 = Belt_Array.get(items, i + 1 | 0);
-      var next = match$2 !== undefined ? React.createElement("li", {
-              className: "flex items-center text-fire hover:text-fire-70 ml-auto"
-            }, React.createElement(Next.Link.make, {
-                  href: match$2.href,
-                  children: React.createElement("a", undefined, match$2.name)
-                }), React.createElement(Icon.ArrowRight.make, {
-                  className: "ml-2"
-                })) : null;
+      var next = match$2 !== undefined ? React.createElement(Next.Link.make, {
+              href: match$2.href,
+              children: React.createElement("a", {
+                    className: "flex items-center text-fire hover:text-fire-70 ml-auto border-2 border-red-300 rounded py-1.5 px-3"
+                  }, match$2.name, React.createElement(Icon.ArrowRight.make, {
+                        className: "ml-2"
+                      }))
+            }) : null;
       pagination = React.createElement("div", {
-            className: "mt-9"
-          }, React.createElement("ul", {
-                className: "flex justify-between"
-              }, previous, next));
+            className: "flex justify-between mt-9"
+          }, previous, next);
     } else {
       pagination = null;
     }
