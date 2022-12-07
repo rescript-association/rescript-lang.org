@@ -10,11 +10,14 @@ import * as Core from "highlight.js/lib/core";
 function renderHLJS(highlightedLinesOpt, darkmodeOpt, code, lang, param) {
   var highlightedLines = highlightedLinesOpt !== undefined ? highlightedLinesOpt : [];
   var darkmode = darkmodeOpt !== undefined ? darkmodeOpt : false;
+  var options = {
+    language: lang
+  };
   var match;
   try {
     match = [
       lang,
-      Core.highlight(lang, code).value
+      Core.highlight(code, options).value
     ];
   }
   catch (raw_exn){

@@ -141,4 +141,9 @@ let companies = [
     url: "https://darklang.com/",
     path: "/static/lp/darklang.svg",
   }),
+  Logo({
+    name: "Better Vim",
+    url: "https://bettervim.com/",
+    path: "/static/lp/bettervim.svg",
+  })
 ]
