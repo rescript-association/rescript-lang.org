@@ -172,7 +172,7 @@ Since objects don't require type declarations, and since ReScript infers all the
 @val external document: 'a = "document"
 
 // call a method
-document["addEventListener"]("mouseup", _event => {
+document["addEventListener"](. "mouseup", _event => {
   Js.log("clicked!")
 })
 
