@@ -148,6 +148,7 @@ let make = (
     components
     sidebarState=(isSidebarOpen, setSidebarOpen)
     sidebar
+    categories
     ?breadcrumbs
     ?editHref>
     metaElement children

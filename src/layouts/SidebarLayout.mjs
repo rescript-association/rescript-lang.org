@@ -201,6 +201,7 @@ function SidebarLayout(Props) {
   var editHref = Props.editHref;
   var sidebarState = Props.sidebarState;
   var sidebar = Props.sidebar;
+  var categories = Props.categories;
   var breadcrumbs = Props.breadcrumbs;
   var children = Props.children;
   var match = React.useState(function () {
@@ -247,6 +248,42 @@ function SidebarLayout(Props) {
           href: editHref,
           rel: "noopener noreferrer"
         }, "Edit") : null;
+  var pagination;
+  if (categories !== undefined) {
+    var items = Belt_Array.flatMap(categories, (function (c) {
+            return c.items;
+          }));
+    var i = items.findIndex(function (item) {
+          return item.href === router.route;
+        });
+    if (i !== -1) {
+      var match$1 = Belt_Array.get(items, i - 1 | 0);
+      var previous = match$1 !== undefined ? React.createElement(Next.Link.make, {
+              href: match$1.href,
+              children: React.createElement("a", {
+                    className: "flex items-center text-fire hover:text-fire-70 border-2 border-red-300 rounded py-1.5 px-3"
+                  }, React.createElement(Icon.ArrowRight.make, {
+                        className: "rotate-180 mr-2"
+                      }), match$1.name)
+            }) : null;
+      var match$2 = Belt_Array.get(items, i + 1 | 0);
+      var next = match$2 !== undefined ? React.createElement(Next.Link.make, {
+              href: match$2.href,
+              children: React.createElement("a", {
+                    className: "flex items-center text-fire hover:text-fire-70 ml-auto border-2 border-red-300 rounded py-1.5 px-3"
+                  }, match$2.name, React.createElement(Icon.ArrowRight.make, {
+                        className: "ml-2"
+                      }))
+            }) : null;
+      pagination = React.createElement("div", {
+            className: "flex justify-between mt-9"
+          }, previous, next);
+    } else {
+      pagination = null;
+    }
+  } else {
+    pagination = null;
+  }
   return React.createElement(React.Fragment, undefined, React.createElement(Meta.make, {
                   title: metaTitle
                 }), React.createElement("div", {
@@ -281,7 +318,7 @@ function SidebarLayout(Props) {
                                     }, React.createElement(Mdx.Provider.make, {
                                           components: components,
                                           children: children
-                                        })))))), React.createElement(Footer.make, {})));
+                                        })), pagination)))), React.createElement(Footer.make, {})));
 }
 
 var Toc = {};

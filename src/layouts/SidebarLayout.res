@@ -215,6 +215,7 @@ let make = (
   ~sidebarState: (bool, (bool => bool) => unit),
   // (Sidebar, toggleSidebar) ... for toggling sidebar in mobile view
   ~sidebar: React.element,
+  ~categories: option<array<Sidebar.Category.t>>=?,
   ~breadcrumbs: option<list<Url.breadcrumb>>=?,
   ~children,
 ) => {
@@ -259,6 +260,41 @@ let make = (
   | None => React.null
   }
 
+  let pagination = switch categories {
+  | Some(categories) =>
+    let items = categories->Belt.Array.flatMap(c => c.items)
+
+    switch items->Js.Array2.findIndex(item => item.href === router.route) {
+    | -1 => React.null
+    | i =>
+      let previous = switch items->Belt.Array.get(i - 1) {
+      | Some({name, href}) =>
+        <Link href>
+          <a className={"flex items-center text-fire hover:text-fire-70 border-2 border-red-300 rounded py-1.5 px-3"}>
+            <Icon.ArrowRight className={"rotate-180 mr-2"} />
+            {React.string(name)}
+          </a>
+        </Link>
+      | None => React.null
+      }
+      let next = switch items->Belt.Array.get(i + 1) {
+      | Some({name, href}) =>
+        <Link href>
+          <a className={"flex items-center text-fire hover:text-fire-70 ml-auto border-2 border-red-300 rounded py-1.5 px-3"}>
+            {React.string(name)}
+            <Icon.ArrowRight className={"ml-2"} />
+          </a>
+        </Link>
+      | None => React.null
+      }
+      <div className={"flex justify-between mt-9"}>
+        previous
+        next
+      </div>
+    }
+  | None => React.null
+  }
+
   <>
     <Meta title=metaTitle />
     <div className={"mt-16 min-w-320 " ++ theme}>
@@ -286,6 +322,7 @@ let make = (
               <div className={hasBreadcrumbs ? "mt-10" : "-mt-4"}>
                 <Mdx.Provider components> children </Mdx.Provider>
               </div>
+              pagination
             </main>
           </div>
         </div>
