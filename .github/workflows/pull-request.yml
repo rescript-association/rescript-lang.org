@@ -8,14 +8,11 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14.x
+      - run: npm ci
+      - run: npx rescript
+      - run: npm test
 
       - name: Format check
         run: |
           npx rescript format -all
           git diff --name-only --exit-code -- '*.res' '*.resi'
-
-      - name: Test
-        run: |
-          npm ci
-          npx rescript
-          npm test
