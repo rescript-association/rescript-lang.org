@@ -74,5 +74,5 @@ let parse = (route: string): t => {
     )
   }
 
-  {fullpath: fullpath, base: base, version: version, pagepath: pagepath}
+  {fullpath, base, version, pagepath}
 }

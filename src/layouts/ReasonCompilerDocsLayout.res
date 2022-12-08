@@ -70,7 +70,7 @@ let make = (~components=Markdown.default, ~children) => {
         Toc.header: header["name"],
         href: "#" ++ header["href"],
       })
-      {Toc.title: title, entries: entries}
+      {Toc.title, entries}
     })
   }
 

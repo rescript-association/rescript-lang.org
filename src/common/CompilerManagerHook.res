@@ -18,8 +18,7 @@ module LoadScript = {
     ~src: string,
     ~onSuccess: unit => unit,
     ~onError: err => unit,
-    . unit,
-  ) => unit = "default"
+  ) => (. unit) => unit = "default"
 
   @module("../ffi/loadScript")
   external removeScript: (~src: string) => unit = "removeScript"
@@ -122,11 +121,12 @@ let attachCompilerAndLibraries = (~version: string, ~libraries: array<string>, (
     | Ok() =>
       Belt.Array.map(libraries, lib => {
         let cmijUrl = CdnMeta.getLibraryCmijUrl(version, lib)
-        LoadScript.loadScriptPromise(cmijUrl)->Promise.thenResolve(r =>
-          switch r {
-          | Error(_) => Error(j`Could not load cmij from url $cmijUrl`)
-          | _ => r
-          }
+        LoadScript.loadScriptPromise(cmijUrl)->Promise.thenResolve(
+          r =>
+            switch r {
+            | Error(_) => Error(j`Could not load cmij from url $cmijUrl`)
+            | _ => r
+            },
         )
       })
     | Error(msg) => [Promise.resolve(Error(msg))]
@@ -219,8 +219,8 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
       | Ready(ready) =>
         ready.selected.instance->Compiler.setConfig(config)
         setState(_ => {
-          let selected = {...ready.selected, config: config}
-          Ready({...ready, selected: selected})
+          let selected = {...ready.selected, config}
+          Ready({...ready, selected})
         })
       | _ => ()
       }
@@ -276,7 +276,7 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
           | _ => (Nothing, lang)
           }
 
-          setState(_ => Ready({...ready, result: result, errors: [], targetLang: targetLang}))
+          setState(_ => Ready({...ready, result, errors: [], targetLang}))
         })
       | _ => ()
       }
@@ -311,7 +311,7 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
         | None => ready.result
         }
 
-        setState(_ => Ready({...ready, result: result, errors: []}))
+        setState(_ => Ready({...ready, result, errors: []}))
       | _ => ()
       }
     }
@@ -350,12 +350,12 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
 
             let selected = {
               id: latest,
-              apiVersion: apiVersion,
+              apiVersion,
               compilerVersion: instance->Compiler.version,
               ocamlVersion: instance->Compiler.ocamlVersion,
-              config: config,
-              libraries: libraries,
-              instance: instance,
+              config,
+              libraries,
+              instance,
             }
 
             let targetLang =
@@ -363,13 +363,15 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
               ->Js.Array2.find(l => l === initialLang)
               ->Belt.Option.getWithDefault(Version.defaultTargetLang)
 
-            setState(_ => Ready({
-              selected: selected,
-              targetLang: targetLang,
-              versions: versions,
-              errors: [],
-              result: FinalResult.Nothing,
-            }))
+            setState(
+              _ => Ready({
+                selected,
+                targetLang,
+                versions,
+                errors: [],
+                result: FinalResult.Nothing,
+              }),
+            )
           | Error(errs) =>
             let msg = Js.Array2.joinWith(errs, "; ")
 
@@ -389,8 +391,9 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
           LoadScript.removeScript(~src=CdnMeta.getCompilerUrl(ready.selected.id))
 
           // We are removing the previous libraries, therefore we use ready.selected here
-          Belt.Array.forEach(ready.selected.libraries, lib =>
-            LoadScript.removeScript(~src=CdnMeta.getLibraryCmijUrl(ready.selected.id, lib))
+          Belt.Array.forEach(
+            ready.selected.libraries,
+            lib => LoadScript.removeScript(~src=CdnMeta.getLibraryCmijUrl(ready.selected.id, lib)),
           )
 
           let instance = Compiler.make()
@@ -399,21 +402,23 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
 
           let selected = {
             id: version,
-            apiVersion: apiVersion,
+            apiVersion,
             compilerVersion: instance->Compiler.version,
             ocamlVersion: instance->Compiler.ocamlVersion,
-            config: config,
+            config,
             libraries: migratedLibraries,
-            instance: instance,
+            instance,
           }
 
-          setState(_ => Ready({
-            selected: selected,
-            targetLang: Version.defaultTargetLang,
-            versions: ready.versions,
-            errors: [],
-            result: FinalResult.Nothing,
-          }))
+          setState(
+            _ => Ready({
+              selected,
+              targetLang: Version.defaultTargetLang,
+              versions: ready.versions,
+              errors: [],
+              result: FinalResult.Nothing,
+            }),
+          )
         | Error(errs) =>
           let msg = Js.Array2.joinWith(errs, "; ")
 

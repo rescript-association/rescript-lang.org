@@ -11,7 +11,8 @@ module H2 = {
   // but having an Elm like documentation
   @react.component
   let make = (~id, ~children) => <>
-    <div className="mb-10 mt-20" /> <Markdown.H2 id> children </Markdown.H2>
+    <div className="mb-10 mt-20" />
+    <Markdown.H2 id> children </Markdown.H2>
   </>
 }
 

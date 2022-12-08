@@ -4,7 +4,7 @@ module Document = {
 }
 
 module ClassList = {
-  type t;
+  type t
   @send external toggle: (t, string) => unit = "toggle"
 }
 
@@ -14,7 +14,6 @@ module Element = {
   @set external setClassName: (Dom.element, string) => unit = "className"
   @get external classList: Dom.element => ClassList.t = "classList"
 }
-
 
 type animationFrameId
 

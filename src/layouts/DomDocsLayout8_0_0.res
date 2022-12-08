@@ -76,7 +76,7 @@ module Docs = {
       open SidebarLayout.Toc
       {
         title: moduleName,
-        entries: Belt.Array.map(headers, ((name, href)) => {header: name, href: href}),
+        entries: Belt.Array.map(headers, ((name, href)) => {header: name, href}),
       }
     }
 
@@ -86,7 +86,8 @@ module Docs = {
     let warnBanner = <ApiLayout.OldDocsWarning route version />
 
     <ApiLayout components title version activeToc categories breadcrumbs>
-      warnBanner children
+      warnBanner
+      children
     </ApiLayout>
   }
 }

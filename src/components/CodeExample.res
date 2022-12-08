@@ -112,10 +112,12 @@ module CopyButton = {
       | _ => None
       }
     }, [state])
-//Copy-Button
+    //Copy-Button
     <button
       ref={ReactDOM.Ref.domRef(buttonRef)} disabled={state === Copied} className="relative" onClick>
-      <Icon.Clipboard className="text-gray-30 mt-px hover:cursor-pointer hover:text-gray-60 hover:bg-gray-30 w-6 h-6 p-1 rounded transition-all duration-300 ease-in-out" />
+      <Icon.Clipboard
+        className="text-gray-30 mt-px hover:cursor-pointer hover:text-gray-60 hover:bg-gray-30 w-6 h-6 p-1 rounded transition-all duration-300 ease-in-out"
+      />
     </button>
   }
 }
@@ -127,18 +129,18 @@ let make = (~highlightedLines=[], ~code: string, ~showLabel=true, ~lang="text") 
   let label = if showLabel {
     let label = langShortname(lang)
     <div className="absolute right-0 px-4 pb-4 font-sans text-12 font-bold text-gray-30">
-      {
-        //RES or JS Label
-        Js.String2.toUpperCase(label)->React.string
-      }
+      {//RES or JS Label
+      Js.String2.toUpperCase(label)->React.string}
     </div>
   } else {
     React.null
   }
 
-  <div //normal code-text without tabs
+  <div
+    //normal code-text without tabs
     className="relative w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-gray-20 bg-gray-10 py-2 text-gray-80">
-    label <div className="px-5 text-14 pt-4 pb-2 overflow-x-auto -mt-2"> children </div>
+    label
+    <div className="px-5 text-14 pt-4 pb-2 overflow-x-auto -mt-2"> children </div>
   </div>
 }
 
@@ -229,15 +231,19 @@ module Toggle = {
       | Some(tab) =>
         let playgroundLinkButton =
           <Next.Link href={`/try?code=${LzString.compressToEncodedURIComponent(tab.code)}}`}>
-            <a target="_blank"> // ICON Link to PLAYGROUND
-              <Icon.ExternalLink className="text-gray-30 mt-px hover:cursor-pointer hover:text-gray-60 hover:bg-gray-30 w-6 h-6 p-1 rounded transition-all duration-300 ease-in-out" />
+            <a target="_blank">
+              // ICON Link to PLAYGROUND
+              <Icon.ExternalLink
+                className="text-gray-30 mt-px hover:cursor-pointer hover:text-gray-60 hover:bg-gray-30 w-6 h-6 p-1 rounded transition-all duration-300 ease-in-out"
+              />
             </a>
           </Next.Link>
 
         let copyButton = <CopyButton code={tab.code} />
 
         <div className="flex items-center justify-end h-full pr-4 space-x-2">
-          playgroundLinkButton copyButton
+          playgroundLinkButton
+          copyButton
         </div>
       | None => React.null
       }

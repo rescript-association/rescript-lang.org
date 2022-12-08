@@ -33,10 +33,8 @@ module Toc = {
         <li key=header className="pl-2 mt-2 first:mt-1">
           <Link href>
             <a className="font-normal block text-14 text-gray-40 leading-tight hover:text-gray-80">
-              {
-                //links, nested
-                React.string(header)
-              }
+              {//links, nested
+              React.string(header)}
             </a>
           </Link>
         </li>
@@ -165,7 +163,9 @@ module Sidebar = {
           <div className="mb-56">
             {categories
             ->Belt.Array.map(category =>
-              <div key=category.name> <Category getActiveToc isItemActive category /> </div>
+              <div key=category.name>
+                <Category getActiveToc isItemActive category />
+              </div>
             )
             ->React.array}
           </div>
@@ -188,7 +188,10 @@ module BreadCrumbs = {
           </Link>
         }
         if i > 0 {
-          <span key={Belt.Int.toString(i)}> {React.string(" / ")} item </span>
+          <span key={Belt.Int.toString(i)}>
+            {React.string(" / ")}
+            item
+          </span>
         } else {
           item
         }
@@ -270,7 +273,8 @@ let make = (
       let previous = switch items->Belt.Array.get(i - 1) {
       | Some({name, href}) =>
         <Link href>
-          <a className={"flex items-center text-fire hover:text-fire-70 border-2 border-red-300 rounded py-1.5 px-3"}>
+          <a
+            className={"flex items-center text-fire hover:text-fire-70 border-2 border-red-300 rounded py-1.5 px-3"}>
             <Icon.ArrowRight className={"rotate-180 mr-2"} />
             {React.string(name)}
           </a>
@@ -280,7 +284,8 @@ let make = (
       let next = switch items->Belt.Array.get(i + 1) {
       | Some({name, href}) =>
         <Link href>
-          <a className={"flex items-center text-fire hover:text-fire-70 ml-auto border-2 border-red-300 rounded py-1.5 px-3"}>
+          <a
+            className={"flex items-center text-fire hover:text-fire-70 ml-auto border-2 border-red-300 rounded py-1.5 px-3"}>
             {React.string(name)}
             <Icon.ArrowRight className={"ml-2"} />
           </a>
@@ -316,7 +321,8 @@ let make = (
                 />
                 <div
                   className="truncate overflow-x-auto touch-scroll flex items-center space-x-4 md:justify-between mr-4 w-full">
-                  breadcrumbs editLinkEl
+                  breadcrumbs
+                  editLinkEl
                 </div>
               </div>
               <div className={hasBreadcrumbs ? "mt-10" : "-mt-4"}>

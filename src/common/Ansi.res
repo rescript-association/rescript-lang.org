@@ -67,7 +67,7 @@ module Location = {
     endPos: int,
   }
 
-  let fromString = input => {input: input, pos: -1}
+  let fromString = input => {input, pos: -1}
 
   let isDone = p => p.pos >= Js.String.length(p.input)
 
@@ -147,26 +147,26 @@ module Lexer = {
         if c === esc {
           let token = Text({
             loc: {
-              startPos: startPos,
-              endPos: endPos,
+              startPos,
+              endPos,
             },
-            content: content,
+            content,
           })
           Js.Array2.push(acc, token)->ignore
           lex(~acc, ~state=ReadSgr({startPos: p.pos, content: c}), p)
         } else if isDone(p) {
           let token = Text({
             loc: {
-              startPos: startPos,
-              endPos: endPos,
+              startPos,
+              endPos,
             },
-            content: content,
+            content,
           })
           Js.Array2.push(acc, token)->ignore
           acc
         } else {
           let content = content ++ c
-          lex(~acc, ~state=ReadText({startPos: startPos, content: content}), p)
+          lex(~acc, ~state=ReadText({startPos, content}), p)
         }
       | ReadSgr({startPos, content}) =>
         let c = next(p)
@@ -175,7 +175,7 @@ module Lexer = {
         if c !== "[" && isAscii(c) {
           let raw = content ++ c
 
-          let loc = {startPos: startPos, endPos: startPos + Js.String.length(raw) - 1}
+          let loc = {startPos, endPos: startPos + Js.String.length(raw) - 1}
 
           let token = Js.Re.exec_(%re(`/\[([0-9;]+)([\x40-\x7F])/`), raw)->(
             x =>
@@ -185,7 +185,7 @@ module Lexer = {
                 switch Js.Nullable.toOption(groups[1]) {
                 | Some(str) =>
                   switch Js.String2.split(str, ";") {
-                  | ["0"] => ClearSgr({loc: loc, raw: raw})
+                  | ["0"] => ClearSgr({loc, raw})
                   | other =>
                     let params = Belt.Array.map(other, s =>
                       switch s {
@@ -209,18 +209,18 @@ module Lexer = {
                       | o => Unknown(o)
                       }
                     )
-                    Sgr({loc: loc, raw: raw, params: params})
+                    Sgr({loc, raw, params})
                   }
 
-                | None => Sgr({loc: loc, raw: raw, params: []})
+                | None => Sgr({loc, raw, params: []})
                 }
-              | None => Sgr({loc: loc, raw: raw, params: []})
+              | None => Sgr({loc, raw, params: []})
               }
           )
           Js.Array2.push(acc, token)->ignore
           lex(~acc, ~state=Scan, p)
         } else {
-          lex(~acc, ~state=ReadSgr({startPos: startPos, content: content ++ c}), p)
+          lex(~acc, ~state=ReadSgr({startPos, content: content ++ c}), p)
         }
       }
     }

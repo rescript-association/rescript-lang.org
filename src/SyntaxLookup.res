@@ -93,10 +93,10 @@ let toItem = (syntaxData: syntaxData): item => {
   let summary = syntaxData["summary"]
   let category = syntaxData["category"]
   let item: item = {
-    id: id,
-    keywords: keywords,
-    name: name,
-    summary: summary,
+    id,
+    keywords,
+    name,
+    summary,
     category: Category.fromString(category),
     component: requireSyntaxFile(file),
   }
@@ -223,6 +223,7 @@ let make = () => {
           let filtered = searchItems(value)
           setState(_ => ShowFiltered(value, filtered))
         }
+
       | Some(item) => router->Next.Router.push("/syntax-lookup#" ++ item.id)
       }
     }
@@ -321,6 +322,9 @@ let make = () => {
         />
       </div>
     </div>
-    <div className="mt-10"> {details} {React.array(categories)} </div>
+    <div className="mt-10">
+      {details}
+      {React.array(categories)}
+    </div>
   </div>
 }

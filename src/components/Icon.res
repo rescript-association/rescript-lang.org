@@ -112,7 +112,8 @@ module CornerLeftUp = {
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="2px">
-      <path d="M11.414 6l-5-5-5 5" /> <path d="M17.414 17h-7a4 4 0 01-4-4V1" />
+      <path d="M11.414 6l-5-5-5 5" />
+      <path d="M17.414 17h-7a4 4 0 01-4-4V1" />
     </svg>
 }
 
@@ -226,8 +227,7 @@ module ExternalLink = {
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+      strokeLinejoin="round">
       <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" />
     </svg>
 }

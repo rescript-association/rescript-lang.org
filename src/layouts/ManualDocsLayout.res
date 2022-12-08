@@ -178,7 +178,8 @@ module V800 = {
       availableVersions=Constants.allManualVersions
       ?frontmatter
       breadcrumbs>
-      warnBanner children
+      warnBanner
+      children
     </V800Layout>
   }
 }

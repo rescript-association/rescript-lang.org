@@ -145,5 +145,5 @@ let companies = [
     name: "Better Vim",
     url: "https://bettervim.com/",
     path: "/static/lp/bettervim.svg",
-  })
+  }),
 ]
