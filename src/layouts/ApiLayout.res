@@ -57,7 +57,7 @@ let makeBreadcrumbs = (~prefix: Url.breadcrumb, route: string): list<Url.breadcr
       ret,
       {
         open Url
-        {name: prettyString(path), href: href}
+        {name: prettyString(path), href}
       },
     )->ignore
     (href, ret)

@@ -11,13 +11,15 @@ let make = (~className="", ~imgClassName="", ~imgSrcs: array<string>, ~mode=NoAu
     | NoAuto => None
     | AutoFadeTransition(ms) =>
       let timerId = Js.Global.setInterval(() => {
-        setIndex(prev => {
-          if prev === imgSrcs->Belt.Array.length - 1 {
-            0
-          } else {
-            prev + 1
-          }
-        })
+        setIndex(
+          prev => {
+            if prev === imgSrcs->Belt.Array.length - 1 {
+              0
+            } else {
+              prev + 1
+            }
+          },
+        )
       }, ms)
 
       Some(

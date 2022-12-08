@@ -142,7 +142,9 @@ module DocsSection = {
       if isAbsolute {
         <a href rel="noopener noreferrer" className=""> content </a>
       } else {
-        <Next.Link href> <a className=""> content </a> </Next.Link>
+        <Next.Link href>
+          <a className=""> content </a>
+        </Next.Link>
       }
     }
   }
@@ -230,7 +232,9 @@ module DocsSection = {
 
                 <li key=text>
                   <span className="text-fire mr-2"> {React.string(`-`)} </span>
-                  <Link href> <a className=linkClass> {React.string(text)} </a> </Link>
+                  <Link href>
+                    <a className=linkClass> {React.string(text)} </a>
+                  </Link>
                 </li>
               })
               ->React.array}
@@ -306,7 +310,10 @@ module DocsSection = {
                 />
               }
 
-              <> packageLink syntaxLookupLink </>
+              <>
+                packageLink
+                syntaxLookupLink
+              </>
             }
           </div>
         </div>
@@ -348,7 +355,9 @@ module DocsSection = {
       </div>
       <div className="flex justify-center">
         <div className="w-full sm:grid sm:grid-cols-3 max-w-1280">
-          languageManualColumn ecosystemColumn quickReferenceColumn
+          languageManualColumn
+          ecosystemColumn
+          quickReferenceColumn
         </div>
       </div>
       <img
@@ -367,7 +376,9 @@ module MobileNav = {
     let extLink = "block hover:cursor-pointer hover:text-white text-gray-60"
     <div className="border-gray-80 border-t">
       <ul>
-        <li className=base> <DocSearch.Textbox id="docsearch-mobile" /> </li>
+        <li className=base>
+          <DocSearch.Textbox id="docsearch-mobile" />
+        </li>
         <li className=base>
           <Link href="/try">
             <a className={linkOrActiveLink(~target="/try", ~route)}>
@@ -392,10 +403,7 @@ module MobileNav = {
          </li>
  */
         <li className=base>
-          <a
-            href="https://twitter.com/rescriptlang"
-            rel="noopener noreferrer"
-            className=extLink>
+          <a href="https://twitter.com/rescriptlang" rel="noopener noreferrer" className=extLink>
             {React.string("Twitter")}
           </a>
         </li>
@@ -495,7 +503,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
     setCollapsibles(prev => {
       Belt.Array.keepMap(prev, next => {
         if next.title === id {
-          Some({...next, state: state})
+          Some({...next, state})
         } else {
           None
         }
@@ -559,10 +567,10 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
             </Link>
           </div>
           <div className="hidden md:flex items-center">
-            <div className="hidden sm:block mr-6"> <DocSearch /> </div>
-            <a
-
-              href=githubHref rel="noopener noreferrer" className={"mr-5 " ++ link}>
+            <div className="hidden sm:block mr-6">
+              <DocSearch />
+            </div>
+            <a href=githubHref rel="noopener noreferrer" className={"mr-5 " ++ link}>
               <Icon.GitHub className="w-6 h-6 opacity-50 hover:opacity-100" />
             </a>
             <a
@@ -585,7 +593,9 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
           resetCollapsibles()
           toggleOverlay()
         }}>
-        <Icon.DrawerDots className={"h-1 w-auto block " ++ (isOverlayOpen ? "text-fire" : "text-gray-60")} />
+        <Icon.DrawerDots
+          className={"h-1 w-auto block " ++ (isOverlayOpen ? "text-fire" : "text-gray-60")}
+        />
       </button>
       /* Mobile overlay */
       <div

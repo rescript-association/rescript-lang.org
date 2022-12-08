@@ -138,7 +138,10 @@ module Card = {
   let make = (~value: Resource.t, ~onKeywordSelect: option<string => unit>=?) => {
     let icon = switch value {
     | Npm(_) => <Icon.Npm className="w-8 opacity-50" />
-    | Url(_) => <span> <Icon.Hyperlink className="w-8 opacity-50" /> </span>
+    | Url(_) =>
+      <span>
+        <Icon.Hyperlink className="w-8 opacity-50" />
+      </span>
     }
     let linkBox = switch value {
     | Npm(pkg) =>
@@ -159,7 +162,8 @@ module Card = {
       | None => React.null
       }
       <div className="text-14 space-x-2 mt-1">
-        <a className="hover:text-fire" href={pkg.npmHref}> {React.string("NPM")} </a> {repoEl}
+        <a className="hover:text-fire" href={pkg.npmHref}> {React.string("NPM")} </a>
+        {repoEl}
       </div>
     | Url(_) => React.null
     }
@@ -481,10 +485,15 @@ let default = (props: props) => {
                     onClear
                     value={searchValue}
                   />
-                  <div className="mt-12 space-y-8"> officialCategory communityCategory </div>
+                  <div className="mt-12 space-y-8">
+                    officialCategory
+                    communityCategory
+                  </div>
                 </div>
               </main>
-              <div className="hidden lg:block h-full "> <InfoSidebar filter setFilter /> </div>
+              <div className="hidden lg:block h-full ">
+                <InfoSidebar filter setFilter />
+              </div>
             </Mdx.Provider>
           </div>
         </div>

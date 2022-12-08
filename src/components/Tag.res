@@ -7,5 +7,7 @@ let make = (~text, ~kind=#Subtle) => {
   let className = switch kind {
   | #Subtle => "px-1 bg-gray-10 text-gray-60 font-semibold rounded text-14"
   }
-  <div> <span className> {React.string(text)} </span> </div>
+  <div>
+    <span className> {React.string(text)} </span>
+  </div>
 }

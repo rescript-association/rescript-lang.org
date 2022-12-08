@@ -58,7 +58,7 @@ let getAllPosts = () => {
     switch BlogFrontmatter.decode(data) {
     | Error(msg) => Js.Exn.raiseError(msg)
     | Ok(d) => {
-        path: path,
+        path,
         frontmatter: d,
         archived: false,
       }
@@ -121,7 +121,7 @@ module RssFeed = {
         {
           title: fm.title,
           href: baseUrl ++ "/blog/" ++ blogPathToSlug(post.path),
-          description: description,
+          description,
           pubDate: DateStr.toDate(fm.date),
         }
       })

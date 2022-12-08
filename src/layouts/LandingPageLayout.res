@@ -244,7 +244,8 @@ module QuickInstall = {
           )}
         </div>
         <div className="w-full space-y-2">
-          {copyBox("npm install rescript")} {copyBox("npx rescript init .")}
+          {copyBox("npm install rescript")}
+          {copyBox("npx rescript init .")}
         </div>
       </div>
     }
@@ -425,7 +426,9 @@ module MainUSP = {
     <section
       className="w-full bg-gray-90 overflow-hidden"
       style={ReactDOM.Style.make(~minHeight="37rem", ())}>
-      item1 item2 item3
+      item1
+      item2
+      item3
     </section>
   }
 }
@@ -702,7 +705,9 @@ let make = (~components=Markdown.default, ~children) => {
               <Mdx.Provider components>
                 <div className="">
                   <div className="w-full">
-                    <div className="mt-16 md:mt-32 lg:mt-40 mb-12"> <Intro /> </div>
+                    <div className="mt-16 md:mt-32 lg:mt-40 mb-12">
+                      <Intro />
+                    </div>
                     <PlaygroundHero />
                     <QuickInstall />
                     <MainUSP />

@@ -409,7 +409,10 @@ module ResultPane = {
         let toStr = Api.Lang.toString(toLang)
         j`Could not convert from "$fromStr" to "$toStr" due to malformed syntax:`
       }
-      <div> <PreWrap className="text-16 mb-4"> {React.string(msg)} </PreWrap> errs </div>
+      <div>
+        <PreWrap className="text-16 mb-4"> {React.string(msg)} </PreWrap>
+        errs
+      </div>
     | Comp(UnexpectedError(msg))
     | Conv(UnexpectedError(msg)) =>
       React.string(msg)
@@ -428,7 +431,8 @@ module ResultPane = {
         </PreWrap>
         <div className="mt-4">
           <PreWrap>
-            <div className=subheader> {React.string("Message: ")} </div> {React.string(msg)}
+            <div className=subheader> {React.string("Message: ")} </div>
+            {React.string(msg)}
           </PreWrap>
         </div>
         <div className="mt-4">
@@ -569,9 +573,9 @@ module WarningFlagsWidget = {
         }
 
         FuzzySuggestions({
-          modifier: modifier,
-          precedingTokens: precedingTokens,
-          results: results,
+          modifier,
+          precedingTokens,
+          results,
           selected: 0,
         })
       | _ =>
@@ -594,9 +598,9 @@ module WarningFlagsWidget = {
               )
               let modifier = token.enabled ? "+" : "-"
               FuzzySuggestions({
-                modifier: modifier,
-                precedingTokens: precedingTokens,
-                results: results,
+                modifier,
+                precedingTokens,
+                results,
                 selected: 0,
               })
             }
@@ -611,9 +615,9 @@ module WarningFlagsWidget = {
             let results = WarningFlagDescription.lookupAll()
 
             FuzzySuggestions({
-              modifier: modifier,
+              modifier,
               precedingTokens: [],
-              results: results,
+              results,
               selected: 0,
             })
           | _ => ErrorSuggestion(msg)
@@ -625,8 +629,8 @@ module WarningFlagsWidget = {
     switch prev {
     | ShowTokenHint(_)
     | Typing(_) =>
-      Typing({suggestion: suggestion, input: input})
-    | HideSuggestion(_) => Typing({suggestion: suggestion, input: input})
+      Typing({suggestion, input})
+    | HideSuggestion(_) => Typing({suggestion, input})
     }
   }
 
@@ -710,7 +714,7 @@ module WarningFlagsWidget = {
           ReactEvent.Mouse.preventDefault(evt)
           ReactEvent.Mouse.stopPropagation(evt)
 
-          setState(prev => ShowTokenHint({token: token, lastState: prev}))
+          setState(prev => ShowTokenHint({token, lastState: prev}))
         }
 
         let leave = evt => {
@@ -828,7 +832,8 @@ module WarningFlagsWidget = {
         }
 
         <div key=num>
-          <span className=color> {React.string(modifier)} </span> {React.string(description)}
+          <span className=color> {React.string(modifier)} </span>
+          {React.string(description)}
         </div>
       })
       ->React.array
@@ -1005,8 +1010,7 @@ module Settings = {
 
     let availableTargetLangs = Api.Version.availableLanguages(readyState.selected.apiVersion)
 
-    let onTargetLangSelect = lang =>
-      dispatch(SwitchLanguage({lang: lang, code: editorCode.current}))
+    let onTargetLangSelect = lang => dispatch(SwitchLanguage({lang, code: editorCode.current}))
 
     let onWarningFlagsUpdate = flags => {
       let normalizeEmptyFlags = flags =>
@@ -1022,7 +1026,7 @@ module Settings = {
     }
 
     let onModuleSystemUpdate = module_system => {
-      let config = {...config, module_system: module_system}
+      let config = {...config, module_system}
       setConfig(config)
     }
 
@@ -1039,7 +1043,7 @@ module Settings = {
     }
 
     let onCompilerSelect = id =>
-      dispatch(SwitchToCompiler({id: id, libraries: readyState.selected.libraries}))
+      dispatch(SwitchToCompiler({id, libraries: readyState.selected.libraries}))
 
     let titleClass = "hl-5 text-gray-20 mb-2"
     <div className="p-4 pt-8 bg-gray-90 text-gray-20">
@@ -1227,12 +1231,12 @@ module ControlPanel = {
 let locMsgToCmError = (~kind: CodeMirror.Error.kind, locMsg: Api.LocMsg.t): CodeMirror.Error.t => {
   let {Api.LocMsg.row: row, column, endColumn, endRow, shortMsg} = locMsg
   {
-    CodeMirror.Error.row: row,
-    column: column,
-    endColumn: endColumn,
-    endRow: endRow,
+    CodeMirror.Error.row,
+    column,
+    endColumn,
+    endRow,
     text: shortMsg,
-    kind: kind,
+    kind,
   }
 }
 
@@ -1324,7 +1328,8 @@ module OutputPanel = {
       <div
         className="relative w-full bg-gray-90 text-gray-20"
         style={ReactDOM.Style.make(~height="calc(100vh - 9rem)", ())}>
-        resultPane codeElement
+        resultPane
+        codeElement
       </div>
 
     let errorPane = switch compilerState {
@@ -1385,7 +1390,9 @@ module OutputPanel = {
       "flex items-center h-12 px-4 pr-16 " ++ activeClass
     }
 
-    <div className="h-full bg-gray-90"> <Pane tabs makeTabClass /> </div>
+    <div className="h-full bg-gray-90">
+      <Pane tabs makeTabClass />
+    </div>
   }
 }
 
@@ -1528,7 +1535,7 @@ let default = () => {
             line: end.line,
             col: end.col,
           },
-          hint: hint,
+          hint,
         }
       }
     })

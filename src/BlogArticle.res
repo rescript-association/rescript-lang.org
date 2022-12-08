@@ -81,7 +81,11 @@ module BlogHeader = {
       <div className="w-full max-w-740">
         <div className="text-gray-60 body-sm mb-5">
           {switch category {
-          | Some(category) => <> {React.string(category)} {React.string(middleDotSpacer)} </>
+          | Some(category) =>
+            <>
+              {React.string(category)}
+              {React.string(middleDotSpacer)}
+            </>
           | None => React.null
           }}
           {React.string(Util.Date.toDayMonthYear(date))}
@@ -116,7 +120,10 @@ module BlogHeader = {
             style={ReactDOMStyle.make(~maxHeight="33.625rem", ())}
           />
         </div>
-      | None => <div className="max-w-740 w-full"> <Line /> </div>
+      | None =>
+        <div className="max-w-740 w-full">
+          <Line />
+        </div>
       }}
     </div>
   }
@@ -234,6 +241,6 @@ let getStaticPaths: Next.GetStaticPaths.t<Params.t> = () => {
       Params.slug: BlogApi.blogPathToSlug(postData.path),
     },
   })
-  let ret = {paths: paths, fallback: false}
+  let ret = {paths, fallback: false}
   Promise.resolve(ret)
 }

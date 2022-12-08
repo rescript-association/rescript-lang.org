@@ -27,7 +27,10 @@ module Docs = {
 
     let warnBanner = <ApiLayout.OldDocsWarning route version />
 
-    <ApiLayout title categories version components> warnBanner children </ApiLayout>
+    <ApiLayout title categories version components>
+      warnBanner
+      children
+    </ApiLayout>
   }
 }
 
