@@ -12,7 +12,7 @@ jobs:
       - name: Format check
         run: |
           npx rescript format -all
-          git diff --name-only -- '*.res' '*.resi'
+          git diff --name-only --exit-code -- '*.res' '*.resi'
 
       - name: Test
         run: |
