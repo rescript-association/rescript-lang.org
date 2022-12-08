@@ -429,6 +429,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
         let url = Url.parse(route)
         switch url {
         | {base: ["docs"]}
+        | {base: ["docs", "react"]}
         | {base: ["docs", "gentype"]}
         | {base: ["docs", "manual"]} =>
           switch Belt.Array.get(url.pagepath, 0) {
