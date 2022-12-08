@@ -6,21 +6,16 @@ canonical: "/docs/gentype/latest/getting-started"
 
 # Getting Started
 
-`genType` is tightly integrated in the ReScript Compiler. It only requires minimal setup.
-
 ## Setup
 
-
-Install the binaries via `npm` (or `yarn`):
+Since compiler v10.1, there's no need to install anything. For compiler 10.0 or older, install the binaries via `npm` (or `yarn`):
 
 ```
-npm install --save-dev gentype
+npm install gentype --save-dev
 
 # Verify installed gentype binary
 npx gentype --help
 ```
-
-**Note:** Version requirements / compatibility list can be found [here](https://github.com/rescript-association/genType#requirements).
 
 Add a `gentypeconfig` section to your `bsconfig.json` (See [Configuration](#configuration) for details):
 
@@ -37,10 +32,6 @@ Add a `gentypeconfig` section to your `bsconfig.json` (See [Configuration](#conf
 }
 ```
 
-For running `genType` with ReScript via `npm` workflow, no special setup is required in `package.json`.
-
-> **Note:** `rescript` will automatically detect your installed `genType` version.
-
 ## Configuration
 
 Every `genType` powered project requires a configuration item `"gentypeconfig"`
@@ -50,7 +41,7 @@ structure:
 ```js
   //...
   "gentypeconfig": {
-    "language": "typescript" | "flow" | "untyped",
+    "language": "typescript",
     "generatedFileExtension": ".gen.tsx",
     "module": "es6" | "commonjs",
     "shims": {
@@ -63,9 +54,7 @@ structure:
   - File extension used for genType generated files (defaults to `.gen.tsx`)
 
 - **language**
-  - `"typescript"` : Generate `*.gen.tsx` files written in TypeScript.
-  - `"flow"`: Generate `*.gen.js` files with Flow type annotations.
-  - `"untyped"`: Generate `*.gen.js` files in vanilla JavaScript.
+  - `"typescript"` : the `language` setting is not required from compiler v10.1
  
 - **module**
   - Module format used for the generated `*.gen.tsx` files (supports `"es6"` and `"commonjs"`)
@@ -74,17 +63,17 @@ structure:
   - Required only if one needs to export certain basic ReScript data types to JS when one cannot modify the sources to add annotations (e.g. exporting ReScript lists), and if the types are not first-classed in genType.
   - Example: `Array<string>` with format: `"RescriptModule=JavaScriptModule"`
 
-## Adding Shims (TS & Flow)
+## Adding Shims
 
-A shim is a TS / Flow file that provides user-provided definitions for library types.
+A shim is a TS file that provides user-provided definitions for library types.
 
-Configure your shim files within `"gentypeconfig"` in your [`bsconfig.json`](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/bsconfig.json), and add relevant `.shims.js` files in a directory which is visible by ReScript e.g.  [`src/shims/`](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/src/shims). An example shim to export ReactEvent can be found [here](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/src/shims/ReactEvent.shim.ts).
+Configure your shim files within `"gentypeconfig"` in your [`bsconfig.json`](https://github.com/rescript-lang/rescript-compiler/blob/master/jscomp/gentype_tests/typescript-react-example/bsconfig.json), and add relevant `.shims.ts` files in a directory which is visible by ReScript e.g.  [`src/shims/`](https://github.com/rescript-lang/rescript-compiler/tree/master/jscomp/gentype_tests/typescript-react-example/src/shims). An example shim to export ReactEvent can be found [here](https://github.com/rescript-lang/rescript-compiler/blob/master/jscomp/gentype_tests/typescript-react-example/src/shims/ReactEvent.shim.ts).
 
 ## Testing the Whole Setup
 
 Open any relevant `*.res` file and add `@genType` annotations to any bindings / values / functions to be used from JavaScript. If an annotated value uses a type, the type must be annotated too. See e.g.  [Hooks.res](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/src/Hooks.res).
 
-Save the file and rebuild the project via `npm run bs:build` or similar. You should now see a `*.gen.tsx` (for TypeScript, or `*.gen.js` for Flow) file with the same name (e.g. `MyComponent.res` -> `MyComponent.gen.tsx`).
+Save the file and rebuild the project via `npm run bs:build` or similar. You should now see a `*.gen.tsx` file with the same name (e.g. `MyComponent.res` -> `MyComponent.gen.tsx`).
 
 Any values exported from `MyComponent.res` can then be imported from JS. For example:
 
@@ -96,11 +85,7 @@ import MyComponent from "./components/MyComponent.gen";
 
 We prepared some examples to give you an idea on how to integrate `genType` in your own project. Check out the READMEs of the listed projects.
 
-**Please make sure to build genType before trying to build the examples.**
-
-- [typescript-react-example](https://github.com/reason-association/genType/tree/master/examples/typescript-react-example)
-- [flow-react-example](https://github.com/reason-association/genType/tree/master/examples/flow-react-example)
-- [untyped-react-example](https://github.com/reason-association/genType/tree/master/examples/untyped-react-example)
+- [typescript-react-example](https://github.com/rescript-lang/rescript-compiler/tree/master/jscomp/gentype_tests/typescript-react-example)
 
 ## Experimental features
 
@@ -115,7 +100,3 @@ These features are for experimentation only. They could be changed/removed any t
 - **in-source = true**. Currently only supports ReScript projects with [in-source generation](/docs/manual/latest/build-configuration#package-specs) and `.bs.js` file suffix.
 
 - **Limited namespace support**. Currently there's limited [namespace](/docs/manual/latest/build-configuration#name-namespace) support, and only `namespace:true` is possible, not e.g. `namespace:"custom"`.
-
-## Changelog
-
-See [Changes.md](https://github.com/reason-association/genType/blob/master/Changes.md) for a complete list of features, fixes, and changes for each release.

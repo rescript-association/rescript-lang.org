@@ -44,7 +44,7 @@ function Blog$CategorySelector(Props) {
             }, Belt_Array.map(tabs, (function (tab) {
                     var onClick = function (evt) {
                       evt.preventDefault();
-                      return Curry._1(onSelected, tab);
+                      Curry._1(onSelected, tab);
                     };
                     var isActive = selected === tab;
                     var text = tab ? "Archived" : "All";
@@ -245,9 +245,9 @@ function $$default(props) {
                 }, React.createElement(Blog$CategorySelector, {
                       selected: currentSelection,
                       onSelected: (function (selection) {
-                          return Curry._1(setSelection, (function (param) {
-                                        return selection;
-                                      }));
+                          Curry._1(setSelection, (function (param) {
+                                  return selection;
+                                }));
                         })
                     }))), result);
   }
@@ -301,6 +301,5 @@ export {
   $$default ,
   $$default as default,
   getStaticProps ,
-  
 }
 /* middleDotSpacer Not a pure module */

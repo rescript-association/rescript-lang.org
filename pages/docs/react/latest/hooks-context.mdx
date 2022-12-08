@@ -36,12 +36,7 @@ module ThemeContext = {
   let context = React.createContext("light")
 
   module Provider = {
-    let provider = React.Context.provider(context)
-
-    @react.component
-    let make = (~value, ~children) => {
-      React.createElement(provider, {"value": value, "children": children})
-    }
+    let make = React.Context.provider(context)
   }
 }
 
@@ -77,20 +72,10 @@ let make = () => {
 ```js
 var context = React.createContext("light");
 
-var provider = context.Provider;
-
-function ThemeContext$Provider(Props) {
-  var value = Props.value;
-  var children = Props.children;
-  return React.createElement(provider, {
-              value: value,
-              children: children
-            });
-}
+var make = context.Provider;
 
 var Provider = {
-  provider: provider,
-  make: ThemeContext$Provider
+  make: make
 };
 
 var ThemeContext = {
@@ -98,7 +83,7 @@ var ThemeContext = {
   Provider: Provider
 };
 
-function ThemedButton(Props) {
+function App$ThemedButton(props) {
   var theme = React.useContext(context);
   var match;
   switch (theme) {
@@ -130,21 +115,21 @@ function ThemedButton(Props) {
 }
 
 var ThemedButton = {
-  make: ThemedButton
+  make: App$ThemedButton
 };
 
-function Toolbar(Props) {
-  return React.createElement("div", undefined, React.createElement(ThemedButton, {}));
+function App$Toolbar(props) {
+  return React.createElement("div", undefined, React.createElement(App$ThemedButton, {}));
 }
 
 var Toolbar = {
-  make: Toolbar
+  make: App$Toolbar
 };
 
-function App(Props) {
-  return React.createElement(ThemeContext$Provider, {
+function App(props) {
+  return React.createElement(make, {
               value: "dark",
-              children: React.createElement("div", undefined, React.createElement(Toolbar, {}))
+              children: React.createElement("div", undefined, React.createElement(App$Toolbar, {}))
             });
 }
 ```

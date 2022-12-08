@@ -4,16 +4,23 @@ import * as Url from "../common/Url.mjs";
 import * as Next from "../bindings/Next.mjs";
 import * as React from "react";
 import * as Markdown from "../components/Markdown.mjs";
+import * as Constants from "../common/Constants.mjs";
 import * as DocsLayout from "./DocsLayout.mjs";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 
 var tocData = (require('index_data/react_latest_toc.json'));
 
-var Latest = DocsLayout.Make({
+var LatestLayout = DocsLayout.Make({
       tocData: tocData
     });
 
-function ReactDocsLayout(Props) {
+var tocData$1 = (require('index_data/react_v0100_toc.json'));
+
+var V0100Layout = DocsLayout.Make({
+      tocData: tocData$1
+    });
+
+function ReactDocsLayout$Latest(Props) {
   var frontmatter = Props.frontmatter;
   var componentsOpt = Props.components;
   var children = Props.children;
@@ -38,16 +45,12 @@ function ReactDocsLayout(Props) {
     hd: breadcrumbs_0,
     tl: breadcrumbs_1
   };
-  var availableVersions = [[
-      "latest",
-      "v0.10"
-    ]];
   var tmp = {
     breadcrumbs: breadcrumbs,
     title: "rescript-react",
     metaTitleCategory: "React",
     version: "latest",
-    availableVersions: availableVersions,
+    availableVersions: Constants.allReactVersions,
     components: components,
     theme: "Reason",
     children: children
@@ -55,8 +58,57 @@ function ReactDocsLayout(Props) {
   if (frontmatter !== undefined) {
     tmp.frontmatter = Caml_option.valFromOption(frontmatter);
   }
-  return React.createElement(Latest.make, tmp);
+  return React.createElement(LatestLayout.make, tmp);
 }
+
+var Latest = {
+  make: ReactDocsLayout$Latest
+};
+
+function ReactDocsLayout$V0100(Props) {
+  var frontmatter = Props.frontmatter;
+  var componentsOpt = Props.components;
+  var children = Props.children;
+  var components = componentsOpt !== undefined ? Caml_option.valFromOption(componentsOpt) : Markdown.$$default;
+  var router = Next.Router.useRouter(undefined);
+  var route = router.route;
+  var url = Url.parse(route);
+  var version = url.version;
+  var version$1 = typeof version === "number" ? "latest" : version._0;
+  var breadcrumbs_0 = {
+    name: "Docs",
+    href: "/docs/latest"
+  };
+  var breadcrumbs_1 = {
+    hd: {
+      name: "rescript-react",
+      href: "/docs/react/" + (version$1 + "/introduction")
+    },
+    tl: /* [] */0
+  };
+  var breadcrumbs = {
+    hd: breadcrumbs_0,
+    tl: breadcrumbs_1
+  };
+  var tmp = {
+    breadcrumbs: breadcrumbs,
+    title: "rescript-react",
+    metaTitleCategory: "React",
+    version: version$1,
+    availableVersions: Constants.allReactVersions,
+    components: components,
+    theme: "Reason",
+    children: children
+  };
+  if (frontmatter !== undefined) {
+    tmp.frontmatter = Caml_option.valFromOption(frontmatter);
+  }
+  return React.createElement(V0100Layout.make, tmp);
+}
+
+var V0100 = {
+  make: ReactDocsLayout$V0100
+};
 
 var Link;
 
@@ -66,15 +118,14 @@ var Category;
 
 var Toc;
 
-var make = ReactDocsLayout;
-
 export {
   Link ,
   NavItem ,
   Category ,
   Toc ,
+  LatestLayout ,
+  V0100Layout ,
   Latest ,
-  make ,
-  
+  V0100 ,
 }
-/* Latest Not a pure module */
+/* LatestLayout Not a pure module */

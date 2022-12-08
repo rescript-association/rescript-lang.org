@@ -219,7 +219,7 @@ module QuickInstall = {
       <button
         ref={ReactDOM.Ref.domRef(buttonRef)}
         disabled={state === Copied}
-        className="relative h-10 w-10 flex justify-center	items-center "
+        className="relative h-10 w-10 flex justify-center items-center "
         onClick>
         <Icon.Copy className="w-6 h-6 mt-px text-gray-40 hover:cursor-pointer hover:text-gray-80" />
       </button>
@@ -244,7 +244,7 @@ module QuickInstall = {
           )}
         </div>
         <div className="w-full space-y-2">
-          {copyBox("npm install rescript --save-dev")} {copyBox("npx rescript init .")}
+          {copyBox("npm install rescript")} {copyBox("npx rescript init .")}
         </div>
       </div>
     }
@@ -514,7 +514,7 @@ module TrustedBy = {
         {React.string("Trusted by our users")}
       </h3>
       <div
-        className="flex flex-wrap mx-4 space-y-4 justify-center items-center max-w-xl lg:mx-auto mt-16 ">
+        className="flex flex-wrap mx-4 gap-8 justify-center items-center max-w-xl lg:mx-auto mt-16 ">
         {OurUsers.companies
         ->Js.Array2.map(company => {
           let (companyKey, renderedCompany) = switch company {

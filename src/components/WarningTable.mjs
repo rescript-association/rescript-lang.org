@@ -30,6 +30,5 @@ var make = WarningTable;
 
 export {
   make ,
-  
 }
 /* react Not a pure module */

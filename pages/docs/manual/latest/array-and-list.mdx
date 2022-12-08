@@ -58,7 +58,7 @@ ReScript provides a singly linked list too. Lists are:
 
 - immutable
 - fast at prepending items
-- fast at getting the tail
+- fast at getting the head
 - slow at everything else
 
 <CodeTab labels={["ReScript", "JS Output"]}>
@@ -123,9 +123,7 @@ var anotherList = {
 
 `myList` didn't mutate. `anotherList` is now `list{0, 1, 2, 3}`. This is efficient (constant time, not linear). `anotherList`'s last 3 elements are shared with `myList`!
 
-**Note that `list{a, ...b, ...c}` is a syntax error**. We don't support multiple spread for a list. That'd be an accidental linear operation (`O(b)`), since each item of b would be one-by-one added to the head of `c`. You can use `List.concat` for this, but we highly discourage it.
-
-Updating an arbitrary item in the middle of a list is also discouraged, since its performance and allocation overhead would be linear (`O(n)`).
+**Note that `list{a, ...b, ...c}` was a syntax error** before compiler v10.1. In general, the pattern should be used with care as its performance and allocation overhead are linear (`O(n)`).
 
 #### Access
 

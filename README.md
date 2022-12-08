@@ -17,8 +17,8 @@ This is the official documentation platform for the [ReScript](https://rescript-
 
 ## System Requirements
 
-- `node@12.22.1` or higher (for ES6 module compat)
-- `npm@7` (package-lock v2)
+- `node@16.x` or higher (for ES6 module compat)
+- `npm@7` or higher (package-lock v2)
 
 ## Setup
 
@@ -91,7 +91,7 @@ We check the validity of our code examples marked with:
 Run the checks with:
 
 ```sh
-node scripts/test-examples.js
+node scripts/test-examples.mjs
 ```
 
 ### Markdown Hyperlink Tests
@@ -117,10 +117,10 @@ Here is an example on how to run the tests:
 
 ```sh
 # Tests all files
-node scripts/test-hrefs.js
+node scripts/test-hrefs.mjs
 
 # Or just a subset (glob pattern)
-node scripts/test-hrefs.js "pages/docs/manual/**/*.mdx"
+node scripts/test-hrefs.mjs "pages/docs/manual/**/*.mdx"
 ```
 
 ### Continous Integration

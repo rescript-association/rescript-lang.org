@@ -70,6 +70,7 @@ let make: (
   // (Sidebar, toggleSidebar) ... for toggling sidebar in mobile view
   ~sidebarState: (bool, (bool => bool) => unit),
   ~sidebar: React.element,
+  ~categories: array<Sidebar.Category.t>=?,
   ~breadcrumbs: list<Url.breadcrumb>=?,
   ~children: React.element,
 ) => React.element

@@ -22,12 +22,13 @@ module Lang: {
 module Version: {
   type t =
     | V1
+    | V2
     | UnknownVersion(string)
 
   // Helps finding the right API version
   let fromString: string => t
 
-  let defaultTargetLang: t => Lang.t
+  let defaultTargetLang: Lang.t
 
   let availableLanguages: t => array<Lang.t>
 }
@@ -174,7 +175,6 @@ module Compiler: {
   /*
    * Reason compiler actions
    */
-  let reasonVersion: t => string
   let reasonCompile: (t, string) => CompilationResult.t
   let reasonFormat: (t, string) => ConversionResult.t
 

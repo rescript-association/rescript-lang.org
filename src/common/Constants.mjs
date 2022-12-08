@@ -4,7 +4,7 @@
 var allManualVersions = [
   [
     "latest",
-    "v9.1"
+    "v9.1 - v10.0"
   ],
   [
     "v9.0.0",
@@ -13,6 +13,17 @@ var allManualVersions = [
   [
     "v8.0.0",
     "v6.0 - v8.2"
+  ]
+];
+
+var allReactVersions = [
+  [
+    "latest",
+    "v0.11.0"
+  ],
+  [
+    "v0.10.0",
+    "v0.10.0"
   ]
 ];
 
@@ -63,9 +74,9 @@ var tools = [[
 
 export {
   allManualVersions ,
+  allReactVersions ,
   languageManual ,
   ecosystem ,
   tools ,
-  
 }
 /* No side effect */

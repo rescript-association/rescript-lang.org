@@ -29,11 +29,13 @@ function toString(t) {
         return "Operators";
     case /* LanguageConstructs */2 :
         return "Language Constructs";
-    case /* ExtensionPoints */3 :
+    case /* BuiltInFunctions */3 :
+        return "Built In Functions";
+    case /* ExtensionPoints */4 :
         return "Extension Points";
-    case /* SpecialValues */4 :
+    case /* SpecialValues */5 :
         return "Special Values";
-    case /* Other */5 :
+    case /* Other */6 :
         return "Other";
     
   }
@@ -41,18 +43,20 @@ function toString(t) {
 
 function fromString(s) {
   switch (s) {
+    case "builtinfunctions" :
+        return /* BuiltInFunctions */3;
     case "decorators" :
         return /* Decorators */0;
     case "extensionpoints" :
-        return /* ExtensionPoints */3;
+        return /* ExtensionPoints */4;
     case "languageconstructs" :
         return /* LanguageConstructs */2;
     case "operators" :
         return /* Operators */1;
     case "specialvalues" :
-        return /* SpecialValues */4;
+        return /* SpecialValues */5;
     default:
-      return /* Other */5;
+      return /* Other */6;
   }
 }
 
@@ -197,7 +201,6 @@ function SyntaxLookup(Props) {
                     return /* ShowAll */0;
                   }));
           }
-          
         }), [router]);
   var onSearchValueChange = function (value) {
     if (value === "") {
@@ -208,14 +211,14 @@ function SyntaxLookup(Props) {
       return Next.Router.push(router, "/syntax-lookup#" + item.id);
     }
     var filtered = searchItems(value);
-    return Curry._1(setState, (function (param) {
-                  return {
-                          TAG: 0,
-                          _0: value,
-                          _1: filtered,
-                          [Symbol.for("name")]: "ShowFiltered"
-                        };
-                }));
+    Curry._1(setState, (function (param) {
+            return {
+                    TAG: 0,
+                    _0: value,
+                    _1: filtered,
+                    [Symbol.for("name")]: "ShowFiltered"
+                  };
+          }));
   };
   var details;
   if (typeof state === "number" || state.TAG === /* ShowFiltered */0) {
@@ -233,9 +236,10 @@ function SyntaxLookup(Props) {
         /* Decorators */0,
         /* Operators */1,
         /* LanguageConstructs */2,
-        /* ExtensionPoints */3,
-        /* SpecialValues */4,
-        /* Other */5
+        /* BuiltInFunctions */3,
+        /* ExtensionPoints */4,
+        /* SpecialValues */5,
+        /* Other */6
       ], (function (cat) {
           return [
                   toString(cat),
@@ -262,7 +266,7 @@ function SyntaxLookup(Props) {
           var children = Belt_Array.map(items, (function (item) {
                   var onMouseDown = function (evt) {
                     evt.preventDefault();
-                    return onSearchValueChange(item.name);
+                    onSearchValueChange(item.name);
                   };
                   return React.createElement("span", {
                               key: item.name,
@@ -301,7 +305,7 @@ function SyntaxLookup(Props) {
     ];
   }
   var onSearchClear = function (param) {
-    return onSearchValueChange("");
+    onSearchValueChange("");
   };
   return React.createElement("div", undefined, React.createElement("div", {
                   className: "flex flex-col items-center"
@@ -336,6 +340,5 @@ var make = SyntaxLookup;
 
 export {
   make ,
-  
 }
 /* indexData Not a pure module */

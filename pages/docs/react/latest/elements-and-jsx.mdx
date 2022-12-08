@@ -12,7 +12,7 @@ Elements are the smallest building blocks of React apps. This page will explain 
 
 </Intro>
 
-> **Note:** This page assumes your `bsconfig.json` to be set to `"reason": { "react-jsx": 3 }`, otherwise your JSX will not be transformed to its React specific form. 
+> **Note:** This page assumes your `bsconfig.json` to be set to `"jsx": { "version": 4 }`, otherwise your JSX will not be transformed to its React specific form. 
 
 ## Element Basics
 
@@ -37,7 +37,7 @@ let wrapChildren = (children: React.element) => {
 wrapChildren(<div> {React.string("Let's use React with ReScript")} </div>)
 ```
 
-Understanding the definition of a `React.element` is essential since it is heavily used within the React APIs, such as `ReactDOM.render(element, ...)`, etc. Be aware that JSX doesn't do any automatic `string` to `React.element` conversion for you (ReScript forces explicit type conversion). For example `<div> Hello World </div>` will not type-check (which is actually a good thing because it's also a huge source for subtle bugs!), you need to convert your `"Hello World"` with the `React.string` function first.
+Understanding the definition of a `React.element` is essential since it is heavily used within the React APIs, such as `ReactDOM.Client.Root.render(..., element)`, etc. Be aware that JSX doesn't do any automatic `string` to `React.element` conversion for you (ReScript forces explicit type conversion). For example `<div> Hello World </div>` will not type-check (which is actually a good thing because it's also a huge source for subtle bugs!), you need to convert your `"Hello World"` with the `React.string` function first.
 
 Fortunately our React bindings bring all necessary functionality to represent all relevant data types as `React.element`s.
 
@@ -122,12 +122,10 @@ React.createElement("div", undefined, element);
 Sometimes it's necessary to pass around component functions to have more control over `React.element` creation. Use the `React.createElement` function to instantiate your elements:
 
 ```res
-type props = {"name": string};
+type props = {name: string}
 
 let render = (myComp: props => React.element) => {
-  <div>
-    {React.createElement(myComp, {"name": "Franz"})}
-  </div>
+  <div> {React.createElement(myComp, {name: "Franz"})} </div>
 }
 ```
 
@@ -146,19 +144,22 @@ There is also a `React.createElementVariadic` function, which takes an array of 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-type props = {"title": string, "children": React.element};
+type props = {title: string, children: React.element}
 
 let render = (article: props => React.element) => {
-  let children = [React.string("Introduction"), React.string("Body")];
+  let children = [React.string("Introduction"), React.string("Body")]
 
-  let props = {"title": "Article #1", "children": React.null};
+  let props = {title: "Article #1", children: React.null}
 
   {React.createElementVariadic(article, props, children)}
 }
 ```
 ```js
 function render(article) {
-  var children = ["Introduction"];
+  var children = [
+    "Introduction",
+    "Body"
+  ];
   var props = {
     title: "Article #1",
     children: null
@@ -180,15 +181,13 @@ This function is mostly used by our JSX transformations, so usually you want to 
 ### Creating DOM Elements
 
 
-To create DOM elements (`<div>`, `<span>`, etc.), use `ReactDOMRe.createDOMElementVariadic`:
+To create DOM elements (`<div>`, `<span>`, etc.), use `ReactDOM.createDOMElementVariadic`:
 
 ```res
-ReactDOMRe.createDOMElementVariadic("div", ~props=ReactDOM.domProps(~className="card", ()), []);
+ReactDOM.createDOMElementVariadic("div", ~props={className: "card"}, [])
 ```
 
-The function above requires the `ReactDOM.domProps` constructor function, so ReScript can make sure that we are only passing valid dom props. You can find an exhaustive list of all available props in the [ReactDOM](https://github.com/reasonml/reason-react/blob/master/src/ReactDOM.re#L61) module.
-
-**Warning:** The `ReactDOMRe` module will be removed in the next major `rescript-react` release, so use sparsely!
+ReScript can make sure that we are only passing valid dom props. You can find an exhaustive list of all available props in the [JsxDOM](https://github.com/rescript-lang/rescript-compiler/blob/3bc159f33a3534280bbc26be88fa37ea2114dafe/jscomp/others/jsxDOM.res#L31) module.
 
 ### Cloning Elements
 

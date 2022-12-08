@@ -145,11 +145,40 @@ var companies = [
     url: "https://reka.market",
     path: "/static/lp/reka_market.svg",
     [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Better Cart",
+    url: "https://getbettercart.com",
+    path: "/static/lp/bettercart.svg",
+    [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Greenlabs",
+    url: "https://greenlabs.co.kr/",
+    path: "/static/lp/greenlabs.svg",
+    [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Maker",
+    url: "https://maker.co/",
+    path: "/static/lp/maker.svg",
+    [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Darklang",
+    url: "https://darklang.com/",
+    path: "/static/lp/darklang.svg",
+    [Symbol.for("name")]: "Logo"
+  },
+  {
+    name: "Better Vim",
+    url: "https://bettervim.com/",
+    path: "/static/lp/bettervim.svg",
+    [Symbol.for("name")]: "Logo"
   }
 ];
 
 export {
   companies ,
-  
 }
 /* No side effect */

@@ -6,16 +6,14 @@ canonical: "/docs/manual/latest/promise"
 
 # Async & Promise
 
-ReScript's primary mechanism for async programming is the same as JavaScript's (callbacks and promises), since we compile cleanly to JavaScript and would like to avoid dragging in a heavy custom runtime.
-
-There is currently no support for `async` and `await` keywords in ReScript; though our new Promise API bindings revamp + [pipe](pipe) will make your async code already look better than otherwise.
+Support for `async` and `await` is added in compiler version 10.1. The majority of existing code is based on promises. The new Promise API bindings make async code look better than with old promises.
 
 ## Promise (new)
 
 Our up to date Promise bindings are currently not part of the the standard library. For now, please install them separately:
 
 ```sh
-npm install @ryyppy/rescript-promise --save
+npm install @ryyppy/rescript-promise
 ```
 
 In your `bsconfig.json`:

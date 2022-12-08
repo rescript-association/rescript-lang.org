@@ -52,9 +52,9 @@ module Sgr = {
     }
 }
 
-let esc = j`\\u001B`
+let esc = j`\u001B`
 
-let isAscii = (c: string) => Js.Re.test_(%re(`/[\\x40-\\x7F]/`), c)
+let isAscii = (c: string) => Js.Re.test_(%re(`/[\x40-\x7F]/`), c)
 
 module Location = {
   type t = {
@@ -109,7 +109,7 @@ module Location = {
 
 module Lexer = {
   open Location
-  open Sgr
+  open! Sgr
 
   type token =
     | Text({loc: Location.loc, content: string})
@@ -177,7 +177,7 @@ module Lexer = {
 
           let loc = {startPos: startPos, endPos: startPos + Js.String.length(raw) - 1}
 
-          let token = Js.Re.exec_(%re(`/\\[([0-9;]+)([\\x40-\\x7F])/`), raw)->(
+          let token = Js.Re.exec_(%re(`/\[([0-9;]+)([\x40-\x7F])/`), raw)->(
             x =>
               switch x {
               | Some(result) =>
@@ -320,7 +320,7 @@ module SgrString = {
   let toString = (e: t): string => {
     let content = {
       open Js.String2
-      replaceByRe(e.content, %re("/\\n/g"), "\\n")->replace(esc, "")
+      replaceByRe(e.content, %re("/\n/g"), "\\n")->replace(esc, "")
     }
     let params = Belt.Array.map(e.params, Sgr.paramToString)->Js.Array2.joinWith(", ")
 
@@ -336,7 +336,7 @@ module Printer = {
     | Text({content, loc: {startPos, endPos}}) =>
       let content = {
         open Js.String2
-        replaceByRe(content, %re("/\\n/g"), "\\n")->replace(esc, "")
+        replaceByRe(content, %re("/\n/g"), "\\n")->replace(esc, "")
       }
       j`Text "$content" ($startPos to $endPos)`
     | Sgr({params, raw, loc: {startPos, endPos}}) =>

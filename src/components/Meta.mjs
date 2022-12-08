@@ -122,6 +122,5 @@ var make = Meta;
 
 export {
   make ,
-  
 }
 /* Next Not a pure module */

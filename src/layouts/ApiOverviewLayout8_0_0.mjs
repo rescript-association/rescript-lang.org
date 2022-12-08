@@ -59,6 +59,5 @@ var Docs = {
 
 export {
   Docs ,
-  
 }
 /* Next Not a pure module */

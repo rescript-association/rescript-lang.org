@@ -16,7 +16,8 @@ import urlModule from "url";
 import { URL } from 'url';
 import {getAllPosts, blogPathToSlug} from '../src/common/BlogApi.mjs'
 
-const __dirname = new URL('.', import.meta.url).pathname;
+const pathname = new URL('.', import.meta.url).pathname;
+const __dirname = process.platform !== 'win32' ? pathname : pathname.substring(1)
 
 const mapBlogFilePath = path => {
   const match = path.match(/\.\/_blogposts\/(.*\.mdx)/);
