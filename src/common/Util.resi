@@ -1,5 +1,14 @@
 module Url: {
+  type t = {
+    hash: string,
+    host: string,
+    hostname: string,
+    href: string,
+    origin: string,
+    pathname: string
+  }
   let isAbsolute: string => bool
+  let make: string => t
 }
 
 module Unsafe: {

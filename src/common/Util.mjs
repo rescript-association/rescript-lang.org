@@ -23,10 +23,6 @@ var isAbsolute = (function(str) {
       return false;
     });
 
-var Url = {
-  isAbsolute: isAbsolute
-};
-
 function toDayMonthYear(date) {
   return new (Intl.DateTimeFormat)("en-US", {
                 month: "short",
@@ -37,6 +33,15 @@ function toDayMonthYear(date) {
 
 var $$Date = {
   toDayMonthYear: toDayMonthYear
+};
+
+function Url_make(prim) {
+  return new URL(prim);
+}
+
+var Url = {
+  isAbsolute: isAbsolute,
+  make: Url_make
 };
 
 var Unsafe = {

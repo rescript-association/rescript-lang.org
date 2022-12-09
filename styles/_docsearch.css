@@ -41,8 +41,8 @@
   width: 100vw;
   z-index: 200;
   padding: 10vh;
-  cursor: auto !important;
-  @apply fixed top-0 left-0 bg-white-40-tr flex flex-col backdrop-blur-sm;
+  backdrop-filter: blur(3px);
+  @apply fixed top-0 left-0 bg-white-40-tr flex flex-col;
 }
 
 .DocSearch-Container a {
