@@ -13,6 +13,4 @@ jobs:
       - run: npm test
 
       - name: Format check
-        run: |
-          npx rescript format -all
-          git diff --name-only --exit-code -- '*.res' '*.resi'
+        run: npx rescript format -check -all
