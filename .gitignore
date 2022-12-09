@@ -24,3 +24,6 @@ lib/
 .vscode/
 
 .vercel
+
+# sync with bsconfig.json
+src/**/*.mjs
