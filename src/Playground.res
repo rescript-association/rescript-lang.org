@@ -1105,6 +1105,20 @@ module Settings = {
 }
 
 module ControlPanel = {
+  let codeFromResult = (result: FinalResult.t): string => {
+    open Api
+    switch result {
+    | FinalResult.Comp(comp) =>
+      switch comp {
+      | CompilationResult.Success({js_code}) => js_code
+      | UnexpectedError(_)
+      | Unknown(_, _)
+      | Fail(_) => "/* No JS code generated */"
+      }
+    | Nothing
+    | Conv(_) => "/* No JS code generated */"
+    }
+  }
   module Button = {
     @react.component
     let make = (~children, ~onClick=?) =>
@@ -1215,9 +1229,27 @@ module ControlPanel = {
         Next.Router.replace(router, url)
         url
       }
+
+      let compiledCode = switch state {
+      | Ready(ready) =>
+        switch ready.result {
+        | Comp(Success(_)) => codeFromResult(ready.result)->Some
+        | _ => None
+        }
+      | _ => None
+      }
+
+      let onRunOutputClick = evt => {
+        ReactEvent.Mouse.preventDefault(evt)
+        RenderOutputManager.renderOutput(compiledCode)
+      }
+
       <>
         <div className="mr-2">
           <Button onClick=onFormatClick> {React.string("Format")} </Button>
+        </div>
+        <div className="mr-2">
+          <Button onClick={onRunOutputClick}> {React.string("Run")} </Button>
         </div>
         <ShareButton actionIndicatorKey createShareLink />
       </>
@@ -1241,21 +1273,6 @@ let locMsgToCmError = (~kind: CodeMirror.Error.kind, locMsg: Api.LocMsg.t): Code
 }
 
 module OutputPanel = {
-  let codeFromResult = (result: FinalResult.t): string => {
-    open Api
-    switch result {
-    | FinalResult.Comp(comp) =>
-      switch comp {
-      | CompilationResult.Success({js_code}) => js_code
-      | UnexpectedError(_)
-      | Unknown(_, _)
-      | Fail(_) => "/* No JS code generated */"
-      }
-    | Nothing
-    | Conv(_) => "/* No JS code generated */"
-    }
-  }
-
   @react.component
   let make = (
     ~compilerDispatch,
@@ -1278,17 +1295,18 @@ module OutputPanel = {
       | (_, Ready({result: Nothing})) => None
       | (Ready(prevReady), Ready(ready)) =>
         switch (prevReady.result, ready.result) {
-        | (_, Comp(Success(_))) => codeFromResult(ready.result)->Some
+        | (_, Comp(Success(_))) => ControlPanel.codeFromResult(ready.result)->Some
         | _ => None
         }
-      | (_, Ready({result: Comp(Success(_)) as result})) => codeFromResult(result)->Some
+      | (_, Ready({result: Comp(Success(_)) as result})) =>
+        ControlPanel.codeFromResult(result)->Some
       | (Ready({result: Comp(Success(_)) as result}), Compiling(_, _)) =>
-        codeFromResult(result)->Some
+        ControlPanel.codeFromResult(result)->Some
       | _ => None
       }
     | None =>
       switch compilerState {
-      | Ready(ready) => codeFromResult(ready.result)->Some
+      | Ready(ready) => ControlPanel.codeFromResult(ready.result)->Some
       | _ => None
       }
     }
@@ -1323,6 +1341,23 @@ module OutputPanel = {
         className={"whitespace-pre-wrap overflow-y-auto p-4 " ++ (showCm ? "block" : "hidden")}>
         {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="js", ())}
       </pre>
+
+    let renderOutputPane: React.element = switch compilerState {
+    | Compiling(ready, _)
+    | Ready(ready) =>
+      switch ready.result {
+      | Comp(Success(_)) =>
+        <iframe
+          width="100%"
+          id="iframe-eval"
+          className="relative w-full bg-gray-90 text-gray-20"
+          style={ReactDOMStyle.make(~height="calc(100vh - 9rem)", ())}
+          srcDoc=RenderOutputManager.Frame.srcdoc
+        />
+      | _ => React.null
+      }
+    | _ => React.null
+    }
 
     let output =
       <div
@@ -1375,6 +1410,10 @@ module OutputPanel = {
     let tabs = [
       {Pane.title: "JavaScript", content: output},
       {
+        title: "Render",
+        content: <div style={ReactDOM.Style.make(~height="50%", ())}> renderOutputPane </div>,
+      },
+      {
         title: "Problems",
         content: <div style={ReactDOM.Style.make(~height="50%", ())}> errorPane </div>,
       },
@@ -1398,7 +1437,8 @@ module OutputPanel = {
 
 let initialResContent = `module Button = {
   @react.component
-  let make = (~count: int) => {
+  let make = () => {
+    let (count, setCount) = React.useState(_ => 0)
     let times = switch count {
     | 1 => "once"
     | 2 => "twice"
@@ -1406,7 +1446,14 @@ let initialResContent = `module Button = {
     }
     let msg = "Click me " ++ times
 
-    <button> {msg->React.string} </button>
+    <button onClick={_ => setCount(c => c + 1)}> {msg->React.string} </button>
+  }
+}
+
+module App = {
+  @react.component
+  let make = () => {
+    <Button />
   }
 }
 ` // Please note:

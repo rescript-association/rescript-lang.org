@@ -19,6 +19,7 @@ import * as Belt_Result from "rescript/lib/es6/belt_Result.js";
 import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as HighlightJs from "./common/HighlightJs.mjs";
 import * as CompilerManagerHook from "./common/CompilerManagerHook.mjs";
+import * as RenderOutputManager from "./common/RenderOutputManager.mjs";
 import * as RescriptCompilerApi from "./bindings/RescriptCompilerApi.mjs";
 import * as WarningFlagDescription from "./common/WarningFlagDescription.mjs";
 
@@ -1417,6 +1418,21 @@ function Playground$Settings(Props) {
                         }))));
 }
 
+function codeFromResult(result) {
+  if (typeof result === "number") {
+    return "/* No JS code generated */";
+  }
+  if (result.TAG === /* Conv */0) {
+    return "/* No JS code generated */";
+  }
+  var comp = result._0;
+  if (comp.TAG === /* Success */1) {
+    return comp._0.js_code;
+  } else {
+    return "/* No JS code generated */";
+  }
+}
+
 function Playground$ControlPanel$Button(Props) {
   var children = Props.children;
   var onClick = Props.onClick;
@@ -1540,11 +1556,28 @@ function Playground$ControlPanel(Props) {
       Next.Router.replace(router, url);
       return url;
     };
+    var compiledCode;
+    if (typeof state === "number" || state.TAG !== /* Ready */2) {
+      compiledCode = undefined;
+    } else {
+      var ready$1 = state._0;
+      var match = ready$1.result;
+      compiledCode = typeof match === "number" || match.TAG === /* Conv */0 || match._0.TAG !== /* Success */1 ? undefined : codeFromResult(ready$1.result);
+    }
+    var onRunOutputClick = function (evt) {
+      evt.preventDefault();
+      return RenderOutputManager.renderOutput(compiledCode);
+    };
     children = React.createElement(React.Fragment, undefined, React.createElement("div", {
               className: "mr-2"
             }, React.createElement(Playground$ControlPanel$Button, {
                   children: "Format",
                   onClick: onFormatClick
+                })), React.createElement("div", {
+              className: "mr-2"
+            }, React.createElement(Playground$ControlPanel$Button, {
+                  children: "Run",
+                  onClick: onRunOutputClick
                 })), React.createElement(Playground$ControlPanel$ShareButton, {
               createShareLink: createShareLink,
               actionIndicatorKey: actionIndicatorKey
@@ -1564,21 +1597,6 @@ function locMsgToCmError(kind, locMsg) {
           text: locMsg.shortMsg,
           kind: kind
         };
-}
-
-function codeFromResult(result) {
-  if (typeof result === "number") {
-    return "/* No JS code generated */";
-  }
-  if (result.TAG === /* Conv */0) {
-    return "/* No JS code generated */";
-  }
-  var comp = result._0;
-  if (comp.TAG === /* Success */1) {
-    return comp._0.js_code;
-  } else {
-    return "/* No JS code generated */";
-  }
 }
 
 function Playground$OutputPanel(Props) {
@@ -1697,6 +1715,32 @@ function Playground$OutputPanel(Props) {
           height: "calc(100vh - 11.5rem)"
         }
       }, HighlightJs.renderHLJS(undefined, true, match$2[0], "js", undefined));
+  var renderOutputPane;
+  var exit$4 = 0;
+  if (typeof compilerState === "number") {
+    renderOutputPane = null;
+  } else {
+    switch (compilerState.TAG | 0) {
+      case /* Ready */2 :
+      case /* Compiling */3 :
+          exit$4 = 1;
+          break;
+      default:
+        renderOutputPane = null;
+    }
+  }
+  if (exit$4 === 1) {
+    var match$3 = compilerState._0.result;
+    renderOutputPane = typeof match$3 === "number" || match$3.TAG === /* Conv */0 || match$3._0.TAG !== /* Success */1 ? null : React.createElement("iframe", {
+            className: "relative w-full bg-gray-90 text-gray-20",
+            id: "iframe-eval",
+            style: {
+              height: "calc(100vh - 9rem)"
+            },
+            srcDoc: RenderOutputManager.Frame.srcdoc,
+            width: "100%"
+          });
+  }
   var output = React.createElement("div", {
         className: "relative w-full bg-gray-90 text-gray-20",
         style: {
@@ -1746,12 +1790,12 @@ function Playground$OutputPanel(Props) {
   } else {
     switch (compilerState.TAG | 0) {
       case /* Ready */2 :
-          var match$3 = compilerState._0.result;
-          selected = typeof match$3 === "number" ? 1 : (
-              match$3.TAG === /* Conv */0 ? (
-                  match$3._0.TAG === /* Success */0 ? 0 : 1
+          var match$4 = compilerState._0.result;
+          selected = typeof match$4 === "number" ? 1 : (
+              match$4.TAG === /* Conv */0 ? (
+                  match$4._0.TAG === /* Success */0 ? 0 : 1
                 ) : (
-                  match$3._0.TAG === /* Success */1 ? 0 : 1
+                  match$4._0.TAG === /* Success */1 ? 0 : 1
                 )
             );
           break;
@@ -1767,6 +1811,14 @@ function Playground$OutputPanel(Props) {
     {
       title: "JavaScript",
       content: output
+    },
+    {
+      title: "Render",
+      content: React.createElement("div", {
+            style: {
+              height: "50%"
+            }
+          }, renderOutputPane)
     },
     {
       title: "Problems",
@@ -1797,7 +1849,7 @@ function Playground$OutputPanel(Props) {
                 }));
 }
 
-var initialResContent = "module Button = {\n  @react.component\n  let make = (~count: int) => {\n    let times = switch count {\n    | 1 => \"once\"\n    | 2 => \"twice\"\n    | n => Belt.Int.toString(n) ++ \" times\"\n    }\n    let msg = \"Click me \" ++ times\n\n    <button> {msg->React.string} </button>\n  }\n}\n";
+var initialResContent = "module Button = {\n  @react.component\n  let make = () => {\n    let (count, setCount) = React.useState(_ => 0)\n    let times = switch count {\n    | 1 => \"once\"\n    | 2 => \"twice\"\n    | n => Belt.Int.toString(n) ++ \" times\"\n    }\n    let msg = \"Click me \" ++ times\n\n    <button onClick={_ => setCount(c => c + 1)}> {msg->React.string} </button>\n  }\n}\n\nmodule App = {\n  @react.component\n  let make = () => {\n    <Button />\n  }\n}\n";
 
 function Playground$default(Props) {
   var router = Next.Router.useRouter(undefined);
