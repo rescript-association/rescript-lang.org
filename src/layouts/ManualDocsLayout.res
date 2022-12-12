@@ -1,17 +1,26 @@
-module LatestLayout = DocsLayout.Make({
-  // Structure defined by `scripts/extract-tocs.js`
-  let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_latest_toc.json')")
-})
+module EnLayouts = {
+  module LatestLayout = DocsLayout.Make({
+    // Structure defined by `scripts/extract-tocs.js`
+    let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_latest_toc.json')")
+  })
 
-module V800Layout = DocsLayout.Make({
-  // Structure defined by `scripts/extract-tocs.js`
-  let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_v800_toc.json')")
-})
+  module V800Layout = DocsLayout.Make({
+    // Structure defined by `scripts/extract-tocs.js`
+    let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_v800_toc.json')")
+  })
 
-module V900Layout = DocsLayout.Make({
-  // Structure defined by `scripts/extract-tocs.js`
-  let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_v900_toc.json')")
-})
+  module V900Layout = DocsLayout.Make({
+    // Structure defined by `scripts/extract-tocs.js`
+    let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_v900_toc.json')")
+  })
+}
+
+module CnLayouts = {
+  module LatestLayout = DocsLayout.Make({
+    // Structure defined by `scripts/extract-tocs.js`
+    let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_latest_toc_cn.json')")
+  })
+}
 
 module Latest = {
   @react.component
@@ -27,34 +36,51 @@ module Latest = {
     | Latest => "latest"
     }
 
+    let lang = url.lang
+
     let breadcrumbs = list{
       {
         open Url
-        {name: "Docs", href: "/docs/" ++ version}
+        {name: "Docs", href: langPrefix(lang) ++ "/docs/" ++ version}
       },
       {
         open Url
         {
           name: "Language Manual",
-          href: "/docs/manual/" ++ (version ++ "/introduction"),
+          href: langPrefix(lang) ++ "/docs/manual/" ++ (version ++ "/introduction"),
         }
       },
     }
 
     let title = "Language Manual"
     let version = "latest"
-
-    <LatestLayout
-      theme=#Reason
-      components
-      version
-      title
-      metaTitleCategory="ReScript Language Manual"
-      availableVersions=Constants.allManualVersions
-      ?frontmatter
-      breadcrumbs>
-      children
-    </LatestLayout>
+    
+    switch lang {
+    | Default =>
+      <EnLayouts.LatestLayout
+        theme=#Reason
+        components
+        version
+        title
+        metaTitleCategory="ReScript Language Manual"
+        availableVersions=Constants.allManualVersions
+        ?frontmatter
+        breadcrumbs>
+        children
+      </EnLayouts.LatestLayout>
+    | Chinese =>
+      <CnLayouts.LatestLayout
+        theme=#Reason
+        components
+        version
+        title
+        metaTitleCategory="ReScript 语言手册"
+        availableVersions=Constants.allManualVersions
+        ?frontmatter
+        breadcrumbs>
+        children
+      </CnLayouts.LatestLayout>
+    }
   }
 }
 
@@ -88,7 +114,7 @@ module V900 = {
 
     let title = "Language Manual"
 
-    <V900Layout
+    <EnLayouts.V900Layout
       theme=#Reason
       components
       version
@@ -98,7 +124,7 @@ module V900 = {
       ?frontmatter
       breadcrumbs>
       children
-    </V900Layout>
+    </EnLayouts.V900Layout>
   }
 }
 
@@ -169,7 +195,7 @@ module V800 = {
       </div>
     }
 
-    <V800Layout
+    <EnLayouts.V800Layout
       theme=#Reason
       components
       version
@@ -180,6 +206,6 @@ module V800 = {
       breadcrumbs>
       warnBanner
       children
-    </V800Layout>
+    </EnLayouts.V800Layout>
   }
 }

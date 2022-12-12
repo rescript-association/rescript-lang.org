@@ -1,0 +1,284 @@
+---
+title: "If-Else & 循环"
+description: "If, else, ternary, for, and while"
+canonical: "/docs/manual/latest/control-flow"
+---
+
+<!--
+# If-Else & Loops
+-->
+# If-Else & 循环
+
+<!--
+ReScript supports `if`, `else`, ternary expression (`a ? b : c`), `for` and `while`.
+-->
+
+ReScript 支持 `if`，`else`，三目运算符（`a ? b : c`），`for` 循环和 `while` 循环。
+
+
+<!--
+ReScript also supports our famous pattern matching, which will be covered in [its own section](pattern-matching-destructuring.md)
+-->
+
+ReScript 还支持十分强大的模式匹配，我们将用一个[专门的章节](pattern-matching-destructuring.md)介绍它。
+
+<!--
+## If-Else & Ternary
+-->
+## If-Else & 三目运算符
+
+<!--
+Unlike its JavaScript counterpart, ReScript's `if` is an expression; they evaluate to their body's content:
+-->
+
+与它的 JavaScript 对应不同，ReScript的 `if` 是一个表达式；它们对表达式体中的内容进行求值：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let message = if isMorning {
+  "Good morning!"
+} else {
+  "Hello!"
+}
+```
+```js
+var message = isMorning ? "Good morning!" : "Hello!";
+```
+
+</CodeTab>
+
+<!--
+**Note:** an `if-else` expression without the final `else` branch implicitly gives `()` (aka the `unit` type). So this:
+-->
+
+**注意**：没有 `else` 分支的 `if-else` 表达式隐式给出了 `()`（`unit` 类型）作为 `else` 分支的值。所以：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+if showMenu {
+  displayMenu()
+}
+```
+```js
+if (showMenu) {
+  displayMenu();
+}
+```
+
+</CodeTab>
+
+
+<!--
+is basically the same as:
+-->
+
+和以下代码基本相同：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+if showMenu {
+  displayMenu()
+} else {
+  ()
+}
+```
+```js
+if (showMenu) {
+  displayMenu()
+}
+```
+
+</CodeTab>
+
+<!--
+Here's another way to look at it. This is clearly wrong:
+-->
+
+从另一个角度看这个特性，这显然是错误的：
+
+```res
+let result = if showMenu {
+  1 + 2
+}
+```
+
+<!--
+It'll give a type error, saying basically that the implicit `else` branch has the type `unit` while the `if` branch has type `int`. Intuitively, this makes sense: what would `result`'s value be, if `showMenu` was `false`?
+-->
+
+它会抛出一个类型错误，隐含的 `else` 分支的类型是 `unit`，而 `if` 分支的类型是 `int`。直观地说，这样做是有道理的：如果 `showMenu` 是 `false`，那 `result` 的值又应该是什么呢？
+
+<!--
+We also have ternary sugar, but **we encourage you to prefer if-else when possible**.
+-->
+
+我们还提供了三目运算符，作为语法糖，但是**我们鼓励你优先使用 `if-else` 表达式**。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let message = isMorning ? "Good morning!" : "Hello!"
+```
+```js
+var message = isMorning ? "Good morning!" : "Hello!";
+```
+
+</CodeTab>
+
+<!--
+**`if-else` and ternary are much less used** in ReScript than in other languages; [Pattern-matching](pattern-matching-destructuring.md) kills a whole category of code that previously required conditionals.
+-->
+
+`if-else` 和三目运算符在 ReScript 中的使用比其他语言**少得多**；[模式匹配](pattern-matching-destructuring.md)消灭了一整类以前需要条件表达式的代码。
+
+<!--
+## For Loops
+-->
+## for 循环
+
+<!--
+For loops iterate from a starting value up to (and including) the ending value.
+-->
+
+for 循环从一个起始值迭代到终止值（包括终止值）。
+
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+for i in startValueInclusive to endValueInclusive {
+  Js.log(i)
+}
+```
+```js
+for(var i = startValueInclusive; i <= endValueInclusive; ++i){
+  console.log(i);
+}
+```
+
+</CodeTab>
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+// prints: 1 2 3, one per line
+for x in 1 to 3 {
+  Js.log(x)
+}
+```
+```js
+for(var x = 1; x <= 3; ++x){
+  console.log(x);
+}
+```
+
+</CodeTab>
+
+
+<!--
+You can make the `for` loop count in the opposite direction by using `downto`.
+-->
+
+你可以通过使用 `downto` 让 `for` 从大到小计数。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+for i in startValueInclusive downto endValueInclusive {
+  Js.log(i)
+}
+```
+```js
+for(var i = startValueInclusive; i >= endValueInclusive; --i){
+  console.log(i);
+}
+```
+
+</CodeTab>
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+// prints: 3 2 1, one per line
+for x in 3 downto 1 {
+  Js.log(x)
+}
+```
+```js
+for(var x = 3; x >= 1; --x){
+  console.log(x);
+}
+```
+
+</CodeTab>
+
+<!--
+## While Loops
+-->
+## while 循环
+
+<!--
+While loops execute its body code block while its condition is true.
+-->
+
+`while` 循环在其条件为 `true` 时执行 body 代码块。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+while testCondition {
+  // body here
+}
+```
+```js
+while (testCondition) {
+  // body here
+}
+```
+
+</CodeTab>
+
+
+<!--
+### Tips & Tricks
+-->
+### 技巧和诀窍
+
+
+<!--
+There's no loop-breaking `break` keyword (nor early `return` from functions, for that matter) in ReScript. However, we can break out of a while loop easily through using a [mutable binding](mutation.md).
+-->
+
+在 ReScript 中没有跳出循环的 `break` 关键字（也没有从函数中提前返回的 `return`）。然而，我们可以通过使用一个[可变绑定](mutation.md)来轻松地脱离一个 while 循环。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let break = ref(false)
+
+while !break.contents {
+  if Js.Math.random() > 0.3 {
+    break := true
+  } else {
+    Js.log("Still running")
+  }
+}
+```
+```js
+var $$break = {
+  contents: false
+};
+
+while(!$$break.contents) {
+  if (Math.random() > 0.3) {
+    $$break.contents = true;
+  } else {
+    console.log("Still running");
+  }
+};
+```
+
+</CodeTab>

@@ -1,0 +1,283 @@
+---
+title: "Let 绑定"
+description: "Let binding syntax for binding to values in ReScript"
+canonical: "/docs/manual/latest/let-binding"
+---
+
+<!--
+# Let Binding
+-->
+# Let 绑定
+
+<!--
+A "let binding", in other languages, might be called a "variable declaration". `let` _binds_ values to names. They can be seen and referenced by code that comes _after_ them.
+-->
+
+在其他语言中，“let 绑定”可能被称为“变量声明”。`let` 将值与名字 _绑定_，它们可以被后面的代码看到和引用。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let greeting = "hello!"
+let score = 10
+let newScore = 10 + score
+```
+```js
+var greeting = "hello!";
+var score = 10;
+var newScore = 20;
+```
+
+</CodeTab>
+
+<!--
+## Block Scope
+-->
+## 块作用域
+
+<!--
+Bindings can be scoped through `{}`.
+-->
+
+可以通过 `{}` 限制绑定的作用域。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let message = {
+  let part1 = "hello"
+  let part2 = "world"
+  part1 ++ " " ++ part2
+}
+// `part1` and `part2` not accessible here!
+```
+```js
+var message = "hello world";
+```
+
+</CodeTab>
+
+<!--
+The value of the last line of a scope is implicitly returned.
+-->
+
+作用域最后一行的值被隐式返回。
+
+<!--
+### Design Decisions
+-->
+### 设计决策
+
+<!--
+ReScript's `if`, `while` and functions all use the same block scoping mechanism. The code below works **not** because of some special "if scope"; but simply because it's the same scope syntax and feature you just saw:
+-->
+
+ReScript 的 `if`、`while` 和函数都使用相同的块作用域机制。下面的代码之所以有效，**并不是**因为有什么特殊的“if 作用域”；而是因为它与你刚才看到的作用域语法和特性相同。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+if displayGreeting {
+  let message = "Enjoying the docs so far?"
+  Js.log(message)
+}
+// `message` not accessible here!
+```
+```js
+if (displayGreeting) {
+  console.log("Enjoying the docs so far?");
+}
+```
+
+</CodeTab>
+
+<!--
+## Bindings Are Immutable
+-->
+## 绑定是不可变的
+
+<!--
+Let bindings are "immutable", aka "cannot change". This helps our type system deduce and optimize much more than other languages (and in turn, help you more).
+-->
+
+let 绑定是“不可变的”，也就是“不能改变”。这帮助 Rescript 的类型系统进行比其他语言更多的推理和优化（反过来，也能更好地帮助你）。
+
+<!--
+## Binding Shadowing
+-->
+## 绑定覆盖
+
+<!--
+The above restriction might sound unpractical at first. How would you change a value then? Usually, 2 ways:
+-->
+
+上述限制一开始可能听起来不切实际。那么如何改变一个值呢？通常情况下，有两种方法：
+
+<!--
+The first is to realize that many times, what you want isn't to mutate a variable's value. For example, this JavaScript pattern:
+-->
+
+首先是要意识到，很多时候，你想要的并不是改变一个变量的值。例如，这样的 JavaScript 代码：
+
+```js
+var result = 0;
+result = calculate(result);
+result = calculateSomeMore(result);
+```
+
+<!--
+...is really just to comment on intermediate steps. You didn't need to mutate `result` at all! You could have just written this JS:
+-->
+
+这种写法只是对中间步骤进行注释，你完全不需要修改 `result`！你可以直接这样写：
+
+```js
+var result1 = 0;
+var result2 = calculate(result1);
+var result3 = calculateSomeMore(result2);
+```
+
+<!--
+In ReScript, this obviously works too:
+-->
+
+在 ReScript 中这当然也没问题：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let result1 = 0
+let result2 = calculate(result1)
+let result3 = calculateSomeMore(result2)
+```
+```js
+var result1 = 0;
+var result2 = calculate(0);
+var result3 = calculateSomeMore(result2);
+```
+
+</CodeTab>
+
+<!--
+Additionally, reusing the same let binding name overshadows the previous bindings with the same name. So you can write this too:
+-->
+
+此外，用相同的名字进行 let 绑定会覆盖之前的同名绑定。所以你也可以这样写：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let result = 0
+let result = calculate(result)
+let result = calculateSomeMore(result)
+```
+```js
+var result = calculate(0);
+var result$1 = calculateSomeMore(result);
+```
+
+</CodeTab>
+
+<!--
+(Though for the sake of clarity, we don't recommend this).
+-->
+
+（虽然为了清晰起见，我们不推荐这样做）。
+
+<!--
+As a matter of fact, even this is valid code:
+-->
+
+事实上，即使这也是有效的代码：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let result = "hello"
+Js.log(result) // prints "hello"
+let result = 1
+Js.log(result) // prints 1
+```
+```js
+var result = 1;
+console.log("hello");
+console.log(1);
+```
+
+</CodeTab>
+
+<!--
+The binding you refer to is whatever's the closest upward. No mutation here!
+If you need _real_ mutation, e.g. passing a value around, have it modified by many pieces of code, we provide a slightly heavier [mutation feature](mutation.md).
+-->
+
+你引用的绑定是上方距离最近绑定。这里没有修改！如果你需要 _真正的_ 修改，比如说把一个值传来传去，让它被很多段代码修改，我们提供了一个稍微重一点的[可变性特性](mutation.md)。
+
+<!--
+## Private let bindings
+-->
+## 私有 let 绑定
+
+<!--
+Private let bindings are introduced in the release [7.2](https://rescript-lang.org/blog/bucklescript-release-7-2).
+-->
+
+私有 let 绑定在 [7.2](https://rescript-lang.org/blog/bucklescript-release-7-2) 版本中引入。
+
+<!--
+In the module system, everything is public by default,
+the only way to hide some values is by providing a separate signature to
+list public fields and their types:
+-->
+
+在模块系统中，所有东西默认是公开的，隐藏某些值的唯一方式是提供一个独立的模块签名，列出模块中的公共字段和他们的类型：
+
+```res
+module A: {
+  let b: int
+} = {
+  let a = 3
+  let b = 4
+}
+```
+
+<!--
+`%%private` gives you an option to mark private fields directly
+-->
+
+使用 `%%private` 可以直接标记私有字段
+
+```res
+module A = {
+  %%private(let a = 3)
+  let b = 4
+}
+```
+
+<!--
+`%%private` also applies to file level modules, so in some cases,
+users do not need to provide a separate interface file just to hide some particular values.
+-->
+
+`%%private` 也可用于文件级模块，所以在某些情况下，用户不需要为了隐藏某些特定的值而提供一个单独的接口文件。
+
+<!--
+Note interface files are still recommended as a general best practice since they give you better
+separate compilation units and also they're better for documentation.
+-->
+
+注意，仍然建议将接口文件作为通用最佳实践，因为接口给你提供了更好的独立编译单元，而且对文档更友好。
+
+<!--
+Still, `%%private` is useful in the following scenarios:
+
+- **Code generators.** Some code generators want to hide some values but it is sometimes very hard or time consuming for code generators to synthesize the types for public fields.
+
+- **Quick prototyping.** During prototyping, we still want to hide some values, but the interface file is not stable yet, `%%private` provide you such convenience.
+-->
+
+不过，`%%private` 在以下场景还是很有用的：
+
+- **代码生成器**。一些代码生成器想要隐藏某些值，但对于代码生成器来说，为公共字段合成类型有时非常困难或耗费时间
+
+- **快速原型设计**。在原型设计过程中，我们仍然希望隐藏一些值，但接口文件还不稳定，`%%private` 为你提供了这种便利

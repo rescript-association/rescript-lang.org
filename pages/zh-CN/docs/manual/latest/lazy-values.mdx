@@ -1,0 +1,172 @@
+---
+title: "惰性值"
+description: "Data type for deferred computation in ReScript"
+canonical: "/docs/manual/latest/lazy-values"
+---
+
+<!--
+# Lazy Value
+-->
+# 惰性值
+
+<!--
+If you have some expensive computations you'd like to **defer and cache** subsequently, you can wrap it with `lazy`:
+-->
+
+如果你有一些昂贵的计算，你想**延后计算并且缓存结果**, 你可以使用 `lazy` 包装它：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res prelude
+// Read the directory, only once
+let expensiveFilesRead = lazy({
+  Js.log("Reading dir")
+  Node.Fs.readdirSync("./pages")
+})
+```
+```js
+var Fs = require("fs");
+
+var expensiveFilesRead = {
+  LAZY_DONE: false,
+  VAL: (function () {
+    console.log("Reading dir");
+    return Fs.readdirSync("./pages");
+  })
+};
+```
+
+</CodeTab>
+
+<!--
+Check the JS Output tab: that `expensiveFilesRead`'s code isn't executed yet, even though you declared it! You can carry it around without fearing that it'll run the directory read.
+-->
+
+检查 JS 输出标签页：尽管你已经声明了 `expensiveFilesRead`，但它的代码还没有执行！你可以随手拿着它，不用担心它进行目录读取。
+
+<!--
+**Note**: a lazy value is **not** a [shared data type](shared-data-types.md). Don't rely on its runtime representation in your JavaScript code.
+-->
+
+**注意**：惰性值是**不是**一个[共享数据类型](shared-data-types.md)。不要在你的 JavaScript 代码中依赖它的运行时表示。
+
+<!--
+## Execute The Lazy Computation
+-->
+## 执行惰性计算
+
+<!--
+To actually run the lazy value's computation, use `Lazy.force` from the globally available `Lazy` module:
+-->
+
+要实际运行惰性值的计算，请使用全局模块 `Lazy` 的 `Lazy.force`：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+// First call. The computation happens
+Js.log(Lazy.force(expensiveFilesRead)) // logs "Reading dir" and the directory content
+
+// Second call. Will just return the already calculated result
+Js.log(Lazy.force(expensiveFilesRead)) // logs the directory content
+```
+```js
+console.log(CamlinternalLazy.force(expensiveFilesRead));
+
+console.log(CamlinternalLazy.force(expensiveFilesRead));
+```
+
+</CodeTab>
+
+<!--
+The first time `Lazy.force` is called, the expensive computation happens and the result is **cached**. The second time, the cached value is directly used.
+-->
+
+第一次调用 `Lazy.force` 时，进行了昂贵的计算，而且结果被**缓存**了。第二次调用会直接使用缓存的值。
+
+<!--
+**You can't re-trigger the computation after the first `force` call**. Make sure you only use a lazy value with computations whose results don't change (e.g. an expensive server request whose response is always the same).
+-->
+
+**在第一次调用后你无法重新触发计算**。确保你只在计算结果不改变的情况下使用惰性值（例如，一个昂贵的服务器请求，它的响应总是相同的）。
+
+<!--
+Instead of using `Lazy.force`, you can also use [pattern matching](pattern-matching-destructuring.md) to trigger the computation:
+-->
+
+除了使用 `Lazy.force`，你也可以使用[模式匹配](pattern-matching-destructuring.md)来触发计算：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+switch expensiveFilesRead {
+| lazy(result) => Js.log(result)
+}
+```
+```js
+var result = CamlinternalLazy.force(expensiveFilesRead);
+```
+
+</CodeTab>
+
+<!--
+Since pattern matching also works on a `let` binding, you can also do:
+-->
+
+因为模式匹配也可用于 `let` 绑定，你也可以这样做：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let lazy(result) = expensiveFilesRead
+Js.log(result)
+```
+```js
+var result = CamlinternalLazy.force(expensiveFilesRead);
+console.log(result);
+```
+
+</CodeTab>
+
+<!--
+## Exception Handling
+-->
+## 处理异常
+
+<!--
+For completeness' sake, our files read example might raise an exception because of `readdirSync`. Here's how you'd handle it:
+-->
+
+为了完整起见，我们的文件读取例子可能因为 `readdirSync` 而引发一个异常。下面是处理方式：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let result = try {
+  Lazy.force(expensiveFilesRead)
+} catch {
+| Not_found => [] // empty array of files
+}
+```
+```js
+var result;
+
+try {
+  result = CamlinternalLazy.force(expensiveFilesRead);
+} catch (raw_exn) {
+  var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+  if (exn.RE_EXN_ID === "Not_found") {
+    result = [];
+  } else {
+    throw exn;
+  }
+}
+```
+
+</CodeTab>
+
+<!--
+Though you should probably handle the exception inside the lazy computation itself.
+-->
+
+不过你应该在惰性计算内部处理这个异常。

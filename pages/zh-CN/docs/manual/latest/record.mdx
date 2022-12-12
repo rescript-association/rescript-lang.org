@@ -1,0 +1,614 @@
+---
+title: "记录"
+description: "Record types in ReScript"
+canonical: "/docs/manual/latest/record"
+---
+
+<!--
+# Record
+-->
+# 记录
+
+<!--
+Records are like JavaScript objects but:
+- are immutable by default
+- have fixed fields (not extensible)
+-->
+
+记录和 JavaScript 对象很像，但：
+- 默认是不可变的
+- 有固定的字段（不可扩展）
+
+<!--
+## Type Declaration
+-->
+## 类型声明
+
+<!--
+A record needs a mandatory type declaration:
+-->
+
+记录需要强制性的类型声明：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res prelude
+type person = {
+  age: int,
+  name: string,
+}
+```
+```js
+// Empty output
+```
+
+</CodeTab>
+
+<!--
+## Creation
+-->
+## 创建记录
+
+<!--
+To create a `person` record (declared above):
+-->
+
+要创建一个 `person` 记录（上面已经声明）：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res prelude
+let me = {
+  age: 5,
+  name: "Big ReScript"
+}
+```
+```js
+var me = {
+  age: 5,
+  name: "Big ReScript"
+};
+```
+
+</CodeTab>
+
+<!--
+When you create a new record value, ReScript tries to find a record type declaration that conforms to the shape of the value. So the `me` value here is inferred as of type `person`.
+-->
+
+当你创建新的记录值时，ReScript 试图找到符合值的形状的记录类型声明。因此，这里的 `me` 值被推断为 `person` 类型。
+
+<!--
+The type is found by looking above the `me` value. **Note**: if the type instead resides in another file or module, you need to explicitly indicate which file or module it is:
+-->
+
+通过查找 `me` 值的上方可以找到该类型。如果类型存在于另一个文件或模块中，你需要明确指出它是哪个文件或模块：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+// School.res
+type person = {age: int, name: string}
+```
+```js
+// Empty output
+```
+
+</CodeTab>
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// Example.res
+
+let me: School.person = {age: 20, name: "Big ReScript"}
+/* or */
+let me2 = {School.age: 20, name: "Big ReScript"}
+```
+```js
+var me = {
+  age: 20,
+  name: "Big ReScript"
+};
+var me2 = {
+  age: 20,
+  name: "Big ReScript"
+};
+```
+
+</CodeTab>
+
+<!--
+In both me and me2 the record definition from School is found. The first one, me with the regular type annotation, is preferred.
+-->
+
+在 `me` 和 `me2` 中都可以找到 `School` 的记录定义。建议使用带有常规类型标注的 `me`。
+
+<!--
+## Access
+-->
+## 字段访问
+
+<!--
+ Use the familiar dot notation:
+-->
+
+使用熟悉的点号：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let name = me.name
+```
+```js
+var name = "Big ReScript";
+```
+
+</CodeTab>
+
+<!--
+## Immutable Update
+-->
+## 不可变更新
+
+<!--
+New records can be created from old records with the `...` spread operator. The original record isn't mutated.
+-->
+
+可以用 `...` 展开操作符从旧记录中创建新记录。原始记录不会被修改。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let meNextYear = {...me, age: me.age + 1}
+```
+```js
+var meNextYear = {
+  age: 21,
+  name: "Big ReScript"
+};
+```
+
+</CodeTab>
+
+<!--
+**Note**: spread cannot add new fields to the record value, as a record's shape is fixed by its type.
+-->
+
+**注意**: 展开不能向记录值添加新字段，记录的形状是由其类型固定的。
+
+<!--
+## Mutable Update
+-->
+## 可变更新
+
+<!--
+Record fields can optionally be mutable. This allows you to efficiently update those fields in-place with the `=` operator.
+-->
+
+记录的字段可以是可变的，这允许你用 `=` 操作符高效地原地更新这些字段。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type person = {
+  name: string,
+  mutable age: int
+}
+
+let baby = {name: "Baby ReScript", age: 5}
+baby.age = baby.age + 1 // `baby.age` is now 6. Happy birthday!
+```
+```js
+var baby = {
+  name: "Baby ReScript",
+  age: 5
+};
+
+baby.age = baby.age + 1 | 0;
+```
+
+</CodeTab>
+
+<!--
+Fields not marked with `mutable` in the type declaration cannot be mutated.
+-->
+
+在类型声明中没有标记为 `mutable` 的字段不能被修改。
+
+<!--
+## JavaScript Output
+-->
+## JavaScript 输出
+
+<!--
+ReScript records compile to straightforward JavaScript objects; see the various JS output tabs above.
+-->
+
+ReScript 记录编译为直接的 JavaScript 对象；查看上面的各种 JS 输出标签。
+
+<!--
+## Optional Record Fields
+-->
+## 可选记录字段
+
+<!--
+ReScript [`v10`](/blog/release-10-0-0#experimental-optional-record-fields) introduced optional record fields. This means that you can define fields that can be omitted when creating the record. It looks like this:
+-->
+
+ReScript 在 [`v10`](/blog/release-10-0-0#experimental-optional-record-fields) 引入了可选记录字段，这意味着你可以定义在创建记录时可以省略的字段。它看起来像这样：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type person = {
+  age: int,
+  name?: string
+}
+```
+```js
+// Empty output
+```
+
+</CodeTab>
+
+<!--
+Notice how `name` has a suffixed `?`. That means that the field itself is _optional_.
+-->
+
+注意 `name` 有一个 `?` 后缀，这意味着字段本身是 _可选的_。
+
+<!--
+### Creation
+-->
+## 创建记录
+
+<!--
+You can omit any optional fields when creating a record. Not setting an optional field will default the field's value to `None`:
+-->
+
+在创建一个记录时，你可以省略任何可选字段，未设置的可选字段值默认为 `None`：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type person = {
+  age: int,
+  name?: string
+}
+
+let me = {
+  age: 5,
+  name: "Big ReScript"
+}
+
+let friend = {
+  age: 7
+}
+```
+```js
+var me = {
+  age: 5,
+  name: "Big ReScript"
+};
+
+var friend = {
+  age: 7
+};
+```
+
+</CodeTab>
+
+<!--
+This has consequences for pattern matching, which we'll expand a bit on soon.
+-->
+
+这对模式匹配有影响，我们将很快展开讨论。
+
+<!--
+## Immutable Update
+-->
+## 不可变更新
+
+<!--
+Updating an optional field via an immutable update above lets you set that field value without needing to care whether it's optional or not.
+-->
+
+通过不可变更新来更新一个可选字段，可以让你设置该字段的值，而不用关心它是否可选。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type person = {
+  age: int,
+  name?: string
+}
+
+let me = {
+  age: 123,
+  name: "Hello"
+}
+
+let withoutName = {
+  ...me,
+  name: "New Name"
+}
+```
+```js
+import * as Caml_obj from "./stdlib/caml_obj.js";
+
+var me = {
+  age: 123,
+  name: "Hello"
+};
+
+var newrecord = Caml_obj.obj_dup(me);
+
+newrecord.name = "New Name";
+
+var withoutName = newrecord;
+```
+
+</CodeTab>
+
+
+<!--
+However, if you want to set the field to an optional value, you prefix that value with `?`:
+-->
+
+然而，如果你想将可选字段设置为 `option` 值，你需要在值前加上 `?`：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type person = {
+  age: int,
+  name?: string
+}
+
+let me = {
+  age: 123,
+  name: "Hello"
+}
+
+let maybeName = Some("My Name")
+
+let withoutName = {
+  ...me,
+  name: ?maybeName
+}
+```
+```js
+import * as Caml_obj from "./stdlib/caml_obj.js";
+
+var me = {
+  age: 123,
+  name: "Hello"
+};
+
+var maybeName = "My Name";
+
+var newrecord = Caml_obj.obj_dup(me);
+
+newrecord.name = maybeName;
+
+var withoutName = newrecord;
+```
+
+</CodeTab>
+
+<!--
+You can unset an optional field's value via that same mechanism by setting it to `?None`.
+-->
+
+你可以使用同样的机制将一个可选字段的值设置为 `?None`，从而消去字段的值。
+
+<!--
+### Pattern Matching on Optional Fields
+-->
+### 可选字段的模式匹配
+
+<!--
+[Pattern matching](pattern-matching-destructuring), one of ReScript's most important features, has two caveats when you deal with optional fields.
+-->
+
+[模式匹配](pattern-matching-destructuring)是 ReScript 最重要的特性之一，当你处理可选字段时，有两点需要注意。
+
+<!--
+When matching on the value directly, it's an `option`. Example:
+-->
+
+当直接对值进行匹配时，它是一个 `option`。例如：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type person = {
+  age: int,
+  name?: string,
+}
+
+let me = {
+  age: 123,
+  name: "Hello",
+}
+
+let isRescript = switch me.name {
+| Some("ReScript") => true
+| Some(_) | None => false
+}
+```
+```js
+var isRescript;
+
+isRescript = "Hello" === "ReScript" ? true : false;
+
+var me = {
+  age: 123,
+  name: "Hello"
+};
+```
+
+</CodeTab>
+
+<!--
+But, when matching on the field as part of the general record structure, it's treated as the underlying, non-optional value:
+-->
+
+但是，当把字段作为一般记录结构的一部分进行匹配时，它被视为基本的、非可选的值：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type person = {
+  age: int,
+  name?: string,
+}
+
+let me = {
+  age: 123,
+  name: "Hello",
+}
+
+let isRescript = switch me {
+| {name: "ReScript"} => true
+| _ => false
+}
+
+```
+```js
+var isRescript;
+
+isRescript = "Hello" === "ReScript" ? true : false;
+
+var me = {
+  age: 123,
+  name: "Hello"
+};
+```
+
+</CodeTab>
+
+<!--
+Sometimes you _do_ want to know whether the field was set or not. You can tell the pattern matching engine about that by prefixing your option match with `?`, like this:
+-->
+
+有时你_确实_想知道这个字段是否被设置了。你可以通过在你的匹配选项前加上 `?` 来告知模式匹配引擎这一点，就像这样：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type person = {
+  age: int,
+  name?: string,
+}
+
+let me = {
+  age: 123,
+  name: "Hello",
+}
+
+let nameWasSet = switch me {
+| {name: ?None} => false
+| {name: ?Some(_)} => true
+}
+```
+```js
+var nameWasSet = false;
+
+var me = {
+  age: 123,
+  name: "Hello"
+};
+```
+
+</CodeTab>
+
+<!--
+## Tips & Tricks
+-->
+## 技巧和诀窍
+
+<!--
+### Record Types Are Found By Field Name
+-->
+### 记录类型是通过字段名找到的
+
+<!--
+With records, you **cannot** say "I'd like this function to take any record type, as long as they have the field `age`". The following **won't work as intended**:
+-->
+
+对于记录，你**不能**说“我想让这个函数接受任何记录类型，只要它们有 `age` 这个字段”。下面的方法**不会按照预期工作**：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type person = {age: int, name: string}
+type monster = {age: int, hasTentacles: bool}
+
+let getAge = (entity) => entity.age
+```
+```js
+function getAge(entity) {
+  return entity.age;
+}
+```
+
+</CodeTab>
+
+<!--
+Instead, `getAge` will infer that the parameter `entity` must be of type `monster`, the closest record type with the field `age`. The following code's last line fails:
+-->
+
+相反，`getAge` 将推断出参数 `entity` 必须是 `monster` 类型，这是与字段 `age` 最接近的记录类型。下面代码的最后一行会报错：
+
+
+```res
+let kraken = {age: 9999, hasTentacles: true}
+let me = {age: 5, name: "Baby ReScript"}
+
+getAge(kraken)
+getAge(me) // type error!
+```
+
+<!--
+The type system will complain that `me` is a `person`, and that `getAge` only works on `monster`. If you need such capability, use ReScript objects, described [here](object.md).
+-->
+
+类型系统会抱怨 `me` 是一个 `person`，而 `getAge` 只对 `monster` 有效。如果你需要这样的能力，请使用 ReScript 对象，参考[这里](object.md)。
+
+<!--
+### Optional Fields in Records Can Be Useful for Bindings
+-->
+### 记录的可选字段可用于绑定
+
+<!--
+Many JavaScript APIs tend to have large configuration objects that can be a bit annoying to model as records, since you previously always needed to specify all record fields when creating a record.
+-->
+
+很多 JavaScript API 往往有庞大的配置对象，如果用记录来建模这些对象可能有点令人讨厌，因为你总是需要在创建记录时指定所有记录字段。
+
+<!--
+Optional record fields, introduced in [`v10`](/blog/release-10-0-0#experimental-optional-record-fields), is intended to help with this. Optional fields will let you avoid having to specify all fields, and let you just specify the one's you care about. A significant improvement in ergonomics for bindings and other APIs with for example large configuration objects.
+-->
+
+[`v10`](/blog/release-10-0-0#experimental-optional-record-fields) 引入可选记录字段就是为了帮助解决这个问题。可选字段让你避免指定所有字段，而让你只指定你关心的字段。对于绑定，和其他具有大型配置对象的 API 来说，这是人体工程学上的重大改进。
+
+<!--
+## Design Decisions
+-->
+## 设计决策
+
+<!--
+After reading the constraints in the previous sections, and if you're coming from a dynamic language background, you might be wondering why one would bother with record in the first place instead of straight using object, since the former needs explicit typing and doesn't allow different records with the same field name to be passed to the same function, etc.
+-->
+
+在阅读了前面几节的约束条件后，如果你是动态语言背景的人，你可能会想，为什么首先要用记录而不是直接用对象？因为记录需要明确的类型化，而且不允许将具有相同字段名的不同记录传递给同一个函数，等等。
+
+<!--
+1. The truth is that most of the times in your app, your data's shape is actually fixed, and if it's not, it can potentially be better represented as a combination of variant (introduced next) + record instead.
+2. Since a record type is resolved through finding that single explicit type declaration (we call this "nominal typing"), the type error messages end up better than the counterpart ("structural typing", like for tuples). This makes refactoring easier; changing a record type's fields naturally allows the compiler to know that it's still the same record, just misused in some places. Otherwise, under structural typing, it might get hard to tell whether the definition site or the usage site is wrong.
+-->
+
+1. 事实是，在你的应用程序中，大多数时候你的数据的形状实际上是固定的，如果不是，它表示为变体(接下来介绍) + 记录的组合可能会更好。
+2. 由于记录类型是通过找到那个单一的显式类型声明来解决的（我们称之为“名义类型(nominal typing)”），类型错误信息最终会比对等的类型（“结构式类型(structural typing)”，如元组）更好。这使得重构更容易；改变一个记录类型的字段天然允许编译器知道它仍然是同一个记录，只是在某些地方被误用。否则，在结构化类型下，可能会很难分辨是定义的地方还是使用的地方出了问题。

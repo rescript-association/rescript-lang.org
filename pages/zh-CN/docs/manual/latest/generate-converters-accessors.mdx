@@ -1,0 +1,834 @@
+---
+title: "生成转换器与辅助函数"
+description: "All about the @deriving decorator, and how to generate code from types"
+canonical: "/docs/manual/latest/generate-converters-accessors"
+---
+
+<!--
+# Generate Converters & Helpers
+-->
+# 生成转换器与辅助函数
+
+<!--
+**Note**: if you're looking for:
+- `@deriving(jsConverter)` for records
+- `@deriving({jsConverter: newType})` for records
+- `@deriving(jsConverter)` for polymorphic variants
+-->
+
+**注意**：以下装饰器：
+- 用于记录的 `@deriving(jsConverter)`
+- 用于记录的 `@deriving({jsConverter: newType})`
+- 用于多态变体的 `@deriving(jsConverter)`
+
+<!--
+These particular ones are no longer needed. Select a doc version lower than `9.0` in the sidebar to see their old docs.
+-->
+
+在 9.0 及更新的版本中已经不再需要，请在侧边栏菜单中切换至旧版本查看文档。
+
+<!-- TODO: genType -->
+
+<!--
+When using ReScript, you will sometimes come into situations where you want to
+-->
+
+在使用 ReScript 时，有时你可以会有以下需求：
+
+<!--
+- Automatically generate functions that convert between ReScript's internal and JS runtime values (e.g. variants).
+- Convert a record type into an abstract type with generated creation, accessor and method functions.
+- Generate some other helper functions, such as functions from record attribute names.
+-->
+
+- 自动生成在 ReScript 内部值（如变体）和 JS 值之间转换的函数。
+- 将一个记录类型转换为一个抽象类型，它有自动生成的构造函数、访问函数和方法函数。
+- 生成其他辅助函数，例如从记录的属性名生成函数。
+<!--
+You can use the `@deriving` decorator for different code generation scenarios. All different options and configurations will be discussed on this page.
+-->
+
+你可以在不同的代码生成场景中使用 `@deriving` 装饰器。所有选项和配置都将在本章讨论。
+
+<!--
+**Note:** Please be aware that extensive use of code generation might make it harder to understand your programs (since the code being generated is not visible in the source code, and you just need to know what kind of functions / values a decorator generates).
+-->
+
+**请注意：**大量使用代码生成可能会让你的程序难以理解（因为生成的代码在源代码中不可见，而且你只需要知道装饰器生成了什么样的函数/值）。
+
+
+<!--
+## Generate Functions & Plain Values for Variants
+-->
+## 为变体生成函数与值
+
+<!--
+Use `@deriving(accessors)` on a variant type to create accessor functions for its constructors.
+-->
+
+在一个变体类型上使用 `@deriving(accessors)` 来为其构造器创建访问函数。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+@deriving(accessors)
+type action =
+  | Click
+  | Submit(string)
+  | Cancel;
+```
+
+```js
+function submit(param_0) {
+  return /* Submit */[param_0];
+}
+
+var click = /* Click */0;
+
+var cancel = /* Cancel */1;
+
+exports.click  = click;
+exports.submit = submit;
+exports.cancel = cancel;
+```
+
+</CodeTab>
+
+<!--
+Variants constructors with payloads generate functions, payload-less constructors generate plain integers (the internal representation of variants).
+-->
+
+有 payload 的变体构造器会生成函数，而无 payload 构造器则会生成值（变体的内部表示）。
+
+<!--
+**Note**:
+- The generated accessors are lower-cased.
+- You can now use these helpers on the JavaScript side! But don't rely on their actual values please.
+-->
+
+**注意**:
+- 生成的访问器名字是小写的
+- 你可以在 JavaScript 端使用这些生成的辅助函数，但请不要依赖它们的实际值！
+
+<!--
+### Usage
+-->
+### 用法
+
+```res
+let s = submit("hello"); /* gives Submit("hello") */
+```
+
+<!--
+This is useful:
+-->
+
+以下情况时很有用：
+
+<!--
+- When you're passing the accessor function as a higher-order function (which plain variant constructors aren't).
+- When you'd like the JS side to use these values & functions opaquely and pass you back a variant constructor (since JS has no such thing).
+-->
+
+- 当你将访问器函数作为高阶函数传递时（普通的变体构造器做不到）
+- 当你希望在 JS 端不透明地使用这些值或函数，并向你传回一个变体构造器时（因为 JS 没有这样的东西）
+
+<!--
+Please note that in case you just want to _pipe a payload into a constructor_, you don't need to generate functions for that. Use the `->` syntax instead, e.g. `"test"->Submit`.
+-->
+
+请注意，如果你只是想 _传入 payload 到一个构造器_，你不必生成函数。可以直接使用 `->` 语法，例如 `"test"->Submit`。
+
+<!--
+## Generate Field Accessors for Records
+-->
+## 为记录生成字段访问器
+
+<!--
+Use `@deriving(accessors)` on a record type to create accessors for its record field names.
+-->
+
+在一个记录类型上使用 `@deriving(accessors)`，为其记录字段名创建访问器。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+@deriving(accessors)
+type pet = {name: string}
+
+let pets = [{name: "bob"}, {name: "bob2"}]
+
+pets
+ ->Belt.Array.map(name)
+ ->Js.Array2.joinWith("&")
+ ->Js.log
+```
+
+```js
+function name(param) {
+  return param.name;
+}
+
+var pets = [
+  {
+    name: "bob"
+  },
+  {
+    name: "bob2"
+  }
+];
+
+console.log(Belt_Array.map(pets, name).join("&"));
+```
+
+</CodeTab>
+
+<!--
+## Generate Converters for JS Integer Enums and Variants
+-->
+## 为 JS 的整数型枚举和 ReScript 的变体生成双向转换器
+
+<!--
+Use `@deriving(jsConverter)` on a variant type to create converter functions that allow back and forth conversion between JS integer enum and ReScript variant values.
+-->
+
+在变体类型上使用 `@deriving(jsConverter)` 来创建转换器函数，这些函数允许在 JS 整数型枚举和 ReScript 变量值之间来回转换。
+
+
+```res
+@deriving(jsConverter)
+type fruit =
+  | Apple
+  | Orange
+  | Kiwi
+  | Watermelon;
+```
+
+<!--
+This option causes `jsConverter` to, again, generate functions of the following types:
+-->
+
+这个选项使 `jsConverter` 再次生成以下类型的函数：
+
+```resi
+let fruitToJs: fruit => int;
+
+let fruitFromJs: int => option(fruit);
+```
+
+<!--
+For `fruitToJs`, each fruit variant constructor would map into an integer, starting at 0, in the order they're declared.
+-->
+
+`fruitToJs` 会将 fruit 的各个构造器映射到从 0 开始的整数，按照变体中的声明顺序递增。
+
+<!--
+For `fruitFromJs`, the return value is an `option`, because not every int maps to a constructor.
+-->
+
+`fruitFromJs` 的返回类型是 `option`，因为不是每个整数都能映射到一个构造器。
+
+<!--
+You can also attach a `@as(1234)` to each constructor to customize their output.
+-->
+
+你也可以给每个构造器添加 `@as(1234)` 来自定义其输出。
+
+<!--
+### Usage
+-->
+### 用法
+
+```res
+@deriving(jsConverter)
+type fruit =
+  | Apple
+  | @as(10) Orange
+  | @as(100) Kiwi
+  | Watermelon
+
+let zero = fruitToJs(Apple) /* 0 */
+
+switch fruitFromJs(100) {
+| Some(Kiwi) => Js.log("this is Kiwi")
+| _ => Js.log("received something wrong from the JS side")
+}
+```
+
+<!--
+**Note**: by using `@as` here, all subsequent number encoding changes. `Apple` is still `0`, `Orange` is `10`, `Kiwi` is `100` and `Watermelon` is **`101`**!
+-->
+
+**注意**：因为这里使用了 `@as`，所有后续数字编号都会改变。`Apple` 仍然是 `0`，但 `Orange` 是 `10`，`Kiwi` 是 `100`，`Watermelon` 是 **`101`**！
+
+<!--
+### More Safety
+-->
+### 提高安全性
+
+<!--
+Similar to the JS object <-> record deriving, you can hide the fact that the JS enum are ints by using the same `newType` option with `@deriving(jsConverter)`:
+-->
+
+与 JS 对象和记录类型间的转换类似，你可以通过对 `@deriving(jsConverter)` 使用相同的 `newType` 选项，来隐藏 JS 枚举是整数的事实。
+
+```res
+@deriving({jsConverter: newType})
+type fruit =
+  | Apple
+  | @as(100) Kiwi
+  | Watermelon;
+```
+
+<!--
+This option causes `@deriving(jsConverter)` to generate functions of the following types:
+-->
+
+这个选项使 `@deriving(jsConverter)` 生成以下类型的函数：
+
+```resi
+let fruitToJs: fruit => abs_fruit;
+
+let fruitFromJs: abs_fruit => fruit;
+```
+
+<!--
+For `fruitFromJs`, the return value, unlike the previous non-abstract type case, doesn't contain an `option`, because there's no way a bad value can be passed into it; the only creator of `abs_fruit` values is `fruitToJs`!
+-->
+
+这次，`fruitFromJs` 与之前的非抽象类型的情况不同，返回值不含 `option`，因为不可能有不正确的值传入其中；只有 `fruitToJs` 可以创建 `abs_fruit` 类型的值！
+
+<!--
+#### Usage
+-->
+#### 用法
+
+```res
+@deriving({jsConverter: newType})
+type fruit =
+  | Apple
+  | @as(100) Kiwi
+  | Watermelon
+
+let opaqueValue = fruitToJs(Apple)
+
+@module("myJSFruits") external jsKiwi: abs_fruit = "iSwearThisIsAKiwi"
+let kiwi = fruitFromJs(jsKiwi)
+
+let error = fruitFromJs(100) /* nope, can't take a random int */
+```
+
+<!--
+## Convert Record Type to Abstract Record
+-->
+## 将记录转换为抽象记录
+
+<!--
+> **Note**: For ReScript >= v7, we recommend using [plain records to compile to JS objects](bind-to-js-object#bind-to-record-like-js-objects).
+> This feature might still be useful for certain scenarios, but the ergonomics might be worse
+-->
+
+> **注意**: 对于 >= v7 版本的 ReScript，推荐使用[用于编译到 JS 对象的记录](bind-to-js-object#bind-to-record-like-js-objects)。
+> 对于特定场景，这个功能仍然非常有用，但是使用体验比较糟糕。
+
+<!--
+Use `@deriving(abstract)` on a record type to expand the type into a creation, and a set of getter / setter functions for fields and methods.
+-->
+
+在记录类型上使用 `@deriving(abstract)` 可以将该类型扩展为一个构造函数，并为其字段和方法提供一组 getter/setter 函数。
+
+<!--
+Usually you'd just use ReScript records to compile to JS objects of the same shape. There is still one particular use-case left where the `@deriving(abstract)` convertion is still useful: Whenever you need compile a record with an optional field where the JS object attribute shouldn't show up in the resulting JS when undefined (e.g. `{name: "Carl", age: undefined}` vs `{name: "Carl"}`). Check the [Optional Labels](#optional-labels) section for more infos on this particular scenario.
+-->
+
+通常情况下，你只需使用 ReScript 记录来编译成相同形状的 JS 对象。但在某些特定场景中 `@deriving(abstract)` 还是很有用。比如你需要将一个带有 `option` 类型字段的记录编译到 JS 对象，但是当某个属性值为 `undefined` 时，这个属性不应该出现在 JS 对象中（例如，`{name: "Carl", age: undefined}` vs `{name: "Carl"}`）。请查看[可选标签（Optional Labels）](#optional-labels)小节来了解关于这种特殊情况的更多细节。
+
+<!--
+### Usage Example
+-->
+### 用法示例
+
+```res
+@deriving(abstract)
+type person = {
+  name: string,
+  age: int,
+  job: string,
+};
+
+@val external john : person = "john";
+```
+
+<!--
+**Note**: the `person` type is **not** a record! It's a record-looking type that uses the record's syntax and type-checking. The `@deriving(abstract)` decorator turns it into an "abstract type" (aka you don't know what the actual value's shape).
+-->
+
+**注意**：`person` 类型**不是**一个记录！它是一个看起来像记录的类型，使用记录的语法和类型检查。`@deriving(abstract)` 装饰器会把它转换为一个“抽象类型”（我们无法知道抽象类型的实际值的形状）。
+
+<!--
+### Creation
+-->
+### 创建
+
+<!--
+You don't have to bind to an existing `person` object from the JS side. You can also create such `person` JS object from ReScript's side.
+-->
+
+你不必绑定来自 JS 端的现存 `person` 对象，你可以从 ReScript 端创建这样的 `person` JS 对象。
+
+<!--
+Since `@deriving(abstract)` turns the above `person` record into an abstract type, you can't directly create a person record as you would usually. This doesn't work: `{name: "Joe", age: 20, job: "teacher"}`.
+-->
+
+由于 `@deriving(abstract)` 会将 `person` 记录转换为一个抽象类型，你不能按照平时的做法直接创建一个 `person` 记录。`{name: "Joe", age: 20, job: "teacher"}` 是不行的。
+
+<!--
+Instead, you'd use the **creation function** of the same name as the record type, implicitly generated by the `@deriving(abstract)` annotation:
+-->
+
+相反，你会使用与记录类型同名的**创建函数**，它由 `@deriving(abstract)` 隐式生成：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let joe = person(~name="Joe", ~age=20, ~job="teacher")
+```
+
+```js
+var joe = {
+  name: "Joe",
+  age: 20,
+  job: "teacher"
+};
+```
+
+</CodeTab>
+
+<!--
+Note how in the example above there is no JS runtime overhead.
+-->
+
+请注意，上面的例子是没有 JS 运行时开销的。
+
+
+<!--
+#### Rename Fields
+-->
+#### 重命名字段
+
+<!--
+Sometimes you might be binding to a JS object with field names that are invalid in ReScript. Two examples would be `{type: "foo"}` (reserved keyword in ReScript) and `{"aria-checked": true}`. Choose a valid field name then use `@as` to circumvent this:
+-->
+
+有时候你需要绑定的 JS 对象的某些字段名在 ReScript 中无效。例如 `{type: "foo"}` （type 在 ReScript 中是保留关键字）和 `{"aria-checked": true}`。选择一个有效的字段名，然后使用 `@as` 来规避这个问题：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+@deriving(abstract)
+type data = {
+  @as("type") type_: string,
+  @as("aria-label") ariaLabel: string,
+};
+
+let d = data(~type_="message", ~ariaLabel="hello");
+```
+
+```js
+var d = {
+  type: "message",
+  "aria-label": "hello"
+};
+```
+
+</CodeTab>
+
+<!--
+#### Optional Labels
+-->
+#### 可选标签
+
+<!--
+You can omit fields during the creation of the object:
+-->
+
+你可以在创建对象时忽略一些字段：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+@deriving(abstract)
+type person = {
+  @optional name: string,
+  age: int,
+  job: string,
+};
+
+let joe = person(~age=20, ~job="teacher", ());
+```
+
+```js
+var joe = {
+  age: 20,
+  job: "teacher"
+};
+```
+
+</CodeTab>
+
+<!--
+Optional values that are not defined, will not show up as an attribute in the resulting JS object. In the example above, you will see that `name` was omitted.
+-->
+
+未定义的可选值不会出现在最终的 JS 对象的属性中。在上面的例子中，你可以看到 `name` 字段被忽略了。
+
+<!--
+**Note** that the `@optional` tag turned the `name` field optional. Merely typing `name` as `option<string>` wouldn't work.
+-->
+
+**注意**，`@optional` 标签将 `name` 字段变成了可选的。仅仅将 `name` 的类型标注为 `option<string>` 是行不通的。
+
+<!--
+**Note**: now that your creation function contains optional fields, we mandate an unlabeled `()` at the end to indicate that [you've finished applying the function](function#optional-labeled-arguments).
+-->
+
+**注意**：因为创建函数包含可选字段，所以需要在最后使用 `()` 表示[已完成该函数的应用](function#optional-labeled-arguments)。
+
+<!--
+### Accessors
+-->
+### 访问器
+
+<!--
+Again, since `@deriving(abstract)` hides the actual record shape, you can't access a field using e.g. `joe.age`. We remediate this by generating getter and setters.
+-->
+
+同样，由于 `@deriving(abstract)` 隐藏了记录的实际形状，你不能使用类似 `joe.age` 的方式访问字段。我们通过生成 getter 和 setters 来补救这个问题。
+
+<!--
+#### Read
+-->
+#### 读取
+
+<!--
+One getter function is generated per `@deriving(abstract)` record type field. In the above example, you'd get 3 functions: `nameGet`, `ageGet`, `jobGet`. They take in a `person` value and return `string`, `int`, `string` respectively:
+-->
+
+`@deriving(abstract)` 装饰的记录类型的每个字段都会生成一个 getter 函数。以上面的代码为例，你会得到 3 个函数：`nameGet`、`ageGet` 和 `jobGet`。它们会接收一个 `person` 值，并分别返回 `string`、`int` 和 `string`。
+
+```res
+let twenty = ageGet(joe)
+```
+
+<!--
+Alternatively, you can use the [Pipe](pipe) operator (`->`) for a nicer-looking access syntax:
+-->
+
+另外，你也可以使用[管道](pipe)操作符（`->`）来获得更漂亮的访问语法：
+
+```res
+let twenty = joe->ageGet
+```
+
+<!--
+If you prefer shorter names for the getter functions, we also support a `light` setting:
+-->
+
+如果喜欢更短的 getter 函数名字，我们也支持轻量级 `light` 设置：
+
+```res
+@deriving({abstract: light})
+type person = {
+  name: string,
+  age: int,
+}
+
+let joe = person(~name="Joe", ~age=20)
+let joeName = name(joe)
+```
+
+<!--
+The getter functions will now have the same names as the object fields themselves.
+-->
+
+现在 getter 函数的名字和对象字段名字相同。
+
+<!--
+#### Write
+-->
+#### 写入
+
+<!--
+A `@deriving(abstract)` value is immutable by default. To mutate such value, you need to first mark one of the abstract record field as `mutable`, the same way you'd mark a normal record as mutable:
+-->
+
+一个 `@deriving(abstract)` 值默认是不可变的。要修改这样的值，首先你需要将抽象记录的字段标记为 `mutable`，就像将普通记录标记为可变一样：
+
+```res
+@deriving(abstract)
+type person = {
+  name: string,
+  mutable age: int,
+  job: string,
+}
+```
+
+<!--
+Then, a setter of the name `ageSet` will be generated. Use it like so:
+-->
+
+随后会生成一个名为 `ageSet` 的 setter 函数。可以像这样使用它：
+
+```res
+let joe = person(~name="Joe", ~age=20, ~job="teacher");
+ageSet(joe, 21);
+```
+
+<!--
+Alternatively, with the Pipe First syntax:
+-->
+
+也可以通过管道操作符来使用它：
+
+```res
+joe->ageSet(21)
+```
+
+<!--
+### Methods
+-->
+### 方法
+
+<!--
+You can attach arbitrary methods onto a type (_any_ type, as a matter of fact. Not just `@deriving(abstract)` record types). See [Object Method](bind-to-js-function#object-method) in the "Bind to JS Function" section for more infos.
+-->
+
+你可以在类型上附加任意的方法（事实上是 _任何_ 类型，不仅仅是 `@deriving(abstract)` 记录类型）。查看“绑定到 JS 函数”一节中的[对象方法](bind-to-js-function#object-method)来获取更多信息。
+
+<!--
+### Tips & Tricks
+-->
+### 技巧和诀窍
+
+<!--
+You can leverage `@deriving(abstract)` for finer-grained access control.
+-->
+
+可以利用 `@deriving(abstract)` 来实现更精细的访问控制。
+
+<!--
+#### Mutability
+-->
+#### 可变性
+
+<!--
+You can mark a field as mutable in the implementation (`.res`) file, while _hiding_ such mutability in the interface file:
+-->
+
+可以在实现文件（`.res`）中把字段标记为可变，而在接口文件（`.resi`）中 _隐藏_ 这种可变性：
+
+```res
+/* test.res */
+@deriving(abstract)
+type cord = {
+  @optional mutable x: int,
+  y: int,
+};
+```
+
+```resi
+/* test.resi */
+@deriving(abstract)
+type cord = {
+  @optional x: int,
+  y: int,
+};
+```
+
+<!--
+Tada! Now you can mutate inside your own file as much as you want, and prevent others from doing so!
+-->
+
+好了！现在，现在你可以在自己的文件中尽情使用可变性，并防止别人这样做！
+
+<!--
+#### Hide the Creation Function
+-->
+#### 隐藏创建函数
+
+<!--
+Mark the record as `private` to disable the creation function:
+-->
+
+将记录标记为 `private` 可以禁用创建函数：
+
+```res
+@deriving(abstract)
+type cord = private {
+  @optional x: int,
+  y: int,
+}
+```
+
+<!--
+The accessors are still there, but you can no longer create such data structure. Great for binding to a JS object while preventing others from creating more such object!
+-->
+
+访问器依然存在，只是你无法再创建该数据结构。因此，它非常适合创建 JS 对象绑定的同时防止其他人创建这个对象！
+
+<!--
+#### Use submodules to prevent naming collisions and binding shadowing
+-->
+#### 使用子模块来避免命名冲突和绑定覆盖
+
+<!--
+Oftentimes you will have multiple abstract types with similar attributes. Since
+ReScript will expand all abstract getter, setter and creation functions in the
+same scope where the type is defined, you will eventually run into value shadowing problems.
+-->
+
+很多时候，你会有多个类似属性的抽象类型。由于 ReScript 会在类型被定义的作用域中展开全部的抽象 getter，setter 和创建函数，你最终会遇到值被覆盖的问题。
+
+<!--
+**For example:**
+-->
+
+**例如：**
+
+```res
+@deriving(abstract)
+type person = {name: string}
+
+@deriving(abstract)
+type cat = {
+  name: string,
+  isLazy: bool,
+};
+
+let person = person(~name="Alice")
+
+/* Error: This expression has type person but an expression was expected
+   of type cat */
+person->nameGet()
+```
+
+<!--
+To get around this issue, you can use modules to group a type with its related
+functions and later use them via local open statements:
+-->
+
+为了绕过这个问题，你可以使用模块将类型与其相关函数放在一起，然后通过使用局部 `open` 语句来使用它们：
+
+```res
+module Person = {
+  @deriving(abstract)
+  type t = {name: string}
+}
+
+module Cat = {
+  @deriving(abstract)
+  type t = {
+    name: string,
+    isLazy: bool,
+  }
+}
+
+let person = Person.t(~name="Alice")
+let cat = Cat.t(~name="Snowball", ~isLazy=true)
+
+/* We can use each nameGet function separately now */
+let shoutPersonName = {
+  open Person
+  person->nameGet->Js.String.toUpperCase
+}
+
+/* Note how we use a local `open Cat` expression to
+ get access to Cat's nameGet function */
+let whisperCatName = {
+  open Cat
+  cat->nameGet->Js.String.toLowerCase
+}
+```
+
+<!--
+## Convert External into JS Object Creation Function
+-->
+## 将 `external` 转换为 JS 对象创建函数
+
+<!--
+Use `@obj` on an `external` binding to create a function that, when called, will evaluate to a JS object with fields corresponding to the function's parameter labels.
+-->
+
+在 `external` 上使用 `@obj` 来创建一个函数，当调用该函数时，会得到一个 JS 对象，其字段对应于函数的参数标签。
+
+<!--
+This is very handy because you can make some of those labelled parameters optional and if you don't pass them in, the output object won't include the corresponding fields. Thus you can use it to dynamically create objects with the subset of fields you need at runtime.
+-->
+
+这非常方便，因为你可以使其中一些标记的参数成为可选项，如果你不传入这些参数，输出的对象将不包括相应字段。因此，你可以用它在运行时动态创建只包含需要字段的对象。
+
+<!--
+For example, suppose you need a JavaScript object like this:
+-->
+
+例如，假设你需要一个这样的 JavaScript 对象：
+
+
+```js
+var homeRoute = {
+  type: "GET",
+  path: "/",
+  action: () => console.log("Home"),
+  // options: ...
+};
+```
+
+<!--
+But only the first three fields are required; the options field is optional. You can declare the binding function like so:
+-->
+
+但是只有前三个字段是必须的。options 字段是可选的。你可以像这样声明绑定函数：
+
+```res
+@obj
+external route: (
+  ~\"type": string,
+  ~path: string,
+  ~action: list<string> => unit,
+  ~options: {..}=?,
+  unit,
+) => _ = ""
+```
+
+<!--
+**Note**: the ` = ""` part at the end is just a dummy placeholder, due to syntactic limitations. It serves no purpose currently.
+-->
+
+**注意**: 由于语法限制，末尾的 ` = ""` 只是一个虚拟占位符。当前它没有任何作用。
+
+<!--
+This function has four labelled parameters (the fourth one optional), one unlabelled parameter at the end (which we mandate for functions with [optional parameters](function#optional-labeled-arguments), and one parameter (`\"type"`) that required quoting to [avoid clashing](use-illegal-identifier-names) with the reserved `type` keyword.
+-->
+
+这个函数有 4 个带标签的参数（第 4 个是可选的），和末尾的一个无标签的参数（我们规定有[可选参数](function#optional-labeled-arguments)的函数必须这样做）。由于在 ReScript 中 `type` 是一个保留的关键字，所以参数 `\"type"` 必须带有双引号以[避免冲突](use-illegal-identifier-names)。
+
+<!--
+Also of interest is the return type: `_`, which tells ReScript to automatically infer the full type of the JS object, sparing you the hassle of writing down the type manually!
+-->
+
+另外值得注意的是其返回类型：`_`，它告诉 ReScript 自动推导出 JS 对象的完整类型，省去了你手写类型的麻烦！
+
+<!--
+The function is called like so:
+-->
+
+这个函数是这样调用的：
+
+```res
+let homeRoute = route(
+  ~\"type"="GET",
+  ~path="/",
+  ~action=_ => Js.log("Home"),
+  (),
+)
+```

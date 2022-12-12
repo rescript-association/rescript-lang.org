@@ -1,0 +1,37 @@
+<!--
+# Overview
+-->
+# 概览
+
+<!--
+ReScript ships 3 modules in its standard library.
+
+- [Js](api/js): bindings for all your familiar JavaScript APIs.
+- [Belt](api/belt): extra collections and helpers not available in JavaScript.
+- [Dom](api/dom): Dom related types and modules.
+-->
+
+ReScript 标准库提供了三个模块：
+
+- [Js](api/js)：你所熟悉的 JavaScript API 绑定。
+- [Belt](api/belt)：JavaScript 中所没有的额外的集合 API 与辅助函数。
+- [Dom](api/dom)：DOM 相关的类型和模块。
+
+<!--
+Usage heuristics:
+- Default to using the `Js` module. Most of the APIs in it are runtime-free and compile down to clean, readable JavaScript, which is our priority.
+- For other APIs that aren't available in regular JavaScript (and thus don't exist in our `Js` bindings), use Belt. For example, prefer `Js.Array2` over `Belt.Array`.
+- The `Dom` module contains our standardized types used by various userland DOM bindings. Due to the complexity of DOM, we don't mind that you ignore this module and build your application-specific DOM bindings.
+-->
+
+用法提示：
+
+- 默认使用 `Js` 模块。其中大部分 API 是无运行时的（runtime-free），并且会编译为干净可读的 JavaScript 代码，这是我们优先考虑的。
+- 对于那些常规 JavaScript 中没有的 API（当然也不存在于 `Js` 模块中），使用 Belt。优先使用 `Js` 模块，比如使用 `Js.Array2` 而不是 `Belt.Array`。
+- `Dom` 模块包含标准化类型，这些类型被用户态的 DOM 绑定使用。但由于 DOM 本身的复杂性，你可以忽略这个模块，编写适合你的应用程序的 DOM 绑定。
+
+<!--
+**Note**: we do not recommend other userland standard library alternatives (unless it's DOM bindings). These cause confusion and split points for the community.
+-->
+
+**注意**：我们不推荐使用标准库的其他替代方案（除非是 DOM 绑定），因为这可能会造成社区的混乱和分裂。

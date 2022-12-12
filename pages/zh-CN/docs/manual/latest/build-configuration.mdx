@@ -1,0 +1,389 @@
+---
+title: "构建配置"
+metaTitle: "Build System Configuration"
+description: "Details about the configuration of the ReScript build system (bsconfig.json)"
+canonical: "/docs/manual/latest/build-configuration"
+---
+
+<!--
+# Configuration
+-->
+# 构建系统配置
+
+<!--
+`bsconfig.json` is the single, mandatory build meta file needed for `rescript`.
+-->
+
+`bsconfig.json` 是 `rescript` 强制需要的唯一的构建元数据文件。
+
+<!--
+**The complete configuration schema is [here](./build-configuration-schema)**. We'll _non-exhaustively_ highlight the important parts in prose below.
+ -->
+
+**完整的构建配置概要在[这里](./build-configuration-schema)**。接下来我们将简要介绍构建配置中的重要部分。
+
+<!--
+## name, namespace
+-->
+## name 和 namespace
+
+<!--
+`name` is the name of the library, used as its "namespace". You can activate namespacing through `"namespace": true` in your `bsconfig.json`. Namespacing is almost **mandatory**; we haven't turned it on by default yet to preserve backward-compatibility.
+-->
+
+`name` 是指的库的名称，作为库的“命名空间”使用。你可以通过 `bsconfig.json` 中的 `"namespace": true` 来激活命名空间。使用命名空间几乎是**强制性的**，但是我们为了确保向后兼容而没有默认开启。
+
+<!--
+**Explanation**: by default, your files, once used as a third-party dependency, are available globally to the consumer. E.g. if you have an `Util.re` and the consumer also has a file of the same name, they will clash. Turning on `namespace` avoids this by wrapping all your own project's files into an extra module layer; instead of a global `Util` module, the consumer will see you as `MyProject.Util`. **The namespacing affects your consumers, not yourself**.
+-->
+
+**解释**：默认情况下，你的文件一旦被用作第三方依赖，对用户来说在全局作用域上可用。例如，如果你有一个 `Util.res`，而你的库的使用者也有一个同名的文件，它们会发生冲突。开启 `namespace` 可以避免这种情况，命名空间为你项目的所有文件提供一个额外的模块包装层；而不是一个全局的 `Util` 模块，用户将看到的是 `MyProject.Util`。**命名空间影响的是你的用户，而不是你自己**。
+
+<!--
+Aka, in ReScript, "namespace" is just a fancy term for an auto-generated module that wraps all your project's files (efficiently and correctly, of course!) for third-party consumption.
+-->
+
+也就是说，在 ReScript 中，“命名空间”只是一个花哨的术语，它指的是自动生成一个模块来包装项目中的所有文件（当然是又快又好的！）供第三方使用。
+
+<!--
+We don't do folder-level namespacing for your own project; all your own file names must be unique. This is a constraint that enables several features such as fast search and easier project reorganization.
+-->
+
+我们不为你的项目创建文件夹级别的命名空间；你的所有文件名必须是唯一的。这是一个约束条件，基于它可以实现一些特性，如快速搜索和更轻松的项目重组。
+
+<!--
+**Note**: the `bsconfig.json` `name` should be the same as the `package.json` `name`, to avoid confusing corner-cases. However, this means that you can't use a camelCased names such as `MyProject`, since `package.json` and npm forbid you to do so (some file systems are case-insensitive). To have the namespace/module as `MyProject`, write `"name": "my-project"`. ReScript will turn that into the camelCased name correctly.
+-->
+
+**注意**：`bsconfig.json` 的 `name` 应与 `package.json` 的 `name` 相同，以避免出现混乱的边界情况。这就意味着你不能使用驼峰命名的名字，如 `MyProject`，因为 `package.json` 和 npm 禁止你这样做（因为有些文件系统不区分大小写）。要想让命名空间/模块的名字是 `MyProject`，可以写上 `"name": "my-project"`。ReScript 会正确地将它转化为驼峰命名。
+
+<!--
+**Note on custom namespacing**: if for some reason, you need a namespace that is different from what your `name` will produce, you can directly send a string to the `namespace` option. For example, if your package is a binding named `bs-some-thing`, you can use `"namespace": "some-thing"` to get `SomeThing` namespace instead of `BsSomeThing`.
+-->
+
+**关于自定义命名空间的注意事项**：如果由于某些原因，你需要与 `name` 不同的命名空间，你可以给 `namespace` 选项传递一个字符串。例如，如果你的包是一个名为 `bs-some-thing` 的绑定，你可以使用 `"namespace": "some-thing"` 来获得 `SomeThing` 的命名空间，而不是 `BsSomeThing`。
+
+<!--
+## sources
+-->
+## sources
+
+<!--
+Your source files need to be specified explicitly (we don't want to accidentally drill down into some unrelated directories). Examples:
+-->
+
+你需要明确指定你的源文件目录（我们不想意外跑到不相关的目录）。例如：
+
+
+```json
+{
+  "sources": ["src", "examples"]
+}
+```
+```json
+{
+  "sources": {
+    "dir": "src",
+    "subdirs": ["page"]
+  }
+}
+```
+
+```json
+{
+  "sources": [
+    "examples",
+    {
+      "dir": "src",
+      "subdirs": true // 递归构建所有子目录
+    }
+  ]
+}
+```
+
+<!--
+You can mark your directories as dev-only (for e.g. tests). These won't be built and exposed to third-parties, or even to other "dev" directories in the same project:
+-->
+
+你可以把你的目录标记为仅用于开发（dev-only），例如测试目录。这些文件不会被构建然后暴露给第三方，甚至不会暴露给同一项目中的其他“开发”目录。
+
+```json
+{
+  "sources" : {
+    "dir" : "test",
+    "type" : "dev"
+  }
+}
+```
+
+## bs-dependencies 和 bs-dev-dependencies
+
+<!--
+List of ReScript dependencies. Just like `package.json`'s dependencies, they'll be searched in `node_modules`.
+-->
+
+ReScript 的依赖项列表，就像 `package.json` 中的依赖项一样，ReScript 将在 `node_modules` 中搜索它们。
+
+<!--
+Note that only sources marked with `"type":"dev"` will be able to resolve modules from `bs-dev-dependencies`.
+-->
+
+注意，只有标有 `"type":"dev"` 的源代码才能够解析 `bs-dev-dependencies` 中的模块。
+
+<!--
+## pinned-dependencies
+-->
+## pinned-dependencies
+
+<!--
+**Since 8.4**: List of pinned dependencies. A pinned dependency will always be rebuilt whenever you build a toplevel package (e.g. your main app) with `rescript`.
+-->
+
+**自 8.4 版本起可用**，固定依赖的列表。每当你用 `rescript` 构建一个顶层的包（例如你的主程序）时，固定依赖总会被重新构建。
+
+<!--
+This is useful for working on multiple independent ReScript packages simultaneously. More usage details can be found in our dedicated [pinned dependencies](./build-pinned-dependencies) page.
+-->
+
+这对于同时处理多个独立的 ReScript 包非常有用。更多使用细节参见[固定依赖](./build-pinned-dependencies)页面。
+
+<!--
+## external-stdlib
+-->
+## external-stdlib
+
+<!--
+**Since 9.0**: This setting allows depending on an externally built stdlib package (instead of a locally built stdlib runtime). Useful for shipping packages that are only consumed in JS or TS without any dependencies to the ReScript development toolchain.
+-->
+
+**自 9.0 版本起可用**，此设置允许依赖外部构建的 stdlib 包（而不是本地构建的 stdlib 运行时）。对于只在 JS 或 TS 中使用而不依赖于 ReScript 开发工具链的包非常有用。
+
+<!--
+More details can be found on our [external stdlib](./build-external-stdlib) page.
+-->
+
+更多细节参见[外部标准库](./build-external-stdlib)页面。
+
+<!--
+## reason, refmt (old)
+-->
+## reason 和 refmt (旧)
+
+<!--
+`reason` config is enabled by default. To turn on JSX for [ReasonReact](https://reasonml.github.io/reason-react/), specify:
+-->
+
+`reason` 配置项是默认启用的。要为 [ReasonReact](https://reasonml.github.io/reason-react/) 打开 JSX，请指定：
+
+```json
+{
+  "reason": {"react-jsx": 3},
+  "refmt": 3
+}
+```
+
+<!--
+The `refmt` config **should be explicitly specified** as `3`.
+-->
+
+`refmt` 配置项应**明确指定**为 `3`。
+
+## js-post-build
+
+<!--
+Hook that's invoked every time a file is recompiled. Good for JS build system interop, but please use it **sparingly**. Calling your custom command for every recompiled file slows down your build and worsens the building experience for even third-party users of your lib.
+-->
+
+该选项指定文件重新编译时调用的钩子。有助于和 JS 构建系统互操作，但请**谨慎**使用。为每个重新编译的文件调用自定义命令会降低构建速度，甚至恶化第三方用户的构建体验。
+
+<!--
+Example:
+-->
+
+例子：
+
+```json
+{
+  "js-post-build": {
+    "cmd": "/path/to/node ../../postProcessTheFile.js"
+  }
+}
+```
+
+<!--
+Note that the path resolution for the command (`node` in this case) is done so:
+-->
+
+注意，命令（本例中为 `node`）的路径解析是这样做的：
+
+<!--
+- `/myCommand` is resolved into `/myCommand`
+- `package/myCommand` is resolved into `node_modules/package/myCommand`
+- `./myCommand` is resolved into `myProjectRoot/myCommand`
+- `myCommand` is just called as `myCommand`, aka a globally available executable. But note that ReScript doesn't read into your shell's environment, so if you put e.g. `node`, it won't find it unless you specify an absolute path. Alternatively, add `#!/usr/local/bin/node` to the top of your script to directly call it without prepending `node`.
+ -->
+
+- `/myCommand` 被解析为 `/myCommand`
+- `package/myCommand` 被解析为 `node_modules/package/myCommand`
+- `./myCommand` 被解析为 `myProjectRoot/myCommand`
+- `myCommand` 只是作为 `myCommand` 被调用，也就是一个全局可用的可执行文件。但要注意的是，ReScript 并不读取你的 shell 环境，所以如果你输入 `node`，需要指定一个绝对路径，否则 ReScript 无法找到它。你也可以在脚本顶部添加 `#!/usr/local/bin/node` 来直接调用它，而不需要在前面加上 `node`。
+
+
+<!--
+The command itself is called from inside `lib/bs`.
+-->
+
+该命令本身是在 `lib/bs` 中调用的。
+
+## package-specs
+
+<!--
+Output to either CommonJS (the default) or ES6 modules. Example:
+-->
+
+输出到 CommonJS（默认）或 ES6 模块。例如：
+
+```json
+{
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": true
+  }
+}
+```
+
+<!--
+- `"module": "es6-global"` resolves `node_modules` using relative paths. Good for development-time usage of ES6 in conjunction with browsers like Safari and Firefox that support ES6 modules today. **No more dev-time bundling**!
+- `"in-source": true` generates output alongside source files. If you omit it, it'll generate the artifacts into `lib/js`. The output directory is not configurable otherwise.
+-->
+
+- `"module": "es6-global"` 使用相对路径解析 `node_modules`。这有利于 ES6 在开发阶段的使用，并与 Safari 和 Firefox 等支持 ES6 模块的浏览器相结合。**不要再在开发时打包了**！
+- `"in-source": true` 表示 JS 输出生成到源文件目录。如果你忽略它，构建生成的制品会放到 `lib/js` 中。没有其他的输出目录可配置。
+
+<!--
+This configuration only applies to you, when you develop the project. When the project is used as a third-party library, the consumer's own `bsconfig.json` `package-specs` overrides the configuration here, logically.
+-->
+
+只有你在开发项目时，这个配置才对你适用。当项目被用作第三方库时，用户自己的 `bsconfig.json` `package-specs` 会覆盖这里的配置。
+
+<!--
+## suffix
+-->
+## suffix
+
+<!--
+Either `".js"`, `".mjs"`, `".cjs"` or `".bs.js"`. Currently prefer `bs.js` for now.
+-->
+
+后缀可以是 `".js"`，`".mjs"`，`".cjs "` 或 `".bs.js"`。目前倾向于 `bs.js`。
+
+<!--
+### Design Decisions
+-->
+### 设计决策
+
+<!--
+Generating JS files with the `.bs.js` suffix means that, on the JS side, you can do `const myReScriptFile = require('./theFile.bs')`. The benefits:
+-->
+
+<!--
+- It's immediately clear that we're dealing with a generated JS file here.
+- It avoids clashes with a potential `theFile.js` file in the same folder.
+- It avoids the need of using a build system loader for ReScript files. This + in-source build means integrating a ReScript project into your pure JS codebase **basically doesn't touch anything in your build pipeline at all**.
+- [genType](/docs/gentype/latest/introduction) requires `bs.js` for compiled JS artifacts. If you are using `genType`, you need to use `bs.js` for now.
+-->
+
+<!--
+## warnings
+-->
+
+生成带有 `.bs.js` 后缀的 JS 文件意味着，在 JS 端你可以这样导入：`const myReScriptFile = require('./theFile.bs')`。这样做的好处是：
+
+- 我们能立刻看出导入的 JS 文件是 ReScript 生成的。
+- 它避免了与同一文件夹中潜在的 `theFile.js` 文件发生冲突。
+- 它避免了为 ReScript 文件使用构建系统加载器。这种方式加上 `in-source` 进行构建意味着，在**基本不修改 JS 构建管线**的情况下，就能将 ReScript 项目集成到你的纯 JS 代码库中。
+- [genType](/docs/gentype/latest/introduction) 要求编译的 JS 制品以 `bs.js` 为后缀。如果你正在使用 `genType`，你需要暂时使用 `bs.js`。
+
+<!--
+## warnings
+-->
+## warnings
+
+<!--
+Selectively turn on/off certain warnings and/or turn them into hard errors. Example:
+-->
+
+可选地打开/关闭特定的警告，或把警告变成硬错误（hard error）。例如：
+
+
+```json
+{
+  "warnings": {
+    "number": "-44-102",
+    "error": "+5"
+  }
+}
+```
+
+<!--
+Turn off warning `44` and `102` (polymorphic comparison). Turn warning `5` (partial application whose result has function type and is ignored) into a hard error.
+-->
+
+关闭警告 `44` 和 `102`（多态比较），将警告 `5`（部分应用的结果具有函数类型并被忽略）变成硬性错误。
+
+<!--
+The warning numbers are shown in the build output when they're triggered. See [Warning Numbers](./warning-numbers) for the complete list.
+-->
+
+当警告被触发时，警告编号会显示在构建输出中。完整的列表参见[警告编号](./warning-numbers)。
+
+<!--
+## bsc-flags
+-->
+## bsc-flags
+
+<!--
+Extra flags to pass to the compiler. For advanced usages.
+-->
+
+传递给编译器的额外选项，属于进阶用法。
+
+<!--
+## Environment Variables
+-->
+## 环境变量
+
+<!--
+We heavily disrecommend the usage of environment variables, but for certain cases, they're justified.
+-->
+
+我们非常不推荐使用环境变量，但在某些情况下使用它们是合理的。
+
+<!--
+### Error Output Coloring: `NINJA_ANSI_FORCED`
+-->
+
+### 带颜色的错误输出：`NINJA_ANSI_FORCED`
+
+<!--
+This is mostly for other programmatic usage of `rescript` where outputting colors is not desired.
+-->
+
+这个选项主要是针对不需要输出颜色的 `rescript` 的其他程序化的用法。
+
+
+<!--
+When `NINJA_ANSI_FORCED` is set to `1`: `rescript` produces color.
+When `NINJA_ANSI_FORCED` is set to `0`: `rescript` doesn't produce color.
+When `NINJA_ANSI_FORCED` is not set: `rescript` might or might not produce color, depending on a smart detection of where it's outputted.
+-->
+
+当 `NINJA_ANSI_FORCED` 被设置为 `1` 时：`rescript` 输出会有颜色。
+当 `NINJA_ANSI_FORCED` 被设置为 `0` 时：`rescript` 输出不会有颜色。
+当 `NINJA_ANSI_FORCED` 未被设置时。`rescript` 智能检测它输出到的位置，来确定是否输出颜色。
+
+<!--
+> Note that the underlying compiler will always be passed `-color always`. See more details in [this issue](https://github.com/rescript-lang/rescript-compiler/issues/2984#issuecomment-410669163).
+-->
+
+> 请注意，底层编译器将始终传递 `-color always`。更多细节参见[这个 issue](https://github.com/rescript-lang/rescript-compiler/issues/2984#issuecomment-410669163)。

@@ -1,0 +1,119 @@
+---
+title: "可变性"
+description: "Imperative and mutative programming capabilities in ReScript"
+canonical: "/docs/manual/latest/mutation"
+---
+
+<!--
+# Mutation
+-->
+# 可变性
+
+<!--
+ReScript has great traditional imperative & mutative programming capabilities. You should use these features sparingly, but sometimes they allow your code to be more performant and written in a more familiar pattern.
+-->
+
+ReScript 在传统的命令式且数据可变的编程方式上表现不错。你应当谨慎使用这些特性，但有时候它们可以让你的代码有更好的性能，也可以让你用更熟悉的方式编写代码。
+
+<!--
+## Mutate Let-binding
+-->
+## 可变 let 绑定
+
+<!--
+Let-bindings are immutable, but you can wrap it with a `ref`, exposed as a record with a single mutable field in the standard library:
+-->
+
+let 绑定是不可变的，但是你可以用一个 `ref` 来包装它，这在标准库中被暴露为一个带有单独可变字段的记录：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res prelude
+let myValue = ref(5)
+```
+```js
+var myValue = {
+  contents: 5
+};
+```
+
+</CodeTab>
+
+<!--
+## Usage
+-->
+## 用法
+
+<!--
+You can get the actual value of a `ref` box through accessing its `contents` field:
+-->
+
+你可以通过访问 `content` 字段获得 `ref` 包装的实际值：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let five = myValue.contents // 5
+```
+```js
+var five = myValue.contents;
+```
+
+</CodeTab>
+
+<!--
+Assign a new value to `myValue` like so:
+-->
+
+像下面这样给 `myValue` 赋新值：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+myValue.contents = 6
+```
+```js
+myValue.contents = 6;
+```
+
+</CodeTab>
+
+<!--
+We provide a syntax sugar for this:
+-->
+
+我们为此提供了一个语法糖：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+myValue := 6
+```
+```js
+myValue.contents = 6;
+```
+
+</CodeTab>
+
+<!--
+Note that the previous binding `five` stays `5`, since it got the underlying item on the `ref` box, not the `ref` itself.
+-->
+
+请注意，前一个绑定 `five` 的值仍然是 `5`，因为它得到了 `ref` 包装里的内容，而不是 `ref` 本身。
+
+<!--
+**Note**: you might see in the JS output tabs above that `ref` allocates an object. Worry not; local, non-exported `ref`s allocations are optimized away.
+-->
+
+**注意**：你可能在上面的 JS 输出中看到，`ref` 分配了一个对象。不用担心，局部非导出的 `ref` 分配会被优化掉。
+
+<!--
+## Tip & Tricks
+-->
+## 技巧和诀窍
+
+<!--
+Before reaching for `ref`, know that you can achieve lightweight, local "mutations" through [overriding let bindings](let-binding.md#binding-shadowing).
+-->
+
+在使用 `ref` 之前，要知道你可以使用[覆盖 let 绑定](let-binding.md#binding-shadowing)来实现轻量级的局部“可变性”。

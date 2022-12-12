@@ -3,6 +3,17 @@ type version =
   | NoVersion
   | Version(string)
 
+type lang =
+  | Default
+  | Chinese
+
+let langPrefix = (lang) => {
+  switch lang {
+    | Default => ""
+    | Chinese => "/zh-CN"
+  }
+}
+
 /*
   Example 1:
   Url: "/docs/manual/latest/advanced/introduction"
@@ -38,6 +49,7 @@ type version =
 
 type t = {
   fullpath: array<string>,
+  lang: lang,
   base: array<string>,
   version: version,
   pagepath: array<string>,
@@ -56,10 +68,21 @@ let prettyString = (str: string) => {
 
 let parse = (route: string): t => {
   let fullpath = route->Js.String2.split("/")->Belt.Array.keep(s => s !== "")
+  let foundLocaleIndex = Js.Array2.findIndex(fullpath, chunk => {
+    Js.Re.test_(%re(`/zh-CN/`), chunk)
+  })
+  let lang = if foundLocaleIndex == -1 {
+    Default
+  } else {
+    switch fullpath[foundLocaleIndex] {
+    | "zh-CN" => Chinese
+    | _ => Default
+    }
+  }
   let foundVersionIndex = Js.Array2.findIndex(fullpath, chunk => {
     Js.Re.test_(%re(`/latest|v\d+(\.\d+)?(\.\d+)?/`), chunk)
   })
-
+  let startOfBase = if foundLocaleIndex == -1 {0} else {1}
   let (version, base, pagepath) = if foundVersionIndex == -1 {
     (NoVersion, fullpath, [])
   } else {
@@ -69,10 +92,10 @@ let parse = (route: string): t => {
     }
     (
       version,
-      fullpath->Js.Array2.slice(~start=0, ~end_=foundVersionIndex),
+      fullpath->Js.Array2.slice(~start=startOfBase, ~end_=foundVersionIndex),
       fullpath->Js.Array2.slice(~start=foundVersionIndex + 1, ~end_=Js.Array2.length(fullpath)),
     )
   }
 
-  {fullpath, base, version, pagepath}
+  {fullpath, lang, base, version, pagepath}
 }

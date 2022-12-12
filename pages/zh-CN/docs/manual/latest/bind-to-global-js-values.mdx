@@ -1,0 +1,223 @@
+---
+title: "绑定到全局 JS 值"
+description: "JS interop with global JS values in ReScript"
+canonical: "/docs/manual/latest/bind-to-global-js-values"
+---
+
+<!--
+# Bind to Global JS Values
+-->
+# 绑定到全局 JS 值
+
+<!--
+**First**, make sure the value you'd like to model doesn't already exist in our [provided API](api/js).
+-->
+
+**首先**，确保你要绑定的值不在[我们提供的 API](api/js) 中。
+
+<!--
+Some JS values, like `setTimeout`, live in the global scope. You can bind to them like so:
+-->
+
+一些 JS 值，例如 `setTimeout`，存在于全局作用域内。你可以像这样绑定到它们：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+@val external setTimeout: (unit => unit, int) => float = "setTimeout"
+@val external clearTimeout: float => unit = "clearTimeout"
+```
+```js
+// Empty output
+```
+
+</CodeTab>
+
+<!--
+(We already provide `setTimeout`, `clearTimeout` and others in the [Js.Global](api/js/global) module).
+-->
+
+（我们已经在 [Js.Global](api/js/global) 模块中提供了 `setTimeout`、`clearTimeout` 等绑定。）
+
+<!--
+This binds to the JavaScript [`setTimeout`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrworkerGlobalScope/setTimeout) methods and the corresponding `clearTimeout`. The `external`'s type annotation specifies that `setTimeout`:
+-->
+
+上面的代码会绑定到 JavaScript 的 [`setTimeout`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrworkerGlobalScope/setTimeout) 方法，和与之对应的 `clearTimeout` 方法。`external` 的类型标注指定 `setTimeout` 需要满足：
+
+<!--
+- Takes a function that accepts `unit` and returns `unit` (which on the JS side turns into a function that accepts nothing and returns nothing aka `undefined`),
+- and an integer that specifies the duration before calling said function,
+- returns a number that is the timeout's ID. This number might be big, so we're modeling it as a float rather than the 32-bit int.
+-->
+
+- 接受一个参数为 `unit` 且返回 `unit` 的函数（它在 JS 端变成一个不接受任何内容且不返回任何内容的函数（指返回 `undefined`））。
+- 和一个调用回调函数的延时值。
+- 返回一个数字，即 timeout 的 ID。这个数字可能会很大，所以我们将其建模为浮点数，而不是 32 位整数。
+
+<!--
+### Tips & Tricks
+-->
+### 技巧和诀窍
+
+<!--
+**The above isn't ideal**. See how `setTimeout` returns a `float` and `clearTimeout` accepts one. There's no guarantee that you're passing the float created by `setTimeout` into `clearTimeout`! For all we know, someone might pass it `Math.random()` into the latter.
+-->
+
+**以上情况并不理想**。想想怎么让 `setTimeout` 返回的 `float` 来作为 `clearTimeout` 的输入。你没办法保证将 `setTimeout` 的返回值传递给 `clearTimeout`！据我们所知，有人可能把 `Math.random()` 传递给后者。
+
+<!--
+We're in a language with a great type system now! Let's leverage a popular feature to solve this problem: abstract types.
+-->
+
+我们正在使用具有出色类型系统的语言！让我们利用一个流行的特性来解决这个问题：抽象类型。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type timerId
+@val external setTimeout: (unit => unit, int) => timerId = "setTimeout"
+@val external clearTimeout: timerId => unit = "clearTimeout"
+
+let id = setTimeout(() => Js.log("hello"), 100)
+clearTimeout(id)
+```
+```js
+var id = setTimeout(function (param) {
+  console.log("hello");
+}, 100);
+
+clearTimeout(id);
+```
+
+</CodeTab>
+
+<!--
+Clearly, `timerId` is a type that can only be created by `setTimeout`! Now we've guaranteed that `clearTimeout` _will_ be passed a valid ID. Whether it's a number under the hood is now a mere implementation detail.
+-->
+
+显然，`timerId` 是一个只能通过 `setTimeout` 创建的类型！现在我们可以保证 `clearTimeout` _将_ 收到一个有效的 ID。`timerId` 是否是数字只是一个实现细节。
+
+<!--
+Since `external` s are inlined, we end up with JS output as readable as hand-written JS.
+-->
+
+由于 `external` 是内联的，我们最终得到的 JS 输出与手写 JS 一样可读。
+
+<!--
+## Global Modules
+-->
+## 全局模块
+
+<!--
+If you want to bind to a value inside a global module, e.g. `Math.random`, attach a `scope` to your `val` external:
+-->
+
+如果你想要绑定一个全局模块内的值，例如 `Math.random`，可以将 `scope` 附加到被 `val` 标注的 `external`：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+@scope("Math") @val external random: unit => float = "random"
+let someNumber = random()
+```
+```js
+var someNumber = Math.random();
+```
+
+</CodeTab>
+
+<!--
+you can bind to an arbitrarily deep object by passing a tuple to `scope`:
+-->
+
+你可以通过传递一个元组给 `scope` 来绑定一个任意深度的对象：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+@val @scope(("window", "location", "ancestorOrigins"))
+external length: int = "length"
+```
+```js
+// Empty output
+```
+
+</CodeTab>
+
+<!--
+This binds to `window.location.ancestorOrigins.length`.
+-->
+
+这将绑定到 `window.location.ancestorOrigins.length`。
+
+<!--
+## Special Global Values
+-->
+## 特殊全局值
+
+<!--
+Global values like `__filename` and `__DEV__` don't always exist; you can't even model them as an `option`, since the mere act of referring to them in ReScript (then compiled into JS) would trigger the usual `Uncaught ReferenceError: __filename is not defined` error in e.g. the browser environment.
+-->
+
+像 `__filename` 和 `__DEV__` 这样的全局值可能会不存在；你甚至不能将它们建模为 `option`，因为仅仅是在 ReScript 中引用它们（然后编译为 JS）就会触发常见的 `Uncaught ReferenceError: __filename is not defined` 错误，例如在浏览器环境中就会这样。
+
+<!--
+For these troublesome global values, ReScript provides a special approach: `%external(a_single_identifier)`.
+-->
+
+对于这些麻烦的全局值，ReScript 提供了一种特殊的方法：`%external(a_single_identifier)`。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+switch %external(__DEV__) {
+| Some(_) => Js.log("dev mode")
+| None => Js.log("production mode")
+}
+```
+```js
+var match = typeof __DEV__ === "undefined" ? undefined : __DEV__;
+
+if (match !== undefined) {
+  console.log("dev mode");
+} else {
+  console.log("production mode");
+}
+```
+
+</CodeTab>
+
+<!--
+That first line's `typeof` check won't trigger a JS ReferenceError.
+-->
+
+第一行的 `typeof` 检查不会触发 JS ReferenceError。
+
+<!--
+Another example:
+-->
+
+另一个例子：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+switch %external(__filename) {
+| Some(f) => Js.log(f)
+| None => Js.log("non-node environment")
+};
+```
+```js
+var match = typeof (__filename) === "undefined" ? undefined : (__filename);
+
+if (match !== undefined) {
+  console.log(match);
+} else {
+  console.log("non-node environment");
+}
+```
+
+</CodeTab>
+
+<!-- TODO: revamp this page. Not good. Tell to use globalThis["foo"], and look in our stdlib -->

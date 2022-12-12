@@ -1,0 +1,198 @@
+---
+title: "拆箱"
+description: "Unbox a wrapper"
+canonical: "/docs/manual/latest/unboxed"
+---
+
+<!--
+# Unboxed
+-->
+# 拆箱
+
+<!--
+Consider a ReScript variant with a single payload, and a record with a single field:
+-->
+
+考虑一个单 payload 变体和一个单字段记录：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type name = Name(string)
+let studentName = Name("Joe")
+
+type greeting = {message: string}
+let hi = {message: "hello!"}
+```
+```js
+var studentName = /* Name */{
+  _0: "Joe"
+};
+
+var hi = {
+  message: "hello!"
+};
+```
+
+</CodeTab>
+
+<!--
+If you check the JavaScript output, you'll see the `studentName` and `hi` JS object, as expected (see the [variant JS output](variant#javascript-output) and [record JS output](record#javascript-output) sections for details).
+-->
+
+如果你检查 JavaScript 的输出，你将看到 `studentName` 和 `hi` JS 对象，正如预期的那样（详见[变体的 JS 输出](variant#javascript-output)和[记录的 JS 输出](record#javascript-output)）。
+
+<!--
+For performance and certain JavaScript interop situations, ReScript offers a way to unwrap (aka unbox) the JS object wrappers from the output for records with a single field and variants with a single constructor and single payload. Annotate their type declaration with the attribute `@unboxed`:
+-->
+
+对于需求性能和某些与 JavaScript 互操作情况，ReScript 提供了一种从输出中解包（也就是拆箱）JS 对象包装的方法，它用于单字段记录和单 payload 单构造器变体。用属性 `@unboxed` 来标注它们的类型声明：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+@unboxed
+type name = Name(string)
+let studentName = Name("Joe")
+
+@unboxed
+type greeting = {message: string}
+let hi = {message: "hello!"}
+```
+```js
+var studentName = "Joe";
+
+var hi = "hello!";
+```
+
+</CodeTab>
+
+<!--
+Check the new output! Clean.
+-->
+
+检查新的输出！嗯，很干净。
+
+<!--
+## Usage
+-->
+## 用法
+
+<!--
+Why would you ever want a variant or a record with a single payload? Why not just... pass the payload? Here's one use-case for variant.
+-->
+
+为什么你会想要只有单个 payload 的变体或记录？为什么不直接...直接传递 payload ？这是变体的一种使用场景。
+
+<!--
+Suppose you have a game with a local/global coordinate system:
+-->
+
+假设你有一个具有局部/全局坐标系的游戏：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type coordinates = {x: float, y: float}
+
+let renderDot = (coordinates) => {
+  Js.log3("Pretend to draw at:", coordinates.x, coordinates.y)
+}
+
+let toWorldCoordinates = (localCoordinates) => {
+  {
+    x: localCoordinates.x +. 10.,
+    y: localCoordinates.x +. 20.,
+  }
+}
+
+let playerLocalCoordinates = {x: 20.5, y: 30.5}
+
+renderDot(playerLocalCoordinates)
+```
+```js
+function renderDot(coordinates) {
+  console.log("Pretend to draw at:", coordinates.x, coordinates.y);
+}
+
+function toWorldCoordinates(localCoordinates) {
+  return {
+    x: localCoordinates.x + 10,
+    y: localCoordinates.x + 20
+  };
+}
+
+var playerLocalCoordinates = {
+  x: 20.5,
+  y: 30.5
+};
+
+renderDot(playerLocalCoordinates);
+```
+
+</CodeTab>
+
+<!--
+Oops, that's wrong! `renderDot` should have taken global coordinates, not local ones... Let's prevent passing the wrong kind of coordinates:
+-->
+
+哦，出错了！`renderDot` 应该使用全局坐标系，而不是局部的... 让我们防止传递错误的坐标系：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type coordinates = {x: float, y: float}
+@unboxed type localCoordinates = Local(coordinates)
+@unboxed type worldCoordinates = World(coordinates)
+
+let renderDot = (World(coordinates)) => {
+  Js.log3("Pretend to draw at:", coordinates.x, coordinates.y)
+}
+
+let toWorldCoordinates = (Local(coordinates)) => {
+  World({
+    x: coordinates.x +. 10.,
+    y: coordinates.x +. 20.,
+  })
+}
+
+let playerLocalCoordinates = Local({x: 20.5, y: 30.5})
+
+// This now errors!
+// renderDot(playerLocalCoordinates)
+// We're forced to do this instead:
+renderDot(playerLocalCoordinates->toWorldCoordinates)
+```
+```js
+function renderDot(coordinates) {
+  console.log("Pretend to draw at:", coordinates.x, coordinates.y);
+}
+
+function toWorldCoordinates(coordinates) {
+  return {
+    x: coordinates.x + 10,
+    y: coordinates.x + 20
+  };
+}
+
+var playerLocalCoordinates = {
+  x: 20.5,
+  y: 30.5
+};
+
+renderDot(toWorldCoordinates(playerLocalCoordinates));
+```
+
+</CodeTab>
+
+<!--
+Now `renderDot` only takes `worldCoordinates`. Through a nice combination of using distinct variant types + argument destructuring, we've achieved better safety **without compromising on performance**: the `unboxed` attribute compiled to clean, variant-wrapper-less JS code! Check the output.
+-->
+
+现在 `renderDot` 只接受 `worldCoordinates`。通过使用不同的变体类型 + 参数解构这个完美结合，我们在**不影响性能**的情况下获得了更好的安全性：`unboxed` 属性编译为干净的、无变体包装的 JS 代码！检查一下输出。
+
+<!--
+As for a record with a single field, the use-cases are a bit more edgy. We won't mention them here.
+-->
+
+至于单字段的记录，它们的使用情况有点太前卫了。我们不会在这里提到它们。

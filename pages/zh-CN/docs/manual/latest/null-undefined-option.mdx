@@ -1,0 +1,323 @@
+---
+title: "Null，Undefined & Option"
+description: "JS interop with nullable and optional values in ReScript"
+canonical: "/docs/manual/latest/null-undefined-option"
+---
+
+<!--
+# Null, Undefined and Option
+-->
+# Null，Undefined & Option
+
+<!--
+ReScript itself doesn't have the notion of `null` or `undefined`. This is a _great_ thing, as it wipes out an entire category of bugs. No more `undefined is not a function`, and `cannot access someAttribute of undefined`!
+-->
+
+ReScript 本身没有 `null` 和 `undefined`。这实在是件 _好事_，因为它消除了一整类的 bug。再也不会有 `undefined is not a function` 和 `cannot access someAttribute of undefined` 了！
+
+<!--
+However, the **concept** of a potentially nonexistent value is still useful, and safely exists in our language.
+-->
+
+不过，“可能不存在值”这一**概念**仍然是有用的，并且安全地存在于我们的语言中。
+
+<!--
+We represent the existence and nonexistence of a value by wrapping it with the `option` type. Here's its definition from the standard library:
+-->
+
+我们将值用 `option` 类型包装，来表示值的存在与不存在。下面是它在标准库中的定义：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type option<'a> = None | Some('a)
+```
+```js
+// Empty output
+```
+
+</CodeTab>
+
+<!--
+It means "a value of type option is either None (representing nothing) or that actual value wrapped in a Some".
+-->
+
+它的意思是“option 类型的值要么是 None（什么也没有），要么是被 Some 包装的那个实际值”。
+
+<!--
+**Note** how the `option` type is just a regular [variant](variant.md).
+-->
+
+**注意** `option` 类型只是一个普通的[变体](variant.md)。
+
+<!--
+## Example
+-->
+## 示例
+
+<!--
+Here's a normal value:
+-->
+
+这是一个普通的值：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let licenseNumber = 5
+```
+```js
+var licenseNumber = 5;
+```
+
+</CodeTab>
+
+<!--
+To represent the concept of "maybe null", you'd turn this into an `option` type by wrapping it. For the sake of a more illustrative example, we'll put a condition around it:
+-->
+
+为了表示“可能为空”的概念，你可以通过包装把它变成一个 `option` 类型。为了更好地说明问题，我们给它加上条件表达式：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let licenseNumber =
+  if personHasACar {
+    Some(5)
+  } else {
+    None
+  }
+```
+```js
+var licenseNumber = personHasACar ? 5 : undefined;
+```
+
+</CodeTab>
+
+<!--
+Later on, when another piece of code receives such value, it'd be forced to handle both cases through [pattern matching](pattern-matching-destructuring.md):
+-->
+
+稍后，当另一段代码收到这样的值时，它会被强制通过[模式匹配](pattern-matching-destructuring.md)来处理两种情况：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+switch licenseNumber {
+| None =>
+  Js.log("The person doesn't have a car")
+| Some(number) =>
+  Js.log("The person's license number is " ++ Js.Int.toString(number))
+}
+```
+```js
+var number = licenseNumber;
+
+if (number !== undefined) {
+  console.log("The person's license number is " + number.toString());
+} else {
+  console.log("The person doesn't have a car");
+}
+```
+
+</CodeTab>
+
+<!--
+By turning your ordinary number into an `option` type, and by forcing you to handle the `None` case, the language effectively removed the possibility for you to mishandle, or forget to handle, a conceptual `null` value! **A pure ReScript program doesn't have null errors**.
+-->
+
+通过把普通数字变成 `option` 类型并强迫你处理 `None` 的情况，ReScript 有效地消除了误处理或者忘记处理（概念上的）`null` 值的可能性！**纯 ReScript 程序不会出现 null 错误**。
+
+<!--
+## Interoperate with JavaScript `undefined` and `null`
+-->
+## 与 JavaScript 的 `undefined` 和 `null` 互操作
+
+<!--
+The `option` type is common enough that we special-case it when compiling to JavaScript:
+-->
+
+`option` 类型很常见，所以我们在编译成 JavaScript 时会对其进行特殊处理：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let x = Some(5)
+```
+```js
+var x = 5;
+```
+
+</CodeTab>
+
+<!--
+simply compiles down to `5`, and
+-->
+
+会简洁地编译为`5`，而
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let x = None
+```
+```js
+var x;
+```
+
+</CodeTab>
+
+<!--
+compiles to `undefined`! If you've got e.g. a string in JavaScript that you know might be `undefined`, type it as `option<string>` and you're done! Likewise, you can send a `Some(5)` or `None` to the JS side and expect it to be interpreted correctly =)
+-->
+
+会编译为 `undefined`！如果你在 JavaScript 中有一个字符串，你知道它可能是 `undefined`，那么把它标注为 `option<string>` 就完事了！同样地，你可以向 JS 端发送一个 `Some(5)` 或 `None`，并期望它被正确解释 =)。
+
+<!--
+### Caveat 1
+-->
+### 警告 1
+
+<!--
+The option-to-undefined translation isn't perfect, because on our side, `option` values can be composed:
+-->
+
+`option` 到 `undefined` 的翻译并不是完美的，因为在 ReScript 这边， `option` 值是可组合的：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let x = Some(Some(Some(5)))
+```
+```js
+var x = 5;
+```
+
+</CodeTab>
+
+<!--
+This still compiles to `5`, but this gets troublesome:
+-->
+
+这仍然会编译为 `5`，但是下面的代码就不太说的清了：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let x = Some(None)
+```
+```js
+var Caml_option = require("./stdlib/caml_option.js");
+
+var x = Caml_option.some(undefined);
+```
+
+</CodeTab>
+
+<!--
+What's this `Caml_option.some` thing? Why can't this compile to `undefined`? Long story short, when dealing with a polymorphic `option` type (aka `option<'a>`, for any `'a`), many operations become tricky if we don't mark the value with some special annotation. If this doesn't make sense, don't worry; just remember the following rule:
+-->
+
+这个 `Caml_option.some` 是什么东西？为什么它不能直接编译成 `undefined`？长话短说，在处理多态 `option` 类型时（也就是 `option<'a>`，`'a`为任意类型），如果我们不对值进行一些特殊的标注，许多操作就会变得很棘手。如果这段说明对你没什么意义，别担心，记住下面的规则就行：
+
+<!--
+- **Never, EVER, pass a nested `option` value (e.g. `Some(Some(Some(5)))`) into the JS side.**
+- **Never, EVER, annotate a value coming from JS as `option<'a>`. Always give the concrete, non-polymorphic type.**
+-->
+
+- **永远不要传递一个嵌套的 `option` 值（比如 `Some(Some(Some(5)))`）到 JS 端**
+- **永远不要将一个来自于 JS 的值标注为 `option<'a>` 类型。总是使用具体的非多态类型**
+
+<!--
+### Caveat 2
+-->
+### 警告 2
+
+<!--
+Unfortunately, lots of times, your JavaScript value might be _both_ `null` or `undefined`. In that case, you unfortunately can't type such value as e.g. `option<int>`, since our `option` type only checks for `undefined` and not `null` when dealing with a `None`.
+-->
+
+不幸的是，很多时候你的 JavaScript 值既可能是 `null` 也可能是 `undefined`。在这种情况下，你不能把这样的值当作 `option<int>` 类型，因为我们的 `option` 类型在处理 `None` 时只检查 `undefined` 而不检查 `null`。
+
+<!--
+#### Solution: More Sophisticated `undefined` & `null` Interop
+-->
+#### 解决方法：更复杂的 `undefined` 和 `null` 互操作
+
+<!--
+To solve this, we provide access to more elaborate `null` and `undefined` helpers through the [`Js.Nullable`](api/js/nullable) module. This somewhat works like an `option` type, but is different from it.
+-->
+
+为了解决这个问题，我们通过 [`Js.Nullable`](api/js/nullable) 模块提供了更复杂的 `null` 和 `undefined` 辅助函数。这有点像 `option` 类型，但又与之不同。
+
+<!--
+#### Examples
+-->
+#### 示例
+
+<!--
+To create a JS `null`, use the value `Js.Nullable.null`. To create a JS `undefined`, use `Js.Nullable.undefined` (you can naturally use `None` too, but that's not the point here; the `Js.Nullable.*` helpers wouldn't work with it).
+-->
+
+要创建 JS 的 `null`，使用 `Js.Nullable.null` 的值。要创建 JS 的 `undefined`，使用 `Js.Nullable.undefined`（你也可以使用 `None`，但这不是这里的重点；`Js.Nullable.*` 里的辅助函数不会对它起作用）。
+
+<!--
+If you're receiving, for example, a JS string that can be null and undefined, type it as:
+-->
+
+例如，如果你收到的是一个可以为 `null` 和 `undefined` 的 JS 字符串，那就这样声明类型：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+@module("MyConstant") external myId: Js.Nullable.t<string> = "myId"
+```
+```js
+// Empty output
+```
+
+</CodeTab>
+
+<!--
+To create such a nullable string from our side (presumably to pass it to the JS side, for interop purpose), do:
+-->
+
+如果要从 ReScript 这边创建一个可空（nullable）字符串（假设是为了互操作目的，会把它传递给 JS 端），可以这么做：
+
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+@module("MyIdValidator") external validate: Js.Nullable.t<string> => bool = "validate"
+let personId: Js.Nullable.t<string> = Js.Nullable.return("abc123")
+
+let result = validate(personId)
+```
+```js
+var MyIdValidator = require("MyIdValidator");
+var personId = "abc123";
+var result = MyIdValidator.validate(personId);
+```
+
+</CodeTab>
+
+<!--
+The `return` part "wraps" a string into a nullable string, to make the type system understand and track the fact that, as you pass this value around, it's not just a string, but a string that can be `null` or `undefined`.
+-->
+
+`return` 部分将一个字符串“包装”成一个可空字符串，以使类型系统理解并跟踪这样一个事实：当你传递这个值时，它不仅仅是一个字符串，而是一个可以是 `null` 或 `undefined` 的字符串。
+
+<!--
+#### Convert to/from `option`
+-->
+#### 与 `option` 值互相转换
+
+<!--
+`Js.Nullable.fromOption` converts from a `option` to `Js.Nullable.t`.
+
+`Js.Nullable.toOption` does the opposite.
+-->
+
+`Js.Nullable.fromOption` 将一个 `option` 转换到 `Js.Nullable.t`。
+
+`Js.Nullable.toOption` 做相反的转换。

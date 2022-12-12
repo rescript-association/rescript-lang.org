@@ -1,0 +1,144 @@
+---
+title: "Async & Promise"
+description: "JS Promise handling in ReScript"
+canonical: "/docs/manual/latest/promise"
+---
+
+# 异步与 Promise
+
+<!--
+Support for `async` and `await` is added in compiler version 10.1. The majority of existing code is based on promises. The new Promise API bindings make async code look better than with old promises.
+-->
+
+在编译器 10.1 版本中增加了对 `async` 和 `await` 的支持。现有的大部分代码都是基于 promise 的。新的 Promise API 绑定使异步代码看起来比使用旧的 promise 更好。
+
+<!--
+## Promise (new)
+-->
+## Promise (新版本)
+
+<!--
+Our up to date Promise bindings are currently not part of the the standard library. For now, please install them separately:
+-->
+
+我们最新的 Promise 绑定目前还不是标准库的一部分，现在，还请单独安装它们：
+
+
+```sh
+npm install @ryyppy/rescript-promise --save
+```
+
+<!--
+In your `bsconfig.json`:
+-->
+
+在你的 `bsconfig.json` 中加上：
+
+```json
+{
+  "bs-dependencies": ["@ryyppy/rescript-promise"]
+}
+```
+
+<!--
+_Alternatively you may vendor the [`Promise.res` / `Promise.resi` files](https://github.com/ryyppy/rescript-promise/tree/master/src) files in your app codebase if you want to have more control._
+-->
+
+_如果你想有更多的控制权，你可以在你的应用程序代码库中直接加入 [`Promise.res`/`Promise.resi` 文件](https://github.com/ryyppy/rescript-promise/tree/master/src)。_
+
+<!--
+You can find the APIs and full usage examples [here](https://github.com/ryyppy/rescript-promise#usage).
+-->
+
+你可以在这里找到 API 文档和完整的使用[例子](https://github.com/ryyppy/rescript-promise#usage)。
+
+<!--
+## Promise (legacy)
+-->
+## Promise (旧版本)
+
+<!--
+> **Note:** The `Js.Promise` bindings are following the outdated data-last convention from a few years ago. We kept those APIs for backwards compatibility, so for now please use [`rescript-promise`](https://github.com/ryyppy/rescript-promise) until we upstream the new bindings to our standard library.
+-->
+
+> **注意**：`Js.Promise` 绑定遵循几年前过时的 data-last 约定。我们保留这些 API 是为了向后兼容，现在请使用 [`rescript-promise`](https://github.com/ryyppy/rescript-promise) 直到我们将新的绑定上传到我们的标准库。
+
+<!--
+ReScript has built-in support for [JavaScript promises](api/js/promise). The 3 functions you generally need are:
+-->
+
+ReScript 内置了对 [JavaScript promise](api/js/promise) 的支持。你通常需要的 3 个函数是：
+
+- `Js.Promise.resolve: 'a => Js.Promise.t('a)`
+- `Js.Promise.then_: ('a => Js.Promise.t('b), Js.Promise.t('a)) => Js.Promise.t('b)`
+- `Js.Promise.catch: (Js.Promise.error => Js.Promise.t('a), Js.Promise.t('a)) => Js.Promise.t('a)`
+
+<!--
+Additionally, here's the type signature for creating a promise on the ReScript side:
+-->
+
+此外，这里是在 ReScript 端创建 Promise 的类型签名：
+
+```res
+Js.Promise.make: (
+  (
+    ~resolve: (. 'a) => unit,
+    ~reject: (. exn) => unit
+  ) => unit
+) => Js.Promise.t<'a>
+```
+
+<!--
+This type signature means that `make` takes a callback that takes 2 named arguments, `resolve` and `reject`. Both arguments are themselves [uncurried callbacks](function.md#uncurried-function) (with a dot). `make` returns the created promise.
+-->
+
+这种类型签名意味着 `make` 接受一个有两个参数的回调函数，参数分别是 `resolve` 和 `reject`。两个参数都是[去柯里化的回调函数](function.md#uncurried-function)（注意带点）。`make` 返回创建的 promise。
+
+<!--
+### Usage
+-->
+### 用法
+
+<!--
+Using the [pipe operator](pipe.md):
+-->
+
+使用[管道操作符](pipe.md)：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let myPromise = Js.Promise.make((~resolve, ~reject) => resolve(. 2))
+
+myPromise->Js.Promise.then_(value => {
+  Js.log(value)
+  Js.Promise.resolve(value + 2)
+}, _)->Js.Promise.then_(value => {
+  Js.log(value)
+  Js.Promise.resolve(value + 3)
+}, _)->Js.Promise.catch(err => {
+  Js.log2("Failure!!", err)
+  Js.Promise.resolve(-2)
+}, _)
+```
+```js
+var myPromise = new Promise(function (resolve, reject) {
+  return resolve(2);
+});
+
+myPromise
+  .then(function (value) {
+    console.log(value);
+    return Promise.resolve((value + 2) | 0);
+  })
+  .then(function (value) {
+    console.log(value);
+    return Promise.resolve((value + 3) | 0);
+  })
+  .catch(function (err) {
+    console.log("Failure!!", err);
+    return Promise.resolve(-2);
+  });
+```
+
+</CodeTab>

@@ -115,12 +115,16 @@ const processFile = (filepath, sidebarJson={}) => {
   return dataset;
 };
 
-const createTOC = result => {
+const createTOC = (result, useEncode=false) => {
   // Currently we reorder the data to a map, the key is
   // reflected as the router pathname, as defined by the
   // NextJS router
   return result.reduce((acc, data) => {
-    const { title, headers, category, id } = data;
+    let { title, headers, category, id } = data;
+    if (useEncode) {
+      headers = headers.map(header =>
+        ({ "name": header.name, "href": encodeURI(header.href) }))
+    }
     acc["/" + data.href] = {
       id,
       title,
@@ -151,6 +155,27 @@ const createLatestManualToc = () => {
 
   fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
 };
+
+const createLatestManualCnToc = () => {
+  const MD_DIR = path.join(__dirname, "../pages/zh-CN/docs/manual/latest");
+  const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_manual_latest.json");
+  const TARGET_FILE = path.join(__dirname, "../index_data/manual_latest_toc_cn.json");
+
+  const sidebarJson = JSON.parse(fs.readFileSync(SIDEBAR_JSON));
+
+  const FILE_ORDER = Object.values(sidebarJson).reduce((acc, items) => {
+    return acc.concat(items)
+  }, []);
+
+  const files = glob.sync(`${MD_DIR}/*.?(js|md?(x))`);
+  const ordered = orderFiles(files, FILE_ORDER);
+
+  const result = ordered.map((filepath) => processFile(filepath, sidebarJson));
+  const toc = createTOC(result, true);
+
+  fs.writeFileSync(TARGET_FILE, JSON.stringify(toc), "utf8");
+};
+
 
 const createReasonCompilerToc = () => {
   const MD_DIR = path.join(__dirname, "../pages/docs/reason-compiler/latest");
@@ -289,3 +314,4 @@ createReactToc("latest");
 createReactToc("v0.10.0");
 createGenTypeToc();
 createCommunityToc();
+createLatestManualCnToc();

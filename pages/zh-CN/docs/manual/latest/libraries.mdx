@@ -1,0 +1,65 @@
+---
+title: "库 & 发布"
+description: "Install & publish ReScript packages"
+canonical: "/docs/manual/latest/libraries"
+---
+
+<!--
+# Libraries & Publishing
+-->
+# 库 & 发布
+
+<!--
+ReScript libraries are just like JavaScript libraries: published & hosted on [NPM](http://npmjs.com). You can reuse your `npm`, `yarn` and `package.json`-related tools to manage them!
+-->
+
+ReScript 库就像 JavaScript 库一样：在 [NPM](http://npmjs.com) 上进行发布和托管。你可以复用你的 `npm`，`yarn` 以及和 `package.json` 相关的工具来管理他们。
+
+<!--
+## Tips & Tricks
+-->
+### 技巧和诀窍
+
+<!--
+### Publish
+-->
+### 发布
+
+<!--
+We recommend you to check in your compiled JavaScript output, for its [various benefits](interop-with-js-build-systems.md#popular-js-build-systems). If not, then at least consider publishing the JavaScript output by un-ignoring them in your [npmignore](https://docs.npmjs.com/cli/v7/using-npm/developers#keeping-files-out-of-your-package). This way, your published ReScript package comes with plain JavaScript files that JS users can consume. If your project's good, JS users might not even realize that they've installed a library written in ReScript!
+-->
+
+我们建议你检查编译后的 JavaScript 输出，因为它有各种[好处](interop-with-js-build-systems.md#popular-js-build-systems)。如果你不打算检查，那么至少考虑将 JavaScript 输出结果也一起发布，可以通过在你的 [npmignore](https://docs.npmjs.com/cli/v7/using-npm/developers#keeping-files-out-of-your-package) 中去掉忽略项来发布。这样的话，你发布的 ReScript 包将会附带 JS 文件，它可以被 JS 用户使用。如果你的项目非常好，JS 使用者甚至不会意识到他们安装了一个用 ReScript 写的库！
+
+<!--
+In case your library is only consumed by JS users, you may want to check out our [external stdlib](./build-external-stdlib) configuration as well.
+-->
+
+如果你的库只被 JS 用户使用，你可以查看我们的[外部标准库](./build-external-stdlib)配置。
+
+<!--
+### Find Libraries
+-->
+### 寻找库
+
+<!--
+Search `rescript`-related packages on NPM, or use our [Package Index](/packages).
+-->
+
+可以在 NPM 上搜索 `rescript` 相关的包，或者使用我们的[包索引](/packages)。
+
+<!--
+If you can't find what you're looking for, remember that **you don't need a wrapper** to use a JS library:
+-->
+
+如果你找不到想要的内容，记住，使用 JS 库时**你不需要再封装一层**：
+
+<!--
+- Most JS data types, such as array and objects, [map over cleanly to ReScript and vice-versa](shared-data-types.md).
+- You also have access to the familiar [JS API](api/js).
+- You can use a JavaScript library without needing to install dedicated binding libraries. Check the [`external`](external) page.
+-->
+
+- 大多数 JS 数据类型，例如数组和对象，[在 ReScript 中都有清晰的对应，反之亦然](shared-data-types.md)
+- 你也可以访问熟悉的 [JS API](api/js)
+- 无需安装专门的绑定库你就可以使用 JavaScript 库。参见 [`external`](external) 页面

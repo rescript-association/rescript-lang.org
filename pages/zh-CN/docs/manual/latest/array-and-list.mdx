@@ -1,0 +1,233 @@
+---
+title: "数组 & 列表"
+description: "Arrays and List data structures"
+canonical: "/docs/manual/latest/array-and-list"
+---
+
+<!--
+# Array and List
+-->
+# 数组和列表
+
+<!--
+## Array
+-->
+## 数组
+
+<!--
+Arrays are our main ordered data structure. They work the same way as JavaScript arrays: they can be randomly accessed, dynamically resized, updated, etc.
+-->
+
+数组是最主要的有序数据结构。它的用法和 JavaScript 数组相同：可随机访问，动态调整大小，以及更新等。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let myArray = ["hello", "world", "how are you"]
+```
+```js
+var myArray = ["hello", "world", "how are you"];
+```
+
+</CodeTab>
+
+<!--
+ReScript arrays' items must have the same type, i.e. homogeneous.
+-->
+
+ReScript 数组的元素类型必须相同，即满足同质性（homogeneous）。
+
+<!--
+### Usage
+-->
+### 用法
+
+<!--
+See the [Js.Array](api/js/array) API.
+-->
+
+查看 [Js.Array](api/js/array) 模块的 API 文档。
+
+<!--
+Access & update an array item like so:
+-->
+
+访问和更新数组项的方法如下：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let myArray = ["hello", "world", "how are you"]
+
+let firstItem = myArray[0] // "hello"
+
+myArray[0] = "hey" // now ["hey", "world", "how are you"]
+
+let pushedValue = Js.Array2.push(myArray, "bye")
+```
+```js
+var myArray = ["hello", "world", "how are you"];
+
+var firstItem = myArray[0];
+
+myArray[0] = "hey";
+
+var pushedValue = myArray.push("bye");
+```
+
+</CodeTab>
+
+<!--
+## List
+-->
+## 列表
+
+<!--
+ReScript provides a singly linked list too. Lists are:
+-->
+
+ReScript 也提供了单链表，它具有以下特性：
+
+<!--
+- immutable
+- fast at prepending items
+- fast at getting the head
+- slow at everything else
+-->
+
+- 不可变
+- 头插速度快
+- 获取头部元素快
+- 其他操作很慢
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let myList = list{1, 2, 3}
+```
+```js
+var myList = {
+  hd: 1,
+  tl: {
+    hd: 2,
+    tl: {
+      hd: 3,
+      tl: 0
+    }
+  }
+};
+```
+
+</CodeTab>
+
+<!--
+Like arrays, lists' items need to be of the same type.
+-->
+
+和数组一样，列表的元素类型必须相同。
+
+<!--
+### Usage
+-->
+### 用法
+
+<!--
+You'd use list for its resizability, its fast prepend (adding at the head), and its fast split, all of which are immutable and relatively efficient.
+-->
+
+你可以使用列表来利用它可变长度，快速头插，和快速拆分的特性，所有操作都是不可变且无副作用的，而且相对高效。
+
+<!--
+Do **not** use list if you need to randomly access an item or insert at non-head position. Your code would end up obtuse and/or slow.
+-->
+
+如果你要进行随机访问或非头插操作，那么**请勿**使用列表。你的代码最后会变得又丑又慢。
+
+<!--
+The standard lib provides a [List module](api/belt/list).
+-->
+
+标准库提供了一个 [List 模块](api/belt/list)。
+
+<!--
+#### Immutable Prepend
+-->
+#### 无副作用头插
+
+<!--
+Use the spread syntax:
+-->
+
+使用展开（spread）语法：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res prelude
+let myList = list{1, 2, 3}
+let anotherList = list{0, ...myList}
+```
+```js
+var myList = {
+  hd: 1,
+  tl: {
+    hd: 2,
+    tl: {
+      hd: 3,
+      tl: 0
+    }
+  }
+};
+
+var anotherList = {
+  hd: 0,
+  tl: myList
+};
+```
+
+</CodeTab>
+
+<!--
+`myList` didn't mutate. `anotherList` is now `list{0, 1, 2, 3}`. This is efficient (constant time, not linear). `anotherList`'s last 3 elements are shared with `myList`!
+-->
+
+`myList` 不会被修改，`anotherList` 的值是 `list{0, 1, 2, 3}` 。这个操作十分高效（常数而非线性时间复杂度），`anotherList` 的最后 3 个元素是与 `myList` 共享的！
+
+<!--
+**Note that `list{a, ...b, ...c}` is a syntax error**. We don't support multiple spread for a list. That'd be an accidental linear operation (`O(b)`), since each item of b would be one-by-one added to the head of `c`. You can use `List.concat` for this, but we highly discourage it.
+-->
+
+**注意，`list{a, ...b, ...c}` 的语法是错误的**，我们不支持列表的多次展开。这是一个线性操作（`O(b)`），因为 b 中的每一项都要被逐一添加到 c 的头部。你可以使用 `List.concat` 完成这个操作，但我们非常不建议这样做。
+
+<!--
+Updating an arbitrary item in the middle of a list is also discouraged, since its performance and allocation overhead would be linear (`O(n)`).
+-->
+
+我们也不鼓励更新列表中间的任意项，因为它的性能和内存分配开销是线性的（`O(n)`）。
+
+<!--
+#### Access
+-->
+#### 访问
+
+<!--
+`switch` (described in the [pattern matching section](pattern-matching-destructuring.md)) is usually used to access list items:
+-->
+
+`switch`（详见[模式匹配](pattern-matching-destructuring.md)）通常用于访问列表项：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let message =
+  switch myList {
+  | list{} => "This list is empty"
+  | list{a, ...rest} => "The head of the list is the string " ++ Js.Int.toString(a)
+  }
+```
+```js
+var message = myList
+  ? "The head of the list is the string " + (1).toString()
+  : "This list is empty";
+```
+
+</CodeTab>

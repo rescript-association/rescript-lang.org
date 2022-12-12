@@ -1,0 +1,316 @@
+---
+title: "基础类型"
+description: "Primitive Data Types in ReScript"
+canonical: "/docs/manual/latest/primitive-types"
+---
+
+<!--
+# Primitive Types
+-->
+# 基础类型
+
+<!--
+ReScript comes with the familiar primitive types like `string`, `int`, `float`, etc.
+-->
+
+ReScript 带有我们熟悉的基础类型，比如 `string`，`int`，`float` 等。
+
+<!-- TODO: doc unit -->
+
+<!--
+## String
+-->
+## 字符串
+
+<!--
+ReScript `string`s are delimited using **double** quotes (single quotes are reserved for the character type below).
+-->
+
+ReScript 字符串使用双引号进行分隔（单引号保留给下面的字符类型）。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let greeting = "Hello world!"
+let multilineGreeting = "Hello
+ world!"
+```
+```js
+var greeting = "Hello world!";
+var multilineGreeting = "Hello\n world!";
+```
+
+</CodeTab>
+
+<!--
+To concatenate strings, use `++`:
+-->
+
+要连接两个字符串，使用 `++` 运算符：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let greetings = "Hello " ++ "world!"
+```
+```js
+var greetings = "Hello world!";
+```
+
+</CodeTab>
+
+<!--
+### String Interpolation
+-->
+### 字符串插值
+
+<!--
+There's a special syntax for string that allows
+-->
+
+有一个特殊的字符串语法，它允许：
+
+<!--
+- multiline string just like before
+- no special character escaping
+- Interpolation
+- Proper unicode handling
+-->
+
+- 多行字符串
+- 没有特殊的字符转义
+- 插值
+- 适当的 unicode 处理
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let name = "Joe"
+
+let greeting = `Hello
+World
+👋
+${name}
+`
+```
+```js
+var name = "Joe";
+
+var greeting = "Hello\nWorld\n👋\n" + name + "\n";
+```
+
+</CodeTab>
+
+<!--
+This is just like JavaScript's backtick string interpolation, except without needing to escape special characters.
+-->
+
+这就像 JavaScript 的反引号字符串插值，只是不需要转义特殊字符。
+
+<!--
+For interpolation, you'll have to convert the binding (`name` in the example) into a string if it isn't one. If you want the interpolation to implicitly convert a binding into a string, prepend a `j`:
+-->
+
+对于插值，如果绑定不是字符串（比如上述例子中的 `name`），你必须将其转换成字符串。如果想让插值隐式地将绑定转换为字符串，可以在前面加一个 `j`：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let age = 10
+let message = j`Today I am $age years old.`
+```
+```js
+var message = "Today I am " + 10 + " years old.";
+```
+
+</CodeTab>
+
+<!--
+### Usage
+-->
+### 用法
+
+<!--
+See the familiar `Js.String` API in the [API docs](api/js/string). Since a ReScript string maps to a JavaScript string, you can mix & match the string operations in both standard libraries.
+-->
+
+在[API文档](api/js/string)中查看熟悉的 `Js.String` API。由于 ReScript 字符串映射到 JavaScript 字符串，你可以混用和匹配两个标准库中的字符串操作。
+
+<!--
+### Tips & Tricks
+-->
+### 技巧和诀窍
+
+<!--
+**You have a good type system now**! In an untyped language, you'd often overload the meaning of string by using it as:
+-->
+
+**你现在有了一个很好的类型系统了**！在无类型语言中，你经常需要重载字符串的意义，比如，用作：
+
+<!--
+- a unique id: `var BLUE_COLOR = "blue"`
+- an identifier into a data structure: `var BLUE = "blue" var RED = "red" var colors = [BLUE, RED]`
+- the name of an object field: `person["age"] = 24`
+- an enum: `if (audio.canPlayType() === 'probably') {...}` [(ಠ_ಠ)](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/canPlayType#Return_value)
+- other crazy patterns you'll soon find horrible, after getting used to ReScript's alternatives.
+-->
+
+- 唯一的 id：`var BLUE_COLOR = "blue"`
+- 数据结构的标识符：`var BLUE = "blue" var RED = "red" var colors = [BLUE, RED]`
+- 对象的字段名：`person["age"] = 24`
+- 枚举值：`if (audio.canPlayType() === 'probably') {...}` [(ಠ_ಠ)](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/canPlayType#Return_value)
+- 以及在习惯了 ReScript 的替代方案后，你很快就能意识到的其他疯狂用法
+
+<!--
+The more you overload the poor string type, the less the type system (or a teammate) can help you! ReScript provides concise, fast and maintainable types & data structures alternatives to the use-cases above (e.g. variants, in a later section).
+-->
+
+你对可怜的字符串类型的意义重载的越多，类型系统（或团队成员）能够帮助你的程度就越低！ReScript 提供了简洁、快速和可维护的类型和数据结构，以替代上述使用情况（例如，后面的章节的变体）。
+
+<!--
+## Char
+-->
+## 字符
+
+<!--
+ReScript has a type for a string with a single letter:
+-->
+
+ReScript 为单字符字符串提供了一种类型：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let firstLetterOfAlphabet = 'a'
+```
+```js
+var firstLetterOfAlphabet = /* "a" */97;
+```
+
+</CodeTab>
+
+<!--
+**Note**: Char doesn't support Unicode or UTF-8 and is therefore not recommended.
+-->
+
+**注意**：Char 不支持 Unicode 或 UTF-8，因此不推荐使用。
+
+<!--
+To convert a String to a Char, use `String.get("a", 0)`. To convert a Char to a String, use `String.make(1, 'a')`.
+-->
+
+将一个字符串转换为一个字符，使用 `String.get("a", 0)`。将字符转换为字符串，使用 `String.make(1, 'a')`。
+
+<!--
+Regular Expression
+-->
+## 正则表达式
+
+<!--
+ReScript regular expressions compile cleanly to their JavaScript counterpart:
+-->
+
+ReScript 正则表达式可以干净地编译成对应的 JavaScript：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let r = %re("/b/g")
+```
+```js
+var r = /b/g;
+```
+
+</CodeTab>
+
+<!--
+A regular expression like the above has the type `Js.Re.t`. The [Js.Re](api/js/re) module contains the regular expression helpers you have seen in JS.
+-->
+
+像上面这样的正则表达式的类型是 `Js.Re.t`。[Js.Re](api/js/re) 模块包含你在 JS 中见到过的正则表达式辅助函数。
+
+<!--
+## Boolean
+-->
+## 布尔类型
+
+<!--
+A ReScript boolean has the type `bool` and can be either `true` or `false`. Common operations:
+-->
+
+ReScript 布尔值具有 `bool` 类型，可以是 `true` 或 `false`。常见的操作：
+
+<!--
+- `&&`: logical and.
+- `||`: logical or.
+- `!`: logical not.
+- `<=`, `>=`, `<`, `>`
+- `==`: structural equal, compares data structures deeply: `(1, 2) == (1, 2)` is `true`. Convenient, but use with caution.
+- `===`: referential equal, compares shallowly. `(1, 2) === (1, 2)` is `false`. `let myTuple = (1, 2); myTuple === myTuple` is `true`.
+- `!=`: structural unequal.
+- `!==`: referential unequal.
+-->
+
+- `&&`：逻辑与
+- `||`：逻辑或
+- `!`：逻辑非
+- `<=`，`>=`，`<`，`>`
+- `==`：结构相等，深入比较数据结构：`(1, 2) == (1, 2)` 为 `true`。很方便，但要谨慎使用
+- `===`：引用相等，浅层比较数据结构。`(1, 2) === (1, 2)` 为 `false`。`let myTuple = (1, 2); myTuple === myTuple` 为 `true`
+- `!=`：结构不相等
+- `!==`：引用不相等
+
+<!--
+ReScript's `true/false` compiles into a JavaScript `true/false`.
+-->
+
+ReScript 的 `true/false` 编译为 JavaScript 的 `true/false`。
+
+<!--
+## Integers
+-->
+## 整数
+
+<!--
+32-bits, truncated when necessary. We provide the usual operations on them: `+`, `-`, `*`, `/`, etc. See [Js.Int](api/js/int) for helper functions.
+-->
+
+32 位整数，必要时进行截断。我们提供对它们的常用操作：`+`，`-`，`*`，`/` 等等。参见 [Js.Int](api/js/int) 的辅助函数。
+
+
+<!--
+**Be careful when you bind to JavaScript numbers!** Since ReScript integers have a much smaller range than JavaScript numbers, data might get lost when dealing with large numbers. In those cases it’s much safer to bind the numbers as **float**. Be extra mindful of this when binding to JavaScript Dates and their epoch time.
+-->
+
+**当你绑定 JavaScript 数字时要小心！**由于 ReScript 整数范围比 JavaScript 数字小得多，在处理大数字时，数据可能会丢失。在这种情况下，将数字绑定为 **float** 会更安全。当绑定到 JavaScript 日期和它们的新纪元时间（epoch time）时，要特别注意这一点。
+
+<!--
+To improve readability, you may place underscores in the middle of numeric literals such as `1_000_000`. Note that underscores can be placed anywhere within a number, not just every three digits.
+-->
+
+为了提高可读性，你可以把下划线放在数字的中间，如 `1_000_000`。注意，下划线可以放在数字的任何地方，不只是每隔三位数字放一个。
+
+<!--
+## Floats
+-->
+## 浮点数
+
+<!--
+Float requires other operators: `+.`, `-.`, `*.`, `/.`, etc. Like `0.5 +. 0.6`. See [Js.Float](api/js/float) for helper functions.
+-->
+
+浮点数需要其他运算符：`+.`，`-.`，`*.`，`/.`，等等。如 `0.5 +. 0.6`。参见 [Js.Float](api/js/float) 的辅助函数。
+
+<!--
+As with integers, you may use underscores within literals to improve readability.
+-->
+
+和整数一样，你可以在字面值中使用下划线以提高可读性。
+
+## Unit
+
+<!--
+The `unit` type has a single value, `()`. It compiles to JavaScript's `undefined`. It's a dummy type used as a placeholder in various places. You won't need it until you see it.
+-->
+
+`unit` 类型只有一个单一的值，`()`。它可以编译为 JavaScript 的 `undefined`。它是一个哑（dummy）类型，在不同的地方作为占位符使用。除非你看到它，否则你不会需要它。

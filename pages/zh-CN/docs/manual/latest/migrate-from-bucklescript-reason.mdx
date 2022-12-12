@@ -1,0 +1,125 @@
+---
+title: "从 BuckleScript/Reason 迁移"
+description: "Instructions on upgrading from Reason to ReScript"
+canonical: "/docs/manual/latest/migrate-to-new-syntax"
+---
+
+<!--
+# Migrate from BuckleScript/Reason
+-->
+# 从 BuckleScript/Reason 迁移
+
+<!--
+ReScript is a rebranding and cleanup of BuckleScript (since `v8.2.0`) & Reason (`v3.6`) that enables us to ship a tighter compile-to-JS stack with more coherent documentation & tools. If you're an existing user of BuckleScript & Reason, here's the gist:
+-->
+
+ReScript 是对 BuckleScript（自 `v8.2.0` 起）和 Reason（`v3.6`）的重塑和清理，它使我们能以更连贯的文档和工具提供更紧凑的 compile-to-JS 技术栈。如果你是 BuckleScript 或 Reason 的现有用户，下面是要注意的点：
+
+<!--
+- ReScript is mostly just BuckleScript rebranded, with a new syntax that's like the Reason syntax, but catered more toward the JavaScript crowd.
+- All your existing code will keep working even if you don't upgrade.
+-->
+
+- ReScript 主要是 BuckleScript 的改版，它的新语法和 Reason 的语法类似，但更加适合 Javascript 人群
+- 即使你不升级，你所有的现有代码也会继续工作
+
+
+<!--
+## Upgrade Your Codebase
+-->
+## 升级你的代码库
+
+<!--
+There are lots of exciting improvements in the new syntax (features, speed, error messages, etc.). The upgrade is trivial, backward-compatible and can be done on a per-file basis:
+-->
+
+新的语法有很多令人兴奋的改进（特性，速度，错误提示等）。升级是轻松的，向后兼容的，并且可以在每个文件的基础上完成：
+
+```
+npm install rescript@9
+
+# Also works with .rei / .ml / .mli / etc
+npx rescript convert src/MyFile.re
+```
+
+<!--
+Enjoy the improved experience!
+-->
+
+享受改进后的体验吧！
+
+<!--
+### Upgrade Individual Folders
+-->
+### 对单个文件夹进行升级
+
+<!--
+This is useful for per-directory convertions:
+-->
+
+这对逐目录的转换很有用：
+
+```console
+# *.rei, *.ml, *.mli,....
+for f in your-folder/**/*.re; do; node_modules/.bin/rescript convert $f && rm $f; done;
+```
+
+<!--
+### Upgrade an Entire Codebase
+-->
+### 升级一整个代码库
+
+<!--
+In case you are confident in converting your codebase in one step, use the following:
+-->
+
+如果你对一步到位地转换你的代码库有信心，可以使用以下方法：
+
+```
+npx rescript convert -all
+```
+
+<!--
+## Difference With Old Reason
+-->
+## 与 Reason 的不同之处
+
+<!--
+- Complete removal of semicolon (you can still write them).
+- No need for parentheses around `if`, `switch` and `try`.
+- Type arguments: from `option(int)` to `option<int>`.
+- Old interpolated string: from `{j|hello ${name}|j}` to `` j`hello ${name}` ``. Now with proper unicode support!
+- New interpolated string: `` `hello world` ``. Also supports multiline and unicode. `"hello world"` string is now singleline.
+- Polymorphic variants: from `` `red`` to `#red`.
+- Arrays: from `[|1,2,3|]` to `[1,2,3]`. In JS, arrays are the right default.
+- Lists: from `[1,2,3]` to `list[1,2,3]` (_8.1.1 update_: now it is `list{1, 2, 3}`). This ties with upcoming plans to access containers in a uniform way: `set[...]` and `map[...]`. Maybe temporary.
+- Exception: from `try (compute()) { | Not_found => Js.log("oops")}` to `try compute() catch { | Not_found => Js.log("oops")}`.
+- First class module: from `(module S: Student)` to `module(S: Student)`.
+- No custom infix operator for now (including `mod`).
+- Object access: from `settings##visible #= true` to `settings["visible"] = true`. Rejoice!
+- Object: from `Js.t({"age": int})` to just `{"age": int}`. The `Js.t` part is now uneeded.
+- Attribute: from `[@myAttribute "hello"]` to `@myAttribute("hello")`. From `[%re bla]` to `%re(bla)`.
+- Removed dereference syntax `result^`. Just use `result.contents`.
+- `fun` pattern matching syntax removed.
+- Type declaration is non-recursive by default, consistent with let bindings. To have recursive types, use `type rec myList<'a> = Nil | Cons('a, myList<'a>)`.
+- Use any words, including reserved keywords, as your identifier name: `let \"try" = true`.
+-->
+
+- 完全去除了分号（你仍然可以写分号）
+- 不再需要在 `if`、`switch` 和 `try` 周围加上括号
+- 类型参数：`option(int)` 变为 `option<int>`
+- 旧字符串插值：`{j|hello ${name}|j}` 变为 `` j`hello ${name}` ``。现在有了适当的 unicode 支持！
+- 新字符串插值：`` `hello world` ``，同样支持多行和 unicode。`"hello world"` 现在是单行的
+- 多态变体（Polymorphic variants）：`` `red`` 变为 `#red`
+- 数组：`[|1,2,3|]` 变为 `[1,2,3]`。后者是 JS 中的写法
+- 列表：`[1,2,3]` 变为 `list[1,2,3]`（_8.1.1 版本更新_：现在是 `list{1, 2, 3}`）。这与即将到来的以统一方式访问容器的计划有关，比如 `set[...]` 和 `map[...]`。也许只是暂时修改
+- 异常：`try (compute()) { | Not_found => Js.log("oops")}` 变为 `try compute() catch { | Not_found => Js.log("oops")}`
+- 一等公民模块：`(module S: Student)` 变为 `module(S: Student)`
+- 目前没有自定义的中缀运算符（包括 `mod`）
+- 访问对象：`settings##visible #= true` 变为 `settings["visible"] = true`。欢呼吧！
+- 创建对象：`Js.t({"age": int})` 变成了 `{"age": int}`，不再需要 `Js.t`
+- 属性（装饰器）：`[@myAttribute "hello"]` 变为 `@myAttribute("hello")`。`[%re bla]` 变为 `%re(bla)`
+- 解引用语法 `result^` 被移除了，只需使用 `result.contents`
+- `fun` 模式匹配语法被移除了
+- 类型声明默认为非递归，与 let 绑定一致。要有递归类型，请使用 `type rec myList<'a> = Nil | Cons('a, myList<'a>)`
+- 可以使用任意的单词（包括保留关键字）作为标识符：`let \"try" = true`

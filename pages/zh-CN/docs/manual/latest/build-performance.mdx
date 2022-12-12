@@ -1,0 +1,211 @@
+---
+title: "构建性能"
+metaTitle: "Build Performance"
+description: "ReScript build performance and measuring tools"
+canonical: "/docs/manual/latest/build-performance"
+---
+
+<!--
+# Build Performance
+-->
+# 构建性能
+
+<!--
+ReScript considers performance at install time, build time and run time as a serious feature; it's one of those things you don't notice until you realize it's missing.
+-->
+
+ReScript 认为安装时，构建时和运行时的性能都很重要；只有在你失去时，你才会珍惜。
+
+<!--
+## Profile Your Build
+-->
+## 性能优化
+
+<!--
+Sometime your build can be slow due to some confused infra setups. We provide an interactive visualization of your build's performance via `bstracing`:
+-->
+
+有时，由于一些混乱的基础设置，你的构建可能会很慢。我们通过 `bstracing` 为你提供一个交互式的构建性能可视化：
+
+
+```sh
+./node_modules/.bin/bstracing
+```
+
+<!--
+Run the above command at your ReScript project's root; it'll spit out a JSON file you can drag and drop into `chrome://tracing`.
+-->
+
+在你的 ReScript 项目根目录运行上面的命令；它会生成一个 JSON 文件，你可以将此文件拖入 `chrome://tracing` 中。
+
+import Image from "src/components/Image";
+
+<Image withShadow={true} src="/static/img/bstracing.png" caption="bstracing 的截图"/>
+
+<!--
+## Under the Hood
+-->
+## 底层原理
+
+<!--
+ReScript itself uses a build system under the hood, called [Ninja](https://ninja-build.org). Ninja is like Make, but cross-platform, minimal, focuses in perf and destined to be more of a low-level building block than a full-blown build system. In this regard, Ninja's a great implementation detail for `rescript`.
+-->
+
+ReScript 底层使用一个名为 [Ninja](https://ninja-build.org) 的构建系统。Ninja 和 Make 类似，但是跨平台、最小化、专注于性能，注定成为比完整的构建系统更低级的构建模块。在这方面，Ninja 是 `rescript` 的一个很棒的实现细节。
+
+<!--
+ReScript reads into `bsconfig.json` and generates the Ninja build file in `lib/bs`. The file contains the low-level compiler commands, namespacing rules, intermediate artifacts generation & others. It then runs `ninja` for the actual build.
+-->
+
+ReScript 读取 `bsconfig.json` 并在 `lib/bs` 中生成 Ninja 构建文件。该文件包含底层的编译器命令、命名空间规则、中间产物的生成和其他内容。最后运行 `ninja` 进行实际构建。
+
+<!--
+## The JS Wrapper
+-->
+## JS Wrapper
+
+<!--
+`rescript` itself is a Node.js wrapper which takes care of some miscellaneous tasks, plus the watcher. The lower-level, watcher-less, fast native `rescript` is called `rescript.exe`. It's located at `node_modules/rescript/{your-platform}/rescript.exe`.
+-->
+
+`rescript` 本身是一个 Node.js 的 wrapper，它负责处理繁杂的任务，以及监听文件变化。底层的，无监听的，且快速的原生 `rescript` 被称为 `rescript.exe`。它位于 `node_modules/rescript/{your-platform}/rescript.exe`。
+
+<!--
+If you don't need the watcher, you can run said `rescript.exe`. This side-steps Node.js' long startup time, which can be in the order of `100ms`. Our editor plugin finds and uses this native `rescript.exe` for better performance.
+-->
+
+如果你不需要监听文件变化，你可以运行上面的 `rescript.exe`。这就避免了 Node.js 漫长的启动时间，它的启动时间可能在 `100ms` 左右。我们的编辑器插件会找到并使用这个本地的 `rescript.exe`，以获得更好的性能。
+
+<!--
+## Numbers
+-->
+## 数据
+
+<!--
+Raw `rescript.exe` build on a small project should be around `70ms`. This doubles when you use the JS `rescript` wrapper which comes with a watcher, which is practically faster since you don't manually run the build at every change (though you should opt for the raw `rescript.exe` for programmatic usage, e.g. inserting rescript into your existing JS build pipeline).
+-->
+
+使用原生 `rescript.exe` 构建小型项目的耗时应该在 `70ms` 左右。当你使用附带文件监听的 JS `rescript` wrapper 时，构建耗时会翻倍，但实际上构建速度变快了，因为你不需要在每次修改时手动运行构建（尽管你应该选择原生 `rescript.exe` 用于程序化的用途，例如将 rescript 插入到你现有的 JS 构建管线）。
+
+<!--
+No-op build (when no file's changed) should be around `15ms`. Incremental rebuild (described soon) of a single file in a project is around `70ms` too.
+-->
+
+无操作构建（当没有文件改变时）应该在 `15ms` 左右。项目中单个文件的增量重新构建（即将介绍）也在 `70ms` 左右。
+
+<!--
+Cleaning the artifacts should be instantaneous.
+-->
+
+清理构建制品应该是立即完成的。
+
+<!--
+### Extreme Test
+-->
+### 极端测试
+
+<!--
+We've stress-tested `rescript.exe` on a big project of 10,000 files (2 directories, 5000 files each, first 5000 no dependencies, last 5000 10 dependencies on files from the former directory) using https://github.com/rescript-lang/build-benchmark, on a Retina Macbook Pro Early 2015 (3.1 GHz Intel Core i7).
+-->
+
+在一台 Retina Macbook Pro Early 2015（3.1 GHz Intel Core i7）上，我们使用 https://github.com/rescript-lang/build-benchmark ，在一个拥有 10,000 个文件的大型项目（2 个目录，每个 5000 个文件，前 5000 个没有依赖项，后 5000 个依赖 10 个前一个目录的文件）上，对 `rescript.exe` 进行了压力测试。
+
+<!-- TODO: better repro -->
+
+<!--
+- No-op build of 10k files: `800ms` (the minimum amount of time required to check the mtimes of 10k files).
+- Clean build: <3 minutes.
+- Incremental build: depends on the number of the dependents of the file. No dependent means `1s`.
+-->
+
+- 10k 文件的无操作构建：`800ms`（检查 10k 文件的 mtimes 所需的最少时间）。
+- 清除后构建：小于 3 分钟。
+- 增量构建：取决于文件的依赖数量，没有依赖意味着 `1s` 即可完成。
+
+<!--
+### Stability
+-->
+### 稳定性
+
+<!--
+`rescript` is a file-based build system. We don't do in-memory build, even if that speeds up the build a lot. In-memory builds risk memory leaks, out-of-memory errors, corrupt halfway build and others. Our watcher mode stays open for days or months with no leak.
+-->
+
+`rescript` 是基于文件的构建系统。尽管在内存中构建会极大地提升构建速度，但是我们选择不在内存中构建。在内存中构建存在内存泄漏、内存耗尽、构建半途中断以及其他风险。我们的 watch 模式可以整天整月地开着，不会出现内存泄漏。
+
+<!--
+The watcher is also just a thin file watcher that calls `rescript.exe`. We don't like babysitting daemon processes.
+-->
+
+监听器实际上也是一个调用 `rescript.exe` 的小型文件监听器。我们不喜欢保姆级的守护进程。
+
+<!--
+## Incrementality & Correctness
+-->
+## 渐进性 & 正确性
+
+<!--
+ReScript doesn't take whole seconds to run every time. The bulk of the build performance comes from incremental build, aka re-building a previously built project when a few files changed.
+-->
+
+ReScript 并不是每次都要花整整几秒钟来运行。大部分的构建开销来自于增量构建，也就是当只有一些文件发生变化时，才重新构建一个先前已经构建过的项目。
+
+<!--
+In short, thanks to our compiler and the build system's architecture, we're able to **only build what's needed**. E.g. if `MyFile.res` isn't changed, then it's not recompiled. You can roughly emulate such incrementalism in languages like JavaScript, but the degree of correctness is unfortunately low. For example, if you rename or move a JS file, then the watcher might get confused and not pick up the "new" file or fail to clean things up correctly, resulting in you needing to clean your build and restart anew, which defeats the purpose.
+-->
+
+简而言之，得益于我们的编译器和构建系统架构，我们能够**只构建需要构建的内容**。例如，如果 `MyFile.res` 没有改变，那么它就不会被重新编译。你可以在 JavaScript 等语言中粗略地模仿这种渐进方式，但不幸的是，其正确程度很低。例如，如果你重命名或移动一个 JS 文件，那么监听器可能会混乱，无法找到“新”文件，或不能正确地清理内容，导致你需要清理你的构建并重新构建，这就没有达到增量的目的。
+
+<!--
+Say goodbye to stale build from your JavaScript ecosystem!
+-->
+
+和 JavaScript 生态中陈旧的构建系统说再见吧！
+
+<!--
+## Speed Up Incremental Build
+-->
+## 加快增量构建的速度
+
+<!--
+ReScript uses the concept of interface files (`.resi`) (or, equivalently, [module signatures](module.md#signatures)). Exposing only what you need naturally speeds up incremental builds. E.g. if you change a `.res` file whose corresponding `.resi` file doesn't expose the changed part, then you've reduced the amount of dependent files you have to rebuild.
+-->
+
+ReScript 使用接口文件的概念（`.resi`）（等同于[模块签名](module.md#signatures)），只公开你需要的东西，这自然会加快增量构建的速度。例如，如果你改变了一个 `.res` 文件，而该文件对应的 `.resi` 文件没有暴露所改变的部分，那么就减少了必须重新构建的依赖文件的数量。
+
+<!--
+## Programmatic Usage
+-->
+## 程序化用法
+
+<!--
+Unfortunately, JS build systems are usually the bottleneck for building a JS project nowadays. Having parts of the build blazingly fast doesn't matter much if the rest of the build takes seconds or literally minutes. Here are a few suggestions:
+-->
+
+不幸的是，如今的 JS 构建系统通常是构建一个 JS 项目的瓶颈。如果构建其他部分需要数秒钟或数分钟，那么即使其余部分的构建速度快得惊人，也并没有什么意义。下面是几个建议：
+
+<!--
+- Convert more files into ReScript =). Fewer files going through fewer parts of the JS pipeline helps a ton.
+
+- Careful with bringing in more dependencies: libraries, syntax transforms (e.g. the unofficially supported PPX), build step loaders, etc. The bulk of these dragging down the editing & building experience might out-weight the API benefits they provide.
+-->
+
+- 将更多的文件转换成 ReScript =)。让更少的文件通过更少的 JS 构建管线会有很好的效果。
+- 谨慎引入更多的依赖项：库，语法转换（例如非官方支持的 PPX），构建加载器等。拖后腿的编辑和构建体验，可能会超过它们提供的 API 优势。
+
+<!--
+## Hot Reloading
+-->
+## 热重载
+
+<!--
+Hot reloading refers to maintaining a dev server and listening to file changes in a way that allows the server to pipe some delta changes right into the currently running browser page. This provides a relatively fast iteration workflow while working in specific frameworks.
+-->
+
+热重载是指维护一个开发服务器并监听文件的变化，允许服务器将一些差异变化直接输送到当前运行的浏览器页面。在特定的框架中工作时，这种方式提供了一个相对快速的迭代工作流。
+
+<!--
+However, hot reloading is fragile by nature, and counts on the occasional inconsistencies (bad state, bad eval, etc.) and the heavy devserver setup/config being less of a hassle than the benefits it provides. We err on the side of caution and stability in general, and decided not to provide a built-in hot reloading _yet_. **Note**: you can still use the hot reloading facility provided by your JS build pipeline.
+-->
+
+然而，热重载在本质上是脆弱的，并且偶尔会出现不一致性（状态错误、执行错误等），也依赖繁重的开发服务器设置/配置，总体来说弊大于利。我们从谨慎和稳定的角度出发，决定 _暂时_ 不提供内置的热重载。**注意**：你仍然可以使用你的 JS 构建管线所提供的热重载。

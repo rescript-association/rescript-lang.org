@@ -1,0 +1,132 @@
+---
+title: "共享数据类型"
+description: "Data types that share runtime presentation between JS and ReScript"
+canonical: "/docs/manual/latest/shared-data-types"
+---
+
+<!--
+# Shared Data Types
+-->
+# 共享数据类型
+
+<!--
+ReScript's built-in values of type `string`, `float`, `array` and a few others have a rather interesting property: they compile to the exact same value in JavaScript!
+-->
+
+ReScript 内置的 `string`，`float`，`array` 值和其他一些类型的值有一个非常有趣的特性：它们在 JavaScript 中编译成完全相同的值！
+
+<!--
+This means that if you're passing e.g. a ReScript string to the JavaScript side, the JS side can directly use it as a native JS string. It also means that you can import a JS string and pretend it's a native ReScript string.
+-->
+
+这意味着，如果要向 JavaScript 端传递一个 ReScript 字符串，JS 端可以直接将其作为原生 JS 字符串来使用。它还意味着你可以导入一个 JS 字符串并假装它是一个原生 ReScript 字符串。
+
+<!--
+Unlike most compiled-to-js languages, in ReScript, **you don't need to write data converters back and forth for most of our values**!
+-->
+
+和大多数编译为 JS 的语言不同，在 ReScript 中，**你不需要为我们的大多数值来回编写数据转换器！**
+
+<!--
+**Shared, bidirectionally usable types**:
+-->
+
+**共享的、双向可用的类型**：
+
+<!--
+- String. ReScript strings are JavaScript strings, vice-versa. (Caveat: only our backtick string `` `hello 👋 ${personName}` `` supports unicode and interpolation).
+
+- Float. ReScript floats are JS numbers, vice-versa.
+
+- Array. In addition to the [JS Array API](api/js/array), we provide our own [Belt.Array](api/belt/array#set) API too.
+
+- Tuple. Compiles to a JS array. You can treat a fixed-sized, heterogenous JS array as ReScript tuple too.
+
+- Boolean.
+
+- Record. Record compiles to JS object. Therefore you can also treat JS objects as records. If they're too dynamic, consider modeling them on the ReScript side as a hashmap/dictionary [`Js.Dict`](api/js/dict) or a ReScript object.
+
+- Object. ReScript objects are JavaScript objects, vice-versa.
+
+- Function. They compile to clean JS functions.
+
+- Module. ReScript files are considered top-level modules, and are compiled to JS files 1 to 1. Nested modules are compiled to JavaScript objects.
+
+- Polymorphic variants.
+
+- Unit. The `unit` type, which has a single value `()`, compiles to `undefined` too. Likewise, you can treat an incoming JS `undefined` as `()` if that's the only value it'll ever be.
+-->
+
+- String：ReScript 字符串是 JavaScript 字符串，反之亦然。（注意：只有我们的反引号字符串 `` `hello 👋 ${personName}` `` 支持 unicode 和插值）
+
+- Float：ReScript 浮点数就是 JS 的数字，反之亦然
+
+- Array：除了 [JS Array API](api/js/array) 之外，我们还提供了自己的 [Belt.Array](api/belt/array#set) API
+
+- Tuple：编译为 JS 数组。你也可以将固定大小的异构 JS 数组视为 ReScript 元组
+
+- Boolean
+
+- Record：记录会编译成 JS 对象。因此你也可以将 JS 对象视为记录。如果它们太过动态，可以考虑在 ReScript 端将它们建模为散列表/字典 [`Js.Dict`](api/js/dict) 或 ReScript 对象
+
+- Object：ReScript 对象是 JavaScript 对象，反之亦然
+
+- Function：它们会编译为干净的 JS 函数
+
+- Module：ReScript 文件被认为是顶层模块，并被 1 比 1 地编译为 JS 文件。嵌套模块被编译为 JavaScript 对象
+
+- Polymorphic variants
+
+- Unit：`unit` 类型，只有一个单一的值 `()`，会被编译为 `undefined`。同样，你也可以将传入的 JS `undefined` 作为 `()`，如果这是它唯一可能的值的话。
+
+<!--
+**Types that are slightly different than JS, but that you can still use from JS**:
+-->
+
+**这些类型与 JS 略有不同，但仍然可以从 JS 中使用**：
+
+<!--
+- Int. **Ints are 32-bits**! Be careful, you can potentially treat them as JS numbers and vice-versa, but if the number's large, then you better treat JS numbers as floats. For example, we bind to Js.Date using `float`s.
+
+- Option. The `option` type's `None` value compiles into JS `undefined`. The `Some` value, e.g. `Some(5)`, compiles to `5`. Likewise, you can treat an incoming JS `undefined` as `None`. **JS `null` isn't handled here**. If your JS value can be `null`, use [Js.Nullable](api/js/nullable) helpers.
+
+- Exception.
+
+- Variant. Check the compiled JavaScript output of variant to see its shape. We don't recommend exporting a ReScript variant for pure JS usage, since they're harder to read as plain JS code, but you can do it.
+
+- List, which is just a regular variant.
+-->
+
+- Int：**Int 是 32 位的！**注意，你可以把它们看作 JS 数字，反之亦然，但是如果数字很大，那么你最好将 JS 数字作为浮点数处理。例如，我们使用 `float` 来绑定 Js.Date
+
+- Option：`option` 类型的 `None` 值会编译为 JS 的 `undefined`。`Some` 值，比如 `Some(5)`，会编译为 `5`。同样地，你可以将传入的 JS `undefined` 作为 `None`。**ReScript 不处理 JS `null`**。如果你的 JS 值可能为 `null`，请使用 [Js.Nullable](api/js/nullable) 中的辅助函数
+
+- Exception
+
+- Variant：检查变体编译后的 JavaScript 输出。我们不建议专门导出 ReScript 变体去给纯 JS 代码使用，因为它们作为 JS 代码可读性不好，但是你可以这么做。
+
+- List：这只是一个普通的变体
+
+
+<!--
+**Non-shared types (aka internal types)**:
+-->
+
+**非共享类型（又名内部类型）**：
+
+- Character
+- Int64
+- 惰性值
+- 剩下的其他类型
+
+<!--
+Many of these are stable, which means that you can still serialize/deserialize them as-is without manual conversions. But we discourage actively peeking into their structure otherwise.
+-->
+
+其中许多是稳定的，这意味着你仍然可以按原样对它们进行序列化/反序列化，而无需手动转换。但我们不鼓励主动窥探他们的内部结构。
+
+<!--
+These types require manual conversions if you want to export them for JS consumption. For a seamless JS/TypeScript/Flow integration experience, you might want to use [genType](https://github.com/cristianoc/gentype) instead of doing conversions by hand.
+-->
+
+如果要导出这些类型以供 JS 使用，则需要手动转换。为了获得无缝的 JS/TypeScript/Flow 集成体验，你可能想使用 [genType](https://github.com/cristianoc/gentype)，而不是手动进行转换。

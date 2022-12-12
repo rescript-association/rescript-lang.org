@@ -1,0 +1,1127 @@
+---
+title: "模式匹配/解构"
+description: "Pattern matching and destructuring complex data structures in ReScript"
+canonical: "/docs/manual/latest/pattern-matching-destructuring"
+---
+
+<!--
+# Pattern Matching / Destructuring
+-->
+# 模式匹配/解构
+
+<!--
+One of ReScript's **best** feature is our pattern matching. Pattern matching combines 3 brilliant features into one:
+-->
+
+ReScript **最棒**的特性之一就是模式匹配了。模式匹配将 3 个极佳的特性融为一体：
+
+<!--
+- Destructuring.
+- `switch` based on shape of data.
+- Exhaustiveness check.
+-->
+
+- 解构。
+- 基于数据形状的 `switch`。
+- 穷尽性检查。
+
+<!--
+We'll dive into each aspect below.
+-->
+
+我们将在下面深入探讨各个特性。
+
+<!--
+## Destructuring
+-->
+## 解构
+
+<!--
+Even JavaScript has destructuring, which is "opening up" a data structure to extract the parts we want and assign variable names to them:
+-->
+
+甚至 JavaScript 也有解构功能，也就是“打开”一个数据结构，提取我们想要的部分，并为其分配变量名：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let coordinates = (10, 20, 30)
+let (x, _, _) = coordinates
+Js.log(x) // 10
+```
+```js
+var coordinates = [10, 20, 30];
+var x = 10;
+console.log(10);
+```
+
+</CodeTab>
+
+<!--
+Destructuring works with most built-in data structures:
+-->
+
+大部分内置数据结构都是可以解构的：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// Record
+type student = {name: string, age: int}
+let student1 = {name: "John", age: 10}
+let {name} = student1 // "John" assigned to `name`
+
+// Variant
+type result =
+  | Success(string)
+let myResult = Success("You did it!")
+let Success(message) = myResult // "You did it!" assigned to `message`
+```
+```js
+var student1 = {
+  name: "John",
+  age: 10
+};
+var name = "John";
+
+var myResult = /* Success */{
+  _0: "You did it!"
+};
+var message = "You did it!"
+
+var myArray = [1, 2, 3];
+if (myArray.length !== 2) {
+  throw {
+    RE_EXN_ID: "Match_failure",
+    _1: [
+      "playground.res",
+      14,
+      4
+    ],
+    Error: new Error()
+  };
+}
+var item1 = myArray[0];
+var item2 = myArray[1];
+
+var myList = {
+  hd: 1,
+  tl: {
+    hd: 2,
+    tl: {
+      hd: 3,
+      tl: /* [] */0
+    }
+  }
+};
+// ...
+```
+
+</CodeTab>
+
+<!--
+You can also use destructuring anywhere you'd usually put a binding:
+-->
+
+你也可以在通常放置绑定的地方使用解构：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type result =
+  | Success(string)
+let displayMessage = (Success(m)) => {
+  // we've directly extracted the success message
+  // string by destructuring the parameter
+  Js.log(m)
+}
+displayMessage(Success("You did it!"))
+```
+```js
+function displayMessage(m) {
+  console.log(m._0);
+}
+
+displayMessage(/* Success */{
+  _0: "You did it!"
+});
+```
+
+</CodeTab>
+
+<!--
+For a record, you can rename the field while destructuring:
+-->
+
+对于记录，你可以在解构时重命名字段：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let {name: n} = student1 // "John" assigned to `n`
+```
+```js
+var n = "John";
+```
+
+</CodeTab>
+
+<!--
+You _can_ in theory destructure array and list at the top level too:
+-->
+
+理论上，你也 _可以_ 在顶层解构数组和列表：
+
+```res
+let myArray = [1, 2, 3]
+let [item1, item2, _] = myArray
+// 1 assigned to `item1`, 2 assigned to `item2`, 3rd item ignored
+
+let myList = list{1, 2, 3}
+let list{head, ...tail} = myList
+// 1 assigned to `head`, `list{2, 3}` assigned to tail
+```
+
+<!--
+But the array example is **highly disrecommended** (use tuple instead) and the list example will error on you. They're only there for completeness' sake. As you'll see below, the proper way of using destructuring array and list is using `switch`.
+-->
+
+但是我们**非常不推荐**解构数组（这种情况最好用元组代替）。上面的例子会报错，它们只是为了做补充说明。正如你将在下面看到的，解构数组和列表的正确方法是使用 `switch`。
+
+<!--
+## `switch` Based on Shape of Data
+-->
+## 基于数据形状的 `switch`
+
+<!--
+While the destructuring aspect of pattern matching is nice, it doesn't really change the way you think about structuring your code. One paradigm-changing way of thinking about your code is to execute some code based on the shape of the data.
+-->
+
+虽然模式匹配的解构挺不错，但它并没有真正改变你对代码结构的思考方式。一种改变你对于代码的思维模式的方法是，根据数据形状来执行一些代码。
+
+<!--
+Consider a variant:
+-->
+
+考虑如下变体：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res prelude
+type payload =
+  | BadResult(int)
+  | GoodResult(string)
+  | NoResult
+```
+```js
+// Empty output
+```
+
+</CodeTab>
+
+<!--
+We'd like to handle each of the 3 cases differently. For example, print a success message if the value is `GoodResult(...)`, do something else when the value is `NoResult`, etc.
+-->
+
+我们想要以不同的方式处理这三种情况。例如，如果值是 `GoodResult(...)`，那就打印一条成功消息；如果值是 `NoResult` 那就做其他事情，等等。
+
+<!--
+In other languages, you'd end up with a series of if-elses that are hard to read and error-prone. In ReScript, you can instead use the supercharged `switch` pattern matching facility to destructure the value while calling the right code based on what you destructured:
+-->
+
+在其他语言中，你最终会得到一系列难以阅读和容易出错的 if-else。在 ReScript 中，你可以使用强大的 `switch` 模式匹配来对值进行解构，然后根据解构的结果调用正确的代码：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let data = GoodResult("Product shipped!")
+switch data {
+| GoodResult(theMessage) =>
+  Js.log("Success! " ++ theMessage)
+| BadResult(errorCode) =>
+  Js.log("Something's wrong. The error code is: " ++ Js.Int.toString(errorCode))
+| NoResult =>
+  Js.log("Bah.")
+}
+```
+```js
+var data = {
+  TAG: /* GoodResult */1,
+  _0: "Product shipped!"
+};
+
+if (typeof data === "number") {
+  console.log("Bah.");
+} else if (data.TAG === /* BadResult */ 0) {
+  console.log("Something's wrong. The error code is: " + "Product shipped!".toString());
+} else {
+  console.log("Success! Product shipped!");
+}
+```
+
+</CodeTab>
+
+<!--
+In this case, `message` will have the value `"Success! Product shipped!"`.
+-->
+
+这种情况 `message` 的值会是 `"Success! Product shipped!"`。
+
+<!--
+Suddenly, your if-elses that messily checks some structure of the value got turned into a clean, compiler-verified, linear list of code to execute based on exactly the shape of the value.
+-->
+
+转眼之间，乱七八糟的 if-else 变成了一个干净的、经过编译器验证的、线性的代码列表。它可以准确地根据值的形状来执行。
+
+<!--
+### Complex Examples
+-->
+### 复杂的示例
+
+<!--
+Here's a real-world scenario that'd be a headache to code in other languages. Given this data structure:
+-->
+
+下面是一段真实场景的代码，在别的语言中表达相同的功能是很头疼的。考虑这个数据结构：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res prelude
+type status = Vacations(int) | Sabbatical(int) | Sick | Present
+type reportCard = {passing: bool, gpa: float}
+type person =
+  | Teacher({
+    name: string,
+    age: int,
+  })
+  | Student({
+    name: string,
+    status: status,
+    reportCard: reportCard,
+  })
+```
+```js
+// Empty output
+```
+
+</CodeTab>
+
+<!--
+Imagine this requirement:
+-->
+
+<!--
+- Informally greet a person who's a teacher and if his name is Mary or Joe.
+- Greet other teachers formally.
+- If the person's a student, congratulate him/her score if they passed the semester.
+- If the student has a gpa of 0 and is on vacations or sabbatical, display a different message.
+- A catch-all message for a student.
+-->
+
+假如有以下需求：
+- 如果是老师而且名字是“Marry”或“Joe”的话，和他/她非正式的打声招呼。
+- 正式地和别的老师打招呼。
+- 如果是学生并且通过了期末考试，那就祝贺他/她获得的分数。
+- 如果学生的 gpa 为 0，并且正在休假或公休，那就显示不同的信息。
+- 对其他学生显示一条通用的信息。
+
+<!--
+ReScript can do this easily!
+-->
+
+ReScript 可以轻松完成任务！
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res prelude
+let person1 = Teacher({name: "Jane", age: 35})
+
+let message = switch person1 {
+| Teacher({name: "Mary" | "Joe"}) =>
+  `Hey, still going to the party on Saturday?`
+| Teacher({name}) =>
+  // this is matched only if `name` isn't "Mary" or "Joe"
+  `Hello ${name}.`
+| Student({name, reportCard: {passing: true, gpa}}) =>
+  `Congrats ${name}, nice GPA of ${Js.Float.toString(gpa)} you got there!`
+| Student({
+    reportCard: {gpa: 0.0},
+    status: Vacations(daysLeft) | Sabbatical(daysLeft)
+  }) =>
+  `Come back in ${Js.Int.toString(daysLeft)} days!`
+| Student({status: Sick}) =>
+  `How are you feeling?`
+| Student({name}) =>
+  `Good luck next semester ${name}!`
+}
+```
+```js
+var person1 = {
+  TAG: /* Teacher */0,
+  name: "Jane",
+  age: 35
+};
+
+var message;
+
+if (person1.TAG) {
+  var match$1 = person1.status;
+  var name = person1.name;
+  var match$2 = person1.reportCard;
+  message = match$2.passing
+    ? "Congrats " +
+      name +
+      ", nice GPA of " +
+      match$2.gpa.toString() +
+      " you got there!"
+    : typeof match$1 === "number"
+    ? match$1 !== 0
+      ? "Good luck next semester " + name + "!"
+      : "How are you feeling?"
+    : person1.reportCard.gpa !== 0.0
+    ? "Good luck next semester " + name + "!"
+    : "Come back in " + match$1._0.toString() + " days!";
+} else {
+  var name$1 = person1.name;
+  switch (name$1) {
+    case "Joe":
+    case "Mary":
+      message = "Hey, still going to the party on Saturday?";
+      break;
+    default:
+      message = "Hello " + name$1 + ".";
+  }
+}
+```
+
+</CodeTab>
+
+<!--
+**Note** how we've:
+- drilled deep down into the value concisely
+- using a **nested pattern check** `"Mary" | "Joe"` and `Vacations | Sabbatical`
+- while extracting the `daysLeft` number from the latter case
+- and assigned the greeting to the binding `message`.
+-->
+
+**注意** 我们是如何：
+- 简洁的深入到内部值。
+- 使用**嵌套模式检查**，即 `"Mary" | "Joe"` 和 `Vacations | Sabbatical`。
+- 从后一种情况中提取 `dayLeft` 数字。
+- 将问候语绑定给 `message`。
+
+<!--
+Here's another example of pattern matching, this time on an inline tuple.
+-->
+
+下面是另一个模式匹配的例子，这次用在内联元组上。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type animal = Dog | Cat | Bird
+let categoryId = switch (isBig, myAnimal) {
+| (true, Dog) => 1
+| (true, Cat) => 2
+| (true, Bird) => 3
+| (false, Dog | Cat) => 4
+| (false, Bird) => 5
+}
+```
+```js
+var categoryId = isBig ? (myAnimal + 1) | 0 : myAnimal >= 2 ? 5 : 4;
+```
+
+</CodeTab>
+
+<!--
+**Note** how pattern matching on a tuple is equivalent to a 2D table:
+-->
+
+**注意**元组上的模式匹配是如何等价于二维查找表的：
+
+| isBig \ myAnimal | Dog | Cat | Bird |
+|------------------|-----|-----|------|
+| true             | 1   | 2   | 3    |
+| false            | 4   | 4   | 5    |
+
+### Fall-Through 模式
+
+<!--
+The nested pattern check, demonstrated in the earlier `person` example, also works at the top level of a `switch`:
+-->
+
+在前面的 `person` 的例子中展示的嵌套模式检查，也可以用在 `switch` 的顶层：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res prelude
+let myStatus = Vacations(10)
+
+switch myStatus {
+| Vacations(days)
+| Sabbatical(days) => Js.log(`Come back in ${Js.Int.toString(days)} days!`)
+| Sick
+| Present => Js.log("Hey! How are you?")
+}
+```
+```js
+var myStatus = {
+  TAG: /* Vacations */0,
+  _0: 10
+};
+
+if (typeof myStatus === "number") {
+  console.log("Hey! How are you?");
+} else {
+  console.log("Come back in " + (10).toString() + " days!");
+}
+```
+
+</CodeTab>
+
+<!--
+Having multiple cases fall into the same handling can clean up certain types of logic.
+-->
+
+让多种情况落入同一处理可以整理某些类型的逻辑。
+
+<!--
+### Ignore Part of a Value
+-->
+### 忽略值的一部分
+
+<!--
+If you have a value like `Teacher(payload)` where you just want to pattern match on the `Teacher` part and ignore the `payload` completely, you can use the `_` wildcard like this:
+-->
+
+如果你有个像 `Teacher(payload)` 这样的值，你可能只想匹配 `Teacher` 部分而完全忽略 `payload`，你可以像这样使用 `_` 通配符：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+switch person1 {
+| Teacher(_) => Js.log("Hi teacher")
+| Student(_) => Js.log("Hey student")
+}
+```
+```js
+if (person1.TAG) {
+  console.log("Hey student");
+} else {
+  console.log("Hi teacher");
+}
+```
+
+</CodeTab>
+
+<!--
+`_` also works at the top level of the `switch`, serving as a catch-all condition:
+-->
+
+`_` 也可用在 `switch` 的顶层，它被当作默认情况：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+switch myStatus {
+| Vacations(_) => Js.log("Have fun!")
+| _ => Js.log("Ok.")
+}
+```
+```js
+if (typeof myStatus === "number" || myStatus.TAG) {
+  console.log("Ok.");
+} else {
+  console.log("Have fun!");
+}
+```
+
+</CodeTab>
+
+<!--
+**Do not** abuse a top-level catch-all condition. Instead, prefer writing out all the cases:
+-->
+
+**不要**滥用顶层 `_`，相反，最好写出所有的情况：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+switch myStatus {
+| Vacations(_) => Js.log("Have fun!")
+| Sabbatical(_) | Sick | Present => Js.log("Ok.")
+}
+```
+```js
+if (typeof myStatus === "number" || myStatus.TAG) {
+  console.log("Ok.");
+} else {
+  console.log("Have fun!");
+}
+```
+
+</CodeTab>
+
+<!--
+Slightly more verbose, but a one-time writing effort. This helps when you add a new variant case e.g. `Quarantined` to the `status` type and need to update the places that pattern match on it. A top-level wildcard here would have accidentally and silently continued working, potentially causing bugs.
+-->
+
+这稍微有些啰嗦，但只是一次性的编写工作。当你为 `status` 类型添加了一个新的变体（例如 `Quarantined`）并需要更新模式匹配的位置时，这将有所帮助。顶层通配符会意外地默默继续工作，可能会造成 bug。
+
+<!--
+### If Clause
+-->
+### If 子句
+
+<!--
+Sometime, you want to check more than the shape of a value. You want to also run some arbitrary check on it. You might be tempted to write this:
+-->
+
+有时，你想检查的不仅仅是一个值的形状，你还想对它进行一些任意的检查。你可能很想这样写：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+switch person1 {
+| Teacher(_) => () // do nothing
+| Student({reportCard: {gpa}}) =>
+  if gpa < 0.5 {
+    Js.log("What's happening")
+  } else {
+    Js.log("Heyo")
+  }
+}
+```
+```js
+if (person1.TAG) {
+  if (person1.reportCard.gpa < 0.5) {
+    console.log("What's happening");
+  } else {
+    console.log("Heyo");
+  }
+}
+```
+
+</CodeTab>
+
+<!--
+`switch` patterns support a shortcut for the arbitrary `if` check, to keep your pattern linear-looking:
+-->
+
+`switch` 模式支持简写的任意 `if` 检查，以保持模式匹配的线性外观：
+
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+switch person1 {
+| Teacher(_) => () // do nothing
+| Student({reportCard: {gpa}}) if gpa < 0.5 =>
+  Js.log("What's happening")
+| Student(_) =>
+  // fall-through, catch-all case
+  Js.log("Heyo")
+}
+```
+```js
+if (person1.TAG) {
+  if (person1.reportCard.gpa < 0.5) {
+    console.log("What's happening");
+  } else {
+    console.log("Heyo");
+  }
+}
+```
+
+</CodeTab>
+
+<!--
+**Note:** ReScript versions < 9.0 had a `when` clause, not an `if` clause.  Rescript 9.0 changed `when` to `if`.  (`when` may still work, but is deprecated.)
+-->
+
+**注意**：ReScript 9.0 版本之前使用的是 `when` 子句而不是 `if` 子句。ReScript 在 9.0 版本将 `when` 改为 `if`。（`when` 可能仍然可用，但已被废弃）
+
+<!--
+### Match on Exceptions
+-->
+### 对异常进行匹配
+
+<!--
+If the function throws an exception (covered later), you can also match on _that_, in addition to the function's normally returned values.
+-->
+
+如果函数抛出了一个异常（稍后会介绍），除了匹配函数的正常返回值外，你还可以对 _异常_ 进行匹配。
+
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+switch List.find(i => i === theItem, myItems) {
+| item => Js.log(item)
+| exception Not_found => Js.log("No such item found!")
+}
+```
+```js
+var exit = 0;
+
+var item;
+
+try {
+  item = List.find(function(i) {
+    return i === theItem;
+  }, myItems);
+  exit = 1;
+}
+catch (raw_exn){
+  var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+  if (exn.RE_EXN_ID === "Not_found") {
+    console.log("No such item found!");
+  } else {
+    throw exn;
+  }
+}
+
+if (exit === 1) {
+  console.log(item);
+}
+```
+
+</CodeTab>
+
+<!--
+### Match on Array
+-->
+### 匹配数组
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let students = ["Jane", "Harvey", "Patrick"]
+switch students {
+| [] => Js.log("There are no students")
+| [student1] =>
+  Js.log("There's a single student here: " ++ student1)
+| manyStudents =>
+  // display the array of names
+  Js.log2("The students are: ", manyStudents)
+}
+```
+```js
+var students = ["Jane", "Harvey", "Patrick"];
+
+var len = students.length;
+
+if (len !== 1) {
+  if (len !== 0) {
+    console.log("The students are: ", students);
+  } else {
+    console.log("There are no students");
+  }
+} else {
+  var student1 = students[0];
+  console.log("There's a single student here: " + student1);
+}
+```
+
+</CodeTab>
+
+<!--
+### Match on List
+-->
+### 匹配列表
+
+<!--
+Pattern matching on list is similar to array, but with the extra feature of extracting the tail of a list (all elements except the first one):
+-->
+
+列表的模式匹配与数组类似，但有个提取列表尾部的额外特性（除第一个元素外的所有元素）：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let rec printStudents = (students) => {
+  switch students {
+  | list{} => () // done
+  | list{student} => Js.log("Last student: " ++ student)
+  | list{student1, ...otherStudents} =>
+    Js.log(student1)
+    printStudents(otherStudents)
+  }
+}
+printStudents(list{"Jane", "Harvey", "Patrick"})
+```
+```js
+function printStudents(_students) {
+  while(true) {
+    var students = _students;
+    if (!students) {
+      return;
+    }
+    var otherStudents = students.tl;
+    var student = students.hd;
+    if (otherStudents) {
+      console.log(student);
+      _students = otherStudents;
+      continue;
+    }
+    console.log("Last student: " + student);
+    return;
+  };
+}
+
+printStudents({
+  hd: "Jane",
+  tl: {
+    hd: "Harvey",
+    tl: {
+      hd: "Patrick",
+      tl: /* [] */0
+    }
+  }
+});
+```
+
+</CodeTab>
+
+
+<!--
+### Small Pitfall
+-->
+### 一些小陷阱
+
+<!--
+**Note**: you can only pass literals (i.e. concrete values) as a pattern, not let-binding names or other things. The following doesn't work as expected:
+-->
+
+**注意**: 你只能传递字面值（即具体的值）作为模式，而不能传递 let 绑定的名称或其他东西，下面的做法不能像预期的那样工作：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let coordinates = (10, 20, 30)
+let centerY = 20
+switch coordinates {
+| (x, centerY, _) => Js.log(x)
+}
+```
+```js
+var coordinates = [10, 20, 30];
+var centerY = 20;
+
+console.log(10);
+```
+
+</CodeTab>
+
+<!--
+A first time ReScript user might accidentally write that code, assuming that it's matching on `coordinates` when the second value is of the same value as `centerY`. In reality, this is interpreted as matching on coordinates and assigning the second value of the tuple to the name `centerY`, which isn't what's intended.
+-->
+
+第一次使用 ReScript 的人可能会不小心写下这段代码，认为 `coordinates` 的第二个值与 `centerY` 相同的时候会匹配 `coordinates`。但实际上这会被解释为在 `coordinates` 上进行匹配，并将元组的第二个值赋给 `centerY`，这不是我们想要的结果。
+
+<!--
+## Exhaustiveness Check
+-->
+## 穷尽性检查
+
+<!--
+As if the above features aren't enough, ReScript also provides arguably the most important pattern matching feature: **compile-time check of missing patterns**.
+-->
+
+如果上述特性还不够，ReScript 还提供了可以说是最重要的模式匹配特性：**缺失模式的编译时检查**。
+
+<!--
+Let's revisit one of the above examples:
+-->
+
+让我们重新回到上面的例子：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let message = switch person1 {
+| Teacher({name: "Mary" | "Joe"}) =>
+  `Hey, still going to the party on Saturday?`
+| Student({name, reportCard: {passing: true, gpa}}) =>
+  `Congrats ${name}, nice GPA of ${Js.Float.toString(gpa)} you got there!`
+| Student({
+    reportCard: {gpa: 0.0},
+    status: Vacations(daysLeft) | Sabbatical(daysLeft)
+  }) =>
+  `Come back in ${Js.Int.toString(daysLeft)} days!`
+| Student({status: Sick}) =>
+  `How are you feeling?`
+| Student({name}) =>
+  `Good luck next semester ${name}!`
+}
+```
+```js
+if (person1.TAG) {
+  var match$1 = person1.status;
+  var name = person1.name;
+  var match$2 = person1.reportCard;
+  if (match$2.passing) {
+    "Congrats " + name + ", nice GPA of " + match$2.gpa.toString() + " you got there!";
+  } else if (typeof match$1 === "number") {
+    if (match$1 !== 0) {
+      "Good luck next semester " + name + "!";
+    } else {
+      "How are you feeling?";
+    }
+  } else if (person1.reportCard.gpa !== 0.0) {
+    "Good luck next semester " + name + "!";
+  } else {
+    "Come back in " + match$1._0.toString() + " days!";
+  }
+} else {
+  switch (person1.name) {
+    case "Joe":
+    case "Mary":
+      break;
+    default:
+      throw {
+        RE_EXN_ID: "Match_failure",
+        _1: [
+          "playground.res",
+          13,
+          0
+        ],
+        Error: new Error()
+      };
+  }
+}
+```
+
+</CodeTab>
+
+<!--
+Did you see what we removed? This time, we've omitted the handling of the case where `person1` is `Teacher({name})` when `name` isn't Mary or Joe.
+-->
+
+你看到我们删除了什么吗？这一次，我们省略了对 `person1` 是 `Teacher({name})` 而名字不是 Mary 或 Joe 的情况的处理。
+
+<!--
+Failing to handle every scenario of a value likely constitutes the majority of program bugs out there. This happens very often when you refactor a piece of code someone else wrote. Fortunately for ReScript, the compiler will tell you so:
+-->
+
+未能处理一个值的每一种情况可能是 bug 主要来源。当你重构别人编写的代码时，这种事经常发生。幸运的是，在 ReScript 中遇到这种情况时，编译器会告诉你：
+
+```
+Warning 8: this pattern-matching is not exhaustive.
+Here is an example of a value that is not matched:
+Some({name: ""})
+```
+
+<!--
+**BAM**! You've just erased an entire category of important bugs before you even ran the code. In fact, this is how most of nullable values is handled:
+-->
+
+**砰**！在你运行代码之前，你就已经抹去了一整类的 bug。事实上，这就是大多数可空值的处理方式：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let myNullableValue = Some(5)
+
+switch myNullableValue {
+| Some(v) => Js.log("value is present")
+| None => Js.log("value is absent")
+}
+```
+```js
+var myNullableValue = 5;
+
+if (myNullableValue !== undefined) {
+  console.log("value is present");
+} else {
+  console.log("value is absent");
+}
+```
+
+</CodeTab>
+
+<!--
+If you don't handle the `None` case, the compiler warns. No more `undefined` bugs in your code!
+-->
+
+如果你不处理 `None` 的情况，编译器会发出警告。你的代码中不会再有 `undefined` 之类的 bug 了！
+
+<!--
+## Conclusion & Tips & Tricks
+-->
+## 结论，技巧与诀窍
+
+<!--
+Hopefully you can see how pattern matching is a game changer for writing correct code, through the concise destructuring syntax, the proper conditions handling of `switch`, and the static exhaustiveness check.
+-->
+
+希望你能看到模式匹配是如何改变编写正确代码的游戏规则的，通过简明的解构语法，`switch` 中恰当的条件处理，以及静态的穷尽性检查。
+
+<!--
+Below is some advice:
+-->
+
+下面是一些建议：
+
+<!--
+Avoid using the wildcard `_` unnecessarily.  Using the wildcard `_` will bypass the compiler's exhaustiveness check.  Consequently, the compiler will not be able to notify you of probable errors when you add a new case to a variant. Try only using `_` against infinite possibilities, e.g. string, int, etc.
+-->
+
+避免不必要地使用通配符 `_`，使用 `_` 将绕过编译器的穷尽性检查。因此，当你在变体中增加一个新的 case 时，编译器将无法提示可能出现的错误。试着只用 `_` 应对无限的可能性，例如字符串，整数，等等。
+
+<!--
+Use the `if` clause sparingly.
+-->
+
+谨慎地使用 `if` 子句。
+
+<!--
+**Flatten your pattern-match whenever you can**. This is a real bug remover. Here's a series of examples, from worst to best:
+-->
+
+**尽可能扁平化你的模式匹配**。这样做能最大程度地消除 bug，下面是一系列代码实例，从坏到好：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let optionBoolToBool = opt => {
+  if opt == None {
+    false
+  } else if opt === Some(true) {
+    true
+  } else {
+    false
+  }
+}
+```
+```js
+function optionBoolToBool(opt) {
+  if (opt === undefined) {
+    return false;
+  } else {
+    return opt === true;
+  }
+}
+```
+
+</CodeTab>
+
+<!--
+Now that's just silly =). Let's turn it into pattern-matching:
+-->
+
+这样做有点蠢，让我们把它变成模式匹配：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let optionBoolToBool = opt => {
+  switch opt {
+  | None => false
+  | Some(a) => a ? true : false
+  }
+}
+```
+```js
+function optionBoolToBool(opt) {
+  if (opt !== undefined && opt) {
+    return true;
+  } else {
+    return false;
+  }
+}
+```
+
+</CodeTab>
+
+<!--
+Slightly better, but still nested. Pattern-matching allows you to do this:
+-->
+
+稍微好一点了，但仍然存在嵌套，模式匹配允许你这样做：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let optionBoolToBool = opt => {
+  switch opt {
+  | None => false
+  | Some(true) => true
+  | Some(false) => false
+  }
+}
+```
+```js
+function optionBoolToBool(opt) {
+  if (opt !== undefined && opt) {
+    return true;
+  } else {
+    return false;
+  }
+}
+```
+
+</CodeTab>
+
+<!--
+Much more linear-looking! Now, you might be tempted to do this:
+-->
+
+看起来更线性了！现在，你可能很想这样做：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let optionBoolToBool = opt => {
+  switch opt {
+  | Some(true) => true
+  | _ => false
+  }
+}
+```
+```js
+function optionBoolToBool(opt) {
+  if (opt !== undefined && opt) {
+    return true;
+  } else {
+    return false;
+  }
+}
+```
+
+</CodeTab>
+
+<!--
+Which is much more concise, but kills the exhaustiveness check mentioned above; refrain from using that. This is the best:
+-->
+
+这确实更简洁了，但会破坏上面提到的穷尽性检查；尽量不要这样做。下面是最好的写法：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let optionBoolToBool = opt => {
+  switch opt {
+  | Some(trueOrFalse) => trueOrFalse
+  | None => false
+  }
+}
+```
+```js
+function optionBoolToBool(opt) {
+  if (opt !== undefined) {
+    return opt;
+  } else {
+    return false;
+  }
+}
+```
+
+</CodeTab>
+
+<!--
+Pretty darn hard to make a mistake in this code at this point! Whenever you'd like to use an if-else with many branches, prefer pattern matching instead. It's more concise and [performant](variant#design-decisions) too.
+-->
+
+现在要想在这段代码中犯错是非常困难的！当你想使用一个有许多分支的 if-else 时，最好用模式匹配来代替。它更简明，而且[性能也更好](variant#design-decisions)。

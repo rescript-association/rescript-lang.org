@@ -1,0 +1,198 @@
+---
+title: "引言"
+description: "The hows and whys of ReScript"
+canonical: "/docs/manual/latest/introduction"
+---
+
+# ReScript
+
+<!--
+Ever wanted a language like JavaScript, but without the warts, with a great type system, and with a lean build toolchain that doesn't waste your time?
+-->
+
+你是否曾想过像 JavaScript 一样但没有缺陷的语言，有一个出色的类型系统，有一个不浪费你时间的精简构建工具链？
+
+<!--
+ReScript looks like JS, acts like JS, and compiles to the highest quality of clean, readable and performant JS, directly runnable in browsers and Node.
+-->
+
+ReScript 看起来像 JS，运行起来像 JS，并且可以编译成干净、可读且高效的高质量 JS，可以直接在浏览器和 Node 中运行。
+
+<!--
+**This means you can pick up ReScript and access the vast JavaScript ecosystem and tooling as if you've known ReScript for a long time**!
+-->
+
+**这意味着你随手拿起 ReScript 就能访问庞大的 JavaScript 生态和工具，就好像 ReScript 是你的老朋友！**
+
+<!--
+**ReScript is the language for folks who don't necessarily love JavaScript, but who still acknowledge its importance**.
+-->
+
+**ReScript 是为那些不一定喜欢 JavaScript，但仍然承认其重要性的人准备的语言。**
+
+<!--
+## Difference vs TypeScript
+-->
+## 和 TypeScript 的区别
+
+<!--
+We respect TypeScript very much and think that it's a positive force in the JavaScript ecosystem. ReScript shares some of the same goals as TypeScript, but is different enough regarding some important nuances:
+-->
+
+我们非常尊重 TypeScript，认为它是 JavaScript 生态中的一支积极力量。ReScript 和 TypeScript 有一些相同的目标，但在一些重要的细节上又有足够的不同：
+
+<!--
+- TypeScript's (admittedly noble) goal is to cover the entire JavaScript feature set and more. **ReScript covers only a curated subset of JavaScript**. For example, we emphasize plain data + functions over classes, clean [pattern matching](pattern-matching-destructuring.md) over fragile `if`s and virtual dispatches, [proper data modeling](variant.md) over string abuse, etc. JavaScript supersets will only grow larger over time; ReScript doesn't. \*
+
+- Consequently, TypeScript's type system is necessarily complex, pitfalls-ridden, potentially requires tweaking, sometimes slow, and requires quite a bit of noisy annotations that often feel like manual bookkeeping rather than clear documentation. In contrast, ReScript's type system:
+  - Is deliberately curated to be a simple subset most folks will have an easier time to use.
+  - Has **no** pitfalls, aka the type system is "sound" (the types will always be correct). E.g. If a type isn't marked as nullable, its value will never lie and let through some `undefined` value silently. **ReScript code has no null/undefined errors**.
+  - Is the same for everyone. No knobs, no bikeshedding opportunity.
+  - Runs extremely fast precisely thanks to its simplicity and curation. It's one of the fastest compiler & build system toolchains for JavaScript development.
+  - **Doesn't need type annotations**. Annotate as much or as little as you'd like. The types are inferred by the language (and, again, are guaranteed correct).
+
+- Migrating to TypeScript is done "breadth-first," whereas migrating to ReScript is done "depth-first." You can convert your codebase to TypeScript by "turning it on" for all files and annotate here and there; but how much type safety did you gain? How do you measure it? Type errors can still slip in and out of the converted pieces. For ReScript, our interop features draw clear boundaries: there's pure ReScript code, and there's JS interop code. Every piece of converted ReScript code is 100% clean. You'd convert file by file and each conversion increases your safety monotonically.
+-->
+
+- TypeScript 的目标（诚然这是个伟大的目标）是在覆盖整个 JavaScript 语言特性的基础上提供更多的特性。**ReScript只覆盖了一个精心挑选的 JavaScript 子集**。 比方说我们强调简单的 _数据+函数_ 而不是类；简洁的[模式匹配](/docs-cn/manual/latest/pattern-matching-destructuring.md)而不是脆弱的的 `if` 和动态分发；[合适的数据模型](/docs-cn/manual/latest/variant.md)而不是滥用字符串，等等。JavaScript 的超集只会越来越大；而 ReScript 不会 \*
+
+
+- 因此，TypeScript 的类型系统必然是复杂的，陷阱重重，可能需要微调，有时很慢，而且需要相当多的嘈杂标注，这些标注往往感觉像手工“记录”而不是清晰的文档。相比之下，ReScript 的类型系统：
+  - 精心选择了一个简单的子集，让大多数人更容易使用。
+  - **没有**陷阱，也就是说，ReScript 的类型系统是健全的（类型总是正确的）。例如，如果一个类型没有被标记为 nullable，它的值永远不会说谎，并不会让一些 `undefined` 值悄悄地通过。**ReScript 代码没有 null/undefined 错误**。
+  - 对每个人来说都是一样的，这样就没有引发不必要争论的机会。
+  - 运行速度极快，这归功于它的的简单性和精心设计。它是 JavaScript 开发中最快的编译器和构建系统工具链之一。
+  - **不需要类型标注**。你想标注多少就标注多少。类型是由语言推导出来的（并且同样保证正确）。
+
+- 如果说迁移到 TypeScript 是“广度优先”的过程，那么迁移到 ReScript 就是“深度优先”的过程。你为所有文件“打开” TypeScript 来将代码库转移到 TypeScript，然后这里标注一点那里标注一点，但你获得了多少类型安全？你如何衡量它？类型错误仍然可以从转换后的文件溜进溜出。对于 ReScript，我们的互操作特性划定了明确的界限：这里是纯 ReScript 代码，那里是 JS 互操作代码。每一段转换后的 ReScript 代码都是 100% 干净的。你可以逐个转换文件，每一下都能提升安全性
+
+<!--
+\* When you absolutely need to write or interoperate with free-for-all JavaScript, we expose enough escape hatches for you.
+-->
+
+\* 当你绝对需要编写或与自由的 JavaScript 互操作时，我们为你敞开了“逃生通道”。
+
+<!--
+## Other Highlights
+-->
+## 其他亮点
+
+<!--
+Aside from the aforementioned simple, robust and fast type system, ReScript presents a few more advantages.
+-->
+
+除了先前提到的简单、健壮且快速的类型系统外，ReScript 还具有一些其他优势。
+
+<!--
+### Faster than JavaScript
+-->
+### 比 JavaScript 更快
+
+<!--
+JavaScript's been aggressively optimized by talented engineers over a long span. Unfortunately, even for seasoned JS devs, it can be hard to know how to properly leverage JS's performance. ReScript's type system and compiler naturally guides you toward writing code that's very often performant by default, with good leverage of various Just-In-Time optimizations (hidden classes, inline caching, avoiding deopts, etc).
+-->
+
+在很长一段时间里，天才工程师们一直在积极地优化 JavaScript。不幸的是，即使是经验丰富的 JS 开发者，也很难知道如何正确利用 JS 的性能。ReScript 的类型系统和编译器可以很自然地引导你编写默认情况下性能良好的代码，并很好地利用各种 JIT 优化（隐藏类，内联缓存，避免JIT的Deopt等）。
+
+<!--
+A widespread adage to write fast JavaScript code is to write as if there's a type system (in order to trigger JS engines' good optimization heuristics); ReScript gives you a real one and generates code that's friendly to optimizations by default.
+-->
+
+编写快速 JavaScript 代码的一个广为流传的格言是，要像有一个类型系统一样编写（以便触发 JS 引擎的启发式优化）；ReScript 为你提供一个真正的类型系统，并且生成的代码默认对优化很友好。
+
+<!--
+### High Quality Dead Code Elimination
+-->
+### 高质量的死代码消除
+
+<!--
+The JavaScript ecosystem is very reliant on dependencies. Shipping the final product inevitably drags in a huge amount of code, lots of which the project doesn't actually use. These regions of dead code impact loading, parsing and interpretation speed. ReScript provides powerful dead code elimination at all levels:
+-->
+
+JavaScript 生态非常依赖于依赖库。发布最终产品时不可避免地会拖入大量代码，其中的很多实际上不会被项目使用。这些“死代码”会影响加载、解析和解释速度。ReScript 在所有层面上提供强大的死代码消除功能：
+
+<!--
+- Function- and module-level code elimination is facilitated by the well-engineered type system and purity analysis.
+- At the global level, ReScript generates code that is naturally friendly to dead code elimination done by bundling tools such as [Rollup](https://github.com/rollup/rollup) and [Closure Compiler](https://developers.google.com/closure/compiler/), after its own sophisticated elimination pass.
+- The same applies for ReScript's own tiny runtime (which is written in ReScript itself).
+-->
+
+- 完善的类型系统和纯度分析（purity analysis）促进了函数和模块级死代码的消除
+- 在全局层面上，在经过自身复杂的消除 pass 后，ReScript 生成的代码对打包工具（如 [Rollup](https://github.com/rollup/rollup) 和 [Closure Compiler](https://developers.google.com/closure/compiler/)）所做的死代码消除天然友好
+- 这同样适用于 ReScript 自己的小运行时（它是由 ReScript 自己编写的）
+
+<!--
+### Tiny JS Output
+-->
+### 小巧的 JS 输出
+
+<!--
+A `Hello world` ReScript program generates **20 bytes** of JS code. Additionally, the standard library pieces you require in are only included when needed.
+-->
+
+ReScript 的 `Hello World` 程序只会生成 **20 字节**的 JS 代码。此外，你所需要的标准库只有在需要时才会被包含进去。
+
+<!--
+### Fast Iteration Loop
+-->
+### 快速迭代循环
+
+<!--
+ReScript's build time is **one or two orders of magnitude** faster than alternatives. In its watcher mode, the build system usually finishes before you switch screen from the editor to the terminal tab (two digits of milliseconds). A fast iteration cycle reduces the need of keeping one's mental state around longer; this in turn allows one to stay in the flow longer and more often.
+-->
+
+ReScript 的构建时间比替代方案快**一到两个数量级**。在其观察者模式下，构建系统通常在你将屏幕从编辑器切换为终端标签之前完成构建（十几或几十毫秒）。快速的迭代周期减少了保持一个人的精神状态的需要；这反过来又让一个人能够更长时间、更频繁地处于开发流程中。
+
+<!--
+### Readable Output & Great Interop
+-->
+### 可读的输出和良好的互操作性
+
+<!--
+Unreadable JavaScript code generated from other compiled-to-js languages makes it so that it could be, practically speaking:
+
+- Hard to debug (cryptic stack trace, mangled variable names)
+- Hard to learn from (non-straightforward mapping of concepts from one language to another)
+- Hard to profile for performance (unclear what runtime performance cost there is)
+- Hard to integrate with existing hand-written JS code
+-->
+
+其他编译到 JS 的语言生成不可读的 JavaScript 代码，这使得它们：
+- 难以调试（隐秘的堆栈跟踪，混乱的变量名）
+- 难以学习（从一种语言到另一种语言的概念映射非常不直观）
+- 难以进行性能调优（不清楚有哪些运行时的性能开销）
+- 难以与现有的手写 JS 代码整合
+
+<!--
+ReScript's JS output is very readable. This is especially important while learning, where users might want to understand how the code's compiled, and to audit for bugs.
+-->
+
+ReScript 的 JS 输出可读性非常好，这在学习时尤其重要，因为用户可能想了解代码是如何编译的，以及进行 bug 审查。
+
+<!--
+This characteristic, combined with a fully-featured JS interop system, allows ReScript code to be inserted into an existing JavaScript codebase almost unnoticed.
+-->
+
+这一特点与功能完善的 JS 互操作系统相结合，允许 ReScript 代码无缝插入到现有的 JavaScript 代码库中。
+
+<!--
+### Preservation of Code Structure
+-->
+### 保持代码结构
+
+<!--
+ReScript maps one source file to one JavaScript output file. This eases the integration of existing tools such as bundlers and test runners. You can even start writing a single file without much change to your build setup. Each file's code structure is approximately preserved, too.
+-->
+
+ReScript 将一个源文件映射到一个 JavaScript 输出文件，这简化了现有工具（如打包工具和测试运行器）的整合。你甚至可以直接开始编写一个文件，而不需要对你的构建配置做太大的改变。每个文件的代码结构也大致保留了下来。
+
+<!--
+## Conclusion
+-->
+## 总结
+
+<!--
+We hope the above gave you enough of an idea of ReScript and its differentiators。Feel free to [try it online](/try) to get a feel!
+-->
+
+我们希望上述内容能让你对 ReScript 及其与众不同之处有足够的了解。欢迎通过我们的[在线编译工具](/try)来体验 ReScript！

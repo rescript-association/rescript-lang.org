@@ -1,0 +1,69 @@
+---
+title: "使用非法的标识符"
+description: "Handling (JS) naming collisions in ReScript"
+canonical: "/docs/manual/latest/use-illegal-identifier-names"
+---
+
+<!--
+# Use Illegal Identifier Names
+-->
+# 使用非法的标识符
+
+<!--
+Sometime, for e.g. a let binding or a record field, you might want to use:
+- A capitalized name.
+- A name that contains illegal characters (e.g. emojis, hyphen, space).
+- A name that's one of ReScript's reserved keywords.
+-->
+
+有时对于一个 let 绑定或一个 record 字段，你可能想使用：
+- 大写的名字。
+- 包含非法字符的名字（如：表情符号、连字符、空格）。
+- 属于 ReScript 保留关键字的名字。
+
+<!--
+We provide an escape hatch syntax for these cases:
+-->
+
+我们为这些情况提供了一个语法：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let \"my-🍎" = 10
+
+type element = {
+  \"aria-label": string
+}
+
+let myElement = {
+  \"aria-label": "close"
+}
+
+let label = myElement.\"aria-label"
+
+let calculate = (~\"Props") => {
+  \"Props" + 1
+}
+```
+```js
+var my$$unknown$unknown$unknown$unknown = 10;
+
+var myElement = {
+  "aria-label": "close"
+};
+
+var label = myElement["aria-label"];
+
+function calculate(Props) {
+  return Props + 1 | 0;
+}
+```
+
+</CodeTab>
+
+<!--
+See the output. **Use them only when necessary**, for interop with JavaScript. This is a last-resort feature. If you abuse this, many of the compiler guarantees will go away.
+-->
+
+请看输出。**仅在必要时使用它们**，以便与 JavaScript 互操作。这是一个不得已而为之的功能。如果你滥用它，许多编译器的保证将消失。

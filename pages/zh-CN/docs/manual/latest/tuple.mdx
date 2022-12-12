@@ -1,0 +1,153 @@
+---
+title: "元组"
+description: "Tuple types and values in ReScript"
+canonical: "/docs/manual/latest/tuple"
+---
+
+<!--
+# Tuple
+-->
+# 元组
+
+<!--
+Tuples are a ReScript-specific data structure that don't exist in JavaScript. They are:
+-->
+
+元组是一种 ReScript 特有的数据结构，在 JavaScript 中不存在。它们是：
+
+<!--
+- immutable
+- ordered
+- fix-sized at creation time
+- heterogeneous (can contain different types of values)
+-->
+
+- 不可变的
+- 有序的
+- 在创建时固定大小
+- 异构的（可以包含不同类型的值）
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let ageAndName = (24, "Lil' ReScript")
+let my3dCoordinates = (20.0, 30.5, 100.0)
+```
+```js
+var ageAndName = [24, "Lil' ReScript"];
+var my3dCoordinates = [20.0, 30.5, 100.0];
+```
+
+</CodeTab>
+
+<!--
+Tuples' types can be used in type annotations as well. Tuple types visually resemble tuples values.
+-->
+
+元组的类型也可以在类型标注中使用，元组类型看起来和元组值很像。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res prelude
+let ageAndName: (int, string) = (24, "Lil' ReScript")
+// a tuple type alias
+type coord3d = (float, float, float)
+let my3dCoordinates: coord3d = (20.0, 30.5, 100.0)
+```
+```js
+var ageAndName = [24, "Lil' ReScript"];
+var my3dCoordinates = [20.0, 30.5, 100.0];
+```
+</CodeTab>
+
+<!--
+**Note**: there's no tuple of size 1. You'd just use the value itself.
+-->
+
+**注意**：没有大小为 1 的元组，你只需使用值本身。
+
+<!--
+## Usage
+-->
+## 使用
+
+<!--
+To get a specific member of a tuple, destructure it:
+-->
+
+要获取元组的特定成员，可以对元组进行解构：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let (_, y, _) = my3dCoordinates // now you've retrieved y
+```
+```js
+var y = 30.5;
+```
+
+</CodeTab>
+
+<!--
+The `_` means you're ignoring the indicated members of the tuple.
+-->
+
+`_` 意味着你要忽略元组中的指定成员。
+
+<!--
+Tuples aren't meant to be updated mutatively. You'd create new ones by destructuring the old ones:
+-->
+
+元组无法通过修改来更新，你可以通过解构旧的元组来创建新的元组：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let coordinates1 = (10, 20, 30)
+let (c1x, _, _) = coordinates1
+let coordinates2 = (c1x + 50, 20, 30)
+```
+```js
+var coordinates1 = [10, 20, 30];
+var c1x = 10;
+var coordinates2 = [60, 20, 30];
+```
+
+</CodeTab>
+
+
+<!--
+## Tips & Tricks
+-->
+## 技巧和诀窍
+
+<!--
+You'd use tuples in handy situations that pass around multiple values without too much ceremony. For example, to return many values:
+-->
+
+你可以在方便的情况下使用元组，随意传递多个值。例如，返回多个值：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let getCenterCoordinates = () => {
+  let x = doSomeOperationsHere()
+  let y = doSomeMoreOperationsHere()
+  (x, y)
+}
+```
+```js
+function getCenterCoordinates(param) {
+  var x = doSomeOperationsHere(undefined);
+  var y = doSomeMoreOperationsHere(undefined);
+  return [x, y];
+}
+```
+
+</CodeTab>
+
+<!--
+Try to keep the usage of tuple **local**. For data structures that are long-living and passed around often, prefer a **record**, which has named fields.
+-->
+
+尽量**局部地**使用元组，对于那些长期存在并经常需要传递的数据结构，最好使用**记录（record）**，它有命名的字段。

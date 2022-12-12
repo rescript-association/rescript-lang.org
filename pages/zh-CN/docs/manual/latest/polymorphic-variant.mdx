@@ -1,0 +1,656 @@
+---
+title: "多态变体"
+description: "The Polymorphic Variant data structure in ReScript"
+canonical: "/docs/manual/latest/polymorphic-variant"
+---
+
+<!--
+# Polymorphic Variant
+-->
+# 多态变体
+
+<!--
+Polymorphic variants (or poly variant) are a cousin of [variant](variant). With these differences:
+-->
+
+多态变体是[变体](variant)的表亲。它们有这些不同之处：
+
+<!--
+- They start with a `#` and the constructor name doesn't need to be capitalized.
+- They don't require an explicit type definition. The type is inferred from usage.
+- Values of different poly variant types can share the constructors they have in common (aka, poly variants are "structurally" typed, as opposed to ["nominally" typed](variant#variant-types-are-found-by-field-name)).
+-->
+
+- 多态变体以 `#` 开头，构造器的名字无需首字母大写。
+- 多态变体不需要显式的类型定义，类型是由使用情况推断出来的。
+- 不同多态变体可以共享它们共同的构造器（也就是说，多态变体是“结构式”的类型，而不是[“名义式”](variant#variant-types-are-found-by-field-name)的类型）。
+
+<!--
+They're a convenient and useful alternative to regular variants, but should **not** be abused. See the drawbacks at the end of this page.
+-->
+
+它们是普通变体的更便利的替代，但**不应该**被滥用，见本页末尾的缺点。
+
+<!--
+## Creation
+-->
+## 创建多态变体
+
+<!--
+We provide 3 syntaxes for a poly variant's constructor:
+-->
+
+我们为多态变体构造器提供了 3 种语法：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let myColor = #red
+let myLabel = #"aria-hidden"
+let myNumber = #7
+```
+
+```js
+var myColor = "red";
+var myLabel = "aria-hidden";
+var myNumber = 7;
+```
+
+</CodeTab>
+
+<!--
+**Take a look at the output**. Poly variants are _great_ for JavaScript interop. For example, you can use it to model JavaScript string and number enums like TypeScript, but without confusing their accidental usage with regular strings and numbers.
+-->
+
+**看一下输出**。多态变体对 JavaScript 互操作是**很有用的**。例如，你可以用它来为 JavaScript 的字符串和数字枚举建模，就像 TypeScript 一样，但不会把这种用法与普通的字符串和数字搞混。
+
+<!--
+`myColor` uses the common syntax. The second and third syntaxes are to support expressing strings and numbers more conveniently. We allow the second one because otherwise it'd be invalid syntax since symbols like `-` and others are usually reserved.
+-->
+
+`myColor` 使用的是一般语法。第二和第三种语法是为了更方便地表达字符串和数字。我们允许第二种语法，因为不这样做的话它将是无效的的语法，因为像 `-` 和其他符号通常是保留的。
+
+<!--
+## Type Declaration
+-->
+# 类型声明
+
+<!--
+Although **optional**, you can still pre-declare a poly variant type:
+-->
+
+虽然类型声明是**可选的**，但你仍然可以预先声明一个多态变体类型：
+
+```res
+// Note the surrounding square brackets, and # for constructors
+type color = [#red | #green | #blue]
+```
+
+<!--
+These types can also be inlined, unlike for regular variant:
+-->
+
+与普通变体不同，这些类型可以被内联：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let render = (myColor: [#red | #green | #blue]) => {
+  switch myColor {
+  | #blue => Js.log("Hello blue!")
+  | #red
+  | #green => Js.log("Hello other colors")
+  }
+}
+```
+
+```js
+function render(myColor) {
+  if (myColor === "green" || myColor === "red") {
+    console.log("Hello other colors");
+  } else {
+    console.log("Hello blue!");
+  }
+}
+```
+
+</CodeTab>
+
+<!--
+**Note**: because a poly variant value's type definition is **inferred** and not searched in the scope, the following snippet won't error:
+-->
+
+**注意**：因为多态变体值的类型定义是**推断**出来的，而不是在作用域内搜索得到的，所以下面的代码片段不会报错：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type color = [#red | #green | #blue]
+
+let render = myColor => {
+  switch myColor {
+  | #blue => Js.log("Hello blue!")
+  | #green => Js.log("Hello green!")
+  // works!
+  | #yellow => Js.log("Hello yellow!")
+  }
+}
+```
+
+```js
+function render(myColor) {
+  if (myColor === "yellow") {
+    console.log("Hello yellow!");
+  } else if (myColor === "green") {
+    console.log("Hello green!");
+  } else {
+    console.log("Hello blue!");
+  }
+}
+```
+
+</CodeTab>
+
+<!--
+That `myColor` parameter's type is inferred to be `#red`, `#green` or `#yellow`, and is unrelated to the `color` type. If you intended `myColor` to be of type `color`, annotate it as `myColor: color` in any of the places.
+-->
+
+`myColor` 参数的类型被推断为 `#red`，`#green` 或 `#yellow`，而且与 `color` 类型无关。如果你想让 `myColor` 是 `color` 类型，请在任何地方都将它标注为 `myColor: color`。
+
+<!--
+## Constructor Arguments
+-->
+## 构造器参数
+
+<!--
+This is similar to a regular variant's [constructor arguments](variant#constructor-arguments):
+-->
+
+它和普通变体的[构造器参数](variant#constructor-arguments)类似：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type account = [
+  | #Anonymous
+  | #Instagram(string)
+  | #Facebook(string, int)
+]
+
+let me: account = #Instagram("Jenny")
+let him: account = #Facebook("Josh", 26)
+```
+
+```js
+var me = {
+  NAME: "Instagram",
+  VAL: "Jenny"
+};
+
+var him = {
+  NAME: "Facebook",
+  VAL: [
+    "Josh",
+    26
+  ]
+};
+```
+
+</CodeTab>
+
+<!--
+### Combine Types and Pattern Match
+-->
+### 类型合并与模式匹配
+
+<!--
+You can use poly variant types within other poly variant types to create a sum of all constructors:
+-->
+
+你可以在多态变体类型中使用其他多态变体类型，来创建包含所有构造体的和类型：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type red = [#Ruby | #Redwood | #Rust]
+type blue = [#Sapphire | #Neon | #Navy]
+
+// Contains all constructors of red and blue.
+// Also adds #Papayawhip
+type color = [red | blue | #Papayawhip]
+
+let myColor: color = #Ruby
+```
+
+```js
+var myColor = "Ruby";
+```
+
+</CodeTab>
+
+<!--
+There's also some special [pattern matching](./pattern-matching-destructuring) syntax to match on constructors defined in a specific poly variant type:
+-->
+
+还有一些特殊的[模式匹配](./pattern-matching-destructuring)语法，用于匹配在特定多态变体类型中定义的构造器：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// 续前一个例子...
+
+switch myColor {
+| #...blue => Js.log("This blue-ish")
+| #...red => Js.log("This red-ish")
+| other => Js.log2("Other color than red and blue: ", other)
+}
+```
+
+```js
+var other = myColor;
+
+if (other === "Neon" || other === "Navy" || other === "Sapphire") {
+  console.log("This is blue-ish");
+} else if (other === "Rust" || other === "Ruby" || other === "Redwood") {
+  console.log("This is red-ish");
+} else {
+  console.log("Other color than red and blue: ", other);
+}
+```
+
+</CodeTab>
+
+<!--
+This is a shorter version of:
+-->
+
+这是下面代码的一个较短的版本：
+
+```res
+switch myColor {
+| #Sapphire | #Neon | #Navy => Js.log("This is blue-ish")
+| #Ruby | #Redwood | #Rust => Js.log("This is red-ish")
+| other => Js.log2("Other color than red and blue: ", other)
+}
+```
+
+<!--
+## Structural Sharing
+-->
+## 结构共享
+
+<!--
+Since poly variants value don't have a source of truth for their type, you can write such code:
+-->
+
+因为多态变体值的类型没有一个真正的来源，所以你可以写这样的代码：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type preferredColors = [#white | #blue]
+
+let myColor: preferredColors = #blue
+
+let displayColor = v => {
+  switch v {
+  | #red => "Hello red"
+  | #green => "Hello green"
+  | #white => "Hey white!"
+  | #blue => "Hey blue!"
+  }
+}
+
+Js.log(displayColor(myColor))
+```
+
+```js
+var myColor = "blue";
+
+function displayColor(v) {
+  if (v === "white") {
+    return "Hey white!";
+  } else if (v === "red") {
+    return "Hello red";
+  } else if (v === "green") {
+    return "Hello green";
+  } else {
+    return "Hey blue!";
+  }
+}
+
+console.log(displayColor("blue"));
+```
+
+</CodeTab>
+
+<!--
+With a regular variant, the line `displayColor(myColor)` would fail, since it'd complain that the type of `myColor` doesn't match the type of `v`. No problem with poly variant.
+-->
+
+如果是普通的变体，在 `displayColor(myColor)` 这一行就会报错，类型系统会抱怨 `myColor` 的类型和 `v` 的类型不匹配。用多态变体就没有问题。
+
+<!--
+## JavaScript Output
+-->
+## JavaScript 输出
+
+<!--
+Poly variants are great for JavaScript interop! You can share their values to JS code, or model incoming JS values as poly variants.
+-->
+
+多态变体十分适合用于 JavaScript 互操作！你可以将它们的值共享给 JS 代码，或者将传入的 JS 值建模为多态变体。
+
+<!--
+- `#red` and `#"I am red 😃"` compile to JavaScipt `"red"` and `"I am red 😃"`.
+- `#1` compiles to JavaScript `1`.
+- Poly variant constructor with 1 argument, like `Instagram("Jenny")` compile to a straightforward `{NAME: "Instagram", VAL: "Jenny"}`. 2 or more arguments like `#Facebook("Josh", 26)` compile to a similar object, but with `VAL` being an array of the arguments.
+-->
+
+- `#red` 和 `#"I am red 😃"` 编译为 JavaScript 的 `"red"` 和 `"I am red 😃"`
+- `#1` 编译为 JavaScript `1`
+- 像 `Instagram("Jenny")` 的单参数多态变体构造器直接编译为 `{NAME: "Instagram", VAL: "Jenny"}`。像 `#Facebook("Josh", 26)` 拥有 2 个或者更多参数的构造器会编译成一个类似的对象，但是 `VAL` 是一个由参数组成的数组
+
+<!--
+### Bind to Functions
+-->
+### 绑定到函数
+
+<!--
+For example, let's assume we want to bind to `Intl.NumberFormat` and want to make sure that our users only pass valid locales, we could define an external binding like this:
+-->
+
+例如，假设我们想绑定到 `Intl.NumberFormat`，并想确保我们的用户只传递有效的语言环境（locale），我们可以这样定义一个外部绑定：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type t
+
+@scope("Intl") @val
+external makeNumberFormat: ([#"de-DE" | #"en-GB" | #"en-US"]) => t = "NumberFormat"
+
+let intl = makeNumberFormat(#"de-DE")
+```
+
+```js
+var intl = Intl.NumberFormat("de-DE");
+```
+
+</CodeTab>
+
+<!--
+The JS output is identical to handwritten JS, but we also get to enjoy type errors if we accidentally write `makeNumberFormat(#"de-DR")`.
+-->
+
+JS 输出与手写 JS 相同，但如果我们不小心写了 `makeNumberFormat(#"de-DR")`，我们也会遇到类型错误。
+
+<!--
+More advanced usage examples for poly variant interop can be found in [Bind to JS Function](bind-to-js-function#constrain-arguments-better).
+-->
+
+更多关于多态变体互操作的高级用例参见[绑定到 JS 函数](bind-to-js-function#constrain-arguments-better)。
+
+<!--
+### Bind to String Enums
+-->
+### 绑定到字符串枚举
+
+<!--
+Let's assume we have a TypeScript module that expresses following enum export:
+-->
+
+假设我们有一个 TypeScript 模块，表达以下枚举导出：
+
+```js
+// direction.js
+enum Direction {
+  Up = "UP",
+  Down = "DOWN",
+  Left = "LEFT",
+  Right = "RIGHT",
+}
+
+export const myDirection = Direction.Up
+```
+
+<!--
+For this particular example, we can also inline poly variant type definitions to design the type for the imported `myDirection` value:
+-->
+
+对于这个特别的例子，我们也可以内联多态变体的类型定义来设计导入的 `myDirection` 值的类型：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type direction = [ #UP | #DOWN | #LEFT | #RIGHT ]
+@module("./direction.js") external myDirection: direction = "myDirection"
+```
+
+```js
+var DirectionJs = require("./direction.js");
+
+var myDirection = DirectionJs.myDirection;
+```
+
+</CodeTab>
+
+<!--
+Again: since we were using poly variants, the JS Output is practically zero-cost and doesn't add any extra code!
+-->
+
+再次提醒：因为我们使用的是多态变体，我们的 JS 输出是零开销的！没有增加任何额外的代码。
+
+<!--
+## Extra Constraints on Types
+-->
+## 额外的类型约束
+
+<!--
+The previous poly variant type annotations we've looked at are the regular "closed" kind. However, there's a way to express "I want at least these constructors" (lower bound) and "I want at most these constructors" (upper bound):
+-->
+
+我们之前看到的多态变体类型标注是常规的“封闭”类型。然而，还有一种方式可以表达“我至少想要这些构造器”（下界）和“我最多想要这些构造器”（上界）：
+
+```res
+// Only #Red allowed. Closed.
+let basic: [#Red] = #Red
+
+// May contain #Red, or any other value. Open
+// here, foreground will actually be inferred as [> #Red | #Green]
+let foreground: [> #Red] = #Green
+
+// The value must be, at most, one of #Red or #Blue
+// Only #Red and #Blue are valid values
+let background: [< #Red | #Blue] = #Red
+```
+
+<!--
+**Note:** We added this info for educational purposes. In most cases you will not want to use any of this stuff, since it makes your APIs pretty unreadable / hard to use.
+-->
+
+**注意**：我们补充这些信息是出于教学目的。大多数情况下，你不会想使用这些东西，因为它会让你的 API 变得相当难读和难用。
+
+<!--
+### Closed `[`
+-->
+### 封闭的 `[`
+
+<!--
+This is the simplest poly variant definition, and also the most practical one. Like a common variant type, this one defines an exact set of constructors.
+-->
+
+这是最简单的多态变体定义，也是最实用的定义。像普通的变体类型一样，它精确定义了构造器集合。
+
+```res
+type rgb = [ #Red | #Green | #Blue ]
+
+let color: rgb = #Green
+```
+
+<!--
+In the example above, `color` will only allow one of the three constructors that are defined in the `rgb` type. This is usually the way how poly variants should be defined.
+-->
+
+在上面的例子中，`color` 只允许是 `rgb` 类型中定义的三个构造器中的一个。这通常是多态变体应该被定义的方式。
+
+<!--
+In case you want to define a type that is extensible, you'll need to use the lower / upper bound syntax.
+-->
+
+如果你想要定义可扩展的类型，你需要使用下界/上界语法。
+
+<!--
+### Lower Bound `[>`
+-->
+### 下界 `[>`
+
+<!--
+A lower bound defines the minimum set of constructors a poly variant type is aware of. It is also considered an "open poly variant type", because it doesn't restrict any additional values.
+-->
+
+下界定义了多态变体类型所知道的最小构造器集合。它也被认为是一个“开放的多态变体类型”，因为它不限制任何额外的值。
+
+<!--
+Here is an example on how to make a minimum set of `basicBlueTones` extensible for a new `color` type:
+-->
+
+下面是一个例子，展示了如何使一组最小的 `basicBlueTones` 可扩展为一个新的 `color` 类型：
+
+```res
+type basicBlueTone<'a> = [> #Blue | #DeepBlue | #LightBlue ] as 'a
+type color = basicBlueTone<[#Blue | #DeepBlue | #LightBlue | #Purple]>
+
+let color: color = #Purple
+
+// This will fail due to missing minimum constructors:
+type notWorking = basicBlueTone<[#Purple]>
+```
+
+<!--
+Here, the compiler will enforce the user to define `#Blue | #DeepBlue | #LightBlue` as the minimum set of constructors when trying to extend `basicBlueTone<'a>`.
+-->
+
+这里编译器会强制用户在尝试扩展 `basicBlueTone<'a>` 时定义最小的构造器集合 `#Blue | #DeepBlue | #LightBlue`。
+
+<!--
+**Note:** Since we want to define an extensible poly variant, we need to provide a type placeholder `<'a>`, and also add `as 'a` after the poly variant declaration, which essentially means: "Given type `'a` is constraint to the minimum set of constructors (`#Blue | #DeepBlue | #LightBlue`) defined in `basicBlueTone`".
+-->
+
+**注意**：因为我们想要定义一个可扩展的多态变体，我们需要提供一个类型占位符 `<'a>`，同时在类型声明后添加 `as 'a`。这样做的意思是：“给定类型 `'a` 受制于 `basicBlueTone` 中定义的最小构造器集合（`#Blue | #DeepBlue | #LightBlue`）”。
+
+<!--
+### Upper Bound `[<`
+-->
+### 上界 `[<`
+
+<!--
+The upper bound works in the opposite way than a lower bound: the extending type may only use constructors that are stated in the upper bound constraint.
+-->
+
+上界的工作方式和下界相反：扩展的类型只能使用上界约束中声明的构造器。
+
+<!--
+Here another example, but with red colors:
+-->
+
+这是另一个例子，只是使用了各种红色：
+
+```res
+type validRed<'a> = [< #Fire | #Crimson | #Ash] as 'a
+type myReds = validRed<[#Ash]>
+
+// This will fail due to unlisted constructor not defined by the lower bound
+type notWorking = validRed<[#Purple]>
+```
+
+<!--
+## Coercion
+-->
+## 强制类型转换
+
+<!--
+You can convert a poly variant to a `string` or `int` at no cost:
+-->
+
+你可以将多态变体类型零成本地转换到 `string` 或 `int`：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type company = [#Apple | #Facebook]
+let theCompany: company = #Apple
+
+let message = "Hello " ++ (theCompany :> string)
+```
+
+```js
+var theCompany = "Apple";
+var message = "Hello " + theCompany;
+```
+
+</CodeTab>
+
+<!--
+**Note**: for the coercion to work, the poly variant type needs to be closed; you'd need to annotate it, since otherwise, `theCompany` would be inferred as `[> #Apple]`.
+-->
+
+**注意**：为了让强制转换奏效，多态变体类型需要是封闭的；你需要对其进行标注，否则 `theCompany` 会被推断为 `[> #Apple]`。
+
+<!--
+## Tips & Tricks
+-->
+## 技巧和诀窍
+
+<!--
+### Variant vs Polymorphic Variant
+-->
+### 变体 vs 多态变体
+
+<!--
+One might think that polymorphic variants are superior to regular [variants](./variant). As always, there are trade-offs:
+-->
+
+有人可能会觉得多态变体比[普通变体](./variant)更强大。但凡事都有取舍：
+
+<!--
+- Due to their "structural" nature, poly variant's type errors might be more confusing. If you accidentally write `#blur` instead of `#blue`, ReScript will still error but can't indicate the correct source as easily. Regular variants' source of truth is the type definition, so the error can't go wrong.
+-->
+- 由于多态变体的“结构式”天性，多态变体的类型错误可能更令人困惑。如果你不小心写了 `#blur` 而不是 `#blue`，ReScript 仍然会出错，但无法轻易指出正确的来源。普通变体有类型定义这个真相源头，所以报错不会跑偏。
+
+<!--
+- It's also harder to refactor poly variants. Consider this:
+-->
+- 重构多态变体也更难。考虑一下这个：
+  ```res
+  let myFruit = #Apple
+  let mySecondFruit = #Apple
+  let myCompany = #Apple
+  ```
+<!--
+  Refactoring the first one to `#Orange` doesn't mean we should refactor the third one. Therefore, the editor plugin can't touch the second one either. Regular variant doesn't have such problem, as these 2 values presumably come from different variant type definitions.
+-->
+  把第一个重构成 `#Orange` 并不意味着我们应该重构第三个。同样的道理，编辑器插件也不能触及第二个。普通变体没有这样的问题，因为这两个值可能来自不同的变体类型定义。
+
+<!--
+- You might lose some nice pattern match checks from the compiler:
+-->
+- 你可能会失去一些来自编译器的很棒的模式匹配检查：
+  ```res
+  let myColor = #red
+
+  switch myColor {
+  | #red => Js.log("Hello red!")
+  | #blue => Js.log("Hello blue!")
+  }
+  ```
+<!--
+  Because there's no poly variant definition, it's hard to know whether the `#blue` case can be safely removed.
+-->
+  因为没有多态变体的定义，所以很难知道是否可以安全地删除 `#blue` 的 case。
+
+<!--
+In most scenarios, we'd recommend to use regular variants over polymorphic variants, especially when you are writing plain ReScript code. In case you want to write zero-cost interop bindings or generate clean JS output, poly variants are oftentimes a better option.
+-->
+
+在大多数使用场景下，我们更推荐使用普通变体而不是多态变体，尤其时当你在编写普通 ReScript 代码时。如果你想编写零成本的互操作绑定，或生成干净的 JS 输出，多态变体往往是更好的选择。

@@ -1,0 +1,176 @@
+---
+title: "FAQ"
+description: "Frequently asked questions about ReScript and its ecosystem"
+canonical: "/docs/manual/latest/faq"
+---
+
+<!--
+# Frequently Asked Questions
+-->
+# 常见问题
+
+<!--
+**What's the goal of this project?**
+-->
+
+**这个项目的目标是什么？**
+
+<!--
+We aim to provide the best typed language experience for the JavaScript platform.
+-->
+
+我们的目标是为 JavaScript 平台提供最好的类型语言体验。
+
+<!--
+**What’s the relationship with BuckleScript?**
+-->
+
+**ReScript 与 BuckleScript 有什么关系？**
+
+<!--
+BuckleScript is ReScript's old branding, with a sharper focus on proper JS support and familiarity which we previously couldn't achieve to the degree we wanted, due to us needing to cater to various different crowds.
+-->
+
+BuckleScript 是 ReScript 的旧牌子，更加注重对 JS 的适当支持和熟悉程度，而我们以前由于需要迎合各种不同的人群，所以无法达到我们想要的程度。
+
+<!--
+**What’s ReScript's relationship with OCaml?**
+-->
+
+**ReScript 和 OCaml 的关系是什么？**
+
+<!--
+We reuse and adjust the excellent type system and lots of other high quality components from OCaml for JS experience.
+Additionally, ReScript provides its own syntax, build system, IDE, backend, JS interop, extra language features, etc.
+-->
+
+我们重用并调整了优秀的类型系统和许多其他来自 OCaml 的高质量组件，以提高 JS 体验。
+此外，ReScript 还提供了自己的语法、构建系统、IDE、后端、JS 互操作、额外的语言特性等。
+
+<!--
+The ReScript toolchain is developed using OCaml, however, the version of ReScript is decoupled against the version of OCaml,
+ReScript compiler should build against any reasonable modern version of OCaml compiler.
+-->
+
+ReScript 工具链是使用 OCaml 开发的，但是，ReScript 的版本与 OCaml 的版本是脱钩的。
+ReScript 编译器可以用任何合理的现代版本 OCaml 编译器进行构建。
+
+<!--
+For the majority of ReScript users, they don't need to learn OCaml or use OCaml toolchain to be productive in ReScript.
+-->
+
+对于大多数 ReScript 用户来说，他们不需要学习 OCaml 或使用 OCaml 工具链，就可以从 ReScript 中受益。
+
+<!--
+**What’s the relationship with Reason?**
+-->
+
+**ReScript 和 Reason 的关系是什么？**
+
+<!--
+See [here](/blog/bucklescript-is-rebranding). Reason is a syntax layer for OCaml that BuckleScript also adopted. The current ReScript compiler also supports the old Reason syntax v3.6 for backward compatibility. We will support it for a long time to make sure existing users do not get breaking changes.
+-->
+
+参考[这里](/blog/bucklescript-is-rebranding)。Reason 是 OCaml 的一个语法层，BuckleScript 也采用了它。目前的 ReScript 编译器也支持旧的 Reason v3.6 语法，以便向后兼容。我们将长期支持它，以确保现有用户不会得到破坏性的改变。
+
+<!--
+**I come from Reason/OCaml. Will ReScript keep supporting X?**
+-->
+
+**我来自 Reason/OCaml，ReScript 会继续支持 X 吗？**
+
+<!--
+Please see our [blog post](/blog/a-note-on-bucklescripts-future-commitments) on this matter.
+-->
+
+请参考我们关于这个问题的[博文](/blog/a-note-on-bucklescripts-future-commitments)。
+
+<!--
+**Where can I see the docs in old Reason/OCaml syntax?**
+-->
+
+**哪里可以看到旧版 Reason/OCaml 语法的文档？**
+
+<!--
+Switch the doc version to `v8.0.0` in the sidebar on the left!
+-->
+
+在左边的侧边栏中把文档版本切换到 `v8.0.0`！
+
+<!--
+**Will ReScript support native compilation eventually?**
+-->
+
+**ReScript 最终是否会支持本机编译（native compilation）？**
+
+<!--
+Our focus is a solid JS story right now. In the future, if there’s strong demand, we might consider it.
+-->
+
+我们现在的重点是可靠的 JS 支持。如果在未来有强烈的需求，我们可能会考虑它。
+
+<!--
+**What’s the current state of ReScript?**
+-->
+
+**ReScript 的当前状态如何？**
+
+<!--
+Currently, we're actively working on the editor support.
+-->
+
+目前我们正在积极研究对编辑器的支持。
+
+<!--
+**When will we get the `async/await` keywords?**
+-->
+
+**我们什么时候能得到 `async/await` 关键字？**
+
+<!--
+See our answer on the [Async & Promise](promise) page's intro.
+-->
+
+请看我们在 [异步 & Promise](promise) 页面中的回答。
+
+<!--
+**Why create a new syntax?**
+-->
+
+**为什么要创建一个新的语法？**
+
+<!--
+The existing Reason syntax is owned by a different team with a different vision. Reason aims to be 100% compatible with OCaml syntax and to support all versions of OCaml. In the last few years, we've drawn the conclusion that it’s very hard to deliver such goal without sacrificing user experience. The other reason is that we feel it’s better to have the same vision as a team so that we can make more coherent decisions.
+-->
+
+现有的 Reason 语法是由不同的团队拥有的，有着不同的愿景。Reason 的目标是与 OCaml 语法 100% 兼容，并支持所有版本的 OCaml。在过去的几年中，我们得出的结论是很难在不牺牲用户体验的情况下实现这样的目标。另一个原因是，我们觉得作为一个团队，最好能有相同的愿景，这样我们就能做出更一致的决定。
+
+<!--
+**Who is behind the project?**
+-->
+
+**谁是这个项目的维护者？**
+
+<!--
+The ReScript team (Hongbo, Cheng, Cristiano, Maxim, Patrick, Ricky).
+-->
+
+ReScript 团队（张宏波，Cheng，Cristiano，Maxim，Patrick，Ricky）。
+
+<!--
+**We have a new forum; will we also have our own Discord?**
+-->
+
+**我们有一个新的论坛；我们也会有自己的 Discord 吗？**
+
+<!--
+Not now. We've found that too much important information get casually passed in Discord then lost within the noise. We prefer folks to communicate on the [forum](https://forum.rescript-lang.org). This is nicer to the less active members.
+-->
+
+现在没有。我们发现太多重要信息会在 Discord 中随意传递，然后在噪音中消失。我们更喜欢人们在[论坛](https://forum.rescript-lang.org)上交流，这对不太活跃的成员更友好。
+
+<!--
+The team doesn't use the old Discord anymore. We encourage you to move your questions to the forum instead.
+-->
+
+ReScript 团队不再使用旧的 Discord 了，我们鼓励您将问题移至论坛。

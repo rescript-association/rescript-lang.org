@@ -1,0 +1,403 @@
+---
+title: "类型"
+description: "Types and type definitions in ReScript"
+canonical: "/docs/manual/latest/type"
+---
+
+<!--
+# Type
+-->
+# 类型
+
+<!--
+Types are the highlight of ReScript! They are:
+- **Strong**. A type can't change into another type. In JavaScript, your variable's type might change when the code runs (aka at runtime). E.g. a `number` variable might change into a `string` sometimes. This is an anti-feature; it makes the code much harder to understand when reading or debugging.
+- **Static**. ReScript types are erased after compilation and don't exist at runtime. Never worry about your types dragging down performance. You don't need type info during runtime; we report all the information (especially all the type errors) during compile time. Catch the bugs earlier!
+- **Sound**. This is our biggest differentiator versus many other typed languages that compile to JavaScript. Our type system is guaranteed to **never** be wrong. Most type systems make a guess at the type of a value and show you a type in your editor that's sometime incorrect. We don't do that. We believe that a type system that is sometime incorrect can end up being dangerous due to expectation mismatches.
+- **Fast**. Many developers underestimate how much of their project's build time goes into type checking. Our type checker is one of the fastest around.
+- **Inferred**. You don't have to write down the types! ReScript can deduce them from their values. Yes, it might seem magical that we can deduce all of your program's types, without incorrectness, without your manual annotation, and do so quickly. Welcome to ReScript =).
+-->
+
+类型是 ReScript 的亮点！它们是：
+- **强类型**。一个类型无法变为另一个类型。在 JavaScript 中，当代码执行时（也称运行时），变量的类型可能会改变。例如，一个类型为 `number` 的变量可能变为 `string` 类型。这是不好的特性，它使代码在阅读或调试时更难理解
+- **静态类型**。ReScript 类型在编译后被擦除，在运行时不存在。不必担心类型会拖累性能。你在运行时不需要类型信息；我们在编译时报告所有信息（尤其是所有类型错误）。更早地捕获错误！
+- **健全（sound）**。这是我们与其他编译到 JavaScript 的带类型语言的最大区别。我们的类型系统保证**永远不会**出错。大多数类型系统对一个值的类型进行猜测，有时在编辑器中不能显示正确的类型。我们不这样做。我们相信，由于与期望不匹配，一个会出错的类型系统最终会变得危险
+- **快速**。许多开发者低估了项目构建时类型检查的耗时。我们的类型检查器是最快的之一
+- **类型推导**。你不必写出类型！ReScript 可以从值中推导出类型。是的，我们可以推断出你的程序的所有类型，没有不正确的地方，不需要你手动标注，而且速度很快，看起来就像魔法一样。欢迎来到 ReScript =)
+
+<!--
+The following sections explore more of our type system.
+-->
+
+下面的章节将探讨类型系统的更多内容。
+
+<!--
+## Inference
+-->
+## 类型推导
+
+<!--
+This let-binding doesn't contain any written type:
+-->
+
+这个 let 绑定不包含任何手写的类型：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let score = 10
+let add = (a, b) => a + b
+```
+```js
+var score = 10;
+function add(a, b) {
+  return a + b | 0;
+}
+```
+
+</CodeTab>
+
+<!--
+ReScript knows that `score` is an `int`, judging by the value `10`. This is called **inference**. Likewise, it also knows that the `add` function takes 2 `int`s and returns an `int`, judging from the `+` operator, which works on ints.
+-->
+
+ReScript 知道 `socre` 是一个 `int`，通过 `10` 来判断。这就是所谓的**推导**。同样，它也知道 `add` 函数接受两个 `int` 并返回了一个 `int`，这是由对 `int` 做加法的 `+` 运算符判断的。
+
+<!--
+## Type Annotation
+-->
+## 类型标注
+
+<!--
+But you can also optionally write down the type, aka annotate your value:
+-->
+
+但你也可以选择性地写下类型，也就是标注你的值：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let score: int = 10
+```
+```js
+var score = 10;
+```
+
+</CodeTab>
+
+<!--
+If the type annotation for `score` doesn't correspond to our inferred type for it, we'll show you an error during compilation time. We **won't** silently assume your type annotation is correct, unlike many other languages.
+-->
+
+如果 `score` 的类型标注与我们推断的类型不一致，我们会在编译时向你显示一个错误。我们**不会**默默地假定你的类型标注是对的，这与许多其他语言不同。
+
+<!--
+You can also wrap any expression in parentheses and annotate it:
+-->
+
+你也可以用括号把任何表达式包起来，并对其进行标注：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let myInt = 5
+let myInt: int = 5
+let myInt = (5: int) + (4: int)
+let add = (x: int, y: int) : int => x + y
+let drawCircle = (~radius as r: int): circleType => /* code here */
+```
+```js
+var myInt = 9;
+function add(x, y) {
+  return x + y | 0;
+}
+function drawCircle(r) {
+  /* code here */
+}
+```
+
+</CodeTab>
+
+<!--
+Note: in the last line, `(~radius as r: int)` is a labeled argument. More on this in the [function](function.md) page.
+-->
+
+注意：在最后一行，`(~radius as r: int)` 是一个标签参数。查看 [函数](function.md) 章节以了解更多。
+
+<!--
+## Type Alias
+-->
+## 类型别名
+
+<!--
+You can refer to a type by a different name. They'll be equivalent:
+-->
+
+你可以用不同的名字指代一个类型。它们是等价的：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type scoreType = int
+let x: scoreType = 10
+```
+```js
+var x = 10;
+```
+
+</CodeTab>
+
+<!--
+## Type Parameter (Aka Generic)
+-->
+## 类型参数（泛型）
+
+<!--
+Types can accept parameters, akin to generics in other languages. The parameters' names **need** to start with `'`.
+-->
+
+类型可以接受参数，类似于其他语言中的泛型。参数名**必须**以 `'` 开头。
+
+<!--
+The use-case of a parameterized type is to kill duplications. Before:
+-->
+
+参数化类型的应用是为了消除重复代码。使用前：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+// this is a tuple of 3 items, explained next
+type intCoordinates = (int, int, int)
+type floatCoordinates = (float, float, float)
+
+let a: intCoordinates = (10, 20, 20)
+let b: floatCoordinates = (10.5, 20.5, 20.5)
+```
+```js
+var a = [10, 20, 20];
+var b = [10.5, 20.5, 20.5];
+```
+
+</CodeTab>
+
+<!--
+After:
+-->
+
+使用后：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type coordinates<'a> = ('a, 'a, 'a)
+
+let a: coordinates<int> = (10, 20, 20)
+let b: coordinates<float> = (10.5, 20.5, 20.5)
+```
+```js
+var a = [10, 20, 20];
+var b = [10.5, 20.5, 20.5];
+```
+
+</CodeTab>
+
+<!--
+Note that the above codes are just contrived examples for illustration purposes. Since the types are inferred, you could have just written:
+-->
+
+注意，上述代码只是为了说明问题而设计的例子。因为类型是推断出来的，你可以直接写：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let buddy = (10, 20, 20)
+```
+```js
+var buddy = [10, 20, 20];
+```
+
+</CodeTab>
+
+<!--
+The type system infers that it's a `(int, int, int)`. Nothing else needed to be written down.
+-->
+
+类型系统推断出它是一个 `(int, int, int)`，什么都不需要写。
+
+<!--
+Type arguments appear in many places. Our `array<'a>` type is such a type that requires a type parameter
+-->
+
+类型参数出现在很多地方。 `array<'a>` 类型就是这样一种类型，它需要一个类型参数：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+// inferred as `array<string>`
+let greetings = ["hello", "world", "how are you"]
+```
+```js
+// inferred as `array<string>`
+var greetings = ["hello", "world", "how are you"];
+```
+
+</CodeTab>
+
+<!--
+If types didn't accept parameters, the standard library would need to define the types `arrayOfString`, `arrayOfInt`, `arrayOfTuplesOfInt`, etc. That'd be tedious.
+-->
+
+如果类型不能接受参数，标准库将需要定义 `arrayOfString`，`arrayOfInt`，`arrayOfTuplesOfInt` 等类型。这将是很啰嗦的。
+
+<!--
+Types can receive many arguments, and be composable.
+-->
+
+类型可以接收许多参数，并且是可组合的。
+
+<!-- TODO: too early for this example -->
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type result<'a, 'b> =
+  | Ok('a)
+  | Error('b)
+
+type myPayload = {data: string}
+
+type myPayloadResults<'errorType> = array<result<myPayload, 'errorType>>
+
+let payloadResults: myPayloadResults<string> = [
+  Ok({data: "hi"}),
+  Ok({data: "bye"}),
+  Error("Something wrong happened!")
+]
+```
+```js
+var payloadResults = [
+  {
+    TAG: /* Ok */0,
+    _0: {data: "hi"}
+  },
+  {
+    TAG: /* Ok */0,
+    _0: {data: "bye"}
+  },
+  {
+    TAG: /* Error */1,
+    _0: "Something wrong happened!"
+  }
+];
+```
+
+</CodeTab>
+
+<!--
+## Recursive Types
+-->
+## 递归类型
+
+<!--
+Just like a function, a type can reference itself within itself using `rec`:
+-->
+
+就像函数一样，一个类型也可以使用 `rec` 在其内部引用自己：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type rec person = {
+  name: string,
+  friends: array<person>
+}
+```
+```js
+// Empty output
+```
+
+</CodeTab>
+
+<!--
+## Mutually Recursive Types
+-->
+## 互递归类型
+
+<!--
+Types can also be _mutually_ recursive through `and`:
+-->
+
+类型也可以通过 `and` 来实现 _相互_ 递归：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type rec student = {taughtBy: teacher}
+and teacher = {students: array<student>}
+```
+```js
+// Empty output
+```
+
+</CodeTab>
+
+<!--
+## Type Escape Hatch
+-->
+## 类型逃生通道
+
+<!--
+ReScript's type system is robust and does not allow dangerous, unsafe stuff like implicit type casting, randomly guessing a value's type, etc. However, out of pragmatism, we expose a single escape hatch for you to "lie" to the type system:
+-->
+
+ReScript 的类型系统非常健壮，不允许出现危险、不安全的情况，如隐式类型转换，随机猜测值的类型等。然而，出于实用主义的考虑，我们为你提供了一个单一的逃生通道，以便你向类型系统“撒谎”：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+external myShadyConversion: myType1 => myType2 = "%identity"
+```
+```js
+// Empty output
+```
+
+</CodeTab>
+
+<!--
+This declaration converts a `myType1` of your choice to `myType2` of your choice. You can use it like so:
+-->
+
+这个声明将你选择的 `myType1` 转换为你选择的 `myType2`。你可以像这样使用它：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+external convertToFloat : int => float = "%identity"
+let age = 10
+let gpa = 2.1 +. convertToFloat(age)
+```
+```js
+var age = 10;
+var gpa = 2.1 + 10;
+```
+
+</CodeTab>
+
+<!--
+Obviously, do **not** abuse this feature. Use it tastefully when you're working with existing, overly dynamic JS code, for example.
+-->
+
+很明显，**不要**滥用这个特性。当你在处理现有的，过于动态的 JS 代码时，要有品位地使用它。
+
+<!--
+More on externals [here](external.md).
+-->
+
+关于 external 的更多信息请参考 [这里](external.md)。
+
+<!--
+**Note**: this particular `external` is the only one that isn't preceded by a `@` [attribute](attribute.md).
+-->
+
+**注意**: 上面代码中这个特别的 `external` 是唯一一个前面没有 `@` [属性](attribute.md)的。

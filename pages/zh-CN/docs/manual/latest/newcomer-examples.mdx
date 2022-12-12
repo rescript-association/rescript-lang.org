@@ -1,0 +1,176 @@
+---
+title: "新人示例"
+description: "Quick examples for users new to ReScript"
+canonical: "/docs/manual/latest/newcomer-examples"
+---
+
+<!--# Newcomer Examples
+-->
+# 新人示例
+
+<!-- TODO: this whole page needs a revamp -->
+
+<!--
+An example is worth a thousand words.
+-->
+
+一例胜千言。
+
+<!--
+This section is dedicated to newcomers trying to figure out general idioms & conventions. If you're a beginner who's got a good idea for an example, please suggest an edit!
+-->
+
+本节是为想要了解惯用写法和编码规范的新人专门准备的。如果你是初学者，对某个例子有更好的想法，请提出修改建议！
+
+<!--
+## Use the [`option` type](null-undefined-option.md)
+-->
+## 使用 [`option` 类型](null-undefined-option.md)
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let possiblyNullValue1 = None
+let possiblyNullValue2 = Some("Hello")
+
+switch possiblyNullValue2 {
+| None => Js.log("Nothing to see here.")
+| Some(message) => Js.log(message)
+}
+```
+```js
+var possiblyNullValue1;
+var possiblyNullValue2 = "Hello";
+
+if (possiblyNullValue2 !== undefined) {
+  console.log(possiblyNullValue2);
+} else {
+  console.log("Nothing to see here.");
+}
+
+```
+
+</CodeTab>
+
+<!--
+## Create a Parametrized Type
+-->
+## 创建参数化类型
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type universityStudent = {gpa: float}
+
+type response<'studentType> = {
+  status: int,
+  student: 'studentType,
+}
+```
+```js
+// Empty output
+// 没有输出
+```
+
+</CodeTab>
+
+<!--
+## Creating a JS Object
+-->
+## 创建 JS 对象
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let student1 = {
+  "name": "John",
+  "age": 30,
+}
+```
+```js
+var student1 = {
+  name: "John",
+  age: 30,
+};
+```
+
+</CodeTab>
+
+<!--
+Or using [record](record.md):
+-->
+
+或使用[记录](record.md)：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type payload = {
+  name: string,
+  age: int,
+}
+
+let student1 = {
+  name: "John",
+  age: 30,
+}
+```
+```js
+var student1 = {
+  name: "John",
+  age: 30,
+};
+```
+
+</CodeTab>
+
+<!--
+## Modeling a JS Module with Default Export
+-->
+## 为带有默认导出的 JS 模块建模
+
+<!--
+See [here](import-from-export-to-js.md#import-a-javascript-module-itself-es6-module-format).
+-->
+
+见[此处](import-from-export-to-js.md#import-a-javascript-module-itself-es6-module-format)。
+
+<!--
+## Checking for JS nullable types using the `option` type
+-->
+## 使用 `option` 检查 JS 的可空类型
+
+<!--
+For a function whose argument is passed a JavaScript value that's potentially `null` or `undefined`, it's idiomatic to convert it to an `option`. The conversion is done through the helper functions in ReScript's [`Js.Nullable`](api/js/nullable#t) module. In this case, `toOption`:
+-->
+
+对于参数是 JavaScript 值（可能为 `null` 或 `undefined` ）的函数，一般将参数转为 `option`。可以通过 ReScript 的 [`Js.Nullable`](api/js/nullable#t) 模块完成转换。在这种情况下，使用 `toOption`：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let greetByName = (possiblyNullName) => {
+  let optionName = Js.Nullable.toOption(possiblyNullName)
+  switch optionName {
+  | None => "Hi"
+  | Some(name) => "Hello " ++ name
+  }
+}
+```
+```js
+function greetByName(possiblyNullName) {
+  if (possiblyNullName == null) {
+    return "Hi";
+  } else {
+    return "Hello " + possiblyNullName;
+  }
+}
+```
+
+</CodeTab>
+
+<!--
+This check compiles to `possiblyNullName == null` in JS, so checks for the presence of `null` or `undefined`.
+-->
+
+这个检查在 JS 中编译为 `possiblyNullName == null`，所以可以检查是否存在 `null` 或 `undefined`。

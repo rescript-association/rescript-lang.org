@@ -1,0 +1,80 @@
+---
+title: "JSON"
+description: "Interacting with JSON in ReScript"
+canonical: "/docs/manual/latest/json"
+---
+
+# JSON
+
+<!--
+## Parse
+-->
+## 解析
+
+<!--
+Bind to JavaScript's `JSON.parse` and type the return value as the type you're expecting:
+-->
+
+与 JavaScript 的 `JSON.parse` 绑定，并注明你期望的返回值类型：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+// declare the shape of the json you're binding to
+type data = {names: array<string>}
+
+// bind to JS' JSON.parse
+@scope("JSON") @val
+external parseIntoMyData: string => data = "parse"
+
+let result = parseIntoMyData(`{"names": ["Luke", "Christine"]}`)
+let name1 = result.names[0]
+```
+```js
+var result = JSON.parse("{\"names\": [\"Luke\", \"Christine\"]}");
+var name1 = result.names[0];
+```
+
+</CodeTab>
+
+<!--
+Where `data` can be any type you assume the JSON is. As you can see, this compiles to a straightforward `JSON.parse` call. As with regular JS, this is convenient, but has no guarantee that e.g. the data is correctly shaped, or even syntactically valid. Slightly dangerous.
+-->
+
+`data` 可以将 JSON 标记为你想要的任何类型。如你所见，这可以编译成一个直接的 `JSON.parse` 调用。就像普通的 JS 一样，这很方便，但是不能保证数据的形状正确，甚至不能保证语法上有效。这稍微有点危险。
+
+<!--
+## Stringify
+-->
+## 字符串化
+
+<!--
+Use `Js.Json.stringify`:
+-->
+
+使用 `Js.Json.stringify`:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+Js.log(Js.Json.stringifyAny(["Amy", "Joe"]))
+```
+```js
+console.log(JSON.stringify([
+  "Amy",
+  "Joe"
+]));
+```
+
+</CodeTab>
+
+<!--
+## Advanced
+-->
+## 进阶
+
+<!--
+The [Js.Json](api/js/json) module provides slightly safer, low-level building blocks for power users who want to parse JSON on a per-field basis. See the examples in the API docs.
+-->
+
+[Js.Json](api/js/json) 模块为需要在字段级别解析 JSON 的用户提供了更安全的，低层次的构建块。更多例子详见 API 文档。

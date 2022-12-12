@@ -1,0 +1,363 @@
+---
+title: "管道"
+description: "The Pipe operator (->)"
+canonical: "/docs/manual/latest/pipe"
+---
+
+
+<!--
+# Pipe
+-->
+# 管道
+
+<!--
+ReScript provides a tiny but surprisingly useful operator `->`, called the "pipe", that allows you to "flip" your code inside-out. `a(b)` becomes `b->a`. It's a simple piece of syntax that doesn't have any runtime cost.
+-->
+
+ReScript 提供了一个小巧但好用的操作符 `->`，称为“管道”，它允许你由内向外“翻转”代码。`a(b)` 可以写成 `b->a`。这是一个简单的语法，没有任何运行时开销。
+
+<!--
+Why would you use it? Imagine you have the following:
+-->
+
+为什么你要使用它？想象下面的情况：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+validateAge(getAge(parseData(person)))
+```
+```js
+validateAge(getAge(parseData(person)));
+```
+
+</CodeTab>
+
+<!--
+This is slightly hard to read, since you need to read the code from the innermost part, to the outer parts. Use pipe to streamline it:
+-->
+
+这有点难读，因为你需要从最里面的部分开始，读到最外面的部分。使用管道来变为链式调用：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+person
+  ->parseData
+  ->getAge
+  ->validateAge
+```
+```js
+validateAge(getAge(parseData(person)));
+```
+
+</CodeTab>
+
+<!--
+Basically, `parseData(person)` is transformed into `person->parseData`, and `getAge(person->parseData)` is transformed into `person->parseData->getAge`, etc.
+-->
+
+`parseData(person)` 被转换为 `person->parseData`，`getAge(person->parseData)` 被转换为 `person->parseData->getAge`，依此类推。
+
+<!--
+**This works when the function takes more than one argument too**.
+-->
+
+**当函数需要一个以上的参数时这也是可行的**。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+a(one, two, three)
+```
+```js
+a(one, two, three);
+```
+
+</CodeTab>
+
+<!--
+is the same as
+-->
+
+这和下面是一样的：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+one->a(two, three)
+```
+```js
+a(one, two, three);
+```
+
+</CodeTab>
+
+<!--
+This also works with labeled arguments.
+-->
+
+管道也适用于带标签的参数。
+
+<!--
+Pipes are used to emulate object-oriented programming. For example, `myStudent.getName` in other languages like Java would be `myStudent->getName` in ReScript (equivalent to `getName(myStudent)`). This allows us to have the readability of OOP without the downside of dragging in a huge class system just to call a function on a piece of data.
+-->
+
+管道可以用来模拟面向对象编程。例如，在 Java 等其他语言中是 `myStudent.getName`，在 ReScript 中可以写成 `myStudent->getName`（相当于 `getName(myStudent)`）。这使我们能够拥有 OOP 的可读性，又不必引入一个巨大的类系统，而引入这个巨大系统的唯一目的还只是为了用函数调用对象的一块数据。
+
+<!--
+## Tips & Tricks
+-->
+## 技巧和诀窍
+
+<!--
+Do **not** abuse pipes; they're a means to an end. Inexperienced engineers sometimes shape a library's API to take advantage of the pipe. This is backwards.
+-->
+
+**不要滥用**管道；它们是达到目的的一种手段。没有经验的工程师有时会把库 API 专门设计成可以使用管道的样子，这就本末倒置了。
+
+<!--
+## JS Method Chaining
+-->
+## JS 方法链
+
+<!--
+_This section requires understanding of [our binding API](bind-to-js-function.md#object-method)_.
+-->
+
+_阅读这一小节需要先理解 [JS 绑定 API](bind-to-js-function.md#object-method)_。
+
+<!--
+JavaScript's APIs are often attached to objects, and are often chainable, like so:
+-->
+
+JavaScript 的 API 通常关联在对象上，而且通常是可以链式调用的，像这样：
+
+```js
+const result = [1, 2, 3].map(a => a + 1).filter(a => a % 2 === 0);
+
+asyncRequest()
+  .setWaitDuration(4000)
+  .send();
+```
+
+<!--
+Assuming we don't need the chaining behavior above, we'd bind to each case this using [`@send`](/syntax-lookup#send-decorator) from the aforementioned binding API page:
+-->
+
+假设我们不需要上面的链式调用，我们可以使用 [`@send`](/syntax-lookup#send-decorator) 来分别绑定链式调用中的各个函数，`@send` 的文档在上面给出的链接中。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res prelude
+type request
+@val external asyncRequest: unit => request = "asyncRequest"
+@send external setWaitDuration: (request, int) => request = "setWaitDuration"
+@send external send: request => unit = "send"
+```
+```js
+// Empty output
+```
+
+</CodeTab>
+
+<!--
+You'd use them like this:
+-->
+
+你可以这样使用它们：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let result = Js.Array2.filter(
+  Js.Array2.map([1, 2, 3], a => a + 1),
+  a => mod(a, 2) == 0
+)
+
+send(setWaitDuration(asyncRequest(), 4000))
+```
+```js
+var result = [1, 2, 3].map(function(a) {
+  return a + 1 | 0;
+}).filter(function(a) {
+  return a % 2 === 0;
+});
+
+asyncRequest().setWaitDuration(4000).send();
+```
+
+</CodeTab>
+
+<!--
+This looks much worse than the JS counterpart! Clean it up visually with pipe:
+-->
+
+这看起来比对应的 JS 部分要糟糕得多！用管道整理它们：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let result = [1, 2, 3]
+  ->Js.Array2.map(a => a + 1)
+  ->Js.Array2.filter(a => mod(a, 2) == 0)
+
+asyncRequest()->setWaitDuration(4000)->send
+```
+```js
+var result = [1, 2, 3].map(function(a) {
+  return a + 1 | 0;
+}).filter(function(a) {
+  return a % 2 === 0;
+});
+
+asyncRequest().setWaitDuration(4000).send();
+```
+
+</CodeTab>
+
+<!--
+## Pipe Into Variants
+-->
+## 在管道中使用变体
+
+<!--
+You can pipe into a variant's constructor as if it was a function:
+-->
+
+你可以在管道中像函数一样使用变体构造器：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let result = name->preprocess->Some
+```
+```js
+var result = preprocess(name);
+```
+
+</CodeTab>
+
+<!--
+We turn this into:
+-->
+
+我们会把它变成：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let result = Some(preprocess(name))
+```
+```js
+var result = preprocess(name);
+```
+
+</CodeTab>
+
+<!--
+**Note** that using a variant constructor as a function wouldn't work anywhere else beside here.
+-->
+
+**注意**，只有在管道中才能把变体构造器当成函数使用，其他任何地方都不行。
+
+<!--
+## Pipe Placeholders
+-->
+## 管道占位符
+
+<!--
+A placeholder is written as an underscore and it tells ReScript that you want to fill in an argument of a function later. These two have equivalent meaning:
+-->
+
+通过下划线来表达一个占位符，它告诉 ReScript 你想在之后填入函数的一个参数。下面的两行代码是一个意思：
+
+```res
+let addTo7 = (x) => add3(3, x, 4)
+let addTo7 = add3(3, _, 4)
+```
+
+<!--
+Sometimes you don't want to pipe the value you have into the first position. In these cases you can mark a placeholder value to show which argument you would like to pipe into.
+-->
+
+有时你不想把你拥有的值通过管道输送到第一个位置。在这些情况下，你可以标记一个占位符，来表示你想通过管道传到哪个位置。
+
+<!--
+Let's say you have a function `namePerson`, which takes a `person` then a `name` argument. If you are transforming a person then pipe will work as-is:
+-->
+
+假设你有一个 `namePerson` 函数，它接受一个 `person` 和一个 `name` 参数。如果你想用管道传递一个 `person`，可以这样做：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+makePerson(~age=47, ())
+  ->namePerson("Jane")
+```
+```js
+namePerson(makePerson(47), "Jane");
+```
+
+</CodeTab>
+
+<!--
+If you have a name that you want to apply to a person object, you can use a placeholder:
+-->
+
+如果你有一个 `name`，并且想通过管道操作符作用到一个 `person` 对象上，你可以使用一个占位符：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+getName(input)
+  ->namePerson(personDetails, _)
+```
+```js
+var __x = getName(input);
+namePerson(personDetails, __x);
+```
+
+</CodeTab>
+
+<!--
+This allows you to pipe into any positional argument. It also works for named arguments:
+-->
+
+这允许你将值通过管道传到任意参数位置。它也适用于命名参数：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+getName(input)
+  ->namePerson(~person=personDetails, ~name=_)
+```
+```js
+var __x = getName(input);
+namePerson(personDetails, __x);
+```
+
+</CodeTab>
+
+<!--
+## Triangle Pipe (Deprecated)
+-->
+## 三角管道操作符（已废弃）
+
+<!--
+You might see usages of another pipe, `|>`, in some codebases. These are deprecated.
+-->
+
+你可能在一些代码库中见过另一种管道，`|>`。它们已经被废弃了。
+
+<!--
+Unlike `->` pipe, the `|>` pipe puts the subject as the last (not first) argument of the function. `a |> f(b)` turns into `f(b, a)`.
+-->
+
+与 `->` 管道不同，`|>` 管道将参数传入最后一个参数（而不是第一个）。`a |> f(b)` 变为 `f(b, a)`。
+
+<!--
+For a more thorough discussion on the rationale and differences between the two operators, please refer to the [Data-first and Data-last comparison by Javier Chávarri](https://www.javierchavarri.com/data-first-and-data-last-a-comparison/)
+-->
+
+关于这两个运算符的原理和区别的更深入讨论，请参考 [Data-first and Data-last comparison by Javier Chávarri](https://www.javierchavarri.com/data-first-and-data-last-a-comparison/)。

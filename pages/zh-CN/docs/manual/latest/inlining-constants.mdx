@@ -1,0 +1,116 @@
+---
+title: "内联常量"
+description: "Inlining constants"
+canonical: "/docs/manual/latest/inlining-constants"
+---
+
+<!--
+# Inlining Constants
+-->
+# 内联常量
+
+<!--
+Sometime, in the JavaScript output, you might want a certain value to be forcefully inlined. For example:
+-->
+
+有时，在输出的 JavaScript 中，你可能想要将特定的值强制内联。例如：
+
+```js
+if (process.env.mode === 'development') {
+  console.log("Dev-only code here!")
+}
+```
+
+<!--
+The reason is that your JavaScript bundler (e.g. Webpack) might turn that into:
+-->
+
+原因是你的 JavaScript 打包器（例如 Webpack）可能会将它们转换为：
+
+```js
+if ('production' === 'development') {
+  console.log("Dev-only code here!")
+}
+```
+
+<!--
+Then your subsequent Uglifyjs optimization would remove that entire `if` block. This is how projects like ReactJS provide a development mode code with plenty of dev warnings, while ensuring that the uglified (minified) production code is free of those expensive blocks.
+-->
+
+之后的 Uglifyjs 优化过程会将整个 `if` 块移除。这样开发模式代码可以带有大量开发警告，同时确保压缩（精简）后的生产代码能去除掉这些昂贵的代码，ReactJS 等项目就是这样做的。
+
+<!--
+So, in ReScript, producing that example `if (process.env.mode === 'development')` output is important. This first try doesn't work:
+-->
+
+因此，在 ReScript 中，生成类似 `if (process.env.mode === 'development')` 的输出是很重要的。以下的尝试没有效果：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+@val external process: 'a = "process"
+
+let mode = "development"
+
+if (process["env"]["mode"] === mode) {
+  Js.log("Dev-only code here!")
+}
+```
+```js
+var mode = "development";
+
+if (process.env.mode === mode) {
+  console.log("Dev-only code here!");
+}
+```
+
+</CodeTab>
+
+<!--
+The JS output shows `if (process.env.mode === mode)`, which isn't what we wanted. To inline `mode`'s value, use `@inline`:
+-->
+
+JS 输出显示 `if (process.env.mode === mode)`，这不是我们想要的结果。需要使用 `@inline` 来内联 `mode` 的值：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+@val external process: 'a = "process"
+
+@inline
+let mode = "development"
+
+if (process["env"]["mode"] === mode) {
+  Js.log("Dev-only code here!")
+}
+```
+```js
+if (process.env.mode === "development") {
+  console.log("Dev-only code here!");
+}
+```
+
+</CodeTab>
+
+<!--
+Now your resulting JS code can pass through Webpack and Uglifyjs like the rest of your JavaScript code, and that whole `console.log` can be removed.
+-->
+
+现在生成的 JS 代码可以像其他的 JS 代码一样通过 Webpack 和 Uglifyjs，并且整个 `console.log`可以被移除。
+
+<!--
+The inlining currently only works for **string, float and boolean**.
+-->
+
+目前，内联只对 **string，float 和 boolean** 有效。
+
+<!--
+## Tips & Tricks
+-->
+### 技巧和诀窍
+
+<!--
+This is **not** an optimization. This is an edge-case feature for folks who absolutely need particular values inlined for a JavaScript post-processing step, like conditional compilation. Beside the difference in code that the conditional compilation might end up outputting, there's no performance difference between inlining and not inlining simple values in the eyes of a JavaScript engine.
+-->
+
+这**不是**一个优化。这是一个边缘情况特性，提供给需要为 JavaScript 后处理步骤（例如条件编译）内联特定值的人们。除了条件编译输出的代码可能有所不同之外，内联和不内联简单值对于 JavaScript 引擎来说没有性能上的差异。
