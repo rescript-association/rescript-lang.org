@@ -25,3 +25,5 @@ let parse: string => t
 let prettyString: string => string
 
 let langPrefix: lang => string
+
+let langIndependentPath : t => string

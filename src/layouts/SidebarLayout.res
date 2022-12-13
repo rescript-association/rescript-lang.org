@@ -224,6 +224,7 @@ let make = (
 ) => {
   let (isNavOpen, setNavOpen) = React.useState(() => false)
   let router = Next.Router.useRouter()
+  let url = Url.parse(router.route)
 
   let theme = ColorTheme.toCN(theme)
 
@@ -262,7 +263,19 @@ let make = (
     </a>
   | None => React.null
   }
+  let internationalizationLink = switch url.lang {
+  | Url.Default =>
+    let href = "/zh-CN/" ++ Url.langIndependentPath(url)
+    <a href className="inline text-14 hover:underline text-fire" rel="noopener noreferrer">
+      {React.string("中文")}
+    </a>
 
+  | Url.Chinese =>
+    let href = "/" ++ Url.langIndependentPath(url)
+    <a href className="inline text-14 hover:underline text-fire" rel="noopener noreferrer">
+      {React.string("English")}
+    </a>
+  }
   let pagination = switch categories {
   | Some(categories) =>
     let items = categories->Belt.Array.flatMap(c => c.items)
@@ -322,6 +335,7 @@ let make = (
                 <div
                   className="truncate overflow-x-auto touch-scroll flex items-center space-x-4 md:justify-between mr-4 w-full">
                   breadcrumbs
+                  internationalizationLink
                   editLinkEl
                 </div>
               </div>

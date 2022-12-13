@@ -7,10 +7,10 @@ type lang =
   | Default
   | Chinese
 
-let langPrefix = (lang) => {
+let langPrefix = lang => {
   switch lang {
-    | Default => ""
-    | Chinese => "/zh-CN"
+  | Default => ""
+  | Chinese => "/zh-CN"
   }
 }
 
@@ -82,7 +82,11 @@ let parse = (route: string): t => {
   let foundVersionIndex = Js.Array2.findIndex(fullpath, chunk => {
     Js.Re.test_(%re(`/latest|v\d+(\.\d+)?(\.\d+)?/`), chunk)
   })
-  let startOfBase = if foundLocaleIndex == -1 {0} else {1}
+  let startOfBase = if foundLocaleIndex == -1 {
+    0
+  } else {
+    1
+  }
   let (version, base, pagepath) = if foundVersionIndex == -1 {
     (NoVersion, fullpath, [])
   } else {
@@ -98,4 +102,23 @@ let parse = (route: string): t => {
   }
 
   {fullpath, lang, base, version, pagepath}
+}
+
+let langIndependentPath = (url: t) => {
+  let foundLocaleIndex = Js.Array2.findIndex(url.fullpath, chunk => {
+    Js.Re.test_(%re(`/zh-CN/`), chunk)
+  })
+
+  let startOfBase = if foundLocaleIndex == -1 {
+    0
+  } else {
+    1
+  }
+
+  String.concat(
+    "/",
+    Array.to_list(
+      Js.Array2.slice(url.fullpath, ~start=startOfBase, ~end_=Js.Array2.length(url.fullpath)),
+    ),
+  )
 }
