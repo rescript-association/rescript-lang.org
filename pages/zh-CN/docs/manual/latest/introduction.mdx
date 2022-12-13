@@ -54,7 +54,7 @@ We respect TypeScript very much and think that it's a positive force in the Java
 - Migrating to TypeScript is done "breadth-first," whereas migrating to ReScript is done "depth-first." You can convert your codebase to TypeScript by "turning it on" for all files and annotate here and there; but how much type safety did you gain? How do you measure it? Type errors can still slip in and out of the converted pieces. For ReScript, our interop features draw clear boundaries: there's pure ReScript code, and there's JS interop code. Every piece of converted ReScript code is 100% clean. You'd convert file by file and each conversion increases your safety monotonically.
 -->
 
-- TypeScript 的目标（诚然这是个伟大的目标）是在覆盖整个 JavaScript 语言特性的基础上提供更多的特性。**ReScript只覆盖了一个精心挑选的 JavaScript 子集**。 比方说我们强调简单的 _数据+函数_ 而不是类；简洁的[模式匹配](/docs-cn/manual/latest/pattern-matching-destructuring.md)而不是脆弱的的 `if` 和动态分发；[合适的数据模型](/docs-cn/manual/latest/variant.md)而不是滥用字符串，等等。JavaScript 的超集只会越来越大；而 ReScript 不会 \*
+- TypeScript 的目标（诚然这是个伟大的目标）是在覆盖整个 JavaScript 语言特性的基础上提供更多的特性。**ReScript只覆盖了一个精心挑选的 JavaScript 子集**。 比方说我们强调简单的 _数据+函数_ 而不是类；简洁的[模式匹配](/zh-CN/docs/manual/latest/pattern-matching-destructuring.md)而不是脆弱的的 `if` 和动态分发；[合适的数据模型](/zh-CN/docs/manual/latest/variant.md)而不是滥用字符串，等等。JavaScript 的超集只会越来越大；而 ReScript 不会 \*
 
 
 - 因此，TypeScript 的类型系统必然是复杂的，陷阱重重，可能需要微调，有时很慢，而且需要相当多的嘈杂标注，这些标注往往感觉像手工“记录”而不是清晰的文档。相比之下，ReScript 的类型系统：
