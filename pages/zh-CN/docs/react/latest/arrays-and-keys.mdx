@@ -1,0 +1,139 @@
+---
+title: 数组 & Keys
+description: "在 Rescript 和 React 中渲染数组和操作keys"
+canonical: "/docs/react/latest/arrays-and-keys"
+---
+
+<!-- # Arrays and Keys -->
+# 数组 & Keys
+
+<Intro>
+
+<!-- Whenever we are transforming data into an array of elements and put it in our React tree, we need to make sure to give every element an unique identifier to help React distinguish elements for each render. This page will explain the `key` attribute and how to apply it whenever we need to map data to `React.element`s. -->
+当我们将数据转换为 React 元素数组，并插入我们的 React 元素树时，需要确保为每个元素提供一个唯一标识符，以帮助 React 在渲染时区分元素。本节将介绍 `key` 属性的概念，以及当我们需要将数据映射到 `React.element` 时如何设置 `key`。
+
+</Intro>
+
+<!-- ## Keys & Rendering Arrays -->
+## Keys & 渲染元素数组
+
+<!-- Keys help React identify which elements have been changed, added, or removed throughout each render. Keys should be given to elements inside the array to give the elements a stable identity: -->
+Keys 在每次渲染时帮助 React 识别有哪些元素被修改，新增或删除。我们应该为数组中的 React 元素提供 Key，从而为元素提供稳定的标识：
+
+```res
+let numbers = [1, 2, 3, 4, 5];
+
+let items = Belt.Array.map(numbers, (number) => {
+  <li key={Belt.Int.toString(number)}> {React.int(number)} </li>
+})
+```
+
+<!-- The best way to pick a key is to use a string that uniquely identifies a list item among its siblings. Most often you would use IDs from your data as keys: -->
+Key 最好是能够在所有同级的列表项中唯一标识一个列表项的字符串。通常你会将数据的 ID 作为 Key：
+
+```res
+type todo = {id: string, text: string}
+
+let todos = [
+  {id: "todo1", text: "Todo 1"},
+  {id: "todo2", text: "Todo 2"}
+]
+
+let items = Belt.Array.map(todos, todo => {
+  <li key={todo.id}> {React.string(todo.text)} </li>
+})
+```
+
+<!-- If you don’t have stable IDs for rendered items, you may use the item index as a key as a last resort: -->
+如果需要渲染的列表项没有稳定的 ID，最后的手段是将列表项的索引用作 Key：
+
+```res {1..3}
+let items = Belt.Array.mapWithIndex(todos, (i, todo) => {
+  // Only do this if items have no stable id
+  <li key={Belt.Int.toString(i)}>
+    {todo.text}
+  </li>
+});
+```
+
+<!-- ### Keys Must Only Be Unique Among Siblings -->
+### Keys 需要在同级的项目中唯一
+
+<!-- Keys used within arrays should be unique among their siblings. However they don’t need to be globally unique. We can use the same keys when we produce two different arrays: -->
+数组中使用的 Keys 在其同级中应该是唯一的。但是它们不需要是全局唯一的。当我们生成两个不同的数组时，可以使用相同的 Keys：
+
+```res {6,10,17,18,25,27}
+type post = {id: string, title: string, content: string}
+
+module Blog = {
+  @react.component
+  let make = (~posts: array<post>) => {
+    let sidebar =
+      <ul>
+        {
+          Belt.Array.map(posts, (post) => {
+            <li key={post.id}>
+              {React.string(post.title)}
+            </li>
+          })->React.array
+        }
+      </ul>
+
+    let content = Belt.Array.map(posts, (post) => {
+        <div key={post.id}>
+          <h3>{React.string(post.title)}</h3>
+          <p>{React.string(post.content)}</p>
+        </div>
+    });
+      
+      <div>
+      {sidebar}
+      <hr />
+      {React.array(content)}
+    </div>
+  }
+}
+
+let posts = [
+  {id: "1", title: "Hello World", content: "Welcome to learning ReScript & React!"},
+  {id: "2", title: "Installation", content: "You can install reason-react from npm."}
+]
+
+let blog = <Blog posts/>
+```
+
+
+<!-- ## Rendering `list` Values -->
+## 渲染 `list`
+
+<!-- In case you ever want to render a `list` of items, you can do something like this: -->
+如果你想要渲染 `list`，你可以这样做：
+
+```res
+type todo = {id: string, text: string}
+
+@react.component
+let make = () => {
+  let todoList = list{
+    {id: "todo1", text: "Todo 1"},
+    {id: "todo2", text: "Todo 2"},
+  }
+
+  let items =
+    todoList
+    ->Belt.List.toArray
+    ->Belt.Array.map(todo => {
+      <li key={todo.id}> {React.string(todo.text)} </li>
+    })
+
+  <div> {React.array(items)} </div>
+}
+
+```
+
+<!-- We use `Belt.List.toArray` to convert our list to an array before creating our `array<React.element>`. Please note that using `list` has performance impact due to extra conversion costs. -->
+创建 `array<React.element>` 之前，使用 `Belt.List.toArray` 将列表转换到数组。请注意，由于有额外的转换开销，使用 `list` 会影响性能。
+
+<!-- 99% of the time you'll want to use arrays (seamless interop, faster JS code), but in some cases it might make sense to use a `list` to leverage advanced pattern matching features etc. -->
+99%的情况下你会使用数组（与 JS 无缝互操作，生成更快的 JS 代码），但是在某些情况下，可以使用 `list` 来利用模式匹配等特性。
+

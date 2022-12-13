@@ -1,0 +1,74 @@
+---
+title: 安装
+description: "安装和设置"
+canonical: "/docs/react/latest/installation"
+---
+
+<!-- # Installation -->
+# 安装
+
+<!-- **Requirements:** -->
+
+要求:
+
+<!-- - `rescript@9.1.2` or later (alternatively for older codebases: `bs-platform@8.3 or later`)
+- `react@16.8.1` or later -->
+
+- `rescript@9.1.2` 或更新版本（或者更老的代码库： `bs-platform@8.3 或更新版本`）
+- `react@16.8.1` 或更新版本
+
+<!-- Add following dependency to your ReScript project (in case you don't have any project yet, check out the [installation instructions](/docs/manual/latest/installation) in the manual): -->
+
+在 ReScript 项目中添加下面的依赖（如果你还没有创建项目，可以参考[安装指南](/docs/manual/latest/installation)）：
+
+```
+npm install @rescript/react
+```
+
+<!-- Then add the following setting to your existing `bsconfig.json`: -->
+
+之后，在现有的 `bsconfig.json` 文件中添加以下配置：
+
+```json
+{
+  "reason": { "react-jsx": 3 },
+  "bs-dependencies": ["@rescript/react"]
+}
+```
+
+<!-- To test your setup, create a new `.res` file in your source directory and add the following code: -->
+
+为了测试配置是否生效，请在源代码目录中新建 `.res` 文件，然后粘贴下面的代码：
+
+```res
+// src/Test.res
+@react.component
+let make = () => {
+  <div> {React.string("Hello World")} </div>
+}
+```
+
+<!-- Now run `npx rescript` and you should see a successful build. -->
+
+现在，运行命令 `npx rescript` 就可以成功构建项目了。
+
+<!-- ## Exposed Modules -->
+## 提供的模块
+
+<!-- After a successful installation, `@rescript/react` will make following modules available in your project's global scope: -->
+
+成功安装之后，`@rescript/react` 可以让你在项目全局作用域中使用下面这些模块：
+
+<!-- - `React`: Bindings to React
+- `ReactDOM`: Bindings to the ReactDOM
+- `ReactDOMServer`: Bindings to the ReactDOMServer
+- `ReactEvent`: Bindings to React's synthetic events
+- `ReactDOMStyle`: Bindings to the inline style API
+- `RescriptReactRouter`: A simple, yet fully featured router with minimal memory allocations -->
+
+- `React`: React 绑定
+- `ReactDOM`: ReactDom 绑定
+- `ReactDOMServer`: ReactDOMServer 绑定
+- `ReactEvent`: React 的合成事件绑定
+- `ReactDOMStyle`: 内联样式 API 绑定
+- `RescriptReactRouter`: 一个最低限度分配内存，简单但功能齐全的路由

@@ -1,0 +1,164 @@
+---
+title: useRef Hook
+description: "关于 ReScript 中 useRef React Hook 的细节"
+canonical: "/docs/react/latest/hooks-ref"
+---
+
+<!-- # useRef -->
+# useRef
+
+<Intro>
+
+<!-- The `useRef` hooks creates and manages mutable containers inside your React component. -->
+`useRef` 在你的 React 组件中创建和管理可变容器。
+
+</Intro>
+
+<!-- ## Usage -->
+## 用法
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let refContainer = React.useRef(initialValue);
+```
+
+```js
+  var button = React.useRef(null);
+  React.useRef(0);
+```
+
+</CodeTab>
+
+<!-- `React.useRef` returns a mutable ref object whose `.current` record field is initialized to the passed argument (`initialValue`). The returned object will persist for the full lifetime of the component. -->
+`React.useRef` 返回可变的 ref 对象，它的 `.current` 记录字段被初始化为 `initialValue`。返回的对象将存活到组件的整个生命周期结束。
+
+<!-- Essentially, a `React.ref` is like a "box" that can hold a mutable value in its `.current` record field. -->
+实质上，`React.ref` 就像一个”盒子“，它将可变值保存在 `.current` 记录字段。
+
+<!-- You might be familiar with refs primarily as a way to access the DOM. If you pass a ref object to React with `<div ref={ReactDOM.Ref.domRef(myRef)} />`, React will set its `.current` property to the corresponding DOM node whenever that node changes. -->
+作为访问 DOM 节点的主要方式，你可能对 refs 很熟悉。如果你通过 `<div ref={ReactDOM.Ref.domRef(myRef)} />` 将一个 ref 对象传给 React，当相应的 DOM 节点发生改变的时候， React 会将 `.current` 属性设置为该节点。
+
+<!-- However, `useRef()` is useful for more than the ref attribute. It's handy for keeping any mutable value around similar to how you’d use instance fields in classes. -->
+然而，`useRef()` 不仅适用于 ref 属性。它可以方便地保存可变值，类似于在类中使用实例字段的方式。
+
+<!-- This works because `useRef()` creates a plain JavaScript object. The only difference between `useRef()` and creating a `{current: ...}` object yourself is that useRef will give you the same ref object on every render. -->
+这是因为 `useRef()` 创建了一个普通 JavaScript 对象。使用 `useRef()` 和自己创建 `{current: ...}` 对象的区别是，useRef 会在每次渲染时给你相同的 ref 对象。
+
+<!-- Keep in mind that `useRef` doesn’t notify you when its content changes. Mutating the `.current` record field doesn’t cause a re-render. If you want to run some code when React attaches or detaches a ref to a DOM node, you may want to use a [callback ref](./refs-and-the-dom#callback-refs) instead. -->
+请记住，`useRef` 在它的内容变更时不会通知你。修改 `.current` 记录字段不会导致重新渲染。如果你想要在 React 向 DOM 节点附加或分离 ref 时运行一些代码，你可能需要使用 [回调 ref](./refs-and-the-dom#回调-refs)。
+
+<!-- More infos on direct DOM manipulation can be found in the [Refs and the DOM](./refs-and-the-dom) section. -->
+关于直接操作 DOM 的更多信息，参见 [Refs & DOM](./refs-and-the-dom)。
+
+<!-- ## Examples -->
+## 示例
+
+<!-- ### Managing Focus for a Text Input -->
+### 管理 Text Input 的焦点
+
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// TextInputWithFocusButton.res
+
+@send external focus: Dom.element => unit = "focus"
+
+@react.component
+let make = () => {
+  let inputEl = React.useRef(Js.Nullable.null)
+
+  let onClick = _ => {
+    inputEl.current
+    ->Js.Nullable.toOption
+    ->Belt.Option.forEach(input => input->focus)
+  }
+
+  <>
+    <input ref={ReactDOM.Ref.domRef(inputEl)} type_="text" />
+    <button onClick> {React.string("Focus the input")} </button>
+  </>
+}
+```
+
+```js
+function TextInputWithFocusButton(Props) {
+  var inputEl = React.useRef(null);
+  var onClick = function (param) {
+    return Belt_Option.forEach(Caml_option.nullable_to_opt(inputEl.current), (function (input) {
+                  input.focus();
+
+                }));
+  };
+  return React.createElement(React.Fragment, undefined, React.createElement("input", {
+                  ref: inputEl,
+                  type: "text"
+                }), React.createElement("button", {
+                  onClick: onClick
+                }, "Focus the input"));
+}
+```
+
+</CodeTab>
+
+<!-- ### Using a Callback Ref -->
+### 使用回调 Ref
+
+<!-- Reusing the example from our [Refs and the DOM](./refs-and-the-dom#callback-refs) section: -->
+[Refs & DOM](./refs-and-the-dom#回调-refs) 章节的例子：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// CustomTextInput.res
+
+@send external focus: Dom.element => unit = "focus"
+
+@react.component
+let make = () => {
+  let textInput = React.useRef(Js.Nullable.null)
+  let setTextInputRef = element => {
+    textInput.current = element;
+  }
+
+  let focusTextInput = _ => {
+    textInput.current
+    ->Js.Nullable.toOption
+    ->Belt.Option.forEach(input => input->focus)
+  }
+
+  <div>
+    <input type_="text" ref={ReactDOM.Ref.callbackDomRef(setTextInputRef)} />
+    <input
+      type_="button" value="Focus the text input" onClick={focusTextInput}
+    />
+  </div>
+}
+```
+
+```js
+function CustomTextInput(Props) {
+  var textInput = React.useRef(null);
+  var setTextInputRef = function (element) {
+    textInput.current = element;
+
+  };
+  var focusTextInput = function (param) {
+    return Belt_Option.forEach(Caml_option.nullable_to_opt(textInput.current), (function (input) {
+                  input.focus();
+
+                }));
+  };
+  return React.createElement("div", undefined, React.createElement("input", {
+                  ref: setTextInputRef,
+                  type: "text"
+                }), React.createElement("input", {
+                  type: "button",
+                  value: "Focus the text input",
+                  onClick: focusTextInput
+                }));
+}
+```
+
+</CodeTab>

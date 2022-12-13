@@ -1,0 +1,173 @@
+---
+title: useState Hook
+description: "关于 ReScript 中 useState React Hook 的细节"
+canonical: "/docs/react/latest/hooks-state"
+---
+
+<!-- # useState -->
+# useState
+
+<Intro>
+
+<!-- `React.useState` returns a stateful value, and a function to update it. -->
+`React.useState` 返回一个有状态的值，和一个更新它的函数。
+
+</Intro>
+
+<!-- ## Usage -->
+## 用法
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let (state, setState) = React.useState(_ => initialState)
+```
+
+```js
+var match = React.useState(function () {
+      return initialState;
+    });
+
+var state = match[0];
+
+var setState = match[1];
+```
+
+</CodeTab>
+
+
+<!-- During the initial render, the returned state `state` is the same as the value passed as the first argument (initialState). -->
+初次渲染时，返回的 `state` 和作为第一个参数传给 `React.useState` 的 initialState 一样。
+
+<!-- The `setState` function can be passed down to other components as well, which is useful for e.g. setting the state of a parent component by its children. -->
+`setState` 函数也可以传给其他组件，可以用于通过子组件设置父组件的 state。
+
+<!-- ## Examples -->
+## 示例
+
+<!-- ### Using State for a Text Input -->
+### 为 Text Input 添加 State
+
+```res
+@react.component
+let make = () => {
+  let (text, setText) = React.useState(_ => "");
+
+  let onChange = evt => {
+    ReactEvent.Form.preventDefault(evt)
+    let value = ReactEvent.Form.target(evt)["value"]
+    setText(_prev => value);
+  }
+
+  <div>
+    <input onChange value=text />
+  </div>
+};
+```
+
+<!-- ### Passing `setState` to a Child Component -->
+### 将 `setState` 传给子组件
+
+<!-- In this example, we are creating a `ThemeContainer` component that manages a `darkmode` boolean state and passes the `setDarkmode` function to a `ControlPanel` component to trigger the state changes. -->
+下面的例子中， `ThemeContainer` 组件用于管理 `darkmode` state，并将 `setDarkmode` 函数传给 `ControlPanel` 组件来触发 state 变更。
+
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// ThemeContainer.res
+module ControlPanel = {
+  @react.component
+  let make = (~setDarkmode, ~darkmode) => {
+    let onClick = evt => {
+      ReactEvent.Mouse.preventDefault(evt)
+      setDarkmode(prev => !prev)
+    }
+
+    let toggleText = "Switch to " ++ ((darkmode ? "light" : "dark") ++ " theme")
+
+    <div> <button onClick> {React.string(toggleText)} </button> </div>
+  }
+}
+
+@react.component
+let make = (~content) => {
+  let (darkmode, setDarkmode) = React.useState(_ => false)
+
+  let className = darkmode ? "theme-dark" : "theme-light"
+
+  <div className>
+    <section>
+      <h1> {React.string("More Infos about ReScript")} </h1> content
+    </section>
+    <ControlPanel darkmode setDarkmode />
+  </div>
+}
+```
+```js
+function ControlPanel(Props) {
+  var setDarkmode = Props.setDarkmode;
+  var darkmode = Props.darkmode;
+  var onClick = function (evt) {
+    evt.preventDefault();
+    return Curry._1(setDarkmode, (function (prev) {
+                  return !prev;
+                }));
+  };
+  var toggleText = "Switch to " + ((
+      darkmode ? "light" : "dark"
+    ) + " theme");
+  return React.createElement("div", undefined, React.createElement("button", {
+                  onClick: onClick
+                }, toggleText));
+}
+
+function ThemeContainer(Props) {
+  var content = Props.content;
+  var match = React.useState(function () {
+        return false;
+      });
+  var darkmode = match[0];
+  var className = darkmode ? "theme-dark" : "theme-light";
+  return React.createElement("div", {
+              className: className
+            }, React.createElement("section", undefined, React.createElement("h1", undefined, "More Infos about ReScript"), content), React.createElement(Playground$ControlPanel, {
+                  setDarkmode: match[1],
+                  darkmode: darkmode
+                }));
+}
+```
+
+</CodeTab>
+
+<!-- Note that whenever `setDarkmode` is returning a new value (e.g. switching from `true` -> `false`), it will cause a re-render for `ThemeContainer`'s `className` and the toggle text of its nested `ControlPanel`. -->
+当 `setDarkmode` 返回一个新值时（例如 `true` 切换到 `false`），`ThemeContainer` 的 `className` 将会进行重渲染，嵌套的 `ControlPanel` 组件的切换文本也会改变。
+
+<!-- ## Uncurried Version -->
+## Uncurried 版本
+
+<!-- For cleaner JS output, you can use `React.Uncurried.useState` instead: -->
+为了更干净的 JS 输出，可以使用 `React.Uncurried.useState`：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let (state, setState) = React.Uncurried.useState(_ => 0)
+
+setState(. prev => prev + 1)
+```
+
+```js
+var match = React.useState(function () {
+      return 0;
+  });
+
+var setState = match[1];
+
+setState(function (prev) {
+      return prev + 1 | 0;
+    });
+```
+
+</CodeTab>
+

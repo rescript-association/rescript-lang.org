@@ -1,0 +1,145 @@
+---
+title: 概览
+description: "ReScript and React 中的 Hooks 和状态管理概览"
+canonical: "/docs/react/latest/hooks-overview"
+---
+
+<!-- # Hooks Overview -->
+# Hooks 概览
+
+<Intro>
+
+<!-- Hooks are an essential mechanism to introduce and manage state and effects in React components. -->
+Hooks 是在 React 组件中引入和管理状态和副作用的基本机制。
+
+</Intro>
+
+<!-- ## What is a Hook? -->
+## 什么是 Hook ？
+
+<!-- In the previous chapters we learned how React components are just a simple function representing UI based on specific prop values. For an application to be useful we still need a way to manipulate those props interactively either via user input or via requests loading in data from a server. -->
+在前面的章节中，我们学到了 React 组件是基于特定 props 值的简单函数，用于表示 UI。为了使应用更可用，我们需要一种通过用户输入或向服务器发送请求来加载数据，从而交互式地操作 props 的方法。
+
+<!-- That's where Hooks come in. A Hook is a function that allows us to introduce component state and trigger side-effects for different tasks, such as HTTP requests, direct HTML DOM access, querying window sizes, etc.  -->
+这就是 Hook 的用武之地。Hook 是一种函数，它让我们可以为组件引入状态，并为不同的任务触发副作用，例如 HTTP 请求、直接访问 HTML DOM、获取窗口大小等等。
+
+<!-- In other words: **It allows us to "hook into" React features.** -->
+换句话说：**Hook 可以让我们“钩入” React 特性。**
+
+<!-- ### Example: The `useState` Hook -->
+### 示例: `useState` Hook
+
+<!-- Just for a quick look, here is an example of a `Counter` component that allows a user to click a button and increment an `count` value that will immediately be rendered on each button click:  -->
+让我们看一个例子，下面是一个 `Counter` 组件，它允许用户通过点击按钮来增加 `count` 值，并且新的 `count` 值会在按钮点击时被渲染：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// Counter.res
+@react.component
+let make = () => {
+  let (count, setCount) = React.useState(_ => 0);
+
+  let onClick = (_evt) => {
+    setCount(prev => prev + 1)
+  };
+
+  let msg = "You clicked" ++ Belt.Int.toString(count) ++  "times"
+
+  <div>
+    <p>{React.string(msg)}</p>
+    <button onClick> {React.string("Click me")} </button>
+  </div>
+}
+```
+```js
+function Counter(Props) {
+  var match = React.useState(function () {
+        return 0;
+      });
+  var setCount = match[1];
+  var onClick = function (_evt) {
+    return Curry._1(setCount, (function (prev) {
+                  return prev + 1 | 0;
+                }));
+  };
+  var msg = "You clicked" + String(match[0]) + "times";
+  return React.createElement("div", undefined, React.createElement("p", undefined, msg), React.createElement("button", {
+                  onClick: onClick
+                }, "Click me"));
+}
+```
+
+</CodeTab>
+
+
+<!-- Here we are using the `React.useState` Hook. We call it inside a component function to add some local state to it. React will preserve this state between re-renders. `React.useState` returns a tuple: the current state value (`count`) and a function that lets you update it (`setCount`). You can call this function from an event handler or pass it down to other components to call the function.  -->
+我们使用了 `React.useState` Hook。我们在组件函数中调用它来为组件添加局部状态。React 会在重渲染之间保持这些状态。`React.useState` 返回一个元组，包括当前状态值（`count`） 和一个更新状态值的函数（`setCount`）。你能在处理事件时调用更新函数，或将更新函数传递给其他组件。
+
+<!-- The only argument to `React.useState` is a function that returns the initial state (`_ => 0`). In the example above, it is 0 because our counter starts from zero. Note that your state can be any type you want and `ReScript` will make sure to infer the types for you (only make sure to return an initial state that matches your type). The initial state argument is only used during the first render. -->
+`React.useState` 的唯一参数是一个返回初始状态的函数（`_ => 0`）。在上面的例子中，它是 0 ，因为我们的计数器从零开始。请注意，状态可以是任何类型，Rescript 会为你进行类型推断（只需要确保你的初始状态和你的类型匹配）。初始状态参数只会在首次渲染时使用。
+
+<!-- This was just a quick example on our first hook usage. We will go into more detail in a dedicated [useState](./hooks-state) section. -->
+这只是 Hook 的一个小例子。我们会在独立的 [useState](./hooks-state) 章节中介绍更多细节。
+
+<!-- ## Available Hooks -->
+## 可用的 Hooks
+
+<!-- **Note:** All hooks are part of the `React` module (e.g. `React.useState`). -->
+**注意**： 所有 Hooks 都在 `React` 模块下（例如 `React.useState`）。
+
+<!-- ### Basic Hooks: -->
+### 基础 Hooks:
+
+<!-- - [useState](./hooks-state): Adds local state to your component
+- [useEffect](./hooks-effect): Runs side-effectual code within your component
+- [useContext](./hooks-context): Gives your component to a React Context value -->
+- [useState](./hooks-state): 为组件添加局部状态
+- [useEffect](./hooks-effect): 在组件内运行有副作用的代码
+- [useContext](./hooks-context): 让你的组件能访问 React Context
+
+<!-- ### Additional Hooks: -->
+### 额外 Hooks:
+
+<!-- - [useReducer](./hooks-reducer): An alternative to `useState`. Uses the state / action / reduce pattern.
+- [useRef](./hooks-ref): Returns a mutable React-Ref value -->
+- [useReducer](./hooks-reducer): `useState` 的替代方案，使用state / action / reduce 模式
+- [useRef](./hooks-ref): 返回一个可变的 React Ref 值
+
+<!-- 下面是原文档内的注释，不是翻译的注释 -->
+<!-- - [useCallback](./hooks-callback): Returns a memoized callback -->
+<!-- - [useMemo](./hooks-memo): Returns a memoized value -->
+<!-- - [useImperativeHandle](./hooks-imperative-handle): Customizes the instance value that is exposed to parent components when using `ref` -->
+<!-- - [useLayoutEffect](./hooks-layout-effect): Identical to useEffect, but it fires synchronously after all DOM mutations. -->
+<!-- 上面是原文档内的注释，不是翻译的注释 -->
+
+
+<!-- ## Rules of Hooks -->
+## Hooks 规则
+
+<!-- Hooks are just simple functions, but you need to follow _two rules_ when using them. ReScript doesn't enforce those rules within the compiler, so if you really want to enforce correct hooks conventions, you can use an [eslint-plugin](https://www.npmjs.com/package/eslint-plugin-react-hooks) to check your compiled JS output. -->
+Hooks 本质上是些简单函数，但是你需要在使用时遵循 _两条规则_。ReScript 不会在编译器中强制执行这些规则，如果你想要强制执行正确的 Hooks 约定，可以使用 [eslint-plugin](https://www.npmjs.com/package/eslint-plugin-react-hooks) 来检查编译的 JS 输出。
+
+<!-- ### Rule 1) Only Call Hooks at the Top Level -->
+### 1. 只在最顶层调用 Hook
+
+
+<!-- **Don’t call Hooks inside loops, conditions, or nested functions.** Instead, always use Hooks at the top level of your React function. By following this rule, you ensure that Hooks are called in the same order each time a component renders. That’s what allows React to correctly preserve the state of Hooks between multiple `useState` and `useEffect` calls. (If you’re curious, you can check out the in depth explanation in the [ReactJS Hooks docs](https://reactjs.org/docs/hooks-rules.html#explanation)) -->
+**不要在循环，条件或嵌套函数中调用 Hooks**，确保总是在你的 React 函数的最顶层调用它们。遵守这条规则，你就能确保 Hook 在每一次渲染中都按照同样的顺序被调用。这让 React 能够在多次的 `useState` 和 `useEffect` 调用之间正确保持 Hooks 状态。(如果你对此感到好奇，[ReactJS Hooks 文档](https://reactjs.org/docs/hooks-rules.html#explanation) 有更深入的解释。)
+
+
+<!-- ### Rule 2) Only Call Hooks from React Functions -->
+### 2. 只在 React 函数中调用 Hook
+
+<!-- **Don't call Hooks from regular functions.** Instead, you can:
+
+- ✅ Call Hooks from React function components.
+- ✅ Call Hooks from custom Hooks (we’ll learn about them in our [custom hooks](./hooks-custom) section). -->
+
+**不要在普通的 JavaScript 函数中调用 Hook。** 你可以：
+- ✅ 在 React 的函数组件中调用 Hook
+- ✅ 在自定义 Hook 中调用其他 Hook (我们将会在 [自定义 hooks](./hooks-custom) 章节中学习。)
+
+
+<!-- By following this rule, you ensure that all stateful logic in a component is clearly visible from its source code. -->
+遵循这些规则，确保组件的状态逻辑在代码中清晰可见。

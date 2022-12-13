@@ -1,0 +1,559 @@
+---
+title: 构建自定义 Hooks
+description: "如何使用ReScript & React构建你自己的hooks"
+canonical: "/docs/react/latest/hooks-custom"
+---
+
+<!-- # Build A Custom Hook -->
+# 构建自定义 Hooks
+
+<Intro>
+
+<!-- React comes with a few fundamental hooks out-of-the-box, such as `React.useState` or `React.useEffect`. Here you will learn how to build your own, higher-level hooks for your React use-cases. -->
+
+React 自带了一些基础的 hooks，例如 `React.useState` 或 `React.useEffect`。本章中你将学习如何针对你的 React 用例构建高阶 hooks。
+
+</Intro>
+
+<!-- ## Why Custom Hooks? -->
+## 为什么自定义 Hooks？
+
+<!-- Custom hooks let you extract existing component logic into reusable, separate functions. -->
+自定义 hooks 可以让你将现有组件的逻辑提取到可复用的，独立的函数中。
+
+<!-- Let's go back to a previous example from our [React.useEffect section](./hooks-effect) where we built a component for a chat application that displays a message, indicating whether a friend is online or offline: -->
+我们回顾一下之前的例子 [React.useEffect 章节](./hooks-effect)，这个例子中我们构建了一个聊天应用的组件，用于展示消息，显示朋友是否在线。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res {16-31}
+// FriendStatus.res
+
+module ChatAPI = {
+  // 出于演示的目的，ChatAPI是虚构的一个全局变量
+  type status = { isOnline: bool };
+  @val external subscribeToFriendStatus: (string, status => unit) => unit = "subscribeToFriendStatus";
+  @val external unsubscribeFromFriendStatus: (string, status => unit) => unit = "unsubscribeFromFriendStatus";
+}
+
+type state = Offline | Loading | Online;
+
+@react.component
+let make = (~friendId: string) => {
+  let (state, setState) = React.useState(_ => Offline)
+
+  React.useEffect(() => {
+    let handleStatusChange = (status) => {
+      setState(_ => {
+        status.ChatAPI.isOnline ? Online : Offline
+      })
+    }
+
+    ChatAPI.subscribeToFriendStatus(friendId, handleStatusChange);
+    setState(_ => Loading);
+
+    let cleanup = () => {
+      ChatAPI.unsubscribeFromFriendStatus(friendId, handleStatusChange)
+    }
+
+    Some(cleanup)
+  })
+
+  let text = switch(state) {
+    | Offline => friendId ++ " is offline"
+    | Online => friendId ++ " is online"
+    | Loading => "loading..."
+  }
+
+  <div>
+  	{React.string(text)}
+  </div>
+}
+
+```
+
+```js
+function FriendStatus(Props) {
+  var friendId = Props.friendId;
+  var match = React.useState(function () {
+        return /* Offline */0;
+      });
+  var setState = match[1];
+  React.useEffect(function () {
+        var handleStatusChange = function (status) {
+          return Curry._1(setState, (function (param) {
+                        if (status.isOnline) {
+                          return /* Online */2;
+                        } else {
+                          return /* Offline */0;
+                        }
+                      }));
+        };
+        subscribeToFriendStatus(friendId, handleStatusChange);
+        Curry._1(setState, (function (param) {
+                return /* Loading */1;
+              }));
+        return (function (param) {
+                  unsubscribeFromFriendStatus(friendId, handleStatusChange);
+
+                });
+      });
+  var text;
+  switch (match[0]) {
+    case /* Offline */0 :
+        text = friendId + " is offline";
+        break;
+    case /* Loading */1 :
+        text = "loading...";
+        break;
+    case /* Online */2 :
+        text = friendId + " is online";
+        break;
+
+  }
+  return React.createElement("div", undefined, text);
+}
+```
+
+</CodeTab>
+
+<!-- Now let’s say that our chat application also has a contact list, and we want to render names of online users with a green color. We could copy and paste similar logic above into our `FriendListItem` component but it wouldn’t be ideal: -->
+现在，假设我们的聊天应用有个联系人列表，我们想用绿色展示在线用户的名字。我们可以复制粘贴上面相似的逻辑到 `FriendListItem` 组件中，但这并不令人满意。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res {15-30}
+// FriendListItem.res
+type state = Offline | Loading | Online;
+
+// module ChatAPI = {...}
+
+type friend = {
+  id: string,
+  name: string
+};
+
+@react.component
+let make = (~friend: friend) => {
+  let (state, setState) = React.useState(_ => Offline)
+
+  React.useEffect(() => {
+    let handleStatusChange = (status) => {
+      setState(_ => {
+        status.ChatAPI.isOnline ? Online : Offline
+      })
+    }
+
+    ChatAPI.subscribeToFriendStatus(friend.id, handleStatusChange);
+    setState(_ => Loading);
+
+    let cleanup = () => {
+      ChatAPI.unsubscribeFromFriendStatus(friend.id, handleStatusChange)
+    }
+
+    Some(cleanup)
+  })
+
+  let color = switch(state) {
+    | Offline => "red"
+    | Online => "green"
+    | Loading => "grey"
+  }
+
+  <li style={ReactDOMStyle.make(~color,())}>
+      {React.string(friend.name)}
+  </li>
+}
+```
+
+```js
+function FriendListItem(Props) {
+  var friend = Props.friend;
+  var match = React.useState(function () {
+        return /* Offline */0;
+      });
+  var setState = match[1];
+  React.useEffect(function () {
+        var handleStatusChange = function (status) {
+          return Curry._1(setState, (function (param) {
+                        if (status.isOnline) {
+                          return /* Online */2;
+                        } else {
+                          return /* Offline */0;
+                        }
+                      }));
+        };
+        subscribeToFriendStatus(friend.id, handleStatusChange);
+        Curry._1(setState, (function (param) {
+                return /* Loading */1;
+              }));
+        return (function (param) {
+                  unsubscribeFromFriendStatus(friend.id, handleStatusChange);
+
+                });
+      });
+  var color;
+  switch (match[0]) {
+    case /* Offline */0 :
+        color = "red";
+        break;
+    case /* Loading */1 :
+        color = "grey";
+        break;
+    case /* Online */2 :
+        color = "green";
+        break;
+
+  }
+  return React.createElement("li", {
+              style: {
+                color: color
+              }
+            }, friend.name);
+}
+```
+
+</CodeTab>
+
+<!-- Instead, we’d like to share this logic between `FriendStatus` and `FriendListItem`. -->
+相反，我们更期望这段逻辑能在 `FriendStatus` 和 `FriendListItem` 中共用
+
+<!-- Traditionally in React, we’ve had two popular ways to share stateful logic between components: render props and higher-order components. We will now look at how Hooks solve many of the same problems without forcing you to add more components to the tree. -->
+传统上，在 React 中有两种流行的方法来在组件间共享有状态的逻辑：`render props` 和高阶组件。现在让我们看看 Hooks 是如何解决大多数同类的问题，而不需要在组件树中添加更多组件的。
+
+<!-- ## Extracting a Custom Hook -->
+## 提取自定义 Hook
+
+<!-- Usually when we want to share logic between two functions, we extract it to a third function. Both components and Hooks are functions, so this works for them too! -->
+我们需要在函数之间共享逻辑时，通常会将逻辑提取到另一个函数中。组件和 Hooks 都是函数，所以这个思路也适用。
+
+<!-- **A custom Hook is a function whose name starts with ”use” and that may call other Hooks.** For example, `useFriendStatus` below is our first custom Hook (we create a new file `FriendStatusHook.res` to encapsulate the `state` type as well): -->
+**自定义 Hook 是以 ”use” 作为前缀的函数，同时也可能会调用其它的 Hooks。**举例来说，下面的 `useFriendStatus` 是我们的第一个 Hook（我们新创建了 `FriendStatusHook.res` 文件，用来封装 `state` 类型）：
+
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// FriendStatusHook.res
+
+// module ChatAPI {...}
+
+type state = Offline | Loading | Online
+
+let useFriendStatus = (friendId: string): state => {
+  let (state, setState) = React.useState(_ => Offline)
+
+  React.useEffect(() => {
+    let handleStatusChange = status => {
+      setState(_ => {
+        status.ChatAPI.isOnline ? Online : Offline
+      })
+    }
+
+    ChatAPI.subscribeToFriendStatus(friendId, handleStatusChange)
+    setState(_ => Loading)
+
+    let cleanup = () => {
+      ChatAPI.unsubscribeFromFriendStatus(friendId, handleStatusChange)
+    }
+
+    Some(cleanup)
+  })
+
+  state
+}
+```
+
+```js
+function useFriendStatus(friendId) {
+  var match = React.useState(function () {
+        return /* Offline */0;
+      });
+  var setState = match[1];
+  React.useEffect(function () {
+        var handleStatusChange = function (status) {
+          return Curry._1(setState, (function (param) {
+                        if (status.isOnline) {
+                          return /* Online */2;
+                        } else {
+                          return /* Offline */0;
+                        }
+                      }));
+        };
+        subscribeToFriendStatus(friendId, handleStatusChange);
+        Curry._1(setState, (function (param) {
+                return /* Loading */1;
+              }));
+        return (function (param) {
+                  unsubscribeFromFriendStatus(friendId, handleStatusChange);
+
+                });
+      });
+  return match[0];
+}
+```
+
+</CodeTab>
+
+<!-- There’s nothing new inside of it — the logic is copied from the components above. Just like in a component, make sure to only call other Hooks unconditionally at the top level of your custom Hook. -->
+里面没啥新的内容，逻辑都是从上面组件中复制过来的。就像在组件中一样，确保只在自定义 Hook 的顶层无条件地调用其他 Hook。
+
+<!-- Unlike a React component, a custom Hook doesn’t need to have a specific signature. We can decide what it takes as arguments, and what, if anything, it should return. In other words, it’s just like a normal function. Its name should always start with use so that you can tell at a glance that the rules of Hooks apply to it. -->
+与 React 组件不同，自定义 Hook 不需要具有特定签名。 我们可以决定它接受什么作为参数，以及它应该返回什么（如果有的话）。换句话说，它就像一个普通的函数。它的名称应该始终以 use 开头，以便你一眼就可以看出它是 Hooks。
+
+<!-- The purpose of our `useFriendStatus` Hook is to subscribe us to a friend’s status. This is why it takes `friendId` as an argument, and returns the online state like `Online`, `Offline` or `Loading`: -->
+我们的 `useFriendStatus` Hook 的用途是订阅朋友的状态。所以它将 `friendId` 作为参数，并返回在线状态，如 `Online`、`Offline` 或 `Loading`：
+```res
+let useFriendStatus = (friendId: string): status {
+  let (state, setState) = React.useState(_ => Offline);
+
+  // ...
+
+  state
+}
+```
+
+<!-- Now let’s use our custom Hook. -->
+现在用一下我们的自定义 Hook。
+
+<!-- ## Using a Custom Hook -->
+## 使用自定义 Hook
+
+<!-- In the beginning, our stated goal was to remove the duplicated logic from the `FriendStatus` and `FriendListItem` components. Both of them want to know the online state of a friend. -->
+最开始我们的既定目标是移除 `FriendStatus` 和 `FriendListItem` 组件的重复逻辑。这两个组件都需要知道朋友的在线状态。
+
+<!-- Now that we’ve extracted this logic to a useFriendStatus hook, we can just use it: -->
+现在我们已经将这个逻辑提取到 `useFriendStatus` hook 中，我们可以直接使用它：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res {6}
+// FriendStatus.res
+type friend = { id: string };
+
+@react.component
+let make = (~friend: friend) => {
+  let onlineState = FriendStatusHook.useFriendStatus(friend.id);
+
+  let status = switch(onlineState) {
+    | FriendStatusHook.Online => "Online"
+    | Loading => "Loading"
+    | Offline => "Offline"
+  }
+
+  React.string(status);
+}
+```
+```js
+function FriendStatus(Props) {
+  var friend = Props.friend;
+  var onlineState = useFriendStatus(friend.id);
+  var color;
+  switch (onlineState) {
+    case /* Offline */0 :
+        color = "red";
+        break;
+    case /* Loading */1 :
+        color = "grey";
+        break;
+    case /* Online */2 :
+        color = "green";
+        break;
+
+  }
+  return React.createElement("li", {
+              style: {
+                color: color
+              }
+            }, friend.name);
+}
+```
+
+</CodeTab>
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res {4}
+// FriendListItem.res
+@react.component
+let make = (~friend: friend) => {
+  let onlineState = FriendStatusHook.useFriendStatus(friend.id);
+
+  let color = switch(onlineState) {
+    | Offline => "red"
+    | Online => "green"
+    | Loading => "grey"
+  }
+
+  <li style={ReactDOMStyle.make(~color,())}>
+      {React.string(friend.name)}
+  </li>
+}
+```
+
+```js
+function FriendListItem(Props) {
+  var friend = Props.friend;
+  var onlineState = useFriendStatus(friend.id);
+  var color;
+  switch (onlineState) {
+    case /* Offline */0 :
+        color = "red";
+        break;
+    case /* Loading */1 :
+        color = "grey";
+        break;
+    case /* Online */2 :
+        color = "green";
+        break;
+
+  }
+  return React.createElement("li", {
+              style: {
+                color: color
+              }
+            }, friend.name);
+}
+```
+
+</CodeTab>
+
+
+<!-- **Is this code equivalent to the original examples?** Yes, it works in exactly the same way. If you look closely, you’ll notice we didn’t make any changes to the behavior. All we did was to extract some common code between two functions into a separate function. Custom Hooks are a convention that naturally follows from the design of Hooks, rather than a React feature. -->
+**这个代码和之前的例子是等价的吗？**是的，它会以相同的方式工作。如果你仔细观察，你会注意到我们没有更改任何行为。我们只是将两个函数之间的一些公共代码提取到一个单独的函数中。自定义 Hooks 是一个约定，自然遵循 Hooks 的设计，而不是一个 React 特性。
+
+<!-- **Do I have to name my custom Hooks starting with “use”?** Please do. This convention is very important. Without it, we wouldn’t be able to automatically check for violations of rules of Hooks because we couldn’t tell if a certain function contains calls to Hooks inside of it. -->
+**我的自定义 Hooks 必须以 “use” 开头吗？**请这样做吧。这个约定非常重要。没有它，我们就无法自动检查是否违反 Hooks 规则，因为我们无法判断某个函数内部是否包含对 Hooks 的调用。
+
+<!-- **Do two components using the same Hook share state?** No. Custom Hooks are a mechanism to reuse stateful logic (such as setting up a subscription and remembering the current value), but every time you use a custom Hook, all state and effects inside of it are fully isolated. -->
+**使用相同 Hook 的两个组件共享状态吗？**不。自定义Hook是一种复用状态逻辑的机制（例如设置订阅并记住当前值），但是每次使用自定义 Hook 时，其中的所有状态和效果都是完全隔离的。
+
+<!-- **How does a custom Hook get isolated state?** Each call to a Hook gets isolated state. Because we call useFriendStatus directly, from React’s point of view our component just calls useState and useEffect. And as we learned earlier, we can call useState and useEffect many times in one component, and they will be completely independent. -->
+**自定义 Hook 是如何隔离状态的？**对 Hook 的每次调用都会获得隔离的状态。因为我们直接调用 `useFriendStatus`，从 React 的角度来看，我们的组件只调用了 `useState` 和 `useEffect`。而且正如我们之前所了解的，我们可以在一个组件中多次调用 `useState` 和 `useEffect`，它们将是完全独立的。
+
+<!-- ### Tip: Pass Information Between Hooks -->
+### 技巧：在 Hooks 之间传递信息
+
+<!-- Since Hooks are functions, we can pass information between them. -->
+由于 Hooks 是函数，我们可以直接在它们间传递信息。
+
+<!-- To illustrate this, we’ll use another component from our hypothetical chat example. This is a chat message recipient picker that displays whether the currently selected friend is online: -->
+为了演示这一点，我们将使用聊天示例中的另一个组件。这是一个消息收件人选择器，显示当前选择的朋友是否在线：
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res {11,12,14-18,22}
+type friend = {id: string, name: string}
+
+let friendList = [
+  {id: "1", name: "Phoebe"},
+  {id: "2", name: "Rachel"},
+  {id: "3", name: "Ross"},
+]
+
+@react.component
+let make = () => {
+  let (recipientId, setRecipientId) = React.useState(_ => "1")
+  let recipientOnlineState = FriendStatusHook.useFriendStatus(recipientId)
+
+  let color = switch recipientOnlineState {
+  | FriendStatusHook.Offline => Circle.Red
+  | Online => Green
+  | Loading => Grey
+  }
+
+  let onChange = evt => {
+    let value = ReactEvent.Form.target(evt)["value"]
+    setRecipientId(value)
+  }
+
+  let friends = Belt.Array.map(friendList, friend => {
+    <option key={friend.id} value={friend.id}>
+      {React.string(friend.name)}
+    </option>
+  })
+
+  <>
+    <Circle color />
+    <select value={recipientId} onChange>
+      {React.array(friends)}
+    </select>
+  </>
+}
+```
+```js
+var friendList = [
+  {
+    id: "1",
+    name: "Phoebe"
+  },
+  {
+    id: "2",
+    name: "Rachel"
+  },
+  {
+    id: "3",
+    name: "Ross"
+  }
+];
+
+function Playground(Props) {
+  var match = React.useState(function () {
+        return "1";
+      });
+  var setRecipientId = match[1];
+  var recipientId = match[0];
+  var recipientOnlineState = useFriendStatus(recipientId);
+  var color;
+  switch (recipientOnlineState) {
+    case /* Offline */0 :
+        color = /* Red */0;
+        break;
+    case /* Loading */1 :
+        color = /* Grey */2;
+        break;
+    case /* Online */2 :
+        color = /* Green */1;
+        break;
+
+  }
+  var onChange = function (evt) {
+    return Curry._1(setRecipientId, evt.target.value);
+  };
+  var friends = Belt_Array.map(friendList, (function (friend) {
+          return React.createElement("option", {
+                      key: friend.id,
+                      value: friend.id
+                    }, friend.name);
+        }));
+  return React.createElement(React.Fragment, undefined, React.createElement(Playground$Circle, {
+                  color: color
+                }), React.createElement("select", {
+                  value: recipientId,
+                  onChange: onChange
+                }, friends));
+}
+```
+
+</CodeTab>
+
+<!-- We keep the currently chosen friend ID in the `recipientId` state variable, and update it if the user chooses a different friend in the `<select>` picker. -->
+我们将当前选择的朋友 ID 保存在 `recipientId` 状态变量中，如果用户在 `<select>` 选择器中选择了不同的朋友，则更新它。
+<!-- Because the useState Hook call gives us the latest value of the `recipientId` state variable, we can pass it to our custom `FriendStatusHook.useFriendStatus` Hook as an argument: -->
+因为 `useState` Hook 调用为我们提供了 `recipientId` 状态变量的最新值，我们可以将它作为参数传递给我们的自定义 `FriendStatusHook.useFriendStatus` Hook：
+```res
+let (recipientId, setRecipientId) = React.useState(_ => "1")
+let recipientOnlineState = FriendStatusHook.useFriendStatus(recipientId)
+```
+
+<!-- This lets us know whether the currently selected friend is online. If we pick a different friend and update the `recipientId` state variable, our `FriendStatus.useFriendStatus` Hook will unsubscribe from the previously selected friend, and subscribe to the status of the newly selected one. -->
+这样我们能知道当前选择的朋友是否在线。如果我们选择不同的朋友并更新 `recipientId` 状态变量，我们的 `FriendStatus.useFriendStatus` Hook将取消订阅之前选择的朋友，并订阅新选择的朋友的状态。
+
+<!-- ## Use Your Imagination -->
+## 发挥你的想象力
+
+<!-- Custom Hooks offer the flexibility of sharing logic. You can write custom Hooks that cover a wide range of use cases like form handling, animation, declarative subscriptions, timers, and probably many more we haven’t considered. What’s more, you can build Hooks that are just as easy to use as React’s built-in features. -->
+自定义 Hooks 提供了共享逻辑的灵活性。你可以编写自定义 Hook 去覆盖广泛的用例，例如表单处理、动画、声明式订阅、计时器，以及更多我们没有考虑到的用例。更重要的是，你可以构建与 React 的内置功能一样易于使用的 Hooks。
+
+<!-- Try to resist adding abstraction too early. It's pretty common that components grow pretty big when there is enough stateful logic handling involved. This is normal — don’t feel like you have to immediately split it into Hooks. But we also encourage you to start spotting cases where a custom Hook could hide complex logic behind a simple interface, or help untangle a messy component. -->
+尽量避免过早地添加抽象。当涉及到足够多的状态逻辑处理时，组件通常会变得很臃肿。这很正常，不要觉得必须立即将其拆分为 Hooks。但我们也鼓励你去发现自定义 Hook 的应用场景，它可以将复杂逻辑隐藏在简单的接口后面或帮助你解耦杂乱的组件。
+

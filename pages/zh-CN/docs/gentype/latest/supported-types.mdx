@@ -1,0 +1,295 @@
+---
+title: "支持的类型"
+description: "GenType 支持的类型和转换为的值"
+canonical: "/docs/gentype/latest/supported-types"
+---
+
+<!-- # Supported types -->
+# 支持的类型
+
+<Intro>
+
+<!-- Some types and values in ReScript do not map directly to JavaScript and need to be converted whenever a value crosses the boundary. This document gives an overview on how `genType`'s convertion works on different types. -->
+在 ReScript 中，有些类型和值不直接映射到 JavaScript 中，当值跨越边界时需要进行转换。本文档概述了 `genType` 如何转换不同的类型。
+
+</Intro>
+
+## Int
+
+<!-- ReScript values e.g. `1`, `2`, `3` are unchanged. So they are exported to JS values of type `number`. -->
+ReScript 的值，例如 `1`, `2`, `3` 是不变的，因此导出到 JS 的 `number` 类型。
+
+## Float
+
+<!-- ReScript values e.g. `1.0`, `2.0`, `3.0` are unchanged. So they are exported to JS values of type `number`. -->
+ReScript 的值，例如 `1.0`， `2.0`， `3.0` 是不变的，因此导出到 JS 的 `number` 类型。
+
+## String
+
+<!-- ReScript values e.g. `"a"`, `"b"`, `"c"` are unchanged. So they are exported to JS values of type `string`. -->
+ReScript 的值，例如 `"a"`， `"b"`， `"c"` 是不变的，因此导出到 JS 的 `string` 类型。
+
+## Optionals
+
+<!-- ReScript values of type e.g. `option(int)`, such as `None`, `Some(0)`, `Some(1)`, `Some(2)`, are exported to JS values `null`, `undefined`, `0`, `1`, `2`. -->
+ReScript 的 `option` 类型的值，例如 `option(int)` 类型，像是 `None`，`Some(0)`，`Some(1)`，`Some(2)`，被导出到 JS 的 `null`，`undefined`，`0`，`1`，`2`。
+
+<!-- The JS values are unboxed, and `null`/`undefined` are conflated. -->
+JS 的值是拆箱后的，`null` / `undefined` 被 ReScript 合并了。
+
+<!-- So the option type is exported to JS type `null` or `undefined` or `number`. -->
+因此，`option` 类型被导出为 JS 类型 `null` 或 `undefined` 或 `number`。
+
+## Nullables
+
+<!-- ReScript values of type e.g. `Js.Nullable.t(int)`, such as `Js.Nullable.null`, `Js.Nullable.undefined`, `Js.Nullable.return(0)`, `Js.Nullable.return(1)`, `Js.Nullable.return(2)`, are exported to JS values `null`, `undefined`, `0`, `1`, `2`. -->
+ReScript 的可空类型的值，例如 `Js.Nullable.t(int)`，像 `Js.Nullable.null`，`Js.Nullable.undefined`，`Js.Nullable.return(0)`，`Js.Nullable.return(1)`，`Js.Nullable.return(2)`，被导出到 JS 分别是 `null`，`undefined`，`0`，`1`，`2`。
+
+<!-- The JS values are identical: there is no conversion unless the argument type needs conversion. -->
+JS 值遵循相同规则：除非参数类型需要转换，否则不会转换。
+
+## Records
+
+<!-- ReScript record values of type e.g. `{x:int}` such as `{x:0}`, `{x:1}`, `{x:2}`, are exported to JS object values `{x:0}`, `{x:1}`, `{x:2}`. This requires a change of runtime representation from arrays to objects. -->
+ReScript 记录类型的值，例如 `{x:int}` 像 `{x:0}`，`{x:1}`，`{x:2}`，被导出到 JS 的对象的值 `{x:0}`，`{x:1}`，`{x:2}`。这需要将运行时表示从数组更改为对象。
+
+<!-- So they are exported to JS values of type `{x:number}`. -->
+因此它们被导出到类型为 `{x:number}` 的 JS 值中。
+
+<!-- Since records are immutable by default, their fields will be exported to readonly property types in Flow/TS. Mutable fields are specified in ReScript by e.g. `{mutable mutableField: string}`. -->
+因为记录在默认情况下是不可变的，所以它们的字段将被导出为 Flow/TS 中的只读属性类型。可变字段在 ReScript 中由例如 `{mutable mutableField: string}` 指定。
+
+<!-- The `@genType.as` annotation can be used to change the name of a field on the JS side of things. So e.g. `{[@genType.as "y"] x:int}` is exported as JS type `{y:int}`. -->
+`@genType.as` 注解可以用来更改 JS 端一个字段的名称。所以 `{[@genType.as "y"] x:int}` 被导出为 JS 类型 `{y:int}`。
+
+<!-- If one field of the ReScript record has option type, this is exported to an optional JS field. So for example ReScript type `{x: option(int)}` is exported as JS type `{x?: number}`. -->
+如果 ReScript 记录的一个字段有 option 类型，它将被导出到一个可选的 JS 字段。例如，ReScript类型 `{x: option(int)}` 被导出为 JS 类型 `{x?: number}`。
+<!-- ## Objects -->
+## 对象
+
+<!-- ReScript object values of type e.g. `{. "x":int}` such as `{"x": 0}`, `{"x": 1}`, `{"x": 2}`, are exported as identical JS object values `{x:0}`, `{x:1}`, `{x:2}`. This requires no conversion. So they are exported to JS values of type `{x:number}`.
+A conversion is required only when the type of some field requires conversions. -->
+ReScript 对象的值，例如 `{. "x":int}`，像 `{"x": 0}`，`{"x": 1}`，`{"x": 2}`,被导出为和 JS 相同的对象值 `{x:0}`，`{x:1}`，`{x:2}`。这不需要转换。所以它们被导出到类型为 `{x:number}` 的 JS 值中。
+只有当某些字段的类型需要转换时才进行转换。
+
+<!-- Since objects are immutable by default, their fields will be exported to readonly property types in Flow/TS. Mutable fields are specified in ReScript by e.g. `{ @set "mutableField": string }`. -->
+因为对象在默认情况下是不可变的，所以它们的字段将被导出为 Flow/TS 中的只读属性类型。可变字段在 ReScript 中由 `{ @set "mutableField": string }` 指定。
+
+<!-- It is possible to mix object and option types, so for example the ReScript type `{. "x":int, "y":option(string)}` exports to JS type `{x:number, ?y: string}`, requires no conversion, and allows option pattern matching on the ReScript side. -->
+可以混合对象和 option 类型，例如，ReScript 类型 `{. "x":int, "y":option(string)}` 被导出到 JS 类型 `{x:number, ?y: string}`，不需要转换，并允许在 ReScript 端进行模式匹配。
+
+<!-- Object field names follow ReScript's mangling convention (so e.g. `_type` in ReScript represents `type` in JS): -->
+对象字段名遵循 ReScript 的 mangling 约定（例如：`_type` 在 ReScript 中代表 JS 中的 `type`）：
+
+```
+删除后缀 “__”。
+否则在前缀 “_“ 后跟着大写字母或关键字时删除前缀 ”_“。
+```
+
+<!-- ## Tuples -->
+## 元组
+
+<!-- ReScript tuple values of type e.g. `(int, string)` are exported as identical JS values of type `[number, string]`. This requires no conversion, unless one of types of the tuple items does.
+While the type of ReScript tuples is immutable, there's currently no mature enforcement in TS/Flow, so they're currenty exported to mutable tuples. -->
+ReScript 元组类型的值。`(int, string)` 被导出为类型为 `[number, string]` 的相同 JS 值。这不需要转换，除非其中一种类型的元组项需要转换。
+虽然 ReScript 元组的类型是不可变的，但 TS/Flow 中目前还没有成熟的支持，所以它们目前被导出到可变的元组。
+
+<!-- ## Variants -->
+## 变体
+
+<!-- Ordinary variants (with capitalized cases, e.g. ``` | A | B(int) ```) and polymorphic variants (with a backtick, e.g. ``` | `A | `B(int) ```) are represented in the same way, so there's no difference from the point of view of JavaScript. Polymorphic variants don't have to be capitalized. -->
+普通的变体（有首字母大写的 case，例如 ``` | A | B(int) ```）和多态变体（有一个反引号，例如 ``` | `A | `B(int) ```）以相同的方式表示，所以从 JavaScript 的视角来看没有区别。多态变体不需要首字母大写。
+
+<!-- Variants can have an *unboxed*, or a *boxed* representation. The unboxed representation is used when there is at most one case with a payload, and that payload has object type; otherwise, a boxed representation is used. Object types are arrays, objects, records and tuples. -->
+变体可以有*未装箱*或*已装箱*表示。当最多有一个 case 有 payload 的情况下，并且该 payload 具有对象类型时，使用未装箱表示；否则，将使用已装箱表示。对象类型包括数组、对象、记录和元组。
+
+<!-- Variants without payloads are essentially sequences of identifiers. -->
+没有 payload 的变体本质上是标识符的序列。
+<!-- E.g. type ``[@genType] type days = | Monday | Tuesday``. -->
+例如类型 ``[@genType] type days = | Monday | Tuesday``.
+<!-- The corresponding JS representation is `"Monday"`, `"Tuesday"`. -->
+对应的 JS 表示是 `"Monday"`, `"Tuesday"`
+<!-- Similarly, polymorphic variant type ``[@genType] type days = [ | `Monday | `Tuesday ] `` has the same JS representation. -->
+类似地，多态变体类型 ``[@genType] type days = [ | `Monday | `Tuesday ] `` 具有相同的 JS 表示。
+
+<!-- When at most one variant case has a payload, and if the payload is of object type, e.g. 
+``` [ | Unnamed | Named({. "name": string, "surname": string}) ] ```-->
+当变体至少有一个 case 有 payload，如果 payload 是对象类型，例如 ``` [ | Unnamed | Named({. "name": string, "surname": string}) ] ```。
+
+<!-- then the representation is unboxed: JS values are e.g. `"Unnamed"` and
+`{name: "hello", surname: "world"}`. Similarly for polymorphic variants. -->
+那么该表示是未被装箱的：JS 值是 `"Unnamed"` 和 `{name: "hello", surname: "world"}`，多态变体也一样。
+<!-- Note that this unboxed representation does not use the label `"Named"` of the variant case with payload, because that value is distinguished from the other payload-less cases by its type: an object. -->
+注意，这个未被装箱的表示，没有使用带有 payload 的变体 case 的标签 `"Named"`，因为该值与其他无 payload 的 case 的区别在于它的类型：是一个对象。
+<!-- If there is more than one case with payload, or if the single payload has not type object, a boxed representation is used.  -->
+如果变体有多个 case 附带 payload，或者那唯一的 payload 不是对象类型的，则使用被装箱的表示。
+
+<!-- The boxed representation has shape ```{tag: "someTag", value: someValue}```. -->
+被装箱的表示有形状 ```{tag: "someTag", value: someValue}```
+
+<!-- For example, type ```| A | B(int) | C(string)``` has values such as ```"A"``` and ```{tag: "B", value: 42}``` and ```{tag: "C", value: "hello"}```. -->
+
+例如，类型 ```| A | B(int) | C(string)``` 有例如 ```"A"``` 和 ```{tag: "B", value: 42}``` 和 ```{tag: "C", value: "hello"}```的值。
+
+<!-- Polymorhphic variants are treated similarly. Notice that payloads for polymorphic variants are always unary: ``` `Pair(int,int) ``` has a single payload of type `(int,int)`. Instead, ordinary variants distinguish between unary ``` Pair((int,int)) ``` and binary ``` Pair(int,int) ``` payloads. All those cases are represented in JS as ```{tag: "Pair", value: [3, 4]}```, and the conversion functions take care of the different ReScript representations. -->
+多态变体的处理方式类似。注意，多态变体的 payload 总是一元的： ``` `Pair(int,int) ``` 只有一个 `(int,int)` 类型的 payload。相反，普通变体区分一元 ``` Pair((int,int)) ``` 和二元 ``` Pair(int,int) ``` 的 payload。所有这些情况在 JS 中都表示为 ```{tag: "Pair", value: [3, 4]}```，转换函数负责处理不同的 ReScript 表示。
+
+<!-- The `@genType.as` annotation can be used to modify the name emitted for a variant case on the JS side. So e.g. ``` | [@genType.as "Arenamed"] A``` exports ReScript value `` A `` to JS value `"Arenamed"`.
+Boolean/integer/float constants can be expressed as ``` | [@genType.as true] True ``` and ``` | [@genType.as 20] Twenty ``` and ``` | [@genType.as 0.5] Half ```. Similarly for polymorphic variants. -->
+`@genType.as` 注解可用于在 JS 端修改变体 case 导出的名称。所以像 ``` | [@genType.as "Arenamed"] A``` 导出 ReScript 值 `` A `` 到 JS 值`"Arenamed"` 布尔/整数/浮点常量可以表示为 ``` | [@genType.as true] True ``` 和 ``` | [@genType.as 20] Twenty ``` 和 ``` | [@genType.as 0.5] Half ```。多态变体也是如此。
+
+<!-- The `@genType.as` annotation can also be used on variants with payloads to determine what appears in `{ tag: ... }`. -->
+`@genType.as` 注解也可以用在带有 payload 的变体上，以确定出现在 `{ tag: ... }` 中的值。
+
+<!-- For more examples, see [Variants.res](https://github.com/reason-association/genType/tree/master/examples/typescript-react-example/src/Variants.res) and [VariantsWithPayload.res](https://github.com/reason-association/genType/tree/master/examples/typescript-react-example/src/VariantsWithPayload.res). -->
+更多示例，请看 [Variants.res](https://github.com/reason-association/genType/tree/master/examples/typescript-react-example/src/Variants.res) 和 [VariantsWithPayload.res](https://github.com/reason-association/genType/tree/master/examples/typescript-react-example/src/VariantsWithPayload.res)。
+
+<!-- **NOTE:** When exporting/importing values that have polymorphic variant type, you have to use type annotations, and cannot rely on type inference. So instead of ```let monday = `Monday```, use ```let monday : days = `Monday```. The former does not work, as the type checker infers a type without annotations. -->
+**注意**： 当导出/导入具有多态变体类型的值时，必须标记类型，不能依赖类型推断。所以不要用 ```let monday = `Monday```，而要用 ```let monday : days = `Monday```。前者不会生效，因为类型检查器推断出没有标记出类型。
+
+<!-- ## Arrays -->
+## 数组
+
+<!-- Arrays with elements of ReScript type `t` are exported to JS arrays with elements of the corresponding JS type. If a conversion is required, a copy of the array is performed. -->
+带有 `t` 类型元素的数组被导出到带有相应 JS 类型元素的 JS 数组中。如果需要转换，数组会被拷贝。
+
+<!-- Immutable arrays are supported with the additional ReScript library [ImmutableArray.res/.resi](https://github.com/reason-association/genType/tree/master/examples/typescript-react-example/src/ImmutableArray.resi), which currently needs to be added to your project. -->
+有额外的 ReScript 库支持不可变数组 [ImmutableArray.res/.resi](https://github.com/reason-association/genType/tree/master/examples/typescript-react-example/src/ImmutableArray.resi)，需要手动添加到项目中。
+
+<!-- The type `ImmutableArray.t(+'a)` is covariant, and is mapped to readonly array types in TS/Flow. As opposed to TS/Flow, `ImmutableArray.t` does not allow casting in either direction with normal arrays. Instead, a copy must be performed using `fromArray` and `toArray`. -->
+类型 `ImmutableArray.t(+'a)` 是协变的，并且被映射到 TS/Flow 中的只读数组类型。相对于 TS/Flow, `ImmutableArray.t` 不允许对普通数组进行任意方向的类型转换。相反，拷贝必须使用 `fromArray` 和 `toArray` 来执行。
+
+<!-- ## Functions and Function Components -->
+## 函数和函数组件
+
+<!-- ReScript functions are exported as JS functions of the corresponding type.
+So for example a ReScript function `foo : int => int` is exported as a JS function from numbers to numbers. -->
+ReScript 函数被导出为对应类型的 JS 函数。
+例如，一个 ReScript 函数 `foo : int => int` 导出为接收 number 并返回 number 的 JS 函数。
+
+<!-- If named arguments are present in the ReScript type, they are grouped and exported as JS objects. For example `foo : (~x:int, ~y:int) => int` is exported as a JS function from objects of type `{x:number, y:number}` to numbers. -->
+如果命名参数在 ReScript 类型中出现，它们将被分组并导出为 JS 对象。例如 `foo : (~x:int, ~y:int) => int` 导出为接收类型为 `{x:number, y:number}` 的对象并返回 number 的 JS 函数。
+
+<!-- In case of mixed named and unnamed arguments, consecutive named arguments form separate groups. So e.g. `foo : (int, ~x:int, ~y:int, int, ~z:int) => int` is exported to a JS function of type `(number, {x:number, y:number}, number, {z:number}) => number`. -->
+在混合命名参数和未命名参数的情况下，连续的命名参数组成独立的组。所以如 `foo : (int, ~x:int, ~y:int, int, ~z:int) => int` 被导出到类型为 `(number, {x:number, y:number}, number, {z:number}) => number` 的 JS 函数。
+
+<!-- Function components are exported and imported exactly like normal functions. For example: -->
+函数组件的导出和导入与普通函数完全相同。例如：
+
+```reason
+[@genType]
+[@react.component]
+let make = (~name) => React.string(name);
+```
+
+<!-- For renaming, named arguments follow ReScript's mangling convention: -->
+命名参数也遵守 ReScript 的 mangling 约束：
+
+```
+删除后缀 “__”。
+否则在前缀 “_“ 后跟着大写字母或关键字时删除前缀 ”_“。
+```
+
+<!-- For example: -->
+例如：
+```res
+@genType
+let exampleFunction = (~_type) => "type: " ++ _type
+```
+
+<!-- ## Imported Types -->
+## 导入类型
+
+<!-- It's possible to import an existing TS/Flow type as an opaque type in ReScript. For example, -->
+可以在 ReScript 中将现有的 TS/Flow 类型作为不透明类型导入。例如
+
+```res
+@genType.import("./SomeFlowTypes") type weekday
+```
+
+<!-- defines a type which maps to `weekday` in `SomeFlowTypes.js`.
+See for example [Types.res](https://github.com/reason-association/genType/tree/master/examples/flow-react-example/src/Types.res) and [SomeFlowTypes.js](https://github.com/reason-association/genType/tree/master/examples/flow-react-example/src/SomeFlowTypes.js). -->
+定义一个映射到 `SomeFlowTypes.js` 中的 `weekday` 的类型。
+看这个例子 [Types.res](https://github.com/reason-association/genType/tree/master/examples/flow-react-example/src/Types.res) 和 [SomeFlowTypes.js](https://github.com/reason-association/genType/tree/master/examples/flow-react-example/src/SomeFlowTypes.js)。
+
+<!-- ## Recursive Types -->
+## 递归类型
+
+<!-- Recursive types which do not require a conversion are fully supported. -->
+<!-- If a recursive type requires a conversion, only a shallow conversion is performed, and a warning comment is included in the output. (The alternative would be to perform an expensive conversion down a data structure of arbitrary size).
+See for example [Types.res](https://github.com/reason-association/genType/tree/master/examples/typescript-react-example/src/nested/Types.res). -->
+不需要转换的递归类型被完全支持。
+如果递归类型需要转换，则只执行浅转换，并在输出中包含警告注释。(替代方案是对任意大小的数据结构执行昂贵的转换)。
+看这个例子 [Types.res](https://github.com/reason-association/genType/tree/master/examples/typescript-react-example/src/nested/Types.res)。
+
+<!-- ## First Class Modules -->
+## 一等公民模块
+
+<!-- ReScript first class modules are converted from their array ReScript runtime representation to JS Object types.
+For example, -->
+ReScript 一等公民模块从它们的 ReScript 运行时表示，即数组，转换为 JS 对象类型。
+例如，
+
+```res
+module type MT = {
+  let x: int
+  let y: string
+}
+module M = {
+  let y = "abc"
+  let x = 42
+}
+export firstClassModule: module(MT) = module(M)
+```
+
+<!-- is exported as a JS object of type -->
+被导出为JS对象类型
+
+```res
+{"x": number, "y": string}
+```
+
+<!-- Notice how the order of elements in the exported JS object is determined by the module type `MT` and not the module implementation `M`. -->
+注意导出的 JS 对象中元素的顺序是由模块类型 `MT` 而不是模块实现 `M` 决定的。
+
+<!-- ## Polymorphic Types -->
+## 多态类型
+
+<!-- If a ReScript type contains a type variable, the corresponding value is not converted. In other words, the conversion is the identity function. For example, a ReScript function of type `{payload: 'a} => 'a` must treat the value of the payload as a black box, as a consequence of parametric polymorphism. If a typed back-end is used, the ReScript type is converted to the corresponding generic type. -->
+如果 ReScript 类型包含类型变量，则不转换对应的值。换句话说，转换就是恒等函数。例如，类型为 `{payload: 'a} => 'a` 的 ReScript 函数，必须将有效 payload 的值视为黑箱，作为参数多态的结果。如果使用带类型的后端，则将 ReScript 类型转换为相应的泛型类型。
+
+<!-- ### Exporting Values from Polymorphic Types with Hidden Type Variables -->
+### 从具有隐藏类型变量的多态类型导出值
+
+<!-- For cases when a value that contains a hidden type variable needs to be converted, a function can be used to produce the appropriate output: -->
+对于需要转换包含隐藏类型变量的值的情况，可以使用函数来产生适当的输出：
+<!-- **Doesn't work** -->
+**无效**
+
+```res
+@genType
+let none = None
+```
+
+```js
+export const none: ?T1 = OptionBS.none; // Errors out as T1 is not defined
+```
+
+<!-- **Works** -->
+**有效**
+
+```res
+@genType
+let none = () => None
+```
+
+```js
+const none = <T1>(a: T1): ?T1 => OptionBS.none;
+```
+
+## Promises
+
+<!-- Values of type `Js.Promise.t(arg)` are exported to JS promises of type `Promise<argJS>` where `argJS` is the JS type corresponding to `arg`. -->
+类型 `Js.Promise.t(arg)` 的值被导出为类型 `Promise<argJS>` ，其中 `argJS` 是对应于 `arg` 的 JS 类型。
+<!-- If a conversion for the argument is required, the conversion functions are chained via `.then(promise => ...)`. -->
+如果需要对参数进行转换，转换函数通过 `.then(promise => ...)` 串联起来。

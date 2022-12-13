@@ -1,0 +1,134 @@
+---
+title: "简介"
+description: "GenType - Interoperability between ReScript and TypeScript / Flow"
+canonical: "/docs/gentype/latest/introduction"
+---
+
+<!-- # GenType -->
+# GenType
+
+<!-- `genType` is a code generation tool that lets you export ReScript values and types to use in JavaScript, and import JavaScript values and types into ReScript. -->
+`genType` 是一个代码生成工具，它允许你导出 ReScript 中的值和类型用于 JavaScript 中，还可以导入 JavaScript 中的值和类型到 ReScript 中。
+
+
+<!-- Converter functions between the two representations are generated based on the type of the value. The converters can be generated in vanilla JavaScript, or in [TypeScript](https://www.typescriptlang.org/) / [Flow](https://flow.org/en/) for a type-safe idiomatic interface.
+In particular, conversion of [rescript-react](/docs/react/latest/introduction) components both ways is supported, with automatic generation of the wrappers. -->
+
+根据值的类型生成两种表示形式之间的转换器函数。转换器可以被生成为原生 JavaScript，或者生成为 [TypeScript](https://www.typescriptlang.org/) / [Flow](https://flow.org/en/) ，从而获得类型安全的接口。
+特别是，[rescript-react](/docs/react/latest/introduction) 组件支持两种转换方式，还附带自动生成的包装器。
+
+<!-- Here's an article describing how to use `genType` as part of a migration strategy where a tree of components is gradually converted to ReScript bottom-up (old article containing Reason / BuckleScript): [Adopting Reason: strategies, dual sources of truth, and why genType is a big deal](https://medium.com/p/c514265b466d).   -->
+这里有一篇文章描述了如何使用 `genType` 作为迁移策略的一部分，将组件树自下而上地逐渐转换为 ReScript (包含 Reason / BuckleScript 的旧文章): [Adopting Reason: strategies, dual sources of truth, and why genType is a big deal](https://medium.com/p/c514265b466d)。  
+
+<!-- The implementation of genType performs a type-directed transformation of ReScript programs after ReScript source code compilation. The transformed programs operate on data types idiomatic to JS. -->
+genType 的实现在编译完 ReScript 源码之后对 ReScript 程序执行面向类型的转换，转换后的程序操作的就是 JS 惯用的数据类型。
+
+<!-- For example, a ReScript function operating on a ReScript variant `type t  = | A(int) | B(string)` (which is represented as custom blocks at runtime) is exported to a JS function operating on the corresponding JS object of type `{ tag: "A"; value: number }
+  | { tag: "B"; value: string }`. -->
+例如，一个在 ReScript 变体上的函数操作 `type t  = | A(int) | B(string)` (哪一个在运行时会表示为自定义块) 被导出到一个 JS 函数操作中对应的 JS 对象类型 `{ tag: "A"; value: number }
+  | { tag: "B"; value: string }`
+
+<!-- The output of genType can be configured by using one of 3 back-ends: `untyped` to generate wrappers in vanilla JS, `typescript` to generate [TypeScript](https://www.typescriptlang.org/), and `flow` to generate JS with [Flow](https://flow.org/en/) type annotations. -->
+genType 的后端有三种配置，生成不同的输出：`untyped` 生成原生 JS 的包装器，`typescript` 生成 [TypeScript](https://www.typescriptlang.org/)，`flow` 生成带有 [Flow](https://flow.org/en/) 类型注解的 JS。
+
+<!--
+## A Quick Example 
+-->
+## 快速示例
+
+<!-- Let's assume we are working on a TypeScript (TS) codebase and we want to integrate a single rescript-react component. -->
+假设我们正在处理一个 TypeScript (TS) 代码库，我们想集成一个单独的 rescript-react 组件。
+
+<!-- We want to be able to import the rescript-react component like any other React component in our existing TS code, but we also want to preserve all the ReScript types in the TS type system (and convert incompatible values if necessary). -->
+
+我们希望能够像导入现有 TS 代码中的 React 组件一样，导入 rescript-react 组件，我们也想在 TS 类型系统中保留所有的 ReScript 类型（并在必要时转换不兼容的值）。
+
+<!-- **That's exactly what genType was made for!** -->
+**genType 就是为此而生的！**
+
+<!-- First we'll set up a rescript-react component: -->
+首先，我们准备一个 rescript-react 组件：
+
+```res
+/* src/MyComp.res */
+
+@genType
+type color =
+  | Red
+  | Blue;
+
+@genType
+@react.component
+let make = (~name: string, ~color: color) => {
+  let colorStr =
+    switch (color) {
+    | Red => "red"
+    | Blue => "blue"
+    };
+
+  <div className={"color-" ++ colorStr}> {React.string(name)} </div>;
+};
+```
+
+<!-- On a successful compile, `genType` will convert `src/MyComp.res` to a TS file called `src/MyComp.gen.ts` which will look something like this: -->
+当成功编译后，`genType` 会将 `src/MyComp.res` 转换到一个叫做 `src/MyComp.gen.ts` 的 TS 文件中，它看起来像这样:
+
+```ts
+// src/MyComp.gen.tsx
+
+/* TypeScript file generated from MyComp.res by genType. */
+/* eslint-disable import/first */
+
+
+import * as React from 'react';
+
+const $$toRE818596289: { [key: string]: any } = {"Red": 0, "Blue": 1};
+
+// tslint:disable-next-line:no-var-requires
+const MyCompBS = require('./MyComp.bs');
+
+// tslint:disable-next-line:interface-over-type-literal
+export type color = "Red" | "Blue";
+
+// tslint:disable-next-line:interface-over-type-literal
+export type Props = { readonly color: color; readonly name: string };
+
+export const make: React.ComponentType<{ readonly color: color; readonly name: string }> = function MyComp(Arg1: any) {
+  const $props = {color:$$toRE818596289[Arg1.color], name:Arg1.name};
+  const result = React.createElement(MyCompBS.make, $props);
+  return result
+};
+```
+
+<!-- genType automatically maps the `color` variant to TS via a string union type `color = "Red" | "Blue"`, and also provides all the converters to convert between the ReScript & TS representation as well. -->
+genType 自动将 `color` 变体映射到 TS 的字符串联合类型 `color = "Red" | "Blue"`，还提供了在 ReScript & TS 表示之间转换的所有转换器。
+
+<!-- Therefore way we can seamlessly use ReScript specific data structures within TS without writing the converter code by hand! -->
+因此，我们可以在 TS 中无缝使用 ReScript 特定的数据结构，而无需手动编写转换器代码！
+
+<!-- Within our TypeScript application, we can now import and use the React component in the following manner: -->
+在我们的 TypeScript 应用程序中，我们现在可以通过以下方式导入和使用 React 组件：
+
+```ts
+// src/App.ts
+import { make as MyComp } from "./MyComp.gen.tsx";
+
+const App = () => {
+  return (<div>
+    <h1> My Component </h1>
+    <MyComp color="Blue" name="ReScript & TypeScript" />
+  </div>);
+};
+```
+
+<!-- That's it for our quick example. -->
+这就是我们的快速示例。
+
+<!-- For detailed information, head to the [Getting Started](getting-started) or [Usage](usage) section. -->
+详情请见[开始使用](getting-started)或[用法](usage)。
+
+<!-- ## Development -->
+## 开发问题
+
+<!-- For contributions, issues or questions, please refer to the [GitHub repository](https://github.com/reason-association/genType) or our [ReScript forum](https://forum.rescript-lang.org). -->
+想要贡献代码，提出 issues 或提问，请参照 [GitHub 仓库](https://github.com/reason-association/genType) 或我们的 [ReScript 论坛](https://forum.rescript-lang.org)

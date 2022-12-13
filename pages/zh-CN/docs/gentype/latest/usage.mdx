@@ -1,0 +1,225 @@
+<!-- # Usage -->
+# 用法
+
+<Intro>
+
+<!-- `genType` operates on two kinds of entities: _types_ and _values_.
+Each can be _exported_ from ReScript to JS, or _imported_ into ReScript from JS.
+The main annotation is `@genType`, which by default means _export_. -->
+
+`genType` 操作两种类型的实体: _types_ 和 _values_。
+它们都可以从 ReScript _导出_ 到 JS，或者从 JS _导入_ 到 ReScript。
+主要的注解是 `@genType`，默认情况下是 _导出_。
+
+</Intro>
+
+<!-- ## Export and Import Types -->
+## 导出和导入类型
+
+<!-- The following exports a function type `callback` to JS: -->
+下面将一个函数类型 `callback` 导出到JS:
+
+```res
+@genType
+type callback = ReactEvent.Mouse.t => unit
+```
+
+<!-- To instead import a type called `complexNumber` from JS module `MyMath.ts` (or `MyMath.js`), use the `@genType.import` annotation: -->
+从 JS 模块 `MyMath.ts`（或 `MyMath.js`）中导入名为 `complexNumber` 的类型，使用 `@genType.import` 注解:
+
+```res
+@genType.import("./MyMath")
+type complexNumber
+```
+
+<!-- This imported type will be treated as opaque by ReScript.Ω -->
+这个导入的类型将被 ReScript.Ω 视为不透明的。
+
+<!-- ## Export and Import Values -->
+## 导出和导入值
+
+<!-- To export a function `callback` to JS: -->
+导出一个函数 `callback` 到 JS:
+
+```res
+@genType
+let callback = _ => Js.log("Clicked");
+```
+
+<!-- To rename the function and export it as `CB` on the JS side, use -->
+要在 JS 端重命名函数并将其导出为 `CB`，请使用
+
+```res
+@genType
+@genType.as("CB")
+let callback = _ => Js.log("Clicked");
+```
+
+<!-- or the more compact -->
+或者更紧凑的写法
+
+```res
+@genType("CB")
+let callback = _ => Js.log("Clicked");
+```
+
+
+<!-- To import a function `realValue` from JS module `MyMath.ts` (or `MyMath.js`): -->
+从 JS 模块 `MyMath.ts` (或 `MyMath.js`) 中导入函数 `realValue`：
+
+```res
+@genType.import("./MyMath") /* JS module to import from. */
+/* Name and type of the JS value to import. */
+external realValue: complexNumber => float = "realValue";
+```
+
+<!-- > **Note:** With genType < 2.17.0 or bucklescript < 5.0.0, one had to add a line with `@bs.module` and the current file name. See the older [README](https://github.com/cristianoc/genType/blob/v2.16.0/README.md). -->
+> **注意**： 当 genType 版本 < 2.17.0 或 bucklescript 版本 < 5.0.0, 必须加上一行 `@bs.module` 和当前文件名。 请看旧版 [README](https://github.com/cristianoc/genType/blob/v2.16.0/README.md).
+
+
+
+<!-- Because of the `external` keyword, it's clear from context that this is an import, so you can also just use `@genType` and omit `.import`. -->
+因为 `external` 关键字，从上下文可以清楚地看出这是一个导入，所以你也可以只使用 `@genType` 而忽略 `.import`。
+
+<!-- To import a default JS export, use a second argument to `@genType.import` e.g. `@genType.import(("./MyMath", "default"))`. -->
+要导入一个默认的 JS 导出，在 `@genType.import` 中使用第二个参数，例如 `@genType.import(("./MyMath", "default"))`。
+
+<!-- Similarly, to import a value with a different JS name, use e.g. `@genType.import(("./MyMath", "ValueStartingWithUpperCaseLetter"))`. -->
+相似的，导入具有不同 JS 名称的值，使用类似 `@genType.import(("./MyMath", "ValueStartingWithUpperCaseLetter"))` 的方法。
+
+<!-- To import nested values, e.g. `Some.Nested.value`, use e.g. `@genType.import(("./MyMath", "Some.Nested.value"))`. -->
+导入嵌套值，例如 `Some.Nested.value`, 使用类似 `@genType.import(("./MyMath", "Some.Nested.value"))` 的方法。
+
+<!-- ## Interface (.resi) and Implementation (.res) files -->
+## 接口 (.resi) 和实现 (.res) 文件
+
+<!-- If both `Foo.resi` and `Foo.res` exist, the annotations are taken from `Foo.resi`. The same happens with local modules: if present, the module type gets precedence. -->
+如果 `Foo.resi` 和 `Foo.res` 都存在，注解会从 `Foo.resi` 中取。局部模块也是如此：如果存在，则模块类型优先。
+
+<!-- The behaviour can be overridden by adding annotation `@genType.ignoreInterface` at the top of `Foo.resi`. Use case: expose implementation details to JS but not to ReScript. -->
+可以通过在 `Foo.resi` 顶部添加注解 `@genType.ignoreInterface` 来覆盖该行为。用例：向 JS 暴露实现细节，而不向 ReScript 暴露。
+
+<!-- ## Type Expansion and @genType.opaque -->
+## 类型扩展和 @genType.opaque
+
+<!-- If an exported type `persons` references other types in its definition, those types are also exported by default, as long as they are defined in the same file: -->
+如果导出的类型 `persons` 在其定义中引用了其他类型，那么这些类型在默认情况下也会被导出，只要它们定义在同一个文件中：
+
+```res
+type name = string
+type surname = string
+type person = {name: name, surname: surname}
+
+@genType
+type persons = array<person>;
+```
+
+<!-- If however you wish to hide from JS the fact that `name` and `surname` are strings, you can do it with the `@genType.opaque` annotation: -->
+但是，如果你想在 JS 中隐藏 `name` 和 `surname` 是字符串的事实，你可以用 `@genType.opaque` 注解：
+
+```res
+@genType.opaque
+type name = string
+
+@genType.opaque
+type surname = string
+
+type person = {
+  name,
+  surname,
+};
+
+@genType
+type persons = array<person>;
+```
+
+<!-- ## Renaming, @genType.as, and object mangling convention. -->
+## 重命名，@genType.as 和对象 mangling 约定。
+
+<!-- By default, entities with a given name are exported/imported with the same name. However, you might wish to change the appearence of the name on the JS side. -->
+默认情况下，具有给定名称的实体将以相同的名称导出/导入。但是，你可能希望更改在 JS 端出现的名称。
+
+<!-- **NOTE:** Starting from ReScript 7.0.0, `@genType.as` on record fields will be discouraged, -->
+<!-- as it incurs a runtime conversion cost. Instead `@bs.as` will be supported and incur zero cost. -->
+**注意**：从ReScript 7.0.0 版本开始，`@genType.as` 不鼓励使用在记录字段，
+因为它会产生运行时转换开销。使用零开销的 `@bs.as` 替代它。
+
+<!-- For example, in case of a record field whose name is a keyword, such as `type`: -->
+例如，对于名称为关键字的记录字段，例如 `type`：
+
+```res
+@genType
+type shipment = {
+  date: float,
+  @genType.as("type")
+  type_: string,
+}
+```
+
+<!-- Object field names follow ReScript's mangling convention: -->
+对象字段名遵循 ReScript 的 mangling 约定：
+
+<!-- ``` -->
+<!-- Remove trailing "__" if present. -->
+<!-- Otherwise remove leading "_" when followed by an uppercase letter, or keyword. -->
+<!-- ``` -->
+```
+删除后缀的 “__”。
+否则，当前缀 “_” 后跟着大写字母或关键字时，删除前缀。
+```
+<!-- This means that the analogous example with objects is: -->
+类似的对象例子是:
+
+```res
+@genType
+type shipment = {
+  "date": float,
+  "_type": string,
+}
+```
+
+<!-- or the equivalent ``` "type__": string```. -->
+或者 ``` "type__": string```，也是一样的。
+
+<!-- Functions and function components also follow the mangling convention for labeled arguments: -->
+函数和函数组件对于标签参数也遵循 mangling 约定：
+
+```res
+@genType
+let exampleFunction = (~_type) => "type: " ++ _type
+
+@genType
+@react.component
+let exampleComponent = (~_type) => React.string("type: " ++ _type)
+```
+
+<!-- It is possible to use `@genType.as` for functions, though this is only maintained for backwards compatibility, and cannot be used on function components: -->
+可以对函数使用 `@genType.as`，尽管这只是为了向后兼容，并且不能在函数式组件上使用：
+
+```res
+@genType
+let functionWithGenTypeAs =
+  (~date: float) => @genType.as("type") (~type_: string) => ...
+```
+
+<!-- **NOTE:** For technical reasons, it is not possible to use `@genType.as` on the first argument of a function. -->
+**注意**： 由于技术原因，在函数的第一个参数上使用 `@genType.as` 是不可能的。
+
+<!-- ## Dependent Projects / Libraries -->
+## 依赖项目 / 库
+
+<!-- ReScript dependencies are specified in `bs-dependencies`. -->
+ReScript 依赖项在 `bs-dependencies` 中指定。
+<!-- For example, if the dependencies are `"bs-dependencies": ["somelibrary"]` and `somelibrary` contains `Common.res`, this looks up the types of `foo` in the library: -->
+例如，如果依赖项是 `"bs-dependencies": ["somelibrary"]`，并且 `somelibrary` 包含 `Common.res`，下面的代码会在库中查找 `foo` 的类型：
+
+```res
+@genType
+let z = Common.foo;
+```
+
+<!-- Scoped packages of the form e.g. `@demo/somelibrary` are also supported. -->
+还支持形式为 `@demo/somelibrary` 的作用域包。
+
+<!-- **NOTE:** The library must have been published with the `.gen.ts` files created by genType. -->
+**注意**： 库必须是和 genType 生成的 `.gen.ts` 文件一起发布的。

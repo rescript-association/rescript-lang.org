@@ -1,0 +1,169 @@
+---
+title: "开始使用"
+description: "如何开始在 ReScript 项目中使用 genType"
+canonical: "/docs/gentype/latest/getting-started"
+---
+
+<!-- # Getting Started -->
+# 开始使用
+
+<!-- `genType` is tightly integrated in the ReScript Compiler. It only requires minimal setup. -->
+`genType` 与 ReScript 编译器紧密集成，只需要很少的设置即可使用。
+
+<!-- ## Setup -->
+## 安装
+
+
+<!-- Install the binaries via `npm` (or `yarn`): -->
+通过 `npm`（或 `yarn`）安装二进制文件：
+
+```
+npm install gentype --save-dev
+
+# Verify installed gentype binary
+npx gentype --help
+```
+
+<!-- **Note:** Version requirements / compatibility list can be found [here](https://github.com/rescript-association/genType#requirements). -->
+ **注意**：版本要求 / 兼容性列表可以在[这里](https://github.com/rescript-association/genType#requirements)找到
+
+<!-- Add a `gentypeconfig` section to your `bsconfig.json` (See [Configuration](#configuration) for details): -->
+添加 `gentypeconfig` 到你的 `bsconfig.json` 中 (更多细节请看[配置](#configuration)):
+
+
+```
+"gentypeconfig": {
+    "language": "typescript",
+    "shims": {},
+    "generatedFileExtension": ".gen.tsx",
+    "module": "es6",
+    "debug": {
+      "all": false,
+      "basic": false
+    }
+}
+```
+
+<!-- For running `genType` with ReScript via `npm` workflow, no special setup is required in `package.json`. -->
+
+如果要通过 `npm` 工作流使用 ReScript 运行 `genType`，不需要在 `package.json` 中进行特殊设置。
+
+<!-- > **Note:** `rescript` will automatically detect your installed `genType` version. -->
+**注意**：`rescript` 将自动检测你安装的 `genType` 版本。
+
+<!-- ## Configuration -->
+## 配置
+
+<!-- Every `genType` powered project requires a configuration item `"gentypeconfig"`
+at top level in the project's `bsconfig.json`. The configuration has following
+structure: -->
+每个 `genType` 驱动的项目都需要一个位于 `bsconfig.json` 顶层的配置项 `"gentypeconfig"`。配置结构如下：
+
+```js
+  //...
+  "gentypeconfig": {
+    "language": "typescript" | "flow" | "untyped",
+    "generatedFileExtension": ".gen.tsx",
+    "module": "es6" | "commonjs",
+    "shims": {
+      "ReasonReact": "ReactShim"
+    }
+  }
+```
+
+<!-- - **generatedFileExtension**
+  - File extension used for genType generated files (defaults to `.gen.tsx`) -->
+
+- **generatedFileExtension**
+  - 生成文件的扩展名 (默认为 `.gen.tsx`)
+
+<!-- - **language**
+  - `"typescript"` : Generate `*.gen.tsx` files written in TypeScript.
+  - `"flow"`: Generate `*.gen.js` files with Flow type annotations.
+  - `"untyped"`: Generate `*.gen.js` files in vanilla JavaScript. -->
+
+- **language**
+  - `"typescript"` : 生成 TypeScript 的 `*.gen.tsx` 文件。
+  - `"flow"`: 生成带有 Flow 类型注解的 `*.gen.js`  文件。
+  - `"untyped"`: 生成普通 JavaScript 的 `*.gen.js` 文件。
+
+<!-- - **module**
+  - Module format used for the generated `*.gen.tsx` files (supports `"es6"` and `"commonjs"`) -->
+
+- **module**
+  - 生成的 `*.gen.tsx` 文件的模块格式 (支持 `"es6"` 和 `"commonjs"`)
+  
+<!-- - **shims**
+  - Required only if one needs to export certain basic ReScript data types to JS when one cannot modify the sources to add annotations (e.g. exporting ReScript lists), and if the types are not first-classed in genType.
+  - Example: `Array<string>` with format: `"RescriptModule=JavaScriptModule"`  -->
+
+- **shims**
+  - 当无法修改源代码添加注解（例如导出 ReScript 的 list），而又需要将某些基本 ReScript 数据类型导出到 JS，并且这些类型在 genType 中不是一等公民时，才需要此项。
+  - 例如： `Array<string>` 格式为： `"RescriptModule=JavaScriptModule"`
+
+<!-- ## Adding Shims (TS & Flow) -->
+## 添加 Shims (TS & Flow)
+
+<!-- A shim is a TS / Flow file that provides user-provided definitions for library types. -->
+shim 是一个 TS / Flow 文件，包含用户定义的库类型。
+
+<!-- Configure your shim files within `"gentypeconfig"` in your [`bsconfig.json`](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/bsconfig.json), and add relevant `.shims.js` files in a directory which is visible by ReScript e.g.  [`src/shims/`](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/src/shims). An example shim to export ReactEvent can be found [here](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/src/shims/ReactEvent.shim.ts). -->
+在 [`bsconfig.json`](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/bsconfig.json) 的 `"gentypeconfig"` 中配置你的 shim 文件，并将相关的 `.shims.js` 文件添加到 ReScript 可见的目录中，例如 [`src/shims/`](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/src/shims)，可以在[这里](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/src/shims/ReactEvent.shim.ts)找到导出 ReactEvent 的示例shim 文件。
+
+<!-- ## Testing the Whole Setup -->
+## 测试是否生效
+
+<!-- Open any relevant `*.res` file and add `@genType` annotations to any bindings / values / functions to be used from JavaScript. If an annotated value uses a type, the type must be annotated too. See e.g.  [Hooks.res](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/src/Hooks.res). -->
+打开相关的 `*.res` 文件，并将 `@genType` 注解添加到要被 JavaScript 使用的任何绑定/值/函数，如果被注解的值使用一个类型，这个类型也必须被注解。请看例子 [Hooks.res](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/src/Hooks.res)
+
+<!-- Save the file and rebuild the project via `npm run bs:build` or similar. You should now see a `*.gen.tsx` (for TypeScript, or `*.gen.js` for Flow) file with the same name (e.g. `MyComponent.res` -> `MyComponent.gen.tsx`). -->
+保存文件并运行 `npm run bs:build` 或类似命令来重新构建，你现在应该看到一个具有相同名称的 `*.gen.tsx`（用于 TypeScript），或 `*.gen.js` （用于 Flow）文件（例如 `MyComponent.res` -> `MyComponent.gen.tsx`）。
+
+<!-- Any values exported from `MyComponent.res` can then be imported from JS. For example: -->
+然后，从 `MyComponent.res` 导出的任何值都可以从 JS 导入。例如：
+
+```js
+import MyComponent from "./components/MyComponent.gen";
+```
+
+<!-- ## Examples -->
+## 示例
+
+<!-- We prepared some examples to give you an idea on how to integrate `genType` in your own project. Check out the READMEs of the listed projects. -->
+我们准备了一些例子，让你了解如何在你的项目中集成 `genType`。查看下面项目的 README。
+
+<!-- **Please make sure to build genType before trying to build the examples.** -->
+**请确保先构建 genType，再尝试构建示例。**
+
+- [typescript-react-example](https://github.com/reason-association/genType/tree/master/examples/typescript-react-example)
+- [flow-react-example](https://github.com/reason-association/genType/tree/master/examples/flow-react-example)
+- [untyped-react-example](https://github.com/reason-association/genType/tree/master/examples/untyped-react-example)
+
+<!-- ## Experimental features -->
+## 实验性特性
+
+<!-- These features are for experimentation only. They could be changed/removed any time, and not be considered breaking changes. -->
+
+这些特性仅用于实验。它们随时可能被更改/删除，而不会被认为是 breaking changes。
+
+<!-- - Export object and record types as interfaces. To activate, add `"exportInterfaces": true` to the configuration. The types are also renamed from `name` to `Iname`.
+
+- Emit prop types for the untyped back-end. To activate, add `"propTypes": true` and `"language": "untyped"` to the configuration. -->
+- 将对象和记录类型导出为接口。要激活此特性，请将 `"exportInterfaces": true` 添加到配置中。类型会从 `name` 被重命名为 `Iname`
+- 为非类型化后端发送 prop 类型。要激活此特性，请将 `"propTypes": true` 和 `"language": "untyped"` 添加到配置中
+
+<!-- ## Limitations -->
+## 限制
+
+<!-- - **in-source = true**. Currently only supports ReScript projects with [in-source generation](/docs/manual/latest/build-configuration#package-specs) and `.bs.js` file suffix.
+
+- **Limited namespace support**. Currently there's limited [namespace](/docs/manual/latest/build-configuration#name-namespace) support, and only `namespace:true` is possible, not e.g. `namespace:"custom"`. -->
+
+- **in-source = true** 目前仅支持配置了 [in-source 生成](/docs/manual/latest/build-configuration#package-specs) 和 `.bs.js` 文件后缀的 ReScript 项目。
+
+- **有限的命名空间支持** 目前只有有限的 [namespace](/docs/manual/latest/build-configuration#name-namespace) 支持，并且只有 `namespace: true` 是可行的，而不是 `namespace: "custom"` 之类配置。
+
+<!-- ## Changelog -->
+## 更新日志
+
+查看 [Changes.md](https://github.com/reason-association/genType/blob/master/Changes.md) 以获取每个版本的特性、修复和更改的完整列表。

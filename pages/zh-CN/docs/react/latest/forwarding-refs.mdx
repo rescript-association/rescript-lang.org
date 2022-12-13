@@ -1,0 +1,202 @@
+---
+title: 转发 Refs
+description: "在 ReScript 和 React 中转发 Ref 值"
+canonical: "/docs/react/latest/forwarding-refs"
+---
+
+# 转发 Refs
+
+<Intro>
+
+<!-- Ref forwarding is a technique for automatically passing a [React.ref](./refs-and-the-dom) through a component to one of its children. This is typically not necessary for most components in the application. However, it can be useful for some kinds of components, especially in reusable component libraries. The most common scenarios are described below. -->
+Ref 转发是一种将 [React.ref](./refs-and-the-dom) 通过组件自动传递给它的子组件的技术。对于应用中的大部分组件来说，这通常是不必要的。然而，它对某些组件非常有用，尤其是可复用组件库中的组件。下面描述了最常见的应用场景。
+
+</Intro>
+
+<!-- ## Why Ref Forwarding? -->
+## 为什么要转发 Ref ？
+
+<!-- Consider a FancyButton component that renders the native button DOM element: -->
+考虑一个渲染原生 button DOM 的 FancyButton 组件：
+
+```res
+// FancyButton.res
+
+@react.component
+let make = (~children) => {
+  <button className="FancyButton">
+    children
+  </button>
+}
+```
+
+<!-- React components hide their implementation details, including their rendered output. Other components using FancyButton **usually will not need** to obtain a ref to the inner button DOM element. This is good because it prevents components from relying on each other’s DOM structure too much. -->
+React 组件隐藏了实现细节，也包括渲染输出。其他使用 FancyButton 的组件**通常不需要**获取它内部的 button DOM 元素。这很好，因为它可以防止组件过度依赖彼此的 DOM 结构。
+
+<!-- Although such encapsulation is desirable for application-level components like `FeedStory` or `Comment`, it can be inconvenient for highly reusable “leaf” components like `FancyButton` or `MyTextInput`. These components tend to be used throughout the application in a similar manner as a regular DOM button and input, and accessing their DOM nodes may be unavoidable for managing focus, selection, or animations. -->
+这种封装对于类似 `FeedStory` 或 `Comment` 的应用级组件来说是可取的，但是对于类似 `FancyButton` 或 `MyTextInput` 的高度可复用的“叶子“组件来说可能有点不方便。通常我们倾向于像一个常规 button 和 input DOM 一样使用这些组件，访问它们的 DOM 节点来管理焦点，控制选择或动画，可能是不可避免的。
+
+<!-- There are currently two strategies on forwarding refs through a component. In ReScript and React we strongly recommend **passing your ref as a prop**, but there is also a dedicated API called `React.forwardRef`. -->
+目前有两种策略来通过组件转发引用。在 ReScript 和 React 中我们强烈推荐**将 ref 作为 prop 传递**，但也有一个专用 API `React.forwardRef`。
+
+<!-- We will discuss both methods in this document. -->
+下面我们会讨论这两种方法。
+
+<!-- ## Forward Refs via Props -->
+## 通过 Props 转发 Refs
+
+<!-- A `React.ref` can be passed down like any other prop. The component will take care of forwarding the ref to the right DOM element. -->
+`React.ref` 能像其他 prop 一样传递。组件会将 ref 转发到正确的 DOM 元素。
+
+<!-- **No new concepts to learn!** -->
+**不需要学习任何新概念！**
+
+<!-- In the example below, `FancyInput` defines a prop `inputRef` that will be forwarded to its `input` element: -->
+下面的例子中，`FancyInput` 定义了一个 `inputRef` prop，会被转发到它的 `input` 元素：
+
+```res
+// App.res
+
+module FancyInput = {
+  @react.component
+  let make = (~children, ~inputRef: ReactDOM.domRef) =>
+    <div> <input type_="text" ref=inputRef /> children </div>
+}
+
+@send external focus: Dom.element => unit = "focus"
+
+@react.component
+let make = () => {
+  let input = React.useRef(Js.Nullable.null)
+
+  let focusInput = () =>
+    input.current
+    ->Js.Nullable.toOption
+    ->Belt.Option.forEach(input => input->focus)
+
+  let onClick = _ => focusInput()
+
+  <div>
+    <FancyInput inputRef={ReactDOM.Ref.domRef(input)}>
+      <button onClick> {React.string("Click to focus")} </button>
+    </FancyInput>
+  </div>
+}
+```
+
+<!-- We use the `ReactDOM.domRef` type to represent our `inputRef`. We pass our ref in the exact same manner as we'd do a DOM `ref` attribute (`<input ref={ReactDOM.Ref.domRef(myRef)} />`). -->
+我们使用 `ReactDOM.domRef` 类型来表示 `inputRef`。我们可以像将 `ref` 属性传给 DOM 一样传递 `inputRef`（`<input ref={ReactDOM.Ref.domRef(myRef)} />`）。
+
+
+<!-- ## [Discouraged] React.forwardRef -->
+## [不推荐] React.forwardRef
+
+<!-- **Note:** We discourage this method since it [will likely go away](https://twitter.com/dan_abramov/status/1173372190395445251) at some point, and doesn't yield any obvious advantages over the previously mentioned ref prop passing. -->
+**注意**： 我们不推荐这种方法，因为它[可能会在某个时间点消失](https://twitter.com/dan_abramov/status/1173372190395445251)，而且与前面提到的传递 ref prop 相比，它没有任何明显的优势。
+
+<!-- `React.forwardRef` offers a way to "emulate a `ref` prop" within custom components. Internally the component will forward the passed `ref` value to the target DOM element instead. -->
+`React.forwardRef` 提供了一种在自定义组件中“模拟 `ref` prop”的方法。在组件内部，组件会把传递的 `ref` 值转发给目标 DOM 元素。
+
+<!-- This is how the previous example would look like with the `React.forwardRef` approach: -->
+上面例子的 `React.forwarRef` 版本：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// App.res
+
+module FancyInput = {
+  @react.component
+  let make = React.forwardRef((~className=?, ~children, ref_) =>
+    <div>
+      <input
+        type_="text"
+        ?className
+        ref=?{Js.Nullable.toOption(ref_)->Belt.Option.map(
+          ReactDOM.Ref.domRef,
+        )}
+      />
+      children
+    </div>
+  )
+}
+
+@send external focus: Dom.element => unit = "focus"
+
+@react.component
+let make = () => {
+  let input = React.useRef(Js.Nullable.null)
+
+  let focusInput = () =>
+    input.current
+    ->Js.Nullable.toOption
+    ->Belt.Option.forEach(input => input->focus)
+
+  let onClick = _ => focusInput()
+
+  <div>
+    <FancyInput className="fancy" ref=input>
+      <button onClick> {React.string("Click to focus")} </button>
+    </FancyInput>
+  </div>
+}
+```
+
+```js
+var React = require("react");
+var Belt_Option = require("./stdlib/belt_Option.js");
+var Caml_option = require("./stdlib/caml_option.js");
+
+var make = React.forwardRef(function (Props, ref_) {
+      var className = Props.className;
+      var children = Props.children;
+      var tmp = {
+        type: "text"
+      };
+      var tmp$1 = Belt_Option.map((ref_ == null) ? undefined : Caml_option.some(ref_), (function (prim) {
+              return prim;
+            }));
+      if (tmp$1 !== undefined) {
+        tmp.ref = Caml_option.valFromOption(tmp$1);
+      }
+      if (className !== undefined) {
+        tmp.className = Caml_option.valFromOption(className);
+      }
+      return React.createElement("div", undefined, React.createElement("input", tmp), children);
+    });
+
+var FancyInput = {
+  make: make
+};
+
+function App(Props) {
+  var input = React.useRef(null);
+  var onClick = function (param) {
+    return Belt_Option.forEach(Caml_option.nullable_to_opt(input.current), (function (input) {
+                  input.focus();
+
+                }));
+  };
+  return React.createElement("div", undefined, React.createElement(make, {
+                  className: "fancy",
+                  children: React.createElement("button", {
+                        onClick: onClick
+                      }, "Click to focus"),
+                  ref: input
+                }));
+}
+```
+
+</CodeTab>
+
+<!-- **Note:** Our `@react.component` decorator transforms our labeled argument props within our `React.forwardRef` function in the same manner as our classic `make` function. -->
+**注意**： 在我们的 `React.forwardRef` 函数中，`@react.component` 装饰器使用与 `make` 函数相同的方式转换标签参数。
+
+<!-- This way, components using `FancyInput` can get a ref to the underlying `input` DOM node and access it if necessary—just like if they used a DOM `input` directly. -->
+这样，使用 `FancyInput` 的组件可以获得底层 `input` DOM 节点的引用，并在必要时访问它，就像在直接使用 `input` 一样。
+
+<!-- ## Note for Component Library Maintainers -->
+## 组件库维护者须知
+
+<!-- **When you start using ref forwarding in a component library, you should treat it as a breaking change and release a new major version of your library**. This is because your library likely has an observably different behavior (such as what refs get assigned to, and what types are exported), and this can break apps and other libraries that depend on the old behavior. -->
+**当你开始在组件库中使用 ref 转发时，你应该把它当作一个 breaking change，并且发布一个新的 major 版本。** 这是因为你的库可能会具有不同的行为（例如分配给哪些 refs，哪些类型会被导出），这可能会破坏依赖于旧行为的应用或其他库。

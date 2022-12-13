@@ -1,0 +1,344 @@
+---
+title: Refs & DOM
+description: "在 ReScript 和 React 中使用 Refs 和 DOM"
+canonical: "/docs/react/latest/refs-and-the-dom"
+---
+
+<!-- # Refs and the DOM -->
+# Refs & DOM
+
+<Intro>
+
+<!-- Refs provide a way to access DOM nodes or React elements created within your `make` component function. -->
+Refs 提供了一种方法来访问在 `make` 组件函数中创建的 DOM 节点或 React 元素。
+
+</Intro>
+
+<!-- In the typical React dataflow, [props](./components-and-props) are the only way that parent components interact with their children. To modify a child, you re-render it with new props. However, there are a few cases where you need to imperatively modify a child outside of the typical dataflow. The child to be modified could be an `React.element`, or it could be a `Dom.element`. For both of these cases, React provides an escape hatch. -->
+在典型的 React 数据流中，[props](./components-and-props)是父组件与子组件交互的唯一方式。要修改一个子组件，你需要使用新的 props 来重新渲染它。但是，在某些情况下，你需要在典型数据流之外强制修改子组件。被修改的子组件可能是一个 `React.element` 或 `Dom.element`。对于这两种情况，React 都提供了解决办法。
+
+<!-- A `React.ref` is defined like this: -->
+像这样定义一个 `React.ref` ：
+
+```res
+type t<'value> = { mutable current: 'value }
+```
+
+<!-- > *Note that the `Ref.ref` should not to be confused with the builtin [ref type](/docs/manual/latest/mutation), the language feature that enables mutation.* -->
+> *注意不要将 `React.ref` 和用于添加可变性的语言特性[ref类型](/docs/manual/latest/mutation)弄混了。*
+
+<!-- ## When to use Refs -->
+## 何时使用 Refs
+
+<!-- There are a few good use cases for refs:
+
+- Managing state that *should not trigger* any re-render.
+- Managing focus, text selection, or media playback.
+- Triggering imperative animations.
+- Integrating with third-party DOM libraries.
+-->
+
+Refs 的应用场景：
+- 管理*不应该触发*重新渲染的状态。
+- 管理焦点、文本选择、媒体播放。
+- 触发命令式的动画。
+- 与第三方 DOM 库集成。
+
+<!-- Avoid using refs for anything that can be done declaratively.  -->
+避免在能够使用声明式的方式完成的事情上使用 refs
+
+<!-- ## Creating Refs -->
+## 创建 Refs
+
+<!-- A React ref is represented as a `React.ref('value)` type, a container managing a mutable value of type `'value`. You can create this kind of ref with the [React.useRef](./hooks-ref) hook: -->
+React ref 被表示为 `React.ref（'value)` 类型，一个管理 `'value` 类型的可变值的容器。你能使用 [React.useRef](./hooks-ref) hook 来创建 ref：
+
+```res
+@react.component
+let make = () => {
+  let clicks = React.useRef(0);
+
+  let onClick = (_) => {
+    clicks.current = clicks.current + 1;
+  };
+
+  <div onClick>
+    {Belt.Int.toString(clicks.current)->React.string}
+  </div>
+}
+```
+
+<!-- The example above defines a binding `clicks` of type `React.ref(int)`. Note how changing the value `clicks.current` doesn't trigger any re-rendering of the component. -->
+上面的例子定义了一个 `React.ref(int)` 类型的绑定 `clicks`。注意，改变 `clicks.current` 的值不会触发任何组件重渲染。
+
+<!-- ## Accessing Refs -->
+## 访问 Refs
+
+<!-- When a ref is passed to an element during render, a reference to the node becomes accessible at the current attribute of the ref. -->
+当渲染过程中将 ref 传递给元素后，就能通过 ref 的当前属性访问对节点的引用。
+
+```res
+let value = myRef.current
+```
+
+<!-- The value of the ref differs depending on the type of the node:
+- When the ref attribute is used on an HTML element, the ref passed via `ReactDOM.Ref.domRef` receives the underlying DOM element as its current property (type of `React.ref<Js.Nullable.t<Dom.element>>`)
+- In case of interop, when the ref attribute is used on a custom class component (based on JS classes), the ref object receives the mounted instance of the component as its current (not discussed in this document).
+- **You may not use the ref attribute on component functions** because they don’t have instances (we don't expose JS classes in ReScript). -->
+ref 的值取决于节点的类型：
+- 当在 HTML 元素上使用 ref 属性时，通过 `ReactDOM.Ref.domRef` 接收基础 DOM 元素作为其当前属性（类型为 `React.ref<Js.Nullable.t<Dom.element>>`）
+- 在与 JS 互操作的情况下，当在自定义类组件（基于 JS 类）上使用 ref 属性时，ref 对象将接收组件的 mounted 实例（本文档中未讨论）。
+- **你不能在组件函数上使用 ref 属性**因为它们没有实例（Rescript 不会暴露 JS 类）。
+
+<!-- Here are some examples: -->
+下面是一些例子：
+
+<!-- ### Adding a Ref to a DOM Element -->
+### 为 DOM 元素添加 Ref
+
+<!-- This code uses a `React.ref` to store a reference to an `input` DOM node to put focus on a text field when a button was clicked: -->
+这段代码使用 `React.ref` 储存 `input` DOM 节点的引用，用于在按钮被点击时给 text 的 `input` 设置焦点：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// CustomTextInput.res
+
+@send external focus: Dom.element => unit = "focus"
+
+@react.component
+let make = () => {
+  let textInput = React.useRef(Js.Nullable.null)
+
+  let focusInput = () =>
+    switch textInput.current->Js.Nullable.toOption {
+    | Some(dom) => dom->focus
+    | None => ()
+    }
+
+  let onClick = _ => focusInput()
+
+  <div>
+    <input type_="text" ref={ReactDOM.Ref.domRef(textInput)} />
+    <input type_="button" value="Focus the text input" onClick />
+  </div>
+}
+```
+
+```js
+function CustomTextInput(Props) {
+  var textInput = React.useRef(null);
+  var onClick = function (param) {
+    var dom = textInput.current;
+    if (!(dom == null)) {
+      dom.focus();
+      return ;
+    }
+
+  };
+  return React.createElement("div", undefined, React.createElement("input", {
+                  ref: textInput,
+                  type: "text"
+                }), React.createElement("input", {
+                  type: "button",
+                  value: "Focus the text input",
+                  onClick: onClick
+                }));
+}
+```
+
+</CodeTab>
+
+<!-- A few things happened here, so let's break them down:
+
+- We initialize our `textInput` ref as a `Js.Nullable.null`
+- We register our `textInput` ref in our `<input>` element with `ReactDOM.Ref.domRef(textInput)`
+- In our `focusInput` function, we need to first verify that our DOM element is set, and then use the `focus` binding to set the focus -->
+解释一下上面的代码发生了什么：
+
+- 我们将 `textInput` ref 实例化为 `Js.Nullable.null`
+- 我们使用 `ReactDOM.Ref.domRef(textInput)` 在 `<input>` 元素内注册 `textInput` 的 ref
+- 在 `focusInput` 函数中，我们首先需要验证 ref 是否设置为 DOM 元素，然后使用 `focus` binding 来设置焦点。
+
+<!-- React will assign the `current` field with the DOM element when the component mounts, and assign it back to null when it unmounts. -->
+React 将在组件 mount 时给 `current` 赋值 DOM 元素，并在组件 unmount 时将其分配回 null。
+
+<!-- ### Refs and Component Functions -->
+### Refs & 组件函数
+
+<!-- In React, you **can't** pass a `ref` attribute to a component function: -->
+在 React 中，你**不能**将 `ref` 属性传递给组件函数：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+module MyComp = {
+  @react.component
+  let make = (~ref) => <input />
+}
+
+@react.component
+let make = () => {
+  let textInput = React.useRef(Js.Nullable.null)
+
+  // This will **not** work
+  <MyComp ref={ReactDOM.Ref.domRef(textInput)} />
+}
+```
+
+```js
+// Compiler Error:
+// Ref cannot be passed as a normal prop. Please use `forwardRef`
+// API instead
+```
+
+</CodeTab>
+
+<!-- The snippet above will not compile and output an error that looks like this: `"Ref cannot be passed as a normal prop. Please use forwardRef API instead."`. -->
+上面的代码片段将不会被编译，并输出一个错误：`"Ref cannot be passed as a normal prop. Please use forwardRef API instead."`。
+
+<!-- As the error message implies, If you want to allow people to take a ref to your component function, you can use [ref forwarding](./forwarding-refs) (possibly in conjunction with useImperativeHandle) instead. -->
+正如错误消息所说，如果你需要允许其他人对你的组件函数使用 ref ，你可以使用[Ref转发](./forwarding-refs)（可能与 useImperativeHandle 一起使用）。
+
+
+<!-- ## Exposing DOM Refs to Parent Components -->
+## 向父组件暴露 DOM Refs
+
+<!-- In rare cases, you might want to have access to a child’s DOM node from a parent component. This is generally not recommended because it breaks component encapsulation, but it can occasionally be useful for triggering focus or measuring the size or position of a child DOM node. -->
+在极少数情况下，你可能想要从父组件访问子组件的 DOM 节点。通常不建议这样做，因为它破坏了组件封装，但是偶尔可以用于触发焦点，或是用于获取子 DOM 节点的大小或位置。
+
+<!-- we recommend to use [ref forwarding](./forwarding-refs) for these cases. **Ref forwarding lets components opt into exposing any child component’s ref as their own**. You can find a detailed example of how to expose a child’s DOM node to a parent component in the ref forwarding documentation. -->
+我们建议使用[Ref转发](./forwarding-refs)。**Ref 转发允许组件将子组件的 Ref 暴露给自己**。你能在 Ref 转发的文档中找到将子组件的 DOM 节点暴露给父组件的例子。
+
+<!-- ## Callback Refs -->
+## 回调 Refs
+
+<!-- React also supports another way to set refs called “callback refs” (`React.Ref.callbackDomRef`), which gives more fine-grain control over when refs are set and unset. -->
+React 还支持另一种设置 refs 的方法，称为 “回调 refs”（`React.Ref.callbackDomRef`），它能让你更精细地控制 refs 的设置和解除。
+
+<!-- Instead of passing a ref value created by `React.useRef()`, you can pass in a callback function. The function receives the target `Dom.element` as its argument, which can be stored and accessed elsewhere. -->
+不同于传递由 `React.useRef()` 创建的 ref 值，你会传递一个回调函数。这个函数接收 `Dom.element` 作为参数，以使这个 `Dom.element` 能被存储并在其他地方访问。
+
+<!-- **Note:** Usually we'd use `React.Ref.domRef()` to pass a ref value, but for callback refs, we use `React.Ref.callbackDomRef()` instead. -->
+**注意**：通常我们会使用 `React.Ref.domRef()` 传递一个 ref 值，但是对于回调 refs，我们使用 `React.Ref.callbackDomRef()`。
+
+<!-- The example below implements a common pattern: using the ref callback to store a reference to a DOM node in an instance property. -->
+下面的例子描述了一个通用的范例：使用 ref 回调函数，在实例的属性中存储对 DOM 节点的引用。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// CustomTextInput.res
+
+@send external focus: Dom.element => unit = "focus"
+
+@react.component
+let make = () => {
+  let textInput = React.useRef(Js.Nullable.null)
+  let setTextInputRef = element => {
+    textInput.current = element;
+  }
+
+  let focusTextInput = _ => {
+    textInput.current
+    ->Js.Nullable.toOption
+    ->Belt.Option.forEach(input => input->focus)
+  }
+
+  <div>
+    <input type_="text" ref={ReactDOM.Ref.callbackDomRef(setTextInputRef)} />
+    <input
+      type_="button" value="Focus the text input" onClick={focusTextInput}
+    />
+  </div>
+}
+```
+
+```js
+function CustomTextInput(Props) {
+  var textInput = React.useRef(null);
+  var setTextInputRef = function (element) {
+    textInput.current = element;
+
+  };
+  var focusTextInput = function (param) {
+    return Belt_Option.forEach(Caml_option.nullable_to_opt(textInput.current), (function (input) {
+                  input.focus();
+
+                }));
+  };
+  return React.createElement("div", undefined, React.createElement("input", {
+                  ref: setTextInputRef,
+                  type: "text"
+                }), React.createElement("input", {
+                  type: "button",
+                  value: "Focus the text input",
+                  onClick: focusTextInput
+                }));
+}
+```
+
+</CodeTab>
+
+<!-- React will call the ref callback with the DOM element when the component mounts, and call it with null when it unmounts. -->
+React 会在组件 mount 时使用 DOM 元素调用 ref 回调函数，并在 unmount 时使用 null 调用它。
+
+<!-- You can pass callback refs between components like you can with object refs that were created with `React.useRef()`. -->
+你能在组件间传递回调 refs，就像传递 `React.useRef()` 创建的对象 refs 一样。
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// Parent.res
+
+@send external focus: Dom.element => unit = "focus"
+
+module CustomTextInput = {
+  @react.component
+  let make = (~setInputRef) => {
+    <div>
+      <input type_="text" ref={ReactDOM.Ref.callbackDomRef(setInputRef)} />
+    </div>
+  }
+}
+
+@react.component
+let make = () => {
+  let textInput = React.useRef(Js.Nullable.null)
+  let setInputRef = element => { textInput.current = element}
+
+  <CustomTextInput setInputRef/>
+}
+```
+
+```js
+function CustomTextInput(Props) {
+  var setInputRef = Props.setInputRef;
+  return React.createElement("div", undefined, React.createElement("input", {
+                  ref: setInputRef,
+                  type: "text"
+                }));
+}
+
+var CustomTextInput = {
+  make: CustomTextInput
+};
+
+function Parent(Props) {
+  var textInput = React.useRef(null);
+  var setInputRef = function (element) {
+    textInput.current = element;
+
+  };
+  return React.createElement(CustomTextInput, {
+              setInputRef: setInputRef
+            });
+}
+```
+
+</CodeTab>
+
+
+<!-- In the example above, `Parent` passes its ref callback as an `setInputRef` prop to the `CustomTextInput`, and the `CustomTextInput` passes the same function as a special ref attribute to the `<input>`. As a result, the `textInput` ref in Parent will be set to the DOM node corresponding to the `<input>` element in the `CustomTextInput`. -->
+在上面的例子中，`Parent` 将它的 ref 回调函数传递给 `CustomTextInput` 的 `setInputRef` prop，`CustomTextInput` 将同样的函数作为特别的 ref 属性传递给 `<input>`。因此，父组件中的 `textInput` ref 会被设置为 `CustomTextInput` 中的 `<input>` 的 DOM 节点。
+

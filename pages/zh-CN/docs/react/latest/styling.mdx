@@ -1,0 +1,231 @@
+---
+title: 样式
+description: "ReScript & React 中的样式"
+canonical: "/docs/react/latest/styling"
+---
+
+<!-- # Styling -->
+# 样式
+
+<!-- React comes with builtin support for inline styles, but there are also a number of third party libraries for styling React components. You might be comfortable with a specific setup, like: -->
+React 为内联样式提供了内置支持，但也有许多用于编写 React 组件样式的第三方库。你可能会喜欢这些方案：
+
+<!-- - Global CSS / CSS modules
+- CSS utility libraries (`tailwindcss`, `tachyons`, `bootstrap` etc.)
+- CSS-in-JS (`styled-components`, `emotion`, etc.) -->
+- Global CSS / CSS modules
+- CSS 工具库（`tailwindcss`, `tachyons`, `bootstrap` 等）
+- CSS-in-JS（`styled-components`, `emotion` 等）
+
+<!-- If they work in JS then they almost certainly work in ReScript. In the next few sections, we've shared some ideas for working with popular libraries. If you're interested in working with one you don't see here, search the [package index](https://rescript-lang.org/packages) or post in [the forum](https://forum.rescript-lang.org). -->
+ReScript 也能兼容这些库。下面几节，我们介绍了如何使用流行的样式库。如果你想要使用没提到的库，可以搜索 [package index](https://rescript-lang.org/packages) 或在 [ReScript论坛](https://forum.rescript-lang.org) 发帖询问。
+
+<!-- ## Inline Styles -->
+## 内联样式
+
+<!-- This is the most basic form of styling, coming straight from the 90s. You can apply a `style` attribute to any DOM element with our `ReactDOM.Style.make` API: -->
+从90年代开始，内联样式就是样式的最基本形式。你能通过 `ReactDOM.Style.make` API 来为任何 DOM 元素提供一个 `style` 属性：
+
+```res
+<div style={ReactDOM.Style.make(~color="#444444", ~fontSize="68px", ())} />
+```
+
+<!-- It's a [labeled](/docs/manual/latest/function#labeled-arguments) (therefore typed) function call that maps to the familiar style object `{color: '#444444', fontSize: '68px'}`. For every CSS attribute in the CSS specfication, there is a camelCased label in our `make` function. -->
+它是一个使用 [标签参数](/docs-cn/manual/latest/function#标签参数) 的函数调用（因此是类型化的），参数映射到我们熟悉的 CSS 样式对象 `{color: '#444444', fontSize: '68px'}`。对于 CSS 规范中的每个 CSS 属性，在 `make` 函数中都有一个驼峰命名的标签参数。
+
+<!-- **Note** that `make` returns an opaque `ReactDOM.Style.t` type that you can't read into. We also expose a `ReactDOM.Style.combine` that takes in two `style`s and combine them. -->
+**注意**： `make` 返回一个不透明的 `ReactDOM.Style.t` 类型。我们还提供一个 `ReactDOM.Style.combine` 接口，来组合两个 `style`。
+
+<!-- ### Escape Hatch: `unsafeAddProp` -->
+### 逃生通道：`unsafeAddProp`
+
+<!-- The above `Style.make` API will safely type check every style field! However, we might have missed some more esoteric fields. If that's the case, the type system will tell you that the field you're trying to add doesn't exist. To remediate this, we're exposing a `ReactDOM.Style.unsafeAddProp` to dangerously add a field to a style: -->
+上面的 `Style.make` API 会安全地检查每个样式字段的类型！但我们可能忽略了一些极少使用的字段。如果是这样，类型系统将会提示你尝试添加的字段不存在。为了提供补救措施，我们提供了 `ReactDOM.Style.unsafeAddProp` 来给样式添加字段，但是不是类型安全的。
+
+```res
+let style =
+  ReactDOM.Style.make(
+    ~color="red",
+    ~padding="10px",
+    (),
+  )->ReactDOM.Style.unsafeAddProp("-webkit-animation-name", "moveit")
+```
+
+<!-- ## Global CSS -->
+## Global CSS
+
+<!-- Use a `%%raw` expression to import CSS files within your ReScript / React component code: -->
+使用 `%%raw` 表达式在 ReScript / React 组件代码中导入 CSS 文件：
+
+```rescript
+// in a CommonJS setup
+%%raw("require('./styles/main.css')")
+
+// or with ES6
+%%raw("import './styles/main.css'")
+```
+
+<!-- ## CSS Modules -->
+## CSS Modules
+
+<!-- [CSS modules](https://github.com/css-modules/css-modules) can be imported like any other JS module. The imported value is a JS object, with attributes equivalent to each classname defined in the CSS file. -->
+[CSS modules](https://github.com/css-modules/css-modules) 能像 JS 模块一样被导入。导入的是一个 JS 对象，属性名和 CSS 文件的类名相同。
+
+<!-- As an example, let's say we have a CSS module like this: -->
+例如，我们有一个像这样的 CSS module：
+
+```css
+/* styles.module.css */
+
+.root {
+  color: red
+}
+```
+
+<!-- We now need to create a module binding that imports our styles as a JS object:  -->
+为了将 CSS module 作为 JS 对象导入，我们需要新建一个 module 的绑定：
+
+```res
+// {..} means we are handling a JS object with an unknown
+// set of attributes
+@module external styles: {..} = "./styles.module.css"
+
+// Use the obj["key"] syntax to access any classname within our object
+let app = <div className={styles["root"]} />
+```
+
+<!-- **Note:** `{..}` is an open [JS object type](/docs/manual/latest/object#type-declaration), which means the type checker will not type check correct classname usage. If you want to enforce compiler errors, replace `{..}` with a concrete JS object type, such as `{"root": string}`. -->
+**注意**： `{..}` 是一个开放的 [JS 对象类型](/docs/manual/latest/object#type-declaration)，所以类型检查器不会检查是否正确使用类名。如果你想要强制让编译器报错，将 `{..}` 替换为具体的 JS 对象类型，例如 `{"root": string}`。
+
+
+<!-- ## CSS Utility Libraries -->
+## CSS 工具库
+
+<!-- ### Tailwind -->
+### Tailwind
+
+<!-- CSS utility libraries like [TailwindCSS](https://tailwindcss.com) usually require some globally imported CSS. -->
+[TailwindCSS](https://tailwindcss.com) 类似的 CSS 工具库通常需要一些全局导入的 CSS。
+
+<!-- First, create your TailwindCSS main entrypoint file: -->
+首先，新建 Tailwind CSS 的主入口文件：
+
+```css
+/* main.css */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+<!-- Then, import your `main.css` file in your ReScript / React application: -->
+然后，在你的 ReScript / React 应用中导入 `main.css` 文件：
+
+```res
+// src/App.res
+
+%%raw("import './main.css'")
+```
+
+<!-- Utilize ReScript's pattern matching and string interpolations to combine different classnames: -->
+利用 ReScript 的模式匹配和字符串插值来组合不同的 CSS 类名：
+
+```res
+@react.component
+let make = (~active: bool) => {
+  let activeClass = if active {
+    "text-green-600"
+  }
+  else {
+    "text-red-600"
+  }
+
+  <div className={`border-1 border-black ${activeClass}`}>
+    {React.string("Hello World")}
+  </div>
+}
+```
+
+<!-- > **Hint:** `rescript-lang.org` actually uses TailwindCSS under the hood! Check out our [codebase](https://github.com/rescript-association/rescript-lang.org) to get some more inspiration on usage patterns. -->
+**提示：** `rescript-lang.org` 用了 Tailwind CSS！查看我们的 [代码库](https://github.com/rescript-association/rescript-lang.org) 来获得一些使用灵感。
+
+
+<!-- ## CSS-in-JS -->
+## CSS-in-JS
+
+<!-- There's no way we could recommend a definitive CSS-in-JS workflow, since there are many different approaches on how to bind to CSS-in-JS libraries (going from simple to very advanced). -->
+我们无法推荐一个权威的 CSS-in-JS 工作流，因为绑定到 CSS-in-JS 库有很多不同的方法（从简单到非常高级）。
+
+<!-- For demonstration purposes, let's create some simple bindings to e.g. [`emotion`](https://emotion.sh/docs/introduction) (as described [here](https://github.com/bloodyowl/rescript-react-starter-kit/blob/eca7055c59ba578b2d1994fc928d8f541a423e74/src/shared/Emotion.res)): -->
+为了演示，让我们创建一些简单的 [`emotion`](https://emotion.sh/docs/introduction) 绑定 (像 [这里](https://github.com/bloodyowl/rescript-react-starter-kit/blob/eca7055c59ba578b2d1994fc928d8f541a423e74/src/shared/Emotion.res) 提到的):
+
+```res
+// src/Emotion.res
+
+@module("@emotion/css") external css: {..} => string = "css"
+@module("@emotion/css") external rawCss: string => string = "css"
+@module("@emotion/css") external keyframes: {..} => string = "css"
+@module("@emotion/css") external cx: array<string> => string = "cx"
+
+@module("@emotion/css") external injectGlobal: string => unit = "injectGlobal"
+```
+
+<!-- This will give you straight-forward access to `emotion`'s apis. Here's how you'd use them in your app code: -->
+这会让你直接访问 `emotion` 的 API。下面是使用 `emotion` 的例子：
+
+```res
+let container = Emotion.css({
+  "color": "#fff",
+  "backgroundColor": "red"
+})
+
+let app = <div className={container} />
+```
+
+<!-- You can also use submodules to organize your styles more easily: -->
+你也可以用子模块来更轻松地组织你的样式：
+
+```res
+module Styles = {
+  open Emotion
+  let container = css({
+    "color": "#fff",
+    "backgroundColor": "red"
+  })
+  // your other declarations
+}
+
+let app = <div className={Styles.container} />
+```
+
+<!-- Please note that this approach will not check for invalid css attribute names. If you e.g. want to make sure that only valid CSS attributes are being passed, you could define your `css` function like this as well: -->
+请注意，这种方法不会检查 CSS 属性名是否有效。如果你想要确保只传入有效的 CSS 属性，你可以像这样定义你的 `css` 函数：
+
+```res
+@module("@emotion/css") external css: ReactDOM.Style.t => string = "css"
+
+// Usage is slightly different (and probably less ergonomic)
+let container = ReactDOM.Style.make(~padding="20px", ())->css;
+
+let app = <div
+  className={container}
+/>
+```
+
+<!-- Here we used the already existing `React.Style.t` type to enforce valid CSS attribute names. 
+Last but not least, you can also bind to functions that let you use raw CSS directly: -->
+这里我们使用现有的 `React.Style.t` 类型来强制确保只传入有效的 CSS 属性名。
+
+最后但同样重要的是，你也能为直接使用原生 CSS 的函数创建绑定：
+
+```res
+let container = Emotion.rawCss(`
+  color: #fff;
+  background-color: red;
+`)
+
+let app = <div className={container} />
+```
+
+<!-- Please keep in mind that there's a spectrum on how type-safe an API can be (while being more / less complex to handle), so choose a solution that fits to your team's needs. -->
+请记住，API 的类型安全程度有一个范围，需要在安全性和复杂度之间做权衡，所以请选择一个满足团队需求的解决方案。

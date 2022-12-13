@@ -1,0 +1,246 @@
+---
+title: 超越 JSX
+description: "如何在不使用 JSX 的情况下使用 ReScript 和 React"
+canonical: "/docs/react/latest/beyond-jsx"
+---
+
+<!-- # Beyond JSX -->
+# 超越 JSX
+
+<Intro>
+
+<!-- JSX is a syntax sugar that allows us to use React components in an HTML like manner. A component needs to adhere to certain interface conventions, otherwise it can't be used in JSX. This section will go into detail on how the JSX transformation works and what React APIs are used underneath. -->
+JSX 是一个语法糖，允许我们以类似 HTML 的方式组合 React 组件。要使用 JSX，组件需要遵循某些接口约定。本章节会深入 JSX 转换的细节，以及 JSX 底层使用的 React API。
+
+</Intro>
+
+<!-- **Note:** This section requires knowledge about the low level apis for [creating elements](./elements-and-jsx#creating-elements-from-component-functions), such as `React.createElement` or `ReactDOMRe.createDOMElementVariadic`. -->
+**注意**：本章需要你了解 [创建元素](./elements-and-jsx#creating-elements-from-component-functions) 的底层 API，例如 `React.createElement` 或 `ReactDOMRe.createDOMElementVariadic`。
+
+<!-- > **Note:** This page assumes your `bsconfig.json` to be set to `"reason": { "react-jsx": 3 }` to apply the right JSX transformations.  -->
+**注意**：本章假设你的 `bsconfig.json` 拥有 `"reason": { "react-jsx": 3 }`设置，从而能够正确应用 JSX 转换。
+
+<!-- ## Component Types -->
+## 组件类型
+
+<!-- A plain React component is defined as a `('props) => React.element` function. You can also express a component more efficiently with our shorthand type `React.component<'props>`.  -->
+普通的 React 组件被定义为 `('props) => React.element` 函数。
+
+<!-- Here are some examples on how to define your own component types (often useful when interoping with existing JS code, or passing around components): -->
+下面是一些例子，演示了如何定义组件类型（与现有 JS 代码互操作，或传递组件时很有用）：
+
+```res
+// Plain function type
+type friendComp =
+  ({"name": string, "online": bool}) => React.element;
+
+// Equivalent to
+// ({"padding": string, "children": React.element}) => React.element
+type containerComp =
+  React.component<{
+    "padding": string,
+    "children": React.element
+  }>;
+```
+<!-- The types above are pretty low level (basically the JS representation of a React component), but since ReScript React has its own ways of defining React components in a more language specific way, let's have a closer look on the anatomy of such a construct. -->
+上面的类型非常底层（基本上是 React 组件的 JS 表示），ReScript React 使用更富有语言特点方式来定义 React 组件，接下来让我们详细了解。
+
+<!-- ## JSX Component Interface -->
+## JSX 组件接口
+
+<!-- A ReScript React component needs to be a (sub-)module with a `make` and `makeProps` function to be usable in JSX. To make things easier, we provide a `@react.component` decorator to create those functions for you: -->
+ReScript React 组件是一个（子）模块，含有被 JSX 使用的 `make` 和 `makeProps` 函数。为了更好的使用体验，我们提供一个 `@react.component` 装饰器来为你创建这些函数：
+
+<CodeTab labels={["Decorated", "Expanded"]}>
+
+```res
+module Friend = {
+  @react.component
+  let make = (~name: string, ~children) => {
+    <div>
+      {React.string(name)}
+      children
+    </div>
+  }
+}
+```
+```res
+module Friend = {
+  @obj
+  external makeProps: (
+    ~name: string,
+    ~children: 'children,
+    ~key: string=?,
+    unit) => {"name": string, "children": 'children} = "";
+
+  let make = (props: {"name": string, "children": 'children}) => {
+    // React element creation from the original make function
+  }
+}
+```
+
+</CodeTab>
+
+<!-- In the expanded output:
+
+- `makeProps`: A function that receives multiple labeled arguments (according to prop names) and returns the value that is consumed by make(props)
+- `make`: A converted `make` function that complies to the component interface `(props) => React.element` -->
+
+在扩展后的输出中：
+
+- `makeProps`：一个接收多个标签参数（prop 名）的函数，返回一个被 make(props) 消耗的值。
+
+- `make`：一个转换后的 `make` 函数，编译到组件接口 `(props) => React.element`。
+
+<!-- **Note:** The `makeProps` function will also always contain a `~key` prop. -->
+**注意**： `makeProps` 函数总会包含一个 `~key` 参数。
+
+<!-- ### Special Case React.forwardRef -->
+### 特殊情况 React.forwardRef
+
+<!-- The `@react.component` decorator also works for `React.forwardRef` calls: -->
+`@react.component` 装饰器也对 `React.forwardRef` 生效：
+
+
+<CodeTab labels={["Decorated", "Expanded"]}>
+
+```res
+module FancyInput = {
+  @react.component
+  let make = React.forwardRef((~className=?, ~children, ref_) =>
+    <div>
+      // use ref_ here
+    </div>
+  )
+}
+```
+
+```res
+// Simplified Output
+module FancyInput = {
+  @obj
+  external makeProps: (
+    ~className: 'className=?,
+    ~children: 'children,
+    ~key: string=?,
+    ~ref: 'ref=?,
+    unit,
+  ) => {"className": option<'className>, "children": 'children} = ""
+
+  let make =
+    (~className=?, ~children) => ref_ => ReactDOMRe.createDOMElementVariadic("div", [])
+
+  let make = React.forwardRef(
+    (props: {"className": option<'className>, "children": 'children}, ref_,) => {
+      make(
+        ~className=props["className"],
+        ~children=props["children"],
+        ref_)
+    })
+}
+```
+
+</CodeTab>
+
+<!-- As shown in the expanded output above, our decorator desugars the function passed to `React.forwardRef` in the same manner as a typical component `make` function. It also creates a `makeProps` function with a `ref` prop, so we can use it in our JSX call (`<FancyInput ref=.../>`). -->
+就像上面的被扩展后的输出，装饰器会转换传给 `React.forwardRef` 的函数，就像转换典型的组件 `make` 函数一样。它也会创建一个 `makeProps` 函数，而且会添加 `ref` prop，便于我们在 JSX 调用时使用（`<FancyInput ref=.../>`）。
+
+<!-- So now that we know how the ReScript React component transformation works, let's have a look on how ReScript transforms our JSX constructs. -->
+现在，我们明白了 ReScript React 组件是如何转换的，让我们接着看看 ReScript 如何转换 JSX 结构。
+
+<!-- ## JSX Under the Hood -->
+## JSX 底层原理
+
+<!-- Whenever we are using JSX with a custom component ("capitalized JSX"), we are actually using `React.createElement` to create a new element. Here is an example of a React component without children:  -->
+当我们在自定义组件使用 JSX 时（“首字母大写的 JSX”），我们实际上使用 `React.createElement` 去创建新元素。下面是没有子元素的 React 组件的例子：
+
+<CodeTab labels={["JSX", "Without JSX"]}>
+
+```res
+<Friend name="Fred" age=1 />
+```
+```res
+React.createElement(Friend.make, Friend.makeProps(~name="Fred", ~age=1, ()))
+```
+```js
+React.createElement(Playground$Friend, { name: "Fred", age: 20 });
+```
+
+</CodeTab>
+
+<!-- As you can see, it uses `Friend.make` and `Friend.makeProps` to call the `React.createElement` API. In case you are providing children, it will use `React.createElementVariadic` instead (which is just a different binding for `React.createElement`): -->
+如你所见，它使用 `Friend.make` 和 `Friend.makeProps` 调用 `React.createElement` API。如果你提供了子元素，它会调用 `React.createElementVariadic`（`React.createElement` 的一个不同绑定）：
+
+<CodeTab labels={["JSX", "Without JSX", "JS Output"]}>
+
+```res
+<Container width=200>
+  {React.string("Hello")}
+  {React.string("World")}
+</Container>
+```
+
+```res
+React.createElementVariadic(
+  Container.make,
+  Container.makeProps(~width=200, ~children=React.null, ()),
+  [{React.string("Hello")}, {React.string("World")}],
+)
+```
+
+```js
+React.createElement(Container, { width: 200, children: null }, "Hello", "World");
+```
+
+</CodeTab>
+
+<!-- Note that the `~children=React.null` prop has no relevance since React will only care about the children array passed as a third argument. -->
+注意，`~children=React.null` 属性没有意义，因为 React 只关心传递给第三个参数的子元素数组。
+
+
+<!-- ### Dom Elements -->
+### DOM 元素
+
+<!-- "Uncapitalized JSX" expressions are treated as DOM elements and will be converted to `ReactDOMRe.createDOMElementVariadic` calls:  -->
+“首字母未大写的 JSX” 表达式会被视为 DOM 元素，并被转换为 `ReactDOMRe.createDOMElementVariadic` 调用：
+
+<CodeTab labels={["JSX", "Without JSX", "JS Output"]}>
+
+```res
+<div title="test"/>
+```
+
+```res
+ReactDOMRe.createDOMElementVariadic("div", ~props=ReactDOMRe.domProps(~title="test", ()), [])
+```
+
+```js
+ React.createElement("div", { title: "test" });
+```
+
+</CodeTab>
+
+<!-- The same goes for uncapitalized JSX with children: -->
+有子元素的 JSX 也一样：
+
+<CodeTab labels={["JSX", "Without JSX", "JS Output"]}>
+
+```res
+<div title="test">
+  <span/>
+</div>
+```
+
+```res
+ReactDOMRe.createDOMElementVariadic(
+  "div",
+  ~props=ReactDOMRe.domProps(~title="test", ()),
+  [ReactDOMRe.createDOMElementVariadic("span", [])],
+)
+```
+
+```js
+React.createElement("div", { title: "test" }, React.createElement("span", undefined));
+```
+
+</CodeTab>

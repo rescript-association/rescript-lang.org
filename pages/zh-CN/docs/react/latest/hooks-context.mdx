@@ -1,0 +1,158 @@
+---
+title: useContext Hook
+description: "关于 ReScript 中 useContext React Hook 的细节"
+canonical: "/docs/react/latest/hooks-context"
+---
+
+<!-- # useContext -->
+# useContext
+
+<Intro>
+
+<!-- Context provides a way to pass data through the component tree without having to pass props down manually at every level. The `useContext` hooks gives access to such Context values. -->
+Context 提供了一个无需为每层组件手动添加 props，就能在组件树间进行数据传递的方法。
+`useContext` Hook 提供了访问 Context 的方法。
+
+</Intro>
+
+<!-- > **Note:** All the details and rationale on React's context feature can be found in [here](./context). -->
+> **注意**：React Context 的所有细节和原理参见 [Context](./context)。
+
+<!-- ## Usage -->
+## 用法
+
+```res
+let value = React.useContext(myContext)
+```
+
+<!-- Accepts a `React.Context.t` (the value returned from `React.createContext`) and returns the current context value for that context. The current context value is determined by the value prop of the nearest `<MyContext.Provider>` above the calling component in the tree. -->
+接收一个 `React.Context.t` 参数（从 `React.createContext` 返回的值），然后返回该 Context 的当前值。Context 的当前值由组件树中调用 useContext 的组件上方最近的 `<MyContext.Provider>` 的 value prop 决定。
+
+<!-- ## Examples -->
+## 示例
+
+<!-- ### A Simple ThemeProvider -->
+### 简单的 ThemeProvider
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// App.res
+module ThemeContext = {
+  let context = React.createContext("light")
+
+  module Provider = {
+    let provider = React.Context.provider(context)
+
+    @react.component
+    let make = (~value, ~children) => {
+      React.createElement(provider, {"value": value, "children": children})
+    }
+  }
+}
+
+module ThemedButton = {
+  @react.component
+  let make = () => {
+    let theme = React.useContext(ThemeContext.context)
+    let (color, backgroundColor) = switch theme {
+    | "dark" => ("#ffffff", "#222222")
+    | "light" | _ => ("#000000", "#eeeeee")
+    }
+
+    let style = ReactDOMStyle.make(~color, ~backgroundColor, ())
+
+    <button style> {React.string("I am a styled button!")} </button>
+  }
+}
+
+module Toolbar = {
+  @react.component
+  let make = () => {
+    <div> <ThemedButton /> </div>
+  }
+}
+
+@react.component
+let make = () => {
+  <ThemeContext.Provider value="dark">
+    <div> <Toolbar /> </div>
+  </ThemeContext.Provider>
+}
+```
+```js
+var context = React.createContext("light");
+
+var provider = context.Provider;
+
+function ThemeContext$Provider(Props) {
+  var value = Props.value;
+  var children = Props.children;
+  return React.createElement(provider, {
+              value: value,
+              children: children
+            });
+}
+
+var Provider = {
+  provider: provider,
+  make: ThemeContext$Provider
+};
+
+var ThemeContext = {
+  context: context,
+  Provider: Provider
+};
+
+function ThemedButton(Props) {
+  var theme = React.useContext(context);
+  var match;
+  switch (theme) {
+    case "dark" :
+        match = [
+          "#ffffff",
+          "#222222"
+        ];
+        break;
+    case "light" :
+        match = [
+          "#000000",
+          "#eeeeee"
+        ];
+        break;
+    default:
+      match = [
+        "#000000",
+        "#eeeeee"
+      ];
+  }
+  var style = {
+    backgroundColor: match[1],
+    color: match[0]
+  };
+  return React.createElement("button", {
+              style: style
+            }, "I am a styled button!");
+}
+
+var ThemedButton = {
+  make: ThemedButton
+};
+
+function Toolbar(Props) {
+  return React.createElement("div", undefined, React.createElement(ThemedButton, {}));
+}
+
+var Toolbar = {
+  make: Toolbar
+};
+
+function App(Props) {
+  return React.createElement(ThemeContext$Provider, {
+              value: "dark",
+              children: React.createElement("div", undefined, React.createElement(Toolbar, {}))
+            });
+}
+```
+
+</CodeTab>

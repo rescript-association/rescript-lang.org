@@ -1,0 +1,325 @@
+---
+title: useEffect Hook
+description: "关于 ReScript 中 useEffect React Hook 的细节"
+canonical: "/docs/react/latest/hooks-effect"
+---
+
+<!-- # useEffect -->
+# useEffect
+
+<Intro>
+
+<!-- The *Effect* Hook lets you perform side effects in function components. -->
+*Effect* Hook 可以让你在函数组件中执行带副作用的操作。
+
+</Intro>
+
+<!-- ## What are Effects? -->
+## 什么是 Effects？
+
+<!-- Common examples for (side) effects are data fetching, setting up a subscription, and manually changing the DOM in React components. -->
+数据获取，设置订阅以及手动更改 React 组件中的 DOM 都是常见的（副）作用。
+
+<!-- There are two common kinds of side effects in React components: those that don’t require cleanup, and those that do. We'll look into the distinction later on in our examples, but first let's see how the interface looks like. -->
+在 React 组件中有两种常见的副作用操作，一些在完成后需要清理，另一些不需要清理。我们将在稍后的例子中研究它们的区别，但首先让我们看看 useEffect 接口。
+
+
+<!-- ## Basic Usage -->
+## 基本用法
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// 每次渲染完成后运行
+React.useEffect(() => {
+  // Run effects
+  None // or Some(() => {})
+})
+
+
+// 组件 mount 后运行一次
+React.useEffect0(() => {
+  // Run effects
+  None // or Some(() => {})
+})
+
+// `prop1` 变更时运行
+React.useEffect1(() => {
+  // Run effects based on prop1
+  None
+}, [prop1])
+
+// `prop1` or `prop2` 变更时运行
+React.useEffect2(() => {
+  // Run effects based on prop1 / prop2
+  None
+}, (prop1, prop2))
+
+React.useEffect3(() => {
+  None
+}, (prop1, prop2, prop3));
+
+// useEffect4...7 with according dependency
+// tuple just like useEffect3
+
+```
+
+```js
+React.useEffect(function () { });
+React.useEffect((function () { }), []);
+React.useEffect((function () { }), [ prop1 ]);
+React.useEffect((function () { }), [ prop1, prop2 ]);
+React.useEffect((function () { }), [ prop1, prop2, prop3 ]);
+```
+
+</CodeTab>
+
+<!-- `React.useEffect` receives a function that contains imperative, possibly effectful code, and returns a value `option<unit => unit>` as a potential cleanup function. -->
+`React.useEffect` 接收一个 effect 函数，包含命令式的，可能有副作用的代码，然后返回一个值 `option<unit => unit>` 作为潜在的清理函数。
+
+<!-- A `useEffect` call may receive an additional array of dependencies (see `React.useEffect1` / `React.useEffect2...7`). The effect function will run whenever one of the provided dependencies has changed. More details on why this is useful [down below](#effect-dependencies). -->
+`useEffect` 调用可能会接收额外的依赖项数组(参见 `React.useEffect1` / `React.useEffect2...7`)。只要依赖项之一发生变化，就会运行 effect 函数。关于这些接口的用处请看[下面](#effect-依赖)。
+
+<!-- **Note:** You probably wonder why `React.useEffect1` receives an `array`, and `useEffect2` etc require a `tuple` (e.g. `(prop1, prop2)`) for the dependency list. That's because a tuple can receive multiple values of different types, whereas an `array` only accepts values of identical types. It's possible to replicate `useEffect2` by doing `React.useEffect1(fn, [1, 2])`, on other hand the type checker wouldn't allow `React.useEffect1(fn, [1, "two"])`. -->
+**注意**： 你可能好奇为什么 `React.useEffect1` 接收依赖项的 `array`，但 `useEffect2` 需要一个依赖项的 `tuple`（例如 `(prop1, prop2)`）。因为元组可以存储不同类型的多个值，数组只能存储某个特定类型的值。可以用 `React.useEffect1(fn, [1, 2])` 模仿 `useEffect2`，但是类型检查器不会允许 `React.useEffect1(fn, [1, "two"])` 通过。
+
+<!-- `React.useEffect` will run its function after every completed render, while `React.useEffect0` will only run the effect on the first render (when the component has mounted). -->
+`React.useEffect` 会在每次渲染完成时运行它的 effect 函数，`React.useEffect0` 只在首次渲染时（组件 mounted 时）运行 effect 函数。
+
+
+<!-- ## Examples -->
+## 示例
+
+<!-- ### Effects without Cleanup -->
+### 不需要清理的 Effects
+
+<!-- Sometimes, we want to run some additional code after React has updated the DOM. Network requests, manual DOM mutations, and logging are common examples of effects that don’t require a cleanup. We say that because we can run them and immediately forget about them. -->
+有时，我们想要在 React 更新完 DOM 之后运行一些额外的代码。常见的不需要清理的 effects 有网络请求，手动操作 DOM 以及记录日志。因为运行它们之后就可以不管了。
+
+<!-- As an example, let's write a counter component that updates `document.title` on every render: -->
+下面是一个计数器组件的例子，在每次渲染时更新 `document.title`：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// Counter.res
+module Document = {
+  type t;
+  @val external document: t = "document";
+  @set external setTitle: (t, string) => unit = "title"
+}
+
+@react.component
+let make = () => {
+  let (count, setCount) = React.useState(_ => 0);
+
+  React.useEffect(() => {
+    open Document
+    document->setTitle(`You clicked ${Belt.Int.toString(count)} times!`)
+    None
+  }, );
+
+  let onClick = (_evt) => {
+    setCount(prev => prev + 1)
+  };
+
+  let msg = "You clicked" ++ Belt.Int.toString(count) ++  "times"
+
+  <div>
+    <p>{React.string(msg)}</p>
+    <button onClick> {React.string("Click me")} </button>
+  </div>
+}
+```
+```js
+function Counter(Props) {
+  var match = React.useState(function () {
+        return 0;
+      });
+  var setCount = match[1];
+  var count = match[0];
+  React.useEffect(function () {
+        document.title = "You clicked " + String(count) + " times!";
+
+      });
+  var onClick = function (_evt) {
+    return Curry._1(setCount, (function (prev) {
+                  return prev + 1 | 0;
+                }));
+  };
+  var msg = "You clicked" + String(count) + "times";
+  return React.createElement("div", undefined,
+    React.createElement("p", undefined, msg),
+      React.createElement("button", {
+                  onClick: onClick
+                }, "Click me"));
+}
+```
+
+</CodeTab>
+
+<!-- In case we want to make the effects dependent on `count`, we can just use following `useEffect` call instead: -->
+我们想要 effects 依赖于 `count`，可以使用下面的 `useEffect` 调用：
+
+```res
+ React.useEffect1(() => {
+    open Document
+    document->setTitle(`You clicked ${Belt.Int.toString(count)} times!`)
+    None
+  }, [count]);
+```
+
+<!-- Now instead of running an effect on every render, it will only run when `count` has a different value than in the render before. -->
+现在它只在 `count` 的值改变时运行 effect 函数，而不是在每次渲染时都运行。
+
+### 需要清理的 Effects
+
+<!-- Earlier, we looked at how to express side effects that don’t require any cleanup. However, some effects do. For example, we might want to set up a subscription to some external data source. In that case, it is important to clean up so that we don’t introduce a memory leak! -->
+上面我们研究了如何表达不需要任何清理的副作用。然而某些 effects 需要进行清理，例如订阅一些外部数据源。在这种情况下，清理很重要，否则可能会产生内存泄露！
+
+<!-- Let's look at an example that gracefully subscribes, and later on unsubscribes from some subscription API: -->
+让我们看一个例子，它可以优雅地订阅和取消订阅一些订阅 API：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// FriendStatus.res
+
+module ChatAPI = {
+  // Imaginary globally available ChatAPI for demo purposes
+  type status = { isOnline: bool };
+  @val external subscribeToFriendStatus: (string, status => unit) => unit = "subscribeToFriendStatus";
+  @val external unsubscribeFromFriendStatus: (string, status => unit) => unit = "unsubscribeFromFriendStatus";
+}
+
+type state = Offline | Loading | Online;
+
+@react.component
+let make = (~friendId: string) => {
+  let (state, setState) = React.useState(_ => Offline)
+
+  React.useEffect(() => {
+    let handleStatusChange = (status) => {
+      setState(_ => {
+        status.ChatAPI.isOnline ? Online : Offline
+      })
+    }
+
+    ChatAPI.subscribeToFriendStatus(friendId, handleStatusChange);
+    setState(_ => Loading);
+
+    let cleanup = () => {
+      ChatAPI.unsubscribeFromFriendStatus(friendId, handleStatusChange)
+    }
+
+    Some(cleanup)
+  })
+
+  let text = switch(state) {
+    | Offline => friendId ++ " is offline"
+    | Online => friendId ++ " is online"
+    | Loading => "loading..."
+  }
+
+  <div>
+  	{React.string(text)}
+  </div>
+}
+```
+```js
+function FriendStatus(Props) {
+  var friendId = Props.friendId;
+  var match = React.useState(function () {
+        return /* Offline */0;
+      });
+  var setState = match[1];
+  React.useEffect(function () {
+        var handleStatusChange = function (status) {
+          return Curry._1(setState, (function (param) {
+                        if (status.isOnline) {
+                          return /* Online */2;
+                        } else {
+                          return /* Offline */0;
+                        }
+                      }));
+        };
+        subscribeToFriendStatus(friendId, handleStatusChange);
+        Curry._1(setState, (function (param) {
+                return /* Loading */1;
+              }));
+        return (function (param) {
+                  unsubscribeFromFriendStatus(friendId, handleStatusChange);
+
+                });
+      });
+  var text;
+  switch (match[0]) {
+    case /* Offline */0 :
+        text = friendId + " is offline";
+        break;
+    case /* Loading */1 :
+        text = "loading...";
+        break;
+    case /* Online */2 :
+        text = friendId + " is online";
+        break;
+
+  }
+  return React.createElement("div", undefined, text);
+}
+```
+
+</CodeTab>
+
+
+## Effect 依赖
+
+<!-- In some cases, cleaning up or applying the effect after every render might create a performance problem. Let's look at a concrete example to see what `useEffect` does: -->
+在某些情况下，在每次渲染时进行清理或运行 effect 函数会产生性能问题。让我们看一个具体的例子，看看 `useEffect` 会怎么做：
+
+```res
+// from a previous example above
+React.useEffect1(() => {
+  open Document
+  document->setTitle(`You clicked ${Belt.Int.toString(count)} times!`)
+  None;
+}, [count]);
+```
+<!-- Here, we pass `[count]` to `useEffect1` as a dependency. What does this mean? If the `count` is 5, and then our component re-renders with count still equal to 5, React will compare `[5]` from the previous render and `[5]` from the next render. Because all items within the array are the same (5 === 5), React would skip the effect. That’s our optimization. -->
+这里，我们将 `[count]` 作为依赖传给 `useEffect1`。这是什么意思？如果 `count` 的值是 5，我们的组件重新渲染时 `count` 的值依然是 5，React 会比较前次渲染的 `[5]` 和之后渲染的 `[5]`。因为数组中所有项是相同的（5 === 5），React 会跳过 effect 函数。这就优化了性能。
+
+<!-- When we render with count updated to 6, React will compare the items in the `[5]` array from the previous render to items in the `[6]` array from the next render. This time, React will re-apply the effect because `5 !== 6`. If there are multiple items in the array, React will re-run the effect even if just one of them is different. -->
+当我们使用更新为 6 的 `count` 进行渲染时，React 会比较前次渲染的 `[5]` 和之后渲染的 `[6]`。这次，React 将重新运行 effect 函数，因为 `5 !== 6`。如果数组中有多个项，即使其中只有一个不同，React 也会重新运行 effect 函数。
+
+<!-- This also works for effects that have a cleanup phase: -->
+这也适用于有清理阶段的 effects：
+
+```res
+// from a previous example above
+React.useEffect1(() => {
+  let handleStatusChange = (status) => {
+    setState(_ => {
+      status.ChatAPI.isOnline ? Online : Offline
+    })
+  }
+
+  ChatAPI.subscribeToFriendStatus(friendId, handleStatusChange);
+  setState(_ => Loading);
+
+  let cleanup = () => {
+    ChatAPI.unsubscribeFromFriendStatus(friendId, handleStatusChange)
+  }
+
+  Some(cleanup)
+}, [friendId]) // Only re-subscribe if friendId changes
+```
+
+<!-- **Important:** If you use this optimization, make sure the array includes all values from the component scope (such as props and state) that change over time and that are used by the effect. Otherwise, your code will reference stale values from previous renders -->
+**重要：** 如果使用此优化，请确保数组包含组件范围中随时间变化且被 effect 使用的所有值（例如 props 和 state）。否则，代码将引用前一次渲染的过时值。
+
+<!-- If you want to run an effect and clean it up only once (on mount and unmount), use `React.useEffect0`. -->
+如果要只在 mount 时运行一次 effect，然后在 unmount 时进行清理，使用 `React.useEffect0`。
+
+<!-- If you are interested in more performance optmization related topics, have a look at the ReactJS [Performance Optimization Docs](https://reactjs.org/docs/hooks-faq.html#performance-optimizations) for more detailed infos. -->
+如果你对有关性能优化的主题感兴趣，请参考 [ReactJS 性能优化文档](https://reactjs.org/docs/hooks-faq.html#performance-optimizations)。
+

@@ -1,0 +1,239 @@
+---
+title: Context
+description: "关于 ReScript 和 React 中 Context 的细节"
+canonical: "/docs/react/latest/context"
+---
+
+# Context
+
+<Intro>
+
+<!-- 
+Context provides a way to pass data through the component tree without having to pass props down manually at every level. 
+-->
+
+Context 提供了一个无需为每层组件手动添加 props，就能在组件树间进行数据传递的方法。
+
+</Intro>
+
+<!--
+## Why Context?
+-->
+
+## 为什么需要 Context？
+
+<!-- 
+In a typical React application, data is passed top-down (parent to child) via props, but this can be cumbersome for certain types of props (e.g. locale preference, UI theme) that are required by many components within an application. Context provides a way to share values like these between components without having to explicitly pass a prop through every level of the tree. 
+-->
+
+在一个典型的 React 应用中，数据是通过 props 属性自上而下（由父及子）进行传递的，但这对于某些类型的属性而言是极其繁琐的（例如：地区偏好，UI 主题），这些属性是应用程序中许多组件都需要的。Context 提供了一种在组件之间共享此类值的方式，而不必显式地通过组件树逐层传递 props。
+
+
+<!--
+**Note:** In ReScript, passing down props is way simpler than in TS / JS due to its [JSX prop punning](/docs/manual/latest/jsx#punning) feature and strong type inference, so it's often preferrable to keep it simple and just do props passing. Less magic means more transparency!
+-->
+
+**注意**： 在 ReScript 中, 由于其 [JSX prop 双关](/docs/manual/latest/jsx#punning) 功能和强大的类型推导，传递 props 属性要比 TS / JS 中简单得多，所以最好保持简单，只做 props 传递。Less magic means more transparency!
+
+
+<!-- 
+## When to Use Context 
+-->
+
+## 何时使用 Context
+
+<!-- 
+Context is designed to share data that can be considered “global” for a tree of React components, such as the current authenticated user, theme, or preferred language. For example, in the code below we manually thread through a “theme” prop in order to style the Button component:
+-->
+
+Context 的设计目的是为了在整个组件树中共享“全局”数据，例如当前认证的用户、主题或首选语言。举个例子，在下面的代码中，我们通过一个 “theme” 属性手动调整一个按钮组件的样式：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// src/App.res
+type theme = Light | Dark;
+
+module Button = {
+  @react.component
+  let make = (~theme) => {
+    let className = switch theme {
+      | Light => "theme-light"
+      | Dark => "theme-black"
+    };
+    <button className> {React.string("Click me")} </button>
+  }
+}
+
+module ThemedButton = {
+  @react.component
+  let make = (~theme) => {
+    <Button theme />
+  }
+}
+
+module Toolbar = {
+  @react.component
+  let make = (~theme) => {
+    <div>
+      <ThemedButton theme/>
+    </div>
+  }
+}
+
+@react.component
+let make = () => {
+  // // We define the theme in the
+  // // toplevel App component and
+  // // pass it down
+
+  // 我们在顶层的 App 组件定义 theme 属性
+  // 并将其向下传递
+  <Toolbar theme=Dark/>
+}
+```
+
+```js
+function Button(Props) {
+  var theme = Props.theme;
+  var className = theme ? "theme-black" : "theme-light";
+  return React.createElement("button", {
+              className: className
+            }, "Click me");
+}
+
+function ThemedButton(Props) {
+  var theme = Props.theme;
+  return React.createElement(Button, {
+              theme: theme
+            });
+}
+
+function Toolbar(Props) {
+  var theme = Props.theme;
+  return React.createElement("div", undefined, React.createElement(ThemedButton, {
+                  theme: theme
+                }));
+}
+
+function Playground(Props) {
+  return React.createElement(Toolbar, {
+              theme: /* Dark */1
+            });
+}
+```
+</CodeTab>
+
+<!--
+Using context, we can avoid passing props through intermediate elements:
+-->
+
+使用 context, 我们可以避免通过中间元素传递 props：
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+// src/App.res
+
+module ThemeContext = {
+  type theme = Light | Dark;
+  let context = React.createContext(Light)
+
+  module Provider = {
+    let provider = React.Context.provider(context)
+
+    @react.component
+    let make = (~value, ~children) => {
+      React.createElement(provider, {"value": value, "children": children})
+    }
+  }
+}
+
+module Button = {
+  @react.component
+  let make = (~theme) => {
+    let className = switch theme {
+      | ThemeContext.Light => "theme-light"
+      | Dark => "theme-black"
+    };
+    <button className> {React.string("Click me")} </button>
+  }
+}
+
+module ThemedButton = {
+  @react.component
+  let make = () => {
+    let theme = React.useContext(ThemeContext.context)
+
+    <Button theme/>
+  }
+}
+
+module Toolbar = {
+  @react.component
+  let make = () => {
+    <div> <ThemedButton /> </div>
+  }
+}
+
+@react.component
+let make = () => {
+  <ThemeContext.Provider value=ThemeContext.Dark>
+    <div> <Toolbar /> </div>
+  </ThemeContext.Provider>
+}
+```
+```js
+var context = React.createContext(/* Light */0);
+
+var provider = context.Provider;
+
+function ThemeContext$Provider(Props) {
+  var value = Props.value;
+  var children = Props.children;
+  return React.createElement(provider, {
+              value: value,
+              children: children
+            });
+}
+
+function Button(Props) {
+  var theme = Props.theme;
+  var className = theme ? "theme-black" : "theme-light";
+  return React.createElement("button", {
+              className: className
+            }, "Click me");
+}
+
+var Button = {
+  make: Button
+};
+
+function ThemedButton(Props) {
+  var theme = React.useContext(context);
+  return React.createElement(Button, {
+              theme: theme
+            });
+}
+
+var ThemedButton = {
+  make: ThemedButton
+};
+
+function Toolbar(Props) {
+  return React.createElement("div", undefined, React.createElement(ThemedButton, {}));
+}
+
+var Toolbar = {
+  make: Toolbar
+};
+
+function Playground(Props) {
+  return React.createElement(ThemeContext$Provider, {
+              value: /* Dark */1,
+              children: React.createElement("div", undefined, React.createElement(Toolbar, {}))
+            });
+}
+```
+
+</CodeTab>
