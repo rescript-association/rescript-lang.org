@@ -36,7 +36,7 @@ CodeMirror.defineSimpleMode("rescript", {
       token: ["keyword", "keyword2", null, "def"]
     },
     {
-      regex: /(?:and|as|assert|catch|constraint|downto|else|exception|export|external|false|for|if|import|in|include|lazy|let|module|mutable|of|open|private|switch|to|true|try|type|when|while|with\!)\b/,
+      regex: /(?:and|as|assert|catch|async|await|constraint|downto|else|exception|export|external|false|for|if|import|in|include|lazy|let|module|mutable|of|open|private|switch|to|true|try|type|when|while|with\!)\b/,
       token: "keyword"
     },
     {
