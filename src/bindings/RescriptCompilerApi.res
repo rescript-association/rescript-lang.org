@@ -58,6 +58,13 @@ module Version = {
     | _ => UnknownVersion(apiVersion)
     }
 
+  let toString = t =>
+    switch t {
+    | V1 => "1.0"
+    | V2 => "2.0"
+    | UnknownVersion(version) => version
+    }
+
   let defaultTargetLang = Lang.Res
 
   let availableLanguages = t =>

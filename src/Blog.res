@@ -324,7 +324,7 @@ let default = (props: props): React.element => {
   </>
 }
 
-let getStaticProps: Next.GetStaticProps.t<props, params> = _ctx => {
+let getStaticProps: Next.GetStaticProps.t<props, params> = async _ctx => {
   let (archived, nonArchived) = BlogApi.getAllPosts()->Belt.Array.partition(data => data.archived)
 
   let props = {
@@ -332,5 +332,5 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = _ctx => {
     archived,
   }
 
-  Js.Promise.resolve({"props": props})
+  {"props": props}
 }

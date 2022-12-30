@@ -522,38 +522,38 @@ module Response = {
 
 @val external fetchNpmPackages: string => Js.Promise.t<Response.t> = "fetch"
 
-let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = _ctx => {
-  fetchNpmPackages("https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250")
-  ->Js.Promise.then_(response => {
-    Response.json(response)
-  }, _)
-  ->Js.Promise.then_(data => {
-    let pkges = Belt.Array.map(data["objects"], item => {
-      let pkg = item["package"]
-      {
-        name: pkg["name"],
-        version: pkg["version"],
-        keywords: Resource.filterKeywords(pkg["keywords"])->Resource.uniqueKeywords,
-        description: Belt.Option.getWithDefault(pkg["description"], ""),
-        repositoryHref: Js.Null.fromOption(pkg["links"]["repository"]),
-        npmHref: pkg["links"]["npm"],
-      }
-    })
+let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => {
+  let response = await fetchNpmPackages(
+    "https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250",
+  )
 
-    let index_data_dir = Node.Path.join2(Node.Process.cwd(), "./data")
-    let urlResources =
-      Node.Path.join2(index_data_dir, "packages_url_resources.json")
-      ->Node.Fs.readFileSync(#utf8)
-      ->Js.Json.parseExn
-      ->unsafeToUrlResource
-    let props: props = {
-      "packages": pkges,
-      "urlResources": urlResources,
+  let data = await response->Response.json
+
+  let pkges = Belt.Array.map(data["objects"], item => {
+    let pkg = item["package"]
+    {
+      name: pkg["name"],
+      version: pkg["version"],
+      keywords: Resource.filterKeywords(pkg["keywords"])->Resource.uniqueKeywords,
+      description: Belt.Option.getWithDefault(pkg["description"], ""),
+      repositoryHref: Js.Null.fromOption(pkg["links"]["repository"]),
+      npmHref: pkg["links"]["npm"],
     }
-    let ret = {
-      "props": props,
-      "revalidate": 43200,
-    }
-    Js.Promise.resolve(ret)
-  }, _)
+  })
+
+  let index_data_dir = Node.Path.join2(Node.Process.cwd(), "./data")
+  let urlResources =
+    Node.Path.join2(index_data_dir, "packages_url_resources.json")
+    ->Node.Fs.readFileSync(#utf8)
+    ->Js.Json.parseExn
+    ->unsafeToUrlResource
+  let props: props = {
+    "packages": pkges,
+    "urlResources": urlResources,
+  }
+
+  {
+    "props": props,
+    "revalidate": 43200,
+  }
 }
