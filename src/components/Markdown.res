@@ -150,7 +150,7 @@ module H2 = {
 module H3 = {
   @react.component
   let make = (~id, ~children) =>
-    <h3 className="group mt-8 mb-1 hl-4">
+    <h3 className="group mt-8 mb-4 hl-4">
       children
       <span className="ml-2">
         <Anchor id />
@@ -190,7 +190,7 @@ module InlineCode = {
   @react.component
   let make = (~children) =>
     <code
-      className="md-inline-code px-2 py-0.5 text-14 text-gray-60 font-mono rounded-sm bg-gray-10-tr border border-gray-90 border-opacity-5">
+      className="md-inline-code px-2 py-0.5  text-gray-60 font-mono rounded-sm bg-gray-10-tr border border-gray-90 border-opacity-5">
       children
     </code>
 }
