@@ -11,4 +11,4 @@ Next's dynamic import mechanism.
 */
 
 @react.component
-let make: unit => React.element
+let make: (~tag: string) => React.element
