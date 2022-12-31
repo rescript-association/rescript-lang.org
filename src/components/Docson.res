@@ -14,11 +14,11 @@ module Response = {
 @val external fetchSchema: string => Js.Promise.t<Response.t> = "fetch"
 
 @react.component
-let make = () => {
+let make = (~tag) => {
   let element = React.useRef(Js.Nullable.null)
 
   React.useEffect0(() => {
-    let segment = "https://raw.githubusercontent.com/rescript-lang/rescript-compiler/master/docs/docson/build-schema.json"
+    let segment = `https://raw.githubusercontent.com/rescript-lang/rescript-compiler/${tag}/docs/docson/build-schema.json`
 
     // The api for docson is a little bit funky, so you need to check out the source to understand what it's doing
     // See: https://github.com/lbovet/docson/blob/master/src/index.js
