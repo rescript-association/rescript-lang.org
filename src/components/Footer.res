@@ -14,7 +14,7 @@ module Section = {
 let make = () => {
   let linkClass = "hover:underline hover:pointer"
   let iconLink = "hover:pointer hover:text-gray-60-tr"
-  let copyrightYear = Js.Date.make() -> Js.Date.getFullYear -> Js.Float.toString
+  let copyrightYear = Js.Date.make()->Js.Date.getFullYear->Js.Float.toString
 
   <footer className="flex justify-center border-t border-gray-10">
     <div
@@ -59,10 +59,7 @@ let make = () => {
         </Section>
         <Section title="Find us on">
           <div className="flex space-x-3 text-gray-100">
-            <a
-              className=iconLink
-              rel="noopener noreferrer"
-              href="https://github.com/rescript-lang">
+            <a className=iconLink rel="noopener noreferrer" href="https://github.com/rescript-lang">
               <Icon.GitHub className="w-6 h-6" />
             </a>
             <a className=iconLink rel="noopener noreferrer" href="https://twitter.com/rescriptlang">

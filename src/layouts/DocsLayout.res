@@ -38,7 +38,7 @@ let makeBreadcrumbs = (~basePath: string, route: string): list<Url.breadcrumb> =
       ret,
       {
         open Url
-        {name: prettyString(path), href: href}
+        {name: prettyString(path), href}
       },
     )->ignore
     (href, ret)
@@ -151,7 +151,8 @@ let make = (
     categories
     ?breadcrumbs
     ?editHref>
-    metaElement children
+    metaElement
+    children
   </SidebarLayout>
 }
 
@@ -199,7 +200,7 @@ module Make = (Content: StaticContent) => {
           header: header["name"],
           href: "#" ++ header["href"],
         })
-        {title: title, entries: entries}
+        {title, entries}
       })
     }
 
@@ -226,10 +227,10 @@ module Make = (Content: StaticContent) => {
       Js.Dict.entries(groups)->Belt.Array.map(((name, values)) => {
         open Category
         {
-          name: name,
+          name,
           items: Belt.Array.map(values, ((href, value)) => {
             NavItem.name: value["title"],
-            href: href,
+            href,
           }),
         }
       })

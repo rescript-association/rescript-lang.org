@@ -18,8 +18,7 @@ module LoadScript = {
     ~src: string,
     ~onSuccess: unit => unit,
     ~onError: err => unit,
-    . unit,
-  ) => unit = "default"
+  ) => (. unit) => unit = "default"
 
   @module("../ffi/loadScript")
   external removeScript: (~src: string) => unit = "removeScript"
@@ -102,39 +101,28 @@ let migrateLibraries = (~version: string, libraries: array<string>): array<strin
     We coupled the compiler / library loading to prevent ppl to try loading compiler / cmij files
     separately and cause all kinds of race conditions.
  */
-let attachCompilerAndLibraries = (~version: string, ~libraries: array<string>, ()): Promise.t<
-  result<unit, array<string>>,
+let attachCompilerAndLibraries = async (~version: string, ~libraries: array<string>, ()): result<
+  unit,
+  array<string>,
 > => {
   let compilerUrl = CdnMeta.getCompilerUrl(version)
 
   // Useful for debugging our local build
   /* let compilerUrl = "/static/linked-bs-bundle.js"; */
 
-  LoadScript.loadScriptPromise(compilerUrl)
-  ->Promise.thenResolve(r => {
-    switch r {
-    | Error(_) => Error(j`Could not load compiler from url $compilerUrl`)
-    | _ => r
-    }
-  })
-  ->Promise.then(r => {
-    let promises = switch r {
-    | Ok() =>
-      Belt.Array.map(libraries, lib => {
-        let cmijUrl = CdnMeta.getLibraryCmijUrl(version, lib)
-        LoadScript.loadScriptPromise(cmijUrl)->Promise.thenResolve(r =>
-          switch r {
-          | Error(_) => Error(j`Could not load cmij from url $cmijUrl`)
-          | _ => r
-          }
-        )
-      })
-    | Error(msg) => [Promise.resolve(Error(msg))]
-    }
+  switch await LoadScript.loadScriptPromise(compilerUrl) {
+  | Error(_) => Error([`Could not load compiler from url ${compilerUrl}`])
+  | Ok(_) =>
+    let promises = Belt.Array.map(libraries, async lib => {
+      let cmijUrl = CdnMeta.getLibraryCmijUrl(version, lib)
+      switch await LoadScript.loadScriptPromise(cmijUrl) {
+      | Error(_) => Error(`Could not load cmij from url ${cmijUrl}`)
+      | r => r
+      }
+    })
 
-    Promise.all(promises)
-  })
-  ->Promise.thenResolve(all => {
+    let all = await Promise.all(promises)
+
     let errors = Belt.Array.keepMap(all, r => {
       switch r {
       | Error(msg) => Some(msg)
@@ -146,7 +134,7 @@ let attachCompilerAndLibraries = (~version: string, ~libraries: array<string>, (
     | [] => Ok()
     | errs => Error(errs)
     }
-  })
+  }
 }
 
 type error =
@@ -219,8 +207,8 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
       | Ready(ready) =>
         ready.selected.instance->Compiler.setConfig(config)
         setState(_ => {
-          let selected = {...ready.selected, config: config}
-          Ready({...ready, selected: selected})
+          let selected = {...ready.selected, config}
+          Ready({...ready, selected})
         })
       | _ => ()
       }
@@ -276,7 +264,7 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
           | _ => (Nothing, lang)
           }
 
-          setState(_ => Ready({...ready, result: result, errors: [], targetLang: targetLang}))
+          setState(_ => Ready({...ready, result, errors: [], targetLang}))
         })
       | _ => ()
       }
@@ -311,7 +299,7 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
         | None => ready.result
         }
 
-        setState(_ => Ready({...ready, result: result, errors: []}))
+        setState(_ => Ready({...ready, result, errors: []}))
       | _ => ()
       }
     }
@@ -330,19 +318,18 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
     })
 
   React.useEffect1(() => {
-    switch state {
-    | Init =>
-      switch CdnMeta.versions {
-      | [] => dispatchError(SetupError(j`No compiler versions found`))
-      | versions =>
-        let latest = versions[0]
+    let updateState = async () => {
+      switch state {
+      | Init =>
+        switch CdnMeta.versions {
+        | [] => dispatchError(SetupError("No compiler versions found"))
+        | versions =>
+          let latest = versions[0]
 
-        // Latest version is already running on @rescript/react
-        let libraries = ["@rescript/react"]
+          // Latest version is already running on @rescript/react
+          let libraries = ["@rescript/react"]
 
-        attachCompilerAndLibraries(~version=latest, ~libraries, ())
-        ->Promise.thenResolve(result =>
-          switch result {
+          switch await attachCompilerAndLibraries(~version=latest, ~libraries, ()) {
           | Ok() =>
             let instance = Compiler.make()
             let apiVersion = apiVersion->Version.fromString
@@ -350,12 +337,12 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
 
             let selected = {
               id: latest,
-              apiVersion: apiVersion,
+              apiVersion,
               compilerVersion: instance->Compiler.version,
               ocamlVersion: instance->Compiler.ocamlVersion,
-              config: config,
-              libraries: libraries,
-              instance: instance,
+              config,
+              libraries,
+              instance,
             }
 
             let targetLang =
@@ -364,9 +351,9 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
               ->Belt.Option.getWithDefault(Version.defaultTargetLang)
 
             setState(_ => Ready({
-              selected: selected,
-              targetLang: targetLang,
-              versions: versions,
+              selected,
+              targetLang,
+              versions,
               errors: [],
               result: FinalResult.Nothing,
             }))
@@ -375,15 +362,11 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
 
             dispatchError(CompilerLoadingError(msg))
           }
-        )
-        ->ignore
-      }
-    | SwitchingCompiler(ready, version, libraries) =>
-      let migratedLibraries = libraries->migrateLibraries(~version)
+        }
+      | SwitchingCompiler(ready, version, libraries) =>
+        let migratedLibraries = libraries->migrateLibraries(~version)
 
-      attachCompilerAndLibraries(~version, ~libraries=migratedLibraries, ())
-      ->Promise.thenResolve(result =>
-        switch result {
+        switch await attachCompilerAndLibraries(~version, ~libraries=migratedLibraries, ()) {
         | Ok() =>
           // Make sure to remove the previous script from the DOM as well
           LoadScript.removeScript(~src=CdnMeta.getCompilerUrl(ready.selected.id))
@@ -399,16 +382,16 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
 
           let selected = {
             id: version,
-            apiVersion: apiVersion,
+            apiVersion,
             compilerVersion: instance->Compiler.version,
             ocamlVersion: instance->Compiler.ocamlVersion,
-            config: config,
+            config,
             libraries: migratedLibraries,
-            instance: instance,
+            instance,
           }
 
           setState(_ => Ready({
-            selected: selected,
+            selected,
             targetLang: Version.defaultTargetLang,
             versions: ready.versions,
             errors: [],
@@ -419,34 +402,39 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
 
           dispatchError(CompilerLoadingError(msg))
         }
-      )
-      ->ignore
-    | Compiling(ready, (lang, code)) =>
-      let apiVersion = ready.selected.apiVersion
-      let instance = ready.selected.instance
+      | Compiling(ready, (lang, code)) =>
+        let apiVersion = ready.selected.apiVersion
+        let instance = ready.selected.instance
 
-      let compResult = switch apiVersion {
-      | Version.V1 =>
-        switch lang {
-        | Lang.OCaml => instance->Compiler.ocamlCompile(code)
-        | Lang.Reason => instance->Compiler.reasonCompile(code)
-        | Lang.Res => instance->Compiler.resCompile(code)
+        let compResult = switch apiVersion {
+        | Version.V1 =>
+          switch lang {
+          | Lang.OCaml => instance->Compiler.ocamlCompile(code)
+          | Lang.Reason => instance->Compiler.reasonCompile(code)
+          | Lang.Res => instance->Compiler.resCompile(code)
+          }
+        | Version.V2 =>
+          switch lang {
+          | Lang.OCaml => instance->Compiler.ocamlCompile(code)
+          | Lang.Reason =>
+            CompilationResult.UnexpectedError(
+              `Reason not supported with API version "${apiVersion->RescriptCompilerApi.Version.toString}"`,
+            )
+          | Lang.Res => instance->Compiler.resCompile(code)
+          }
+        | UnknownVersion(version) =>
+          CompilationResult.UnexpectedError(
+            `Can't handle result of compiler API version "${version}"`,
+          )
         }
-      | Version.V2 =>
-        switch lang {
-        | Lang.OCaml => instance->Compiler.ocamlCompile(code)
-        | Lang.Reason =>
-          CompilationResult.UnexpectedError(j`Reason not supported with API version "$apiVersion"`)
-        | Lang.Res => instance->Compiler.resCompile(code)
-        }
-      | UnknownVersion(apiVersion) =>
-        CompilationResult.UnexpectedError(j`Can't handle result of compiler API version "$apiVersion"`)
+
+        setState(_ => Ready({...ready, result: FinalResult.Comp(compResult)}))
+      | SetupFailed(_)
+      | Ready(_) => ()
       }
-
-      setState(_ => Ready({...ready, result: FinalResult.Comp(compResult)}))
-    | SetupFailed(_)
-    | Ready(_) => ()
     }
+
+    updateState()->ignore
     None
   }, [state])
 

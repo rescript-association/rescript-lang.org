@@ -142,7 +142,9 @@ module DocsSection = {
       if isAbsolute {
         <a href rel="noopener noreferrer" className=""> content </a>
       } else {
-        <Next.Link href> <a className=""> content </a> </Next.Link>
+        <Next.Link href>
+          <a className=""> content </a>
+        </Next.Link>
       }
     }
   }
@@ -230,7 +232,9 @@ module DocsSection = {
 
                 <li key=text>
                   <span className="text-fire mr-2"> {React.string(`-`)} </span>
-                  <Link href> <a className=linkClass> {React.string(text)} </a> </Link>
+                  <Link href>
+                    <a className=linkClass> {React.string(text)} </a>
+                  </Link>
                 </li>
               })
               ->React.array}
@@ -306,7 +310,10 @@ module DocsSection = {
                 />
               }
 
-              <> packageLink syntaxLookupLink </>
+              <>
+                packageLink
+                syntaxLookupLink
+              </>
             }
           </div>
         </div>
@@ -348,7 +355,9 @@ module DocsSection = {
       </div>
       <div className="flex justify-center">
         <div className="w-full sm:grid sm:grid-cols-3 max-w-1280">
-          languageManualColumn ecosystemColumn quickReferenceColumn
+          languageManualColumn
+          ecosystemColumn
+          quickReferenceColumn
         </div>
       </div>
       <img
@@ -491,7 +500,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
     setCollapsibles(prev => {
       Belt.Array.keepMap(prev, next => {
         if next.title === id {
-          Some({...next, state: state})
+          Some({...next, state})
         } else {
           None
         }

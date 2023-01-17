@@ -24,3 +24,5 @@ lib/
 .vscode/
 
 .vercel
+
+src/**/*.mjs

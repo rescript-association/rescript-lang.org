@@ -43,7 +43,11 @@ module Listbox = {
 
   module Options = {
     @module("@headlessui/react") @scope("Listbox") @react.component
-    external make: (~static: bool=?, ~className: string=?, ~children: React.element) => React.element = "Options"
+    external make: (
+      ~static: bool=?,
+      ~className: string=?,
+      ~children: React.element,
+    ) => React.element = "Options"
   }
 
   module Option = {

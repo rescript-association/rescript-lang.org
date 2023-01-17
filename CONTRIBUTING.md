@@ -30,9 +30,9 @@ If you need inspiration on what to work on, you can check out issues tagged with
 
 We really appreciate all input from users, community members and potential contributors. Please make sure to consider the other person's opinion and don't assume any common knowledge.
 
-**Most importantly: Keep it professional and be nice to eachother**
+**Most importantly: Keep it professional and be nice to each other**
 
-There might be situations where others don't understand a proposed feature or have different opinions on certain writing styles. That's fine, discussions are always welcome! Communicate in clear actionables, make your plans clear and always to stick to the original topic.
+There might be situations where others don't understand a proposed feature or have different opinions on certain writing styles. That's fine, discussions are always welcome! Communicate in clear actionables, make your plans clear and always stick to the original topic.
 
 If other contributors disagree with certain proposals and don't change their mind after longer discussions, please don't get discouraged when an issue gets closed / postponed. Everyone tries their best to make the platform better, and to look at it in another perspective: Closed issues are also a highly valuable resource for others to understand technical decisions later on.
 
@@ -40,7 +40,7 @@ If other contributors disagree with certain proposals and don't change their min
 
 Open Source development can be a challenge to coordinate, so please make sure to block enough time to work on your tasks and show commitment when taking on some work. Let other contributors know if your time schedule changes significantly, and also let others know if you can't finish a task.
 
-We value your voluntary work, and of course it's fine to step back from a ticket for any reasons (we can also help you if you are getting stuck). Please talk to us in any case, otherwise we might re-assign the ticket to other contributors.
+We value your voluntary work, and of course it's fine to step back from a ticket for any reason (we can also help you if you are getting stuck). Please talk to us in any case, otherwise we might re-assign the ticket to other contributors.
 
 ### Communication Channels
 
@@ -66,7 +66,7 @@ Always check if there are any designs for certain UI components and think about 
 ### Technical Writing (Documentation)
 
 - Think and write in a JS friendly mindset when explaining concepts / showing examples.
-- No `foo` examples if somewhat possible. Try to establish practical context in your show case examples.
+- No `foo` examples if somewhat possible. Try to establish practical context in your showcase examples.
 - No references to `OCaml`. ReScript is its own language, and we don't rely on external resources of our host language.
 - If possible, no references to `Reason` examples / external resources. Our goal is to migrate everything to ReScript syntax.
 

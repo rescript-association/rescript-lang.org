@@ -58,6 +58,13 @@ module Version = {
     | _ => UnknownVersion(apiVersion)
     }
 
+  let toString = t =>
+    switch t {
+    | V1 => "1.0"
+    | V2 => "2.0"
+    | UnknownVersion(version) => version
+    }
+
   let defaultTargetLang = Lang.Res
 
   let availableLanguages = t =>
@@ -136,9 +143,7 @@ module Warning = {
     let warnNumber = field("warnNumber", int, json)
     let details = LocMsg.decode(json)
 
-    field("isError", bool, json)
-      ? WarnErr({warnNumber: warnNumber, details: details})
-      : Warn({warnNumber: warnNumber, details: details})
+    field("isError", bool, json) ? WarnErr({warnNumber, details}) : Warn({warnNumber, details})
   }
 
   // Useful for showing errors in a more compact format
@@ -235,7 +240,7 @@ module CompileSuccess = {
       js_code: field("js_code", string, json),
       warnings: field("warnings", array(Warning.decode), json),
       type_hints: withDefault([], field("type_hints", array(TypeHint.decode)), json),
-      time: time,
+      time,
     }
   }
 }
@@ -327,7 +332,7 @@ module ConversionResult = {
     | "unexpected_error" => UnexpectedError(field("msg", string, json))
     | "syntax_error" =>
       let locMsgs = field("errors", array(LocMsg.decode), json)
-      Fail({fromLang: fromLang, toLang: toLang, details: locMsgs})
+      Fail({fromLang, toLang, details: locMsgs})
     | other => Unknown(j`Unknown conversion result type "$other"`, json)
     } catch {
     | DecodeError(errMsg) => Unknown(errMsg, json)
