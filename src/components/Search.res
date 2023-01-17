@@ -13,6 +13,10 @@ external addKeyboardEventListener: (string, keyboardEventLike => unit) => unit =
 external removeKeyboardEventListener: (string, keyboardEventLike => unit) => unit =
   "addEventListener"
 
+type window
+@val external window: window = "window"
+@get external scrollY: window => int = "scrollY"
+
 @send
 external keyboardEventPreventDefault: keyboardEventLike => unit = "preventDefault"
 
@@ -24,6 +28,7 @@ type state = Active | Inactive
 @react.component
 let make = () => {
   let (state, setState) = React.useState(_ => Inactive)
+
   React.useEffect1(() => {
     let isEditableTag = el =>
       switch el->tagName {
@@ -39,6 +44,7 @@ let make = () => {
         e->keyboardEventPreventDefault
       }
     }
+
     let handleGlobalKeyDown = e => {
       switch e.key {
       | "/" => focusSearch(e)
@@ -50,10 +56,19 @@ let make = () => {
     addKeyboardEventListener("keydown", handleGlobalKeyDown)
     Some(() => removeKeyboardEventListener("keydown", handleGlobalKeyDown))
   }, [setState])
-  let onClick = _ => setState(_ => Active)
+
+  let onClick = _ =>
+    setState(_ =>
+      switch state {
+      | Active => Inactive
+      | _ => Active
+      }
+    )
+
   let onClose = React.useCallback1(() => {
     setState(_ => Inactive)
   }, [state])
+
   <button onClick type_="button">
     <Icon.MagnifierGlass className="text-gray-60 w-5 h-5" />
     {switch state {
@@ -66,6 +81,7 @@ let make = () => {
             appId
             indexName
             onClose
+            initialScrollY={window->scrollY}
             transformItems={items => {
               // Transform absolute URL intro relative url
               items->Js.Array2.map(item => {

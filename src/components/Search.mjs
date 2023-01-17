@@ -75,7 +75,11 @@ function Search(Props) {
         }), [setState]);
   var onClick = function (param) {
     Curry._1(setState, (function (param) {
-            return /* Active */0;
+            if (state) {
+              return /* Active */0;
+            } else {
+              return /* Inactive */1;
+            }
           }));
   };
   var onClose = React.useCallback((function (param) {
@@ -129,7 +133,8 @@ function Search(Props) {
                                 children: React.createElement("a", undefined, param.children)
                               });
                   }),
-                onClose: onClose
+                onClose: onClose,
+                initialScrollY: window.scrollY
               }), element);
   }
   return React.createElement("button", {

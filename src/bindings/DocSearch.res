@@ -52,4 +52,5 @@ external make: (
   ~navigator: navigator=?,
   ~onClose: unit => unit=?,
   ~searchParameters: searchParameters=?,
+  ~initialScrollY: int=?,
 ) => React.element = "DocSearchModal"
