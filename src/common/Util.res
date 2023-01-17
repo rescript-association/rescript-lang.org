@@ -65,7 +65,7 @@ module Url = {
     hostname: string,
     href: string,
     origin: string,
-    pathname: string
+    pathname: string,
   }
   let isAbsolute: string => bool = %raw(`
     function(str) {

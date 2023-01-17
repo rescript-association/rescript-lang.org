@@ -564,7 +564,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
             </Link>
           </div>
           <div className="md:flex">
-            <Search/>
+            <Search />
             <div className="hidden md:flex items-center ml-5">
               <a href=githubHref rel="noopener noreferrer" className={"mr-5 " ++ link}>
                 <Icon.GitHub className="w-6 h-6 opacity-50 hover:opacity-100" />
