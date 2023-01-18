@@ -57,20 +57,14 @@ let make = () => {
     Some(() => removeKeyboardEventListener("keydown", handleGlobalKeyDown))
   }, [setState])
 
-  let onClick = _ =>
-    setState(_ =>
-      switch state {
-      | Active => Inactive
-      | _ => Active
-      }
-    )
+  let onClick = _ => setState(_ => Active)
 
   let onClose = React.useCallback1(() => {
     setState(_ => Inactive)
   }, [state])
 
-  <button onClick type_="button">
-    <Icon.MagnifierGlass className="text-gray-60 w-5 h-5" />
+  <button onClick type_="button" className="text-gray-60 hover:text-fire-50">
+    <Icon.MagnifierGlass className="fill-current" />
     {switch state {
     | Active =>
       switch ReactDOM.querySelector("body") {
@@ -89,18 +83,14 @@ let make = () => {
                 | Js.Exn.Error(obj) =>
                   switch Js.Exn.message(obj) {
                   | Some(m) =>
-                    Js.Console.error("Failed to constructor URL" ++ m)
+                    Js.Console.error("Failed to constructor URL " ++ m)
                     item.url
                   | None => item.url
                   }
                 }
+
                 {...item, url}
               })
-            }}
-            hitComponent={({hit, children}) => {
-              <Next.Link href={hit.url}>
-                <a> children </a>
-              </Next.Link>
             }}
           />,
           element,
