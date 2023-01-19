@@ -61,10 +61,12 @@ let make = () => {
 
   let onClose = React.useCallback1(() => {
     setState(_ => Inactive)
-  }, [state])
+  }, [setState])
 
-  <button onClick type_="button" className="text-gray-60 hover:text-fire-50">
-    <Icon.MagnifierGlass className="fill-current" />
+  <>
+    <button onClick type_="button" className="text-gray-60 hover:text-fire-50 p-2">
+      <Icon.MagnifierGlass className="fill-current" />
+    </button>
     {switch state {
     | Active =>
       switch ReactDOM.querySelector("body") {
@@ -99,5 +101,5 @@ let make = () => {
       }
     | Inactive => React.null
     }}
-  </button>
+  </>
 }

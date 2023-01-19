@@ -563,7 +563,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
               </a>
             </Link>
           </div>
-          <div className="md:flex">
+          <div className="md:flex flex items-center">
             <Search />
             <div className="hidden md:flex items-center ml-5">
               <a href=githubHref rel="noopener noreferrer" className={"mr-5 " ++ link}>

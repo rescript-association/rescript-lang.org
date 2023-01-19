@@ -43,6 +43,7 @@
   padding: 10vh;
   background-color: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(3px);
+  cursor: inherit !important;
   @apply fixed top-0 left-0 flex flex-col;
 }
 
@@ -71,7 +72,7 @@
 }
 
 .DocSearch-Input {
-  @apply appearance-none outline-none bg-transparent border-none flex-1 text-14 pl-4;
+  @apply w-full appearance-none outline-none bg-transparent border-none flex-1 text-14 px-4;
 }
 
 .DocSearch-Input::placeholder {
@@ -119,8 +120,9 @@
 
 .DocSearch-Cancel {
   font-size: 0;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='53.7' height='53.7' viewBox='0 0 53.7 53.7'><path opacity='.6' fill='%23666E6E' d='M35.6 34.4L28 26.8l7.6-7.6c.2-.2.2-.5 0-.7l-.5-.5c-.2-.2-.5-.2-.7 0l-7.6 7.6-7.5-7.6c-.2-.2-.5-.2-.7 0l-.6.6c-.2.2-.2.5 0 .7l7.6 7.6-7.6 7.5c-.2.2-.2.5 0 .7l.5.5c.2.2.5.2.7 0l7.6-7.6 7.6 7.6c.2.2.5.2.7 0l.5-.5c.2-.2.2-.5 0-.7z'/></svg>");
-  @apply w-3 h-3 bg-no-repeat bg-center;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='16' height='7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M.506 6h3.931V4.986H1.736v-1.39h2.488V2.583H1.736V1.196h2.69V.182H.506V6zM8.56 1.855h1.18C9.721.818 8.87.102 7.574.102c-1.276 0-2.21.705-2.205 1.762-.003.858.602 1.35 1.585 1.585l.634.159c.633.153.986.335.988.727-.002.426-.406.716-1.03.716-.64 0-1.1-.295-1.14-.878h-1.19c.03 1.259.931 1.91 2.343 1.91 1.42 0 2.256-.68 2.259-1.745-.003-.969-.733-1.483-1.744-1.71l-.523-.125c-.506-.117-.93-.304-.92-.722 0-.375.332-.65.934-.65.588 0 .949.267.994.724zm7.22.364C15.618.875 14.6.102 13.254.102c-1.537 0-2.71 1.086-2.71 2.989 0 1.898 1.153 2.989 2.71 2.989 1.492 0 2.392-.992 2.526-2.063l-1.244-.006c-.117.623-.606.98-1.262.98-.883 0-1.483-.656-1.483-1.9 0-1.21.591-1.9 1.492-1.9.673 0 1.159.389 1.253 1.028h1.244z' fill='%23334155'/%3E%3C/svg%3E");
+  background-size: 57.1428571429% auto;
+  @apply w-9 h-7 bg-no-repeat bg-center appearance-none border border-gray-20 rounded;
 }
 
 /* Modal Dropdown */
