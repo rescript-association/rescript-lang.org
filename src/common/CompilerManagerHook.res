@@ -38,6 +38,7 @@ module CdnMeta = {
   // Make sure versions exist on https://cdn.rescript-lang.org
   // [0] = latest
   let versions = [
+    "v10.1.2",
     "v10.0.1",
     "v10.0.0",
     "v9.1.2",
@@ -184,7 +185,12 @@ type action =
 //  transition happened, or not.  We need that for a ActivityIndicator
 //  component to give feedback to the user that an action happened (useful in
 //  cases where the output didn't visually change)
-let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => unit>=?, ()) => {
+let useCompilerManager = (
+  ~initialVersion: option<string>=?,
+  ~initialLang: Lang.t=Res,
+  ~onAction: option<action => unit>=?,
+  (),
+) => {
   let (state, setState) = React.useState(_ => Init)
 
   // Dispatch method for the public interface
@@ -326,17 +332,43 @@ let useCompilerManager = (~initialLang: Lang.t=Res, ~onAction: option<action => 
         | versions =>
           let latest = versions[0]
 
+          // If the provided initialVersion is not available, fall back
+          // to "latest"
+          let initVersion = switch initialVersion {
+          | Some(version) =>
+            if (
+              CdnMeta.versions->Js.Array2.some(v => {
+                version == v
+              })
+            ) {
+              version
+            } else {
+              latest
+            }
+          | None => latest
+          }
+
           // Latest version is already running on @rescript/react
           let libraries = ["@rescript/react"]
 
-          switch await attachCompilerAndLibraries(~version=latest, ~libraries, ()) {
+          switch await attachCompilerAndLibraries(~version=initVersion, ~libraries, ()) {
           | Ok() =>
             let instance = Compiler.make()
             let apiVersion = apiVersion->Version.fromString
-            let config = instance->Compiler.getConfig
+
+            // Note: The compiler bundle currently defaults to
+            // commonjs when initiating the compiler, but our playground
+            // should default to ES6. So we override the config
+            // and use the `setConfig` function to sync up the
+            // internal compiler state with our playground state.
+            let config = {
+              ...instance->Compiler.getConfig,
+              module_system: "es6",
+            }
+            instance->Compiler.setConfig(config)
 
             let selected = {
-              id: latest,
+              id: initVersion,
               apiVersion,
               compilerVersion: instance->Compiler.version,
               ocamlVersion: instance->Compiler.ocamlVersion,

@@ -1203,6 +1203,10 @@ module ControlPanel = {
         | lang => [("ext", Api.Lang.toExt(lang))]
         }
 
+        let version = ready.selected.compilerVersion
+
+        Js.Array2.push(params, ("version", "v" ++ version))->ignore
+
         Js.Array2.push(
           params,
           ("code", editorCode.current->LzString.compressToEncodedURIComponent),
@@ -1396,7 +1400,15 @@ module OutputPanel = {
   }
 }
 
-let initialResContent = `module Button = {
+/**
+The initial content is somewhat based on the compiler version.
+If we are handling a version that's beyond 10.1, we want to make
+sure we are using an example that includes a JSX pragma to
+inform the user that you are able to switch between jsx 3 / jsx 4
+and the different jsx modes (classic and automatic).
+*/
+module InitialContent = {
+  let original = `module Button = {
   @react.component
   let make = (~count: int) => {
     let times = switch count {
@@ -1409,7 +1421,61 @@ let initialResContent = `module Button = {
     <button> {msg->React.string} </button>
   }
 }
-` // Please note:
+`
+
+  let since_10_1 = `@@jsxConfig({ version: 4, mode: "automatic" })
+
+module CounterMessage = {
+  @react.component
+  let make = (~count, ~username=?) => {
+    let times = switch count {
+    | 1 => "once"
+    | 2 => "twice"
+    | n => Belt.Int.toString(n) ++ " times"
+    }
+
+    let name = switch username {
+    | Some("") => "Anonymous"
+    | Some(name) => name
+    | None => "Anonymous"
+    }
+
+    <div> {React.string(\`Hello \$\{name\}, you clicked me \` ++ times)} </div>
+  }
+}
+
+module App = {
+  @react.component
+  let make = () => {
+    let (count, setCount) = React.useState(() => 0)
+    let (username, setUsername) = React.useState(() => "Anonymous")
+
+    <div>
+      {React.string("Username: ")}
+      <input
+        type_="text"
+        value={username}
+        onChange={evt => {
+          evt->ReactEvent.Form.preventDefault
+          let username = (evt->ReactEvent.Form.target)["value"]
+          setUsername(_prev => username)
+        }}
+      />
+      <button
+        onClick={_evt => {
+          setCount(prev => prev + 1)
+        }}>
+        {React.string("Click me")}
+      </button>
+      <button onClick={_evt => setCount(_ => 0)}> {React.string("Reset")} </button>
+      <CounterMessage count username />
+    </div>
+  }
+}
+`
+}
+
+// Please note:
 // ---
 // The Playground is still a work in progress
 // ReScript / old Reason syntax should parse just
@@ -1420,9 +1486,30 @@ let initialResContent = `module Button = {
 
 let initialReContent = j`Js.log("Hello Reason 3.6!");`
 
+/**
+Takes a `versionStr` starting with a "v" and ending in major.minor.patch (e.g.
+"v10.1.0") returns major, minor, patch as an integer tuple if it's actually in
+a x.y.z format, otherwise will return `None`.
+*/
+let parseVersion = (versionStr: string): option<(int, int, int)> => {
+  switch versionStr->Js.String2.replace("v", "")->Js.String2.split(".") {
+  | [major, minor, patch] =>
+    switch (major->Belt.Int.fromString, minor->Belt.Int.fromString, patch->Belt.Int.fromString) {
+    | (Some(major), Some(minor), Some(patch)) => Some((major, minor, patch))
+    | _ => None
+    }
+  | _ => None
+  }
+}
+
 @react.component
 let default = () => {
   let router = Next.Router.useRouter()
+
+  let initialVersion = switch Js.Dict.get(router.query, "version") {
+  | Some(version) => Some(version)
+  | None => CompilerManagerHook.CdnMeta.versions->Belt.Array.get(0)
+  }
 
   let initialLang = switch Js.Dict.get(router.query, "ext") {
   | Some("re") => Api.Lang.Reason
@@ -1433,14 +1520,32 @@ let default = () => {
   | (Some(compressedCode), _) => LzString.decompressToEncodedURIComponent(compressedCode)
   | (None, Reason) => initialReContent
   | (None, Res)
-  | (None, _) => initialResContent
+  | (None, _) =>
+    switch initialVersion {
+    | Some(initialVersion) =>
+      switch parseVersion(initialVersion) {
+      | Some((major, minor, _)) =>
+        if major >= 10 && minor >= 1 {
+          InitialContent.since_10_1
+        } else {
+          InitialContent.original
+        }
+      | None => InitialContent.original
+      }
+    | None => InitialContent.original
+    }
   }
 
   // We don't count to infinity. This value is only required to trigger
   // rerenders for specific components (ActivityIndicator)
   let (actionCount, setActionCount) = React.useState(_ => 0)
   let onAction = _ => setActionCount(prev => prev > 1000000 ? 0 : prev + 1)
-  let (compilerState, compilerDispatch) = useCompilerManager(~initialLang, ~onAction, ())
+  let (compilerState, compilerDispatch) = useCompilerManager(
+    ~initialVersion?,
+    ~initialLang,
+    ~onAction,
+    (),
+  )
 
   let overlayState = React.useState(() => false)
 
