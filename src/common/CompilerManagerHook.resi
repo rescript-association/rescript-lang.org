@@ -8,6 +8,11 @@ module FinalResult: {
     | Nothing
 }
 
+module CdnMeta: {
+  /** All available versions on the CDN */
+  let versions: array<string>
+}
+
 type selected = {
   id: string, // The id used for loading the compiler bundle (ideally should be the same as compilerVersion)
   apiVersion: Version.t, // The playground API version in use
@@ -41,6 +46,7 @@ type action =
   | UpdateConfig(Config.t)
 
 let useCompilerManager: (
+  ~initialVersion: string=?,
   ~initialLang: Lang.t=?,
   ~onAction: action => unit=?,
   unit,
