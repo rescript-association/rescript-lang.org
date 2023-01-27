@@ -2,7 +2,7 @@
   "Overview": [
     "introduction",
     "installation",
-    "migrate-react"
+    "migrate-from-v3"
   ],
   "Main Concepts": [
     "elements-and-jsx",
