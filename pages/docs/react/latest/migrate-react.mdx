@@ -1,7 +1,7 @@
 ---
 title: Migrate from JSX v3
 description: "Migrate from JSX v3"
-canonical: "/docs/react/latest/migrate-from-v3"
+canonical: "/docs/react/latest/migrate-react"
 ---
 
 # Migrate from JSX v3
@@ -209,5 +209,34 @@ let make = () => {
       <button onClick> {React.string("Click to focus")} </button>
     </FancyInput>
   </div>
+}
+```
+
+### Mangling the prop name
+
+The prop name was mangled automatically in v3, such as `_open` becomes `open` in the generated js code. This is no longer the case in v4 because the internal representation is changed to the record instead object. If you need to mangle the prop name, you can use the `@as` annotation.
+
+Rewrite this:
+
+```res
+module Comp = {
+  @react.component
+  let make = (~_open, ~_type) =>
+    <Modal _open _type>
+      <Description />
+    </Modal>
+}
+```
+
+To this:
+
+```res
+module Comp = {
+  @react.component
+  let make =
+    (@as("open") ~_open, @as("type") ~_type) =>
+      <Modal _open _type>
+        <Description />
+      </Modal>
 }
 ```
