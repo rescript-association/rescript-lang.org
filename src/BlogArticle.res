@@ -187,11 +187,9 @@ let default = (props: props) => {
               <div className="text-24 sm:text-32 text-center text-gray-80 font-medium">
                 {React.string("Want to read more?")}
               </div>
-              <Next.Link href="/blog">
-                <a className="text-fire hover:text-fire-70">
-                  {React.string("Back to Overview")}
-                  <Icon.ArrowRight className="ml-2 inline-block" />
-                </a>
+              <Next.Link href="/blog" className="text-fire hover:text-fire-70">
+                {React.string("Back to Overview")}
+                <Icon.ArrowRight className="ml-2 inline-block" />
               </Next.Link>
             </div>
           </div>

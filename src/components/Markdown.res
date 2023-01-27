@@ -94,11 +94,9 @@ module UrlBox = {
         <Icon.ArrowRight className="ml-1" />
       </a>
     } else {
-      <Next.Link href>
-        <a className="flex items-center">
-          {React.string(text)}
-          <Icon.ArrowRight className="ml-1" />
-        </a>
+      <Next.Link href className="flex items-center">
+        {React.string(text)}
+        <Icon.ArrowRight className="ml-1" />
       </Next.Link>
     }
     <div className="md-url-box text-16 border-l-2 border-gray-60 my-6 py-6 pl-8 pr-10 bg-gray-5">
@@ -413,11 +411,12 @@ module A = {
       | [pathname] => Js.String2.replaceByRe(pathname, regex, "")
       | _ => href
       }
-      <Next.Link href>
-        <a
-          href rel="noopener noreferrer" className="no-underline text-fire hover:underline" ?target>
-          children
-        </a>
+      <Next.Link
+        href
+        hrefRel="noopener noreferrer"
+        className="no-underline text-fire hover:underline"
+        ?target>
+        children
       </Next.Link>
     }
 }

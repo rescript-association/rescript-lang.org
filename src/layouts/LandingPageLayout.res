@@ -96,11 +96,10 @@ exports.Button = Button;`,
           </div>
           /* ---Link to Playground--- */
           <div>
-            <Next.Link href={`/try?code=${LzString.compressToEncodedURIComponent(example.res)}}`}>
-              <a
-                className="captions md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60">
-                {React.string("Edit this example in Playground")}
-              </a>
+            <Next.Link
+              href={`/try?code=${LzString.compressToEncodedURIComponent(example.res)}}`}
+              className="captions md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60">
+              {React.string("Edit this example in Playground")}
             </Next.Link>
           </div>
           //
@@ -636,13 +635,13 @@ module CuratedResources = {
           className="grid grid-flow-col grid-cols-2 grid-rows-2 lg:grid-cols-4 lg:grid-rows-1 gap-2 md:gap-4 lg:gap-8 max-w-1280 px-5 md:px-8 mx-auto">
           {cards
           ->Belt.Array.mapWithIndex((i, card) =>
-            <Next.Link key={Belt.Int.toString(i)} href={card.href}>
-              <a
-                className="hover:bg-gray-80 bg-gray-90 px-4 md:px-8 pb-0 md:pb-8 relative rounded-xl md:min-w-[196px]">
-                <img className="h-[53px] absolute mt-6" src=card.imgSrc />
-                <h5 className="text-gray-10 hl-4 mt-32 h-12"> {card.title} </h5>
-                <div className="text-gray-40 mt-2 mb-8 body-sm"> {React.string(card.descr)} </div>
-              </a>
+            <Next.Link
+              key={Belt.Int.toString(i)}
+              href={card.href}
+              className="hover:bg-gray-80 bg-gray-90 px-4 md:px-8 pb-0 md:pb-8 relative rounded-xl md:min-w-[196px]">
+              <img className="h-[53px] absolute mt-6" src=card.imgSrc />
+              <h5 className="text-gray-10 hl-4 mt-32 h-12"> {card.title} </h5>
+              <div className="text-gray-40 mt-2 mb-8 body-sm"> {React.string(card.descr)} </div>
             </Next.Link>
           )
           ->React.array}

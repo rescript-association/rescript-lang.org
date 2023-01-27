@@ -6,7 +6,7 @@ const remarkSlug = require("remark-slug");
 const transpileModules = ["rescript"].concat(bsconfig["bs-dependencies"]);
 const withTM = require("next-transpile-modules")(transpileModules);
 
-const withMdx = require("./plugins/next-mdx")({
+const withMdx = require("@next/mdx")({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [remarkSlug],
@@ -61,4 +61,7 @@ const config = {
   },
 };
 
-module.exports = withMdx(withTM(config));
+module.exports = withMdx({
+  transpilePackages: transpileModules,
+  ...config,
+});
