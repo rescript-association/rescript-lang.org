@@ -91,7 +91,7 @@ See the familiar `Js.String` API in the [API docs](api/js/string). Since a ReScr
 
 ### Tips & Tricks
 
-**You have a good type system now**! In an untyped language, you'd often overload the meaning of string by using it as:
+**You have a good type system now!** In an untyped language, you'd often overload the meaning of string by using it as:
 
 - a unique id: `var BLUE_COLOR = "blue"`
 - an identifier into a data structure: `var BLUE = "blue" var RED = "red" var colors = [BLUE, RED]`
@@ -145,7 +145,7 @@ A ReScript boolean has the type `bool` and can be either `true` or `false`. Comm
 - `||`: logical or.
 - `!`: logical not.
 - `<=`, `>=`, `<`, `>`
-- `==`: structural equal, compares data structures deeply: `(1, 2) == (1, 2)` is `true`. Convenient, but use with caution.
+- `==`: structural equal, compares data structures deeply. `(1, 2) == (1, 2)` is `true`. Convenient, but use with caution.
 - `===`: referential equal, compares shallowly. `(1, 2) === (1, 2)` is `false`. `let myTuple = (1, 2); myTuple === myTuple` is `true`.
 - `!=`: structural unequal.
 - `!==`: referential unequal.
