@@ -4,24 +4,30 @@ description: "Async / await for asynchronous operations"
 canonical: "/docs/manual/latest/async-await"
 ---
 
+import "src/Demo.mjs"
+
+<!-- This prelude is used in many different followup examples, so we use it to shorten the noise of the example code. -->
+<div className="hidden">
+
+```res prelude
+@val external fetchUserMail: string => promise<string> = "GlobalAPI.fetchUserMail"
+@val external sendAnalytics: string => promise<unit> = "GlobalAPI.sendAnalytics"
+```
+
+</div>
+
 <!-- See https://github.com/cristianoc/rescript-compiler-experiments/pull/1#issuecomment-1131182023 for all async/await use-case examples -->
 
 # Async / Await
 
 ***Since 10.1***
 
-Use the `async` / `await` keywords to make asynchronous, `Promise` based code easier to read and write. If you are already familiar with JS' `async` / `await`, you will most likely be able to use the syntax right away as is.
-
-**Some basics:**
-- You may only use `await` in `async` function bodies
-- `await` may only be called on a `promise` value
-- `await` calls are expressions (pattern matching!)
-- A function returning a `promise<'a>` is equivalent to an `async` function returning a value `'a` (important for writing signature files and bindings)
-- `promise` values and types returned from an `async` function don't auto-collapse
+ReScript comes with `async` / `await` support to make asynchronous, `Promise` based code easier to read and write. This feature is very similar to its JS equivalent, so if you are already familiar with JS' `async` / `await`, you will feel right at home.
 
 ## How it looks 
 
 Let's start with a quick example to show-case the syntax:
+
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -53,41 +59,22 @@ async function logUserDetails(userId) {
 
 As we can see above, an `async` function is defined via the `async` keyword right before the function's parameter list. In the function body, we are now able to use the `await` keyword to explicitly wait for a `Promise` value and assign its content to a let binding `email`.
 
-Everything we've just saw was essentially what we are used to `async` / `await` in JS, but there's still a few details that are specific to ReScript. The next few sections will go through all the details that are specific to the ReScript type system.
+You will probably notice that this looks very similar to `async` / `await` in JS, but there's still a few details that are specific to ReScript. The next few sections will go through all the details that are specific to the ReScript type system.
+
+## Basics
+
+- You may only use `await` in `async` function bodies
+- `await` may only be called on a `promise` value
+- `await` calls are expressions, therefore they can be used in pattern matching (`switch`)
+- A function returning a `promise<'a>` is equivalent to an `async` function returning a value `'a` (important for writing signature files and bindings)
+- `promise` values and types returned from an `async` function don't auto-collapse
+
 
 ## Types and `async` functions
 
-### No `promise` type in inline return types
-
-When typing the return type of an `async` function inline, we completely omit the `promise<...>` type and just state the actual type we want to return. As an example, we would type a `logUserDetails` function like this: 
-
-
-```res
-// Instead of promise<unit> we return `unit` instead.
-// The boxing into a promise is already done implicitly
-// by the compiler.
-let logUserDetails = async (userId: string): unit => {
-  Js.log("...")
-}
-```
-
-**Note:** This was a deliberate design decision. More details on the rationale can be found [here](https://github.com/rescript-lang/rescript-compiler/pull/5913#issuecomment-1359003870).
-
-### Promises don't auto-collapse in async functions
-
-As a JS developer you'd expect a `promise<'a>` to collapse into another `promise<'a>` when returned in an `async` function. This is not the case in ReScript. Use the `await` function to unwrap any nested promises instead.
-
-```res
-let fetchData = async (userId: string): string => {
-  // We can't just return the result of `fetchUserMail`, otherwise we'd get a
-  // type error due to our function return type of type `string`
-  await fetchUserMail(userId)
-}
-```
-
 ### `async` function type signatures
 
-Function type signatures (i.e defined in signature files) don't differentiate between `async` and conventional functions. Every function with a `promise` return type are `async` functions; hence we use the `promise` return type.
+Function type signatures (i.e defined in signature files) don't require any special keywords for `async` usage. Whenever you want to type an `async` function, use a `promise` return type.
 
 ```resi
 // Demo.resi
@@ -97,7 +84,7 @@ let fetchUserMail: string => promise<string>
 
 The same logic applies to type definitions in `.res` files:
 
-```res
+```res example
 // function type
 type someAsyncFn = int => promise<int>
 
@@ -107,42 +94,99 @@ let fetchData: string => promise<string> = async (userId) => {
 }
 ```
 
-For completeness reasons, let's also show-case the difference between type definitions and inline type definitions:
+**BUT:** When typing `async` functions in your implementation files, you need to omit the `promise<'a>` type:
+
+```res
+// This function is compiled into a `string => promise<string>` type.
+// The promise<...> part is implicitly added by the compiler.
+let fetchData = async (userId: string): string => {
+  await fetchUserMail("test")
+}
+```
+
+For completeness reasons, let's expand the full signature and inline type definitions in one code snippet:
 
 ```res
 // Note how the inline return type uses `string`, while the type definition uses `promise<string>`
 let fetchData: string => promise<string> = async (userId: string): string {
-  await fetchuserMail(userId)
+  await fetchUserMail(userId)
 }
 ```
 
-(The last example was only mentioned for education purposes. Don't do that in your actual code.)
+**Note:** In a practical scenario you'd either use a type signature, or inline types, not both at the same time. In case you are interested in the design decisions, check out [this discussion](https://github.com/rescript-lang/rescript-compiler/pull/5913#issuecomment-1359003870).
 
-## Common usage examples
+### `async` uncurried functions
 
-### Error handling
+The `async` keyword does also work for uncurried functions.
 
-As with any synchronous code, you may use `try / catch` or `switch` to pattern match on errors.
+```res
+let fetchData = async (. userId: string): string {
+  await fetchUserMail(userId)
+}
+```
 
-```res example
-let logUserDetails = async (userId: string): result<unit, string> => {
-  let email = await fetchUserMail(userId)
+### Promises don't auto-collapse in async functions
 
-  // await can be used within a `try` body
+In JS, nested promises (i.e. `promise<promise<'a>>`) will automatically collapse into a flat promise (`promise<'a>`). This is not the case in ReScript. Use the `await` function to manually unwrap any nested promises within an `async` function instead.
+
+```res
+let fetchData = async (userId: string): string => {
+  // We can't just return the result of `fetchUserMail`, otherwise we'd get a
+  // type error due to our function return type of type `string`
+  await fetchUserMail(userId)
+}
+```
+
+## Error handling
+
+You may use `try / catch` or `switch` to handle exceptions during async execution.
+
+```res
+// For simulation purposes
+let authenticate = async () => {
+  raise(Js.Exn.raiseRangeError("Authentication failed."))
+}
+
+let checkAuth = async () => {
   try {
-    Js.log(`Email address for user ${userId}: ${email}`)
-    await sendAnalytics(`User details have been logged for ${userId}`)
-    Ok()
+    await authenticate()
   } catch {
-  // In case some generic JS exception has been thrown due to unknown interop reasons
-  | JsError(_) => Error("Could not send analytics")
+  | Js.Exn.Error(e) =>
+    switch Js.Exn.message(e) {
+    | Some(msg) => Js.log("JS error thrown: " ++ msg)
+    | None => Js.log("Some other exception has been thrown")
+    }
   }
 }
 ```
 
-### Piping `await` calls
+Note how we are essentially catching JS errors the same way as described in our [Exception](exception#catch-rescript-exceptions-from-js) section.
 
-It is possible
+You may unify error and value handling in a single switch as well:
+
+```res
+let authenticate = async () => {
+  raise(Js.Exn.raiseRangeError("Authentication failed."))
+}
+
+let checkAuth = async () => {
+  switch await authenticate() {
+  | _ => Js.log("ok")
+  | exception Js.Exn.Error(e) => 
+    switch Js.Exn.message(e) {
+    | Some(msg) => Js.log("JS error thrown: " ++ msg)
+    | None => Js.log("Some other exception has been thrown")
+    }
+  }
+}
+```
+
+**Important:** When using `await` with a `switch`, always make sure to put the actual await call in the `switch` expression, otherwise your `await` error will not be caught.
+
+## Piping `await` calls
+
+You may want to pipe the result of an `await` call right into another function.
+This can be done by wrapping your `await` calls in a new `{}` closure.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -164,9 +208,11 @@ async function fetchData(param) {
 
 </CodeTab>
 
-### Pattern matching on `await` calls
+Note how the original closure was removed in the final JS output. No extra allocations!
 
-Of course we can also go fancy with all kinds of pattern matching combinations.
+## Pattern matching on `await` calls
+
+`await` calls are just another kind of expression, so you can use `switch` pattern matching for more complex logic.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -207,4 +253,88 @@ async function fetchData(param) {
 ```
 
 </CodeTab>
+
+## `await` multiple promises
+
+We can utilize the `Js.Promise2` module to handle multiple promises. E.g. let's use `Js.Promise2.all` to wait for multiple promises before continuing the program:
+
+```res
+let pauseReturn = async (value, timeout) => {
+  Js.Promise2.make((~resolve, ~reject) => {
+    Js.Global.setTimeout(() => {
+      resolve(. value)
+    }, timeout)->ignore
+  })
+}
+
+let logMultipleValues = async () => {
+  let value1 = await pauseReturn("value1", 2000)
+  let value2 = await pauseReturn("value2", 1200)
+  let value3 = await pauseReturn("value3", 500)
+
+  let all = await Js.Promise2.all([value1, value2, value3])
+
+  switch all {
+  | [v1, v2, v3] => Js.log(`All values: ${v1}, ${v2}, ${v3}`)
+  | _ => Js.log("this should never happen")
+  }
+}
+```
+
+## JS Interop with `async` functions
+
+`async` / `await` practically works with any function that returns a `promise<'a>` value. Map your `promise` returning function via an `external`, and use it in an `async` function as usual.
+
+Here's a full example of using the MDN `fetch` API, using `async` / `await` to simulate a login:
+
+```res
+// A generic Response type for typing our fetch requests
+module Response = {
+  type t<'data>
+  @send external json: t<'data> => Promise.t<'data> = "json"
+}
+
+// A binding to our globally available `fetch` function. `fetch` is a
+// standardized function to retrieve data from the network that is available in
+// all modern browsers.
+@val @scope("globalThis")
+external fetch: (
+  string,
+  'params,
+) => Promise.t<Response.t<{"token": Js.Nullable.t<string>, "error": Js.Nullable.t<string>}>> =
+  "fetch"
+
+// We now use our asynchronous `fetch` function to simulate a login.
+// Note how we use `await` with regular functions returning a `promise`.
+let login = async (email: string, password: string) => {
+  let body = {
+    "email": email,
+    "password": password,
+  }
+
+  let params = {
+    "method": "POST",
+    "headers": {
+      "Content-Type": "application/json",
+    },
+    "body": Js.Json.stringifyAny(body),
+  }
+
+  try {
+    let response = await fetch("https://reqres.in/api/login", params)
+    let data = await response->Response.json
+
+    switch Js.Nullable.toOption(data["error"]) {
+    | Some(msg) => Error(msg)
+    | None =>
+      switch Js.Nullable.toOption(data["token"]) {
+      | Some(token) => Ok(token)
+      | None => Error("Didn't return a token")
+      }
+    }
+  } catch {
+  | _ => Error("Unexpected network error occurred")
+  }
+}
+```
 
