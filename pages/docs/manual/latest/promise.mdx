@@ -30,7 +30,7 @@ To work with promise values (instead of using `async` / `await`) you may want to
 
 A builtin module to create, chain and manipulate promises.
 
-**Note:** This is an intermediate replacement for the `Js.Promise` module. It is designed to work with the `->` operator and should be used in favour of it's legacy counterpart. We are aware that the `Belt`, `Js` and `Js.xxx2` situation is confusing; a proper solution will hopefully be part of our upcoming `v11` release.
+> **Note:** This is an intermediate replacement for the `Js.Promise` module. It is designed to work with the `->` operator and should be used in favour of it's legacy counterpart. We are aware that the `Belt`, `Js` and `Js.xxx2` situation is confusing; a proper solution will hopefully be part of our upcoming `v11` release.
 
 ### Creating a promise
 
@@ -77,7 +77,7 @@ let logAsyncMessage = async () => {
 }
 ```
 
-Way better.
+Needless to say, the async / await version offers better ergonomics and less opportunities to run into type issues.
 
 ### Run multiple promises in parallel
 
