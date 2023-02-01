@@ -83,6 +83,9 @@ Needless to say, the async / await version offers better ergonomics and less opp
 
 In case you want to launch multiple promises in parallel, use `Js.Promise2.all`:
 
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
 ```res
 @val
 external fetchMessage: string => promise<string> = "global.fetchMessage"
@@ -90,9 +93,25 @@ external fetchMessage: string => promise<string> = "global.fetchMessage"
 let logAsyncMessage = async () => {
   let messages = await Js.Promise2.all([fetchMessage("message1"), fetchMessage("message2")])
 
-  Js.log(Belt.Array.joinWith(messages, ", "))
+  Js.log(Js.Array2.joinWith(messages, ", "))
 }
 ```
+
+```js
+async function logAsyncMessage(param) {
+  var messages = await Promise.all([
+        global.fetchMessage("message1"),
+        global.fetchMessage("message2")
+      ]);
+  console.log(messages.join(", "));
+}
+
+export {
+  logAsyncMessage ,
+}
+```
+
+</CodeTab>
 
 ## Js.Promise module (legacy - do not use)
 
