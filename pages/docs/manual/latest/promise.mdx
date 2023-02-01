@@ -96,7 +96,7 @@ let logAsyncMessage = async () => {
 
 ## Js.Promise module (legacy - do not use)
 
-> **Note:** The `Js.Promise` bindings are following the outdated data-last convention from a few years ago. We kept those APIs for backwards compatibility, so for now please use [`rescript-promise`](https://github.com/ryyppy/rescript-promise) until we upstream the new bindings to our standard library.
+> **Note:** The `Js.Promise` bindings are following the outdated data-last convention from a few years ago. We kept those APIs for backwards compatibility. Either use `Js.Promise2` or a third-party promise binding instead.
 
 ReScript has built-in support for [JavaScript promises](api/js/promise). The 3 functions you generally need are:
 
