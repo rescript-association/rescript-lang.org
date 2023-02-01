@@ -291,7 +291,7 @@ Here's a full example of using the MDN `fetch` API, using `async` / `await` to s
 // A generic Response type for typing our fetch requests
 module Response = {
   type t<'data>
-  @send external json: t<'data> => Promise.t<'data> = "json"
+  @send external json: t<'data> => promise<'data> = "json"
 }
 
 // A binding to our globally available `fetch` function. `fetch` is a
@@ -301,7 +301,7 @@ module Response = {
 external fetch: (
   string,
   'params,
-) => Promise.t<Response.t<{"token": Js.Nullable.t<string>, "error": Js.Nullable.t<string>}>> =
+) => promise<Response.t<{"token": Js.Nullable.t<string>, "error": Js.Nullable.t<string>}>> =
   "fetch"
 
 // We now use our asynchronous `fetch` function to simulate a login.
