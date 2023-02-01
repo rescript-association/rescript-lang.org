@@ -91,7 +91,14 @@ let make = () => {
                   }
                 }
 
-                {...item, url}
+                let (content, type_) = switch item.content->Js.Nullable.toOption {
+                | Some(c) => (c->Js.Nullable.return, item.type_)
+                | None =>
+                  let fallback = item.hierarchy["lvl0"]
+                  (fallback->Js.Nullable.return, #content)
+                }
+
+                {...item, url, content, type_}
               })
             }}
           />,
