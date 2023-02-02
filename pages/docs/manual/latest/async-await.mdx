@@ -257,7 +257,7 @@ async function fetchData(param) {
 We can utilize the `Js.Promise2` module to handle multiple promises. E.g. let's use `Js.Promise2.all` to wait for multiple promises before continuing the program:
 
 ```res
-let pauseReturn = async (value, timeout) => {
+let pauseReturn = (value, timeout) => {
   Js.Promise2.make((~resolve, ~reject) => {
     Js.Global.setTimeout(() => {
       resolve(. value)
@@ -266,11 +266,11 @@ let pauseReturn = async (value, timeout) => {
 }
 
 let logMultipleValues = async () => {
-  let value1 = await pauseReturn("value1", 2000)
-  let value2 = await pauseReturn("value2", 1200)
-  let value3 = await pauseReturn("value3", 500)
+  let promise1 = pauseReturn("value1", 2000)
+  let promise2 = pauseReturn("value2", 1200)
+  let promise3 = pauseReturn("value3", 500)
 
-  let all = await Js.Promise2.all([value1, value2, value3])
+  let all = await Js.Promise2.all([promise1, promise2, promise3])
 
   switch all {
   | [v1, v2, v3] => Js.log(`All values: ${v1}, ${v2}, ${v3}`)
