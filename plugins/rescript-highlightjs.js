@@ -29,7 +29,7 @@ module.exports = function(hljs) {
     keyword:
       'and as assert catch constraint downto else exception export external false for ' +
       'if import in include lazy let module mutable of open private rec switch ' +
-      'to true try type when while with',
+      'to true try type when while with async await',
     // not reliable
      //built_in:
        //'array bool bytes char exn|5 float int int32 int64 list lazy_t|5 nativeint|5 ref string unit',
