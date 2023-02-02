@@ -116,7 +116,7 @@ module ClassicModeExample = {
   }
 }
 
-module NoDecoratorExample = {
+module NoAttributeExample = {
   // No need for `makeProps` anymore
   type props = {name: string}
 
@@ -163,9 +163,9 @@ module PropSpreadExample = {
 
   @react.component
   let make = () => {
-    let props = {NoDecoratorExample.name: "World"}
+    let props = {NoAttributeExample.name: "World"}
 
-    <NoDecoratorExample {...props} />
+    <NoAttributeExample {...props} />
   }
 }
 
@@ -173,7 +173,7 @@ let root =
   <div>
     <AutomaticModeExample name="Automatic" />
     <ClassicModeExample name="Classic" />
-    <NoDecoratorExample name="NoDecorator" />
+    <NoAttributeExample name="NoAttribute" />
     <ReactInterfaceExample name="Interface" />
     <PropTypeInjectionExample isHuman=true />
     <PropSpreadExample />
@@ -208,7 +208,7 @@ function make(props) {
             });
 }
 
-var NoDecoratorExample = {
+var NoAttributeExample = {
   make: make
 };
 
@@ -254,7 +254,7 @@ var root = JsxRuntime.jsxs("div", {
               name: "Classic"
             }),
         JsxRuntime.jsx(make, {
-              name: "NoDecorator"
+              name: "NoAttribute"
             }),
         JsxRuntime.jsx(Playground$ReactInterfaceExample, {
               name: "Interface"
@@ -269,7 +269,7 @@ var root = JsxRuntime.jsxs("div", {
 export {
   AutomaticModeExample ,
   ClassicModeExample ,
-  NoDecoratorExample ,
+  NoAttributeExample ,
   ReactInterfaceExample ,
   PropTypeInjectionExample ,
   PropSpreadExample ,
