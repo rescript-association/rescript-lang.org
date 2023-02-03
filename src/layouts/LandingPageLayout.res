@@ -243,10 +243,11 @@ module QuickInstall = {
             "You can quickly add ReScript to your existing JavaScript codebase via npm / yarn:",
           )}
         </div>
-        <div className="w-full space-y-2">
-          {copyBox("npm install rescript")}
-          {copyBox("npx create-rescript-app")}
+        <div className="w-full space-y-2"> {copyBox("npm install rescript")} </div>
+        <div className="captions x text-gray-40 mb-2 mt-2">
+          {React.string("Or generate a new project from the official template with npx:")}
         </div>
+        <div className="w-full space-y-2"> {copyBox("npx create-rescript-app")} </div>
       </div>
     }
   }
