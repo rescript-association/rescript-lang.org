@@ -12,6 +12,11 @@ let companies = [
     path: "/static/lp/facebook.svg",
   }),
   Logo({
+    name: "Juspay",
+    url: "https://juspay.in",
+    path: "/static/lp/juspay.svg",
+  }),
+  Logo({
     name: "Rohea",
     url: "https://rohea.com",
     path: "/static/lp/rohea.svg",
