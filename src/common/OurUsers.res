@@ -37,6 +37,11 @@ let companies = [
     path: "/static/lp/draftbit.svg",
   }),
   Logo({
+    name: "Porter",
+    url: "https://porter.in",
+    path: "/static/lp/porter.svg",
+  }),
+  Logo({
     name: "Pupilfirst",
     url: "https://pupilfirst.com",
     path: "/static/lp/pupilfirst.svg",
