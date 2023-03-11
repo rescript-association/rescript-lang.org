@@ -151,4 +151,9 @@ let companies = [
     url: "https://bettervim.com/",
     path: "/static/lp/bettervim.svg",
   }),
+  Logo({
+    name: "Instapainting.com",
+    url: "https://www.instapainting.com/",
+    path: "/static/lp/instapainting.svg",
+  }),
 ]
