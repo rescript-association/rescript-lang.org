@@ -2,16 +2,6 @@ type company = Logo({name: string, url: string, path: string})
 
 let companies = [
   Logo({
-    name: "Facebook Messenger",
-    url: "https://messenger.com",
-    path: "/static/lp/messenger.svg",
-  }),
-  Logo({
-    name: "Facebook",
-    url: "https://messenger.com",
-    path: "/static/lp/facebook.svg",
-  }),
-  Logo({
     name: "Juspay",
     url: "https://juspay.in",
     path: "/static/lp/juspay.svg",
