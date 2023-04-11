@@ -172,7 +172,7 @@ The `unit` type is a type that indicates the absense of a specific value. It has
 
 Consider the `Math.random` function. Its type signature is `unit => float`, which means it receives a `unit` as input and creates a random `float` as output. You use this function like this - `let x = Math.random()` - notice the `()` on the end.
 
-Image a simplified `Console.log` function that prints a message to the console. Its type signature is `string => unit`. This means it takes a string as input, prints it, and then returns essentially nothing useful. When `unit` is the output of a function it means the function performs some kind of side-effect. 
+Image a simplified `Console.log` function that prints a message to the console. Its type signature is `string => unit` and you'd use it like this `Console.log("something happened!")`. It takes a string as input, prints it, and then returns essentially nothing useful. When `unit` is the output of a function it means the function performs some kind of side-effect. 
 
 ## Unknown
 
