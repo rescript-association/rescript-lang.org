@@ -168,4 +168,16 @@ As with integers, you may use underscores within literals to improve readability
 
 ## Unit
 
-The `unit` type has a single value, `()`. It compiles to JavaScript's `undefined`. It's a dummy type used as a placeholder in various places. You won't need it until you see it.
+The `unit` type is a type that indicates the absense of a specific value. It has only a single value, `()`, which acts as a placeholder when no other value exists or is needed. It compiles to JavaScript's `undefined` and resembles the `void` type in languages such as C++. What's the point of such a type?
+
+Consider the `Math.random` function. Its type signature is `unit => float`, which means it receives a `unit` as input and creates a random `float` as output. You use this function like this - `let x = Math.random()` - notice the `()` on the end.
+
+Image a simplified `Console.log` function that prints a message to the console. Its type signature is `string => unit`. This means it takes a string as input, prints it, and then returns essentially nothing useful. When `unit` is the output of a function it means the function performs some kind of side-effect. 
+
+## Unknown
+
+The `unknown` type represents values with contents that are a mystery or are not 100% guaranteed to be what you think they are. It provides type-safety when interacting with data received from an external untrusted source. For example, suppose an external function is documented to return a `string`. It might. But if the documentation is not accurate or the code has bugs, the function could return `null`, an `array`, or something else you weren't expecting.
+
+The ReScript type system helps you avoid run-time crashes and unpredicatable behavior by preventing you from using `unknown` in places that expect a `string` or `int` or some other type. The ReScript core libraries also provide utility functions to help you inspect `unknown` values and access their contents. In some cases you may need a JSON parsing library to convert `unknown` values to types you can safely use.   
+
+Consider using `unknown` when receiving data from [external JavaScript functions](/docs/manual/latest/bind-to-js-function)
