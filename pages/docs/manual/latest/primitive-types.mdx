@@ -168,7 +168,7 @@ As with integers, you may use underscores within literals to improve readability
 
 ## Unit
 
-The `unit` type is a type that indicates the absense of a specific value. It has only a single value, `()`, which acts as a placeholder when no other value exists or is needed. It compiles to JavaScript's `undefined` and resembles the `void` type in languages such as C++. What's the point of such a type?
+The `unit` type indicates the absense of a specific value. It has only a single value, `()`, which acts as a placeholder when no other value exists or is needed. It compiles to JavaScript's `undefined` and resembles the `void` type in languages such as C++. What's the point of such a type?
 
 Consider the `Math.random` function. Its type signature is `unit => float`, which means it receives a `unit` as input and calculates a random `float` as output. You use the function like this - `let x = Math.random()`. Notice `()` as the first and only function argument.
 
