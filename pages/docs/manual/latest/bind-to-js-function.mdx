@@ -258,8 +258,9 @@ The `getPropertySafe` function returns an `unknown`, which could be `null` or a 
 @get_index external getPropertySafe: ({..}, string) => unknown = ""
 
 let person = {"name": "Bob", "age": 12}
+
 let greeting1 = "Hello, " ++ getPropertyUnsafe(person, "name") // works (this time!)
-let greeting2 = "Hello, " ++ getPropertySafe(person, "name") // syntax error
+// let greeting2 = "Hello, " ++ getPropertySafe(person, "name") // syntax error
 ```
 
 ## Special-case: Event Listeners
