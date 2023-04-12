@@ -1,0 +1,236 @@
+---
+author: rescript-team
+date: "2023-04-15"
+title: Even better interop using customizeable variants
+badge: roadmap
+description: |
+  Async/await & better Promise support, JSX v4, and more!
+---
+
+TLDR;
+
+- Variants is _the_ feature of ReScript.
+- We're making the runtime representation of variants customizeable.
+- This means it'll be much easier to your variants cleanly to external data and APIs.
+- This covers variants with a discriminator, which will map cleanly to TS/JS discriminated unions (link)
+- We also introduce unboxed variants, meaning being able to leverage variants to
+
+Variants is _the_ feature of ReScript.
+
+Polymorphic variants are still useful for certain scenarios, but they've [always had some fairly large downsides](https://rescript-lang.org/docs/manual/latest/polymorphic-variant#variant-vs-polymorphic-variant) as compared to regular variants.
+
+- Customizeable runtime representation for variants
+
+## Unboxed variants
+
+- Explain boxed
+
+Here's a simple example:
+
+```rescript
+@unboxed type listItemValue = String(string) | Boolean(bool) | Number(float)
+
+let myArray = [String("Hello"), Boolean(true), Boolean(false), Number(13.37)]
+```
+
+Compiles to this JS:
+
+```javascript
+var myArray = ["hello", true, false, 13.37];
+```
+
+- More explanations of what this enables. More examples below
+
+## Examples of how interop is improved
+
+Let's look at a few examples of how interop is improved with the new variant representation.
+
+### Pattern matching on nullable values
+
+Previously, any value that might be `null` would need to be explicitly converted to an option, via for example `Nullable.toOption` (in `Core`), before you could use pattern matching on it. With the new possibility of defining unboxed variants, you'll now be able to define variants that will allow you to pattern match directly on the nullable values, without requiring explicit conversion. Let's look at what usage looks like before, vs now:
+
+```rescript
+type userAge = {ageNum: Nullable.t<int>}
+type rec user = {
+  name: string,
+  age: Nullable.t<userAge>,
+  bestFriend: Nullable.t<user>,
+}
+
+let getBestFriendsAge = user =>
+  switch user.bestFriend->Nullable.toOption {
+  | Some({age}) =>
+    switch age->Nullable.toOption {
+    | None => None
+    | Some({ageNum}) => ageNum->Nullable.toOption
+    }
+  | None => None
+  }
+```
+
+As you can see, you need to convert each level of nullables explicitly, which breaks the pattern matching flow. With the new unboxed variant representation, we'll instead be able to do this:
+
+```rescript
+// The type definition below is inlined here to examplify, but this definition will live in Core and be easily accessible
+module Nullable = {
+  @unboxed type t<'a> = Present('a) | @as(null) Null
+}
+
+type userAge = {ageNum: Nullable.t<int>}
+type rec user = {
+  name: string,
+  age: Nullable.t<userAge>,
+  bestFriend: Nullable.t<user>,
+}
+
+let getBestFriendsAge = user =>
+  switch user.bestFriend {
+  | Present({age: Present({ageNum: Present(ageNum)})}) => Some(ageNum)
+  | _ => None
+  }
+```
+
+Pattern matching goodness, just like you'd expect to be able to do!
+
+This has a few implications:
+
+- Dealing with external data, that is often nullable and seldom guaranteed to map cleanly to `option` without needing conversion, becomes much easier, and zero cost
+- Special handling like [@return(nullable)](https://rescript-lang.org/syntax-lookup#return-decorator) becomes redundant. This is good because that functionality does not work in all cases, but the new functionality will
+
+### Decoding and encoding JSON idiomatically
+
+With unboxed variants, we have everything we need to define an actual, valid JSON type:
+
+```rescript
+@unboxed
+type rec json =
+  | @as(false) False
+  | @as(true) True
+  | @as(null) Null
+  | String(string)
+  | Number(float)
+  | Object(Js.Dict.t<json>)
+  | Array(array<json>)
+
+let myValidJsonValue = Array([String("Hi"), Number(123.)])
+```
+
+This above makes it impossible to define anything but valid JSON. You can also easily use this to pattern match on parsed JSON values. Here's an example of how you could write your own JSON decoders easily, leveraging pattern matching:
+
+```rescript
+@unboxed
+type rec json =
+  | @as(false) False
+  | @as(true) True
+  | @as(null) Null
+  | String(string)
+  | Number(float)
+  | Object(Js.Dict.t<json>)
+  | Array(array<json>)
+
+type rec user = {
+  name: string,
+  age: int,
+  bestFriend: option<user>,
+}
+
+let rec decodeUser = json =>
+  switch json {
+  | Object(userDict) =>
+    switch (
+      userDict->Dict.get("name"),
+      userDict->Dict.get("age"),
+      userDict->Dict.get("bestFriend"),
+    ) {
+    | (Some(String(name)), Some(Number(age)), Some(maybeBestFriend)) =>
+      Some({
+        name,
+        age: age->Float.toInt,
+        bestFriend: maybeBestFriend->decodeUser,
+      })
+    | _ => None
+    }
+  | _ => None
+  }
+
+let decodeUsers = json =>
+  switch json {
+  | Array(array) => array->Array.map(decodeUser)->Array.keepSome
+  | _ => []
+  }
+```
+
+The point of this example isn't to showcase a perfect JSON decoder strategy, but rather show that the language itself will now have the building blocks to interact with JSON style data natively.
+
+### Binding to TypeScript enums
+
+```typescript
+// direction.ts
+/** Direction of the action. */
+enum Direction {
+  /** The direction is up. */
+  Up = "UP",
+
+  /** The direction is down. */
+  Down = "DOWN",
+
+  /** The direction is left. */
+  Left = "LEFT",
+
+  /** The direction is right. */
+  Right = "RIGHT",
+}
+
+export const myDirection = Direction.Up;
+```
+
+Previously, you'd be forced to use a polymorphic variant for this if you wanted clean, zero-cost interop:
+
+```rescript
+type direction = [ #UP | #DOWN | #LEFT | #RIGHT ]
+@module("./direction.js") external myDirection: direction = "myDirection"
+```
+
+Notice a few things:
+
+- We're forced to use the names of the enum payload, meaning it won't fully map to what you'd use in TypeScript
+- There's no way to bring over the documentation strings, because polymorphic variants are structural, so there's no one source definition for them to look for docstrings on. This is true _even_ if you annotate with your explicitly written out polymorphic variant definition.
+
+With the new runtime representation, this is how you'd bind to the above enum instead:
+
+```rescript
+/** Direction of the action. */
+type direction =
+  | /** The direction is up. */
+  @as("UP")
+  Up
+
+  | /** The direction is down. */
+  @as("DOWN")
+  Down
+
+  | /** The direction is left. */
+  @as("LEFT")
+  Left
+
+  | /** The direction is right. */
+  @as("RIGHT")
+  Right
+
+@module("./direction.js") external myDirection: direction = "myDirection"
+```
+
+Now, this maps 100% to the TypeScript code, including letting us bring over the documentation strings so we get a nice editor experience.
+
+### String literals
+
+The same logic is easily applied to string literals from TypeScript, only here the benefits is even larger, because string literals have the same limitations in TypeScript that polymorphic variants have in ReScript.
+
+```typescript
+// direction.ts
+type direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
+```
+
+There's no way to attach documentation strings to string literals in TypeScript, and you only get the actual value to interact with.
+
+With the new customizeable variants, you could bind to the above string literal type easily, but add documentation, change the name you interact with i. And there's no runtime cost.
