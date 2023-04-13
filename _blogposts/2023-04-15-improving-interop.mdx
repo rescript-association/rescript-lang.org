@@ -1,31 +1,182 @@
 ---
 author: rescript-team
 date: "2023-04-15"
-title: Even better interop using customizeable variants
+title: Even better interop using customizable variants
 badge: roadmap
 description: |
-  Async/await & better Promise support, JSX v4, and more!
+  TBD
 ---
 
-TLDR;
+Interop with JavaScript/TypeScript is a top priority for ReScript. Recently we've made some changes to the runtime representation of variants that'll allow you to use variants for a large number of new interop scenarios, zero cost. This is important, because variants is _the_ feature of ReScript, enabling great data modeling, pattern matching and more. _Pattern matching_ is really the key here. The changes we've made will enable you to write idiomatic ReScript leveraging pattern matching in many more scenarios.
 
-- Variants is _the_ feature of ReScript.
-- We're making the runtime representation of variants customizeable.
-- This means it'll be much easier to your variants cleanly to external data and APIs.
-- This covers variants with a discriminator, which will map cleanly to TS/JS discriminated unions (link)
-- We also introduce unboxed variants, meaning being able to leverage variants to
+These changes will ship in `v11` of ReScript, and in this post we'll tell you all you need to know about them.
 
-Variants is _the_ feature of ReScript.
+## TLDR;
 
-Polymorphic variants are still useful for certain scenarios, but they've [always had some fairly large downsides](https://rescript-lang.org/docs/manual/latest/polymorphic-variant#variant-vs-polymorphic-variant) as compared to regular variants.
+### Customizable runtime representation
 
-- Customizeable runtime representation for variants
+We're making the runtime representation of variants customizable. This will allow you to cleanly map variants external data and APIs in many more cases than before.
 
-## Unboxed variants
+That in turn will let you write idiomatic ReScript in more cases when interfacing with external data, leveraging the power of pattern matching and other ReScript features.
 
-- Explain boxed
+### Zero cost bindings to discriminated unions
 
-Here's a simple example:
+This covers variants with a discriminator, which will map cleanly to JavaScript/TypeScript [discriminated unions](https://www.typescriptlang.org/docs/handbook/unions-and-intersections.html#discriminating-unions).
+
+Discriminated unions are getting more and more popular in TypeScript (for good reason!) and this will open up a whole new venue for simple interop for ReScript. This will let you effortlessly utilize the power of ReScript's pattern matching and similar features, without needing any runtime conversion. In addition it'll also greatly improve debuggability, because the runtime representation will map cleanly to the variant type you've defined.
+
+### Unboxed (untagged) variants
+
+We also introduce untagged variants, meaning variants where the underlying runtime representation is a primitive. This will let you cleanly map to things like heterogenous array items, nullable values, and more.
+
+## The current state
+
+We have several tools available today in ReScript for binding to external values without having to convert them to a ReScript runtime representation. Most notably, we have polymorphic variants, allowing us to bind zero cost to string and number literals. An example:
+
+```rescript
+// These will both be
+type myType = [#"store-or-network" | #"network-only"]
+```
+
+However, polymorphic variants have many [downsides when compared to regular variants](https://rescript-lang.org/docs/manual/latest/polymorphic-variant#variant-vs-polymorphic-variant). They still have many good and valid use cases, but more often than not the reason for picking them has been their runtime representation mapping cleanly to external data. Meaning they are typically chosen even though choosing regular variants would almost always have been a better choice, all things equal.
+
+In addition to this, there's currently no way to map to discriminated unions in TypeScript (which are getting more and more popular) without needing to do manual runtime conversion of the discriminated union into a ReScript variant. This is cumbersome in the default case, and even more cumbersome when dealing with things like recursive structures, where each level of recursion needs to do explicit conversion.
+
+With ReScript v11, these issues will finally be solved. Let us take you on a tour of what has changed, and how it improves on the current situation.
+
+## Tagged variants
+
+Variants with payloads have always been represented as a tagged union at runtime. Here's an example:
+
+```rescript
+type entity = User({name: string}) | Group({workingName: string})
+
+let user = User({name: "Hello"})
+```
+
+Is represented as:
+
+```javascript
+var user = {
+  TAG: /* User */ 0,
+  name: "Hello",
+};
+```
+
+However, this has been problematic when binding to external data, because there has been no way to customize the discriminator (the `TAG` property) or how its value is represented for each variant case (`0` representing `User` here).
+
+Let's examplify this by imagining we're binding to an external union that looks like this in TypeScript:
+
+```typescript
+type LoadingState =
+  | { state: "loading"; ready: boolean }
+  | { state: "error"; message: string }
+  | { state: "done"; data: Data };
+```
+
+Currently, there's no good way to use a ReScript variant to represent this type without resorting to manual and error prone runtime conversion. However, with the new funcionality, binding to the above zero cost is easy:
+
+```rescript
+@tag("state")
+type loadingState = | @as("loading") Loading({ready: bool}) | @as("error") Error({message: string}) | @as("done") Done({data: data})
+
+let state = Error({message: "Something went wrong!"})
+```
+
+This will compile to:
+
+```javascript
+var state = {
+  state: "error",
+  message: "Something went wrong!",
+};
+```
+
+Let's break down what we've done to make this work:
+
+- The `@tag` attribute lets you customize the discriminator. We're setting that to `"state"` so we map to what the external data looks like.
+- Each variant case has an `@as` attribute. That controls what each variant case is discriminated on. We're setting all of the cases to their lowercase equivalent, because that's what the external data will look like.
+
+The end result is clean and zero cost bindings to the external data, in a way that previously would require manual runtime conversion.
+
+Let's look at a few more real world examples.
+
+### Binding to TypeScript enums
+
+```typescript
+// direction.ts
+/** Direction of the action. */
+enum Direction {
+  /** The direction is up. */
+  Up = "UP",
+
+  /** The direction is down. */
+  Down = "DOWN",
+
+  /** The direction is left. */
+  Left = "LEFT",
+
+  /** The direction is right. */
+  Right = "RIGHT",
+}
+
+export const myDirection = Direction.Up;
+```
+
+Previously, you'd be forced to use a polymorphic variant for this if you wanted clean, zero-cost interop:
+
+```rescript
+type direction = [ #UP | #DOWN | #LEFT | #RIGHT ]
+@module("./direction.js") external myDirection: direction = "myDirection"
+```
+
+Notice a few things:
+
+- We're forced to use the names of the enum payload, meaning it won't fully map to what you'd use in TypeScript
+- There's no way to bring over the documentation strings, because polymorphic variants are structural, so there's no one source definition for them to look for docstrings on. This is true _even_ if you annotate with your explicitly written out polymorphic variant definition.
+
+With the new runtime representation, this is how you'd bind to the above enum instead:
+
+```rescript
+/** Direction of the action. */
+type direction =
+  | /** The direction is up. */
+  @as("UP")
+  Up
+
+  | /** The direction is down. */
+  @as("DOWN")
+  Down
+
+  | /** The direction is left. */
+  @as("LEFT")
+  Left
+
+  | /** The direction is right. */
+  @as("RIGHT")
+  Right
+
+@module("./direction.js") external myDirection: direction = "myDirection"
+```
+
+Now, this maps 100% to the TypeScript code, including letting us bring over the documentation strings so we get a nice editor experience.
+
+### String literals
+
+The same logic is easily applied to string literals from TypeScript, only here the benefits is even larger, because string literals have the same limitations in TypeScript that polymorphic variants have in ReScript.
+
+```typescript
+// direction.ts
+type direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
+```
+
+There's no way to attach documentation strings to string literals in TypeScript, and you only get the actual value to interact with.
+
+With the new customizable variants, you could bind to the above string literal type easily, but add documentation, change the name you interact with i. And there's no runtime cost.
+
+### Untagged variants
+
+We've also implemented support for _untagged variants_. This will let you use variants to represent values that are primitives and literals in a way that hasn't been possible before. We'll explain what this is and why it's useful by showing a number of real world examples. Let's start with a simple one on how we can now represent a heterogenous array.
 
 ```rescript
 @unboxed type listItemValue = String(string) | Boolean(bool) | Number(float)
@@ -33,17 +184,19 @@ Here's a simple example:
 let myArray = [String("Hello"), Boolean(true), Boolean(false), Number(13.37)]
 ```
 
-Compiles to this JS:
+Here, each value will be _unboxed_ at runtime. That means that the variant payload will be all that's left at runtime, no "box" holding the value.
+
+It therefore compiles to this JS:
 
 ```javascript
 var myArray = ["hello", true, false, 13.37];
 ```
 
-- More explanations of what this enables. More examples below
+This was previously possible to do, leveraging a few tricks, when you didn't need to potentially read the values from the array again in ReScript. But, if you wanted to read back the values, you'd have to do a number of manual steps.
 
-## Examples of how interop is improved
+In the above example, reaching back into the values is as simple as pattern matching on them.
 
-Let's look at a few examples of how interop is improved with the new variant representation.
+Let's look at a few more examples.
 
 ### Pattern matching on nullable values
 
@@ -162,75 +315,6 @@ let decodeUsers = json =>
 
 The point of this example isn't to showcase a perfect JSON decoder strategy, but rather show that the language itself will now have the building blocks to interact with JSON style data natively.
 
-### Binding to TypeScript enums
+## Wrapping up
 
-```typescript
-// direction.ts
-/** Direction of the action. */
-enum Direction {
-  /** The direction is up. */
-  Up = "UP",
-
-  /** The direction is down. */
-  Down = "DOWN",
-
-  /** The direction is left. */
-  Left = "LEFT",
-
-  /** The direction is right. */
-  Right = "RIGHT",
-}
-
-export const myDirection = Direction.Up;
-```
-
-Previously, you'd be forced to use a polymorphic variant for this if you wanted clean, zero-cost interop:
-
-```rescript
-type direction = [ #UP | #DOWN | #LEFT | #RIGHT ]
-@module("./direction.js") external myDirection: direction = "myDirection"
-```
-
-Notice a few things:
-
-- We're forced to use the names of the enum payload, meaning it won't fully map to what you'd use in TypeScript
-- There's no way to bring over the documentation strings, because polymorphic variants are structural, so there's no one source definition for them to look for docstrings on. This is true _even_ if you annotate with your explicitly written out polymorphic variant definition.
-
-With the new runtime representation, this is how you'd bind to the above enum instead:
-
-```rescript
-/** Direction of the action. */
-type direction =
-  | /** The direction is up. */
-  @as("UP")
-  Up
-
-  | /** The direction is down. */
-  @as("DOWN")
-  Down
-
-  | /** The direction is left. */
-  @as("LEFT")
-  Left
-
-  | /** The direction is right. */
-  @as("RIGHT")
-  Right
-
-@module("./direction.js") external myDirection: direction = "myDirection"
-```
-
-Now, this maps 100% to the TypeScript code, including letting us bring over the documentation strings so we get a nice editor experience.
-
-### String literals
-
-The same logic is easily applied to string literals from TypeScript, only here the benefits is even larger, because string literals have the same limitations in TypeScript that polymorphic variants have in ReScript.
-
-```typescript
-// direction.ts
-type direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
-```
-
-There's no way to attach documentation strings to string literals in TypeScript, and you only get the actual value to interact with.
-
-With the new customizeable variants, you could bind to the above string literal type easily, but add documentation, change the name you interact with i. And there's no runtime cost.
+- Major new features that will enable whole new use cases and scenarios
