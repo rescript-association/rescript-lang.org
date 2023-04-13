@@ -1,10 +1,10 @@
 ---
 author: rescript-team
 date: "2023-04-15"
-title: Even better interop using customizable variants
+title: Better interop with customizable variants
 badge: roadmap
 description: |
-  TBD
+  A tour of new capabilities coming in ReScript v11
 ---
 
 Interop with JavaScript/TypeScript is a top priority for ReScript. Recently we've made some changes to the runtime representation of variants that'll allow you to use variants for a large number of new interop scenarios, zero cost. This is important, because variants is _the_ feature of ReScript, enabling great data modeling, pattern matching and more. _Pattern matching_ is really the key here. The changes we've made will enable you to write idiomatic ReScript leveraging pattern matching in many more scenarios.
@@ -13,9 +13,11 @@ These changes will ship in `v11` of ReScript, and in this post we'll tell you al
 
 ## TLDR;
 
+This is a long post, so here's a TLDR; for those of you who just want the broad strokes.
+
 ### Customizable runtime representation
 
-We're making the runtime representation of variants customizable. This will allow you to cleanly map variants external data and APIs in many more cases than before.
+We're making the runtime representation of variants customizable. This will allow you to cleanly map variants to external data and APIs in many more cases than before.
 
 That in turn will let you write idiomatic ReScript in more cases when interfacing with external data, leveraging the power of pattern matching and other ReScript features.
 
@@ -23,24 +25,27 @@ That in turn will let you write idiomatic ReScript in more cases when interfacin
 
 This covers variants with a discriminator, which will map cleanly to JavaScript/TypeScript [discriminated unions](https://www.typescriptlang.org/docs/handbook/unions-and-intersections.html#discriminating-unions).
 
-Discriminated unions are getting more and more popular in TypeScript (for good reason!) and this will open up a whole new venue for simple interop for ReScript. This will let you effortlessly utilize the power of ReScript's pattern matching and similar features, without needing any runtime conversion. In addition it'll also greatly improve debuggability, because the runtime representation will map cleanly to the variant type you've defined.
+Discriminated unions are getting more and more popular in TypeScript (for good reason!) and this will open up a whole new venue for simple interop for ReScript. It will let you effortlessly utilize the power of ReScript's pattern matching and similar features, without needing any runtime conversion. In addition it'll also greatly improve debuggability, because the runtime representation will map cleanly to the variant type you've defined.
 
 ### Unboxed (untagged) variants
 
-We also introduce untagged variants, meaning variants where the underlying runtime representation is a primitive. This will let you cleanly map to things like heterogenous array items, nullable values, and more.
+We also introduce untagged variants, meaning variants where the underlying runtime representation is can be a primitive, without a specific discriminator. This will let you cleanly map to things like heterogenous array items, nullable values, and more.
+
+There's your summary. Now let's dive into the details.
 
 ## The current state
 
 We have several tools available today in ReScript for binding to external values without having to convert them to a ReScript runtime representation. Most notably, we have polymorphic variants, allowing us to bind zero cost to string and number literals. An example:
 
 ```rescript
-// These will both be
+// These will both be represented as the strings
+// "store-or-network" and "network-only" at runtime.
 type myType = [#"store-or-network" | #"network-only"]
 ```
 
 However, polymorphic variants have many [downsides when compared to regular variants](https://rescript-lang.org/docs/manual/latest/polymorphic-variant#variant-vs-polymorphic-variant). They still have many good and valid use cases, but more often than not the reason for picking them has been their runtime representation mapping cleanly to external data. Meaning they are typically chosen even though choosing regular variants would almost always have been a better choice, all things equal.
 
-In addition to this, there's currently no way to map to discriminated unions in TypeScript (which are getting more and more popular) without needing to do manual runtime conversion of the discriminated union into a ReScript variant. This is cumbersome in the default case, and even more cumbersome when dealing with things like recursive structures, where each level of recursion needs to do explicit conversion.
+In addition to this, there's currently no way to map to discriminated unions in TypeScript (which are getting more and more popular) without being forced to do manual runtime conversion of the discriminated union into a ReScript variant. This is cumbersome in the default case, and even more cumbersome when dealing with things like recursive structures, where each level of recursion needs to do explicit conversion.
 
 With ReScript v11, these issues will finally be solved. Let us take you on a tour of what has changed, and how it improves on the current situation.
 
@@ -63,7 +68,7 @@ var user = {
 };
 ```
 
-However, this has been problematic when binding to external data, because there has been no way to customize the discriminator (the `TAG` property) or how its value is represented for each variant case (`0` representing `User` here).
+However, this has been problematic when binding to external data, because there has been no way to customize the discriminator (the `TAG` property) or how its value is represented for each variant case (`0` representing `User` here). And that means that unless your external data is modeled the exact same way as above, which is unlikely, you'd be forced to convert to the structure ReScript expects at runtime.
 
 Let's examplify this by imagining we're binding to an external union that looks like this in TypeScript:
 
@@ -94,8 +99,8 @@ var state = {
 
 Let's break down what we've done to make this work:
 
-- The `@tag` attribute lets you customize the discriminator. We're setting that to `"state"` so we map to what the external data looks like.
-- Each variant case has an `@as` attribute. That controls what each variant case is discriminated on. We're setting all of the cases to their lowercase equivalent, because that's what the external data will look like.
+- The `@tag` attribute lets you customize the discriminator (default: `TAG`). We're setting that to `"state"` so we map to what the external data looks like.
+- Each variant case has an `@as` attribute. That controls what each variant case is discriminated on (default: the variant case name as string). We're setting all of the cases to their lowercase equivalent, because that's what the external data will look like.
 
 The end result is clean and zero cost bindings to the external data, in a way that previously would require manual runtime conversion.
 
@@ -172,11 +177,13 @@ type direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
 
 There's no way to attach documentation strings to string literals in TypeScript, and you only get the actual value to interact with.
 
-With the new customizable variants, you could bind to the above string literal type easily, but add documentation, change the name you interact with i. And there's no runtime cost.
+With the new customizable variants, you could bind to the above string literal type easily, but add documentation, change the name you interact with in ReScript. And there's no runtime cost.
 
 ### Untagged variants
 
-We've also implemented support for _untagged variants_. This will let you use variants to represent values that are primitives and literals in a way that hasn't been possible before. We'll explain what this is and why it's useful by showing a number of real world examples. Let's start with a simple one on how we can now represent a heterogenous array.
+We've also implemented support for _untagged variants_. This will let you use variants to represent values that are primitives and literals in a way that hasn't been possible before.
+
+We'll explain what this is and why it's useful by showing a number of real world examples. Let's start with a simple one on how we can now represent a heterogenous array.
 
 ```rescript
 @unboxed type listItemValue = String(string) | Boolean(bool) | Number(float)
@@ -184,7 +191,7 @@ We've also implemented support for _untagged variants_. This will let you use va
 let myArray = [String("Hello"), Boolean(true), Boolean(false), Number(13.37)]
 ```
 
-Here, each value will be _unboxed_ at runtime. That means that the variant payload will be all that's left at runtime, no "box" holding the value.
+Here, each value will be _unboxed_ at runtime. That means that the variant payload will be all that's left, the variant case name wrapping the payload itself will be stripped out and the payload will be all that remains.
 
 It therefore compiles to this JS:
 
@@ -196,11 +203,11 @@ This was previously possible to do, leveraging a few tricks, when you didn't nee
 
 In the above example, reaching back into the values is as simple as pattern matching on them.
 
-Let's look at a few more examples.
+Let's look at a few more examples of what untagged variants enable.
 
 ### Pattern matching on nullable values
 
-Previously, any value that might be `null` would need to be explicitly converted to an option, via for example `Nullable.toOption` (in `Core`), before you could use pattern matching on it. With the new possibility of defining unboxed variants, you'll now be able to define variants that will allow you to pattern match directly on the nullable values, without requiring explicit conversion. Let's look at what usage looks like before, vs now:
+Previously, any value that might be `null` would need to be explicitly converted to an option, via for example `Nullable.toOption` (in `Core`), before you could use pattern matching on it. Here's a typical example of how that could look:
 
 ```rescript
 type userAge = {ageNum: Nullable.t<int>}
@@ -243,12 +250,14 @@ let getBestFriendsAge = user =>
   }
 ```
 
-Pattern matching goodness, just like you'd expect to be able to do!
+> Notice how `@as` now allows us to say that an unboxed variant case should map to a specific underlying primitive. `Present` has a type variable, so it can hold any type. And since it's an unboxed type, only the payloads will be kept at runtime - `'a` or `null`. That's where the magic comes from.
+
+Breaking down the example, we see pattern matching goodness, just like you'd expect to be able to do.
 
 This has a few implications:
 
-- Dealing with external data, that is often nullable and seldom guaranteed to map cleanly to `option` without needing conversion, becomes much easier, and zero cost
-- Special handling like [@return(nullable)](https://rescript-lang.org/syntax-lookup#return-decorator) becomes redundant. This is good because that functionality does not work in all cases, but the new functionality will
+- Dealing with external data, that is often nullable and seldom guaranteed to map cleanly to `option` without needing conversion, becomes much easier, and zero cost.
+- Special handling like [@return(nullable)](https://rescript-lang.org/syntax-lookup#return-decorator) becomes redundant. This is good also because the current functionality does not work in all cases. The new functionality will work anywhere.
 
 ### Decoding and encoding JSON idiomatically
 
@@ -268,7 +277,7 @@ type rec json =
 let myValidJsonValue = Array([String("Hi"), Number(123.)])
 ```
 
-This above makes it impossible to define anything but valid JSON. You can also easily use this to pattern match on parsed JSON values. Here's an example of how you could write your own JSON decoders easily, leveraging pattern matching:
+Here's an example of how you could write your own JSON decoders easily using the above, leveraging pattern matching:
 
 ```rescript
 @unboxed
@@ -314,6 +323,12 @@ let decodeUsers = json =>
 ```
 
 The point of this example isn't to showcase a perfect JSON decoder strategy, but rather show that the language itself will now have the building blocks to interact with JSON style data natively.
+
+This can be extrapolated to many more cases.
+
+### Bonus: Exhaustive checked, future proofed mapping to external data
+
+- TODO: Fill in
 
 ## Wrapping up
 
