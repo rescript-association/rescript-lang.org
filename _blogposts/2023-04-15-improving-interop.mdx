@@ -7,53 +7,13 @@ description: |
   A tour of new capabilities coming in ReScript v11
 ---
 
-ReScript v11 is around the corner, and it comes packed with new features that will improve interop with JavaScript/TypeScript. We will shine some light on each significant feature in a series of blog posts.
+ReScript v11 is around the corner, and it comes packed with new features that will improve interop with JavaScript/TypeScript. Recently we've made some changes to the runtime representation of variants that'll allow you to use variants for a large number of new interop scenarios, zero cost. This is important, because variants is _the_ feature of ReScript, enabling great data modeling, pattern matching and more.
 
-Interop with JavaScript/TypeScript is a top priority for ReScript. Recently we've made some changes to the runtime representation of variants that'll allow you to use variants for a large number of new interop scenarios, zero cost. This is important, because variants is _the_ feature of ReScript, enabling great data modeling, pattern matching and more.
+- **Customizable runtime representation.** We're making the runtime representation of variants customizable. This will allow you to cleanly map variants to external data and APIs in many more cases than before.
+- **Zero cost bindings to discriminated unions.** Variants with inline records will map cleanly to JavaScript/TypeScript [discriminated unions](https://www.typescriptlang.org/docs/handbook/unions-and-intersections.html#discriminating-unions).
+- **Unboxed (untagged) variants.** We also introduce untagged variants - variants where the underlying runtime representation can be a primitive, without a specific discriminator. This will let you cleanly map to things like heterogenous array items, nullable values, and more.
 
-_Pattern matching_ is really the key here. The changes we've made will enable you to write idiomatic ReScript leveraging pattern matching in many more scenarios.
-
-These changes will ship in `v11` of ReScript, and in this post we'll tell you all you need to know about them.
-
-## TLDR;
-
-This is a long post, so here's a summary for those of you who just want the broad strokes.
-
-### Customizable runtime representation
-
-We're making the runtime representation of variants customizable. This will allow you to cleanly map variants to external data and APIs in many more cases than before.
-
-### Zero cost bindings to discriminated unions
-
-Variants with inline records will map cleanly to JavaScript/TypeScript [discriminated unions](https://www.typescriptlang.org/docs/handbook/unions-and-intersections.html#discriminating-unions).
-
-Discriminated unions are getting more and more popular in TypeScript (for good reason!) and this will open up a whole new venue for simple interop for ReScript. It will let you effortlessly utilize the power of ReScript's pattern matching and similar features, without needing any runtime conversion.
-
-In addition it'll also greatly improve debuggability, because the runtime representation will map cleanly to the variant type you've defined.
-
-### Unboxed (untagged) variants
-
-We also introduce untagged variants - variants where the underlying runtime representation can be a primitive, without a specific discriminator. This will let you cleanly map to things like heterogenous array items, nullable values, and more.
-
-Now let's dive into the details.
-
-## The current state
-
-We have several tools available today in ReScript for binding to external values without having to convert them to a runtime representation ReScript understand. Most notably, we have polymorphic variants, allowing us to bind zero cost to string and number literals. An example:
-
-```rescript
-// These will both be represented as the strings
-// "store-or-network" and "network-only" at runtime.
-type myType = [#"store-or-network" | #"network-only"]
-```
-
-However, polymorphic variants have many [downsides when compared to regular variants](https://rescript-lang.org/docs/manual/latest/polymorphic-variant#variant-vs-polymorphic-variant).
-
-They still have many good and valid use cases, but more often than not the reason for picking them has been their runtime representation mapping cleanly to external data. They are typically chosen even though choosing regular variants would almost always have been a better choice, all things equal.
-
-In addition to this, there's currently no way to map to discriminated unions in TypeScript (which are getting more and more popular) without being forced to do manual runtime conversion of the discriminated union into a ReScript variant. This is cumbersome in the default case, and even more cumbersome when dealing with things like recursive structures, where each level of recursion needs to do explicit conversion.
-
-With ReScript v11, these issues will finally be solved. Let us take you on a tour of what has changed, and how it improves on the current situation.
+Let's dive into the details.
 
 ## Tagged variants
 
@@ -330,53 +290,27 @@ let decodeUsers = json =>
   }
 ```
 
-The point of this example isn't to showcase a perfect JSON decoder strategy, but rather show that the language itself will now have the building blocks to interact with JSON style data natively.
-
-This can be extrapolated to many more cases, including easy and simple JSON encoders.
-
-### Bonus: Exhaustive checked, future proofed mapping to external data
-
-Included in the untagged variants functionality is also a built in way to handle when you receive data you didn't expect. Imagine this case:
+Encoding that same structure back into JSON is also easy:
 
 ```rescript
-type userStatus = | @as("online") Online | @as("offline") Offline
+let rec userToJson = user => Object(
+  Dict.fromArray([
+    ("name", String(user.name)),
+    ("age", Number(user.age->Int.toFloat)),
+    (
+      "bestFriend",
+      switch user.bestFriend {
+      | None => Null
+      | Some(friend) => userToJson(friend)
+      },
+    ),
+  ]),
+)
 
-let greetByStatus = status =>
-  switch status {
-  | Online => "Hello, you're here!"
-  | Offline => "Oh, you're not online.."
-  }
+let usersToJson = users => Array(users->Array.map(userToJson))
 ```
 
-`userStatus` describes an enum coming from some API. You deploy your code, and everything is working well. But, imagine that the server now adds a `Idle` case without you having a chance to deploy code handling the new case? You'd get a match failure since there would be no code path to handle that new enum value.
-
-However, there's a simple and solid solution for that now. Let's change our variant defintion to handle any value that might be added in the future.
-
-```rescript
-@unboxed
-type userStatus = | @as("online") Online | @as("offline") Offline | FutureAddedValue(unknown)
-
-let greetByStatus = status =>
-  switch status {
-  | Online => "Hello, you're here!"
-  | Offline => "Oh, you're not online.."
-  | FutureAddedValue(v) =>
-    Logger.log(`Unknown value:`, v)
-    "Oops, you have a status I didn't expect.."
-  }
-```
-
-Now, any value that does not match `"online"` or `"offline"` will match `FutureAddedValue`. And, if we add new cases to `userStatus`, the compiler will still show us all places where we need to handle the new case, because this preserves exhaustiveness checking.
-
-Let's distill what we've done and what that means:
-
-- We've added a `FutureAddedValue(unknown)` case. This is what will capture any value that hasn't been matched by the other cases in the variant.
-- `unknown` is a type representing something not known, and you can't really do much with it without classifying it to something known.
-- In order for this to work, we also need to `@unbox` our type so the only thing remaining at runtime will be `unknown`.
-
-> Note that the `FutureAddedValue` case can be called anything for this to work, the important thing is that the type is `@unboxed` and that the catch-all case has a payload of type `unknown`.
-
-This is useful when interfacing with external data that might change. It's also useful when you know a piece of data might be one of a large amount of different things, but you only want to handle a few of those explictly. Like an enum from an API that might have 50 cases, but you only care about explicitly handling 3 of them.
+This can be extrapolated to many more cases.
 
 ## Wrapping up
 
