@@ -7,10 +7,10 @@ description: |
   A tour of new capabilities coming in ReScript v11
 ---
 
-ReScript v11 is around the corner, and it comes packed with new features that will improve interop with JavaScript/TypeScript. Recently we've made some changes to the runtime representation of variants that'll allow you to use variants for a large number of new interop scenarios, zero cost. This is important, because variants is _the_ feature of ReScript, enabling great data modeling, pattern matching and more.
+ReScript v11 is around the corner, and it comes packed with new features that will improve interop with JavaScript/TypeScript. Recently we've made some changes to the runtime representation of variants that'll allow you to use variants for a large number of new interop scenarios, zero cost. This is important, because variants are _the_ feature of ReScript, enabling great data modeling, pattern matching and more.
 
 - **Customizable runtime representation.** We're making the runtime representation of variants customizable. This will allow you to cleanly map variants to external data and APIs in many more cases than before.
-- **Zero cost bindings to discriminated unions.** Variants with inline records will map cleanly to JavaScript/TypeScript [discriminated unions](https://www.typescriptlang.org/docs/handbook/unions-and-intersections.html#discriminating-unions).
+- **Zero cost bindings to discriminated unions.** Variants with inline records will map cleanly to JavaScript/TypeScript [discriminated unions](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions).
 - **Unboxed (untagged) variants.** We also introduce untagged variants - variants where the underlying runtime representation can be a primitive, without a specific discriminator. This will let you cleanly map to things like heterogenous array items, nullable values, and more.
 
 Let's dive into the details.
@@ -134,7 +134,7 @@ Now, this maps 100% to the TypeScript code, including letting us bring over the 
 
 ### String literals
 
-The same logic is easily applied to string literals from TypeScript, only here the benefits is even larger, because string literals have the same limitations in TypeScript that polymorphic variants have in ReScript.
+The same logic is easily applied to string literals from TypeScript, only here the benefit is even larger, because string literals have the same limitations in TypeScript that polymorphic variants have in ReScript.
 
 ```typescript
 // direction.ts
