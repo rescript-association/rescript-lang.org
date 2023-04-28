@@ -1042,8 +1042,7 @@ module Settings = {
       setConfig(defaultConfig)
     }
 
-    let onCompilerSelect = id =>
-      dispatch(SwitchToCompiler({id, libraries: readyState.selected.libraries}))
+    let onCompilerSelect = id => dispatch(SwitchToCompiler(id))
 
     let titleClass = "hl-5 text-gray-20 mb-2"
     <div className="p-4 pt-8 bg-gray-90 text-gray-20">
@@ -1067,7 +1066,9 @@ module Settings = {
                   {React.string(version)}
                 </option>
               )->React.array}
-              <option disabled=true className="py-4"> {React.string("---Official Releases---")} </option>
+              <option disabled=true className="py-4">
+                {React.string("---Official Releases---")}
+              </option>
             </>
           }}
           {Belt.Array.map(readyState.versions, version =>
@@ -1094,7 +1095,7 @@ module Settings = {
         />
       </div>
       <div className="mt-6">
-        <div className=titleClass> {React.string("Enabled Libraries")} </div>
+        <div className=titleClass> {React.string("Loaded Libraries")} </div>
         <ul>
           {Belt.Array.map(readyState.selected.libraries, lib => {
             <li className="ml-2" key=lib> {React.string(lib)} </li>
@@ -1202,7 +1203,7 @@ module ControlPanel = {
     let router = Next.Router.useRouter()
     let children = switch state {
     | Init => React.string("Initializing...")
-    | SwitchingCompiler(_, _, _) => React.string("Switching Compiler...")
+    | SwitchingCompiler(_ready, _version) => React.string("Switching Compiler...")
     | Compiling(ready, _)
     | Ready(ready) =>
       let onFormatClick = evt => {
@@ -1352,7 +1353,7 @@ module OutputPanel = {
     let errorPane = switch compilerState {
     | Compiling(ready, _)
     | Ready(ready)
-    | SwitchingCompiler(ready, _, _) =>
+    | SwitchingCompiler(ready, _) =>
       <ResultPane
         targetLang=ready.targetLang
         compilerVersion=ready.selected.compilerVersion
@@ -1365,7 +1366,7 @@ module OutputPanel = {
     let settingsPane = switch compilerState {
     | Ready(ready)
     | Compiling(ready, _)
-    | SwitchingCompiler(ready, _, _) =>
+    | SwitchingCompiler(ready, _) =>
       let config = ready.selected.config
       let setConfig = config => compilerDispatch(UpdateConfig(config))
 

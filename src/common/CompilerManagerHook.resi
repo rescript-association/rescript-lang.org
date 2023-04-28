@@ -35,12 +35,12 @@ type ready = {
 type state =
   | Init
   | SetupFailed(string)
-  | SwitchingCompiler(ready, string, array<string>) // (ready, targetId, libraries)
+  | SwitchingCompiler(ready, string) // (ready, targetId, libraries)
   | Ready(ready)
   | Compiling(ready, (Lang.t, string))
 
 type action =
-  | SwitchToCompiler({id: string, libraries: array<string>})
+  | SwitchToCompiler(string) // id
   | SwitchLanguage({lang: Lang.t, code: string})
   | Format(string)
   | CompileCode(Lang.t, string)

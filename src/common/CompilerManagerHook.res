@@ -170,12 +170,12 @@ type ready = {
 type state =
   | Init
   | SetupFailed(string)
-  | SwitchingCompiler(ready, string, array<string>) // (ready, targetId, libraries)
+  | SwitchingCompiler(ready, string) // (ready, targetId, libraries)
   | Ready(ready)
   | Compiling(ready, (Lang.t, string))
 
 type action =
-  | SwitchToCompiler({id: string, libraries: array<string>})
+  | SwitchToCompiler(string) // id
   | SwitchLanguage({lang: Lang.t, code: string})
   | Format(string)
   | CompileCode(Lang.t, string)
@@ -204,12 +204,12 @@ let useCompilerManager = (
   let dispatch = (action: action): unit => {
     Belt.Option.forEach(onAction, cb => cb(action))
     switch action {
-    | SwitchToCompiler({id, libraries}) =>
+    | SwitchToCompiler(id) =>
       switch state {
       | Ready(ready) =>
         // TODO: Check if libraries have changed as well
         if ready.selected.id !== id {
-          setState(_ => SwitchingCompiler(ready, id, libraries))
+          setState(_ => SwitchingCompiler(ready, id))
         } else {
           ()
         }
@@ -404,7 +404,7 @@ let useCompilerManager = (
             dispatchError(CompilerLoadingError(msg))
           }
         }
-      | SwitchingCompiler(ready, version, _libraries) =>
+      | SwitchingCompiler(ready, version) =>
         let libraries = getLibrariesForVersion(~version)
 
         switch await attachCompilerAndLibraries(~version, ~libraries, ()) {
