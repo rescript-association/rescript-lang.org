@@ -49,6 +49,8 @@ module CdnMeta = {
     "v8.3.0-dev.2",
   ]
 
+  let experimentalVersions = ["v11.0.0-alpha.5"]
+
   let getCompilerUrl = (version: string): string =>
     j`https://cdn.rescript-lang.org/$version/compiler.js`
 
@@ -66,26 +68,30 @@ module FinalResult = {
 
 // This will a given list of libraries to a specific target version of the compiler.
 // E.g. starting from v9, @rescript/react instead of reason-react is used.
-let migrateLibraries = (~version: string, libraries: array<string>): array<string> => {
+// If the version can't be parsed, an empty array will be returned.
+let getLibrariesForVersion = (~version: string): array<string> => {
   switch Js.String2.split(version, ".")->Belt.List.fromArray {
   | list{major, ..._rest} =>
     let version =
       Js.String2.replace(major, "v", "")->Belt.Int.fromString->Belt.Option.getWithDefault(0)
 
-    Belt.Array.map(libraries, library => {
-      if version >= 9 {
-        switch library {
-        | "reason-react" => "@rescript/react"
-        | _ => library
-        }
-      } else {
-        switch library {
-        | "@rescript/react" => "reason-react"
-        | _ => library
-        }
-      }
-    })
-  | _ => libraries
+    let libraries = if version >= 9 {
+      ["@rescript/react"]
+    } else if version < 9 {
+      ["reason-react"]
+    } else {
+      []
+    }
+
+    // Since version 11, we ship the compiler-builtins as a separate file, and
+    // we also added @rescript/core as a pre-vendored package
+    if version >= 11 {
+      libraries->Js.Array2.push("@rescript/core")->ignore
+      libraries->Js.Array2.push("compiler-builtins")->ignore
+    }
+
+    libraries
+  | _ => []
   }
 }
 
@@ -154,6 +160,7 @@ type selected = {
 
 type ready = {
   versions: array<string>,
+  experimentalVersions: array<string>,
   selected: selected,
   targetLang: Lang.t,
   errors: array<string>, // For major errors like bundle loading
@@ -336,8 +343,9 @@ let useCompilerManager = (
           // to "latest"
           let initVersion = switch initialVersion {
           | Some(version) =>
+            let allVersions = Belt.Array.concat(CdnMeta.versions, CdnMeta.experimentalVersions)
             if (
-              CdnMeta.versions->Js.Array2.some(v => {
+              allVersions->Js.Array2.some(v => {
                 version == v
               })
             ) {
@@ -349,7 +357,7 @@ let useCompilerManager = (
           }
 
           // Latest version is already running on @rescript/react
-          let libraries = ["@rescript/react"]
+          let libraries = getLibrariesForVersion(~version=initVersion)
 
           switch await attachCompilerAndLibraries(~version=initVersion, ~libraries, ()) {
           | Ok() =>
@@ -386,6 +394,7 @@ let useCompilerManager = (
               selected,
               targetLang,
               versions,
+              experimentalVersions: CdnMeta.experimentalVersions,
               errors: [],
               result: FinalResult.Nothing,
             }))
@@ -395,10 +404,10 @@ let useCompilerManager = (
             dispatchError(CompilerLoadingError(msg))
           }
         }
-      | SwitchingCompiler(ready, version, libraries) =>
-        let migratedLibraries = libraries->migrateLibraries(~version)
+      | SwitchingCompiler(ready, version, _libraries) =>
+        let libraries = getLibrariesForVersion(~version)
 
-        switch await attachCompilerAndLibraries(~version, ~libraries=migratedLibraries, ()) {
+        switch await attachCompilerAndLibraries(~version, ~libraries, ()) {
         | Ok() =>
           // Make sure to remove the previous script from the DOM as well
           LoadScript.removeScript(~src=CdnMeta.getCompilerUrl(ready.selected.id))
@@ -418,7 +427,7 @@ let useCompilerManager = (
             compilerVersion: instance->Compiler.version,
             ocamlVersion: instance->Compiler.ocamlVersion,
             config,
-            libraries: migratedLibraries,
+            libraries,
             instance,
           }
 
@@ -426,6 +435,7 @@ let useCompilerManager = (
             selected,
             targetLang: Version.defaultTargetLang,
             versions: ready.versions,
+            experimentalVersions: ready.experimentalVersions,
             errors: [],
             result: FinalResult.Nothing,
           }))
@@ -439,13 +449,13 @@ let useCompilerManager = (
         let instance = ready.selected.instance
 
         let compResult = switch apiVersion {
-        | Version.V1 =>
+        | V1 =>
           switch lang {
           | Lang.OCaml => instance->Compiler.ocamlCompile(code)
           | Lang.Reason => instance->Compiler.reasonCompile(code)
           | Lang.Res => instance->Compiler.resCompile(code)
           }
-        | Version.V2 =>
+        | V2 | V3 =>
           switch lang {
           | Lang.OCaml => instance->Compiler.ocamlCompile(code)
           | Lang.Reason =>

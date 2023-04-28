@@ -1057,6 +1057,19 @@ module Settings = {
             let id = (evt->ReactEvent.Form.target)["value"]
             onCompilerSelect(id)
           }}>
+          {switch readyState.experimentalVersions {
+          | [] => React.null
+          | experimentalVersions =>
+            <>
+              <option disabled=true className="py-4"> {React.string("---Experimental---")} </option>
+              {Belt.Array.map(experimentalVersions, version =>
+                <option className="py-4" key=version value=version>
+                  {React.string(version)}
+                </option>
+              )->React.array}
+              <option disabled=true className="py-4"> {React.string("---Official Releases---")} </option>
+            </>
+          }}
           {Belt.Array.map(readyState.versions, version =>
             <option className="py-4" key=version value=version> {React.string(version)} </option>
           )->React.array}

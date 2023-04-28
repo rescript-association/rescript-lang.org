@@ -25,6 +25,7 @@ type selected = {
 
 type ready = {
   versions: array<string>,
+  experimentalVersions: array<string>,
   selected: selected,
   targetLang: Lang.t,
   errors: array<string>, // For major errors like bundle loading
