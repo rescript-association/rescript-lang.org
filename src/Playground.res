@@ -1578,7 +1578,14 @@ let default = () => {
     ->Belt.Option.getWithDefault(false)
   })
   React.useEffect1(() => {
+<<<<<<< HEAD
     Dom.Storage2.localStorage->Dom.Storage2.setItem("res-vim-mode", isVimMode ? "true" : "false")
+=======
+    Dom.Storage2.localStorage->Dom.Storage2.setItem(
+      "res-vim-mode",
+      isVimMode == true ? "true" : "false",
+    )
+>>>>>>> 422012f05edd5159bc932d55334fa96fa05c1b45
     None
   }, [isVimMode])
   let overlayState = React.useState(() => false)
