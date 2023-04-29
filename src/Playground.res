@@ -54,10 +54,8 @@ module ToggleSelection = {
       values
     }
 
-    let selectedIndex = switch Belt.Array.getIndexBy(values, lang => lang === selected) {
-    | Some(i) => i
-    | None => 0
-    }
+    let selectedIndex =
+      Belt.Array.getIndexBy(values, lang => lang === selected)->Belt.Option.getWithDefault(0)
 
     let elements = Belt.Array.mapWithIndex(values, (i, value) => {
       let active = i === selectedIndex ? "bg-fire text-white font-bold" : "bg-gray-80 opacity-50"
@@ -1005,7 +1003,9 @@ module Settings = {
     ~setConfig: Api.Config.t => unit,
     ~editorCode: React.ref<string>,
     ~config: Api.Config.t,
+    ~vimMode: (bool, (bool => bool) => unit),
   ) => {
+    let (isVimMode, setVimMode) = vimMode
     let {Api.Config.warn_flags: warn_flags} = config
 
     let availableTargetLangs = Api.Version.availableLanguages(readyState.selected.apiVersion)
@@ -1092,6 +1092,15 @@ module Settings = {
           toLabel={value => value}
           selected=config.module_system
           onChange=onModuleSystemUpdate
+        />
+      </div>
+      <div className="mt-6">
+        <div className=titleClass> {React.string("Vim Mode")} </div>
+        <ToggleSelection
+          values=[true, false]
+          toLabel={value => value ? "On" : "Off"}
+          selected=isVimMode
+          onChange={_ => setVimMode(prev => prev == false)}
         />
       </div>
       <div className="mt-6">
@@ -1279,6 +1288,7 @@ module OutputPanel = {
     ~compilerDispatch,
     ~compilerState: CompilerManagerHook.state,
     ~editorCode: React.ref<string>,
+    ~vimMode: (bool, (bool => bool) => unit),
   ) => {
     /*
        We need the prevState to understand different
@@ -1370,7 +1380,7 @@ module OutputPanel = {
       let config = ready.selected.config
       let setConfig = config => compilerDispatch(UpdateConfig(config))
 
-      <Settings readyState=ready dispatch=compilerDispatch editorCode setConfig config />
+      <Settings readyState=ready dispatch=compilerDispatch editorCode setConfig config vimMode />
     | SetupFailed(msg) => <div> {React.string("Setup failed: " ++ msg)} </div>
     | Init => <div> {React.string("Initalizing Playground...")} </div>
     }
@@ -1561,6 +1571,16 @@ let default = () => {
     (),
   )
 
+  let (isVimMode, setVimMode) = React.useState(_ => {
+    Dom.Storage2.localStorage
+    ->Dom.Storage2.getItem("res-vim-mode")
+    ->Belt.Option.map(value => value == "true")
+    ->Belt.Option.getWithDefault(false)
+  })
+  React.useEffect1(() => {
+    Dom.Storage2.localStorage->Dom.Storage2.setItem("res-vim-mode", isVimMode ? "true" : "false")
+    None
+  }, [isVimMode])
   let overlayState = React.useState(() => false)
 
   let windowWidth = CodeMirror.useWindowWidth()
@@ -1712,13 +1732,16 @@ let default = () => {
                   }}
                   onMarkerFocus={rowCol => setFocusedRowCol(_prev => Some(rowCol))}
                   onMarkerFocusLeave={_ => setFocusedRowCol(_ => None)}
+                  keyMap={isVimMode ? "vim" : "default"}
                 />
               </div>
             </div>
             <div
               className="relative w-full overflow-x-hidden h-screen lg:h-auto lg:w-1/2"
               style={ReactDOM.Style.make(~maxWidth=windowWidth > 1024 ? "56rem" : "100%", ())}>
-              <OutputPanel compilerDispatch compilerState editorCode />
+              <OutputPanel
+                compilerDispatch compilerState editorCode vimMode=(isVimMode, setVimMode)
+              />
               <div className="absolute bottom-0 w-full">
                 <Statusbar
                   actionIndicatorKey={Belt.Int.toString(actionCount)} state=compilerState

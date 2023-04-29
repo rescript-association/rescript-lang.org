@@ -38,6 +38,7 @@ module CM: {
       ~lineWrapping: bool=?,
       ~fixedGutter: bool=?,
       ~scrollbarStyle: string=?,
+      ~keyMap: string=?,
       unit,
     ) => t
   }
@@ -63,4 +64,5 @@ let make: (
   ~lineNumbers: bool=?,
   ~scrollbarStyle: string=?,
   ~lineWrapping: bool=?,
+  ~keyMap: string=?,
 ) => React.element

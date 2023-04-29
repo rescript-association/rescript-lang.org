@@ -8,6 +8,8 @@
     This file is providing the core functionality and logic of our CodeMirror instances.
  */
 
+%%raw("import 'codemirror/keymap/vim';")
+
 let useWindowWidth: unit => int = %raw(j` () => {
   const isClient = typeof window === 'object';
 
@@ -69,6 +71,8 @@ module CM = {
       fixedGutter: bool,
       @optional
       scrollbarStyle: string,
+      @optional
+      keyMap: string,
     }
   }
 
@@ -119,6 +123,9 @@ module CM = {
 
   @send
   external setMode: (t, @as("mode") _, string) => unit = "setOption"
+
+  @send
+  external setKeyMap: (t, @as("keyMap") _, string) => unit = "setOption"
 
   @send
   external getScrollerElement: t => Dom.element = "getScrollerElement"
@@ -598,6 +605,7 @@ let make = // props relevant for the react wrapper
   ~lineNumbers=true,
   ~scrollbarStyle="overlay",
   ~lineWrapping=false,
+  ~keyMap="default",
 ): React.element => {
   let inputElement = React.useRef(Js.Nullable.null)
   let cmRef: React.ref<option<CM.t>> = React.useRef(None)
@@ -618,10 +626,10 @@ let make = // props relevant for the react wrapper
         ~readOnly,
         ~lineNumbers,
         ~scrollbarStyle,
+        ~keyMap,
         (),
       )
       let cm = CM.fromTextArea(input, options)
-
       Belt.Option.forEach(minHeight, minHeight =>
         cm->CM.getScrollerElement->DomUtil.setMinHeight(minHeight)
       )
@@ -722,6 +730,11 @@ let make = // props relevant for the react wrapper
     cm->CM.setMode(mode)
     None
   }, [mode])
+
+  React.useEffect1(() => {
+    Belt.Option.getExn(cmRef.current)->CM.setKeyMap(keyMap)
+    None
+  }, [keyMap])
 
   /*
     Needed in case the className visually hides / shows
