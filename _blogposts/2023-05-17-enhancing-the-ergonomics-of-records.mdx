@@ -1,0 +1,140 @@
+---
+author: rescript-team
+date: "2023-05-17"
+title: Enhancing the ergonomics of records
+badge: roadmap
+description: |
+  A tour of new capabilities coming in ReScript v11
+---
+
+[Records](https://rescript-lang.org/docs/manual/latest/record) are a fundamental part of ReScript, representing an efficient and expressive way to model structured data. Beyond offering a clear and concise definition of complex data structures, records bring numerous advantages such as strong type checking, immutability by default, great error messages, and support for exhaustive pattern matching. This allows you to write robust and maintainable code, while the compiler ensures you've handled all possible cases when dissecting a record.
+
+However, there's always room for improvement. In ReScript v10 we added support for [optional record fields](https://rescript-lang.org/docs/manual/latest/record#optional-record-fields) to make constructing records with many optional fields easier and more ergonomic. Now we're focusing on how we can improve the workflow around defining records.
+
+In ReScript v11, we're delighted to introduce two new features that will significantly boost your record manipulation capabilities: Record Type Spreads and Record Type Coercion. Let's delve into what these new features offer and how they can make working with records more ergonomic.
+
+## Type Spreads
+
+Before type spreads, creating a new record that was similar or extended from another record required spelling out every single field in the new definition. This was often tedious, error-prone and made code harder to maintain, especially when working with records with many fields.
+
+In ReScript v11, you can now spread one or more record types into a new record type. It looks like this:
+
+```rescript
+type a = {
+  id: string,
+  name: string,
+}
+
+type b = {
+  age: int
+}
+
+type c = {
+  ...a,
+  ...b,
+  active: bool
+}
+```
+
+`type c` will now be:
+
+```rescript
+type c = {
+  id: string,
+  name: string,
+  age: int,
+  active: bool,
+}
+```
+
+Keeping it as straightforward as possible, spreads are essentially a 'copy-paste' operation for fields from one or more records to another, inlining the fields from the spread records into the new record.
+
+This is going to be a much more ergonomic experience when working with types with many fields, where variations of the same underlying type are needed.
+
+### Use case: extending the built in DOM nodes
+
+This feature can be particularly useful when extending DOM nodes. For instance, in the case of the animation library Framer Motion, one could easily extend the native DOM types with additional properties specific to the library, leading to a more seamless and type-safe integration.
+
+This is how you could bind to a `div` in Framer Motion with the new record type spreads:
+
+```rescript
+type animate = {} // definition omitted for brevity
+
+type divProps = {
+  ...JsxDOM.domProps,
+  initial?: animate,
+  animate?: animate,
+  whileHover?: animate,
+  whileTap?: animate,
+}
+
+module Div = {
+  @module("framer-motion") external make: divProps => Jsx.element = "div"
+}
+```
+
+You can now use `<Div />` as a `<motion.div />` component from Framer Motion. And your type definition is now simple and easy to maintain.
+
+## Type Coercion
+
+Type coercion introduces an extra layer of flexibility when working with records. Now, records of the same shape can be coerced between each other. This means that we can cast record `a` to be record `b` at the type level, if they contain the same exact fields. An example:
+
+```rescript
+type a = {
+  name: string,
+  age: int,
+}
+
+type b = {
+  name: string,
+  age: int,
+}
+
+let nameFromB = (b: b) => b.name
+
+let a: a = {
+  name: "Name",
+  age: 35,
+}
+
+let name = nameFromB((a :> b))
+```
+
+Notice how we _coerce_ the value `a` into the type `b`. This works because they have the same fields.
+
+Additionally, we can also coerce between records where record `a` has a subset of the fields of record `b`. The same example as above, slightly altered:
+
+```rescript
+type a = {
+  id: string,
+  name: string,
+  age: int,
+  active: bool,
+}
+
+type b = {
+  name: string,
+  age: int,
+}
+
+let nameFromB = (b: b) => b.name
+
+let a: a = {
+  id: "1",
+  name: "Name",
+  age: 35,
+  active: true,
+}
+
+let name = nameFromB((a :> b))
+```
+
+Notice how `a` now has more fields than `b`, but we can still coerce `a` to `b` because `b` has a subset of the fields of `a`.
+
+### Coercing is explicit
+
+To maintain the robustness of our type system, coercing is an explicit action. Records are still nominal, preserving the same guarantees as before. You can't accidentally pass record `a` as a `b` without explicitly coercing between them. This is crucial as it prevents accidental dependencies on shapes rather than records, ensuring type safety by forcing explicit coercion between types.
+
+## Conclusion
+
+The introduction of Record Type Spreads and Coercion in ReScript v11 will provide developers with even more powerful tools for manipulating and interacting with record types. We're eager to see how you'll leverage these new features in your ReScript projects. Happy coding!
