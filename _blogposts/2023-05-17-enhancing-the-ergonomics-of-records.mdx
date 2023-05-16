@@ -102,7 +102,7 @@ let name = nameFromB((a :> b))
 
 Notice how we _coerce_ the value `a` into the type `b`. This works because they have the same fields.
 
-Additionally, we can also coerce between records where record `a` has a subset of the fields of record `b`. The same example as above, slightly altered:
+Additionally, we can also coerce records from `a` to `b` whenever `a` is a super-set of `b` (i.e. `a` containing all the fields of `b`, and more). The same example as above, slightly altered:
 
 ```rescript
 type a = {
