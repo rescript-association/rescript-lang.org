@@ -7,11 +7,15 @@ description: |
   A tour of new capabilities coming in ReScript v11
 ---
 
-[Records](https://rescript-lang.org/docs/manual/latest/record) are a fundamental part of ReScript, representing an efficient and expressive way to model structured data. Beyond offering a clear and concise definition of complex data structures, records bring numerous advantages such as strong type checking, immutability by default, great error messages, and support for exhaustive pattern matching. This allows you to write robust and maintainable code, while the compiler ensures you've handled all possible cases when dissecting a record.
+> This is the second post covering new capabilities that'll ship in ReScript v11. You can check out the first post on [better interop with customizable variants here](https://rescript-lang.org/blog/improving-interop).
 
-However, there's always room for improvement. In ReScript v10 we added support for [optional record fields](https://rescript-lang.org/docs/manual/latest/record#optional-record-fields) to make constructing records with many optional fields easier and more ergonomic. Now we're focusing on how we can improve the workflow around defining records.
+[Records](https://rescript-lang.org/docs/manual/latest/record) are a fundamental part of ReScript, offering a clear and concise definition of complex data structures, immutability by default, great error messages, and support for exhaustive pattern matching.
 
-In ReScript v11, we're delighted to introduce two new features that will significantly boost your record manipulation capabilities: Record Type Spreads and Record Type Coercion. Let's delve into what these new features offer and how they can make working with records more ergonomic.
+However, working with records is not without friction. They need to be defined before they're used, can't be extended, and you can't pass parts of them around, because they're "all or nothing". Some of these constraints are what enables the benefits of records. But, they can be slightly unergonomic at times. Especially compared to their close relative [structural objects](https://rescript-lang.org/docs/manual/latest/object#sidebar), that while lacking important features like pattern matching, does allow you to spread type definitions at creation, and leverage subtyping between types that share the same fields.
+
+Because records are so much more powerful in general, we've been focusing on how using them can be more ergonomic and how we can bring some of the ergonomics of structural objects to them as well.
+
+In ReScript v10 we added support for [optional record fields](https://rescript-lang.org/docs/manual/latest/record#optional-record-fields) to make constructing records with many optional fields easier. In ReScript v11, we're delighted to introduce two new features that will significantly boost your record manipulation capabilities: Record Type Spreads and Record Type Coercion. Let's delve into what these new features offer and how they can make working with records more ergonomic.
 
 ## Type Spreads
 
@@ -60,6 +64,7 @@ This is how you could bind to a `div` in Framer Motion with the new record type 
 ```rescript
 type animate = {} // definition omitted for brevity
 
+// JsxDOM.domProps is a built-in record with all valid DOM node attributes
 type divProps = {
   ...JsxDOM.domProps,
   initial?: animate,
@@ -97,10 +102,10 @@ let a: a = {
   age: 35,
 }
 
-let name = nameFromB((a :> b))
+let name = nameFromB(a :> b)
 ```
 
-Notice how we _coerce_ the value `a` into the type `b`. This works because they have the same fields.
+Notice how we _coerce_ the value `a` into the type `b` using the coercion operator `:>`. This works because they have the same fields.
 
 Additionally, we can also coerce records from `a` to `b` whenever `a` is a super-set of `b` (i.e. `a` containing all the fields of `b`, and more). The same example as above, slightly altered:
 
@@ -126,7 +131,7 @@ let a: a = {
   active: true,
 }
 
-let name = nameFromB((a :> b))
+let name = nameFromB(a :> b)
 ```
 
 Notice how `a` now has more fields than `b`, but we can still coerce `a` to `b` because `b` has a subset of the fields of `a`.
