@@ -141,9 +141,37 @@ let name = nameFromB(a :> b)
 
 Notice how `a` now has more fields than `b`, but we can still coerce `a` to `b` because `b` has a subset of the fields of `a`.
 
+In combination with [optional record fields](docs/manual/latest/record#optional-record-fields), one may coerce a mandatory field of an `option` type to an optional field:
+
+```rescript
+type a = {
+  name: string,
+
+  // mandatory, but explicitly typed as option<int>
+  age: option<int>,
+}
+
+type b = {
+  name: string,
+  // optional field
+  age?: int,
+}
+
+let nameFromB = (b: b) => b.name
+
+let a: a = {
+  name: "Name",
+  age: Some(35),
+}
+
+let name = nameFromB(a :> b)
+```
+
+The last example was rather advanced; the full feature set of record type coercion will later on be covered in a dedicated document page.
+
 ### Record Type Coercion is Explicit
 
-Records are still nominally typed, so it is not possible to pass a record `a` as record `b` without an explicit type coercion. This is crucial as it prevents accidental dependencies on shapes rather than records, ensuring predictable and more robust type checking results.
+Records are nominally typed, so it is not possible to pass a record `a` as record `b` without an explicit type coercion. This conscious design decision prevents accidental type matching on shapes rather than records, ensuring predictable and more robust type checking results.
 
 ## Try it out!
 
