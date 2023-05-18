@@ -96,182 +96,6 @@ module ToggleSelection = {
   }
 }
 
-// module Pane = {
-//   type tab = {
-//     title: string,
-//     content: React.element,
-//   }
-
-//   // Classname is applied to a div element
-//   let defaultMakeTabClass = (active: bool): string => {
-//     let rest = active
-//       ? "text-fire font-medium bg-gray-100 hover:cursor-default"
-//       : "hover:cursor-pointer"
-
-//     "flex items-center h-12 px-4 pr-24 " ++ rest
-//   }
-
-//   // tabClass: base class for bg color etc
-//   @react.component
-//   let make = (
-//     ~disabled=false,
-//     ~tabs: array<tab>,
-//     ~makeTabClass=defaultMakeTabClass,
-//     ~selected=0,
-//     ~layout: layout,
-//   ) => {
-//     let (current, setCurrent) = React.useState(_ =>
-//       if selected < 0 || selected >= Js.Array.length(tabs) {
-//         0
-//       } else {
-//         selected
-//       }
-//     )
-
-//     React.useEffect1(() => {
-//       setCurrent(_ => selected)
-//       None
-//     }, [selected])
-
-//     let headers = Belt.Array.mapWithIndex(tabs, (i, tab) => {
-//       let title = tab.title
-//       let onMouseDown = evt => {
-//         ReactEvent.Mouse.preventDefault(evt)
-//         ReactEvent.Mouse.stopPropagation(evt)
-//         setCurrent(_ => i)
-//       }
-//       let active = current === i
-//       // For Safari iOS12
-//       let onClick = _ => ()
-//       let className = makeTabClass(active)
-//       <button key={Belt.Int.toString(i) ++ ("-" ++ title)} onMouseDown onClick className disabled>
-//         {React.string(title)}
-//       </button>
-//     })
-
-//     let resultPanel = React.useRef(Js.Nullable.null)
-
-//     let setHeight = () => {
-//       switch resultPanel.current->Js.Nullable.toOption {
-//       | Some(element) =>
-//         let position = Webapi.Document.getBoundingClientRect(element)
-//         let offsetTop: int = position["top"]
-//         Webapi.Document.height(element, `calc(100vh - ${offsetTop->Belt.Int.toString}px)`)
-//       | None => ()
-//       }
-//     }
-
-//     React.useEffect(_ => {
-//       setHeight()
-//       None
-//     })
-
-//     React.useEffect1(_ => {
-//       setHeight()
-//       None
-//     }, [layout])
-
-//     let body = Belt.Array.mapWithIndex(tabs, (i, tab) => {
-//       let className = current === i ? "block h-full" : "hidden"
-
-//       <div key={Belt.Int.toString(i)} className={"overflow-auto " ++ className}> tab.content </div>
-//     })
-
-//     // let (offsetLeft, offsetTop) = switch offsetPosition {
-//     // | Some(left, top) => (`${Belt.Float.toString(left)}px`, `${Belt.Float.toString(top)}px`)
-//     // | None => ("50%", "100%")
-//     // }
-
-//     <>
-//       <div
-//         className={"flex justify-between flex-wrap bg-gray-100 " ++ (disabled ? "opacity-50" : "")}>
-//         {React.array(headers)}
-//       </div>
-//       <div
-//         ref={ReactDOM.Ref.domRef(resultPanel)}
-//         // style={ReactDOM.Style.make(
-//         //   // ~width={`calc(100vw - ${offsetLeft})`},
-//         //   ~height={`calc(100vh - ${offsetTop})`},
-//         //   (),
-//         // )}
-//       >
-//         {React.array(body)}
-//       </div>
-//     </>
-//   }
-// }
-
-// module Statusbar = {
-//   let renderTitle = (~targetLang, result) => {
-//     /* let errClass = "text-fire"; */
-//     /* let warnClass = "text-orange-dark"; */
-//     /* let okClass = "text-turtle-dark"; */
-//     let errClass = "text-white-80"
-//     let warnClass = "text-white font-bold"
-//     let okClass = "text-white-80"
-
-//     let (className, text) = switch result {
-//     | FinalResult.Comp(Fail(result)) =>
-//       switch result {
-//       | SyntaxErr(_) => (errClass, "Syntax Errors (" ++ (Api.Lang.toString(targetLang) ++ ")"))
-//       | TypecheckErr(_) => (errClass, "Type Errors")
-//       | WarningErr(_) => (warnClass, "Warning Errors")
-//       | WarningFlagErr(_) => (errClass, "Config Error")
-//       | OtherErr(_) => (errClass, "Errors")
-//       }
-//     | Conv(Fail(_)) => (errClass, "Syntax Errors")
-//     | Comp(Success({warnings})) =>
-//       let warningNum = Belt.Array.length(warnings)
-//       if warningNum === 0 {
-//         (okClass, "Compiled successfully")
-//       } else {
-//         (warnClass, "Compiled with " ++ (Belt.Int.toString(warningNum) ++ " Warning(s)"))
-//       }
-//     | Conv(Success(_)) => (okClass, "Format Successful")
-//     | Comp(UnexpectedError(_))
-//     | Conv(UnexpectedError(_)) => (errClass, "Unexpected Error")
-//     | Comp(Unknown(_))
-//     | Conv(Unknown(_)) => (errClass, "Unknown Result")
-//     | Nothing => (okClass, "Ready")
-//     }
-
-//     <span className> {React.string(text)} </span>
-//   }
-
-//   @react.component
-//   let make = (~actionIndicatorKey: string, ~state: CompilerManagerHook.state) =>
-//     switch state {
-//     | Compiling(ready, _)
-//     | Ready(ready) =>
-//       let {result} = ready
-//       let activityIndicatorColor = switch result {
-//       | FinalResult.Comp(Fail(_))
-//       | Conv(Fail(_))
-//       | Comp(UnexpectedError(_))
-//       | Conv(UnexpectedError(_))
-//       | Comp(Unknown(_))
-//       | Conv(Unknown(_)) => "bg-fire-70"
-//       | Conv(Success(_))
-//       | Nothing => "bg-turtle-dark"
-//       | Comp(Success({warnings})) =>
-//         if Array.length(warnings) === 0 {
-//           "bg-turtle-dark"
-//         } else {
-//           "bg-orange"
-//         }
-//       }
-
-//       <div className={"py-2 pb-3 flex items-center text-white " ++ activityIndicatorColor}>
-//         <div className="flex items-center font-medium px-4">
-//           <div key=actionIndicatorKey className="pr-4 animate-pulse">
-//             {renderTitle(~targetLang=ready.targetLang, result)}
-//           </div>
-//         </div>
-//       </div>
-//     | _ => React.null
-//     }
-// }
-
 module ResultPane = {
   module PreWrap = {
     @react.component
@@ -1593,10 +1417,6 @@ let make = () => {
     (),
   )
 
-  // let overlayState = React.useState(() => false)
-
-  // let windowWidth = CodeMirror.useWindowWidth()
-
   // The user can focus an error / warning on a specific line & column
   // which is stored in this ref and triggered by hover / click states
   // in the CodeMirror editor
@@ -1649,17 +1469,9 @@ let make = () => {
   let rightPanelRef = React.useRef(Js.Nullable.null)
   let subPanelRef = React.useRef(Js.Nullable.null)
 
-  // let (leftPanelDimensions, setLeftPanelDimensions) = React.useState(() => (None, None))
 
   let onResize = () => {
     let newLayout = Webapi.Window.innerWidth < breakingPoint ? Vertical : Horizontal
-    // let (width, height) = leftPanelDimensions
-    // let full = Some(1.0)
-    // let newDimensions = switch newLayout {
-    // | Horizontal => (width, full)
-    // | Vertical => (full, height)
-    // }
-    // setLeftPanelDimensions(_ => newDimensions)
     setLayout(_ => newLayout)
     switch panelRef.current->Js.Nullable.toOption {
     | Some(element) =>
@@ -1826,11 +1638,6 @@ let make = () => {
 
   let (current, setCurrent) = React.useState(_ => JavaScript)
 
-  //  React.useEffect1(() => {
-  //    setCurrent(_ => selected)
-  //    None
-  //  }, [selected])
-
   let disabled = false
 
   let makeTabClass = active => {
@@ -1873,7 +1680,6 @@ let make = () => {
       ref={ReactDOM.Ref.domRef(panelRef)}>
       <div
         ref={ReactDOM.Ref.domRef(leftPanelRef)}
-        // style={ReactDOM.Style.make(~flex="50 1 0px", ())}
         style={ReactDOM.Style.make(~width=layout == Vertical ? "100%" : "50%", ())}
         className={`${layout == Vertical ? "h-2/4" : "!h-full"}`}>
         <CodeMirror
@@ -1914,8 +1720,6 @@ let make = () => {
       // Right Panel
       <div
         ref={ReactDOM.Ref.domRef(rightPanelRef)}
-        // style={ReactDOM.Style.make(~flex="50 1 0px", ())}
-        // style={ReactDOM.Style.make(~width="50%", ())}
         style={ReactDOM.Style.make(~width=layout == Vertical ? "100%" : "50%", ())}
         className={`${layout == Vertical ? "h-6/15" : "!h-inherit"}`}>
         <div className={"flex flex-wrap justify-between w-full " ++ (disabled ? "opacity-50" : "")}>
