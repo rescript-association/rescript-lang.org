@@ -100,7 +100,8 @@ module.exports = {
       },
       /*--- SPACING ---*/
       height: {
-        "18": "4.5rem" // 72px
+        "18": "4.5rem", // 72px
+        "inherit": "inherit"
       },
       minWidth: {
         "320": "20rem"
@@ -137,7 +138,8 @@ module.exports = {
         },
       },
       boxShadow: {
-        sm: '0 0.5px 0.5px 0 rgba(0, 0, 0, 0.05)'},
+        sm: '0 0.5px 0.5px 0 rgba(0, 0, 0, 0.05)'
+      },
     },
     borderRadius: {
       none: "0",
@@ -148,7 +150,7 @@ module.exports = {
       full: "9999px", //round
     },
     screens: {
-      xs: "599px", 
+      xs: "599px",
       sm: "576px", //don't use this
       md: "768px", //try to avoid this
       lg: "1024px",

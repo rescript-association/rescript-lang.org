@@ -596,7 +596,7 @@ let make = // props relevant for the react wrapper
   ~mode,
   ~readOnly=false,
   ~lineNumbers=true,
-  ~scrollbarStyle="overlay",
+  ~scrollbarStyle="native",
   ~lineWrapping=false,
 ): React.element => {
   let inputElement = React.useRef(Js.Nullable.null)
