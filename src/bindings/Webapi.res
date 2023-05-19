@@ -5,7 +5,6 @@ module Document = {
   external addEventListener: (string, 'a => unit) => unit = "addEventListener"
   @scope("document") @val
   external removeEventListener: (string, 'a => unit) => unit = "removeEventListener"
-  
 }
 
 module ClassList = {
@@ -19,10 +18,10 @@ module Element = {
   @set external setClassName: (Dom.element, string) => unit = "className"
   @get external classList: Dom.element => ClassList.t = "classList"
   @get external offsetWidth: Dom.element => float = "offsetWidth"
+  @get external offsetHeight: Dom.element => float = "offsetHeight"
   @send external getBoundingClientRect: Dom.element => {..} = "getBoundingClientRect"
 
   module Style = {
-    @scope("style") @set external flex: (Dom.element, string) => unit = "flex"
     @scope("style") @set external width: (Dom.element, string) => unit = "width"
     @scope("style") @set external height: (Dom.element, string) => unit = "height"
   }

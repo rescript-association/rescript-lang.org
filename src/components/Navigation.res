@@ -462,8 +462,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
     setCollapsibles(prev => Belt.Array.map(prev, c => {...c, state: Closed}))
 
   let navRef = React.useRef(Js.Nullable.null)
-  // TODO: This work force render playground
-  // Hooks.useOutsideClick(ReactDOM.Ref.domRef(navRef), resetCollapsibles)
+  Hooks.useOutsideClick(ReactDOM.Ref.domRef(navRef), resetCollapsibles)
 
   /* let windowWidth = useWindowWidth() */
 

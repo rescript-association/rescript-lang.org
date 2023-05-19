@@ -21,8 +21,8 @@ if (typeof window !== "undefined" && typeof window.navigator !== "undefined") {
 open CompilerManagerHook
 module Api = RescriptCompilerApi
 
-type layout = Vertical | Horizontal
-type tabs = JavaScript | Problems | Settings
+type layout = Column | Row
+type tab = JavaScript | Problems | Settings
 let breakingPoint = 1024
 
 module DropdownSelect = {
@@ -1067,14 +1067,8 @@ module ControlPanel = {
   ) => {
     let router = Next.Router.useRouter()
     let children = switch state {
-    | Init =>
-      <span className="py-1 border-transparent rounded border">
-        {React.string("Initializing...")}
-      </span>
-    | SwitchingCompiler(_ready, _version) =>
-      <span className="py-1 border-transparent rounded border">
-        {React.string("Switching Compiler...")}
-      </span>
+    | Init => React.string("Initializing...")
+    | SwitchingCompiler(_ready, _version) => React.string("Switching Compiler...")
     | Compiling(ready, _)
     | Ready(ready) =>
       let onFormatClick = evt => {
@@ -1150,7 +1144,7 @@ module OutputPanel = {
     ~compilerDispatch,
     ~compilerState: CompilerManagerHook.state,
     ~editorCode: React.ref<string>,
-    ~currentTab: tabs,
+    ~currentTab: tab,
   ) => {
     /*
        We need the prevState to understand different
@@ -1456,22 +1450,20 @@ let make = () => {
   }, [compilerState])
 
   let (layout, setLayout) = React.useState(_ =>
-    Webapi.Window.innerWidth < breakingPoint ? Vertical : Horizontal
+    Webapi.Window.innerWidth < breakingPoint ? Column : Row
   )
-  // let (dragging, setDragging) = React.useState(() => false)
 
   let isDragging = React.useRef(false)
 
   let panelRef = React.useRef(Js.Nullable.null)
 
-  let resizeSeparatorRef = React.useRef(Js.Nullable.null)
+  let separatorRef = React.useRef(Js.Nullable.null)
   let leftPanelRef = React.useRef(Js.Nullable.null)
   let rightPanelRef = React.useRef(Js.Nullable.null)
   let subPanelRef = React.useRef(Js.Nullable.null)
 
-
   let onResize = () => {
-    let newLayout = Webapi.Window.innerWidth < breakingPoint ? Vertical : Horizontal
+    let newLayout = Webapi.Window.innerWidth < breakingPoint ? Column : Row
     setLayout(_ => newLayout)
     switch panelRef.current->Js.Nullable.toOption {
     | Some(element) =>
@@ -1493,6 +1485,7 @@ let make = () => {
     Some(() => Webapi.Window.removeEventListener("resize", onResize))
   })
 
+  // To force CodeMirror render scrollbar on first render
   React.useLayoutEffect(() => {
     onResize()
     None
@@ -1500,42 +1493,39 @@ let make = () => {
 
   let onMouseDown = _ => isDragging.current = true
 
-  let onMove = value => {
+  let onMove = position => {
     if isDragging.current {
       switch (
+        panelRef.current->Js.Nullable.toOption,
         leftPanelRef.current->Js.Nullable.toOption,
-        resizeSeparatorRef.current->Js.Nullable.toOption,
         rightPanelRef.current->Js.Nullable.toOption,
         subPanelRef.current->Js.Nullable.toOption,
       ) {
-      | (Some(leftElement), Some(resizeElement), Some(rightElement), Some(subElement)) =>
-        // let rect = Webapi.Document.getBoundingClientRect(resizeElement)
-        // let elementOffset: int = layout == Vertical ? rect["top"] : rect["left"]
+      | (Some(panelElement), Some(leftElement), Some(rightElement), Some(subElement)) =>
+        let rectPanel = Webapi.Element.getBoundingClientRect(panelElement)
+
+        // Update OutputPanel height
+        let offsetTop = Webapi.Element.getBoundingClientRect(subElement)["top"]
+        Webapi.Element.Style.height(subElement, `calc(100vh - ${offsetTop->Belt.Float.toString}px)`)
 
         switch layout {
-        | Horizontal =>
-          let _ = resizeElement->Webapi.Element.offsetWidth
-          let width = Belt.Int.toFloat(value) /. Belt.Int.toFloat(Webapi.Window.innerWidth) *. 100.0
+        | Row =>
+          let delta = Belt.Int.toFloat(position) -. rectPanel["left"]
 
-          Webapi.Element.Style.width(leftElement, `${width->Belt.Float.toString}%`)
-          Webapi.Element.Style.width(rightElement, `${(100.0 -. width)->Belt.Float.toString}%`)
+          let leftWidth = delta /. rectPanel["width"] *. 100.0
+          let rightWidth = (rectPanel["width"] -. delta) /. rectPanel["width"] *. 100.0
 
-          let offsetTop = Webapi.Element.getBoundingClientRect(subElement)["top"]
-          Webapi.Element.Style.height(
-            subElement,
-            `calc(100vh - ${offsetTop->Belt.Float.toString}px)`,
-          )
-        | Vertical =>
-          let height =
-            Belt.Int.toFloat(value) /. Belt.Int.toFloat(Webapi.Window.innerHeight) *. 100.0
-          Webapi.Element.Style.height(leftElement, `${height->Belt.Float.toString}%`)
-          Webapi.Element.Style.height(rightElement, `${(100.0 -. height)->Belt.Float.toString}%`)
+          Webapi.Element.Style.width(leftElement, `${leftWidth->Belt.Float.toString}%`)
+          Webapi.Element.Style.width(rightElement, `${rightWidth->Belt.Float.toString}%`)
 
-          let offsetTop = Webapi.Element.getBoundingClientRect(subElement)["top"]
-          Webapi.Element.Style.height(
-            subElement,
-            `calc(100vh - ${offsetTop->Belt.Float.toString}px)`,
-          )
+        | Column =>
+          let delta = Belt.Int.toFloat(position) -. rectPanel["top"]
+
+          let topHeight = delta /. rectPanel["height"] *. 100.
+          let bottomHeight = (rectPanel["height"] -. delta) /. rectPanel["height"] *. 100.
+
+          Webapi.Element.Style.height(leftElement, `${topHeight->Belt.Float.toString}%`)
+          Webapi.Element.Style.height(rightElement, `${bottomHeight->Belt.Float.toString}%`)
         }
       | _ => ()
       }
@@ -1544,16 +1534,17 @@ let make = () => {
 
   let onMouseMove = e => {
     ReactEvent.Mouse.preventDefault(e)
-    let value = layout == Horizontal ? ReactEvent.Mouse.clientX(e) : ReactEvent.Mouse.clientY(e)
-    onMove(value)
+    let position = layout == Row ? ReactEvent.Mouse.clientX(e) : ReactEvent.Mouse.clientY(e)
+    onMove(position)
   }
 
   let onMouseUp = _ => isDragging.current = false
 
   let onTouchMove = e => {
     let touches = e->ReactEvent.Touch.touches
-    let value = layout == Horizontal ? touches["0"]["screenX"] : touches["0"]["screenY"]
-    onMove(value)
+    let firstTouch = touches["0"]
+    let position = layout == Row ? firstTouch["clientX"] : firstTouch["clientY"]
+    onMove(position)
   }
 
   let onTouchStart = _ => isDragging.current = true
@@ -1636,7 +1627,7 @@ let make = () => {
   | _ => "rescript"
   }
 
-  let (current, setCurrent) = React.useState(_ => JavaScript)
+  let (currentTab, setCurrentTab) = React.useState(_ => JavaScript)
 
   let disabled = false
 
@@ -1657,9 +1648,9 @@ let make = () => {
     let onMouseDown = evt => {
       ReactEvent.Mouse.preventDefault(evt)
       ReactEvent.Mouse.stopPropagation(evt)
-      setCurrent(_ => tab)
+      setCurrentTab(_ => tab)
     }
-    let active = current === tab
+    let active = currentTab === tab
     // For Safari iOS12
     let onClick = _ => ()
     let className = makeTabClass(active)
@@ -1668,7 +1659,7 @@ let make = () => {
     </button>
   })
 
-  <main className={"flex flex-col bg-gray-100"}>
+  <main className={"flex flex-col bg-gray-100 overflow-hidden"}>
     <ControlPanel
       actionIndicatorKey={Belt.Int.toString(actionCount)}
       state=compilerState
@@ -1676,12 +1667,13 @@ let make = () => {
       editorCode
     />
     <div
-      className={`flex ${layout == Vertical ? "flex-col" : "flex-row"}`}
+      className={`flex ${layout == Column ? "flex-col" : "flex-row"}`}
       ref={ReactDOM.Ref.domRef(panelRef)}>
+      // Left Panel
       <div
         ref={ReactDOM.Ref.domRef(leftPanelRef)}
-        style={ReactDOM.Style.make(~width=layout == Vertical ? "100%" : "50%", ())}
-        className={`${layout == Vertical ? "h-2/4" : "!h-full"}`}>
+        style={ReactDOM.Style.make(~width=layout == Column ? "100%" : "50%", ())}
+        className={`${layout == Column ? "h-2/4" : "!h-full"}`}>
         <CodeMirror
           className="bg-gray-100 h-full"
           mode
@@ -1705,28 +1697,29 @@ let make = () => {
           onMarkerFocusLeave={_ => setFocusedRowCol(_ => None)}
         />
       </div>
+      // Separator
       <div
-        ref={ReactDOM.Ref.domRef(resizeSeparatorRef)}
-        style={ReactDOM.Style.make(~cursor=layout == Vertical ? "row-resize" : "col-resize", ())}
+        ref={ReactDOM.Ref.domRef(separatorRef)}
+        style={ReactDOM.Style.make(~cursor=layout == Column ? "row-resize" : "col-resize", ())}
         // TODO: touch-none not applied
         className={`flex items-center justify-center touch-none select-none bg-gray-70 opacity-30 hover:opacity-50 rounded-lg`}
         onMouseDown={onMouseDown}
         onTouchStart={onTouchStart}
         onTouchEnd={onMouseUp}>
-        <span className={`m-0.5 ${layout == Vertical ? "rotate-90" : ""}`}>
+        <span className={`m-0.5 ${layout == Column ? "rotate-90" : ""}`}>
           {React.string("⣿")}
         </span>
       </div>
       // Right Panel
       <div
         ref={ReactDOM.Ref.domRef(rightPanelRef)}
-        style={ReactDOM.Style.make(~width=layout == Vertical ? "100%" : "50%", ())}
-        className={`${layout == Vertical ? "h-6/15" : "!h-inherit"}`}>
+        style={ReactDOM.Style.make(~width=layout == Column ? "100%" : "50%", ())}
+        className={`${layout == Column ? "h-6/15" : "!h-inherit"}`}>
         <div className={"flex flex-wrap justify-between w-full " ++ (disabled ? "opacity-50" : "")}>
           {React.array(headers)}
         </div>
         <div ref={ReactDOM.Ref.domRef(subPanelRef)} className="overflow-auto">
-          <OutputPanel currentTab=current compilerDispatch compilerState editorCode />
+          <OutputPanel currentTab compilerDispatch compilerState editorCode />
         </div>
       </div>
     </div>
