@@ -10,7 +10,7 @@ let default = () => {
     <div className="text-16">
       <div className="text-gray-40 text-14">
         <Navigation fixed=false overlayState />
-        <Playground/>
+        <Playground />
       </div>
     </div>
   </>
