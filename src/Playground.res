@@ -1550,15 +1550,15 @@ let make = () => {
   let onTouchStart = _ => isDragging.current = true
 
   React.useEffect(() => {
-    Webapi.Document.addEventListener("mousemove", onMouseMove)
-    Webapi.Document.addEventListener("touchmove", onTouchMove)
-    Webapi.Document.addEventListener("mouseup", onMouseUp)
+    Webapi.Window.addEventListener("mousemove", onMouseMove)
+    Webapi.Window.addEventListener("touchmove", onTouchMove)
+    Webapi.Window.addEventListener("mouseup", onMouseUp)
 
     Some(
       () => {
-        Webapi.Document.removeEventListener("mousemove", onMouseMove)
-        Webapi.Document.removeEventListener("touchmove", onTouchMove)
-        Webapi.Document.removeEventListener("mouseup", onMouseUp)
+        Webapi.Window.removeEventListener("mousemove", onMouseMove)
+        Webapi.Window.removeEventListener("touchmove", onTouchMove)
+        Webapi.Window.removeEventListener("mouseup", onMouseUp)
       },
     )
   })
