@@ -56,7 +56,7 @@ type c = {
 }
 ```
 
-Keeping it as straightforward as possible, type spreads are essentially a "copy-paste" operation for fields from one or more records to another, inlining the fields from the spread records into the new record. Please note: As for right now it is not possible to override fields in the target record type.
+Record type spreads act as a 'copy-paste' mechanism for fields from one or more records into a new record. This operation inlines the fields from the spread records directly into the new record definition, while preserving their original properties, such as whether they are optional or mandatory. It's important to note that duplicate field names are not allowed across the records being spread, even if the fields share the same type.
 
 Needless to say, this feature offers a much better ergonomics when working with types with lots of fields, where variations of the same underlying type are needed.
 
