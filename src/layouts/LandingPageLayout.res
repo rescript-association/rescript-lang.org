@@ -513,12 +513,12 @@ module OtherSellingPoints = {
 module TrustedBy = {
   @react.component
   let make = () => {
-    <section className="mt-20">
+    <section className="mt-20 flex flex-col items-center">
       <h3 className="hl-1 text-gray-80 text-center max-w-576 mx-auto">
         {React.string("Trusted by our users")}
       </h3>
       <div
-        className="flex flex-wrap mx-4 gap-8 justify-center items-center max-w-xl lg:mx-auto mt-16 ">
+        className="flex flex-wrap mx-4 gap-8 justify-center items-center max-w-xl lg:mx-auto mt-16 mb-16">
         {OurUsers.companies
         ->Js.Array2.map(company => {
           let (companyKey, renderedCompany) = switch company {
@@ -533,8 +533,12 @@ module TrustedBy = {
         })
         ->React.array}
       </div>
+      <a
+        href="https://github.com/rescript-association/rescript-lang.org/blob/master/src/common/OurUsers.res">
+        <Button> {React.string("Add Your Logo")} </Button>
+      </a>
       <div
-        className="mt-10 max-w-320 overflow-hidden opacity-50"
+        className="self-start mt-10 max-w-320 overflow-hidden opacity-50"
         style={ReactDOM.Style.make(~maxHeight="6rem", ())}>
         <img className="w-full h-full" src="/static/lp/grid.svg" />
       </div>
