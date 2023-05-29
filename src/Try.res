@@ -1,6 +1,11 @@
-@react.component
-let default = () => {
+type props = {
+  versions: string
+}
+
+let default = (props: props) => {
   let overlayState = React.useState(() => false)
+
+  Js.log(props)
 
   <>
     <Meta title="ReScript Playground" description="Try ReScript in the browser" />
@@ -14,4 +19,12 @@ let default = () => {
       </div>
     </div>
   </>
+}
+
+let getStaticProps: Next.GetStaticProps.t<_, _> = async _ctx => {
+  // let (archived, nonArchived) = BlogApi.getAllPosts()->Belt.Array.partition(data => data.archived)
+
+  let a = {"props": {"versions": "name"}}
+  Js.log(a)
+  a
 }
