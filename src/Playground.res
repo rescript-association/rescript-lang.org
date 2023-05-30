@@ -915,11 +915,14 @@ module Settings = {
         <div className=titleClass> {React.string("ReScript Version")} </div>
         <DropdownSelect
           name="compilerVersions"
-          value=readyState.selected.id
+          value={Util.Semver.toString(readyState.selected.id)}
           onChange={evt => {
             ReactEvent.Form.preventDefault(evt)
-            let id = (evt->ReactEvent.Form.target)["value"]
-            onCompilerSelect(id)
+            let id: string = (evt->ReactEvent.Form.target)["value"]
+            switch id->Util.Semver.parse {
+            | Some(v) => onCompilerSelect(v)
+            | None => ()
+            }
           }}>
           {
             let (experimentalVersions, stableVersions) =
@@ -1396,12 +1399,8 @@ let default = (~props: Try.props) => {
     versions->Js.Array2.find(version => version.preRelease->Belt.Option.isNone)
 
   let initialVersion = switch Js.Dict.get(router.query, "version") {
-  | Some(version) => Some(version)
-  | None =>
-    switch lastStableVersion {
-    | Some(version) => Util.Semver.toString(version)->Some
-    | None => None
-    }
+  | Some(version) => version->Util.Semver.parse
+  | None => lastStableVersion
   }
 
   let initialLang = switch Js.Dict.get(router.query, "ext") {
@@ -1415,15 +1414,11 @@ let default = (~props: Try.props) => {
   | (None, Res)
   | (None, _) =>
     switch initialVersion {
-    | Some(initialVersion) =>
-      switch Util.Semver.parse(initialVersion) {
-      | Some({Util.Semver.major: major, minor, _}) =>
-        if major >= 10 && minor >= 1 {
-          InitialContent.since_10_1
-        } else {
-          InitialContent.original
-        }
-      | None => InitialContent.original
+    | Some({Util.Semver.major: major, minor, _}) =>
+      if major >= 10 && minor >= 1 {
+        InitialContent.since_10_1
+      } else {
+        InitialContent.original
       }
     | None => InitialContent.original
     }

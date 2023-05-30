@@ -9,7 +9,7 @@ module FinalResult: {
 }
 
 type selected = {
-  id: string, // The id used for loading the compiler bundle (ideally should be the same as compilerVersion)
+  id: Util.Semver.t, // The id used for loading the compiler bundle (ideally should be the same as compilerVersion)
   apiVersion: Version.t, // The playground API version in use
   compilerVersion: string,
   ocamlVersion: string,
@@ -29,19 +29,19 @@ type ready = {
 type state =
   | Init
   | SetupFailed(string)
-  | SwitchingCompiler(ready, string) // (ready, targetId, libraries)
+  | SwitchingCompiler(ready, Util.Semver.t) // (ready, targetId, libraries)
   | Ready(ready)
   | Compiling(ready, (Lang.t, string))
 
 type action =
-  | SwitchToCompiler(string) // id
+  | SwitchToCompiler(Util.Semver.t) // id
   | SwitchLanguage({lang: Lang.t, code: string})
   | Format(string)
   | CompileCode(Lang.t, string)
   | UpdateConfig(Config.t)
 
 let useCompilerManager: (
-  ~initialVersion: string=?,
+  ~initialVersion: Util.Semver.t=?,
   ~initialLang: Lang.t=?,
   ~onAction: action => unit=?,
   ~versions: array<Util.Semver.t>,

@@ -35,11 +35,11 @@ module LoadScript = {
 }
 
 module CdnMeta = {
-  let getCompilerUrl = (version: string): string =>
-    j`https://cdn.rescript-lang.org/$version/compiler.js`
+  let getCompilerUrl = (version: Util.Semver.t): string =>
+    `https://cdn.rescript-lang.org/${Util.Semver.toString(version)}/compiler.js`
 
-  let getLibraryCmijUrl = (version: string, libraryName: string): string =>
-    j`https://cdn.rescript-lang.org/$version/$libraryName/cmij.js`
+  let getLibraryCmijUrl = (version: Util.Semver.t, libraryName: string): string =>
+    `https://cdn.rescript-lang.org/${Util.Semver.toString(version)}/${libraryName}/cmij.js`
 }
 
 module FinalResult = {
@@ -53,30 +53,23 @@ module FinalResult = {
 // This will a given list of libraries to a specific target version of the compiler.
 // E.g. starting from v9, @rescript/react instead of reason-react is used.
 // If the version can't be parsed, an empty array will be returned.
-let getLibrariesForVersion = (~version: string): array<string> => {
-  switch Js.String2.split(version, ".")->Belt.List.fromArray {
-  | list{major, ..._rest} =>
-    let version =
-      Js.String2.replace(major, "v", "")->Belt.Int.fromString->Belt.Option.getWithDefault(0)
-
-    let libraries = if version >= 9 {
-      ["@rescript/react"]
-    } else if version < 9 {
-      ["reason-react"]
-    } else {
-      []
-    }
-
-    // Since version 11, we ship the compiler-builtins as a separate file, and
-    // we also added @rescript/core as a pre-vendored package
-    if version >= 11 {
-      libraries->Js.Array2.push("@rescript/core")->ignore
-      libraries->Js.Array2.push("compiler-builtins")->ignore
-    }
-
-    libraries
-  | _ => []
+let getLibrariesForVersion = (~version: Util.Semver.t): array<string> => {
+  let libraries = if version.major >= 9 {
+    ["@rescript/react"]
+  } else if version.major < 9 {
+    ["reason-react"]
+  } else {
+    []
   }
+
+  // Since version 11, we ship the compiler-builtins as a separate file, and
+  // we also added @rescript/core as a pre-vendored package
+  if version.major >= 11 {
+    libraries->Js.Array2.push("@rescript/core")->ignore
+    libraries->Js.Array2.push("compiler-builtins")->ignore
+  }
+
+  libraries
 }
 
 /*
@@ -92,10 +85,11 @@ let getLibrariesForVersion = (~version: string): array<string> => {
     We coupled the compiler / library loading to prevent ppl to try loading compiler / cmij files
     separately and cause all kinds of race conditions.
  */
-let attachCompilerAndLibraries = async (~version: string, ~libraries: array<string>, ()): result<
-  unit,
-  array<string>,
-> => {
+let attachCompilerAndLibraries = async (
+  ~version: Util.Semver.t,
+  ~libraries: array<string>,
+  (),
+): result<unit, array<string>> => {
   let compilerUrl = CdnMeta.getCompilerUrl(version)
 
   // Useful for debugging our local build
@@ -133,7 +127,7 @@ type error =
   | CompilerLoadingError(string)
 
 type selected = {
-  id: string, // The id used for loading the compiler bundle (ideally should be the same as compilerVersion)
+  id: Util.Semver.t, // The id used for loading the compiler bundle (ideally should be the same as compilerVersion)
   apiVersion: Version.t, // The playground API version in use
   compilerVersion: string,
   ocamlVersion: string,
@@ -153,12 +147,12 @@ type ready = {
 type state =
   | Init
   | SetupFailed(string)
-  | SwitchingCompiler(ready, string) // (ready, targetId, libraries)
+  | SwitchingCompiler(ready, Util.Semver.t) // (ready, targetId, libraries)
   | Ready(ready)
   | Compiling(ready, (Lang.t, string))
 
 type action =
-  | SwitchToCompiler(string) // id
+  | SwitchToCompiler(Util.Semver.t) // id
   | SwitchLanguage({lang: Lang.t, code: string})
   | Format(string)
   | CompileCode(Lang.t, string)
@@ -176,7 +170,7 @@ type action =
 //  component to give feedback to the user that an action happened (useful in
 //  cases where the output didn't visually change)
 let useCompilerManager = (
-  ~initialVersion: option<string>=?,
+  ~initialVersion: option<Util.Semver.t>=?,
   ~initialLang: Lang.t=Res,
   ~onAction: option<action => unit>=?,
   ~versions: array<Util.Semver.t>,
