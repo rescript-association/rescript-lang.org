@@ -36,3 +36,13 @@ module Window = {
   @scope("window") @val external innerWidth: int = "innerWidth"
   @scope("window") @val external innerHeight: int = "innerHeight"
 }
+
+module Fetch = {
+  module Response = {
+    type t
+    @send external json: t => promise<Js.Json.t> = "json"
+    @send external text: t => promise<string> = "text"
+  }
+
+  @val external fetch: string => promise<Response.t> = "fetch"
+}

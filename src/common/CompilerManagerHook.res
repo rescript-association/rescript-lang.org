@@ -35,22 +35,6 @@ module LoadScript = {
 }
 
 module CdnMeta = {
-  // Make sure versions exist on https://cdn.rescript-lang.org
-  // [0] = latest
-  let versions = [
-    "v10.1.2",
-    "v10.0.1",
-    "v10.0.0",
-    "v9.1.2",
-    "v9.0.2",
-    "v9.0.1",
-    "v9.0.0",
-    "v8.4.2",
-    "v8.3.0-dev.2",
-  ]
-
-  let experimentalVersions = ["v11.0.0-alpha.5"]
-
   let getCompilerUrl = (version: string): string =>
     j`https://cdn.rescript-lang.org/$version/compiler.js`
 
@@ -159,8 +143,7 @@ type selected = {
 }
 
 type ready = {
-  versions: array<string>,
-  experimentalVersions: array<string>,
+  versions: array<Util.Semver.t>,
   selected: selected,
   targetLang: Lang.t,
   errors: array<string>, // For major errors like bundle loading
@@ -196,6 +179,7 @@ let useCompilerManager = (
   ~initialVersion: option<string>=?,
   ~initialLang: Lang.t=Res,
   ~onAction: option<action => unit>=?,
+  ~versions: array<Util.Semver.t>,
   (),
 ) => {
   let (state, setState) = React.useState(_ => Init)
@@ -334,74 +318,58 @@ let useCompilerManager = (
     let updateState = async () => {
       switch state {
       | Init =>
-        switch CdnMeta.versions {
+        switch versions {
         | [] => dispatchError(SetupError("No compiler versions found"))
         | versions =>
-          let latest = versions[0]
-
-          // If the provided initialVersion is not available, fall back
-          // to "latest"
-          let initVersion = switch initialVersion {
+          switch initialVersion {
           | Some(version) =>
-            let allVersions = Belt.Array.concat(CdnMeta.versions, CdnMeta.experimentalVersions)
-            if (
-              allVersions->Js.Array2.some(v => {
-                version == v
-              })
-            ) {
-              version
-            } else {
-              latest
+            // Latest version is already running on @rescript/react
+            let libraries = getLibrariesForVersion(~version)
+
+            switch await attachCompilerAndLibraries(~version, ~libraries, ()) {
+            | Ok() =>
+              let instance = Compiler.make()
+              let apiVersion = apiVersion->Version.fromString
+
+              // Note: The compiler bundle currently defaults to
+              // commonjs when initiating the compiler, but our playground
+              // should default to ES6. So we override the config
+              // and use the `setConfig` function to sync up the
+              // internal compiler state with our playground state.
+              let config = {
+                ...instance->Compiler.getConfig,
+                module_system: "es6",
+              }
+              instance->Compiler.setConfig(config)
+
+              let selected = {
+                id: version,
+                apiVersion,
+                compilerVersion: instance->Compiler.version,
+                ocamlVersion: instance->Compiler.ocamlVersion,
+                config,
+                libraries,
+                instance,
+              }
+
+              let targetLang =
+                Version.availableLanguages(apiVersion)
+                ->Js.Array2.find(l => l === initialLang)
+                ->Belt.Option.getWithDefault(Version.defaultTargetLang)
+
+              setState(_ => Ready({
+                selected,
+                targetLang,
+                versions,
+                errors: [],
+                result: FinalResult.Nothing,
+              }))
+            | Error(errs) =>
+              let msg = Js.Array2.joinWith(errs, "; ")
+
+              dispatchError(CompilerLoadingError(msg))
             }
-          | None => latest
-          }
-
-          // Latest version is already running on @rescript/react
-          let libraries = getLibrariesForVersion(~version=initVersion)
-
-          switch await attachCompilerAndLibraries(~version=initVersion, ~libraries, ()) {
-          | Ok() =>
-            let instance = Compiler.make()
-            let apiVersion = apiVersion->Version.fromString
-
-            // Note: The compiler bundle currently defaults to
-            // commonjs when initiating the compiler, but our playground
-            // should default to ES6. So we override the config
-            // and use the `setConfig` function to sync up the
-            // internal compiler state with our playground state.
-            let config = {
-              ...instance->Compiler.getConfig,
-              module_system: "es6",
-            }
-            instance->Compiler.setConfig(config)
-
-            let selected = {
-              id: initVersion,
-              apiVersion,
-              compilerVersion: instance->Compiler.version,
-              ocamlVersion: instance->Compiler.ocamlVersion,
-              config,
-              libraries,
-              instance,
-            }
-
-            let targetLang =
-              Version.availableLanguages(apiVersion)
-              ->Js.Array2.find(l => l === initialLang)
-              ->Belt.Option.getWithDefault(Version.defaultTargetLang)
-
-            setState(_ => Ready({
-              selected,
-              targetLang,
-              versions,
-              experimentalVersions: CdnMeta.experimentalVersions,
-              errors: [],
-              result: FinalResult.Nothing,
-            }))
-          | Error(errs) =>
-            let msg = Js.Array2.joinWith(errs, "; ")
-
-            dispatchError(CompilerLoadingError(msg))
+          | None => dispatchError(CompilerLoadingError("Cant not found the initial version"))
           }
         }
       | SwitchingCompiler(ready, version) =>
@@ -435,7 +403,6 @@ let useCompilerManager = (
             selected,
             targetLang: Version.defaultTargetLang,
             versions: ready.versions,
-            experimentalVersions: ready.experimentalVersions,
             errors: [],
             result: FinalResult.Nothing,
           }))

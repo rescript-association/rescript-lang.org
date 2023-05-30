@@ -8,11 +8,6 @@ module FinalResult: {
     | Nothing
 }
 
-module CdnMeta: {
-  /** All available versions on the CDN */
-  let versions: array<string>
-}
-
 type selected = {
   id: string, // The id used for loading the compiler bundle (ideally should be the same as compilerVersion)
   apiVersion: Version.t, // The playground API version in use
@@ -24,8 +19,7 @@ type selected = {
 }
 
 type ready = {
-  versions: array<string>,
-  experimentalVersions: array<string>,
+  versions: array<Util.Semver.t>,
   selected: selected,
   targetLang: Lang.t,
   errors: array<string>, // For major errors like bundle loading
@@ -50,5 +44,6 @@ let useCompilerManager: (
   ~initialVersion: string=?,
   ~initialLang: Lang.t=?,
   ~onAction: action => unit=?,
+  ~versions: array<Util.Semver.t>,
   unit,
 ) => (state, action => unit)

@@ -1,3 +1,3 @@
-type props = {versions: string}
-let default: props => React.element
-let getStaticProps: Next.GetStaticProps.t<{"versions": string}, 'a>
+let default: {"children": React.element} => React.element
+type props = {versions: array<string>}
+let getStaticProps: Next.GetStaticProps.t<props, 'a>

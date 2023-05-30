@@ -18,3 +18,11 @@ module Date: {
 module Json: {
   let prettyStringify: Js.Json.t => string
 }
+
+module Semver: {
+  type preRelease = Alpha(int) | Beta(int) | Dev(int)
+  type t = {major: int, minor: int, patch: int, preRelease: option<preRelease>}
+
+  let parse: string => option<t>
+  let toString: t => string
+}
