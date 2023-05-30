@@ -45,7 +45,5 @@ let getStaticProps: Next.GetStaticProps.t<props, _> = async _ => {
     })
   }
 
-  Js.log(versions)
-
   {"props": {versions: versions}}
 }
