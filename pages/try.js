@@ -1,12 +1,12 @@
 import dynamic from "next/dynamic";
 
-const Playground = dynamic(() => import("src/Playground.mjs"), {
+const Try = dynamic(() => import("src/Try.mjs"), {
   ssr: false,
   //loading: () => <div> Loading... </div>
 });
 
-function Try() {
-  return <Playground />;
+function Comp() {
+  return <Try />;
 }
 
-export default Try;
+export default Comp;

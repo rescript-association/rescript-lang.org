@@ -71,6 +71,10 @@ var greeting = "Hello\nWorld\n👋\n" + name + "\n";
 
 This is just like JavaScript's backtick string interpolation, except without needing to escape special characters.
 
+### Unsafe String Interpolation (Deprecated)
+
+> ReScript v10.1.4 deprecated unsafe string interpolation and will be removed in v11.
+
 For interpolation, you'll have to convert the binding (`name` in the example) into a string if it isn't one. If you want the interpolation to implicitly convert a binding into a string, prepend a `j`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>

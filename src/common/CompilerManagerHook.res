@@ -49,7 +49,7 @@ module CdnMeta = {
     "v8.3.0-dev.2",
   ]
 
-  let experimentalVersions = ["v11.0.0-alpha.5"]
+  let experimentalVersions = ["v11.0.0-beta.1", "v11.0.0-alpha.5"]
 
   let getCompilerUrl = (version: string): string =>
     j`https://cdn.rescript-lang.org/$version/compiler.js`
