@@ -25,22 +25,26 @@ let getStaticProps: Next.GetStaticProps.t<props, _> = async _ => {
     let text = await Webapi.Fetch.Response.text(response)
     text
     ->Js.String2.split("\n")
-    ->Js.Array2.filter(line => line->Js.String2.startsWith("<a href"))
     ->Belt.Array.keepMap(line => {
-      // Adapted from https://semver.org/
-      let semverRe = %re("/v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/
-")
-      let result = Js.Re.exec_(semverRe, line)
-      switch result {
-      | Some(r) =>
-        switch Js.Re.captures(r)->Belt.Array.get(0) {
-        | Some(str) => Js.Nullable.toOption(str)
+      switch line->Js.String2.startsWith("<a href") {
+      | true =>
+        // Adapted from https://semver.org/
+        let semverRe = %re("/v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/
+  ")
+        switch Js.Re.exec_(semverRe, line) {
+        | Some(result) =>
+          switch Js.Re.captures(result)->Belt.Array.get(0) {
+          | Some(str) => Js.Nullable.toOption(str)
+          | None => None
+          }
         | None => None
         }
-      | None => None
+      | false => None
       }
     })
   }
+
+  Js.log(versions)
 
   {"props": {versions: versions}}
 }
