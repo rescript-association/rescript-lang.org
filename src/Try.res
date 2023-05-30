@@ -29,8 +29,9 @@ let getStaticProps: Next.GetStaticProps.t<props, _> = async _ => {
       switch line->Js.String2.startsWith("<a href") {
       | true =>
         // Adapted from https://semver.org/
-        let semverRe = %re("/v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/
-  ")
+        let semverRe = %re(
+          "/v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/"
+        )
         switch Js.Re.exec_(semverRe, line) {
         | Some(result) =>
           switch Js.Re.captures(result)->Belt.Array.get(0) {
