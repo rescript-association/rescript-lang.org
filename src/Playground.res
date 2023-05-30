@@ -1380,8 +1380,7 @@ let default = (~props: Try.props) => {
 
   let versions =
     props.versions
-    ->Js.Array2.map(Util.Semver.parse)
-    ->Belt.Array.keepMap(x => x)
+    ->Belt.Array.keepMap(v => v->Util.Semver.parse)
     ->Js.Array2.sortInPlaceWith((a, b) => {
       let cmp = ({Util.Semver.major: major, minor, patch, _}) => {
         [major, minor, patch]
