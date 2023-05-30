@@ -87,7 +87,7 @@ module Date = {
 
 /**
 Takes a `version` string starting with a "v" and ending in major.minor.patch or
-major.minor.patch-prereleader.identider (e.g. "v10.1.0" or "v10.1.0-alpha.2")
+major.minor.patch-prerelease.identifier (e.g. "v10.1.0" or "v10.1.0-alpha.2")
 */
 module Semver = {
   type preRelease = Alpha(int) | Beta(int) | Dev(int)
