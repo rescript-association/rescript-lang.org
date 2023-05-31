@@ -1,38 +1,48 @@
 ---
 author: rescript-team
 date: "2023-05-25"
-title: Dynamic import
+title: First-class Dynamic Import Support
 badge: roadmap
 description: |
   A tour of new capabilities coming in ReScript v11
 ---
 
-> This is the third post covering new capabilities that'll ship in ReScript v11. You can check out the first post on [better interop with customizable variants here](https://rescript-lang.org/blog/improving-interop) and the second one TODO.
+> This is the third post covering new capabilities that'll ship in ReScript v11. You can check out the first post on [Better Interop with Customizable Variants](/blog/improving-interop) and the second post on [Enhanced Ergonomics for Record Types](/blog/enhanced-ergonomics-for-record-types).
 
-[Dynamic import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import), a feature allowing for asynchronous code loading in JavaScript, has long offered potential for code splitting, lazy loading, and via that reduced initial load times for applications. While ReScript has always supported dynamic imports, they've often been cumbersome to maintain in their current form. We're excited to announce that, with ReScript v11, we're introducing first-class support for dynamic imports - making them ergonomic to use and easy to maintain.
+In JavaScript, every line of code and source file for an app needs to be bundled and shipped to the browser. Depending on the size of a JS application, it may be required to dynamically load parts of its source code while the app is in use via separate JS modules.
 
-But before we dive into how dynamic imports look in v11, let's do a short primer on what the challenges has been when using dynamic imports in ReScript prior to v11.
+To accomplish this, browsers added support for dynamic loading via the globally available [`import()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) function to allow code splitting and lazy loading and ultimately reduce initial load times for our applications.
 
-## The current state of dynamic imports in ReScript
+Even though ReScript has been able to bind to `import` calls via `externals`, doing so was quite cumbersome to maintain due to the following reasons:
 
-Dynamic imports in JavaScript work on _paths_. This means that if you want to dynamically import the file `src/utils/text/markdown.js` from `src/components/text/MarkdownRenderer.js`, you'd need to spell the full relative path out:
+1. An `import` call requires a path to a JS file. The ReScript compiler doesn't directly expose file paths for compiled modules, so the user has to manually find and rely on compiled file paths.
+2. The return type of an `import` call needs to be defined manually; a quite repetitive task with lots of potential bugs when the imported module has changed.
+
+Arguably, these kind of problems should ideally be tackled on the toolchain and compiler level, since the compiler knows best about module structures and JS file locations.
+
+Therefore, we're excited to announce that ReScript v11 will ship with first-class support for dynamic imports as part of the language.
+
+
+## Using `import` with ReScript prior v11
+
+Dynamic imports in JavaScript work on _paths_ referring to different JS files in your JS project.
+
+For example to dynamically import the file `src/utils/text/markdown.js` from `src/components/text/MarkdownRenderer.js`, you'd need to spell the full relative path out:
 
 ```js
 // MarkdownRenderer.js
 let markdown = await import("../../../utils/text/markdown.js");
 ```
 
-In JavaScript, modules and files are referred to by their file system path, which makes sense considering its design. However, in ReScript, all files represent modules that are globally available for anyone to use, without having to care about where that file is located on the file system.
+However, in ReScript, all files represent modules that are globally available for anyone to use, without having to care about where that file is located on the file system.
 
-This global availability of modules is generally beneficial, as it simplifies file restructuring and relieves developers from the need to remember the precise location of each file. However, when it comes to dynamic imports, this poses a challenge.
+This global availability of modules is generally beneficial, as it simplifies file restructuring and relieves developers from the need to remember the precise location of each file. However, when it comes to dynamic imports, this poses a challenge — suddenly you need to point to a filepath that is managed by the ReScript compiler.
 
-As a ReScript developer, you're not accustomed to tracking the relative file system locations of your modules. But with dynamic imports, you'd would have to manually keep track of where your files are located relative to each other, in order for your dynamic import binding to point to the right file.
+So depending on your compiler settings, your compiled files may be stored in a different directory, or the file extensions may be different (`bs.js`, `.js`, `.mjs`, etc).
 
-Moreover, in ReScript you can change what suffix your generated files has. It's `.bs.js` by default, but it could be `.mjs`, `.bs.mjs` or even just `.js` depending on what project and environment you're in. This flexibility is another great feature of ReScript, but it further complicates dynamic imports as the import paths need to account for the file suffixes.
+Before v11, you'd try to figure out the compiled JS file path and put it in a `import` binding:
 
-Before v11, these factors made maintaining dynamic imports in ReScript quite challenging. Let's take a look at how we've addressed these issues in v11.
-
-## Importing a value
+## Dynamically importing a Value
 
 Dynamically importing a value, like a function, is now done via the new `Js.import` function. You pass a reference to the value you want to dynamically import, just as if you'd use the value directly. `Js.import` will return a promise resolving to the value you pass into it, that you can then `await`. The compiler will ensure that the JavaScript file holding that value is not referenced directly, but rather is dynamically imported.
 
