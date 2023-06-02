@@ -20,7 +20,7 @@ Even though ReScript has been able to bind to `import` calls via `external` bind
 1. An `import` call requires a path to a JS file. The ReScript compiler doesn't directly expose file paths for compiled modules, so the user has to manually find and rely on compiled file paths.
 2. The return type of an `import` call needs to be defined manually; a quite repetitive task with lots of potential bugs when the imported module has changed.
 
-Arguably, these kind of problems should ideally be tackled on the compiler level, since the ReScript compiler knows best about module structures and compiled JS file locations — so we decided to fix it.
+Arguably, these kind of problems should ideally be tackled on the compiler level, since the ReScript compiler knows best about module structures and compiled JS file locations — so we finally decided to fix this.
 
 Today we're happy to announce that ReScript v11 will ship with first-class support for dynamic imports as part of the language.
 
