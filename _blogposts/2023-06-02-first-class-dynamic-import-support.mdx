@@ -1,28 +1,28 @@
 ---
 author: rescript-team
-date: "2023-05-25"
+date: "2023-06-02"
 title: First-class Dynamic Import Support
 badge: roadmap
 description: |
-  A tour of new capabilities coming in ReScript v11
+  A tour of new capabilities coming to ReScript v11
 ---
 
 > This is the third post covering new capabilities that'll ship in ReScript v11. You can check out the first post on [Better Interop with Customizable Variants](/blog/improving-interop) and the second post on [Enhanced Ergonomics for Record Types](/blog/enhanced-ergonomics-for-record-types).
 
-When developing apps in JavaScript, every relevant source file needs to be bundled up and shipped to the browser. As the app grows, it's usually recommended to dynamically load parts of the app code on demand as separate JS modules.
+When developing apps in JavaScript, every line of code eventually needs to be bundled up and shipped to the browser. As the app grows, it's usually a good idea to split up and load parts of the app code on demand as separate JS modules to prevent bundle bloat.
 
-To accomplish this, browsers provide support for dynamic loading via the globally available [`import()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) function — to allow code splitting and lazy loading and ultimately reduce initial load times for our applications.
+To accomplish this, browsers provide support for dynamic loading via the globally available [`import()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) function to allow code splitting and lazy loading and ultimately reducing initial load times for our applications.
 
-Even though ReScript has been able to bind to `import` calls via `externals`, doing so was quite hard to maintain due to the following reasons:
+Even though ReScript has been able to bind to `import` calls via `external` bindings, doing so was quite hard to maintain for to the following reasons:
 
 1. An `import` call requires a path to a JS file. The ReScript compiler doesn't directly expose file paths for compiled modules, so the user has to manually find and rely on compiled file paths.
 2. The return type of an `import` call needs to be defined manually; a quite repetitive task with lots of potential bugs when the imported module has changed.
 
-Arguably, these kind of problems should ideally be tackled on the compiler level, since the ReScript compiler knows best about module structures and JS file locations.
+Arguably, these kind of problems should ideally be tackled on the compiler level, since the ReScript compiler knows best about module structures and compiled JS file locations — so we decided to fix it.
 
-To fix this, we're excited to announce that ReScript v11 will ship with first-class support for dynamic imports as part of the language!
+Today we're happy to announce that ReScript v11 will ship with first-class support for dynamic imports as part of the language.
 
-Let's dive in.
+Let's have a look!
 
 ## Import Parts of a Module
 
@@ -63,13 +63,13 @@ async function main() {
 
 Notice how the compiler keeps track of the relative path to the module you're importing, as well as plucking out the value you want to use from the imported module.
 
-Quite a difference compared to doing both of those things manually, right? Now let's have a look at a more concrete use case with React components.
+Quite a difference compared to doing both of those things manually, right? Now let's have a look at a more concrete use-case with React components.
 
 ### Use-case: Importing a React component
 
-Our dynamic import makes tasks like [lazy loading React components](https://react.dev/reference/react/lazy#lazy) a simple one-liner.
+> **Note:** This section requires the latest [@rescript/react](https://github.com/rescript-lang/rescript-react) bindings to be installed.
 
-First, let's define a simple component as an example:
+Our dynamic import makes tasks like [lazy loading React components](https://react.dev/reference/react/lazy#lazy) a simple one-liner. First let's define a simple component as an example:
 
 ```rescript
 // Title.res
@@ -79,16 +79,7 @@ let make = (~text) => {
 }
 ```
 
-Now, let's dynamically import this component using the `React.lazy_` binding.
-
-`React.lazy_` receives a callback function that returns a promise that resolves to a React component and then returns a lazy loaded version of the same React component:
-
-```rescript
-// React.resi
-let lazy_: (unit => promise<React.component<'props>>) => React.component<'props>
-```
-
-In order to dynamically import our `<Title />` component, just pass the result of a dynamic import of `Title.make` to `React.lazy_`:
+Now let's dynamically import the `<Title/>` component by passing the result of our dynamic import to `React.lazy_`:
 
 ```rescript
 module LazyTitle = {
@@ -98,9 +89,9 @@ module LazyTitle = {
 let titleJsx = <LazyTitle text="Hello!" />
 ```
 
-`<LazyTitle />` behaves exactly the same as the wrapped `<Title />` component, but will be lazy loaded via React's built in lazy mechanism.
+That's all the code we need! The new `<LazyTitle />` component behaves exactly the same as the wrapped `<Title />` component, but will be lazy loaded via React's built in lazy mechanism.
 
-> Note that APIs for `React.lazy` ship with the latest official [@rescript/react](https://github.com/rescript-lang/rescript-react) bindings.
+Needless to say, all the code examples you've seen so far are fully type-safe.
 
 ## Import a Whole Module
 
@@ -144,8 +135,8 @@ Please note that this release is only intended for experiments and feedback purp
 
 The most important take away of the new dynamic imports functionality in ReScript is that you'll never need to care about _where_ what you're importing is located on the file system - the compiler already does it for you.
 
-More importantly, dynamic imports will help us providing end-users with faster load times and quicker app interaction, even on slow network connections.
+We hope that it will help shipping software with better end-user experience with faster load times and quicker app interaction, especially on slower network connections.
 
-As always, we're eager to hear about your experiences with these new features. Don't hesitate to share your thoughts and feedback with us on our [issue tracker](https://github.com/rescript-lang/rescript-compiler/issues) or on the [forum](https://forum.rescript-lang.org).
+As always, we're eager to hear about your experiences with our new features. Feel free to share your thoughts and feedback with us on our [issue tracker](https://github.com/rescript-lang/rescript-compiler/issues) or on the [forum](https://forum.rescript-lang.org).
 
 Happy hacking!
