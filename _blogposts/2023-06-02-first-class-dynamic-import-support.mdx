@@ -9,6 +9,8 @@ description: |
 
 > This is the third post covering new capabilities that'll ship in ReScript v11. You can check out the first post on [Better Interop with Customizable Variants](/blog/improving-interop) and the second post on [Enhanced Ergonomics for Record Types](/blog/enhanced-ergonomics-for-record-types).
 
+## Introduction
+
 When developing apps in JavaScript, every line of code eventually needs to be bundled up and shipped to the browser. As the app grows, it's usually a good idea to split up and load parts of the app code on demand as separate JS modules to prevent bundle bloat.
 
 To accomplish this, browsers provide support for dynamic loading via the globally available [`import()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) function to allow code splitting and lazy loading and ultimately reducing initial load times for our applications.
@@ -67,7 +69,7 @@ Quite a difference compared to doing both of those things manually, right? Now l
 
 ### Use-case: Importing a React component
 
-> **Note:** This section requires the latest [@rescript/react](https://github.com/rescript-lang/rescript-react) bindings to be installed.
+> **Note:** This section requires the latest [@rescript/react](https://github.com/rescript-lang/rescript-react) bindings to be installed (_0.12.0-alpha.2 and above_).
 
 Our dynamic import makes tasks like [lazy loading React components](https://react.dev/reference/react/lazy#lazy) a simple one-liner. First let's define a simple component as an example:
 
