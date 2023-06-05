@@ -70,7 +70,7 @@ Let's consider the same logging example in ReScript, but this time using normal 
 type logger<'a> = { log: 'a => unit}
 
 @module("jsAPI") external getLogger: unit => logger<'a> = "getLogger"
-````
+```
 
 In this case, the `logger` type is a simple polymorphic function type `'a => unit`. However, when we attempt to use this type in the same way as before, we encounter an issue:
 
@@ -84,3 +84,17 @@ myLogger.log(42) // Type error!
 The problem arises because the type inference in ReScript assigns a concrete type to the `logger` function based on the first usage. In this example, after the first call to `myLogger`, the compiler infers the type `logger<string>` for `myLogger`. Consequently, when we attempt to pass an argument of type `number` in the next line, a type error occurs because it conflicts with the inferred type `logger<string>`.
 
 In contrast, scoped polymorphic types, such as `'a. 'a => unit`, overcome this limitation by allowing type variables within the scope of the function. They ensure that the type of the argument is preserved consistently within that scope, regardless of the specific value used in the first invocation.
+
+## Limitations of Scoped Polymorphic Types
+
+Scoped polymorphic types work only when they are directly applied to let-bindings or record fields (as demonstrated in the logger example above). They can neither be applied to function bodies, nor to separate type definitions:
+
+```res
+exception Abort
+
+let testExn: 'a. unit => 'a = () => raise(Abort) // Works!
+
+let testExn2 = (): 'a. 'a = raise(Abort) // Syntax error!
+type fn = 'a. 'a => unit // Syntax error!
+```
+
