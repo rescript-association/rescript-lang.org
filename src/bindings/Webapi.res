@@ -40,7 +40,6 @@ module Window = {
 module Fetch = {
   module Response = {
     type t
-    @send external json: t => promise<Js.Json.t> = "json"
     @send external text: t => promise<string> = "text"
   }
 
