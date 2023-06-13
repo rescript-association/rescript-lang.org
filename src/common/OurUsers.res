@@ -154,4 +154,9 @@ let companies = [
     url: "https://www.instapainting.com/",
     path: "/static/lp/instapainting.svg",
   }),
+  Logo({
+    name: "Silq",
+    url: "https://www.onesilq.com/",
+    path: "/static/lp/silq.svg",
+  }),
 ]
