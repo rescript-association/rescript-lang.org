@@ -1135,7 +1135,7 @@ module ControlPanel = {
     | _ => React.null
     }
 
-    <div className="flex justify-end items-center bg-gray-100 p-3"> children </div>
+    <div className="flex justify-start items-center bg-gray-100 py-3 px-11"> children </div>
   }
 }
 
