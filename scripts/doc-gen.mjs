@@ -14,6 +14,30 @@ const files = all_files.filter(
     file.endsWith(".resi") ||
     file.endsWith(".ml") ||
     file.endsWith(".mli")
+).filter(file =>
+  ![
+    "arg.res",
+    "arg.resi",
+    "arrayLabels.ml",
+    "arrayLabels.mli",
+    // Belt Internals
+    "belt_internalAVLset.res",
+    "belt_internalAVLset.resi",
+    "belt_internalAVLtree.res",
+    "belt_internalAVLtree.resi",
+    "belt_internalBuckets.res",
+    "belt_internalBuckets.resi",
+    "belt_internalBucketsType.res",
+    "belt_internalBucketsType.resi",
+    "belt_internalMapInt.res",
+    "belt_internalMapInt.resi",
+    "belt_internalMapString.res",
+    "belt_internals.resi",
+    "belt_internalSetBuckets.res",
+    "belt_internalSetBuckets.resi",
+    "belt_internalSetInt.res",
+    "belt_internalSetString.res"
+  ].includes(file)
 );
 
 const interfaces = files.reduce((acc, file) => {
