@@ -1,0 +1,809 @@
+{
+  "name": "Belt_List",
+  "docstrings": [
+    "Collection functions for manipulating the `list` data structures, a singly-linked list.\n\n  **Prefer Array** if you need any of the following:\n\n  - Random access of element\n  - Better interop with JavaScript\n  - Better memory usage & performance."
+  ],
+  "items": [
+    {
+      "id": "Belt_List.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a> = list<'a>",
+      "docstrings": [
+        "`'a t` is compatible with built-in `list` type"
+      ]
+    },
+    {
+      "id": "Belt_List.length",
+      "kind": "value",
+      "name": "length",
+      "signature": "let length: t<'a> => int",
+      "docstrings": [
+        "Returns the length of a list.\n\n  ```res example\n  Belt.List.length(list{1, 2, 3}) // 3\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.size",
+      "kind": "value",
+      "name": "size",
+      "signature": "let size: t<'a> => int",
+      "docstrings": [
+        "**See** [`length`](##length)"
+      ]
+    },
+    {
+      "id": "Belt_List.head",
+      "kind": "value",
+      "name": "head",
+      "signature": "let head: t<'a> => option<'a>",
+      "docstrings": [
+        "Returns `Some(value)` where `value` is the first element in the list, or\n  `None` if `someList` is an empty list.\n\n  ```res example\n  Belt.List.head(list{}) // None\n  Belt.List.head(list{1, 2, 3}) // Some(1)\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.headExn",
+      "kind": "value",
+      "name": "headExn",
+      "signature": "let headExn: t<'a> => 'a",
+      "docstrings": [
+        "Same as [head](#head), but raises an exception if `someList` is empty. Use\n  with care.\n\n  ```res example\n  Belt.List.headExn(list{1, 2, 3}) // 1\n\n  Belt.List.headExn(list{}) // Raises an Error\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.tail",
+      "kind": "value",
+      "name": "tail",
+      "signature": "let tail: t<'a> => option<t<'a>>",
+      "docstrings": [
+        "Returns `None` if `someList` is empty, otherwise it returns `Some(tail)`\n  where `tail` is everything except the first element of `someList`.\n\n  ```res example\n  Belt.List.tail(list{1, 2, 3}) // Some(list{2, 3})\n\n  Belt.List.tail(list{}) // None\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.tailExn",
+      "kind": "value",
+      "name": "tailExn",
+      "signature": "let tailExn: t<'a> => t<'a>",
+      "docstrings": [
+        "Same as [tail](#tail), but raises an exception if `someList` is empty. Use\n  with care.\n\n  ```res example\n  Belt.List.tailExn(list{1, 2, 3}) // list{2, 3}\n\n  Belt.List.tailExn(list{}) // Raises an Error\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.add",
+      "kind": "value",
+      "name": "add",
+      "signature": "let add: (t<'a>, 'a) => t<'a>",
+      "docstrings": [
+        "Adds `value` to the beginning of `someList`.\n\n  ```res example\n  Belt.List.add(list{2, 3}, 1) // list{1, 2, 3}\n\n  Belt.List.add(list{\"World\", \"!\"}, \"Hello\") // list{\"Hello\", \"World\", \"!\"}\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.get",
+      "kind": "value",
+      "name": "get",
+      "signature": "let get: (t<'a>, int) => option<'a>",
+      "docstrings": [
+        "Return the nth element in `someList`, or `None` if `index` is larger than the\n  length.\n\n  ```res example\n  let abc = list{\"A\", \"B\", \"C\"}\n\n  abc->Belt.List.get(1) // Some(\"B\")\n\n  abc->Belt.List.get(4) // None\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.getExn",
+      "kind": "value",
+      "name": "getExn",
+      "signature": "let getExn: (t<'a>, int) => 'a",
+      "docstrings": [
+        "Same as [get](#get), but raises an exception if `index` is larger than the\n  length. Use with care.\n\n  ```res example\n  let abc = list{\"A\", \"B\", \"C\"}\n\n  abc->Belt.List.getExn(1) // \"B\"\n\n  abc->Belt.List.getExn(4) // Raises an Error\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.make",
+      "kind": "value",
+      "name": "make",
+      "signature": "let make: (int, 'a) => t<'a>",
+      "docstrings": [
+        "Returns a list of length `numItems` with each element filled with value `v`. Returns an empty list if `numItems` is negative.\n\n  ```res example\n  Belt.List.make(3, 1) // list{1, 1, 1}\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.makeByU",
+      "kind": "value",
+      "name": "makeByU",
+      "signature": "let makeByU: (int, (. int) => 'a) => t<'a>",
+      "docstrings": [
+        "Uncurried version of [makeBy](#makeBy)"
+      ]
+    },
+    {
+      "id": "Belt_List.makeBy",
+      "kind": "value",
+      "name": "makeBy",
+      "signature": "let makeBy: (int, int => 'a) => t<'a>",
+      "docstrings": [
+        "Return a list of length `numItems` with element `i` initialized with `f(i)`.\nReturns an empty list if `numItems` is negative.\n\n```res example\nBelt.List.makeBy(5, i => i) // list{0, 1, 2, 3, 4}\n\nBelt.List.makeBy(5, i => i * i) // list{0, 1, 4, 9, 16}\n```"
+      ]
+    },
+    {
+      "id": "Belt_List.shuffle",
+      "kind": "value",
+      "name": "shuffle",
+      "signature": "let shuffle: t<'a> => t<'a>",
+      "docstrings": [
+        "Returns a new list in random order.\n\n  ```res example\n  Belt.List.shuffle(list{1, 2, 3}) // list{2, 1, 3}\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.drop",
+      "kind": "value",
+      "name": "drop",
+      "signature": "let drop: (t<'a>, int) => option<t<'a>>",
+      "docstrings": [
+        "Return a new list, dropping the first `n` elements. Returns `None` if `someList` has fewer than `n` elements.\n\n  ```res example\n  list{1, 2, 3}->Belt.List.drop(2) // Some(list{3})\n\n  list{1, 2, 3}->Belt.List.drop(3) // Some(list{})\n\n  list{1, 2, 3}->Belt.List.drop(4) // None\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.take",
+      "kind": "value",
+      "name": "take",
+      "signature": "let take: (t<'a>, int) => option<t<'a>>",
+      "docstrings": [
+        "Returns a list with the first `n` elements from `someList`, or `None` if `someList` has fewer than `n` elements.\n\n```res example\nlist{1, 2, 3}->Belt.List.take(1) // Some(list{1})\n\nlist{1, 2, 3}->Belt.List.take(2) // Some(list{1, 2})\n\nlist{1, 2, 3}->Belt.List.take(4) // None\n```"
+      ]
+    },
+    {
+      "id": "Belt_List.splitAt",
+      "kind": "value",
+      "name": "splitAt",
+      "signature": "let splitAt: (t<'a>, int) => option<(list<'a>, list<'a>)>",
+      "docstrings": [
+        "Split the list `someList` at `index`. Returns `None` when the length of `someList` is less than `index`.\n\n  ```res example\n  list{\"Hello\", \"World\"}->Belt.List.splitAt(1) // Some((list{\"Hello\"}, list{\"World\"}))\n\n  list{0, 1, 2, 3, 4}->Belt.List.splitAt(2) // Some((list{0, 1}, list{2, 3, 4}))\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.concat",
+      "kind": "value",
+      "name": "concat",
+      "signature": "let concat: (t<'a>, t<'a>) => t<'a>",
+      "docstrings": [
+        "Returns the list obtained by adding `secondList` after `firstList`.\n\n  ```res example\n  Belt.List.concat(list{1, 2, 3}, list{4, 5}) // list{1, 2, 3, 4, 5}\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.concatMany",
+      "kind": "value",
+      "name": "concatMany",
+      "signature": "let concatMany: array<t<'a>> => t<'a>",
+      "docstrings": [
+        "Returns the list obtained by concatenating all the lists in array `a`, in\n  order.\n\n  ```res example\n  Belt.List.concatMany([list{1, 2, 3}, list{}, list{3}]) // list{1, 2, 3, 3}\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.reverseConcat",
+      "kind": "value",
+      "name": "reverseConcat",
+      "signature": "let reverseConcat: (t<'a>, t<'a>) => t<'a>",
+      "docstrings": [
+        "Equivalent to writing: `concat(reverse(firstList, secondList)`\n\n  ```res example\n  Belt.List.reverseConcat(list{1, 2}, list{3, 4}) // list{2, 1, 3, 4}\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.flatten",
+      "kind": "value",
+      "name": "flatten",
+      "signature": "let flatten: t<t<'a>> => t<'a>",
+      "docstrings": [
+        "Return the list obtained by concatenating all the lists in list `ls`, in order.\n\n  ```res example\n  Belt.List.flatten(list{list{1, 2, 3}, list{}, list{3}}) // list{1, 2, 3, 3}\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.mapU",
+      "kind": "value",
+      "name": "mapU",
+      "signature": "let mapU: (t<'a>, (. 'a) => 'b) => t<'b>",
+      "docstrings": [
+        "Uncurried version of [map](#map)."
+      ]
+    },
+    {
+      "id": "Belt_List.map",
+      "kind": "value",
+      "name": "map",
+      "signature": "let map: (t<'a>, 'a => 'b) => t<'b>",
+      "docstrings": [
+        "Returns a new list with `f` applied to each element of `someList`.\n\n  ```res example\n  list{1, 2}->Belt.List.map(x => x + 1) // list{3, 4}\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.zip",
+      "kind": "value",
+      "name": "zip",
+      "signature": "let zip: (t<'a>, t<'b>) => t<('a, 'b)>",
+      "docstrings": [
+        "Returns a list of pairs from the two lists with the length of the shorter list.\n\n  ```res example\n  Belt.List.zip(list{1, 2}, list{3, 4, 5}) // list{(1, 3), (2, 4)}\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.zipByU",
+      "kind": "value",
+      "name": "zipByU",
+      "signature": "let zipByU: (t<'a>, t<'b>, (. 'a, 'b) => 'c) => t<'c>",
+      "docstrings": [
+        "Uncurried version of [zipBy](#zipBy)."
+      ]
+    },
+    {
+      "id": "Belt_List.zipBy",
+      "kind": "value",
+      "name": "zipBy",
+      "signature": "let zipBy: (t<'a>, t<'b>, ('a, 'b) => 'c) => t<'c>",
+      "docstrings": [
+        "**See:** [zip](#zip)\n\n  ```res example\n  Belt.List.zipBy(list{1, 2, 3}, list{4, 5}, (a, b) => 2 * a + b) // list{6, 9}\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.mapWithIndexU",
+      "kind": "value",
+      "name": "mapWithIndexU",
+      "signature": "let mapWithIndexU: (t<'a>, (. int, 'a) => 'b) => t<'b>",
+      "docstrings": [
+        "Uncurried version of [mapWithIndex](#mapWithIndex)."
+      ]
+    },
+    {
+      "id": "Belt_List.mapWithIndex",
+      "kind": "value",
+      "name": "mapWithIndex",
+      "signature": "let mapWithIndex: (t<'a>, (int, 'a) => 'b) => t<'b>",
+      "docstrings": [
+        "Applies `f` to each element of `someList`.\n  Function `f` takes two arguments: the index starting from 0 and the element from `someList`, in that order.\n\n  ```res example\n  list{1, 2, 3}->Belt.List.mapWithIndex((index, x) => index + x) // list{1, 3, 5}\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.fromArray",
+      "kind": "value",
+      "name": "fromArray",
+      "signature": "let fromArray: array<'a> => t<'a>",
+      "docstrings": [
+        "Converts the given array to a list.\n\n  ```res example\n  Belt.List.fromArray([1, 2, 3]) // list{1, 2, 3}\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.toArray",
+      "kind": "value",
+      "name": "toArray",
+      "signature": "let toArray: t<'a> => array<'a>",
+      "docstrings": [
+        "Converts the given list to an array.\n\n  ```res example\n  Belt.List.toArray(list{1, 2, 3}) // [1, 2, 3]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.reverse",
+      "kind": "value",
+      "name": "reverse",
+      "signature": "let reverse: t<'a> => t<'a>",
+      "docstrings": [
+        "Returns a new list whose elements are those of `someList` in reversed order.\n\n  ```res example\n  Belt.List.reverse(list{1, 2, 3}) /* list{3, 2, 1} */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.mapReverseU",
+      "kind": "value",
+      "name": "mapReverseU",
+      "signature": "let mapReverseU: (t<'a>, (. 'a) => 'b) => t<'b>",
+      "docstrings": [
+        "Uncurried version of [mapReverse](#mapReverse)."
+      ]
+    },
+    {
+      "id": "Belt_List.mapReverse",
+      "kind": "value",
+      "name": "mapReverse",
+      "signature": "let mapReverse: (t<'a>, 'a => 'b) => t<'b>",
+      "docstrings": [
+        "Equivalent to:\n\n  ```res\n  map(someList, f)->reverse\n  ```\n\n  ```res example\n  list{3, 4, 5}->Belt.List.mapReverse(x => x * x) /* list{25, 16, 9} */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.forEachU",
+      "kind": "value",
+      "name": "forEachU",
+      "signature": "let forEachU: (t<'a>, (. 'a) => 'b) => unit",
+      "docstrings": [
+        "Uncurried version of [forEach](#forEach)."
+      ]
+    },
+    {
+      "id": "Belt_List.forEach",
+      "kind": "value",
+      "name": "forEach",
+      "signature": "let forEach: (t<'a>, 'a => 'b) => unit",
+      "docstrings": [
+        "Call `f` on each element of `someList` from the beginning to end.\n  `f` returns `unit`, so no new array is created. Use `forEach` when you are primarily concerned with repetitively creating side effects.\n\n  ```res example\n  Belt.List.forEach(list{\"a\", \"b\", \"c\"}, x => Js.log(\"Item: \" ++ x))\n  /*\n    prints:\n    Item: a\n    Item: b\n    Item: c\n  */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.forEachWithIndexU",
+      "kind": "value",
+      "name": "forEachWithIndexU",
+      "signature": "let forEachWithIndexU: (t<'a>, (. int, 'a) => 'b) => unit",
+      "docstrings": [
+        "Uncurried version of [forEachWithIndex](#forEachWithIndex)."
+      ]
+    },
+    {
+      "id": "Belt_List.forEachWithIndex",
+      "kind": "value",
+      "name": "forEachWithIndex",
+      "signature": "let forEachWithIndex: (t<'a>, (int, 'a) => 'b) => unit",
+      "docstrings": [
+        "Call `f` on each element of `someList` from beginning to end.\n  Function `f` takes two arguments: the index starting from 0 and the element from `someList`. `f` returns `unit`.\n\n  ```res example\n  Belt.List.forEachWithIndex(list{\"a\", \"b\", \"c\"}, (index, x) => {\n    Js.log(\"Item \" ++ Belt.Int.toString(index) ++ \" is \" ++ x)\n  })\n  /*\n    prints:\n    Item 0 is a\n    Item 1 is b\n    Item 2 is cc\n  */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.reduceU",
+      "kind": "value",
+      "name": "reduceU",
+      "signature": "let reduceU: (t<'a>, 'b, (. 'b, 'a) => 'b) => 'b",
+      "docstrings": [
+        "Uncurried version of [reduce](#reduce)."
+      ]
+    },
+    {
+      "id": "Belt_List.reduce",
+      "kind": "value",
+      "name": "reduce",
+      "signature": "let reduce: (t<'a>, 'b, ('b, 'a) => 'b) => 'b",
+      "docstrings": [
+        "Applies `f` to each element of `someList` from beginning to end. Function `f` has two parameters: the item from the list and an “accumulator”, which starts with a value of `initialValue`. reduce returns the final value of the accumulator.\n\n  ```res example\n  list{1, 2, 3, 4}->Belt.List.reduce(0, (a, b) => a + b) /* 10 */\n\n  /* same as */\n\n  list{1, 2, 3, 4}->Belt.List.reduce(0, (acc, item) => acc + item) /* 10 */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.reduceWithIndexU",
+      "kind": "value",
+      "name": "reduceWithIndexU",
+      "signature": "let reduceWithIndexU: (t<'a>, 'b, (. 'b, 'a, int) => 'b) => 'b",
+      "docstrings": [
+        "Uncurried version of [reduceWithIndex](#reduceWithIndex)."
+      ]
+    },
+    {
+      "id": "Belt_List.reduceWithIndex",
+      "kind": "value",
+      "name": "reduceWithIndex",
+      "signature": "let reduceWithIndex: (t<'a>, 'b, ('b, 'a, int) => 'b) => 'b",
+      "docstrings": [
+        "Applies `f` to each element of `someList` from beginning to end. Function `f` has three parameters: the item from the list and an “accumulator”, which starts with a value of `initialValue` and the index of each element. `reduceWithIndex` returns the final value of the accumulator.\n\n  ```res example\n  list{1, 2, 3, 4}->Belt.List.reduceWithIndex(0, (acc, item, index) => acc + item + index) /* 16 */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.reduceReverseU",
+      "kind": "value",
+      "name": "reduceReverseU",
+      "signature": "let reduceReverseU: (t<'a>, 'b, (. 'b, 'a) => 'b) => 'b",
+      "docstrings": [
+        "Uncurried version of [reduceReverse](#reduceReverse)."
+      ]
+    },
+    {
+      "id": "Belt_List.reduceReverse",
+      "kind": "value",
+      "name": "reduceReverse",
+      "signature": "let reduceReverse: (t<'a>, 'b, ('b, 'a) => 'b) => 'b",
+      "docstrings": [
+        "Works like [reduce](#reduce), except that function `f` is applied to each\n  item of `someList` from the last back to the first.\n\n  ```res example\n  list{1, 2, 3, 4}->Belt.List.reduceReverse(0, (a, b) => a + b) /* 10 */\n\n  list{1, 2, 3, 4}->Belt.List.reduceReverse(10, (a, b) => a - b) /* 0 */\n\n  list{1, 2, 3, 4}->Belt.List.reduceReverse(list{}, Belt.List.add) // list{1, 2, 3, 4}\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.mapReverse2U",
+      "kind": "value",
+      "name": "mapReverse2U",
+      "signature": "let mapReverse2U: (t<'a>, t<'b>, (. 'a, 'b) => 'c) => t<'c>",
+      "docstrings": [
+        "Uncurried version of [mapReverse2](#mapReverse2)."
+      ]
+    },
+    {
+      "id": "Belt_List.mapReverse2",
+      "kind": "value",
+      "name": "mapReverse2",
+      "signature": "let mapReverse2: (t<'a>, t<'b>, ('a, 'b) => 'c) => t<'c>",
+      "docstrings": [
+        "Equivalent to: `zipBy(xs, ys, f)->reverse`\n\n  ```res example\n\n  Belt.List.mapReverse2(list{1, 2, 3}, list{1, 2}, (a, b) => a + b) // list{4, 2}\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.forEach2U",
+      "kind": "value",
+      "name": "forEach2U",
+      "signature": "let forEach2U: (t<'a>, t<'b>, (. 'a, 'b) => 'c) => unit",
+      "docstrings": [
+        "Uncurried version of [forEach2](#forEach2)."
+      ]
+    },
+    {
+      "id": "Belt_List.forEach2",
+      "kind": "value",
+      "name": "forEach2",
+      "signature": "let forEach2: (t<'a>, t<'b>, ('a, 'b) => 'c) => unit",
+      "docstrings": [
+        "Stops at the length of the shorter list.\n\n  ```res example\n  Belt.List.forEach2(list{\"Z\", \"Y\"}, list{\"A\", \"B\", \"C\"}, (x, y) => Js.log2(x, y))\n\n  /*\n    prints:\n    \"Z\" \"A\"\n    \"Y\" \"B\"\n  */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.reduce2U",
+      "kind": "value",
+      "name": "reduce2U",
+      "signature": "let reduce2U: (t<'b>, t<'c>, 'a, (. 'a, 'b, 'c) => 'a) => 'a",
+      "docstrings": [
+        "Uncurried version of [reduce2](#reduce2)."
+      ]
+    },
+    {
+      "id": "Belt_List.reduce2",
+      "kind": "value",
+      "name": "reduce2",
+      "signature": "let reduce2: (t<'b>, t<'c>, 'a, ('a, 'b, 'c) => 'a) => 'a",
+      "docstrings": [
+        "Applies `f` to each element of `firstList` and `secondList` from beginning to end. Stops with the shorter list. Function `f` has three parameters: an “accumulator” which starts with a value of `initialValue`, an item from `firstList`, and an item from `secondList`. `reduce2` returns the final value of the accumulator.\n\n  ```res example\n  Belt.List.reduce2(list{1, 2, 3}, list{4, 5}, 0, (acc, x, y) => acc + x * x + y) /* 0 + (1 * 1 + 4) + (2 * 2 + 5) */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.reduceReverse2U",
+      "kind": "value",
+      "name": "reduceReverse2U",
+      "signature": "let reduceReverse2U: (t<'a>, t<'b>, 'c, (. 'c, 'a, 'b) => 'c) => 'c",
+      "docstrings": [
+        "Uncurried version of [reduceReverse2](#reduceReverse2)."
+      ]
+    },
+    {
+      "id": "Belt_List.reduceReverse2",
+      "kind": "value",
+      "name": "reduceReverse2",
+      "signature": "let reduceReverse2: (t<'a>, t<'b>, 'c, ('c, 'a, 'b) => 'c) => 'c",
+      "docstrings": [
+        "Applies `f` to each element of `firstList` and `secondList` from end to\n  beginning. Stops with the shorter list. Function `f` has three parameters: an\n  “accumulator” which starts with a value of init, an item from `firstList`,\n  and an item from `secondList`. `reduce2` returns the final value of the\n  accumulator.\n\n  ```res example\n  Belt.List.reduceReverse2(list{1, 2, 3}, list{4, 5}, 0, (acc, x, y) => acc + x * x + y) /*  + (1 * 1 + 4) + (2 * 2 + 5) */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.everyU",
+      "kind": "value",
+      "name": "everyU",
+      "signature": "let everyU: (t<'a>, (. 'a) => bool) => bool",
+      "docstrings": [
+        "Uncurried version of [every](#every)."
+      ]
+    },
+    {
+      "id": "Belt_List.every",
+      "kind": "value",
+      "name": "every",
+      "signature": "let every: (t<'a>, 'a => bool) => bool",
+      "docstrings": [
+        "Returns `true` if all elements satisfy `pred`, where `pred` is a predicate: a function taking an element and returning a bool.\n\n  ```res example\n  let isBelow10 = value => value < 10\n\n  list{1, 9, 8, 2}->Belt.List.every(isBelow10) /* true */\n\n  list{1, 99, 8, 2}->Belt.List.every(isBelow10) /* false */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.someU",
+      "kind": "value",
+      "name": "someU",
+      "signature": "let someU: (t<'a>, (. 'a) => bool) => bool",
+      "docstrings": [
+        "Uncurried version of [some](#some)."
+      ]
+    },
+    {
+      "id": "Belt_List.some",
+      "kind": "value",
+      "name": "some",
+      "signature": "let some: (t<'a>, 'a => bool) => bool",
+      "docstrings": [
+        "Returns `true` if at least _one_ of the elements in `someList` satisfies\n  `pred`, where `pred` is a predicate: a function taking an element and\n  returning a bool.\n\n  ```res example\n  let isAbove100 = value => value > 100\n\n  list{101, 1, 2, 3}->Belt.List.some(isAbove100) /* true */\n\n  list{1, 2, 3, 4}->Belt.List.some(isAbove100) /* false */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.every2U",
+      "kind": "value",
+      "name": "every2U",
+      "signature": "let every2U: (t<'a>, t<'b>, (. 'a, 'b) => bool) => bool",
+      "docstrings": [
+        "Uncurried version of [every2](#every2)."
+      ]
+    },
+    {
+      "id": "Belt_List.every2",
+      "kind": "value",
+      "name": "every2",
+      "signature": "let every2: (t<'a>, t<'b>, ('a, 'b) => bool) => bool",
+      "docstrings": [
+        "Returns `true` if predicate `pred(a, b)` is `true` for all pairs of elements\n  up to the shorter length (i.e. `min(length(firstList), length(secondList))`)\n\n  ```res example\n  Belt.List.every2(list{1, 2, 3}, list{0, 1}, (a, b) => a > b) /* true */\n\n  Belt.List.every2(list{}, list{1}, (a, b) => a > b) /* true */\n\n  Belt.List.every2(list{2, 3}, list{1}, (a, b) => a > b) /* true */\n\n  Belt.List.every2(list{0, 1}, list{5, 0}, (a, b) => a > b) /* false */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.some2U",
+      "kind": "value",
+      "name": "some2U",
+      "signature": "let some2U: (t<'a>, t<'b>, (. 'a, 'b) => bool) => bool",
+      "docstrings": [
+        "Uncurried version of [some2](#some2)."
+      ]
+    },
+    {
+      "id": "Belt_List.some2",
+      "kind": "value",
+      "name": "some2",
+      "signature": "let some2: (t<'a>, t<'b>, ('a, 'b) => bool) => bool",
+      "docstrings": [
+        "Returns `true` if predicate `pred(a, b)` is true for any pair of elements up\n  to the shorter length (i.e. `min(length(firstList), length(secondList))`)\n\n  ```res example\n  Belt.List.some2(list{1, 2, 3}, list{0, 1}, (a, b) => a > b) /* true */\n\n  Belt.List.some2(list{}, list{1}, (a, b) => a > b) /* false */\n\n  Belt.List.some2(list{2, 3}, list{1}, (a, b) => a > b) /* true */\n\n  Belt.List.some2(list{0, 1}, list{5, 0}, (a, b) => a > b) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.cmpByLength",
+      "kind": "value",
+      "name": "cmpByLength",
+      "signature": "let cmpByLength: (t<'a>, t<'a>) => int",
+      "docstrings": [
+        "Compare two lists solely by length. Returns `-1` if `length(firstList)` is\n  less than `length(secondList)`, `0` if `length(firstList)` equals\n  `length(secondList)`, and `1` if `length(firstList)` is greater than\n  `length(secondList)`.\n\n  ```res example\n  Belt.List.cmpByLength(list{1, 2}, list{3, 4, 5, 6}) /* -1 */\n\n  Belt.List.cmpByLength(list{1, 2, 3}, list{4, 5, 6}) /* = 0 */\n\n  Belt.List.cmpByLength(list{1, 2, 3, 4}, list{5, 6}) /* = 1 */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.cmpU",
+      "kind": "value",
+      "name": "cmpU",
+      "signature": "let cmpU: (t<'a>, t<'a>, (. 'a, 'a) => int) => int",
+      "docstrings": [
+        "Uncurried version of [cmp](#cmp)."
+      ]
+    },
+    {
+      "id": "Belt_List.cmp",
+      "kind": "value",
+      "name": "cmp",
+      "signature": "let cmp: (t<'a>, t<'a>, ('a, 'a) => int) => int",
+      "docstrings": [
+        "Compare elements one by one `compareFn(a, b)`. `compareFn` returns a negative number if `a` is \"less than\" `b`, zero if `a` is \"equal to\" `b`, a positive number if `a` is \"greater than\" `b`.\n\n  The comparison returns the first non-zero result of `compareFn`, or zero if `compareFn` returns zero for all `a` and `b`.\n\n  If all items have compared equal, but `firstList` is exhausted first, return `-1`. (`firstList` is shorter).\n  If all items have compared equal, but `secondList` is exhausted first, return `1` (`firstList` is longer).\n\n  ```res example\n  Belt.List.cmp(list{3}, list{3, 7}, (a, b) => compare(a, b)) /* (-1) */\n\n  Belt.List.cmp(list{5, 3}, list{5}, (a, b) => compare(a, b)) /* 1 */\n\n  Belt.List.cmp(list{1, 3, 5}, list{1, 4, 2}, (a, b) => compare(a, b)) /* (-1) */\n\n  Belt.List.cmp(list{1, 3, 5}, list{1, 2, 3}, (a, b) => compare(a, b)) /* 1 */\n\n  Belt.List.cmp(list{1, 3, 5}, list{1, 3, 5}, (a, b) => compare(a, b)) /* 0 */\n  ```\n\n  **Please note:** The total ordering of List is different from Array,\n  for Array, we compare the length first and, only if the lengths are equal, elements one by one.\n  For lists, we just compare elements one by one."
+      ]
+    },
+    {
+      "id": "Belt_List.eqU",
+      "kind": "value",
+      "name": "eqU",
+      "signature": "let eqU: (t<'a>, t<'a>, (. 'a, 'a) => bool) => bool",
+      "docstrings": [
+        "Uncurried version of [eq](#eq)."
+      ]
+    },
+    {
+      "id": "Belt_List.eq",
+      "kind": "value",
+      "name": "eq",
+      "signature": "let eq: (t<'a>, t<'a>, ('a, 'a) => bool) => bool",
+      "docstrings": [
+        "Check equality of `firstList` and `secondList` using `eqElem` for equality on\n  elements, where `eqElem` is a function that returns `true` if items `x` and\n  `y` meet some criterion for equality, `false` otherwise. eq `false` if length\n  of `firstList` and `secondList` are not the same.\n\n  ```res example\n  Belt.List.eq(list{1, 2, 3}, list{1, 2}, (a, b) => a == b) /* false */\n\n  Belt.List.eq(list{1, 2}, list{1, 2}, (a, b) => a == b) /* true */\n\n  Belt.List.eq(list{1, 2, 3}, list{(-1), (-2), (-3)}, (a, b) => abs(a) == abs(b)) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.hasU",
+      "kind": "value",
+      "name": "hasU",
+      "signature": "let hasU: (t<'a>, 'b, (. 'a, 'b) => bool) => bool",
+      "docstrings": [
+        "Uncurried version of [has](#has)."
+      ]
+    },
+    {
+      "id": "Belt_List.has",
+      "kind": "value",
+      "name": "has",
+      "signature": "let has: (t<'a>, 'b, ('a, 'b) => bool) => bool",
+      "docstrings": [
+        "Returns `true` if the list contains at least one element for which\n  `eqFunction(x)` returns true.\n\n  ```res example\n  list{1, 2, 3}->Belt.List.has(2, (a, b) => a == b) /* true */\n\n  list{1, 2, 3}->Belt.List.has(4, (a, b) => a == b) /* false */\n\n  list{(-1), (-2), (-3)}->Belt.List.has(2, (a, b) => abs(a) == abs(b)) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.getByU",
+      "kind": "value",
+      "name": "getByU",
+      "signature": "let getByU: (t<'a>, (. 'a) => bool) => option<'a>",
+      "docstrings": [
+        "Uncurried version of [getBy](#getBy)."
+      ]
+    },
+    {
+      "id": "Belt_List.getBy",
+      "kind": "value",
+      "name": "getBy",
+      "signature": "let getBy: (t<'a>, 'a => bool) => option<'a>",
+      "docstrings": [
+        "Returns `Some(value)` for the first value in `someList` that satisfies the\n  predicate function `pred`. Returns `None` if no element satisfies the function.\n\n  ```res example\n  Belt.List.getBy(list{1, 4, 3, 2}, x => x > 3) /* Some(4) */\n\n  Belt.List.getBy(list{1, 4, 3, 2}, x => x > 4) /* None */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.keepU",
+      "kind": "value",
+      "name": "keepU",
+      "signature": "let keepU: (t<'a>, (. 'a) => bool) => t<'a>",
+      "docstrings": [
+        "Uncurried version of [keep](#keep)."
+      ]
+    },
+    {
+      "id": "Belt_List.keep",
+      "kind": "value",
+      "name": "keep",
+      "signature": "let keep: (t<'a>, 'a => bool) => t<'a>",
+      "docstrings": [
+        "Returns a list of all elements in `someList` which satisfy the predicate function `pred`.\n\n  ```res example\n  let isEven = x => mod(x, 2) == 0\n\n  Belt.List.keep(list{1, 2, 3, 4}, isEven) /* list{2, 4} */\n\n  Belt.List.keep(list{None, Some(2), Some(3), None}, Belt.Option.isSome) /* list{Some(2), Some(3)} */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.filter",
+      "kind": "value",
+      "name": "filter",
+      "signature": "let filter: (t<'a>, 'a => bool) => t<'a>",
+      "docstrings": [
+        "Returns a list of all elements in `someList` which satisfy the predicate function `pred`.\n\n  ```res example\n  let isEven = x => mod(x, 2) == 0\n\n  Belt.List.filter(list{1, 2, 3, 4}, isEven) /* list{2, 4} */\n\n  Belt.List.filter(list{None, Some(2), Some(3), None}, Belt.Option.isSome) /* list{Some(2), Some(3)} */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.keepWithIndexU",
+      "kind": "value",
+      "name": "keepWithIndexU",
+      "signature": "let keepWithIndexU: (t<'a>, (. 'a, int) => bool) => t<'a>",
+      "docstrings": [
+        "Uncurried version of [keepWithIndex](#keepWithIndex)."
+      ]
+    },
+    {
+      "id": "Belt_List.keepWithIndex",
+      "kind": "value",
+      "name": "keepWithIndex",
+      "signature": "let keepWithIndex: (t<'a>, ('a, int) => bool) => t<'a>",
+      "docstrings": [
+        "Returns a list of all elements in `someList` which satisfy the predicate function `pred`.\n\n  ```res example\n  let isEven = x => mod(x, 2) == 0\n\n  Belt.List.keepWithIndex(list{1, 2, 3, 4}, (_x, index) => isEven(index)) /* list{1, 3} */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.filterWithIndex",
+      "kind": "value",
+      "name": "filterWithIndex",
+      "signature": "let filterWithIndex: (t<'a>, ('a, int) => bool) => t<'a>",
+      "docstrings": [
+        "Returns a list of all elements in `someList` which satisfy the predicate function `pred`.\n\n  ```res example\n  let isEven = x => mod(x, 2) == 0\n\n  Belt.List.filterWithIndex(list{1, 2, 3, 4}, (_x, index) => isEven(index)) /* list{1, 3} */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.keepMapU",
+      "kind": "value",
+      "name": "keepMapU",
+      "signature": "let keepMapU: (t<'a>, (. 'a) => option<'b>) => t<'b>",
+      "docstrings": [
+        "Uncurried version of [keepMap](#keepMap)."
+      ]
+    },
+    {
+      "id": "Belt_List.keepMap",
+      "kind": "value",
+      "name": "keepMap",
+      "signature": "let keepMap: (t<'a>, 'a => option<'b>) => t<'b>",
+      "docstrings": [
+        "Applies `f` to each element of `someList`. If `f(x)` returns `Some(value)`, then `value` is _kept_ in the resulting list.\n  If `f(x)` returns `None`, the element is _not_ retained in the result.\n\n  ```res example\n  let isEven = x => mod(x, 2) == 0\n\n  list{1, 2, 3, 4}\n  ->Belt.List.keepMap(x =>\n      if (isEven(x)) {\n        Some(x)\n      } else {\n        None\n      }\n    ) /* list{2, 4} */\n\n  list{Some(1), Some(2), None}->Belt.List.keepMap(x => x) /* list{1, 2} */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.partitionU",
+      "kind": "value",
+      "name": "partitionU",
+      "signature": "let partitionU: (t<'a>, (. 'a) => bool) => (t<'a>, t<'a>)",
+      "docstrings": [
+        "Uncurried version of [partition](#partition)."
+      ]
+    },
+    {
+      "id": "Belt_List.partition",
+      "kind": "value",
+      "name": "partition",
+      "signature": "let partition: (t<'a>, 'a => bool) => (t<'a>, t<'a>)",
+      "docstrings": [
+        "Creates a pair of lists; the first list consists of all elements of `someList` that satisfy the predicate function `pred`; the second list consists of all elements of `someList` that _do not_ satisfy `pred.\n\n  In other words:\n\n  ```res\n  (elementsThatSatisfies, elementsThatDoesNotSatisfy)\n  ```\n\n  ```res example\n  Belt.List.partition(list{1, 2, 3, 4}, x => x > 2) /* (list{3, 4}, list{1, 2}) */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.unzip",
+      "kind": "value",
+      "name": "unzip",
+      "signature": "let unzip: t<('a, 'b)> => (t<'a>, t<'b>)",
+      "docstrings": [
+        "Takes a list of pairs and creates a pair of lists. The first list contains all the first items of the pairs; the second list contains all the second items.\n\n  ```res example\n  Belt.List.unzip(list{(1, 2), (3, 4)}) /* (list{1, 3}, list{2, 4}) */\n\n  Belt.List.unzip(list{(\"H\", \"W\"), (\"e\", \"o\"), (\"l\", \"r\"), (\"l\", \"l\"), (\"o\", \"d\"), (\" \", \"!\")})\n  /* (list{\"H\", \"e\", \"l\", \"l\", \"o\", \" \"}, list{\"W\", \"o\", \"r\", \"l\", \"d\", \"!\"}) */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.getAssocU",
+      "kind": "value",
+      "name": "getAssocU",
+      "signature": "let getAssocU: (t<('a, 'c)>, 'b, (. 'a, 'b) => bool) => option<'c>",
+      "docstrings": [
+        "Uncurried version of [getAssoc](#getAssoc)."
+      ]
+    },
+    {
+      "id": "Belt_List.getAssoc",
+      "kind": "value",
+      "name": "getAssoc",
+      "signature": "let getAssoc: (t<('a, 'c)>, 'b, ('a, 'b) => bool) => option<'c>",
+      "docstrings": [
+        "Return the second element of a pair in `someList` where the first element equals `k` as per the predicate function `eqFunction`, or `None` if not found.\n\n  ```res example\n  list{(1, \"a\"), (2, \"b\"), (3, \"c\")}->Belt.List.getAssoc(3, (a, b) => a == b) /* Some(\"c\") */\n\n  list{(9, \"morning\"), (15, \"afternoon\"), (22, \"night\")}\n  ->Belt.List.getAssoc(15, (k, item) => k /* 15 */ == item /* 9, 5, 22 */)\n  /* Some(\"afternoon\") */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.hasAssocU",
+      "kind": "value",
+      "name": "hasAssocU",
+      "signature": "let hasAssocU: (t<('a, 'c)>, 'b, (. 'a, 'b) => bool) => bool",
+      "docstrings": [
+        "Uncurried version of [hasAssoc](#hasAssoc)."
+      ]
+    },
+    {
+      "id": "Belt_List.hasAssoc",
+      "kind": "value",
+      "name": "hasAssoc",
+      "signature": "let hasAssoc: (t<('a, 'c)>, 'b, ('a, 'b) => bool) => bool",
+      "docstrings": [
+        "Returns `true` if there is a pair in `someList` where the first element equals `k` as per the predicate function `eqFunction`.\n\n  ```res example\n  list{(1, \"a\"), (2, \"b\"), (3, \"c\")}->Belt.List.hasAssoc(1, (a, b) => a == b) /* true */\n\n  list{(9, \"morning\"), (15, \"afternoon\"), (22, \"night\")}\n  ->Belt.List.hasAssoc(25, (k, item) => k /* 25 */ == item /* 9, 5, 22 */) /* false */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.removeAssocU",
+      "kind": "value",
+      "name": "removeAssocU",
+      "signature": "let removeAssocU: (t<('a, 'c)>, 'b, (. 'a, 'b) => bool) => t<('a, 'c)>",
+      "docstrings": [
+        "Uncurried version of [removeAssoc](#removeAssoc)."
+      ]
+    },
+    {
+      "id": "Belt_List.removeAssoc",
+      "kind": "value",
+      "name": "removeAssoc",
+      "signature": "let removeAssoc: (t<('a, 'c)>, 'b, ('a, 'b) => bool) => t<('a, 'c)>",
+      "docstrings": [
+        "Return a list after removing the first pair whose first value is `k` per the equality predicate `eqFunction`; if not found, return a new list identical to `someList`.\n\n  ```res example\n  list{(1, \"a\"), (2, \"b\"), (3, \"c\")}->Belt.List.removeAssoc(1, (a, b) => a == b) /* list{(2, \"b\"), (3, \"c\")} */\n\n  list{(9, \"morning\"), (15, \"afternoon\"), (22, \"night\")}\n  ->Belt.List.removeAssoc(9, (k, item) => k /* 9 */ == item /* 9, 5, 22 */)\n  /* list{(15, \"afternoon\"), (22, \"night\")} */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_List.setAssocU",
+      "kind": "value",
+      "name": "setAssocU",
+      "signature": "let setAssocU: (t<('a, 'c)>, 'a, 'c, (. 'a, 'a) => bool) => t<('a, 'c)>",
+      "docstrings": [
+        "Uncurried version of [setAssoc](#setAssoc)."
+      ]
+    },
+    {
+      "id": "Belt_List.setAssoc",
+      "kind": "value",
+      "name": "setAssoc",
+      "signature": "let setAssoc: (t<('a, 'c)>, 'a, 'c, ('a, 'a) => bool) => t<('a, 'c)>",
+      "docstrings": [
+        "If `k` exists in `someList` by satisfying the `eqFunction` predicate, return a new list with the key and value replaced by the new `k` and `v`; otherwise, return a new list with the pair `k`, `v` added to the head of `someList`.\n\n  ```res example\n  list{(1, \"a\"), (2, \"b\"), (3, \"c\")}->Belt.List.setAssoc(2, \"x\", (a, b) => a == b) /* list{(1, \"a\"), (2, \"x\"), (3, \"c\")} */\n\n  list{(1, \"a\"), (3, \"c\")}->Belt.List.setAssoc(2, \"b\", (a, b) => a == b) /* list{(2, \"b\"), (1, \"a\"), (3, \"c\")} */\n\n  list{(9, \"morning\"), (3, \"morning?!\"), (22, \"night\")}\n  ->Belt.List.setAssoc(15, \"afternoon\", (a, b) => mod(a, 12) == mod(b, 12))\n  /* list{(9, \"morning\"), (15, \"afternoon\"), (22, \"night\")} */\n  ```\n\n  **Please note**\n\n  In the last example, since: `15 mod 12` equals `3 mod 12`\n\n  Both the key _and_ the value are replaced in the list."
+      ]
+    },
+    {
+      "id": "Belt_List.sortU",
+      "kind": "value",
+      "name": "sortU",
+      "signature": "let sortU: (t<'a>, (. 'a, 'a) => int) => t<'a>",
+      "docstrings": [
+        "Uncurried version of [sort](#sort)."
+      ]
+    },
+    {
+      "id": "Belt_List.sort",
+      "kind": "value",
+      "name": "sort",
+      "signature": "let sort: (t<'a>, ('a, 'a) => int) => t<'a>",
+      "docstrings": [
+        "Returns a sorted list.\n\n  ```res example\n  Belt.List.sort(list{5, 4, 9, 3, 7}, (a, b) => a - b) // list{3, 4, 5, 7, 9}\n  ```"
+      ]
+    }
+  ]
+}

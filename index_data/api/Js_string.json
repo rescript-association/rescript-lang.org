@@ -1,0 +1,405 @@
+{
+  "name": "Js_string",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Js_string.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t = string",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.make",
+      "kind": "value",
+      "name": "make",
+      "signature": "let make: 'a => t",
+      "docstrings": [
+        "`make(value)` converts the given value to a `string`.\n\n```res example\nJs.String2.make(3.5) == \"3.5\"\nJs.String2.make([1, 2, 3]) == \"1,2,3\"\n```"
+      ]
+    },
+    {
+      "id": "Js_string.fromCharCode",
+      "kind": "value",
+      "name": "fromCharCode",
+      "signature": "let fromCharCode: int => t",
+      "docstrings": [
+        "`fromCharCode(n)` creates a `string` containing the character corresponding to that number; `n` ranges from 0 to 65535.\nIf out of range, the lower 16 bits of the value are used. Thus, `fromCharCode(0x1F63A)` gives the same result as `fromCharCode(0xF63A)`. See [`String.fromCharCode`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode) on MDN.\n\n```res example\nJs.String2.fromCharCode(65) == \"A\"\nJs.String2.fromCharCode(0x3c8) == `ψ`\nJs.String2.fromCharCode(0xd55c) == `한`\nJs.String2.fromCharCode(-64568) == `ψ`\n```"
+      ]
+    },
+    {
+      "id": "Js_string.fromCharCodeMany",
+      "kind": "value",
+      "name": "fromCharCodeMany",
+      "signature": "let fromCharCodeMany: array<int> => t",
+      "docstrings": [
+        "`fromCharCodeMany([n1, n2, n3])` creates a `string` from the characters\ncorresponding to the given numbers, using the same rules as `fromCharCode`. See\n[`String.fromCharCode`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode)\non MDN."
+      ]
+    },
+    {
+      "id": "Js_string.fromCodePoint",
+      "kind": "value",
+      "name": "fromCodePoint",
+      "signature": "let fromCodePoint: int => t",
+      "docstrings": [
+        "`fromCodePoint(n)` creates a `string` containing the character corresponding to\nthat numeric code point. If the number is not a valid code point, it raises\n`RangeError`.Thus, `fromCodePoint(0x1F63A)` will produce a correct value,\nunlike `fromCharCode(0x1F63A)`, and `fromCodePoint(-5)` will raise a\n`RangeError`.\n\nSee [`String.fromCodePoint`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint)\non MDN.\n\n```res example\nJs.String2.fromCodePoint(65) == \"A\"\nJs.String2.fromCodePoint(0x3c8) == `ψ`\nJs.String2.fromCodePoint(0xd55c) == `한`\nJs.String2.fromCodePoint(0x1f63a) == `😺`\n```"
+      ]
+    },
+    {
+      "id": "Js_string.fromCodePointMany",
+      "kind": "value",
+      "name": "fromCodePointMany",
+      "signature": "let fromCodePointMany: array<int> => t",
+      "docstrings": [
+        "`fromCodePointMany([n1, n2, n3])` creates a `string` from the characters\ncorresponding to the given code point numbers, using the same rules as\n`fromCodePoint`.\n\nSee [`String.fromCodePoint`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint)\non MDN.\n\n```res example\nJs.String2.fromCodePointMany([0xd55c, 0xae00, 0x1f63a]) == `한글😺`\n```"
+      ]
+    },
+    {
+      "id": "Js_string.length",
+      "kind": "value",
+      "name": "length",
+      "signature": "let length: t => int",
+      "docstrings": [
+        "`length(s)` returns the length of the given `string`. See\n[`String.length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/length)\non MDN.\n\n```res example\nJs.String2.length(\"abcd\") == 4\n```"
+      ]
+    },
+    {
+      "id": "Js_string.get",
+      "kind": "value",
+      "name": "get",
+      "signature": "let get: (t, int) => t",
+      "docstrings": [
+        "`get(s, n)` returns as a `string` the character at the given index number. If\n`n` is out of range, this function returns `undefined`, so at some point this\nfunction may be modified to return `option(string)`.\n\n```res example\nJs.String2.get(\"Reason\", 0) == \"R\"\nJs.String2.get(\"Reason\", 4) == \"o\"\nJs.String2.get(`Rẽasöń`, 5) == `ń`\n```"
+      ]
+    },
+    {
+      "id": "Js_string.charAt",
+      "kind": "value",
+      "name": "charAt",
+      "signature": "let charAt: (int, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.charCodeAt",
+      "kind": "value",
+      "name": "charCodeAt",
+      "signature": "let charCodeAt: (int, t) => float",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.codePointAt",
+      "kind": "value",
+      "name": "codePointAt",
+      "signature": "let codePointAt: (int, t) => option<int>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.concat",
+      "kind": "value",
+      "name": "concat",
+      "signature": "let concat: (t, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.concatMany",
+      "kind": "value",
+      "name": "concatMany",
+      "signature": "let concatMany: (array<t>, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.endsWith",
+      "kind": "value",
+      "name": "endsWith",
+      "signature": "let endsWith: (t, t) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.endsWithFrom",
+      "kind": "value",
+      "name": "endsWithFrom",
+      "signature": "let endsWithFrom: (t, int, t) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.includes",
+      "kind": "value",
+      "name": "includes",
+      "signature": "let includes: (t, t) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.includesFrom",
+      "kind": "value",
+      "name": "includesFrom",
+      "signature": "let includesFrom: (t, int, t) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.indexOf",
+      "kind": "value",
+      "name": "indexOf",
+      "signature": "let indexOf: (t, t) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.indexOfFrom",
+      "kind": "value",
+      "name": "indexOfFrom",
+      "signature": "let indexOfFrom: (t, int, t) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.lastIndexOf",
+      "kind": "value",
+      "name": "lastIndexOf",
+      "signature": "let lastIndexOf: (t, t) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.lastIndexOfFrom",
+      "kind": "value",
+      "name": "lastIndexOfFrom",
+      "signature": "let lastIndexOfFrom: (t, int, t) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.localeCompare",
+      "kind": "value",
+      "name": "localeCompare",
+      "signature": "let localeCompare: (t, t) => float",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.match_",
+      "kind": "value",
+      "name": "match_",
+      "signature": "let match_: (Js_re.t, t) => option<array<option<t>>>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.normalize",
+      "kind": "value",
+      "name": "normalize",
+      "signature": "let normalize: t => t",
+      "docstrings": [
+        "`normalize(str)` returns the normalized Unicode string using Normalization Form\nCanonical (NFC) Composition. Consider the character ã, which can be represented\nas the single codepoint \\u00e3 or the combination of a lower case letter A\n\\u0061 and a combining tilde \\u0303. Normalization ensures that both can be\nstored in an equivalent binary representation.\n\nSee [`String.normalize`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize)\non MDN.\n\nSee also [Unicode technical report #15](https://unicode.org/reports/tr15/) for\ndetails."
+      ]
+    },
+    {
+      "id": "Js_string.normalizeByForm",
+      "kind": "value",
+      "name": "normalizeByForm",
+      "signature": "let normalizeByForm: (t, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.repeat",
+      "kind": "value",
+      "name": "repeat",
+      "signature": "let repeat: (int, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.replace",
+      "kind": "value",
+      "name": "replace",
+      "signature": "let replace: (t, t, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.replaceByRe",
+      "kind": "value",
+      "name": "replaceByRe",
+      "signature": "let replaceByRe: (Js_re.t, t, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.unsafeReplaceBy0",
+      "kind": "value",
+      "name": "unsafeReplaceBy0",
+      "signature": "let unsafeReplaceBy0: (Js_re.t, (t, int, t) => t, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.unsafeReplaceBy1",
+      "kind": "value",
+      "name": "unsafeReplaceBy1",
+      "signature": "let unsafeReplaceBy1: (Js_re.t, (t, t, int, t) => t, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.unsafeReplaceBy2",
+      "kind": "value",
+      "name": "unsafeReplaceBy2",
+      "signature": "let unsafeReplaceBy2: (Js_re.t, (t, t, t, int, t) => t, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.unsafeReplaceBy3",
+      "kind": "value",
+      "name": "unsafeReplaceBy3",
+      "signature": "let unsafeReplaceBy3: (Js_re.t, (t, t, t, t, int, t) => t, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.search",
+      "kind": "value",
+      "name": "search",
+      "signature": "let search: (Js_re.t, t) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.slice",
+      "kind": "value",
+      "name": "slice",
+      "signature": "let slice: (~from: int, ~to_: int, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.sliceToEnd",
+      "kind": "value",
+      "name": "sliceToEnd",
+      "signature": "let sliceToEnd: (~from: int, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.split",
+      "kind": "value",
+      "name": "split",
+      "signature": "let split: (t, t) => array<t>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.splitAtMost",
+      "kind": "value",
+      "name": "splitAtMost",
+      "signature": "let splitAtMost: (t, ~limit: int, t) => array<t>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.splitByRe",
+      "kind": "value",
+      "name": "splitByRe",
+      "signature": "let splitByRe: (Js_re.t, t) => array<option<t>>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.splitByReAtMost",
+      "kind": "value",
+      "name": "splitByReAtMost",
+      "signature": "let splitByReAtMost: (Js_re.t, ~limit: int, t) => array<option<t>>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.startsWith",
+      "kind": "value",
+      "name": "startsWith",
+      "signature": "let startsWith: (t, t) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.startsWithFrom",
+      "kind": "value",
+      "name": "startsWithFrom",
+      "signature": "let startsWithFrom: (t, int, t) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.substr",
+      "kind": "value",
+      "name": "substr",
+      "signature": "let substr: (~from: int, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.substrAtMost",
+      "kind": "value",
+      "name": "substrAtMost",
+      "signature": "let substrAtMost: (~from: int, ~length: int, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.substring",
+      "kind": "value",
+      "name": "substring",
+      "signature": "let substring: (~from: int, ~to_: int, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.substringToEnd",
+      "kind": "value",
+      "name": "substringToEnd",
+      "signature": "let substringToEnd: (~from: int, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.toLowerCase",
+      "kind": "value",
+      "name": "toLowerCase",
+      "signature": "let toLowerCase: t => t",
+      "docstrings": [
+        "`toLowerCase(str)` converts `str` to lower case using the locale-insensitive\ncase mappings in the Unicode Character Database. Notice that the conversion can\ngive different results depending upon context, for example with the Greek\nletter sigma, which has two different lower case forms; one when it is the last\ncharacter in a string and another when it is not.\n\nSee [`String.toLowerCase`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toLowerCase)\non MDN.\n\n```res example\nJs.String.toLowerCase(\"ABC\") == \"abc\"\nJs.String.toLowerCase(`ΣΠ`) == `σπ`\nJs.String.toLowerCase(`ΠΣ`) == `πς`\n```"
+      ]
+    },
+    {
+      "id": "Js_string.toLocaleLowerCase",
+      "kind": "value",
+      "name": "toLocaleLowerCase",
+      "signature": "let toLocaleLowerCase: t => t",
+      "docstrings": [
+        "`toLocaleLowerCase(str)` converts `str` to lower case using the current locale.\n\nSee [`String.toLocaleLowerCase`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toLocaleLowerCase)\non MDN."
+      ]
+    },
+    {
+      "id": "Js_string.toUpperCase",
+      "kind": "value",
+      "name": "toUpperCase",
+      "signature": "let toUpperCase: t => t",
+      "docstrings": [
+        "`toUpperCase(str)` converts `str` to upper case using the locale-insensitive\ncase mappings in the Unicode Character Database. Notice that the conversion can\nexpand the number of letters in the result; for example the German ß\ncapitalizes to two Ses in a row.\n\nSee [`String.toUpperCase`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toUpperCase)\non MDN.\n\n```res example\nJs.String.toUpperCase(\"abc\") == \"ABC\"\nJs.String.toUpperCase(`Straße`) == `STRASSE`\nJs.String.toUpperCase(`πς`) == `ΠΣ`\n```"
+      ]
+    },
+    {
+      "id": "Js_string.toLocaleUpperCase",
+      "kind": "value",
+      "name": "toLocaleUpperCase",
+      "signature": "let toLocaleUpperCase: t => t",
+      "docstrings": [
+        "`toLocaleUpperCase(str)` converts `str` to upper case using the current locale.\n\nSee [`String.to:LocaleUpperCase`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toLocaleUpperCase)\non MDN."
+      ]
+    },
+    {
+      "id": "Js_string.trim",
+      "kind": "value",
+      "name": "trim",
+      "signature": "let trim: t => t",
+      "docstrings": [
+        "`trim(str)` returns a string that is `str` with whitespace stripped from both\nends. Internal whitespace is not removed.\n\nSee [`String.trim`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/trim)\non MDN.\n\n```res example\nJs.String.trim(\"   abc def   \") == \"abc def\"\nJs.String.trim(\"\\n\\r\\t abc def \\n\\n\\t\\r \") == \"abc def\"\n```"
+      ]
+    },
+    {
+      "id": "Js_string.anchor",
+      "kind": "value",
+      "name": "anchor",
+      "signature": "let anchor: (t, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.link",
+      "kind": "value",
+      "name": "link",
+      "signature": "let link: (t, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_string.castToArrayLike",
+      "kind": "value",
+      "name": "castToArrayLike",
+      "signature": "let castToArrayLike: t => Js_array2.array_like<t>",
+      "docstrings": [
+        "Casts its argument to an `array_like` entity that can be processed by functions\nsuch as `Js.Array2.fromMap()`\n\n```res example\nlet s = \"abcde\"\nlet arr = Js.Array2.fromMap(Js.String.castToArrayLike(s), x => x)\narr == [\"a\", \"b\", \"c\", \"d\", \"e\"]\n```"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,327 @@
+{
+  "name": "Belt_SetString",
+  "docstrings": [
+    "This module is [`Belt.Set`]() specialized with value type to be a primitive type.\n  It is more efficient in general, the  API is the same with [`Belt_Set`]() except its value type is fixed,\n  and identity is not needed(using the built-in one)\n\n  **See** [`Belt.Set`]()"
+  ],
+  "items": [
+    {
+      "id": "Belt_SetString.value",
+      "kind": "type",
+      "name": "value",
+      "signature": "type value = string",
+      "docstrings": [
+        "The type of the set elements."
+      ]
+    },
+    {
+      "id": "Belt_SetString.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t",
+      "docstrings": [
+        "The type of sets."
+      ]
+    },
+    {
+      "id": "Belt_SetString.empty",
+      "kind": "value",
+      "name": "empty",
+      "signature": "let empty: t",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.fromArray",
+      "kind": "value",
+      "name": "fromArray",
+      "signature": "let fromArray: array<value> => t",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.fromSortedArrayUnsafe",
+      "kind": "value",
+      "name": "fromSortedArrayUnsafe",
+      "signature": "let fromSortedArrayUnsafe: array<value> => t",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.isEmpty",
+      "kind": "value",
+      "name": "isEmpty",
+      "signature": "let isEmpty: t => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.has",
+      "kind": "value",
+      "name": "has",
+      "signature": "let has: (t, value) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.add",
+      "kind": "value",
+      "name": "add",
+      "signature": "let add: (t, value) => t",
+      "docstrings": [
+        "`add s x` If `x` was already in `s`, `s` is returned unchanged."
+      ]
+    },
+    {
+      "id": "Belt_SetString.mergeMany",
+      "kind": "value",
+      "name": "mergeMany",
+      "signature": "let mergeMany: (t, array<value>) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.remove",
+      "kind": "value",
+      "name": "remove",
+      "signature": "let remove: (t, value) => t",
+      "docstrings": [
+        "`remove m x` If `x` was not in `m`, `m` is returned reference unchanged."
+      ]
+    },
+    {
+      "id": "Belt_SetString.removeMany",
+      "kind": "value",
+      "name": "removeMany",
+      "signature": "let removeMany: (t, array<value>) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.union",
+      "kind": "value",
+      "name": "union",
+      "signature": "let union: (t, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.intersect",
+      "kind": "value",
+      "name": "intersect",
+      "signature": "let intersect: (t, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.diff",
+      "kind": "value",
+      "name": "diff",
+      "signature": "let diff: (t, t) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.subset",
+      "kind": "value",
+      "name": "subset",
+      "signature": "let subset: (t, t) => bool",
+      "docstrings": [
+        "`subset s1 s2` tests whether the set `s1` is a subset of\n    the set `s2`."
+      ]
+    },
+    {
+      "id": "Belt_SetString.cmp",
+      "kind": "value",
+      "name": "cmp",
+      "signature": "let cmp: (t, t) => int",
+      "docstrings": [
+        "Total ordering between sets. Can be used as the ordering function\n    for doing sets of sets."
+      ]
+    },
+    {
+      "id": "Belt_SetString.eq",
+      "kind": "value",
+      "name": "eq",
+      "signature": "let eq: (t, t) => bool",
+      "docstrings": [
+        "`eq s1 s2` tests whether the sets `s1` and `s2` are\n    equal, that is, contain equal elements."
+      ]
+    },
+    {
+      "id": "Belt_SetString.forEachU",
+      "kind": "value",
+      "name": "forEachU",
+      "signature": "let forEachU: (t, (. value) => unit) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.forEach",
+      "kind": "value",
+      "name": "forEach",
+      "signature": "let forEach: (t, value => unit) => unit",
+      "docstrings": [
+        "`forEach s f` applies `f` in turn to all elements of `s`.\n    In increasing order"
+      ]
+    },
+    {
+      "id": "Belt_SetString.reduceU",
+      "kind": "value",
+      "name": "reduceU",
+      "signature": "let reduceU: (t, 'a, (. 'a, value) => 'a) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.reduce",
+      "kind": "value",
+      "name": "reduce",
+      "signature": "let reduce: (t, 'a, ('a, value) => 'a) => 'a",
+      "docstrings": [
+        "Iterate in increasing order."
+      ]
+    },
+    {
+      "id": "Belt_SetString.everyU",
+      "kind": "value",
+      "name": "everyU",
+      "signature": "let everyU: (t, (. value) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.every",
+      "kind": "value",
+      "name": "every",
+      "signature": "let every: (t, value => bool) => bool",
+      "docstrings": [
+        "`every p s` checks if all elements of the set\n    satisfy the predicate `p`. Order unspecified."
+      ]
+    },
+    {
+      "id": "Belt_SetString.someU",
+      "kind": "value",
+      "name": "someU",
+      "signature": "let someU: (t, (. value) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.some",
+      "kind": "value",
+      "name": "some",
+      "signature": "let some: (t, value => bool) => bool",
+      "docstrings": [
+        "`some p s` checks if at least one element of\n    the set satisfies the predicate `p`. Oder unspecified."
+      ]
+    },
+    {
+      "id": "Belt_SetString.keepU",
+      "kind": "value",
+      "name": "keepU",
+      "signature": "let keepU: (t, (. value) => bool) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.keep",
+      "kind": "value",
+      "name": "keep",
+      "signature": "let keep: (t, value => bool) => t",
+      "docstrings": [
+        "`keep p s` returns the set of all elements in `s`\n    that satisfy predicate `p`."
+      ]
+    },
+    {
+      "id": "Belt_SetString.partitionU",
+      "kind": "value",
+      "name": "partitionU",
+      "signature": "let partitionU: (t, (. value) => bool) => (t, t)",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.partition",
+      "kind": "value",
+      "name": "partition",
+      "signature": "let partition: (t, value => bool) => (t, t)",
+      "docstrings": [
+        "`partition p s` returns a pair of sets `(s1, s2)`, where\n  `s1` is the set of all the elements of `s` that satisfy the\n  predicate `p`, and `s2` is the set of all the elements of\n  `s` that do not satisfy `p`."
+      ]
+    },
+    {
+      "id": "Belt_SetString.size",
+      "kind": "value",
+      "name": "size",
+      "signature": "let size: t => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.toList",
+      "kind": "value",
+      "name": "toList",
+      "signature": "let toList: t => list<value>",
+      "docstrings": [
+        "In increasing order"
+      ]
+    },
+    {
+      "id": "Belt_SetString.toArray",
+      "kind": "value",
+      "name": "toArray",
+      "signature": "let toArray: t => array<value>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.minimum",
+      "kind": "value",
+      "name": "minimum",
+      "signature": "let minimum: t => option<value>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.minUndefined",
+      "kind": "value",
+      "name": "minUndefined",
+      "signature": "let minUndefined: t => Js.undefined<value>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.maximum",
+      "kind": "value",
+      "name": "maximum",
+      "signature": "let maximum: t => option<value>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.maxUndefined",
+      "kind": "value",
+      "name": "maxUndefined",
+      "signature": "let maxUndefined: t => Js.undefined<value>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.get",
+      "kind": "value",
+      "name": "get",
+      "signature": "let get: (t, value) => option<value>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.getUndefined",
+      "kind": "value",
+      "name": "getUndefined",
+      "signature": "let getUndefined: (t, value) => Js.undefined<value>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.getExn",
+      "kind": "value",
+      "name": "getExn",
+      "signature": "let getExn: (t, value) => value",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetString.split",
+      "kind": "value",
+      "name": "split",
+      "signature": "let split: (t, value) => ((t, t), bool)",
+      "docstrings": [
+        "`split x s` returns a triple `(l, present, r)`, where\n  `l` is the set of elements of `s` that are\n  strictly less than `x`;\n  `r` is the set of elements of `s` that are\n  strictly greater than `x`;\n  `present` is `false` if `s` contains no element equal to `x`,\n  or `true` if `s` contains an element equal to `x`."
+      ]
+    },
+    {
+      "id": "Belt_SetString.checkInvariantInternal",
+      "kind": "value",
+      "name": "checkInvariantInternal",
+      "signature": "let checkInvariantInternal: t => unit",
+      "docstrings": [
+        "**raise** when invariant is not held"
+      ]
+    }
+  ]
+}

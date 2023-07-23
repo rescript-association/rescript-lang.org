@@ -1,0 +1,88 @@
+{
+  "name": "Belt_Range",
+  "docstrings": [
+    "A small utility module to provide inclusive range operations for `[start,\n  finish]`.  Internally it is relying on loops instead of creating new arrays,\n  which makes it pretty performant and memory friendly."
+  ],
+  "items": [
+    {
+      "id": "Belt_Range.forEachU",
+      "kind": "value",
+      "name": "forEachU",
+      "signature": "let forEachU: (int, int, (. int) => unit) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Range.forEach",
+      "kind": "value",
+      "name": "forEach",
+      "signature": "let forEach: (int, int, int => unit) => unit",
+      "docstrings": [
+        "`forEach(start, finish, action)`\n\n  equivalent to `Belt.Array.(forEach(range(start, finish), action))`\n\n  ```res example\n  Belt.Range.forEach(0, 4, (i) => Js.log(i))\n\n  /**\n   * prints:\n   *   0\n   *   1\n   *   2\n   *   3\n   *   4\n   */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Range.everyU",
+      "kind": "value",
+      "name": "everyU",
+      "signature": "let everyU: (int, int, (. int) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Range.every",
+      "kind": "value",
+      "name": "every",
+      "signature": "let every: (int, int, int => bool) => bool",
+      "docstrings": [
+        "`every(start, finish, p)`\n\n  equivalent to `Belt.Array.(every(range(start, finish), p))`\n\n  ```res example\n  Belt.Range.every(0, 4, (i) => i < 5) /* true */\n\n  Belt.Range.every(0, 4, (i) => i < 4) /* false */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Range.everyByU",
+      "kind": "value",
+      "name": "everyByU",
+      "signature": "let everyByU: (int, int, ~step: int, (. int) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Range.everyBy",
+      "kind": "value",
+      "name": "everyBy",
+      "signature": "let everyBy: (int, int, ~step: int, int => bool) => bool",
+      "docstrings": [
+        "`everyBy(start, finish, ~step, p)`\n\n  See `Belt_Array.rangeBy`\n\n  equivalent to `Belt.Array.(every(rangeBy(start, finish, ~step), p))`\n\n  ```res example\n  Belt.Range.everyBy(0, 4, ~step=1, (i) => mod(i, 2) === 0) /* false */\n\n  Belt.Range.everyBy(0, 4, ~step=2, (i) => mod(i, 2) === 0) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Range.someU",
+      "kind": "value",
+      "name": "someU",
+      "signature": "let someU: (int, int, (. int) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Range.some",
+      "kind": "value",
+      "name": "some",
+      "signature": "let some: (int, int, int => bool) => bool",
+      "docstrings": [
+        "`some(start, finish, p)`\n\n  equivalent to `Belt.Array.(some(range(start, finish), p))`\n\n  ```res example\n  Belt.Range.some(0, 4, (i) => i > 5) /* false */\n\n  Belt.Range.some(0, 4, (i) => i > 2) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Range.someByU",
+      "kind": "value",
+      "name": "someByU",
+      "signature": "let someByU: (int, int, ~step: int, (. int) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Range.someBy",
+      "kind": "value",
+      "name": "someBy",
+      "signature": "let someBy: (int, int, ~step: int, int => bool) => bool",
+      "docstrings": [
+        "`someBy(start, finish, ~step, p)`\n\n  See `Belt_Array.rangeBy`\n\n  equivalent to `Belt.Array.(some(rangeBy(start, finish, ~step), p))`\n\n  ```res example\n  Belt.Range.someBy(1, 5, ~step=2, (i) => mod(i, 2) === 0) /* false */\n  Belt.Range.someBy(0, 4, ~step=2, (i) => mod(i, 2) === 0) /* true */\n  ```"
+      ]
+    }
+  ]
+}

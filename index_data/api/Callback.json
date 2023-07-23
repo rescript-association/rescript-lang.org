@@ -1,0 +1,24 @@
+{
+  "name": "Callback",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Callback.register",
+      "kind": "value",
+      "name": "register",
+      "signature": "let register: (string, 'a) => unit",
+      "docstrings": [
+        "[Callback.register n v] registers the value [v] under\n   the name [n]. C code can later retrieve a handle to [v]\n   by calling [caml_named_value(n)]."
+      ]
+    },
+    {
+      "id": "Callback.register_exception",
+      "kind": "value",
+      "name": "register_exception",
+      "signature": "let register_exception: (string, exn) => unit",
+      "docstrings": [
+        "[Callback.register_exception n exn] registers the\n   exception contained in the exception value [exn]\n   under the name [n]. C code can later retrieve a handle to\n   the exception by calling [caml_named_value(n)]. The exception\n   value thus obtained is suitable for passing as first argument\n   to [raise_constant] or [raise_with_arg]."
+      ]
+    }
+  ]
+}

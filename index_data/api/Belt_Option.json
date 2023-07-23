@@ -1,0 +1,188 @@
+{
+  "name": "Belt_Option",
+  "docstrings": [
+    "In Belt we represent the existence and nonexistence of a value by wrapping it\n   with the `option` type.  In order to make it a bit more convenient to work with\n   option-types, Belt provides utility-functions for it.\n\n   The `option` type is a part of the ReScript standard library which is defined like this:\n\n   ```res sig\n   type option<'a> = None | Some('a)\n   ```\n\n   ```res example\n   let someString: option<string> = Some(\"hello\")\n   ```"
+  ],
+  "items": [
+    {
+      "id": "Belt_Option.keepU",
+      "kind": "value",
+      "name": "keepU",
+      "signature": "let keepU: (option<'a>, (. 'a) => bool) => option<'a>",
+      "docstrings": [
+        "Uncurried version of `keep`"
+      ]
+    },
+    {
+      "id": "Belt_Option.keep",
+      "kind": "value",
+      "name": "keep",
+      "signature": "let keep: (option<'a>, 'a => bool) => option<'a>",
+      "docstrings": [
+        "If `optionValue` is `Some(value)` and `p(value) = true`, it returns `Some(value)`; otherwise returns `None`\n\n   ```res example\n   Belt.Option.keep(Some(10), x => x > 5) /* returns `Some(10)` */\n   Belt.Option.keep(Some(4), x => x > 5) /* returns `None` */\n   Belt.Option.keep(None, x => x > 5) /* returns `None` */\n   ```"
+      ]
+    },
+    {
+      "id": "Belt_Option.forEachU",
+      "kind": "value",
+      "name": "forEachU",
+      "signature": "let forEachU: (option<'a>, (. 'a) => unit) => unit",
+      "docstrings": [
+        "Uncurried version of `forEach`"
+      ]
+    },
+    {
+      "id": "Belt_Option.forEach",
+      "kind": "value",
+      "name": "forEach",
+      "signature": "let forEach: (option<'a>, 'a => unit) => unit",
+      "docstrings": [
+        "If `optionValue` is `Some(value`), it calls `f(value)`; otherwise returns `()`\n\n   ```res example\n   Belt.Option.forEach(Some(\"thing\"), x => Js.log(x)) /* logs \"thing\" */\n   Belt.Option.forEach(None, x => Js.log(x)) /* returns () */\n   ```"
+      ]
+    },
+    {
+      "id": "Belt_Option.getExn",
+      "kind": "value",
+      "name": "getExn",
+      "signature": "let getExn: option<'a> => 'a",
+      "docstrings": [
+        "Raises an Error in case `None` is provided. Use with care.\n\n   ```res example\n   Belt.Option.getExn(Some(3)) /* 3 */\n\n   Belt.Option.getExn(None) /* Raises an Error */\n   ```"
+      ]
+    },
+    {
+      "id": "Belt_Option.getUnsafe",
+      "kind": "value",
+      "name": "getUnsafe",
+      "signature": "let getUnsafe: option<'a> => 'a",
+      "docstrings": [
+        "`getUnsafe(x)` returns `x`\n\n   This is an unsafe operation, it assumes `x` is neither `None`\n   nor `Some(None(...)))`"
+      ]
+    },
+    {
+      "id": "Belt_Option.mapWithDefaultU",
+      "kind": "value",
+      "name": "mapWithDefaultU",
+      "signature": "let mapWithDefaultU: (option<'a>, 'b, (. 'a) => 'b) => 'b",
+      "docstrings": [
+        "Uncurried version of `mapWithDefault`"
+      ]
+    },
+    {
+      "id": "Belt_Option.mapWithDefault",
+      "kind": "value",
+      "name": "mapWithDefault",
+      "signature": "let mapWithDefault: (option<'a>, 'b, 'a => 'b) => 'b",
+      "docstrings": [
+        "If `optionValue` is of `Some(value)`,\n   this function returns that value applied with `f`, in other words `f(value)`.\n\n   If `optionValue` is `None`, the default is returned.\n\n   ```res example\n   let someValue = Some(3)\n   someValue->Belt.Option.mapWithDefault(0, x => x + 5) /* 8 */\n\n   let noneValue = None\n   noneValue->Belt.Option.mapWithDefault(0, x => x + 5) /* 0 */\n   ```"
+      ]
+    },
+    {
+      "id": "Belt_Option.mapU",
+      "kind": "value",
+      "name": "mapU",
+      "signature": "let mapU: (option<'a>, (. 'a) => 'b) => option<'b>",
+      "docstrings": [
+        "Uncurried version of `map`"
+      ]
+    },
+    {
+      "id": "Belt_Option.map",
+      "kind": "value",
+      "name": "map",
+      "signature": "let map: (option<'a>, 'a => 'b) => option<'b>",
+      "docstrings": [
+        "If `optionValue` is `Some(value)` this returns `f(value)`, otherwise it returns `None`.\n\n   ```res example\n   Belt.Option.map(Some(3), x => x * x) /* Some(9) */\n\n   Belt.Option.map(None, x => x * x) /* None */\n   ```"
+      ]
+    },
+    {
+      "id": "Belt_Option.flatMapU",
+      "kind": "value",
+      "name": "flatMapU",
+      "signature": "let flatMapU: (option<'a>, (. 'a) => option<'b>) => option<'b>",
+      "docstrings": [
+        "Uncurried version of `flatMap`"
+      ]
+    },
+    {
+      "id": "Belt_Option.flatMap",
+      "kind": "value",
+      "name": "flatMap",
+      "signature": "let flatMap: (option<'a>, 'a => option<'b>) => option<'b>",
+      "docstrings": [
+        "If `optionValue` is `Some(value)`, returns `f(value)`, otherwise returns\n   `None`.<br/>\n   The function `f` must have a return type of `option<'b>`.\n\n   ```res example\n   let addIfAboveOne = value =>\n     if (value > 1) {\n       Some(value + 1)\n     } else {\n       None\n     }\n\n   Belt.Option.flatMap(Some(2), addIfAboveOne) /* Some(3) */\n\n   Belt.Option.flatMap(Some(-4), addIfAboveOne) /* None */\n\n   Belt.Option.flatMap(None, addIfAboveOne) /* None */\n   ```"
+      ]
+    },
+    {
+      "id": "Belt_Option.getWithDefault",
+      "kind": "value",
+      "name": "getWithDefault",
+      "signature": "let getWithDefault: (option<'a>, 'a) => 'a",
+      "docstrings": [
+        "If `optionalValue` is `Some(value)`, returns `value`, otherwise default.\n\n   ```res example\n   Belt.Option.getWithDefault(None, \"Banana\") /* Banana */\n\n   Belt.Option.getWithDefault(Some(\"Apple\"), \"Banana\") /* Apple */\n   ```\n\n   ```res example\n   let greet = (firstName: option<string>) =>\n     \"Greetings \" ++ firstName->Belt.Option.getWithDefault(\"Anonymous\")\n\n   Some(\"Jane\")->greet /* \"Greetings Jane\" */\n\n   None->greet /* \"Greetings Anonymous\" */\n   ```"
+      ]
+    },
+    {
+      "id": "Belt_Option.orElse",
+      "kind": "value",
+      "name": "orElse",
+      "signature": "let orElse: (option<'a>, option<'a>) => option<'a>",
+      "docstrings": [
+        "`orElse optionalValue otherOptional`\n\n   If `optionalValue` is `Some value`, returns `Some value`, otherwise `otherOptional`\n\n   ```\n   orElse (Some 1812) (Some 1066) = Some 1812;;\n   orElse None (Some 1066) = Some 1066;;\n   orElse None None = None;;\n   ```"
+      ]
+    },
+    {
+      "id": "Belt_Option.isSome",
+      "kind": "value",
+      "name": "isSome",
+      "signature": "let isSome: option<'a> => bool",
+      "docstrings": [
+        "Returns `true` if the argument is `Some(value)`, `false` otherwise.\n\n   ```res example\n   Belt.Option.isSome(None) /* false */\n\n   Belt.Option.isSome(Some(1)) /* true */\n   ```"
+      ]
+    },
+    {
+      "id": "Belt_Option.isNone",
+      "kind": "value",
+      "name": "isNone",
+      "signature": "let isNone: option<'a> => bool",
+      "docstrings": [
+        "Returns `true` if the argument is `None`, `false` otherwise.\n\n   ```res example\n   Belt.Option.isNone(None) /* true */\n\n   Belt.Option.isNone(Some(1)) /* false */\n   ```"
+      ]
+    },
+    {
+      "id": "Belt_Option.eqU",
+      "kind": "value",
+      "name": "eqU",
+      "signature": "let eqU: (option<'a>, option<'b>, (. 'a, 'b) => bool) => bool",
+      "docstrings": [
+        "Uncurried version of `eq`"
+      ]
+    },
+    {
+      "id": "Belt_Option.eq",
+      "kind": "value",
+      "name": "eq",
+      "signature": "let eq: (option<'a>, option<'b>, ('a, 'b) => bool) => bool",
+      "docstrings": [
+        "Evaluates two optional values for equality with respect to a predicate\n   function. If both `optValue1` and `optValue2` are `None`, returns `true`.\n   If one of the arguments is `Some(value)` and the other is `None`, returns\n   `false`.\n\n   If arguments are `Some(value1)` and `Some(value2)`, returns the result of\n   `predicate(value1, value2)`; the predicate function must return a bool.\n\n   ```res example\n   let clockEqual = (a, b) => mod(a, 12) == mod(b, 12)\n\n   open Belt.Option\n\n   eq(Some(3), Some(15), clockEqual) /* true */\n\n   eq(Some(3), None, clockEqual) /* false */\n\n   eq(None, Some(3), clockEqual) /* false */\n\n   eq(None, None, clockEqual) /* true */\n   ```"
+      ]
+    },
+    {
+      "id": "Belt_Option.cmpU",
+      "kind": "value",
+      "name": "cmpU",
+      "signature": "let cmpU: (option<'a>, option<'b>, (. 'a, 'b) => int) => int",
+      "docstrings": [
+        "Uncurried version of `cmp`"
+      ]
+    },
+    {
+      "id": "Belt_Option.cmp",
+      "kind": "value",
+      "name": "cmp",
+      "signature": "let cmp: (option<'a>, option<'b>, ('a, 'b) => int) => int",
+      "docstrings": [
+        "`cmp(optValue1, optValue2, comparisonFunction)` compares two optional values\n   with respect to given `comparisonFunction`.\n\n   If both `optValue1` and `optValue2` are `None`, it returns `0`.\n\n   If the first argument is `Some(value1)` and the second is `None`, returns `1`\n   (something is greater than nothing).\n\n   If the first argument is `None` and the second is `Some(value2)`, returns `-1`\n   (nothing is less than something).\n\n   If the arguments are `Some(value1)` and `Some(value2)`, returns the result of\n   `comparisonFunction(value1, value2)`; comparisonFunction takes two arguments\n   and returns `-1` if the first argument is less than the second, `0` if the\n   arguments are equal, and `1` if the first argument is greater than the second.\n\n   ```res example\n   let clockCompare = (a, b) => compare(mod(a, 12), mod(b, 12))\n\n   open Belt.Option\n\n   cmp(Some(3), Some(15), clockCompare) /* 0 */\n\n   cmp(Some(3), Some(14), clockCompare) /* 1 */\n\n   cmp(Some(2), Some(15), clockCompare) /* (-1) */\n\n   cmp(None, Some(15), clockCompare) /* (-1) */\n\n   cmp(Some(14), None, clockCompare) /* 1 */\n\n   cmp(None, None, clockCompare) /* 0 */\n   ```"
+      ]
+    }
+  ]
+}

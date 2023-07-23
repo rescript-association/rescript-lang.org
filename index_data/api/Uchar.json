@@ -1,0 +1,164 @@
+{
+  "name": "Uchar",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Uchar.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t",
+      "docstrings": [
+        "The type for Unicode characters.\n\n    A value of this type represents an Unicode\n    {{:http://unicode.org/glossary/#unicode_scalar_value}scalar\n    value} which is an integer in the ranges [0x0000]...[0xD7FF] or\n    [0xE000]...[0x10FFFF]."
+      ]
+    },
+    {
+      "id": "Uchar.min",
+      "kind": "value",
+      "name": "min",
+      "signature": "let min: t",
+      "docstrings": [
+        "[min] is U+0000."
+      ]
+    },
+    {
+      "id": "Uchar.max",
+      "kind": "value",
+      "name": "max",
+      "signature": "let max: t",
+      "docstrings": [
+        "[max] is U+10FFFF."
+      ]
+    },
+    {
+      "id": "Uchar.bom",
+      "kind": "value",
+      "name": "bom",
+      "signature": "let bom: t",
+      "docstrings": [
+        "[bom] is U+FEFF, the\n    {{:http://unicode.org/glossary/#byte_order_mark}byte order mark} (BOM)\n    character.\n\n    @since 4.06.0"
+      ]
+    },
+    {
+      "id": "Uchar.rep",
+      "kind": "value",
+      "name": "rep",
+      "signature": "let rep: t",
+      "docstrings": [
+        "[rep] is U+FFFD, the\n    {{:http://unicode.org/glossary/#replacement_character}replacement}\n    character.\n\n    @since 4.06.0"
+      ]
+    },
+    {
+      "id": "Uchar.succ",
+      "kind": "value",
+      "name": "succ",
+      "signature": "let succ: t => t",
+      "docstrings": [
+        "[succ u] is the scalar value after [u] in the set of Unicode scalar\n    values.\n\n    @raise Invalid_argument if [u] is {!max}."
+      ]
+    },
+    {
+      "id": "Uchar.pred",
+      "kind": "value",
+      "name": "pred",
+      "signature": "let pred: t => t",
+      "docstrings": [
+        "[pred u] is the scalar value before [u] in the set of Unicode scalar\n    values.\n\n    @raise Invalid_argument if [u] is {!min}."
+      ]
+    },
+    {
+      "id": "Uchar.is_valid",
+      "kind": "value",
+      "name": "is_valid",
+      "signature": "let is_valid: int => bool",
+      "docstrings": [
+        "[is_valid n] is [true] iff [n] is an Unicode scalar value\n    (i.e. in the ranges [0x0000]...[0xD7FF] or [0xE000]...[0x10FFFF])."
+      ]
+    },
+    {
+      "id": "Uchar.of_int",
+      "kind": "value",
+      "name": "of_int",
+      "signature": "let of_int: int => t",
+      "docstrings": [
+        "[of_int i] is [i] as an Unicode character.\n\n    @raise Invalid_argument if [i] does not satisfy {!is_valid}."
+      ]
+    },
+    {
+      "id": "Uchar.unsafe_of_int",
+      "kind": "value",
+      "name": "unsafe_of_int",
+      "signature": "let unsafe_of_int: int => t",
+      "docstrings": []
+    },
+    {
+      "id": "Uchar.to_int",
+      "kind": "value",
+      "name": "to_int",
+      "signature": "let to_int: t => int",
+      "docstrings": [
+        "[to_int u] is [u] as an integer."
+      ]
+    },
+    {
+      "id": "Uchar.is_char",
+      "kind": "value",
+      "name": "is_char",
+      "signature": "let is_char: t => bool",
+      "docstrings": [
+        "[is_char u] is [true] iff [u] is a latin1 OCaml character."
+      ]
+    },
+    {
+      "id": "Uchar.of_char",
+      "kind": "value",
+      "name": "of_char",
+      "signature": "let of_char: char => t",
+      "docstrings": [
+        "[of_char c] is [c] as an Unicode character."
+      ]
+    },
+    {
+      "id": "Uchar.to_char",
+      "kind": "value",
+      "name": "to_char",
+      "signature": "let to_char: t => char",
+      "docstrings": [
+        "[to_char u] is [u] as an OCaml latin1 character.\n\n    @raise Invalid_argument if [u] does not satisfy {!is_char}."
+      ]
+    },
+    {
+      "id": "Uchar.unsafe_to_char",
+      "kind": "value",
+      "name": "unsafe_to_char",
+      "signature": "let unsafe_to_char: t => char",
+      "docstrings": []
+    },
+    {
+      "id": "Uchar.equal",
+      "kind": "value",
+      "name": "equal",
+      "signature": "let equal: (t, t) => bool",
+      "docstrings": [
+        "[equal u u'] is [u = u']."
+      ]
+    },
+    {
+      "id": "Uchar.compare",
+      "kind": "value",
+      "name": "compare",
+      "signature": "let compare: (t, t) => int",
+      "docstrings": [
+        "[compare u u'] is [Pervasives.compare u u']."
+      ]
+    },
+    {
+      "id": "Uchar.hash",
+      "kind": "value",
+      "name": "hash",
+      "signature": "let hash: t => int",
+      "docstrings": [
+        "[hash u] associates a non-negative integer to [u]."
+      ]
+    }
+  ]
+}

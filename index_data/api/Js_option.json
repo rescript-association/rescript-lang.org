@@ -1,0 +1,97 @@
+{
+  "name": "Js_option",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Js_option.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a> = option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_option.some",
+      "kind": "value",
+      "name": "some",
+      "signature": "let some: 'a => option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_option.isSome",
+      "kind": "value",
+      "name": "isSome",
+      "signature": "let isSome: option<'a> => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_option.isSomeValue",
+      "kind": "value",
+      "name": "isSomeValue",
+      "signature": "let isSomeValue: ((. 'a, 'a) => bool, 'a, option<'a>) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_option.isNone",
+      "kind": "value",
+      "name": "isNone",
+      "signature": "let isNone: option<'a> => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_option.getExn",
+      "kind": "value",
+      "name": "getExn",
+      "signature": "let getExn: option<'a> => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Js_option.equal",
+      "kind": "value",
+      "name": "equal",
+      "signature": "let equal: ((. 'a, 'b) => bool, option<'a>, option<'b>) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_option.andThen",
+      "kind": "value",
+      "name": "andThen",
+      "signature": "let andThen: ((. 'a) => option<'b>, option<'a>) => option<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_option.map",
+      "kind": "value",
+      "name": "map",
+      "signature": "let map: ((. 'a) => 'b, option<'a>) => option<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_option.getWithDefault",
+      "kind": "value",
+      "name": "getWithDefault",
+      "signature": "let getWithDefault: ('a, option<'a>) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Js_option.default",
+      "kind": "value",
+      "name": "default",
+      "signature": "let default: ('a, option<'a>) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Js_option.filter",
+      "kind": "value",
+      "name": "filter",
+      "signature": "let filter: ((. 'a) => bool, option<'a>) => option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_option.firstSome",
+      "kind": "value",
+      "name": "firstSome",
+      "signature": "let firstSome: (option<'a>, option<'a>) => option<'a>",
+      "docstrings": []
+    }
+  ]
+}

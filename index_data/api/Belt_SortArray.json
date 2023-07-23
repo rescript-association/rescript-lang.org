@@ -1,0 +1,148 @@
+{
+  "name": "Belt_SortArray",
+  "docstrings": [
+    "A module for Array sort relevant utiliites"
+  ],
+  "items": [
+    {
+      "id": "Belt_SortArray.Belt_SortArrayInt",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Specalized when key type is `int`, more efficient\n    than the generic type"
+      ],
+      "signature": "module Int = Belt_SortArrayInt"
+    },
+    {
+      "id": "Belt_SortArray.Belt_SortArrayString",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Specalized when key type is `string`, more efficient\n    than the generic type"
+      ],
+      "signature": "module String = Belt_SortArrayString"
+    },
+    {
+      "id": "Belt_SortArray.strictlySortedLengthU",
+      "kind": "value",
+      "name": "strictlySortedLengthU",
+      "signature": "let strictlySortedLengthU: (array<'a>, (. 'a, 'a) => bool) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SortArray.strictlySortedLength",
+      "kind": "value",
+      "name": "strictlySortedLength",
+      "signature": "let strictlySortedLength: (array<'a>, ('a, 'a) => bool) => int",
+      "docstrings": [
+        "`strictlySortedLenght(xs, cmp);` return `+n` means increasing order `-n` means negative order\n\n  ```res example\n  Belt.SortArray.strictlySortedLength([1, 2, 3, 4, 3], (x, y) => x < y) == 4\n\n  Belt.SortArray.strictlySortedLength([], (x, y) => x < y) == 0\n\n  Belt.SortArray.strictlySortedLength([1], (x, y) => x < y) == 1\n\n  Belt.SortArray.strictlySortedLength([4, 3, 2, 1], (x, y) => x < y) == -4\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SortArray.isSortedU",
+      "kind": "value",
+      "name": "isSortedU",
+      "signature": "let isSortedU: (array<'a>, (. 'a, 'a) => int) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SortArray.isSorted",
+      "kind": "value",
+      "name": "isSorted",
+      "signature": "let isSorted: (array<'a>, ('a, 'a) => int) => bool",
+      "docstrings": [
+        "`isSorted(arr, cmp)`: Returns true if array is increasingly sorted (equal is okay)"
+      ]
+    },
+    {
+      "id": "Belt_SortArray.stableSortInPlaceByU",
+      "kind": "value",
+      "name": "stableSortInPlaceByU",
+      "signature": "let stableSortInPlaceByU: (array<'a>, (. 'a, 'a) => int) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SortArray.stableSortInPlaceBy",
+      "kind": "value",
+      "name": "stableSortInPlaceBy",
+      "signature": "let stableSortInPlaceBy: (array<'a>, ('a, 'a) => int) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SortArray.stableSortByU",
+      "kind": "value",
+      "name": "stableSortByU",
+      "signature": "let stableSortByU: (array<'a>, (. 'a, 'a) => int) => array<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SortArray.stableSortBy",
+      "kind": "value",
+      "name": "stableSortBy",
+      "signature": "let stableSortBy: (array<'a>, ('a, 'a) => int) => array<'a>",
+      "docstrings": [
+        "`stableSortBy(xs, cmp)`: Returns a fresh array Sort `xs` in place using\n  comparator `cmp`, the stable means if the elements are equal, their order will\n  be preserved"
+      ]
+    },
+    {
+      "id": "Belt_SortArray.binarySearchByU",
+      "kind": "value",
+      "name": "binarySearchByU",
+      "signature": "let binarySearchByU: (array<'a>, 'a, (. 'a, 'a) => int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SortArray.binarySearchBy",
+      "kind": "value",
+      "name": "binarySearchBy",
+      "signature": "let binarySearchBy: (array<'a>, 'a, ('a, 'a) => int) => int",
+      "docstrings": [
+        "If value is not found and value is less than one or more elements in array, the\n  negative number returned is the bitwise complement of the index of the first\n  element that is larger than value.\n\n  If value is not found and value is greater\n  than all elements in array, the negative number returned is the bitwise\n  complement of (the index of the last element plus 1)for example, if `key` is\n  smaller than all elements return `-1` since `lnot(-1) == 0` if `key` is larger\n  than all elements return `lnot(-1) == 0` since `lnot(- (len + 1)) == len`\n\n  ```res example\n  Belt.SortArray.binarySearchBy([1, 2, 3, 4, 33, 35, 36], 33, Pervasives.compare) == 4\n\n  lnot(Belt.SortArray.binarySearchBy([1, 3, 5, 7], 4, Pervasives.compare)) == 2\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SortArray.unionU",
+      "kind": "value",
+      "name": "unionU",
+      "signature": "let unionU: (array<'a>, int, int, array<'a>, int, int, array<'a>, int, (. 'a, 'a) => int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SortArray.union",
+      "kind": "value",
+      "name": "union",
+      "signature": "let union: (array<'a>, int, int, array<'a>, int, int, array<'a>, int, ('a, 'a) => int) => int",
+      "docstrings": [
+        "`union src src1ofs src1len src2 src2ofs src2len dst dstofs cmp`\n  assume `src` and `src2` is strictly sorted.\n  for equivalent elements, it is picked from `src`\n  also assume that `dst` is large enough to store all elements"
+      ]
+    },
+    {
+      "id": "Belt_SortArray.intersectU",
+      "kind": "value",
+      "name": "intersectU",
+      "signature": "let intersectU: (array<'a>, int, int, array<'a>, int, int, array<'a>, int, (. 'a, 'a) => int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SortArray.intersect",
+      "kind": "value",
+      "name": "intersect",
+      "signature": "let intersect: (array<'a>, int, int, array<'a>, int, int, array<'a>, int, ('a, 'a) => int) => int",
+      "docstrings": [
+        "`union src src1ofs src1len src2 src2ofs src2len dst dstofs cmp`\n\n  **return** the `offset` in the output array"
+      ]
+    },
+    {
+      "id": "Belt_SortArray.diffU",
+      "kind": "value",
+      "name": "diffU",
+      "signature": "let diffU: (array<'a>, int, int, array<'a>, int, int, array<'a>, int, (. 'a, 'a) => int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SortArray.diff",
+      "kind": "value",
+      "name": "diff",
+      "signature": "let diff: (array<'a>, int, int, array<'a>, int, int, array<'a>, int, ('a, 'a) => int) => int",
+      "docstrings": []
+    }
+  ]
+}

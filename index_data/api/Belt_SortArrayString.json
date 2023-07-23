@@ -1,0 +1,83 @@
+{
+  "name": "Belt_SortArrayString",
+  "docstrings": [
+    "This is a specialized module for [`Belt_SortArray`](), the docs in that module also\n    applies here, except the comparator is fixed and inlined"
+  ],
+  "items": [
+    {
+      "id": "Belt_SortArrayString.element",
+      "kind": "type",
+      "name": "element",
+      "signature": "type element = string",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SortArrayString.strictlySortedLength",
+      "kind": "value",
+      "name": "strictlySortedLength",
+      "signature": "let strictlySortedLength: array<element> => int",
+      "docstrings": [
+        "The same as [`Belt_SortArray.strictlySortedLength`]() except the comparator is fixed\n\n  **return** `+n` means increasing order  `-n` means negative order"
+      ]
+    },
+    {
+      "id": "Belt_SortArrayString.isSorted",
+      "kind": "value",
+      "name": "isSorted",
+      "signature": "let isSorted: array<element> => bool",
+      "docstrings": [
+        "`sorted xs` return true if `xs` is in non strict increasing order"
+      ]
+    },
+    {
+      "id": "Belt_SortArrayString.stableSortInPlace",
+      "kind": "value",
+      "name": "stableSortInPlace",
+      "signature": "let stableSortInPlace: array<element> => unit",
+      "docstrings": [
+        "The same as [`Belt_SortArray.stableSortInPlaceBy`]() except the comparator is fixed"
+      ]
+    },
+    {
+      "id": "Belt_SortArrayString.stableSort",
+      "kind": "value",
+      "name": "stableSort",
+      "signature": "let stableSort: array<element> => array<element>",
+      "docstrings": [
+        "The same as [`Belt_SortArray.stableSortBy`]() except the comparator is fixed"
+      ]
+    },
+    {
+      "id": "Belt_SortArrayString.binarySearch",
+      "kind": "value",
+      "name": "binarySearch",
+      "signature": "let binarySearch: (array<element>, element) => int",
+      "docstrings": [
+        "If value is not found and value is less than one or more elements in array,\n  the negative number returned is the bitwise complement of the index of the first element\n  that is larger than value.\n\n  If value is not found and value is greater than all elements in array,\n  the negative number returned is the bitwise complement of\n  (the index of the last element plus 1)\n\n  for example, if `key` is smaller than all elements return `-1` since `lnot (-1) = 0`\n  if `key` is larger than all elements return `- (len + 1)` since `lnot (-(len+1)) = len`"
+      ]
+    },
+    {
+      "id": "Belt_SortArrayString.union",
+      "kind": "value",
+      "name": "union",
+      "signature": "let union: (array<element>, int, int, array<element>, int, int, array<element>, int) => int",
+      "docstrings": [
+        "`union src src1ofs src1len src2 src2ofs src2len dst dstofs cmp`\n  assume `src` and `src2` is strictly sorted.\n  for equivalent elements, it is picked from `src`\n  also assume that `dst` is large enough to store all elements"
+      ]
+    },
+    {
+      "id": "Belt_SortArrayString.intersect",
+      "kind": "value",
+      "name": "intersect",
+      "signature": "let intersect: (array<element>, int, int, array<element>, int, int, array<element>, int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SortArrayString.diff",
+      "kind": "value",
+      "name": "diff",
+      "signature": "let diff: (array<element>, int, int, array<element>, int, int, array<element>, int) => int",
+      "docstrings": []
+    }
+  ]
+}

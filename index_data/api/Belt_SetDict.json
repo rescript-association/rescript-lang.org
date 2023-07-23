@@ -1,0 +1,367 @@
+{
+  "name": "Belt_SetDict",
+  "docstrings": [
+    "This module separates identity from data. It is a bit more verbose but slightly more efficient due to the fact that there is no need to pack identity and data back after each operation."
+  ],
+  "items": [
+    {
+      "id": "Belt_SetDict.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'value, 'identity>",
+      "docstrings": [
+        "`'value` is the element type\n\n  `'identity` the identity of the collection"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.cmp",
+      "kind": "type",
+      "name": "cmp",
+      "signature": "type cmp<'value, 'id> = Belt_Id.cmp<'value, 'id>",
+      "docstrings": [
+        "Type of compare function."
+      ]
+    },
+    {
+      "id": "Belt_SetDict.empty",
+      "kind": "value",
+      "name": "empty",
+      "signature": "let empty: t<'value, 'id>",
+      "docstrings": [
+        "```res example\n  let s0 = Belt.Set.Dict.empty\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.fromArray",
+      "kind": "value",
+      "name": "fromArray",
+      "signature": "let fromArray: (array<'value>, ~cmp: cmp<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Creates new set from array of elements.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.fromArray([1, 3, 2, 4], ~cmp=IntCmp.cmp)\n\n  s0->Belt.Set.Dict.toArray /* [1, 2, 3, 4] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.fromSortedArrayUnsafe",
+      "kind": "value",
+      "name": "fromSortedArrayUnsafe",
+      "signature": "let fromSortedArrayUnsafe: array<'value> => t<'value, 'id>",
+      "docstrings": [
+        "The same as [fromArray][#fromarray] except it is after assuming the input array is already sorted."
+      ]
+    },
+    {
+      "id": "Belt_SetDict.isEmpty",
+      "kind": "value",
+      "name": "isEmpty",
+      "signature": "let isEmpty: t<'a, 'b> => bool",
+      "docstrings": [
+        "Checks if set is empty.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let empty = Belt.Set.Dict.fromArray([], ~cmp=IntCmp.cmp)\n  let notEmpty = Belt.Set.Dict.fromArray([1], ~cmp=IntCmp.cmp)\n\n  Belt.Set.Dict.isEmpty(empty) /* true */\n  Belt.Set.Dict.isEmpty(notEmpty) /* false */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.has",
+      "kind": "value",
+      "name": "has",
+      "signature": "let has: (t<'value, 'id>, 'value, ~cmp: cmp<'value, 'id>) => bool",
+      "docstrings": [
+        "Checks if an element exists in the set.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let set = Belt.Set.Dict.fromArray([1, 4, 2, 5], ~cmp=IntCmp.cmp)\n\n  set->Belt.Set.Dict.has(3, ~cmp=IntCmp.cmp) /* false */\n  set->Belt.Set.Dict.has(1, ~cmp=IntCmp.cmp) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.add",
+      "kind": "value",
+      "name": "add",
+      "signature": "let add: (t<'value, 'id>, 'value, ~cmp: cmp<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Adds element to set. If element existed in set, value is unchanged.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.empty\n  let s1 = s0->Belt.Set.Dict.add(1, ~cmp=IntCmp.cmp)\n  let s2 = s1->Belt.Set.Dict.add(2, ~cmp=IntCmp.cmp)\n  let s3 = s2->Belt.Set.Dict.add(2, ~cmp=IntCmp.cmp)\n  s0->Belt.Set.Dict.toArray /* [] */\n  s1->Belt.Set.Dict.toArray /* [1] */\n  s2->Belt.Set.Dict.toArray /* [1, 2] */\n  s3->Belt.Set.Dict.toArray /* [1,2 ] */\n  s2 == s3 /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.mergeMany",
+      "kind": "value",
+      "name": "mergeMany",
+      "signature": "let mergeMany: (t<'value, 'id>, array<'value>, ~cmp: cmp<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Adds each element of array to set. Unlike [add](#add), the reference of return value might be changed even if all values in array already exist in set\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let set = Belt.Set.Dict.empty\n\n  let newSet = set->Belt.Set.Dict.mergeMany([5, 4, 3, 2, 1], ~cmp=IntCmp.cmp)\n  newSet->Belt.Set.Dict.toArray /* [1, 2, 3, 4, 5] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.remove",
+      "kind": "value",
+      "name": "remove",
+      "signature": "let remove: (t<'value, 'id>, 'value, ~cmp: cmp<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Removes element from set. If element did not exist in set, value is unchanged.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.fromArray([2, 3, 1, 4, 5], ~cmp=IntCmp.cmp)\n  let s1 = s0->Belt.Set.Dict.remove(1, ~cmp=IntCmp.cmp)\n  let s2 = s1->Belt.Set.Dict.remove(3, ~cmp=IntCmp.cmp)\n  let s3 = s2->Belt.Set.Dict.remove(3, ~cmp=IntCmp.cmp)\n\n  s1->Belt.Set.Dict.toArray /* [2,3,4,5] */\n  s2->Belt.Set.Dict.toArray /* [2,4,5] */\n  s2 == s3 /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.removeMany",
+      "kind": "value",
+      "name": "removeMany",
+      "signature": "let removeMany: (t<'value, 'id>, array<'value>, ~cmp: cmp<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Removes each element of array from set. Unlike [remove](#remove), the reference of return value might be changed even if any values in array not existed in set.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let set = Belt.Set.Dict.fromArray([1, 2, 3, 4], ~cmp=IntCmp.cmp)\n\n  let newSet = set->Belt.Set.Dict.removeMany([5, 4, 3, 2, 1], ~cmp=IntCmp.cmp)\n  newSet->Belt.Set.Dict.toArray /* [] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.union",
+      "kind": "value",
+      "name": "union",
+      "signature": "let union: (t<'value, 'id>, t<'value, 'id>, ~cmp: cmp<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Returns union of two sets.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.fromArray([5, 2, 3, 5, 6], ~cmp=IntCmp.cmp)\n  let s1 = Belt.Set.Dict.fromArray([5, 2, 3, 1, 5, 4], ~cmp=IntCmp.cmp)\n  let union = Belt.Set.Dict.union(s0, s1, ~cmp=IntCmp.cmp)\n  union->Belt.Set.Dict.toArray /* [1,2,3,4,5,6] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.intersect",
+      "kind": "value",
+      "name": "intersect",
+      "signature": "let intersect: (t<'value, 'id>, t<'value, 'id>, ~cmp: cmp<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Returns intersection of two sets.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.fromArray([5, 2, 3, 5, 6], ~cmp=IntCmp.cmp)\n  let s1 = Belt.Set.Dict.fromArray([5, 2, 3, 1, 5, 4], ~cmp=IntCmp.cmp)\n  let intersect = Belt.Set.Dict.intersect(s0, s1, ~cmp=IntCmp.cmp)\n  intersect->Belt.Set.Dict.toArray /* [2,3,5] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.diff",
+      "kind": "value",
+      "name": "diff",
+      "signature": "let diff: (t<'value, 'id>, t<'value, 'id>, ~cmp: cmp<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Returns elements from first set, not existing in second set.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.fromArray([5, 2, 3, 5, 6], ~cmp=IntCmp.cmp)\n  let s1 = Belt.Set.Dict.fromArray([5, 2, 3, 1, 5, 4], ~cmp=IntCmp.cmp)\n\n  let diff1 = Belt.Set.Dict.diff(s0, s1, ~cmp=IntCmp.cmp)\n  let diff2 = Belt.Set.Dict.diff(s1, s0, ~cmp=IntCmp.cmp)\n\n  diff1->Belt.Set.Dict.toArray /* [6] */\n  diff2->Belt.Set.Dict.toArray /* [1,4] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.subset",
+      "kind": "value",
+      "name": "subset",
+      "signature": "let subset: (t<'value, 'id>, t<'value, 'id>, ~cmp: cmp<'value, 'id>) => bool",
+      "docstrings": [
+        "Checks if second set is subset of first set.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.fromArray([5, 2, 3, 5, 6], ~cmp=IntCmp.cmp)\n  let s1 = Belt.Set.Dict.fromArray([5, 2, 3, 1, 5, 4], ~cmp=IntCmp.cmp)\n  let s2 = Belt.Set.Dict.intersect(s0, s1, ~cmp=IntCmp.cmp)\n  Belt.Set.Dict.subset(s2, s0, ~cmp=IntCmp.cmp) /* true */\n  Belt.Set.Dict.subset(s2, s1, ~cmp=IntCmp.cmp) /* true */\n  Belt.Set.Dict.subset(s1, s0, ~cmp=IntCmp.cmp) /* false */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.cmp",
+      "kind": "value",
+      "name": "cmp",
+      "signature": "let cmp: (t<'value, 'id>, t<'value, 'id>, ~cmp: cmp<'value, 'id>) => int",
+      "docstrings": [
+        "Total ordering between sets. Can be used as the ordering function for doing sets of sets. It compares size first and then iterates over each element following the order of elements."
+      ]
+    },
+    {
+      "id": "Belt_SetDict.eq",
+      "kind": "value",
+      "name": "eq",
+      "signature": "let eq: (t<'value, 'id>, t<'value, 'id>, ~cmp: cmp<'value, 'id>) => bool",
+      "docstrings": [
+        "Checks if two sets are equal.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.fromArray([5, 2, 3], ~cmp=IntCmp.cmp)\n  let s1 = Belt.Set.Dict.fromArray([3, 2, 5], ~cmp=IntCmp.cmp)\n\n  Belt.Set.Dict.eq(s0, s1, ~cmp=IntCmp.cmp) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.forEachU",
+      "kind": "value",
+      "name": "forEachU",
+      "signature": "let forEachU: (t<'value, 'id>, (. 'value) => unit) => unit",
+      "docstrings": [
+        "Same as [forEach](##forEach) but takes uncurried functon."
+      ]
+    },
+    {
+      "id": "Belt_SetDict.forEach",
+      "kind": "value",
+      "name": "forEach",
+      "signature": "let forEach: (t<'value, 'id>, 'value => unit) => unit",
+      "docstrings": [
+        "Applies function `f` in turn to all elements of set in increasing order.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.fromArray([5, 2, 3, 5, 6], ~cmp=IntCmp.cmp)\n  let acc = ref(list{})\n  s0->Belt.Set.Dict.forEach(x => acc := Belt.List.add(acc.contents, x))\n  acc /* [6,5,3,2] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.reduceU",
+      "kind": "value",
+      "name": "reduceU",
+      "signature": "let reduceU: (t<'value, 'id>, 'a, (. 'a, 'value) => 'a) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetDict.reduce",
+      "kind": "value",
+      "name": "reduce",
+      "signature": "let reduce: (t<'value, 'id>, 'a, ('a, 'value) => 'a) => 'a",
+      "docstrings": [
+        "Applies function `f` to each element of set in increasing order. Function `f` has two parameters: the item from the set and an “accumulator”, which starts with a value of `initialValue`. `reduce` returns the final value of the accumulator.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.fromArray([5, 2, 3, 5, 6], ~cmp=IntCmp.cmp)\n  s0->Belt.Set.Dict.reduce(list{}, (acc, element) => acc->Belt.List.add(element)) /* [6,5,3,2] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.everyU",
+      "kind": "value",
+      "name": "everyU",
+      "signature": "let everyU: (t<'value, 'id>, (. 'value) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetDict.every",
+      "kind": "value",
+      "name": "every",
+      "signature": "let every: (t<'value, 'id>, 'value => bool) => bool",
+      "docstrings": [
+        "Checks if all elements of the set satisfy the predicate. Order unspecified.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let isEven = x => mod(x, 2) == 0\n\n  let s0 = Belt.Set.Dict.fromArray([2, 4, 6, 8], ~cmp=IntCmp.cmp)\n  s0->Belt.Set.Dict.every(isEven) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.someU",
+      "kind": "value",
+      "name": "someU",
+      "signature": "let someU: (t<'value, 'id>, (. 'value) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetDict.some",
+      "kind": "value",
+      "name": "some",
+      "signature": "let some: (t<'value, 'id>, 'value => bool) => bool",
+      "docstrings": [
+        "Checks if at least one element of the set satisfies the predicate.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let isOdd = x => mod(x, 2) != 0\n\n  let s0 = Belt.Set.Dict.fromArray([1, 2, 4, 6, 8], ~cmp=IntCmp.cmp)\n  s0->Belt.Set.Dict.some(isOdd) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.keepU",
+      "kind": "value",
+      "name": "keepU",
+      "signature": "let keepU: (t<'value, 'id>, (. 'value) => bool) => t<'value, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetDict.keep",
+      "kind": "value",
+      "name": "keep",
+      "signature": "let keep: (t<'value, 'id>, 'value => bool) => t<'value, 'id>",
+      "docstrings": [
+        "Returns the set of all elements that satisfy the predicate.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let isEven = x => mod(x, 2) == 0\n\n  let s0 = Belt.Set.Dict.fromArray([1, 2, 3, 4, 5], ~cmp=IntCmp.cmp)\n  let s1 = s0->Belt.Set.Dict.keep(isEven)\n\n  s1->Belt.Set.Dict.toArray /* [2,4] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.partitionU",
+      "kind": "value",
+      "name": "partitionU",
+      "signature": "let partitionU: (t<'value, 'id>, (. 'value) => bool) => (t<'value, 'id>, t<'value, 'id>)",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_SetDict.partition",
+      "kind": "value",
+      "name": "partition",
+      "signature": "let partition: (t<'value, 'id>, 'value => bool) => (t<'value, 'id>, t<'value, 'id>)",
+      "docstrings": [
+        "Returns a pair of sets, where first is the set of all the elements of set that satisfy the predicate, and second is the set of all the elements of set that do not satisfy the predicate.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let isOdd = x => mod(x, 2) != 0\n\n  let s0 = Belt.Set.Dict.fromArray([1, 2, 3, 4, 5], ~cmp=IntCmp.cmp)\n  let (s1, s2) = s0->Belt.Set.Dict.partition(isOdd)\n\n  s1->Belt.Set.Dict.toArray /* [1,3,5] */\n  s2->Belt.Set.Dict.toArray /* [2,4] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.size",
+      "kind": "value",
+      "name": "size",
+      "signature": "let size: t<'value, 'id> => int",
+      "docstrings": [
+        "Returns size of the set.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.fromArray([1, 2, 3, 4], ~cmp=IntCmp.cmp)\n\n  s0->Belt.Set.Dict.size /* 4 */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.toList",
+      "kind": "value",
+      "name": "toList",
+      "signature": "let toList: t<'value, 'id> => list<'value>",
+      "docstrings": [
+        "Returns list of ordered set elements.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.fromArray([3, 2, 1, 5], ~cmp=IntCmp.cmp)\n\n  s0->Belt.Set.Dict.toList /* [1,2,3,5] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.toArray",
+      "kind": "value",
+      "name": "toArray",
+      "signature": "let toArray: t<'value, 'id> => array<'value>",
+      "docstrings": [
+        "Returns array of ordered set elements.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.fromArray([3, 2, 1, 5], ~cmp=IntCmp.cmp)\n\n  s0->Belt.Set.Dict.toArray /* [1,2,3,5] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.minimum",
+      "kind": "value",
+      "name": "minimum",
+      "signature": "let minimum: t<'value, 'id> => option<'value>",
+      "docstrings": [
+        "Returns minimum value of the collection. `None` if collection is empty.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.empty\n  let s1 = Belt.Set.Dict.fromArray([3, 2, 1, 5], ~cmp=IntCmp.cmp)\n\n  s0->Belt.Set.Dict.minimum /* None */\n  s1->Belt.Set.Dict.minimum /* Some(1) */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.minUndefined",
+      "kind": "value",
+      "name": "minUndefined",
+      "signature": "let minUndefined: t<'value, 'id> => Js.undefined<'value>",
+      "docstrings": [
+        "Returns minimum value of the collection. `undefined` if collection is empty.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.empty\n  let s1 = Belt.Set.Dict.fromArray([3, 2, 1, 5], ~cmp=IntCmp.cmp)\n\n  s0->Belt.Set.Dict.minUndefined /* undefined */\n  s1->Belt.Set.Dict.minUndefined /* 1 */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.maximum",
+      "kind": "value",
+      "name": "maximum",
+      "signature": "let maximum: t<'value, 'id> => option<'value>",
+      "docstrings": [
+        "Returns maximum value of the collection. `None` if collection is empty.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.empty\n  let s1 = Belt.Set.Dict.fromArray([3, 2, 1, 5], ~cmp=IntCmp.cmp)\n\n  s0->Belt.Set.Dict.maximum /* None */\n  s1->Belt.Set.Dict.maximum /* Some(5) */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.maxUndefined",
+      "kind": "value",
+      "name": "maxUndefined",
+      "signature": "let maxUndefined: t<'value, 'id> => Js.undefined<'value>",
+      "docstrings": [
+        "Returns maximum value of the collection. `undefined` if collection is empty.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.empty\n  let s1 = Belt.Set.Dict.fromArray([3, 2, 1, 5], ~cmp=IntCmp.cmp)\n\n  s0->Belt.Set.Dict.maxUndefined /* undefined */\n  s1->Belt.Set.Dict.maxUndefined /* 5 */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.get",
+      "kind": "value",
+      "name": "get",
+      "signature": "let get: (t<'value, 'id>, 'value, ~cmp: cmp<'value, 'id>) => option<'value>",
+      "docstrings": [
+        "Returns the reference of the value which is equivalent to value using the comparator specifiecd by this collection. Returns `None` if element does not exist.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.fromArray([1, 2, 3, 4, 5], ~cmp=IntCmp.cmp)\n\n  s0->Belt.Set.Dict.get(3, ~cmp=IntCmp.cmp) /* Some(3) */\n  s0->Belt.Set.Dict.get(20, ~cmp=IntCmp.cmp) /* None */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.getUndefined",
+      "kind": "value",
+      "name": "getUndefined",
+      "signature": "let getUndefined: (t<'value, 'id>, 'value, ~cmp: cmp<'value, 'id>) => Js.undefined<'value>",
+      "docstrings": [
+        "Same as [get](#get) but returns `undefined` when element does not exist."
+      ]
+    },
+    {
+      "id": "Belt_SetDict.getExn",
+      "kind": "value",
+      "name": "getExn",
+      "signature": "let getExn: (t<'value, 'id>, 'value, ~cmp: cmp<'value, 'id>) => 'value",
+      "docstrings": [
+        "Same as [get](#get) but raise when element does not exist."
+      ]
+    },
+    {
+      "id": "Belt_SetDict.split",
+      "kind": "value",
+      "name": "split",
+      "signature": "let split: (\\n  t<'value, 'id>,\\n  'value,\\n  ~cmp: cmp<'value, 'id>,\\n) => ((t<'value, 'id>, t<'value, 'id>), bool)",
+      "docstrings": [
+        "Returns a tuple `((smaller, larger), present)`, `present` is true when element exist in set.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.Set.Dict.fromArray([1, 2, 3, 4, 5], ~cmp=IntCmp.cmp)\n\n  let ((smaller, larger), present) = s0->Belt.Set.Dict.split(3, ~cmp=IntCmp.cmp)\n\n  present /* true */\n  smaller->Belt.Set.Dict.toArray /* [1,2] */\n  larger->Belt.Set.Dict.toArray /* [4,5] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_SetDict.checkInvariantInternal",
+      "kind": "value",
+      "name": "checkInvariantInternal",
+      "signature": "let checkInvariantInternal: t<'a, 'b> => unit",
+      "docstrings": [
+        "**raise** when invariant is not held"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,582 @@
+{
+  "name": "Js_math",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Js_math._E",
+      "kind": "value",
+      "name": "_E",
+      "signature": "let _E: float",
+      "docstrings": [
+        "Euler's number; ≈ 2.718281828459045. See\n  [`Math.E`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/E)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math._LN2",
+      "kind": "value",
+      "name": "_LN2",
+      "signature": "let _LN2: float",
+      "docstrings": [
+        "Natural logarithm of 2; ≈ 0.6931471805599453. See\n  [`Math.LN2`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/LN2)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math._LN10",
+      "kind": "value",
+      "name": "_LN10",
+      "signature": "let _LN10: float",
+      "docstrings": [
+        "Natural logarithm of 10; ≈ 2.302585092994046. See\n  [`Math.LN10`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/LN10)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math._LOG2E",
+      "kind": "value",
+      "name": "_LOG2E",
+      "signature": "let _LOG2E: float",
+      "docstrings": [
+        "Base 2 logarithm of E; ≈ 1.4426950408889634. See\n  [`Math.LOG2E`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/LOG2E)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math._LOG10E",
+      "kind": "value",
+      "name": "_LOG10E",
+      "signature": "let _LOG10E: float",
+      "docstrings": [
+        "Base 10 logarithm of E; ≈ 0.4342944819032518. See\n  [`Math.LOG10E`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/LOG10E)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math._PI",
+      "kind": "value",
+      "name": "_PI",
+      "signature": "let _PI: float",
+      "docstrings": [
+        "Pi - ratio of the circumference to the diameter of a circle; ≈ 3.141592653589793. See\n  [`Math.PI`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/PI)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math._SQRT1_2",
+      "kind": "value",
+      "name": "_SQRT1_2",
+      "signature": "let _SQRT1_2: float",
+      "docstrings": [
+        "Square root of 1/2; ≈ 0.7071067811865476. See\n  [`Math.SQRT1_2`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/SQRT1_2)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math._SQRT2",
+      "kind": "value",
+      "name": "_SQRT2",
+      "signature": "let _SQRT2: float",
+      "docstrings": [
+        "Square root of 2; ≈ 1.4142135623730951. See\n  [`Math.SQRT2`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/SQRT2)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.abs_int",
+      "kind": "value",
+      "name": "abs_int",
+      "signature": "let abs_int: int => int",
+      "docstrings": [
+        "Absolute value for integer argument. See\n  [`Math.abs`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/abs)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.abs_float",
+      "kind": "value",
+      "name": "abs_float",
+      "signature": "let abs_float: float => float",
+      "docstrings": [
+        "Absolute value for float argument. See\n  [`Math.abs`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/abs)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.acos",
+      "kind": "value",
+      "name": "acos",
+      "signature": "let acos: float => float",
+      "docstrings": [
+        "Arccosine (in radians) of argument; returns `NaN` if the argument is outside\n  the range [-1.0, 1.0]. See\n  [`Math.acos`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/acos)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.acosh",
+      "kind": "value",
+      "name": "acosh",
+      "signature": "let acosh: float => float",
+      "docstrings": [
+        "Hyperbolic arccosine (in radians) of argument; returns `NaN` if the argument\n  is less than 1.0. See\n  [`Math.acosh`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/acosh)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.asin",
+      "kind": "value",
+      "name": "asin",
+      "signature": "let asin: float => float",
+      "docstrings": [
+        "Arcsine (in radians) of argument; returns `NaN` if the argument is outside\n  the range [-1.0, 1.0]. See\n  [`Math.asin`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/asin)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.asinh",
+      "kind": "value",
+      "name": "asinh",
+      "signature": "let asinh: float => float",
+      "docstrings": [
+        "Hyperbolic arcsine (in radians) of argument. See\n  [`Math.asinh`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/asinh)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.atan",
+      "kind": "value",
+      "name": "atan",
+      "signature": "let atan: float => float",
+      "docstrings": [
+        "Arctangent (in radians) of argument. See\n  [`Math.atan`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/atan)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.atanh",
+      "kind": "value",
+      "name": "atanh",
+      "signature": "let atanh: float => float",
+      "docstrings": [
+        "Hyperbolic arctangent (in radians) of argument; returns `NaN` if the argument\n  is is outside the range [-1.0, 1.0]. Returns `-Infinity` and `Infinity` for\n  arguments -1.0 and 1.0. See\n  [`Math.atanh`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/atanh)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.atan2",
+      "kind": "value",
+      "name": "atan2",
+      "signature": "let atan2: (~y: float, ~x: float, unit) => float",
+      "docstrings": [
+        "Returns the angle (in radians) of the quotient `y /. x`. It is also the angle\n  between the *x*-axis and point (*x*, *y*). See\n  [`Math.atan2`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/atan2)\n  on MDN.\n\n  ```res example\n  Js.Math.atan2(~y=0.0, ~x=10.0, ()) == 0.0\n  Js.Math.atan2(~x=5.0, ~y=5.0, ()) == Js.Math._PI /. 4.0\n  Js.Math.atan2(~x=-5.0, ~y=5.0, ())\n  Js.Math.atan2(~x=-5.0, ~y=5.0, ()) == 3.0 *. Js.Math._PI /. 4.0\n  Js.Math.atan2(~x=-0.0, ~y=-5.0, ()) == -.Js.Math._PI /. 2.0\n  ```"
+      ]
+    },
+    {
+      "id": "Js_math.cbrt",
+      "kind": "value",
+      "name": "cbrt",
+      "signature": "let cbrt: float => float",
+      "docstrings": [
+        "Cube root. See\n  [`Math.cbrt`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/cbrt)\n  on MDN"
+      ]
+    },
+    {
+      "id": "Js_math.unsafe_ceil_int",
+      "kind": "value",
+      "name": "unsafe_ceil_int",
+      "signature": "let unsafe_ceil_int: float => int",
+      "docstrings": [
+        "Returns the smallest integer greater than or equal to the argument. This\n  function may return values not representable by `int`, whose range is\n  -2147483648 to 2147483647. This is because, in JavaScript, there are only\n  64-bit floating point numbers, which can represent integers in the range\n  ±(2<sup>53</sup>-1) exactly. See\n  [`Math.ceil`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/ceil)\n  on MDN.\n\n  ```res example\n  Js.Math.unsafe_ceil_int(3.1) == 4\n  Js.Math.unsafe_ceil_int(3.0) == 3\n  Js.Math.unsafe_ceil_int(-3.1) == -3\n  Js.Math.unsafe_ceil_int(1.0e15) // result is outside range of int datatype\n  ```"
+      ]
+    },
+    {
+      "id": "Js_math.unsafe_ceil",
+      "kind": "value",
+      "name": "unsafe_ceil",
+      "signature": "let unsafe_ceil: float => int",
+      "docstrings": [
+        "Deprecated; please use [`unsafe_ceil_int`](#unsafe_ceil_int) instead."
+      ]
+    },
+    {
+      "id": "Js_math.ceil_int",
+      "kind": "value",
+      "name": "ceil_int",
+      "signature": "let ceil_int: float => int",
+      "docstrings": [
+        "Returns the smallest `int` greater than or equal to the argument; the result\n  is pinned to the range of the `int` data type: -2147483648 to 2147483647. See\n  [`Math.ceil`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/ceil)\n  on MDN.\n\n  ```res example\n  Js.Math.ceil_int(3.1) == 4\n  Js.Math.ceil_int(3.0) == 3\n  Js.Math.ceil_int(-3.1) == -3\n  Js.Math.ceil_int(-1.0e15) == -2147483648\n  Js.Math.ceil_int(1.0e15) == 2147483647\n  ```"
+      ]
+    },
+    {
+      "id": "Js_math.ceil",
+      "kind": "value",
+      "name": "ceil",
+      "signature": "let ceil: float => int",
+      "docstrings": [
+        "Deprecated; please use [`ceil_int`](#ceil_int) instead."
+      ]
+    },
+    {
+      "id": "Js_math.ceil_float",
+      "kind": "value",
+      "name": "ceil_float",
+      "signature": "let ceil_float: float => float",
+      "docstrings": [
+        "Returns the smallest integral value greater than or equal to the argument.\n  The result is a `float` and is not restricted to the `int` data type range.\n  See\n  [`Math.ceil`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/ceil)\n  on MDN.\n\n  ```res example\n  Js.Math.ceil_float(3.1) == 4.0\n  Js.Math.ceil_float(3.0) == 3.0\n  Js.Math.ceil_float(-3.1) == -3.0\n  Js.Math.ceil_float(2_150_000_000.3) == 2_150_000_001.0\n  ```"
+      ]
+    },
+    {
+      "id": "Js_math.clz32",
+      "kind": "value",
+      "name": "clz32",
+      "signature": "let clz32: int => int",
+      "docstrings": [
+        "Number of leading zero bits of the argument's 32 bit int representation. See\n  [`Math.clz32`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/clz32)\n  on MDN.\n\n  ```res example\n  Js.Math.clz32(0) == 32\n  Js.Math.clz32(-1) == 0\n  Js.Math.clz32(255) == 24\n  ```"
+      ]
+    },
+    {
+      "id": "Js_math.cos",
+      "kind": "value",
+      "name": "cos",
+      "signature": "let cos: float => float",
+      "docstrings": [
+        "Cosine of argument, which must be specified in radians. See\n  [`Math.cos`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/cos)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.cosh",
+      "kind": "value",
+      "name": "cosh",
+      "signature": "let cosh: float => float",
+      "docstrings": [
+        "Hyperbolic cosine of argument, which must be specified in radians. See\n  [`Math.cosh`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/cosh)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.exp",
+      "kind": "value",
+      "name": "exp",
+      "signature": "let exp: float => float",
+      "docstrings": [
+        "Natural exponentional; returns *e* (the base of natural logarithms) to the\n  power of the given argument. See\n  [`Math.exp`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/exp)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.expm1",
+      "kind": "value",
+      "name": "expm1",
+      "signature": "let expm1: float => float",
+      "docstrings": [
+        "Returns *e* (the base of natural logarithms) to the power of the given\n  argument minus 1. See\n  [`Math.expm1`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/expm1)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.unsafe_floor_int",
+      "kind": "value",
+      "name": "unsafe_floor_int",
+      "signature": "let unsafe_floor_int: float => int",
+      "docstrings": [
+        "Returns the largest integer less than or equal to the argument. This function\n  may return values not representable by `int`, whose range is -2147483648 to\n  2147483647. This is because, in JavaScript, there are only 64-bit floating\n  point numbers, which can represent integers in the range\n  ±(2<sup>53</sup>-1) exactly. See\n  [`Math.floor`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/floor)\n  on MDN.\n\n  ```res example\n  Js.Math.unsafe_floor_int(3.7) == 3\n  Js.Math.unsafe_floor_int(3.0) == 3\n  Js.Math.unsafe_floor_int(-3.7) == -4\n  Js.Math.unsafe_floor_int(1.0e15) // result is outside range of int datatype\n  ```"
+      ]
+    },
+    {
+      "id": "Js_math.unsafe_floor",
+      "kind": "value",
+      "name": "unsafe_floor",
+      "signature": "let unsafe_floor: float => int",
+      "docstrings": [
+        "Deprecated; please use [`unsafe_floor_int`](#unsafe_floor_int) instead."
+      ]
+    },
+    {
+      "id": "Js_math.floor_int",
+      "kind": "value",
+      "name": "floor_int",
+      "signature": "let floor_int: float => int",
+      "docstrings": [
+        "Returns the largest `int` less than or equal to the argument; the result is\n  pinned to the range of the `int` data type: -2147483648 to 2147483647. See\n  [`Math.floor`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/floor)\n  on MDN.\n\n  ```res example\n  Js.Math.floor_int(3.7) == 3\n  Js.Math.floor_int(3.0) == 3\n  Js.Math.floor_int(-3.1) == -4\n  Js.Math.floor_int(-1.0e15) == -2147483648\n  Js.Math.floor_int(1.0e15) == 2147483647\n  ```"
+      ]
+    },
+    {
+      "id": "Js_math.floor",
+      "kind": "value",
+      "name": "floor",
+      "signature": "let floor: float => int",
+      "docstrings": [
+        "Deprecated; please use [`floor_int`](#floor_int) instead."
+      ]
+    },
+    {
+      "id": "Js_math.floor_float",
+      "kind": "value",
+      "name": "floor_float",
+      "signature": "let floor_float: float => float",
+      "docstrings": [
+        "Returns the largest integral value less than or equal to the argument. The\n  result is a `float` and is not restricted to the `int` data type range. See\n  [`Math.floor`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/floor)\n  on MDN.\n\n  ```res example\n  Js.Math.floor_float(3.7) == 3.0\n  Js.Math.floor_float(3.0) == 3.0\n  Js.Math.floor_float(-3.1) == -4.0\n  Js.Math.floor_float(2_150_000_000.3) == 2_150_000_000.0\n  ```"
+      ]
+    },
+    {
+      "id": "Js_math.fround",
+      "kind": "value",
+      "name": "fround",
+      "signature": "let fround: float => float",
+      "docstrings": [
+        "Round to nearest single precision float. See\n  [`Math.fround`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/fround)\n  on MDN.\n\n  ```res example\n  Js.Math.fround(5.5) == 5.5\n  Js.Math.fround(5.05) == 5.050000190734863\n  ```"
+      ]
+    },
+    {
+      "id": "Js_math.hypot",
+      "kind": "value",
+      "name": "hypot",
+      "signature": "let hypot: (float, float) => float",
+      "docstrings": [
+        "Returns the square root of the sum of squares of its two arguments (the\n  Pythagorean formula). See\n  [`Math.hypot`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/hypot)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.hypotMany",
+      "kind": "value",
+      "name": "hypotMany",
+      "signature": "let hypotMany: array<float> => float",
+      "docstrings": [
+        "Returns the square root of the sum of squares of the numbers in the array\n  argument (generalized Pythagorean equation). Using an array allows you to\n  have more than two items. See\n  [`Math.hypot`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/hypot)\n  on MDN.\n\n  ```res example\n  Js.Math.hypotMany([3.0, 4.0, 12.0]) == 13.0\n  ```"
+      ]
+    },
+    {
+      "id": "Js_math.imul",
+      "kind": "value",
+      "name": "imul",
+      "signature": "let imul: (int, int) => int",
+      "docstrings": [
+        "32-bit integer multiplication. Use this only when you need to optimize\n  performance of multiplication of numbers stored as 32-bit integers. See\n  [`Math.imul`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/imul)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.log",
+      "kind": "value",
+      "name": "log",
+      "signature": "let log: float => float",
+      "docstrings": [
+        "Returns the natural logarithm of its argument; this is the number *x* such\n  that *e*<sup>*x*</sup> equals the argument. Returns `NaN` for negative\n  arguments. See\n  [`Math.log`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/log)\n  on MDN.\n\n  ```res example\n  Js.Math.log(Js.Math._E) == 1.0\n  Js.Math.log(100.0) == 4.605170185988092\n  ```"
+      ]
+    },
+    {
+      "id": "Js_math.log1p",
+      "kind": "value",
+      "name": "log1p",
+      "signature": "let log1p: float => float",
+      "docstrings": [
+        "Returns the natural logarithm of one plus the argument. Returns `NaN` for\n  arguments less than -1. See\n  [`Math.log1p`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/log1p)\n  on MDN.\n\n  ```res example\n  Js.Math.log1p(Js.Math._E -. 1.0) == 1.0\n  Js.Math.log1p(99.0) == 4.605170185988092\n  ```"
+      ]
+    },
+    {
+      "id": "Js_math.log10",
+      "kind": "value",
+      "name": "log10",
+      "signature": "let log10: float => float",
+      "docstrings": [
+        "Returns the base 10 logarithm of its argument. Returns `NaN` for negative\n  arguments. See\n  [`Math.log10`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/log10)\n  on MDN.\n\n  ```res example\n  Js.Math.log10(1000.0) == 3.0\n  Js.Math.log10(0.01) == -2.0\n  Js.Math.log10(Js.Math.sqrt(10.0)) == 0.5\n  ```"
+      ]
+    },
+    {
+      "id": "Js_math.log2",
+      "kind": "value",
+      "name": "log2",
+      "signature": "let log2: float => float",
+      "docstrings": [
+        "Returns the base 2 logarithm of its argument. Returns `NaN` for negative\n  arguments. See\n  [`Math.log2`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/log2)\n  on MDN.\n\n  ```res example\n  Js.Math.log2(512.0) == 9.0\n  Js.Math.log2(0.125) == -3.0\n  Js.Math.log2(Js.Math._SQRT2) == 0.5000000000000001 // due to precision\n  ```"
+      ]
+    },
+    {
+      "id": "Js_math.max_int",
+      "kind": "value",
+      "name": "max_int",
+      "signature": "let max_int: (int, int) => int",
+      "docstrings": [
+        "Returns the maximum of its two integer arguments.  See\n  [`Math.max`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.maxMany_int",
+      "kind": "value",
+      "name": "maxMany_int",
+      "signature": "let maxMany_int: array<int> => int",
+      "docstrings": [
+        "Returns the maximum of the integers in the given array.  See\n  [`Math.max`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.max_float",
+      "kind": "value",
+      "name": "max_float",
+      "signature": "let max_float: (float, float) => float",
+      "docstrings": [
+        "Returns the maximum of its two floating point arguments. See\n  [`Math.max`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.maxMany_float",
+      "kind": "value",
+      "name": "maxMany_float",
+      "signature": "let maxMany_float: array<float> => float",
+      "docstrings": [
+        "Returns the maximum of the floating point values in the given array. See\n  [`Math.max`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.min_int",
+      "kind": "value",
+      "name": "min_int",
+      "signature": "let min_int: (int, int) => int",
+      "docstrings": [
+        "Returns the minimum of its two integer arguments. See\n  [`Math.min`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/min)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.minMany_int",
+      "kind": "value",
+      "name": "minMany_int",
+      "signature": "let minMany_int: array<int> => int",
+      "docstrings": [
+        "Returns the minimum of the integers in the given array. See\n  [`Math.min`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/min)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.min_float",
+      "kind": "value",
+      "name": "min_float",
+      "signature": "let min_float: (float, float) => float",
+      "docstrings": [
+        "Returns the minimum of its two floating point arguments. See\n  [`Math.min`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/min)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.minMany_float",
+      "kind": "value",
+      "name": "minMany_float",
+      "signature": "let minMany_float: array<float> => float",
+      "docstrings": [
+        "Returns the minimum of the floating point values in the given array. See\n  [`Math.min`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/min)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.pow_int",
+      "kind": "value",
+      "name": "pow_int",
+      "signature": "let pow_int: (~base: int, ~exp: int) => int",
+      "docstrings": [
+        "Raises the given base to the given exponent. (Arguments and result are\n  integers.) See\n  [`Math.pow`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/pow)\n  on MDN.\n\n  ```res example\n  Js.Math.pow_int(~base=3, ~exp=4) == 81\n  ```"
+      ]
+    },
+    {
+      "id": "Js_math.pow_float",
+      "kind": "value",
+      "name": "pow_float",
+      "signature": "let pow_float: (~base: float, ~exp: float) => float",
+      "docstrings": [
+        "Raises the given base to the given exponent. (Arguments and result are\n  floats.) Returns `NaN` if the result would be imaginary. See\n  [`Math.pow`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/pow)\n  on MDN.\n\n  ```res example\n  Js.Math.pow_float(~base=3.0, ~exp=4.0) == 81.0\n  Js.Math.pow_float(~base=4.0, ~exp=-2.0) == 0.0625\n  Js.Math.pow_float(~base=625.0, ~exp=0.5) == 25.0\n  Js.Math.pow_float(~base=625.0, ~exp=-0.5) == 0.04\n  Js.Float.isNaN(Js.Math.pow_float(~base=-2.0, ~exp=0.5)) == true\n  ```"
+      ]
+    },
+    {
+      "id": "Js_math.random",
+      "kind": "value",
+      "name": "random",
+      "signature": "let random: unit => float",
+      "docstrings": [
+        "Returns a random number in the half-closed interval [0,1). See\n  [`Math.random`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.random_int",
+      "kind": "value",
+      "name": "random_int",
+      "signature": "let random_int: (int, int) => int",
+      "docstrings": [
+        "A call to `random_int(minVal, maxVal)` returns a random number in the\n  half-closed interval [minVal, maxVal). See\n  [`Math.random`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.unsafe_round",
+      "kind": "value",
+      "name": "unsafe_round",
+      "signature": "let unsafe_round: float => int",
+      "docstrings": [
+        "Rounds its argument to nearest integer. For numbers with a fractional portion\n  of exactly 0.5, the argument is rounded to the next integer in the direction\n  of positive infinity. This function may return values not representable by\n  `int`, whose range is -2147483648 to 2147483647. This is because, in\n  JavaScript, there are only 64-bit floating point numbers, which can represent\n  integers in the range ±(2<sup>53</sup>-1) exactly. See\n  [`Math.round`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round)\n  on MDN.\n\n  ```res example\n  Js.Math.unsafe_round(3.7) == 4\n  Js.Math.unsafe_round(-3.5) == -3\n  Js.Math.unsafe_round(2_150_000_000_000.3) // out of range for int\n  ```"
+      ]
+    },
+    {
+      "id": "Js_math.round",
+      "kind": "value",
+      "name": "round",
+      "signature": "let round: float => float",
+      "docstrings": [
+        "Rounds to nearest integral value (expressed as a float). See\n  [`Math.round`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/round)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.sign_int",
+      "kind": "value",
+      "name": "sign_int",
+      "signature": "let sign_int: int => int",
+      "docstrings": [
+        "Returns the sign of its integer argument: -1 if negative, 0 if zero, 1 if\n  positive. See\n  [`Math.sign`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sign)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.sign_float",
+      "kind": "value",
+      "name": "sign_float",
+      "signature": "let sign_float: float => float",
+      "docstrings": [
+        "Returns the sign of its float argument: -1.0 if negative, 0.0 if zero, 1.0 if\n  positive. See\n  [`Math.sign`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sign)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.sin",
+      "kind": "value",
+      "name": "sin",
+      "signature": "let sin: float => float",
+      "docstrings": [
+        "Sine of argument, which must be specified in radians. See\n  [`Math.sin`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sin)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.sinh",
+      "kind": "value",
+      "name": "sinh",
+      "signature": "let sinh: float => float",
+      "docstrings": [
+        "Hyperbolic sine of argument, which must be specified in radians. See\n  [`Math.sinh`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sinh)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.sqrt",
+      "kind": "value",
+      "name": "sqrt",
+      "signature": "let sqrt: float => float",
+      "docstrings": [
+        "Square root. If the argument is negative, this function returns `NaN`. See\n  [`Math.sqrt`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sqrt)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.tan",
+      "kind": "value",
+      "name": "tan",
+      "signature": "let tan: float => float",
+      "docstrings": [
+        "Tangent of argument, which must be specified in radians. Returns `NaN` if the\n  argument is positive infinity or negative infinity. See\n  [`Math.cos`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/cos)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.tanh",
+      "kind": "value",
+      "name": "tanh",
+      "signature": "let tanh: float => float",
+      "docstrings": [
+        "Hyperbolic tangent of argument, which must be specified in radians. See\n  [`Math.tanh`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/tanh)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.unsafe_trunc",
+      "kind": "value",
+      "name": "unsafe_trunc",
+      "signature": "let unsafe_trunc: float => int",
+      "docstrings": [
+        "Truncates its argument; i.e., removes fractional digits. This function may\n  return values not representable by `int`, whose range is -2147483648 to\n  2147483647. This is because, in JavaScript, there are only 64-bit floating\n  point numbers, which can represent integers in the range ±(2<sup>53</sup>-1)\n  exactly. See\n  [`Math.trunc`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/trunc)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_math.trunc",
+      "kind": "value",
+      "name": "trunc",
+      "signature": "let trunc: float => float",
+      "docstrings": [
+        "Truncates its argument; i.e., removes fractional digits. See\n  [`Math.trunc`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/trunc)\n  on MDN."
+      ]
+    }
+  ]
+}

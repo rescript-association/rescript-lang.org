@@ -1,0 +1,195 @@
+{
+  "name": "Buffer",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Buffer.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t",
+      "docstrings": [
+        "The abstract type of buffers."
+      ]
+    },
+    {
+      "id": "Buffer.create",
+      "kind": "value",
+      "name": "create",
+      "signature": "let create: int => t",
+      "docstrings": [
+        "[create n] returns a fresh buffer, initially empty.\n   The [n] parameter is the initial size of the internal byte sequence\n   that holds the buffer contents. That byte sequence is automatically\n   reallocated when more than [n] characters are stored in the buffer,\n   but shrinks back to [n] characters when [reset] is called.\n   For best performance, [n] should be of the same order of magnitude\n   as the number of characters that are expected to be stored in\n   the buffer (for instance, 80 for a buffer that holds one output\n   line).  Nothing bad will happen if the buffer grows beyond that\n   limit, however. In doubt, take [n = 16] for instance.\n   If [n] is not between 1 and {!Sys.max_string_length}, it will\n   be clipped to that interval."
+      ]
+    },
+    {
+      "id": "Buffer.contents",
+      "kind": "value",
+      "name": "contents",
+      "signature": "let contents: t => string",
+      "docstrings": [
+        "Return a copy of the current contents of the buffer.\n    The buffer itself is unchanged."
+      ]
+    },
+    {
+      "id": "Buffer.to_bytes",
+      "kind": "value",
+      "name": "to_bytes",
+      "signature": "let to_bytes: t => bytes",
+      "docstrings": [
+        "Return a copy of the current contents of the buffer.\n    The buffer itself is unchanged.\n    @since 4.02"
+      ]
+    },
+    {
+      "id": "Buffer.sub",
+      "kind": "value",
+      "name": "sub",
+      "signature": "let sub: (t, int, int) => string",
+      "docstrings": [
+        "[Buffer.sub b off len] returns a copy of [len] bytes from the\n    current contents of the buffer [b], starting at offset [off].\n\n    Raise [Invalid_argument] if [srcoff] and [len] do not designate a valid\n    range of [b]."
+      ]
+    },
+    {
+      "id": "Buffer.blit",
+      "kind": "value",
+      "name": "blit",
+      "signature": "let blit: (t, int, bytes, int, int) => unit",
+      "docstrings": [
+        "[Buffer.blit src srcoff dst dstoff len] copies [len] characters from\n   the current contents of the buffer [src], starting at offset [srcoff]\n   to [dst], starting at character [dstoff].\n\n   Raise [Invalid_argument] if [srcoff] and [len] do not designate a valid\n   range of [src], or if [dstoff] and [len] do not designate a valid\n   range of [dst].\n   @since 3.11.2"
+      ]
+    },
+    {
+      "id": "Buffer.nth",
+      "kind": "value",
+      "name": "nth",
+      "signature": "let nth: (t, int) => char",
+      "docstrings": [
+        "Get the n-th character of the buffer. Raise [Invalid_argument] if\n    index out of bounds"
+      ]
+    },
+    {
+      "id": "Buffer.length",
+      "kind": "value",
+      "name": "length",
+      "signature": "let length: t => int",
+      "docstrings": [
+        "Return the number of characters currently contained in the buffer."
+      ]
+    },
+    {
+      "id": "Buffer.clear",
+      "kind": "value",
+      "name": "clear",
+      "signature": "let clear: t => unit",
+      "docstrings": [
+        "Empty the buffer."
+      ]
+    },
+    {
+      "id": "Buffer.reset",
+      "kind": "value",
+      "name": "reset",
+      "signature": "let reset: t => unit",
+      "docstrings": [
+        "Empty the buffer and deallocate the internal byte sequence holding the\n   buffer contents, replacing it with the initial internal byte sequence\n   of length [n] that was allocated by {!Buffer.create} [n].\n   For long-lived buffers that may have grown a lot, [reset] allows\n   faster reclamation of the space used by the buffer."
+      ]
+    },
+    {
+      "id": "Buffer.add_char",
+      "kind": "value",
+      "name": "add_char",
+      "signature": "let add_char: (t, char) => unit",
+      "docstrings": [
+        "[add_char b c] appends the character [c] at the end of buffer [b]."
+      ]
+    },
+    {
+      "id": "Buffer.add_utf_8_uchar",
+      "kind": "value",
+      "name": "add_utf_8_uchar",
+      "signature": "let add_utf_8_uchar: (t, Uchar.t) => unit",
+      "docstrings": [
+        "[add_utf_8_uchar b u] appends the {{:https://tools.ietf.org/html/rfc3629}\n    UTF-8} encoding of [u] at the end of buffer [b].\n\n    @since 4.06.0"
+      ]
+    },
+    {
+      "id": "Buffer.add_utf_16le_uchar",
+      "kind": "value",
+      "name": "add_utf_16le_uchar",
+      "signature": "let add_utf_16le_uchar: (t, Uchar.t) => unit",
+      "docstrings": [
+        "[add_utf_16le_uchar b u] appends the\n    {{:https://tools.ietf.org/html/rfc2781}UTF-16LE} encoding of [u]\n    at the end of buffer [b].\n\n    @since 4.06.0"
+      ]
+    },
+    {
+      "id": "Buffer.add_utf_16be_uchar",
+      "kind": "value",
+      "name": "add_utf_16be_uchar",
+      "signature": "let add_utf_16be_uchar: (t, Uchar.t) => unit",
+      "docstrings": [
+        "[add_utf_16be_uchar b u] appends the\n    {{:https://tools.ietf.org/html/rfc2781}UTF-16BE} encoding of [u]\n    at the end of buffer [b].\n\n    @since 4.06.0"
+      ]
+    },
+    {
+      "id": "Buffer.add_string",
+      "kind": "value",
+      "name": "add_string",
+      "signature": "let add_string: (t, string) => unit",
+      "docstrings": [
+        "[add_string b s] appends the string [s] at the end of buffer [b]."
+      ]
+    },
+    {
+      "id": "Buffer.add_bytes",
+      "kind": "value",
+      "name": "add_bytes",
+      "signature": "let add_bytes: (t, bytes) => unit",
+      "docstrings": [
+        "[add_bytes b s] appends the byte sequence [s] at the end of buffer [b].\n    @since 4.02"
+      ]
+    },
+    {
+      "id": "Buffer.add_substring",
+      "kind": "value",
+      "name": "add_substring",
+      "signature": "let add_substring: (t, string, int, int) => unit",
+      "docstrings": [
+        "[add_substring b s ofs len] takes [len] characters from offset\n   [ofs] in string [s] and appends them at the end of buffer [b]."
+      ]
+    },
+    {
+      "id": "Buffer.add_subbytes",
+      "kind": "value",
+      "name": "add_subbytes",
+      "signature": "let add_subbytes: (t, bytes, int, int) => unit",
+      "docstrings": [
+        "[add_subbytes b s ofs len] takes [len] characters from offset\n    [ofs] in byte sequence [s] and appends them at the end of buffer [b].\n    @since 4.02"
+      ]
+    },
+    {
+      "id": "Buffer.add_substitute",
+      "kind": "value",
+      "name": "add_substitute",
+      "signature": "let add_substitute: (t, string => string, string) => unit",
+      "docstrings": [
+        "[add_substitute b f s] appends the string pattern [s] at the end\n   of buffer [b] with substitution.\n   The substitution process looks for variables into\n   the pattern and substitutes each variable name by its value, as\n   obtained by applying the mapping [f] to the variable name. Inside the\n   string pattern, a variable name immediately follows a non-escaped\n   [$] character and is one of the following:\n   - a non empty sequence of alphanumeric or [_] characters,\n   - an arbitrary sequence of characters enclosed by a pair of\n   matching parentheses or curly brackets.\n   An escaped [$] character is a [$] that immediately follows a backslash\n   character; it then stands for a plain [$].\n   Raise [Not_found] if the closing character of a parenthesized variable\n   cannot be found."
+      ]
+    },
+    {
+      "id": "Buffer.add_buffer",
+      "kind": "value",
+      "name": "add_buffer",
+      "signature": "let add_buffer: (t, t) => unit",
+      "docstrings": [
+        "[add_buffer b1 b2] appends the current contents of buffer [b2]\n   at the end of buffer [b1].  [b2] is not modified."
+      ]
+    },
+    {
+      "id": "Buffer.truncate",
+      "kind": "value",
+      "name": "truncate",
+      "signature": "let truncate: (t, int) => unit",
+      "docstrings": [
+        "[truncate b len] truncates the length of [b] to [len]\n  Note: the internal byte sequence is not shortened.\n  Raise [Invalid_argument] if [len < 0] or [len > length b].\n  @since 4.05.0"
+      ]
+    }
+  ]
+}

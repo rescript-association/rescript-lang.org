@@ -1,0 +1,379 @@
+{
+  "name": "Belt_internals",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Belt_internals.^",
+      "kind": "value",
+      "name": "^",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.=",
+      "kind": "value",
+      "name": "=",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.<>",
+      "kind": "value",
+      "name": "<>",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.==",
+      "kind": "value",
+      "name": "==",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.!=",
+      "kind": "value",
+      "name": "!=",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.<",
+      "kind": "value",
+      "name": "<",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.>",
+      "kind": "value",
+      "name": ">",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.<=",
+      "kind": "value",
+      "name": "<=",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.>=",
+      "kind": "value",
+      "name": ">=",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.+",
+      "kind": "value",
+      "name": "+",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.-",
+      "kind": "value",
+      "name": "-",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.~-",
+      "kind": "value",
+      "name": "~-",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.*",
+      "kind": "value",
+      "name": "*",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals./",
+      "kind": "value",
+      "name": "/",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.lsl",
+      "kind": "value",
+      "name": "lsl",
+      "signature": "let lsl: (int, int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.lor",
+      "kind": "value",
+      "name": "lor",
+      "signature": "let lor: (int, int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.land",
+      "kind": "value",
+      "name": "land",
+      "signature": "let land: (int, int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.mod",
+      "kind": "value",
+      "name": "mod",
+      "signature": "let mod: (int, int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.lsr",
+      "kind": "value",
+      "name": "lsr",
+      "signature": "let lsr: (int, int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.lxor",
+      "kind": "value",
+      "name": "lxor",
+      "signature": "let lxor: (int, int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.asr",
+      "kind": "value",
+      "name": "asr",
+      "signature": "let asr: (int, int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.ref",
+      "kind": "type",
+      "name": "ref",
+      "signature": "type ref<'a> = {mutable contents: 'a}",
+      "docstrings": [],
+      "detail": {
+        "kind": "record",
+        "fieldDocs": [
+          {
+            "fieldName": "contents",
+            "docstrings": [],
+            "signature": "'a"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Belt_internals.ref",
+      "kind": "value",
+      "name": "ref",
+      "signature": "let ref: 'a => ref<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.||",
+      "kind": "value",
+      "name": "||",
+      "signature": "let _: (bool, bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.&&",
+      "kind": "value",
+      "name": "&&",
+      "signature": "let _: (bool, bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.not",
+      "kind": "value",
+      "name": "not",
+      "signature": "let not: bool => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.raise",
+      "kind": "value",
+      "name": "raise",
+      "signature": "let raise: exn => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.ignore",
+      "kind": "value",
+      "name": "ignore",
+      "signature": "let ignore: 'a => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.|>",
+      "kind": "value",
+      "name": "|>",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.@@",
+      "kind": "value",
+      "name": "@@",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.**",
+      "kind": "value",
+      "name": "**",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.~-.",
+      "kind": "value",
+      "name": "~-.",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.+.",
+      "kind": "value",
+      "name": "+.",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.-.",
+      "kind": "value",
+      "name": "-.",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals.*.",
+      "kind": "value",
+      "name": "*.",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internals./.",
+      "kind": "value",
+      "name": "/.",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": []
+    },
+    {
+      "id": "Obj.Belt_internals",
+      "kind": "module",
+      "item": {
+        "name": "Obj",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Belt_internals.Obj.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_internals.Obj.field",
+            "kind": "value",
+            "name": "field",
+            "signature": "let field: (t, int) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_internals.Obj.set_field",
+            "kind": "value",
+            "name": "set_field",
+            "signature": "let set_field: (t, int, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_internals.Obj.tag",
+            "kind": "value",
+            "name": "tag",
+            "signature": "let tag: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_internals.Obj.repr",
+            "kind": "value",
+            "name": "repr",
+            "signature": "let repr: 'a => t",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_internals.Obj.obj",
+            "kind": "value",
+            "name": "obj",
+            "signature": "let obj: t => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_internals.Obj.magic",
+            "kind": "value",
+            "name": "magic",
+            "signature": "let magic: 'a => 'b",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_internals.Obj.size",
+            "kind": "value",
+            "name": "size",
+            "signature": "let size: t => int",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Pervasives.Belt_internals",
+      "kind": "module",
+      "item": {
+        "name": "Pervasives",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Belt_internals.Pervasives.compare",
+            "kind": "value",
+            "name": "compare",
+            "signature": "let compare: ('a, 'a) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_internals.Pervasives.not",
+            "kind": "value",
+            "name": "not",
+            "signature": "let not: bool => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_internals.Pervasives.min",
+            "kind": "value",
+            "name": "min",
+            "signature": "let min: ('a, 'a) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_internals.Pervasives.max",
+            "kind": "value",
+            "name": "max",
+            "signature": "let max: ('a, 'a) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_internals.Pervasives.=",
+            "kind": "value",
+            "name": "=",
+            "signature": "let _: %rescript.typehole",
+            "docstrings": []
+          }
+        ]
+      }
+    }
+  ]
+}

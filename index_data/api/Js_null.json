@@ -1,0 +1,123 @@
+{
+  "name": "Js_null",
+  "docstrings": [
+    "Provides functionality for dealing with the `Js.null<'a>` type"
+  ],
+  "items": [
+    {
+      "id": "Js_null.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a> = Js.null<'a> = Value('a) | Null",
+      "docstrings": [
+        "Local alias for `Js.null('a)`"
+      ],
+      "detail": {
+        "kind": "variant",
+        "constructorDocs": [
+          {
+            "constructorName": "Value",
+            "docstrings": [],
+            "signature": "Value('a)"
+          },
+          {
+            "constructorName": "Null",
+            "docstrings": [],
+            "signature": "Null"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Js_null.return",
+      "kind": "value",
+      "name": "return",
+      "signature": "let return: 'a => t<'a>",
+      "docstrings": [
+        "Constructs a value of `Js.null('a)` containing a value of `'a`."
+      ]
+    },
+    {
+      "id": "Js_null.test",
+      "kind": "value",
+      "name": "test",
+      "signature": "let test: t<'a> => bool",
+      "docstrings": [
+        "Returns `true` if the given value is empty (`null`), `false` otherwise."
+      ]
+    },
+    {
+      "id": "Js_null.empty",
+      "kind": "value",
+      "name": "empty",
+      "signature": "let empty: t<'a>",
+      "docstrings": [
+        "The empty value, `null`"
+      ]
+    },
+    {
+      "id": "Js_null.getUnsafe",
+      "kind": "value",
+      "name": "getUnsafe",
+      "signature": "let getUnsafe: t<'a> => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Js_null.getExn",
+      "kind": "value",
+      "name": "getExn",
+      "signature": "let getExn: t<'a> => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Js_null.bind",
+      "kind": "value",
+      "name": "bind",
+      "signature": "let bind: (t<'a>, (. 'a) => 'b) => t<'b>",
+      "docstrings": [
+        "Maps the contained value using the given function.\n\nIf `Js.null('a)` contains a value, that value is unwrapped, mapped to a `'b`\nusing the given function `'a => 'b`, then wrapped back up and returned as\n`Js.null('b)`.\n\n```res example\nlet maybeGreetWorld = (maybeGreeting: Js.null<string>) =>\n  Js.Null.bind(maybeGreeting, (. greeting) => greeting ++ \" world!\")\n```"
+      ]
+    },
+    {
+      "id": "Js_null.iter",
+      "kind": "value",
+      "name": "iter",
+      "signature": "let iter: (t<'a>, (. 'a) => unit) => unit",
+      "docstrings": [
+        "Iterates over the contained value with the given function.\nIf `Js.null('a)` contains a value, that value is unwrapped and applied to the given function.\n\n```res example\nlet maybeSay = (maybeMessage: Js.null<string>) =>\n  Js.Null.iter(maybeMessage, (. message) => Js.log(message))\n```"
+      ]
+    },
+    {
+      "id": "Js_null.fromOption",
+      "kind": "value",
+      "name": "fromOption",
+      "signature": "let fromOption: option<'a> => t<'a>",
+      "docstrings": [
+        "Maps `option('a)` to `Js.null('a)`.\n`Some(a)` => `a`\n`None` => `empty`"
+      ]
+    },
+    {
+      "id": "Js_null.from_opt",
+      "kind": "value",
+      "name": "from_opt",
+      "signature": "let from_opt: option<'a> => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_null.toOption",
+      "kind": "value",
+      "name": "toOption",
+      "signature": "let toOption: t<'a> => option<'a>",
+      "docstrings": [
+        "Maps `Js.null('a)` to `option('a)`.\n`a` => `Some(a)`\n`empty` => `None`"
+      ]
+    },
+    {
+      "id": "Js_null.to_opt",
+      "kind": "value",
+      "name": "to_opt",
+      "signature": "let to_opt: t<'a> => option<'a>",
+      "docstrings": []
+    }
+  ]
+}

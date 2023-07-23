@@ -1,0 +1,69 @@
+{
+  "name": "Dom_storage2",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Dom_storage2.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t",
+      "docstrings": []
+    },
+    {
+      "id": "Dom_storage2.getItem",
+      "kind": "value",
+      "name": "getItem",
+      "signature": "let getItem: (t, string) => option<string>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom_storage2.setItem",
+      "kind": "value",
+      "name": "setItem",
+      "signature": "let setItem: (t, string, string) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Dom_storage2.removeItem",
+      "kind": "value",
+      "name": "removeItem",
+      "signature": "let removeItem: (t, string) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Dom_storage2.clear",
+      "kind": "value",
+      "name": "clear",
+      "signature": "let clear: t => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Dom_storage2.key",
+      "kind": "value",
+      "name": "key",
+      "signature": "let key: (t, int) => option<string>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom_storage2.length",
+      "kind": "value",
+      "name": "length",
+      "signature": "let length: t => int",
+      "docstrings": []
+    },
+    {
+      "id": "Dom_storage2.localStorage",
+      "kind": "value",
+      "name": "localStorage",
+      "signature": "let localStorage: t",
+      "docstrings": []
+    },
+    {
+      "id": "Dom_storage2.sessionStorage",
+      "kind": "value",
+      "name": "sessionStorage",
+      "signature": "let sessionStorage: t",
+      "docstrings": []
+    }
+  ]
+}

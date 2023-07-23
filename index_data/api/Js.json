@@ -1,0 +1,579 @@
+{
+  "name": "Js",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Js.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a> = 'a constraint 'a = {..}",
+      "docstrings": [
+        "JS object type"
+      ]
+    },
+    {
+      "id": "Js.Js_mapperRt",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module MapperRt = Js_mapperRt"
+    },
+    {
+      "id": "Internal.Js",
+      "kind": "module",
+      "item": {
+        "name": "Internal",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Js.Internal.opaqueFullApply",
+            "kind": "value",
+            "name": "opaqueFullApply",
+            "signature": "let opaqueFullApply: 'a => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js.Internal.run",
+            "kind": "value",
+            "name": "run",
+            "signature": "let run: (. unit) => 'a => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js.Internal.opaque",
+            "kind": "value",
+            "name": "opaque",
+            "signature": "let opaque: 'a => 'a",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Js.null",
+      "kind": "type",
+      "name": "null",
+      "signature": "type null<'a> = Value('a) | Null",
+      "docstrings": [
+        "Nullable value of this type can be either null or 'a. This type is equivalent to Js.Null.t."
+      ],
+      "detail": {
+        "kind": "variant",
+        "constructorDocs": [
+          {
+            "constructorName": "Value",
+            "docstrings": [],
+            "signature": "Value('a)"
+          },
+          {
+            "constructorName": "Null",
+            "docstrings": [],
+            "signature": "Null"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Js.undefined",
+      "kind": "type",
+      "name": "undefined",
+      "signature": "type undefined<+'a>",
+      "docstrings": [
+        "A value of this type can be either undefined or 'a. This type is equivalent to Js.Undefined.t."
+      ]
+    },
+    {
+      "id": "Js.nullable",
+      "kind": "type",
+      "name": "nullable",
+      "signature": "type nullable<'a> = Value('a) | Null | Undefined",
+      "docstrings": [],
+      "detail": {
+        "kind": "variant",
+        "constructorDocs": [
+          {
+            "constructorName": "Value",
+            "docstrings": [],
+            "signature": "Value('a)"
+          },
+          {
+            "constructorName": "Null",
+            "docstrings": [],
+            "signature": "Null"
+          },
+          {
+            "constructorName": "Undefined",
+            "docstrings": [],
+            "signature": "Undefined"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Js.null_undefined",
+      "kind": "type",
+      "name": "null_undefined",
+      "signature": "type null_undefined<'a> = nullable<'a>",
+      "docstrings": [],
+      "detail": {
+        "kind": "variant",
+        "constructorDocs": [
+          {
+            "constructorName": "Value",
+            "docstrings": [],
+            "signature": "Value('a)"
+          },
+          {
+            "constructorName": "Null",
+            "docstrings": [],
+            "signature": "Null"
+          },
+          {
+            "constructorName": "Undefined",
+            "docstrings": [],
+            "signature": "Undefined"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Js.toOption",
+      "kind": "value",
+      "name": "toOption",
+      "signature": "let toOption: nullable<'a> => option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js.undefinedToOption",
+      "kind": "value",
+      "name": "undefinedToOption",
+      "signature": "let undefinedToOption: undefined<'a> => option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js.nullToOption",
+      "kind": "value",
+      "name": "nullToOption",
+      "signature": "let nullToOption: null<'a> => option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js.isNullable",
+      "kind": "value",
+      "name": "isNullable",
+      "signature": "let isNullable: nullable<'a> => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js.import",
+      "kind": "value",
+      "name": "import",
+      "signature": "let import: 'a => promise<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js.testAny",
+      "kind": "value",
+      "name": "testAny",
+      "signature": "let testAny: 'a => bool",
+      "docstrings": [
+        "The same as {!test} except that it is more permissive on the types of input"
+      ]
+    },
+    {
+      "id": "Js.promise",
+      "kind": "type",
+      "name": "promise",
+      "signature": "type promise<+'a, +'e>",
+      "docstrings": [
+        "The promise type, defined here for interoperation across packages.\n  @deprecated please use `Js.Promise`."
+      ]
+    },
+    {
+      "id": "Js.null",
+      "kind": "value",
+      "name": "null",
+      "signature": "let null: null<'a>",
+      "docstrings": [
+        "The same as empty in `Js.Null`. Compiles to `null`."
+      ]
+    },
+    {
+      "id": "Js.undefined",
+      "kind": "value",
+      "name": "undefined",
+      "signature": "let undefined: undefined<'a>",
+      "docstrings": [
+        "The same as empty `Js.Undefined`. Compiles to `undefined`."
+      ]
+    },
+    {
+      "id": "Js.typeof",
+      "kind": "value",
+      "name": "typeof",
+      "signature": "let typeof: 'a => string",
+      "docstrings": [
+        "`typeof x` will be compiled as `typeof x` in JS. Please consider functions in\n`Js.Types` for a type safe way of reflection."
+      ]
+    },
+    {
+      "id": "Js.log",
+      "kind": "value",
+      "name": "log",
+      "signature": "let log: 'a => unit",
+      "docstrings": [
+        "Equivalent to console.log any value."
+      ]
+    },
+    {
+      "id": "Js.log2",
+      "kind": "value",
+      "name": "log2",
+      "signature": "let log2: ('a, 'b) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js.log3",
+      "kind": "value",
+      "name": "log3",
+      "signature": "let log3: ('a, 'b, 'c) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js.log4",
+      "kind": "value",
+      "name": "log4",
+      "signature": "let log4: ('a, 'b, 'c, 'd) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js.logMany",
+      "kind": "value",
+      "name": "logMany",
+      "signature": "let logMany: array<'a> => unit",
+      "docstrings": [
+        "A convenience function to console.log more than 4 arguments"
+      ]
+    },
+    {
+      "id": "Js.eqNull",
+      "kind": "value",
+      "name": "eqNull",
+      "signature": "let eqNull: ('a, null<'a>) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js.eqUndefined",
+      "kind": "value",
+      "name": "eqUndefined",
+      "signature": "let eqUndefined: ('a, undefined<'a>) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js.eqNullable",
+      "kind": "value",
+      "name": "eqNullable",
+      "signature": "let eqNullable: ('a, nullable<'a>) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js.unsafe_lt",
+      "kind": "value",
+      "name": "unsafe_lt",
+      "signature": "let unsafe_lt: ('a, 'a) => bool",
+      "docstrings": [
+        "`unsafe_lt(a, b)` will be compiled as `a < b`.\n    It is marked as unsafe, since it is impossible\n    to give a proper semantics for comparision which applies to any type"
+      ]
+    },
+    {
+      "id": "Js.unsafe_le",
+      "kind": "value",
+      "name": "unsafe_le",
+      "signature": "let unsafe_le: ('a, 'a) => bool",
+      "docstrings": [
+        "`unsafe_le(a, b) will be compiled as `a <= b`.\n   See also `Js.unsafe_lt`."
+      ]
+    },
+    {
+      "id": "Js.unsafe_gt",
+      "kind": "value",
+      "name": "unsafe_gt",
+      "signature": "let unsafe_gt: ('a, 'a) => bool",
+      "docstrings": [
+        "`unsafe_gt(a, b)` will be compiled as `a > b`.\n    See also `Js.unsafe_lt`."
+      ]
+    },
+    {
+      "id": "Js.unsafe_ge",
+      "kind": "value",
+      "name": "unsafe_ge",
+      "signature": "let unsafe_ge: ('a, 'a) => bool",
+      "docstrings": [
+        "`unsafe_ge(a, b)` will be compiled as `a >= b`.\n   See also `Js.unsafe_lt`."
+      ]
+    },
+    {
+      "id": "Js.Js_null",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide utilities for `Js.null<'a>`"
+      ],
+      "signature": "module Null = Js_null"
+    },
+    {
+      "id": "Js.Js_undefined",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide utilities for `Js.undefined<'a>`"
+      ],
+      "signature": "module Undefined = Js_undefined"
+    },
+    {
+      "id": "Js.Js_null_undefined",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide utilities for `Js.null_undefined`"
+      ],
+      "signature": "module Nullable = Js_null_undefined"
+    },
+    {
+      "id": "Js.Js_null_undefined",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "@deprecated please use `Js.Nullable`"
+      ],
+      "signature": "module Null_undefined = Js_null_undefined"
+    },
+    {
+      "id": "Js.Js_exn",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide utilities for dealing with Js exceptions"
+      ],
+      "signature": "module Exn = Js_exn"
+    },
+    {
+      "id": "Js.Js_array",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide bindings to JS array"
+      ],
+      "signature": "module Array = Js_array"
+    },
+    {
+      "id": "Js.Js_array2",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide bindings to JS array"
+      ],
+      "signature": "module Array2 = Js_array2"
+    },
+    {
+      "id": "Js.Js_string",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide bindings to JS string"
+      ],
+      "signature": "module String = Js_string"
+    },
+    {
+      "id": "Js.Js_string2",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide bindings to JS string"
+      ],
+      "signature": "module String2 = Js_string2"
+    },
+    {
+      "id": "Js.Js_re",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide bindings to JS regex expression"
+      ],
+      "signature": "module Re = Js_re"
+    },
+    {
+      "id": "Js.Js_promise",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide bindings to JS Promise"
+      ],
+      "signature": "module Promise = Js_promise"
+    },
+    {
+      "id": "Js.Js_promise2",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide bindings to JS Promise"
+      ],
+      "signature": "module Promise2 = Js_promise2"
+    },
+    {
+      "id": "Js.Js_date",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide bindings for JS Date"
+      ],
+      "signature": "module Date = Js_date"
+    },
+    {
+      "id": "Js.Js_dict",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide utilities for JS dictionary object"
+      ],
+      "signature": "module Dict = Js_dict"
+    },
+    {
+      "id": "Js.Js_global",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide bindings to JS global functions in global namespace"
+      ],
+      "signature": "module Global = Js_global"
+    },
+    {
+      "id": "Js.Js_json",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide utilities for json"
+      ],
+      "signature": "module Json = Js_json"
+    },
+    {
+      "id": "Js.Js_math",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide bindings for JS `Math` object"
+      ],
+      "signature": "module Math = Js_math"
+    },
+    {
+      "id": "Js.Js_obj",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide utilities for `Js.t`"
+      ],
+      "signature": "module Obj = Js_obj"
+    },
+    {
+      "id": "Js.Js_typed_array",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide bindings for JS typed array"
+      ],
+      "signature": "module Typed_array = Js_typed_array"
+    },
+    {
+      "id": "Js.Js_typed_array2",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide bindings for JS typed array"
+      ],
+      "signature": "module TypedArray2 = Js_typed_array2"
+    },
+    {
+      "id": "Js.Js_types",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide utilities for manipulating JS types"
+      ],
+      "signature": "module Types = Js_types"
+    },
+    {
+      "id": "Js.Js_float",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide utilities for JS float"
+      ],
+      "signature": "module Float = Js_float"
+    },
+    {
+      "id": "Js.Js_int",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide utilities for int"
+      ],
+      "signature": "module Int = Js_int"
+    },
+    {
+      "id": "Js.Js_bigint",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide utilities for bigint"
+      ],
+      "signature": "module Bigint = Js_bigint"
+    },
+    {
+      "id": "Js.Js_option",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide utilities for option"
+      ],
+      "signature": "module Option = Js_option"
+    },
+    {
+      "id": "Js.Js_result",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Define the interface for result"
+      ],
+      "signature": "module Result = Js_result"
+    },
+    {
+      "id": "Js.Js_list",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide utilities for list"
+      ],
+      "signature": "module List = Js_list"
+    },
+    {
+      "id": "Js.Js_vector",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provides bindings for JS Vector"
+      ],
+      "signature": "module Vector = Js_vector"
+    },
+    {
+      "id": "Js.Js_console",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provides bindings for console"
+      ],
+      "signature": "module Console = Js_console"
+    },
+    {
+      "id": "Js.Js_set",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provides bindings for ES6 Set"
+      ],
+      "signature": "module Set = Js_set"
+    },
+    {
+      "id": "Js.Js_weakset",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provides bindings for ES6 WeakSet"
+      ],
+      "signature": "module WeakSet = Js_weakset"
+    },
+    {
+      "id": "Js.Js_map",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provides bindings for ES6 Map"
+      ],
+      "signature": "module Map = Js_map"
+    },
+    {
+      "id": "Js.Js_weakmap",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provides bindings for ES6 WeakMap"
+      ],
+      "signature": "module WeakMap = Js_weakmap"
+    }
+  ]
+}

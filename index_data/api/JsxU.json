@@ -1,0 +1,78 @@
+{
+  "name": "JsxU",
+  "docstrings": [
+    "Internal: use Jsx directly."
+  ],
+  "items": [
+    {
+      "id": "JsxU.element",
+      "kind": "type",
+      "name": "element",
+      "signature": "type element",
+      "docstrings": []
+    },
+    {
+      "id": "JsxU.ref",
+      "kind": "type",
+      "name": "ref",
+      "signature": "type ref",
+      "docstrings": []
+    },
+    {
+      "id": "JsxU.null",
+      "kind": "value",
+      "name": "null",
+      "signature": "let null: element",
+      "docstrings": []
+    },
+    {
+      "id": "JsxU.float",
+      "kind": "value",
+      "name": "float",
+      "signature": "let float: (. float) => element",
+      "docstrings": []
+    },
+    {
+      "id": "JsxU.int",
+      "kind": "value",
+      "name": "int",
+      "signature": "let int: (. int) => element",
+      "docstrings": []
+    },
+    {
+      "id": "JsxU.string",
+      "kind": "value",
+      "name": "string",
+      "signature": "let string: (. string) => element",
+      "docstrings": []
+    },
+    {
+      "id": "JsxU.array",
+      "kind": "value",
+      "name": "array",
+      "signature": "let array: (. array<element>) => element",
+      "docstrings": []
+    },
+    {
+      "id": "JsxU.componentLike",
+      "kind": "type",
+      "name": "componentLike",
+      "signature": "type componentLike<'props, 'return> = (. 'props) => 'return",
+      "docstrings": []
+    },
+    {
+      "id": "JsxU.component",
+      "kind": "type",
+      "name": "component",
+      "signature": "type component<'props> = componentLike<'props, element>",
+      "docstrings": []
+    },
+    {
+      "id": "JsxU.component",
+      "kind": "value",
+      "name": "component",
+      "signature": "let component: (. componentLike<'props, element>) => component<'props>",
+      "docstrings": []
+    }
+  ]
+}

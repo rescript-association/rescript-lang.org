@@ -1,0 +1,167 @@
+{
+  "name": "Js_console",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Js_console.log",
+      "kind": "value",
+      "name": "log",
+      "signature": "let log: 'a => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.log2",
+      "kind": "value",
+      "name": "log2",
+      "signature": "let log2: ('a, 'b) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.log3",
+      "kind": "value",
+      "name": "log3",
+      "signature": "let log3: ('a, 'b, 'c) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.log4",
+      "kind": "value",
+      "name": "log4",
+      "signature": "let log4: ('a, 'b, 'c, 'd) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.logMany",
+      "kind": "value",
+      "name": "logMany",
+      "signature": "let logMany: array<'a> => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.info",
+      "kind": "value",
+      "name": "info",
+      "signature": "let info: 'a => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.info2",
+      "kind": "value",
+      "name": "info2",
+      "signature": "let info2: ('a, 'b) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.info3",
+      "kind": "value",
+      "name": "info3",
+      "signature": "let info3: ('a, 'b, 'c) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.info4",
+      "kind": "value",
+      "name": "info4",
+      "signature": "let info4: ('a, 'b, 'c, 'd) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.infoMany",
+      "kind": "value",
+      "name": "infoMany",
+      "signature": "let infoMany: array<'a> => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.warn",
+      "kind": "value",
+      "name": "warn",
+      "signature": "let warn: 'a => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.warn2",
+      "kind": "value",
+      "name": "warn2",
+      "signature": "let warn2: ('a, 'b) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.warn3",
+      "kind": "value",
+      "name": "warn3",
+      "signature": "let warn3: ('a, 'b, 'c) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.warn4",
+      "kind": "value",
+      "name": "warn4",
+      "signature": "let warn4: ('a, 'b, 'c, 'd) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.warnMany",
+      "kind": "value",
+      "name": "warnMany",
+      "signature": "let warnMany: array<'a> => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.error",
+      "kind": "value",
+      "name": "error",
+      "signature": "let error: 'a => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.error2",
+      "kind": "value",
+      "name": "error2",
+      "signature": "let error2: ('a, 'b) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.error3",
+      "kind": "value",
+      "name": "error3",
+      "signature": "let error3: ('a, 'b, 'c) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.error4",
+      "kind": "value",
+      "name": "error4",
+      "signature": "let error4: ('a, 'b, 'c, 'd) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.errorMany",
+      "kind": "value",
+      "name": "errorMany",
+      "signature": "let errorMany: array<'a> => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.trace",
+      "kind": "value",
+      "name": "trace",
+      "signature": "let trace: unit => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.timeStart",
+      "kind": "value",
+      "name": "timeStart",
+      "signature": "let timeStart: string => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_console.timeEnd",
+      "kind": "value",
+      "name": "timeEnd",
+      "signature": "let timeEnd: string => unit",
+      "docstrings": []
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "name": "Js_float",
+  "docstrings": [
+    "Provide utilities for JS float."
+  ],
+  "items": [
+    {
+      "id": "Js_float._NaN",
+      "kind": "value",
+      "name": "_NaN",
+      "signature": "let _NaN: float",
+      "docstrings": [
+        "The special value \"Not a Number\"\n\n  **See:** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN)"
+      ]
+    },
+    {
+      "id": "Js_float.isNaN",
+      "kind": "value",
+      "name": "isNaN",
+      "signature": "let isNaN: float => bool",
+      "docstrings": [
+        "Tests if the given value is `_NaN`\n\n  Note that both `_NaN = _NaN` and `_NaN == _NaN` will return `false`. `isNaN` is\n  therefore necessary to test for `_NaN`.\n\n  **return** `true` if the given value is `_NaN`, `false` otherwise\n\n  **see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN)"
+      ]
+    },
+    {
+      "id": "Js_float.isFinite",
+      "kind": "value",
+      "name": "isFinite",
+      "signature": "let isFinite: float => bool",
+      "docstrings": [
+        "Tests if the given value is finite\n\n  **return** `true` if the given value is a finite number, `false` otherwise\n\n  ```res example\n  /* returns [false] */\n  Js.Float.isFinite(infinity)\n\n  /* returns [false] */\n  Js.Float.isFinite(neg_infinity)\n\n  /* returns [false] */\n  Js.Float.isFinite(Js.Float._NaN)\n\n  /* returns [true] */\n  Js.Float.isFinite(1234.)\n  ```\n\n  **see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isFinite)"
+      ]
+    },
+    {
+      "id": "Js_float.toExponential",
+      "kind": "value",
+      "name": "toExponential",
+      "signature": "let toExponential: float => string",
+      "docstrings": [
+        "Formats a `float` using exponential (scientific) notation\n\n  **return** a `string` representing the given value in exponential notation\n\n  **raise** RangeError if digits is not in the range [0, 20] (inclusive)\n\n  ```res example\n  /* prints \"7.71234e+1\" */\n  Js.Float.toExponential(77.1234)->Js.log\n\n  /* prints \"7.7e+1\" */\n  Js.Float.toExponential(77.)->Js.log\n  ```\n\n  **See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential)"
+      ]
+    },
+    {
+      "id": "Js_float.toExponentialWithPrecision",
+      "kind": "value",
+      "name": "toExponentialWithPrecision",
+      "signature": "let toExponentialWithPrecision: (float, ~digits: int) => string",
+      "docstrings": [
+        "Formats a `float` using exponential (scientific) notation\n\n  **digits** specifies how many digits should appear after the decimal point. The\n  value must be in the range [0, 20] (inclusive).\n\n  **return** a `string` representing the given value in exponential notation\n\n  The output will be rounded or padded with zeroes if necessary.\n\n  **raise** RangeError if digits is not in the range [0, 20] (inclusive)\n\n  ```res example\n  /* prints \"7.71e+1\" */\n  Js.Float.toExponentialWithPrecision(77.1234, ~digits=2)->Js.log\n  ```\n\n  **see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential)"
+      ]
+    },
+    {
+      "id": "Js_float.toFixed",
+      "kind": "value",
+      "name": "toFixed",
+      "signature": "let toFixed: float => string",
+      "docstrings": [
+        "Formats a `float` using fixed point notation\n\n  **return** a `string` representing the given value in fixed-point notation (usually)\n\n  **raise** RangeError if digits is not in the range [0, 20] (inclusive)\n\n  ```res example\n  /* prints \"12346\" (note the rounding) */\n  Js.Float.toFixed(12345.6789)->Js.log\n\n  /* print \"1.2e+21\" */\n  Js.Float.toFixed(1.2e21)->Js.log\n  ```\n\n  **See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed)"
+      ]
+    },
+    {
+      "id": "Js_float.toFixedWithPrecision",
+      "kind": "value",
+      "name": "toFixedWithPrecision",
+      "signature": "let toFixedWithPrecision: (float, ~digits: int) => string",
+      "docstrings": [
+        "Formats a `float` using fixed point notation\n\n  **digits** specifies how many digits should appear after the decimal point. The\n  value must be in the range [0, 20] (inclusive). Defaults to `0`.\n\n  **return** a `string` representing the given value in fixed-point notation (usually)\n\n  The output will be rounded or padded with zeroes if necessary.\n\n  **raise** RangeError if digits is not in the range [0, 20] (inclusive)\n\n  ```res example\n  /* prints \"12345.7\" (note the rounding) */\n  Js.Float.toFixedWithPrecision(12345.6789, ~digits=1)->Js.log\n\n  /* prints \"0.00\" (note the added zeroes) */\n  Js.Float.toFixedWithPrecision(0., ~digits=2)->Js.log\n  ```\n\n  **See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed)"
+      ]
+    },
+    {
+      "id": "Js_float.toPrecision",
+      "kind": "value",
+      "name": "toPrecision",
+      "signature": "let toPrecision: float => string",
+      "docstrings": [
+        "Formats a `float` using some fairly arbitrary rules\n\n  **return** a `string` representing the given value in fixed-point (usually)\n\n  `toPrecision` differs from `toFixed` in that the former will format the number\n  with full precision, while the latter will not output any digits after the\n  decimal point.\n\n  **raise** RangeError if digits is not in the range accepted by this function (what do you mean \"vague\"?)\n\n  ```res example\n  /* prints \"12345.6789\" */\n  Js.Float.toPrecision(12345.6789)->Js.log\n\n  /* print \"1.2e+21\" */\n  Js.Float.toPrecision(1.2e21)->Js.log\n  ```\n\n  **See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision)"
+      ]
+    },
+    {
+      "id": "Js_float.toPrecisionWithPrecision",
+      "kind": "value",
+      "name": "toPrecisionWithPrecision",
+      "signature": "let toPrecisionWithPrecision: (float, ~digits: int) => string",
+      "docstrings": [
+        "Formats a `float` using some fairly arbitrary rules\n\n  **digits** specifies how many digits should appear in total. The\n  value must between 0 and some arbitrary number that's hopefully at least larger\n  than 20 (for Node it's 21. Why? Who knows).\n\n  **return** a `string` representing the given value in fixed-point or scientific notation\n\n  The output will be rounded or padded with zeroes if necessary.\n\n  `toPrecisionWithPrecision` differs from `toFixedWithPrecision` in that the former\n  will count all digits against the precision, while the latter will count only\n  the digits after the decimal point. `toPrecisionWithPrecision` will also use\n  scientific notation if the specified precision is less than the number for digits\n  before the decimal point.\n\n  **raise** RangeError if digits is not in the range accepted by this function (what do you mean \"vague\"?)\n\n  ```res example\n  /* prints \"1e+4\" */\n  Js.Float.toPrecisionWithPrecision(12345.6789, ~digits=1)->Js.log\n\n  /* prints \"0.0\" */\n  Js.Float.toPrecisionWithPrecision(0., ~digits=2)->Js.log\n  ```\n\n  **See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision)"
+      ]
+    },
+    {
+      "id": "Js_float.toString",
+      "kind": "value",
+      "name": "toString",
+      "signature": "let toString: float => string",
+      "docstrings": [
+        "Formats a `float` as a string\n\n  **return** a `string` representing the given value in fixed-point (usually)\n\n  ```res example\n  /* prints \"12345.6789\" */\n  Js.Float.toString(12345.6789)->Js.log\n  ```\n\n  **See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString)"
+      ]
+    },
+    {
+      "id": "Js_float.toStringWithRadix",
+      "kind": "value",
+      "name": "toStringWithRadix",
+      "signature": "let toStringWithRadix: (float, ~radix: int) => string",
+      "docstrings": [
+        "Formats a `float` as a string\n\n  **radix** specifies the radix base to use for the formatted number. The\n  value must be in the range [2, 36] (inclusive).\n\n  **return** a `string` representing the given value in fixed-point (usually)\n\n  **raise** RangeError if radix is not in the range [2, 36] (inclusive)\n\n  ```res example\n  /* prints \"110\" */\n  Js.Float.toStringWithRadix(6., ~radix=2)->Js.log\n\n  /* prints \"11.001000111101011100001010001111010111000010100011111\" */\n  Js.Float.toStringWithRadix(3.14, ~radix=2)->Js.log\n\n  /* prints \"deadbeef\" */\n  Js.Float.toStringWithRadix(3735928559., ~radix=16)->Js.log\n\n  /* prints \"3f.gez4w97ry0a18ymf6qadcxr\" */\n  Js.Float.toStringWithRadix(123.456, ~radix=36)->Js.log\n  ```\n\n  **See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString)"
+      ]
+    },
+    {
+      "id": "Js_float.fromString",
+      "kind": "value",
+      "name": "fromString",
+      "signature": "let fromString: string => float",
+      "docstrings": [
+        "Parses the given `string` into a `float` using JavaScript semantics\n\n  **return** the number as a `float` if successfully parsed, `_NaN` otherwise.\n\n  ```res example\n  /* returns 123 */\n  Js.Float.fromString(\"123\")\n\n  /* returns 12.3 */\n  Js.Float.fromString(\"12.3\")\n\n  /* returns 0 */\n  Js.Float.fromString(\"\")\n\n  /* returns 17 */\n  Js.Float.fromString(\"0x11\")\n\n  /* returns 3 */\n  Js.Float.fromString(\"0b11\")\n\n  /* returns 9 */\n  Js.Float.fromString(\"0o11\")\n\n  /* returns [_NaN] */\n  Js.Float.fromString(\"hello\")\n\n  /* returns [_NaN] */\n  Js.Float.fromString(\"100a\")\n  ```"
+      ]
+    }
+  ]
+}

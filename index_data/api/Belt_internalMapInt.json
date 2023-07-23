@@ -1,0 +1,171 @@
+{
+  "name": "Belt_internalMapInt",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Belt_internalMapInt.key",
+      "kind": "type",
+      "name": "key",
+      "signature": "type key = int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.Belt_internalAVLtree",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module N = Belt_internalAVLtree"
+    },
+    {
+      "id": "Belt_internalMapInt.Belt_Array",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module A = Belt_Array"
+    },
+    {
+      "id": "Belt_internalMapInt.Belt_SortArray",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module S = Belt_SortArray"
+    },
+    {
+      "id": "Belt_internalMapInt.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a> = N.t<key, 'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.add",
+      "kind": "value",
+      "name": "add",
+      "signature": "let add: (N.t<key, 'a>, key, 'a) => N.t<key, 'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.get",
+      "kind": "value",
+      "name": "get",
+      "signature": "let get: (N.t<key, 'a>, key) => option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.getUndefined",
+      "kind": "value",
+      "name": "getUndefined",
+      "signature": "let getUndefined: (N.t<key, 'a>, key) => Js.Undefined.t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.getExn",
+      "kind": "value",
+      "name": "getExn",
+      "signature": "let getExn: (N.t<key, 'a>, key) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.getWithDefault",
+      "kind": "value",
+      "name": "getWithDefault",
+      "signature": "let getWithDefault: (N.t<key, 'a>, key, 'a) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.has",
+      "kind": "value",
+      "name": "has",
+      "signature": "let has: (N.t<key, 'a>, key) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.remove",
+      "kind": "value",
+      "name": "remove",
+      "signature": "let remove: (N.t<key, 'a>, key) => N.t<key, 'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.splitAux",
+      "kind": "value",
+      "name": "splitAux",
+      "signature": "let splitAux: (key, N.node<key, 'a>) => (t<'a>, option<'a>, t<'a>)",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.split",
+      "kind": "value",
+      "name": "split",
+      "signature": "let split: (key, option<N.node<key, 'a>>) => (t<'a>, option<'a>, t<'a>)",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.mergeU",
+      "kind": "value",
+      "name": "mergeU",
+      "signature": "let mergeU: (N.t<key, 'a>, t<'b>, (. key, option<'a>, option<'b>) => option<'c>) => N.t<key, 'c>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.merge",
+      "kind": "value",
+      "name": "merge",
+      "signature": "let merge: (N.t<key, 'a>, t<'b>, (key, option<'a>, option<'b>) => option<'c>) => N.t<key, 'c>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.compareAux",
+      "kind": "value",
+      "name": "compareAux",
+      "signature": "let compareAux: (list<N.node<key, 'a>>, list<N.node<key, 'b>>, (. 'a, 'b) => int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.cmpU",
+      "kind": "value",
+      "name": "cmpU",
+      "signature": "let cmpU: (N.t<key, 'a>, N.t<key, 'b>, (. 'a, 'b) => int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.cmp",
+      "kind": "value",
+      "name": "cmp",
+      "signature": "let cmp: (N.t<key, 'a>, N.t<key, 'b>, ('a, 'b) => int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.eqAux",
+      "kind": "value",
+      "name": "eqAux",
+      "signature": "let eqAux: (list<N.node<key, 'a>>, list<N.node<key, 'b>>, (. 'a, 'b) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.eqU",
+      "kind": "value",
+      "name": "eqU",
+      "signature": "let eqU: (N.t<key, 'a>, N.t<key, 'b>, (. 'a, 'b) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.eq",
+      "kind": "value",
+      "name": "eq",
+      "signature": "let eq: (N.t<key, 'a>, N.t<key, 'b>, ('a, 'b) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.addMutate",
+      "kind": "value",
+      "name": "addMutate",
+      "signature": "let addMutate: (t<'a>, key, 'a) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalMapInt.fromArray",
+      "kind": "value",
+      "name": "fromArray",
+      "signature": "let fromArray: array<(key, 'a)> => N.t<key, 'a>",
+      "docstrings": []
+    }
+  ]
+}

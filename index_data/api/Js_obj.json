@@ -1,0 +1,35 @@
+{
+  "name": "Js_obj",
+  "docstrings": [
+    "Provides functions for inspecting and manipulating native JavaScript objects"
+  ],
+  "items": [
+    {
+      "id": "Js_obj.empty",
+      "kind": "value",
+      "name": "empty",
+      "signature": "let empty: unit => {..}",
+      "docstrings": [
+        "`empty()` returns the empty object `{}`"
+      ]
+    },
+    {
+      "id": "Js_obj.assign",
+      "kind": "value",
+      "name": "assign",
+      "signature": "let assign: ({..}, {..}) => {..}",
+      "docstrings": [
+        "`assign(target, source)` copies properties from source to target.\nProperties in `target` will be overwritten by properties in `source` if they have the same key.\nReturns `target`.\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)\n\n```res example\n/* Copy an object */\n\nlet obj = {\"a\": 1}\n\nlet copy = Js.Obj.assign(Js.Obj.empty(), obj)\n\n/* prints \"{ a: 1 }\" */\nJs.log(copy)\n\n/* Merge objects with same properties */\n\nlet target = {\"a\": 1, \"b\": 1}\nlet source = {\"b\": 2}\n\nlet obj = Js.Obj.assign(target, source)\n\n/* prints \"{ a: 1, b: 2 }\" */\nJs.log(obj)\n\n/* prints \"{ a: 1, b: 2 }\", target is modified */\nJs.log(target)\n```"
+      ]
+    },
+    {
+      "id": "Js_obj.keys",
+      "kind": "value",
+      "name": "keys",
+      "signature": "let keys: {..} => array<string>",
+      "docstrings": [
+        "`keys(obj)` returns an `array` of the keys of `obj`'s own enumerable properties."
+      ]
+    }
+  ]
+}

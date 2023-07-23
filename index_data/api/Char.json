@@ -1,0 +1,103 @@
+{
+  "name": "Char",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Char.code",
+      "kind": "value",
+      "name": "code",
+      "signature": "let code: char => int",
+      "docstrings": [
+        "Return the ASCII code of the argument."
+      ]
+    },
+    {
+      "id": "Char.chr",
+      "kind": "value",
+      "name": "chr",
+      "signature": "let chr: int => char",
+      "docstrings": [
+        "Return the character with the given ASCII code.\n   Raise [Invalid_argument \"Char.chr\"] if the argument is\n   outside the range 0--255."
+      ]
+    },
+    {
+      "id": "Char.escaped",
+      "kind": "value",
+      "name": "escaped",
+      "signature": "let escaped: char => string",
+      "docstrings": [
+        "Return a string representing the given character,\n    with special characters escaped following the lexical conventions\n    of OCaml.\n    All characters outside the ASCII printable range (32..126) are\n    escaped, as well as backslash, double-quote, and single-quote."
+      ]
+    },
+    {
+      "id": "Char.lowercase",
+      "kind": "value",
+      "name": "lowercase",
+      "signature": "let lowercase: char => char",
+      "docstrings": [
+        "Convert the given character to its equivalent lowercase character,\n   using the ISO Latin-1 (8859-1) character set.\n   @deprecated Functions operating on Latin-1 character set are deprecated."
+      ]
+    },
+    {
+      "id": "Char.uppercase",
+      "kind": "value",
+      "name": "uppercase",
+      "signature": "let uppercase: char => char",
+      "docstrings": [
+        "Convert the given character to its equivalent uppercase character,\n   using the ISO Latin-1 (8859-1) character set.\n   @deprecated Functions operating on Latin-1 character set are deprecated."
+      ]
+    },
+    {
+      "id": "Char.lowercase_ascii",
+      "kind": "value",
+      "name": "lowercase_ascii",
+      "signature": "let lowercase_ascii: char => char",
+      "docstrings": [
+        "Convert the given character to its equivalent lowercase character,\n   using the US-ASCII character set.\n   @since 4.03.0"
+      ]
+    },
+    {
+      "id": "Char.uppercase_ascii",
+      "kind": "value",
+      "name": "uppercase_ascii",
+      "signature": "let uppercase_ascii: char => char",
+      "docstrings": [
+        "Convert the given character to its equivalent uppercase character,\n   using the US-ASCII character set.\n   @since 4.03.0"
+      ]
+    },
+    {
+      "id": "Char.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t = char",
+      "docstrings": [
+        "An alias for the type of characters."
+      ]
+    },
+    {
+      "id": "Char.compare",
+      "kind": "value",
+      "name": "compare",
+      "signature": "let compare: (t, t) => int",
+      "docstrings": [
+        "The comparison function for characters, with the same specification as\n    {!Pervasives.compare}.  Along with the type [t], this function [compare]\n    allows the module [Char] to be passed as argument to the functors\n    {!Set.Make} and {!Map.Make}."
+      ]
+    },
+    {
+      "id": "Char.equal",
+      "kind": "value",
+      "name": "equal",
+      "signature": "let equal: (t, t) => bool",
+      "docstrings": [
+        "The equal function for chars.\n    @since 4.03.0"
+      ]
+    },
+    {
+      "id": "Char.unsafe_chr",
+      "kind": "value",
+      "name": "unsafe_chr",
+      "signature": "let unsafe_chr: int => char",
+      "docstrings": []
+    }
+  ]
+}

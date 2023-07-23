@@ -1,0 +1,117 @@
+{
+  "name": "Js_undefined",
+  "docstrings": [
+    "Provides functionality for dealing with the `Js.undefined('a)` type"
+  ],
+  "items": [
+    {
+      "id": "Js_undefined.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a> = Js.undefined<'a>",
+      "docstrings": [
+        "Local alias for `Js.undefined('a)`"
+      ]
+    },
+    {
+      "id": "Js_undefined.return",
+      "kind": "value",
+      "name": "return",
+      "signature": "let return: 'a => t<'a>",
+      "docstrings": [
+        "Constructs a value of `Js.undefined('a)` containing a value of `'a`."
+      ]
+    },
+    {
+      "id": "Js_undefined.test",
+      "kind": "value",
+      "name": "test",
+      "signature": "let test: t<'a> => bool",
+      "docstrings": [
+        "Returns `true` if the given value is empty (undefined), `false` otherwise."
+      ]
+    },
+    {
+      "id": "Js_undefined.testAny",
+      "kind": "value",
+      "name": "testAny",
+      "signature": "let testAny: 'a => bool",
+      "docstrings": [
+        "Returns `true` if the given value is empty (undefined).\n\n**since 1.6.1**"
+      ]
+    },
+    {
+      "id": "Js_undefined.empty",
+      "kind": "value",
+      "name": "empty",
+      "signature": "let empty: t<'a>",
+      "docstrings": [
+        "The empty value, `undefined`"
+      ]
+    },
+    {
+      "id": "Js_undefined.getUnsafe",
+      "kind": "value",
+      "name": "getUnsafe",
+      "signature": "let getUnsafe: t<'a> => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Js_undefined.getExn",
+      "kind": "value",
+      "name": "getExn",
+      "signature": "let getExn: t<'a> => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Js_undefined.bind",
+      "kind": "value",
+      "name": "bind",
+      "signature": "let bind: (t<'a>, (. 'a) => 'b) => t<'b>",
+      "docstrings": [
+        "Maps the contained value using the given function.\nIf `Js.undefined('a)` contains a value, that value is unwrapped, mapped to a\n`'b` using the given function `a' => 'b`, then wrapped back up and returned as\n`Js.undefined('b)`.\n\n```res example\nlet maybeGreetWorld = (maybeGreeting: Js.undefined<string>) =>\n  Js.Undefined.bind(maybeGreeting, (. greeting) => greeting ++ \" world!\")\n```"
+      ]
+    },
+    {
+      "id": "Js_undefined.iter",
+      "kind": "value",
+      "name": "iter",
+      "signature": "let iter: (t<'a>, (. 'a) => unit) => unit",
+      "docstrings": [
+        "Iterates over the contained value with the given function. If\n`Js.undefined('a)` contains a value, that value is unwrapped and applied to the\ngiven function.\n\n```res example\nlet maybeSay = (maybeMessage: Js.undefined<string>) =>\n  Js.Undefined.iter(maybeMessage, (. message) => Js.log(message))\n```"
+      ]
+    },
+    {
+      "id": "Js_undefined.fromOption",
+      "kind": "value",
+      "name": "fromOption",
+      "signature": "let fromOption: option<'a> => t<'a>",
+      "docstrings": [
+        "Maps `option('a)` to `Js.undefined('a)`.\n`Some(a)` => `a`\n`None` => `empty`"
+      ]
+    },
+    {
+      "id": "Js_undefined.from_opt",
+      "kind": "value",
+      "name": "from_opt",
+      "signature": "let from_opt: option<'a> => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_undefined.toOption",
+      "kind": "value",
+      "name": "toOption",
+      "signature": "let toOption: t<'a> => option<'a>",
+      "docstrings": [
+        "Maps `Js.undefined('a)` to `option('a)`\n`a` => `Some(a)`\n`empty` => `None`"
+      ]
+    },
+    {
+      "id": "Js_undefined.to_opt",
+      "kind": "value",
+      "name": "to_opt",
+      "signature": "let to_opt: t<'a> => option<'a>",
+      "docstrings": []
+    }
+  ]
+}

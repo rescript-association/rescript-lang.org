@@ -1,0 +1,30 @@
+{
+  "name": "StdLabels",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "StdLabels.ArrayLabels",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module Array = ArrayLabels"
+    },
+    {
+      "id": "StdLabels.BytesLabels",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module Bytes = BytesLabels"
+    },
+    {
+      "id": "StdLabels.ListLabels",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module List = ListLabels"
+    },
+    {
+      "id": "StdLabels.StringLabels",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module String = StringLabels"
+    }
+  ]
+}

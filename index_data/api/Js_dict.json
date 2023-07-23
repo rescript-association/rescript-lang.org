@@ -1,0 +1,123 @@
+{
+  "name": "Js_dict",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Js_dict.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a>",
+      "docstrings": [
+        "Dictionary type (ie an '{ }' JS object). However it is restricted to hold a\nsingle type; therefore values must have the same type. This Dictionary type is\nmostly used with the Js_json.t type."
+      ]
+    },
+    {
+      "id": "Js_dict.key",
+      "kind": "type",
+      "name": "key",
+      "signature": "type key = string",
+      "docstrings": [
+        "The type for dictionary keys. This means that dictionaries *must* use `string`s as their keys."
+      ]
+    },
+    {
+      "id": "Js_dict.get",
+      "kind": "value",
+      "name": "get",
+      "signature": "let get: (t<'a>, key) => option<'a>",
+      "docstrings": [
+        "`Js.Dict.get(key)` returns `None` if the key is not found in the dictionary,\n`Some(value)` otherwise.\n\n```res example\nJs.Dict.get(ages, \"Vinh\") == Some(22)\nJs.Dict.get(ages, \"Paul\") == None\n```"
+      ]
+    },
+    {
+      "id": "Js_dict.unsafeGet",
+      "kind": "value",
+      "name": "unsafeGet",
+      "signature": "let unsafeGet: (t<'a>, key) => 'a",
+      "docstrings": [
+        "`Js.Dict.unsafeGet(key)` returns the value if the key exists, otherwise an `undefined` value is returned. Use this only when you are sure the key exists (i.e. when having used the `keys()` function to check that the key is valid).\n\n```res example\nJs.Dict.unsafeGet(ages, \"Fred\") == 49\nJs.Dict.unsafeGet(ages, \"Paul\") // returns undefined\n```"
+      ]
+    },
+    {
+      "id": "Js_dict.set",
+      "kind": "value",
+      "name": "set",
+      "signature": "let set: (t<'a>, key, 'a) => unit",
+      "docstrings": [
+        "`Js.Dict.set(dict, key, value)` sets the key/value in the dictionary `dict`. If\nthe key does not exist, and entry will be created for it.\n\n*This function modifies the original dictionary.*\n\n```res example\nJs.Dict.set(ages, \"Maria\", 31)\nJs.log(ages == Js.Dict.fromList(list{(\"Maria\", 31), (\"Vinh\", 22), (\"Fred\", 49)}))\n\nJs.Dict.set(ages, \"David\", 66)\nJs.log(ages == Js.Dict.fromList(list{(\"Maria\", 31), (\"Vinh\", 22), (\"Fred\", 49), (\"David\", 66)}))\n```"
+      ]
+    },
+    {
+      "id": "Js_dict.keys",
+      "kind": "value",
+      "name": "keys",
+      "signature": "let keys: t<'a> => array<string>",
+      "docstrings": [
+        "Returns all the keys in the dictionary `dict`.\n\n```res example\nJs.Dict.keys(ages) == [\"Maria\", \"Vinh\", \"Fred\"]\n```"
+      ]
+    },
+    {
+      "id": "Js_dict.empty",
+      "kind": "value",
+      "name": "empty",
+      "signature": "let empty: unit => t<'a>",
+      "docstrings": [
+        "Returns an empty dictionary."
+      ]
+    },
+    {
+      "id": "Js_dict.unsafeDeleteKey",
+      "kind": "value",
+      "name": "unsafeDeleteKey",
+      "signature": "let unsafeDeleteKey: (. t<string>, string) => unit",
+      "docstrings": [
+        "Experimental internal function"
+      ]
+    },
+    {
+      "id": "Js_dict.entries",
+      "kind": "value",
+      "name": "entries",
+      "signature": "let entries: t<'a> => array<(key, 'a)>",
+      "docstrings": [
+        "Returns an array of key/value pairs in the given dictionary (ES2017).\n\n```res example\nJs.Dict.entries(ages) == [(\"Maria\", 30), (\"Vinh\", 22), (\"Fred\", 49)]\n```"
+      ]
+    },
+    {
+      "id": "Js_dict.values",
+      "kind": "value",
+      "name": "values",
+      "signature": "let values: t<'a> => array<'a>",
+      "docstrings": [
+        "Returns the values in the given dictionary (ES2017).\n\n```res example\nJs.Dict.values(ages) == [30, 22, 49]\n```"
+      ]
+    },
+    {
+      "id": "Js_dict.fromList",
+      "kind": "value",
+      "name": "fromList",
+      "signature": "let fromList: list<(key, 'a)> => t<'a>",
+      "docstrings": [
+        "Creates a new dictionary containing each (key, value) pair in its list\nargument.\n\n```res example\nlet capitals = Js.Dict.fromList(list{(\"Japan\", \"Tokyo\"), (\"France\", \"Paris\"), (\"Egypt\", \"Cairo\")})\n```"
+      ]
+    },
+    {
+      "id": "Js_dict.fromArray",
+      "kind": "value",
+      "name": "fromArray",
+      "signature": "let fromArray: array<(key, 'a)> => t<'a>",
+      "docstrings": [
+        "Creates a new dictionary containing each (key, value) pair in its array\nargument.\n\n```res example\nlet capitals2 = Js.Dict.fromArray([(\"Germany\", \"Berlin\"), (\"Burkina Faso\", \"Ouagadougou\")])\n```"
+      ]
+    },
+    {
+      "id": "Js_dict.map",
+      "kind": "value",
+      "name": "map",
+      "signature": "let map: ((. 'a) => 'b, t<'a>) => t<'b>",
+      "docstrings": [
+        "`map(f, dict)` maps `dict` to a new dictionary with the same keys, using the\nfunction `f` to map each value.\n\n```res example\nlet prices = Js.Dict.fromList(list{(\"pen\", 1.00), (\"book\", 5.00), (\"stapler\", 7.00)})\n\nlet discount = (. price) => price *. 0.90\nlet salePrices = Js.Dict.map(discount, prices)\n\nsalePrices == Js.Dict.fromList(list{(\"pen\", 0.90), (\"book\", 4.50), (\"stapler\", 6.30)})\n```"
+      ]
+    }
+  ]
+}

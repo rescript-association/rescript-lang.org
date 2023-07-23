@@ -1,0 +1,122 @@
+{
+  "name": "Js_promise2",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Js_promise2.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a> = promise<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise2.error",
+      "kind": "type",
+      "name": "error",
+      "signature": "type error",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise2.then",
+      "kind": "value",
+      "name": "then",
+      "signature": "let then: (promise<'a>, 'a => promise<'b>) => promise<'b>",
+      "docstrings": [
+        "Type-safe t-first then"
+      ]
+    },
+    {
+      "id": "Js_promise2.catch",
+      "kind": "value",
+      "name": "catch",
+      "signature": "let catch: (promise<'a>, error => promise<'a>) => promise<'a>",
+      "docstrings": [
+        "Type-safe t-first catch"
+      ]
+    },
+    {
+      "id": "Js_promise2.make",
+      "kind": "value",
+      "name": "make",
+      "signature": "let make: ((~resolve: (. 'a) => unit, ~reject: (. exn) => unit) => unit) => promise<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise2.resolve",
+      "kind": "value",
+      "name": "resolve",
+      "signature": "let resolve: 'a => promise<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise2.reject",
+      "kind": "value",
+      "name": "reject",
+      "signature": "let reject: exn => promise<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise2.all",
+      "kind": "value",
+      "name": "all",
+      "signature": "let all: array<promise<'a>> => promise<array<'a>>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise2.all2",
+      "kind": "value",
+      "name": "all2",
+      "signature": "let all2: ((promise<'a0>, promise<'a1>)) => promise<('a0, 'a1)>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise2.all3",
+      "kind": "value",
+      "name": "all3",
+      "signature": "let all3: ((promise<'a0>, promise<'a1>, promise<'a2>)) => promise<('a0, 'a1, 'a2)>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise2.all4",
+      "kind": "value",
+      "name": "all4",
+      "signature": "let all4: ((promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>)) => promise<(\\n  'a0,\\n  'a1,\\n  'a2,\\n  'a3,\\n)>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise2.all5",
+      "kind": "value",
+      "name": "all5",
+      "signature": "let all5: ((promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>, promise<'a4>)) => promise<(\\n  'a0,\\n  'a1,\\n  'a2,\\n  'a3,\\n  'a4,\\n)>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise2.all6",
+      "kind": "value",
+      "name": "all6",
+      "signature": "let all6: (\\n  (promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>, promise<'a4>, promise<'a5>)\\n) => promise<('a0, 'a1, 'a2, 'a3, 'a4, 'a5)>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise2.race",
+      "kind": "value",
+      "name": "race",
+      "signature": "let race: array<promise<'a>> => promise<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise2.unsafe_async",
+      "kind": "value",
+      "name": "unsafe_async",
+      "signature": "let unsafe_async: 'a => promise<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise2.unsafe_await",
+      "kind": "value",
+      "name": "unsafe_await",
+      "signature": "let unsafe_await: promise<'a> => 'a",
+      "docstrings": []
+    }
+  ]
+}

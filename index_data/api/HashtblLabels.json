@@ -1,0 +1,518 @@
+{
+  "name": "HashtblLabels",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "HashtblLabels.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a, 'b> = Hashtbl.t<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.seeded_hash_param",
+      "kind": "value",
+      "name": "seeded_hash_param",
+      "signature": "let seeded_hash_param: (int, int, int, 'a) => int",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.hash_param",
+      "kind": "value",
+      "name": "hash_param",
+      "signature": "let hash_param: (int, int, 'a) => int",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.seeded_hash",
+      "kind": "value",
+      "name": "seeded_hash",
+      "signature": "let seeded_hash: (int, 'a) => int",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.hash",
+      "kind": "value",
+      "name": "hash",
+      "signature": "let hash: 'a => int",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.stats",
+      "kind": "value",
+      "name": "stats",
+      "signature": "let stats: Hashtbl.t<'a, 'b> => Hashtbl.statistics",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.is_randomized",
+      "kind": "value",
+      "name": "is_randomized",
+      "signature": "let is_randomized: unit => bool",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.randomize",
+      "kind": "value",
+      "name": "randomize",
+      "signature": "let randomize: unit => unit",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.length",
+      "kind": "value",
+      "name": "length",
+      "signature": "let length: Hashtbl.t<'a, 'b> => int",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.fold",
+      "kind": "value",
+      "name": "fold",
+      "signature": "let fold: (('a, 'b, 'c) => 'c, Hashtbl.t<'a, 'b>, 'c) => 'c",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.filter_map_inplace",
+      "kind": "value",
+      "name": "filter_map_inplace",
+      "signature": "let filter_map_inplace: (('a, 'b) => option<'b>, Hashtbl.t<'a, 'b>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.iter",
+      "kind": "value",
+      "name": "iter",
+      "signature": "let iter: (('a, 'b) => unit, Hashtbl.t<'a, 'b>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.replace",
+      "kind": "value",
+      "name": "replace",
+      "signature": "let replace: (Hashtbl.t<'a, 'b>, 'a, 'b) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.remove",
+      "kind": "value",
+      "name": "remove",
+      "signature": "let remove: (Hashtbl.t<'a, 'b>, 'a) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.mem",
+      "kind": "value",
+      "name": "mem",
+      "signature": "let mem: (Hashtbl.t<'a, 'b>, 'a) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.find_all",
+      "kind": "value",
+      "name": "find_all",
+      "signature": "let find_all: (Hashtbl.t<'a, 'b>, 'a) => list<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.find_opt",
+      "kind": "value",
+      "name": "find_opt",
+      "signature": "let find_opt: (Hashtbl.t<'a, 'b>, 'a) => option<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.find",
+      "kind": "value",
+      "name": "find",
+      "signature": "let find: (Hashtbl.t<'a, 'b>, 'a) => 'b",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.add",
+      "kind": "value",
+      "name": "add",
+      "signature": "let add: (Hashtbl.t<'a, 'b>, 'a, 'b) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.copy",
+      "kind": "value",
+      "name": "copy",
+      "signature": "let copy: Hashtbl.t<'a, 'b> => Hashtbl.t<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.reset",
+      "kind": "value",
+      "name": "reset",
+      "signature": "let reset: Hashtbl.t<'a, 'b> => unit",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.clear",
+      "kind": "value",
+      "name": "clear",
+      "signature": "let clear: Hashtbl.t<'a, 'b> => unit",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.create",
+      "kind": "value",
+      "name": "create",
+      "signature": "let create: (~random: bool=?, int) => Hashtbl.t<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.add",
+      "kind": "value",
+      "name": "add",
+      "signature": "let add: (Hashtbl.t<'a, 'b>, ~key: 'a, ~data: 'b) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.replace",
+      "kind": "value",
+      "name": "replace",
+      "signature": "let replace: (Hashtbl.t<'a, 'b>, ~key: 'a, ~data: 'b) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.iter",
+      "kind": "value",
+      "name": "iter",
+      "signature": "let iter: (~f: (~key: 'a, ~data: 'b) => unit, Hashtbl.t<'a, 'b>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.filter_map_inplace",
+      "kind": "value",
+      "name": "filter_map_inplace",
+      "signature": "let filter_map_inplace: (~f: (~key: 'a, ~data: 'b) => option<'b>, Hashtbl.t<'a, 'b>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.fold",
+      "kind": "value",
+      "name": "fold",
+      "signature": "let fold: (~f: (~key: 'a, ~data: 'b, 'c) => 'c, Hashtbl.t<'a, 'b>, ~init: 'c) => 'c",
+      "docstrings": []
+    },
+    {
+      "id": "HashtblLabels.statistics",
+      "kind": "type",
+      "name": "statistics",
+      "signature": "type statistics = Hashtbl.statistics = {\\n  num_bindings: int,\\n  num_buckets: int,\\n  max_bucket_length: int,\\n  bucket_histogram: array<int>,\\n}",
+      "docstrings": [],
+      "detail": {
+        "kind": "record",
+        "fieldDocs": [
+          {
+            "fieldName": "num_bindings",
+            "docstrings": [],
+            "signature": "int"
+          },
+          {
+            "fieldName": "num_buckets",
+            "docstrings": [],
+            "signature": "int"
+          },
+          {
+            "fieldName": "max_bucket_length",
+            "docstrings": [],
+            "signature": "int"
+          },
+          {
+            "fieldName": "bucket_histogram",
+            "docstrings": [],
+            "signature": "array<int>"
+          }
+        ]
+      }
+    },
+    {
+      "id": "HashtblLabels.Hashtbl.HashedType",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module HashedType = Hashtbl.HashedType"
+    },
+    {
+      "id": "HashtblLabels.Hashtbl.SeededHashedType",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module SeededHashedType = Hashtbl.SeededHashedType"
+    },
+    {
+      "id": "S.HashtblLabels",
+      "kind": "module",
+      "item": {
+        "name": "S",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "HashtblLabels.S.key",
+            "kind": "type",
+            "name": "key",
+            "signature": "type key",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.S.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.S.create",
+            "kind": "value",
+            "name": "create",
+            "signature": "let create: int => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.S.clear",
+            "kind": "value",
+            "name": "clear",
+            "signature": "let clear: t<'a> => unit",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.S.reset",
+            "kind": "value",
+            "name": "reset",
+            "signature": "let reset: t<'a> => unit",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.S.copy",
+            "kind": "value",
+            "name": "copy",
+            "signature": "let copy: t<'a> => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.S.add",
+            "kind": "value",
+            "name": "add",
+            "signature": "let add: (t<'a>, ~key: key, ~data: 'a) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.S.remove",
+            "kind": "value",
+            "name": "remove",
+            "signature": "let remove: (t<'a>, key) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.S.find",
+            "kind": "value",
+            "name": "find",
+            "signature": "let find: (t<'a>, key) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.S.find_opt",
+            "kind": "value",
+            "name": "find_opt",
+            "signature": "let find_opt: (t<'a>, key) => option<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.S.find_all",
+            "kind": "value",
+            "name": "find_all",
+            "signature": "let find_all: (t<'a>, key) => list<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.S.replace",
+            "kind": "value",
+            "name": "replace",
+            "signature": "let replace: (t<'a>, ~key: key, ~data: 'a) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.S.mem",
+            "kind": "value",
+            "name": "mem",
+            "signature": "let mem: (t<'a>, key) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.S.iter",
+            "kind": "value",
+            "name": "iter",
+            "signature": "let iter: (~f: (~key: key, ~data: 'a) => unit, t<'a>) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.S.filter_map_inplace",
+            "kind": "value",
+            "name": "filter_map_inplace",
+            "signature": "let filter_map_inplace: (~f: (~key: key, ~data: 'a) => option<'a>, t<'a>) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.S.fold",
+            "kind": "value",
+            "name": "fold",
+            "signature": "let fold: (~f: (~key: key, ~data: 'a, 'b) => 'b, t<'a>, ~init: 'b) => 'b",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.S.length",
+            "kind": "value",
+            "name": "length",
+            "signature": "let length: t<'a> => int",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.S.stats",
+            "kind": "value",
+            "name": "stats",
+            "signature": "let stats: t<'a> => statistics",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "SeededS.HashtblLabels",
+      "kind": "module",
+      "item": {
+        "name": "SeededS",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "HashtblLabels.SeededS.key",
+            "kind": "type",
+            "name": "key",
+            "signature": "type key",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.SeededS.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.SeededS.create",
+            "kind": "value",
+            "name": "create",
+            "signature": "let create: (~random: bool=?, int) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.SeededS.clear",
+            "kind": "value",
+            "name": "clear",
+            "signature": "let clear: t<'a> => unit",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.SeededS.reset",
+            "kind": "value",
+            "name": "reset",
+            "signature": "let reset: t<'a> => unit",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.SeededS.copy",
+            "kind": "value",
+            "name": "copy",
+            "signature": "let copy: t<'a> => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.SeededS.add",
+            "kind": "value",
+            "name": "add",
+            "signature": "let add: (t<'a>, ~key: key, ~data: 'a) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.SeededS.remove",
+            "kind": "value",
+            "name": "remove",
+            "signature": "let remove: (t<'a>, key) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.SeededS.find",
+            "kind": "value",
+            "name": "find",
+            "signature": "let find: (t<'a>, key) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.SeededS.find_opt",
+            "kind": "value",
+            "name": "find_opt",
+            "signature": "let find_opt: (t<'a>, key) => option<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.SeededS.find_all",
+            "kind": "value",
+            "name": "find_all",
+            "signature": "let find_all: (t<'a>, key) => list<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.SeededS.replace",
+            "kind": "value",
+            "name": "replace",
+            "signature": "let replace: (t<'a>, ~key: key, ~data: 'a) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.SeededS.mem",
+            "kind": "value",
+            "name": "mem",
+            "signature": "let mem: (t<'a>, key) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.SeededS.iter",
+            "kind": "value",
+            "name": "iter",
+            "signature": "let iter: (~f: (~key: key, ~data: 'a) => unit, t<'a>) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.SeededS.filter_map_inplace",
+            "kind": "value",
+            "name": "filter_map_inplace",
+            "signature": "let filter_map_inplace: (~f: (~key: key, ~data: 'a) => option<'a>, t<'a>) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.SeededS.fold",
+            "kind": "value",
+            "name": "fold",
+            "signature": "let fold: (~f: (~key: key, ~data: 'a, 'b) => 'b, t<'a>, ~init: 'b) => 'b",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.SeededS.length",
+            "kind": "value",
+            "name": "length",
+            "signature": "let length: t<'a> => int",
+            "docstrings": []
+          },
+          {
+            "id": "HashtblLabels.SeededS.stats",
+            "kind": "value",
+            "name": "stats",
+            "signature": "let stats: t<'a> => statistics",
+            "docstrings": []
+          }
+        ]
+      }
+    }
+  ]
+}

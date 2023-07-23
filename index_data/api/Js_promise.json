@@ -1,0 +1,120 @@
+{
+  "name": "Js_promise",
+  "docstrings": [
+    "Deprecation note: These bindings are pretty outdated and cannot be used\n    properly with the `->` operator.\n\n    More details on proper Promise usage can be found here:\n    https://rescript-lang.org/docs/manual/latest/promise#promise-legacy"
+  ],
+  "items": [
+    {
+      "id": "Js_promise.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a> = promise<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise.error",
+      "kind": "type",
+      "name": "error",
+      "signature": "type error = Js_promise2.error",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise.make",
+      "kind": "value",
+      "name": "make",
+      "signature": "let make: ((~resolve: (. 'a) => unit, ~reject: (. exn) => unit) => unit) => promise<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise.resolve",
+      "kind": "value",
+      "name": "resolve",
+      "signature": "let resolve: 'a => promise<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise.reject",
+      "kind": "value",
+      "name": "reject",
+      "signature": "let reject: exn => promise<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise.all",
+      "kind": "value",
+      "name": "all",
+      "signature": "let all: array<promise<'a>> => promise<array<'a>>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise.all2",
+      "kind": "value",
+      "name": "all2",
+      "signature": "let all2: ((promise<'a0>, promise<'a1>)) => promise<('a0, 'a1)>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise.all3",
+      "kind": "value",
+      "name": "all3",
+      "signature": "let all3: ((promise<'a0>, promise<'a1>, promise<'a2>)) => promise<('a0, 'a1, 'a2)>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise.all4",
+      "kind": "value",
+      "name": "all4",
+      "signature": "let all4: ((promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>)) => promise<(\\n  'a0,\\n  'a1,\\n  'a2,\\n  'a3,\\n)>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise.all5",
+      "kind": "value",
+      "name": "all5",
+      "signature": "let all5: ((promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>, promise<'a4>)) => promise<(\\n  'a0,\\n  'a1,\\n  'a2,\\n  'a3,\\n  'a4,\\n)>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise.all6",
+      "kind": "value",
+      "name": "all6",
+      "signature": "let all6: (\\n  (promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>, promise<'a4>, promise<'a5>)\\n) => promise<('a0, 'a1, 'a2, 'a3, 'a4, 'a5)>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise.race",
+      "kind": "value",
+      "name": "race",
+      "signature": "let race: array<promise<'a>> => promise<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise.then_",
+      "kind": "value",
+      "name": "then_",
+      "signature": "let then_: ('a => promise<'b>, promise<'a>) => promise<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise.catch",
+      "kind": "value",
+      "name": "catch",
+      "signature": "let catch: (error => promise<'a>, promise<'a>) => promise<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise.unsafe_async",
+      "kind": "value",
+      "name": "unsafe_async",
+      "signature": "let unsafe_async: 'a => promise<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_promise.unsafe_await",
+      "kind": "value",
+      "name": "unsafe_await",
+      "signature": "let unsafe_await: promise<'a> => 'a",
+      "docstrings": []
+    }
+  ]
+}

@@ -1,0 +1,322 @@
+{
+  "name": "Lexing",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Lexing.position",
+      "kind": "type",
+      "name": "position",
+      "signature": "type position = {\\n  pos_fname: string,\\n  pos_lnum: int,\\n  pos_bol: int,\\n  pos_cnum: int,\\n}",
+      "docstrings": [
+        "A value of type [position] describes a point in a source file.\n   [pos_fname] is the file name; [pos_lnum] is the line number;\n   [pos_bol] is the offset of the beginning of the line (number\n   of characters between the beginning of the lexbuf and the beginning\n   of the line); [pos_cnum] is the offset of the position (number of\n   characters between the beginning of the lexbuf and the position).\n   The difference between [pos_cnum] and [pos_bol] is the character\n   offset within the line (i.e. the column number, assuming each\n   character is one column wide).\n\n   See the documentation of type [lexbuf] for information about\n   how the lexing engine will manage positions."
+      ],
+      "detail": {
+        "kind": "record",
+        "fieldDocs": [
+          {
+            "fieldName": "pos_fname",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "pos_lnum",
+            "docstrings": [],
+            "signature": "int"
+          },
+          {
+            "fieldName": "pos_bol",
+            "docstrings": [],
+            "signature": "int"
+          },
+          {
+            "fieldName": "pos_cnum",
+            "docstrings": [],
+            "signature": "int"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Lexing.dummy_pos",
+      "kind": "value",
+      "name": "dummy_pos",
+      "signature": "let dummy_pos: position",
+      "docstrings": [
+        "A value of type [position], guaranteed to be different from any\n   valid position."
+      ]
+    },
+    {
+      "id": "Lexing.lexbuf",
+      "kind": "type",
+      "name": "lexbuf",
+      "signature": "type lexbuf = {\\n  refill_buff: lexbuf => unit,\\n  mutable lex_buffer: bytes,\\n  mutable lex_buffer_len: int,\\n  mutable lex_abs_pos: int,\\n  mutable lex_start_pos: int,\\n  mutable lex_curr_pos: int,\\n  mutable lex_last_pos: int,\\n  mutable lex_last_action: int,\\n  mutable lex_eof_reached: bool,\\n  mutable lex_mem: array<int>,\\n  mutable lex_start_p: position,\\n  mutable lex_curr_p: position,\\n}",
+      "docstrings": [
+        "The type of lexer buffers. A lexer buffer is the argument passed\n   to the scanning functions defined by the generated scanners.\n   The lexer buffer holds the current state of the scanner, plus\n   a function to refill the buffer from the input.\n\n   At each token, the lexing engine will copy [lex_curr_p] to\n   [lex_start_p], then change the [pos_cnum] field\n   of [lex_curr_p] by updating it with the number of characters read\n   since the start of the [lexbuf].  The other fields are left\n   unchanged by the lexing engine.  In order to keep them\n   accurate, they must be initialised before the first use of the\n   lexbuf, and updated by the relevant lexer actions (i.e. at each\n   end of line -- see also [new_line])."
+      ],
+      "detail": {
+        "kind": "record",
+        "fieldDocs": [
+          {
+            "fieldName": "refill_buff",
+            "docstrings": [],
+            "signature": "lexbuf => unit"
+          },
+          {
+            "fieldName": "lex_buffer",
+            "docstrings": [],
+            "signature": "bytes"
+          },
+          {
+            "fieldName": "lex_buffer_len",
+            "docstrings": [],
+            "signature": "int"
+          },
+          {
+            "fieldName": "lex_abs_pos",
+            "docstrings": [],
+            "signature": "int"
+          },
+          {
+            "fieldName": "lex_start_pos",
+            "docstrings": [],
+            "signature": "int"
+          },
+          {
+            "fieldName": "lex_curr_pos",
+            "docstrings": [],
+            "signature": "int"
+          },
+          {
+            "fieldName": "lex_last_pos",
+            "docstrings": [],
+            "signature": "int"
+          },
+          {
+            "fieldName": "lex_last_action",
+            "docstrings": [],
+            "signature": "int"
+          },
+          {
+            "fieldName": "lex_eof_reached",
+            "docstrings": [],
+            "signature": "bool"
+          },
+          {
+            "fieldName": "lex_mem",
+            "docstrings": [],
+            "signature": "array<int>"
+          },
+          {
+            "fieldName": "lex_start_p",
+            "docstrings": [],
+            "signature": "position"
+          },
+          {
+            "fieldName": "lex_curr_p",
+            "docstrings": [],
+            "signature": "position"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Lexing.from_string",
+      "kind": "value",
+      "name": "from_string",
+      "signature": "let from_string: string => lexbuf",
+      "docstrings": [
+        "Create a lexer buffer which reads from\n   the given string. Reading starts from the first character in\n   the string. An end-of-input condition is generated when the\n   end of the string is reached."
+      ]
+    },
+    {
+      "id": "Lexing.from_function",
+      "kind": "value",
+      "name": "from_function",
+      "signature": "let from_function: ((bytes, int) => int) => lexbuf",
+      "docstrings": [
+        "Create a lexer buffer with the given function as its reading method.\n   When the scanner needs more characters, it will call the given\n   function, giving it a byte sequence [s] and a byte\n   count [n]. The function should put [n] bytes or fewer in [s],\n   starting at index 0, and return the number of bytes\n   provided. A return value of 0 means end of input."
+      ]
+    },
+    {
+      "id": "Lexing.lexeme",
+      "kind": "value",
+      "name": "lexeme",
+      "signature": "let lexeme: lexbuf => string",
+      "docstrings": [
+        "[Lexing.lexeme lexbuf] returns the string matched by\n           the regular expression."
+      ]
+    },
+    {
+      "id": "Lexing.lexeme_char",
+      "kind": "value",
+      "name": "lexeme_char",
+      "signature": "let lexeme_char: (lexbuf, int) => char",
+      "docstrings": [
+        "[Lexing.lexeme_char lexbuf i] returns character number [i] in\n   the matched string."
+      ]
+    },
+    {
+      "id": "Lexing.lexeme_start",
+      "kind": "value",
+      "name": "lexeme_start",
+      "signature": "let lexeme_start: lexbuf => int",
+      "docstrings": [
+        "[Lexing.lexeme_start lexbuf] returns the offset in the\n   input stream of the first character of the matched string.\n   The first character of the stream has offset 0."
+      ]
+    },
+    {
+      "id": "Lexing.lexeme_end",
+      "kind": "value",
+      "name": "lexeme_end",
+      "signature": "let lexeme_end: lexbuf => int",
+      "docstrings": [
+        "[Lexing.lexeme_end lexbuf] returns the offset in the input stream\n   of the character following the last character of the matched\n   string. The first character of the stream has offset 0."
+      ]
+    },
+    {
+      "id": "Lexing.lexeme_start_p",
+      "kind": "value",
+      "name": "lexeme_start_p",
+      "signature": "let lexeme_start_p: lexbuf => position",
+      "docstrings": [
+        "Like [lexeme_start], but return a complete [position] instead\n    of an offset."
+      ]
+    },
+    {
+      "id": "Lexing.lexeme_end_p",
+      "kind": "value",
+      "name": "lexeme_end_p",
+      "signature": "let lexeme_end_p: lexbuf => position",
+      "docstrings": [
+        "Like [lexeme_end], but return a complete [position] instead\n    of an offset."
+      ]
+    },
+    {
+      "id": "Lexing.new_line",
+      "kind": "value",
+      "name": "new_line",
+      "signature": "let new_line: lexbuf => unit",
+      "docstrings": [
+        "Update the [lex_curr_p] field of the lexbuf to reflect the start\n    of a new line.  You can call this function in the semantic action\n    of the rule that matches the end-of-line character.\n    @since 3.11.0"
+      ]
+    },
+    {
+      "id": "Lexing.flush_input",
+      "kind": "value",
+      "name": "flush_input",
+      "signature": "let flush_input: lexbuf => unit",
+      "docstrings": [
+        "Discard the contents of the buffer and reset the current\n    position to 0.  The next use of the lexbuf will trigger a\n    refill."
+      ]
+    },
+    {
+      "id": "Lexing.sub_lexeme",
+      "kind": "value",
+      "name": "sub_lexeme",
+      "signature": "let sub_lexeme: (lexbuf, int, int) => string",
+      "docstrings": []
+    },
+    {
+      "id": "Lexing.sub_lexeme_opt",
+      "kind": "value",
+      "name": "sub_lexeme_opt",
+      "signature": "let sub_lexeme_opt: (lexbuf, int, int) => option<string>",
+      "docstrings": []
+    },
+    {
+      "id": "Lexing.sub_lexeme_char",
+      "kind": "value",
+      "name": "sub_lexeme_char",
+      "signature": "let sub_lexeme_char: (lexbuf, int) => char",
+      "docstrings": []
+    },
+    {
+      "id": "Lexing.sub_lexeme_char_opt",
+      "kind": "value",
+      "name": "sub_lexeme_char_opt",
+      "signature": "let sub_lexeme_char_opt: (lexbuf, int) => option<char>",
+      "docstrings": []
+    },
+    {
+      "id": "Lexing.lex_tables",
+      "kind": "type",
+      "name": "lex_tables",
+      "signature": "type lex_tables = {\\n  lex_base: string,\\n  lex_backtrk: string,\\n  lex_default: string,\\n  lex_trans: string,\\n  lex_check: string,\\n  lex_base_code: string,\\n  lex_backtrk_code: string,\\n  lex_default_code: string,\\n  lex_trans_code: string,\\n  lex_check_code: string,\\n  lex_code: string,\\n}",
+      "docstrings": [],
+      "detail": {
+        "kind": "record",
+        "fieldDocs": [
+          {
+            "fieldName": "lex_base",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "lex_backtrk",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "lex_default",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "lex_trans",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "lex_check",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "lex_base_code",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "lex_backtrk_code",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "lex_default_code",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "lex_trans_code",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "lex_check_code",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "lex_code",
+            "docstrings": [],
+            "signature": "string"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Lexing.engine",
+      "kind": "value",
+      "name": "engine",
+      "signature": "let engine: (lex_tables, int, lexbuf) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Lexing.new_engine",
+      "kind": "value",
+      "name": "new_engine",
+      "signature": "let new_engine: (lex_tables, int, lexbuf) => int",
+      "docstrings": []
+    }
+  ]
+}

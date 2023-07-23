@@ -1,0 +1,330 @@
+{
+  "name": "Int64",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Int64.zero",
+      "kind": "value",
+      "name": "zero",
+      "signature": "let zero: int64",
+      "docstrings": [
+        "The 64-bit integer 0."
+      ]
+    },
+    {
+      "id": "Int64.one",
+      "kind": "value",
+      "name": "one",
+      "signature": "let one: int64",
+      "docstrings": [
+        "The 64-bit integer 1."
+      ]
+    },
+    {
+      "id": "Int64.minus_one",
+      "kind": "value",
+      "name": "minus_one",
+      "signature": "let minus_one: int64",
+      "docstrings": [
+        "The 64-bit integer -1."
+      ]
+    },
+    {
+      "id": "Int64.neg",
+      "kind": "value",
+      "name": "neg",
+      "signature": "let neg: int64 => int64",
+      "docstrings": [
+        "Unary negation."
+      ]
+    },
+    {
+      "id": "Int64.add",
+      "kind": "value",
+      "name": "add",
+      "signature": "let add: (int64, int64) => int64",
+      "docstrings": [
+        "Addition."
+      ]
+    },
+    {
+      "id": "Int64.sub",
+      "kind": "value",
+      "name": "sub",
+      "signature": "let sub: (int64, int64) => int64",
+      "docstrings": [
+        "Subtraction."
+      ]
+    },
+    {
+      "id": "Int64.mul",
+      "kind": "value",
+      "name": "mul",
+      "signature": "let mul: (int64, int64) => int64",
+      "docstrings": [
+        "Multiplication."
+      ]
+    },
+    {
+      "id": "Int64.div",
+      "kind": "value",
+      "name": "div",
+      "signature": "let div: (int64, int64) => int64",
+      "docstrings": [
+        "Integer division.  Raise [Division_by_zero] if the second\n   argument is zero.  This division rounds the real quotient of\n   its arguments towards zero, as specified for {!Pervasives.(/)}."
+      ]
+    },
+    {
+      "id": "Int64.rem",
+      "kind": "value",
+      "name": "rem",
+      "signature": "let rem: (int64, int64) => int64",
+      "docstrings": [
+        "Integer remainder.  If [y] is not zero, the result\n   of [Int64.rem x y] satisfies the following property:\n   [x = Int64.add (Int64.mul (Int64.div x y) y) (Int64.rem x y)].\n   If [y = 0], [Int64.rem x y] raises [Division_by_zero]."
+      ]
+    },
+    {
+      "id": "Int64.succ",
+      "kind": "value",
+      "name": "succ",
+      "signature": "let succ: int64 => int64",
+      "docstrings": [
+        "Successor.  [Int64.succ x] is [Int64.add x Int64.one]."
+      ]
+    },
+    {
+      "id": "Int64.pred",
+      "kind": "value",
+      "name": "pred",
+      "signature": "let pred: int64 => int64",
+      "docstrings": [
+        "Predecessor.  [Int64.pred x] is [Int64.sub x Int64.one]."
+      ]
+    },
+    {
+      "id": "Int64.abs",
+      "kind": "value",
+      "name": "abs",
+      "signature": "let abs: int64 => int64",
+      "docstrings": [
+        "Return the absolute value of its argument."
+      ]
+    },
+    {
+      "id": "Int64.max_int",
+      "kind": "value",
+      "name": "max_int",
+      "signature": "let max_int: int64",
+      "docstrings": [
+        "The greatest representable 64-bit integer, 2{^63} - 1."
+      ]
+    },
+    {
+      "id": "Int64.min_int",
+      "kind": "value",
+      "name": "min_int",
+      "signature": "let min_int: int64",
+      "docstrings": [
+        "The smallest representable 64-bit integer, -2{^63}."
+      ]
+    },
+    {
+      "id": "Int64.logand",
+      "kind": "value",
+      "name": "logand",
+      "signature": "let logand: (int64, int64) => int64",
+      "docstrings": [
+        "Bitwise logical and."
+      ]
+    },
+    {
+      "id": "Int64.logor",
+      "kind": "value",
+      "name": "logor",
+      "signature": "let logor: (int64, int64) => int64",
+      "docstrings": [
+        "Bitwise logical or."
+      ]
+    },
+    {
+      "id": "Int64.logxor",
+      "kind": "value",
+      "name": "logxor",
+      "signature": "let logxor: (int64, int64) => int64",
+      "docstrings": [
+        "Bitwise logical exclusive or."
+      ]
+    },
+    {
+      "id": "Int64.lognot",
+      "kind": "value",
+      "name": "lognot",
+      "signature": "let lognot: int64 => int64",
+      "docstrings": [
+        "Bitwise logical negation."
+      ]
+    },
+    {
+      "id": "Int64.shift_left",
+      "kind": "value",
+      "name": "shift_left",
+      "signature": "let shift_left: (int64, int) => int64",
+      "docstrings": [
+        "[Int64.shift_left x y] shifts [x] to the left by [y] bits.\n   The result is unspecified if [y < 0] or [y >= 64]."
+      ]
+    },
+    {
+      "id": "Int64.shift_right",
+      "kind": "value",
+      "name": "shift_right",
+      "signature": "let shift_right: (int64, int) => int64",
+      "docstrings": [
+        "[Int64.shift_right x y] shifts [x] to the right by [y] bits.\n   This is an arithmetic shift: the sign bit of [x] is replicated\n   and inserted in the vacated bits.\n   The result is unspecified if [y < 0] or [y >= 64]."
+      ]
+    },
+    {
+      "id": "Int64.shift_right_logical",
+      "kind": "value",
+      "name": "shift_right_logical",
+      "signature": "let shift_right_logical: (int64, int) => int64",
+      "docstrings": [
+        "[Int64.shift_right_logical x y] shifts [x] to the right by [y] bits.\n   This is a logical shift: zeroes are inserted in the vacated bits\n   regardless of the sign of [x].\n   The result is unspecified if [y < 0] or [y >= 64]."
+      ]
+    },
+    {
+      "id": "Int64.of_int",
+      "kind": "value",
+      "name": "of_int",
+      "signature": "let of_int: int => int64",
+      "docstrings": [
+        "Convert the given integer (type [int]) to a 64-bit integer\n    (type [int64])."
+      ]
+    },
+    {
+      "id": "Int64.to_int",
+      "kind": "value",
+      "name": "to_int",
+      "signature": "let to_int: int64 => int",
+      "docstrings": [
+        "Convert the given 64-bit integer (type [int64]) to an\n   integer (type [int]).  On 64-bit platforms, the 64-bit integer\n   is taken modulo 2{^63}, i.e. the high-order bit is lost\n   during the conversion.  On 32-bit platforms, the 64-bit integer\n   is taken modulo 2{^31}, i.e. the top 33 bits are lost\n   during the conversion."
+      ]
+    },
+    {
+      "id": "Int64.of_float",
+      "kind": "value",
+      "name": "of_float",
+      "signature": "let of_float: float => int64",
+      "docstrings": [
+        "Convert the given floating-point number to a 64-bit integer,\n   discarding the fractional part (truncate towards 0).\n   The result of the conversion is undefined if, after truncation,\n   the number is outside the range \\[{!Int64.min_int}, {!Int64.max_int}\\]."
+      ]
+    },
+    {
+      "id": "Int64.to_float",
+      "kind": "value",
+      "name": "to_float",
+      "signature": "let to_float: int64 => float",
+      "docstrings": [
+        "Convert the given 64-bit integer to a floating-point number."
+      ]
+    },
+    {
+      "id": "Int64.of_int32",
+      "kind": "value",
+      "name": "of_int32",
+      "signature": "let of_int32: int => int64",
+      "docstrings": [
+        "Convert the given 32-bit integer (type [int])\n   to a 64-bit integer (type [int64])."
+      ]
+    },
+    {
+      "id": "Int64.to_int32",
+      "kind": "value",
+      "name": "to_int32",
+      "signature": "let to_int32: int64 => int",
+      "docstrings": [
+        "Convert the given 64-bit integer (type [int64]) to a\n   32-bit integer (type [int]). The 64-bit integer\n   is taken modulo 2{^32}, i.e. the top 32 bits are lost\n   during the conversion."
+      ]
+    },
+    {
+      "id": "Int64.of_string",
+      "kind": "value",
+      "name": "of_string",
+      "signature": "let of_string: string => int64",
+      "docstrings": [
+        "Convert the given string to a 64-bit integer.\n   The string is read in decimal (by default, or if the string \n   begins with [0u]) or in hexadecimal, octal or binary if the\n   string begins with [0x], [0o] or [0b] respectively.\n\n   The [0u] prefix reads the input as an unsigned integer in the range\n   [[0, 2*Int64.max_int+1]].  If the input exceeds {!Int64.max_int}\n   it is converted to the signed integer\n   [Int64.min_int + input - Int64.max_int - 1].\n\n   The [_] (underscore) character can appear anywhere in the string\n   and is ignored.\n   Raise [Failure \"Int64.of_string\"] if the given string is not\n   a valid representation of an integer, or if the integer represented\n   exceeds the range of integers representable in type [int64]."
+      ]
+    },
+    {
+      "id": "Int64.of_string_opt",
+      "kind": "value",
+      "name": "of_string_opt",
+      "signature": "let of_string_opt: string => option<int64>",
+      "docstrings": [
+        "Same as [of_string], but return [None] instead of raising.\n    @since 4.05"
+      ]
+    },
+    {
+      "id": "Int64.to_string",
+      "kind": "value",
+      "name": "to_string",
+      "signature": "let to_string: int64 => string",
+      "docstrings": [
+        "Return the string representation of its argument, in decimal."
+      ]
+    },
+    {
+      "id": "Int64.bits_of_float",
+      "kind": "value",
+      "name": "bits_of_float",
+      "signature": "let bits_of_float: float => int64",
+      "docstrings": [
+        "Return the internal representation of the given float according\n   to the IEEE 754 floating-point 'double format' bit layout.\n   Bit 63 of the result represents the sign of the float;\n   bits 62 to 52 represent the (biased) exponent; bits 51 to 0\n   represent the mantissa."
+      ]
+    },
+    {
+      "id": "Int64.float_of_bits",
+      "kind": "value",
+      "name": "float_of_bits",
+      "signature": "let float_of_bits: int64 => float",
+      "docstrings": [
+        "Return the floating-point number whose internal representation,\n   according to the IEEE 754 floating-point 'double format' bit layout,\n   is the given [int64]."
+      ]
+    },
+    {
+      "id": "Int64.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t = int64",
+      "docstrings": [
+        "An alias for the type of 64-bit integers."
+      ]
+    },
+    {
+      "id": "Int64.compare",
+      "kind": "value",
+      "name": "compare",
+      "signature": "let compare: (t, t) => int",
+      "docstrings": [
+        "The comparison function for 64-bit integers, with the same specification as\n    {!Pervasives.compare}.  Along with the type [t], this function [compare]\n    allows the module [Int64] to be passed as argument to the functors\n    {!Set.Make} and {!Map.Make}."
+      ]
+    },
+    {
+      "id": "Int64.equal",
+      "kind": "value",
+      "name": "equal",
+      "signature": "let equal: (t, t) => bool",
+      "docstrings": [
+        "The equal function for int64s.\n    @since 4.03.0"
+      ]
+    },
+    {
+      "id": "Int64.format",
+      "kind": "value",
+      "name": "format",
+      "signature": "let format: (string, int64) => string",
+      "docstrings": [
+        "Do not use this deprecated function.  Instead,\n   used {!Printf.sprintf} with a [%L...] format."
+      ]
+    }
+  ]
+}

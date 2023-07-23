@@ -1,0 +1,369 @@
+{
+  "name": "Belt_MutableMap",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Belt_MutableMap.Belt_MutableMapInt",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module Int = Belt_MutableMapInt"
+    },
+    {
+      "id": "Belt_MutableMap.Belt_MutableMapString",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module String = Belt_MutableMapString"
+    },
+    {
+      "id": "Belt_MutableMap.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'k, 'v, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.id",
+      "kind": "type",
+      "name": "id",
+      "signature": "type id<'key, 'id> = Belt_Id.comparable<'key, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.make",
+      "kind": "value",
+      "name": "make",
+      "signature": "let make: (~id: id<'k, 'id>) => t<'k, 'a, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.clear",
+      "kind": "value",
+      "name": "clear",
+      "signature": "let clear: t<'a, 'b, 'c> => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.isEmpty",
+      "kind": "value",
+      "name": "isEmpty",
+      "signature": "let isEmpty: t<'a, 'b, 'c> => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.has",
+      "kind": "value",
+      "name": "has",
+      "signature": "let has: (t<'k, 'a, 'b>, 'k) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.cmpU",
+      "kind": "value",
+      "name": "cmpU",
+      "signature": "let cmpU: (t<'k, 'a, 'id>, t<'k, 'a, 'id>, (. 'a, 'a) => int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.cmp",
+      "kind": "value",
+      "name": "cmp",
+      "signature": "let cmp: (t<'k, 'a, 'id>, t<'k, 'a, 'id>, ('a, 'a) => int) => int",
+      "docstrings": [
+        "`cmp(m1, m2, cmp)` First compare by size, if size is the same, compare by\n    key, value pair."
+      ]
+    },
+    {
+      "id": "Belt_MutableMap.eqU",
+      "kind": "value",
+      "name": "eqU",
+      "signature": "let eqU: (t<'k, 'a, 'id>, t<'k, 'a, 'id>, (. 'a, 'a) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.eq",
+      "kind": "value",
+      "name": "eq",
+      "signature": "let eq: (t<'k, 'a, 'id>, t<'k, 'a, 'id>, ('a, 'a) => bool) => bool",
+      "docstrings": [
+        "`eq(m1, m2, eqf)` tests whether the maps `m1` and `m2` are equal, that is,\n    contain equal keys and associate them with equal data. `eqf` is the\n    equality predicate used to compare the data associated with the keys."
+      ]
+    },
+    {
+      "id": "Belt_MutableMap.forEachU",
+      "kind": "value",
+      "name": "forEachU",
+      "signature": "let forEachU: (t<'k, 'a, 'id>, (. 'k, 'a) => unit) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.forEach",
+      "kind": "value",
+      "name": "forEach",
+      "signature": "let forEach: (t<'k, 'a, 'id>, ('k, 'a) => unit) => unit",
+      "docstrings": [
+        "`forEach(m, f)` applies f to all bindings in map `m`. `f` receives the `'k`\n    as first argument, and the associated value as second argument. The\n    bindings are passed to `f` in increasing order with respect to the ordering\n    over the type of the keys."
+      ]
+    },
+    {
+      "id": "Belt_MutableMap.reduceU",
+      "kind": "value",
+      "name": "reduceU",
+      "signature": "let reduceU: (t<'k, 'a, 'id>, 'b, (. 'b, 'k, 'a) => 'b) => 'b",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.reduce",
+      "kind": "value",
+      "name": "reduce",
+      "signature": "let reduce: (t<'k, 'a, 'id>, 'b, ('b, 'k, 'a) => 'b) => 'b",
+      "docstrings": [
+        "`reduce(m, a, f), computes`(f(kN, dN) ... (f(k1, d1, a))...)`, where`k1 ...\n    kN`are the keys of all bindings in`m`(in increasing order), and`d1 ... dN`\n    are the associated data."
+      ]
+    },
+    {
+      "id": "Belt_MutableMap.everyU",
+      "kind": "value",
+      "name": "everyU",
+      "signature": "let everyU: (t<'k, 'a, 'id>, (. 'k, 'a) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.every",
+      "kind": "value",
+      "name": "every",
+      "signature": "let every: (t<'k, 'a, 'id>, ('k, 'a) => bool) => bool",
+      "docstrings": [
+        "`every(m, p)` checks if all the bindings of the map satisfy the predicate\n    `p`."
+      ]
+    },
+    {
+      "id": "Belt_MutableMap.someU",
+      "kind": "value",
+      "name": "someU",
+      "signature": "let someU: (t<'k, 'a, 'id>, (. 'k, 'a) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.some",
+      "kind": "value",
+      "name": "some",
+      "signature": "let some: (t<'k, 'a, 'id>, ('k, 'a) => bool) => bool",
+      "docstrings": [
+        "`some(m, p)` checks if at least one binding of the map satisfy the\n    predicate `p`."
+      ]
+    },
+    {
+      "id": "Belt_MutableMap.size",
+      "kind": "value",
+      "name": "size",
+      "signature": "let size: t<'k, 'a, 'id> => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.toList",
+      "kind": "value",
+      "name": "toList",
+      "signature": "let toList: t<'k, 'a, 'id> => list<('k, 'a)>",
+      "docstrings": [
+        "In increasing order."
+      ]
+    },
+    {
+      "id": "Belt_MutableMap.toArray",
+      "kind": "value",
+      "name": "toArray",
+      "signature": "let toArray: t<'k, 'a, 'id> => array<('k, 'a)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.fromArray",
+      "kind": "value",
+      "name": "fromArray",
+      "signature": "let fromArray: (array<('k, 'a)>, ~id: id<'k, 'id>) => t<'k, 'a, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.keysToArray",
+      "kind": "value",
+      "name": "keysToArray",
+      "signature": "let keysToArray: t<'k, 'a, 'b> => array<'k>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.valuesToArray",
+      "kind": "value",
+      "name": "valuesToArray",
+      "signature": "let valuesToArray: t<'a, 'a0, 'b> => array<'a0>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.minKey",
+      "kind": "value",
+      "name": "minKey",
+      "signature": "let minKey: t<'k, 'a, 'b> => option<'k>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.minKeyUndefined",
+      "kind": "value",
+      "name": "minKeyUndefined",
+      "signature": "let minKeyUndefined: t<'k, 'a, 'b> => Js.undefined<'k>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.maxKey",
+      "kind": "value",
+      "name": "maxKey",
+      "signature": "let maxKey: t<'k, 'a, 'b> => option<'k>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.maxKeyUndefined",
+      "kind": "value",
+      "name": "maxKeyUndefined",
+      "signature": "let maxKeyUndefined: t<'k, 'a, 'b> => Js.undefined<'k>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.minimum",
+      "kind": "value",
+      "name": "minimum",
+      "signature": "let minimum: t<'k, 'a, 'b> => option<('k, 'a)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.minUndefined",
+      "kind": "value",
+      "name": "minUndefined",
+      "signature": "let minUndefined: t<'k, 'a, 'b> => Js.undefined<('k, 'a)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.maximum",
+      "kind": "value",
+      "name": "maximum",
+      "signature": "let maximum: t<'k, 'a, 'b> => option<('k, 'a)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.maxUndefined",
+      "kind": "value",
+      "name": "maxUndefined",
+      "signature": "let maxUndefined: t<'k, 'a, 'b> => Js.undefined<('k, 'a)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.get",
+      "kind": "value",
+      "name": "get",
+      "signature": "let get: (t<'k, 'a, 'id>, 'k) => option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.getUndefined",
+      "kind": "value",
+      "name": "getUndefined",
+      "signature": "let getUndefined: (t<'k, 'a, 'id>, 'k) => Js.undefined<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.getWithDefault",
+      "kind": "value",
+      "name": "getWithDefault",
+      "signature": "let getWithDefault: (t<'k, 'a, 'id>, 'k, 'a) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.getExn",
+      "kind": "value",
+      "name": "getExn",
+      "signature": "let getExn: (t<'k, 'a, 'id>, 'k) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.checkInvariantInternal",
+      "kind": "value",
+      "name": "checkInvariantInternal",
+      "signature": "let checkInvariantInternal: t<'a, 'b, 'c> => unit",
+      "docstrings": [
+        "Raise when invariant is not held."
+      ]
+    },
+    {
+      "id": "Belt_MutableMap.remove",
+      "kind": "value",
+      "name": "remove",
+      "signature": "let remove: (t<'k, 'a, 'id>, 'k) => unit",
+      "docstrings": [
+        "`remove(m, x)` do the in-place modification."
+      ]
+    },
+    {
+      "id": "Belt_MutableMap.removeMany",
+      "kind": "value",
+      "name": "removeMany",
+      "signature": "let removeMany: (t<'k, 'a, 'id>, array<'k>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.set",
+      "kind": "value",
+      "name": "set",
+      "signature": "let set: (t<'k, 'a, 'id>, 'k, 'a) => unit",
+      "docstrings": [
+        "`set(m, x, y)` do the in-place modification"
+      ]
+    },
+    {
+      "id": "Belt_MutableMap.updateU",
+      "kind": "value",
+      "name": "updateU",
+      "signature": "let updateU: (t<'k, 'a, 'id>, 'k, (. option<'a>) => option<'a>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.update",
+      "kind": "value",
+      "name": "update",
+      "signature": "let update: (t<'k, 'a, 'id>, 'k, option<'a> => option<'a>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.mergeMany",
+      "kind": "value",
+      "name": "mergeMany",
+      "signature": "let mergeMany: (t<'k, 'a, 'id>, array<('k, 'a)>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.mapU",
+      "kind": "value",
+      "name": "mapU",
+      "signature": "let mapU: (t<'k, 'a, 'id>, (. 'a) => 'b) => t<'k, 'b, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.map",
+      "kind": "value",
+      "name": "map",
+      "signature": "let map: (t<'k, 'a, 'id>, 'a => 'b) => t<'k, 'b, 'id>",
+      "docstrings": [
+        "`map(m, f)` returns a map with same domain as `m`, where the associated\n    value a of all bindings of `m` has been replaced by the result of the\n    application of `f` to `a`. The bindings are passed to `f` in increasing\n    order with respect to the ordering over the type of the keys."
+      ]
+    },
+    {
+      "id": "Belt_MutableMap.mapWithKeyU",
+      "kind": "value",
+      "name": "mapWithKeyU",
+      "signature": "let mapWithKeyU: (t<'k, 'a, 'id>, (. 'k, 'a) => 'b) => t<'k, 'b, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableMap.mapWithKey",
+      "kind": "value",
+      "name": "mapWithKey",
+      "signature": "let mapWithKey: (t<'k, 'a, 'id>, ('k, 'a) => 'b) => t<'k, 'b, 'id>",
+      "docstrings": []
+    }
+  ]
+}

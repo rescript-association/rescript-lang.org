@@ -1,0 +1,141 @@
+{
+  "name": "Belt_HashSetString",
+  "docstrings": [
+    "This module is [`Belt.HashSet`]() specialized with key type to be a primitive type.\n\n  It is more efficient in general, the  API is the same with [`Belt.HashSet`]() except its key type is fixed,\n  and identity is not needed(using the built-in one)\n\n  **See** [`Belt.HashSet`]()"
+  ],
+  "items": [
+    {
+      "id": "Belt_HashSetString.key",
+      "kind": "type",
+      "name": "key",
+      "signature": "type key = string",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.make",
+      "kind": "value",
+      "name": "make",
+      "signature": "let make: (~hintSize: int) => t",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.clear",
+      "kind": "value",
+      "name": "clear",
+      "signature": "let clear: t => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.isEmpty",
+      "kind": "value",
+      "name": "isEmpty",
+      "signature": "let isEmpty: t => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.add",
+      "kind": "value",
+      "name": "add",
+      "signature": "let add: (t, key) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.copy",
+      "kind": "value",
+      "name": "copy",
+      "signature": "let copy: t => t",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.has",
+      "kind": "value",
+      "name": "has",
+      "signature": "let has: (t, key) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.remove",
+      "kind": "value",
+      "name": "remove",
+      "signature": "let remove: (t, key) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.forEachU",
+      "kind": "value",
+      "name": "forEachU",
+      "signature": "let forEachU: (t, (. key) => unit) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.forEach",
+      "kind": "value",
+      "name": "forEach",
+      "signature": "let forEach: (t, key => unit) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.reduceU",
+      "kind": "value",
+      "name": "reduceU",
+      "signature": "let reduceU: (t, 'c, (. 'c, key) => 'c) => 'c",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.reduce",
+      "kind": "value",
+      "name": "reduce",
+      "signature": "let reduce: (t, 'c, ('c, key) => 'c) => 'c",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.size",
+      "kind": "value",
+      "name": "size",
+      "signature": "let size: t => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.logStats",
+      "kind": "value",
+      "name": "logStats",
+      "signature": "let logStats: t => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.toArray",
+      "kind": "value",
+      "name": "toArray",
+      "signature": "let toArray: t => array<key>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.fromArray",
+      "kind": "value",
+      "name": "fromArray",
+      "signature": "let fromArray: array<key> => t",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.mergeMany",
+      "kind": "value",
+      "name": "mergeMany",
+      "signature": "let mergeMany: (t, array<key>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSetString.getBucketHistogram",
+      "kind": "value",
+      "name": "getBucketHistogram",
+      "signature": "let getBucketHistogram: t => array<int>",
+      "docstrings": []
+    }
+  ]
+}

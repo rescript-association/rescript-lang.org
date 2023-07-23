@@ -1,0 +1,26 @@
+{
+  "name": "Js_cast",
+  "docstrings": [
+    "Safe cast between OCaml values which share the same\n  runtime representation\n\n  Different OCaml types might share the same represention in the\n  ReScript runtime; while this is a compiler internal knowledge,\n  applications might benefit from having a safe and zero cost\n  conversion between those types.\n\n  This modules acts as the **single place** for such conversion.\n\n  If for any reason, the runtime representation changes, those function\n  will be modified accordingly."
+  ],
+  "items": [
+    {
+      "id": "Js_cast.intOfBool",
+      "kind": "value",
+      "name": "intOfBool",
+      "signature": "let intOfBool: bool => int",
+      "docstrings": [
+        "`intOfBool b` returns `1` for when `b` is `true` and `0` when `b` is\n    `false`"
+      ]
+    },
+    {
+      "id": "Js_cast.floatOfInt",
+      "kind": "value",
+      "name": "floatOfInt",
+      "signature": "let floatOfInt: int => float",
+      "docstrings": [
+        "`floatOfInt i` returns the float value of `i`"
+      ]
+    }
+  ]
+}

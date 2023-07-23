@@ -1,0 +1,28 @@
+{
+  "name": "Js_result",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Js_result.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'good, 'bad> = Ok('good) | Error('bad)",
+      "docstrings": [],
+      "detail": {
+        "kind": "variant",
+        "constructorDocs": [
+          {
+            "constructorName": "Ok",
+            "docstrings": [],
+            "signature": "Ok('good)"
+          },
+          {
+            "constructorName": "Error",
+            "docstrings": [],
+            "signature": "Error('bad)"
+          }
+        ]
+      }
+    }
+  ]
+}

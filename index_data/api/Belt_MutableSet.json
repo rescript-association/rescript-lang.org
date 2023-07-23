@@ -1,0 +1,406 @@
+{
+  "name": "Belt_MutableSet",
+  "docstrings": [
+    "A **mutable** sorted set module which allows customized compare behavior.\n  The implementation uses balanced binary trees, and therefore searching and insertion take time logarithmic in the size of the map.\n\n  It also has two specialized inner modules [Belt.MutableSet.Int](mutable-set-int) and [Belt.MutableSet.String](mutable-set-string) - This module separates data from function which is more verbose but slightly more efficient\n\n  ```res example\n  module PairComparator = Belt.Id.MakeComparable({\n    type t = (int, int)\n    let cmp = ((a0, a1), (b0, b1)) =>\n      switch Pervasives.compare(a0, b0) {\n      | 0 => Pervasives.compare(a1, b1)\n      | c => c\n      }\n  })\n\n  let mySet = Belt.MutableSet.make(~id=module(PairComparator))\n  mySet->Belt.MutableSet.add((1, 2))\n  ```"
+  ],
+  "items": [
+    {
+      "id": "Belt_MutableSet.Belt_MutableSetInt",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Specialized when key type is `int`, more efficient\n    than the generic type"
+      ],
+      "signature": "module Int = Belt_MutableSetInt"
+    },
+    {
+      "id": "Belt_MutableSet.Belt_MutableSetString",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Specialized when key type is `string`, more efficient\n    than the generic type"
+      ],
+      "signature": "module String = Belt_MutableSetString"
+    },
+    {
+      "id": "Belt_MutableSet.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'value, 'identity>",
+      "docstrings": [
+        "`'value` is the element type\n\n  `'identity` the identity of the collection"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.id",
+      "kind": "type",
+      "name": "id",
+      "signature": "type id<'value, 'id> = Belt_Id.comparable<'value, 'id>",
+      "docstrings": [
+        "The identity needed for making a set from scratch"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.make",
+      "kind": "value",
+      "name": "make",
+      "signature": "let make: (~id: id<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Creates a new set by taking in the comparator"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.fromArray",
+      "kind": "value",
+      "name": "fromArray",
+      "signature": "let fromArray: (array<'value>, ~id: id<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Creates new set from array of elements.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.fromArray([1, 3, 2, 4], ~id=module(IntCmp))\n\n  s0->Belt.MutableSet.toArray /* [1, 2, 3, 4] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.fromSortedArrayUnsafe",
+      "kind": "value",
+      "name": "fromSortedArrayUnsafe",
+      "signature": "let fromSortedArrayUnsafe: (array<'value>, ~id: id<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "The same as [fromArray][#fromarray] except it is after assuming the input array is already sorted."
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.copy",
+      "kind": "value",
+      "name": "copy",
+      "signature": "let copy: t<'value, 'id> => t<'value, 'id>",
+      "docstrings": [
+        "Returns copy of a set.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.fromArray([1, 3, 2, 4], ~id=module(IntCmp))\n\n  let copied = s0->Belt.MutableSet.copy\n  copied->Belt.MutableSet.toArray /* [1, 2, 3, 4] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.isEmpty",
+      "kind": "value",
+      "name": "isEmpty",
+      "signature": "let isEmpty: t<'a, 'b> => bool",
+      "docstrings": [
+        "Checks if set is empty.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let empty = Belt.MutableSet.fromArray([], ~id=module(IntCmp))\n  let notEmpty = Belt.MutableSet.fromArray([1], ~id=module(IntCmp))\n\n  Belt.MutableSet.isEmpty(empty) /* true */\n  Belt.MutableSet.isEmpty(notEmpty) /* false */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.has",
+      "kind": "value",
+      "name": "has",
+      "signature": "let has: (t<'value, 'id>, 'value) => bool",
+      "docstrings": [
+        "Checks if element exists in set.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let set = Belt.MutableSet.fromArray([1, 4, 2, 5], ~id=module(IntCmp))\n\n  set->Belt.MutableSet.has(3) /* false */\n  set->Belt.MutableSet.has(1) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.add",
+      "kind": "value",
+      "name": "add",
+      "signature": "let add: (t<'value, 'id>, 'value) => unit",
+      "docstrings": [
+        "Adds element to set. If element existed in set, value is unchanged.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.make(~id=module(IntCmp))\n  s0->Belt.MutableSet.add(1)\n  s0->Belt.MutableSet.add(2)\n  s0->Belt.MutableSet.add(2)\n\n  s0->Belt.MutableSet.toArray /* [1, 2] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.addCheck",
+      "kind": "value",
+      "name": "addCheck",
+      "signature": "let addCheck: (t<'value, 'id>, 'value) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableSet.mergeMany",
+      "kind": "value",
+      "name": "mergeMany",
+      "signature": "let mergeMany: (t<'value, 'id>, array<'value>) => unit",
+      "docstrings": [
+        "Adds each element of array to set.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let set = Belt.MutableSet.make(~id=module(IntCmp))\n\n  set->Belt.MutableSet.mergeMany([5, 4, 3, 2, 1])\n  set->Belt.MutableSet.toArray /* [1, 2, 3, 4, 5] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.remove",
+      "kind": "value",
+      "name": "remove",
+      "signature": "let remove: (t<'value, 'id>, 'value) => unit",
+      "docstrings": [
+        "Removes element from set. If element did not exist in set, value is unchanged.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.fromArray([2, 3, 1, 4, 5], ~id=module(IntCmp))\n  s0->Belt.MutableSet.remove(1)\n  s0->Belt.MutableSet.remove(3)\n  s0->Belt.MutableSet.remove(3)\n\n  s0->Belt.MutableSet.toArray /* [2,4,5] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.removeCheck",
+      "kind": "value",
+      "name": "removeCheck",
+      "signature": "let removeCheck: (t<'value, 'id>, 'value) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableSet.removeMany",
+      "kind": "value",
+      "name": "removeMany",
+      "signature": "let removeMany: (t<'value, 'id>, array<'value>) => unit",
+      "docstrings": [
+        "Removes each element of array from set.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let set = Belt.MutableSet.fromArray([1, 2, 3, 4], ~id=module(IntCmp))\n\n  set->Belt.MutableSet.removeMany([5, 4, 3, 2, 1])\n  set->Belt.MutableSet.toArray /* [] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.union",
+      "kind": "value",
+      "name": "union",
+      "signature": "let union: (t<'value, 'id>, t<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Returns union of two sets.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.fromArray([5, 2, 3, 5, 6], ~id=module(IntCmp))\n  let s1 = Belt.MutableSet.fromArray([5, 2, 3, 1, 5, 4], ~id=module(IntCmp))\n  let union = Belt.MutableSet.union(s0, s1)\n  union->Belt.MutableSet.toArray /* [1,2,3,4,5,6] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.intersect",
+      "kind": "value",
+      "name": "intersect",
+      "signature": "let intersect: (t<'value, 'id>, t<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Returns intersection of two sets.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.fromArray([5, 2, 3, 5, 6], ~id=module(IntCmp))\n  let s1 = Belt.MutableSet.fromArray([5, 2, 3, 1, 5, 4], ~id=module(IntCmp))\n  let intersect = Belt.MutableSet.intersect(s0, s1)\n  intersect->Belt.MutableSet.toArray /* [2,3,5] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.diff",
+      "kind": "value",
+      "name": "diff",
+      "signature": "let diff: (t<'value, 'id>, t<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Returns elements from first set, not existing in second set.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.fromArray([5, 2, 3, 5, 6], ~id=module(IntCmp))\n  let s1 = Belt.MutableSet.fromArray([5, 2, 3, 1, 5, 4], ~id=module(IntCmp))\n  Belt.MutableSet.toArray(Belt.MutableSet.diff(s0, s1)) /* [6] */\n  Belt.MutableSet.toArray(Belt.MutableSet.diff(s1, s0)) /* [1,4] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.subset",
+      "kind": "value",
+      "name": "subset",
+      "signature": "let subset: (t<'value, 'id>, t<'value, 'id>) => bool",
+      "docstrings": [
+        "Checks if second set is subset of first set.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.fromArray([5, 2, 3, 5, 6], ~id=module(IntCmp))\n  let s1 = Belt.MutableSet.fromArray([5, 2, 3, 1, 5, 4], ~id=module(IntCmp))\n  let s2 = Belt.MutableSet.intersect(s0, s1)\n  Belt.MutableSet.subset(s2, s0) /* true */\n  Belt.MutableSet.subset(s2, s1) /* true */\n  Belt.MutableSet.subset(s1, s0) /* false */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.cmp",
+      "kind": "value",
+      "name": "cmp",
+      "signature": "let cmp: (t<'value, 'id>, t<'value, 'id>) => int",
+      "docstrings": [
+        "Total ordering between sets. Can be used as the ordering function for doing sets of sets. It compares size first and then iterates over each element following the order of elements."
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.eq",
+      "kind": "value",
+      "name": "eq",
+      "signature": "let eq: (t<'value, 'id>, t<'value, 'id>) => bool",
+      "docstrings": [
+        "Checks if two sets are equal.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.fromArray([5, 2, 3], ~id=module(IntCmp))\n  let s1 = Belt.MutableSet.fromArray([3, 2, 5], ~id=module(IntCmp))\n\n  Belt.MutableSet.eq(s0, s1) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.forEachU",
+      "kind": "value",
+      "name": "forEachU",
+      "signature": "let forEachU: (t<'value, 'id>, (. 'value) => unit) => unit",
+      "docstrings": [
+        "Same as [forEach](##forEach) but takes uncurried functon."
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.forEach",
+      "kind": "value",
+      "name": "forEach",
+      "signature": "let forEach: (t<'value, 'id>, 'value => unit) => unit",
+      "docstrings": [
+        "Applies function `f` in turn to all elements of set in increasing order.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.fromArray([5, 2, 3, 5, 6], ~id=module(IntCmp))\n  let acc = ref(list{})\n  s0->Belt.MutableSet.forEach(x => acc := Belt.List.add(acc.contents, x))\n  acc /* [6,5,3,2] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.reduceU",
+      "kind": "value",
+      "name": "reduceU",
+      "signature": "let reduceU: (t<'value, 'id>, 'a, (. 'a, 'value) => 'a) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableSet.reduce",
+      "kind": "value",
+      "name": "reduce",
+      "signature": "let reduce: (t<'value, 'id>, 'a, ('a, 'value) => 'a) => 'a",
+      "docstrings": [
+        "Applies function `f` to each element of set in increasing order. Function `f` has two parameters: the item from the set and an “accumulator”, which starts with a value of `initialValue`. `reduce` returns the final value of the accumulator.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.fromArray([5, 2, 3, 5, 6], ~id=module(IntCmp))\n  s0->Belt.MutableSet.reduce(list{}, (acc, element) => acc->Belt.List.add(element)) /* [6,5,3,2] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.everyU",
+      "kind": "value",
+      "name": "everyU",
+      "signature": "let everyU: (t<'value, 'id>, (. 'value) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableSet.every",
+      "kind": "value",
+      "name": "every",
+      "signature": "let every: (t<'value, 'id>, 'value => bool) => bool",
+      "docstrings": [
+        "Checks if all elements of the set satisfy the predicate. Order unspecified.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let isEven = x => mod(x, 2) == 0\n\n  let s0 = Belt.MutableSet.fromArray([2, 4, 6, 8], ~id=module(IntCmp))\n  s0->Belt.MutableSet.every(isEven) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.someU",
+      "kind": "value",
+      "name": "someU",
+      "signature": "let someU: (t<'value, 'id>, (. 'value) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableSet.some",
+      "kind": "value",
+      "name": "some",
+      "signature": "let some: (t<'value, 'id>, 'value => bool) => bool",
+      "docstrings": [
+        "Checks if at least one element of the set satisfies the predicate.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let isOdd = x => mod(x, 2) != 0\n\n  let s0 = Belt.MutableSet.fromArray([1, 2, 4, 6, 8], ~id=module(IntCmp))\n  s0->Belt.MutableSet.some(isOdd) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.keepU",
+      "kind": "value",
+      "name": "keepU",
+      "signature": "let keepU: (t<'value, 'id>, (. 'value) => bool) => t<'value, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableSet.keep",
+      "kind": "value",
+      "name": "keep",
+      "signature": "let keep: (t<'value, 'id>, 'value => bool) => t<'value, 'id>",
+      "docstrings": [
+        "Returns the set of all elements that satisfy the predicate.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let isEven = x => mod(x, 2) == 0\n\n  let s0 = Belt.MutableSet.fromArray([1, 2, 3, 4, 5], ~id=module(IntCmp))\n  let s1 = s0->Belt.MutableSet.keep(isEven)\n\n  s1->Belt.MutableSet.toArray /* [2, 4] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.partitionU",
+      "kind": "value",
+      "name": "partitionU",
+      "signature": "let partitionU: (t<'value, 'id>, (. 'value) => bool) => (t<'value, 'id>, t<'value, 'id>)",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableSet.partition",
+      "kind": "value",
+      "name": "partition",
+      "signature": "let partition: (t<'value, 'id>, 'value => bool) => (t<'value, 'id>, t<'value, 'id>)",
+      "docstrings": [
+        "```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let isOdd = x => mod(x, 2) != 0\n\n  let s0 = Belt.MutableSet.fromArray([1, 2, 3, 4, 5], ~id=module(IntCmp))\n  let (s1, s2) = s0->Belt.MutableSet.partition(isOdd)\n\n  s1->Belt.MutableSet.toArray /* [1,3,5] */\n  s2->Belt.MutableSet.toArray /* [2,4] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.size",
+      "kind": "value",
+      "name": "size",
+      "signature": "let size: t<'value, 'id> => int",
+      "docstrings": [
+        "Returns size of the set.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.fromArray([1, 2, 3, 4], ~id=module(IntCmp))\n\n  s0->Belt.MutableSet.size /* 4 */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.toList",
+      "kind": "value",
+      "name": "toList",
+      "signature": "let toList: t<'value, 'id> => list<'value>",
+      "docstrings": [
+        "Returns list of ordered set elements.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.fromArray([3, 2, 1, 5], ~id=module(IntCmp))\n\n  s0->Belt.MutableSet.toList /* [1,2,3,5] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.toArray",
+      "kind": "value",
+      "name": "toArray",
+      "signature": "let toArray: t<'value, 'id> => array<'value>",
+      "docstrings": [
+        "Returns array of ordered set elements.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.fromArray([3, 2, 1, 5], ~id=module(IntCmp))\n\n  s0->Belt.MutableSet.toArray /* [1,2,3,5] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.minimum",
+      "kind": "value",
+      "name": "minimum",
+      "signature": "let minimum: t<'value, 'id> => option<'value>",
+      "docstrings": [
+        "Returns minimum value of the collection. `None` if collection is empty.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.make(~id=module(IntCmp))\n  let s1 = Belt.MutableSet.fromArray([3, 2, 1, 5], ~id=module(IntCmp))\n\n  s0->Belt.MutableSet.minimum /* None */\n  s1->Belt.MutableSet.minimum /* Some(1) */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.minUndefined",
+      "kind": "value",
+      "name": "minUndefined",
+      "signature": "let minUndefined: t<'value, 'id> => Js.undefined<'value>",
+      "docstrings": [
+        "Returns minimum value of the collection. `undefined` if collection is empty.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.make(~id=module(IntCmp))\n  let s1 = Belt.MutableSet.fromArray([3, 2, 1, 5], ~id=module(IntCmp))\n\n  s0->Belt.MutableSet.minUndefined /* undefined */\n  s1->Belt.MutableSet.minUndefined /* 1 */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.maximum",
+      "kind": "value",
+      "name": "maximum",
+      "signature": "let maximum: t<'value, 'id> => option<'value>",
+      "docstrings": [
+        "Returns maximum value of the collection. `None` if collection is empty.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.make(~id=module(IntCmp))\n  let s1 = Belt.MutableSet.fromArray([3, 2, 1, 5], ~id=module(IntCmp))\n\n  s0->Belt.MutableSet.maximum /* None */\n  s1->Belt.MutableSet.maximum /* Some(5) */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.maxUndefined",
+      "kind": "value",
+      "name": "maxUndefined",
+      "signature": "let maxUndefined: t<'value, 'id> => Js.undefined<'value>",
+      "docstrings": [
+        "Returns maximum value of the collection. `undefined` if collection is empty.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.make(~id=module(IntCmp))\n  let s1 = Belt.MutableSet.fromArray([3, 2, 1, 5], ~id=module(IntCmp))\n\n  s0->Belt.MutableSet.maxUndefined /* undefined */\n  s1->Belt.MutableSet.maxUndefined /* 5 */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.get",
+      "kind": "value",
+      "name": "get",
+      "signature": "let get: (t<'value, 'id>, 'value) => option<'value>",
+      "docstrings": [
+        "Returns the reference of the value which is equivalent to value using the comparator specifiecd by this collection. Returns `None` if element does not exist.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.fromArray([1, 2, 3, 4, 5], ~id=module(IntCmp))\n\n  s0->Belt.MutableSet.get(3) /* Some(3) */\n  s0->Belt.MutableSet.get(20) /* None */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.getUndefined",
+      "kind": "value",
+      "name": "getUndefined",
+      "signature": "let getUndefined: (t<'value, 'id>, 'value) => Js.undefined<'value>",
+      "docstrings": [
+        "Same as [get](#get) but returns `undefined` when element does not exist."
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.getExn",
+      "kind": "value",
+      "name": "getExn",
+      "signature": "let getExn: (t<'value, 'id>, 'value) => 'value",
+      "docstrings": [
+        "Same as [get](#get) but raise when element does not exist."
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.split",
+      "kind": "value",
+      "name": "split",
+      "signature": "let split: (t<'value, 'id>, 'value) => ((t<'value, 'id>, t<'value, 'id>), bool)",
+      "docstrings": [
+        "Returns a tuple `((smaller, larger), present)`, `present` is true when element exist in set.\n\n  ```res example\n  module IntCmp = Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n\n  let s0 = Belt.MutableSet.fromArray([1, 2, 3, 4, 5], ~id=module(IntCmp))\n\n  let ((smaller, larger), present) = s0->Belt.MutableSet.split(3)\n\n  present /* true */\n  smaller->Belt.MutableSet.toArray /* [1,2] */\n  larger->Belt.MutableSet.toArray /* [4,5] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_MutableSet.checkInvariantInternal",
+      "kind": "value",
+      "name": "checkInvariantInternal",
+      "signature": "let checkInvariantInternal: t<'a, 'b> => unit",
+      "docstrings": [
+        "**raise** when invariant is not held"
+      ]
+    }
+  ]
+}

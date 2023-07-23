@@ -1,0 +1,15 @@
+{
+  "name": "Js_bigint",
+  "docstrings": [
+    "JavaScript BigInt API"
+  ],
+  "items": [
+    {
+      "id": "Js_bigint.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t",
+      "docstrings": []
+    }
+  ]
+}

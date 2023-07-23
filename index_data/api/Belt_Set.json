@@ -1,0 +1,418 @@
+{
+  "name": "Belt_Set",
+  "docstrings": [
+    "An _immutable_ sorted set module which allows customized _compare_ behavior.\n\n  The implementation uses balanced binary trees, and therefore searching\n  and insertion take time logarithmic in the size of the map.\n\n  For more info on this module's usage of identity, `make` and others, please see\n  the top level documentation of Belt, **A special encoding for collection safety**.\n\n  Example usage:\n\n  ```res example\n  module PairComparator =\n    Belt.Id.MakeComparable({\n      type t = (int, int)\n      let cmp = ((a0, a1), (b0, b1)) =>\n        switch (Pervasives.compare(a0, b0)) {\n        | 0 => Pervasives.compare(a1, b1)\n        | c => c\n        }\n    })\n\n  let mySet = Belt.Set.make(~id=module(PairComparator))\n  let mySet2 = Belt.Set.add(mySet, (1, 2))\n  ```\n\n  **Note:** This module's examples will assume a predeclared module for integers\n  called `IntCmp`. It is declared like this:\n\n  ```res example\n  module IntCmp =\n    Belt.Id.MakeComparable({\n      type t = int\n      let cmp = Pervasives.compare\n    })\n  ```"
+  ],
+  "items": [
+    {
+      "id": "Belt_Set.Belt_SetInt",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Specialized when value type is `int`, more efficient\n  than the generic type, its compare behavior is fixed using the built-in comparison"
+      ],
+      "signature": "module Int = Belt_SetInt"
+    },
+    {
+      "id": "Belt_Set.Belt_SetString",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Specialized when value type is `string`, more efficient\n  than the generic type, its compare behavior is fixed using the built-in comparison"
+      ],
+      "signature": "module String = Belt_SetString"
+    },
+    {
+      "id": "Belt_Set.Belt_SetDict",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "This module separates identity from data, it is a bit more verbose but slightly\n  more efficient due to the fact that there is no need to pack identity and data back\n  after each operation"
+      ],
+      "signature": "module Dict = Belt_SetDict"
+    },
+    {
+      "id": "Belt_Set.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'value, 'identity>",
+      "docstrings": [
+        "`'value` is the element type\n\n  `'identity` the identity of the collection"
+      ]
+    },
+    {
+      "id": "Belt_Set.id",
+      "kind": "type",
+      "name": "id",
+      "signature": "type id<'value, 'id> = Belt_Id.comparable<'value, 'id>",
+      "docstrings": [
+        "The identity needed for making a set from scratch"
+      ]
+    },
+    {
+      "id": "Belt_Set.make",
+      "kind": "value",
+      "name": "make",
+      "signature": "let make: (~id: id<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Creates a new set by taking in the comparator\n\n  ```res example\n  let set = Belt.Set.make(~id=module(IntCmp))\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.fromArray",
+      "kind": "value",
+      "name": "fromArray",
+      "signature": "let fromArray: (array<'value>, ~id: id<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Creates new set from array of elements.\n\n  ```res example\n  let s0 = Belt.Set.fromArray([1, 3, 2, 4], ~id=module(IntCmp))\n\n  s0->Belt.Set.toArray /* [1, 2, 3, 4] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.fromSortedArrayUnsafe",
+      "kind": "value",
+      "name": "fromSortedArrayUnsafe",
+      "signature": "let fromSortedArrayUnsafe: (array<'value>, ~id: id<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "The same as [fromArray][#fromarray] except it is after assuming the input array is already sorted."
+      ]
+    },
+    {
+      "id": "Belt_Set.isEmpty",
+      "kind": "value",
+      "name": "isEmpty",
+      "signature": "let isEmpty: t<'a, 'b> => bool",
+      "docstrings": [
+        "Checks if set is empty.\n\n   ```res example\n   let empty = Belt.Set.fromArray([], ~id=module(IntCmp))\n   let notEmpty = Belt.Set.fromArray([1],~id=module(IntCmp))\n\n   Belt.Set.isEmpty(empty) /* true */\n   Belt.Set.isEmpty(notEmpty) /* false */\n   ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.has",
+      "kind": "value",
+      "name": "has",
+      "signature": "let has: (t<'value, 'id>, 'value) => bool",
+      "docstrings": [
+        "Checks if element exists in set.\n\n   ```res example\n   let set = Belt.Set.fromArray([1, 4, 2, 5], ~id=module(IntCmp))\n\n   set->Belt.Set.has(3) /* false */\n   set->Belt.Set.has(1) /* true */\n   ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.add",
+      "kind": "value",
+      "name": "add",
+      "signature": "let add: (t<'value, 'id>, 'value) => t<'value, 'id>",
+      "docstrings": [
+        "Adds element to set. If element existed in set, value is unchanged.\n\n  ```res example\n  let s0 = Belt.Set.make(~id=module(IntCmp))\n  let s1 = s0->Belt.Set.add(1)\n  let s2 = s1->Belt.Set.add(2)\n  let s3 = s2->Belt.Set.add(2)\n  s0->Belt.Set.toArray /* [] */\n  s1->Belt.Set.toArray /* [1] */\n  s2->Belt.Set.toArray /* [1, 2] */\n  s3->Belt.Set.toArray /* [1,2 ] */\n  s2 == s3 /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.mergeMany",
+      "kind": "value",
+      "name": "mergeMany",
+      "signature": "let mergeMany: (t<'value, 'id>, array<'value>) => t<'value, 'id>",
+      "docstrings": [
+        "Adds each element of array to set. Unlike [add](#add), the reference of return value might be changed even if all values in array already exist in set\n\n  ```res example\n  let set = Belt.Set.make(~id=module(IntCmp))\n\n  let newSet = set->Belt.Set.mergeMany([5, 4, 3, 2, 1])\n  newSet->Belt.Set.toArray /* [1, 2, 3, 4, 5] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.remove",
+      "kind": "value",
+      "name": "remove",
+      "signature": "let remove: (t<'value, 'id>, 'value) => t<'value, 'id>",
+      "docstrings": [
+        "Removes element from set. If element did not exist in set, value is unchanged.\n\n  ```res example\n  let s0 = Belt.Set.fromArray([2,3,1,4,5], ~id=module(IntCmp))\n  let s1 = s0->Belt.Set.remove(1)\n  let s2 = s1->Belt.Set.remove(3)\n  let s3 = s2->Belt.Set.remove(3)\n\n  s1->Belt.Set.toArray /* [2,3,4,5] */\n  s2->Belt.Set.toArray /* [2,4,5] */\n  s2 == s3 /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.removeMany",
+      "kind": "value",
+      "name": "removeMany",
+      "signature": "let removeMany: (t<'value, 'id>, array<'value>) => t<'value, 'id>",
+      "docstrings": [
+        "Removes each element of array from set. Unlike [remove](#remove), the reference of return value might be changed even if none of values in array existed in set.\n\n  ```res example\n  let set = Belt.Set.fromArray([1, 2, 3, 4],~id=module(IntCmp))\n\n  let newSet = set->Belt.Set.removeMany([5, 4, 3, 2, 1])\n  newSet->Belt.Set.toArray /* [] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.union",
+      "kind": "value",
+      "name": "union",
+      "signature": "let union: (t<'value, 'id>, t<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Returns union of two sets.\n\n   ```res example\n   let s0 = Belt.Set.fromArray([5,2,3,5,6], ~id=module(IntCmp))\n   let s1 = Belt.Set.fromArray([5,2,3,1,5,4], ~id=module(IntCmp))\n   let union = Belt.Set.union(s0, s1)\n   union->Belt.Set.toArray /* [1,2,3,4,5,6] */\n   ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.intersect",
+      "kind": "value",
+      "name": "intersect",
+      "signature": "let intersect: (t<'value, 'id>, t<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Returns intersection of two sets.\n\n  ```res example\n  let s0 = Belt.Set.fromArray([5,2,3,5,6], ~id=module(IntCmp))\n  let s1 = Belt.Set.fromArray([5,2,3,1,5,4], ~id=module(IntCmp))\n  let intersect = Belt.Set.intersect(s0, s1)\n  intersect->Belt.Set.toArray /* [2,3,5] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.diff",
+      "kind": "value",
+      "name": "diff",
+      "signature": "let diff: (t<'value, 'id>, t<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "Returns elements from first set, not existing in second set.\n\n  ```res example\n  let s0 = Belt.Set.fromArray([5,2,3,5,6], ~id=module(IntCmp))\n  let s1 = Belt.Set.fromArray([5,2,3,1,5,4], ~id=module(IntCmp))\n  Belt.Set.toArray(Belt.Set.diff(s0, s1)) /* [6] */\n  Belt.Set.toArray(Belt.Set.diff(s1,s0)) /* [1,4] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.subset",
+      "kind": "value",
+      "name": "subset",
+      "signature": "let subset: (t<'value, 'id>, t<'value, 'id>) => bool",
+      "docstrings": [
+        "Checks if second set is subset of first set.\n\n  ```res example\n  let s0 = Belt.Set.fromArray([5,2,3,5,6], ~id=module(IntCmp))\n  let s1 = Belt.Set.fromArray([5,2,3,1,5,4], ~id=module(IntCmp))\n  let s2 = Belt.Set.intersect(s0, s1)\n  Belt.Set.subset(s2, s0) /* true */\n  Belt.Set.subset(s2, s1) /* true */\n  Belt.Set.subset(s1, s0) /* false */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.cmp",
+      "kind": "value",
+      "name": "cmp",
+      "signature": "let cmp: (t<'value, 'id>, t<'value, 'id>) => int",
+      "docstrings": [
+        "Total ordering between sets. Can be used as the ordering function for doing sets of sets. It compares size first and then iterates over each element following the order of elements."
+      ]
+    },
+    {
+      "id": "Belt_Set.eq",
+      "kind": "value",
+      "name": "eq",
+      "signature": "let eq: (t<'value, 'id>, t<'value, 'id>) => bool",
+      "docstrings": [
+        "Checks if two sets are equal.\n\n  ```res example\n  let s0 = Belt.Set.fromArray([5,2,3], ~id=module(IntCmp))\n  let s1 = Belt.Set.fromArray([3,2,5], ~id=module(IntCmp))\n\n  Belt.Set.eq(s0, s1) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.forEachU",
+      "kind": "value",
+      "name": "forEachU",
+      "signature": "let forEachU: (t<'value, 'id>, (. 'value) => unit) => unit",
+      "docstrings": [
+        "Same as [forEach](##forEach) but takes uncurried functon."
+      ]
+    },
+    {
+      "id": "Belt_Set.forEach",
+      "kind": "value",
+      "name": "forEach",
+      "signature": "let forEach: (t<'value, 'id>, 'value => unit) => unit",
+      "docstrings": [
+        "Applies function `f` in turn to all elements of set in increasing order.\n\n  ```res example\n  let s0 = Belt.Set.fromArray([5,2,3,5,6], ~id=module(IntCmp))\n  let acc = ref(list{})\n  s0->Belt.Set.forEach(x => {\n    acc := Belt.List.add(acc.contents, x)\n  })\n  acc /* [6,5,3,2] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.reduceU",
+      "kind": "value",
+      "name": "reduceU",
+      "signature": "let reduceU: (t<'value, 'id>, 'a, (. 'a, 'value) => 'a) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Set.reduce",
+      "kind": "value",
+      "name": "reduce",
+      "signature": "let reduce: (t<'value, 'id>, 'a, ('a, 'value) => 'a) => 'a",
+      "docstrings": [
+        "Applies function `f` to each element of set in increasing order. Function `f` has two parameters: the item from the set and an “accumulator”, which starts with a value of `initialValue`. `reduce` returns the final value of the accumulator.\n\n  ```res example\n  let s0 = Belt.Set.fromArray([5,2,3,5,6], ~id=module(IntCmp))\n  s0->Belt.Set.reduce(list{}, (acc, element) =>\n    acc->Belt.List.add(element)\n  ) /* [6,5,3,2] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.everyU",
+      "kind": "value",
+      "name": "everyU",
+      "signature": "let everyU: (t<'value, 'id>, (. 'value) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Set.every",
+      "kind": "value",
+      "name": "every",
+      "signature": "let every: (t<'value, 'id>, 'value => bool) => bool",
+      "docstrings": [
+        "Checks if all elements of the set satisfy the predicate. Order unspecified.\n\n  ```res example\n  let isEven = x => mod(x, 2) == 0\n\n  let s0 = Belt.Set.fromArray([2,4,6,8], ~id=module(IntCmp))\n  s0->Belt.Set.every(isEven) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.someU",
+      "kind": "value",
+      "name": "someU",
+      "signature": "let someU: (t<'value, 'id>, (. 'value) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Set.some",
+      "kind": "value",
+      "name": "some",
+      "signature": "let some: (t<'value, 'id>, 'value => bool) => bool",
+      "docstrings": [
+        "Checks if at least one element of the set satisfies the predicate.\n\n  ```res example\n  let isOdd = x => mod(x, 2) != 0\n\n  let s0 = Belt.Set.fromArray([1,2,4,6,8], ~id=module(IntCmp))\n  s0->Belt.Set.some(isOdd) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.keepU",
+      "kind": "value",
+      "name": "keepU",
+      "signature": "let keepU: (t<'value, 'id>, (. 'value) => bool) => t<'value, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Set.keep",
+      "kind": "value",
+      "name": "keep",
+      "signature": "let keep: (t<'value, 'id>, 'value => bool) => t<'value, 'id>",
+      "docstrings": [
+        "Returns the set of all elements that satisfy the predicate.\n\n  ```res example\n  let isEven = x => mod(x, 2) == 0\n\n  let s0 = Belt.Set.fromArray([1,2,3,4,5], ~id=module(IntCmp))\n  let s1 = s0->Belt.Set.keep(isEven)\n\n  s1->Belt.Set.toArray /* [2,4] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.partitionU",
+      "kind": "value",
+      "name": "partitionU",
+      "signature": "let partitionU: (t<'value, 'id>, (. 'value) => bool) => (t<'value, 'id>, t<'value, 'id>)",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Set.partition",
+      "kind": "value",
+      "name": "partition",
+      "signature": "let partition: (t<'value, 'id>, 'value => bool) => (t<'value, 'id>, t<'value, 'id>)",
+      "docstrings": [
+        "Returns a pair of sets, where first is the set of all the elements of set that satisfy the predicate, and second is the set of all the elements of set that do not satisfy the predicate.\n\n  ```res example\n  let isOdd = x => mod(x, 2) != 0\n\n  let s0 = Belt.Set.fromArray([1,2,3,4,5], ~id=module(IntCmp))\n  let (s1, s2) = s0->Belt.Set.partition(isOdd)\n\n  s1->Belt.Set.toArray /* [1,3,5] */\n  s2->Belt.Set.toArray /* [2,4] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.size",
+      "kind": "value",
+      "name": "size",
+      "signature": "let size: t<'value, 'id> => int",
+      "docstrings": [
+        "Returns size of the set.\n\n  ```res example\n  let s0 = Belt.Set.fromArray([1,2,3,4], ~id=module(IntCmp))\n\n  s0->Belt.Set.size /* 4 */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.toArray",
+      "kind": "value",
+      "name": "toArray",
+      "signature": "let toArray: t<'value, 'id> => array<'value>",
+      "docstrings": [
+        "Returns array of ordered set elements.\n\n  ```res example\n  let s0 = Belt.Set.fromArray([3,2,1,5], ~id=module(IntCmp))\n\n  s0->Belt.Set.toArray /* [1,2,3,5] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.toList",
+      "kind": "value",
+      "name": "toList",
+      "signature": "let toList: t<'value, 'id> => list<'value>",
+      "docstrings": [
+        "Returns list of ordered set elements.\n\n  ```res example\n  let s0 = Belt.Set.fromArray([3,2,1,5], ~id=module(IntCmp))\n\n  s0->Belt.Set.toList /* [1,2,3,5] */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.minimum",
+      "kind": "value",
+      "name": "minimum",
+      "signature": "let minimum: t<'value, 'id> => option<'value>",
+      "docstrings": [
+        "Returns minimum value of the collection. `None` if collection is empty.\n\n  ```res example\n  let s0 = Belt.Set.make(~id=module(IntCmp))\n  let s1 = Belt.Set.fromArray([3,2,1,5], ~id=module(IntCmp))\n\n  s0->Belt.Set.minimum /* None */\n  s1->Belt.Set.minimum /* Some(1) */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.minUndefined",
+      "kind": "value",
+      "name": "minUndefined",
+      "signature": "let minUndefined: t<'value, 'id> => Js.undefined<'value>",
+      "docstrings": [
+        "Returns minimum value of the collection. `undefined` if collection is empty.\n\n  ```res example\n  let s0 = Belt.Set.make(~id=module(IntCmp))\n  let s1 = Belt.Set.fromArray([3,2,1,5], ~id=module(IntCmp))\n\n  s0->Belt.Set.minUndefined /* undefined */\n  s1->Belt.Set.minUndefined /* 1 */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.maximum",
+      "kind": "value",
+      "name": "maximum",
+      "signature": "let maximum: t<'value, 'id> => option<'value>",
+      "docstrings": [
+        "Returns maximum value of the collection. `None` if collection is empty.\n\n  ```res example\n  let s0 = Belt.Set.make(~id=module(IntCmp))\n  let s1 = Belt.Set.fromArray([3,2,1,5], ~id=module(IntCmp))\n\n  s0->Belt.Set.maximum /* None */\n  s1->Belt.Set.maximum /* Some(5) */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.maxUndefined",
+      "kind": "value",
+      "name": "maxUndefined",
+      "signature": "let maxUndefined: t<'value, 'id> => Js.undefined<'value>",
+      "docstrings": [
+        "Returns maximum value of the collection. `undefined` if collection is empty.\n\n  ```res example\n  let s0 = Belt.Set.make(~id=module(IntCmp))\n  let s1 = Belt.Set.fromArray([3,2,1,5], ~id=module(IntCmp))\n\n  s0->Belt.Set.maxUndefined /* undefined */\n  s1->Belt.Set.maxUndefined /* 5 */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.get",
+      "kind": "value",
+      "name": "get",
+      "signature": "let get: (t<'value, 'id>, 'value) => option<'value>",
+      "docstrings": [
+        "Returns the reference of the value which is equivalent to value using the comparator specifiecd by this collection. Returns `None` if element does not exist.\n\n  ```res example\n  let s0 = Belt.Set.fromArray([1,2,3,4,5], ~id=module(IntCmp))\n\n  s0->Belt.Set.get(3) /* Some(3) */\n  s0->Belt.Set.get(20) /* None */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.getUndefined",
+      "kind": "value",
+      "name": "getUndefined",
+      "signature": "let getUndefined: (t<'value, 'id>, 'value) => Js.undefined<'value>",
+      "docstrings": [
+        "Same as [get](#get) but returns `undefined` when element does not exist."
+      ]
+    },
+    {
+      "id": "Belt_Set.getExn",
+      "kind": "value",
+      "name": "getExn",
+      "signature": "let getExn: (t<'value, 'id>, 'value) => 'value",
+      "docstrings": [
+        "Same as [get](#get) but raise when element does not exist."
+      ]
+    },
+    {
+      "id": "Belt_Set.split",
+      "kind": "value",
+      "name": "split",
+      "signature": "let split: (t<'value, 'id>, 'value) => ((t<'value, 'id>, t<'value, 'id>), bool)",
+      "docstrings": [
+        "Returns a tuple `((smaller, larger), present)`, `present` is true when element exist in set.\n\n  ```res example\n  let s0 = Belt.Set.fromArray([1,2,3,4,5], ~id=module(IntCmp))\n\n  let ((smaller, larger), present) = s0->Belt.Set.split(3)\n\n  present /* true */\n  smaller->Belt.Set.toArray /* [1,2] */\n  larger->Belt.Set.toArray /* [4,5] */\n\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Set.checkInvariantInternal",
+      "kind": "value",
+      "name": "checkInvariantInternal",
+      "signature": "let checkInvariantInternal: t<'a, 'b> => unit",
+      "docstrings": [
+        "**raise** when invariant is not held"
+      ]
+    },
+    {
+      "id": "Belt_Set.getData",
+      "kind": "value",
+      "name": "getData",
+      "signature": "let getData: t<'value, 'id> => Belt_SetDict.t<'value, 'id>",
+      "docstrings": [
+        "**Advanced usage only**\n\n  Returns the raw data (detached from comparator), but its type is still manifested, so that user can pass identity directly without boxing."
+      ]
+    },
+    {
+      "id": "Belt_Set.getId",
+      "kind": "value",
+      "name": "getId",
+      "signature": "let getId: t<'value, 'id> => id<'value, 'id>",
+      "docstrings": [
+        "**Advanced usage only**\n\n  Returns the identity of set."
+      ]
+    },
+    {
+      "id": "Belt_Set.packIdData",
+      "kind": "value",
+      "name": "packIdData",
+      "signature": "let packIdData: (~id: id<'value, 'id>, ~data: Belt_SetDict.t<'value, 'id>) => t<'value, 'id>",
+      "docstrings": [
+        "**Advanced usage only**\n\n  Returns the packed collection."
+      ]
+    }
+  ]
+}

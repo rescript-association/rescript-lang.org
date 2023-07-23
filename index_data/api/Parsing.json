@@ -1,0 +1,223 @@
+{
+  "name": "Parsing",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Parsing.symbol_start",
+      "kind": "value",
+      "name": "symbol_start",
+      "signature": "let symbol_start: unit => int",
+      "docstrings": [
+        "[symbol_start] and {!Parsing.symbol_end} are to be called in the\n   action part of a grammar rule only. They return the offset of the\n   string that matches the left-hand side of the rule: [symbol_start()]\n   returns the offset of the first character; [symbol_end()] returns the\n   offset after the last character. The first character in a file is at\n   offset 0."
+      ]
+    },
+    {
+      "id": "Parsing.symbol_end",
+      "kind": "value",
+      "name": "symbol_end",
+      "signature": "let symbol_end: unit => int",
+      "docstrings": [
+        "See {!Parsing.symbol_start}."
+      ]
+    },
+    {
+      "id": "Parsing.rhs_start",
+      "kind": "value",
+      "name": "rhs_start",
+      "signature": "let rhs_start: int => int",
+      "docstrings": [
+        "Same as {!Parsing.symbol_start} and {!Parsing.symbol_end}, but\n   return the offset of the string matching the [n]th item on the\n   right-hand side of the rule, where [n] is the integer parameter\n   to [rhs_start] and [rhs_end]. [n] is 1 for the leftmost item."
+      ]
+    },
+    {
+      "id": "Parsing.rhs_end",
+      "kind": "value",
+      "name": "rhs_end",
+      "signature": "let rhs_end: int => int",
+      "docstrings": [
+        "See {!Parsing.rhs_start}."
+      ]
+    },
+    {
+      "id": "Parsing.symbol_start_pos",
+      "kind": "value",
+      "name": "symbol_start_pos",
+      "signature": "let symbol_start_pos: unit => Lexing.position",
+      "docstrings": [
+        "Same as [symbol_start], but return a [position] instead of an offset."
+      ]
+    },
+    {
+      "id": "Parsing.symbol_end_pos",
+      "kind": "value",
+      "name": "symbol_end_pos",
+      "signature": "let symbol_end_pos: unit => Lexing.position",
+      "docstrings": [
+        "Same as [symbol_end], but return a [position] instead of an offset."
+      ]
+    },
+    {
+      "id": "Parsing.rhs_start_pos",
+      "kind": "value",
+      "name": "rhs_start_pos",
+      "signature": "let rhs_start_pos: int => Lexing.position",
+      "docstrings": [
+        "Same as [rhs_start], but return a [position] instead of an offset."
+      ]
+    },
+    {
+      "id": "Parsing.rhs_end_pos",
+      "kind": "value",
+      "name": "rhs_end_pos",
+      "signature": "let rhs_end_pos: int => Lexing.position",
+      "docstrings": [
+        "Same as [rhs_end], but return a [position] instead of an offset."
+      ]
+    },
+    {
+      "id": "Parsing.clear_parser",
+      "kind": "value",
+      "name": "clear_parser",
+      "signature": "let clear_parser: unit => unit",
+      "docstrings": [
+        "Empty the parser stack. Call it just after a parsing function\n   has returned, to remove all pointers from the parser stack\n   to structures that were built by semantic actions during parsing.\n   This is optional, but lowers the memory requirements of the\n   programs."
+      ]
+    },
+    {
+      "id": "Parsing.set_trace",
+      "kind": "value",
+      "name": "set_trace",
+      "signature": "let set_trace: bool => bool",
+      "docstrings": [
+        "Control debugging support for [ocamlyacc]-generated parsers.\n    After [Parsing.set_trace true], the pushdown automaton that\n    executes the parsers prints a trace of its actions (reading a token,\n    shifting a state, reducing by a rule) on standard output.\n    [Parsing.set_trace false] turns this debugging trace off.\n    The boolean returned is the previous state of the trace flag.\n    @since 3.11.0"
+      ]
+    },
+    {
+      "id": "Parsing.parser_env",
+      "kind": "type",
+      "name": "parser_env",
+      "signature": "type parser_env",
+      "docstrings": []
+    },
+    {
+      "id": "Parsing.parse_tables",
+      "kind": "type",
+      "name": "parse_tables",
+      "signature": "type parse_tables = {\\n  actions: array<parser_env => Obj.t>,\\n  transl_const: array<int>,\\n  transl_block: array<int>,\\n  lhs: string,\\n  len: string,\\n  defred: string,\\n  dgoto: string,\\n  sindex: string,\\n  rindex: string,\\n  gindex: string,\\n  tablesize: int,\\n  table: string,\\n  check: string,\\n  error_function: string => unit,\\n  names_const: string,\\n  names_block: string,\\n}",
+      "docstrings": [],
+      "detail": {
+        "kind": "record",
+        "fieldDocs": [
+          {
+            "fieldName": "actions",
+            "docstrings": [],
+            "signature": "array<parser_env => Obj.t>"
+          },
+          {
+            "fieldName": "transl_const",
+            "docstrings": [],
+            "signature": "array<int>"
+          },
+          {
+            "fieldName": "transl_block",
+            "docstrings": [],
+            "signature": "array<int>"
+          },
+          {
+            "fieldName": "lhs",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "len",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "defred",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "dgoto",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "sindex",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "rindex",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "gindex",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "tablesize",
+            "docstrings": [],
+            "signature": "int"
+          },
+          {
+            "fieldName": "table",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "check",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "error_function",
+            "docstrings": [],
+            "signature": "string => unit"
+          },
+          {
+            "fieldName": "names_const",
+            "docstrings": [],
+            "signature": "string"
+          },
+          {
+            "fieldName": "names_block",
+            "docstrings": [],
+            "signature": "string"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Parsing.yyparse",
+      "kind": "value",
+      "name": "yyparse",
+      "signature": "let yyparse: (parse_tables, int, Lexing.lexbuf => 'a, Lexing.lexbuf) => 'b",
+      "docstrings": []
+    },
+    {
+      "id": "Parsing.peek_val",
+      "kind": "value",
+      "name": "peek_val",
+      "signature": "let peek_val: (parser_env, int) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Parsing.is_current_lookahead",
+      "kind": "value",
+      "name": "is_current_lookahead",
+      "signature": "let is_current_lookahead: 'a => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Parsing.parse_error",
+      "kind": "value",
+      "name": "parse_error",
+      "signature": "let parse_error: string => unit",
+      "docstrings": []
+    }
+  ]
+}

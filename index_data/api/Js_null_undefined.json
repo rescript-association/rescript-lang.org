@@ -1,0 +1,123 @@
+{
+  "name": "Js_null_undefined",
+  "docstrings": [
+    "Contains functionality for dealing with values that can be both `null` and `undefined`"
+  ],
+  "items": [
+    {
+      "id": "Js_null_undefined.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a> = Js.nullable<'a> = Value('a) | Null | Undefined",
+      "docstrings": [
+        "Local alias for `Js.null_undefined('a)`."
+      ],
+      "detail": {
+        "kind": "variant",
+        "constructorDocs": [
+          {
+            "constructorName": "Value",
+            "docstrings": [],
+            "signature": "Value('a)"
+          },
+          {
+            "constructorName": "Null",
+            "docstrings": [],
+            "signature": "Null"
+          },
+          {
+            "constructorName": "Undefined",
+            "docstrings": [],
+            "signature": "Undefined"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Js_null_undefined.return",
+      "kind": "value",
+      "name": "return",
+      "signature": "let return: 'a => t<'a>",
+      "docstrings": [
+        "Constructs a value of `Js.null_undefined('a)` containing a value of `'a`."
+      ]
+    },
+    {
+      "id": "Js_null_undefined.isNullable",
+      "kind": "value",
+      "name": "isNullable",
+      "signature": "let isNullable: t<'a> => bool",
+      "docstrings": [
+        "Returns `true` if the given value is null or undefined, `false` otherwise."
+      ]
+    },
+    {
+      "id": "Js_null_undefined.null",
+      "kind": "value",
+      "name": "null",
+      "signature": "let null: t<'a>",
+      "docstrings": [
+        "The null value of type `Js.null_undefined('a)`."
+      ]
+    },
+    {
+      "id": "Js_null_undefined.undefined",
+      "kind": "value",
+      "name": "undefined",
+      "signature": "let undefined: t<'a>",
+      "docstrings": [
+        "The undefined value of type `Js.null_undefined('a)`."
+      ]
+    },
+    {
+      "id": "Js_null_undefined.bind",
+      "kind": "value",
+      "name": "bind",
+      "signature": "let bind: (t<'a>, (. 'a) => 'b) => t<'b>",
+      "docstrings": [
+        "Maps the contained value using the given function.\n\nIf `Js.null_undefined('a)` contains a value, that value is unwrapped, mapped to\na `'b` using the given function `a' => 'b`, then wrapped back up and returned\nas `Js.null_undefined('b)`.\n\n```res example\nlet maybeGreetWorld = (maybeGreeting: Js.null_undefined<string>) =>\n  Js.Null_undefined.bind(maybeGreeting, (. greeting) => greeting ++ \" world!\")\n```"
+      ]
+    },
+    {
+      "id": "Js_null_undefined.iter",
+      "kind": "value",
+      "name": "iter",
+      "signature": "let iter: (t<'a>, (. 'a) => unit) => unit",
+      "docstrings": [
+        "Iterates over the contained value with the given function.\nIf `Js.null_undefined('a)` contains a value, that value is unwrapped and applied to the given function.\n\n```res example\nlet maybeSay = (maybeMessage: Js.null_undefined<string>) =>\n  Js.Null_undefined.iter(maybeMessage, (. message) => Js.log(message))\n```"
+      ]
+    },
+    {
+      "id": "Js_null_undefined.fromOption",
+      "kind": "value",
+      "name": "fromOption",
+      "signature": "let fromOption: option<'a> => t<'a>",
+      "docstrings": [
+        "Maps `option('a)` to `Js.null_undefined('a)`.\n`Some(a)` => `a`\n`None` => `undefined`"
+      ]
+    },
+    {
+      "id": "Js_null_undefined.from_opt",
+      "kind": "value",
+      "name": "from_opt",
+      "signature": "let from_opt: option<'a> => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_null_undefined.toOption",
+      "kind": "value",
+      "name": "toOption",
+      "signature": "let toOption: t<'a> => option<'a>",
+      "docstrings": [
+        "Maps `Js.null_undefined('a)` to `option('a)`.\n`a` => `Some(a)`\n`undefined` => `None`\n`null` => `None`"
+      ]
+    },
+    {
+      "id": "Js_null_undefined.to_opt",
+      "kind": "value",
+      "name": "to_opt",
+      "signature": "let to_opt: t<'a> => option<'a>",
+      "docstrings": []
+    }
+  ]
+}

@@ -1,0 +1,1841 @@
+{
+  "name": "Dom",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Dom._baseClass",
+      "kind": "type",
+      "name": "_baseClass",
+      "signature": "type _baseClass",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.animation",
+      "kind": "type",
+      "name": "animation",
+      "signature": "type animation",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.cssStyleDeclaration",
+      "kind": "type",
+      "name": "cssStyleDeclaration",
+      "signature": "type cssStyleDeclaration",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.cssStyleSheet",
+      "kind": "type",
+      "name": "cssStyleSheet",
+      "signature": "type cssStyleSheet",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.eventTarget_like",
+      "kind": "type",
+      "name": "eventTarget_like",
+      "signature": "type eventTarget_like<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.eventTarget",
+      "kind": "type",
+      "name": "eventTarget",
+      "signature": "type eventTarget = eventTarget_like<_baseClass>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._node",
+      "kind": "type",
+      "name": "_node",
+      "signature": "type _node<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.node_like",
+      "kind": "type",
+      "name": "node_like",
+      "signature": "type node_like<'a> = eventTarget_like<_node<'a>>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.node",
+      "kind": "type",
+      "name": "node",
+      "signature": "type node = node_like<_baseClass>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._attr",
+      "kind": "type",
+      "name": "_attr",
+      "signature": "type _attr",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.attr",
+      "kind": "type",
+      "name": "attr",
+      "signature": "type attr = node_like<_attr>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._characterData",
+      "kind": "type",
+      "name": "_characterData",
+      "signature": "type _characterData<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.characterData_like",
+      "kind": "type",
+      "name": "characterData_like",
+      "signature": "type characterData_like<'a> = node_like<_characterData<'a>>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.characterData",
+      "kind": "type",
+      "name": "characterData",
+      "signature": "type characterData = characterData_like<_baseClass>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._cdataSection",
+      "kind": "type",
+      "name": "_cdataSection",
+      "signature": "type _cdataSection",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.cdataSection",
+      "kind": "type",
+      "name": "cdataSection",
+      "signature": "type cdataSection = characterData_like<_cdataSection>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._comment",
+      "kind": "type",
+      "name": "_comment",
+      "signature": "type _comment",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.comment",
+      "kind": "type",
+      "name": "comment",
+      "signature": "type comment = characterData_like<_comment>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._document",
+      "kind": "type",
+      "name": "_document",
+      "signature": "type _document<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.document_like",
+      "kind": "type",
+      "name": "document_like",
+      "signature": "type document_like<'a> = node_like<_document<'a>>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.document",
+      "kind": "type",
+      "name": "document",
+      "signature": "type document = document_like<_baseClass>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._documentFragment",
+      "kind": "type",
+      "name": "_documentFragment",
+      "signature": "type _documentFragment",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.documentFragment",
+      "kind": "type",
+      "name": "documentFragment",
+      "signature": "type documentFragment = node_like<_documentFragment>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._documentType",
+      "kind": "type",
+      "name": "_documentType",
+      "signature": "type _documentType",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.documentType",
+      "kind": "type",
+      "name": "documentType",
+      "signature": "type documentType = node_like<_documentType>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.domImplementation",
+      "kind": "type",
+      "name": "domImplementation",
+      "signature": "type domImplementation",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._element",
+      "kind": "type",
+      "name": "_element",
+      "signature": "type _element<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.element_like",
+      "kind": "type",
+      "name": "element_like",
+      "signature": "type element_like<'a> = node_like<_element<'a>>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.element",
+      "kind": "type",
+      "name": "element",
+      "signature": "type element = element_like<_baseClass>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlCollection",
+      "kind": "type",
+      "name": "htmlCollection",
+      "signature": "type htmlCollection",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlFormControlsCollection",
+      "kind": "type",
+      "name": "htmlFormControlsCollection",
+      "signature": "type htmlFormControlsCollection",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlOptionsCollection",
+      "kind": "type",
+      "name": "htmlOptionsCollection",
+      "signature": "type htmlOptionsCollection",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.intersectionObserver",
+      "kind": "type",
+      "name": "intersectionObserver",
+      "signature": "type intersectionObserver",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.intersectionObserverEntry",
+      "kind": "type",
+      "name": "intersectionObserverEntry",
+      "signature": "type intersectionObserverEntry",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.mutationObserver",
+      "kind": "type",
+      "name": "mutationObserver",
+      "signature": "type mutationObserver",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.mutationRecord",
+      "kind": "type",
+      "name": "mutationRecord",
+      "signature": "type mutationRecord",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.performanceObserver",
+      "kind": "type",
+      "name": "performanceObserver",
+      "signature": "type performanceObserver",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.performanceObserverEntryList",
+      "kind": "type",
+      "name": "performanceObserverEntryList",
+      "signature": "type performanceObserverEntryList",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.reportingObserver",
+      "kind": "type",
+      "name": "reportingObserver",
+      "signature": "type reportingObserver",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.reportingObserverOptions",
+      "kind": "type",
+      "name": "reportingObserverOptions",
+      "signature": "type reportingObserverOptions",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.resizeObserver",
+      "kind": "type",
+      "name": "resizeObserver",
+      "signature": "type resizeObserver",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.resizeObserverEntry",
+      "kind": "type",
+      "name": "resizeObserverEntry",
+      "signature": "type resizeObserverEntry",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.namedNodeMap",
+      "kind": "type",
+      "name": "namedNodeMap",
+      "signature": "type namedNodeMap",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.nodeList",
+      "kind": "type",
+      "name": "nodeList",
+      "signature": "type nodeList",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.radioNodeList",
+      "kind": "type",
+      "name": "radioNodeList",
+      "signature": "type radioNodeList",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.processingInstruction",
+      "kind": "type",
+      "name": "processingInstruction",
+      "signature": "type processingInstruction",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._shadowRoot",
+      "kind": "type",
+      "name": "_shadowRoot",
+      "signature": "type _shadowRoot",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.shadowRoot",
+      "kind": "type",
+      "name": "shadowRoot",
+      "signature": "type shadowRoot = node_like<_shadowRoot>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._text",
+      "kind": "type",
+      "name": "_text",
+      "signature": "type _text",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.text",
+      "kind": "type",
+      "name": "text",
+      "signature": "type text = characterData_like<_text>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.domRect",
+      "kind": "type",
+      "name": "domRect",
+      "signature": "type domRect",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.dataTransfer",
+      "kind": "type",
+      "name": "dataTransfer",
+      "signature": "type dataTransfer",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.domStringMap",
+      "kind": "type",
+      "name": "domStringMap",
+      "signature": "type domStringMap",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.history",
+      "kind": "type",
+      "name": "history",
+      "signature": "type history",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlDocument",
+      "kind": "type",
+      "name": "_htmlDocument",
+      "signature": "type _htmlDocument",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlDocument",
+      "kind": "type",
+      "name": "htmlDocument",
+      "signature": "type htmlDocument = document_like<_htmlDocument>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlElement",
+      "kind": "type",
+      "name": "_htmlElement",
+      "signature": "type _htmlElement<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlElement_like",
+      "kind": "type",
+      "name": "htmlElement_like",
+      "signature": "type htmlElement_like<'a> = element_like<_htmlElement<'a>>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlElement",
+      "kind": "type",
+      "name": "htmlElement",
+      "signature": "type htmlElement = htmlElement_like<_baseClass>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlAnchorElement",
+      "kind": "type",
+      "name": "_htmlAnchorElement",
+      "signature": "type _htmlAnchorElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlAnchorElement",
+      "kind": "type",
+      "name": "htmlAnchorElement",
+      "signature": "type htmlAnchorElement = htmlElement_like<_htmlAnchorElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlAreaElement",
+      "kind": "type",
+      "name": "_htmlAreaElement",
+      "signature": "type _htmlAreaElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlAreaElement",
+      "kind": "type",
+      "name": "htmlAreaElement",
+      "signature": "type htmlAreaElement = htmlElement_like<_htmlAreaElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlAudioElement",
+      "kind": "type",
+      "name": "_htmlAudioElement",
+      "signature": "type _htmlAudioElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlAudioElement",
+      "kind": "type",
+      "name": "htmlAudioElement",
+      "signature": "type htmlAudioElement = htmlElement_like<_htmlAudioElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlBaseElement",
+      "kind": "type",
+      "name": "_htmlBaseElement",
+      "signature": "type _htmlBaseElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlBaseElement",
+      "kind": "type",
+      "name": "htmlBaseElement",
+      "signature": "type htmlBaseElement = htmlElement_like<_htmlBaseElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlBodyElement",
+      "kind": "type",
+      "name": "_htmlBodyElement",
+      "signature": "type _htmlBodyElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlBodyElement",
+      "kind": "type",
+      "name": "htmlBodyElement",
+      "signature": "type htmlBodyElement = htmlElement_like<_htmlBodyElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlBrElement",
+      "kind": "type",
+      "name": "_htmlBrElement",
+      "signature": "type _htmlBrElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlBrElement",
+      "kind": "type",
+      "name": "htmlBrElement",
+      "signature": "type htmlBrElement = htmlElement_like<_htmlBrElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlButtonElement",
+      "kind": "type",
+      "name": "_htmlButtonElement",
+      "signature": "type _htmlButtonElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlButtonElement",
+      "kind": "type",
+      "name": "htmlButtonElement",
+      "signature": "type htmlButtonElement = htmlElement_like<_htmlButtonElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlCanvasElement",
+      "kind": "type",
+      "name": "_htmlCanvasElement",
+      "signature": "type _htmlCanvasElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlCanvasElement",
+      "kind": "type",
+      "name": "htmlCanvasElement",
+      "signature": "type htmlCanvasElement = htmlElement_like<_htmlCanvasElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlDataElement",
+      "kind": "type",
+      "name": "_htmlDataElement",
+      "signature": "type _htmlDataElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlDataElement",
+      "kind": "type",
+      "name": "htmlDataElement",
+      "signature": "type htmlDataElement = htmlElement_like<_htmlDataElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlDataListElement",
+      "kind": "type",
+      "name": "_htmlDataListElement",
+      "signature": "type _htmlDataListElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlDataListElement",
+      "kind": "type",
+      "name": "htmlDataListElement",
+      "signature": "type htmlDataListElement = htmlElement_like<_htmlDataListElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlDialogElement",
+      "kind": "type",
+      "name": "_htmlDialogElement",
+      "signature": "type _htmlDialogElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlDialogElement",
+      "kind": "type",
+      "name": "htmlDialogElement",
+      "signature": "type htmlDialogElement = htmlElement_like<_htmlDialogElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlDivElement",
+      "kind": "type",
+      "name": "_htmlDivElement",
+      "signature": "type _htmlDivElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlDivElement",
+      "kind": "type",
+      "name": "htmlDivElement",
+      "signature": "type htmlDivElement = htmlElement_like<_htmlDivElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlDlistElement",
+      "kind": "type",
+      "name": "_htmlDlistElement",
+      "signature": "type _htmlDlistElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlDlistElement",
+      "kind": "type",
+      "name": "htmlDlistElement",
+      "signature": "type htmlDlistElement = htmlElement_like<_htmlDlistElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlEmbedElement",
+      "kind": "type",
+      "name": "_htmlEmbedElement",
+      "signature": "type _htmlEmbedElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlEmbedElement",
+      "kind": "type",
+      "name": "htmlEmbedElement",
+      "signature": "type htmlEmbedElement = htmlElement_like<_htmlEmbedElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlFieldSetElement",
+      "kind": "type",
+      "name": "_htmlFieldSetElement",
+      "signature": "type _htmlFieldSetElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlFieldSetElement",
+      "kind": "type",
+      "name": "htmlFieldSetElement",
+      "signature": "type htmlFieldSetElement = htmlElement_like<_htmlFieldSetElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlFormElement",
+      "kind": "type",
+      "name": "_htmlFormElement",
+      "signature": "type _htmlFormElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlFormElement",
+      "kind": "type",
+      "name": "htmlFormElement",
+      "signature": "type htmlFormElement = htmlElement_like<_htmlFormElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlHeadElement",
+      "kind": "type",
+      "name": "_htmlHeadElement",
+      "signature": "type _htmlHeadElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlHeadElement",
+      "kind": "type",
+      "name": "htmlHeadElement",
+      "signature": "type htmlHeadElement = htmlElement_like<_htmlHeadElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlHeadingElement",
+      "kind": "type",
+      "name": "_htmlHeadingElement",
+      "signature": "type _htmlHeadingElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlHeadingElement",
+      "kind": "type",
+      "name": "htmlHeadingElement",
+      "signature": "type htmlHeadingElement = htmlElement_like<_htmlHeadingElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlHrElement",
+      "kind": "type",
+      "name": "_htmlHrElement",
+      "signature": "type _htmlHrElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlHrElement",
+      "kind": "type",
+      "name": "htmlHrElement",
+      "signature": "type htmlHrElement = htmlElement_like<_htmlHrElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlHtmlElement",
+      "kind": "type",
+      "name": "_htmlHtmlElement",
+      "signature": "type _htmlHtmlElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlHtmlElement",
+      "kind": "type",
+      "name": "htmlHtmlElement",
+      "signature": "type htmlHtmlElement = htmlElement_like<_htmlHtmlElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlIframeElement",
+      "kind": "type",
+      "name": "_htmlIframeElement",
+      "signature": "type _htmlIframeElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlIframeElement",
+      "kind": "type",
+      "name": "htmlIframeElement",
+      "signature": "type htmlIframeElement = htmlElement_like<_htmlIframeElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlImageElement",
+      "kind": "type",
+      "name": "_htmlImageElement",
+      "signature": "type _htmlImageElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlImageElement",
+      "kind": "type",
+      "name": "htmlImageElement",
+      "signature": "type htmlImageElement = htmlElement_like<_htmlImageElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlInputElement",
+      "kind": "type",
+      "name": "_htmlInputElement",
+      "signature": "type _htmlInputElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlInputElement",
+      "kind": "type",
+      "name": "htmlInputElement",
+      "signature": "type htmlInputElement = htmlElement_like<_htmlInputElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlLabelElement",
+      "kind": "type",
+      "name": "_htmlLabelElement",
+      "signature": "type _htmlLabelElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlLabelElement",
+      "kind": "type",
+      "name": "htmlLabelElement",
+      "signature": "type htmlLabelElement = htmlElement_like<_htmlLabelElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlLegendElement",
+      "kind": "type",
+      "name": "_htmlLegendElement",
+      "signature": "type _htmlLegendElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlLegendElement",
+      "kind": "type",
+      "name": "htmlLegendElement",
+      "signature": "type htmlLegendElement = htmlElement_like<_htmlLegendElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlLiElement",
+      "kind": "type",
+      "name": "_htmlLiElement",
+      "signature": "type _htmlLiElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlLiElement",
+      "kind": "type",
+      "name": "htmlLiElement",
+      "signature": "type htmlLiElement = htmlElement_like<_htmlLiElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlLinkElement",
+      "kind": "type",
+      "name": "_htmlLinkElement",
+      "signature": "type _htmlLinkElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlLinkElement",
+      "kind": "type",
+      "name": "htmlLinkElement",
+      "signature": "type htmlLinkElement = htmlElement_like<_htmlLinkElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlMapElement",
+      "kind": "type",
+      "name": "_htmlMapElement",
+      "signature": "type _htmlMapElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlMapElement",
+      "kind": "type",
+      "name": "htmlMapElement",
+      "signature": "type htmlMapElement = htmlElement_like<_htmlMapElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlMediaElement",
+      "kind": "type",
+      "name": "_htmlMediaElement",
+      "signature": "type _htmlMediaElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlMediaElement",
+      "kind": "type",
+      "name": "htmlMediaElement",
+      "signature": "type htmlMediaElement = htmlElement_like<_htmlMediaElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlMenuElement",
+      "kind": "type",
+      "name": "_htmlMenuElement",
+      "signature": "type _htmlMenuElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlMenuElement",
+      "kind": "type",
+      "name": "htmlMenuElement",
+      "signature": "type htmlMenuElement = htmlElement_like<_htmlMenuElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlMetaElement",
+      "kind": "type",
+      "name": "_htmlMetaElement",
+      "signature": "type _htmlMetaElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlMetaElement",
+      "kind": "type",
+      "name": "htmlMetaElement",
+      "signature": "type htmlMetaElement = htmlElement_like<_htmlMetaElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlMeterElement",
+      "kind": "type",
+      "name": "_htmlMeterElement",
+      "signature": "type _htmlMeterElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlMeterElement",
+      "kind": "type",
+      "name": "htmlMeterElement",
+      "signature": "type htmlMeterElement = htmlElement_like<_htmlMeterElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlModElement",
+      "kind": "type",
+      "name": "_htmlModElement",
+      "signature": "type _htmlModElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlModElement",
+      "kind": "type",
+      "name": "htmlModElement",
+      "signature": "type htmlModElement = htmlElement_like<_htmlModElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlOListElement",
+      "kind": "type",
+      "name": "_htmlOListElement",
+      "signature": "type _htmlOListElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlOListElement",
+      "kind": "type",
+      "name": "htmlOListElement",
+      "signature": "type htmlOListElement = htmlElement_like<_htmlOListElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlObjectElement",
+      "kind": "type",
+      "name": "_htmlObjectElement",
+      "signature": "type _htmlObjectElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlObjectElement",
+      "kind": "type",
+      "name": "htmlObjectElement",
+      "signature": "type htmlObjectElement = htmlElement_like<_htmlObjectElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlOptGroupElement",
+      "kind": "type",
+      "name": "_htmlOptGroupElement",
+      "signature": "type _htmlOptGroupElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlOptGroupElement",
+      "kind": "type",
+      "name": "htmlOptGroupElement",
+      "signature": "type htmlOptGroupElement = htmlElement_like<_htmlOptGroupElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlOptionElement",
+      "kind": "type",
+      "name": "_htmlOptionElement",
+      "signature": "type _htmlOptionElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlOptionElement",
+      "kind": "type",
+      "name": "htmlOptionElement",
+      "signature": "type htmlOptionElement = htmlElement_like<_htmlOptionElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlOutputElement",
+      "kind": "type",
+      "name": "_htmlOutputElement",
+      "signature": "type _htmlOutputElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlOutputElement",
+      "kind": "type",
+      "name": "htmlOutputElement",
+      "signature": "type htmlOutputElement = htmlElement_like<_htmlOutputElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlParagraphElement",
+      "kind": "type",
+      "name": "_htmlParagraphElement",
+      "signature": "type _htmlParagraphElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlParagraphElement",
+      "kind": "type",
+      "name": "htmlParagraphElement",
+      "signature": "type htmlParagraphElement = htmlElement_like<_htmlParagraphElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlParamElement",
+      "kind": "type",
+      "name": "_htmlParamElement",
+      "signature": "type _htmlParamElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlParamElement",
+      "kind": "type",
+      "name": "htmlParamElement",
+      "signature": "type htmlParamElement = htmlElement_like<_htmlParamElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlPreElement",
+      "kind": "type",
+      "name": "_htmlPreElement",
+      "signature": "type _htmlPreElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlPreElement",
+      "kind": "type",
+      "name": "htmlPreElement",
+      "signature": "type htmlPreElement = htmlElement_like<_htmlPreElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlProgressElement",
+      "kind": "type",
+      "name": "_htmlProgressElement",
+      "signature": "type _htmlProgressElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlProgressElement",
+      "kind": "type",
+      "name": "htmlProgressElement",
+      "signature": "type htmlProgressElement = htmlElement_like<_htmlProgressElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlQuoteElement",
+      "kind": "type",
+      "name": "_htmlQuoteElement",
+      "signature": "type _htmlQuoteElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlQuoteElement",
+      "kind": "type",
+      "name": "htmlQuoteElement",
+      "signature": "type htmlQuoteElement = htmlElement_like<_htmlQuoteElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlScriptElement",
+      "kind": "type",
+      "name": "_htmlScriptElement",
+      "signature": "type _htmlScriptElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlScriptElement",
+      "kind": "type",
+      "name": "htmlScriptElement",
+      "signature": "type htmlScriptElement = htmlElement_like<_htmlScriptElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlSelectElement",
+      "kind": "type",
+      "name": "_htmlSelectElement",
+      "signature": "type _htmlSelectElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlSelectElement",
+      "kind": "type",
+      "name": "htmlSelectElement",
+      "signature": "type htmlSelectElement = htmlElement_like<_htmlSelectElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlSlotElement",
+      "kind": "type",
+      "name": "_htmlSlotElement",
+      "signature": "type _htmlSlotElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlSlotElement",
+      "kind": "type",
+      "name": "htmlSlotElement",
+      "signature": "type htmlSlotElement = htmlElement_like<_htmlSlotElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlSourceElement",
+      "kind": "type",
+      "name": "_htmlSourceElement",
+      "signature": "type _htmlSourceElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlSourceElement",
+      "kind": "type",
+      "name": "htmlSourceElement",
+      "signature": "type htmlSourceElement = htmlElement_like<_htmlSourceElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlSpanElement",
+      "kind": "type",
+      "name": "_htmlSpanElement",
+      "signature": "type _htmlSpanElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlSpanElement",
+      "kind": "type",
+      "name": "htmlSpanElement",
+      "signature": "type htmlSpanElement = htmlElement_like<_htmlSpanElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlStyleElement",
+      "kind": "type",
+      "name": "_htmlStyleElement",
+      "signature": "type _htmlStyleElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlStyleElement",
+      "kind": "type",
+      "name": "htmlStyleElement",
+      "signature": "type htmlStyleElement = htmlElement_like<_htmlStyleElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlTableCaptionElement",
+      "kind": "type",
+      "name": "_htmlTableCaptionElement",
+      "signature": "type _htmlTableCaptionElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlTableCaptionElement",
+      "kind": "type",
+      "name": "htmlTableCaptionElement",
+      "signature": "type htmlTableCaptionElement = htmlElement_like<_htmlTableCaptionElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlTableCellElement",
+      "kind": "type",
+      "name": "_htmlTableCellElement",
+      "signature": "type _htmlTableCellElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlTableCellElement",
+      "kind": "type",
+      "name": "htmlTableCellElement",
+      "signature": "type htmlTableCellElement = htmlElement_like<_htmlTableCellElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlTableColElement",
+      "kind": "type",
+      "name": "_htmlTableColElement",
+      "signature": "type _htmlTableColElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlTableColElement",
+      "kind": "type",
+      "name": "htmlTableColElement",
+      "signature": "type htmlTableColElement = htmlElement_like<_htmlTableColElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlTableDataCellElement",
+      "kind": "type",
+      "name": "_htmlTableDataCellElement",
+      "signature": "type _htmlTableDataCellElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlTableDataCellElement",
+      "kind": "type",
+      "name": "htmlTableDataCellElement",
+      "signature": "type htmlTableDataCellElement = htmlElement_like<_htmlTableDataCellElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlTableElement",
+      "kind": "type",
+      "name": "_htmlTableElement",
+      "signature": "type _htmlTableElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlTableElement",
+      "kind": "type",
+      "name": "htmlTableElement",
+      "signature": "type htmlTableElement = htmlElement_like<_htmlTableElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlTableHeaderCellElement",
+      "kind": "type",
+      "name": "_htmlTableHeaderCellElement",
+      "signature": "type _htmlTableHeaderCellElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlTableHeaderCellElement",
+      "kind": "type",
+      "name": "htmlTableHeaderCellElement",
+      "signature": "type htmlTableHeaderCellElement = htmlElement_like<_htmlTableHeaderCellElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlTableRowElement",
+      "kind": "type",
+      "name": "_htmlTableRowElement",
+      "signature": "type _htmlTableRowElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlTableRowElement",
+      "kind": "type",
+      "name": "htmlTableRowElement",
+      "signature": "type htmlTableRowElement = htmlElement_like<_htmlTableRowElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlTableSectionElement",
+      "kind": "type",
+      "name": "_htmlTableSectionElement",
+      "signature": "type _htmlTableSectionElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlTableSectionElement",
+      "kind": "type",
+      "name": "htmlTableSectionElement",
+      "signature": "type htmlTableSectionElement = htmlElement_like<_htmlTableSectionElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlTextAreaElement",
+      "kind": "type",
+      "name": "_htmlTextAreaElement",
+      "signature": "type _htmlTextAreaElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlTextAreaElement",
+      "kind": "type",
+      "name": "htmlTextAreaElement",
+      "signature": "type htmlTextAreaElement = htmlElement_like<_htmlTextAreaElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlTimeElement",
+      "kind": "type",
+      "name": "_htmlTimeElement",
+      "signature": "type _htmlTimeElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlTimeElement",
+      "kind": "type",
+      "name": "htmlTimeElement",
+      "signature": "type htmlTimeElement = htmlElement_like<_htmlTimeElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlTitleElement",
+      "kind": "type",
+      "name": "_htmlTitleElement",
+      "signature": "type _htmlTitleElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlTitleElement",
+      "kind": "type",
+      "name": "htmlTitleElement",
+      "signature": "type htmlTitleElement = htmlElement_like<_htmlTitleElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlTrackElement",
+      "kind": "type",
+      "name": "_htmlTrackElement",
+      "signature": "type _htmlTrackElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlTrackElement",
+      "kind": "type",
+      "name": "htmlTrackElement",
+      "signature": "type htmlTrackElement = htmlElement_like<_htmlTrackElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlUlistElement",
+      "kind": "type",
+      "name": "_htmlUlistElement",
+      "signature": "type _htmlUlistElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlUlistElement",
+      "kind": "type",
+      "name": "htmlUlistElement",
+      "signature": "type htmlUlistElement = htmlElement_like<_htmlUlistElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlUnknownElement",
+      "kind": "type",
+      "name": "_htmlUnknownElement",
+      "signature": "type _htmlUnknownElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlUnknownElement",
+      "kind": "type",
+      "name": "htmlUnknownElement",
+      "signature": "type htmlUnknownElement = htmlElement_like<_htmlUnknownElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._htmlVideoElement",
+      "kind": "type",
+      "name": "_htmlVideoElement",
+      "signature": "type _htmlVideoElement",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.htmlVideoElement",
+      "kind": "type",
+      "name": "htmlVideoElement",
+      "signature": "type htmlVideoElement = htmlElement_like<_htmlVideoElement>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.location",
+      "kind": "type",
+      "name": "location",
+      "signature": "type location",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.window",
+      "kind": "type",
+      "name": "window",
+      "signature": "type window",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._xmlDocument",
+      "kind": "type",
+      "name": "_xmlDocument",
+      "signature": "type _xmlDocument",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.xmlDocument",
+      "kind": "type",
+      "name": "xmlDocument",
+      "signature": "type xmlDocument = document_like<_xmlDocument>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.event_like",
+      "kind": "type",
+      "name": "event_like",
+      "signature": "type event_like<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.event",
+      "kind": "type",
+      "name": "event",
+      "signature": "type event = event_like<_baseClass>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._uiEvent",
+      "kind": "type",
+      "name": "_uiEvent",
+      "signature": "type _uiEvent<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.uiEvent_like",
+      "kind": "type",
+      "name": "uiEvent_like",
+      "signature": "type uiEvent_like<'a> = event_like<_uiEvent<'a>>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.uiEvent",
+      "kind": "type",
+      "name": "uiEvent",
+      "signature": "type uiEvent = uiEvent_like<_baseClass>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._animationEvent",
+      "kind": "type",
+      "name": "_animationEvent",
+      "signature": "type _animationEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.animationEvent",
+      "kind": "type",
+      "name": "animationEvent",
+      "signature": "type animationEvent = event_like<_animationEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._beforeUnloadEvent",
+      "kind": "type",
+      "name": "_beforeUnloadEvent",
+      "signature": "type _beforeUnloadEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.beforeUnloadEvent",
+      "kind": "type",
+      "name": "beforeUnloadEvent",
+      "signature": "type beforeUnloadEvent = event_like<_beforeUnloadEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._clipboardEvent",
+      "kind": "type",
+      "name": "_clipboardEvent",
+      "signature": "type _clipboardEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.clipboardEvent",
+      "kind": "type",
+      "name": "clipboardEvent",
+      "signature": "type clipboardEvent = event_like<_clipboardEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._closeEvent",
+      "kind": "type",
+      "name": "_closeEvent",
+      "signature": "type _closeEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.closeEvent",
+      "kind": "type",
+      "name": "closeEvent",
+      "signature": "type closeEvent = event_like<_closeEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._compositionEvent",
+      "kind": "type",
+      "name": "_compositionEvent",
+      "signature": "type _compositionEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.compositionEvent",
+      "kind": "type",
+      "name": "compositionEvent",
+      "signature": "type compositionEvent = uiEvent_like<_compositionEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._customEvent",
+      "kind": "type",
+      "name": "_customEvent",
+      "signature": "type _customEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.customEvent",
+      "kind": "type",
+      "name": "customEvent",
+      "signature": "type customEvent = event_like<_customEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._dragEvent",
+      "kind": "type",
+      "name": "_dragEvent",
+      "signature": "type _dragEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.dragEvent",
+      "kind": "type",
+      "name": "dragEvent",
+      "signature": "type dragEvent = event_like<_dragEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._errorEvent",
+      "kind": "type",
+      "name": "_errorEvent",
+      "signature": "type _errorEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.errorEvent",
+      "kind": "type",
+      "name": "errorEvent",
+      "signature": "type errorEvent = event_like<_errorEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._focusEvent",
+      "kind": "type",
+      "name": "_focusEvent",
+      "signature": "type _focusEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.focusEvent",
+      "kind": "type",
+      "name": "focusEvent",
+      "signature": "type focusEvent = uiEvent_like<_focusEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._idbVersionChangeEvent",
+      "kind": "type",
+      "name": "_idbVersionChangeEvent",
+      "signature": "type _idbVersionChangeEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.idbVersionChangeEvent",
+      "kind": "type",
+      "name": "idbVersionChangeEvent",
+      "signature": "type idbVersionChangeEvent = event_like<_idbVersionChangeEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._inputEvent",
+      "kind": "type",
+      "name": "_inputEvent",
+      "signature": "type _inputEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.inputEvent",
+      "kind": "type",
+      "name": "inputEvent",
+      "signature": "type inputEvent = uiEvent_like<_inputEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._keyboardEvent",
+      "kind": "type",
+      "name": "_keyboardEvent",
+      "signature": "type _keyboardEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.keyboardEvent",
+      "kind": "type",
+      "name": "keyboardEvent",
+      "signature": "type keyboardEvent = uiEvent_like<_keyboardEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._mouseEvent",
+      "kind": "type",
+      "name": "_mouseEvent",
+      "signature": "type _mouseEvent<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.mouseEvent_like",
+      "kind": "type",
+      "name": "mouseEvent_like",
+      "signature": "type mouseEvent_like<'a> = uiEvent_like<_mouseEvent<'a>>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.mouseEvent",
+      "kind": "type",
+      "name": "mouseEvent",
+      "signature": "type mouseEvent = mouseEvent_like<_baseClass>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._pageTransitionEvent",
+      "kind": "type",
+      "name": "_pageTransitionEvent",
+      "signature": "type _pageTransitionEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.pageTransitionEvent",
+      "kind": "type",
+      "name": "pageTransitionEvent",
+      "signature": "type pageTransitionEvent = event_like<_pageTransitionEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._pointerEvent",
+      "kind": "type",
+      "name": "_pointerEvent",
+      "signature": "type _pointerEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.pointerEvent",
+      "kind": "type",
+      "name": "pointerEvent",
+      "signature": "type pointerEvent = mouseEvent_like<_pointerEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._popStateEvent",
+      "kind": "type",
+      "name": "_popStateEvent",
+      "signature": "type _popStateEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.popStateEvent",
+      "kind": "type",
+      "name": "popStateEvent",
+      "signature": "type popStateEvent = event_like<_popStateEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._progressEvent",
+      "kind": "type",
+      "name": "_progressEvent",
+      "signature": "type _progressEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.progressEvent",
+      "kind": "type",
+      "name": "progressEvent",
+      "signature": "type progressEvent = event_like<_progressEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._relatedEvent",
+      "kind": "type",
+      "name": "_relatedEvent",
+      "signature": "type _relatedEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.relatedEvent",
+      "kind": "type",
+      "name": "relatedEvent",
+      "signature": "type relatedEvent = event_like<_relatedEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._storageEvent",
+      "kind": "type",
+      "name": "_storageEvent",
+      "signature": "type _storageEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.storageEvent",
+      "kind": "type",
+      "name": "storageEvent",
+      "signature": "type storageEvent = event_like<_storageEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._svgZoomEvent",
+      "kind": "type",
+      "name": "_svgZoomEvent",
+      "signature": "type _svgZoomEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.svgZoomEvent",
+      "kind": "type",
+      "name": "svgZoomEvent",
+      "signature": "type svgZoomEvent = event_like<_svgZoomEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._timeEvent",
+      "kind": "type",
+      "name": "_timeEvent",
+      "signature": "type _timeEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.timeEvent",
+      "kind": "type",
+      "name": "timeEvent",
+      "signature": "type timeEvent = event_like<_timeEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._touchEvent",
+      "kind": "type",
+      "name": "_touchEvent",
+      "signature": "type _touchEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.touchEvent",
+      "kind": "type",
+      "name": "touchEvent",
+      "signature": "type touchEvent = uiEvent_like<_touchEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._trackEvent",
+      "kind": "type",
+      "name": "_trackEvent",
+      "signature": "type _trackEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.trackEvent",
+      "kind": "type",
+      "name": "trackEvent",
+      "signature": "type trackEvent = event_like<_trackEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._transitionEvent",
+      "kind": "type",
+      "name": "_transitionEvent",
+      "signature": "type _transitionEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.transitionEvent",
+      "kind": "type",
+      "name": "transitionEvent",
+      "signature": "type transitionEvent = event_like<_transitionEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._webGlContextEvent",
+      "kind": "type",
+      "name": "_webGlContextEvent",
+      "signature": "type _webGlContextEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.webGlContextEvent",
+      "kind": "type",
+      "name": "webGlContextEvent",
+      "signature": "type webGlContextEvent = event_like<_webGlContextEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom._wheelEvent",
+      "kind": "type",
+      "name": "_wheelEvent",
+      "signature": "type _wheelEvent",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.wheelEvent",
+      "kind": "type",
+      "name": "wheelEvent",
+      "signature": "type wheelEvent = uiEvent_like<_wheelEvent>",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.range",
+      "kind": "type",
+      "name": "range",
+      "signature": "type range",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.selection",
+      "kind": "type",
+      "name": "selection",
+      "signature": "type selection",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.domTokenList",
+      "kind": "type",
+      "name": "domTokenList",
+      "signature": "type domTokenList",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.domSettableTokenList",
+      "kind": "type",
+      "name": "domSettableTokenList",
+      "signature": "type domSettableTokenList",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.nodeFilter",
+      "kind": "type",
+      "name": "nodeFilter",
+      "signature": "type nodeFilter = {acceptNode: element => int}",
+      "docstrings": [],
+      "detail": {
+        "kind": "record",
+        "fieldDocs": [
+          {
+            "fieldName": "acceptNode",
+            "docstrings": [],
+            "signature": "element => int"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Dom.nodeIterator",
+      "kind": "type",
+      "name": "nodeIterator",
+      "signature": "type nodeIterator",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.treeWalker",
+      "kind": "type",
+      "name": "treeWalker",
+      "signature": "type treeWalker",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.svgRect",
+      "kind": "type",
+      "name": "svgRect",
+      "signature": "type svgRect",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.svgPoint",
+      "kind": "type",
+      "name": "svgPoint",
+      "signature": "type svgPoint",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.eventPointerId",
+      "kind": "type",
+      "name": "eventPointerId",
+      "signature": "type eventPointerId",
+      "docstrings": []
+    },
+    {
+      "id": "Dom.Dom_storage",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module Storage = Dom_storage"
+    },
+    {
+      "id": "Dom.Dom_storage2",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module Storage2 = Dom_storage2"
+    }
+  ]
+}

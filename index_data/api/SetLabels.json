@@ -1,0 +1,731 @@
+{
+  "name": "SetLabels",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "OrderedType.SetLabels",
+      "kind": "module",
+      "item": {
+        "name": "OrderedType",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "SetLabels.OrderedType.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.OrderedType.compare",
+            "kind": "value",
+            "name": "compare",
+            "signature": "let compare: (t, t) => int",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S.SetLabels",
+      "kind": "module",
+      "item": {
+        "name": "S",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "SetLabels.S.elt",
+            "kind": "type",
+            "name": "elt",
+            "signature": "type elt",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.empty",
+            "kind": "value",
+            "name": "empty",
+            "signature": "let empty: t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.is_empty",
+            "kind": "value",
+            "name": "is_empty",
+            "signature": "let is_empty: t => bool",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.mem",
+            "kind": "value",
+            "name": "mem",
+            "signature": "let mem: (elt, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.add",
+            "kind": "value",
+            "name": "add",
+            "signature": "let add: (elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.singleton",
+            "kind": "value",
+            "name": "singleton",
+            "signature": "let singleton: elt => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.remove",
+            "kind": "value",
+            "name": "remove",
+            "signature": "let remove: (elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.union",
+            "kind": "value",
+            "name": "union",
+            "signature": "let union: (t, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.inter",
+            "kind": "value",
+            "name": "inter",
+            "signature": "let inter: (t, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.diff",
+            "kind": "value",
+            "name": "diff",
+            "signature": "let diff: (t, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.compare",
+            "kind": "value",
+            "name": "compare",
+            "signature": "let compare: (t, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.equal",
+            "kind": "value",
+            "name": "equal",
+            "signature": "let equal: (t, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.subset",
+            "kind": "value",
+            "name": "subset",
+            "signature": "let subset: (t, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.iter",
+            "kind": "value",
+            "name": "iter",
+            "signature": "let iter: (~f: elt => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.map",
+            "kind": "value",
+            "name": "map",
+            "signature": "let map: (~f: elt => elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.fold",
+            "kind": "value",
+            "name": "fold",
+            "signature": "let fold: (~f: (elt, 'a) => 'a, t, ~init: 'a) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.for_all",
+            "kind": "value",
+            "name": "for_all",
+            "signature": "let for_all: (~f: elt => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.exists",
+            "kind": "value",
+            "name": "exists",
+            "signature": "let exists: (~f: elt => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.filter",
+            "kind": "value",
+            "name": "filter",
+            "signature": "let filter: (~f: elt => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.partition",
+            "kind": "value",
+            "name": "partition",
+            "signature": "let partition: (~f: elt => bool, t) => (t, t)",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.cardinal",
+            "kind": "value",
+            "name": "cardinal",
+            "signature": "let cardinal: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.elements",
+            "kind": "value",
+            "name": "elements",
+            "signature": "let elements: t => list<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.min_elt",
+            "kind": "value",
+            "name": "min_elt",
+            "signature": "let min_elt: t => elt",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.min_elt_opt",
+            "kind": "value",
+            "name": "min_elt_opt",
+            "signature": "let min_elt_opt: t => option<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.max_elt",
+            "kind": "value",
+            "name": "max_elt",
+            "signature": "let max_elt: t => elt",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.max_elt_opt",
+            "kind": "value",
+            "name": "max_elt_opt",
+            "signature": "let max_elt_opt: t => option<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.choose",
+            "kind": "value",
+            "name": "choose",
+            "signature": "let choose: t => elt",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.choose_opt",
+            "kind": "value",
+            "name": "choose_opt",
+            "signature": "let choose_opt: t => option<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.split",
+            "kind": "value",
+            "name": "split",
+            "signature": "let split: (elt, t) => (t, bool, t)",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.find",
+            "kind": "value",
+            "name": "find",
+            "signature": "let find: (elt, t) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.find_opt",
+            "kind": "value",
+            "name": "find_opt",
+            "signature": "let find_opt: (elt, t) => option<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.find_first",
+            "kind": "value",
+            "name": "find_first",
+            "signature": "let find_first: (~f: elt => bool, t) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.find_first_opt",
+            "kind": "value",
+            "name": "find_first_opt",
+            "signature": "let find_first_opt: (~f: elt => bool, t) => option<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.find_last",
+            "kind": "value",
+            "name": "find_last",
+            "signature": "let find_last: (~f: elt => bool, t) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.find_last_opt",
+            "kind": "value",
+            "name": "find_last_opt",
+            "signature": "let find_last_opt: (~f: elt => bool, t) => option<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.S.of_list",
+            "kind": "value",
+            "name": "of_list",
+            "signature": "let of_list: list<elt> => t",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Make.SetLabels",
+      "kind": "module",
+      "item": {
+        "name": "Make",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "SetLabels.Make.elt",
+            "kind": "type",
+            "name": "elt",
+            "signature": "type elt = Ord.t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = Empty | Node({l: t, v: elt, r: t, h: int})",
+            "docstrings": [],
+            "detail": {
+              "kind": "variant",
+              "constructorDocs": [
+                {
+                  "constructorName": "Empty",
+                  "docstrings": [],
+                  "signature": "Empty"
+                },
+                {
+                  "constructorName": "Node",
+                  "docstrings": [],
+                  "signature": "Node"
+                }
+              ]
+            }
+          },
+          {
+            "id": "SetLabels.Make.height",
+            "kind": "value",
+            "name": "height",
+            "signature": "let height: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.create",
+            "kind": "value",
+            "name": "create",
+            "signature": "let create: (t, elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.bal",
+            "kind": "value",
+            "name": "bal",
+            "signature": "let bal: (t, elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.add",
+            "kind": "value",
+            "name": "add",
+            "signature": "let add: (elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.singleton",
+            "kind": "value",
+            "name": "singleton",
+            "signature": "let singleton: elt => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.add_min_element",
+            "kind": "value",
+            "name": "add_min_element",
+            "signature": "let add_min_element: (elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.add_max_element",
+            "kind": "value",
+            "name": "add_max_element",
+            "signature": "let add_max_element: (elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.join",
+            "kind": "value",
+            "name": "join",
+            "signature": "let join: (t, elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.min_elt",
+            "kind": "value",
+            "name": "min_elt",
+            "signature": "let min_elt: t => elt",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.min_elt_opt",
+            "kind": "value",
+            "name": "min_elt_opt",
+            "signature": "let min_elt_opt: t => option<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.max_elt",
+            "kind": "value",
+            "name": "max_elt",
+            "signature": "let max_elt: t => elt",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.max_elt_opt",
+            "kind": "value",
+            "name": "max_elt_opt",
+            "signature": "let max_elt_opt: t => option<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.remove_min_elt",
+            "kind": "value",
+            "name": "remove_min_elt",
+            "signature": "let remove_min_elt: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.merge",
+            "kind": "value",
+            "name": "merge",
+            "signature": "let merge: (t, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.concat",
+            "kind": "value",
+            "name": "concat",
+            "signature": "let concat: (t, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.split",
+            "kind": "value",
+            "name": "split",
+            "signature": "let split: (Ord.t, t) => (t, bool, t)",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.empty",
+            "kind": "value",
+            "name": "empty",
+            "signature": "let empty: t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.is_empty",
+            "kind": "value",
+            "name": "is_empty",
+            "signature": "let is_empty: t => bool",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.mem",
+            "kind": "value",
+            "name": "mem",
+            "signature": "let mem: (Ord.t, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.remove",
+            "kind": "value",
+            "name": "remove",
+            "signature": "let remove: (Ord.t, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.union",
+            "kind": "value",
+            "name": "union",
+            "signature": "let union: (t, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.inter",
+            "kind": "value",
+            "name": "inter",
+            "signature": "let inter: (t, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.diff",
+            "kind": "value",
+            "name": "diff",
+            "signature": "let diff: (t, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.enumeration",
+            "kind": "type",
+            "name": "enumeration",
+            "signature": "type enumeration = End | More(elt, t, enumeration)",
+            "docstrings": [],
+            "detail": {
+              "kind": "variant",
+              "constructorDocs": [
+                {
+                  "constructorName": "End",
+                  "docstrings": [],
+                  "signature": "End"
+                },
+                {
+                  "constructorName": "More",
+                  "docstrings": [],
+                  "signature": "More(elt, t, enumeration)"
+                }
+              ]
+            }
+          },
+          {
+            "id": "SetLabels.Make.cons_enum",
+            "kind": "value",
+            "name": "cons_enum",
+            "signature": "let cons_enum: (t, enumeration) => enumeration",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.compare_aux",
+            "kind": "value",
+            "name": "compare_aux",
+            "signature": "let compare_aux: (enumeration, enumeration) => int",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.compare",
+            "kind": "value",
+            "name": "compare",
+            "signature": "let compare: (t, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.equal",
+            "kind": "value",
+            "name": "equal",
+            "signature": "let equal: (t, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.subset",
+            "kind": "value",
+            "name": "subset",
+            "signature": "let subset: (t, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.iter",
+            "kind": "value",
+            "name": "iter",
+            "signature": "let iter: (~f: elt => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.fold",
+            "kind": "value",
+            "name": "fold",
+            "signature": "let fold: (~f: (elt, 'a) => 'a, t, ~init: 'a) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.for_all",
+            "kind": "value",
+            "name": "for_all",
+            "signature": "let for_all: (~f: elt => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.exists",
+            "kind": "value",
+            "name": "exists",
+            "signature": "let exists: (~f: elt => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.filter",
+            "kind": "value",
+            "name": "filter",
+            "signature": "let filter: (~f: elt => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.partition",
+            "kind": "value",
+            "name": "partition",
+            "signature": "let partition: (~f: elt => bool, t) => (t, t)",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.cardinal",
+            "kind": "value",
+            "name": "cardinal",
+            "signature": "let cardinal: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.elements_aux",
+            "kind": "value",
+            "name": "elements_aux",
+            "signature": "let elements_aux: (list<elt>, t) => list<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.elements",
+            "kind": "value",
+            "name": "elements",
+            "signature": "let elements: t => list<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.choose",
+            "kind": "value",
+            "name": "choose",
+            "signature": "let choose: t => elt",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.choose_opt",
+            "kind": "value",
+            "name": "choose_opt",
+            "signature": "let choose_opt: t => option<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.find",
+            "kind": "value",
+            "name": "find",
+            "signature": "let find: (Ord.t, t) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.find_first_aux",
+            "kind": "value",
+            "name": "find_first_aux",
+            "signature": "let find_first_aux: (elt, elt => bool, t) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.find_first",
+            "kind": "value",
+            "name": "find_first",
+            "signature": "let find_first: (~f: elt => bool, t) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.find_first_opt_aux",
+            "kind": "value",
+            "name": "find_first_opt_aux",
+            "signature": "let find_first_opt_aux: (elt, elt => bool, t) => option<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.find_first_opt",
+            "kind": "value",
+            "name": "find_first_opt",
+            "signature": "let find_first_opt: (~f: elt => bool, t) => option<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.find_last_aux",
+            "kind": "value",
+            "name": "find_last_aux",
+            "signature": "let find_last_aux: (elt, elt => bool, t) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.find_last",
+            "kind": "value",
+            "name": "find_last",
+            "signature": "let find_last: (~f: elt => bool, t) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.find_last_opt_aux",
+            "kind": "value",
+            "name": "find_last_opt_aux",
+            "signature": "let find_last_opt_aux: (elt, elt => bool, t) => option<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.find_last_opt",
+            "kind": "value",
+            "name": "find_last_opt",
+            "signature": "let find_last_opt: (~f: elt => bool, t) => option<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.find_opt",
+            "kind": "value",
+            "name": "find_opt",
+            "signature": "let find_opt: (Ord.t, t) => option<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.try_join",
+            "kind": "value",
+            "name": "try_join",
+            "signature": "let try_join: (t, elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.map",
+            "kind": "value",
+            "name": "map",
+            "signature": "let map: (~f: elt => elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.of_sorted_list",
+            "kind": "value",
+            "name": "of_sorted_list",
+            "signature": "let of_sorted_list: list<elt> => t",
+            "docstrings": []
+          },
+          {
+            "id": "SetLabels.Make.of_list",
+            "kind": "value",
+            "name": "of_list",
+            "signature": "let of_list: list<elt> => t",
+            "docstrings": []
+          }
+        ]
+      }
+    }
+  ]
+}

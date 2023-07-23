@@ -1,0 +1,121 @@
+{
+  "name": "Js_exn",
+  "docstrings": [
+    "Provide utilities for dealing with JS exceptions."
+  ],
+  "items": [
+    {
+      "id": "Js_exn.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t",
+      "docstrings": [
+        "Represents a JS exception"
+      ]
+    },
+    {
+      "id": "Js_exn.asJsExn",
+      "kind": "value",
+      "name": "asJsExn",
+      "signature": "let asJsExn: exn => option<t>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_exn.stack",
+      "kind": "value",
+      "name": "stack",
+      "signature": "let stack: t => option<string>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_exn.message",
+      "kind": "value",
+      "name": "message",
+      "signature": "let message: t => option<string>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_exn.name",
+      "kind": "value",
+      "name": "name",
+      "signature": "let name: t => option<string>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_exn.fileName",
+      "kind": "value",
+      "name": "fileName",
+      "signature": "let fileName: t => option<string>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_exn.isCamlExceptionOrOpenVariant",
+      "kind": "value",
+      "name": "isCamlExceptionOrOpenVariant",
+      "signature": "let isCamlExceptionOrOpenVariant: 'a => bool",
+      "docstrings": [
+        "internal use only"
+      ]
+    },
+    {
+      "id": "Js_exn.anyToExnInternal",
+      "kind": "value",
+      "name": "anyToExnInternal",
+      "signature": "let anyToExnInternal: 'a => exn",
+      "docstrings": [
+        "`anyToExnInternal obj` will take any value `obj` and wrap it\n  in a Js.Exn.Error if given value is not an exn already. If\n  `obj` is an exn, it will return `obj` without any changes.\n\n  This function is mostly useful for cases where you want to unify a type of a value\n  that potentially is either exn, a JS error, or any other JS value really (e.g. for\n  a value passed to a Promise.catch callback)\n\n  **IMPORTANT**: This is an internal API and may be changed / removed any time in the future.\n\n  ```\n  switch (Js.Exn.unsafeAnyToExn(\"test\")) {\n  | Js.Exn.Error(v) =>\n    switch(Js.Exn.message(v)) {\n    | Some(str) => Js.log(\"We won't end up here\")\n    | None => Js.log2(\"We will land here: \", v)\n    }\n  }\n  ```"
+      ]
+    },
+    {
+      "id": "Js_exn.raiseError",
+      "kind": "value",
+      "name": "raiseError",
+      "signature": "let raiseError: string => 'a",
+      "docstrings": [
+        "Raise Js exception Error object with stacktrace"
+      ]
+    },
+    {
+      "id": "Js_exn.raiseEvalError",
+      "kind": "value",
+      "name": "raiseEvalError",
+      "signature": "let raiseEvalError: string => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Js_exn.raiseRangeError",
+      "kind": "value",
+      "name": "raiseRangeError",
+      "signature": "let raiseRangeError: string => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Js_exn.raiseReferenceError",
+      "kind": "value",
+      "name": "raiseReferenceError",
+      "signature": "let raiseReferenceError: string => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Js_exn.raiseSyntaxError",
+      "kind": "value",
+      "name": "raiseSyntaxError",
+      "signature": "let raiseSyntaxError: string => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Js_exn.raiseTypeError",
+      "kind": "value",
+      "name": "raiseTypeError",
+      "signature": "let raiseTypeError: string => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Js_exn.raiseUriError",
+      "kind": "value",
+      "name": "raiseUriError",
+      "signature": "let raiseUriError: string => 'a",
+      "docstrings": []
+    }
+  ]
+}

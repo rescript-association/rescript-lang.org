@@ -1,0 +1,105 @@
+{
+  "name": "Stack",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Stack.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a>",
+      "docstrings": [
+        "The type of stacks containing elements of type ['a]."
+      ]
+    },
+    {
+      "id": "Stack.create",
+      "kind": "value",
+      "name": "create",
+      "signature": "let create: unit => t<'a>",
+      "docstrings": [
+        "Return a new stack, initially empty."
+      ]
+    },
+    {
+      "id": "Stack.push",
+      "kind": "value",
+      "name": "push",
+      "signature": "let push: ('a, t<'a>) => unit",
+      "docstrings": [
+        "[push x s] adds the element [x] at the top of stack [s]."
+      ]
+    },
+    {
+      "id": "Stack.pop",
+      "kind": "value",
+      "name": "pop",
+      "signature": "let pop: t<'a> => 'a",
+      "docstrings": [
+        "[pop s] removes and returns the topmost element in stack [s],\n   or raises {!Empty} if the stack is empty."
+      ]
+    },
+    {
+      "id": "Stack.top",
+      "kind": "value",
+      "name": "top",
+      "signature": "let top: t<'a> => 'a",
+      "docstrings": [
+        "[top s] returns the topmost element in stack [s],\n   or raises {!Empty} if the stack is empty."
+      ]
+    },
+    {
+      "id": "Stack.clear",
+      "kind": "value",
+      "name": "clear",
+      "signature": "let clear: t<'a> => unit",
+      "docstrings": [
+        "Discard all elements from a stack."
+      ]
+    },
+    {
+      "id": "Stack.copy",
+      "kind": "value",
+      "name": "copy",
+      "signature": "let copy: t<'a> => t<'a>",
+      "docstrings": [
+        "Return a copy of the given stack."
+      ]
+    },
+    {
+      "id": "Stack.is_empty",
+      "kind": "value",
+      "name": "is_empty",
+      "signature": "let is_empty: t<'a> => bool",
+      "docstrings": [
+        "Return [true] if the given stack is empty, [false] otherwise."
+      ]
+    },
+    {
+      "id": "Stack.length",
+      "kind": "value",
+      "name": "length",
+      "signature": "let length: t<'a> => int",
+      "docstrings": [
+        "Return the number of elements in a stack. Time complexity O(1)"
+      ]
+    },
+    {
+      "id": "Stack.iter",
+      "kind": "value",
+      "name": "iter",
+      "signature": "let iter: ('a => unit, t<'a>) => unit",
+      "docstrings": [
+        "[iter f s] applies [f] in turn to all elements of [s],\n   from the element at the top of the stack to the element at the\n   bottom of the stack. The stack itself is unchanged."
+      ]
+    },
+    {
+      "id": "Stack.fold",
+      "kind": "value",
+      "name": "fold",
+      "signature": "let fold: (('b, 'a) => 'b, 'b, t<'a>) => 'b",
+      "docstrings": [
+        "[fold f accu s] is [(f (... (f (f accu x1) x2) ...) xn)]\n    where [x1] is the top of the stack, [x2] the second element,\n    and [xn] the bottom element. The stack is unchanged.\n    @since 4.03"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,347 @@
+{
+  "name": "Set",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Make.Set",
+      "kind": "module",
+      "item": {
+        "name": "Make",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Set.Make.elt",
+            "kind": "type",
+            "name": "elt",
+            "signature": "type elt = Ord.t",
+            "docstrings": []
+          },
+          {
+            "id": "Set.Make.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t",
+            "docstrings": [
+              "The type of sets."
+            ]
+          },
+          {
+            "id": "Set.Make.empty",
+            "kind": "value",
+            "name": "empty",
+            "signature": "let empty: t",
+            "docstrings": [
+              "The empty set."
+            ]
+          },
+          {
+            "id": "Set.Make.is_empty",
+            "kind": "value",
+            "name": "is_empty",
+            "signature": "let is_empty: t => bool",
+            "docstrings": [
+              "Test whether a set is empty or not."
+            ]
+          },
+          {
+            "id": "Set.Make.mem",
+            "kind": "value",
+            "name": "mem",
+            "signature": "let mem: (elt, t) => bool",
+            "docstrings": [
+              "[mem x s] tests whether [x] belongs to the set [s]."
+            ]
+          },
+          {
+            "id": "Set.Make.add",
+            "kind": "value",
+            "name": "add",
+            "signature": "let add: (elt, t) => t",
+            "docstrings": [
+              "[add x s] returns a set containing all elements of [s],\n       plus [x]. If [x] was already in [s], [s] is returned unchanged\n       (the result of the function is then physically equal to [s]).\n       @before 4.03 Physical equality was not ensured."
+            ]
+          },
+          {
+            "id": "Set.Make.singleton",
+            "kind": "value",
+            "name": "singleton",
+            "signature": "let singleton: elt => t",
+            "docstrings": [
+              "[singleton x] returns the one-element set containing only [x]."
+            ]
+          },
+          {
+            "id": "Set.Make.remove",
+            "kind": "value",
+            "name": "remove",
+            "signature": "let remove: (elt, t) => t",
+            "docstrings": [
+              "[remove x s] returns a set containing all elements of [s],\n       except [x]. If [x] was not in [s], [s] is returned unchanged\n       (the result of the function is then physically equal to [s]).\n       @before 4.03 Physical equality was not ensured."
+            ]
+          },
+          {
+            "id": "Set.Make.union",
+            "kind": "value",
+            "name": "union",
+            "signature": "let union: (t, t) => t",
+            "docstrings": [
+              "Set union."
+            ]
+          },
+          {
+            "id": "Set.Make.inter",
+            "kind": "value",
+            "name": "inter",
+            "signature": "let inter: (t, t) => t",
+            "docstrings": [
+              "Set intersection."
+            ]
+          },
+          {
+            "id": "Set.Make.diff",
+            "kind": "value",
+            "name": "diff",
+            "signature": "let diff: (t, t) => t",
+            "docstrings": [
+              "Set difference."
+            ]
+          },
+          {
+            "id": "Set.Make.compare",
+            "kind": "value",
+            "name": "compare",
+            "signature": "let compare: (t, t) => int",
+            "docstrings": [
+              "Total ordering between sets. Can be used as the ordering function\n       for doing sets of sets."
+            ]
+          },
+          {
+            "id": "Set.Make.equal",
+            "kind": "value",
+            "name": "equal",
+            "signature": "let equal: (t, t) => bool",
+            "docstrings": [
+              "[equal s1 s2] tests whether the sets [s1] and [s2] are\n       equal, that is, contain equal elements."
+            ]
+          },
+          {
+            "id": "Set.Make.subset",
+            "kind": "value",
+            "name": "subset",
+            "signature": "let subset: (t, t) => bool",
+            "docstrings": [
+              "[subset s1 s2] tests whether the set [s1] is a subset of\n       the set [s2]."
+            ]
+          },
+          {
+            "id": "Set.Make.iter",
+            "kind": "value",
+            "name": "iter",
+            "signature": "let iter: (elt => unit, t) => unit",
+            "docstrings": [
+              "[iter f s] applies [f] in turn to all elements of [s].\n       The elements of [s] are presented to [f] in increasing order\n       with respect to the ordering over the type of the elements."
+            ]
+          },
+          {
+            "id": "Set.Make.map",
+            "kind": "value",
+            "name": "map",
+            "signature": "let map: (elt => elt, t) => t",
+            "docstrings": [
+              "[map f s] is the set whose elements are [f a0],[f a1]... [f\n        aN], where [a0],[a1]...[aN] are the elements of [s].\n\n       The elements are passed to [f] in increasing order\n       with respect to the ordering over the type of the elements.\n\n       If no element of [s] is changed by [f], [s] is returned\n       unchanged. (If each output of [f] is physically equal to its\n       input, the returned set is physically equal to [s].)\n       @since 4.04.0"
+            ]
+          },
+          {
+            "id": "Set.Make.fold",
+            "kind": "value",
+            "name": "fold",
+            "signature": "let fold: ((elt, 'a) => 'a, t, 'a) => 'a",
+            "docstrings": [
+              "[fold f s a] computes [(f xN ... (f x2 (f x1 a))...)],\n       where [x1 ... xN] are the elements of [s], in increasing order."
+            ]
+          },
+          {
+            "id": "Set.Make.for_all",
+            "kind": "value",
+            "name": "for_all",
+            "signature": "let for_all: (elt => bool, t) => bool",
+            "docstrings": [
+              "[for_all p s] checks if all elements of the set\n       satisfy the predicate [p]."
+            ]
+          },
+          {
+            "id": "Set.Make.exists",
+            "kind": "value",
+            "name": "exists",
+            "signature": "let exists: (elt => bool, t) => bool",
+            "docstrings": [
+              "[exists p s] checks if at least one element of\n       the set satisfies the predicate [p]."
+            ]
+          },
+          {
+            "id": "Set.Make.filter",
+            "kind": "value",
+            "name": "filter",
+            "signature": "let filter: (elt => bool, t) => t",
+            "docstrings": [
+              "[filter p s] returns the set of all elements in [s]\n       that satisfy predicate [p]. If [p] satisfies every element in [s],\n       [s] is returned unchanged (the result of the function is then\n       physically equal to [s]).\n       @before 4.03 Physical equality was not ensured."
+            ]
+          },
+          {
+            "id": "Set.Make.partition",
+            "kind": "value",
+            "name": "partition",
+            "signature": "let partition: (elt => bool, t) => (t, t)",
+            "docstrings": [
+              "[partition p s] returns a pair of sets [(s1, s2)], where\n       [s1] is the set of all the elements of [s] that satisfy the\n       predicate [p], and [s2] is the set of all the elements of\n       [s] that do not satisfy [p]."
+            ]
+          },
+          {
+            "id": "Set.Make.cardinal",
+            "kind": "value",
+            "name": "cardinal",
+            "signature": "let cardinal: t => int",
+            "docstrings": [
+              "Return the number of elements of a set."
+            ]
+          },
+          {
+            "id": "Set.Make.elements",
+            "kind": "value",
+            "name": "elements",
+            "signature": "let elements: t => list<elt>",
+            "docstrings": [
+              "Return the list of all elements of the given set.\n       The returned list is sorted in increasing order with respect\n       to the ordering [Ord.compare], where [Ord] is the argument\n       given to {!Set.Make}."
+            ]
+          },
+          {
+            "id": "Set.Make.min_elt",
+            "kind": "value",
+            "name": "min_elt",
+            "signature": "let min_elt: t => elt",
+            "docstrings": [
+              "Return the smallest element of the given set\n       (with respect to the [Ord.compare] ordering), or raise\n       [Not_found] if the set is empty."
+            ]
+          },
+          {
+            "id": "Set.Make.min_elt_opt",
+            "kind": "value",
+            "name": "min_elt_opt",
+            "signature": "let min_elt_opt: t => option<elt>",
+            "docstrings": [
+              "Return the smallest element of the given set\n       (with respect to the [Ord.compare] ordering), or [None]\n       if the set is empty.\n        @since 4.05"
+            ]
+          },
+          {
+            "id": "Set.Make.max_elt",
+            "kind": "value",
+            "name": "max_elt",
+            "signature": "let max_elt: t => elt",
+            "docstrings": [
+              "Same as {!Set.S.min_elt}, but returns the largest element of the\n       given set."
+            ]
+          },
+          {
+            "id": "Set.Make.max_elt_opt",
+            "kind": "value",
+            "name": "max_elt_opt",
+            "signature": "let max_elt_opt: t => option<elt>",
+            "docstrings": [
+              "Same as {!Set.S.min_elt_opt}, but returns the largest element of the\n        given set.\n        @since 4.05"
+            ]
+          },
+          {
+            "id": "Set.Make.choose",
+            "kind": "value",
+            "name": "choose",
+            "signature": "let choose: t => elt",
+            "docstrings": [
+              "Return one element of the given set, or raise [Not_found] if\n       the set is empty. Which element is chosen is unspecified,\n       but equal elements will be chosen for equal sets."
+            ]
+          },
+          {
+            "id": "Set.Make.choose_opt",
+            "kind": "value",
+            "name": "choose_opt",
+            "signature": "let choose_opt: t => option<elt>",
+            "docstrings": [
+              "Return one element of the given set, or [None] if\n        the set is empty. Which element is chosen is unspecified,\n        but equal elements will be chosen for equal sets.\n        @since 4.05"
+            ]
+          },
+          {
+            "id": "Set.Make.split",
+            "kind": "value",
+            "name": "split",
+            "signature": "let split: (elt, t) => (t, bool, t)",
+            "docstrings": [
+              "[split x s] returns a triple [(l, present, r)], where\n          [l] is the set of elements of [s] that are\n          strictly less than [x];\n          [r] is the set of elements of [s] that are\n          strictly greater than [x];\n          [present] is [false] if [s] contains no element equal to [x],\n          or [true] if [s] contains an element equal to [x]."
+            ]
+          },
+          {
+            "id": "Set.Make.find",
+            "kind": "value",
+            "name": "find",
+            "signature": "let find: (elt, t) => elt",
+            "docstrings": [
+              "[find x s] returns the element of [s] equal to [x] (according\n        to [Ord.compare]), or raise [Not_found] if no such element\n        exists.\n        @since 4.01.0"
+            ]
+          },
+          {
+            "id": "Set.Make.find_opt",
+            "kind": "value",
+            "name": "find_opt",
+            "signature": "let find_opt: (elt, t) => option<elt>",
+            "docstrings": [
+              "[find_opt x s] returns the element of [s] equal to [x] (according\n        to [Ord.compare]), or [None] if no such element\n        exists.\n        @since 4.05"
+            ]
+          },
+          {
+            "id": "Set.Make.find_first",
+            "kind": "value",
+            "name": "find_first",
+            "signature": "let find_first: (elt => bool, t) => elt",
+            "docstrings": [
+              "[find_first f s], where [f] is a monotonically increasing function,\n       returns the lowest element [e] of [s] such that [f e],\n       or raises [Not_found] if no such element exists.\n\n       For example, [find_first (fun e -> Ord.compare e x >= 0) s] will return\n       the first element [e] of [s] where [Ord.compare e x >= 0] (intuitively:\n       [e >= x]), or raise [Not_found] if [x] is greater than any element of\n       [s].\n\n        @since 4.05"
+            ]
+          },
+          {
+            "id": "Set.Make.find_first_opt",
+            "kind": "value",
+            "name": "find_first_opt",
+            "signature": "let find_first_opt: (elt => bool, t) => option<elt>",
+            "docstrings": [
+              "[find_first_opt f s], where [f] is a monotonically increasing function,\n       returns an option containing the lowest element [e] of [s] such that\n       [f e], or [None] if no such element exists.\n        @since 4.05"
+            ]
+          },
+          {
+            "id": "Set.Make.find_last",
+            "kind": "value",
+            "name": "find_last",
+            "signature": "let find_last: (elt => bool, t) => elt",
+            "docstrings": [
+              "[find_last f s], where [f] is a monotonically decreasing function,\n       returns the highest element [e] of [s] such that [f e],\n       or raises [Not_found] if no such element exists.\n        @since 4.05"
+            ]
+          },
+          {
+            "id": "Set.Make.find_last_opt",
+            "kind": "value",
+            "name": "find_last_opt",
+            "signature": "let find_last_opt: (elt => bool, t) => option<elt>",
+            "docstrings": [
+              "[find_last_opt f s], where [f] is a monotonically decreasing function,\n       returns an option containing the highest element [e] of [s] such that\n       [f e], or [None] if no such element exists.\n        @since 4.05"
+            ]
+          },
+          {
+            "id": "Set.Make.of_list",
+            "kind": "value",
+            "name": "of_list",
+            "signature": "let of_list: list<elt> => t",
+            "docstrings": [
+              "[of_list l] creates a set from a list of elements.\n        This is usually more efficient than folding [add] over the list,\n        except perhaps for lists with many duplicated elements.\n        @since 4.02.0"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

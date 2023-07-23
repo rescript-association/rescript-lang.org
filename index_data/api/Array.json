@@ -1,0 +1,369 @@
+{
+  "name": "Array",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Array.length",
+      "kind": "value",
+      "name": "length",
+      "signature": "let length: array<'a> => int",
+      "docstrings": [
+        "Return the length (number of elements) of the given array."
+      ]
+    },
+    {
+      "id": "Array.get",
+      "kind": "value",
+      "name": "get",
+      "signature": "let get: (array<'a>, int) => 'a",
+      "docstrings": [
+        "[Array.get a n] returns the element number [n] of array [a].\n   The first element has number 0.\n   The last element has number [Array.length a - 1].\n   You can also write [a.(n)] instead of [Array.get a n].\n\n   Raise [Invalid_argument \"index out of bounds\"]\n   if [n] is outside the range 0 to [(Array.length a - 1)]."
+      ]
+    },
+    {
+      "id": "Array.set",
+      "kind": "value",
+      "name": "set",
+      "signature": "let set: (array<'a>, int, 'a) => unit",
+      "docstrings": [
+        "[Array.set a n x] modifies array [a] in place, replacing\n   element number [n] with [x].\n   You can also write [a.(n) <- x] instead of [Array.set a n x].\n\n   Raise [Invalid_argument \"index out of bounds\"]\n   if [n] is outside the range 0 to [Array.length a - 1]."
+      ]
+    },
+    {
+      "id": "Array.make",
+      "kind": "value",
+      "name": "make",
+      "signature": "let make: (int, 'a) => array<'a>",
+      "docstrings": [
+        "[Array.make n x] returns a fresh array of length [n],\n   initialized with [x].\n   All the elements of this new array are initially\n   physically equal to [x] (in the sense of the [==] predicate).\n   Consequently, if [x] is mutable, it is shared among all elements\n   of the array, and modifying [x] through one of the array entries\n   will modify all other entries at the same time.\n\n   Raise [Invalid_argument] if [n < 0] or [n > Sys.max_array_length].\n   If the value of [x] is a floating-point number, then the maximum\n   size is only [Sys.max_array_length / 2]."
+      ]
+    },
+    {
+      "id": "Array.create",
+      "kind": "value",
+      "name": "create",
+      "signature": "let create: (int, 'a) => array<'a>",
+      "docstrings": [
+        "@deprecated [Array.create] is an alias for {!Array.make}."
+      ]
+    },
+    {
+      "id": "Array.create_float",
+      "kind": "value",
+      "name": "create_float",
+      "signature": "let create_float: int => array<float>",
+      "docstrings": [
+        "[Array.create_float n] returns a fresh float array of length [n],\n    with uninitialized data.\n    @since 4.03"
+      ]
+    },
+    {
+      "id": "Array.make_float",
+      "kind": "value",
+      "name": "make_float",
+      "signature": "let make_float: int => array<float>",
+      "docstrings": [
+        "@deprecated [Array.make_float] is an alias for {!Array.create_float}."
+      ]
+    },
+    {
+      "id": "Array.init",
+      "kind": "value",
+      "name": "init",
+      "signature": "let init: (int, int => 'a) => array<'a>",
+      "docstrings": [
+        "[Array.init n f] returns a fresh array of length [n],\n   with element number [i] initialized to the result of [f i].\n   In other terms, [Array.init n f] tabulates the results of [f]\n   applied to the integers [0] to [n-1].\n\n   Raise [Invalid_argument] if [n < 0] or [n > Sys.max_array_length].\n   If the return type of [f] is [float], then the maximum\n   size is only [Sys.max_array_length / 2]."
+      ]
+    },
+    {
+      "id": "Array.make_matrix",
+      "kind": "value",
+      "name": "make_matrix",
+      "signature": "let make_matrix: (int, int, 'a) => array<array<'a>>",
+      "docstrings": [
+        "[Array.make_matrix dimx dimy e] returns a two-dimensional array\n   (an array of arrays) with first dimension [dimx] and\n   second dimension [dimy]. All the elements of this new matrix\n   are initially physically equal to [e].\n   The element ([x,y]) of a matrix [m] is accessed\n   with the notation [m.(x).(y)].\n\n   Raise [Invalid_argument] if [dimx] or [dimy] is negative or\n   greater than {!Sys.max_array_length}.\n   If the value of [e] is a floating-point number, then the maximum\n   size is only [Sys.max_array_length / 2]."
+      ]
+    },
+    {
+      "id": "Array.create_matrix",
+      "kind": "value",
+      "name": "create_matrix",
+      "signature": "let create_matrix: (int, int, 'a) => array<array<'a>>",
+      "docstrings": [
+        "@deprecated [Array.create_matrix] is an alias for {!Array.make_matrix}."
+      ]
+    },
+    {
+      "id": "Array.append",
+      "kind": "value",
+      "name": "append",
+      "signature": "let append: (array<'a>, array<'a>) => array<'a>",
+      "docstrings": [
+        "[Array.append v1 v2] returns a fresh array containing the\n   concatenation of the arrays [v1] and [v2]."
+      ]
+    },
+    {
+      "id": "Array.concat",
+      "kind": "value",
+      "name": "concat",
+      "signature": "let concat: list<array<'a>> => array<'a>",
+      "docstrings": [
+        "Same as {!Array.append}, but concatenates a list of arrays."
+      ]
+    },
+    {
+      "id": "Array.sub",
+      "kind": "value",
+      "name": "sub",
+      "signature": "let sub: (array<'a>, int, int) => array<'a>",
+      "docstrings": [
+        "[Array.sub a start len] returns a fresh array of length [len],\n   containing the elements number [start] to [start + len - 1]\n   of array [a].\n\n   Raise [Invalid_argument \"Array.sub\"] if [start] and [len] do not\n   designate a valid subarray of [a]; that is, if\n   [start < 0], or [len < 0], or [start + len > Array.length a]."
+      ]
+    },
+    {
+      "id": "Array.copy",
+      "kind": "value",
+      "name": "copy",
+      "signature": "let copy: array<'a> => array<'a>",
+      "docstrings": [
+        "[Array.copy a] returns a copy of [a], that is, a fresh array\n   containing the same elements as [a]."
+      ]
+    },
+    {
+      "id": "Array.fill",
+      "kind": "value",
+      "name": "fill",
+      "signature": "let fill: (array<'a>, int, int, 'a) => unit",
+      "docstrings": [
+        "[Array.fill a ofs len x] modifies the array [a] in place,\n   storing [x] in elements number [ofs] to [ofs + len - 1].\n\n   Raise [Invalid_argument \"Array.fill\"] if [ofs] and [len] do not\n   designate a valid subarray of [a]."
+      ]
+    },
+    {
+      "id": "Array.blit",
+      "kind": "value",
+      "name": "blit",
+      "signature": "let blit: (array<'a>, int, array<'a>, int, int) => unit",
+      "docstrings": [
+        "[Array.blit v1 o1 v2 o2 len] copies [len] elements\n   from array [v1], starting at element number [o1], to array [v2],\n   starting at element number [o2]. It works correctly even if\n   [v1] and [v2] are the same array, and the source and\n   destination chunks overlap.\n\n   Raise [Invalid_argument \"Array.blit\"] if [o1] and [len] do not\n   designate a valid subarray of [v1], or if [o2] and [len] do not\n   designate a valid subarray of [v2]."
+      ]
+    },
+    {
+      "id": "Array.to_list",
+      "kind": "value",
+      "name": "to_list",
+      "signature": "let to_list: array<'a> => list<'a>",
+      "docstrings": [
+        "[Array.to_list a] returns the list of all the elements of [a]."
+      ]
+    },
+    {
+      "id": "Array.of_list",
+      "kind": "value",
+      "name": "of_list",
+      "signature": "let of_list: list<'a> => array<'a>",
+      "docstrings": [
+        "[Array.of_list l] returns a fresh array containing the elements\n   of [l]."
+      ]
+    },
+    {
+      "id": "Array.iter",
+      "kind": "value",
+      "name": "iter",
+      "signature": "let iter: ('a => unit, array<'a>) => unit",
+      "docstrings": [
+        "[Array.iter f a] applies function [f] in turn to all\n   the elements of [a].  It is equivalent to\n   [f a.(0); f a.(1); ...; f a.(Array.length a - 1); ()]."
+      ]
+    },
+    {
+      "id": "Array.iteri",
+      "kind": "value",
+      "name": "iteri",
+      "signature": "let iteri: ((int, 'a) => unit, array<'a>) => unit",
+      "docstrings": [
+        "Same as {!Array.iter}, but the\n   function is applied with the index of the element as first argument,\n   and the element itself as second argument."
+      ]
+    },
+    {
+      "id": "Array.map",
+      "kind": "value",
+      "name": "map",
+      "signature": "let map: ('a => 'b, array<'a>) => array<'b>",
+      "docstrings": [
+        "[Array.map f a] applies function [f] to all the elements of [a],\n   and builds an array with the results returned by [f]:\n   [[| f a.(0); f a.(1); ...; f a.(Array.length a - 1) |]]."
+      ]
+    },
+    {
+      "id": "Array.mapi",
+      "kind": "value",
+      "name": "mapi",
+      "signature": "let mapi: ((int, 'a) => 'b, array<'a>) => array<'b>",
+      "docstrings": [
+        "Same as {!Array.map}, but the\n   function is applied to the index of the element as first argument,\n   and the element itself as second argument."
+      ]
+    },
+    {
+      "id": "Array.fold_left",
+      "kind": "value",
+      "name": "fold_left",
+      "signature": "let fold_left: (('a, 'b) => 'a, 'a, array<'b>) => 'a",
+      "docstrings": [
+        "[Array.fold_left f x a] computes\n   [f (... (f (f x a.(0)) a.(1)) ...) a.(n-1)],\n   where [n] is the length of the array [a]."
+      ]
+    },
+    {
+      "id": "Array.fold_right",
+      "kind": "value",
+      "name": "fold_right",
+      "signature": "let fold_right: (('b, 'a) => 'a, array<'b>, 'a) => 'a",
+      "docstrings": [
+        "[Array.fold_right f a x] computes\n   [f a.(0) (f a.(1) ( ... (f a.(n-1) x) ...))],\n   where [n] is the length of the array [a]."
+      ]
+    },
+    {
+      "id": "Array.iter2",
+      "kind": "value",
+      "name": "iter2",
+      "signature": "let iter2: (('a, 'b) => unit, array<'a>, array<'b>) => unit",
+      "docstrings": [
+        "[Array.iter2 f a b] applies function [f] to all the elements of [a]\n   and [b].\n   Raise [Invalid_argument] if the arrays are not the same size.\n   @since 4.03.0"
+      ]
+    },
+    {
+      "id": "Array.map2",
+      "kind": "value",
+      "name": "map2",
+      "signature": "let map2: (('a, 'b) => 'c, array<'a>, array<'b>) => array<'c>",
+      "docstrings": [
+        "[Array.map2 f a b] applies function [f] to all the elements of [a]\n   and [b], and builds an array with the results returned by [f]:\n   [[| f a.(0) b.(0); ...; f a.(Array.length a - 1) b.(Array.length b - 1)|]].\n   Raise [Invalid_argument] if the arrays are not the same size.\n   @since 4.03.0"
+      ]
+    },
+    {
+      "id": "Array.for_all",
+      "kind": "value",
+      "name": "for_all",
+      "signature": "let for_all: ('a => bool, array<'a>) => bool",
+      "docstrings": [
+        "[Array.for_all p [|a1; ...; an|]] checks if all elements of the array\n   satisfy the predicate [p]. That is, it returns\n   [(p a1) && (p a2) && ... && (p an)].\n   @since 4.03.0"
+      ]
+    },
+    {
+      "id": "Array.exists",
+      "kind": "value",
+      "name": "exists",
+      "signature": "let exists: ('a => bool, array<'a>) => bool",
+      "docstrings": [
+        "[Array.exists p [|a1; ...; an|]] checks if at least one element of\n    the array satisfies the predicate [p]. That is, it returns\n    [(p a1) || (p a2) || ... || (p an)].\n    @since 4.03.0"
+      ]
+    },
+    {
+      "id": "Array.mem",
+      "kind": "value",
+      "name": "mem",
+      "signature": "let mem: ('a, array<'a>) => bool",
+      "docstrings": [
+        "[mem a l] is true if and only if [a] is equal\n   to an element of [l].\n   @since 4.03.0"
+      ]
+    },
+    {
+      "id": "Array.memq",
+      "kind": "value",
+      "name": "memq",
+      "signature": "let memq: ('a, array<'a>) => bool",
+      "docstrings": [
+        "Same as {!Array.mem}, but uses physical equality instead of structural\n   equality to compare array elements.\n   @since 4.03.0"
+      ]
+    },
+    {
+      "id": "Array.sort",
+      "kind": "value",
+      "name": "sort",
+      "signature": "let sort: (('a, 'a) => int, array<'a>) => unit",
+      "docstrings": [
+        "Sort an array in increasing order according to a comparison\n   function.  The comparison function must return 0 if its arguments\n   compare as equal, a positive integer if the first is greater,\n   and a negative integer if the first is smaller (see below for a\n   complete specification).  For example, {!Pervasives.compare} is\n   a suitable comparison function, provided there are no floating-point\n   NaN values in the data.  After calling [Array.sort], the\n   array is sorted in place in increasing order.\n   [Array.sort] is guaranteed to run in constant heap space\n   and (at most) logarithmic stack space.\n\n   The current implementation uses Heap Sort.  It runs in constant\n   stack space.\n\n   Specification of the comparison function:\n   Let [a] be the array and [cmp] the comparison function.  The following\n   must be true for all x, y, z in a :\n-   [cmp x y] > 0 if and only if [cmp y x] < 0\n-   if [cmp x y] >= 0 and [cmp y z] >= 0 then [cmp x z] >= 0\n\n   When [Array.sort] returns, [a] contains the same elements as before,\n   reordered in such a way that for all i and j valid indices of [a] :\n-   [cmp a.(i) a.(j)] >= 0 if and only if i >= j"
+      ]
+    },
+    {
+      "id": "Array.stable_sort",
+      "kind": "value",
+      "name": "stable_sort",
+      "signature": "let stable_sort: (('a, 'a) => int, array<'a>) => unit",
+      "docstrings": [
+        "Same as {!Array.sort}, but the sorting algorithm is stable (i.e.\n   elements that compare equal are kept in their original order) and\n   not guaranteed to run in constant heap space.\n\n   The current implementation uses Merge Sort. It uses [n/2]\n   words of heap space, where [n] is the length of the array.\n   It is usually faster than the current implementation of {!Array.sort}."
+      ]
+    },
+    {
+      "id": "Array.fast_sort",
+      "kind": "value",
+      "name": "fast_sort",
+      "signature": "let fast_sort: (('a, 'a) => int, array<'a>) => unit",
+      "docstrings": [
+        "Same as {!Array.sort} or {!Array.stable_sort}, whichever is faster\n    on typical input."
+      ]
+    },
+    {
+      "id": "Array.unsafe_get",
+      "kind": "value",
+      "name": "unsafe_get",
+      "signature": "let unsafe_get: (array<'a>, int) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Array.unsafe_set",
+      "kind": "value",
+      "name": "unsafe_set",
+      "signature": "let unsafe_set: (array<'a>, int, 'a) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Floatarray.Array",
+      "kind": "module",
+      "item": {
+        "name": "Floatarray",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Array.Floatarray.create",
+            "kind": "value",
+            "name": "create",
+            "signature": "let create: int => floatarray",
+            "docstrings": []
+          },
+          {
+            "id": "Array.Floatarray.length",
+            "kind": "value",
+            "name": "length",
+            "signature": "let length: floatarray => int",
+            "docstrings": []
+          },
+          {
+            "id": "Array.Floatarray.get",
+            "kind": "value",
+            "name": "get",
+            "signature": "let get: (floatarray, int) => float",
+            "docstrings": []
+          },
+          {
+            "id": "Array.Floatarray.set",
+            "kind": "value",
+            "name": "set",
+            "signature": "let set: (floatarray, int, float) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Array.Floatarray.unsafe_get",
+            "kind": "value",
+            "name": "unsafe_get",
+            "signature": "let unsafe_get: (floatarray, int) => float",
+            "docstrings": []
+          },
+          {
+            "id": "Array.Floatarray.unsafe_set",
+            "kind": "value",
+            "name": "unsafe_set",
+            "signature": "let unsafe_set: (floatarray, int, float) => unit",
+            "docstrings": []
+          }
+        ]
+      }
+    }
+  ]
+}

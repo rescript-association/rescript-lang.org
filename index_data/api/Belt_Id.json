@@ -1,0 +1,242 @@
+{
+  "name": "Belt_Id",
+  "docstrings": [
+    "[`Belt.Id`]()\n\n  Provide utiliites to create identified comparators or hashes for\n  data structures used below.\n\n  It create a unique identifer per module of functions so that different data structures with slightly different\n  comparison functions won't mix."
+  ],
+  "items": [
+    {
+      "id": "Belt_Id.hash",
+      "kind": "type",
+      "name": "hash",
+      "signature": "type hash<'a, 'id>",
+      "docstrings": [
+        "`('a, 'id) hash`\n\n  Its runtime represenation is a `hash` function, but signed with a\n  type parameter, so that different hash functions type mismatch"
+      ]
+    },
+    {
+      "id": "Belt_Id.eq",
+      "kind": "type",
+      "name": "eq",
+      "signature": "type eq<'a, 'id>",
+      "docstrings": [
+        "`('a, 'id) eq`\n\n  Its runtime represenation is an `eq` function, but signed with a\n  type parameter, so that different hash functions type mismatch"
+      ]
+    },
+    {
+      "id": "Belt_Id.cmp",
+      "kind": "type",
+      "name": "cmp",
+      "signature": "type cmp<'a, 'id>",
+      "docstrings": [
+        "`('a,'id) cmp`\n\n  Its runtime representation is a `cmp` function, but signed with a\n  type parameter, so that different hash functions type mismatch"
+      ]
+    },
+    {
+      "id": "Belt_Id.comparable",
+      "kind": "type",
+      "name": "comparable",
+      "signature": "type comparable<'key, 'id> = module(Comparable with type identity = 'id)\\ntype t = 'key",
+      "docstrings": [
+        "`('key, 'id) cmparable` is a module of functions, here it only includes `cmp`.\n\n  Unlike normal functions, when created, it comes with a unique identity (guaranteed\n  by the type system).\n\n  It can be created using function [`comparableU`]() or [`comparable`]().\n\n  The idea of a unique identity when created is that it makes sure two sets would type\n  mismatch if they use different comparison function"
+      ]
+    },
+    {
+      "id": "MakeComparableU.Belt_Id",
+      "kind": "module",
+      "item": {
+        "name": "MakeComparableU",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Belt_Id.MakeComparableU.identity",
+            "kind": "type",
+            "name": "identity",
+            "signature": "type identity",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_Id.MakeComparableU.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = M.t",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_Id.MakeComparableU.cmp",
+            "kind": "value",
+            "name": "cmp",
+            "signature": "let cmp: cmp<t, identity>",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "MakeComparable.Belt_Id",
+      "kind": "module",
+      "item": {
+        "name": "MakeComparable",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Belt_Id.MakeComparable.identity",
+            "kind": "type",
+            "name": "identity",
+            "signature": "type identity",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_Id.MakeComparable.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = M.t",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_Id.MakeComparable.cmp",
+            "kind": "value",
+            "name": "cmp",
+            "signature": "let cmp: cmp<t, identity>",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Belt_Id.comparableU",
+      "kind": "value",
+      "name": "comparableU",
+      "signature": "let comparableU: (~cmp: (. 'a, 'a) => int) => module(Comparable with type t = 'a)",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Id.comparable",
+      "kind": "value",
+      "name": "comparable",
+      "signature": "let comparable: (~cmp: ('a, 'a) => int) => module(Comparable with type t = 'a)",
+      "docstrings": [
+        "```\n  module C = (\n    val Belt.Id.comparable ~cmp:(compare : int -> int -> int)\n  )\n  let m = Belt.Set.make(module C)\n  ```\n\n  Note that the name of C can not be ignored"
+      ]
+    },
+    {
+      "id": "Belt_Id.hashable",
+      "kind": "type",
+      "name": "hashable",
+      "signature": "type hashable<'key, 'id> = module(Hashable with type identity = 'id)\\ntype t = 'key",
+      "docstrings": [
+        "`('key, 'id) hashable` is a module of functions, here it only includes `hash`, `eq`.\n\n  Unlike normal functions, when created, it comes with a unique identity (guaranteed\n  by the type system).\n\n  It can be created using function [`hashableU`]() or [`hashable`]().\n\n  The idea of a unique identity when created is that it makes sure two hash sets would type\n  mismatch if they use different comparison function"
+      ]
+    },
+    {
+      "id": "MakeHashableU.Belt_Id",
+      "kind": "module",
+      "item": {
+        "name": "MakeHashableU",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Belt_Id.MakeHashableU.identity",
+            "kind": "type",
+            "name": "identity",
+            "signature": "type identity",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_Id.MakeHashableU.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = M.t",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_Id.MakeHashableU.hash",
+            "kind": "value",
+            "name": "hash",
+            "signature": "let hash: hash<t, identity>",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_Id.MakeHashableU.eq",
+            "kind": "value",
+            "name": "eq",
+            "signature": "let eq: eq<t, identity>",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "MakeHashable.Belt_Id",
+      "kind": "module",
+      "item": {
+        "name": "MakeHashable",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Belt_Id.MakeHashable.identity",
+            "kind": "type",
+            "name": "identity",
+            "signature": "type identity",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_Id.MakeHashable.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = M.t",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_Id.MakeHashable.hash",
+            "kind": "value",
+            "name": "hash",
+            "signature": "let hash: hash<t, identity>",
+            "docstrings": []
+          },
+          {
+            "id": "Belt_Id.MakeHashable.eq",
+            "kind": "value",
+            "name": "eq",
+            "signature": "let eq: eq<t, identity>",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Belt_Id.hashableU",
+      "kind": "value",
+      "name": "hashableU",
+      "signature": "let hashableU: (~hash: (. 'a) => int, ~eq: (. 'a, 'a) => bool) => module(Hashable with type t = 'a)",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Id.hashable",
+      "kind": "value",
+      "name": "hashable",
+      "signature": "let hashable: (~hash: 'a => int, ~eq: ('a, 'a) => bool) => module(Hashable with type t = 'a)",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Id.getHashInternal",
+      "kind": "value",
+      "name": "getHashInternal",
+      "signature": "let getHashInternal: hash<'a, 'id> => (. 'a) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Id.getEqInternal",
+      "kind": "value",
+      "name": "getEqInternal",
+      "signature": "let getEqInternal: eq<'a, 'id> => (. 'a, 'a) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Id.getCmpInternal",
+      "kind": "value",
+      "name": "getCmpInternal",
+      "signature": "let getCmpInternal: cmp<'a, 'id> => (. 'a, 'a) => int",
+      "docstrings": []
+    }
+  ]
+}

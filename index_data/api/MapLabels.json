@@ -1,0 +1,696 @@
+{
+  "name": "MapLabels",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "OrderedType.MapLabels",
+      "kind": "module",
+      "item": {
+        "name": "OrderedType",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "MapLabels.OrderedType.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.OrderedType.compare",
+            "kind": "value",
+            "name": "compare",
+            "signature": "let compare: (t, t) => int",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S.MapLabels",
+      "kind": "module",
+      "item": {
+        "name": "S",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "MapLabels.S.key",
+            "kind": "type",
+            "name": "key",
+            "signature": "type key",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t<+'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.empty",
+            "kind": "value",
+            "name": "empty",
+            "signature": "let empty: t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.is_empty",
+            "kind": "value",
+            "name": "is_empty",
+            "signature": "let is_empty: t<'a> => bool",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.mem",
+            "kind": "value",
+            "name": "mem",
+            "signature": "let mem: (key, t<'a>) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.add",
+            "kind": "value",
+            "name": "add",
+            "signature": "let add: (~key: key, ~data: 'a, t<'a>) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.update",
+            "kind": "value",
+            "name": "update",
+            "signature": "let update: (~key: key, ~f: option<'a> => option<'a>, t<'a>) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.singleton",
+            "kind": "value",
+            "name": "singleton",
+            "signature": "let singleton: (key, 'a) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.remove",
+            "kind": "value",
+            "name": "remove",
+            "signature": "let remove: (key, t<'a>) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.merge",
+            "kind": "value",
+            "name": "merge",
+            "signature": "let merge: (~f: (key, option<'a>, option<'b>) => option<'c>, t<'a>, t<'b>) => t<'c>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.union",
+            "kind": "value",
+            "name": "union",
+            "signature": "let union: (~f: (key, 'a, 'a) => option<'a>, t<'a>, t<'a>) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.compare",
+            "kind": "value",
+            "name": "compare",
+            "signature": "let compare: (~cmp: ('a, 'a) => int, t<'a>, t<'a>) => int",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.equal",
+            "kind": "value",
+            "name": "equal",
+            "signature": "let equal: (~cmp: ('a, 'a) => bool, t<'a>, t<'a>) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.iter",
+            "kind": "value",
+            "name": "iter",
+            "signature": "let iter: (~f: (~key: key, ~data: 'a) => unit, t<'a>) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.fold",
+            "kind": "value",
+            "name": "fold",
+            "signature": "let fold: (~f: (~key: key, ~data: 'a, 'b) => 'b, t<'a>, ~init: 'b) => 'b",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.for_all",
+            "kind": "value",
+            "name": "for_all",
+            "signature": "let for_all: (~f: (key, 'a) => bool, t<'a>) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.exists",
+            "kind": "value",
+            "name": "exists",
+            "signature": "let exists: (~f: (key, 'a) => bool, t<'a>) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.filter",
+            "kind": "value",
+            "name": "filter",
+            "signature": "let filter: (~f: (key, 'a) => bool, t<'a>) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.partition",
+            "kind": "value",
+            "name": "partition",
+            "signature": "let partition: (~f: (key, 'a) => bool, t<'a>) => (t<'a>, t<'a>)",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.cardinal",
+            "kind": "value",
+            "name": "cardinal",
+            "signature": "let cardinal: t<'a> => int",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.bindings",
+            "kind": "value",
+            "name": "bindings",
+            "signature": "let bindings: t<'a> => list<(key, 'a)>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.min_binding",
+            "kind": "value",
+            "name": "min_binding",
+            "signature": "let min_binding: t<'a> => (key, 'a)",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.min_binding_opt",
+            "kind": "value",
+            "name": "min_binding_opt",
+            "signature": "let min_binding_opt: t<'a> => option<(key, 'a)>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.max_binding",
+            "kind": "value",
+            "name": "max_binding",
+            "signature": "let max_binding: t<'a> => (key, 'a)",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.max_binding_opt",
+            "kind": "value",
+            "name": "max_binding_opt",
+            "signature": "let max_binding_opt: t<'a> => option<(key, 'a)>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.choose",
+            "kind": "value",
+            "name": "choose",
+            "signature": "let choose: t<'a> => (key, 'a)",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.choose_opt",
+            "kind": "value",
+            "name": "choose_opt",
+            "signature": "let choose_opt: t<'a> => option<(key, 'a)>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.split",
+            "kind": "value",
+            "name": "split",
+            "signature": "let split: (key, t<'a>) => (t<'a>, option<'a>, t<'a>)",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.find",
+            "kind": "value",
+            "name": "find",
+            "signature": "let find: (key, t<'a>) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.find_opt",
+            "kind": "value",
+            "name": "find_opt",
+            "signature": "let find_opt: (key, t<'a>) => option<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.find_first",
+            "kind": "value",
+            "name": "find_first",
+            "signature": "let find_first: (~f: key => bool, t<'a>) => (key, 'a)",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.find_first_opt",
+            "kind": "value",
+            "name": "find_first_opt",
+            "signature": "let find_first_opt: (~f: key => bool, t<'a>) => option<(key, 'a)>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.find_last",
+            "kind": "value",
+            "name": "find_last",
+            "signature": "let find_last: (~f: key => bool, t<'a>) => (key, 'a)",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.find_last_opt",
+            "kind": "value",
+            "name": "find_last_opt",
+            "signature": "let find_last_opt: (~f: key => bool, t<'a>) => option<(key, 'a)>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.map",
+            "kind": "value",
+            "name": "map",
+            "signature": "let map: (~f: 'a => 'b, t<'a>) => t<'b>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.S.mapi",
+            "kind": "value",
+            "name": "mapi",
+            "signature": "let mapi: (~f: (key, 'a) => 'b, t<'a>) => t<'b>",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Make.MapLabels",
+      "kind": "module",
+      "item": {
+        "name": "Make",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "MapLabels.Make.key",
+            "kind": "type",
+            "name": "key",
+            "signature": "type key = Ord.t",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t<'a> =\\n  | Empty\\n  | Node({l: t<'a>, v: key, d: 'a, r: t<'a>, h: int})",
+            "docstrings": [],
+            "detail": {
+              "kind": "variant",
+              "constructorDocs": [
+                {
+                  "constructorName": "Empty",
+                  "docstrings": [],
+                  "signature": "Empty"
+                },
+                {
+                  "constructorName": "Node",
+                  "docstrings": [],
+                  "signature": "Node"
+                }
+              ]
+            }
+          },
+          {
+            "id": "MapLabels.Make.height",
+            "kind": "value",
+            "name": "height",
+            "signature": "let height: t<'a> => int",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.create",
+            "kind": "value",
+            "name": "create",
+            "signature": "let create: (t<'a>, key, 'a, t<'a>) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.singleton",
+            "kind": "value",
+            "name": "singleton",
+            "signature": "let singleton: (key, 'a) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.bal",
+            "kind": "value",
+            "name": "bal",
+            "signature": "let bal: (t<'a>, key, 'a, t<'a>) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.empty",
+            "kind": "value",
+            "name": "empty",
+            "signature": "let empty: t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.is_empty",
+            "kind": "value",
+            "name": "is_empty",
+            "signature": "let is_empty: t<'a> => bool",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.add",
+            "kind": "value",
+            "name": "add",
+            "signature": "let add: (~key: key, ~data: 'a, t<'a>) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.find",
+            "kind": "value",
+            "name": "find",
+            "signature": "let find: (Ord.t, t<'a>) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.find_first_aux",
+            "kind": "value",
+            "name": "find_first_aux",
+            "signature": "let find_first_aux: (key, 'a, key => bool, t<'a>) => (key, 'a)",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.find_first",
+            "kind": "value",
+            "name": "find_first",
+            "signature": "let find_first: (~f: key => bool, t<'a>) => (key, 'a)",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.find_first_opt_aux",
+            "kind": "value",
+            "name": "find_first_opt_aux",
+            "signature": "let find_first_opt_aux: (key, 'a, key => bool, t<'a>) => option<(key, 'a)>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.find_first_opt",
+            "kind": "value",
+            "name": "find_first_opt",
+            "signature": "let find_first_opt: (~f: key => bool, t<'a>) => option<(key, 'a)>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.find_last_aux",
+            "kind": "value",
+            "name": "find_last_aux",
+            "signature": "let find_last_aux: (key, 'a, key => bool, t<'a>) => (key, 'a)",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.find_last",
+            "kind": "value",
+            "name": "find_last",
+            "signature": "let find_last: (~f: key => bool, t<'a>) => (key, 'a)",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.find_last_opt_aux",
+            "kind": "value",
+            "name": "find_last_opt_aux",
+            "signature": "let find_last_opt_aux: (key, 'a, key => bool, t<'a>) => option<(key, 'a)>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.find_last_opt",
+            "kind": "value",
+            "name": "find_last_opt",
+            "signature": "let find_last_opt: (~f: key => bool, t<'a>) => option<(key, 'a)>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.find_opt",
+            "kind": "value",
+            "name": "find_opt",
+            "signature": "let find_opt: (Ord.t, t<'a>) => option<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.mem",
+            "kind": "value",
+            "name": "mem",
+            "signature": "let mem: (Ord.t, t<'a>) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.min_binding",
+            "kind": "value",
+            "name": "min_binding",
+            "signature": "let min_binding: t<'a> => (key, 'a)",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.min_binding_opt",
+            "kind": "value",
+            "name": "min_binding_opt",
+            "signature": "let min_binding_opt: t<'a> => option<(key, 'a)>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.max_binding",
+            "kind": "value",
+            "name": "max_binding",
+            "signature": "let max_binding: t<'a> => (key, 'a)",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.max_binding_opt",
+            "kind": "value",
+            "name": "max_binding_opt",
+            "signature": "let max_binding_opt: t<'a> => option<(key, 'a)>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.remove_min_binding",
+            "kind": "value",
+            "name": "remove_min_binding",
+            "signature": "let remove_min_binding: t<'a> => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.remove",
+            "kind": "value",
+            "name": "remove",
+            "signature": "let remove: (Ord.t, t<'a>) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.update",
+            "kind": "value",
+            "name": "update",
+            "signature": "let update: (~key: key, ~f: option<'a> => option<'a>, t<'a>) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.iter",
+            "kind": "value",
+            "name": "iter",
+            "signature": "let iter: (~f: (~key: key, ~data: 'a) => unit, t<'a>) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.map",
+            "kind": "value",
+            "name": "map",
+            "signature": "let map: (~f: 'a => 'b, t<'a>) => t<'b>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.mapi",
+            "kind": "value",
+            "name": "mapi",
+            "signature": "let mapi: (~f: (key, 'a) => 'b, t<'a>) => t<'b>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.fold",
+            "kind": "value",
+            "name": "fold",
+            "signature": "let fold: (~f: (~key: key, ~data: 'a, 'b) => 'b, t<'a>, ~init: 'b) => 'b",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.for_all",
+            "kind": "value",
+            "name": "for_all",
+            "signature": "let for_all: (~f: (key, 'a) => bool, t<'a>) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.exists",
+            "kind": "value",
+            "name": "exists",
+            "signature": "let exists: (~f: (key, 'a) => bool, t<'a>) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.add_min_binding",
+            "kind": "value",
+            "name": "add_min_binding",
+            "signature": "let add_min_binding: (key, 'a, t<'a>) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.add_max_binding",
+            "kind": "value",
+            "name": "add_max_binding",
+            "signature": "let add_max_binding: (key, 'a, t<'a>) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.join",
+            "kind": "value",
+            "name": "join",
+            "signature": "let join: (t<'a>, key, 'a, t<'a>) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.concat",
+            "kind": "value",
+            "name": "concat",
+            "signature": "let concat: (t<'a>, t<'a>) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.concat_or_join",
+            "kind": "value",
+            "name": "concat_or_join",
+            "signature": "let concat_or_join: (t<'a>, key, option<'a>, t<'a>) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.split",
+            "kind": "value",
+            "name": "split",
+            "signature": "let split: (Ord.t, t<'a>) => (t<'a>, option<'a>, t<'a>)",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.merge",
+            "kind": "value",
+            "name": "merge",
+            "signature": "let merge: (~f: (key, option<'a>, option<'b>) => option<'c>, t<'a>, t<'b>) => t<'c>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.union",
+            "kind": "value",
+            "name": "union",
+            "signature": "let union: (~f: (key, 'a, 'a) => option<'a>, t<'a>, t<'a>) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.filter",
+            "kind": "value",
+            "name": "filter",
+            "signature": "let filter: (~f: (key, 'a) => bool, t<'a>) => t<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.partition",
+            "kind": "value",
+            "name": "partition",
+            "signature": "let partition: (~f: (key, 'a) => bool, t<'a>) => (t<'a>, t<'a>)",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.enumeration",
+            "kind": "type",
+            "name": "enumeration",
+            "signature": "type enumeration<'a> =\\n  | End\\n  | More(key, 'a, t<'a>, enumeration<'a>)",
+            "docstrings": [],
+            "detail": {
+              "kind": "variant",
+              "constructorDocs": [
+                {
+                  "constructorName": "End",
+                  "docstrings": [],
+                  "signature": "End"
+                },
+                {
+                  "constructorName": "More",
+                  "docstrings": [],
+                  "signature": "More(key, 'a, t<'a>, enumeration<'a>)"
+                }
+              ]
+            }
+          },
+          {
+            "id": "MapLabels.Make.cons_enum",
+            "kind": "value",
+            "name": "cons_enum",
+            "signature": "let cons_enum: (t<'a>, enumeration<'a>) => enumeration<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.compare",
+            "kind": "value",
+            "name": "compare",
+            "signature": "let compare: (~cmp: ('a, 'b) => int, t<'a>, t<'b>) => int",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.equal",
+            "kind": "value",
+            "name": "equal",
+            "signature": "let equal: (~cmp: ('a, 'b) => bool, t<'a>, t<'b>) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.cardinal",
+            "kind": "value",
+            "name": "cardinal",
+            "signature": "let cardinal: t<'a> => int",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.bindings_aux",
+            "kind": "value",
+            "name": "bindings_aux",
+            "signature": "let bindings_aux: (list<(key, 'a)>, t<'a>) => list<(key, 'a)>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.bindings",
+            "kind": "value",
+            "name": "bindings",
+            "signature": "let bindings: t<'a> => list<(key, 'a)>",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.choose",
+            "kind": "value",
+            "name": "choose",
+            "signature": "let choose: t<'a> => (key, 'a)",
+            "docstrings": []
+          },
+          {
+            "id": "MapLabels.Make.choose_opt",
+            "kind": "value",
+            "name": "choose_opt",
+            "signature": "let choose_opt: t<'a> => option<(key, 'a)>",
+            "docstrings": []
+          }
+        ]
+      }
+    }
+  ]
+}

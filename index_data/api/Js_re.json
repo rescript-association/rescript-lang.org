@@ -1,0 +1,179 @@
+{
+  "name": "Js_re",
+  "docstrings": [
+    "Provide bindings to JS regular expressions (RegExp).\n\n  **Note:** This is not an immutable API. A RegExp object with the `global` (\"g\")\n  flag set will modify the [`lastIndex`]() property when the RegExp object is used,\n  and subsequent uses will continue the search from the previous [`lastIndex`]()."
+  ],
+  "items": [
+    {
+      "id": "Js_re.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t",
+      "docstrings": [
+        "The RegExp object."
+      ]
+    },
+    {
+      "id": "Js_re.result",
+      "kind": "type",
+      "name": "result",
+      "signature": "type result",
+      "docstrings": [
+        "The result of a executing a RegExp on a string."
+      ]
+    },
+    {
+      "id": "Js_re.captures",
+      "kind": "value",
+      "name": "captures",
+      "signature": "let captures: result => array<Js.nullable<string>>",
+      "docstrings": [
+        "An `array` of the match and captures, the first is the full match and the\n  remaining are the substring captures."
+      ]
+    },
+    {
+      "id": "Js_re.matches",
+      "kind": "value",
+      "name": "matches",
+      "signature": "let matches: result => array<string>",
+      "docstrings": [
+        "Deprecated. Use `captures` instead."
+      ]
+    },
+    {
+      "id": "Js_re.index",
+      "kind": "value",
+      "name": "index",
+      "signature": "let index: result => int",
+      "docstrings": [
+        "0-based index of the match in the input string."
+      ]
+    },
+    {
+      "id": "Js_re.input",
+      "kind": "value",
+      "name": "input",
+      "signature": "let input: result => string",
+      "docstrings": [
+        "The original input string."
+      ]
+    },
+    {
+      "id": "Js_re.fromString",
+      "kind": "value",
+      "name": "fromString",
+      "signature": "let fromString: string => t",
+      "docstrings": [
+        "Constructs a RegExp object (Js.Re.t) from a `string`.\n  Regex literals `%re(\"/.../\")` should generally be preferred, but `fromString`\n  is useful when you need to dynamically construct a regex using strings,\n  exactly like when you do so in JavaScript.\n\n  ```res example\n  let firstReScriptFileExtension = (filename, content) => {\n    let result = Js.Re.fromString(filename ++ \"\\.(res|resi)\")->Js.Re.exec_(content)\n    switch result {\n    | Some(r) => Js.Nullable.toOption(Js.Re.captures(r)[1])\n    | None => None\n    }\n  }\n\n  // outputs \"res\"\n  firstReScriptFileExtension(\"School\", \"School.res School.resi Main.js School.bs.js\")\n  ```"
+      ]
+    },
+    {
+      "id": "Js_re.fromStringWithFlags",
+      "kind": "value",
+      "name": "fromStringWithFlags",
+      "signature": "let fromStringWithFlags: (string, ~flags: string) => t",
+      "docstrings": [
+        "Constructs a RegExp object (`Js.Re.t`) from a string with the given flags.\n  See `Js.Re.fromString`.\n\n  Valid flags:\n\n  - **g** global\n  - **i** ignore case\n  - **m** multiline\n  - **u** unicode (es2015)\n  - **y** sticky (es2015)"
+      ]
+    },
+    {
+      "id": "Js_re.flags",
+      "kind": "value",
+      "name": "flags",
+      "signature": "let flags: t => string",
+      "docstrings": [
+        "Returns the enabled flags as a string."
+      ]
+    },
+    {
+      "id": "Js_re.global",
+      "kind": "value",
+      "name": "global",
+      "signature": "let global: t => bool",
+      "docstrings": [
+        "Returns a `bool` indicating whether the global flag is set."
+      ]
+    },
+    {
+      "id": "Js_re.ignoreCase",
+      "kind": "value",
+      "name": "ignoreCase",
+      "signature": "let ignoreCase: t => bool",
+      "docstrings": [
+        "Returns a `bool` indicating whether the ignoreCase flag is set."
+      ]
+    },
+    {
+      "id": "Js_re.lastIndex",
+      "kind": "value",
+      "name": "lastIndex",
+      "signature": "let lastIndex: t => int",
+      "docstrings": [
+        "Returns the index where the next match will start its search. This property\n  will be modified when the RegExp object is used, if the global (\"g\") flag is\n  set.\n\n  ```res example\n  let re = %re(\"/ab*TODO/g\")\n  let str = \"abbcdefabh\"\n\n  let break = ref(false)\n  while !break.contents {\n    switch Js.Re.exec_(re, str) {\n    | Some(result) => Js.Nullable.iter(Js.Re.captures(result)[0], (. match_) => {\n        let next = Belt.Int.toString(Js.Re.lastIndex(re))\n        Js.log(\"Found \" ++ (match_ ++ (\". Next match starts at \" ++ next)))\n      })\n    | None => break := true\n    }\n  }\n  ```\n\n  See\n  [`RegExp: lastIndex`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/lastIndex)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_re.setLastIndex",
+      "kind": "value",
+      "name": "setLastIndex",
+      "signature": "let setLastIndex: (t, int) => unit",
+      "docstrings": [
+        "Sets the index at which the next match will start its search from."
+      ]
+    },
+    {
+      "id": "Js_re.multiline",
+      "kind": "value",
+      "name": "multiline",
+      "signature": "let multiline: t => bool",
+      "docstrings": [
+        "Returns a `bool` indicating whether the multiline flag is set."
+      ]
+    },
+    {
+      "id": "Js_re.source",
+      "kind": "value",
+      "name": "source",
+      "signature": "let source: t => string",
+      "docstrings": [
+        "Returns the pattern as a `string`."
+      ]
+    },
+    {
+      "id": "Js_re.sticky",
+      "kind": "value",
+      "name": "sticky",
+      "signature": "let sticky: t => bool",
+      "docstrings": [
+        "Returns a `bool` indicating whether the sticky flag is set."
+      ]
+    },
+    {
+      "id": "Js_re.unicode",
+      "kind": "value",
+      "name": "unicode",
+      "signature": "let unicode: t => bool",
+      "docstrings": [
+        "Returns a `bool` indicating whether the unicode flag is set."
+      ]
+    },
+    {
+      "id": "Js_re.exec_",
+      "kind": "value",
+      "name": "exec_",
+      "signature": "let exec_: (t, string) => option<result>",
+      "docstrings": [
+        "Executes a search on a given string using the given RegExp object.\n  Returns `Some(Js.Re.result)` if a match is found, `None` otherwise.\n\n  ```res example\n  /* Match \"quick brown\" followed by \"jumps\", ignoring characters in between\n   * Remember \"brown\" and \"jumps\"\n   * Ignore case\n   */\n\n  let re = %re(\"/quick\\s(brown).+?(jumps)/ig\")\n  let result = Js.Re.exec_(re, \"The Quick Brown Fox Jumps Over The Lazy Dog\")\n  ```\n\n  See\n  [`RegExp.prototype.exec()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_re.test_",
+      "kind": "value",
+      "name": "test_",
+      "signature": "let test_: (t, string) => bool",
+      "docstrings": [
+        "Tests whether the given RegExp object will match a given `string`.\n  Returns true if a match is found, false otherwise.\n\n  ```res example\n  /* A simple implementation of Js.String.startsWith */\n\n  let str = \"hello world!\"\n\n  let startsWith = (target, substring) =>\n    Js.Re.fromString(\"^\" ++ substring)->Js.Re.test_(target)\n\n  Js.log(str->startsWith(\"hello\")) /* prints \"true\" */\n  ```\n\n  See\n  [`RegExp.prototype.test()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test)\n  on MDN."
+      ]
+    }
+  ]
+}

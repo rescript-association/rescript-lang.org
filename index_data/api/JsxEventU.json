@@ -1,0 +1,2733 @@
+{
+  "name": "JsxEventU",
+  "docstrings": [
+    "Internal: use JsxEvent directly."
+  ],
+  "items": [
+    {
+      "id": "JsxEventU.synthetic",
+      "kind": "type",
+      "name": "synthetic",
+      "signature": "type synthetic<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "MakeEventWithType.JsxEventU",
+      "kind": "module",
+      "item": {
+        "name": "MakeEventWithType",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "JsxEventU.MakeEventWithType.bubbles",
+            "kind": "value",
+            "name": "bubbles",
+            "signature": "let bubbles: (. Type.t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.MakeEventWithType.cancelable",
+            "kind": "value",
+            "name": "cancelable",
+            "signature": "let cancelable: (. Type.t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.MakeEventWithType.currentTarget",
+            "kind": "value",
+            "name": "currentTarget",
+            "signature": "let currentTarget: (. Type.t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.MakeEventWithType.defaultPrevented",
+            "kind": "value",
+            "name": "defaultPrevented",
+            "signature": "let defaultPrevented: (. Type.t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.MakeEventWithType.eventPhase",
+            "kind": "value",
+            "name": "eventPhase",
+            "signature": "let eventPhase: (. Type.t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.MakeEventWithType.isTrusted",
+            "kind": "value",
+            "name": "isTrusted",
+            "signature": "let isTrusted: (. Type.t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.MakeEventWithType.nativeEvent",
+            "kind": "value",
+            "name": "nativeEvent",
+            "signature": "let nativeEvent: (. Type.t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.MakeEventWithType.preventDefault",
+            "kind": "value",
+            "name": "preventDefault",
+            "signature": "let preventDefault: (. Type.t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.MakeEventWithType.isDefaultPrevented",
+            "kind": "value",
+            "name": "isDefaultPrevented",
+            "signature": "let isDefaultPrevented: (. Type.t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.MakeEventWithType.stopPropagation",
+            "kind": "value",
+            "name": "stopPropagation",
+            "signature": "let stopPropagation: (. Type.t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.MakeEventWithType.isPropagationStopped",
+            "kind": "value",
+            "name": "isPropagationStopped",
+            "signature": "let isPropagationStopped: (. Type.t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.MakeEventWithType.target",
+            "kind": "value",
+            "name": "target",
+            "signature": "let target: (. Type.t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.MakeEventWithType.timeStamp",
+            "kind": "value",
+            "name": "timeStamp",
+            "signature": "let timeStamp: (. Type.t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.MakeEventWithType.type_",
+            "kind": "value",
+            "name": "type_",
+            "signature": "let type_: (. Type.t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.MakeEventWithType.persist",
+            "kind": "value",
+            "name": "persist",
+            "signature": "let persist: (. Type.t) => unit",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Synthetic.JsxEventU",
+      "kind": "module",
+      "item": {
+        "name": "Synthetic",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "JsxEventU.Synthetic.tag",
+            "kind": "type",
+            "name": "tag",
+            "signature": "type tag",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Synthetic.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = synthetic<tag>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Synthetic.bubbles",
+            "kind": "value",
+            "name": "bubbles",
+            "signature": "let bubbles: (. synthetic<'a>) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Synthetic.cancelable",
+            "kind": "value",
+            "name": "cancelable",
+            "signature": "let cancelable: (. synthetic<'a>) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Synthetic.currentTarget",
+            "kind": "value",
+            "name": "currentTarget",
+            "signature": "let currentTarget: (. synthetic<'a>) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Synthetic.defaultPrevented",
+            "kind": "value",
+            "name": "defaultPrevented",
+            "signature": "let defaultPrevented: (. synthetic<'a>) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Synthetic.eventPhase",
+            "kind": "value",
+            "name": "eventPhase",
+            "signature": "let eventPhase: (. synthetic<'a>) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Synthetic.isTrusted",
+            "kind": "value",
+            "name": "isTrusted",
+            "signature": "let isTrusted: (. synthetic<'a>) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Synthetic.nativeEvent",
+            "kind": "value",
+            "name": "nativeEvent",
+            "signature": "let nativeEvent: (. synthetic<'a>) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Synthetic.preventDefault",
+            "kind": "value",
+            "name": "preventDefault",
+            "signature": "let preventDefault: (. synthetic<'a>) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Synthetic.isDefaultPrevented",
+            "kind": "value",
+            "name": "isDefaultPrevented",
+            "signature": "let isDefaultPrevented: (. synthetic<'a>) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Synthetic.stopPropagation",
+            "kind": "value",
+            "name": "stopPropagation",
+            "signature": "let stopPropagation: (. synthetic<'a>) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Synthetic.isPropagationStopped",
+            "kind": "value",
+            "name": "isPropagationStopped",
+            "signature": "let isPropagationStopped: (. synthetic<'a>) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Synthetic.target",
+            "kind": "value",
+            "name": "target",
+            "signature": "let target: (. synthetic<'a>) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Synthetic.timeStamp",
+            "kind": "value",
+            "name": "timeStamp",
+            "signature": "let timeStamp: (. synthetic<'a>) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Synthetic.type_",
+            "kind": "value",
+            "name": "type_",
+            "signature": "let type_: (. synthetic<'a>) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Synthetic.persist",
+            "kind": "value",
+            "name": "persist",
+            "signature": "let persist: (. synthetic<'a>) => unit",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "JsxEventU.toSyntheticEvent",
+      "kind": "value",
+      "name": "toSyntheticEvent",
+      "signature": "let toSyntheticEvent: (. synthetic<'a>) => Synthetic.t",
+      "docstrings": []
+    },
+    {
+      "id": "Clipboard.JsxEventU",
+      "kind": "module",
+      "item": {
+        "name": "Clipboard",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "JsxEventU.Clipboard.tag",
+            "kind": "type",
+            "name": "tag",
+            "signature": "type tag",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Clipboard.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = synthetic<tag>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Clipboard.bubbles",
+            "kind": "value",
+            "name": "bubbles",
+            "signature": "let bubbles: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Clipboard.cancelable",
+            "kind": "value",
+            "name": "cancelable",
+            "signature": "let cancelable: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Clipboard.currentTarget",
+            "kind": "value",
+            "name": "currentTarget",
+            "signature": "let currentTarget: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Clipboard.defaultPrevented",
+            "kind": "value",
+            "name": "defaultPrevented",
+            "signature": "let defaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Clipboard.eventPhase",
+            "kind": "value",
+            "name": "eventPhase",
+            "signature": "let eventPhase: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Clipboard.isTrusted",
+            "kind": "value",
+            "name": "isTrusted",
+            "signature": "let isTrusted: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Clipboard.nativeEvent",
+            "kind": "value",
+            "name": "nativeEvent",
+            "signature": "let nativeEvent: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Clipboard.preventDefault",
+            "kind": "value",
+            "name": "preventDefault",
+            "signature": "let preventDefault: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Clipboard.isDefaultPrevented",
+            "kind": "value",
+            "name": "isDefaultPrevented",
+            "signature": "let isDefaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Clipboard.stopPropagation",
+            "kind": "value",
+            "name": "stopPropagation",
+            "signature": "let stopPropagation: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Clipboard.isPropagationStopped",
+            "kind": "value",
+            "name": "isPropagationStopped",
+            "signature": "let isPropagationStopped: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Clipboard.target",
+            "kind": "value",
+            "name": "target",
+            "signature": "let target: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Clipboard.timeStamp",
+            "kind": "value",
+            "name": "timeStamp",
+            "signature": "let timeStamp: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Clipboard.type_",
+            "kind": "value",
+            "name": "type_",
+            "signature": "let type_: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Clipboard.persist",
+            "kind": "value",
+            "name": "persist",
+            "signature": "let persist: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Clipboard.clipboardData",
+            "kind": "value",
+            "name": "clipboardData",
+            "signature": "let clipboardData: (. t) => {..}",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Composition.JsxEventU",
+      "kind": "module",
+      "item": {
+        "name": "Composition",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "JsxEventU.Composition.tag",
+            "kind": "type",
+            "name": "tag",
+            "signature": "type tag",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Composition.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = synthetic<tag>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Composition.bubbles",
+            "kind": "value",
+            "name": "bubbles",
+            "signature": "let bubbles: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Composition.cancelable",
+            "kind": "value",
+            "name": "cancelable",
+            "signature": "let cancelable: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Composition.currentTarget",
+            "kind": "value",
+            "name": "currentTarget",
+            "signature": "let currentTarget: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Composition.defaultPrevented",
+            "kind": "value",
+            "name": "defaultPrevented",
+            "signature": "let defaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Composition.eventPhase",
+            "kind": "value",
+            "name": "eventPhase",
+            "signature": "let eventPhase: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Composition.isTrusted",
+            "kind": "value",
+            "name": "isTrusted",
+            "signature": "let isTrusted: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Composition.nativeEvent",
+            "kind": "value",
+            "name": "nativeEvent",
+            "signature": "let nativeEvent: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Composition.preventDefault",
+            "kind": "value",
+            "name": "preventDefault",
+            "signature": "let preventDefault: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Composition.isDefaultPrevented",
+            "kind": "value",
+            "name": "isDefaultPrevented",
+            "signature": "let isDefaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Composition.stopPropagation",
+            "kind": "value",
+            "name": "stopPropagation",
+            "signature": "let stopPropagation: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Composition.isPropagationStopped",
+            "kind": "value",
+            "name": "isPropagationStopped",
+            "signature": "let isPropagationStopped: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Composition.target",
+            "kind": "value",
+            "name": "target",
+            "signature": "let target: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Composition.timeStamp",
+            "kind": "value",
+            "name": "timeStamp",
+            "signature": "let timeStamp: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Composition.type_",
+            "kind": "value",
+            "name": "type_",
+            "signature": "let type_: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Composition.persist",
+            "kind": "value",
+            "name": "persist",
+            "signature": "let persist: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Composition.data",
+            "kind": "value",
+            "name": "data",
+            "signature": "let data: (. t) => string",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Keyboard.JsxEventU",
+      "kind": "module",
+      "item": {
+        "name": "Keyboard",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "JsxEventU.Keyboard.tag",
+            "kind": "type",
+            "name": "tag",
+            "signature": "type tag",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = synthetic<tag>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.bubbles",
+            "kind": "value",
+            "name": "bubbles",
+            "signature": "let bubbles: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.cancelable",
+            "kind": "value",
+            "name": "cancelable",
+            "signature": "let cancelable: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.currentTarget",
+            "kind": "value",
+            "name": "currentTarget",
+            "signature": "let currentTarget: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.defaultPrevented",
+            "kind": "value",
+            "name": "defaultPrevented",
+            "signature": "let defaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.eventPhase",
+            "kind": "value",
+            "name": "eventPhase",
+            "signature": "let eventPhase: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.isTrusted",
+            "kind": "value",
+            "name": "isTrusted",
+            "signature": "let isTrusted: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.nativeEvent",
+            "kind": "value",
+            "name": "nativeEvent",
+            "signature": "let nativeEvent: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.preventDefault",
+            "kind": "value",
+            "name": "preventDefault",
+            "signature": "let preventDefault: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.isDefaultPrevented",
+            "kind": "value",
+            "name": "isDefaultPrevented",
+            "signature": "let isDefaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.stopPropagation",
+            "kind": "value",
+            "name": "stopPropagation",
+            "signature": "let stopPropagation: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.isPropagationStopped",
+            "kind": "value",
+            "name": "isPropagationStopped",
+            "signature": "let isPropagationStopped: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.target",
+            "kind": "value",
+            "name": "target",
+            "signature": "let target: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.timeStamp",
+            "kind": "value",
+            "name": "timeStamp",
+            "signature": "let timeStamp: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.type_",
+            "kind": "value",
+            "name": "type_",
+            "signature": "let type_: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.persist",
+            "kind": "value",
+            "name": "persist",
+            "signature": "let persist: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.altKey",
+            "kind": "value",
+            "name": "altKey",
+            "signature": "let altKey: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.charCode",
+            "kind": "value",
+            "name": "charCode",
+            "signature": "let charCode: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.ctrlKey",
+            "kind": "value",
+            "name": "ctrlKey",
+            "signature": "let ctrlKey: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.getModifierState",
+            "kind": "value",
+            "name": "getModifierState",
+            "signature": "let getModifierState: (. t, string) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.key",
+            "kind": "value",
+            "name": "key",
+            "signature": "let key: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.keyCode",
+            "kind": "value",
+            "name": "keyCode",
+            "signature": "let keyCode: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.locale",
+            "kind": "value",
+            "name": "locale",
+            "signature": "let locale: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.location",
+            "kind": "value",
+            "name": "location",
+            "signature": "let location: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.metaKey",
+            "kind": "value",
+            "name": "metaKey",
+            "signature": "let metaKey: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.repeat",
+            "kind": "value",
+            "name": "repeat",
+            "signature": "let repeat: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.shiftKey",
+            "kind": "value",
+            "name": "shiftKey",
+            "signature": "let shiftKey: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Keyboard.which",
+            "kind": "value",
+            "name": "which",
+            "signature": "let which: (. t) => int",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Focus.JsxEventU",
+      "kind": "module",
+      "item": {
+        "name": "Focus",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "JsxEventU.Focus.tag",
+            "kind": "type",
+            "name": "tag",
+            "signature": "type tag",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Focus.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = synthetic<tag>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Focus.bubbles",
+            "kind": "value",
+            "name": "bubbles",
+            "signature": "let bubbles: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Focus.cancelable",
+            "kind": "value",
+            "name": "cancelable",
+            "signature": "let cancelable: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Focus.currentTarget",
+            "kind": "value",
+            "name": "currentTarget",
+            "signature": "let currentTarget: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Focus.defaultPrevented",
+            "kind": "value",
+            "name": "defaultPrevented",
+            "signature": "let defaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Focus.eventPhase",
+            "kind": "value",
+            "name": "eventPhase",
+            "signature": "let eventPhase: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Focus.isTrusted",
+            "kind": "value",
+            "name": "isTrusted",
+            "signature": "let isTrusted: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Focus.nativeEvent",
+            "kind": "value",
+            "name": "nativeEvent",
+            "signature": "let nativeEvent: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Focus.preventDefault",
+            "kind": "value",
+            "name": "preventDefault",
+            "signature": "let preventDefault: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Focus.isDefaultPrevented",
+            "kind": "value",
+            "name": "isDefaultPrevented",
+            "signature": "let isDefaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Focus.stopPropagation",
+            "kind": "value",
+            "name": "stopPropagation",
+            "signature": "let stopPropagation: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Focus.isPropagationStopped",
+            "kind": "value",
+            "name": "isPropagationStopped",
+            "signature": "let isPropagationStopped: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Focus.target",
+            "kind": "value",
+            "name": "target",
+            "signature": "let target: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Focus.timeStamp",
+            "kind": "value",
+            "name": "timeStamp",
+            "signature": "let timeStamp: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Focus.type_",
+            "kind": "value",
+            "name": "type_",
+            "signature": "let type_: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Focus.persist",
+            "kind": "value",
+            "name": "persist",
+            "signature": "let persist: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Focus.relatedTarget",
+            "kind": "value",
+            "name": "relatedTarget",
+            "signature": "let relatedTarget: (. t) => option<{..}>",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Form.JsxEventU",
+      "kind": "module",
+      "item": {
+        "name": "Form",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "JsxEventU.Form.tag",
+            "kind": "type",
+            "name": "tag",
+            "signature": "type tag",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Form.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = synthetic<tag>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Form.bubbles",
+            "kind": "value",
+            "name": "bubbles",
+            "signature": "let bubbles: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Form.cancelable",
+            "kind": "value",
+            "name": "cancelable",
+            "signature": "let cancelable: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Form.currentTarget",
+            "kind": "value",
+            "name": "currentTarget",
+            "signature": "let currentTarget: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Form.defaultPrevented",
+            "kind": "value",
+            "name": "defaultPrevented",
+            "signature": "let defaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Form.eventPhase",
+            "kind": "value",
+            "name": "eventPhase",
+            "signature": "let eventPhase: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Form.isTrusted",
+            "kind": "value",
+            "name": "isTrusted",
+            "signature": "let isTrusted: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Form.nativeEvent",
+            "kind": "value",
+            "name": "nativeEvent",
+            "signature": "let nativeEvent: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Form.preventDefault",
+            "kind": "value",
+            "name": "preventDefault",
+            "signature": "let preventDefault: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Form.isDefaultPrevented",
+            "kind": "value",
+            "name": "isDefaultPrevented",
+            "signature": "let isDefaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Form.stopPropagation",
+            "kind": "value",
+            "name": "stopPropagation",
+            "signature": "let stopPropagation: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Form.isPropagationStopped",
+            "kind": "value",
+            "name": "isPropagationStopped",
+            "signature": "let isPropagationStopped: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Form.target",
+            "kind": "value",
+            "name": "target",
+            "signature": "let target: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Form.timeStamp",
+            "kind": "value",
+            "name": "timeStamp",
+            "signature": "let timeStamp: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Form.type_",
+            "kind": "value",
+            "name": "type_",
+            "signature": "let type_: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Form.persist",
+            "kind": "value",
+            "name": "persist",
+            "signature": "let persist: (. t) => unit",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Mouse.JsxEventU",
+      "kind": "module",
+      "item": {
+        "name": "Mouse",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "JsxEventU.Mouse.tag",
+            "kind": "type",
+            "name": "tag",
+            "signature": "type tag",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = synthetic<tag>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.bubbles",
+            "kind": "value",
+            "name": "bubbles",
+            "signature": "let bubbles: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.cancelable",
+            "kind": "value",
+            "name": "cancelable",
+            "signature": "let cancelable: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.currentTarget",
+            "kind": "value",
+            "name": "currentTarget",
+            "signature": "let currentTarget: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.defaultPrevented",
+            "kind": "value",
+            "name": "defaultPrevented",
+            "signature": "let defaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.eventPhase",
+            "kind": "value",
+            "name": "eventPhase",
+            "signature": "let eventPhase: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.isTrusted",
+            "kind": "value",
+            "name": "isTrusted",
+            "signature": "let isTrusted: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.nativeEvent",
+            "kind": "value",
+            "name": "nativeEvent",
+            "signature": "let nativeEvent: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.preventDefault",
+            "kind": "value",
+            "name": "preventDefault",
+            "signature": "let preventDefault: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.isDefaultPrevented",
+            "kind": "value",
+            "name": "isDefaultPrevented",
+            "signature": "let isDefaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.stopPropagation",
+            "kind": "value",
+            "name": "stopPropagation",
+            "signature": "let stopPropagation: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.isPropagationStopped",
+            "kind": "value",
+            "name": "isPropagationStopped",
+            "signature": "let isPropagationStopped: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.target",
+            "kind": "value",
+            "name": "target",
+            "signature": "let target: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.timeStamp",
+            "kind": "value",
+            "name": "timeStamp",
+            "signature": "let timeStamp: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.type_",
+            "kind": "value",
+            "name": "type_",
+            "signature": "let type_: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.persist",
+            "kind": "value",
+            "name": "persist",
+            "signature": "let persist: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.altKey",
+            "kind": "value",
+            "name": "altKey",
+            "signature": "let altKey: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.button",
+            "kind": "value",
+            "name": "button",
+            "signature": "let button: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.buttons",
+            "kind": "value",
+            "name": "buttons",
+            "signature": "let buttons: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.clientX",
+            "kind": "value",
+            "name": "clientX",
+            "signature": "let clientX: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.clientY",
+            "kind": "value",
+            "name": "clientY",
+            "signature": "let clientY: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.ctrlKey",
+            "kind": "value",
+            "name": "ctrlKey",
+            "signature": "let ctrlKey: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.getModifierState",
+            "kind": "value",
+            "name": "getModifierState",
+            "signature": "let getModifierState: (. (. t) => string) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.metaKey",
+            "kind": "value",
+            "name": "metaKey",
+            "signature": "let metaKey: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.movementX",
+            "kind": "value",
+            "name": "movementX",
+            "signature": "let movementX: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.movementY",
+            "kind": "value",
+            "name": "movementY",
+            "signature": "let movementY: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.pageX",
+            "kind": "value",
+            "name": "pageX",
+            "signature": "let pageX: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.pageY",
+            "kind": "value",
+            "name": "pageY",
+            "signature": "let pageY: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.relatedTarget",
+            "kind": "value",
+            "name": "relatedTarget",
+            "signature": "let relatedTarget: (. t) => option<{..}>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.screenX",
+            "kind": "value",
+            "name": "screenX",
+            "signature": "let screenX: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.screenY",
+            "kind": "value",
+            "name": "screenY",
+            "signature": "let screenY: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Mouse.shiftKey",
+            "kind": "value",
+            "name": "shiftKey",
+            "signature": "let shiftKey: (. t) => bool",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Pointer.JsxEventU",
+      "kind": "module",
+      "item": {
+        "name": "Pointer",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "JsxEventU.Pointer.tag",
+            "kind": "type",
+            "name": "tag",
+            "signature": "type tag",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = synthetic<tag>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.bubbles",
+            "kind": "value",
+            "name": "bubbles",
+            "signature": "let bubbles: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.cancelable",
+            "kind": "value",
+            "name": "cancelable",
+            "signature": "let cancelable: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.currentTarget",
+            "kind": "value",
+            "name": "currentTarget",
+            "signature": "let currentTarget: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.defaultPrevented",
+            "kind": "value",
+            "name": "defaultPrevented",
+            "signature": "let defaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.eventPhase",
+            "kind": "value",
+            "name": "eventPhase",
+            "signature": "let eventPhase: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.isTrusted",
+            "kind": "value",
+            "name": "isTrusted",
+            "signature": "let isTrusted: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.nativeEvent",
+            "kind": "value",
+            "name": "nativeEvent",
+            "signature": "let nativeEvent: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.preventDefault",
+            "kind": "value",
+            "name": "preventDefault",
+            "signature": "let preventDefault: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.isDefaultPrevented",
+            "kind": "value",
+            "name": "isDefaultPrevented",
+            "signature": "let isDefaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.stopPropagation",
+            "kind": "value",
+            "name": "stopPropagation",
+            "signature": "let stopPropagation: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.isPropagationStopped",
+            "kind": "value",
+            "name": "isPropagationStopped",
+            "signature": "let isPropagationStopped: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.target",
+            "kind": "value",
+            "name": "target",
+            "signature": "let target: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.timeStamp",
+            "kind": "value",
+            "name": "timeStamp",
+            "signature": "let timeStamp: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.type_",
+            "kind": "value",
+            "name": "type_",
+            "signature": "let type_: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.persist",
+            "kind": "value",
+            "name": "persist",
+            "signature": "let persist: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.detail",
+            "kind": "value",
+            "name": "detail",
+            "signature": "let detail: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.screenX",
+            "kind": "value",
+            "name": "screenX",
+            "signature": "let screenX: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.screenY",
+            "kind": "value",
+            "name": "screenY",
+            "signature": "let screenY: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.clientX",
+            "kind": "value",
+            "name": "clientX",
+            "signature": "let clientX: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.clientY",
+            "kind": "value",
+            "name": "clientY",
+            "signature": "let clientY: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.pageX",
+            "kind": "value",
+            "name": "pageX",
+            "signature": "let pageX: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.pageY",
+            "kind": "value",
+            "name": "pageY",
+            "signature": "let pageY: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.movementX",
+            "kind": "value",
+            "name": "movementX",
+            "signature": "let movementX: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.movementY",
+            "kind": "value",
+            "name": "movementY",
+            "signature": "let movementY: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.ctrlKey",
+            "kind": "value",
+            "name": "ctrlKey",
+            "signature": "let ctrlKey: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.shiftKey",
+            "kind": "value",
+            "name": "shiftKey",
+            "signature": "let shiftKey: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.altKey",
+            "kind": "value",
+            "name": "altKey",
+            "signature": "let altKey: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.metaKey",
+            "kind": "value",
+            "name": "metaKey",
+            "signature": "let metaKey: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.getModifierState",
+            "kind": "value",
+            "name": "getModifierState",
+            "signature": "let getModifierState: (. (. t) => string) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.button",
+            "kind": "value",
+            "name": "button",
+            "signature": "let button: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.buttons",
+            "kind": "value",
+            "name": "buttons",
+            "signature": "let buttons: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.relatedTarget",
+            "kind": "value",
+            "name": "relatedTarget",
+            "signature": "let relatedTarget: (. t) => option<{..}>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.width",
+            "kind": "value",
+            "name": "width",
+            "signature": "let width: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.height",
+            "kind": "value",
+            "name": "height",
+            "signature": "let height: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.pressure",
+            "kind": "value",
+            "name": "pressure",
+            "signature": "let pressure: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.tangentialPressure",
+            "kind": "value",
+            "name": "tangentialPressure",
+            "signature": "let tangentialPressure: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.tiltX",
+            "kind": "value",
+            "name": "tiltX",
+            "signature": "let tiltX: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.tiltY",
+            "kind": "value",
+            "name": "tiltY",
+            "signature": "let tiltY: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.twist",
+            "kind": "value",
+            "name": "twist",
+            "signature": "let twist: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.pointerType",
+            "kind": "value",
+            "name": "pointerType",
+            "signature": "let pointerType: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Pointer.isPrimary",
+            "kind": "value",
+            "name": "isPrimary",
+            "signature": "let isPrimary: (. t) => bool",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Selection.JsxEventU",
+      "kind": "module",
+      "item": {
+        "name": "Selection",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "JsxEventU.Selection.tag",
+            "kind": "type",
+            "name": "tag",
+            "signature": "type tag",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Selection.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = synthetic<tag>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Selection.bubbles",
+            "kind": "value",
+            "name": "bubbles",
+            "signature": "let bubbles: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Selection.cancelable",
+            "kind": "value",
+            "name": "cancelable",
+            "signature": "let cancelable: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Selection.currentTarget",
+            "kind": "value",
+            "name": "currentTarget",
+            "signature": "let currentTarget: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Selection.defaultPrevented",
+            "kind": "value",
+            "name": "defaultPrevented",
+            "signature": "let defaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Selection.eventPhase",
+            "kind": "value",
+            "name": "eventPhase",
+            "signature": "let eventPhase: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Selection.isTrusted",
+            "kind": "value",
+            "name": "isTrusted",
+            "signature": "let isTrusted: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Selection.nativeEvent",
+            "kind": "value",
+            "name": "nativeEvent",
+            "signature": "let nativeEvent: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Selection.preventDefault",
+            "kind": "value",
+            "name": "preventDefault",
+            "signature": "let preventDefault: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Selection.isDefaultPrevented",
+            "kind": "value",
+            "name": "isDefaultPrevented",
+            "signature": "let isDefaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Selection.stopPropagation",
+            "kind": "value",
+            "name": "stopPropagation",
+            "signature": "let stopPropagation: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Selection.isPropagationStopped",
+            "kind": "value",
+            "name": "isPropagationStopped",
+            "signature": "let isPropagationStopped: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Selection.target",
+            "kind": "value",
+            "name": "target",
+            "signature": "let target: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Selection.timeStamp",
+            "kind": "value",
+            "name": "timeStamp",
+            "signature": "let timeStamp: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Selection.type_",
+            "kind": "value",
+            "name": "type_",
+            "signature": "let type_: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Selection.persist",
+            "kind": "value",
+            "name": "persist",
+            "signature": "let persist: (. t) => unit",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Touch.JsxEventU",
+      "kind": "module",
+      "item": {
+        "name": "Touch",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "JsxEventU.Touch.tag",
+            "kind": "type",
+            "name": "tag",
+            "signature": "type tag",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = synthetic<tag>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.bubbles",
+            "kind": "value",
+            "name": "bubbles",
+            "signature": "let bubbles: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.cancelable",
+            "kind": "value",
+            "name": "cancelable",
+            "signature": "let cancelable: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.currentTarget",
+            "kind": "value",
+            "name": "currentTarget",
+            "signature": "let currentTarget: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.defaultPrevented",
+            "kind": "value",
+            "name": "defaultPrevented",
+            "signature": "let defaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.eventPhase",
+            "kind": "value",
+            "name": "eventPhase",
+            "signature": "let eventPhase: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.isTrusted",
+            "kind": "value",
+            "name": "isTrusted",
+            "signature": "let isTrusted: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.nativeEvent",
+            "kind": "value",
+            "name": "nativeEvent",
+            "signature": "let nativeEvent: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.preventDefault",
+            "kind": "value",
+            "name": "preventDefault",
+            "signature": "let preventDefault: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.isDefaultPrevented",
+            "kind": "value",
+            "name": "isDefaultPrevented",
+            "signature": "let isDefaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.stopPropagation",
+            "kind": "value",
+            "name": "stopPropagation",
+            "signature": "let stopPropagation: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.isPropagationStopped",
+            "kind": "value",
+            "name": "isPropagationStopped",
+            "signature": "let isPropagationStopped: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.target",
+            "kind": "value",
+            "name": "target",
+            "signature": "let target: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.timeStamp",
+            "kind": "value",
+            "name": "timeStamp",
+            "signature": "let timeStamp: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.type_",
+            "kind": "value",
+            "name": "type_",
+            "signature": "let type_: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.persist",
+            "kind": "value",
+            "name": "persist",
+            "signature": "let persist: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.altKey",
+            "kind": "value",
+            "name": "altKey",
+            "signature": "let altKey: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.changedTouches",
+            "kind": "value",
+            "name": "changedTouches",
+            "signature": "let changedTouches: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.ctrlKey",
+            "kind": "value",
+            "name": "ctrlKey",
+            "signature": "let ctrlKey: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.getModifierState",
+            "kind": "value",
+            "name": "getModifierState",
+            "signature": "let getModifierState: (. (. t) => string) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.metaKey",
+            "kind": "value",
+            "name": "metaKey",
+            "signature": "let metaKey: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.shiftKey",
+            "kind": "value",
+            "name": "shiftKey",
+            "signature": "let shiftKey: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.targetTouches",
+            "kind": "value",
+            "name": "targetTouches",
+            "signature": "let targetTouches: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Touch.touches",
+            "kind": "value",
+            "name": "touches",
+            "signature": "let touches: (. t) => {..}",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "UI.JsxEventU",
+      "kind": "module",
+      "item": {
+        "name": "UI",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "JsxEventU.UI.tag",
+            "kind": "type",
+            "name": "tag",
+            "signature": "type tag",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.UI.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = synthetic<tag>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.UI.bubbles",
+            "kind": "value",
+            "name": "bubbles",
+            "signature": "let bubbles: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.UI.cancelable",
+            "kind": "value",
+            "name": "cancelable",
+            "signature": "let cancelable: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.UI.currentTarget",
+            "kind": "value",
+            "name": "currentTarget",
+            "signature": "let currentTarget: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.UI.defaultPrevented",
+            "kind": "value",
+            "name": "defaultPrevented",
+            "signature": "let defaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.UI.eventPhase",
+            "kind": "value",
+            "name": "eventPhase",
+            "signature": "let eventPhase: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.UI.isTrusted",
+            "kind": "value",
+            "name": "isTrusted",
+            "signature": "let isTrusted: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.UI.nativeEvent",
+            "kind": "value",
+            "name": "nativeEvent",
+            "signature": "let nativeEvent: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.UI.preventDefault",
+            "kind": "value",
+            "name": "preventDefault",
+            "signature": "let preventDefault: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.UI.isDefaultPrevented",
+            "kind": "value",
+            "name": "isDefaultPrevented",
+            "signature": "let isDefaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.UI.stopPropagation",
+            "kind": "value",
+            "name": "stopPropagation",
+            "signature": "let stopPropagation: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.UI.isPropagationStopped",
+            "kind": "value",
+            "name": "isPropagationStopped",
+            "signature": "let isPropagationStopped: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.UI.target",
+            "kind": "value",
+            "name": "target",
+            "signature": "let target: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.UI.timeStamp",
+            "kind": "value",
+            "name": "timeStamp",
+            "signature": "let timeStamp: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.UI.type_",
+            "kind": "value",
+            "name": "type_",
+            "signature": "let type_: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.UI.persist",
+            "kind": "value",
+            "name": "persist",
+            "signature": "let persist: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.UI.detail",
+            "kind": "value",
+            "name": "detail",
+            "signature": "let detail: (. t) => int",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Wheel.JsxEventU",
+      "kind": "module",
+      "item": {
+        "name": "Wheel",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "JsxEventU.Wheel.tag",
+            "kind": "type",
+            "name": "tag",
+            "signature": "type tag",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = synthetic<tag>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.bubbles",
+            "kind": "value",
+            "name": "bubbles",
+            "signature": "let bubbles: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.cancelable",
+            "kind": "value",
+            "name": "cancelable",
+            "signature": "let cancelable: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.currentTarget",
+            "kind": "value",
+            "name": "currentTarget",
+            "signature": "let currentTarget: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.defaultPrevented",
+            "kind": "value",
+            "name": "defaultPrevented",
+            "signature": "let defaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.eventPhase",
+            "kind": "value",
+            "name": "eventPhase",
+            "signature": "let eventPhase: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.isTrusted",
+            "kind": "value",
+            "name": "isTrusted",
+            "signature": "let isTrusted: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.nativeEvent",
+            "kind": "value",
+            "name": "nativeEvent",
+            "signature": "let nativeEvent: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.preventDefault",
+            "kind": "value",
+            "name": "preventDefault",
+            "signature": "let preventDefault: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.isDefaultPrevented",
+            "kind": "value",
+            "name": "isDefaultPrevented",
+            "signature": "let isDefaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.stopPropagation",
+            "kind": "value",
+            "name": "stopPropagation",
+            "signature": "let stopPropagation: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.isPropagationStopped",
+            "kind": "value",
+            "name": "isPropagationStopped",
+            "signature": "let isPropagationStopped: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.target",
+            "kind": "value",
+            "name": "target",
+            "signature": "let target: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.timeStamp",
+            "kind": "value",
+            "name": "timeStamp",
+            "signature": "let timeStamp: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.type_",
+            "kind": "value",
+            "name": "type_",
+            "signature": "let type_: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.persist",
+            "kind": "value",
+            "name": "persist",
+            "signature": "let persist: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.deltaMode",
+            "kind": "value",
+            "name": "deltaMode",
+            "signature": "let deltaMode: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.deltaX",
+            "kind": "value",
+            "name": "deltaX",
+            "signature": "let deltaX: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.deltaY",
+            "kind": "value",
+            "name": "deltaY",
+            "signature": "let deltaY: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Wheel.deltaZ",
+            "kind": "value",
+            "name": "deltaZ",
+            "signature": "let deltaZ: (. t) => float",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Media.JsxEventU",
+      "kind": "module",
+      "item": {
+        "name": "Media",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "JsxEventU.Media.tag",
+            "kind": "type",
+            "name": "tag",
+            "signature": "type tag",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Media.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = synthetic<tag>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Media.bubbles",
+            "kind": "value",
+            "name": "bubbles",
+            "signature": "let bubbles: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Media.cancelable",
+            "kind": "value",
+            "name": "cancelable",
+            "signature": "let cancelable: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Media.currentTarget",
+            "kind": "value",
+            "name": "currentTarget",
+            "signature": "let currentTarget: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Media.defaultPrevented",
+            "kind": "value",
+            "name": "defaultPrevented",
+            "signature": "let defaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Media.eventPhase",
+            "kind": "value",
+            "name": "eventPhase",
+            "signature": "let eventPhase: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Media.isTrusted",
+            "kind": "value",
+            "name": "isTrusted",
+            "signature": "let isTrusted: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Media.nativeEvent",
+            "kind": "value",
+            "name": "nativeEvent",
+            "signature": "let nativeEvent: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Media.preventDefault",
+            "kind": "value",
+            "name": "preventDefault",
+            "signature": "let preventDefault: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Media.isDefaultPrevented",
+            "kind": "value",
+            "name": "isDefaultPrevented",
+            "signature": "let isDefaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Media.stopPropagation",
+            "kind": "value",
+            "name": "stopPropagation",
+            "signature": "let stopPropagation: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Media.isPropagationStopped",
+            "kind": "value",
+            "name": "isPropagationStopped",
+            "signature": "let isPropagationStopped: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Media.target",
+            "kind": "value",
+            "name": "target",
+            "signature": "let target: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Media.timeStamp",
+            "kind": "value",
+            "name": "timeStamp",
+            "signature": "let timeStamp: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Media.type_",
+            "kind": "value",
+            "name": "type_",
+            "signature": "let type_: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Media.persist",
+            "kind": "value",
+            "name": "persist",
+            "signature": "let persist: (. t) => unit",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Image.JsxEventU",
+      "kind": "module",
+      "item": {
+        "name": "Image",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "JsxEventU.Image.tag",
+            "kind": "type",
+            "name": "tag",
+            "signature": "type tag",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Image.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = synthetic<tag>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Image.bubbles",
+            "kind": "value",
+            "name": "bubbles",
+            "signature": "let bubbles: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Image.cancelable",
+            "kind": "value",
+            "name": "cancelable",
+            "signature": "let cancelable: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Image.currentTarget",
+            "kind": "value",
+            "name": "currentTarget",
+            "signature": "let currentTarget: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Image.defaultPrevented",
+            "kind": "value",
+            "name": "defaultPrevented",
+            "signature": "let defaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Image.eventPhase",
+            "kind": "value",
+            "name": "eventPhase",
+            "signature": "let eventPhase: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Image.isTrusted",
+            "kind": "value",
+            "name": "isTrusted",
+            "signature": "let isTrusted: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Image.nativeEvent",
+            "kind": "value",
+            "name": "nativeEvent",
+            "signature": "let nativeEvent: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Image.preventDefault",
+            "kind": "value",
+            "name": "preventDefault",
+            "signature": "let preventDefault: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Image.isDefaultPrevented",
+            "kind": "value",
+            "name": "isDefaultPrevented",
+            "signature": "let isDefaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Image.stopPropagation",
+            "kind": "value",
+            "name": "stopPropagation",
+            "signature": "let stopPropagation: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Image.isPropagationStopped",
+            "kind": "value",
+            "name": "isPropagationStopped",
+            "signature": "let isPropagationStopped: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Image.target",
+            "kind": "value",
+            "name": "target",
+            "signature": "let target: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Image.timeStamp",
+            "kind": "value",
+            "name": "timeStamp",
+            "signature": "let timeStamp: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Image.type_",
+            "kind": "value",
+            "name": "type_",
+            "signature": "let type_: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Image.persist",
+            "kind": "value",
+            "name": "persist",
+            "signature": "let persist: (. t) => unit",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Animation.JsxEventU",
+      "kind": "module",
+      "item": {
+        "name": "Animation",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "JsxEventU.Animation.tag",
+            "kind": "type",
+            "name": "tag",
+            "signature": "type tag",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = synthetic<tag>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.bubbles",
+            "kind": "value",
+            "name": "bubbles",
+            "signature": "let bubbles: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.cancelable",
+            "kind": "value",
+            "name": "cancelable",
+            "signature": "let cancelable: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.currentTarget",
+            "kind": "value",
+            "name": "currentTarget",
+            "signature": "let currentTarget: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.defaultPrevented",
+            "kind": "value",
+            "name": "defaultPrevented",
+            "signature": "let defaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.eventPhase",
+            "kind": "value",
+            "name": "eventPhase",
+            "signature": "let eventPhase: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.isTrusted",
+            "kind": "value",
+            "name": "isTrusted",
+            "signature": "let isTrusted: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.nativeEvent",
+            "kind": "value",
+            "name": "nativeEvent",
+            "signature": "let nativeEvent: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.preventDefault",
+            "kind": "value",
+            "name": "preventDefault",
+            "signature": "let preventDefault: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.isDefaultPrevented",
+            "kind": "value",
+            "name": "isDefaultPrevented",
+            "signature": "let isDefaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.stopPropagation",
+            "kind": "value",
+            "name": "stopPropagation",
+            "signature": "let stopPropagation: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.isPropagationStopped",
+            "kind": "value",
+            "name": "isPropagationStopped",
+            "signature": "let isPropagationStopped: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.target",
+            "kind": "value",
+            "name": "target",
+            "signature": "let target: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.timeStamp",
+            "kind": "value",
+            "name": "timeStamp",
+            "signature": "let timeStamp: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.type_",
+            "kind": "value",
+            "name": "type_",
+            "signature": "let type_: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.persist",
+            "kind": "value",
+            "name": "persist",
+            "signature": "let persist: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.animationName",
+            "kind": "value",
+            "name": "animationName",
+            "signature": "let animationName: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.pseudoElement",
+            "kind": "value",
+            "name": "pseudoElement",
+            "signature": "let pseudoElement: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Animation.elapsedTime",
+            "kind": "value",
+            "name": "elapsedTime",
+            "signature": "let elapsedTime: (. t) => float",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Transition.JsxEventU",
+      "kind": "module",
+      "item": {
+        "name": "Transition",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "JsxEventU.Transition.tag",
+            "kind": "type",
+            "name": "tag",
+            "signature": "type tag",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = synthetic<tag>",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.bubbles",
+            "kind": "value",
+            "name": "bubbles",
+            "signature": "let bubbles: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.cancelable",
+            "kind": "value",
+            "name": "cancelable",
+            "signature": "let cancelable: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.currentTarget",
+            "kind": "value",
+            "name": "currentTarget",
+            "signature": "let currentTarget: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.defaultPrevented",
+            "kind": "value",
+            "name": "defaultPrevented",
+            "signature": "let defaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.eventPhase",
+            "kind": "value",
+            "name": "eventPhase",
+            "signature": "let eventPhase: (. t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.isTrusted",
+            "kind": "value",
+            "name": "isTrusted",
+            "signature": "let isTrusted: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.nativeEvent",
+            "kind": "value",
+            "name": "nativeEvent",
+            "signature": "let nativeEvent: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.preventDefault",
+            "kind": "value",
+            "name": "preventDefault",
+            "signature": "let preventDefault: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.isDefaultPrevented",
+            "kind": "value",
+            "name": "isDefaultPrevented",
+            "signature": "let isDefaultPrevented: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.stopPropagation",
+            "kind": "value",
+            "name": "stopPropagation",
+            "signature": "let stopPropagation: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.isPropagationStopped",
+            "kind": "value",
+            "name": "isPropagationStopped",
+            "signature": "let isPropagationStopped: (. t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.target",
+            "kind": "value",
+            "name": "target",
+            "signature": "let target: (. t) => {..}",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.timeStamp",
+            "kind": "value",
+            "name": "timeStamp",
+            "signature": "let timeStamp: (. t) => float",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.type_",
+            "kind": "value",
+            "name": "type_",
+            "signature": "let type_: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.persist",
+            "kind": "value",
+            "name": "persist",
+            "signature": "let persist: (. t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.propertyName",
+            "kind": "value",
+            "name": "propertyName",
+            "signature": "let propertyName: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.pseudoElement",
+            "kind": "value",
+            "name": "pseudoElement",
+            "signature": "let pseudoElement: (. t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "JsxEventU.Transition.elapsedTime",
+            "kind": "value",
+            "name": "elapsedTime",
+            "signature": "let elapsedTime: (. t) => float",
+            "docstrings": []
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,312 @@
+{
+  "name": "Int32",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Int32.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t = int",
+      "docstrings": [
+        "32-bit integers.\n\n   This module provides operations on the type [t]\n   of signed 32-bit integers.  Unlike the built-in [int] type,\n   the type [t] is guaranteed to be exactly 32-bit wide on all\n   platforms.  All arithmetic operations over [t] are taken\n   modulo 2{^32}.\n\n   Performance notice: values of type [t] occupy more memory\n   space than values of type [int], and arithmetic operations on\n   [t] are generally slower than those on [int].  Use [t]\n   only when the application requires exact 32-bit arithmetic."
+      ]
+    },
+    {
+      "id": "Int32.zero",
+      "kind": "value",
+      "name": "zero",
+      "signature": "let zero: t",
+      "docstrings": [
+        "The 32-bit integer 0."
+      ]
+    },
+    {
+      "id": "Int32.one",
+      "kind": "value",
+      "name": "one",
+      "signature": "let one: t",
+      "docstrings": [
+        "The 32-bit integer 1."
+      ]
+    },
+    {
+      "id": "Int32.minus_one",
+      "kind": "value",
+      "name": "minus_one",
+      "signature": "let minus_one: t",
+      "docstrings": [
+        "The 32-bit integer -1."
+      ]
+    },
+    {
+      "id": "Int32.neg",
+      "kind": "value",
+      "name": "neg",
+      "signature": "let neg: t => t",
+      "docstrings": [
+        "Unary negation."
+      ]
+    },
+    {
+      "id": "Int32.add",
+      "kind": "value",
+      "name": "add",
+      "signature": "let add: (t, t) => t",
+      "docstrings": [
+        "Addition."
+      ]
+    },
+    {
+      "id": "Int32.sub",
+      "kind": "value",
+      "name": "sub",
+      "signature": "let sub: (t, t) => t",
+      "docstrings": [
+        "Subtraction."
+      ]
+    },
+    {
+      "id": "Int32.mul",
+      "kind": "value",
+      "name": "mul",
+      "signature": "let mul: (t, t) => t",
+      "docstrings": [
+        "Multiplication."
+      ]
+    },
+    {
+      "id": "Int32.div",
+      "kind": "value",
+      "name": "div",
+      "signature": "let div: (t, t) => t",
+      "docstrings": [
+        "Integer division.  Raise [Division_by_zero] if the second\n   argument is zero.  This division rounds the real quotient of\n   its arguments towards zero, as specified for {!Pervasives.(/)}."
+      ]
+    },
+    {
+      "id": "Int32.rem",
+      "kind": "value",
+      "name": "rem",
+      "signature": "let rem: (t, t) => t",
+      "docstrings": [
+        "Integer remainder.  If [y] is not zero, the result\n   of [Int32.rem x y] satisfies the following property:\n   [x = Int32.add (Int32.mul (Int32.div x y) y) (Int32.rem x y)].\n   If [y = 0], [Int32.rem x y] raises [Division_by_zero]."
+      ]
+    },
+    {
+      "id": "Int32.succ",
+      "kind": "value",
+      "name": "succ",
+      "signature": "let succ: t => t",
+      "docstrings": [
+        "Successor.  [Int32.succ x] is [Int32.add x Int32.one]."
+      ]
+    },
+    {
+      "id": "Int32.pred",
+      "kind": "value",
+      "name": "pred",
+      "signature": "let pred: t => t",
+      "docstrings": [
+        "Predecessor.  [Int32.pred x] is [Int32.sub x Int32.one]."
+      ]
+    },
+    {
+      "id": "Int32.abs",
+      "kind": "value",
+      "name": "abs",
+      "signature": "let abs: t => t",
+      "docstrings": [
+        "Return the absolute value of its argument."
+      ]
+    },
+    {
+      "id": "Int32.max_int",
+      "kind": "value",
+      "name": "max_int",
+      "signature": "let max_int: t",
+      "docstrings": [
+        "The greatest representable 32-bit integer, 2{^31} - 1."
+      ]
+    },
+    {
+      "id": "Int32.min_int",
+      "kind": "value",
+      "name": "min_int",
+      "signature": "let min_int: t",
+      "docstrings": [
+        "The smallest representable 32-bit integer, -2{^31}."
+      ]
+    },
+    {
+      "id": "Int32.logand",
+      "kind": "value",
+      "name": "logand",
+      "signature": "let logand: (t, t) => t",
+      "docstrings": [
+        "Bitwise logical and."
+      ]
+    },
+    {
+      "id": "Int32.logor",
+      "kind": "value",
+      "name": "logor",
+      "signature": "let logor: (t, t) => t",
+      "docstrings": [
+        "Bitwise logical or."
+      ]
+    },
+    {
+      "id": "Int32.logxor",
+      "kind": "value",
+      "name": "logxor",
+      "signature": "let logxor: (t, t) => t",
+      "docstrings": [
+        "Bitwise logical exclusive or."
+      ]
+    },
+    {
+      "id": "Int32.lognot",
+      "kind": "value",
+      "name": "lognot",
+      "signature": "let lognot: t => t",
+      "docstrings": [
+        "Bitwise logical negation."
+      ]
+    },
+    {
+      "id": "Int32.shift_left",
+      "kind": "value",
+      "name": "shift_left",
+      "signature": "let shift_left: (t, int) => t",
+      "docstrings": [
+        "[Int32.shift_left x y] shifts [x] to the left by [y] bits.\n   The result is unspecified if [y < 0] or [y >= 32]."
+      ]
+    },
+    {
+      "id": "Int32.shift_right",
+      "kind": "value",
+      "name": "shift_right",
+      "signature": "let shift_right: (t, int) => t",
+      "docstrings": [
+        "[Int32.shift_right x y] shifts [x] to the right by [y] bits.\n   This is an arithmetic shift: the sign bit of [x] is replicated\n   and inserted in the vacated bits.\n   The result is unspecified if [y < 0] or [y >= 32]."
+      ]
+    },
+    {
+      "id": "Int32.shift_right_logical",
+      "kind": "value",
+      "name": "shift_right_logical",
+      "signature": "let shift_right_logical: (t, int) => t",
+      "docstrings": [
+        "[Int32.shift_right_logical x y] shifts [x] to the right by [y] bits.\n   This is a logical shift: zeroes are inserted in the vacated bits\n   regardless of the sign of [x].\n   The result is unspecified if [y < 0] or [y >= 32]."
+      ]
+    },
+    {
+      "id": "Int32.of_int",
+      "kind": "value",
+      "name": "of_int",
+      "signature": "let of_int: int => t",
+      "docstrings": [
+        "Convert the given integer (type [int]) to a 32-bit integer\n    (type [t])."
+      ]
+    },
+    {
+      "id": "Int32.to_int",
+      "kind": "value",
+      "name": "to_int",
+      "signature": "let to_int: t => int",
+      "docstrings": [
+        "Convert the given 32-bit integer (type [t]) to an\n   integer (type [int]).  On 32-bit platforms, the 32-bit integer\n   is taken modulo 2{^31}, i.e. the high-order bit is lost\n   during the conversion.  On 64-bit platforms, the conversion\n   is exact."
+      ]
+    },
+    {
+      "id": "Int32.of_float",
+      "kind": "value",
+      "name": "of_float",
+      "signature": "let of_float: float => t",
+      "docstrings": [
+        "Convert the given floating-point number to a 32-bit integer,\n   discarding the fractional part (truncate towards 0).\n   The result of the conversion is undefined if, after truncation,\n   the number is outside the range \\[{!Int32.min_int}, {!Int32.max_int}\\]."
+      ]
+    },
+    {
+      "id": "Int32.to_float",
+      "kind": "value",
+      "name": "to_float",
+      "signature": "let to_float: t => float",
+      "docstrings": [
+        "Convert the given 32-bit integer to a floating-point number."
+      ]
+    },
+    {
+      "id": "Int32.of_string",
+      "kind": "value",
+      "name": "of_string",
+      "signature": "let of_string: string => t",
+      "docstrings": [
+        "Convert the given string to a 32-bit integer.\n   The string is read in decimal (by default, or if the string \n   begins with [0u]) or in hexadecimal, octal or binary if the\n   string begins with [0x], [0o] or [0b] respectively.\n\n   The [0u] prefix reads the input as an unsigned integer in the range\n   [[0, 2*Int32.max_int+1]].  If the input exceeds {!Int32.max_int}\n   it is converted to the signed integer\n   [Int32.min_int + input - Int32.max_int - 1].\n\n   The [_] (underscore) character can appear anywhere in the string\n   and is ignored.\n   Raise [Failure \"Int32.of_string\"] if the given string is not\n   a valid representation of an integer, or if the integer represented\n   exceeds the range of integers representable in type [t]."
+      ]
+    },
+    {
+      "id": "Int32.of_string_opt",
+      "kind": "value",
+      "name": "of_string_opt",
+      "signature": "let of_string_opt: string => option<t>",
+      "docstrings": [
+        "Same as [of_string], but return [None] instead of raising.\n    @since 4.05"
+      ]
+    },
+    {
+      "id": "Int32.to_string",
+      "kind": "value",
+      "name": "to_string",
+      "signature": "let to_string: t => string",
+      "docstrings": [
+        "Return the string representation of its argument, in signed decimal."
+      ]
+    },
+    {
+      "id": "Int32.bits_of_float",
+      "kind": "value",
+      "name": "bits_of_float",
+      "signature": "let bits_of_float: float => t",
+      "docstrings": [
+        "Return the internal representation of the given float according\n   to the IEEE 754 floating-point 'single format' bit layout.\n   Bit 31 of the result represents the sign of the float;\n   bits 30 to 23 represent the (biased) exponent; bits 22 to 0\n   represent the mantissa."
+      ]
+    },
+    {
+      "id": "Int32.float_of_bits",
+      "kind": "value",
+      "name": "float_of_bits",
+      "signature": "let float_of_bits: t => float",
+      "docstrings": [
+        "Return the floating-point number whose internal representation,\n   according to the IEEE 754 floating-point 'single format' bit layout,\n   is the given [t]."
+      ]
+    },
+    {
+      "id": "Int32.compare",
+      "kind": "value",
+      "name": "compare",
+      "signature": "let compare: (t, t) => int",
+      "docstrings": [
+        "The comparison function for 32-bit integers, with the same specification as\n    {!Pervasives.compare}.  Along with the type [t], this function [compare]\n    allows the module [Int32] to be passed as argument to the functors\n    {!Set.Make} and {!Map.Make}."
+      ]
+    },
+    {
+      "id": "Int32.equal",
+      "kind": "value",
+      "name": "equal",
+      "signature": "let equal: (t, t) => bool",
+      "docstrings": [
+        "The equal function for int32s.\n    @since 4.03.0"
+      ]
+    },
+    {
+      "id": "Int32.format",
+      "kind": "value",
+      "name": "format",
+      "signature": "let format: (string, t) => string",
+      "docstrings": [
+        "Do not use this deprecated function.  Instead,\n   used {!Printf.sprintf} with a [%l...] format."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "name": "Belt_internalSetString",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Belt_internalSetString.value",
+      "kind": "type",
+      "name": "value",
+      "signature": "type value = string",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalSetString.Belt_SortArrayString",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module S = Belt_SortArrayString"
+    },
+    {
+      "id": "Belt_internalSetString.Belt_internalAVLset",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module N = Belt_internalAVLset"
+    },
+    {
+      "id": "Belt_internalSetString.Belt_Array",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module A = Belt_Array"
+    },
+    {
+      "id": "Belt_internalSetString.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t = N.t<value>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalSetString.has",
+      "kind": "value",
+      "name": "has",
+      "signature": "let has: (t, value) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalSetString.compareAux",
+      "kind": "value",
+      "name": "compareAux",
+      "signature": "let compareAux: (list<N.node<value>>, list<N.node<value>>) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalSetString.cmp",
+      "kind": "value",
+      "name": "cmp",
+      "signature": "let cmp: (N.t<value>, N.t<value>) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalSetString.eq",
+      "kind": "value",
+      "name": "eq",
+      "signature": "let eq: (t, N.t<value>) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalSetString.subset",
+      "kind": "value",
+      "name": "subset",
+      "signature": "let subset: (t, t) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalSetString.get",
+      "kind": "value",
+      "name": "get",
+      "signature": "let get: (t, value) => option<value>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalSetString.getUndefined",
+      "kind": "value",
+      "name": "getUndefined",
+      "signature": "let getUndefined: (t, value) => Js.Undefined.t<value>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalSetString.getExn",
+      "kind": "value",
+      "name": "getExn",
+      "signature": "let getExn: (t, value) => value",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalSetString.addMutate",
+      "kind": "value",
+      "name": "addMutate",
+      "signature": "let addMutate: (N.t<value>, value) => N.t<value>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalSetString.fromArray",
+      "kind": "value",
+      "name": "fromArray",
+      "signature": "let fromArray: array<value> => N.t<value>",
+      "docstrings": []
+    }
+  ]
+}

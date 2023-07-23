@@ -1,0 +1,87 @@
+{
+  "name": "Digest",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Digest.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t = string",
+      "docstrings": [
+        "The type of digests: 16-character strings."
+      ]
+    },
+    {
+      "id": "Digest.compare",
+      "kind": "value",
+      "name": "compare",
+      "signature": "let compare: (t, t) => int",
+      "docstrings": [
+        "The comparison function for 16-character digest, with the same\n    specification as {!Pervasives.compare} and the implementation\n    shared with {!String.compare}. Along with the type [t], this\n    function [compare] allows the module [Digest] to be passed as\n    argument to the functors {!Set.Make} and {!Map.Make}.\n    @since 4.00.0"
+      ]
+    },
+    {
+      "id": "Digest.equal",
+      "kind": "value",
+      "name": "equal",
+      "signature": "let equal: (t, t) => bool",
+      "docstrings": [
+        "The equal function for 16-character digest.\n    @since 4.03.0"
+      ]
+    },
+    {
+      "id": "Digest.string",
+      "kind": "value",
+      "name": "string",
+      "signature": "let string: string => t",
+      "docstrings": [
+        "Return the digest of the given string."
+      ]
+    },
+    {
+      "id": "Digest.bytes",
+      "kind": "value",
+      "name": "bytes",
+      "signature": "let bytes: bytes => t",
+      "docstrings": [
+        "Return the digest of the given byte sequence.\n    @since 4.02.0"
+      ]
+    },
+    {
+      "id": "Digest.substring",
+      "kind": "value",
+      "name": "substring",
+      "signature": "let substring: (string, int, int) => t",
+      "docstrings": [
+        "[Digest.substring s ofs len] returns the digest of the substring\n   of [s] starting at index [ofs] and containing [len] characters."
+      ]
+    },
+    {
+      "id": "Digest.subbytes",
+      "kind": "value",
+      "name": "subbytes",
+      "signature": "let subbytes: (bytes, int, int) => t",
+      "docstrings": [
+        "[Digest.subbytes s ofs len] returns the digest of the subsequence\n    of [s] starting at index [ofs] and containing [len] bytes.\n    @since 4.02.0"
+      ]
+    },
+    {
+      "id": "Digest.to_hex",
+      "kind": "value",
+      "name": "to_hex",
+      "signature": "let to_hex: t => string",
+      "docstrings": [
+        "Return the printable hexadecimal representation of the given digest.\n    Raise [Invalid_argument] if the argument is not exactly 16 bytes."
+      ]
+    },
+    {
+      "id": "Digest.from_hex",
+      "kind": "value",
+      "name": "from_hex",
+      "signature": "let from_hex: string => t",
+      "docstrings": [
+        "Convert a hexadecimal representation back into the corresponding digest.\n   Raise [Invalid_argument] if the argument is not exactly 32 hexadecimal\n   characters.\n   @since 4.00.0"
+      ]
+    }
+  ]
+}

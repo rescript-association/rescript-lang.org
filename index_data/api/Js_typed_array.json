@@ -1,0 +1,4663 @@
+{
+  "name": "Js_typed_array",
+  "docstrings": [
+    "JavaScript Typed Array API\n\n  **see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)"
+  ],
+  "items": [
+    {
+      "id": "Js_typed_array.array_buffer",
+      "kind": "type",
+      "name": "array_buffer",
+      "signature": "type array_buffer = Js_typed_array2.array_buffer",
+      "docstrings": []
+    },
+    {
+      "id": "Js_typed_array.array_like",
+      "kind": "type",
+      "name": "array_like",
+      "signature": "type array_like<'a> = Js_typed_array2.array_like<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Type.Js_typed_array",
+      "kind": "module",
+      "item": {
+        "name": "Type",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Js_typed_array.Type.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "ArrayBuffer.Js_typed_array",
+      "kind": "module",
+      "item": {
+        "name": "ArrayBuffer",
+        "docstrings": [
+          "The underlying buffer that the typed arrays provide views of\n\n    **see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)"
+        ],
+        "items": [
+          {
+            "id": "Js_typed_array.ArrayBuffer.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = array_buffer",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.ArrayBuffer.make",
+            "kind": "value",
+            "name": "make",
+            "signature": "let make: int => t",
+            "docstrings": [
+              "takes length. initializes elements to 0"
+            ]
+          },
+          {
+            "id": "Js_typed_array.ArrayBuffer.byteLength",
+            "kind": "value",
+            "name": "byteLength",
+            "signature": "let byteLength: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.ArrayBuffer.slice",
+            "kind": "value",
+            "name": "slice",
+            "signature": "let slice: (~start: int, ~end_: int, t) => array_buffer",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.ArrayBuffer.sliceFrom",
+            "kind": "value",
+            "name": "sliceFrom",
+            "signature": "let sliceFrom: (int, t) => array_buffer",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S.Js_typed_array",
+      "kind": "module",
+      "item": {
+        "name": "S",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Js_typed_array.S.elt",
+            "kind": "type",
+            "name": "elt",
+            "signature": "type elt",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.typed_array",
+            "kind": "type",
+            "name": "typed_array",
+            "signature": "type typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = typed_array<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.unsafe_get",
+            "kind": "value",
+            "name": "unsafe_get",
+            "signature": "let unsafe_get: (t, int) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.unsafe_set",
+            "kind": "value",
+            "name": "unsafe_set",
+            "signature": "let unsafe_set: (t, int, elt) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.buffer",
+            "kind": "value",
+            "name": "buffer",
+            "signature": "let buffer: t => array_buffer",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.byteLength",
+            "kind": "value",
+            "name": "byteLength",
+            "signature": "let byteLength: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.byteOffset",
+            "kind": "value",
+            "name": "byteOffset",
+            "signature": "let byteOffset: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.setArray",
+            "kind": "value",
+            "name": "setArray",
+            "signature": "let setArray: (array<elt>, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.setArrayOffset",
+            "kind": "value",
+            "name": "setArrayOffset",
+            "signature": "let setArrayOffset: (array<elt>, int, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.length",
+            "kind": "value",
+            "name": "length",
+            "signature": "let length: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.copyWithin",
+            "kind": "value",
+            "name": "copyWithin",
+            "signature": "let copyWithin: (~to_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.copyWithinFrom",
+            "kind": "value",
+            "name": "copyWithinFrom",
+            "signature": "let copyWithinFrom: (~to_: int, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.copyWithinFromRange",
+            "kind": "value",
+            "name": "copyWithinFromRange",
+            "signature": "let copyWithinFromRange: (~to_: int, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.fillInPlace",
+            "kind": "value",
+            "name": "fillInPlace",
+            "signature": "let fillInPlace: (elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.fillFromInPlace",
+            "kind": "value",
+            "name": "fillFromInPlace",
+            "signature": "let fillFromInPlace: (elt, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.fillRangeInPlace",
+            "kind": "value",
+            "name": "fillRangeInPlace",
+            "signature": "let fillRangeInPlace: (elt, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.reverseInPlace",
+            "kind": "value",
+            "name": "reverseInPlace",
+            "signature": "let reverseInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.sortInPlace",
+            "kind": "value",
+            "name": "sortInPlace",
+            "signature": "let sortInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.sortInPlaceWith",
+            "kind": "value",
+            "name": "sortInPlaceWith",
+            "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.includes",
+            "kind": "value",
+            "name": "includes",
+            "signature": "let includes: (elt, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.indexOf",
+            "kind": "value",
+            "name": "indexOf",
+            "signature": "let indexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.indexOfFrom",
+            "kind": "value",
+            "name": "indexOfFrom",
+            "signature": "let indexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.join",
+            "kind": "value",
+            "name": "join",
+            "signature": "let join: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.joinWith",
+            "kind": "value",
+            "name": "joinWith",
+            "signature": "let joinWith: (string, t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.lastIndexOf",
+            "kind": "value",
+            "name": "lastIndexOf",
+            "signature": "let lastIndexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.lastIndexOfFrom",
+            "kind": "value",
+            "name": "lastIndexOfFrom",
+            "signature": "let lastIndexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.slice",
+            "kind": "value",
+            "name": "slice",
+            "signature": "let slice: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.copy",
+            "kind": "value",
+            "name": "copy",
+            "signature": "let copy: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.sliceFrom",
+            "kind": "value",
+            "name": "sliceFrom",
+            "signature": "let sliceFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.subarray",
+            "kind": "value",
+            "name": "subarray",
+            "signature": "let subarray: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.subarrayFrom",
+            "kind": "value",
+            "name": "subarrayFrom",
+            "signature": "let subarrayFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.toString",
+            "kind": "value",
+            "name": "toString",
+            "signature": "let toString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.toLocaleString",
+            "kind": "value",
+            "name": "toLocaleString",
+            "signature": "let toLocaleString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.every",
+            "kind": "value",
+            "name": "every",
+            "signature": "let every: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.everyi",
+            "kind": "value",
+            "name": "everyi",
+            "signature": "let everyi: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.filter",
+            "kind": "value",
+            "name": "filter",
+            "signature": "let filter: ((. elt) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.filteri",
+            "kind": "value",
+            "name": "filteri",
+            "signature": "let filteri: ((. elt, int) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.find",
+            "kind": "value",
+            "name": "find",
+            "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.findi",
+            "kind": "value",
+            "name": "findi",
+            "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.findIndex",
+            "kind": "value",
+            "name": "findIndex",
+            "signature": "let findIndex: ((. elt) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.findIndexi",
+            "kind": "value",
+            "name": "findIndexi",
+            "signature": "let findIndexi: ((. elt, int) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.forEach",
+            "kind": "value",
+            "name": "forEach",
+            "signature": "let forEach: ((. elt) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.forEachi",
+            "kind": "value",
+            "name": "forEachi",
+            "signature": "let forEachi: ((. elt, int) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.map",
+            "kind": "value",
+            "name": "map",
+            "signature": "let map: ((. elt) => 'b, t) => typed_array<'b>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.mapi",
+            "kind": "value",
+            "name": "mapi",
+            "signature": "let mapi: ((. elt, int) => 'b, t) => typed_array<'b>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.reduce",
+            "kind": "value",
+            "name": "reduce",
+            "signature": "let reduce: ((. 'b, elt) => 'b, 'b, t) => 'b",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.reducei",
+            "kind": "value",
+            "name": "reducei",
+            "signature": "let reducei: ((. 'b, elt, int) => 'b, 'b, t) => 'b",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.reduceRight",
+            "kind": "value",
+            "name": "reduceRight",
+            "signature": "let reduceRight: ((. 'b, elt) => 'b, 'b, t) => 'b",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.reduceRighti",
+            "kind": "value",
+            "name": "reduceRighti",
+            "signature": "let reduceRighti: ((. 'b, elt, int) => 'b, 'b, t) => 'b",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.some",
+            "kind": "value",
+            "name": "some",
+            "signature": "let some: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.S.somei",
+            "kind": "value",
+            "name": "somei",
+            "signature": "let somei: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Int8Array.Js_typed_array",
+      "kind": "module",
+      "item": {
+        "name": "Int8Array",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Js_typed_array.Int8Array.elt",
+            "kind": "type",
+            "name": "elt",
+            "signature": "type elt = int",
+            "docstrings": [
+              ""
+            ]
+          },
+          {
+            "id": "Js_typed_array.Int8Array.typed_array",
+            "kind": "type",
+            "name": "typed_array",
+            "signature": "type typed_array<'a> = Js_typed_array2.Int8Array.typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = typed_array<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.unsafe_get",
+            "kind": "value",
+            "name": "unsafe_get",
+            "signature": "let unsafe_get: (t, int) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.unsafe_set",
+            "kind": "value",
+            "name": "unsafe_set",
+            "signature": "let unsafe_set: (t, int, elt) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.buffer",
+            "kind": "value",
+            "name": "buffer",
+            "signature": "let buffer: t => array_buffer",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.byteLength",
+            "kind": "value",
+            "name": "byteLength",
+            "signature": "let byteLength: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.byteOffset",
+            "kind": "value",
+            "name": "byteOffset",
+            "signature": "let byteOffset: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.setArray",
+            "kind": "value",
+            "name": "setArray",
+            "signature": "let setArray: (array<elt>, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.setArrayOffset",
+            "kind": "value",
+            "name": "setArrayOffset",
+            "signature": "let setArrayOffset: (array<elt>, int, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.length",
+            "kind": "value",
+            "name": "length",
+            "signature": "let length: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.copyWithin",
+            "kind": "value",
+            "name": "copyWithin",
+            "signature": "let copyWithin: (~to_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.copyWithinFrom",
+            "kind": "value",
+            "name": "copyWithinFrom",
+            "signature": "let copyWithinFrom: (~to_: int, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.copyWithinFromRange",
+            "kind": "value",
+            "name": "copyWithinFromRange",
+            "signature": "let copyWithinFromRange: (~to_: int, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.fillInPlace",
+            "kind": "value",
+            "name": "fillInPlace",
+            "signature": "let fillInPlace: (elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.fillFromInPlace",
+            "kind": "value",
+            "name": "fillFromInPlace",
+            "signature": "let fillFromInPlace: (elt, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.fillRangeInPlace",
+            "kind": "value",
+            "name": "fillRangeInPlace",
+            "signature": "let fillRangeInPlace: (elt, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.reverseInPlace",
+            "kind": "value",
+            "name": "reverseInPlace",
+            "signature": "let reverseInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.sortInPlace",
+            "kind": "value",
+            "name": "sortInPlace",
+            "signature": "let sortInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.sortInPlaceWith",
+            "kind": "value",
+            "name": "sortInPlaceWith",
+            "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.includes",
+            "kind": "value",
+            "name": "includes",
+            "signature": "let includes: (elt, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.indexOf",
+            "kind": "value",
+            "name": "indexOf",
+            "signature": "let indexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.indexOfFrom",
+            "kind": "value",
+            "name": "indexOfFrom",
+            "signature": "let indexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.join",
+            "kind": "value",
+            "name": "join",
+            "signature": "let join: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.joinWith",
+            "kind": "value",
+            "name": "joinWith",
+            "signature": "let joinWith: (string, t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.lastIndexOf",
+            "kind": "value",
+            "name": "lastIndexOf",
+            "signature": "let lastIndexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.lastIndexOfFrom",
+            "kind": "value",
+            "name": "lastIndexOfFrom",
+            "signature": "let lastIndexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.slice",
+            "kind": "value",
+            "name": "slice",
+            "signature": "let slice: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.copy",
+            "kind": "value",
+            "name": "copy",
+            "signature": "let copy: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.sliceFrom",
+            "kind": "value",
+            "name": "sliceFrom",
+            "signature": "let sliceFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.subarray",
+            "kind": "value",
+            "name": "subarray",
+            "signature": "let subarray: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.subarrayFrom",
+            "kind": "value",
+            "name": "subarrayFrom",
+            "signature": "let subarrayFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.toString",
+            "kind": "value",
+            "name": "toString",
+            "signature": "let toString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.toLocaleString",
+            "kind": "value",
+            "name": "toLocaleString",
+            "signature": "let toLocaleString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.every",
+            "kind": "value",
+            "name": "every",
+            "signature": "let every: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.everyi",
+            "kind": "value",
+            "name": "everyi",
+            "signature": "let everyi: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.filter",
+            "kind": "value",
+            "name": "filter",
+            "signature": "let filter: ((. elt) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.filteri",
+            "kind": "value",
+            "name": "filteri",
+            "signature": "let filteri: ((. elt, int) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.find",
+            "kind": "value",
+            "name": "find",
+            "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.findi",
+            "kind": "value",
+            "name": "findi",
+            "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.findIndex",
+            "kind": "value",
+            "name": "findIndex",
+            "signature": "let findIndex: ((. elt) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.findIndexi",
+            "kind": "value",
+            "name": "findIndexi",
+            "signature": "let findIndexi: ((. elt, int) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.forEach",
+            "kind": "value",
+            "name": "forEach",
+            "signature": "let forEach: ((. elt) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.forEachi",
+            "kind": "value",
+            "name": "forEachi",
+            "signature": "let forEachi: ((. elt, int) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.map",
+            "kind": "value",
+            "name": "map",
+            "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.mapi",
+            "kind": "value",
+            "name": "mapi",
+            "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.reduce",
+            "kind": "value",
+            "name": "reduce",
+            "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.reducei",
+            "kind": "value",
+            "name": "reducei",
+            "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.reduceRight",
+            "kind": "value",
+            "name": "reduceRight",
+            "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.reduceRighti",
+            "kind": "value",
+            "name": "reduceRighti",
+            "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.some",
+            "kind": "value",
+            "name": "some",
+            "signature": "let some: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.somei",
+            "kind": "value",
+            "name": "somei",
+            "signature": "let somei: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array._BYTES_PER_ELEMENT",
+            "kind": "value",
+            "name": "_BYTES_PER_ELEMENT",
+            "signature": "let _BYTES_PER_ELEMENT: int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.make",
+            "kind": "value",
+            "name": "make",
+            "signature": "let make: array<elt> => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.fromBuffer",
+            "kind": "value",
+            "name": "fromBuffer",
+            "signature": "let fromBuffer: array_buffer => t",
+            "docstrings": [
+              "can throw"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Int8Array.fromBufferOffset",
+            "kind": "value",
+            "name": "fromBufferOffset",
+            "signature": "let fromBufferOffset: (array_buffer, int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raise Js exception\n\n    **param** offset is in bytes"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Int8Array.fromBufferRange",
+            "kind": "value",
+            "name": "fromBufferRange",
+            "signature": "let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raises Js exception\n\n    **param** offset is in bytes, length in elements"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Int8Array.fromLength",
+            "kind": "value",
+            "name": "fromLength",
+            "signature": "let fromLength: int => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int8Array.from",
+            "kind": "value",
+            "name": "from",
+            "signature": "let from: array_like<elt> => t",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Uint8Array.Js_typed_array",
+      "kind": "module",
+      "item": {
+        "name": "Uint8Array",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Js_typed_array.Uint8Array.elt",
+            "kind": "type",
+            "name": "elt",
+            "signature": "type elt = int",
+            "docstrings": [
+              ""
+            ]
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.typed_array",
+            "kind": "type",
+            "name": "typed_array",
+            "signature": "type typed_array<'a> = Js_typed_array2.Uint8Array.typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = typed_array<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.unsafe_get",
+            "kind": "value",
+            "name": "unsafe_get",
+            "signature": "let unsafe_get: (t, int) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.unsafe_set",
+            "kind": "value",
+            "name": "unsafe_set",
+            "signature": "let unsafe_set: (t, int, elt) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.buffer",
+            "kind": "value",
+            "name": "buffer",
+            "signature": "let buffer: t => array_buffer",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.byteLength",
+            "kind": "value",
+            "name": "byteLength",
+            "signature": "let byteLength: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.byteOffset",
+            "kind": "value",
+            "name": "byteOffset",
+            "signature": "let byteOffset: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.setArray",
+            "kind": "value",
+            "name": "setArray",
+            "signature": "let setArray: (array<elt>, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.setArrayOffset",
+            "kind": "value",
+            "name": "setArrayOffset",
+            "signature": "let setArrayOffset: (array<elt>, int, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.length",
+            "kind": "value",
+            "name": "length",
+            "signature": "let length: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.copyWithin",
+            "kind": "value",
+            "name": "copyWithin",
+            "signature": "let copyWithin: (~to_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.copyWithinFrom",
+            "kind": "value",
+            "name": "copyWithinFrom",
+            "signature": "let copyWithinFrom: (~to_: int, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.copyWithinFromRange",
+            "kind": "value",
+            "name": "copyWithinFromRange",
+            "signature": "let copyWithinFromRange: (~to_: int, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.fillInPlace",
+            "kind": "value",
+            "name": "fillInPlace",
+            "signature": "let fillInPlace: (elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.fillFromInPlace",
+            "kind": "value",
+            "name": "fillFromInPlace",
+            "signature": "let fillFromInPlace: (elt, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.fillRangeInPlace",
+            "kind": "value",
+            "name": "fillRangeInPlace",
+            "signature": "let fillRangeInPlace: (elt, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.reverseInPlace",
+            "kind": "value",
+            "name": "reverseInPlace",
+            "signature": "let reverseInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.sortInPlace",
+            "kind": "value",
+            "name": "sortInPlace",
+            "signature": "let sortInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.sortInPlaceWith",
+            "kind": "value",
+            "name": "sortInPlaceWith",
+            "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.includes",
+            "kind": "value",
+            "name": "includes",
+            "signature": "let includes: (elt, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.indexOf",
+            "kind": "value",
+            "name": "indexOf",
+            "signature": "let indexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.indexOfFrom",
+            "kind": "value",
+            "name": "indexOfFrom",
+            "signature": "let indexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.join",
+            "kind": "value",
+            "name": "join",
+            "signature": "let join: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.joinWith",
+            "kind": "value",
+            "name": "joinWith",
+            "signature": "let joinWith: (string, t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.lastIndexOf",
+            "kind": "value",
+            "name": "lastIndexOf",
+            "signature": "let lastIndexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.lastIndexOfFrom",
+            "kind": "value",
+            "name": "lastIndexOfFrom",
+            "signature": "let lastIndexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.slice",
+            "kind": "value",
+            "name": "slice",
+            "signature": "let slice: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.copy",
+            "kind": "value",
+            "name": "copy",
+            "signature": "let copy: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.sliceFrom",
+            "kind": "value",
+            "name": "sliceFrom",
+            "signature": "let sliceFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.subarray",
+            "kind": "value",
+            "name": "subarray",
+            "signature": "let subarray: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.subarrayFrom",
+            "kind": "value",
+            "name": "subarrayFrom",
+            "signature": "let subarrayFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.toString",
+            "kind": "value",
+            "name": "toString",
+            "signature": "let toString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.toLocaleString",
+            "kind": "value",
+            "name": "toLocaleString",
+            "signature": "let toLocaleString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.every",
+            "kind": "value",
+            "name": "every",
+            "signature": "let every: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.everyi",
+            "kind": "value",
+            "name": "everyi",
+            "signature": "let everyi: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.filter",
+            "kind": "value",
+            "name": "filter",
+            "signature": "let filter: ((. elt) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.filteri",
+            "kind": "value",
+            "name": "filteri",
+            "signature": "let filteri: ((. elt, int) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.find",
+            "kind": "value",
+            "name": "find",
+            "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.findi",
+            "kind": "value",
+            "name": "findi",
+            "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.findIndex",
+            "kind": "value",
+            "name": "findIndex",
+            "signature": "let findIndex: ((. elt) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.findIndexi",
+            "kind": "value",
+            "name": "findIndexi",
+            "signature": "let findIndexi: ((. elt, int) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.forEach",
+            "kind": "value",
+            "name": "forEach",
+            "signature": "let forEach: ((. elt) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.forEachi",
+            "kind": "value",
+            "name": "forEachi",
+            "signature": "let forEachi: ((. elt, int) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.map",
+            "kind": "value",
+            "name": "map",
+            "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.mapi",
+            "kind": "value",
+            "name": "mapi",
+            "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.reduce",
+            "kind": "value",
+            "name": "reduce",
+            "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.reducei",
+            "kind": "value",
+            "name": "reducei",
+            "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.reduceRight",
+            "kind": "value",
+            "name": "reduceRight",
+            "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.reduceRighti",
+            "kind": "value",
+            "name": "reduceRighti",
+            "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.some",
+            "kind": "value",
+            "name": "some",
+            "signature": "let some: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.somei",
+            "kind": "value",
+            "name": "somei",
+            "signature": "let somei: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array._BYTES_PER_ELEMENT",
+            "kind": "value",
+            "name": "_BYTES_PER_ELEMENT",
+            "signature": "let _BYTES_PER_ELEMENT: int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.make",
+            "kind": "value",
+            "name": "make",
+            "signature": "let make: array<elt> => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.fromBuffer",
+            "kind": "value",
+            "name": "fromBuffer",
+            "signature": "let fromBuffer: array_buffer => t",
+            "docstrings": [
+              "can throw"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.fromBufferOffset",
+            "kind": "value",
+            "name": "fromBufferOffset",
+            "signature": "let fromBufferOffset: (array_buffer, int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raise Js exception\n\n    **param** offset is in bytes"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.fromBufferRange",
+            "kind": "value",
+            "name": "fromBufferRange",
+            "signature": "let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raises Js exception\n\n    **param** offset is in bytes, length in elements"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.fromLength",
+            "kind": "value",
+            "name": "fromLength",
+            "signature": "let fromLength: int => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8Array.from",
+            "kind": "value",
+            "name": "from",
+            "signature": "let from: array_like<elt> => t",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Uint8ClampedArray.Js_typed_array",
+      "kind": "module",
+      "item": {
+        "name": "Uint8ClampedArray",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.elt",
+            "kind": "type",
+            "name": "elt",
+            "signature": "type elt = int",
+            "docstrings": [
+              ""
+            ]
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.typed_array",
+            "kind": "type",
+            "name": "typed_array",
+            "signature": "type typed_array<'a> = Js_typed_array2.Uint8ClampedArray.typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = typed_array<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.unsafe_get",
+            "kind": "value",
+            "name": "unsafe_get",
+            "signature": "let unsafe_get: (t, int) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.unsafe_set",
+            "kind": "value",
+            "name": "unsafe_set",
+            "signature": "let unsafe_set: (t, int, elt) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.buffer",
+            "kind": "value",
+            "name": "buffer",
+            "signature": "let buffer: t => array_buffer",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.byteLength",
+            "kind": "value",
+            "name": "byteLength",
+            "signature": "let byteLength: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.byteOffset",
+            "kind": "value",
+            "name": "byteOffset",
+            "signature": "let byteOffset: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.setArray",
+            "kind": "value",
+            "name": "setArray",
+            "signature": "let setArray: (array<elt>, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.setArrayOffset",
+            "kind": "value",
+            "name": "setArrayOffset",
+            "signature": "let setArrayOffset: (array<elt>, int, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.length",
+            "kind": "value",
+            "name": "length",
+            "signature": "let length: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.copyWithin",
+            "kind": "value",
+            "name": "copyWithin",
+            "signature": "let copyWithin: (~to_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.copyWithinFrom",
+            "kind": "value",
+            "name": "copyWithinFrom",
+            "signature": "let copyWithinFrom: (~to_: int, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.copyWithinFromRange",
+            "kind": "value",
+            "name": "copyWithinFromRange",
+            "signature": "let copyWithinFromRange: (~to_: int, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.fillInPlace",
+            "kind": "value",
+            "name": "fillInPlace",
+            "signature": "let fillInPlace: (elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.fillFromInPlace",
+            "kind": "value",
+            "name": "fillFromInPlace",
+            "signature": "let fillFromInPlace: (elt, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.fillRangeInPlace",
+            "kind": "value",
+            "name": "fillRangeInPlace",
+            "signature": "let fillRangeInPlace: (elt, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.reverseInPlace",
+            "kind": "value",
+            "name": "reverseInPlace",
+            "signature": "let reverseInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.sortInPlace",
+            "kind": "value",
+            "name": "sortInPlace",
+            "signature": "let sortInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.sortInPlaceWith",
+            "kind": "value",
+            "name": "sortInPlaceWith",
+            "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.includes",
+            "kind": "value",
+            "name": "includes",
+            "signature": "let includes: (elt, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.indexOf",
+            "kind": "value",
+            "name": "indexOf",
+            "signature": "let indexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.indexOfFrom",
+            "kind": "value",
+            "name": "indexOfFrom",
+            "signature": "let indexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.join",
+            "kind": "value",
+            "name": "join",
+            "signature": "let join: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.joinWith",
+            "kind": "value",
+            "name": "joinWith",
+            "signature": "let joinWith: (string, t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.lastIndexOf",
+            "kind": "value",
+            "name": "lastIndexOf",
+            "signature": "let lastIndexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.lastIndexOfFrom",
+            "kind": "value",
+            "name": "lastIndexOfFrom",
+            "signature": "let lastIndexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.slice",
+            "kind": "value",
+            "name": "slice",
+            "signature": "let slice: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.copy",
+            "kind": "value",
+            "name": "copy",
+            "signature": "let copy: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.sliceFrom",
+            "kind": "value",
+            "name": "sliceFrom",
+            "signature": "let sliceFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.subarray",
+            "kind": "value",
+            "name": "subarray",
+            "signature": "let subarray: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.subarrayFrom",
+            "kind": "value",
+            "name": "subarrayFrom",
+            "signature": "let subarrayFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.toString",
+            "kind": "value",
+            "name": "toString",
+            "signature": "let toString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.toLocaleString",
+            "kind": "value",
+            "name": "toLocaleString",
+            "signature": "let toLocaleString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.every",
+            "kind": "value",
+            "name": "every",
+            "signature": "let every: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.everyi",
+            "kind": "value",
+            "name": "everyi",
+            "signature": "let everyi: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.filter",
+            "kind": "value",
+            "name": "filter",
+            "signature": "let filter: ((. elt) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.filteri",
+            "kind": "value",
+            "name": "filteri",
+            "signature": "let filteri: ((. elt, int) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.find",
+            "kind": "value",
+            "name": "find",
+            "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.findi",
+            "kind": "value",
+            "name": "findi",
+            "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.findIndex",
+            "kind": "value",
+            "name": "findIndex",
+            "signature": "let findIndex: ((. elt) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.findIndexi",
+            "kind": "value",
+            "name": "findIndexi",
+            "signature": "let findIndexi: ((. elt, int) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.forEach",
+            "kind": "value",
+            "name": "forEach",
+            "signature": "let forEach: ((. elt) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.forEachi",
+            "kind": "value",
+            "name": "forEachi",
+            "signature": "let forEachi: ((. elt, int) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.map",
+            "kind": "value",
+            "name": "map",
+            "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.mapi",
+            "kind": "value",
+            "name": "mapi",
+            "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.reduce",
+            "kind": "value",
+            "name": "reduce",
+            "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.reducei",
+            "kind": "value",
+            "name": "reducei",
+            "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.reduceRight",
+            "kind": "value",
+            "name": "reduceRight",
+            "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.reduceRighti",
+            "kind": "value",
+            "name": "reduceRighti",
+            "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.some",
+            "kind": "value",
+            "name": "some",
+            "signature": "let some: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.somei",
+            "kind": "value",
+            "name": "somei",
+            "signature": "let somei: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray._BYTES_PER_ELEMENT",
+            "kind": "value",
+            "name": "_BYTES_PER_ELEMENT",
+            "signature": "let _BYTES_PER_ELEMENT: int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.make",
+            "kind": "value",
+            "name": "make",
+            "signature": "let make: array<elt> => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.fromBuffer",
+            "kind": "value",
+            "name": "fromBuffer",
+            "signature": "let fromBuffer: array_buffer => t",
+            "docstrings": [
+              "can throw"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.fromBufferOffset",
+            "kind": "value",
+            "name": "fromBufferOffset",
+            "signature": "let fromBufferOffset: (array_buffer, int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raise Js exception\n\n    **param** offset is in bytes"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.fromBufferRange",
+            "kind": "value",
+            "name": "fromBufferRange",
+            "signature": "let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raises Js exception\n\n    **param** offset is in bytes, length in elements"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.fromLength",
+            "kind": "value",
+            "name": "fromLength",
+            "signature": "let fromLength: int => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint8ClampedArray.from",
+            "kind": "value",
+            "name": "from",
+            "signature": "let from: array_like<elt> => t",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Int16Array.Js_typed_array",
+      "kind": "module",
+      "item": {
+        "name": "Int16Array",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Js_typed_array.Int16Array.elt",
+            "kind": "type",
+            "name": "elt",
+            "signature": "type elt = int",
+            "docstrings": [
+              ""
+            ]
+          },
+          {
+            "id": "Js_typed_array.Int16Array.typed_array",
+            "kind": "type",
+            "name": "typed_array",
+            "signature": "type typed_array<'a> = Js_typed_array2.Int16Array.typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = typed_array<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.unsafe_get",
+            "kind": "value",
+            "name": "unsafe_get",
+            "signature": "let unsafe_get: (t, int) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.unsafe_set",
+            "kind": "value",
+            "name": "unsafe_set",
+            "signature": "let unsafe_set: (t, int, elt) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.buffer",
+            "kind": "value",
+            "name": "buffer",
+            "signature": "let buffer: t => array_buffer",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.byteLength",
+            "kind": "value",
+            "name": "byteLength",
+            "signature": "let byteLength: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.byteOffset",
+            "kind": "value",
+            "name": "byteOffset",
+            "signature": "let byteOffset: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.setArray",
+            "kind": "value",
+            "name": "setArray",
+            "signature": "let setArray: (array<elt>, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.setArrayOffset",
+            "kind": "value",
+            "name": "setArrayOffset",
+            "signature": "let setArrayOffset: (array<elt>, int, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.length",
+            "kind": "value",
+            "name": "length",
+            "signature": "let length: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.copyWithin",
+            "kind": "value",
+            "name": "copyWithin",
+            "signature": "let copyWithin: (~to_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.copyWithinFrom",
+            "kind": "value",
+            "name": "copyWithinFrom",
+            "signature": "let copyWithinFrom: (~to_: int, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.copyWithinFromRange",
+            "kind": "value",
+            "name": "copyWithinFromRange",
+            "signature": "let copyWithinFromRange: (~to_: int, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.fillInPlace",
+            "kind": "value",
+            "name": "fillInPlace",
+            "signature": "let fillInPlace: (elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.fillFromInPlace",
+            "kind": "value",
+            "name": "fillFromInPlace",
+            "signature": "let fillFromInPlace: (elt, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.fillRangeInPlace",
+            "kind": "value",
+            "name": "fillRangeInPlace",
+            "signature": "let fillRangeInPlace: (elt, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.reverseInPlace",
+            "kind": "value",
+            "name": "reverseInPlace",
+            "signature": "let reverseInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.sortInPlace",
+            "kind": "value",
+            "name": "sortInPlace",
+            "signature": "let sortInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.sortInPlaceWith",
+            "kind": "value",
+            "name": "sortInPlaceWith",
+            "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.includes",
+            "kind": "value",
+            "name": "includes",
+            "signature": "let includes: (elt, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.indexOf",
+            "kind": "value",
+            "name": "indexOf",
+            "signature": "let indexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.indexOfFrom",
+            "kind": "value",
+            "name": "indexOfFrom",
+            "signature": "let indexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.join",
+            "kind": "value",
+            "name": "join",
+            "signature": "let join: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.joinWith",
+            "kind": "value",
+            "name": "joinWith",
+            "signature": "let joinWith: (string, t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.lastIndexOf",
+            "kind": "value",
+            "name": "lastIndexOf",
+            "signature": "let lastIndexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.lastIndexOfFrom",
+            "kind": "value",
+            "name": "lastIndexOfFrom",
+            "signature": "let lastIndexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.slice",
+            "kind": "value",
+            "name": "slice",
+            "signature": "let slice: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.copy",
+            "kind": "value",
+            "name": "copy",
+            "signature": "let copy: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.sliceFrom",
+            "kind": "value",
+            "name": "sliceFrom",
+            "signature": "let sliceFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.subarray",
+            "kind": "value",
+            "name": "subarray",
+            "signature": "let subarray: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.subarrayFrom",
+            "kind": "value",
+            "name": "subarrayFrom",
+            "signature": "let subarrayFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.toString",
+            "kind": "value",
+            "name": "toString",
+            "signature": "let toString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.toLocaleString",
+            "kind": "value",
+            "name": "toLocaleString",
+            "signature": "let toLocaleString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.every",
+            "kind": "value",
+            "name": "every",
+            "signature": "let every: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.everyi",
+            "kind": "value",
+            "name": "everyi",
+            "signature": "let everyi: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.filter",
+            "kind": "value",
+            "name": "filter",
+            "signature": "let filter: ((. elt) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.filteri",
+            "kind": "value",
+            "name": "filteri",
+            "signature": "let filteri: ((. elt, int) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.find",
+            "kind": "value",
+            "name": "find",
+            "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.findi",
+            "kind": "value",
+            "name": "findi",
+            "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.findIndex",
+            "kind": "value",
+            "name": "findIndex",
+            "signature": "let findIndex: ((. elt) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.findIndexi",
+            "kind": "value",
+            "name": "findIndexi",
+            "signature": "let findIndexi: ((. elt, int) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.forEach",
+            "kind": "value",
+            "name": "forEach",
+            "signature": "let forEach: ((. elt) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.forEachi",
+            "kind": "value",
+            "name": "forEachi",
+            "signature": "let forEachi: ((. elt, int) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.map",
+            "kind": "value",
+            "name": "map",
+            "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.mapi",
+            "kind": "value",
+            "name": "mapi",
+            "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.reduce",
+            "kind": "value",
+            "name": "reduce",
+            "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.reducei",
+            "kind": "value",
+            "name": "reducei",
+            "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.reduceRight",
+            "kind": "value",
+            "name": "reduceRight",
+            "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.reduceRighti",
+            "kind": "value",
+            "name": "reduceRighti",
+            "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.some",
+            "kind": "value",
+            "name": "some",
+            "signature": "let some: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.somei",
+            "kind": "value",
+            "name": "somei",
+            "signature": "let somei: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array._BYTES_PER_ELEMENT",
+            "kind": "value",
+            "name": "_BYTES_PER_ELEMENT",
+            "signature": "let _BYTES_PER_ELEMENT: int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.make",
+            "kind": "value",
+            "name": "make",
+            "signature": "let make: array<elt> => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.fromBuffer",
+            "kind": "value",
+            "name": "fromBuffer",
+            "signature": "let fromBuffer: array_buffer => t",
+            "docstrings": [
+              "can throw"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Int16Array.fromBufferOffset",
+            "kind": "value",
+            "name": "fromBufferOffset",
+            "signature": "let fromBufferOffset: (array_buffer, int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raise Js exception\n\n    **param** offset is in bytes"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Int16Array.fromBufferRange",
+            "kind": "value",
+            "name": "fromBufferRange",
+            "signature": "let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raises Js exception\n\n    **param** offset is in bytes, length in elements"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Int16Array.fromLength",
+            "kind": "value",
+            "name": "fromLength",
+            "signature": "let fromLength: int => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int16Array.from",
+            "kind": "value",
+            "name": "from",
+            "signature": "let from: array_like<elt> => t",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Uint16Array.Js_typed_array",
+      "kind": "module",
+      "item": {
+        "name": "Uint16Array",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Js_typed_array.Uint16Array.elt",
+            "kind": "type",
+            "name": "elt",
+            "signature": "type elt = int",
+            "docstrings": [
+              ""
+            ]
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.typed_array",
+            "kind": "type",
+            "name": "typed_array",
+            "signature": "type typed_array<'a> = Js_typed_array2.Uint16Array.typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = typed_array<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.unsafe_get",
+            "kind": "value",
+            "name": "unsafe_get",
+            "signature": "let unsafe_get: (t, int) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.unsafe_set",
+            "kind": "value",
+            "name": "unsafe_set",
+            "signature": "let unsafe_set: (t, int, elt) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.buffer",
+            "kind": "value",
+            "name": "buffer",
+            "signature": "let buffer: t => array_buffer",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.byteLength",
+            "kind": "value",
+            "name": "byteLength",
+            "signature": "let byteLength: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.byteOffset",
+            "kind": "value",
+            "name": "byteOffset",
+            "signature": "let byteOffset: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.setArray",
+            "kind": "value",
+            "name": "setArray",
+            "signature": "let setArray: (array<elt>, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.setArrayOffset",
+            "kind": "value",
+            "name": "setArrayOffset",
+            "signature": "let setArrayOffset: (array<elt>, int, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.length",
+            "kind": "value",
+            "name": "length",
+            "signature": "let length: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.copyWithin",
+            "kind": "value",
+            "name": "copyWithin",
+            "signature": "let copyWithin: (~to_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.copyWithinFrom",
+            "kind": "value",
+            "name": "copyWithinFrom",
+            "signature": "let copyWithinFrom: (~to_: int, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.copyWithinFromRange",
+            "kind": "value",
+            "name": "copyWithinFromRange",
+            "signature": "let copyWithinFromRange: (~to_: int, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.fillInPlace",
+            "kind": "value",
+            "name": "fillInPlace",
+            "signature": "let fillInPlace: (elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.fillFromInPlace",
+            "kind": "value",
+            "name": "fillFromInPlace",
+            "signature": "let fillFromInPlace: (elt, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.fillRangeInPlace",
+            "kind": "value",
+            "name": "fillRangeInPlace",
+            "signature": "let fillRangeInPlace: (elt, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.reverseInPlace",
+            "kind": "value",
+            "name": "reverseInPlace",
+            "signature": "let reverseInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.sortInPlace",
+            "kind": "value",
+            "name": "sortInPlace",
+            "signature": "let sortInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.sortInPlaceWith",
+            "kind": "value",
+            "name": "sortInPlaceWith",
+            "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.includes",
+            "kind": "value",
+            "name": "includes",
+            "signature": "let includes: (elt, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.indexOf",
+            "kind": "value",
+            "name": "indexOf",
+            "signature": "let indexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.indexOfFrom",
+            "kind": "value",
+            "name": "indexOfFrom",
+            "signature": "let indexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.join",
+            "kind": "value",
+            "name": "join",
+            "signature": "let join: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.joinWith",
+            "kind": "value",
+            "name": "joinWith",
+            "signature": "let joinWith: (string, t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.lastIndexOf",
+            "kind": "value",
+            "name": "lastIndexOf",
+            "signature": "let lastIndexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.lastIndexOfFrom",
+            "kind": "value",
+            "name": "lastIndexOfFrom",
+            "signature": "let lastIndexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.slice",
+            "kind": "value",
+            "name": "slice",
+            "signature": "let slice: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.copy",
+            "kind": "value",
+            "name": "copy",
+            "signature": "let copy: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.sliceFrom",
+            "kind": "value",
+            "name": "sliceFrom",
+            "signature": "let sliceFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.subarray",
+            "kind": "value",
+            "name": "subarray",
+            "signature": "let subarray: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.subarrayFrom",
+            "kind": "value",
+            "name": "subarrayFrom",
+            "signature": "let subarrayFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.toString",
+            "kind": "value",
+            "name": "toString",
+            "signature": "let toString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.toLocaleString",
+            "kind": "value",
+            "name": "toLocaleString",
+            "signature": "let toLocaleString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.every",
+            "kind": "value",
+            "name": "every",
+            "signature": "let every: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.everyi",
+            "kind": "value",
+            "name": "everyi",
+            "signature": "let everyi: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.filter",
+            "kind": "value",
+            "name": "filter",
+            "signature": "let filter: ((. elt) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.filteri",
+            "kind": "value",
+            "name": "filteri",
+            "signature": "let filteri: ((. elt, int) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.find",
+            "kind": "value",
+            "name": "find",
+            "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.findi",
+            "kind": "value",
+            "name": "findi",
+            "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.findIndex",
+            "kind": "value",
+            "name": "findIndex",
+            "signature": "let findIndex: ((. elt) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.findIndexi",
+            "kind": "value",
+            "name": "findIndexi",
+            "signature": "let findIndexi: ((. elt, int) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.forEach",
+            "kind": "value",
+            "name": "forEach",
+            "signature": "let forEach: ((. elt) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.forEachi",
+            "kind": "value",
+            "name": "forEachi",
+            "signature": "let forEachi: ((. elt, int) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.map",
+            "kind": "value",
+            "name": "map",
+            "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.mapi",
+            "kind": "value",
+            "name": "mapi",
+            "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.reduce",
+            "kind": "value",
+            "name": "reduce",
+            "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.reducei",
+            "kind": "value",
+            "name": "reducei",
+            "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.reduceRight",
+            "kind": "value",
+            "name": "reduceRight",
+            "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.reduceRighti",
+            "kind": "value",
+            "name": "reduceRighti",
+            "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.some",
+            "kind": "value",
+            "name": "some",
+            "signature": "let some: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.somei",
+            "kind": "value",
+            "name": "somei",
+            "signature": "let somei: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array._BYTES_PER_ELEMENT",
+            "kind": "value",
+            "name": "_BYTES_PER_ELEMENT",
+            "signature": "let _BYTES_PER_ELEMENT: int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.make",
+            "kind": "value",
+            "name": "make",
+            "signature": "let make: array<elt> => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.fromBuffer",
+            "kind": "value",
+            "name": "fromBuffer",
+            "signature": "let fromBuffer: array_buffer => t",
+            "docstrings": [
+              "can throw"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.fromBufferOffset",
+            "kind": "value",
+            "name": "fromBufferOffset",
+            "signature": "let fromBufferOffset: (array_buffer, int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raise Js exception\n\n    **param** offset is in bytes"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.fromBufferRange",
+            "kind": "value",
+            "name": "fromBufferRange",
+            "signature": "let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raises Js exception\n\n    **param** offset is in bytes, length in elements"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.fromLength",
+            "kind": "value",
+            "name": "fromLength",
+            "signature": "let fromLength: int => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint16Array.from",
+            "kind": "value",
+            "name": "from",
+            "signature": "let from: array_like<elt> => t",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Int32Array.Js_typed_array",
+      "kind": "module",
+      "item": {
+        "name": "Int32Array",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Js_typed_array.Int32Array.elt",
+            "kind": "type",
+            "name": "elt",
+            "signature": "type elt = int",
+            "docstrings": [
+              ""
+            ]
+          },
+          {
+            "id": "Js_typed_array.Int32Array.typed_array",
+            "kind": "type",
+            "name": "typed_array",
+            "signature": "type typed_array<'a> = Js_typed_array2.Int32Array.typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = typed_array<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.unsafe_get",
+            "kind": "value",
+            "name": "unsafe_get",
+            "signature": "let unsafe_get: (t, int) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.unsafe_set",
+            "kind": "value",
+            "name": "unsafe_set",
+            "signature": "let unsafe_set: (t, int, elt) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.buffer",
+            "kind": "value",
+            "name": "buffer",
+            "signature": "let buffer: t => array_buffer",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.byteLength",
+            "kind": "value",
+            "name": "byteLength",
+            "signature": "let byteLength: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.byteOffset",
+            "kind": "value",
+            "name": "byteOffset",
+            "signature": "let byteOffset: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.setArray",
+            "kind": "value",
+            "name": "setArray",
+            "signature": "let setArray: (array<elt>, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.setArrayOffset",
+            "kind": "value",
+            "name": "setArrayOffset",
+            "signature": "let setArrayOffset: (array<elt>, int, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.length",
+            "kind": "value",
+            "name": "length",
+            "signature": "let length: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.copyWithin",
+            "kind": "value",
+            "name": "copyWithin",
+            "signature": "let copyWithin: (~to_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.copyWithinFrom",
+            "kind": "value",
+            "name": "copyWithinFrom",
+            "signature": "let copyWithinFrom: (~to_: int, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.copyWithinFromRange",
+            "kind": "value",
+            "name": "copyWithinFromRange",
+            "signature": "let copyWithinFromRange: (~to_: int, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.fillInPlace",
+            "kind": "value",
+            "name": "fillInPlace",
+            "signature": "let fillInPlace: (elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.fillFromInPlace",
+            "kind": "value",
+            "name": "fillFromInPlace",
+            "signature": "let fillFromInPlace: (elt, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.fillRangeInPlace",
+            "kind": "value",
+            "name": "fillRangeInPlace",
+            "signature": "let fillRangeInPlace: (elt, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.reverseInPlace",
+            "kind": "value",
+            "name": "reverseInPlace",
+            "signature": "let reverseInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.sortInPlace",
+            "kind": "value",
+            "name": "sortInPlace",
+            "signature": "let sortInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.sortInPlaceWith",
+            "kind": "value",
+            "name": "sortInPlaceWith",
+            "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.includes",
+            "kind": "value",
+            "name": "includes",
+            "signature": "let includes: (elt, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.indexOf",
+            "kind": "value",
+            "name": "indexOf",
+            "signature": "let indexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.indexOfFrom",
+            "kind": "value",
+            "name": "indexOfFrom",
+            "signature": "let indexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.join",
+            "kind": "value",
+            "name": "join",
+            "signature": "let join: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.joinWith",
+            "kind": "value",
+            "name": "joinWith",
+            "signature": "let joinWith: (string, t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.lastIndexOf",
+            "kind": "value",
+            "name": "lastIndexOf",
+            "signature": "let lastIndexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.lastIndexOfFrom",
+            "kind": "value",
+            "name": "lastIndexOfFrom",
+            "signature": "let lastIndexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.slice",
+            "kind": "value",
+            "name": "slice",
+            "signature": "let slice: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.copy",
+            "kind": "value",
+            "name": "copy",
+            "signature": "let copy: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.sliceFrom",
+            "kind": "value",
+            "name": "sliceFrom",
+            "signature": "let sliceFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.subarray",
+            "kind": "value",
+            "name": "subarray",
+            "signature": "let subarray: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.subarrayFrom",
+            "kind": "value",
+            "name": "subarrayFrom",
+            "signature": "let subarrayFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.toString",
+            "kind": "value",
+            "name": "toString",
+            "signature": "let toString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.toLocaleString",
+            "kind": "value",
+            "name": "toLocaleString",
+            "signature": "let toLocaleString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.every",
+            "kind": "value",
+            "name": "every",
+            "signature": "let every: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.everyi",
+            "kind": "value",
+            "name": "everyi",
+            "signature": "let everyi: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.filter",
+            "kind": "value",
+            "name": "filter",
+            "signature": "let filter: ((. elt) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.filteri",
+            "kind": "value",
+            "name": "filteri",
+            "signature": "let filteri: ((. elt, int) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.find",
+            "kind": "value",
+            "name": "find",
+            "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.findi",
+            "kind": "value",
+            "name": "findi",
+            "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.findIndex",
+            "kind": "value",
+            "name": "findIndex",
+            "signature": "let findIndex: ((. elt) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.findIndexi",
+            "kind": "value",
+            "name": "findIndexi",
+            "signature": "let findIndexi: ((. elt, int) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.forEach",
+            "kind": "value",
+            "name": "forEach",
+            "signature": "let forEach: ((. elt) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.forEachi",
+            "kind": "value",
+            "name": "forEachi",
+            "signature": "let forEachi: ((. elt, int) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.map",
+            "kind": "value",
+            "name": "map",
+            "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.mapi",
+            "kind": "value",
+            "name": "mapi",
+            "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.reduce",
+            "kind": "value",
+            "name": "reduce",
+            "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.reducei",
+            "kind": "value",
+            "name": "reducei",
+            "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.reduceRight",
+            "kind": "value",
+            "name": "reduceRight",
+            "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.reduceRighti",
+            "kind": "value",
+            "name": "reduceRighti",
+            "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.some",
+            "kind": "value",
+            "name": "some",
+            "signature": "let some: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.somei",
+            "kind": "value",
+            "name": "somei",
+            "signature": "let somei: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array._BYTES_PER_ELEMENT",
+            "kind": "value",
+            "name": "_BYTES_PER_ELEMENT",
+            "signature": "let _BYTES_PER_ELEMENT: int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.make",
+            "kind": "value",
+            "name": "make",
+            "signature": "let make: array<elt> => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.fromBuffer",
+            "kind": "value",
+            "name": "fromBuffer",
+            "signature": "let fromBuffer: array_buffer => t",
+            "docstrings": [
+              "can throw"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Int32Array.fromBufferOffset",
+            "kind": "value",
+            "name": "fromBufferOffset",
+            "signature": "let fromBufferOffset: (array_buffer, int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raise Js exception\n\n    **param** offset is in bytes"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Int32Array.fromBufferRange",
+            "kind": "value",
+            "name": "fromBufferRange",
+            "signature": "let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raises Js exception\n\n    **param** offset is in bytes, length in elements"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Int32Array.fromLength",
+            "kind": "value",
+            "name": "fromLength",
+            "signature": "let fromLength: int => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.from",
+            "kind": "value",
+            "name": "from",
+            "signature": "let from: array_like<elt> => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.create",
+            "kind": "value",
+            "name": "create",
+            "signature": "let create: array<int> => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Int32Array.of_buffer",
+            "kind": "value",
+            "name": "of_buffer",
+            "signature": "let of_buffer: array_buffer => t",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Js_typed_array.Int32Array",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module Int32_array = Int32Array"
+    },
+    {
+      "id": "Uint32Array.Js_typed_array",
+      "kind": "module",
+      "item": {
+        "name": "Uint32Array",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Js_typed_array.Uint32Array.elt",
+            "kind": "type",
+            "name": "elt",
+            "signature": "type elt = int",
+            "docstrings": [
+              ""
+            ]
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.typed_array",
+            "kind": "type",
+            "name": "typed_array",
+            "signature": "type typed_array<'a> = Js_typed_array2.Uint32Array.typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = typed_array<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.unsafe_get",
+            "kind": "value",
+            "name": "unsafe_get",
+            "signature": "let unsafe_get: (t, int) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.unsafe_set",
+            "kind": "value",
+            "name": "unsafe_set",
+            "signature": "let unsafe_set: (t, int, elt) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.buffer",
+            "kind": "value",
+            "name": "buffer",
+            "signature": "let buffer: t => array_buffer",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.byteLength",
+            "kind": "value",
+            "name": "byteLength",
+            "signature": "let byteLength: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.byteOffset",
+            "kind": "value",
+            "name": "byteOffset",
+            "signature": "let byteOffset: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.setArray",
+            "kind": "value",
+            "name": "setArray",
+            "signature": "let setArray: (array<elt>, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.setArrayOffset",
+            "kind": "value",
+            "name": "setArrayOffset",
+            "signature": "let setArrayOffset: (array<elt>, int, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.length",
+            "kind": "value",
+            "name": "length",
+            "signature": "let length: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.copyWithin",
+            "kind": "value",
+            "name": "copyWithin",
+            "signature": "let copyWithin: (~to_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.copyWithinFrom",
+            "kind": "value",
+            "name": "copyWithinFrom",
+            "signature": "let copyWithinFrom: (~to_: int, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.copyWithinFromRange",
+            "kind": "value",
+            "name": "copyWithinFromRange",
+            "signature": "let copyWithinFromRange: (~to_: int, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.fillInPlace",
+            "kind": "value",
+            "name": "fillInPlace",
+            "signature": "let fillInPlace: (elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.fillFromInPlace",
+            "kind": "value",
+            "name": "fillFromInPlace",
+            "signature": "let fillFromInPlace: (elt, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.fillRangeInPlace",
+            "kind": "value",
+            "name": "fillRangeInPlace",
+            "signature": "let fillRangeInPlace: (elt, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.reverseInPlace",
+            "kind": "value",
+            "name": "reverseInPlace",
+            "signature": "let reverseInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.sortInPlace",
+            "kind": "value",
+            "name": "sortInPlace",
+            "signature": "let sortInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.sortInPlaceWith",
+            "kind": "value",
+            "name": "sortInPlaceWith",
+            "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.includes",
+            "kind": "value",
+            "name": "includes",
+            "signature": "let includes: (elt, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.indexOf",
+            "kind": "value",
+            "name": "indexOf",
+            "signature": "let indexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.indexOfFrom",
+            "kind": "value",
+            "name": "indexOfFrom",
+            "signature": "let indexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.join",
+            "kind": "value",
+            "name": "join",
+            "signature": "let join: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.joinWith",
+            "kind": "value",
+            "name": "joinWith",
+            "signature": "let joinWith: (string, t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.lastIndexOf",
+            "kind": "value",
+            "name": "lastIndexOf",
+            "signature": "let lastIndexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.lastIndexOfFrom",
+            "kind": "value",
+            "name": "lastIndexOfFrom",
+            "signature": "let lastIndexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.slice",
+            "kind": "value",
+            "name": "slice",
+            "signature": "let slice: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.copy",
+            "kind": "value",
+            "name": "copy",
+            "signature": "let copy: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.sliceFrom",
+            "kind": "value",
+            "name": "sliceFrom",
+            "signature": "let sliceFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.subarray",
+            "kind": "value",
+            "name": "subarray",
+            "signature": "let subarray: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.subarrayFrom",
+            "kind": "value",
+            "name": "subarrayFrom",
+            "signature": "let subarrayFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.toString",
+            "kind": "value",
+            "name": "toString",
+            "signature": "let toString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.toLocaleString",
+            "kind": "value",
+            "name": "toLocaleString",
+            "signature": "let toLocaleString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.every",
+            "kind": "value",
+            "name": "every",
+            "signature": "let every: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.everyi",
+            "kind": "value",
+            "name": "everyi",
+            "signature": "let everyi: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.filter",
+            "kind": "value",
+            "name": "filter",
+            "signature": "let filter: ((. elt) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.filteri",
+            "kind": "value",
+            "name": "filteri",
+            "signature": "let filteri: ((. elt, int) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.find",
+            "kind": "value",
+            "name": "find",
+            "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.findi",
+            "kind": "value",
+            "name": "findi",
+            "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.findIndex",
+            "kind": "value",
+            "name": "findIndex",
+            "signature": "let findIndex: ((. elt) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.findIndexi",
+            "kind": "value",
+            "name": "findIndexi",
+            "signature": "let findIndexi: ((. elt, int) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.forEach",
+            "kind": "value",
+            "name": "forEach",
+            "signature": "let forEach: ((. elt) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.forEachi",
+            "kind": "value",
+            "name": "forEachi",
+            "signature": "let forEachi: ((. elt, int) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.map",
+            "kind": "value",
+            "name": "map",
+            "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.mapi",
+            "kind": "value",
+            "name": "mapi",
+            "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.reduce",
+            "kind": "value",
+            "name": "reduce",
+            "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.reducei",
+            "kind": "value",
+            "name": "reducei",
+            "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.reduceRight",
+            "kind": "value",
+            "name": "reduceRight",
+            "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.reduceRighti",
+            "kind": "value",
+            "name": "reduceRighti",
+            "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.some",
+            "kind": "value",
+            "name": "some",
+            "signature": "let some: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.somei",
+            "kind": "value",
+            "name": "somei",
+            "signature": "let somei: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array._BYTES_PER_ELEMENT",
+            "kind": "value",
+            "name": "_BYTES_PER_ELEMENT",
+            "signature": "let _BYTES_PER_ELEMENT: int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.make",
+            "kind": "value",
+            "name": "make",
+            "signature": "let make: array<elt> => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.fromBuffer",
+            "kind": "value",
+            "name": "fromBuffer",
+            "signature": "let fromBuffer: array_buffer => t",
+            "docstrings": [
+              "can throw"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.fromBufferOffset",
+            "kind": "value",
+            "name": "fromBufferOffset",
+            "signature": "let fromBufferOffset: (array_buffer, int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raise Js exception\n\n    **param** offset is in bytes"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.fromBufferRange",
+            "kind": "value",
+            "name": "fromBufferRange",
+            "signature": "let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raises Js exception\n\n    **param** offset is in bytes, length in elements"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.fromLength",
+            "kind": "value",
+            "name": "fromLength",
+            "signature": "let fromLength: int => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Uint32Array.from",
+            "kind": "value",
+            "name": "from",
+            "signature": "let from: array_like<elt> => t",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Float32Array.Js_typed_array",
+      "kind": "module",
+      "item": {
+        "name": "Float32Array",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Js_typed_array.Float32Array.elt",
+            "kind": "type",
+            "name": "elt",
+            "signature": "type elt = float",
+            "docstrings": [
+              ""
+            ]
+          },
+          {
+            "id": "Js_typed_array.Float32Array.typed_array",
+            "kind": "type",
+            "name": "typed_array",
+            "signature": "type typed_array<'a> = Js_typed_array2.Float32Array.typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = typed_array<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.unsafe_get",
+            "kind": "value",
+            "name": "unsafe_get",
+            "signature": "let unsafe_get: (t, int) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.unsafe_set",
+            "kind": "value",
+            "name": "unsafe_set",
+            "signature": "let unsafe_set: (t, int, elt) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.buffer",
+            "kind": "value",
+            "name": "buffer",
+            "signature": "let buffer: t => array_buffer",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.byteLength",
+            "kind": "value",
+            "name": "byteLength",
+            "signature": "let byteLength: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.byteOffset",
+            "kind": "value",
+            "name": "byteOffset",
+            "signature": "let byteOffset: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.setArray",
+            "kind": "value",
+            "name": "setArray",
+            "signature": "let setArray: (array<elt>, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.setArrayOffset",
+            "kind": "value",
+            "name": "setArrayOffset",
+            "signature": "let setArrayOffset: (array<elt>, int, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.length",
+            "kind": "value",
+            "name": "length",
+            "signature": "let length: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.copyWithin",
+            "kind": "value",
+            "name": "copyWithin",
+            "signature": "let copyWithin: (~to_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.copyWithinFrom",
+            "kind": "value",
+            "name": "copyWithinFrom",
+            "signature": "let copyWithinFrom: (~to_: int, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.copyWithinFromRange",
+            "kind": "value",
+            "name": "copyWithinFromRange",
+            "signature": "let copyWithinFromRange: (~to_: int, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.fillInPlace",
+            "kind": "value",
+            "name": "fillInPlace",
+            "signature": "let fillInPlace: (elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.fillFromInPlace",
+            "kind": "value",
+            "name": "fillFromInPlace",
+            "signature": "let fillFromInPlace: (elt, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.fillRangeInPlace",
+            "kind": "value",
+            "name": "fillRangeInPlace",
+            "signature": "let fillRangeInPlace: (elt, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.reverseInPlace",
+            "kind": "value",
+            "name": "reverseInPlace",
+            "signature": "let reverseInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.sortInPlace",
+            "kind": "value",
+            "name": "sortInPlace",
+            "signature": "let sortInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.sortInPlaceWith",
+            "kind": "value",
+            "name": "sortInPlaceWith",
+            "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.includes",
+            "kind": "value",
+            "name": "includes",
+            "signature": "let includes: (elt, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.indexOf",
+            "kind": "value",
+            "name": "indexOf",
+            "signature": "let indexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.indexOfFrom",
+            "kind": "value",
+            "name": "indexOfFrom",
+            "signature": "let indexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.join",
+            "kind": "value",
+            "name": "join",
+            "signature": "let join: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.joinWith",
+            "kind": "value",
+            "name": "joinWith",
+            "signature": "let joinWith: (string, t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.lastIndexOf",
+            "kind": "value",
+            "name": "lastIndexOf",
+            "signature": "let lastIndexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.lastIndexOfFrom",
+            "kind": "value",
+            "name": "lastIndexOfFrom",
+            "signature": "let lastIndexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.slice",
+            "kind": "value",
+            "name": "slice",
+            "signature": "let slice: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.copy",
+            "kind": "value",
+            "name": "copy",
+            "signature": "let copy: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.sliceFrom",
+            "kind": "value",
+            "name": "sliceFrom",
+            "signature": "let sliceFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.subarray",
+            "kind": "value",
+            "name": "subarray",
+            "signature": "let subarray: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.subarrayFrom",
+            "kind": "value",
+            "name": "subarrayFrom",
+            "signature": "let subarrayFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.toString",
+            "kind": "value",
+            "name": "toString",
+            "signature": "let toString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.toLocaleString",
+            "kind": "value",
+            "name": "toLocaleString",
+            "signature": "let toLocaleString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.every",
+            "kind": "value",
+            "name": "every",
+            "signature": "let every: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.everyi",
+            "kind": "value",
+            "name": "everyi",
+            "signature": "let everyi: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.filter",
+            "kind": "value",
+            "name": "filter",
+            "signature": "let filter: ((. elt) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.filteri",
+            "kind": "value",
+            "name": "filteri",
+            "signature": "let filteri: ((. elt, int) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.find",
+            "kind": "value",
+            "name": "find",
+            "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.findi",
+            "kind": "value",
+            "name": "findi",
+            "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.findIndex",
+            "kind": "value",
+            "name": "findIndex",
+            "signature": "let findIndex: ((. elt) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.findIndexi",
+            "kind": "value",
+            "name": "findIndexi",
+            "signature": "let findIndexi: ((. elt, int) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.forEach",
+            "kind": "value",
+            "name": "forEach",
+            "signature": "let forEach: ((. elt) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.forEachi",
+            "kind": "value",
+            "name": "forEachi",
+            "signature": "let forEachi: ((. elt, int) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.map",
+            "kind": "value",
+            "name": "map",
+            "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.mapi",
+            "kind": "value",
+            "name": "mapi",
+            "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.reduce",
+            "kind": "value",
+            "name": "reduce",
+            "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.reducei",
+            "kind": "value",
+            "name": "reducei",
+            "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.reduceRight",
+            "kind": "value",
+            "name": "reduceRight",
+            "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.reduceRighti",
+            "kind": "value",
+            "name": "reduceRighti",
+            "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.some",
+            "kind": "value",
+            "name": "some",
+            "signature": "let some: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.somei",
+            "kind": "value",
+            "name": "somei",
+            "signature": "let somei: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array._BYTES_PER_ELEMENT",
+            "kind": "value",
+            "name": "_BYTES_PER_ELEMENT",
+            "signature": "let _BYTES_PER_ELEMENT: int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.make",
+            "kind": "value",
+            "name": "make",
+            "signature": "let make: array<elt> => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.fromBuffer",
+            "kind": "value",
+            "name": "fromBuffer",
+            "signature": "let fromBuffer: array_buffer => t",
+            "docstrings": [
+              "can throw"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Float32Array.fromBufferOffset",
+            "kind": "value",
+            "name": "fromBufferOffset",
+            "signature": "let fromBufferOffset: (array_buffer, int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raise Js exception\n\n    **param** offset is in bytes"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Float32Array.fromBufferRange",
+            "kind": "value",
+            "name": "fromBufferRange",
+            "signature": "let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raises Js exception\n\n    **param** offset is in bytes, length in elements"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Float32Array.fromLength",
+            "kind": "value",
+            "name": "fromLength",
+            "signature": "let fromLength: int => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.from",
+            "kind": "value",
+            "name": "from",
+            "signature": "let from: array_like<elt> => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.create",
+            "kind": "value",
+            "name": "create",
+            "signature": "let create: array<float> => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float32Array.of_buffer",
+            "kind": "value",
+            "name": "of_buffer",
+            "signature": "let of_buffer: array_buffer => t",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Js_typed_array.Float32Array",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module Float32_array = Float32Array"
+    },
+    {
+      "id": "Float64Array.Js_typed_array",
+      "kind": "module",
+      "item": {
+        "name": "Float64Array",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Js_typed_array.Float64Array.elt",
+            "kind": "type",
+            "name": "elt",
+            "signature": "type elt = float",
+            "docstrings": [
+              ""
+            ]
+          },
+          {
+            "id": "Js_typed_array.Float64Array.typed_array",
+            "kind": "type",
+            "name": "typed_array",
+            "signature": "type typed_array<'a> = Js_typed_array2.Float64Array.typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = typed_array<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.unsafe_get",
+            "kind": "value",
+            "name": "unsafe_get",
+            "signature": "let unsafe_get: (t, int) => elt",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.unsafe_set",
+            "kind": "value",
+            "name": "unsafe_set",
+            "signature": "let unsafe_set: (t, int, elt) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.buffer",
+            "kind": "value",
+            "name": "buffer",
+            "signature": "let buffer: t => array_buffer",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.byteLength",
+            "kind": "value",
+            "name": "byteLength",
+            "signature": "let byteLength: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.byteOffset",
+            "kind": "value",
+            "name": "byteOffset",
+            "signature": "let byteOffset: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.setArray",
+            "kind": "value",
+            "name": "setArray",
+            "signature": "let setArray: (array<elt>, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.setArrayOffset",
+            "kind": "value",
+            "name": "setArrayOffset",
+            "signature": "let setArrayOffset: (array<elt>, int, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.length",
+            "kind": "value",
+            "name": "length",
+            "signature": "let length: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.copyWithin",
+            "kind": "value",
+            "name": "copyWithin",
+            "signature": "let copyWithin: (~to_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.copyWithinFrom",
+            "kind": "value",
+            "name": "copyWithinFrom",
+            "signature": "let copyWithinFrom: (~to_: int, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.copyWithinFromRange",
+            "kind": "value",
+            "name": "copyWithinFromRange",
+            "signature": "let copyWithinFromRange: (~to_: int, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.fillInPlace",
+            "kind": "value",
+            "name": "fillInPlace",
+            "signature": "let fillInPlace: (elt, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.fillFromInPlace",
+            "kind": "value",
+            "name": "fillFromInPlace",
+            "signature": "let fillFromInPlace: (elt, ~from: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.fillRangeInPlace",
+            "kind": "value",
+            "name": "fillRangeInPlace",
+            "signature": "let fillRangeInPlace: (elt, ~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.reverseInPlace",
+            "kind": "value",
+            "name": "reverseInPlace",
+            "signature": "let reverseInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.sortInPlace",
+            "kind": "value",
+            "name": "sortInPlace",
+            "signature": "let sortInPlace: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.sortInPlaceWith",
+            "kind": "value",
+            "name": "sortInPlaceWith",
+            "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.includes",
+            "kind": "value",
+            "name": "includes",
+            "signature": "let includes: (elt, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.indexOf",
+            "kind": "value",
+            "name": "indexOf",
+            "signature": "let indexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.indexOfFrom",
+            "kind": "value",
+            "name": "indexOfFrom",
+            "signature": "let indexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.join",
+            "kind": "value",
+            "name": "join",
+            "signature": "let join: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.joinWith",
+            "kind": "value",
+            "name": "joinWith",
+            "signature": "let joinWith: (string, t) => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.lastIndexOf",
+            "kind": "value",
+            "name": "lastIndexOf",
+            "signature": "let lastIndexOf: (elt, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.lastIndexOfFrom",
+            "kind": "value",
+            "name": "lastIndexOfFrom",
+            "signature": "let lastIndexOfFrom: (elt, ~from: int, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.slice",
+            "kind": "value",
+            "name": "slice",
+            "signature": "let slice: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.copy",
+            "kind": "value",
+            "name": "copy",
+            "signature": "let copy: t => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.sliceFrom",
+            "kind": "value",
+            "name": "sliceFrom",
+            "signature": "let sliceFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.subarray",
+            "kind": "value",
+            "name": "subarray",
+            "signature": "let subarray: (~start: int, ~end_: int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.subarrayFrom",
+            "kind": "value",
+            "name": "subarrayFrom",
+            "signature": "let subarrayFrom: (int, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.toString",
+            "kind": "value",
+            "name": "toString",
+            "signature": "let toString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.toLocaleString",
+            "kind": "value",
+            "name": "toLocaleString",
+            "signature": "let toLocaleString: t => string",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.every",
+            "kind": "value",
+            "name": "every",
+            "signature": "let every: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.everyi",
+            "kind": "value",
+            "name": "everyi",
+            "signature": "let everyi: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.filter",
+            "kind": "value",
+            "name": "filter",
+            "signature": "let filter: ((. elt) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.filteri",
+            "kind": "value",
+            "name": "filteri",
+            "signature": "let filteri: ((. elt, int) => bool, t) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.find",
+            "kind": "value",
+            "name": "find",
+            "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.findi",
+            "kind": "value",
+            "name": "findi",
+            "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.findIndex",
+            "kind": "value",
+            "name": "findIndex",
+            "signature": "let findIndex: ((. elt) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.findIndexi",
+            "kind": "value",
+            "name": "findIndexi",
+            "signature": "let findIndexi: ((. elt, int) => bool, t) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.forEach",
+            "kind": "value",
+            "name": "forEach",
+            "signature": "let forEach: ((. elt) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.forEachi",
+            "kind": "value",
+            "name": "forEachi",
+            "signature": "let forEachi: ((. elt, int) => unit, t) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.map",
+            "kind": "value",
+            "name": "map",
+            "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.mapi",
+            "kind": "value",
+            "name": "mapi",
+            "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.reduce",
+            "kind": "value",
+            "name": "reduce",
+            "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.reducei",
+            "kind": "value",
+            "name": "reducei",
+            "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.reduceRight",
+            "kind": "value",
+            "name": "reduceRight",
+            "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.reduceRighti",
+            "kind": "value",
+            "name": "reduceRighti",
+            "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.some",
+            "kind": "value",
+            "name": "some",
+            "signature": "let some: ((. elt) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.somei",
+            "kind": "value",
+            "name": "somei",
+            "signature": "let somei: ((. elt, int) => bool, t) => bool",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array._BYTES_PER_ELEMENT",
+            "kind": "value",
+            "name": "_BYTES_PER_ELEMENT",
+            "signature": "let _BYTES_PER_ELEMENT: int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.make",
+            "kind": "value",
+            "name": "make",
+            "signature": "let make: array<elt> => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.fromBuffer",
+            "kind": "value",
+            "name": "fromBuffer",
+            "signature": "let fromBuffer: array_buffer => t",
+            "docstrings": [
+              "can throw"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Float64Array.fromBufferOffset",
+            "kind": "value",
+            "name": "fromBufferOffset",
+            "signature": "let fromBufferOffset: (array_buffer, int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raise Js exception\n\n    **param** offset is in bytes"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Float64Array.fromBufferRange",
+            "kind": "value",
+            "name": "fromBufferRange",
+            "signature": "let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t",
+            "docstrings": [
+              "**raise** Js.Exn.Error raises Js exception\n\n    **param** offset is in bytes, length in elements"
+            ]
+          },
+          {
+            "id": "Js_typed_array.Float64Array.fromLength",
+            "kind": "value",
+            "name": "fromLength",
+            "signature": "let fromLength: int => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.from",
+            "kind": "value",
+            "name": "from",
+            "signature": "let from: array_like<elt> => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.create",
+            "kind": "value",
+            "name": "create",
+            "signature": "let create: array<float> => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.Float64Array.of_buffer",
+            "kind": "value",
+            "name": "of_buffer",
+            "signature": "let of_buffer: array_buffer => t",
+            "docstrings": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "Js_typed_array.Float64Array",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module Float64_array = Float64Array"
+    },
+    {
+      "id": "DataView.Js_typed_array",
+      "kind": "module",
+      "item": {
+        "name": "DataView",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Js_typed_array.DataView.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t = Js_typed_array2.DataView.t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.make",
+            "kind": "value",
+            "name": "make",
+            "signature": "let make: array_buffer => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.fromBuffer",
+            "kind": "value",
+            "name": "fromBuffer",
+            "signature": "let fromBuffer: array_buffer => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.fromBufferOffset",
+            "kind": "value",
+            "name": "fromBufferOffset",
+            "signature": "let fromBufferOffset: (array_buffer, int) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.fromBufferRange",
+            "kind": "value",
+            "name": "fromBufferRange",
+            "signature": "let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.buffer",
+            "kind": "value",
+            "name": "buffer",
+            "signature": "let buffer: t => array_buffer",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.byteLength",
+            "kind": "value",
+            "name": "byteLength",
+            "signature": "let byteLength: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.byteOffset",
+            "kind": "value",
+            "name": "byteOffset",
+            "signature": "let byteOffset: t => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.getInt8",
+            "kind": "value",
+            "name": "getInt8",
+            "signature": "let getInt8: (t, int) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.getUint8",
+            "kind": "value",
+            "name": "getUint8",
+            "signature": "let getUint8: (t, int) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.getInt16",
+            "kind": "value",
+            "name": "getInt16",
+            "signature": "let getInt16: (t, int) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.getInt16LittleEndian",
+            "kind": "value",
+            "name": "getInt16LittleEndian",
+            "signature": "let getInt16LittleEndian: (t, int) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.getUint16",
+            "kind": "value",
+            "name": "getUint16",
+            "signature": "let getUint16: (t, int) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.getUint16LittleEndian",
+            "kind": "value",
+            "name": "getUint16LittleEndian",
+            "signature": "let getUint16LittleEndian: (t, int) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.getInt32",
+            "kind": "value",
+            "name": "getInt32",
+            "signature": "let getInt32: (t, int) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.getInt32LittleEndian",
+            "kind": "value",
+            "name": "getInt32LittleEndian",
+            "signature": "let getInt32LittleEndian: (t, int) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.getUint32",
+            "kind": "value",
+            "name": "getUint32",
+            "signature": "let getUint32: (t, int) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.getUint32LittleEndian",
+            "kind": "value",
+            "name": "getUint32LittleEndian",
+            "signature": "let getUint32LittleEndian: (t, int) => int",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.getFloat32",
+            "kind": "value",
+            "name": "getFloat32",
+            "signature": "let getFloat32: (t, int) => float",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.getFloat32LittleEndian",
+            "kind": "value",
+            "name": "getFloat32LittleEndian",
+            "signature": "let getFloat32LittleEndian: (t, int) => float",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.getFloat64",
+            "kind": "value",
+            "name": "getFloat64",
+            "signature": "let getFloat64: (t, int) => float",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.getFloat64LittleEndian",
+            "kind": "value",
+            "name": "getFloat64LittleEndian",
+            "signature": "let getFloat64LittleEndian: (t, int) => float",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.setInt8",
+            "kind": "value",
+            "name": "setInt8",
+            "signature": "let setInt8: (t, int, int) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.setUint8",
+            "kind": "value",
+            "name": "setUint8",
+            "signature": "let setUint8: (t, int, int) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.setInt16",
+            "kind": "value",
+            "name": "setInt16",
+            "signature": "let setInt16: (t, int, int) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.setInt16LittleEndian",
+            "kind": "value",
+            "name": "setInt16LittleEndian",
+            "signature": "let setInt16LittleEndian: (t, int, int) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.setUint16",
+            "kind": "value",
+            "name": "setUint16",
+            "signature": "let setUint16: (t, int, int) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.setUint16LittleEndian",
+            "kind": "value",
+            "name": "setUint16LittleEndian",
+            "signature": "let setUint16LittleEndian: (t, int, int) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.setInt32",
+            "kind": "value",
+            "name": "setInt32",
+            "signature": "let setInt32: (t, int, int) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.setInt32LittleEndian",
+            "kind": "value",
+            "name": "setInt32LittleEndian",
+            "signature": "let setInt32LittleEndian: (t, int, int) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.setUint32",
+            "kind": "value",
+            "name": "setUint32",
+            "signature": "let setUint32: (t, int, int) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.setUint32LittleEndian",
+            "kind": "value",
+            "name": "setUint32LittleEndian",
+            "signature": "let setUint32LittleEndian: (t, int, int) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.setFloat32",
+            "kind": "value",
+            "name": "setFloat32",
+            "signature": "let setFloat32: (t, int, float) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.setFloat32LittleEndian",
+            "kind": "value",
+            "name": "setFloat32LittleEndian",
+            "signature": "let setFloat32LittleEndian: (t, int, float) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.setFloat64",
+            "kind": "value",
+            "name": "setFloat64",
+            "signature": "let setFloat64: (t, int, float) => unit",
+            "docstrings": []
+          },
+          {
+            "id": "Js_typed_array.DataView.setFloat64LittleEndian",
+            "kind": "value",
+            "name": "setFloat64LittleEndian",
+            "signature": "let setFloat64LittleEndian: (t, int, float) => unit",
+            "docstrings": []
+          }
+        ]
+      }
+    }
+  ]
+}

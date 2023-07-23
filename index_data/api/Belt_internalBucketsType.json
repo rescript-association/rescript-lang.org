@@ -1,0 +1,87 @@
+{
+  "name": "Belt_internalBucketsType",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Belt_internalBucketsType.opt",
+      "kind": "type",
+      "name": "opt",
+      "signature": "type opt<'a> = Js.undefined<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBucketsType.container",
+      "kind": "type",
+      "name": "container",
+      "signature": "type container<'hash, 'eq, 'c> = {\\n  mutable size: int,\\n  mutable buckets: array<opt<'c>>,\\n  hash: 'hash,\\n  eq: 'eq,\\n}",
+      "docstrings": [],
+      "detail": {
+        "kind": "record",
+        "fieldDocs": [
+          {
+            "fieldName": "size",
+            "docstrings": [],
+            "signature": "int"
+          },
+          {
+            "fieldName": "buckets",
+            "docstrings": [],
+            "signature": "array<opt<'c>>"
+          },
+          {
+            "fieldName": "hash",
+            "docstrings": [],
+            "signature": "'hash"
+          },
+          {
+            "fieldName": "eq",
+            "docstrings": [],
+            "signature": "'eq"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Belt_internalBucketsType.toOpt",
+      "kind": "value",
+      "name": "toOpt",
+      "signature": "let toOpt: opt<'a> => option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBucketsType.return",
+      "kind": "value",
+      "name": "return",
+      "signature": "let return: 'a => opt<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBucketsType.emptyOpt",
+      "kind": "value",
+      "name": "emptyOpt",
+      "signature": "let emptyOpt: Js.undefined<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBucketsType.make",
+      "kind": "value",
+      "name": "make",
+      "signature": "let make: (~hash: 'hash, ~eq: 'eq, ~hintSize: int) => container<'hash, 'eq, 'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBucketsType.clear",
+      "kind": "value",
+      "name": "clear",
+      "signature": "let clear: container<'a, 'b, 'c> => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBucketsType.isEmpty",
+      "kind": "value",
+      "name": "isEmpty",
+      "signature": "let isEmpty: container<'a, 'b, 'c> => bool",
+      "docstrings": []
+    }
+  ]
+}

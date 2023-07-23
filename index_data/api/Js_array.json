@@ -1,0 +1,444 @@
+{
+  "name": "Js_array",
+  "docstrings": [
+    "Provides bindings to JavaScript’s `Array` functions. These bindings are\n  optimized for pipe-last (`|>`), where the array to be processed is the last\n  parameter in the function.\n\n  Here is an example to find the sum of squares of all even numbers in an array.\n  Without pipe last, we must call the functions in reverse order:\n\n  ```res example\n  let isEven = x => mod(x, 2) == 0\n  let square = x => x * x\n  let result = {\n    open Js.Array\n    reduce(\\\"+\", 0, map(square, filter(isEven, [5, 2, 3, 4, 1])))\n  }\n  ```\n\n  With pipe last, we call the functions in the “natural” order:\n\n  ```res example\n  let isEven = x => mod(x, 2) == 0\n  let square = x => x * x\n  let result = {\n    open Js.Array\n    [5, 2, 3, 4, 1] |> filter(isEven) |> map(square) |> reduce(\"+\", 0)\n  }\n  ```"
+  ],
+  "items": [
+    {
+      "id": "Js_array.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a> = array<'a>",
+      "docstrings": [
+        "The type used to describe a JavaScript array."
+      ]
+    },
+    {
+      "id": "Js_array.array_like",
+      "kind": "type",
+      "name": "array_like",
+      "signature": "type array_like<'a> = Js_array2.array_like<'a>",
+      "docstrings": [
+        "A type used to describe JavaScript objects that are like an array or are iterable."
+      ]
+    },
+    {
+      "id": "Js_array.from",
+      "kind": "value",
+      "name": "from",
+      "signature": "let from: array_like<'a> => array<'a>",
+      "docstrings": [
+        "Creates a shallow copy of an array from an array-like object. See [`Array.from`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from) on MDN.\n\n  ```res example\n  let strArr = Js.String.castToArrayLike(\"abcd\")\n  Js.Array.from(strArr) == [\"a\", \"b\", \"c\", \"d\"]\n  ```"
+      ]
+    },
+    {
+      "id": "Js_array.fromMap",
+      "kind": "value",
+      "name": "fromMap",
+      "signature": "let fromMap: (array_like<'a>, 'a => 'b) => array<'b>",
+      "docstrings": [
+        "Creates a new array by applying a function (the second argument) to each item\n  in the `array_like` first argument.  See\n  [`Array.from`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from)\n  on MDN.\n\n  ```res example\n  let strArr = Js.String.castToArrayLike(\"abcd\")\n  let code = s => Js.String.charCodeAt(0, s)\n  Js.Array.fromMap(strArr, code) == [97.0, 98.0, 99.0, 100.0]\n  ```"
+      ]
+    },
+    {
+      "id": "Js_array.isArray",
+      "kind": "value",
+      "name": "isArray",
+      "signature": "let isArray: 'a => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.length",
+      "kind": "value",
+      "name": "length",
+      "signature": "let length: array<'a> => int",
+      "docstrings": [
+        "Returns the number of elements in the array. See [`Array.length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/length) on MDN."
+      ]
+    },
+    {
+      "id": "Js_array.copyWithin",
+      "kind": "value",
+      "name": "copyWithin",
+      "signature": "let copyWithin: (~to_: int, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.copyWithinFrom",
+      "kind": "value",
+      "name": "copyWithinFrom",
+      "signature": "let copyWithinFrom: (~to_: int, ~from: int, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.copyWithinFromRange",
+      "kind": "value",
+      "name": "copyWithinFromRange",
+      "signature": "let copyWithinFromRange: (~to_: int, ~start: int, ~end_: int, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.fillInPlace",
+      "kind": "value",
+      "name": "fillInPlace",
+      "signature": "let fillInPlace: ('a, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.fillFromInPlace",
+      "kind": "value",
+      "name": "fillFromInPlace",
+      "signature": "let fillFromInPlace: ('a, ~from: int, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.fillRangeInPlace",
+      "kind": "value",
+      "name": "fillRangeInPlace",
+      "signature": "let fillRangeInPlace: ('a, ~start: int, ~end_: int, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.pop",
+      "kind": "value",
+      "name": "pop",
+      "signature": "let pop: t<'a> => option<'a>",
+      "docstrings": [
+        "If the array is not empty, removes the last element and returns it as `Some(value)`; returns `None` if the array is empty. *This function modifies the original array.* See [`Array.pop`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop) on MDN.\n\n  ```res example\n  let arr = [100, 101, 102, 103, 104]\n  Js.Array.pop(arr) == Some(104)\n  arr == [100, 101, 102, 103]\n\n  let empty: array<int> = []\n  Js.Array.pop(empty) == None\n  ```"
+      ]
+    },
+    {
+      "id": "Js_array.push",
+      "kind": "value",
+      "name": "push",
+      "signature": "let push: ('a, t<'a>) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.pushMany",
+      "kind": "value",
+      "name": "pushMany",
+      "signature": "let pushMany: (array<'a>, t<'a>) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.reverseInPlace",
+      "kind": "value",
+      "name": "reverseInPlace",
+      "signature": "let reverseInPlace: t<'a> => t<'a>",
+      "docstrings": [
+        "Returns an array with the elements of the input array in reverse order. *This function modifies the original array.* See [`Array.reverse`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse) on MDN.\n\n  ```res example\n  let arr = [\"ant\", \"bee\", \"cat\"]\n  Js.Array.reverseInPlace(arr) == [\"cat\", \"bee\", \"ant\"]\n  arr == [\"cat\", \"bee\", \"ant\"]\n  ```"
+      ]
+    },
+    {
+      "id": "Js_array.shift",
+      "kind": "value",
+      "name": "shift",
+      "signature": "let shift: t<'a> => option<'a>",
+      "docstrings": [
+        "If the array is not empty, removes the first element and returns it as `Some(value)`; returns `None` if the array is empty. *This function modifies the original array.* See [`Array.shift`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift) on MDN.\n\n  ```res example\n  let arr = [100, 101, 102, 103, 104]\n  Js.Array.shift(arr) == Some(100)\n  arr == [101, 102, 103, 104]\n\n  let empty: array<int> = []\n  Js.Array.shift(empty) == None\n  ```"
+      ]
+    },
+    {
+      "id": "Js_array.sortInPlace",
+      "kind": "value",
+      "name": "sortInPlace",
+      "signature": "let sortInPlace: t<'a> => t<'a>",
+      "docstrings": [
+        "Sorts the given array in place and returns the sorted array. JavaScript sorts the array by converting the arguments to UTF-16 strings and sorting them. See the second example with sorting numbers, which does not do a numeric sort. *This function modifies the original array.* See [`Array.sort`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) on MDN.\n\n  ```res example\n  let words = [\"bee\", \"dog\", \"ant\", \"cat\"]\n  Js.Array.sortInPlace(words) == [\"ant\", \"bee\", \"cat\", \"dog\"]\n  words == [\"ant\", \"bee\", \"cat\", \"dog\"]\n\n  let numbers = [3, 30, 10, 1, 20, 2]\n  Js.Array.sortInPlace(numbers) == [1, 10, 2, 20, 3, 30]\n  numbers == [1, 10, 2, 20, 3, 30]\n  ```"
+      ]
+    },
+    {
+      "id": "Js_array.sortInPlaceWith",
+      "kind": "value",
+      "name": "sortInPlaceWith",
+      "signature": "let sortInPlaceWith: (('a, 'a) => int, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.spliceInPlace",
+      "kind": "value",
+      "name": "spliceInPlace",
+      "signature": "let spliceInPlace: (~pos: int, ~remove: int, ~add: array<'a>, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.removeFromInPlace",
+      "kind": "value",
+      "name": "removeFromInPlace",
+      "signature": "let removeFromInPlace: (~pos: int, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.removeCountInPlace",
+      "kind": "value",
+      "name": "removeCountInPlace",
+      "signature": "let removeCountInPlace: (~pos: int, ~count: int, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.unshift",
+      "kind": "value",
+      "name": "unshift",
+      "signature": "let unshift: ('a, t<'a>) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.unshiftMany",
+      "kind": "value",
+      "name": "unshiftMany",
+      "signature": "let unshiftMany: (array<'a>, t<'a>) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.concat",
+      "kind": "value",
+      "name": "concat",
+      "signature": "let concat: (t<'a>, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.concatMany",
+      "kind": "value",
+      "name": "concatMany",
+      "signature": "let concatMany: (array<t<'a>>, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.includes",
+      "kind": "value",
+      "name": "includes",
+      "signature": "let includes: ('a, t<'a>) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.indexOf",
+      "kind": "value",
+      "name": "indexOf",
+      "signature": "let indexOf: ('a, t<'a>) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.indexOfFrom",
+      "kind": "value",
+      "name": "indexOfFrom",
+      "signature": "let indexOfFrom: ('a, ~from: int, t<'a>) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.join",
+      "kind": "value",
+      "name": "join",
+      "signature": "let join: t<'a> => string",
+      "docstrings": [
+        "@deprecated: Use `joinWith` instead."
+      ]
+    },
+    {
+      "id": "Js_array.joinWith",
+      "kind": "value",
+      "name": "joinWith",
+      "signature": "let joinWith: (string, t<'a>) => string",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.lastIndexOf",
+      "kind": "value",
+      "name": "lastIndexOf",
+      "signature": "let lastIndexOf: ('a, t<'a>) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.lastIndexOfFrom",
+      "kind": "value",
+      "name": "lastIndexOfFrom",
+      "signature": "let lastIndexOfFrom: ('a, ~from: int, t<'a>) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.slice",
+      "kind": "value",
+      "name": "slice",
+      "signature": "let slice: (~start: int, ~end_: int, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.copy",
+      "kind": "value",
+      "name": "copy",
+      "signature": "let copy: t<'a> => t<'a>",
+      "docstrings": [
+        "Returns a copy of the entire array. Same as `Js.Array.Slice(~start=0,\n  ~end_=Js.Array.length(arr), arr)`. See\n  [`Array.slice`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice)\n  on MDN."
+      ]
+    },
+    {
+      "id": "Js_array.sliceFrom",
+      "kind": "value",
+      "name": "sliceFrom",
+      "signature": "let sliceFrom: (int, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.toString",
+      "kind": "value",
+      "name": "toString",
+      "signature": "let toString: t<'a> => string",
+      "docstrings": [
+        "Converts the array to a string. Each element is converted to a string using\n  JavaScript. Unlike the JavaScript `Array.toString()`, all elements in a\n  ReasonML array must have the same type. See\n  [`Array.toString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toString)\n  on MDN.\n\n  ```res example\n  Js.Array.toString([3.5, 4.6, 7.8]) == \"3.5,4.6,7.8\"\n  Js.Array.toString([\"a\", \"b\", \"c\"]) == \"a,b,c\"\n  ```"
+      ]
+    },
+    {
+      "id": "Js_array.toLocaleString",
+      "kind": "value",
+      "name": "toLocaleString",
+      "signature": "let toLocaleString: t<'a> => string",
+      "docstrings": [
+        "Converts the array to a string using the conventions of the current locale.\n  Each element is converted to a string using JavaScript. Unlike the JavaScript\n  `Array.toLocaleString()`, all elements in a ReasonML array must have the same\ntype. See\n[`Array.toLocaleString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toLocaleString)\non MDN.\n\n  ```res example\n  Js.Array.toLocaleString([Js.Date.make()])\n  // returns \"3/19/2020, 10:52:11 AM\" for locale en_US.utf8\n  // returns \"2020-3-19 10:52:11\" for locale de_DE.utf8\n  ```"
+      ]
+    },
+    {
+      "id": "Js_array.every",
+      "kind": "value",
+      "name": "every",
+      "signature": "let every: ('a => bool, t<'a>) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.everyi",
+      "kind": "value",
+      "name": "everyi",
+      "signature": "let everyi: (('a, int) => bool, t<'a>) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.filter",
+      "kind": "value",
+      "name": "filter",
+      "signature": "let filter: ('a => bool, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.filteri",
+      "kind": "value",
+      "name": "filteri",
+      "signature": "let filteri: (('a, int) => bool, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.find",
+      "kind": "value",
+      "name": "find",
+      "signature": "let find: ('a => bool, t<'a>) => option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.findi",
+      "kind": "value",
+      "name": "findi",
+      "signature": "let findi: (('a, int) => bool, t<'a>) => option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.findIndex",
+      "kind": "value",
+      "name": "findIndex",
+      "signature": "let findIndex: ('a => bool, t<'a>) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.findIndexi",
+      "kind": "value",
+      "name": "findIndexi",
+      "signature": "let findIndexi: (('a, int) => bool, t<'a>) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.forEach",
+      "kind": "value",
+      "name": "forEach",
+      "signature": "let forEach: ('a => unit, t<'a>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.forEachi",
+      "kind": "value",
+      "name": "forEachi",
+      "signature": "let forEachi: (('a, int) => unit, t<'a>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.map",
+      "kind": "value",
+      "name": "map",
+      "signature": "let map: ('a => 'b, t<'a>) => t<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.mapi",
+      "kind": "value",
+      "name": "mapi",
+      "signature": "let mapi: (('a, int) => 'b, t<'a>) => t<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.reduce",
+      "kind": "value",
+      "name": "reduce",
+      "signature": "let reduce: (('a, 'b) => 'a, 'a, t<'b>) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.reducei",
+      "kind": "value",
+      "name": "reducei",
+      "signature": "let reducei: (('a, 'b, int) => 'a, 'a, t<'b>) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.reduceRight",
+      "kind": "value",
+      "name": "reduceRight",
+      "signature": "let reduceRight: (('a, 'b) => 'a, 'a, t<'b>) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.reduceRighti",
+      "kind": "value",
+      "name": "reduceRighti",
+      "signature": "let reduceRighti: (('a, 'b, int) => 'a, 'a, t<'b>) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.some",
+      "kind": "value",
+      "name": "some",
+      "signature": "let some: ('a => bool, t<'a>) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.somei",
+      "kind": "value",
+      "name": "somei",
+      "signature": "let somei: (('a, int) => bool, t<'a>) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_array.unsafe_get",
+      "kind": "value",
+      "name": "unsafe_get",
+      "signature": "let unsafe_get: (array<'a>, int) => 'a",
+      "docstrings": [
+        "Returns the value at the given position in the array if the position is in\nbounds; returns the JavaScript value `undefined` otherwise.\n\n```res example\nlet arr = [100, 101, 102, 103]\nJs.Array.unsafe_get(arr, 3) == 103\nJs.Array.unsafe_get(arr, 4) // returns undefined\n```"
+      ]
+    },
+    {
+      "id": "Js_array.unsafe_set",
+      "kind": "value",
+      "name": "unsafe_set",
+      "signature": "let unsafe_set: (array<'a>, int, 'a) => unit",
+      "docstrings": [
+        "Sets the value at the given position in the array if the position is in bounds.\nIf the index is out of bounds, well, “here there be dragons.“ *This function\n  modifies the original array.*\n\n```res example\nlet arr = [100, 101, 102, 103]\nJs.Array.unsafe_set(arr, 3, 99)\n// result is [100, 101, 102, 99]\n\nJs.Array.unsafe_set(arr, 4, 88)\n// result is [100, 101, 102, 99, 88]\n\nJs.Array.unsafe_set(arr, 6, 77)\n// result is [100, 101, 102, 99, 88, <1 empty item>, 77]\n\nJs.Array.unsafe_set(arr, -1, 66)\n// you don't want to know.\n```"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "name": "Js_list",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Js_list.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a> = list<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.length",
+      "kind": "value",
+      "name": "length",
+      "signature": "let length: t<'a> => int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.cons",
+      "kind": "value",
+      "name": "cons",
+      "signature": "let cons: ('a, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.isEmpty",
+      "kind": "value",
+      "name": "isEmpty",
+      "signature": "let isEmpty: t<'a> => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.hd",
+      "kind": "value",
+      "name": "hd",
+      "signature": "let hd: t<'a> => option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.tl",
+      "kind": "value",
+      "name": "tl",
+      "signature": "let tl: t<'a> => option<t<'a>>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.nth",
+      "kind": "value",
+      "name": "nth",
+      "signature": "let nth: (t<'a>, int) => option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.revAppend",
+      "kind": "value",
+      "name": "revAppend",
+      "signature": "let revAppend: (t<'a>, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.rev",
+      "kind": "value",
+      "name": "rev",
+      "signature": "let rev: t<'a> => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.mapRev",
+      "kind": "value",
+      "name": "mapRev",
+      "signature": "let mapRev: ((. 'a) => 'b, t<'a>) => t<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.map",
+      "kind": "value",
+      "name": "map",
+      "signature": "let map: ((. 'a) => 'b, t<'a>) => t<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.iter",
+      "kind": "value",
+      "name": "iter",
+      "signature": "let iter: ((. 'a) => unit, t<'a>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.iteri",
+      "kind": "value",
+      "name": "iteri",
+      "signature": "let iteri: ((. int, 'a) => unit, t<'a>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.foldLeft",
+      "kind": "value",
+      "name": "foldLeft",
+      "signature": "let foldLeft: ((. 'a, 'b) => 'a, 'a, list<'b>) => 'a",
+      "docstrings": [
+        "Application order is left to right, tail recurisve"
+      ]
+    },
+    {
+      "id": "Js_list.foldRight",
+      "kind": "value",
+      "name": "foldRight",
+      "signature": "let foldRight: ((. 'a, 'b) => 'b, list<'a>, 'b) => 'b",
+      "docstrings": [
+        "Application order is right to left\n    tail-recursive."
+      ]
+    },
+    {
+      "id": "Js_list.flatten",
+      "kind": "value",
+      "name": "flatten",
+      "signature": "let flatten: t<t<'a>> => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.filter",
+      "kind": "value",
+      "name": "filter",
+      "signature": "let filter: ((. 'a) => bool, t<'a>) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.filterMap",
+      "kind": "value",
+      "name": "filterMap",
+      "signature": "let filterMap: ((. 'a) => option<'b>, t<'a>) => t<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.countBy",
+      "kind": "value",
+      "name": "countBy",
+      "signature": "let countBy: ((. 'a) => bool, list<'a>) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.init",
+      "kind": "value",
+      "name": "init",
+      "signature": "let init: (int, (. int) => 'a) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.toVector",
+      "kind": "value",
+      "name": "toVector",
+      "signature": "let toVector: t<'a> => array<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Js_list.equal",
+      "kind": "value",
+      "name": "equal",
+      "signature": "let equal: ((. 'a, 'a) => bool, list<'a>, list<'a>) => bool",
+      "docstrings": []
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Js_weakset",
+  "docstrings": [
+    "ES6 WeakSet API"
+  ],
+  "items": [
+    {
+      "id": "Js_weakset.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a>",
+      "docstrings": []
+    }
+  ]
+}

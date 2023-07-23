@@ -1,0 +1,421 @@
+{
+  "name": "Belt_MapDict",
+  "docstrings": [
+    "This module separates identity from data, it is a bit more verbose but\n    slightly more efficient due to the fact that there is no need to pack\n    identity and data back after each operation.\n\n    **_Advanced usage only_**"
+  ],
+  "items": [
+    {
+      "id": "Belt_MapDict.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'key, 'value, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.cmp",
+      "kind": "type",
+      "name": "cmp",
+      "signature": "type cmp<'key, 'id> = Belt_Id.cmp<'key, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.empty",
+      "kind": "value",
+      "name": "empty",
+      "signature": "let empty: t<'k, 'v, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.isEmpty",
+      "kind": "value",
+      "name": "isEmpty",
+      "signature": "let isEmpty: t<'k, 'v, 'id> => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.has",
+      "kind": "value",
+      "name": "has",
+      "signature": "let has: (t<'k, 'a, 'id>, 'k, ~cmp: cmp<'k, 'id>) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.cmpU",
+      "kind": "value",
+      "name": "cmpU",
+      "signature": "let cmpU: (t<'k, 'v, 'id>, t<'k, 'v, 'id>, ~kcmp: cmp<'k, 'id>, ~vcmp: (. 'v, 'v) => int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.cmp",
+      "kind": "value",
+      "name": "cmp",
+      "signature": "let cmp: (t<'k, 'v, 'id>, t<'k, 'v, 'id>, ~kcmp: cmp<'k, 'id>, ~vcmp: ('v, 'v) => int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.eqU",
+      "kind": "value",
+      "name": "eqU",
+      "signature": "let eqU: (t<'k, 'a, 'id>, t<'k, 'a, 'id>, ~kcmp: cmp<'k, 'id>, ~veq: (. 'a, 'a) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.eq",
+      "kind": "value",
+      "name": "eq",
+      "signature": "let eq: (t<'k, 'a, 'id>, t<'k, 'a, 'id>, ~kcmp: cmp<'k, 'id>, ~veq: ('a, 'a) => bool) => bool",
+      "docstrings": [
+        "`eq(m1, m2, cmp)` tests whether the maps `m1` and `m2` are equal, that is,\n    contain equal keys and associate them with equal data. `cmp` is the\n    equality predicate used to compare the data associated with the keys."
+      ]
+    },
+    {
+      "id": "Belt_MapDict.findFirstByU",
+      "kind": "value",
+      "name": "findFirstByU",
+      "signature": "let findFirstByU: (t<'k, 'v, 'id>, (. 'k, 'v) => bool) => option<('k, 'v)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.findFirstBy",
+      "kind": "value",
+      "name": "findFirstBy",
+      "signature": "let findFirstBy: (t<'k, 'v, 'id>, ('k, 'v) => bool) => option<('k, 'v)>",
+      "docstrings": [
+        "`findFirstBy(m, p)` uses function `f` to find the first key value pair to\n    match predicate `p`.\n\n    ```res example\n    module IntCmp = Belt.Id.MakeComparable({\n      type t = int\n      let cmp = Pervasives.compare\n    })\n\n    let s0 = Belt.Map.Dict.fromArray([(4, \"4\"), (1, \"1\"), (2, \"2\"), (3, \"3\")], ~cmp=IntCmp.cmp)\n\n    Belt.Map.Dict.findFirstBy(s0, (k, _) => k == 4) == Some((4, \"4\"))\n    ```"
+      ]
+    },
+    {
+      "id": "Belt_MapDict.forEachU",
+      "kind": "value",
+      "name": "forEachU",
+      "signature": "let forEachU: (t<'k, 'a, 'id>, (. 'k, 'a) => unit) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.forEach",
+      "kind": "value",
+      "name": "forEach",
+      "signature": "let forEach: (t<'k, 'a, 'id>, ('k, 'a) => unit) => unit",
+      "docstrings": [
+        "`forEach(m, f)` applies `f` to all bindings in map `m`. `f` receives the\n    key as first argument, and the associated value as second argument. The\n    bindings are passed to `f` in increasing order with respect to the ordering\n    over the type of the keys."
+      ]
+    },
+    {
+      "id": "Belt_MapDict.reduceU",
+      "kind": "value",
+      "name": "reduceU",
+      "signature": "let reduceU: (t<'k, 'a, 'id>, 'b, (. 'b, 'k, 'a) => 'b) => 'b",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.reduce",
+      "kind": "value",
+      "name": "reduce",
+      "signature": "let reduce: (t<'k, 'a, 'id>, 'b, ('b, 'k, 'a) => 'b) => 'b",
+      "docstrings": [
+        "`reduce(m, a, f)` computes `f(kN, dN ... f(k1, d1, a)...)`, where `k1 ...\n    kN` are the keys of all bindings in `m` (in increasing order), and `d1 ...\n    dN` are the associated data."
+      ]
+    },
+    {
+      "id": "Belt_MapDict.everyU",
+      "kind": "value",
+      "name": "everyU",
+      "signature": "let everyU: (t<'k, 'a, 'id>, (. 'k, 'a) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.every",
+      "kind": "value",
+      "name": "every",
+      "signature": "let every: (t<'k, 'a, 'id>, ('k, 'a) => bool) => bool",
+      "docstrings": [
+        "`every(m, p)` checks if all the bindings of the map satisfy the predicate\n    `p`. Order unspecified"
+      ]
+    },
+    {
+      "id": "Belt_MapDict.someU",
+      "kind": "value",
+      "name": "someU",
+      "signature": "let someU: (t<'k, 'a, 'id>, (. 'k, 'a) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.some",
+      "kind": "value",
+      "name": "some",
+      "signature": "let some: (t<'k, 'a, 'id>, ('k, 'a) => bool) => bool",
+      "docstrings": [
+        "`some(m, p)` checks if at least one binding of the map satisfy the\n    predicate `p`. Order unspecified"
+      ]
+    },
+    {
+      "id": "Belt_MapDict.size",
+      "kind": "value",
+      "name": "size",
+      "signature": "let size: t<'k, 'a, 'id> => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.toList",
+      "kind": "value",
+      "name": "toList",
+      "signature": "let toList: t<'k, 'a, 'id> => list<('k, 'a)>",
+      "docstrings": [
+        "In increasing order."
+      ]
+    },
+    {
+      "id": "Belt_MapDict.toArray",
+      "kind": "value",
+      "name": "toArray",
+      "signature": "let toArray: t<'k, 'a, 'id> => array<('k, 'a)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.fromArray",
+      "kind": "value",
+      "name": "fromArray",
+      "signature": "let fromArray: (array<('k, 'a)>, ~cmp: cmp<'k, 'id>) => t<'k, 'a, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.keysToArray",
+      "kind": "value",
+      "name": "keysToArray",
+      "signature": "let keysToArray: t<'k, 'a, 'id> => array<'k>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.valuesToArray",
+      "kind": "value",
+      "name": "valuesToArray",
+      "signature": "let valuesToArray: t<'k, 'a, 'id> => array<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.minKey",
+      "kind": "value",
+      "name": "minKey",
+      "signature": "let minKey: t<'k, 'a, 'b> => option<'k>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.minKeyUndefined",
+      "kind": "value",
+      "name": "minKeyUndefined",
+      "signature": "let minKeyUndefined: t<'k, 'a, 'b> => Js.undefined<'k>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.maxKey",
+      "kind": "value",
+      "name": "maxKey",
+      "signature": "let maxKey: t<'k, 'a, 'b> => option<'k>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.maxKeyUndefined",
+      "kind": "value",
+      "name": "maxKeyUndefined",
+      "signature": "let maxKeyUndefined: t<'k, 'a, 'b> => Js.undefined<'k>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.minimum",
+      "kind": "value",
+      "name": "minimum",
+      "signature": "let minimum: t<'k, 'a, 'b> => option<('k, 'a)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.minUndefined",
+      "kind": "value",
+      "name": "minUndefined",
+      "signature": "let minUndefined: t<'k, 'a, 'b> => Js.undefined<('k, 'a)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.maximum",
+      "kind": "value",
+      "name": "maximum",
+      "signature": "let maximum: t<'k, 'a, 'b> => option<('k, 'a)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.maxUndefined",
+      "kind": "value",
+      "name": "maxUndefined",
+      "signature": "let maxUndefined: t<'k, 'a, 'b> => Js.undefined<('k, 'a)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.get",
+      "kind": "value",
+      "name": "get",
+      "signature": "let get: (t<'k, 'a, 'id>, 'k, ~cmp: cmp<'k, 'id>) => option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.getUndefined",
+      "kind": "value",
+      "name": "getUndefined",
+      "signature": "let getUndefined: (t<'k, 'a, 'id>, 'k, ~cmp: cmp<'k, 'id>) => Js.undefined<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.getWithDefault",
+      "kind": "value",
+      "name": "getWithDefault",
+      "signature": "let getWithDefault: (t<'k, 'a, 'id>, 'k, 'a, ~cmp: cmp<'k, 'id>) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.getExn",
+      "kind": "value",
+      "name": "getExn",
+      "signature": "let getExn: (t<'k, 'a, 'id>, 'k, ~cmp: cmp<'k, 'id>) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.checkInvariantInternal",
+      "kind": "value",
+      "name": "checkInvariantInternal",
+      "signature": "let checkInvariantInternal: t<'a, 'b, 'c> => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.remove",
+      "kind": "value",
+      "name": "remove",
+      "signature": "let remove: (t<'a, 'b, 'id>, 'a, ~cmp: cmp<'a, 'id>) => t<'a, 'b, 'id>",
+      "docstrings": [
+        "`remove(m, x)` returns a map containing the same bindings as `m`, except\n    for `x` which is unbound in the returned map."
+      ]
+    },
+    {
+      "id": "Belt_MapDict.removeMany",
+      "kind": "value",
+      "name": "removeMany",
+      "signature": "let removeMany: (t<'a, 'b, 'id>, array<'a>, ~cmp: cmp<'a, 'id>) => t<'a, 'b, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.set",
+      "kind": "value",
+      "name": "set",
+      "signature": "let set: (t<'a, 'b, 'id>, 'a, 'b, ~cmp: cmp<'a, 'id>) => t<'a, 'b, 'id>",
+      "docstrings": [
+        "`set(m, x, y)` returns a map containing the same bindings as `m`, plus a\n    binding of `x` to `y`. If `x` was already bound in `m`, its previous\n    binding disappears."
+      ]
+    },
+    {
+      "id": "Belt_MapDict.updateU",
+      "kind": "value",
+      "name": "updateU",
+      "signature": "let updateU: (\\n  t<'a, 'b, 'id>,\\n  'a,\\n  (. option<'b>) => option<'b>,\\n  ~cmp: cmp<'a, 'id>,\\n) => t<'a, 'b, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.update",
+      "kind": "value",
+      "name": "update",
+      "signature": "let update: (t<'a, 'b, 'id>, 'a, option<'b> => option<'b>, ~cmp: cmp<'a, 'id>) => t<'a, 'b, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.mergeU",
+      "kind": "value",
+      "name": "mergeU",
+      "signature": "let mergeU: (\\n  t<'a, 'b, 'id>,\\n  t<'a, 'c, 'id>,\\n  (. 'a, option<'b>, option<'c>) => option<'d>,\\n  ~cmp: cmp<'a, 'id>,\\n) => t<'a, 'd, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.merge",
+      "kind": "value",
+      "name": "merge",
+      "signature": "let merge: (\\n  t<'a, 'b, 'id>,\\n  t<'a, 'c, 'id>,\\n  ('a, option<'b>, option<'c>) => option<'d>,\\n  ~cmp: cmp<'a, 'id>,\\n) => t<'a, 'd, 'id>",
+      "docstrings": [
+        "`merge(m1, m2, f)` computes a map whose keys is a subset of keys of `m1`\n    and of `m2`. The presence of each such binding, and the corresponding\n    value, is determined with the function `f`."
+      ]
+    },
+    {
+      "id": "Belt_MapDict.mergeMany",
+      "kind": "value",
+      "name": "mergeMany",
+      "signature": "let mergeMany: (t<'a, 'b, 'id>, array<('a, 'b)>, ~cmp: cmp<'a, 'id>) => t<'a, 'b, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.keepU",
+      "kind": "value",
+      "name": "keepU",
+      "signature": "let keepU: (t<'k, 'a, 'id>, (. 'k, 'a) => bool) => t<'k, 'a, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.keep",
+      "kind": "value",
+      "name": "keep",
+      "signature": "let keep: (t<'k, 'a, 'id>, ('k, 'a) => bool) => t<'k, 'a, 'id>",
+      "docstrings": [
+        "`keep(m, p)` returns the map with all the bindings in `m` that satisfy\n    predicate `p`."
+      ]
+    },
+    {
+      "id": "Belt_MapDict.partitionU",
+      "kind": "value",
+      "name": "partitionU",
+      "signature": "let partitionU: (t<'k, 'a, 'id>, (. 'k, 'a) => bool) => (t<'k, 'a, 'id>, t<'k, 'a, 'id>)",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.partition",
+      "kind": "value",
+      "name": "partition",
+      "signature": "let partition: (t<'k, 'a, 'id>, ('k, 'a) => bool) => (t<'k, 'a, 'id>, t<'k, 'a, 'id>)",
+      "docstrings": [
+        "`partition(m, p)` returns a pair of maps `(m1, m2)`, where `m1` contains\n    all the bindings of `s` that satisfy the predicate `p`, and `m2` is the map\n    with all the bindings of `s` that do not satisfy `p`."
+      ]
+    },
+    {
+      "id": "Belt_MapDict.split",
+      "kind": "value",
+      "name": "split",
+      "signature": "let split: (\\n  t<'a, 'b, 'id>,\\n  'a,\\n  ~cmp: cmp<'a, 'id>,\\n) => ((t<'a, 'b, 'id>, t<'a, 'b, 'id>), option<'b>)",
+      "docstrings": [
+        "`split(x, m)` returns a triple `(l, data, r)`, where `l` is the map with\n    all the bindings of `m` whose key is strictly less than `x`; `r` is the map\n    with all the bindings of `m` whose key is strictly greater than `x`; `data`\n    is `None` if `m` contains no binding for `x`, or `Some(v)` if `m` binds `v`\n    to `x`."
+      ]
+    },
+    {
+      "id": "Belt_MapDict.mapU",
+      "kind": "value",
+      "name": "mapU",
+      "signature": "let mapU: (t<'k, 'a, 'id>, (. 'a) => 'b) => t<'k, 'b, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.map",
+      "kind": "value",
+      "name": "map",
+      "signature": "let map: (t<'k, 'a, 'id>, 'a => 'b) => t<'k, 'b, 'id>",
+      "docstrings": [
+        "`map(m, f)` returns a map with same domain as `m`, where the associated\n    value `a` of all bindings of `m` has been replaced by the result of the\n    application of `f` to `a`. The bindings are passed to `f` in increasing\n    order with respect to the ordering over the type of the keys."
+      ]
+    },
+    {
+      "id": "Belt_MapDict.mapWithKeyU",
+      "kind": "value",
+      "name": "mapWithKeyU",
+      "signature": "let mapWithKeyU: (t<'k, 'a, 'id>, (. 'k, 'a) => 'b) => t<'k, 'b, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MapDict.mapWithKey",
+      "kind": "value",
+      "name": "mapWithKey",
+      "signature": "let mapWithKey: (t<'k, 'a, 'id>, ('k, 'a) => 'b) => t<'k, 'b, 'id>",
+      "docstrings": []
+    }
+  ]
+}

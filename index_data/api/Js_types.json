@@ -1,0 +1,193 @@
+{
+  "name": "Js_types",
+  "docstrings": [
+    "Provide utilities for manipulating JS types."
+  ],
+  "items": [
+    {
+      "id": "Js_types.symbol",
+      "kind": "type",
+      "name": "symbol",
+      "signature": "type symbol",
+      "docstrings": [
+        "Js symbol type (only available in ES6)"
+      ]
+    },
+    {
+      "id": "Js_types.bigint_val",
+      "kind": "type",
+      "name": "bigint_val",
+      "signature": "type bigint_val",
+      "docstrings": [
+        "Js bigint type only available in ES2020"
+      ]
+    },
+    {
+      "id": "Js_types.obj_val",
+      "kind": "type",
+      "name": "obj_val",
+      "signature": "type obj_val",
+      "docstrings": []
+    },
+    {
+      "id": "Js_types.undefined_val",
+      "kind": "type",
+      "name": "undefined_val",
+      "signature": "type undefined_val",
+      "docstrings": [
+        "This type has only one value `undefined`"
+      ]
+    },
+    {
+      "id": "Js_types.null_val",
+      "kind": "type",
+      "name": "null_val",
+      "signature": "type null_val",
+      "docstrings": [
+        "This type has only one value `null`"
+      ]
+    },
+    {
+      "id": "Js_types.function_val",
+      "kind": "type",
+      "name": "function_val",
+      "signature": "type function_val",
+      "docstrings": []
+    },
+    {
+      "id": "Js_types.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<_> =\\n  | Undefined: t<undefined_val>\\n  | Null: t<null_val>\\n  | Boolean: t<bool>\\n  | Number: t<float>\\n  | String: t<string>\\n  | Function: t<function_val>\\n  | Object: t<obj_val>\\n  | Symbol: t<symbol>\\n  | BigInt: t<bigint_val>",
+      "docstrings": [],
+      "detail": {
+        "kind": "variant",
+        "constructorDocs": [
+          {
+            "constructorName": "Undefined",
+            "docstrings": [],
+            "signature": "Undefined\nt<undefined_val>"
+          },
+          {
+            "constructorName": "Null",
+            "docstrings": [],
+            "signature": "Null\nt<null_val>"
+          },
+          {
+            "constructorName": "Boolean",
+            "docstrings": [],
+            "signature": "Boolean\nt<bool>"
+          },
+          {
+            "constructorName": "Number",
+            "docstrings": [],
+            "signature": "Number\nt<float>"
+          },
+          {
+            "constructorName": "String",
+            "docstrings": [],
+            "signature": "String\nt<string>"
+          },
+          {
+            "constructorName": "Function",
+            "docstrings": [],
+            "signature": "Function\nt<function_val>"
+          },
+          {
+            "constructorName": "Object",
+            "docstrings": [],
+            "signature": "Object\nt<obj_val>"
+          },
+          {
+            "constructorName": "Symbol",
+            "docstrings": [],
+            "signature": "Symbol\nt<symbol>"
+          },
+          {
+            "constructorName": "BigInt",
+            "docstrings": [],
+            "signature": "BigInt\nt<bigint_val>"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Js_types.test",
+      "kind": "value",
+      "name": "test",
+      "signature": "let test: ('a, t<'b>) => bool",
+      "docstrings": [
+        "`test(value, t)` returns `true` if `value` is `typeof t`, otherwise `false`.\n   This is useful for doing runtime reflection on any given value.\n\n   ```res example\n   test(\"test\", String) == true\n   test(() => true, Function) == true\n   test(\"test\", Boolean) == false\n   ```"
+      ]
+    },
+    {
+      "id": "Js_types.tagged_t",
+      "kind": "type",
+      "name": "tagged_t",
+      "signature": "type tagged_t =\\n  | JSFalse\\n  | JSTrue\\n  | JSNull\\n  | JSUndefined\\n  | JSNumber(float)\\n  | JSString(string)\\n  | JSFunction(function_val)\\n  | JSObject(obj_val)\\n  | JSSymbol(symbol)\\n  | JSBigInt(bigint_val)",
+      "docstrings": [],
+      "detail": {
+        "kind": "variant",
+        "constructorDocs": [
+          {
+            "constructorName": "JSFalse",
+            "docstrings": [],
+            "signature": "JSFalse"
+          },
+          {
+            "constructorName": "JSTrue",
+            "docstrings": [],
+            "signature": "JSTrue"
+          },
+          {
+            "constructorName": "JSNull",
+            "docstrings": [],
+            "signature": "JSNull"
+          },
+          {
+            "constructorName": "JSUndefined",
+            "docstrings": [],
+            "signature": "JSUndefined"
+          },
+          {
+            "constructorName": "JSNumber",
+            "docstrings": [],
+            "signature": "JSNumber(float)"
+          },
+          {
+            "constructorName": "JSString",
+            "docstrings": [],
+            "signature": "JSString(string)"
+          },
+          {
+            "constructorName": "JSFunction",
+            "docstrings": [],
+            "signature": "JSFunction(function_val)"
+          },
+          {
+            "constructorName": "JSObject",
+            "docstrings": [],
+            "signature": "JSObject(obj_val)"
+          },
+          {
+            "constructorName": "JSSymbol",
+            "docstrings": [],
+            "signature": "JSSymbol(symbol)"
+          },
+          {
+            "constructorName": "JSBigInt",
+            "docstrings": [],
+            "signature": "JSBigInt(bigint_val)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Js_types.classify",
+      "kind": "value",
+      "name": "classify",
+      "signature": "let classify: 'a => tagged_t",
+      "docstrings": []
+    }
+  ]
+}

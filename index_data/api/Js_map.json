@@ -1,0 +1,15 @@
+{
+  "name": "Js_map",
+  "docstrings": [
+    "ES6 Map API"
+  ],
+  "items": [
+    {
+      "id": "Js_map.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'k, 'v>",
+      "docstrings": []
+    }
+  ]
+}

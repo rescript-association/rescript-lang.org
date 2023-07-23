@@ -1,0 +1,90 @@
+{
+  "name": "Js_int",
+  "docstrings": [
+    "Provide utilities for handling `int`."
+  ],
+  "items": [
+    {
+      "id": "Js_int.toExponential",
+      "kind": "value",
+      "name": "toExponential",
+      "signature": "let toExponential: int => string",
+      "docstrings": [
+        "Formats an `int` using exponential (scientific) notation.\nReturns a `string` representing the given value in exponential notation.\nRaises `RangeError` if digits is not in the range \\[0, 20\\] (inclusive).\n\n**see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential)\n\n```res example\n/* prints \"7.7e+1\" */\nJs.log(Js.Int.toExponential(77))\n```"
+      ]
+    },
+    {
+      "id": "Js_int.toExponentialWithPrecision",
+      "kind": "value",
+      "name": "toExponentialWithPrecision",
+      "signature": "let toExponentialWithPrecision: (int, ~digits: int) => string",
+      "docstrings": [
+        "Formats an `int` using exponential (scientific) notation.\n`digits` specifies how many digits should appear after the decimal point. The value must be in the range \\[0, 20\\] (inclusive).\n\nReturns a `string` representing the given value in exponential notation.\n\nThe output will be rounded or padded with zeroes if necessary.\nRaises `RangeError` if `digits` is not in the range \\[0, 20\\] (inclusive).\n\n**see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential)\n\n```res example\n/* prints \"7.70e+1\" */\nJs.log(Js.Int.toExponentialWithPrecision(77, ~digits=2))\n\n/* prints \"5.68e+3\" */\nJs.log(Js.Int.toExponentialWithPrecision(5678, ~digits=2))\n```"
+      ]
+    },
+    {
+      "id": "Js_int.toPrecision",
+      "kind": "value",
+      "name": "toPrecision",
+      "signature": "let toPrecision: int => string",
+      "docstrings": [
+        "Formats an `int` using some fairly arbitrary rules.\nReturns a `string` representing the given value in fixed-point (usually).\n\n`toPrecision` differs from `toFixed` in that the former will format the number with full precision, while the latter will not output any digits after the decimal point.\nRaises `RangeError` if `digits` is not in the range accepted by this function.\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision)\n\n```res example\n/* prints \"123456789\" */\nJs.log(Js.Int.toPrecision(123456789))\n```"
+      ]
+    },
+    {
+      "id": "Js_int.toPrecisionWithPrecision",
+      "kind": "value",
+      "name": "toPrecisionWithPrecision",
+      "signature": "let toPrecisionWithPrecision: (int, ~digits: int) => string",
+      "docstrings": [
+        "Formats an `int` using some fairly arbitrary rules.\n`digits` specifies how many digits should appear in total. The value must between 0 and some arbitrary number that's hopefully at least larger than 20 (for Node it's 21. Why? Who knows).\n\nReturns a `string` representing the given value in fixed-point or scientific notation.\n\nThe output will be rounded or padded with zeroes if necessary.\n\n`toPrecisionWithPrecision` differs from `toFixedWithPrecision` in that the former will count all digits against the precision, while the latter will count only the digits after the decimal point.\n`toPrecisionWithPrecision` will also use scientific notation if the specified precision is less than the number of digits before the decimal point.\nRaises `RangeError` if `digits` is not in the range accepted by this function.\n\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision)\n\n```res example\n/* prints \"1.2e+8\" */\nJs.log(Js.Int.toPrecisionWithPrecision(123456789, ~digits=2))\n\n/* prints \"0.0\" */\nJs.log(Js.Int.toPrecisionWithPrecision(0, ~digits=2))\n```"
+      ]
+    },
+    {
+      "id": "Js_int.toString",
+      "kind": "value",
+      "name": "toString",
+      "signature": "let toString: int => string",
+      "docstrings": [
+        "Formats an `int` as a `string`. Returns a `string` representing the given value\nin fixed-point (usually).\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString)\n\n```res example\n/* prints \"123456789\" */\nJs.log(Js.Int.toString(123456789))\n```"
+      ]
+    },
+    {
+      "id": "Js_int.toStringWithRadix",
+      "kind": "value",
+      "name": "toStringWithRadix",
+      "signature": "let toStringWithRadix: (int, ~radix: int) => string",
+      "docstrings": [
+        "Formats an `int` as a `string`. `radix` specifies the radix base to use for the\nformatted number. The value must be in the range \\[2, 36\\] (inclusive). Returns\na `string` representing the given value in fixed-point (usually). Raises\n`RangeError` if `radix` is not in the range \\[2, 36\\] (inclusive).\n\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString)\n\n```res example\n/* prints \"110\" */\nJs.log(Js.Int.toStringWithRadix(6, ~radix=2))\n\n/* prints \"deadbeef\" */\nJs.log(Js.Int.toStringWithRadix(3735928559, ~radix=16))\n\n/* prints \"2n9c\" */\nJs.log(Js.Int.toStringWithRadix(123456, ~radix=36))\n```"
+      ]
+    },
+    {
+      "id": "Js_int.toFloat",
+      "kind": "value",
+      "name": "toFloat",
+      "signature": "let toFloat: int => float",
+      "docstrings": []
+    },
+    {
+      "id": "Js_int.equal",
+      "kind": "value",
+      "name": "equal",
+      "signature": "let equal: (int, int) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Js_int.max",
+      "kind": "value",
+      "name": "max",
+      "signature": "let max: int",
+      "docstrings": []
+    },
+    {
+      "id": "Js_int.min",
+      "kind": "value",
+      "name": "min",
+      "signature": "let min: int",
+      "docstrings": []
+    }
+  ]
+}

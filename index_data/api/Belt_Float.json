@@ -1,0 +1,80 @@
+{
+  "name": "Belt_Float",
+  "docstrings": [
+    "This module includes convenience methods for handling `float` types."
+  ],
+  "items": [
+    {
+      "id": "Belt_Float.toInt",
+      "kind": "value",
+      "name": "toInt",
+      "signature": "let toInt: float => int",
+      "docstrings": [
+        "Converts a given `float` to an `int`.\n\n```res example\nJs.log(Belt.Float.toInt(1.0) === 1) /* true */\n```"
+      ]
+    },
+    {
+      "id": "Belt_Float.fromInt",
+      "kind": "value",
+      "name": "fromInt",
+      "signature": "let fromInt: int => float",
+      "docstrings": [
+        "Converts a given `int` to a `float`.\n\n  ```res example\n  Js.log(Belt.Float.fromInt(1) === 1.0) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Float.fromString",
+      "kind": "value",
+      "name": "fromString",
+      "signature": "let fromString: string => option<float>",
+      "docstrings": [
+        "Converts a given `string` to a `float`. Returns `Some(float)` when the input is a number, `None` otherwise.\n\n  ```res example\n  Js.log(Belt.Float.fromString(\"1.0\") === Some(1.0)) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Float.toString",
+      "kind": "value",
+      "name": "toString",
+      "signature": "let toString: float => string",
+      "docstrings": [
+        "Converts a given `float` to a `string`. Uses the JavaScript `String` constructor under the hood.\n\n  ```res example\n  Js.log(Belt.Float.toString(1.0) === \"1.0\") /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Float.+",
+      "kind": "value",
+      "name": "+",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Addition of two `float` values.\n  Can be opened in a module to avoid dot-notation (`+.`), however this yields a shadow warning (Warning number 44) in the default configuration.\n\n  ```res example\n  open Belt.Float\n  Js.log(2.0 + 2.0 === 4.0) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Float.-",
+      "kind": "value",
+      "name": "-",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Subtraction of two `float` values.\n  Can be opened in a module to avoid dot-notation (`-.`), however this yields a shadow warning (Warning number 44) in the default configuration.\n\n  ```res example\n  open Belt.Float\n  Js.log(2.0 - 1.0 === 1.0) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Float.*",
+      "kind": "value",
+      "name": "*",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Multiplication of two `float` values.\n  Can be opened in a module to avoid dot-notation (`*.`), however this yields a shadow warning (Warning number 44) in the default configuration.\n\n  ```res example\n  open Belt.Float\n  Js.log(2.0 * 2.0 === 4.0) /* true */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Float./",
+      "kind": "value",
+      "name": "/",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Division of two `float` values.\n  Can be opened in a module to avoid dot-notation (`/.`), however this yields a shadow warning (Warning number 44) in the default configuration.\n\n  ```res example\n  open Belt.Float\n  Js.log(4.0 / 2.0 === 2.0) /* true */\n  ```"
+      ]
+    }
+  ]
+}

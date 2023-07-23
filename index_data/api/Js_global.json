@@ -1,0 +1,116 @@
+{
+  "name": "Js_global",
+  "docstrings": [
+    "Contains functions available in the global scope\n    (`window` in a browser context)"
+  ],
+  "items": [
+    {
+      "id": "Js_global.intervalId",
+      "kind": "type",
+      "name": "intervalId",
+      "signature": "type intervalId",
+      "docstrings": [
+        "Identify an interval started by `Js.Global.setInterval`."
+      ]
+    },
+    {
+      "id": "Js_global.timeoutId",
+      "kind": "type",
+      "name": "timeoutId",
+      "signature": "type timeoutId",
+      "docstrings": [
+        "Identify timeout started by `Js.Global.setTimeout`."
+      ]
+    },
+    {
+      "id": "Js_global.clearInterval",
+      "kind": "value",
+      "name": "clearInterval",
+      "signature": "let clearInterval: intervalId => unit",
+      "docstrings": [
+        "Clear an interval started by `Js.Global.setInterval`\n\n```res example\n/* API for a somewhat aggressive snoozing alarm clock */\n\nlet punchSleepyGuy = () => Js.log(\"Punch\")\n\nlet interval = ref(Js.Nullable.null)\n\nlet remind = () => {\n  Js.log(\"Wake Up!\")\n  punchSleepyGuy()\n}\n\nlet snooze = mins =>\n  interval := Js.Nullable.return(Js.Global.setInterval(remind, mins * 60 * 1000))\n\nlet cancel = () =>\n  Js.Nullable.iter(interval.contents, (. intervalId) => Js.Global.clearInterval(intervalId))\n```"
+      ]
+    },
+    {
+      "id": "Js_global.clearTimeout",
+      "kind": "value",
+      "name": "clearTimeout",
+      "signature": "let clearTimeout: timeoutId => unit",
+      "docstrings": [
+        "Clear a timeout started by `Js.Global.setTimeout`.\n\n```res example\n/* A simple model of a code monkey's brain */\n\nlet closeHackerNewsTab = () => Js.log(\"close\")\n\nlet timer = ref(Js.Nullable.null)\n\nlet work = () => closeHackerNewsTab()\n\nlet procrastinate = mins => {\n  Js.Nullable.iter(timer.contents, (. timer) => Js.Global.clearTimeout(timer))\n  timer := Js.Nullable.return(Js.Global.setTimeout(work, mins * 60 * 1000))\n}\n```"
+      ]
+    },
+    {
+      "id": "Js_global.setInterval",
+      "kind": "value",
+      "name": "setInterval",
+      "signature": "let setInterval: (unit => unit, int) => intervalId",
+      "docstrings": [
+        "Repeatedly executes a callback with a specified interval (in milliseconds)\nbetween calls. Returns a `Js.Global.intervalId` that can be passed to\n`Js.Global.clearInterval` to cancel the timeout.\n\n```res example\n/* Will count up and print the count to the console every second */\n\nlet count = ref(0)\n\nlet tick = () => {\n  count := count.contents + 1\n  Js.log(Belt.Int.toString(count.contents))\n}\n\nJs.Global.setInterval(tick, 1000)\n```"
+      ]
+    },
+    {
+      "id": "Js_global.setIntervalFloat",
+      "kind": "value",
+      "name": "setIntervalFloat",
+      "signature": "let setIntervalFloat: (unit => unit, float) => intervalId",
+      "docstrings": [
+        "Repeatedly executes a callback with a specified interval (in milliseconds)\nbetween calls. Returns a `Js.Global.intervalId` that can be passed to\n`Js.Global.clearInterval` to cancel the timeout.\n\n```res example\n/* Will count up and print the count to the console every second */\n\nlet count = ref(0)\n\nlet tick = () => {\n  count := count.contents + 1\n  Js.log(Belt.Int.toString(count.contents))\n}\n\nJs.Global.setIntervalFloat(tick, 1000.0)\n```"
+      ]
+    },
+    {
+      "id": "Js_global.setTimeout",
+      "kind": "value",
+      "name": "setTimeout",
+      "signature": "let setTimeout: (unit => unit, int) => timeoutId",
+      "docstrings": [
+        "Execute a callback after a specified delay (in milliseconds). Returns a\n`Js.Global.timeoutId` that can be passed to `Js.Global.clearTimeout` to cancel\nthe timeout.\n\n```res example\n/* Prints \"Timed out!\" in the console after one second */\n\nlet message = \"Timed out!\"\n\nJs.Global.setTimeout(() => Js.log(message), 1000)\n```"
+      ]
+    },
+    {
+      "id": "Js_global.setTimeoutFloat",
+      "kind": "value",
+      "name": "setTimeoutFloat",
+      "signature": "let setTimeoutFloat: (unit => unit, float) => timeoutId",
+      "docstrings": [
+        "Execute a callback after a specified delay (in milliseconds). Returns a\n`Js.Global.timeoutId` that can be passed to `Js.Global.clearTimeout` to cancel\nthe timeout.\n\n```res example\n/* Prints \"Timed out!\" in the console after one second */\n\nlet message = \"Timed out!\"\n\nJs.Global.setTimeoutFloat(() => Js.log(message), 1000.0)\n```"
+      ]
+    },
+    {
+      "id": "Js_global.encodeURI",
+      "kind": "value",
+      "name": "encodeURI",
+      "signature": "let encodeURI: string => string",
+      "docstrings": [
+        "URL-encodes a string.\n\n  **see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI)"
+      ]
+    },
+    {
+      "id": "Js_global.decodeURI",
+      "kind": "value",
+      "name": "decodeURI",
+      "signature": "let decodeURI: string => string",
+      "docstrings": [
+        "Decodes a URL-enmcoded string produced by `encodeURI`\n\n  **see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURI)"
+      ]
+    },
+    {
+      "id": "Js_global.encodeURIComponent",
+      "kind": "value",
+      "name": "encodeURIComponent",
+      "signature": "let encodeURIComponent: string => string",
+      "docstrings": [
+        "URL-encodes a string, including characters with special meaning in a URI.\n\n  **see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent)"
+      ]
+    },
+    {
+      "id": "Js_global.decodeURIComponent",
+      "kind": "value",
+      "name": "decodeURIComponent",
+      "signature": "let decodeURIComponent: string => string",
+      "docstrings": [
+        "Decodes a URL-enmcoded string produced by `encodeURIComponent`\n\n  **see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent)"
+      ]
+    }
+  ]
+}

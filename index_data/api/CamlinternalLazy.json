@@ -1,0 +1,27 @@
+{
+  "name": "CamlinternalLazy",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "CamlinternalLazy.force",
+      "kind": "value",
+      "name": "force",
+      "signature": "let force: lazy_t<'a> => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "CamlinternalLazy.force_val",
+      "kind": "value",
+      "name": "force_val",
+      "signature": "let force_val: lazy_t<'a> => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "CamlinternalLazy.is_val",
+      "kind": "value",
+      "name": "is_val",
+      "signature": "let is_val: lazy_t<'a> => bool",
+      "docstrings": []
+    }
+  ]
+}

@@ -1,0 +1,697 @@
+{
+  "name": "Belt_Array",
+  "docstrings": [
+    "Utililites for `Array` functions.\n\n### Note about index syntax\n\nCode like `arr[0]` does *not* compile to JavaScript `arr[0]`. Reason transforms the `[]` index syntax into a function: `Array.get(arr, 0)`. By default, this uses the default standard library's `Array.get` function, which may raise an exception if the index isn't found. If you `open Belt`, it will use the `Belt.Array.get` function which returns options instead of raising exceptions. [See this for more information](../belt.mdx#array-access-runtime-safety)."
+  ],
+  "items": [
+    {
+      "id": "Belt_Array.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a> = array<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.length",
+      "kind": "value",
+      "name": "length",
+      "signature": "let length: t<'a> => int",
+      "docstrings": [
+        "return the size of the array\n\n```res example\n// Returns 1\nBelt.Array.length([\"test\"])\n```"
+      ]
+    },
+    {
+      "id": "Belt_Array.size",
+      "kind": "value",
+      "name": "size",
+      "signature": "let size: t<'a> => int",
+      "docstrings": [
+        "**See** [`length`]()"
+      ]
+    },
+    {
+      "id": "Belt_Array.get",
+      "kind": "value",
+      "name": "get",
+      "signature": "let get: (t<'a>, int) => option<'a>",
+      "docstrings": [
+        "If `i <= 0 <= length(arr)` returns `Some(value)` where `value` is the item at index `i`.\n  If `i` is out of range returns `None`.\n  ```\n  Belt.Array.get([\"a\", \"b\", \"c\"], 0) == Some(\"a\")\n  Belt.Array.get([\"a\", \"b\", \"c\"], 3) == None\n  Belt.Array.get([\"a\", \"b\", \"c\"], -1) == None\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.getExn",
+      "kind": "value",
+      "name": "getExn",
+      "signature": "let getExn: (t<'a>, int) => 'a",
+      "docstrings": [
+        "Raise an exception if `i` is out of range.\n  Otherwise return the value at index `i` in `arr`."
+      ]
+    },
+    {
+      "id": "Belt_Array.getUnsafe",
+      "kind": "value",
+      "name": "getUnsafe",
+      "signature": "let getUnsafe: (t<'a>, int) => 'a",
+      "docstrings": [
+        "`getUnsafe(arr, i)`\n\n  **Unsafe**\n\n  no bounds checking; this would cause type error if `i` does not stay within range"
+      ]
+    },
+    {
+      "id": "Belt_Array.getUndefined",
+      "kind": "value",
+      "name": "getUndefined",
+      "signature": "let getUndefined: (t<'a>, int) => Js.undefined<'a>",
+      "docstrings": [
+        "`getUndefined(arr, i)`\n\n  It does the samething in the runtime as [`getUnsafe`]();\n  it is _type safe_ since the return type still track whether it is\n  in range or not"
+      ]
+    },
+    {
+      "id": "Belt_Array.set",
+      "kind": "value",
+      "name": "set",
+      "signature": "let set: (t<'a>, int, 'a) => bool",
+      "docstrings": [
+        "`set(arr, n, x)` modifies `arr` in place; it replaces the nth element of `arr` with `x`.\n  Returning `false` means not updated due to out of range."
+      ]
+    },
+    {
+      "id": "Belt_Array.setExn",
+      "kind": "value",
+      "name": "setExn",
+      "signature": "let setExn: (t<'a>, int, 'a) => unit",
+      "docstrings": [
+        "`setExn(arr, i, x)` raise an exception if `i` is out of range."
+      ]
+    },
+    {
+      "id": "Belt_Array.setUnsafe",
+      "kind": "value",
+      "name": "setUnsafe",
+      "signature": "let setUnsafe: (t<'a>, int, 'a) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.shuffleInPlace",
+      "kind": "value",
+      "name": "shuffleInPlace",
+      "signature": "let shuffleInPlace: t<'a> => unit",
+      "docstrings": [
+        "`shuffleInPlace(arr)` randomly re-orders the items in `arr`"
+      ]
+    },
+    {
+      "id": "Belt_Array.shuffle",
+      "kind": "value",
+      "name": "shuffle",
+      "signature": "let shuffle: t<'a> => t<'a>",
+      "docstrings": [
+        "Returns a fresh array with items in original array randomly shuffled."
+      ]
+    },
+    {
+      "id": "Belt_Array.reverseInPlace",
+      "kind": "value",
+      "name": "reverseInPlace",
+      "signature": "let reverseInPlace: t<'a> => unit",
+      "docstrings": [
+        "`reverseInPlace(arr)` reverses items in `arr` in place.\n\n  ```res example\n  let arr = [10, 11, 12, 13, 14]\n\n  let () = Belt.Array.reverseInPlace(arr)\n\n  arr == [14, 13, 12, 11, 10]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.reverse",
+      "kind": "value",
+      "name": "reverse",
+      "signature": "let reverse: t<'a> => t<'a>",
+      "docstrings": [
+        "`reverse(arr)` returns a fresh array with items in arr in reverse order.\n\n  ```res example\n  Belt.Array.reverse([10, 11, 12, 13, 14]) == [14, 13, 12, 11, 10]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.makeUninitialized",
+      "kind": "value",
+      "name": "makeUninitialized",
+      "signature": "let makeUninitialized: int => array<Js.undefined<'a>>",
+      "docstrings": [
+        "`makeUninitialized(n)` creates an array of length `n` filled with the undefined value. You must specify the type of data that will eventually fill the array.\n\n  ```res example\n  let arr: array<Js.undefined<string>> = Belt.Array.makeUninitialized(5)\n\n  Belt.Array.getExn(arr, 0) == Js.undefined\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.makeUninitializedUnsafe",
+      "kind": "value",
+      "name": "makeUninitializedUnsafe",
+      "signature": "let makeUninitializedUnsafe: int => t<'a>",
+      "docstrings": [
+        "**Unsafe**\n\n  ```res example\n  let arr = Belt.Array.makeUninitializedUnsafe(5)\n\n  Js.log(Belt.Array.getExn(arr, 0)) // undefined\n\n  Belt.Array.setExn(arr, 0, \"example\")\n\n  Js.log(Belt.Array.getExn(arr, 0) == \"example\")\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.make",
+      "kind": "value",
+      "name": "make",
+      "signature": "let make: (int, 'a) => t<'a>",
+      "docstrings": [
+        "`make(n, e)` return an array of size `n` filled with value `e`.\n  Returns an empty array when `n` is negative."
+      ]
+    },
+    {
+      "id": "Belt_Array.range",
+      "kind": "value",
+      "name": "range",
+      "signature": "let range: (int, int) => array<int>",
+      "docstrings": [
+        "`range(start, finish)` create an inclusive array.\n\n  ```res example\n  Belt.Array.range(0, 3) == [0, 1, 2, 3]\n\n  Belt.Array.range(3, 0) == []\n\n  Belt.Array.range(3, 3) == [3]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.rangeBy",
+      "kind": "value",
+      "name": "rangeBy",
+      "signature": "let rangeBy: (int, int, ~step: int) => array<int>",
+      "docstrings": [
+        "`rangeBy(start, finish, ~step)`\n\n  Returns empty array when step is 0 or negative. It also return an empty array when `start > finish`.\n\n  ```res example\n  Belt.Array.rangeBy(0, 10, ~step=3) == [0, 3, 6, 9]\n\n  Belt.Array.rangeBy(0, 12, ~step=3) == [0, 3, 6, 9, 12]\n\n  Belt.Array.rangeBy(33, 0, ~step=1) == []\n\n  Belt.Array.rangeBy(33, 0, ~step=-1) == []\n\n  Belt.Array.rangeBy(3, 12, ~step=-1) == []\n\n  Belt.Array.rangeBy(3, 3, ~step=0) == []\n\n  Belt.Array.rangeBy(3, 3, ~step=1) == [3]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.makeByU",
+      "kind": "value",
+      "name": "makeByU",
+      "signature": "let makeByU: (int, (. int) => 'a) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.makeBy",
+      "kind": "value",
+      "name": "makeBy",
+      "signature": "let makeBy: (int, int => 'a) => t<'a>",
+      "docstrings": [
+        "`makeBy(n, f)`\n\n  Return an empty array when n is negative return an array of size n populated by `f(i)` start from `0` to `n - 1`.\n\n  ```res example\n  Belt.Array.makeBy(5, (i) => i) == [0, 1, 2, 3, 4]\n\n  Belt.Array.makeBy(5, (i) => i * i) == [0, 1, 4, 9, 16]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.makeByAndShuffleU",
+      "kind": "value",
+      "name": "makeByAndShuffleU",
+      "signature": "let makeByAndShuffleU: (int, (. int) => 'a) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.makeByAndShuffle",
+      "kind": "value",
+      "name": "makeByAndShuffle",
+      "signature": "let makeByAndShuffle: (int, int => 'a) => t<'a>",
+      "docstrings": [
+        "Equivalent to `shuffle(makeBy(n, f))`"
+      ]
+    },
+    {
+      "id": "Belt_Array.zip",
+      "kind": "value",
+      "name": "zip",
+      "signature": "let zip: (t<'a>, array<'b>) => array<('a, 'b)>",
+      "docstrings": [
+        "`zip(a, b)`\n\n  Create an array of pairs from corresponding elements of a and b. Stop with the shorter array.\n\n  ```res example\n  Belt.Array.zip([1, 2], [3, 4, 5]) == [(1, 3), (2, 4)]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.zipByU",
+      "kind": "value",
+      "name": "zipByU",
+      "signature": "let zipByU: (t<'a>, array<'b>, (. 'a, 'b) => 'c) => array<'c>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.zipBy",
+      "kind": "value",
+      "name": "zipBy",
+      "signature": "let zipBy: (t<'a>, array<'b>, ('a, 'b) => 'c) => array<'c>",
+      "docstrings": [
+        "`zipBy(xs, ys, f)`\n\n  Create an array by applying `f` to corresponding elements of `xs` and `ys`. Stops with shorter array.\n\n  Equivalent to `map(zip(xs, ys), ((a, b)) => f(a, b))`\n\n  ```res example\n  Belt.Array.zipBy([1, 2, 3], [4, 5], (a, b) => 2 * a + b) == [6, 9]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.unzip",
+      "kind": "value",
+      "name": "unzip",
+      "signature": "let unzip: array<('a, 'b)> => (t<'a>, array<'b>)",
+      "docstrings": [
+        "`unzip(a)` takes an array of pairs and creates a pair of arrays. The first array contains all the first items of the pairs; the second array contains all the second items.\n\n  ```res example\n  Belt.Array.unzip([(1, 2), (3, 4)]) == ([1, 3], [2, 4])\n\n  Belt.Array.unzip([(1, 2), (3, 4), (5, 6), (7, 8)]) == ([1, 3, 5, 7], [2, 4, 6, 8])\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.concat",
+      "kind": "value",
+      "name": "concat",
+      "signature": "let concat: (t<'a>, t<'a>) => t<'a>",
+      "docstrings": [
+        "`concat(xs, ys)`\n\n  Returns a fresh array containing the concatenation of the arrays `v1` and `v2`;so even if `v1` or `v2` is empty; it can not be shared\n\n  ```res example\n  Belt.Array.concat([1, 2, 3], [4, 5]) == [1, 2, 3, 4, 5]\n\n  Belt.Array.concat([], [\"a\", \"b\", \"c\"]) == [\"a\", \"b\", \"c\"]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.concatMany",
+      "kind": "value",
+      "name": "concatMany",
+      "signature": "let concatMany: array<t<'a>> => t<'a>",
+      "docstrings": [
+        "`concatMany(xss)`\n\n  Returns a fresh array as the concatenation of `xss` (an array of arrays)\n\n  ```res example\n  Belt.Array.concatMany([[1, 2, 3], [4, 5, 6], [7, 8]]) == [1, 2, 3, 4, 5, 6, 7, 8]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.slice",
+      "kind": "value",
+      "name": "slice",
+      "signature": "let slice: (t<'a>, ~offset: int, ~len: int) => t<'a>",
+      "docstrings": [
+        "`slice(xs, offset, len)` creates a new array with the len elements of `xs`\n  starting at `offset` for `offset` can be negative;and is evaluated as\n  `length(xs) - offset(slice, xs) - 1(1)` means get the last element as a\n  singleton array `slice(xs, ~-len, len)` will return a copy of the array if the\n  array does not have enough data; `slice` extracts through the end of sequence.\n\n  if `len` is negative; returns the empty array.\n\n  ```res example\n  Belt.Array.slice([10, 11, 12, 13, 14, 15, 16], ~offset=2, ~len=3) == [12, 13, 14]\n\n  Belt.Array.slice([10, 11, 12, 13, 14, 15, 16], ~offset=-4, ~len=3) == [13, 14, 15]\n\n  Belt.Array.slice([10, 11, 12, 13, 14, 15, 16], ~offset=4, ~len=9) == [14, 15, 16]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.sliceToEnd",
+      "kind": "value",
+      "name": "sliceToEnd",
+      "signature": "let sliceToEnd: (t<'a>, int) => t<'a>",
+      "docstrings": [
+        "`sliceToEnd(xs, offset)` creates a new array with the elements of `xs` starting at `offset`\n\n  `offset` can be negative; and is evaluated as `length(xs) - offset(sliceToEnd, xs) - 1` means get the last element as a singleton array\n\n  `sliceToEnd(xs, 0)` will return a copy of the array\n\n  ```res example\n  Belt.Array.sliceToEnd([10, 11, 12, 13, 14, 15, 16], 2) == [12, 13, 14, 15, 16]\n\n  Belt.Array.sliceToEnd([10, 11, 12, 13, 14, 15, 16], -4) == [13, 14, 15, 16]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.copy",
+      "kind": "value",
+      "name": "copy",
+      "signature": "let copy: t<'a> => t<'a>",
+      "docstrings": [
+        "`copy(a)`\n\n  Returns a copy of a; that is; a fresh array containing the same elements as a."
+      ]
+    },
+    {
+      "id": "Belt_Array.fill",
+      "kind": "value",
+      "name": "fill",
+      "signature": "let fill: (t<'a>, ~offset: int, ~len: int, 'a) => unit",
+      "docstrings": [
+        "`fill(arr, ~offset, ~len, x)`\n\n  Modifies `arr` in place, storing `x` in elements number `offset` to `offset + len - 1`.\n  `offset` can be negative; and is evaluated as `length(arr - offset)`\n\n  `fill(arr, ~offset=-1, ~len=1)` means fill the last element, if the array does not have enough data; `fill` will ignore it\n\n  ```res example\n  let arr = Belt.Array.makeBy(5, (i) => i)\n\n  Belt.Array.fill(arr, ~offset=2, ~len=2, 9)\n\n  arr == [0, 1, 9, 9, 4]\n\n  Belt.Array.fill(arr, ~offset=7, ~len=2, 8)\n\n  arr == [0, 1, 9, 9, 4]"
+      ]
+    },
+    {
+      "id": "Belt_Array.blit",
+      "kind": "value",
+      "name": "blit",
+      "signature": "let blit: (~src: t<'a>, ~srcOffset: int, ~dst: t<'a>, ~dstOffset: int, ~len: int) => unit",
+      "docstrings": [
+        "`blit(~src=v1, ~srcOffset=o1, ~dst=v2, ~dstOffset=o2, ~len)`\n\n  copies `len` elements from array `v1`;starting at element number `o1`;to array `v2`, starting at element number `o2`.\n\n  It works correctly even if `v1` and `v2` are the same array;and the source and destination chunks overlap.\n\n  `offset` can be negative; `-1` means `len - 1`; if `len + offset` is still negative;it will be set as 0\n\n  For each of the examples;presume that `v1 == [10, 11, 12, 13, 14, 15, 16, 17]` and `v2 == [20, 21, 22, 23, 24, 25, 26, 27]`. The result shown is the content of the destination array.\n\n  ```res example\n  let v1 = [10, 11, 12, 13, 14, 15, 16, 17]\n  let v2 = [20, 21, 22, 23, 24, 25, 26, 27]\n\n  Belt.Array.blit(~src=v1, ~srcOffset=4, ~dst=v2, ~dstOffset=2, ~len=3)\n  v2 == [20, 21, 14, 15, 16, 25, 26, 27]\n\n  Belt.Array.blit(~src=v1, ~srcOffset=4, ~dst=v1, ~dstOffset=2, ~len=3)\n  v1 == [10, 11, 14, 15, 16, 15, 16, 17]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.blitUnsafe",
+      "kind": "value",
+      "name": "blitUnsafe",
+      "signature": "let blitUnsafe: (~src: t<'a>, ~srcOffset: int, ~dst: t<'a>, ~dstOffset: int, ~len: int) => unit",
+      "docstrings": [
+        "Unsafe blit without bounds checking."
+      ]
+    },
+    {
+      "id": "Belt_Array.forEachU",
+      "kind": "value",
+      "name": "forEachU",
+      "signature": "let forEachU: (t<'a>, (. 'a) => unit) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.forEach",
+      "kind": "value",
+      "name": "forEach",
+      "signature": "let forEach: (t<'a>, 'a => unit) => unit",
+      "docstrings": [
+        "`forEach(xs, f)`\n\n  Call `f` on each element of `xs` from the beginning to end. `f` returns `unit`;so no new array is created. Use `forEach` when you are primarily concerned with repetitively creating side effects.\n\n  ```res example\n  Belt.Array.forEach([\"a\", \"b\", \"c\"], x => Js.log(\"Item: \" ++ x))\n\n  /*\n    prints:\n    Item: a\n    Item: b\n    Item: c\n  */\n  let total = ref(0)\n\n  Belt.Array.forEach([1, 2, 3, 4], x => total := total.contents + x)\n\n  total.contents == 1 + 2 + 3 + 4\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.mapU",
+      "kind": "value",
+      "name": "mapU",
+      "signature": "let mapU: (t<'a>, (. 'a) => 'b) => array<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.map",
+      "kind": "value",
+      "name": "map",
+      "signature": "let map: (t<'a>, 'a => 'b) => array<'b>",
+      "docstrings": [
+        "`map(xs, f)`\n\n  Returns a new array by calling `f` for each element of `xs` from the beginning to end.\n\n  ```res example\n  Belt.Array.map([1, 2], (x) => x + 1) == [3, 4]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.flatMapU",
+      "kind": "value",
+      "name": "flatMapU",
+      "signature": "let flatMapU: (t<'a>, (. 'a) => array<'b>) => array<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.flatMap",
+      "kind": "value",
+      "name": "flatMap",
+      "signature": "let flatMap: (t<'a>, 'a => array<'b>) => array<'b>",
+      "docstrings": [
+        "`flatMap(xs, f)`\n\n  **Returns** a new array by calling `f` for each element of `xs` from\n  the beginning to end, concatenating the results.\n\n  ```res example\n  flatMap([1, 2], x => [x + 10, x + 20]) == [11, 21, 12, 22]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.getByU",
+      "kind": "value",
+      "name": "getByU",
+      "signature": "let getByU: (t<'a>, (. 'a) => bool) => option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.getBy",
+      "kind": "value",
+      "name": "getBy",
+      "signature": "let getBy: (t<'a>, 'a => bool) => option<'a>",
+      "docstrings": [
+        "`getBy(xs, p)`\n\n  Returns `Some(value)` for the first value in `xs` that satisifies the predicate function `p`; returns `None` if no element satisifies the function.\n\n  ```res example\n  Belt.Array.getBy([1, 4, 3, 2], (x) => mod(x, 2) == 0) == Some(4)\n  Belt.Array.getBy([15, 13, 11], (x) => mod(x, 2) == 0) == None\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.getIndexByU",
+      "kind": "value",
+      "name": "getIndexByU",
+      "signature": "let getIndexByU: (t<'a>, (. 'a) => bool) => option<int>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.getIndexBy",
+      "kind": "value",
+      "name": "getIndexBy",
+      "signature": "let getIndexBy: (t<'a>, 'a => bool) => option<int>",
+      "docstrings": [
+        "`getIndexBy(xs, p)` returns `Some(index)` for the first value in `xs` that satisifies the predicate function `p`;\n  returns `None` if no element satisifies the function.\n\n  ```res example\n  Belt.Array.getIndexBy([1, 4, 3, 2], (x) => mod(x, 2) == 0) == Some(1)\n  Belt.Array.getIndexBy([15, 13, 11], (x) => mod(x, 2) == 0) == None\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.keepU",
+      "kind": "value",
+      "name": "keepU",
+      "signature": "let keepU: (t<'a>, (. 'a) => bool) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.keep",
+      "kind": "value",
+      "name": "keep",
+      "signature": "let keep: (t<'a>, 'a => bool) => t<'a>",
+      "docstrings": [
+        "`keep(xs, p)` returns a new array that keep all elements satisfy `p`."
+      ]
+    },
+    {
+      "id": "Belt_Array.keepWithIndexU",
+      "kind": "value",
+      "name": "keepWithIndexU",
+      "signature": "let keepWithIndexU: (t<'a>, (. 'a, int) => bool) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.keepWithIndex",
+      "kind": "value",
+      "name": "keepWithIndex",
+      "signature": "let keepWithIndex: (t<'a>, ('a, int) => bool) => t<'a>",
+      "docstrings": [
+        "`keepWithIndex(xs, p)`\n\n  Returns a new array that keep all elements satisfy `p`.\n\n  ```res example\n  Belt.Array.keepWithIndex([1, 2, 3], (_x, i) => i == 1) == [2]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.keepMapU",
+      "kind": "value",
+      "name": "keepMapU",
+      "signature": "let keepMapU: (t<'a>, (. 'a) => option<'b>) => array<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.keepMap",
+      "kind": "value",
+      "name": "keepMap",
+      "signature": "let keepMap: (t<'a>, 'a => option<'b>) => array<'b>",
+      "docstrings": [
+        "`keepMap(xs, p)`\n\n  Returns a new array that keep all elements that return a non-None applied `p`.\n\n  ```res example\n  Belt.Array.keepMap([1, 2, 3], x =>\n    if mod(x, 2) == 0 {\n      Some(x)\n    } else {\n      None\n    }\n  )\n  == [2]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.forEachWithIndexU",
+      "kind": "value",
+      "name": "forEachWithIndexU",
+      "signature": "let forEachWithIndexU: (t<'a>, (. int, 'a) => unit) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.forEachWithIndex",
+      "kind": "value",
+      "name": "forEachWithIndex",
+      "signature": "let forEachWithIndex: (t<'a>, (int, 'a) => unit) => unit",
+      "docstrings": [
+        "`forEachWithIndex(xs, f)`\n\n  The same as `Belt.Array.forEach`;\n  except that `f` is supplied two arguments: the index starting from 0 and the element from `xs`.\n\n  ```res example\n  Belt.Array.forEachWithIndex([\"a\", \"b\", \"c\"], (i, x) => Js.log(\"Item \" ++ Belt.Int.toString(i) ++ \" is \" ++ x))\n\n  /*\n    prints:\n    Item 0 is a\n    Item 1 is b\n    Item 2 is cc\n  */\n  let total = ref(0)\n\n  Belt.Array.forEachWithIndex([10, 11, 12, 13], (i, x) => total := total.contents + x + i)\n\n  total.contents == 0 + 10 + 1 + 11 + 2 + 12 + 3 + 13\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.mapWithIndexU",
+      "kind": "value",
+      "name": "mapWithIndexU",
+      "signature": "let mapWithIndexU: (t<'a>, (. int, 'a) => 'b) => array<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.mapWithIndex",
+      "kind": "value",
+      "name": "mapWithIndex",
+      "signature": "let mapWithIndex: (t<'a>, (int, 'a) => 'b) => array<'b>",
+      "docstrings": [
+        "`mapWithIndex(xs, f)`\n\n  `mapWithIndex(xs, f)` applies `f` to each element of `xs`. Function `f` takes two arguments: the index starting from 0 and the element from `xs`.\n\n  ```res example\n  Belt.Array.mapWithIndex([1, 2, 3], (i, x) => i + x) == [0 + 1, 1 + 2, 2 + 3]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.partitionU",
+      "kind": "value",
+      "name": "partitionU",
+      "signature": "let partitionU: (t<'a>, (. 'a) => bool) => (t<'a>, t<'a>)",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.partition",
+      "kind": "value",
+      "name": "partition",
+      "signature": "let partition: (t<'a>, 'a => bool) => (t<'a>, t<'a>)",
+      "docstrings": [
+        "`partition(f, a)` split array into tuple of two arrays based on predicate `f`; first of tuple where predicate cause true, second where predicate cause false\n\n  ```res example\n  Belt.Array.partition([1, 2, 3, 4, 5], (x) => mod(x, 2) == 0) == ([2, 4], [1, 3, 5])\n\n  Belt.Array.partition([1, 2, 3, 4, 5], (x) => mod(x, 2) != 0) == ([1, 3, 5], [2, 4])\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.reduceU",
+      "kind": "value",
+      "name": "reduceU",
+      "signature": "let reduceU: (array<'b>, 'a, (. 'a, 'b) => 'a) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.reduce",
+      "kind": "value",
+      "name": "reduce",
+      "signature": "let reduce: (array<'b>, 'a, ('a, 'b) => 'a) => 'a",
+      "docstrings": [
+        "`reduce(xs, init, f)`\n\n  Applies `f` to each element of `xs` from beginning to end. Function `f` has two parameters: the item from the list and an “accumulator”; which starts with a value of `init`. `reduce` returns the final value of the accumulator.\n\n  ```res example\n  Belt.Array.reduce([2, 3, 4], 1, (a, b) => a + b) == 10\n\n  Belt.Array.reduce([\"a\", \"b\", \"c\", \"d\"], \"\", (a, b) => a ++ b) == \"abcd\"\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.reduceReverseU",
+      "kind": "value",
+      "name": "reduceReverseU",
+      "signature": "let reduceReverseU: (array<'b>, 'a, (. 'a, 'b) => 'a) => 'a",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.reduceReverse",
+      "kind": "value",
+      "name": "reduceReverse",
+      "signature": "let reduceReverse: (array<'b>, 'a, ('a, 'b) => 'a) => 'a",
+      "docstrings": [
+        "`reduceReverse(xs, init, f)`\n\n  Works like `Belt_Array.reduce`; except that function `f` is applied to each item of `xs` from the last back to the first.\n\n  ```res example\n  Belt.Array.reduceReverse([\"a\", \"b\", \"c\", \"d\"], \"\", (a, b) => a ++ b) == \"dcba\"\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.reduceReverse2U",
+      "kind": "value",
+      "name": "reduceReverse2U",
+      "signature": "let reduceReverse2U: (t<'a>, array<'b>, 'c, (. 'c, 'a, 'b) => 'c) => 'c",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.reduceReverse2",
+      "kind": "value",
+      "name": "reduceReverse2",
+      "signature": "let reduceReverse2: (t<'a>, array<'b>, 'c, ('c, 'a, 'b) => 'c) => 'c",
+      "docstrings": [
+        "`reduceReverse2(xs, ys, init, f)`\n\n  Reduces two arrays xs and ys;taking items starting at `min(length(xs), length(ys))` down to and including zero.\n\n  ```res example\n  Belt.Array.reduceReverse2([1, 2, 3], [1, 2], 0, (acc, x, y) => acc + x + y) == 6\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.reduceWithIndexU",
+      "kind": "value",
+      "name": "reduceWithIndexU",
+      "signature": "let reduceWithIndexU: (t<'a>, 'b, (. 'b, 'a, int) => 'b) => 'b",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.reduceWithIndex",
+      "kind": "value",
+      "name": "reduceWithIndex",
+      "signature": "let reduceWithIndex: (t<'a>, 'b, ('b, 'a, int) => 'b) => 'b",
+      "docstrings": [
+        "Applies `f` to each element of `xs` from beginning to end. Function `f` has three parameters: the item from the array and an “accumulator”, which starts with a value of `init` and the index of each element. `reduceWithIndex` returns the final value of the accumulator.\n\n  ```res example\n  Belt.Array.reduceWithIndex([1, 2, 3, 4], 0, (acc, x, i) => acc + x + i) == 16\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.joinWithU",
+      "kind": "value",
+      "name": "joinWithU",
+      "signature": "let joinWithU: (t<'a>, string, (. 'a) => string) => string",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.joinWith",
+      "kind": "value",
+      "name": "joinWith",
+      "signature": "let joinWith: (t<'a>, string, 'a => string) => string",
+      "docstrings": [
+        "`joinWith(xs, sep, toString)`\n\n  Concatenates all the elements of `xs` converted to string with `toString`, each separated by `sep`, the string\n  given as the second argument, into a single string.\n  If the array has only one element, then that element will be returned\n  without using the separator.\n  If the array is empty, the empty string will be returned.\n\n  ```res example\n  joinWith([0, 1], \", \", string_of_int) == \"0, 1\"\n  joinWith([], \" \", string_of_int) == \"\"\n  joinWith([1], \" \", string_of_int) == \"1\"\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.someU",
+      "kind": "value",
+      "name": "someU",
+      "signature": "let someU: (t<'a>, (. 'a) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.some",
+      "kind": "value",
+      "name": "some",
+      "signature": "let some: (t<'a>, 'a => bool) => bool",
+      "docstrings": [
+        "`some(xs, p)`\n\n  Returns true if at least one of the elements in `xs` satifies `p`; where `p` is a predicate: a function taking an element and returning a `bool`.\n\n  ```res example\n  Belt.Array.some([2, 3, 4], (x) => mod(x, 2) == 1) == true\n\n  Belt.Array.some([(-1), (-3), (-5)], (x) => x > 0) == false\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.everyU",
+      "kind": "value",
+      "name": "everyU",
+      "signature": "let everyU: (t<'a>, (. 'a) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.every",
+      "kind": "value",
+      "name": "every",
+      "signature": "let every: (t<'a>, 'a => bool) => bool",
+      "docstrings": [
+        "`every(xs, p)`\n\n  Returns `true` if all elements satisfy `p`; where `p` is a predicate: a function taking an element and returning a `bool`.\n\n  ```res example\n  Belt.Array.every([1, 3, 5], (x) => mod(x, 2) == 1) == true\n\n  Belt.Array.every([1, (-3), 5], (x) => x > 0) == false\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.every2U",
+      "kind": "value",
+      "name": "every2U",
+      "signature": "let every2U: (t<'a>, array<'b>, (. 'a, 'b) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.every2",
+      "kind": "value",
+      "name": "every2",
+      "signature": "let every2: (t<'a>, array<'b>, ('a, 'b) => bool) => bool",
+      "docstrings": [
+        "`every2(xs, ys, p)`\n\n  returns true if `p(xi, yi)` is true for all pairs of elements up to the shorter length (i.e. `min(length(xs), length(ys))`)\n\n  ```res example\n  Belt.Array.every2([1, 2, 3], [0, 1], (a, b) => a > b) == true\n\n  Belt.Array.every2([], [1], (x, y) => x > y) == true\n\n  Belt.Array.every2([2, 3], [1], (x, y) => x > y) == true\n\n  Belt.Array.every2([0, 1], [5, 0], (x, y) => x > y) == false\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.some2U",
+      "kind": "value",
+      "name": "some2U",
+      "signature": "let some2U: (t<'a>, array<'b>, (. 'a, 'b) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.some2",
+      "kind": "value",
+      "name": "some2",
+      "signature": "let some2: (t<'a>, array<'b>, ('a, 'b) => bool) => bool",
+      "docstrings": [
+        "`some2(xs, ys, p)`\n\n  returns true if `p(xi, yi)` is true for any pair of elements up to the shorter length (i.e. `min(length(xs), length(ys))`)\n\n  ```res example\n  Belt.Array.some2([0, 2], [1, 0, 3], (a, b) => a > b) == true\n\n  Belt.Array.some2([], [1], (x, y) => x > y) == false\n\n  Belt.Array.some2([2, 3], [1, 4], (x, y) => x > y) == true\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.cmpU",
+      "kind": "value",
+      "name": "cmpU",
+      "signature": "let cmpU: (t<'a>, t<'a>, (. 'a, 'a) => int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.cmp",
+      "kind": "value",
+      "name": "cmp",
+      "signature": "let cmp: (t<'a>, t<'a>, ('a, 'a) => int) => int",
+      "docstrings": [
+        "`cmp(xs, ys, f)`\n\n  Compared by length if `length(xs) != length(ys)`; returning -1 if `length(xs) < length(ys)` or 1 if `length(xs) > length(ys)`\n  Otherwise compare one by one `f(x, y)`. `f` returns\n  a negative number if `x` is “less than” `y`\n  zero if `x` is “equal to” `y`\n  a positive number if `x` is “greater than” `y`\n  The comparison returns the first non-zero result of `f`;or zero if `f` returns zero for all `x` and `y`.\n\n  ```res example\n  Belt.Array.cmp([1, 3, 5], [1, 4, 2], (a, b) => compare(a, b)) == -1\n\n  Belt.Array.cmp([1, 3, 5], [1, 2, 3], (a, b) => compare(a, b)) == 1\n\n  Belt.Array.cmp([1, 3, 5], [1, 3, 5], (a, b) => compare(a, b)) == 0\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.eqU",
+      "kind": "value",
+      "name": "eqU",
+      "signature": "let eqU: (t<'a>, t<'a>, (. 'a, 'a) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.eq",
+      "kind": "value",
+      "name": "eq",
+      "signature": "let eq: (t<'a>, t<'a>, ('a, 'a) => bool) => bool",
+      "docstrings": [
+        "`eq(xs, ys)`\n\n  return false if length is not the same\n  otherwise compare items one by one using `f(xi, yi)`; and return true if all results are truefalse otherwise\n\n  ```res example\n  Belt.Array.eq([1, 2, 3], [(-1), (-2), (-3)], (a, b) => abs(a) == abs(b)) == true\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.truncateToLengthUnsafe",
+      "kind": "value",
+      "name": "truncateToLengthUnsafe",
+      "signature": "let truncateToLengthUnsafe: (t<'a>, int) => unit",
+      "docstrings": [
+        "Unsafe `truncateToLengthUnsafe(xs, n)` sets length of array `xs` to `n`.\n\n  If `n` is greater than the length of `xs`; the extra elements are set to `Js.Null_undefined.null`.\n\n  If `n` is less than zero; raises a `RangeError`.\n\n  ```res example\n  let arr = [\"ant\", \"bee\", \"cat\", \"dog\", \"elk\"]\n\n  Belt.Array.truncateToLengthUnsafe(arr, 3)\n\n  arr == [\"ant\", \"bee\", \"cat\"]\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Array.initU",
+      "kind": "value",
+      "name": "initU",
+      "signature": "let initU: (int, (. int) => 'a) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.init",
+      "kind": "value",
+      "name": "init",
+      "signature": "let init: (int, int => 'a) => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Array.push",
+      "kind": "value",
+      "name": "push",
+      "signature": "let push: (t<'a>, 'a) => unit",
+      "docstrings": [
+        "`arr->push(item)` pushes an element `item` into an array `arr`."
+      ]
+    }
+  ]
+}

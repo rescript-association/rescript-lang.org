@@ -1,0 +1,198 @@
+{
+  "name": "Belt_MutableQueue",
+  "docstrings": [
+    "A FIFO (first in first out) queue data structure."
+  ],
+  "items": [
+    {
+      "id": "Belt_MutableQueue.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a>",
+      "docstrings": [
+        "The type of queues containing elements of `type('a)`."
+      ]
+    },
+    {
+      "id": "Belt_MutableQueue.make",
+      "kind": "value",
+      "name": "make",
+      "signature": "let make: unit => t<'a>",
+      "docstrings": [
+        "Returns a new queue, initially empty."
+      ]
+    },
+    {
+      "id": "Belt_MutableQueue.clear",
+      "kind": "value",
+      "name": "clear",
+      "signature": "let clear: t<'a> => unit",
+      "docstrings": [
+        "Discard all elements from the queue."
+      ]
+    },
+    {
+      "id": "Belt_MutableQueue.isEmpty",
+      "kind": "value",
+      "name": "isEmpty",
+      "signature": "let isEmpty: t<'a> => bool",
+      "docstrings": [
+        "Returns `true` if the given queue is empty, `false` otherwise."
+      ]
+    },
+    {
+      "id": "Belt_MutableQueue.fromArray",
+      "kind": "value",
+      "name": "fromArray",
+      "signature": "let fromArray: array<'a> => t<'a>",
+      "docstrings": [
+        "`fromArray` a is equivalent to `Array.forEach(a, add(q, a));`"
+      ]
+    },
+    {
+      "id": "Belt_MutableQueue.add",
+      "kind": "value",
+      "name": "add",
+      "signature": "let add: (t<'a>, 'a) => unit",
+      "docstrings": [
+        "`add(q, x)` adds the element `x` at the end of the queue `q`."
+      ]
+    },
+    {
+      "id": "Belt_MutableQueue.peek",
+      "kind": "value",
+      "name": "peek",
+      "signature": "let peek: t<'a> => option<'a>",
+      "docstrings": [
+        "`peekOpt(q)` returns the first element in queue `q`, without removing it from the queue."
+      ]
+    },
+    {
+      "id": "Belt_MutableQueue.peekUndefined",
+      "kind": "value",
+      "name": "peekUndefined",
+      "signature": "let peekUndefined: t<'a> => Js.undefined<'a>",
+      "docstrings": [
+        "`peekUndefined(q)` returns `undefined` if not found."
+      ]
+    },
+    {
+      "id": "Belt_MutableQueue.peekExn",
+      "kind": "value",
+      "name": "peekExn",
+      "signature": "let peekExn: t<'a> => 'a",
+      "docstrings": [
+        "raise an exception if `q` is empty"
+      ]
+    },
+    {
+      "id": "Belt_MutableQueue.pop",
+      "kind": "value",
+      "name": "pop",
+      "signature": "let pop: t<'a> => option<'a>",
+      "docstrings": [
+        "`pop(q)` removes and returns the first element in queue `q`."
+      ]
+    },
+    {
+      "id": "Belt_MutableQueue.popUndefined",
+      "kind": "value",
+      "name": "popUndefined",
+      "signature": "let popUndefined: t<'a> => Js.undefined<'a>",
+      "docstrings": [
+        "`popUndefined(q)` removes and returns the first element in queue `q`. it will return `undefined` if it is already empty."
+      ]
+    },
+    {
+      "id": "Belt_MutableQueue.popExn",
+      "kind": "value",
+      "name": "popExn",
+      "signature": "let popExn: t<'a> => 'a",
+      "docstrings": [
+        "`popExn(q)` raise an exception if q is empty."
+      ]
+    },
+    {
+      "id": "Belt_MutableQueue.copy",
+      "kind": "value",
+      "name": "copy",
+      "signature": "let copy: t<'a> => t<'a>",
+      "docstrings": [
+        "`copy(q)` returns a fresh queue."
+      ]
+    },
+    {
+      "id": "Belt_MutableQueue.size",
+      "kind": "value",
+      "name": "size",
+      "signature": "let size: t<'a> => int",
+      "docstrings": [
+        "Returns the number of elements in a queue."
+      ]
+    },
+    {
+      "id": "Belt_MutableQueue.mapU",
+      "kind": "value",
+      "name": "mapU",
+      "signature": "let mapU: (t<'a>, (. 'a) => 'b) => t<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableQueue.map",
+      "kind": "value",
+      "name": "map",
+      "signature": "let map: (t<'a>, 'a => 'b) => t<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableQueue.forEachU",
+      "kind": "value",
+      "name": "forEachU",
+      "signature": "let forEachU: (t<'a>, (. 'a) => unit) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableQueue.forEach",
+      "kind": "value",
+      "name": "forEach",
+      "signature": "let forEach: (t<'a>, 'a => unit) => unit",
+      "docstrings": [
+        "`forEach(q, f) applies`f`in turn to all elements of`q`, from the least\n  recently entered to the most recently entered. The queue itself is unchanged."
+      ]
+    },
+    {
+      "id": "Belt_MutableQueue.reduceU",
+      "kind": "value",
+      "name": "reduceU",
+      "signature": "let reduceU: (t<'a>, 'b, (. 'b, 'a) => 'b) => 'b",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_MutableQueue.reduce",
+      "kind": "value",
+      "name": "reduce",
+      "signature": "let reduce: (t<'a>, 'b, ('b, 'a) => 'b) => 'b",
+      "docstrings": [
+        "`reduce(q, accu, f)` is equivalent to `List.reduce(l, accu, f)`, where `l` is the list of `q`'s elements. The queue remains unchanged."
+      ]
+    },
+    {
+      "id": "Belt_MutableQueue.transfer",
+      "kind": "value",
+      "name": "transfer",
+      "signature": "let transfer: (t<'a>, t<'a>) => unit",
+      "docstrings": [
+        "`transfer(q1, q2)` adds all of `q1`'s elements at the end of the queue `q2`, then clears `q1`. It is equivalent to the sequence `forEach((x) => add(x, q2), q1);`; clear `q1`, but runs in constant time."
+      ]
+    },
+    {
+      "id": "Belt_MutableQueue.toArray",
+      "kind": "value",
+      "name": "toArray",
+      "signature": "let toArray: t<'a> => array<'a>",
+      "docstrings": [
+        "First added will be in the beginning of the array."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "name": "Belt_HashMapString",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Belt_HashMapString.key",
+      "kind": "type",
+      "name": "key",
+      "signature": "type key = string",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.make",
+      "kind": "value",
+      "name": "make",
+      "signature": "let make: (~hintSize: int) => t<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.clear",
+      "kind": "value",
+      "name": "clear",
+      "signature": "let clear: t<'b> => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.isEmpty",
+      "kind": "value",
+      "name": "isEmpty",
+      "signature": "let isEmpty: t<'a> => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.set",
+      "kind": "value",
+      "name": "set",
+      "signature": "let set: (t<'a>, key, 'a) => unit",
+      "docstrings": [
+        "`setDone tbl k v` if `k` does not exist,\n  add the binding `k,v`, otherwise, update the old value with the new\n  `v`"
+      ]
+    },
+    {
+      "id": "Belt_HashMapString.copy",
+      "kind": "value",
+      "name": "copy",
+      "signature": "let copy: t<'a> => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.get",
+      "kind": "value",
+      "name": "get",
+      "signature": "let get: (t<'a>, key) => option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.has",
+      "kind": "value",
+      "name": "has",
+      "signature": "let has: (t<'b>, key) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.remove",
+      "kind": "value",
+      "name": "remove",
+      "signature": "let remove: (t<'a>, key) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.forEachU",
+      "kind": "value",
+      "name": "forEachU",
+      "signature": "let forEachU: (t<'b>, (. key, 'b) => unit) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.forEach",
+      "kind": "value",
+      "name": "forEach",
+      "signature": "let forEach: (t<'b>, (key, 'b) => unit) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.reduceU",
+      "kind": "value",
+      "name": "reduceU",
+      "signature": "let reduceU: (t<'b>, 'c, (. 'c, key, 'b) => 'c) => 'c",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.reduce",
+      "kind": "value",
+      "name": "reduce",
+      "signature": "let reduce: (t<'b>, 'c, ('c, key, 'b) => 'c) => 'c",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.keepMapInPlaceU",
+      "kind": "value",
+      "name": "keepMapInPlaceU",
+      "signature": "let keepMapInPlaceU: (t<'a>, (. key, 'a) => option<'a>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.keepMapInPlace",
+      "kind": "value",
+      "name": "keepMapInPlace",
+      "signature": "let keepMapInPlace: (t<'a>, (key, 'a) => option<'a>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.size",
+      "kind": "value",
+      "name": "size",
+      "signature": "let size: t<'a> => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.toArray",
+      "kind": "value",
+      "name": "toArray",
+      "signature": "let toArray: t<'a> => array<(key, 'a)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.keysToArray",
+      "kind": "value",
+      "name": "keysToArray",
+      "signature": "let keysToArray: t<'a> => array<key>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.valuesToArray",
+      "kind": "value",
+      "name": "valuesToArray",
+      "signature": "let valuesToArray: t<'a> => array<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.fromArray",
+      "kind": "value",
+      "name": "fromArray",
+      "signature": "let fromArray: array<(key, 'a)> => t<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.mergeMany",
+      "kind": "value",
+      "name": "mergeMany",
+      "signature": "let mergeMany: (t<'a>, array<(key, 'a)>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.getBucketHistogram",
+      "kind": "value",
+      "name": "getBucketHistogram",
+      "signature": "let getBucketHistogram: t<'a> => array<int>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashMapString.logStats",
+      "kind": "value",
+      "name": "logStats",
+      "signature": "let logStats: t<'a> => unit",
+      "docstrings": []
+    }
+  ]
+}

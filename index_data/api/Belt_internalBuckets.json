@@ -1,0 +1,162 @@
+{
+  "name": "Belt_internalBuckets",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Belt_internalBuckets.Belt_internalBucketsType",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module C = Belt_internalBucketsType"
+    },
+    {
+      "id": "Belt_internalBuckets.bucket",
+      "kind": "type",
+      "name": "bucket",
+      "signature": "type bucket<'a, 'b> = {\\n  mutable key: 'a,\\n  mutable value: 'b,\\n  mutable next: C.opt<bucket<'a, 'b>>,\\n}",
+      "docstrings": [],
+      "detail": {
+        "kind": "record",
+        "fieldDocs": [
+          {
+            "fieldName": "key",
+            "docstrings": [],
+            "signature": "'a"
+          },
+          {
+            "fieldName": "value",
+            "docstrings": [],
+            "signature": "'b"
+          },
+          {
+            "fieldName": "next",
+            "docstrings": [],
+            "signature": "C.opt<bucket<'a, 'b>>"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Belt_internalBuckets.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'hash, 'eq, 'a, 'b> = C.container<'hash, 'eq, bucket<'a, 'b>>",
+      "docstrings": [],
+      "detail": {
+        "kind": "record",
+        "fieldDocs": [
+          {
+            "fieldName": "size",
+            "docstrings": [],
+            "signature": "int"
+          },
+          {
+            "fieldName": "buckets",
+            "docstrings": [],
+            "signature": "array<opt<'c>>"
+          },
+          {
+            "fieldName": "hash",
+            "docstrings": [],
+            "signature": "'hash"
+          },
+          {
+            "fieldName": "eq",
+            "docstrings": [],
+            "signature": "'eq"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Belt_internalBuckets.copy",
+      "kind": "value",
+      "name": "copy",
+      "signature": "let copy: t<'hash, 'eq, 'a, 'b> => t<'hash, 'eq, 'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBuckets.forEachU",
+      "kind": "value",
+      "name": "forEachU",
+      "signature": "let forEachU: (t<'a, 'b, 'a0, 'b0>, (. 'a0, 'b0) => 'c) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBuckets.forEach",
+      "kind": "value",
+      "name": "forEach",
+      "signature": "let forEach: (t<'a, 'b, 'a0, 'b0>, ('a0, 'b0) => 'c) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBuckets.reduceU",
+      "kind": "value",
+      "name": "reduceU",
+      "signature": "let reduceU: (t<'a, 'b, 'a0, 'b0>, 'c, (. 'c, 'a0, 'b0) => 'c) => 'c",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBuckets.reduce",
+      "kind": "value",
+      "name": "reduce",
+      "signature": "let reduce: (t<'a, 'b, 'a0, 'b0>, 'c, ('c, 'a0, 'b0) => 'c) => 'c",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBuckets.logStats",
+      "kind": "value",
+      "name": "logStats",
+      "signature": "let logStats: t<'a, 'b, 'c, 'd> => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBuckets.keepMapInPlaceU",
+      "kind": "value",
+      "name": "keepMapInPlaceU",
+      "signature": "let keepMapInPlaceU: (t<'a, 'b, 'a0, 'b0>, (. 'a0, 'b0) => option<'b0>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBuckets.keepMapInPlace",
+      "kind": "value",
+      "name": "keepMapInPlace",
+      "signature": "let keepMapInPlace: (t<'a, 'b, 'a0, 'b0>, ('a0, 'b0) => option<'b0>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBuckets.fillArray",
+      "kind": "value",
+      "name": "fillArray",
+      "signature": "let fillArray: (int, array<('a, 'b)>, bucket<'a, 'b>) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBuckets.keysToArray",
+      "kind": "value",
+      "name": "keysToArray",
+      "signature": "let keysToArray: t<'a, 'b, 'a0, 'c> => array<'a0>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBuckets.valuesToArray",
+      "kind": "value",
+      "name": "valuesToArray",
+      "signature": "let valuesToArray: t<'a, 'b, 'c, 'b0> => array<'b0>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBuckets.toArray",
+      "kind": "value",
+      "name": "toArray",
+      "signature": "let toArray: t<'a, 'b, 'a0, 'b0> => array<('a0, 'b0)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalBuckets.getBucketHistogram",
+      "kind": "value",
+      "name": "getBucketHistogram",
+      "signature": "let getBucketHistogram: t<'a, 'b, 'c, 'd> => array<int>",
+      "docstrings": []
+    }
+  ]
+}

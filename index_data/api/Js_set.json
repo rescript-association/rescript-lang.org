@@ -1,0 +1,15 @@
+{
+  "name": "Js_set",
+  "docstrings": [
+    "ES6 Set API"
+  ],
+  "items": [
+    {
+      "id": "Js_set.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a>",
+      "docstrings": []
+    }
+  ]
+}

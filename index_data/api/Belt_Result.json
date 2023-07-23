@@ -1,0 +1,148 @@
+{
+  "name": "Belt_Result",
+  "docstrings": [
+    "Result types are really useful to describe the result of a certain operation\n  without relying on exceptions or `option` types.\n\n  This module gives you useful utilities to create and combine `Result` data."
+  ],
+  "items": [
+    {
+      "id": "Belt_Result.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a, 'b> = Ok('a) | Error('b)",
+      "docstrings": [],
+      "detail": {
+        "kind": "variant",
+        "constructorDocs": [
+          {
+            "constructorName": "Ok",
+            "docstrings": [],
+            "signature": "Ok('a)"
+          },
+          {
+            "constructorName": "Error",
+            "docstrings": [
+              "The type `Result.t(result, err)` describes a variant of two states:\n  `Ok(someResult)` represents a successful operation, whereby\n  ``Error(someError)` signals an erronous operation.\n\n  In this concrete example, we are defining our own `Result` type to reflect an HTTP like\n  query operation:\n\n  ```res example\n  type responseError = NotAvailable | NotFound\n  type queryResult = t<string, responseError>\n\n  let failQueryUser = (username: string): queryResult => {\n    Error(NotAvailable)\n  }\n```"
+            ],
+            "signature": "Error('b)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Belt_Result.getExn",
+      "kind": "value",
+      "name": "getExn",
+      "signature": "let getExn: t<'a, 'b> => 'a",
+      "docstrings": [
+        "`getExn(res)`: when `res` is `Ok(n)`, returns `n` when `res` is `Error(m)`, raise an exception\n\n  ```res example\n  Belt.Result.getExn(Belt.Result.Ok(42)) == 42\n\n  Belt.Result.getExn(Belt.Result.Error(\"Invalid data\")) /* raises exception */\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Result.mapWithDefaultU",
+      "kind": "value",
+      "name": "mapWithDefaultU",
+      "signature": "let mapWithDefaultU: (t<'a, 'c>, 'b, (. 'a) => 'b) => 'b",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Result.mapWithDefault",
+      "kind": "value",
+      "name": "mapWithDefault",
+      "signature": "let mapWithDefault: (t<'a, 'c>, 'b, 'a => 'b) => 'b",
+      "docstrings": [
+        "`mapWithDefault(res, default, f)`: When res is `Ok(n)`, returns `f(n)`,\n  otherwise `default`.\n\n  ```res example\n  let ok = Belt.Result.Ok(42)\n  Belt.Result.mapWithDefault(ok, 0, (x) => x / 2) == 21\n\n  let error = Belt.Result.Error(\"Invalid data\")\n  Belt.Result.mapWithDefault(error, 0, (x) => x / 2) == 0\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Result.mapU",
+      "kind": "value",
+      "name": "mapU",
+      "signature": "let mapU: (t<'a, 'c>, (. 'a) => 'b) => t<'b, 'c>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Result.map",
+      "kind": "value",
+      "name": "map",
+      "signature": "let map: (t<'a, 'c>, 'a => 'b) => t<'b, 'c>",
+      "docstrings": [
+        "`map(res, f)`: When res is `Ok(n)`, returns `Ok(f(n))`. Otherwise returns res\n  unchanged. Function `f` takes a value of the same type as `n` and returns an\n  ordinary value.\n\n  ```res example\n  let f = (x) => sqrt(Belt.Int.toFloat(x))\n\n  Belt.Result.map(Ok(64), f) == Ok(8.0)\n\n  Belt.Result.map(Error(\"Invalid data\"), f) == Error(\"Invalid data\")\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Result.flatMapU",
+      "kind": "value",
+      "name": "flatMapU",
+      "signature": "let flatMapU: (t<'a, 'c>, (. 'a) => t<'b, 'c>) => t<'b, 'c>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Result.flatMap",
+      "kind": "value",
+      "name": "flatMap",
+      "signature": "let flatMap: (t<'a, 'c>, 'a => t<'b, 'c>) => t<'b, 'c>",
+      "docstrings": [
+        "`flatMap(res, f)`: When res is `Ok(n)`, returns `f(n)`. Otherwise, returns res\n  unchanged. Function `f` takes a value of the same type as `n` and returns a\n  `Belt.Result`.\n\n  ```res example\n  let recip = (x) =>\n    if (x !== 0.0) {\n      Belt.Result.Ok(1.0 /. x)\n    } else {\n      Belt.Result.Error(\"Divide by zero\")\n    }\n\n  Belt.Result.flatMap(Ok(2.0), recip) == Ok(0.5)\n\n  Belt.Result.flatMap(Ok(0.0), recip) == Error(\"Divide by zero\")\n\n  Belt.Result.flatMap(Error(\"Already bad\"), recip) == Error(\"Already bad\")\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Result.getWithDefault",
+      "kind": "value",
+      "name": "getWithDefault",
+      "signature": "let getWithDefault: (t<'a, 'b>, 'a) => 'a",
+      "docstrings": [
+        "`getWithDefault(res, defaultValue)`: If `res` is `Ok(n)`, returns `n`,\n  otherwise `default`\n\n  ```res example\n  Belt.Result.getWithDefault(Ok(42), 0) == 42\n\n  Belt.Result.getWithDefault(Error(\"Invalid Data\"), 0) == 0\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Result.isOk",
+      "kind": "value",
+      "name": "isOk",
+      "signature": "let isOk: t<'a, 'b> => bool",
+      "docstrings": [
+        "`isOk(res)`: Returns `true` if `res` is of the form `Ok(n)`, `false` if it is\n  the `Error(e)` variant."
+      ]
+    },
+    {
+      "id": "Belt_Result.isError",
+      "kind": "value",
+      "name": "isError",
+      "signature": "let isError: t<'a, 'b> => bool",
+      "docstrings": [
+        "`isError(res)`: Returns `true` if `res` is of the form `Error(e)`, `false` if\n  it is the `Ok(n)` variant."
+      ]
+    },
+    {
+      "id": "Belt_Result.eqU",
+      "kind": "value",
+      "name": "eqU",
+      "signature": "let eqU: (t<'a, 'c>, t<'b, 'd>, (. 'a, 'b) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Result.eq",
+      "kind": "value",
+      "name": "eq",
+      "signature": "let eq: (t<'a, 'c>, t<'b, 'd>, ('a, 'b) => bool) => bool",
+      "docstrings": [
+        "`eq(res1, res2, f)`: Determine if two `Belt.Result` variables are equal with\n  respect to an equality function. If `res1` and `res2` are of the form `Ok(n)`\n  and `Ok(m)`, return the result of `f(n, m)`. If one of `res1` and `res2` are of\n  the form `Error(e)`, return false If both `res1` and `res2` are of the form\n  `Error(e)`, return true\n\n  ```res example\n  let good1 = Belt.Result.Ok(42)\n\n  let good2 = Belt.Result.Ok(32)\n\n  let bad1 = Belt.Result.Error(\"invalid\")\n\n  let bad2 = Belt.Result.Error(\"really invalid\")\n\n  let mod10equal = (a, b) => mod(a, 10) === mod(b, 10)\n\n  Belt.Result.eq(good1, good2, mod10equal) == true\n\n  Belt.Result.eq(good1, bad1, mod10equal) == false\n\n  Belt.Result.eq(bad2, good2, mod10equal) == false\n\n  Belt.Result.eq(bad1, bad2, mod10equal) == true\n  ```"
+      ]
+    },
+    {
+      "id": "Belt_Result.cmpU",
+      "kind": "value",
+      "name": "cmpU",
+      "signature": "let cmpU: (t<'a, 'c>, t<'b, 'd>, (. 'a, 'b) => int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_Result.cmp",
+      "kind": "value",
+      "name": "cmp",
+      "signature": "let cmp: (t<'a, 'c>, t<'b, 'd>, ('a, 'b) => int) => int",
+      "docstrings": [
+        "`cmp(res1, res2, f)`: Compare two `Belt.Result` variables with respect to a\n  comparison function. The comparison function returns -1 if the first variable\n  is \"less than\" the second, 0 if the two variables are equal, and 1 if the first\n  is \"greater than\" the second.\n\n  If `res1` and `res2` are of the form `Ok(n)` and `Ok(m)`, return the result of\n  `f(n, m)`. If `res1` is of the form `Error(e)` and `res2` of the form `Ok(n)`,\n  return -1 (nothing is less than something) If `res1` is of the form `Ok(n)` and\n  `res2` of the form `Error(e)`, return 1 (something is greater than nothing) If\n  both `res1` and `res2` are of the form `Error(e)`, return 0 (equal)\n\n  ```res example\n  let good1 = Belt.Result.Ok(59)\n\n  let good2 = Belt.Result.Ok(37)\n\n  let bad1 = Belt.Result.Error(\"invalid\")\n\n  let bad2 = Belt.Result.Error(\"really invalid\")\n\n  let mod10cmp = (a, b) => Pervasives.compare(mod(a, 10), mod(b, 10))\n\n  Belt.Result.cmp(Ok(39), Ok(57), mod10cmp) == 1\n\n  Belt.Result.cmp(Ok(57), Ok(39), mod10cmp) == (-1)\n\n  Belt.Result.cmp(Ok(39), Error(\"y\"), mod10cmp) == 1\n\n  Belt.Result.cmp(Error(\"x\"), Ok(57), mod10cmp) == (-1)\n\n  Belt.Result.cmp(Error(\"x\"), Error(\"y\"), mod10cmp) == 0\n  ```"
+      ]
+    }
+  ]
+}

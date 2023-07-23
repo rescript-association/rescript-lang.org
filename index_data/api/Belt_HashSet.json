@@ -1,0 +1,163 @@
+{
+  "name": "Belt_HashSet",
+  "docstrings": [
+    "A **mutable** Hash set which allows customized `hash` behavior.\n\n  All data are parameterized by not its only type but also a unique identity in\n  the time of initialization, so that two _HashSets of ints_ initialized with\n  different _hash_ functions will have different type.\n\n  For example:\n\n  ```res prelude\n  module I0 = unpack(\n    Belt.Id.hashableU(\n      ~hash=(. a: int) => land(a, 65535),\n      ~eq=(. a, b) => a == b,\n    )\n  )\n\n  let s0 = Belt.HashSet.make(~id=module(I0), ~hintSize=40)\n\n  module I1 = unpack(\n    Belt.Id.hashableU(\n      ~hash=(. a: int) => land(a, 255),\n      ~eq=(. a, b) => a == b,\n    )\n  )\n\n  let s1 = Belt.HashSet.make(~id=module(I1), ~hintSize=40)\n\n  Belt.HashSet.add(s1, 0)\n  Belt.HashSet.add(s1, 1)\n  ```\n\n  The invariant must be held: for two elements who are equal, their hashed\n  value should be the same.\n\n  Here the compiler would infer `s0` and `s1` having different type so that it\n  would not mix.\n\n  ```res sig\n  let s0: Belt.HashSet.t<int, I0.identity>\n  let s1: Belt.HashSet.t<int, I1.identity>\n  ```\n\n  We can add elements to the collection (see last two lines in the example\n  above). Since this is an mutable data structure, `s1` will contain two pairs."
+  ],
+  "items": [
+    {
+      "id": "Belt_HashSet.Belt_HashSetInt",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Specalized when key type is `int`, more efficient\n    than the generic type"
+      ],
+      "signature": "module Int = Belt_HashSetInt"
+    },
+    {
+      "id": "Belt_HashSet.Belt_HashSetString",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Specalized when key type is `string`, more efficient\n    than the generic type"
+      ],
+      "signature": "module String = Belt_HashSetString"
+    },
+    {
+      "id": "Belt_HashSet.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'a, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSet.id",
+      "kind": "type",
+      "name": "id",
+      "signature": "type id<'a, 'id> = Belt_Id.hashable<'a, 'id>",
+      "docstrings": [
+        "The type of hash tables from type `'a` to type `'b`."
+      ]
+    },
+    {
+      "id": "Belt_HashSet.make",
+      "kind": "value",
+      "name": "make",
+      "signature": "let make: (~hintSize: int, ~id: id<'a, 'id>) => t<'a, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSet.clear",
+      "kind": "value",
+      "name": "clear",
+      "signature": "let clear: t<'a, 'id> => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSet.isEmpty",
+      "kind": "value",
+      "name": "isEmpty",
+      "signature": "let isEmpty: t<'a, 'b> => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSet.add",
+      "kind": "value",
+      "name": "add",
+      "signature": "let add: (t<'a, 'id>, 'a) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSet.copy",
+      "kind": "value",
+      "name": "copy",
+      "signature": "let copy: t<'a, 'id> => t<'a, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSet.has",
+      "kind": "value",
+      "name": "has",
+      "signature": "let has: (t<'a, 'id>, 'a) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSet.remove",
+      "kind": "value",
+      "name": "remove",
+      "signature": "let remove: (t<'a, 'id>, 'a) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSet.forEachU",
+      "kind": "value",
+      "name": "forEachU",
+      "signature": "let forEachU: (t<'a, 'id>, (. 'a) => unit) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSet.forEach",
+      "kind": "value",
+      "name": "forEach",
+      "signature": "let forEach: (t<'a, 'id>, 'a => unit) => unit",
+      "docstrings": [
+        "Order unspecified."
+      ]
+    },
+    {
+      "id": "Belt_HashSet.reduceU",
+      "kind": "value",
+      "name": "reduceU",
+      "signature": "let reduceU: (t<'a, 'id>, 'c, (. 'c, 'a) => 'c) => 'c",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSet.reduce",
+      "kind": "value",
+      "name": "reduce",
+      "signature": "let reduce: (t<'a, 'id>, 'c, ('c, 'a) => 'c) => 'c",
+      "docstrings": [
+        "Order unspecified."
+      ]
+    },
+    {
+      "id": "Belt_HashSet.size",
+      "kind": "value",
+      "name": "size",
+      "signature": "let size: t<'a, 'id> => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSet.logStats",
+      "kind": "value",
+      "name": "logStats",
+      "signature": "let logStats: t<'a, 'b> => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSet.toArray",
+      "kind": "value",
+      "name": "toArray",
+      "signature": "let toArray: t<'a, 'id> => array<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSet.fromArray",
+      "kind": "value",
+      "name": "fromArray",
+      "signature": "let fromArray: (array<'a>, ~id: id<'a, 'id>) => t<'a, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSet.mergeMany",
+      "kind": "value",
+      "name": "mergeMany",
+      "signature": "let mergeMany: (t<'a, 'id>, array<'a>) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_HashSet.getBucketHistogram",
+      "kind": "value",
+      "name": "getBucketHistogram",
+      "signature": "let getBucketHistogram: t<'a, 'b> => array<int>",
+      "docstrings": []
+    }
+  ]
+}

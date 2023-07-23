@@ -1,0 +1,500 @@
+{
+  "name": "Belt_internalAVLtree",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Belt_internalAVLtree.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t<'key, 'a> = option<node<'key, 'a>>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.node",
+      "kind": "type",
+      "name": "node",
+      "signature": "type node<'k, 'v> = {\\n  mutable key: 'k,\\n  mutable value: 'v,\\n  mutable height: int,\\n  mutable left: t<'k, 'v>,\\n  mutable right: t<'k, 'v>,\\n}",
+      "docstrings": [],
+      "detail": {
+        "kind": "record",
+        "fieldDocs": [
+          {
+            "fieldName": "key",
+            "docstrings": [],
+            "signature": "'k"
+          },
+          {
+            "fieldName": "value",
+            "docstrings": [],
+            "signature": "'v"
+          },
+          {
+            "fieldName": "height",
+            "docstrings": [],
+            "signature": "int"
+          },
+          {
+            "fieldName": "left",
+            "docstrings": [],
+            "signature": "t<'k, 'v>"
+          },
+          {
+            "fieldName": "right",
+            "docstrings": [],
+            "signature": "t<'k, 'v>"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Belt_internalAVLtree.cmp",
+      "kind": "type",
+      "name": "cmp",
+      "signature": "type cmp<'k, 'id> = Belt_Id.cmp<'k, 'id>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.copy",
+      "kind": "value",
+      "name": "copy",
+      "signature": "let copy: t<'k, 'v> => t<'k, 'v>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.create",
+      "kind": "value",
+      "name": "create",
+      "signature": "let create: (t<'a, 'b>, 'a, 'b, t<'a, 'b>) => t<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.bal",
+      "kind": "value",
+      "name": "bal",
+      "signature": "let bal: (t<'a, 'b>, 'a, 'b, t<'a, 'b>) => t<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.singleton",
+      "kind": "value",
+      "name": "singleton",
+      "signature": "let singleton: ('a, 'b) => t<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.updateValue",
+      "kind": "value",
+      "name": "updateValue",
+      "signature": "let updateValue: (node<'k, 'v>, 'v) => node<'k, 'v>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.minKey",
+      "kind": "value",
+      "name": "minKey",
+      "signature": "let minKey: t<'a, 'b> => option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.minKeyUndefined",
+      "kind": "value",
+      "name": "minKeyUndefined",
+      "signature": "let minKeyUndefined: t<'a, 'b> => Js.undefined<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.maxKey",
+      "kind": "value",
+      "name": "maxKey",
+      "signature": "let maxKey: t<'a, 'b> => option<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.maxKeyUndefined",
+      "kind": "value",
+      "name": "maxKeyUndefined",
+      "signature": "let maxKeyUndefined: t<'a, 'b> => Js.undefined<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.minimum",
+      "kind": "value",
+      "name": "minimum",
+      "signature": "let minimum: t<'a, 'b> => option<('a, 'b)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.minUndefined",
+      "kind": "value",
+      "name": "minUndefined",
+      "signature": "let minUndefined: t<'a, 'b> => Js.undefined<('a, 'b)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.maximum",
+      "kind": "value",
+      "name": "maximum",
+      "signature": "let maximum: t<'a, 'b> => option<('a, 'b)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.maxUndefined",
+      "kind": "value",
+      "name": "maxUndefined",
+      "signature": "let maxUndefined: t<'a, 'b> => Js.undefined<('a, 'b)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.removeMinAuxWithRef",
+      "kind": "value",
+      "name": "removeMinAuxWithRef",
+      "signature": "let removeMinAuxWithRef: (node<'a, 'b>, Belt_internals.ref<'a>, Belt_internals.ref<'b>) => t<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.isEmpty",
+      "kind": "value",
+      "name": "isEmpty",
+      "signature": "let isEmpty: t<'a, 'b> => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.stackAllLeft",
+      "kind": "value",
+      "name": "stackAllLeft",
+      "signature": "let stackAllLeft: (t<'a, 'b>, list<node<'a, 'b>>) => list<node<'a, 'b>>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.findFirstByU",
+      "kind": "value",
+      "name": "findFirstByU",
+      "signature": "let findFirstByU: (t<'a, 'b>, (. 'a, 'b) => bool) => option<('a, 'b)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.findFirstBy",
+      "kind": "value",
+      "name": "findFirstBy",
+      "signature": "let findFirstBy: (t<'a, 'b>, ('a, 'b) => bool) => option<('a, 'b)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.forEachU",
+      "kind": "value",
+      "name": "forEachU",
+      "signature": "let forEachU: (t<'a, 'b>, (. 'a, 'b) => unit) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.forEach",
+      "kind": "value",
+      "name": "forEach",
+      "signature": "let forEach: (t<'a, 'b>, ('a, 'b) => unit) => unit",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.mapU",
+      "kind": "value",
+      "name": "mapU",
+      "signature": "let mapU: (t<'c, 'a>, (. 'a) => 'b) => t<'c, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.map",
+      "kind": "value",
+      "name": "map",
+      "signature": "let map: (t<'c, 'a>, 'a => 'b) => t<'c, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.mapWithKeyU",
+      "kind": "value",
+      "name": "mapWithKeyU",
+      "signature": "let mapWithKeyU: (t<'a, 'b>, (. 'a, 'b) => 'c) => t<'a, 'c>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.mapWithKey",
+      "kind": "value",
+      "name": "mapWithKey",
+      "signature": "let mapWithKey: (t<'a, 'b>, ('a, 'b) => 'c) => t<'a, 'c>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.reduceU",
+      "kind": "value",
+      "name": "reduceU",
+      "signature": "let reduceU: (t<'a, 'b>, 'c, (. 'c, 'a, 'b) => 'c) => 'c",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.reduce",
+      "kind": "value",
+      "name": "reduce",
+      "signature": "let reduce: (t<'a, 'b>, 'c, ('c, 'a, 'b) => 'c) => 'c",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.everyU",
+      "kind": "value",
+      "name": "everyU",
+      "signature": "let everyU: (t<'a, 'b>, (. 'a, 'b) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.every",
+      "kind": "value",
+      "name": "every",
+      "signature": "let every: (t<'a, 'b>, ('a, 'b) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.someU",
+      "kind": "value",
+      "name": "someU",
+      "signature": "let someU: (t<'a, 'b>, (. 'a, 'b) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.some",
+      "kind": "value",
+      "name": "some",
+      "signature": "let some: (t<'a, 'b>, ('a, 'b) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.join",
+      "kind": "value",
+      "name": "join",
+      "signature": "let join: (t<'a, 'b>, 'a, 'b, t<'a, 'b>) => t<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.concat",
+      "kind": "value",
+      "name": "concat",
+      "signature": "let concat: (t<'a, 'b>, t<'a, 'b>) => t<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.concatOrJoin",
+      "kind": "value",
+      "name": "concatOrJoin",
+      "signature": "let concatOrJoin: (t<'a, 'b>, 'a, option<'b>, t<'a, 'b>) => t<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.keepSharedU",
+      "kind": "value",
+      "name": "keepSharedU",
+      "signature": "let keepSharedU: (t<'a, 'b>, (. 'a, 'b) => bool) => t<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.keepShared",
+      "kind": "value",
+      "name": "keepShared",
+      "signature": "let keepShared: (t<'a, 'b>, ('a, 'b) => bool) => t<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.keepMapU",
+      "kind": "value",
+      "name": "keepMapU",
+      "signature": "let keepMapU: (t<'a, 'b>, (. 'a, 'b) => option<'c>) => t<'a, 'c>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.keepMap",
+      "kind": "value",
+      "name": "keepMap",
+      "signature": "let keepMap: (t<'a, 'b>, ('a, 'b) => option<'c>) => t<'a, 'c>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.partitionSharedU",
+      "kind": "value",
+      "name": "partitionSharedU",
+      "signature": "let partitionSharedU: (t<'a, 'b>, (. 'a, 'b) => bool) => (t<'a, 'b>, t<'a, 'b>)",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.partitionShared",
+      "kind": "value",
+      "name": "partitionShared",
+      "signature": "let partitionShared: (t<'a, 'b>, ('a, 'b) => bool) => (t<'a, 'b>, t<'a, 'b>)",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.lengthNode",
+      "kind": "value",
+      "name": "lengthNode",
+      "signature": "let lengthNode: node<'a, 'b> => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.size",
+      "kind": "value",
+      "name": "size",
+      "signature": "let size: t<'a, 'b> => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.toList",
+      "kind": "value",
+      "name": "toList",
+      "signature": "let toList: t<'a, 'b> => list<('a, 'b)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.checkInvariantInternal",
+      "kind": "value",
+      "name": "checkInvariantInternal",
+      "signature": "let checkInvariantInternal: t<'a, 'b> => unit",
+      "docstrings": [
+        "**raise** when invariant is not held"
+      ]
+    },
+    {
+      "id": "Belt_internalAVLtree.fillArray",
+      "kind": "value",
+      "name": "fillArray",
+      "signature": "let fillArray: (node<'a, 'b>, int, array<('a, 'b)>) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.toArray",
+      "kind": "value",
+      "name": "toArray",
+      "signature": "let toArray: t<'a, 'b> => array<('a, 'b)>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.keysToArray",
+      "kind": "value",
+      "name": "keysToArray",
+      "signature": "let keysToArray: t<'a, 'b> => array<'a>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.valuesToArray",
+      "kind": "value",
+      "name": "valuesToArray",
+      "signature": "let valuesToArray: t<'a, 'b> => array<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.fromSortedArrayAux",
+      "kind": "value",
+      "name": "fromSortedArrayAux",
+      "signature": "let fromSortedArrayAux: (array<('a, 'b)>, int, int) => t<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.fromSortedArrayRevAux",
+      "kind": "value",
+      "name": "fromSortedArrayRevAux",
+      "signature": "let fromSortedArrayRevAux: (array<('a, 'b)>, int, int) => t<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.fromSortedArrayUnsafe",
+      "kind": "value",
+      "name": "fromSortedArrayUnsafe",
+      "signature": "let fromSortedArrayUnsafe: array<('a, 'b)> => t<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.cmpU",
+      "kind": "value",
+      "name": "cmpU",
+      "signature": "let cmpU: (t<'a, 'b>, t<'a, 'c>, ~kcmp: cmp<'a, 'd>, ~vcmp: (. 'b, 'c) => int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.cmp",
+      "kind": "value",
+      "name": "cmp",
+      "signature": "let cmp: (t<'a, 'b>, t<'a, 'c>, ~kcmp: cmp<'a, 'd>, ~vcmp: ('b, 'c) => int) => int",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.eqU",
+      "kind": "value",
+      "name": "eqU",
+      "signature": "let eqU: (t<'a, 'b>, t<'a, 'c>, ~kcmp: cmp<'a, 'd>, ~veq: (. 'b, 'c) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.eq",
+      "kind": "value",
+      "name": "eq",
+      "signature": "let eq: (t<'a, 'b>, t<'a, 'c>, ~kcmp: cmp<'a, 'd>, ~veq: ('b, 'c) => bool) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.get",
+      "kind": "value",
+      "name": "get",
+      "signature": "let get: (t<'a, 'b>, 'a, ~cmp: cmp<'a, 'c>) => option<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.getUndefined",
+      "kind": "value",
+      "name": "getUndefined",
+      "signature": "let getUndefined: (t<'a, 'b>, 'a, ~cmp: cmp<'a, 'c>) => Js.undefined<'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.getWithDefault",
+      "kind": "value",
+      "name": "getWithDefault",
+      "signature": "let getWithDefault: (t<'a, 'b>, 'a, 'b, ~cmp: cmp<'a, 'c>) => 'b",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.getExn",
+      "kind": "value",
+      "name": "getExn",
+      "signature": "let getExn: (t<'a, 'b>, 'a, ~cmp: cmp<'a, 'c>) => 'b",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.has",
+      "kind": "value",
+      "name": "has",
+      "signature": "let has: (t<'a, 'b>, 'a, ~cmp: cmp<'a, 'c>) => bool",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.fromArray",
+      "kind": "value",
+      "name": "fromArray",
+      "signature": "let fromArray: (array<('a, 'b)>, ~cmp: cmp<'a, 'id>) => t<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.updateMutate",
+      "kind": "value",
+      "name": "updateMutate",
+      "signature": "let updateMutate: (t<'a, 'b>, 'a, 'b, ~cmp: cmp<'a, 'id>) => t<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.balMutate",
+      "kind": "value",
+      "name": "balMutate",
+      "signature": "let balMutate: node<'a, 'b> => node<'a, 'b>",
+      "docstrings": []
+    },
+    {
+      "id": "Belt_internalAVLtree.removeMinAuxWithRootMutate",
+      "kind": "value",
+      "name": "removeMinAuxWithRootMutate",
+      "signature": "let removeMinAuxWithRootMutate: (node<'a, 'b>, node<'a, 'b>) => t<'a, 'b>",
+      "docstrings": []
+    }
+  ]
+}

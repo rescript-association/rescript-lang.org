@@ -1,0 +1,1251 @@
+{
+  "name": "Pervasives",
+  "docstrings": [],
+  "items": [
+    {
+      "id": "Pervasives.JsxC",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module Jsx = JsxC"
+    },
+    {
+      "id": "Pervasives.JsxEventC",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module JsxEvent = JsxEventC"
+    },
+    {
+      "id": "Pervasives.JsxDOMC",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module JsxDOM = JsxDOMC"
+    },
+    {
+      "id": "Pervasives.JsxPPXReactSupportC",
+      "kind": "moduleAlias",
+      "docstrings": [],
+      "signature": "module JsxPPXReactSupport = JsxPPXReactSupportC"
+    },
+    {
+      "id": "JsxModules.Pervasives",
+      "kind": "module",
+      "item": {
+        "name": "JsxModules",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Pervasives.JsxModules.JsxC",
+            "kind": "moduleAlias",
+            "docstrings": [],
+            "signature": "module Jsx = JsxC"
+          },
+          {
+            "id": "Pervasives.JsxModules.JsxEventC",
+            "kind": "moduleAlias",
+            "docstrings": [],
+            "signature": "module JsxEvent = JsxEventC"
+          },
+          {
+            "id": "Pervasives.JsxModules.JsxDOMC",
+            "kind": "moduleAlias",
+            "docstrings": [],
+            "signature": "module JsxDOM = JsxDOMC"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Pervasives.__unsafe_cast",
+      "kind": "value",
+      "name": "__unsafe_cast",
+      "signature": "let __unsafe_cast: 'a => 'b",
+      "docstrings": []
+    },
+    {
+      "id": "Pervasives.raise",
+      "kind": "value",
+      "name": "raise",
+      "signature": "let raise: exn => 'a",
+      "docstrings": [
+        "Raise the given exception value"
+      ]
+    },
+    {
+      "id": "Pervasives.raise_notrace",
+      "kind": "value",
+      "name": "raise_notrace",
+      "signature": "let raise_notrace: exn => 'a",
+      "docstrings": [
+        "A faster version [raise] which does not record the backtrace.\n    @since 4.02.0"
+      ]
+    },
+    {
+      "id": "Pervasives.invalid_arg",
+      "kind": "value",
+      "name": "invalid_arg",
+      "signature": "let invalid_arg: string => 'a",
+      "docstrings": [
+        "Raise exception [Invalid_argument] with the given string."
+      ]
+    },
+    {
+      "id": "Pervasives.failwith",
+      "kind": "value",
+      "name": "failwith",
+      "signature": "let failwith: string => 'a",
+      "docstrings": [
+        "Raise exception [Failure] with the given string."
+      ]
+    },
+    {
+      "id": "Pervasives.=",
+      "kind": "value",
+      "name": "=",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "[e1 = e2] tests for structural equality of [e1] and [e2].\n   Mutable structures (e.g. references and arrays) are equal\n   if and only if their current contents are structurally equal,\n   even if the two mutable objects are not the same physical object.\n   Equality between functional values raises [Invalid_argument].\n   Equality between cyclic data structures may not terminate.\n   Left-associative operator at precedence level 4/11."
+      ]
+    },
+    {
+      "id": "Pervasives.<>",
+      "kind": "value",
+      "name": "<>",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Negation of {!Pervasives.( = )}.\n    Left-associative operator at precedence level 4/11."
+      ]
+    },
+    {
+      "id": "Pervasives.<",
+      "kind": "value",
+      "name": "<",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "See {!Pervasives.( >= )}.\n    Left-associative operator at precedence level 4/11."
+      ]
+    },
+    {
+      "id": "Pervasives.>",
+      "kind": "value",
+      "name": ">",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "See {!Pervasives.( >= )}.\n    Left-associative operator at precedence level 4/11."
+      ]
+    },
+    {
+      "id": "Pervasives.<=",
+      "kind": "value",
+      "name": "<=",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "See {!Pervasives.( >= )}.\n    Left-associative operator at precedence level 4/11."
+      ]
+    },
+    {
+      "id": "Pervasives.>=",
+      "kind": "value",
+      "name": ">=",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Structural ordering functions. These functions coincide with\n   the usual orderings over integers, characters, strings, byte sequences\n   and floating-point numbers, and extend them to a\n   total ordering over all types.\n   The ordering is compatible with [( = )]. As in the case\n   of [( = )], mutable structures are compared by contents.\n   Comparison between functional values raises [Invalid_argument].\n   Comparison between cyclic structures may not terminate.\n   Left-associative operator at precedence level 4/11."
+      ]
+    },
+    {
+      "id": "Pervasives.compare",
+      "kind": "value",
+      "name": "compare",
+      "signature": "let compare: ('a, 'a) => int",
+      "docstrings": [
+        "[compare x y] returns [0] if [x] is equal to [y],\n   a negative integer if [x] is less than [y], and a positive integer\n   if [x] is greater than [y].  The ordering implemented by [compare]\n   is compatible with the comparison predicates [=], [<] and [>]\n   defined above,  with one difference on the treatment of the float value\n   {!Pervasives.nan}.  Namely, the comparison predicates treat [nan]\n   as different from any other float value, including itself;\n   while [compare] treats [nan] as equal to itself and less than any\n   other float value.  This treatment of [nan] ensures that [compare]\n   defines a total ordering relation.\n\n   [compare] applied to functional values may raise [Invalid_argument].\n   [compare] applied to cyclic structures may not terminate.\n\n   The [compare] function can be used as the comparison function\n   required by the {!Set.Make} and {!Map.Make} functors, as well as\n   the {!List.sort} and {!Array.sort} functions."
+      ]
+    },
+    {
+      "id": "Pervasives.min",
+      "kind": "value",
+      "name": "min",
+      "signature": "let min: ('a, 'a) => 'a",
+      "docstrings": [
+        "Return the smaller of the two arguments.\n    The result is unspecified if one of the arguments contains\n    the float value [nan]."
+      ]
+    },
+    {
+      "id": "Pervasives.max",
+      "kind": "value",
+      "name": "max",
+      "signature": "let max: ('a, 'a) => 'a",
+      "docstrings": [
+        "Return the greater of the two arguments.\n    The result is unspecified if one of the arguments contains\n    the float value [nan]."
+      ]
+    },
+    {
+      "id": "Pervasives.==",
+      "kind": "value",
+      "name": "==",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "[e1 == e2] tests for physical equality of [e1] and [e2].\n   On mutable types such as references, arrays, byte sequences, records with\n   mutable fields and objects with mutable instance variables,\n   [e1 == e2] is true if and only if physical modification of [e1]\n   also affects [e2].\n   On non-mutable types, the behavior of [( == )] is\n   implementation-dependent; however, it is guaranteed that\n   [e1 == e2] implies [compare e1 e2 = 0].\n   Left-associative operator at precedence level 4/11."
+      ]
+    },
+    {
+      "id": "Pervasives.!=",
+      "kind": "value",
+      "name": "!=",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Negation of {!Pervasives.( == )}.\n    Left-associative operator at precedence level 4/11."
+      ]
+    },
+    {
+      "id": "Pervasives.not",
+      "kind": "value",
+      "name": "not",
+      "signature": "let not: bool => bool",
+      "docstrings": [
+        "The boolean negation."
+      ]
+    },
+    {
+      "id": "Pervasives.&&",
+      "kind": "value",
+      "name": "&&",
+      "signature": "let _: (bool, bool) => bool",
+      "docstrings": [
+        "The boolean 'and'. Evaluation is sequential, left-to-right:\n   in [e1 && e2], [e1] is evaluated first, and if it returns [false],\n   [e2] is not evaluated at all.\n   Right-associative operator at precedence level 3/11."
+      ]
+    },
+    {
+      "id": "Pervasives.||",
+      "kind": "value",
+      "name": "||",
+      "signature": "let _: (bool, bool) => bool",
+      "docstrings": [
+        "The boolean 'or'. Evaluation is sequential, left-to-right:\n   in [e1 || e2], [e1] is evaluated first, and if it returns [true],\n   [e2] is not evaluated at all.\n   Right-associative operator at precedence level 2/11."
+      ]
+    },
+    {
+      "id": "Pervasives.__LOC__",
+      "kind": "value",
+      "name": "__LOC__",
+      "signature": "let __LOC__: string",
+      "docstrings": [
+        "[__LOC__] returns the location at which this expression appears in\n    the file currently being parsed by the compiler, with the standard\n    error format of OCaml: \\\"File %S, line %d, characters %d-%d\\\".\n    @since 4.02.0"
+      ]
+    },
+    {
+      "id": "Pervasives.__FILE__",
+      "kind": "value",
+      "name": "__FILE__",
+      "signature": "let __FILE__: string",
+      "docstrings": [
+        "[__FILE__] returns the name of the file currently being\n    parsed by the compiler.\n    @since 4.02.0"
+      ]
+    },
+    {
+      "id": "Pervasives.__LINE__",
+      "kind": "value",
+      "name": "__LINE__",
+      "signature": "let __LINE__: int",
+      "docstrings": [
+        "[__LINE__] returns the line number at which this expression\n    appears in the file currently being parsed by the compiler.\n    @since 4.02.0"
+      ]
+    },
+    {
+      "id": "Pervasives.__MODULE__",
+      "kind": "value",
+      "name": "__MODULE__",
+      "signature": "let __MODULE__: string",
+      "docstrings": [
+        "[__MODULE__] returns the module name of the file being\n    parsed by the compiler.\n    @since 4.02.0"
+      ]
+    },
+    {
+      "id": "Pervasives.__POS__",
+      "kind": "value",
+      "name": "__POS__",
+      "signature": "let __POS__: (string, int, int, int)",
+      "docstrings": [
+        "[__POS__] returns a tuple [(file,lnum,cnum,enum)], corresponding\n    to the location at which this expression appears in the file\n    currently being parsed by the compiler. [file] is the current\n    filename, [lnum] the line number, [cnum] the character position in\n    the line and [enum] the last character position in the line.\n    @since 4.02.0"
+      ]
+    },
+    {
+      "id": "Pervasives.__LOC_OF__",
+      "kind": "value",
+      "name": "__LOC_OF__",
+      "signature": "let __LOC_OF__: 'a => (string, 'a)",
+      "docstrings": [
+        "[__LOC_OF__ expr] returns a pair [(loc, expr)] where [loc] is the\n    location of [expr] in the file currently being parsed by the\n    compiler, with the standard error format of OCaml: \\\"File %S, line\n    %d, characters %d-%d\\\".\n    @since 4.02.0"
+      ]
+    },
+    {
+      "id": "Pervasives.__LINE_OF__",
+      "kind": "value",
+      "name": "__LINE_OF__",
+      "signature": "let __LINE_OF__: 'a => (int, 'a)",
+      "docstrings": [
+        "[__LINE__ expr] returns a pair [(line, expr)], where [line] is the\n    line number at which the expression [expr] appears in the file\n    currently being parsed by the compiler.\n    @since 4.02.0"
+      ]
+    },
+    {
+      "id": "Pervasives.__POS_OF__",
+      "kind": "value",
+      "name": "__POS_OF__",
+      "signature": "let __POS_OF__: 'a => ((string, int, int, int), 'a)",
+      "docstrings": [
+        "[__POS_OF__ expr] returns a pair [(loc,expr)], where [loc] is a\n    tuple [(file,lnum,cnum,enum)] corresponding to the location at\n    which the expression [expr] appears in the file currently being\n    parsed by the compiler. [file] is the current filename, [lnum] the\n    line number, [cnum] the character position in the line and [enum]\n    the last character position in the line.\n    @since 4.02.0"
+      ]
+    },
+    {
+      "id": "Pervasives.|>",
+      "kind": "value",
+      "name": "|>",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Reverse-application operator: [x |> f |> g] is exactly equivalent\n to [g (f (x))].\n Left-associative operator at precedence level 4/11.\n   @since 4.01"
+      ]
+    },
+    {
+      "id": "Pervasives.@@",
+      "kind": "value",
+      "name": "@@",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Application operator: [g @@ f @@ x] is exactly equivalent to\n [g (f (x))].\n Right-associative operator at precedence level 5/11.\n   @since 4.01"
+      ]
+    },
+    {
+      "id": "Pervasives.~-",
+      "kind": "value",
+      "name": "~-",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Unary negation. You can also write [- e] instead of [~- e].\n    Unary operator at precedence level 9/11 for [- e]\n    and 11/11 for [~- e]."
+      ]
+    },
+    {
+      "id": "Pervasives.~+",
+      "kind": "value",
+      "name": "~+",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Unary addition. You can also write [+ e] instead of [~+ e].\n    Unary operator at precedence level 9/11 for [+ e]\n    and 11/11 for [~+ e].\n    @since 3.12.0"
+      ]
+    },
+    {
+      "id": "Pervasives.succ",
+      "kind": "value",
+      "name": "succ",
+      "signature": "let succ: int => int",
+      "docstrings": [
+        "[succ x] is [x + 1]."
+      ]
+    },
+    {
+      "id": "Pervasives.pred",
+      "kind": "value",
+      "name": "pred",
+      "signature": "let pred: int => int",
+      "docstrings": [
+        "[pred x] is [x - 1]."
+      ]
+    },
+    {
+      "id": "Pervasives.+",
+      "kind": "value",
+      "name": "+",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Integer addition.\n    Left-associative operator at precedence level 6/11."
+      ]
+    },
+    {
+      "id": "Pervasives.-",
+      "kind": "value",
+      "name": "-",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Integer subtraction.\n    Left-associative operator at precedence level 6/11."
+      ]
+    },
+    {
+      "id": "Pervasives.*",
+      "kind": "value",
+      "name": "*",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Integer multiplication.\n    Left-associative operator at precedence level 7/11."
+      ]
+    },
+    {
+      "id": "Pervasives./",
+      "kind": "value",
+      "name": "/",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Integer division.\n   Raise [Division_by_zero] if the second argument is 0.\n   Integer division rounds the real quotient of its arguments towards zero.\n   More precisely, if [x >= 0] and [y > 0], [x / y] is the greatest integer\n   less than or equal to the real quotient of [x] by [y].  Moreover,\n   [(- x) / y = x / (- y) = - (x / y)].\n   Left-associative operator at precedence level 7/11."
+      ]
+    },
+    {
+      "id": "Pervasives.mod",
+      "kind": "value",
+      "name": "mod",
+      "signature": "let mod: (int, int) => int",
+      "docstrings": [
+        "Integer remainder.  If [y] is not zero, the result\n   of [x mod y] satisfies the following properties:\n   [x = (x / y) * y + x mod y] and\n   [abs(x mod y) <= abs(y) - 1].\n   If [y = 0], [x mod y] raises [Division_by_zero].\n   Note that [x mod y] is negative only if [x < 0].\n   Raise [Division_by_zero] if [y] is zero.\n   Left-associative operator at precedence level 7/11."
+      ]
+    },
+    {
+      "id": "Pervasives.abs",
+      "kind": "value",
+      "name": "abs",
+      "signature": "let abs: int => int",
+      "docstrings": [
+        "Return the absolute value of the argument.  Note that this may be\n  negative if the argument is [min_int]."
+      ]
+    },
+    {
+      "id": "Pervasives.max_int",
+      "kind": "value",
+      "name": "max_int",
+      "signature": "let max_int: int",
+      "docstrings": [
+        "The greatest representable integer."
+      ]
+    },
+    {
+      "id": "Pervasives.min_int",
+      "kind": "value",
+      "name": "min_int",
+      "signature": "let min_int: int",
+      "docstrings": [
+        "The smallest representable integer."
+      ]
+    },
+    {
+      "id": "Pervasives.land",
+      "kind": "value",
+      "name": "land",
+      "signature": "let land: (int, int) => int",
+      "docstrings": [
+        "Bitwise logical and.\n    Left-associative operator at precedence level 7/11."
+      ]
+    },
+    {
+      "id": "Pervasives.lor",
+      "kind": "value",
+      "name": "lor",
+      "signature": "let lor: (int, int) => int",
+      "docstrings": [
+        "Bitwise logical or.\n    Left-associative operator at precedence level 7/11."
+      ]
+    },
+    {
+      "id": "Pervasives.lxor",
+      "kind": "value",
+      "name": "lxor",
+      "signature": "let lxor: (int, int) => int",
+      "docstrings": [
+        "Bitwise logical exclusive or.\n    Left-associative operator at precedence level 7/11."
+      ]
+    },
+    {
+      "id": "Pervasives.lnot",
+      "kind": "value",
+      "name": "lnot",
+      "signature": "let lnot: int => int",
+      "docstrings": [
+        "Bitwise logical negation."
+      ]
+    },
+    {
+      "id": "Pervasives.lsl",
+      "kind": "value",
+      "name": "lsl",
+      "signature": "let lsl: (int, int) => int",
+      "docstrings": [
+        "[n lsl m] shifts [n] to the left by [m] bits.\n   The result is unspecified if [m < 0] or [m >= bitsize],\n   where [bitsize] is [32] on a 32-bit platform and\n   [64] on a 64-bit platform.\n   Right-associative operator at precedence level 8/11."
+      ]
+    },
+    {
+      "id": "Pervasives.lsr",
+      "kind": "value",
+      "name": "lsr",
+      "signature": "let lsr: (int, int) => int",
+      "docstrings": [
+        "[n lsr m] shifts [n] to the right by [m] bits.\n   This is a logical shift: zeroes are inserted regardless of\n   the sign of [n].\n   The result is unspecified if [m < 0] or [m >= bitsize].\n   Right-associative operator at precedence level 8/11."
+      ]
+    },
+    {
+      "id": "Pervasives.asr",
+      "kind": "value",
+      "name": "asr",
+      "signature": "let asr: (int, int) => int",
+      "docstrings": [
+        "[n asr m] shifts [n] to the right by [m] bits.\n   This is an arithmetic shift: the sign bit of [n] is replicated.\n   The result is unspecified if [m < 0] or [m >= bitsize].\n   Right-associative operator at precedence level 8/11."
+      ]
+    },
+    {
+      "id": "Pervasives.~-.",
+      "kind": "value",
+      "name": "~-.",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Unary negation. You can also write [-. e] instead of [~-. e].\n    Unary operator at precedence level 9/11 for [-. e]\n    and 11/11 for [~-. e]."
+      ]
+    },
+    {
+      "id": "Pervasives.~+.",
+      "kind": "value",
+      "name": "~+.",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Unary addition. You can also write [+. e] instead of [~+. e].\n    Unary operator at precedence level 9/11 for [+. e]\n    and 11/11 for [~+. e].\n    @since 3.12.0"
+      ]
+    },
+    {
+      "id": "Pervasives.+.",
+      "kind": "value",
+      "name": "+.",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Floating-point addition.\n    Left-associative operator at precedence level 6/11."
+      ]
+    },
+    {
+      "id": "Pervasives.-.",
+      "kind": "value",
+      "name": "-.",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Floating-point subtraction.\n    Left-associative operator at precedence level 6/11."
+      ]
+    },
+    {
+      "id": "Pervasives.*.",
+      "kind": "value",
+      "name": "*.",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Floating-point multiplication.\n    Left-associative operator at precedence level 7/11."
+      ]
+    },
+    {
+      "id": "Pervasives./.",
+      "kind": "value",
+      "name": "/.",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Floating-point division.\n    Left-associative operator at precedence level 7/11."
+      ]
+    },
+    {
+      "id": "Pervasives.**",
+      "kind": "value",
+      "name": "**",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "Exponentiation."
+      ]
+    },
+    {
+      "id": "Pervasives.sqrt",
+      "kind": "value",
+      "name": "sqrt",
+      "signature": "let sqrt: float => float",
+      "docstrings": [
+        "Square root."
+      ]
+    },
+    {
+      "id": "Pervasives.exp",
+      "kind": "value",
+      "name": "exp",
+      "signature": "let exp: float => float",
+      "docstrings": [
+        "Exponential."
+      ]
+    },
+    {
+      "id": "Pervasives.log",
+      "kind": "value",
+      "name": "log",
+      "signature": "let log: float => float",
+      "docstrings": [
+        "Natural logarithm."
+      ]
+    },
+    {
+      "id": "Pervasives.log10",
+      "kind": "value",
+      "name": "log10",
+      "signature": "let log10: float => float",
+      "docstrings": [
+        "Base 10 logarithm."
+      ]
+    },
+    {
+      "id": "Pervasives.expm1",
+      "kind": "value",
+      "name": "expm1",
+      "signature": "let expm1: float => float",
+      "docstrings": [
+        "[expm1 x] computes [exp x -. 1.0], giving numerically-accurate results\n    even if [x] is close to [0.0].\n    @since 3.12.0"
+      ]
+    },
+    {
+      "id": "Pervasives.log1p",
+      "kind": "value",
+      "name": "log1p",
+      "signature": "let log1p: float => float",
+      "docstrings": [
+        "[log1p x] computes [log(1.0 +. x)] (natural logarithm),\n    giving numerically-accurate results even if [x] is close to [0.0].\n    @since 3.12.0"
+      ]
+    },
+    {
+      "id": "Pervasives.cos",
+      "kind": "value",
+      "name": "cos",
+      "signature": "let cos: float => float",
+      "docstrings": [
+        "Cosine.  Argument is in radians."
+      ]
+    },
+    {
+      "id": "Pervasives.sin",
+      "kind": "value",
+      "name": "sin",
+      "signature": "let sin: float => float",
+      "docstrings": [
+        "Sine.  Argument is in radians."
+      ]
+    },
+    {
+      "id": "Pervasives.tan",
+      "kind": "value",
+      "name": "tan",
+      "signature": "let tan: float => float",
+      "docstrings": [
+        "Tangent.  Argument is in radians."
+      ]
+    },
+    {
+      "id": "Pervasives.acos",
+      "kind": "value",
+      "name": "acos",
+      "signature": "let acos: float => float",
+      "docstrings": [
+        "Arc cosine.  The argument must fall within the range [[-1.0, 1.0]].\n    Result is in radians and is between [0.0] and [pi]."
+      ]
+    },
+    {
+      "id": "Pervasives.asin",
+      "kind": "value",
+      "name": "asin",
+      "signature": "let asin: float => float",
+      "docstrings": [
+        "Arc sine.  The argument must fall within the range [[-1.0, 1.0]].\n    Result is in radians and is between [-pi/2] and [pi/2]."
+      ]
+    },
+    {
+      "id": "Pervasives.atan",
+      "kind": "value",
+      "name": "atan",
+      "signature": "let atan: float => float",
+      "docstrings": [
+        "Arc tangent.\n    Result is in radians and is between [-pi/2] and [pi/2]."
+      ]
+    },
+    {
+      "id": "Pervasives.atan2",
+      "kind": "value",
+      "name": "atan2",
+      "signature": "let atan2: (float, float) => float",
+      "docstrings": [
+        "[atan2 y x] returns the arc tangent of [y /. x].  The signs of [x]\n    and [y] are used to determine the quadrant of the result.\n    Result is in radians and is between [-pi] and [pi]."
+      ]
+    },
+    {
+      "id": "Pervasives.hypot",
+      "kind": "value",
+      "name": "hypot",
+      "signature": "let hypot: (float, float) => float",
+      "docstrings": [
+        "[hypot x y] returns [sqrt(x *. x + y *. y)], that is, the length\n  of the hypotenuse of a right-angled triangle with sides of length\n  [x] and [y], or, equivalently, the distance of the point [(x,y)]\n  to origin.\n  @since 4.00.0"
+      ]
+    },
+    {
+      "id": "Pervasives.cosh",
+      "kind": "value",
+      "name": "cosh",
+      "signature": "let cosh: float => float",
+      "docstrings": [
+        "Hyperbolic cosine.  Argument is in radians."
+      ]
+    },
+    {
+      "id": "Pervasives.sinh",
+      "kind": "value",
+      "name": "sinh",
+      "signature": "let sinh: float => float",
+      "docstrings": [
+        "Hyperbolic sine.  Argument is in radians."
+      ]
+    },
+    {
+      "id": "Pervasives.tanh",
+      "kind": "value",
+      "name": "tanh",
+      "signature": "let tanh: float => float",
+      "docstrings": [
+        "Hyperbolic tangent.  Argument is in radians."
+      ]
+    },
+    {
+      "id": "Pervasives.ceil",
+      "kind": "value",
+      "name": "ceil",
+      "signature": "let ceil: float => float",
+      "docstrings": [
+        "Round above to an integer value.\n    [ceil f] returns the least integer value greater than or equal to [f].\n    The result is returned as a float."
+      ]
+    },
+    {
+      "id": "Pervasives.floor",
+      "kind": "value",
+      "name": "floor",
+      "signature": "let floor: float => float",
+      "docstrings": [
+        "Round below to an integer value.\n    [floor f] returns the greatest integer value less than or\n    equal to [f].\n    The result is returned as a float."
+      ]
+    },
+    {
+      "id": "Pervasives.abs_float",
+      "kind": "value",
+      "name": "abs_float",
+      "signature": "let abs_float: float => float",
+      "docstrings": [
+        "[abs_float f] returns the absolute value of [f]."
+      ]
+    },
+    {
+      "id": "Pervasives.copysign",
+      "kind": "value",
+      "name": "copysign",
+      "signature": "let copysign: (float, float) => float",
+      "docstrings": [
+        "[copysign x y] returns a float whose absolute value is that of [x]\n  and whose sign is that of [y].  If [x] is [nan], returns [nan].\n  If [y] is [nan], returns either [x] or [-. x], but it is not\n  specified which.\n  @since 4.00.0"
+      ]
+    },
+    {
+      "id": "Pervasives.mod_float",
+      "kind": "value",
+      "name": "mod_float",
+      "signature": "let mod_float: (float, float) => float",
+      "docstrings": [
+        "[mod_float a b] returns the remainder of [a] with respect to\n   [b].  The returned value is [a -. n *. b], where [n]\n   is the quotient [a /. b] rounded towards zero to an integer."
+      ]
+    },
+    {
+      "id": "Pervasives.frexp",
+      "kind": "value",
+      "name": "frexp",
+      "signature": "let frexp: float => (float, int)",
+      "docstrings": [
+        "[frexp f] returns the pair of the significant\n   and the exponent of [f].  When [f] is zero, the\n   significant [x] and the exponent [n] of [f] are equal to\n   zero.  When [f] is non-zero, they are defined by\n   [f = x *. 2 ** n] and [0.5 <= x < 1.0]."
+      ]
+    },
+    {
+      "id": "Pervasives.ldexp",
+      "kind": "value",
+      "name": "ldexp",
+      "signature": "let ldexp: (float, int) => float",
+      "docstrings": [
+        "[ldexp x n] returns [x *. 2 ** n]."
+      ]
+    },
+    {
+      "id": "Pervasives.modf",
+      "kind": "value",
+      "name": "modf",
+      "signature": "let modf: float => (float, float)",
+      "docstrings": [
+        "[modf f] returns the pair of the fractional and integral\n   part of [f]."
+      ]
+    },
+    {
+      "id": "Pervasives.float",
+      "kind": "value",
+      "name": "float",
+      "signature": "let float: int => float",
+      "docstrings": [
+        "Same as {!Pervasives.float_of_int}."
+      ]
+    },
+    {
+      "id": "Pervasives.float_of_int",
+      "kind": "value",
+      "name": "float_of_int",
+      "signature": "let float_of_int: int => float",
+      "docstrings": [
+        "Convert an integer to floating-point."
+      ]
+    },
+    {
+      "id": "Pervasives.truncate",
+      "kind": "value",
+      "name": "truncate",
+      "signature": "let truncate: float => int",
+      "docstrings": [
+        "Same as {!Pervasives.int_of_float}."
+      ]
+    },
+    {
+      "id": "Pervasives.int_of_float",
+      "kind": "value",
+      "name": "int_of_float",
+      "signature": "let int_of_float: float => int",
+      "docstrings": [
+        "Truncate the given floating-point number to an integer.\n   The result is unspecified if the argument is [nan] or falls outside the\n   range of representable integers."
+      ]
+    },
+    {
+      "id": "Pervasives.infinity",
+      "kind": "value",
+      "name": "infinity",
+      "signature": "let infinity: float",
+      "docstrings": [
+        "Positive infinity."
+      ]
+    },
+    {
+      "id": "Pervasives.neg_infinity",
+      "kind": "value",
+      "name": "neg_infinity",
+      "signature": "let neg_infinity: float",
+      "docstrings": [
+        "Negative infinity."
+      ]
+    },
+    {
+      "id": "Pervasives.nan",
+      "kind": "value",
+      "name": "nan",
+      "signature": "let nan: float",
+      "docstrings": [
+        "A special floating-point value denoting the result of an\n   undefined operation such as [0.0 /. 0.0].  Stands for\n   'not a number'.  Any floating-point operation with [nan] as\n   argument returns [nan] as result.  As for floating-point comparisons,\n   [=], [<], [<=], [>] and [>=] return [false] and [<>] returns [true]\n   if one or both of their arguments is [nan]."
+      ]
+    },
+    {
+      "id": "Pervasives.max_float",
+      "kind": "value",
+      "name": "max_float",
+      "signature": "let max_float: float",
+      "docstrings": [
+        "The largest positive finite value of type [float]."
+      ]
+    },
+    {
+      "id": "Pervasives.min_float",
+      "kind": "value",
+      "name": "min_float",
+      "signature": "let min_float: float",
+      "docstrings": [
+        "The smallest positive, non-zero, non-denormalized value of type [float]."
+      ]
+    },
+    {
+      "id": "Pervasives.epsilon_float",
+      "kind": "value",
+      "name": "epsilon_float",
+      "signature": "let epsilon_float: float",
+      "docstrings": [
+        "The difference between [1.0] and the smallest exactly representable\n    floating-point number greater than [1.0]."
+      ]
+    },
+    {
+      "id": "Pervasives.fpclass",
+      "kind": "type",
+      "name": "fpclass",
+      "signature": "type fpclass =\\n  | FP_normal\\n  | FP_subnormal\\n  | FP_zero\\n  | FP_infinite\\n  | FP_nan",
+      "docstrings": [
+        "The five classes of floating-point numbers, as determined by\n   the {!Pervasives.classify_float} function."
+      ],
+      "detail": {
+        "kind": "variant",
+        "constructorDocs": [
+          {
+            "constructorName": "FP_normal",
+            "docstrings": [
+              "Normal number, none of the below"
+            ],
+            "signature": "FP_normal"
+          },
+          {
+            "constructorName": "FP_subnormal",
+            "docstrings": [
+              "Number very close to 0.0, has reduced precision"
+            ],
+            "signature": "FP_subnormal"
+          },
+          {
+            "constructorName": "FP_zero",
+            "docstrings": [
+              "Number is 0.0 or -0.0"
+            ],
+            "signature": "FP_zero"
+          },
+          {
+            "constructorName": "FP_infinite",
+            "docstrings": [
+              "Number is positive or negative infinity"
+            ],
+            "signature": "FP_infinite"
+          },
+          {
+            "constructorName": "FP_nan",
+            "docstrings": [
+              "Not a number: result of an undefined operation"
+            ],
+            "signature": "FP_nan"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Pervasives.classify_float",
+      "kind": "value",
+      "name": "classify_float",
+      "signature": "let classify_float: float => fpclass",
+      "docstrings": [
+        "Return the class of the given floating-point number:\n   normal, subnormal, zero, infinite, or not a number."
+      ]
+    },
+    {
+      "id": "Pervasives.^",
+      "kind": "value",
+      "name": "^",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "{1 String operations}\n\n   More string operations are provided in module {!String}."
+      ]
+    },
+    {
+      "id": "Pervasives.int_of_char",
+      "kind": "value",
+      "name": "int_of_char",
+      "signature": "let int_of_char: char => int",
+      "docstrings": [
+        "Return the ASCII code of the argument."
+      ]
+    },
+    {
+      "id": "Pervasives.char_of_int",
+      "kind": "value",
+      "name": "char_of_int",
+      "signature": "let char_of_int: int => char",
+      "docstrings": [
+        "Return the character with the given ASCII code.\n   Raise [Invalid_argument \\\"char_of_int\\\"] if the argument is\n   outside the range 0--255."
+      ]
+    },
+    {
+      "id": "Pervasives.ignore",
+      "kind": "value",
+      "name": "ignore",
+      "signature": "let ignore: 'a => unit",
+      "docstrings": [
+        "Discard the value of its argument and return [()].\n   For instance, [ignore(f x)] discards the result of\n   the side-effecting function [f].  It is equivalent to\n   [f x; ()], except that the latter may generate a\n   compiler warning; writing [ignore(f x)] instead\n   avoids the warning."
+      ]
+    },
+    {
+      "id": "Pervasives.string_of_bool",
+      "kind": "value",
+      "name": "string_of_bool",
+      "signature": "let string_of_bool: bool => string",
+      "docstrings": [
+        "Return the string representation of a boolean. As the returned values\n   may be shared, the user should not modify them directly."
+      ]
+    },
+    {
+      "id": "Pervasives.bool_of_string",
+      "kind": "value",
+      "name": "bool_of_string",
+      "signature": "let bool_of_string: string => bool",
+      "docstrings": [
+        "Convert the given string to a boolean.\n   Raise [Invalid_argument \\\"bool_of_string\\\"] if the string is not\n   [\\\"true\\\"] or [\\\"false\\\"]."
+      ]
+    },
+    {
+      "id": "Pervasives.bool_of_string_opt",
+      "kind": "value",
+      "name": "bool_of_string_opt",
+      "signature": "let bool_of_string_opt: string => option<bool>",
+      "docstrings": [
+        "Convert the given string to a boolean.\n    Return [None] if the string is not\n    [\\\"true\\\"] or [\\\"false\\\"].\n    @since 4.05"
+      ]
+    },
+    {
+      "id": "Pervasives.string_of_int",
+      "kind": "value",
+      "name": "string_of_int",
+      "signature": "let string_of_int: int => string",
+      "docstrings": [
+        "Return the string representation of an integer, in decimal."
+      ]
+    },
+    {
+      "id": "Pervasives.int_of_string",
+      "kind": "value",
+      "name": "int_of_string",
+      "signature": "let int_of_string: string => int",
+      "docstrings": [
+        "Convert the given string to an integer.\n   The string is read in decimal (by default, or if the string \n   begins with [0u]), in hexadecimal (if it begins with [0x] or\n   [0X]), in octal (if it begins with [0o] or [0O]), or in binary\n   (if it begins with [0b] or [0B]).\n\n   The [0u] prefix reads the input as an unsigned integer in the range\n   [[0, 2*max_int+1]].  If the input exceeds {!max_int}\n   it is converted to the signed integer\n   [min_int + input - max_int - 1].\n\n   The [_] (underscore) character can appear anywhere in the string\n   and is ignored.\n   Raise [Failure \\\"int_of_string\\\"] if the given string is not\n   a valid representation of an integer, or if the integer represented\n   exceeds the range of integers representable in type [int]."
+      ]
+    },
+    {
+      "id": "Pervasives.int_of_string_opt",
+      "kind": "value",
+      "name": "int_of_string_opt",
+      "signature": "let int_of_string_opt: string => option<int>",
+      "docstrings": [
+        "Same as [int_of_string], but returns [None] instead of raising.\n    @since 4.05"
+      ]
+    },
+    {
+      "id": "Pervasives.string_of_float",
+      "kind": "value",
+      "name": "string_of_float",
+      "signature": "let string_of_float: float => string",
+      "docstrings": [
+        "Return the string representation of a floating-point number."
+      ]
+    },
+    {
+      "id": "Pervasives.float_of_string",
+      "kind": "value",
+      "name": "float_of_string",
+      "signature": "let float_of_string: string => float",
+      "docstrings": [
+        "Convert the given string to a float.  The string is read in decimal\n   (by default) or in hexadecimal (marked by [0x] or [0X]).\n   The format of decimal floating-point numbers is\n   [ [-] dd.ddd (e|E) [+|-] dd ], where [d] stands for a decimal digit.\n   The format of hexadecimal floating-point numbers is\n   [ [-] 0(x|X) hh.hhh (p|P) [+|-] dd ], where [h] stands for an\n   hexadecimal digit and [d] for a decimal digit.\n   In both cases, at least one of the integer and fractional parts must be\n   given; the exponent part is optional.\n   The [_] (underscore) character can appear anywhere in the string\n   and is ignored.\n   Depending on the execution platforms, other representations of\n   floating-point numbers can be accepted, but should not be relied upon.\n   Raise [Failure \\\"float_of_string\\\"] if the given string is not a valid\n   representation of a float."
+      ]
+    },
+    {
+      "id": "Pervasives.float_of_string_opt",
+      "kind": "value",
+      "name": "float_of_string_opt",
+      "signature": "let float_of_string_opt: string => option<float>",
+      "docstrings": [
+        "Same as [float_of_string], but returns [None] instead of raising.\n    @since 4.05"
+      ]
+    },
+    {
+      "id": "Pervasives.fst",
+      "kind": "value",
+      "name": "fst",
+      "signature": "let fst: (('a, 'b)) => 'a",
+      "docstrings": [
+        "Return the first component of a pair."
+      ]
+    },
+    {
+      "id": "Pervasives.snd",
+      "kind": "value",
+      "name": "snd",
+      "signature": "let snd: (('a, 'b)) => 'b",
+      "docstrings": [
+        "Return the second component of a pair."
+      ]
+    },
+    {
+      "id": "Pervasives.@",
+      "kind": "value",
+      "name": "@",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "List concatenation.  Tail-recursive (length of the first argument).\n    Right-associative operator at precedence level 5/11."
+      ]
+    },
+    {
+      "id": "Pervasives.int32",
+      "kind": "type",
+      "name": "int32",
+      "signature": "type int32 = int",
+      "docstrings": []
+    },
+    {
+      "id": "Pervasives.print_string",
+      "kind": "value",
+      "name": "print_string",
+      "signature": "let print_string: string => unit",
+      "docstrings": [
+        "Print a string on standard output."
+      ]
+    },
+    {
+      "id": "Pervasives.print_int",
+      "kind": "value",
+      "name": "print_int",
+      "signature": "let print_int: int => unit",
+      "docstrings": [
+        "Print an integer, in decimal, on standard output."
+      ]
+    },
+    {
+      "id": "Pervasives.print_float",
+      "kind": "value",
+      "name": "print_float",
+      "signature": "let print_float: float => unit",
+      "docstrings": [
+        "Print a floating-point number, in decimal, on standard output."
+      ]
+    },
+    {
+      "id": "Pervasives.print_endline",
+      "kind": "value",
+      "name": "print_endline",
+      "signature": "let print_endline: string => unit",
+      "docstrings": [
+        "Print a string, followed by a newline character, on\n   standard output and flush standard output."
+      ]
+    },
+    {
+      "id": "Pervasives.print_newline",
+      "kind": "value",
+      "name": "print_newline",
+      "signature": "let print_newline: unit => unit",
+      "docstrings": [
+        "Print a newline character on standard output, and flush\n   standard output. This can be used to simulate line\n   buffering of standard output."
+      ]
+    },
+    {
+      "id": "Pervasives.prerr_endline",
+      "kind": "value",
+      "name": "prerr_endline",
+      "signature": "let prerr_endline: string => unit",
+      "docstrings": [
+        "Print a string, followed by a newline character on standard\n   error and flush standard error."
+      ]
+    },
+    {
+      "id": "Pervasives.prerr_newline",
+      "kind": "value",
+      "name": "prerr_newline",
+      "signature": "let prerr_newline: unit => unit",
+      "docstrings": [
+        "Print a newline character on standard error, and flush\n   standard error."
+      ]
+    },
+    {
+      "id": "Pervasives.ref",
+      "kind": "type",
+      "name": "ref",
+      "signature": "type ref<'a> = {mutable contents: 'a}",
+      "docstrings": [
+        "The type of references (mutable indirection cells) containing\n   a value of type ['a]."
+      ],
+      "detail": {
+        "kind": "record",
+        "fieldDocs": [
+          {
+            "fieldName": "contents",
+            "docstrings": [],
+            "signature": "'a"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Pervasives.ref",
+      "kind": "value",
+      "name": "ref",
+      "signature": "let ref: 'a => ref<'a>",
+      "docstrings": [
+        "Return a fresh reference containing the given value."
+      ]
+    },
+    {
+      "id": "Pervasives.!",
+      "kind": "value",
+      "name": "!",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "[!r] returns the current contents of reference [r].\n   Equivalent to [fun r -> r.contents].\n   Unary operator at precedence level 11/11."
+      ]
+    },
+    {
+      "id": "Pervasives.:=",
+      "kind": "value",
+      "name": ":=",
+      "signature": "let _: %rescript.typehole",
+      "docstrings": [
+        "[r := a] stores the value of [a] in reference [r].\n   Equivalent to [fun r v -> r.contents <- v].\n   Right-associative operator at precedence level 1/11."
+      ]
+    },
+    {
+      "id": "Pervasives.incr",
+      "kind": "value",
+      "name": "incr",
+      "signature": "let incr: ref<int> => unit",
+      "docstrings": [
+        "Increment the integer contained in the given reference.\n   Equivalent to [fun r -> r := succ !r]."
+      ]
+    },
+    {
+      "id": "Pervasives.decr",
+      "kind": "value",
+      "name": "decr",
+      "signature": "let decr: ref<int> => unit",
+      "docstrings": [
+        "Decrement the integer contained in the given reference.\n   Equivalent to [fun r -> r := pred !r]."
+      ]
+    },
+    {
+      "id": "Pervasives.result",
+      "kind": "type",
+      "name": "result",
+      "signature": "type result<'a, 'b> = Belt.Result.t<'a, 'b> =\\n  | Ok('a)\\n  | Error('b)",
+      "docstrings": [
+        "@since 4.03.0"
+      ],
+      "detail": {
+        "kind": "variant",
+        "constructorDocs": [
+          {
+            "constructorName": "Ok",
+            "docstrings": [],
+            "signature": "Ok('a)"
+          },
+          {
+            "constructorName": "Error",
+            "docstrings": [],
+            "signature": "Error('b)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Pervasives.exit",
+      "kind": "value",
+      "name": "exit",
+      "signature": "let exit: int => 'a",
+      "docstrings": [
+        "Terminate the process, returning the given status code\n   to the operating system: usually 0 to indicate no errors,\n   and a small positive integer to indicate failure.\n   All open output channels are flushed with [flush_all].\n   An implicit [exit 0] is performed each time a program\n   terminates normally.  An implicit [exit 2] is performed if the program\n   terminates early because of an uncaught exception."
+      ]
+    },
+    {
+      "id": "Pervasives.at_exit",
+      "kind": "value",
+      "name": "at_exit",
+      "signature": "let at_exit: (unit => unit) => unit",
+      "docstrings": [
+        "Register the given function to be called at program termination\n   time. The functions registered with [at_exit] will be called when\n   the program does any of the following:\n   - executes {!Pervasives.exit}\n   - terminates, either normally or because of an uncaught\n     exception\n   - executes the C function [caml_shutdown].\n   The functions are called in 'last in, first out' order: the\n   function most recently added with [at_exit] is called first."
+      ]
+    },
+    {
+      "id": "Pervasives.valid_float_lexem",
+      "kind": "value",
+      "name": "valid_float_lexem",
+      "signature": "let valid_float_lexem: string => string",
+      "docstrings": []
+    }
+  ]
+}

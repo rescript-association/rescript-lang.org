@@ -1,0 +1,419 @@
+{
+  "name": "Js_json",
+  "docstrings": [
+    "Efficient JSON encoding using JavaScript API\n\n  **see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON)"
+  ],
+  "items": [
+    {
+      "id": "Js_json.t",
+      "kind": "type",
+      "name": "t",
+      "signature": "type t =\\n  | False\\n  | True\\n  | Null\\n  | String(string)\\n  | Number(float)\\n  | Object(Js.Dict.t<t>)\\n  | Array(array<t>)",
+      "docstrings": [
+        "The JSON data structure"
+      ],
+      "detail": {
+        "kind": "variant",
+        "constructorDocs": [
+          {
+            "constructorName": "False",
+            "docstrings": [],
+            "signature": "False"
+          },
+          {
+            "constructorName": "True",
+            "docstrings": [],
+            "signature": "True"
+          },
+          {
+            "constructorName": "Null",
+            "docstrings": [],
+            "signature": "Null"
+          },
+          {
+            "constructorName": "String",
+            "docstrings": [],
+            "signature": "String(string)"
+          },
+          {
+            "constructorName": "Number",
+            "docstrings": [],
+            "signature": "Number(float)"
+          },
+          {
+            "constructorName": "Object",
+            "docstrings": [],
+            "signature": "Object(Js.Dict.t<t>)"
+          },
+          {
+            "constructorName": "Array",
+            "docstrings": [],
+            "signature": "Array(array<t>)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Kind.Js_json",
+      "kind": "module",
+      "item": {
+        "name": "Kind",
+        "docstrings": [],
+        "items": [
+          {
+            "id": "Js_json.Kind.json",
+            "kind": "type",
+            "name": "json",
+            "signature": "type json = t",
+            "docstrings": [],
+            "detail": {
+              "kind": "variant",
+              "constructorDocs": [
+                {
+                  "constructorName": "False",
+                  "docstrings": [],
+                  "signature": "False"
+                },
+                {
+                  "constructorName": "True",
+                  "docstrings": [],
+                  "signature": "True"
+                },
+                {
+                  "constructorName": "Null",
+                  "docstrings": [],
+                  "signature": "Null"
+                },
+                {
+                  "constructorName": "String",
+                  "docstrings": [],
+                  "signature": "String(string)"
+                },
+                {
+                  "constructorName": "Number",
+                  "docstrings": [],
+                  "signature": "Number(float)"
+                },
+                {
+                  "constructorName": "Object",
+                  "docstrings": [],
+                  "signature": "Object(Js.Dict.t<t>)"
+                },
+                {
+                  "constructorName": "Array",
+                  "docstrings": [],
+                  "signature": "Array(array<t>)"
+                }
+              ]
+            }
+          },
+          {
+            "id": "Js_json.Kind.t",
+            "kind": "type",
+            "name": "t",
+            "signature": "type t<_> =\\n  | String: t<Js_string.t>\\n  | Number: t<float>\\n  | Object: t<Js_dict.t<json>>\\n  | Array: t<array<json>>\\n  | Boolean: t<bool>\\n  | Null: t<Js_types.null_val>",
+            "docstrings": [
+              "Underlying type of a JSON value"
+            ],
+            "detail": {
+              "kind": "variant",
+              "constructorDocs": [
+                {
+                  "constructorName": "String",
+                  "docstrings": [],
+                  "signature": "String\nt<Js_string.t>"
+                },
+                {
+                  "constructorName": "Number",
+                  "docstrings": [],
+                  "signature": "Number\nt<float>"
+                },
+                {
+                  "constructorName": "Object",
+                  "docstrings": [],
+                  "signature": "Object\nt<Js_dict.t<json>>"
+                },
+                {
+                  "constructorName": "Array",
+                  "docstrings": [],
+                  "signature": "Array\nt<array<json>>"
+                },
+                {
+                  "constructorName": "Boolean",
+                  "docstrings": [],
+                  "signature": "Boolean\nt<bool>"
+                },
+                {
+                  "constructorName": "Null",
+                  "docstrings": [],
+                  "signature": "Null\nt<Js_types.null_val>"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "Js_json.tagged_t",
+      "kind": "type",
+      "name": "tagged_t",
+      "signature": "type tagged_t =\\n  | JSONFalse\\n  | JSONTrue\\n  | JSONNull\\n  | JSONString(string)\\n  | JSONNumber(float)\\n  | JSONObject(Js_dict.t<t>)\\n  | JSONArray(array<t>)",
+      "docstrings": [],
+      "detail": {
+        "kind": "variant",
+        "constructorDocs": [
+          {
+            "constructorName": "JSONFalse",
+            "docstrings": [],
+            "signature": "JSONFalse"
+          },
+          {
+            "constructorName": "JSONTrue",
+            "docstrings": [],
+            "signature": "JSONTrue"
+          },
+          {
+            "constructorName": "JSONNull",
+            "docstrings": [],
+            "signature": "JSONNull"
+          },
+          {
+            "constructorName": "JSONString",
+            "docstrings": [],
+            "signature": "JSONString(string)"
+          },
+          {
+            "constructorName": "JSONNumber",
+            "docstrings": [],
+            "signature": "JSONNumber(float)"
+          },
+          {
+            "constructorName": "JSONObject",
+            "docstrings": [],
+            "signature": "JSONObject(Js_dict.t<t>)"
+          },
+          {
+            "constructorName": "JSONArray",
+            "docstrings": [],
+            "signature": "JSONArray(array<t>)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Js_json.classify",
+      "kind": "value",
+      "name": "classify",
+      "signature": "let classify: t => tagged_t",
+      "docstrings": []
+    },
+    {
+      "id": "Js_json.test",
+      "kind": "value",
+      "name": "test",
+      "signature": "let test: ('a, Kind.t<'b>) => bool",
+      "docstrings": [
+        "`test(v, kind)` returns `true` if `v` is of `kind`."
+      ]
+    },
+    {
+      "id": "Js_json.decodeString",
+      "kind": "value",
+      "name": "decodeString",
+      "signature": "let decodeString: t => option<Js_string.t>",
+      "docstrings": [
+        "`decodeString(json)` returns `Some(s)` if `json` is a `string`, `None` otherwise."
+      ]
+    },
+    {
+      "id": "Js_json.decodeNumber",
+      "kind": "value",
+      "name": "decodeNumber",
+      "signature": "let decodeNumber: t => option<float>",
+      "docstrings": [
+        "`decodeNumber(json)` returns `Some(n)` if `json` is a `number`, `None` otherwise."
+      ]
+    },
+    {
+      "id": "Js_json.decodeObject",
+      "kind": "value",
+      "name": "decodeObject",
+      "signature": "let decodeObject: t => option<Js_dict.t<t>>",
+      "docstrings": [
+        "`decodeObject(json)` returns `Some(o)` if `json` is an `object`, `None` otherwise."
+      ]
+    },
+    {
+      "id": "Js_json.decodeArray",
+      "kind": "value",
+      "name": "decodeArray",
+      "signature": "let decodeArray: t => option<array<t>>",
+      "docstrings": [
+        "`decodeArray(json)` returns `Some(a)` if `json` is an `array`, `None` otherwise."
+      ]
+    },
+    {
+      "id": "Js_json.decodeBoolean",
+      "kind": "value",
+      "name": "decodeBoolean",
+      "signature": "let decodeBoolean: t => option<bool>",
+      "docstrings": [
+        "`decodeBoolean(json)` returns `Some(b)` if `json` is a `boolean`, `None` otherwise."
+      ]
+    },
+    {
+      "id": "Js_json.decodeNull",
+      "kind": "value",
+      "name": "decodeNull",
+      "signature": "let decodeNull: t => option<Js_null.t<'a>>",
+      "docstrings": [
+        "`decodeNull(json)` returns `Some(null)` if `json` is a `null`, `None` otherwise."
+      ]
+    },
+    {
+      "id": "Js_json.null",
+      "kind": "value",
+      "name": "null",
+      "signature": "let null: t",
+      "docstrings": [
+        "`null` is the singleton null JSON value."
+      ]
+    },
+    {
+      "id": "Js_json.string",
+      "kind": "value",
+      "name": "string",
+      "signature": "let string: string => t",
+      "docstrings": [
+        "`string(s)` makes a JSON string of the `string` `s`."
+      ]
+    },
+    {
+      "id": "Js_json.number",
+      "kind": "value",
+      "name": "number",
+      "signature": "let number: float => t",
+      "docstrings": [
+        "`number(n)` makes a JSON number of the `float` `n`."
+      ]
+    },
+    {
+      "id": "Js_json.boolean",
+      "kind": "value",
+      "name": "boolean",
+      "signature": "let boolean: bool => t",
+      "docstrings": [
+        "`boolean(b)` makes a JSON boolean of the `bool` `b`."
+      ]
+    },
+    {
+      "id": "Js_json.object_",
+      "kind": "value",
+      "name": "object_",
+      "signature": "let object_: Js_dict.t<t> => t",
+      "docstrings": [
+        "`object_(dict)` makes a JSON object of the `Js.Dict.t` `dict`."
+      ]
+    },
+    {
+      "id": "Js_json.array",
+      "kind": "value",
+      "name": "array",
+      "signature": "let array: array<t> => t",
+      "docstrings": [
+        "`array_(a)` makes a JSON array of the `Js.Json.t` array `a`."
+      ]
+    },
+    {
+      "id": "Js_json.stringArray",
+      "kind": "value",
+      "name": "stringArray",
+      "signature": "let stringArray: array<string> => t",
+      "docstrings": [
+        "`stringArray(a)` makes a JSON array of the `string` array `a`."
+      ]
+    },
+    {
+      "id": "Js_json.numberArray",
+      "kind": "value",
+      "name": "numberArray",
+      "signature": "let numberArray: array<float> => t",
+      "docstrings": [
+        "`numberArray(a)` makes a JSON array of the `float` array `a`."
+      ]
+    },
+    {
+      "id": "Js_json.booleanArray",
+      "kind": "value",
+      "name": "booleanArray",
+      "signature": "let booleanArray: array<bool> => t",
+      "docstrings": [
+        "`booleanArray(a)` makes a JSON array of the `bool` array `a`."
+      ]
+    },
+    {
+      "id": "Js_json.objectArray",
+      "kind": "value",
+      "name": "objectArray",
+      "signature": "let objectArray: array<Js_dict.t<t>> => t",
+      "docstrings": [
+        "`objectArray(a) makes a JSON array of the `JsDict.t` array `a`."
+      ]
+    },
+    {
+      "id": "Js_json.parseExn",
+      "kind": "value",
+      "name": "parseExn",
+      "signature": "let parseExn: string => t",
+      "docstrings": [
+        "`parseExn(s)` parses the `string` `s` into a JSON data structure.\nReturns a JSON data structure.\nRaises `SyntaxError` if the given string is not a valid JSON. Note: `SyntaxError` is a JavaScript exception.\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse)\n\n```res example\n/* parse a simple JSON string */\n\nlet json = try Js.Json.parseExn(` \"hello\" `) catch {\n| _ => failwith(\"Error parsing JSON string\")\n}\n\nswitch Js.Json.classify(json) {\n| Js.Json.JSONString(value) => Js.log(value)\n| _ => failwith(\"Expected a string\")\n}\n```\n\n```res example\n/* parse a complex JSON string */\n\nlet getIds = s => {\n  let json = try Js.Json.parseExn(s) catch {\n  | _ => failwith(\"Error parsing JSON string\")\n  }\n\n  switch Js.Json.classify(json) {\n  | Js.Json.JSONObject(value) =>\n    /* In this branch, compiler infer value : Js.Json.t Js.Dict.t */\n    switch Js.Dict.get(value, \"ids\") {\n    | Some(ids) =>\n      switch Js.Json.classify(ids) {\n      | Js.Json.JSONArray(ids) => /* In this branch compiler infer ids : Js.Json.t array */\n        ids\n      | _ => failwith(\"Expected an array\")\n      }\n    | None => failwith(\"Expected an `ids` property\")\n    }\n  | _ => failwith(\"Expected an object\")\n  }\n}\n\n/* prints `1, 2, 3` */\nJs.log(getIds(` { \"ids\" : [1, 2, 3 ] } `))\n```"
+      ]
+    },
+    {
+      "id": "Js_json.stringify",
+      "kind": "value",
+      "name": "stringify",
+      "signature": "let stringify: t => string",
+      "docstrings": [
+        "`stringify(json)` formats the JSON data structure as a `string`.\nReturns the string representation of a given JSON data structure.\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)\n\n```res example\n/* Creates and stringifies a simple JS object */\n\nlet dict = Js.Dict.empty()\nJs.Dict.set(dict, \"name\", Js.Json.string(\"John Doe\"))\nJs.Dict.set(dict, \"age\", Js.Json.number(30.0))\nJs.Dict.set(dict, \"likes\", Js.Json.stringArray([\"bucklescript\", \"ocaml\", \"js\"]))\n\nJs.log(Js.Json.stringify(Js.Json.object_(dict)))\n```"
+      ]
+    },
+    {
+      "id": "Js_json.stringifyWithSpace",
+      "kind": "value",
+      "name": "stringifyWithSpace",
+      "signature": "let stringifyWithSpace: (t, int) => string",
+      "docstrings": [
+        "`stringifyWithSpace(json)` formats the JSON data structure as a `string`.\nReturns the string representation of a given JSON data structure with spacing.\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)\n\n```res example\n/* Creates and stringifies a simple JS object with spacing */\n\nlet dict = Js.Dict.empty()\nJs.Dict.set(dict, \"name\", Js.Json.string(\"John Doe\"))\nJs.Dict.set(dict, \"age\", Js.Json.number(30.0))\nJs.Dict.set(dict, \"likes\", Js.Json.stringArray([\"bucklescript\", \"ocaml\", \"js\"]))\n\nJs.log(Js.Json.stringifyWithSpace(Js.Json.object_(dict), 2))\n```"
+      ]
+    },
+    {
+      "id": "Js_json.stringifyAny",
+      "kind": "value",
+      "name": "stringifyAny",
+      "signature": "let stringifyAny: 'a => option<string>",
+      "docstrings": [
+        "`stringifyAny(value)` formats any value into a JSON string.\n\n```res example\n/* prints `[\"hello\", \"world\"]` */\nJs.log(Js.Json.stringifyAny([\"hello\", \"world\"]))\n```"
+      ]
+    },
+    {
+      "id": "Js_json.deserializeUnsafe",
+      "kind": "value",
+      "name": "deserializeUnsafe",
+      "signature": "let deserializeUnsafe: string => 'a",
+      "docstrings": [
+        "Best-effort serialization, it tries to seralize as\n  many objects as possible and deserialize it back\n\n  It is unsafe in two aspects\n  - It may throw during  parsing\n  - when you cast it to a specific type, it may have a type mismatch"
+      ]
+    },
+    {
+      "id": "Js_json.serializeExn",
+      "kind": "value",
+      "name": "serializeExn",
+      "signature": "let serializeExn: 'a => string",
+      "docstrings": [
+        "It will raise in such situations:\n  - The object can not be serlialized to a JSON\n  - There are cycles\n  - Some JS engines can not stringify deeply nested json objects"
+      ]
+    }
+  ]
+}
