@@ -8,37 +8,82 @@ const ANALYSIS_PATH =
   "/home/pedro/Desktop/projects/rescript-vscode/analysis/rescript-editor-analysis.exe";
 
 const all_files = fs.readdirSync(LIB_PATH);
-const files = all_files.filter(
-  file =>
-    file.endsWith(".res") ||
-    file.endsWith(".resi") ||
-    file.endsWith(".ml") ||
-    file.endsWith(".mli")
-).filter(file =>
-  ![
-    "arg.res",
-    "arg.resi",
-    "arrayLabels.ml",
-    "arrayLabels.mli",
-    // Belt Internals
-    "belt_internalAVLset.res",
-    "belt_internalAVLset.resi",
-    "belt_internalAVLtree.res",
-    "belt_internalAVLtree.resi",
-    "belt_internalBuckets.res",
-    "belt_internalBuckets.resi",
-    "belt_internalBucketsType.res",
-    "belt_internalBucketsType.resi",
-    "belt_internalMapInt.res",
-    "belt_internalMapInt.resi",
-    "belt_internalMapString.res",
-    "belt_internals.resi",
-    "belt_internalSetBuckets.res",
-    "belt_internalSetBuckets.resi",
-    "belt_internalSetInt.res",
-    "belt_internalSetString.res"
-  ].includes(file)
-);
+const files = all_files
+  .filter(file =>
+    [
+      // Belt
+      "belt.res",
+      "belt_Array.resi",
+      "belt_Float.resi",
+      "belt_HashMap.resi",
+      "belt_HashMapInt.resi",
+      "belt_HashMapString.resi",
+      "belt_HashSet.resi",
+      "belt_HashSetInt.resi",
+      "belt_HashSetString.resi",
+      "belt_Id.resi",
+      "belt_Int.resi",
+      "belt_List.resi",
+      "belt_Map.resi",
+      "belt_MapDict.resi",
+      "belt_MapInt.resi",
+      "belt_MapString.resi",
+      "belt_MutableMap.resi",
+      "belt_MutableMapInt.resi",
+      "belt_MutableMapString.resi",
+      "belt_MutableQueue.resi",
+      "belt_MutableSet.resi",
+      "belt_MutableSetInt.resi",
+      "belt_MutableSetString.resi",
+      "belt_MutableStack.resi",
+      "belt_Option.resi",
+      "belt_Range.resi",
+      "belt_Result.resi",
+      "belt_Set.resi",
+      "belt_SetDict.resi",
+      "belt_SetInt.resi",
+      "belt_SetString.resi",
+      "belt_SortArray.resi",
+      "belt_SortArrayInt.resi",
+      "belt_SortArrayString.resi",
+
+      // DOM
+      "dom.res",
+      "dom_storage.res",
+      "dom_storage2.res",
+
+      // JS
+      "js.ml",
+      "js_array.res",
+      "js_array2.res",
+      "js_bigint.res",
+      "js_console.res",
+      "js_date.res",
+      "js_dict.mli",
+      "js_exn.resi",
+      "js_float.res",
+      "js_global.res",
+      "js_int.res",
+      "js_json.resi",
+      "js_list.resi",
+      "js_math.ml",
+      "js_null.resi",
+      "js_null_undefined.resi",
+      "js_obj.res",
+      "js_option.resi",
+      "js_promise.res",
+      "js_promise2.res",
+      "js_re.res",
+      "js_result.resi",
+      "js_set.res",
+      "js_string.ml",
+      "js_string2.ml",
+      "js_typed_array.res",
+      "js_typed_array2.res",
+      "js_types.resi",
+      "js_undefined.resi"
+    ].includes(file)
+  );
 
 const interfaces = files.reduce((acc, file) => {
   const interface_file = file + "i";
