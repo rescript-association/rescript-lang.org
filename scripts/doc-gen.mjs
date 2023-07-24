@@ -86,22 +86,7 @@ const files = fs
   .readdirSync(LIB_PATH)
   .filter(file => PUBLIC_API_MODULES.includes(file));
 
-const diff = PUBLIC_API_MODULES.filter(o => !files.includes(o));
-assert(diff.length == 0, `Files listed ${diff}, but not found`);
-
-const interfaces = files.reduce((acc, file) => {
-  const interface_file = file + "i";
-  const is_interface = file.endsWith("i");
-  const interface_exists = files.includes(interface_file);
-
-  if (is_interface) {
-    return acc.includes(file) ? acc : [...acc, file];
-  } else {
-    return [...acc, interface_exists ? interface_file : file];
-  }
-}, []);
-
-const docs = interfaces.map(file => {
+const docs = files.map(file => {
   const full_path = path.join(LIB_PATH, file);
   const process = child_process.execSync(
     `${ANALYSIS_PATH} extractDocs ${full_path}`
