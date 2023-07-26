@@ -52,9 +52,9 @@ module Sgr = {
     }
 }
 
-let esc = j`\\u001B`
+let esc = j`\u001B`
 
-let isAscii = (c: string) => Js.Re.test_(%re(`/[\\x40-\\x7F]/`), c)
+let isAscii = (c: string) => Js.Re.test_(%re(`/[\x40-\x7F]/`), c)
 
 module Location = {
   type t = {
@@ -67,7 +67,7 @@ module Location = {
     endPos: int,
   }
 
-  let fromString = input => {input: input, pos: -1}
+  let fromString = input => {input, pos: -1}
 
   let isDone = p => p.pos >= Js.String.length(p.input)
 
@@ -109,7 +109,7 @@ module Location = {
 
 module Lexer = {
   open Location
-  open Sgr
+  open! Sgr
 
   type token =
     | Text({loc: Location.loc, content: string})
@@ -147,26 +147,26 @@ module Lexer = {
         if c === esc {
           let token = Text({
             loc: {
-              startPos: startPos,
-              endPos: endPos,
+              startPos,
+              endPos,
             },
-            content: content,
+            content,
           })
           Js.Array2.push(acc, token)->ignore
           lex(~acc, ~state=ReadSgr({startPos: p.pos, content: c}), p)
         } else if isDone(p) {
           let token = Text({
             loc: {
-              startPos: startPos,
-              endPos: endPos,
+              startPos,
+              endPos,
             },
-            content: content,
+            content,
           })
           Js.Array2.push(acc, token)->ignore
           acc
         } else {
           let content = content ++ c
-          lex(~acc, ~state=ReadText({startPos: startPos, content: content}), p)
+          lex(~acc, ~state=ReadText({startPos, content}), p)
         }
       | ReadSgr({startPos, content}) =>
         let c = next(p)
@@ -175,9 +175,9 @@ module Lexer = {
         if c !== "[" && isAscii(c) {
           let raw = content ++ c
 
-          let loc = {startPos: startPos, endPos: startPos + Js.String.length(raw) - 1}
+          let loc = {startPos, endPos: startPos + Js.String.length(raw) - 1}
 
-          let token = Js.Re.exec_(%re(`/\\[([0-9;]+)([\\x40-\\x7F])/`), raw)->(
+          let token = Js.Re.exec_(%re(`/\[([0-9;]+)([\x40-\x7F])/`), raw)->(
             x =>
               switch x {
               | Some(result) =>
@@ -185,7 +185,7 @@ module Lexer = {
                 switch Js.Nullable.toOption(groups[1]) {
                 | Some(str) =>
                   switch Js.String2.split(str, ";") {
-                  | ["0"] => ClearSgr({loc: loc, raw: raw})
+                  | ["0"] => ClearSgr({loc, raw})
                   | other =>
                     let params = Belt.Array.map(other, s =>
                       switch s {
@@ -209,18 +209,18 @@ module Lexer = {
                       | o => Unknown(o)
                       }
                     )
-                    Sgr({loc: loc, raw: raw, params: params})
+                    Sgr({loc, raw, params})
                   }
 
-                | None => Sgr({loc: loc, raw: raw, params: []})
+                | None => Sgr({loc, raw, params: []})
                 }
-              | None => Sgr({loc: loc, raw: raw, params: []})
+              | None => Sgr({loc, raw, params: []})
               }
           )
           Js.Array2.push(acc, token)->ignore
           lex(~acc, ~state=Scan, p)
         } else {
-          lex(~acc, ~state=ReadSgr({startPos: startPos, content: content ++ c}), p)
+          lex(~acc, ~state=ReadSgr({startPos, content: content ++ c}), p)
         }
       }
     }
@@ -320,7 +320,7 @@ module SgrString = {
   let toString = (e: t): string => {
     let content = {
       open Js.String2
-      replaceByRe(e.content, %re("/\\n/g"), "\\n")->replace(esc, "")
+      replaceByRe(e.content, %re("/\n/g"), "\\n")->replace(esc, "")
     }
     let params = Belt.Array.map(e.params, Sgr.paramToString)->Js.Array2.joinWith(", ")
 
@@ -336,7 +336,7 @@ module Printer = {
     | Text({content, loc: {startPos, endPos}}) =>
       let content = {
         open Js.String2
-        replaceByRe(content, %re("/\\n/g"), "\\n")->replace(esc, "")
+        replaceByRe(content, %re("/\n/g"), "\\n")->replace(esc, "")
       }
       j`Text "$content" ($startPos to $endPos)`
     | Sgr({params, raw, loc: {startPos, endPos}}) =>

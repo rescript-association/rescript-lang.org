@@ -488,7 +488,7 @@ if (person1.TAG) {
 
 </CodeTab>
 
-**Note:** In ReScript version < 9.0, the `if` clause is denoted as a `when`, but will be reformatted to `if` in newer versions.
+**Note:** Rescript versions < 9.0 had a `when` clause, not an `if` clause.  Rescript 9.0 changed `when` to `if`.  (`when` may still work, but is deprecated.)
 
 ### Match on Exceptions
 
@@ -743,11 +743,11 @@ If you don't handle the `None` case, the compiler warns. No more `undefined` bug
 
 Hopefully you can see how pattern matching is a game changer for writing correct code, through the concise destructuring syntax, the proper conditions handling of `switch`, and the static exhaustiveness check.
 
-Here are some advices.
+Below is some advice:
 
-Do not abuse the wildcard `_` too much. This prevents the compiler from giving you better exhaustiveness check, which would be especially important after a refactoring where you add a new case to a variant. Try only using `_` against infinite possibilities, e.g. string, int, etc.
+Avoid using the wildcard `_` unnecessarily.  Using the wildcard `_` will bypass the compiler's exhaustiveness check.  Consequently, the compiler will not be able to notify you of probable errors when you add a new case to a variant. Try only using `_` against infinite possibilities, e.g. string, int, etc.
 
-Use `if` clause sparingly.
+Use the `if` clause sparingly.
 
 **Flatten your pattern-match whenever you can**. This is a real bug remover. Here's a series of examples, from worst to best:
 

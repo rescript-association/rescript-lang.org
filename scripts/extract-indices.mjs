@@ -14,7 +14,8 @@ import path from "path";
 import fs from "fs";
 import { URL } from 'url';
 
-const __dirname = new URL('.', import.meta.url).pathname;
+const pathname = new URL('.', import.meta.url).pathname;
+const __dirname = process.platform !== 'win32' ? pathname : pathname.substring(1)
 
 const headers = options => (tree, file) => {
   const headers = [];
@@ -22,13 +23,13 @@ const headers = options => (tree, file) => {
   tree.children.forEach(child => {
     if (child.type === "heading" && child.depth === 1) {
       if (child.children.length > 0) {
-        mainHeader = child.children[0].value;
+        mainHeader = child.children.map(element => element.value).join("");
       }
     }
     if (child.type === "heading" && child.depth === 2) {
       if (child.children.length > 0) {
         const id = child.data.id || "";
-        const name = child.children[0].value;
+        const name = child.children.map(element => element.value).join("");
         headers.push({ name, href: id });
       }
     }

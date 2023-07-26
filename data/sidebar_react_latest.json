@@ -2,7 +2,7 @@
   "Overview": [
     "introduction",
     "installation",
-    "migrate-from-reason-react"
+    "migrate-react"
   ],
   "Main Concepts": [
     "elements-and-jsx",
@@ -25,6 +25,7 @@
   ],
   "Guides": [
     "beyond-jsx",
-    "forwarding-refs"
+    "forwarding-refs",
+    "extensions-of-props"
   ]
 }

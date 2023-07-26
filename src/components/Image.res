@@ -8,7 +8,7 @@ let default = (~src: string, ~withShadow=false, ~caption: option<string>=?) => {
     ""
   }
   <div className="mt-8 mb-12 md:-mx-16">
-    <a href=src target="_blank" rel="noopener noreferrer">
+    <a href=src rel="noopener noreferrer">
       <img className={"w-full " ++ shadow} src />
     </a>
     {switch caption {

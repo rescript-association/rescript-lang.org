@@ -9,6 +9,11 @@ node_modules/
 .next/
 index_data/*.json
 
+# Generated via test examples script
+_tempFile.cmi
+_tempFile.cmj
+_tempFile.cmt
+
 # these docs are checked in, but we consider them frozen.
 pages/docs/manual/v8.0.0/
 pages/docs/manual/v9.0.0/
@@ -19,3 +24,5 @@ lib/
 .vscode/
 
 .vercel
+
+src/**/*.mjs

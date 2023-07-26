@@ -34,6 +34,8 @@ module Lang = {
 module Version = {
   type t =
     | V1
+    | V2
+    | V3
     | UnknownVersion(string)
 
   // Helps finding the right API version
@@ -53,18 +55,25 @@ module Version = {
         }
       | _ => UnknownVersion(apiVersion)
       }
+    | list{"2"} => V2
+    | list{"3"} => V3
     | _ => UnknownVersion(apiVersion)
     }
 
-  let defaultTargetLang = t =>
+  let toString = t =>
     switch t {
-    | V1 => Lang.Res
-    | _ => Reason
+    | V1 => "1.0"
+    | V2 => "2.0"
+    | V3 => "3.0"
+    | UnknownVersion(version) => version
     }
+
+  let defaultTargetLang = Lang.Res
 
   let availableLanguages = t =>
     switch t {
     | V1 => [Lang.Reason, Res]
+    | V2 | V3 => [Lang.Res]
     | UnknownVersion(_) => [Res]
     }
 }
@@ -137,9 +146,7 @@ module Warning = {
     let warnNumber = field("warnNumber", int, json)
     let details = LocMsg.decode(json)
 
-    field("isError", bool, json)
-      ? WarnErr({warnNumber: warnNumber, details: details})
-      : Warn({warnNumber: warnNumber, details: details})
+    field("isError", bool, json) ? WarnErr({warnNumber, details}) : Warn({warnNumber, details})
   }
 
   // Useful for showing errors in a more compact format
@@ -236,7 +243,7 @@ module CompileSuccess = {
       js_code: field("js_code", string, json),
       warnings: field("warnings", array(Warning.decode), json),
       type_hints: withDefault([], field("type_hints", array(TypeHint.decode)), json),
-      time: time,
+      time,
     }
   }
 }
@@ -328,7 +335,7 @@ module ConversionResult = {
     | "unexpected_error" => UnexpectedError(field("msg", string, json))
     | "syntax_error" =>
       let locMsgs = field("errors", array(LocMsg.decode), json)
-      Fail({fromLang: fromLang, toLang: toLang, details: locMsgs})
+      Fail({fromLang, toLang, details: locMsgs})
     | other => Unknown(j`Unknown conversion result type "$other"`, json)
     } catch {
     | DecodeError(errMsg) => Unknown(errMsg, json)
@@ -340,6 +347,7 @@ module Config = {
   type t = {
     module_system: string,
     warn_flags: string,
+    uncurried?: bool,
   }
 }
 
@@ -374,9 +382,6 @@ module Compiler = {
     let json = resFormat(t, code)
     ConversionResult.decode(~fromLang=Res, ~toLang=Res, json)
   }
-
-  @get @scope("reason")
-  external reasonVersion: t => string = "version"
 
   @send @scope("reason")
   external reasonCompile: (t, string) => Js.Json.t = "compile"

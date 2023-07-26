@@ -12,7 +12,8 @@ import path from "path";
 import fs from "fs";
 import { URL } from 'url';
 
-const __dirname = new URL('.', import.meta.url).pathname;
+const pathname = new URL('.', import.meta.url).pathname;
+const __dirname = process.platform !== 'win32' ? pathname : pathname.substring(1)
 
 // orderArr: ["introduction", "overview",,...]
 const orderFiles = (filepaths, orderArr) => {
@@ -203,10 +204,11 @@ const createV800ManualToc = () => {
 };
 
 
-const createReactToc = () => {
-  const MD_DIR = path.join(__dirname, "../pages/docs/react/latest");
-  const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_react_latest.json");
-  const TARGET_FILE = path.join(__dirname, "../index_data/react_latest_toc.json");
+const createReactToc = version => {
+  const versionLabel = version.replace(/\./g, "");
+  const MD_DIR = path.join(__dirname, "../pages/docs/react");
+  const SIDEBAR_JSON = path.join(__dirname, `../data/sidebar_react_${versionLabel}.json`);
+  const TARGET_FILE = path.join(__dirname, `../index_data/react_${versionLabel}_toc.json`);
 
   const sidebarJson = JSON.parse(fs.readFileSync(SIDEBAR_JSON));
 
@@ -214,7 +216,7 @@ const createReactToc = () => {
     return acc.concat(items)
   },[]);
 
-  const files = glob.sync(`${MD_DIR}/*.md?(x)`);
+  const files = glob.sync(`${MD_DIR}/${version}/*.md?(x)`);
   const ordered = orderFiles(files, FILE_ORDER);
 
   const result = ordered.map((filepath) => processFile(filepath, sidebarJson));
@@ -283,6 +285,7 @@ createLatestManualToc();
 createV900ManualToc();
 createV800ManualToc();
 createReasonCompilerToc();
-createReactToc();
+createReactToc("latest");
+createReactToc("v0.10.0");
 createGenTypeToc();
 createCommunityToc();

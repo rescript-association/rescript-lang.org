@@ -204,7 +204,7 @@ module Parser = {
           Js.Array2.push(ret, token)->ignore
           ParseModifier
         } else {
-          ParseFlag({modifier: modifier, acc: acc ++ cur})
+          ParseFlag({modifier, acc: acc ++ cur})
         }
       }
 

@@ -1,38 +1,121 @@
 ---
-title: "Async & Promise"
+title: "Promises"
 description: "JS Promise handling in ReScript"
 canonical: "/docs/manual/latest/promise"
 ---
 
-# Async & Promise
+# Promise
 
-ReScript's primary mechanism for async programming is the same as JavaScript's (callbacks and promises), since we compile cleanly to JavaScript and would like to avoid dragging in a heavy custom runtime.
+> **Note:** Starting from ReScript 10.1 and above, we recommend using [async / await](./async-await) when interacting with Promises.
 
-There is currently no support for `async` and `await` keywords in ReScript; though our new Promise API bindings revamp + [pipe](pipe) will make your async code already look better than otherwise.
+## `promise` type
 
-## Promise (new)
+**Since 10.1**
 
-Our up to date Promise bindings are currently not part of the the standard library. For now, please install them separately:
+In ReScript, every JS promise is represented with the globally available `promise<'a>` type. For ReScript versions < 10.1, use its original alias `Js.Promise.t<'a>` instead.
 
-```sh
-npm install @ryyppy/rescript-promise --save
+Here's a usage example in a function signature:
+
+```resi
+// User.resi file
+
+type user = {name: string}
+
+let fetchUser: string => promise<user>
 ```
 
-In your `bsconfig.json`:
+To work with promise values (instead of using `async` / `await`) you may want to use the built in `Js.Promise2` module. 
 
-```json
-{
-  "bs-dependencies": ["@ryyppy/rescript-promise"]
+## Js.Promise2
+
+A builtin module to create, chain and manipulate promises.
+
+> **Note:** This is an intermediate replacement for the `Js.Promise` module. It is designed to work with the `->` operator and should be used in favour of it's legacy counterpart. We are aware that the `Belt`, `Js` and `Js.xxx2` situation is confusing; a proper solution will hopefully be part of our upcoming `v11` release.
+
+### Creating a promise
+
+```res
+let p1 = Js.Promise2.make((~resolve, ~reject) => {
+  // We use uncurried functions for resolve / reject
+  // for cleaner JS output without unintended curry calls
+  resolve(. "hello world")
+})
+
+let p2 = Js.Promise2.resolve("some value")
+
+// You can only reject `exn` values for streamlined catch handling
+exception MyOwnError(string)
+let p3 = Js.Promise2.reject(MyOwnError("some rejection"))
+```
+
+### Access the contents and transform a promise
+
+```res
+let logAsyncMessage = () => {
+  open Js.Promise2
+  Js.Promise2.resolve("hello world")
+  ->then(msg => {
+    // then callbacks require the result to be resolved explicitly
+    resolve("Message: " ++ msg)
+  })
+  ->then(msg => {
+    Js.log(msg)
+
+    // Even if there is no result, we need to use resolve() to return a promise
+    resolve()
+  })
+  ->ignore // Requires ignoring due to unhandled return value
 }
 ```
 
-_Alternatively you may vendor the [`Promise.res` / `Promise.resi` files](https://github.com/ryyppy/rescript-promise/tree/master/src) files in your app codebase if you want to have more control._
+For comparison, the `async` / `await` version of the same code would look like this:
 
-You can find the APIs and full usage examples [here](https://github.com/ryyppy/rescript-promise#usage).
+```res
+let logAsyncMessage = async () => {
+  let msg = await Js.Promise2.resolve("hello world")
+  Js.log(`Message: ${msg}`)
+}
+```
 
-## Promise (legacy)
+Needless to say, the async / await version offers better ergonomics and less opportunities to run into type issues.
 
-> **Note:** The `Js.Promise` bindings are following the outdated data-last convention from a few years ago. We kept those APIs for backwards compatibility, so for now please use [`rescript-promise`](https://github.com/ryyppy/rescript-promise) until we upstream the new bindings to our standard library.
+### Run multiple promises in parallel
+
+In case you want to launch multiple promises in parallel, use `Js.Promise2.all`:
+
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+@val
+external fetchMessage: string => promise<string> = "global.fetchMessage"
+
+let logAsyncMessage = async () => {
+  let messages = await Js.Promise2.all([fetchMessage("message1"), fetchMessage("message2")])
+
+  Js.log(Js.Array2.joinWith(messages, ", "))
+}
+```
+
+```js
+async function logAsyncMessage(param) {
+  var messages = await Promise.all([
+        global.fetchMessage("message1"),
+        global.fetchMessage("message2")
+      ]);
+  console.log(messages.join(", "));
+}
+
+export {
+  logAsyncMessage ,
+}
+```
+
+</CodeTab>
+
+## Js.Promise module (legacy - do not use)
+
+> **Note:** The `Js.Promise` bindings are following the outdated data-last convention from a few years ago. We kept those APIs for backwards compatibility. Either use `Js.Promise2` or a third-party promise binding instead.
 
 ReScript has built-in support for [JavaScript promises](api/js/promise). The 3 functions you generally need are:
 

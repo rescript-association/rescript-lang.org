@@ -5,6 +5,7 @@ import * as escodegen from "escodegen";
 function removeImportsAndExports(code) {
   const ast = acorn.parse(code, {
     ecmaVersion: 9,
+    sourceType: "module"
   });
 
   walk(ast, {

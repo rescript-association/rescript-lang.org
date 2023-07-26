@@ -8,7 +8,7 @@ function transpile(prim) {
 }
 
 function run(code) {
-  return "\n      (function () {\n        " + RemoveImportsAndExports(code) + "\n        const root = document.getElementById(\"root\");\n        ReactDOM.render(App.make(), root);\n      })();\n    ";
+  return "(function () {\n  " + RemoveImportsAndExports(code) + "\n  const root = document.getElementById(\"root\");\n  ReactDOM.render(App.make(), root);\n})();";
 }
 
 var Transpiler = {
@@ -29,10 +29,8 @@ function sendOutput(code) {
   
 }
 
-var Frame_srcdoc = "\n    <html>\n      <head>\n        <meta charset=\"UTF-8\" />\n        <title>Playground Output</title>\n      </head>\n\n      <body>\n        <div id=\"root\"></div>\n        <script\n          src=\"https://unpkg.com/react@17/umd/react.production.min.js\"\n          crossorigin\n        ></script>\n        <script\n          src=\"https://unpkg.com/react-dom@17/umd/react-dom.production.min.js\"\n          crossorigin\n        ></script>\n        <script\n          src=\"https://bundleplayground.s3.sa-east-1.amazonaws.com/bundle.js\"\n          crossorigin\n        ></script>\n        <script>\n          window.addEventListener(\"message\", (event) => {\n            try {\n              eval(event.data);\n            } catch (err) {\n              console.log(err);\n            }\n          });\n        </script>\n      </body>\n    </html>\n  ";
-
 var Frame = {
-  srcdoc: Frame_srcdoc,
+  srcdoc: "\n    <html>\n      <head>\n        <meta charset=\"UTF-8\" />\n        <title>Playground Output</title>\n      </head>\n      <body>\n        <div id=\"root\"></div>\n        <script\n          src=\"https://unpkg.com/react@17/umd/react.production.min.js\"\n          crossorigin\n        ></script>\n        <script\n          src=\"https://unpkg.com/react-dom@17/umd/react-dom.production.min.js\"\n          crossorigin\n        ></script>\n        <script\n          src=\"https://bundleplayground.s3.sa-east-1.amazonaws.com/bundle.js\"\n          crossorigin\n        ></script>\n        <script>\n          window.addEventListener(\"message\", (event) => {\n            try {\n              eval(event.data);\n            } catch (err) {\n              console.log(err);\n            }\n          });\n        </script>\n      </body>\n    </html>\n  ",
   sendOutput: sendOutput
 };
 
@@ -47,6 +45,5 @@ export {
   Transpiler ,
   Frame ,
   renderOutput ,
-  
 }
 /* ../ffi/removeImportsAndExports Not a pure module */

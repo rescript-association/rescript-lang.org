@@ -71,6 +71,10 @@ var greeting = "Hello\nWorld\n👋\n" + name + "\n";
 
 This is just like JavaScript's backtick string interpolation, except without needing to escape special characters.
 
+### Unsafe String Interpolation (Deprecated)
+
+> ReScript v10.1.4 deprecated unsafe string interpolation and will be removed in v11.
+
 For interpolation, you'll have to convert the binding (`name` in the example) into a string if it isn't one. If you want the interpolation to implicitly convert a binding into a string, prepend a `j`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
@@ -91,7 +95,7 @@ See the familiar `Js.String` API in the [API docs](api/js/string). Since a ReScr
 
 ### Tips & Tricks
 
-**You have a good type system now**! In an untyped language, you'd often overload the meaning of string by using it as:
+**You have a good type system now!** In an untyped language, you'd often overload the meaning of string by using it as:
 
 - a unique id: `var BLUE_COLOR = "blue"`
 - an identifier into a data structure: `var BLUE = "blue" var RED = "red" var colors = [BLUE, RED]`
@@ -145,7 +149,7 @@ A ReScript boolean has the type `bool` and can be either `true` or `false`. Comm
 - `||`: logical or.
 - `!`: logical not.
 - `<=`, `>=`, `<`, `>`
-- `==`: structural equal, compares data structures deeply: `(1, 2) == (1, 2)` is `true`. Convenient, but use with caution.
+- `==`: structural equal, compares data structures deeply. `(1, 2) == (1, 2)` is `true`. Convenient, but use with caution.
 - `===`: referential equal, compares shallowly. `(1, 2) === (1, 2)` is `false`. `let myTuple = (1, 2); myTuple === myTuple` is `true`.
 - `!=`: structural unequal.
 - `!==`: referential unequal.
@@ -156,7 +160,7 @@ ReScript's `true/false` compiles into a JavaScript `true/false`.
 
 32-bits, truncated when necessary. We provide the usual operations on them: `+`, `-`, `*`, `/`, etc. See [Js.Int](api/js/int) for helper functions.
 
-**Careful when you bind to JavaScript numbers**! Long ones might be truncated. Bind JS number (especially Dates) as **float** instead.
+**Be careful when you bind to JavaScript numbers!** Since ReScript integers have a much smaller range than JavaScript numbers, data might get lost when dealing with large numbers. In those cases, it’s much safer to bind the numbers as **floats**. Be extra mindful of this when binding to JavaScript Dates and their epoch time.
 
 To improve readability, you may place underscores in the middle of numeric literals such as `1_000_000`. Note that underscores can be placed anywhere within a number, not just every three digits.
 
@@ -168,4 +172,16 @@ As with integers, you may use underscores within literals to improve readability
 
 ## Unit
 
-The `unit` type has a single value, `()`. It compiles to JavaScript's `undefined`. It's a dummy type used as a placeholder in various places. You won't need it until you see it.
+The `unit` type indicates the absence of a specific value. It has only a single value, `()`, which acts as a placeholder when no other value exists or is needed. It compiles to JavaScript's `undefined` and resembles the `void` type in languages such as C++. What's the point of such a type?
+
+Consider the `Math.random` function. Its type signature is `unit => float`, which means it receives a `unit` as input and calculates a random `float` as output. You use the function like this - `let x = Math.random()`. Notice `()` as the first and only function argument.
+
+Imagine a simplified `Console.log` function that prints a message. Its type signature is `string => unit` and you'd use it like this `Console.log("Hello!")`. It takes a string as input, prints it, and then returns nothing useful. When `unit` is the output of a function it means the function performs some kind of side-effect. 
+
+## Unknown
+
+The `unknown` type represents values with contents that are a mystery or are not 100% guaranteed to be what you think they are. It provides type-safety when interacting with data received from an untrusted source. For example, suppose an external function is supposed to return a `string`. It might. But if the documentation is not accurate or the code has bugs, the function could return `null`, an `array`, or something else you weren't expecting.
+
+The ReScript type system helps you avoid run-time crashes and unpredicatable behavior by preventing you from using `unknown` in places that expect a `string` or `int` or some other type. The ReScript core libraries also provide utility functions to help you inspect `unknown` values and access their contents. In some cases you may need a JSON parsing library to convert `unknown` values to types you can safely use.   
+
+Consider using `unknown` when receiving data from [external JavaScript functions](/docs/manual/latest/bind-to-js-function)

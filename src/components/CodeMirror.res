@@ -381,8 +381,8 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
             markerRef.current = Some(marker)
             stateRef.current = Shown({
               el: target,
-              marker: marker,
-              hoverHint: hoverHint,
+              marker,
+              hoverHint,
               hideTimer: None,
             })
           | Shown({el, marker: prevMarker, hideTimer}) =>
@@ -394,9 +394,9 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
             let marker = cm->CM.markText(from, to_, markerObj)
 
             stateRef.current = Shown({
-              el: el,
-              marker: marker,
-              hoverHint: hoverHint,
+              el,
+              marker,
+              hoverHint,
               hideTimer: None,
             })
           }
@@ -423,9 +423,9 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
       }, 200)
 
       stateRef.current = Shown({
-        el: el,
-        hoverHint: hoverHint,
-        marker: marker,
+        el,
+        hoverHint,
+        marker,
         hideTimer: Some(timerId),
       })
     | _ => ()
@@ -492,90 +492,91 @@ let extractRowColFromId = (id: string): option<(int, int)> =>
   | _ => None
   }
 
+module ErrorHash = Belt.Id.MakeHashable({
+  type t = int
+  let hash = a => a
+  let eq = (a, b) => a == b
+})
+
 let updateErrors = (~state: state, ~onMarkerFocus=?, ~onMarkerFocusLeave=?, ~cm: CM.t, errors) => {
   Belt.Array.forEach(state.marked, mark => mark->CM.TextMarker.clear)
+
+  let errorsMap = Belt.HashMap.make(~hintSize=Belt.Array.length(errors), ~id=module(ErrorHash))
   state.marked = []
-  cm->{
-    open CM
-    clearGutter(errorGutterId)
-  }
+  cm->CM.clearGutter(CM.errorGutterId)
 
   let wrapper = cm->CM.getWrapperElement
 
-  Belt.Array.forEachWithIndex(errors, (_idx, e) => {
+  Belt.Array.forEachWithIndex(errors, (idx, e) => {
     open DomUtil
     open Error
 
-    let marker = GutterMarker.make(~rowCol=(e.row, e.column), ~kind=e.kind, ())
+    if !Belt.HashMap.has(errorsMap, e.row) {
+      let marker = GutterMarker.make(~rowCol=(e.row, e.column), ~kind=e.kind, ())
+      Belt.HashMap.set(errorsMap, e.row, idx)
+      wrapper->appendChild(marker)
 
-    wrapper->appendChild(marker)
+      // CodeMirrors line numbers are (strangely enough) zero based
+      let row = e.row - 1
+      let endRow = e.endRow - 1
 
-    // CodeMirrors line numbers are (strangely enough) zero based
-    let row = e.row - 1
-    let endRow = e.endRow - 1
+      cm->CM.setGutterMarker(row, CM.errorGutterId, marker)
 
-    cm->CM.setGutterMarker(row, CM.errorGutterId, marker)
+      let from = {CM.line: row, ch: e.column}
+      let to_ = {CM.line: endRow, ch: e.endColumn}
 
-    let from = {CM.line: row, ch: e.column}
-    let to_ = {CM.line: endRow, ch: e.endColumn}
+      let markTextColor = switch e.kind {
+      | #Error => "border-fire"
+      | #Warning => "border-orange"
+      }
 
-    let markTextColor = switch e.kind {
-    | #Error => "border-fire"
-    | #Warning => "border-orange"
-    }
-
-    cm
-    ->CM.markText(
-      from,
-      to_,
-      CM.MarkTextOption.make(
-        ~className="border-b border-dotted hover:cursor-pointer " ++ markTextColor,
-        ~attributes=CM.MarkTextOption.Attr.make(
-          ~id="text-marker_" ++
-          (Belt.Int.toString(e.row) ++
-          ("-" ++ (Belt.Int.toString(e.column) ++ ""))),
+      cm
+      ->CM.markText(
+        from,
+        to_,
+        CM.MarkTextOption.make(
+          ~className="border-b border-dotted hover:cursor-pointer " ++ markTextColor,
+          ~attributes=CM.MarkTextOption.Attr.make(
+            ~id="text-marker_" ++
+            (Belt.Int.toString(e.row) ++
+            ("-" ++ (Belt.Int.toString(e.column) ++ ""))),
+            (),
+          ),
           (),
         ),
-        (),
-      ),
-    )
-    ->Js.Array2.push(state.marked, _)
-    ->ignore
-    ()
+      )
+      ->Js.Array2.push(state.marked, _)
+      ->ignore
+      ()
+    }
   })
 
   let isMarkerId = id =>
     Js.String2.startsWith(id, "gutter-marker") || Js.String2.startsWith(id, "text-marker")
 
-  wrapper->{
-    open DomUtil
-    setOnMouseOver(evt => {
-      let target = Event.target(evt)
+  wrapper->DomUtil.setOnMouseOver(evt => {
+    let target = DomUtil.Event.target(evt)
 
-      let id = getId(target)
-      if isMarkerId(id) {
-        switch extractRowColFromId(id) {
-        | Some(rowCol) => Belt.Option.forEach(onMarkerFocus, cb => cb(rowCol))
-        | None => ()
-        }
+    let id = DomUtil.getId(target)
+    if isMarkerId(id) {
+      switch extractRowColFromId(id) {
+      | Some(rowCol) => Belt.Option.forEach(onMarkerFocus, cb => cb(rowCol))
+      | None => ()
       }
-    })
-  }
+    }
+  })
 
-  wrapper->{
-    open DomUtil
-    setOnMouseOut(evt => {
-      let target = Event.target(evt)
+  wrapper->DomUtil.setOnMouseOut(evt => {
+    let target = DomUtil.Event.target(evt)
 
-      let id = getId(target)
-      if isMarkerId(id) {
-        switch extractRowColFromId(id) {
-        | Some(rowCol) => Belt.Option.forEach(onMarkerFocusLeave, cb => cb(rowCol))
-        | None => ()
-        }
+    let id = DomUtil.getId(target)
+    if isMarkerId(id) {
+      switch extractRowColFromId(id) {
+      | Some(rowCol) => Belt.Option.forEach(onMarkerFocusLeave, cb => cb(rowCol))
+      | None => ()
       }
-    })
-  }
+    }
+  })
 }
 
 @react.component
@@ -595,12 +596,12 @@ let make = // props relevant for the react wrapper
   ~mode,
   ~readOnly=false,
   ~lineNumbers=true,
-  ~scrollbarStyle="overlay",
+  ~scrollbarStyle="native",
   ~lineWrapping=false,
 ): React.element => {
   let inputElement = React.useRef(Js.Nullable.null)
   let cmRef: React.ref<option<CM.t>> = React.useRef(None)
-  let cmStateRef = React.useRef({marked: [], hoverHints: hoverHints})
+  let cmStateRef = React.useRef({marked: [], hoverHints})
 
   let windowWidth = useWindowWidth()
   let (onMouseOver, onMouseOut, onMouseMove) = useHoverTooltip(~cmStateRef, ~cmRef, ())

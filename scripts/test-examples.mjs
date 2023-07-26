@@ -4,7 +4,8 @@ import child_process from "child_process";
 import path from "path";
 import { URL } from 'url';
 
-const __dirname = new URL('.', import.meta.url).pathname;
+const pathname = new URL('.', import.meta.url).pathname;
+const __dirname = process.platform !== 'win32' ? pathname : pathname.substring(1)
 
 let tempFileName = path.join(__dirname, '..', '_tempFile.res')
 let tempFileNameRegex = /_tempFile\.res/g
@@ -13,7 +14,7 @@ let tempFileNameRegex = /_tempFile\.res/g
 //       see the package.json on how to define another rescript version
 let compilersDir = path.join(__dirname, "..", "compilers")
 
-let bsc = path.join(compilersDir, 'node_modules', 'rescript-912', process.platform, 'bsc.exe')
+let bsc = path.join(compilersDir, 'node_modules', 'rescript-1010', process.platform, 'bsc.exe')
 
 const prepareCompilers = () => {
   if (fs.existsSync(bsc)) {
@@ -82,7 +83,7 @@ glob.sync(__dirname + '/../pages/docs/manual/latest/**/*.mdx').forEach((file) =>
     try {
       // -109 for suppressing `Toplevel expression is expected to have unit type.`
       // Most doc snippets do e.g. `Belt.Array.length(["test"])`, which triggers this
-      child_process.execFileSync(bsc, ['-i', tempFileName, '-w', '-109'], {stdio: 'pipe'})
+      child_process.execFileSync(bsc, [tempFileName, '-w', '-109'], {stdio: 'pipe'})
     } catch (e) {
       process.stdout.write(postprocessOutput(file, e))
       success = false

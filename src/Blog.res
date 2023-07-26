@@ -32,7 +32,9 @@ module Badge = {
 
     <div
       className={bgColor ++ " flex items-center h-6 font-medium tracking-tight text-gray-80-tr text-14 px-2 rounded-sm"}>
-      <div> <img className="h-3 block mr-1" src="/static/star.svg" /> </div>
+      <div>
+        <img className="h-3 block mr-1" src="/static/star.svg" />
+      </div>
       <div> {React.string(text)} </div>
     </div>
   }
@@ -94,7 +96,10 @@ module BlogCard = {
       <div className="relative">
         {switch badge {
         | None => React.null
-        | Some(badge) => <div className="absolute z-10 bottom-0 mb-4 -ml-2"> <Badge badge /> </div>
+        | Some(badge) =>
+          <div className="absolute z-10 bottom-0 mb-4 -ml-2">
+            <Badge badge />
+          </div>
         }}
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
           <a className="relative hl-title block mb-4 pt-9/16">
@@ -110,11 +115,17 @@ module BlogCard = {
       </div>
       <div className="px-2">
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
-          <a> <h2 className="hl-4"> {React.string(title)} </h2> </a>
+          <a>
+            <h2 className="hl-4"> {React.string(title)} </h2>
+          </a>
         </Link>
         <div className="captions text-gray-40 pt-1">
           {switch category {
-          | Some(category) => <> {React.string(category)} {React.string(j` · `)} </>
+          | Some(category) =>
+            <>
+              {React.string(category)}
+              {React.string(j` · `)}
+            </>
           | None => React.null
           }}
           {React.string(date->Util.Date.toDayMonthYear)}
@@ -150,7 +161,9 @@ module FeatureCard = {
           <a className="relative block pt-2/3">
             {switch badge {
             | Some(badge) =>
-              <div className="absolute z-10 top-0 mt-10 ml-4 lg:-ml-4"> <Badge badge /> </div>
+              <div className="absolute z-10 top-0 mt-10 ml-4 lg:-ml-4">
+                <Badge badge />
+              </div>
             | None => React.null
             }}
             {
@@ -174,12 +187,12 @@ module FeatureCard = {
                 <a
                   className="hover:text-gray-60"
                   href={"https://twitter.com/" ++ author.twitter}
-                  rel="noopener noreferrer"
-                  target="_blank">
+                  rel="noopener noreferrer">
                   {React.string(author.fullname)}
                 </a>
                 {switch category {
-                | Some(category) => <>
+                | Some(category) =>
+                  <>
                     {React.string(middleDotSpacer)}
                     {React.string(category)}
                     {React.string(middleDotSpacer)}
@@ -193,7 +206,9 @@ module FeatureCard = {
           </div>
         </div>
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
-          <a> <Button> {React.string("Read Article")} </Button> </a>
+          <a>
+            <Button> {React.string("Read Article")} </Button>
+          </a>
         </Link>
       </div>
     </section>
@@ -264,7 +279,10 @@ let default = (props: props): React.element => {
         </div>
       }
 
-      <> featureBox postsBox </>
+      <>
+        featureBox
+        postsBox
+      </>
     }
 
     <>
@@ -306,13 +324,13 @@ let default = (props: props): React.element => {
   </>
 }
 
-let getStaticProps: Next.GetStaticProps.t<props, params> = _ctx => {
+let getStaticProps: Next.GetStaticProps.t<props, params> = async _ctx => {
   let (archived, nonArchived) = BlogApi.getAllPosts()->Belt.Array.partition(data => data.archived)
 
   let props = {
     posts: nonArchived,
-    archived: archived,
+    archived,
   }
 
-  Js.Promise.resolve({"props": props})
+  {"props": props}
 }

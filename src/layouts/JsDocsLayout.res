@@ -184,7 +184,7 @@ module Docs = {
       open SidebarLayout.Toc
       {
         title: moduleName,
-        entries: Belt.Array.map(headers, ((name, href)) => {header: name, href: href}),
+        entries: Belt.Array.map(headers, ((name, href)) => {header: name, href}),
       }
     }
 

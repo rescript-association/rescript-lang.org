@@ -17,10 +17,12 @@ canonical: "/docs/manual/latest/overview"
 
 ### Comments
 
-| JavaScript        | ReScript    |
-| ----------------- | ----------- |
-| `/* Comment */`   | Same        |
-| `// Line comment` | Same        |
+| JavaScript           | ReScript                         |
+| -------------------- | -------------------------------- |
+| `// Line comment`    | Same                             |
+| `/* Comment */`      | Same                             |
+| `/** Doc Comment */` | `/** Before Types/Values */`     |
+|                      | `/*** Standalone Doc Comment */` |
 
 ### Variable
 
@@ -98,6 +100,15 @@ canonical: "/docs/manual/latest/overview"
 | `function named(arg) {...}`     | `let named = (arg) => {...}` |
 | `const f = function(arg) {...}` | `let f = (arg) => {...}`     |
 | `add(4, add(5, 6))`             | Same                         |
+
+### Async Function / Await
+
+| JavaScript                               | ReScript                           |
+| ---------------------------------------- | ---------------------------------- |
+| `async (arg) => {...}`                   | Same                               |
+| `async function named(arg) {...}`        | `let named = async (arg) => {...}` |
+| `await somePromise`                      | Same                               |
+| `async (arg): Promise<string> => {...}`  | `async (): string => {...}` (note the return type)|
 
 ### Blocks
 

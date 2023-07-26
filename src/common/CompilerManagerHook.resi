@@ -8,12 +8,16 @@ module FinalResult: {
     | Nothing
 }
 
+module CdnMeta: {
+  /** All available versions on the CDN */
+  let versions: array<string>
+}
+
 type selected = {
   id: string, // The id used for loading the compiler bundle (ideally should be the same as compilerVersion)
   apiVersion: Version.t, // The playground API version in use
   compilerVersion: string,
   ocamlVersion: string,
-  reasonVersion: string,
   libraries: array<string>,
   config: Config.t,
   instance: Compiler.t,
@@ -21,6 +25,7 @@ type selected = {
 
 type ready = {
   versions: array<string>,
+  experimentalVersions: array<string>,
   selected: selected,
   targetLang: Lang.t,
   errors: array<string>, // For major errors like bundle loading
@@ -30,18 +35,19 @@ type ready = {
 type state =
   | Init
   | SetupFailed(string)
-  | SwitchingCompiler(ready, string, array<string>) // (ready, targetId, libraries)
+  | SwitchingCompiler(ready, string) // (ready, targetId, libraries)
   | Ready(ready)
   | Compiling(ready, (Lang.t, string))
 
 type action =
-  | SwitchToCompiler({id: string, libraries: array<string>})
+  | SwitchToCompiler(string) // id
   | SwitchLanguage({lang: Lang.t, code: string})
   | Format(string)
   | CompileCode(Lang.t, string)
   | UpdateConfig(Config.t)
 
 let useCompilerManager: (
+  ~initialVersion: string=?,
   ~initialLang: Lang.t=?,
   ~onAction: action => unit=?,
   unit,

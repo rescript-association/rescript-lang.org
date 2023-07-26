@@ -138,7 +138,10 @@ module Card = {
   let make = (~value: Resource.t, ~onKeywordSelect: option<string => unit>=?) => {
     let icon = switch value {
     | Npm(_) => <Icon.Npm className="w-8 opacity-50" />
-    | Url(_) => <span> <Icon.Hyperlink className="w-8 opacity-50" /> </span>
+    | Url(_) =>
+      <span>
+        <Icon.Hyperlink className="w-8 opacity-50" />
+      </span>
     }
     let linkBox = switch value {
     | Npm(pkg) =>
@@ -146,24 +149,20 @@ module Card = {
       let repoEl = switch repositoryHref {
       | Some(href) =>
         let name = if Js.String2.startsWith(href, "https://github.com") {
-          "Github"
+          "GitHub"
         } else if Js.String2.startsWith(href, "https://gitlab.com") {
-          "Gitlab"
+          "GitLab"
         } else {
           "Repository"
         }
         <>
           <span> {React.string("|")} </span>
-          <a href rel="noopener noreferrer" className="hover:text-fire" target="_blank">
-            {React.string(name)}
-          </a>
+          <a href rel="noopener noreferrer" className="hover:text-fire"> {React.string(name)} </a>
         </>
       | None => React.null
       }
       <div className="text-14 space-x-2 mt-1">
-        <a className="hover:text-fire" href={pkg.npmHref} target="_blank">
-          {React.string("NPM")}
-        </a>
+        <a className="hover:text-fire" href={pkg.npmHref}> {React.string("NPM")} </a>
         {repoEl}
       </div>
     | Url(_) => React.null
@@ -182,7 +181,7 @@ module Card = {
     <div className="bg-gray-5-tr py-6 rounded-lg p-4">
       <div className="flex justify-between">
         <div>
-          <a className="font-bold hover:text-fire text-18" href=titleHref target="_blank">
+          <a className="font-bold hover:text-fire text-18" href=titleHref>
             <span> {React.string(title)} </span>
           </a>
           {linkBox}
@@ -486,10 +485,15 @@ let default = (props: props) => {
                     onClear
                     value={searchValue}
                   />
-                  <div className="mt-12 space-y-8"> officialCategory communityCategory </div>
+                  <div className="mt-12 space-y-8">
+                    officialCategory
+                    communityCategory
+                  </div>
                 </div>
               </main>
-              <div className="hidden lg:block h-full "> <InfoSidebar filter setFilter /> </div>
+              <div className="hidden lg:block h-full ">
+                <InfoSidebar filter setFilter />
+              </div>
             </Mdx.Provider>
           </div>
         </div>
@@ -518,38 +522,38 @@ module Response = {
 
 @val external fetchNpmPackages: string => Js.Promise.t<Response.t> = "fetch"
 
-let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = _ctx => {
-  fetchNpmPackages("https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250")
-  ->Js.Promise.then_(response => {
-    Response.json(response)
-  }, _)
-  ->Js.Promise.then_(data => {
-    let pkges = Belt.Array.map(data["objects"], item => {
-      let pkg = item["package"]
-      {
-        name: pkg["name"],
-        version: pkg["version"],
-        keywords: Resource.filterKeywords(pkg["keywords"])->Resource.uniqueKeywords,
-        description: Belt.Option.getWithDefault(pkg["description"], ""),
-        repositoryHref: Js.Null.fromOption(pkg["links"]["repository"]),
-        npmHref: pkg["links"]["npm"],
-      }
-    })
+let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => {
+  let response = await fetchNpmPackages(
+    "https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250",
+  )
 
-    let index_data_dir = Node.Path.join2(Node.Process.cwd(), "./data")
-    let urlResources =
-      Node.Path.join2(index_data_dir, "packages_url_resources.json")
-      ->Node.Fs.readFileSync(#utf8)
-      ->Js.Json.parseExn
-      ->unsafeToUrlResource
-    let props: props = {
-      "packages": pkges,
-      "urlResources": urlResources,
+  let data = await response->Response.json
+
+  let pkges = Belt.Array.map(data["objects"], item => {
+    let pkg = item["package"]
+    {
+      name: pkg["name"],
+      version: pkg["version"],
+      keywords: Resource.filterKeywords(pkg["keywords"])->Resource.uniqueKeywords,
+      description: Belt.Option.getWithDefault(pkg["description"], ""),
+      repositoryHref: Js.Null.fromOption(pkg["links"]["repository"]),
+      npmHref: pkg["links"]["npm"],
     }
-    let ret = {
-      "props": props,
-      "revalidate": 43200,
-    }
-    Js.Promise.resolve(ret)
-  }, _)
+  })
+
+  let index_data_dir = Node.Path.join2(Node.Process.cwd(), "./data")
+  let urlResources =
+    Node.Path.join2(index_data_dir, "packages_url_resources.json")
+    ->Node.Fs.readFileSync(#utf8)
+    ->Js.Json.parseExn
+    ->unsafeToUrlResource
+  let props: props = {
+    "packages": pkges,
+    "urlResources": urlResources,
+  }
+
+  {
+    "props": props,
+    "revalidate": 43200,
+  }
 }

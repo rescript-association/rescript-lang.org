@@ -315,19 +315,20 @@ Js.String2.localeCompare("CAT", "cat") > 0.0
 ## match
 
 ```res sig
-let match_: (t, Js_re.t) => option<array<t>>
+let match_: (t, Js_re.t) => option<array<option<t>>>
 ```
 
 `match(str, regexp)` matches a `string` against the given `regexp`. If there is no match, it returns `None`. For regular expressions without the g modifier, if there is a match, the return value is `Some(array)` where the array contains:
 - The entire matched string
 - Any capture groups if the regexp had parentheses
-For regular expressions with the g modifier, a matched expression returns `Some(array)` with all the matched substrings and no capture groups. See [`String.match`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match) on MDN.
+
+For regular expressions with the g modifier, a matched expression returns `Some(array)` with all the matched substrings and no capture groups. Javscript String.prototype.match can return `undefined`  for optional capture groups that are not found, thus the element of the returned array is typed `option<t>`. See [`String.match`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match) on MDN.
 
 ```res example
-Js.String2.match_("The better bats", %re("/b[aeiou]t/")) == Some(["bet"])
-Js.String2.match_("The better bats", %re("/b[aeiou]t/g")) == Some(["bet", "bat"])
+Js.String2.match_("The better bats", %re("/b[aeiou]t/")) == Some([Some("bet")])
+Js.String2.match_("The better bats", %re("/b[aeiou]t/g")) == Some([Some("bet"), Some("bat")])
 Js.String2.match_("Today is 2018-04-05.", %re("/(\d+)-(\d+)-(\d+)/")) ==
-  Some(["2018-04-05", "2018", "04", "05"])
+  Some([Some("2018-04-05"), Some("2018"), Some("04"), Some("05")])
 Js.String2.match_("The large container.", %re("/b[aeiou]g/")) == None
 ```
 

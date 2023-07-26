@@ -98,8 +98,7 @@ exports.Button = Button;`,
           <div>
             <Next.Link href={`/try?code=${LzString.compressToEncodedURIComponent(example.res)}}`}>
               <a
-                className="captions md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60"
-                target="_blank">
+                className="captions md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60">
                 {React.string("Edit this example in Playground")}
               </a>
             </Next.Link>
@@ -220,7 +219,7 @@ module QuickInstall = {
       <button
         ref={ReactDOM.Ref.domRef(buttonRef)}
         disabled={state === Copied}
-        className="relative h-10 w-10 flex justify-center	items-center "
+        className="relative h-10 w-10 flex justify-center items-center "
         onClick>
         <Icon.Copy className="w-6 h-6 mt-px text-gray-40 hover:cursor-pointer hover:text-gray-80" />
       </button>
@@ -244,9 +243,11 @@ module QuickInstall = {
             "You can quickly add ReScript to your existing JavaScript codebase via npm / yarn:",
           )}
         </div>
-        <div className="w-full space-y-2">
-          {copyBox("npm install rescript --save-dev")} {copyBox("npx rescript init .")}
+        <div className="w-full space-y-2"> {copyBox("npm install rescript")} </div>
+        <div className="captions x text-gray-40 mb-2 mt-2">
+          {React.string("Or generate a new project from the official template with npx:")}
         </div>
+        <div className="w-full space-y-2"> {copyBox("npx create-rescript-app")} </div>
       </div>
     }
   }
@@ -363,10 +364,7 @@ module MainUSP = {
       title={React.string("The fastest build system on the web")}
       media={<video
         className="rounded-lg" controls={true} poster={"/static/lp/fast-build-preview.jpg"}>
-        <source
-          src="https://assets-17077.kxcdn.com/videos/fast-build-3.mp4"
-          type_="video/mp4"
-        />
+        <source src="https://assets-17077.kxcdn.com/videos/fast-build-3.mp4" type_="video/mp4" />
       </video>}
       paragraph={<>
         <p>
@@ -395,10 +393,7 @@ module MainUSP = {
       </span>}
       media={<video
         className="rounded-lg" controls={true} poster={"/static/lp/type-better-preview.jpg"}>
-        <source
-          src="https://assets-17077.kxcdn.com/videos/type-better-3.mp4"
-          type_="video/mp4"
-        />
+        <source src="https://assets-17077.kxcdn.com/videos/type-better-3.mp4" type_="video/mp4" />
       </video>}
       polygonDirection=Up
       paragraph={React.string(`Every ReScript app is fully typed and provides
@@ -419,8 +414,7 @@ module MainUSP = {
       media={<video
         className="rounded-lg" controls={true} poster={"/static/lp/interop-example-preview.jpg"}>
         <source
-          src="https://assets-17077.kxcdn.com/videos/interop-example-2.mp4"
-          type_="video/mp4"
+          src="https://assets-17077.kxcdn.com/videos/interop-example-2.mp4" type_="video/mp4"
         />
       </video>}
       paragraph={React.string(`Use any library from JavaScript, export ReScript
@@ -433,7 +427,9 @@ module MainUSP = {
     <section
       className="w-full bg-gray-90 overflow-hidden"
       style={ReactDOM.Style.make(~minHeight="37rem", ())}>
-      item1 item2 item3
+      item1
+      item2
+      item3
     </section>
   }
 }
@@ -469,10 +465,7 @@ module OtherSellingPoints = {
           </p>
           <div className="mt-6">
             <Button
-              href="https://forum.rescript-lang.org"
-              target="_blank"
-              size={Button.Small}
-              kind={Button.PrimaryBlue}>
+              href="https://forum.rescript-lang.org" size={Button.Small} kind={Button.PrimaryBlue}>
               {React.string("Join our Forum")}
             </Button>
           </div>
@@ -518,59 +511,20 @@ module OtherSellingPoints = {
 }
 
 module TrustedBy = {
-  type company = Logo({name: string, url: string, path: string})
-
-  let companies = [
-    Logo({
-      name: "Facebook Messenger",
-      url: "https://messenger.com",
-      path: "/static/lp/messenger.svg",
-    }),
-    Logo({
-      name: "Facebook",
-      url: "https://messenger.com",
-      path: "/static/lp/facebook.svg",
-    }),
-    Logo({
-      name: "Rohea",
-      url: "https://rohea.com",
-      path: "/static/lp/rohea.svg",
-    }),
-    Logo({
-      name: "CCA",
-      url: "https://cca.io",
-      path: "/static/lp/cca-io.svg",
-    }),
-    Logo({
-      name: "Nomadic Labs",
-      url: "https://nomadic-labs.com",
-      path: "/static/lp/nomadic_labs.svg",
-    }),
-    Logo({
-      name: "Draftbit",
-      url: "https://draftbit.com",
-      path: "/static/lp/draftbit.svg",
-    }),
-    Logo({
-      name: "Pupilfirst",
-      url: "https://pupilfirst.com",
-      path: "/static/lp/pupilfirst.svg",
-    }),
-  ]
-
   @react.component
   let make = () => {
-    <section className="mt-20">
+    <section className="mt-20 flex flex-col items-center">
       <h3 className="hl-1 text-gray-80 text-center max-w-576 mx-auto">
         {React.string("Trusted by our users")}
       </h3>
-      <div className="flex flex-wrap mx-4 space-y-4 justify-center items-center max-w-xl lg:mx-auto mt-16 ">
-        {companies
+      <div
+        className="flex flex-wrap mx-4 gap-8 justify-center items-center max-w-xl lg:mx-auto mt-16 mb-16">
+        {OurUsers.companies
         ->Js.Array2.map(company => {
           let (companyKey, renderedCompany) = switch company {
           | Logo({name, path, url}) => (
               name,
-              <a href=url target="_blank" rel="noopener noreferrer">
+              <a href=url rel="noopener noreferrer">
                 <img className="hover:opacity-75 max-w-sm h-12" src=path />
               </a>,
             )
@@ -579,8 +533,12 @@ module TrustedBy = {
         })
         ->React.array}
       </div>
+      <a
+        href="https://github.com/rescript-association/rescript-lang.org/blob/master/src/common/OurUsers.res">
+        <Button> {React.string("Add Your Logo")} </Button>
+      </a>
       <div
-        className="mt-10 max-w-320 overflow-hidden opacity-50"
+        className="self-start mt-10 max-w-320 overflow-hidden opacity-50"
         style={ReactDOM.Style.make(~maxHeight="6rem", ())}>
         <img className="w-full h-full" src="/static/lp/grid.svg" />
       </div>
@@ -709,7 +667,6 @@ module CuratedResources = {
             <a
               key={Belt.Int.toString(i)}
               href={card.href}
-              target="_blank"
               className="hover:bg-gray-80 bg-gray-90 px-5 pb-8 relative rounded-xl min-w-[200px]">
               <img className="h-12 absolute mt-5" src=card.imgSrc />
               <h5 className="text-gray-10 hl-4 mt-32 h-12"> {card.title} </h5>
@@ -753,7 +710,9 @@ let make = (~components=Markdown.default, ~children) => {
               <Mdx.Provider components>
                 <div className="">
                   <div className="w-full">
-                    <div className="mt-16 md:mt-32 lg:mt-40 mb-12"> <Intro /> </div>
+                    <div className="mt-16 md:mt-32 lg:mt-40 mb-12">
+                      <Intro />
+                    </div>
                     <PlaygroundHero />
                     <QuickInstall />
                     <MainUSP />

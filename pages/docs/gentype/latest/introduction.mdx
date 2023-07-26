@@ -6,23 +6,21 @@ canonical: "/docs/gentype/latest/introduction"
 
 # GenType
 
-`genType` is a code generation tool that lets you export ReScript values and types to use in JavaScript, and import JavaScript values and types into ReScript.
+`genType` is a code generation tool that lets you export ReScript values and types to use in TypeScript (TS), and import TS values and types into ReScript.
 
-Converter functions between the two representations are generated based on the type of the value. The converters can be generated in vanilla JavaScript, or in [TypeScript](https://www.typescriptlang.org/) / [Flow](https://flow.org/en/) for a type-safe idiomatic interface.
+Converter functions between the two runtime representations are generated when required based on the type of the values.
 In particular, conversion of [rescript-react](/docs/react/latest/introduction) components both ways is supported, with automatic generation of the wrappers.
 
 Here's an article describing how to use `genType` as part of a migration strategy where a tree of components is gradually converted to ReScript bottom-up (old article containing Reason / BuckleScript): [Adopting Reason: strategies, dual sources of truth, and why genType is a big deal](https://medium.com/p/c514265b466d).
 
-The implementation of genType performs a type-directed transformation of ReScript programs after ReScript source code compilation. The transformed programs operate on data types idiomatic to JS.
+The implementation of genType performs a type-directed transformation of ReScript programs after compilation. The transformed programs operate on data types idiomatic to JS.
 
-For example, a ReScript function operating on a ReScript variant `type t  = | A(int) | B(string)` (which is represented as custom blocks at runtime) is exported to a JS function operating on the corresponding JS object of type `{ tag: "A"; value: number }
+For example, a ReScript function operating on a ReScript variant `type t = | A(int) | B(string)` (which is represented as custom objects with tags at runtime) is exported to a JS function operating on the corresponding JS object of type `{ tag: "A"; value: number }
   | { tag: "B"; value: string }`.
-
-The output of genType can be configured by using one of 3 back-ends: `untyped` to generate wrappers in vanilla JS, `typescript` to generate [TypeScript](https://www.typescriptlang.org/), and `flow` to generate JS with [Flow](https://flow.org/en/) type annotations.
 
 ## A Quick Example
 
-Let's assume we are working on a TypeScript (TS) codebase and we want to integrate a single rescript-react component.
+Let's assume we are working on a TypeScript codebase and we want to integrate a single rescript-react component.
 
 We want to be able to import the rescript-react component like any other React component in our existing TS code, but we also want to preserve all the ReScript types in the TS type system (and convert incompatible values if necessary).
 
@@ -51,7 +49,7 @@ let make = (~name: string, ~color: color) => {
 };
 ```
 
-On a successful compile, `genType` will convert `src/MyComp.res` to a TS file called `src/MyComp.gen.ts` which will look something like this:
+On a successful compile, `genType` will convert `src/MyComp.res` to a TS file called `src/MyComp.gen.tsx` which will look something like this:
 
 ```ts
 // src/MyComp.gen.tsx
@@ -104,4 +102,4 @@ For detailed information, head to the [Getting Started](getting-started) or [Usa
 
 ## Development
 
-For contributions, issues or questions, please refer to the [Github repository](https://github.com/reason-association/genType) or our [ReScript forum](https://forum.rescript-lang.org).
+Since ReScript v10.1, genType is part of the compiler's [GitHub repository](https://github.com/rescript-lang/rescript-compiler).

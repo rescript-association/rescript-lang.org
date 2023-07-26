@@ -6,9 +6,7 @@
 
 This is the official documentation platform for the [ReScript](https://rescript-lang.org) programming language.
 
-**In case you want to report a technical issue, please refer to the appropriate repository:**
-- [rescript-compiler](https://github.com/rescript-lang/rescript-compiler): The compiler and build system
-- [rescript-syntax](https://github.com/rescript-lang/syntax): The ReScript syntax
+**Please report any technical issues with ReScript to the [compiler repository](https://github.com/rescript-lang/rescript-compiler).**
 
 **In case you are missing some specific documentation:**
 - Some language / compiler feature may not be documented yet
@@ -17,8 +15,8 @@ This is the official documentation platform for the [ReScript](https://rescript-
 
 ## System Requirements
 
-- `node@12.22.1` or higher (for ES6 module compat)
-- `npm@7` (package-lock v2)
+- `node@16.x` or higher (for ES6 module compat)
+- `npm@7` or higher (package-lock v2)
 
 ## Setup
 
@@ -26,11 +24,11 @@ This is the official documentation platform for the [ReScript](https://rescript-
 # For first time clone / build (install dependencies)
 npm i
 
-# Only needed for initial clone (or content H2 changes)
-npm run update-index
-
 # Initial build
 npx rescript
+
+# Only needed for initial clone (or content H2 changes)
+npm run update-index
 
 # Build the index data
 npm run update-index
@@ -91,7 +89,7 @@ We check the validity of our code examples marked with:
 Run the checks with:
 
 ```sh
-node scripts/test-examples.js
+node scripts/test-examples.mjs
 ```
 
 ### Markdown Hyperlink Tests
@@ -117,10 +115,10 @@ Here is an example on how to run the tests:
 
 ```sh
 # Tests all files
-node scripts/test-hrefs.js
+node scripts/test-hrefs.mjs
 
 # Or just a subset (glob pattern)
-node scripts/test-hrefs.js "pages/docs/manual/**/*.mdx"
+node scripts/test-hrefs.mjs "pages/docs/manual/**/*.mdx"
 ```
 
 ### Continous Integration
@@ -152,6 +150,15 @@ NODE_ENV=production npx postcss styles/main.css -o test.css
 ## Writing Blog Posts
 
 In case you are a blog author, please refer to our [guide on writing blog posts](https://rescript-lang.org/blogpost-guide).
+
+## How to Add Your Company Logo to Our Front Page
+
+In case your company is a user of ReScript and wants to be displayed on our front page ("Trusted by our users" section), do the following:
+
+- Get your logo as a black / white `.svg` version and use `#979AAD` as a fill color (check out the existing logos on our front page).
+- Put your logo into the [`public/static/lp`](./public/static/lp) folder; the file should be named after your company.
+- Open [src/common/OurUsers.res](./src/common/OurUsers.res) and add your info
+- Commit, push, and open a PR.
 
 ### Contributing
 

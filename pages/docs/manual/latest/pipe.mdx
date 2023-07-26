@@ -87,14 +87,11 @@ asyncRequest()
   .send();
 ```
 
-Assuming we don't need the chaining behavior above, we'd bind to each case this using `bs.send` from the aforementioned binding API page:
+Assuming we don't need the chaining behavior above, we'd bind to each case this using [`@send`](/syntax-lookup#send-decorator) from the aforementioned binding API page:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res prelude
-@send external map: (array<'a>, 'a => 'b) => array<'b> = "map"
-@send external filter: (array<'a>, 'a => bool) => array<'a> = "filter"
-
 type request
 @val external asyncRequest: unit => request = "asyncRequest"
 @send external setWaitDuration: (request, int) => request = "setWaitDuration"
@@ -136,8 +133,8 @@ This looks much worse than the JS counterpart! Clean it up visually with pipe:
 
 ```res example
 let result = [1, 2, 3]
-  ->map(a => a + 1)
-  ->filter(a => mod(a, 2) == 0)
+  ->Js.Array2.map(a => a + 1)
+  ->Js.Array2.filter(a => mod(a, 2) == 0)
 
 asyncRequest()->setWaitDuration(4000)->send
 ```

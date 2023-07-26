@@ -42,7 +42,7 @@ module.exports = {
           "95": "#14162C",
           "100": "#0B0D22",
           "5-tr": "rgba(1, 20, 29, 0.02)", //get rid of this
-          "10-tr": "rgba(1, 16, 39, 0.05)", //get rid of this
+          "10-tr": "rgba(1, 20, 38, 0.02)",
           "60-tr": "rgba(1, 4, 39, 0.6)",
           "80-tr": "rgba(1, 4, 39, 0.8)",
           "90-tr": "rgba(1, 4, 39, 0.95)",
@@ -100,7 +100,8 @@ module.exports = {
       },
       /*--- SPACING ---*/
       height: {
-        "18": "4.5rem" // 72px
+        "18": "4.5rem", // 72px
+        "inherit": "inherit"
       },
       minWidth: {
         "320": "20rem"
@@ -135,7 +136,10 @@ module.exports = {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '.5' },
         },
-      }
+      },
+      boxShadow: {
+        sm: '0 0.5px 0.5px 0 rgba(0, 0, 0, 0.05)'
+      },
     },
     borderRadius: {
       none: "0",
@@ -146,7 +150,7 @@ module.exports = {
       full: "9999px", //round
     },
     screens: {
-      xs: "599px", 
+      xs: "599px",
       sm: "576px", //don't use this
       md: "768px", //try to avoid this
       lg: "1024px",

@@ -35,7 +35,7 @@ let message = {
   let part2 = "world"
   part1 ++ " " ++ part2
 }
-// `part1` and `part2` not accessible here!
+// `part1` and `part2` are not accessible here!
 ```
 ```js
 var message = "hello world";
@@ -72,7 +72,7 @@ Let bindings are "immutable", aka "cannot change". This helps our type system de
 
 ## Binding Shadowing
 
-The above restriction might sound unpractical at first. How would you change a value then? Usually, 2 ways:
+The above restriction might sound impractical at first. How would you change a value then? Usually, 2 ways:
 
 The first is to realize that many times, what you want isn't to mutate a variable's value. For example, this JavaScript pattern:
 
@@ -150,8 +150,8 @@ If you need _real_ mutation, e.g. passing a value around, have it modified by ma
 
 Private let bindings are introduced in the release [7.2](https://rescript-lang.org/blog/bucklescript-release-7-2).
 
-In the module system, everything is public by default, 
-the only way to hide some values is by providing a separate signature to 
+In the module system, everything is public by default,
+the only way to hide some values is by providing a separate signature to
 list public fields and their types:
 
 ```res
@@ -162,7 +162,7 @@ module A: {
   let b = 4
 }
 ```
-`%private` gives you an option to mark private fields directly
+`%%private` gives you an option to mark private fields directly
 
 ```res
 module A = {
@@ -171,15 +171,15 @@ module A = {
 }
 ```
 
-`%private` also applies to file level modules, so in some cases, 
+`%%private` also applies to file level modules, so in some cases,
 users do not need to provide a separate interface file just to hide some particular values.
 
-Note interface files are still recommended as a general best practice since they give you better 
-separate compilation units and also they're better for documentation. 
+Note interface files are still recommended as a general best practice since they give you better
+separate compilation units and also they're better for documentation.
 
-Still, `%private` is useful in the following scenarios:
+Still, `%%private` is useful in the following scenarios:
 
-- Code generators. Some code generators want to hide some values but it is sometimes very hard or time consuming for code generators to synthesize the types for public fields.
+- **Code generators.** Some code generators want to hide some values but it is sometimes very hard or time consuming for code generators to synthesize the types for public fields.
 
-- Quick prototyping. During prototyping, we still want to hide some values, but the interface file is not stable yet, `%private` provide you such convenience.
+- **Quick prototyping.** During prototyping, we still want to hide some values, but the interface file is not stable yet, `%%private` provides you such convenience.
 

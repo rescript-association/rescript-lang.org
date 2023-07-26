@@ -8,18 +8,19 @@
 /*@import "./_typography.css";*/
 
 body {
-  @apply font-sans bg-white sm:subpixel-antialiased md:antialiased;
-}
-
-.hide-scrollbar::-webkit-scrollbar {
-    width: 0px;
-    background: transparent; /* Chrome/Safari/Webkit */
+  @apply font-sans bg-white sm:subpixel-antialiased ;
 }
 
 .hide-scrollbar {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none;  /* IE 10+ */
 }
+
+.hide-scrollbar::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* Chrome/Safari/Webkit */
+}
+
 
 @tailwind utilities;
 
@@ -48,34 +49,34 @@ body {
 
   @responsive {
     .hl-1 {
-      @apply text-48 font-semibold tracking-tighter leading-tight text-gray-80
+      @apply text-48 font-semibold tracking-tighter leading-tight text-black
     }
     .hl-2 {
-      @apply text-32 font-semibold tracking-tighter leading-tight text-gray-80
+      @apply text-32 font-semibold tracking-tighter leading-tight text-black
     }
     .hl-3 { 
-      @apply text-24 font-bold tracking-tight leading-tight text-gray-80
+      @apply text-24 font-semibold tracking-tight leading-tight text-black
     }
     .hl-4 {
-      @apply text-18 font-bold tracking-tight leading-tight text-gray-80
+      @apply text-18 font-semibold tracking-tight leading-tight text-gray-80
     }
     .hl-5 {
       @apply text-14 font-bold tracking-normal leading-tight text-gray-80
     }
     .hl-overline {
-      @apply text-11 font-bold tracking-widest leading-tight uppercase text-gray-80
+      @apply text-11 font-semibold tracking-wide leading-tight uppercase text-gray-80
     }
   }
 
   @responsive {
     .body-lg {
-      @apply text-18 font-normal tracking-normal leading-4
+      @apply text-18 font-normal tracking-tight leading-4
     }
     .body-button {
       @apply text-16 font-semibold tracking-normal leading-2
     }
     .body-md {
-      @apply text-16 font-normal tracking-normal leading-4
+      @apply text-16 font-normal tracking-tight leading-4
     }
     .body-sm {
       @apply text-14 font-medium tracking-normal leading-2
