@@ -1,11 +1,20 @@
 // Structure defined by `scripts/extract-tocs.js`
-let tocData: Js.Dict.t<{
+// let tocData: Js.Dict.t<{
+//   "title": string,
+//   "headers": array<{
+//     "name": string,
+//     "href": string,
+//   }>,
+// }> = %raw("require('index_data/reason_compiler_toc.json')")
+
+@module("index_data/reason_compiler_toc.json") external tocData: Js.Dict.t<{
   "title": string,
   "headers": array<{
     "name": string,
     "href": string,
   }>,
-}> = %raw("require('index_data/reason_compiler_toc.json')")
+}> = "default"
+
 
 module NavItem = SidebarLayout.Sidebar.NavItem
 module Category = SidebarLayout.Sidebar.Category

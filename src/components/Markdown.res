@@ -294,6 +294,7 @@ module Code = {
       Scenario 3 (children = string):
       Children is already a string, we don't need to anything special
  */
+
     if isArray(children) {
       // Scenario 1
       let code = children->asStringArray->Js.Array2.joinWith("")
@@ -301,6 +302,9 @@ module Code = {
     } else if isObject(children) {
       // Scenario 2
       children->asElement
+    } else if Js.typeof(children) == "string" {
+      let code = children->asElement
+      <InlineCode> code </InlineCode>
     } else {
       // Scenario 3
       let code = unknownAsString(children)
@@ -329,6 +333,7 @@ module CodeTab = {
 
       switch child {
       | Element(codeEl) =>
+        Js.log(("Here", codeEl, codeEl->Mdx.getMdxType))
         switch codeEl->Mdx.getMdxType {
         | "code" =>
           let className = Mdx.getMdxClassName(codeEl)->Belt.Option.getWithDefault("")

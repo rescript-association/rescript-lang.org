@@ -22,7 +22,7 @@
  */
 module.exports = {
   mode: "jit",
-  purge: [
+  content: [
     "./src/**/*.{mjs,js,res}",
     "./pages/**/*.{mjs,js,mdx}",
   ],

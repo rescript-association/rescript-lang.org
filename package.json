@@ -7,10 +7,17 @@
   "engines": {
     "node": "16.x"
   },
+  "type": "module",
+  "postcss": {
+    "plugins": {
+      "tailwindcss": {},
+      "autoprefixer": {}
+    }
+  },
   "dependencies": {
     "@headlessui/react": "^1.2.0",
-    "@mdx-js/loader": "^1.6.22",
-    "@next/mdx": "^8.1.0",
+    "@mdx-js/loader": "^2.3.0",
+    "@next/mdx": "^13.4.12",
     "@rescript/react": "^0.10.3",
     "@ryyppy/rescript-promise": "2.1.0",
     "codemirror": "^5.54.0",
@@ -19,16 +26,16 @@
     "fuse.js": "^6.4.3",
     "gentype": "^3.44.0",
     "glob": "^7.1.4",
-    "gray-matter": "^4.0.2",
+    "gray-matter": "^4.0.3",
     "highlight.js": "^10.5.0",
     "lz-string": "^1.4.4",
     "next": "^13.1.1",
     "next-transpile-modules": "^9.1.0",
-    "postcss": "^8.3.0",
     "prettier": "^1.18.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "remark-parse": "^7.0.1",
+    "remark-frontmatter": "^4.0.1",
+    "remark-parse": "^10.0.2",
     "remark-slug": "^5.1.2",
     "remark-stringify": "^7.0.3",
     "request": "^2.88.0",
@@ -43,13 +50,14 @@
     "update-index": "node scripts/extract-indices.mjs && node scripts/extract-tocs.mjs && node scripts/extract-syntax.mjs && node scripts/generate_feed.mjs > public/blog/feed.xml"
   },
   "devDependencies": {
-    "@mdx-js/react": "^1.6.22",
-    "autoprefixer": "^10.2.6",
-    "cssnano": "^4.1.10",
+    "@mdx-js/react": "^2.3.0",
+    "autoprefixer": "^10.4.14",
+    "cssnano": "^6.0.1",
     "esbuild-loader": "^2.20.0",
+    "postcss": "^8.4.27",
     "postcss-cli": "^8.3.0",
     "reanalyze": "^2.16.0",
     "rescript": "^10.1.0-rc.4",
-    "tailwindcss": "^2.1.4"
+    "tailwindcss": "^3.3.3"
   }
 }

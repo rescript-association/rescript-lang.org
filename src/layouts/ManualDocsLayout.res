@@ -1,16 +1,19 @@
 module LatestLayout = DocsLayout.Make({
   // Structure defined by `scripts/extract-tocs.js`
-  let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_latest_toc.json')")
+  // let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_latest_toc.json')")
+  @module("index_data/manual_latest_toc.json") external tocData: SidebarLayout.Toc.raw = "default"
 })
 
 module V800Layout = DocsLayout.Make({
   // Structure defined by `scripts/extract-tocs.js`
-  let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_v800_toc.json')")
+  // let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_v800_toc.json')")
+  @module("index_data/manual_v800_toc.json") external tocData: SidebarLayout.Toc.raw = "default"
 })
 
 module V900Layout = DocsLayout.Make({
   // Structure defined by `scripts/extract-tocs.js`
-  let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_v900_toc.json')")
+  // let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_v900_toc.json')")
+  @module("index_data/manual_v900_toc.json") external tocData: SidebarLayout.Toc.raw = "default"
 })
 
 module Latest = {

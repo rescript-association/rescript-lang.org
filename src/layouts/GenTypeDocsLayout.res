@@ -1,6 +1,7 @@
 module LatestLayout = DocsLayout.Make({
   // Structure defined by `scripts/extract-tocs.js`
-  let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/gentype_latest_toc.json')")
+  // let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/gentype_latest_toc.json')")
+  @module("index_data/gentype_latest_toc.json") external tocData: SidebarLayout.Toc.raw = "default"
 })
 
 @react.component
