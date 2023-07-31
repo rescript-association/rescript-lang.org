@@ -52,7 +52,6 @@ module Components: {
     ~th: React.component<props>=?,
     ~td: React.component<props>=?,
     ~blockquote: React.component<props>=?,
-    // ~inlineCode: React.component<props>=?,
     ~strong: React.component<props>=?,
     ~hr: React.component<{.}>=?,
     ~code: React.component<{

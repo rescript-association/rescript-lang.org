@@ -134,8 +134,6 @@ module Components = {
     td: React.component<props>,
     @optional
     blockquote: React.component<props>,
-    // @optional
-    // inlineCode: React.component<props>,
     @optional
     strong: React.component<props>,
     @optional

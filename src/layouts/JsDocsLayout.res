@@ -1,8 +1,4 @@
 // Structure defined by `scripts/extract-indices.js`
-// let indexData:  = %raw("require('index_data/latest_js_api_index.json')")
-
-
-
 @module("index_data/latest_js_api_index.json") external indexData: Js.Dict.t<{
   "moduleName": string,
   "headers": array<{

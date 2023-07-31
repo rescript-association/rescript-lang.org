@@ -192,16 +192,6 @@ module InlineCode = {
       children
     </code>
 }
-// module InlineCode = {
-//   @react.component
-//   let make = (~children) => {
-//     Js.log(("InlineCode", children))
-//     <code
-//       className="md-inline-code px-2 py-0.5 text-14 text-gray-60 font-mono rounded-sm bg-gray-10-tr border border-gray-90 border-opacity-5">
-//       children
-//     </code>
-//   }
-// }
 
 module Table = {
   @react.component
@@ -236,11 +226,6 @@ module Code = {
 
   // TODO: Might be refactorable with the new @unboxed feature
   type unknown = Mdx.Components.unknown
-
-  let isArray: unknown => bool = %raw("thing => { return thing instanceof Array; }")
-  let isObject: unknown => bool = %raw("thing => { return thing instanceof Object; }")
-  external asStringArray: unknown => array<string> = "%identity"
-  external asElement: unknown => React.element = "%identity"
 
   external unknownAsString: unknown => string = "%identity"
 
@@ -286,54 +271,13 @@ module Code = {
       }
     }
 
-    /*
-      Converts the given children provided by remark, depending on
-      given scenarios.
-
-      Scenario 1 (children = array(string):
-      Someone is using a literal <code> tag with some source in it
-      e.g. <code> hello world </code>
-
-      Then remark would call this component with children = [ "hello", "world" ].
-      In this case we need to open the Array,
-
-      Scenario 2 (children = React element / object):
-      Children is an element, so we will need to render the given
-      React element without adding our own components.
-
-      Scenario 3 (children = string):
-      Children is already a string, we don't need to anything special
- */
-
-    // Js.log(("Code", lang, children, isArray(children), isObject(children)))
-
-    let result = switch lang {
+    switch lang {
     | "text" => <InlineCode> {children->unknownAsString->React.string} </InlineCode>
     | lang => {
         let code = unknownAsString(children)
         <Pre> {makeCodeElement(~code, ~metastring, ~lang)} </Pre>
       }
     }
-
-    result
-
-    // if isArray(children) {
-    //   // Scenario 1
-    //   let code = children->asStringArray->Js.Array2.joinWith("")
-    //   // <InlineCode> {React.string(code)} </InlineCode>
-    //   <Pre> {React.string(code)} </Pre>
-    // } else if isObject(children) {
-    //   // Scenario 2
-    //   children->asElement
-    // } else if Js.typeof(children) == "string" {
-    //   let code = children->asElement
-    //   // <InlineCode> code </InlineCode>
-    //   <Pre> code </Pre>
-    // } else {
-    //   // Scenario 3
-    //   let code = unknownAsString(children)
-    //   makeCodeElement(~code, ~metastring, ~lang)
-    // }
   }
 }
 
@@ -570,7 +514,6 @@ let default = Mdx.Components.t(
   ~a=A.make,
   ~pre=Pre.make,
   ~blockquote=Blockquote.make,
-  // ~inlineCode=InlineCode.make,
   ~code=Code.make,
   (),
 )

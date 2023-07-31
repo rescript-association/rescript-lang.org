@@ -1,7 +1,5 @@
 module CommunityLayout = DocsLayout.Make({
   // Structure defined by `scripts/extract-tocs.js`
-  // let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/community_toc.json')")
-
   @module("index_data/community_toc.json") external tocData: SidebarLayout.Toc.raw = "default"
 })
 
