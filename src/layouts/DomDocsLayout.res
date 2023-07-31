@@ -1,5 +1,6 @@
 // Structure defined by `scripts/extract-indices.js`
-@module("index_data/latest_dom_api_index.json") external indexData: Js.Dict.t<{
+@module("index_data/latest_dom_api_index.json")
+external indexData: Js.Dict.t<{
   "moduleName": string,
   "headers": array<{
     "name": string,
