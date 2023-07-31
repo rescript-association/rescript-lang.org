@@ -19,7 +19,7 @@ const withMDX = nextMDX({
 });
 
 const config = {
-  pageExtensions: ["jsx", "js", "bs.js", "mdx", "mjs", "md"],
+  pageExtensions: ["jsx", "js", "bs.js", "mdx", "mjs"],
   env: {
     ENV: process.env.NODE_ENV,
   },
