@@ -32,7 +32,7 @@ let default = Mdx.Components.t(
   ~th=Th.make,
   ~td=Td.make,
   ~pre=Pre.make,
-  ~inlineCode=InlineCode.make,
+  // ~inlineCode=InlineCode.make,
   ~code=Code.make,
   (),
 )

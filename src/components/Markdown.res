@@ -188,10 +188,20 @@ module InlineCode = {
   @react.component
   let make = (~children) =>
     <code
-      className="md-inline-code px-2 py-0.5 text-14 text-gray-60 font-mono rounded-sm bg-gray-10-tr border border-gray-90 border-opacity-5">
+      className="md-inline-code px-2 py-0.5  text-gray-60 font-mono rounded-sm bg-gray-10-tr border border-gray-90 border-opacity-5">
       children
     </code>
 }
+// module InlineCode = {
+//   @react.component
+//   let make = (~children) => {
+//     Js.log(("InlineCode", children))
+//     <code
+//       className="md-inline-code px-2 py-0.5 text-14 text-gray-60 font-mono rounded-sm bg-gray-10-tr border border-gray-90 border-opacity-5">
+//       children
+//     </code>
+//   }
+// }
 
 module Table = {
   @react.component
@@ -295,21 +305,35 @@ module Code = {
       Children is already a string, we don't need to anything special
  */
 
-    if isArray(children) {
-      // Scenario 1
-      let code = children->asStringArray->Js.Array2.joinWith("")
-      <InlineCode> {React.string(code)} </InlineCode>
-    } else if isObject(children) {
-      // Scenario 2
-      children->asElement
-    } else if Js.typeof(children) == "string" {
-      let code = children->asElement
-      <InlineCode> code </InlineCode>
-    } else {
-      // Scenario 3
-      let code = unknownAsString(children)
-      makeCodeElement(~code, ~metastring, ~lang)
+    // Js.log(("Code", lang, children, isArray(children), isObject(children)))
+
+    let result = switch lang {
+    | "text" => <InlineCode> {children->unknownAsString->React.string} </InlineCode>
+    | lang => {
+        let code = unknownAsString(children)
+        <Pre> {makeCodeElement(~code, ~metastring, ~lang)} </Pre>
+      }
     }
+
+    result
+
+    // if isArray(children) {
+    //   // Scenario 1
+    //   let code = children->asStringArray->Js.Array2.joinWith("")
+    //   // <InlineCode> {React.string(code)} </InlineCode>
+    //   <Pre> {React.string(code)} </Pre>
+    // } else if isObject(children) {
+    //   // Scenario 2
+    //   children->asElement
+    // } else if Js.typeof(children) == "string" {
+    //   let code = children->asElement
+    //   // <InlineCode> code </InlineCode>
+    //   <Pre> code </Pre>
+    // } else {
+    //   // Scenario 3
+    //   let code = unknownAsString(children)
+    //   makeCodeElement(~code, ~metastring, ~lang)
+    // }
   }
 }
 
@@ -333,30 +357,25 @@ module CodeTab = {
 
       switch child {
       | Element(codeEl) =>
-        Js.log(("Here", codeEl, codeEl->Mdx.getMdxType))
-        switch codeEl->Mdx.getMdxType {
-        | "code" =>
-          let className = Mdx.getMdxClassName(codeEl)->Belt.Option.getWithDefault("")
+        let className = Mdx.getMdxClassName(codeEl)->Belt.Option.getWithDefault("")
 
-          let metastring = getMdxMetastring(codeEl)->Belt.Option.getWithDefault("")
+        let metastring = getMdxMetastring(codeEl)->Belt.Option.getWithDefault("")
 
-          let lang = switch Js.String2.split(className, "-") {
-          | ["language", lang] => Some(lang)
-          | _ => None
-          }
-
-          let code = Js.String2.make(Mdx.MdxChildren.getMdxChildren(codeEl))
-          let label = Belt.Array.get(labels, i)
-          let tab = {
-            CodeExample.Toggle.lang,
-            code,
-            label,
-            highlightedLines: Some(Code.parseNumericRangeMeta(metastring)),
-          }
-          Js.Array2.push(acc, tab)->ignore
-
-        | _ => ()
+        let lang = switch Js.String2.split(className, "-") {
+        | ["language", lang] => Some(lang)
+        | _ => None
         }
+
+        let code = Js.String2.make(Mdx.MdxChildren.getMdxChildren(codeEl))
+        let label = Belt.Array.get(labels, i)
+        let tab = {
+          CodeExample.Toggle.lang,
+          code,
+          label,
+          highlightedLines: Some(Code.parseNumericRangeMeta(metastring)),
+        }
+        Js.Array2.push(acc, tab)->ignore
+
       | _ => ()
       }
       acc
@@ -551,7 +570,7 @@ let default = Mdx.Components.t(
   ~a=A.make,
   ~pre=Pre.make,
   ~blockquote=Blockquote.make,
-  ~inlineCode=InlineCode.make,
+  // ~inlineCode=InlineCode.make,
   ~code=Code.make,
   (),
 )

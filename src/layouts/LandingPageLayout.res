@@ -462,10 +462,11 @@ module OtherSellingPoints = {
             who deeply care about simplicity, speed and practicality.`)}
           </p>
           <div className="mt-6">
-            <Button
-              href="https://forum.rescript-lang.org" size={Button.Small} kind={Button.PrimaryBlue}>
-              {React.string("Join our Forum")}
-            </Button>
+            <a href="https://forum.rescript-lang.org">
+              <Button size={Button.Small} kind={Button.PrimaryBlue}>
+                {React.string("Join our Forum")}
+              </Button>
+            </a>
           </div>
         </div>
         // 2 small items

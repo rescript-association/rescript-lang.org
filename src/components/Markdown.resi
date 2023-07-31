@@ -68,10 +68,10 @@ module Pre: {
   let make: (~children: React.element) => React.element
 }
 
-module InlineCode: {
-  @react.component
-  let make: (~children: React.element) => React.element
-}
+// module InlineCode: {
+//   @react.component
+//   let make: (~children: React.element) => React.element
+// }
 
 module Table: {
   @react.component

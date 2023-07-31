@@ -69,7 +69,7 @@ module Sidebar = {
         {Belt.Array.map(items, m => {
           let hidden = isHidden ? "hidden" : "block"
           let active = isItemActive(m)
-            ? ` bg-fire-5 text-fire leading-5 -ml-2 pl-2 font-medium block hover:bg-fire-5 `
+            ? ` bg-fire-5 text-red-500 leading-5 -ml-2 pl-2 font-medium block hover:bg-fire-70 `
             : ""
 
           let activeToc = switch getActiveToc {

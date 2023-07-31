@@ -145,7 +145,7 @@ canonical: "/docs/manual/latest/overview"
 | JavaScript                    | ReScript                                      |
 | ----------------------------- | --------------------------------------------- |
 | `const {a, b} = data`         | `let {a, b} = data`                           |
-| `const [a, b] = data`         | <code>let [a, b] = data</code> \*             |
+| `const [a, b] = data`         | `let [a, b] = data` \*             |
 | `const {a: aa, b: bb} = data` | `let {a: aa, b: bb} = data`                   |
 
 \* Gives good compiler warning that `data` might not be of length 2.
@@ -174,7 +174,7 @@ canonical: "/docs/manual/latest/overview"
 | JavaScript                                      | ReScript                                   |
 | ----------------------------------------------- | ------------------------------------------ |
 | `throw new SomeError(...)`                      | `raise(SomeError(...))`                    |
-| `try {a} catch (Err) {...} finally {...}`       | <code>try a catch { &#124; Err => ...}</code> \* |
+| `try {a} catch (Err) {...} finally {...}`       | `try a catch { \| Err => ...}` \* |
 
 \* No finally.
 
@@ -183,30 +183,34 @@ canonical: "/docs/manual/latest/overview"
 The last expression of a block delimited by `{}` implicitly returns (including function body). In JavaScript, this can only be simulated via an immediately-invoked function expression (since function bodies have their own local scope).
 
 <table>
-  <thead>
-    <tr>
-      <th>JavaScript</th>
-      <th>ReScript</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-  <pre><code>{`let result = (function() {
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>ReScript</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+```js
+let result = (function() {
   const x = 23;
   const y = 34;
   return x + y;
-})();`}</code></pre>
-      </td>
-      <td>
-  <pre><code>{`let result = {
+})();
+```
+</td>
+<td>
+```res
+let result = {
   let x = 23
   let y = 34
   x + y
-}`}</code></pre>
-      </td>
-    </tr>
-  </tbody>
+}
+```
+</td>
+</tr>
+</tbody>
 </table>
 
 ## Common Features' JS Output

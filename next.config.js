@@ -1,66 +1,56 @@
-// const { ProvidePlugin } = require("webpack");
-
-// const bsconfig = require("./bsconfig.json");
-// const remarkSlug = require("remark-slug");
-
+import webpack from "webpack";
+import rehypeSlug from 'rehype-slug';
+import remarkGfm from 'remark-gfm';
+import remarkComment from 'remark-comment';
+import nextMDX from "@next/mdx";
+import bsconfig from "./bsconfig.json" assert {type: 'json'};
 import remarkFrontmatter from 'remark-frontmatter'
-const transpileModules = ["rescript"].concat([
-    "@rescript/react",
-    "@ryyppy/rescript-promise"
-  ]);
-// const withTM = require("next-transpile-modules")(transpileModules);
 
+const { ProvidePlugin } = webpack;
+const transpileModules = ["rescript"].concat(bsconfig["bs-dependencies"]);
 
-import * as NextMdx from '@next/mdx'
-
-// const withMdx = require("@next/mdx")({
-//   extension: /\.mdx?$/,
-//   options: {
-//     remarkPlugins: [remarkSlug],
-//   },
-// });
-
-const withMDX = NextMdx.default({
+const withMDX = nextMDX({
   extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [remarkFrontmatter], // ESM ✅
+    remarkPlugins: [remarkComment, remarkGfm, remarkFrontmatter],
     providerImportSource: '@mdx-js/react',
-    rehypePlugins: []
+    rehypePlugins: [rehypeSlug]
   },
 });
 
 const config = {
-  pageExtensions: ["jsx", "js", "bs.js", "mdx", "mjs"],
+  pageExtensions: ["jsx", "js", "bs.js", "mdx", "mjs", "md"],
   env: {
     ENV: process.env.NODE_ENV,
   },
+  experimental: { esmExternals: 'loose' },
   swcMinify: true,
-  // webpack: (config, options) => {
-  //   const { isServer } = options;
-  //   if (!isServer) {
-  //     // We shim fs for things like the blog slugs component
-  //     // where we need fs access in the server-side part
-  //     config.resolve.fallback = {
-  //       fs: false,
-  //       path: false,
-  //     };
-  //   }
-  //   // We need this additional rule to make sure that mjs files are
-  //   // correctly detected within our src/ folder
-  //   config.module.rules.push({
-  //     test: /\.m?js$/,
-  //     // v-- currently using an experimental setting with esbuild-loader
-  //     //use: options.defaultLoaders.babel,
-  //     use: [{ loader: "esbuild-loader", options: { loader: "jsx" } }],
-  //     exclude: /node_modules/,
-  //     type: "javascript/auto",
-  //     resolve: {
-  //       fullySpecified: false,
-  //     },
-  //   });
-  //   config.plugins.push(new ProvidePlugin({ React: "react" }));
-  //   return config;
-  // },
+  webpack: (config, options) => {
+    const { isServer } = options;
+    if (!isServer) {
+      // We shim fs for things like the blog slugs component
+      // where we need fs access in the server-side part
+      config.resolve.fallback = {
+        fs: false,
+        path: false,
+      };
+    }
+    // We need this additional rule to make sure that mjs files are
+    // correctly detected within our src/ folder
+    config.module.rules.push({
+      test: /\.m?js$/,
+      // v-- currently using an experimental setting with esbuild-loader
+      //use: options.defaultLoaders.babel,
+      use: [{ loader: "esbuild-loader", options: { loader: "jsx" } }],
+      exclude: /node_modules/,
+      type: "javascript/auto",
+      resolve: {
+        fullySpecified: false,
+      },
+    });
+    config.plugins.push(new ProvidePlugin({ React: "react" }));
+    return config;
+  },
   async redirects() {
     return [
       {
@@ -76,11 +66,6 @@ const config = {
     ];
   },
 };
-
-// module.exports = withMdx({
-//   transpilePackages: transpileModules,
-//   ...config,
-// });
 
 export default withMDX({
   transpilePackages: transpileModules,

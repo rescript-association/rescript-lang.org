@@ -1,7 +1,7 @@
 module Link = Next.Link
 
-let link = "no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px"
-let activeLink = "text-inherit font-medium text-fire-30 border-b border-fire"
+let link = "no-underline block hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px"
+let activeLink = "font-medium text-fire-30 border-b border-fire"
 
 let linkOrActiveLink = (~target, ~route) => target === route ? activeLink : link
 
