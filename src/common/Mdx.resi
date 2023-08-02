@@ -69,3 +69,19 @@ module Provider: {
   @react.component
   let make: (~components: Components.t, ~children: React.element=?) => React.element
 }
+
+@module("@mdx-js/mdx") external compileSync: (string, {..}) => string = "compileSync"
+
+module Remote: {
+  type output = {
+    frontmatter: Js.Json.t,
+    compiledSource: string,
+    scope: Js.Json.t,
+  }
+  let serialize: (string, {..}) => promise<output>
+}
+
+module MDXRemote: {
+  @react.component
+  let make: (~props: Remote.output) => React.element
+}

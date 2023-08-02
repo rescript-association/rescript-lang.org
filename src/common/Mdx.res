@@ -160,3 +160,17 @@ module Provider = {
   external make: (~components: Components.t, ~children: React.element=?) => React.element =
     "MDXProvider"
 }
+
+@module("@mdx-js/mdx") external compileSync: (string, {..}) => string = "compileSync"
+
+module Remote = {
+  type output = {frontmatter: Js.Json.t, compiledSource: string, scope: Js.Json.t}
+
+  @module("next-mdx-remote/serialize")
+  external serialize: (string, {..}) => promise<output> = "serialize"
+}
+
+module MDXRemote = {
+  @react.component @module("next-mdx-remote")
+  external make: (~props: Remote.output) => React.element = "MDXRemote"
+}

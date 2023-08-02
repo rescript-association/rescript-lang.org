@@ -115,36 +115,36 @@ import studentName from 'student.js';
 
 A JavaScript default export is really just syntax sugar for a named export implicitly called `default` (now you know!). So to export a default value from ReScript, you can just do:
 
-<CodeTab labels={["ReScript", "JS Output (CommonJS)", "JS Output (ES6)"]}>
+<!-- <CodeTab labels={["ReScript", "JS Output (CommonJS)", "JS Output (ES6)"]}> -->
 
-```res example
-// ReScriptStudent.res
-let default = "Bob"
-```
-```js
-var $$default = "Bob";
+<!-- ```res example -->
+<!-- // ReScriptStudent.res -->
+<!-- let default = "Bob" -->
+<!-- ``` -->
+<!-- ```js -->
+<!-- var $$default = "Bob"; -->
 
-exports.$$default = $$default;
-exports.default = $$default;
-// informal transpiler-compatible marker of a default export compiled from ES6
-exports.__esModule = true;
-```
-```js
-var $$default = "Bob";
+<!-- exports.$$default = $$default; -->
+<!-- exports.default = $$default; -->
+<!-- // informal transpiler-compatible marker of a default export compiled from ES6 -->
+<!-- exports.__esModule = true; -->
+<!-- ``` -->
+<!-- ```js -->
+<!-- var $$default = "Bob"; -->
 
-export {
-  $$default,
-  $$default as default,
-}
-```
+<!-- export { -->
+<!--   $$default, -->
+<!--   $$default as default, -->
+<!-- } -->
+<!-- ``` -->
 
-</CodeTab>
+<!-- </CodeTab> -->
 
-You can then import this default export as usual on the JS side:
+<!-- You can then import this default export as usual on the JS side: -->
 
-```js
-// teacher2.js
-import studentName from 'ReScriptStudent.js';
-```
+<!-- ```js -->
+<!-- // teacher2.js -->
+<!-- import studentName from 'ReScriptStudent.js'; -->
+<!-- ``` -->
 
-If your JavaScript's ES6 default import is transpiled by Babel/Webpack/Jest into CommonJS `require`s, we've taken care of that too! See the CommonJS output tab for `__esModule`.
+<!-- If your JavaScript's ES6 default import is transpiled by Babel/Webpack/Jest into CommonJS `require`s, we've taken care of that too! See the CommonJS output tab for `__esModule`. -->
