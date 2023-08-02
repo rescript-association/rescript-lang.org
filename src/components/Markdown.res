@@ -148,7 +148,7 @@ module H2 = {
 module H3 = {
   @react.component
   let make = (~id, ~children) =>
-    <h3 className="group mt-8 mb-1 hl-4">
+    <h3 className="group mt-8 mb-4 hl-4">
       children
       <span className="ml-2">
         <Anchor id />

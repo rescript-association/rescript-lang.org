@@ -23,6 +23,7 @@ module Version: {
   type t =
     | V1
     | V2
+    | V3
     | UnknownVersion(string)
 
   // Helps finding the right API version
@@ -156,6 +157,8 @@ module Config: {
   type t = {
     module_system: string,
     warn_flags: string,
+    /** Only available in apiVersion > 3 (= ReScript 11+) */
+    uncurried?: bool,
   }
 }
 

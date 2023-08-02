@@ -47,7 +47,7 @@ npx rescript convert -all
 - Complete removal of semicolon (you can still write them).
 - No need for parentheses around `if`, `switch` and `try`.
 - Type arguments: from `option(int)` to `option<int>`.
-- Old interpolated string: from `{j|hello ${name}|j}` to `` j`hello ${name}` ``. Now with proper unicode support!
+- Old interpolated string: from `{j|hello ${name}|j}` to `` `hello ${name}` ``. Now with proper unicode support!
 - New interpolated string: `` `hello world` ``. Also supports multiline and unicode. `"hello world"` string is now singleline.
 - Polymorphic variants: from `` `red`` to `#red`.
 - Arrays: from `[|1,2,3|]` to `[1,2,3]`. In JS, arrays are the right default.

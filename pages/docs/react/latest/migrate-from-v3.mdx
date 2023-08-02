@@ -211,3 +211,55 @@ let make = () => {
   </div>
 }
 ```
+
+### Mangling the prop name
+
+The prop name was mangled automatically in v3, such as `_open` becomes `open` in the generated js code. This is no longer the case in v4 because the internal representation is changed to the record instead object. If you need to mangle the prop name, you can use the `@as` annotation.
+
+Rewrite this:
+
+```res
+module Comp = {
+  @react.component
+  let make = (~_open, ~_type) =>
+    <Modal _open _type>
+      <Description />
+    </Modal>
+}
+```
+
+To this:
+
+```res
+module Comp = {
+  @react.component
+  let make =
+    (@as("open") ~_open, @as("type") ~_type) =>
+      <Modal _open _type>
+        <Description />
+      </Modal>
+}
+```
+
+
+### Bindings to JS components with optional props
+
+Previously, you could wrap optional props with an explicit `option` when writing bindings to JS components. This approach functioned only due to an implementation detail of the ppx in JSX 3; it's not how to correctly write bindings to a function with optional arguments.
+
+Rewrite this:
+
+```res
+module Button = {
+  @module("./Button") @react.component
+  external make: (~text: option<string>=?) => React.element = "default"
+}
+```
+
+To this:
+
+```res
+module Button = {
+  @module("./Button") @react.component
+  external make: (~text: string=?) => React.element = "default"
+}
+```

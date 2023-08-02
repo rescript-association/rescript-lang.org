@@ -168,7 +168,9 @@ module M = {
   let y = "abc"
   let x = 42
 }
-export firstClassModule: module(MT) = module(M)
+
+@genType
+let firstClassModule: module(MT) = module(M)
 ```
 
 is exported as a JS object of type

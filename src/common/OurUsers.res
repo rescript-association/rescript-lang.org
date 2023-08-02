@@ -1,15 +1,13 @@
 type company = Logo({name: string, url: string, path: string})
 
+// NOTE: More details on how this works can be found in our README:
+// https://github.com/rescript-association/rescript-lang.org#how-to-add-your-company-logo-to-our-front-page
+
 let companies = [
   Logo({
-    name: "Facebook Messenger",
-    url: "https://messenger.com",
-    path: "/static/lp/messenger.svg",
-  }),
-  Logo({
-    name: "Facebook",
-    url: "https://messenger.com",
-    path: "/static/lp/facebook.svg",
+    name: "Juspay",
+    url: "https://juspay.in",
+    path: "/static/lp/juspay.svg",
   }),
   Logo({
     name: "Rohea",
@@ -30,6 +28,11 @@ let companies = [
     name: "Draftbit",
     url: "https://draftbit.com",
     path: "/static/lp/draftbit.svg",
+  }),
+  Logo({
+    name: "Porter",
+    url: "https://porter.in",
+    path: "/static/lp/porter.svg",
   }),
   Logo({
     name: "Pupilfirst",
@@ -145,5 +148,20 @@ let companies = [
     name: "Better Vim",
     url: "https://bettervim.com/",
     path: "/static/lp/bettervim.svg",
+  }),
+  Logo({
+    name: "Instapainting.com",
+    url: "https://www.instapainting.com/",
+    path: "/static/lp/instapainting.svg",
+  }),
+  Logo({
+    name: "Silq",
+    url: "https://www.onesilq.com/",
+    path: "/static/lp/silq.svg",
+  }),
+  Logo({
+    name: "Sensonomic",
+    url: "https://www.sensonomic.com/",
+    path: "/static/lp/sensonomic.svg",
   }),
 ]

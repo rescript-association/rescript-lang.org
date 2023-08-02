@@ -35,6 +35,7 @@ module Version = {
   type t =
     | V1
     | V2
+    | V3
     | UnknownVersion(string)
 
   // Helps finding the right API version
@@ -55,6 +56,7 @@ module Version = {
       | _ => UnknownVersion(apiVersion)
       }
     | list{"2"} => V2
+    | list{"3"} => V3
     | _ => UnknownVersion(apiVersion)
     }
 
@@ -62,6 +64,7 @@ module Version = {
     switch t {
     | V1 => "1.0"
     | V2 => "2.0"
+    | V3 => "3.0"
     | UnknownVersion(version) => version
     }
 
@@ -70,7 +73,7 @@ module Version = {
   let availableLanguages = t =>
     switch t {
     | V1 => [Lang.Reason, Res]
-    | V2 => [Lang.Res]
+    | V2 | V3 => [Lang.Res]
     | UnknownVersion(_) => [Res]
     }
 }
@@ -344,6 +347,7 @@ module Config = {
   type t = {
     module_system: string,
     warn_flags: string,
+    uncurried?: bool,
   }
 }
 

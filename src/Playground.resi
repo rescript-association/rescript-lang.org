@@ -1,2 +1,2 @@
 @react.component
-let default: unit => React.element
+let make: unit => React.element

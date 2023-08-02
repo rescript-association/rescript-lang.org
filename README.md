@@ -24,11 +24,11 @@ This is the official documentation platform for the [ReScript](https://rescript-
 # For first time clone / build (install dependencies)
 npm i
 
-# Only needed for initial clone (or content H2 changes)
-npm run update-index
-
 # Initial build
 npx rescript
+
+# Only needed for initial clone (or content H2 changes)
+npm run update-index
 
 # Build the index data
 npm run update-index

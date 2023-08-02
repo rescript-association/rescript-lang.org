@@ -27,6 +27,7 @@
     "exception",
     "lazy-values",
     "promise",
+    "async-await",
     "module",
     "import-export",
     "attribute",
@@ -34,7 +35,8 @@
     "reserved-keywords"
   ],
   "Advanced Features": [
-    "extensible-variant"
+    "extensible-variant",
+    "scoped-polymorphic-types"
   ],
   "JavaScript Interop": [
     "interop-cheatsheet",
