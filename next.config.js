@@ -23,7 +23,6 @@ const config = {
   env: {
     ENV: process.env.NODE_ENV,
   },
-  experimental: { esmExternals: 'loose' },
   swcMinify: true,
   webpack: (config, options) => {
     const { isServer } = options;
