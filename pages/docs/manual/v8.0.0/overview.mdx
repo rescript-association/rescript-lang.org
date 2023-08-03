@@ -107,28 +107,33 @@ canonical: "/docs/manual/latest/overview"
   <thead>
     <tr>
       <th>JavaScript</th>
-      <th>Us    </th>
+      <th>US</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-  <pre><code>{`const myFun = (x, y) => {
-  const doubleX = x + x;
-  const doubleY = y + y;
-  return doubleX + doubleY
-};`}</code></pre>
+      ```
+      const myFun = (x, y) => {
+        const doubleX = x + x;
+        const doubleY = y + y;
+        return doubleX + doubleY
+      };
+      ```
       </td>
       <td>
-  <pre><code>{`let myFun = (x, y) => {
-  let doubleX = x + x
-  let doubleY = y + y
-  doubleX + doubleY
-}`}</code></pre>
+      ```
+      let myFun = (x, y) => {
+        let doubleX = x + x
+        let doubleY = y + y
+        doubleX + doubleY
+      }
+      ```
       </td>
     </tr>
   </tbody>
 </table>
+
 
 ### If-else
 
@@ -186,24 +191,28 @@ The last expression of a block delimited by `{}` implicitly returns (including f
   <thead>
     <tr>
       <th>JavaScript</th>
-      <th>Us</th>
+      <th>US</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-  <pre><code>{`let result = (function() {
-  const x = 23;
-  const y = 34;
-  return x + y;
-})();`}</code></pre>
+      ```
+      let result = (function() {
+        const x = 23;
+        const y = 34;
+        return x + y;
+      })();
+      ```
       </td>
       <td>
-  <pre><code>{`let result = {
-  let x = 23
-  let y = 34
-  x + y
-}`}</code></pre>
+      ```
+      let result = {
+        let x = 23
+        let y = 34
+        x + y
+      }
+      ```
       </td>
     </tr>
   </tbody>
