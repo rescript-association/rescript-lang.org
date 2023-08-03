@@ -116,7 +116,7 @@ canonical: "/docs/manual/latest/overview"
   <thead>
     <tr>
       <th>JavaScript</th>
-      <th>ReScript  </th>
+      <th>Us    </th>
     </tr>
   </thead>
   <tbody>
@@ -192,34 +192,34 @@ canonical: "/docs/manual/latest/overview"
 The last expression of a block delimited by `{}` implicitly returns (including function body). In JavaScript, this can only be simulated via an immediately-invoked function expression (since function bodies have their own local scope).
 
 <table>
-<thead>
-<tr>
-<th>JavaScript</th>
-<th>ReScript</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-```js
-let result = (function() {
-  const x = 23;
-  const y = 34;
-  return x + y;
-})();
-```
-</td>
-<td>
-```res
-let result = {
-  let x = 23
-  let y = 34
-  x + y
-}
-```
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>JavaScript</th>
+      <th>ReScript</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+      ```
+      let result = (function() {
+        const x = 23;
+        const y = 34;
+        return x + y;
+      })();
+      ```
+      </td>
+      <td>
+      ```
+      let result = {
+        let x = 23
+        let y = 34
+        x + y
+      }
+      ```
+      </td>
+    </tr>
+  </tbody>
 </table>
 
 ## Common Features' JS Output

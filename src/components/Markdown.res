@@ -271,12 +271,12 @@ module Code = {
       }
     }
 
+    let code = children->unknownAsString
+    let isMultiline = code->Js.String2.includes("\n")
+
     switch lang {
-    | "text" => <InlineCode> {children->unknownAsString->React.string} </InlineCode>
-    | lang => {
-        let code = unknownAsString(children)
-        <Pre> {makeCodeElement(~code, ~metastring, ~lang)} </Pre>
-      }
+    | "text" if !isMultiline => <InlineCode> {code->React.string} </InlineCode>
+    | lang => <Pre> {makeCodeElement(~code, ~metastring, ~lang)} </Pre>
     }
   }
 }
