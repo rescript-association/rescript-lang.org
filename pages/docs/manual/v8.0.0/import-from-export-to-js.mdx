@@ -110,35 +110,35 @@ import studentName from 'student.js';
 
 Technically, since a ReScript file maps to a module, there's no such thing as "default" export, only named ones. However, we've made an exception to support default module when you do the following:
 
-<!-- <CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}> -->
+<CodeTab labels={["Reason (Old Syntax)", "ML (Older Syntax)", "JS Output"]}>
 
-<!-- ```re -->
-<!-- /* FavoriteStudent.re */ -->
-<!-- let default = "Bob"; -->
-<!-- ``` -->
-<!-- ```re -->
-<!-- (* FavoriteStudent.re *) -->
-<!-- let default = "Bob" -->
-<!-- ``` -->
-<!-- ```js -->
-<!-- var $$default = "Bob"; -->
+```re
+/* FavoriteStudent.re */
+let default = "Bob";
+```
+```re
+(* FavoriteStudent.re *)
+let default = "Bob"
+```
+```js
+var $$default = "Bob";
 
-<!-- exports.$$default = $$default; -->
-<!-- exports.default = $$default; -->
-<!-- exports.__esModule = true; -->
-<!-- ``` -->
+exports.$$default = $$default;
+exports.default = $$default;
+exports.__esModule = true;
+```
 
-<!-- </CodeTab> -->
+</CodeTab>
 
-<!-- You can then require the default as normal JS side: -->
+You can then require the default as normal JS side:
 
-<!-- ```js -->
-<!-- // teacher2.js -->
-<!-- import studentName from 'FavoriteStudent.js'; -->
-<!-- ``` -->
+```js
+// teacher2.js
+import studentName from 'FavoriteStudent.js';
+```
 
-<!-- **Note**: the above JS snippet _only_ works if you're using that ES6 import/export syntax in JS. If you're still using `require`, you'd need to do: -->
+**Note**: the above JS snippet _only_ works if you're using that ES6 import/export syntax in JS. If you're still using `require`, you'd need to do:
 
-<!-- ```js -->
-<!-- let studentName = require('FavoriteStudent').default; -->
-<!-- ``` -->
+```js
+let studentName = require('FavoriteStudent').default;
+```
