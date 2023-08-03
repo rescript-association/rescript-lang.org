@@ -39,7 +39,7 @@ canonical: "/docs/manual/latest/overview"
 | `"Hello world!"`          | Same                    |
 | `'Hello world!'`          | Strings must use `"`    |
 | `"hello " + "world"`      | `"hello " ++ "world"`   |
-| `` `hello ${message}` ``  | `{j|Hello $(message)|j}`|
+| `` `hello ${message}` ``  | `\{j|Hello $(message)|j}`|
 
 ### Boolean
 
@@ -174,7 +174,7 @@ canonical: "/docs/manual/latest/overview"
 | JavaScript                                | Us                                         |
 | ----------------------------------------- | ------------------------------------------ |
 | `throw new SomeError(...)`                | `raise(SomeError(...))`                    |
-| `try {a} catch (Err) {...} finally {...}` | `try a catch { | Err => ...}` \* |
+| `try {a} catch (Err) {...} finally {...}` | `try a catch { \| Err => ...}` \* |
 
 \* No finally.
 
@@ -214,7 +214,7 @@ The last expression of a block delimited by `{}` implicitly returns (including f
 Feature                         | Example                              | JavaScript Output
 --------------------------------|--------------------------------------|----------------------
 String                          | `"Hello"`                            | `"Hello"`
-String Interpolation            | `{j|Hello $(message)|j}`             | `"Hello " + message`
+String Interpolation            | `\{j|Hello $(message)|j}`             | `"Hello " + message`
 Character (disrecommended)      | `'x'`                                | `120` (char code)
 Integer                         | `23`, `-23`                          | `23`, `-23`
 Float                           | `23.0`, `-23.0`                      | `23.0`, `-23.0`
