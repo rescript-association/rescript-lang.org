@@ -1,12 +1,15 @@
+import fs from "fs";
 import webpack from "webpack";
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import remarkComment from 'remark-comment';
 import nextMDX from "@next/mdx";
-import bsconfig from "./bsconfig.json" assert {type: 'json'};
 import remarkFrontmatter from 'remark-frontmatter'
 
+const bsconfig = JSON.parse(fs.readFileSync("./bsconfig.json"))
+
 const { ProvidePlugin } = webpack;
+
 const transpileModules = ["rescript"].concat(bsconfig["bs-dependencies"]);
 
 const withMDX = nextMDX({
