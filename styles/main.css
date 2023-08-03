@@ -5,7 +5,7 @@
 @import './_markdown.css';
 @import "./_fonts.css";
 @import "./_docsearch.css";
-/* @import "./_typography.css"; */
+/*@import "./_typography.css";*/
 
 body {
   @apply font-sans bg-white sm:subpixel-antialiased ;
