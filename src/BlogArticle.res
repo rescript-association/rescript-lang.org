@@ -24,19 +24,6 @@ module Params = {
 
 type props = {mdxSource: Mdx.Remote.output, isArchived: bool, path: string}
 
-module BlogComponent = {
-  type t = {default: React.component<{.}>}
-
-  @val external require: string => t = "require"
-
-  let frontmatter: React.component<{.}> => Js.Json.t = %raw(`
-      function(component) {
-        if(typeof component.frontmatter === "object") { return component.frontmatter; }
-        return {};
-      }
-    `)
-}
-
 module Line = {
   @react.component
   let make = () => <div className="block border-t border-gray-20" />
@@ -136,29 +123,22 @@ type remarkPlugin
 
 let mdxOptions = {"remarkPlugins": [remarkComment, remarkGfm, remarkFrontmatter]}
 
-external createProps: {..} => {"props": Mdx.Remote.output} = "%identity"
-external asJSXElement: 'a => React.element = "%identity"
+external asProps: {..} => {"props": Mdx.Remote.output} = "%identity"
 
 let default = (props: props) => {
   let {mdxSource, isArchived, path} = props
 
-  let components = {
-    "Image": Image.default->asJSXElement,
-    "Video": Video.default->asJSXElement,
-    "Intro": Intro.default->asJSXElement,
-  }
-
-  let p = {
+  let mdxProps = {
     "frontmatter": mdxSource.frontmatter,
     "scope": mdxSource.scope,
     "compiledSource": mdxSource.compiledSource,
-    "components": components,
+    "components": Markdown.default,
     "options": {
       "mdxOptions": mdxOptions,
     },
   }
 
-  let children = React.createElement(Mdx.MDXRemote.make, createProps(p))
+  let children = React.createElement(Mdx.MDXRemote.make, asProps(mdxProps))
 
   let fm = mdxSource.frontmatter->BlogFrontmatter.decode
 

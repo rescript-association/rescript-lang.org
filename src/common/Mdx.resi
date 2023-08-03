@@ -36,6 +36,12 @@ module Components: {
     ~info: React.component<props>=?,
     ~warn: React.component<props>=?,
     ~intro: React.component<props>=?,
+    ~image: React.component<{
+      "src": string,
+      "withShadow": option<bool>,
+      "caption": option<string>,
+    }>=?,
+    ~video: React.component<{"src": string, "caption": option<string>}>=?,
     ~urlBox: React.component<{"text": string, "href": string, "children": MdxChildren.t}>=?,
     ~codeTab: React.component<{"children": MdxChildren.t, "labels": option<array<string>>}>=?,
     ~p: React.component<props>=?,
@@ -69,8 +75,6 @@ module Provider: {
   @react.component
   let make: (~components: Components.t, ~children: React.element=?) => React.element
 }
-
-@module("@mdx-js/mdx") external compileSync: (string, {..}) => string = "compileSync"
 
 module Remote: {
   type output = {

@@ -94,6 +94,17 @@ module Components = {
     warn: React.component<props>,
     @as("Intro") @optional
     intro: React.component<props>,
+    @as("Image") @optional
+    image: React.component<{
+      "src": string,
+      "withShadow": option<bool>,
+      "caption": option<string>,
+    }>,
+    @as("Video") @optional
+    video: React.component<{
+      "src": string,
+      "caption": option<string>,
+    }>,
     @as("UrlBox") @optional
     urlBox: React.component<{
       "text": string,
@@ -160,8 +171,6 @@ module Provider = {
   external make: (~components: Components.t, ~children: React.element=?) => React.element =
     "MDXProvider"
 }
-
-@module("@mdx-js/mdx") external compileSync: (string, {..}) => string = "compileSync"
 
 module Remote = {
   type output = {frontmatter: Js.Json.t, compiledSource: string, scope: Js.Json.t}
