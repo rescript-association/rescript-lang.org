@@ -55,13 +55,6 @@ Since objects are immutable by default, their fields will be exported to readonl
 
 It is possible to mix object and option types, so for example the ReScript type `{. "x":int, "y":option<string>}` exports to JS type `{x:number, ?y: string}`, requires no conversion, and allows option pattern matching on the ReScript side.
 
-Object field names follow ReScript's mangling convention (so e.g. `_type` in ReScript represents `type` in JS):
-
-```
-Remove trailing "__" if present.
-Otherwise remove leading "_" when followed by an uppercase letter, or keyword.
-```
-
 ## Tuples
 
 ReScript tuple values of type e.g. `(int, string)` are exported as identical JS values of type `[number, string]`. This requires no conversion, unless one of types of the tuple items does.
@@ -121,20 +114,6 @@ Function components are exported and imported exactly like normal functions. For
 [@genType]
 [@react.component]
 let make = (~name) => React.string(name);
-```
-
-For renaming, named arguments follow ReScript's mangling convention:
-
-```
-Remove trailing "__" if present.
-Otherwise remove leading "_" when followed by an uppercase letter, or keyword.
-```
-
-For example:
-
-```res
-@genType
-let exampleFunction = (~_type) => "type: " ++ _type
 ```
 
 ## Imported Types
