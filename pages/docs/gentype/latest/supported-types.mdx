@@ -37,12 +37,11 @@ The JS values are identical: there is no conversion unless the argument type nee
 
 ## Records
 
-ReScript record values of type e.g. `{x:int}` such as `{x:0}`, `{x:1}`, `{x:2}`, are exported to JS object values `{x:0}`, `{x:1}`, `{x:2}`. This requires a change of runtime representation from arrays to objects.
-So they are exported to JS values of type `{x:number}`.
+ReScript record values of type e.g. `{x: int}` such as `{x: 0}`, `{x: 1}`, are exported to JS values of type `{x: number}` without runtime conversion.
 
 Since records are immutable by default, their fields will be exported to readonly property types in Flow/TS. Mutable fields are specified in ReScript by e.g. `{mutable mutableField: string}`.
 
-The `@genType.as` annotation can be used to change the name of a field on the JS side of things. So e.g. `{[@genType.as "y"] x:int}` is exported as JS type `{y:int}`.
+The `@as` annotation can be used to change the name of a field on the JS side of things. So e.g. `{@as("y") x: int}` is exported as JS type `{y: number}`.
 
 If one field of the ReScript record has option type, this is exported to an optional JS field. So for example ReScript type `{x: option<int>}` is exported as JS type `{x?: number}`.
 
@@ -74,13 +73,13 @@ Ordinary variants (with capitalized cases, e.g. ``` | A | B(int) ```) and polymo
 Variants can have an *unboxed*, or a *boxed* representation. The unboxed representation is used when there is at most one case with a payload, and that payload has object type; otherwise, a boxed representation is used. Object types are arrays, objects, records and tuples.
 
 Variants without payloads are essentially sequences of identifiers.
-E.g. type ``[@genType] type days = | Monday | Tuesday``.
+E.g. type ``@genType type days = Monday | Tuesday``.
 The corresponding JS representation is `"Monday"`, `"Tuesday"`.
-Similarly, polymorphic variant type ``[@genType] type days = [ | `Monday | `Tuesday ] `` has the same JS representation.
+Similarly, polymorphic variant type ``@genType type days = [#Monday | #Tuesday]`` has the same JS representation.
 
 
 When at most one variant case has a payload, and if the payload is of object type, e.g.
-``` [ | Unnamed | Named({. "name": string, "surname": string}) ] ```
+```Unnamed | Named({. "name": string, "surname": string})```
 then the representation is unboxed: JS values are e.g. `"Unnamed"` and
 `{name: "hello", surname: "world"}`. Similarly for polymorphic variants.
 Note that this unboxed representation does not use the label `"Named"` of the variant case with payload, because that value is distinguished from the other payload-less cases by its type: an object.
@@ -90,8 +89,8 @@ For example, type ```| A | B(int) | C(string)``` has values such as ```"A"``` an
 ```{tag: "B", value: 42}``` and ```{tag: "C", value: "hello"}```.
 Polymorhphic variants are treated similarly. Notice that payloads for polymorphic variants are always unary: ``` `Pair(int,int) ``` has a single payload of type `(int,int)`. Instead, ordinary variants distinguish between unary ``` Pair((int,int)) ``` and binary ``` Pair(int,int) ``` payloads. All those cases are represented in JS as ```{tag: "Pair", value: [3, 4]}```, and the conversion functions take care of the different ReScript representations.
 
-The `@genType.as` annotation can be used to modify the name emitted for a variant case on the JS side. So e.g. ``` | [@genType.as "Arenamed"] A``` exports ReScript value `` A `` to JS value `"Arenamed"`.
-Boolean/integer/float constants can be expressed as ``` | [@genType.as true] True ``` and ``` | [@genType.as 20] Twenty ``` and ``` | [@genType.as 0.5] Half ```. Similarly for polymorphic variants.
+The `@genType.as` annotation can be used to modify the name emitted for a variant case on the JS side. So e.g. ``` | @genType.as("Arenamed") A``` exports ReScript value `` A `` to JS value `"Arenamed"`.
+Boolean/integer/float constants can be expressed as ``` | @genType.as(true) True ``` and ``` | @genType.as(20) Twenty ``` and ``` | @genType.as(0.5) Half ```. Similarly for polymorphic variants.
 The `@genType.as` annotation can also be used on variants with payloads to determine what appears in `{ tag: ... }`.
 
 For more examples, see [Variants.res](https://github.com/reason-association/genType/tree/master/examples/typescript-react-example/src/Variants.res) and [VariantsWithPayload.res](https://github.com/reason-association/genType/tree/master/examples/typescript-react-example/src/VariantsWithPayload.res).
@@ -117,9 +116,9 @@ In case of mixed named and unnamed arguments, consecutive named arguments form s
 
 Function components are exported and imported exactly like normal functions. For example:
 
-```reason
-[@genType]
-[@react.component]
+```rescript
+@genType
+@react.component
 let make = (~name) => React.string(name);
 ```
 
