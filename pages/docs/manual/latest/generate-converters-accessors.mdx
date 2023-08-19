@@ -130,7 +130,7 @@ This option causes `jsConverter` to, again, generate functions of the following 
 ```resi
 let fruitToJs: fruit => int;
 
-let fruitFromJs: int => option(fruit);
+let fruitFromJs: int => option<fruit>;
 ```
 
 For `fruitToJs`, each fruit variant constructor would map into an integer, starting at 0, in the order they're declared.
