@@ -76,7 +76,7 @@ let make = (
   ~children,
 ) => {
   let router = Next.Router.useRouter()
-  let route = router.route
+  let route = router.asPath
 
   let (isSidebarOpen, setSidebarOpen) = React.useState(_ => false)
   let toggleSidebar = () => setSidebarOpen(prev => !prev)

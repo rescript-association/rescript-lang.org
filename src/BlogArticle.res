@@ -116,12 +116,12 @@ module BlogHeader = {
   }
 }
 
-type remarkPlugin
-@module("remark-comment") external remarkComment: remarkPlugin = "default"
-@module("remark-gfm") external remarkGfm: remarkPlugin = "default"
-@module("remark-frontmatter") external remarkFrontmatter: remarkPlugin = "default"
+// type remarkPlugin
+// @module("remark-comment") external remarkComment: remarkPlugin = "default"
+// @module("remark-gfm") external remarkGfm: remarkPlugin = "default"
+// @module("remark-frontmatter") external remarkFrontmatter: remarkPlugin = "default"
 
-let mdxOptions = {"remarkPlugins": [remarkComment, remarkGfm, remarkFrontmatter]}
+// let mdxOptions = {"remarkPlugins": [remarkComment, remarkGfm, remarkFrontmatter]}
 
 external asProps: {..} => {"props": Mdx.Remote.output} = "%identity"
 
@@ -134,7 +134,7 @@ let default = (props: props) => {
     "compiledSource": mdxSource.compiledSource,
     "components": Markdown.default,
     "options": {
-      "mdxOptions": mdxOptions,
+      "mdxOptions": Mdx.mdxOptions,
     },
   }
 
@@ -234,7 +234,7 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = async ctx => {
 
   let mdxSource = await Mdx.Remote.serialize(
     source,
-    {"parseFrontmatter": true, "mdxOptions": mdxOptions},
+    {"parseFrontmatter": true, "mdxOptions": Mdx.mdxOptions},
   )
 
   let props = {mdxSource, isArchived, path}

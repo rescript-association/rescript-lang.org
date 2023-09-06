@@ -20,7 +20,7 @@ module Docs = {
   @react.component
   let make = (~components=ApiMarkdown.default, ~children) => {
     let router = Next.Router.useRouter()
-    let route = router.route
+    let route = router.asPath
 
     let title = "API"
     let version = "v8.0.0"

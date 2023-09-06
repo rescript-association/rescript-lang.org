@@ -61,7 +61,7 @@ let make = (
   ~children,
 ) => {
   let router = Next.Router.useRouter()
-  let route = router.route
+  let route = router.asPath
 
   let (isSidebarOpen, setSidebarOpen) = React.useState(_ => false)
   let toggleSidebar = () => setSidebarOpen(prev => !prev)
@@ -136,7 +136,13 @@ let make = (
       | None => title
       }
       let meta = <Meta title ?description ?canonical />
-      (meta, Some(fm.ghEditHref))
+      let editUrl = switch fm.canonical->Js.Null.toOption {
+      | Some(url) =>
+        `https://github.com/reason-association/rescript-lang.org/blob/master${url}.mdx`->Some
+      | None => None
+      }
+      (meta, editUrl)
+    // (meta, Some(fm.ghEditHref))
     | None => (React.null, None)
     }
   | None => (React.null, None)
@@ -177,7 +183,7 @@ module Make = (Content: StaticContent) => {
     ~children: React.element,
   ) => {
     let router = Next.Router.useRouter()
-    let route = router.route
+    let route = router.asPath
 
     // Extend breadcrumbs with document title
     let breadcrumbs = Js.Dict.get(Content.tocData, route)->Belt.Option.mapWithDefault(

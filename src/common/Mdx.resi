@@ -89,3 +89,7 @@ module MDXRemote: {
   @react.component
   let make: (~props: Remote.output) => React.element
 }
+
+type remarkPlugin
+type rehypePlugin
+let mdxOptions: {"remarkPlugins": array<remarkPlugin>, "rehypePlugins": array<rehypePlugin>}

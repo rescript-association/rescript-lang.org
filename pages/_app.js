@@ -12,8 +12,8 @@ import "codemirror/lib/codemirror.css";
 import "styles/cm.css";
 import "styles/docson.css";
 
-import {make as ResApp} from "src/common/App.mjs";
+// import {make as ResApp} from "src/common/App.mjs";
 
-export default function App(props) {
-  return <ResApp {...props} />
+export default function App({ Component, pageProps }) {
+  return  <Component {...pageProps} />;
 };
