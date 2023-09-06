@@ -20,7 +20,7 @@ Local alias for 'a Js.undefined.
 let return: 'a => t<'a>
 ```
 
-Constructs a value of `Js.undefined('a)` containing a value of `'a`.
+Constructs a value of `Js.undefined<'a>` containing a value of `'a`.
 
 ## test
 
@@ -65,7 +65,7 @@ let bind: (t<'a>, (. 'a) => 'b) => t<'b>
 ```
 
 Maps the contained value using the given function.
-If `Js.undefined('a)` contains a value, that value is unwrapped, mapped to a `'b` using the given function `a' => 'b`, then wrapped back up and returned as `Js.undefined('b)`.
+If `Js.undefined<'a>` contains a value, that value is unwrapped, mapped to a `'b` using the given function `a' => 'b`, then wrapped back up and returned as `Js.undefined<'b>`.
 
 ```res example
 let maybeGreetWorld = (maybeGreeting: Js.undefined<string>) =>
@@ -79,7 +79,7 @@ let iter: (t<'a>, (. 'a) => unit) => unit
 ```
 
 Iterates over the contained value with the given function.
-If `Js.undefined('a)` contains a value, that value is unwrapped and applied to the given function.
+If `Js.undefined<'a>` contains a value, that value is unwrapped and applied to the given function.
 
 ```res example
 let maybeSay = (maybeMessage: Js.undefined<string>) =>
@@ -92,7 +92,7 @@ let maybeSay = (maybeMessage: Js.undefined<string>) =>
 let fromOption: option<'a> => t<'a>
 ```
 
-Maps `option('a)` to `Js.undefined('a)`.
+Maps `option<'a>` to `Js.undefined<'a>`.
 `Some(a)` => `a`
 `None` => `empty`
 
@@ -108,7 +108,7 @@ let from_opt: option<'a> => t<'a>
 let toOption: t<'a> => option<'a>
 ```
 
-Maps `Js.undefined('a)` to `option('a)`
+Maps `Js.undefined<'a>` to `option<'a>`
 `a` => `Some(a)`
 `empty` => `None`
 

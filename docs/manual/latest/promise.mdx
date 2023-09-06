@@ -119,9 +119,9 @@ export {
 
 ReScript has built-in support for [JavaScript promises](api/js/promise). The 3 functions you generally need are:
 
-- `Js.Promise.resolve: 'a => Js.Promise.t('a)`
-- `Js.Promise.then_: ('a => Js.Promise.t('b), Js.Promise.t('a)) => Js.Promise.t('b)`
-- `Js.Promise.catch: (Js.Promise.error => Js.Promise.t('a), Js.Promise.t('a)) => Js.Promise.t('a)`
+- `Js.Promise.resolve: 'a => Js.Promise.t<'a>`
+- `Js.Promise.then_: ('a => Js.Promise.t<'b>, Js.Promise.t<'a>) => Js.Promise.t<'b>`
+- `Js.Promise.catch: (Js.Promise.error => Js.Promise.t<'a>, Js.Promise.t<'a>) => Js.Promise.t<'a>`
 
 Additionally, here's the type signature for creating a promise on the ReScript side:
 
