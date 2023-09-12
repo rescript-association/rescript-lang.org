@@ -164,4 +164,9 @@ let companies = [
     url: "https://www.sensonomic.com/",
     path: "/static/lp/sensonomic.svg",
   }),
+  Logo({
+    name: "MngGifLab",
+    url: "https://www.mnggiflab.com/",
+    path: "/img/logo/logo-icon.png"
+  })
 ]
