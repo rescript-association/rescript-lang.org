@@ -133,7 +133,7 @@ const createTOC = result => {
 };
 
 const createLatestManualToc = () => {
-  const MD_DIR = path.join(__dirname, "../pages/docs/manual/latest");
+  const MD_DIR = path.join(__dirname, "../docs/manual/latest");
   const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_manual_latest.json");
   const TARGET_FILE = path.join(__dirname, "../index_data/manual_latest_toc.json");
 
@@ -153,7 +153,7 @@ const createLatestManualToc = () => {
 };
 
 const createReasonCompilerToc = () => {
-  const MD_DIR = path.join(__dirname, "../pages/docs/reason-compiler/latest");
+  const MD_DIR = path.join(__dirname, "../docs/reason-compiler/latest");
   const TARGET_FILE = path.join(__dirname, "../index_data/reason_compiler_toc.json");
 
   const files = glob.sync(`${MD_DIR}/*.md?(x)`);
@@ -164,7 +164,7 @@ const createReasonCompilerToc = () => {
 };
 
 const createV900ManualToc = () => {
-  const MD_DIR = path.join(__dirname, "../pages/docs/manual/v9.0.0");
+  const MD_DIR = path.join(__dirname, "../docs/manual/v9.0.0");
   const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_manual_v900.json");
   const TARGET_FILE = path.join(__dirname, "../index_data/manual_v900_toc.json");
 
@@ -184,7 +184,7 @@ const createV900ManualToc = () => {
 };
 
 const createV800ManualToc = () => {
-  const MD_DIR = path.join(__dirname, "../pages/docs/manual/v8.0.0");
+  const MD_DIR = path.join(__dirname, "../docs/manual/v8.0.0");
   const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_manual_v800.json");
   const TARGET_FILE = path.join(__dirname, "../index_data/manual_v800_toc.json");
 
@@ -206,7 +206,7 @@ const createV800ManualToc = () => {
 
 const createReactToc = version => {
   const versionLabel = version.replace(/\./g, "");
-  const MD_DIR = path.join(__dirname, "../pages/docs/react");
+  const MD_DIR = path.join(__dirname, "../docs/react");
   const SIDEBAR_JSON = path.join(__dirname, `../data/sidebar_react_${versionLabel}.json`);
   const TARGET_FILE = path.join(__dirname, `../index_data/react_${versionLabel}_toc.json`);
 
@@ -226,7 +226,7 @@ const createReactToc = version => {
 };
 
 const createGenTypeToc = () => {
-  const MD_DIR = path.join(__dirname, "../pages/docs/gentype/latest");
+  const MD_DIR = path.join(__dirname, "../docs/gentype/latest");
   const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_gentype_latest.json");
   const TARGET_FILE = path.join(__dirname, "../index_data/gentype_latest_toc.json");
 
@@ -246,7 +246,7 @@ const createGenTypeToc = () => {
 };
 
 const createCommunityToc = () => {
-  const MD_DIR = path.join(__dirname, "../pages/community");
+  const MD_DIR = path.join(__dirname, "../community");
   const SIDEBAR_JSON = path.join(__dirname, "../data/sidebar_community.json");
   const TARGET_FILE = path.join(__dirname, "../index_data/community_toc.json");
 

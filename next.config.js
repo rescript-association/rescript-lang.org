@@ -9,7 +9,6 @@ import nextMDX from "@next/mdx";
 import remarkFrontmatter from 'remark-frontmatter'
 // import remarkParseFrontmatter from "remark-parse-frontmatter";
 // import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
-import myPlugin from "./frontmatter.js"
 
 const bsconfig = JSON.parse(fs.readFileSync("./bsconfig.json"))
 
