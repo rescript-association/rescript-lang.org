@@ -153,7 +153,7 @@ const genMdx = topLevel.map(doc => {
 
   const introTopLevel =
     doc.docstrings.length > 0
-      ? `\n\n<Intro>\n\n${doc.docstrings.join("")}\n\n</Intro>\n\n`
+      ? `\n\n<Intro>\n\n\n${doc.docstrings.join("")}\n\n\n</Intro>\n\n`
       : "";
 
   const body = [`# ${doc.name}\n`, introTopLevel, mainItems].join("\n");
@@ -171,7 +171,7 @@ genMdx.forEach(doc => {
   const name = doc.name.toLowerCase();
   const subDir = path.join(output_dir, name);
 
-  fs.writeFileSync(name + ".mdx", doc.body);
+  fs.writeFileSync(path.join(subDir, name + ".mdx"), doc.body);
 
   if (!fs.existsSync(subDir)) {
     fs.mkdirSync(subDir);
