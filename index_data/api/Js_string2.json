@@ -125,7 +125,7 @@
       "name": "endsWith",
       "signature": "let endsWith: (t, t) => bool",
       "docstrings": [
-        "ES2015: `endsWith(str, substr)` returns `true` if the `str` ends with `substr`,\n`false` otherwise.\n\nSee [`String.endsWith`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith)\non MDN.\n\n```res example\nJs.String2.endsWith(\"BuckleScript\", \"Script\") == true\nJs.String2.endsWith(\"BuckleShoes\", \"Script\") == false\n```"
+        "ES2015: `endsWith(str, substr)` returns `true` if the `str` ends with `substr`,\n`false` otherwise.\n\nSee [`String.endsWith`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith)\non MDN.\n\n```res example\nJs.String2.endsWith(\"ReScript\", \"Script\") == true\nJs.String2.endsWith(\"C++\", \"Script\") == false\n```"
       ]
     },
     {
@@ -359,7 +359,7 @@
       "name": "startsWith",
       "signature": "let startsWith: (t, t) => bool",
       "docstrings": [
-        "ES2015: `startsWith(str, substr)` returns `true` if the `str` starts with\n`substr`, `false` otherwise.\n\nSee [`String.startsWith`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)\non MDN.\n\n```res example\nJs.String2.startsWith(\"BuckleScript\", \"Buckle\") == true\nJs.String2.startsWith(\"BuckleScript\", \"\") == true\nJs.String2.startsWith(\"JavaScript\", \"Buckle\") == false\n```"
+        "ES2015: `startsWith(str, substr)` returns `true` if the `str` starts with\n`substr`, `false` otherwise.\n\nSee [`String.startsWith`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)\non MDN.\n\n```res example\nJs.String2.startsWith(\"ReScript\", \"Re\") == true\nJs.String2.startsWith(\"ReScript\", \"\") == true\nJs.String2.startsWith(\"JavaScript\", \"Re\") == false\n```"
       ]
     },
     {
@@ -368,7 +368,7 @@
       "name": "startsWithFrom",
       "signature": "let startsWithFrom: (t, t, int) => bool",
       "docstrings": [
-        "ES2015: `startsWithFrom(str, substr, n)` returns `true` if the `str` starts\nwith `substr` starting at position `n`, false otherwise. If `n` is negative,\nthe search starts at the beginning of `str`.\n\nSee [`String.startsWith`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)\non MDN.\n\n```res example\nJs.String2.startsWithFrom(\"BuckleScript\", \"kle\", 3) == true\nJs.String2.startsWithFrom(\"BuckleScript\", \"\", 3) == true\nJs.String2.startsWithFrom(\"JavaScript\", \"Buckle\", 2) == false\n```"
+        "ES2015: `startsWithFrom(str, substr, n)` returns `true` if the `str` starts\nwith `substr` starting at position `n`, false otherwise. If `n` is negative,\nthe search starts at the beginning of `str`.\n\nSee [`String.startsWith`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)\non MDN.\n\n```res example\nJs.String2.startsWithFrom(\"ReScript\", \"Scri\", 2) == true\nJs.String2.startsWithFrom(\"ReScript\", \"\", 2) == true\nJs.String2.startsWithFrom(\"JavaScript\", \"Scri\", 2) == false\n```"
       ]
     },
     {

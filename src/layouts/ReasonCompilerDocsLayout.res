@@ -52,9 +52,9 @@ let advancedNavs = [
 let categories = [
   {
     open Category
-    {name: "Interop", items: interopNavs}
+    {name: "Interop"->Some, items: interopNavs}
   },
-  {name: "Advanced", items: advancedNavs},
+  {name: "Advanced"->Some, items: advancedNavs},
 ]
 
 @react.component

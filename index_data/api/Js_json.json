@@ -376,7 +376,7 @@
       "name": "stringify",
       "signature": "let stringify: t => string",
       "docstrings": [
-        "`stringify(json)` formats the JSON data structure as a `string`.\nReturns the string representation of a given JSON data structure.\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)\n\n```res example\n/* Creates and stringifies a simple JS object */\n\nlet dict = Js.Dict.empty()\nJs.Dict.set(dict, \"name\", Js.Json.string(\"John Doe\"))\nJs.Dict.set(dict, \"age\", Js.Json.number(30.0))\nJs.Dict.set(dict, \"likes\", Js.Json.stringArray([\"bucklescript\", \"ocaml\", \"js\"]))\n\nJs.log(Js.Json.stringify(Js.Json.object_(dict)))\n```"
+        "`stringify(json)` formats the JSON data structure as a `string`.\nReturns the string representation of a given JSON data structure.\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)\n\n```res example\n/* Creates and stringifies a simple JS object */\n\nlet dict = Js.Dict.empty()\nJs.Dict.set(dict, \"name\", Js.Json.string(\"John Doe\"))\nJs.Dict.set(dict, \"age\", Js.Json.number(30.0))\nJs.Dict.set(dict, \"likes\", Js.Json.stringArray([\"ReScript\", \"ocaml\", \"js\"]))\n\nJs.log(Js.Json.stringify(Js.Json.object_(dict)))\n```"
       ]
     },
     {
@@ -385,7 +385,7 @@
       "name": "stringifyWithSpace",
       "signature": "let stringifyWithSpace: (t, int) => string",
       "docstrings": [
-        "`stringifyWithSpace(json)` formats the JSON data structure as a `string`.\nReturns the string representation of a given JSON data structure with spacing.\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)\n\n```res example\n/* Creates and stringifies a simple JS object with spacing */\n\nlet dict = Js.Dict.empty()\nJs.Dict.set(dict, \"name\", Js.Json.string(\"John Doe\"))\nJs.Dict.set(dict, \"age\", Js.Json.number(30.0))\nJs.Dict.set(dict, \"likes\", Js.Json.stringArray([\"bucklescript\", \"ocaml\", \"js\"]))\n\nJs.log(Js.Json.stringifyWithSpace(Js.Json.object_(dict), 2))\n```"
+        "`stringifyWithSpace(json)` formats the JSON data structure as a `string`.\nReturns the string representation of a given JSON data structure with spacing.\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)\n\n```res example\n/* Creates and stringifies a simple JS object with spacing */\n\nlet dict = Js.Dict.empty()\nJs.Dict.set(dict, \"name\", Js.Json.string(\"John Doe\"))\nJs.Dict.set(dict, \"age\", Js.Json.number(30.0))\nJs.Dict.set(dict, \"likes\", Js.Json.stringArray([\"ReScript\", \"ocaml\", \"js\"]))\n\nJs.log(Js.Json.stringifyWithSpace(Js.Json.object_(dict), 2))\n```"
       ]
     },
     {

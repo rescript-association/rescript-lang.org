@@ -1,0 +1,92 @@
+# Js_option
+
+### t
+
+
+```res sig
+type t<'a> = option<'a>
+```
+
+### some
+
+
+```res sig
+let some: 'a => option<'a>
+```
+
+### isSome
+
+
+```res sig
+let isSome: option<'a> => bool
+```
+
+### isSomeValue
+
+
+```res sig
+let isSomeValue: ((. 'a, 'a) => bool, 'a, option<'a>) => bool
+```
+
+### isNone
+
+
+```res sig
+let isNone: option<'a> => bool
+```
+
+### getExn
+
+
+```res sig
+let getExn: option<'a> => 'a
+```
+
+### equal
+
+
+```res sig
+let equal: ((. 'a, 'b) => bool, option<'a>, option<'b>) => bool
+```
+
+### andThen
+
+
+```res sig
+let andThen: ((. 'a) => option<'b>, option<'a>) => option<'b>
+```
+
+### map
+
+
+```res sig
+let map: ((. 'a) => 'b, option<'a>) => option<'b>
+```
+
+### getWithDefault
+
+
+```res sig
+let getWithDefault: ('a, option<'a>) => 'a
+```
+
+### default
+
+
+```res sig
+let default: ('a, option<'a>) => 'a
+```
+
+### filter
+
+
+```res sig
+let filter: ((. 'a) => bool, option<'a>) => option<'a>
+```
+
+### firstSome
+
+
+```res sig
+let firstSome: (option<'a>, option<'a>) => option<'a>
+```

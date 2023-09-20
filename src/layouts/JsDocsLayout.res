@@ -136,13 +136,23 @@ let apiNavs = [
   {name: "Vector", href: "/docs/manual/latest/api/js/vector"},
 ]
 
-let categories = [
-  {
-    open Category
-    {name: "Overview", items: overviewNavs}
-  },
-  {name: "Submodules", items: apiNavs},
-]
+// let categories = [
+//   {
+//     open Category
+//     {name: "Overview", items: overviewNavs}
+//   },
+//   {name: "Submodules", items: apiNavs},
+// ]
+
+let navItems =
+  indexData
+  ->Js.Dict.entries
+  ->Js.Array2.map(((href, info)) => {
+    let name = info["moduleName"]
+    {NavItem.name, href}
+  })
+
+let categories = [{Category.name: None, items: navItems}]
 
 module Docs = {
   @react.component

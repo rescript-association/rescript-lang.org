@@ -1,0 +1,92 @@
+# Dom_storage
+
+### t
+
+
+```res sig
+type t = Dom_storage2.t
+```
+
+### getItem
+
+
+```res sig
+let getItem: (t, string) => option<string>
+```
+
+### getItem
+
+
+```res sig
+let getItem: (string, t) => option<string>
+```
+
+### setItem
+
+
+```res sig
+let setItem: (t, string, string) => unit
+```
+
+### setItem
+
+
+```res sig
+let setItem: (string, string, t) => unit
+```
+
+### removeItem
+
+
+```res sig
+let removeItem: (t, string) => unit
+```
+
+### removeItem
+
+
+```res sig
+let removeItem: (string, t) => unit
+```
+
+### clear
+
+
+```res sig
+let clear: t => unit
+```
+
+### key
+
+
+```res sig
+let key: (t, int) => option<string>
+```
+
+### key
+
+
+```res sig
+let key: (int, t) => option<string>
+```
+
+### length
+
+
+```res sig
+let length: t => int
+```
+
+### localStorage
+
+
+```res sig
+let localStorage: t
+```
+
+### sessionStorage
+
+
+```res sig
+let sessionStorage: t
+```

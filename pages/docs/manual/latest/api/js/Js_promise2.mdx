@@ -1,0 +1,113 @@
+# Js_promise2
+
+### t
+
+
+```res sig
+type t<'a> = promise<'a>
+```
+
+### error
+
+
+```res sig
+type error
+```
+
+### then
+Type-safe t-first then
+
+```res sig
+let then: (promise<'a>, 'a => promise<'b>) => promise<'b>
+```
+
+### catch
+Type-safe t-first catch
+
+```res sig
+let catch: (promise<'a>, error => promise<'a>) => promise<'a>
+```
+
+### make
+
+
+```res sig
+let make: ((~resolve: (. 'a) => unit, ~reject: (. exn) => unit) => unit) => promise<'a>
+```
+
+### resolve
+
+
+```res sig
+let resolve: 'a => promise<'a>
+```
+
+### reject
+
+
+```res sig
+let reject: exn => promise<'a>
+```
+
+### all
+
+
+```res sig
+let all: array<promise<'a>> => promise<array<'a>>
+```
+
+### all2
+
+
+```res sig
+let all2: ((promise<'a0>, promise<'a1>)) => promise<('a0, 'a1)>
+```
+
+### all3
+
+
+```res sig
+let all3: ((promise<'a0>, promise<'a1>, promise<'a2>)) => promise<('a0, 'a1, 'a2)>
+```
+
+### all4
+
+
+```res sig
+let all4: ((promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>)) => promise<(\n  'a0,\n  'a1,\n  'a2,\n  'a3,\n)>
+```
+
+### all5
+
+
+```res sig
+let all5: ((promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>, promise<'a4>)) => promise<(\n  'a0,\n  'a1,\n  'a2,\n  'a3,\n  'a4,\n)>
+```
+
+### all6
+
+
+```res sig
+let all6: (\n  (promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>, promise<'a4>, promise<'a5>)\n) => promise<('a0, 'a1, 'a2, 'a3, 'a4, 'a5)>
+```
+
+### race
+
+
+```res sig
+let race: array<promise<'a>> => promise<'a>
+```
+
+### unsafe_async
+
+
+```res sig
+let unsafe_async: 'a => promise<'a>
+```
+
+### unsafe_await
+
+
+```res sig
+let unsafe_await: promise<'a> => 'a
+```

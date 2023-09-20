@@ -1,6 +1,8 @@
 {
   "name": "Js_string",
-  "docstrings": [],
+  "docstrings": [
+    "JavaScript String API"
+  ],
   "items": [
     {
       "id": "Js_string.t",

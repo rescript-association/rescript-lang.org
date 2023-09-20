@@ -504,6 +504,22 @@
       "signature": "module Bigint = Js_bigint"
     },
     {
+      "id": "Js.Js_file",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide utilities for File"
+      ],
+      "signature": "module File = Js_file"
+    },
+    {
+      "id": "Js.Js_blob",
+      "kind": "moduleAlias",
+      "docstrings": [
+        "Provide utilities for Blob"
+      ],
+      "signature": "module Blob = Js_blob"
+    },
+    {
       "id": "Js.Js_option",
       "kind": "moduleAlias",
       "docstrings": [

@@ -1,0 +1,489 @@
+# Js_string
+
+<Intro>
+
+JavaScript String API
+
+</Intro>
+
+
+### t
+
+
+```res sig
+type t = string
+```
+
+### make
+`make(value)` converts the given value to a `string`.
+
+```res example
+Js.String2.make(3.5) == "3.5"
+Js.String2.make([1, 2, 3]) == "1,2,3"
+```
+
+```res sig
+let make: 'a => t
+```
+
+### fromCharCode
+`fromCharCode(n)` creates a `string` containing the character corresponding to that number; `n` ranges from 0 to 65535.
+If out of range, the lower 16 bits of the value are used. Thus, `fromCharCode(0x1F63A)` gives the same result as `fromCharCode(0xF63A)`. See [`String.fromCharCode`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode) on MDN.
+
+```res example
+Js.String2.fromCharCode(65) == "A"
+Js.String2.fromCharCode(0x3c8) == `ψ`
+Js.String2.fromCharCode(0xd55c) == `한`
+Js.String2.fromCharCode(-64568) == `ψ`
+```
+
+```res sig
+let fromCharCode: int => t
+```
+
+### fromCharCodeMany
+`fromCharCodeMany([n1, n2, n3])` creates a `string` from the characters
+corresponding to the given numbers, using the same rules as `fromCharCode`. See
+[`String.fromCharCode`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode)
+on MDN.
+
+```res sig
+let fromCharCodeMany: array<int> => t
+```
+
+### fromCodePoint
+`fromCodePoint(n)` creates a `string` containing the character corresponding to
+that numeric code point. If the number is not a valid code point, it raises
+`RangeError`.Thus, `fromCodePoint(0x1F63A)` will produce a correct value,
+unlike `fromCharCode(0x1F63A)`, and `fromCodePoint(-5)` will raise a
+`RangeError`.
+
+See [`String.fromCodePoint`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint)
+on MDN.
+
+```res example
+Js.String2.fromCodePoint(65) == "A"
+Js.String2.fromCodePoint(0x3c8) == `ψ`
+Js.String2.fromCodePoint(0xd55c) == `한`
+Js.String2.fromCodePoint(0x1f63a) == `😺`
+```
+
+```res sig
+let fromCodePoint: int => t
+```
+
+### fromCodePointMany
+`fromCodePointMany([n1, n2, n3])` creates a `string` from the characters
+corresponding to the given code point numbers, using the same rules as
+`fromCodePoint`.
+
+See [`String.fromCodePoint`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCodePoint)
+on MDN.
+
+```res example
+Js.String2.fromCodePointMany([0xd55c, 0xae00, 0x1f63a]) == `한글😺`
+```
+
+```res sig
+let fromCodePointMany: array<int> => t
+```
+
+### length
+`length(s)` returns the length of the given `string`. See
+[`String.length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/length)
+on MDN.
+
+```res example
+Js.String2.length("abcd") == 4
+```
+
+```res sig
+let length: t => int
+```
+
+### get
+`get(s, n)` returns as a `string` the character at the given index number. If
+`n` is out of range, this function returns `undefined`, so at some point this
+function may be modified to return `option(string)`.
+
+```res example
+Js.String2.get("Reason", 0) == "R"
+Js.String2.get("Reason", 4) == "o"
+Js.String2.get(`Rẽasöń`, 5) == `ń`
+```
+
+```res sig
+let get: (t, int) => t
+```
+
+### charAt
+
+
+```res sig
+let charAt: (int, t) => t
+```
+
+### charCodeAt
+
+
+```res sig
+let charCodeAt: (int, t) => float
+```
+
+### codePointAt
+
+
+```res sig
+let codePointAt: (int, t) => option<int>
+```
+
+### concat
+
+
+```res sig
+let concat: (t, t) => t
+```
+
+### concatMany
+
+
+```res sig
+let concatMany: (array<t>, t) => t
+```
+
+### endsWith
+
+
+```res sig
+let endsWith: (t, t) => bool
+```
+
+### endsWithFrom
+
+
+```res sig
+let endsWithFrom: (t, int, t) => bool
+```
+
+### includes
+
+
+```res sig
+let includes: (t, t) => bool
+```
+
+### includesFrom
+
+
+```res sig
+let includesFrom: (t, int, t) => bool
+```
+
+### indexOf
+
+
+```res sig
+let indexOf: (t, t) => int
+```
+
+### indexOfFrom
+
+
+```res sig
+let indexOfFrom: (t, int, t) => int
+```
+
+### lastIndexOf
+
+
+```res sig
+let lastIndexOf: (t, t) => int
+```
+
+### lastIndexOfFrom
+
+
+```res sig
+let lastIndexOfFrom: (t, int, t) => int
+```
+
+### localeCompare
+
+
+```res sig
+let localeCompare: (t, t) => float
+```
+
+### match_
+
+
+```res sig
+let match_: (Js_re.t, t) => option<array<option<t>>>
+```
+
+### normalize
+`normalize(str)` returns the normalized Unicode string using Normalization Form
+Canonical (NFC) Composition. Consider the character ã, which can be represented
+as the single codepoint \u00e3 or the combination of a lower case letter A
+\u0061 and a combining tilde \u0303. Normalization ensures that both can be
+stored in an equivalent binary representation.
+
+See [`String.normalize`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize)
+on MDN.
+
+See also [Unicode technical report #15](https://unicode.org/reports/tr15/) for
+details.
+
+```res sig
+let normalize: t => t
+```
+
+### normalizeByForm
+
+
+```res sig
+let normalizeByForm: (t, t) => t
+```
+
+### repeat
+
+
+```res sig
+let repeat: (int, t) => t
+```
+
+### replace
+
+
+```res sig
+let replace: (t, t, t) => t
+```
+
+### replaceByRe
+
+
+```res sig
+let replaceByRe: (Js_re.t, t, t) => t
+```
+
+### unsafeReplaceBy0
+
+
+```res sig
+let unsafeReplaceBy0: (Js_re.t, (t, int, t) => t, t) => t
+```
+
+### unsafeReplaceBy1
+
+
+```res sig
+let unsafeReplaceBy1: (Js_re.t, (t, t, int, t) => t, t) => t
+```
+
+### unsafeReplaceBy2
+
+
+```res sig
+let unsafeReplaceBy2: (Js_re.t, (t, t, t, int, t) => t, t) => t
+```
+
+### unsafeReplaceBy3
+
+
+```res sig
+let unsafeReplaceBy3: (Js_re.t, (t, t, t, t, int, t) => t, t) => t
+```
+
+### search
+
+
+```res sig
+let search: (Js_re.t, t) => int
+```
+
+### slice
+
+
+```res sig
+let slice: (~from: int, ~to_: int, t) => t
+```
+
+### sliceToEnd
+
+
+```res sig
+let sliceToEnd: (~from: int, t) => t
+```
+
+### split
+
+
+```res sig
+let split: (t, t) => array<t>
+```
+
+### splitAtMost
+
+
+```res sig
+let splitAtMost: (t, ~limit: int, t) => array<t>
+```
+
+### splitByRe
+
+
+```res sig
+let splitByRe: (Js_re.t, t) => array<option<t>>
+```
+
+### splitByReAtMost
+
+
+```res sig
+let splitByReAtMost: (Js_re.t, ~limit: int, t) => array<option<t>>
+```
+
+### startsWith
+
+
+```res sig
+let startsWith: (t, t) => bool
+```
+
+### startsWithFrom
+
+
+```res sig
+let startsWithFrom: (t, int, t) => bool
+```
+
+### substr
+
+
+```res sig
+let substr: (~from: int, t) => t
+```
+
+### substrAtMost
+
+
+```res sig
+let substrAtMost: (~from: int, ~length: int, t) => t
+```
+
+### substring
+
+
+```res sig
+let substring: (~from: int, ~to_: int, t) => t
+```
+
+### substringToEnd
+
+
+```res sig
+let substringToEnd: (~from: int, t) => t
+```
+
+### toLowerCase
+`toLowerCase(str)` converts `str` to lower case using the locale-insensitive
+case mappings in the Unicode Character Database. Notice that the conversion can
+give different results depending upon context, for example with the Greek
+letter sigma, which has two different lower case forms; one when it is the last
+character in a string and another when it is not.
+
+See [`String.toLowerCase`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toLowerCase)
+on MDN.
+
+```res example
+Js.String.toLowerCase("ABC") == "abc"
+Js.String.toLowerCase(`ΣΠ`) == `σπ`
+Js.String.toLowerCase(`ΠΣ`) == `πς`
+```
+
+```res sig
+let toLowerCase: t => t
+```
+
+### toLocaleLowerCase
+`toLocaleLowerCase(str)` converts `str` to lower case using the current locale.
+
+See [`String.toLocaleLowerCase`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toLocaleLowerCase)
+on MDN.
+
+```res sig
+let toLocaleLowerCase: t => t
+```
+
+### toUpperCase
+`toUpperCase(str)` converts `str` to upper case using the locale-insensitive
+case mappings in the Unicode Character Database. Notice that the conversion can
+expand the number of letters in the result; for example the German ß
+capitalizes to two Ses in a row.
+
+See [`String.toUpperCase`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toUpperCase)
+on MDN.
+
+```res example
+Js.String.toUpperCase("abc") == "ABC"
+Js.String.toUpperCase(`Straße`) == `STRASSE`
+Js.String.toUpperCase(`πς`) == `ΠΣ`
+```
+
+```res sig
+let toUpperCase: t => t
+```
+
+### toLocaleUpperCase
+`toLocaleUpperCase(str)` converts `str` to upper case using the current locale.
+
+See [`String.to:LocaleUpperCase`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toLocaleUpperCase)
+on MDN.
+
+```res sig
+let toLocaleUpperCase: t => t
+```
+
+### trim
+`trim(str)` returns a string that is `str` with whitespace stripped from both
+ends. Internal whitespace is not removed.
+
+See [`String.trim`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/trim)
+on MDN.
+
+```res example
+Js.String.trim("   abc def   ") == "abc def"
+Js.String.trim("\n\r\t abc def \n\n\t\r ") == "abc def"
+```
+
+```res sig
+let trim: t => t
+```
+
+### anchor
+
+
+```res sig
+let anchor: (t, t) => t
+```
+
+### link
+
+
+```res sig
+let link: (t, t) => t
+```
+
+### castToArrayLike
+Casts its argument to an `array_like` entity that can be processed by functions
+such as `Js.Array2.fromMap()`
+
+```res example
+let s = "abcde"
+let arr = Js.Array2.fromMap(Js.String.castToArrayLike(s), x => x)
+arr == ["a", "b", "c", "d", "e"]
+```
+
+```res sig
+let castToArrayLike: t => Js_array2.array_like<t>
+```

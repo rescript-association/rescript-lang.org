@@ -1,0 +1,131 @@
+# Js_exn
+
+<Intro>
+
+Provide utilities for dealing with JS exceptions.
+
+</Intro>
+
+
+### t
+Represents a JS exception
+
+```res sig
+type t
+```
+
+### asJsExn
+
+
+```res sig
+let asJsExn: exn => option<t>
+```
+
+### stack
+
+
+```res sig
+let stack: t => option<string>
+```
+
+### message
+
+
+```res sig
+let message: t => option<string>
+```
+
+### name
+
+
+```res sig
+let name: t => option<string>
+```
+
+### fileName
+
+
+```res sig
+let fileName: t => option<string>
+```
+
+### isCamlExceptionOrOpenVariant
+internal use only
+
+```res sig
+let isCamlExceptionOrOpenVariant: 'a => bool
+```
+
+### anyToExnInternal
+`anyToExnInternal obj` will take any value `obj` and wrap it
+  in a Js.Exn.Error if given value is not an exn already. If
+  `obj` is an exn, it will return `obj` without any changes.
+
+  This function is mostly useful for cases where you want to unify a type of a value
+  that potentially is either exn, a JS error, or any other JS value really (e.g. for
+  a value passed to a Promise.catch callback)
+
+  **IMPORTANT**: This is an internal API and may be changed / removed any time in the future.
+
+  ```
+  switch (Js.Exn.unsafeAnyToExn("test")) {
+  | Js.Exn.Error(v) =>
+    switch(Js.Exn.message(v)) {
+    | Some(str) => Js.log("We won't end up here")
+    | None => Js.log2("We will land here: ", v)
+    }
+  }
+  ```
+
+```res sig
+let anyToExnInternal: 'a => exn
+```
+
+### raiseError
+Raise Js exception Error object with stacktrace
+
+```res sig
+let raiseError: string => 'a
+```
+
+### raiseEvalError
+
+
+```res sig
+let raiseEvalError: string => 'a
+```
+
+### raiseRangeError
+
+
+```res sig
+let raiseRangeError: string => 'a
+```
+
+### raiseReferenceError
+
+
+```res sig
+let raiseReferenceError: string => 'a
+```
+
+### raiseSyntaxError
+
+
+```res sig
+let raiseSyntaxError: string => 'a
+```
+
+### raiseTypeError
+
+
+```res sig
+let raiseTypeError: string => 'a
+```
+
+### raiseUriError
+
+
+```res sig
+let raiseUriError: string => 'a
+```

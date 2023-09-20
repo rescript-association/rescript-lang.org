@@ -36,7 +36,7 @@ module Sidebar: {
   }
   module Category: {
     type t = {
-      name: string,
+      name: option<string>,
       items: array<NavItem.t>,
     }
 

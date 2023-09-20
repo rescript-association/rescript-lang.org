@@ -87,18 +87,28 @@ let utilityNavs = [
   },
 ]
 
-let categories = [
-  {
-    open Category
-    {name: "Overview", items: overviewNavs}
-  },
-  {name: "Basics", items: basicNavs},
-  {name: "Set", items: setNavs},
-  {name: "Map", items: mapNavs},
-  {name: "Mutable Collections", items: mutableCollectionsNavs},
-  {name: "Sort Collections", items: sortNavs},
-  {name: "Utilities", items: utilityNavs},
-]
+let navItems =
+  indexData
+  ->Js.Dict.entries
+  ->Js.Array2.map(((href, info)) => {
+    let name = info["moduleName"]
+    {NavItem.name, href}
+  })
+
+let categories = [{Category.name: None, items: navItems}]
+
+// let categories = [
+//   {
+//     open Category
+//     {name: "Overview", items: overviewNavs}
+//   },
+//   {name: "Basics", items: basicNavs},
+//   {name: "Set", items: setNavs},
+//   {name: "Map", items: mapNavs},
+//   {name: "Mutable Collections", items: mutableCollectionsNavs},
+//   {name: "Sort Collections", items: sortNavs},
+//   {name: "Utilities", items: utilityNavs},
+// ]
 
 module Docs = {
   @react.component

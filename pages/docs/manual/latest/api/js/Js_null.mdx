@@ -1,0 +1,111 @@
+# Js_null
+
+<Intro>
+
+Provides functionality for dealing with the `Js.null<'a>` type
+
+</Intro>
+
+
+### t
+Local alias for `Js.null('a)`
+
+```res sig
+type t<'a> = Js.null<'a> = Value('a) | Null
+```
+
+### return
+Constructs a value of `Js.null('a)` containing a value of `'a`.
+
+```res sig
+let return: 'a => t<'a>
+```
+
+### test
+Returns `true` if the given value is empty (`null`), `false` otherwise.
+
+```res sig
+let test: t<'a> => bool
+```
+
+### empty
+The empty value, `null`
+
+```res sig
+let empty: t<'a>
+```
+
+### getUnsafe
+
+
+```res sig
+let getUnsafe: t<'a> => 'a
+```
+
+### getExn
+
+
+```res sig
+let getExn: t<'a> => 'a
+```
+
+### bind
+Maps the contained value using the given function.
+
+If `Js.null('a)` contains a value, that value is unwrapped, mapped to a `'b`
+using the given function `'a => 'b`, then wrapped back up and returned as
+`Js.null('b)`.
+
+```res example
+let maybeGreetWorld = (maybeGreeting: Js.null<string>) =>
+  Js.Null.bind(maybeGreeting, (. greeting) => greeting ++ " world!")
+```
+
+```res sig
+let bind: (t<'a>, (. 'a) => 'b) => t<'b>
+```
+
+### iter
+Iterates over the contained value with the given function.
+If `Js.null('a)` contains a value, that value is unwrapped and applied to the given function.
+
+```res example
+let maybeSay = (maybeMessage: Js.null<string>) =>
+  Js.Null.iter(maybeMessage, (. message) => Js.log(message))
+```
+
+```res sig
+let iter: (t<'a>, (. 'a) => unit) => unit
+```
+
+### fromOption
+Maps `option('a)` to `Js.null('a)`.
+`Some(a)` => `a`
+`None` => `empty`
+
+```res sig
+let fromOption: option<'a> => t<'a>
+```
+
+### from_opt
+
+
+```res sig
+let from_opt: option<'a> => t<'a>
+```
+
+### toOption
+Maps `Js.null('a)` to `option('a)`.
+`a` => `Some(a)`
+`empty` => `None`
+
+```res sig
+let toOption: t<'a> => option<'a>
+```
+
+### to_opt
+
+
+```res sig
+let to_opt: t<'a> => option<'a>
+```

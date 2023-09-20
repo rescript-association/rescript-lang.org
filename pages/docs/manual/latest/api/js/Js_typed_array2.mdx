@@ -1,0 +1,3549 @@
+# Js_typed_array2
+
+<Intro>
+
+JavaScript Typed Array API
+
+  **see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)
+
+</Intro>
+
+
+### array_buffer
+
+
+```res sig
+type array_buffer
+```
+
+### array_like
+
+
+```res sig
+type array_like<'a>
+```
+
+## ArrayBuffer
+
+The underlying buffer that the typed arrays provide views of
+
+    **see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)
+
+### t
+
+
+```res sig
+type t = array_buffer
+```
+### make
+takes length. initializes elements to 0
+
+```res sig
+let make: int => t
+```
+### byteLength
+
+
+```res sig
+let byteLength: t => int
+```
+### slice
+
+
+```res sig
+let slice: (t, ~start: int, ~end_: int) => array_buffer
+```
+### sliceFrom
+
+
+```res sig
+let sliceFrom: (t, int) => array_buffer
+```
+
+## Int8Array
+
+
+
+### elt
+
+
+```res sig
+type elt = int
+```
+### typed_array
+
+
+```res sig
+type typed_array<'a>
+```
+### t
+
+
+```res sig
+type t = typed_array<elt>
+```
+### unsafe_get
+
+
+```res sig
+let unsafe_get: (t, int) => elt
+```
+### unsafe_set
+
+
+```res sig
+let unsafe_set: (t, int, elt) => unit
+```
+### buffer
+
+
+```res sig
+let buffer: t => array_buffer
+```
+### byteLength
+
+
+```res sig
+let byteLength: t => int
+```
+### byteOffset
+
+
+```res sig
+let byteOffset: t => int
+```
+### setArray
+
+
+```res sig
+let setArray: (t, array<elt>) => unit
+```
+### setArrayOffset
+
+
+```res sig
+let setArrayOffset: (t, array<elt>, int) => unit
+```
+### length
+
+
+```res sig
+let length: t => int
+```
+### copyWithin
+
+
+```res sig
+let copyWithin: (t, ~to_: int) => t
+```
+### copyWithinFrom
+
+
+```res sig
+let copyWithinFrom: (t, ~to_: int, ~from: int) => t
+```
+### copyWithinFromRange
+
+
+```res sig
+let copyWithinFromRange: (t, ~to_: int, ~start: int, ~end_: int) => t
+```
+### fillInPlace
+
+
+```res sig
+let fillInPlace: (t, elt) => t
+```
+### fillFromInPlace
+
+
+```res sig
+let fillFromInPlace: (t, elt, ~from: int) => t
+```
+### fillRangeInPlace
+
+
+```res sig
+let fillRangeInPlace: (t, elt, ~start: int, ~end_: int) => t
+```
+### reverseInPlace
+
+
+```res sig
+let reverseInPlace: t => t
+```
+### sortInPlace
+
+
+```res sig
+let sortInPlace: t => t
+```
+### sortInPlaceWith
+
+
+```res sig
+let sortInPlaceWith: (t, (. elt, elt) => int) => t
+```
+### includes
+
+
+```res sig
+let includes: (t, elt) => bool
+```
+### indexOf
+
+
+```res sig
+let indexOf: (t, elt) => int
+```
+### indexOfFrom
+
+
+```res sig
+let indexOfFrom: (t, elt, ~from: int) => int
+```
+### join
+
+
+```res sig
+let join: t => string
+```
+### joinWith
+
+
+```res sig
+let joinWith: (t, string) => string
+```
+### lastIndexOf
+
+
+```res sig
+let lastIndexOf: (t, elt) => int
+```
+### lastIndexOfFrom
+
+
+```res sig
+let lastIndexOfFrom: (t, elt, ~from: int) => int
+```
+### slice
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let slice: (t, ~start: int, ~end_: int) => t
+```
+### copy
+
+
+```res sig
+let copy: t => t
+```
+### sliceFrom
+
+
+```res sig
+let sliceFrom: (t, int) => t
+```
+### subarray
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let subarray: (t, ~start: int, ~end_: int) => t
+```
+### subarrayFrom
+
+
+```res sig
+let subarrayFrom: (t, int) => t
+```
+### toString
+
+
+```res sig
+let toString: t => string
+```
+### toLocaleString
+
+
+```res sig
+let toLocaleString: t => string
+```
+### every
+
+
+```res sig
+let every: (t, (. elt) => bool) => bool
+```
+### everyi
+
+
+```res sig
+let everyi: (t, (. elt, int) => bool) => bool
+```
+### filter
+
+
+```res sig
+let filter: (t, (. elt) => bool) => t
+```
+### filteri
+
+
+```res sig
+let filteri: (t, (. elt, int) => bool) => t
+```
+### find
+
+
+```res sig
+let find: (t, (. elt) => bool) => Js.undefined<elt>
+```
+### findi
+
+
+```res sig
+let findi: (t, (. elt, int) => bool) => Js.undefined<elt>
+```
+### findIndex
+
+
+```res sig
+let findIndex: (t, (. elt) => bool) => int
+```
+### findIndexi
+
+
+```res sig
+let findIndexi: (t, (. elt, int) => bool) => int
+```
+### forEach
+
+
+```res sig
+let forEach: (t, (. elt) => unit) => unit
+```
+### forEachi
+
+
+```res sig
+let forEachi: (t, (. elt, int) => unit) => unit
+```
+### map
+
+
+```res sig
+let map: (t, (. elt) => 'b) => typed_array<'b>
+```
+### mapi
+
+
+```res sig
+let mapi: (t, (. elt, int) => 'b) => typed_array<'b>
+```
+### reduce
+
+
+```res sig
+let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reducei
+
+
+```res sig
+let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### reduceRight
+
+
+```res sig
+let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reduceRighti
+
+
+```res sig
+let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### some
+
+
+```res sig
+let some: (t, (. elt) => bool) => bool
+```
+### somei
+
+
+```res sig
+let somei: (t, (. elt, int) => bool) => bool
+```
+### _BYTES_PER_ELEMENT
+
+
+```res sig
+let _BYTES_PER_ELEMENT: int
+```
+### make
+
+
+```res sig
+let make: array<elt> => t
+```
+### fromBuffer
+can throw
+
+```res sig
+let fromBuffer: array_buffer => t
+```
+### fromBufferOffset
+**raise** Js.Exn.Error raise Js exception
+
+    **param** offset is in bytes
+
+```res sig
+let fromBufferOffset: (array_buffer, int) => t
+```
+### fromBufferRange
+**raise** Js.Exn.Error raises Js exception
+
+    **param** offset is in bytes, length in elements
+
+```res sig
+let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t
+```
+### fromLength
+
+
+```res sig
+let fromLength: int => t
+```
+### from
+
+
+```res sig
+let from: array_like<elt> => t
+```
+
+## Uint8Array
+
+
+
+### elt
+
+
+```res sig
+type elt = int
+```
+### typed_array
+
+
+```res sig
+type typed_array<'a>
+```
+### t
+
+
+```res sig
+type t = typed_array<elt>
+```
+### unsafe_get
+
+
+```res sig
+let unsafe_get: (t, int) => elt
+```
+### unsafe_set
+
+
+```res sig
+let unsafe_set: (t, int, elt) => unit
+```
+### buffer
+
+
+```res sig
+let buffer: t => array_buffer
+```
+### byteLength
+
+
+```res sig
+let byteLength: t => int
+```
+### byteOffset
+
+
+```res sig
+let byteOffset: t => int
+```
+### setArray
+
+
+```res sig
+let setArray: (t, array<elt>) => unit
+```
+### setArrayOffset
+
+
+```res sig
+let setArrayOffset: (t, array<elt>, int) => unit
+```
+### length
+
+
+```res sig
+let length: t => int
+```
+### copyWithin
+
+
+```res sig
+let copyWithin: (t, ~to_: int) => t
+```
+### copyWithinFrom
+
+
+```res sig
+let copyWithinFrom: (t, ~to_: int, ~from: int) => t
+```
+### copyWithinFromRange
+
+
+```res sig
+let copyWithinFromRange: (t, ~to_: int, ~start: int, ~end_: int) => t
+```
+### fillInPlace
+
+
+```res sig
+let fillInPlace: (t, elt) => t
+```
+### fillFromInPlace
+
+
+```res sig
+let fillFromInPlace: (t, elt, ~from: int) => t
+```
+### fillRangeInPlace
+
+
+```res sig
+let fillRangeInPlace: (t, elt, ~start: int, ~end_: int) => t
+```
+### reverseInPlace
+
+
+```res sig
+let reverseInPlace: t => t
+```
+### sortInPlace
+
+
+```res sig
+let sortInPlace: t => t
+```
+### sortInPlaceWith
+
+
+```res sig
+let sortInPlaceWith: (t, (. elt, elt) => int) => t
+```
+### includes
+
+
+```res sig
+let includes: (t, elt) => bool
+```
+### indexOf
+
+
+```res sig
+let indexOf: (t, elt) => int
+```
+### indexOfFrom
+
+
+```res sig
+let indexOfFrom: (t, elt, ~from: int) => int
+```
+### join
+
+
+```res sig
+let join: t => string
+```
+### joinWith
+
+
+```res sig
+let joinWith: (t, string) => string
+```
+### lastIndexOf
+
+
+```res sig
+let lastIndexOf: (t, elt) => int
+```
+### lastIndexOfFrom
+
+
+```res sig
+let lastIndexOfFrom: (t, elt, ~from: int) => int
+```
+### slice
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let slice: (t, ~start: int, ~end_: int) => t
+```
+### copy
+
+
+```res sig
+let copy: t => t
+```
+### sliceFrom
+
+
+```res sig
+let sliceFrom: (t, int) => t
+```
+### subarray
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let subarray: (t, ~start: int, ~end_: int) => t
+```
+### subarrayFrom
+
+
+```res sig
+let subarrayFrom: (t, int) => t
+```
+### toString
+
+
+```res sig
+let toString: t => string
+```
+### toLocaleString
+
+
+```res sig
+let toLocaleString: t => string
+```
+### every
+
+
+```res sig
+let every: (t, (. elt) => bool) => bool
+```
+### everyi
+
+
+```res sig
+let everyi: (t, (. elt, int) => bool) => bool
+```
+### filter
+
+
+```res sig
+let filter: (t, (. elt) => bool) => t
+```
+### filteri
+
+
+```res sig
+let filteri: (t, (. elt, int) => bool) => t
+```
+### find
+
+
+```res sig
+let find: (t, (. elt) => bool) => Js.undefined<elt>
+```
+### findi
+
+
+```res sig
+let findi: (t, (. elt, int) => bool) => Js.undefined<elt>
+```
+### findIndex
+
+
+```res sig
+let findIndex: (t, (. elt) => bool) => int
+```
+### findIndexi
+
+
+```res sig
+let findIndexi: (t, (. elt, int) => bool) => int
+```
+### forEach
+
+
+```res sig
+let forEach: (t, (. elt) => unit) => unit
+```
+### forEachi
+
+
+```res sig
+let forEachi: (t, (. elt, int) => unit) => unit
+```
+### map
+
+
+```res sig
+let map: (t, (. elt) => 'b) => typed_array<'b>
+```
+### mapi
+
+
+```res sig
+let mapi: (t, (. elt, int) => 'b) => typed_array<'b>
+```
+### reduce
+
+
+```res sig
+let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reducei
+
+
+```res sig
+let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### reduceRight
+
+
+```res sig
+let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reduceRighti
+
+
+```res sig
+let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### some
+
+
+```res sig
+let some: (t, (. elt) => bool) => bool
+```
+### somei
+
+
+```res sig
+let somei: (t, (. elt, int) => bool) => bool
+```
+### _BYTES_PER_ELEMENT
+
+
+```res sig
+let _BYTES_PER_ELEMENT: int
+```
+### make
+
+
+```res sig
+let make: array<elt> => t
+```
+### fromBuffer
+can throw
+
+```res sig
+let fromBuffer: array_buffer => t
+```
+### fromBufferOffset
+**raise** Js.Exn.Error raise Js exception
+
+    **param** offset is in bytes
+
+```res sig
+let fromBufferOffset: (array_buffer, int) => t
+```
+### fromBufferRange
+**raise** Js.Exn.Error raises Js exception
+
+    **param** offset is in bytes, length in elements
+
+```res sig
+let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t
+```
+### fromLength
+
+
+```res sig
+let fromLength: int => t
+```
+### from
+
+
+```res sig
+let from: array_like<elt> => t
+```
+
+## Uint8ClampedArray
+
+
+
+### elt
+
+
+```res sig
+type elt = int
+```
+### typed_array
+
+
+```res sig
+type typed_array<'a>
+```
+### t
+
+
+```res sig
+type t = typed_array<elt>
+```
+### unsafe_get
+
+
+```res sig
+let unsafe_get: (t, int) => elt
+```
+### unsafe_set
+
+
+```res sig
+let unsafe_set: (t, int, elt) => unit
+```
+### buffer
+
+
+```res sig
+let buffer: t => array_buffer
+```
+### byteLength
+
+
+```res sig
+let byteLength: t => int
+```
+### byteOffset
+
+
+```res sig
+let byteOffset: t => int
+```
+### setArray
+
+
+```res sig
+let setArray: (t, array<elt>) => unit
+```
+### setArrayOffset
+
+
+```res sig
+let setArrayOffset: (t, array<elt>, int) => unit
+```
+### length
+
+
+```res sig
+let length: t => int
+```
+### copyWithin
+
+
+```res sig
+let copyWithin: (t, ~to_: int) => t
+```
+### copyWithinFrom
+
+
+```res sig
+let copyWithinFrom: (t, ~to_: int, ~from: int) => t
+```
+### copyWithinFromRange
+
+
+```res sig
+let copyWithinFromRange: (t, ~to_: int, ~start: int, ~end_: int) => t
+```
+### fillInPlace
+
+
+```res sig
+let fillInPlace: (t, elt) => t
+```
+### fillFromInPlace
+
+
+```res sig
+let fillFromInPlace: (t, elt, ~from: int) => t
+```
+### fillRangeInPlace
+
+
+```res sig
+let fillRangeInPlace: (t, elt, ~start: int, ~end_: int) => t
+```
+### reverseInPlace
+
+
+```res sig
+let reverseInPlace: t => t
+```
+### sortInPlace
+
+
+```res sig
+let sortInPlace: t => t
+```
+### sortInPlaceWith
+
+
+```res sig
+let sortInPlaceWith: (t, (. elt, elt) => int) => t
+```
+### includes
+
+
+```res sig
+let includes: (t, elt) => bool
+```
+### indexOf
+
+
+```res sig
+let indexOf: (t, elt) => int
+```
+### indexOfFrom
+
+
+```res sig
+let indexOfFrom: (t, elt, ~from: int) => int
+```
+### join
+
+
+```res sig
+let join: t => string
+```
+### joinWith
+
+
+```res sig
+let joinWith: (t, string) => string
+```
+### lastIndexOf
+
+
+```res sig
+let lastIndexOf: (t, elt) => int
+```
+### lastIndexOfFrom
+
+
+```res sig
+let lastIndexOfFrom: (t, elt, ~from: int) => int
+```
+### slice
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let slice: (t, ~start: int, ~end_: int) => t
+```
+### copy
+
+
+```res sig
+let copy: t => t
+```
+### sliceFrom
+
+
+```res sig
+let sliceFrom: (t, int) => t
+```
+### subarray
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let subarray: (t, ~start: int, ~end_: int) => t
+```
+### subarrayFrom
+
+
+```res sig
+let subarrayFrom: (t, int) => t
+```
+### toString
+
+
+```res sig
+let toString: t => string
+```
+### toLocaleString
+
+
+```res sig
+let toLocaleString: t => string
+```
+### every
+
+
+```res sig
+let every: (t, (. elt) => bool) => bool
+```
+### everyi
+
+
+```res sig
+let everyi: (t, (. elt, int) => bool) => bool
+```
+### filter
+
+
+```res sig
+let filter: (t, (. elt) => bool) => t
+```
+### filteri
+
+
+```res sig
+let filteri: (t, (. elt, int) => bool) => t
+```
+### find
+
+
+```res sig
+let find: (t, (. elt) => bool) => Js.undefined<elt>
+```
+### findi
+
+
+```res sig
+let findi: (t, (. elt, int) => bool) => Js.undefined<elt>
+```
+### findIndex
+
+
+```res sig
+let findIndex: (t, (. elt) => bool) => int
+```
+### findIndexi
+
+
+```res sig
+let findIndexi: (t, (. elt, int) => bool) => int
+```
+### forEach
+
+
+```res sig
+let forEach: (t, (. elt) => unit) => unit
+```
+### forEachi
+
+
+```res sig
+let forEachi: (t, (. elt, int) => unit) => unit
+```
+### map
+
+
+```res sig
+let map: (t, (. elt) => 'b) => typed_array<'b>
+```
+### mapi
+
+
+```res sig
+let mapi: (t, (. elt, int) => 'b) => typed_array<'b>
+```
+### reduce
+
+
+```res sig
+let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reducei
+
+
+```res sig
+let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### reduceRight
+
+
+```res sig
+let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reduceRighti
+
+
+```res sig
+let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### some
+
+
+```res sig
+let some: (t, (. elt) => bool) => bool
+```
+### somei
+
+
+```res sig
+let somei: (t, (. elt, int) => bool) => bool
+```
+### _BYTES_PER_ELEMENT
+
+
+```res sig
+let _BYTES_PER_ELEMENT: int
+```
+### make
+
+
+```res sig
+let make: array<elt> => t
+```
+### fromBuffer
+can throw
+
+```res sig
+let fromBuffer: array_buffer => t
+```
+### fromBufferOffset
+**raise** Js.Exn.Error raise Js exception
+
+    **param** offset is in bytes
+
+```res sig
+let fromBufferOffset: (array_buffer, int) => t
+```
+### fromBufferRange
+**raise** Js.Exn.Error raises Js exception
+
+    **param** offset is in bytes, length in elements
+
+```res sig
+let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t
+```
+### fromLength
+
+
+```res sig
+let fromLength: int => t
+```
+### from
+
+
+```res sig
+let from: array_like<elt> => t
+```
+
+## Int16Array
+
+
+
+### elt
+
+
+```res sig
+type elt = int
+```
+### typed_array
+
+
+```res sig
+type typed_array<'a>
+```
+### t
+
+
+```res sig
+type t = typed_array<elt>
+```
+### unsafe_get
+
+
+```res sig
+let unsafe_get: (t, int) => elt
+```
+### unsafe_set
+
+
+```res sig
+let unsafe_set: (t, int, elt) => unit
+```
+### buffer
+
+
+```res sig
+let buffer: t => array_buffer
+```
+### byteLength
+
+
+```res sig
+let byteLength: t => int
+```
+### byteOffset
+
+
+```res sig
+let byteOffset: t => int
+```
+### setArray
+
+
+```res sig
+let setArray: (t, array<elt>) => unit
+```
+### setArrayOffset
+
+
+```res sig
+let setArrayOffset: (t, array<elt>, int) => unit
+```
+### length
+
+
+```res sig
+let length: t => int
+```
+### copyWithin
+
+
+```res sig
+let copyWithin: (t, ~to_: int) => t
+```
+### copyWithinFrom
+
+
+```res sig
+let copyWithinFrom: (t, ~to_: int, ~from: int) => t
+```
+### copyWithinFromRange
+
+
+```res sig
+let copyWithinFromRange: (t, ~to_: int, ~start: int, ~end_: int) => t
+```
+### fillInPlace
+
+
+```res sig
+let fillInPlace: (t, elt) => t
+```
+### fillFromInPlace
+
+
+```res sig
+let fillFromInPlace: (t, elt, ~from: int) => t
+```
+### fillRangeInPlace
+
+
+```res sig
+let fillRangeInPlace: (t, elt, ~start: int, ~end_: int) => t
+```
+### reverseInPlace
+
+
+```res sig
+let reverseInPlace: t => t
+```
+### sortInPlace
+
+
+```res sig
+let sortInPlace: t => t
+```
+### sortInPlaceWith
+
+
+```res sig
+let sortInPlaceWith: (t, (. elt, elt) => int) => t
+```
+### includes
+
+
+```res sig
+let includes: (t, elt) => bool
+```
+### indexOf
+
+
+```res sig
+let indexOf: (t, elt) => int
+```
+### indexOfFrom
+
+
+```res sig
+let indexOfFrom: (t, elt, ~from: int) => int
+```
+### join
+
+
+```res sig
+let join: t => string
+```
+### joinWith
+
+
+```res sig
+let joinWith: (t, string) => string
+```
+### lastIndexOf
+
+
+```res sig
+let lastIndexOf: (t, elt) => int
+```
+### lastIndexOfFrom
+
+
+```res sig
+let lastIndexOfFrom: (t, elt, ~from: int) => int
+```
+### slice
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let slice: (t, ~start: int, ~end_: int) => t
+```
+### copy
+
+
+```res sig
+let copy: t => t
+```
+### sliceFrom
+
+
+```res sig
+let sliceFrom: (t, int) => t
+```
+### subarray
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let subarray: (t, ~start: int, ~end_: int) => t
+```
+### subarrayFrom
+
+
+```res sig
+let subarrayFrom: (t, int) => t
+```
+### toString
+
+
+```res sig
+let toString: t => string
+```
+### toLocaleString
+
+
+```res sig
+let toLocaleString: t => string
+```
+### every
+
+
+```res sig
+let every: (t, (. elt) => bool) => bool
+```
+### everyi
+
+
+```res sig
+let everyi: (t, (. elt, int) => bool) => bool
+```
+### filter
+
+
+```res sig
+let filter: (t, (. elt) => bool) => t
+```
+### filteri
+
+
+```res sig
+let filteri: (t, (. elt, int) => bool) => t
+```
+### find
+
+
+```res sig
+let find: (t, (. elt) => bool) => Js.undefined<elt>
+```
+### findi
+
+
+```res sig
+let findi: (t, (. elt, int) => bool) => Js.undefined<elt>
+```
+### findIndex
+
+
+```res sig
+let findIndex: (t, (. elt) => bool) => int
+```
+### findIndexi
+
+
+```res sig
+let findIndexi: (t, (. elt, int) => bool) => int
+```
+### forEach
+
+
+```res sig
+let forEach: (t, (. elt) => unit) => unit
+```
+### forEachi
+
+
+```res sig
+let forEachi: (t, (. elt, int) => unit) => unit
+```
+### map
+
+
+```res sig
+let map: (t, (. elt) => 'b) => typed_array<'b>
+```
+### mapi
+
+
+```res sig
+let mapi: (t, (. elt, int) => 'b) => typed_array<'b>
+```
+### reduce
+
+
+```res sig
+let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reducei
+
+
+```res sig
+let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### reduceRight
+
+
+```res sig
+let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reduceRighti
+
+
+```res sig
+let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### some
+
+
+```res sig
+let some: (t, (. elt) => bool) => bool
+```
+### somei
+
+
+```res sig
+let somei: (t, (. elt, int) => bool) => bool
+```
+### _BYTES_PER_ELEMENT
+
+
+```res sig
+let _BYTES_PER_ELEMENT: int
+```
+### make
+
+
+```res sig
+let make: array<elt> => t
+```
+### fromBuffer
+can throw
+
+```res sig
+let fromBuffer: array_buffer => t
+```
+### fromBufferOffset
+**raise** Js.Exn.Error raise Js exception
+
+    **param** offset is in bytes
+
+```res sig
+let fromBufferOffset: (array_buffer, int) => t
+```
+### fromBufferRange
+**raise** Js.Exn.Error raises Js exception
+
+    **param** offset is in bytes, length in elements
+
+```res sig
+let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t
+```
+### fromLength
+
+
+```res sig
+let fromLength: int => t
+```
+### from
+
+
+```res sig
+let from: array_like<elt> => t
+```
+
+## Uint16Array
+
+
+
+### elt
+
+
+```res sig
+type elt = int
+```
+### typed_array
+
+
+```res sig
+type typed_array<'a>
+```
+### t
+
+
+```res sig
+type t = typed_array<elt>
+```
+### unsafe_get
+
+
+```res sig
+let unsafe_get: (t, int) => elt
+```
+### unsafe_set
+
+
+```res sig
+let unsafe_set: (t, int, elt) => unit
+```
+### buffer
+
+
+```res sig
+let buffer: t => array_buffer
+```
+### byteLength
+
+
+```res sig
+let byteLength: t => int
+```
+### byteOffset
+
+
+```res sig
+let byteOffset: t => int
+```
+### setArray
+
+
+```res sig
+let setArray: (t, array<elt>) => unit
+```
+### setArrayOffset
+
+
+```res sig
+let setArrayOffset: (t, array<elt>, int) => unit
+```
+### length
+
+
+```res sig
+let length: t => int
+```
+### copyWithin
+
+
+```res sig
+let copyWithin: (t, ~to_: int) => t
+```
+### copyWithinFrom
+
+
+```res sig
+let copyWithinFrom: (t, ~to_: int, ~from: int) => t
+```
+### copyWithinFromRange
+
+
+```res sig
+let copyWithinFromRange: (t, ~to_: int, ~start: int, ~end_: int) => t
+```
+### fillInPlace
+
+
+```res sig
+let fillInPlace: (t, elt) => t
+```
+### fillFromInPlace
+
+
+```res sig
+let fillFromInPlace: (t, elt, ~from: int) => t
+```
+### fillRangeInPlace
+
+
+```res sig
+let fillRangeInPlace: (t, elt, ~start: int, ~end_: int) => t
+```
+### reverseInPlace
+
+
+```res sig
+let reverseInPlace: t => t
+```
+### sortInPlace
+
+
+```res sig
+let sortInPlace: t => t
+```
+### sortInPlaceWith
+
+
+```res sig
+let sortInPlaceWith: (t, (. elt, elt) => int) => t
+```
+### includes
+
+
+```res sig
+let includes: (t, elt) => bool
+```
+### indexOf
+
+
+```res sig
+let indexOf: (t, elt) => int
+```
+### indexOfFrom
+
+
+```res sig
+let indexOfFrom: (t, elt, ~from: int) => int
+```
+### join
+
+
+```res sig
+let join: t => string
+```
+### joinWith
+
+
+```res sig
+let joinWith: (t, string) => string
+```
+### lastIndexOf
+
+
+```res sig
+let lastIndexOf: (t, elt) => int
+```
+### lastIndexOfFrom
+
+
+```res sig
+let lastIndexOfFrom: (t, elt, ~from: int) => int
+```
+### slice
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let slice: (t, ~start: int, ~end_: int) => t
+```
+### copy
+
+
+```res sig
+let copy: t => t
+```
+### sliceFrom
+
+
+```res sig
+let sliceFrom: (t, int) => t
+```
+### subarray
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let subarray: (t, ~start: int, ~end_: int) => t
+```
+### subarrayFrom
+
+
+```res sig
+let subarrayFrom: (t, int) => t
+```
+### toString
+
+
+```res sig
+let toString: t => string
+```
+### toLocaleString
+
+
+```res sig
+let toLocaleString: t => string
+```
+### every
+
+
+```res sig
+let every: (t, (. elt) => bool) => bool
+```
+### everyi
+
+
+```res sig
+let everyi: (t, (. elt, int) => bool) => bool
+```
+### filter
+
+
+```res sig
+let filter: (t, (. elt) => bool) => t
+```
+### filteri
+
+
+```res sig
+let filteri: (t, (. elt, int) => bool) => t
+```
+### find
+
+
+```res sig
+let find: (t, (. elt) => bool) => Js.undefined<elt>
+```
+### findi
+
+
+```res sig
+let findi: (t, (. elt, int) => bool) => Js.undefined<elt>
+```
+### findIndex
+
+
+```res sig
+let findIndex: (t, (. elt) => bool) => int
+```
+### findIndexi
+
+
+```res sig
+let findIndexi: (t, (. elt, int) => bool) => int
+```
+### forEach
+
+
+```res sig
+let forEach: (t, (. elt) => unit) => unit
+```
+### forEachi
+
+
+```res sig
+let forEachi: (t, (. elt, int) => unit) => unit
+```
+### map
+
+
+```res sig
+let map: (t, (. elt) => 'b) => typed_array<'b>
+```
+### mapi
+
+
+```res sig
+let mapi: (t, (. elt, int) => 'b) => typed_array<'b>
+```
+### reduce
+
+
+```res sig
+let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reducei
+
+
+```res sig
+let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### reduceRight
+
+
+```res sig
+let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reduceRighti
+
+
+```res sig
+let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### some
+
+
+```res sig
+let some: (t, (. elt) => bool) => bool
+```
+### somei
+
+
+```res sig
+let somei: (t, (. elt, int) => bool) => bool
+```
+### _BYTES_PER_ELEMENT
+
+
+```res sig
+let _BYTES_PER_ELEMENT: int
+```
+### make
+
+
+```res sig
+let make: array<elt> => t
+```
+### fromBuffer
+can throw
+
+```res sig
+let fromBuffer: array_buffer => t
+```
+### fromBufferOffset
+**raise** Js.Exn.Error raise Js exception
+
+    **param** offset is in bytes
+
+```res sig
+let fromBufferOffset: (array_buffer, int) => t
+```
+### fromBufferRange
+**raise** Js.Exn.Error raises Js exception
+
+    **param** offset is in bytes, length in elements
+
+```res sig
+let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t
+```
+### fromLength
+
+
+```res sig
+let fromLength: int => t
+```
+### from
+
+
+```res sig
+let from: array_like<elt> => t
+```
+
+## Int32Array
+
+
+
+### elt
+
+
+```res sig
+type elt = int
+```
+### typed_array
+
+
+```res sig
+type typed_array<'a>
+```
+### t
+
+
+```res sig
+type t = typed_array<elt>
+```
+### unsafe_get
+
+
+```res sig
+let unsafe_get: (t, int) => elt
+```
+### unsafe_set
+
+
+```res sig
+let unsafe_set: (t, int, elt) => unit
+```
+### buffer
+
+
+```res sig
+let buffer: t => array_buffer
+```
+### byteLength
+
+
+```res sig
+let byteLength: t => int
+```
+### byteOffset
+
+
+```res sig
+let byteOffset: t => int
+```
+### setArray
+
+
+```res sig
+let setArray: (t, array<elt>) => unit
+```
+### setArrayOffset
+
+
+```res sig
+let setArrayOffset: (t, array<elt>, int) => unit
+```
+### length
+
+
+```res sig
+let length: t => int
+```
+### copyWithin
+
+
+```res sig
+let copyWithin: (t, ~to_: int) => t
+```
+### copyWithinFrom
+
+
+```res sig
+let copyWithinFrom: (t, ~to_: int, ~from: int) => t
+```
+### copyWithinFromRange
+
+
+```res sig
+let copyWithinFromRange: (t, ~to_: int, ~start: int, ~end_: int) => t
+```
+### fillInPlace
+
+
+```res sig
+let fillInPlace: (t, elt) => t
+```
+### fillFromInPlace
+
+
+```res sig
+let fillFromInPlace: (t, elt, ~from: int) => t
+```
+### fillRangeInPlace
+
+
+```res sig
+let fillRangeInPlace: (t, elt, ~start: int, ~end_: int) => t
+```
+### reverseInPlace
+
+
+```res sig
+let reverseInPlace: t => t
+```
+### sortInPlace
+
+
+```res sig
+let sortInPlace: t => t
+```
+### sortInPlaceWith
+
+
+```res sig
+let sortInPlaceWith: (t, (. elt, elt) => int) => t
+```
+### includes
+
+
+```res sig
+let includes: (t, elt) => bool
+```
+### indexOf
+
+
+```res sig
+let indexOf: (t, elt) => int
+```
+### indexOfFrom
+
+
+```res sig
+let indexOfFrom: (t, elt, ~from: int) => int
+```
+### join
+
+
+```res sig
+let join: t => string
+```
+### joinWith
+
+
+```res sig
+let joinWith: (t, string) => string
+```
+### lastIndexOf
+
+
+```res sig
+let lastIndexOf: (t, elt) => int
+```
+### lastIndexOfFrom
+
+
+```res sig
+let lastIndexOfFrom: (t, elt, ~from: int) => int
+```
+### slice
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let slice: (t, ~start: int, ~end_: int) => t
+```
+### copy
+
+
+```res sig
+let copy: t => t
+```
+### sliceFrom
+
+
+```res sig
+let sliceFrom: (t, int) => t
+```
+### subarray
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let subarray: (t, ~start: int, ~end_: int) => t
+```
+### subarrayFrom
+
+
+```res sig
+let subarrayFrom: (t, int) => t
+```
+### toString
+
+
+```res sig
+let toString: t => string
+```
+### toLocaleString
+
+
+```res sig
+let toLocaleString: t => string
+```
+### every
+
+
+```res sig
+let every: (t, (. elt) => bool) => bool
+```
+### everyi
+
+
+```res sig
+let everyi: (t, (. elt, int) => bool) => bool
+```
+### filter
+
+
+```res sig
+let filter: (t, (. elt) => bool) => t
+```
+### filteri
+
+
+```res sig
+let filteri: (t, (. elt, int) => bool) => t
+```
+### find
+
+
+```res sig
+let find: (t, (. elt) => bool) => Js.undefined<elt>
+```
+### findi
+
+
+```res sig
+let findi: (t, (. elt, int) => bool) => Js.undefined<elt>
+```
+### findIndex
+
+
+```res sig
+let findIndex: (t, (. elt) => bool) => int
+```
+### findIndexi
+
+
+```res sig
+let findIndexi: (t, (. elt, int) => bool) => int
+```
+### forEach
+
+
+```res sig
+let forEach: (t, (. elt) => unit) => unit
+```
+### forEachi
+
+
+```res sig
+let forEachi: (t, (. elt, int) => unit) => unit
+```
+### map
+
+
+```res sig
+let map: (t, (. elt) => 'b) => typed_array<'b>
+```
+### mapi
+
+
+```res sig
+let mapi: (t, (. elt, int) => 'b) => typed_array<'b>
+```
+### reduce
+
+
+```res sig
+let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reducei
+
+
+```res sig
+let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### reduceRight
+
+
+```res sig
+let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reduceRighti
+
+
+```res sig
+let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### some
+
+
+```res sig
+let some: (t, (. elt) => bool) => bool
+```
+### somei
+
+
+```res sig
+let somei: (t, (. elt, int) => bool) => bool
+```
+### _BYTES_PER_ELEMENT
+
+
+```res sig
+let _BYTES_PER_ELEMENT: int
+```
+### make
+
+
+```res sig
+let make: array<elt> => t
+```
+### fromBuffer
+can throw
+
+```res sig
+let fromBuffer: array_buffer => t
+```
+### fromBufferOffset
+**raise** Js.Exn.Error raise Js exception
+
+    **param** offset is in bytes
+
+```res sig
+let fromBufferOffset: (array_buffer, int) => t
+```
+### fromBufferRange
+**raise** Js.Exn.Error raises Js exception
+
+    **param** offset is in bytes, length in elements
+
+```res sig
+let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t
+```
+### fromLength
+
+
+```res sig
+let fromLength: int => t
+```
+### from
+
+
+```res sig
+let from: array_like<elt> => t
+```
+
+## Uint32Array
+
+
+
+### elt
+
+
+```res sig
+type elt = int
+```
+### typed_array
+
+
+```res sig
+type typed_array<'a>
+```
+### t
+
+
+```res sig
+type t = typed_array<elt>
+```
+### unsafe_get
+
+
+```res sig
+let unsafe_get: (t, int) => elt
+```
+### unsafe_set
+
+
+```res sig
+let unsafe_set: (t, int, elt) => unit
+```
+### buffer
+
+
+```res sig
+let buffer: t => array_buffer
+```
+### byteLength
+
+
+```res sig
+let byteLength: t => int
+```
+### byteOffset
+
+
+```res sig
+let byteOffset: t => int
+```
+### setArray
+
+
+```res sig
+let setArray: (t, array<elt>) => unit
+```
+### setArrayOffset
+
+
+```res sig
+let setArrayOffset: (t, array<elt>, int) => unit
+```
+### length
+
+
+```res sig
+let length: t => int
+```
+### copyWithin
+
+
+```res sig
+let copyWithin: (t, ~to_: int) => t
+```
+### copyWithinFrom
+
+
+```res sig
+let copyWithinFrom: (t, ~to_: int, ~from: int) => t
+```
+### copyWithinFromRange
+
+
+```res sig
+let copyWithinFromRange: (t, ~to_: int, ~start: int, ~end_: int) => t
+```
+### fillInPlace
+
+
+```res sig
+let fillInPlace: (t, elt) => t
+```
+### fillFromInPlace
+
+
+```res sig
+let fillFromInPlace: (t, elt, ~from: int) => t
+```
+### fillRangeInPlace
+
+
+```res sig
+let fillRangeInPlace: (t, elt, ~start: int, ~end_: int) => t
+```
+### reverseInPlace
+
+
+```res sig
+let reverseInPlace: t => t
+```
+### sortInPlace
+
+
+```res sig
+let sortInPlace: t => t
+```
+### sortInPlaceWith
+
+
+```res sig
+let sortInPlaceWith: (t, (. elt, elt) => int) => t
+```
+### includes
+
+
+```res sig
+let includes: (t, elt) => bool
+```
+### indexOf
+
+
+```res sig
+let indexOf: (t, elt) => int
+```
+### indexOfFrom
+
+
+```res sig
+let indexOfFrom: (t, elt, ~from: int) => int
+```
+### join
+
+
+```res sig
+let join: t => string
+```
+### joinWith
+
+
+```res sig
+let joinWith: (t, string) => string
+```
+### lastIndexOf
+
+
+```res sig
+let lastIndexOf: (t, elt) => int
+```
+### lastIndexOfFrom
+
+
+```res sig
+let lastIndexOfFrom: (t, elt, ~from: int) => int
+```
+### slice
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let slice: (t, ~start: int, ~end_: int) => t
+```
+### copy
+
+
+```res sig
+let copy: t => t
+```
+### sliceFrom
+
+
+```res sig
+let sliceFrom: (t, int) => t
+```
+### subarray
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let subarray: (t, ~start: int, ~end_: int) => t
+```
+### subarrayFrom
+
+
+```res sig
+let subarrayFrom: (t, int) => t
+```
+### toString
+
+
+```res sig
+let toString: t => string
+```
+### toLocaleString
+
+
+```res sig
+let toLocaleString: t => string
+```
+### every
+
+
+```res sig
+let every: (t, (. elt) => bool) => bool
+```
+### everyi
+
+
+```res sig
+let everyi: (t, (. elt, int) => bool) => bool
+```
+### filter
+
+
+```res sig
+let filter: (t, (. elt) => bool) => t
+```
+### filteri
+
+
+```res sig
+let filteri: (t, (. elt, int) => bool) => t
+```
+### find
+
+
+```res sig
+let find: (t, (. elt) => bool) => Js.undefined<elt>
+```
+### findi
+
+
+```res sig
+let findi: (t, (. elt, int) => bool) => Js.undefined<elt>
+```
+### findIndex
+
+
+```res sig
+let findIndex: (t, (. elt) => bool) => int
+```
+### findIndexi
+
+
+```res sig
+let findIndexi: (t, (. elt, int) => bool) => int
+```
+### forEach
+
+
+```res sig
+let forEach: (t, (. elt) => unit) => unit
+```
+### forEachi
+
+
+```res sig
+let forEachi: (t, (. elt, int) => unit) => unit
+```
+### map
+
+
+```res sig
+let map: (t, (. elt) => 'b) => typed_array<'b>
+```
+### mapi
+
+
+```res sig
+let mapi: (t, (. elt, int) => 'b) => typed_array<'b>
+```
+### reduce
+
+
+```res sig
+let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reducei
+
+
+```res sig
+let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### reduceRight
+
+
+```res sig
+let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reduceRighti
+
+
+```res sig
+let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### some
+
+
+```res sig
+let some: (t, (. elt) => bool) => bool
+```
+### somei
+
+
+```res sig
+let somei: (t, (. elt, int) => bool) => bool
+```
+### _BYTES_PER_ELEMENT
+
+
+```res sig
+let _BYTES_PER_ELEMENT: int
+```
+### make
+
+
+```res sig
+let make: array<elt> => t
+```
+### fromBuffer
+can throw
+
+```res sig
+let fromBuffer: array_buffer => t
+```
+### fromBufferOffset
+**raise** Js.Exn.Error raise Js exception
+
+    **param** offset is in bytes
+
+```res sig
+let fromBufferOffset: (array_buffer, int) => t
+```
+### fromBufferRange
+**raise** Js.Exn.Error raises Js exception
+
+    **param** offset is in bytes, length in elements
+
+```res sig
+let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t
+```
+### fromLength
+
+
+```res sig
+let fromLength: int => t
+```
+### from
+
+
+```res sig
+let from: array_like<elt> => t
+```
+
+## Float32Array
+
+
+
+### elt
+
+
+```res sig
+type elt = float
+```
+### typed_array
+
+
+```res sig
+type typed_array<'a>
+```
+### t
+
+
+```res sig
+type t = typed_array<elt>
+```
+### unsafe_get
+
+
+```res sig
+let unsafe_get: (t, int) => elt
+```
+### unsafe_set
+
+
+```res sig
+let unsafe_set: (t, int, elt) => unit
+```
+### buffer
+
+
+```res sig
+let buffer: t => array_buffer
+```
+### byteLength
+
+
+```res sig
+let byteLength: t => int
+```
+### byteOffset
+
+
+```res sig
+let byteOffset: t => int
+```
+### setArray
+
+
+```res sig
+let setArray: (t, array<elt>) => unit
+```
+### setArrayOffset
+
+
+```res sig
+let setArrayOffset: (t, array<elt>, int) => unit
+```
+### length
+
+
+```res sig
+let length: t => int
+```
+### copyWithin
+
+
+```res sig
+let copyWithin: (t, ~to_: int) => t
+```
+### copyWithinFrom
+
+
+```res sig
+let copyWithinFrom: (t, ~to_: int, ~from: int) => t
+```
+### copyWithinFromRange
+
+
+```res sig
+let copyWithinFromRange: (t, ~to_: int, ~start: int, ~end_: int) => t
+```
+### fillInPlace
+
+
+```res sig
+let fillInPlace: (t, elt) => t
+```
+### fillFromInPlace
+
+
+```res sig
+let fillFromInPlace: (t, elt, ~from: int) => t
+```
+### fillRangeInPlace
+
+
+```res sig
+let fillRangeInPlace: (t, elt, ~start: int, ~end_: int) => t
+```
+### reverseInPlace
+
+
+```res sig
+let reverseInPlace: t => t
+```
+### sortInPlace
+
+
+```res sig
+let sortInPlace: t => t
+```
+### sortInPlaceWith
+
+
+```res sig
+let sortInPlaceWith: (t, (. elt, elt) => int) => t
+```
+### includes
+
+
+```res sig
+let includes: (t, elt) => bool
+```
+### indexOf
+
+
+```res sig
+let indexOf: (t, elt) => int
+```
+### indexOfFrom
+
+
+```res sig
+let indexOfFrom: (t, elt, ~from: int) => int
+```
+### join
+
+
+```res sig
+let join: t => string
+```
+### joinWith
+
+
+```res sig
+let joinWith: (t, string) => string
+```
+### lastIndexOf
+
+
+```res sig
+let lastIndexOf: (t, elt) => int
+```
+### lastIndexOfFrom
+
+
+```res sig
+let lastIndexOfFrom: (t, elt, ~from: int) => int
+```
+### slice
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let slice: (t, ~start: int, ~end_: int) => t
+```
+### copy
+
+
+```res sig
+let copy: t => t
+```
+### sliceFrom
+
+
+```res sig
+let sliceFrom: (t, int) => t
+```
+### subarray
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let subarray: (t, ~start: int, ~end_: int) => t
+```
+### subarrayFrom
+
+
+```res sig
+let subarrayFrom: (t, int) => t
+```
+### toString
+
+
+```res sig
+let toString: t => string
+```
+### toLocaleString
+
+
+```res sig
+let toLocaleString: t => string
+```
+### every
+
+
+```res sig
+let every: (t, (. elt) => bool) => bool
+```
+### everyi
+
+
+```res sig
+let everyi: (t, (. elt, int) => bool) => bool
+```
+### filter
+
+
+```res sig
+let filter: (t, (. elt) => bool) => t
+```
+### filteri
+
+
+```res sig
+let filteri: (t, (. elt, int) => bool) => t
+```
+### find
+
+
+```res sig
+let find: (t, (. elt) => bool) => Js.undefined<elt>
+```
+### findi
+
+
+```res sig
+let findi: (t, (. elt, int) => bool) => Js.undefined<elt>
+```
+### findIndex
+
+
+```res sig
+let findIndex: (t, (. elt) => bool) => int
+```
+### findIndexi
+
+
+```res sig
+let findIndexi: (t, (. elt, int) => bool) => int
+```
+### forEach
+
+
+```res sig
+let forEach: (t, (. elt) => unit) => unit
+```
+### forEachi
+
+
+```res sig
+let forEachi: (t, (. elt, int) => unit) => unit
+```
+### map
+
+
+```res sig
+let map: (t, (. elt) => 'b) => typed_array<'b>
+```
+### mapi
+
+
+```res sig
+let mapi: (t, (. elt, int) => 'b) => typed_array<'b>
+```
+### reduce
+
+
+```res sig
+let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reducei
+
+
+```res sig
+let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### reduceRight
+
+
+```res sig
+let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reduceRighti
+
+
+```res sig
+let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### some
+
+
+```res sig
+let some: (t, (. elt) => bool) => bool
+```
+### somei
+
+
+```res sig
+let somei: (t, (. elt, int) => bool) => bool
+```
+### _BYTES_PER_ELEMENT
+
+
+```res sig
+let _BYTES_PER_ELEMENT: int
+```
+### make
+
+
+```res sig
+let make: array<elt> => t
+```
+### fromBuffer
+can throw
+
+```res sig
+let fromBuffer: array_buffer => t
+```
+### fromBufferOffset
+**raise** Js.Exn.Error raise Js exception
+
+    **param** offset is in bytes
+
+```res sig
+let fromBufferOffset: (array_buffer, int) => t
+```
+### fromBufferRange
+**raise** Js.Exn.Error raises Js exception
+
+    **param** offset is in bytes, length in elements
+
+```res sig
+let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t
+```
+### fromLength
+
+
+```res sig
+let fromLength: int => t
+```
+### from
+
+
+```res sig
+let from: array_like<elt> => t
+```
+
+## Float64Array
+
+
+
+### elt
+
+
+```res sig
+type elt = float
+```
+### typed_array
+
+
+```res sig
+type typed_array<'a>
+```
+### t
+
+
+```res sig
+type t = typed_array<elt>
+```
+### unsafe_get
+
+
+```res sig
+let unsafe_get: (t, int) => elt
+```
+### unsafe_set
+
+
+```res sig
+let unsafe_set: (t, int, elt) => unit
+```
+### buffer
+
+
+```res sig
+let buffer: t => array_buffer
+```
+### byteLength
+
+
+```res sig
+let byteLength: t => int
+```
+### byteOffset
+
+
+```res sig
+let byteOffset: t => int
+```
+### setArray
+
+
+```res sig
+let setArray: (t, array<elt>) => unit
+```
+### setArrayOffset
+
+
+```res sig
+let setArrayOffset: (t, array<elt>, int) => unit
+```
+### length
+
+
+```res sig
+let length: t => int
+```
+### copyWithin
+
+
+```res sig
+let copyWithin: (t, ~to_: int) => t
+```
+### copyWithinFrom
+
+
+```res sig
+let copyWithinFrom: (t, ~to_: int, ~from: int) => t
+```
+### copyWithinFromRange
+
+
+```res sig
+let copyWithinFromRange: (t, ~to_: int, ~start: int, ~end_: int) => t
+```
+### fillInPlace
+
+
+```res sig
+let fillInPlace: (t, elt) => t
+```
+### fillFromInPlace
+
+
+```res sig
+let fillFromInPlace: (t, elt, ~from: int) => t
+```
+### fillRangeInPlace
+
+
+```res sig
+let fillRangeInPlace: (t, elt, ~start: int, ~end_: int) => t
+```
+### reverseInPlace
+
+
+```res sig
+let reverseInPlace: t => t
+```
+### sortInPlace
+
+
+```res sig
+let sortInPlace: t => t
+```
+### sortInPlaceWith
+
+
+```res sig
+let sortInPlaceWith: (t, (. elt, elt) => int) => t
+```
+### includes
+
+
+```res sig
+let includes: (t, elt) => bool
+```
+### indexOf
+
+
+```res sig
+let indexOf: (t, elt) => int
+```
+### indexOfFrom
+
+
+```res sig
+let indexOfFrom: (t, elt, ~from: int) => int
+```
+### join
+
+
+```res sig
+let join: t => string
+```
+### joinWith
+
+
+```res sig
+let joinWith: (t, string) => string
+```
+### lastIndexOf
+
+
+```res sig
+let lastIndexOf: (t, elt) => int
+```
+### lastIndexOfFrom
+
+
+```res sig
+let lastIndexOfFrom: (t, elt, ~from: int) => int
+```
+### slice
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let slice: (t, ~start: int, ~end_: int) => t
+```
+### copy
+
+
+```res sig
+let copy: t => t
+```
+### sliceFrom
+
+
+```res sig
+let sliceFrom: (t, int) => t
+```
+### subarray
+`start` is inclusive, `end_` exclusive
+
+```res sig
+let subarray: (t, ~start: int, ~end_: int) => t
+```
+### subarrayFrom
+
+
+```res sig
+let subarrayFrom: (t, int) => t
+```
+### toString
+
+
+```res sig
+let toString: t => string
+```
+### toLocaleString
+
+
+```res sig
+let toLocaleString: t => string
+```
+### every
+
+
+```res sig
+let every: (t, (. elt) => bool) => bool
+```
+### everyi
+
+
+```res sig
+let everyi: (t, (. elt, int) => bool) => bool
+```
+### filter
+
+
+```res sig
+let filter: (t, (. elt) => bool) => t
+```
+### filteri
+
+
+```res sig
+let filteri: (t, (. elt, int) => bool) => t
+```
+### find
+
+
+```res sig
+let find: (t, (. elt) => bool) => Js.undefined<elt>
+```
+### findi
+
+
+```res sig
+let findi: (t, (. elt, int) => bool) => Js.undefined<elt>
+```
+### findIndex
+
+
+```res sig
+let findIndex: (t, (. elt) => bool) => int
+```
+### findIndexi
+
+
+```res sig
+let findIndexi: (t, (. elt, int) => bool) => int
+```
+### forEach
+
+
+```res sig
+let forEach: (t, (. elt) => unit) => unit
+```
+### forEachi
+
+
+```res sig
+let forEachi: (t, (. elt, int) => unit) => unit
+```
+### map
+
+
+```res sig
+let map: (t, (. elt) => 'b) => typed_array<'b>
+```
+### mapi
+
+
+```res sig
+let mapi: (t, (. elt, int) => 'b) => typed_array<'b>
+```
+### reduce
+
+
+```res sig
+let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reducei
+
+
+```res sig
+let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### reduceRight
+
+
+```res sig
+let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b
+```
+### reduceRighti
+
+
+```res sig
+let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b
+```
+### some
+
+
+```res sig
+let some: (t, (. elt) => bool) => bool
+```
+### somei
+
+
+```res sig
+let somei: (t, (. elt, int) => bool) => bool
+```
+### _BYTES_PER_ELEMENT
+
+
+```res sig
+let _BYTES_PER_ELEMENT: int
+```
+### make
+
+
+```res sig
+let make: array<elt> => t
+```
+### fromBuffer
+can throw
+
+```res sig
+let fromBuffer: array_buffer => t
+```
+### fromBufferOffset
+**raise** Js.Exn.Error raise Js exception
+
+    **param** offset is in bytes
+
+```res sig
+let fromBufferOffset: (array_buffer, int) => t
+```
+### fromBufferRange
+**raise** Js.Exn.Error raises Js exception
+
+    **param** offset is in bytes, length in elements
+
+```res sig
+let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t
+```
+### fromLength
+
+
+```res sig
+let fromLength: int => t
+```
+### from
+
+
+```res sig
+let from: array_like<elt> => t
+```
+
+## DataView
+
+
+
+### t
+
+
+```res sig
+type t
+```
+### make
+
+
+```res sig
+let make: array_buffer => t
+```
+### fromBuffer
+
+
+```res sig
+let fromBuffer: array_buffer => t
+```
+### fromBufferOffset
+
+
+```res sig
+let fromBufferOffset: (array_buffer, int) => t
+```
+### fromBufferRange
+
+
+```res sig
+let fromBufferRange: (array_buffer, ~offset: int, ~length: int) => t
+```
+### buffer
+
+
+```res sig
+let buffer: t => array_buffer
+```
+### byteLength
+
+
+```res sig
+let byteLength: t => int
+```
+### byteOffset
+
+
+```res sig
+let byteOffset: t => int
+```
+### getInt8
+
+
+```res sig
+let getInt8: (t, int) => int
+```
+### getUint8
+
+
+```res sig
+let getUint8: (t, int) => int
+```
+### getInt16
+
+
+```res sig
+let getInt16: (t, int) => int
+```
+### getInt16LittleEndian
+
+
+```res sig
+let getInt16LittleEndian: (t, int) => int
+```
+### getUint16
+
+
+```res sig
+let getUint16: (t, int) => int
+```
+### getUint16LittleEndian
+
+
+```res sig
+let getUint16LittleEndian: (t, int) => int
+```
+### getInt32
+
+
+```res sig
+let getInt32: (t, int) => int
+```
+### getInt32LittleEndian
+
+
+```res sig
+let getInt32LittleEndian: (t, int) => int
+```
+### getUint32
+
+
+```res sig
+let getUint32: (t, int) => int
+```
+### getUint32LittleEndian
+
+
+```res sig
+let getUint32LittleEndian: (t, int) => int
+```
+### getFloat32
+
+
+```res sig
+let getFloat32: (t, int) => float
+```
+### getFloat32LittleEndian
+
+
+```res sig
+let getFloat32LittleEndian: (t, int) => float
+```
+### getFloat64
+
+
+```res sig
+let getFloat64: (t, int) => float
+```
+### getFloat64LittleEndian
+
+
+```res sig
+let getFloat64LittleEndian: (t, int) => float
+```
+### setInt8
+
+
+```res sig
+let setInt8: (t, int, int) => unit
+```
+### setUint8
+
+
+```res sig
+let setUint8: (t, int, int) => unit
+```
+### setInt16
+
+
+```res sig
+let setInt16: (t, int, int) => unit
+```
+### setInt16LittleEndian
+
+
+```res sig
+let setInt16LittleEndian: (t, int, int) => unit
+```
+### setUint16
+
+
+```res sig
+let setUint16: (t, int, int) => unit
+```
+### setUint16LittleEndian
+
+
+```res sig
+let setUint16LittleEndian: (t, int, int) => unit
+```
+### setInt32
+
+
+```res sig
+let setInt32: (t, int, int) => unit
+```
+### setInt32LittleEndian
+
+
+```res sig
+let setInt32LittleEndian: (t, int, int) => unit
+```
+### setUint32
+
+
+```res sig
+let setUint32: (t, int, int) => unit
+```
+### setUint32LittleEndian
+
+
+```res sig
+let setUint32LittleEndian: (t, int, int) => unit
+```
+### setFloat32
+
+
+```res sig
+let setFloat32: (t, int, float) => unit
+```
+### setFloat32LittleEndian
+
+
+```res sig
+let setFloat32LittleEndian: (t, int, float) => unit
+```
+### setFloat64
+
+
+```res sig
+let setFloat64: (t, int, float) => unit
+```
+### setFloat64LittleEndian
+
+
+```res sig
+let setFloat64LittleEndian: (t, int, float) => unit
+```

@@ -1,15 +1,15 @@
 {
   "name": "Js_dict",
-  "docstrings": [],
+  "docstrings": [
+    "Provide utilities for JS dictionary object.\n\n**Note:** This module's examples will assume this predeclared dictionary:\n\n```res prelude\nlet ages = Js.Dict.fromList(list{(\"Maria\", 30), (\"Vinh\", 22), (\"Fred\", 49)})\n```"
+  ],
   "items": [
     {
       "id": "Js_dict.t",
       "kind": "type",
       "name": "t",
       "signature": "type t<'a>",
-      "docstrings": [
-        "Dictionary type (ie an '{ }' JS object). However it is restricted to hold a\nsingle type; therefore values must have the same type. This Dictionary type is\nmostly used with the Js_json.t type."
-      ]
+      "docstrings": []
     },
     {
       "id": "Js_dict.key",

@@ -1,0 +1,85 @@
+# Js_types
+
+<Intro>
+
+Provide utilities for manipulating JS types.
+
+</Intro>
+
+
+### symbol
+Js symbol type (only available in ES6)
+
+```res sig
+type symbol
+```
+
+### bigint_val
+Js bigint type only available in ES2020
+
+```res sig
+type bigint_val
+```
+
+### obj_val
+
+
+```res sig
+type obj_val
+```
+
+### undefined_val
+This type has only one value `undefined`
+
+```res sig
+type undefined_val
+```
+
+### null_val
+This type has only one value `null`
+
+```res sig
+type null_val
+```
+
+### function_val
+
+
+```res sig
+type function_val
+```
+
+### t
+
+
+```res sig
+type t<_> =\n  | Undefined: t<undefined_val>\n  | Null: t<null_val>\n  | Boolean: t<bool>\n  | Number: t<float>\n  | String: t<string>\n  | Function: t<function_val>\n  | Object: t<obj_val>\n  | Symbol: t<symbol>\n  | BigInt: t<bigint_val>
+```
+
+### test
+`test(value, t)` returns `true` if `value` is `typeof t`, otherwise `false`.
+   This is useful for doing runtime reflection on any given value.
+
+   ```res example
+   test("test", String) == true
+   test(() => true, Function) == true
+   test("test", Boolean) == false
+   ```
+
+```res sig
+let test: ('a, t<'b>) => bool
+```
+
+### tagged_t
+
+
+```res sig
+type tagged_t =\n  | JSFalse\n  | JSTrue\n  | JSNull\n  | JSUndefined\n  | JSNumber(float)\n  | JSString(string)\n  | JSFunction(function_val)\n  | JSObject(obj_val)\n  | JSSymbol(symbol)\n  | JSBigInt(bigint_val)
+```
+
+### classify
+
+
+```res sig
+let classify: 'a => tagged_t
+```
