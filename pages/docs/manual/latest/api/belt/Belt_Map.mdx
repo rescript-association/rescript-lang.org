@@ -543,7 +543,11 @@ let mergeMany: (t<'k, 'v, 'id>, array<('k, 'v)>) => t<'k, 'v, 'id>
 
 
 ```res sig
-let mergeU: (\n  t<'k, 'v, 'id>,\n  t<'k, 'v2, 'id>,\n  (. 'k, option<'v>, option<'v2>) => option<'v3>,\n) => t<'k, 'v3, 'id>
+let mergeU: (
+  t<'k, 'v, 'id>,
+  t<'k, 'v2, 'id>,
+  (. 'k, option<'v>, option<'v2>) => option<'v3>,
+) => t<'k, 'v3, 'id>
 ```
 
 ### merge
@@ -552,7 +556,11 @@ let mergeU: (\n  t<'k, 'v, 'id>,\n  t<'k, 'v2, 'id>,\n  (. 'k, option<'v>, optio
     value, is determined with the function `f`.
 
 ```res sig
-let merge: (\n  t<'k, 'v, 'id>,\n  t<'k, 'v2, 'id>,\n  ('k, option<'v>, option<'v2>) => option<'v3>,\n) => t<'k, 'v3, 'id>
+let merge: (
+  t<'k, 'v, 'id>,
+  t<'k, 'v2, 'id>,
+  ('k, option<'v>, option<'v2>) => option<'v3>,
+) => t<'k, 'v3, 'id>
 ```
 
 ### keepU

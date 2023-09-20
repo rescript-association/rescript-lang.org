@@ -116,7 +116,11 @@ const processItem = item => {
     return processModule(item.item);
   }
 
-  const codeblock = ["```res sig", item.signature, "```"].join("\n");
+  const codeblock = [
+    "```res sig",
+    item.signature.replace(/\\n/g, "\n"),
+    "```"
+  ].join("\n");
   return `### ${item.name}\n${item.docstrings.join("")}\n\n${codeblock}\n`;
 };
 

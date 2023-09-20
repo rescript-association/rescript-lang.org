@@ -8,7 +8,14 @@ Efficient JSON encoding using JavaScript API
 The JSON data structure
 
 ```res sig
-type t =\n  | False\n  | True\n  | Null\n  | String(string)\n  | Number(float)\n  | Object(Js.Dict.t<t>)\n  | Array(array<t>)
+type t =
+  | False
+  | True
+  | Null
+  | String(string)
+  | Number(float)
+  | Object(Js.Dict.t<t>)
+  | Array(array<t>)
 ```
 
 ## Kind
@@ -25,14 +32,27 @@ type json = t
 Underlying type of a JSON value
 
 ```res sig
-type t<_> =\n  | String: t<Js_string.t>\n  | Number: t<float>\n  | Object: t<Js_dict.t<json>>\n  | Array: t<array<json>>\n  | Boolean: t<bool>\n  | Null: t<Js_types.null_val>
+type t<_> =
+  | String: t<Js_string.t>
+  | Number: t<float>
+  | Object: t<Js_dict.t<json>>
+  | Array: t<array<json>>
+  | Boolean: t<bool>
+  | Null: t<Js_types.null_val>
 ```
 
 ### tagged_t
 
 
 ```res sig
-type tagged_t =\n  | JSONFalse\n  | JSONTrue\n  | JSONNull\n  | JSONString(string)\n  | JSONNumber(float)\n  | JSONObject(Js_dict.t<t>)\n  | JSONArray(array<t>)
+type tagged_t =
+  | JSONFalse
+  | JSONTrue
+  | JSONNull
+  | JSONString(string)
+  | JSONNumber(float)
+  | JSONObject(Js_dict.t<t>)
+  | JSONArray(array<t>)
 ```
 
 ### classify

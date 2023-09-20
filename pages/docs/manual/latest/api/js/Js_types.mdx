@@ -48,7 +48,16 @@ type function_val
 
 
 ```res sig
-type t<_> =\n  | Undefined: t<undefined_val>\n  | Null: t<null_val>\n  | Boolean: t<bool>\n  | Number: t<float>\n  | String: t<string>\n  | Function: t<function_val>\n  | Object: t<obj_val>\n  | Symbol: t<symbol>\n  | BigInt: t<bigint_val>
+type t<_> =
+  | Undefined: t<undefined_val>
+  | Null: t<null_val>
+  | Boolean: t<bool>
+  | Number: t<float>
+  | String: t<string>
+  | Function: t<function_val>
+  | Object: t<obj_val>
+  | Symbol: t<symbol>
+  | BigInt: t<bigint_val>
 ```
 
 ### test
@@ -69,7 +78,17 @@ let test: ('a, t<'b>) => bool
 
 
 ```res sig
-type tagged_t =\n  | JSFalse\n  | JSTrue\n  | JSNull\n  | JSUndefined\n  | JSNumber(float)\n  | JSString(string)\n  | JSFunction(function_val)\n  | JSObject(obj_val)\n  | JSSymbol(symbol)\n  | JSBigInt(bigint_val)
+type tagged_t =
+  | JSFalse
+  | JSTrue
+  | JSNull
+  | JSUndefined
+  | JSNumber(float)
+  | JSString(string)
+  | JSFunction(function_val)
+  | JSObject(obj_val)
+  | JSSymbol(symbol)
+  | JSBigInt(bigint_val)
 ```
 
 ### classify

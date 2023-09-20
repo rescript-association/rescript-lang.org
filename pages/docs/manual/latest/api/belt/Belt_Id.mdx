@@ -50,7 +50,8 @@ type cmp<'a, 'id>
   mismatch if they use different comparison function
 
 ```res sig
-type comparable<'key, 'id> = module(Comparable with type identity = 'id)\ntype t = 'key
+type comparable<'key, 'id> = module(Comparable with type identity = 'id)
+type t = 'key
 ```
 
 ## MakeComparableU
@@ -132,7 +133,8 @@ let comparable: (~cmp: ('a, 'a) => int) => module(Comparable with type t = 'a)
   mismatch if they use different comparison function
 
 ```res sig
-type hashable<'key, 'id> = module(Hashable with type identity = 'id)\ntype t = 'key
+type hashable<'key, 'id> = module(Hashable with type identity = 'id)
+type t = 'key
 ```
 
 ## MakeHashableU

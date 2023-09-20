@@ -74,21 +74,34 @@ let all3: ((promise<'a0>, promise<'a1>, promise<'a2>)) => promise<('a0, 'a1, 'a2
 
 
 ```res sig
-let all4: ((promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>)) => promise<(\n  'a0,\n  'a1,\n  'a2,\n  'a3,\n)>
+let all4: ((promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>)) => promise<(
+  'a0,
+  'a1,
+  'a2,
+  'a3,
+)>
 ```
 
 ### all5
 
 
 ```res sig
-let all5: ((promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>, promise<'a4>)) => promise<(\n  'a0,\n  'a1,\n  'a2,\n  'a3,\n  'a4,\n)>
+let all5: ((promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>, promise<'a4>)) => promise<(
+  'a0,
+  'a1,
+  'a2,
+  'a3,
+  'a4,
+)>
 ```
 
 ### all6
 
 
 ```res sig
-let all6: (\n  (promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>, promise<'a4>, promise<'a5>)\n) => promise<('a0, 'a1, 'a2, 'a3, 'a4, 'a5)>
+let all6: (
+  (promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>, promise<'a4>, promise<'a5>)
+) => promise<('a0, 'a1, 'a2, 'a3, 'a4, 'a5)>
 ```
 
 ### race

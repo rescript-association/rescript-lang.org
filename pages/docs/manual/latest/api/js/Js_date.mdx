@@ -114,7 +114,14 @@ Constructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/G
 on MDN.
 
 ```res sig
-let makeWithYMDHM: (\n  ~year: float,\n  ~month: float,\n  ~date: float,\n  ~hours: float,\n  ~minutes: float,\n  unit,\n) => t
+let makeWithYMDHM: (
+  ~year: float,
+  ~month: float,
+  ~date: float,
+  ~hours: float,
+  ~minutes: float,
+  unit,
+) => t
 ```
 
 ### makeWithYMDHMS
@@ -137,7 +144,15 @@ Js.Date.makeWithYMDHMS(
 ```
 
 ```res sig
-let makeWithYMDHMS: (\n  ~year: float,\n  ~month: float,\n  ~date: float,\n  ~hours: float,\n  ~minutes: float,\n  ~seconds: float,\n  unit,\n) => t
+let makeWithYMDHMS: (
+  ~year: float,
+  ~month: float,
+  ~date: float,
+  ~hours: float,
+  ~minutes: float,
+  ~seconds: float,
+  unit,
+) => t
 ```
 
 ### utcWithYM
@@ -187,7 +202,14 @@ arguments are ignored. See
 on MDN.
 
 ```res sig
-let utcWithYMDHM: (\n  ~year: float,\n  ~month: float,\n  ~date: float,\n  ~hours: float,\n  ~minutes: float,\n  unit,\n) => float
+let utcWithYMDHM: (
+  ~year: float,
+  ~month: float,
+  ~date: float,
+  ~hours: float,
+  ~minutes: float,
+  unit,
+) => float
 ```
 
 ### utcWithYMDHMS
@@ -200,7 +222,15 @@ See
 on MDN.
 
 ```res sig
-let utcWithYMDHMS: (\n  ~year: float,\n  ~month: float,\n  ~date: float,\n  ~hours: float,\n  ~minutes: float,\n  ~seconds: float,\n  unit,\n) => float
+let utcWithYMDHMS: (
+  ~year: float,
+  ~month: float,
+  ~date: float,
+  ~hours: float,
+  ~minutes: float,
+  ~seconds: float,
+  unit,
+) => float
 ```
 
 ### now
@@ -634,7 +664,14 @@ futureTime == Js.Date.getTime(date1)
 ```
 
 ```res sig
-let setHoursMSMs: (\n  t,\n  ~hours: float,\n  ~minutes: float,\n  ~seconds: float,\n  ~milliseconds: float,\n  unit,\n) => float
+let setHoursMSMs: (
+  t,
+  ~hours: float,
+  ~minutes: float,
+  ~seconds: float,
+  ~milliseconds: float,
+  unit,
+) => float
 ```
 
 ### setMilliseconds
@@ -963,7 +1000,14 @@ futureTime == Js.Date.getTime(date1)
 ```
 
 ```res sig
-let setUTCHoursMSMs: (\n  t,\n  ~hours: float,\n  ~minutes: float,\n  ~seconds: float,\n  ~milliseconds: float,\n  unit,\n) => float
+let setUTCHoursMSMs: (
+  t,
+  ~hours: float,
+  ~minutes: float,
+  ~seconds: float,
+  ~milliseconds: float,
+  unit,
+) => float
 ```
 
 ### setUTCMilliseconds
