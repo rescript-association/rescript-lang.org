@@ -1,7 +1,5 @@
 # Belt_MutableSet
 
-<Intro>
-
 A **mutable** sorted set module which allows customized compare behavior.
   The implementation uses balanced binary trees, and therefore searching and insertion take time logarithmic in the size of the map.
 
@@ -20,9 +18,6 @@ A **mutable** sorted set module which allows customized compare behavior.
   let mySet = Belt.MutableSet.make(~id=module(PairComparator))
   mySet->Belt.MutableSet.add((1, 2))
   ```
-
-</Intro>
-
 
 ### undefined
 Specialized when key type is `int`, more efficient

@@ -134,9 +134,7 @@ const genMdx = topLevel.map(doc => {
       const items = module.items.map(item => processItem(item)).join("\n");
 
       const docstring =
-        module.docstrings.length > 0
-          ? `\n<Intro>\n\n${module.docstrings.join("")}\n\n</Intro>\n\n`
-          : "";
+        module.docstrings.length > 0 ? `\n${module.docstrings.join("")}\n` : "";
 
       const body = [`# ${module.name}`, docstring, items].join("\n");
 
@@ -152,11 +150,9 @@ const genMdx = topLevel.map(doc => {
     .join("\n");
 
   const introTopLevel =
-    doc.docstrings.length > 0
-      ? `\n\n<Intro>\n\n\n${doc.docstrings.join("")}\n\n\n</Intro>\n\n`
-      : "";
+    doc.docstrings.length > 0 ? `\n${doc.docstrings.join("")}\n` : "";
 
-  const body = [`# ${doc.name}\n`, introTopLevel, mainItems].join("\n");
+  const body = [`# ${doc.name}`, introTopLevel, mainItems].join("\n");
 
   return { name: doc.name, body, submodules: modulesAlias };
 });
@@ -171,15 +167,15 @@ genMdx.forEach(doc => {
   const name = doc.name.toLowerCase();
   const subDir = path.join(output_dir, name);
 
-  fs.writeFileSync(path.join(subDir, name + ".mdx"), doc.body);
+  // if (!fs.existsSync(subDir)) {
+  //   fs.mkdirSync(subDir);
+  // }
 
-  if (!fs.existsSync(subDir)) {
-    fs.mkdirSync(subDir);
-  }
+  fs.writeFileSync(subDir + ".mdx", doc.body, { encoding: "utf8" });
 
   doc.submodules.forEach(submodule => {
     const subModuleFile = path.join(subDir, submodule.name + ".mdx");
 
-    fs.writeFileSync(subModuleFile, submodule.body);
+    fs.writeFileSync(subModuleFile, submodule.body, { encoding: "utf8" });
   });
 });
