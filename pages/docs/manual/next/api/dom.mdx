@@ -1,0 +1,1814 @@
+# Dom
+
+## _baseClass
+
+```res sig
+type _baseClass
+```
+
+
+## animation
+
+```res sig
+type animation
+```
+
+
+## cssStyleDeclaration
+
+```res sig
+type cssStyleDeclaration
+```
+
+
+## cssStyleSheet
+
+```res sig
+type cssStyleSheet
+```
+
+
+## eventTarget_like
+
+```res sig
+type eventTarget_like<'a>
+```
+
+
+## eventTarget
+
+```res sig
+type eventTarget = eventTarget_like<_baseClass>
+```
+
+
+## _node
+
+```res sig
+type _node<'a>
+```
+
+
+## node_like
+
+```res sig
+type node_like<'a> = eventTarget_like<_node<'a>>
+```
+
+
+## node
+
+```res sig
+type node = node_like<_baseClass>
+```
+
+
+## _attr
+
+```res sig
+type _attr
+```
+
+
+## attr
+
+```res sig
+type attr = node_like<_attr>
+```
+
+
+## _characterData
+
+```res sig
+type _characterData<'a>
+```
+
+
+## characterData_like
+
+```res sig
+type characterData_like<'a> = node_like<_characterData<'a>>
+```
+
+
+## characterData
+
+```res sig
+type characterData = characterData_like<_baseClass>
+```
+
+
+## _cdataSection
+
+```res sig
+type _cdataSection
+```
+
+
+## cdataSection
+
+```res sig
+type cdataSection = characterData_like<_cdataSection>
+```
+
+
+## _comment
+
+```res sig
+type _comment
+```
+
+
+## comment
+
+```res sig
+type comment = characterData_like<_comment>
+```
+
+
+## _document
+
+```res sig
+type _document<'a>
+```
+
+
+## document_like
+
+```res sig
+type document_like<'a> = node_like<_document<'a>>
+```
+
+
+## document
+
+```res sig
+type document = document_like<_baseClass>
+```
+
+
+## _documentFragment
+
+```res sig
+type _documentFragment
+```
+
+
+## documentFragment
+
+```res sig
+type documentFragment = node_like<_documentFragment>
+```
+
+
+## _documentType
+
+```res sig
+type _documentType
+```
+
+
+## documentType
+
+```res sig
+type documentType = node_like<_documentType>
+```
+
+
+## domImplementation
+
+```res sig
+type domImplementation
+```
+
+
+## _element
+
+```res sig
+type _element<'a>
+```
+
+
+## element_like
+
+```res sig
+type element_like<'a> = node_like<_element<'a>>
+```
+
+
+## element
+
+```res sig
+type element = element_like<_baseClass>
+```
+
+
+## htmlCollection
+
+```res sig
+type htmlCollection
+```
+
+
+## htmlFormControlsCollection
+
+```res sig
+type htmlFormControlsCollection
+```
+
+
+## htmlOptionsCollection
+
+```res sig
+type htmlOptionsCollection
+```
+
+
+## intersectionObserver
+
+```res sig
+type intersectionObserver
+```
+
+
+## intersectionObserverEntry
+
+```res sig
+type intersectionObserverEntry
+```
+
+
+## mutationObserver
+
+```res sig
+type mutationObserver
+```
+
+
+## mutationRecord
+
+```res sig
+type mutationRecord
+```
+
+
+## performanceObserver
+
+```res sig
+type performanceObserver
+```
+
+
+## performanceObserverEntryList
+
+```res sig
+type performanceObserverEntryList
+```
+
+
+## reportingObserver
+
+```res sig
+type reportingObserver
+```
+
+
+## reportingObserverOptions
+
+```res sig
+type reportingObserverOptions
+```
+
+
+## resizeObserver
+
+```res sig
+type resizeObserver
+```
+
+
+## resizeObserverEntry
+
+```res sig
+type resizeObserverEntry
+```
+
+
+## namedNodeMap
+
+```res sig
+type namedNodeMap
+```
+
+
+## nodeList
+
+```res sig
+type nodeList
+```
+
+
+## radioNodeList
+
+```res sig
+type radioNodeList
+```
+
+
+## processingInstruction
+
+```res sig
+type processingInstruction
+```
+
+
+## _shadowRoot
+
+```res sig
+type _shadowRoot
+```
+
+
+## shadowRoot
+
+```res sig
+type shadowRoot = node_like<_shadowRoot>
+```
+
+
+## _text
+
+```res sig
+type _text
+```
+
+
+## text
+
+```res sig
+type text = characterData_like<_text>
+```
+
+
+## domRect
+
+```res sig
+type domRect
+```
+
+
+## dataTransfer
+
+```res sig
+type dataTransfer
+```
+
+
+## domStringMap
+
+```res sig
+type domStringMap
+```
+
+
+## history
+
+```res sig
+type history
+```
+
+
+## _htmlDocument
+
+```res sig
+type _htmlDocument
+```
+
+
+## htmlDocument
+
+```res sig
+type htmlDocument = document_like<_htmlDocument>
+```
+
+
+## _htmlElement
+
+```res sig
+type _htmlElement<'a>
+```
+
+
+## htmlElement_like
+
+```res sig
+type htmlElement_like<'a> = element_like<_htmlElement<'a>>
+```
+
+
+## htmlElement
+
+```res sig
+type htmlElement = htmlElement_like<_baseClass>
+```
+
+
+## _htmlAnchorElement
+
+```res sig
+type _htmlAnchorElement
+```
+
+
+## htmlAnchorElement
+
+```res sig
+type htmlAnchorElement = htmlElement_like<_htmlAnchorElement>
+```
+
+
+## _htmlAreaElement
+
+```res sig
+type _htmlAreaElement
+```
+
+
+## htmlAreaElement
+
+```res sig
+type htmlAreaElement = htmlElement_like<_htmlAreaElement>
+```
+
+
+## _htmlAudioElement
+
+```res sig
+type _htmlAudioElement
+```
+
+
+## htmlAudioElement
+
+```res sig
+type htmlAudioElement = htmlElement_like<_htmlAudioElement>
+```
+
+
+## _htmlBaseElement
+
+```res sig
+type _htmlBaseElement
+```
+
+
+## htmlBaseElement
+
+```res sig
+type htmlBaseElement = htmlElement_like<_htmlBaseElement>
+```
+
+
+## _htmlBodyElement
+
+```res sig
+type _htmlBodyElement
+```
+
+
+## htmlBodyElement
+
+```res sig
+type htmlBodyElement = htmlElement_like<_htmlBodyElement>
+```
+
+
+## _htmlBrElement
+
+```res sig
+type _htmlBrElement
+```
+
+
+## htmlBrElement
+
+```res sig
+type htmlBrElement = htmlElement_like<_htmlBrElement>
+```
+
+
+## _htmlButtonElement
+
+```res sig
+type _htmlButtonElement
+```
+
+
+## htmlButtonElement
+
+```res sig
+type htmlButtonElement = htmlElement_like<_htmlButtonElement>
+```
+
+
+## _htmlCanvasElement
+
+```res sig
+type _htmlCanvasElement
+```
+
+
+## htmlCanvasElement
+
+```res sig
+type htmlCanvasElement = htmlElement_like<_htmlCanvasElement>
+```
+
+
+## _htmlDataElement
+
+```res sig
+type _htmlDataElement
+```
+
+
+## htmlDataElement
+
+```res sig
+type htmlDataElement = htmlElement_like<_htmlDataElement>
+```
+
+
+## _htmlDataListElement
+
+```res sig
+type _htmlDataListElement
+```
+
+
+## htmlDataListElement
+
+```res sig
+type htmlDataListElement = htmlElement_like<_htmlDataListElement>
+```
+
+
+## _htmlDialogElement
+
+```res sig
+type _htmlDialogElement
+```
+
+
+## htmlDialogElement
+
+```res sig
+type htmlDialogElement = htmlElement_like<_htmlDialogElement>
+```
+
+
+## _htmlDivElement
+
+```res sig
+type _htmlDivElement
+```
+
+
+## htmlDivElement
+
+```res sig
+type htmlDivElement = htmlElement_like<_htmlDivElement>
+```
+
+
+## _htmlDlistElement
+
+```res sig
+type _htmlDlistElement
+```
+
+
+## htmlDlistElement
+
+```res sig
+type htmlDlistElement = htmlElement_like<_htmlDlistElement>
+```
+
+
+## _htmlEmbedElement
+
+```res sig
+type _htmlEmbedElement
+```
+
+
+## htmlEmbedElement
+
+```res sig
+type htmlEmbedElement = htmlElement_like<_htmlEmbedElement>
+```
+
+
+## _htmlFieldSetElement
+
+```res sig
+type _htmlFieldSetElement
+```
+
+
+## htmlFieldSetElement
+
+```res sig
+type htmlFieldSetElement = htmlElement_like<_htmlFieldSetElement>
+```
+
+
+## _htmlFormElement
+
+```res sig
+type _htmlFormElement
+```
+
+
+## htmlFormElement
+
+```res sig
+type htmlFormElement = htmlElement_like<_htmlFormElement>
+```
+
+
+## _htmlHeadElement
+
+```res sig
+type _htmlHeadElement
+```
+
+
+## htmlHeadElement
+
+```res sig
+type htmlHeadElement = htmlElement_like<_htmlHeadElement>
+```
+
+
+## _htmlHeadingElement
+
+```res sig
+type _htmlHeadingElement
+```
+
+
+## htmlHeadingElement
+
+```res sig
+type htmlHeadingElement = htmlElement_like<_htmlHeadingElement>
+```
+
+
+## _htmlHrElement
+
+```res sig
+type _htmlHrElement
+```
+
+
+## htmlHrElement
+
+```res sig
+type htmlHrElement = htmlElement_like<_htmlHrElement>
+```
+
+
+## _htmlHtmlElement
+
+```res sig
+type _htmlHtmlElement
+```
+
+
+## htmlHtmlElement
+
+```res sig
+type htmlHtmlElement = htmlElement_like<_htmlHtmlElement>
+```
+
+
+## _htmlIframeElement
+
+```res sig
+type _htmlIframeElement
+```
+
+
+## htmlIframeElement
+
+```res sig
+type htmlIframeElement = htmlElement_like<_htmlIframeElement>
+```
+
+
+## _htmlImageElement
+
+```res sig
+type _htmlImageElement
+```
+
+
+## htmlImageElement
+
+```res sig
+type htmlImageElement = htmlElement_like<_htmlImageElement>
+```
+
+
+## _htmlInputElement
+
+```res sig
+type _htmlInputElement
+```
+
+
+## htmlInputElement
+
+```res sig
+type htmlInputElement = htmlElement_like<_htmlInputElement>
+```
+
+
+## _htmlLabelElement
+
+```res sig
+type _htmlLabelElement
+```
+
+
+## htmlLabelElement
+
+```res sig
+type htmlLabelElement = htmlElement_like<_htmlLabelElement>
+```
+
+
+## _htmlLegendElement
+
+```res sig
+type _htmlLegendElement
+```
+
+
+## htmlLegendElement
+
+```res sig
+type htmlLegendElement = htmlElement_like<_htmlLegendElement>
+```
+
+
+## _htmlLiElement
+
+```res sig
+type _htmlLiElement
+```
+
+
+## htmlLiElement
+
+```res sig
+type htmlLiElement = htmlElement_like<_htmlLiElement>
+```
+
+
+## _htmlLinkElement
+
+```res sig
+type _htmlLinkElement
+```
+
+
+## htmlLinkElement
+
+```res sig
+type htmlLinkElement = htmlElement_like<_htmlLinkElement>
+```
+
+
+## _htmlMapElement
+
+```res sig
+type _htmlMapElement
+```
+
+
+## htmlMapElement
+
+```res sig
+type htmlMapElement = htmlElement_like<_htmlMapElement>
+```
+
+
+## _htmlMediaElement
+
+```res sig
+type _htmlMediaElement
+```
+
+
+## htmlMediaElement
+
+```res sig
+type htmlMediaElement = htmlElement_like<_htmlMediaElement>
+```
+
+
+## _htmlMenuElement
+
+```res sig
+type _htmlMenuElement
+```
+
+
+## htmlMenuElement
+
+```res sig
+type htmlMenuElement = htmlElement_like<_htmlMenuElement>
+```
+
+
+## _htmlMetaElement
+
+```res sig
+type _htmlMetaElement
+```
+
+
+## htmlMetaElement
+
+```res sig
+type htmlMetaElement = htmlElement_like<_htmlMetaElement>
+```
+
+
+## _htmlMeterElement
+
+```res sig
+type _htmlMeterElement
+```
+
+
+## htmlMeterElement
+
+```res sig
+type htmlMeterElement = htmlElement_like<_htmlMeterElement>
+```
+
+
+## _htmlModElement
+
+```res sig
+type _htmlModElement
+```
+
+
+## htmlModElement
+
+```res sig
+type htmlModElement = htmlElement_like<_htmlModElement>
+```
+
+
+## _htmlOListElement
+
+```res sig
+type _htmlOListElement
+```
+
+
+## htmlOListElement
+
+```res sig
+type htmlOListElement = htmlElement_like<_htmlOListElement>
+```
+
+
+## _htmlObjectElement
+
+```res sig
+type _htmlObjectElement
+```
+
+
+## htmlObjectElement
+
+```res sig
+type htmlObjectElement = htmlElement_like<_htmlObjectElement>
+```
+
+
+## _htmlOptGroupElement
+
+```res sig
+type _htmlOptGroupElement
+```
+
+
+## htmlOptGroupElement
+
+```res sig
+type htmlOptGroupElement = htmlElement_like<_htmlOptGroupElement>
+```
+
+
+## _htmlOptionElement
+
+```res sig
+type _htmlOptionElement
+```
+
+
+## htmlOptionElement
+
+```res sig
+type htmlOptionElement = htmlElement_like<_htmlOptionElement>
+```
+
+
+## _htmlOutputElement
+
+```res sig
+type _htmlOutputElement
+```
+
+
+## htmlOutputElement
+
+```res sig
+type htmlOutputElement = htmlElement_like<_htmlOutputElement>
+```
+
+
+## _htmlParagraphElement
+
+```res sig
+type _htmlParagraphElement
+```
+
+
+## htmlParagraphElement
+
+```res sig
+type htmlParagraphElement = htmlElement_like<_htmlParagraphElement>
+```
+
+
+## _htmlParamElement
+
+```res sig
+type _htmlParamElement
+```
+
+
+## htmlParamElement
+
+```res sig
+type htmlParamElement = htmlElement_like<_htmlParamElement>
+```
+
+
+## _htmlPreElement
+
+```res sig
+type _htmlPreElement
+```
+
+
+## htmlPreElement
+
+```res sig
+type htmlPreElement = htmlElement_like<_htmlPreElement>
+```
+
+
+## _htmlProgressElement
+
+```res sig
+type _htmlProgressElement
+```
+
+
+## htmlProgressElement
+
+```res sig
+type htmlProgressElement = htmlElement_like<_htmlProgressElement>
+```
+
+
+## _htmlQuoteElement
+
+```res sig
+type _htmlQuoteElement
+```
+
+
+## htmlQuoteElement
+
+```res sig
+type htmlQuoteElement = htmlElement_like<_htmlQuoteElement>
+```
+
+
+## _htmlScriptElement
+
+```res sig
+type _htmlScriptElement
+```
+
+
+## htmlScriptElement
+
+```res sig
+type htmlScriptElement = htmlElement_like<_htmlScriptElement>
+```
+
+
+## _htmlSelectElement
+
+```res sig
+type _htmlSelectElement
+```
+
+
+## htmlSelectElement
+
+```res sig
+type htmlSelectElement = htmlElement_like<_htmlSelectElement>
+```
+
+
+## _htmlSlotElement
+
+```res sig
+type _htmlSlotElement
+```
+
+
+## htmlSlotElement
+
+```res sig
+type htmlSlotElement = htmlElement_like<_htmlSlotElement>
+```
+
+
+## _htmlSourceElement
+
+```res sig
+type _htmlSourceElement
+```
+
+
+## htmlSourceElement
+
+```res sig
+type htmlSourceElement = htmlElement_like<_htmlSourceElement>
+```
+
+
+## _htmlSpanElement
+
+```res sig
+type _htmlSpanElement
+```
+
+
+## htmlSpanElement
+
+```res sig
+type htmlSpanElement = htmlElement_like<_htmlSpanElement>
+```
+
+
+## _htmlStyleElement
+
+```res sig
+type _htmlStyleElement
+```
+
+
+## htmlStyleElement
+
+```res sig
+type htmlStyleElement = htmlElement_like<_htmlStyleElement>
+```
+
+
+## _htmlTableCaptionElement
+
+```res sig
+type _htmlTableCaptionElement
+```
+
+
+## htmlTableCaptionElement
+
+```res sig
+type htmlTableCaptionElement = htmlElement_like<_htmlTableCaptionElement>
+```
+
+
+## _htmlTableCellElement
+
+```res sig
+type _htmlTableCellElement
+```
+
+
+## htmlTableCellElement
+
+```res sig
+type htmlTableCellElement = htmlElement_like<_htmlTableCellElement>
+```
+
+
+## _htmlTableColElement
+
+```res sig
+type _htmlTableColElement
+```
+
+
+## htmlTableColElement
+
+```res sig
+type htmlTableColElement = htmlElement_like<_htmlTableColElement>
+```
+
+
+## _htmlTableDataCellElement
+
+```res sig
+type _htmlTableDataCellElement
+```
+
+
+## htmlTableDataCellElement
+
+```res sig
+type htmlTableDataCellElement = htmlElement_like<_htmlTableDataCellElement>
+```
+
+
+## _htmlTableElement
+
+```res sig
+type _htmlTableElement
+```
+
+
+## htmlTableElement
+
+```res sig
+type htmlTableElement = htmlElement_like<_htmlTableElement>
+```
+
+
+## _htmlTableHeaderCellElement
+
+```res sig
+type _htmlTableHeaderCellElement
+```
+
+
+## htmlTableHeaderCellElement
+
+```res sig
+type htmlTableHeaderCellElement = htmlElement_like<_htmlTableHeaderCellElement>
+```
+
+
+## _htmlTableRowElement
+
+```res sig
+type _htmlTableRowElement
+```
+
+
+## htmlTableRowElement
+
+```res sig
+type htmlTableRowElement = htmlElement_like<_htmlTableRowElement>
+```
+
+
+## _htmlTableSectionElement
+
+```res sig
+type _htmlTableSectionElement
+```
+
+
+## htmlTableSectionElement
+
+```res sig
+type htmlTableSectionElement = htmlElement_like<_htmlTableSectionElement>
+```
+
+
+## _htmlTextAreaElement
+
+```res sig
+type _htmlTextAreaElement
+```
+
+
+## htmlTextAreaElement
+
+```res sig
+type htmlTextAreaElement = htmlElement_like<_htmlTextAreaElement>
+```
+
+
+## _htmlTimeElement
+
+```res sig
+type _htmlTimeElement
+```
+
+
+## htmlTimeElement
+
+```res sig
+type htmlTimeElement = htmlElement_like<_htmlTimeElement>
+```
+
+
+## _htmlTitleElement
+
+```res sig
+type _htmlTitleElement
+```
+
+
+## htmlTitleElement
+
+```res sig
+type htmlTitleElement = htmlElement_like<_htmlTitleElement>
+```
+
+
+## _htmlTrackElement
+
+```res sig
+type _htmlTrackElement
+```
+
+
+## htmlTrackElement
+
+```res sig
+type htmlTrackElement = htmlElement_like<_htmlTrackElement>
+```
+
+
+## _htmlUlistElement
+
+```res sig
+type _htmlUlistElement
+```
+
+
+## htmlUlistElement
+
+```res sig
+type htmlUlistElement = htmlElement_like<_htmlUlistElement>
+```
+
+
+## _htmlUnknownElement
+
+```res sig
+type _htmlUnknownElement
+```
+
+
+## htmlUnknownElement
+
+```res sig
+type htmlUnknownElement = htmlElement_like<_htmlUnknownElement>
+```
+
+
+## _htmlVideoElement
+
+```res sig
+type _htmlVideoElement
+```
+
+
+## htmlVideoElement
+
+```res sig
+type htmlVideoElement = htmlElement_like<_htmlVideoElement>
+```
+
+
+## location
+
+```res sig
+type location
+```
+
+
+## window
+
+```res sig
+type window
+```
+
+
+## _xmlDocument
+
+```res sig
+type _xmlDocument
+```
+
+
+## xmlDocument
+
+```res sig
+type xmlDocument = document_like<_xmlDocument>
+```
+
+
+## event_like
+
+```res sig
+type event_like<'a>
+```
+
+
+## event
+
+```res sig
+type event = event_like<_baseClass>
+```
+
+
+## _uiEvent
+
+```res sig
+type _uiEvent<'a>
+```
+
+
+## uiEvent_like
+
+```res sig
+type uiEvent_like<'a> = event_like<_uiEvent<'a>>
+```
+
+
+## uiEvent
+
+```res sig
+type uiEvent = uiEvent_like<_baseClass>
+```
+
+
+## _animationEvent
+
+```res sig
+type _animationEvent
+```
+
+
+## animationEvent
+
+```res sig
+type animationEvent = event_like<_animationEvent>
+```
+
+
+## _beforeUnloadEvent
+
+```res sig
+type _beforeUnloadEvent
+```
+
+
+## beforeUnloadEvent
+
+```res sig
+type beforeUnloadEvent = event_like<_beforeUnloadEvent>
+```
+
+
+## _clipboardEvent
+
+```res sig
+type _clipboardEvent
+```
+
+
+## clipboardEvent
+
+```res sig
+type clipboardEvent = event_like<_clipboardEvent>
+```
+
+
+## _closeEvent
+
+```res sig
+type _closeEvent
+```
+
+
+## closeEvent
+
+```res sig
+type closeEvent = event_like<_closeEvent>
+```
+
+
+## _compositionEvent
+
+```res sig
+type _compositionEvent
+```
+
+
+## compositionEvent
+
+```res sig
+type compositionEvent = uiEvent_like<_compositionEvent>
+```
+
+
+## _customEvent
+
+```res sig
+type _customEvent
+```
+
+
+## customEvent
+
+```res sig
+type customEvent = event_like<_customEvent>
+```
+
+
+## _dragEvent
+
+```res sig
+type _dragEvent
+```
+
+
+## dragEvent
+
+```res sig
+type dragEvent = event_like<_dragEvent>
+```
+
+
+## _errorEvent
+
+```res sig
+type _errorEvent
+```
+
+
+## errorEvent
+
+```res sig
+type errorEvent = event_like<_errorEvent>
+```
+
+
+## _focusEvent
+
+```res sig
+type _focusEvent
+```
+
+
+## focusEvent
+
+```res sig
+type focusEvent = uiEvent_like<_focusEvent>
+```
+
+
+## _idbVersionChangeEvent
+
+```res sig
+type _idbVersionChangeEvent
+```
+
+
+## idbVersionChangeEvent
+
+```res sig
+type idbVersionChangeEvent = event_like<_idbVersionChangeEvent>
+```
+
+
+## _inputEvent
+
+```res sig
+type _inputEvent
+```
+
+
+## inputEvent
+
+```res sig
+type inputEvent = uiEvent_like<_inputEvent>
+```
+
+
+## _keyboardEvent
+
+```res sig
+type _keyboardEvent
+```
+
+
+## keyboardEvent
+
+```res sig
+type keyboardEvent = uiEvent_like<_keyboardEvent>
+```
+
+
+## _mouseEvent
+
+```res sig
+type _mouseEvent<'a>
+```
+
+
+## mouseEvent_like
+
+```res sig
+type mouseEvent_like<'a> = uiEvent_like<_mouseEvent<'a>>
+```
+
+
+## mouseEvent
+
+```res sig
+type mouseEvent = mouseEvent_like<_baseClass>
+```
+
+
+## _pageTransitionEvent
+
+```res sig
+type _pageTransitionEvent
+```
+
+
+## pageTransitionEvent
+
+```res sig
+type pageTransitionEvent = event_like<_pageTransitionEvent>
+```
+
+
+## _pointerEvent
+
+```res sig
+type _pointerEvent
+```
+
+
+## pointerEvent
+
+```res sig
+type pointerEvent = mouseEvent_like<_pointerEvent>
+```
+
+
+## _popStateEvent
+
+```res sig
+type _popStateEvent
+```
+
+
+## popStateEvent
+
+```res sig
+type popStateEvent = event_like<_popStateEvent>
+```
+
+
+## _progressEvent
+
+```res sig
+type _progressEvent
+```
+
+
+## progressEvent
+
+```res sig
+type progressEvent = event_like<_progressEvent>
+```
+
+
+## _relatedEvent
+
+```res sig
+type _relatedEvent
+```
+
+
+## relatedEvent
+
+```res sig
+type relatedEvent = event_like<_relatedEvent>
+```
+
+
+## _storageEvent
+
+```res sig
+type _storageEvent
+```
+
+
+## storageEvent
+
+```res sig
+type storageEvent = event_like<_storageEvent>
+```
+
+
+## _svgZoomEvent
+
+```res sig
+type _svgZoomEvent
+```
+
+
+## svgZoomEvent
+
+```res sig
+type svgZoomEvent = event_like<_svgZoomEvent>
+```
+
+
+## _timeEvent
+
+```res sig
+type _timeEvent
+```
+
+
+## timeEvent
+
+```res sig
+type timeEvent = event_like<_timeEvent>
+```
+
+
+## _touchEvent
+
+```res sig
+type _touchEvent
+```
+
+
+## touchEvent
+
+```res sig
+type touchEvent = uiEvent_like<_touchEvent>
+```
+
+
+## _trackEvent
+
+```res sig
+type _trackEvent
+```
+
+
+## trackEvent
+
+```res sig
+type trackEvent = event_like<_trackEvent>
+```
+
+
+## _transitionEvent
+
+```res sig
+type _transitionEvent
+```
+
+
+## transitionEvent
+
+```res sig
+type transitionEvent = event_like<_transitionEvent>
+```
+
+
+## _webGlContextEvent
+
+```res sig
+type _webGlContextEvent
+```
+
+
+## webGlContextEvent
+
+```res sig
+type webGlContextEvent = event_like<_webGlContextEvent>
+```
+
+
+## _wheelEvent
+
+```res sig
+type _wheelEvent
+```
+
+
+## wheelEvent
+
+```res sig
+type wheelEvent = uiEvent_like<_wheelEvent>
+```
+
+
+## range
+
+```res sig
+type range
+```
+
+
+## selection
+
+```res sig
+type selection
+```
+
+
+## domTokenList
+
+```res sig
+type domTokenList
+```
+
+
+## domSettableTokenList
+
+```res sig
+type domSettableTokenList
+```
+
+
+## nodeFilter
+
+```res sig
+type nodeFilter = {acceptNode: element => int}
+```
+
+
+## nodeIterator
+
+```res sig
+type nodeIterator
+```
+
+
+## treeWalker
+
+```res sig
+type treeWalker
+```
+
+
+## svgRect
+
+```res sig
+type svgRect
+```
+
+
+## svgPoint
+
+```res sig
+type svgPoint
+```
+
+
+## eventPointerId
+
+```res sig
+type eventPointerId
+```
+

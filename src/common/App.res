@@ -49,7 +49,6 @@ let make = (props: props): React.element => {
   let content = React.createElement(component, pageProps)
 
   let url = router.route->Url.parse
-
   switch url {
   // landing page
   | {base: [], pagepath: []} => <LandingPageLayout> content </LandingPageLayout>
@@ -77,6 +76,16 @@ let make = (props: props): React.element => {
         | (_, Some("js")) => <JsDocsLayout8_0_0.Docs> content </JsDocsLayout8_0_0.Docs>
         | (_, Some("belt")) => <BeltDocsLayout8_0_0.Docs> content </BeltDocsLayout8_0_0.Docs>
         | (_, Some("dom")) => <DomDocsLayout8_0_0.Docs> content </DomDocsLayout8_0_0.Docs>
+        | _ => React.null
+        }
+      | Version("next") =>
+        switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
+        | (1, _) => <ApiOverviewLayout_Next.Docs> content </ApiOverviewLayout_Next.Docs>
+        | (2, Some("js")) => <JsDocsLayout_Next.Prose> content </JsDocsLayout_Next.Prose>
+        | (2, Some("belt")) => <BeltDocsLayout_Next.Prose> content </BeltDocsLayout_Next.Prose>
+        | (_, Some("js")) => <JsDocsLayout_Next.Docs> content </JsDocsLayout_Next.Docs>
+        | (_, Some("belt")) => <BeltDocsLayout_Next.Docs> content </BeltDocsLayout_Next.Docs>
+        | (_, Some("dom")) => <DomDocsLayout_Next.Docs> content </DomDocsLayout_Next.Docs>
         | _ => React.null
         }
       | _ => content

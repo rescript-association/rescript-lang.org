@@ -1,220 +1,178 @@
 # Js
 
-### t
-JS object type
+The Js module mostly contains ReScript bindings to _standard JavaScript APIs_
+like [console.log](https://developer.mozilla.org/en-US/docs/Web/API/Console/log),
+or the JavaScript
+[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String),
+[Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), and
+[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+classes.
+
+It is meant as a zero-abstraction interop layer and directly exposes JavaScript functions as they are. If you can find your API in this module, prefer this over an equivalent Belt helper. For example, prefer [Js.Array2](js/array-2) over [Belt.Array](belt/array)
+
+## Argument Order
+
+For historical reasons, some APIs in the Js namespace (e.g. [Js.String](js/string)) are
+using the data-last argument order whereas others (e.g. [Js.Date](js/date)) are using data-first.
+
+For more information about these argument orders and the trade-offs between them, see
+[this blog post](https://www.javierchavarri.com/data-first-and-data-last-a-comparison/).
+
+_Eventually, all modules in the Js namespace are going to be migrated to data-first though._
+
+In the meantime, there are several options for dealing with the data-last APIs:
+
+```res example
+/* Js.String (data-last API used with pipe last operator) */
+Js.log("2019-11-10" |> Js.String.split("-"))
+Js.log("ReScript" |> Js.String.startsWith("Re"))
+
+/* Js.String (data-last API used with pipe first operator) */
+Js.log("2019-11-10"->Js.String.split("-", _))
+Js.log("ReScript"->Js.String.startsWith("Re", _))
+
+/* Js.String (data-last API used without any piping) */
+Js.log(Js.String.split("-", "2019-11-10"))
+Js.log(Js.String.startsWith("Re", "ReScript"))
+```
+## Js.Xxx2 Modules
+
+Prefer `Js.Array2` over `Js.Array`, `Js.String2` over `Js.String`, etc. The latters are old modules.
+
+## Object
 
 ```res sig
-type t<'a> = 'a constraint 'a = {..}
+type t<+'a>
 ```
 
-## Internal
+Js object type.
 
-
-
-### opaqueFullApply
-
-
-```res sig
-let opaqueFullApply: 'a => 'a
-```
-### run
-
-
-```res sig
-let run: (. unit) => 'a => 'a
-```
-### opaque
-
-
-```res sig
-let opaque: 'a => 'a
+```res example
+let x: {"x": int, "y": int} = {"x": 1, "y": 2}
 ```
 
-### null
-Nullable value of this type can be either null or 'a. This type is equivalent to Js.Null.t.
+## Nullable and Undefined
 
-```res sig
-type null<'a> = Value('a) | Null
+```res prelude
+type null<+'a>
 ```
 
-### undefined
-A value of this type can be either undefined or 'a. This type is equivalent to Js.Undefined.t.
+nullable, value of this type can be either null or 'a this type is the same as type t in Js.Null
 
-```res sig
+```res prelude
 type undefined<+'a>
 ```
 
-### nullable
+value of this type can be either undefined or 'a this type is the same as type t in Js.Undefined
 
-
-```res sig
-type nullable<'a> = Value('a) | Null | Undefined
+```res prelude
+type nullable<+'a>
 ```
 
-### null_undefined
+value of this type can be undefined, null or 'a this type is the same as type t n Js.Null_undefined
 
-
-```res sig
-type null_undefined<'a> = nullable<'a>
+```res prelude
+type null_undefined<'a> = Js.nullable<'a>
 ```
 
-### toOption
-
-
 ```res sig
-let toOption: nullable<'a> => option<'a>
+let toOption: Js.nullable<'a> => option<'a>
 ```
 
-### undefinedToOption
-
-
 ```res sig
-let undefinedToOption: undefined<'a> => option<'a>
+let undefinedToOption: Js.undefined<'a> => option<'a>
 ```
 
-### nullToOption
-
-
 ```res sig
-let nullToOption: null<'a> => option<'a>
+let nullToOption: Js.null<'a> => option<'a>
 ```
 
-### isNullable
-
-
 ```res sig
-let isNullable: nullable<'a> => bool
+let test: Js.nullable<'a> => bool
 ```
 
-### import
-
-
 ```res sig
-let import: 'a => promise<'a>
+let isNullable: Js.nullable<'a> => bool
 ```
-
-### testAny
-The same as {!test} except that it is more permissive on the types of input
 
 ```res sig
 let testAny: 'a => bool
 ```
 
-### promise
-The promise type, defined here for interoperation across packages.
-  @deprecated please use `Js.Promise`.
+The same as `Js.test` except that it is more permissive on the types of input.
 
 ```res sig
 type promise<+'a, +'e>
 ```
 
-### null
-The same as empty in `Js.Null`. Compiles to `null`.
+Deprecated. please use `Js.Promise`.
+The promise type, defined here for interoperation across packages.
 
 ```res sig
-let null: null<'a>
+let null: Js.null<'a>
 ```
 
-### undefined
-The same as empty `Js.Undefined`. Compiles to `undefined`.
+The same as empty in `Js.Null`. Will be compiled as `null`.
 
 ```res sig
-let undefined: undefined<'a>
+let undefined: Js.undefined<'a>
 ```
 
-### typeof
-`typeof x` will be compiled as `typeof x` in JS. Please consider functions in
-`Js.Types` for a type safe way of reflection.
+The same as empty `Js.Undefined`. Will be compiled as `undefined`.
+
+## TypeOf
 
 ```res sig
 let typeof: 'a => string
 ```
 
-### log
-Equivalent to console.log any value.
+`typeof x` will be compiled as `typeof x` in JS. Please consider functions in `Js.Types` for a type safe way of reflection.
+
+## Logging
 
 ```res sig
 let log: 'a => unit
-```
-
-### log2
-
-
-```res sig
 let log2: ('a, 'b) => unit
-```
-
-### log3
-
-
-```res sig
 let log3: ('a, 'b, 'c) => unit
-```
-
-### log4
-
-
-```res sig
 let log4: ('a, 'b, 'c, 'd) => unit
 ```
 
-### logMany
-A convenience function to console.log more than 4 arguments
+A convenience function to log everything.
 
 ```res sig
 let logMany: array<'a> => unit
 ```
 
-### eqNull
+A convenience function to log more than 4 arguments
 
+## Comparison
 
 ```res sig
 let eqNull: ('a, null<'a>) => bool
-```
-
-### eqUndefined
-
-
-```res sig
 let eqUndefined: ('a, undefined<'a>) => bool
-```
-
-### eqNullable
-
-
-```res sig
 let eqNullable: ('a, nullable<'a>) => bool
 ```
-
-### unsafe_lt
-`unsafe_lt(a, b)` will be compiled as `a < b`.
-    It is marked as unsafe, since it is impossible
-    to give a proper semantics for comparision which applies to any type
 
 ```res sig
 let unsafe_lt: ('a, 'a) => bool
 ```
 
-### unsafe_le
-`unsafe_le(a, b) will be compiled as `a <= b`.
-   See also `Js.unsafe_lt`.
+`unsafe_lt a b` will be compiled as `a < b`. It is marked as unsafe, since it is impossible to give a proper semantics for comparision which applies to any type.
 
 ```res sig
 let unsafe_le: ('a, 'a) => bool
 ```
 
-### unsafe_gt
-`unsafe_gt(a, b)` will be compiled as `a > b`.
-    See also `Js.unsafe_lt`.
+`unsafe_le a b` will be compiled as `a <= b`. See also `Js.unsafe_lt`.
 
 ```res sig
 let unsafe_gt: ('a, 'a) => bool
 ```
 
-### unsafe_ge
-`unsafe_ge(a, b)` will be compiled as `a >= b`.
-   See also `Js.unsafe_lt`.
+`unsafe_gt a b` will be compiled as `a > b`. See also `Js.unsafe_lt`.
 
 ```res sig
 let unsafe_ge: ('a, 'a) => bool
 ```
+
+`unsafe_ge a b` will be compiled as `a >= b`. See also `Js.unsafe_lt`.

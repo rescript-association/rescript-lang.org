@@ -104,7 +104,7 @@ const topLevel = docs.filter(doc => ["Belt", "Js", "Dom"].includes(doc.name));
 
 const processModule = moduleItem => {
   const docstring =
-    moduleItem.docstrings.length > 0 ? moduleItem.docstrings.join("") : "";
+    moduleItem.docstrings != undefined && moduleItem.docstrings.length > 0 ? moduleItem.docstrings.join("") : "";
 
   const items = moduleItem.items.map(item => processItem(item)).join("");
 
@@ -113,7 +113,7 @@ const processModule = moduleItem => {
 
 const processItem = item => {
   if (item.kind == "module") {
-    return processModule(item.item);
+    return processModule(item)
   }
 
   const codeblock = [
@@ -121,7 +121,7 @@ const processItem = item => {
     item.signature.replace(/\\n/g, "\n"),
     "```"
   ].join("\n");
-  return `### ${item.name}\n${item.docstrings.join("")}\n\n${codeblock}\n`;
+  return `## ${item.name}\n\n${codeblock}\n${item.docstrings.join("")}\n`;
 };
 
 const genMdx = topLevel.map(doc => {
@@ -161,7 +161,7 @@ const genMdx = topLevel.map(doc => {
   return { name: doc.name, body, submodules: modulesAlias };
 });
 
-const output_dir = path.join("pages", "docs", "manual", "latest", "api");
+const output_dir = path.join("pages", "docs", "manual", "next", "api");
 
 if (!fs.existsSync(output_dir)) {
   fs.mkdirSync(output_dir);

@@ -28,23 +28,13 @@ let moduleNavs = [
   },
 ]
 
-// let categories = [
-//   {
-//     open Category
-//     {name: "Overview", items: overviewNavs}
-//   },
-//   {name: "Submodules", items: moduleNavs},
-// ]
-
-let navItems =
-  indexData
-  ->Js.Dict.entries
-  ->Js.Array2.map(((href, info)) => {
-    let name = info["moduleName"]
-    {NavItem.name, href}
-  })
-
-let categories = [{Category.name: None, items: navItems}]
+let categories = [
+  {
+    open Category
+    {name: "Overview"->Some, items: overviewNavs}
+  },
+  {name: "Submodules"->Some, items: moduleNavs},
+]
 
 module Docs = {
   @react.component

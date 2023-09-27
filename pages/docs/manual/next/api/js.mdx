@@ -1,0 +1,220 @@
+# Js
+
+## t
+
+```res sig
+type t<'a> = 'a constraint 'a = {..}
+```
+JS object type
+
+## Internal
+
+
+
+## opaqueFullApply
+
+```res sig
+let opaqueFullApply: 'a => 'a
+```
+
+## run
+
+```res sig
+let run: (. unit) => 'a => 'a
+```
+
+## opaque
+
+```res sig
+let opaque: 'a => 'a
+```
+
+
+## null
+
+```res sig
+type null<'a> = Value('a) | Null
+```
+Nullable value of this type can be either null or 'a. This type is equivalent to Js.Null.t.
+
+## undefined
+
+```res sig
+type undefined<+'a>
+```
+A value of this type can be either undefined or 'a. This type is equivalent to Js.Undefined.t.
+
+## nullable
+
+```res sig
+type nullable<'a> = Value('a) | Null | Undefined
+```
+
+
+## null_undefined
+
+```res sig
+type null_undefined<'a> = nullable<'a>
+```
+
+
+## toOption
+
+```res sig
+let toOption: nullable<'a> => option<'a>
+```
+
+
+## undefinedToOption
+
+```res sig
+let undefinedToOption: undefined<'a> => option<'a>
+```
+
+
+## nullToOption
+
+```res sig
+let nullToOption: null<'a> => option<'a>
+```
+
+
+## isNullable
+
+```res sig
+let isNullable: nullable<'a> => bool
+```
+
+
+## import
+
+```res sig
+let import: 'a => promise<'a>
+```
+
+
+## testAny
+
+```res sig
+let testAny: 'a => bool
+```
+The same as {!test} except that it is more permissive on the types of input
+
+## promise
+
+```res sig
+type promise<+'a, +'e>
+```
+The promise type, defined here for interoperation across packages.
+  @deprecated please use `Js.Promise`.
+
+## null
+
+```res sig
+let null: null<'a>
+```
+The same as empty in `Js.Null`. Compiles to `null`.
+
+## undefined
+
+```res sig
+let undefined: undefined<'a>
+```
+The same as empty `Js.Undefined`. Compiles to `undefined`.
+
+## typeof
+
+```res sig
+let typeof: 'a => string
+```
+`typeof x` will be compiled as `typeof x` in JS. Please consider functions in
+`Js.Types` for a type safe way of reflection.
+
+## log
+
+```res sig
+let log: 'a => unit
+```
+Equivalent to console.log any value.
+
+## log2
+
+```res sig
+let log2: ('a, 'b) => unit
+```
+
+
+## log3
+
+```res sig
+let log3: ('a, 'b, 'c) => unit
+```
+
+
+## log4
+
+```res sig
+let log4: ('a, 'b, 'c, 'd) => unit
+```
+
+
+## logMany
+
+```res sig
+let logMany: array<'a> => unit
+```
+A convenience function to console.log more than 4 arguments
+
+## eqNull
+
+```res sig
+let eqNull: ('a, null<'a>) => bool
+```
+
+
+## eqUndefined
+
+```res sig
+let eqUndefined: ('a, undefined<'a>) => bool
+```
+
+
+## eqNullable
+
+```res sig
+let eqNullable: ('a, nullable<'a>) => bool
+```
+
+
+## unsafe_lt
+
+```res sig
+let unsafe_lt: ('a, 'a) => bool
+```
+`unsafe_lt(a, b)` will be compiled as `a < b`.
+    It is marked as unsafe, since it is impossible
+    to give a proper semantics for comparision which applies to any type
+
+## unsafe_le
+
+```res sig
+let unsafe_le: ('a, 'a) => bool
+```
+`unsafe_le(a, b) will be compiled as `a <= b`.
+   See also `Js.unsafe_lt`.
+
+## unsafe_gt
+
+```res sig
+let unsafe_gt: ('a, 'a) => bool
+```
+`unsafe_gt(a, b)` will be compiled as `a > b`.
+    See also `Js.unsafe_lt`.
+
+## unsafe_ge
+
+```res sig
+let unsafe_ge: ('a, 'a) => bool
+```
+`unsafe_ge(a, b)` will be compiled as `a >= b`.
+   See also `Js.unsafe_lt`.
