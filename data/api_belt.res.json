@@ -37,7 +37,7 @@
       "docstrings": ["`('key, 'id) cmparable` is a module of functions, here it only includes `cmp`.\n\n  Unlike normal functions, when created, it comes with a unique identity (guaranteed\n  by the type system).\n\n  It can be created using function [`comparableU`]() or [`comparable`]().\n\n  The idea of a unique identity when created is that it makes sure two sets would type\n  mismatch if they use different comparison function"]
     }, 
     {
-      "id": "MakeComparableU.Belt_Id.Belt",
+      "id": "Belt.Belt_Id.MakeComparableU",
       "name": "MakeComparableU",
       "kind": "module",
       "items": [
@@ -64,7 +64,7 @@
       }]
     }, 
     {
-      "id": "MakeComparable.Belt_Id.Belt",
+      "id": "Belt.Belt_Id.MakeComparable",
       "name": "MakeComparable",
       "kind": "module",
       "items": [
@@ -112,7 +112,7 @@
       "docstrings": ["`('key, 'id) hashable` is a module of functions, here it only includes `hash`, `eq`.\n\n  Unlike normal functions, when created, it comes with a unique identity (guaranteed\n  by the type system).\n\n  It can be created using function [`hashableU`]() or [`hashable`]().\n\n  The idea of a unique identity when created is that it makes sure two hash sets would type\n  mismatch if they use different comparison function"]
     }, 
     {
-      "id": "MakeHashableU.Belt_Id.Belt",
+      "id": "Belt.Belt_Id.MakeHashableU",
       "name": "MakeHashableU",
       "kind": "module",
       "items": [
@@ -146,7 +146,7 @@
       }]
     }, 
     {
-      "id": "MakeHashable.Belt_Id.Belt",
+      "id": "Belt.Belt_Id.MakeHashable",
       "name": "MakeHashable",
       "kind": "module",
       "items": [

@@ -38,7 +38,7 @@
     }]
   }, 
   {
-    "id": "Internal.Js",
+    "id": "Js.Internal",
     "name": "Internal",
     "kind": "module",
     "items": [
@@ -3634,7 +3634,7 @@
       }
     }, 
     {
-      "id": "Kind.Js_json.Js",
+      "id": "Js.Js_json.Kind",
       "name": "Kind",
       "kind": "module",
       "items": [
@@ -4413,7 +4413,7 @@
       "docstrings": []
     }, 
     {
-      "id": "Type.Js_typed_array.Js",
+      "id": "Js.Js_typed_array.Type",
       "name": "Type",
       "kind": "module",
       "items": [
@@ -4426,7 +4426,7 @@
       }]
     }, 
     {
-      "id": "ArrayBuffer.Js_typed_array.Js",
+      "id": "Js.Js_typed_array.ArrayBuffer",
       "name": "ArrayBuffer",
       "kind": "module",
       "items": [
@@ -4467,7 +4467,7 @@
       }]
     }, 
     {
-      "id": "S.Js_typed_array.Js",
+      "id": "Js.Js_typed_array.S",
       "name": "S",
       "kind": "module",
       "items": [
@@ -4837,7 +4837,7 @@
       }]
     }, 
     {
-      "id": "Int8Array.Js_typed_array.Js",
+      "id": "Js.Js_typed_array.Int8Array",
       "name": "Int8Array",
       "kind": "module",
       "items": [
@@ -5256,7 +5256,7 @@
       }]
     }, 
     {
-      "id": "Uint8Array.Js_typed_array.Js",
+      "id": "Js.Js_typed_array.Uint8Array",
       "name": "Uint8Array",
       "kind": "module",
       "items": [
@@ -5675,7 +5675,7 @@
       }]
     }, 
     {
-      "id": "Uint8ClampedArray.Js_typed_array.Js",
+      "id": "Js.Js_typed_array.Uint8ClampedArray",
       "name": "Uint8ClampedArray",
       "kind": "module",
       "items": [
@@ -6094,7 +6094,7 @@
       }]
     }, 
     {
-      "id": "Int16Array.Js_typed_array.Js",
+      "id": "Js.Js_typed_array.Int16Array",
       "name": "Int16Array",
       "kind": "module",
       "items": [
@@ -6513,7 +6513,7 @@
       }]
     }, 
     {
-      "id": "Uint16Array.Js_typed_array.Js",
+      "id": "Js.Js_typed_array.Uint16Array",
       "name": "Uint16Array",
       "kind": "module",
       "items": [
@@ -6932,7 +6932,7 @@
       }]
     }, 
     {
-      "id": "Int32Array.Js_typed_array.Js",
+      "id": "Js.Js_typed_array.Int32Array",
       "name": "Int32Array",
       "kind": "module",
       "items": [
@@ -7374,7 +7374,7 @@
       "items": []
     }, 
     {
-      "id": "Uint32Array.Js_typed_array.Js",
+      "id": "Js.Js_typed_array.Uint32Array",
       "name": "Uint32Array",
       "kind": "module",
       "items": [
@@ -7793,7 +7793,7 @@
       }]
     }, 
     {
-      "id": "Float32Array.Js_typed_array.Js",
+      "id": "Js.Js_typed_array.Float32Array",
       "name": "Float32Array",
       "kind": "module",
       "items": [
@@ -8235,7 +8235,7 @@
       "items": []
     }, 
     {
-      "id": "Float64Array.Js_typed_array.Js",
+      "id": "Js.Js_typed_array.Float64Array",
       "name": "Float64Array",
       "kind": "module",
       "items": [
@@ -8677,7 +8677,7 @@
       "items": []
     }, 
     {
-      "id": "DataView.Js_typed_array.Js",
+      "id": "Js.Js_typed_array.DataView",
       "name": "DataView",
       "kind": "module",
       "items": [
@@ -8956,7 +8956,7 @@
       "docstrings": []
     }, 
     {
-      "id": "ArrayBuffer.Js_typed_array2.Js",
+      "id": "Js.Js_typed_array2.ArrayBuffer",
       "name": "ArrayBuffer",
       "kind": "module",
       "items": [
@@ -8997,7 +8997,7 @@
       }]
     }, 
     {
-      "id": "Int8Array.Js_typed_array2.Js",
+      "id": "Js.Js_typed_array2.Int8Array",
       "name": "Int8Array",
       "kind": "module",
       "items": [
@@ -9436,7 +9436,7 @@
       }]
     }, 
     {
-      "id": "Uint8Array.Js_typed_array2.Js",
+      "id": "Js.Js_typed_array2.Uint8Array",
       "name": "Uint8Array",
       "kind": "module",
       "items": [
@@ -9855,7 +9855,7 @@
       }]
     }, 
     {
-      "id": "Uint8ClampedArray.Js_typed_array2.Js",
+      "id": "Js.Js_typed_array2.Uint8ClampedArray",
       "name": "Uint8ClampedArray",
       "kind": "module",
       "items": [
@@ -10274,7 +10274,7 @@
       }]
     }, 
     {
-      "id": "Int16Array.Js_typed_array2.Js",
+      "id": "Js.Js_typed_array2.Int16Array",
       "name": "Int16Array",
       "kind": "module",
       "items": [
@@ -10693,7 +10693,7 @@
       }]
     }, 
     {
-      "id": "Uint16Array.Js_typed_array2.Js",
+      "id": "Js.Js_typed_array2.Uint16Array",
       "name": "Uint16Array",
       "kind": "module",
       "items": [
@@ -11112,7 +11112,7 @@
       }]
     }, 
     {
-      "id": "Int32Array.Js_typed_array2.Js",
+      "id": "Js.Js_typed_array2.Int32Array",
       "name": "Int32Array",
       "kind": "module",
       "items": [
@@ -11531,7 +11531,7 @@
       }]
     }, 
     {
-      "id": "Uint32Array.Js_typed_array2.Js",
+      "id": "Js.Js_typed_array2.Uint32Array",
       "name": "Uint32Array",
       "kind": "module",
       "items": [
@@ -11950,7 +11950,7 @@
       }]
     }, 
     {
-      "id": "Float32Array.Js_typed_array2.Js",
+      "id": "Js.Js_typed_array2.Float32Array",
       "name": "Float32Array",
       "kind": "module",
       "items": [
@@ -12369,7 +12369,7 @@
       }]
     }, 
     {
-      "id": "Float64Array.Js_typed_array2.Js",
+      "id": "Js.Js_typed_array2.Float64Array",
       "name": "Float64Array",
       "kind": "module",
       "items": [
@@ -12788,7 +12788,7 @@
       }]
     }, 
     {
-      "id": "DataView.Js_typed_array2.Js",
+      "id": "Js.Js_typed_array2.DataView",
       "name": "DataView",
       "kind": "module",
       "items": [
