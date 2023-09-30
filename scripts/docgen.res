@@ -22,8 +22,8 @@ module Schema = {
   }
 
   type docItemDetail =
-    | Record({fieldDocs: array<fieldDoc>})
-    | Variant({constructorDocs: array<constructorDoc>})
+    | Record(array<fieldDoc>)
+    | Variant(array<constructorDoc>)
 
   type rec docItem =
     | Value({
@@ -80,7 +80,7 @@ let decodeStringByField = (item, field) => {
     | _ => assert false
     }
   | None => {
-      Js.log(item)
+      Js.Console.error(item)
       failwith(`Not found field: ${field}`)
     }
   }
@@ -104,7 +104,7 @@ let decodeRecordFields = (fields: array<Js.Json.t>) => {
   let fields = fields->Js.Array2.map(field => {
     switch classify(field) {
     | JSONObject(doc) => {
-        let fieldName = doc->decodeStringByField("fieldName")
+        let fieldName = doc->decodeStringByField("name")
         let docstrings = doc->decodeDocstring
         let signature = doc->decodeStringByField("signature")
         let deprecated = doc->decodeDepreacted
@@ -124,7 +124,7 @@ let decodeRecordFields = (fields: array<Js.Json.t>) => {
     | _ => assert false
     }
   })
-  Schema.Record({fieldDocs: fields})
+  Schema.Record(fields)
 }
 
 let decodeConstructorFields = (fields: array<Js.Json.t>) => {
@@ -132,7 +132,7 @@ let decodeConstructorFields = (fields: array<Js.Json.t>) => {
   let fields = fields->Js.Array2.map(field => {
     switch classify(field) {
     | JSONObject(doc) => {
-        let constructorName = doc->decodeStringByField("constructorName")
+        let constructorName = doc->decodeStringByField("name")
         let docstrings = doc->decodeDocstring
         let signature = doc->decodeStringByField("signature")
         let deprecated = doc->decodeDepreacted
@@ -143,7 +143,7 @@ let decodeConstructorFields = (fields: array<Js.Json.t>) => {
     | _ => assert false
     }
   })
-  Schema.Variant({constructorDocs: fields})
+  Schema.Variant(fields)
 }
 
 let decodeDetail = detail => {
@@ -151,36 +151,19 @@ let decodeDetail = detail => {
 
   switch classify(detail) {
   | JSONObject(detail) =>
-    switch detail->Js.Dict.get("kind") {
-    | Some(field) =>
-      switch classify(field) {
-      | JSONString(kind) =>
+    switch (detail->Js.Dict.get("kind"), detail->Js.Dict.get("items")) {
+    | (Some(kind), Some(items)) =>
+      switch (classify(kind), classify(items)) {
+      | (JSONString(kind), JSONArray(items)) =>
         switch kind {
-        | "record" =>
-          switch Js.Dict.get(detail, "fieldDocs") {
-          | Some(field) =>
-            switch classify(field) {
-            | JSONArray(arr) => decodeRecordFields(arr)
-            | _ => assert false
-            }
-          | None => assert false
-          }
-
-        | "variant" =>
-          switch Js.Dict.get(detail, "constructorDocs") {
-          | Some(field) =>
-            switch classify(field) {
-            | JSONArray(arr) => decodeConstructorFields(arr)
-            | _ => assert false
-            }
-          | None => assert false
-          }
+        | "record" => decodeRecordFields(items)
+        | "variant" => decodeConstructorFields(items)
         | _ => assert false
         }
 
       | _ => assert false
       }
-    | None => assert false
+    | _ => assert false
     }
 
   | _ => assert false

@@ -4,30 +4,38 @@ import * as Fs from "fs";
 import * as Path from "path";
 import * as Docgen from "./docgen.mjs";
 import * as Process from "process";
+import * as Child_process from "child_process";
 
 var args = Process.argv;
 
-var args_len = args.length;
+var argsLen = args.length;
 
-var analysis_path = args[args_len - 2 | 0];
+var analysisExePath = args[argsLen - 2 | 0];
 
-var compiler_path = args[args_len - 1 | 0];
+var compiler_path = args[argsLen - 1 | 0];
 
-var lib_path = Path.join(compiler_path, "lib", "ocaml");
+var libPath = Path.join(compiler_path, "lib", "ocaml");
 
-var json = Fs.readFileSync("index_data/js.json", "utf8");
+var entryPointLibs = [
+  "js.ml",
+  "belt.res",
+  "dom.res"
+];
 
-var doc = Docgen.decodeFromJson(JSON.parse(json));
-
-console.log(doc);
+var docs = entryPointLibs.map(function (libFile) {
+      var entryPointFile = Path.join(libPath, libFile);
+      var output = Child_process.execSync("" + analysisExePath + " extractDocs " + entryPointFile + "", {}).toString().trim();
+      Fs.writeFileSync("data/api_" + libFile + ".json", output, "utf8");
+      return Docgen.decodeFromJson(JSON.parse(output));
+    });
 
 export {
   args ,
-  args_len ,
-  analysis_path ,
+  argsLen ,
+  analysisExePath ,
   compiler_path ,
-  lib_path ,
-  json ,
-  doc ,
+  libPath ,
+  entryPointLibs ,
+  docs ,
 }
 /* args Not a pure module */

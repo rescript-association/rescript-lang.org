@@ -91,7 +91,7 @@ function decodeStringByField(item, field) {
           Error: new Error()
         };
   } else {
-    console.log(item);
+    console.error(item);
     return Pervasives.failwith("Not found field: " + field + "");
   }
 }
@@ -143,7 +143,7 @@ function decodeRecordFields(fields) {
         }
         if (doc.TAG === /* JSONObject */2) {
           var doc$1 = doc._0;
-          var fieldName = decodeStringByField(doc$1, "fieldName");
+          var fieldName = decodeStringByField(doc$1, "name");
           var docstrings = decodeDocstring(doc$1);
           var signature = decodeStringByField(doc$1, "signature");
           var deprecated = decodeDepreacted(doc$1);
@@ -213,7 +213,7 @@ function decodeRecordFields(fields) {
       });
   return {
           TAG: 0,
-          fieldDocs: fields$1,
+          _0: fields$1,
           [Symbol.for("name")]: "Record"
         };
 }
@@ -234,7 +234,7 @@ function decodeConstructorFields(fields) {
         }
         if (doc.TAG === /* JSONObject */2) {
           var doc$1 = doc._0;
-          var constructorName = decodeStringByField(doc$1, "constructorName");
+          var constructorName = decodeStringByField(doc$1, "name");
           var docstrings = decodeDocstring(doc$1);
           var signature = decodeStringByField(doc$1, "signature");
           var deprecated = decodeDepreacted(doc$1);
@@ -257,7 +257,7 @@ function decodeConstructorFields(fields) {
       });
   return {
           TAG: 1,
-          constructorDocs: fields$1,
+          _0: fields$1,
           [Symbol.for("name")]: "Variant"
         };
 }
@@ -269,7 +269,7 @@ function decodeDetail(detail) {
           RE_EXN_ID: "Assert_failure",
           _1: [
             "docgen.res",
-            186,
+            169,
             9
           ],
           Error: new Error()
@@ -277,142 +277,70 @@ function decodeDetail(detail) {
   }
   if (detail$1.TAG === /* JSONObject */2) {
     var detail$2 = detail$1._0;
-    var field = Js_dict.get(detail$2, "kind");
-    if (field !== undefined) {
-      var kind = Js_json.classify(Caml_option.valFromOption(field));
-      if (typeof kind === "number") {
-        throw {
-              RE_EXN_ID: "Assert_failure",
-              _1: [
-                "docgen.res",
-                181,
-                13
-              ],
-              Error: new Error()
-            };
-      }
-      if (kind.TAG === /* JSONString */0) {
-        switch (kind._0) {
-          case "record" :
-              var field$1 = Js_dict.get(detail$2, "fieldDocs");
-              if (field$1 !== undefined) {
-                var arr = Js_json.classify(Caml_option.valFromOption(field$1));
-                if (typeof arr === "number") {
-                  throw {
-                        RE_EXN_ID: "Assert_failure",
-                        _1: [
-                          "docgen.res",
-                          164,
-                          19
-                        ],
-                        Error: new Error()
-                      };
-                }
-                if (arr.TAG === /* JSONArray */3) {
-                  return decodeRecordFields(arr._0);
-                }
-                throw {
-                      RE_EXN_ID: "Assert_failure",
-                      _1: [
-                        "docgen.res",
-                        164,
-                        19
-                      ],
-                      Error: new Error()
-                    };
-              } else {
-                throw {
-                      RE_EXN_ID: "Assert_failure",
-                      _1: [
-                        "docgen.res",
-                        166,
-                        20
-                      ],
-                      Error: new Error()
-                    };
-              }
-          case "variant" :
-              var field$2 = Js_dict.get(detail$2, "constructorDocs");
-              if (field$2 !== undefined) {
-                var arr$1 = Js_json.classify(Caml_option.valFromOption(field$2));
-                if (typeof arr$1 === "number") {
-                  throw {
-                        RE_EXN_ID: "Assert_failure",
-                        _1: [
-                          "docgen.res",
-                          174,
-                          19
-                        ],
-                        Error: new Error()
-                      };
-                }
-                if (arr$1.TAG === /* JSONArray */3) {
-                  return decodeConstructorFields(arr$1._0);
-                }
-                throw {
-                      RE_EXN_ID: "Assert_failure",
-                      _1: [
-                        "docgen.res",
-                        174,
-                        19
-                      ],
-                      Error: new Error()
-                    };
-              } else {
-                throw {
-                      RE_EXN_ID: "Assert_failure",
-                      _1: [
-                        "docgen.res",
-                        176,
-                        20
-                      ],
-                      Error: new Error()
-                    };
-              }
-          default:
-            throw {
-                  RE_EXN_ID: "Assert_failure",
-                  _1: [
-                    "docgen.res",
-                    178,
-                    15
-                  ],
-                  Error: new Error()
-                };
+    var match = Js_dict.get(detail$2, "kind");
+    var match$1 = Js_dict.get(detail$2, "items");
+    if (match !== undefined) {
+      if (match$1 !== undefined) {
+        var match$2 = Js_json.classify(Caml_option.valFromOption(match));
+        var match$3 = Js_json.classify(Caml_option.valFromOption(match$1));
+        if (typeof match$2 !== "number" && match$2.TAG === /* JSONString */0 && typeof match$3 !== "number" && match$3.TAG === /* JSONArray */3) {
+          var items = match$3._0;
+          switch (match$2._0) {
+            case "record" :
+                return decodeRecordFields(items);
+            case "variant" :
+                return decodeConstructorFields(items);
+            default:
+              throw {
+                    RE_EXN_ID: "Assert_failure",
+                    _1: [
+                      "docgen.res",
+                      161,
+                      15
+                    ],
+                    Error: new Error()
+                  };
+          }
         }
-      } else {
         throw {
               RE_EXN_ID: "Assert_failure",
               _1: [
                 "docgen.res",
-                181,
+                164,
                 13
               ],
               Error: new Error()
             };
       }
-    } else {
       throw {
             RE_EXN_ID: "Assert_failure",
             _1: [
               "docgen.res",
-              183,
-              14
+              166,
+              11
             ],
             Error: new Error()
           };
     }
-  } else {
     throw {
           RE_EXN_ID: "Assert_failure",
           _1: [
             "docgen.res",
-            186,
-            9
+            166,
+            11
           ],
           Error: new Error()
         };
   }
+  throw {
+        RE_EXN_ID: "Assert_failure",
+        _1: [
+          "docgen.res",
+          169,
+          9
+        ],
+        Error: new Error()
+      };
 }
 
 function decodeValue(item) {
@@ -429,63 +357,6 @@ function decodeValue(item) {
           name: name,
           deprecated: deprecated,
           [Symbol.for("name")]: "Value"
-        };
-}
-
-function decodeModule(item) {
-  var id = decodeStringByField(item, "id");
-  var name = decodeStringByField(item, "name");
-  var deprecated = decodeDepreacted(item);
-  var docstring = decodeDocstring(item);
-  var items = Js_dict.get(item, "items");
-  var items$1;
-  if (items !== undefined) {
-    var arr = Js_json.classify(Caml_option.valFromOption(items));
-    if (typeof arr === "number") {
-      throw {
-            RE_EXN_ID: "Assert_failure",
-            _1: [
-              "docgen.res",
-              228,
-              11
-            ],
-            Error: new Error()
-          };
-    }
-    if (arr.TAG === /* JSONArray */3) {
-      items$1 = arr._0.map(decodeItem);
-    } else {
-      throw {
-            RE_EXN_ID: "Assert_failure",
-            _1: [
-              "docgen.res",
-              228,
-              11
-            ],
-            Error: new Error()
-          };
-    }
-  } else {
-    throw {
-          RE_EXN_ID: "Assert_failure",
-          _1: [
-            "docgen.res",
-            230,
-            12
-          ],
-          Error: new Error()
-        };
-  }
-  return {
-          TAG: 2,
-          _0: {
-            id: id,
-            docstring: docstring,
-            deprecated: deprecated,
-            name: name,
-            items: items$1
-          },
-          [Symbol.for("name")]: "Module"
         };
 }
 
@@ -509,6 +380,63 @@ function decodeType(item) {
         };
 }
 
+function decodeModule(item) {
+  var id = decodeStringByField(item, "id");
+  var name = decodeStringByField(item, "name");
+  var deprecated = decodeDepreacted(item);
+  var docstring = decodeDocstring(item);
+  var items = Js_dict.get(item, "items");
+  var items$1;
+  if (items !== undefined) {
+    var arr = Js_json.classify(Caml_option.valFromOption(items));
+    if (typeof arr === "number") {
+      throw {
+            RE_EXN_ID: "Assert_failure",
+            _1: [
+              "docgen.res",
+              211,
+              11
+            ],
+            Error: new Error()
+          };
+    }
+    if (arr.TAG === /* JSONArray */3) {
+      items$1 = arr._0.map(decodeItem);
+    } else {
+      throw {
+            RE_EXN_ID: "Assert_failure",
+            _1: [
+              "docgen.res",
+              211,
+              11
+            ],
+            Error: new Error()
+          };
+    }
+  } else {
+    throw {
+          RE_EXN_ID: "Assert_failure",
+          _1: [
+            "docgen.res",
+            213,
+            12
+          ],
+          Error: new Error()
+        };
+  }
+  return {
+          TAG: 2,
+          _0: {
+            id: id,
+            docstring: docstring,
+            deprecated: deprecated,
+            name: name,
+            items: items$1
+          },
+          [Symbol.for("name")]: "Module"
+        };
+}
+
 function decodeItem(item) {
   var value = Js_json.classify(item);
   if (typeof value === "number") {
@@ -516,7 +444,7 @@ function decodeItem(item) {
           RE_EXN_ID: "Assert_failure",
           _1: [
             "docgen.res",
-            256,
+            239,
             9
           ],
           Error: new Error()
@@ -552,7 +480,7 @@ function decodeItem(item) {
           RE_EXN_ID: "Assert_failure",
           _1: [
             "docgen.res",
-            256,
+            239,
             9
           ],
           Error: new Error()
@@ -569,7 +497,7 @@ function decodeFromJson(json) {
           RE_EXN_ID: "Assert_failure",
           _1: [
             "docgen.res",
-            287,
+            270,
             9
           ],
           Error: new Error()
@@ -589,7 +517,7 @@ function decodeFromJson(json) {
               RE_EXN_ID: "Assert_failure",
               _1: [
                 "docgen.res",
-                278,
+                261,
                 15
               ],
               Error: new Error()
@@ -602,7 +530,7 @@ function decodeFromJson(json) {
               RE_EXN_ID: "Assert_failure",
               _1: [
                 "docgen.res",
-                278,
+                261,
                 15
               ],
               Error: new Error()
@@ -613,7 +541,7 @@ function decodeFromJson(json) {
             RE_EXN_ID: "Assert_failure",
             _1: [
               "docgen.res",
-              281,
+              264,
               16
             ],
             Error: new Error()
@@ -630,7 +558,7 @@ function decodeFromJson(json) {
         RE_EXN_ID: "Assert_failure",
         _1: [
           "docgen.res",
-          287,
+          270,
           9
         ],
         Error: new Error()
