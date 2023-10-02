@@ -43,7 +43,7 @@ module Schema = {
         detail: option<docItemDetail>,
       })
     | Module(docsForModule)
-    | ModuleAlias(docsForModuleAlias)
+    | ModuleAlias({id: string, docstring: array<string>, name: string, items: array<docItem>})
   and docsForModule = {
     id: string,
     docstring: array<string>,
