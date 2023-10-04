@@ -1,3 +1,3 @@
-type props
+// type props
 
-let make: props => React.element
+// let make: props => React.element
