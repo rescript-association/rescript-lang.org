@@ -1826,97 +1826,97 @@
     "docstrings": []
   }, 
   {
-    "id": "Dom.Dom_storage",
+    "id": "Dom.Storage",
     "kind": "moduleAlias",
     "name": "Storage",
     "docstrings": [],
     "items": [
     {
-      "id": "Dom.Dom_storage.t",
+      "id": "Dom.Storage.t",
       "kind": "type",
       "name": "t",
       "signature": "type t = Dom_storage2.t",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage.getItem",
+      "id": "Dom.Storage.getItem",
       "kind": "value",
       "name": "getItem",
       "signature": "let getItem: (t, string) => option<string>",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage.getItem",
+      "id": "Dom.Storage.getItem",
       "kind": "value",
       "name": "getItem",
       "signature": "let getItem: (string, t) => option<string>",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage.setItem",
+      "id": "Dom.Storage.setItem",
       "kind": "value",
       "name": "setItem",
       "signature": "let setItem: (t, string, string) => unit",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage.setItem",
+      "id": "Dom.Storage.setItem",
       "kind": "value",
       "name": "setItem",
       "signature": "let setItem: (string, string, t) => unit",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage.removeItem",
+      "id": "Dom.Storage.removeItem",
       "kind": "value",
       "name": "removeItem",
       "signature": "let removeItem: (t, string) => unit",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage.removeItem",
+      "id": "Dom.Storage.removeItem",
       "kind": "value",
       "name": "removeItem",
       "signature": "let removeItem: (string, t) => unit",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage.clear",
+      "id": "Dom.Storage.clear",
       "kind": "value",
       "name": "clear",
       "signature": "let clear: t => unit",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage.key",
+      "id": "Dom.Storage.key",
       "kind": "value",
       "name": "key",
       "signature": "let key: (t, int) => option<string>",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage.key",
+      "id": "Dom.Storage.key",
       "kind": "value",
       "name": "key",
       "signature": "let key: (int, t) => option<string>",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage.length",
+      "id": "Dom.Storage.length",
       "kind": "value",
       "name": "length",
       "signature": "let length: t => int",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage.localStorage",
+      "id": "Dom.Storage.localStorage",
       "kind": "value",
       "name": "localStorage",
       "signature": "let localStorage: t",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage.sessionStorage",
+      "id": "Dom.Storage.sessionStorage",
       "kind": "value",
       "name": "sessionStorage",
       "signature": "let sessionStorage: t",
@@ -1924,69 +1924,69 @@
     }]
   }, 
   {
-    "id": "Dom.Dom_storage2",
+    "id": "Dom.Storage2",
     "kind": "moduleAlias",
     "name": "Storage2",
     "docstrings": [],
     "items": [
     {
-      "id": "Dom.Dom_storage2.t",
+      "id": "Dom.Storage2.t",
       "kind": "type",
       "name": "t",
       "signature": "type t",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage2.getItem",
+      "id": "Dom.Storage2.getItem",
       "kind": "value",
       "name": "getItem",
       "signature": "let getItem: (t, string) => option<string>",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage2.setItem",
+      "id": "Dom.Storage2.setItem",
       "kind": "value",
       "name": "setItem",
       "signature": "let setItem: (t, string, string) => unit",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage2.removeItem",
+      "id": "Dom.Storage2.removeItem",
       "kind": "value",
       "name": "removeItem",
       "signature": "let removeItem: (t, string) => unit",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage2.clear",
+      "id": "Dom.Storage2.clear",
       "kind": "value",
       "name": "clear",
       "signature": "let clear: t => unit",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage2.key",
+      "id": "Dom.Storage2.key",
       "kind": "value",
       "name": "key",
       "signature": "let key: (t, int) => option<string>",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage2.length",
+      "id": "Dom.Storage2.length",
       "kind": "value",
       "name": "length",
       "signature": "let length: t => int",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage2.localStorage",
+      "id": "Dom.Storage2.localStorage",
       "kind": "value",
       "name": "localStorage",
       "signature": "let localStorage: t",
       "docstrings": []
     }, 
     {
-      "id": "Dom.Dom_storage2.sessionStorage",
+      "id": "Dom.Storage2.sessionStorage",
       "kind": "value",
       "name": "sessionStorage",
       "signature": "let sessionStorage: t",

@@ -141,6 +141,7 @@ let default = (props: props) => {
   let fm = component->BlogComponent.frontmatter->BlogFrontmatter.decode
 
   let children = React.createElement(component, Js.Obj.empty())
+  Js.log(children)
 
   let archivedNote = archived
     ? {
