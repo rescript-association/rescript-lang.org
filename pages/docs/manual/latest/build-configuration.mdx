@@ -66,6 +66,18 @@ You can mark your directories as dev-only (for e.g. tests). These won't be built
 }
 ```
 
+You can also explicitly allow which modules can be seen from outside. This feature is especially useful for library authors who want to have a single entry point for their users.   
+Here, the file `src/MyMainModule.res` is exposed to outside consumers, while all other files are private.
+
+```json
+{
+  "sources": {
+    "dir": "src",
+    "public": ["MyMainModule"]
+  },
+}
+```
+
 ## bs-dependencies, bs-dev-dependencies
 
 List of ReScript dependencies. Just like `package.json`'s dependencies, they'll be searched in `node_modules`.
