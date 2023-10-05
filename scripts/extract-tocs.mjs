@@ -141,7 +141,7 @@ const createLatestManualToc = () => {
 
   const FILE_ORDER = Object.values(sidebarJson).reduce((acc, items) => {
     return acc.concat(items)
-  }, []).filter(section => section !== "build-configuration-schema" && section !== "warning-numbers");
+  }, [])
 
   const files = glob.sync(`${MD_DIR}/*.?(js|md?(x))`);
   const ordered = orderFiles(files, FILE_ORDER);
@@ -172,7 +172,7 @@ const createV900ManualToc = () => {
 
   const FILE_ORDER = Object.values(sidebarJson).reduce((acc, items) => {
     return acc.concat(items)
-  }, []).filter(section => section !== "build-configuration-schema" && section !== "warning-numbers");
+  }, [])
 
   const files = glob.sync(`${MD_DIR}/*.?(js|md?(x))`);
   const ordered = orderFiles(files, FILE_ORDER);
@@ -192,7 +192,7 @@ const createV800ManualToc = () => {
 
   const FILE_ORDER = Object.values(sidebarJson).reduce((acc, items) => {
     return acc.concat(items)
-  }, []).filter(section => section !== "build-configuration-schema" && section !== "warning-numbers");
+  }, [])
 
   const files = glob.sync(`${MD_DIR}/*.?(js|md?(x))`);
   const ordered = orderFiles(files, FILE_ORDER);

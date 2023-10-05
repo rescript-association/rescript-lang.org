@@ -1,13 +1,32 @@
 type params = {slug: array<string>}
 
-type props = {mdxSource: Mdx.Remote.output}
+type props = {mdxSource: Mdx.Remote.output, slug: array<string>}
 
 let default = (props: props) => {
-  let {mdxSource} = props
-
+  let {mdxSource, slug} = props
   let frontmatter = mdxSource.frontmatter
 
-  let content = MdxUtils.createElement(mdxSource)
+  let otherElement = switch slug->Belt.List.fromArray {
+  | list{"manual", version, rest} =>
+    switch rest {
+    | "warning-numbers" => <WarningTable />
+    | "build-configuration-schema" =>
+      switch version {
+      | "latest" => <Docson tag="master" />
+      | "v9.0.0" => <Docson tag="9.0.0" />
+      | _ => React.null
+      }
+    | _ => React.null
+    }
+  | _ => React.null
+  }
+
+  let content =
+    <>
+      {MdxUtils.createElement(mdxSource)}
+      otherElement
+    </>
+
   let router = Next.Router.useRouter()
 
   let url = router.asPath->Url.parse
@@ -88,7 +107,8 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = async ctx => {
   let mdxSource = await MdxUtils.serialize(source)
 
   let props = {
-    mdxSource: mdxSource,
+    mdxSource,
+    slug: params.slug,
   }
 
   {"props": props}
