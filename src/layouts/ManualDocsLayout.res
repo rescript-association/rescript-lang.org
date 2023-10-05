@@ -13,6 +13,11 @@ module V900Layout = DocsLayout.Make({
   @module("index_data/manual_v900_toc.json") external tocData: SidebarLayout.Toc.raw = "default"
 })
 
+module V1000Layout = DocsLayout.Make({
+  // Structure defined by `scripts/extract-tocs.js`
+  let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_v1000_toc.json')")
+})
+
 module Latest = {
   @react.component
   let make = (~frontmatter=?, ~components=Markdown.default, ~children) => {
@@ -55,6 +60,50 @@ module Latest = {
       breadcrumbs>
       children
     </LatestLayout>
+  }
+}
+
+module V1000 = {
+  @react.component
+  let make = (~frontmatter=?, ~components=Markdown.default, ~children) => {
+    let router = Next.Router.useRouter()
+    let route = router.route
+
+    let url = route->Url.parse
+
+    let version = switch url.version {
+    | Version(version) => version
+    | NoVersion => "latest"
+    | Latest => "latest"
+    }
+
+    let breadcrumbs = list{
+      {
+        open Url
+        {name: "Docs", href: "/docs/" ++ version}
+      },
+      {
+        open Url
+        {
+          name: "Language Manual",
+          href: "/docs/manual/" ++ (version ++ "/introduction"),
+        }
+      },
+    }
+
+    let title = "Language Manual"
+
+    <V1000Layout
+      theme=#Reason
+      components
+      version
+      title
+      metaTitleCategory="ReScript Language Manual"
+      availableVersions=Constants.allManualVersions
+      ?frontmatter
+      breadcrumbs>
+      children
+    </V1000Layout>
   }
 }
 
