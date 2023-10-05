@@ -210,12 +210,12 @@ const main = () => {
 
   // All files that are going to be tested for broken links
   const files = glob.sync(
-    pattern ? pattern : `./{pages,_blogposts,misc_docs}/**/*.md?(x)`,
+    pattern ? pattern : `./{pages,docs,_blogposts,misc_docs}/**/*.md?(x)`,
     { cwd }
   );
 
   // We need to capture all files independently from the test file glob
-  const pageMapFiles = glob.sync("./{pages,_blogposts}/**/*.{js,mdx}", { cwd });
+  const pageMapFiles = glob.sync("./{pages,_blogposts,docs}/**/*.{js,mdx}", { cwd });
   const staticFiles = glob.sync("./public/static/**/*.{svg,png,woff2}", { cwd });
 
   const allFiles = pageMapFiles.concat(staticFiles);

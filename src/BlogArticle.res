@@ -116,29 +116,10 @@ module BlogHeader = {
   }
 }
 
-// type remarkPlugin
-// @module("remark-comment") external remarkComment: remarkPlugin = "default"
-// @module("remark-gfm") external remarkGfm: remarkPlugin = "default"
-// @module("remark-frontmatter") external remarkFrontmatter: remarkPlugin = "default"
-
-// let mdxOptions = {"remarkPlugins": [remarkComment, remarkGfm, remarkFrontmatter]}
-
-external asProps: {..} => {"props": Mdx.Remote.output} = "%identity"
-
 let default = (props: props) => {
   let {mdxSource, isArchived, path} = props
 
-  let mdxProps = {
-    "frontmatter": mdxSource.frontmatter,
-    "scope": mdxSource.scope,
-    "compiledSource": mdxSource.compiledSource,
-    "components": Markdown.default,
-    "options": {
-      "mdxOptions": Mdx.mdxOptions,
-    },
-  }
-
-  let children = React.createElement(Mdx.MDXRemote.make, asProps(mdxProps))
+  let children = MdxUtils.createElement(mdxSource)
 
   let fm = mdxSource.frontmatter->BlogFrontmatter.decode
 
@@ -232,10 +213,7 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = async ctx => {
 
   let source = filePath->Node.Fs.readFileSync(#utf8)
 
-  let mdxSource = await Mdx.Remote.serialize(
-    source,
-    {"parseFrontmatter": true, "mdxOptions": Mdx.mdxOptions},
-  )
+  let mdxSource = await MdxUtils.serialize(source)
 
   let props = {mdxSource, isArchived, path}
 

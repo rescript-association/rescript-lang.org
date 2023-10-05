@@ -1,21 +1,10 @@
 type params = {slug: string}
 
 type props = {mdxSource: Mdx.Remote.output}
-external asProps: {..} => {"props": Mdx.Remote.output} = "%identity"
+
 let default = (props: props): React.element => {
   let {mdxSource} = props
-
-  let mdxProps = {
-    "frontmatter": mdxSource.frontmatter,
-    "scope": mdxSource.scope,
-    "compiledSource": mdxSource.compiledSource,
-    "components": Markdown.default,
-    "options": {
-      "mdxOptions": Mdx.mdxOptions,
-    },
-  }
-
-  let children = React.createElement(Mdx.MDXRemote.make, asProps(mdxProps))
+  let children = MdxUtils.createElement(mdxSource)
 
   <CommunityLayout frontmatter={mdxSource.frontmatter}> children </CommunityLayout>
 }
@@ -27,10 +16,7 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = async ctx => {
 
   let source = filePath->Node.Fs.readFileSync(#utf8)
 
-  let mdxSource = await Mdx.Remote.serialize(
-    source,
-    {"parseFrontmatter": true, "mdxOptions": Mdx.mdxOptions},
-  )
+  let mdxSource = await MdxUtils.serialize(source)
 
   let props = {
     mdxSource: mdxSource,

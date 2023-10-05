@@ -131,23 +131,14 @@ let decode = (json: Js.Json.t) => {
     category,
   }
 }
-external asProps: {..} => {"props": Mdx.Remote.output} = "%identity"
 let default = (props: props) => {
   let {mdxSources} = props
 
   let allItems = mdxSources->Js.Array2.map(mdxSource => {
     let {id, keywords, category, summary, name} = decode(mdxSource.frontmatter)
-    let mdxProps = {
-      "frontmatter": mdxSource.frontmatter,
-      "scope": mdxSource.scope,
-      "compiledSource": mdxSource.compiledSource,
-      "components": Markdown.default,
-      "options": {
-        "mdxOptions": Mdx.mdxOptions,
-      },
-    }
 
-    let children = React.createElement(Mdx.MDXRemote.make, asProps(mdxProps))
+    let children = MdxUtils.createElement(mdxSource)
+
     {id, keywords, category, summary, name, children}
   })
 
@@ -353,7 +344,7 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = async _ctx => {
   let allFiles = Node.Fs.readdirSync(dir)->Js.Array2.map(async file => {
     let fullPath = Node.Path.join2(dir, file)
     let source = fullPath->Node.Fs.readFileSync(#utf8)
-    await Mdx.Remote.serialize(source, {"parseFrontmatter": true, "mdxOptions": Mdx.mdxOptions})
+    await MdxUtils.serialize(source)
   })
 
   let mdxSources = await Js.Promise2.all(allFiles)

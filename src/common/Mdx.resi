@@ -75,6 +75,8 @@ module Provider: {
   @react.component
   let make: (~components: Components.t, ~children: React.element=?) => React.element
 }
+type remarkPlugin
+type rehypePlugin
 
 module Remote: {
   type output = {
@@ -82,14 +84,18 @@ module Remote: {
     compiledSource: string,
     scope: Js.Json.t,
   }
-  let serialize: (string, {..}) => promise<output>
+  type mdxOptions = {
+    remarkPlugins: array<remarkPlugin>,
+    rehypePlugins: array<rehypePlugin>,
+  }
+  type options = {
+    parseFrontmatter: bool,
+    mdxOptions: mdxOptions,
+  }
+  let serialize: (string, options) => promise<output>
 }
 
 module MDXRemote: {
   @react.component
   let make: (~props: Remote.output) => React.element
 }
-
-type remarkPlugin
-type rehypePlugin
-let mdxOptions: {"remarkPlugins": array<remarkPlugin>, "rehypePlugins": array<rehypePlugin>}
