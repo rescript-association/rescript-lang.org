@@ -1,32 +1,9 @@
-import fs from "fs";
-import url from "url";
-import path from "path";
 import webpack from "webpack";
-import rehypeSlug from 'rehype-slug';
-import remarkGfm from 'remark-gfm';
-import remarkComment from 'remark-comment';
-import nextMDX from "@next/mdx";
-import remarkFrontmatter from 'remark-frontmatter'
-// import remarkParseFrontmatter from "remark-parse-frontmatter";
-// import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
-
-const bsconfig = JSON.parse(fs.readFileSync("./bsconfig.json"))
 
 const { ProvidePlugin } = webpack;
 
-const transpileModules = ["rescript"].concat(bsconfig["bs-dependencies"]);
-
-const withMDX = nextMDX({
-  extension: /\.mdx?$/,
-  options: {
-    remarkPlugins: [remarkComment, remarkGfm, remarkFrontmatter],
-    providerImportSource: '@mdx-js/react',
-    rehypePlugins: [rehypeSlug]
-  },
-});
-
 const config = {
-  pageExtensions: ["jsx", "js", "bs.js", "mdx", "mjs"],
+  pageExtensions: ["jsx", "js", "bs.js", "mjs"],
   env: {
     ENV: process.env.NODE_ENV,
   },
@@ -55,13 +32,6 @@ const config = {
       },
     });
 
-    // const loader_path = url.fileURLToPath(path.dirname(import.meta.url));
-
-    // config.module.rules.push({
-    //   test: /\.mdx?$/,
-    //   use: [{ loader: path.resolve(loader_path, "frontmatter.js") }]
-    // });
-
     config.plugins.push(new ProvidePlugin({ React: "react" }));
     return config;
   },
@@ -81,7 +51,4 @@ const config = {
   },
 };
 
-export default withMDX({
-  transpilePackages: transpileModules,
-  ...config
-})
+export default config

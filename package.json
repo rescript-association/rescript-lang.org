@@ -16,8 +16,6 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.2.0",
-    "@mdx-js/loader": "^2.3.0",
-    "@next/mdx": "^13.4.12",
     "@rescript/react": "^0.10.3",
     "@ryyppy/rescript-promise": "2.1.0",
     "codemirror": "^5.54.0",
