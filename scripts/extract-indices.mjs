@@ -110,7 +110,9 @@ const createIndex = result => {
       }
     );
 
-    acc["/" + data.href] = {
+    const href = data.href.replace("..", "")
+
+    acc[href] = {
       moduleName,
       headers: headersSorted
     };
@@ -155,6 +157,7 @@ const extractApiIndex = version => {
 };
 
 extractApiIndex("latest");
+extractApiIndex("v9.0.0")
 extractApiIndex("v8.0.0");
 
 

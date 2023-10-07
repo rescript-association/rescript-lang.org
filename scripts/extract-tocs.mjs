@@ -121,7 +121,8 @@ const createTOC = result => {
   // NextJS router
   return result.reduce((acc, data) => {
     const { title, headers, category, id } = data;
-    acc["/" + data.href] = {
+    const href = data.href.replace("..", "")
+    acc[href] = {
       id,
       title,
       headers,
