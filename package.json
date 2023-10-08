@@ -17,7 +17,6 @@
   "dependencies": {
     "@headlessui/react": "^1.2.0",
     "@mdx-js/loader": "^2.3.0",
-    "@next/mdx": "^13.4.12",
     "@rescript/react": "^0.10.3",
     "@ryyppy/rescript-promise": "2.1.0",
     "codemirror": "^5.54.0",
@@ -38,6 +37,7 @@
     "remark-comment": "^1.0.0",
     "remark-frontmatter": "^4.0.1",
     "remark-gfm": "^3.0.1",
+    "remark-mdx-frontmatter": "^3.0.0",
     "remark-parse": "^10.0.2",
     "remark-slug": "^5.1.2",
     "remark-stringify": "^7.0.3",
@@ -61,6 +61,7 @@
     "postcss-cli": "^8.3.0",
     "reanalyze": "^2.16.0",
     "rescript": "^10.1.4",
+    "simple-functional-loader": "^1.2.1",
     "tailwindcss": "^3.3.3"
   }
 }

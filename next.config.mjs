@@ -3,23 +3,15 @@ import webpack from "webpack";
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import remarkComment from 'remark-comment';
-import nextMDX from "@next/mdx";
 import remarkFrontmatter from 'remark-frontmatter'
+import remarkMdxFrontmatter from "remark-mdx-frontmatter";
+import { createLoader } from 'simple-functional-loader'
 
 const bsconfig = JSON.parse(fs.readFileSync("./bsconfig.json"))
 
 const { ProvidePlugin } = webpack;
 
 const transpileModules = ["rescript"].concat(bsconfig["bs-dependencies"]);
-
-const withMDX = nextMDX({
-  extension: /\.mdx?$/,
-  options: {
-    remarkPlugins: [remarkComment, remarkGfm, remarkFrontmatter],
-    providerImportSource: '@mdx-js/react',
-    rehypePlugins: [rehypeSlug]
-  },
-});
 
 const config = {
   pageExtensions: ["jsx", "js", "bs.js", "mdx", "mjs"],
@@ -50,6 +42,37 @@ const config = {
         fullySpecified: false,
       },
     });
+
+    function mainMdxLoader(plugins) {
+      return [
+        createLoader(function(source) {
+          const result = `${source}\n\nMDXContent.frontmatter = frontmatter`
+          return result
+        }),
+      ]
+    }
+
+    config.module.rules.push({
+      test: /\.mdx?$/,
+      use: mainMdxLoader(),
+    });
+
+    config.module.rules.push({
+      test: /\.mdx?$/,
+      use: [
+        {
+          loader: '@mdx-js/loader',
+          /** @type {import('@mdx-js/loader').Options} */
+          options: {
+            remarkPlugins: [remarkComment, remarkGfm, remarkFrontmatter, remarkMdxFrontmatter],
+            providerImportSource: '@mdx-js/react',
+            rehypePlugins: [rehypeSlug]
+          }
+        }
+      ]
+    });
+
+
     config.plugins.push(new ProvidePlugin({ React: "react" }));
     return config;
   },
@@ -69,7 +92,7 @@ const config = {
   },
 };
 
-export default withMDX({
+export default {
   transpilePackages: transpileModules,
   ...config
-})
+}
