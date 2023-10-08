@@ -1,5 +1,5 @@
 // Structure defined by `scripts/extract-indices.js`
-@module("index_data/latest_belt_api_index.json")
+@module("index_data/v900_belt_api_index.json")
 external indexData: Js.Dict.t<{
   "moduleName": string,
   "headers": array<{
@@ -14,77 +14,77 @@ module NavItem = SidebarLayout.Sidebar.NavItem
 let overviewNavs = [
   {
     open NavItem
-    {name: "Introduction", href: "/docs/manual/latest/api/belt"}
+    {name: "Introduction", href: "/docs/manual/v9.0.0/api/belt"}
   },
 ]
 
 let setNavs = [
   {
     open NavItem
-    {name: "HashSet", href: "/docs/manual/latest/api/belt/hash-set"}
+    {name: "HashSet", href: "/docs/manual/v9.0.0/api/belt/hash-set"}
   },
-  {name: "HashSetInt", href: "/docs/manual/latest/api/belt/hash-set-int"},
-  {name: "HashSetString", href: "/docs/manual/latest/api/belt/hash-set-string"},
-  {name: "Set", href: "/docs/manual/latest/api/belt/set"},
-  {name: "SetDict", href: "/docs/manual/latest/api/belt/set-dict"},
-  {name: "SetInt", href: "/docs/manual/latest/api/belt/set-int"},
-  {name: "SetString", href: "/docs/manual/latest/api/belt/set-string"},
+  {name: "HashSetInt", href: "/docs/manual/v9.0.0/api/belt/hash-set-int"},
+  {name: "HashSetString", href: "/docs/manual/v9.0.0/api/belt/hash-set-string"},
+  {name: "Set", href: "/docs/manual/v9.0.0/api/belt/set"},
+  {name: "SetDict", href: "/docs/manual/v9.0.0/api/belt/set-dict"},
+  {name: "SetInt", href: "/docs/manual/v9.0.0/api/belt/set-int"},
+  {name: "SetString", href: "/docs/manual/v9.0.0/api/belt/set-string"},
 ]
 
 let mapNavs = [
   {
     open NavItem
-    {name: "HashMap", href: "/docs/manual/latest/api/belt/hash-map"}
+    {name: "HashMap", href: "/docs/manual/v9.0.0/api/belt/hash-map"}
   },
-  {name: "HashMapInt", href: "/docs/manual/latest/api/belt/hash-map-int"},
-  {name: "HashMapString", href: "/docs/manual/latest/api/belt/hash-map-string"},
-  {name: "Map", href: "/docs/manual/latest/api/belt/map"},
-  {name: "MapDict", href: "/docs/manual/latest/api/belt/map-dict"},
-  {name: "MapInt", href: "/docs/manual/latest/api/belt/map-int"},
-  {name: "MapString", href: "/docs/manual/latest/api/belt/map-string"},
+  {name: "HashMapInt", href: "/docs/manual/v9.0.0/api/belt/hash-map-int"},
+  {name: "HashMapString", href: "/docs/manual/v9.0.0/api/belt/hash-map-string"},
+  {name: "Map", href: "/docs/manual/v9.0.0/api/belt/map"},
+  {name: "MapDict", href: "/docs/manual/v9.0.0/api/belt/map-dict"},
+  {name: "MapInt", href: "/docs/manual/v9.0.0/api/belt/map-int"},
+  {name: "MapString", href: "/docs/manual/v9.0.0/api/belt/map-string"},
 ]
 
 let mutableCollectionsNavs = [
   {
     open NavItem
-    {name: "MutableMap", href: "/docs/manual/latest/api/belt/mutable-map"}
+    {name: "MutableMap", href: "/docs/manual/v9.0.0/api/belt/mutable-map"}
   },
-  {name: "MutableMapInt", href: "/docs/manual/latest/api/belt/mutable-map-int"},
-  {name: "MutableMapString", href: "/docs/manual/latest/api/belt/mutable-map-string"},
-  {name: "MutableQueue", href: "/docs/manual/latest/api/belt/mutable-queue"},
-  {name: "MutableSet", href: "/docs/manual/latest/api/belt/mutable-set"},
-  {name: "MutableSetInt", href: "/docs/manual/latest/api/belt/mutable-set-int"},
-  {name: "MutableSetString", href: "/docs/manual/latest/api/belt/mutable-set-string"},
-  {name: "MutableStack", href: "/docs/manual/latest/api/belt/mutable-stack"},
+  {name: "MutableMapInt", href: "/docs/manual/v9.0.0/api/belt/mutable-map-int"},
+  {name: "MutableMapString", href: "/docs/manual/v9.0.0/api/belt/mutable-map-string"},
+  {name: "MutableQueue", href: "/docs/manual/v9.0.0/api/belt/mutable-queue"},
+  {name: "MutableSet", href: "/docs/manual/v9.0.0/api/belt/mutable-set"},
+  {name: "MutableSetInt", href: "/docs/manual/v9.0.0/api/belt/mutable-set-int"},
+  {name: "MutableSetString", href: "/docs/manual/v9.0.0/api/belt/mutable-set-string"},
+  {name: "MutableStack", href: "/docs/manual/v9.0.0/api/belt/mutable-stack"},
 ]
 
 let basicNavs = [
   {
     open NavItem
-    {name: "Array", href: "/docs/manual/latest/api/belt/array"}
+    {name: "Array", href: "/docs/manual/v9.0.0/api/belt/array"}
   },
-  {name: "List", href: "/docs/manual/latest/api/belt/list"},
-  {name: "Float", href: "/docs/manual/latest/api/belt/float"},
-  {name: "Int", href: "/docs/manual/latest/api/belt/int"},
-  {name: "Range", href: "/docs/manual/latest/api/belt/range"},
-  {name: "Id", href: "/docs/manual/latest/api/belt/id"},
-  {name: "Option", href: "/docs/manual/latest/api/belt/option"},
-  {name: "Result", href: "/docs/manual/latest/api/belt/result"},
+  {name: "List", href: "/docs/manual/v9.0.0/api/belt/list"},
+  {name: "Float", href: "/docs/manual/v9.0.0/api/belt/float"},
+  {name: "Int", href: "/docs/manual/v9.0.0/api/belt/int"},
+  {name: "Range", href: "/docs/manual/v9.0.0/api/belt/range"},
+  {name: "Id", href: "/docs/manual/v9.0.0/api/belt/id"},
+  {name: "Option", href: "/docs/manual/v9.0.0/api/belt/option"},
+  {name: "Result", href: "/docs/manual/v9.0.0/api/belt/result"},
 ]
 
 let sortNavs = [
   {
     open NavItem
-    {name: "SortArray", href: "/docs/manual/latest/api/belt/sort-array"}
+    {name: "SortArray", href: "/docs/manual/v9.0.0/api/belt/sort-array"}
   },
-  {name: "SortArrayInt", href: "/docs/manual/latest/api/belt/sort-array-int"},
-  {name: "SortArrayString", href: "/docs/manual/latest/api/belt/sort-array-string"},
+  {name: "SortArrayInt", href: "/docs/manual/v9.0.0/api/belt/sort-array-int"},
+  {name: "SortArrayString", href: "/docs/manual/v9.0.0/api/belt/sort-array-string"},
 ]
 
 let utilityNavs = [
   {
     open NavItem
-    {name: "Debug", href: "/docs/manual/latest/api/belt/debug"}
+    {name: "Debug", href: "/docs/manual/v9.0.0/api/belt/debug"}
   },
 ]
 
