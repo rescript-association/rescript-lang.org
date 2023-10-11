@@ -23,7 +23,7 @@ type mod = {
   id: string,
   docstring: array<string>,
   name: string,
-  items: array<Docgen.Schema.docItem>,
+  items: array<Docgen.item>,
 }
 
 type section = {
@@ -52,7 +52,7 @@ let docs = entryPointLibs->Js.Array2.map(libFile => {
 
   let doc = output->Js.Json.parseExn->Docgen.decodeFromJson
 
-  let rec getModules = (lst: list<Docgen.Schema.docItem>, moduleNames: list<mod>) =>
+  let rec getModules = (lst: list<Docgen.item>, moduleNames: list<mod>) =>
     switch lst {
     | list{
         Module({id, items, name, docstring}) | ModuleAlias({id, items, name, docstring}),
@@ -72,7 +72,7 @@ let docs = entryPointLibs->Js.Array2.map(libFile => {
 })
 
 let () = {
-  let encodeModule = (docItem: Docgen.Schema.docItem) => {
+  let encodeModule = (docItem: Docgen.item) => {
     open Js.Json
     switch docItem {
     | Value({id, name, docstring, signature}) => {

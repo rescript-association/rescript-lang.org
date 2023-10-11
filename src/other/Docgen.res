@@ -1,56 +1,47 @@
-module Schema = {
-  type fieldDoc = {
-    fieldName: string,
-    docstrings: array<string>,
-    signature: string,
-    optional: bool,
-    deprecated: option<string>,
-  }
+type field = {
+  name: string,
+  docstrings: array<string>,
+  signature: string,
+  optional: bool,
+  deprecated: option<string>,
+}
 
-  type constructorDoc = {
-    constructorName: string,
-    docstrings: array<string>,
-    signature: string,
-    deprecated: option<string>,
-  }
+type constructor = {
+  name: string,
+  docstrings: array<string>,
+  signature: string,
+  deprecated: option<string>,
+}
 
-  type docsForModuleAlias = {
-    id: string,
-    docstring: array<string>,
-    name: string,
-    signature: string,
-  }
+type detail =
+  | Record(array<field>)
+  | Variant(array<constructor>)
 
-  type docItemDetail =
-    | Record(array<fieldDoc>)
-    | Variant(array<constructorDoc>)
-
-  type rec docItem =
-    | Value({
-        id: string,
-        docstring: array<string>,
-        signature: string,
-        name: string,
-        deprecated: option<string>,
-      })
-    | Type({
-        id: string,
-        docstring: array<string>,
-        signature: string,
-        name: string,
-        deprecated: option<string>,
-        /** Additional documentation for constructors and record fields, if available. */
-        detail: option<docItemDetail>,
-      })
-    | Module(docsForModule)
-    | ModuleAlias({id: string, docstring: array<string>, name: string, items: array<docItem>})
-  and docsForModule = {
-    id: string,
-    docstring: array<string>,
-    deprecated: option<string>,
-    name: string,
-    items: array<docItem>,
-  }
+type rec item =
+  | Value({
+      id: string,
+      docstring: array<string>,
+      signature: string,
+      name: string,
+      deprecated: option<string>,
+    })
+  | Type({
+      id: string,
+      docstring: array<string>,
+      signature: string,
+      name: string,
+      deprecated: option<string>,
+      /** Additional documentation for constructors and record fields, if available. */
+      detail: option<detail>,
+    })
+  | Module(docsForModule)
+  | ModuleAlias({id: string, docstring: array<string>, name: string, items: array<item>})
+and docsForModule = {
+  id: string,
+  docstring: array<string>,
+  deprecated: option<string>,
+  name: string,
+  items: array<item>,
 }
 
 let decodeDocstring = item => {
@@ -104,7 +95,7 @@ let decodeRecordFields = (fields: array<Js.Json.t>) => {
   let fields = fields->Js.Array2.map(field => {
     switch classify(field) {
     | JSONObject(doc) => {
-        let fieldName = doc->decodeStringByField("name")
+        let name = doc->decodeStringByField("name")
         let docstrings = doc->decodeDocstring
         let signature = doc->decodeStringByField("signature")
         let deprecated = doc->decodeDepreacted
@@ -118,13 +109,13 @@ let decodeRecordFields = (fields: array<Js.Json.t>) => {
         | None => assert false
         }
 
-        {Schema.fieldName, docstrings, signature, optional, deprecated}
+        {name, docstrings, signature, optional, deprecated}
       }
 
     | _ => assert false
     }
   })
-  Schema.Record(fields)
+  Record(fields)
 }
 
 let decodeConstructorFields = (fields: array<Js.Json.t>) => {
@@ -132,18 +123,18 @@ let decodeConstructorFields = (fields: array<Js.Json.t>) => {
   let fields = fields->Js.Array2.map(field => {
     switch classify(field) {
     | JSONObject(doc) => {
-        let constructorName = doc->decodeStringByField("name")
+        let name = doc->decodeStringByField("name")
         let docstrings = doc->decodeDocstring
         let signature = doc->decodeStringByField("signature")
         let deprecated = doc->decodeDepreacted
 
-        {Schema.constructorName, docstrings, signature, deprecated}
+        {name, docstrings, signature, deprecated}
       }
 
     | _ => assert false
     }
   })
-  Schema.Variant(fields)
+  Variant(fields)
 }
 
 let decodeDetail = detail => {
@@ -176,7 +167,7 @@ let rec decodeValue = (item: Js_dict.t<Js.Json.t>) => {
   let name = item->decodeStringByField("name")
   let deprecated = item->decodeDepreacted
   let docstring = item->decodeDocstring
-  Schema.Value({id, docstring, signature, name, deprecated})
+  Value({id, docstring, signature, name, deprecated})
 }
 and decodeType = (item: Js_dict.t<Js.Json.t>) => {
   let id = item->decodeStringByField("id")
@@ -188,15 +179,22 @@ and decodeType = (item: Js_dict.t<Js.Json.t>) => {
   | Some(field) => decodeDetail(field)->Some
   | None => None
   }
-  Schema.Type({id, docstring, signature, name, deprecated, detail})
+  Type({id, docstring, signature, name, deprecated, detail})
 }
 and decodeModuleAlias = (item: Js.Dict.t<Js.Json.t>) => {
-  // let id = item->decode_string_by_field("id")
-  // let signature = item->decode_string_by_field("signature")
-  // let name = item->decode_string_by_field("name")
-  // let docstring = item->decode_docstring
-  // Schema.ModuleAlias({id, signature, name, docstring})
-  decodeModule(item)
+  open Js.Json
+  let id = item->decodeStringByField("id")
+  let name = item->decodeStringByField("name")
+  let docstring = item->decodeDocstring
+  let items = switch Js.Dict.get(item, "items") {
+  | Some(items) =>
+    switch classify(items) {
+    | JSONArray(arr) => arr->Js.Array2.map(i => decodeItem(i))
+    | _ => assert false
+    }
+  | None => assert false
+  }
+  ModuleAlias({id, items, name, docstring})
 }
 and decodeModule = (item: Js.Dict.t<Js.Json.t>) => {
   open Js.Json
@@ -212,7 +210,7 @@ and decodeModule = (item: Js.Dict.t<Js.Json.t>) => {
     }
   | None => assert false
   }
-  Schema.Module({id, name, docstring, deprecated, items})
+  Module({id, name, docstring, deprecated, items})
 }
 and decodeItem = (item: Js.Json.t) => {
   open Js.Json
@@ -244,9 +242,9 @@ type doc = {
   name: string,
   deprecated: option<string>,
   docstring: array<string>,
-  items: array<Schema.docItem>,
+  items: array<item>,
 }
-let decodeFromJson = (json: Js.Json.t) => {
+let decodeFromJson = json => {
   open Js.Json
 
   switch classify(json) {
