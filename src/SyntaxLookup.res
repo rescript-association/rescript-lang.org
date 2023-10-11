@@ -340,7 +340,9 @@ let default = (props: props) => {
 
   <>
     <Meta
-      siteName="ReScript Blog" title description="News, Announcements, Release Notes and more"
+      siteName="ReScript Syntax Lookup"
+      title
+      description="Discover ReScript syntax constructs with our lookup tool"
     />
     <div className="mt-4 xs:mt-16">
       <div className="text-gray-80">
@@ -366,7 +368,6 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = async _ctx => {
   let allFiles = Node.Fs.readdirSync(dir)->Js.Array2.map(async file => {
     let fullPath = Node.Path.join2(dir, file)
     let source = fullPath->Node.Fs.readFileSync(#utf8)
-    // await MdxUtils.serialize(source)
     await Mdx.Remote.serialize(source, {"parseFrontmatter": true, "mdxOptions": mdxOptions})
   })
 

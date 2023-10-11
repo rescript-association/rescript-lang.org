@@ -129,6 +129,7 @@ let make = (props: props): React.element => {
       <CommunityLayout frontmatter={component->frontmatter}> content </CommunityLayout>
     | list{"try"} => content
     | list{"blog"} => content // Blog implements its own layout as well
+    | list{"syntax-lookup"} => content
     | list{"packages"} => content
     | list{"blog", ..._rest} => // Here, the layout will be handled by the Blog_Article component
       // to keep the frontmatter parsing etc in one place
