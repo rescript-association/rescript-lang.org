@@ -47,12 +47,6 @@ let docsDecoded = entryPointLibs->Js.Array2.map(libFile => {
     ->Node.Buffer.toString
     ->Js.String2.trim
 
-  // let writeFile = false
-  // if writeFile {
-  //   let name = libFile->Js.String2.split(".")->Js.Array2.unsafe_get(0)
-  //   Node.Fs.writeFileAsUtf8Sync(`data/api_${name}.json`, output)
-  // }
-
   output->Js.Json.parseExn->Docgen.decodeFromJson
 })
 
@@ -94,8 +88,8 @@ let docs = docsDecoded->Js.Array2.map(doc => {
 })
 
 let allModules = {
+  open Js.Json
   let encodeItem = (docItem: Docgen.item) => {
-    open Js.Json
     switch docItem {
     | Value({id, name, docstrings, signature}) => {
         let dict = Js.Dict.fromArray([
@@ -105,8 +99,7 @@ let allModules = {
           ("docstrings", docstrings->stringArray),
           ("signature", signature->string),
         ])
-        let b = Js.Json.object_(dict)
-        b->Some
+        dict->object_->Some
       }
 
     | Type({id, name, docstrings, signature}) =>
@@ -117,7 +110,7 @@ let allModules = {
         ("docstrings", docstrings->stringArray),
         ("signature", signature->string),
       ])
-      Js.Json.object_(dict)->Some
+      object_(dict)->Some
 
     | _ => None
     }
@@ -127,16 +120,16 @@ let allModules = {
     let submodules =
       modules
       ->Js.Array2.map(mod => {
-        let items = mod.items->Belt.Array.keepMap(item => encodeItem(item))->Js.Json.array
+        let items = mod.items->Belt.Array.keepMap(item => encodeItem(item))->array
         let rest = Js.Dict.fromArray([
-          ("id", mod.id->Js.Json.string),
-          ("name", mod.name->Js.Json.string),
-          ("docstrings", mod.docstrings->Js.Json.stringArray),
+          ("id", mod.id->string),
+          ("name", mod.name->string),
+          ("docstrings", mod.docstrings->stringArray),
           ("items", items),
         ])
         (
           mod.id->Js.String2.split(".")->Js.Array2.joinWith("/")->Js.String2.toLowerCase,
-          rest->Js.Json.object_,
+          rest->object_,
         )
       })
       ->Js.Dict.fromArray
@@ -155,7 +148,7 @@ let () = {
     )
   })
 }
-Js.log(allModules)
+
 // type toctree = {name: string}
 // Generate TOC modules
 // let () = {
@@ -182,7 +175,7 @@ Js.log(allModules)
 let () = {
   let json = allModules->Js.Array2.reduce((acc, (_, mod)) => {
       Js.Array2.concat(mod->Js.Dict.keys, acc)
-    }, [])->Js.Array2.map(path => path->Js.Json.string)->Js.Json.array
+    }, [])->Js.Array2.map(Js.Json.string)->Js.Json.array
 
   Node.Fs.writeFileAsUtf8Sync(`data/api_module_paths.json`, json->Js.Json.stringify)
 }
