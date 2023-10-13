@@ -47,11 +47,11 @@ let docsDecoded = entryPointLibs->Js.Array2.map(libFile => {
     ->Node.Buffer.toString
     ->Js.String2.trim
 
-  let writeFile = false
-  if writeFile {
-    let name = libFile->Js.String2.split(".")->Js.Array2.unsafe_get(0)
-    Node.Fs.writeFileAsUtf8Sync(`data/api_${name}.json`, output)
-  }
+  // let writeFile = false
+  // if writeFile {
+  //   let name = libFile->Js.String2.split(".")->Js.Array2.unsafe_get(0)
+  //   Node.Fs.writeFileAsUtf8Sync(`data/api_${name}.json`, output)
+  // }
 
   output->Js.Json.parseExn->Docgen.decodeFromJson
 })
@@ -93,7 +93,7 @@ let docs = docsDecoded->Js.Array2.map(doc => {
   // }
 })
 
-let () = {
+let allModules = {
   let encodeItem = (docItem: Docgen.item) => {
     open Js.Json
     switch docItem {
@@ -123,7 +123,7 @@ let () = {
     }
   }
 
-  docs->Js.Array2.forEach(((topLevelName, modules)) => {
+  docs->Js.Array2.map(((topLevelName, modules)) => {
     let submodules =
       modules
       ->Js.Array2.map(mod => {
@@ -134,70 +134,55 @@ let () = {
           ("docstrings", mod.docstrings->Js.Json.stringArray),
           ("items", items),
         ])
-        (mod.id->Js.String2.toLowerCase, rest->Js.Json.object_)
+        (
+          mod.id->Js.String2.split(".")->Js.Array2.joinWith("/")->Js.String2.toLowerCase,
+          rest->Js.Json.object_,
+        )
       })
       ->Js.Dict.fromArray
 
-    // let topLevelItems =
-    //   doc.topLevelItems->Belt.Array.keepMap(item => encodeItem(item))->Js.Json.array
-
-    let json = Js.Json.object_(submodules)
-
-    // let json =
-    //   Js.Dict.fromArray([
-    //     ("name", doc.name->Js.Json.string),
-    //     ("docstrings", doc.docstrings->Js.Json.stringArray),
-    //     ("topLevelItems", topLevelItems),
-    //     ("submodules", submodules->Js.Json.object_),
-    //   ])->Js.Json.object_
-
-    if !true {
-      Node.Fs.writeFileAsUtf8Sync(
-        `index_data/${topLevelName->Js.String2.toLowerCase}.json`,
-        json->Js.Json.stringifyWithSpace(2),
-      )
-    }
+    (topLevelName, submodules)
   })
 }
 
-type toctree = {name: string}
-// Generate TOC modules
 let () = {
-  // let r = docs->Js.Array2.map(((topLevelName, docs)) => {
-  //   let a = docs->Js.Array2.map(mod => {
-  //     mod.id
-  //   })
-  //   a->Belt.List.fromArray
-  // })
+  allModules->Js.Array2.forEach(((topLevelName, mod)) => {
+    let json = Js.Json.object_(mod)
 
-  // let rec getModules = (lst: list<Docgen.item>, moduleNames: list<toctree>) =>
-  //   switch lst {
-  //   | list{Module({id, name, items}) | ModuleAlias({id, name, items}), ...rest} =>
-  //     getModules(list{...rest, ...Belt.List.fromArray(items)}, list{{name: name}, ...moduleNames})
-  //   | list{Type(_) | Value(_), ...rest} => getModules(rest, moduleNames)
-  //   | list{} => moduleNames
-  //   }
-
-  // let a = docsDecoded->Js.Array2.map(doc => getModules(doc.items->Belt.List.fromArray, list{}))
-  // Js.log(a->Js.Json.stringifyAny)
-  ()
+    Node.Fs.writeFileAsUtf8Sync(
+      `data/${topLevelName->Js.String2.toLowerCase}.json`,
+      json->Js.Json.stringifyWithSpace(2),
+    )
+  })
 }
 
-// Generate the modules_paths.json
+// type toctree = {name: string}
+// Generate TOC modules
 // let () = {
-//   let modulePathsIndexData = docs->Js.Array2.reduce((acc, doc) => {
-//     let paths = doc.submodules->Js.Array2.map(({id}) => {
-//       let paths = id->Js.String2.split(".")
-//       let result =
-//         paths
-//         ->Js.Array2.sliceFrom(1)
-//         ->Js.Array2.map(id => Js.String2.toLowerCase(id)->Js.Json.string)
-//       result->Js.Json.array
+//   let r = docs->Js.Array2.map(((topLevelName, docs)) => {
+//     let a = docs->Js.Array2.map(mod => {
+//       mod.id
 //     })
-//     acc->Js.Dict.set(doc.name->Js.String2.toLowerCase, paths->Js.Json.array)
-//     acc
-//   }, Js.Dict.empty())
+//     a->Belt.List.fromArray
+//   })
 
-//   let json = modulePathsIndexData->Js.Json.object_->Js.Json.stringify
-//   Node.Fs.writeFileAsUtf8Sync(`index_data/modules_paths.json`, json)
+//   let rec getModules = (lst: list<Docgen.item>, moduleNames: list<toctree>) =>
+//     switch lst {
+//     | list{Module({id, name, items}) | ModuleAlias({id, name, items}), ...rest} =>
+//       getModules(list{...rest, ...Belt.List.fromArray(items)}, list{{name: name}, ...moduleNames})
+//     | list{Type(_) | Value(_), ...rest} => getModules(rest, moduleNames)
+//     | list{} => moduleNames
+//     }
+
+//   let a = docsDecoded->Js.Array2.map(doc => getModules(doc.items->Belt.List.fromArray, list{}))
+//   Js.log(a->Js.Json.stringifyAny)
 // }
+
+// Generate the modules_paths.json
+let () = {
+  let json = allModules->Js.Array2.reduce((acc, (_, mod)) => {
+      Js.Array2.concat(mod->Js.Dict.keys, acc)
+    }, [])->Js.Array2.map(path => path->Js.Json.string)->Js.Json.array
+
+  Node.Fs.writeFileAsUtf8Sync(`data/api_module_paths.json`, json->Js.Json.stringify)
+}

@@ -1,12 +1,9 @@
 type apiIndex = Js.Dict.t<Js.Json.t>
 
-let apiJs: apiIndex = %raw("require('index_data/js.json')")
-let apiBelt: apiIndex = %raw("require('index_data/belt.json')")
-let apiDom: apiIndex = %raw("require('index_data/dom.json')")
-
-let modulePaths: Js.Dict.t<array<array<string>>> = %raw("require('index_data/modules_paths.json')")
-
-// type mod = Belt(Docgen.doc) | DOM(Docgen.doc) | JS(Docgen.doc)
+let apiJs: apiIndex = %raw("require('data/js.json')")
+let apiBelt: apiIndex = %raw("require('data/belt.json')")
+let apiDom: apiIndex = %raw("require('data/dom.json')")
+let modulePaths: array<string> = %raw("require('data/api_module_paths.json')")
 
 type params = {slug: array<string>}
 
@@ -14,8 +11,6 @@ type props = {doc: Js.Json.t}
 
 let default = (props: props) => {
   let overlayState = React.useState(() => false)
-  // let router = Next.Router.useRouter()
-  // let route = router.route
 
   let {doc} = props
 
@@ -100,22 +95,8 @@ let default = (props: props) => {
         <Navigation overlayState />
         <div className="flex lg:justify-center">
           <div className="flex w-full max-w-1280 md:mx-8">
-            // sidebar
             <main className="px-4 w-full pt-16 md:ml-12 lg:mr-8 mb-32 md:max-w-576 lg:max-w-740">
               item
-              //width of the right content part
-              // <Markdown.H1> {content.name->React.string} </Markdown.H1>
-              // <p> {content.docstrings->Js.Array2.joinWith("\n")->React.string} </p>
-              // <Markdown.P> {content.docstring->Js.Array2.joinWith("\n")->React.string} </Markdown.P>
-              // {content.items
-              // ->Js.Array2.map(item => {
-              //   <>
-              //     <Markdown.H3 id=item.name> {item.name->React.string} </Markdown.H3>
-              //   </>
-              // })
-              // ->React.array}
-              // {items->React.array}
-              // {pcontent.na->Js.Array2.joinWith("/")->React.string}
             </main>
             {switch valuesAndTypes {
             | Some(elemets) =>
@@ -144,7 +125,7 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = async ctx => {
 
   let slug = params.slug
 
-  let moduleId = slug->Js.Array2.joinWith(".")
+  let moduleId = slug->Js.Array2.joinWith("/")
   let topLevelModule = slug->Js.Array2.unsafe_get(0)
 
   let apiContent = switch topLevelModule {
@@ -163,25 +144,14 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = async ctx => {
   {"props": props}
 }
 
-@send external flat: array<array<'t>> => array<'t> = "flat"
-
 let getStaticPaths: Next.GetStaticPaths.t<params> = async () => {
   open Next.GetStaticPaths
 
-  let paths =
-    modulePaths
-    ->Js.Dict.keys
-    ->Js.Array2.map(name => {
-      let submodulesPaths =
-        Js.Dict.unsafeGet(modulePaths, name)->Js.Array2.map(i => Js.Array2.concat([name], i))
-      Js.Array2.concat([[name]], submodulesPaths)
-    })
-    ->flat
-    ->Js.Array2.map(slug => {
-      params: {
-        slug: slug,
-      },
-    })
+  let paths = modulePaths->Js.Array2.map(slug => {
+    params: {
+      slug: slug->Js.String2.split("/"),
+    },
+  })
 
   {paths, fallback: false}
 }
