@@ -155,7 +155,7 @@ let () = {
     )
   })
 }
-
+Js.log(allModules)
 // type toctree = {name: string}
 // Generate TOC modules
 // let () = {

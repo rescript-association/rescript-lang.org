@@ -198,6 +198,8 @@ allModules.forEach(function (param) {
       Fs.writeFileSync("data/" + param[0].toLowerCase() + ".json", JSON.stringify(param[1], null, 2), "utf8");
     });
 
+console.log(allModules);
+
 var json = allModules.reduce((function (acc, param) {
           return Object.keys(param[1]).concat(acc);
         }), []).map(function (path) {
