@@ -20,14 +20,14 @@ type detail =
 type rec item =
   | Value({
       id: string,
-      docstring: array<string>,
+      docstrings: array<string>,
       signature: string,
       name: string,
       deprecated: option<string>,
     })
   | Type({
       id: string,
-      docstring: array<string>,
+      docstrings: array<string>,
       signature: string,
       name: string,
       deprecated: option<string>,
@@ -35,10 +35,10 @@ type rec item =
       detail: option<detail>,
     })
   | Module(docsForModule)
-  | ModuleAlias({id: string, docstring: array<string>, name: string, items: array<item>})
+  | ModuleAlias({id: string, docstrings: array<string>, name: string, items: array<item>})
 and docsForModule = {
   id: string,
-  docstring: array<string>,
+  docstrings: array<string>,
   deprecated: option<string>,
   name: string,
   items: array<item>,
@@ -166,26 +166,26 @@ let rec decodeValue = (item: Js_dict.t<Js.Json.t>) => {
   let signature = item->decodeStringByField("signature")
   let name = item->decodeStringByField("name")
   let deprecated = item->decodeDepreacted
-  let docstring = item->decodeDocstring
-  Value({id, docstring, signature, name, deprecated})
+  let docstrings = item->decodeDocstring
+  Value({id, docstrings, signature, name, deprecated})
 }
 and decodeType = (item: Js_dict.t<Js.Json.t>) => {
   let id = item->decodeStringByField("id")
   let signature = item->decodeStringByField("signature")
   let name = item->decodeStringByField("name")
   let deprecated = item->decodeDepreacted
-  let docstring = item->decodeDocstring
+  let docstrings = item->decodeDocstring
   let detail = switch item->Js_dict.get("detail") {
   | Some(field) => decodeDetail(field)->Some
   | None => None
   }
-  Type({id, docstring, signature, name, deprecated, detail})
+  Type({id, docstrings, signature, name, deprecated, detail})
 }
 and decodeModuleAlias = (item: Js.Dict.t<Js.Json.t>) => {
   open Js.Json
   let id = item->decodeStringByField("id")
   let name = item->decodeStringByField("name")
-  let docstring = item->decodeDocstring
+  let docstrings = item->decodeDocstring
   let items = switch Js.Dict.get(item, "items") {
   | Some(items) =>
     switch classify(items) {
@@ -194,14 +194,14 @@ and decodeModuleAlias = (item: Js.Dict.t<Js.Json.t>) => {
     }
   | None => assert false
   }
-  ModuleAlias({id, items, name, docstring})
+  ModuleAlias({id, items, name, docstrings})
 }
 and decodeModule = (item: Js.Dict.t<Js.Json.t>) => {
   open Js.Json
   let id = item->decodeStringByField("id")
   let name = item->decodeStringByField("name")
   let deprecated = item->decodeDepreacted
-  let docstring = item->decodeDocstring
+  let docstrings = item->decodeDocstring
   let items = switch Js.Dict.get(item, "items") {
   | Some(items) =>
     switch classify(items) {
@@ -210,7 +210,7 @@ and decodeModule = (item: Js.Dict.t<Js.Json.t>) => {
     }
   | None => assert false
   }
-  Module({id, name, docstring, deprecated, items})
+  Module({id, name, docstrings, deprecated, items})
 }
 and decodeItem = (item: Js.Json.t) => {
   open Js.Json
@@ -241,7 +241,7 @@ and decodeItem = (item: Js.Json.t) => {
 type doc = {
   name: string,
   deprecated: option<string>,
-  docstring: array<string>,
+  docstrings: array<string>,
   items: array<item>,
 }
 let decodeFromJson = json => {
@@ -251,7 +251,7 @@ let decodeFromJson = json => {
   | JSONObject(mod) => {
       let name = mod->decodeStringByField("name")
       let deprecated = mod->decodeDepreacted
-      let docstring = mod->decodeDocstring
+      let docstrings = mod->decodeDocstring
       let items = switch Js.Dict.get(mod, "items") {
       | Some(items) =>
         switch classify(items) {
@@ -262,7 +262,7 @@ let decodeFromJson = json => {
       | None => assert false
       }
 
-      {name, deprecated, docstring, items}
+      {name, deprecated, docstrings, items}
     }
 
   | _ => assert false

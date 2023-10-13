@@ -154,7 +154,6 @@ const extractApiIndex = version => {
   fs.writeFileSync(DOM_INDEX_FILE, JSON.stringify(domIndex), "utf8");
 };
 
-extractApiIndex("next")
 extractApiIndex("latest");
 extractApiIndex("v8.0.0");
 
