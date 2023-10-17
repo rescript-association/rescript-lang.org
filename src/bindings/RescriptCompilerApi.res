@@ -348,6 +348,7 @@ module Config = {
     module_system: string,
     warn_flags: string,
     uncurried?: bool,
+    open_modules?: array<string>,
   }
 }
 
@@ -423,6 +424,8 @@ module Compiler = {
 
   @send external setWarnFlags: (t, string) => bool = "setWarnFlags"
 
+  @send external setOpenModules: (t, array<string>) => bool = "setOpenModules"
+
   let setConfig = (t: t, config: Config.t): unit => {
     let moduleSystem = switch config.module_system {
     | "nodejs" => #nodejs->Some
@@ -431,6 +434,7 @@ module Compiler = {
     }
 
     Belt.Option.forEach(moduleSystem, moduleSystem => t->setModuleSystem(moduleSystem)->ignore)
+    Belt.Option.forEach(config.open_modules, modules => t->setOpenModules(modules)->ignore)
 
     t->setWarnFlags(config.warn_flags)->ignore
   }
