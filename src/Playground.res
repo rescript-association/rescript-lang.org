@@ -1366,6 +1366,12 @@ let parseVersion = (versionStr: string): option<(int, int, int)> => {
   }
 }
 
+// If @rescript/core is loaded, open it automatically
+let getPreamble = ready =>
+  ready.selected.libraries->Belt.Array.some(el => el === "@rescript/core")
+    ? "open! RescriptCore; "
+    : ""
+
 @react.component
 let make = () => {
   let router = Next.Router.useRouter()
@@ -1422,7 +1428,7 @@ let make = () => {
    we take any success results and set the editor code to the new formatted code */
   switch compilerState {
   | Ready({result: FinalResult.Nothing} as ready) =>
-    compilerDispatch(CompileCode(ready.targetLang, editorCode.current))
+    compilerDispatch(CompileCode(ready.targetLang, getPreamble(ready) ++ editorCode.current))
   | Ready({result: FinalResult.Conv(Api.ConversionResult.Success({code}))}) =>
     editorCode.current = code
   | _ => ()
@@ -1442,7 +1448,8 @@ let make = () => {
   React.useEffect1(() => {
     timeoutCompile.current = () =>
       switch compilerState {
-      | Ready(ready) => compilerDispatch(CompileCode(ready.targetLang, editorCode.current))
+      | Ready(ready) =>
+        compilerDispatch(CompileCode(ready.targetLang, getPreamble(ready) ++ editorCode.current))
       | _ => ()
       }
 
