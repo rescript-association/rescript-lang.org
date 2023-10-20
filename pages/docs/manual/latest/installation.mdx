@@ -21,6 +21,15 @@ npm run res:build
 node src/Demo.bs.js
 ```
 
+or use the create-rescript-app tool:
+
+```sh
+npm create rescript-app // Select basic template
+cd <your-rescript-project-name>
+npm run res:build
+node src/Demo.bs.js
+```
+
 That compiles your ReScript into JavaScript, then uses Node.js to run said JavaScript. **We recommend you use our unique workflow of keeping a tab open for the generated `.bs.js` file**, so that you can learn how ReScript transforms into JavaScript. Not many languages output clean JavaScript code you can inspect and learn from!
 
 During development, instead of running `npm run res:build` each time to compile, use `npm run res:dev` to start a watcher that recompiles automatically after file changes.
