@@ -432,6 +432,18 @@ let usersToJson = users => Array(users->Array.map(userToJson))
 
 This can be extrapolated to many more cases.
 
+// ### Unboxable types
+
+// TODO #734: Add a list of what can currently be unboxed (and why), and a note that it's possible that more things could be unboxed in the future.
+
+// ### Catch all
+
+// TODO #733: Add a small section on the "catch all" trick, and what kind of things that enable.
+
+// ## Variant spread
+
+// TODO #732
+
 ## Coercion
 
 You can convert a variant to a `string` or `int` at no cost:
@@ -451,6 +463,12 @@ var message = "Hello " + theCompany;
 ```
 
 </CodeTab>
+
+// TODO #731: expand this section with:
+//
+// Coercing between variants (and the constraints around that)
+// Why you can sometimes coerce from variant to string/int/float, and how to think about that (runtime representation must match)
+// The last additions of allowing coercing strings to unboxed variants with catch-all string cases
 
 ## Tips & Tricks
 
