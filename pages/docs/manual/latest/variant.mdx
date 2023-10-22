@@ -346,18 +346,17 @@ let getBestFriendsAge = user =>
   }
 ```
 
-> Notice how `@as` allows us to say that an unboxed variant case should map to a specific underlying _primitive_. `Present` has a type variable, so it can hold any type. And since it's an unboxed type, only the payloads `'a` or `null` will be kept at runtime. That's where the magic comes from.
+> Notice how `@as` allows us to say that an untagged variant case should map to a specific underlying _primitive_. `Present` has a type variable, so it can hold any type. And since it's an unboxed type, only the payloads `'a` or `null` will be kept at runtime. That's where the magic comes from.
 
 ### Decoding and encoding JSON idiomatically
 
-With unboxed variants, we have everything we need to define a JSON type:
+With untagged variants, we have everything we need to define a JSON type:
 
 ```rescript
 @unboxed
 type rec json =
-  | @as(false) False
-  | @as(true) True
   | @as(null) Null
+  | Boolean(bool)
   | String(string)
   | Number(float)
   | Object(Js.Dict.t<json>)
