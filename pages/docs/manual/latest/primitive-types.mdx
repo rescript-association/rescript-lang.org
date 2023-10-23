@@ -48,7 +48,6 @@ There's a special syntax for string that allows
 - multiline string just like before
 - no special character escaping
 - Interpolation
-- Proper unicode handling
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -71,27 +70,9 @@ var greeting = "Hello\nWorld\n👋\n" + name + "\n";
 
 This is just like JavaScript's backtick string interpolation, except without needing to escape special characters.
 
-### Unsafe String Interpolation (Deprecated)
-
-> ReScript v10.1.4 deprecated unsafe string interpolation and will be removed in v11.
-
-For interpolation, you'll have to convert the binding (`name` in the example) into a string if it isn't one. If you want the interpolation to implicitly convert a binding into a string, prepend a `j`:
-
-<CodeTab labels={["ReScript", "JS Output"]}>
-
-```res example
-let age = 10
-let message = j`Today I am $age years old.`
-```
-```js
-var message = "Today I am " + 10 + " years old.";
-```
-
-</CodeTab>
-
 ### Usage
 
-See the familiar `Js.String` API in the [API docs](api/js/string). Since a ReScript string maps to a JavaScript string, you can mix & match the string operations in both standard libraries.
+See the familiar `String` API in the [API docs](api/js/string). Since a ReScript string maps to a JavaScript string, you can mix & match the string operations in all standard libraries.
 
 ### Tips & Tricks
 

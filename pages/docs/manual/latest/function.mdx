@@ -388,34 +388,7 @@ function callFirst(_param) {
 
 </CodeTab>
 
-## Uncurried Function
-
-ReScript's functions are curried by default, which is one of the few performance penalties we pay in the compiled JS output. The compiler does a best-effort job at removing those currying whenever possible. However, in certain edge cases, you might want guaranteed uncurrying. In those cases, put a dot in the function's parameter list:
-
-<CodeTab labels={["ReScript", "JS Output"]}>
-
-```res example
-let add = (. x, y) => x + y
-
-add(. 1, 2)
-```
-```js
-function add(x, y) {
-  return x + y | 0;
-}
-
-add(1, 2);
-```
-
-</CodeTab>
-
-If you write down the uncurried function's type, you'll add a dot there as well.
-
-**Note**: both the declaration site and the call site need to have the uncurry annotation. That's part of the guarantee/requirement.
-
-**This feature seems trivial**, but is actually one of our most important features, as a primarily functional language. We encourage you to use it if you'd like to remove any mention of `Curry` runtime in the JS output.
-
-## Async/Await (from v10.1)
+## Async/Await
 
 Just as in JS, an async function can be declared by adding `async` before the definition, and `await` can be used in the body of such functions.
 The output looks like idiomatic JS:

@@ -160,7 +160,7 @@ See the [Pattern Matching/Destructuring](pattern-matching-destructuring) section
 
 A variant value compiles to 3 possible JavaScript outputs depending on its type declaration:
 
-- If the variant value is a constructor with no payload, it compiles to a number.
+- If the variant value is a constructor with no payload, it compiles to a string.
 - If it's a constructor with a payload, it compiles to an object with the field `TAG` and the field `_0` for the first payload, `_1` for the second payload, etc.
 - An exception to the above is a variant whose type declaration contains only a single constructor with payload. In that case, the constructor compiles to an object without the `TAG` field.
 - Labeled variant payloads (the inline record trick earlier) compile to an object with the label names instead of `_0`, `_1`, etc. The object might or might not have the `TAG` field as per previous rule.
@@ -193,43 +193,282 @@ let a1 = Warrior({score: 10.5})
 let a2 = Wizard("Joe")
 ```
 ```js
-var g1 = /* Hello */0;
-var g2 = /* Goodbye */1;
+var g1 = "Hello";
 
-var o1 = /* Good */0;
-var o2 = /* Error */{
+var g2 = "Goodbye";
+
+var o1 = "Good";
+
+var o2 = {
+  TAG: "Error",
   _0: "oops!"
 };
 
-var f1 = /* Child */0;
+var f1 = "Child";
+
 var f2 = {
-  TAG: /* Mom */0,
+  TAG: "Mom",
   _0: 30,
   _1: "Jane"
 };
+
 var f3 = {
-  TAG: /* Dad */1,
+  TAG: "Dad",
   _0: 32
 };
 
-var p1 = /* Teacher */0;
-var p2 = /* Student */{
+var p1 = "Teacher";
+
+var p2 = {
+  TAG: "Student",
   gpa: 99.5
 };
 
 var a1 = {
-  TAG: /* Warrior */0,
+  TAG: "Warrior",
   _0: {
     score: 10.5
   }
 };
+
 var a2 = {
-  TAG: /* Wizard */1,
+  TAG: "Wizard",
   _0: "Joe"
 };
 ```
 
 </CodeTab>
+
+## Tagged variants
+
+- The `@tag` attribute lets you customize the discriminator (default: `TAG`).
+- `@as` attributes control what each variant case is discriminated on (default: the variant case name as string).
+
+### Example: Binding to TypeScript enums
+
+```typescript
+// direction.ts
+/** Direction of the action. */
+enum Direction {
+  /** The direction is up. */
+  Up = "UP",
+
+  /** The direction is down. */
+  Down = "DOWN",
+
+  /** The direction is left. */
+  Left = "LEFT",
+
+  /** The direction is right. */
+  Right = "RIGHT",
+}
+
+export const myDirection = Direction.Up;
+```
+
+You can bind to the above enums like so:
+
+```rescript
+/** Direction of the action. */
+type direction =
+  | /** The direction is up. */
+  @as("UP")
+  Up
+
+  | /** The direction is down. */
+  @as("DOWN")
+  Down
+
+  | /** The direction is left. */
+  @as("LEFT")
+  Left
+
+  | /** The direction is right. */
+  @as("RIGHT")
+  Right
+
+@module("./direction.js") external myDirection: direction = "myDirection"
+```
+
+Now, this maps 100% to the TypeScript code, including letting us bring over the documentation strings so we get a nice editor experience.
+
+### String literals
+
+The same logic is easily applied to string literals from TypeScript, only here the benefit is even larger, because string literals have the same limitations in TypeScript that polymorphic variants have in ReScript.
+
+```typescript
+// direction.ts
+type direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
+```
+
+There's no way to attach documentation strings to string literals in TypeScript, and you only get the actual value to interact with.
+
+## Untagged variants
+
+With _untagged variants_ it is possible to represent a heterogenous array.
+
+```rescript
+@unboxed type listItemValue = String(string) | Boolean(bool) | Number(float)
+
+let myArray = [String("Hello"), Boolean(true), Boolean(false), Number(13.37)]
+```
+
+Here, each value will be _unboxed_ at runtime. That means that the variant payload will be all that's left, the variant case name wrapping the payload itself will be stripped out and the payload will be all that remains.
+
+It, therefore, compiles to this JS:
+
+```javascript
+var myArray = ["hello", true, false, 13.37];
+```
+
+In the above example, reaching back into the values is as simple as pattern matching on them.
+
+### Pattern matching on nullable values
+
+```rescript
+// The type definition below is inlined here to examplify, but this definition will live in [Core](https://github.com/rescript-association/rescript-core) and be easily accessible
+module Null = {
+  @unboxed type t<'a> = Present('a) | @as(null) Null
+}
+
+type userAge = {ageNum: Null.t<int>}
+
+type rec user = {
+  name: string,
+  age: Null.t<userAge>,
+  bestFriend: Null.t<user>,
+}
+
+let getBestFriendsAge = user =>
+  switch user.bestFriend {
+  | Present({age: Present({ageNum: Present(ageNum)})}) => Some(ageNum)
+  | _ => None
+  }
+```
+
+> Notice how `@as` allows us to say that an untagged variant case should map to a specific underlying _primitive_. `Present` has a type variable, so it can hold any type. And since it's an unboxed type, only the payloads `'a` or `null` will be kept at runtime. That's where the magic comes from.
+
+### Decoding and encoding JSON idiomatically
+
+With untagged variants, we have everything we need to define a JSON type:
+
+```rescript
+@unboxed
+type rec json =
+  | @as(null) Null
+  | Boolean(bool)
+  | String(string)
+  | Number(float)
+  | Object(Js.Dict.t<json>)
+  | Array(array<json>)
+
+let myValidJsonValue = Array([String("Hi"), Number(123.)])
+```
+
+Here's an example of how you could write your own JSON decoders easily using the above, leveraging pattern matching:
+
+```rescript
+@unboxed
+type rec json =
+  | @as(false) False
+  | @as(true) True
+  | @as(null) Null
+  | String(string)
+  | Number(float)
+  | Object(Js.Dict.t<json>)
+  | Array(array<json>)
+
+type rec user = {
+  name: string,
+  age: int,
+  bestFriend: option<user>,
+}
+
+let rec decodeUser = json =>
+  switch json {
+  | Object(userDict) =>
+    switch (
+      userDict->Dict.get("name"),
+      userDict->Dict.get("age"),
+      userDict->Dict.get("bestFriend"),
+    ) {
+    | (Some(String(name)), Some(Number(age)), Some(maybeBestFriend)) =>
+      Some({
+        name,
+        age: age->Float.toInt,
+        bestFriend: maybeBestFriend->decodeUser,
+      })
+    | _ => None
+    }
+  | _ => None
+  }
+
+let decodeUsers = json =>
+  switch json {
+  | Array(array) => array->Array.map(decodeUser)->Array.keepSome
+  | _ => []
+  }
+```
+
+Encoding that same structure back into JSON is also easy:
+
+```rescript
+let rec userToJson = user => Object(
+  Dict.fromArray([
+    ("name", String(user.name)),
+    ("age", Number(user.age->Int.toFloat)),
+    (
+      "bestFriend",
+      switch user.bestFriend {
+      | None => Null
+      | Some(friend) => userToJson(friend)
+      },
+    ),
+  ]),
+)
+
+let usersToJson = users => Array(users->Array.map(userToJson))
+```
+
+This can be extrapolated to many more cases.
+
+// ### Unboxable types
+
+// TODO #734: Add a list of what can currently be unboxed (and why), and a note that it's possible that more things could be unboxed in the future.
+
+// ### Catch all
+
+// TODO #733: Add a small section on the "catch all" trick, and what kind of things that enable.
+
+// ## Variant spread
+
+// TODO #732
+
+## Coercion
+
+You can convert a variant to a `string` or `int` at no cost:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type company = Apple | Facebook | Other(string)
+let theCompany: company = Apple
+
+let message = "Hello " ++ (theCompany :> string)
+```
+
+```js
+var theCompany = "Apple";
+var message = "Hello " + theCompany;
+```
+
+</CodeTab>
+
+// TODO #731: expand this section with:
+//
+// Coercing between variants (and the constraints around that)
+// Why you can sometimes coerce from variant to string/int/float, and how to think about that (runtime representation must match)
+// The last additions of allowing coercing strings to unboxed variants with catch-all string cases
 
 ## Tips & Tricks
 
@@ -285,14 +524,48 @@ function betterDraw(animal) {
 }
 
 betterDraw({
-  TAG: /* MyFloat */0,
-  _0: 1.5
-});
+      TAG: "MyFloat",
+      _0: 1.5
+    });
 ```
 
 </CodeTab>
 
-**Try not to do that**, as this generates extra noisy output. Alternatively, define two `external`s that both compile to the same JS call:
+**Try not to do that**, as this generates extra noisy output. Instead, use the `@unboxed` attribute to guide ReScript to generate more efficient code:
+
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+// reserved for internal usage
+@module("myLibrary") external draw : 'a => unit = "draw"
+
+@unboxed
+type animal =
+  | MyFloat(float)
+  | MyString(string)
+
+let betterDraw = (animal) =>
+  switch animal {
+  | MyFloat(f) => draw(f)
+  | MyString(s) => draw(s)
+  }
+
+betterDraw(MyFloat(1.5))
+```
+```js
+var MyLibrary = require("myLibrary");
+
+function betterDraw(animal) {
+  MyLibrary.draw(animal);
+}
+
+MyLibrary.draw(1.5);
+```
+
+</CodeTab>
+
+Alternatively, define two `external`s that both compile to the same JS call:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
