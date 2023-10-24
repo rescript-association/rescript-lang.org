@@ -1,5 +1,5 @@
 // Structure defined by `scripts/extract-indices.js`
-@module("index_data/v800_dom_api_index.json")
+@module("index_data/v900_dom_api_index.json")
 external indexData: Js.Dict.t<{
   "moduleName": string,
   "headers": array<{
@@ -14,18 +14,18 @@ module NavItem = SidebarLayout.Sidebar.NavItem
 let overviewNavs = [
   {
     open NavItem
-    {name: "Dom", href: "/docs/manual/v8.0.0/api/dom"}
+    {name: "Dom", href: "/docs/manual/v9.0.0/api/dom"}
   },
 ]
 
 let moduleNavs = [
   {
     open NavItem
-    {name: "Storage", href: "/docs/manual/v8.0.0/api/dom/storage"}
+    {name: "Storage", href: "/docs/manual/v9.0.0/api/dom/storage"}
   },
   {
     open NavItem
-    {name: "Storage2", href: "/docs/manual/v8.0.0/api/dom/storage2"}
+    {name: "Storage2", href: "/docs/manual/v9.0.0/api/dom/storage2"}
   },
 ]
 
@@ -82,7 +82,7 @@ module Docs = {
     }
 
     let title = "Dom Module"
-    let version = "v8.0.0"
+    let version = "v9.0.0"
 
     let warnBanner = <ApiLayout.OldDocsWarning route version />
 

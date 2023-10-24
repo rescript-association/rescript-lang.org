@@ -61,6 +61,9 @@ module Link: {
     ~shallow: option<bool>=?,
     ~passHref: option<bool>=?,
     ~children: React.element,
+    ~className: option<string>=?,
+    ~target: string=?,
+    ~hrefRel: string=?,
   ) => React.element
 }
 
