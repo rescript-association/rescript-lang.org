@@ -7,29 +7,29 @@
 
 // Register all the highlightjs stuff for the whole application
 %%raw(`
-  let hljs = require('highlight.js/lib/core');
-  let js = require('highlight.js/lib/languages/javascript');
-  let css = require('highlight.js/lib/languages/css');
-  let ocaml = require('highlight.js/lib/languages/ocaml');
-  let reason = require('plugins/reason-highlightjs');
-  let rescript = require('plugins/rescript-highlightjs');
-  let bash = require('highlight.js/lib/languages/bash');
-  let json = require('highlight.js/lib/languages/json');
-  let html = require('highlight.js/lib/languages/xml');
-  let text = require('highlight.js/lib/languages/plaintext');
-  let diff = require('highlight.js/lib/languages/diff');
+  import hljs from 'highlight.js/lib/core'
+  import javascript from 'highlight.js/lib/languages/javascript'
+  import css from 'highlight.js/lib/languages/css'
+  import ocaml from 'highlight.js/lib/languages/ocaml'
+  import reason from 'plugins/reason-highlightjs'
+  import rescript from 'plugins/rescript-highlightjs'
+  import bash from 'highlight.js/lib/languages/bash'
+  import json from 'highlight.js/lib/languages/json'
+  import html from 'highlight.js/lib/languages/xml'
+  import text from 'highlight.js/lib/languages/plaintext'
+  import diff from 'highlight.js/lib/languages/diff'
 
-  hljs.registerLanguage('reason', reason);
-  hljs.registerLanguage('rescript', rescript);
-  hljs.registerLanguage('javascript', js);
-  hljs.registerLanguage('css', css);
-  hljs.registerLanguage('ts', js);
-  hljs.registerLanguage('ocaml', ocaml);
-  hljs.registerLanguage('sh', bash);
-  hljs.registerLanguage('json', json);
-  hljs.registerLanguage('text', text);
-  hljs.registerLanguage('html', html);
-  hljs.registerLanguage('diff', diff);
+  hljs.registerLanguage('reason', reason)
+  hljs.registerLanguage('rescript', rescript)
+  hljs.registerLanguage('javascript', javascript)
+  hljs.registerLanguage('css', css)
+  hljs.registerLanguage('ts', javascript)
+  hljs.registerLanguage('ocaml', ocaml)
+  hljs.registerLanguage('sh', bash)
+  hljs.registerLanguage('json', json)
+  hljs.registerLanguage('text', text)
+  hljs.registerLanguage('html', html)
+  hljs.registerLanguage('diff', diff)
 `)
 
 type pageComponent = React.component<{.}>
@@ -79,6 +79,16 @@ let make = (props: props): React.element => {
         | (_, Some("dom")) => <DomDocsLayout8_0_0.Docs> content </DomDocsLayout8_0_0.Docs>
         | _ => React.null
         }
+      | Version("v9.0.0") =>
+        switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
+        | (1, _) => <ApiOverviewLayout9_0_0.Docs> content </ApiOverviewLayout9_0_0.Docs>
+        | (2, Some("js")) => <JsDocsLayout9_0_0.Prose> content </JsDocsLayout9_0_0.Prose>
+        | (2, Some("belt")) => <BeltDocsLayout9_0_0.Prose> content </BeltDocsLayout9_0_0.Prose>
+        | (_, Some("js")) => <JsDocsLayout9_0_0.Docs> content </JsDocsLayout9_0_0.Docs>
+        | (_, Some("belt")) => <BeltDocsLayout9_0_0.Docs> content </BeltDocsLayout9_0_0.Docs>
+        | (_, Some("dom")) => <DomDocsLayout9_0_0.Docs> content </DomDocsLayout9_0_0.Docs>
+        | _ => React.null
+        }
       | _ => content
       }
     | _ =>
@@ -119,6 +129,7 @@ let make = (props: props): React.element => {
       <CommunityLayout frontmatter={component->frontmatter}> content </CommunityLayout>
     | list{"try"} => content
     | list{"blog"} => content // Blog implements its own layout as well
+    | list{"syntax-lookup"} => content
     | list{"packages"} => content
     | list{"blog", ..._rest} => // Here, the layout will be handled by the Blog_Article component
       // to keep the frontmatter parsing etc in one place

@@ -230,13 +230,12 @@ module Toggle = {
       | Some({code: ""}) => React.null
       | Some(tab) =>
         let playgroundLinkButton =
-          <Next.Link href={`/try?code=${LzString.compressToEncodedURIComponent(tab.code)}}`}>
-            <a target="_blank">
-              // ICON Link to PLAYGROUND
-              <Icon.ExternalLink
-                className="text-gray-30 mt-px hover:cursor-pointer hover:text-gray-60 hover:bg-gray-30 w-6 h-6 p-1 rounded transition-all duration-300 ease-in-out"
-              />
-            </a>
+          <Next.Link
+            href={`/try?code=${LzString.compressToEncodedURIComponent(tab.code)}}`} target="_blank">
+            // ICON Link to PLAYGROUND
+            <Icon.ExternalLink
+              className="text-gray-30 mt-px hover:cursor-pointer hover:text-gray-60 hover:bg-gray-30 w-6 h-6 p-1 rounded transition-all duration-300 ease-in-out"
+            />
           </Next.Link>
 
         let copyButton = <CopyButton code={tab.code} />

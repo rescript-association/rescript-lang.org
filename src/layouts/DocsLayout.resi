@@ -17,7 +17,7 @@ let make: (
 ) => React.element
 
 module type StaticContent = {
-  /* let categories: array(SidebarLayout.Sidebar.Category.t); */
+  /* let categories: array<SidebarLayout.Sidebar.Category.t>; */
   let tocData: SidebarLayout.Toc.raw
 }
 
@@ -31,7 +31,7 @@ module Make: (Content: StaticContent) =>
     ~frontmatter: Js.Json.t=?,
     ~version: string=?,
     ~availableVersions: array<(string, string)>=?,
-    /* ~activeToc: option(SidebarLayout.Toc.t)=?, */
+    /* ~activeToc: option<SidebarLayout.Toc.t>=?, */
     ~components: Mdx.Components.t=?,
     ~theme: ColorTheme.t=?,
     ~children: React.element,
