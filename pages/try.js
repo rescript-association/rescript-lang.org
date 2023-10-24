@@ -5,13 +5,15 @@ import Try from "src/Try.mjs";
 
 const Playground = dynamic(() => import("src/Playground.mjs"), {
   ssr: false,
-  loading: () => <span>Loading...</span>,
-})
+  loading: () => <span>Loading...</span>
+});
 
 function Comp(props) {
-  return <Try>
-    <Playground {...props}/>
-  </Try>;
+  return (
+    <Try>
+      <Playground {...props} />
+    </Try>
+  );
 }
 
 export default Comp;
