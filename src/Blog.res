@@ -123,7 +123,7 @@ module BlogCard = {
           | Some(category) =>
             <>
               {React.string(category)}
-              {React.string(j` · `)}
+              {React.string(` · `)}
             </>
           | None => React.null
           }}

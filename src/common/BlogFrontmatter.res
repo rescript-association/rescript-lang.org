@@ -98,7 +98,7 @@ let decodeBadge = (str: string): Badge.t =>
   | "testing" => Testing
   | "preview" => Preview
   | "roadmap" => Roadmap
-  | str => raise(Json.Decode.DecodeError(j`Unknown category "$str"`))
+  | str => raise(Json.Decode.DecodeError(`Unknown category "${str}"`))
   }
 
 exception AuthorNotFound(string)
@@ -106,7 +106,7 @@ exception AuthorNotFound(string)
 let decodeAuthor = (~fieldName: string, ~authors, username) =>
   switch Js.Array2.find(authors, a => a.username === username) {
   | Some(author) => author
-  | None => raise(AuthorNotFound(j`Couldn't find author "$username" in field $fieldName`))
+  | None => raise(AuthorNotFound(`Couldn't find author "${username}" in field ${fieldName}`))
   }
 
 let authorDecoder = (~fieldName: string, ~authors, json) => {
