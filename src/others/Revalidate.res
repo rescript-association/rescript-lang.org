@@ -1,7 +1,5 @@
 module Req = {
-  type query = {secret: string}
-
-  type req = {query: query}
+  type req = {query: Js.Dict.t<string>}
 }
 
 module Res = {
@@ -21,14 +19,19 @@ module Res = {
 @val external process: 'a = "process"
 
 let handler = async (req: Req.req, res: Res.res) => {
-  if req.query.secret !== process["env"]["NEXT_REVALIDATE_SECRET_TOKEN"] {
-    res->Res.Status.make(401)->Res.Status.json({"message": "Invalid secret"})
-  } else {
-    try {
-      let () = await res->Res.revalidate("/try")
-      res->Res.json({"revalidated": true})
-    } catch {
-    | Js.Exn.Error(_) => res->Res.Status.make(500)->Res.Status.send("Error revalidating")
+  switch req.query->Js.Dict.get("secret") {
+  | Some(secret) =>
+    if secret !== process["env"]["NEXT_REVALIDATE_SECRET_TOKEN"] {
+      res->Res.Status.make(401)->Res.Status.json({"message": "Invalid secret"})
+    } else {
+      try {
+        let () = await res->Res.revalidate("/try")
+        res->Res.json({"revalidated": true})
+      } catch {
+      | Js.Exn.Error(_) => res->Res.Status.make(500)->Res.Status.send("Error revalidating")
+      }
     }
+  | None =>
+    res->Res.Status.make(500)->Res.Status.send("Error revalidating, param `secret` not found")
   }
 }
