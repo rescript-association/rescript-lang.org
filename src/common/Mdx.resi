@@ -36,6 +36,12 @@ module Components: {
     ~info: React.component<props>=?,
     ~warn: React.component<props>=?,
     ~intro: React.component<props>=?,
+    ~image: React.component<{
+      "src": string,
+      "withShadow": option<bool>,
+      "caption": option<string>,
+    }>=?,
+    ~video: React.component<{"src": string, "caption": option<string>}>=?,
     ~urlBox: React.component<{"text": string, "href": string, "children": MdxChildren.t}>=?,
     ~codeTab: React.component<{"children": MdxChildren.t, "labels": option<array<string>>}>=?,
     ~p: React.component<props>=?,
@@ -52,7 +58,6 @@ module Components: {
     ~th: React.component<props>=?,
     ~td: React.component<props>=?,
     ~blockquote: React.component<props>=?,
-    ~inlineCode: React.component<props>=?,
     ~strong: React.component<props>=?,
     ~hr: React.component<{.}>=?,
     ~code: React.component<{
@@ -69,4 +74,18 @@ module Components: {
 module Provider: {
   @react.component
   let make: (~components: Components.t, ~children: React.element=?) => React.element
+}
+
+module Remote: {
+  type output = {
+    frontmatter: Js.Json.t,
+    compiledSource: string,
+    scope: Js.Json.t,
+  }
+  let serialize: (string, {..}) => promise<output>
+}
+
+module MDXRemote: {
+  @react.component
+  let make: (~props: Remote.output) => React.element
 }

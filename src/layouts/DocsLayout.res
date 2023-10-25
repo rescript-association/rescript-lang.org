@@ -136,7 +136,13 @@ let make = (
       | None => title
       }
       let meta = <Meta title ?description ?canonical />
-      (meta, Some(fm.ghEditHref))
+
+      let ghEditHref = switch canonical {
+      | Some(canonical) =>
+        `https://github.com/reason-association/rescript-lang.org/blob/master/pages${canonical}.mdx`->Some
+      | None => None
+      }
+      (meta, ghEditHref)
     | None => (React.null, None)
     }
   | None => (React.null, None)

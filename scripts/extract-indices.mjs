@@ -155,6 +155,7 @@ const extractApiIndex = version => {
 };
 
 extractApiIndex("latest");
+extractApiIndex("v9.0.0")
 extractApiIndex("v8.0.0");
 
 

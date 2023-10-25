@@ -20,9 +20,8 @@
  *
  *
  */
-module.exports = {
-  mode: "jit",
-  purge: [
+export default {
+  content: [
     "./src/**/*.{mjs,js,res}",
     "./pages/**/*.{mjs,js,mdx}",
   ],
@@ -232,20 +231,6 @@ module.exports = {
         "monospace"
       ]
     }
-  },
-  variants: {
-    color: ["hover"],
-    backgroundColor: ["hover", "active"],
-    fontWeight: ['hover', 'focus'],
-    cursor: ["hover"],
-    width: ["responsive"],
-    border: ["hover", "responsive"],
-    borderWidth: ["active", "responsive", "last", "first"],
-    borderRadius: ["first", "responsive"],
-    padding: ["hover", "responsive", "last"],
-    margin: ["hover", "responsive", "first", "last"],
-    visibility: ["group-hover"],
-    outline: ["focus"],
   },
   plugins: []
 };

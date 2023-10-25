@@ -6,12 +6,12 @@ module Toc = SidebarLayout.Toc
 
 module LatestLayout = DocsLayout.Make({
   // Structure defined by `scripts/extract-tocs.js`
-  let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/react_latest_toc.json')")
+  @module("index_data/react_latest_toc.json") external tocData: SidebarLayout.Toc.raw = "default"
 })
 
 module V0100Layout = DocsLayout.Make({
   // Structure defined by `scripts/extract-tocs.js`
-  let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/react_v0100_toc.json')")
+  @module("index_data/react_v0100_toc.json") external tocData: SidebarLayout.Toc.raw = "default"
 })
 
 module Latest = {

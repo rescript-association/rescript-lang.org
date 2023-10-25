@@ -1,5 +1,5 @@
 // Structure defined by `scripts/extract-indices.js`
-@module("index_data/latest_dom_api_index.json")
+@module("index_data/v900_dom_api_index.json")
 external indexData: Js.Dict.t<{
   "moduleName": string,
   "headers": array<{
@@ -14,27 +14,27 @@ module NavItem = SidebarLayout.Sidebar.NavItem
 let overviewNavs = [
   {
     open NavItem
-    {name: "Dom", href: "/docs/manual/latest/api/dom"}
+    {name: "Dom", href: "/docs/manual/v9.0.0/api/dom"}
   },
 ]
 
 let moduleNavs = [
   {
     open NavItem
-    {name: "Storage", href: "/docs/manual/latest/api/dom/storage"}
+    {name: "Storage", href: "/docs/manual/v9.0.0/api/dom/storage"}
   },
   {
     open NavItem
-    {name: "Storage2", href: "/docs/manual/latest/api/dom/storage2"}
+    {name: "Storage2", href: "/docs/manual/v9.0.0/api/dom/storage2"}
   },
 ]
 
 let categories = [
   {
     open Category
-    {name: "Overview"->Some, items: overviewNavs}
+    {name: "Overview", items: overviewNavs}
   },
-  {name: "Submodules"->Some, items: moduleNavs},
+  {name: "Submodules", items: moduleNavs},
 ]
 
 module Docs = {
@@ -82,9 +82,14 @@ module Docs = {
     }
 
     let title = "Dom Module"
-    let version = "latest"
+    let version = "v9.0.0"
 
-    <ApiLayout components title version activeToc categories breadcrumbs> children </ApiLayout>
+    let warnBanner = <ApiLayout.OldDocsWarning route version />
+
+    <ApiLayout components title version activeToc categories breadcrumbs>
+      warnBanner
+      children
+    </ApiLayout>
   }
 }
 

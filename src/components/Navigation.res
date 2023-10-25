@@ -1,7 +1,7 @@
 module Link = Next.Link
 
-let link = "no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px"
-let activeLink = "text-inherit font-medium text-fire-30 border-b border-fire"
+let link = "no-underline block hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px"
+let activeLink = "font-medium text-fire-30 border-b border-fire"
 
 let linkOrActiveLink = (~target, ~route) => target === route ? activeLink : link
 
@@ -142,9 +142,7 @@ module DocsSection = {
       if isAbsolute {
         <a href rel="noopener noreferrer" className=""> content </a>
       } else {
-        <Next.Link href>
-          <a className=""> content </a>
-        </Next.Link>
+        <Next.Link href className=""> content </Next.Link>
       }
     }
   }
@@ -232,9 +230,7 @@ module DocsSection = {
 
                 <li key=text>
                   <span className="text-fire mr-2"> {React.string(`-`)} </span>
-                  <Link href>
-                    <a className=linkClass> {React.string(text)} </a>
-                  </Link>
+                  <Link href className=linkClass> {React.string(text)} </Link>
                 </li>
               })
               ->React.array}
@@ -380,25 +376,21 @@ module MobileNav = {
           <DocSearch.Textbox id="docsearch-mobile" />
         </li>
         <li className=base>
-          <Link href="/try">
-            <a className={linkOrActiveLink(~target="/try", ~route)}>
-              {React.string("Playground")}
-            </a>
+          <Link href="/try" className={linkOrActiveLink(~target="/try", ~route)}>
+            {React.string("Playground")}
           </Link>
         </li>
         <li className=base>
-          <Link href="/blog">
-            <a className={linkOrActiveLinkSubroute(~target="/blog", ~route)}>
-              {React.string("Blog")}
-            </a>
+          <Link href="/blog" className={linkOrActiveLinkSubroute(~target="/blog", ~route)}>
+            {React.string("Blog")}
           </Link>
         </li>
         /*
          <li className=base>
-           <Link href="/community">
-             <a className={linkOrActiveLink(~target="/community", ~route)}>
+           <Link href="/community"  className={linkOrActiveLink(~target="/community", ~route)}>
+             
                {React.string("Community")}
-             </a>
+             
            </Link>
          </li>
  */
@@ -546,24 +538,23 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
             className="flex ml-10 space-x-5 w-full max-w-320"
             style={ReactDOMStyle.make(~maxWidth="26rem", ())}>
             {collapsibleElements->React.array}
-            <Link href="/docs/manual/latest/api">
-              <a className={linkOrActiveApiSubroute(~route)}> {React.string("API")} </a>
+            <Link href="/docs/manual/latest/api" className={linkOrActiveApiSubroute(~route)}>
+              {React.string("API")}
             </Link>
-            <Link href="/try">
-              <a className={"hidden xs:block " ++ linkOrActiveLink(~target="/try", ~route)}>
-                {React.string("Playground")}
-              </a>
+            <Link
+              href="/try"
+              className={"hidden xs:block " ++ linkOrActiveLink(~target="/try", ~route)}>
+              {React.string("Playground")}
             </Link>
-            <Link href="/blog">
-              <a
-                className={"hidden xs:block " ++ linkOrActiveLinkSubroute(~target="/blog", ~route)}>
-                {React.string("Blog")}
-              </a>
+            <Link
+              href="/blog"
+              className={"hidden xs:block " ++ linkOrActiveLinkSubroute(~target="/blog", ~route)}>
+              {React.string("Blog")}
             </Link>
-            <Link href="/community">
-              <a className={"hidden xs:block " ++ linkOrActiveLink(~target="/community", ~route)}>
-                {React.string("Community")}
-              </a>
+            <Link
+              href="/community"
+              className={"hidden xs:block " ++ linkOrActiveLink(~target="/community", ~route)}>
+              {React.string("Community")}
             </Link>
           </div>
           <div className="hidden md:flex items-center">
