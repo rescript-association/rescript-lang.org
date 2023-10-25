@@ -134,7 +134,7 @@ module RssFeed = {
       Belt.Array.get(items, 0)
       ->Belt.Option.map(item => {
         let latestPubDateStr = item.pubDate->dateToUTCString
-        j`<lastBuildDate>$latestPubDateStr</lastBuildDate>`
+        `<lastBuildDate>${latestPubDateStr}</lastBuildDate>`
       })
       ->Belt.Option.getWithDefault("")
 
@@ -143,33 +143,34 @@ module RssFeed = {
       ->Js.Array2.map(({title, pubDate, description, href}) => {
         let descriptionElement = switch description {
         | "" => ""
-        | desc => j`<description>
-            <![CDATA[$desc]]>
+        | desc =>
+          `<description>
+            <![CDATA[${desc}]]>
           </description>`
         }
 
         // TODO: convert pubdate to string
         let dateStr = pubDate->dateToUTCString
-        j`
+        `
         <item>
-          <title> <![CDATA[$title]]></title>
-          <link> $href </link>
-          <guid> $href </guid>
-          $descriptionElement
-          <pubDate>$dateStr</pubDate>
+          <title> <![CDATA[${title}]]></title>
+          <link> ${href} </link>
+          <guid> ${href} </guid>
+          ${descriptionElement}
+          <pubDate>${dateStr}</pubDate>
         </item>`
       })
       ->Js.Array2.joinWith("\n")
 
-    let ret = j`<?xml version="1.0" encoding="utf-8" ?>
+    let ret = `<?xml version="1.0" encoding="utf-8" ?>
   <rss version="2.0">
     <channel>
-      <title>$siteTitle</title>
+      <title>${siteTitle}</title>
       <link>https://rescript-lang.org</link>
-      <description>$siteDescription</description>
+      <description>${siteDescription}</description>
       <language>en</language>
-      $latestPubDateElement
-$itemsStr
+      ${latestPubDateElement}
+${itemsStr}
     </channel>
   </rss>` //rescript-lang.org</link>
 

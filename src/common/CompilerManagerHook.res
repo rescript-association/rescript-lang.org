@@ -28,7 +28,7 @@ module LoadScript = {
       loadScript(
         ~src=url,
         ~onSuccess=() => resolve(. Ok()),
-        ~onError=_err => resolve(. Error(j`Could not load script: $url`)),
+        ~onError=_err => resolve(. Error(`Could not load script: ${url}`)),
       )->ignore
     })
   }
@@ -52,10 +52,10 @@ module CdnMeta = {
   let experimentalVersions = ["v11.0.0-rc.3", "v11.0.0-beta.4", "v11.0.0-beta.1", "v11.0.0-alpha.5"]
 
   let getCompilerUrl = (version: string): string =>
-    j`https://cdn.rescript-lang.org/$version/compiler.js`
+    `https://cdn.rescript-lang.org/${version}/compiler.js`
 
   let getLibraryCmijUrl = (version: string, libraryName: string): string =>
-    j`https://cdn.rescript-lang.org/$version/$libraryName/cmij.js`
+    `https://cdn.rescript-lang.org/${version}/${libraryName}/cmij.js`
 }
 
 module FinalResult = {
