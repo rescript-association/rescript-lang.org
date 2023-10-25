@@ -940,16 +940,44 @@ module Settings = {
               {switch experimentalVersions {
               | [] => React.null
               | experimentalVersions =>
+                let versionByOrder = experimentalVersions->Js.Array2.sortInPlaceWith((a, b) => {
+                  let cmp = ({Util.Semver.major: major, minor, patch, preRelease} as v) => {
+                    let preRelease = switch preRelease {
+                    | Some(preRelease) =>
+                      switch preRelease {
+                      | Dev(id) => 0 + id
+                      | Alpha(id) => 10 + id
+                      | Beta(id) => 20 + id
+                      | Rc(id) => 30 + id
+                      }
+                    | None => 0
+                    }
+                    let number =
+                      [major, minor, patch]
+                      ->Js.Array2.map(v => v->Belt.Int.toString)
+                      ->Js.Array2.joinWith("")
+                      ->Belt.Int.fromString
+                      ->Belt.Option.getWithDefault(0)
+
+                    let a = number + preRelease
+                    Js.log((Util.Semver.toString(v), number + preRelease, [major, minor, patch]))
+
+                    a
+                  }
+                  cmp(b) - cmp(a)
+                })
                 <>
                   <option disabled=true className="py-4">
                     {React.string("---Experimental---")}
                   </option>
-                  {Belt.Array.map(experimentalVersions, version => {
+                  {versionByOrder
+                  ->Belt.Array.map(version => {
                     let version = Util.Semver.toString(version)
                     <option className="py-4" key=version value=version>
                       {React.string(version)}
                     </option>
-                  })->React.array}
+                  })
+                  ->React.array}
                   <option disabled=true className="py-4">
                     {React.string("---Official Releases---")}
                   </option>
