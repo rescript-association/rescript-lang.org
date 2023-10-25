@@ -1491,7 +1491,7 @@ let make = () => {
   React.useLayoutEffect(() => {
     onResize()
     None
-  })
+  }, [])
 
   let onMouseDown = _ => isDragging.current = true
 
@@ -1563,7 +1563,7 @@ let make = () => {
         Webapi.Window.removeEventListener("mouseup", onMouseUp)
       },
     )
-  })
+  }, [])
 
   let cmErrors = switch compilerState {
   | Ready({result}) =>

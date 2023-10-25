@@ -116,20 +116,47 @@ type props = {mdxSources: array<Mdx.Remote.output>}
 type params = {slug: string}
 
 let decode = (json: Js.Json.t) => {
-  open Json.Decode
-  let id = json->field("id", string, _)
-  let keywords = json->field("keywords", array(string), _)
-  let name = json->field("name", string, _)
-  let summary = json->field("summary", string, _)
-  let category = json->field("category", string, _)->Category.fromString
-
-  {
-    id,
-    keywords,
-    name,
-    summary,
-    category,
+  switch json {
+  | Object(itemDict) =>
+    switch (
+      itemDict->Js.Dict.get("id"),
+      itemDict->Js.Dict.get("keywords"),
+      itemDict->Js.Dict.get("name"),
+      itemDict->Js.Dict.get("summary"),
+      itemDict->Js.Dict.get("category"),
+    ) {
+    | (
+        Some(String(id)),
+        Some(Array(keywords)),
+        Some(String(name)),
+        Some(String(summary)),
+        Some(String(category)),
+      ) => {
+        id,
+        // TODO:
+        keywords: [],
+        name,
+        summary,
+        category: category->Category.fromString,
+      }
+    | _ => assert(false)
+    }
+  | _ => assert(false)
   }
+  // open Json.Decode
+  // let id = json->field("id", string, _)
+  // let keywords = json->field("keywords", array(string), _)
+  // let name = json->field("name", string, _)
+  // let summary = json->field("summary", string, _)
+  // let category = json->field("category", string, _)->Category.fromString
+
+  // {
+  //   id,
+  //   keywords,
+  //   name,
+  //   summary,
+  //   category,
+  // }
 }
 
 type remarkPlugin
@@ -367,7 +394,7 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = async _ctx => {
 
   let allFiles = Node.Fs.readdirSync(dir)->Js.Array2.map(async file => {
     let fullPath = Node.Path.join2(dir, file)
-    let source = fullPath->Node.Fs.readFileSync(#utf8)
+    let source = fullPath->Node.Fs.readFileSync("utf8")
     await Mdx.Remote.serialize(source, {"parseFrontmatter": true, "mdxOptions": mdxOptions})
   })
 

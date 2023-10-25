@@ -544,7 +544,7 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => 
   let index_data_dir = Node.Path.join2(Node.Process.cwd(), "./data")
   let urlResources =
     Node.Path.join2(index_data_dir, "packages_url_resources.json")
-    ->Node.Fs.readFileSync(#utf8)
+    ->Node.Fs.readFileSync("utf8")
     ->Js.Json.parseExn
     ->unsafeToUrlResource
   let props: props = {

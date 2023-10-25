@@ -8,6 +8,7 @@
     "@rescript/react",
     "@ryyppy/rescript-promise"
   ],
+  "uncurried": false,
   "ppx-flags": [],
   "sources": [
     {
