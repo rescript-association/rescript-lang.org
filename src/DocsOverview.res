@@ -27,10 +27,10 @@ let default = (~showVersionSelect=true) => {
   }
 
   let languageManual = [
-    ("Overview", j` /docs/manual/$version/introduction`),
-    ("Language Features", j`/docs/manual/$version/overview`),
-    ("JS Interop", j`/docs/manual/$version/embed-raw-javascript`),
-    ("Build System", j`/docs/manual/$version/build-overview`),
+    ("Overview", `/docs/manual/${version}/introduction`),
+    ("Language Features", `/docs/manual/${version}/overview`),
+    ("JS Interop", `/docs/manual/${version}/embed-raw-javascript`),
+    ("Build System", `/docs/manual/${version}/build-overview`),
   ]
 
   let ecosystem = [

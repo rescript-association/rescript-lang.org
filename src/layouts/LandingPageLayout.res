@@ -131,7 +131,7 @@ exports.Button = Button;`,
 
 module QuickInstall = {
   module CopyButton = {
-    let copyToClipboard: string => bool = %raw(j`
+    let copyToClipboard: string => bool = %raw(`
   function(str) {
     try {
       const el = document.createElement('textarea');
