@@ -303,9 +303,17 @@ type direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
 
 There's no way to attach documentation strings to string literals in TypeScript, and you only get the actual value to interact with.
 
+### Valid `@as` payloads
+Here's a list of everything you can put in the `@as` tag of a variant constructor:
+- A string literal: `@as("success")`
+- An int: `@as(5)`
+- A float constant: `@as(1.5)`
+- True/false: `@as(true)` and `@as(false)`
+- Null: `@as(null)`
+
 ## Untagged variants
 
-With _untagged variants_ it is possible to represent a heterogenous array.
+With _untagged variants_ it is possible to mix types together that normally can't be mixed in the ReScript type system. For example, with untagged variants you can represent a heterogenous array:
 
 ```rescript
 @unboxed type listItemValue = String(string) | Boolean(bool) | Number(float)
@@ -323,10 +331,38 @@ var myArray = ["hello", true, false, 13.37];
 
 In the above example, reaching back into the values is as simple as pattern matching on them.
 
-### Pattern matching on nullable values
+### Unboxing rules (advanced)
+#### No overlap in constructors
+A variant can be unboxed if no constructors have overlap in their runtime representation. 
+
+For example, you can't have `String1(string) | String2(string)` in the same unboxed variant, because there's no way for ReScript to know at runtime which of `String1` or `String2` that `string` belongs to, as it could belong to both.
+The same goes for two records - even if they have fully different shapes, they're still JavaScript `object` at runtime.
+
+Don't worry - the compiler will guide you and ensure there's no overlap.
+
+#### What you can unbox
+Here's a list of all possible things you can unbox:
+- `string`: `String(string)`
+- `float`: `Number(float)`. Notice `int` cannot be unboxed, because JavaScript only has `number` (not actually `int` and `float` like in ReScript) so we can't disambiguate between `float` and `int` at runtime.
+- `bool`: `Boolean(bool)`
+- `array<'value>`: `List(array<string>)`
+- `promise<'value>`: `Promise(promise<string>)`
+- `Dict.t`: `Object(Dict.t<string>)`
+- `Date.t`: `Date(Date.t)`. A JavaScript date.
+- `Blob.t`: `Blob(Blob.t)`. A JavaScript blob.
+- `File.t`: `File(File.t)`. A JavaScript file.
+- `RegExp.t`: `RegExp(RegExp.t)`. A JavaScript regexp instance.
+
+Again notice that the constructor names can be anything, what matters is what's in the payload.
+
+> **Under the hood**: Untagged variants uses a combination of JavaScript `typeof` and `instanceof` checks to discern between unboxed constructors at runtime. This means that we could add more things to the list above detailing what can be unboxed, if there are useful enough use cases.
+
+### Pattern matching on unboxed variants
+Pattern matching works the same on unboxed variants as it does on regular variants. In fact, in the perspective of ReScript's type system there's no difference between untagged and tagged variants. You can do virtually the same things with both. That's the beauty of untagged variants - they're just variants to you as a developer.
+
+Here's an example of pattern matching on an unboxed nullable value that illustrates the above:
 
 ```rescript
-// The type definition below is inlined here to examplify, but this definition will live in [Core](https://github.com/rescript-association/rescript-core) and be easily accessible
 module Null = {
   @unboxed type t<'a> = Present('a) | @as(null) Null
 }
@@ -345,12 +381,13 @@ let getBestFriendsAge = user =>
   | _ => None
   }
 ```
+No difference to how you'd do with a regular variant. But, the runtime representation is different to a regular variant.
 
 > Notice how `@as` allows us to say that an untagged variant case should map to a specific underlying _primitive_. `Present` has a type variable, so it can hold any type. And since it's an unboxed type, only the payloads `'a` or `null` will be kept at runtime. That's where the magic comes from.
 
 ### Decoding and encoding JSON idiomatically
 
-With untagged variants, we have everything we need to define a JSON type:
+With untagged variants, we have everything we need to define a native JSON type:
 
 ```rescript
 @unboxed
@@ -370,8 +407,7 @@ Here's an example of how you could write your own JSON decoders easily using the
 ```rescript
 @unboxed
 type rec json =
-  | @as(false) False
-  | @as(true) True
+  | Boolean(bool)
   | @as(null) Null
   | String(string)
   | Number(float)
