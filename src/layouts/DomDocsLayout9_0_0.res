@@ -32,9 +32,9 @@ let moduleNavs = [
 let categories = [
   {
     open Category
-    {name: "Overview", items: overviewNavs}
+    {name: "Overview"->Some, items: overviewNavs}
   },
-  {name: "Submodules", items: moduleNavs},
+  {name: "Submodules"->Some, items: moduleNavs},
 ]
 
 module Docs = {

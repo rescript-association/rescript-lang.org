@@ -1,9 +1,9 @@
 type apiIndex = Js.Dict.t<Js.Json.t>
 
-let apiJs: apiIndex = %raw("require('data/js.json')")
-let apiBelt: apiIndex = %raw("require('data/belt.json')")
-let apiDom: apiIndex = %raw("require('data/dom.json')")
-let modulePaths: array<string> = %raw("require('data/api_module_paths.json')")
+@module("data/js.json") external apiJs: apiIndex = "default"
+@module("data/belt.json") external apiBelt: apiIndex = "default"
+@module("data/dom.json") external apiDom: apiIndex = "default"
+@module("data/api_module_paths.json") external modulePaths: array<string> = "default"
 
 type params = {slug: array<string>}
 
