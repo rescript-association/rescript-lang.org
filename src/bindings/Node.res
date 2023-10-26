@@ -1,7 +1,7 @@
 module Path = {
   @module("path") external join2: (string, string) => string = "join"
   @module("path") external basename: string => string = "basename"
-  @module("path") external resolve: (string, string) => string = "dirname"
+  @module("path") external resolve: (string, string) => string = "resolve"
 }
 
 module Process = {
@@ -9,6 +9,6 @@ module Process = {
 }
 
 module Fs = {
-  @module("fs") external readFileSync: (string, string) => string = "readFileSync"
+  @module("fs") external readFileSync: string => string = "readFileSync"
   @module("fs") external readdirSync: string => array<string> = "readdirSync"
 }

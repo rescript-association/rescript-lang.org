@@ -394,7 +394,7 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = async _ctx => {
 
   let allFiles = Node.Fs.readdirSync(dir)->Js.Array2.map(async file => {
     let fullPath = Node.Path.join2(dir, file)
-    let source = fullPath->Node.Fs.readFileSync("utf8")
+    let source = fullPath->Node.Fs.readFileSync
     await Mdx.Remote.serialize(source, {"parseFrontmatter": true, "mdxOptions": mdxOptions})
   })
 

@@ -54,7 +54,7 @@ let getAllPosts = () => {
 
   let nonArchivedPosts = mdxFiles(postsDirectory)->Js.Array2.map(path => {
     let {GrayMatter.data: data} =
-      Node.Path.join2(postsDirectory, path)->Node.Fs.readFileSync("utf8")->GrayMatter.matter
+      Node.Path.join2(postsDirectory, path)->Node.Fs.readFileSync->GrayMatter.matter
     switch BlogFrontmatter.decode(data) {
     | Error(msg) => Js.Exn.raiseError(msg)
     | Ok(d) => {
@@ -67,7 +67,7 @@ let getAllPosts = () => {
 
   let archivedPosts = mdxFiles(archivedPostsDirectory)->Js.Array2.map(path => {
     let {GrayMatter.data: data} =
-      Node.Path.join2(archivedPostsDirectory, path)->Node.Fs.readFileSync("utf8")->GrayMatter.matter
+      Node.Path.join2(archivedPostsDirectory, path)->Node.Fs.readFileSync->GrayMatter.matter
     switch BlogFrontmatter.decode(data) {
     | Error(msg) => Js.Exn.raiseError(msg)
     | Ok(d) => {

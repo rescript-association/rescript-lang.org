@@ -1420,6 +1420,7 @@ let make = () => {
 
   let editorCode = React.useRef(initialContent)
 
+  Js.log(compilerState)
   /* In case the compiler did some kind of syntax conversion / reformatting,
    we take any success results and set the editor code to the new formatted code */
   switch compilerState {

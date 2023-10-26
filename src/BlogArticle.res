@@ -230,7 +230,7 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = async ctx => {
 
   let isArchived = Js.String2.startsWith(path, "archive/")
 
-  let source = filePath->Node.Fs.readFileSync("utf8")
+  let source = filePath->Node.Fs.readFileSync
 
   let mdxSource = await Mdx.Remote.serialize(
     source,

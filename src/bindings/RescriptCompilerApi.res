@@ -26,7 +26,7 @@ module Lang = {
     | String("ml") => OCaml
     | String("re") => Reason
     | String("res") => Res
-    | other => assert(false)
+    | _ => assert(false)
     // raise(DecodeError(`Unknown language "${other}"`))
     }
   }

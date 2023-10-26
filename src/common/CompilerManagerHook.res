@@ -330,7 +330,7 @@ let useCompilerManager = (
       }
     })
 
-  React.useEffect1(() => {
+  React.useEffect(() => {
     let updateState = async () => {
       switch state {
       | Init =>
