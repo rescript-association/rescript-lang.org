@@ -941,7 +941,7 @@ module Settings = {
               | [] => React.null
               | experimentalVersions =>
                 let versionByOrder = experimentalVersions->Js.Array2.sortInPlaceWith((a, b) => {
-                  let cmp = ({Util.Semver.major: major, minor, patch, preRelease} as v) => {
+                  let cmp = ({Util.Semver.major: major, minor, patch, preRelease}) => {
                     let preRelease = switch preRelease {
                     | Some(preRelease) =>
                       switch preRelease {
@@ -959,10 +959,7 @@ module Settings = {
                       ->Belt.Int.fromString
                       ->Belt.Option.getWithDefault(0)
 
-                    let a = number + preRelease
-                    Js.log((Util.Semver.toString(v), number + preRelease, [major, minor, patch]))
-
-                    a
+                    number + preRelease
                   }
                   cmp(b) - cmp(a)
                 })
