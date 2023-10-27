@@ -915,11 +915,11 @@ module Settings = {
         <div className=titleClass> {React.string("ReScript Version")} </div>
         <DropdownSelect
           name="compilerVersions"
-          value={Util.Semver.toString(readyState.selected.id)}
+          value={CompilerManagerHook.Semver.toString(readyState.selected.id)}
           onChange={evt => {
             ReactEvent.Form.preventDefault(evt)
             let id: string = (evt->ReactEvent.Form.target)["value"]
-            switch id->Util.Semver.parse {
+            switch id->CompilerManagerHook.Semver.parse {
             | Some(v) => onCompilerSelect(v)
             | None => ()
             }
@@ -941,7 +941,12 @@ module Settings = {
               | [] => React.null
               | experimentalVersions =>
                 let versionByOrder = experimentalVersions->Js.Array2.sortInPlaceWith((a, b) => {
-                  let cmp = ({Util.Semver.major: major, minor, patch, preRelease}) => {
+                  let cmp = ({
+                    CompilerManagerHook.Semver.major: major,
+                    minor,
+                    patch,
+                    preRelease,
+                  }) => {
                     let preRelease = switch preRelease {
                     | Some(preRelease) =>
                       switch preRelease {
@@ -969,7 +974,7 @@ module Settings = {
                   </option>
                   {versionByOrder
                   ->Belt.Array.map(version => {
-                    let version = Util.Semver.toString(version)
+                    let version = CompilerManagerHook.Semver.toString(version)
                     <option className="py-4" key=version value=version>
                       {React.string(version)}
                     </option>
@@ -984,7 +989,7 @@ module Settings = {
               | [] => React.null
               | stableVersions =>
                 Belt.Array.map(stableVersions, version => {
-                  let version = Util.Semver.toString(version)
+                  let version = CompilerManagerHook.Semver.toString(version)
                   <option className="py-4" key=version value=version>
                     {React.string(version)}
                   </option>
@@ -1408,9 +1413,9 @@ let default = (~props: Try.props) => {
 
   let versions =
     props.versions
-    ->Belt.Array.keepMap(v => v->Util.Semver.parse)
+    ->Belt.Array.keepMap(v => v->CompilerManagerHook.Semver.parse)
     ->Js.Array2.sortInPlaceWith((a, b) => {
-      let cmp = ({Util.Semver.major: major, minor, patch, _}) => {
+      let cmp = ({CompilerManagerHook.Semver.major: major, minor, patch, _}) => {
         [major, minor, patch]
         ->Js.Array2.map(v => v->Belt.Int.toString)
         ->Js.Array2.joinWith("")
@@ -1424,7 +1429,7 @@ let default = (~props: Try.props) => {
     versions->Js.Array2.find(version => version.preRelease->Belt.Option.isNone)
 
   let initialVersion = switch Js.Dict.get(router.query, "version") {
-  | Some(version) => version->Util.Semver.parse
+  | Some(version) => version->CompilerManagerHook.Semver.parse
   | None => lastStableVersion
   }
 
@@ -1439,7 +1444,7 @@ let default = (~props: Try.props) => {
   | (None, Res)
   | (None, _) =>
     switch initialVersion {
-    | Some({Util.Semver.major: major, minor, _}) =>
+    | Some({CompilerManagerHook.Semver.major: major, minor, _}) =>
       if major >= 10 && minor >= 1 {
         InitialContent.since_10_1
       } else {

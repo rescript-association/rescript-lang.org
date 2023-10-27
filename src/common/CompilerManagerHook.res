@@ -34,12 +34,85 @@ module LoadScript = {
   }
 }
 
-module CdnMeta = {
-  let getCompilerUrl = (version: Util.Semver.t): string =>
-    `https://cdn.rescript-lang.org/${Util.Semver.toString(version)}/compiler.js`
+module Semver = {
+  type preRelease = Alpha(int) | Beta(int) | Dev(int) | Rc(int)
 
-  let getLibraryCmijUrl = (version: Util.Semver.t, libraryName: string): string =>
-    `https://cdn.rescript-lang.org/${Util.Semver.toString(version)}/${libraryName}/cmij.js`
+  type t = {major: int, minor: int, patch: int, preRelease: option<preRelease>}
+
+  /**
+  Takes a `version` string starting with a "v" and ending in major.minor.patch or
+  major.minor.patch-prerelease.identifier (e.g. "v10.1.0" or "v10.1.0-alpha.2")
+  */
+  let parse = (versionStr: string) => {
+    let parsePreRelease = str => {
+      switch str->Js.String2.split("-") {
+      | [_, identifier] =>
+        switch identifier->Js.String2.split(".") {
+        | [name, number] =>
+          switch Belt.Int.fromString(number) {
+          | None => None
+          | Some(buildIdentifier) =>
+            switch name {
+            | "dev" => buildIdentifier->Dev->Some
+            | "beta" => buildIdentifier->Beta->Some
+            | "alpha" => buildIdentifier->Alpha->Some
+            | "rc" => buildIdentifier->Rc->Some
+            | _ => None
+            }
+          }
+        | _ => None
+        }
+      | _ => None
+      }
+    }
+
+    // Some version contain a suffix. Example: v11.0.0-alpha.5, v11.0.0-beta.1
+    let isPrerelease = versionStr->Js.String2.search(%re("/-/")) != -1
+
+    // Get the first part i.e vX.Y.Z
+    let versionNumber =
+      versionStr->Js.String2.split("-")->Belt.Array.get(0)->Belt.Option.getWithDefault(versionStr)
+
+    switch versionNumber->Js.String2.replace("v", "")->Js.String2.split(".") {
+    | [major, minor, patch] =>
+      switch (major->Belt.Int.fromString, minor->Belt.Int.fromString, patch->Belt.Int.fromString) {
+      | (Some(major), Some(minor), Some(patch)) =>
+        let preReleaseIdentifier = if isPrerelease {
+          parsePreRelease(versionStr)
+        } else {
+          None
+        }
+        Some({major, minor, patch, preRelease: preReleaseIdentifier})
+      | _ => None
+      }
+    | _ => None
+    }
+  }
+
+  let toString = ({major, minor, patch, preRelease}) => {
+    let mainVersion = `v${major->Belt.Int.toString}.${minor->Belt.Int.toString}.${patch->Belt.Int.toString}`
+
+    switch preRelease {
+    | None => mainVersion
+    | Some(identifier) =>
+      let identifier = switch identifier {
+      | Dev(number) => `dev.${number->Belt.Int.toString}`
+      | Alpha(number) => `alpha.${number->Belt.Int.toString}`
+      | Beta(number) => `beta.${number->Belt.Int.toString}`
+      | Rc(number) => `rc.${number->Belt.Int.toString}`
+      }
+
+      `${mainVersion}-${identifier}`
+    }
+  }
+}
+
+module CdnMeta = {
+  let getCompilerUrl = (version): string =>
+    `https://cdn.rescript-lang.org/${Semver.toString(version)}/compiler.js`
+
+  let getLibraryCmijUrl = (version, libraryName: string): string =>
+    `https://cdn.rescript-lang.org/${Semver.toString(version)}/${libraryName}/cmij.js`
 }
 
 module FinalResult = {
@@ -53,7 +126,7 @@ module FinalResult = {
 // This will a given list of libraries to a specific target version of the compiler.
 // E.g. starting from v9, @rescript/react instead of reason-react is used.
 // If the version can't be parsed, an empty array will be returned.
-let getLibrariesForVersion = (~version: Util.Semver.t): array<string> => {
+let getLibrariesForVersion = (~version: Semver.t): array<string> => {
   let libraries = if version.major >= 9 {
     ["@rescript/react"]
   } else if version.major < 9 {
@@ -85,11 +158,10 @@ let getLibrariesForVersion = (~version: Util.Semver.t): array<string> => {
     We coupled the compiler / library loading to prevent ppl to try loading compiler / cmij files
     separately and cause all kinds of race conditions.
  */
-let attachCompilerAndLibraries = async (
-  ~version: Util.Semver.t,
-  ~libraries: array<string>,
-  (),
-): result<unit, array<string>> => {
+let attachCompilerAndLibraries = async (~version, ~libraries: array<string>, ()): result<
+  unit,
+  array<string>,
+> => {
   let compilerUrl = CdnMeta.getCompilerUrl(version)
 
   // Useful for debugging our local build
@@ -127,7 +199,7 @@ type error =
   | CompilerLoadingError(string)
 
 type selected = {
-  id: Util.Semver.t, // The id used for loading the compiler bundle (ideally should be the same as compilerVersion)
+  id: Semver.t, // The id used for loading the compiler bundle (ideally should be the same as compilerVersion)
   apiVersion: Version.t, // The playground API version in use
   compilerVersion: string,
   ocamlVersion: string,
@@ -137,7 +209,7 @@ type selected = {
 }
 
 type ready = {
-  versions: array<Util.Semver.t>,
+  versions: array<Semver.t>,
   selected: selected,
   targetLang: Lang.t,
   errors: array<string>, // For major errors like bundle loading
@@ -147,12 +219,12 @@ type ready = {
 type state =
   | Init
   | SetupFailed(string)
-  | SwitchingCompiler(ready, Util.Semver.t) // (ready, targetId, libraries)
+  | SwitchingCompiler(ready, Semver.t) // (ready, targetId, libraries)
   | Ready(ready)
   | Compiling(ready, (Lang.t, string))
 
 type action =
-  | SwitchToCompiler(Util.Semver.t) // id
+  | SwitchToCompiler(Semver.t) // id
   | SwitchLanguage({lang: Lang.t, code: string})
   | Format(string)
   | CompileCode(Lang.t, string)
@@ -170,10 +242,10 @@ type action =
 //  component to give feedback to the user that an action happened (useful in
 //  cases where the output didn't visually change)
 let useCompilerManager = (
-  ~initialVersion: option<Util.Semver.t>=?,
+  ~initialVersion: option<Semver.t>=?,
   ~initialLang: Lang.t=Res,
   ~onAction: option<action => unit>=?,
-  ~versions: array<Util.Semver.t>,
+  ~versions: array<Semver.t>,
   (),
 ) => {
   let (state, setState) = React.useState(_ => Init)
