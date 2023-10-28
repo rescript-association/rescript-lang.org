@@ -917,30 +917,88 @@ module Settings = {
         <div className=titleClass> {React.string("ReScript Version")} </div>
         <DropdownSelect
           name="compilerVersions"
-          value=readyState.selected.id
+          value={CompilerManagerHook.Semver.toString(readyState.selected.id)}
           onChange={evt => {
             ReactEvent.Form.preventDefault(evt)
-            let id = (evt->ReactEvent.Form.target)["value"]
-            onCompilerSelect(id)
+            let id: string = (evt->ReactEvent.Form.target)["value"]
+            switch id->CompilerManagerHook.Semver.parse {
+            | Some(v) => onCompilerSelect(v)
+            | None => ()
+            }
           }}>
-          {switch readyState.experimentalVersions {
-          | [] => React.null
-          | experimentalVersions =>
+          {
+            let (experimentalVersions, stableVersions) =
+              readyState.versions->Js.Array2.reduce((acc, item) => {
+                let (lhs, rhs) = acc
+                if item.preRelease->Belt.Option.isSome {
+                  Js.Array2.push(lhs, item)
+                } else {
+                  Js.Array2.push(rhs, item)
+                }->ignore
+                acc
+              }, ([], []))
+
             <>
-              <option disabled=true className="py-4"> {React.string("---Experimental---")} </option>
-              {Belt.Array.map(experimentalVersions, version =>
-                <option className="py-4" key=version value=version>
-                  {React.string(version)}
-                </option>
-              )->React.array}
-              <option disabled=true className="py-4">
-                {React.string("---Official Releases---")}
-              </option>
+              {switch experimentalVersions {
+              | [] => React.null
+              | experimentalVersions =>
+                let versionByOrder = experimentalVersions->Js.Array2.sortInPlaceWith((a, b) => {
+                  let cmp = ({
+                    CompilerManagerHook.Semver.major: major,
+                    minor,
+                    patch,
+                    preRelease,
+                  }) => {
+                    let preRelease = switch preRelease {
+                    | Some(preRelease) =>
+                      switch preRelease {
+                      | Dev(id) => 0 + id
+                      | Alpha(id) => 10 + id
+                      | Beta(id) => 20 + id
+                      | Rc(id) => 30 + id
+                      }
+                    | None => 0
+                    }
+                    let number =
+                      [major, minor, patch]
+                      ->Js.Array2.map(v => v->Belt.Int.toString)
+                      ->Js.Array2.joinWith("")
+                      ->Belt.Int.fromString
+                      ->Belt.Option.getWithDefault(0)
+
+                    number + preRelease
+                  }
+                  cmp(b) - cmp(a)
+                })
+                <>
+                  <option disabled=true className="py-4">
+                    {React.string("---Experimental---")}
+                  </option>
+                  {versionByOrder
+                  ->Belt.Array.map(version => {
+                    let version = CompilerManagerHook.Semver.toString(version)
+                    <option className="py-4" key=version value=version>
+                      {React.string(version)}
+                    </option>
+                  })
+                  ->React.array}
+                  <option disabled=true className="py-4">
+                    {React.string("---Official Releases---")}
+                  </option>
+                </>
+              }}
+              {switch stableVersions {
+              | [] => React.null
+              | stableVersions =>
+                Belt.Array.map(stableVersions, version => {
+                  let version = CompilerManagerHook.Semver.toString(version)
+                  <option className="py-4" key=version value=version>
+                    {React.string(version)}
+                  </option>
+                })->React.array
+              }}
             </>
-          }}
-          {Belt.Array.map(readyState.versions, version =>
-            <option className="py-4" key=version value=version> {React.string(version)} </option>
-          )->React.array}
+          }
         </DropdownSelect>
       </div>
       <div className="mt-6">
@@ -1352,29 +1410,29 @@ module App = {
 
 let initialReContent = `Js.log("Hello Reason 3.6!");`
 
-/**
-Takes a `versionStr` starting with a "v" and ending in major.minor.patch (e.g.
-"v10.1.0") returns major, minor, patch as an integer tuple if it's actually in
-a x.y.z format, otherwise will return `None`.
-*/
-let parseVersion = (versionStr: string): option<(int, int, int)> => {
-  switch versionStr->Js.String2.replace("v", "")->Js.String2.split(".") {
-  | [major, minor, patch] =>
-    switch (major->Belt.Int.fromString, minor->Belt.Int.fromString, patch->Belt.Int.fromString) {
-    | (Some(major), Some(minor), Some(patch)) => Some((major, minor, patch))
-    | _ => None
-    }
-  | _ => None
-  }
-}
-
-@react.component
-let make = () => {
+let default = (~props: Try.props) => {
   let router = Next.Router.useRouter()
 
+  let versions =
+    props.versions
+    ->Belt.Array.keepMap(v => v->CompilerManagerHook.Semver.parse)
+    ->Js.Array2.sortInPlaceWith((a, b) => {
+      let cmp = ({CompilerManagerHook.Semver.major: major, minor, patch, _}) => {
+        [major, minor, patch]
+        ->Js.Array2.map(v => v->Belt.Int.toString)
+        ->Js.Array2.joinWith("")
+        ->Belt.Int.fromString
+        ->Belt.Option.getWithDefault(0)
+      }
+      cmp(b) - cmp(a)
+    })
+
+  let lastStableVersion =
+    versions->Js.Array2.find(version => version.preRelease->Belt.Option.isNone)
+
   let initialVersion = switch Js.Dict.get(router.query, "version") {
-  | Some(version) => Some(version)
-  | None => CompilerManagerHook.CdnMeta.versions->Belt.Array.get(0)
+  | Some(version) => version->CompilerManagerHook.Semver.parse
+  | None => lastStableVersion
   }
 
   let initialLang = switch Js.Dict.get(router.query, "ext") {
@@ -1388,15 +1446,11 @@ let make = () => {
   | (None, Res)
   | (None, _) =>
     switch initialVersion {
-    | Some(initialVersion) =>
-      switch parseVersion(initialVersion) {
-      | Some((major, minor, _)) =>
-        if major >= 10 && minor >= 1 {
-          InitialContent.since_10_1
-        } else {
-          InitialContent.original
-        }
-      | None => InitialContent.original
+    | Some({CompilerManagerHook.Semver.major: major, minor, _}) =>
+      if major >= 10 && minor >= 1 {
+        InitialContent.since_10_1
+      } else {
+        InitialContent.original
       }
     | None => InitialContent.original
     }
@@ -1410,6 +1464,7 @@ let make = () => {
     ~initialVersion?,
     ~initialLang,
     ~onAction,
+    ~versions,
     (),
   )
 
