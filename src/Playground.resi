@@ -1,2 +1,1 @@
-@react.component
-let make: unit => React.element
+let default: (~props: Try.props) => React.element
