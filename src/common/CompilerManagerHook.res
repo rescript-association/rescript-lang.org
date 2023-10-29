@@ -18,7 +18,7 @@ module LoadScript = {
     ~src: string,
     ~onSuccess: unit => unit,
     ~onError: err => unit,
-  ) => (. unit) => unit = "default"
+  ) => unit => unit = "default"
 
   @module("../ffi/loadScript")
   external removeScript: (~src: string) => unit = "removeScript"
@@ -27,8 +27,8 @@ module LoadScript = {
     Js.Promise2.make((~resolve, ~reject as _) => {
       loadScript(
         ~src=url,
-        ~onSuccess=() => resolve(. Ok()),
-        ~onError=_err => resolve(. Error(`Could not load script: ${url}`)),
+        ~onSuccess=() => resolve(Ok()),
+        ~onError=_err => resolve(Error(`Could not load script: ${url}`)),
       )->ignore
     })
   }

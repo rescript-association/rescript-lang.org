@@ -11,7 +11,7 @@ let default = props => {
     },
   )
 
-  let playground = React.createElement(lazyPlayground, {"versions": props.versions})
+  let playground = React.createElement(lazyPlayground, {versions: props.versions})
 
   <>
     <Meta title="ReScript Playground" description="Try ReScript in the browser" />

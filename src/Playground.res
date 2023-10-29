@@ -1630,7 +1630,7 @@ let make = (~versions: array<string>) => {
       | SyntaxErr(locMsgs)
       | TypecheckErr(locMsgs)
       | OtherErr(locMsgs) =>
-        Js.Array2.map(locMsgs, locMsgToCmError(~kind=#Error))
+        Js.Array2.map(locMsgs, locMsgToCmError(~kind=#Error, ...))
       | WarningErr(warnings) =>
         Js.Array2.map(warnings, warning => {
           switch warning {
@@ -1649,7 +1649,7 @@ let make = (~versions: array<string>) => {
           locMsgToCmError(~kind=#Warning, details)
         }
       })
-    | Conv(Fail({details})) => Js.Array2.map(details, locMsgToCmError(~kind=#Error))
+    | Conv(Fail({details})) => Js.Array2.map(details, locMsgToCmError(~kind=#Error, ...))
     | Comp(_)
     | Conv(_)
     | Nothing => []

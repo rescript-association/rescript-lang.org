@@ -7,7 +7,7 @@
   "bs-dependencies": [
     "@rescript/react"
   ],
-  "uncurried": false,
+  "uncurried": true,
   "ppx-flags": [],
   "sources": [
     {
