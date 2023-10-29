@@ -21,13 +21,11 @@ module Lang = {
     }
 
   let decode = (json: Js.Json.t): t => {
-    // open! Json.Decode
     switch json {
     | String("ml") => OCaml
     | String("re") => Reason
     | String("res") => Res
     | _ => assert(false)
-    // raise(DecodeError(`Unknown language "${other}"`))
     }
   }
 }
@@ -90,15 +88,6 @@ module LocMsg = {
   }
 
   let decode = (json: Js.Json.t): t => {
-    // open Json.Decode
-    // {
-    //   fullMsg: json->field("fullMsg", string, _),
-    //   shortMsg: json->field("shortMsg", string, _),
-    //   row: json->field("row", int, _),
-    //   column: json->field("column", int, _),
-    //   endRow: json->field("endRow", int, _),
-    //   endColumn: json->field("endColumn", int, _),
-    // }
     switch json {
     | Object(locDict) =>
       switch (
@@ -171,12 +160,7 @@ module Warning = {
     | WarnErr({warnNumber: int, details: LocMsg.t}) // Describes an erronous warning
 
   let decode = (json: Js.Json.t): t => {
-    // open! Json.Decode
-
-    // let warnNumber = field("warnNumber", int, json)
     let details = LocMsg.decode(json)
-
-    // field("isError", bool, json) ? WarnErr({warnNumber, details}) : Warn({warnNumber, details})
 
     switch json {
     | Object(warnDict) =>
@@ -218,13 +202,6 @@ module WarningFlag = {
   }
 
   let decode = (json: Js.Json.t): t => {
-    // open Json.Decode
-    // {
-    //   msg: field("msg", string, json),
-    //   warn_flags: field("warn_flags", string, json),
-    //   warn_error_flags: field("warn_error_flags", string, json),
-    // }
-
     switch json {
     | Object(warnFlagDict) =>
       switch (
@@ -263,12 +240,6 @@ module TypeHint = {
     | CoreType(data)
 
   let decodePosition = (json: Js.Json.t) => {
-    // open Json.Decode
-    // {
-    //   line: field("line", int, json),
-    //   col: field("col", int, json),
-    // }
-
     switch json {
     | Object(posDict) =>
       switch (posDict->Js.Dict.get("line"), posDict->Js.Dict.get("col")) {
@@ -283,13 +254,6 @@ module TypeHint = {
   }
 
   let decode = (json: Js.Json.t): t => {
-    // open Json.Decode
-    // let data = {
-    //   start: field("start", decodePosition, json),
-    //   end: field("end", decodePosition, json),
-    //   hint: field("hint", string, json),
-    // }
-
     let data = switch json {
     | Object(dataDict) =>
       switch (
@@ -316,8 +280,7 @@ module TypeHint = {
         | "type_declaration" => TypeDeclaration(data)
         | "binding" => Binding(data)
         | "core_type" => CoreType(data)
-        | other => assert(false)
-        // raise(DecodeError(`Unknown kind "${other}" type hint`))
+        | _ => assert(false)
         }
       | _ => assert(false)
       }
@@ -335,14 +298,6 @@ module CompileSuccess = {
   }
 
   let decode = (~time: float, json: Js.Json.t): t => {
-    // open Json.Decode
-    // {
-    //   js_code: field("js_code", string, json),
-    //   warnings: field("warnings", array(Warning.decode), json),
-    //   type_hints: withDefault([], field("type_hints", array(TypeHint.decode)), json),
-    //   time,
-    // }
-
     switch json {
     | Object(infoDict) =>
       switch (
@@ -371,13 +326,6 @@ module ConvertSuccess = {
   }
 
   let decode = (json: Js.Json.t): t => {
-    // open Json.Decode
-    // {
-    //   code: field("code", string, json),
-    //   fromLang: field("fromLang", Lang.decode, json),
-    //   toLang: field("toLang", Lang.decode, json),
-    // }
-
     switch json {
     | Object(dict) =>
       switch (
@@ -434,30 +382,6 @@ module CompileFail = {
       }
     | _ => assert(false)
     }
-
-    // open! Json.Decode
-
-    // switch field("type", string, json) {
-    // | "syntax_error" =>
-    //   let locMsgs = field("errors", array(LocMsg.decode), json)
-    //   // TODO: There seems to be a bug in the ReScript bundle that reports
-    //   //       back multiple LocMsgs of the same value
-    //   locMsgs->LocMsg.dedupe->SyntaxErr
-    // | "type_error" =>
-    //   let locMsgs = field("errors", array(LocMsg.decode), json)
-    //   TypecheckErr(locMsgs)
-    // | "warning_error" =>
-    //   let warnings = field("errors", array(Warning.decode), json)
-    //   WarningErr(warnings)
-    // | "other_error" =>
-    //   let locMsgs = field("errors", array(LocMsg.decode), json)
-    //   OtherErr(locMsgs)
-
-    // | "warning_flag_error" =>
-    //   let warningFlag = WarningFlag.decode(json)
-    //   WarningFlagErr(warningFlag)
-    // | other => raise(DecodeError(`Unknown type "${other}" in CompileFail result`))
-    // }
   }
 }
 
@@ -470,20 +394,10 @@ module CompilationResult = {
 
   // TODO: We might change this specific api completely before launching
   let decode = (~time: float, json: Js.Json.t): t => {
-    // open! Json.Decode
-
-    // try switch field("type", string, json) {
-    // | "success" => Success(CompileSuccess.decode(~time, json))
-    // | "unexpected_error" => UnexpectedError(field("msg", string, json))
-    // | _ => Fail(CompileFail.decode(json))
-    // } catch {
-    // | DecodeError(errMsg) => Unknown(errMsg, json)
-    // }
-
     switch json {
     | Object(dict) =>
       switch dict->Js.Dict.get("type") {
-      | Some(String("sucess")) => Success(CompileSuccess.decode(~time, json))
+      | Some(String("success")) => Success(CompileSuccess.decode(~time, json))
       | Some(String("unexpected_error")) =>
         UnexpectedError(dict->Js.Dict.unsafeGet("msg")->Js.Json.stringify)
       | _ => Fail(CompileFail.decode(json))
@@ -501,18 +415,6 @@ module ConversionResult = {
     | Unknown(string, Js.Json.t)
 
   let decode = (~fromLang: Lang.t, ~toLang: Lang.t, json: Js.Json.t): t => {
-    // open! Json.Decode
-    // try switch field("type", string, json) {
-    // | "success" => Success(ConvertSuccess.decode(json))
-    // | "unexpected_error" => UnexpectedError(field("msg", string, json))
-    // | "syntax_error" =>
-    //   let locMsgs = field("errors", array(LocMsg.decode), json)
-    //   Fail({fromLang, toLang, details: locMsgs})
-    // | other => Unknown(`Unknown conversion result type "${other}"`, json)
-    // } catch {
-    // | DecodeError(errMsg) => Unknown(errMsg, json)
-    // }
-
     switch json {
     | Object(dict) =>
       switch dict->Js.Dict.get("type") {

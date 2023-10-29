@@ -176,7 +176,7 @@ module QuickInstall = {
         }
       }
 
-      React.useEffect1(() => {
+      React.useEffect(() => {
         switch state {
         | Copied =>
           open Webapi

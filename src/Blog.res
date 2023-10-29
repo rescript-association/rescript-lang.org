@@ -101,10 +101,7 @@ module BlogCard = {
             <Badge badge />
           </div>
         }}
-        <Link
-          href="/blog/[slug]"
-          _as={"/blog/" ++ slug}
-          className="relative hl-title block mb-4 pt-9/16">
+        <Link href={`/blog/${slug}`} className="relative hl-title block mb-4 pt-9/16">
           {
             let className = "absolute top-0 h-full w-full object-cover"
             switch previewImg {
@@ -115,7 +112,7 @@ module BlogCard = {
         </Link>
       </div>
       <div className="px-2">
-        <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
+        <Link href={`/blog/${slug}`}>
           <h2 className="hl-4"> {React.string(title)} </h2>
         </Link>
         <div className="captions text-gray-40 pt-1">
@@ -156,7 +153,7 @@ module FeatureCard = {
           ~maxHeight="25.4375rem",
           (),
         )}>
-        <Link href="/blog/[slug]" _as={"/blog/" ++ slug} className="relative block pt-2/3">
+        <Link href={`/blog/${slug}`} className="relative block pt-2/3">
           {switch badge {
           | Some(badge) =>
             <div className="absolute z-10 top-0 mt-10 ml-4 lg:-ml-4">
@@ -202,7 +199,7 @@ module FeatureCard = {
             <p className="body-md text-gray-70"> {React.string(firstParagraph)} </p>
           </div>
         </div>
-        <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
+        <Link href={`/blog/${slug}`}>
           <Button> {React.string("Read Article")} </Button>
         </Link>
       </div>

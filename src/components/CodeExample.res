@@ -74,7 +74,7 @@ module CopyButton = {
       }
     }
 
-    React.useEffect1(() => {
+    React.useEffect(() => {
       switch state {
       | Copied =>
         open DomUtil

@@ -323,7 +323,7 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
 
   let markerRef = React.useRef(None)
 
-  React.useEffect0(() => {
+  React.useEffect(() => {
     tooltip->HoverTooltip.attach
 
     Some(
@@ -331,7 +331,7 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
         tooltip->HoverTooltip.clear
       },
     )
-  })
+  }, [])
 
   let checkIfTextMarker: Dom.element => bool = %raw(`
   function(el) {
@@ -606,7 +606,7 @@ let make = // props relevant for the react wrapper
   let windowWidth = useWindowWidth()
   let (onMouseOver, onMouseOut, onMouseMove) = useHoverTooltip(~cmStateRef, ~cmRef, ())
 
-  React.useEffect0(() =>
+  React.useEffect(() =>
     switch inputElement.current->Js.Nullable.toOption {
     | Some(input) =>
       let options = CM.Options.t(
@@ -659,9 +659,9 @@ let make = // props relevant for the react wrapper
       Some(cleanup)
     | None => None
     }
-  )
+  , [])
 
-  React.useEffect1(() => {
+  React.useEffect(() => {
     cmStateRef.current.hoverHints = hoverHints
     None
   }, [hoverHints])
@@ -705,7 +705,7 @@ let make = // props relevant for the react wrapper
     `${row->Belt.Int.toString}-${column->Belt.Int.toString}`
   })->Js.Array2.joinWith(";")
 
-  React.useEffect1(() => {
+  React.useEffect(() => {
     let state = cmStateRef.current
     switch cmRef.current {
     | Some(cm) =>
@@ -717,7 +717,7 @@ let make = // props relevant for the react wrapper
     None
   }, [errorsFingerprint])
 
-  React.useEffect1(() => {
+  React.useEffect(() => {
     let cm = Belt.Option.getExn(cmRef.current)
     cm->CM.setMode(mode)
     None
@@ -727,7 +727,7 @@ let make = // props relevant for the react wrapper
     Needed in case the className visually hides / shows
     a codemirror instance, or the window has been resized.
  */
-  React.useEffect2(() => {
+  React.useEffect(() => {
     switch cmRef.current {
     | Some(cm) => cm->CM.refresh
     | None => ()

@@ -433,14 +433,14 @@ let default = (props: props) => {
   // On first render, the router query is undefined so we set a flag.
   let firstRenderDone = React.useRef(false)
 
-  React.useEffect0(() => {
+  React.useEffect(() => {
     firstRenderDone.current = true
 
     None
-  })
+  }, [])
 
   // On second render, this hook runs one more time to actually trigger the search.
-  React.useEffect1(() => {
+  React.useEffect(() => {
     router.query->Js.Dict.get("search")->Belt.Option.forEach(onValueChange)
 
     None
@@ -453,7 +453,7 @@ let default = (props: props) => {
     })
 
   // When the search term changes, update the router query accordingly.
-  React.useEffect1(() => {
+  React.useEffect(() => {
     switch state {
     | All => updateQuery("")
     | Filtered(value) => updateQuery(value)
@@ -517,10 +517,10 @@ type npmData = {
 
 module Response = {
   type t
-  @send external json: t => Js.Promise.t<npmData> = "json"
+  @send external json: t => promise<npmData> = "json"
 }
 
-@val external fetchNpmPackages: string => Js.Promise.t<Response.t> = "fetch"
+@val external fetchNpmPackages: string => promise<Response.t> = "fetch"
 
 let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => {
   let response = await fetchNpmPackages(

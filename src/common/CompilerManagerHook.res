@@ -23,8 +23,8 @@ module LoadScript = {
   @module("../ffi/loadScript")
   external removeScript: (~src: string) => unit = "removeScript"
 
-  let loadScriptPromise = (url: string): Promise.t<result<unit, string>> => {
-    Promise.make((resolve, _reject) => {
+  let loadScriptPromise = (url: string) => {
+    Js.Promise2.make((~resolve, ~reject as _) => {
       loadScript(
         ~src=url,
         ~onSuccess=() => resolve(. Ok()),
@@ -178,7 +178,7 @@ let attachCompilerAndLibraries = async (~version, ~libraries: array<string>, ())
       }
     })
 
-    let all = await Promise.all(promises)
+    let all = await Js.Promise2.all(promises)
 
     let errors = Belt.Array.keepMap(all, r => {
       switch r {

@@ -19,7 +19,7 @@ module GetServerSideProps = {
     res: Res.t,
   }
 
-  type t<'props, 'params> = context<'props, 'params> => Js.Promise.t<{"props": 'props}>
+  type t<'props, 'params> = context<'props, 'params> => promise<{"props": 'props}>
 }
 
 module GetStaticProps = {
@@ -30,9 +30,9 @@ module GetStaticProps = {
     req: Js.Nullable.t<'props>,
   }
 
-  type t<'props, 'params> = context<'props, 'params> => Js.Promise.t<{"props": 'props}>
+  type t<'props, 'params> = context<'props, 'params> => promise<{"props": 'props}>
 
-  type revalidate<'props, 'params> = context<'props, 'params> => Js.Promise.t<{
+  type revalidate<'props, 'params> = context<'props, 'params> => promise<{
     "props": 'props,
     "revalidate": int,
   }>
@@ -48,7 +48,7 @@ module GetStaticPaths = {
     fallback: bool,
   }
 
-  type t<'params> = unit => Promise.t<return<'params>>
+  type t<'params> = unit => promise<return<'params>>
 }
 
 module Link = {
@@ -130,16 +130,13 @@ module Error = {
 }
 
 module Dynamic = {
-  @deriving(abstract)
   type options = {
-    @optional
-    ssr: bool,
-    @optional
-    loading: unit => React.element,
+    ssr?: bool,
+    loading?: unit => React.element,
   }
 
   @module("next/dynamic")
-  external dynamic: (unit => Js.Promise.t<'a>, options) => 'a = "default"
+  external dynamic: (unit => promise<'a>, options) => 'a = "default"
 
-  @val external import: string => Js.Promise.t<'a> = "import"
+  @val external import: string => promise<'a> = "import"
 }

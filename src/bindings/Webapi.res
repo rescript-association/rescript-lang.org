@@ -41,6 +41,7 @@ module Fetch = {
   module Response = {
     type t
     @send external text: t => promise<string> = "text"
+    @send external json: t => promise<Js.Json.t> = "json"
   }
 
   @val external fetch: string => promise<Response.t> = "fetch"

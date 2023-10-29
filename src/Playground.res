@@ -1088,7 +1088,7 @@ module ControlPanel = {
     let make = (~createShareLink: unit => string, ~actionIndicatorKey: string) => {
       let (state, setState) = React.useState(() => Init)
 
-      React.useEffect1(() => {
+      React.useEffect(() => {
         setState(_ => Init)
         None
       }, [actionIndicatorKey])
@@ -1410,11 +1410,12 @@ module App = {
 
 let initialReContent = `Js.log("Hello Reason 3.6!");`
 
-let default = (~props: Try.props) => {
+@react.component
+let make = (~versions: array<string>) => {
   let router = Next.Router.useRouter()
 
   let versions =
-    props.versions
+    versions
     ->Belt.Array.keepMap(v => v->CompilerManagerHook.Semver.parse)
     ->Js.Array2.sortInPlaceWith((a, b) => {
       let cmp = ({CompilerManagerHook.Semver.major: major, minor, patch, _}) => {
@@ -1497,7 +1498,7 @@ let default = (~props: Try.props) => {
   let typingTimer = React.useRef(None)
   let timeoutCompile = React.useRef(() => ())
 
-  React.useEffect1(() => {
+  React.useEffect(() => {
     timeoutCompile.current = () =>
       switch compilerState {
       | Ready(ready) => compilerDispatch(CompileCode(ready.targetLang, editorCode.current))
@@ -1538,10 +1539,10 @@ let default = (~props: Try.props) => {
     }
   }
 
-  React.useEffect0(() => {
+  React.useEffect(() => {
     Webapi.Window.addEventListener("resize", onResize)
     Some(() => Webapi.Window.removeEventListener("resize", onResize))
-  })
+  }, [])
 
   // To force CodeMirror render scrollbar on first render
   React.useLayoutEffect(() => {

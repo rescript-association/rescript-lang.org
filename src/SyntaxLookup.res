@@ -133,8 +133,12 @@ let decode = (json: Js.Json.t) => {
         Some(String(category)),
       ) => {
         id,
-        // TODO:
-        keywords: [],
+        keywords: keywords->Belt.Array.keepMap(keyword => {
+          switch keyword {
+          | String(s) => s->Some
+          | _ => None
+          }
+        }),
         name,
         summary,
         category: category->Category.fromString,
@@ -143,20 +147,6 @@ let decode = (json: Js.Json.t) => {
     }
   | _ => assert(false)
   }
-  // open Json.Decode
-  // let id = json->field("id", string, _)
-  // let keywords = json->field("keywords", array(string), _)
-  // let name = json->field("name", string, _)
-  // let summary = json->field("summary", string, _)
-  // let category = json->field("category", string, _)->Category.fromString
-
-  // {
-  //   id,
-  //   keywords,
-  //   name,
-  //   summary,
-  //   category,
-  // }
 }
 
 type remarkPlugin
@@ -223,7 +213,7 @@ let default = (props: props) => {
   // [A] The page first loads.
   // [B] The search box is cleared.
   // [C] The search box value exactly matches an item name.
-  React.useEffect1(() => {
+  React.useEffect(() => {
     switch getAnchor(router.asPath) {
     | None => setState(_ => ShowAll)
     | Some(anchor) =>
