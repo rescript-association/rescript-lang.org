@@ -14,7 +14,7 @@ import path from "path";
 import fs from "fs";
 import urlModule from "url";
 import { URL } from 'url';
-import {getAllPosts, blogPathToSlug} from '../src/common/BlogApi.mjs'
+import {getAllPosts, blogPathToSlug} from '../src/common/BlogApi.bs.mjs'
 
 const pathname = new URL('.', import.meta.url).pathname;
 const __dirname = process.platform !== 'win32' ? pathname : pathname.substring(1)
