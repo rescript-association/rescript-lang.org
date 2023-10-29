@@ -16,7 +16,7 @@ module Lang: {
 
   let toExt: t => string
 
-  let decode: Js.Json.t => t
+  let ofString: string => t
 }
 
 module Version: {

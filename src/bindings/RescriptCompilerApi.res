@@ -20,11 +20,11 @@ module Lang = {
     | OCaml => "ml"
     }
 
-  let decode = (json: Js.Json.t): t => {
-    switch json {
-    | String("ml") => OCaml
-    | String("re") => Reason
-    | String("res") => Res
+  let ofString = lang => {
+    switch lang {
+    | "ml" => OCaml
+    | "re" => Reason
+    | "res" => Res
     | _ => assert(false)
     }
   }
@@ -333,10 +333,10 @@ module ConvertSuccess = {
         dict->Js.Dict.get("fromLang"),
         dict->Js.Dict.get("toLang"),
       ) {
-      | (Some(String(code)), Some(Object(fromLang)), Some(Object(toLang))) => {
+      | (Some(String(code)), Some(String(fromLang)), Some(String(toLang))) => {
           code,
-          fromLang: fromLang->Js.Json.object_->Lang.decode,
-          toLang: toLang->Js.Json.object_->Lang.decode,
+          fromLang: fromLang->Lang.ofString,
+          toLang: toLang->Lang.ofString,
         }
       | _ => assert(false)
       }
