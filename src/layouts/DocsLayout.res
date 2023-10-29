@@ -243,17 +243,17 @@ module Make = (Content: StaticContent) => {
     }
 
     make({
-      breadcrumbs: ?breadcrumbs,
-      title: title,
-      metaTitleCategory: ?metaTitleCategory,
-      frontmatter: ?frontmatter,
-      version: ?version,
-      availableVersions: ?availableVersions,
-      activeToc: ?activeToc,
-      categories: categories,
-      components: ?components,
-      theme: ?theme,
-      children: children,
+      ?breadcrumbs,
+      title,
+      ?metaTitleCategory,
+      ?frontmatter,
+      ?version,
+      ?availableVersions,
+      ?activeToc,
+      categories,
+      ?components,
+      ?theme,
+      children,
     })
   }
 }

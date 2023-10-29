@@ -116,30 +116,8 @@ module BlogHeader = {
   }
 }
 
-// type remarkPlugin
-// @module("remark-comment") external remarkComment: remarkPlugin = "default"
-// @module("remark-gfm") external remarkGfm: remarkPlugin = "default"
-// @module("remark-frontmatter") external remarkFrontmatter: remarkPlugin = "default"
-
-// let mdxOptions = {"remarkPlugins": [remarkComment, remarkGfm, remarkFrontmatter]}
-
-// external asProps: {..} => {"props": MdxRemote.output} = "%identity"
-
 let default = (props: props) => {
   let {mdxSource, isArchived, path} = props
-
-  // let mdxProps = {
-  //   "frontmatter": mdxSource.frontmatter,
-  //   "scope": mdxSource.scope,
-  //   "compiledSource": mdxSource.compiledSource,
-  //   "components": MarkdownComponents.default,
-  //   "options": {
-  //     "mdxOptions": mdxOptions,
-  //   },
-  // }
-
-  // let children = React.createElement(Mdx.MDXRemote.make, asProps(mdxProps))
-  // let children = React.null
 
   let children =
     <MdxRemote

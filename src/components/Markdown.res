@@ -530,6 +530,3 @@ module Video = {
 /* Sets our preferred branded styles
    We most likely will never need a different ~components
    option on our website. */
-
-// external asMdx: 'a => Mdx.Components.t = "%identity"
-// let default = asMdx(React.null)

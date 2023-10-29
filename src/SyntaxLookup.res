@@ -132,32 +132,11 @@ let decode = (json: Js.Json.t) => {
   }
 }
 
-// type remarkPlugin
-// @module("remark-comment") external remarkComment: remarkPlugin = "default"
-// @module("remark-gfm") external remarkGfm: remarkPlugin = "default"
-// @module("remark-frontmatter") external remarkFrontmatter: remarkPlugin = "default"
-
-// let mdxOptions = {"remarkPlugins": [remarkComment, remarkGfm, remarkFrontmatter]}
-
-// external asProps: {..} => {"props": MdxRemote.output} = "%identity"
-
 let default = (props: props) => {
   let {mdxSources} = props
 
   let allItems = mdxSources->Js.Array2.map(mdxSource => {
     let {id, keywords, category, summary, name} = decode(mdxSource.frontmatter)
-
-    // let mdxProps = {
-    //   "frontmatter": mdxSource.frontmatter,
-    //   "scope": mdxSource.scope,
-    //   "compiledSource": mdxSource.compiledSource,
-    //   "components": MarkdownComponents.default,
-    //   "options": {
-    //     "mdxOptions": mdxOptions,
-    //   },
-    // }
-
-    // let children = React.createElement(Mdx.MDXRemote.make, mdxSource)
 
     let children =
       <MdxRemote
@@ -256,7 +235,7 @@ let default = (props: props) => {
   let categories = {
     open Category
     let initial = [
-      Decorators,
+      Category.Decorators,
       Operators,
       LanguageConstructs,
       BuiltInFunctions,
@@ -374,7 +353,10 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = async _ctx => {
   let allFiles = Node.Fs.readdirSync(dir)->Js.Array2.map(async file => {
     let fullPath = Node.Path.join2(dir, file)
     let source = fullPath->Node.Fs.readFileSync(#utf8)
-    await MdxRemote.serialize(source, {parseFrontmatter: true, mdxOptions: MdxRemote.defaulltMdxOptions})
+    await MdxRemote.serialize(
+      source,
+      {parseFrontmatter: true, mdxOptions: MdxRemote.defaulltMdxOptions},
+    )
   })
 
   let mdxSources = await Js.Promise2.all(allFiles)

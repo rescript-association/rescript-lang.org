@@ -60,7 +60,11 @@ module Latest = {
 
 module V900 = {
   @react.component
-  let make = (~frontmatter: option<Js.Json.t>=?, ~components=MarkdownComponents.default, ~children) => {
+  let make = (
+    ~frontmatter: option<Js.Json.t>=?,
+    ~components=MarkdownComponents.default,
+    ~children,
+  ) => {
     let router = Next.Router.useRouter()
     let route = router.route
 

@@ -155,7 +155,7 @@ module Strong: {
 
 module Image: {
   @react.component
-  let make: (~src: string, ~withShadow:bool=?, ~caption: string=?) => React.element
+  let make: (~src: string, ~withShadow: bool=?, ~caption: string=?) => React.element
 }
 
 module Video: {
@@ -168,4 +168,3 @@ module Video: {
 /* Sets our preferred branded styles
    We most likely will never need a different ~components
    option on our website. */
-// let default: Mdx.Components.t
