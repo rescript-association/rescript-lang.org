@@ -19,7 +19,6 @@ module H2 = {
 type aliasH2 = Markdown.H2.props<string, React.element> => React.element
 external asMarkdownH2: 'a => aliasH2 = "%identity"
 
-// let default = MarkdownComponents.default
 let default = {
   MarkdownComponents.intro: Intro.make,
   p: P.make,
