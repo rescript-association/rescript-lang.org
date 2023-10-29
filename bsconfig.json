@@ -1,8 +1,8 @@
 {
   "name": "rescript-lang.org",
   "namespace": false,
-  "reason": {
-    "react-jsx": 3
+  "jsx": {
+    "version": 4
   },
   "bs-dependencies": [
     "@rescript/react",

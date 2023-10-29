@@ -112,7 +112,7 @@ external scrollTo: (int, int) => unit = "scrollTo"
 
 let scrollToTop = () => scrollTo(0, 0)
 
-type props = {mdxSources: array<Mdx.Remote.output>}
+type props = {mdxSources: array<MdxRemote.output>}
 type params = {slug: string}
 
 let decode = (json: Js.Json.t) => {
@@ -132,14 +132,14 @@ let decode = (json: Js.Json.t) => {
   }
 }
 
-type remarkPlugin
-@module("remark-comment") external remarkComment: remarkPlugin = "default"
-@module("remark-gfm") external remarkGfm: remarkPlugin = "default"
-@module("remark-frontmatter") external remarkFrontmatter: remarkPlugin = "default"
+// type remarkPlugin
+// @module("remark-comment") external remarkComment: remarkPlugin = "default"
+// @module("remark-gfm") external remarkGfm: remarkPlugin = "default"
+// @module("remark-frontmatter") external remarkFrontmatter: remarkPlugin = "default"
 
-let mdxOptions = {"remarkPlugins": [remarkComment, remarkGfm, remarkFrontmatter]}
+// let mdxOptions = {"remarkPlugins": [remarkComment, remarkGfm, remarkFrontmatter]}
 
-external asProps: {..} => {"props": Mdx.Remote.output} = "%identity"
+// external asProps: {..} => {"props": MdxRemote.output} = "%identity"
 
 let default = (props: props) => {
   let {mdxSources} = props
@@ -147,19 +147,25 @@ let default = (props: props) => {
   let allItems = mdxSources->Js.Array2.map(mdxSource => {
     let {id, keywords, category, summary, name} = decode(mdxSource.frontmatter)
 
-    let mdxProps = {
-      "frontmatter": mdxSource.frontmatter,
-      "scope": mdxSource.scope,
-      "compiledSource": mdxSource.compiledSource,
-      "components": Markdown.default,
-      "options": {
-        "mdxOptions": mdxOptions,
-      },
-    }
+    // let mdxProps = {
+    //   "frontmatter": mdxSource.frontmatter,
+    //   "scope": mdxSource.scope,
+    //   "compiledSource": mdxSource.compiledSource,
+    //   "components": MarkdownComponents.default,
+    //   "options": {
+    //     "mdxOptions": mdxOptions,
+    //   },
+    // }
 
-    let children = React.createElement(Mdx.MDXRemote.make, asProps(mdxProps))
+    // let children = React.createElement(Mdx.MDXRemote.make, mdxSource)
 
-    // let children = MdxUtils.createElement(mdxSource)
+    let children =
+      <MdxRemote
+        frontmatter={mdxSource.frontmatter}
+        compiledSource={mdxSource.compiledSource}
+        scope={mdxSource.scope}
+        components={MarkdownComponents.default}
+      />
 
     {id, keywords, category, summary, name, children}
   })
@@ -349,11 +355,11 @@ let default = (props: props) => {
         <Navigation overlayState />
         <div className="flex xs:justify-center overflow-hidden pb-48">
           <main className="mt-16 min-w-320 lg:align-center w-full px-4 md:px-8 max-w-1280">
-            <Mdx.Provider components=Markdown.default>
+            <MdxProvider components=MarkdownComponents.default>
               <div className="flex justify-center">
                 <div className="max-w-740 w-full"> content </div>
               </div>
-            </Mdx.Provider>
+            </MdxProvider>
           </main>
         </div>
         <Footer />
@@ -368,7 +374,7 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = async _ctx => {
   let allFiles = Node.Fs.readdirSync(dir)->Js.Array2.map(async file => {
     let fullPath = Node.Path.join2(dir, file)
     let source = fullPath->Node.Fs.readFileSync(#utf8)
-    await Mdx.Remote.serialize(source, {"parseFrontmatter": true, "mdxOptions": mdxOptions})
+    await MdxRemote.serialize(source, {parseFrontmatter: true, mdxOptions: MdxRemote.defaulltMdxOptions})
   })
 
   let mdxSources = await Js.Promise2.all(allFiles)

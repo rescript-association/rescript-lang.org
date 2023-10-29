@@ -166,20 +166,20 @@ module Components = {
   }
 }
 
-module Provider = {
-  @module("@mdx-js/react") @react.component
-  external make: (~components: Components.t, ~children: React.element=?) => React.element =
-    "MDXProvider"
-}
+// module Provider = {
+//   @module("@mdx-js/react") @react.component
+//   external make: (~components: MarkdownComponents.t, ~children: React.element=?) => React.element =
+//     "MDXProvider"
+// }
 
-module Remote = {
-  type output = {frontmatter: Js.Json.t, compiledSource: string, scope: Js.Json.t}
+// module Remote = {
+//   type output = {frontmatter: Js.Json.t, compiledSource: string, scope: Js.Json.t}
 
-  @module("next-mdx-remote/serialize")
-  external serialize: (string, {..}) => promise<output> = "serialize"
-}
+//   @module("next-mdx-remote/serialize")
+//   external serialize: (string, {..}) => promise<output> = "serialize"
+// }
 
-module MDXRemote = {
-  @react.component @module("next-mdx-remote")
-  external make: (~props: Remote.output) => React.element = "MDXRemote"
-}
+// module MDXRemote = {
+//   @react.component @module("next-mdx-remote")
+//   external make: (~frontmatter:Js.Json.t, ~compiledSource: string, ~scope: Js.Json.t, ~components:MarkdownComponents.t=?) => React.element = "MDXRemote"
+// }

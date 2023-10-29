@@ -16,7 +16,7 @@ module V0100Layout = DocsLayout.Make({
 
 module Latest = {
   @react.component
-  let make = (~frontmatter=?, ~components=Markdown.default, ~children) => {
+  let make = (~frontmatter=?, ~components=MarkdownComponents.default, ~children) => {
     let router = Next.Router.useRouter()
     let route = router.route
 
@@ -61,7 +61,7 @@ module Latest = {
 
 module V0100 = {
   @react.component
-  let make = (~frontmatter=?, ~components=Markdown.default, ~children) => {
+  let make = (~frontmatter=?, ~components=MarkdownComponents.default, ~children) => {
     let router = Next.Router.useRouter()
     let route = router.route
 

@@ -475,7 +475,7 @@ let default = (props: props) => {
         <div className="flex overflow-hidden">
           <div
             className="flex justify-between min-w-320 px-4 pt-16 lg:align-center w-full lg:px-8 pb-48">
-            <Mdx.Provider components=Markdown.default>
+            <MdxProvider components=MarkdownComponents.default>
               <main className="max-w-1280 w-full flex justify-center">
                 <div style={ReactDOM.Style.make(~maxWidth="44.0625rem", ())} className="w-full">
                   <H1> {React.string("Libraries & Bindings")} </H1>
@@ -494,7 +494,7 @@ let default = (props: props) => {
               <div className="hidden lg:block h-full ">
                 <InfoSidebar filter setFilter />
               </div>
-            </Mdx.Provider>
+            </MdxProvider>
           </div>
         </div>
         <Footer />

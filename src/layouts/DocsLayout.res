@@ -56,7 +56,7 @@ let make = (
   ~availableVersions: option<array<(string, string)>>=?,
   ~activeToc: option<SidebarLayout.Toc.t>=?,
   ~categories: array<Category.t>,
-  ~components=Markdown.default,
+  ~components=MarkdownComponents.default,
   ~theme=#Reason,
   ~children,
 ) => {
@@ -178,7 +178,7 @@ module Make = (Content: StaticContent) => {
     ~version: option<string>=?,
     ~availableVersions: option<array<(string, string)>>=?,
     /* ~activeToc: option<SidebarLayout.Toc.t>=?, */
-    ~components: option<Mdx.Components.t>=?,
+    ~components: option<MarkdownComponents.t>=?,
     ~theme: option<ColorTheme.t>=?,
     ~children: React.element,
   ) => {
@@ -243,17 +243,17 @@ module Make = (Content: StaticContent) => {
     }
 
     make({
-      "breadcrumbs": breadcrumbs,
-      "title": title,
-      "metaTitleCategory": metaTitleCategory,
-      "frontmatter": frontmatter,
-      "version": version,
-      "availableVersions": availableVersions,
-      "activeToc": activeToc,
-      "categories": categories,
-      "components": components,
-      "theme": theme,
-      "children": children,
+      breadcrumbs: ?breadcrumbs,
+      title: title,
+      metaTitleCategory: ?metaTitleCategory,
+      frontmatter: ?frontmatter,
+      version: ?version,
+      availableVersions: ?availableVersions,
+      activeToc: ?activeToc,
+      categories: categories,
+      components: ?components,
+      theme: ?theme,
+      children: children,
     })
   }
 }

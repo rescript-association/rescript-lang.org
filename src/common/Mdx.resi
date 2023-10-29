@@ -71,21 +71,21 @@ module Components: {
   ) => t
 }
 
-module Provider: {
-  @react.component
-  let make: (~components: Components.t, ~children: React.element=?) => React.element
-}
+// module Provider: {
+//   @react.component
+//   let make: (~components: Components.t, ~children: React.element=?) => React.element
+// }
 
-module Remote: {
-  type output = {
-    frontmatter: Js.Json.t,
-    compiledSource: string,
-    scope: Js.Json.t,
-  }
-  let serialize: (string, {..}) => promise<output>
-}
+// module Remote: {
+//   type output = {
+//     frontmatter: Js.Json.t,
+//     compiledSource: string,
+//     scope: Js.Json.t,
+//   }
+//   let serialize: (string, {..}) => promise<output>
+// }
 
-module MDXRemote: {
-  @react.component
-  let make: (~props: Remote.output) => React.element
-}
+// module MDXRemote: {
+//   @react.component
+//   let make: (~frontmatter: Js.Json.t, ~compiledSource: string, ~scope: Js.Json.t, ~components:MarkdownComponents.t=?) => React.element
+// }
