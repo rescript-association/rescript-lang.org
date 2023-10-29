@@ -28,7 +28,7 @@ module LoadScript = {
       loadScript(
         ~src=url,
         ~onSuccess=() => resolve(. Ok()),
-        ~onError=_err => resolve(. Error(j`Could not load script: $url`)),
+        ~onError=_err => resolve(. Error(`Could not load script: ${url}`)),
       )->ignore
     })
   }

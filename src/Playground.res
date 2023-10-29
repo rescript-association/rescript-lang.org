@@ -125,7 +125,7 @@ module ResultPane = {
       <div className={"p-2 " ++ highlightClass}>
         <span className=prefixColor> {React.string(prefixText)} </span>
         <span className="font-medium text-gray-40">
-          {React.string(j` Line $row, column $column:`)}
+          {React.string(` Line ${row->Belt.Int.toString}, column ${column->Belt.Int.toString}:`)}
         </span>
         <AnsiPre className="whitespace-pre-wrap "> shortMsg </AnsiPre>
       </div>
@@ -247,7 +247,7 @@ module ResultPane = {
         "Formatting completed with 0 errors"
       } else {
         let toStr = Api.Lang.toString(toLang)
-        j`Switched to $toStr with 0 errors`
+        `Switched to ${toStr} with 0 errors`
       }
       <PreWrap> {React.string(msg)} </PreWrap>
     | Conv(Fail({fromLang, toLang, details})) =>
@@ -268,11 +268,11 @@ module ResultPane = {
       // We keep both cases though in case we change things later
       let msg = if fromLang === toLang {
         let langStr = Api.Lang.toString(toLang)
-        j`The code is not valid $langStr syntax.`
+        `The code is not valid ${langStr} syntax.`
       } else {
         let fromStr = Api.Lang.toString(fromLang)
         let toStr = Api.Lang.toString(toLang)
-        j`Could not convert from "$fromStr" to "$toStr" due to malformed syntax:`
+        `Could not convert from "${fromStr}" to "${toStr}" due to malformed syntax:`
       }
       <div>
         <PreWrap className="text-16 mb-4"> {React.string(msg)} </PreWrap>
@@ -310,7 +310,9 @@ module ResultPane = {
     | Nothing =>
       let syntax = Api.Lang.toString(targetLang)
       <PreWrap>
-        {React.string(j`This playground is now running on compiler version $compilerVersion with $syntax syntax`)}
+        {React.string(
+          `This playground is now running on compiler version ${compilerVersion} with ${syntax} syntax`,
+        )}
       </PreWrap>
     }
 
@@ -1053,7 +1055,7 @@ module ControlPanel = {
   }
 
   module ShareButton = {
-    let copyToClipboard: string => bool = %raw(j`
+    let copyToClipboard: string => bool = %raw(`
     function(str) {
       try {
       const el = document.createElement('textarea');
@@ -1406,7 +1408,7 @@ module App = {
 // Feel free to play around and compile some
 // ReScript code!
 
-let initialReContent = j`Js.log("Hello Reason 3.6!");`
+let initialReContent = `Js.log("Hello Reason 3.6!");`
 
 let default = (~props: Try.props) => {
   let router = Next.Router.useRouter()

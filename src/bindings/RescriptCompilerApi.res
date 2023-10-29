@@ -26,7 +26,7 @@ module Lang = {
     | "ml" => OCaml
     | "re" => Reason
     | "res" => Res
-    | other => raise(DecodeError(j`Unknown language "$other"`))
+    | other => raise(DecodeError(`Unknown language "${other}"`))
     }
   }
 }
@@ -110,7 +110,7 @@ module LocMsg = {
     | #E => "E"
     }
 
-    j`[1;31m[$prefix] Line $row, $column:[0m $shortMsg`
+    `[1;31m[${prefix}] Line ${row->Belt.Int.toString}, ${column->Belt.Int.toString}:[0m ${shortMsg}`
   }
 
   // Creates a somewhat unique id based on the rows / cols of the locMsg
@@ -160,11 +160,11 @@ module Warning = {
     | Warn({warnNumber, details})
     | WarnErr({warnNumber, details}) =>
       let {LocMsg.row: row, column, shortMsg} = details
-      let msg = j`(Warning number $warnNumber) $shortMsg`
+      let msg = `(Warning number ${warnNumber->Belt.Int.toString}) ${shortMsg}`
       (row, column, msg)
     }
 
-    j`[1;31m[$prefix] Line $row, $column:[0m $msg`
+    `[1;31m[${prefix}] Line ${row->Belt.Int.toString}, ${column->Belt.Int.toString}:[0m ${msg}`
   }
 }
 
@@ -295,7 +295,7 @@ module CompileFail = {
     | "warning_flag_error" =>
       let warningFlag = WarningFlag.decode(json)
       WarningFlagErr(warningFlag)
-    | other => raise(DecodeError(j`Unknown type "$other" in CompileFail result`))
+    | other => raise(DecodeError(`Unknown type "${other}" in CompileFail result`))
     }
   }
 }
@@ -336,7 +336,7 @@ module ConversionResult = {
     | "syntax_error" =>
       let locMsgs = field("errors", array(LocMsg.decode), json)
       Fail({fromLang, toLang, details: locMsgs})
-    | other => Unknown(j`Unknown conversion result type "$other"`, json)
+    | other => Unknown(`Unknown conversion result type "${other}"`, json)
     } catch {
     | DecodeError(errMsg) => Unknown(errMsg, json)
     }
