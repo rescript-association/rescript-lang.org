@@ -25,4 +25,4 @@ lib/
 
 .vercel
 
-src/**/*.mjs
+*.bs.mjs

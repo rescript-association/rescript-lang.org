@@ -27,7 +27,7 @@
   "warnings": {
     "error": "+8"
   },
-  "suffix": ".mjs",
+  "suffix": ".bs.mjs",
   "bsc-flags": [
     "-bs-g"
   ],

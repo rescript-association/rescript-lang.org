@@ -1,6 +1,6 @@
-import Comp from "src/Packages"
+import Comp from "src/Packages.bs.mjs"
 
-export { getStaticProps } from "src/Packages"
+export { getStaticProps } from "src/Packages.bs.mjs"
 
 export default function PackagesPage(props) {
   return <Comp {...props}/>;
