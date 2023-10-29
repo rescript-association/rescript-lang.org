@@ -2,7 +2,7 @@
   "name": "rescript-lang.org",
   "namespace": false,
   "jsx": {
-    "version": 3
+    "version": 4
   },
   "bs-dependencies": [
     "@rescript/react"

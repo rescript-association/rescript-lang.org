@@ -11,7 +11,7 @@ let make: (
   ~availableVersions: array<(string, string)>=?,
   ~activeToc: SidebarLayout.Toc.t=?,
   ~categories: array<SidebarLayout.Sidebar.Category.t>,
-  ~components: Mdx.Components.t=?,
+  ~components: MarkdownComponents.t=?,
   ~theme: ColorTheme.t=?,
   ~children: React.element,
 ) => React.element
@@ -32,7 +32,7 @@ module Make: (Content: StaticContent) =>
     ~version: string=?,
     ~availableVersions: array<(string, string)>=?,
     /* ~activeToc: option<SidebarLayout.Toc.t>=?, */
-    ~components: Mdx.Components.t=?,
+    ~components: MarkdownComponents.t=?,
     ~theme: ColorTheme.t=?,
     ~children: React.element,
   ) => React.element

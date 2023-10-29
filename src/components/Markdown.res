@@ -476,6 +476,47 @@ module Strong = {
   let make = (~children) => <strong className="font-semibold"> children </strong>
 }
 
+module Image = {
+  @react.component
+  let make = (~src: string, ~withShadow=false, ~caption: option<string>=?) => {
+    let shadow = if withShadow {
+      "shadow-md"
+    } else {
+      ""
+    }
+    <div className="mt-8 mb-12 md:-mx-16">
+      <a href=src rel="noopener noreferrer">
+        <img className={"w-full " ++ shadow} src />
+      </a>
+      {switch caption {
+      | None => React.null
+      | Some(caption) =>
+        <div className="mt-4 text-14 text-gray-60 md:ml-16"> {React.string(caption)} </div>
+      }}
+    </div>
+  }
+}
+
+module Video = {
+  @react.component
+  let make = (~src: string, ~caption: option<string>=?) => {
+    <div className="mt-8 mb-12 md:-mx-16">
+      <div className={"flex w-full justify-center"}>
+        <div
+          className="relative w-full h-full"
+          style={ReactDOMStyle.make(~width="640px", ~paddingTop="56.25%", ())}>
+          <iframe className={"absolute top-0 left-0 w-full h-full"} src allowFullScreen={true} />
+        </div>
+      </div>
+      {switch caption {
+      | None => React.null
+      | Some(caption) =>
+        <div className="mt-4 text-14 text-gray-80 md:ml-16"> {React.string(caption)} </div>
+      }}
+    </div>
+  }
+}
+
 // Useful for debugging injected values in props
 //  let mdxTestComponent: React.component<{.}> = %raw(`
 //  function(children) {
@@ -489,33 +530,3 @@ module Strong = {
 /* Sets our preferred branded styles
    We most likely will never need a different ~components
    option on our website. */
-let default = Mdx.Components.t(
-  ~cite=Cite.make,
-  ~info=Info.make,
-  ~intro=Intro.make,
-  ~warn=Warn.make,
-  ~urlBox=UrlBox.make,
-  ~codeTab=CodeTab.make,
-  ~image=Image.default,
-  ~video=Video.default,
-  ~p=P.make,
-  ~li=Li.make,
-  ~h1=H1.make,
-  ~h2=H2.make,
-  ~h3=H3.make,
-  ~h4=H4.make,
-  ~h5=H5.make,
-  ~ul=Ul.make,
-  ~ol=Ol.make,
-  ~table=Table.make,
-  ~thead=Thead.make,
-  ~th=Th.make,
-  ~td=Td.make,
-  ~hr=Hr.make,
-  ~strong=Strong.make,
-  ~a=A.make,
-  ~pre=Pre.make,
-  ~blockquote=Blockquote.make,
-  ~code=Code.make,
-  (),
-)
