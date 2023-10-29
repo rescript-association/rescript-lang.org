@@ -18,8 +18,12 @@ external serialize: (string, serializeOptions) => promise<output> = "serialize"
 @module("remark-comment") external remarkComment: mdxPlugin = "default"
 @module("remark-gfm") external remarkGfm: mdxPlugin = "default"
 @module("remark-frontmatter") external remarkFrontmatter: mdxPlugin = "default"
+@module("rehype-slug") external rehypeSlug: mdxPlugin = "default"
 
-let defaulltMdxOptions = {remarkPlugins: [remarkComment, remarkGfm, remarkFrontmatter]}
+let defaulltMdxOptions = {
+  remarkPlugins: [remarkComment, remarkGfm, remarkFrontmatter],
+  rehypePlugins: [rehypeSlug],
+}
 
 @react.component @module("next-mdx-remote")
 external make: (
