@@ -372,7 +372,7 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = async _ctx => {
     let source = fullPath->Node.Fs.readFileSync
     await MdxRemote.serialize(
       source,
-      {parseFrontmatter: true, mdxOptions: MdxRemote.defaulltMdxOptions},
+      {parseFrontmatter: true, mdxOptions: MdxRemote.defaultMdxOptions},
     )
   })
 

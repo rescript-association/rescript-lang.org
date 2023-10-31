@@ -20,7 +20,7 @@ external serialize: (string, serializeOptions) => promise<output> = "serialize"
 @module("remark-frontmatter") external remarkFrontmatter: mdxPlugin = "default"
 @module("rehype-slug") external rehypeSlug: mdxPlugin = "default"
 
-let defaulltMdxOptions = {
+let defaultMdxOptions = {
   remarkPlugins: [remarkComment, remarkGfm, remarkFrontmatter],
   rehypePlugins: [rehypeSlug],
 }

@@ -221,7 +221,7 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = async ctx => {
 
   let mdxSource = await MdxRemote.serialize(
     source,
-    {parseFrontmatter: true, mdxOptions: MdxRemote.defaulltMdxOptions},
+    {parseFrontmatter: true, mdxOptions: MdxRemote.defaultMdxOptions},
   )
 
   let props = {mdxSource, isArchived, path}
