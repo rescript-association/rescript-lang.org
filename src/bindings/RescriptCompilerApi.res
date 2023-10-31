@@ -36,6 +36,7 @@ module Version = {
     | V1
     | V2
     | V3
+    | V4
     | UnknownVersion(string)
 
   // Helps finding the right API version
@@ -57,6 +58,7 @@ module Version = {
       }
     | list{"2"} => V2
     | list{"3"} => V3
+    | list{"4"} => V4
     | _ => UnknownVersion(apiVersion)
     }
 
@@ -65,6 +67,7 @@ module Version = {
     | V1 => "1.0"
     | V2 => "2.0"
     | V3 => "3.0"
+    | V4 => "4.0"
     | UnknownVersion(version) => version
     }
 
@@ -73,7 +76,7 @@ module Version = {
   let availableLanguages = t =>
     switch t {
     | V1 => [Lang.Reason, Res]
-    | V2 | V3 => [Lang.Res]
+    | V2 | V3 | V4 => [Lang.Res]
     | UnknownVersion(_) => [Res]
     }
 }
