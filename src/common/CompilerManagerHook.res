@@ -453,7 +453,14 @@ let useCompilerManager = (
 
           let instance = Compiler.make()
           let apiVersion = apiVersion->Version.fromString
-          let config = instance->Compiler.getConfig
+
+          let open_modules =
+            libraries->Belt.Array.some(el => el === "@rescript/core")
+              ? Some(["RescriptCore"])
+              : None
+
+          let config = {...instance->Compiler.getConfig, ?open_modules}
+          instance->Compiler.setConfig(config)
 
           let selected = {
             id: version,
