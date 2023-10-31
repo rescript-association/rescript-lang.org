@@ -490,7 +490,7 @@ let useCompilerManager = (
           | Lang.Reason => instance->Compiler.reasonCompile(code)
           | Lang.Res => instance->Compiler.resCompile(code)
           }
-        | V2 | V3 =>
+        | V2 | V3 | V4 =>
           switch lang {
           | Lang.OCaml => instance->Compiler.ocamlCompile(code)
           | Lang.Reason =>
