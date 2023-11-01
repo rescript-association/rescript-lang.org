@@ -1,4 +1,4 @@
-(** Efficient JSON handling
+@@ocaml.text(" Efficient JSON handling
 This module has four aspects to it:
 - Parsing, which turns a JSON string into an encoded JSON data structure
 - Stringificaiton, which produces a JSON string from an encoded JSON data structure
@@ -37,10 +37,10 @@ let arrayOfInts str
     match Json.Decode.(array int value)
     | Ok arr -> arr
     | Error _ -> []
-  | None -> failWith "Unable to parse JSON"
+  | None -> failWith \"Unable to parse JSON\"
 
 (* prints `[3, 2, 1]` *)
-let _ = Js.log (arrayOfInts "[1, 2, 3]" |> Js.Array.reverse)
+let _ = Js.log (arrayOfInts \"[1, 2, 3]\" |> Js.Array.reverse)
 ]}
 
 @example {[
@@ -55,16 +55,16 @@ let _ =
 @example {[
 (* Encoding a JSON data structure using Json.Encode *)
 
-(* prints ["foo", "bar"] *)
+(* prints [\"foo\", \"bar\"] *)
 let _ =
-  [| "foo", "bar" |]
+  [| \"foo\", \"bar\" |]
   |> Json.Encode.stringArray
   |> Json.stringify
   |> Js.log
 
-(* prints ["foo", "bar"] *)
+(* prints [\"foo\", \"bar\"] *)
 let _ =
-  [| "foo", "bar" |]
+  [| \"foo\", \"bar\" |]
   |> Js.Array.map Encode.int
   |> Json.Encode.jsonArray
   |> Json.stringify
@@ -88,29 +88,31 @@ let mapJsonObjectString f decoder encoder str =
 let sum ns =
   Array.fold_left (+) 0
 
-(* prints `{ "foo": 6, "bar": 24 }` *)
+(* prints `{ \"foo\": 6, \"bar\": 24 }` *)
 let _ =
   Js.log (
     mapJsonObjectString sun Json.Decode.(array int) Json.Encode.int {|
       {
-        "foo": [1, 2, 3],
-        "bar": [9, 8, 7]
+        \"foo\": [1, 2, 3],
+        \"bar\": [9, 8, 7]
       }
     |} 
   )
 ]}
-*) 
+")
 
 module Decode = Json_decode
 module Encode = Json_encode
 
-exception ParseError of string
+exception ParseError(string)
 
-val parse: string -> Js.Json.t option
-(** [parse s] returns [Some json] if s is a valid json string, [None] otherwise *)
+@ocaml.doc(" [parse s] returns [Some json] if s is a valid json string, [None] otherwise ")
+let parse: string => option<Js.Json.t>
 
-val parseOrRaise: string -> Js.Json.t
-(** [parse s] returns a [Js.Json.t] if s is a valid json string, raises [ParseError] otherwise *)
+@ocaml.doc(
+  " [parse s] returns a [Js.Json.t] if s is a valid json string, raises [ParseError] otherwise "
+)
+let parseOrRaise: string => Js.Json.t
 
-val stringify: Js.Json.t -> string
-(** [stringify json] returns the [string] representation of the given [Js.Json.t] value *)
+@ocaml.doc(" [stringify json] returns the [string] representation of the given [Js.Json.t] value ")
+let stringify: Js.Json.t => string
