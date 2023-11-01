@@ -14,7 +14,7 @@ const { ProvidePlugin } = webpack;
 const transpileModules = ["rescript"].concat(bsconfig["bs-dependencies"]);
 
 const config = {
-  pageExtensions: ["jsx", "js", "bs.mjs", "mdx", "mjs"],
+  pageExtensions: ["jsx", "js", "bs.js", "mdx", "mjs"],
   env: {
     ENV: process.env.NODE_ENV,
   },

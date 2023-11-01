@@ -2,4 +2,4 @@ export {
   default,
   getStaticPaths,
   getStaticProps
-} from "src/BlogArticle.bs.mjs";
+} from "src/BlogArticle.mjs";

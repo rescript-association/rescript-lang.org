@@ -12,7 +12,7 @@ import "codemirror/lib/codemirror.css";
 import "styles/cm.css";
 import "styles/docson.css";
 
-import {make as ResApp} from "src/common/App.bs.mjs";
+import {make as ResApp} from "src/common/App.mjs";
 
 export default function App(props) {
   return <ResApp {...props} />
