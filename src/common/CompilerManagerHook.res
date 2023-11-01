@@ -145,6 +145,12 @@ let getLibrariesForVersion = (~version: Semver.t): array<string> => {
   libraries
 }
 
+let getOpenModules = (~apiVersion: Version.t, ~libraries: array<string>): option<array<string>> =>
+  switch apiVersion {
+  | V1 | V2 | V3 | UnknownVersion(_) => None
+  | V4 => libraries->Belt.Array.some(el => el === "@rescript/core") ? Some(["RescriptCore"]) : None
+  }
+
 /*
     This function loads the compiler, plus a defined set of libraries that are available
     on our bs-platform-js-releases channel.
@@ -396,6 +402,7 @@ let useCompilerManager = (
             | Ok() =>
               let instance = Compiler.make()
               let apiVersion = apiVersion->Version.fromString
+              let open_modules = getOpenModules(~apiVersion, ~libraries)
 
               // Note: The compiler bundle currently defaults to
               // commonjs when initiating the compiler, but our playground
@@ -405,6 +412,7 @@ let useCompilerManager = (
               let config = {
                 ...instance->Compiler.getConfig,
                 module_system: "es6",
+                ?open_modules,
               }
               instance->Compiler.setConfig(config)
 
@@ -453,11 +461,7 @@ let useCompilerManager = (
 
           let instance = Compiler.make()
           let apiVersion = apiVersion->Version.fromString
-
-          let open_modules =
-            libraries->Belt.Array.some(el => el === "@rescript/core")
-              ? Some(["RescriptCore"])
-              : None
+          let open_modules = getOpenModules(~apiVersion, ~libraries)
 
           let config = {...instance->Compiler.getConfig, ?open_modules}
           instance->Compiler.setConfig(config)
