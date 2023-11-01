@@ -84,7 +84,7 @@ let array = (decode, json) =>
     \"@@"(raise, DecodeError("Expected array, got " ++ _stringify(json)))
   }
 
-let list = (decode, json) => array(decode)(json)->Array.to_list
+let list = (decode, json) => array(decode, json)->Array.to_list
 
 let pair = (decodeA, decodeB, json) =>
   if Js.Array.isArray(json) {
@@ -194,8 +194,8 @@ let field = (key, decode, json) =>
 
 let rec at = (key_path, decoder, json) =>
   switch key_path {
-  | list{key} => field(key, decoder)(json)
-  | list{first, ...rest} => field(first, at(rest, decoder))(json)
+  | list{key} => field(key, decoder, json)
+  | list{first, ...rest} => field(first, at(rest, decoder, json), ...)
   | list{} => \"@@"(raise, Invalid_argument("Expected key_path to contain at least one element"))
   }
 
@@ -224,7 +224,7 @@ let oneOf = (decoders, json) => {
   inner(decoders, list{})
 }
 
-let either = (a, b) => oneOf(list{a, b})
+let either = (a, b) => oneOf(list{a, b}, ...)
 
 let withDefault = (default, decode, json) =>
   try decode(json) catch {

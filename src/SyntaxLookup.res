@@ -116,36 +116,19 @@ type props = {mdxSources: array<MdxRemote.output>}
 type params = {slug: string}
 
 let decode = (json: Js.Json.t) => {
-  switch json {
-  | Object(itemDict) =>
-    switch (
-      itemDict->Js.Dict.get("id"),
-      itemDict->Js.Dict.get("keywords"),
-      itemDict->Js.Dict.get("name"),
-      itemDict->Js.Dict.get("summary"),
-      itemDict->Js.Dict.get("category"),
-    ) {
-    | (
-        Some(String(id)),
-        Some(Array(keywords)),
-        Some(String(name)),
-        Some(String(summary)),
-        Some(String(category)),
-      ) => {
-        id,
-        keywords: keywords->Belt.Array.keepMap(keyword => {
-          switch keyword {
-          | String(s) => s->Some
-          | _ => None
-          }
-        }),
-        name,
-        summary,
-        category: category->Category.fromString,
-      }
-    | _ => assert(false)
-    }
-  | _ => assert(false)
+  open Json.Decode
+  let id = json->(field("id", string, _))
+  let keywords = json->(field("keywords", array(string, ...), _))
+  let name = json->(field("name", string, _))
+  let summary = json->(field("summary", string, _))
+  let category = json->field("category", string, _)->Category.fromString
+
+  {
+    id,
+    keywords,
+    name,
+    summary,
+    category,
   }
 }
 
