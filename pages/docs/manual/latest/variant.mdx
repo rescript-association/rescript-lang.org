@@ -351,7 +351,7 @@ var myArray = ["hello", true, false, 13.37];
 
 In the above example, reaching back into the values is as simple as pattern matching on them.
 
-### Unboxing rules (advanced)
+### Advanced: Unboxing rules
 #### No overlap in constructors
 A variant can be unboxed if no constructors have overlap in their runtime representation. 
 
@@ -488,9 +488,90 @@ let usersToJson = users => Array(users->Array.map(userToJson))
 
 This can be extrapolated to many more cases.
 
-// ### Catch all
+### Advanced: Catch-all Constructors
+With untagged variants comes a rather interesting capability - catch-all cases are now possible to encode directly into a variant. 
 
-// TODO #733: Add a small section on the "catch all" trick, and what kind of things that enable.
+Let's look at how it works. Imagine you're using a third party API that returns a list of available animals. You could of course model it as a regular `string`, but given that variants can be used as "typed strings", using a variant would give you much more benefit:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+```rescript
+type animal = Dog | Cat | Bird
+
+type apiResponse = {
+  animal: animal
+}
+
+let greetAnimal = (animal: animal) =>
+  switch animal {
+  | Dog => "Wof"
+  | Cat => "Meow"
+  | Bird => "Kashiiin"
+  }
+```
+```javascript
+```
+</CodeTab>
+
+
+This is all fine and good as long as the API returns `"Dog"`, `"Cat"` or `"Bird"` for `animal`. 
+However, what if the API changes before you have a chance to deploy new code, and can now return `"Turtle"` as well? Your code would break down because the variant `animal` doesn't cover `"Turtle"`.
+
+So, we'll need to go back to `string`, loosing all of the goodies of using a variant, and then do manual conversion into the `animal` variant from `string`, right?
+Well, this used to be the case before, but not anymore! We can leverage untagged variants to bake in handling of unknown values into the variant itself.
+
+Let's update our type definition first:
+```rescript
+@unboxed
+type animal = Dog | Cat | Bird | UnknownAnimal(string)
+```
+
+Notice we've added `@unboxed` and the constructor `UnknownAnimal(string)`. Remember how untagged variants work? You remove the constructors and just leave the payloads. This means that the variant above at runtime translates to this (made up) JavaScript type:
+```
+type animal = "Dog" | "Cat" | "Bird" | string
+```
+So, any string not mapping directly to one of the payloadless constructors will now map to the general `string` case.
+
+As soon as we've added this, the compiler complains that we now need to handle this additional case in our pattern match as well. Let's fix that:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+```rescript
+@unboxed
+type animal = Dog | Cat | Bird | UnknownAnimal(string)
+
+type apiResponse = {
+  animal: animal
+}
+
+let greetAnimal = (animal: animal) =>
+  switch animal {
+  | Dog => "Wof"
+  | Cat => "Meow"
+  | Bird => "Kashiiin"
+  | UnknownAnimal(otherAnimal) =>
+    `I don't know how to greet animal ${otherAnimal}`
+  }
+```
+```javascript
+function greetAnimal(animal) {
+  if (!(animal === "Cat" || animal === "Dog" || animal === "Bird")) {
+    return "I don't know how to greet animal " + animal;
+  }
+  switch (animal) {
+    case "Dog" :
+        return "Wof";
+    case "Cat" :
+        return "Meow";
+    case "Bird" :
+        return "Kashiiin";
+    
+  }
+}
+```
+</CodeTab>
+
+There! Now the external API can change as much as it wants, we'll be forced to write all code that interfaces with `animal` in a safe way that handles all possible cases. All of this baked into the variant definition itself, so no need for labor intensive manual conversion.
+
+This is useful in any scenario when you use something enum-style that's external and might change. Additionally, it's also useful when something external has a large number of possible values that are known, but where you only care about a subset of them. With a catch-all case you don't need to bind to all of them just because they can happen, you can safely just bind to the ones you care about and let the catch-all case handle the rest.
 
 ## Coercion
 In certain situations, variants can be coerced to other variants, or to and from primitives. Coercion is always zero cost.
