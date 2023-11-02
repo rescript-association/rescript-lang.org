@@ -102,7 +102,7 @@ glob.sync(__dirname + '/../pages/docs/manual/latest/**/*.mdx').forEach((file) =>
           rescriptCoreCompiled,
           '-w',
           '-109',
-          "-uncurried",
+          '-uncurried',
           '-open',
           'RescriptCore',
         ],
