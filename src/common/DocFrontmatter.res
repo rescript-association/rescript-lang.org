@@ -5,7 +5,7 @@ type t = {
   canonical: Js.null<string>,
 }
 
-let decode = (json) => {
+let decode = json => {
   open! Json.Decode
   try Some({
     title: field("title", string, json),
