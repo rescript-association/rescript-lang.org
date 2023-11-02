@@ -98,7 +98,7 @@ let decodeBadge = (str: string): Badge.t =>
   | "testing" => Testing
   | "preview" => Preview
   | "roadmap" => Roadmap
-  | _ => assert(false)
+  | str => raise(Json.Decode.DecodeError(`Unknown category "${str}"`))
   }
 
 exception AuthorNotFound(string)
@@ -109,64 +109,32 @@ let decodeAuthor = (~fieldName: string, ~authors, username) =>
   | None => raise(AuthorNotFound(`Couldn't find author "${username}" in field ${fieldName}`))
   }
 
-let decode = (json: Js.Json.t): result<t, string> => {
-  switch json {
-  | Object(dict) =>
-    switch (
-      dict->Js.Dict.get("author"),
-      dict->Js.Dict.get("co-authors"),
-      dict->Js.Dict.get("date"),
-      dict->Js.Dict.get("badge"),
-      dict->Js.Dict.get("previewImg"),
-      dict->Js.Dict.get("articleImg"),
-      dict->Js.Dict.get("title"),
-      dict->Js.Dict.get("description"),
-    ) {
-    | (
-        Some(String(author)),
-        co_authors,
-        Some(String(date)),
-        badge,
-        previewImg,
-        articleImg,
-        Some(String(title)),
-        description,
-      ) =>
-      let fm = {
-        author: author->decodeAuthor(~fieldName="author", ~authors),
-        co_authors: switch co_authors {
-        | Some(Array(co_authors)) =>
-          co_authors->Belt.Array.keepMap(author => {
-            switch author {
-            | String(author) => author->decodeAuthor(~fieldName="author", ~authors)->Some
-            | _ => None
-            }
-          })
-        | _ => []
-        },
-        date: date->DateStr.fromString,
-        previewImg: switch previewImg {
-        | Some(String(s)) => s->Js.Null.return
-        | _ => Js.null
-        },
-        articleImg: switch articleImg {
-        | Some(String(s)) => s->Js.Null.return
-        | _ => Js.null
-        },
-        title,
-        badge: switch badge {
-        | Some(String(s)) => s->decodeBadge->Js.Null.return
-        | _ => Js.null
-        },
-        description: switch description {
-        | Some(String(s)) => Js.Null.return(s)
-        | _ => Js.null
-        },
-      }
-      Ok(fm)
-    | _ => Error(`Error to decode: ${Js.Json.stringify(json)}`)
-    }
+let authorDecoder = (~fieldName: string, ~authors) => {
+  open Json.Decode
 
-  | _ => Error(`Expected object json`)
+  let multiple = j => array(string, j)->Belt.Array.map(a => decodeAuthor(~fieldName, ~authors, a))
+
+  let single = j => [string(j)->decodeAuthor(~fieldName, ~authors)]
+
+  either(single, multiple)
+}
+
+let decode = (json: Js.Json.t): result<t, string> => {
+  open Json.Decode
+  switch {
+    author: json->field("author", string, _)->decodeAuthor(~fieldName="author", ~authors),
+    co_authors: json
+    ->optional(field("co-authors", authorDecoder(~fieldName="co-authors", ~authors), ...), _)
+    ->Belt.Option.getWithDefault([]),
+    date: json->field("date", string, _)->DateStr.fromString,
+    badge: json->optional(j => field("badge", string, j)->decodeBadge, _)->Js.Null.fromOption,
+    previewImg: json->optional(field("previewImg", string, ...), _)->Js.Null.fromOption,
+    articleImg: json->optional(field("articleImg", string, ...), _)->Js.Null.fromOption,
+    title: json->(field("title", string, _)),
+    description: json->(nullable(field("description", string, ...), _)),
+  } {
+  | fm => Ok(fm)
+  | exception DecodeError(str) => Error(str)
+  | exception AuthorNotFound(str) => Error(str)
   }
 }
