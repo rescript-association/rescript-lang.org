@@ -427,8 +427,8 @@ Here's an example of how you could write your own JSON decoders easily using the
 ```rescript
 @unboxed
 type rec json =
-  | Boolean(bool)
   | @as(null) Null
+  | Boolean(bool)
   | String(string)
   | Number(float)
   | Object(Js.Dict.t<json>)
