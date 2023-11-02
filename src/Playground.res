@@ -902,9 +902,19 @@ module Settings = {
 
     let onResetClick = evt => {
       ReactEvent.Mouse.preventDefault(evt)
+
+      let open_modules = switch readyState.selected.apiVersion {
+      | V1 | V2 | V3 | UnknownVersion(_) => None
+      | V4 =>
+        readyState.selected.libraries->Belt.Array.some(el => el === "@rescript/core")
+          ? Some(["RescriptCore"])
+          : None
+      }
+
       let defaultConfig = {
         Api.Config.module_system: "nodejs",
         warn_flags: "+a-4-9-20-40-41-42-50-61-102-109",
+        ?open_modules,
       }
       setConfig(defaultConfig)
     }

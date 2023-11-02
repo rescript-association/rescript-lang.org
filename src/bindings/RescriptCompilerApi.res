@@ -36,6 +36,7 @@ module Version = {
     | V1
     | V2
     | V3
+    | V4
     | UnknownVersion(string)
 
   // Helps finding the right API version
@@ -57,6 +58,7 @@ module Version = {
       }
     | list{"2"} => V2
     | list{"3"} => V3
+    | list{"4"} => V4
     | _ => UnknownVersion(apiVersion)
     }
 
@@ -65,6 +67,7 @@ module Version = {
     | V1 => "1.0"
     | V2 => "2.0"
     | V3 => "3.0"
+    | V4 => "4.0"
     | UnknownVersion(version) => version
     }
 
@@ -73,7 +76,7 @@ module Version = {
   let availableLanguages = t =>
     switch t {
     | V1 => [Lang.Reason, Res]
-    | V2 | V3 => [Lang.Res]
+    | V2 | V3 | V4 => [Lang.Res]
     | UnknownVersion(_) => [Res]
     }
 }
@@ -348,6 +351,7 @@ module Config = {
     module_system: string,
     warn_flags: string,
     uncurried?: bool,
+    open_modules?: array<string>,
   }
 }
 
@@ -423,6 +427,8 @@ module Compiler = {
 
   @send external setWarnFlags: (t, string) => bool = "setWarnFlags"
 
+  @send external setOpenModules: (t, array<string>) => bool = "setOpenModules"
+
   let setConfig = (t: t, config: Config.t): unit => {
     let moduleSystem = switch config.module_system {
     | "nodejs" => #nodejs->Some
@@ -431,6 +437,7 @@ module Compiler = {
     }
 
     Belt.Option.forEach(moduleSystem, moduleSystem => t->setModuleSystem(moduleSystem)->ignore)
+    Belt.Option.forEach(config.open_modules, modules => t->setOpenModules(modules)->ignore)
 
     t->setWarnFlags(config.warn_flags)->ignore
   }
