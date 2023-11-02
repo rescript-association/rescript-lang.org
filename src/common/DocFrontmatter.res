@@ -5,14 +5,13 @@ type t = {
   canonical: Js.null<string>,
 }
 
-let decode = (json: Js.Json.t) => {
+let decode = (json) => {
   open! Json.Decode
   try Some({
     title: field("title", string, json),
     metaTitle: optional(field("metaTitle", string, ...), json)->Js.Null.fromOption,
     description: optional(field("description", string, ...), json)->Js.Null.fromOption,
     canonical: optional(field("canonical", string, ...), json)->Js.Null.fromOption,
-    // ghEditHref: field("__ghEditHref", string, json),
   }) catch {
   | DecodeError(_errMsg) => None
   }
