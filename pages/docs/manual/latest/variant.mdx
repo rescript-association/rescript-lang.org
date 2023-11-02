@@ -152,6 +152,26 @@ var me = {
 
 The output is slightly uglier and less performant than the former.
 
+## Variant Type Spreads
+Just like [with records](record#record-type-spread), it's possible to use type spreads to create new variants from other variants:
+
+```rescript
+type a = One | Two | Three
+type b = | ...a | Four | Five
+```
+
+Type `b` is now:
+```rescript
+type b = One | Two | Three | Four | Five
+```
+
+Type spreads act as a 'copy-paste', meaning all constructors are copied as-is from `a` to `b`. Here are the rules for spreads to work:
+- You can't overwrite constructors, so the same constructor name can exist in only one place as you spread. This is true even if the constructors are identical.
+- All variants and constructors must share the same runtime configuration - `@unboxed`, `@tag`, `@as` and so on.
+- You can't spread types in recursive definitions.
+
+Note that you need a leading `|` if you want to use a spread in the first position of a variant definition.
+
 ### Pattern Matching On Variant
 
 See the [Pattern Matching/Destructuring](pattern-matching-destructuring) section later.
@@ -160,10 +180,9 @@ See the [Pattern Matching/Destructuring](pattern-matching-destructuring) section
 
 A variant value compiles to 3 possible JavaScript outputs depending on its type declaration:
 
-- If the variant value is a constructor with no payload, it compiles to a string.
-- If it's a constructor with a payload, it compiles to an object with the field `TAG` and the field `_0` for the first payload, `_1` for the second payload, etc.
-- An exception to the above is a variant whose type declaration contains only a single constructor with payload. In that case, the constructor compiles to an object without the `TAG` field.
-- Labeled variant payloads (the inline record trick earlier) compile to an object with the label names instead of `_0`, `_1`, etc. The object might or might not have the `TAG` field as per previous rule.
+- If the variant value is a constructor with no payload, it compiles to a string of the constructor name. Example: `Yes` compiles to `"Yes"`.
+- If it's a constructor with a payload, it compiles to an object with the field `TAG` and the field `_0` for the first payload, `_1` for the second payload, etc. The value of `TAG` is the constructor name as string by default, but note that the name of the `TAG` field as well as the string value used for each constructor name [can be customized](#tagged-variants).
+- Labeled variant payloads (the inline record trick earlier) compile to an object with the label names instead of `_0`, `_1`, etc. The object will have the `TAG` field as per the previous rule.
 
 Check the output in these examples:
 
@@ -294,7 +313,7 @@ Now, this maps 100% to the TypeScript code, including letting us bring over the 
 
 ### String literals
 
-The same logic is easily applied to string literals from TypeScript, only here the benefit is even larger, because string literals have the same limitations in TypeScript that polymorphic variants have in ReScript.
+The same logic is easily applied to string literals from TypeScript, only here the benefit is even larger, because string literals have the same limitations in TypeScript that polymorphic variants have in ReScript:
 
 ```typescript
 // direction.ts
@@ -307,13 +326,14 @@ There's no way to attach documentation strings to string literals in TypeScript,
 Here's a list of everything you can put in the `@as` tag of a variant constructor:
 - A string literal: `@as("success")`
 - An int: `@as(5)`
-- A float constant: `@as(1.5)`
+- A float: `@as(1.5)`
 - True/false: `@as(true)` and `@as(false)`
 - Null: `@as(null)`
+- Undefined: `@as(undefined)`
 
 ## Untagged variants
 
-With _untagged variants_ it is possible to mix types together that normally can't be mixed in the ReScript type system. For example, with untagged variants you can represent a heterogenous array:
+With _untagged variants_ it is possible to mix types together that normally can't be mixed in the ReScript type system, as long as there's a way to discriminate them at runtime. For example, with untagged variants you can represent a heterogenous array:
 
 ```rescript
 @unboxed type listItemValue = String(string) | Boolean(bool) | Number(float)
@@ -468,20 +488,11 @@ let usersToJson = users => Array(users->Array.map(userToJson))
 
 This can be extrapolated to many more cases.
 
-// ### Unboxable types
-
-// TODO #734: Add a list of what can currently be unboxed (and why), and a note that it's possible that more things could be unboxed in the future.
-
 // ### Catch all
 
 // TODO #733: Add a small section on the "catch all" trick, and what kind of things that enable.
 
-// ## Variant spread
-
-// TODO #732
-
 ## Coercion
-
 You can convert a variant to a `string` or `int` at no cost:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
