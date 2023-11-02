@@ -493,29 +493,65 @@ This can be extrapolated to many more cases.
 // TODO #733: Add a small section on the "catch all" trick, and what kind of things that enable.
 
 ## Coercion
-You can convert a variant to a `string` or `int` at no cost:
+In certain situations, variants can be coerced to other variants, or to and from primitives. Coercion is always zero cost.
 
-<CodeTab labels={["ReScript", "JS Output"]}>
+### Coercing Variants to Other Variants
+You can coerce a variant to another variant if they're identical in runtime representation, and additionally if the variant you're coercing can be represented as the variant you're coercing to.
 
-```res
-type company = Apple | Facebook | Other(string)
-let theCompany: company = Apple
+Here's an example using [variant type spreads](#variant-type-spreads):
+```rescript
+type a = One | Two | Three
+type b = | ...a | Four | Five
 
-let message = "Hello " ++ (theCompany :> string)
+let one: a = One
+let four: b = Four
+
+// This works because type `b` can always represent type `a` since all of type `a`'s constructors are spread into type `b` 
+let oneAsTypeB = (one :> b)
 ```
 
-```js
-var theCompany = "Apple";
-var message = "Hello " + theCompany;
+### Coercing Variants to Primitives
+Variants that are guaranteed to always be represented by a single primitive at runtime can be coerced to that primitive.
+
+It works with strings, the default runtime representation of payloadless constructors:
+```rescript
+// Constructors without payloads are represented as `string` by default
+type a = One | Two | Three
+
+let one: a = One
+
+// All constructors are strings at runtime, so you can safely coerce it to a string
+let oneAsString = (one :> string)
 ```
 
-</CodeTab>
+If you were to configure all of your construtors to be represented as `int` or `float`, you could coerce to those too:
+```rescript
+type asInt = | @as(1) One | @as(2) Two | @as(3) Three
 
-// TODO #731: expand this section with:
-//
-// Coercing between variants (and the constraints around that)
-// Why you can sometimes coerce from variant to string/int/float, and how to think about that (runtime representation must match)
-// The last additions of allowing coercing strings to unboxed variants with catch-all string cases
+let oneInt: asInt = One
+let toInt = (oneInt :> int)
+```
+
+### Advanced: Coercing `string` to Variant
+In certain situtations it's possible to coerce a `string` to a variant. This is an advanced technique that you're unlikely to need much, but when you do it's really useful.
+
+You can coerce a `string` to a variant when:
+- Your variant is `@unboxed`
+- Your variant has a "catch-all" `string` case
+
+Let's look at an example:
+```rescript
+@unboxed
+type myEnum = One | Two | Other(string)
+
+// Other("Other thing")
+let asMyEnum = ("Other thing" :> myEnum)
+
+// One
+let asMyEnum = ("One" :> myEnum)
+```
+
+This works because the variant is unboxed **and** has a catch-all case. So, if you throw a string at this variant that's not representable by the payloadless constructors, like `"One"` or `"Two"`, it'll _always_ end up in `Other(string)`, since that case can represent any `string`.
 
 ## Tips & Tricks
 
@@ -667,12 +703,12 @@ switch data {
 ```js
 console.log("Wof");
 
-var data = /* Dog */0;
+var data = "Dog";
 ```
 
 </CodeTab>
 
 The compiler sees the variant, then
 
-1. conceptually turns them into `type animal = 0 | 1 | 2`
+1. conceptually turns them into `type animal = "Dog" | "Cat" | "Bird"`
 2. compiles `switch` to a constant-time jump table (`O(1)`).
