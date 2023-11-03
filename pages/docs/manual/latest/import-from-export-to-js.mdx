@@ -93,6 +93,65 @@ var studentName = Student;
 
 </CodeTab>
 
+## Dynamic Import
+Leveraging JavaScript's [dynamic `import`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) to reduce bundle size and lazy load code as needed is easy in ReScript. It's also a little bit more convenient than in regular JavaScript because you don't need to keep track of file paths manually with ReScript's module system.
+
+### Dynamically Importing Parts of a Module
+Use the `Js.import` function to dynamically import a specific part of a module. Put whatever `let` binding you want to import in there, and you'll get a `promise` back resolving to that specific binding.
+
+Let's look at an example. Imagine the following file `MathUtils.res`:
+
+```rescript
+let add = (a, b) => a + b
+let sub = (a, b) => a - b
+```
+
+Now let's dynamically import the add function in another module, e.g. `App.res`:
+
+<CodeTab labels={["ReScript", "JS Output (ES6)"]}>
+```rescript
+// App.res
+let main = async () => {
+  let add = await Js.import(MathUtils.add)
+  let onePlusOne = add(1, 1)
+
+  Console.log(onePlusOne)
+}
+```
+```javascript
+async function main() {
+  var add = await import("./MathUtils.mjs").then(function(m) {
+    return m.add;
+  });
+
+  var onePlusOne = add(1, 1);
+  console.log(onePlusOne);
+}
+```
+</CodeTab>
+
+### Dynamically Importing an Entire Module
+The syntax for importing a whole module looks a little different, since we are operating on the module syntax level; instead of using `Js.import`, you may simply `await` the module itself:
+<CodeTab labels={["ReScript", "JS Output (ES6)"]}>
+```rescript
+// App.res
+let main = async () => {
+  module Utils = await MathUtils
+
+  let twoPlusTwo = Utils.add(2, 2)
+  Console.log(twoPlusTwo)
+}
+```
+```javascript
+async function main() {
+  var Utils = await import("./MathUtils.mjs");
+
+  var twoPlusTwo = Utils.add(2, 2);
+  console.log(twoPlusTwo);
+}
+```
+</CodeTab>
+
 ## Export To JavaScript
 
 ### Export a Named Value
