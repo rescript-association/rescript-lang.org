@@ -101,30 +101,29 @@ module BlogCard = {
             <Badge badge />
           </div>
         }}
-        <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
-          <a className="relative hl-title block mb-4 pt-9/16">
-            {
-              let className = "absolute top-0 h-full w-full object-cover"
-              switch previewImg {
-              | Some(src) => <img className src />
-              | None => <img className src=defaultPreviewImg />
-              }
+        <Link
+          href="/blog/[slug]"
+          _as={"/blog/" ++ slug}
+          className="relative hl-title block mb-4 pt-9/16">
+          {
+            let className = "absolute top-0 h-full w-full object-cover"
+            switch previewImg {
+            | Some(src) => <img className src />
+            | None => <img className src=defaultPreviewImg />
             }
-          </a>
+          }
         </Link>
       </div>
       <div className="px-2">
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
-          <a>
-            <h2 className="hl-4"> {React.string(title)} </h2>
-          </a>
+          <h2 className="hl-4"> {React.string(title)} </h2>
         </Link>
         <div className="captions text-gray-40 pt-1">
           {switch category {
           | Some(category) =>
             <>
               {React.string(category)}
-              {React.string(j` · `)}
+              {React.string(` · `)}
             </>
           | None => React.null
           }}
@@ -157,23 +156,21 @@ module FeatureCard = {
           ~maxHeight="25.4375rem",
           (),
         )}>
-        <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
-          <a className="relative block pt-2/3">
-            {switch badge {
-            | Some(badge) =>
-              <div className="absolute z-10 top-0 mt-10 ml-4 lg:-ml-4">
-                <Badge badge />
-              </div>
-            | None => React.null
-            }}
-            {
-              let className = "absolute top-0 h-full w-full object-cover"
-              switch previewImg {
-              | Some(src) => <img className src />
-              | None => <img className src=defaultPreviewImg />
-              }
+        <Link href="/blog/[slug]" _as={"/blog/" ++ slug} className="relative block pt-2/3">
+          {switch badge {
+          | Some(badge) =>
+            <div className="absolute z-10 top-0 mt-10 ml-4 lg:-ml-4">
+              <Badge badge />
+            </div>
+          | None => React.null
+          }}
+          {
+            let className = "absolute top-0 h-full w-full object-cover"
+            switch previewImg {
+            | Some(src) => <img className src />
+            | None => <img className src=defaultPreviewImg />
             }
-          </a>
+          }
         </Link>
       </div>
       <div
@@ -206,9 +203,7 @@ module FeatureCard = {
           </div>
         </div>
         <Link href="/blog/[slug]" _as={"/blog/" ++ slug}>
-          <a>
-            <Button> {React.string("Read Article")} </Button>
-          </a>
+          <Button> {React.string("Read Article")} </Button>
         </Link>
       </div>
     </section>

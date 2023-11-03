@@ -8,7 +8,7 @@
     This file is providing the core functionality and logic of our CodeMirror instances.
  */
 
-let useWindowWidth: unit => int = %raw(j` () => {
+let useWindowWidth: unit => int = %raw(` () => {
   const isClient = typeof window === 'object';
 
   function getSize() {
@@ -460,7 +460,7 @@ module GutterMarker = {
     }
 
     let (row, col) = rowCol
-    marker->setId(j`gutter-marker_$row-$col`)
+    marker->setId(`gutter-marker_${row->Belt.Int.toString}-${col->Belt.Int.toString}`)
     marker->setClassName(
       "flex items-center justify-center text-14 text-center ml-1 h-6 font-bold hover:cursor-pointer " ++
       colorClass,
@@ -596,7 +596,7 @@ let make = // props relevant for the react wrapper
   ~mode,
   ~readOnly=false,
   ~lineNumbers=true,
-  ~scrollbarStyle="overlay",
+  ~scrollbarStyle="native",
   ~lineWrapping=false,
 ): React.element => {
   let inputElement = React.useRef(Js.Nullable.null)
@@ -702,7 +702,7 @@ let make = // props relevant for the react wrapper
  */
   let errorsFingerprint = Belt.Array.map(errors, e => {
     let {Error.row: row, column} = e
-    j`$row-$column`
+    `${row->Belt.Int.toString}-${column->Belt.Int.toString}`
   })->Js.Array2.joinWith(";")
 
   React.useEffect1(() => {

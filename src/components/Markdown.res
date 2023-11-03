@@ -94,11 +94,9 @@ module UrlBox = {
         <Icon.ArrowRight className="ml-1" />
       </a>
     } else {
-      <Next.Link href>
-        <a className="flex items-center">
-          {React.string(text)}
-          <Icon.ArrowRight className="ml-1" />
-        </a>
+      <Next.Link href className="flex items-center">
+        {React.string(text)}
+        <Icon.ArrowRight className="ml-1" />
       </Next.Link>
     }
     <div className="md-url-box text-16 border-l-2 border-gray-60 my-6 py-6 pl-8 pr-10 bg-gray-5">
@@ -229,11 +227,6 @@ module Code = {
   // TODO: Might be refactorable with the new @unboxed feature
   type unknown = Mdx.Components.unknown
 
-  let isArray: unknown => bool = %raw("thing => { return thing instanceof Array; }")
-  let isObject: unknown => bool = %raw("thing => { return thing instanceof Object; }")
-  external asStringArray: unknown => array<string> = "%identity"
-  external asElement: unknown => React.element = "%identity"
-
   external unknownAsString: unknown => string = "%identity"
 
   let parseNumericRangeMeta = (metastring: string) =>
@@ -278,35 +271,12 @@ module Code = {
       }
     }
 
-    /*
-      Converts the given children provided by remark, depending on
-      given scenarios.
+    let code = children->unknownAsString
+    let isMultiline = code->Js.String2.includes("\n")
 
-      Scenario 1 (children = array(string):
-      Someone is using a literal <code> tag with some source in it
-      e.g. <code> hello world </code>
-
-      Then remark would call this component with children = [ "hello", "world" ].
-      In this case we need to open the Array,
-
-      Scenario 2 (children = React element / object):
-      Children is an element, so we will need to render the given
-      React element without adding our own components.
-
-      Scenario 3 (children = string):
-      Children is already a string, we don't need to anything special
- */
-    if isArray(children) {
-      // Scenario 1
-      let code = children->asStringArray->Js.Array2.joinWith("")
-      <InlineCode> {React.string(code)} </InlineCode>
-    } else if isObject(children) {
-      // Scenario 2
-      children->asElement
-    } else {
-      // Scenario 3
-      let code = unknownAsString(children)
-      makeCodeElement(~code, ~metastring, ~lang)
+    switch lang {
+    | "text" if !isMultiline => <InlineCode> {code->React.string} </InlineCode>
+    | lang => <Pre> {makeCodeElement(~code, ~metastring, ~lang)} </Pre>
     }
   }
 }
@@ -331,29 +301,25 @@ module CodeTab = {
 
       switch child {
       | Element(codeEl) =>
-        switch codeEl->Mdx.getMdxType {
-        | "code" =>
-          let className = Mdx.getMdxClassName(codeEl)->Belt.Option.getWithDefault("")
+        let className = Mdx.getMdxClassName(codeEl)->Belt.Option.getWithDefault("")
 
-          let metastring = getMdxMetastring(codeEl)->Belt.Option.getWithDefault("")
+        let metastring = getMdxMetastring(codeEl)->Belt.Option.getWithDefault("")
 
-          let lang = switch Js.String2.split(className, "-") {
-          | ["language", lang] => Some(lang)
-          | _ => None
-          }
-
-          let code = Js.String2.make(Mdx.MdxChildren.getMdxChildren(codeEl))
-          let label = Belt.Array.get(labels, i)
-          let tab = {
-            CodeExample.Toggle.lang,
-            code,
-            label,
-            highlightedLines: Some(Code.parseNumericRangeMeta(metastring)),
-          }
-          Js.Array2.push(acc, tab)->ignore
-
-        | _ => ()
+        let lang = switch Js.String2.split(className, "-") {
+        | ["language", lang] => Some(lang)
+        | _ => None
         }
+
+        let code = Js.String2.make(Mdx.MdxChildren.getMdxChildren(codeEl))
+        let label = Belt.Array.get(labels, i)
+        let tab = {
+          CodeExample.Toggle.lang,
+          code,
+          label,
+          highlightedLines: Some(Code.parseNumericRangeMeta(metastring)),
+        }
+        Js.Array2.push(acc, tab)->ignore
+
       | _ => ()
       }
       acc
@@ -413,11 +379,12 @@ module A = {
       | [pathname] => Js.String2.replaceByRe(pathname, regex, "")
       | _ => href
       }
-      <Next.Link href>
-        <a
-          href rel="noopener noreferrer" className="no-underline text-fire hover:underline" ?target>
-          children
-        </a>
+      <Next.Link
+        href
+        hrefRel="noopener noreferrer"
+        className="no-underline text-fire hover:underline"
+        ?target>
+        children
       </Next.Link>
     }
 }
@@ -529,6 +496,8 @@ let default = Mdx.Components.t(
   ~warn=Warn.make,
   ~urlBox=UrlBox.make,
   ~codeTab=CodeTab.make,
+  ~image=Image.default,
+  ~video=Video.default,
   ~p=P.make,
   ~li=Li.make,
   ~h1=H1.make,
@@ -547,7 +516,6 @@ let default = Mdx.Components.t(
   ~a=A.make,
   ~pre=Pre.make,
   ~blockquote=Blockquote.make,
-  ~inlineCode=InlineCode.make,
   ~code=Code.make,
   (),
 )

@@ -1,12 +1,19 @@
 import dynamic from "next/dynamic";
 
+export { getStaticProps } from "src/Try.mjs";
+import Try from "src/Try.mjs";
+
 const Playground = dynamic(() => import("src/Playground.mjs"), {
   ssr: false,
-  //loading: () => <div> Loading... </div>
+  loading: () => <span>Loading...</span>
 });
 
-function Try() {
-  return <Playground />;
+function Comp(props) {
+  return (
+    <Try>
+      <Playground {...props} />
+    </Try>
+  );
 }
 
-export default Try;
+export default Comp;

@@ -1,7 +1,7 @@
 /* Contains some generic hooks */
+%%raw("import React from 'react'")
 
-let useOutsideClick: (ReactDOM.Ref.t, unit => unit) => unit = %raw(j`(outerRef, trigger) => {
-  const React = require('react')
+let useOutsideClick: (ReactDOM.Ref.t, unit => unit) => unit = %raw(`(outerRef, trigger) => {
   function handleClickOutside(event) {
     if (outerRef.current && !outerRef.current.contains(event.target)) {
       trigger();
@@ -16,8 +16,7 @@ let useOutsideClick: (ReactDOM.Ref.t, unit => unit) => unit = %raw(j`(outerRef, 
   });
 }`)
 
-let useWindowWidth: unit => option<int> = %raw(j` () => {
-  const React = require('react')
+let useWindowWidth: unit => option<int> = %raw(` () => {
   const isClient = typeof window === 'object';
 
   function getSize() {

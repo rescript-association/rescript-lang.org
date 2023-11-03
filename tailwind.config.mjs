@@ -20,9 +20,8 @@
  *
  *
  */
-module.exports = {
-  mode: "jit",
-  purge: [
+export default {
+  content: [
     "./src/**/*.{mjs,js,res}",
     "./pages/**/*.{mjs,js,mdx}",
   ],
@@ -100,7 +99,8 @@ module.exports = {
       },
       /*--- SPACING ---*/
       height: {
-        "18": "4.5rem" // 72px
+        "18": "4.5rem", // 72px
+        "inherit": "inherit"
       },
       minWidth: {
         "320": "20rem"
@@ -137,7 +137,8 @@ module.exports = {
         },
       },
       boxShadow: {
-        sm: '0 0.5px 0.5px 0 rgba(0, 0, 0, 0.05)'},
+        sm: '0 0.5px 0.5px 0 rgba(0, 0, 0, 0.05)'
+      },
     },
     borderRadius: {
       none: "0",
@@ -148,7 +149,7 @@ module.exports = {
       full: "9999px", //round
     },
     screens: {
-      xs: "599px", 
+      xs: "599px",
       sm: "576px", //don't use this
       md: "768px", //try to avoid this
       lg: "1024px",
@@ -230,20 +231,6 @@ module.exports = {
         "monospace"
       ]
     }
-  },
-  variants: {
-    color: ["hover"],
-    backgroundColor: ["hover", "active"],
-    fontWeight: ['hover', 'focus'],
-    cursor: ["hover"],
-    width: ["responsive"],
-    border: ["hover", "responsive"],
-    borderWidth: ["active", "responsive", "last", "first"],
-    borderRadius: ["first", "responsive"],
-    padding: ["hover", "responsive", "last"],
-    margin: ["hover", "responsive", "first", "last"],
-    visibility: ["group-hover"],
-    outline: ["focus"],
   },
   plugins: []
 };

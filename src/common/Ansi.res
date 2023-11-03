@@ -52,7 +52,7 @@ module Sgr = {
     }
 }
 
-let esc = j`\u001B`
+let esc = `\u001B`
 
 let isAscii = (c: string) => Js.Re.test_(%re(`/[\x40-\x7F]/`), c)
 
@@ -324,7 +324,7 @@ module SgrString = {
     }
     let params = Belt.Array.map(e.params, Sgr.paramToString)->Js.Array2.joinWith(", ")
 
-    j`SgrString params: $params | content: $content`
+    `SgrString params: ${params} | content: ${content}`
   }
 }
 
@@ -338,14 +338,14 @@ module Printer = {
         open Js.String2
         replaceByRe(content, %re("/\n/g"), "\\n")->replace(esc, "")
       }
-      j`Text "$content" ($startPos to $endPos)`
+      `Text "${content}" (${startPos->Belt.Int.toString} to ${endPos->Belt.Int.toString})`
     | Sgr({params, raw, loc: {startPos, endPos}}) =>
       let raw = Js.String2.replace(raw, esc, "")
       let params = Belt.Array.map(params, Sgr.paramToString)->Js.Array2.joinWith(", ")
-      j`Sgr "$raw" -> $params ($startPos to $endPos)`
+      `Sgr "${raw}" -> ${params} (${startPos->Belt.Int.toString} to ${endPos->Belt.Int.toString})`
     | ClearSgr({loc: {startPos, endPos}, raw}) =>
       let raw = Js.String2.replace(raw, esc, "")
-      j`Clear Sgr "$raw" ($startPos to $endPos)`
+      `Clear Sgr "${raw}" (${startPos->Belt.Int.toString} to ${endPos->Belt.Int.toString})`
     }
 
   let plainString = (tokens: array<token>): string =>

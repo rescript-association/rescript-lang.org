@@ -8,13 +8,24 @@ module FinalResult: {
     | Nothing
 }
 
-module CdnMeta: {
-  /** All available versions on the CDN */
-  let versions: array<string>
+module Semver: {
+  type preRelease =
+    | Alpha(int)
+    | Beta(int)
+    | Dev(int)
+    | Rc(int)
+  type t = {
+    major: int,
+    minor: int,
+    patch: int,
+    preRelease: option<preRelease>,
+  }
+  let parse: string => option<t>
+  let toString: t => string
 }
 
 type selected = {
-  id: string, // The id used for loading the compiler bundle (ideally should be the same as compilerVersion)
+  id: Semver.t, // The id used for loading the compiler bundle (ideally should be the same as compilerVersion)
   apiVersion: Version.t, // The playground API version in use
   compilerVersion: string,
   ocamlVersion: string,
@@ -24,7 +35,7 @@ type selected = {
 }
 
 type ready = {
-  versions: array<string>,
+  versions: array<Semver.t>,
   selected: selected,
   targetLang: Lang.t,
   errors: array<string>, // For major errors like bundle loading
@@ -34,20 +45,21 @@ type ready = {
 type state =
   | Init
   | SetupFailed(string)
-  | SwitchingCompiler(ready, string, array<string>) // (ready, targetId, libraries)
+  | SwitchingCompiler(ready, Semver.t) // (ready, targetId, libraries)
   | Ready(ready)
   | Compiling(ready, (Lang.t, string))
 
 type action =
-  | SwitchToCompiler({id: string, libraries: array<string>})
+  | SwitchToCompiler(Semver.t) // id
   | SwitchLanguage({lang: Lang.t, code: string})
   | Format(string)
   | CompileCode(Lang.t, string)
   | UpdateConfig(Config.t)
 
 let useCompilerManager: (
-  ~initialVersion: string=?,
+  ~initialVersion: Semver.t=?,
   ~initialLang: Lang.t=?,
   ~onAction: action => unit=?,
+  ~versions: array<Semver.t>,
   unit,
 ) => (state, action => unit)

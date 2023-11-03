@@ -136,7 +136,13 @@ let make = (
       | None => title
       }
       let meta = <Meta title ?description ?canonical />
-      (meta, Some(fm.ghEditHref))
+
+      let ghEditHref = switch canonical {
+      | Some(canonical) =>
+        `https://github.com/reason-association/rescript-lang.org/blob/master/pages${canonical}.mdx`->Some
+      | None => None
+      }
+      (meta, ghEditHref)
     | None => (React.null, None)
     }
   | None => (React.null, None)
@@ -157,7 +163,7 @@ let make = (
 }
 
 module type StaticContent = {
-  /* let categories: array(SidebarLayout.Sidebar.Category.t); */
+  /* let categories: array<SidebarLayout.Sidebar.Category.t>; */
   let tocData: SidebarLayout.Toc.raw
 }
 
@@ -171,7 +177,7 @@ module Make = (Content: StaticContent) => {
     ~frontmatter=?,
     ~version: option<string>=?,
     ~availableVersions: option<array<(string, string)>>=?,
-    /* ~activeToc: option(SidebarLayout.Toc.t)=?, */
+    /* ~activeToc: option<SidebarLayout.Toc.t>=?, */
     ~components: option<Mdx.Components.t>=?,
     ~theme: option<ColorTheme.t>=?,
     ~children: React.element,

@@ -13,6 +13,12 @@ module Element = {
   @send external removeChild: (Dom.element, Dom.element) => unit = "removeChild"
   @set external setClassName: (Dom.element, string) => unit = "className"
   @get external classList: Dom.element => ClassList.t = "classList"
+  @send external getBoundingClientRect: Dom.element => {..} = "getBoundingClientRect"
+
+  module Style = {
+    @scope("style") @set external width: (Dom.element, string) => unit = "width"
+    @scope("style") @set external height: (Dom.element, string) => unit = "height"
+  }
 }
 
 type animationFrameId
@@ -22,3 +28,20 @@ external requestAnimationFrame: (unit => unit) => animationFrameId = "requestAni
 
 @scope("window") @val
 external cancelAnimationFrame: animationFrameId => unit = "cancelAnimationFrame"
+
+module Window = {
+  @scope("window") @val external addEventListener: (string, 'a => unit) => unit = "addEventListener"
+  @scope("window") @val
+  external removeEventListener: (string, 'a => unit) => unit = "removeEventListener"
+  @scope("window") @val external innerWidth: int = "innerWidth"
+  @scope("window") @val external innerHeight: int = "innerHeight"
+}
+
+module Fetch = {
+  module Response = {
+    type t
+    @send external text: t => promise<string> = "text"
+  }
+
+  @val external fetch: string => promise<Response.t> = "fetch"
+}

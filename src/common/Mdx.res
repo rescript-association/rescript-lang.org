@@ -94,6 +94,17 @@ module Components = {
     warn: React.component<props>,
     @as("Intro") @optional
     intro: React.component<props>,
+    @as("Image") @optional
+    image: React.component<{
+      "src": string,
+      "withShadow": option<bool>,
+      "caption": option<string>,
+    }>,
+    @as("Video") @optional
+    video: React.component<{
+      "src": string,
+      "caption": option<string>,
+    }>,
     @as("UrlBox") @optional
     urlBox: React.component<{
       "text": string,
@@ -135,8 +146,6 @@ module Components = {
     @optional
     blockquote: React.component<props>,
     @optional
-    inlineCode: React.component<props>,
-    @optional
     strong: React.component<props>,
     @optional
     hr: React.component<{.}>,
@@ -161,4 +170,16 @@ module Provider = {
   @module("@mdx-js/react") @react.component
   external make: (~components: Components.t, ~children: React.element=?) => React.element =
     "MDXProvider"
+}
+
+module Remote = {
+  type output = {frontmatter: Js.Json.t, compiledSource: string, scope: Js.Json.t}
+
+  @module("next-mdx-remote/serialize")
+  external serialize: (string, {..}) => promise<output> = "serialize"
+}
+
+module MDXRemote = {
+  @react.component @module("next-mdx-remote")
+  external make: (~props: Remote.output) => React.element = "MDXRemote"
 }

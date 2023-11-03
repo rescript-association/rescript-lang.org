@@ -1,11 +1,12 @@
 // Structure defined by `scripts/extract-indices.js`
-let indexData: Js.Dict.t<{
+@module("index_data/v800_dom_api_index.json")
+external indexData: Js.Dict.t<{
   "moduleName": string,
   "headers": array<{
     "name": string,
     "href": string,
   }>,
-}> = %raw("require('index_data/v800_dom_api_index.json')")
+}> = "default"
 
 module Category = SidebarLayout.Sidebar.Category
 module NavItem = SidebarLayout.Sidebar.NavItem

@@ -96,11 +96,10 @@ exports.Button = Button;`,
           </div>
           /* ---Link to Playground--- */
           <div>
-            <Next.Link href={`/try?code=${LzString.compressToEncodedURIComponent(example.res)}}`}>
-              <a
-                className="captions md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60">
-                {React.string("Edit this example in Playground")}
-              </a>
+            <Next.Link
+              href={`/try?code=${LzString.compressToEncodedURIComponent(example.res)}}`}
+              className="captions md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60">
+              {React.string("Edit this example in Playground")}
             </Next.Link>
           </div>
           //
@@ -132,7 +131,7 @@ exports.Button = Button;`,
 
 module QuickInstall = {
   module CopyButton = {
-    let copyToClipboard: string => bool = %raw(j`
+    let copyToClipboard: string => bool = %raw(`
   function(str) {
     try {
       const el = document.createElement('textarea');
@@ -243,10 +242,11 @@ module QuickInstall = {
             "You can quickly add ReScript to your existing JavaScript codebase via npm / yarn:",
           )}
         </div>
-        <div className="w-full space-y-2">
-          {copyBox("npm install rescript")}
-          {copyBox("npx rescript init .")}
+        <div className="w-full space-y-2"> {copyBox("npm install rescript")} </div>
+        <div className="captions x text-gray-40 mb-2 mt-2">
+          {React.string("Or generate a new project from the official template with npx:")}
         </div>
+        <div className="w-full space-y-2"> {copyBox("npx create-rescript-app")} </div>
       </div>
     }
   }
@@ -463,10 +463,11 @@ module OtherSellingPoints = {
             who deeply care about simplicity, speed and practicality.`)}
           </p>
           <div className="mt-6">
-            <Button
-              href="https://forum.rescript-lang.org" size={Button.Small} kind={Button.PrimaryBlue}>
-              {React.string("Join our Forum")}
-            </Button>
+            <a href="https://forum.rescript-lang.org">
+              <Button size={Button.Small} kind={Button.PrimaryBlue}>
+                {React.string("Join our Forum")}
+              </Button>
+            </a>
           </div>
         </div>
         // 2 small items
@@ -512,12 +513,12 @@ module OtherSellingPoints = {
 module TrustedBy = {
   @react.component
   let make = () => {
-    <section className="mt-20">
+    <section className="mt-20 flex flex-col items-center">
       <h3 className="hl-1 text-gray-80 text-center max-w-576 mx-auto">
         {React.string("Trusted by our users")}
       </h3>
       <div
-        className="flex flex-wrap mx-4 gap-8 justify-center items-center max-w-xl lg:mx-auto mt-16 ">
+        className="flex flex-wrap mx-4 gap-8 justify-center items-center max-w-xl lg:mx-auto mt-16 mb-16">
         {OurUsers.companies
         ->Js.Array2.map(company => {
           let (companyKey, renderedCompany) = switch company {
@@ -532,8 +533,12 @@ module TrustedBy = {
         })
         ->React.array}
       </div>
+      <a
+        href="https://github.com/rescript-association/rescript-lang.org/blob/master/src/common/OurUsers.res">
+        <Button> {React.string("Add Your Logo")} </Button>
+      </a>
       <div
-        className="mt-10 max-w-320 overflow-hidden opacity-50"
+        className="self-start mt-10 max-w-320 overflow-hidden opacity-50"
         style={ReactDOM.Style.make(~maxHeight="6rem", ())}>
         <img className="w-full h-full" src="/static/lp/grid.svg" />
       </div>
@@ -636,13 +641,13 @@ module CuratedResources = {
           className="grid grid-flow-col grid-cols-2 grid-rows-2 lg:grid-cols-4 lg:grid-rows-1 gap-2 md:gap-4 lg:gap-8 max-w-1280 px-5 md:px-8 mx-auto">
           {cards
           ->Belt.Array.mapWithIndex((i, card) =>
-            <Next.Link key={Belt.Int.toString(i)} href={card.href}>
-              <a
-                className="hover:bg-gray-80 bg-gray-90 px-4 md:px-8 pb-0 md:pb-8 relative rounded-xl md:min-w-[196px]">
-                <img className="h-[53px] absolute mt-6" src=card.imgSrc />
-                <h5 className="text-gray-10 hl-4 mt-32 h-12"> {card.title} </h5>
-                <div className="text-gray-40 mt-2 mb-8 body-sm"> {React.string(card.descr)} </div>
-              </a>
+            <Next.Link
+              key={Belt.Int.toString(i)}
+              href={card.href}
+              className="hover:bg-gray-80 bg-gray-90 px-4 md:px-8 pb-0 md:pb-8 relative rounded-xl md:min-w-[196px]">
+              <img className="h-[53px] absolute mt-6" src=card.imgSrc />
+              <h5 className="text-gray-10 hl-4 mt-32 h-12"> {card.title} </h5>
+              <div className="text-gray-40 mt-2 mb-8 body-sm"> {React.string(card.descr)} </div>
             </Next.Link>
           )
           ->React.array}

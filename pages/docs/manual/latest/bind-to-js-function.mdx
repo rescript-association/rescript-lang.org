@@ -245,6 +245,24 @@ testIntType(21);
 
 `onClosed` compiles to `0`, `onOpen` to `20` and `inBinary` to **`21`**.
 
+## Unknown for type safety
+
+It is best practice to inspect data received from untrusted external functions to ensure it contains what you expect. This helps avoid run-time crashes and unexpected behavior. If you're certain about what an external function returns, simply assert the return value as `string` or `array<int>` or whatever you want it to be. Otherwise use `unknown`. The ReScript type system will prevent you from using an `unknown` until you first inspect it and "convert" it using JSON parsing utilities or similar tools.
+
+Consider the example below of two external functions that access the value of a property on a JavaScript object. `getPropertyUnsafe` returns an `'a`, which means "anything you want it to be." ReScript allows you to use this value as a `string` or `array` or any other type. Quite convenient! But if the property is missing or contains something unexpected, your code might break. You can make the binding more safe by changing `'a` to `string` or `option<'a>`, but this doesn't completely eliminate the problem.
+
+The `getPropertySafe` function returns an `unknown`, which could be `null` or a `string` or anything else. But ReScript prevents you from using this value inappropriately until it has been safely parsed.
+
+```res example
+@get_index external getPropertyUnsafe: ({..}, string) => 'a = ""
+@get_index external getPropertySafe: ({..}, string) => unknown = ""
+
+let person = {"name": "Bob", "age": 12}
+
+let greeting1 = "Hello, " ++ getPropertyUnsafe(person, "name") // works (this time!)
+// let greeting2 = "Hello, " ++ getPropertySafe(person, "name") // syntax error
+```
+
 ## Special-case: Event Listeners
 
 One last trick with polymorphic variants:
