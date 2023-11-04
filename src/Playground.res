@@ -22,7 +22,7 @@ open CompilerManagerHook
 module Api = RescriptCompilerApi
 
 type layout = Column | Row
-type tab = JavaScript | Problems | Settings | Result
+type tab = JavaScript | Problems | Settings | RenderOutput
 let breakingPoint = 1024
 
 module DropdownSelect = {
@@ -1358,10 +1358,10 @@ module OutputPanel = {
     prevSelected.current = selected
 
     let tabs = [
+      (RenderOutput, renderOutputPane),
       (JavaScript, output),
       (Problems, errorPane),
       (Settings, settingsPane),
-      (Result, renderOutputPane),
     ]
 
     let body = Belt.Array.mapWithIndex(tabs, (i, (tab, content)) => {
@@ -1750,14 +1750,14 @@ let default = (~props: Try.props) => {
     "flex-1 items-center p-4 border-t-4 border-transparent " ++ activeClass
   }
 
-  let tabs = [JavaScript, Problems, Settings]
+  let tabs = [RenderOutput, JavaScript, Problems, Settings]
 
   let headers = Belt.Array.mapWithIndex(tabs, (i, tab) => {
     let title = switch tab {
     | JavaScript => "JavaScript"
     | Problems => "Problems"
     | Settings => "Settings"
-    | Result => "Render Output"
+    | RenderOutput => "Render Output"
     }
     let onMouseDown = evt => {
       ReactEvent.Mouse.preventDefault(evt)
