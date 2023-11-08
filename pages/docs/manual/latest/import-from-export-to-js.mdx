@@ -93,6 +93,25 @@ var studentName = Student;
 
 </CodeTab>
 
+### Import a JSON file content
+
+Use the `bs.module` [external](external.md):
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type dataType
+@bs.module external studentNames: dataType = "./students.json"
+Js.log(studentNames)
+```
+```js
+var StudentsJson = require("./students.json");
+var studentNames = StudentsJson;
+console.log(studentNames);
+```
+
+</CodeTab>
+
 ## Export To JavaScript
 
 ### Export a Named Value
