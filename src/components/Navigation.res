@@ -372,9 +372,9 @@ module MobileNav = {
     let extLink = "block hover:cursor-pointer hover:text-white text-gray-60"
     <div className="border-gray-80 border-t">
       <ul>
-        <li className=base>
-          <DocSearch.Textbox id="docsearch-mobile" />
-        </li>
+        // <li className=base>
+        //   <DocSearch.Textbox id="docsearch-mobile" />
+        // </li>
         <li className=base>
           <Link href="/try" className={linkOrActiveLink(~target="/try", ~route)}>
             {React.string("Playground")}

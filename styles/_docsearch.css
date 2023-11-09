@@ -166,8 +166,8 @@
 }
 
 .DocSearch-Hit {
-  border-radius: 4px;
-  @apply relative flex;
+  /* border-radius: 4px; */
+  @apply relative flex rounded-s border-b border-gray-20;
 }
 
 .DocSearch-Hit a {
@@ -201,10 +201,11 @@
 }
 
 .DocSearch-Hit-Container {
-  @apply flex items-center flex-row p-4 text-gray-40;
+  @apply flex items-center flex-row px-4 pb-4 pt-1 text-gray-40;
 }
 
 .DocSearch-Hit-icon {
+  /* display: none; */
   @apply w-5 h-5 stroke-1 text-gray-40;
 }
 

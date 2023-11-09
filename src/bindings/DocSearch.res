@@ -11,13 +11,13 @@ type contentType = [
 ]
 
 type hierarchy = {
-  "lvl0": string,
-  "lvl1": string,
-  "lvl2": Js.Nullable.t<string>,
-  "lvl3": Js.Nullable.t<string>,
-  "lvl4": Js.Nullable.t<string>,
-  "lvl5": Js.Nullable.t<string>,
-  "lvl6": Js.Nullable.t<string>,
+  lvl0: string,
+  lvl1: string,
+  lvl2: Js.Nullable.t<string>,
+  lvl3: Js.Nullable.t<string>,
+  lvl4: Js.Nullable.t<string>,
+  lvl5: Js.Nullable.t<string>,
+  lvl6: Js.Nullable.t<string>,
 }
 
 type docSearchHit = {
