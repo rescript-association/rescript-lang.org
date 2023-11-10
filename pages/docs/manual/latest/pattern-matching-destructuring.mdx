@@ -211,16 +211,10 @@ Here's a real-world scenario that'd be a headache to code in other languages. Gi
 ```res prelude
 type status = Vacations(int) | Sabbatical(int) | Sick | Present
 type reportCard = {passing: bool, gpa: float}
+type student = {name: string, status: status, reportCard: reportCard}
 type person =
-  | Teacher({
-    name: string,
-    age: int,
-  })
-  | Student({
-    name: string,
-    status: status,
-    reportCard: reportCard,
-  })
+  | Teacher({name: string, age: int})
+  | Student(student)
 ```
 ```js
 // Empty output
