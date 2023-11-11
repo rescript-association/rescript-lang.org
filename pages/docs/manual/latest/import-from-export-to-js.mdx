@@ -60,7 +60,7 @@ By omitting the string argument to `module`, you bind to the whole JS module:
 <CodeTab labels={["ReScript", "JS Output (CommonJS)", "JS Output (ES6)"]}>
 
 ```res example
-@module external leftPad: string => int => string = "./leftPad"
+@module external leftPad: (string, int) => string = "./leftPad"
 let paddedResult = leftPad("hi", 5)
 ```
 ```js

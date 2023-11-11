@@ -68,7 +68,7 @@ Regex literals `%re("/.../")` should generally be preferred, but `fromString` is
 let firstReScriptFileExtension = (filename, content) => {
   let result = Js.Re.fromString(filename ++ "\.(res|resi)")->Js.Re.exec_(content)
   switch result {
-  | Some(r) => Js.Nullable.toOption(Js.Re.captures(r)[1])
+  | Some(r) => Js.Re.captures(r)[1]
   | None => None
   }
 }
@@ -134,10 +134,16 @@ let str = "abbcdefabh"
 let break = ref(false)
 while !break.contents {
   switch Js.Re.exec_(re, str) {
-  | Some(result) => Js.Nullable.iter(Js.Re.captures(result)[0], (. match_) => {
-      let next = Belt.Int.toString(Js.Re.lastIndex(re))
-      Js.log("Found " ++ (match_ ++ (". Next match starts at " ++ next)))
-    })
+  | Some(result) =>
+    Js.Nullable.iter(
+      Js.Re.captures(result)[0]->Js.Nullable.fromOption,
+      (. match_) => {
+        let next = Belt.Int.toString(Js.Re.lastIndex(re))
+        let matchStr =
+          match_->Js.Nullable.toOption->Belt.Option.getWithDefault("")
+        Js.log("Found " ++ (matchStr ++ (". Next match starts at " ++ next)))
+      },
+    )
   | None => break := true
   }
 }

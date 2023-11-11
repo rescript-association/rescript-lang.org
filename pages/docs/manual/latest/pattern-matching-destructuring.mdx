@@ -211,16 +211,10 @@ Here's a real-world scenario that'd be a headache to code in other languages. Gi
 ```res prelude
 type status = Vacations(int) | Sabbatical(int) | Sick | Present
 type reportCard = {passing: bool, gpa: float}
+type student = {name: string, status: status, reportCard: reportCard}
 type person =
-  | Teacher({
-    name: string,
-    age: int,
-  })
-  | Student({
-    name: string,
-    status: status,
-    reportCard: reportCard,
-  })
+  | Teacher({name: string, age: int})
+  | Student(student)
 ```
 ```js
 // Empty output
@@ -625,7 +619,7 @@ printStudents({
 let coordinates = (10, 20, 30)
 let centerY = 20
 switch coordinates {
-| (x, centerY, _) => Js.log(x)
+| (x, _centerY, _) => Js.log(x)
 }
 ```
 ```js
@@ -721,7 +715,7 @@ Some({name: ""})
 let myNullableValue = Some(5)
 
 switch myNullableValue {
-| Some(v) => Js.log("value is present")
+| Some(_v) => Js.log("value is present")
 | None => Js.log("value is absent")
 }
 ```
