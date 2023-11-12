@@ -25,6 +25,61 @@ external keyboardEventPreventDefault: keyboardEventLike => unit = "preventDefaul
 
 type state = Active | Inactive
 
+let hit = ({hit, children}: DocSearch.hitComponent) => {
+  let toTitle = str =>
+    str->Js.String2.charAt(0)->Js.String2.toUpperCase ++ Js.String2.sliceToEnd(str, ~from=1)
+
+  let description = switch hit.url
+  ->Js.String2.split("/")
+  ->Js.Array2.sliceFrom(1)
+  ->Belt.List.fromArray {
+  | list{"blog", ..._} => "Blog"
+  | list{"docs", doc, version, ...rest} =>
+    let path = rest->Belt.List.toArray
+
+    let info =
+      path
+      ->Js.Array2.slice(~start=0, ~end_=Js.Array2.length(path) - 1)
+      ->Js.Array2.map(path =>
+        switch path {
+        | "api" => "API"
+        | other => toTitle(other)
+        }
+      )
+
+    [doc->toTitle, version->toTitle]->Js.Array2.concat(info)->Js.Array2.joinWith(" / ")
+  | _ => ""
+  }
+
+  <Next.Link href={hit.url} className="flex flex-col w-full">
+    <span className="text-gray-60 captions px-4 pt-3 pb-1 block">
+      {description->React.string}
+    </span>
+    children
+  </Next.Link>
+}
+
+let transformItems = (items: DocSearch.transformItems) => {
+  items->Belt.Array.keepMap(item => {
+    // Transform absolute URL into relative
+    let url = try Util.Url.make(item.url)->Some catch {
+    | Js.Exn.Error(obj) =>
+      Js.Console.error2(`Failed to parse URL ${item.url}`, obj)
+      None
+    }
+    switch url {
+    | Some({pathname, hash}) =>
+      let (lvl1, type_) = switch item.hierarchy.lvl1->Js.Nullable.toOption {
+      | Some(_) => (item.hierarchy.lvl1, item.type_)
+      | None => (item.hierarchy.lvl0->Js.Nullable.return, #lvl1)
+      }
+      let hierarchy = {...item.hierarchy, lvl1}
+      {...item, url: pathname ++ hash, hierarchy, type_}->Some
+    | None => None
+    }
+  })
+}
+
 @react.component
 let make = () => {
   let (state, setState) = React.useState(_ => Inactive)
@@ -78,62 +133,8 @@ let make = () => {
             indexName
             onClose
             initialScrollY={window->scrollY}
-            transformItems={items => {
-              // Js.log(items)
-              // Transform absolute URL intro relative url
-              items->Js.Array2.map(item => {
-                let url = try Util.Url.make(item.url).pathname catch {
-                | Js.Exn.Error(obj) =>
-                  switch Js.Exn.message(obj) {
-                  | Some(m) =>
-                    Js.Console.error("Failed to constructor URL " ++ m)
-                    item.url
-                  | None => item.url
-                  }
-                }
-
-                let (content, type_) = switch item.content->Js.Nullable.toOption {
-                | Some(c) => (c->Js.Nullable.return, item.type_)
-                | None =>
-                  let fallback = item.hierarchy.lvl0
-                  (fallback->Js.Nullable.return, #content)
-                }
-
-                {...item, url, content, type_}
-              })
-            }}
-            hitComponent={({hit, children}) => {
-              let description = switch hit.url
-              ->Js.String2.split("/")
-              ->Js.Array2.sliceFrom(1)
-              ->Belt.List.fromArray {
-              | list{"blog", ..._} => "BLOG"
-              | list{"docs", "manual", version, ...rest} =>
-                let path = rest->Belt.List.toArray
-
-                let info =
-                  path
-                  ->Js.Array2.slice(~start=0, ~end_=Js.Array2.length(path) - 1)
-                  ->Js.Array2.map(Js.String2.toUpperCase)
-
-                let version = if version == "latest" {
-                  "Latest"
-                } else {
-                  version
-                }
-
-                [version]->Js.Array2.concat(info)->Js.Array2.joinWith(" / ")
-              | _ => ""
-              }
-              // <div className="flex flex-col w-full">
-              <a href={hit.url} className="flex flex-col w-full">
-                <span className="text-gray-60 captions px-4 py-2 block">
-                  {description->React.string}
-                </span>
-                children
-              </a>
-              // </div>
-            }}
+            transformItems={transformItems}
+            hitComponent=hit
           />,
           element,
         )

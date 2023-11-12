@@ -12,7 +12,7 @@ type contentType = [
 
 type hierarchy = {
   lvl0: string,
-  lvl1: string,
+  lvl1: Js.Nullable.t<string>,
   lvl2: Js.Nullable.t<string>,
   lvl3: Js.Nullable.t<string>,
   lvl4: Js.Nullable.t<string>,
