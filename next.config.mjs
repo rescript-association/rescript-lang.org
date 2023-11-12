@@ -88,6 +88,11 @@ const config = {
         destination: "/blog/bucklescript-is-rebranding",
         permanent: true,
       },
+      {
+        source: "/docs/manual/latest/migrate-from-bucklescript-reason",
+        destination: "/docs/manual/v10.0.0/migrate-from-bucklescript-reason",
+        permanent: true,
+      },
     ];
   },
 };
