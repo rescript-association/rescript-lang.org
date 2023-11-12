@@ -59,7 +59,13 @@ let hit = ({hit, children}: DocSearch.hitComponent) => {
   </Next.Link>
 }
 
+@val @scope(("window", "location")) external pathname: string = "pathname"
 let transformItems = (items: DocSearch.transformItems) => {
+  let version = switch pathname {
+  | "/" => Url.Latest
+  | other => Url.parse(other).version
+  }
+
   items->Belt.Array.keepMap(item => {
     // Transform absolute URL into relative
     let url = try Util.Url.make(item.url)->Some catch {
@@ -69,12 +75,25 @@ let transformItems = (items: DocSearch.transformItems) => {
     }
     switch url {
     | Some({pathname, hash}) =>
-      let (lvl1, type_) = switch item.hierarchy.lvl1->Js.Nullable.toOption {
-      | Some(_) => (item.hierarchy.lvl1, item.type_)
-      | None => (item.hierarchy.lvl0->Js.Nullable.return, #lvl1)
+      let versionStr = switch version {
+      | Latest | NoVersion => "latest"
+      | Version(v) => v
       }
-      let hierarchy = {...item.hierarchy, lvl1}
-      {...item, url: pathname ++ hash, hierarchy, type_}->Some
+      let urlVersion = switch Url.parse(pathname).version {
+      | Latest | NoVersion => "latest"
+      | Version(v) => v
+      }
+
+      if urlVersion == versionStr {
+        let (lvl1, type_) = switch item.hierarchy.lvl1->Js.Nullable.toOption {
+        | Some(_) => (item.hierarchy.lvl1, item.type_)
+        | None => (item.hierarchy.lvl0->Js.Nullable.return, #lvl1)
+        }
+        let hierarchy = {...item.hierarchy, lvl1}
+        {...item, url: pathname ++ hash, hierarchy, type_}->Some
+      } else {
+        None
+      }
     | None => None
     }
   })
