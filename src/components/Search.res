@@ -33,7 +33,7 @@ let hit = ({hit, children}: DocSearch.hitComponent) => {
   ->Js.String2.split("/")
   ->Js.Array2.sliceFrom(1)
   ->Belt.List.fromArray {
-  | list{"blog", ..._} => "Blog"
+  | list{"blog" as r | "community" as r, ..._} => r->toTitle
   | list{"docs", doc, version, ...rest} =>
     let path = rest->Belt.List.toArray
 
