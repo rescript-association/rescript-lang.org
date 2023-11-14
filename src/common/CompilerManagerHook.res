@@ -108,13 +108,11 @@ module Semver = {
 }
 
 module CdnMeta = {
-  let experimentalVersions = ["v11.0.0-rc.3", "v11.0.0-beta.4", "v11.0.0-beta.1", "v11.0.0-alpha.5"]
+  let getCompilerUrl = (version): string =>
+    `https://cdn.rescript-lang.org/${Semver.toString(version)}/compiler.js`
 
-  let getCompilerUrl = (version: string): string =>
-    `https://cdn.rescript-lang.org/${version}/compiler.js`
-
-  let getLibraryCmijUrl = (version: string, libraryName: string): string =>
-    `https://cdn.rescript-lang.org/${version}/${libraryName}/cmij.js`
+  let getLibraryCmijUrl = (version, libraryName: string): string =>
+    `https://cdn.rescript-lang.org/${Semver.toString(version)}/${libraryName}/cmij.js`
 }
 
 module FinalResult = {
