@@ -136,8 +136,6 @@ let make = (props: props): React.element => {
     }
   | {base: ["docs", "reason-compiler"], version: Latest} =>
     <ReasonCompilerDocsLayout> content </ReasonCompilerDocsLayout>
-  | {base: ["docs", "gentype"], version: Latest} =>
-    <GenTypeDocsLayout frontmatter={component->frontmatter}> content </GenTypeDocsLayout>
   // common routes
   | {base} =>
     switch Belt.List.fromArray(base) {

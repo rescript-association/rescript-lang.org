@@ -20,7 +20,7 @@ let languageManual = version => {
 let ecosystem = [
   ("Package Index", "/packages"),
   ("rescript-react", "/docs/react/latest/introduction"),
-  ("GenType", "/docs/gentype/latest/introduction"),
+  ("GenType", "/docs/manual/latest/gentype-introduction"),
   ("Reanalyze", "https://github.com/reason-association/reanalyze"),
 ]
 
