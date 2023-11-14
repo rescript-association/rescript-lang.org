@@ -130,6 +130,8 @@ let make = (props: props): React.element => {
       </ReactDocsLayout.Latest>
     | Version("v0.10.0") =>
       <ReactDocsLayout.V0100 frontmatter={component->frontmatter}> content </ReactDocsLayout.V0100>
+    | Version("v0.11.0") =>
+      <ReactDocsLayout.V0110 frontmatter={component->frontmatter}> content </ReactDocsLayout.V0110>
     | _ => React.null
     }
   | {base: ["docs", "reason-compiler"], version: Latest} =>

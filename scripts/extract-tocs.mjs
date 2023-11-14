@@ -343,5 +343,6 @@ createV800ManualToc();
 createReasonCompilerToc();
 createReactToc("latest");
 createReactToc("v0.10.0");
+createReactToc("v0.11.0");
 createGenTypeToc();
 createCommunityToc();

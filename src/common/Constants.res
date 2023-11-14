@@ -5,7 +5,7 @@ let allManualVersions = [
   ("v9.0.0", "v8.2 - v9.0"),
   ("v8.0.0", "v6.0 - v8.2"),
 ]
-let allReactVersions = [("latest", "v0.11.0"), ("v0.10.0", "v0.10.0")]
+let allReactVersions = [("latest", "v0.12.0"), ("v0.11.0", "v0.11.0"), ("v0.10.0", "v0.10.0")]
 
 // Used for the DocsOverview and collapsible navigation
 let languageManual = version => {
