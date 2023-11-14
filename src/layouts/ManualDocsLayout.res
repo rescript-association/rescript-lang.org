@@ -15,7 +15,7 @@ module V900Layout = DocsLayout.Make({
 
 module V1000Layout = DocsLayout.Make({
   // Structure defined by `scripts/extract-tocs.js`
-  let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_v1000_toc.json')")
+  @module("index_data/manual_v1000_toc.json") external tocData: SidebarLayout.Toc.raw = "default"
 })
 
 module Latest = {
