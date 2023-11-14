@@ -577,7 +577,7 @@ module CuratedResources = {
       imgSrc: "/static/ic_gentype@2x.png",
       title: React.string("TypeScript Integration"),
       descr: "Learn how to integrate ReScript in your existing TypeScript codebases.",
-      href: "/docs/gentype/latest/introduction",
+      href: "/docs/manual/latest/gentype-introduction",
     },
   ]
 

@@ -189,11 +189,12 @@ module DocsSection = {
       {
         imgSrc: "/static/ic_gentype@2x.png",
         title: "GenType",
-        description: "Seamless TypeScript & Flow integration",
-        href: "/docs/gentype/latest/introduction",
+        description: "Seamless TypeScript integration",
+        href: "/docs/manual/latest/gentype-introduction",
         isActive: url => {
           switch url.base {
-          | ["docs", "gentype"] => true
+          | ["docs", "manual", "latest", fragment]
+            if fragment->Js.String2.startsWith("gentype") => true
           | _ => false
           }
         },

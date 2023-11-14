@@ -1,13 +1,13 @@
 import fs from "fs";
 import webpack from "webpack";
-import rehypeSlug from 'rehype-slug';
-import remarkGfm from 'remark-gfm';
-import remarkComment from 'remark-comment';
-import remarkFrontmatter from 'remark-frontmatter'
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
+import remarkComment from "remark-comment";
+import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
-import { createLoader } from 'simple-functional-loader'
+import { createLoader } from "simple-functional-loader";
 
-const bsconfig = JSON.parse(fs.readFileSync("./bsconfig.json"))
+const bsconfig = JSON.parse(fs.readFileSync("./bsconfig.json"));
 
 const { ProvidePlugin } = webpack;
 
@@ -46,10 +46,10 @@ const config = {
     function mainMdxLoader(plugins) {
       return [
         createLoader(function(source) {
-          const result = `${source}\n\nMDXContent.frontmatter = frontmatter`
-          return result
+          const result = `${source}\n\nMDXContent.frontmatter = frontmatter`;
+          return result;
         }),
-      ]
+      ];
     }
 
     config.module.rules.push({
@@ -61,17 +61,21 @@ const config = {
       test: /\.mdx?$/,
       use: [
         {
-          loader: '@mdx-js/loader',
+          loader: "@mdx-js/loader",
           /** @type {import('@mdx-js/loader').Options} */
           options: {
-            remarkPlugins: [remarkComment, remarkGfm, remarkFrontmatter, remarkMdxFrontmatter],
-            providerImportSource: '@mdx-js/react',
-            rehypePlugins: [rehypeSlug]
-          }
-        }
-      ]
+            remarkPlugins: [
+              remarkComment,
+              remarkGfm,
+              remarkFrontmatter,
+              remarkMdxFrontmatter,
+            ],
+            providerImportSource: "@mdx-js/react",
+            rehypePlugins: [rehypeSlug],
+          },
+        },
+      ],
     });
-
 
     config.plugins.push(new ProvidePlugin({ React: "react" }));
     return config;
@@ -93,11 +97,31 @@ const config = {
         destination: "/docs/manual/v10.0.0/migrate-from-bucklescript-reason",
         permanent: true,
       },
+      {
+        source: "/docs/gentype/latest/introduction",
+        destination: "/docs/manual/latest/gentype-introduction",
+        permanent: true,
+      },
+      {
+        source: "/docs/gentype/latest/getting-started",
+        destination: "/docs/manual/latest/gentype-getting-started",
+        permanent: true,
+      },
+      {
+        source: "/docs/gentype/latest/usage",
+        destination: "/docs/manual/latest/gentype-usage",
+        permanent: true,
+      },
+      {
+        source: "/docs/gentype/latest/supported-types",
+        destination: "/docs/manual/latest/gentype-supported-types",
+        permanent: true,
+      },
     ];
   },
 };
 
 export default {
   transpilePackages: transpileModules,
-  ...config
-}
+  ...config,
+};
