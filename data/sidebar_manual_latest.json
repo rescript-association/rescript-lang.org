@@ -31,7 +31,6 @@
     "import-export",
     "attribute",
     "unboxed",
-    "uncurried-mode",
     "reserved-keywords"
   ],
   "Advanced Features": [
