@@ -386,9 +386,11 @@ function callFirst(_param) {
 
 </CodeTab>
 
-## Curried Function
+## Partial Application
 
-ReScript's functions are uncurried by default since version 11. If you need to partially apply a function, there is now explicit syntax for it: 
+**Since 11.0**
+
+To partially apply a function, use the explicit `...` syntax. 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 ```res
