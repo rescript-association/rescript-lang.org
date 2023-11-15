@@ -7,7 +7,7 @@ canonical: "/docs/manual/latest/build-configuration"
 
 # Configuration
 
-`rescript.json` (or `rescript.json` in versions prior ReScript 11) is the single, mandatory build meta file needed for `rescript`.
+`rescript.json` (or `bsconfig.json` in versions prior ReScript 11) is the single, mandatory build meta file needed for `rescript`.
 
 **The complete configuration schema is [here](./build-configuration-schema)**. We'll _non-exhaustively_ highlight the important parts in prose below.
 
@@ -96,19 +96,6 @@ This is useful for working on multiple independent ReScript packages simultaneou
 
 More details can be found on our [external stdlib](./build-external-stdlib) page.
 
-## reason, refmt (old)
-
-`reason` config is enabled by default. To turn on JSX for [ReasonReact](https://reasonml.github.io/reason-react/), specify:
-
-```json
-{
-  "reason": {"react-jsx": 3},
-  "refmt": 3
-}
-```
-
-The `refmt` config **should be explicitly specified** as `3`.
-
 ## js-post-build
 
 Hook that's invoked every time a file is recompiled. Good for JS build system interop, but please use it **sparingly**. Calling your custom command for every recompiled file slows down your build and worsens the building experience for even third-party users of your lib.
@@ -152,7 +139,19 @@ This configuration only applies to you, when you develop the project. When the p
 
 ## suffix
 
-Either `".js"`, `".mjs"`, `".cjs"` or `".bs.js"`. Currently prefer `bs.js` for now.
+**Since 11.0**: The suffix can now be freely chosen. However, we still suggest you stick to the convention and use
+one of the following:  
+- `".js`
+- `".mjs"`
+- `".cjs"`
+- `".res.js"`
+- `".res.mjs"`
+- `".res.cjs"`
+- `".bs.js"`
+- `".bs.mjs"`
+- `".bs.cjs"`
+
+Currently prefer `.bs.js` for now.
 
 ### Design Decisions
 
@@ -162,6 +161,18 @@ Generating JS files with the `.bs.js` suffix means that, on the JS side, you can
 - It avoids clashes with a potential `theFile.js` file in the same folder.
 - It avoids the need of using a build system loader for ReScript files. This + in-source build means integrating a ReScript project into your pure JS codebase **basically doesn't touch anything in your build pipeline at all**.
 - [genType](/docs/gentype/latest/introduction) requires `bs.js` for compiled JS artifacts. If you are using `genType`, you need to use `bs.js` for now.
+
+## uncurried
+
+**Since 11.0**: While we strongly encourage all users to use uncurried mode, it is still possible to opt out. Just set `"uncurried"` to `false` to get the old behavior back:
+
+```json
+{
+  "uncurried": false
+}
+```
+
+More details can be found in the [blogpost about "Uncurried Mode"](/blog/uncurried-mode).
 
 ## warnings
 
