@@ -32,7 +32,7 @@ let dict = (encode, d) => {
 let object_ = (props): Js.Json.t => jsonDict(Js.Dict.fromList(props))
 
 external jsonArray: array<Js.Json.t> => Js.Json.t = "%identity"
-let array = (encode, l) => jsonArray(Array.map(encode, l))
+let array = (encode, l) => jsonArray(Array.map(x => encode(x), l))
 let list = (encode, x) =>
   switch x {
   | list{} => jsonArray([])

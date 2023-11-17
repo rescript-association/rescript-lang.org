@@ -195,7 +195,7 @@ let field = (key, decode, json) =>
 let rec at = (key_path, decoder, json) =>
   switch key_path {
   | list{key} => field(key, decoder, json)
-  | list{first, ...rest} => field(first, at(rest, decoder, json), ...)
+  | list{first, ...rest} => field(first, at(rest, decoder, ...), json)
   | list{} => \"@@"(raise, Invalid_argument("Expected key_path to contain at least one element"))
   }
 
