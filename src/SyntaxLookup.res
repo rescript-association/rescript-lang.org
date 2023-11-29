@@ -233,7 +233,6 @@ let default = (props: props) => {
     Order all items in tag groups
  */
   let categories = {
-    open Category
     let initial = [
       Category.Decorators,
       Operators,
@@ -243,7 +242,7 @@ let default = (props: props) => {
       SpecialValues,
       Other,
     ]->Belt.Array.map(cat => {
-      (cat->toString, [])
+      (cat->Category.toString, [])
     })
 
     let items = switch state {
@@ -253,7 +252,7 @@ let default = (props: props) => {
     }
 
     Belt.Array.reduce(items, Js.Dict.fromArray(initial), (acc, item) => {
-      let key = item.category->toString
+      let key = item.category->Category.toString
       Js.Dict.get(acc, key)->Belt.Option.mapWithDefault(acc, items => {
         Js.Array2.push(items, item)->ignore
         Js.Dict.set(acc, key, items)

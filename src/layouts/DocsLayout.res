@@ -200,13 +200,12 @@ module Make = (Content: StaticContent) => {
     let activeToc: option<SidebarLayout.Toc.t> = {
       open Belt.Option
       Js.Dict.get(Content.tocData, route)->map(data => {
-        open SidebarLayout.Toc
         let title = data["title"]
         let entries = Belt.Array.map(data["headers"], header => {
-          header: header["name"],
+          SidebarLayout.Toc.header: header["name"],
           href: "#" ++ header["href"],
         })
-        {title, entries}
+        {SidebarLayout.Toc.title, entries}
       })
     }
 
