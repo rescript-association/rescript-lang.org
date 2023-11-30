@@ -50,6 +50,38 @@ module Latest = {
     let title = "rescript-react"
     let version = "latest"
 
+    // TODO: Remove this once the work on the v11 milestone is completed.
+    // https://github.com/rescript-association/rescript-lang.org/milestone/6
+    let warnBanner = {
+      open Markdown
+
+      let v011Url =
+        "/" ++
+        (Js.Array2.joinWith(url.base, "/") ++
+        ("/v0.11.0/" ++ Js.Array2.joinWith(url.pagepath, "/")))
+
+      let label = switch Js.Array2.find(Constants.allReactVersions, ((v, _)) => {
+        v === version
+      }) {
+      | Some((_, label)) => label
+      | None => version
+      }
+
+      <div className="mb-10">
+        <Warn>
+          <P>
+            {React.string(
+              "You are currently looking at the " ++
+              (label ++
+              " docs, which are still a work in progress. If you miss anything, you may find it in the older v11.0 docs "),
+            )}
+            <A href=v011Url> {React.string("here")} </A>
+            {React.string(".")}
+          </P>
+        </Warn>
+      </div>
+    }
+
     <LatestLayout
       theme=#Reason
       components
@@ -59,6 +91,7 @@ module Latest = {
       title
       breadcrumbs
       ?frontmatter>
+      warnBanner
       children
     </LatestLayout>
   }
