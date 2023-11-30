@@ -73,7 +73,7 @@ module Latest = {
             {React.string(
               "You are currently looking at the " ++
               (label ++
-              " docs, which are still a work in progress. If you miss anything, you may find it in the older v11.0 docs "),
+              " docs, which are still a work in progress. If you miss anything, you may find it in the older v0.11.0 docs "),
             )}
             <A href=v011Url> {React.string("here")} </A>
             {React.string(".")}
