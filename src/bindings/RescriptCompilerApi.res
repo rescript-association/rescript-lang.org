@@ -94,12 +94,12 @@ module LocMsg = {
   let decode = (json): t => {
     open Json.Decode
     {
-      fullMsg: json->field("fullMsg", string, _),
-      shortMsg: json->field("shortMsg", string, _),
-      row: json->field("row", int, _),
-      column: json->field("column", int, _),
-      endRow: json->field("endRow", int, _),
-      endColumn: json->field("endColumn", int, _),
+      fullMsg: json->(field("fullMsg", string, _)),
+      shortMsg: json->(field("shortMsg", string, _)),
+      row: json->(field("row", int, _)),
+      column: json->(field("column", int, _)),
+      endRow: json->(field("endRow", int, _)),
+      endColumn: json->(field("endColumn", int, _)),
     }
   }
 
@@ -244,8 +244,8 @@ module CompileSuccess = {
     open Json.Decode
     {
       js_code: field("js_code", string, json),
-      warnings: field("warnings", array(Warning.decode), json),
-      type_hints: withDefault([], field("type_hints", array(TypeHint.decode)), json),
+      warnings: field("warnings", array(Warning.decode, ...), json),
+      type_hints: withDefault([], field("type_hints", array(TypeHint.decode, ...), ...), json),
       time,
     }
   }
@@ -281,18 +281,18 @@ module CompileFail = {
 
     switch field("type", string, json) {
     | "syntax_error" =>
-      let locMsgs = field("errors", array(LocMsg.decode), json)
+      let locMsgs = field("errors", array(LocMsg.decode, ...), json)
       // TODO: There seems to be a bug in the ReScript bundle that reports
       //       back multiple LocMsgs of the same value
       locMsgs->LocMsg.dedupe->SyntaxErr
     | "type_error" =>
-      let locMsgs = field("errors", array(LocMsg.decode), json)
+      let locMsgs = field("errors", array(LocMsg.decode, ...), json)
       TypecheckErr(locMsgs)
     | "warning_error" =>
-      let warnings = field("errors", array(Warning.decode), json)
+      let warnings = field("errors", array(Warning.decode, ...), json)
       WarningErr(warnings)
     | "other_error" =>
-      let locMsgs = field("errors", array(LocMsg.decode), json)
+      let locMsgs = field("errors", array(LocMsg.decode, ...), json)
       OtherErr(locMsgs)
 
     | "warning_flag_error" =>
@@ -337,7 +337,7 @@ module ConversionResult = {
     | "success" => Success(ConvertSuccess.decode(json))
     | "unexpected_error" => UnexpectedError(field("msg", string, json))
     | "syntax_error" =>
-      let locMsgs = field("errors", array(LocMsg.decode), json)
+      let locMsgs = field("errors", array(LocMsg.decode, ...), json)
       Fail({fromLang, toLang, details: locMsgs})
     | other => Unknown(`Unknown conversion result type "${other}"`, json)
     } catch {

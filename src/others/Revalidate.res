@@ -16,20 +16,25 @@ module Res = {
   }
 }
 
-@val external process: 'a = "process"
-
 let handler = async (req: Req.req, res: Res.res) => {
   switch req.query->Js.Dict.get("secret") {
   | Some(secret) =>
-    if secret !== process["env"]["NEXT_REVALIDATE_SECRET_TOKEN"] {
-      res->Res.Status.make(401)->Res.Status.json({"message": "Invalid secret"})
-    } else {
-      try {
-        let () = await res->Res.revalidate("/try")
-        res->Res.json({"revalidated": true})
-      } catch {
-      | Js.Exn.Error(_) => res->Res.Status.make(500)->Res.Status.send("Error revalidating")
+    switch Node.Process.env->Js.Dict.get("NEXT_REVALIDATE_SECRET_TOKEN") {
+    | Some(token) =>
+      if secret !== token {
+        res->Res.Status.make(401)->Res.Status.json({"message": "Invalid secret"})
+      } else {
+        try {
+          let () = await res->Res.revalidate("/try")
+          res->Res.json({"revalidated": true})
+        } catch {
+        | Js.Exn.Error(_) => res->Res.Status.make(500)->Res.Status.send("Error revalidating")
+        }
       }
+    | None =>
+      res
+      ->Res.Status.make(500)
+      ->Res.Status.send("Error revalidating, `NEXT_REVALIDATE_SECRET_TOKEN` not found")
     }
   | None =>
     res->Res.Status.make(500)->Res.Status.send("Error revalidating, param `secret` not found")

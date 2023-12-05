@@ -2,7 +2,7 @@ module Params: {
   type t = {slug: string}
 }
 
-type props = {mdxSource: Mdx.Remote.output, isArchived: bool, path: string}
+type props = {mdxSource: MdxRemote.output, isArchived: bool, path: string}
 
 let default: props => React.element
 

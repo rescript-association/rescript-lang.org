@@ -56,7 +56,7 @@ let make = (
   ~availableVersions: option<array<(string, string)>>=?,
   ~activeToc: option<SidebarLayout.Toc.t>=?,
   ~categories: array<Category.t>,
-  ~components=Markdown.default,
+  ~components=MarkdownComponents.default,
   ~theme=#Reason,
   ~children,
 ) => {
@@ -66,7 +66,7 @@ let make = (
   let (isSidebarOpen, setSidebarOpen) = React.useState(_ => false)
   let toggleSidebar = () => setSidebarOpen(prev => !prev)
 
-  React.useEffect0(() => {
+  React.useEffect(() => {
     open Next.Router.Events
     let {Next.Router.events: events} = router
 
@@ -81,7 +81,7 @@ let make = (
         events->off(#hashChangeComplete(onChangeComplete))
       },
     )
-  })
+  }, [])
 
   let preludeSection =
     <div className="flex justify-between text-fire font-medium items-baseline">
@@ -178,7 +178,7 @@ module Make = (Content: StaticContent) => {
     ~version: option<string>=?,
     ~availableVersions: option<array<(string, string)>>=?,
     /* ~activeToc: option<SidebarLayout.Toc.t>=?, */
-    ~components: option<Mdx.Components.t>=?,
+    ~components: option<MarkdownComponents.t>=?,
     ~theme: option<ColorTheme.t>=?,
     ~children: React.element,
   ) => {
@@ -200,13 +200,12 @@ module Make = (Content: StaticContent) => {
     let activeToc: option<SidebarLayout.Toc.t> = {
       open Belt.Option
       Js.Dict.get(Content.tocData, route)->map(data => {
-        open SidebarLayout.Toc
         let title = data["title"]
         let entries = Belt.Array.map(data["headers"], header => {
-          header: header["name"],
+          SidebarLayout.Toc.header: header["name"],
           href: "#" ++ header["href"],
         })
-        {title, entries}
+        {SidebarLayout.Toc.title, entries}
       })
     }
 
@@ -243,17 +242,17 @@ module Make = (Content: StaticContent) => {
     }
 
     make({
-      "breadcrumbs": breadcrumbs,
-      "title": title,
-      "metaTitleCategory": metaTitleCategory,
-      "frontmatter": frontmatter,
-      "version": version,
-      "availableVersions": availableVersions,
-      "activeToc": activeToc,
-      "categories": categories,
-      "components": components,
-      "theme": theme,
-      "children": children,
+      ?breadcrumbs,
+      title,
+      ?metaTitleCategory,
+      ?frontmatter,
+      ?version,
+      ?availableVersions,
+      ?activeToc,
+      categories,
+      ?components,
+      ?theme,
+      children,
     })
   }
 }

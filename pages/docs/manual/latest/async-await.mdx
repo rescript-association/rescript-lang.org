@@ -18,8 +18,6 @@ canonical: "/docs/manual/latest/async-await"
 
 # Async / Await
 
-**Since 10.1**
-
 ReScript comes with `async` / `await` support to make asynchronous, `Promise` based code easier to read and write. This feature is very similar to its JS equivalent, so if you are already familiar with JS' `async` / `await`, you will feel right at home.
 
 ## How it looks 
@@ -112,16 +110,6 @@ let fetchData: string => promise<string> = async (userId: string): string {
 ```
 
 **Note:** In a practical scenario you'd either use a type signature, or inline types, not both at the same time. In case you are interested in the design decisions, check out [this discussion](https://github.com/rescript-lang/rescript-compiler/pull/5913#issuecomment-1359003870).
-
-### `async` uncurried functions
-
-The `async` keyword does also work for uncurried functions.
-
-```res
-let fetchData = async (. userId: string): string {
-  await fetchUserMail(userId)
-}
-```
 
 ### Promises don't auto-collapse in async functions
 

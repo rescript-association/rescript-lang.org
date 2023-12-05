@@ -18,17 +18,17 @@ module LoadScript = {
     ~src: string,
     ~onSuccess: unit => unit,
     ~onError: err => unit,
-  ) => (. unit) => unit = "default"
+  ) => unit => unit = "default"
 
   @module("../ffi/loadScript")
   external removeScript: (~src: string) => unit = "removeScript"
 
-  let loadScriptPromise = (url: string): Promise.t<result<unit, string>> => {
-    Promise.make((resolve, _reject) => {
+  let loadScriptPromise = (url: string) => {
+    Js.Promise2.make((~resolve, ~reject as _) => {
       loadScript(
         ~src=url,
-        ~onSuccess=() => resolve(. Ok()),
-        ~onError=_err => resolve(. Error(`Could not load script: ${url}`)),
+        ~onSuccess=() => resolve(Ok()),
+        ~onError=_err => resolve(Error(`Could not load script: ${url}`)),
       )->ignore
     })
   }
@@ -184,7 +184,7 @@ let attachCompilerAndLibraries = async (~version, ~libraries: array<string>, ())
       }
     })
 
-    let all = await Promise.all(promises)
+    let all = await Js.Promise2.all(promises)
 
     let errors = Belt.Array.keepMap(all, r => {
       switch r {
@@ -386,7 +386,7 @@ let useCompilerManager = (
       }
     })
 
-  React.useEffect1(() => {
+  React.useEffect(() => {
     let updateState = async () => {
       switch state {
       | Init =>

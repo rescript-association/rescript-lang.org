@@ -112,15 +112,15 @@ external scrollTo: (int, int) => unit = "scrollTo"
 
 let scrollToTop = () => scrollTo(0, 0)
 
-type props = {mdxSources: array<Mdx.Remote.output>}
+type props = {mdxSources: array<MdxRemote.output>}
 type params = {slug: string}
 
 let decode = (json: Js.Json.t) => {
   open Json.Decode
-  let id = json->field("id", string, _)
-  let keywords = json->field("keywords", array(string), _)
-  let name = json->field("name", string, _)
-  let summary = json->field("summary", string, _)
+  let id = json->(field("id", string, _))
+  let keywords = json->(field("keywords", array(string, ...), _))
+  let name = json->(field("name", string, _))
+  let summary = json->(field("summary", string, _))
   let category = json->field("category", string, _)->Category.fromString
 
   {
@@ -132,34 +132,19 @@ let decode = (json: Js.Json.t) => {
   }
 }
 
-type remarkPlugin
-@module("remark-comment") external remarkComment: remarkPlugin = "default"
-@module("remark-gfm") external remarkGfm: remarkPlugin = "default"
-@module("remark-frontmatter") external remarkFrontmatter: remarkPlugin = "default"
-
-let mdxOptions = {"remarkPlugins": [remarkComment, remarkGfm, remarkFrontmatter]}
-
-external asProps: {..} => {"props": Mdx.Remote.output} = "%identity"
-
 let default = (props: props) => {
   let {mdxSources} = props
 
   let allItems = mdxSources->Js.Array2.map(mdxSource => {
     let {id, keywords, category, summary, name} = decode(mdxSource.frontmatter)
 
-    let mdxProps = {
-      "frontmatter": mdxSource.frontmatter,
-      "scope": mdxSource.scope,
-      "compiledSource": mdxSource.compiledSource,
-      "components": Markdown.default,
-      "options": {
-        "mdxOptions": mdxOptions,
-      },
-    }
-
-    let children = React.createElement(Mdx.MDXRemote.make, asProps(mdxProps))
-
-    // let children = MdxUtils.createElement(mdxSource)
+    let children =
+      <MdxRemote
+        frontmatter={mdxSource.frontmatter}
+        compiledSource={mdxSource.compiledSource}
+        scope={mdxSource.scope}
+        components={MarkdownComponents.default}
+      />
 
     {id, keywords, category, summary, name, children}
   })
@@ -196,7 +181,7 @@ let default = (props: props) => {
   // [A] The page first loads.
   // [B] The search box is cleared.
   // [C] The search box value exactly matches an item name.
-  React.useEffect1(() => {
+  React.useEffect(() => {
     switch getAnchor(router.asPath) {
     | None => setState(_ => ShowAll)
     | Some(anchor) =>
@@ -248,9 +233,8 @@ let default = (props: props) => {
     Order all items in tag groups
  */
   let categories = {
-    open Category
     let initial = [
-      Decorators,
+      Category.Decorators,
       Operators,
       LanguageConstructs,
       BuiltInFunctions,
@@ -258,7 +242,7 @@ let default = (props: props) => {
       SpecialValues,
       Other,
     ]->Belt.Array.map(cat => {
-      (cat->toString, [])
+      (cat->Category.toString, [])
     })
 
     let items = switch state {
@@ -268,7 +252,7 @@ let default = (props: props) => {
     }
 
     Belt.Array.reduce(items, Js.Dict.fromArray(initial), (acc, item) => {
-      let key = item.category->toString
+      let key = item.category->Category.toString
       Js.Dict.get(acc, key)->Belt.Option.mapWithDefault(acc, items => {
         Js.Array2.push(items, item)->ignore
         Js.Dict.set(acc, key, items)
@@ -349,11 +333,11 @@ let default = (props: props) => {
         <Navigation overlayState />
         <div className="flex xs:justify-center overflow-hidden pb-48">
           <main className="mt-16 min-w-320 lg:align-center w-full px-4 md:px-8 max-w-1280">
-            <Mdx.Provider components=Markdown.default>
+            <MdxProvider components=MarkdownComponents.default>
               <div className="flex justify-center">
                 <div className="max-w-740 w-full"> content </div>
               </div>
-            </Mdx.Provider>
+            </MdxProvider>
           </main>
         </div>
         <Footer />
@@ -367,8 +351,11 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = async _ctx => {
 
   let allFiles = Node.Fs.readdirSync(dir)->Js.Array2.map(async file => {
     let fullPath = Node.Path.join2(dir, file)
-    let source = fullPath->Node.Fs.readFileSync(#utf8)
-    await Mdx.Remote.serialize(source, {"parseFrontmatter": true, "mdxOptions": mdxOptions})
+    let source = fullPath->Node.Fs.readFileSync
+    await MdxRemote.serialize(
+      source,
+      {parseFrontmatter: true, mdxOptions: MdxRemote.defaultMdxOptions},
+    )
   })
 
   let mdxSources = await Js.Promise2.all(allFiles)

@@ -1098,7 +1098,7 @@ module ControlPanel = {
     let make = (~createShareLink: unit => string, ~actionIndicatorKey: string) => {
       let (state, setState) = React.useState(() => Init)
 
-      React.useEffect1(() => {
+      React.useEffect(() => {
         setState(_ => Init)
         None
       }, [actionIndicatorKey])
@@ -1420,11 +1420,12 @@ module App = {
 
 let initialReContent = `Js.log("Hello Reason 3.6!");`
 
-let default = (~props: Try.props) => {
+@react.component
+let make = (~versions: array<string>) => {
   let router = Next.Router.useRouter()
 
   let versions =
-    props.versions
+    versions
     ->Belt.Array.keepMap(v => v->CompilerManagerHook.Semver.parse)
     ->Js.Array2.sortInPlaceWith((a, b) => {
       let cmp = ({CompilerManagerHook.Semver.major: major, minor, patch, _}) => {
@@ -1506,7 +1507,7 @@ let default = (~props: Try.props) => {
   let typingTimer = React.useRef(None)
   let timeoutCompile = React.useRef(() => ())
 
-  React.useEffect1(() => {
+  React.useEffect(() => {
     timeoutCompile.current = () =>
       switch compilerState {
       | Ready(ready) => compilerDispatch(CompileCode(ready.targetLang, editorCode.current))
@@ -1547,16 +1548,16 @@ let default = (~props: Try.props) => {
     }
   }
 
-  React.useEffect0(() => {
+  React.useEffect(() => {
     Webapi.Window.addEventListener("resize", onResize)
     Some(() => Webapi.Window.removeEventListener("resize", onResize))
-  })
+  }, [])
 
   // To force CodeMirror render scrollbar on first render
   React.useLayoutEffect(() => {
     onResize()
     None
-  })
+  }, [])
 
   let onMouseDown = _ => isDragging.current = true
 
@@ -1628,7 +1629,7 @@ let default = (~props: Try.props) => {
         Webapi.Window.removeEventListener("mouseup", onMouseUp)
       },
     )
-  })
+  }, [])
 
   let cmErrors = switch compilerState {
   | Ready({result}) =>
@@ -1638,7 +1639,7 @@ let default = (~props: Try.props) => {
       | SyntaxErr(locMsgs)
       | TypecheckErr(locMsgs)
       | OtherErr(locMsgs) =>
-        Js.Array2.map(locMsgs, locMsgToCmError(~kind=#Error))
+        Js.Array2.map(locMsgs, locMsgToCmError(~kind=#Error, ...))
       | WarningErr(warnings) =>
         Js.Array2.map(warnings, warning => {
           switch warning {
@@ -1657,7 +1658,7 @@ let default = (~props: Try.props) => {
           locMsgToCmError(~kind=#Warning, details)
         }
       })
-    | Conv(Fail({details})) => Js.Array2.map(details, locMsgToCmError(~kind=#Error))
+    | Conv(Fail({details})) => Js.Array2.map(details, locMsgToCmError(~kind=#Error, ...))
     | Comp(_)
     | Conv(_)
     | Nothing => []

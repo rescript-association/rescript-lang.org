@@ -2,8 +2,8 @@
   "Overview": [
     "introduction",
     "installation",
+    "migrate-to-v11-and-uncurried-mode",
     "editor-plugins",
-    "migrate-from-bucklescript-reason",
     "try"
   ],
   "Language Features": [
@@ -31,7 +31,6 @@
     "module",
     "import-export",
     "attribute",
-    "unboxed",
     "reserved-keywords"
   ],
   "Advanced Features": [

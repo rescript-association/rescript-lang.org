@@ -74,7 +74,7 @@ module CopyButton = {
       }
     }
 
-    React.useEffect1(() => {
+    React.useEffect(() => {
       switch state {
       | Copied =>
         open DomUtil
@@ -159,10 +159,10 @@ module Toggle = {
     switch tabs {
     | [tab] =>
       make({
-        "highlightedLines": tab.highlightedLines,
-        "code": tab.code,
-        "lang": tab.lang,
-        "showLabel": Some(true),
+        highlightedLines: ?tab.highlightedLines,
+        code: tab.code,
+        lang: ?tab.lang,
+        showLabel: true,
       })
     | multiple =>
       let numberOfItems = Js.Array.length(multiple)
