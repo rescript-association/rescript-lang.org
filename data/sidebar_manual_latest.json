@@ -53,6 +53,12 @@
     "browser-support-polyfills",
     "libraries"
   ],
+  "TypeScript Interop": [
+    "gentype-introduction",
+    "gentype-getting-started",
+    "gentype-usage",
+    "gentype-supported-types"
+  ],
   "Build System": [
     "build-overview",
     "build-configuration",
