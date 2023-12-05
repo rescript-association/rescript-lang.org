@@ -163,6 +163,7 @@ let companies = [
     name: "Sensonomic",
     url: "https://www.sensonomic.com/",
     path: "/static/lp/sensonomic.svg",
+  }),
   Logo({
     name: "Band Protocol",
     url: "https://www.bandprotocol.com/",
