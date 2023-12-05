@@ -22,20 +22,7 @@ module Params = {
   type t = {slug: string}
 }
 
-type props = {path: string}
-
-module BlogComponent = {
-  type t = {default: React.component<{.}>}
-
-  @val external require: string => t = "require"
-
-  let frontmatter: React.component<{.}> => Js.Json.t = %raw(`
-      function(component) {
-        if(typeof component.frontmatter === "object") { return component.frontmatter; }
-        return {};
-      }
-    `)
-}
+type props = {mdxSource: MdxRemote.output, isArchived: bool, path: string}
 
 module Line = {
   @react.component
@@ -130,19 +117,19 @@ module BlogHeader = {
 }
 
 let default = (props: props) => {
-  let {path} = props
+  let {mdxSource, isArchived, path} = props
 
-  let module_ = BlogComponent.require("../_blogposts/" ++ path)
+  let children =
+    <MdxRemote
+      frontmatter={mdxSource.frontmatter}
+      compiledSource={mdxSource.compiledSource}
+      scope={mdxSource.scope}
+      components={MarkdownComponents.default}
+    />
 
-  let archived = Js.String2.startsWith(path, "archive/")
+  let fm = mdxSource.frontmatter->BlogFrontmatter.decode
 
-  let component = module_.default
-
-  let fm = component->BlogComponent.frontmatter->BlogFrontmatter.decode
-
-  let children = React.createElement(component, Js.Obj.empty())
-
-  let archivedNote = archived
+  let archivedNote = isArchived
     ? {
         open Markdown
         <div className="mb-10">
@@ -187,11 +174,9 @@ let default = (props: props) => {
               <div className="text-24 sm:text-32 text-center text-gray-80 font-medium">
                 {React.string("Want to read more?")}
               </div>
-              <Next.Link href="/blog">
-                <a className="text-fire hover:text-fire-70">
-                  {React.string("Back to Overview")}
-                  <Icon.ArrowRight className="ml-2 inline-block" />
-                </a>
+              <Next.Link href="/blog" className="text-fire hover:text-fire-70">
+                {React.string("Back to Overview")}
+                <Icon.ArrowRight className="ml-2 inline-block" />
               </Next.Link>
             </div>
           </div>
@@ -228,7 +213,18 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = async ctx => {
   | Some({path}) => path
   }
 
-  let props = {path: path}
+  let filePath = Node.Path.resolve("_blogposts", path)
+
+  let isArchived = Js.String2.startsWith(path, "archive/")
+
+  let source = filePath->Node.Fs.readFileSync
+
+  let mdxSource = await MdxRemote.serialize(
+    source,
+    {parseFrontmatter: true, mdxOptions: MdxRemote.defaultMdxOptions},
+  )
+
+  let props = {mdxSource, isArchived, path}
 
   {"props": props}
 }

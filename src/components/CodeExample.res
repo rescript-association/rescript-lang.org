@@ -29,7 +29,7 @@ module DomUtil = {
 }
 
 module CopyButton = {
-  let copyToClipboard: string => bool = %raw(j`
+  let copyToClipboard: string => bool = %raw(`
   function(str) {
     try {
       const el = document.createElement('textarea');
@@ -74,7 +74,7 @@ module CopyButton = {
       }
     }
 
-    React.useEffect1(() => {
+    React.useEffect(() => {
       switch state {
       | Copied =>
         open DomUtil
@@ -159,10 +159,10 @@ module Toggle = {
     switch tabs {
     | [tab] =>
       make({
-        "highlightedLines": tab.highlightedLines,
-        "code": tab.code,
-        "lang": tab.lang,
-        "showLabel": Some(true),
+        highlightedLines: ?tab.highlightedLines,
+        code: tab.code,
+        lang: ?tab.lang,
+        showLabel: true,
       })
     | multiple =>
       let numberOfItems = Js.Array.length(multiple)
@@ -230,13 +230,12 @@ module Toggle = {
       | Some({code: ""}) => React.null
       | Some(tab) =>
         let playgroundLinkButton =
-          <Next.Link href={`/try?code=${LzString.compressToEncodedURIComponent(tab.code)}}`}>
-            <a target="_blank">
-              // ICON Link to PLAYGROUND
-              <Icon.ExternalLink
-                className="text-gray-30 mt-px hover:cursor-pointer hover:text-gray-60 hover:bg-gray-30 w-6 h-6 p-1 rounded transition-all duration-300 ease-in-out"
-              />
-            </a>
+          <Next.Link
+            href={`/try?code=${LzString.compressToEncodedURIComponent(tab.code)}}`} target="_blank">
+            // ICON Link to PLAYGROUND
+            <Icon.ExternalLink
+              className="text-gray-30 mt-px hover:cursor-pointer hover:text-gray-60 hover:bg-gray-30 w-6 h-6 p-1 rounded transition-all duration-300 ease-in-out"
+            />
           </Next.Link>
 
         let copyButton = <CopyButton code={tab.code} />

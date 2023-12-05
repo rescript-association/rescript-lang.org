@@ -96,11 +96,10 @@ exports.Button = Button;`,
           </div>
           /* ---Link to Playground--- */
           <div>
-            <Next.Link href={`/try?code=${LzString.compressToEncodedURIComponent(example.res)}}`}>
-              <a
-                className="captions md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60">
-                {React.string("Edit this example in Playground")}
-              </a>
+            <Next.Link
+              href={`/try?code=${LzString.compressToEncodedURIComponent(example.res)}}`}
+              className="captions md:px-0 border-b border-gray-40 hover:border-gray-60 text-gray-60">
+              {React.string("Edit this example in Playground")}
             </Next.Link>
           </div>
           //
@@ -132,7 +131,7 @@ exports.Button = Button;`,
 
 module QuickInstall = {
   module CopyButton = {
-    let copyToClipboard: string => bool = %raw(j`
+    let copyToClipboard: string => bool = %raw(`
   function(str) {
     try {
       const el = document.createElement('textarea');
@@ -177,7 +176,7 @@ module QuickInstall = {
         }
       }
 
-      React.useEffect1(() => {
+      React.useEffect(() => {
         switch state {
         | Copied =>
           open Webapi
@@ -464,10 +463,11 @@ module OtherSellingPoints = {
             who deeply care about simplicity, speed and practicality.`)}
           </p>
           <div className="mt-6">
-            <Button
-              href="https://forum.rescript-lang.org" size={Button.Small} kind={Button.PrimaryBlue}>
-              {React.string("Join our Forum")}
-            </Button>
+            <a href="https://forum.rescript-lang.org">
+              <Button size={Button.Small} kind={Button.PrimaryBlue}>
+                {React.string("Join our Forum")}
+              </Button>
+            </a>
           </div>
         </div>
         // 2 small items
@@ -641,13 +641,13 @@ module CuratedResources = {
           className="grid grid-flow-col grid-cols-2 grid-rows-2 lg:grid-cols-4 lg:grid-rows-1 gap-2 md:gap-4 lg:gap-8 max-w-1280 px-5 md:px-8 mx-auto">
           {cards
           ->Belt.Array.mapWithIndex((i, card) =>
-            <Next.Link key={Belt.Int.toString(i)} href={card.href}>
-              <a
-                className="hover:bg-gray-80 bg-gray-90 px-4 md:px-8 pb-0 md:pb-8 relative rounded-xl md:min-w-[196px]">
-                <img className="h-[53px] absolute mt-6" src=card.imgSrc />
-                <h5 className="text-gray-10 hl-4 mt-32 h-12"> {card.title} </h5>
-                <div className="text-gray-40 mt-2 mb-8 body-sm"> {React.string(card.descr)} </div>
-              </a>
+            <Next.Link
+              key={Belt.Int.toString(i)}
+              href={card.href}
+              className="hover:bg-gray-80 bg-gray-90 px-4 md:px-8 pb-0 md:pb-8 relative rounded-xl md:min-w-[196px]">
+              <img className="h-[53px] absolute mt-6" src=card.imgSrc />
+              <h5 className="text-gray-10 hl-4 mt-32 h-12"> {card.title} </h5>
+              <div className="text-gray-40 mt-2 mb-8 body-sm"> {React.string(card.descr)} </div>
             </Next.Link>
           )
           ->React.array}
@@ -691,7 +691,7 @@ module Sponsors = {
 */
 
 @react.component
-let make = (~components=Markdown.default, ~children) => {
+let make = (~components=MarkdownComponents.default, ~children) => {
   let overlayState = React.useState(() => false)
 
   <>
@@ -707,7 +707,7 @@ let make = (~components=Markdown.default, ~children) => {
         <div className="absolute top-16 w-full">
           <div className="relative overflow-hidden pb-32">
             <main className="mt-10 min-w-320 lg:align-center w-full">
-              <Mdx.Provider components>
+              <MdxProvider components>
                 <div className="">
                   <div className="w-full">
                     <div className="mt-16 md:mt-32 lg:mt-40 mb-12">
@@ -722,7 +722,7 @@ let make = (~components=Markdown.default, ~children) => {
                     children
                   </div>
                 </div>
-              </Mdx.Provider>
+              </MdxProvider>
             </main>
           </div>
           <Footer />

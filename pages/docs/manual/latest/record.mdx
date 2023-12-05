@@ -394,6 +394,122 @@ var me = {
 
 </CodeTab>
 
+## Record Type Spread
+
+In ReScript v11, you can now spread one or more record types into a new record type. It looks like this:
+
+```rescript
+type a = {
+  id: string,
+  name: string,
+}
+
+type b = {
+  age: int
+}
+
+type c = {
+  ...a,
+  ...b,
+  active: bool
+}
+```
+
+`type c` will now be:
+
+```rescript
+type c = {
+  id: string,
+  name: string,
+  age: int,
+  active: bool,
+}
+```
+
+Record type spreads act as a 'copy-paste' mechanism for fields from one or more records into a new record. This operation inlines the fields from the spread records directly into the new record definition, while preserving their original properties, such as whether they are optional or mandatory. It's important to note that duplicate field names are not allowed across the records being spread, even if the fields have the same type.
+
+## Record Type Coercion
+
+Record type coercion gives us more flexibility when passing around records in our application code. In other words, we can now coerce a record `a` to be treated as a record `b` at the type level, as long as the original record `a` contains the same set of fields in `b`. Here's an example:
+
+```rescript
+type a = {
+  name: string,
+  age: int,
+}
+
+type b = {
+  name: string,
+  age: int,
+}
+
+let nameFromB = (b: b) => b.name
+
+let a: a = {
+  name: "Name",
+  age: 35,
+}
+
+let name = nameFromB(a :> b)
+```
+
+Notice how we _coerced_ the value `a` to type `b` using the coercion operator `:>`. This works because they have the same record fields. This is purely at the type level, and does not involve any runtime operations.
+
+Additionally, we can also coerce records from `a` to `b` whenever `a` is a super-set of `b` (i.e. `a` containing all the fields of `b`, and more). The same example as above, slightly altered:
+
+```rescript
+type a = {
+  id: string,
+  name: string,
+  age: int,
+  active: bool,
+}
+
+type b = {
+  name: string,
+  age: int,
+}
+
+let nameFromB = (b: b) => b.name
+
+let a: a = {
+  id: "1",
+  name: "Name",
+  age: 35,
+  active: true,
+}
+
+let name = nameFromB(a :> b)
+```
+
+Notice how `a` now has more fields than `b`, but we can still coerce `a` to `b` because `b` has a subset of the fields of `a`.
+
+In combination with [optional record fields](/docs/manual/latest/record#optional-record-fields), one may coerce a mandatory field of an `option` type to an optional field:
+
+```rescript
+type a = {
+  name: string,
+
+  // mandatory, but explicitly typed as option<int>
+  age: option<int>,
+}
+
+type b = {
+  name: string,
+  // optional field
+  age?: int,
+}
+
+let nameFromB = (b: b) => b.name
+
+let a: a = {
+  name: "Name",
+  age: Some(35),
+}
+
+let name = nameFromB(a :> b)
+```
+
 ## Tips & Tricks
 
 ### Record Types Are Found By Field Name
@@ -438,3 +554,4 @@ After reading the constraints in the previous sections, and if you're coming fro
 
 1. The truth is that most of the times in your app, your data's shape is actually fixed, and if it's not, it can potentially be better represented as a combination of variant (introduced next) + record instead.
 2. Since a record type is resolved through finding that single explicit type declaration (we call this "nominal typing"), the type error messages end up better than the counterpart ("structural typing", like for tuples). This makes refactoring easier; changing a record type's fields naturally allows the compiler to know that it's still the same record, just misused in some places. Otherwise, under structural typing, it might get hard to tell whether the definition site or the usage site is wrong.
+

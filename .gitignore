@@ -15,8 +15,8 @@ _tempFile.cmj
 _tempFile.cmt
 
 # these docs are checked in, but we consider them frozen.
-pages/docs/manual/v8.0.0/
-pages/docs/manual/v9.0.0/
+# pages/docs/manual/v8.0.0/
+# pages/docs/manual/v9.0.0/
 
 .bsb.lock
 .merlin
@@ -26,3 +26,4 @@ lib/
 .vercel
 
 src/**/*.mjs
+scripts/**/*.mjs

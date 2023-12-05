@@ -10,7 +10,7 @@ It also has three specialized inner modules [Belt.MutableSet.Int](mutable-set-in
 </Intro>
 
 ```res example
-module PairComparator = Belt.Id.MakeComparable({
+module PairComparator = Belt.Id.MakeComparableU({
   type t = (int, int)
   let cmp = ((a0, a1), (b0, b1)) =>
     switch Pervasives.compare(a0, b0) {

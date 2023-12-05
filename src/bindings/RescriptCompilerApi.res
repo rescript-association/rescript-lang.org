@@ -26,7 +26,7 @@ module Lang = {
     | "ml" => OCaml
     | "re" => Reason
     | "res" => Res
-    | other => raise(DecodeError(j`Unknown language "$other"`))
+    | other => raise(DecodeError(`Unknown language "${other}"`))
     }
   }
 }
@@ -36,6 +36,7 @@ module Version = {
     | V1
     | V2
     | V3
+    | V4
     | UnknownVersion(string)
 
   // Helps finding the right API version
@@ -57,6 +58,7 @@ module Version = {
       }
     | list{"2"} => V2
     | list{"3"} => V3
+    | list{"4"} => V4
     | _ => UnknownVersion(apiVersion)
     }
 
@@ -65,6 +67,7 @@ module Version = {
     | V1 => "1.0"
     | V2 => "2.0"
     | V3 => "3.0"
+    | V4 => "4.0"
     | UnknownVersion(version) => version
     }
 
@@ -73,7 +76,7 @@ module Version = {
   let availableLanguages = t =>
     switch t {
     | V1 => [Lang.Reason, Res]
-    | V2 | V3 => [Lang.Res]
+    | V2 | V3 | V4 => [Lang.Res]
     | UnknownVersion(_) => [Res]
     }
 }
@@ -91,12 +94,12 @@ module LocMsg = {
   let decode = (json): t => {
     open Json.Decode
     {
-      fullMsg: json->field("fullMsg", string, _),
-      shortMsg: json->field("shortMsg", string, _),
-      row: json->field("row", int, _),
-      column: json->field("column", int, _),
-      endRow: json->field("endRow", int, _),
-      endColumn: json->field("endColumn", int, _),
+      fullMsg: json->(field("fullMsg", string, _)),
+      shortMsg: json->(field("shortMsg", string, _)),
+      row: json->(field("row", int, _)),
+      column: json->(field("column", int, _)),
+      endRow: json->(field("endRow", int, _)),
+      endColumn: json->(field("endColumn", int, _)),
     }
   }
 
@@ -110,7 +113,7 @@ module LocMsg = {
     | #E => "E"
     }
 
-    j`[1;31m[$prefix] Line $row, $column:[0m $shortMsg`
+    `[1;31m[${prefix}] Line ${row->Belt.Int.toString}, ${column->Belt.Int.toString}:[0m ${shortMsg}`
   }
 
   // Creates a somewhat unique id based on the rows / cols of the locMsg
@@ -160,11 +163,11 @@ module Warning = {
     | Warn({warnNumber, details})
     | WarnErr({warnNumber, details}) =>
       let {LocMsg.row: row, column, shortMsg} = details
-      let msg = j`(Warning number $warnNumber) $shortMsg`
+      let msg = `(Warning number ${warnNumber->Belt.Int.toString}) ${shortMsg}`
       (row, column, msg)
     }
 
-    j`[1;31m[$prefix] Line $row, $column:[0m $msg`
+    `[1;31m[${prefix}] Line ${row->Belt.Int.toString}, ${column->Belt.Int.toString}:[0m ${msg}`
   }
 }
 
@@ -241,8 +244,8 @@ module CompileSuccess = {
     open Json.Decode
     {
       js_code: field("js_code", string, json),
-      warnings: field("warnings", array(Warning.decode), json),
-      type_hints: withDefault([], field("type_hints", array(TypeHint.decode)), json),
+      warnings: field("warnings", array(Warning.decode, ...), json),
+      type_hints: withDefault([], field("type_hints", array(TypeHint.decode, ...), ...), json),
       time,
     }
   }
@@ -278,24 +281,24 @@ module CompileFail = {
 
     switch field("type", string, json) {
     | "syntax_error" =>
-      let locMsgs = field("errors", array(LocMsg.decode), json)
+      let locMsgs = field("errors", array(LocMsg.decode, ...), json)
       // TODO: There seems to be a bug in the ReScript bundle that reports
       //       back multiple LocMsgs of the same value
       locMsgs->LocMsg.dedupe->SyntaxErr
     | "type_error" =>
-      let locMsgs = field("errors", array(LocMsg.decode), json)
+      let locMsgs = field("errors", array(LocMsg.decode, ...), json)
       TypecheckErr(locMsgs)
     | "warning_error" =>
-      let warnings = field("errors", array(Warning.decode), json)
+      let warnings = field("errors", array(Warning.decode, ...), json)
       WarningErr(warnings)
     | "other_error" =>
-      let locMsgs = field("errors", array(LocMsg.decode), json)
+      let locMsgs = field("errors", array(LocMsg.decode, ...), json)
       OtherErr(locMsgs)
 
     | "warning_flag_error" =>
       let warningFlag = WarningFlag.decode(json)
       WarningFlagErr(warningFlag)
-    | other => raise(DecodeError(j`Unknown type "$other" in CompileFail result`))
+    | other => raise(DecodeError(`Unknown type "${other}" in CompileFail result`))
     }
   }
 }
@@ -334,9 +337,9 @@ module ConversionResult = {
     | "success" => Success(ConvertSuccess.decode(json))
     | "unexpected_error" => UnexpectedError(field("msg", string, json))
     | "syntax_error" =>
-      let locMsgs = field("errors", array(LocMsg.decode), json)
+      let locMsgs = field("errors", array(LocMsg.decode, ...), json)
       Fail({fromLang, toLang, details: locMsgs})
-    | other => Unknown(j`Unknown conversion result type "$other"`, json)
+    | other => Unknown(`Unknown conversion result type "${other}"`, json)
     } catch {
     | DecodeError(errMsg) => Unknown(errMsg, json)
     }
@@ -348,6 +351,7 @@ module Config = {
     module_system: string,
     warn_flags: string,
     uncurried?: bool,
+    open_modules?: array<string>,
   }
 }
 
@@ -423,6 +427,8 @@ module Compiler = {
 
   @send external setWarnFlags: (t, string) => bool = "setWarnFlags"
 
+  @send external setOpenModules: (t, array<string>) => bool = "setOpenModules"
+
   let setConfig = (t: t, config: Config.t): unit => {
     let moduleSystem = switch config.module_system {
     | "nodejs" => #nodejs->Some
@@ -431,6 +437,7 @@ module Compiler = {
     }
 
     Belt.Option.forEach(moduleSystem, moduleSystem => t->setModuleSystem(moduleSystem)->ignore)
+    Belt.Option.forEach(config.open_modules, modules => t->setOpenModules(modules)->ignore)
 
     t->setWarnFlags(config.warn_flags)->ignore
   }

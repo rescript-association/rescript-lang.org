@@ -125,7 +125,7 @@ module ResultPane = {
       <div className={"p-2 " ++ highlightClass}>
         <span className=prefixColor> {React.string(prefixText)} </span>
         <span className="font-medium text-gray-40">
-          {React.string(j` Line $row, column $column:`)}
+          {React.string(` Line ${row->Belt.Int.toString}, column ${column->Belt.Int.toString}:`)}
         </span>
         <AnsiPre className="whitespace-pre-wrap "> shortMsg </AnsiPre>
       </div>
@@ -247,7 +247,7 @@ module ResultPane = {
         "Formatting completed with 0 errors"
       } else {
         let toStr = Api.Lang.toString(toLang)
-        j`Switched to $toStr with 0 errors`
+        `Switched to ${toStr} with 0 errors`
       }
       <PreWrap> {React.string(msg)} </PreWrap>
     | Conv(Fail({fromLang, toLang, details})) =>
@@ -268,11 +268,11 @@ module ResultPane = {
       // We keep both cases though in case we change things later
       let msg = if fromLang === toLang {
         let langStr = Api.Lang.toString(toLang)
-        j`The code is not valid $langStr syntax.`
+        `The code is not valid ${langStr} syntax.`
       } else {
         let fromStr = Api.Lang.toString(fromLang)
         let toStr = Api.Lang.toString(toLang)
-        j`Could not convert from "$fromStr" to "$toStr" due to malformed syntax:`
+        `Could not convert from "${fromStr}" to "${toStr}" due to malformed syntax:`
       }
       <div>
         <PreWrap className="text-16 mb-4"> {React.string(msg)} </PreWrap>
@@ -310,7 +310,9 @@ module ResultPane = {
     | Nothing =>
       let syntax = Api.Lang.toString(targetLang)
       <PreWrap>
-        {React.string(j`This playground is now running on compiler version $compilerVersion with $syntax syntax`)}
+        {React.string(
+          `This playground is now running on compiler version ${compilerVersion} with ${syntax} syntax`,
+        )}
       </PreWrap>
     }
 
@@ -900,9 +902,19 @@ module Settings = {
 
     let onResetClick = evt => {
       ReactEvent.Mouse.preventDefault(evt)
+
+      let open_modules = switch readyState.selected.apiVersion {
+      | V1 | V2 | V3 | UnknownVersion(_) => None
+      | V4 =>
+        readyState.selected.libraries->Belt.Array.some(el => el === "@rescript/core")
+          ? Some(["RescriptCore"])
+          : None
+      }
+
       let defaultConfig = {
         Api.Config.module_system: "nodejs",
         warn_flags: "+a-4-9-20-40-41-42-50-61-102-109",
+        ?open_modules,
       }
       setConfig(defaultConfig)
     }
@@ -915,30 +927,88 @@ module Settings = {
         <div className=titleClass> {React.string("ReScript Version")} </div>
         <DropdownSelect
           name="compilerVersions"
-          value=readyState.selected.id
+          value={CompilerManagerHook.Semver.toString(readyState.selected.id)}
           onChange={evt => {
             ReactEvent.Form.preventDefault(evt)
-            let id = (evt->ReactEvent.Form.target)["value"]
-            onCompilerSelect(id)
+            let id: string = (evt->ReactEvent.Form.target)["value"]
+            switch id->CompilerManagerHook.Semver.parse {
+            | Some(v) => onCompilerSelect(v)
+            | None => ()
+            }
           }}>
-          {switch readyState.experimentalVersions {
-          | [] => React.null
-          | experimentalVersions =>
+          {
+            let (experimentalVersions, stableVersions) =
+              readyState.versions->Js.Array2.reduce((acc, item) => {
+                let (lhs, rhs) = acc
+                if item.preRelease->Belt.Option.isSome {
+                  Js.Array2.push(lhs, item)
+                } else {
+                  Js.Array2.push(rhs, item)
+                }->ignore
+                acc
+              }, ([], []))
+
             <>
-              <option disabled=true className="py-4"> {React.string("---Experimental---")} </option>
-              {Belt.Array.map(experimentalVersions, version =>
-                <option className="py-4" key=version value=version>
-                  {React.string(version)}
-                </option>
-              )->React.array}
-              <option disabled=true className="py-4">
-                {React.string("---Official Releases---")}
-              </option>
+              {switch experimentalVersions {
+              | [] => React.null
+              | experimentalVersions =>
+                let versionByOrder = experimentalVersions->Js.Array2.sortInPlaceWith((a, b) => {
+                  let cmp = ({
+                    CompilerManagerHook.Semver.major: major,
+                    minor,
+                    patch,
+                    preRelease,
+                  }) => {
+                    let preRelease = switch preRelease {
+                    | Some(preRelease) =>
+                      switch preRelease {
+                      | Dev(id) => 0 + id
+                      | Alpha(id) => 10 + id
+                      | Beta(id) => 20 + id
+                      | Rc(id) => 30 + id
+                      }
+                    | None => 0
+                    }
+                    let number =
+                      [major, minor, patch]
+                      ->Js.Array2.map(v => v->Belt.Int.toString)
+                      ->Js.Array2.joinWith("")
+                      ->Belt.Int.fromString
+                      ->Belt.Option.getWithDefault(0)
+
+                    number + preRelease
+                  }
+                  cmp(b) - cmp(a)
+                })
+                <>
+                  <option disabled=true className="py-4">
+                    {React.string("---Experimental---")}
+                  </option>
+                  {versionByOrder
+                  ->Belt.Array.map(version => {
+                    let version = CompilerManagerHook.Semver.toString(version)
+                    <option className="py-4" key=version value=version>
+                      {React.string(version)}
+                    </option>
+                  })
+                  ->React.array}
+                  <option disabled=true className="py-4">
+                    {React.string("---Official Releases---")}
+                  </option>
+                </>
+              }}
+              {switch stableVersions {
+              | [] => React.null
+              | stableVersions =>
+                Belt.Array.map(stableVersions, version => {
+                  let version = CompilerManagerHook.Semver.toString(version)
+                  <option className="py-4" key=version value=version>
+                    {React.string(version)}
+                  </option>
+                })->React.array
+              }}
             </>
-          }}
-          {Belt.Array.map(readyState.versions, version =>
-            <option className="py-4" key=version value=version> {React.string(version)} </option>
-          )->React.array}
+          }
         </DropdownSelect>
       </div>
       <div className="mt-6">
@@ -995,7 +1065,7 @@ module ControlPanel = {
   }
 
   module ShareButton = {
-    let copyToClipboard: string => bool = %raw(j`
+    let copyToClipboard: string => bool = %raw(`
     function(str) {
       try {
       const el = document.createElement('textarea');
@@ -1028,7 +1098,7 @@ module ControlPanel = {
     let make = (~createShareLink: unit => string, ~actionIndicatorKey: string) => {
       let (state, setState) = React.useState(() => Init)
 
-      React.useEffect1(() => {
+      React.useEffect(() => {
         setState(_ => Init)
         None
       }, [actionIndicatorKey])
@@ -1348,31 +1418,32 @@ module App = {
 // Feel free to play around and compile some
 // ReScript code!
 
-let initialReContent = j`Js.log("Hello Reason 3.6!");`
-
-/**
-Takes a `versionStr` starting with a "v" and ending in major.minor.patch (e.g.
-"v10.1.0") returns major, minor, patch as an integer tuple if it's actually in
-a x.y.z format, otherwise will return `None`.
-*/
-let parseVersion = (versionStr: string): option<(int, int, int)> => {
-  switch versionStr->Js.String2.replace("v", "")->Js.String2.split(".") {
-  | [major, minor, patch] =>
-    switch (major->Belt.Int.fromString, minor->Belt.Int.fromString, patch->Belt.Int.fromString) {
-    | (Some(major), Some(minor), Some(patch)) => Some((major, minor, patch))
-    | _ => None
-    }
-  | _ => None
-  }
-}
+let initialReContent = `Js.log("Hello Reason 3.6!");`
 
 @react.component
-let make = () => {
+let make = (~versions: array<string>) => {
   let router = Next.Router.useRouter()
 
+  let versions =
+    versions
+    ->Belt.Array.keepMap(v => v->CompilerManagerHook.Semver.parse)
+    ->Js.Array2.sortInPlaceWith((a, b) => {
+      let cmp = ({CompilerManagerHook.Semver.major: major, minor, patch, _}) => {
+        [major, minor, patch]
+        ->Js.Array2.map(v => v->Belt.Int.toString)
+        ->Js.Array2.joinWith("")
+        ->Belt.Int.fromString
+        ->Belt.Option.getWithDefault(0)
+      }
+      cmp(b) - cmp(a)
+    })
+
+  let lastStableVersion =
+    versions->Js.Array2.find(version => version.preRelease->Belt.Option.isNone)
+
   let initialVersion = switch Js.Dict.get(router.query, "version") {
-  | Some(version) => Some(version)
-  | None => CompilerManagerHook.CdnMeta.versions->Belt.Array.get(0)
+  | Some(version) => version->CompilerManagerHook.Semver.parse
+  | None => lastStableVersion
   }
 
   let initialLang = switch Js.Dict.get(router.query, "ext") {
@@ -1386,15 +1457,11 @@ let make = () => {
   | (None, Res)
   | (None, _) =>
     switch initialVersion {
-    | Some(initialVersion) =>
-      switch parseVersion(initialVersion) {
-      | Some((major, minor, _)) =>
-        if major >= 10 && minor >= 1 {
-          InitialContent.since_10_1
-        } else {
-          InitialContent.original
-        }
-      | None => InitialContent.original
+    | Some({CompilerManagerHook.Semver.major: major, minor, _}) =>
+      if major >= 10 && minor >= 1 {
+        InitialContent.since_10_1
+      } else {
+        InitialContent.original
       }
     | None => InitialContent.original
     }
@@ -1408,6 +1475,7 @@ let make = () => {
     ~initialVersion?,
     ~initialLang,
     ~onAction,
+    ~versions,
     (),
   )
 
@@ -1439,7 +1507,7 @@ let make = () => {
   let typingTimer = React.useRef(None)
   let timeoutCompile = React.useRef(() => ())
 
-  React.useEffect1(() => {
+  React.useEffect(() => {
     timeoutCompile.current = () =>
       switch compilerState {
       | Ready(ready) => compilerDispatch(CompileCode(ready.targetLang, editorCode.current))
@@ -1480,16 +1548,16 @@ let make = () => {
     }
   }
 
-  React.useEffect0(() => {
+  React.useEffect(() => {
     Webapi.Window.addEventListener("resize", onResize)
     Some(() => Webapi.Window.removeEventListener("resize", onResize))
-  })
+  }, [])
 
   // To force CodeMirror render scrollbar on first render
   React.useLayoutEffect(() => {
     onResize()
     None
-  })
+  }, [])
 
   let onMouseDown = _ => isDragging.current = true
 
@@ -1561,7 +1629,7 @@ let make = () => {
         Webapi.Window.removeEventListener("mouseup", onMouseUp)
       },
     )
-  })
+  }, [])
 
   let cmErrors = switch compilerState {
   | Ready({result}) =>
@@ -1571,7 +1639,7 @@ let make = () => {
       | SyntaxErr(locMsgs)
       | TypecheckErr(locMsgs)
       | OtherErr(locMsgs) =>
-        Js.Array2.map(locMsgs, locMsgToCmError(~kind=#Error))
+        Js.Array2.map(locMsgs, locMsgToCmError(~kind=#Error, ...))
       | WarningErr(warnings) =>
         Js.Array2.map(warnings, warning => {
           switch warning {
@@ -1590,7 +1658,7 @@ let make = () => {
           locMsgToCmError(~kind=#Warning, details)
         }
       })
-    | Conv(Fail({details})) => Js.Array2.map(details, locMsgToCmError(~kind=#Error))
+    | Conv(Fail({details})) => Js.Array2.map(details, locMsgToCmError(~kind=#Error, ...))
     | Comp(_)
     | Conv(_)
     | Nothing => []

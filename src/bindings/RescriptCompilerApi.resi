@@ -24,6 +24,7 @@ module Version: {
     | V1
     | V2
     | V3
+    | V4
     | UnknownVersion(string)
 
   // Helps finding the right API version
@@ -159,6 +160,7 @@ module Config: {
     warn_flags: string,
     /** Only available in apiVersion > 3 (= ReScript 11+) */
     uncurried?: bool,
+    open_modules?: array<string>,
   }
 }
 
@@ -197,6 +199,7 @@ module Compiler: {
   let setModuleSystem: (t, [#es6 | #nodejs]) => bool
 
   let setWarnFlags: (t, string) => bool
+  let setOpenModules: (t, array<string>) => bool
   let setConfig: (t, Config.t) => unit
 
   // General format function

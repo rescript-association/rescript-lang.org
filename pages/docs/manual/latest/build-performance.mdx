@@ -27,7 +27,7 @@ import Image from "src/components/Image";
 
 ReScript itself uses a build system under the hood, called [Ninja](https://ninja-build.org). Ninja is like Make, but cross-platform, minimal, focuses in perf and destined to be more of a low-level building block than a full-blown build system. In this regard, Ninja's a great implementation detail for `rescript`.
 
-ReScript reads into `bsconfig.json` and generates the Ninja build file in `lib/bs`. The file contains the low-level compiler commands, namespacing rules, intermediate artifacts generation & others. It then runs `ninja` for the actual build.
+ReScript reads into `rescript.json` and generates the Ninja build file in `lib/bs`. The file contains the low-level compiler commands, namespacing rules, intermediate artifacts generation & others. It then runs `ninja` for the actual build.
 
 ## The JS Wrapper
 
@@ -50,7 +50,7 @@ We've stress-tested `rescript.exe` on a big project of 10,000 files (2 directori
 <!-- TODO: better repro -->
 
 - No-op build of 10k files: `800ms` (the minimum amount of time required to check the mtimes of 10k files).
-- Clean build: <3 minutes.
+- Clean build: \<3 minutes.
 - Incremental build: depends on the number of the dependents of the file. No dependent means `1s`.
 
 ### Stability
