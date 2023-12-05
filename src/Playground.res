@@ -22,7 +22,7 @@ open CompilerManagerHook
 module Api = RescriptCompilerApi
 
 type layout = Column | Row
-type tab = JavaScript | Problems | Settings
+type tab = JavaScript | Problems | Settings | RenderOutput
 let breakingPoint = 1024
 
 module DropdownSelect = {
@@ -1054,6 +1054,20 @@ module Settings = {
 }
 
 module ControlPanel = {
+  let codeFromResult = (result: FinalResult.t): string => {
+    open Api
+    switch result {
+    | FinalResult.Comp(comp) =>
+      switch comp {
+      | CompilationResult.Success({js_code}) => js_code
+      | UnexpectedError(_)
+      | Unknown(_, _)
+      | Fail(_) => "/* No JS code generated */"
+      }
+    | Nothing
+    | Conv(_) => "/* No JS code generated */"
+    }
+  }
   module Button = {
     @react.component
     let make = (~children, ~onClick=?) =>
@@ -1168,9 +1182,27 @@ module ControlPanel = {
         Next.Router.replace(router, url)
         url
       }
+
+      let compiledCode = switch state {
+      | Ready(ready) =>
+        switch ready.result {
+        | Comp(Success(_)) => codeFromResult(ready.result)->Some
+        | _ => None
+        }
+      | _ => None
+      }
+
+      let onRunOutputClick = evt => {
+        ReactEvent.Mouse.preventDefault(evt)
+        RenderOutputManager.renderOutput(compiledCode)
+      }
+
       <>
         <div className="mr-2">
           <Button onClick=onFormatClick> {React.string("Format")} </Button>
+        </div>
+        <div className="mr-2">
+          <Button onClick={onRunOutputClick}> {React.string("Run")} </Button>
         </div>
         <ShareButton actionIndicatorKey createShareLink />
       </>
@@ -1194,21 +1226,6 @@ let locMsgToCmError = (~kind: CodeMirror.Error.kind, locMsg: Api.LocMsg.t): Code
 }
 
 module OutputPanel = {
-  let codeFromResult = (result: FinalResult.t): string => {
-    open Api
-    switch result {
-    | FinalResult.Comp(comp) =>
-      switch comp {
-      | CompilationResult.Success({js_code}) => js_code
-      | UnexpectedError(_)
-      | Unknown(_, _)
-      | Fail(_) => "/* No JS code generated */"
-      }
-    | Nothing
-    | Conv(_) => "/* No JS code generated */"
-    }
-  }
-
   @react.component
   let make = (
     ~compilerDispatch,
@@ -1232,17 +1249,18 @@ module OutputPanel = {
       | (_, Ready({result: Nothing})) => None
       | (Ready(prevReady), Ready(ready)) =>
         switch (prevReady.result, ready.result) {
-        | (_, Comp(Success(_))) => codeFromResult(ready.result)->Some
+        | (_, Comp(Success(_))) => ControlPanel.codeFromResult(ready.result)->Some
         | _ => None
         }
-      | (_, Ready({result: Comp(Success(_)) as result})) => codeFromResult(result)->Some
+      | (_, Ready({result: Comp(Success(_)) as result})) =>
+        ControlPanel.codeFromResult(result)->Some
       | (Ready({result: Comp(Success(_)) as result}), Compiling(_, _)) =>
-        codeFromResult(result)->Some
+        ControlPanel.codeFromResult(result)->Some
       | _ => None
       }
     | None =>
       switch compilerState {
-      | Ready(ready) => codeFromResult(ready.result)->Some
+      | Ready(ready) => ControlPanel.codeFromResult(ready.result)->Some
       | _ => None
       }
     }
@@ -1275,6 +1293,23 @@ module OutputPanel = {
       <pre className={"whitespace-pre-wrap p-4 " ++ (showCm ? "block" : "hidden")}>
         {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="js", ())}
       </pre>
+
+    let renderOutputPane: React.element = switch compilerState {
+    | Compiling(ready, _)
+    | Ready(ready) =>
+      switch ready.result {
+      | Comp(Success(_)) =>
+        <iframe
+          width="100%"
+          id="iframe-eval"
+          className="relative w-full bg-gray-90 text-gray-20"
+          style={ReactDOMStyle.make(~height="calc(100vh - 9rem)", ())}
+          srcDoc=RenderOutputManager.Frame.srcdoc
+        />
+      | _ => React.null
+      }
+    | _ => React.null
+    }
 
     let output =
       <div className="text-gray-20">
@@ -1322,7 +1357,12 @@ module OutputPanel = {
 
     prevSelected.current = selected
 
-    let tabs = [(JavaScript, output), (Problems, errorPane), (Settings, settingsPane)]
+    let tabs = [
+      (RenderOutput, renderOutputPane),
+      (JavaScript, output),
+      (Problems, errorPane),
+      (Settings, settingsPane),
+    ]
 
     let body = Belt.Array.mapWithIndex(tabs, (i, (tab, content)) => {
       let className = currentTab == tab ? "block h-inherit" : "hidden"
@@ -1344,7 +1384,8 @@ and the different jsx modes (classic and automatic).
 module InitialContent = {
   let original = `module Button = {
   @react.component
-  let make = (~count: int) => {
+  let make = () => {
+    let (count, setCount) = React.useState(_ => 0)
     let times = switch count {
     | 1 => "once"
     | 2 => "twice"
@@ -1352,12 +1393,18 @@ module InitialContent = {
     }
     let msg = "Click me " ++ times
 
-    <button> {msg->React.string} </button>
+    <button onClick={_ => setCount(c => c + 1)}> {msg->React.string} </button>
+  }
+}
+
+module App = {
+  @react.component
+  let make = () => {
+    <Button />
   }
 }
 `
-
-  let since_10_1 = `@@jsxConfig({ version: 4, mode: "automatic" })
+  let since_10_1 = `@@jsxConfig({ version: 4, mode: "classic" })
 
 module CounterMessage = {
   @react.component
@@ -1408,7 +1455,6 @@ module App = {
 }
 `
 }
-
 // Please note:
 // ---
 // The Playground is still a work in progress
@@ -1704,13 +1750,14 @@ let default = (~props: Try.props) => {
     "flex-1 items-center p-4 border-t-4 border-transparent " ++ activeClass
   }
 
-  let tabs = [JavaScript, Problems, Settings]
+  let tabs = [RenderOutput, JavaScript, Problems, Settings]
 
   let headers = Belt.Array.mapWithIndex(tabs, (i, tab) => {
     let title = switch tab {
     | JavaScript => "JavaScript"
     | Problems => "Problems"
     | Settings => "Settings"
+    | RenderOutput => "Render Output"
     }
     let onMouseDown = evt => {
       ReactEvent.Mouse.preventDefault(evt)
