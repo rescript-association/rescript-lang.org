@@ -55,9 +55,11 @@
   ],
   "TypeScript Interop": [
     "gentype-introduction",
-    "gentype-getting-started",
     "gentype-usage",
-    "gentype-supported-types"
+    "gentype-supported-types",
+    "bind-to-ts-object",
+    "bind-to-ts-primitive",
+    "bind-to-ts-variant"
   ],
   "Build System": [
     "build-overview",

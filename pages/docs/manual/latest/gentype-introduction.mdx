@@ -91,20 +91,7 @@ const App = () => {
 };
 ```
 
-That's it for our quick example.
-
-For detailed information, head to the [Getting Started](/docs/manual/latest/gentype-getting-started) or [Usage](/docs/manual/latest/gentype-usage) section.
-
 ## Setup
-
-Since compiler v10.1, there's no need to install anything. For compiler 10.0 or older, install the binaries via `npm` (or `yarn`):
-
-```
-npm install gentype --save-dev
-
-# Verify installed gentype binary
-npx gentype --help
-```
 
 Add a `gentypeconfig` section to your `rescript.json` (See [Configuration](#configuration) for details):
 
@@ -189,6 +176,6 @@ These features are for experimentation only. They could be changed/removed any t
 
 ## Limitations
 
-- **in-source = true**. Currently only supports ReScript projects with [in-source generation](/docs/manual/latest/build-configuration#package-specs) and `.bs.js` file suffix.
+- **in-source = true**. Currently only supports ReScript projects with [in-source generation](/docs/manual/latest/build-configuration#package-specs) and file suffixes that end on `.js`, like `.res.js` or `.bs.js`.
 
 - **Limited namespace support**. Currently there's limited [namespace](/docs/manual/latest/build-configuration#name-namespace) support, and only `namespace:true` is possible, not e.g. `namespace:"custom"`.

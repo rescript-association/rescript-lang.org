@@ -109,17 +109,17 @@ const config = {
       },
       {
         source: "/docs/gentype/latest/getting-started",
-        destination: "/docs/manual/latest/gentype-getting-started",
+        destination: "/docs/manual/latest/gentype-introduction",
         permanent: true,
       },
       {
         source: "/docs/gentype/latest/usage",
-        destination: "/docs/manual/latest/gentype-usage",
+        destination: "/docs/manual/latest/gentype-introduction",
         permanent: true,
       },
       {
         source: "/docs/gentype/latest/supported-types",
-        destination: "/docs/manual/latest/gentype-supported-types",
+        destination: "/docs/manual/latest/gentype-introduction",
         permanent: true,
       },
     ];
