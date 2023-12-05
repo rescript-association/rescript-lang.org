@@ -56,10 +56,13 @@
   "TypeScript Interop": [
     "gentype-introduction",
     "gentype-usage",
-    "gentype-supported-types",
-    "bind-to-ts-object",
     "bind-to-ts-primitive",
-    "bind-to-ts-variant"
+    "bind-to-ts-collections",
+    "bind-to-ts-object",
+    "bind-to-ts-option-null",
+    "bind-to-ts-function",
+    "bind-to-ts-variant",
+    "bind-to-ts-other"
   ],
   "Build System": [
     "build-overview",

@@ -1,0 +1,86 @@
+---
+title: "More TypeScript interop"
+description: "More TypeScript interop"
+canonical: "/docs/manual/latest/bind-to-ts-other"
+---
+
+# More TypeScript interop
+
+## Imported Types
+
+It's possible to import an existing TS type as an opaque type in ReScript. For example,
+
+```res
+@genType.import("./SomeFlowTypes") type weekday
+```
+
+defines a type which maps to `weekday` in `SomeFlowTypes.js`.
+See for example [Types.res](https://github.com/reason-association/genType/tree/master/examples/flow-react-example/src/Types.res) and [SomeFlowTypes.js](https://github.com/reason-association/genType/tree/master/examples/flow-react-example/src/SomeFlowTypes.js).
+
+## Recursive Types
+
+Recursive types which do not require a conversion are fully supported.
+If a recursive type requires a conversion, only a shallow conversion is performed, and a warning comment is included in the output. (The alternative would be to perform an expensive conversion down a data structure of arbitrary size).
+See for example [Types.res](https://github.com/reason-association/genType/tree/master/examples/typescript-react-example/src/nested/Types.res).
+
+## First Class Modules
+
+ReScript first class modules are converted from their array ReScript runtime representation to JS Object types.
+For example,
+
+```res
+module type MT = {
+  let x: int
+  let y: string
+}
+module M = {
+  let y = "abc"
+  let x = 42
+}
+
+@genType
+let firstClassModule: module(MT) = module(M)
+```
+
+is exported as a JS object of type
+
+```res
+{"x": number, "y": string}
+```
+
+Notice how the order of elements in the exported JS object is determined by the module type `MT` and not the module implementation `M`.
+
+## Polymorphic Types
+
+If a ReScript type contains a type variable, the corresponding value is not converted. In other words, the conversion is the identity function. For example, a ReScript function of type `{payload: 'a} => 'a` must treat the value of the payload as a black box, as a consequence of parametric polymorphism. If a typed back-end is used, the ReScript type is converted to the corresponding generic type.
+
+### Exporting Values from Polymorphic Types with Hidden Type Variables
+
+For cases when a value that contains a hidden type variable needs to be converted, a function can be used to produce the appropriate output:
+
+**Doesn't work**
+
+```res
+@genType
+let none = None
+```
+
+```js
+export const none: ?T1 = OptionBS.none; // Errors out as T1 is not defined
+```
+
+**Works**
+
+```res
+@genType
+let none = () => None
+```
+
+```js
+const none = <T1>(a: T1): ?T1 => OptionBS.none;
+```
+
+## Promises
+
+Values of type `Js.Promise.t<arg>` are exported to JS promises of type `Promise<argJS>` where `argJS` is the JS type corresponding to `arg`.
+If a conversion for the argument is required, the conversion functions are chained via `.then(promise => ...)`.
