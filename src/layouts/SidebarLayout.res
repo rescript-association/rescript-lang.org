@@ -210,7 +210,7 @@ module MobileDrawerButton = {
 let make = (
   ~metaTitle: string,
   ~theme: ColorTheme.t,
-  ~components: Mdx.Components.t,
+  ~components: MarkdownComponents.t,
   ~editHref: option<string>=?,
   ~sidebarState: (bool, (bool => bool) => unit),
   // (Sidebar, toggleSidebar) ... for toggling sidebar in mobile view
@@ -235,7 +235,7 @@ let make = (
   let (_isSidebarOpen, setSidebarOpen) = sidebarState
   let toggleSidebar = () => setSidebarOpen(prev => !prev)
 
-  React.useEffect0(() => {
+  React.useEffect(() => {
     open Next.Router.Events
     let {Next.Router.events: events} = router
 
@@ -250,7 +250,7 @@ let make = (
         events->off(#hashChangeComplete(onChangeComplete))
       },
     )
-  })
+  }, [])
 
   let editLinkEl = switch editHref {
   | Some(href) =>
@@ -321,7 +321,7 @@ let make = (
                 </div>
               </div>
               <div className={hasBreadcrumbs ? "mt-10" : "-mt-4"}>
-                <Mdx.Provider components> children </Mdx.Provider>
+                <MdxProvider components> children </MdxProvider>
               </div>
               pagination
             </main>

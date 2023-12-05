@@ -20,7 +20,7 @@ module V1000Layout = DocsLayout.Make({
 
 module Latest = {
   @react.component
-  let make = (~frontmatter=?, ~components=Markdown.default, ~children) => {
+  let make = (~frontmatter=?, ~components=MarkdownComponents.default, ~children) => {
     let router = Next.Router.useRouter()
     let route = router.route
 
@@ -142,7 +142,11 @@ module V1000 = {
 
 module V900 = {
   @react.component
-  let make = (~frontmatter: option<Js.Json.t>=?, ~components=Markdown.default, ~children) => {
+  let make = (
+    ~frontmatter: option<Js.Json.t>=?,
+    ~components=MarkdownComponents.default,
+    ~children,
+  ) => {
     let router = Next.Router.useRouter()
     let route = router.route
 
@@ -186,7 +190,7 @@ module V900 = {
 
 module V800 = {
   @react.component
-  let make = (~frontmatter=?, ~components=Markdown.default, ~children) => {
+  let make = (~frontmatter=?, ~components=MarkdownComponents.default, ~children) => {
     let router = Next.Router.useRouter()
     let route = router.route
 

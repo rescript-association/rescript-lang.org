@@ -7,7 +7,7 @@ import remarkFrontmatter from 'remark-frontmatter'
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import { createLoader } from 'simple-functional-loader'
 
-const bsconfig = JSON.parse(fs.readFileSync("./bsconfig.json"))
+const bsconfig = JSON.parse(fs.readFileSync("./rescript.json"))
 
 const { ProvidePlugin } = webpack;
 

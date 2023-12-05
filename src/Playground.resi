@@ -1,1 +1,2 @@
-let default: (~props: Try.props) => React.element
+@react.component
+let make: (~versions: array<string>) => React.element

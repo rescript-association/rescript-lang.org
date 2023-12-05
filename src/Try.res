@@ -1,7 +1,17 @@
-let default = (props: {"children": React.element}) => {
+type props = {versions: array<string>}
+
+let default = props => {
   let overlayState = React.useState(() => false)
 
-  let playground = props["children"]
+  let lazyPlayground = Next.Dynamic.dynamic(
+    async () => await Js.import(Playground.make),
+    {
+      ssr: false,
+      loading: () => <span> {React.string("Loading...")} </span>,
+    },
+  )
+
+  let playground = React.createElement(lazyPlayground, {versions: props.versions})
 
   <>
     <Meta title="ReScript Playground" description="Try ReScript in the browser" />
@@ -16,8 +26,6 @@ let default = (props: {"children": React.element}) => {
     </div>
   </>
 }
-
-type props = {versions: array<string>}
 
 let getStaticProps: Next.GetStaticProps.t<props, _> = async _ => {
   let versions = {

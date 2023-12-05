@@ -42,19 +42,17 @@ let blogPathToSlug = path => {
   path->Js.String2.replaceByRe(%re(`/^(archive\/)?\d\d\d\d-\d\d-\d\d-(.+)\.mdx$/`), "$2")
 }
 
-@module("path") external extname: string => string = "extname"
-
 let getAllPosts = () => {
   let postsDirectory = Node.Path.join2(Node.Process.cwd(), "_blogposts")
   let archivedPostsDirectory = Node.Path.join2(postsDirectory, "archive")
 
   let mdxFiles = dir => {
-    Node.Fs.readdirSync(dir)->Js.Array2.filter(path => extname(path) === ".mdx")
+    Node.Fs.readdirSync(dir)->Js.Array2.filter(path => Node.Path.extname(path) === ".mdx")
   }
 
   let nonArchivedPosts = mdxFiles(postsDirectory)->Js.Array2.map(path => {
     let {GrayMatter.data: data} =
-      Node.Path.join2(postsDirectory, path)->Node.Fs.readFileSync(#utf8)->GrayMatter.matter
+      Node.Path.join2(postsDirectory, path)->Node.Fs.readFileSync->GrayMatter.matter
     switch BlogFrontmatter.decode(data) {
     | Error(msg) => Js.Exn.raiseError(msg)
     | Ok(d) => {
@@ -67,7 +65,7 @@ let getAllPosts = () => {
 
   let archivedPosts = mdxFiles(archivedPostsDirectory)->Js.Array2.map(path => {
     let {GrayMatter.data: data} =
-      Node.Path.join2(archivedPostsDirectory, path)->Node.Fs.readFileSync(#utf8)->GrayMatter.matter
+      Node.Path.join2(archivedPostsDirectory, path)->Node.Fs.readFileSync->GrayMatter.matter
     switch BlogFrontmatter.decode(data) {
     | Error(msg) => Js.Exn.raiseError(msg)
     | Ok(d) => {

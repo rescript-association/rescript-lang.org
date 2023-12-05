@@ -1,13 +1,13 @@
 {
   "name": "rescript-lang.org",
   "namespace": false,
-  "reason": {
-    "react-jsx": 3
+  "jsx": {
+    "version": 4
   },
   "bs-dependencies": [
-    "@rescript/react",
-    "@ryyppy/rescript-promise"
+    "@rescript/react"
   ],
+  "uncurried": true,
   "ppx-flags": [],
   "sources": [
     {
