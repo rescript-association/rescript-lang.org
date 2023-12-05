@@ -4,19 +4,16 @@ description: "GenType - Interoperability between ReScript and TypeScript"
 canonical: "/docs/manual/latest/gentype-introduction"
 ---
 
-# GenType
+# ReScript & TypeScript
 
-`genType` is a code generation tool that lets you export ReScript values and types to use in TypeScript (TS), and import TS values and types into ReScript.
+The ReScript compiler includes a code generation tool that lets you export ReScript values and types to use in TypeScript (TS), and import TS values and types into ReScript. It is called `genType`.
 
 Converter functions between the two runtime representations are generated when required based on the type of the values.
 In particular, conversion of [rescript-react](/docs/react/latest/introduction) components both ways is supported, with automatic generation of the wrappers.
 
-Here's an article describing how to use `genType` as part of a migration strategy where a tree of components is gradually converted to ReScript bottom-up (old article containing Reason / BuckleScript): [Adopting Reason: strategies, dual sources of truth, and why genType is a big deal](https://medium.com/p/c514265b466d).
-
 The implementation of genType performs a type-directed transformation of ReScript programs after compilation. The transformed programs operate on data types idiomatic to JS.
 
-For example, a ReScript function operating on a ReScript variant `type t = | A(int) | B(string)` (which is represented as custom objects with tags at runtime) is exported to a JS function operating on the corresponding JS object of type `{ tag: "A"; value: number }
-  | { tag: "B"; value: string }`.
+For example, a ReScript function operating on a ReScript variant `type t = | A(int) | B(string)` (which is represented as custom objects with tags at runtime) is exported to a JS function operating on the corresponding JS object of type `{ TAG: "A"; _0: number } | { TAG: "B"; _0: string };`.
 
 ## A Quick Example
 
@@ -34,7 +31,7 @@ First we'll set up a rescript-react component:
 @genType
 type color =
   | Red
-  | Blue;
+  | Blue
 
 @genType
 @react.component
@@ -43,10 +40,10 @@ let make = (~name: string, ~color: color) => {
     switch (color) {
     | Red => "red"
     | Blue => "blue"
-    };
+    }
 
-  <div className={"color-" ++ colorStr}> {React.string(name)} </div>;
-};
+  <div className={"color-" ++ colorStr}> {React.string(name)} </div>
+}
 ```
 
 On a successful compile, `genType` will convert `src/MyComp.res` to a TS file called `src/MyComp.gen.tsx` which will look something like this:
@@ -54,33 +51,29 @@ On a successful compile, `genType` will convert `src/MyComp.res` to a TS file ca
 ```ts
 // src/MyComp.gen.tsx
 
-/* TypeScript file generated from MyComp.res by genType. */
-/* eslint-disable import/first */
+/* TypeScript file generated from Main.res by genType. */
 
+/* eslint-disable */
+/* tslint:disable */
 
-import * as React from 'react';
+import * as React from "react";
 
-const $$toRE818596289: { [key: string]: any } = {"Red": 0, "Blue": 1};
+import * as MainBS__Es6Import from "./Main.res";
+const MainBS: any = MainBS__Es6Import;
 
-// tslint:disable-next-line:no-var-requires
-const MyCompBS = require('./MyComp.bs');
-
-// tslint:disable-next-line:interface-over-type-literal
 export type color = "Red" | "Blue";
 
-// tslint:disable-next-line:interface-over-type-literal
 export type Props = { readonly color: color; readonly name: string };
 
-export const make: React.ComponentType<{ readonly color: color; readonly name: string }> = function MyComp(Arg1: any) {
-  const $props = {color:$$toRE818596289[Arg1.color], name:Arg1.name};
-  const result = React.createElement(MyCompBS.make, $props);
-  return result
-};
+export const make: React.ComponentType<{
+  readonly color: color;
+  readonly name: string;
+}> = MainBS.make;
 ```
 
 genType automatically maps the `color` variant to TS via a string union type `color = "Red" | "Blue"`, and also provides all the converters to convert between the ReScript & TS representation as well.
 
-Therefore way we can seamlessly use ReScript specific data structures within TS without writing the converter code by hand!
+Therefore we can seamlessly use ReScript specific data structures within TS without writing the converter code by hand!
 
 Within our TypeScript application, we can now import and use the React component in the following manner:
 
@@ -89,10 +82,12 @@ Within our TypeScript application, we can now import and use the React component
 import { make as MyComp } from "./MyComp.gen.tsx";
 
 const App = () => {
-  return (<div>
-    <h1> My Component </h1>
-    <MyComp color="Blue" name="ReScript & TypeScript" />
-  </div>);
+  return (
+    <div>
+      <h1> My Component </h1>
+      <MyComp color="Blue" name="ReScript & TypeScript" />
+    </div>
+  );
 };
 ```
 
@@ -100,6 +95,100 @@ That's it for our quick example.
 
 For detailed information, head to the [Getting Started](/docs/manual/latest/gentype-getting-started) or [Usage](/docs/manual/latest/gentype-usage) section.
 
-## Development
+## Setup
 
-Since ReScript v10.1, genType is part of the compiler's [GitHub repository](https://github.com/rescript-lang/rescript-compiler).
+Since compiler v10.1, there's no need to install anything. For compiler 10.0 or older, install the binaries via `npm` (or `yarn`):
+
+```
+npm install gentype --save-dev
+
+# Verify installed gentype binary
+npx gentype --help
+```
+
+Add a `gentypeconfig` section to your `rescript.json` (See [Configuration](#configuration) for details):
+
+```json
+"gentypeconfig": {
+    "language": "typescript",
+    "shims": {},
+    "generatedFileExtension": ".gen.tsx",
+    "module": "es6",
+    "debug": {
+      "all": false,
+      "basic": false
+    }
+}
+```
+
+## Configuration
+
+Every `genType` powered project requires a configuration item `"gentypeconfig"`
+at top level in the project's `rescript.json`. The configuration has following
+structure:
+
+```json
+  //...
+  "gentypeconfig": {
+    "language": "typescript",
+    "generatedFileExtension": ".gen.tsx",
+    "module": "es6" | "commonjs",
+    "shims": {
+      "ReasonReact": "ReactShim"
+    }
+  }
+```
+
+- **generatedFileExtension**
+
+  - File extension used for genType generated files (defaults to `.gen.tsx`)
+
+- **language**
+
+  - `"typescript"` : the `language` setting is not required from compiler v10.1
+
+- **module**
+
+  - Module format used for the generated `*.gen.tsx` files (supports `"es6"` and `"commonjs"`)
+
+- **shims**
+  - Required only if one needs to export certain basic ReScript data types to JS when one cannot modify the sources to add annotations (e.g. exporting ReScript lists), and if the types are not first-classed in genType.
+  - Example: `Array<string>` with format: `"RescriptModule=JavaScriptModule"`
+
+## Adding Shims
+
+A shim is a TS file that provides user-provided definitions for library types.
+
+Configure your shim files within `"gentypeconfig"` in your [`rescript.json`](https://github.com/rescript-lang/rescript-compiler/blob/master/jscomp/gentype_tests/typescript-react-example/rescript.json), and add relevant `.shims.ts` files in a directory which is visible by ReScript e.g. [`src/shims/`](https://github.com/rescript-lang/rescript-compiler/tree/master/jscomp/gentype_tests/typescript-react-example/src/shims). An example shim to export ReactEvent can be found [here](https://github.com/rescript-lang/rescript-compiler/blob/master/jscomp/gentype_tests/typescript-react-example/src/shims/ReactEvent.shim.ts).
+
+## Testing the Whole Setup
+
+Open any relevant `*.res` file and add `@genType` annotations to any bindings / values / functions to be used from JavaScript. If an annotated value uses a type, the type must be annotated too. See e.g. [Hooks.res](https://github.com/reason-association/genType/blob/master/examples/typescript-react-example/src/Hooks.res).
+
+Save the file and rebuild the project via `npm run bs:build` or similar. You should now see a `*.gen.tsx` file with the same name (e.g. `MyComponent.res` -> `MyComponent.gen.tsx`).
+
+Any values exported from `MyComponent.res` can then be imported from JS. For example:
+
+```js
+import MyComponent from "./components/MyComponent.gen";
+```
+
+## Examples
+
+We prepared some examples to give you an idea on how to integrate `genType` in your own project. Check out the READMEs of the listed projects.
+
+- [typescript-react-example](https://github.com/rescript-lang/rescript-compiler/tree/master/jscomp/gentype_tests/typescript-react-example)
+
+## Experimental features
+
+These features are for experimentation only. They could be changed/removed any time, and not be considered breaking changes.
+
+- Export object and record types as interfaces. To activate, add `"exportInterfaces": true` to the configuration. The types are also renamed from `name` to `Iname`.
+
+- Emit prop types for the untyped back-end. To activate, add `"propTypes": true` and `"language": "untyped"` to the configuration.
+
+## Limitations
+
+- **in-source = true**. Currently only supports ReScript projects with [in-source generation](/docs/manual/latest/build-configuration#package-specs) and `.bs.js` file suffix.
+
+- **Limited namespace support**. Currently there's limited [namespace](/docs/manual/latest/build-configuration#name-namespace) support, and only `namespace:true` is possible, not e.g. `namespace:"custom"`.
