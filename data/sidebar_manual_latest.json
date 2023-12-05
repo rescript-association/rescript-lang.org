@@ -31,7 +31,6 @@
     "module",
     "import-export",
     "attribute",
-    "unboxed",
     "reserved-keywords"
   ],
   "Advanced Features": [
