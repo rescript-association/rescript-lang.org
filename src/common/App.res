@@ -89,6 +89,16 @@ let make = (props: props): React.element => {
         | (_, Some("dom")) => <DomDocsLayout9_0_0.Docs> content </DomDocsLayout9_0_0.Docs>
         | _ => React.null
         }
+      | Version("v10.0.0") =>
+        switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
+        | (1, _) => <ApiOverviewLayout10_0_0.Docs> content </ApiOverviewLayout10_0_0.Docs>
+        | (2, Some("js")) => <JsDocsLayout10_0_0.Prose> content </JsDocsLayout10_0_0.Prose>
+        | (2, Some("belt")) => <BeltDocsLayout10_0_0.Prose> content </BeltDocsLayout10_0_0.Prose>
+        | (_, Some("js")) => <JsDocsLayout10_0_0.Docs> content </JsDocsLayout10_0_0.Docs>
+        | (_, Some("belt")) => <BeltDocsLayout10_0_0.Docs> content </BeltDocsLayout10_0_0.Docs>
+        | (_, Some("dom")) => <DomDocsLayout10_0_0.Docs> content </DomDocsLayout10_0_0.Docs>
+        | _ => React.null
+        }
       | _ => content
       }
     | _ =>
@@ -105,6 +115,10 @@ let make = (props: props): React.element => {
         <ManualDocsLayout.V900 frontmatter={component->frontmatter}>
           content
         </ManualDocsLayout.V900>
+      | Version("v10.0.0") =>
+        <ManualDocsLayout.V1000 frontmatter={component->frontmatter}>
+          content
+        </ManualDocsLayout.V1000>
       | _ => React.null
       }
     }
@@ -116,6 +130,8 @@ let make = (props: props): React.element => {
       </ReactDocsLayout.Latest>
     | Version("v0.10.0") =>
       <ReactDocsLayout.V0100 frontmatter={component->frontmatter}> content </ReactDocsLayout.V0100>
+    | Version("v0.11.0") =>
+      <ReactDocsLayout.V0110 frontmatter={component->frontmatter}> content </ReactDocsLayout.V0110>
     | _ => React.null
     }
   | {base: ["docs", "reason-compiler"], version: Latest} =>

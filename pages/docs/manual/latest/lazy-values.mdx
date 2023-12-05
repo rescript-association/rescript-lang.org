@@ -11,10 +11,13 @@ If you have some expensive computations you'd like to **defer and cache** subseq
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res prelude
+@module("node:fs")
+external readdirSync: string => array<string> = "readdirSync"
+
 // Read the directory, only once
 let expensiveFilesRead = lazy({
   Js.log("Reading dir")
-  Node.Fs.readdirSync("./pages")
+  readdirSync("./pages")
 })
 ```
 ```js

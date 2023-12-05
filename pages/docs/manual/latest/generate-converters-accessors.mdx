@@ -88,8 +88,8 @@ type pet = {name: string}
 let pets = [{name: "bob"}, {name: "bob2"}]
 
 pets
- ->Belt.Array.map(name)
- ->Js.Array2.joinWith("&")
+ ->Array.map(name)
+ ->Array.joinWith("&")
  ->Js.log
 ```
 

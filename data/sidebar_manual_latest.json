@@ -3,7 +3,6 @@
     "introduction",
     "installation",
     "editor-plugins",
-    "migrate-from-bucklescript-reason",
     "try"
   ],
   "Language Features": [
