@@ -103,7 +103,23 @@ let transformItems = (items: DocSearch.transformItems) => {
 let make = () => {
   let (state, setState) = React.useState(_ => Inactive)
 
-  React.useEffect1(() => {
+  let handleCloseModal = () => {
+    let () = switch ReactDOM.querySelector(".DocSearch-Modal") {
+    | Some(modal) =>
+      switch ReactDOM.querySelector("body") {
+      | Some(body) =>
+        open Webapi
+        body->Element.classList->ClassList.remove("DocSearch--active")
+        modal->Element.addEventListener("transitionend", () => {
+          setState(_ => Inactive)
+        })
+      | None => setState(_ => Inactive)
+      }
+    | None => ()
+    }
+  }
+
+  React.useEffect(() => {
     let isEditableTag = el =>
       switch el->tagName {
       | "TEXTAREA" | "SELECT" | "INPUT" => true
@@ -123,7 +139,8 @@ let make = () => {
       switch e.key {
       | "/" => focusSearch(e)
       | "k" if e.ctrlKey || e.metaKey => focusSearch(e)
-      | "Escape" => setState(_ => Inactive)
+      | "Escape" => handleCloseModal()
+      // setState(_ => Inactive)
       | _ => ()
       }
     }
@@ -131,10 +148,13 @@ let make = () => {
     Some(() => removeKeyboardEventListener("keydown", handleGlobalKeyDown))
   }, [setState])
 
-  let onClick = _ => setState(_ => Active)
+  let onClick = _ => {
+    setState(_ => Active)
+  }
 
-  let onClose = React.useCallback1(() => {
-    setState(_ => Inactive)
+  let onClose = React.useCallback(() => {
+    // setState(_ => Inactive)
+    handleCloseModal()
   }, [setState])
 
   <>

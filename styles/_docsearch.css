@@ -42,9 +42,16 @@
   z-index: 200;
   padding: 10vh;
   background-color: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(0px);
   cursor: inherit !important;
+  transition: all .05s ease;
   @apply fixed top-0 left-0 flex flex-col;
+}
+
+.DocSearch--active {
+  .DocSearch-Container {
+    backdrop-filter: blur(3px);
+  }
 }
 
 .DocSearch-Container a {
@@ -58,6 +65,16 @@
 
 .DocSearch-Modal {
   @apply relative min-h-0 mx-auto bg-white w-full flex flex-col shadow-lg max-w-screen-md rounded-lg;
+  transform: scale(0.95);
+  opacity: 0;
+  transition: all .2s ease;
+}
+
+.DocSearch--active {
+  .DocSearch-Modal {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* Modal Searchbox */
