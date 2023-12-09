@@ -13,24 +13,36 @@ canonical: "/docs/manual/latest/installation"
 
 ## New Project
 
+### Quick Setup
+
+```sh
+npm create rescript-app
+```
+
+1. Follow the steps of the setup.
+2. Trigger a ReScript build
+
+```sh
+npm run res:build
+```
+
+3. If you selected the basic theme, simply run it with
+
+```
+node src/Demo.res.js
+```
+
+### Manual Setup
+
 ```sh
 git clone https://github.com/rescript-lang/rescript-project-template
 cd rescript-project-template
 npm install
 npm run res:build
-node src/Demo.bs.js
+node src/Demo.res.js
 ```
 
-or use the create-rescript-app tool:
-
-```sh
-npm create rescript-app // Select basic template
-cd <your-rescript-project-name>
-npm run res:build
-node src/Demo.bs.js
-```
-
-That compiles your ReScript into JavaScript, then uses Node.js to run said JavaScript. **We recommend you use our unique workflow of keeping a tab open for the generated `.bs.js` file**, so that you can learn how ReScript transforms into JavaScript. Not many languages output clean JavaScript code you can inspect and learn from!
+That compiles your ReScript into JavaScript, then uses Node.js to run said JavaScript. **We recommend you use our unique workflow of keeping a tab open for the generated `.res.js` file**, so that you can learn how ReScript transforms into JavaScript. Not many languages output clean JavaScript code you can inspect and learn from!
 
 During development, instead of running `npm run res:build` each time to compile, use `npm run res:dev` to start a watcher that recompiles automatically after file changes.
 
@@ -58,7 +70,7 @@ If you already have a JavaScript project into which you'd like to add ReScript:
         "in-source": true
       }
     ],
-    "suffix": ".bs.js",
+    "suffix": ".res.js",
     "bs-dependencies": []
   }
   ```
