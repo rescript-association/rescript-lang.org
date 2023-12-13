@@ -65,7 +65,7 @@ You can directly match on exceptions _while_ getting another return value from a
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res prelude
-switch List.find(i => i === 4, list{1, 2, 3}) {
+switch list{1, 2, 3}->List.getExn(4) {
 | item => Js.log(item)
 | exception Not_found => Js.log("No such item found!")
 }

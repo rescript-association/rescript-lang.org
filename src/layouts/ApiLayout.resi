@@ -12,6 +12,6 @@ let make: (
   ~title: string=?,
   ~version: string=?,
   ~activeToc: SidebarLayout.Toc.t=?,
-  ~components: Mdx.Components.t=?,
+  ~components: MarkdownComponents.t=?,
   ~children: React.element,
 ) => React.element

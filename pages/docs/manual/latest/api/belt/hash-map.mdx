@@ -31,7 +31,7 @@ let make: (~hintSize: int, ~id: id<'key, 'id>) => t<'key, 'value, 'id>
 `make(~hintSize=10, ~id)` creates a new map by taking in the comparator and `hintSize`.
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -51,7 +51,7 @@ let clear: t<'key, 'value, 'id> => unit
 Clears a hash table.
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -71,7 +71,7 @@ let isEmpty: t<'a, 'b, 'c> => bool
 `isEmpty(m)` checks whether a hash map is empty.
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -89,7 +89,7 @@ let set: (t<'key, 'value, 'id>, 'key, 'value) => unit
 `set(hMap, k, v)` if `k` does not exist, add the binding `k,v`, otherwise, update the old value with the new `v`.
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -111,7 +111,7 @@ let copy: t<'key, 'value, 'id> => t<'key, 'value, 'id>
 Creates copy of a hash map.
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -134,7 +134,7 @@ let get: (t<'key, 'value, 'id>, 'key) => option<'value>
 Returns value bound under specific key. If values not exist returns `None`.
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -156,7 +156,7 @@ let has: (t<'key, 'value, 'id>, 'key) => bool
 Checks if `x` is bound in `tbl`.
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -178,7 +178,7 @@ let remove: (t<'key, 'value, 'id>, 'key) => unit
 If bound exists, removes it from the hash map.
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -207,7 +207,7 @@ let forEach: (t<'key, 'value, 'id>, ('key, 'value) => unit) => unit
 `forEach(tbl, f)` applies `f` to all bindings in table `tbl`. `f` receives the key as first argument, and the associated value as second argument. Each binding is presented exactly once to `f`.
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -238,7 +238,7 @@ let reduce: (t<'key, 'value, 'id>, 'c, ('c, 'key, 'value) => 'c) => 'c
 The order in which the bindings are passed to `f` is unspecified. However, if the table contains several bindings for the same key, they are passed to `f` in reverse order of introduction, that is, the most recent binding is passed first.
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -268,7 +268,7 @@ let keepMapInPlace: (t<'key, 'value, 'id>, ('key, 'value) => option<'value>) => 
 Filters out values for which function `f` returned `None`.
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -290,7 +290,7 @@ let size: t<'a, 'b, 'c> => int
 `size(tbl)` returns the number of bindings in `tbl`. It takes constant time.
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -312,7 +312,7 @@ let toArray: t<'key, 'value, 'id> => array<('key, 'value)>
 Returns array of key value pairs.
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -334,7 +334,7 @@ let keysToArray: t<'key, 'a, 'b> => array<'key>
 Returns array of keys.
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -356,7 +356,7 @@ let valuesToArray: t<'a, 'value, 'b> => array<'value>
 Returns array of values.
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -380,7 +380,7 @@ Creates new hash map from array of pairs.
 Returns array of values.
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -397,7 +397,7 @@ let mergeMany: (t<'key, 'value, 'id>, array<('key, 'value)>) => unit
 ```
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -414,7 +414,7 @@ let getBucketHistogram: t<'a, 'b, 'c> => array<int>
 ```
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -432,7 +432,7 @@ let logStats: t<'a, 'b, 'c> => unit
 ```
 
 ```res example
-module IntHash = Belt.Id.MakeHashable({
+module IntHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b

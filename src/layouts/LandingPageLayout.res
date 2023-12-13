@@ -131,7 +131,7 @@ exports.Button = Button;`,
 
 module QuickInstall = {
   module CopyButton = {
-    let copyToClipboard: string => bool = %raw(j`
+    let copyToClipboard: string => bool = %raw(`
   function(str) {
     try {
       const el = document.createElement('textarea');
@@ -176,7 +176,7 @@ module QuickInstall = {
         }
       }
 
-      React.useEffect1(() => {
+      React.useEffect(() => {
         switch state {
         | Copied =>
           open Webapi
@@ -691,7 +691,7 @@ module Sponsors = {
 */
 
 @react.component
-let make = (~components=Markdown.default, ~children) => {
+let make = (~components=MarkdownComponents.default, ~children) => {
   let overlayState = React.useState(() => false)
 
   <>
@@ -707,7 +707,7 @@ let make = (~components=Markdown.default, ~children) => {
         <div className="absolute top-16 w-full">
           <div className="relative overflow-hidden pb-32">
             <main className="mt-10 min-w-320 lg:align-center w-full">
-              <Mdx.Provider components>
+              <MdxProvider components>
                 <div className="">
                   <div className="w-full">
                     <div className="mt-16 md:mt-32 lg:mt-40 mb-12">
@@ -722,7 +722,7 @@ let make = (~components=Markdown.default, ~children) => {
                     children
                   </div>
                 </div>
-              </Mdx.Provider>
+              </MdxProvider>
             </main>
           </div>
           <Footer />

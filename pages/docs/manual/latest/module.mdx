@@ -445,7 +445,7 @@ module MakeSet = (Item: Comparable) => {
   let empty = list{}
   let add = (currentSet: backingType, newItem: Item.t): backingType =>
     // if item exists
-    if List.exists(x => Item.equal(x, newItem), currentSet) {
+    if currentSet->List.some(x => Item.equal(x, newItem)) {
       currentSet // return the same (immutable) set (a list really)
     } else {
       list{

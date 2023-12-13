@@ -59,7 +59,7 @@ let categories = [
 ]
 
 @react.component
-let make = (~components=Markdown.default, ~children) => {
+let make = (~components=MarkdownComponents.default, ~children) => {
   let router = Next.Router.useRouter()
   let route = router.route
 

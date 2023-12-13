@@ -1,19 +1,19 @@
 ---
 title: "Configuration"
 metaTitle: "Build System Configuration"
-description: "Details about the configuration of the ReScript build system (bsconfig.json)"
+description: "Details about the configuration of the ReScript build system (rescript.json)"
 canonical: "/docs/manual/latest/build-configuration"
 ---
 
 # Configuration
 
-`bsconfig.json` is the single, mandatory build meta file needed for `rescript`.
+`rescript.json` (or `bsconfig.json` in versions prior ReScript 11) is the single, mandatory build meta file needed for `rescript`.
 
 **The complete configuration schema is [here](./build-configuration-schema)**. We'll _non-exhaustively_ highlight the important parts in prose below.
 
 ## name, namespace
 
-`name` is the name of the library, used as its "namespace". You can activate namespacing through `"namespace": true` in your `bsconfig.json`. Namespacing is almost **mandatory**; we haven't turned it on by default yet to preserve backward-compatibility.
+`name` is the name of the library, used as its "namespace". You can activate namespacing through `"namespace": true` in your `rescript.json`. Namespacing is almost **mandatory**; we haven't turned it on by default yet to preserve backward-compatibility.
 
 **Explanation**: by default, your files, once used as a third-party dependency, are available globally to the consumer. E.g. if you have an `Util.re` and the consumer also has a file of the same name, they will clash. Turning on `namespace` avoids this by wrapping all your own project's files into an extra module layer; instead of a global `Util` module, the consumer will see you as `MyProject.Util`. **The namespacing affects your consumers, not yourself**.
 
@@ -21,7 +21,7 @@ Aka, in ReScript, "namespace" is just a fancy term for an auto-generated module 
 
 We don't do folder-level namespacing for your own project; all your own file names must be unique. This is a constraint that enables several features such as fast search and easier project reorganization.
 
-**Note**: the `bsconfig.json` `name` should be the same as the `package.json` `name`, to avoid confusing corner-cases. However, this means that you can't use a camelCased names such as `MyProject`, since `package.json` and npm forbid you to do so (some file systems are case-insensitive). To have the namespace/module as `MyProject`, write `"name": "my-project"`. ReScript will turn that into the camelCased name correctly.
+**Note**: the `rescript.json` `name` should be the same as the `package.json` `name`, to avoid confusing corner-cases. However, this means that you can't use a camelCased names such as `MyProject`, since `package.json` and npm forbid you to do so (some file systems are case-insensitive). To have the namespace/module as `MyProject`, write `"name": "my-project"`. ReScript will turn that into the camelCased name correctly.
 
 **Note on custom namespacing**: if for some reason, you need a namespace that is different from what your `name` will produce, you can directly send a string to the `namespace` option. For example, if your package is a binding named `bs-some-thing`, you can use `"namespace": "some-thing"` to get `SomeThing` namespace instead of `BsSomeThing`.
 
@@ -96,19 +96,6 @@ This is useful for working on multiple independent ReScript packages simultaneou
 
 More details can be found on our [external stdlib](./build-external-stdlib) page.
 
-## reason, refmt (old)
-
-`reason` config is enabled by default. To turn on JSX for [ReasonReact](https://reasonml.github.io/reason-react/), specify:
-
-```json
-{
-  "reason": {"react-jsx": 3},
-  "refmt": 3
-}
-```
-
-The `refmt` config **should be explicitly specified** as `3`.
-
 ## js-post-build
 
 Hook that's invoked every time a file is recompiled. Good for JS build system interop, but please use it **sparingly**. Calling your custom command for every recompiled file slows down your build and worsens the building experience for even third-party users of your lib.
@@ -148,11 +135,23 @@ Output to either CommonJS (the default) or ES6 modules. Example:
 - `"module": "es6-global"` resolves `node_modules` using relative paths. Good for development-time usage of ES6 in conjunction with browsers like Safari and Firefox that support ES6 modules today. **No more dev-time bundling**!
 - `"in-source": true` generates output alongside source files. If you omit it, it'll generate the artifacts into `lib/js`. The output directory is not configurable otherwise.
 
-This configuration only applies to you, when you develop the project. When the project is used as a third-party library, the consumer's own `bsconfig.json` `package-specs` overrides the configuration here, logically.
+This configuration only applies to you, when you develop the project. When the project is used as a third-party library, the consumer's own `rescript.json` `package-specs` overrides the configuration here, logically.
 
 ## suffix
 
-Either `".js"`, `".mjs"`, `".cjs"` or `".bs.js"`. Currently prefer `bs.js` for now.
+**Since 11.0**: The suffix can now be freely chosen. However, we still suggest you stick to the convention and use
+one of the following:  
+- `".js`
+- `".mjs"`
+- `".cjs"`
+- `".res.js"`
+- `".res.mjs"`
+- `".res.cjs"`
+- `".bs.js"`
+- `".bs.mjs"`
+- `".bs.cjs"`
+
+Currently prefer `.bs.js` for now.
 
 ### Design Decisions
 
@@ -162,6 +161,18 @@ Generating JS files with the `.bs.js` suffix means that, on the JS side, you can
 - It avoids clashes with a potential `theFile.js` file in the same folder.
 - It avoids the need of using a build system loader for ReScript files. This + in-source build means integrating a ReScript project into your pure JS codebase **basically doesn't touch anything in your build pipeline at all**.
 - [genType](/docs/gentype/latest/introduction) requires `bs.js` for compiled JS artifacts. If you are using `genType`, you need to use `bs.js` for now.
+
+## uncurried
+
+**Since 11.0**: While we strongly encourage all users to use uncurried mode, it is still possible to opt out. Just set `"uncurried"` to `false` to get the old behavior back:
+
+```json
+{
+  "uncurried": false
+}
+```
+
+More details can be found in the [blogpost about "Uncurried Mode"](/blog/uncurried-mode).
 
 ## warnings
 

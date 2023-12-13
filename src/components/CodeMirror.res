@@ -8,7 +8,7 @@
     This file is providing the core functionality and logic of our CodeMirror instances.
  */
 
-let useWindowWidth: unit => int = %raw(j` () => {
+let useWindowWidth: unit => int = %raw(` () => {
   const isClient = typeof window === 'object';
 
   function getSize() {
@@ -53,22 +53,15 @@ module CM = {
   let errorGutterId = "errors"
 
   module Options = {
-    @deriving({abstract: light})
     type t = {
       theme: string,
-      @optional
-      gutters: array<string>,
+      gutters?: array<string>,
       mode: string,
-      @optional
-      lineNumbers: bool,
-      @optional
-      readOnly: bool,
-      @optional
-      lineWrapping: bool,
-      @optional
-      fixedGutter: bool,
-      @optional
-      scrollbarStyle: string,
+      lineNumbers?: bool,
+      readOnly?: bool,
+      lineWrapping?: bool,
+      fixedGutter?: bool,
+      scrollbarStyle?: string,
     }
   }
 
@@ -76,42 +69,42 @@ module CM = {
   external onMouseOver: (
     Dom.element,
     @as("mouseover") _,
-    @uncurry (ReactEvent.Mouse.t => unit),
+    @uncurry ReactEvent.Mouse.t => unit,
   ) => unit = "on"
 
   @module("codemirror")
   external onMouseMove: (
     Dom.element,
     @as("mousemove") _,
-    @uncurry (ReactEvent.Mouse.t => unit),
+    @uncurry ReactEvent.Mouse.t => unit,
   ) => unit = "on"
 
   @module("codemirror")
   external offMouseOver: (
     Dom.element,
     @as("mouseover") _,
-    @uncurry (ReactEvent.Mouse.t => unit),
+    @uncurry ReactEvent.Mouse.t => unit,
   ) => unit = "off"
 
   @module("codemirror")
   external offMouseOut: (
     Dom.element,
     @as("mouseout") _,
-    @uncurry (ReactEvent.Mouse.t => unit),
+    @uncurry ReactEvent.Mouse.t => unit,
   ) => unit = "off"
 
   @module("codemirror")
   external offMouseMove: (
     Dom.element,
     @as("mousemove") _,
-    @uncurry (ReactEvent.Mouse.t => unit),
+    @uncurry ReactEvent.Mouse.t => unit,
   ) => unit = "off"
 
   @module("codemirror")
   external onMouseOut: (
     Dom.element,
     @as("mouseout") _,
-    @uncurry (ReactEvent.Mouse.t => unit),
+    @uncurry ReactEvent.Mouse.t => unit,
   ) => unit = "on"
 
   @module("codemirror")
@@ -129,7 +122,7 @@ module CM = {
   @send external refresh: t => unit = "refresh"
 
   @send
-  external onChange: (t, @as("change") _, @uncurry (t => unit)) => unit = "on"
+  external onChange: (t, @as("change") _, @uncurry t => unit) => unit = "on"
 
   @send external toTextArea: t => unit = "toTextArea"
 
@@ -138,7 +131,7 @@ module CM = {
   @send external getValue: t => string = "getValue"
 
   @send
-  external operation: (t, @uncurry (unit => unit)) => unit = "operation"
+  external operation: (t, @uncurry unit => unit) => unit = "operation"
 
   @send
   external setGutterMarker: (t, int, string, Dom.element) => unit = "setGutterMarker"
@@ -323,7 +316,7 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
 
   let markerRef = React.useRef(None)
 
-  React.useEffect0(() => {
+  React.useEffect(() => {
     tooltip->HoverTooltip.attach
 
     Some(
@@ -331,7 +324,7 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
         tooltip->HoverTooltip.clear
       },
     )
-  })
+  }, [])
 
   let checkIfTextMarker: Dom.element => bool = %raw(`
   function(el) {
@@ -460,7 +453,7 @@ module GutterMarker = {
     }
 
     let (row, col) = rowCol
-    marker->setId(j`gutter-marker_$row-$col`)
+    marker->setId(`gutter-marker_${row->Belt.Int.toString}-${col->Belt.Int.toString}`)
     marker->setClassName(
       "flex items-center justify-center text-14 text-center ml-1 h-6 font-bold hover:cursor-pointer " ++
       colorClass,
@@ -492,7 +485,7 @@ let extractRowColFromId = (id: string): option<(int, int)> =>
   | _ => None
   }
 
-module ErrorHash = Belt.Id.MakeHashable({
+module ErrorHash = Belt.Id.MakeHashableU({
   type t = int
   let hash = a => a
   let eq = (a, b) => a == b
@@ -606,20 +599,19 @@ let make = // props relevant for the react wrapper
   let windowWidth = useWindowWidth()
   let (onMouseOver, onMouseOut, onMouseMove) = useHoverTooltip(~cmStateRef, ~cmRef, ())
 
-  React.useEffect0(() =>
+  React.useEffect(() =>
     switch inputElement.current->Js.Nullable.toOption {
     | Some(input) =>
-      let options = CM.Options.t(
-        ~theme="material",
-        ~gutters=[CM.errorGutterId, "CodeMirror-linenumbers"],
-        ~mode,
-        ~lineWrapping,
-        ~fixedGutter=false,
-        ~readOnly,
-        ~lineNumbers,
-        ~scrollbarStyle,
-        (),
-      )
+      let options = {
+        CM.Options.theme: "material",
+        gutters: [CM.errorGutterId, "CodeMirror-linenumbers"],
+        mode,
+        lineWrapping,
+        fixedGutter: false,
+        readOnly,
+        lineNumbers,
+        scrollbarStyle,
+      }
       let cm = CM.fromTextArea(input, options)
 
       Belt.Option.forEach(minHeight, minHeight =>
@@ -659,9 +651,9 @@ let make = // props relevant for the react wrapper
       Some(cleanup)
     | None => None
     }
-  )
+  , [])
 
-  React.useEffect1(() => {
+  React.useEffect(() => {
     cmStateRef.current.hoverHints = hoverHints
     None
   }, [hoverHints])
@@ -702,10 +694,10 @@ let make = // props relevant for the react wrapper
  */
   let errorsFingerprint = Belt.Array.map(errors, e => {
     let {Error.row: row, column} = e
-    j`$row-$column`
+    `${row->Belt.Int.toString}-${column->Belt.Int.toString}`
   })->Js.Array2.joinWith(";")
 
-  React.useEffect1(() => {
+  React.useEffect(() => {
     let state = cmStateRef.current
     switch cmRef.current {
     | Some(cm) =>
@@ -717,7 +709,7 @@ let make = // props relevant for the react wrapper
     None
   }, [errorsFingerprint])
 
-  React.useEffect1(() => {
+  React.useEffect(() => {
     let cm = Belt.Option.getExn(cmRef.current)
     cm->CM.setMode(mode)
     None
@@ -727,7 +719,7 @@ let make = // props relevant for the react wrapper
     Needed in case the className visually hides / shows
     a codemirror instance, or the window has been resized.
  */
-  React.useEffect2(() => {
+  React.useEffect(() => {
     switch cmRef.current {
     | Some(cm) => cm->CM.refresh
     | None => ()
