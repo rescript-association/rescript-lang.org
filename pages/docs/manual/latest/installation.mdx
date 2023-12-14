@@ -9,38 +9,45 @@ canonical: "/docs/manual/latest/installation"
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) version >= 14
-- [npm](https://docs.npmjs.com/cli/) (which comes with Node.js) or [Yarn](https://yarnpkg.com/)
+- One of the following package managers
+  - [npm](https://docs.npmjs.com/cli/) (comes with Node.js)
+  - [yarn](https://yarnpkg.com/)
+  - [pnpm](https://pnpm.io/)
+  - [bun](https://bun.sh/)
 
 ## New Project
 
-### Quick Setup
+The fastest and easiest way to spin up a new ReScript project is with the [create-rescript-app](https://github.com/rescript-lang/create-rescript-app) project generator. You can start it with any of the aforementioned package managers or `npx`.
 
-```sh
+<CodeTab labels={["npm", "npx", "yarn", "pnpm", "bun"]}>
+
+```sh example
 npm create rescript-app
 ```
-
-1. Follow the steps of the setup.
-2. Trigger a ReScript build
-
 ```sh
-npm run res:build
+npx create-rescript-app
 ```
-
-3. If you selected the basic theme, simply run it with
-
-```
-node src/Demo.res.js
-```
-
-### Manual Setup
-
 ```sh
-git clone https://github.com/rescript-lang/rescript-project-template
-cd rescript-project-template
-npm install
-npm run res:build
-node src/Demo.res.js
+yarn create rescript-app
 ```
+```sh
+pnpm create rescript-app
+```
+```sh
+bun create rescript-app
+```
+
+</CodeTab>
+
+- Follow the steps of the setup.
+- Trigger a ReScript build:
+  ```sh
+  npm run res:build
+  ```
+- If you selected the basic theme, simply run it with:
+  ```sh
+  node src/Demo.res.js
+  ```
 
 That compiles your ReScript into JavaScript, then uses Node.js to run said JavaScript. **We recommend you use our unique workflow of keeping a tab open for the generated `.res.js` file**, so that you can learn how ReScript transforms into JavaScript. Not many languages output clean JavaScript code you can inspect and learn from!
 
@@ -48,13 +55,52 @@ During development, instead of running `npm run res:build` each time to compile,
 
 ## Integrate Into an Existing JS Project
 
-If you already have a JavaScript project into which you'd like to add ReScript:
+If you already have a JavaScript project into which you'd like to add ReScript you can do that in the following ways:
 
+### Quick Setup
+
+In the root directory of your project, execute:
+<CodeTab labels={["npm", "npx", "yarn", "pnpm", "bun"]}>
+
+```sh
+npm create rescript-app
+```
+```sh
+npx create-rescript-app
+```
+```sh
+yarn create rescript-app
+```
+```sh
+pnpm create rescript-app
+```
+```sh
+bun create rescript-app
+```
+
+</CodeTab>
+
+It should mention that a `package.json` file has been detected and asks you if it should install ReScript into your project. Just follow the steps accordingly.
+
+### Manual Setup
 - Install ReScript locally:
+  <CodeTab labels={["npm", "yarn", "pnpm", "bun"]}>
+
   ```sh
   npm install rescript
   ```
-- Create a ReScript build configuration at the root:
+  ```sh
+  yarn add rescript
+  ```
+  ```sh
+  pnpm install rescript
+  ```
+  ```sh
+  bun install rescript
+  ```
+
+  </CodeTab>
+- Create a ReScript build configuration file (called `rescript.json`) at the root:
   ```json
   {
     "name": "your-project-name",
