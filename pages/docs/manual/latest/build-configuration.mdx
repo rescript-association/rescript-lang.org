@@ -152,7 +152,7 @@ one of the following:
 
 ### Design Decisions
 
-Generating JS files with the `.res.js` suffix means that, on the JS side, you can do `const myReScriptFile = require('./theFile.bs')`. The benefits:
+Generating JS files with the `.res.js` suffix means that, on the JS side, you can do `const myReScriptFile = require('./theFile.res')`. The benefits:
 
 - It's immediately clear that we're dealing with a generated JS file here.
 - It avoids clashes with a potential `theFile.js` file in the same folder.
