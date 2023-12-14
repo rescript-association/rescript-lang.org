@@ -128,7 +128,8 @@ let make = (~highlightedLines=[], ~code: string, ~showLabel=true, ~lang="text") 
 
   let label = if showLabel {
     let label = langShortname(lang)
-    <div className="absolute right-0 px-4 pb-4 font-sans text-12 font-bold text-gray-30">
+    <div
+      className="absolute right-1 top-0 p-1 font-sans text-12 font-bold text-gray-30 pointer-events-none">
       {//RES or JS Label
       Js.String2.toUpperCase(label)->React.string}
     </div>
@@ -138,9 +139,9 @@ let make = (~highlightedLines=[], ~code: string, ~showLabel=true, ~lang="text") 
 
   <div
     //normal code-text without tabs
-    className="relative w-full flex-col rounded-none xs:rounded border-t border-b xs:border border-gray-20 bg-gray-10 py-2 text-gray-80">
+    className="relative w-full flex-col rounded xs:rounded border border-gray-20 bg-gray-10 pt-2 text-gray-80">
     label
-    <div className="px-5 text-14 pt-4 pb-2 overflow-x-auto -mt-2"> children </div>
+    <div className="px-5 text-14 pt-4 pb-4 overflow-x-auto"> children </div>
   </div>
 }
 
@@ -252,13 +253,13 @@ module Toggle = {
         <div
           className="absolute flex w-full font-sans bg-transparent text-14 text-gray-40 "
           style={ReactDOM.Style.make(~marginTop="-26px", ())}>
-          <div className="flex ml-2 xs:ml-0"> {React.array(tabElements)} </div>
+          <div className="flex xs:ml-0"> {React.array(tabElements)} </div>
           <div className="flex-1 w-full bg-gray-20 border-b rounded-tr border-gray-20 items-center">
             buttonDiv
           </div>
         </div>
         <div
-          className="px-4 lg:px-5 text-14 pb-4 pt-4 overflow-x-auto bg-gray-10 border-gray-20 xs:rounded-b border">
+          className="px-4 lg:px-5 text-14 pb-4 pt-4 overflow-x-auto bg-gray-10 border-gray-20 rounded-b border">
           <pre> children </pre>
         </div>
       </div>
