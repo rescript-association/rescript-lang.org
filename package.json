@@ -18,6 +18,7 @@
     "@headlessui/react": "^1.2.0",
     "@mdx-js/loader": "^2.3.0",
     "@rescript/react": "^0.12.0-alpha.3",
+    "@rescript/tools": "file:rescript-tools-0.2.0.tgz",
     "codemirror": "^5.54.0",
     "docson": "^2.1.0",
     "eslint-config-next": "^13.1.1",
@@ -32,6 +33,7 @@
     "prettier": "^1.18.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-markdown": "^9.0.1",
     "rehype-slug": "^5.1.0",
     "remark-comment": "^1.0.0",
     "remark-frontmatter": "^4.0.1",
@@ -59,7 +61,7 @@
     "postcss": "^8.4.27",
     "postcss-cli": "^8.3.0",
     "reanalyze": "^2.16.0",
-    "rescript": "^11.0.0-rc.6",
+    "rescript": "^11.0.0-rc.7",
     "simple-functional-loader": "^1.2.1",
     "tailwindcss": "^3.3.3"
   }

@@ -11,15 +11,15 @@ let args = Node.Process.argv
 
 let argsLen = args->Js.Array2.length
 
-let analysisExePath = args->Js.Array2.unsafe_get(argsLen - 2)
-let compiler_path = args->Js.Array2.unsafe_get(argsLen - 1)
-let libPath = Node.Path.join([compiler_path, "lib", "ocaml"])
-
-external asBuffer: string => Node.Buffer.t = "%identity"
+let analysisExePath = args->Belt.Array.getExn(argsLen - 2)
+let compilerPath = args->Belt.Array.getExn(argsLen - 1)
+let libPath = Node.Path.join([compilerPath, "lib", "ocaml"])
 
 @send external flat: array<array<'t>> => array<'t> = "flat"
 
 let entryPointLibs = ["js.ml", "belt.res", "dom.res"]
+
+module Docgen = RescriptTools.Docgen
 
 type mod = {
   id: string,
@@ -39,11 +39,11 @@ type section = {
 let docsDecoded = entryPointLibs->Js.Array2.map(libFile => {
   let entryPointFile = Node.Path.join2(libPath, libFile)
   let output =
-    Node.Child_process.execSync(
+    Node.ChildProcess.execSync(
       `${analysisExePath} extractDocs ${entryPointFile}`,
-      Node.Child_process.option(),
+      // Node.Child_process.option(),
     )
-    ->asBuffer
+    // ->asBuffer
     ->Node.Buffer.toString
     ->Js.String2.trim
 
@@ -142,9 +142,9 @@ let () = {
   allModules->Js.Array2.forEach(((topLevelName, mod)) => {
     let json = Js.Json.object_(mod)
 
-    Node.Fs.writeFileAsUtf8Sync(
+    Node.Fs.writeFileSync(
       `data/${topLevelName->Js.String2.toLowerCase}.json`,
-      json->Js.Json.stringifyWithSpace(2),
+      json->Js.Json.stringify,
     )
   })
 }
@@ -173,9 +173,13 @@ let () = {
 
 // Generate the modules_paths.json
 let () = {
-  let json = allModules->Js.Array2.reduce((acc, (_, mod)) => {
+  let json =
+    allModules
+    ->Js.Array2.reduce((acc, (_, mod)) => {
       Js.Array2.concat(mod->Js.Dict.keys, acc)
-    }, [])->Js.Array2.map(Js.Json.string)->Js.Json.array
+    }, [])
+    ->Js.Array2.map(Js.Json.string)
+    ->Js.Json.array
 
-  Node.Fs.writeFileAsUtf8Sync(`data/api_module_paths.json`, json->Js.Json.stringify)
+  Node.Fs.writeFileSync(`data/api_module_paths.json`, json->Js.Json.stringify)
 }

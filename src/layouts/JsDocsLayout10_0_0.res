@@ -140,9 +140,9 @@ let apiNavs = [
 let categories = [
   {
     open Category
-    {name: "Overview", items: overviewNavs}
+    {name: "Overview"->Some, items: overviewNavs}
   },
-  {name: "Submodules", items: apiNavs},
+  {name: "Submodules"->Some, items: apiNavs},
 ]
 
 module Docs = {

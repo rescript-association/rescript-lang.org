@@ -2,23 +2,21 @@
 
 import * as Fs from "fs";
 import * as Path from "path";
-import * as Docgen from "../src/other/Docgen.mjs";
 import * as Js_dict from "rescript/lib/es6/js_dict.js";
-import * as Process from "process";
 import * as Belt_List from "rescript/lib/es6/belt_List.js";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
-import * as Caml_option from "rescript/lib/es6/caml_option.js";
+import * as Tools_Docgen from "@rescript/tools/src/Tools_Docgen.mjs";
 import * as Child_process from "child_process";
 
-var args = Process.argv;
+var args = process.argv;
 
 var argsLen = args.length;
 
-var analysisExePath = args[argsLen - 2 | 0];
+var analysisExePath = Belt_Array.getExn(args, argsLen - 2 | 0);
 
-var compiler_path = args[argsLen - 1 | 0];
+var compilerPath = Belt_Array.getExn(args, argsLen - 1 | 0);
 
-var libPath = Path.join(compiler_path, "lib", "ocaml");
+var libPath = Path.join(compilerPath, "lib", "ocaml");
 
 var entryPointLibs = [
   "js.ml",
@@ -28,18 +26,18 @@ var entryPointLibs = [
 
 var docsDecoded = entryPointLibs.map(function (libFile) {
       var entryPointFile = Path.join(libPath, libFile);
-      var output = Child_process.execSync("" + analysisExePath + " extractDocs " + entryPointFile + "", {}).toString().trim();
-      return Docgen.decodeFromJson(JSON.parse(output));
+      var output = Child_process.execSync(analysisExePath + " extractDocs " + entryPointFile).toString().trim();
+      return Tools_Docgen.decodeFromJson(JSON.parse(output));
     });
 
 var docs = docsDecoded.map(function (doc) {
       var topLevelItems = Belt_Array.keepMap(doc.items, (function (item) {
-              switch (item.TAG | 0) {
-                case /* Value */0 :
-                case /* Type */1 :
+              switch (item.kind) {
+                case "value" :
+                case "type" :
                     return item;
-                case /* Module */2 :
-                case /* ModuleAlias */3 :
+                case "module" :
+                case "moduleAlias" :
                     return ;
                 
               }
@@ -56,19 +54,18 @@ var docs = docsDecoded.map(function (doc) {
           var docstrings;
           var name;
           var items;
-          switch (match.TAG | 0) {
-            case /* Value */0 :
-            case /* Type */1 :
+          switch (match.kind) {
+            case "value" :
+            case "type" :
                 _lst = lst.tl;
                 continue ;
-            case /* Module */2 :
-                var match$1 = match._0;
-                id = match$1.id;
-                docstrings = match$1.docstrings;
-                name = match$1.name;
-                items = match$1.items;
+            case "module" :
+                id = match.id;
+                docstrings = match.docstrings;
+                name = match.name;
+                items = match.items;
                 break;
-            case /* ModuleAlias */3 :
+            case "moduleAlias" :
                 id = match.id;
                 docstrings = match.docstrings;
                 name = match.name;
@@ -112,55 +109,55 @@ var docs = docsDecoded.map(function (doc) {
 var allModules = docs.map(function (param) {
       var submodules = Js_dict.fromArray(param[1].map(function (mod) {
                 var items = Belt_Array.keepMap(mod.items, (function (item) {
-                        switch (item.TAG | 0) {
-                          case /* Value */0 :
-                              return Caml_option.some(Js_dict.fromArray([
-                                              [
-                                                "id",
-                                                item.id
-                                              ],
-                                              [
-                                                "kind",
-                                                "value"
-                                              ],
-                                              [
-                                                "name",
-                                                item.name
-                                              ],
-                                              [
-                                                "docstrings",
-                                                item.docstrings
-                                              ],
-                                              [
-                                                "signature",
-                                                item.signature
-                                              ]
-                                            ]));
-                          case /* Type */1 :
-                              return Caml_option.some(Js_dict.fromArray([
-                                              [
-                                                "id",
-                                                item.id
-                                              ],
-                                              [
-                                                "kind",
-                                                "type"
-                                              ],
-                                              [
-                                                "name",
-                                                item.name
-                                              ],
-                                              [
-                                                "docstrings",
-                                                item.docstrings
-                                              ],
-                                              [
-                                                "signature",
-                                                item.signature
-                                              ]
-                                            ]));
-                          case /* Module */2 :
-                          case /* ModuleAlias */3 :
+                        switch (item.kind) {
+                          case "value" :
+                              return Js_dict.fromArray([
+                                          [
+                                            "id",
+                                            item.id
+                                          ],
+                                          [
+                                            "kind",
+                                            "value"
+                                          ],
+                                          [
+                                            "name",
+                                            item.name
+                                          ],
+                                          [
+                                            "docstrings",
+                                            item.docstrings
+                                          ],
+                                          [
+                                            "signature",
+                                            item.signature
+                                          ]
+                                        ]);
+                          case "type" :
+                              return Js_dict.fromArray([
+                                          [
+                                            "id",
+                                            item.id
+                                          ],
+                                          [
+                                            "kind",
+                                            "type"
+                                          ],
+                                          [
+                                            "name",
+                                            item.name
+                                          ],
+                                          [
+                                            "docstrings",
+                                            item.docstrings
+                                          ],
+                                          [
+                                            "signature",
+                                            item.signature
+                                          ]
+                                        ]);
+                          case "module" :
+                          case "moduleAlias" :
                               return ;
                           
                         }
@@ -195,7 +192,7 @@ var allModules = docs.map(function (param) {
     });
 
 allModules.forEach(function (param) {
-      Fs.writeFileSync("data/" + param[0].toLowerCase() + ".json", JSON.stringify(param[1], null, 2), "utf8");
+      Fs.writeFileSync("data/" + param[0].toLowerCase() + ".json", JSON.stringify(param[1]));
     });
 
 var json = allModules.reduce((function (acc, param) {
@@ -204,15 +201,18 @@ var json = allModules.reduce((function (acc, param) {
       return prim;
     });
 
-Fs.writeFileSync("data/api_module_paths.json", JSON.stringify(json), "utf8");
+Fs.writeFileSync("data/api_module_paths.json", JSON.stringify(json));
+
+var Docgen;
 
 export {
   args ,
   argsLen ,
   analysisExePath ,
-  compiler_path ,
+  compilerPath ,
   libPath ,
   entryPointLibs ,
+  Docgen ,
   docsDecoded ,
   docs ,
   allModules ,
