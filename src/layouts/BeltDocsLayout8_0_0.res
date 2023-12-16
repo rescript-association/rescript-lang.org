@@ -118,14 +118,14 @@ let utilityNavs = [
 let categories = [
   {
     open Category
-    {name: "Overview"->Some, items: overviewNavs}
+    {name: "Overview", items: overviewNavs}
   },
-  {name: "Basics"->Some, items: basicNavs},
-  {name: "Set"->Some, items: setNavs},
-  {name: "Map"->Some, items: mapNavs},
-  {name: "Mutable Collections"->Some, items: mutableCollectionsNavs},
-  {name: "Sort Collections"->Some, items: sortNavs},
-  {name: "Utilities"->Some, items: utilityNavs},
+  {name: "Basics", items: basicNavs},
+  {name: "Set", items: setNavs},
+  {name: "Map", items: mapNavs},
+  {name: "Mutable Collections", items: mutableCollectionsNavs},
+  {name: "Sort Collections", items: sortNavs},
+  {name: "Utilities", items: utilityNavs},
 ]
 
 module Docs = {

@@ -17,17 +17,34 @@ type rec toctree = {
 module SidebarTree = {
   @react.component
   let make = (~tree: array<toctree>) => {
+    // let className = "py-1 md:h-auto tracking-tight text-gray-60 rounded-sm hover:bg-gray-20 hover:-ml-2 hover:py-1 hover:pl-2 leading-5 -ml-2 pl-2 font-medium block hover:bg-fire-70 "
+    let summaryClassName = "truncate font-medium cursor-pointer py-1 md:h-auto tracking-tight text-gray-60 rounded-sm hover:bg-gray-20 hover:-ml-2 hover:py-1 hover:pl-2 "
+    let router = Next.Router.useRouter()
+
+    let onClick = path => {
+      let href = path->Js.Array2.joinWith("/")
+      Next.Router.push(router, href)
+    }
+
     let rec renderTree = (tree: toctree, level: int) => {
       let wrappUl = tree.children->Js.Array2.length > 0
 
       let main =
         tree.children
+        ->Js.Array2.sortInPlaceWith((v1, v2) => {
+          if v1.name > v2.name {
+            1
+          } else {
+            -1
+          }
+        })
         ->Js.Array2.map(item => {
-          let href = item.path->Js.Array2.joinWith("/")
           let content =
             <>
-              <summary title={item.name}>
-                <Next.Link href={href}> {item.name->React.string} </Next.Link>
+              <summary
+                title={item.name} onClick={_ => onClick(item.path)} className={summaryClassName}>
+                {item.name->React.string}
+                // <Next.Link className href={href}> {item.name->React.string} </Next.Link>
               </summary>
               {if item.children->Js.Array2.length > 0 {
                 renderTree(item, level + 1)
@@ -49,7 +66,7 @@ module SidebarTree = {
       if wrappUl {
         <ul
           data={"level-" ++ level->Belt.Int.toString}
-          style={ReactDOM.Style.make(~marginLeft=`${level->Belt.Int.toString}rem`, ())}>
+          style={ReactDOM.Style.make(~marginLeft=`9%`, ())}>
           main
         </ul>
       } else {
@@ -57,19 +74,24 @@ module SidebarTree = {
       }
     }
 
-    <div className={"flex flex-col"}>
-      {tree
-      ->Js.Array2.map(node => {
-        let href = node.path->Js.Array2.joinWith("/")
-
-        <details key={node.name} className="toc-tree-toplevel">
-          <summary title={node.name}>
-            <Next.Link href={href}> {node.name->React.string} </Next.Link>
-          </summary>
-          {renderTree(node, 1)}
-        </details>
-      })
-      ->React.array}
+    <div className={"md:block md:w-48 md:-ml-4 lg:w-1/5 md:h-auto md:relative bg-white"}>
+      <aside
+        className={"flex flex-col px-2 py-3 sticky overflow-y-auto top-16 w-60"}
+        style={ReactDOM.Style.make(~height="calc(100vh - 4.5rem);", ())}>
+        {tree
+        ->Js.Array2.map(item => {
+          <details key={item.name}>
+            <summary
+              title={item.name}
+              className={"truncate cursor-pointer py-1 md:h-auto tracking-tight text-gray-60 rounded-sm hover:bg-gray-20 hover:-ml-2 hover:py-1 hover:pl-2 "}
+              onClick={_ => onClick(item.path)}>
+              {item.name->React.string}
+            </summary>
+            {renderTree(item, 1)}
+          </details>
+        })
+        ->React.array}
+      </aside>
     </div>
   }
 }
@@ -368,11 +390,11 @@ module Overview = {
     //   items: [{name: "Overview", href: "/docs/manual/next/api"}],
     // },
     {
-      name: "Modules"->Some,
+      name: "Modules",
       items: [
-        {name: "Js Module", href: "/docs/manual/next/api/js"},
-        {name: "Belt Stdlib", href: "/docs/manual/next/api/belt"},
-        {name: "Dom Module", href: "/docs/manual/next/api/dom"},
+        {name: "Js Module", href: "/docs/manual/latest/api/js"},
+        {name: "Belt Stdlib", href: "/docs/manual/latest/api/belt"},
+        {name: "Dom Module", href: "/docs/manual/latest/api/dom"},
       ],
     },
   ]

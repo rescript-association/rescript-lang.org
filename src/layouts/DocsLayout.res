@@ -232,7 +232,7 @@ module Make = (Content: StaticContent) => {
       Js.Dict.entries(groups)->Belt.Array.map(((name, values)) => {
         open Category
         {
-          name: Some(name),
+          name,
           items: Belt.Array.map(values, ((href, value)) => {
             NavItem.name: value["title"],
             href,

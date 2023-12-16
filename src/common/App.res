@@ -60,13 +60,8 @@ let make = (props: props): React.element => {
       switch version {
       | Latest =>
         switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
-        | (1, _) => <ApiOverviewLayout.Docs> content </ApiOverviewLayout.Docs>
-        | (2, Some("js")) => <JsDocsLayout.Prose> content </JsDocsLayout.Prose>
-        | (2, Some("belt")) => <BeltDocsLayout.Prose> content </BeltDocsLayout.Prose>
-        | (_, Some("js")) => <JsDocsLayout.Docs> content </JsDocsLayout.Docs>
-        | (_, Some("belt")) => <BeltDocsLayout.Docs> content </BeltDocsLayout.Docs>
-        | (_, Some("dom")) => <DomDocsLayout.Docs> content </DomDocsLayout.Docs>
-        | _ => React.null
+        | (1, _) => <ApiDocs.Overview> content </ApiDocs.Overview>
+        | _ => content
         }
       | Version("v8.0.0") =>
         switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
@@ -98,12 +93,6 @@ let make = (props: props): React.element => {
         | (_, Some("dom")) => <DomDocsLayout10_0_0.Docs> content </DomDocsLayout10_0_0.Docs>
         | _ => React.null
         }
-      | Version("next") =>
-        switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
-        | (1, _) => <ApiDocs.Overview> content </ApiDocs.Overview>
-        | _ => content
-        }
-
       | _ => content
       }
     | _ =>

@@ -57,7 +57,7 @@ let prettyString = (str: string) => {
 let parse = (route: string): t => {
   let fullpath = route->Js.String2.split("/")->Belt.Array.keep(s => s !== "")
   let foundVersionIndex = Js.Array2.findIndex(fullpath, chunk => {
-    Js.Re.test_(%re(`/latest|next|v\d+(\.\d+)?(\.\d+)?/`), chunk)
+    Js.Re.test_(%re(`/latest|v\d+(\.\d+)?(\.\d+)?/`), chunk)
   })
 
   let (version, base, pagepath) = if foundVersionIndex == -1 {

@@ -100,17 +100,14 @@ module Sidebar = {
 
   module Category = {
     type t = {
-      name: option<string>,
+      name: string,
       items: array<NavItem.t>,
     }
 
     @react.component
     let make = (~getActiveToc=?, ~isItemActive: option<NavItem.t => bool>=?, ~category: t) =>
-      <div className="my-10">
-        {switch category.name {
-        | Some(name) => <Title> {React.string(name)} </Title>
-        | None => React.null
-        }}
+      <div key=category.name className="my-10">
+        <Title> {React.string(category.name)} </Title>
         <NavItem ?isItemActive ?getActiveToc items=category.items />
       </div>
   }
@@ -164,8 +161,8 @@ module Sidebar = {
  */
           <div className="mb-56">
             {categories
-            ->Belt.Array.mapWithIndex((key, category) =>
-              <div key={Belt.Int.toString(key)}>
+            ->Belt.Array.map(category =>
+              <div key=category.name>
                 <Category getActiveToc isItemActive category />
               </div>
             )

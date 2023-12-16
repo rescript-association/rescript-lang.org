@@ -2,11 +2,11 @@ module Sidebar = SidebarLayout.Sidebar
 
 let categories: array<Sidebar.Category.t> = [
   {
-    name: "Introduction"->Some,
+    name: "Introduction",
     items: [{name: "Overview", href: "/docs/manual/v10.0.0/api"}],
   },
   {
-    name: "Modules"->Some,
+    name: "Modules",
     items: [
       {name: "Js Module", href: "/docs/manual/v10.0.0/api/js"},
       {name: "Belt Stdlib", href: "/docs/manual/v10.0.0/api/belt"},

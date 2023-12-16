@@ -15,8 +15,6 @@ let analysisExePath = args->Belt.Array.getExn(argsLen - 2)
 let compilerPath = args->Belt.Array.getExn(argsLen - 1)
 let libPath = Node.Path.join([compilerPath, "lib", "ocaml"])
 
-@send external flat: array<array<'t>> => array<'t> = "flat"
-
 let entryPointLibs = ["js.ml", "belt.res", "dom.res"]
 
 module Docgen = RescriptTools.Docgen
@@ -39,9 +37,7 @@ type section = {
 let docsDecoded = entryPointLibs->Js.Array2.map(libFile => {
   let entryPointFile = Node.Path.join2(libPath, libFile)
   let output =
-    Node.ChildProcess.execSync(
-      `${analysisExePath} extractDocs ${entryPointFile}`,
-    )
+    Node.ChildProcess.execSync(`${analysisExePath} extractDocs ${entryPointFile}`)
     ->Node.Buffer.toString
     ->Js.String2.trim
 
@@ -158,7 +154,7 @@ let () = {
       let children = getModules(itemsList, [], joinPath(~path, ~name))
 
       getModules(
-        list{...rest},
+        rest,
         Js.Array2.concat([{name, path: joinPath(~path, ~name), children}], moduleNames),
         path,
       )
