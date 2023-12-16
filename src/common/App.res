@@ -98,6 +98,12 @@ let make = (props: props): React.element => {
         | (_, Some("dom")) => <DomDocsLayout10_0_0.Docs> content </DomDocsLayout10_0_0.Docs>
         | _ => React.null
         }
+      | Version("next") =>
+        switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
+        | (1, _) => <ApiDocs.Overview> content </ApiDocs.Overview>
+        | _ => content
+        }
+
       | _ => content
       }
     | _ =>

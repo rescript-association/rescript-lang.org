@@ -41,9 +41,7 @@ let docsDecoded = entryPointLibs->Js.Array2.map(libFile => {
   let output =
     Node.ChildProcess.execSync(
       `${analysisExePath} extractDocs ${entryPointFile}`,
-      // Node.Child_process.option(),
     )
-    // ->asBuffer
     ->Node.Buffer.toString
     ->Js.String2.trim
 
@@ -78,13 +76,6 @@ let docs = docsDecoded->Js.Array2.map(doc => {
   let result = [top]->Js.Array2.concat(submodules)
 
   (doc.name, result)
-  // {
-  //   name: doc.name,
-  //   docstrings: doc.docstrings,
-  //   deprecated: doc.deprecated,
-  //   submodules,
-  //   topLevelItems,
-  // }
 })
 
 let allModules = {
@@ -149,27 +140,51 @@ let () = {
   })
 }
 
-// type toctree = {name: string}
+type rec toctree = {
+  name: string,
+  path: array<string>,
+  children: array<toctree>,
+}
+
 // Generate TOC modules
-// let () = {
-//   let r = docs->Js.Array2.map(((topLevelName, docs)) => {
-//     let a = docs->Js.Array2.map(mod => {
-//       mod.id
-//     })
-//     a->Belt.List.fromArray
-//   })
+let () = {
+  let joinPath = (~path: array<string>, ~name: string) => {
+    Js.Array2.concat(path, [name])->Js.Array2.map(path => path->Js.String2.toLowerCase)
+  }
+  let rec getModules = (lst: list<Docgen.item>, moduleNames, path) => {
+    switch lst {
+    | list{Module({items, name}) | ModuleAlias({items, name}), ...rest} =>
+      let itemsList = items->Belt.List.fromArray
+      let children = getModules(itemsList, [], joinPath(~path, ~name))
 
-//   let rec getModules = (lst: list<Docgen.item>, moduleNames: list<toctree>) =>
-//     switch lst {
-//     | list{Module({id, name, items}) | ModuleAlias({id, name, items}), ...rest} =>
-//       getModules(list{...rest, ...Belt.List.fromArray(items)}, list{{name: name}, ...moduleNames})
-//     | list{Type(_) | Value(_), ...rest} => getModules(rest, moduleNames)
-//     | list{} => moduleNames
-//     }
+      getModules(
+        list{...rest},
+        Js.Array2.concat([{name, path: joinPath(~path, ~name), children}], moduleNames),
+        path,
+      )
+    | list{Type(_) | Value(_), ...rest} => getModules(rest, moduleNames, path)
+    | list{} => moduleNames
+    }
+  }
 
-//   let a = docsDecoded->Js.Array2.map(doc => getModules(doc.items->Belt.List.fromArray, list{}))
-//   Js.log(a->Js.Json.stringifyAny)
-// }
+  let tocTree = docsDecoded->Js.Array2.map(({name, items}) => {
+    let path = [name->Js.String2.toLowerCase]
+    {
+      name,
+      path,
+      children: items
+      ->Belt.List.fromArray
+      ->getModules([], path),
+    }
+  })
+
+  Node.Fs.writeFileSync(
+    `data/api_toc_tree.json`,
+    tocTree
+    ->Js.Json.stringifyAny
+    ->Belt.Option.getExn,
+  )
+}
 
 // Generate the modules_paths.json
 let () = {

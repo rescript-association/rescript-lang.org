@@ -6,6 +6,73 @@ type apiIndex = Js.Dict.t<Js.Json.t>
 @module("data/belt.json") external apiBelt: apiIndex = "default"
 @module("data/dom.json") external apiDom: apiIndex = "default"
 @module("data/api_module_paths.json") external modulePaths: array<string> = "default"
+type rec toctree = {
+  name: string,
+  path: array<string>,
+  children: array<toctree>,
+}
+
+@module("data/api_toc_tree") external apiTocTree: array<toctree> = "default"
+
+module SidebarTree = {
+  @react.component
+  let make = (~tree: array<toctree>) => {
+    let rec renderTree = (tree: toctree, level: int) => {
+      let wrappUl = tree.children->Js.Array2.length > 0
+
+      let main =
+        tree.children
+        ->Js.Array2.map(item => {
+          let href = item.path->Js.Array2.joinWith("/")
+          let content =
+            <>
+              <summary title={item.name}>
+                <Next.Link href={href}> {item.name->React.string} </Next.Link>
+              </summary>
+              {if item.children->Js.Array2.length > 0 {
+                renderTree(item, level + 1)
+              } else {
+                React.null
+              }}
+            </>
+
+          if item.children->Js.Array2.length > 0 {
+            <li key={item.name}>
+              <details> content </details>
+            </li>
+          } else {
+            <li key={item.name}> content </li>
+          }
+        })
+        ->React.array
+
+      if wrappUl {
+        <ul
+          data={"level-" ++ level->Belt.Int.toString}
+          style={ReactDOM.Style.make(~marginLeft=`${level->Belt.Int.toString}rem`, ())}>
+          main
+        </ul>
+      } else {
+        main
+      }
+    }
+
+    <div className={"flex flex-col"}>
+      {tree
+      ->Js.Array2.map(node => {
+        let href = node.path->Js.Array2.joinWith("/")
+
+        <details key={node.name} className="toc-tree-toplevel">
+          <summary title={node.name}>
+            <Next.Link href={href}> {node.name->React.string} </Next.Link>
+          </summary>
+          {renderTree(node, 1)}
+        </details>
+      })
+      ->React.array}
+    </div>
+  }
+}
 
 type params = {slug: array<string>}
 
@@ -54,22 +121,29 @@ type mod = {
 
 type props = result<mod, string>
 
-type aliasH2 = Markdown.H2.props<string, React.element> => React.element
-external asMarkdownH2: 'a => aliasH2 = "%identity"
+external asMarkdownH2: 'a => Markdown.H2.props<string, React.element> => React.element = "%identity"
+
+external asMdxPlugin: 'a => MdxRemote.mdxPlugin = "%identity"
 
 let default = (props: props) => {
   let overlayState = React.useState(() => false)
 
   open Markdown
 
-  let docstringsMarkdown = docstrings => {
+  let docstringsMarkdown = (~docstrings, ~slugPrefix) => {
     let components = {
       ...MarkdownComponents.default,
       h2: MarkdownComponents.default.h3->asMarkdownH2,
     }
 
+    let options = {"prefix": slugPrefix ++ "-"}->asMdxPlugin
     docstrings
-    ->Js.Array2.map(doc => <ReactMarkdown components={components}> doc </ReactMarkdown>)
+    ->Js.Array2.map(doc =>
+      <ReactMarkdown
+        components={components} rehypePlugins={[[MdxRemote.rehypeSlug, options]->asMdxPlugin]}>
+        doc
+      </ReactMarkdown>
+    )
     ->React.array
   }
 
@@ -82,21 +156,21 @@ let default = (props: props) => {
         <>
           <H2 id=name> {name->React.string} </H2>
           <CodeExample code lang="rescript" />
-          {docstrings->docstringsMarkdown}
+          {docstringsMarkdown(~docstrings, ~slugPrefix=name)}
         </>
       | Type({name, signature, docstrings}) =>
         let code = Js.String2.replaceByRe(signature, %re("/\\n/g"), "\n")
         <>
           <H2 id=name> {name->React.string} </H2>
           <CodeExample code lang="rescript" />
-          {docstrings->docstringsMarkdown}
+          {docstringsMarkdown(~docstrings, ~slugPrefix=name)}
         </>
       }
     })
 
     <>
       <H1> {id->React.string} </H1>
-      {docstrings->docstringsMarkdown}
+      {docstringsMarkdown(~docstrings, ~slugPrefix=id)}
       {valuesAndType->React.array}
     </>
   | _ => React.null
@@ -143,6 +217,8 @@ let default = (props: props) => {
         <Navigation overlayState />
         <div className="flex lg:justify-center">
           <div className="flex w-full max-w-1280 md:mx-8">
+            // <Tree toctree={apiTocTree}/>
+            <SidebarTree tree={apiTocTree} />
             <main className="px-4 w-full pt-16 md:ml-12 lg:mr-8 mb-32 md:max-w-576 lg:max-w-740">
               item
             </main>
@@ -281,4 +357,32 @@ let getStaticPaths: Next.GetStaticPaths.t<params> = async () => {
   })
 
   {paths, fallback: false}
+}
+
+module Overview = {
+  module Sidebar = SidebarLayout.Sidebar
+
+  let categories: array<Sidebar.Category.t> = [
+    // {
+    //   name: "Introduction"->Some,
+    //   items: [{name: "Overview", href: "/docs/manual/next/api"}],
+    // },
+    {
+      name: "Modules"->Some,
+      items: [
+        {name: "Js Module", href: "/docs/manual/next/api/js"},
+        {name: "Belt Stdlib", href: "/docs/manual/next/api/belt"},
+        {name: "Dom Module", href: "/docs/manual/next/api/dom"},
+      ],
+    },
+  ]
+
+  /* Used for API docs (structured data) */
+  @react.component
+  let make = (~components=ApiMarkdown.default, ~children) => {
+    let title = "API"
+    let version = "next"
+
+    <ApiLayout title categories version components> children </ApiLayout>
+  }
 }
