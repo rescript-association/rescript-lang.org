@@ -2,22 +2,20 @@ module Docgen = RescriptTools.Docgen
 
 type apiIndex = Js.Dict.t<Js.Json.t>
 
-@module("data/js.json") external apiJs: apiIndex = "default"
-@module("data/belt.json") external apiBelt: apiIndex = "default"
-@module("data/dom.json") external apiDom: apiIndex = "default"
-@module("data/api_module_paths.json") external modulePaths: array<string> = "default"
 type rec toctree = {
   name: string,
   path: array<string>,
   children: array<toctree>,
 }
 
+@module("data/js.json") external apiJs: apiIndex = "default"
+@module("data/belt.json") external apiBelt: apiIndex = "default"
+@module("data/dom.json") external apiDom: apiIndex = "default"
 @module("data/api_toc_tree") external apiTocTree: array<toctree> = "default"
 
 module SidebarTree = {
   @react.component
   let make = (~tree: array<toctree>) => {
-    // let className = "py-1 md:h-auto tracking-tight text-gray-60 rounded-sm hover:bg-gray-20 hover:-ml-2 hover:py-1 hover:pl-2 leading-5 -ml-2 pl-2 font-medium block hover:bg-fire-70 "
     let summaryClassName = "truncate font-medium cursor-pointer py-1 md:h-auto tracking-tight text-gray-60 rounded-sm hover:bg-gray-20 hover:-ml-2 hover:py-1 hover:pl-2 "
     let router = Next.Router.useRouter()
 
@@ -371,6 +369,11 @@ let getStaticProps: Next.GetStaticProps.t<props, params> = async ctx => {
 
 let getStaticPaths: Next.GetStaticPaths.t<params> = async () => {
   open Next.GetStaticPaths
+
+  let modulePaths = [apiJs, apiDom, apiBelt]->Js.Array2.reduce((acc, cur) => {
+    let paths = cur->Js.Dict.keys
+    Js.Array2.concat(paths, acc)
+  }, [])
 
   let paths = modulePaths->Js.Array2.map(slug => {
     params: {

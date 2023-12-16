@@ -4,7 +4,7 @@ Generate docs from compiler repo
 ## Run
 
 ```bash
-node scripts/build_doc.mjs path/to/rescript-vscode/analysis/rescript-editor-analysis.exe path/to/rescript-compiler
+node scripts/gendocs.mjs path/to/rescript-vscode/analysis/rescript-editor-analysis.exe path/to/rescript-compiler
 ```
 */
 let args = Node.Process.argv
@@ -180,17 +180,4 @@ let () = {
     ->Js.Json.stringifyAny
     ->Belt.Option.getExn,
   )
-}
-
-// Generate the modules_paths.json
-let () = {
-  let json =
-    allModules
-    ->Js.Array2.reduce((acc, (_, mod)) => {
-      Js.Array2.concat(mod->Js.Dict.keys, acc)
-    }, [])
-    ->Js.Array2.map(Js.Json.string)
-    ->Js.Json.array
-
-  Node.Fs.writeFileSync(`data/api_module_paths.json`, json->Js.Json.stringify)
 }
