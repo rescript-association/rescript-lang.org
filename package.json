@@ -61,7 +61,7 @@
     "postcss": "^8.4.27",
     "postcss-cli": "^8.3.0",
     "reanalyze": "^2.16.0",
-    "rescript": "^11.0.0-rc.7",
+    "rescript": "^11.0.0-rc.6",
     "simple-functional-loader": "^1.2.1",
     "tailwindcss": "^3.3.3"
   }

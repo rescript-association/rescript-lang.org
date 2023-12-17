@@ -1,17 +1,16 @@
 /***
-Generate docs from compiler repo
+Generate docs from ReScript Compiler
 
 ## Run
 
 ```bash
-node scripts/gendocs.mjs path/to/rescript-vscode/analysis/rescript-editor-analysis.exe path/to/rescript-compiler
+node scripts/gendocs.mjs path/to/projects/rescript-compiler
 ```
 */
 let args = Node.Process.argv
 
 let argsLen = args->Js.Array2.length
 
-let analysisExePath = args->Belt.Array.getExn(argsLen - 2)
 let compilerPath = args->Belt.Array.getExn(argsLen - 1)
 let libPath = Node.Path.join([compilerPath, "lib", "ocaml"])
 
@@ -34,10 +33,15 @@ type section = {
   submodules: array<mod>,
 }
 
+let env = Node.Process.env
+
 let docsDecoded = entryPointLibs->Js.Array2.map(libFile => {
   let entryPointFile = Node.Path.join2(libPath, libFile)
+
+  Js.Dict.set(env, "FROM_COMPILER", "true")
+
   let output =
-    Node.ChildProcess.execSync(`${analysisExePath} extractDocs ${entryPointFile}`)
+    Node.ChildProcess.execSync(`./node_modules/.bin/rescript-tools doc ${entryPointFile}`)
     ->Node.Buffer.toString
     ->Js.String2.trim
 
