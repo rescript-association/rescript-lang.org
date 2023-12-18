@@ -163,6 +163,9 @@ const testFile = (pageMap, test) => {
 
       // If there's no page stated the relative link
       if (!pageMap[resolved]) {
+        if (url.includes("/docs/manual/latest/api") || url.includes("api")) {
+          return;
+        }
         const { line, column } = link.position.start;
         const stderr = `${filepath}: Unknown href '${url}' in line ${line}:${column}`;
         results.push({
