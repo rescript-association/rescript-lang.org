@@ -181,7 +181,7 @@ module H5 = {
 
 module Pre = {
   @react.component
-  let make = (~children) => <pre className="mt-2 mb-4 -mx-6 xs:mx-0 block"> children </pre>
+  let make = (~children) => <pre className="mt-2 mb-4 xs:mx-0 block"> children </pre>
 }
 
 module InlineCode = {
@@ -325,7 +325,7 @@ module CodeTab = {
       acc
     })
 
-    <div className="md-codetab mt-8 mb-8 -mx-6 xs:mx-0">
+    <div className="md-codetab mt-8 mb-8 xs:mx-0">
       <CodeExample.Toggle tabs />
     </div>
   }
