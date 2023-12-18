@@ -18,7 +18,7 @@
     "@headlessui/react": "^1.2.0",
     "@mdx-js/loader": "^2.3.0",
     "@rescript/react": "^0.12.0-alpha.3",
-    "@rescript/tools": "file:rescript-tools-0.2.0.tgz",
+    "@rescript/tools": "^0.3.0",
     "codemirror": "^5.54.0",
     "docson": "^2.1.0",
     "eslint-config-next": "^13.1.1",

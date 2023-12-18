@@ -42,7 +42,6 @@ module SidebarTree = {
               <summary
                 title={item.name} onClick={_ => onClick(item.path)} className={summaryClassName}>
                 {item.name->React.string}
-                // <Next.Link className href={href}> {item.name->React.string} </Next.Link>
               </summary>
               {if item.children->Js.Array2.length > 0 {
                 renderTree(item, level + 1)
