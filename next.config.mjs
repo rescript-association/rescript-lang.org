@@ -102,6 +102,11 @@ const config = {
         destination: "/docs/manual/v10.0.0/unboxed",
         permanent: true,
       },
+      {
+        source: "/docs/manual/latest/migrate-to-v11-and-uncurried-mode",
+        destination: "/docs/manual/latest/migrate-to-v11",
+        permanent: true,
+      },
     ];
   },
 };
