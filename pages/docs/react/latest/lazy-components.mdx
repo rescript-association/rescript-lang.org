@@ -1,7 +1,7 @@
 ---
 title: Lazy Components
 description: "Details on how to use the React.lazy_ API to dynamically import components"
-canonical: "/docs/react/latest/dynamically-importing-components"
+canonical: "/docs/react/latest/lazy-components"
 ---
 
 # Lazy Components
@@ -16,9 +16,9 @@ React ships with an [API for dynamically loading components](https://react.dev/r
 
 > **Note:** This section requires the latest [@rescript/react](https://github.com/rescript-lang/rescript-react) bindings to be installed (_0.12.0-alpha.2 and above_).
 
-ReScript comes with APIs for doing dynamic imports both for single values and for entire modules. These APIs, together with `React.lazy_`, let's you dynamically import React components easily.
+ReScript comes with APIs for doing dynamic imports both for single values and for entire modules. These APIs make dynamically importing React components easy.
 
-Let's look at a small example. First let's define a simple component:
+Let's look at a small example. First we'll define a simple component:
 
 ```rescript
 // Title.res
@@ -28,7 +28,7 @@ let make = (~text) => {
 }
 ```
 
-Now let's dynamically import the `<Title/>` component by passing the result of our dynamic import to `React.lazy_`:
+Now we can dynamically import the `<Title/>` component by passing the result of our dynamic import to `React.lazy_`:
 
 ```rescript
 // SomeOtherFile.res
