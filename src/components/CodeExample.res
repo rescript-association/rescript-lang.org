@@ -222,22 +222,29 @@ module Toggle = {
         })
         ->Belt.Option.getWithDefault(React.null)
 
-      let buttonDiv = switch Js.Array2.find(multiple, tab => {
+      // On a ReScript tab, always copy or open the ReScript code. Otherwise, copy the current selected code.
+      let isReScript = tab =>
         switch tab.lang {
         | Some("res") | Some("rescript") => true
         | _ => false
         }
-      }) {
+
+      let buttonDiv = switch Js.Array2.findi(multiple, (tab, index) =>
+        tab->isReScript || index === selected
+      ) {
       | Some({code: ""}) => React.null
       | Some(tab) =>
         let playgroundLinkButton =
-          <Next.Link
-            href={`/try?code=${LzString.compressToEncodedURIComponent(tab.code)}}`} target="_blank">
-            // ICON Link to PLAYGROUND
-            <Icon.ExternalLink
-              className="text-gray-30 mt-px hover:cursor-pointer hover:text-gray-60 hover:bg-gray-30 w-6 h-6 p-1 rounded transition-all duration-300 ease-in-out"
-            />
-          </Next.Link>
+          tab->isReScript
+            ? <Next.Link
+                href={`/try?code=${LzString.compressToEncodedURIComponent(tab.code)}}`}
+                target="_blank">
+                // ICON Link to PLAYGROUND
+                <Icon.ExternalLink
+                  className="text-gray-30 mt-px hover:cursor-pointer hover:text-gray-60 hover:bg-gray-30 w-6 h-6 p-1 rounded transition-all duration-300 ease-in-out"
+                />
+              </Next.Link>
+            : React.null
 
         let copyButton = <CopyButton code={tab.code} />
 
