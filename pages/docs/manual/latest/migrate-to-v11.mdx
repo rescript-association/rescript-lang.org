@@ -1,6 +1,6 @@
 ---
 title: "Migrate to v11"
-description: "Instructions on upgrading to ReScript 11 with the new uncurried mode"
+description: "Instructions on upgrading to ReScript 11"
 canonical: "/docs/manual/latest/migrate-to-v11"
 ---
 
@@ -11,28 +11,12 @@ canonical: "/docs/manual/latest/migrate-to-v11"
 The ReScript community is proud to introduce ReScript V11 which comes with a ton of new features but also removes a lot of bulk.
 A migration to it can be very straightforward, but it can also take some time, depending on your code style or what dependencies you use.
 
-Please have a look at the full [set of breaking changes](#list-of-all-breaking-changes) below to be able to decide whether this is a task you want to undertake. There is also the possibilty to opt-out of uncurried mode for now, which is probably the most fundamental change of this release. That and other new and notable features are discussed in the following blogposts:
+Please have a look at the full [set of breaking changes](#list-of-all-breaking-changes) below to be able to decide whether this is a task you want to undertake. There is also the possibilty to [opt-out of uncurried mode](#minimal-migration) for now, which is probably the most fundamental change of this release. That and other new and notable features are discussed in the following blogposts:
 
 - [Better interop with customizable variants](/blog/improving-interop)
 - [Enhanced Ergonomics for Record Types](/blog/enhanced-ergonomics-for-record-types)
 - [First-class Dynamic Import Support](/blog/first-class-dynamic-import-support)
 - [Uncurried Mode](/blog/uncurried-mode)
-
-## Minimal Migration
-
-This guide describes the things to do at least to migrate to ReScript 11.
-
-### Disable uncurried mode
-
-If you use currying extensively and don't want to bother with adapting your code, or have dependencies that just don't work with uncurried mode yet, just set it to false in your `rescript.json`.
-
-```json
-{
-  "uncurried": false
-}
-```
-
-For more information, read the Build System Configuration about [uncurried](/docs/manual/latest/build-configuration#uncurried).
 
 ## Recommended Migration
 
@@ -42,17 +26,17 @@ For uncurried mode to take effect in ReScript 11 there is nothing to configure, 
 
 ### Adapt suffix
 
-ReScript 11 now allows having arbitrary suffixes in the generated JavaScript files. However it is still recommended to stick to using `.res.js`, `.res.mjs` or `.res.cjs`. For more information, read the Build System Configuration about [suffixes](/docs/manual/latest/build-configuration#suffix).
+ReScript 11 now allows having arbitrary suffixes in the generated JavaScript files. However, it is still recommended to stick to using `.res.js`, `.res.mjs` or `.res.cjs`. For more information, read the Build System Configuration about [suffixes](/docs/manual/latest/build-configuration#suffix).
 
 ### rescript.json
 
-The old configuration filename `bsconfig.json` is finally deprecated. Rename it to `rescript.json`.
+The old configuration filename `bsconfig.json` is deprecated. Rename `bsconfig.json` to `rescript.json` to get rid of the deprecation warning.
 
 ### ReScript Core standard library
 
-There is a new standard library in development that can already be installed called ReScript Core. It replaces the complete `Js` module as well as some of the more frequently used modules from `Belt` and is the recommended standard library to use with uncurried mode. At a later stage it will be integrated into the compiler while `Belt` will be maintaned as a separate npm package.
+[ReScript Core](https://github.com/rescript-association/rescript-core) is ReScript's new standard library. It replaces the complete `Js` module as well as some of the more frequently used modules from `Belt` and is recommended to use with uncurried mode.
 
-Until it's integrated in the compiler, it needs to be installed manually:
+It will be integrated into the compiler in a future version. In ReScript 11, it still needs to be installed manually:
 
 ```console
 $ npm install @rescript/core
@@ -85,6 +69,22 @@ For a detailed explanation on migration to ReScript Core, please refer to its [m
 ### Removed bindings
 
 Many Node bindings have been removed from the compiler. Please use [rescript-nodejs](https://github.com/TheSpyder/rescript-nodejs) instead or write your own local bindings.
+
+## Minimal Migration
+
+This guide describes the things to do at least to migrate to ReScript 11.
+
+### Disable uncurried mode
+
+If you use currying extensively and don't want to bother with adapting your code, or have dependencies that just don't work with uncurried mode yet, just set it to false in your `rescript.json`.
+
+```json
+{
+  "uncurried": false
+}
+```
+
+For more information, read the Build System Configuration about [uncurried](/docs/manual/latest/build-configuration#uncurried).
 
 ## List of all breaking changes
 
