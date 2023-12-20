@@ -2,7 +2,7 @@
   "Overview": [
     "introduction",
     "installation",
-    "migrate-to-v11-and-uncurried-mode",
+    "migrate-to-v11",
     "editor-plugins",
     "try"
   ],
