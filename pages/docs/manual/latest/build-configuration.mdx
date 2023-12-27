@@ -192,6 +192,41 @@ The warning numbers are shown in the build output when they're triggered. See [W
 
 Extra flags to pass to the compiler. For advanced usages.
 
+## gentypeconfig
+
+To enable genType, set `"gentypeconfig"` at top level in the project's `rescript.json`.
+
+```json
+{
+  "gentypeconfig": {
+    "module": "es6",
+    "moduleResolution": "node",
+    "generatedFileExtension": ".gen.tsx",
+    "debug": {
+      "all": false,
+      "basic": false
+    }
+  }
+}
+```
+
+`generatedFileExtension`: File extension used for genType generated files (defaults to `".gen.tsx"`)
+
+`module`: Module format used for the generated `*.gen.tsx` files (supports `"es6"` and `"commonjs"`)
+
+`moduleResolution`: Module resolution strategy used in genType outputs. This may be required for compatibility with TypeScript projects. Specify the value as the same in `tsconfig.json`.
+- `"node"`(default): Drop extensions in import paths.
+- `"node16"`: Use TS output's extension. This provides compatibility with projects using `"moduleResolution": "node16"` and ES Modules.
+- `"bundler"`: Use TS input's extension. This provides compatibility with projects using `"moduleResolution": "bundler"` and ES Modules. This also requires TS v5.0+ and `compilerOptions.allowImportingTsExtensions` to `true`
+
+`debug`: Enable debug logs.
+
+### Deprecated options
+
+`language`: the `language` setting is not required from compiler v10.1.
+
+`shims`: Required only if one needs to export certain basic ReScript data types to JS when one cannot modify the sources to add annotations (e.g. exporting ReScript lists), and if the types are not first-classed in genType.
+
 ## Environment Variables
 
 We heavily disrecommend the usage of environment variables, but for certain cases, they're justified.
