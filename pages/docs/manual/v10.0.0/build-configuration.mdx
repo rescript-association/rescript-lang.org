@@ -34,6 +34,7 @@ Your source files need to be specified explicitly (we don't want to accidentally
   "sources": ["src", "examples"]
 }
 ```
+
 ```json
 {
   "sources": {
@@ -59,14 +60,14 @@ You can mark your directories as dev-only (for e.g. tests). These won't be built
 
 ```json
 {
-  "sources" : {
-    "dir" : "test",
-    "type" : "dev"
+  "sources": {
+    "dir": "test",
+    "type": "dev"
   }
 }
 ```
 
-You can also explicitly allow which modules can be seen from outside. This feature is especially useful for library authors who want to have a single entry point for their users.   
+You can also explicitly allow which modules can be seen from outside. This feature is especially useful for library authors who want to have a single entry point for their users.  
 Here, the file `src/MyMainModule.res` is exposed to outside consumers, while all other files are private.
 
 ```json
@@ -74,7 +75,7 @@ Here, the file `src/MyMainModule.res` is exposed to outside consumers, while all
   "sources": {
     "dir": "src",
     "public": ["MyMainModule"]
-  },
+  }
 }
 ```
 
@@ -102,7 +103,7 @@ More details can be found on our [external stdlib](./build-external-stdlib) page
 
 ```json
 {
-  "reason": {"react-jsx": 3},
+  "reason": { "react-jsx": 3 },
   "refmt": 3
 }
 ```
@@ -161,7 +162,7 @@ Generating JS files with the `.bs.js` suffix means that, on the JS side, you can
 - It's immediately clear that we're dealing with a generated JS file here.
 - It avoids clashes with a potential `theFile.js` file in the same folder.
 - It avoids the need of using a build system loader for ReScript files. This + in-source build means integrating a ReScript project into your pure JS codebase **basically doesn't touch anything in your build pipeline at all**.
-- [genType](/docs/manual/latest/gentype-introduction) requires `bs.js` for compiled JS artifacts. If you are using `genType`, you need to use `bs.js` for now.
+- [genType](/docs/manual/latest/typescript-integration) requires `bs.js` for compiled JS artifacts. If you are using `genType`, you need to use `bs.js` for now.
 
 ## warnings
 
