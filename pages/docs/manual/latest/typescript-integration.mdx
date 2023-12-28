@@ -85,6 +85,42 @@ import { printColorMessage } from "./Color.gen.tsx";
 printColorMessage("Red", "Hello, genType!");
 ```
 
+## Exporting an entire module
+
+_Since ReScript `11.0.0`_ modules can be annotated with `@genType` as well. In that case, all types and values of the module will be converted to TS types. Example: 
+
+<CodeTab labels={["ReScript", "TypeScript Output"]}>
+
+```res example
+@genType
+module Size = {
+  type t =
+    | Small
+    | Medium
+    | Large
+
+  let getNum = (size: t) =>
+    switch size {
+    | Small => 1.
+    | Medium => 5.
+    | Large => 10.
+    }
+}
+```
+
+```ts
+import * as MyCompBS__Es6Import from './MyComp.res';
+const MyCompBS: any = MyCompBS__Es6Import;
+
+export type Size_t = "Small" | "Medium" | "Large";
+
+export const Size_getNum: (size:Size_t) => number = MyCompBS.Size.getNum;
+
+export const Size: { getNum: (size:Size_t) => number } = MyCompBS.Size
+```
+</CodeTab>
+
+
 ## Setup
 
 Add a `gentypeconfig` section to your `rescript.json` (See [Configuration](/docs/manual/latest/build-configuration#gentypeconfig) for details).
