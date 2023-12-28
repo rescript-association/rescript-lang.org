@@ -149,7 +149,6 @@ one of the following:
 - `".res.js"`
 - `".res.mjs"`
 - `".res.cjs"`
-  <<<<<<< HEAD
 
 ### Design Decisions
 
@@ -215,6 +214,7 @@ To enable genType, set `"gentypeconfig"` at top level in the project's `rescript
 `module`: Module format used for the generated `*.gen.tsx` files (supports `"es6"` and `"commonjs"`)
 
 `moduleResolution`: Module resolution strategy used in genType outputs. This may be required for compatibility with TypeScript projects. Specify the value as the same in `tsconfig.json`.
+
 - `"node"`(default): Drop extensions in import paths.
 - `"node16"`: Use TS output's extension. This provides compatibility with projects using `"moduleResolution": "node16"` and ES Modules.
 - `"bundler"`: Use TS input's extension. This provides compatibility with projects using `"moduleResolution": "bundler"` and ES Modules. This also requires TS v5.0+ and `compilerOptions.allowImportingTsExtensions` to `true`

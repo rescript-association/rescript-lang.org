@@ -25,9 +25,9 @@ type t = { TAG: "A"; _0: number } | { TAG: "B"; _0: string };
 
 ## A Quick Example
 
-Let's assume we are working on a TypeScript codebase and we want to integrate a single TypeScript function.
+Let's assume we are working on a TypeScript codebase and we want to integrate a single ReScript function.
 
-We want to be able to import the function like any other in our existing TypeScript code, but we also want to preserve all the ReScript types in the TypeScript type system
+We want to be able to import the function like any other one in our existing TypeScript code, but we also want to preserve all the ReScript types in the TypeScript type system.
 
 **That's exactly what genType was made for!**
 
@@ -64,11 +64,13 @@ On a successful compile, `genType` will convert `src/Color.res` to a TypeScript 
 /* eslint-disable */
 /* tslint:disable */
 
-import * as ColorJS from './Color.res.js';
+import * as ColorJS from "./Color.res.js";
 
 export type color = "Red" | "Blue";
 
-export const printColorMessage: (color:color) => void = ColorJS.printColorMessage as any;
+export const printColorMessage: (
+  color: color
+) => void = ColorJS.printColorMessage as any;
 ```
 
 genType automatically maps the `color` variant to TS via a string union type `"Red" | "Blue"`.

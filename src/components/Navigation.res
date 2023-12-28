@@ -190,7 +190,7 @@ module DocsSection = {
         imgSrc: "/static/ic_gentype@2x.png",
         title: "GenType",
         description: "Seamless TypeScript integration",
-        href: "/docs/manual/latest/gentype-introduction",
+        href: "/docs/manual/latest/typescript-integration",
         isActive: url => {
           switch url.fullpath {
           | ["docs", "manual", _, fragment] => fragment->Js.String2.startsWith("gentype")
