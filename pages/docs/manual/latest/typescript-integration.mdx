@@ -103,7 +103,7 @@ The minimal configuration of genType is following:
 }
 ```
 
-And don't forget to make sure `allowJs` in the project `tsconfig.json`:
+And don't forget to make sure `allowJs` is set to `true` in the project's `tsconfig.json`:
 
 ```json
 {
@@ -115,7 +115,7 @@ And don't forget to make sure `allowJs` in the project `tsconfig.json`:
 
 ### TypeScript Module Resolutions
 
-Make sure to set the same `moduleResolution` in the both `rescript.json` and `tsconfig.json` so that the output of genType is performed at preferred module resolution.
+Make sure to set the same `moduleResolution` value in both `rescript.json` and `tsconfig.json`, so that the output of genType is done with the preferred module resolution.
 
 For example if the TypeScript project uses ES Modules with `Node16` / `NodeNext` module resolution:
 
@@ -139,7 +139,7 @@ Then `moduleResolution` in `gentypeconfig` should be same value:
 }
 ```
 
-In case of the TypeScript project uses `Bundler` module resolution, `allowImportingTsExtensions` should also be `true`:
+In case of the TypeScript project using `Bundler` module resolution, `allowImportingTsExtensions` should also be `true`:
 
 ```json
 // tsconfig.json
