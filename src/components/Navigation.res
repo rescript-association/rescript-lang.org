@@ -169,7 +169,7 @@ module DocsSection = {
         href: `/docs/manual/${version}/introduction`,
         isActive: url => {
           switch url.fullpath {
-          | ["docs", "manual", _, fragment] => !(fragment->Js.String2.startsWith("gentype"))
+          | ["docs", "manual", _, fragment] => fragment !== "typescript-integration"
           | _ => false
           }
         },
@@ -193,7 +193,7 @@ module DocsSection = {
         href: "/docs/manual/latest/typescript-integration",
         isActive: url => {
           switch url.fullpath {
-          | ["docs", "manual", _, fragment] => fragment->Js.String2.startsWith("gentype")
+          | ["docs", "manual", _, "typescript-integration"] => true
           | _ => false
           }
         },
