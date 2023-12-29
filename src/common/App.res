@@ -60,7 +60,7 @@ let make = (props: props): React.element => {
       switch version {
       | Latest =>
         switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
-        | (1, _) => <ApiDocs.Overview> content </ApiDocs.Overview>
+        | (1, _) => <ApiOverviewLayout.Docs> content </ApiOverviewLayout.Docs>
         | _ => content
         }
       | Version("v8.0.0") =>
@@ -116,6 +116,8 @@ let make = (props: props): React.element => {
       | _ => React.null
       }
     }
+  | {base: ["docs", "api", _]} => // Js.log(url)
+    content
   | {base: ["docs", "react"], version} =>
     switch version {
     | Latest =>

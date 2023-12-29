@@ -1,99 +1,10 @@
 module Docgen = RescriptTools.Docgen
 
-type apiIndex = Js.Dict.t<Js.Json.t>
-
-type rec toctree = {
+type rec node = {
   name: string,
   path: array<string>,
-  children: array<toctree>,
+  children: array<node>,
 }
-
-@module("data/js.json") external apiJs: apiIndex = "default"
-@module("data/belt.json") external apiBelt: apiIndex = "default"
-@module("data/dom.json") external apiDom: apiIndex = "default"
-@module("data/api_toc_tree") external apiTocTree: array<toctree> = "default"
-
-module SidebarTree = {
-  @react.component
-  let make = (~tree: array<toctree>) => {
-    let summaryClassName = "truncate font-medium cursor-pointer py-1 md:h-auto tracking-tight text-gray-60 rounded-sm hover:bg-gray-20 hover:-ml-2 hover:py-1 hover:pl-2 "
-    let router = Next.Router.useRouter()
-
-    let onClick = path => {
-      let href = path->Js.Array2.joinWith("/")
-      Next.Router.push(router, href)
-    }
-
-    let rec renderTree = (tree: toctree, level: int) => {
-      let wrappUl = tree.children->Js.Array2.length > 0
-
-      let main =
-        tree.children
-        ->Js.Array2.sortInPlaceWith((v1, v2) => {
-          if v1.name > v2.name {
-            1
-          } else {
-            -1
-          }
-        })
-        ->Js.Array2.map(item => {
-          let content =
-            <>
-              <summary
-                title={item.name} onClick={_ => onClick(item.path)} className={summaryClassName}>
-                {item.name->React.string}
-              </summary>
-              {if item.children->Js.Array2.length > 0 {
-                renderTree(item, level + 1)
-              } else {
-                React.null
-              }}
-            </>
-
-          if item.children->Js.Array2.length > 0 {
-            <li key={item.name}>
-              <details> content </details>
-            </li>
-          } else {
-            <li key={item.name}> content </li>
-          }
-        })
-        ->React.array
-
-      if wrappUl {
-        <ul
-          data={"level-" ++ level->Belt.Int.toString}
-          style={ReactDOM.Style.make(~marginLeft=`9%`, ())}>
-          main
-        </ul>
-      } else {
-        main
-      }
-    }
-
-    <div className={"md:block md:w-48 md:-ml-4 lg:w-1/5 md:h-auto md:relative bg-white"}>
-      <aside
-        className={"flex flex-col px-2 py-3 sticky overflow-y-auto top-16 w-60"}
-        style={ReactDOM.Style.make(~height="calc(100vh - 4.5rem);", ())}>
-        {tree
-        ->Js.Array2.map(item => {
-          <details key={item.name}>
-            <summary
-              title={item.name}
-              className={"truncate cursor-pointer py-1 md:h-auto tracking-tight text-gray-60 rounded-sm hover:bg-gray-20 hover:-ml-2 hover:py-1 hover:pl-2 "}
-              onClick={_ => onClick(item.path)}>
-              {item.name->React.string}
-            </summary>
-            {renderTree(item, 1)}
-          </details>
-        })
-        ->React.array}
-      </aside>
-    </div>
-  }
-}
-
-type params = {slug: array<string>}
 
 type field = {
   name: string,
@@ -130,7 +41,132 @@ type item =
       detail: Js.Null.t<detail>,
     })
 
-type mod = {
+module SidebarTree = {
+  @react.component
+  let make = (~isOpen: bool, ~toggle: unit => unit, ~node: node) => {
+    let router = Next.Router.useRouter()
+
+    let moduleRoute =
+      Webapi.URL.make("file://" ++ router.asPath).pathname
+      ->Js.String2.replace("/docs/manual/latest/api/", "")
+      ->Js.String2.split("/")
+
+    let summaryClassName = "truncate py-1 md:h-auto tracking-tight text-gray-60 font-medium text-14 rounded-sm hover:bg-gray-20 hover:-ml-2 hover:py-1 hover:pl-2 "
+    let classNameActive = " bg-fire-5 text-red-500 -ml-2 pl-2 font-medium hover:bg-fire-70"
+
+    let rec renderNode = (node: node, level: int) => {
+      let isCurrentRoute =
+        Js.Array2.joinWith(moduleRoute, "/") === Js.Array2.joinWith(node.path, "/")
+      let classNameActive = isCurrentRoute ? classNameActive : ""
+
+      let hasChildren = node.children->Js.Array2.length > 0
+      let href = node.path->Js.Array2.joinWith("/")
+
+      switch hasChildren {
+      | true =>
+        let open_ =
+          node.path->Js.Array2.joinWith("/") ===
+            moduleRoute
+            ->Js.Array2.slice(~start=0, ~end_=Js.Array2.length(moduleRoute) - 1)
+            ->Js.Array2.joinWith("/")
+
+        <details key={node.name} open_>
+          <summary className={summaryClassName ++ classNameActive}>
+            <Next.Link className={"inline-block w-10/12"} href>
+              {node.name->React.string}
+            </Next.Link>
+          </summary>
+          {if hasChildren {
+            <ul className={"ml-5"}>
+              {node.children
+              ->Js.Array2.map(node => node->renderNode(level + 1))
+              ->React.array}
+            </ul>
+          } else {
+            React.null
+          }}
+        </details>
+      | false =>
+        <li className={"list-none mt-1 leading-4"}>
+          <summary className={summaryClassName ++ classNameActive}>
+            <Next.Link className={"block"} href> {node.name->React.string} </Next.Link>
+          </summary>
+        </li>
+      }
+    }
+
+    let url =
+      router.asPath
+      ->Url.parse
+      ->Some
+
+    let preludeSection =
+      <div className="flex justify-between text-fire font-medium items-baseline">
+        {React.string(node.name ++ " Module")}
+        {switch url {
+        | Some({version}) =>
+          let onChange = evt => {
+            open Url
+            ReactEvent.Form.preventDefault(evt)
+            let version = (evt->ReactEvent.Form.target)["value"]
+            let url = Url.parse(router.asPath)
+
+            let targetUrl =
+              "/" ++
+              (Js.Array2.joinWith(url.base, "/") ++
+              ("/" ++ (version ++ ("/" ++ Js.Array2.joinWith(url.pagepath, "/")))))
+            router->Next.Router.push(targetUrl)
+          }
+          let version = switch version {
+          | Latest | NoVersion => "latest"
+          | Version(version) => version
+          }
+          <VersionSelect onChange version availableVersions=ApiLayout.allApiVersions />
+        | None => React.null
+        }}
+      </div>
+
+    <div
+      className={(
+        isOpen ? "fixed w-full left-0 h-full z-20 min-w-320" : "hidden "
+      ) ++ " md:block md:w-48 md:-ml-4 lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white"}>
+      <aside
+        id="sidebar-content"
+        className="relative top-0 px-4 w-full block md:top-16 md:pt-16 md:sticky border-r border-gray-20 overflow-y-auto pb-24 h-[calc(100vh-4.5rem)]">
+        <div className="flex justify-between">
+          <div className="w-3/4 md:w-full"> React.null </div>
+          <button
+            onClick={evt => {
+              ReactEvent.Mouse.preventDefault(evt)
+              toggle()
+            }}
+            className="md:hidden h-16">
+            <Icon.Close />
+          </button>
+        </div>
+        preludeSection
+        <div className="my-10">
+          <div className="hl-overline block text-gray-80 mt-5 mb-2">
+            {"Overview"->React.string}
+          </div>
+          <Next.Link
+            className={"block " ++
+            summaryClassName ++ (moduleRoute->Js.Array2.length == 1 ? classNameActive : "")}
+            href={node.path->Js.Array2.joinWith("/")}>
+            {node.name->React.string}
+          </Next.Link>
+        </div>
+        <div className="hl-overline text-gray-80 mt-5 mb-2"> {"submodules"->React.string} </div>
+        {node.children
+        ->Js.Array2.sortInPlaceWith((v1, v2) => v1.name > v2.name ? 1 : -1)
+        ->Js.Array2.map(node => node->renderNode(1))
+        ->React.array}
+      </aside>
+    </div>
+  }
+}
+
+type module_ = {
   id: string,
   docstrings: array<string>,
   deprecated: Js.Null.t<string>,
@@ -138,16 +174,22 @@ type mod = {
   items: array<item>,
 }
 
-type props = result<mod, string>
+type api = {
+  module_: module_,
+  toctree: node,
+}
+
+type params = {slug: array<string>}
+type props = result<api, string>
 
 external asMarkdownH2: 'a => Markdown.H2.props<string, React.element> => React.element = "%identity"
 
 external asMdxPlugin: 'a => MdxRemote.mdxPlugin = "%identity"
 
 let default = (props: props) => {
-  let overlayState = React.useState(() => false)
-
-  open Markdown
+  let (isSidebarOpen, setSidebarOpen) = React.useState(_ => false)
+  let toggleSidebar = () => setSidebarOpen(prev => !prev)
+  let router = Next.Router.useRouter()
 
   let docstringsMarkdown = (~docstrings, ~slugPrefix) => {
     let components = {
@@ -166,247 +208,290 @@ let default = (props: props) => {
     ->React.array
   }
 
-  let item = switch props {
-  | Ok({id, docstrings, items}) =>
-    let valuesAndType = items->Js.Array2.map(item => {
-      switch item {
-      | Value({name, signature, docstrings}) =>
-        let code = Js.String2.replaceByRe(signature, %re("/\\n/g"), "\n")
-        <>
-          <H2 id=name> {name->React.string} </H2>
-          <CodeExample code lang="rescript" />
-          {docstringsMarkdown(~docstrings, ~slugPrefix=name)}
-        </>
-      | Type({name, signature, docstrings}) =>
-        let code = Js.String2.replaceByRe(signature, %re("/\\n/g"), "\n")
-        <>
-          <H2 id=name> {name->React.string} </H2>
-          <CodeExample code lang="rescript" />
-          {docstringsMarkdown(~docstrings, ~slugPrefix=name)}
-        </>
-      }
-    })
+  let title = switch props {
+  | Ok({module_: {id}}) => id
+  | _ => "API"
+  }
 
+  let item = {
+    open Markdown
+    switch props {
+    | Ok({module_: {id, name, docstrings, items}}) =>
+      let valuesAndType = items->Js.Array2.map(item => {
+        switch item {
+        | Value({name, signature, docstrings}) =>
+          let code = Js.String2.replaceByRe(signature, %re("/\\n/g"), "\n")
+          <>
+            <H2 id=name> {name->React.string} </H2>
+            <CodeExample code lang="rescript" />
+            <div className="mt-3"> {docstringsMarkdown(~docstrings, ~slugPrefix=name)} </div>
+          </>
+        | Type({name, signature, docstrings}) =>
+          let code = Js.String2.replaceByRe(signature, %re("/\\n/g"), "\n")
+          <>
+            <H2 id=name> {name->React.string} </H2>
+            <CodeExample code lang="rescript" />
+            <div className={"mt-3"}> {docstringsMarkdown(~docstrings, ~slugPrefix=name)} </div>
+          </>
+        }
+      })
+
+      <>
+        <H1> {name->React.string} </H1>
+        {docstringsMarkdown(~docstrings, ~slugPrefix=id)}
+        {valuesAndType->React.array}
+      </>
+    | _ => React.null
+    }
+  }
+
+  // let valuesAndTypes = switch props {
+  // | Ok({module_: {items}}) if Js.Array2.length(items) > 0 =>
+  //   let valuesAndTypes = items->Belt.Array.keepMap(item => {
+  //     switch item {
+  //     | Value({name}) as kind | Type({name}) as kind =>
+  //       let icon = switch kind {
+  //       | Type(_) => "T"
+  //       | Value(_) => "V"
+  //       }
+  //       let (textColor, bgColor) = switch kind {
+  //       | Type(_) => ("text-fire-30", "bg-fire-5")
+  //       | Value(_) => ("text-sky-30", "bg-sky-5")
+  //       }
+  //       let result =
+  //         <li className="my-3 flex">
+  //           <a
+  //             className="flex font-normal text-14 text-gray-40 leading-tight hover:text-gray-80"
+  //             href={`#${name}`}>
+  //             <div
+  //               className={`${bgColor} w-5 h-5 mr-3 flex justify-center items-center rounded-xl`}>
+  //               <span style={ReactDOM.Style.make(~fontSize="10px", ())} className=textColor>
+  //                 {icon->React.string}
+  //               </span>
+  //             </div>
+  //             {React.string(name)}
+  //           </a>
+  //         </li>
+  //       Some(result)
+  //     }
+  //   })
+  //   valuesAndTypes->Some
+  // | _ => None
+  // }
+
+  let sidebar = switch props {
+  | Ok({toctree}) => <SidebarTree isOpen=isSidebarOpen toggle=toggleSidebar node={toctree} />
+  | Error(_) => React.null
+  }
+
+  let prefix = {
+    {Url.name: "API", href: "/docs/manual/" ++ ("latest" ++ "/api")}
+  }
+
+  let breadcrumbs = ApiLayout.makeBreadcrumbs(~prefix, router.asPath)
+
+  let children =
     <>
-      <H1> {id->React.string} </H1>
-      {docstringsMarkdown(~docstrings, ~slugPrefix=id)}
-      {valuesAndType->React.array}
+      item
+      // {switch valuesAndTypes {
+      // | Some(elemets) =>
+      //   <div className="pt-16 relative">
+      //     <aside
+      //       className="sticky top-18 overflow-auto px-8"
+      //       style={ReactDOM.Style.make(~height="calc(100vh - 6rem)", ())}>
+      //       <span className="font-normal block text-14 text-gray-40">
+      //         {React.string("Types and Values")}
+      //       </span>
+      //       <ul> {elemets->React.array} </ul>
+      //     </aside>
+      //   </div>
+      // | None => React.null
+      // }}
     </>
-  | _ => React.null
-  }
 
-  let valuesAndTypes = switch props {
-  | Ok({items}) if Js.Array2.length(items) > 0 =>
-    let valuesAndTypes = items->Belt.Array.keepMap(item => {
-      switch item {
-      | Value({name}) as kind | Type({name}) as kind =>
-        let icon = switch kind {
-        | Type(_) => "T"
-        | Value(_) => "V"
-        }
-        let (textColor, bgColor) = switch kind {
-        | Type(_) => ("text-fire-30", "bg-fire-5")
-        | Value(_) => ("text-sky-30", "bg-sky-5")
-        }
-        let result =
-          <li className="my-3 flex">
-            <a
-              className="flex font-normal text-14 text-gray-40 leading-tight hover:text-gray-80"
-              href={`#${name}`}>
-              <div
-                className={`${bgColor} w-5 h-5 mr-3 flex justify-center items-center rounded-xl`}>
-                <span style={ReactDOM.Style.make(~fontSize="10px", ())} className=textColor>
-                  {icon->React.string}
-                </span>
-              </div>
-              {React.string(name)}
-            </a>
-          </li>
-        Some(result)
-      }
-    })
-    valuesAndTypes->Some
-  | _ => None
-  }
-
-  <>
-    <Meta title="API | ReScript API" />
-    <div className={"mt-16 min-w-320 "}>
-      <div className="w-full">
-        <Navigation overlayState />
-        <div className="flex lg:justify-center">
-          <div className="flex w-full max-w-1280 md:mx-8">
-            // <Tree toctree={apiTocTree}/>
-            <SidebarTree tree={apiTocTree} />
-            <main className="px-4 w-full pt-16 md:ml-12 lg:mr-8 mb-32 md:max-w-576 lg:max-w-740">
-              item
-            </main>
-            {switch valuesAndTypes {
-            | Some(elemets) =>
-              <div className="pt-16 relative">
-                <aside
-                  className="sticky top-18 overflow-auto px-8"
-                  style={ReactDOM.Style.make(~height="calc(100vh - 6rem)", ())}>
-                  <span className="font-normal block text-14 text-gray-40">
-                    {React.string("Types and Values")}
-                  </span>
-                  <ul> {elemets->React.array} </ul>
-                </aside>
-              </div>
-            | None => React.null
-            }}
-          </div>
-        </div>
-      </div>
-      <Footer />
-    </div>
-  </>
+  <SidebarLayout
+    breadcrumbs
+    metaTitle={title ++ " | ReScript API"}
+    theme=#Reason
+    components=ApiMarkdown.default
+    sidebarState=(isSidebarOpen, setSidebarOpen)
+    sidebar>
+    children
+  </SidebarLayout>
 }
 
-let getStaticProps: Next.GetStaticProps.t<props, params> = async ctx => {
-  let {params} = ctx
+module Data = {
+  type t = {
+    mainModule: Js.Dict.t<Js.Json.t>,
+    tree: Js.Dict.t<Js.Json.t>,
+  }
 
-  let slug = params.slug
+  let dir = Node.Path.resolve("data", "api")
 
-  let moduleId = slug->Js.Array2.joinWith("/")
+  let getVersion = (~version: string, ~moduleName: string) => {
+    open Node
 
-  let content = switch slug->Belt.Array.get(0) {
-  | Some(topLevelModule) =>
-    let apiContent = switch topLevelModule {
-    | "js" => apiJs->Some
-    | "belt" => apiBelt->Some
-    | "dom" => apiDom->Some
+    let pathModule = Path.join([dir, version, `${moduleName}.json`])
+
+    let moduleContent = Fs.readFileSync(pathModule)->Js.Json.parseExn
+
+    let content = switch moduleContent {
+    | Object(dict) => dict->Some
     | _ => None
     }
 
-    switch apiContent {
-    | Some(content) => content->Js.Dict.get(moduleId)
-    | None => None
+    let toctree = switch Path.join([dir, version, "toc_tree.json"])
+    ->Fs.readFileSync
+    ->Js.Json.parseExn {
+    | Object(dict) => dict->Some
+    | _ => None
     }
-  | None => None
-  }
 
-  let docItem = switch content {
-  | Some(json) =>
-    switch json->Js.Json.decodeObject {
-    | Some(obj) => Docgen.decodeModule(obj)->Some
-    | None => None
+    switch (content, toctree) {
+    | (Some(content), Some(toctree)) => Some({mainModule: content, tree: toctree})
+    | _ => None
     }
-  | None => None
   }
+}
 
-  let props = switch docItem {
-  | Some(Docgen.Module({id, name, docstrings, items, ?deprecated})) =>
-    let items = items->Js.Array2.map(item =>
-      switch item {
-      | Docgen.Value({id, docstrings, signature, name, ?deprecated}) =>
-        Value({
-          id,
-          docstrings,
-          signature,
-          name,
-          deprecated: deprecated->Js.Null.fromOption,
-        })
-      | Type({id, docstrings, signature, name, ?deprecated, ?detail}) =>
-        let detail = switch detail {
-        | Some(kind) =>
-          switch kind {
-          | Docgen.Record({items}) =>
-            let items = items->Js.Array2.map(({
-              name,
+external asTocTree: Js.Json.t => node = "%identity"
+
+let processStaticProps = (~slug: array<string>, ~version: string) => {
+  let moduleName = slug->Belt.Array.getExn(0)
+  let content = Data.getVersion(~version, ~moduleName)
+
+  let modulePath = slug->Js.Array2.joinWith("/")
+
+  switch content {
+  | Some({mainModule, tree}) =>
+    switch mainModule->Js.Dict.get(modulePath) {
+    | Some(Object(mod)) =>
+      let docItem = Docgen.decodeModule(mod)
+
+      switch docItem {
+      | Docgen.Module({id, name, docstrings, items, ?deprecated}) =>
+        let items = items->Js.Array2.map(item =>
+          switch item {
+          | Docgen.Value({id, docstrings, signature, name, ?deprecated}) =>
+            Value({
+              id,
               docstrings,
               signature,
-              optional,
-              ?deprecated,
-            }) => {
-              {
-                name,
-                docstrings,
-                signature,
-                optional,
-                deprecated: deprecated->Js.Null.fromOption,
-              }
+              name,
+              deprecated: deprecated->Js.Null.fromOption,
             })
-            Record({items: items})->Js.Null.return
-          | Variant({items}) =>
-            let items = items->Js.Array2.map(({name, docstrings, signature, ?deprecated}) => {
-              {
-                name,
-                docstrings,
-                signature,
-                deprecated: deprecated->Js.Null.fromOption,
-              }
-            })
+          | Type({id, docstrings, signature, name, ?deprecated, ?detail}) =>
+            let detail = switch detail {
+            | Some(kind) =>
+              switch kind {
+              | Docgen.Record({items}) =>
+                let items = items->Js.Array2.map(({
+                  name,
+                  docstrings,
+                  signature,
+                  optional,
+                  ?deprecated,
+                }) => {
+                  {
+                    name,
+                    docstrings,
+                    signature,
+                    optional,
+                    deprecated: deprecated->Js.Null.fromOption,
+                  }
+                })
+                Record({items: items})->Js.Null.return
+              | Variant({items}) =>
+                let items = items->Js.Array2.map(({name, docstrings, signature, ?deprecated}) => {
+                  {
+                    name,
+                    docstrings,
+                    signature,
+                    deprecated: deprecated->Js.Null.fromOption,
+                  }
+                })
 
-            Variant({items: items})->Js.Null.return
+                Variant({items: items})->Js.Null.return
+              }
+            | None => Js.Null.empty
+            }
+            Type({
+              id,
+              docstrings,
+              signature,
+              name,
+              deprecated: deprecated->Js.Null.fromOption,
+              detail,
+            })
+          | _ => assert(false)
           }
-        | None => Js.Null.empty
-        }
-        Type({
+        )
+        let module_ = {
           id,
-          docstrings,
-          signature,
           name,
+          docstrings,
           deprecated: deprecated->Js.Null.fromOption,
-          detail,
-        })
-      | _ => assert(false)
+          items,
+        }
+
+        let toctree = tree->Js.Dict.get(moduleName)
+
+        switch toctree {
+        | Some(toctree) => Ok({module_, toctree: toctree->asTocTree})
+        | None => Error(`Failed to find toctree to ${modulePath}`)
+        }
+      | _ => Error(`Failed to find module ${modulePath}`)
       }
-    )
-    {
-      id,
-      name,
-      docstrings,
-      deprecated: deprecated->Js.Null.fromOption,
-      items,
-    }->Ok
-  | _ => Error(`Failed to find module ${moduleId}`)
+    | Some(_) => Error(`Expected an object for ${modulePath}`)
+    | None => Error(`Failed to get key for ${modulePath}`)
+    }
+  | None => Error(`Failed to get API Data for version ${version} and module ${moduleName}`)
   }
-
-  {"props": props}
 }
 
-let getStaticPaths: Next.GetStaticPaths.t<params> = async () => {
-  open Next.GetStaticPaths
+let getStaticPropsByVersion = async (ctx: {"params": params, "version": string}) => {
+  let params = ctx["params"]
+  let version = ctx["version"]
 
-  let modulePaths = [apiJs, apiDom, apiBelt]->Js.Array2.reduce((acc, cur) => {
-    let paths = cur->Js.Dict.keys
-    Js.Array2.concat(paths, acc)
-  }, [])
+  let slug = params.slug
 
-  let paths = modulePaths->Js.Array2.map(slug => {
-    params: {
-      slug: slug->Js.String2.split("/"),
-    },
-  })
+  let result = processStaticProps(~slug, ~version)
 
-  {paths, fallback: false}
+  {"props": result}
 }
 
-module Overview = {
-  module Sidebar = SidebarLayout.Sidebar
+let getStaticPathsByVersion = async (~version: string) => {
+  open Node
 
-  let categories: array<Sidebar.Category.t> = [
-    // {
-    //   name: "Introduction"->Some,
-    //   items: [{name: "Overview", href: "/docs/manual/next/api"}],
-    // },
+  let pathDir = Path.join([Data.dir, version])
+
+  let slugs =
+    pathDir
+    ->Fs.readdirSync
+    ->Js.Array2.reduce((acc, file) => {
+      switch file == "toc_tree.json" {
+      | true => acc
+      | false =>
+        let paths = switch Path.join2(pathDir, file)
+        ->Fs.readFileSync
+        ->Js.Json.parseExn {
+        | Object(dict) =>
+          dict
+          ->Js.Dict.keys
+          ->Js.Array2.map(modPath => modPath->Js.String2.split("/"))
+        | _ => acc
+        }
+        Js.Array2.concat(acc, paths)
+      }
+    }, [])
+
+  let paths = slugs->Js.Array2.map(slug =>
     {
-      name: "Modules",
-      items: [
-        {name: "Js Module", href: "/docs/manual/latest/api/js"},
-        {name: "Belt Stdlib", href: "/docs/manual/latest/api/belt"},
-        {name: "Dom Module", href: "/docs/manual/latest/api/dom"},
-      ],
-    },
-  ]
+      "params": {
+        "slug": slug,
+      },
+    }
+  )
 
-  /* Used for API docs (structured data) */
-  @react.component
-  let make = (~components=ApiMarkdown.default, ~children) => {
-    let title = "API"
-    let version = "next"
-
-    <ApiLayout title categories version components> children </ApiLayout>
-  }
+  {"paths": paths, "fallback": false}
 }

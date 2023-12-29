@@ -4,21 +4,47 @@ Generate docs from ReScript Compiler
 ## Run
 
 ```bash
-node scripts/gendocs.mjs path/to/projects/rescript-compiler
+node scripts/gendocs.mjs path/to/rescript-compiler version
+```
+
+## Examples
+
+```bash
+node scripts/gendocs.mjs path/to/rescript-compiler latest
 ```
 */
-let args = Node.Process.argv
+@val @scope(("import", "meta")) external url: string = "url"
 
-let argsLen = args->Js.Array2.length
-
-let compilerPath = args->Belt.Array.getExn(argsLen - 1)
-let libPath = Node.Path.join([compilerPath, "lib", "ocaml"])
-
-let entryPointLibs = ["js.ml", "belt.res", "dom.res"]
-
+open Node
 module Docgen = RescriptTools.Docgen
 
-type mod = {
+let args = Process.argv->Js.Array2.sliceFrom(2)
+let dirname =
+  url
+  ->URL.fileURLToPath
+  ->Path.dirname
+
+let compilerLibPath = switch args->Belt.Array.get(0) {
+| Some(path) => Path.join([path, "lib", "ocaml"])
+| None => failwith("First argument should be path to rescript-compiler repo")
+}
+
+let version = switch args->Belt.Array.get(1) {
+| Some(version) => version
+| None => failwith("Second argument should be a version, `latest`, v10")
+}
+let dirVersion = Path.join([dirname, "..", "data", "api", version])
+
+if Fs.existsSync(dirVersion) {
+  Js.Console.error(`Directory ${dirVersion} already exists`)
+  Process.exit(1)
+} else {
+  Fs.mkdirSync(dirVersion)
+}
+
+let entryPointFiles = ["js.ml", "belt.res", "dom.res"]
+
+type module_ = {
   id: string,
   docstrings: array<string>,
   name: string,
@@ -30,22 +56,24 @@ type section = {
   docstrings: array<string>,
   deprecated: option<string>,
   topLevelItems: array<Docgen.item>,
-  submodules: array<mod>,
+  submodules: array<module_>,
 }
 
-let env = Node.Process.env
+let env = Process.env
 
-let docsDecoded = entryPointLibs->Js.Array2.map(libFile => {
-  let entryPointFile = Node.Path.join2(libPath, libFile)
+let docsDecoded = entryPointFiles->Js.Array2.map(libFile => {
+  let entryPointFile = Path.join2(compilerLibPath, libFile)
 
   Js.Dict.set(env, "FROM_COMPILER", "true")
 
   let output =
-    Node.ChildProcess.execSync(`./node_modules/.bin/rescript-tools doc ${entryPointFile}`)
-    ->Node.Buffer.toString
+    ChildProcess.execSync(`./node_modules/.bin/rescript-tools doc ${entryPointFile}`)
+    ->Buffer.toString
     ->Js.String2.trim
 
-  output->Js.Json.parseExn->Docgen.decodeFromJson
+  output
+  ->Js.Json.parseExn
+  ->Docgen.decodeFromJson
 })
 
 let docs = docsDecoded->Js.Array2.map(doc => {
@@ -57,7 +85,7 @@ let docs = docsDecoded->Js.Array2.map(doc => {
     }
   })
 
-  let rec getModules = (lst: list<Docgen.item>, moduleNames: list<mod>) =>
+  let rec getModules = (lst: list<Docgen.item>, moduleNames: list<module_>) =>
     switch lst {
     | list{
         Module({id, items, name, docstrings}) | ModuleAlias({id, items, name, docstrings}),
@@ -111,7 +139,10 @@ let allModules = {
     let submodules =
       modules
       ->Js.Array2.map(mod => {
-        let items = mod.items->Belt.Array.keepMap(item => encodeItem(item))->array
+        let items =
+          mod.items
+          ->Belt.Array.keepMap(item => encodeItem(item))
+          ->array
         let rest = Js.Dict.fromArray([
           ("id", mod.id->string),
           ("name", mod.name->string),
@@ -119,7 +150,10 @@ let allModules = {
           ("items", items),
         ])
         (
-          mod.id->Js.String2.split(".")->Js.Array2.joinWith("/")->Js.String2.toLowerCase,
+          mod.id
+          ->Js.String2.split(".")
+          ->Js.Array2.joinWith("/")
+          ->Js.String2.toLowerCase,
           rest->object_,
         )
       })
@@ -133,17 +167,17 @@ let () = {
   allModules->Js.Array2.forEach(((topLevelName, mod)) => {
     let json = Js.Json.object_(mod)
 
-    Node.Fs.writeFileSync(
-      `data/${topLevelName->Js.String2.toLowerCase}.json`,
-      json->Js.Json.stringify,
+    Fs.writeFileSync(
+      Path.join([dirVersion, `${topLevelName->Js.String2.toLowerCase}.json`]),
+      json->Js.Json.stringifyWithSpace(2),
     )
   })
 }
 
-type rec toctree = {
+type rec node = {
   name: string,
   path: array<string>,
-  children: array<toctree>,
+  children: array<node>,
 }
 
 // Generate TOC modules
@@ -168,19 +202,23 @@ let () = {
   }
 
   let tocTree = docsDecoded->Js.Array2.map(({name, items}) => {
-    let path = [name->Js.String2.toLowerCase]
-    {
-      name,
+    let path = name->Js.String2.toLowerCase
+    (
       path,
-      children: items
-      ->Belt.List.fromArray
-      ->getModules([], path),
-    }
+      {
+        name,
+        path: [path],
+        children: items
+        ->Belt.List.fromArray
+        ->getModules([], [path]),
+      },
+    )
   })
 
-  Node.Fs.writeFileSync(
-    `data/api_toc_tree.json`,
+  Fs.writeFileSync(
+    Path.join([dirVersion, "toc_tree.json"]),
     tocTree
+    ->Js.Dict.fromArray
     ->Js.Json.stringifyAny
     ->Belt.Option.getExn,
   )
