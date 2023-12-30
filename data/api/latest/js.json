@@ -3,7 +3,7 @@
     "id": "Js",
     "name": "Js",
     "docstrings": [
-      "The Js module mostly contains ReScript bindings to _standard JavaScript APIs_\nlike [console.log](https://developer.mozilla.org/en-US/docs/Web/API/Console/log),\nor the JavaScript\n[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String),\n[Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), and\n[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)\nclasses.\n\nIt is meant as a zero-abstraction interop layer and directly exposes JavaScript functions as they are. If you can find your API in this module, prefer this over an equivalent Belt helper. For example, prefer [Js.Array2](js/array-2) over [Belt.Array](belt/array)\n\n## Argument Order\n\nFor historical reasons, some APIs in the Js namespace (e.g. [Js.String](js/string)) are\nusing the data-last argument order whereas others (e.g. [Js.Date](js/date)) are using data-first.\n\nFor more information about these argument orders and the trade-offs between them, see\n[this blog post](https://www.javierchavarri.com/data-first-and-data-last-a-comparison/).\n\n_Eventually, all modules in the Js namespace are going to be migrated to data-first though._\n\nIn the meantime, there are several options for dealing with the data-last APIs:\n\n## Examples\n\n```rescript\n/* Js.String (data-last API used with pipe last operator) */\nJs.log(\"2019-11-10\" |> Js.String.split(\"-\"))\nJs.log(\"ReScript\" |> Js.String.startsWith(\"Re\"))\n\n/* Js.String (data-last API used with pipe first operator) */\nJs.log(\"2019-11-10\"->Js.String.split(\"-\", _))\nJs.log(\"ReScript\"->Js.String.startsWith(\"Re\", _))\n\n/* Js.String (data-last API used without any piping) */\nJs.log(Js.String.split(\"-\", \"2019-11-10\"))\nJs.log(Js.String.startsWith(\"Re\", \"ReScript\"))\n```\n## Js.Xxx2 Modules\n\nPrefer `Js.Array2` over `Js.Array`, `Js.String2` over `Js.String`, etc. The latters are old modules."
+      "The Js module mostly contains ReScript bindings to _standard JavaScript APIs_\nlike [console.log](https://developer.mozilla.org/en-US/docs/Web/API/Console/log),\nor the JavaScript\n[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String),\n[Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), and\n[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)\nclasses.\n\nIt is meant as a zero-abstraction interop layer and directly exposes JavaScript functions as they are. If you can find your API in this module, prefer this over an equivalent Belt helper. For example, prefer [Js.Array2](js/array2) over [Belt.Array](belt/array)\n\n## Argument Order\n\nFor historical reasons, some APIs in the Js namespace (e.g. [Js.String](js/string)) are\nusing the data-last argument order whereas others (e.g. [Js.Date](js/date)) are using data-first.\n\nFor more information about these argument orders and the trade-offs between them, see\n[this blog post](https://www.javierchavarri.com/data-first-and-data-last-a-comparison/).\n\n_Eventually, all modules in the Js namespace are going to be migrated to data-first though._\n\nIn the meantime, there are several options for dealing with the data-last APIs:\n\n## Examples\n\n```rescript\n/* Js.String (data-last API used with pipe last operator) */\nJs.log(\"2019-11-10\" |> Js.String.split(\"-\"))\nJs.log(\"ReScript\" |> Js.String.startsWith(\"Re\"))\n\n/* Js.String (data-last API used with pipe first operator) */\nJs.log(\"2019-11-10\"->Js.String.split(\"-\", _))\nJs.log(\"ReScript\"->Js.String.startsWith(\"Re\", _))\n\n/* Js.String (data-last API used without any piping) */\nJs.log(Js.String.split(\"-\", \"2019-11-10\"))\nJs.log(Js.String.startsWith(\"Re\", \"ReScript\"))\n```\n## Js.Xxx2 Modules\n\nPrefer `Js.Array2` over `Js.Array`, `Js.String2` over `Js.String`, etc. The latters are old modules."
     ],
     "items": [
       {
@@ -201,7 +201,7 @@
         "kind": "value",
         "name": "unsafe_le",
         "docstrings": [
-          "`unsafe_le(a, b) will be compiled as `a <= b`.\n   See also `Js.unsafe_lt`."
+          "`unsafe_le(a, b)` will be compiled as `a <= b`.\n   See also `Js.unsafe_lt`."
         ],
         "signature": "let unsafe_le: ('a, 'a) => bool"
       },
@@ -5112,14 +5112,16 @@
         "kind": "value",
         "name": "create",
         "docstrings": [],
-        "signature": "let create: array<float> => t"
+        "signature": "let create: array<float> => t",
+        "deprecated": "use `make` instead"
       },
       {
         "id": "Js.Typed_array.Float64Array.of_buffer",
         "kind": "value",
         "name": "of_buffer",
         "docstrings": [],
-        "signature": "let of_buffer: array_buffer => t"
+        "signature": "let of_buffer: array_buffer => t",
+        "deprecated": "use `fromBuffer` instead"
       }
     ]
   },
@@ -5560,14 +5562,16 @@
         "kind": "value",
         "name": "create",
         "docstrings": [],
-        "signature": "let create: array<float> => t"
+        "signature": "let create: array<float> => t",
+        "deprecated": "use `make` instead"
       },
       {
         "id": "Js.Typed_array.Float32Array.of_buffer",
         "kind": "value",
         "name": "of_buffer",
         "docstrings": [],
-        "signature": "let of_buffer: array_buffer => t"
+        "signature": "let of_buffer: array_buffer => t",
+        "deprecated": "use `fromBuffer` instead"
       }
     ]
   },
@@ -6436,14 +6440,16 @@
         "kind": "value",
         "name": "create",
         "docstrings": [],
-        "signature": "let create: array<int> => t"
+        "signature": "let create: array<int> => t",
+        "deprecated": "use `make` instead"
       },
       {
         "id": "Js.Typed_array.Int32Array.of_buffer",
         "kind": "value",
         "name": "of_buffer",
         "docstrings": [],
-        "signature": "let of_buffer: array_buffer => t"
+        "signature": "let of_buffer: array_buffer => t",
+        "deprecated": "use `fromBuffer` instead"
       }
     ]
   },
@@ -9622,7 +9628,8 @@
         "kind": "type",
         "name": "t",
         "docstrings": [],
-        "signature": "type t<'good, 'bad> = Ok('good) | Error('bad)"
+        "signature": "type t<'good, 'bad> = Ok('good) | Error('bad)",
+        "deprecated": "Please use `Belt.Result.t` instead"
       }
     ]
   },
@@ -9708,7 +9715,8 @@
         "kind": "value",
         "name": "default",
         "docstrings": [],
-        "signature": "let default: ('a, option<'a>) => 'a"
+        "signature": "let default: ('a, option<'a>) => 'a",
+        "deprecated": "Use `getWithDefault` instead since default has special meaning in ES module"
       },
       {
         "id": "Js.Option.filter",
@@ -9786,7 +9794,7 @@
         "kind": "value",
         "name": "toExponential",
         "docstrings": [
-          "Formats an `int` using exponential (scientific) notation.\nReturns a `string` representing the given value in exponential notation.\nRaises `RangeError` if digits is not in the range \\[0, 20\\] (inclusive).\n\n**see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential)\n\n## Examples\n\n```rescript\n/* prints \"7.7e+1\" */\nJs.log(Js.Int.toExponential(77))\n```"
+          "Formats an `int` using exponential (scientific) notation.\nReturns a `string` representing the given value in exponential notation.\nRaises `RangeError` if digits is not in the range \\[0, 20\\] (inclusive).\n\nSee [`toExponential`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential) on MDN.\n\n## Examples\n\n```rescript\n/* prints \"7.7e+1\" */\nJs.log(Js.Int.toExponential(77))\n```"
         ],
         "signature": "let toExponential: int => string"
       },
@@ -9795,7 +9803,7 @@
         "kind": "value",
         "name": "toExponentialWithPrecision",
         "docstrings": [
-          "Formats an `int` using exponential (scientific) notation.\n`digits` specifies how many digits should appear after the decimal point. The value must be in the range \\[0, 20\\] (inclusive).\n\nReturns a `string` representing the given value in exponential notation.\n\nThe output will be rounded or padded with zeroes if necessary.\nRaises `RangeError` if `digits` is not in the range \\[0, 20\\] (inclusive).\n\n**see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential)\n\n## Examples\n\n```rescript\n/* prints \"7.70e+1\" */\nJs.log(Js.Int.toExponentialWithPrecision(77, ~digits=2))\n\n/* prints \"5.68e+3\" */\nJs.log(Js.Int.toExponentialWithPrecision(5678, ~digits=2))\n```"
+          "Formats an `int` using exponential (scientific) notation.\n`digits` specifies how many digits should appear after the decimal point. The value must be in the range \\[0, 20\\] (inclusive).\n\nReturns a `string` representing the given value in exponential notation.\n\nThe output will be rounded or padded with zeroes if necessary.\nRaises `RangeError` if `digits` is not in the range \\[0, 20\\] (inclusive).\n\nSee [`toExponential`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential) on MDN.\n\n## Examples\n\n```rescript\n/* prints \"7.70e+1\" */\nJs.log(Js.Int.toExponentialWithPrecision(77, ~digits=2))\n\n/* prints \"5.68e+3\" */\nJs.log(Js.Int.toExponentialWithPrecision(5678, ~digits=2))\n```"
         ],
         "signature": "let toExponentialWithPrecision: (int, ~digits: int) => string"
       },
@@ -9804,7 +9812,7 @@
         "kind": "value",
         "name": "toPrecision",
         "docstrings": [
-          "Formats an `int` using some fairly arbitrary rules.\nReturns a `string` representing the given value in fixed-point (usually).\n\n`toPrecision` differs from `toFixed` in that the former will format the number with full precision, while the latter will not output any digits after the decimal point.\nRaises `RangeError` if `digits` is not in the range accepted by this function.\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision)\n\n## Examples\n\n```rescript\n/* prints \"123456789\" */\nJs.log(Js.Int.toPrecision(123456789))\n```"
+          "Formats an `int` using some fairly arbitrary rules.\nReturns a `string` representing the given value in fixed-point (usually).\n\n`toPrecision` differs from `toFixed` in that the former will format the number with full precision, while the latter will not output any digits after the decimal point.\nRaises `RangeError` if `digits` is not in the range accepted by this function.\n\nSee [`toPrecision`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision) on MDN.\n\n## Examples\n\n```rescript\n/* prints \"123456789\" */\nJs.log(Js.Int.toPrecision(123456789))\n```"
         ],
         "signature": "let toPrecision: int => string"
       },
@@ -9813,7 +9821,7 @@
         "kind": "value",
         "name": "toPrecisionWithPrecision",
         "docstrings": [
-          "Formats an `int` using some fairly arbitrary rules.\n`digits` specifies how many digits should appear in total. The value must between 0 and some arbitrary number that's hopefully at least larger than 20 (for Node it's 21. Why? Who knows).\n\nReturns a `string` representing the given value in fixed-point or scientific notation.\n\nThe output will be rounded or padded with zeroes if necessary.\n\n`toPrecisionWithPrecision` differs from `toFixedWithPrecision` in that the former will count all digits against the precision, while the latter will count only the digits after the decimal point.\n`toPrecisionWithPrecision` will also use scientific notation if the specified precision is less than the number of digits before the decimal point.\nRaises `RangeError` if `digits` is not in the range accepted by this function.\n\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision)\n\n## Examples\n\n```rescript\n/* prints \"1.2e+8\" */\nJs.log(Js.Int.toPrecisionWithPrecision(123456789, ~digits=2))\n\n/* prints \"0.0\" */\nJs.log(Js.Int.toPrecisionWithPrecision(0, ~digits=2))\n```"
+          "Formats an `int` using some fairly arbitrary rules.\n`digits` specifies how many digits should appear in total. The value must between 0 and some arbitrary number that's hopefully at least larger than 20 (for Node it's 21. Why? Who knows).\n\nReturns a `string` representing the given value in fixed-point or scientific notation.\n\nThe output will be rounded or padded with zeroes if necessary.\n\n`toPrecisionWithPrecision` differs from `toFixedWithPrecision` in that the former will count all digits against the precision, while the latter will count only the digits after the decimal point.\n`toPrecisionWithPrecision` will also use scientific notation if the specified precision is less than the number of digits before the decimal point.\nRaises `RangeError` if `digits` is not in the range accepted by this function.\n\n\nSee [`toPrecision`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision) on MDN.\n\n## Examples\n\n```rescript\n/* prints \"1.2e+8\" */\nJs.log(Js.Int.toPrecisionWithPrecision(123456789, ~digits=2))\n\n/* prints \"0.0\" */\nJs.log(Js.Int.toPrecisionWithPrecision(0, ~digits=2))\n```"
         ],
         "signature": "let toPrecisionWithPrecision: (int, ~digits: int) => string"
       },
@@ -9822,7 +9830,7 @@
         "kind": "value",
         "name": "toString",
         "docstrings": [
-          "Formats an `int` as a `string`. Returns a `string` representing the given value\nin fixed-point (usually).\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString)\n\n## Examples\n\n```rescript\n/* prints \"123456789\" */\nJs.log(Js.Int.toString(123456789))\n```"
+          "Formats an `int` as a `string`. Returns a `string` representing the given value\nin fixed-point (usually).\n\nSee [`toString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString) on MDN.\n\n## Examples\n\n```rescript\n/* prints \"123456789\" */\nJs.log(Js.Int.toString(123456789))\n```"
         ],
         "signature": "let toString: int => string"
       },
@@ -9831,7 +9839,7 @@
         "kind": "value",
         "name": "toStringWithRadix",
         "docstrings": [
-          "Formats an `int` as a `string`. `radix` specifies the radix base to use for the\nformatted number. The value must be in the range \\[2, 36\\] (inclusive). Returns\na `string` representing the given value in fixed-point (usually). Raises\n`RangeError` if `radix` is not in the range \\[2, 36\\] (inclusive).\n\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString)\n\n## Examples\n\n```rescript\n/* prints \"110\" */\nJs.log(Js.Int.toStringWithRadix(6, ~radix=2))\n\n/* prints \"deadbeef\" */\nJs.log(Js.Int.toStringWithRadix(3735928559, ~radix=16))\n\n/* prints \"2n9c\" */\nJs.log(Js.Int.toStringWithRadix(123456, ~radix=36))\n```"
+          "Formats an `int` as a `string`. `radix` specifies the radix base to use for the\nformatted number. The value must be in the range \\[2, 36\\] (inclusive). Returns\na `string` representing the given value in fixed-point (usually). Raises\n`RangeError` if `radix` is not in the range \\[2, 36\\] (inclusive).\n\n\nSee [`toString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString) on MDN.\n\n## Examples\n\n```rescript\n/* prints \"110\" */\nJs.log(Js.Int.toStringWithRadix(6, ~radix=2))\n\n/* prints \"deadbeef\" */\nJs.log(Js.Int.toStringWithRadix(3735928559, ~radix=16))\n\n/* prints \"2n9c\" */\nJs.log(Js.Int.toStringWithRadix(123456, ~radix=36))\n```"
         ],
         "signature": "let toStringWithRadix: (int, ~radix: int) => string"
       },
@@ -9877,7 +9885,7 @@
         "kind": "value",
         "name": "_NaN",
         "docstrings": [
-          "The special value \"Not a Number\"\n\n**See:** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN)"
+          "The special value \"Not a Number\". See [`NaN`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN) on MDN."
         ],
         "signature": "let _NaN: float"
       },
@@ -9886,7 +9894,7 @@
         "kind": "value",
         "name": "isNaN",
         "docstrings": [
-          "Tests if the given value is `_NaN`\n\nNote that both `_NaN = _NaN` and `_NaN == _NaN` will return `false`. `isNaN` is\ntherefore necessary to test for `_NaN`.\n\n**return** `true` if the given value is `_NaN`, `false` otherwise\n\n**see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN)"
+          "Tests if the given value is `_NaN`\n\nNote that both `_NaN = _NaN` and `_NaN == _NaN` will return `false`. `isNaN` is\ntherefore necessary to test for `_NaN`. Return `true` if the given value is\n`_NaN`, `false` otherwise. See [`isNaN`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN) on MDN."
         ],
         "signature": "let isNaN: float => bool"
       },
@@ -9895,7 +9903,7 @@
         "kind": "value",
         "name": "isFinite",
         "docstrings": [
-          "Tests if the given value is finite\n\n**return** `true` if the given value is a finite number, `false` otherwise\n\n## Examples\n\n```rescript\n/* returns [false] */\nJs.Float.isFinite(infinity)\n\n/* returns [false] */\nJs.Float.isFinite(neg_infinity)\n\n/* returns [false] */\nJs.Float.isFinite(Js.Float._NaN)\n\n/* returns [true] */\nJs.Float.isFinite(1234.)\n```\n\n**see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isFinite)"
+          "Tests if the given value is finite. Return `true` if the given value is a finite\nnumber, `false` otherwise. See [`isFinite`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isFinite) on MDN.\n\n## Examples\n\n```rescript\n/* returns [false] */\nJs.Float.isFinite(infinity)\n\n/* returns [false] */\nJs.Float.isFinite(neg_infinity)\n\n/* returns [false] */\nJs.Float.isFinite(Js.Float._NaN)\n\n/* returns [true] */\nJs.Float.isFinite(1234.)\n```"
         ],
         "signature": "let isFinite: float => bool"
       },
@@ -9904,7 +9912,7 @@
         "kind": "value",
         "name": "toExponential",
         "docstrings": [
-          "Formats a `float` using exponential (scientific) notation\n\n**return** a `string` representing the given value in exponential notation\n\n**raise** RangeError if digits is not in the range [0, 20] (inclusive)\n\n## Examples\n\n```rescript\n/* prints \"7.71234e+1\" */\nJs.Float.toExponential(77.1234)->Js.log\n\n/* prints \"7.7e+1\" */\nJs.Float.toExponential(77.)->Js.log\n```\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential)"
+          "Formats a `float` using exponential (scientific) notation. Return a\n`string` representing the given value in exponential notation. Raise\nRangeError if digits is not in the range [0, 20] (inclusive). See [`toExponential`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential) on MDN.\n\n## Examples\n\n```rescript\n/* prints \"7.71234e+1\" */\nJs.Float.toExponential(77.1234)->Js.log\n\n/* prints \"7.7e+1\" */\nJs.Float.toExponential(77.)->Js.log\n```"
         ],
         "signature": "let toExponential: float => string"
       },
@@ -9913,7 +9921,7 @@
         "kind": "value",
         "name": "toExponentialWithPrecision",
         "docstrings": [
-          "Formats a `float` using exponential (scientific) notation\n\n**digits** specifies how many digits should appear after the decimal point. The\nvalue must be in the range [0, 20] (inclusive).\n\n**return** a `string` representing the given value in exponential notation\n\nThe output will be rounded or padded with zeroes if necessary.\n\n**raise** RangeError if digits is not in the range [0, 20] (inclusive)\n\n## Examples\n\n```rescript\n/* prints \"7.71e+1\" */\nJs.Float.toExponentialWithPrecision(77.1234, ~digits=2)->Js.log\n```\n\n**see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential)"
+          "Formats a `float` using exponential (scientific) notation. `digits` specifies\nhow many digits should appear after the decimal point. The value must be in\nthe range [0, 20] (inclusive). Return a `string` representing the given value\nin exponential notation. The output will be rounded or padded with zeroes if\nnecessary. Raise RangeError if `digits` is not in the range [0, 20] (inclusive).\nSee [`toExponential`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential) on MDN.\n\n## Examples\n\n```rescript\n/* prints \"7.71e+1\" */\nJs.Float.toExponentialWithPrecision(77.1234, ~digits=2)->Js.log\n```"
         ],
         "signature": "let toExponentialWithPrecision: (float, ~digits: int) => string"
       },
@@ -9922,7 +9930,7 @@
         "kind": "value",
         "name": "toFixed",
         "docstrings": [
-          "Formats a `float` using fixed point notation\n\n**return** a `string` representing the given value in fixed-point notation (usually)\n\n**raise** RangeError if digits is not in the range [0, 20] (inclusive)\n\n## Examples\n\n```rescript\n/* prints \"12346\" (note the rounding) */\nJs.Float.toFixed(12345.6789)->Js.log\n\n/* print \"1.2e+21\" */\nJs.Float.toFixed(1.2e21)->Js.log\n```\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed)"
+          "Formats a `float` using fixed point notation. Return a `string` representing the\ngiven value in fixed-point notation (usually). Raise RangeError if digits is not\nin the range [0, 20] (inclusive). See [`toFixed`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed) on MDN.\n\n## Examples\n\n```rescript\n/* prints \"12346\" (note the rounding) */\nJs.Float.toFixed(12345.6789)->Js.log\n\n/* print \"1.2e+21\" */\nJs.Float.toFixed(1.2e21)->Js.log\n```"
         ],
         "signature": "let toFixed: float => string"
       },
@@ -9931,7 +9939,7 @@
         "kind": "value",
         "name": "toFixedWithPrecision",
         "docstrings": [
-          "Formats a `float` using fixed point notation\n\n**digits** specifies how many digits should appear after the decimal point. The\nvalue must be in the range [0, 20] (inclusive). Defaults to `0`.\n\n**return** a `string` representing the given value in fixed-point notation (usually)\n\nThe output will be rounded or padded with zeroes if necessary.\n\n**raise** RangeError if digits is not in the range [0, 20] (inclusive)\n\n## Examples\n\n```rescript\n/* prints \"12345.7\" (note the rounding) */\nJs.Float.toFixedWithPrecision(12345.6789, ~digits=1)->Js.log\n\n/* prints \"0.00\" (note the added zeroes) */\nJs.Float.toFixedWithPrecision(0., ~digits=2)->Js.log\n```\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed)"
+          "Formats a `float` using fixed point notation. `digits` specifies how many digits\nshould appear after the decimal point. The value must be in the range [0, 20]\n(inclusive). Defaults to `0`. Return a `string` representing the given value in\nfixed-point notation (usually). See [`toFixed`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed) on MDN.\n\nThe output will be rounded or padded with zeroes if necessary.\n\nRaise RangeError if digits is not in the range [0, 20] (inclusive)\n\n## Examples\n\n```rescript\n/* prints \"12345.7\" (note the rounding) */\nJs.Float.toFixedWithPrecision(12345.6789, ~digits=1)->Js.log\n\n/* prints \"0.00\" (note the added zeroes) */\nJs.Float.toFixedWithPrecision(0., ~digits=2)->Js.log\n```"
         ],
         "signature": "let toFixedWithPrecision: (float, ~digits: int) => string"
       },
@@ -9940,7 +9948,7 @@
         "kind": "value",
         "name": "toPrecision",
         "docstrings": [
-          "Formats a `float` using some fairly arbitrary rules\n\n**return** a `string` representing the given value in fixed-point (usually)\n\n`toPrecision` differs from `toFixed` in that the former will format the number\nwith full precision, while the latter will not output any digits after the\ndecimal point.\n\n**raise** RangeError if digits is not in the range accepted by this function (what do you mean \"vague\"?)\n\n## Examples\n\n```rescript\n/* prints \"12345.6789\" */\nJs.Float.toPrecision(12345.6789)->Js.log\n\n/* print \"1.2e+21\" */\nJs.Float.toPrecision(1.2e21)->Js.log\n```\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision)"
+          "Formats a `float` using some fairly arbitrary rules. Return a `string`\nrepresenting the given value in fixed-point (usually). `toPrecision` differs\nfrom `Js.Float.toFixed` in that the former will format the number with full\nprecision, while the latter will not output any digits after the decimal point.\nSee [`toPrecision`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision) on MDN.\n\nRaise RangeError if digits is not in the range accepted by this function (what do you mean \"vague\"?)\n\n## Examples\n\n```rescript\n/* prints \"12345.6789\" */\nJs.Float.toPrecision(12345.6789)->Js.log\n\n/* print \"1.2e+21\" */\nJs.Float.toPrecision(1.2e21)->Js.log\n```"
         ],
         "signature": "let toPrecision: float => string"
       },
@@ -9949,7 +9957,7 @@
         "kind": "value",
         "name": "toPrecisionWithPrecision",
         "docstrings": [
-          "Formats a `float` using some fairly arbitrary rules\n\n**digits** specifies how many digits should appear in total. The\nvalue must between 0 and some arbitrary number that's hopefully at least larger\nthan 20 (for Node it's 21. Why? Who knows).\n\n**return** a `string` representing the given value in fixed-point or scientific notation\n\nThe output will be rounded or padded with zeroes if necessary.\n\n`toPrecisionWithPrecision` differs from `toFixedWithPrecision` in that the former\nwill count all digits against the precision, while the latter will count only\nthe digits after the decimal point. `toPrecisionWithPrecision` will also use\nscientific notation if the specified precision is less than the number for digits\nbefore the decimal point.\n\n**raise** RangeError if digits is not in the range accepted by this function (what do you mean \"vague\"?)\n\n## Examples\n\n```rescript\n/* prints \"1e+4\" */\nJs.Float.toPrecisionWithPrecision(12345.6789, ~digits=1)->Js.log\n\n/* prints \"0.0\" */\nJs.Float.toPrecisionWithPrecision(0., ~digits=2)->Js.log\n```\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision)"
+          "Formats a `float` using some fairly arbitrary rules. `digits` specifies how many\ndigits should appear in total. The value must between 0 and some arbitrary number\nthat's hopefully at least larger than 20 (for Node it's 21. Why? Who knows).\nSee [`toPrecision`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision) on MDN.\n\nReturn a `string` representing the given value in fixed-point or scientific\nnotation. The output will be rounded or padded with zeroes if necessary.\n\n`toPrecisionWithPrecision` differs from `toFixedWithPrecision` in that the former\nwill count all digits against the precision, while the latter will count only\nthe digits after the decimal point. `toPrecisionWithPrecision` will also use\nscientific notation if the specified precision is less than the number for digits\nbefore the decimal point.\n\nRaise RangeError if digits is not in the range accepted by this function (what do you mean \"vague\"?)\n\n## Examples\n\n```rescript\n/* prints \"1e+4\" */\nJs.Float.toPrecisionWithPrecision(12345.6789, ~digits=1)->Js.log\n\n/* prints \"0.0\" */\nJs.Float.toPrecisionWithPrecision(0., ~digits=2)->Js.log\n```"
         ],
         "signature": "let toPrecisionWithPrecision: (float, ~digits: int) => string"
       },
@@ -9958,7 +9966,7 @@
         "kind": "value",
         "name": "toString",
         "docstrings": [
-          "Formats a `float` as a string\n\n**return** a `string` representing the given value in fixed-point (usually)\n\n## Examples\n\n```rescript\n/* prints \"12345.6789\" */\nJs.Float.toString(12345.6789)->Js.log\n```\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString)"
+          "Formats a `float` as a string. Return a `string` representing the given value in\nfixed-point (usually). See [`toString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString) on MDN.\n\n## Examples\n\n```rescript\n/* prints \"12345.6789\" */\nJs.Float.toString(12345.6789)->Js.log\n```"
         ],
         "signature": "let toString: float => string"
       },
@@ -9967,7 +9975,7 @@
         "kind": "value",
         "name": "toStringWithRadix",
         "docstrings": [
-          "Formats a `float` as a string\n\n**radix** specifies the radix base to use for the formatted number. The\nvalue must be in the range [2, 36] (inclusive).\n\n**return** a `string` representing the given value in fixed-point (usually)\n\n**raise** RangeError if radix is not in the range [2, 36] (inclusive)\n\n## Examples\n\n```rescript\n/* prints \"110\" */\nJs.Float.toStringWithRadix(6., ~radix=2)->Js.log\n\n/* prints \"11.001000111101011100001010001111010111000010100011111\" */\nJs.Float.toStringWithRadix(3.14, ~radix=2)->Js.log\n\n/* prints \"deadbeef\" */\nJs.Float.toStringWithRadix(3735928559., ~radix=16)->Js.log\n\n/* prints \"3f.gez4w97ry0a18ymf6qadcxr\" */\nJs.Float.toStringWithRadix(123.456, ~radix=36)->Js.log\n```\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString)"
+          "Formats a `float` as a string. `radix` specifies the radix base to use for the\nformatted number. The value must be in the range [2, 36] (inclusive). Return a\n`string` representing the given value in fixed-point (usually). See [`toString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString) on MDN.\n\nRaise RangeError if radix is not in the range [2, 36] (inclusive)\n\n## Examples\n\n```rescript\n/* prints \"110\" */\nJs.Float.toStringWithRadix(6., ~radix=2)->Js.log\n\n/* prints \"11.001000111101011100001010001111010111000010100011111\" */\nJs.Float.toStringWithRadix(3.14, ~radix=2)->Js.log\n\n/* prints \"deadbeef\" */\nJs.Float.toStringWithRadix(3735928559., ~radix=16)->Js.log\n\n/* prints \"3f.gez4w97ry0a18ymf6qadcxr\" */\nJs.Float.toStringWithRadix(123.456, ~radix=36)->Js.log\n```"
         ],
         "signature": "let toStringWithRadix: (float, ~radix: int) => string"
       },
@@ -9976,7 +9984,7 @@
         "kind": "value",
         "name": "fromString",
         "docstrings": [
-          "Parses the given `string` into a `float` using JavaScript semantics\n\n**return** the number as a `float` if successfully parsed, `_NaN` otherwise.\n\n## Examples\n\n```rescript\n/* returns 123 */\nJs.Float.fromString(\"123\")\n\n/* returns 12.3 */\nJs.Float.fromString(\"12.3\")\n\n/* returns 0 */\nJs.Float.fromString(\"\")\n\n/* returns 17 */\nJs.Float.fromString(\"0x11\")\n\n/* returns 3 */\nJs.Float.fromString(\"0b11\")\n\n/* returns 9 */\nJs.Float.fromString(\"0o11\")\n\n/* returns [_NaN] */\nJs.Float.fromString(\"hello\")\n\n/* returns [_NaN] */\nJs.Float.fromString(\"100a\")\n```"
+          "Parses the given `string` into a `float` using JavaScript semantics. Return the\nnumber as a `float` if successfully parsed, `_NaN` otherwise.\n\n## Examples\n\n```rescript\n/* returns 123 */\nJs.Float.fromString(\"123\")\n\n/* returns 12.3 */\nJs.Float.fromString(\"12.3\")\n\n/* returns 0 */\nJs.Float.fromString(\"\")\n\n/* returns 17 */\nJs.Float.fromString(\"0x11\")\n\n/* returns 3 */\nJs.Float.fromString(\"0b11\")\n\n/* returns 9 */\nJs.Float.fromString(\"0o11\")\n\n/* returns [_NaN] */\nJs.Float.fromString(\"hello\")\n\n/* returns [_NaN] */\nJs.Float.fromString(\"100a\")\n```"
         ],
         "signature": "let fromString: string => float"
       }
@@ -10336,7 +10344,8 @@
         "kind": "value",
         "name": "unsafe_ceil",
         "docstrings": [],
-        "signature": "let unsafe_ceil: float => int"
+        "signature": "let unsafe_ceil: float => int",
+        "deprecated": "Please use `unsafe_ceil_int` instead"
       },
       {
         "id": "Js.Math.ceil_int",
@@ -10352,7 +10361,8 @@
         "kind": "value",
         "name": "ceil",
         "docstrings": [],
-        "signature": "let ceil: float => int"
+        "signature": "let ceil: float => int",
+        "deprecated": "Please use `ceil_int` instead"
       },
       {
         "id": "Js.Math.ceil_float",
@@ -10422,7 +10432,8 @@
         "kind": "value",
         "name": "unsafe_floor",
         "docstrings": [],
-        "signature": "let unsafe_floor: float => int"
+        "signature": "let unsafe_floor: float => int",
+        "deprecated": "Please use `unsafe_floor_int` instead"
       },
       {
         "id": "Js.Math.floor_int",
@@ -10438,7 +10449,8 @@
         "kind": "value",
         "name": "floor",
         "docstrings": [],
-        "signature": "let floor: float => int"
+        "signature": "let floor: float => int",
+        "deprecated": "Please use `floor_int` instead"
       },
       {
         "id": "Js.Math.floor_float",
@@ -10600,7 +10612,8 @@
         "docstrings": [
           "Raises the given base to the given exponent. (Arguments and result are\nintegers.) See\n[`Math.pow`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/pow)\non MDN.\n\n## Examples\n\n```rescript\nJs.Math.pow_int(~base=3, ~exp=4) == 81\n```"
         ],
-        "signature": "let pow_int: (~base: int, ~exp: int) => int"
+        "signature": "let pow_int: (~base: int, ~exp: int) => int",
+        "deprecated": "use `pow_float` instead, the return type may be not int"
       },
       {
         "id": "Js.Math.pow_float",
@@ -10918,7 +10931,7 @@
         "kind": "value",
         "name": "parseExn",
         "docstrings": [
-          "`parseExn(s)` parses the `string` `s` into a JSON data structure.\nReturns a JSON data structure.\nRaises `SyntaxError` if the given string is not a valid JSON. Note: `SyntaxError` is a JavaScript exception.\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse)\n\n## Examples\n\n```rescript\n/* parse a simple JSON string */\n\nlet json = try Js.Json.parseExn(` \"hello\" `) catch {\n| _ => failwith(\"Error parsing JSON string\")\n}\n\nswitch Js.Json.classify(json) {\n| Js.Json.JSONString(value) => Js.log(value)\n| _ => failwith(\"Expected a string\")\n}\n```\n\n```rescript\n/* parse a complex JSON string */\n\nlet getIds = s => {\n  let json = try Js.Json.parseExn(s) catch {\n  | _ => failwith(\"Error parsing JSON string\")\n  }\n\n  switch Js.Json.classify(json) {\n  | Js.Json.JSONObject(value) =>\n    /* In this branch, compiler infer value : Js.Json.t Js.Dict.t */\n    switch Js.Dict.get(value, \"ids\") {\n    | Some(ids) =>\n      switch Js.Json.classify(ids) {\n      | Js.Json.JSONArray(ids) => /* In this branch compiler infer ids : Js.Json.t array */\n        ids\n      | _ => failwith(\"Expected an array\")\n      }\n    | None => failwith(\"Expected an `ids` property\")\n    }\n  | _ => failwith(\"Expected an object\")\n  }\n}\n\n/* prints `1, 2, 3` */\nJs.log(getIds(` { \"ids\" : [1, 2, 3 ] } `))\n```"
+          "`parseExn(s)` parses the `string` `s` into a JSON data structure.\nReturns a JSON data structure.\nRaises `SyntaxError` if the given string is not a valid JSON. Note: `SyntaxError` is a JavaScript exception.\n\nSee [`parse`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse) on MDN.\n\n## Examples\n\n```rescript\n/* parse a simple JSON string */\n\nlet json = try Js.Json.parseExn(` \"hello\" `) catch {\n| _ => failwith(\"Error parsing JSON string\")\n}\n\nswitch Js.Json.classify(json) {\n| Js.Json.JSONString(value) => Js.log(value)\n| _ => failwith(\"Expected a string\")\n}\n```\n\n```rescript\n/* parse a complex JSON string */\n\nlet getIds = s => {\n  let json = try Js.Json.parseExn(s) catch {\n  | _ => failwith(\"Error parsing JSON string\")\n  }\n\n  switch Js.Json.classify(json) {\n  | Js.Json.JSONObject(value) =>\n    /* In this branch, compiler infer value : Js.Json.t Js.Dict.t */\n    switch Js.Dict.get(value, \"ids\") {\n    | Some(ids) =>\n      switch Js.Json.classify(ids) {\n      | Js.Json.JSONArray(ids) => /* In this branch compiler infer ids : Js.Json.t array */\n        ids\n      | _ => failwith(\"Expected an array\")\n      }\n    | None => failwith(\"Expected an `ids` property\")\n    }\n  | _ => failwith(\"Expected an object\")\n  }\n}\n\n/* prints `1, 2, 3` */\nJs.log(getIds(` { \"ids\" : [1, 2, 3 ] } `))\n```"
         ],
         "signature": "let parseExn: string => t"
       },
@@ -10927,7 +10940,7 @@
         "kind": "value",
         "name": "stringify",
         "docstrings": [
-          "`stringify(json)` formats the JSON data structure as a `string`.\nReturns the string representation of a given JSON data structure.\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)\n\n## Examples\n\n```rescript\n/* Creates and stringifies a simple JS object */\n\nlet dict = Js.Dict.empty()\nJs.Dict.set(dict, \"name\", Js.Json.string(\"John Doe\"))\nJs.Dict.set(dict, \"age\", Js.Json.number(30.0))\nJs.Dict.set(dict, \"likes\", Js.Json.stringArray([\"ReScript\", \"ocaml\", \"js\"]))\n\nJs.log(Js.Json.stringify(Js.Json.object_(dict)))\n```"
+          "`stringify(json)` formats the JSON data structure as a `string`.\nReturns the string representation of a given JSON data structure.\n\nSee [`stringify`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) on MDN.\n\n## Examples\n\n```rescript\n/* Creates and stringifies a simple JS object */\n\nlet dict = Js.Dict.empty()\nJs.Dict.set(dict, \"name\", Js.Json.string(\"John Doe\"))\nJs.Dict.set(dict, \"age\", Js.Json.number(30.0))\nJs.Dict.set(dict, \"likes\", Js.Json.stringArray([\"ReScript\", \"ocaml\", \"js\"]))\n\nJs.log(Js.Json.stringify(Js.Json.object_(dict)))\n```"
         ],
         "signature": "let stringify: t => string"
       },
@@ -10936,7 +10949,7 @@
         "kind": "value",
         "name": "stringifyWithSpace",
         "docstrings": [
-          "`stringifyWithSpace(json)` formats the JSON data structure as a `string`.\nReturns the string representation of a given JSON data structure with spacing.\n\n**See** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)\n\n## Examples\n\n```rescript\n/* Creates and stringifies a simple JS object with spacing */\n\nlet dict = Js.Dict.empty()\nJs.Dict.set(dict, \"name\", Js.Json.string(\"John Doe\"))\nJs.Dict.set(dict, \"age\", Js.Json.number(30.0))\nJs.Dict.set(dict, \"likes\", Js.Json.stringArray([\"ReScript\", \"ocaml\", \"js\"]))\n\nJs.log(Js.Json.stringifyWithSpace(Js.Json.object_(dict), 2))\n```"
+          "`stringifyWithSpace(json)` formats the JSON data structure as a `string`.\nReturns the string representation of a given JSON data structure with spacing.\n\nSee [`stringify`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) on MDN.\n\n## Examples\n\n```rescript\n/* Creates and stringifies a simple JS object with spacing */\n\nlet dict = Js.Dict.empty()\nJs.Dict.set(dict, \"name\", Js.Json.string(\"John Doe\"))\nJs.Dict.set(dict, \"age\", Js.Json.number(30.0))\nJs.Dict.set(dict, \"likes\", Js.Json.stringArray([\"ReScript\", \"ocaml\", \"js\"]))\n\nJs.log(Js.Json.stringifyWithSpace(Js.Json.object_(dict), 2))\n```"
         ],
         "signature": "let stringifyWithSpace: (t, int) => string"
       },
@@ -11053,7 +11066,7 @@
         "kind": "value",
         "name": "encodeURI",
         "docstrings": [
-          "URL-encodes a string.\n\n**see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI)"
+          "URL-encodes a string.\n\nSee [`encodeURI`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI) on MDN."
         ],
         "signature": "let encodeURI: string => string"
       },
@@ -11062,7 +11075,7 @@
         "kind": "value",
         "name": "decodeURI",
         "docstrings": [
-          "Decodes a URL-enmcoded string produced by `encodeURI`\n\n**see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURI)"
+          "Decodes a URL-enmcoded string produced by `encodeURI`\n\nSee [`decodeURI`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURI) on MDN."
         ],
         "signature": "let decodeURI: string => string"
       },
@@ -11071,7 +11084,7 @@
         "kind": "value",
         "name": "encodeURIComponent",
         "docstrings": [
-          "URL-encodes a string, including characters with special meaning in a URI.\n\n**see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent)"
+          "URL-encodes a string, including characters with special meaning in a URI.\n\nSee [`encodeURIComponent`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) on MDN."
         ],
         "signature": "let encodeURIComponent: string => string"
       },
@@ -11080,7 +11093,7 @@
         "kind": "value",
         "name": "decodeURIComponent",
         "docstrings": [
-          "Decodes a URL-enmcoded string produced by `encodeURIComponent`\n\n**see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent)"
+          "Decodes a URL-enmcoded string produced by `encodeURIComponent`\n\nSee [`decodeURIComponent`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent) on MDN."
         ],
         "signature": "let decodeURIComponent: string => string"
       }
@@ -11364,7 +11377,8 @@
         "kind": "value",
         "name": "parse",
         "docstrings": [],
-        "signature": "let parse: string => t"
+        "signature": "let parse: string => t",
+        "deprecated": "Please use `fromString` instead"
       },
       {
         "id": "Js.Date.parseAsFloat",
@@ -11542,7 +11556,8 @@
         "kind": "value",
         "name": "getYear",
         "docstrings": [],
-        "signature": "let getYear: t => float"
+        "signature": "let getYear: t => float",
+        "deprecated": "Use `getFullYear` instead."
       },
       {
         "id": "Js.Date.setDate",
@@ -11855,7 +11870,8 @@
         "kind": "value",
         "name": "setYear",
         "docstrings": [],
-        "signature": "let setYear: (t, float) => float"
+        "signature": "let setYear: (t, float) => float",
+        "deprecated": "Use `setFullYear` instead"
       },
       {
         "id": "Js.Date.toDateString",
@@ -11871,7 +11887,8 @@
         "kind": "value",
         "name": "toGMTString",
         "docstrings": [],
-        "signature": "let toGMTString: t => string"
+        "signature": "let toGMTString: t => string",
+        "deprecated": "Use `toUTCString` instead"
       },
       {
         "id": "Js.Date.toISOString",
@@ -11887,7 +11904,8 @@
         "kind": "value",
         "name": "toJSON",
         "docstrings": [],
-        "signature": "let toJSON: t => string"
+        "signature": "let toJSON: t => string",
+        "deprecated": "This method is unsafe. It will be changed to return option in a future \\\n     release. Please use toJSONUnsafe instead."
       },
       {
         "id": "Js.Date.toJSONUnsafe",
@@ -12239,7 +12257,8 @@
         "kind": "value",
         "name": "matches",
         "docstrings": [],
-        "signature": "let matches: result => array<string>"
+        "signature": "let matches: result => array<string>",
+        "deprecated": "Use Js.Re.captures instead"
       },
       {
         "id": "Js.Re.index",
@@ -13498,7 +13517,8 @@
         "kind": "value",
         "name": "append",
         "docstrings": [],
-        "signature": "let append: (t<'a>, 'a) => t<'a>"
+        "signature": "let append: (t<'a>, 'a) => t<'a>",
+        "deprecated": "`append` is not type-safe. Use `concat` instead."
       },
       {
         "id": "Js.Array2.concat",
@@ -14032,7 +14052,8 @@
         "kind": "value",
         "name": "join",
         "docstrings": [],
-        "signature": "let join: t<'a> => string"
+        "signature": "let join: t<'a> => string",
+        "deprecated": "please use joinWith instead"
       },
       {
         "id": "Js.Array.joinWith",
@@ -14446,7 +14467,8 @@
         "kind": "value",
         "name": "from_opt",
         "docstrings": [],
-        "signature": "let from_opt: option<'a> => t<'a>"
+        "signature": "let from_opt: option<'a> => t<'a>",
+        "deprecated": "Use fromOption instead"
       },
       {
         "id": "Js.Null_undefined.toOption",
@@ -14462,7 +14484,8 @@
         "kind": "value",
         "name": "to_opt",
         "docstrings": [],
-        "signature": "let to_opt: t<'a> => option<'a>"
+        "signature": "let to_opt: t<'a> => option<'a>",
+        "deprecated": "Use toOption instead"
       }
     ]
   },
@@ -14550,7 +14573,8 @@
         "kind": "value",
         "name": "from_opt",
         "docstrings": [],
-        "signature": "let from_opt: option<'a> => t<'a>"
+        "signature": "let from_opt: option<'a> => t<'a>",
+        "deprecated": "Use fromOption instead"
       },
       {
         "id": "Js.Nullable.toOption",
@@ -14566,7 +14590,8 @@
         "kind": "value",
         "name": "to_opt",
         "docstrings": [],
-        "signature": "let to_opt: t<'a> => option<'a>"
+        "signature": "let to_opt: t<'a> => option<'a>",
+        "deprecated": "Use toOption instead"
       }
     ]
   },
@@ -14602,7 +14627,8 @@
         "docstrings": [
           "Returns `true` if the given value is empty (undefined), `false` otherwise."
         ],
-        "signature": "let test: t<'a> => bool"
+        "signature": "let test: t<'a> => bool",
+        "deprecated": "Use = Js.undefined directly"
       },
       {
         "id": "Js.Undefined.testAny",
@@ -14668,7 +14694,8 @@
         "kind": "value",
         "name": "from_opt",
         "docstrings": [],
-        "signature": "let from_opt: option<'a> => t<'a>"
+        "signature": "let from_opt: option<'a> => t<'a>",
+        "deprecated": "Use fromOption instead"
       },
       {
         "id": "Js.Undefined.toOption",
@@ -14684,7 +14711,8 @@
         "kind": "value",
         "name": "to_opt",
         "docstrings": [],
-        "signature": "let to_opt: t<'a> => option<'a>"
+        "signature": "let to_opt: t<'a> => option<'a>",
+        "deprecated": "use toOption instead"
       }
     ]
   },
@@ -14720,7 +14748,8 @@
         "docstrings": [
           "Returns `true` if the given value is empty (`null`), `false` otherwise."
         ],
-        "signature": "let test: t<'a> => bool"
+        "signature": "let test: t<'a> => bool",
+        "deprecated": "Use = Js.null directly "
       },
       {
         "id": "Js.Null.empty",
@@ -14777,7 +14806,8 @@
         "kind": "value",
         "name": "from_opt",
         "docstrings": [],
-        "signature": "let from_opt: option<'a> => t<'a>"
+        "signature": "let from_opt: option<'a> => t<'a>",
+        "deprecated": "Use fromOption instead"
       },
       {
         "id": "Js.Null.toOption",
@@ -14793,7 +14823,8 @@
         "kind": "value",
         "name": "to_opt",
         "docstrings": [],
-        "signature": "let to_opt: t<'a> => option<'a>"
+        "signature": "let to_opt: t<'a> => option<'a>",
+        "deprecated": "Use toOption instead"
       }
     ]
   },

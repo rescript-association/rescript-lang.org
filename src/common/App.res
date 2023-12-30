@@ -49,6 +49,7 @@ let make = (props: props): React.element => {
   let content = React.createElement(component, pageProps)
 
   let url = router.route->Url.parse
+
   switch url {
   // landing page
   | {base: [], pagepath: []} => <LandingPageLayout> content </LandingPageLayout>
@@ -116,8 +117,6 @@ let make = (props: props): React.element => {
       | _ => React.null
       }
     }
-  | {base: ["docs", "api", _]} => // Js.log(url)
-    content
   | {base: ["docs", "react"], version} =>
     switch version {
     | Latest =>

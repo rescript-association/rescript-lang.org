@@ -3,7 +3,7 @@
     "id": "Belt",
     "name": "Belt",
     "docstrings": [
-      "The ReScript standard library.\n\nBelt is currently mostly covering collection types. It has no string or date functions yet, although Belt.String is in the works. In the meantime, use [Js.String](js/string) for string functions and [Js.Date](js/date) for date functions.\n\n## Motivation\n\nBelt provides:\n\n- The **highest quality** immutable data structures in JavaScript.\n- Safety by default: A Belt function will never throw exceptions, unless it is\n  indicated explicitly in the function name (suffix \"Exn\").\n- Better performance and smaller code size running on the JS platform.\n- Ready for [Tree Shaking](https://webpack.js.org/guides/tree-shaking/).\n\n## Usage\n\nTo use modules from Belt, either refer to them by their fully qualified name (`Belt.List`, `Belt.Array` etc.) or open the `Belt` module by putting\n\n## Examples\n\n```rescript\nopen Belt\n```\n\nat the top of your source files. After opening Belt this way, `Array` will refer to `Belt.Array`, `List` will refer to `Belt.List` etc. in the subsequent code.\n\nIf you want to open Belt globally for all files in your project instead, you can put\n\n```json\n{\n  \"bsc-flags\": [\"-open Belt\"]\n}\n```\n\ninto your `bsconfig.json`.\n\n**Note**: this is the **only** `open` we encourage.\n\nExample usage:\n\n## Examples\n\n```rescript\nlet someNumbers = [1, 1, 4, 2, 3, 6, 3, 4, 2]\n\nlet greaterThan2UniqueAndSorted =\n  someNumbers\n  ->Belt.Array.keep(x => x > 2)\n  // convert to and from set to make values unique\n  ->Belt.Set.Int.fromArray\n  ->Belt.Set.Int.toArray // output is already sorted\n\nJs.log2(\"result\", greaterThan2UniqueAndSorted)\n```\n\n## Curried vs. Uncurried Callbacks\n\nFor functions taking a callback parameter, there are usually two versions\navailable:\n\n- curried (no suffix)\n- uncurried (suffixed with `U`)\n\nE.g.:\n\n## Examples\n\n```rescript\nlet forEach: (t<'a>, 'a => unit) => unit\n\nlet forEachU: (t<'a>, (. 'a) => unit) => unit\n```\n\nThe uncurried version will be faster in some cases, but for simplicity we recommend to stick with the curried version unless you need the extra performance.\n\nThe two versions can be invoked as follows:\n\n## Examples\n\n```rescript\n[\"a\", \"b\", \"c\"]->Belt.Array.forEach(x => Js.log(x))\n\n[\"a\", \"b\", \"c\"]->Belt.Array.forEachU((. x) => Js.log(x))\n```\n\n## Specialized Collections\n\nFor collections types like set or map, Belt provides both a generic module as well as specialized, more efficient implementations for string and int keys.\n\nFor example, Belt has the following set modules:\n\n- [Belt.Set](belt/set)\n- [Belt.Set.Int](belt/set-int)\n- [Belt.Set.String](belt/set-string)\n\n## Implementation Details\n\n### Array access runtime safety\n\nOne common confusion comes from the way Belt handles array access. It differs from than the default standard library's.\n\n## Examples\n\n```rescript\nlet letters = [\"a\", \"b\", \"c\"]\nlet a = letters[0] // a == \"a\"\nlet capitalA = Js.String.toUpperCase(a)\nlet k = letters[10] // Raises an exception! The 10th index doesn't exist.\n```\n\nBecause Belt avoids exceptions and returns `options` instead, this code behaves differently:\n\n## Examples\n\n```rescript\nopen Belt\nlet letters = [\"a\", \"b\", \"c\"]\nlet a = letters[0] // a == Some(\"a\")\nlet captialA = Js.String.toUpperCase(a) // Type error! This code will not compile.\nlet k = letters[10] // k == None\n```\n\nAlthough we've fixed the problem where `k` raises an exception, we now have a type error when trying to capitalize `a`. There are a few things going on here:\n\n- Reason transforms array index access to the function `Array.get`. So `letters[0]` is the same as `Array.get(letters, 0)`.\n- The compiler uses whichever `Array` module is in scope. If you `open Belt`, then it uses `Belt.Array`.\n- `Belt.Array.get` returns values wrapped in options, so `letters[0] == Some(\"a\")`.\n\nFortunately, this is easy to fix:\n\n## Examples\n\n```rescript\nopen Belt\nlet letters = [\"a\", \"b\", \"c\"]\nlet a = letters[0]\n\n// Use a switch statement:\nlet capitalA =\n  switch a {\n  | Some(a) => Some(Js.String.toUpperCase(a))\n  | None => None\n  }\n\nlet k = letters[10] // k == None\n```\n\nWith that little bit of tweaking, our code now compiles successfully and is 100% free of runtime errors!\n\n### A Special Encoding for Collection Safety\n\nWhen we create a collection library for a custom data type we need a way to provide a comparator function. Take Set for example, suppose its element type is a pair of ints, it needs a custom compare function that takes two tuples and returns their order. The Set could not just be typed as Set.t (int \\* int) , its customized compare function needs to manifest itself in the signature, otherwise, if the user creates another customized compare function, the two collection could mix which would result in runtime error.\n\nWe use a phantom type to solve the problem:\n\n## Examples\n\n```rescript\nmodule Comparable1 =\n  Belt.Id.MakeComparable(\n    {\n      type t = (int, int)\n      let cmp = ((a0, a1), (b0, b1)) =>\n        switch Pervasives.compare(a0, b0) {\n        | 0 => Pervasives.compare(a1, b1)\n        | c => c\n        }\n    }\n  )\n\nlet mySet1 = Belt.Set.make(~id=module(Comparable1))\n\nmodule Comparable2 =\n  Belt.Id.MakeComparable(\n    {\n      type t = (int, int)\n      let cmp = ((a0, a1), (b0, b1)) =>\n        switch Pervasives.compare(a0, b0) {\n        | 0 => Pervasives.compare(a1, b1)\n        | c => c\n        }\n    }\n  )\n\nlet mySet2 = Belt.Set.make(~id=module(Comparable2))\n```\n\nHere, the compiler would infer `mySet1` and `mySet2` having different type, so e.g. a `merge` operation that tries to merge these two sets will correctly fail.\n\n## Examples\n\n```rescript\nlet mySet1: t<(int, int), Comparable1.identity>\nlet mySet2: t<(int, int), Comparable2.identity>\n```\n\n`Comparable1.identity` and `Comparable2.identity` are not the same using our encoding scheme."
+      "The ReScript standard library.\n\nBelt is currently mostly covering collection types. It has no string or date functions yet, although Belt.String is in the works. In the meantime, use [Js.String](js/string) for string functions and [Js.Date](js/date) for date functions.\n\n## Motivation\n\nBelt provides:\n\n- The **highest quality** immutable data structures in JavaScript.\n- Safety by default: A Belt function will never throw exceptions, unless it is\n  indicated explicitly in the function name (suffix \"Exn\").\n- Better performance and smaller code size running on the JS platform.\n- Ready for [Tree Shaking](https://webpack.js.org/guides/tree-shaking/).\n\n## Usage\n\nTo use modules from Belt, either refer to them by their fully qualified name (`Belt.List`, `Belt.Array` etc.) or open the `Belt` module by putting\n\n## Examples\n\n```rescript\nopen Belt\n```\n\nat the top of your source files. After opening Belt this way, `Array` will refer to `Belt.Array`, `List` will refer to `Belt.List` etc. in the subsequent code.\n\nIf you want to open Belt globally for all files in your project instead, you can put\n\n```json\n{\n  \"bsc-flags\": [\"-open Belt\"]\n}\n```\n\ninto your `bsconfig.json`.\n\n**Note**: this is the **only** `open` we encourage.\n\nExample usage:\n\n## Examples\n\n```rescript\nlet someNumbers = [1, 1, 4, 2, 3, 6, 3, 4, 2]\n\nlet greaterThan2UniqueAndSorted =\n  someNumbers\n  ->Belt.Array.keep(x => x > 2)\n  // convert to and from set to make values unique\n  ->Belt.Set.Int.fromArray\n  ->Belt.Set.Int.toArray // output is already sorted\n\nJs.log2(\"result\", greaterThan2UniqueAndSorted)\n```\n\n## Curried vs. Uncurried Callbacks\n\nFor functions taking a callback parameter, there are usually two versions\navailable:\n\n- curried (no suffix)\n- uncurried (suffixed with `U`)\n\nE.g.:\n\n## Examples\n\n```rescript\nlet forEach: (t<'a>, 'a => unit) => unit\n\nlet forEachU: (t<'a>, (. 'a) => unit) => unit\n```\n\nThe uncurried version will be faster in some cases, but for simplicity we recommend to stick with the curried version unless you need the extra performance.\n\nThe two versions can be invoked as follows:\n\n## Examples\n\n```rescript\n[\"a\", \"b\", \"c\"]->Belt.Array.forEach(x => Js.log(x))\n\n[\"a\", \"b\", \"c\"]->Belt.Array.forEachU((. x) => Js.log(x))\n```\n\n## Specialized Collections\n\nFor collections types like set or map, Belt provides both a generic module as well as specialized, more efficient implementations for string and int keys.\n\nFor example, Belt has the following set modules:\n\n- [Belt.Set](belt/set)\n- [Belt.Set.Int](belt/set/int)\n- [Belt.Set.String](belt/set/string)\n\n## Implementation Details\n\n### Array access runtime safety\n\nOne common confusion comes from the way Belt handles array access. It differs from than the default standard library's.\n\n## Examples\n\n```rescript\nlet letters = [\"a\", \"b\", \"c\"]\nlet a = letters[0] // a == \"a\"\nlet capitalA = Js.String.toUpperCase(a)\nlet k = letters[10] // Raises an exception! The 10th index doesn't exist.\n```\n\nBecause Belt avoids exceptions and returns `options` instead, this code behaves differently:\n\n## Examples\n\n```rescript\nopen Belt\nlet letters = [\"a\", \"b\", \"c\"]\nlet a = letters[0] // a == Some(\"a\")\nlet captialA = Js.String.toUpperCase(a) // Type error! This code will not compile.\nlet k = letters[10] // k == None\n```\n\nAlthough we've fixed the problem where `k` raises an exception, we now have a type error when trying to capitalize `a`. There are a few things going on here:\n\n- Reason transforms array index access to the function `Array.get`. So `letters[0]` is the same as `Array.get(letters, 0)`.\n- The compiler uses whichever `Array` module is in scope. If you `open Belt`, then it uses `Belt.Array`.\n- `Belt.Array.get` returns values wrapped in options, so `letters[0] == Some(\"a\")`.\n\nFortunately, this is easy to fix:\n\n## Examples\n\n```rescript\nopen Belt\nlet letters = [\"a\", \"b\", \"c\"]\nlet a = letters[0]\n\n// Use a switch statement:\nlet capitalA =\n  switch a {\n  | Some(a) => Some(Js.String.toUpperCase(a))\n  | None => None\n  }\n\nlet k = letters[10] // k == None\n```\n\nWith that little bit of tweaking, our code now compiles successfully and is 100% free of runtime errors!\n\n### A Special Encoding for Collection Safety\n\nWhen we create a collection library for a custom data type we need a way to provide a comparator function. Take Set for example, suppose its element type is a pair of ints, it needs a custom compare function that takes two tuples and returns their order. The Set could not just be typed as Set.t (int \\* int) , its customized compare function needs to manifest itself in the signature, otherwise, if the user creates another customized compare function, the two collection could mix which would result in runtime error.\n\nWe use a phantom type to solve the problem:\n\n## Examples\n\n```rescript\nmodule Comparable1 =\n  Belt.Id.MakeComparable(\n    {\n      type t = (int, int)\n      let cmp = ((a0, a1), (b0, b1)) =>\n        switch Pervasives.compare(a0, b0) {\n        | 0 => Pervasives.compare(a1, b1)\n        | c => c\n        }\n    }\n  )\n\nlet mySet1 = Belt.Set.make(~id=module(Comparable1))\n\nmodule Comparable2 =\n  Belt.Id.MakeComparable(\n    {\n      type t = (int, int)\n      let cmp = ((a0, a1), (b0, b1)) =>\n        switch Pervasives.compare(a0, b0) {\n        | 0 => Pervasives.compare(a1, b1)\n        | c => c\n        }\n    }\n  )\n\nlet mySet2 = Belt.Set.make(~id=module(Comparable2))\n```\n\nHere, the compiler would infer `mySet1` and `mySet2` having different type, so e.g. a `merge` operation that tries to merge these two sets will correctly fail.\n\n## Examples\n\n```rescript\nlet mySet1: t<(int, int), Comparable1.identity>\nlet mySet2: t<(int, int), Comparable2.identity>\n```\n\n`Comparable1.identity` and `Comparable2.identity` are not the same using our encoding scheme."
     ],
     "items": []
   },
@@ -5048,7 +5048,7 @@
         "kind": "value",
         "name": "orElse",
         "docstrings": [
-          "`orElse(optionalValue, otherOptional)`\n\nIf `optionalValue` is `Some(value)`, returns `Some(value)`, otherwise `otherOptional`\n\n## Examples\n\n```rescript\nBelt.Option.orElse(Some(1812), Some(1066)) == Some(1812)\nBelt.Option.orElse(None, Some(1066)) == Some(1066)\nBelt.Option.orElse(None, None) == None\n```"
+          "`orElse(optionalValue, otherOptional)` if `optionalValue` is `Some(value)`,\nreturns `Some(value)`, otherwise `otherOptional`\n\n## Examples\n\n```rescript\nBelt.Option.orElse(Some(1812), Some(1066)) == Some(1812)\nBelt.Option.orElse(None, Some(1066)) == Some(1066)\nBelt.Option.orElse(None, None) == None\n```"
         ],
         "signature": "let orElse: (option<'a>, option<'a>) => option<'a>"
       },
@@ -6027,7 +6027,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [
-          "Same as [forEach](##forEach) but takes uncurried functon."
+          "Same as `Belt.MutableSet.forEach` but takes uncurried functon."
         ],
         "signature": "let forEachU: (t<'value, 'id>, (. 'value) => unit) => unit"
       },
@@ -6197,7 +6197,7 @@
         "kind": "value",
         "name": "getUndefined",
         "docstrings": [
-          "Same as [get](#get) but returns `undefined` when element does not exist."
+          "Same as `Belt.MutableSet.get` but returns `undefined` when element does not exist."
         ],
         "signature": "let getUndefined: (t<'value, 'id>, 'value) => Js.undefined<'value>"
       },
@@ -6206,7 +6206,7 @@
         "kind": "value",
         "name": "getExn",
         "docstrings": [
-          "Same as [get](#get) but raise when element does not exist."
+          "Same as `Belt.MutableSet.get` but raise when element does not exist."
         ],
         "signature": "let getExn: (t<'value, 'id>, 'value) => 'value"
       },
@@ -6819,7 +6819,7 @@
         "kind": "value",
         "name": "mergeMany",
         "docstrings": [
-          "Adds each element of array to set. Unlike [add](#add), the reference of return value might be changed even if all values in array already exist in set\n\n## Examples\n\n```rescript\nlet set = Belt.Set.make(~id=module(IntCmp))\n\nlet newSet = set->Belt.Set.mergeMany([5, 4, 3, 2, 1])\nnewSet->Belt.Set.toArray /* [1, 2, 3, 4, 5] */\n```"
+          "Adds each element of array to set. Unlike `Belt.Set.add`](#add), the reference of return value might be changed even if all values in array already exist in set\n\n## Examples\n\n```rescript\nlet set = Belt.Set.make(~id=module(IntCmp))\n\nlet newSet = set->Belt.Set.mergeMany([5, 4, 3, 2, 1])\nnewSet->Belt.Set.toArray /* [1, 2, 3, 4, 5] */\n```"
         ],
         "signature": "let mergeMany: (t<'value, 'id>, array<'value>) => t<'value, 'id>"
       },
@@ -6900,7 +6900,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [
-          "Same as [forEach](##forEach) but takes uncurried functon."
+          "Same as [forEach](#forEach) but takes uncurried functon."
         ],
         "signature": "let forEachU: (t<'value, 'id>, (. 'value) => unit) => unit"
       },
@@ -7149,7 +7149,7 @@
         "kind": "value",
         "name": "forEach",
         "docstrings": [
-          "`forEach(start, finish, action)`\n\nequivalent to `Belt.Array.(forEach(range(start, finish), action))`\n\n## Examples\n\n```rescript\nBelt.Range.forEach(0, 4, (i) => Js.log(i))\n\n// Prints:\n// 0\n// 1\n// 2\n// 3\n// 4\n```"
+          "`forEach(start, finish, action)` equivalent to `Belt.Array.forEach(Belt.Array.range(start, finish), action))`\n\n## Examples\n\n```rescript\nBelt.Range.forEach(0, 4, (i) => Js.log(i))\n\n// Prints:\n// 0\n// 1\n// 2\n// 3\n// 4\n```"
         ],
         "signature": "let forEach: (int, int, int => unit) => unit"
       },
@@ -7165,7 +7165,7 @@
         "kind": "value",
         "name": "every",
         "docstrings": [
-          "`every(start, finish, p)`\n\nequivalent to `Belt.Array.(every(range(start, finish), p))`\n\n## Examples\n\n```rescript\nBelt.Range.every(0, 4, (i) => i < 5) /* true */\n\nBelt.Range.every(0, 4, (i) => i < 4) /* false */\n```"
+          "`every(start, finish, p)` equivalent to `Belt.Array.every(Belt.Array.range(start, finish), p)`\n## Examples\n\n```rescript\nBelt.Range.every(0, 4, (i) => i < 5) /* true */\n\nBelt.Range.every(0, 4, (i) => i < 4) /* false */\n```"
         ],
         "signature": "let every: (int, int, int => bool) => bool"
       },
@@ -7181,7 +7181,7 @@
         "kind": "value",
         "name": "everyBy",
         "docstrings": [
-          "`everyBy(start, finish, ~step, p)`\n\nSee `Belt_Array.rangeBy`\n\nequivalent to `Belt.Array.(every(rangeBy(start, finish, ~step), p))`\n\n## Examples\n\n```rescript\nBelt.Range.everyBy(0, 4, ~step=1, (i) => mod(i, 2) === 0) /* false */\n\nBelt.Range.everyBy(0, 4, ~step=2, (i) => mod(i, 2) === 0) /* true */\n```"
+          "`everyBy(start, finish, ~step, p)`. See `Belt.Array.rangeBy`, equivalent to\n`Belt.Array.every(Belt.Array.rangeBy(start, finish, ~step), p)`\n\n## Examples\n\n```rescript\nBelt.Range.everyBy(0, 4, ~step=1, (i) => mod(i, 2) === 0) /* false */\n\nBelt.Range.everyBy(0, 4, ~step=2, (i) => mod(i, 2) === 0) /* true */\n```"
         ],
         "signature": "let everyBy: (int, int, ~step: int, int => bool) => bool"
       },
@@ -7197,7 +7197,7 @@
         "kind": "value",
         "name": "some",
         "docstrings": [
-          "`some(start, finish, p)`\n\nequivalent to `Belt.Array.(some(range(start, finish), p))`\n\n## Examples\n\n```rescript\nBelt.Range.some(0, 4, (i) => i > 5) /* false */\n\nBelt.Range.some(0, 4, (i) => i > 2) /* true */\n```"
+          "`some(start, finish, p)` equivalent to `Belt.Array.some(Belt.Array.range(start, finish), p)`\n\n## Examples\n\n```rescript\nBelt.Range.some(0, 4, (i) => i > 5) /* false */\n\nBelt.Range.some(0, 4, (i) => i > 2) /* true */\n```"
         ],
         "signature": "let some: (int, int, int => bool) => bool"
       },
@@ -7213,7 +7213,7 @@
         "kind": "value",
         "name": "someBy",
         "docstrings": [
-          "`someBy(start, finish, ~step, p)`\n\nSee `Belt_Array.rangeBy`\n\nequivalent to `Belt.Array.(some(rangeBy(start, finish, ~step), p))`\n\n## Examples\n\n```rescript\nBelt.Range.someBy(1, 5, ~step=2, (i) => mod(i, 2) === 0) /* false */\nBelt.Range.someBy(0, 4, ~step=2, (i) => mod(i, 2) === 0) /* true */\n```"
+          "`someBy(start, finish, ~step, p)` See `Belt.Array.rangeBy`, equivalent to\n`Belt.Array.some(Belt.Array.rangeBy(start, finish, ~step), p)`\n\n## Examples\n\n```rescript\nBelt.Range.someBy(1, 5, ~step=2, (i) => mod(i, 2) === 0) /* false */\nBelt.Range.someBy(0, 4, ~step=2, (i) => mod(i, 2) === 0) /* true */\n```"
         ],
         "signature": "let someBy: (int, int, ~step: int, int => bool) => bool"
       }
@@ -7249,7 +7249,7 @@
         "kind": "value",
         "name": "size",
         "docstrings": [
-          "**See** [`length`](##length)"
+          "See `Belt.List.length`"
         ],
         "signature": "let size: t<'a> => int"
       },
@@ -7267,7 +7267,7 @@
         "kind": "value",
         "name": "headExn",
         "docstrings": [
-          "Same as [head](#head), but raises an exception if `someList` is empty. Use\nwith care.\n\n## Examples\n\n```rescript\nBelt.List.headExn(list{1, 2, 3}) // 1\n\nBelt.List.headExn(list{}) // Raises an Error\n```"
+          "Same as `Belt.List.head` but raises an exception if `someList` is empty. Use\nwith care.\n\n## Examples\n\n```rescript\nBelt.List.headExn(list{1, 2, 3}) // 1\n\nBelt.List.headExn(list{}) // Raises an Error\n```"
         ],
         "signature": "let headExn: t<'a> => 'a"
       },
@@ -7285,7 +7285,7 @@
         "kind": "value",
         "name": "tailExn",
         "docstrings": [
-          "Same as [tail](#tail), but raises an exception if `someList` is empty. Use\nwith care.\n\n## Examples\n\n```rescript\nBelt.List.tailExn(list{1, 2, 3}) // list{2, 3}\n\nBelt.List.tailExn(list{}) // Raises an Error\n```"
+          "Same as `Belt.List.tail` but raises an exception if `someList` is empty. Use\nwith care.\n\n## Examples\n\n```rescript\nBelt.List.tailExn(list{1, 2, 3}) // list{2, 3}\n\nBelt.List.tailExn(list{}) // Raises an Error\n```"
         ],
         "signature": "let tailExn: t<'a> => t<'a>"
       },
@@ -7312,7 +7312,7 @@
         "kind": "value",
         "name": "getExn",
         "docstrings": [
-          "Same as [get](#get), but raises an exception if `index` is larger than the\nlength. Use with care.\n\n## Examples\n\n```rescript\nlet abc = list{\"A\", \"B\", \"C\"}\n\nabc->Belt.List.getExn(1) // \"B\"\n\nabc->Belt.List.getExn(4) // Raises an Error\n```"
+          "Same as `Belt.List.get` but raises an exception if `index` is larger than the\nlength. Use with care.\n\n## Examples\n\n```rescript\nlet abc = list{\"A\", \"B\", \"C\"}\n\nabc->Belt.List.getExn(1) // \"B\"\n\nabc->Belt.List.getExn(4) // Raises an Error\n```"
         ],
         "signature": "let getExn: (t<'a>, int) => 'a"
       },
@@ -7456,7 +7456,7 @@
         "kind": "value",
         "name": "zipBy",
         "docstrings": [
-          "**See:** [zip](#zip)\n\n## Examples\n\n```rescript\nBelt.List.zipBy(list{1, 2, 3}, list{4, 5}, (a, b) => 2 * a + b) // list{6, 9}\n```"
+          "See [Belt.List.zip](#zip)\n\n## Examples\n\n```rescript\nBelt.List.zipBy(list{1, 2, 3}, list{4, 5}, (a, b) => 2 * a + b) // list{6, 9}\n```"
         ],
         "signature": "let zipBy: (t<'a>, t<'b>, ('a, 'b) => 'c) => t<'c>"
       },
@@ -7863,7 +7863,8 @@
         "docstrings": [
           "Returns a list of all elements in `someList` which satisfy the predicate function `pred`.\n\n## Examples\n\n```rescript\nlet isEven = x => mod(x, 2) == 0\n\nBelt.List.filter(list{1, 2, 3, 4}, isEven) /* list{2, 4} */\n\nBelt.List.filter(list{None, Some(2), Some(3), None}, Belt.Option.isSome) /* list{Some(2), Some(3)} */\n```"
         ],
-        "signature": "let filter: (t<'a>, 'a => bool) => t<'a>"
+        "signature": "let filter: (t<'a>, 'a => bool) => t<'a>",
+        "deprecated": "This function will soon be deprecated. Please, use `List.keep` instead."
       },
       {
         "id": "Belt.List.keepWithIndexU",
@@ -7890,7 +7891,8 @@
         "docstrings": [
           "Returns a list of all elements in `someList` which satisfy the predicate function `pred`.\n\n## Examples\n\n```rescript\nlet isEven = x => mod(x, 2) == 0\n\nBelt.List.filterWithIndex(list{1, 2, 3, 4}, (_x, index) => isEven(index)) /* list{1, 3} */\n```"
         ],
-        "signature": "let filterWithIndex: (t<'a>, ('a, int) => bool) => t<'a>"
+        "signature": "let filterWithIndex: (t<'a>, ('a, int) => bool) => t<'a>",
+        "deprecated": "This function will soon be deprecated. Please, use `List.keepWithIndex` \\\n     instead."
       },
       {
         "id": "Belt.List.keepMapU",
@@ -8502,7 +8504,7 @@
         "kind": "value",
         "name": "length",
         "docstrings": [
-          "return the size of the array\n\n## Examples\n\n```rescript\n// Returns 1\nBelt.Array.length([\"test\"])\n```"
+          "Return the size of the array\n\n## Examples\n\n```rescript\n// Returns 1\nBelt.Array.length([\"test\"])\n```"
         ],
         "signature": "let length: t<'a> => int"
       },
@@ -8511,7 +8513,7 @@
         "kind": "value",
         "name": "size",
         "docstrings": [
-          "**See** [`length`]()"
+          "See [`Belt.Array.length`]()"
         ],
         "signature": "let size: t<'a> => int"
       },
@@ -8653,7 +8655,7 @@
         "kind": "value",
         "name": "rangeBy",
         "docstrings": [
-          "`rangeBy(start, finish, ~step)`\n\nReturns empty array when step is 0 or negative. It also return an empty array when `start > finish`.\n\n## Examples\n\n```rescript\nBelt.Array.rangeBy(0, 10, ~step=3) == [0, 3, 6, 9]\n\nBelt.Array.rangeBy(0, 12, ~step=3) == [0, 3, 6, 9, 12]\n\nBelt.Array.rangeBy(33, 0, ~step=1) == []\n\nBelt.Array.rangeBy(33, 0, ~step=-1) == []\n\nBelt.Array.rangeBy(3, 12, ~step=-1) == []\n\nBelt.Array.rangeBy(3, 3, ~step=0) == []\n\nBelt.Array.rangeBy(3, 3, ~step=1) == [3]\n```"
+          "`rangeBy(start, finish, ~step)` returns empty array when step is 0 or negative.\nIt also return an empty array when `start > finish`.\n\n## Examples\n\n```rescript\nBelt.Array.rangeBy(0, 10, ~step=3) == [0, 3, 6, 9]\n\nBelt.Array.rangeBy(0, 12, ~step=3) == [0, 3, 6, 9, 12]\n\nBelt.Array.rangeBy(33, 0, ~step=1) == []\n\nBelt.Array.rangeBy(33, 0, ~step=-1) == []\n\nBelt.Array.rangeBy(3, 12, ~step=-1) == []\n\nBelt.Array.rangeBy(3, 3, ~step=0) == []\n\nBelt.Array.rangeBy(3, 3, ~step=1) == [3]\n```"
         ],
         "signature": "let rangeBy: (int, int, ~step: int) => array<int>"
       },
@@ -8669,7 +8671,7 @@
         "kind": "value",
         "name": "makeBy",
         "docstrings": [
-          "`makeBy(n, f)`\n\nReturn an empty array when n is negative return an array of size n populated by `f(i)` start from `0` to `n - 1`.\n\n## Examples\n\n```rescript\nBelt.Array.makeBy(5, (i) => i) == [0, 1, 2, 3, 4]\n\nBelt.Array.makeBy(5, (i) => i * i) == [0, 1, 4, 9, 16]\n```"
+          "`makeBy(n, f)` return an empty array when n is negative return an array of size\nn populated by `f(i)` start from `0` to `n - 1`.\n\n## Examples\n\n```rescript\nBelt.Array.makeBy(5, (i) => i) == [0, 1, 2, 3, 4]\n\nBelt.Array.makeBy(5, (i) => i * i) == [0, 1, 4, 9, 16]\n```"
         ],
         "signature": "let makeBy: (int, int => 'a) => t<'a>"
       },
@@ -8694,7 +8696,7 @@
         "kind": "value",
         "name": "zip",
         "docstrings": [
-          "`zip(a, b)`\n\nCreate an array of pairs from corresponding elements of a and b. Stop with the shorter array.\n\n## Examples\n\n```rescript\nBelt.Array.zip([1, 2], [3, 4, 5]) == [(1, 3), (2, 4)]\n```"
+          "`zip(a, b)` create an array of pairs from corresponding elements of a and b.\nStop with the shorter array.\n\n## Examples\n\n```rescript\nBelt.Array.zip([1, 2], [3, 4, 5]) == [(1, 3), (2, 4)]\n```"
         ],
         "signature": "let zip: (t<'a>, array<'b>) => array<('a, 'b)>"
       },
@@ -8710,7 +8712,7 @@
         "kind": "value",
         "name": "zipBy",
         "docstrings": [
-          "`zipBy(xs, ys, f)`\n\nCreate an array by applying `f` to corresponding elements of `xs` and `ys`. Stops with shorter array.\n\nEquivalent to `map(zip(xs, ys), ((a, b)) => f(a, b))`\n\n## Examples\n\n```rescript\nBelt.Array.zipBy([1, 2, 3], [4, 5], (a, b) => 2 * a + b) == [6, 9]\n```"
+          "`zipBy(xs, ys, f)` create an array by applying `f` to corresponding elements of\n`xs` and `ys`. Stops with shorter array.\n\nEquivalent to `map(zip(xs, ys), ((a, b)) => f(a, b))`\n\n## Examples\n\n```rescript\nBelt.Array.zipBy([1, 2, 3], [4, 5], (a, b) => 2 * a + b) == [6, 9]\n```"
         ],
         "signature": "let zipBy: (t<'a>, array<'b>, ('a, 'b) => 'c) => array<'c>"
       },
@@ -8719,7 +8721,7 @@
         "kind": "value",
         "name": "unzip",
         "docstrings": [
-          "`unzip(a)` takes an array of pairs and creates a pair of arrays. The first array contains all the first items of the pairs; the second array contains all the second items.\n\n## Examples\n\n```rescript\nBelt.Array.unzip([(1, 2), (3, 4)]) == ([1, 3], [2, 4])\n\nBelt.Array.unzip([(1, 2), (3, 4), (5, 6), (7, 8)]) == ([1, 3, 5, 7], [2, 4, 6, 8])\n```"
+          "`unzip(a)` takes an array of pairs and creates a pair of arrays. The first array\ncontains all the first items of the pairs; the second array contains all the\nsecond items.\n\n## Examples\n\n```rescript\nBelt.Array.unzip([(1, 2), (3, 4)]) == ([1, 3], [2, 4])\n\nBelt.Array.unzip([(1, 2), (3, 4), (5, 6), (7, 8)]) == ([1, 3, 5, 7], [2, 4, 6, 8])\n```"
         ],
         "signature": "let unzip: array<('a, 'b)> => (t<'a>, array<'b>)"
       },
@@ -8728,7 +8730,7 @@
         "kind": "value",
         "name": "concat",
         "docstrings": [
-          "`concat(xs, ys)`\n\nReturns a fresh array containing the concatenation of the arrays `v1` and `v2`;so even if `v1` or `v2` is empty; it can not be shared\n\n## Examples\n\n```rescript\nBelt.Array.concat([1, 2, 3], [4, 5]) == [1, 2, 3, 4, 5]\n\nBelt.Array.concat([], [\"a\", \"b\", \"c\"]) == [\"a\", \"b\", \"c\"]\n```"
+          "`concat(xs, ys)` returns a fresh array containing the concatenation of the arrays\n`v1` and `v2`, so even if `v1` or `v2` is empty; it can not be shared.\n\n## Examples\n\n```rescript\nBelt.Array.concat([1, 2, 3], [4, 5]) == [1, 2, 3, 4, 5]\n\nBelt.Array.concat([], [\"a\", \"b\", \"c\"]) == [\"a\", \"b\", \"c\"]\n```"
         ],
         "signature": "let concat: (t<'a>, t<'a>) => t<'a>"
       },
@@ -8737,7 +8739,7 @@
         "kind": "value",
         "name": "concatMany",
         "docstrings": [
-          "`concatMany(xss)`\n\nReturns a fresh array as the concatenation of `xss` (an array of arrays)\n\n## Examples\n\n```rescript\nBelt.Array.concatMany([[1, 2, 3], [4, 5, 6], [7, 8]]) == [1, 2, 3, 4, 5, 6, 7, 8]\n```"
+          "`concatMany(xss)` returns a fresh array as the concatenation of `xss` (an array of arrays)\n\n## Examples\n\n```rescript\nBelt.Array.concatMany([[1, 2, 3], [4, 5, 6], [7, 8]]) == [1, 2, 3, 4, 5, 6, 7, 8]\n```"
         ],
         "signature": "let concatMany: array<t<'a>> => t<'a>"
       },
@@ -8764,7 +8766,7 @@
         "kind": "value",
         "name": "copy",
         "docstrings": [
-          "`copy(a)`\n\nReturns a copy of a; that is; a fresh array containing the same elements as a."
+          "`copy(a)` returns a copy of `a`; that is; a fresh array containing the same\nelements as `a`."
         ],
         "signature": "let copy: t<'a> => t<'a>"
       },
@@ -8773,7 +8775,7 @@
         "kind": "value",
         "name": "fill",
         "docstrings": [
-          "`fill(arr, ~offset, ~len, x)`\n\nModifies `arr` in place, storing `x` in elements number `offset` to `offset + len - 1`.\n`offset` can be negative; and is evaluated as `length(arr - offset)`\n\n`fill(arr, ~offset=-1, ~len=1)` means fill the last element, if the array does not have enough data; `fill` will ignore it\n\n## Examples\n\n```rescript\nlet arr = Belt.Array.makeBy(5, (i) => i)\n\nBelt.Array.fill(arr, ~offset=2, ~len=2, 9)\n\narr == [0, 1, 9, 9, 4]\n\nBelt.Array.fill(arr, ~offset=7, ~len=2, 8)\n\narr == [0, 1, 9, 9, 4]"
+          "`fill(arr, ~offset, ~len, x)` modifies `arr` in place, storing `x` in elements\nnumber `offset` to `offset + len - 1`. `offset` can be negative; and is evaluated\nas `length(arr - offset)`.\n\n`fill(arr, ~offset=-1, ~len=1)` means fill the last element, if the array does not have enough data; `fill` will ignore it\n\n## Examples\n\n```rescript\nlet arr = Belt.Array.makeBy(5, (i) => i)\n\nBelt.Array.fill(arr, ~offset=2, ~len=2, 9)\n\narr == [0, 1, 9, 9, 4]\n\nBelt.Array.fill(arr, ~offset=7, ~len=2, 8)\n\narr == [0, 1, 9, 9, 4]"
         ],
         "signature": "let fill: (t<'a>, ~offset: int, ~len: int, 'a) => unit"
       },
@@ -8782,7 +8784,7 @@
         "kind": "value",
         "name": "blit",
         "docstrings": [
-          "`blit(~src=v1, ~srcOffset=o1, ~dst=v2, ~dstOffset=o2, ~len)`\n\ncopies `len` elements from array `v1`;starting at element number `o1`;to array `v2`, starting at element number `o2`.\n\nIt works correctly even if `v1` and `v2` are the same array;and the source and destination chunks overlap.\n\n`offset` can be negative; `-1` means `len - 1`; if `len + offset` is still negative;it will be set as 0\n\nFor each of the examples;presume that `v1 == [10, 11, 12, 13, 14, 15, 16, 17]` and `v2 == [20, 21, 22, 23, 24, 25, 26, 27]`. The result shown is the content of the destination array.\n\n## Examples\n\n```rescript\nlet v1 = [10, 11, 12, 13, 14, 15, 16, 17]\nlet v2 = [20, 21, 22, 23, 24, 25, 26, 27]\n\nBelt.Array.blit(~src=v1, ~srcOffset=4, ~dst=v2, ~dstOffset=2, ~len=3)\nv2 == [20, 21, 14, 15, 16, 25, 26, 27]\n\nBelt.Array.blit(~src=v1, ~srcOffset=4, ~dst=v1, ~dstOffset=2, ~len=3)\nv1 == [10, 11, 14, 15, 16, 15, 16, 17]\n```"
+          "`blit(~src=v1, ~srcOffset=o1, ~dst=v2, ~dstOffset=o2, ~len)` copies `len` elements\nfrom array `v1`;starting at element number `o1`;to array `v2`, starting at element\nnumber `o2`. It works correctly even if `v1` and `v2` are the same array and the\nsource and destination chunks overlap.\n\n`offset` can be negative; `-1` means `len - 1`; if `len + offset` is still negative;it will be set as 0\n\nFor each of the examples;presume that `v1 == [10, 11, 12, 13, 14, 15, 16, 17]` and `v2 == [20, 21, 22, 23, 24, 25, 26, 27]`. The result shown is the content of the destination array.\n\n## Examples\n\n```rescript\nlet v1 = [10, 11, 12, 13, 14, 15, 16, 17]\nlet v2 = [20, 21, 22, 23, 24, 25, 26, 27]\n\nBelt.Array.blit(~src=v1, ~srcOffset=4, ~dst=v2, ~dstOffset=2, ~len=3)\nv2 == [20, 21, 14, 15, 16, 25, 26, 27]\n\nBelt.Array.blit(~src=v1, ~srcOffset=4, ~dst=v1, ~dstOffset=2, ~len=3)\nv1 == [10, 11, 14, 15, 16, 15, 16, 17]\n```"
         ],
         "signature": "let blit: (\\n  ~src: t<'a>,\\n  ~srcOffset: int,\\n  ~dst: t<'a>,\\n  ~dstOffset: int,\\n  ~len: int,\\n) => unit"
       },
@@ -8807,7 +8809,7 @@
         "kind": "value",
         "name": "forEach",
         "docstrings": [
-          "`forEach(xs, f)`\n\nCall `f` on each element of `xs` from the beginning to end. `f` returns `unit`;so no new array is created. Use `forEach` when you are primarily concerned with repetitively creating side effects.\n\n## Examples\n\n```rescript\nBelt.Array.forEach([\"a\", \"b\", \"c\"], x => Js.log(\"Item: \" ++ x))\n\n/*\n  prints:\n  Item: a\n  Item: b\n  Item: c\n*/\nlet total = ref(0)\n\nBelt.Array.forEach([1, 2, 3, 4], x => total := total.contents + x)\n\ntotal.contents == 1 + 2 + 3 + 4\n```"
+          "`forEach(xs, f)`\n\nCall `f` on each element of `xs` from the beginning to end. `f` returns `unit`\nso no new array is created. Use `forEach` when you are primarily concerned with\nrepetitively creating side effects.\n\n## Examples\n\n```rescript\nBelt.Array.forEach([\"a\", \"b\", \"c\"], x => Js.log(\"Item: \" ++ x))\n\n/*\n  prints:\n  Item: a\n  Item: b\n  Item: c\n*/\nlet total = ref(0)\n\nBelt.Array.forEach([1, 2, 3, 4], x => total := total.contents + x)\n\ntotal.contents == 1 + 2 + 3 + 4\n```"
         ],
         "signature": "let forEach: (t<'a>, 'a => unit) => unit"
       },
@@ -8823,7 +8825,7 @@
         "kind": "value",
         "name": "map",
         "docstrings": [
-          "`map(xs, f)`\n\nReturns a new array by calling `f` for each element of `xs` from the beginning to end.\n\n## Examples\n\n```rescript\nBelt.Array.map([1, 2], (x) => x + 1) == [3, 4]\n```"
+          "`map(xs, f)` returns a new array by calling `f` for each element of `xs` from\nthe beginning to end.\n\n## Examples\n\n```rescript\nBelt.Array.map([1, 2], (x) => x + 1) == [3, 4]\n```"
         ],
         "signature": "let map: (t<'a>, 'a => 'b) => array<'b>"
       },
@@ -8839,7 +8841,7 @@
         "kind": "value",
         "name": "flatMap",
         "docstrings": [
-          "`flatMap(xs, f)`\n\n**Returns** a new array by calling `f` for each element of `xs` from\nthe beginning to end, concatenating the results.\n\n## Examples\n\n```rescript\nflatMap([1, 2], x => [x + 10, x + 20]) == [11, 21, 12, 22]\n```"
+          "`flatMap(xs, f)` returns a new array by calling `f` for each element of `xs` from\nthe beginning to end, concatenating the results.\n\n## Examples\n\n```rescript\nBelt.Array.flatMap([1, 2], x => [x + 10, x + 20]) == [11, 21, 12, 22]\n```"
         ],
         "signature": "let flatMap: (t<'a>, 'a => array<'b>) => array<'b>"
       },
@@ -8855,7 +8857,7 @@
         "kind": "value",
         "name": "getBy",
         "docstrings": [
-          "`getBy(xs, p)`\n\nReturns `Some(value)` for the first value in `xs` that satisifies the predicate\nfunction `p`; returns `None` if no element satisifies the function.\n\n## Examples\n\n```rescript\nBelt.Array.getBy([1, 4, 3, 2], (x) => mod(x, 2) == 0) == Some(4)\nBelt.Array.getBy([15, 13, 11], (x) => mod(x, 2) == 0) == None\n```"
+          "`getBy(xs, p)` returns `Some(value)` for the first value in `xs` that satisifies\nthe predicate function `p`; returns `None` if no element satisifies the function.\n\n## Examples\n\n```rescript\nBelt.Array.getBy([1, 4, 3, 2], (x) => mod(x, 2) == 0) == Some(4)\nBelt.Array.getBy([15, 13, 11], (x) => mod(x, 2) == 0) == None\n```"
         ],
         "signature": "let getBy: (t<'a>, 'a => bool) => option<'a>"
       },
@@ -8903,7 +8905,7 @@
         "kind": "value",
         "name": "keepWithIndex",
         "docstrings": [
-          "`keepWithIndex(xs, p)`\n\nReturns a new array that keep all elements satisfy `p`.\n\n## Examples\n\n```rescript\nBelt.Array.keepWithIndex([1, 2, 3], (_x, i) => i == 1) == [2]\n```"
+          "`keepWithIndex(xs, p)` returns a new array that keep all elements satisfy `p`.\n\n## Examples\n\n```rescript\nBelt.Array.keepWithIndex([1, 2, 3], (_x, i) => i == 1) == [2]\n```"
         ],
         "signature": "let keepWithIndex: (t<'a>, ('a, int) => bool) => t<'a>"
       },
@@ -8919,7 +8921,7 @@
         "kind": "value",
         "name": "keepMap",
         "docstrings": [
-          "`keepMap(xs, p)`\n\nReturns a new array that keep all elements that return a non-None applied `p`.\n\n## Examples\n\n```rescript\nBelt.Array.keepMap([1, 2, 3], x =>\n  if mod(x, 2) == 0 {\n    Some(x)\n  } else {\n    None\n  }\n)\n== [2]\n```"
+          "`keepMap(xs, p)` returns a new array that keep all elements that return a non\nNone applied `p`.\n\n## Examples\n\n```rescript\nBelt.Array.keepMap([1, 2, 3], x =>\n  if mod(x, 2) == 0 {\n    Some(x)\n  } else {\n    None\n  }\n)\n== [2]\n```"
         ],
         "signature": "let keepMap: (t<'a>, 'a => option<'b>) => array<'b>"
       },
@@ -8935,7 +8937,7 @@
         "kind": "value",
         "name": "forEachWithIndex",
         "docstrings": [
-          "`forEachWithIndex(xs, f)`\n\nThe same as `Belt.Array.forEach`;\nexcept that `f` is supplied two arguments: the index starting from 0 and the \nelement from `xs`.\n\n## Examples\n\n```rescript\nBelt.Array.forEachWithIndex([\"a\", \"b\", \"c\"], (i, x) => Js.log(\"Item \" ++ Belt.Int.toString(i) ++ \" is \" ++ x))\n\n/*\n  prints:\n  Item 0 is a\n  Item 1 is b\n  Item 2 is cc\n*/\nlet total = ref(0)\n\nBelt.Array.forEachWithIndex([10, 11, 12, 13], (i, x) => total := total.contents + x + i)\n\ntotal.contents == 0 + 10 + 1 + 11 + 2 + 12 + 3 + 13\n```"
+          "`forEachWithIndex(xs, f)` same as `Belt.Array.forEach`, except that `f` is\nsupplied two arguments: the index starting from 0 and the element from `xs`.\n\n## Examples\n\n```rescript\nBelt.Array.forEachWithIndex([\"a\", \"b\", \"c\"], (i, x) => Js.log(\"Item \" ++ Belt.Int.toString(i) ++ \" is \" ++ x))\n\n/*\n  prints:\n  Item 0 is a\n  Item 1 is b\n  Item 2 is cc\n*/\nlet total = ref(0)\n\nBelt.Array.forEachWithIndex([10, 11, 12, 13], (i, x) => total := total.contents + x + i)\n\ntotal.contents == 0 + 10 + 1 + 11 + 2 + 12 + 3 + 13\n```"
         ],
         "signature": "let forEachWithIndex: (t<'a>, (int, 'a) => unit) => unit"
       },
@@ -8951,7 +8953,7 @@
         "kind": "value",
         "name": "mapWithIndex",
         "docstrings": [
-          "`mapWithIndex(xs, f)`\n\n`mapWithIndex(xs, f)` applies `f` to each element of `xs`. Function `f` takes two\narguments: the index starting from 0 and the element from `xs`.\n\n## Examples\n\n```rescript\nBelt.Array.mapWithIndex([1, 2, 3], (i, x) => i + x) == [0 + 1, 1 + 2, 2 + 3]\n```"
+          "`mapWithIndex(xs, f)` applies `f` to each element of `xs`. Function `f` takes\ntwo arguments: the index starting from 0 and the element from `xs`.\n\n## Examples\n\n```rescript\nBelt.Array.mapWithIndex([1, 2, 3], (i, x) => i + x) == [0 + 1, 1 + 2, 2 + 3]\n```"
         ],
         "signature": "let mapWithIndex: (t<'a>, (int, 'a) => 'b) => array<'b>"
       },
@@ -8983,7 +8985,7 @@
         "kind": "value",
         "name": "reduce",
         "docstrings": [
-          "`reduce(xs, init, f)`\n\nApplies `f` to each element of `xs` from beginning to end. Function `f` has two\nparameters: the item from the list and an “accumulator”; which starts with a value\nof `init`. `reduce` returns the final value of the accumulator.\n\n## Examples\n\n```rescript\nBelt.Array.reduce([2, 3, 4], 1, (a, b) => a + b) == 10\n\nBelt.Array.reduce([\"a\", \"b\", \"c\", \"d\"], \"\", (a, b) => a ++ b) == \"abcd\"\n```"
+          "`reduce(xs, init, f)` applies `f` to each element of `xs` from beginning to end.\nFunction `f` has two parameters: the item from the list and an “accumulator”;\nwhich starts with a value of `init`. `reduce` returns the final value of the\naccumulator.\n\n## Examples\n\n```rescript\nBelt.Array.reduce([2, 3, 4], 1, (a, b) => a + b) == 10\n\nBelt.Array.reduce([\"a\", \"b\", \"c\", \"d\"], \"\", (a, b) => a ++ b) == \"abcd\"\n```"
         ],
         "signature": "let reduce: (array<'b>, 'a, ('a, 'b) => 'a) => 'a"
       },
@@ -8999,7 +9001,7 @@
         "kind": "value",
         "name": "reduceReverse",
         "docstrings": [
-          "`reduceReverse(xs, init, f)`\n\nWorks like `Belt_Array.reduce`; except that function `f` is applied to each item\nof `xs` from the last back to the first.\n\n## Examples\n\n```rescript\nBelt.Array.reduceReverse([\"a\", \"b\", \"c\", \"d\"], \"\", (a, b) => a ++ b) == \"dcba\"\n```"
+          "`reduceReverse(xs, init, f)` works like `Belt.Array.reduce` except that\nfunction `f` is applied to each item of `xs` from the last back to the first.\n\n## Examples\n\n```rescript\nBelt.Array.reduceReverse([\"a\", \"b\", \"c\", \"d\"], \"\", (a, b) => a ++ b) == \"dcba\"\n```"
         ],
         "signature": "let reduceReverse: (array<'b>, 'a, ('a, 'b) => 'a) => 'a"
       },
@@ -9015,7 +9017,7 @@
         "kind": "value",
         "name": "reduceReverse2",
         "docstrings": [
-          "`reduceReverse2(xs, ys, init, f)`\n\nReduces two arrays xs and ys;taking items starting at `min(length(xs), length(ys))`\ndown to and including zero.\n\n## Examples\n\n```rescript\nBelt.Array.reduceReverse2([1, 2, 3], [1, 2], 0, (acc, x, y) => acc + x + y) == 6\n```"
+          "`reduceReverse2(xs, ys, init, f)` reduces two arrays xs and ys;taking items\nstarting at `min(length(xs), length(ys))` down to and including zero.\n\n## Examples\n\n```rescript\nBelt.Array.reduceReverse2([1, 2, 3], [1, 2], 0, (acc, x, y) => acc + x + y) == 6\n```"
         ],
         "signature": "let reduceReverse2: (t<'a>, array<'b>, 'c, ('c, 'a, 'b) => 'c) => 'c"
       },
@@ -9047,7 +9049,7 @@
         "kind": "value",
         "name": "joinWith",
         "docstrings": [
-          "`joinWith(xs, sep, toString)`\n\nConcatenates all the elements of `xs` converted to string with `toString`, each\nseparated by `sep`, the string given as the second argument, into a single string.\nIf the array has only one element, then that element will be returned without \nusing the separator. If the array is empty, the empty string will be returned.\n\n## Examples\n\n```rescript\njoinWith([0, 1], \", \", string_of_int) == \"0, 1\"\njoinWith([], \" \", string_of_int) == \"\"\njoinWith([1], \" \", string_of_int) == \"1\"\n```"
+          "`joinWith(xs, sep, toString)`\n\nConcatenates all the elements of `xs` converted to string with `toString`, each\nseparated by `sep`, the string given as the second argument, into a single string.\nIf the array has only one element, then that element will be returned without \nusing the separator. If the array is empty, the empty string will be returned.\n\n## Examples\n\n```rescript\nBelt.Array.joinWith([0, 1], \", \", Js.Int.toString) == \"0, 1\"\nBelt.Array.joinWith([], \" \", Js.Int.toString) == \"\"\nBelt.Array.joinWith([1], \" \", Js.Int.toString) == \"1\"\n```"
         ],
         "signature": "let joinWith: (t<'a>, string, 'a => string) => string"
       },
@@ -9063,7 +9065,7 @@
         "kind": "value",
         "name": "some",
         "docstrings": [
-          "`some(xs, p)`\n\nReturns true if at least one of the elements in `xs` satifies `p`; where `p` is\na predicate: a function taking an element and returning a `bool`.\n\n## Examples\n\n```rescript\nBelt.Array.some([2, 3, 4], (x) => mod(x, 2) == 1) == true\n\nBelt.Array.some([(-1), (-3), (-5)], (x) => x > 0) == false\n```"
+          "`some(xs, p)` returns true if at least one of the elements in `xs` satifies `p`;\nwhere `p` is a predicate: a function taking an element and returning a `bool`.\n\n## Examples\n\n```rescript\nBelt.Array.some([2, 3, 4], (x) => mod(x, 2) == 1) == true\n\nBelt.Array.some([(-1), (-3), (-5)], (x) => x > 0) == false\n```"
         ],
         "signature": "let some: (t<'a>, 'a => bool) => bool"
       },
@@ -9079,7 +9081,7 @@
         "kind": "value",
         "name": "every",
         "docstrings": [
-          "`every(xs, p)`\n\nReturns `true` if all elements satisfy `p`; where `p` is a predicate: a function\ntaking an element and returning a `bool`.\n\n## Examples\n\n```rescript\nBelt.Array.every([1, 3, 5], (x) => mod(x, 2) == 1) == true\n\nBelt.Array.every([1, (-3), 5], (x) => x > 0) == false\n```"
+          "`every(xs, p)` returns `true` if all elements satisfy `p`; where `p` is a\npredicate: a function taking an element and returning a `bool`.\n\n## Examples\n\n```rescript\nBelt.Array.every([1, 3, 5], (x) => mod(x, 2) == 1) == true\n\nBelt.Array.every([1, (-3), 5], (x) => x > 0) == false\n```"
         ],
         "signature": "let every: (t<'a>, 'a => bool) => bool"
       },
@@ -9095,7 +9097,7 @@
         "kind": "value",
         "name": "every2",
         "docstrings": [
-          "`every2(xs, ys, p)`\n\nreturns true if `p(xi, yi)` is true for all pairs of elements up to the shorter\nlength (i.e. `min(length(xs), length(ys))`)\n\n## Examples\n\n```rescript\nBelt.Array.every2([1, 2, 3], [0, 1], (a, b) => a > b) == true\n\nBelt.Array.every2([], [1], (x, y) => x > y) == true\n\nBelt.Array.every2([2, 3], [1], (x, y) => x > y) == true\n\nBelt.Array.every2([0, 1], [5, 0], (x, y) => x > y) == false\n```"
+          "`every2(xs, ys, p)` returns true if `p(xi, yi)` is true for all pairs of\nelements up to the shorter length (i.e. `min(length(xs), length(ys))`)\n\n## Examples\n\n```rescript\nBelt.Array.every2([1, 2, 3], [0, 1], (a, b) => a > b) == true\n\nBelt.Array.every2([], [1], (x, y) => x > y) == true\n\nBelt.Array.every2([2, 3], [1], (x, y) => x > y) == true\n\nBelt.Array.every2([0, 1], [5, 0], (x, y) => x > y) == false\n```"
         ],
         "signature": "let every2: (t<'a>, array<'b>, ('a, 'b) => bool) => bool"
       },
@@ -9111,7 +9113,7 @@
         "kind": "value",
         "name": "some2",
         "docstrings": [
-          "`some2(xs, ys, p)`\n\nreturns true if `p(xi, yi)` is true for any pair of elements up to the shorter\nlength (i.e. `min(length(xs), length(ys))`)\n\n## Examples\n\n```rescript\nBelt.Array.some2([0, 2], [1, 0, 3], (a, b) => a > b) == true\n\nBelt.Array.some2([], [1], (x, y) => x > y) == false\n\nBelt.Array.some2([2, 3], [1, 4], (x, y) => x > y) == true\n```"
+          "`some2(xs, ys, p)` returns true if `p(xi, yi)` is true for any pair of elements\nup to the shorter length (i.e. `min(length(xs), length(ys))`)\n\n## Examples\n\n```rescript\nBelt.Array.some2([0, 2], [1, 0, 3], (a, b) => a > b) == true\n\nBelt.Array.some2([], [1], (x, y) => x > y) == false\n\nBelt.Array.some2([2, 3], [1, 4], (x, y) => x > y) == true\n```"
         ],
         "signature": "let some2: (t<'a>, array<'b>, ('a, 'b) => bool) => bool"
       },
@@ -9127,7 +9129,7 @@
         "kind": "value",
         "name": "cmp",
         "docstrings": [
-          "`cmp(xs, ys, f)`\n\nCompared by length if `length(xs) != length(ys)`; returning -1 if `length(xs) < length(ys)` or 1 if `length(xs) > length(ys)`\nOtherwise compare one by one `f(x, y)`. `f` returns\na negative number if `x` is “less than” `y`\nzero if `x` is “equal to” `y`\na positive number if `x` is “greater than” `y`\nThe comparison returns the first non-zero result of `f`;or zero if `f` returns zero for all `x` and `y`.\n\n## Examples\n\n```rescript\nBelt.Array.cmp([1, 3, 5], [1, 4, 2], (a, b) => compare(a, b)) == -1\n\nBelt.Array.cmp([1, 3, 5], [1, 2, 3], (a, b) => compare(a, b)) == 1\n\nBelt.Array.cmp([1, 3, 5], [1, 3, 5], (a, b) => compare(a, b)) == 0\n```"
+          "`cmp(xs, ys, f)` compared by length if `length(xs) != length(ys)`; returning `-1`\nif `length(xs) < length(ys)` or 1 if `length(xs) > length(ys)`. Otherwise\ncompare one by one `f(x, y)`. `f` returns a negative number if `x` is “less than” `y`\nzero if `x` is “equal to” `y` a positive number if `x` is “greater than”\n`y`. The comparison returns the first non-zero result of `f`; or zero if `f`\nreturns zero for all `x` and `y`.\n\n## Examples\n\n```rescript\nBelt.Array.cmp([1, 3, 5], [1, 4, 2], (a, b) => compare(a, b)) == -1\n\nBelt.Array.cmp([1, 3, 5], [1, 2, 3], (a, b) => compare(a, b)) == 1\n\nBelt.Array.cmp([1, 3, 5], [1, 3, 5], (a, b) => compare(a, b)) == 0\n```"
         ],
         "signature": "let cmp: (t<'a>, t<'a>, ('a, 'a) => int) => int"
       },
@@ -9143,7 +9145,7 @@
         "kind": "value",
         "name": "eq",
         "docstrings": [
-          "`eq(xs, ys)`\n\nreturn false if length is not the same\notherwise compare items one by one using `f(xi, yi)`; and return true if all\nresults are true false otherwise\n\n## Examples\n\n```rescript\nBelt.Array.eq([1, 2, 3], [(-1), (-2), (-3)], (a, b) => abs(a) == abs(b)) == true\n```"
+          "`eq(xs, ys)` return `false` if length is not the same otherwise compare items\none by one using `f(xi, yi)`; and return true if all results are true false otherwise\n\n## Examples\n\n```rescript\nBelt.Array.eq([1, 2, 3], [(-1), (-2), (-3)], (a, b) => abs(a) == abs(b)) == true\n```"
         ],
         "signature": "let eq: (t<'a>, t<'a>, ('a, 'a) => bool) => bool"
       },
@@ -9152,7 +9154,7 @@
         "kind": "value",
         "name": "truncateToLengthUnsafe",
         "docstrings": [
-          "Unsafe `truncateToLengthUnsafe(xs, n)` sets length of array `xs` to `n`.\n\nIf `n` is greater than the length of `xs`; the extra elements are set to `Js.Null_undefined.null`.\n\nIf `n` is less than zero; raises a `RangeError`.\n\n## Examples\n\n```rescript\nlet arr = [\"ant\", \"bee\", \"cat\", \"dog\", \"elk\"]\n\nBelt.Array.truncateToLengthUnsafe(arr, 3)\n\narr == [\"ant\", \"bee\", \"cat\"]\n```"
+          "Unsafe `truncateToLengthUnsafe(xs, n)` sets length of array `xs` to `n`. If `n`\nis greater than the length of `xs`; the extra elements are set to `Js.Null_undefined.null`.\nIf `n` is less than zero; raises a `RangeError`.\n\n## Examples\n\n```rescript\nlet arr = [\"ant\", \"bee\", \"cat\", \"dog\", \"elk\"]\n\nBelt.Array.truncateToLengthUnsafe(arr, 3)\n\narr == [\"ant\", \"bee\", \"cat\"]\n```"
         ],
         "signature": "let truncateToLengthUnsafe: (t<'a>, int) => unit"
       },

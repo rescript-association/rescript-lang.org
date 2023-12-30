@@ -37,7 +37,7 @@ let dirVersion = Path.join([dirname, "..", "data", "api", version])
 
 if Fs.existsSync(dirVersion) {
   Js.Console.error(`Directory ${dirVersion} already exists`)
-  Process.exit(1)
+  // Process.exit(1)
 } else {
   Fs.mkdirSync(dirVersion)
 }
@@ -110,25 +110,39 @@ let allModules = {
   open Js.Json
   let encodeItem = (docItem: Docgen.item) => {
     switch docItem {
-    | Value({id, name, docstrings, signature}) => {
-        let dict = Js.Dict.fromArray([
-          ("id", id->string),
-          ("kind", "value"->string),
-          ("name", name->string),
-          ("docstrings", docstrings->stringArray),
-          ("signature", signature->string),
-        ])
+    | Value({id, name, docstrings, signature, ?deprecated}) => {
+        let dict = Js.Dict.fromArray(
+          [
+            ("id", id->string),
+            ("kind", "value"->string),
+            ("name", name->string),
+            ("docstrings", docstrings->stringArray),
+            ("signature", signature->string),
+          ]->Js.Array2.concat(
+            switch deprecated {
+            | Some(v) => [("deprecated", v->string)]
+            | None => []
+            },
+          ),
+        )
         dict->object_->Some
       }
 
-    | Type({id, name, docstrings, signature}) =>
-      let dict = Js.Dict.fromArray([
-        ("id", id->string),
-        ("kind", "type"->string),
-        ("name", name->string),
-        ("docstrings", docstrings->stringArray),
-        ("signature", signature->string),
-      ])
+    | Type({id, name, docstrings, signature, ?deprecated}) =>
+      let dict = Js.Dict.fromArray(
+        [
+          ("id", id->string),
+          ("kind", "type"->string),
+          ("name", name->string),
+          ("docstrings", docstrings->stringArray),
+          ("signature", signature->string),
+        ]->Js.Array2.concat(
+          switch deprecated {
+          | Some(v) => [("deprecated", v->string)]
+          | None => []
+          },
+        ),
+      )
       object_(dict)->Some
 
     | _ => None

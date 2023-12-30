@@ -54,9 +54,10 @@ module SidebarTree = {
     let summaryClassName = "truncate py-1 md:h-auto tracking-tight text-gray-60 font-medium text-14 rounded-sm hover:bg-gray-20 hover:-ml-2 hover:py-1 hover:pl-2 "
     let classNameActive = " bg-fire-5 text-red-500 -ml-2 pl-2 font-medium hover:bg-fire-70"
 
-    let rec renderNode = (node: node, level: int) => {
+    let rec renderNode = node => {
       let isCurrentRoute =
         Js.Array2.joinWith(moduleRoute, "/") === Js.Array2.joinWith(node.path, "/")
+
       let classNameActive = isCurrentRoute ? classNameActive : ""
 
       let hasChildren = node.children->Js.Array2.length > 0
@@ -79,7 +80,7 @@ module SidebarTree = {
           {if hasChildren {
             <ul className={"ml-5"}>
               {node.children
-              ->Js.Array2.map(node => node->renderNode(level + 1))
+              ->Js.Array2.map(renderNode)
               ->React.array}
             </ul>
           } else {
@@ -159,7 +160,7 @@ module SidebarTree = {
         <div className="hl-overline text-gray-80 mt-5 mb-2"> {"submodules"->React.string} </div>
         {node.children
         ->Js.Array2.sortInPlaceWith((v1, v2) => v1.name > v2.name ? 1 : -1)
-        ->Js.Array2.map(node => node->renderNode(1))
+        ->Js.Array2.map(renderNode)
         ->React.array}
       </aside>
     </div>
@@ -182,31 +183,52 @@ type api = {
 type params = {slug: array<string>}
 type props = result<api, string>
 
-external asMarkdownH2: 'a => Markdown.H2.props<string, React.element> => React.element = "%identity"
+module MarkdownStylize = {
+  external asMarkdownH2: 'a => Markdown.H2.props<string, React.element> => React.element =
+    "%identity"
+  @react.component
+  let make = (~content, ~rehypePlugins: option<array<MdxRemote.mdxPlugin>>=?) => {
+    let components = {
+      ...MarkdownComponents.default,
+      h2: MarkdownComponents.default.h3->asMarkdownH2,
+    }
+    <ReactMarkdown components={components} ?rehypePlugins> content </ReactMarkdown>
+  }
+}
 
-external asMdxPlugin: 'a => MdxRemote.mdxPlugin = "%identity"
+module DeprecatedMessage = {
+  @react.component
+  let make = (~deprecated) => {
+    switch deprecated->Js.Null.toOption {
+    | Some(content) =>
+      <Markdown.Warn>
+        <h4 className={"hl-4 mb-2"}> {"Deprecated"->React.string} </h4>
+        <MarkdownStylize content />
+      </Markdown.Warn>
+    | None => React.null
+    }
+  }
+}
+
+module DocstringsStylize = {
+  external asMdxPlugin: 'a => MdxRemote.mdxPlugin = "%identity"
+  @react.component
+  let make = (~docstrings, ~slugPrefix) => {
+    let options = {"prefix": slugPrefix ++ "-"}->asMdxPlugin
+    <div className={"mt-3"}>
+      {docstrings
+      ->Js.Array2.map(content =>
+        <MarkdownStylize content rehypePlugins={[[MdxRemote.rehypeSlug, options]->asMdxPlugin]} />
+      )
+      ->React.array}
+    </div>
+  }
+}
 
 let default = (props: props) => {
   let (isSidebarOpen, setSidebarOpen) = React.useState(_ => false)
   let toggleSidebar = () => setSidebarOpen(prev => !prev)
   let router = Next.Router.useRouter()
-
-  let docstringsMarkdown = (~docstrings, ~slugPrefix) => {
-    let components = {
-      ...MarkdownComponents.default,
-      h2: MarkdownComponents.default.h3->asMarkdownH2,
-    }
-
-    let options = {"prefix": slugPrefix ++ "-"}->asMdxPlugin
-    docstrings
-    ->Js.Array2.map(doc =>
-      <ReactMarkdown
-        components={components} rehypePlugins={[[MdxRemote.rehypeSlug, options]->asMdxPlugin]}>
-        doc
-      </ReactMarkdown>
-    )
-    ->React.array
-  }
 
   let title = switch props {
   | Ok({module_: {id}}) => id
@@ -219,26 +241,30 @@ let default = (props: props) => {
     | Ok({module_: {id, name, docstrings, items}}) =>
       let valuesAndType = items->Js.Array2.map(item => {
         switch item {
-        | Value({name, signature, docstrings}) =>
+        | Value({name, signature, docstrings, deprecated}) =>
           let code = Js.String2.replaceByRe(signature, %re("/\\n/g"), "\n")
+          let slugPrefix = "value-" ++ name
           <>
-            <H2 id=name> {name->React.string} </H2>
+            <H2 id=slugPrefix> {name->React.string} </H2>
+            <DeprecatedMessage deprecated />
             <CodeExample code lang="rescript" />
-            <div className="mt-3"> {docstringsMarkdown(~docstrings, ~slugPrefix=name)} </div>
+            <DocstringsStylize docstrings slugPrefix />
           </>
-        | Type({name, signature, docstrings}) =>
+        | Type({name, signature, docstrings, deprecated}) =>
           let code = Js.String2.replaceByRe(signature, %re("/\\n/g"), "\n")
+          let slugPrefix = "type-" ++ name
           <>
-            <H2 id=name> {name->React.string} </H2>
+            <H2 id=slugPrefix> {name->React.string} </H2>
+            <DeprecatedMessage deprecated />
             <CodeExample code lang="rescript" />
-            <div className={"mt-3"}> {docstringsMarkdown(~docstrings, ~slugPrefix=name)} </div>
+            <DocstringsStylize docstrings slugPrefix />
           </>
         }
       })
 
       <>
         <H1> {name->React.string} </H1>
-        {docstringsMarkdown(~docstrings, ~slugPrefix=id)}
+        <DocstringsStylize docstrings slugPrefix=id />
         {valuesAndType->React.array}
       </>
     | _ => React.null
@@ -279,13 +305,18 @@ let default = (props: props) => {
   // | _ => None
   // }
 
+  let version = switch Url.parse(router.asPath).version {
+  | Latest | NoVersion => "latest"
+  | Version(v) => v
+  }
+
   let sidebar = switch props {
   | Ok({toctree}) => <SidebarTree isOpen=isSidebarOpen toggle=toggleSidebar node={toctree} />
   | Error(_) => React.null
   }
 
   let prefix = {
-    {Url.name: "API", href: "/docs/manual/" ++ ("latest" ++ "/api")}
+    {Url.name: "API", href: "/docs/manual/" ++ (version ++ "/api")}
   }
 
   let breadcrumbs = ApiLayout.makeBreadcrumbs(~prefix, router.asPath)
