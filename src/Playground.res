@@ -1253,12 +1253,11 @@ module OutputPanel = {
         if type_ === "log" {
           let args: array<string> = data["args"]
 
-          // Js.log(("args", arg))
           setLogs(
             previousLogs =>
               previousLogs
               ->Belt.Option.getWithDefault([])
-              ->Js.Array2.concat(args)
+              ->Js.Array2.concat([args])
               ->Some,
           )
         }
@@ -1340,8 +1339,8 @@ module OutputPanel = {
         ->Js.Array2.map(log =>
           <pre>
             {log
-            ->Js.String2.make
-            ->React.string}
+            ->Js.Array2.map(item => <span> {`${item} `->React.string} </span>)
+            ->React.array}
           </pre>
         )
         ->React.array

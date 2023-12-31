@@ -23,6 +23,11 @@ module Frame = {
       <head>
         <meta charset="UTF-8" />
         <title>Playground Output</title>
+        <style>
+           * {
+             color: rgb(205, 205, 214);
+           }
+        </style>
       </head>
       <body>
         <div id="root"></div>
@@ -43,15 +48,14 @@ module Frame = {
             try {
               eval(event.data);
             } catch (err) {
-              console.log(err);
+              console.error(err);
             }
           });
           console.log = (...args) => {
             let finalArgs = args.map(arg => {
-              if (typeof arg == 'object') {
+              if (typeof arg === 'object') {
                 return JSON.stringify(arg);
               }
-
               return arg;
             });
             parent.window.postMessage({ type: 'log', args: finalArgs }, '*')
