@@ -369,7 +369,8 @@
     "id": "Belt.HashSet.String",
     "name": "String",
     "docstrings": [
-      "Specalized when key type is `string`, more efficient than the generic type"
+      "Specalized when key type is `string`, more efficient than the generic type",
+      "This module is [`Belt.HashSet`]() specialized with key type to be a primitive type.\n\nIt is more efficient in general, the  API is the same with [`Belt.HashSet`]() except its key type is fixed,\nand identity is not needed(using the built-in one)\n\n**See** [`Belt.HashSet`]()"
     ],
     "items": [
       {
@@ -511,7 +512,8 @@
     "id": "Belt.HashSet.Int",
     "name": "Int",
     "docstrings": [
-      "Specalized when key type is `int`, more efficient than the generic type"
+      "Specalized when key type is `int`, more efficient than the generic type",
+      "This module is [`Belt.HashSet`]() specialized with key type to be a primitive type.\n\nIt is more efficient in general, the  API is the same with [`Belt.HashSet`]() except its key type is fixed,\nand identity is not needed(using the built-in one)\n\n**See** [`Belt.HashSet`]()"
     ],
     "items": [
       {
@@ -1359,7 +1361,8 @@
     "id": "Belt.MutableSet.String",
     "name": "String",
     "docstrings": [
-      "Specialized when key type is `string`, more efficient than the generic type"
+      "Specialized when key type is `string`, more efficient than the generic type",
+      "This module is [`Belt.MutableSet`]() specialized with key type to be a primitive type.\n\nIt is more efficient in general, the  API is the same with [`Belt.MutableSet`]() except its key type is fixed,\nand identity is not needed(using the built-in one)\n\n**See** [`Belt.MutableSet`]()"
     ],
     "items": [
       {
@@ -1700,7 +1703,8 @@
     "id": "Belt.MutableSet.Int",
     "name": "Int",
     "docstrings": [
-      "Specialized when key type is `int`, more efficient than the generic type"
+      "Specialized when key type is `int`, more efficient than the generic type",
+      "This module is [`Belt.MutableSet`]() specialized with key type to be a primitive type.\n\nIt is more efficient in general, the  API is the same with [`Belt.MutableSet`]() except its key type is fixed,\nand identity is not needed(using the built-in one)\n\n**See** [`Belt.MutableSet`]()"
     ],
     "items": [
       {
@@ -2040,7 +2044,9 @@
   "belt/map/dict": {
     "id": "Belt.Map.Dict",
     "name": "Dict",
-    "docstrings": [],
+    "docstrings": [
+      "This module separates identity from data, it is a bit more verbose but\nslightly more efficient due to the fact that there is no need to pack\nidentity and data back after each operation.\n\n**_Advanced usage only_**"
+    ],
     "items": [
       {
         "id": "Belt.Map.Dict.t",
@@ -3311,7 +3317,8 @@
     "id": "Belt.Set.Dict",
     "name": "Dict",
     "docstrings": [
-      "This module separates identity from data, it is a bit more verbose but slightly\nmore efficient due to the fact that there is no need to pack identity and data back\nafter each operation"
+      "This module separates identity from data, it is a bit more verbose but slightly\nmore efficient due to the fact that there is no need to pack identity and data back\nafter each operation",
+      "This module separates identity from data. It is a bit more verbose but slightly\nmore efficient due to the fact that there is no need to pack identity and data\nback after each operation."
     ],
     "items": [
       {
@@ -3679,7 +3686,8 @@
     "id": "Belt.Set.String",
     "name": "String",
     "docstrings": [
-      "Specialized when value type is `string`, more efficient than the generic type,\nits compare behavior is fixed using the built-in comparison"
+      "Specialized when value type is `string`, more efficient than the generic type,\nits compare behavior is fixed using the built-in comparison",
+      "This module is [`Belt.Set`]() specialized with value type to be a primitive type.\nIt is more efficient in general, the  API is the same with [`Belt_Set`]() except its value type is fixed,\nand identity is not needed(using the built-in one)\n\n**See** [`Belt.Set`]()"
     ],
     "items": [
       {
@@ -4007,7 +4015,8 @@
     "id": "Belt.Set.Int",
     "name": "Int",
     "docstrings": [
-      "Specialized when value type is `int`, more efficient than the generic type, its\ncompare behavior is fixed using the built-in comparison"
+      "Specialized when value type is `int`, more efficient than the generic type, its\ncompare behavior is fixed using the built-in comparison",
+      "This module is [`Belt.Set`]() specialized with value type to be a primitive type.\nIt is more efficient in general, the  API is the same with [`Belt_Set`]() except its value type is fixed,\nand identity is not needed(using the built-in one)\n\n**See** [`Belt.Set`]()"
     ],
     "items": [
       {
@@ -4335,7 +4344,8 @@
     "id": "Belt.SortArray.String",
     "name": "String",
     "docstrings": [
-      "Specalized when key type is `string`, more efficient than the generic type"
+      "Specalized when key type is `string`, more efficient than the generic type",
+      "This is a specialized module for [`Belt_SortArray`](), the docs in that module also\napplies here, except the comparator is fixed and inlined"
     ],
     "items": [
       {
@@ -4419,7 +4429,8 @@
     "id": "Belt.SortArray.Int",
     "name": "Int",
     "docstrings": [
-      "Specalized when key type is `int`, more efficient than the generic type"
+      "Specalized when key type is `int`, more efficient than the generic type",
+      "This is a specialized module for [`Belt_SortArray`](), the docs in that module also\napplies here, except the comparator is fixed and inlined"
     ],
     "items": [
       {
@@ -4629,7 +4640,8 @@
     "id": "Belt.Float",
     "name": "Float",
     "docstrings": [
-      "[`Belt.Float`]()\n\n  Utilities for Float."
+      "[`Belt.Float`]()\n\n  Utilities for Float.",
+      "This module includes convenience methods for handling `float` types."
     ],
     "items": [
       {
@@ -4710,7 +4722,8 @@
     "id": "Belt.Int",
     "name": "Int",
     "docstrings": [
-      "[`Belt.Int`]()\n\n  Utilities for Int."
+      "[`Belt.Int`]()\n\n  Utilities for Int.",
+      "This module includes convenience methods for handling `int` types."
     ],
     "items": [
       {
@@ -4791,7 +4804,8 @@
     "id": "Belt.Result",
     "name": "Result",
     "docstrings": [
-      "[`Belt.Result`]()\n\n  Utilities for result data type."
+      "[`Belt.Result`]()\n\n  Utilities for result data type.",
+      "Result types are really useful to describe the result of a certain operation\nwithout relying on exceptions or `option` types.\n\nThis module gives you useful utilities to create and combine `Result` data."
     ],
     "items": [
       {
@@ -4923,7 +4937,8 @@
     "id": "Belt.Option",
     "name": "Option",
     "docstrings": [
-      "[`Belt.Option`]()\n\n  Utilities for option data type."
+      "[`Belt.Option`]()\n\n  Utilities for option data type.",
+      "In Belt we represent the existence and nonexistence of a value by wrapping it\nwith the `option` type.  In order to make it a bit more convenient to work with\noption-types, Belt provides utility-functions for it.\n\nThe `option` type is a part of the ReScript standard library which is defined like this:\n\n## Examples\n\n```rescript\ntype option<'a> = None | Some('a)\n```\n\n```rescript\nlet someString: option<string> = Some(\"hello\")\n```"
     ],
     "items": [
       {
@@ -5112,7 +5127,8 @@
     "id": "Belt.HashMap",
     "name": "HashMap",
     "docstrings": [
-      "[`Belt.HashMap`]()\n\n  The top level provides generic **mutable** hash map operations.\n\n  It also has two specialized inner modules\n  [`Belt.HashMap.Int`]() and [`Belt.HashMap.String`]()"
+      "[`Belt.HashMap`]()\n\n  The top level provides generic **mutable** hash map operations.\n\n  It also has two specialized inner modules\n  [`Belt.HashMap.Int`]() and [`Belt.HashMap.String`]()",
+      "A **mutable** Hash map which allows customized [`hash`]() behavior.\n\nAll data are parameterized by not its only type but also a unique identity in\nthe time of initialization, so that two _HashMaps of ints_ initialized with different\n_hash_ functions will have different type.\n\n## Examples\n\n```rescript\ntype t = int\nmodule I0 = unpack(Belt.Id.hashableU(~hash=(. a: t) => \"&\"(a, 0xff_ff), ~eq=(. a, b) => a == b))\nlet s0: t<_, string, _> = make(~hintSize=40, ~id=module(I0))\n\nmodule I1 = unpack(Belt.Id.hashableU(~hash=(. a: t) => \"&\"(a, 0xff), ~eq=(. a, b) => a == b))\nlet s1: t<_, string, _> = make(~hintSize=40, ~id=module(I1))\n```\n\nThe invariant must be held: for two elements who are _equal_,\ntheir hashed value should be the same\n\nHere the compiler would infer `s0` and `s1` having different type so that\nit would not mix.\n\n## Examples\n\n```rescript\nlet s0: t<int, I0.identity>\nlet s1: t<int, I1.identity>\n```\n\nWe can add elements to the collection:\n\n## Examples\n\n```rescript\nlet () = {\n  add(s1, 0, \"3\")\n  add(s1, 1, \"3\")\n}\n```\n\nSince this is an mutable data strucure, `s1` will contain two pairs."
     ],
     "items": [
       {
@@ -5335,7 +5351,8 @@
     "id": "Belt.HashSet",
     "name": "HashSet",
     "docstrings": [
-      "[`Belt.HashSet`]()\n\n  The top level provides generic **mutable** hash set operations.\n\n  It also has two specialized inner modules\n  [`Belt.HashSet.Int`]() and [`Belt.HashSet.String`]()"
+      "[`Belt.HashSet`]()\n\n  The top level provides generic **mutable** hash set operations.\n\n  It also has two specialized inner modules\n  [`Belt.HashSet.Int`]() and [`Belt.HashSet.String`]()",
+      "A **mutable** Hash set which allows customized `hash` behavior.\n\nAll data are parameterized by not its only type but also a unique identity in\nthe time of initialization, so that two _HashSets of ints_ initialized with\ndifferent _hash_ functions will have different type.\n\n## Examples\n\n```rescript\nmodule I0 = unpack(\n  Belt.Id.hashableU(\n    ~hash=(. a: int) => land(a, 65535),\n    ~eq=(. a, b) => a == b,\n  )\n)\n\nlet s0 = Belt.HashSet.make(~id=module(I0), ~hintSize=40)\n\nmodule I1 = unpack(\n  Belt.Id.hashableU(\n    ~hash=(. a: int) => land(a, 255),\n    ~eq=(. a, b) => a == b,\n  )\n)\n\nlet s1 = Belt.HashSet.make(~id=module(I1), ~hintSize=40)\n\nBelt.HashSet.add(s1, 0)\nBelt.HashSet.add(s1, 1)\n```\n\nThe invariant must be held: for two elements who are equal, their hashed\nvalue should be the same.\n\nHere the compiler would infer `s0` and `s1` having different type so that it\nwould not mix.\n\n## Examples\n\n```rescript\nlet s0: Belt.HashSet.t<int, I0.identity>\nlet s1: Belt.HashSet.t<int, I1.identity>\n```\n\nWe can add elements to the collection (see last two lines in the example\nabove). Since this is an mutable data structure, `s1` will contain two pairs."
     ],
     "items": [
       {
@@ -5843,7 +5860,8 @@
     "id": "Belt.MutableSet",
     "name": "MutableSet",
     "docstrings": [
-      "[`Belt.MutableSet`]()\n\n  The top level provides generic **mutable** set operations.\n\n  It also has two specialized inner modules\n  [`Belt.MutableSet.Int`]() and [`Belt.MutableSet.String`]()"
+      "[`Belt.MutableSet`]()\n\n  The top level provides generic **mutable** set operations.\n\n  It also has two specialized inner modules\n  [`Belt.MutableSet.Int`]() and [`Belt.MutableSet.String`]()",
+      "A **mutable** sorted set module which allows customized compare behavior.\nThe implementation uses balanced binary trees, and therefore searching and insertion take time logarithmic in the size of the map.\n\nIt also has two specialized inner modules [Belt.MutableSet.Int](mutable-set-int) and [Belt.MutableSet.String](mutable-set-string) - This module separates data from function which is more verbose but slightly more efficient\n\n## Examples\n\n```rescript\nmodule PairComparator = Belt.Id.MakeComparable({\n  type t = (int, int)\n  let cmp = ((a0, a1), (b0, b1)) =>\n    switch Pervasives.compare(a0, b0) {\n    | 0 => Pervasives.compare(a1, b1)\n    | c => c\n    }\n})\n\nlet mySet = Belt.MutableSet.make(~id=module(PairComparator))\nmySet->Belt.MutableSet.add((1, 2))\n```"
     ],
     "items": [
       {
@@ -6234,7 +6252,8 @@
     "id": "Belt.Map",
     "name": "Map",
     "docstrings": [
-      "[`Belt.Map`](),\n\n  The top level provides generic **immutable** map operations.\n\n  It also has three specialized inner modules\n  [`Belt.Map.Int`](), [`Belt.Map.String`]() and\n\n  [`Belt.Map.Dict`](): This module separates data from function\n  which  is more verbose but slightly more efficient"
+      "[`Belt.Map`](),\n\n  The top level provides generic **immutable** map operations.\n\n  It also has three specialized inner modules\n  [`Belt.Map.Int`](), [`Belt.Map.String`]() and\n\n  [`Belt.Map.Dict`](): This module separates data from function\n  which  is more verbose but slightly more efficient",
+      "The top level provides generic immutable map operations.\n\nIt also has three specialized inner modules `Belt.Map.Int`, `Belt.Map.String`\nand `Belt.Map.Dict`."
     ],
     "items": [
       {
@@ -6739,7 +6758,8 @@
     "id": "Belt.Set",
     "name": "Set",
     "docstrings": [
-      "[`Belt.Set`]()\n\n  The top level provides generic **immutable** set operations.\n\n  It also has three specialized inner modules\n  [`Belt.Set.Int`](), [`Belt.Set.String`]() and\n\n  [`Belt.Set.Dict`](): This module separates data from function\n  which is more verbose but slightly more efficient"
+      "[`Belt.Set`]()\n\n  The top level provides generic **immutable** set operations.\n\n  It also has three specialized inner modules\n  [`Belt.Set.Int`](), [`Belt.Set.String`]() and\n\n  [`Belt.Set.Dict`](): This module separates data from function\n  which is more verbose but slightly more efficient",
+      "An _immutable_ sorted set module which allows customized _compare_ behavior.\n\nThe implementation uses balanced binary trees, and therefore searching\nand insertion take time logarithmic in the size of the map.\n\nFor more info on this module's usage of identity, `make` and others, please see\nthe top level documentation of Belt, **A special encoding for collection safety**.\n\n## Examples\n\n```rescript\nmodule PairComparator =\n  Belt.Id.MakeComparable({\n    type t = (int, int)\n    let cmp = ((a0, a1), (b0, b1)) =>\n      switch (Pervasives.compare(a0, b0)) {\n      | 0 => Pervasives.compare(a1, b1)\n      | c => c\n      }\n  })\n\nlet mySet = Belt.Set.make(~id=module(PairComparator))\nlet mySet2 = Belt.Set.add(mySet, (1, 2))\n```\n\n**Note:** This module's examples will assume a predeclared module for integers\ncalled `IntCmp`. It is declared like this:\n\n```rescript\nmodule IntCmp =\n  Belt.Id.MakeComparable({\n    type t = int\n    let cmp = Pervasives.compare\n  })\n```"
     ],
     "items": [
       {
@@ -7134,7 +7154,8 @@
     "id": "Belt.Range",
     "name": "Range",
     "docstrings": [
-      "[`Belt.Range`]()\n\n  Utilities for a closed range `(from, start)`"
+      "[`Belt.Range`]()\n\n  Utilities for a closed range `(from, start)`",
+      "A small utility module to provide inclusive range operations for `[start, finish]`.\nInternally it is relying on loops instead of creating new arrays, which makes it\npretty performant and memory friendly."
     ],
     "items": [
       {
@@ -7223,7 +7244,8 @@
     "id": "Belt.List",
     "name": "List",
     "docstrings": [
-      "[`Belt.List`]()\n\n  Utilities for List data type"
+      "[`Belt.List`]()\n\n  Utilities for List data type",
+      "Collection functions for manipulating the `list` data structures, a singly-linked list.\n\n**Prefer Array** if you need any of the following:\n\n- Random access of element\n- Better interop with JavaScript\n- Better memory usage & performance."
     ],
     "items": [
       {
@@ -8035,7 +8057,8 @@
     "id": "Belt.MutableStack",
     "name": "MutableStack",
     "docstrings": [
-      "[`Belt.MutableStack`]()\n\n  An FILO(first in last out) stack data structure"
+      "[`Belt.MutableStack`]()\n\n  An FILO(first in last out) stack data structure",
+      "First in last out stack. This module implements stacks, with in-place\nmodification."
     ],
     "items": [
       {
@@ -8157,7 +8180,8 @@
     "id": "Belt.MutableQueue",
     "name": "MutableQueue",
     "docstrings": [
-      "[`Belt.MutableQueue`]()\n\n  An FIFO(first in first out) queue data structure"
+      "[`Belt.MutableQueue`]()\n\n  An FIFO(first in first out) queue data structure",
+      "A FIFO (first in first out) queue data structure."
     ],
     "items": [
       {
@@ -8356,7 +8380,8 @@
     "id": "Belt.SortArray",
     "name": "SortArray",
     "docstrings": [
-      "[`Belt.SortArray`]()\n\n  The top level provides some generic sort related utilities.\n\n  It also has two specialized inner modules\n  [`Belt.SortArray.Int`]() and [`Belt.SortArray.String`]()"
+      "[`Belt.SortArray`]()\n\n  The top level provides some generic sort related utilities.\n\n  It also has two specialized inner modules\n  [`Belt.SortArray.Int`]() and [`Belt.SortArray.String`]()",
+      "A module for Array sort relevant utiliites"
     ],
     "items": [
       {
@@ -8489,7 +8514,8 @@
     "id": "Belt.Array",
     "name": "Array",
     "docstrings": [
-      "[`Belt.Array`]()\n\n  **mutable array**: Utilities functions"
+      "[`Belt.Array`]()\n\n  **mutable array**: Utilities functions",
+      "Utililites for `Array` functions.\n\n### Note about index syntax\n\nCode like `arr[0]` does *not* compile to JavaScript `arr[0]`. Reason transforms\nthe `[]` index syntax into a function: `Array.get(arr, 0)`. By default, this\nuses the default standard library's `Array.get` function, which may raise an\nexception if the index isn't found. If you `open Belt`, it will use the\n`Belt.Array.get` function which returns options instead of raising exceptions. \n[See this for more information](../belt.mdx#array-access-runtime-safety)."
     ],
     "items": [
       {
@@ -9187,7 +9213,8 @@
     "id": "Belt.Id",
     "name": "Id",
     "docstrings": [
-      "[`Belt.Id`]()\n\n  Provide utilities to create identified comparators or hashes for\n  data structures used below.\n\n  It create a unique identifier per module of\n  functions so that different data structures with slightly different\n  comparison functions won't mix"
+      "[`Belt.Id`]()\n\n  Provide utilities to create identified comparators or hashes for\n  data structures used below.\n\n  It create a unique identifier per module of\n  functions so that different data structures with slightly different\n  comparison functions won't mix",
+      "[`Belt.Id`]()\n\nProvide utiliites to create identified comparators or hashes for\ndata structures used below.\n\nIt create a unique identifer per module of functions so that different data structures with slightly different\ncomparison functions won't mix."
     ],
     "items": [
       {

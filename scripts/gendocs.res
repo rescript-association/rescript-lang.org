@@ -25,7 +25,7 @@ let dirname =
   ->Path.dirname
 
 let compilerLibPath = switch args->Belt.Array.get(0) {
-| Some(path) => Path.join([path, "lib", "ocaml"])
+| Some(path) => Path.join([path, "jscomp", "others"])
 | None => failwith("First argument should be path to rescript-compiler repo")
 }
 
@@ -67,9 +67,9 @@ let docsDecoded = entryPointFiles->Js.Array2.map(libFile => {
   Js.Dict.set(env, "FROM_COMPILER", "true")
 
   let output =
-    ChildProcess.execSync(`./node_modules/.bin/rescript-tools doc ${entryPointFile}`)
-    ->Buffer.toString
-    ->Js.String2.trim
+    ChildProcess.execSync(
+      `./node_modules/.bin/rescript-tools doc ${entryPointFile}`,
+    )->Buffer.toString
 
   output
   ->Js.Json.parseExn
@@ -77,13 +77,12 @@ let docsDecoded = entryPointFiles->Js.Array2.map(libFile => {
 })
 
 let docs = docsDecoded->Js.Array2.map(doc => {
-  let topLevelItems = doc.items->Belt.Array.keepMap(item => {
+  let topLevelItems = doc.items->Belt.Array.keepMap(item =>
     switch item {
-    | Value(payload) => Docgen.Value(payload)->Some
-    | Type(payload) => Docgen.Type(payload)->Some
+    | Value(_) as item | Type(_) as item => item->Some
     | _ => None
     }
-  })
+  )
 
   let rec getModules = (lst: list<Docgen.item>, moduleNames: list<module_>) =>
     switch lst {

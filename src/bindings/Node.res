@@ -32,7 +32,6 @@ module Buffer = {
 }
 
 module ChildProcess = {
-  type t
   @module("child_process")
   external execSync: string => Buffer.t = "execSync"
 }

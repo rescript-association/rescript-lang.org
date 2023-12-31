@@ -9049,7 +9049,8 @@
     "id": "Js.WeakMap",
     "name": "WeakMap",
     "docstrings": [
-      "Provides bindings for ES6 WeakMap"
+      "Provides bindings for ES6 WeakMap",
+      "ES6 WeakMap API"
     ],
     "items": [
       {
@@ -9065,7 +9066,8 @@
     "id": "Js.Map",
     "name": "Map",
     "docstrings": [
-      "Provides bindings for ES6 Map"
+      "Provides bindings for ES6 Map",
+      "ES6 Map API"
     ],
     "items": [
       {
@@ -9081,7 +9083,8 @@
     "id": "Js.WeakSet",
     "name": "WeakSet",
     "docstrings": [
-      "Provides bindings for ES6 WeakSet"
+      "Provides bindings for ES6 WeakSet",
+      "ES6 WeakSet API"
     ],
     "items": [
       {
@@ -9097,7 +9100,8 @@
     "id": "Js.Set",
     "name": "Set",
     "docstrings": [
-      "Provides bindings for ES6 Set"
+      "Provides bindings for ES6 Set",
+      "ES6 Set API"
     ],
     "items": [
       {
@@ -9738,7 +9742,8 @@
     "id": "Js.Blob",
     "name": "Blob",
     "docstrings": [
-      "Provide utilities for Blob"
+      "Provide utilities for Blob",
+      "JavaScript Blob API"
     ],
     "items": [
       {
@@ -9754,7 +9759,8 @@
     "id": "Js.File",
     "name": "File",
     "docstrings": [
-      "Provide utilities for File"
+      "Provide utilities for File",
+      "JavaScript File API"
     ],
     "items": [
       {
@@ -9770,7 +9776,8 @@
     "id": "Js.Bigint",
     "name": "Bigint",
     "docstrings": [
-      "Provide utilities for bigint"
+      "Provide utilities for bigint",
+      "JavaScript BigInt API"
     ],
     "items": [
       {
@@ -9786,7 +9793,8 @@
     "id": "Js.Int",
     "name": "Int",
     "docstrings": [
-      "Provide utilities for int"
+      "Provide utilities for int",
+      "Provide utilities for handling `int`."
     ],
     "items": [
       {
@@ -9877,7 +9885,8 @@
     "id": "Js.Float",
     "name": "Float",
     "docstrings": [
-      "Provide utilities for JS float"
+      "Provide utilities for JS float",
+      "Provide utilities for JS float."
     ],
     "items": [
       {
@@ -9994,7 +10003,8 @@
     "id": "Js.Types",
     "name": "Types",
     "docstrings": [
-      "Provide utilities for manipulating JS types"
+      "Provide utilities for manipulating JS types",
+      "Provide utilities for manipulating JS types."
     ],
     "items": [
       {
@@ -10083,7 +10093,8 @@
     "id": "Js.TypedArray2",
     "name": "TypedArray2",
     "docstrings": [
-      "Provide bindings for JS typed array"
+      "Provide bindings for JS typed array",
+      "JavaScript Typed Array API\n\n**see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)"
     ],
     "items": [
       {
@@ -10106,7 +10117,8 @@
     "id": "Js.Typed_array",
     "name": "Typed_array",
     "docstrings": [
-      "Provide bindings for JS typed array"
+      "Provide bindings for JS typed array",
+      "JavaScript Typed Array API\n\n**see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray)"
     ],
     "items": [
       {
@@ -10129,7 +10141,8 @@
     "id": "Js.Obj",
     "name": "Obj",
     "docstrings": [
-      "Provide utilities for `Js.t`"
+      "Provide utilities for `Js.t`",
+      "Provides functions for inspecting and manipulating native JavaScript objects"
     ],
     "items": [
       {
@@ -10165,7 +10178,8 @@
     "id": "Js.Math",
     "name": "Math",
     "docstrings": [
-      "Provide bindings for JS `Math` object"
+      "Provide bindings for JS `Math` object",
+      "Provide utilities for JS Math. Note: The constants `_E`, `_LN10`, `_LN2`,\n`_LOG10E`, `_LOG2E`, `_PI`, `_SQRT1_2`, and `_SQRT2` begin with an underscore\nbecause ReScript variable names cannot begin with a capital letter. (Module\nnames begin with upper case.)"
     ],
     "items": [
       {
@@ -10747,7 +10761,8 @@
     "id": "Js.Json",
     "name": "Json",
     "docstrings": [
-      "Provide utilities for json"
+      "Provide utilities for json",
+      "Efficient JSON encoding using JavaScript API\n\n**see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON)"
     ],
     "items": [
       {
@@ -10986,7 +11001,8 @@
     "id": "Js.Global",
     "name": "Global",
     "docstrings": [
-      "Provide bindings to JS global functions in global namespace"
+      "Provide bindings to JS global functions in global namespace",
+      "Contains functions available in the global scope (`window` in a browser context)"
     ],
     "items": [
       {
@@ -11103,7 +11119,8 @@
     "id": "Js.Dict",
     "name": "Dict",
     "docstrings": [
-      "Provide utilities for JS dictionary object"
+      "Provide utilities for JS dictionary object",
+      "Provide utilities for JS dictionary object.\n\n**Note:** This module's examples will assume this predeclared dictionary:\n\n## Examples\n\n```rescript\nlet ages = Js.Dict.fromList(list{(\"Maria\", 30), (\"Vinh\", 22), (\"Fred\", 49)})\n```"
     ],
     "items": [
       {
@@ -11227,7 +11244,8 @@
     "id": "Js.Date",
     "name": "Date",
     "docstrings": [
-      "Provide bindings for JS Date"
+      "Provide bindings for JS Date",
+      "Provide bindings to JS date. (See\n[`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)\non MDN.) JavaScript stores dates as the number of milliseconds since the UNIX\n*epoch*, midnight 1 January 1970, UTC."
     ],
     "items": [
       {
@@ -12101,7 +12119,8 @@
     "id": "Js.Promise",
     "name": "Promise",
     "docstrings": [
-      "Provide bindings to JS Promise"
+      "Provide bindings to JS Promise",
+      "Deprecation note: These bindings are pretty outdated and cannot be used properly\nwith the `->` operator.\n\nMore details on proper Promise usage can be found here:\nhttps://rescript-lang.org/docs/manual/latest/promise#promise-legacy"
     ],
     "items": [
       {
@@ -12222,7 +12241,8 @@
     "id": "Js.Re",
     "name": "Re",
     "docstrings": [
-      "Provide bindings to JS regex expression"
+      "Provide bindings to JS regex expression",
+      "Provide bindings to JS regular expressions (RegExp).\n\n**Note:** This is not an immutable API. A RegExp object with the `global` (\"g\")\nflag set will modify the [`lastIndex`]() property when the RegExp object is used,\nand subsequent uses will continue the search from the previous [`lastIndex`]()."
     ],
     "items": [
       {
@@ -12401,7 +12421,8 @@
     "id": "Js.String2",
     "name": "String2",
     "docstrings": [
-      "Provide bindings to JS string"
+      "Provide bindings to JS string",
+      "Provide bindings to JS string. Optimized for pipe-first."
     ],
     "items": [
       {
@@ -12885,7 +12906,8 @@
     "id": "Js.String",
     "name": "String",
     "docstrings": [
-      "Provide bindings to JS string"
+      "Provide bindings to JS string",
+      "JavaScript String API"
     ],
     "items": [
       {
@@ -13293,7 +13315,8 @@
     "id": "Js.Array2",
     "name": "Array2",
     "docstrings": [
-      "Provide bindings to JS array"
+      "Provide bindings to JS array",
+      "Provides bindings to JavaScript’s `Array` functions. These bindings are optimized for pipe-first (`->`), where the array to be processed is the first parameter in the function.\n\nHere is an example to find the sum of squares of all even numbers in an array.\nWithout pipe first, we must call the functions in reverse order:\n\n## Examples\n\n```rescript\nlet isEven = x => mod(x, 2) == 0\nlet square = x => x * x\nlet result = {\n  open Js.Array2\n  reduce(map(filter([5, 2, 3, 4, 1], isEven), square), \"+\", 0)\n}\n```\n\nWith pipe first, we call the functions in the “natural” order:\n\n```rescript\nlet isEven = x => mod(x, 2) == 0\nlet square = x => x * x\nlet result = {\n  open Js.Array2\n  [5, 2, 3, 4, 1]->filter(isEven)->map(square)->reduce(\"+\", 0)\n}\n```"
     ],
     "items": [
       {
@@ -13823,7 +13846,8 @@
     "id": "Js.Array",
     "name": "Array",
     "docstrings": [
-      "Provide bindings to JS array"
+      "Provide bindings to JS array",
+      "Provides bindings to JavaScript’s `Array` functions. These bindings are\noptimized for pipe-last (`|>`), where the array to be processed is the last\nparameter in the function.\n\nHere is an example to find the sum of squares of all even numbers in an array.\nWithout pipe last, we must call the functions in reverse order:\n\n## Examples\n\n```rescript\nlet isEven = x => mod(x, 2) == 0\nlet square = x => x * x\nlet result = {\n  open Js.Array\n  reduce(\\\"+\", 0, map(square, filter(isEven, [5, 2, 3, 4, 1])))\n}\n```\n\nWith pipe last, we call the functions in the “natural” order:\n\n```rescript\nlet isEven = x => mod(x, 2) == 0\nlet square = x => x * x\nlet result = {\n  open Js.Array\n  [5, 2, 3, 4, 1] |> filter(isEven) |> map(square) |> reduce(\"+\", 0)\n}\n```"
     ],
     "items": [
       {
@@ -14267,7 +14291,8 @@
     "id": "Js.Exn",
     "name": "Exn",
     "docstrings": [
-      "Provide utilities for dealing with Js exceptions"
+      "Provide utilities for dealing with Js exceptions",
+      "Provide utilities for dealing with JS exceptions."
     ],
     "items": [
       {
@@ -14388,7 +14413,9 @@
   "js/null_undefined": {
     "id": "Js.Null_undefined",
     "name": "Null_undefined",
-    "docstrings": [],
+    "docstrings": [
+      "Contains functionality for dealing with values that can be both `null` and `undefined`"
+    ],
     "items": [
       {
         "id": "Js.Null_undefined.t",
@@ -14493,7 +14520,8 @@
     "id": "Js.Nullable",
     "name": "Nullable",
     "docstrings": [
-      "Provide utilities for `Js.null_undefined`"
+      "Provide utilities for `Js.null_undefined`",
+      "Contains functionality for dealing with values that can be both `null` and `undefined`"
     ],
     "items": [
       {
@@ -14599,7 +14627,8 @@
     "id": "Js.Undefined",
     "name": "Undefined",
     "docstrings": [
-      "Provide utilities for `Js.undefined<'a>`"
+      "Provide utilities for `Js.undefined<'a>`",
+      "Provides functionality for dealing with the `Js.undefined<'a>` type"
     ],
     "items": [
       {
@@ -14720,7 +14749,8 @@
     "id": "Js.Null",
     "name": "Null",
     "docstrings": [
-      "Provide utilities for `Js.null<'a>`"
+      "Provide utilities for `Js.null<'a>`",
+      "Provides functionality for dealing with the `Js.null<'a>` type"
     ],
     "items": [
       {

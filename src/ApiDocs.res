@@ -215,12 +215,15 @@ module DocstringsStylize = {
   @react.component
   let make = (~docstrings, ~slugPrefix) => {
     let options = {"prefix": slugPrefix ++ "-"}->asMdxPlugin
+    let rehypePlugins = [[MdxRemote.rehypeSlug, options]->asMdxPlugin]
+
+    let content = switch docstrings->Js.Array2.length > 1 {
+    | true => docstrings->Js.Array2.sliceFrom(1)
+    | false => docstrings
+    }->Js.Array2.joinWith("\n")
+
     <div className={"mt-3"}>
-      {docstrings
-      ->Js.Array2.map(content =>
-        <MarkdownStylize content rehypePlugins={[[MdxRemote.rehypeSlug, options]->asMdxPlugin]} />
-      )
-      ->React.array}
+      <MarkdownStylize content rehypePlugins />
     </div>
   }
 }
