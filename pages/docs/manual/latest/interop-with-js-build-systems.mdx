@@ -25,7 +25,7 @@ For what it's worth, you can also turn `rescript` into an automated step in your
 
 ### Tips & Tricks
 
-You can make ReScript JS files look even more idiomatic through the in-source + bs suffix config in `bsconfig.json`:
+You can make ReScript JS files look even more idiomatic through the in-source + bs suffix config in `rescript.json`:
 
 ```json
 {
@@ -33,14 +33,14 @@ You can make ReScript JS files look even more idiomatic through the in-source + 
     "module": "commonjs", // or whatever module system your project uses
     "in-source": true
   },
-  "suffix": ".bs.js"
+  "suffix": ".res.js"
 }
 ```
 
 This will:
 
 - Generate the JS files alongside your ReScript source files.
-- Use the file extension `.bs.js`, so that you can require these files on the JS side through `require('./MyFile.bs')`, without needing a loader.
+- Use the file extension `.res.js`, so that you can require these files on the JS side through `require('./MyFile.res.js')`, without needing a loader.
 
 ## Use Loaders on ReScript Side
 

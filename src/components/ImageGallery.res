@@ -6,7 +6,7 @@ type mode =
 let make = (~className="", ~imgClassName="", ~imgSrcs: array<string>, ~mode=NoAuto) => {
   let (index, setIndex) = React.useState(_ => 0)
 
-  React.useEffect0(() => {
+  React.useEffect(() => {
     switch mode {
     | NoAuto => None
     | AutoFadeTransition(ms) =>
@@ -28,7 +28,7 @@ let make = (~className="", ~imgClassName="", ~imgSrcs: array<string>, ~mode=NoAu
         },
       )
     }
-  })
+  }, [])
 
   let src = imgSrcs->Belt.Array.getExn(index)
 

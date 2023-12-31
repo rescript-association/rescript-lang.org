@@ -1,0 +1,13 @@
+{
+  "name": "dummy",
+  "sources": {
+    "dir": "dummy",
+    "subdirs": true
+  },
+  "bs-dependencies": [
+    "@rescript/core"
+  ],
+  "bsc-flags": [
+    "-open RescriptCore"
+  ]
+}

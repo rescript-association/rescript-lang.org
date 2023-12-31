@@ -1,11 +1,12 @@
 // Structure defined by `scripts/extract-tocs.js`
-let tocData: Js.Dict.t<{
+@module("index_data/reason_compiler_toc.json")
+external tocData: Js.Dict.t<{
   "title": string,
   "headers": array<{
     "name": string,
     "href": string,
   }>,
-}> = %raw("require('index_data/reason_compiler_toc.json')")
+}> = "default"
 
 module NavItem = SidebarLayout.Sidebar.NavItem
 module Category = SidebarLayout.Sidebar.Category
@@ -58,7 +59,7 @@ let categories = [
 ]
 
 @react.component
-let make = (~components=Markdown.default, ~children) => {
+let make = (~components=MarkdownComponents.default, ~children) => {
   let router = Next.Router.useRouter()
   let route = router.route
 

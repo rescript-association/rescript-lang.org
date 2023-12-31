@@ -13,7 +13,7 @@ ReScript offers a unique project conversion methodology which:
 
 ## Step 1: Install ReScript
 
-Run `npm install rescript` on your project, then imitate our [New Project](installation#new-project) workflow by adding a `bsconfig.json` at the root. Then start `npx rescript build -w`.
+Run `npm install rescript` on your project, then imitate our [New Project](installation#new-project) workflow by adding a `rescript.json` at the root. Then start `npx rescript build -w`.
 
 ## Step 2: Copy Paste the Entire JS File
 
@@ -73,7 +73,7 @@ function queryResult(usePayload, payload) {
 
 </CodeTab>
 
-Add this file to `bsconfig.json`:
+Add this file to `rescript.json`:
 
 ```json
   "sources": {
@@ -82,9 +82,9 @@ Add this file to `bsconfig.json`:
   },
 ```
 
-Open an editor tab for `src/Main.bs.js`. Do a command-line `diff -u src/main.js src/Main.bs.js`. Aside from whitespaces, you should see only minimal, trivial differences. You're already a third of the way done!
+Open an editor tab for `src/Main.res.js`. Do a command-line `diff -u src/main.js src/Main.res.js`. Aside from whitespaces, you should see only minimal, trivial differences. You're already a third of the way done!
 
-**Always make sure** that at each step, you keep the ReScript output `.bs.js` file open to compare against the existing JavaScript file. Our compilation output is very close to your hand-written JavaScript; you can simply eye the difference to catch conversion bugs!
+**Always make sure** that at each step, you keep the ReScript output `.res.js` file open to compare against the existing JavaScript file. Our compilation output is very close to your hand-written JavaScript; you can simply eye the difference to catch conversion bugs!
 
 ## Step 3: Extract Parts into Idiomatic ReScript
 
@@ -225,9 +225,9 @@ exports.queryResult = queryResult;
 
 We hurrily typed `school` as a polymorphic `'whatever` and let its type be inferred by its usage below. The inference is technically correct, but within the context of bringing it a value from JavaScript, slightly dangerous. This is just the interop trick we've shown in the [`external`](external) page.
 
-Anyway, the file passes the type checker again. Check the `.bs.js` output, diff with the original `.js`; we've now converted a file over to ReScript!
+Anyway, the file passes the type checker again. Check the `.res.js` output, diff with the original `.js`; we've now converted a file over to ReScript!
 
-Now, you can delete the original, hand-written `main.js` file, and grep the files importing `main.js` and change them to importing `Main.bs.js`.
+Now, you can delete the original, hand-written `main.js` file, and grep the files importing `main.js` and change them to importing `Main.res.js`.
 
 ## (Optional) Step 5: Cleanup
 
@@ -283,7 +283,7 @@ We've:
 - typed the payload as a record with only the `student` field
 - typed `getStudentById` as the sole method of `student`
 
-Check that the `.bs.js` output didn't change. How rigidly to type your JavaScript code is up to you; we recommend not typing them too elaborately; it's sometime an endless chase, and produces diminishing returns, especially considering that the elaborate-ness might turn off your potential teammates.
+Check that the `.res.js` output didn't change. How rigidly to type your JavaScript code is up to you; we recommend not typing them too elaborately; it's sometime an endless chase, and produces diminishing returns, especially considering that the elaborate-ness might turn off your potential teammates.
 
 ## Tips & Tricks
 

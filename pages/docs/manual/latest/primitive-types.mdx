@@ -48,7 +48,6 @@ There's a special syntax for string that allows
 - multiline string just like before
 - no special character escaping
 - Interpolation
-- Proper unicode handling
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -71,27 +70,9 @@ var greeting = "Hello\nWorld\n👋\n" + name + "\n";
 
 This is just like JavaScript's backtick string interpolation, except without needing to escape special characters.
 
-### Unsafe String Interpolation (Deprecated)
-
-> ReScript v10.1.4 deprecated unsafe string interpolation and will be removed in v11.
-
-For interpolation, you'll have to convert the binding (`name` in the example) into a string if it isn't one. If you want the interpolation to implicitly convert a binding into a string, prepend a `j`:
-
-<CodeTab labels={["ReScript", "JS Output"]}>
-
-```res example
-let age = 10
-let message = j`Today I am $age years old.`
-```
-```js
-var message = "Today I am " + 10 + " years old.";
-```
-
-</CodeTab>
-
 ### Usage
 
-See the familiar `Js.String` API in the [API docs](api/js/string). Since a ReScript string maps to a JavaScript string, you can mix & match the string operations in both standard libraries.
+See the familiar `String` API in the [API docs](api/js/string). Since a ReScript string maps to a JavaScript string, you can mix & match the string operations in all standard libraries.
 
 ### Tips & Tricks
 
@@ -160,7 +141,7 @@ ReScript's `true/false` compiles into a JavaScript `true/false`.
 
 32-bits, truncated when necessary. We provide the usual operations on them: `+`, `-`, `*`, `/`, etc. See [Js.Int](api/js/int) for helper functions.
 
-**Be careful when you bind to JavaScript numbers!** Since ReScript integers have a much smaller range than JavaScript numbers, data might get lost when dealing with large numbers. In those cases, it’s much safer to bind the numbers as **floats**. Be extra mindful of this when binding to JavaScript Dates and their epoch time.
+**Be careful when you bind to JavaScript numbers!** Since ReScript integers have a much smaller range than JavaScript numbers, data might get lost when dealing with large numbers. In those cases it’s much safer to bind the numbers as **float**. Be extra mindful of this when binding to JavaScript Dates and their epoch time.
 
 To improve readability, you may place underscores in the middle of numeric literals such as `1_000_000`. Note that underscores can be placed anywhere within a number, not just every three digits.
 
@@ -169,6 +150,21 @@ To improve readability, you may place underscores in the middle of numeric liter
 Float requires other operators: `+.`, `-.`, `*.`, `/.`, etc. Like `0.5 +. 0.6`. See [Js.Float](api/js/float) for helper functions.
 
 As with integers, you may use underscores within literals to improve readability.
+
+### Int-to-Float Coercion
+
+`int` values can be coerced to `float` with the `:>` (type coercion) operator.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let result = (1 :> float) +. 2.
+```
+```js
+var result = 1 + 2;
+```
+
+</CodeTab>
 
 ## Unit
 
