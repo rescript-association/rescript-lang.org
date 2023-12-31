@@ -46,6 +46,16 @@ module Frame = {
               console.log(err);
             }
           });
+          console.log = (...args) => {
+            let finalArgs = args.map(arg => {
+              if (typeof arg == 'object') {
+                return JSON.stringify(arg);
+              }
+
+              return arg;
+            });
+            parent.window.postMessage({ type: 'log', args: finalArgs }, '*')
+          };
         </script>
       </body>
     </html>

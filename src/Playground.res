@@ -22,7 +22,7 @@ open CompilerManagerHook
 module Api = RescriptCompilerApi
 
 type layout = Column | Row
-type tab = RenderOutput | JavaScript | Problems | Settings
+type tab = RenderOutput | JavaScript | Problems | Settings | Console
 let breakingPoint = 1024
 
 module DropdownSelect = {
@@ -1243,6 +1243,29 @@ module OutputPanel = {
  */
     let prevState = React.useRef(None)
 
+    let (logs, setLogs) = React.useState(_ => None)
+
+    React.useEffect(() => {
+      Webapi.Window.addEventListener("message", e => {
+        let data = e["data"]
+        let type_: string = data["type"]
+
+        if type_ === "log" {
+          let args: array<string> = data["args"]
+
+          // Js.log(("args", arg))
+          setLogs(
+            previousLogs =>
+              previousLogs
+              ->Belt.Option.getWithDefault([])
+              ->Js.Array2.concat(args)
+              ->Some,
+          )
+        }
+      })
+      None
+    }, [])
+
     let cmCode = switch prevState.current {
     | Some(prev) =>
       switch (prev, compilerState) {
@@ -1310,6 +1333,24 @@ module OutputPanel = {
     | _ => React.null
     }
 
+    let consolePanel = switch logs {
+    | Some(logs) =>
+      let content =
+        logs
+        ->Js.Array2.map(log =>
+          <pre>
+            {log
+            ->Js.String2.make
+            ->React.string}
+          </pre>
+        )
+        ->React.array
+
+      <div className="whitespace-pre-wrap p-4 block"> content </div>
+
+    | None => React.null
+    }
+
     let output =
       <div className="text-gray-20">
         resultPane
@@ -1358,6 +1399,7 @@ module OutputPanel = {
 
     let tabs = [
       (RenderOutput, renderOutputPane),
+      (Console, consolePanel),
       (JavaScript, output),
       (Problems, errorPane),
       (Settings, settingsPane),
@@ -1757,11 +1799,12 @@ let make = (~versions: array<string>) => {
     "flex-1 items-center p-4 border-t-4 border-transparent " ++ activeClass
   }
 
-  let tabs = [RenderOutput, JavaScript, Problems, Settings]
+  let tabs = [RenderOutput, Console, JavaScript, Problems, Settings]
 
   let headers = Belt.Array.mapWithIndex(tabs, (i, tab) => {
     let title = switch tab {
     | RenderOutput => "Render Output"
+    | Console => "Console"
     | JavaScript => "JavaScript"
     | Problems => "Problems"
     | Settings => "Settings"
