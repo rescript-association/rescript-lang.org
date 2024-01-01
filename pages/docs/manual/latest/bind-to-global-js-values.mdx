@@ -43,7 +43,7 @@ type timerId
 @val external setTimeout: (unit => unit, int) => timerId = "setTimeout"
 @val external clearTimeout: timerId => unit = "clearTimeout"
 
-let id = setTimeout(() => Js.log("hello"), 100)
+let id = setTimeout(() => Console.log("hello"), 100)
 clearTimeout(id)
 ```
 ```js
@@ -102,8 +102,8 @@ For these troublesome global values, ReScript provides a special approach: `%ext
 
 ```res example
 switch %external(__DEV__) {
-| Some(_) => Js.log("dev mode")
-| None => Js.log("production mode")
+| Some(_) => Console.log("dev mode")
+| None => Console.log("production mode")
 }
 ```
 ```js
@@ -126,8 +126,8 @@ Another example:
 
 ```res example
 switch %external(__filename) {
-| Some(f) => Js.log(f)
-| None => Js.log("non-node environment")
+| Some(f) => Console.log(f)
+| None => Console.log("non-node environment")
 };
 ```
 ```js

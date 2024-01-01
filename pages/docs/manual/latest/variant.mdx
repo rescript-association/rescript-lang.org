@@ -776,9 +776,9 @@ There's a linear amount of branch checking here (`O(n)`). Compare this to using 
 type animal = Dog | Cat | Bird
 let data = Dog
 switch data {
-| Dog => Js.log("Wof")
-| Cat => Js.log("Meow")
-| Bird => Js.log("Kashiiin")
+| Dog => Console.log("Wof")
+| Cat => Console.log("Meow")
+| Bird => Console.log("Kashiiin")
 }
 ```
 ```js

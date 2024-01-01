@@ -59,7 +59,7 @@ let logAsyncMessage = () => {
     resolve("Message: " ++ msg)
   })
   ->then(msg => {
-    Js.log(msg)
+    Console.log(msg)
 
     // Even if there is no result, we need to use resolve() to return a promise
     resolve()
@@ -73,7 +73,7 @@ For comparison, the `async` / `await` version of the same code would look like t
 ```res
 let logAsyncMessage = async () => {
   let msg = await Js.Promise2.resolve("hello world")
-  Js.log(`Message: ${msg}`)
+  Console.log(`Message: ${msg}`)
 }
 ```
 
@@ -93,7 +93,7 @@ external fetchMessage: string => promise<string> = "global.fetchMessage"
 let logAsyncMessage = async () => {
   let messages = await Js.Promise2.all([fetchMessage("message1"), fetchMessage("message2")])
 
-  Js.log(Js.Array2.joinWith(messages, ", "))
+  Console.log(Js.Array2.joinWith(messages, ", "))
 }
 ```
 
@@ -147,13 +147,13 @@ Using the [pipe operator](pipe.md):
 let myPromise = Js.Promise.make((~resolve, ~reject) => resolve(. 2))
 
 myPromise->Js.Promise.then_(value => {
-  Js.log(value)
+  Console.log(value)
   Js.Promise.resolve(value + 2)
 }, _)->Js.Promise.then_(value => {
-  Js.log(value)
+  Console.log(value)
   Js.Promise.resolve(value + 3)
 }, _)->Js.Promise.catch(err => {
-  Js.log2("Failure!!", err)
+  Console.log2("Failure!!", err)
   Js.Promise.resolve(-2)
 }, _)
 ```
