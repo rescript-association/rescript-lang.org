@@ -21,8 +21,8 @@ let possiblyNullValue1 = None
 let possiblyNullValue2 = Some("Hello")
 
 switch possiblyNullValue2 {
-| None => Js.log("Nothing to see here.")
-| Some(message) => Js.log(message)
+| None => Console.log("Nothing to see here.")
+| Some(message) => Console.log(message)
 }
 ```
 ```js
