@@ -25,8 +25,6 @@ ReScript arrays' items must have the same type, i.e. homogeneous.
 
 ### Usage
 
-See the [Js.Array](api/js/array) API.
-
 Access & update an array item like so:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
@@ -38,7 +36,7 @@ let firstItem = myArray[0] // "hello"
 
 myArray[0] = "hey" // now ["hey", "world", "how are you"]
 
-let pushedValue = Js.Array2.push(myArray, "bye")
+myArray->Array.push("bye")
 ```
 ```js
 var myArray = ["hello", "world", "how are you"];

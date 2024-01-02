@@ -93,7 +93,7 @@ external fetchMessage: string => promise<string> = "global.fetchMessage"
 let logAsyncMessage = async () => {
   let messages = await Js.Promise2.all([fetchMessage("message1"), fetchMessage("message2")])
 
-  Console.log(Js.Array2.joinWith(messages, ", "))
+  Console.log(messages->Array.joinWith(", "))
 }
 ```
 
