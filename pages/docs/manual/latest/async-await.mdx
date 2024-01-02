@@ -180,7 +180,7 @@ This can be done by wrapping your `await` calls in a new `{}` closure.
 @val external fetchUserMail: string => promise<string> = "GlobalAPI.fetchUserMail"
 
 let fetchData = async () => {
-  let mail = {await fetchUserMail("1234")}->Js.String2.toUpperCase
+  let mail = {await fetchUserMail("1234")}->String.toUpperCase
   Console.log(`All upper-cased mail: ${mail}`)
 }
 ```
@@ -242,13 +242,13 @@ async function fetchData(param) {
 
 ## `await` multiple promises
 
-We can utilize the `Js.Promise2` module to handle multiple promises. E.g. let's use `Js.Promise2.all` to wait for multiple promises before continuing the program:
+We can utilize the `Promise` module to handle multiple promises. E.g. let's use `Promise.all` to wait for multiple promises before continuing the program:
 
 ```res
 let pauseReturn = (value, timeout) => {
-  Js.Promise2.make((~resolve, ~reject) => {
+  Promise.make((resolve, _reject) => {
     Js.Global.setTimeout(() => {
-      resolve(. value)
+      resolve(value)
     }, timeout)->ignore
   })
 }
@@ -258,7 +258,7 @@ let logMultipleValues = async () => {
   let promise2 = pauseReturn("value2", 1200)
   let promise3 = pauseReturn("value3", 500)
 
-  let all = await Js.Promise2.all([promise1, promise2, promise3])
+  let all = await Promise.all([promise1, promise2, promise3])
 
   switch all {
   | [v1, v2, v3] => Console.log(`All values: ${v1}, ${v2}, ${v3}`)
