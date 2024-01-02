@@ -215,6 +215,7 @@ let make = (
   ~sidebarState: (bool, (bool => bool) => unit),
   // (Sidebar, toggleSidebar) ... for toggling sidebar in mobile view
   ~sidebar: React.element,
+  ~rightSidebar: option<React.element>=?,
   ~categories: option<array<Sidebar.Category.t>>=?,
   ~breadcrumbs: option<list<Url.breadcrumb>>=?,
   ~children,
@@ -325,6 +326,10 @@ let make = (
               </div>
               pagination
             </main>
+            {switch rightSidebar {
+            | Some(ele) => ele
+            | None => React.null
+            }}
           </div>
         </div>
       </div>

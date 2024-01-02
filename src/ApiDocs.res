@@ -238,7 +238,7 @@ let default = (props: props) => {
   | _ => "API"
   }
 
-  let item = {
+  let children = {
     open Markdown
     switch props {
     | Ok({module_: {id, name, docstrings, items}}) =>
@@ -274,39 +274,58 @@ let default = (props: props) => {
     }
   }
 
-  // let valuesAndTypes = switch props {
-  // | Ok({module_: {items}}) if Js.Array2.length(items) > 0 =>
-  //   let valuesAndTypes = items->Belt.Array.keepMap(item => {
-  //     switch item {
-  //     | Value({name}) as kind | Type({name}) as kind =>
-  //       let icon = switch kind {
-  //       | Type(_) => "T"
-  //       | Value(_) => "V"
-  //       }
-  //       let (textColor, bgColor) = switch kind {
-  //       | Type(_) => ("text-fire-30", "bg-fire-5")
-  //       | Value(_) => ("text-sky-30", "bg-sky-5")
-  //       }
-  //       let result =
-  //         <li className="my-3 flex">
-  //           <a
-  //             className="flex font-normal text-14 text-gray-40 leading-tight hover:text-gray-80"
-  //             href={`#${name}`}>
-  //             <div
-  //               className={`${bgColor} w-5 h-5 mr-3 flex justify-center items-center rounded-xl`}>
-  //               <span style={ReactDOM.Style.make(~fontSize="10px", ())} className=textColor>
-  //                 {icon->React.string}
-  //               </span>
-  //             </div>
-  //             {React.string(name)}
-  //           </a>
-  //         </li>
-  //       Some(result)
-  //     }
-  //   })
-  //   valuesAndTypes->Some
-  // | _ => None
-  // }
+  let rightSidebar = switch props {
+  | Ok({module_: {items}}) if Js.Array2.length(items) > 0 =>
+    let valuesAndTypes = items->Belt.Array.keepMap(item => {
+      switch item {
+      | Value({name, deprecated}) as kind | Type({name, deprecated}) as kind =>
+        let (icon, textColor, bgColor, href) = switch kind {
+        | Type(_) => ("t", "text-fire-30", "bg-fire-5", `#type-${name}`)
+        | Value(_) => ("v", "text-sky-30", "bg-sky-5", `#value-${name}`)
+        }
+        let deprecatedIcon = switch deprecated->Js.Null.toOption {
+        | Some(_) =>
+          <div
+            className={`bg-orange-100 min-w-[20px] min-h-[20px] w-5 h-5 mr-3 flex justify-center items-center rounded-xl ml-auto`}>
+            <span className={"text-[10px] text-orange-400"}> {"D"->React.string} </span>
+          </div>->Some
+        | None => None
+        }
+        let title = `${Belt.Option.isSome(deprecatedIcon) ? "Deprecated " : ""}` ++ name
+        let result =
+          <li className="my-3">
+            <a
+              title
+              className="flex items-center w-full font-normal text-14 text-gray-40 leading-tight hover:text-gray-80"
+              href>
+              <div
+                className={`${bgColor} min-w-[20px] min-h-[20px] w-5 h-5 mr-3 flex justify-center items-center rounded-xl`}>
+                <span className={"text-[10px] font-normal " ++ textColor}>
+                  {icon->React.string}
+                </span>
+              </div>
+              <span className={"truncate"}> {React.string(name)} </span>
+              {switch deprecatedIcon {
+              | Some(icon) => icon
+              | None => React.null
+              }}
+            </a>
+          </li>
+        Some(result)
+      }
+    })
+    <div className="hidden xl:block lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white">
+      <aside
+        className="relative top-0 pl-4 w-full block md:top-16 md:pt-16 md:sticky border-l border-gray-20 overflow-y-auto pb-24 h-[calc(100vh-4.5rem)]">
+        <div className="hl-overline block text-gray-80 mt-16 mb-2">
+          {"Types and values"->React.string}
+        </div>
+        <ul> {valuesAndTypes->React.array} </ul>
+      </aside>
+    </div>
+
+  | _ => React.null
+  }
 
   let version = switch Url.parse(router.asPath).version {
   | Latest | NoVersion => "latest"
@@ -324,32 +343,14 @@ let default = (props: props) => {
 
   let breadcrumbs = ApiLayout.makeBreadcrumbs(~prefix, router.asPath)
 
-  let children =
-    <>
-      item
-      // {switch valuesAndTypes {
-      // | Some(elemets) =>
-      //   <div className="pt-16 relative">
-      //     <aside
-      //       className="sticky top-18 overflow-auto px-8"
-      //       style={ReactDOM.Style.make(~height="calc(100vh - 6rem)", ())}>
-      //       <span className="font-normal block text-14 text-gray-40">
-      //         {React.string("Types and Values")}
-      //       </span>
-      //       <ul> {elemets->React.array} </ul>
-      //     </aside>
-      //   </div>
-      // | None => React.null
-      // }}
-    </>
-
   <SidebarLayout
     breadcrumbs
     metaTitle={title ++ " | ReScript API"}
     theme=#Reason
     components=ApiMarkdown.default
     sidebarState=(isSidebarOpen, setSidebarOpen)
-    sidebar>
+    sidebar
+    rightSidebar>
     children
   </SidebarLayout>
 }
