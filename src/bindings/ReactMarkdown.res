@@ -3,5 +3,4 @@ external make: (
   ~children: string,
   ~components: MarkdownComponents.t=?,
   ~rehypePlugins: array<Rehype.rehypePlugin>=?,
-) => // ~rehypePlugins: array<MdxRemote.mdxPlugin>=?,
-React.element = "default"
+) => React.element = "default"
