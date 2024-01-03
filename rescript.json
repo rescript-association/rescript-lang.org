@@ -29,9 +29,6 @@
     "error": "+8"
   },
   "suffix": ".mjs",
-  "bsc-flags": [
-    "-bs-g"
-  ],
   "gentypeconfig": {
     "language": "untyped",
     "shims": [],

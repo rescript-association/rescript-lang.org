@@ -184,13 +184,11 @@ type params = {slug: array<string>}
 type props = result<api, string>
 
 module MarkdownStylize = {
-  external asMarkdownH2: 'a => Markdown.H2.props<string, React.element> => React.element =
-    "%identity"
   @react.component
-  let make = (~content, ~rehypePlugins: option<array<MdxRemote.mdxPlugin>>=?) => {
+  let make = (~content, ~rehypePlugins) => {
     let components = {
       ...MarkdownComponents.default,
-      h2: MarkdownComponents.default.h3->asMarkdownH2,
+      h2: MarkdownComponents.default.h3->Obj.magic,
     }
     <ReactMarkdown components={components} ?rehypePlugins> content </ReactMarkdown>
   }
@@ -203,7 +201,7 @@ module DeprecatedMessage = {
     | Some(content) =>
       <Markdown.Warn>
         <h4 className={"hl-4 mb-2"}> {"Deprecated"->React.string} </h4>
-        <MarkdownStylize content />
+        <MarkdownStylize content rehypePlugins=None />
       </Markdown.Warn>
     | None => React.null
     }
@@ -211,11 +209,10 @@ module DeprecatedMessage = {
 }
 
 module DocstringsStylize = {
-  external asMdxPlugin: 'a => MdxRemote.mdxPlugin = "%identity"
   @react.component
   let make = (~docstrings, ~slugPrefix) => {
-    let options = {"prefix": slugPrefix ++ "-"}->asMdxPlugin
-    let rehypePlugins = [[MdxRemote.rehypeSlug, options]->asMdxPlugin]
+    let rehypePlugins =
+      [Rehype.WithOptions([Plugin(Rehype.slug), SlugOption({prefix: slugPrefix ++ "-"})])]->Some
 
     let content = switch docstrings->Js.Array2.length > 1 {
     | true => docstrings->Js.Array2.sliceFrom(1)
@@ -389,8 +386,6 @@ module Data = {
   }
 }
 
-external asTocTree: Js.Json.t => node = "%identity"
-
 let processStaticProps = (~slug: array<string>, ~version: string) => {
   let moduleName = slug->Belt.Array.getExn(0)
   let content = Data.getVersion(~version, ~moduleName)
@@ -472,7 +467,7 @@ let processStaticProps = (~slug: array<string>, ~version: string) => {
         let toctree = tree->Js.Dict.get(moduleName)
 
         switch toctree {
-        | Some(toctree) => Ok({module_, toctree: toctree->asTocTree})
+        | Some(toctree) => Ok({module_, toctree: (Obj.magic(toctree): node)})
         | None => Error(`Failed to find toctree to ${modulePath}`)
         }
       | _ => Error(`Failed to find module ${modulePath}`)
