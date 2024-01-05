@@ -4,13 +4,13 @@ Generate docs from ReScript Compiler
 ## Run
 
 ```bash
-node scripts/gendocs.mjs path/to/rescript-compiler version
+node scripts/gendocs.mjs path/to/rescript-compiler version forceReWrite
 ```
 
 ## Examples
 
 ```bash
-node scripts/gendocs.mjs path/to/rescript-compiler latest
+node scripts/gendocs.mjs path/to/rescript-compiler latest true
 ```
 */
 @val @scope(("import", "meta")) external url: string = "url"
@@ -31,13 +31,21 @@ let compilerLibPath = switch args->Belt.Array.get(0) {
 
 let version = switch args->Belt.Array.get(1) {
 | Some(version) => version
-| None => failwith("Second argument should be a version, `latest`, v10")
+| None => failwith("Second argument should be a version, `latest`, `v10`")
 }
+
+let forceReWrite = switch args->Belt.Array.get(2) {
+| Some("true") => true
+| _ => false
+}
+
 let dirVersion = Path.join([dirname, "..", "data", "api", version])
 
 if Fs.existsSync(dirVersion) {
   Js.Console.error(`Directory ${dirVersion} already exists`)
-  // Process.exit(1)
+  if !forceReWrite {
+    Process.exit(1)
+  }
 } else {
   Fs.mkdirSync(dirVersion)
 }
