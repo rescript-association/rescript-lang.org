@@ -52,6 +52,8 @@ if Fs.existsSync(dirVersion) {
 
 let entryPointFiles = ["js.ml", "belt.res", "dom.res"]
 
+let hiddenModules = ["Js.Internal", "Js.MapperRt"]
+
 type module_ = {
   id: string,
   docstrings: array<string>,
@@ -74,10 +76,9 @@ let docsDecoded = entryPointFiles->Js.Array2.map(libFile => {
 
   Js.Dict.set(env, "FROM_COMPILER", "true")
 
-  let output =
-    ChildProcess.execSync(
-      `./node_modules/.bin/rescript-tools doc ${entryPointFile}`,
-    )->Buffer.toString
+  let output = ChildProcess.execSync(
+    `./node_modules/.bin/rescript-tools doc ${entryPointFile}`,
+  )->Buffer.toString
 
   output
   ->Js.Json.parseExn
@@ -98,10 +99,14 @@ let docs = docsDecoded->Js.Array2.map(doc => {
         Module({id, items, name, docstrings}) | ModuleAlias({id, items, name, docstrings}),
         ...rest,
       } =>
-      getModules(
-        list{...rest, ...Belt.List.fromArray(items)},
-        list{{id, items, name, docstrings}, ...moduleNames},
-      )
+      if Js.Array2.includes(hiddenModules, id) {
+        getModules(rest, moduleNames)
+      } else {
+        getModules(
+          list{...rest, ...Belt.List.fromArray(items)},
+          list{{id, items, name, docstrings}, ...moduleNames},
+        )
+      }
     | list{Type(_) | Value(_), ...rest} => getModules(rest, moduleNames)
     | list{} => moduleNames
     }
@@ -208,15 +213,19 @@ let () = {
   }
   let rec getModules = (lst: list<Docgen.item>, moduleNames, path) => {
     switch lst {
-    | list{Module({items, name}) | ModuleAlias({items, name}), ...rest} =>
-      let itemsList = items->Belt.List.fromArray
-      let children = getModules(itemsList, [], joinPath(~path, ~name))
+    | list{Module({id, items, name}) | ModuleAlias({id, items, name}), ...rest} =>
+      if Js.Array2.includes(hiddenModules, id) {
+        getModules(rest, moduleNames, path)
+      } else {
+        let itemsList = items->Belt.List.fromArray
+        let children = getModules(itemsList, [], joinPath(~path, ~name))
 
-      getModules(
-        rest,
-        Js.Array2.concat([{name, path: joinPath(~path, ~name), children}], moduleNames),
-        path,
-      )
+        getModules(
+          rest,
+          Js.Array2.concat([{name, path: joinPath(~path, ~name), children}], moduleNames),
+          path,
+        )
+      }
     | list{Type(_) | Value(_), ...rest} => getModules(rest, moduleNames, path)
     | list{} => moduleNames
     }
