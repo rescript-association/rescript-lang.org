@@ -82,7 +82,7 @@ canonical: "/docs/manual/latest/overview"
 | `myArray[1] = 10`     | Same                               |
 | `[1, "Bob", true]`    | `(1, "Bob", true)` \*              |
 
-\* Heterogenous arrays in JS are disallowed for us. Use tuple instead.
+\* ReScript does not have heterogenous arrays. Use tuples or [Untagged Variants](variant#untagged-variants) instead.
 
 ### Null
 
@@ -108,7 +108,7 @@ canonical: "/docs/manual/latest/overview"
 | `async (arg) => {...}`                   | Same                               |
 | `async function named(arg) {...}`        | `let named = async (arg) => {...}` |
 | `await somePromise`                      | Same                               |
-| `async (arg): Promise<string> => {...}`  | `async (): string => {...}` (note the return type)|
+| `async (arg): Promise<string> => {...}`  | `async (arg): string => {...}` (note the return type)|
 
 ### Blocks
 
@@ -187,7 +187,7 @@ canonical: "/docs/manual/latest/overview"
 | JavaScript                                      | ReScript                                   |
 | ----------------------------------------------- | ------------------------------------------ |
 | `throw new SomeError(...)`                      | `raise(SomeError(...))`                    |
-| `try {a} catch (Err) {...} finally {...}`       | `try a catch { \| Err => ...}` \* |
+| `try {a} catch (err) {...} finally {...}`       | `try a catch { \| SomeError(err) => ...}` \* |
 
 \* No finally.
 

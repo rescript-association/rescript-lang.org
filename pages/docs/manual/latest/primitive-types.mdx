@@ -151,6 +151,21 @@ Float requires other operators: `+.`, `-.`, `*.`, `/.`, etc. Like `0.5 +. 0.6`. 
 
 As with integers, you may use underscores within literals to improve readability.
 
+### Int-to-Float Coercion
+
+`int` values can be coerced to `float` with the `:>` (type coercion) operator.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let result = (1 :> float) +. 2.
+```
+```js
+var result = 1 + 2;
+```
+
+</CodeTab>
+
 ## Unit
 
 The `unit` type indicates the absence of a specific value. It has only a single value, `()`, which acts as a placeholder when no other value exists or is needed. It compiles to JavaScript's `undefined` and resembles the `void` type in languages such as C++. What's the point of such a type?

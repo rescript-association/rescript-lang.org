@@ -39,7 +39,7 @@ let logUserDetails = async (userId: string) => {
 
   await sendAnalytics(`User details have been logged for ${userId}`)
 
-  Js.log(`Email address for user ${userId}: ${email}`)
+  Console.log(`Email address for user ${userId}: ${email}`)
 }
 ```
 
@@ -139,8 +139,8 @@ let checkAuth = async () => {
   } catch {
   | Js.Exn.Error(e) =>
     switch Js.Exn.message(e) {
-    | Some(msg) => Js.log("JS error thrown: " ++ msg)
-    | None => Js.log("Some other exception has been thrown")
+    | Some(msg) => Console.log("JS error thrown: " ++ msg)
+    | None => Console.log("Some other exception has been thrown")
     }
   }
 }
@@ -157,11 +157,11 @@ let authenticate = async () => {
 
 let checkAuth = async () => {
   switch await authenticate() {
-  | _ => Js.log("ok")
+  | _ => Console.log("ok")
   | exception Js.Exn.Error(e) => 
     switch Js.Exn.message(e) {
-    | Some(msg) => Js.log("JS error thrown: " ++ msg)
-    | None => Js.log("Some other exception has been thrown")
+    | Some(msg) => Console.log("JS error thrown: " ++ msg)
+    | None => Console.log("Some other exception has been thrown")
     }
   }
 }
@@ -180,8 +180,8 @@ This can be done by wrapping your `await` calls in a new `{}` closure.
 @val external fetchUserMail: string => promise<string> = "GlobalAPI.fetchUserMail"
 
 let fetchData = async () => {
-  let mail = {await fetchUserMail("1234")}->Js.String2.toUpperCase
-  Js.log(`All upper-cased mail: ${mail}`)
+  let mail = {await fetchUserMail("1234")}->String.toUpperCase
+  Console.log(`All upper-cased mail: ${mail}`)
 }
 ```
 
@@ -208,11 +208,11 @@ Note how the original closure was removed in the final JS output. No extra alloc
 let fetchData = async () => {
   switch (await fetchUserMail("user1"), await fetchUserMail("user2")) {
   | (user1Mail, user2Mail) => {
-      Js.log("user 1 mail: " ++ user1Mail)
-      Js.log("user 2 mail: " ++ user2Mail)
+      Console.log("user 1 mail: " ++ user1Mail)
+      Console.log("user 2 mail: " ++ user2Mail)
     }
 
-  | exception JsError(err) => Js.log2("Some error occurred", err)
+  | exception JsError(err) => Console.log2("Some error occurred", err)
   }
 }
 ```
@@ -242,13 +242,13 @@ async function fetchData(param) {
 
 ## `await` multiple promises
 
-We can utilize the `Js.Promise2` module to handle multiple promises. E.g. let's use `Js.Promise2.all` to wait for multiple promises before continuing the program:
+We can utilize the `Promise` module to handle multiple promises. E.g. let's use `Promise.all` to wait for multiple promises before continuing the program:
 
 ```res
 let pauseReturn = (value, timeout) => {
-  Js.Promise2.make((~resolve, ~reject) => {
+  Promise.make((resolve, _reject) => {
     Js.Global.setTimeout(() => {
-      resolve(. value)
+      resolve(value)
     }, timeout)->ignore
   })
 }
@@ -258,11 +258,11 @@ let logMultipleValues = async () => {
   let promise2 = pauseReturn("value2", 1200)
   let promise3 = pauseReturn("value3", 500)
 
-  let all = await Js.Promise2.all([promise1, promise2, promise3])
+  let all = await Promise.all([promise1, promise2, promise3])
 
   switch all {
-  | [v1, v2, v3] => Js.log(`All values: ${v1}, ${v2}, ${v3}`)
-  | _ => Js.log("this should never happen")
+  | [v1, v2, v3] => Console.log(`All values: ${v1}, ${v2}, ${v3}`)
+  | _ => Console.log("this should never happen")
   }
 }
 ```

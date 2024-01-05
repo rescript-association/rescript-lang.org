@@ -6,43 +6,107 @@ canonical: "/docs/manual/latest/installation"
 
 # Installation
 
+## Notes
+
+With the instructions below, our new standard library [ReScript Core](https://github.com/rescript-association/rescript-core) will be included by default. (In ReScript 11, it comes as a separate npm package `@rescript/core`. In future versions, it will be included in the `rescript` npm package itself.)
+
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) version >= 14
-- [npm](https://docs.npmjs.com/cli/) (which comes with Node.js) or [Yarn](https://yarnpkg.com/)
+- One of the following package managers:
+  - [npm](https://docs.npmjs.com/cli/) (comes with Node.js)
+  - [yarn](https://yarnpkg.com/)
+  - [pnpm](https://pnpm.io/)
+  - [bun](https://bun.sh/)
 
 ## New Project
 
+The fastest and easiest way to spin up a new ReScript project is with the [create-rescript-app](https://github.com/rescript-lang/create-rescript-app) project generator. You can start it with any of the aforementioned package managers or `npx`.
+
+<CodeTab labels={["npm", "npx", "yarn", "pnpm", "bun"]}>
+
+```sh example
+npm create rescript-app
+```
 ```sh
-git clone https://github.com/rescript-lang/rescript-project-template
-cd rescript-project-template
-npm install
-npm run res:build
-node src/Demo.bs.js
+npx create-rescript-app
+```
+```sh
+yarn create rescript-app
+```
+```sh
+pnpm create rescript-app
+```
+```sh
+bun create rescript-app
 ```
 
-or use the create-rescript-app tool:
+</CodeTab>
 
-```sh
-npm create rescript-app // Select basic template
-cd <your-rescript-project-name>
-npm run res:build
-node src/Demo.bs.js
-```
+- Follow the steps of the setup.
+- Trigger a ReScript build:
+  ```sh
+  npm run res:build
+  ```
+- If you selected the "basic" template, simply run it with:
+  ```sh
+  node src/Demo.res.js
+  ```
 
-That compiles your ReScript into JavaScript, then uses Node.js to run said JavaScript. **We recommend you use our unique workflow of keeping a tab open for the generated `.bs.js` file**, so that you can learn how ReScript transforms into JavaScript. Not many languages output clean JavaScript code you can inspect and learn from!
+That compiles your ReScript into JavaScript, then uses Node.js to run said JavaScript.
+
+**When taking your first steps with ReScript, we recommend you use our unique workflow of keeping a tab open for the generated JS file** (`.res.js`/`.res.mjs`), so that you can learn how ReScript transforms into JavaScript.  Not many languages output clean JavaScript code you can inspect and learn from! With our [VS Code extension](https://marketplace.visualstudio.com/items?itemName=chenglou92.rescript-vscode), use the command "ReScript: Open the compiled JS file for this implementation file" to open the generated JS file for the currently active ReScript source file.
 
 During development, instead of running `npm run res:build` each time to compile, use `npm run res:dev` to start a watcher that recompiles automatically after file changes.
 
 ## Integrate Into an Existing JS Project
 
-If you already have a JavaScript project into which you'd like to add ReScript:
+If you already have a JavaScript project into which you'd like to add ReScript you can do that in the following ways:
 
+### Quick Setup
+
+In the root directory of your project, execute:
+<CodeTab labels={["npm", "npx", "yarn", "pnpm", "bun"]}>
+
+```sh
+npm create rescript-app
+```
+```sh
+npx create-rescript-app
+```
+```sh
+yarn create rescript-app
+```
+```sh
+pnpm create rescript-app
+```
+```sh
+bun create rescript-app
+```
+
+</CodeTab>
+
+`create-rescript-app` will tell you that a `package.json` file has been detected and ask you if it should install ReScript into your project. Just follow the steps accordingly.
+
+### Manual Setup
 - Install ReScript locally:
+  <CodeTab labels={["npm", "yarn", "pnpm", "bun"]}>
+
   ```sh
-  npm install rescript
+  npm install rescript @rescript/core
   ```
-- Create a ReScript build configuration at the root:
+  ```sh
+  yarn add rescript @rescript/core
+  ```
+  ```sh
+  pnpm install rescript @rescript/core
+  ```
+  ```sh
+  bun install rescript @rescript/core
+  ```
+
+  </CodeTab>
+- Create a ReScript build configuration file (called `rescript.json`) at the root:
   ```json
   {
     "name": "your-project-name",
@@ -58,8 +122,13 @@ If you already have a JavaScript project into which you'd like to add ReScript:
         "in-source": true
       }
     ],
-    "suffix": ".bs.js",
-    "bs-dependencies": []
+    "suffix": ".res.js",
+    "bs-dependencies": [
+      "@rescript/core"
+    ],
+    "bsc-flags": [
+      "-open RescriptCore"
+    ]
   }
   ```
   See [Build Configuration](build-configuration) for more details on `rescript.json`.
@@ -67,7 +136,7 @@ If you already have a JavaScript project into which you'd like to add ReScript:
   ```json
   "scripts": {
     "res:build": "rescript",
-    "res:dev": "rescript build -w"
+    "res:dev": "rescript -w"
   }
   ```
 

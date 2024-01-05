@@ -12,7 +12,8 @@
     "refs-and-the-dom",
     "context",
     "styling",
-    "router"
+    "router",
+    "lazy-components"
   ],
   "Hooks & State Management": [
     "hooks-overview",

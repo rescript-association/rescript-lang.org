@@ -48,10 +48,10 @@ Extensible variants are open-ended, so the compiler will not be able to exhausti
 ```res
 let print = v =>
   switch v {
-  | Point(x, y) => Js.log2("Point", (x, y))
-  | Line(ax, ay, bx, by) => Js.log2("Line", (ax, ay, bx, by))
+  | Point(x, y) => Console.log2("Point", (x, y))
+  | Line(ax, ay, bx, by) => Console.log2("Line", (ax, ay, bx, by))
   | Other
-  | _ => Js.log("Other")
+  | _ => Console.log("Other")
   }
 ```
 ```js

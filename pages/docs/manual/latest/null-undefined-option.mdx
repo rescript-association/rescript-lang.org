@@ -67,9 +67,9 @@ Later on, when another piece of code receives such value, it'd be forced to hand
 ```res
 switch licenseNumber {
 | None =>
-  Js.log("The person doesn't have a car")
+  Console.log("The person doesn't have a car")
 | Some(number) =>
-  Js.log("The person's license number is " ++ Js.Int.toString(number))
+  Console.log("The person's license number is " ++ Js.Int.toString(number))
 }
 ```
 ```js
