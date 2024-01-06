@@ -109,6 +109,22 @@ const showErrorMsg = failedTest => {
   console.log(stderr);
 };
 
+const createApiIndexModules = version => {
+  const dir = path.join(__dirname, "..", "data", "api", version);
+  const modules = fs.readdirSync(dir).filter(file => file !== "toc_tree.json");
+  const paths = modules.reduce((acc, file) => {
+    const json = JSON.parse(fs.readFileSync(path.join(dir, file)));
+    const keys = Object.keys(json);
+
+    const paths = keys.map(modulePath => path.join(version, "api", modulePath));
+
+    return acc.concat(paths);
+  }, []);
+  return paths;
+};
+
+const apiIndexModules = createApiIndexModules("latest")
+
 const testFile = (pageMap, test) => {
   const filepath = test.filepath;
 
@@ -161,11 +177,30 @@ const testFile = (pageMap, test) => {
         }
       }
 
+      if (resolved.startsWith("/pages/docs/manual/latest/api")) {
+        const pathToModule = resolved.replace("/pages/docs/manual/", "");
+        const pathExists = apiIndexModules.includes(pathToModule);
+
+        if (pathExists) {
+          results.push({
+            status: "ok",
+            link
+          });
+        } else {
+          const { line, column } = link.position.start;
+          const stderr = `${filepath}: Unknown href '${url}' in line ${line}:${column}`;
+          results.push({
+            status: "failed",
+            filepath,
+            stderr,
+            link
+          });
+        }
+        return;
+      }
+
       // If there's no page stated the relative link
       if (!pageMap[resolved]) {
-        if (url.includes("/docs/manual/latest/api") || url.includes("api")) {
-          return;
-        }
         const { line, column } = link.position.start;
         const stderr = `${filepath}: Unknown href '${url}' in line ${line}:${column}`;
         results.push({
@@ -225,8 +260,6 @@ const main = () => {
 
   const pageMap = createPageIndex(allFiles);
 
-  //console.log(pageMap);
-  //return;
   const processedFiles = files.map(processFile);
 
   const allTested = processedFiles.map(file => testFile(pageMap, file));
