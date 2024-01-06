@@ -76,9 +76,10 @@ let docsDecoded = entryPointFiles->Js.Array2.map(libFile => {
 
   Js.Dict.set(env, "FROM_COMPILER", "true")
 
-  let output = ChildProcess.execSync(
-    `./node_modules/.bin/rescript-tools doc ${entryPointFile}`,
-  )->Buffer.toString
+  let output =
+    ChildProcess.execSync(
+      `./node_modules/.bin/rescript-tools doc ${entryPointFile}`,
+    )->Buffer.toString
 
   output
   ->Js.Json.parseExn
