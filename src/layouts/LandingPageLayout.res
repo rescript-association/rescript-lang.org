@@ -29,35 +29,41 @@ module PlaygroundHero = {
 
   let examples = [
     {
-      res: `module Button = {
-  @react.component
-  let make = (~count: int) => {
-    let times = switch count {
-    | 1 => "once"
-    | 2 => "twice"
-    | n => Belt.Int.toString(n) ++ " times"
-    }
-    let msg = "Click me " ++ times
+      res: `type schoolPerson = Teacher | Director | Student(string)
 
-    <button> {msg->React.string} </button>
+let greeting = person =>
+  switch person {
+  | Teacher => "Hey Professor!"
+  | Director => "Hello Director."
+  | Student("Richard") => "Still here Ricky?"
+  | Student(anyOtherName) => \`Hey, $\{anyOtherName\}.\`
   }
-}`,
-      js: `var React = require("react");
 
-function Playground$Button(Props) {
-  var count = Props.count;
-  var times = count !== 1 ? (
-      count !== 2 ? String(count) + " times" : "twice"
-    ) : "once";
-  var msg = "Click me " + times;
-  return React.createElement("button", undefined, msg);
+Student("Anonymous")->greeting->Js.log`,
+      js: `function greeting(person) {
+  if (typeof person !== "object") {
+    if (person === "Teacher") {
+      return "Hey Professor!";
+    } else {
+      return "Hello Director.";
+    }
+  }
+  var anyOtherName = person._0;
+  if (anyOtherName === "Richard") {
+    return "Still here Ricky?";
+  } else {
+    return "Hey, " + anyOtherName + ".";
+  }
 }
 
-var Button = {
-  make: Playground$Button
-};
+console.log(greeting(/* Student */{
+          _0: "Anonymous"
+        }));
 
-exports.Button = Button;`,
+export {
+  greeting ,
+}
+`,
     },
   ]
 
@@ -79,7 +85,7 @@ exports.Button = Button;`,
                 {React.string("Write in ReScript")}
               </div>
               <pre className="text-14 px-8 pt-6 pb-12 whitespace-pre-wrap">
-                {HighlightJs.renderHLJS(~darkmode=true, ~code=example.res, ~lang="res", ())}
+                {HighlightJs.renderHLJS(~darkmode=true, ~code=example.res, ~lang="rescript", ())}
               </pre>
             </div>
             //Right Side (JavaScript)
