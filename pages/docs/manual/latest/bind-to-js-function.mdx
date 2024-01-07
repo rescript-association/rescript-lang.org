@@ -283,7 +283,7 @@ external on: (
 let register = rl =>
   rl
   ->on(#close(event => ()))
-  ->on(#line(line => Js.log(line)));
+  ->on(#line(line => Console.log(line)));
 ```
 ```js
 function register(rl) {
@@ -313,7 +313,7 @@ external processOnExit: (
 ) => unit = "process.on"
 
 processOnExit(exitCode =>
-  Js.log("error code: " ++ Js.Int.toString(exitCode))
+  Console.log("error code: " ++ Js.Int.toString(exitCode))
 );
 ```
 ```js
@@ -365,7 +365,7 @@ type x
 @val external x: x = "x"
 @set external setOnload: (x, @this ((x, int) => unit)) => unit = "onload"
 @get external resp: x => int = "response"
-setOnload(x, @this (o, v) => Js.log(resp(o) + v))
+setOnload(x, @this (o, v) => Console.log(resp(o) + v))
 ```
 ```js
 x.onload = function (v) {

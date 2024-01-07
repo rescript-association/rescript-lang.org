@@ -66,8 +66,8 @@ You can directly match on exceptions _while_ getting another return value from a
 
 ```res prelude
 switch list{1, 2, 3}->List.getExn(4) {
-| item => Js.log(item)
-| exception Not_found => Js.log("No such item found!")
+| item => Console.log(item)
+| exception Not_found => Console.log("No such item found!")
 }
 ```
 ```js
@@ -160,7 +160,7 @@ try {
 } catch {
 | Js.Exn.Error(obj) =>
   switch Js.Exn.message(obj) {
-  | Some(m) => Js.log("Caught a JS exception! Message: " ++ m)
+  | Some(m) => Console.log("Caught a JS exception! Message: " ++ m)
   | None => ()
   }
 }

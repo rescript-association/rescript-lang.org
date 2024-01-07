@@ -54,9 +54,9 @@ These types can also be inlined, unlike for regular variant:
 ```res
 let render = (myColor: [#red | #green | #blue]) => {
   switch myColor {
-  | #blue => Js.log("Hello blue!")
+  | #blue => Console.log("Hello blue!")
   | #red
-  | #green => Js.log("Hello other colors")
+  | #green => Console.log("Hello other colors")
   }
 }
 ```
@@ -82,10 +82,10 @@ type color = [#red | #green | #blue]
 
 let render = myColor => {
   switch myColor {
-  | #blue => Js.log("Hello blue!")
-  | #green => Js.log("Hello green!")
+  | #blue => Console.log("Hello blue!")
+  | #green => Console.log("Hello green!")
   // works!
-  | #yellow => Js.log("Hello yellow!")
+  | #yellow => Console.log("Hello yellow!")
   }
 }
 ```
@@ -171,9 +171,9 @@ There's also some special [pattern matching](./pattern-matching-destructuring) s
 // Continuing the previous example above...
 
 switch myColor {
-| #...blue => Js.log("This blue-ish")
-| #...red => Js.log("This red-ish")
-| other => Js.log2("Other color than red and blue: ", other)
+| #...blue => Console.log("This blue-ish")
+| #...red => Console.log("This red-ish")
+| other => Console.log2("Other color than red and blue: ", other)
 }
 ```
 
@@ -195,9 +195,9 @@ This is a shorter version of:
 
 ```res
 switch myColor {
-| #Sapphire | #Neon | #Navy => Js.log("This is blue-ish")
-| #Ruby | #Redwood | #Rust => Js.log("This is red-ish")
-| other => Js.log2("Other color than red and blue: ", other)
+| #Sapphire | #Neon | #Navy => Console.log("This is blue-ish")
+| #Ruby | #Redwood | #Rust => Console.log("This is red-ish")
+| other => Console.log2("Other color than red and blue: ", other)
 }
 ```
 
@@ -221,7 +221,7 @@ let displayColor = v => {
   }
 }
 
-Js.log(displayColor(myColor))
+Console.log(displayColor(myColor))
 ```
 
 ```js
@@ -424,8 +424,8 @@ One might think that polymorphic variants are superior to regular [variants](./v
   let myColor = #red
 
   switch myColor {
-  | #red => Js.log("Hello red!")
-  | #blue => Js.log("Hello blue!")
+  | #red => Console.log("Hello red!")
+  | #blue => Console.log("Hello blue!")
   }
   ```
   Because there's no poly variant definition, it's hard to know whether the `#blue` case can be safely removed.

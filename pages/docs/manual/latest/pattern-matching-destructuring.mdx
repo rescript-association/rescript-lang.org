@@ -23,7 +23,7 @@ Even JavaScript has destructuring, which is "opening up" a data structure to ext
 ```res example
 let coordinates = (10, 20, 30)
 let (x, _, _) = coordinates
-Js.log(x) // 10
+Console.log(x) // 10
 ```
 ```js
 var coordinates = [10, 20, 30];
@@ -101,7 +101,7 @@ type result =
 let displayMessage = (Success(m)) => {
   // we've directly extracted the success message
   // string by destructuring the parameter
-  Js.log(m)
+  Console.log(m)
 }
 displayMessage(Success("You did it!"))
 ```
@@ -174,11 +174,11 @@ In other languages, you'd end up with a series of if-elses that are hard to read
 let data = GoodResult("Product shipped!")
 switch data {
 | GoodResult(theMessage) =>
-  Js.log("Success! " ++ theMessage)
+  Console.log("Success! " ++ theMessage)
 | BadResult(errorCode) =>
-  Js.log("Something's wrong. The error code is: " ++ Js.Int.toString(errorCode))
+  Console.log("Something's wrong. The error code is: " ++ Js.Int.toString(errorCode))
 | NoResult =>
-  Js.log("Bah.")
+  Console.log("Bah.")
 }
 ```
 ```js
@@ -341,9 +341,9 @@ let myStatus = Vacations(10)
 
 switch myStatus {
 | Vacations(days)
-| Sabbatical(days) => Js.log(`Come back in ${Js.Int.toString(days)} days!`)
+| Sabbatical(days) => Console.log(`Come back in ${Js.Int.toString(days)} days!`)
 | Sick
-| Present => Js.log("Hey! How are you?")
+| Present => Console.log("Hey! How are you?")
 }
 ```
 ```js
@@ -371,8 +371,8 @@ If you have a value like `Teacher(payload)` where you just want to pattern match
 
 ```res example
 switch person1 {
-| Teacher(_) => Js.log("Hi teacher")
-| Student(_) => Js.log("Hey student")
+| Teacher(_) => Console.log("Hi teacher")
+| Student(_) => Console.log("Hey student")
 }
 ```
 ```js
@@ -391,8 +391,8 @@ if (person1.TAG) {
 
 ```res example
 switch myStatus {
-| Vacations(_) => Js.log("Have fun!")
-| _ => Js.log("Ok.")
+| Vacations(_) => Console.log("Have fun!")
+| _ => Console.log("Ok.")
 }
 ```
 ```js
@@ -411,8 +411,8 @@ if (typeof myStatus === "number" || myStatus.TAG) {
 
 ```res example
 switch myStatus {
-| Vacations(_) => Js.log("Have fun!")
-| Sabbatical(_) | Sick | Present => Js.log("Ok.")
+| Vacations(_) => Console.log("Have fun!")
+| Sabbatical(_) | Sick | Present => Console.log("Ok.")
 }
 ```
 ```js
@@ -438,9 +438,9 @@ switch person1 {
 | Teacher(_) => () // do nothing
 | Student({reportCard: {gpa}}) =>
   if gpa < 0.5 {
-    Js.log("What's happening")
+    Console.log("What's happening")
   } else {
-    Js.log("Heyo")
+    Console.log("Heyo")
   }
 }
 ```
@@ -464,10 +464,10 @@ if (person1.TAG) {
 switch person1 {
 | Teacher(_) => () // do nothing
 | Student({reportCard: {gpa}}) if gpa < 0.5 =>
-  Js.log("What's happening")
+  Console.log("What's happening")
 | Student(_) =>
   // fall-through, catch-all case
-  Js.log("Heyo")
+  Console.log("Heyo")
 }
 ```
 ```js
@@ -492,8 +492,8 @@ If the function throws an exception (covered later), you can also match on _that
 
 ```res
 switch List.find(i => i === theItem, myItems) {
-| item => Js.log(item)
-| exception Not_found => Js.log("No such item found!")
+| item => Console.log(item)
+| exception Not_found => Console.log("No such item found!")
 }
 ```
 ```js
@@ -530,12 +530,12 @@ if (exit === 1) {
 ```res example
 let students = ["Jane", "Harvey", "Patrick"]
 switch students {
-| [] => Js.log("There are no students")
+| [] => Console.log("There are no students")
 | [student1] =>
-  Js.log("There's a single student here: " ++ student1)
+  Console.log("There's a single student here: " ++ student1)
 | manyStudents =>
   // display the array of names
-  Js.log2("The students are: ", manyStudents)
+  Console.log2("The students are: ", manyStudents)
 }
 ```
 ```js
@@ -567,9 +567,9 @@ Pattern matching on list is similar to array, but with the extra feature of extr
 let rec printStudents = (students) => {
   switch students {
   | list{} => () // done
-  | list{student} => Js.log("Last student: " ++ student)
+  | list{student} => Console.log("Last student: " ++ student)
   | list{student1, ...otherStudents} =>
-    Js.log(student1)
+    Console.log(student1)
     printStudents(otherStudents)
   }
 }
@@ -619,7 +619,7 @@ printStudents({
 let coordinates = (10, 20, 30)
 let centerY = 20
 switch coordinates {
-| (x, _centerY, _) => Js.log(x)
+| (x, _centerY, _) => Console.log(x)
 }
 ```
 ```js
@@ -715,8 +715,8 @@ Some({name: ""})
 let myNullableValue = Some(5)
 
 switch myNullableValue {
-| Some(_v) => Js.log("value is present")
-| None => Js.log("value is absent")
+| Some(_v) => Console.log("value is present")
+| None => Console.log("value is absent")
 }
 ```
 ```js
