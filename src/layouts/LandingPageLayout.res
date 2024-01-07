@@ -581,6 +581,38 @@ module CuratedResources = {
     },
   ]
 
+  let templates = [
+    {
+      imgSrc: "/static/nextjs_starter_logo.svg",
+      title: <>
+        <div> {React.string("ReScript & ")} </div>
+        <div className="text-gray-40"> {React.string("NextJS")} </div>
+      </>,
+      descr: "Get started with our NextJS starter template.",
+      href: "https://github.com/rescript-lang/create-rescript-app/blob/master/templates/rescript-template-nextjs/README.md",
+    },
+    {
+      imgSrc: "/static/vitejs_starter_logo.svg",
+      title: <>
+        <div> {React.string("ReScript & ")} </div>
+        <div style={ReactDOM.Style.make(~color="#6571FB", ())}> {React.string("ViteJS")} </div>
+      </>,
+      descr: "Get started with ViteJS and ReScript.",
+      href: "https://github.com/rescript-lang/create-rescript-app/blob/master/templates/rescript-template-vite/README.md",
+    },
+    // {
+    //   imgSrc: "/static/nodejs_starter_logo.svg",
+    //   title: <>
+    //     <div> {React.string("ReScript & ")} </div>
+    //     <div className="text-gray-40" style={ReactDOM.Style.make(~color="#699D65", ())}>
+    //       {React.string("NodeJS")}
+    //     </div>
+    //   </>,
+    //   descr: "Get started with ReScript targeting the Node platform.",
+    //   href: "/",
+    // },
+  ]
+
   @react.component
   let make = () => {
     <section className="bg-gray-100 w-full pb-40 pt-20 ">
@@ -615,6 +647,29 @@ module CuratedResources = {
               <h5 className="text-gray-10 hl-4 mt-32 h-12"> {card.title} </h5>
               <div className="text-gray-40 mt-2 mb-8 body-sm"> {React.string(card.descr)} </div>
             </Next.Link>
+          )
+          ->React.array}
+        </div>
+        //Container for templates
+        <div className="px-5 md:px-8 max-w-1280 mx-auto my-20">
+          <div
+            className="body-lg text-center z-2 relative text-gray-40 w-[8rem] mx-auto bg-gray-100">
+            {React.string("Templates")}
+          </div>
+          <hr className="bg-gray-80 h-px border-0 relative top-[-12px]" />
+        </div>
+        <div
+          className="grid grid-flow-col grid-cols-2 lg:grid-cols-3 lg:grid-rows-1 gap-2 md:gap-4 lg:gap-8 max-w-1280 px-5 md:px-8 mx-auto">
+          {templates
+          ->Belt.Array.mapWithIndex((i, card) =>
+            <a
+              key={Belt.Int.toString(i)}
+              href={card.href}
+              className="hover:bg-gray-80 bg-gray-90 px-5 pb-8 relative rounded-xl min-w-[200px]">
+              <img className="h-12 absolute mt-5" src=card.imgSrc />
+              <h5 className="text-gray-10 hl-4 mt-32 h-12"> {card.title} </h5>
+              <div className="text-gray-40 mt-4 body-sm"> {React.string(card.descr)} </div>
+            </a>
           )
           ->React.array}
         </div>
