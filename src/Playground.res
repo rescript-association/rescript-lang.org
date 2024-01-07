@@ -1601,7 +1601,6 @@ let make = (~versions: array<string>) => {
   }
 
   let onMouseMove = e => {
-    ReactEvent.Mouse.preventDefault(e)
     let position = layout == Row ? ReactEvent.Mouse.clientX(e) : ReactEvent.Mouse.clientY(e)
     onMove(position)
   }
