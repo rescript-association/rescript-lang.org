@@ -366,6 +366,7 @@ Here's a list of all possible things you can unbox:
 - `float`: `Number(float)`. Notice `int` cannot be unboxed, because JavaScript only has `number` (not actually `int` and `float` like in ReScript) so we can't disambiguate between `float` and `int` at runtime.
 - `bool`: `Boolean(bool)`
 - `array<'value>`: `List(array<string>)`
+- `('a, 'b, 'c)`: `Tuple((string, int, bool))`. Any size of tuples works, but you can have only one case of array or tuple in a variant. 
 - `promise<'value>`: `Promise(promise<string>)`
 - `Dict.t`: `Object(Dict.t<string>)`
 - `Date.t`: `Date(Date.t)`. A JavaScript date.
