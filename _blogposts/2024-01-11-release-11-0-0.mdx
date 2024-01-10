@@ -1,0 +1,92 @@
+---
+author: rescript-team
+date: "2024-01-11"
+previewImg: /static/blog/compiler_release_11_0.jpg
+title: ReScript 11.0
+badge: release
+description: |
+  The ReScript developer experience now goes up to eleven!
+---
+
+Almost a year after the last release, ReScript is available in version 11! It marks the second major community-driven release and we are very thankful that there are so many willing contributors who invested their spare time into improving the compiler and its ecosystem.
+
+To upgrade your project or to find out if there are any breaking changes that affect you, please follow the [migration guide](/docs/manual/latest/migrate-to-v11).
+
+The complete list of changes can be found [here](https://github.com/rescript-lang/rescript-compiler/blob/11.0_release/CHANGELOG.md). Let's have a look at the most notable improvements.
+
+## Compiler
+
+As this release is packed, please refer to the following blogposts for a detailed breakdown of each of the main new features:
+
+- [Better interop with customizable variants](/blog/improving-interop)
+- [Enhanced Ergonomics for Record Types](/blog/enhanced-ergonomics-for-record-types)
+- [First-class Dynamic Import Support](/blog/first-class-dynamic-import-support)
+- [Uncurried Mode](/blog/uncurried-mode)
+
+## Ecosystem
+
+### Create-ReScript-App
+
+Previously, the rescript binary was able to initialize new projects itself. But it was required to have a global npm install to use it. This functionality has been removed.
+
+Going forward, create-rescript-app is the new recommended way to setup a new project. It can even be used to quickly add ReScript to an existing project. Have a look at the updated [installation instructions](/docs/manual/latest/installation) for how to use it.
+
+### ReScript-React v0.12
+
+In tandem with the new ReScript release, a new version of ReScript-React is released as well. Check out the [corresponding docs](/docs/react/latest/installation).
+
+### Rescript Core
+
+[ReScript Core](https://github.com/rescript-association/rescript-core) is ReScript's new standard library. It replaces the complete `Js` module as well as some of the more frequently used modules from `Belt` and is recommended to use with uncurried mode.
+
+The latest docs on [https://rescript-lang.org](/) already use it for the examples, but please bear in mind that the [API docs](/docs/manual/latest/api) are not updated to it yet. This will happen soon, though as the next section suggests.
+
+### ReScript Tools / Documentation Extraction
+
+There is a new experimental tool available that is a building block for documentation generation from ReScript files. It can be installed and used as follows:
+
+```sh
+npm install --save-dev @rescript/tools
+npx rescript-tools doc src/MyFile.res > doc.json
+```
+
+### LSP
+
+And also we now ship a standalone [Language Server binary](https://www.npmjs.com/package/@rescript/language-server), which can be installed and used like so:
+
+```sh
+npm install -g @rescript/language-server
+npx rescript-language-server --stdio
+```
+
+## What's next
+
+The following features are planned to be implemented in upcoming versions:
+
+- Make JSX usable beyond React:
+  - [Generic JSX transform](https://github.com/rescript-lang/rescript-compiler/issues/6408)
+  - [JSX preserve mode](https://github.com/rescript-lang/rescript-compiler/issues/6197)
+- Integrate the Rescript Core standard library into the compiler
+  - remove the OCaml standard library
+  - remove `Belt` but keep it available as external package
+- Make maintaining TS libraries with ReScript a breeze, [thanks to genType](https://github.com/rescript-lang/rescript-compiler/issues/6210)
+- Support [tagged template literals](https://github.com/rescript-lang/rescript-compiler/pull/6250)
+- [Dedicated syntax for creating Dicts](https://github.com/rescript-lang/rescript-compiler/issues/6545)
+- [Array spread syntax](https://github.com/rescript-lang/rescript-compiler/issues/6546)
+- A [new custom build system](https://github.com/rolandpeelen/rewatch) with better support for workspaces / monorepos
+
+## Acknowledgements
+
+We want to thank everyone from the community who volunteered their precious time to support this project with contributions of any kind, from documentation, to PRs, to discussions in the forum.
+
+## That's it
+
+We hope you enjoy the newest improvements as much as we do.
+
+In case of issues / problems, make sure to report bugs to one of the following repositories:
+
+- [rescript-lang/rescript-compiler](https://github.com/rescript-lang/rescript-compiler) (language / syntax / jsx)
+- [rescript-lang/rescript-react](https://github.com/rescript-lang/rescript-react) (React bindings)
+- [rescript-lang/rescript-vscode](https://github.com/rescript-lang/rescript-vscode) (VSCode language support, LSP, tools)
+- [rescript-lang/create-rescript-app](https://github.com/rescript-lang/create-rescript-app) (project generator) or
+- [rescript-association/rescript-lang.org](https://github.com/rescript-association/rescript-lang.org) (documentation)
