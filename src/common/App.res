@@ -62,12 +62,7 @@ let make = (props: props): React.element => {
       | Latest =>
         switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
         | (1, _) => <ApiOverviewLayout.Docs> content </ApiOverviewLayout.Docs>
-        | (2, Some("js")) => <JsDocsLayout.Prose> content </JsDocsLayout.Prose>
-        | (2, Some("belt")) => <BeltDocsLayout.Prose> content </BeltDocsLayout.Prose>
-        | (_, Some("js")) => <JsDocsLayout.Docs> content </JsDocsLayout.Docs>
-        | (_, Some("belt")) => <BeltDocsLayout.Docs> content </BeltDocsLayout.Docs>
-        | (_, Some("dom")) => <DomDocsLayout.Docs> content </DomDocsLayout.Docs>
-        | _ => React.null
+        | _ => content
         }
       | Version("v8.0.0") =>
         switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {

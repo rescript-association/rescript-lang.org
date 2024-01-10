@@ -141,7 +141,7 @@ let make = (~highlightedLines=[], ~code: string, ~showLabel=true, ~lang="text") 
     //normal code-text without tabs
     className="relative w-full flex-col rounded xs:rounded border border-gray-20 bg-gray-10 pt-2 text-gray-80">
     label
-    <div className="px-5 text-14 pt-4 pb-4 overflow-x-auto"> children </div>
+    <div className="px-5 text-14 pt-4 pb-4 overflow-x-auto whitespace-pre"> children </div>
   </div>
 }
 
