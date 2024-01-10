@@ -33,13 +33,13 @@ The latest docs on [https://rescript-lang.org](/) already use it for the example
 
 ### Create-ReScript-App
 
-Previously, the rescript binary was able to initialize new projects itself. But it was required to have a global npm install to use it. This functionality has been removed.
+Previously, the ReScript binary was able to initialize new projects itself. But it was required to have a global npm install to use it. This functionality has been removed.
 
-Going forward, create-rescript-app is the new recommended way to setup a new project. It can even be used to quickly add ReScript to an existing project. Have a look at the updated [installation instructions](/docs/manual/latest/installation) for how to use it.
+Going forward, `create-rescript-app` is the new recommended way to setup a new project. It can even be used to quickly add ReScript to an existing project. Have a look at the updated [installation instructions](/docs/manual/latest/installation) for how to use it.
 
 ### ReScript-React v0.12
 
-In tandem with the new ReScript release, a new version of ReScript-React is released as well. Check out the [corresponding docs](/docs/react/latest/installation).
+In tandem with the new ReScript release, a new version of ReScript-React is released as well. It brings support for dynamically loading React components via `React.lazy`, and more. Check out the [corresponding docs](/docs/react/latest/installation).
 
 ### ReScript Tools / Documentation Extraction
 
@@ -50,9 +50,13 @@ npm install --save-dev @rescript/tools
 npx rescript-tools doc src/MyFile.res > doc.json
 ```
 
+The tool generates a JSON structure with all the information you need to generate documentation automatically for your ReScript code. It also comes with ReScript bindings for that JSON. Shortly we'll also have automatic markdown generation, and we're planning a static site generator as well, so getting a nice looking and useful documentation site for your ReScript code is just a command away.
+
 ### LSP
 
-And also we now ship a standalone [Language Server binary](https://www.npmjs.com/package/@rescript/language-server), which can be installed and used like so:
+Our LSP powers our editor tooling. Historically, it has lived within the VSCode extension. This has been a problem for people who do not use VSCode. So, we've made sure that each new LSP version is [published standalone to NPM](https://www.npmjs.com/package/@rescript/language-server).
+
+This makes using an up-to-date version of the LSP in other editors than VSCode much easier. You can install and use it like so:
 
 ```sh
 npm install -g @rescript/language-server
@@ -61,7 +65,7 @@ npx rescript-language-server --stdio
 
 ## What's next
 
-The following features are planned to be implemented in upcoming versions:
+As we now finish up the work on v11, we're looking forward to working on the next ReScript version. Here are some of the features we're planning to focus on in upcoming versions:
 
 - Make JSX usable beyond React:
   - [Generic JSX transform](https://github.com/rescript-lang/rescript-compiler/issues/6408)
