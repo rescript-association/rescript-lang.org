@@ -363,7 +363,8 @@ Don't worry - the compiler will guide you and ensure there's no overlap.
 #### What you can unbox
 Here's a list of all possible things you can unbox:
 - `string`: `String(string)`
-- `float`: `Number(float)`. Notice `int` cannot be unboxed, because JavaScript only has `number` (not actually `int` and `float` like in ReScript) so we can't disambiguate between `float` and `int` at runtime.
+- `float`: `Float(float)`. Note you can only have one of `float` or `int` because JavaScript only has `number` (not actually `int` and `float` like in ReScript) so we can't disambiguate between `float` and `int` at runtime.
+- `int`: `Int(int)`. See note above on `float`.
 - `bool`: `Boolean(bool)`
 - `array<'value>`: `List(array<string>)`
 - `('a, 'b, 'c)`: `Tuple((string, int, bool))`. Any size of tuples works, but you can have only one case of array or tuple in a variant. 
