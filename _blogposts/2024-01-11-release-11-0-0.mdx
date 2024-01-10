@@ -16,6 +16,12 @@ The complete list of changes can be found [here](https://github.com/rescript-lan
 
 ## Compiler
 
+Use your favorite package manager to install the new compiler release, e.g:
+
+```sh
+npm install rescript@11
+```
+
 As this release is packed, please refer to the following blogposts for a detailed breakdown of each of the main new features:
 
 - [Better interop with customizable variants](/blog/improving-interop)
@@ -23,13 +29,41 @@ As this release is packed, please refer to the following blogposts for a detaile
 - [First-class Dynamic Import Support](/blog/first-class-dynamic-import-support)
 - [Uncurried Mode](/blog/uncurried-mode)
 
+Furthermore, there are a lot of smaller improvements of which we want to state only a few here.
+
+### More types eligible for type coercion
+
+The `:>` (type coercion) operator now supports a few more datatypes, check out its [Syntax Lookup](/syntax-lookup#type-coercion) page.
+
+### Build System
+
+The watcher can now be called with just `rescript -w`. Also `rescript build` will always build with dependencies by default so the argument `-with-deps` is not needed anymore.
+
+### rescript.json
+
+The compiler config file has been renamed to `rescript.json`. Since the rebrand from `BuckleScript` to `ReScript`, the `bs-` names make no sense anymore. Later on, we will also rename some of the config attributes, like `bs-dependencies`.
+
+### Relaxed Suffix Rules
+
+You can now freely choose the suffix of the generated JS files. For instance instead of `.bs.js` you can now use `.res.js`.
+
+### Opening files from current project globally
+
+It's now possible to have a module opened by default that is just part of the current project. Previously, this only worked with dependencies or namespaced projects. For example, a file with the path `src/Utils.res` can be added to `bsc-flags` like so:
+
+```json
+{
+  "bsc-flags": ["-open Utils"]
+}
+```
+
 ## Ecosystem
 
 ### Rescript Core
 
 [ReScript Core](https://github.com/rescript-association/rescript-core) is ReScript's new standard library. It replaces the complete `Js` module as well as some of the more frequently used modules from `Belt` and is recommended to use with uncurried mode.
 
-The latest docs on [https://rescript-lang.org](/) already use it for the examples, but please bear in mind that the [API docs](/docs/manual/latest/api) are not updated to it yet. This will happen soon though.
+The latest docs on [rescript-lang.org](/) already use it for the examples, but please bear in mind that the [API docs](/docs/manual/latest/api) are not updated to it yet. This will happen soon though.
 
 ### Create-ReScript-App
 
@@ -78,6 +112,7 @@ As we now finish up the work on v11, we're looking forward to working on the nex
 - [Dedicated syntax for creating Dicts](https://github.com/rescript-lang/rescript-compiler/issues/6545)
 - [Array spread syntax](https://github.com/rescript-lang/rescript-compiler/issues/6546)
 - A [new custom build system](https://github.com/rolandpeelen/rewatch) with better support for workspaces / monorepos
+- More improvements to the type system
 
 ## Acknowledgements
 
