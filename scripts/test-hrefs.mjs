@@ -120,7 +120,7 @@ const createApiIndexModules = version => {
 
     return acc.concat(paths);
   }, []);
-  return paths;
+  return ["latest/api", ...paths];
 };
 
 const apiIndexModules = createApiIndexModules("latest")
