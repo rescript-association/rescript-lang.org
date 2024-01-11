@@ -31,33 +31,35 @@ module PlaygroundHero = {
     {
       res: `module Button = {
   @react.component
-  let make = (~count: int) => {
+  let make = (~count) => {
     let times = switch count {
     | 1 => "once"
     | 2 => "twice"
-    | n => Belt.Int.toString(n) ++ " times"
+    | n => n->Int.toString ++ " times"
     }
-    let msg = "Click me " ++ times
 
-    <button> {msg->React.string} </button>
+    <button> {\`Click me $\{times\}\`->React.string} </button>
   }
 }`,
-      js: `var React = require("react");
+      js: `import * as JsxRuntime from "react/jsx-runtime";
 
-function Playground$Button(Props) {
-  var count = Props.count;
+function Playground$Button(props) {
+  var count = props.count;
   var times = count !== 1 ? (
-      count !== 2 ? String(count) + " times" : "twice"
-    ) : "once";
-  var msg = "Click me " + times;
-  return React.createElement("button", undefined, msg);
+    count !== 2 ? count.toString() + " times" : "twice"
+  ) : "once";
+  return JsxRuntime.jsx("button", {
+    children: "Click me " + times
+  });
 }
 
 var Button = {
   make: Playground$Button
 };
 
-exports.Button = Button;`,
+export {
+  Button,
+}`,
     },
   ]
 
