@@ -37,8 +37,9 @@ module PlaygroundHero = {
     | 2 => "twice"
     | n => n->Int.toString ++ " times"
     }
+    let text = \`Click me $\{times\}\`
 
-    <button> {\`Click me $\{times\}\`->React.string} </button>
+    <button> {text->React.string} </button>
   }
 }`,
       js: `import * as JsxRuntime from "react/jsx-runtime";
@@ -48,8 +49,9 @@ function Playground$Button(props) {
   var times = count !== 1 ? (
     count !== 2 ? count.toString() + " times" : "twice"
   ) : "once";
+  var text = "Click me " + times;
   return JsxRuntime.jsx("button", {
-    children: "Click me " + times
+    children: text
   });
 }
 
