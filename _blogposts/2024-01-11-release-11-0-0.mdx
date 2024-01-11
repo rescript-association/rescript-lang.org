@@ -44,9 +44,15 @@ Another addition is first-class support for dynamic imports, which will allow de
 
 ### Uncurried Mode
 
-This release is also introducing uncurried mode, which is a new default mode that compiles all dependencies as uncurried, and it aims to make it easier for newcomers to use the language.
+This release is also introducing uncurried mode , which is a new default mode that compiles all dependencies as uncurried, and it aims to make it easier for newcomers to use the language.
 
 - Blogpost: [Uncurried Mode](/blog/uncurried-mode)
+
+### New Standard Library: ReScript Core
+
+[ReScript Core](https://github.com/rescript-association/rescript-core) is ReScript's new standard library. It replaces the complete `Js` module as well as some of the more frequently used modules from `Belt` and is recommended to use with uncurried mode.
+
+The latest docs on [rescript-lang.org](/) already use it for the examples. Have a look at the new [RescriptCore API docs](/docs/manual/latest/api/core).
 
 ## More Features
 
@@ -79,12 +85,6 @@ It's now possible to have a module opened by default that is just part of the cu
 ```
 
 ## Ecosystem
-
-### Rescript Core
-
-[ReScript Core](https://github.com/rescript-association/rescript-core) is ReScript's new standard library. It replaces the complete `Js` module as well as some of the more frequently used modules from `Belt` and is recommended to use with uncurried mode.
-
-The latest docs on [rescript-lang.org](/) already use it for the examples. Have a look at the new [RescriptCore API docs](/docs/manual/latest/api/core).
 
 ### Create-ReScript-App
 
