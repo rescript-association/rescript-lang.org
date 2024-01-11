@@ -9,6 +9,7 @@ This is the official documentation platform for the [ReScript](https://rescript-
 **Please report any technical issues with ReScript to the [compiler repository](https://github.com/rescript-lang/rescript-compiler).**
 
 **In case you are missing some specific documentation:**
+
 - Some language / compiler feature may not be documented yet
 - Create an issue to let us know what you are missing
 - In case you want to contribute missing docs, please refer to our [Contribution section](#contributing)
@@ -42,7 +43,7 @@ open localhost:3000
 In case you want to run ReScript in watchmode:
 
 ```sh
-npx rescript build -w
+npx rescript -w
 ```
 
 ## Build Index Data
@@ -82,9 +83,10 @@ build specific pages (file `index_data/x.json` not found).
 ### Markdown Codeblock Tests
 
 We check the validity of our code examples marked with:
-- `` ```res example `` (ReScript code snippet)
-- `` ```res sig `` (signature)
-- `` ```res prelude `` (ReScript code snippet available for all subsequent code snippets)
+
+- ` ```res example ` (ReScript code snippet)
+- ` ```res sig ` (signature)
+- ` ```res prelude ` (ReScript code snippet available for all subsequent code snippets)
 
 Run the checks with:
 

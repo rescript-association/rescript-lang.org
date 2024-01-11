@@ -42,13 +42,14 @@
     "remark-parse": "^10.0.2",
     "remark-slug": "^5.1.2",
     "remark-stringify": "^7.0.3",
+    "rescript": "^11.0.0",
     "request": "^2.88.0",
     "stringify-object": "^3.3.0",
     "unified": "^8.4.0"
   },
   "scripts": {
     "dev": "next",
-    "build": "rescript clean -with-deps && rescript && npm run update-index && next build",
+    "build": "rescript && npm run update-index && next build",
     "test": "node scripts/test-examples.mjs && node scripts/test-hrefs.mjs",
     "reanalyze": "reanalyze -all-cmt .",
     "update-index": "node scripts/extract-indices.mjs && node scripts/extract-tocs.mjs && node scripts/extract-syntax.mjs && node scripts/generate_feed.mjs > public/blog/feed.xml"
@@ -61,7 +62,6 @@
     "postcss": "^8.4.27",
     "postcss-cli": "^8.3.0",
     "reanalyze": "^2.16.0",
-    "rescript": "^11.0.0-rc.6",
     "simple-functional-loader": "^1.2.1",
     "tailwindcss": "^3.3.3"
   }
