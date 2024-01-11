@@ -122,7 +122,11 @@ module SidebarTree = {
           | Latest | NoVersion => "latest"
           | Version(version) => version
           }
-          <VersionSelect onChange version availableVersions=ApiLayout.allApiVersions />
+          let availableVersions = switch node.name {
+          | "Core" => [("latest", "v11.0")]
+          | _ => ApiLayout.allApiVersions
+          }
+          <VersionSelect onChange version availableVersions />
         | None => React.null
         }}
       </div>

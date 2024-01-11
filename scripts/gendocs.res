@@ -4,7 +4,7 @@ Generate docs from ReScript Compiler
 ## Run
 
 ```bash
-node scripts/gendocs.mjs path/to/rescript-compiler version forceReWrite
+node scripts/gendocs.mjs path/to/rescript-compiler path/to/rescript-core/src/RescriptCore.res version forceReWrite
 ```
 
 ## Examples
@@ -29,12 +29,17 @@ let compilerLibPath = switch args->Belt.Array.get(0) {
 | None => failwith("First argument should be path to rescript-compiler repo")
 }
 
-let version = switch args->Belt.Array.get(1) {
-| Some(version) => version
-| None => failwith("Second argument should be a version, `latest`, `v10`")
+let corePath = switch args->Belt.Array.get(1) {
+| Some(path) => path
+| _ => failwith("Second argument should be path to rescript-core/src/RescriptCore.res")
 }
 
-let forceReWrite = switch args->Belt.Array.get(2) {
+let version = switch args->Belt.Array.get(2) {
+| Some(version) => version
+| None => failwith("Third argument should be a version, `latest`, `v10`")
+}
+
+let forceReWrite = switch args->Belt.Array.get(3) {
 | Some("true") => true
 | _ => false
 }
@@ -86,6 +91,19 @@ let docsDecoded = entryPointFiles->Js.Array2.map(libFile => {
   ->Docgen.decodeFromJson
 })
 
+let coreDocs = {
+  Js.Dict.set(env, "FROM_COMPILER", "false")
+
+  let output =
+    ChildProcess.execSync(`./node_modules/.bin/rescript-tools doc ${corePath}`)->Buffer.toString
+
+  output
+  ->Js.Json.parseExn
+  ->Docgen.decodeFromJson
+}
+
+let docsDecoded = Js.Array2.concat(docsDecoded, [coreDocs])
+
 let docs = docsDecoded->Js.Array2.map(doc => {
   let topLevelItems = doc.items->Belt.Array.keepMap(item =>
     switch item {
@@ -103,6 +121,9 @@ let docs = docsDecoded->Js.Array2.map(doc => {
       if Js.Array2.includes(hiddenModules, id) {
         getModules(rest, moduleNames)
       } else {
+        let id = Js.String2.startsWith(id, "RescriptCore")
+          ? Js.String2.replace(id, "RescriptCore", "Core")
+          : id
         getModules(
           list{...rest, ...Belt.List.fromArray(items)},
           list{{id, items, name, docstrings}, ...moduleNames},
@@ -112,11 +133,16 @@ let docs = docsDecoded->Js.Array2.map(doc => {
     | list{} => moduleNames
     }
 
-  let top = {id: doc.name, name: doc.name, docstrings: doc.docstrings, items: topLevelItems}
+  // let id = Js.String2.startsWith(doc.name, "RescriptCore") ? "Core" : doc.name
+  let id = Js.String2.startsWith(doc.name, "RescriptCore")
+    ? Js.String2.replace(doc.name, "RescriptCore", "Core")
+    : doc.name
+
+  let top = {id, name: id, docstrings: doc.docstrings, items: topLevelItems}
   let submodules = getModules(doc.items->Belt.List.fromArray, list{})->Belt.List.toArray
   let result = [top]->Js.Array2.concat(submodules)
 
-  (doc.name, result)
+  (id, result)
 })
 
 let allModules = {
@@ -124,6 +150,9 @@ let allModules = {
   let encodeItem = (docItem: Docgen.item) => {
     switch docItem {
     | Value({id, name, docstrings, signature, ?deprecated}) => {
+        let id = Js.String2.startsWith(id, "RescriptCore")
+          ? Js.String2.replace(id, "RescriptCore", "Core")
+          : id
         let dict = Js.Dict.fromArray(
           [
             ("id", id->string),
@@ -142,6 +171,9 @@ let allModules = {
       }
 
     | Type({id, name, docstrings, signature, ?deprecated}) =>
+      let id = Js.String2.startsWith(id, "RescriptCore")
+        ? Js.String2.replace(id, "RescriptCore", "Core")
+        : id
       let dict = Js.Dict.fromArray(
         [
           ("id", id->string),
@@ -170,8 +202,11 @@ let allModules = {
           mod.items
           ->Belt.Array.keepMap(item => encodeItem(item))
           ->array
+
+        let id = Js.String2.startsWith(mod.id, "RescriptCore") ? "Core" : mod.id
+
         let rest = Js.Dict.fromArray([
-          ("id", mod.id->string),
+          ("id", id->string),
           ("name", mod.name->string),
           ("docstrings", mod.docstrings->stringArray),
           ("items", items),
@@ -193,6 +228,8 @@ let allModules = {
 let () = {
   allModules->Js.Array2.forEach(((topLevelName, mod)) => {
     let json = Js.Json.object_(mod)
+
+    let topLevelName = Js.String2.startsWith(topLevelName, "RescriptCore") ? "Core" : topLevelName
 
     Fs.writeFileSync(
       Path.join([dirVersion, `${topLevelName->Js.String2.toLowerCase}.json`]),
@@ -233,6 +270,7 @@ let () = {
   }
 
   let tocTree = docsDecoded->Js.Array2.map(({name, items}) => {
+    let name = Js.String2.startsWith(name, "RescriptCore") ? "Core" : name
     let path = name->Js.String2.toLowerCase
     (
       path,
