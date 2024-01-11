@@ -589,9 +589,8 @@ module CuratedResources = {
         <div className="text-gray-40"> {React.string("NextJS")} </div>
       </>,
       descr: "Get started with our NextJS starter template.",
-      href: "https://github.com/ryyppy/rescript-nextjs-template",
+      href: "https://github.com/rescript-lang/create-rescript-app/blob/master/templates/rescript-template-nextjs/README.md",
     },
-    /*
     {
       imgSrc: "/static/vitejs_starter_logo.svg",
       title: <>
@@ -599,20 +598,19 @@ module CuratedResources = {
         <div style={ReactDOM.Style.make(~color="#6571FB", ())}> {React.string("ViteJS")} </div>
       </>,
       descr: "Get started with ViteJS and ReScript.",
-      href: "/",
+      href: "https://github.com/rescript-lang/create-rescript-app/blob/master/templates/rescript-template-vite/README.md",
     },
-    {
-      imgSrc: "/static/nodejs_starter_logo.svg",
-      title: <>
-        <div> {React.string("ReScript & ")} </div>
-        <div className="text-gray-40" style={ReactDOM.Style.make(~color="#699D65", ())}>
-          {React.string("NodeJS")}
-        </div>
-      </>,
-      descr: "Get started with ReScript targeting the Node platform.",
-      href: "/",
-    },
- */
+    // {
+    //   imgSrc: "/static/nodejs_starter_logo.svg",
+    //   title: <>
+    //     <div> {React.string("ReScript & ")} </div>
+    //     <div className="text-gray-40" style={ReactDOM.Style.make(~color="#699D65", ())}>
+    //       {React.string("NodeJS")}
+    //     </div>
+    //   </>,
+    //   descr: "Get started with ReScript targeting the Node platform.",
+    //   href: "/",
+    // },
   ]
 
   @react.component
