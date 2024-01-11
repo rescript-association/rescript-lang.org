@@ -391,7 +391,7 @@ module A = {
 
 module Ul = {
   @react.component
-  let make = (~children) => <ul className="md-ul mt-12 mb-16"> children </ul>
+  let make = (~children) => <ul className="md-ul mb-16"> children </ul>
 }
 
 module Ol = {
