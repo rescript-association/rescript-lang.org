@@ -16,7 +16,7 @@ let linkOrActiveApiSubroute = (~route) => {
   }
 }
 
-let githubHref = "https://github.com/reason-association/rescript-lang.org#rescript-langorg"
+let githubHref = "https://github.com/rescript-lang/rescript-compiler"
 //let twitterHref = "https://twitter.com/rescriptlang"
 let discourseHref = "https://forum.rescript-lang.org"
 
@@ -202,7 +202,7 @@ module DocsSection = {
         imgSrc: "/static/ic_reanalyze@2x.png",
         title: "Reanalyze",
         description: "Dead Code & Termination analysis",
-        href: "https://github.com/reason-association/reanalyze",
+        href: "https://github.com/rescript-association/reanalyze",
         isActive: _ => {
           false
         },
