@@ -32,7 +32,7 @@ To export a function `callback` to JS:
 
 ```res
 @genType
-let callback = _ => Js.log("Clicked");
+let callback = _ => Console.log("Clicked");
 ```
 
 To rename the function and export it as `CB` on the JS side, use
@@ -40,14 +40,14 @@ To rename the function and export it as `CB` on the JS side, use
 ```res
 @genType
 @genType.as("CB")
-let callback = _ => Js.log("Clicked");
+let callback = _ => Console.log("Clicked");
 ```
 
 or the more compact
 
 ```res
 @genType("CB")
-let callback = _ => Js.log("Clicked");
+let callback = _ => Console.log("Clicked");
 ```
 
 

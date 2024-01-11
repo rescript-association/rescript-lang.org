@@ -32,7 +32,7 @@ So the option type is exported to JS type `null` or `undefined` or `number`.
 
 ## Nullables
 
-ReScript values of type e.g. `Js.Nullable.t<int>`, such as `Js.Nullable.null`, `Js.Nullable.undefined`, `Js.Nullable.return(0)`, `Js.Nullable.return(1)`, `Js.Nullable.return(2)`, are exported to JS values `null`, `undefined`, `0`, `1`, `2`.
+ReScript values of type e.g. `Nullable.t<int>`, such as `Nullable.null`, `Nullable.undefined`, `Nullable.make(0)`, `Nullable.make(1)`, `Nullable.make(2)`, are exported to JS values `null`, `undefined`, `0`, `1`, `2`.
 The JS values are identical: there is no conversion unless the argument type needs conversion.
 
 ## Records
@@ -191,5 +191,5 @@ const none = <T1>(a: T1): ?T1 => OptionBS.none;
 
 ## Promises
 
-Values of type `Js.Promise.t<arg>` are exported to JS promises of type `Promise<argJS>` where `argJS` is the JS type corresponding to `arg`.
+Values of type `Promise.t<arg>` are exported to JS promises of type `Promise<argJS>` where `argJS` is the JS type corresponding to `arg`.
 If a conversion for the argument is required, the conversion functions are chained via `.then(promise => ...)`.

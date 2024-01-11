@@ -187,7 +187,7 @@ There's no loop-breaking `break` keyword (nor early `return` from functions, for
 let break = ref(false)
 
 while !break.contents {
-  if Js.Math.random() > 0.3 {
+  if Math.random() > 0.3 {
     break := true
   } else {
     Console.log("Still running")

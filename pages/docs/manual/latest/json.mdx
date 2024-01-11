@@ -34,12 +34,12 @@ Where `data` can be any type you assume the JSON is. As you can see, this compil
 
 ## Stringify
 
-Use `Js.Json.stringify`:
+Use `Json.stringify`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-Console.log(Js.Json.stringifyAny(["Amy", "Joe"]))
+Console.log(JSON.stringifyAny(["Amy", "Joe"]))
 ```
 ```js
 console.log(JSON.stringify([
@@ -52,4 +52,4 @@ console.log(JSON.stringify([
 
 ## Advanced
 
-The [Js.Json](api/js/json) module provides slightly safer, low-level building blocks for power users who want to parse JSON on a per-field basis. See the examples in the API docs.
+The [Json](api/core/json) module provides slightly safer, low-level building blocks for power users who want to parse JSON on a per-field basis. See the examples in the API docs.

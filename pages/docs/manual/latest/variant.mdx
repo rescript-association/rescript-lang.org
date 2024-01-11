@@ -418,7 +418,7 @@ type rec json =
   | Boolean(bool)
   | String(string)
   | Number(float)
-  | Object(Js.Dict.t<json>)
+  | Object(Dict.t<json>)
   | Array(array<json>)
 
 let myValidJsonValue = Array([String("Hi"), Number(123.)])
@@ -433,7 +433,7 @@ type rec json =
   | Boolean(bool)
   | String(string)
   | Number(float)
-  | Object(Js.Dict.t<json>)
+  | Object(Dict.t<json>)
   | Array(array<json>)
 
 type rec user = {

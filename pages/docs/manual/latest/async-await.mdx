@@ -247,7 +247,7 @@ We can utilize the `Promise` module to handle multiple promises. E.g. let's use 
 ```res
 let pauseReturn = (value, timeout) => {
   Promise.make((resolve, _reject) => {
-    Js.Global.setTimeout(() => {
+    setTimeout(() => {
       resolve(value)
     }, timeout)->ignore
   })
@@ -287,7 +287,7 @@ module Response = {
 external fetch: (
   string,
   'params,
-) => promise<Response.t<{"token": Js.Nullable.t<string>, "error": Js.Nullable.t<string>}>> =
+) => promise<Response.t<{"token": Nullable.t<string>, "error": Nullable.t<string>}>> =
   "fetch"
 
 // We now use our asynchronous `fetch` function to simulate a login.
@@ -303,17 +303,17 @@ let login = async (email: string, password: string) => {
     "headers": {
       "Content-Type": "application/json",
     },
-    "body": Js.Json.stringifyAny(body),
+    "body": Json.stringifyAny(body),
   }
 
   try {
     let response = await fetch("https://reqres.in/api/login", params)
     let data = await response->Response.json
 
-    switch Js.Nullable.toOption(data["error"]) {
+    switch Nullable.toOption(data["error"]) {
     | Some(msg) => Error(msg)
     | None =>
-      switch Js.Nullable.toOption(data["token"]) {
+      switch Nullable.toOption(data["token"]) {
       | Some(token) => Ok(token)
       | None => Error("Didn't return a token")
       }
