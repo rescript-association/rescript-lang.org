@@ -35,6 +35,7 @@ type selected = {
 }
 
 type ready = {
+  code: string,
   versions: array<Semver.t>,
   selected: selected,
   targetLang: Lang.t,
