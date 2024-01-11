@@ -10,24 +10,45 @@ description: |
 
 Almost a year after the last release, ReScript is available in version 11! It marks the second major community-driven release and we are very thankful that there are so many willing contributors who invested their spare time into improving the compiler and its ecosystem.
 
-To upgrade your project or to find out if there are any breaking changes that affect you, please follow the [migration guide](/docs/manual/latest/migrate-to-v11).
-
-The complete list of changes can be found [here](https://github.com/rescript-lang/rescript-compiler/blob/v11.0.0/CHANGELOG.md). Let's have a look at the most notable improvements.
-
-## Compiler
-
 Use your favorite package manager to install the new compiler release, e.g:
 
 ```sh
 npm install rescript@11
 ```
 
-As this release is packed, please refer to the following blogposts for a detailed breakdown of each of the main new features:
+To upgrade your project or to find out if there are any breaking changes that affect you, please follow the [migration guide](/docs/manual/latest/migrate-to-v11).
 
-- [Better interop with customizable variants](/blog/improving-interop)
-- [Enhanced Ergonomics for Record Types](/blog/enhanced-ergonomics-for-record-types)
-- [First-class Dynamic Import Support](/blog/first-class-dynamic-import-support)
-- [Uncurried Mode](/blog/uncurried-mode)
+The complete list of changes can be found [here](https://github.com/rescript-lang/rescript-compiler/blob/v11.0.0/CHANGELOG.md). Let's have a look at the most notable improvements.
+
+## Highlights
+
+**Note**: As this release is packed, please refer to the linked blogposts for a detailed breakdown of each of the main new features.
+
+### Customizable Variants
+
+We are introducing new features that will improve interop with JavaScript/TypeScript, including customizable runtime representation of variants, zero cost bindings to discriminated unions, and unboxed variants that can be used to map to things like heterogenous array items and nullable values.
+
+- Blogpost: [Better interop with customizable variants](/blog/improving-interop)
+
+### Enhanced Ergonomics for Record Types
+
+New enhancements for record types: Record Type Spread and Record Type Coercion. Record Type Spread allows one to share subsets of record fields with other record types, making it easier to work with types with lots of fields. And Record Type Coercion makes it easier to safely to convert between records with the same set of fields (or a subset).
+
+- Blogpost: [Enhanced Ergonomics for Record Types](/blog/enhanced-ergonomics-for-record-types)
+
+### First-class Dynamic Import Support
+
+Another addition is first-class support for dynamic imports, which will allow developers to split up and load parts of the app code on demand as separate JS modules to prevent bundle bloat and reduce initial load times for applications.
+
+- Blogpost: [First-class Dynamic Import Support](/blog/first-class-dynamic-import-support)
+
+### Uncurried Mode
+
+This release is also introducing uncurried mode, which is a new default mode that compiles all dependencies as uncurried, and it aims to make it easier for newcomers to use the language.
+
+- Blogpost: [Uncurried Mode](/blog/uncurried-mode)
+
+## More Features
 
 Furthermore, there are a lot of smaller improvements of which we want to state only a few here.
 
