@@ -1457,13 +1457,9 @@ let make = (~versions: array<string>) => {
   | (None, Res)
   | (None, _) =>
     switch initialVersion {
-    | Some({CompilerManagerHook.Semver.major: major, minor, _}) =>
-      if major >= 10 && minor >= 1 {
-        InitialContent.since_10_1
-      } else {
-        InitialContent.original
-      }
-    | None => InitialContent.original
+    | Some({major: 10, minor}) if minor >= 1 => InitialContent.since_10_1
+    | Some({major}) if major > 10 => InitialContent.since_10_1
+    | _ => InitialContent.original
     }
   }
 
