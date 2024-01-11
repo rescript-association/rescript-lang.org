@@ -414,6 +414,11 @@ module MobileNav = {
   }
 }
 
+module Banner = {
+  @react.component
+  let make = (~children) => <div className="bg-fire-70 text-white text-center py-1"> children </div>
+}
+
 /* isOverlayOpen: if the mobile overlay is toggled open */
 @react.component
 let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
@@ -610,5 +615,13 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
         ->unsafeAddProp("WebkitBackdropFilter", "blur(2px)")
       }
     />
+    // Delete this again, when ReScript 11 is out for some time.
+    <Banner>
+      {React.string("ReScript 11 is out! Read the ")}
+      <Link href="/blog/release-11-0-0" className="underline">
+        {React.string("announcement blog post")}
+      </Link>
+      {React.string(".")}
+    </Banner>
   </>
 }
