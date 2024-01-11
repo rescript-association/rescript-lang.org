@@ -693,6 +693,7 @@ module Sponsors = {
 @react.component
 let make = (~components=MarkdownComponents.default, ~children) => {
   let overlayState = React.useState(() => false)
+  let hasBanner = true
 
   <>
     <Meta
@@ -702,9 +703,9 @@ let make = (~components=MarkdownComponents.default, ~children) => {
       ogImage="/static/Art-3-rescript-launch.jpg"
     />
     <div className="mt-4 xs:mt-16">
-      <div className="text-gray-80 text-18">
+      <div className="text-gray-80 text-18 z">
         <Navigation overlayState />
-        <div className="absolute top-16 w-full">
+        <div className={`absolute w-full ${hasBanner ? "top-[99px]" : "top-16"}`}>
           <div className="relative overflow-hidden pb-32">
             <main className="mt-10 min-w-320 lg:align-center w-full">
               <MdxProvider components>
