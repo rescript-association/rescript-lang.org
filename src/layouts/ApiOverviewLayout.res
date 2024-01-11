@@ -6,6 +6,10 @@ let categories: array<Sidebar.Category.t> = [
     items: [{name: "Overview", href: "/docs/manual/latest/api"}],
   },
   {
+    name: "Core Std",
+    items: [{name: "Core Stdlib", href: "/docs/manual/latest/api/core"}],
+  },
+  {
     name: "Modules",
     items: [
       {name: "Js Module", href: "/docs/manual/latest/api/js"},
