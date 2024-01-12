@@ -313,7 +313,7 @@ external processOnExit: (
 ) => unit = "process.on"
 
 processOnExit(exitCode =>
-  Console.log("error code: " ++ Js.Int.toString(exitCode))
+  Console.log("error code: " ++ Int.toString(exitCode))
 );
 ```
 ```js
