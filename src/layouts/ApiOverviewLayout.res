@@ -6,16 +6,19 @@ let categories: array<Sidebar.Category.t> = [
     items: [{name: "Overview", href: "/docs/manual/latest/api"}],
   },
   {
-    name: "Core Stdlib",
-    items: [{name: "Core Stdlib", href: "/docs/manual/latest/api/core"}],
+    name: "Standard Library",
+    items: [{name: "Core", href: "/docs/manual/latest/api/core"}],
   },
   {
-    name: "Other Modules",
+    name: "Additional Libraries",
     items: [
-      {name: "Js Module", href: "/docs/manual/latest/api/js"},
-      {name: "Belt Stdlib", href: "/docs/manual/latest/api/belt"},
-      {name: "Dom Module", href: "/docs/manual/latest/api/dom"},
+      {name: "Belt", href: "/docs/manual/latest/api/belt"},
+      {name: "Dom", href: "/docs/manual/latest/api/dom"},
     ],
+  },
+  {
+    name: "Legacy Modules",
+    items: [{name: "Js", href: "/docs/manual/latest/api/js"}],
   },
 ]
 
