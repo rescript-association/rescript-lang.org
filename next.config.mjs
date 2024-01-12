@@ -102,6 +102,26 @@ const config = {
         destination: "/docs/manual/v10.0.0/unboxed",
         permanent: true,
       },
+      {
+        source: "/docs/gentype/latest/introduction",
+        destination: "/docs/manual/latest/typescript-integration",
+        permanent: true,
+      },
+      {
+        source: "/docs/gentype/latest/getting-started",
+        destination: "/docs/manual/latest/typescript-integration",
+        permanent: true,
+      },
+      {
+        source: "/docs/gentype/latest/usage",
+        destination: "/docs/manual/latest/typescript-integration",
+        permanent: true,
+      },
+      {
+        source: "/docs/gentype/latest/supported-types",
+        destination: "/docs/manual/latest/typescript-integration",
+        permanent: true,
+      },
     ];
   },
 };
