@@ -215,6 +215,7 @@ type selected = {
 }
 
 type ready = {
+  code: string,
   versions: array<Semver.t>,
   selected: selected,
   targetLang: Lang.t,
@@ -277,13 +278,13 @@ let useCompilerManager = (
         ready.selected.instance->Compiler.setConfig(config)
         setState(_ => {
           let selected = {...ready.selected, config}
-          Ready({...ready, selected})
+          Compiling({...ready, selected}, (ready.targetLang, ready.code))
         })
       | _ => ()
       }
     | CompileCode(lang, code) =>
       switch state {
-      | Ready(ready) => setState(_ => Compiling(ready, (lang, code)))
+      | Ready(ready) => setState(_ => Compiling({...ready, code}, (lang, code)))
       | _ => ()
       }
     | SwitchLanguage({lang, code}) =>
@@ -432,6 +433,7 @@ let useCompilerManager = (
                 ->Belt.Option.getWithDefault(Version.defaultTargetLang)
 
               setState(_ => Ready({
+                code: "",
                 selected,
                 targetLang,
                 versions,
@@ -477,6 +479,7 @@ let useCompilerManager = (
           }
 
           setState(_ => Ready({
+            code: ready.code,
             selected,
             targetLang: Version.defaultTargetLang,
             versions: ready.versions,

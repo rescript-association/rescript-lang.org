@@ -1344,15 +1344,15 @@ and the different jsx modes (classic and automatic).
 module InitialContent = {
   let original = `module Button = {
   @react.component
-  let make = (~count: int) => {
+  let make = (~count) => {
     let times = switch count {
     | 1 => "once"
     | 2 => "twice"
-    | n => Belt.Int.toString(n) ++ " times"
+    | n => n->Belt.Int.toString ++ " times"
     }
-    let msg = "Click me " ++ times
+    let text = \`Click me $\{times\}\`
 
-    <button> {msg->React.string} </button>
+    <button> {text->React.string} </button>
   }
 }
 `
