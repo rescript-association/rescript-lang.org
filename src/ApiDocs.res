@@ -41,9 +41,58 @@ type item =
       detail: Js.Null.t<detail>,
     })
 
+module RightSidebar = {
+  @react.component
+  let make = (~items: array<item>) => {
+    switch items->Js.Array2.length === 0 {
+    | true => React.null
+    | false =>
+      let valuesAndTypes = items->Js.Array2.map(item => {
+        switch item {
+        | Value({name, deprecated}) as kind | Type({name, deprecated}) as kind =>
+          let (icon, textColor, bgColor, href) = switch kind {
+          | Type(_) => ("t", "text-fire-30", "bg-fire-5", `#type-${name}`)
+          | Value(_) => ("v", "text-sky-30", "bg-sky-5", `#value-${name}`)
+          }
+          let deprecatedIcon = switch deprecated->Js.Null.toOption {
+          | Some(_) =>
+            <div
+              className={`bg-orange-100 min-w-[20px] min-h-[20px] w-5 h-5 mr-3 flex justify-center items-center rounded-xl ml-auto`}>
+              <span className={"text-[10px] text-orange-400"}> {"D"->React.string} </span>
+            </div>->Some
+          | None => None
+          }
+          let title = `${Belt.Option.isSome(deprecatedIcon) ? "Deprecated " : ""}` ++ name
+          let result =
+            <li className="my-3">
+              <a
+                title
+                className="flex items-center w-full font-normal text-14 text-gray-40 leading-tight hover:text-gray-80"
+                href>
+                <div
+                  className={`${bgColor} min-w-[20px] min-h-[20px] w-5 h-5 mr-3 flex justify-center items-center rounded-xl`}>
+                  <span className={"text-[10px] font-normal " ++ textColor}>
+                    {icon->React.string}
+                  </span>
+                </div>
+                <span className={"truncate"}> {React.string(name)} </span>
+                {switch deprecatedIcon {
+                | Some(icon) => icon
+                | None => React.null
+                }}
+              </a>
+            </li>
+          result
+        }
+      })
+      valuesAndTypes->React.array
+    }
+  }
+}
+
 module SidebarTree = {
   @react.component
-  let make = (~isOpen: bool, ~toggle: unit => unit, ~node: node) => {
+  let make = (~isOpen: bool, ~toggle: unit => unit, ~node: node, ~items: array<item>) => {
     let router = Next.Router.useRouter()
 
     let moduleRoute =
@@ -54,6 +103,16 @@ module SidebarTree = {
     let summaryClassName = "truncate py-1 md:h-auto tracking-tight text-gray-60 font-medium text-14 rounded-sm hover:bg-gray-20 hover:-ml-2 hover:py-1 hover:pl-2 "
     let classNameActive = " bg-fire-5 text-red-500 -ml-2 pl-2 font-medium hover:bg-fire-70"
 
+    let subMenu = switch items->Js.Array2.length > 0 {
+    | true =>
+      <div className={"xl:hidden ml-5"}>
+        <ul className={"list-none py-0.5"}>
+          <RightSidebar items />
+        </ul>
+      </div>
+    | false => React.null
+    }
+
     let rec renderNode = node => {
       let isCurrentRoute =
         Js.Array2.joinWith(moduleRoute, "/") === Js.Array2.joinWith(node.path, "/")
@@ -62,6 +121,8 @@ module SidebarTree = {
 
       let hasChildren = node.children->Js.Array2.length > 0
       let href = node.path->Js.Array2.joinWith("/")
+
+      let tocModule = isCurrentRoute ? subMenu : React.null
 
       switch hasChildren {
       | true =>
@@ -77,6 +138,7 @@ module SidebarTree = {
               {node.name->React.string}
             </Next.Link>
           </summary>
+          tocModule
           {if hasChildren {
             <ul className={"ml-5"}>
               {node.children
@@ -92,6 +154,7 @@ module SidebarTree = {
           <summary className={summaryClassName ++ classNameActive}>
             <Next.Link className={"block"} href> {node.name->React.string} </Next.Link>
           </summary>
+          tocModule
         </li>
       }
     }
@@ -160,6 +223,7 @@ module SidebarTree = {
             href={node.path->Js.Array2.joinWith("/")}>
             {node.name->React.string}
           </Next.Link>
+          {moduleRoute->Js.Array2.length === 1 ? subMenu : React.null}
         </div>
         <div className="hl-overline text-gray-80 mt-5 mb-2"> {"submodules"->React.string} </div>
         {node.children
@@ -277,54 +341,16 @@ let default = (props: props) => {
 
   let rightSidebar = switch props {
   | Ok({module_: {items}}) if Js.Array2.length(items) > 0 =>
-    let valuesAndTypes = items->Belt.Array.keepMap(item => {
-      switch item {
-      | Value({name, deprecated}) as kind | Type({name, deprecated}) as kind =>
-        let (icon, textColor, bgColor, href) = switch kind {
-        | Type(_) => ("t", "text-fire-30", "bg-fire-5", `#type-${name}`)
-        | Value(_) => ("v", "text-sky-30", "bg-sky-5", `#value-${name}`)
-        }
-        let deprecatedIcon = switch deprecated->Js.Null.toOption {
-        | Some(_) =>
-          <div
-            className={`bg-orange-100 min-w-[20px] min-h-[20px] w-5 h-5 mr-3 flex justify-center items-center rounded-xl ml-auto`}>
-            <span className={"text-[10px] text-orange-400"}> {"D"->React.string} </span>
-          </div>->Some
-        | None => None
-        }
-        let title = `${Belt.Option.isSome(deprecatedIcon) ? "Deprecated " : ""}` ++ name
-        let result =
-          <li className="my-3">
-            <a
-              title
-              className="flex items-center w-full font-normal text-14 text-gray-40 leading-tight hover:text-gray-80"
-              href>
-              <div
-                className={`${bgColor} min-w-[20px] min-h-[20px] w-5 h-5 mr-3 flex justify-center items-center rounded-xl`}>
-                <span className={"text-[10px] font-normal " ++ textColor}>
-                  {icon->React.string}
-                </span>
-              </div>
-              <span className={"truncate"}> {React.string(name)} </span>
-              {switch deprecatedIcon {
-              | Some(icon) => icon
-              | None => React.null
-              }}
-            </a>
-          </li>
-        Some(result)
-      }
-    })
+    let rightSidebar = <RightSidebar items />
     <div className="hidden xl:block lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white">
       <aside
         className="relative top-0 pl-4 w-full block md:top-16 md:pt-16 md:sticky border-l border-gray-20 overflow-y-auto pb-24 h-[calc(100vh-4.5rem)]">
         <div className="hl-overline block text-gray-80 mt-16 mb-2">
           {"Types and values"->React.string}
         </div>
-        <ul> {valuesAndTypes->React.array} </ul>
+        <ul> {rightSidebar} </ul>
       </aside>
     </div>
-
   | _ => React.null
   }
 
@@ -334,7 +360,8 @@ let default = (props: props) => {
   }
 
   let sidebar = switch props {
-  | Ok({toctree}) => <SidebarTree isOpen=isSidebarOpen toggle=toggleSidebar node={toctree} />
+  | Ok({toctree, module_: {items}}) =>
+    <SidebarTree isOpen=isSidebarOpen toggle=toggleSidebar node={toctree} items />
   | Error(_) => React.null
   }
 
