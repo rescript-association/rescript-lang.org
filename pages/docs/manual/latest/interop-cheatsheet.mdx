@@ -38,6 +38,7 @@ This is a glossary with examples. All the features are described by later pages.
 - [`@uncurry`](bind-to-js-function#extra-solution)
 - [`@unwrap`](bind-to-js-function#trick-2-polymorphic-variant--bsunwrap)
 - [`@val`](bind-to-global-js-values#global-modules)
+- [`@taggedTemplate`](bind-to-js-function#tagged_template-functions)
 
 - [`@deprecated`](attribute#usage)
 - [`genType`](https://github.com/reason-association/genType)
@@ -189,6 +190,27 @@ external join: array<string> => string = "join"
 ```
 ```js
 // Empty output
+```
+
+</CodeTab>
+
+### Tagged template functions
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+type res 
+@module("bun") @taggedTemplate 
+external sh: (array<string>, array<string>) => promise<res> = "$"
+
+let filename = "index.res"
+let res = await sh`ls ${filename}`
+```
+
+```js 
+import * as $$Bun from "bun";
+var filename = "index.res"
+var res = await $$Bun.$`ls ${filename}` 
 ```
 
 </CodeTab>
