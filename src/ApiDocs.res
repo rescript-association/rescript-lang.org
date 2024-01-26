@@ -341,14 +341,15 @@ let default = (props: props) => {
 
   let rightSidebar = switch props {
   | Ok({module_: {items}}) if Js.Array2.length(items) > 0 =>
-    let rightSidebar = <RightSidebar items />
     <div className="hidden xl:block lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white">
       <aside
         className="relative top-0 pl-4 w-full block md:top-16 md:pt-16 md:sticky border-l border-gray-20 overflow-y-auto pb-24 h-[calc(100vh-4.5rem)]">
         <div className="hl-overline block text-gray-80 mt-16 mb-2">
           {"Types and values"->React.string}
         </div>
-        <ul> {rightSidebar} </ul>
+        <ul>
+          <RightSidebar items />
+        </ul>
       </aside>
     </div>
   | _ => React.null
