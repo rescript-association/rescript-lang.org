@@ -118,8 +118,8 @@ var compareOptions = Caml_obj.lessthan;
 
 ## Performance of runtime equality checks
 The runtime equality check ReScript uses is quite fast and should be adequate for almost all use cases.
-It's 2x-4x times faster than alternative deep compare functions such as [`_.isEqual`](https://lodash.com/docs/4.17.15#isEqual) or [`deep-equal`](https://www.npmjs.com/package/deep-equal).
+For small objects it can be 2x times faster than alternative deep compare functions such as Lodash's [`_.isEqual`](https://lodash.com/docs/4.17.15#isEqual).
 
-Instead of using `==` you could manually use a slightly faster alternative as [fast-deep-compare](https://www.npmjs.com/package/fast-deep-equal).
+For larger objects instead of using `==` you could manually use a faster alternative such as [fast-deep-compare](https://www.npmjs.com/package/fast-deep-equal), or write a custom comparator function.
 
 [This repo](https://github.com/jderochervlk/rescript-perf) has benchmarks comparing results of different libraries compared to ReScript's built in equality function.
