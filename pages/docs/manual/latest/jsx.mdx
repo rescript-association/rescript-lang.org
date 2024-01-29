@@ -231,7 +231,9 @@ Consequently, a JSX component can cram in a few more props before reaching for e
 **Note** that this is a departure from ReactJS JSX, which does **not** have punning. ReactJS' `<input checked />` desugars to `<input checked=true />`, in order to conform to DOM's idioms and for backward compatibility.
 
 ## Generic JSX transform: JSX beyond React (experimental)
+
 **Since 11.1**
+
 While ReScript comes with first class support for JSX in React, it's also possible to have ReScript delegate JSX to other frameworks. You do that by configuring a _generic JSX transform_. 
 
 This is what you need to do to use a generic JSX transform:
