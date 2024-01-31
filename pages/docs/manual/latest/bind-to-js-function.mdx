@@ -313,7 +313,7 @@ external processOnExit: (
 ) => unit = "process.on"
 
 processOnExit(exitCode =>
-  Console.log("error code: " ++ Js.Int.toString(exitCode))
+  Console.log("error code: " ++ Int.toString(exitCode))
 );
 ```
 ```js
@@ -376,7 +376,7 @@ x.onload = function (v) {
 
 </CodeTab>
 
-`this` has its first parameter is reserved for `this` and for arity of 0, there is no need for a redundant `unit` type.
+`@this` reserves the first parameter for the `this` value, and for arity of 0, there is no need for a redundant `unit` type.
 
 ## Function Nullable Return Value Wrapping
 

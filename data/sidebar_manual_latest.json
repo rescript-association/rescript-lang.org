@@ -51,7 +51,8 @@
     "use-illegal-identifier-names",
     "generate-converters-accessors",
     "browser-support-polyfills",
-    "libraries"
+    "libraries",
+    "typescript-integration"
   ],
   "Build System": [
     "build-overview",

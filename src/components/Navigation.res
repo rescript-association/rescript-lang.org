@@ -168,8 +168,8 @@ module DocsSection = {
         description: "Reference for all language features",
         href: `/docs/manual/${version}/introduction`,
         isActive: url => {
-          switch url.base {
-          | ["docs", "manual"] => true
+          switch url.fullpath {
+          | ["docs", "manual", _, fragment] => fragment !== "typescript-integration"
           | _ => false
           }
         },
@@ -189,11 +189,11 @@ module DocsSection = {
       {
         imgSrc: "/static/ic_gentype@2x.png",
         title: "GenType",
-        description: "Seamless TypeScript & Flow integration",
-        href: "/docs/gentype/latest/introduction",
+        description: "Seamless TypeScript integration",
+        href: "/docs/manual/latest/typescript-integration",
         isActive: url => {
-          switch url.base {
-          | ["docs", "gentype"] => true
+          switch url.fullpath {
+          | ["docs", "manual", _, "typescript-integration"] => true
           | _ => false
           }
         },

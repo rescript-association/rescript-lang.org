@@ -1,3 +1,5 @@
+let allApiVersions: array<(string, string)>
+
 module OldDocsWarning: {
   @react.component
   let make: (~version: string, ~route: string) => React.element

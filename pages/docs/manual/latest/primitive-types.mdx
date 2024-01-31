@@ -72,7 +72,7 @@ This is just like JavaScript's backtick string interpolation, except without nee
 
 ### Usage
 
-See the familiar `String` API in the [API docs](api/js/string). Since a ReScript string maps to a JavaScript string, you can mix & match the string operations in all standard libraries.
+See the familiar `String` API in the [API docs](api/core/string). Since a ReScript string maps to a JavaScript string, you can mix & match the string operations in all standard libraries.
 
 ### Tips & Tricks
 
@@ -120,7 +120,7 @@ var r = /b/g;
 
 </CodeTab>
 
-A regular expression like the above has the type `Js.Re.t`. The [Js.Re](api/js/re) module contains the regular expression helpers you have seen in JS.
+A regular expression like the above has the type `Re.t`. The [Re](api/core/re) module contains the regular expression helpers you have seen in JS.
 
 ## Boolean
 
@@ -139,7 +139,7 @@ ReScript's `true/false` compiles into a JavaScript `true/false`.
 
 ## Integers
 
-32-bits, truncated when necessary. We provide the usual operations on them: `+`, `-`, `*`, `/`, etc. See [Js.Int](api/js/int) for helper functions.
+32-bits, truncated when necessary. We provide the usual operations on them: `+`, `-`, `*`, `/`, etc. See [Int](api/core/int) for helper functions.
 
 **Be careful when you bind to JavaScript numbers!** Since ReScript integers have a much smaller range than JavaScript numbers, data might get lost when dealing with large numbers. In those cases it’s much safer to bind the numbers as **float**. Be extra mindful of this when binding to JavaScript Dates and their epoch time.
 
@@ -147,7 +147,7 @@ To improve readability, you may place underscores in the middle of numeric liter
 
 ## Floats
 
-Float requires other operators: `+.`, `-.`, `*.`, `/.`, etc. Like `0.5 +. 0.6`. See [Js.Float](api/js/float) for helper functions.
+Float requires other operators: `+.`, `-.`, `*.`, `/.`, etc. Like `0.5 +. 0.6`. See [Float](api/core/float) for helper functions.
 
 As with integers, you may use underscores within literals to improve readability.
 

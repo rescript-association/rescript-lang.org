@@ -1,10 +1,8 @@
 type output = {frontmatter: Js.Json.t, compiledSource: string, scope: Js.Json.t}
 
-type mdxPlugin
-
 type mdxOptions = {
-  remarkPlugins?: array<mdxPlugin>,
-  rehypePlugins?: array<mdxPlugin>,
+  remarkPlugins?: array<Remark.remarkPlugin>,
+  rehypePlugins?: array<Rehype.rehypePlugin>,
 }
 
 type serializeOptions = {
@@ -15,14 +13,13 @@ type serializeOptions = {
 @module("next-mdx-remote/serialize")
 external serialize: (string, serializeOptions) => promise<output> = "serialize"
 
-@module("remark-comment") external remarkComment: mdxPlugin = "default"
-@module("remark-gfm") external remarkGfm: mdxPlugin = "default"
-@module("remark-frontmatter") external remarkFrontmatter: mdxPlugin = "default"
-@module("rehype-slug") external rehypeSlug: mdxPlugin = "default"
-
 let defaultMdxOptions = {
-  remarkPlugins: [remarkComment, remarkGfm, remarkFrontmatter],
-  rehypePlugins: [rehypeSlug],
+  rehypePlugins: [Rehype.Plugin(Rehype.slug)],
+  remarkPlugins: [
+    Remark.Plugin(Remark.comment),
+    Remark.Plugin(Remark.gfm),
+    Remark.Plugin(Remark.frontmatter),
+  ],
 }
 
 @react.component @module("next-mdx-remote")

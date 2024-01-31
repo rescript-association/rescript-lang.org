@@ -31,33 +31,37 @@ module PlaygroundHero = {
     {
       res: `module Button = {
   @react.component
-  let make = (~count: int) => {
+  let make = (~count) => {
     let times = switch count {
     | 1 => "once"
     | 2 => "twice"
-    | n => Belt.Int.toString(n) ++ " times"
+    | n => n->Int.toString ++ " times"
     }
-    let msg = "Click me " ++ times
+    let text = \`Click me $\{times\}\`
 
-    <button> {msg->React.string} </button>
+    <button> {text->React.string} </button>
   }
 }`,
-      js: `var React = require("react");
+      js: `import * as JsxRuntime from "react/jsx-runtime";
 
-function Playground$Button(Props) {
-  var count = Props.count;
+function Playground$Button(props) {
+  var count = props.count;
   var times = count !== 1 ? (
-      count !== 2 ? String(count) + " times" : "twice"
-    ) : "once";
-  var msg = "Click me " + times;
-  return React.createElement("button", undefined, msg);
+    count !== 2 ? count.toString() + " times" : "twice"
+  ) : "once";
+  var text = "Click me " + times;
+  return JsxRuntime.jsx("button", {
+    children: text
+  });
 }
 
 var Button = {
   make: Playground$Button
 };
 
-exports.Button = Button;`,
+export {
+  Button,
+}`,
     },
   ]
 
@@ -577,7 +581,7 @@ module CuratedResources = {
       imgSrc: "/static/ic_gentype@2x.png",
       title: React.string("TypeScript Integration"),
       descr: "Learn how to integrate ReScript in your existing TypeScript codebases.",
-      href: "/docs/gentype/latest/introduction",
+      href: "/docs/manual/latest/typescript-integration",
     },
   ]
 
@@ -589,9 +593,8 @@ module CuratedResources = {
         <div className="text-gray-40"> {React.string("NextJS")} </div>
       </>,
       descr: "Get started with our NextJS starter template.",
-      href: "https://github.com/ryyppy/rescript-nextjs-template",
+      href: "https://github.com/rescript-lang/create-rescript-app/blob/master/templates/rescript-template-nextjs/README.md",
     },
-    /*
     {
       imgSrc: "/static/vitejs_starter_logo.svg",
       title: <>
@@ -599,20 +602,19 @@ module CuratedResources = {
         <div style={ReactDOM.Style.make(~color="#6571FB", ())}> {React.string("ViteJS")} </div>
       </>,
       descr: "Get started with ViteJS and ReScript.",
-      href: "/",
+      href: "https://github.com/rescript-lang/create-rescript-app/blob/master/templates/rescript-template-vite/README.md",
     },
-    {
-      imgSrc: "/static/nodejs_starter_logo.svg",
-      title: <>
-        <div> {React.string("ReScript & ")} </div>
-        <div className="text-gray-40" style={ReactDOM.Style.make(~color="#699D65", ())}>
-          {React.string("NodeJS")}
-        </div>
-      </>,
-      descr: "Get started with ReScript targeting the Node platform.",
-      href: "/",
-    },
- */
+    // {
+    //   imgSrc: "/static/nodejs_starter_logo.svg",
+    //   title: <>
+    //     <div> {React.string("ReScript & ")} </div>
+    //     <div className="text-gray-40" style={ReactDOM.Style.make(~color="#699D65", ())}>
+    //       {React.string("NodeJS")}
+    //     </div>
+    //   </>,
+    //   descr: "Get started with ReScript targeting the Node platform.",
+    //   href: "/",
+    // },
   ]
 
   @react.component
@@ -702,9 +704,17 @@ let make = (~components=MarkdownComponents.default, ~children) => {
       ogImage="/static/Art-3-rescript-launch.jpg"
     />
     <div className="mt-4 xs:mt-16">
-      <div className="text-gray-80 text-18">
+      <div className="text-gray-80 text-18 z">
         <Navigation overlayState />
-        <div className="absolute top-16 w-full">
+        <div className="absolute w-full top-16">
+          // Delete this again, when ReScript 11 is out for some time.
+          <Banner>
+            {React.string("ReScript 11 is out! Read the ")}
+            <Next.Link href="/blog/release-11-0-0" className="underline">
+              {React.string("announcement blog post")}
+            </Next.Link>
+            {React.string(".")}
+          </Banner>
           <div className="relative overflow-hidden pb-32">
             <main className="mt-10 min-w-320 lg:align-center w-full">
               <MdxProvider components>

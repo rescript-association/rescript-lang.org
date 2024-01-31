@@ -1,5 +1,5 @@
 // This is used for the version dropdown in the api layouts
-let allApiVersions = [("latest", "v8.2.0"), ("v8.0.0", "< v8.2.0")]
+let allApiVersions = Constants.allManualVersions
 
 module Sidebar = SidebarLayout.Sidebar
 module Toc = SidebarLayout.Toc

@@ -176,20 +176,20 @@ switch data {
 | GoodResult(theMessage) =>
   Console.log("Success! " ++ theMessage)
 | BadResult(errorCode) =>
-  Console.log("Something's wrong. The error code is: " ++ Js.Int.toString(errorCode))
+  Console.log("Something's wrong. The error code is: " ++ Int.toString(errorCode))
 | NoResult =>
   Console.log("Bah.")
 }
 ```
 ```js
 var data = {
-  TAG: /* GoodResult */1,
+  TAG: "GoodResult",
   _0: "Product shipped!"
 };
 
-if (typeof data === "number") {
+if (typeof data !== "object") {
   console.log("Bah.");
-} else if (data.TAG === /* BadResult */ 0) {
+} else if (data.TAG === "BadResult") {
   console.log("Something's wrong. The error code is: " + "Product shipped!".toString());
 } else {
   console.log("Success! Product shipped!");
@@ -244,12 +244,12 @@ let message = switch person1 {
   // this is matched only if `name` isn't "Mary" or "Joe"
   `Hello ${name}.`
 | Student({name, reportCard: {passing: true, gpa}}) =>
-  `Congrats ${name}, nice GPA of ${Js.Float.toString(gpa)} you got there!`
+  `Congrats ${name}, nice GPA of ${Float.toString(gpa)} you got there!`
 | Student({
     reportCard: {gpa: 0.0},
     status: Vacations(daysLeft) | Sabbatical(daysLeft)
   }) =>
-  `Come back in ${Js.Int.toString(daysLeft)} days!`
+  `Come back in ${Int.toString(daysLeft)} days!`
 | Student({status: Sick}) =>
   `How are you feeling?`
 | Student({name}) =>
@@ -258,39 +258,33 @@ let message = switch person1 {
 ```
 ```js
 var person1 = {
-  TAG: /* Teacher */0,
+  TAG: "Teacher",
   name: "Jane",
   age: 35
 };
 
 var message;
 
-if (person1.TAG) {
-  var match$1 = person1.status;
-  var name = person1.name;
-  var match$2 = person1.reportCard;
-  message = match$2.passing
-    ? "Congrats " +
-      name +
-      ", nice GPA of " +
-      match$2.gpa.toString() +
-      " you got there!"
-    : typeof match$1 === "number"
-    ? match$1 !== 0
-      ? "Good luck next semester " + name + "!"
-      : "How are you feeling?"
-    : person1.reportCard.gpa !== 0.0
-    ? "Good luck next semester " + name + "!"
-    : "Come back in " + match$1._0.toString() + " days!";
+if (person1.TAG === "Teacher") {
+  message = "Hello Jane.";
 } else {
-  var name$1 = person1.name;
-  switch (name$1) {
-    case "Joe":
-    case "Mary":
-      message = "Hey, still going to the party on Saturday?";
-      break;
-    default:
-      message = "Hello " + name$1 + ".";
+  var match = "Jane";
+  var match$1 = match.status;
+  var name = match.name;
+  var match$2 = match.reportCard;
+  if (match$2.passing) {
+    message = "Congrats " + name + ", nice GPA of " + match$2.gpa.toString() + " you got there!";
+  } else {
+    var exit = 0;
+    if (typeof match$1 !== "object") {
+      message = match$1 === "Sick" ? "How are you feeling?" : "Good luck next semester " + name + "!";
+    } else {
+      exit = 1;
+    }
+    if (exit === 1) {
+      message = match.reportCard.gpa !== 0.0 ? "Good luck next semester " + name + "!" : "Come back in " + match$1._0.toString() + " days!";
+    }
+    
   }
 }
 ```
@@ -341,7 +335,7 @@ let myStatus = Vacations(10)
 
 switch myStatus {
 | Vacations(days)
-| Sabbatical(days) => Console.log(`Come back in ${Js.Int.toString(days)} days!`)
+| Sabbatical(days) => Console.log(`Come back in ${Int.toString(days)} days!`)
 | Sick
 | Present => Console.log("Hey! How are you?")
 }
@@ -376,10 +370,10 @@ switch person1 {
 }
 ```
 ```js
-if (person1.TAG) {
-  console.log("Hey student");
-} else {
+if (person1.TAG === "Teacher") {
   console.log("Hi teacher");
+} else {
+  console.log("Hey student");
 }
 ```
 
@@ -396,7 +390,7 @@ switch myStatus {
 }
 ```
 ```js
-if (typeof myStatus === "number" || myStatus.TAG) {
+if (typeof myStatus !== "object" || myStatus.TAG !== "Vacations") {
   console.log("Ok.");
 } else {
   console.log("Have fun!");
@@ -416,7 +410,7 @@ switch myStatus {
 }
 ```
 ```js
-if (typeof myStatus === "number" || myStatus.TAG) {
+if (typeof myStatus !== "object" || myStatus.TAG !== "Vacations") {
   console.log("Ok.");
 } else {
   console.log("Have fun!");
@@ -445,8 +439,8 @@ switch person1 {
 }
 ```
 ```js
-if (person1.TAG) {
-  if (person1.reportCard.gpa < 0.5) {
+if (person1.TAG !== "Teacher") {
+  if ("Jane".reportCard.gpa < 0.5) {
     console.log("What's happening");
   } else {
     console.log("Heyo");
@@ -646,12 +640,12 @@ let message = switch person1 {
 | Teacher({name: "Mary" | "Joe"}) =>
   `Hey, still going to the party on Saturday?`
 | Student({name, reportCard: {passing: true, gpa}}) =>
-  `Congrats ${name}, nice GPA of ${Js.Float.toString(gpa)} you got there!`
+  `Congrats ${name}, nice GPA of ${Float.toString(gpa)} you got there!`
 | Student({
     reportCard: {gpa: 0.0},
     status: Vacations(daysLeft) | Sabbatical(daysLeft)
   }) =>
-  `Come back in ${Js.Int.toString(daysLeft)} days!`
+  `Come back in ${Int.toString(daysLeft)} days!`
 | Student({status: Sick}) =>
   `How are you feeling?`
 | Student({name}) =>

@@ -13,7 +13,7 @@ ReScript offers a unique project conversion methodology which:
 
 ## Step 1: Install ReScript
 
-Run `npm install rescript` on your project, then imitate our [New Project](installation#new-project) workflow by adding a `rescript.json` at the root. Then start `npx rescript build -w`.
+Run `npm install rescript` on your project, then imitate our [New Project](installation#new-project) workflow by adding a `rescript.json` at the root. Then start `npx rescript -w`.
 
 ## Step 2: Copy Paste the Entire JS File
 
@@ -279,7 +279,7 @@ exports.queryResult = queryResult;
 </CodeTab>
 
 We've:
-- introduced an opaque types for `school` and `student` to prevent misusages their values
+- introduced an opaque types for `school` and `student` to prevent misuse of their values
 - typed the payload as a record with only the `student` field
 - typed `getStudentById` as the sole method of `student`
 

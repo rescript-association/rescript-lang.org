@@ -106,13 +106,13 @@ See [here](import-from-export-to-js.md#import-a-javascript-module-itself-es6-mod
 
 ## Checking for JS nullable types using the `option` type
 
-For a function whose argument is passed a JavaScript value that's potentially `null` or `undefined`, it's idiomatic to convert it to an `option`. The conversion is done through the helper functions in ReScript's [`Js.Nullable`](api/js/nullable#t) module. In this case, `toOption`:
+For a function whose argument is passed a JavaScript value that's potentially `null` or `undefined`, it's idiomatic to convert it to an `option`. The conversion is done through the helper functions in ReScript's [`Nullable`](api/core/nullable#value-toOption) module. In this case, `toOption`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
 let greetByName = (possiblyNullName) => {
-  let optionName = Js.Nullable.toOption(possiblyNullName)
+  let optionName = Nullable.toOption(possiblyNullName)
   switch optionName {
   | None => "Hi"
   | Some(name) => "Hello " ++ name
