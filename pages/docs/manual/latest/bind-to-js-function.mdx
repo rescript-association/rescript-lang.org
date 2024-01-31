@@ -426,8 +426,9 @@ Currently 4 directives are supported: `null_to_opt`, `undefined_to_opt`, `nullab
 
 **Since 11.1**
 
-**Experimental** You can easily bind to JS tagged template functions.
-All you need to do is defining a binding to a function that has two arrays as arguments, 
+**Experimental** You can easily bind to [JS tagged template functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates).
+Tag functions in JS expect as input an array of strings and variadic parameters for the arguments of the interpolation.
+To bind to those functions in rescript, write bindings that have two arrays as arguments, 
 the first one being an array of strings and the second can be an array of anything.
 You add the `@taggedTemplate` annotation and you're good to go!
 
