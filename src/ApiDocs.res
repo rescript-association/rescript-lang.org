@@ -44,49 +44,46 @@ type item =
 module RightSidebar = {
   @react.component
   let make = (~items: array<item>) => {
-    switch items->Js.Array2.length === 0 {
-    | true => React.null
-    | false =>
-      let valuesAndTypes = items->Js.Array2.map(item => {
-        switch item {
-        | Value({name, deprecated}) as kind | Type({name, deprecated}) as kind =>
-          let (icon, textColor, bgColor, href) = switch kind {
-          | Type(_) => ("t", "text-fire-30", "bg-fire-5", `#type-${name}`)
-          | Value(_) => ("v", "text-sky-30", "bg-sky-5", `#value-${name}`)
-          }
-          let deprecatedIcon = switch deprecated->Js.Null.toOption {
-          | Some(_) =>
-            <div
-              className={`bg-orange-100 min-w-[20px] min-h-[20px] w-5 h-5 mr-3 flex justify-center items-center rounded-xl ml-auto`}>
-              <span className={"text-[10px] text-orange-400"}> {"D"->React.string} </span>
-            </div>->Some
-          | None => None
-          }
-          let title = `${Belt.Option.isSome(deprecatedIcon) ? "Deprecated " : ""}` ++ name
-          let result =
-            <li className="my-3">
-              <a
-                title
-                className="flex items-center w-full font-normal text-14 text-gray-40 leading-tight hover:text-gray-80"
-                href>
-                <div
-                  className={`${bgColor} min-w-[20px] min-h-[20px] w-5 h-5 mr-3 flex justify-center items-center rounded-xl`}>
-                  <span className={"text-[10px] font-normal " ++ textColor}>
-                    {icon->React.string}
-                  </span>
-                </div>
-                <span className={"truncate"}> {React.string(name)} </span>
-                {switch deprecatedIcon {
-                | Some(icon) => icon
-                | None => React.null
-                }}
-              </a>
-            </li>
-          result
+    items
+    ->Js.Array2.map(item => {
+      switch item {
+      | Value({name, deprecated}) as kind | Type({name, deprecated}) as kind =>
+        let (icon, textColor, bgColor, href) = switch kind {
+        | Type(_) => ("t", "text-fire-30", "bg-fire-5", `#type-${name}`)
+        | Value(_) => ("v", "text-sky-30", "bg-sky-5", `#value-${name}`)
         }
-      })
-      valuesAndTypes->React.array
-    }
+        let deprecatedIcon = switch deprecated->Js.Null.toOption {
+        | Some(_) =>
+          <div
+            className={`bg-orange-100 min-w-[20px] min-h-[20px] w-5 h-5 mr-3 flex justify-center items-center rounded-xl ml-auto`}>
+            <span className={"text-[10px] text-orange-400"}> {"D"->React.string} </span>
+          </div>->Some
+        | None => None
+        }
+        let title = `${Belt.Option.isSome(deprecatedIcon) ? "Deprecated " : ""}` ++ name
+        let result =
+          <li className="my-3">
+            <a
+              title
+              className="flex items-center w-full font-normal text-14 text-gray-40 leading-tight hover:text-gray-80"
+              href>
+              <div
+                className={`${bgColor} min-w-[20px] min-h-[20px] w-5 h-5 mr-3 flex justify-center items-center rounded-xl`}>
+                <span className={"text-[10px] font-normal " ++ textColor}>
+                  {icon->React.string}
+                </span>
+              </div>
+              <span className={"truncate"}> {React.string(name)} </span>
+              {switch deprecatedIcon {
+              | Some(icon) => icon
+              | None => React.null
+              }}
+            </a>
+          </li>
+        result
+      }
+    })
+    ->React.array
   }
 }
 
