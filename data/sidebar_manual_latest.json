@@ -31,7 +31,8 @@
     "module",
     "import-export",
     "attribute",
-    "reserved-keywords"
+    "reserved-keywords",
+    "equality-comparison"
   ],
   "Advanced Features": [
     "extensible-variant",
