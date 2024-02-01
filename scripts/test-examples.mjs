@@ -14,8 +14,8 @@ let tempFileNameRegex = /_tempFile\.res/g
 //       see the package.json on how to define another rescript version
 let compilersDir = path.join(__dirname, "..", "compilers")
 
-let bsc = path.join(compilersDir, 'node_modules', 'rescript-1100', process.platform, 'bsc.exe');
-let rescriptBin = path.join(compilersDir, 'node_modules', 'rescript-1100', 'rescript');
+let bsc = path.join(compilersDir, 'node_modules', 'rescript-1110', process.platform, 'bsc.exe');
+let rescriptBin = path.join(compilersDir, 'node_modules', 'rescript-1110', 'rescript');
 let rescriptCoreCompiled = path.join(compilersDir, 'node_modules', '@rescript', 'core', 'lib', 'ocaml');
 
 const prepareCompilers = () => {
