@@ -1,5 +1,6 @@
 {
   "name": "dummy",
+  "jsx": { "version": 4 },
   "sources": {
     "dir": "dummy",
     "subdirs": true
