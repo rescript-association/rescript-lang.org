@@ -28,6 +28,7 @@
     "lazy-values",
     "promise",
     "async-await",
+    "tagged-templates",
     "module",
     "import-export",
     "attribute",
