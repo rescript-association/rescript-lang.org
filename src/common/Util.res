@@ -59,14 +59,6 @@ module Json = {
 }
 
 module Url = {
-  type t = {
-    hash: string,
-    host: string,
-    hostname: string,
-    href: string,
-    origin: string,
-    pathname: string,
-  }
   let isAbsolute: string => bool = %raw(`
     function(str) {
       var r = new RegExp('^(?:[a-z]+:)?//', 'i');
@@ -77,7 +69,6 @@ module Url = {
       return false;
     }
   `) //', 'i');
-  @new external make: string => t = "URL"
 }
 
 module Date = {

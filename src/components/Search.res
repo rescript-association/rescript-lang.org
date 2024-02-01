@@ -68,7 +68,7 @@ let transformItems = (items: DocSearch.transformItems) => {
 
   items->Belt.Array.keepMap(item => {
     // Transform absolute URL into relative
-    let url = try Util.Url.make(item.url)->Some catch {
+    let url = try Webapi.URL.make(item.url)->Some catch {
     | Js.Exn.Error(obj) =>
       Js.Console.error2(`Failed to parse URL ${item.url}`, obj)
       None
