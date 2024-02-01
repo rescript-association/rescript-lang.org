@@ -12,7 +12,7 @@
   import css from 'highlight.js/lib/languages/css'
   import ocaml from 'highlight.js/lib/languages/ocaml'
   import reason from 'plugins/reason-highlightjs'
-  import rescript from 'plugins/rescript-highlightjs'
+  import rescript from 'highlightjs-rescript'
   import bash from 'highlight.js/lib/languages/bash'
   import json from 'highlight.js/lib/languages/json'
   import html from 'highlight.js/lib/languages/xml'
