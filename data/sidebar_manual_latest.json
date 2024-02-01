@@ -28,10 +28,12 @@
     "lazy-values",
     "promise",
     "async-await",
+    "tagged-templates",
     "module",
     "import-export",
     "attribute",
-    "reserved-keywords"
+    "reserved-keywords",
+    "equality-comparison"
   ],
   "Advanced Features": [
     "extensible-variant",
