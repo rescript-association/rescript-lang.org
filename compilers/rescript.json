@@ -5,7 +5,8 @@
     "subdirs": true
   },
   "bs-dependencies": [
-    "@rescript/core"
+    "@rescript/core",
+    "@rescript/react"
   ],
   "bsc-flags": [
     "-open RescriptCore"
