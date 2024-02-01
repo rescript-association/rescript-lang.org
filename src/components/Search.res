@@ -1,6 +1,6 @@
-let apiKey = "d3d9d7cebf13a7b665e47cb85dc9c582"
+let apiKey = "a2485ef172b8cd82a2dfa498d551399b"
 let indexName = "rescript-lang"
-let appId = "BH4D9OD16A"
+let appId = "S32LNEY41T"
 
 @val @scope("document")
 external activeElement: option<Dom.element> = "activeElement"
