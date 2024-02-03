@@ -151,7 +151,7 @@ let make = (props: props): React.element => {
       }
       let description = Belt.Option.flatMap(fm, fm => Js.Null.toOption(fm.description))
       <MainLayout>
-        <Meta ?title ?description />
+        <Meta ?title ?description version=url.version />
         <div className="flex justify-center">
           <div className="max-w-740 w-full"> content </div>
         </div>
