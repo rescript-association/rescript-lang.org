@@ -1,18 +1,17 @@
-// API: https://github.com/algolia/docsearch/tree/v3.3.0/packages/docsearch-react/src/types
-type contentType = [
-  | #content
-  | #lvl0
-  | #lvl1
-  | #lvl2
-  | #lvl3
-  | #lvl4
-  | #lvl5
-  | #lvl6
-]
+// API: https://github.com/algolia/docsearch/tree/v3.5.2/packages/docsearch-react/src/types
+type contentType =
+  | @as("content") Content
+  | @as("lvl0") Lvl0
+  | @as("lvl1") Lvl1
+  | @as("lvl2") Lvl2
+  | @as("lvl3") Lvl3
+  | @as("lvl4") Lvl4
+  | @as("lvl5") Lvl5
+  | @as("lvl6") Lvl6
 
 type hierarchy = {
   lvl0: string,
-  lvl1: Js.Nullable.t<string>,
+  lvl1: string,
   lvl2: Js.Nullable.t<string>,
   lvl3: Js.Nullable.t<string>,
   lvl4: Js.Nullable.t<string>,
@@ -28,6 +27,8 @@ type docSearchHit = {
   @as("type") type_: contentType,
   anchor: Js.Nullable.t<string>,
   hierarchy: hierarchy,
+  _highlightResult: {.},
+  _snippetResult: {.},
 }
 type transformItems = array<docSearchHit>
 

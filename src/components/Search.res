@@ -65,7 +65,6 @@ let transformItems = (items: DocSearch.transformItems) => {
   | "/" => Url.Latest
   | other => Url.parse(other).version
   }
-
   items->Belt.Array.keepMap(item => {
     // Transform absolute URL into relative
     let url = try Webapi.URL.make(item.url)->Some catch {
@@ -83,14 +82,8 @@ let transformItems = (items: DocSearch.transformItems) => {
       | Latest | NoVersion => "latest"
       | Version(v) => v
       }
-
-      if urlVersion == versionStr {
-        let (lvl1, type_) = switch item.hierarchy.lvl1->Js.Nullable.toOption {
-        | Some(_) => (item.hierarchy.lvl1, item.type_)
-        | None => (item.hierarchy.lvl0->Js.Nullable.return, #lvl1)
-        }
-        let hierarchy = {...item.hierarchy, lvl1}
-        {...item, url: pathname ++ hash, hierarchy, type_}->Some
+      if urlVersion === versionStr {
+        {...item, url: pathname ++ hash}->Some
       } else {
         None
       }
@@ -140,7 +133,6 @@ let make = () => {
       | "/" => focusSearch(e)
       | "k" if e.ctrlKey || e.metaKey => focusSearch(e)
       | "Escape" => handleCloseModal()
-      // setState(_ => Inactive)
       | _ => ()
       }
     }
@@ -153,7 +145,6 @@ let make = () => {
   }
 
   let onClose = React.useCallback(() => {
-    // setState(_ => Inactive)
     handleCloseModal()
   }, [setState])
 
