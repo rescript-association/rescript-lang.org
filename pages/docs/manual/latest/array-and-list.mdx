@@ -50,6 +50,54 @@ var pushedValue = myArray.push("bye");
 
 </CodeTab>
 
+### Array spreads
+
+**Since 11.1**
+
+
+You can spread arrays of the the same type into new arrays, just like in JavaScript:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let y = [1, 2]
+let x = [4, 5, ...y]
+let x = [4, 5, ...y, 7, ...y]
+let x = [...y]
+```
+
+```javascript
+var Belt_Array = require("rescript/lib/js/belt_Array.js");
+
+var y = [
+  1,
+  2
+];
+
+var x = Belt_Array.concatMany([
+      [
+        4,
+        5
+      ],
+      y
+    ]);
+
+var x2 = Belt_Array.concatMany([
+      [
+        4,
+        5
+      ],
+      y,
+      [7],
+      y
+    ]);
+
+var x3 = Belt_Array.concatMany([y]);
+```
+</CodeTab>
+
+> Note that array spreads compiles to `Belt.Array.concatMany` right now. This is likely to change to native ES6 array spreads in the future.
+
 ## List
 
 ReScript provides a singly linked list too. Lists are:
