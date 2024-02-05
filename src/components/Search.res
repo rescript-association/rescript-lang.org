@@ -59,34 +59,15 @@ let hit = ({hit, children}: DocSearch.hitComponent) => {
   </Next.Link>
 }
 
-@val @scope(("window", "location")) external pathname: string = "pathname"
 let transformItems = (items: DocSearch.transformItems) => {
-  let version = switch pathname {
-  | "/" => Url.Latest
-  | other => Url.parse(other).version
-  }
   items->Belt.Array.keepMap(item => {
-    // Transform absolute URL into relative
     let url = try Webapi.URL.make(item.url)->Some catch {
     | Js.Exn.Error(obj) =>
       Js.Console.error2(`Failed to parse URL ${item.url}`, obj)
       None
     }
     switch url {
-    | Some({pathname, hash}) =>
-      let versionStr = switch version {
-      | Latest | NoVersion => "latest"
-      | Version(v) => v
-      }
-      let urlVersion = switch Url.parse(pathname).version {
-      | Latest | NoVersion => "latest"
-      | Version(v) => v
-      }
-      if urlVersion === versionStr {
-        {...item, url: pathname ++ hash}->Some
-      } else {
-        None
-      }
+    | Some({pathname, hash}) => {...item, url: pathname ++ hash}->Some
     | None => None
     }
   })
@@ -95,6 +76,12 @@ let transformItems = (items: DocSearch.transformItems) => {
 @react.component
 let make = () => {
   let (state, setState) = React.useState(_ => Inactive)
+  let router = Next.Router.useRouter()
+
+  let version = switch Url.parse(router.route).version {
+  | Version(v) => v
+  | _ => "latest"
+  }
 
   let handleCloseModal = () => {
     let () = switch ReactDOM.querySelector(".DocSearch-Modal") {
@@ -162,6 +149,7 @@ let make = () => {
             appId
             indexName
             onClose
+            searchParameters={facetFilters: ["version:" ++ version]}
             initialScrollY={window->scrollY}
             transformItems={transformItems}
             hitComponent=hit

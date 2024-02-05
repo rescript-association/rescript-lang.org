@@ -27,6 +27,7 @@ type docSearchHit = {
   @as("type") type_: contentType,
   anchor: Js.Nullable.t<string>,
   hierarchy: hierarchy,
+  // NOTE: docsearch need these two fields to highlight results
   _highlightResult: {.},
   _snippetResult: {.},
 }
