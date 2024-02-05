@@ -222,6 +222,7 @@ let make = (
 ) => {
   let (isNavOpen, setNavOpen) = React.useState(() => false)
   let router = Next.Router.useRouter()
+  let version = Url.parse(router.route).version
 
   let theme = ColorTheme.toCN(theme)
 
@@ -297,7 +298,7 @@ let make = (
   }
 
   <>
-    <Meta title=metaTitle />
+    <Meta title=metaTitle version />
     <div className={"mt-16 min-w-320 " ++ theme}>
       <div className="w-full">
         <Navigation overlayState=(isNavOpen, setNavOpen) />

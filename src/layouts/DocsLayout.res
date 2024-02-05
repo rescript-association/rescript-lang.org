@@ -135,7 +135,7 @@ let make = (
         metaTitle ++ (" | " ++ titleCategory)
       | None => title
       }
-      let meta = <Meta title ?description ?canonical />
+      let meta = <Meta title ?description ?canonical version=Url.parse(router.route).version />
 
       let ghEditHref = switch canonical {
       | Some(canonical) =>

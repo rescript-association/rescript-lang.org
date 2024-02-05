@@ -15,6 +15,7 @@ let make = (
   ~ogDescription=description,
   ~ogTitle=?,
   ~ogImage=?,
+  ~version: option<Url.version>=?,
 ) => {
   let title = switch title {
   | None
@@ -68,5 +69,13 @@ let make = (
     /* TODO: Undo this later */
     /* <meta key="twitter:image" property="twitter:image" content=ogImage /> */
     <link rel="alternate" type_="application/rss+xml" title="ReScript Blog" href="/blog/feed.xml" />
+    // Docsearch meta tags
+    <meta
+      name="docsearch:version"
+      content={switch version {
+      | Some(Version(v)) => v
+      | _ => "latest"
+      }}
+    />
   </Head>
 }
