@@ -1,3 +1,4 @@
+blank_issues_enabled: false
 contact_links:
   - name: 🚀 rescript-compiler
     url: https://github.com/rescript-lang/rescript-compiler/issues
