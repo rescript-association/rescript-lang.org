@@ -429,7 +429,7 @@
         "kind": "type",
         "name": "htmlAnchorElement",
         "docstrings": [],
-        "signature": "type htmlAnchorElement = htmlElement_like<\\n  _htmlAnchorElement,\\n>"
+        "signature": "type htmlAnchorElement = htmlElement_like<\n  _htmlAnchorElement,\n>"
       },
       {
         "id": "Dom._htmlAreaElement",
@@ -513,7 +513,7 @@
         "kind": "type",
         "name": "htmlButtonElement",
         "docstrings": [],
-        "signature": "type htmlButtonElement = htmlElement_like<\\n  _htmlButtonElement,\\n>"
+        "signature": "type htmlButtonElement = htmlElement_like<\n  _htmlButtonElement,\n>"
       },
       {
         "id": "Dom._htmlCanvasElement",
@@ -527,7 +527,7 @@
         "kind": "type",
         "name": "htmlCanvasElement",
         "docstrings": [],
-        "signature": "type htmlCanvasElement = htmlElement_like<\\n  _htmlCanvasElement,\\n>"
+        "signature": "type htmlCanvasElement = htmlElement_like<\n  _htmlCanvasElement,\n>"
       },
       {
         "id": "Dom._htmlDataElement",
@@ -555,7 +555,7 @@
         "kind": "type",
         "name": "htmlDataListElement",
         "docstrings": [],
-        "signature": "type htmlDataListElement = htmlElement_like<\\n  _htmlDataListElement,\\n>"
+        "signature": "type htmlDataListElement = htmlElement_like<\n  _htmlDataListElement,\n>"
       },
       {
         "id": "Dom._htmlDialogElement",
@@ -569,7 +569,7 @@
         "kind": "type",
         "name": "htmlDialogElement",
         "docstrings": [],
-        "signature": "type htmlDialogElement = htmlElement_like<\\n  _htmlDialogElement,\\n>"
+        "signature": "type htmlDialogElement = htmlElement_like<\n  _htmlDialogElement,\n>"
       },
       {
         "id": "Dom._htmlDivElement",
@@ -625,7 +625,7 @@
         "kind": "type",
         "name": "htmlFieldSetElement",
         "docstrings": [],
-        "signature": "type htmlFieldSetElement = htmlElement_like<\\n  _htmlFieldSetElement,\\n>"
+        "signature": "type htmlFieldSetElement = htmlElement_like<\n  _htmlFieldSetElement,\n>"
       },
       {
         "id": "Dom._htmlFormElement",
@@ -667,7 +667,7 @@
         "kind": "type",
         "name": "htmlHeadingElement",
         "docstrings": [],
-        "signature": "type htmlHeadingElement = htmlElement_like<\\n  _htmlHeadingElement,\\n>"
+        "signature": "type htmlHeadingElement = htmlElement_like<\n  _htmlHeadingElement,\n>"
       },
       {
         "id": "Dom._htmlHrElement",
@@ -709,7 +709,7 @@
         "kind": "type",
         "name": "htmlIframeElement",
         "docstrings": [],
-        "signature": "type htmlIframeElement = htmlElement_like<\\n  _htmlIframeElement,\\n>"
+        "signature": "type htmlIframeElement = htmlElement_like<\n  _htmlIframeElement,\n>"
       },
       {
         "id": "Dom._htmlImageElement",
@@ -765,7 +765,7 @@
         "kind": "type",
         "name": "htmlLegendElement",
         "docstrings": [],
-        "signature": "type htmlLegendElement = htmlElement_like<\\n  _htmlLegendElement,\\n>"
+        "signature": "type htmlLegendElement = htmlElement_like<\n  _htmlLegendElement,\n>"
       },
       {
         "id": "Dom._htmlLiElement",
@@ -905,7 +905,7 @@
         "kind": "type",
         "name": "htmlObjectElement",
         "docstrings": [],
-        "signature": "type htmlObjectElement = htmlElement_like<\\n  _htmlObjectElement,\\n>"
+        "signature": "type htmlObjectElement = htmlElement_like<\n  _htmlObjectElement,\n>"
       },
       {
         "id": "Dom._htmlOptGroupElement",
@@ -919,7 +919,7 @@
         "kind": "type",
         "name": "htmlOptGroupElement",
         "docstrings": [],
-        "signature": "type htmlOptGroupElement = htmlElement_like<\\n  _htmlOptGroupElement,\\n>"
+        "signature": "type htmlOptGroupElement = htmlElement_like<\n  _htmlOptGroupElement,\n>"
       },
       {
         "id": "Dom._htmlOptionElement",
@@ -933,7 +933,7 @@
         "kind": "type",
         "name": "htmlOptionElement",
         "docstrings": [],
-        "signature": "type htmlOptionElement = htmlElement_like<\\n  _htmlOptionElement,\\n>"
+        "signature": "type htmlOptionElement = htmlElement_like<\n  _htmlOptionElement,\n>"
       },
       {
         "id": "Dom._htmlOutputElement",
@@ -947,7 +947,7 @@
         "kind": "type",
         "name": "htmlOutputElement",
         "docstrings": [],
-        "signature": "type htmlOutputElement = htmlElement_like<\\n  _htmlOutputElement,\\n>"
+        "signature": "type htmlOutputElement = htmlElement_like<\n  _htmlOutputElement,\n>"
       },
       {
         "id": "Dom._htmlParagraphElement",
@@ -961,7 +961,7 @@
         "kind": "type",
         "name": "htmlParagraphElement",
         "docstrings": [],
-        "signature": "type htmlParagraphElement = htmlElement_like<\\n  _htmlParagraphElement,\\n>"
+        "signature": "type htmlParagraphElement = htmlElement_like<\n  _htmlParagraphElement,\n>"
       },
       {
         "id": "Dom._htmlParamElement",
@@ -1003,7 +1003,7 @@
         "kind": "type",
         "name": "htmlProgressElement",
         "docstrings": [],
-        "signature": "type htmlProgressElement = htmlElement_like<\\n  _htmlProgressElement,\\n>"
+        "signature": "type htmlProgressElement = htmlElement_like<\n  _htmlProgressElement,\n>"
       },
       {
         "id": "Dom._htmlQuoteElement",
@@ -1031,7 +1031,7 @@
         "kind": "type",
         "name": "htmlScriptElement",
         "docstrings": [],
-        "signature": "type htmlScriptElement = htmlElement_like<\\n  _htmlScriptElement,\\n>"
+        "signature": "type htmlScriptElement = htmlElement_like<\n  _htmlScriptElement,\n>"
       },
       {
         "id": "Dom._htmlSelectElement",
@@ -1045,7 +1045,7 @@
         "kind": "type",
         "name": "htmlSelectElement",
         "docstrings": [],
-        "signature": "type htmlSelectElement = htmlElement_like<\\n  _htmlSelectElement,\\n>"
+        "signature": "type htmlSelectElement = htmlElement_like<\n  _htmlSelectElement,\n>"
       },
       {
         "id": "Dom._htmlSlotElement",
@@ -1073,7 +1073,7 @@
         "kind": "type",
         "name": "htmlSourceElement",
         "docstrings": [],
-        "signature": "type htmlSourceElement = htmlElement_like<\\n  _htmlSourceElement,\\n>"
+        "signature": "type htmlSourceElement = htmlElement_like<\n  _htmlSourceElement,\n>"
       },
       {
         "id": "Dom._htmlSpanElement",
@@ -1115,7 +1115,7 @@
         "kind": "type",
         "name": "htmlTableCaptionElement",
         "docstrings": [],
-        "signature": "type htmlTableCaptionElement = htmlElement_like<\\n  _htmlTableCaptionElement,\\n>"
+        "signature": "type htmlTableCaptionElement = htmlElement_like<\n  _htmlTableCaptionElement,\n>"
       },
       {
         "id": "Dom._htmlTableCellElement",
@@ -1129,7 +1129,7 @@
         "kind": "type",
         "name": "htmlTableCellElement",
         "docstrings": [],
-        "signature": "type htmlTableCellElement = htmlElement_like<\\n  _htmlTableCellElement,\\n>"
+        "signature": "type htmlTableCellElement = htmlElement_like<\n  _htmlTableCellElement,\n>"
       },
       {
         "id": "Dom._htmlTableColElement",
@@ -1143,7 +1143,7 @@
         "kind": "type",
         "name": "htmlTableColElement",
         "docstrings": [],
-        "signature": "type htmlTableColElement = htmlElement_like<\\n  _htmlTableColElement,\\n>"
+        "signature": "type htmlTableColElement = htmlElement_like<\n  _htmlTableColElement,\n>"
       },
       {
         "id": "Dom._htmlTableDataCellElement",
@@ -1157,7 +1157,7 @@
         "kind": "type",
         "name": "htmlTableDataCellElement",
         "docstrings": [],
-        "signature": "type htmlTableDataCellElement = htmlElement_like<\\n  _htmlTableDataCellElement,\\n>"
+        "signature": "type htmlTableDataCellElement = htmlElement_like<\n  _htmlTableDataCellElement,\n>"
       },
       {
         "id": "Dom._htmlTableElement",
@@ -1185,7 +1185,7 @@
         "kind": "type",
         "name": "htmlTableHeaderCellElement",
         "docstrings": [],
-        "signature": "type htmlTableHeaderCellElement = htmlElement_like<\\n  _htmlTableHeaderCellElement,\\n>"
+        "signature": "type htmlTableHeaderCellElement = htmlElement_like<\n  _htmlTableHeaderCellElement,\n>"
       },
       {
         "id": "Dom._htmlTableRowElement",
@@ -1199,7 +1199,7 @@
         "kind": "type",
         "name": "htmlTableRowElement",
         "docstrings": [],
-        "signature": "type htmlTableRowElement = htmlElement_like<\\n  _htmlTableRowElement,\\n>"
+        "signature": "type htmlTableRowElement = htmlElement_like<\n  _htmlTableRowElement,\n>"
       },
       {
         "id": "Dom._htmlTableSectionElement",
@@ -1213,7 +1213,7 @@
         "kind": "type",
         "name": "htmlTableSectionElement",
         "docstrings": [],
-        "signature": "type htmlTableSectionElement = htmlElement_like<\\n  _htmlTableSectionElement,\\n>"
+        "signature": "type htmlTableSectionElement = htmlElement_like<\n  _htmlTableSectionElement,\n>"
       },
       {
         "id": "Dom._htmlTextAreaElement",
@@ -1227,7 +1227,7 @@
         "kind": "type",
         "name": "htmlTextAreaElement",
         "docstrings": [],
-        "signature": "type htmlTextAreaElement = htmlElement_like<\\n  _htmlTextAreaElement,\\n>"
+        "signature": "type htmlTextAreaElement = htmlElement_like<\n  _htmlTextAreaElement,\n>"
       },
       {
         "id": "Dom._htmlTimeElement",
@@ -1297,7 +1297,7 @@
         "kind": "type",
         "name": "htmlUnknownElement",
         "docstrings": [],
-        "signature": "type htmlUnknownElement = htmlElement_like<\\n  _htmlUnknownElement,\\n>"
+        "signature": "type htmlUnknownElement = htmlElement_like<\n  _htmlUnknownElement,\n>"
       },
       {
         "id": "Dom._htmlVideoElement",
@@ -1514,7 +1514,7 @@
         "kind": "type",
         "name": "idbVersionChangeEvent",
         "docstrings": [],
-        "signature": "type idbVersionChangeEvent = event_like<\\n  _idbVersionChangeEvent,\\n>"
+        "signature": "type idbVersionChangeEvent = event_like<\n  _idbVersionChangeEvent,\n>"
       },
       {
         "id": "Dom._inputEvent",

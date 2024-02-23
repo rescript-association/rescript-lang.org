@@ -424,84 +424,88 @@ let processStaticProps = (~slug: array<string>, ~version: string) => {
   switch content {
   | Some({mainModule, tree}) =>
     switch mainModule->Js.Dict.get(modulePath) {
-    | Some(Object(mod)) =>
-      let docItem = Docgen.decodeModule(mod)
+    | Some(json) =>
+      let {items, docstrings, deprecated, name} = Docgen.decodeFromJson(json)
+      let id = switch json {
+      | Object(dict) =>
+        switch Js.Dict.get(dict, "id") {
+        | Some(String(s)) => s
+        | _ => ""
+        }
+      | _ => ""
+      }
 
-      switch docItem {
-      | Docgen.Module({id, name, docstrings, items, ?deprecated}) =>
-        let items = items->Js.Array2.map(item =>
-          switch item {
-          | Docgen.Value({id, docstrings, signature, name, ?deprecated}) =>
-            Value({
-              id,
-              docstrings,
-              signature,
-              name,
-              deprecated: deprecated->Js.Null.fromOption,
-            })
-          | Type({id, docstrings, signature, name, ?deprecated, ?detail}) =>
-            let detail = switch detail {
-            | Some(kind) =>
-              switch kind {
-              | Docgen.Record({items}) =>
-                let items = items->Js.Array2.map(({
+      let items = items->Js.Array2.map(item =>
+        switch item {
+        | Docgen.Value({id, docstrings, signature, name, ?deprecated}) =>
+          Value({
+            id,
+            docstrings,
+            signature,
+            name,
+            deprecated: deprecated->Js.Null.fromOption,
+          })
+        | Type({id, docstrings, signature, name, ?deprecated, ?detail}) =>
+          let detail = switch detail {
+          | Some(kind) =>
+            switch kind {
+            | Docgen.Record({items}) =>
+              let items = items->Js.Array2.map(({
+                name,
+                docstrings,
+                signature,
+                optional,
+                ?deprecated,
+              }) => {
+                {
                   name,
                   docstrings,
                   signature,
                   optional,
-                  ?deprecated,
-                }) => {
-                  {
-                    name,
-                    docstrings,
-                    signature,
-                    optional,
-                    deprecated: deprecated->Js.Null.fromOption,
-                  }
-                })
-                Record({items: items})->Js.Null.return
-              | Variant({items}) =>
-                let items = items->Js.Array2.map(({name, docstrings, signature, ?deprecated}) => {
-                  {
-                    name,
-                    docstrings,
-                    signature,
-                    deprecated: deprecated->Js.Null.fromOption,
-                  }
-                })
+                  deprecated: deprecated->Js.Null.fromOption,
+                }
+              })
+              Record({items: items})->Js.Null.return
+            | Variant({items}) =>
+              let items = items->Js.Array2.map(({name, docstrings, signature, ?deprecated}) => {
+                {
+                  name,
+                  docstrings,
+                  signature,
+                  deprecated: deprecated->Js.Null.fromOption,
+                }
+              })
 
-                Variant({items: items})->Js.Null.return
-              }
-            | None => Js.Null.empty
+              Variant({items: items})->Js.Null.return
             }
-            Type({
-              id,
-              docstrings,
-              signature,
-              name,
-              deprecated: deprecated->Js.Null.fromOption,
-              detail,
-            })
-          | _ => assert(false)
+          | None => Js.Null.empty
           }
-        )
-        let module_ = {
-          id,
-          name,
-          docstrings,
-          deprecated: deprecated->Js.Null.fromOption,
-          items,
+          Type({
+            id,
+            docstrings,
+            signature,
+            name,
+            deprecated: deprecated->Js.Null.fromOption,
+            detail,
+          })
+        | _ => assert(false)
         }
-
-        let toctree = tree->Js.Dict.get(moduleName)
-
-        switch toctree {
-        | Some(toctree) => Ok({module_, toctree: (Obj.magic(toctree): node)})
-        | None => Error(`Failed to find toctree to ${modulePath}`)
-        }
-      | _ => Error(`Failed to find module ${modulePath}`)
+      )
+      let module_ = {
+        id,
+        name,
+        docstrings,
+        deprecated: deprecated->Js.Null.fromOption,
+        items,
       }
-    | Some(_) => Error(`Expected an object for ${modulePath}`)
+
+      let toctree = tree->Js.Dict.get(moduleName)
+
+      switch toctree {
+      | Some(toctree) => Ok({module_, toctree: (Obj.magic(toctree): node)})
+      | None => Error(`Failed to find toctree to ${modulePath}`)
+      }
+
     | None => Error(`Failed to get key for ${modulePath}`)
     }
   | None => Error(`Failed to get API Data for version ${version} and module ${moduleName}`)

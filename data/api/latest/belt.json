@@ -91,7 +91,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t<'b>, (. key, 'b) => unit) => unit"
+        "signature": "let forEachU: (t<'b>, (key, 'b) => unit) => unit"
       },
       {
         "id": "Belt.HashMap.String.forEach",
@@ -105,7 +105,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t<'b>, 'c, (. 'c, key, 'b) => 'c) => 'c"
+        "signature": "let reduceU: (t<'b>, 'c, ('c, key, 'b) => 'c) => 'c"
       },
       {
         "id": "Belt.HashMap.String.reduce",
@@ -119,7 +119,7 @@
         "kind": "value",
         "name": "keepMapInPlaceU",
         "docstrings": [],
-        "signature": "let keepMapInPlaceU: (t<'a>, (. key, 'a) => option<'a>) => unit"
+        "signature": "let keepMapInPlaceU: (t<'a>, (key, 'a) => option<'a>) => unit"
       },
       {
         "id": "Belt.HashMap.String.keepMapInPlace",
@@ -270,7 +270,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t<'b>, (. key, 'b) => unit) => unit"
+        "signature": "let forEachU: (t<'b>, (key, 'b) => unit) => unit"
       },
       {
         "id": "Belt.HashMap.Int.forEach",
@@ -284,7 +284,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t<'b>, 'c, (. 'c, key, 'b) => 'c) => 'c"
+        "signature": "let reduceU: (t<'b>, 'c, ('c, key, 'b) => 'c) => 'c"
       },
       {
         "id": "Belt.HashMap.Int.reduce",
@@ -298,7 +298,7 @@
         "kind": "value",
         "name": "keepMapInPlaceU",
         "docstrings": [],
-        "signature": "let keepMapInPlaceU: (t<'a>, (. key, 'a) => option<'a>) => unit"
+        "signature": "let keepMapInPlaceU: (t<'a>, (key, 'a) => option<'a>) => unit"
       },
       {
         "id": "Belt.HashMap.Int.keepMapInPlace",
@@ -441,7 +441,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t, (. key) => unit) => unit"
+        "signature": "let forEachU: (t, key => unit) => unit"
       },
       {
         "id": "Belt.HashSet.String.forEach",
@@ -455,7 +455,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t, 'c, (. 'c, key) => 'c) => 'c"
+        "signature": "let reduceU: (t, 'c, ('c, key) => 'c) => 'c"
       },
       {
         "id": "Belt.HashSet.String.reduce",
@@ -584,7 +584,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t, (. key) => unit) => unit"
+        "signature": "let forEachU: (t, key => unit) => unit"
       },
       {
         "id": "Belt.HashSet.Int.forEach",
@@ -598,7 +598,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t, 'c, (. 'c, key) => 'c) => 'c"
+        "signature": "let reduceU: (t, 'c, ('c, key) => 'c) => 'c"
       },
       {
         "id": "Belt.HashSet.Int.reduce",
@@ -703,7 +703,7 @@
         "kind": "value",
         "name": "cmpU",
         "docstrings": [],
-        "signature": "let cmpU: (t<'a>, t<'a>, (. 'a, 'a) => int) => int"
+        "signature": "let cmpU: (t<'a>, t<'a>, ('a, 'a) => int) => int"
       },
       {
         "id": "Belt.MutableMap.String.cmp",
@@ -719,7 +719,7 @@
         "kind": "value",
         "name": "eqU",
         "docstrings": [],
-        "signature": "let eqU: (t<'a>, t<'a>, (. 'a, 'a) => bool) => bool"
+        "signature": "let eqU: (t<'a>, t<'a>, ('a, 'a) => bool) => bool"
       },
       {
         "id": "Belt.MutableMap.String.eq",
@@ -735,7 +735,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t<'a>, (. key, 'a) => unit) => unit"
+        "signature": "let forEachU: (t<'a>, (key, 'a) => unit) => unit"
       },
       {
         "id": "Belt.MutableMap.String.forEach",
@@ -751,7 +751,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t<'a>, 'b, (. 'b, key, 'a) => 'b) => 'b"
+        "signature": "let reduceU: (t<'a>, 'b, ('b, key, 'a) => 'b) => 'b"
       },
       {
         "id": "Belt.MutableMap.String.reduce",
@@ -767,7 +767,7 @@
         "kind": "value",
         "name": "everyU",
         "docstrings": [],
-        "signature": "let everyU: (t<'a>, (. key, 'a) => bool) => bool"
+        "signature": "let everyU: (t<'a>, (key, 'a) => bool) => bool"
       },
       {
         "id": "Belt.MutableMap.String.every",
@@ -783,7 +783,7 @@
         "kind": "value",
         "name": "someU",
         "docstrings": [],
-        "signature": "let someU: (t<'a>, (. key, 'a) => bool) => bool"
+        "signature": "let someU: (t<'a>, (key, 'a) => bool) => bool"
       },
       {
         "id": "Belt.MutableMap.String.some",
@@ -963,7 +963,7 @@
         "kind": "value",
         "name": "updateU",
         "docstrings": [],
-        "signature": "let updateU: (t<'a>, key, (. option<'a>) => option<'a>) => unit"
+        "signature": "let updateU: (t<'a>, key, option<'a> => option<'a>) => unit"
       },
       {
         "id": "Belt.MutableMap.String.update",
@@ -977,7 +977,7 @@
         "kind": "value",
         "name": "mapU",
         "docstrings": [],
-        "signature": "let mapU: (t<'a>, (. 'a) => 'b) => t<'b>"
+        "signature": "let mapU: (t<'a>, 'a => 'b) => t<'b>"
       },
       {
         "id": "Belt.MutableMap.String.map",
@@ -993,7 +993,7 @@
         "kind": "value",
         "name": "mapWithKeyU",
         "docstrings": [],
-        "signature": "let mapWithKeyU: (t<'a>, (. key, 'a) => 'b) => t<'b>"
+        "signature": "let mapWithKeyU: (t<'a>, (key, 'a) => 'b) => t<'b>"
       },
       {
         "id": "Belt.MutableMap.String.mapWithKey",
@@ -1056,7 +1056,7 @@
         "kind": "value",
         "name": "cmpU",
         "docstrings": [],
-        "signature": "let cmpU: (t<'a>, t<'a>, (. 'a, 'a) => int) => int"
+        "signature": "let cmpU: (t<'a>, t<'a>, ('a, 'a) => int) => int"
       },
       {
         "id": "Belt.MutableMap.Int.cmp",
@@ -1072,7 +1072,7 @@
         "kind": "value",
         "name": "eqU",
         "docstrings": [],
-        "signature": "let eqU: (t<'a>, t<'a>, (. 'a, 'a) => bool) => bool"
+        "signature": "let eqU: (t<'a>, t<'a>, ('a, 'a) => bool) => bool"
       },
       {
         "id": "Belt.MutableMap.Int.eq",
@@ -1088,7 +1088,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t<'a>, (. key, 'a) => unit) => unit"
+        "signature": "let forEachU: (t<'a>, (key, 'a) => unit) => unit"
       },
       {
         "id": "Belt.MutableMap.Int.forEach",
@@ -1104,7 +1104,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t<'a>, 'b, (. 'b, key, 'a) => 'b) => 'b"
+        "signature": "let reduceU: (t<'a>, 'b, ('b, key, 'a) => 'b) => 'b"
       },
       {
         "id": "Belt.MutableMap.Int.reduce",
@@ -1120,7 +1120,7 @@
         "kind": "value",
         "name": "everyU",
         "docstrings": [],
-        "signature": "let everyU: (t<'a>, (. key, 'a) => bool) => bool"
+        "signature": "let everyU: (t<'a>, (key, 'a) => bool) => bool"
       },
       {
         "id": "Belt.MutableMap.Int.every",
@@ -1136,7 +1136,7 @@
         "kind": "value",
         "name": "someU",
         "docstrings": [],
-        "signature": "let someU: (t<'a>, (. key, 'a) => bool) => bool"
+        "signature": "let someU: (t<'a>, (key, 'a) => bool) => bool"
       },
       {
         "id": "Belt.MutableMap.Int.some",
@@ -1316,7 +1316,7 @@
         "kind": "value",
         "name": "updateU",
         "docstrings": [],
-        "signature": "let updateU: (t<'a>, key, (. option<'a>) => option<'a>) => unit"
+        "signature": "let updateU: (t<'a>, key, option<'a> => option<'a>) => unit"
       },
       {
         "id": "Belt.MutableMap.Int.update",
@@ -1330,7 +1330,7 @@
         "kind": "value",
         "name": "mapU",
         "docstrings": [],
-        "signature": "let mapU: (t<'a>, (. 'a) => 'b) => t<'b>"
+        "signature": "let mapU: (t<'a>, 'a => 'b) => t<'b>"
       },
       {
         "id": "Belt.MutableMap.Int.map",
@@ -1346,7 +1346,7 @@
         "kind": "value",
         "name": "mapWithKeyU",
         "docstrings": [],
-        "signature": "let mapWithKeyU: (t<'a>, (. key, 'a) => 'b) => t<'b>"
+        "signature": "let mapWithKeyU: (t<'a>, (key, 'a) => 'b) => t<'b>"
       },
       {
         "id": "Belt.MutableMap.Int.mapWithKey",
@@ -1514,7 +1514,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t, (. value) => unit) => unit"
+        "signature": "let forEachU: (t, value => unit) => unit"
       },
       {
         "id": "Belt.MutableSet.String.forEach",
@@ -1530,7 +1530,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t, 'a, (. 'a, value) => 'a) => 'a"
+        "signature": "let reduceU: (t, 'a, ('a, value) => 'a) => 'a"
       },
       {
         "id": "Belt.MutableSet.String.reduce",
@@ -1546,7 +1546,7 @@
         "kind": "value",
         "name": "everyU",
         "docstrings": [],
-        "signature": "let everyU: (t, (. value) => bool) => bool"
+        "signature": "let everyU: (t, value => bool) => bool"
       },
       {
         "id": "Belt.MutableSet.String.every",
@@ -1562,7 +1562,7 @@
         "kind": "value",
         "name": "someU",
         "docstrings": [],
-        "signature": "let someU: (t, (. value) => bool) => bool"
+        "signature": "let someU: (t, value => bool) => bool"
       },
       {
         "id": "Belt.MutableSet.String.some",
@@ -1578,7 +1578,7 @@
         "kind": "value",
         "name": "keepU",
         "docstrings": [],
-        "signature": "let keepU: (t, (. value) => bool) => t"
+        "signature": "let keepU: (t, value => bool) => t"
       },
       {
         "id": "Belt.MutableSet.String.keep",
@@ -1594,7 +1594,7 @@
         "kind": "value",
         "name": "partitionU",
         "docstrings": [],
-        "signature": "let partitionU: (t, (. value) => bool) => (t, t)"
+        "signature": "let partitionU: (t, value => bool) => (t, t)"
       },
       {
         "id": "Belt.MutableSet.String.partition",
@@ -1856,7 +1856,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t, (. value) => unit) => unit"
+        "signature": "let forEachU: (t, value => unit) => unit"
       },
       {
         "id": "Belt.MutableSet.Int.forEach",
@@ -1872,7 +1872,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t, 'a, (. 'a, value) => 'a) => 'a"
+        "signature": "let reduceU: (t, 'a, ('a, value) => 'a) => 'a"
       },
       {
         "id": "Belt.MutableSet.Int.reduce",
@@ -1888,7 +1888,7 @@
         "kind": "value",
         "name": "everyU",
         "docstrings": [],
-        "signature": "let everyU: (t, (. value) => bool) => bool"
+        "signature": "let everyU: (t, value => bool) => bool"
       },
       {
         "id": "Belt.MutableSet.Int.every",
@@ -1904,7 +1904,7 @@
         "kind": "value",
         "name": "someU",
         "docstrings": [],
-        "signature": "let someU: (t, (. value) => bool) => bool"
+        "signature": "let someU: (t, value => bool) => bool"
       },
       {
         "id": "Belt.MutableSet.Int.some",
@@ -1920,7 +1920,7 @@
         "kind": "value",
         "name": "keepU",
         "docstrings": [],
-        "signature": "let keepU: (t, (. value) => bool) => t"
+        "signature": "let keepU: (t, value => bool) => t"
       },
       {
         "id": "Belt.MutableSet.Int.keep",
@@ -1936,7 +1936,7 @@
         "kind": "value",
         "name": "partitionU",
         "docstrings": [],
-        "signature": "let partitionU: (t, (. value) => bool) => (t, t)"
+        "signature": "let partitionU: (t, value => bool) => (t, t)"
       },
       {
         "id": "Belt.MutableSet.Int.partition",
@@ -2088,21 +2088,21 @@
         "kind": "value",
         "name": "cmpU",
         "docstrings": [],
-        "signature": "let cmpU: (\\n  t<'k, 'v, 'id>,\\n  t<'k, 'v, 'id>,\\n  ~kcmp: cmp<'k, 'id>,\\n  ~vcmp: (. 'v, 'v) => int,\\n) => int"
+        "signature": "let cmpU: (\n  t<'k, 'v, 'id>,\n  t<'k, 'v, 'id>,\n  ~kcmp: cmp<'k, 'id>,\n  ~vcmp: ('v, 'v) => int,\n) => int"
       },
       {
         "id": "Belt.Map.Dict.cmp",
         "kind": "value",
         "name": "cmp",
         "docstrings": [],
-        "signature": "let cmp: (\\n  t<'k, 'v, 'id>,\\n  t<'k, 'v, 'id>,\\n  ~kcmp: cmp<'k, 'id>,\\n  ~vcmp: ('v, 'v) => int,\\n) => int"
+        "signature": "let cmp: (\n  t<'k, 'v, 'id>,\n  t<'k, 'v, 'id>,\n  ~kcmp: cmp<'k, 'id>,\n  ~vcmp: ('v, 'v) => int,\n) => int"
       },
       {
         "id": "Belt.Map.Dict.eqU",
         "kind": "value",
         "name": "eqU",
         "docstrings": [],
-        "signature": "let eqU: (\\n  t<'k, 'a, 'id>,\\n  t<'k, 'a, 'id>,\\n  ~kcmp: cmp<'k, 'id>,\\n  ~veq: (. 'a, 'a) => bool,\\n) => bool"
+        "signature": "let eqU: (\n  t<'k, 'a, 'id>,\n  t<'k, 'a, 'id>,\n  ~kcmp: cmp<'k, 'id>,\n  ~veq: ('a, 'a) => bool,\n) => bool"
       },
       {
         "id": "Belt.Map.Dict.eq",
@@ -2111,14 +2111,14 @@
         "docstrings": [
           "`eq(m1, m2, cmp)` tests whether the maps `m1` and `m2` are equal, that is,\ncontain equal keys and associate them with equal data. `cmp` is the\nequality predicate used to compare the data associated with the keys."
         ],
-        "signature": "let eq: (\\n  t<'k, 'a, 'id>,\\n  t<'k, 'a, 'id>,\\n  ~kcmp: cmp<'k, 'id>,\\n  ~veq: ('a, 'a) => bool,\\n) => bool"
+        "signature": "let eq: (\n  t<'k, 'a, 'id>,\n  t<'k, 'a, 'id>,\n  ~kcmp: cmp<'k, 'id>,\n  ~veq: ('a, 'a) => bool,\n) => bool"
       },
       {
         "id": "Belt.Map.Dict.findFirstByU",
         "kind": "value",
         "name": "findFirstByU",
         "docstrings": [],
-        "signature": "let findFirstByU: (t<'k, 'v, 'id>, (. 'k, 'v) => bool) => option<('k, 'v)>"
+        "signature": "let findFirstByU: (t<'k, 'v, 'id>, ('k, 'v) => bool) => option<('k, 'v)>"
       },
       {
         "id": "Belt.Map.Dict.findFirstBy",
@@ -2134,7 +2134,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t<'k, 'a, 'id>, (. 'k, 'a) => unit) => unit"
+        "signature": "let forEachU: (t<'k, 'a, 'id>, ('k, 'a) => unit) => unit"
       },
       {
         "id": "Belt.Map.Dict.forEach",
@@ -2150,7 +2150,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t<'k, 'a, 'id>, 'b, (. 'b, 'k, 'a) => 'b) => 'b"
+        "signature": "let reduceU: (t<'k, 'a, 'id>, 'b, ('b, 'k, 'a) => 'b) => 'b"
       },
       {
         "id": "Belt.Map.Dict.reduce",
@@ -2166,7 +2166,7 @@
         "kind": "value",
         "name": "everyU",
         "docstrings": [],
-        "signature": "let everyU: (t<'k, 'a, 'id>, (. 'k, 'a) => bool) => bool"
+        "signature": "let everyU: (t<'k, 'a, 'id>, ('k, 'a) => bool) => bool"
       },
       {
         "id": "Belt.Map.Dict.every",
@@ -2182,7 +2182,7 @@
         "kind": "value",
         "name": "someU",
         "docstrings": [],
-        "signature": "let someU: (t<'k, 'a, 'id>, (. 'k, 'a) => bool) => bool"
+        "signature": "let someU: (t<'k, 'a, 'id>, ('k, 'a) => bool) => bool"
       },
       {
         "id": "Belt.Map.Dict.some",
@@ -2342,7 +2342,7 @@
         "kind": "value",
         "name": "removeMany",
         "docstrings": [],
-        "signature": "let removeMany: (\\n  t<'a, 'b, 'id>,\\n  array<'a>,\\n  ~cmp: cmp<'a, 'id>,\\n) => t<'a, 'b, 'id>"
+        "signature": "let removeMany: (\n  t<'a, 'b, 'id>,\n  array<'a>,\n  ~cmp: cmp<'a, 'id>,\n) => t<'a, 'b, 'id>"
       },
       {
         "id": "Belt.Map.Dict.set",
@@ -2351,28 +2351,28 @@
         "docstrings": [
           "`set(m, x, y)` returns a map containing the same bindings as `m`, plus a\nbinding of `x` to `y`. If `x` was already bound in `m`, its previous\nbinding disappears."
         ],
-        "signature": "let set: (\\n  t<'a, 'b, 'id>,\\n  'a,\\n  'b,\\n  ~cmp: cmp<'a, 'id>,\\n) => t<'a, 'b, 'id>"
+        "signature": "let set: (\n  t<'a, 'b, 'id>,\n  'a,\n  'b,\n  ~cmp: cmp<'a, 'id>,\n) => t<'a, 'b, 'id>"
       },
       {
         "id": "Belt.Map.Dict.updateU",
         "kind": "value",
         "name": "updateU",
         "docstrings": [],
-        "signature": "let updateU: (\\n  t<'a, 'b, 'id>,\\n  'a,\\n  (. option<'b>) => option<'b>,\\n  ~cmp: cmp<'a, 'id>,\\n) => t<'a, 'b, 'id>"
+        "signature": "let updateU: (\n  t<'a, 'b, 'id>,\n  'a,\n  option<'b> => option<'b>,\n  ~cmp: cmp<'a, 'id>,\n) => t<'a, 'b, 'id>"
       },
       {
         "id": "Belt.Map.Dict.update",
         "kind": "value",
         "name": "update",
         "docstrings": [],
-        "signature": "let update: (\\n  t<'a, 'b, 'id>,\\n  'a,\\n  option<'b> => option<'b>,\\n  ~cmp: cmp<'a, 'id>,\\n) => t<'a, 'b, 'id>"
+        "signature": "let update: (\n  t<'a, 'b, 'id>,\n  'a,\n  option<'b> => option<'b>,\n  ~cmp: cmp<'a, 'id>,\n) => t<'a, 'b, 'id>"
       },
       {
         "id": "Belt.Map.Dict.mergeU",
         "kind": "value",
         "name": "mergeU",
         "docstrings": [],
-        "signature": "let mergeU: (\\n  t<'a, 'b, 'id>,\\n  t<'a, 'c, 'id>,\\n  (. 'a, option<'b>, option<'c>) => option<'d>,\\n  ~cmp: cmp<'a, 'id>,\\n) => t<'a, 'd, 'id>"
+        "signature": "let mergeU: (\n  t<'a, 'b, 'id>,\n  t<'a, 'c, 'id>,\n  ('a, option<'b>, option<'c>) => option<'d>,\n  ~cmp: cmp<'a, 'id>,\n) => t<'a, 'd, 'id>"
       },
       {
         "id": "Belt.Map.Dict.merge",
@@ -2381,21 +2381,21 @@
         "docstrings": [
           "`merge(m1, m2, f)` computes a map whose keys is a subset of keys of `m1`\nand of `m2`. The presence of each such binding, and the corresponding\nvalue, is determined with the function `f`."
         ],
-        "signature": "let merge: (\\n  t<'a, 'b, 'id>,\\n  t<'a, 'c, 'id>,\\n  ('a, option<'b>, option<'c>) => option<'d>,\\n  ~cmp: cmp<'a, 'id>,\\n) => t<'a, 'd, 'id>"
+        "signature": "let merge: (\n  t<'a, 'b, 'id>,\n  t<'a, 'c, 'id>,\n  ('a, option<'b>, option<'c>) => option<'d>,\n  ~cmp: cmp<'a, 'id>,\n) => t<'a, 'd, 'id>"
       },
       {
         "id": "Belt.Map.Dict.mergeMany",
         "kind": "value",
         "name": "mergeMany",
         "docstrings": [],
-        "signature": "let mergeMany: (\\n  t<'a, 'b, 'id>,\\n  array<('a, 'b)>,\\n  ~cmp: cmp<'a, 'id>,\\n) => t<'a, 'b, 'id>"
+        "signature": "let mergeMany: (\n  t<'a, 'b, 'id>,\n  array<('a, 'b)>,\n  ~cmp: cmp<'a, 'id>,\n) => t<'a, 'b, 'id>"
       },
       {
         "id": "Belt.Map.Dict.keepU",
         "kind": "value",
         "name": "keepU",
         "docstrings": [],
-        "signature": "let keepU: (t<'k, 'a, 'id>, (. 'k, 'a) => bool) => t<'k, 'a, 'id>"
+        "signature": "let keepU: (t<'k, 'a, 'id>, ('k, 'a) => bool) => t<'k, 'a, 'id>"
       },
       {
         "id": "Belt.Map.Dict.keep",
@@ -2411,7 +2411,7 @@
         "kind": "value",
         "name": "partitionU",
         "docstrings": [],
-        "signature": "let partitionU: (\\n  t<'k, 'a, 'id>,\\n  (. 'k, 'a) => bool,\\n) => (t<'k, 'a, 'id>, t<'k, 'a, 'id>)"
+        "signature": "let partitionU: (\n  t<'k, 'a, 'id>,\n  ('k, 'a) => bool,\n) => (t<'k, 'a, 'id>, t<'k, 'a, 'id>)"
       },
       {
         "id": "Belt.Map.Dict.partition",
@@ -2420,7 +2420,7 @@
         "docstrings": [
           "`partition(m, p)` returns a pair of maps `(m1, m2)`, where `m1` contains\nall the bindings of `s` that satisfy the predicate `p`, and `m2` is the map\nwith all the bindings of `s` that do not satisfy `p`."
         ],
-        "signature": "let partition: (\\n  t<'k, 'a, 'id>,\\n  ('k, 'a) => bool,\\n) => (t<'k, 'a, 'id>, t<'k, 'a, 'id>)"
+        "signature": "let partition: (\n  t<'k, 'a, 'id>,\n  ('k, 'a) => bool,\n) => (t<'k, 'a, 'id>, t<'k, 'a, 'id>)"
       },
       {
         "id": "Belt.Map.Dict.split",
@@ -2429,14 +2429,14 @@
         "docstrings": [
           "`split(x, m)` returns a triple `(l, data, r)`, where `l` is the map with\nall the bindings of `m` whose key is strictly less than `x`; `r` is the map\nwith all the bindings of `m` whose key is strictly greater than `x`; `data`\nis `None` if `m` contains no binding for `x`, or `Some(v)` if `m` binds `v`\nto `x`."
         ],
-        "signature": "let split: (\\n  t<'a, 'b, 'id>,\\n  'a,\\n  ~cmp: cmp<'a, 'id>,\\n) => ((t<'a, 'b, 'id>, t<'a, 'b, 'id>), option<'b>)"
+        "signature": "let split: (\n  t<'a, 'b, 'id>,\n  'a,\n  ~cmp: cmp<'a, 'id>,\n) => ((t<'a, 'b, 'id>, t<'a, 'b, 'id>), option<'b>)"
       },
       {
         "id": "Belt.Map.Dict.mapU",
         "kind": "value",
         "name": "mapU",
         "docstrings": [],
-        "signature": "let mapU: (t<'k, 'a, 'id>, (. 'a) => 'b) => t<'k, 'b, 'id>"
+        "signature": "let mapU: (t<'k, 'a, 'id>, 'a => 'b) => t<'k, 'b, 'id>"
       },
       {
         "id": "Belt.Map.Dict.map",
@@ -2452,7 +2452,7 @@
         "kind": "value",
         "name": "mapWithKeyU",
         "docstrings": [],
-        "signature": "let mapWithKeyU: (t<'k, 'a, 'id>, (. 'k, 'a) => 'b) => t<'k, 'b, 'id>"
+        "signature": "let mapWithKeyU: (t<'k, 'a, 'id>, ('k, 'a) => 'b) => t<'k, 'b, 'id>"
       },
       {
         "id": "Belt.Map.Dict.mapWithKey",
@@ -2510,7 +2510,7 @@
         "kind": "value",
         "name": "cmpU",
         "docstrings": [],
-        "signature": "let cmpU: (t<'v>, t<'v>, (. 'v, 'v) => int) => int"
+        "signature": "let cmpU: (t<'v>, t<'v>, ('v, 'v) => int) => int"
       },
       {
         "id": "Belt.Map.String.cmp",
@@ -2524,7 +2524,7 @@
         "kind": "value",
         "name": "eqU",
         "docstrings": [],
-        "signature": "let eqU: (t<'v>, t<'v>, (. 'v, 'v) => bool) => bool"
+        "signature": "let eqU: (t<'v>, t<'v>, ('v, 'v) => bool) => bool"
       },
       {
         "id": "Belt.Map.String.eq",
@@ -2540,7 +2540,7 @@
         "kind": "value",
         "name": "findFirstByU",
         "docstrings": [],
-        "signature": "let findFirstByU: (t<'v>, (. key, 'v) => bool) => option<(key, 'v)>"
+        "signature": "let findFirstByU: (t<'v>, (key, 'v) => bool) => option<(key, 'v)>"
       },
       {
         "id": "Belt.Map.String.findFirstBy",
@@ -2556,7 +2556,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t<'v>, (. key, 'v) => unit) => unit"
+        "signature": "let forEachU: (t<'v>, (key, 'v) => unit) => unit"
       },
       {
         "id": "Belt.Map.String.forEach",
@@ -2572,7 +2572,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t<'v>, 'v2, (. 'v2, key, 'v) => 'v2) => 'v2"
+        "signature": "let reduceU: (t<'v>, 'v2, ('v2, key, 'v) => 'v2) => 'v2"
       },
       {
         "id": "Belt.Map.String.reduce",
@@ -2588,7 +2588,7 @@
         "kind": "value",
         "name": "everyU",
         "docstrings": [],
-        "signature": "let everyU: (t<'v>, (. key, 'v) => bool) => bool"
+        "signature": "let everyU: (t<'v>, (key, 'v) => bool) => bool"
       },
       {
         "id": "Belt.Map.String.every",
@@ -2604,7 +2604,7 @@
         "kind": "value",
         "name": "someU",
         "docstrings": [],
-        "signature": "let someU: (t<'v>, (. key, 'v) => bool) => bool"
+        "signature": "let someU: (t<'v>, (key, 'v) => bool) => bool"
       },
       {
         "id": "Belt.Map.String.some",
@@ -2782,7 +2782,7 @@
         "kind": "value",
         "name": "updateU",
         "docstrings": [],
-        "signature": "let updateU: (t<'v>, key, (. option<'v>) => option<'v>) => t<'v>"
+        "signature": "let updateU: (t<'v>, key, option<'v> => option<'v>) => t<'v>"
       },
       {
         "id": "Belt.Map.String.update",
@@ -2796,7 +2796,7 @@
         "kind": "value",
         "name": "mergeU",
         "docstrings": [],
-        "signature": "let mergeU: (\\n  t<'v>,\\n  t<'v2>,\\n  (. key, option<'v>, option<'v2>) => option<'c>,\\n) => t<'c>"
+        "signature": "let mergeU: (\n  t<'v>,\n  t<'v2>,\n  (key, option<'v>, option<'v2>) => option<'c>,\n) => t<'c>"
       },
       {
         "id": "Belt.Map.String.merge",
@@ -2805,7 +2805,7 @@
         "docstrings": [
           "`merge(m1, m2, f)` computes a map whose keys is a subset of keys of `m1`\nand of `m2`. The presence of each such binding, and the corresponding\nvalue, is determined with the function `f`."
         ],
-        "signature": "let merge: (\\n  t<'v>,\\n  t<'v2>,\\n  (key, option<'v>, option<'v2>) => option<'c>,\\n) => t<'c>"
+        "signature": "let merge: (\n  t<'v>,\n  t<'v2>,\n  (key, option<'v>, option<'v2>) => option<'c>,\n) => t<'c>"
       },
       {
         "id": "Belt.Map.String.mergeMany",
@@ -2819,7 +2819,7 @@
         "kind": "value",
         "name": "keepU",
         "docstrings": [],
-        "signature": "let keepU: (t<'v>, (. key, 'v) => bool) => t<'v>"
+        "signature": "let keepU: (t<'v>, (key, 'v) => bool) => t<'v>"
       },
       {
         "id": "Belt.Map.String.keep",
@@ -2835,7 +2835,7 @@
         "kind": "value",
         "name": "partitionU",
         "docstrings": [],
-        "signature": "let partitionU: (t<'v>, (. key, 'v) => bool) => (t<'v>, t<'v>)"
+        "signature": "let partitionU: (t<'v>, (key, 'v) => bool) => (t<'v>, t<'v>)"
       },
       {
         "id": "Belt.Map.String.partition",
@@ -2860,7 +2860,7 @@
         "kind": "value",
         "name": "mapU",
         "docstrings": [],
-        "signature": "let mapU: (t<'v>, (. 'v) => 'v2) => t<'v2>"
+        "signature": "let mapU: (t<'v>, 'v => 'v2) => t<'v2>"
       },
       {
         "id": "Belt.Map.String.map",
@@ -2876,7 +2876,7 @@
         "kind": "value",
         "name": "mapWithKeyU",
         "docstrings": [],
-        "signature": "let mapWithKeyU: (t<'v>, (. key, 'v) => 'v2) => t<'v2>"
+        "signature": "let mapWithKeyU: (t<'v>, (key, 'v) => 'v2) => t<'v2>"
       },
       {
         "id": "Belt.Map.String.mapWithKey",
@@ -2936,7 +2936,7 @@
         "kind": "value",
         "name": "cmpU",
         "docstrings": [],
-        "signature": "let cmpU: (t<'v>, t<'v>, (. 'v, 'v) => int) => int"
+        "signature": "let cmpU: (t<'v>, t<'v>, ('v, 'v) => int) => int"
       },
       {
         "id": "Belt.Map.Int.cmp",
@@ -2950,7 +2950,7 @@
         "kind": "value",
         "name": "eqU",
         "docstrings": [],
-        "signature": "let eqU: (t<'v>, t<'v>, (. 'v, 'v) => bool) => bool"
+        "signature": "let eqU: (t<'v>, t<'v>, ('v, 'v) => bool) => bool"
       },
       {
         "id": "Belt.Map.Int.eq",
@@ -2966,7 +2966,7 @@
         "kind": "value",
         "name": "findFirstByU",
         "docstrings": [],
-        "signature": "let findFirstByU: (t<'v>, (. key, 'v) => bool) => option<(key, 'v)>"
+        "signature": "let findFirstByU: (t<'v>, (key, 'v) => bool) => option<(key, 'v)>"
       },
       {
         "id": "Belt.Map.Int.findFirstBy",
@@ -2982,7 +2982,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t<'v>, (. key, 'v) => unit) => unit"
+        "signature": "let forEachU: (t<'v>, (key, 'v) => unit) => unit"
       },
       {
         "id": "Belt.Map.Int.forEach",
@@ -2998,7 +2998,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t<'v>, 'v2, (. 'v2, key, 'v) => 'v2) => 'v2"
+        "signature": "let reduceU: (t<'v>, 'v2, ('v2, key, 'v) => 'v2) => 'v2"
       },
       {
         "id": "Belt.Map.Int.reduce",
@@ -3014,7 +3014,7 @@
         "kind": "value",
         "name": "everyU",
         "docstrings": [],
-        "signature": "let everyU: (t<'v>, (. key, 'v) => bool) => bool"
+        "signature": "let everyU: (t<'v>, (key, 'v) => bool) => bool"
       },
       {
         "id": "Belt.Map.Int.every",
@@ -3030,7 +3030,7 @@
         "kind": "value",
         "name": "someU",
         "docstrings": [],
-        "signature": "let someU: (t<'v>, (. key, 'v) => bool) => bool"
+        "signature": "let someU: (t<'v>, (key, 'v) => bool) => bool"
       },
       {
         "id": "Belt.Map.Int.some",
@@ -3208,7 +3208,7 @@
         "kind": "value",
         "name": "updateU",
         "docstrings": [],
-        "signature": "let updateU: (t<'v>, key, (. option<'v>) => option<'v>) => t<'v>"
+        "signature": "let updateU: (t<'v>, key, option<'v> => option<'v>) => t<'v>"
       },
       {
         "id": "Belt.Map.Int.update",
@@ -3222,7 +3222,7 @@
         "kind": "value",
         "name": "mergeU",
         "docstrings": [],
-        "signature": "let mergeU: (\\n  t<'v>,\\n  t<'v2>,\\n  (. key, option<'v>, option<'v2>) => option<'c>,\\n) => t<'c>"
+        "signature": "let mergeU: (\n  t<'v>,\n  t<'v2>,\n  (key, option<'v>, option<'v2>) => option<'c>,\n) => t<'c>"
       },
       {
         "id": "Belt.Map.Int.merge",
@@ -3231,7 +3231,7 @@
         "docstrings": [
           "`merge(m1, m2, f)` computes a map whose keys is a subset of keys of `m1`\nand of `m2`. The presence of each such binding, and the corresponding\nvalue, is determined with the function `f`."
         ],
-        "signature": "let merge: (\\n  t<'v>,\\n  t<'v2>,\\n  (key, option<'v>, option<'v2>) => option<'c>,\\n) => t<'c>"
+        "signature": "let merge: (\n  t<'v>,\n  t<'v2>,\n  (key, option<'v>, option<'v2>) => option<'c>,\n) => t<'c>"
       },
       {
         "id": "Belt.Map.Int.mergeMany",
@@ -3245,7 +3245,7 @@
         "kind": "value",
         "name": "keepU",
         "docstrings": [],
-        "signature": "let keepU: (t<'v>, (. key, 'v) => bool) => t<'v>"
+        "signature": "let keepU: (t<'v>, (key, 'v) => bool) => t<'v>"
       },
       {
         "id": "Belt.Map.Int.keep",
@@ -3261,7 +3261,7 @@
         "kind": "value",
         "name": "partitionU",
         "docstrings": [],
-        "signature": "let partitionU: (t<'v>, (. key, 'v) => bool) => (t<'v>, t<'v>)"
+        "signature": "let partitionU: (t<'v>, (key, 'v) => bool) => (t<'v>, t<'v>)"
       },
       {
         "id": "Belt.Map.Int.partition",
@@ -3286,7 +3286,7 @@
         "kind": "value",
         "name": "mapU",
         "docstrings": [],
-        "signature": "let mapU: (t<'v>, (. 'v) => 'v2) => t<'v2>"
+        "signature": "let mapU: (t<'v>, 'v => 'v2) => t<'v2>"
       },
       {
         "id": "Belt.Map.Int.map",
@@ -3302,7 +3302,7 @@
         "kind": "value",
         "name": "mapWithKeyU",
         "docstrings": [],
-        "signature": "let mapWithKeyU: (t<'v>, (. key, 'v) => 'v2) => t<'v2>"
+        "signature": "let mapWithKeyU: (t<'v>, (key, 'v) => 'v2) => t<'v2>"
       },
       {
         "id": "Belt.Map.Int.mapWithKey",
@@ -3391,7 +3391,7 @@
         "docstrings": [
           "Adds element to set. If element existed in set, value is unchanged.\n\n## Examples\n\n```rescript\nmodule IntCmp = Belt.Id.MakeComparable({\n  type t = int\n  let cmp = Pervasives.compare\n})\n\nlet s0 = Belt.Set.Dict.empty\nlet s1 = s0->Belt.Set.Dict.add(1, ~cmp=IntCmp.cmp)\nlet s2 = s1->Belt.Set.Dict.add(2, ~cmp=IntCmp.cmp)\nlet s3 = s2->Belt.Set.Dict.add(2, ~cmp=IntCmp.cmp)\ns0->Belt.Set.Dict.toArray /* [] */\ns1->Belt.Set.Dict.toArray /* [1] */\ns2->Belt.Set.Dict.toArray /* [1, 2] */\ns3->Belt.Set.Dict.toArray /* [1,2 ] */\ns2 == s3 /* true */\n```"
         ],
-        "signature": "let add: (\\n  t<'value, 'id>,\\n  'value,\\n  ~cmp: cmp<'value, 'id>,\\n) => t<'value, 'id>"
+        "signature": "let add: (\n  t<'value, 'id>,\n  'value,\n  ~cmp: cmp<'value, 'id>,\n) => t<'value, 'id>"
       },
       {
         "id": "Belt.Set.Dict.mergeMany",
@@ -3400,7 +3400,7 @@
         "docstrings": [
           "Adds each element of array to set. Unlike [add](#add), the reference of return value might be changed even if all values in array already exist in set\n\n## Examples\n\n```rescript\nmodule IntCmp = Belt.Id.MakeComparable({\n  type t = int\n  let cmp = Pervasives.compare\n})\n\nlet set = Belt.Set.Dict.empty\n\nlet newSet = set->Belt.Set.Dict.mergeMany([5, 4, 3, 2, 1], ~cmp=IntCmp.cmp)\nnewSet->Belt.Set.Dict.toArray /* [1, 2, 3, 4, 5] */\n```"
         ],
-        "signature": "let mergeMany: (\\n  t<'value, 'id>,\\n  array<'value>,\\n  ~cmp: cmp<'value, 'id>,\\n) => t<'value, 'id>"
+        "signature": "let mergeMany: (\n  t<'value, 'id>,\n  array<'value>,\n  ~cmp: cmp<'value, 'id>,\n) => t<'value, 'id>"
       },
       {
         "id": "Belt.Set.Dict.remove",
@@ -3409,7 +3409,7 @@
         "docstrings": [
           "Removes element from set. If element did not exist in set, value is unchanged.\n\n## Examples\n\n```rescript\nmodule IntCmp = Belt.Id.MakeComparable({\n  type t = int\n  let cmp = Pervasives.compare\n})\n\nlet s0 = Belt.Set.Dict.fromArray([2, 3, 1, 4, 5], ~cmp=IntCmp.cmp)\nlet s1 = s0->Belt.Set.Dict.remove(1, ~cmp=IntCmp.cmp)\nlet s2 = s1->Belt.Set.Dict.remove(3, ~cmp=IntCmp.cmp)\nlet s3 = s2->Belt.Set.Dict.remove(3, ~cmp=IntCmp.cmp)\n\ns1->Belt.Set.Dict.toArray /* [2,3,4,5] */\ns2->Belt.Set.Dict.toArray /* [2,4,5] */\ns2 == s3 /* true */\n```"
         ],
-        "signature": "let remove: (\\n  t<'value, 'id>,\\n  'value,\\n  ~cmp: cmp<'value, 'id>,\\n) => t<'value, 'id>"
+        "signature": "let remove: (\n  t<'value, 'id>,\n  'value,\n  ~cmp: cmp<'value, 'id>,\n) => t<'value, 'id>"
       },
       {
         "id": "Belt.Set.Dict.removeMany",
@@ -3418,7 +3418,7 @@
         "docstrings": [
           "Removes each element of array from set. Unlike [remove](#remove), the reference of return value might be changed even if any values in array not existed in set.\n\n## Examples\n\n```rescript\nmodule IntCmp = Belt.Id.MakeComparable({\n  type t = int\n  let cmp = Pervasives.compare\n})\n\nlet set = Belt.Set.Dict.fromArray([1, 2, 3, 4], ~cmp=IntCmp.cmp)\n\nlet newSet = set->Belt.Set.Dict.removeMany([5, 4, 3, 2, 1], ~cmp=IntCmp.cmp)\nnewSet->Belt.Set.Dict.toArray /* [] */\n```"
         ],
-        "signature": "let removeMany: (\\n  t<'value, 'id>,\\n  array<'value>,\\n  ~cmp: cmp<'value, 'id>,\\n) => t<'value, 'id>"
+        "signature": "let removeMany: (\n  t<'value, 'id>,\n  array<'value>,\n  ~cmp: cmp<'value, 'id>,\n) => t<'value, 'id>"
       },
       {
         "id": "Belt.Set.Dict.union",
@@ -3427,7 +3427,7 @@
         "docstrings": [
           "Returns union of two sets.\n\n## Examples\n\n```rescript\nmodule IntCmp = Belt.Id.MakeComparable({\n  type t = int\n  let cmp = Pervasives.compare\n})\n\nlet s0 = Belt.Set.Dict.fromArray([5, 2, 3, 5, 6], ~cmp=IntCmp.cmp)\nlet s1 = Belt.Set.Dict.fromArray([5, 2, 3, 1, 5, 4], ~cmp=IntCmp.cmp)\nlet union = Belt.Set.Dict.union(s0, s1, ~cmp=IntCmp.cmp)\nunion->Belt.Set.Dict.toArray /* [1,2,3,4,5,6] */\n```"
         ],
-        "signature": "let union: (\\n  t<'value, 'id>,\\n  t<'value, 'id>,\\n  ~cmp: cmp<'value, 'id>,\\n) => t<'value, 'id>"
+        "signature": "let union: (\n  t<'value, 'id>,\n  t<'value, 'id>,\n  ~cmp: cmp<'value, 'id>,\n) => t<'value, 'id>"
       },
       {
         "id": "Belt.Set.Dict.intersect",
@@ -3436,7 +3436,7 @@
         "docstrings": [
           "Returns intersection of two sets.\n\n## Examples\n\n```rescript\nmodule IntCmp = Belt.Id.MakeComparable({\n  type t = int\n  let cmp = Pervasives.compare\n})\n\nlet s0 = Belt.Set.Dict.fromArray([5, 2, 3, 5, 6], ~cmp=IntCmp.cmp)\nlet s1 = Belt.Set.Dict.fromArray([5, 2, 3, 1, 5, 4], ~cmp=IntCmp.cmp)\nlet intersect = Belt.Set.Dict.intersect(s0, s1, ~cmp=IntCmp.cmp)\nintersect->Belt.Set.Dict.toArray /* [2,3,5] */\n```"
         ],
-        "signature": "let intersect: (\\n  t<'value, 'id>,\\n  t<'value, 'id>,\\n  ~cmp: cmp<'value, 'id>,\\n) => t<'value, 'id>"
+        "signature": "let intersect: (\n  t<'value, 'id>,\n  t<'value, 'id>,\n  ~cmp: cmp<'value, 'id>,\n) => t<'value, 'id>"
       },
       {
         "id": "Belt.Set.Dict.diff",
@@ -3445,7 +3445,7 @@
         "docstrings": [
           "Returns elements from first set, not existing in second set.\n\n## Examples\n\n```rescript\nmodule IntCmp = Belt.Id.MakeComparable({\n  type t = int\n  let cmp = Pervasives.compare\n})\n\nlet s0 = Belt.Set.Dict.fromArray([5, 2, 3, 5, 6], ~cmp=IntCmp.cmp)\nlet s1 = Belt.Set.Dict.fromArray([5, 2, 3, 1, 5, 4], ~cmp=IntCmp.cmp)\n\nlet diff1 = Belt.Set.Dict.diff(s0, s1, ~cmp=IntCmp.cmp)\nlet diff2 = Belt.Set.Dict.diff(s1, s0, ~cmp=IntCmp.cmp)\n\ndiff1->Belt.Set.Dict.toArray /* [6] */\ndiff2->Belt.Set.Dict.toArray /* [1,4] */\n```"
         ],
-        "signature": "let diff: (\\n  t<'value, 'id>,\\n  t<'value, 'id>,\\n  ~cmp: cmp<'value, 'id>,\\n) => t<'value, 'id>"
+        "signature": "let diff: (\n  t<'value, 'id>,\n  t<'value, 'id>,\n  ~cmp: cmp<'value, 'id>,\n) => t<'value, 'id>"
       },
       {
         "id": "Belt.Set.Dict.subset",
@@ -3454,7 +3454,7 @@
         "docstrings": [
           "Checks if second set is subset of first set.\n\n## Examples\n\n```rescript\nmodule IntCmp = Belt.Id.MakeComparable({\n  type t = int\n  let cmp = Pervasives.compare\n})\n\nlet s0 = Belt.Set.Dict.fromArray([5, 2, 3, 5, 6], ~cmp=IntCmp.cmp)\nlet s1 = Belt.Set.Dict.fromArray([5, 2, 3, 1, 5, 4], ~cmp=IntCmp.cmp)\nlet s2 = Belt.Set.Dict.intersect(s0, s1, ~cmp=IntCmp.cmp)\nBelt.Set.Dict.subset(s2, s0, ~cmp=IntCmp.cmp) /* true */\nBelt.Set.Dict.subset(s2, s1, ~cmp=IntCmp.cmp) /* true */\nBelt.Set.Dict.subset(s1, s0, ~cmp=IntCmp.cmp) /* false */\n```"
         ],
-        "signature": "let subset: (\\n  t<'value, 'id>,\\n  t<'value, 'id>,\\n  ~cmp: cmp<'value, 'id>,\\n) => bool"
+        "signature": "let subset: (\n  t<'value, 'id>,\n  t<'value, 'id>,\n  ~cmp: cmp<'value, 'id>,\n) => bool"
       },
       {
         "id": "Belt.Set.Dict.cmp",
@@ -3463,7 +3463,7 @@
         "docstrings": [
           "Total ordering between sets. Can be used as the ordering function for doing sets\nof sets. It compares size first and then iterates over each element following the\norder of elements."
         ],
-        "signature": "let cmp: (\\n  t<'value, 'id>,\\n  t<'value, 'id>,\\n  ~cmp: cmp<'value, 'id>,\\n) => int"
+        "signature": "let cmp: (\n  t<'value, 'id>,\n  t<'value, 'id>,\n  ~cmp: cmp<'value, 'id>,\n) => int"
       },
       {
         "id": "Belt.Set.Dict.eq",
@@ -3472,7 +3472,7 @@
         "docstrings": [
           "Checks if two sets are equal.\n\n## Examples\n\n```rescript\nmodule IntCmp = Belt.Id.MakeComparable({\n  type t = int\n  let cmp = Pervasives.compare\n})\n\nlet s0 = Belt.Set.Dict.fromArray([5, 2, 3], ~cmp=IntCmp.cmp)\nlet s1 = Belt.Set.Dict.fromArray([3, 2, 5], ~cmp=IntCmp.cmp)\n\nBelt.Set.Dict.eq(s0, s1, ~cmp=IntCmp.cmp) /* true */\n```"
         ],
-        "signature": "let eq: (\\n  t<'value, 'id>,\\n  t<'value, 'id>,\\n  ~cmp: cmp<'value, 'id>,\\n) => bool"
+        "signature": "let eq: (\n  t<'value, 'id>,\n  t<'value, 'id>,\n  ~cmp: cmp<'value, 'id>,\n) => bool"
       },
       {
         "id": "Belt.Set.Dict.forEachU",
@@ -3481,7 +3481,7 @@
         "docstrings": [
           "Same as [forEach](##forEach) but takes uncurried functon."
         ],
-        "signature": "let forEachU: (t<'value, 'id>, (. 'value) => unit) => unit"
+        "signature": "let forEachU: (t<'value, 'id>, 'value => unit) => unit"
       },
       {
         "id": "Belt.Set.Dict.forEach",
@@ -3497,7 +3497,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t<'value, 'id>, 'a, (. 'a, 'value) => 'a) => 'a"
+        "signature": "let reduceU: (t<'value, 'id>, 'a, ('a, 'value) => 'a) => 'a"
       },
       {
         "id": "Belt.Set.Dict.reduce",
@@ -3513,7 +3513,7 @@
         "kind": "value",
         "name": "everyU",
         "docstrings": [],
-        "signature": "let everyU: (t<'value, 'id>, (. 'value) => bool) => bool"
+        "signature": "let everyU: (t<'value, 'id>, 'value => bool) => bool"
       },
       {
         "id": "Belt.Set.Dict.every",
@@ -3529,7 +3529,7 @@
         "kind": "value",
         "name": "someU",
         "docstrings": [],
-        "signature": "let someU: (t<'value, 'id>, (. 'value) => bool) => bool"
+        "signature": "let someU: (t<'value, 'id>, 'value => bool) => bool"
       },
       {
         "id": "Belt.Set.Dict.some",
@@ -3545,7 +3545,7 @@
         "kind": "value",
         "name": "keepU",
         "docstrings": [],
-        "signature": "let keepU: (t<'value, 'id>, (. 'value) => bool) => t<'value, 'id>"
+        "signature": "let keepU: (t<'value, 'id>, 'value => bool) => t<'value, 'id>"
       },
       {
         "id": "Belt.Set.Dict.keep",
@@ -3561,7 +3561,7 @@
         "kind": "value",
         "name": "partitionU",
         "docstrings": [],
-        "signature": "let partitionU: (\\n  t<'value, 'id>,\\n  (. 'value) => bool,\\n) => (t<'value, 'id>, t<'value, 'id>)"
+        "signature": "let partitionU: (\n  t<'value, 'id>,\n  'value => bool,\n) => (t<'value, 'id>, t<'value, 'id>)"
       },
       {
         "id": "Belt.Set.Dict.partition",
@@ -3570,7 +3570,7 @@
         "docstrings": [
           "Returns a pair of sets, where first is the set of all the elements of set that satisfy the predicate, and second is the set of all the elements of set that do not satisfy the predicate.\n\n## Examples\n\n```rescript\nmodule IntCmp = Belt.Id.MakeComparable({\n  type t = int\n  let cmp = Pervasives.compare\n})\n\nlet isOdd = x => mod(x, 2) != 0\n\nlet s0 = Belt.Set.Dict.fromArray([1, 2, 3, 4, 5], ~cmp=IntCmp.cmp)\nlet (s1, s2) = s0->Belt.Set.Dict.partition(isOdd)\n\ns1->Belt.Set.Dict.toArray /* [1,3,5] */\ns2->Belt.Set.Dict.toArray /* [2,4] */\n```"
         ],
-        "signature": "let partition: (\\n  t<'value, 'id>,\\n  'value => bool,\\n) => (t<'value, 'id>, t<'value, 'id>)"
+        "signature": "let partition: (\n  t<'value, 'id>,\n  'value => bool,\n) => (t<'value, 'id>, t<'value, 'id>)"
       },
       {
         "id": "Belt.Set.Dict.size",
@@ -3642,7 +3642,7 @@
         "docstrings": [
           "Returns the reference of the value which is equivalent to value using the comparator\nspecifiecd by this collection. Returns `None` if element does not exist.\n\n## Examples\n\n```rescript\nmodule IntCmp = Belt.Id.MakeComparable({\n  type t = int\n  let cmp = Pervasives.compare\n})\n\nlet s0 = Belt.Set.Dict.fromArray([1, 2, 3, 4, 5], ~cmp=IntCmp.cmp)\n\ns0->Belt.Set.Dict.get(3, ~cmp=IntCmp.cmp) /* Some(3) */\ns0->Belt.Set.Dict.get(20, ~cmp=IntCmp.cmp) /* None */\n```"
         ],
-        "signature": "let get: (\\n  t<'value, 'id>,\\n  'value,\\n  ~cmp: cmp<'value, 'id>,\\n) => option<'value>"
+        "signature": "let get: (\n  t<'value, 'id>,\n  'value,\n  ~cmp: cmp<'value, 'id>,\n) => option<'value>"
       },
       {
         "id": "Belt.Set.Dict.getUndefined",
@@ -3651,7 +3651,7 @@
         "docstrings": [
           "Same as [get](#get) but returns `undefined` when element does not exist."
         ],
-        "signature": "let getUndefined: (\\n  t<'value, 'id>,\\n  'value,\\n  ~cmp: cmp<'value, 'id>,\\n) => Js.undefined<'value>"
+        "signature": "let getUndefined: (\n  t<'value, 'id>,\n  'value,\n  ~cmp: cmp<'value, 'id>,\n) => Js.undefined<'value>"
       },
       {
         "id": "Belt.Set.Dict.getExn",
@@ -3669,7 +3669,7 @@
         "docstrings": [
           "Returns a tuple `((smaller, larger), present)`, `present` is true when element exist in set.\n\n## Examples\n\n```rescript\nmodule IntCmp = Belt.Id.MakeComparable({\n  type t = int\n  let cmp = Pervasives.compare\n})\n\nlet s0 = Belt.Set.Dict.fromArray([1, 2, 3, 4, 5], ~cmp=IntCmp.cmp)\n\nlet ((smaller, larger), present) = s0->Belt.Set.Dict.split(3, ~cmp=IntCmp.cmp)\n\npresent /* true */\nsmaller->Belt.Set.Dict.toArray /* [1,2] */\nlarger->Belt.Set.Dict.toArray /* [4,5] */\n```"
         ],
-        "signature": "let split: (\\n  t<'value, 'id>,\\n  'value,\\n  ~cmp: cmp<'value, 'id>,\\n) => ((t<'value, 'id>, t<'value, 'id>), bool)"
+        "signature": "let split: (\n  t<'value, 'id>,\n  'value,\n  ~cmp: cmp<'value, 'id>,\n) => ((t<'value, 'id>, t<'value, 'id>), bool)"
       },
       {
         "id": "Belt.Set.Dict.checkInvariantInternal",
@@ -3828,7 +3828,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t, (. value) => unit) => unit"
+        "signature": "let forEachU: (t, value => unit) => unit"
       },
       {
         "id": "Belt.Set.String.forEach",
@@ -3844,7 +3844,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t, 'a, (. 'a, value) => 'a) => 'a"
+        "signature": "let reduceU: (t, 'a, ('a, value) => 'a) => 'a"
       },
       {
         "id": "Belt.Set.String.reduce",
@@ -3860,7 +3860,7 @@
         "kind": "value",
         "name": "everyU",
         "docstrings": [],
-        "signature": "let everyU: (t, (. value) => bool) => bool"
+        "signature": "let everyU: (t, value => bool) => bool"
       },
       {
         "id": "Belt.Set.String.every",
@@ -3876,7 +3876,7 @@
         "kind": "value",
         "name": "someU",
         "docstrings": [],
-        "signature": "let someU: (t, (. value) => bool) => bool"
+        "signature": "let someU: (t, value => bool) => bool"
       },
       {
         "id": "Belt.Set.String.some",
@@ -3892,7 +3892,7 @@
         "kind": "value",
         "name": "keepU",
         "docstrings": [],
-        "signature": "let keepU: (t, (. value) => bool) => t"
+        "signature": "let keepU: (t, value => bool) => t"
       },
       {
         "id": "Belt.Set.String.keep",
@@ -3908,7 +3908,7 @@
         "kind": "value",
         "name": "partitionU",
         "docstrings": [],
-        "signature": "let partitionU: (t, (. value) => bool) => (t, t)"
+        "signature": "let partitionU: (t, value => bool) => (t, t)"
       },
       {
         "id": "Belt.Set.String.partition",
@@ -4157,7 +4157,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t, (. value) => unit) => unit"
+        "signature": "let forEachU: (t, value => unit) => unit"
       },
       {
         "id": "Belt.Set.Int.forEach",
@@ -4173,7 +4173,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t, 'a, (. 'a, value) => 'a) => 'a"
+        "signature": "let reduceU: (t, 'a, ('a, value) => 'a) => 'a"
       },
       {
         "id": "Belt.Set.Int.reduce",
@@ -4189,7 +4189,7 @@
         "kind": "value",
         "name": "everyU",
         "docstrings": [],
-        "signature": "let everyU: (t, (. value) => bool) => bool"
+        "signature": "let everyU: (t, value => bool) => bool"
       },
       {
         "id": "Belt.Set.Int.every",
@@ -4205,7 +4205,7 @@
         "kind": "value",
         "name": "someU",
         "docstrings": [],
-        "signature": "let someU: (t, (. value) => bool) => bool"
+        "signature": "let someU: (t, value => bool) => bool"
       },
       {
         "id": "Belt.Set.Int.some",
@@ -4221,7 +4221,7 @@
         "kind": "value",
         "name": "keepU",
         "docstrings": [],
-        "signature": "let keepU: (t, (. value) => bool) => t"
+        "signature": "let keepU: (t, value => bool) => t"
       },
       {
         "id": "Belt.Set.Int.keep",
@@ -4237,7 +4237,7 @@
         "kind": "value",
         "name": "partitionU",
         "docstrings": [],
-        "signature": "let partitionU: (t, (. value) => bool) => (t, t)"
+        "signature": "let partitionU: (t, value => bool) => (t, t)"
       },
       {
         "id": "Belt.Set.Int.partition",
@@ -4407,21 +4407,21 @@
         "docstrings": [
           "`union(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp)` assume\n`src` and `src2` is strictly sorted. for equivalent elements, it is picked from\n`src` also assume that `dst` is large enough to store all elements"
         ],
-        "signature": "let union: (\\n  array<element>,\\n  int,\\n  int,\\n  array<element>,\\n  int,\\n  int,\\n  array<element>,\\n  int,\\n) => int"
+        "signature": "let union: (\n  array<element>,\n  int,\n  int,\n  array<element>,\n  int,\n  int,\n  array<element>,\n  int,\n) => int"
       },
       {
         "id": "Belt.SortArray.String.intersect",
         "kind": "value",
         "name": "intersect",
         "docstrings": [],
-        "signature": "let intersect: (\\n  array<element>,\\n  int,\\n  int,\\n  array<element>,\\n  int,\\n  int,\\n  array<element>,\\n  int,\\n) => int"
+        "signature": "let intersect: (\n  array<element>,\n  int,\n  int,\n  array<element>,\n  int,\n  int,\n  array<element>,\n  int,\n) => int"
       },
       {
         "id": "Belt.SortArray.String.diff",
         "kind": "value",
         "name": "diff",
         "docstrings": [],
-        "signature": "let diff: (\\n  array<element>,\\n  int,\\n  int,\\n  array<element>,\\n  int,\\n  int,\\n  array<element>,\\n  int,\\n) => int"
+        "signature": "let diff: (\n  array<element>,\n  int,\n  int,\n  array<element>,\n  int,\n  int,\n  array<element>,\n  int,\n) => int"
       }
     ]
   },
@@ -4492,21 +4492,21 @@
         "docstrings": [
           "`union(src, src1ofs, src1len, src2, src2ofs, src2len, dst, dstofs, cmp)` assume\n`src` and `src2` is strictly sorted. for equivalent elements, it is picked from\n`src` also assume that `dst` is large enough to store all elements"
         ],
-        "signature": "let union: (\\n  array<element>,\\n  int,\\n  int,\\n  array<element>,\\n  int,\\n  int,\\n  array<element>,\\n  int,\\n) => int"
+        "signature": "let union: (\n  array<element>,\n  int,\n  int,\n  array<element>,\n  int,\n  int,\n  array<element>,\n  int,\n) => int"
       },
       {
         "id": "Belt.SortArray.Int.intersect",
         "kind": "value",
         "name": "intersect",
         "docstrings": [],
-        "signature": "let intersect: (\\n  array<element>,\\n  int,\\n  int,\\n  array<element>,\\n  int,\\n  int,\\n  array<element>,\\n  int,\\n) => int"
+        "signature": "let intersect: (\n  array<element>,\n  int,\n  int,\n  array<element>,\n  int,\n  int,\n  array<element>,\n  int,\n) => int"
       },
       {
         "id": "Belt.SortArray.Int.diff",
         "kind": "value",
         "name": "diff",
         "docstrings": [],
-        "signature": "let diff: (\\n  array<element>,\\n  int,\\n  int,\\n  array<element>,\\n  int,\\n  int,\\n  array<element>,\\n  int,\\n) => int"
+        "signature": "let diff: (\n  array<element>,\n  int,\n  int,\n  array<element>,\n  int,\n  int,\n  array<element>,\n  int,\n) => int"
       }
     ]
   },
@@ -4829,7 +4829,7 @@
         "kind": "value",
         "name": "mapWithDefaultU",
         "docstrings": [],
-        "signature": "let mapWithDefaultU: (t<'a, 'c>, 'b, (. 'a) => 'b) => 'b"
+        "signature": "let mapWithDefaultU: (t<'a, 'c>, 'b, 'a => 'b) => 'b"
       },
       {
         "id": "Belt.Result.mapWithDefault",
@@ -4845,7 +4845,7 @@
         "kind": "value",
         "name": "mapU",
         "docstrings": [],
-        "signature": "let mapU: (t<'a, 'c>, (. 'a) => 'b) => t<'b, 'c>"
+        "signature": "let mapU: (t<'a, 'c>, 'a => 'b) => t<'b, 'c>"
       },
       {
         "id": "Belt.Result.map",
@@ -4861,7 +4861,7 @@
         "kind": "value",
         "name": "flatMapU",
         "docstrings": [],
-        "signature": "let flatMapU: (t<'a, 'c>, (. 'a) => t<'b, 'c>) => t<'b, 'c>"
+        "signature": "let flatMapU: (t<'a, 'c>, 'a => t<'b, 'c>) => t<'b, 'c>"
       },
       {
         "id": "Belt.Result.flatMap",
@@ -4904,7 +4904,7 @@
         "kind": "value",
         "name": "eqU",
         "docstrings": [],
-        "signature": "let eqU: (t<'a, 'c>, t<'b, 'd>, (. 'a, 'b) => bool) => bool"
+        "signature": "let eqU: (t<'a, 'c>, t<'b, 'd>, ('a, 'b) => bool) => bool"
       },
       {
         "id": "Belt.Result.eq",
@@ -4920,7 +4920,7 @@
         "kind": "value",
         "name": "cmpU",
         "docstrings": [],
-        "signature": "let cmpU: (t<'a, 'c>, t<'b, 'd>, (. 'a, 'b) => int) => int"
+        "signature": "let cmpU: (t<'a, 'c>, t<'b, 'd>, ('a, 'b) => int) => int"
       },
       {
         "id": "Belt.Result.cmp",
@@ -4948,7 +4948,7 @@
         "docstrings": [
           "Uncurried version of `keep`"
         ],
-        "signature": "let keepU: (option<'a>, (. 'a) => bool) => option<'a>"
+        "signature": "let keepU: (option<'a>, 'a => bool) => option<'a>"
       },
       {
         "id": "Belt.Option.keep",
@@ -4966,7 +4966,7 @@
         "docstrings": [
           "Uncurried version of `forEach`"
         ],
-        "signature": "let forEachU: (option<'a>, (. 'a) => unit) => unit"
+        "signature": "let forEachU: (option<'a>, 'a => unit) => unit"
       },
       {
         "id": "Belt.Option.forEach",
@@ -5002,7 +5002,7 @@
         "docstrings": [
           "Uncurried version of `mapWithDefault`"
         ],
-        "signature": "let mapWithDefaultU: (option<'a>, 'b, (. 'a) => 'b) => 'b"
+        "signature": "let mapWithDefaultU: (option<'a>, 'b, 'a => 'b) => 'b"
       },
       {
         "id": "Belt.Option.mapWithDefault",
@@ -5020,7 +5020,7 @@
         "docstrings": [
           "Uncurried version of `map`"
         ],
-        "signature": "let mapU: (option<'a>, (. 'a) => 'b) => option<'b>"
+        "signature": "let mapU: (option<'a>, 'a => 'b) => option<'b>"
       },
       {
         "id": "Belt.Option.map",
@@ -5038,7 +5038,7 @@
         "docstrings": [
           "Uncurried version of `flatMap`"
         ],
-        "signature": "let flatMapU: (option<'a>, (. 'a) => option<'b>) => option<'b>"
+        "signature": "let flatMapU: (option<'a>, 'a => option<'b>) => option<'b>"
       },
       {
         "id": "Belt.Option.flatMap",
@@ -5092,7 +5092,7 @@
         "docstrings": [
           "Uncurried version of `eq`"
         ],
-        "signature": "let eqU: (option<'a>, option<'b>, (. 'a, 'b) => bool) => bool"
+        "signature": "let eqU: (option<'a>, option<'b>, ('a, 'b) => bool) => bool"
       },
       {
         "id": "Belt.Option.eq",
@@ -5110,7 +5110,7 @@
         "docstrings": [
           "Uncurried version of `cmp`"
         ],
-        "signature": "let cmpU: (option<'a>, option<'b>, (. 'a, 'b) => int) => int"
+        "signature": "let cmpU: (option<'a>, option<'b>, ('a, 'b) => int) => int"
       },
       {
         "id": "Belt.Option.cmp",
@@ -5228,7 +5228,7 @@
         "docstrings": [
           "Same as [forEach](#forEach) but takes uncurried function."
         ],
-        "signature": "let forEachU: (t<'key, 'value, 'id>, (. 'key, 'value) => unit) => unit"
+        "signature": "let forEachU: (t<'key, 'value, 'id>, ('key, 'value) => unit) => unit"
       },
       {
         "id": "Belt.HashMap.forEach",
@@ -5244,7 +5244,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t<'key, 'value, 'id>, 'c, (. 'c, 'key, 'value) => 'c) => 'c"
+        "signature": "let reduceU: (t<'key, 'value, 'id>, 'c, ('c, 'key, 'value) => 'c) => 'c"
       },
       {
         "id": "Belt.HashMap.reduce",
@@ -5262,7 +5262,7 @@
         "docstrings": [
           "Same as [keepMapInPlace](#keepMapInPlace) but takes uncurried function."
         ],
-        "signature": "let keepMapInPlaceU: (\\n  t<'key, 'value, 'id>,\\n  (. 'key, 'value) => option<'value>,\\n) => unit"
+        "signature": "let keepMapInPlaceU: (\n  t<'key, 'value, 'id>,\n  ('key, 'value) => option<'value>,\n) => unit"
       },
       {
         "id": "Belt.HashMap.keepMapInPlace",
@@ -5271,7 +5271,7 @@
         "docstrings": [
           "Filters out values for which function `f` returned `None`.\n\n## Examples\n\n```rescript\nmodule IntHash = Belt.Id.MakeHashable({\n  type t = int\n  let hash = a => a\n  let eq = (a, b) => a == b\n})\n\nlet s0 = Belt.HashMap.make(~hintSize=10, ~id=module(IntHash))\nBelt.HashMap.set(s0, 1, \"value1\")\nBelt.HashMap.set(s0, 2, \"value2\")\n\nBelt.HashMap.keepMapInPlace(s0, (key, value) => key == 1 ? None : Some(value))\n```"
         ],
-        "signature": "let keepMapInPlace: (\\n  t<'key, 'value, 'id>,\\n  ('key, 'value) => option<'value>,\\n) => unit"
+        "signature": "let keepMapInPlace: (\n  t<'key, 'value, 'id>,\n  ('key, 'value) => option<'value>,\n) => unit"
       },
       {
         "id": "Belt.HashMap.size",
@@ -5316,7 +5316,7 @@
         "docstrings": [
           "Creates new hash map from array of pairs.\n\nReturns array of values.\n\n## Examples\n\n```rescript\nmodule IntHash = Belt.Id.MakeHashable({\n  type t = int\n  let hash = a => a\n  let eq = (a, b) => a == b\n})\n\nlet s0 = Belt.HashMap.fromArray([(1, \"value1\"), (2, \"value2\")], ~id=module(IntHash))\nBelt.HashMap.toArray(s0) == [(1, \"value1\"), (2, \"value2\")]\n```"
         ],
-        "signature": "let fromArray: (\\n  array<('key, 'value)>,\\n  ~id: id<'key, 'id>,\\n) => t<'key, 'value, 'id>"
+        "signature": "let fromArray: (\n  array<('key, 'value)>,\n  ~id: id<'key, 'id>,\n) => t<'key, 'value, 'id>"
       },
       {
         "id": "Belt.HashMap.mergeMany",
@@ -5425,7 +5425,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t<'a, 'id>, (. 'a) => unit) => unit"
+        "signature": "let forEachU: (t<'a, 'id>, 'a => unit) => unit"
       },
       {
         "id": "Belt.HashSet.forEach",
@@ -5441,7 +5441,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t<'a, 'id>, 'c, (. 'c, 'a) => 'c) => 'c"
+        "signature": "let reduceU: (t<'a, 'id>, 'c, ('c, 'a) => 'c) => 'c"
       },
       {
         "id": "Belt.HashSet.reduce",
@@ -5550,7 +5550,7 @@
         "kind": "value",
         "name": "cmpU",
         "docstrings": [],
-        "signature": "let cmpU: (t<'k, 'a, 'id>, t<'k, 'a, 'id>, (. 'a, 'a) => int) => int"
+        "signature": "let cmpU: (t<'k, 'a, 'id>, t<'k, 'a, 'id>, ('a, 'a) => int) => int"
       },
       {
         "id": "Belt.MutableMap.cmp",
@@ -5566,7 +5566,7 @@
         "kind": "value",
         "name": "eqU",
         "docstrings": [],
-        "signature": "let eqU: (t<'k, 'a, 'id>, t<'k, 'a, 'id>, (. 'a, 'a) => bool) => bool"
+        "signature": "let eqU: (t<'k, 'a, 'id>, t<'k, 'a, 'id>, ('a, 'a) => bool) => bool"
       },
       {
         "id": "Belt.MutableMap.eq",
@@ -5582,7 +5582,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t<'k, 'a, 'id>, (. 'k, 'a) => unit) => unit"
+        "signature": "let forEachU: (t<'k, 'a, 'id>, ('k, 'a) => unit) => unit"
       },
       {
         "id": "Belt.MutableMap.forEach",
@@ -5598,7 +5598,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t<'k, 'a, 'id>, 'b, (. 'b, 'k, 'a) => 'b) => 'b"
+        "signature": "let reduceU: (t<'k, 'a, 'id>, 'b, ('b, 'k, 'a) => 'b) => 'b"
       },
       {
         "id": "Belt.MutableMap.reduce",
@@ -5614,7 +5614,7 @@
         "kind": "value",
         "name": "everyU",
         "docstrings": [],
-        "signature": "let everyU: (t<'k, 'a, 'id>, (. 'k, 'a) => bool) => bool"
+        "signature": "let everyU: (t<'k, 'a, 'id>, ('k, 'a) => bool) => bool"
       },
       {
         "id": "Belt.MutableMap.every",
@@ -5630,7 +5630,7 @@
         "kind": "value",
         "name": "someU",
         "docstrings": [],
-        "signature": "let someU: (t<'k, 'a, 'id>, (. 'k, 'a) => bool) => bool"
+        "signature": "let someU: (t<'k, 'a, 'id>, ('k, 'a) => bool) => bool"
       },
       {
         "id": "Belt.MutableMap.some",
@@ -5808,7 +5808,7 @@
         "kind": "value",
         "name": "updateU",
         "docstrings": [],
-        "signature": "let updateU: (t<'k, 'a, 'id>, 'k, (. option<'a>) => option<'a>) => unit"
+        "signature": "let updateU: (t<'k, 'a, 'id>, 'k, option<'a> => option<'a>) => unit"
       },
       {
         "id": "Belt.MutableMap.update",
@@ -5829,7 +5829,7 @@
         "kind": "value",
         "name": "mapU",
         "docstrings": [],
-        "signature": "let mapU: (t<'k, 'a, 'id>, (. 'a) => 'b) => t<'k, 'b, 'id>"
+        "signature": "let mapU: (t<'k, 'a, 'id>, 'a => 'b) => t<'k, 'b, 'id>"
       },
       {
         "id": "Belt.MutableMap.map",
@@ -5845,7 +5845,7 @@
         "kind": "value",
         "name": "mapWithKeyU",
         "docstrings": [],
-        "signature": "let mapWithKeyU: (t<'k, 'a, 'id>, (. 'k, 'a) => 'b) => t<'k, 'b, 'id>"
+        "signature": "let mapWithKeyU: (t<'k, 'a, 'id>, ('k, 'a) => 'b) => t<'k, 'b, 'id>"
       },
       {
         "id": "Belt.MutableMap.mapWithKey",
@@ -6047,7 +6047,7 @@
         "docstrings": [
           "Same as `Belt.MutableSet.forEach` but takes uncurried functon."
         ],
-        "signature": "let forEachU: (t<'value, 'id>, (. 'value) => unit) => unit"
+        "signature": "let forEachU: (t<'value, 'id>, 'value => unit) => unit"
       },
       {
         "id": "Belt.MutableSet.forEach",
@@ -6063,7 +6063,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t<'value, 'id>, 'a, (. 'a, 'value) => 'a) => 'a"
+        "signature": "let reduceU: (t<'value, 'id>, 'a, ('a, 'value) => 'a) => 'a"
       },
       {
         "id": "Belt.MutableSet.reduce",
@@ -6079,7 +6079,7 @@
         "kind": "value",
         "name": "everyU",
         "docstrings": [],
-        "signature": "let everyU: (t<'value, 'id>, (. 'value) => bool) => bool"
+        "signature": "let everyU: (t<'value, 'id>, 'value => bool) => bool"
       },
       {
         "id": "Belt.MutableSet.every",
@@ -6095,7 +6095,7 @@
         "kind": "value",
         "name": "someU",
         "docstrings": [],
-        "signature": "let someU: (t<'value, 'id>, (. 'value) => bool) => bool"
+        "signature": "let someU: (t<'value, 'id>, 'value => bool) => bool"
       },
       {
         "id": "Belt.MutableSet.some",
@@ -6111,7 +6111,7 @@
         "kind": "value",
         "name": "keepU",
         "docstrings": [],
-        "signature": "let keepU: (t<'value, 'id>, (. 'value) => bool) => t<'value, 'id>"
+        "signature": "let keepU: (t<'value, 'id>, 'value => bool) => t<'value, 'id>"
       },
       {
         "id": "Belt.MutableSet.keep",
@@ -6127,7 +6127,7 @@
         "kind": "value",
         "name": "partitionU",
         "docstrings": [],
-        "signature": "let partitionU: (\\n  t<'value, 'id>,\\n  (. 'value) => bool,\\n) => (t<'value, 'id>, t<'value, 'id>)"
+        "signature": "let partitionU: (\n  t<'value, 'id>,\n  'value => bool,\n) => (t<'value, 'id>, t<'value, 'id>)"
       },
       {
         "id": "Belt.MutableSet.partition",
@@ -6136,7 +6136,7 @@
         "docstrings": [
           "## Examples\n\n```rescript\nmodule IntCmp = Belt.Id.MakeComparable({\n  type t = int\n  let cmp = Pervasives.compare\n})\n\nlet isOdd = x => mod(x, 2) != 0\n\nlet s0 = Belt.MutableSet.fromArray([1, 2, 3, 4, 5], ~id=module(IntCmp))\nlet (s1, s2) = s0->Belt.MutableSet.partition(isOdd)\n\ns1->Belt.MutableSet.toArray /* [1,3,5] */\ns2->Belt.MutableSet.toArray /* [2,4] */\n```"
         ],
-        "signature": "let partition: (\\n  t<'value, 'id>,\\n  'value => bool,\\n) => (t<'value, 'id>, t<'value, 'id>)"
+        "signature": "let partition: (\n  t<'value, 'id>,\n  'value => bool,\n) => (t<'value, 'id>, t<'value, 'id>)"
       },
       {
         "id": "Belt.MutableSet.size",
@@ -6235,7 +6235,7 @@
         "docstrings": [
           "Returns a tuple `((smaller, larger), present)`, `present` is true when element exist in set.\n\n## Examples\n\n```rescript\nmodule IntCmp = Belt.Id.MakeComparable({\n  type t = int\n  let cmp = Pervasives.compare\n})\n\nlet s0 = Belt.MutableSet.fromArray([1, 2, 3, 4, 5], ~id=module(IntCmp))\n\nlet ((smaller, larger), present) = s0->Belt.MutableSet.split(3)\n\npresent /* true */\nsmaller->Belt.MutableSet.toArray /* [1,2] */\nlarger->Belt.MutableSet.toArray /* [4,5] */\n```"
         ],
-        "signature": "let split: (\\n  t<'value, 'id>,\\n  'value,\\n) => ((t<'value, 'id>, t<'value, 'id>), bool)"
+        "signature": "let split: (\n  t<'value, 'id>,\n  'value,\n) => ((t<'value, 'id>, t<'value, 'id>), bool)"
       },
       {
         "id": "Belt.MutableSet.checkInvariantInternal",
@@ -6306,7 +6306,7 @@
         "kind": "value",
         "name": "cmpU",
         "docstrings": [],
-        "signature": "let cmpU: (t<'k, 'v, 'id>, t<'k, 'v, 'id>, (. 'v, 'v) => int) => int"
+        "signature": "let cmpU: (t<'k, 'v, 'id>, t<'k, 'v, 'id>, ('v, 'v) => int) => int"
       },
       {
         "id": "Belt.Map.cmp",
@@ -6322,7 +6322,7 @@
         "kind": "value",
         "name": "eqU",
         "docstrings": [],
-        "signature": "let eqU: (t<'k, 'v, 'id>, t<'k, 'v, 'id>, (. 'v, 'v) => bool) => bool"
+        "signature": "let eqU: (t<'k, 'v, 'id>, t<'k, 'v, 'id>, ('v, 'v) => bool) => bool"
       },
       {
         "id": "Belt.Map.eq",
@@ -6338,7 +6338,7 @@
         "kind": "value",
         "name": "findFirstByU",
         "docstrings": [],
-        "signature": "let findFirstByU: (t<'k, 'v, 'id>, (. 'k, 'v) => bool) => option<('k, 'v)>"
+        "signature": "let findFirstByU: (t<'k, 'v, 'id>, ('k, 'v) => bool) => option<('k, 'v)>"
       },
       {
         "id": "Belt.Map.findFirstBy",
@@ -6354,7 +6354,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t<'k, 'v, 'id>, (. 'k, 'v) => unit) => unit"
+        "signature": "let forEachU: (t<'k, 'v, 'id>, ('k, 'v) => unit) => unit"
       },
       {
         "id": "Belt.Map.forEach",
@@ -6370,7 +6370,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t<'k, 'v, 'id>, 'acc, (. 'acc, 'k, 'v) => 'acc) => 'acc"
+        "signature": "let reduceU: (t<'k, 'v, 'id>, 'acc, ('acc, 'k, 'v) => 'acc) => 'acc"
       },
       {
         "id": "Belt.Map.reduce",
@@ -6386,7 +6386,7 @@
         "kind": "value",
         "name": "everyU",
         "docstrings": [],
-        "signature": "let everyU: (t<'k, 'v, 'id>, (. 'k, 'v) => bool) => bool"
+        "signature": "let everyU: (t<'k, 'v, 'id>, ('k, 'v) => bool) => bool"
       },
       {
         "id": "Belt.Map.every",
@@ -6402,7 +6402,7 @@
         "kind": "value",
         "name": "someU",
         "docstrings": [],
-        "signature": "let someU: (t<'k, 'v, 'id>, (. 'k, 'v) => bool) => bool"
+        "signature": "let someU: (t<'k, 'v, 'id>, ('k, 'v) => bool) => bool"
       },
       {
         "id": "Belt.Map.some",
@@ -6607,7 +6607,7 @@
         "kind": "value",
         "name": "updateU",
         "docstrings": [],
-        "signature": "let updateU: (\\n  t<'k, 'v, 'id>,\\n  'k,\\n  (. option<'v>) => option<'v>,\\n) => t<'k, 'v, 'id>"
+        "signature": "let updateU: (\n  t<'k, 'v, 'id>,\n  'k,\n  option<'v> => option<'v>,\n) => t<'k, 'v, 'id>"
       },
       {
         "id": "Belt.Map.update",
@@ -6616,7 +6616,7 @@
         "docstrings": [
           "`update(m, x, f)` returns a map containing the same bindings as `m`, except\nfor the binding of `x`. Depending on the value of `y` where `y` is\n`f(get(m, x))`, the binding of `x` is added, removed or updated. If `y` is\n`None`, the binding is removed if it exists; otherwise, if `y` is `Some(z)`\nthen `x` is associated to `z` in the resulting map."
         ],
-        "signature": "let update: (\\n  t<'k, 'v, 'id>,\\n  'k,\\n  option<'v> => option<'v>,\\n) => t<'k, 'v, 'id>"
+        "signature": "let update: (\n  t<'k, 'v, 'id>,\n  'k,\n  option<'v> => option<'v>,\n) => t<'k, 'v, 'id>"
       },
       {
         "id": "Belt.Map.mergeMany",
@@ -6632,7 +6632,7 @@
         "kind": "value",
         "name": "mergeU",
         "docstrings": [],
-        "signature": "let mergeU: (\\n  t<'k, 'v, 'id>,\\n  t<'k, 'v2, 'id>,\\n  (. 'k, option<'v>, option<'v2>) => option<'v3>,\\n) => t<'k, 'v3, 'id>"
+        "signature": "let mergeU: (\n  t<'k, 'v, 'id>,\n  t<'k, 'v2, 'id>,\n  ('k, option<'v>, option<'v2>) => option<'v3>,\n) => t<'k, 'v3, 'id>"
       },
       {
         "id": "Belt.Map.merge",
@@ -6641,14 +6641,14 @@
         "docstrings": [
           "`merge(m1, m2, f)` computes a map whose keys is a subset of keys of `m1`\nand of `m2`. The presence of each such binding, and the corresponding\nvalue, is determined with the function `f`."
         ],
-        "signature": "let merge: (\\n  t<'k, 'v, 'id>,\\n  t<'k, 'v2, 'id>,\\n  ('k, option<'v>, option<'v2>) => option<'v3>,\\n) => t<'k, 'v3, 'id>"
+        "signature": "let merge: (\n  t<'k, 'v, 'id>,\n  t<'k, 'v2, 'id>,\n  ('k, option<'v>, option<'v2>) => option<'v3>,\n) => t<'k, 'v3, 'id>"
       },
       {
         "id": "Belt.Map.keepU",
         "kind": "value",
         "name": "keepU",
         "docstrings": [],
-        "signature": "let keepU: (t<'k, 'v, 'id>, (. 'k, 'v) => bool) => t<'k, 'v, 'id>"
+        "signature": "let keepU: (t<'k, 'v, 'id>, ('k, 'v) => bool) => t<'k, 'v, 'id>"
       },
       {
         "id": "Belt.Map.keep",
@@ -6664,7 +6664,7 @@
         "kind": "value",
         "name": "partitionU",
         "docstrings": [],
-        "signature": "let partitionU: (\\n  t<'k, 'v, 'id>,\\n  (. 'k, 'v) => bool,\\n) => (t<'k, 'v, 'id>, t<'k, 'v, 'id>)"
+        "signature": "let partitionU: (\n  t<'k, 'v, 'id>,\n  ('k, 'v) => bool,\n) => (t<'k, 'v, 'id>, t<'k, 'v, 'id>)"
       },
       {
         "id": "Belt.Map.partition",
@@ -6673,7 +6673,7 @@
         "docstrings": [
           "`partition(m, p)` returns a pair of maps `(m1, m2)`, where `m1` contains\nall the bindings of `s` that satisfy the predicate `p`, and `m2` is the map\nwith all the bindings of `s` that do not satisfy `p`."
         ],
-        "signature": "let partition: (\\n  t<'k, 'v, 'id>,\\n  ('k, 'v) => bool,\\n) => (t<'k, 'v, 'id>, t<'k, 'v, 'id>)"
+        "signature": "let partition: (\n  t<'k, 'v, 'id>,\n  ('k, 'v) => bool,\n) => (t<'k, 'v, 'id>, t<'k, 'v, 'id>)"
       },
       {
         "id": "Belt.Map.split",
@@ -6682,14 +6682,14 @@
         "docstrings": [
           "`split(x, m)` returns a tuple `(l, r)`, data, where `l` is the map with all\nthe bindings of `m` whose 'k is strictly less than `x`; `r` is the map with\nall the bindings of m whose 'k is strictly greater than `x`; `data` is\n`None` if `m` contains no binding for `x`, or `Some(v)` if `m` binds `v` to\n`x`."
         ],
-        "signature": "let split: (\\n  t<'k, 'v, 'id>,\\n  'k,\\n) => ((t<'k, 'v, 'id>, t<'k, 'v, 'id>), option<'v>)"
+        "signature": "let split: (\n  t<'k, 'v, 'id>,\n  'k,\n) => ((t<'k, 'v, 'id>, t<'k, 'v, 'id>), option<'v>)"
       },
       {
         "id": "Belt.Map.mapU",
         "kind": "value",
         "name": "mapU",
         "docstrings": [],
-        "signature": "let mapU: (t<'k, 'v, 'id>, (. 'v) => 'v2) => t<'k, 'v2, 'id>"
+        "signature": "let mapU: (t<'k, 'v, 'id>, 'v => 'v2) => t<'k, 'v2, 'id>"
       },
       {
         "id": "Belt.Map.map",
@@ -6705,7 +6705,7 @@
         "kind": "value",
         "name": "mapWithKeyU",
         "docstrings": [],
-        "signature": "let mapWithKeyU: (t<'k, 'v, 'id>, (. 'k, 'v) => 'v2) => t<'k, 'v2, 'id>"
+        "signature": "let mapWithKeyU: (t<'k, 'v, 'id>, ('k, 'v) => 'v2) => t<'k, 'v2, 'id>"
       },
       {
         "id": "Belt.Map.mapWithKey",
@@ -6741,7 +6741,7 @@
         "docstrings": [
           "`packIdData(~id, ~data)`\n\nAdvanced usage only\n\nReturns the packed collection."
         ],
-        "signature": "let packIdData: (\\n  ~id: id<'k, 'id>,\\n  ~data: Belt_MapDict.t<'k, 'v, 'id>,\\n) => t<'k, 'v, 'id>"
+        "signature": "let packIdData: (\n  ~id: id<'k, 'id>,\n  ~data: Belt_MapDict.t<'k, 'v, 'id>,\n) => t<'k, 'v, 'id>"
       },
       {
         "id": "Belt.Map.checkInvariantInternal",
@@ -6922,7 +6922,7 @@
         "docstrings": [
           "Same as [forEach](#forEach) but takes uncurried functon."
         ],
-        "signature": "let forEachU: (t<'value, 'id>, (. 'value) => unit) => unit"
+        "signature": "let forEachU: (t<'value, 'id>, 'value => unit) => unit"
       },
       {
         "id": "Belt.Set.forEach",
@@ -6938,7 +6938,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t<'value, 'id>, 'a, (. 'a, 'value) => 'a) => 'a"
+        "signature": "let reduceU: (t<'value, 'id>, 'a, ('a, 'value) => 'a) => 'a"
       },
       {
         "id": "Belt.Set.reduce",
@@ -6954,7 +6954,7 @@
         "kind": "value",
         "name": "everyU",
         "docstrings": [],
-        "signature": "let everyU: (t<'value, 'id>, (. 'value) => bool) => bool"
+        "signature": "let everyU: (t<'value, 'id>, 'value => bool) => bool"
       },
       {
         "id": "Belt.Set.every",
@@ -6970,7 +6970,7 @@
         "kind": "value",
         "name": "someU",
         "docstrings": [],
-        "signature": "let someU: (t<'value, 'id>, (. 'value) => bool) => bool"
+        "signature": "let someU: (t<'value, 'id>, 'value => bool) => bool"
       },
       {
         "id": "Belt.Set.some",
@@ -6986,7 +6986,7 @@
         "kind": "value",
         "name": "keepU",
         "docstrings": [],
-        "signature": "let keepU: (t<'value, 'id>, (. 'value) => bool) => t<'value, 'id>"
+        "signature": "let keepU: (t<'value, 'id>, 'value => bool) => t<'value, 'id>"
       },
       {
         "id": "Belt.Set.keep",
@@ -7002,7 +7002,7 @@
         "kind": "value",
         "name": "partitionU",
         "docstrings": [],
-        "signature": "let partitionU: (\\n  t<'value, 'id>,\\n  (. 'value) => bool,\\n) => (t<'value, 'id>, t<'value, 'id>)"
+        "signature": "let partitionU: (\n  t<'value, 'id>,\n  'value => bool,\n) => (t<'value, 'id>, t<'value, 'id>)"
       },
       {
         "id": "Belt.Set.partition",
@@ -7011,7 +7011,7 @@
         "docstrings": [
           "Returns a pair of sets, where first is the set of all the elements of set that satisfy the predicate, and second is the set of all the elements of set that do not satisfy the predicate.\n\n## Examples\n\n```rescript\nlet isOdd = x => mod(x, 2) != 0\n\nlet s0 = Belt.Set.fromArray([1,2,3,4,5], ~id=module(IntCmp))\nlet (s1, s2) = s0->Belt.Set.partition(isOdd)\n\ns1->Belt.Set.toArray /* [1,3,5] */\ns2->Belt.Set.toArray /* [2,4] */\n```"
         ],
-        "signature": "let partition: (\\n  t<'value, 'id>,\\n  'value => bool,\\n) => (t<'value, 'id>, t<'value, 'id>)"
+        "signature": "let partition: (\n  t<'value, 'id>,\n  'value => bool,\n) => (t<'value, 'id>, t<'value, 'id>)"
       },
       {
         "id": "Belt.Set.size",
@@ -7110,7 +7110,7 @@
         "docstrings": [
           "Returns a tuple `((smaller, larger), present)`, `present` is true when element exist in set.\n\n## Examples\n\n```rescript\nlet s0 = Belt.Set.fromArray([1,2,3,4,5], ~id=module(IntCmp))\n\nlet ((smaller, larger), present) = s0->Belt.Set.split(3)\n\npresent /* true */\nsmaller->Belt.Set.toArray /* [1,2] */\nlarger->Belt.Set.toArray /* [4,5] */\n\n```"
         ],
-        "signature": "let split: (\\n  t<'value, 'id>,\\n  'value,\\n) => ((t<'value, 'id>, t<'value, 'id>), bool)"
+        "signature": "let split: (\n  t<'value, 'id>,\n  'value,\n) => ((t<'value, 'id>, t<'value, 'id>), bool)"
       },
       {
         "id": "Belt.Set.checkInvariantInternal",
@@ -7146,7 +7146,7 @@
         "docstrings": [
           "**Advanced usage only**\n\nReturns the packed collection."
         ],
-        "signature": "let packIdData: (\\n  ~id: id<'value, 'id>,\\n  ~data: Belt_SetDict.t<'value, 'id>,\\n) => t<'value, 'id>"
+        "signature": "let packIdData: (\n  ~id: id<'value, 'id>,\n  ~data: Belt_SetDict.t<'value, 'id>,\n) => t<'value, 'id>"
       }
     ]
   },
@@ -7163,7 +7163,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (int, int, (. int) => unit) => unit"
+        "signature": "let forEachU: (int, int, int => unit) => unit"
       },
       {
         "id": "Belt.Range.forEach",
@@ -7179,7 +7179,7 @@
         "kind": "value",
         "name": "everyU",
         "docstrings": [],
-        "signature": "let everyU: (int, int, (. int) => bool) => bool"
+        "signature": "let everyU: (int, int, int => bool) => bool"
       },
       {
         "id": "Belt.Range.every",
@@ -7195,7 +7195,7 @@
         "kind": "value",
         "name": "everyByU",
         "docstrings": [],
-        "signature": "let everyByU: (int, int, ~step: int, (. int) => bool) => bool"
+        "signature": "let everyByU: (int, int, ~step: int, int => bool) => bool"
       },
       {
         "id": "Belt.Range.everyBy",
@@ -7211,7 +7211,7 @@
         "kind": "value",
         "name": "someU",
         "docstrings": [],
-        "signature": "let someU: (int, int, (. int) => bool) => bool"
+        "signature": "let someU: (int, int, int => bool) => bool"
       },
       {
         "id": "Belt.Range.some",
@@ -7227,7 +7227,7 @@
         "kind": "value",
         "name": "someByU",
         "docstrings": [],
-        "signature": "let someByU: (int, int, ~step: int, (. int) => bool) => bool"
+        "signature": "let someByU: (int, int, ~step: int, int => bool) => bool"
       },
       {
         "id": "Belt.Range.someBy",
@@ -7354,7 +7354,7 @@
         "docstrings": [
           "Uncurried version of [makeBy](#makeBy)"
         ],
-        "signature": "let makeByU: (int, (. int) => 'a) => t<'a>"
+        "signature": "let makeByU: (int, int => 'a) => t<'a>"
       },
       {
         "id": "Belt.List.makeBy",
@@ -7444,7 +7444,7 @@
         "docstrings": [
           "Uncurried version of [map](#map)."
         ],
-        "signature": "let mapU: (t<'a>, (. 'a) => 'b) => t<'b>"
+        "signature": "let mapU: (t<'a>, 'a => 'b) => t<'b>"
       },
       {
         "id": "Belt.List.map",
@@ -7471,7 +7471,7 @@
         "docstrings": [
           "Uncurried version of [zipBy](#zipBy)."
         ],
-        "signature": "let zipByU: (t<'a>, t<'b>, (. 'a, 'b) => 'c) => t<'c>"
+        "signature": "let zipByU: (t<'a>, t<'b>, ('a, 'b) => 'c) => t<'c>"
       },
       {
         "id": "Belt.List.zipBy",
@@ -7489,7 +7489,7 @@
         "docstrings": [
           "Uncurried version of [mapWithIndex](#mapWithIndex)."
         ],
-        "signature": "let mapWithIndexU: (t<'a>, (. int, 'a) => 'b) => t<'b>"
+        "signature": "let mapWithIndexU: (t<'a>, (int, 'a) => 'b) => t<'b>"
       },
       {
         "id": "Belt.List.mapWithIndex",
@@ -7534,7 +7534,7 @@
         "docstrings": [
           "Uncurried version of [mapReverse](#mapReverse)."
         ],
-        "signature": "let mapReverseU: (t<'a>, (. 'a) => 'b) => t<'b>"
+        "signature": "let mapReverseU: (t<'a>, 'a => 'b) => t<'b>"
       },
       {
         "id": "Belt.List.mapReverse",
@@ -7552,7 +7552,7 @@
         "docstrings": [
           "Uncurried version of [forEach](#forEach)."
         ],
-        "signature": "let forEachU: (t<'a>, (. 'a) => 'b) => unit"
+        "signature": "let forEachU: (t<'a>, 'a => 'b) => unit"
       },
       {
         "id": "Belt.List.forEach",
@@ -7570,7 +7570,7 @@
         "docstrings": [
           "Uncurried version of [forEachWithIndex](#forEachWithIndex)."
         ],
-        "signature": "let forEachWithIndexU: (t<'a>, (. int, 'a) => 'b) => unit"
+        "signature": "let forEachWithIndexU: (t<'a>, (int, 'a) => 'b) => unit"
       },
       {
         "id": "Belt.List.forEachWithIndex",
@@ -7588,7 +7588,7 @@
         "docstrings": [
           "Uncurried version of [reduce](#reduce)."
         ],
-        "signature": "let reduceU: (t<'a>, 'b, (. 'b, 'a) => 'b) => 'b"
+        "signature": "let reduceU: (t<'a>, 'b, ('b, 'a) => 'b) => 'b"
       },
       {
         "id": "Belt.List.reduce",
@@ -7606,7 +7606,7 @@
         "docstrings": [
           "Uncurried version of [reduceWithIndex](#reduceWithIndex)."
         ],
-        "signature": "let reduceWithIndexU: (t<'a>, 'b, (. 'b, 'a, int) => 'b) => 'b"
+        "signature": "let reduceWithIndexU: (t<'a>, 'b, ('b, 'a, int) => 'b) => 'b"
       },
       {
         "id": "Belt.List.reduceWithIndex",
@@ -7624,7 +7624,7 @@
         "docstrings": [
           "Uncurried version of [reduceReverse](#reduceReverse)."
         ],
-        "signature": "let reduceReverseU: (t<'a>, 'b, (. 'b, 'a) => 'b) => 'b"
+        "signature": "let reduceReverseU: (t<'a>, 'b, ('b, 'a) => 'b) => 'b"
       },
       {
         "id": "Belt.List.reduceReverse",
@@ -7642,7 +7642,7 @@
         "docstrings": [
           "Uncurried version of [mapReverse2](#mapReverse2)."
         ],
-        "signature": "let mapReverse2U: (t<'a>, t<'b>, (. 'a, 'b) => 'c) => t<'c>"
+        "signature": "let mapReverse2U: (t<'a>, t<'b>, ('a, 'b) => 'c) => t<'c>"
       },
       {
         "id": "Belt.List.mapReverse2",
@@ -7660,7 +7660,7 @@
         "docstrings": [
           "Uncurried version of [forEach2](#forEach2)."
         ],
-        "signature": "let forEach2U: (t<'a>, t<'b>, (. 'a, 'b) => 'c) => unit"
+        "signature": "let forEach2U: (t<'a>, t<'b>, ('a, 'b) => 'c) => unit"
       },
       {
         "id": "Belt.List.forEach2",
@@ -7678,7 +7678,7 @@
         "docstrings": [
           "Uncurried version of [reduce2](#reduce2)."
         ],
-        "signature": "let reduce2U: (t<'b>, t<'c>, 'a, (. 'a, 'b, 'c) => 'a) => 'a"
+        "signature": "let reduce2U: (t<'b>, t<'c>, 'a, ('a, 'b, 'c) => 'a) => 'a"
       },
       {
         "id": "Belt.List.reduce2",
@@ -7696,7 +7696,7 @@
         "docstrings": [
           "Uncurried version of [reduceReverse2](#reduceReverse2)."
         ],
-        "signature": "let reduceReverse2U: (t<'a>, t<'b>, 'c, (. 'c, 'a, 'b) => 'c) => 'c"
+        "signature": "let reduceReverse2U: (t<'a>, t<'b>, 'c, ('c, 'a, 'b) => 'c) => 'c"
       },
       {
         "id": "Belt.List.reduceReverse2",
@@ -7714,7 +7714,7 @@
         "docstrings": [
           "Uncurried version of [every](#every)."
         ],
-        "signature": "let everyU: (t<'a>, (. 'a) => bool) => bool"
+        "signature": "let everyU: (t<'a>, 'a => bool) => bool"
       },
       {
         "id": "Belt.List.every",
@@ -7732,7 +7732,7 @@
         "docstrings": [
           "Uncurried version of [some](#some)."
         ],
-        "signature": "let someU: (t<'a>, (. 'a) => bool) => bool"
+        "signature": "let someU: (t<'a>, 'a => bool) => bool"
       },
       {
         "id": "Belt.List.some",
@@ -7750,7 +7750,7 @@
         "docstrings": [
           "Uncurried version of [every2](#every2)."
         ],
-        "signature": "let every2U: (t<'a>, t<'b>, (. 'a, 'b) => bool) => bool"
+        "signature": "let every2U: (t<'a>, t<'b>, ('a, 'b) => bool) => bool"
       },
       {
         "id": "Belt.List.every2",
@@ -7768,7 +7768,7 @@
         "docstrings": [
           "Uncurried version of [some2](#some2)."
         ],
-        "signature": "let some2U: (t<'a>, t<'b>, (. 'a, 'b) => bool) => bool"
+        "signature": "let some2U: (t<'a>, t<'b>, ('a, 'b) => bool) => bool"
       },
       {
         "id": "Belt.List.some2",
@@ -7795,7 +7795,7 @@
         "docstrings": [
           "Uncurried version of [cmp](#cmp)."
         ],
-        "signature": "let cmpU: (t<'a>, t<'a>, (. 'a, 'a) => int) => int"
+        "signature": "let cmpU: (t<'a>, t<'a>, ('a, 'a) => int) => int"
       },
       {
         "id": "Belt.List.cmp",
@@ -7813,7 +7813,7 @@
         "docstrings": [
           "Uncurried version of [eq](#eq)."
         ],
-        "signature": "let eqU: (t<'a>, t<'a>, (. 'a, 'a) => bool) => bool"
+        "signature": "let eqU: (t<'a>, t<'a>, ('a, 'a) => bool) => bool"
       },
       {
         "id": "Belt.List.eq",
@@ -7831,7 +7831,7 @@
         "docstrings": [
           "Uncurried version of [has](#has)."
         ],
-        "signature": "let hasU: (t<'a>, 'b, (. 'a, 'b) => bool) => bool"
+        "signature": "let hasU: (t<'a>, 'b, ('a, 'b) => bool) => bool"
       },
       {
         "id": "Belt.List.has",
@@ -7849,7 +7849,7 @@
         "docstrings": [
           "Uncurried version of [getBy](#getBy)."
         ],
-        "signature": "let getByU: (t<'a>, (. 'a) => bool) => option<'a>"
+        "signature": "let getByU: (t<'a>, 'a => bool) => option<'a>"
       },
       {
         "id": "Belt.List.getBy",
@@ -7867,7 +7867,7 @@
         "docstrings": [
           "Uncurried version of [keep](#keep)."
         ],
-        "signature": "let keepU: (t<'a>, (. 'a) => bool) => t<'a>"
+        "signature": "let keepU: (t<'a>, 'a => bool) => t<'a>"
       },
       {
         "id": "Belt.List.keep",
@@ -7895,7 +7895,7 @@
         "docstrings": [
           "Uncurried version of [keepWithIndex](#keepWithIndex)."
         ],
-        "signature": "let keepWithIndexU: (t<'a>, (. 'a, int) => bool) => t<'a>"
+        "signature": "let keepWithIndexU: (t<'a>, ('a, int) => bool) => t<'a>"
       },
       {
         "id": "Belt.List.keepWithIndex",
@@ -7923,7 +7923,7 @@
         "docstrings": [
           "Uncurried version of [keepMap](#keepMap)."
         ],
-        "signature": "let keepMapU: (t<'a>, (. 'a) => option<'b>) => t<'b>"
+        "signature": "let keepMapU: (t<'a>, 'a => option<'b>) => t<'b>"
       },
       {
         "id": "Belt.List.keepMap",
@@ -7941,7 +7941,7 @@
         "docstrings": [
           "Uncurried version of [partition](#partition)."
         ],
-        "signature": "let partitionU: (t<'a>, (. 'a) => bool) => (t<'a>, t<'a>)"
+        "signature": "let partitionU: (t<'a>, 'a => bool) => (t<'a>, t<'a>)"
       },
       {
         "id": "Belt.List.partition",
@@ -7968,7 +7968,7 @@
         "docstrings": [
           "Uncurried version of [getAssoc](#getAssoc)."
         ],
-        "signature": "let getAssocU: (t<('a, 'c)>, 'b, (. 'a, 'b) => bool) => option<'c>"
+        "signature": "let getAssocU: (t<('a, 'c)>, 'b, ('a, 'b) => bool) => option<'c>"
       },
       {
         "id": "Belt.List.getAssoc",
@@ -7986,7 +7986,7 @@
         "docstrings": [
           "Uncurried version of [hasAssoc](#hasAssoc)."
         ],
-        "signature": "let hasAssocU: (t<('a, 'c)>, 'b, (. 'a, 'b) => bool) => bool"
+        "signature": "let hasAssocU: (t<('a, 'c)>, 'b, ('a, 'b) => bool) => bool"
       },
       {
         "id": "Belt.List.hasAssoc",
@@ -8004,7 +8004,7 @@
         "docstrings": [
           "Uncurried version of [removeAssoc](#removeAssoc)."
         ],
-        "signature": "let removeAssocU: (t<('a, 'c)>, 'b, (. 'a, 'b) => bool) => t<('a, 'c)>"
+        "signature": "let removeAssocU: (t<('a, 'c)>, 'b, ('a, 'b) => bool) => t<('a, 'c)>"
       },
       {
         "id": "Belt.List.removeAssoc",
@@ -8022,7 +8022,7 @@
         "docstrings": [
           "Uncurried version of [setAssoc](#setAssoc)."
         ],
-        "signature": "let setAssocU: (t<('a, 'c)>, 'a, 'c, (. 'a, 'a) => bool) => t<('a, 'c)>"
+        "signature": "let setAssocU: (t<('a, 'c)>, 'a, 'c, ('a, 'a) => bool) => t<('a, 'c)>"
       },
       {
         "id": "Belt.List.setAssoc",
@@ -8040,7 +8040,7 @@
         "docstrings": [
           "Uncurried version of [sort](#sort)."
         ],
-        "signature": "let sortU: (t<'a>, (. 'a, 'a) => int) => t<'a>"
+        "signature": "let sortU: (t<'a>, ('a, 'a) => int) => t<'a>"
       },
       {
         "id": "Belt.List.sort",
@@ -8149,7 +8149,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t<'a>, (. 'a) => unit) => unit"
+        "signature": "let forEachU: (t<'a>, 'a => unit) => unit"
       },
       {
         "id": "Belt.MutableStack.forEach",
@@ -8163,7 +8163,7 @@
         "kind": "value",
         "name": "dynamicPopIterU",
         "docstrings": [],
-        "signature": "let dynamicPopIterU: (t<'a>, (. 'a) => unit) => unit"
+        "signature": "let dynamicPopIterU: (t<'a>, 'a => unit) => unit"
       },
       {
         "id": "Belt.MutableStack.dynamicPopIter",
@@ -8315,7 +8315,7 @@
         "kind": "value",
         "name": "mapU",
         "docstrings": [],
-        "signature": "let mapU: (t<'a>, (. 'a) => 'b) => t<'b>"
+        "signature": "let mapU: (t<'a>, 'a => 'b) => t<'b>"
       },
       {
         "id": "Belt.MutableQueue.map",
@@ -8329,7 +8329,7 @@
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t<'a>, (. 'a) => unit) => unit"
+        "signature": "let forEachU: (t<'a>, 'a => unit) => unit"
       },
       {
         "id": "Belt.MutableQueue.forEach",
@@ -8345,7 +8345,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (t<'a>, 'b, (. 'b, 'a) => 'b) => 'b"
+        "signature": "let reduceU: (t<'a>, 'b, ('b, 'a) => 'b) => 'b"
       },
       {
         "id": "Belt.MutableQueue.reduce",
@@ -8389,7 +8389,7 @@
         "kind": "value",
         "name": "strictlySortedLengthU",
         "docstrings": [],
-        "signature": "let strictlySortedLengthU: (array<'a>, (. 'a, 'a) => bool) => int"
+        "signature": "let strictlySortedLengthU: (array<'a>, ('a, 'a) => bool) => int"
       },
       {
         "id": "Belt.SortArray.strictlySortedLength",
@@ -8405,7 +8405,7 @@
         "kind": "value",
         "name": "isSortedU",
         "docstrings": [],
-        "signature": "let isSortedU: (array<'a>, (. 'a, 'a) => int) => bool"
+        "signature": "let isSortedU: (array<'a>, ('a, 'a) => int) => bool"
       },
       {
         "id": "Belt.SortArray.isSorted",
@@ -8421,7 +8421,7 @@
         "kind": "value",
         "name": "stableSortInPlaceByU",
         "docstrings": [],
-        "signature": "let stableSortInPlaceByU: (array<'a>, (. 'a, 'a) => int) => unit"
+        "signature": "let stableSortInPlaceByU: (array<'a>, ('a, 'a) => int) => unit"
       },
       {
         "id": "Belt.SortArray.stableSortInPlaceBy",
@@ -8435,7 +8435,7 @@
         "kind": "value",
         "name": "stableSortByU",
         "docstrings": [],
-        "signature": "let stableSortByU: (array<'a>, (. 'a, 'a) => int) => array<'a>"
+        "signature": "let stableSortByU: (array<'a>, ('a, 'a) => int) => array<'a>"
       },
       {
         "id": "Belt.SortArray.stableSortBy",
@@ -8451,7 +8451,7 @@
         "kind": "value",
         "name": "binarySearchByU",
         "docstrings": [],
-        "signature": "let binarySearchByU: (array<'a>, 'a, (. 'a, 'a) => int) => int"
+        "signature": "let binarySearchByU: (array<'a>, 'a, ('a, 'a) => int) => int"
       },
       {
         "id": "Belt.SortArray.binarySearchBy",
@@ -8467,7 +8467,7 @@
         "kind": "value",
         "name": "unionU",
         "docstrings": [],
-        "signature": "let unionU: (\\n  array<'a>,\\n  int,\\n  int,\\n  array<'a>,\\n  int,\\n  int,\\n  array<'a>,\\n  int,\\n  (. 'a, 'a) => int,\\n) => int"
+        "signature": "let unionU: (\n  array<'a>,\n  int,\n  int,\n  array<'a>,\n  int,\n  int,\n  array<'a>,\n  int,\n  ('a, 'a) => int,\n) => int"
       },
       {
         "id": "Belt.SortArray.union",
@@ -8476,14 +8476,14 @@
         "docstrings": [
           "`union src src1ofs src1len src2 src2ofs src2len dst dstofs cmp` assume `src` and\n`src2` is strictly sorted. for equivalent elements, it is picked from `src`\nalso assume that `dst` is large enough to store all elements"
         ],
-        "signature": "let union: (\\n  array<'a>,\\n  int,\\n  int,\\n  array<'a>,\\n  int,\\n  int,\\n  array<'a>,\\n  int,\\n  ('a, 'a) => int,\\n) => int"
+        "signature": "let union: (\n  array<'a>,\n  int,\n  int,\n  array<'a>,\n  int,\n  int,\n  array<'a>,\n  int,\n  ('a, 'a) => int,\n) => int"
       },
       {
         "id": "Belt.SortArray.intersectU",
         "kind": "value",
         "name": "intersectU",
         "docstrings": [],
-        "signature": "let intersectU: (\\n  array<'a>,\\n  int,\\n  int,\\n  array<'a>,\\n  int,\\n  int,\\n  array<'a>,\\n  int,\\n  (. 'a, 'a) => int,\\n) => int"
+        "signature": "let intersectU: (\n  array<'a>,\n  int,\n  int,\n  array<'a>,\n  int,\n  int,\n  array<'a>,\n  int,\n  ('a, 'a) => int,\n) => int"
       },
       {
         "id": "Belt.SortArray.intersect",
@@ -8492,21 +8492,21 @@
         "docstrings": [
           "`union src src1ofs src1len src2 src2ofs src2len dst dstofs cmp`\n\n**return** the `offset` in the output array"
         ],
-        "signature": "let intersect: (\\n  array<'a>,\\n  int,\\n  int,\\n  array<'a>,\\n  int,\\n  int,\\n  array<'a>,\\n  int,\\n  ('a, 'a) => int,\\n) => int"
+        "signature": "let intersect: (\n  array<'a>,\n  int,\n  int,\n  array<'a>,\n  int,\n  int,\n  array<'a>,\n  int,\n  ('a, 'a) => int,\n) => int"
       },
       {
         "id": "Belt.SortArray.diffU",
         "kind": "value",
         "name": "diffU",
         "docstrings": [],
-        "signature": "let diffU: (\\n  array<'a>,\\n  int,\\n  int,\\n  array<'a>,\\n  int,\\n  int,\\n  array<'a>,\\n  int,\\n  (. 'a, 'a) => int,\\n) => int"
+        "signature": "let diffU: (\n  array<'a>,\n  int,\n  int,\n  array<'a>,\n  int,\n  int,\n  array<'a>,\n  int,\n  ('a, 'a) => int,\n) => int"
       },
       {
         "id": "Belt.SortArray.diff",
         "kind": "value",
         "name": "diff",
         "docstrings": [],
-        "signature": "let diff: (\\n  array<'a>,\\n  int,\\n  int,\\n  array<'a>,\\n  int,\\n  int,\\n  array<'a>,\\n  int,\\n  ('a, 'a) => int,\\n) => int"
+        "signature": "let diff: (\n  array<'a>,\n  int,\n  int,\n  array<'a>,\n  int,\n  int,\n  array<'a>,\n  int,\n  ('a, 'a) => int,\n) => int"
       }
     ]
   },
@@ -8515,7 +8515,7 @@
     "name": "Array",
     "docstrings": [
       "[`Belt.Array`]()\n\n  **mutable array**: Utilities functions",
-      "Utililites for `Array` functions.\n\n### Note about index syntax\n\nCode like `arr[0]` does *not* compile to JavaScript `arr[0]`. Reason transforms\nthe `[]` index syntax into a function: `Array.get(arr, 0)`. By default, this\nuses the default standard library's `Array.get` function, which may raise an\nexception if the index isn't found. If you `open Belt`, it will use the\n`Belt.Array.get` function which returns options instead of raising exceptions. \n[See this for more information](../belt.mdx#array-access-runtime-safety)."
+      "Utilities for `Array` functions.\n\n### Note about index syntax\n\nCode like `arr[0]` does *not* compile to JavaScript `arr[0]`. Reason transforms\nthe `[]` index syntax into a function: `Array.get(arr, 0)`. By default, this\nuses the default standard library's `Array.get` function, which may raise an\nexception if the index isn't found. If you `open Belt`, it will use the\n`Belt.Array.get` function which returns options instead of raising exceptions. \n[See this for more information](../belt.mdx#array-access-runtime-safety)."
     ],
     "items": [
       {
@@ -8690,7 +8690,7 @@
         "kind": "value",
         "name": "makeByU",
         "docstrings": [],
-        "signature": "let makeByU: (int, (. int) => 'a) => t<'a>"
+        "signature": "let makeByU: (int, int => 'a) => t<'a>"
       },
       {
         "id": "Belt.Array.makeBy",
@@ -8706,7 +8706,7 @@
         "kind": "value",
         "name": "makeByAndShuffleU",
         "docstrings": [],
-        "signature": "let makeByAndShuffleU: (int, (. int) => 'a) => t<'a>"
+        "signature": "let makeByAndShuffleU: (int, int => 'a) => t<'a>"
       },
       {
         "id": "Belt.Array.makeByAndShuffle",
@@ -8731,7 +8731,7 @@
         "kind": "value",
         "name": "zipByU",
         "docstrings": [],
-        "signature": "let zipByU: (t<'a>, array<'b>, (. 'a, 'b) => 'c) => array<'c>"
+        "signature": "let zipByU: (t<'a>, array<'b>, ('a, 'b) => 'c) => array<'c>"
       },
       {
         "id": "Belt.Array.zipBy",
@@ -8812,7 +8812,7 @@
         "docstrings": [
           "`blit(~src=v1, ~srcOffset=o1, ~dst=v2, ~dstOffset=o2, ~len)` copies `len` elements\nfrom array `v1`;starting at element number `o1`;to array `v2`, starting at element\nnumber `o2`. It works correctly even if `v1` and `v2` are the same array and the\nsource and destination chunks overlap.\n\n`offset` can be negative; `-1` means `len - 1`; if `len + offset` is still negative;it will be set as 0\n\nFor each of the examples;presume that `v1 == [10, 11, 12, 13, 14, 15, 16, 17]` and `v2 == [20, 21, 22, 23, 24, 25, 26, 27]`. The result shown is the content of the destination array.\n\n## Examples\n\n```rescript\nlet v1 = [10, 11, 12, 13, 14, 15, 16, 17]\nlet v2 = [20, 21, 22, 23, 24, 25, 26, 27]\n\nBelt.Array.blit(~src=v1, ~srcOffset=4, ~dst=v2, ~dstOffset=2, ~len=3)\nv2 == [20, 21, 14, 15, 16, 25, 26, 27]\n\nBelt.Array.blit(~src=v1, ~srcOffset=4, ~dst=v1, ~dstOffset=2, ~len=3)\nv1 == [10, 11, 14, 15, 16, 15, 16, 17]\n```"
         ],
-        "signature": "let blit: (\\n  ~src: t<'a>,\\n  ~srcOffset: int,\\n  ~dst: t<'a>,\\n  ~dstOffset: int,\\n  ~len: int,\\n) => unit"
+        "signature": "let blit: (\n  ~src: t<'a>,\n  ~srcOffset: int,\n  ~dst: t<'a>,\n  ~dstOffset: int,\n  ~len: int,\n) => unit"
       },
       {
         "id": "Belt.Array.blitUnsafe",
@@ -8821,14 +8821,14 @@
         "docstrings": [
           "Unsafe blit without bounds checking."
         ],
-        "signature": "let blitUnsafe: (\\n  ~src: t<'a>,\\n  ~srcOffset: int,\\n  ~dst: t<'a>,\\n  ~dstOffset: int,\\n  ~len: int,\\n) => unit"
+        "signature": "let blitUnsafe: (\n  ~src: t<'a>,\n  ~srcOffset: int,\n  ~dst: t<'a>,\n  ~dstOffset: int,\n  ~len: int,\n) => unit"
       },
       {
         "id": "Belt.Array.forEachU",
         "kind": "value",
         "name": "forEachU",
         "docstrings": [],
-        "signature": "let forEachU: (t<'a>, (. 'a) => unit) => unit"
+        "signature": "let forEachU: (t<'a>, 'a => unit) => unit"
       },
       {
         "id": "Belt.Array.forEach",
@@ -8844,7 +8844,7 @@
         "kind": "value",
         "name": "mapU",
         "docstrings": [],
-        "signature": "let mapU: (t<'a>, (. 'a) => 'b) => array<'b>"
+        "signature": "let mapU: (t<'a>, 'a => 'b) => array<'b>"
       },
       {
         "id": "Belt.Array.map",
@@ -8860,7 +8860,7 @@
         "kind": "value",
         "name": "flatMapU",
         "docstrings": [],
-        "signature": "let flatMapU: (t<'a>, (. 'a) => array<'b>) => array<'b>"
+        "signature": "let flatMapU: (t<'a>, 'a => array<'b>) => array<'b>"
       },
       {
         "id": "Belt.Array.flatMap",
@@ -8876,7 +8876,7 @@
         "kind": "value",
         "name": "getByU",
         "docstrings": [],
-        "signature": "let getByU: (t<'a>, (. 'a) => bool) => option<'a>"
+        "signature": "let getByU: (t<'a>, 'a => bool) => option<'a>"
       },
       {
         "id": "Belt.Array.getBy",
@@ -8892,7 +8892,7 @@
         "kind": "value",
         "name": "getIndexByU",
         "docstrings": [],
-        "signature": "let getIndexByU: (t<'a>, (. 'a) => bool) => option<int>"
+        "signature": "let getIndexByU: (t<'a>, 'a => bool) => option<int>"
       },
       {
         "id": "Belt.Array.getIndexBy",
@@ -8908,7 +8908,7 @@
         "kind": "value",
         "name": "keepU",
         "docstrings": [],
-        "signature": "let keepU: (t<'a>, (. 'a) => bool) => t<'a>"
+        "signature": "let keepU: (t<'a>, 'a => bool) => t<'a>"
       },
       {
         "id": "Belt.Array.keep",
@@ -8924,7 +8924,7 @@
         "kind": "value",
         "name": "keepWithIndexU",
         "docstrings": [],
-        "signature": "let keepWithIndexU: (t<'a>, (. 'a, int) => bool) => t<'a>"
+        "signature": "let keepWithIndexU: (t<'a>, ('a, int) => bool) => t<'a>"
       },
       {
         "id": "Belt.Array.keepWithIndex",
@@ -8940,7 +8940,7 @@
         "kind": "value",
         "name": "keepMapU",
         "docstrings": [],
-        "signature": "let keepMapU: (t<'a>, (. 'a) => option<'b>) => array<'b>"
+        "signature": "let keepMapU: (t<'a>, 'a => option<'b>) => array<'b>"
       },
       {
         "id": "Belt.Array.keepMap",
@@ -8956,7 +8956,7 @@
         "kind": "value",
         "name": "forEachWithIndexU",
         "docstrings": [],
-        "signature": "let forEachWithIndexU: (t<'a>, (. int, 'a) => unit) => unit"
+        "signature": "let forEachWithIndexU: (t<'a>, (int, 'a) => unit) => unit"
       },
       {
         "id": "Belt.Array.forEachWithIndex",
@@ -8972,7 +8972,7 @@
         "kind": "value",
         "name": "mapWithIndexU",
         "docstrings": [],
-        "signature": "let mapWithIndexU: (t<'a>, (. int, 'a) => 'b) => array<'b>"
+        "signature": "let mapWithIndexU: (t<'a>, (int, 'a) => 'b) => array<'b>"
       },
       {
         "id": "Belt.Array.mapWithIndex",
@@ -8988,7 +8988,7 @@
         "kind": "value",
         "name": "partitionU",
         "docstrings": [],
-        "signature": "let partitionU: (t<'a>, (. 'a) => bool) => (t<'a>, t<'a>)"
+        "signature": "let partitionU: (t<'a>, 'a => bool) => (t<'a>, t<'a>)"
       },
       {
         "id": "Belt.Array.partition",
@@ -9004,7 +9004,7 @@
         "kind": "value",
         "name": "reduceU",
         "docstrings": [],
-        "signature": "let reduceU: (array<'b>, 'a, (. 'a, 'b) => 'a) => 'a"
+        "signature": "let reduceU: (array<'b>, 'a, ('a, 'b) => 'a) => 'a"
       },
       {
         "id": "Belt.Array.reduce",
@@ -9020,7 +9020,7 @@
         "kind": "value",
         "name": "reduceReverseU",
         "docstrings": [],
-        "signature": "let reduceReverseU: (array<'b>, 'a, (. 'a, 'b) => 'a) => 'a"
+        "signature": "let reduceReverseU: (array<'b>, 'a, ('a, 'b) => 'a) => 'a"
       },
       {
         "id": "Belt.Array.reduceReverse",
@@ -9036,7 +9036,7 @@
         "kind": "value",
         "name": "reduceReverse2U",
         "docstrings": [],
-        "signature": "let reduceReverse2U: (t<'a>, array<'b>, 'c, (. 'c, 'a, 'b) => 'c) => 'c"
+        "signature": "let reduceReverse2U: (t<'a>, array<'b>, 'c, ('c, 'a, 'b) => 'c) => 'c"
       },
       {
         "id": "Belt.Array.reduceReverse2",
@@ -9052,7 +9052,7 @@
         "kind": "value",
         "name": "reduceWithIndexU",
         "docstrings": [],
-        "signature": "let reduceWithIndexU: (t<'a>, 'b, (. 'b, 'a, int) => 'b) => 'b"
+        "signature": "let reduceWithIndexU: (t<'a>, 'b, ('b, 'a, int) => 'b) => 'b"
       },
       {
         "id": "Belt.Array.reduceWithIndex",
@@ -9068,7 +9068,7 @@
         "kind": "value",
         "name": "joinWithU",
         "docstrings": [],
-        "signature": "let joinWithU: (t<'a>, string, (. 'a) => string) => string"
+        "signature": "let joinWithU: (t<'a>, string, 'a => string) => string"
       },
       {
         "id": "Belt.Array.joinWith",
@@ -9084,7 +9084,7 @@
         "kind": "value",
         "name": "someU",
         "docstrings": [],
-        "signature": "let someU: (t<'a>, (. 'a) => bool) => bool"
+        "signature": "let someU: (t<'a>, 'a => bool) => bool"
       },
       {
         "id": "Belt.Array.some",
@@ -9100,7 +9100,7 @@
         "kind": "value",
         "name": "everyU",
         "docstrings": [],
-        "signature": "let everyU: (t<'a>, (. 'a) => bool) => bool"
+        "signature": "let everyU: (t<'a>, 'a => bool) => bool"
       },
       {
         "id": "Belt.Array.every",
@@ -9116,7 +9116,7 @@
         "kind": "value",
         "name": "every2U",
         "docstrings": [],
-        "signature": "let every2U: (t<'a>, array<'b>, (. 'a, 'b) => bool) => bool"
+        "signature": "let every2U: (t<'a>, array<'b>, ('a, 'b) => bool) => bool"
       },
       {
         "id": "Belt.Array.every2",
@@ -9132,7 +9132,7 @@
         "kind": "value",
         "name": "some2U",
         "docstrings": [],
-        "signature": "let some2U: (t<'a>, array<'b>, (. 'a, 'b) => bool) => bool"
+        "signature": "let some2U: (t<'a>, array<'b>, ('a, 'b) => bool) => bool"
       },
       {
         "id": "Belt.Array.some2",
@@ -9148,7 +9148,7 @@
         "kind": "value",
         "name": "cmpU",
         "docstrings": [],
-        "signature": "let cmpU: (t<'a>, t<'a>, (. 'a, 'a) => int) => int"
+        "signature": "let cmpU: (t<'a>, t<'a>, ('a, 'a) => int) => int"
       },
       {
         "id": "Belt.Array.cmp",
@@ -9164,7 +9164,7 @@
         "kind": "value",
         "name": "eqU",
         "docstrings": [],
-        "signature": "let eqU: (t<'a>, t<'a>, (. 'a, 'a) => bool) => bool"
+        "signature": "let eqU: (t<'a>, t<'a>, ('a, 'a) => bool) => bool"
       },
       {
         "id": "Belt.Array.eq",
@@ -9189,7 +9189,7 @@
         "kind": "value",
         "name": "initU",
         "docstrings": [],
-        "signature": "let initU: (int, (. int) => 'a) => t<'a>"
+        "signature": "let initU: (int, int => 'a) => t<'a>"
       },
       {
         "id": "Belt.Array.init",
@@ -9251,14 +9251,14 @@
         "docstrings": [
           "`('key, 'id) cmparable` is a module of functions, here it only includes `cmp`.\n\nUnlike normal functions, when created, it comes with a unique identity (guaranteed\nby the type system).\n\nIt can be created using function [`comparableU`]() or [`comparable`]().\n\nThe idea of a unique identity when created is that it makes sure two sets would type\nmismatch if they use different comparison function"
         ],
-        "signature": "type comparable<'key, 'id> = module(Comparable\\n  with type identity = 'id\\n  with type t = 'key)"
+        "signature": "type comparable<'key, 'id> = module(Comparable\n  with type identity = 'id\n  with type t = 'key)"
       },
       {
         "id": "Belt.Id.comparableU",
         "kind": "value",
         "name": "comparableU",
         "docstrings": [],
-        "signature": "let comparableU: (\\n  ~cmp: (. 'a, 'a) => int,\\n) => module(Comparable with type t = 'a)"
+        "signature": "let comparableU: (\n  ~cmp: ('a, 'a) => int,\n) => module(Comparable with type t = 'a)"
       },
       {
         "id": "Belt.Id.comparable",
@@ -9267,7 +9267,7 @@
         "docstrings": [
           "## Examples\n\n```rescript\nmodule C = (\n  val Belt.Id.comparable ~cmp:(compare : int -> int -> int)\n)\nlet m = Belt.Set.make(module C)\n```\nNote that the name of C can not be ignored"
         ],
-        "signature": "let comparable: (\\n  ~cmp: ('a, 'a) => int,\\n) => module(Comparable with type t = 'a)"
+        "signature": "let comparable: (\n  ~cmp: ('a, 'a) => int,\n) => module(Comparable with type t = 'a)"
       },
       {
         "id": "Belt.Id.hashable",
@@ -9276,42 +9276,42 @@
         "docstrings": [
           "`('key, 'id) hashable` is a module of functions, here it only includes `hash`, `eq`.\n\nUnlike normal functions, when created, it comes with a unique identity (guaranteed\nby the type system).\n\nIt can be created using function [`hashableU`]() or [`hashable`]().\n\nThe idea of a unique identity when created is that it makes sure two hash sets would type\nmismatch if they use different comparison function"
         ],
-        "signature": "type hashable<'key, 'id> = module(Hashable\\n  with type identity = 'id\\n  with type t = 'key)"
+        "signature": "type hashable<'key, 'id> = module(Hashable\n  with type identity = 'id\n  with type t = 'key)"
       },
       {
         "id": "Belt.Id.hashableU",
         "kind": "value",
         "name": "hashableU",
         "docstrings": [],
-        "signature": "let hashableU: (\\n  ~hash: (. 'a) => int,\\n  ~eq: (. 'a, 'a) => bool,\\n) => module(Hashable with type t = 'a)"
+        "signature": "let hashableU: (\n  ~hash: 'a => int,\n  ~eq: ('a, 'a) => bool,\n) => module(Hashable with type t = 'a)"
       },
       {
         "id": "Belt.Id.hashable",
         "kind": "value",
         "name": "hashable",
         "docstrings": [],
-        "signature": "let hashable: (\\n  ~hash: 'a => int,\\n  ~eq: ('a, 'a) => bool,\\n) => module(Hashable with type t = 'a)"
+        "signature": "let hashable: (\n  ~hash: 'a => int,\n  ~eq: ('a, 'a) => bool,\n) => module(Hashable with type t = 'a)"
       },
       {
         "id": "Belt.Id.getHashInternal",
         "kind": "value",
         "name": "getHashInternal",
         "docstrings": [],
-        "signature": "let getHashInternal: hash<'a, 'id> => (. 'a) => int"
+        "signature": "let getHashInternal: hash<'a, 'id> => 'a => int"
       },
       {
         "id": "Belt.Id.getEqInternal",
         "kind": "value",
         "name": "getEqInternal",
         "docstrings": [],
-        "signature": "let getEqInternal: eq<'a, 'id> => (. 'a, 'a) => bool"
+        "signature": "let getEqInternal: eq<'a, 'id> => ('a, 'a) => bool"
       },
       {
         "id": "Belt.Id.getCmpInternal",
         "kind": "value",
         "name": "getCmpInternal",
         "docstrings": [],
-        "signature": "let getCmpInternal: cmp<'a, 'id> => (. 'a, 'a) => int"
+        "signature": "let getCmpInternal: cmp<'a, 'id> => ('a, 'a) => int"
       }
     ]
   }

@@ -13,7 +13,7 @@
         "docstrings": [
           "JS object type"
         ],
-        "signature": "type t<'a> = 'a\\n  constraint 'a = {..}"
+        "signature": "type t<'a> = 'a\n  constraint 'a = {..}"
       },
       {
         "id": "Js.null",
@@ -228,7 +228,9 @@
   "js/typedarray2/dataview": {
     "id": "Js.TypedArray2.DataView",
     "name": "DataView",
-    "docstrings": [],
+    "docstrings": [
+      "The DataView view provides a low-level interface for reading and writing\nmultiple number types in an ArrayBuffer irrespective of the platform's endianness.\n\n**see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView)"
+    ],
     "items": [
       {
         "id": "Js.TypedArray2.DataView.t",
@@ -629,7 +631,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: (t, (. elt, elt) => int) => t"
+        "signature": "let sortInPlaceWith: (t, (elt, elt) => int) => t"
       },
       {
         "id": "Js.TypedArray2.Float64Array.includes",
@@ -738,126 +740,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: (t, (. elt) => bool) => bool"
+        "signature": "let every: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Float64Array.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: (t, (. elt, int) => bool) => bool"
+        "signature": "let everyi: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Float64Array.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: (t, (. elt) => bool) => t"
+        "signature": "let filter: (t, elt => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Float64Array.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: (t, (. elt, int) => bool) => t"
+        "signature": "let filteri: (t, (elt, int) => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Float64Array.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: (t, (. elt) => bool) => Js.undefined<elt>"
+        "signature": "let find: (t, elt => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Float64Array.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: (t, (. elt, int) => bool) => Js.undefined<elt>"
+        "signature": "let findi: (t, (elt, int) => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Float64Array.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: (t, (. elt) => bool) => int"
+        "signature": "let findIndex: (t, elt => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Float64Array.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: (t, (. elt, int) => bool) => int"
+        "signature": "let findIndexi: (t, (elt, int) => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Float64Array.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: (t, (. elt) => unit) => unit"
+        "signature": "let forEach: (t, elt => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Float64Array.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: (t, (. elt, int) => unit) => unit"
+        "signature": "let forEachi: (t, (elt, int) => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Float64Array.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: (t, (. elt) => 'b) => typed_array<'b>"
+        "signature": "let map: (t, elt => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Float64Array.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: (t, (. elt, int) => 'b) => typed_array<'b>"
+        "signature": "let mapi: (t, (elt, int) => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Float64Array.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduce: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Float64Array.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reducei: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Float64Array.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduceRight: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Float64Array.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reduceRighti: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Float64Array.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: (t, (. elt) => bool) => bool"
+        "signature": "let some: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Float64Array.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: (t, (. elt, int) => bool) => bool"
+        "signature": "let somei: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Float64Array._BYTES_PER_ELEMENT",
@@ -1061,7 +1063,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: (t, (. elt, elt) => int) => t"
+        "signature": "let sortInPlaceWith: (t, (elt, elt) => int) => t"
       },
       {
         "id": "Js.TypedArray2.Float32Array.includes",
@@ -1170,126 +1172,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: (t, (. elt) => bool) => bool"
+        "signature": "let every: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Float32Array.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: (t, (. elt, int) => bool) => bool"
+        "signature": "let everyi: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Float32Array.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: (t, (. elt) => bool) => t"
+        "signature": "let filter: (t, elt => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Float32Array.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: (t, (. elt, int) => bool) => t"
+        "signature": "let filteri: (t, (elt, int) => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Float32Array.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: (t, (. elt) => bool) => Js.undefined<elt>"
+        "signature": "let find: (t, elt => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Float32Array.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: (t, (. elt, int) => bool) => Js.undefined<elt>"
+        "signature": "let findi: (t, (elt, int) => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Float32Array.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: (t, (. elt) => bool) => int"
+        "signature": "let findIndex: (t, elt => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Float32Array.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: (t, (. elt, int) => bool) => int"
+        "signature": "let findIndexi: (t, (elt, int) => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Float32Array.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: (t, (. elt) => unit) => unit"
+        "signature": "let forEach: (t, elt => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Float32Array.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: (t, (. elt, int) => unit) => unit"
+        "signature": "let forEachi: (t, (elt, int) => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Float32Array.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: (t, (. elt) => 'b) => typed_array<'b>"
+        "signature": "let map: (t, elt => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Float32Array.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: (t, (. elt, int) => 'b) => typed_array<'b>"
+        "signature": "let mapi: (t, (elt, int) => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Float32Array.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduce: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Float32Array.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reducei: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Float32Array.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduceRight: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Float32Array.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reduceRighti: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Float32Array.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: (t, (. elt) => bool) => bool"
+        "signature": "let some: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Float32Array.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: (t, (. elt, int) => bool) => bool"
+        "signature": "let somei: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Float32Array._BYTES_PER_ELEMENT",
@@ -1493,7 +1495,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: (t, (. elt, elt) => int) => t"
+        "signature": "let sortInPlaceWith: (t, (elt, elt) => int) => t"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.includes",
@@ -1602,126 +1604,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: (t, (. elt) => bool) => bool"
+        "signature": "let every: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: (t, (. elt, int) => bool) => bool"
+        "signature": "let everyi: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: (t, (. elt) => bool) => t"
+        "signature": "let filter: (t, elt => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: (t, (. elt, int) => bool) => t"
+        "signature": "let filteri: (t, (elt, int) => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: (t, (. elt) => bool) => Js.undefined<elt>"
+        "signature": "let find: (t, elt => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: (t, (. elt, int) => bool) => Js.undefined<elt>"
+        "signature": "let findi: (t, (elt, int) => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: (t, (. elt) => bool) => int"
+        "signature": "let findIndex: (t, elt => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: (t, (. elt, int) => bool) => int"
+        "signature": "let findIndexi: (t, (elt, int) => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: (t, (. elt) => unit) => unit"
+        "signature": "let forEach: (t, elt => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: (t, (. elt, int) => unit) => unit"
+        "signature": "let forEachi: (t, (elt, int) => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: (t, (. elt) => 'b) => typed_array<'b>"
+        "signature": "let map: (t, elt => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: (t, (. elt, int) => 'b) => typed_array<'b>"
+        "signature": "let mapi: (t, (elt, int) => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduce: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reducei: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduceRight: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reduceRighti: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: (t, (. elt) => bool) => bool"
+        "signature": "let some: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Uint32Array.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: (t, (. elt, int) => bool) => bool"
+        "signature": "let somei: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Uint32Array._BYTES_PER_ELEMENT",
@@ -1925,7 +1927,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: (t, (. elt, elt) => int) => t"
+        "signature": "let sortInPlaceWith: (t, (elt, elt) => int) => t"
       },
       {
         "id": "Js.TypedArray2.Int32Array.includes",
@@ -2034,126 +2036,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: (t, (. elt) => bool) => bool"
+        "signature": "let every: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Int32Array.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: (t, (. elt, int) => bool) => bool"
+        "signature": "let everyi: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Int32Array.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: (t, (. elt) => bool) => t"
+        "signature": "let filter: (t, elt => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Int32Array.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: (t, (. elt, int) => bool) => t"
+        "signature": "let filteri: (t, (elt, int) => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Int32Array.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: (t, (. elt) => bool) => Js.undefined<elt>"
+        "signature": "let find: (t, elt => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Int32Array.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: (t, (. elt, int) => bool) => Js.undefined<elt>"
+        "signature": "let findi: (t, (elt, int) => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Int32Array.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: (t, (. elt) => bool) => int"
+        "signature": "let findIndex: (t, elt => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Int32Array.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: (t, (. elt, int) => bool) => int"
+        "signature": "let findIndexi: (t, (elt, int) => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Int32Array.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: (t, (. elt) => unit) => unit"
+        "signature": "let forEach: (t, elt => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Int32Array.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: (t, (. elt, int) => unit) => unit"
+        "signature": "let forEachi: (t, (elt, int) => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Int32Array.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: (t, (. elt) => 'b) => typed_array<'b>"
+        "signature": "let map: (t, elt => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Int32Array.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: (t, (. elt, int) => 'b) => typed_array<'b>"
+        "signature": "let mapi: (t, (elt, int) => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Int32Array.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduce: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Int32Array.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reducei: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Int32Array.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduceRight: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Int32Array.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reduceRighti: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Int32Array.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: (t, (. elt) => bool) => bool"
+        "signature": "let some: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Int32Array.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: (t, (. elt, int) => bool) => bool"
+        "signature": "let somei: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Int32Array._BYTES_PER_ELEMENT",
@@ -2357,7 +2359,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: (t, (. elt, elt) => int) => t"
+        "signature": "let sortInPlaceWith: (t, (elt, elt) => int) => t"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.includes",
@@ -2466,126 +2468,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: (t, (. elt) => bool) => bool"
+        "signature": "let every: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: (t, (. elt, int) => bool) => bool"
+        "signature": "let everyi: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: (t, (. elt) => bool) => t"
+        "signature": "let filter: (t, elt => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: (t, (. elt, int) => bool) => t"
+        "signature": "let filteri: (t, (elt, int) => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: (t, (. elt) => bool) => Js.undefined<elt>"
+        "signature": "let find: (t, elt => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: (t, (. elt, int) => bool) => Js.undefined<elt>"
+        "signature": "let findi: (t, (elt, int) => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: (t, (. elt) => bool) => int"
+        "signature": "let findIndex: (t, elt => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: (t, (. elt, int) => bool) => int"
+        "signature": "let findIndexi: (t, (elt, int) => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: (t, (. elt) => unit) => unit"
+        "signature": "let forEach: (t, elt => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: (t, (. elt, int) => unit) => unit"
+        "signature": "let forEachi: (t, (elt, int) => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: (t, (. elt) => 'b) => typed_array<'b>"
+        "signature": "let map: (t, elt => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: (t, (. elt, int) => 'b) => typed_array<'b>"
+        "signature": "let mapi: (t, (elt, int) => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduce: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reducei: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduceRight: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reduceRighti: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: (t, (. elt) => bool) => bool"
+        "signature": "let some: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Uint16Array.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: (t, (. elt, int) => bool) => bool"
+        "signature": "let somei: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Uint16Array._BYTES_PER_ELEMENT",
@@ -2789,7 +2791,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: (t, (. elt, elt) => int) => t"
+        "signature": "let sortInPlaceWith: (t, (elt, elt) => int) => t"
       },
       {
         "id": "Js.TypedArray2.Int16Array.includes",
@@ -2898,126 +2900,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: (t, (. elt) => bool) => bool"
+        "signature": "let every: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Int16Array.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: (t, (. elt, int) => bool) => bool"
+        "signature": "let everyi: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Int16Array.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: (t, (. elt) => bool) => t"
+        "signature": "let filter: (t, elt => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Int16Array.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: (t, (. elt, int) => bool) => t"
+        "signature": "let filteri: (t, (elt, int) => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Int16Array.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: (t, (. elt) => bool) => Js.undefined<elt>"
+        "signature": "let find: (t, elt => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Int16Array.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: (t, (. elt, int) => bool) => Js.undefined<elt>"
+        "signature": "let findi: (t, (elt, int) => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Int16Array.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: (t, (. elt) => bool) => int"
+        "signature": "let findIndex: (t, elt => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Int16Array.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: (t, (. elt, int) => bool) => int"
+        "signature": "let findIndexi: (t, (elt, int) => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Int16Array.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: (t, (. elt) => unit) => unit"
+        "signature": "let forEach: (t, elt => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Int16Array.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: (t, (. elt, int) => unit) => unit"
+        "signature": "let forEachi: (t, (elt, int) => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Int16Array.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: (t, (. elt) => 'b) => typed_array<'b>"
+        "signature": "let map: (t, elt => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Int16Array.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: (t, (. elt, int) => 'b) => typed_array<'b>"
+        "signature": "let mapi: (t, (elt, int) => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Int16Array.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduce: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Int16Array.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reducei: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Int16Array.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduceRight: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Int16Array.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reduceRighti: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Int16Array.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: (t, (. elt) => bool) => bool"
+        "signature": "let some: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Int16Array.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: (t, (. elt, int) => bool) => bool"
+        "signature": "let somei: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Int16Array._BYTES_PER_ELEMENT",
@@ -3221,7 +3223,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: (t, (. elt, elt) => int) => t"
+        "signature": "let sortInPlaceWith: (t, (elt, elt) => int) => t"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.includes",
@@ -3330,126 +3332,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: (t, (. elt) => bool) => bool"
+        "signature": "let every: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: (t, (. elt, int) => bool) => bool"
+        "signature": "let everyi: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: (t, (. elt) => bool) => t"
+        "signature": "let filter: (t, elt => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: (t, (. elt, int) => bool) => t"
+        "signature": "let filteri: (t, (elt, int) => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: (t, (. elt) => bool) => Js.undefined<elt>"
+        "signature": "let find: (t, elt => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: (t, (. elt, int) => bool) => Js.undefined<elt>"
+        "signature": "let findi: (t, (elt, int) => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: (t, (. elt) => bool) => int"
+        "signature": "let findIndex: (t, elt => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: (t, (. elt, int) => bool) => int"
+        "signature": "let findIndexi: (t, (elt, int) => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: (t, (. elt) => unit) => unit"
+        "signature": "let forEach: (t, elt => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: (t, (. elt, int) => unit) => unit"
+        "signature": "let forEachi: (t, (elt, int) => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: (t, (. elt) => 'b) => typed_array<'b>"
+        "signature": "let map: (t, elt => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: (t, (. elt, int) => 'b) => typed_array<'b>"
+        "signature": "let mapi: (t, (elt, int) => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduce: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reducei: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduceRight: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reduceRighti: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: (t, (. elt) => bool) => bool"
+        "signature": "let some: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: (t, (. elt, int) => bool) => bool"
+        "signature": "let somei: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Uint8ClampedArray._BYTES_PER_ELEMENT",
@@ -3653,7 +3655,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: (t, (. elt, elt) => int) => t"
+        "signature": "let sortInPlaceWith: (t, (elt, elt) => int) => t"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.includes",
@@ -3762,126 +3764,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: (t, (. elt) => bool) => bool"
+        "signature": "let every: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: (t, (. elt, int) => bool) => bool"
+        "signature": "let everyi: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: (t, (. elt) => bool) => t"
+        "signature": "let filter: (t, elt => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: (t, (. elt, int) => bool) => t"
+        "signature": "let filteri: (t, (elt, int) => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: (t, (. elt) => bool) => Js.undefined<elt>"
+        "signature": "let find: (t, elt => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: (t, (. elt, int) => bool) => Js.undefined<elt>"
+        "signature": "let findi: (t, (elt, int) => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: (t, (. elt) => bool) => int"
+        "signature": "let findIndex: (t, elt => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: (t, (. elt, int) => bool) => int"
+        "signature": "let findIndexi: (t, (elt, int) => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: (t, (. elt) => unit) => unit"
+        "signature": "let forEach: (t, elt => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: (t, (. elt, int) => unit) => unit"
+        "signature": "let forEachi: (t, (elt, int) => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: (t, (. elt) => 'b) => typed_array<'b>"
+        "signature": "let map: (t, elt => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: (t, (. elt, int) => 'b) => typed_array<'b>"
+        "signature": "let mapi: (t, (elt, int) => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduce: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reducei: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduceRight: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reduceRighti: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: (t, (. elt) => bool) => bool"
+        "signature": "let some: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Uint8Array.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: (t, (. elt, int) => bool) => bool"
+        "signature": "let somei: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Uint8Array._BYTES_PER_ELEMENT",
@@ -4085,7 +4087,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: (t, (. elt, elt) => int) => t"
+        "signature": "let sortInPlaceWith: (t, (elt, elt) => int) => t"
       },
       {
         "id": "Js.TypedArray2.Int8Array.includes",
@@ -4194,126 +4196,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: (t, (. elt) => bool) => bool"
+        "signature": "let every: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Int8Array.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: (t, (. elt, int) => bool) => bool"
+        "signature": "let everyi: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Int8Array.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: (t, (. elt) => bool) => t"
+        "signature": "let filter: (t, elt => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Int8Array.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: (t, (. elt, int) => bool) => t"
+        "signature": "let filteri: (t, (elt, int) => bool) => t"
       },
       {
         "id": "Js.TypedArray2.Int8Array.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: (t, (. elt) => bool) => Js.undefined<elt>"
+        "signature": "let find: (t, elt => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Int8Array.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: (t, (. elt, int) => bool) => Js.undefined<elt>"
+        "signature": "let findi: (t, (elt, int) => bool) => Js.undefined<elt>"
       },
       {
         "id": "Js.TypedArray2.Int8Array.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: (t, (. elt) => bool) => int"
+        "signature": "let findIndex: (t, elt => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Int8Array.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: (t, (. elt, int) => bool) => int"
+        "signature": "let findIndexi: (t, (elt, int) => bool) => int"
       },
       {
         "id": "Js.TypedArray2.Int8Array.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: (t, (. elt) => unit) => unit"
+        "signature": "let forEach: (t, elt => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Int8Array.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: (t, (. elt, int) => unit) => unit"
+        "signature": "let forEachi: (t, (elt, int) => unit) => unit"
       },
       {
         "id": "Js.TypedArray2.Int8Array.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: (t, (. elt) => 'b) => typed_array<'b>"
+        "signature": "let map: (t, elt => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Int8Array.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: (t, (. elt, int) => 'b) => typed_array<'b>"
+        "signature": "let mapi: (t, (elt, int) => 'b) => typed_array<'b>"
       },
       {
         "id": "Js.TypedArray2.Int8Array.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduce: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Int8Array.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reducei: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Int8Array.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: (t, (. 'b, elt) => 'b, 'b) => 'b"
+        "signature": "let reduceRight: (t, ('b, elt) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Int8Array.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: (t, (. 'b, elt, int) => 'b, 'b) => 'b"
+        "signature": "let reduceRighti: (t, ('b, elt, int) => 'b, 'b) => 'b"
       },
       {
         "id": "Js.TypedArray2.Int8Array.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: (t, (. elt) => bool) => bool"
+        "signature": "let some: (t, elt => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Int8Array.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: (t, (. elt, int) => bool) => bool"
+        "signature": "let somei: (t, (elt, int) => bool) => bool"
       },
       {
         "id": "Js.TypedArray2.Int8Array._BYTES_PER_ELEMENT",
@@ -4375,7 +4377,9 @@
   "js/typedarray2/arraybuffer": {
     "id": "Js.TypedArray2.ArrayBuffer",
     "name": "ArrayBuffer",
-    "docstrings": [],
+    "docstrings": [
+      "The underlying buffer that the typed arrays provide views of\n\n  **see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)"
+    ],
     "items": [
       {
         "id": "Js.TypedArray2.ArrayBuffer.t",
@@ -4419,7 +4423,9 @@
   "js/typed_array/dataview": {
     "id": "Js.Typed_array.DataView",
     "name": "DataView",
-    "docstrings": [],
+    "docstrings": [
+      "The DataView view provides a low-level interface for reading and writing\nmultiple number types in an ArrayBuffer irrespective of the platform's endianness.\n\n**see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView)"
+    ],
     "items": [
       {
         "id": "Js.Typed_array.DataView.t",
@@ -4700,7 +4706,7 @@
         "kind": "type",
         "name": "typed_array",
         "docstrings": [],
-        "signature": "type typed_array<\\n  'a,\\n> = Js_typed_array2.Float64Array.typed_array<'a>"
+        "signature": "type typed_array<\n  'a,\n> = Js_typed_array2.Float64Array.typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Float64Array.t",
@@ -4826,7 +4832,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t"
+        "signature": "let sortInPlaceWith: ((elt, elt) => int, t) => t"
       },
       {
         "id": "Js.Typed_array.Float64Array.includes",
@@ -4931,126 +4937,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: ((. elt) => bool, t) => bool"
+        "signature": "let every: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Float64Array.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: ((. elt, int) => bool, t) => bool"
+        "signature": "let everyi: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Float64Array.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: ((. elt) => bool, t) => t"
+        "signature": "let filter: (elt => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Float64Array.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: ((. elt, int) => bool, t) => t"
+        "signature": "let filteri: ((elt, int) => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Float64Array.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>"
+        "signature": "let find: (elt => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Float64Array.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>"
+        "signature": "let findi: ((elt, int) => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Float64Array.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: ((. elt) => bool, t) => int"
+        "signature": "let findIndex: (elt => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Float64Array.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: ((. elt, int) => bool, t) => int"
+        "signature": "let findIndexi: ((elt, int) => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Float64Array.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: ((. elt) => unit, t) => unit"
+        "signature": "let forEach: (elt => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Float64Array.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: ((. elt, int) => unit, t) => unit"
+        "signature": "let forEachi: ((elt, int) => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Float64Array.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>"
+        "signature": "let map: (elt => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Float64Array.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>"
+        "signature": "let mapi: ((elt, int) => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Float64Array.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduce: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Float64Array.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reducei: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Float64Array.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRight: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Float64Array.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRighti: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Float64Array.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: ((. elt) => bool, t) => bool"
+        "signature": "let some: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Float64Array.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: ((. elt, int) => bool, t) => bool"
+        "signature": "let somei: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Float64Array._BYTES_PER_ELEMENT",
@@ -5150,7 +5156,7 @@
         "kind": "type",
         "name": "typed_array",
         "docstrings": [],
-        "signature": "type typed_array<\\n  'a,\\n> = Js_typed_array2.Float32Array.typed_array<'a>"
+        "signature": "type typed_array<\n  'a,\n> = Js_typed_array2.Float32Array.typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Float32Array.t",
@@ -5276,7 +5282,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t"
+        "signature": "let sortInPlaceWith: ((elt, elt) => int, t) => t"
       },
       {
         "id": "Js.Typed_array.Float32Array.includes",
@@ -5381,126 +5387,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: ((. elt) => bool, t) => bool"
+        "signature": "let every: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Float32Array.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: ((. elt, int) => bool, t) => bool"
+        "signature": "let everyi: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Float32Array.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: ((. elt) => bool, t) => t"
+        "signature": "let filter: (elt => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Float32Array.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: ((. elt, int) => bool, t) => t"
+        "signature": "let filteri: ((elt, int) => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Float32Array.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>"
+        "signature": "let find: (elt => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Float32Array.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>"
+        "signature": "let findi: ((elt, int) => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Float32Array.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: ((. elt) => bool, t) => int"
+        "signature": "let findIndex: (elt => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Float32Array.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: ((. elt, int) => bool, t) => int"
+        "signature": "let findIndexi: ((elt, int) => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Float32Array.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: ((. elt) => unit, t) => unit"
+        "signature": "let forEach: (elt => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Float32Array.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: ((. elt, int) => unit, t) => unit"
+        "signature": "let forEachi: ((elt, int) => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Float32Array.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>"
+        "signature": "let map: (elt => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Float32Array.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>"
+        "signature": "let mapi: ((elt, int) => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Float32Array.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduce: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Float32Array.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reducei: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Float32Array.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRight: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Float32Array.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRighti: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Float32Array.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: ((. elt) => bool, t) => bool"
+        "signature": "let some: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Float32Array.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: ((. elt, int) => bool, t) => bool"
+        "signature": "let somei: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Float32Array._BYTES_PER_ELEMENT",
@@ -5594,7 +5600,7 @@
         "kind": "type",
         "name": "typed_array",
         "docstrings": [],
-        "signature": "type typed_array<\\n  'a,\\n> = Js_typed_array2.Uint32Array.typed_array<'a>"
+        "signature": "type typed_array<\n  'a,\n> = Js_typed_array2.Uint32Array.typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Uint32Array.t",
@@ -5720,7 +5726,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t"
+        "signature": "let sortInPlaceWith: ((elt, elt) => int, t) => t"
       },
       {
         "id": "Js.Typed_array.Uint32Array.includes",
@@ -5825,126 +5831,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: ((. elt) => bool, t) => bool"
+        "signature": "let every: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Uint32Array.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: ((. elt, int) => bool, t) => bool"
+        "signature": "let everyi: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Uint32Array.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: ((. elt) => bool, t) => t"
+        "signature": "let filter: (elt => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Uint32Array.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: ((. elt, int) => bool, t) => t"
+        "signature": "let filteri: ((elt, int) => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Uint32Array.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>"
+        "signature": "let find: (elt => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Uint32Array.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>"
+        "signature": "let findi: ((elt, int) => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Uint32Array.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: ((. elt) => bool, t) => int"
+        "signature": "let findIndex: (elt => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Uint32Array.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: ((. elt, int) => bool, t) => int"
+        "signature": "let findIndexi: ((elt, int) => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Uint32Array.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: ((. elt) => unit, t) => unit"
+        "signature": "let forEach: (elt => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Uint32Array.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: ((. elt, int) => unit, t) => unit"
+        "signature": "let forEachi: ((elt, int) => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Uint32Array.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>"
+        "signature": "let map: (elt => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Uint32Array.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>"
+        "signature": "let mapi: ((elt, int) => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Uint32Array.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduce: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Uint32Array.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reducei: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Uint32Array.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRight: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Uint32Array.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRighti: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Uint32Array.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: ((. elt) => bool, t) => bool"
+        "signature": "let some: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Uint32Array.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: ((. elt, int) => bool, t) => bool"
+        "signature": "let somei: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Uint32Array._BYTES_PER_ELEMENT",
@@ -6028,7 +6034,7 @@
         "kind": "type",
         "name": "typed_array",
         "docstrings": [],
-        "signature": "type typed_array<\\n  'a,\\n> = Js_typed_array2.Int32Array.typed_array<'a>"
+        "signature": "type typed_array<\n  'a,\n> = Js_typed_array2.Int32Array.typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Int32Array.t",
@@ -6154,7 +6160,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t"
+        "signature": "let sortInPlaceWith: ((elt, elt) => int, t) => t"
       },
       {
         "id": "Js.Typed_array.Int32Array.includes",
@@ -6259,126 +6265,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: ((. elt) => bool, t) => bool"
+        "signature": "let every: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Int32Array.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: ((. elt, int) => bool, t) => bool"
+        "signature": "let everyi: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Int32Array.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: ((. elt) => bool, t) => t"
+        "signature": "let filter: (elt => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Int32Array.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: ((. elt, int) => bool, t) => t"
+        "signature": "let filteri: ((elt, int) => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Int32Array.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>"
+        "signature": "let find: (elt => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Int32Array.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>"
+        "signature": "let findi: ((elt, int) => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Int32Array.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: ((. elt) => bool, t) => int"
+        "signature": "let findIndex: (elt => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Int32Array.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: ((. elt, int) => bool, t) => int"
+        "signature": "let findIndexi: ((elt, int) => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Int32Array.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: ((. elt) => unit, t) => unit"
+        "signature": "let forEach: (elt => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Int32Array.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: ((. elt, int) => unit, t) => unit"
+        "signature": "let forEachi: ((elt, int) => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Int32Array.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>"
+        "signature": "let map: (elt => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Int32Array.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>"
+        "signature": "let mapi: ((elt, int) => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Int32Array.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduce: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Int32Array.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reducei: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Int32Array.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRight: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Int32Array.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRighti: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Int32Array.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: ((. elt) => bool, t) => bool"
+        "signature": "let some: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Int32Array.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: ((. elt, int) => bool, t) => bool"
+        "signature": "let somei: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Int32Array._BYTES_PER_ELEMENT",
@@ -6472,7 +6478,7 @@
         "kind": "type",
         "name": "typed_array",
         "docstrings": [],
-        "signature": "type typed_array<\\n  'a,\\n> = Js_typed_array2.Uint16Array.typed_array<'a>"
+        "signature": "type typed_array<\n  'a,\n> = Js_typed_array2.Uint16Array.typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Uint16Array.t",
@@ -6598,7 +6604,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t"
+        "signature": "let sortInPlaceWith: ((elt, elt) => int, t) => t"
       },
       {
         "id": "Js.Typed_array.Uint16Array.includes",
@@ -6703,126 +6709,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: ((. elt) => bool, t) => bool"
+        "signature": "let every: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Uint16Array.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: ((. elt, int) => bool, t) => bool"
+        "signature": "let everyi: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Uint16Array.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: ((. elt) => bool, t) => t"
+        "signature": "let filter: (elt => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Uint16Array.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: ((. elt, int) => bool, t) => t"
+        "signature": "let filteri: ((elt, int) => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Uint16Array.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>"
+        "signature": "let find: (elt => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Uint16Array.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>"
+        "signature": "let findi: ((elt, int) => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Uint16Array.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: ((. elt) => bool, t) => int"
+        "signature": "let findIndex: (elt => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Uint16Array.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: ((. elt, int) => bool, t) => int"
+        "signature": "let findIndexi: ((elt, int) => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Uint16Array.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: ((. elt) => unit, t) => unit"
+        "signature": "let forEach: (elt => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Uint16Array.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: ((. elt, int) => unit, t) => unit"
+        "signature": "let forEachi: ((elt, int) => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Uint16Array.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>"
+        "signature": "let map: (elt => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Uint16Array.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>"
+        "signature": "let mapi: ((elt, int) => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Uint16Array.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduce: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Uint16Array.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reducei: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Uint16Array.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRight: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Uint16Array.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRighti: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Uint16Array.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: ((. elt) => bool, t) => bool"
+        "signature": "let some: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Uint16Array.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: ((. elt, int) => bool, t) => bool"
+        "signature": "let somei: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Uint16Array._BYTES_PER_ELEMENT",
@@ -6900,7 +6906,7 @@
         "kind": "type",
         "name": "typed_array",
         "docstrings": [],
-        "signature": "type typed_array<\\n  'a,\\n> = Js_typed_array2.Int16Array.typed_array<'a>"
+        "signature": "type typed_array<\n  'a,\n> = Js_typed_array2.Int16Array.typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Int16Array.t",
@@ -7026,7 +7032,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t"
+        "signature": "let sortInPlaceWith: ((elt, elt) => int, t) => t"
       },
       {
         "id": "Js.Typed_array.Int16Array.includes",
@@ -7131,126 +7137,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: ((. elt) => bool, t) => bool"
+        "signature": "let every: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Int16Array.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: ((. elt, int) => bool, t) => bool"
+        "signature": "let everyi: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Int16Array.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: ((. elt) => bool, t) => t"
+        "signature": "let filter: (elt => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Int16Array.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: ((. elt, int) => bool, t) => t"
+        "signature": "let filteri: ((elt, int) => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Int16Array.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>"
+        "signature": "let find: (elt => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Int16Array.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>"
+        "signature": "let findi: ((elt, int) => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Int16Array.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: ((. elt) => bool, t) => int"
+        "signature": "let findIndex: (elt => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Int16Array.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: ((. elt, int) => bool, t) => int"
+        "signature": "let findIndexi: ((elt, int) => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Int16Array.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: ((. elt) => unit, t) => unit"
+        "signature": "let forEach: (elt => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Int16Array.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: ((. elt, int) => unit, t) => unit"
+        "signature": "let forEachi: ((elt, int) => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Int16Array.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>"
+        "signature": "let map: (elt => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Int16Array.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>"
+        "signature": "let mapi: ((elt, int) => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Int16Array.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduce: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Int16Array.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reducei: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Int16Array.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRight: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Int16Array.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRighti: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Int16Array.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: ((. elt) => bool, t) => bool"
+        "signature": "let some: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Int16Array.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: ((. elt, int) => bool, t) => bool"
+        "signature": "let somei: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Int16Array._BYTES_PER_ELEMENT",
@@ -7328,7 +7334,7 @@
         "kind": "type",
         "name": "typed_array",
         "docstrings": [],
-        "signature": "type typed_array<\\n  'a,\\n> = Js_typed_array2.Uint8ClampedArray.typed_array<'a>"
+        "signature": "type typed_array<\n  'a,\n> = Js_typed_array2.Uint8ClampedArray.typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.t",
@@ -7454,7 +7460,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t"
+        "signature": "let sortInPlaceWith: ((elt, elt) => int, t) => t"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.includes",
@@ -7559,126 +7565,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: ((. elt) => bool, t) => bool"
+        "signature": "let every: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: ((. elt, int) => bool, t) => bool"
+        "signature": "let everyi: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: ((. elt) => bool, t) => t"
+        "signature": "let filter: (elt => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: ((. elt, int) => bool, t) => t"
+        "signature": "let filteri: ((elt, int) => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>"
+        "signature": "let find: (elt => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>"
+        "signature": "let findi: ((elt, int) => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: ((. elt) => bool, t) => int"
+        "signature": "let findIndex: (elt => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: ((. elt, int) => bool, t) => int"
+        "signature": "let findIndexi: ((elt, int) => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: ((. elt) => unit, t) => unit"
+        "signature": "let forEach: (elt => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: ((. elt, int) => unit, t) => unit"
+        "signature": "let forEachi: ((elt, int) => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>"
+        "signature": "let map: (elt => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>"
+        "signature": "let mapi: ((elt, int) => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduce: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reducei: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRight: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRighti: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: ((. elt) => bool, t) => bool"
+        "signature": "let some: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: ((. elt, int) => bool, t) => bool"
+        "signature": "let somei: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Uint8ClampedArray._BYTES_PER_ELEMENT",
@@ -7756,7 +7762,7 @@
         "kind": "type",
         "name": "typed_array",
         "docstrings": [],
-        "signature": "type typed_array<\\n  'a,\\n> = Js_typed_array2.Uint8Array.typed_array<'a>"
+        "signature": "type typed_array<\n  'a,\n> = Js_typed_array2.Uint8Array.typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Uint8Array.t",
@@ -7882,7 +7888,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t"
+        "signature": "let sortInPlaceWith: ((elt, elt) => int, t) => t"
       },
       {
         "id": "Js.Typed_array.Uint8Array.includes",
@@ -7987,126 +7993,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: ((. elt) => bool, t) => bool"
+        "signature": "let every: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Uint8Array.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: ((. elt, int) => bool, t) => bool"
+        "signature": "let everyi: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Uint8Array.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: ((. elt) => bool, t) => t"
+        "signature": "let filter: (elt => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Uint8Array.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: ((. elt, int) => bool, t) => t"
+        "signature": "let filteri: ((elt, int) => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Uint8Array.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>"
+        "signature": "let find: (elt => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Uint8Array.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>"
+        "signature": "let findi: ((elt, int) => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Uint8Array.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: ((. elt) => bool, t) => int"
+        "signature": "let findIndex: (elt => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Uint8Array.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: ((. elt, int) => bool, t) => int"
+        "signature": "let findIndexi: ((elt, int) => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Uint8Array.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: ((. elt) => unit, t) => unit"
+        "signature": "let forEach: (elt => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Uint8Array.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: ((. elt, int) => unit, t) => unit"
+        "signature": "let forEachi: ((elt, int) => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Uint8Array.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>"
+        "signature": "let map: (elt => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Uint8Array.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>"
+        "signature": "let mapi: ((elt, int) => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Uint8Array.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduce: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Uint8Array.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reducei: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Uint8Array.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRight: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Uint8Array.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRighti: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Uint8Array.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: ((. elt) => bool, t) => bool"
+        "signature": "let some: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Uint8Array.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: ((. elt, int) => bool, t) => bool"
+        "signature": "let somei: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Uint8Array._BYTES_PER_ELEMENT",
@@ -8184,7 +8190,7 @@
         "kind": "type",
         "name": "typed_array",
         "docstrings": [],
-        "signature": "type typed_array<\\n  'a,\\n> = Js_typed_array2.Int8Array.typed_array<'a>"
+        "signature": "type typed_array<\n  'a,\n> = Js_typed_array2.Int8Array.typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Int8Array.t",
@@ -8310,7 +8316,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t"
+        "signature": "let sortInPlaceWith: ((elt, elt) => int, t) => t"
       },
       {
         "id": "Js.Typed_array.Int8Array.includes",
@@ -8415,126 +8421,126 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: ((. elt) => bool, t) => bool"
+        "signature": "let every: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Int8Array.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: ((. elt, int) => bool, t) => bool"
+        "signature": "let everyi: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Int8Array.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: ((. elt) => bool, t) => t"
+        "signature": "let filter: (elt => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Int8Array.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: ((. elt, int) => bool, t) => t"
+        "signature": "let filteri: ((elt, int) => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.Int8Array.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>"
+        "signature": "let find: (elt => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Int8Array.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>"
+        "signature": "let findi: ((elt, int) => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.Int8Array.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: ((. elt) => bool, t) => int"
+        "signature": "let findIndex: (elt => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Int8Array.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: ((. elt, int) => bool, t) => int"
+        "signature": "let findIndexi: ((elt, int) => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.Int8Array.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: ((. elt) => unit, t) => unit"
+        "signature": "let forEach: (elt => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Int8Array.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: ((. elt, int) => unit, t) => unit"
+        "signature": "let forEachi: ((elt, int) => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.Int8Array.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: ((. elt) => 'a, t) => typed_array<'a>"
+        "signature": "let map: (elt => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Int8Array.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: ((. elt, int) => 'a, t) => typed_array<'a>"
+        "signature": "let mapi: ((elt, int) => 'a, t) => typed_array<'a>"
       },
       {
         "id": "Js.Typed_array.Int8Array.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduce: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Int8Array.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reducei: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Int8Array.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: ((. 'a, elt) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRight: (('a, elt) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Int8Array.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: ((. 'a, elt, int) => 'a, 'a, t) => 'a"
+        "signature": "let reduceRighti: (('a, elt, int) => 'a, 'a, t) => 'a"
       },
       {
         "id": "Js.Typed_array.Int8Array.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: ((. elt) => bool, t) => bool"
+        "signature": "let some: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Int8Array.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: ((. elt, int) => bool, t) => bool"
+        "signature": "let somei: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.Int8Array._BYTES_PER_ELEMENT",
@@ -8736,7 +8742,7 @@
         "kind": "value",
         "name": "sortInPlaceWith",
         "docstrings": [],
-        "signature": "let sortInPlaceWith: ((. elt, elt) => int, t) => t"
+        "signature": "let sortInPlaceWith: ((elt, elt) => int, t) => t"
       },
       {
         "id": "Js.Typed_array.S.includes",
@@ -8841,133 +8847,135 @@
         "kind": "value",
         "name": "every",
         "docstrings": [],
-        "signature": "let every: ((. elt) => bool, t) => bool"
+        "signature": "let every: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.S.everyi",
         "kind": "value",
         "name": "everyi",
         "docstrings": [],
-        "signature": "let everyi: ((. elt, int) => bool, t) => bool"
+        "signature": "let everyi: ((elt, int) => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.S.filter",
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: ((. elt) => bool, t) => t"
+        "signature": "let filter: (elt => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.S.filteri",
         "kind": "value",
         "name": "filteri",
         "docstrings": [],
-        "signature": "let filteri: ((. elt, int) => bool, t) => t"
+        "signature": "let filteri: ((elt, int) => bool, t) => t"
       },
       {
         "id": "Js.Typed_array.S.find",
         "kind": "value",
         "name": "find",
         "docstrings": [],
-        "signature": "let find: ((. elt) => bool, t) => Js.undefined<elt>"
+        "signature": "let find: (elt => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.S.findi",
         "kind": "value",
         "name": "findi",
         "docstrings": [],
-        "signature": "let findi: ((. elt, int) => bool, t) => Js.undefined<elt>"
+        "signature": "let findi: ((elt, int) => bool, t) => Js.undefined<elt>"
       },
       {
         "id": "Js.Typed_array.S.findIndex",
         "kind": "value",
         "name": "findIndex",
         "docstrings": [],
-        "signature": "let findIndex: ((. elt) => bool, t) => int"
+        "signature": "let findIndex: (elt => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.S.findIndexi",
         "kind": "value",
         "name": "findIndexi",
         "docstrings": [],
-        "signature": "let findIndexi: ((. elt, int) => bool, t) => int"
+        "signature": "let findIndexi: ((elt, int) => bool, t) => int"
       },
       {
         "id": "Js.Typed_array.S.forEach",
         "kind": "value",
         "name": "forEach",
         "docstrings": [],
-        "signature": "let forEach: ((. elt) => unit, t) => unit"
+        "signature": "let forEach: (elt => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.S.forEachi",
         "kind": "value",
         "name": "forEachi",
         "docstrings": [],
-        "signature": "let forEachi: ((. elt, int) => unit, t) => unit"
+        "signature": "let forEachi: ((elt, int) => unit, t) => unit"
       },
       {
         "id": "Js.Typed_array.S.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: ((. elt) => 'b, t) => typed_array<'b>"
+        "signature": "let map: (elt => 'b, t) => typed_array<'b>"
       },
       {
         "id": "Js.Typed_array.S.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: ((. elt, int) => 'b, t) => typed_array<'b>"
+        "signature": "let mapi: ((elt, int) => 'b, t) => typed_array<'b>"
       },
       {
         "id": "Js.Typed_array.S.reduce",
         "kind": "value",
         "name": "reduce",
         "docstrings": [],
-        "signature": "let reduce: ((. 'b, elt) => 'b, 'b, t) => 'b"
+        "signature": "let reduce: (('b, elt) => 'b, 'b, t) => 'b"
       },
       {
         "id": "Js.Typed_array.S.reducei",
         "kind": "value",
         "name": "reducei",
         "docstrings": [],
-        "signature": "let reducei: ((. 'b, elt, int) => 'b, 'b, t) => 'b"
+        "signature": "let reducei: (('b, elt, int) => 'b, 'b, t) => 'b"
       },
       {
         "id": "Js.Typed_array.S.reduceRight",
         "kind": "value",
         "name": "reduceRight",
         "docstrings": [],
-        "signature": "let reduceRight: ((. 'b, elt) => 'b, 'b, t) => 'b"
+        "signature": "let reduceRight: (('b, elt) => 'b, 'b, t) => 'b"
       },
       {
         "id": "Js.Typed_array.S.reduceRighti",
         "kind": "value",
         "name": "reduceRighti",
         "docstrings": [],
-        "signature": "let reduceRighti: ((. 'b, elt, int) => 'b, 'b, t) => 'b"
+        "signature": "let reduceRighti: (('b, elt, int) => 'b, 'b, t) => 'b"
       },
       {
         "id": "Js.Typed_array.S.some",
         "kind": "value",
         "name": "some",
         "docstrings": [],
-        "signature": "let some: ((. elt) => bool, t) => bool"
+        "signature": "let some: (elt => bool, t) => bool"
       },
       {
         "id": "Js.Typed_array.S.somei",
         "kind": "value",
         "name": "somei",
         "docstrings": [],
-        "signature": "let somei: ((. elt, int) => bool, t) => bool"
+        "signature": "let somei: ((elt, int) => bool, t) => bool"
       }
     ]
   },
   "js/typed_array/arraybuffer": {
     "id": "Js.Typed_array.ArrayBuffer",
     "name": "ArrayBuffer",
-    "docstrings": [],
+    "docstrings": [
+      "The underlying buffer that the typed arrays provide views of\n\n  **see** [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)"
+    ],
     "items": [
       {
         "id": "Js.Typed_array.ArrayBuffer.t",
@@ -9041,7 +9049,7 @@
         "docstrings": [
           "Underlying type of a JSON value"
         ],
-        "signature": "type t<_> =\\n  | String: t<Js_string.t>\\n  | Number: t<float>\\n  | Object: t<Js_dict.t<json>>\\n  | Array: t<array<json>>\\n  | Boolean: t<bool>\\n  | Null: t<Js_types.null_val>"
+        "signature": "type t<_> =\n  | String: t<Js_string.t>\n  | Number: t<float>\n  | Object: t<Js_dict.t<json>>\n  | Array: t<array<json>>\n  | Boolean: t<bool>\n  | Null: t<Js_types.null_val>"
       }
     ]
   },
@@ -9302,7 +9310,7 @@
         "kind": "value",
         "name": "filterInPlace",
         "docstrings": [],
-        "signature": "let filterInPlace: ((. 'a) => bool, t<'a>) => unit"
+        "signature": "let filterInPlace: ('a => bool, t<'a>) => unit"
       },
       {
         "id": "Js.Vector.empty",
@@ -9339,14 +9347,14 @@
         "kind": "value",
         "name": "iter",
         "docstrings": [],
-        "signature": "let iter: ((. 'a) => unit, t<'a>) => unit"
+        "signature": "let iter: ('a => unit, t<'a>) => unit"
       },
       {
         "id": "Js.Vector.iteri",
         "kind": "value",
         "name": "iteri",
         "docstrings": [],
-        "signature": "let iteri: ((. int, 'a) => unit, t<'a>) => unit"
+        "signature": "let iteri: ((int, 'a) => unit, t<'a>) => unit"
       },
       {
         "id": "Js.Vector.toList",
@@ -9360,28 +9368,28 @@
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: ((. 'a) => 'b, t<'a>) => t<'b>"
+        "signature": "let map: ('a => 'b, t<'a>) => t<'b>"
       },
       {
         "id": "Js.Vector.mapi",
         "kind": "value",
         "name": "mapi",
         "docstrings": [],
-        "signature": "let mapi: ((. int, 'a) => 'b, t<'a>) => t<'b>"
+        "signature": "let mapi: ((int, 'a) => 'b, t<'a>) => t<'b>"
       },
       {
         "id": "Js.Vector.foldLeft",
         "kind": "value",
         "name": "foldLeft",
         "docstrings": [],
-        "signature": "let foldLeft: ((. 'a, 'b) => 'a, 'a, t<'b>) => 'a"
+        "signature": "let foldLeft: (('a, 'b) => 'a, 'a, t<'b>) => 'a"
       },
       {
         "id": "Js.Vector.foldRight",
         "kind": "value",
         "name": "foldRight",
         "docstrings": [],
-        "signature": "let foldRight: ((. 'b, 'a) => 'a, t<'b>, 'a) => 'a"
+        "signature": "let foldRight: (('b, 'a) => 'a, t<'b>, 'a) => 'a"
       },
       {
         "id": "Js.Vector.length",
@@ -9426,7 +9434,7 @@
         "docstrings": [
           "Raises `RangeError` when n is negative.\nn : size"
         ],
-        "signature": "let init: (int, (. int) => 'a) => t<'a>"
+        "signature": "let init: (int, int => 'a) => t<'a>"
       },
       {
         "id": "Js.Vector.append",
@@ -9528,28 +9536,28 @@
         "kind": "value",
         "name": "mapRev",
         "docstrings": [],
-        "signature": "let mapRev: ((. 'a) => 'b, t<'a>) => t<'b>"
+        "signature": "let mapRev: ('a => 'b, t<'a>) => t<'b>"
       },
       {
         "id": "Js.List.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: ((. 'a) => 'b, t<'a>) => t<'b>"
+        "signature": "let map: ('a => 'b, t<'a>) => t<'b>"
       },
       {
         "id": "Js.List.iter",
         "kind": "value",
         "name": "iter",
         "docstrings": [],
-        "signature": "let iter: ((. 'a) => unit, t<'a>) => unit"
+        "signature": "let iter: ('a => unit, t<'a>) => unit"
       },
       {
         "id": "Js.List.iteri",
         "kind": "value",
         "name": "iteri",
         "docstrings": [],
-        "signature": "let iteri: ((. int, 'a) => unit, t<'a>) => unit"
+        "signature": "let iteri: ((int, 'a) => unit, t<'a>) => unit"
       },
       {
         "id": "Js.List.foldLeft",
@@ -9558,7 +9566,7 @@
         "docstrings": [
           "Application order is left to right, tail recurisve"
         ],
-        "signature": "let foldLeft: ((. 'a, 'b) => 'a, 'a, list<'b>) => 'a"
+        "signature": "let foldLeft: (('a, 'b) => 'a, 'a, list<'b>) => 'a"
       },
       {
         "id": "Js.List.foldRight",
@@ -9567,7 +9575,7 @@
         "docstrings": [
           "Application order is right to left tail-recursive."
         ],
-        "signature": "let foldRight: ((. 'a, 'b) => 'b, list<'a>, 'b) => 'b"
+        "signature": "let foldRight: (('a, 'b) => 'b, list<'a>, 'b) => 'b"
       },
       {
         "id": "Js.List.flatten",
@@ -9581,28 +9589,28 @@
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: ((. 'a) => bool, t<'a>) => t<'a>"
+        "signature": "let filter: ('a => bool, t<'a>) => t<'a>"
       },
       {
         "id": "Js.List.filterMap",
         "kind": "value",
         "name": "filterMap",
         "docstrings": [],
-        "signature": "let filterMap: ((. 'a) => option<'b>, t<'a>) => t<'b>"
+        "signature": "let filterMap: ('a => option<'b>, t<'a>) => t<'b>"
       },
       {
         "id": "Js.List.countBy",
         "kind": "value",
         "name": "countBy",
         "docstrings": [],
-        "signature": "let countBy: ((. 'a) => bool, list<'a>) => int"
+        "signature": "let countBy: ('a => bool, list<'a>) => int"
       },
       {
         "id": "Js.List.init",
         "kind": "value",
         "name": "init",
         "docstrings": [],
-        "signature": "let init: (int, (. int) => 'a) => t<'a>"
+        "signature": "let init: (int, int => 'a) => t<'a>"
       },
       {
         "id": "Js.List.toVector",
@@ -9616,7 +9624,7 @@
         "kind": "value",
         "name": "equal",
         "docstrings": [],
-        "signature": "let equal: ((. 'a, 'a) => bool, list<'a>, list<'a>) => bool"
+        "signature": "let equal: (('a, 'a) => bool, list<'a>, list<'a>) => bool"
       }
     ]
   },
@@ -9670,7 +9678,7 @@
         "kind": "value",
         "name": "isSomeValue",
         "docstrings": [],
-        "signature": "let isSomeValue: ((. 'a, 'a) => bool, 'a, option<'a>) => bool"
+        "signature": "let isSomeValue: (('a, 'a) => bool, 'a, option<'a>) => bool"
       },
       {
         "id": "Js.Option.isNone",
@@ -9691,21 +9699,21 @@
         "kind": "value",
         "name": "equal",
         "docstrings": [],
-        "signature": "let equal: ((. 'a, 'b) => bool, option<'a>, option<'b>) => bool"
+        "signature": "let equal: (('a, 'b) => bool, option<'a>, option<'b>) => bool"
       },
       {
         "id": "Js.Option.andThen",
         "kind": "value",
         "name": "andThen",
         "docstrings": [],
-        "signature": "let andThen: ((. 'a) => option<'b>, option<'a>) => option<'b>"
+        "signature": "let andThen: ('a => option<'b>, option<'a>) => option<'b>"
       },
       {
         "id": "Js.Option.map",
         "kind": "value",
         "name": "map",
         "docstrings": [],
-        "signature": "let map: ((. 'a) => 'b, option<'a>) => option<'b>"
+        "signature": "let map: ('a => 'b, option<'a>) => option<'b>"
       },
       {
         "id": "Js.Option.getWithDefault",
@@ -9727,7 +9735,7 @@
         "kind": "value",
         "name": "filter",
         "docstrings": [],
-        "signature": "let filter: ((. 'a) => bool, option<'a>) => option<'a>"
+        "signature": "let filter: ('a => bool, option<'a>) => option<'a>"
       },
       {
         "id": "Js.Option.firstSome",
@@ -10062,7 +10070,7 @@
         "kind": "type",
         "name": "t",
         "docstrings": [],
-        "signature": "type t<_> =\\n  | Undefined: t<undefined_val>\\n  | Null: t<null_val>\\n  | Boolean: t<bool>\\n  | Number: t<float>\\n  | String: t<string>\\n  | Function: t<function_val>\\n  | Object: t<obj_val>\\n  | Symbol: t<symbol>\\n  | BigInt: t<bigint_val>"
+        "signature": "type t<_> =\n  | Undefined: t<undefined_val>\n  | Null: t<null_val>\n  | Boolean: t<bool>\n  | Number: t<float>\n  | String: t<string>\n  | Function: t<function_val>\n  | Object: t<obj_val>\n  | Symbol: t<symbol>\n  | BigInt: t<bigint_val>"
       },
       {
         "id": "Js.Types.test",
@@ -10078,7 +10086,7 @@
         "kind": "type",
         "name": "tagged_t",
         "docstrings": [],
-        "signature": "type tagged_t =\\n  | JSFalse\\n  | JSTrue\\n  | JSNull\\n  | JSUndefined\\n  | JSNumber(float)\\n  | JSString(string)\\n  | JSFunction(function_val)\\n  | JSObject(obj_val)\\n  | JSSymbol(symbol)\\n  | JSBigInt(bigint_val)"
+        "signature": "type tagged_t =\n  | JSFalse\n  | JSTrue\n  | JSNull\n  | JSUndefined\n  | JSNumber(float)\n  | JSString(string)\n  | JSFunction(function_val)\n  | JSObject(obj_val)\n  | JSSymbol(symbol)\n  | JSBigInt(bigint_val)"
       },
       {
         "id": "Js.Types.classify",
@@ -10772,14 +10780,14 @@
         "docstrings": [
           "The JSON data structure"
         ],
-        "signature": "type t =\\n  | Boolean(bool)\\n  | Null\\n  | String(string)\\n  | Number(float)\\n  | Object(Js.Dict.t<t>)\\n  | Array(array<t>)"
+        "signature": "type t =\n  | Boolean(bool)\n  | Null\n  | String(string)\n  | Number(float)\n  | Object(Js.Dict.t<t>)\n  | Array(array<t>)"
       },
       {
         "id": "Js.Json.tagged_t",
         "kind": "type",
         "name": "tagged_t",
         "docstrings": [],
-        "signature": "type tagged_t =\\n  | JSONFalse\\n  | JSONTrue\\n  | JSONNull\\n  | JSONString(string)\\n  | JSONNumber(float)\\n  | JSONObject(Js_dict.t<t>)\\n  | JSONArray(array<t>)"
+        "signature": "type tagged_t =\n  | JSONFalse\n  | JSONTrue\n  | JSONNull\n  | JSONString(string)\n  | JSONNumber(float)\n  | JSONObject(Js_dict.t<t>)\n  | JSONArray(array<t>)"
       },
       {
         "id": "Js.Json.classify",
@@ -11128,7 +11136,7 @@
         "kind": "type",
         "name": "t",
         "docstrings": [],
-        "signature": "type t<'a>"
+        "signature": "type t<'a> = dict<'a>"
       },
       {
         "id": "Js.Dict.key",
@@ -11191,7 +11199,7 @@
         "docstrings": [
           "Experimental internal function"
         ],
-        "signature": "let unsafeDeleteKey: (. t<string>, string) => unit"
+        "signature": "let unsafeDeleteKey: (t<string>, string) => unit"
       },
       {
         "id": "Js.Dict.entries",
@@ -11236,7 +11244,7 @@
         "docstrings": [
           "`map(f, dict)` maps `dict` to a new dictionary with the same keys, using the\nfunction `f` to map each value.\n\n## Examples\n\n```rescript\nlet prices = Js.Dict.fromList(list{(\"pen\", 1.00), (\"book\", 5.00), (\"stapler\", 7.00)})\n\nlet discount = (. price) => price *. 0.90\nlet salePrices = Js.Dict.map(discount, prices)\n\nsalePrices == Js.Dict.fromList(list{(\"pen\", 0.90), (\"book\", 4.50), (\"stapler\", 6.30)})\n```"
         ],
-        "signature": "let map: ((. 'a) => 'b, t<'a>) => t<'b>"
+        "signature": "let map: ('a => 'b, t<'a>) => t<'b>"
       }
     ]
   },
@@ -11316,7 +11324,7 @@
         "docstrings": [
           "Returns a date representing the given date of the given month and year, at zero\nminutes and zero seconds past the given `hours`, in the current time zone.\nFractional parts of arguments are ignored. See [`Date()`\nConstructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date)\non MDN. Fractional parts of the arguments are ignored."
         ],
-        "signature": "let makeWithYMDH: (\\n  ~year: float,\\n  ~month: float,\\n  ~date: float,\\n  ~hours: float,\\n  unit,\\n) => t"
+        "signature": "let makeWithYMDH: (\n  ~year: float,\n  ~month: float,\n  ~date: float,\n  ~hours: float,\n  unit,\n) => t"
       },
       {
         "id": "Js.Date.makeWithYMDHM",
@@ -11325,7 +11333,7 @@
         "docstrings": [
           "Returns a date representing the given date of the given month and year, at zero\nseconds past the given time in hours and minutes in the current time zone.\nFractional parts of arguments are ignored. See [`Date()`\nConstructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date)\non MDN."
         ],
-        "signature": "let makeWithYMDHM: (\\n  ~year: float,\\n  ~month: float,\\n  ~date: float,\\n  ~hours: float,\\n  ~minutes: float,\\n  unit,\\n) => t"
+        "signature": "let makeWithYMDHM: (\n  ~year: float,\n  ~month: float,\n  ~date: float,\n  ~hours: float,\n  ~minutes: float,\n  unit,\n) => t"
       },
       {
         "id": "Js.Date.makeWithYMDHMS",
@@ -11334,7 +11342,7 @@
         "docstrings": [
           "Returns a date representing the given date of the given month and year, at the\ngiven time in hours, minutes, and seconds in the current time zone. Fractional\nparts of arguments are ignored. See [`Date()`\nConstructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date)\non MDN.\n\n## Examples\n\n```rescript\nJs.Date.makeWithYMDHMS(\n  ~year=1973.0,\n  ~month=11.0,\n  ~date=29.0,\n  ~hours=21.0,\n  ~minutes=30.0,\n  ~seconds=54.321,\n  (),\n) == exampleDate\n```"
         ],
-        "signature": "let makeWithYMDHMS: (\\n  ~year: float,\\n  ~month: float,\\n  ~date: float,\\n  ~hours: float,\\n  ~minutes: float,\\n  ~seconds: float,\\n  unit,\\n) => t"
+        "signature": "let makeWithYMDHMS: (\n  ~year: float,\n  ~month: float,\n  ~date: float,\n  ~hours: float,\n  ~minutes: float,\n  ~seconds: float,\n  unit,\n) => t"
       },
       {
         "id": "Js.Date.utcWithYM",
@@ -11361,7 +11369,7 @@
         "docstrings": [
           "Returns a float representing the number of milliseconds past the epoch for\nmidnight of the given date of the given month and year, at zero minutes and\nseconds past the given hours in UTC. Fractional parts of arguments are ignored.\nSee\n[`Date.UTC`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/UTC)\non MDN."
         ],
-        "signature": "let utcWithYMDH: (\\n  ~year: float,\\n  ~month: float,\\n  ~date: float,\\n  ~hours: float,\\n  unit,\\n) => float"
+        "signature": "let utcWithYMDH: (\n  ~year: float,\n  ~month: float,\n  ~date: float,\n  ~hours: float,\n  unit,\n) => float"
       },
       {
         "id": "Js.Date.utcWithYMDHM",
@@ -11370,7 +11378,7 @@
         "docstrings": [
           "Returns a float representing the number of milliseconds past the epoch for\nmidnight of the given date of the given month and year, at zero seconds past\nthe given number of minutes past the given hours in UTC. Fractional parts of\narguments are ignored. See\n[`Date.UTC`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/UTC)\non MDN."
         ],
-        "signature": "let utcWithYMDHM: (\\n  ~year: float,\\n  ~month: float,\\n  ~date: float,\\n  ~hours: float,\\n  ~minutes: float,\\n  unit,\\n) => float"
+        "signature": "let utcWithYMDHM: (\n  ~year: float,\n  ~month: float,\n  ~date: float,\n  ~hours: float,\n  ~minutes: float,\n  unit,\n) => float"
       },
       {
         "id": "Js.Date.utcWithYMDHMS",
@@ -11379,7 +11387,7 @@
         "docstrings": [
           "Returns a float representing the number of milliseconds past the epoch for\nmidnight of the given date of the given month and year, at the given time in\nhours, minutes and seconds in UTC. Fractional parts of arguments are ignored.\n\nSee\n[`Date.UTC`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/UTC)\non MDN."
         ],
-        "signature": "let utcWithYMDHMS: (\\n  ~year: float,\\n  ~month: float,\\n  ~date: float,\\n  ~hours: float,\\n  ~minutes: float,\\n  ~seconds: float,\\n  unit,\\n) => float"
+        "signature": "let utcWithYMDHMS: (\n  ~year: float,\n  ~month: float,\n  ~date: float,\n  ~hours: float,\n  ~minutes: float,\n  ~seconds: float,\n  unit,\n) => float"
       },
       {
         "id": "Js.Date.now",
@@ -11611,7 +11619,7 @@
         "docstrings": [
           "Sets the given `Date`’s year, month, and day of month to the values in the\nlabeled arguments according to the current time zone. Returns the number of\nmilliseconds since the epoch of the updated `Date`. *This function modifies the\noriginal `Date`.* See\n[`Date.setFullYear`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setFullYear)\non MDN.\n\n## Examples\n\n```rescript\nlet date1 = Js.Date.fromFloat(123456654321.0) // 29 November 1973 21:30:54.321 GMT\nlet future = Js.Date.setFullYearMD(date1, ~year=1974.0, ~month=0.0, ~date=7.0, ())\ndate1 == Js.Date.fromString(\"1974-01-07T21:30:54.321Z00:00\")\nfuture == Js.Date.getTime(date1)\n```"
         ],
-        "signature": "let setFullYearMD: (\\n  t,\\n  ~year: float,\\n  ~month: float,\\n  ~date: float,\\n  unit,\\n) => float"
+        "signature": "let setFullYearMD: (\n  t,\n  ~year: float,\n  ~month: float,\n  ~date: float,\n  unit,\n) => float"
       },
       {
         "id": "Js.Date.setHours",
@@ -11638,7 +11646,7 @@
         "docstrings": [
           "Sets the given `Date`’s hours, minutes, and seconds to the values in the\nlabeled arguments according to the current time zone. Returns the number of\nmilliseconds since the epoch of the updated `Date`. *This function modifies the\noriginal `Date`.* See\n[`Date.setHours`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setHours)\non MDN.\n\n## Examples\n\n```rescript\nlet date1 = Js.Date.fromFloat(123456654321.0) // 29 November 1973 21:30:54.321 GMT\nlet futureTime = Js.Date.setHoursMS(date1, ~hours=22.0, ~minutes=46.0, ~seconds=37.0, ())\ndate1 == Js.Date.fromString(\"1973-11-29T22:46:37.321Z00:00\")\nfutureTime == Js.Date.getTime(date1)\n```"
         ],
-        "signature": "let setHoursMS: (\\n  t,\\n  ~hours: float,\\n  ~minutes: float,\\n  ~seconds: float,\\n  unit,\\n) => float"
+        "signature": "let setHoursMS: (\n  t,\n  ~hours: float,\n  ~minutes: float,\n  ~seconds: float,\n  unit,\n) => float"
       },
       {
         "id": "Js.Date.setHoursMSMs",
@@ -11647,7 +11655,7 @@
         "docstrings": [
           "Sets the given `Date`’s hours, minutes, seconds, and milliseconds to the values\nin the labeled arguments according to the current time zone. Returns the number\nof milliseconds since the epoch of the updated `Date`. *This function modifies\nthe original `Date`.* See\n[`Date.setHours`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setHours)\non MDN.\n\n## Examples\n\n```rescript\nlet date1 = Js.Date.fromFloat(123456654321.0) // 29 November 1973 21:30:54.321 GMT\nlet futureTime = Js.Date.setHoursMSMs(\n  date1,\n  ~hours=22.0,\n  ~minutes=46.0,\n  ~seconds=37.0,\n  ~milliseconds=494.0,\n  (),\n)\ndate1 == Js.Date.fromString(\"1973-11-29T22:46:37.494Z00:00\")\nfutureTime == Js.Date.getTime(date1)\n```"
         ],
-        "signature": "let setHoursMSMs: (\\n  t,\\n  ~hours: float,\\n  ~minutes: float,\\n  ~seconds: float,\\n  ~milliseconds: float,\\n  unit,\\n) => float"
+        "signature": "let setHoursMSMs: (\n  t,\n  ~hours: float,\n  ~minutes: float,\n  ~seconds: float,\n  ~milliseconds: float,\n  unit,\n) => float"
       },
       {
         "id": "Js.Date.setMilliseconds",
@@ -11683,7 +11691,7 @@
         "docstrings": [
           "Sets the given `Date`’s minutes, seconds, and milliseconds to the values in the\nlabeled arguments according to the current time zone. Returns the number of\nmilliseconds since the epoch of the updated `Date`. *This function modifies the\noriginal `Date`.* See\n[`Date.setMinutes`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setMinutes)\non MDN.\n\n## Examples\n\n```rescript\nlet date1 = Js.Date.fromFloat(123456654321.0) // 29 November 1973 21:30:54.321 GMT\nlet futureTime = Js.Date.setMinutesSMs(\n  date1,\n  ~minutes=34.0,\n  ~seconds=56.0,\n  ~milliseconds=789.0,\n  (),\n)\ndate1 == Js.Date.fromString(\"1973-11-29T21:34:56.789Z00:00\")\nfutureTime == Js.Date.getTime(date1)\n```"
         ],
-        "signature": "let setMinutesSMs: (\\n  t,\\n  ~minutes: float,\\n  ~seconds: float,\\n  ~milliseconds: float,\\n  unit,\\n) => float"
+        "signature": "let setMinutesSMs: (\n  t,\n  ~minutes: float,\n  ~seconds: float,\n  ~milliseconds: float,\n  unit,\n) => float"
       },
       {
         "id": "Js.Date.setMonth",
@@ -11764,7 +11772,7 @@
         "docstrings": [
           "Sets the given `Date`’s year, month, and day of month to the values in the\nlabeled arguments according to UTC. Returns the number of milliseconds since\nthe epoch of the updated `Date`. *This function modifies the original `Date`.*\nSee\n[`Date.setUTCFullYear`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setUTCFullYear)\non MDN.\n\n## Examples\n\n```rescript\nlet date1 = Js.Date.fromFloat(123456654321.0) // 29 November 1973 21:30:54.321 GMT\nlet future = Js.Date.setUTCFullYearMD(date1, ~year=1974.0, ~month=0.0, ~date=7.0, ())\ndate1 == Js.Date.fromString(\"1974-01-07T21:30:54.321Z00:00\")\nfuture == Js.Date.getTime(date1)\n```"
         ],
-        "signature": "let setUTCFullYearMD: (\\n  t,\\n  ~year: float,\\n  ~month: float,\\n  ~date: float,\\n  unit,\\n) => float"
+        "signature": "let setUTCFullYearMD: (\n  t,\n  ~year: float,\n  ~month: float,\n  ~date: float,\n  unit,\n) => float"
       },
       {
         "id": "Js.Date.setUTCHours",
@@ -11791,7 +11799,7 @@
         "docstrings": [
           "Sets the given `Date`’s hours, minutes, and seconds to the values in the\nlabeled arguments according to UTC. Returns the number of milliseconds since\nthe epoch of the updated `Date`. *This function modifies the original `Date`.*\n\nSee\n[`Date.setUTCHours`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setUTCHours)\non MDN.\n\n## Examples\n\n```rescript\nlet date1 = Js.Date.fromFloat(123456654321.0) // 29 November 1973 21:30:54.321 GMT\nlet futureTime = Js.Date.setUTCHoursMS(date1, ~hours=22.0, ~minutes=46.0, ~seconds=37.0, ())\ndate1 == Js.Date.fromString(\"1973-11-29T22:46:37.321Z00:00\")\nfutureTime == Js.Date.getTime(date1)\n```"
         ],
-        "signature": "let setUTCHoursMS: (\\n  t,\\n  ~hours: float,\\n  ~minutes: float,\\n  ~seconds: float,\\n  unit,\\n) => float"
+        "signature": "let setUTCHoursMS: (\n  t,\n  ~hours: float,\n  ~minutes: float,\n  ~seconds: float,\n  unit,\n) => float"
       },
       {
         "id": "Js.Date.setUTCHoursMSMs",
@@ -11800,7 +11808,7 @@
         "docstrings": [
           "Sets the given `Date`’s hours, minutes, seconds, and milliseconds to the values\nin the labeled arguments according to UTC. Returns the number of milliseconds\nsince the epoch of the updated `Date`. *This function modifies the original\n`Date`.* See\n[`Date.setUTCHours`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setUTCHours)\non MDN.\n\n## Examples\n\n```rescript\nlet date1 = Js.Date.fromFloat(123456654321.0) // 29 November 1973 21:30:54.321 GMT\nlet futureTime = Js.Date.setUTCHoursMSMs(\n  date1,\n  ~hours=22.0,\n  ~minutes=46.0,\n  ~seconds=37.0,\n  ~milliseconds=494.0,\n  (),\n)\ndate1 == Js.Date.fromString(\"1973-11-29T22:46:37.494Z00:00\")\nfutureTime == Js.Date.getTime(date1)\n```"
         ],
-        "signature": "let setUTCHoursMSMs: (\\n  t,\\n  ~hours: float,\\n  ~minutes: float,\\n  ~seconds: float,\\n  ~milliseconds: float,\\n  unit,\\n) => float"
+        "signature": "let setUTCHoursMSMs: (\n  t,\n  ~hours: float,\n  ~minutes: float,\n  ~seconds: float,\n  ~milliseconds: float,\n  unit,\n) => float"
       },
       {
         "id": "Js.Date.setUTCMilliseconds",
@@ -11836,7 +11844,7 @@
         "docstrings": [
           "Sets the given `Date`’s minutes, seconds, and milliseconds to the values in the\nlabeled arguments according to UTC. Returns the number of milliseconds since\nthe epoch of the updated `Date`. *This function modifies the original `Date`.*\nSee\n[`Date.setUTCMinutes`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setUTCMinutes)\non MDN.\n\n## Examples\n\n```rescript\nlet date1 = Js.Date.fromFloat(123456654321.0) // 29 November 1973 21:30:54.321 GMT\nlet futureTime = Js.Date.setUTCMinutesSMs(\n  date1,\n  ~minutes=34.0,\n  ~seconds=56.0,\n  ~milliseconds=789.0,\n  (),\n)\ndate1 == Js.Date.fromString(\"1973-11-29T21:34:56.789Z00:00\")\nfutureTime == Js.Date.getTime(date1)\n```"
         ],
-        "signature": "let setUTCMinutesSMs: (\\n  t,\\n  ~minutes: float,\\n  ~seconds: float,\\n  ~milliseconds: float,\\n  unit,\\n) => float"
+        "signature": "let setUTCMinutesSMs: (\n  t,\n  ~minutes: float,\n  ~seconds: float,\n  ~milliseconds: float,\n  unit,\n) => float"
       },
       {
         "id": "Js.Date.setUTCMonth",
@@ -12034,7 +12042,7 @@
         "kind": "value",
         "name": "make",
         "docstrings": [],
-        "signature": "let make: (\\n  (\\n    ~resolve: (. 'a) => unit,\\n    ~reject: (. exn) => unit,\\n  ) => unit,\\n) => promise<'a>"
+        "signature": "let make: (\n  (~resolve: 'a => unit, ~reject: exn => unit) => unit,\n) => promise<'a>"
       },
       {
         "id": "Js.Promise2.resolve",
@@ -12069,28 +12077,28 @@
         "kind": "value",
         "name": "all3",
         "docstrings": [],
-        "signature": "let all3: (\\n  (promise<'a0>, promise<'a1>, promise<'a2>),\\n) => promise<('a0, 'a1, 'a2)>"
+        "signature": "let all3: (\n  (promise<'a0>, promise<'a1>, promise<'a2>),\n) => promise<('a0, 'a1, 'a2)>"
       },
       {
         "id": "Js.Promise2.all4",
         "kind": "value",
         "name": "all4",
         "docstrings": [],
-        "signature": "let all4: (\\n  (promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>),\\n) => promise<('a0, 'a1, 'a2, 'a3)>"
+        "signature": "let all4: (\n  (promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>),\n) => promise<('a0, 'a1, 'a2, 'a3)>"
       },
       {
         "id": "Js.Promise2.all5",
         "kind": "value",
         "name": "all5",
         "docstrings": [],
-        "signature": "let all5: (\\n  (\\n    promise<'a0>,\\n    promise<'a1>,\\n    promise<'a2>,\\n    promise<'a3>,\\n    promise<'a4>,\\n  ),\\n) => promise<('a0, 'a1, 'a2, 'a3, 'a4)>"
+        "signature": "let all5: (\n  (\n    promise<'a0>,\n    promise<'a1>,\n    promise<'a2>,\n    promise<'a3>,\n    promise<'a4>,\n  ),\n) => promise<('a0, 'a1, 'a2, 'a3, 'a4)>"
       },
       {
         "id": "Js.Promise2.all6",
         "kind": "value",
         "name": "all6",
         "docstrings": [],
-        "signature": "let all6: (\\n  (\\n    promise<'a0>,\\n    promise<'a1>,\\n    promise<'a2>,\\n    promise<'a3>,\\n    promise<'a4>,\\n    promise<'a5>,\\n  ),\\n) => promise<('a0, 'a1, 'a2, 'a3, 'a4, 'a5)>"
+        "signature": "let all6: (\n  (\n    promise<'a0>,\n    promise<'a1>,\n    promise<'a2>,\n    promise<'a3>,\n    promise<'a4>,\n    promise<'a5>,\n  ),\n) => promise<('a0, 'a1, 'a2, 'a3, 'a4, 'a5)>"
       },
       {
         "id": "Js.Promise2.race",
@@ -12142,7 +12150,7 @@
         "kind": "value",
         "name": "make",
         "docstrings": [],
-        "signature": "let make: (\\n  (\\n    ~resolve: (. 'a) => unit,\\n    ~reject: (. exn) => unit,\\n  ) => unit,\\n) => promise<'a>"
+        "signature": "let make: (\n  (~resolve: 'a => unit, ~reject: exn => unit) => unit,\n) => promise<'a>"
       },
       {
         "id": "Js.Promise.resolve",
@@ -12177,28 +12185,28 @@
         "kind": "value",
         "name": "all3",
         "docstrings": [],
-        "signature": "let all3: (\\n  (promise<'a0>, promise<'a1>, promise<'a2>),\\n) => promise<('a0, 'a1, 'a2)>"
+        "signature": "let all3: (\n  (promise<'a0>, promise<'a1>, promise<'a2>),\n) => promise<('a0, 'a1, 'a2)>"
       },
       {
         "id": "Js.Promise.all4",
         "kind": "value",
         "name": "all4",
         "docstrings": [],
-        "signature": "let all4: (\\n  (promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>),\\n) => promise<('a0, 'a1, 'a2, 'a3)>"
+        "signature": "let all4: (\n  (promise<'a0>, promise<'a1>, promise<'a2>, promise<'a3>),\n) => promise<('a0, 'a1, 'a2, 'a3)>"
       },
       {
         "id": "Js.Promise.all5",
         "kind": "value",
         "name": "all5",
         "docstrings": [],
-        "signature": "let all5: (\\n  (\\n    promise<'a0>,\\n    promise<'a1>,\\n    promise<'a2>,\\n    promise<'a3>,\\n    promise<'a4>,\\n  ),\\n) => promise<('a0, 'a1, 'a2, 'a3, 'a4)>"
+        "signature": "let all5: (\n  (\n    promise<'a0>,\n    promise<'a1>,\n    promise<'a2>,\n    promise<'a3>,\n    promise<'a4>,\n  ),\n) => promise<('a0, 'a1, 'a2, 'a3, 'a4)>"
       },
       {
         "id": "Js.Promise.all6",
         "kind": "value",
         "name": "all6",
         "docstrings": [],
-        "signature": "let all6: (\\n  (\\n    promise<'a0>,\\n    promise<'a1>,\\n    promise<'a2>,\\n    promise<'a3>,\\n    promise<'a4>,\\n    promise<'a5>,\\n  ),\\n) => promise<('a0, 'a1, 'a2, 'a3, 'a4, 'a5)>"
+        "signature": "let all6: (\n  (\n    promise<'a0>,\n    promise<'a1>,\n    promise<'a2>,\n    promise<'a3>,\n    promise<'a4>,\n    promise<'a5>,\n  ),\n) => promise<('a0, 'a1, 'a2, 'a3, 'a4, 'a5)>"
       },
       {
         "id": "Js.Promise.race",
@@ -14469,7 +14477,7 @@
         "docstrings": [
           "Maps the contained value using the given function.\n\nIf `Js.null_undefined<'a>` contains a value, that value is unwrapped, mapped to\na `'b` using the given function `a' => 'b`, then wrapped back up and returned\nas `Js.null_undefined<'b>`.\n\n## Examples\n\n```rescript\nlet maybeGreetWorld = (maybeGreeting: Js.null_undefined<string>) =>\n  Js.Null_undefined.bind(maybeGreeting, (. greeting) => greeting ++ \" world!\")\n```"
         ],
-        "signature": "let bind: (t<'a>, (. 'a) => 'b) => t<'b>"
+        "signature": "let bind: (t<'a>, 'a => 'b) => t<'b>"
       },
       {
         "id": "Js.Null_undefined.iter",
@@ -14478,7 +14486,7 @@
         "docstrings": [
           "Iterates over the contained value with the given function.\nIf `Js.null_undefined<'a>` contains a value, that value is unwrapped and applied to the given function.\n\n## Examples\n\n```rescript\nlet maybeSay = (maybeMessage: Js.null_undefined<string>) =>\n  Js.Null_undefined.iter(maybeMessage, (. message) => Js.log(message))\n```"
         ],
-        "signature": "let iter: (t<'a>, (. 'a) => unit) => unit"
+        "signature": "let iter: (t<'a>, 'a => unit) => unit"
       },
       {
         "id": "Js.Null_undefined.fromOption",
@@ -14576,7 +14584,7 @@
         "docstrings": [
           "Maps the contained value using the given function.\n\nIf `Js.null_undefined<'a>` contains a value, that value is unwrapped, mapped to\na `'b` using the given function `a' => 'b`, then wrapped back up and returned\nas `Js.null_undefined<'b>`.\n\n## Examples\n\n```rescript\nlet maybeGreetWorld = (maybeGreeting: Js.null_undefined<string>) =>\n  Js.Null_undefined.bind(maybeGreeting, (. greeting) => greeting ++ \" world!\")\n```"
         ],
-        "signature": "let bind: (t<'a>, (. 'a) => 'b) => t<'b>"
+        "signature": "let bind: (t<'a>, 'a => 'b) => t<'b>"
       },
       {
         "id": "Js.Nullable.iter",
@@ -14585,7 +14593,7 @@
         "docstrings": [
           "Iterates over the contained value with the given function.\nIf `Js.null_undefined<'a>` contains a value, that value is unwrapped and applied to the given function.\n\n## Examples\n\n```rescript\nlet maybeSay = (maybeMessage: Js.null_undefined<string>) =>\n  Js.Null_undefined.iter(maybeMessage, (. message) => Js.log(message))\n```"
         ],
-        "signature": "let iter: (t<'a>, (. 'a) => unit) => unit"
+        "signature": "let iter: (t<'a>, 'a => unit) => unit"
       },
       {
         "id": "Js.Nullable.fromOption",
@@ -14698,7 +14706,7 @@
         "docstrings": [
           "Maps the contained value using the given function.\nIf `Js.undefined<'a>` contains a value, that value is unwrapped, mapped to a\n`'b` using the given function `a' => 'b`, then wrapped back up and returned as\n`Js.undefined<'b>`.\n\n## Examples\n\n```rescript\nlet maybeGreetWorld = (maybeGreeting: Js.undefined<string>) =>\n  Js.Undefined.bind(maybeGreeting, (. greeting) => greeting ++ \" world!\")\n```"
         ],
-        "signature": "let bind: (t<'a>, (. 'a) => 'b) => t<'b>"
+        "signature": "let bind: (t<'a>, 'a => 'b) => t<'b>"
       },
       {
         "id": "Js.Undefined.iter",
@@ -14707,7 +14715,7 @@
         "docstrings": [
           "Iterates over the contained value with the given function. If\n`Js.undefined<'a>` contains a value, that value is unwrapped and applied to the\ngiven function.\n\n## Examples\n\n```rescript\nlet maybeSay = (maybeMessage: Js.undefined<string>) =>\n  Js.Undefined.iter(maybeMessage, (. message) => Js.log(message))\n```"
         ],
-        "signature": "let iter: (t<'a>, (. 'a) => unit) => unit"
+        "signature": "let iter: (t<'a>, 'a => unit) => unit"
       },
       {
         "id": "Js.Undefined.fromOption",
@@ -14811,7 +14819,7 @@
         "docstrings": [
           "Maps the contained value using the given function.\n\nIf `Js.null<'a>` contains a value, that value is unwrapped, mapped to a `'b`\nusing the given function `'a => 'b`, then wrapped back up and returned as\n`Js.null<'b>`.\n\n## Examples\n\n```rescript\nlet maybeGreetWorld = (maybeGreeting: Js.null<string>) =>\n  Js.Null.bind(maybeGreeting, (. greeting) => greeting ++ \" world!\")\n```"
         ],
-        "signature": "let bind: (t<'a>, (. 'a) => 'b) => t<'b>"
+        "signature": "let bind: (t<'a>, 'a => 'b) => t<'b>"
       },
       {
         "id": "Js.Null.iter",
@@ -14820,7 +14828,7 @@
         "docstrings": [
           "Iterates over the contained value with the given function.\nIf `Js.null<'a>` contains a value, that value is unwrapped and applied to the given function.\n\n## Examples\n\n```rescript\nlet maybeSay = (maybeMessage: Js.null<string>) =>\n  Js.Null.iter(maybeMessage, (. message) => Js.log(message))\n```"
         ],
-        "signature": "let iter: (t<'a>, (. 'a) => unit) => unit"
+        "signature": "let iter: (t<'a>, 'a => unit) => unit"
       },
       {
         "id": "Js.Null.fromOption",
