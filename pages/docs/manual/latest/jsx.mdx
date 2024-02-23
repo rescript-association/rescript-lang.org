@@ -164,6 +164,7 @@ React.createElement(MyComponent, {
 - Attributes and children don't mandate `{}`, but we show them anyway for ease of learning. Once you format your file, some of them go away and some turn into parentheses.
 - Props spread is supported, but there are some restrictions (see below).
 - Punning!
+- Props and tag names have to follow ReScript's restrictions on identifiers at the exception of hyphens for lowercase tags ([see below](#hyphens-in-tag-names)).
 
 ### Spread Props
 
@@ -229,6 +230,30 @@ React.createElement(MyComponent, {
 Consequently, a JSX component can cram in a few more props before reaching for extra libraries solutions that avoids props passing.
 
 **Note** that this is a departure from ReactJS JSX, which does **not** have punning. ReactJS' `<input checked />` desugars to `<input checked=true />`, in order to conform to DOM's idioms and for backward compatibility.
+
+### Hyphens in tag names
+
+**Since 11.1**
+
+JSX now supports lowercase tags with hyphens in their name. This allows to bind 
+to web components.
+
+Note though that props names can't have hyphens, you should use `@as` to bind to
+such props in your custom `JsxDOM.domProps` type ([see generic JSX transform](#generic-jsx-transform-jsx-beyond-react-experimental)).
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+<model-viewer src touchActions="pan-y"></model-viewer>
+```
+```js
+React.createElement("model-viewer", {
+  "touch-actions": "pan-y",
+  src: src
+});
+```
+
+</CodeTab>
 
 ## Generic JSX transform: JSX beyond React (experimental)
 
