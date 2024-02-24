@@ -47,7 +47,7 @@ body {
     }
   }
 
-  @responsive {
+  @layer components {
     .hl-1 {
       @apply text-48 font-semibold tracking-tighter leading-tight text-black
     }
@@ -68,7 +68,7 @@ body {
     }
   }
 
-  @responsive {
+  @layer components {
     .body-lg {
       @apply text-18 font-normal tracking-tight leading-4
     }
