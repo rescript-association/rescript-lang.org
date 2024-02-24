@@ -22,13 +22,13 @@ Find a list of all the new features below:
 
 ## JSX for more than React
 
-Historically, ReScript has focused mainly on React for its frontend support. This has led to ReScript having a great JSX transform built into the language itself. But, that JSX transform has been quite difficult to use with anything but React. 
+Historically, ReScript has focused mainly on React for its frontend support. This has led to ReScript having a great JSX transform built into the language itself. However, that JSX transform has been quite difficult to use with anything but React. 
 
-With v11.1, that changes! The JSX transform can now be configured to work with any framework. First class React support is of course still the same, and remains a priority. But, this makes it possible to integrate any other framework's JSX idiomatically in ReScript. And, all the tooling like autocompletion of prop names and types just works.
+With v11.1, that changes! The JSX transform can now be configured to work with any framework. First class React support is of course still the same, and remains a priority. This makes it possible to integrate any other framework's JSX idiomatically in ReScript. And, all the tooling like autocompletion of prop names and types just works.
 
-Many popular frameworks like Vue and Preact use JSX. But, JSX is becoming more and more ubiquitous, and these days JSX can also be used for everything from building CLI apps to responsive e-mail templating. We're happy that ReScript users will now be able to leverage all of these innovations in a more idiomatic way than before.
+Many popular frameworks like Vue and Preact use JSX. But, JSX is also becoming more and more ubiquitous, and these days JSX can also be used for everything from building CLI apps to responsive e-mail templating. We're happy that ReScript users will now be able to leverage all of these innovations in a more idiomatic way than before.
 
-Here's an example of what a Preact integration could look like:
+Here's an example of what a Vue integration could look like:
 
 ```rescript
 // Greet.res
@@ -37,7 +37,7 @@ Here's an example of what a Preact integration could look like:
 @jsx.component
 let make = (~name) => {
   <div>
-    {Preact.string("Hello " ++ name)}
+    {Vue.string("Hello " ++ name)}
   </div>
 }
 ```
