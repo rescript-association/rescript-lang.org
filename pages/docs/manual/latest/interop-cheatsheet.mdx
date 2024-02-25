@@ -38,6 +38,7 @@ This is a glossary with examples. All the features are described by later pages.
 - [`@uncurry`](bind-to-js-function#extra-solution)
 - [`@unwrap`](bind-to-js-function#trick-2-polymorphic-variant--bsunwrap)
 - [`@val`](bind-to-global-js-values#global-modules)
+- [`@taggedTemplate`](bind-to-js-function#tagged_template-functions)
 
 - [`@deprecated`](attribute#usage)
 - [`genType`](https://github.com/reason-association/genType)
@@ -117,25 +118,29 @@ var b;
 
 </CodeTab>
 
-Handling a value that can be `undefined` and `null`, by ditching the `option` type and using `Js.Nullable.t`:
+Handling a value that can be `undefined` and `null`, by ditching the `option` type and using `Nullable.t`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-let jsNull = Js.Nullable.null
-let jsUndefined = Js.Nullable.undefined
-let result1: Js.Nullable.t<string> = Js.Nullable.return("hello")
-let result2: Js.Nullable.t<int> = Js.Nullable.fromOption(Some(10))
-let result3: option<int> = Js.Nullable.toOption(Js.Nullable.return(10))
+let jsNull = Nullable.null
+let jsUndefined = Nullable.undefined
+let result1: Nullable.t<string> = Nullable.make("hello")
+let result2: Nullable.t<int> = Nullable.fromOption(Some(10))
+let result3: option<int> = Nullable.toOption(Nullable.make(10))
 ```
 ```js
-var Caml_option = require("./stdlib/caml_option.js");
-var Js_null_undefined = require("./stdlib/js_null_undefined.js");
+import * as Caml_option from "./stdlib/caml_option.js";
+import * as Core__Nullable from "./stdlib/core__Nullable.js";
+
+var result2 = Core__Nullable.fromOption(10);
 
 var jsNull = null;
+
 var jsUndefined;
+
 var result1 = "hello";
-var result2 = Js_null_undefined.fromOption(10);
+
 var result3 = Caml_option.nullable_to_opt(10);
 ```
 
@@ -159,7 +164,7 @@ var result3 = Caml_option.nullable_to_opt(10);
 [1, 2, 3]
   ->map(a => a + 1)
   ->filter(a => mod(a, 2) == 0)
-  ->Js.log
+  ->Console.log
 ```
 ```js
 console.log(
@@ -185,6 +190,28 @@ external join: array<string> => string = "join"
 ```
 ```js
 // Empty output
+```
+
+</CodeTab>
+
+### Tagged template functions
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+// see https://bun.sh/docs/runtime/shell
+type result = {exitCode: int}
+@module("bun") @taggedTemplate
+external sh: (array<string>, array<string>) => promise<result> = "$"
+
+let filename = "index.res"
+let result = await sh`ls ${filename}`
+```
+
+```js 
+import * as $$Bun from "bun";
+var filename = "index.res";
+var result = await $$Bun.$`ls ${filename}`;
 ```
 
 </CodeTab>

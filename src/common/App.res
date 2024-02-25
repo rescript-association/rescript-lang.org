@@ -12,7 +12,7 @@
   import css from 'highlight.js/lib/languages/css'
   import ocaml from 'highlight.js/lib/languages/ocaml'
   import reason from 'plugins/reason-highlightjs'
-  import rescript from 'plugins/rescript-highlightjs'
+  import rescript from 'highlightjs-rescript'
   import bash from 'highlight.js/lib/languages/bash'
   import json from 'highlight.js/lib/languages/json'
   import html from 'highlight.js/lib/languages/xml'
@@ -62,12 +62,7 @@ let make = (props: props): React.element => {
       | Latest =>
         switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
         | (1, _) => <ApiOverviewLayout.Docs> content </ApiOverviewLayout.Docs>
-        | (2, Some("js")) => <JsDocsLayout.Prose> content </JsDocsLayout.Prose>
-        | (2, Some("belt")) => <BeltDocsLayout.Prose> content </BeltDocsLayout.Prose>
-        | (_, Some("js")) => <JsDocsLayout.Docs> content </JsDocsLayout.Docs>
-        | (_, Some("belt")) => <BeltDocsLayout.Docs> content </BeltDocsLayout.Docs>
-        | (_, Some("dom")) => <DomDocsLayout.Docs> content </DomDocsLayout.Docs>
-        | _ => React.null
+        | _ => content
         }
       | Version("v8.0.0") =>
         switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
@@ -136,8 +131,6 @@ let make = (props: props): React.element => {
     }
   | {base: ["docs", "reason-compiler"], version: Latest} =>
     <ReasonCompilerDocsLayout> content </ReasonCompilerDocsLayout>
-  | {base: ["docs", "gentype"], version: Latest} =>
-    <GenTypeDocsLayout frontmatter={component->frontmatter}> content </GenTypeDocsLayout>
   // common routes
   | {base} =>
     switch Belt.List.fromArray(base) {
@@ -158,7 +151,7 @@ let make = (props: props): React.element => {
       }
       let description = Belt.Option.flatMap(fm, fm => Js.Null.toOption(fm.description))
       <MainLayout>
-        <Meta ?title ?description />
+        <Meta ?title ?description version=url.version />
         <div className="flex justify-center">
           <div className="max-w-740 w-full"> content </div>
         </div>

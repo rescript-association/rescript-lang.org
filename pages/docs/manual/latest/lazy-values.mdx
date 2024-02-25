@@ -16,7 +16,7 @@ external readdirSync: string => array<string> = "readdirSync"
 
 // Read the directory, only once
 let expensiveFilesRead = lazy({
-  Js.log("Reading dir")
+  Console.log("Reading dir")
   readdirSync("./pages")
 })
 ```
@@ -46,10 +46,10 @@ To actually run the lazy value's computation, use `Lazy.force` from the globally
 
 ```res example
 // First call. The computation happens
-Js.log(Lazy.force(expensiveFilesRead)) // logs "Reading dir" and the directory content
+Console.log(Lazy.force(expensiveFilesRead)) // logs "Reading dir" and the directory content
 
 // Second call. Will just return the already calculated result
-Js.log(Lazy.force(expensiveFilesRead)) // logs the directory content
+Console.log(Lazy.force(expensiveFilesRead)) // logs the directory content
 ```
 ```js
 console.log(CamlinternalLazy.force(expensiveFilesRead));
@@ -69,7 +69,7 @@ Instead of using `Lazy.force`, you can also use [pattern matching](pattern-match
 
 ```res example
 switch expensiveFilesRead {
-| lazy(result) => Js.log(result)
+| lazy(result) => Console.log(result)
 }
 ```
 ```js
@@ -84,7 +84,7 @@ Since pattern matching also works on a `let` binding, you can also do:
 
 ```res example
 let lazy(result) = expensiveFilesRead
-Js.log(result)
+Console.log(result)
 ```
 ```js
 var result = CamlinternalLazy.force(expensiveFilesRead);

@@ -3,7 +3,7 @@ type options = {language: string}
 @deriving(abstract)
 type highlightResult = {value: string}
 
-@module("highlight.js/lib/core")
+@module("highlight.js/lib/core") @scope("default")
 external highlight: (~code: string, ~options: options) => highlightResult = "highlight"
 
 let renderHLJS = (~highlightedLines=[], ~darkmode=false, ~code: string, ~lang: string, ()) => {

@@ -108,8 +108,8 @@ You'd use them like this:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-let result = Js.Array2.filter(
-  Js.Array2.map([1, 2, 3], a => a + 1),
+let result = Array.filter(
+  Array.map([1, 2, 3], a => a + 1),
   a => mod(a, 2) == 0
 )
 
@@ -133,8 +133,8 @@ This looks much worse than the JS counterpart! Clean it up visually with pipe:
 
 ```res example
 let result = [1, 2, 3]
-  ->Js.Array2.map(a => a + 1)
-  ->Js.Array2.filter(a => mod(a, 2) == 0)
+  ->Array.map(a => a + 1)
+  ->Array.filter(a => mod(a, 2) == 0)
 
 asyncRequest()->setWaitDuration(4000)->send
 ```

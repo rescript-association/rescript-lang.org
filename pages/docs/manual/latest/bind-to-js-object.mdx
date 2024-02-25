@@ -143,7 +143,7 @@ type t
 
 let i32arr = create(3)
 i32arr->set(0, 42)
-Js.log(i32arr->get(0))
+Console.log(i32arr->get(0))
 ```
 ```js
 var i32arr = new Int32Array(3);
@@ -160,7 +160,7 @@ If your JavaScript object:
 - might or might not add/remove keys
 - contains only values that are of the same type
 
-Then it's not really an object, it's a hash map. Use [Js.Dict](api/js/dict), which contains operations like `get`, `set`, etc. and cleanly compiles to a JavaScript object still.
+Then it's not really an object, it's a hash map. Use [Dict](api/core/dict), which contains operations like `get`, `set`, etc. and cleanly compiles to a JavaScript object still.
 
 ## Bind to a JS Object That's a Class
 

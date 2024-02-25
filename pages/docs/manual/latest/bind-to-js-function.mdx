@@ -283,7 +283,7 @@ external on: (
 let register = rl =>
   rl
   ->on(#close(event => ()))
-  ->on(#line(line => Js.log(line)));
+  ->on(#line(line => Console.log(line)));
 ```
 ```js
 function register(rl) {
@@ -313,7 +313,7 @@ external processOnExit: (
 ) => unit = "process.on"
 
 processOnExit(exitCode =>
-  Js.log("error code: " ++ Js.Int.toString(exitCode))
+  Console.log("error code: " ++ Int.toString(exitCode))
 );
 ```
 ```js
@@ -365,7 +365,7 @@ type x
 @val external x: x = "x"
 @set external setOnload: (x, @this ((x, int) => unit)) => unit = "onload"
 @get external resp: x => int = "response"
-setOnload(x, @this (o, v) => Js.log(resp(o) + v))
+setOnload(x, @this (o, v) => Console.log(resp(o) + v))
 ```
 ```js
 x.onload = function (v) {
@@ -376,7 +376,7 @@ x.onload = function (v) {
 
 </CodeTab>
 
-`this` has its first parameter is reserved for `this` and for arity of 0, there is no need for a redundant `unit` type.
+`@this` reserves the first parameter for the `this` value, and for arity of 0, there is no need for a redundant `unit` type.
 
 ## Function Nullable Return Value Wrapping
 
@@ -421,3 +421,39 @@ Currently 4 directives are supported: `null_to_opt`, `undefined_to_opt`, `nullab
 <!-- When the return type is unit: the compiler will append its return value with an OCaml unit literal to make sure it does return unit. Its main purpose is to make the user consume FFI in idiomatic OCaml code, the cost is very very small and the compiler will do smart optimizations to remove it when the returned value is not used (mostly likely). -->
 
 `identity` will make sure that compiler will do nothing about the returned value. It is rarely used, but introduced here for debugging purpose.
+
+## Tagged template functions
+
+**Since 11.1**
+
+**Experimental** You can easily bind to [JS tagged template functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates).
+Tag functions in JS expect as input an array of strings and variadic parameters for the arguments of the interpolation.
+To bind to those functions in ReScript, the binding signature must have two arrays as arguments,
+the first one being an array of strings and the second can be an array of anything.
+You add the `@taggedTemplate` annotation and you're good to go!
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+// see https://bun.sh/docs/runtime/shell
+type result = {exitCode: int}
+@module("bun") @taggedTemplate
+external sh: (array<string>, array<string>) => promise<result> = "$"
+
+let filename = "index.res"
+let result = await sh`ls ${filename}`
+```
+
+```js 
+import * as $$Bun from "bun";
+var filename = "index.res";
+var result = await $$Bun.$`ls ${filename}`;
+```
+
+</CodeTab>
+
+Notice that it gets compiled to tagged template literals in JS, which allows
+to use JS tools that only work on the literals and not by calling directly the tag function.
+
+There are plenty of useful JS tools you can bind to, like [`gql`](https://github.com/apollographql/graphql-tag),
+[`sql`](https://github.com/porsager/postgres), [`css`](https://github.com/mayank99/ecsstatic) and a lot others!

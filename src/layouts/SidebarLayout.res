@@ -215,12 +215,14 @@ let make = (
   ~sidebarState: (bool, (bool => bool) => unit),
   // (Sidebar, toggleSidebar) ... for toggling sidebar in mobile view
   ~sidebar: React.element,
+  ~rightSidebar: option<React.element>=?,
   ~categories: option<array<Sidebar.Category.t>>=?,
   ~breadcrumbs: option<list<Url.breadcrumb>>=?,
   ~children,
 ) => {
   let (isNavOpen, setNavOpen) = React.useState(() => false)
   let router = Next.Router.useRouter()
+  let version = Url.parse(router.route).version
 
   let theme = ColorTheme.toCN(theme)
 
@@ -296,7 +298,7 @@ let make = (
   }
 
   <>
-    <Meta title=metaTitle />
+    <Meta title=metaTitle version />
     <div className={"mt-16 min-w-320 " ++ theme}>
       <div className="w-full">
         <Navigation overlayState=(isNavOpen, setNavOpen) />
@@ -325,6 +327,10 @@ let make = (
               </div>
               pagination
             </main>
+            {switch rightSidebar {
+            | Some(ele) => ele
+            | None => React.null
+            }}
           </div>
         </div>
       </div>

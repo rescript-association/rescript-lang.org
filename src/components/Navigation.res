@@ -16,7 +16,7 @@ let linkOrActiveApiSubroute = (~route) => {
   }
 }
 
-let githubHref = "https://github.com/reason-association/rescript-lang.org#rescript-langorg"
+let githubHref = "https://github.com/rescript-lang/rescript-compiler"
 //let twitterHref = "https://twitter.com/rescriptlang"
 let discourseHref = "https://forum.rescript-lang.org"
 
@@ -168,8 +168,8 @@ module DocsSection = {
         description: "Reference for all language features",
         href: `/docs/manual/${version}/introduction`,
         isActive: url => {
-          switch url.base {
-          | ["docs", "manual"] => true
+          switch url.fullpath {
+          | ["docs", "manual", _, fragment] => fragment !== "typescript-integration"
           | _ => false
           }
         },
@@ -189,11 +189,11 @@ module DocsSection = {
       {
         imgSrc: "/static/ic_gentype@2x.png",
         title: "GenType",
-        description: "Seamless TypeScript & Flow integration",
-        href: "/docs/gentype/latest/introduction",
+        description: "Seamless TypeScript integration",
+        href: "/docs/manual/latest/typescript-integration",
         isActive: url => {
-          switch url.base {
-          | ["docs", "gentype"] => true
+          switch url.fullpath {
+          | ["docs", "manual", _, "typescript-integration"] => true
           | _ => false
           }
         },
@@ -202,7 +202,7 @@ module DocsSection = {
         imgSrc: "/static/ic_reanalyze@2x.png",
         title: "Reanalyze",
         description: "Dead Code & Termination analysis",
-        href: "https://github.com/reason-association/reanalyze",
+        href: "https://github.com/rescript-association/reanalyze",
         isActive: _ => {
           false
         },

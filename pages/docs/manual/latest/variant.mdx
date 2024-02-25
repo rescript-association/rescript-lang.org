@@ -21,7 +21,7 @@ type myResponse =
 let areYouCrushingIt = Yes
 ```
 ```js
-var areYouCrushingIt = /* Yes */0;
+var areYouCrushingIt = "Yes";
 ```
 
 </CodeTab>
@@ -55,8 +55,8 @@ let pet: Zoo.animal = Dog // preferred
 let pet2 = Zoo.Dog
 ```
 ```js
-var pet = /* Dog */0;
-var pet2 = /* Dog */0;
+var pet = "Dog";
+var pet2 = "Dog";
 ```
 
 </CodeTab>
@@ -89,12 +89,12 @@ let friendAccount = Instagram("Jenny")
 ```
 ```js
 var myAccount = {
-  TAG: /* Facebook */1,
+  TAG: "Facebook",
   _0: "Josh",
   _1: 26
 };
 var friendAccount = {
-  TAG: /* Instagram */0,
+  TAG: "Instagram",
   _0: "Jenny"
 };
 ```
@@ -116,7 +116,7 @@ let me = Id({name: "Joe", password: "123"})
 ```
 ```js
 var me = {
-  TAG: /* Id */1,
+  TAG: "Id",
   name: "Joe",
   password: "123"
 };
@@ -140,7 +140,7 @@ let me = Id({name: "Joe", password: "123"})
 ```
 ```js
 var me = {
-  TAG: /* Id */1,
+  TAG: "Id",
   _0: {
     name: "Joe",
     password: "123"
@@ -363,9 +363,11 @@ Don't worry - the compiler will guide you and ensure there's no overlap.
 #### What you can unbox
 Here's a list of all possible things you can unbox:
 - `string`: `String(string)`
-- `float`: `Number(float)`. Notice `int` cannot be unboxed, because JavaScript only has `number` (not actually `int` and `float` like in ReScript) so we can't disambiguate between `float` and `int` at runtime.
+- `float`: `Float(float)`. Note you can only have one of `float` or `int` because JavaScript only has `number` (not actually `int` and `float` like in ReScript) so we can't disambiguate between `float` and `int` at runtime.
+- `int`: `Int(int)`. See note above on `float`.
 - `bool`: `Boolean(bool)`
 - `array<'value>`: `List(array<string>)`
+- `('a, 'b, 'c)`: `Tuple((string, int, bool))`. Any size of tuples works, but you can have only one case of array or tuple in a variant. 
 - `promise<'value>`: `Promise(promise<string>)`
 - `Dict.t`: `Object(Dict.t<string>)`
 - `Date.t`: `Date(Date.t)`. A JavaScript date.
@@ -416,7 +418,7 @@ type rec json =
   | Boolean(bool)
   | String(string)
   | Number(float)
-  | Object(Js.Dict.t<json>)
+  | Object(Dict.t<json>)
   | Array(array<json>)
 
 let myValidJsonValue = Array([String("Hi"), Number(123.)])
@@ -431,7 +433,7 @@ type rec json =
   | Boolean(bool)
   | String(string)
   | Number(float)
-  | Object(Js.Dict.t<json>)
+  | Object(Dict.t<json>)
   | Array(array<json>)
 
 type rec user = {
@@ -776,9 +778,9 @@ There's a linear amount of branch checking here (`O(n)`). Compare this to using 
 type animal = Dog | Cat | Bird
 let data = Dog
 switch data {
-| Dog => Js.log("Wof")
-| Cat => Js.log("Meow")
-| Bird => Js.log("Kashiiin")
+| Dog => Console.log("Wof")
+| Cat => Console.log("Meow")
+| Bird => Console.log("Kashiiin")
 }
 ```
 ```js

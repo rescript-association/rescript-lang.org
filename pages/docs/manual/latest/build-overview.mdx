@@ -13,24 +13,29 @@ Every ReScript project needs a build description file, `rescript.json`.
 
 ## Options
 
-See `rescript -help`:
+See `rescript help`:
 
 ```
-❯ rescript -help
-Available flags
--v, -version  display version number
--h, -help     display help
+❯ rescript help
+Usage: rescript <options> <subcommand>
+
+`rescript` is equivalent to `rescript build`
+
+Options:
+  -v, -version  display version number
+  -h, -help     display help
+
 Subcommands:
-    build
-    clean
-    format
-    convert
-    help
-Run rescript subcommand -h for more details,
-For example:
-    rescript build -h
-    rescript format -h
-The default `rescript` is equivalent to `rescript build` subcommand
+  build
+  clean
+  format
+  convert
+  dump
+  help
+
+Run `rescript <subcommand> -h` for subcommand help. Examples:
+  rescript build -h
+  rescript format -h
 ```
 
 ## Build Project
@@ -48,7 +53,7 @@ Which is an alias for `rescript build`.
 To keep a build watcher, run:
 
 ```sh
-rescript build -w
+rescript -w
 ```
 
 Any new file change will be picked up and the build will re-run.
@@ -63,10 +68,4 @@ If you ever get into a stale build for edge-case reasons, use:
 
 ```sh
 rescript clean
-```
-
-This will clean your own project's build artifacts. To also clean the dependencies' artifacts:
-
-```sh
-rescript clean -with-deps
 ```

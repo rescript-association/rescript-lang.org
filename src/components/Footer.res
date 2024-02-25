@@ -46,8 +46,8 @@ let make = () => {
         <Section title="About">
           <ul className="text-16 text-gray-80-tr space-y-2">
             <li>
-              <Next.Link href="/community#core-team" className={linkClass}>
-                {React.string("Team")}
+              <Next.Link href="/community" className={linkClass}>
+                {React.string("Community")}
               </Next.Link>
             </li>
             <li>

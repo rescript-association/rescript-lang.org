@@ -25,8 +25,6 @@ ReScript arrays' items must have the same type, i.e. homogeneous.
 
 ### Usage
 
-See the [Js.Array](api/js/array) API.
-
 Access & update an array item like so:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
@@ -38,7 +36,7 @@ let firstItem = myArray[0] // "hello"
 
 myArray[0] = "hey" // now ["hey", "world", "how are you"]
 
-let pushedValue = Js.Array2.push(myArray, "bye")
+myArray->Array.push("bye")
 ```
 ```js
 var myArray = ["hello", "world", "how are you"];
@@ -51,6 +49,54 @@ var pushedValue = myArray.push("bye");
 ```
 
 </CodeTab>
+
+### Array spreads
+
+**Since 11.1**
+
+
+You can spread arrays of the the same type into new arrays, just like in JavaScript:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let y = [1, 2]
+let x = [4, 5, ...y]
+let x2 = [4, 5, ...y, 7, ...y]
+let x3 = [...y]
+```
+
+```javascript
+var Belt_Array = require("rescript/lib/js/belt_Array.js");
+
+var y = [
+  1,
+  2
+];
+
+var x = Belt_Array.concatMany([
+      [
+        4,
+        5
+      ],
+      y
+    ]);
+
+var x2 = Belt_Array.concatMany([
+      [
+        4,
+        5
+      ],
+      y,
+      [7],
+      y
+    ]);
+
+var x3 = Belt_Array.concatMany([y]);
+```
+</CodeTab>
+
+> Note that array spreads compiles to `Belt.Array.concatMany` right now. This is likely to change to native ES6 array spreads in the future.
 
 ## List
 
@@ -89,7 +135,7 @@ You'd use list for its resizability, its fast prepend (adding at the head), and 
 
 Do **not** use list if you need to randomly access an item or insert at non-head position. Your code would end up obtuse and/or slow.
 
-The standard lib provides a [List module](api/belt/list).
+The standard lib provides a [List module](api/core/list).
 
 #### Immutable Prepend
 
@@ -135,7 +181,7 @@ var anotherList = {
 let message =
   switch myList {
   | list{} => "This list is empty"
-  | list{a, ...rest} => "The head of the list is the string " ++ Js.Int.toString(a)
+  | list{a, ...rest} => "The head of the list is the string " ++ Int.toString(a)
   }
 ```
 ```js

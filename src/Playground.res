@@ -1429,9 +1429,9 @@ module InitialContent = {
     let times = switch count {
     | 1 => "once"
     | 2 => "twice"
-    | n => Belt.Int.toString(n) ++ " times"
+    | n => n->Belt.Int.toString ++ " times"
     }
-    let msg = "Click me " ++ times
+    let text = \`Click me $\{times\}\`
 
     <button onClick={_ => setCount(c => c + 1)}> {msg->React.string} </button>
   }
@@ -1550,13 +1550,9 @@ let make = (~versions: array<string>) => {
   | (None, Res)
   | (None, _) =>
     switch initialVersion {
-    | Some({CompilerManagerHook.Semver.major: major, minor, _}) =>
-      if major >= 10 && minor >= 1 {
-        InitialContent.since_10_1
-      } else {
-        InitialContent.original
-      }
-    | None => InitialContent.original
+    | Some({major: 10, minor}) if minor >= 1 => InitialContent.since_10_1
+    | Some({major}) if major > 10 => InitialContent.since_10_1
+    | _ => InitialContent.original
     }
   }
 
@@ -1694,7 +1690,6 @@ let make = (~versions: array<string>) => {
   }
 
   let onMouseMove = e => {
-    ReactEvent.Mouse.preventDefault(e)
     let position = layout == Row ? ReactEvent.Mouse.clientX(e) : ReactEvent.Mouse.clientY(e)
     onMove(position)
   }

@@ -34,7 +34,7 @@ So, in ReScript, producing that example `if (process.env.mode === 'development')
 let mode = "development"
 
 if (process["env"]["mode"] === mode) {
-  Js.log("Dev-only code here!")
+  Console.log("Dev-only code here!")
 }
 ```
 ```js
@@ -58,7 +58,7 @@ The JS output shows `if (process.env.mode === mode)`, which isn't what we wanted
 let mode = "development"
 
 if (process["env"]["mode"] === mode) {
-  Js.log("Dev-only code here!")
+  Console.log("Dev-only code here!")
 }
 ```
 ```js

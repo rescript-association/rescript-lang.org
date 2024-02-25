@@ -46,3 +46,14 @@ module Fetch = {
 
   @val external fetch: string => promise<Response.t> = "fetch"
 }
+
+module URL = {
+  type t = {
+    hash: string,
+    host: string,
+    hostname: string,
+    href: string,
+    pathname: string,
+  }
+  @new external make: string => t = "URL"
+}

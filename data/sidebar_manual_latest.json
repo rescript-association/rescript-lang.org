@@ -28,10 +28,12 @@
     "lazy-values",
     "promise",
     "async-await",
+    "tagged-templates",
     "module",
     "import-export",
     "attribute",
-    "reserved-keywords"
+    "reserved-keywords",
+    "equality-comparison"
   ],
   "Advanced Features": [
     "extensible-variant",
@@ -51,7 +53,8 @@
     "use-illegal-identifier-names",
     "generate-converters-accessors",
     "browser-support-polyfills",
-    "libraries"
+    "libraries",
+    "typescript-integration"
   ],
   "Build System": [
     "build-overview",

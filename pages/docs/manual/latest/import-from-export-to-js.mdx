@@ -84,7 +84,7 @@ Use the value `"default"` on the right hand side:
 
 ```res example
 @module("./student") external studentName: string = "default"
-Js.log(studentName)
+Console.log(studentName)
 ```
 ```js
 import Student from "./student";
@@ -92,6 +92,39 @@ var studentName = Student;
 ```
 
 </CodeTab>
+
+### Use Import Attributes
+
+**Since 11.1**
+
+[Import attributes](https://github.com/tc39/proposal-import-attributes) can be used in ReScript, as long as ReScript is configured to output ES6. You do that by passing configuration to the `@module` attribute:
+
+<CodeTab labels={["ReScript", "JS Output (ES6)"]}>
+```rescript
+@module({from: "./myJson.json", with: {type_: "json", \"some-exotic-identifier": "someValue"}})
+external myJson: Js.Json.t = "default"
+
+Console.log(myJson)
+```
+
+```javascript
+import MyJsonJson from "./myJson.json" with {"type": "json", "some-exotic-identifier": "someValue"};
+
+var myJson = MyJsonJson;
+
+console.log(myJson);
+```
+</CodeTab>
+
+This above imports the local `./myJson.json` file, adding import attributes.
+
+This is how it works:
+1. Instead of passing a string or tuple to `@module`, pass a record.
+2. This record should have a `from` key. The value of that is where you want the module to be imported from (just like the regular string to `@module` is).
+3. It should also have a `with` key, with another record where you put all the import attributes you want emitted.
+
+Notice `\"some-exotic-identifier"` - you'll need to escape any key that's not a valid ReScript record key.
+Also notice `type_`. Since `type` is a reserved keyword in ReScript, you can use `type_` instead. It will be output as `type` in the JavaScript code.
 
 ## Dynamic Import
 Leveraging JavaScript's [dynamic `import`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) to reduce bundle size and lazy load code as needed is easy in ReScript. It's also a little bit more convenient than in regular JavaScript because you don't need to keep track of file paths manually with ReScript's module system.

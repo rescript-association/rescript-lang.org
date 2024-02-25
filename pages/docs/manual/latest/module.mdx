@@ -55,7 +55,7 @@ using the `.` notation. This demonstrates modules' utility for namespacing.
 
 ```res
 let anotherPerson: School.profession = School.Teacher
-Js.log(School.getProfession(anotherPerson)) /* "A teacher" */
+Console.log(School.getProfession(anotherPerson)) /* "A teacher" */
 ```
 ```js
 var anotherPerson = /* Teacher */0;
@@ -149,9 +149,9 @@ let map = (arr, value) => {
   value
 }
 
-// opening Js.Array2 would shadow our previously defined `map`
+// opening Array would shadow our previously defined `map`
 // `open!` will explicitly turn off the automatic warning
-open! Js.Array2
+open! Array
 let arr = map([1,2,3], (a) => { a + 1})
 ```
 

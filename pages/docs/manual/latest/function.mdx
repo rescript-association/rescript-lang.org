@@ -490,7 +490,7 @@ Occasionally you may want to ignore the return value of a function. ReScript pro
 ```res
 mySideEffect()->Promise.catch(handleError)->ignore
 
-Js.Global.setTimeout(myFunc, 1000)->ignore
+setTimeout(myFunc, 1000)->ignore
 ```
 
 ```js
