@@ -124,15 +124,15 @@ Previously:
 
 ```rescript
 let x = <\"custom-tag" />
-let y = <Foo.\"custom-tag" />
 ```
 
 Now:
 
 ```rescript
 let x = <custom-tag />
-let y = <Foo.custom-tag />
 ```
+
+This is particularly useful when dealing with [web components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components), where element names tend to use hyphens.
 
 ## Acknowledgements
 
