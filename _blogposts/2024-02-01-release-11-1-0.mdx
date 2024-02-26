@@ -20,9 +20,29 @@ npm install rescript@11.1
 
 Find a list of all the new features below:
 
-## Generic JSX transform
+## JSX for more than React
 
-TODO
+Historically, ReScript has focused mainly on React for its frontend support. This has led to ReScript having a great JSX transform built into the language itself. However, that JSX transform has been quite difficult to use with anything but React. 
+
+With v11.1, that changes! The JSX transform can now be configured to work with any framework. First class React support is of course still the same, and remains a priority. This makes it possible to integrate any other framework's JSX idiomatically in ReScript. And, all the tooling like autocompletion of prop names and types just works.
+
+Many popular frameworks like Vue and Preact use JSX. But, JSX is also becoming more and more ubiquitous, and these days JSX can also be used for everything from building CLI apps to responsive e-mail templating. We're happy that ReScript users will now be able to leverage all of these innovations in a more idiomatic way than before.
+
+Here's an example of what a Preact integration could look like:
+
+```rescript
+// Greet.res
+
+// @jsx.component works the same as @react.component does in React
+@jsx.component
+let make = (~name) => {
+  <div>
+    {Preact.string("Hello " ++ name)}
+  </div>
+}
+```
+
+Read more in the [`new documentation on the generic JSX transform`](/docs/manual/latest/jsx#generic-jsx-transform-jsx-beyond-react-experimental).
 
 ## Tagged template literals
 
