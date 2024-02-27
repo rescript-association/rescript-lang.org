@@ -1,33 +1,35 @@
-module Transpiler = {
-  @module("../ffi/removeImportsAndExports") external transpile: string => string = "default"
+module AcornParse = {
+  type t
+  @module("../ffi/acorn-parse.js") external parse: string => t = "parse"
 
+  @module("../ffi/acorn-parse.js") external hasEntryPoint: t => bool = "hasEntryPoint"
+
+  @module("../ffi/acorn-parse.js")
+  external removeImportsAndExports: t => string = "removeImportsAndExports"
+}
+
+module Transpiler = {
   let run = code =>
     `(function () {
-  ${transpile(code)}
+  ${code}
   const root = document.getElementById("root");
   ReactDOM.render(App.make(), root);
 })();`
 }
 
 module Frame = {
-  type document
-  type element
-  type contentWindow
-  @send external postMessage: (contentWindow, string, string) => unit = "postMessage"
-  @get external contentWindow: element => option<contentWindow> = "contentWindow"
-  @send external getElementById: (document, string) => Js.nullable<element> = "getElementById"
-  @val external doc: document = "document"
+  let css = `body {
+  background-color: inherit;
+  color: CanvasText;
+  color-scheme: light dark;
+}`
 
   let srcdoc = `
     <html>
       <head>
         <meta charset="UTF-8" />
         <title>Playground Output</title>
-        <style>
-           * {
-             color: rgb(205, 205, 214);
-           }
-        </style>
+        <style>${css}</style>
       </head>
       <body>
         <div id="root"></div>
@@ -37,10 +39,6 @@ module Frame = {
         ></script>
         <script
           src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
-          crossorigin
-        ></script>
-        <script
-          src="https://bundleplayground.s3.sa-east-1.amazonaws.com/bundle.js"
           crossorigin
         ></script>
         <script>
@@ -66,11 +64,17 @@ module Frame = {
   `
 
   let sendOutput = code => {
-    let frame = Js.toOption(doc->getElementById("iframe-eval"))
+    open Webapi
+
+    let frame =
+      Document.document
+      ->Element.getElementById("iframe-eval")
+      ->Js.Nullable.toOption
+
     switch frame {
     | Some(element) =>
-      switch element->contentWindow {
-      | Some(win) => win->postMessage(code, "*")
+      switch element->Element.contentWindow {
+      | Some(win) => win->Element.postMessage(code, "*")
       | None => ()
       }
     | None => ()
@@ -78,8 +82,13 @@ module Frame = {
   }
 }
 
-let renderOutput = code =>
-  switch code {
-  | Some(code) => Transpiler.run(code)->Frame.sendOutput
-  | None => ()
+let renderOutput = code => {
+  let ast = AcornParse.parse(code)
+  let transpiled = AcornParse.removeImportsAndExports(ast)
+  switch AcornParse.hasEntryPoint(ast) {
+  | true =>
+    Transpiler.run(transpiled)->Frame.sendOutput
+    Ok()
+  | false => Error()
   }
+}

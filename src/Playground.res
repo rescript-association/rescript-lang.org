@@ -1183,26 +1183,9 @@ module ControlPanel = {
         url
       }
 
-      let compiledCode = switch state {
-      | Ready(ready) =>
-        switch ready.result {
-        | Comp(Success(_)) => codeFromResult(ready.result)->Some
-        | _ => None
-        }
-      | _ => None
-      }
-
-      let onRunOutputClick = evt => {
-        ReactEvent.Mouse.preventDefault(evt)
-        RenderOutputManager.renderOutput(compiledCode)
-      }
-
       <>
         <div className="mr-2">
           <Button onClick=onFormatClick> {React.string("Format")} </Button>
-        </div>
-        <div className="mr-2">
-          <Button onClick={onRunOutputClick}> {React.string("Run")} </Button>
         </div>
         <ShareButton actionIndicatorKey createShareLink />
       </>
@@ -1222,6 +1205,67 @@ let locMsgToCmError = (~kind: CodeMirror.Error.kind, locMsg: Api.LocMsg.t): Code
     endRow,
     text: shortMsg,
     kind,
+  }
+}
+
+module RenderOutput = {
+  @react.component
+  let make = (~compilerState: CompilerManagerHook.state) => {
+    let code = switch compilerState {
+    | Ready(ready) =>
+      switch ready.result {
+      | Comp(Success(_)) => ControlPanel.codeFromResult(ready.result)->Some
+      | _ => None
+      }
+    | _ => None
+    }
+
+    let valid = switch code {
+    | Some(code) =>
+      switch RenderOutputManager.renderOutput(code) {
+      | Ok(_) => true
+      | Error(_) => false
+      }
+    | None => false
+    }
+
+    let a =
+      <div className={""}>
+        <iframe
+          width="100%"
+          id="iframe-eval"
+          className="relative w-full text-gray-20"
+          srcDoc=RenderOutputManager.Frame.srcdoc
+        />
+      </div>
+
+    a
+
+//     switch code {
+//     | Some(code) =>
+//       switch RenderOutputManager.renderOutput(code) {
+//       | Ok() =>
+//         <iframe
+//           width="100%"
+//           id="iframe-eval"
+//           className="relative w-full text-gray-20"
+//           srcDoc=RenderOutputManager.Frame.srcdoc
+//         />
+//       | Error() =>
+//         let code = `module App = {
+//   @react.component
+//   let make = () => {
+//     <ModuleName />
+//   }
+// }`
+//         <div className={"whitespace-pre-wrap p-4 block"}>
+//           <p className={"mb-2"}> {React.string("To render element create a module App")} </p>
+//           <pre> {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="rescript", ())} </pre>
+//         </div>
+//       }
+
+//     | _ => React.null
+//     }
   }
 }
 
@@ -1253,13 +1297,13 @@ module OutputPanel = {
         if type_ === "log" {
           let args: array<string> = data["args"]
 
-          setLogs(
-            previousLogs =>
-              previousLogs
-              ->Belt.Option.getWithDefault([])
-              ->Js.Array2.concat([args])
-              ->Some,
-          )
+          // setLogs(
+          //   previousLogs =>
+          //     logs
+          //     ->Belt.Option.getWithDefault([])
+          //     ->Js.Array2.concat([args])
+          //     ->Some,
+          // )
         }
       })
       None
@@ -1315,22 +1359,6 @@ module OutputPanel = {
       <pre className={"whitespace-pre-wrap p-4 " ++ (showCm ? "block" : "hidden")}>
         {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="js", ())}
       </pre>
-
-    let renderOutputPane: React.element = switch compilerState {
-    | Compiling(ready, _)
-    | Ready(ready) =>
-      switch ready.result {
-      | Comp(Success(_)) =>
-        <iframe
-          width="100%"
-          id="iframe-eval"
-          className="relative w-full text-gray-20"
-          srcDoc=RenderOutputManager.Frame.srcdoc
-        />
-      | _ => React.null
-      }
-    | _ => React.null
-    }
 
     let consolePanel = switch logs {
     | Some(logs) =>
@@ -1397,7 +1425,7 @@ module OutputPanel = {
     prevSelected.current = selected
 
     let tabs = [
-      (RenderOutput, renderOutputPane),
+      (RenderOutput, <RenderOutput compilerState />),
       (Console, consolePanel),
       (JavaScript, output),
       (Problems, errorPane),
@@ -1445,60 +1473,30 @@ module App = {
 }
 `
 
-  let since_10_1 = `@@jsxConfig({ version: 4, mode: "classic" })
+  let since_10_1 = `@@jsxConfig({version: 4, mode: "classic"})
 
-module CounterMessage = {
+module Button = {
   @react.component
-  let make = (~count, ~username=?) => {
+  let make = () => {
+    let (count, setCount) = React.useState(_ => 0)
     let times = switch count {
     | 1 => "once"
     | 2 => "twice"
-    | n => Belt.Int.toString(n) ++ " times"
+    | n => n->Int.toString ++ " times"
     }
+    let msg = \`Click me $\{times\}\`
 
-    let name = switch username {
-    | Some("") => "Anonymous"
-    | Some(name) => name
-    | None => "Anonymous"
-    }
-
-    <div> {React.string(\`Hello \$\{name\}, you clicked me \` ++ times)} </div>
-  }
-}
-
-module Form = {
-  @react.component
-  let make = () => {
-    let (count, setCount) = React.useState(() => 0)
-    let (username, setUsername) = React.useState(() => "Anonymous")
-
-    <div>
-      {React.string("Username: ")}
-      <input
-        type_="text"
-        value={username}
-        onChange={evt => {
-          evt->ReactEvent.Form.preventDefault
-          let username = (evt->ReactEvent.Form.target)["value"]
-          setUsername(_prev => username)
-        }}
-      />
-      <button
-        onClick={_evt => {
-          setCount(prev => prev + 1)
-        }}>
-        {React.string("Click me")}
-      </button>
-      <button onClick={_evt => setCount(_ => 0)}> {React.string("Reset")} </button>
-      <CounterMessage count username />
-    </div>
+    <button onClick={_ => setCount(c => c + 1)}> {msg->React.string} </button>
   }
 }
 
 module App = {
   @react.component
-  let make = () => <Form/>
+  let make = () => {
+    <Button />
+  }
 }
+
 `
 }
 
@@ -1783,7 +1781,7 @@ let make = (~versions: array<string>) => {
   | _ => "rescript"
   }
 
-  let (currentTab, setCurrentTab) = React.useState(_ => RenderOutput)
+  let (currentTab, setCurrentTab) = React.useState(_ => JavaScript)
 
   let disabled = false
 
@@ -1793,7 +1791,7 @@ let make = (~versions: array<string>) => {
     "flex-1 items-center p-4 border-t-4 border-transparent " ++ activeClass
   }
 
-  let tabs = [RenderOutput, Console, JavaScript, Problems, Settings]
+  let tabs = [JavaScript, RenderOutput, Console, Problems, Settings]
 
   let headers = Belt.Array.mapWithIndex(tabs, (i, tab) => {
     let title = switch tab {
