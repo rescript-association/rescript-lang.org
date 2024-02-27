@@ -45,7 +45,7 @@ module RightSidebar = {
   @react.component
   let make = (~items: array<item>) => {
     items
-    ->Js.Array2.mapi((item, index) => {
+    ->Js.Array2.map(item => {
       switch item {
       | Value({name, deprecated}) as kind | Type({name, deprecated}) as kind =>
         let (icon, textColor, bgColor, href) = switch kind {
@@ -62,7 +62,7 @@ module RightSidebar = {
         }
         let title = `${Belt.Option.isSome(deprecatedIcon) ? "Deprecated " : ""}` ++ name
         let result =
-          <li className="my-3" key={Js.Int.toString(index)}>
+          <li className="my-3">
             <a
               title
               className="flex items-center w-full font-normal text-14 text-gray-40 leading-tight hover:text-gray-80"
@@ -147,7 +147,7 @@ module SidebarTree = {
           }}
         </details>
       | false =>
-        <li key={node.name} className={"list-none mt-1 leading-4"}>
+        <li className={"list-none mt-1 leading-4"}>
           <summary className={summaryClassName ++ classNameActive}>
             <Next.Link className={"block"} href> {node.name->React.string} </Next.Link>
           </summary>

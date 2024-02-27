@@ -382,7 +382,7 @@ module A = {
       }
       <Next.Link
         href
-        hrefrel="noopener noreferrer"
+        hrefRel="noopener noreferrer"
         className="no-underline text-fire hover:underline"
         ?target>
         children

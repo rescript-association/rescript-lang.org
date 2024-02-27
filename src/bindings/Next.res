@@ -63,7 +63,7 @@ module Link = {
     ~children: React.element,
     ~className: string=?,
     ~target: string=?,
-    ~hrefrel: string=?,
+    ~hrefRel: string=?,
   ) => React.element = "default"
 }
 

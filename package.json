@@ -59,6 +59,7 @@
     "@mdx-js/react": "^2.3.0",
     "autoprefixer": "^10.4.14",
     "cssnano": "^6.0.1",
+    "esbuild-loader": "^2.20.0",
     "postcss": "^8.4.27",
     "postcss-cli": "^8.3.0",
     "reanalyze": "^2.16.0",

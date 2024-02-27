@@ -29,8 +29,21 @@ const config = {
         path: false,
       };
     }
+    // We need this additional rule to make sure that mjs files are
+    // correctly detected within our src/ folder
+    config.module.rules.push({
+      test: /\.m?js$/,
+      // v-- currently using an experimental setting with esbuild-loader
+      //use: options.defaultLoaders.babel,
+      use: [{ loader: "esbuild-loader", options: { loader: "jsx" } }],
+      exclude: /node_modules/,
+      type: "javascript/auto",
+      resolve: {
+        fullySpecified: false,
+      },
+    });
 
-    function mainMdxLoader() {
+    function mainMdxLoader(plugins) {
       return [
         createLoader(function(source) {
           const result = `${source}\n\nMDXContent.frontmatter = frontmatter`;
