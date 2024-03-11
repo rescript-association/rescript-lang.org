@@ -169,4 +169,9 @@ let companies = [
     url: "https://www.bandprotocol.com/",
     path: "/static/lp/bandprotocol.svg",
   }),
+  Logo({
+    name: "Envio",
+    url: "https://www.envio.dev/",
+    path: "/static/lp/envio.svg",
+  }),
 ]
