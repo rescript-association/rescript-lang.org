@@ -134,6 +134,47 @@ let x = <custom-tag />
 
 This is particularly useful when dealing with [web components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components), where element names tend to use hyphens.
 
+## Omit trailing undefined in external function calls
+
+ReScript 11's uncurried mode allows for much more ergonomic external function bindings, because trailing units were not needed anymore. But, this comes with a potential problem. All arguments, whether they're actually supplied or not, were printed as `undefined` in the resulting JS. This is handled better now, as trailing `undefined`s are automatically omitted.
+
+<CodeTab labels={["ReScript", "JS Output (ReScript 11.0)", "JS Output (ReScript 11.1)"]}>
+
+```res
+@val
+external stringify: (
+  'a,
+  ~replacer: (string, JSON.t) => JSON.t=?,
+  ~space: int=?,
+) => string = "JSON.stringify"
+
+let obj = {"test": 1}
+
+let result = stringify(obj)
+
+let result2 = stringify(obj, ~space=2)
+```
+```js
+var obj = {
+  test: 1
+};
+
+var result = JSON.stringify(obj, undefined, undefined);
+
+var result2 = JSON.stringify(obj, undefined, 2);
+```
+```js
+var obj = {
+  test: 1
+};
+
+var result = JSON.stringify(obj);
+
+var result2 = JSON.stringify(obj, undefined, 2);
+```
+</CodeTab>
+
+
 ## Other changes
 
 Of course we also got a bunch of other changes and bug fixes in this release. Check out the [compiler changelog](https://github.com/rescript-lang/rescript-compiler/blob/11.0_release/CHANGELOG.md#1110-rc1) if you are interested.
