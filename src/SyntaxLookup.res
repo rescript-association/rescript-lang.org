@@ -265,15 +265,18 @@ let default = (props: props) => {
       if Js.Array.length(items) === 0 {
         acc
       } else {
-        let children = Belt.Array.map(items, item => {
-          let onMouseDown = evt => {
-            ReactEvent.Mouse.preventDefault(evt)
-            onSearchValueChange(item.name)
-          }
-          <span className="mr-2 mb-2 cursor-pointer" onMouseDown key=item.name>
-            <Tag text={item.name} />
-          </span>
-        })
+        let children =
+          items
+          ->Belt.SortArray.stableSortBy((v1, v2) => String.compare(v1.name, v2.name))
+          ->Belt.Array.map(item => {
+            let onMouseDown = evt => {
+              ReactEvent.Mouse.preventDefault(evt)
+              onSearchValueChange(item.name)
+            }
+            <span className="mr-2 mb-2 cursor-pointer" onMouseDown key=item.name>
+              <Tag text={item.name} />
+            </span>
+          })
         let el =
           <div key=title className="first:mt-0 mt-12">
             <Category title> {React.array(children)} </Category>
