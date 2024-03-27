@@ -105,6 +105,37 @@ In a `send`, the object is always the first argument. Actual arguments of the me
 
 Ever used `foo().bar().baz()` chaining ("fluent api") in JS OOP? We can model that in ReScript too, through the [pipe operator](pipe.md).
 
+## Function inside an Object with default export
+
+Binding to a function inside an object with default export. This is only needed if the consumed module is written in ES6.
+
+```js
+// math.js
+const math = {
+  add: (x, y) => x + y
+}
+
+export default math
+```
+
+To create a binding to `add` function you need add the attribute `@scope` with `"default"`.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+@module("./math.js") @scope("default") external add: (int, int) => int = "add"
+
+let result = add(1, 1)
+```
+
+```js
+import * as MathJs from "./math.js";
+
+var result = MathJs.default.add(1, 1);
+```
+
+</CodeTab>
+
 ## Variadic Function Arguments
 
 You might have JS functions that take an arbitrary amount of arguments. ReScript supports modeling those, under the condition that the arbitrary arguments part is homogenous (aka of the same type). If so, add `variadic` to your `external`.
