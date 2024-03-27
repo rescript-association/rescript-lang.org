@@ -24,28 +24,54 @@ var myArray = ["hello", "world", "how are you"];
 ReScript arrays' items must have the same type, i.e. homogeneous.
 
 ### Usage
-
-Access & update an array item like so:
+#### Access
+Accessing items in an array will return an `option` and can be done like so:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
 let myArray = ["hello", "world", "how are you"]
 
-let firstItem = myArray[0] // "hello"
+let firstItem = myArray[0] // Some("hello")
 
-myArray[0] = "hey" // now ["hey", "world", "how are you"]
-
-myArray->Array.push("bye")
+let tenthItem = myArray->Array.get(10) // None
 ```
 ```js
 var myArray = ["hello", "world", "how are you"];
 
 var firstItem = myArray[0];
 
+var tenthItem = myArray[10];
+```
+
+</CodeTab>
+
+The behavior of returning an `option` is new to V11 when you have [Core](api/core) open. 
+It provides a safer way to access array items, which is especially useful when you're not sure if the index is out of bounds.
+If you would like to not use an `option`, you can use [`Array.getUnsafe`](api/core/array#value-getUnsafe).
+
+#### Update
+Items in an array can be updated by assigning a value to an index or using a function:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let myArray = ["hello", "world", "how are you"]
+
+myArray[0] = "hey" // now ["hey", "world", "how are you"]
+
+myArray->Array.push("?") //  ["hey", "world", "how are you", "?"]
+
+myArray->Array.set(0, "bye") //  ["bye", "world", "how are you", "?"]
+```
+```js
+var myArray = ["hello", "world", "how are you"];
+
 myArray[0] = "hey";
 
-var pushedValue = myArray.push("bye");
+myArray.push("?");
+
+myArray[0] = "bye";
 ```
 
 </CodeTab>
