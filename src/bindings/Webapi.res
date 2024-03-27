@@ -6,6 +6,7 @@ module Document = {
 module ClassList = {
   type t
   @send external toggle: (t, string) => unit = "toggle"
+  @send external remove: (t, string) => unit = "remove"
 }
 
 module Element = {
@@ -14,6 +15,7 @@ module Element = {
   @set external setClassName: (Dom.element, string) => unit = "className"
   @get external classList: Dom.element => ClassList.t = "classList"
   @send external getBoundingClientRect: Dom.element => {..} = "getBoundingClientRect"
+  @send external addEventListener: (Dom.element, string, unit => unit) => unit = "addEventListener"
 
   module Style = {
     @scope("style") @set external width: (Dom.element, string) => unit = "width"
