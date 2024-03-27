@@ -5,6 +5,11 @@ type company = Logo({name: string, url: string, path: string})
 
 let companies = [
   Logo({
+    name: "YBRU",
+    url: "https://ybru.ru",
+    path: "/static/lp/ybru.svg",
+  }),
+  Logo({
     name: "Juspay",
     url: "https://juspay.in",
     path: "/static/lp/juspay.svg",
