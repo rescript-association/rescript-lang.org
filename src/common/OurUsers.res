@@ -5,16 +5,6 @@ type company = Logo({name: string, url: string, path: string})
 
 let companies = [
   Logo({
-    name: "YBRU",
-    url: "https://ybru.ru",
-    path: "/static/lp/ybru.svg",
-  }),
-  Logo({
-    name: "Juspay",
-    url: "https://juspay.in",
-    path: "/static/lp/juspay.svg",
-  }),
-  Logo({
     name: "Rohea",
     url: "https://rohea.com",
     path: "/static/lp/rohea.svg",
@@ -160,6 +150,11 @@ let companies = [
     path: "/static/lp/instapainting.svg",
   }),
   Logo({
+    name: "Juspay",
+    url: "https://juspay.in",
+    path: "/static/lp/juspay.svg",
+  }),
+  Logo({
     name: "Silq",
     url: "https://www.onesilq.com/",
     path: "/static/lp/silq.svg",
@@ -178,5 +173,10 @@ let companies = [
     name: "Envio",
     url: "https://www.envio.dev/",
     path: "/static/lp/envio.svg",
+  }),
+  Logo({
+    name: "YBRU",
+    url: "https://ybru.ru",
+    path: "/static/lp/ybru.svg",
   }),
 ]
