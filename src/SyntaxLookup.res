@@ -42,15 +42,43 @@ module Category = {
   }
 }
 
-// The data representing a syntax construct
-// handled in the widget
-type item = {
-  id: string,
-  keywords: array<string>,
-  name: string,
-  summary: string,
-  category: Category.t,
-  children: React.element,
+module Status = {
+  type t =
+    | Active
+    | Deprecated
+
+  let fromString = (s: string): t =>
+    switch s {
+    | "deprecated" => Deprecated
+    | "active" | _ => Active
+    }
+
+  let compare = (a, b) =>
+    switch (a, b) {
+    | (Deprecated, Deprecated) | (Active, Active) => 0
+    | (Active, Deprecated) => -1
+    | (Deprecated, Active) => 1
+    }
+}
+
+module Item = {
+  // The data representing a syntax construct
+  // handled in the widget
+  type t = {
+    id: string,
+    keywords: array<string>,
+    name: string,
+    summary: string,
+    category: Category.t,
+    children: React.element,
+    status: Status.t,
+  }
+
+  let compare = (a, b) =>
+    switch Status.compare(a.status, b.status) {
+    | 0 => String.compare(a.name, b.name)
+    | x => x
+    }
 }
 
 type itemInfo = {
@@ -59,6 +87,7 @@ type itemInfo = {
   name: string,
   summary: string,
   category: Category.t,
+  status: Status.t,
 }
 
 let getAnchor = path => {
@@ -70,8 +99,13 @@ let getAnchor = path => {
 
 module Tag = {
   @react.component
-  let make = (~text: string) => {
-    <span className="hover:bg-fire hover:text-white bg-fire-5 py-1 px-3 rounded text-fire text-16">
+  let make = (~deprecated: bool, ~text: string) => {
+    <span
+      className={`
+       py-1 px-3 rounded text-16
+      ${deprecated
+          ? "hover:bg-gray-30 bg-gray-50 text-gray-80 line-through"
+          : "hover:bg-fire hover:text-white bg-fire-5 text-fire"}`}>
       {React.string(text)}
     </span>
   }
@@ -104,8 +138,8 @@ module DetailBox = {
 
 type state =
   | ShowAll
-  | ShowFiltered(string, array<item>) // (search, filteredItems)
-  | ShowDetails(item)
+  | ShowFiltered(string, array<Item.t>) // (search, filteredItems)
+  | ShowDetails(Item.t)
 
 @val @scope("window")
 external scrollTo: (int, int) => unit = "scrollTo"
@@ -122,6 +156,10 @@ let decode = (json: Js.Json.t) => {
   let name = json->(field("name", string, _))
   let summary = json->(field("summary", string, _))
   let category = json->field("category", string, _)->Category.fromString
+  let status =
+    json
+    ->optional(field("status", string, _), _)
+    ->Belt.Option.mapWithDefault(Status.Active, Status.fromString)
 
   {
     id,
@@ -129,6 +167,7 @@ let decode = (json: Js.Json.t) => {
     name,
     summary,
     category,
+    status,
   }
 }
 
@@ -136,7 +175,7 @@ let default = (props: props) => {
   let {mdxSources} = props
 
   let allItems = mdxSources->Js.Array2.map(mdxSource => {
-    let {id, keywords, category, summary, name} = decode(mdxSource.frontmatter)
+    let {id, keywords, category, summary, name, status} = decode(mdxSource.frontmatter)
 
     let children =
       <MdxRemote
@@ -146,7 +185,7 @@ let default = (props: props) => {
         components={MarkdownComponents.default}
       />
 
-    {id, keywords, category, summary, name, children}
+    {Item.id, keywords, category, summary, name, status, children}
   })
 
   let fuseOpts = Fuse.Options.t(
@@ -160,7 +199,7 @@ let default = (props: props) => {
     (),
   )
 
-  let fuse: Fuse.t<item> = Fuse.make(allItems, fuseOpts)
+  let fuse: Fuse.t<Item.t> = Fuse.make(allItems, fuseOpts)
 
   let router = Next.Router.useRouter()
   let (state, setState) = React.useState(_ => ShowAll)
@@ -267,14 +306,14 @@ let default = (props: props) => {
       } else {
         let children =
           items
-          ->Belt.SortArray.stableSortBy((v1, v2) => String.compare(v1.name, v2.name))
+          ->Belt.SortArray.stableSortBy(Item.compare)
           ->Belt.Array.map(item => {
             let onMouseDown = evt => {
               ReactEvent.Mouse.preventDefault(evt)
               onSearchValueChange(item.name)
             }
             <span className="mr-2 mb-2 cursor-pointer" onMouseDown key=item.name>
-              <Tag text={item.name} />
+              <Tag text={item.name} deprecated={item.status == Deprecated} />
             </span>
           })
         let el =
