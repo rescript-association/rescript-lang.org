@@ -166,6 +166,95 @@ var result = 1 + 2;
 
 </CodeTab>
 
+## Big Integers (experimental)
+
+**Since 11.1**
+
+For values which are too large to be represented by Int or Float, there is the `bigint` primitive type.
+We provide the usual operations on them: `+`, `-`, `*`, `/`, etc. See [BigInt](api/core/bigint) for helper functions.
+
+A bigint number is denoted by a trailing `n` like so: `42n`.
+
+As `bigint` is a different data type than `int`, it's necessary to open the corresponding module to overload the operators.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+open! Js.BigInt
+
+let a = 9007199254740991n + 9007199254740991n
+let b = 2n ** 2n
+```
+```js
+var a = 9007199254740991n + 9007199254740991n;
+
+var p = 2n ** 2n;
+```
+
+</CodeTab>
+
+It also supports all the bitwise operations.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+open! Js.BigInt
+
+let a = land(1n, 1n)
+let b = lor(1n, 1n)
+let c = lxor(1n, 1n)
+let d = lnot(1n)
+let e = lsl(1n, 1n)
+let f = asr(1n, 1n)
+```
+```js
+var Js_bigint = require("./stdlib/js_bigint.js");
+
+var a = 1n & 1n;
+
+var b = 1n | 1n;
+
+var c = 1n ^ 1n;
+
+var d = Js_bigint.lnot(1n);
+
+var e = (1n << 1n);
+
+var f = (1n >> 1n);
+```
+
+</CodeTab>
+
+It can also be pattern-matched.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let bigintValue = 1n
+
+switch bigintValue {
+| 1n => Console.log("Small bigint")
+| 100n => Console.log("Larger bigint")
+| _ => Console.log("Other bigint")
+}
+```
+```js
+if (1n !== 1n) {
+  if (1n !== 100n) {
+    console.log("Other bigint");
+  } else {
+    console.log("Larger bigint");
+  }
+} else {
+  console.log("Small bigint");
+}
+
+var bigintValue = 1n;
+```
+
+</CodeTab>
+
+
 ## Unit
 
 The `unit` type indicates the absence of a specific value. It has only a single value, `()`, which acts as a placeholder when no other value exists or is needed. It compiles to JavaScript's `undefined` and resembles the `void` type in languages such as C++. What's the point of such a type?
