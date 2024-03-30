@@ -173,7 +173,7 @@ var result = 1 + 2;
 For values which are too large to be represented by Int or Float, there is the `bigint` primitive type.
 We provide the usual operations on them: `+`, `-`, `*`, `/`, etc. See [BigInt](api/core/bigint) for helper functions.
 
-A bigint number is denoted by a trailing `n` like so: `42n`.
+A `bigint` number is denoted by a trailing `n` like so: `42n`.
 
 As `bigint` is a different data type than `int`, it's necessary to open the corresponding module to overload the operators.
 
@@ -193,7 +193,7 @@ var p = 2n ** 2n;
 
 </CodeTab>
 
-It also supports all the bitwise operations.
+It also supports all the bitwise operations, except unsigned shift right (`>>>`), which is not supported by JS itself for `bigint`s.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
