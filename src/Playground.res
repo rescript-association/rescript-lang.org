@@ -1210,62 +1210,15 @@ let locMsgToCmError = (~kind: CodeMirror.Error.kind, locMsg: Api.LocMsg.t): Code
 
 module RenderOutput = {
   @react.component
-  let make = (~compilerState: CompilerManagerHook.state) => {
-    let code = switch compilerState {
-    | Ready(ready) =>
-      switch ready.result {
-      | Comp(Success(_)) => ControlPanel.codeFromResult(ready.result)->Some
-      | _ => None
-      }
-    | _ => None
-    }
-
-    let valid = switch code {
-    | Some(code) =>
-      switch RenderOutputManager.renderOutput(code) {
-      | Ok(_) => true
-      | Error(_) => false
-      }
-    | None => false
-    }
-
-    let a =
-      <div className={""}>
-        <iframe
-          width="100%"
-          id="iframe-eval"
-          className="relative w-full text-gray-20"
-          srcDoc=RenderOutputManager.Frame.srcdoc
-        />
-      </div>
-
-    a
-
-//     switch code {
-//     | Some(code) =>
-//       switch RenderOutputManager.renderOutput(code) {
-//       | Ok() =>
-//         <iframe
-//           width="100%"
-//           id="iframe-eval"
-//           className="relative w-full text-gray-20"
-//           srcDoc=RenderOutputManager.Frame.srcdoc
-//         />
-//       | Error() =>
-//         let code = `module App = {
-//   @react.component
-//   let make = () => {
-//     <ModuleName />
-//   }
-// }`
-//         <div className={"whitespace-pre-wrap p-4 block"}>
-//           <p className={"mb-2"}> {React.string("To render element create a module App")} </p>
-//           <pre> {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="rescript", ())} </pre>
-//         </div>
-//       }
-
-//     | _ => React.null
-//     }
+  let make = () => {
+    <div className={""}>
+      <iframe
+        width="100%"
+        id="iframe-eval"
+        className="relative w-full text-gray-20"
+        srcDoc=RenderOutputManager.Frame.srcdoc
+      />
+    </div>
   }
 }
 
@@ -1297,13 +1250,13 @@ module OutputPanel = {
         if type_ === "log" {
           let args: array<string> = data["args"]
 
-          // setLogs(
-          //   previousLogs =>
-          //     logs
-          //     ->Belt.Option.getWithDefault([])
-          //     ->Js.Array2.concat([args])
-          //     ->Some,
-          // )
+          setLogs(
+            _ =>
+              logs
+              ->Belt.Option.getWithDefault([])
+              ->Js.Array2.concat([args])
+              ->Some,
+          )
         }
       })
       None
@@ -1425,7 +1378,7 @@ module OutputPanel = {
     prevSelected.current = selected
 
     let tabs = [
-      (RenderOutput, <RenderOutput compilerState />),
+      (RenderOutput, <RenderOutput />),
       (Console, consolePanel),
       (JavaScript, output),
       (Problems, errorPane),
