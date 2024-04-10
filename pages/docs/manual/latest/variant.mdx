@@ -365,7 +365,7 @@ Here's a list of all possible things you can unbox:
 - `string`: `String(string)`
 - `float`: `Float(float)`. Note you can only have one of `float` or `int` because JavaScript only has `number` (not actually `int` and `float` like in ReScript) so we can't disambiguate between `float` and `int` at runtime.
 - `int`: `Int(int)`. See note above on `float`.
-- `bigint`: `BigInt(int)`. **Since 11.1** This is a distinct type from JavaScripts `number` type so you can use it beside either `float` or `int`.
+- `bigint`: `BigInt(int)`. **Since 11.1** This is a distinct type from JavaScript's `number` type so you can use it beside either `float` or `int`.
 - `bool`: `Boolean(bool)`
 - `array<'value>`: `List(array<string>)`
 - `('a, 'b, 'c)`: `Tuple((string, int, bool))`. Any size of tuples works, but you can have only one case of array or tuple in a variant. 
