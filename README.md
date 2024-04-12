@@ -16,8 +16,8 @@ This is the official documentation platform for the [ReScript](https://rescript-
 
 ## System Requirements
 
-- `node@16.x` or higher (for ES6 module compat)
-- `npm@7` or higher (package-lock v2)
+- `node@18` or higher
+- `npm@10` or higher
 
 ## Setup
 
