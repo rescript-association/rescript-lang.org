@@ -2,8 +2,8 @@
   "Overview": [
     "introduction",
     "installation",
+    "migrate-to-v11",
     "editor-plugins",
-    "migrate-from-bucklescript-reason",
     "try"
   ],
   "Language Features": [
@@ -27,14 +27,17 @@
     "exception",
     "lazy-values",
     "promise",
+    "async-await",
+    "tagged-templates",
     "module",
     "import-export",
     "attribute",
-    "unboxed",
-    "reserved-keywords"
+    "reserved-keywords",
+    "equality-comparison"
   ],
   "Advanced Features": [
-    "extensible-variant"
+    "extensible-variant",
+    "scoped-polymorphic-types"
   ],
   "JavaScript Interop": [
     "interop-cheatsheet",
@@ -50,7 +53,8 @@
     "use-illegal-identifier-names",
     "generate-converters-accessors",
     "browser-support-polyfills",
-    "libraries"
+    "libraries",
+    "typescript-integration"
   ],
   "Build System": [
     "build-overview",

@@ -22,20 +22,7 @@ module Params = {
   type t = {slug: string}
 }
 
-type props = {path: string}
-
-module BlogComponent = {
-  type t = {default: React.component<{.}>}
-
-  @val external require: string => t = "require"
-
-  let frontmatter: React.component<{.}> => Js.Json.t = %raw(`
-      function(component) {
-        if(typeof component.frontmatter === "object") { return component.frontmatter; }
-        return {};
-      }
-    `)
-}
+type props = {mdxSource: MdxRemote.output, isArchived: bool, path: string}
 
 module Line = {
   @react.component
@@ -53,8 +40,7 @@ module AuthorBox = {
         <a
           href={"https://twitter.com/" ++ author.twitter}
           className="hover:text-gray-80"
-          rel="noopener noreferrer"
-          target="_blank">
+          rel="noopener noreferrer">
           {React.string(author.fullname)}
         </a>
         <div className="text-gray-60"> {React.string(author.role)} </div>
@@ -82,7 +68,11 @@ module BlogHeader = {
       <div className="w-full max-w-740">
         <div className="text-gray-60 body-sm mb-5">
           {switch category {
-          | Some(category) => <> {React.string(category)} {React.string(middleDotSpacer)} </>
+          | Some(category) =>
+            <>
+              {React.string(category)}
+              {React.string(middleDotSpacer)}
+            </>
           | None => React.null
           }}
           {React.string(Util.Date.toDayMonthYear(date))}
@@ -117,26 +107,29 @@ module BlogHeader = {
             style={ReactDOMStyle.make(~maxHeight="33.625rem", ())}
           />
         </div>
-      | None => <div className="max-w-740 w-full"> <Line /> </div>
+      | None =>
+        <div className="max-w-740 w-full">
+          <Line />
+        </div>
       }}
     </div>
   }
 }
 
 let default = (props: props) => {
-  let {path} = props
+  let {mdxSource, isArchived, path} = props
 
-  let module_ = BlogComponent.require("../_blogposts/" ++ path)
+  let children =
+    <MdxRemote
+      frontmatter={mdxSource.frontmatter}
+      compiledSource={mdxSource.compiledSource}
+      scope={mdxSource.scope}
+      components={MarkdownComponents.default}
+    />
 
-  let archived = Js.String2.startsWith(path, "archive/")
+  let fm = mdxSource.frontmatter->BlogFrontmatter.decode
 
-  let component = module_.default
-
-  let fm = component->BlogComponent.frontmatter->BlogFrontmatter.decode
-
-  let children = React.createElement(component, Js.Obj.empty())
-
-  let archivedNote = archived
+  let archivedNote = isArchived
     ? {
         open Markdown
         <div className="mb-10">
@@ -181,11 +174,9 @@ let default = (props: props) => {
               <div className="text-24 sm:text-32 text-center text-gray-80 font-medium">
                 {React.string("Want to read more?")}
               </div>
-              <Next.Link href="/blog">
-                <a className="text-fire hover:text-fire-70">
-                  {React.string("Back to Overview")}
-                  <Icon.ArrowRight className="ml-2 inline-block" />
-                </a>
+              <Next.Link href="/blog" className="text-fire hover:text-fire-70">
+                {React.string("Back to Overview")}
+                <Icon.ArrowRight className="ml-2 inline-block" />
               </Next.Link>
             </div>
           </div>
@@ -211,7 +202,7 @@ let default = (props: props) => {
   <MainLayout> content </MainLayout>
 }
 
-let getStaticProps: Next.GetStaticProps.t<props, Params.t> = ctx => {
+let getStaticProps: Next.GetStaticProps.t<props, Params.t> = async ctx => {
   open Next.GetStaticProps
   let {params} = ctx
 
@@ -222,12 +213,23 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = ctx => {
   | Some({path}) => path
   }
 
-  let props = {path: path}
-  let ret = {"props": props}
-  Promise.resolve(ret)
+  let filePath = Node.Path.resolve("_blogposts", path)
+
+  let isArchived = Js.String2.startsWith(path, "archive/")
+
+  let source = filePath->Node.Fs.readFileSync
+
+  let mdxSource = await MdxRemote.serialize(
+    source,
+    {parseFrontmatter: true, mdxOptions: MdxRemote.defaultMdxOptions},
+  )
+
+  let props = {mdxSource, isArchived, path}
+
+  {"props": props}
 }
 
-let getStaticPaths: Next.GetStaticPaths.t<Params.t> = () => {
+let getStaticPaths: Next.GetStaticPaths.t<Params.t> = async () => {
   open Next.GetStaticPaths
 
   let paths = BlogApi.getAllPosts()->Belt.Array.map(postData => {
@@ -235,6 +237,6 @@ let getStaticPaths: Next.GetStaticPaths.t<Params.t> = () => {
       Params.slug: BlogApi.blogPathToSlug(postData.path),
     },
   })
-  let ret = {paths: paths, fallback: false}
-  Promise.resolve(ret)
+
+  {paths, fallback: false}
 }

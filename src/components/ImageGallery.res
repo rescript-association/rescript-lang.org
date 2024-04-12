@@ -6,18 +6,20 @@ type mode =
 let make = (~className="", ~imgClassName="", ~imgSrcs: array<string>, ~mode=NoAuto) => {
   let (index, setIndex) = React.useState(_ => 0)
 
-  React.useEffect0(() => {
+  React.useEffect(() => {
     switch mode {
     | NoAuto => None
     | AutoFadeTransition(ms) =>
       let timerId = Js.Global.setInterval(() => {
-        setIndex(prev => {
-          if prev === imgSrcs->Belt.Array.length - 1 {
-            0
-          } else {
-            prev + 1
-          }
-        })
+        setIndex(
+          prev => {
+            if prev === imgSrcs->Belt.Array.length - 1 {
+              0
+            } else {
+              prev + 1
+            }
+          },
+        )
       }, ms)
 
       Some(
@@ -26,7 +28,7 @@ let make = (~className="", ~imgClassName="", ~imgSrcs: array<string>, ~mode=NoAu
         },
       )
     }
-  })
+  }, [])
 
   let src = imgSrcs->Belt.Array.getExn(index)
 

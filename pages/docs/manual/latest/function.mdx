@@ -180,7 +180,7 @@ Labeled function arguments can be made optional during declaration. You can then
 
 ```res
 // radius can be omitted
-let drawCircle = (~color, ~radius=?, ()) => {
+let drawCircle = (~color, ~radius=?) => {
   setColor(color)
   switch radius {
   | None => startAt(1, 1)
@@ -191,7 +191,7 @@ let drawCircle = (~color, ~radius=?, ()) => {
 ```js
 var Caml_option = require("./stdlib/caml_option.js");
 
-function drawCircle(color, radius, param) {
+function drawCircle(color, radius) {
   setColor(color);
   if (radius === undefined) {
     return startAt(1, 1);
@@ -207,8 +207,6 @@ When given in this syntax, `radius` is **wrapped** in the standard library's `op
 
 More on `option` type [here](null-undefined-option.md).
 
-**Note** for the sake of the type system, whenever you have an optional argument, you need to ensure that there's also at least one positional argument (aka non-labeled, non-optional argument) after it. If there's none, provide a dummy `unit` (aka `()`) argument.
-
 ### Signatures and Type Annotations
 
 Functions with optional labeled arguments can be confusing when it comes to signature and type annotations. Indeed, the type of an optional labeled argument looks different depending on whether you're calling the function, or working inside the function body. Outside the function, a raw value is either passed in (`int`, for example), or left off entirely. Inside the function, the parameter is always there, but its value is an option (`option<int>`). This means that the type signature is different, depending on whether you're writing out the function type, or the parameter type annotation. The first being a raw value, and the second being an option.
@@ -218,8 +216,8 @@ If we get back to our previous example and both add a signature and type annotat
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-let drawCircle: (~color: color, ~radius: int=?, unit) => unit =
-  (~color: color, ~radius: option<int>=?, ()) => {
+let drawCircle: (~color: color, ~radius: int=?) => unit =
+  (~color: color, ~radius: option<int>=?) => {
     setColor(color)
     switch radius {
     | None => startAt(1, 1)
@@ -228,7 +226,7 @@ let drawCircle: (~color: color, ~radius: int=?, unit) => unit =
   }
 ```
 ```js
-function drawCircle(color, radius, param) {
+function drawCircle(color, radius) {
   setColor(color);
   if (radius !== undefined) {
     return startAt(radius, radius);
@@ -255,16 +253,16 @@ Sometimes, you might want to forward a value to a function without knowing wheth
 ```res
 let result =
   switch payloadRadius {
-  | None => drawCircle(~color, ())
-  | Some(r) => drawCircle(~color, ~radius=r, ())
+  | None => drawCircle(~color)
+  | Some(r) => drawCircle(~color, ~radius=r)
   }
 ```
 ```js
 var r = payloadRadius;
 
 var result = r !== undefined
-  ? drawCircle(color, Caml_option.valFromOption(r), undefined)
-  : drawCircle(color, undefined);
+  ? drawCircle(color, Caml_option.valFromOption(r))
+  : drawCircle(color);
 ```
 
 </CodeTab>
@@ -274,10 +272,10 @@ This quickly gets tedious. We provide a shortcut:
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-let result = drawCircle(~color, ~radius=?payloadRadius, ())
+let result = drawCircle(~color, ~radius=?payloadRadius)
 ```
 ```js
-var result = drawCircle(1, undefined, undefined);
+var result = drawCircle(1, undefined);
 ```
 
 </CodeTab>
@@ -291,13 +289,13 @@ Optional labeled arguments can also be provided a default value. In this case, t
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-let drawCircle = (~radius=1, ~color, ()) => {
+let drawCircle = (~radius=1, ~color) => {
   setColor(color)
   startAt(radius, radius)
 }
 ```
 ```js
-function drawCircle(radiusOpt, color, param) {
+function drawCircle(radiusOpt, color) {
   var radius = radiusOpt !== undefined ? radiusOpt : 1;
   setColor(color);
   return startAt(radius, radius);
@@ -388,53 +386,124 @@ function callFirst(_param) {
 
 </CodeTab>
 
-## Uncurried Function
+## Partial Application
 
-ReScript's functions are curried by default, which is one of the few performance penalties we pay in the compiled JS output. The compiler does a best-effort job at removing those currying whenever possible. However, in certain edge cases, you might want guaranteed uncurrying. In those cases, put a dot in the function's parameter list:
+**Since 11.0**
+
+To partially apply a function, use the explicit `...` syntax. 
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+```res
+let add = (a, b) => a + b
+let addFive = add(5, ...)
+```
+
+```js
+function add(a, b) {
+  return a + b | 0;
+}
+
+function addFive(extra) {
+  return 5 + extra | 0;
+}
+```
+</CodeTab>
+
+## Async/Await
+
+Just as in JS, an async function can be declared by adding `async` before the definition, and `await` can be used in the body of such functions.
+The output looks like idiomatic JS:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-let add = (. x, y) => x + y
+let getUserName = async (userId) => userId
 
-add(. 1, 2)
+let greetUser = async (userId) => {
+  let name = await getUserName(userId)  
+  "Hello " ++ name ++ "!"
+}
 ```
 ```js
-function add(x, y) {
-  return x + y | 0;
+async function greetUser(userId) {
+  var name = await getUserName(userId);
+  return "Hello " + name + "!";
 }
-
-add(1, 2);
 ```
-
 </CodeTab>
 
-If you need to call a curried function with a single unit `()` argument, you can use the `ignore()` function:
+The return type of `getUser` is inferred to be `promise<string>`.
+Similarly, `await getUserName(userId)` returns a `string` when the function returns `promise<string>`.
+Using `await` outside of an `async` function (including in a non-async callback to an async function) is an error.
+
+### Ergonomic error handling
+
+Error handling is done by simply using `try`/`catch`, or a switch with an `exception` case, just as in functions that are not async.
+Both JS exceptions and exceptions defined in ReScript can be caught. The compiler takes care of packaging JS exceptions into the builtin `JsError` exception:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-let echo = (. a) => a
+exception SomeReScriptException
 
-echo(. ignore())
-```
+let somethingThatMightThrow = async () => raise(SomeReScriptException)
 
-```js
-function echo(a) {
-  return a;
+let someAsyncFn = async () => {
+  switch await somethingThatMightThrow() {
+  | data => Some(data)
+  | exception JsError(_) => None
+  | exception SomeReScriptException => None
+  }
 }
-
-echo(undefined);
 ```
+```js
+var SomeReScriptException = /* @__PURE__ */Caml_exceptions.create("Example.SomeReScriptException");
 
+async function someAsyncFn(param) {
+  var data;
+  try {
+    data = await somethingThatMightThrow(undefined);
+  }
+  catch (raw_exn){
+    var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+    if (exn.RE_EXN_ID === "JsError") {
+      return ;
+    }
+    if (exn.RE_EXN_ID === SomeReScriptException) {
+      return ;
+    }
+    throw exn;
+  }
+  return data;
+}
+```
 </CodeTab>
 
 
-If you write down the uncurried function's type, you'll add a dot there as well.
 
-**Note**: both the declaration site and the call site need to have the uncurry annotation. That's part of the guarantee/requirement.
+## The ignore() Function
 
-**This feature seems trivial**, but is actually one of our most important features, as a primarily functional language. We encourage you to use it if you'd like to remove any mention of `Curry` runtime in the JS output.
+Occasionally you may want to ignore the return value of a function. ReScript provides an `ignore()` function that discards the value of its argument and returns `()`:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+mySideEffect()->Promise.catch(handleError)->ignore
+
+setTimeout(myFunc, 1000)->ignore
+```
+
+```js
+$$Promise.$$catch(mySideEffect(), function (prim) {
+  return handleError(prim);
+});
+
+setTimeout(function (prim) {
+  myFunc();
+}, 1000);
+```
+
+</CodeTab>
 
 ## Tips & Tricks
 

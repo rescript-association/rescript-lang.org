@@ -2,7 +2,6 @@ name: Test
 on: [pull_request]
 jobs:
   build:
-    name: Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -12,3 +11,6 @@ jobs:
       - run: npm ci
       - run: npx rescript
       - run: npm test
+
+      - name: Format check
+        run: npx rescript format -check -all

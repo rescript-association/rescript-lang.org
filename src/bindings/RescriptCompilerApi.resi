@@ -22,12 +22,17 @@ module Lang: {
 module Version: {
   type t =
     | V1
+    | V2
+    | V3
+    | V4
     | UnknownVersion(string)
 
   // Helps finding the right API version
   let fromString: string => t
 
-  let defaultTargetLang: t => Lang.t
+  let toString: t => string
+
+  let defaultTargetLang: Lang.t
 
   let availableLanguages: t => array<Lang.t>
 }
@@ -153,6 +158,9 @@ module Config: {
   type t = {
     module_system: string,
     warn_flags: string,
+    /** Only available in apiVersion > 3 (= ReScript 11+) */
+    uncurried?: bool,
+    open_modules?: array<string>,
   }
 }
 
@@ -174,7 +182,6 @@ module Compiler: {
   /*
    * Reason compiler actions
    */
-  let reasonVersion: t => string
   let reasonCompile: (t, string) => CompilationResult.t
   let reasonFormat: (t, string) => ConversionResult.t
 
@@ -192,6 +199,7 @@ module Compiler: {
   let setModuleSystem: (t, [#es6 | #nodejs]) => bool
 
   let setWarnFlags: (t, string) => bool
+  let setOpenModules: (t, array<string>) => bool
   let setConfig: (t, Config.t) => unit
 
   // General format function

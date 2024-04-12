@@ -1,4 +1,4 @@
-module Github = {
+module GitHub = {
   @react.component
   let make = (~className: string) =>
     <svg
@@ -112,7 +112,8 @@ module CornerLeftUp = {
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="2px">
-      <path d="M11.414 6l-5-5-5 5" /> <path d="M17.414 17h-7a4 4 0 01-4-4V1" />
+      <path d="M11.414 6l-5-5-5 5" />
+      <path d="M17.414 17h-7a4 4 0 01-4-4V1" />
     </svg>
 }
 
@@ -219,29 +220,17 @@ module ExternalLink = {
     <svg
       className={"stroke-current " ++ className}
       xmlns="http://www.w3.org/2000/svg"
-      width="16.098"
-      height="16.122"
-      viewBox="0 0 16.098 16.122">
-      <g transform="translate(-1046.283 -564.299)">
-        <path
-          d="M1987.235-1783.927h-4.849v11.17h11.164v-5.113"
-          transform="translate(-935.353 2352.43)"
-          fill="none"
-          strokeWidth="1.5"
-        />
-        <g transform="translate(1051.72 570.607) rotate(-45)">
-          <path d="M0,0H7.467" transform="translate(0 3.128)" fill="none" strokeWidth="1.5" />
-          <path
-            d="M0,0,3.078,3.078,0,6.156"
-            transform="translate(4.252 0)"
-            fill="none"
-            strokeWidth="1.5"
-          />
-        </g>
-      </g>
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round">
+      <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" />
     </svg>
 }
-
 
 module Copy = {
   @react.component
@@ -254,18 +243,30 @@ module Copy = {
       fill="none"
       xmlns="http://www.w3.org/2000/svg">
       <rect
-        x="8.00012"
-        y="8.3175"
-        width="12"
-        height="12"
-        rx="2"
-        strokeWidth="2"
-        strokeLinecap="round"
+        x="8.00012" y="8.3175" width="12" height="12" rx="2" strokeWidth="2" strokeLinecap="round"
       />
       <path
         d="M16.0001 4.3175H7.00012C5.34327 4.3175 4.00012 5.66065 4.00012 7.3175V16.3175"
         strokeWidth="2"
         strokeLinecap="square"
       />
+    </svg>
+}
+
+module Clipboard = {
+  @react.component
+  let make = (~className="") =>
+    <svg
+      className={"stroke-current " ++ className}
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round">
+      <path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2" />
+      <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
     </svg>
 }

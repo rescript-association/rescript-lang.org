@@ -1,7 +1,7 @@
 module Link = Next.Link
 
-let link = "no-underline block text-inherit hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px"
-let activeLink = "text-inherit font-medium text-fire-30 border-b border-fire"
+let link = "no-underline block hover:cursor-pointer hover:text-fire-30 text-gray-40 mb-px"
+let activeLink = "font-medium text-fire-30 border-b border-fire"
 
 let linkOrActiveLink = (~target, ~route) => target === route ? activeLink : link
 
@@ -16,7 +16,7 @@ let linkOrActiveApiSubroute = (~route) => {
   }
 }
 
-let githubHref = "https://github.com/reason-association/rescript-lang.org#rescript-langorg"
+let githubHref = "https://github.com/rescript-lang/rescript-compiler"
 //let twitterHref = "https://twitter.com/rescriptlang"
 let discourseHref = "https://forum.rescript-lang.org"
 
@@ -140,9 +140,9 @@ module DocsSection = {
         </div>
 
       if isAbsolute {
-        <a href rel="noopener noreferrer" target="_blank" className=""> content </a>
+        <a href rel="noopener noreferrer" className=""> content </a>
       } else {
-        <Next.Link href> <a className=""> content </a> </Next.Link>
+        <Next.Link href className=""> content </Next.Link>
       }
     }
   }
@@ -168,8 +168,8 @@ module DocsSection = {
         description: "Reference for all language features",
         href: `/docs/manual/${version}/introduction`,
         isActive: url => {
-          switch url.base {
-          | ["docs", "manual"] => true
+          switch url.fullpath {
+          | ["docs", "manual", _, fragment] => fragment !== "typescript-integration"
           | _ => false
           }
         },
@@ -189,11 +189,11 @@ module DocsSection = {
       {
         imgSrc: "/static/ic_gentype@2x.png",
         title: "GenType",
-        description: "Seamless TypeScript & Flow integration",
-        href: "/docs/gentype/latest/introduction",
+        description: "Seamless TypeScript integration",
+        href: "/docs/manual/latest/typescript-integration",
         isActive: url => {
-          switch url.base {
-          | ["docs", "gentype"] => true
+          switch url.fullpath {
+          | ["docs", "manual", _, "typescript-integration"] => true
           | _ => false
           }
         },
@@ -202,7 +202,7 @@ module DocsSection = {
         imgSrc: "/static/ic_reanalyze@2x.png",
         title: "Reanalyze",
         description: "Dead Code & Termination analysis",
-        href: "https://github.com/reason-association/reanalyze",
+        href: "https://github.com/rescript-association/reanalyze",
         isActive: _ => {
           false
         },
@@ -230,7 +230,7 @@ module DocsSection = {
 
                 <li key=text>
                   <span className="text-fire mr-2"> {React.string(`-`)} </span>
-                  <Link href> <a className=linkClass> {React.string(text)} </a> </Link>
+                  <Link href className=linkClass> {React.string(text)} </Link>
                 </li>
               })
               ->React.array}
@@ -306,7 +306,10 @@ module DocsSection = {
                 />
               }
 
-              <> packageLink syntaxLookupLink </>
+              <>
+                packageLink
+                syntaxLookupLink
+              </>
             }
           </div>
         </div>
@@ -348,7 +351,9 @@ module DocsSection = {
       </div>
       <div className="flex justify-center">
         <div className="w-full sm:grid sm:grid-cols-3 max-w-1280">
-          languageManualColumn ecosystemColumn quickReferenceColumn
+          languageManualColumn
+          ecosystemColumn
+          quickReferenceColumn
         </div>
       </div>
       <img
@@ -367,46 +372,40 @@ module MobileNav = {
     let extLink = "block hover:cursor-pointer hover:text-white text-gray-60"
     <div className="border-gray-80 border-t">
       <ul>
-        <li className=base> <DocSearch.Textbox id="docsearch-mobile" /> </li>
         <li className=base>
-          <Link href="/try">
-            <a className={linkOrActiveLink(~target="/try", ~route)}>
-              {React.string("Playground")}
-            </a>
+          <DocSearch.Textbox id="docsearch-mobile" />
+        </li>
+        <li className=base>
+          <Link href="/try" className={linkOrActiveLink(~target="/try", ~route)}>
+            {React.string("Playground")}
           </Link>
         </li>
         <li className=base>
-          <Link href="/blog">
-            <a className={linkOrActiveLinkSubroute(~target="/blog", ~route)}>
-              {React.string("Blog")}
-            </a>
+          <Link href="/blog" className={linkOrActiveLinkSubroute(~target="/blog", ~route)}>
+            {React.string("Blog")}
           </Link>
         </li>
         /*
          <li className=base>
-           <Link href="/community">
-             <a className={linkOrActiveLink(~target="/community", ~route)}>
+           <Link href="/community"  className={linkOrActiveLink(~target="/community", ~route)}>
+             
                {React.string("Community")}
-             </a>
+             
            </Link>
          </li>
  */
         <li className=base>
-          <a
-            href="https://twitter.com/rescriptlang"
-            rel="noopener noreferrer"
-            target="_blank"
-            className=extLink>
+          <a href="https://twitter.com/rescriptlang" rel="noopener noreferrer" className=extLink>
             {React.string("Twitter")}
           </a>
         </li>
         <li className=base>
-          <a href=githubHref rel="noopener noreferrer" target="_blank" className=extLink>
-            {React.string("Github")}
+          <a href=githubHref rel="noopener noreferrer" className=extLink>
+            {React.string("GitHub")}
           </a>
         </li>
         <li className=base>
-          <a href=discourseHref rel="noopener noreferrer" target="_blank" className=extLink>
+          <a href=discourseHref rel="noopener noreferrer" className=extLink>
             {React.string("Forum")}
           </a>
         </li>
@@ -430,6 +429,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
         let url = Url.parse(route)
         switch url {
         | {base: ["docs"]}
+        | {base: ["docs", "react"]}
         | {base: ["docs", "gentype"]}
         | {base: ["docs", "manual"]} =>
           switch Belt.Array.get(url.pagepath, 0) {
@@ -469,7 +469,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
   // Client side navigation requires us to reset the collapsibles
   // whenever a route change had occurred, otherwise the collapsible
   // will stay open, even though you clicked a link
-  React.useEffect0(() => {
+  React.useEffect(() => {
     open Next.Router.Events
     let {Next.Router.events: events} = router
 
@@ -487,7 +487,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
         events->off(#hashChangeComplete(onChangeComplete))
       },
     )
-  })
+  }, [])
 
   let fixedNav = fixed ? "fixed top-0" : "relative"
 
@@ -495,7 +495,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
     setCollapsibles(prev => {
       Belt.Array.keepMap(prev, next => {
         if next.title === id {
-          Some({...next, state: state})
+          Some({...next, state})
         } else {
           None
         }
@@ -538,40 +538,39 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
             className="flex ml-10 space-x-5 w-full max-w-320"
             style={ReactDOMStyle.make(~maxWidth="26rem", ())}>
             {collapsibleElements->React.array}
-            <Link href="/docs/manual/latest/api">
-              <a className={linkOrActiveApiSubroute(~route)}> {React.string("API")} </a>
+            <Link href="/docs/manual/latest/api" className={linkOrActiveApiSubroute(~route)}>
+              {React.string("API")}
             </Link>
-            <Link href="/try">
-              <a className={"hidden xs:block " ++ linkOrActiveLink(~target="/try", ~route)}>
-                {React.string("Playground")}
-              </a>
+            <Link
+              href="/try"
+              className={"hidden xs:block " ++ linkOrActiveLink(~target="/try", ~route)}>
+              {React.string("Playground")}
             </Link>
-            <Link href="/blog">
-              <a
-                className={"hidden xs:block " ++ linkOrActiveLinkSubroute(~target="/blog", ~route)}>
-                {React.string("Blog")}
-              </a>
+            <Link
+              href="/blog"
+              className={"hidden xs:block " ++ linkOrActiveLinkSubroute(~target="/blog", ~route)}>
+              {React.string("Blog")}
             </Link>
-            <Link href="/community">
-              <a className={"hidden xs:block " ++ linkOrActiveLink(~target="/community", ~route)}>
-                {React.string("Community")}
-              </a>
+            <Link
+              href="/community"
+              className={"hidden xs:block " ++ linkOrActiveLink(~target="/community", ~route)}>
+              {React.string("Community")}
             </Link>
           </div>
           <div className="hidden md:flex items-center">
-            <div className="hidden sm:block mr-6"> <DocSearch /> </div>
-            <a
-              href=githubHref rel="noopener noreferrer" target="_blank" className={"mr-5 " ++ link}>
-              <Icon.Github className="w-6 h-6 opacity-50 hover:opacity-100" />
+            <div className="hidden sm:block mr-6">
+              <DocSearch />
+            </div>
+            <a href=githubHref rel="noopener noreferrer" className={"mr-5 " ++ link}>
+              <Icon.GitHub className="w-6 h-6 opacity-50 hover:opacity-100" />
             </a>
             <a
               href="https://twitter.com/rescriptlang"
               rel="noopener noreferrer"
-              target="_blank"
               className={"mr-5 " ++ link}>
               <Icon.Twitter className="w-6 h-6 opacity-50 hover:opacity-100" />
             </a>
-            <a href=discourseHref rel="noopener noreferrer" target="_blank" className=link>
+            <a href=discourseHref rel="noopener noreferrer" className=link>
               <Icon.Discourse className="w-6 h-6 opacity-50 hover:opacity-100" />
             </a>
           </div>
@@ -585,7 +584,9 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
           resetCollapsibles()
           toggleOverlay()
         }}>
-        <Icon.DrawerDots className={"h-1 w-auto block " ++ (isOverlayOpen ? "text-fire" : "text-gray-60")} />
+        <Icon.DrawerDots
+          className={"h-1 w-auto block " ++ (isOverlayOpen ? "text-fire" : "text-gray-60")}
+        />
       </button>
       /* Mobile overlay */
       <div

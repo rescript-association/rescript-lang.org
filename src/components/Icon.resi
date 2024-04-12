@@ -1,4 +1,4 @@
-module Github: {
+module GitHub: {
   @react.component
   let make: (~className: string) => React.element
 }
@@ -70,6 +70,11 @@ module ExternalLink: {
 }
 
 module Copy: {
+  @react.component
+  let make: (~className: string=?) => React.element
+}
+
+module Clipboard: {
   @react.component
   let make: (~className: string=?) => React.element
 }

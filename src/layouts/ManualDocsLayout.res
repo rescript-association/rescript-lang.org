@@ -1,21 +1,26 @@
 module LatestLayout = DocsLayout.Make({
   // Structure defined by `scripts/extract-tocs.js`
-  let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_latest_toc.json')")
+  @module("index_data/manual_latest_toc.json") external tocData: SidebarLayout.Toc.raw = "default"
 })
 
 module V800Layout = DocsLayout.Make({
   // Structure defined by `scripts/extract-tocs.js`
-  let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_v800_toc.json')")
+  @module("index_data/manual_v800_toc.json") external tocData: SidebarLayout.Toc.raw = "default"
 })
 
 module V900Layout = DocsLayout.Make({
   // Structure defined by `scripts/extract-tocs.js`
-  let tocData: SidebarLayout.Toc.raw = %raw("require('index_data/manual_v900_toc.json')")
+  @module("index_data/manual_v900_toc.json") external tocData: SidebarLayout.Toc.raw = "default"
+})
+
+module V1000Layout = DocsLayout.Make({
+  // Structure defined by `scripts/extract-tocs.js`
+  @module("index_data/manual_v1000_toc.json") external tocData: SidebarLayout.Toc.raw = "default"
 })
 
 module Latest = {
   @react.component
-  let make = (~frontmatter=?, ~components=Markdown.default, ~children) => {
+  let make = (~frontmatter=?, ~components=MarkdownComponents.default, ~children) => {
     let router = Next.Router.useRouter()
     let route = router.route
 
@@ -58,9 +63,57 @@ module Latest = {
   }
 }
 
+module V1000 = {
+  @react.component
+  let make = (~frontmatter=?, ~components=MarkdownComponents.default, ~children) => {
+    let router = Next.Router.useRouter()
+    let route = router.route
+
+    let url = route->Url.parse
+
+    let version = switch url.version {
+    | Version(version) => version
+    | NoVersion => "latest"
+    | Latest => "latest"
+    }
+
+    let breadcrumbs = list{
+      {
+        open Url
+        {name: "Docs", href: "/docs/" ++ version}
+      },
+      {
+        open Url
+        {
+          name: "Language Manual",
+          href: "/docs/manual/" ++ (version ++ "/introduction"),
+        }
+      },
+    }
+
+    let title = "Language Manual"
+
+    <V1000Layout
+      theme=#Reason
+      components
+      version
+      title
+      metaTitleCategory="ReScript Language Manual"
+      availableVersions=Constants.allManualVersions
+      ?frontmatter
+      breadcrumbs>
+      children
+    </V1000Layout>
+  }
+}
+
 module V900 = {
   @react.component
-  let make = (~frontmatter: option<Js.Json.t>=?, ~components=Markdown.default, ~children) => {
+  let make = (
+    ~frontmatter: option<Js.Json.t>=?,
+    ~components=MarkdownComponents.default,
+    ~children,
+  ) => {
     let router = Next.Router.useRouter()
     let route = router.route
 
@@ -104,7 +157,7 @@ module V900 = {
 
 module V800 = {
   @react.component
-  let make = (~frontmatter=?, ~components=Markdown.default, ~children) => {
+  let make = (~frontmatter=?, ~components=MarkdownComponents.default, ~children) => {
     let router = Next.Router.useRouter()
     let route = router.route
 
@@ -178,7 +231,8 @@ module V800 = {
       availableVersions=Constants.allManualVersions
       ?frontmatter
       breadcrumbs>
-      warnBanner children
+      warnBanner
+      children
     </V800Layout>
   }
 }

@@ -2,7 +2,7 @@
   "Overview": [
     "introduction",
     "installation",
-    "migrate-from-reason-react"
+    "migrate-react"
   ],
   "Main Concepts": [
     "elements-and-jsx",
@@ -12,7 +12,8 @@
     "refs-and-the-dom",
     "context",
     "styling",
-    "router"
+    "router",
+    "lazy-components"
   ],
   "Hooks & State Management": [
     "hooks-overview",
@@ -25,6 +26,7 @@
   ],
   "Guides": [
     "beyond-jsx",
-    "forwarding-refs"
+    "forwarding-refs",
+    "extensions-of-props"
   ]
 }

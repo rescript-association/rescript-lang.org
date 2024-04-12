@@ -67,9 +67,9 @@ Later on, when another piece of code receives such value, it'd be forced to hand
 ```res
 switch licenseNumber {
 | None =>
-  Js.log("The person doesn't have a car")
+  Console.log("The person doesn't have a car")
 | Some(number) =>
-  Js.log("The person's license number is " ++ Js.Int.toString(number))
+  Console.log("The person's license number is " ++ Int.toString(number))
 }
 ```
 ```js
@@ -159,18 +159,18 @@ Unfortunately, lots of times, your JavaScript value might be _both_ `null` or `u
 
 #### Solution: More Sophisticated `undefined` & `null` Interop
 
-To solve this, we provide access to more elaborate `null` and `undefined` helpers through the [`Js.Nullable`](api/js/nullable) module. This somewhat works like an `option` type, but is different from it.
+To solve this, we provide access to more elaborate `null` and `undefined` helpers through the [`Nullable`](api/core/nullable) module. This somewhat works like an `option` type, but is different from it.
 
 #### Examples
 
-To create a JS `null`, use the value `Js.Nullable.null`. To create a JS `undefined`, use `Js.Nullable.undefined` (you can naturally use `None` too, but that's not the point here; the `Js.Nullable.*` helpers wouldn't work with it).
+To create a JS `null`, use the value `Nullable.null`. To create a JS `undefined`, use `Nullable.undefined` (you can naturally use `None` too, but that's not the point here; the `Nullable.*` helpers wouldn't work with it).
 
 If you're receiving, for example, a JS string that can be `null` and `undefined`, type it as:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-@module("MyConstant") external myId: Js.Nullable.t<string> = "myId"
+@module("MyConstant") external myId: Nullable.t<string> = "myId"
 ```
 ```js
 // Empty output
@@ -183,8 +183,8 @@ To create such a nullable string from our side (presumably to pass it to the JS 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-@module("MyIdValidator") external validate: Js.Nullable.t<string> => bool = "validate"
-let personId: Js.Nullable.t<string> = Js.Nullable.return("abc123")
+@module("MyIdValidator") external validate: Nullable.t<string> => bool = "validate"
+let personId: Nullable.t<string> = Nullable.make("abc123")
 
 let result = validate(personId)
 ```
@@ -200,4 +200,4 @@ The `return` part "wraps" a string into a nullable string, to make the type syst
 
 #### Convert to/from `option`
 
-`Js.Nullable.fromOption` converts from a `option` to `Js.Nullable.t`. `Js.Nullable.toOption` does the opposite.
+`Nullable.fromOption` converts from a `option` to `Nullable.t`. `Nullable.toOption` does the opposite.

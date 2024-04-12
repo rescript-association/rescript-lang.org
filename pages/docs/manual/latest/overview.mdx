@@ -17,10 +17,12 @@ canonical: "/docs/manual/latest/overview"
 
 ### Comments
 
-| JavaScript        | ReScript    |
-| ----------------- | ----------- |
-| `/* Comment */`   | Same        |
-| `// Line comment` | Same        |
+| JavaScript           | ReScript                         |
+| -------------------- | -------------------------------- |
+| `// Line comment`    | Same                             |
+| `/* Comment */`      | Same                             |
+| `/** Doc Comment */` | `/** Before Types/Values */`     |
+|                      | `/*** Standalone Doc Comment */` |
 
 ### Variable
 
@@ -32,12 +34,13 @@ canonical: "/docs/manual/latest/overview"
 
 ### String & Character
 
-| JavaScript                | ReScript              |
-| --------------------------| --------------------- |
-| `"Hello world!"`          | Same                  |
-| `'Hello world!'`          | Strings must use `"`  |
-| `"hello " + "world"`      | `"hello " ++ "world"` |
-| `` `hello ${message}` ``  | Same                  |
+| JavaScript                    | ReScript              |
+| ----------------------------- | --------------------- |
+| `"Hello world!"`              | Same                  |
+| `'Hello world!'`              | Strings must use `"`  |
+| `"hello " + "world"`          | `"hello " ++ "world"` |
+| `` `hello ${message}` ``      | Same                  |
+| `` sql`select ${fnName};` ``  | Same                  |
 
 ### Boolean
 
@@ -80,7 +83,7 @@ canonical: "/docs/manual/latest/overview"
 | `myArray[1] = 10`     | Same                               |
 | `[1, "Bob", true]`    | `(1, "Bob", true)` \*              |
 
-\* Heterogenous arrays in JS are disallowed for us. Use tuple instead.
+\* ReScript does not have heterogenous arrays. Use tuples or [Untagged Variants](variant#untagged-variants) instead.
 
 ### Null
 
@@ -99,30 +102,43 @@ canonical: "/docs/manual/latest/overview"
 | `const f = function(arg) {...}` | `let f = (arg) => {...}`     |
 | `add(4, add(5, 6))`             | Same                         |
 
+### Async Function / Await
+
+| JavaScript                               | ReScript                           |
+| ---------------------------------------- | ---------------------------------- |
+| `async (arg) => {...}`                   | Same                               |
+| `async function named(arg) {...}`        | `let named = async (arg) => {...}` |
+| `await somePromise`                      | Same                               |
+| `async (arg): Promise<string> => {...}`  | `async (arg): string => {...}` (note the return type)|
+
 ### Blocks
 
 <table>
   <thead>
     <tr>
       <th>JavaScript</th>
-      <th>ReScript  </th>
+      <th>ReScript</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-  <pre><code>{`const myFun = (x, y) => {
-  const doubleX = x + x;
-  const doubleY = y + y;
-  return doubleX + doubleY
-};`}</code></pre>
+      ```
+      const myFun = (x, y) => {
+        const doubleX = x + x;
+        const doubleY = y + y;
+        return doubleX + doubleY
+      };
+      ```
       </td>
       <td>
-  <pre><code>{`let myFun = (x, y) => {
-  let doubleX = x + x
-  let doubleY = y + y
-  doubleX + doubleY
-}`}</code></pre>
+      ```
+      let myFun = (x, y) => {
+        let doubleX = x + x
+        let doubleY = y + y
+        doubleX + doubleY
+      }
+      ```
       </td>
     </tr>
   </tbody>
@@ -143,7 +159,7 @@ canonical: "/docs/manual/latest/overview"
 | JavaScript                    | ReScript                                      |
 | ----------------------------- | --------------------------------------------- |
 | `const {a, b} = data`         | `let {a, b} = data`                           |
-| `const [a, b] = data`         | <code>let [a, b] = data</code> \*             |
+| `const [a, b] = data`         | `let [a, b] = data` \*             |
 | `const {a: aa, b: bb} = data` | `let {a: aa, b: bb} = data`                   |
 
 \* Gives good compiler warning that `data` might not be of length 2.
@@ -172,7 +188,7 @@ canonical: "/docs/manual/latest/overview"
 | JavaScript                                      | ReScript                                   |
 | ----------------------------------------------- | ------------------------------------------ |
 | `throw new SomeError(...)`                      | `raise(SomeError(...))`                    |
-| `try {a} catch (Err) {...} finally {...}`       | <code>try a catch { &#124; Err => ...}</code> \* |
+| `try {a} catch (err) {...} finally {...}`       | `try a catch { \| SomeError(err) => ...}` \* |
 
 \* No finally.
 
@@ -190,18 +206,22 @@ The last expression of a block delimited by `{}` implicitly returns (including f
   <tbody>
     <tr>
       <td>
-  <pre><code>{`let result = (function() {
-  const x = 23;
-  const y = 34;
-  return x + y;
-})();`}</code></pre>
+      ```
+      let result = (function() {
+        const x = 23;
+        const y = 34;
+        return x + y;
+      })();
+      ```
       </td>
       <td>
-  <pre><code>{`let result = {
-  let x = 23
-  let y = 34
-  x + y
-}`}</code></pre>
+      ```
+      let result = {
+        let x = 23
+        let y = 34
+        x + y
+      }
+      ```
       </td>
     </tr>
   </tbody>

@@ -8,7 +8,7 @@
     This file is providing the core functionality and logic of our CodeMirror instances.
  */
 
-let useWindowWidth: unit => int = %raw(j` () => {
+let useWindowWidth: unit => int = %raw(` () => {
   const isClient = typeof window === 'object';
 
   function getSize() {
@@ -53,22 +53,15 @@ module CM = {
   let errorGutterId = "errors"
 
   module Options = {
-    @deriving({abstract: light})
     type t = {
       theme: string,
-      @optional
-      gutters: array<string>,
+      gutters?: array<string>,
       mode: string,
-      @optional
-      lineNumbers: bool,
-      @optional
-      readOnly: bool,
-      @optional
-      lineWrapping: bool,
-      @optional
-      fixedGutter: bool,
-      @optional
-      scrollbarStyle: string,
+      lineNumbers?: bool,
+      readOnly?: bool,
+      lineWrapping?: bool,
+      fixedGutter?: bool,
+      scrollbarStyle?: string,
     }
   }
 
@@ -76,42 +69,42 @@ module CM = {
   external onMouseOver: (
     Dom.element,
     @as("mouseover") _,
-    @uncurry (ReactEvent.Mouse.t => unit),
+    @uncurry ReactEvent.Mouse.t => unit,
   ) => unit = "on"
 
   @module("codemirror")
   external onMouseMove: (
     Dom.element,
     @as("mousemove") _,
-    @uncurry (ReactEvent.Mouse.t => unit),
+    @uncurry ReactEvent.Mouse.t => unit,
   ) => unit = "on"
 
   @module("codemirror")
   external offMouseOver: (
     Dom.element,
     @as("mouseover") _,
-    @uncurry (ReactEvent.Mouse.t => unit),
+    @uncurry ReactEvent.Mouse.t => unit,
   ) => unit = "off"
 
   @module("codemirror")
   external offMouseOut: (
     Dom.element,
     @as("mouseout") _,
-    @uncurry (ReactEvent.Mouse.t => unit),
+    @uncurry ReactEvent.Mouse.t => unit,
   ) => unit = "off"
 
   @module("codemirror")
   external offMouseMove: (
     Dom.element,
     @as("mousemove") _,
-    @uncurry (ReactEvent.Mouse.t => unit),
+    @uncurry ReactEvent.Mouse.t => unit,
   ) => unit = "off"
 
   @module("codemirror")
   external onMouseOut: (
     Dom.element,
     @as("mouseout") _,
-    @uncurry (ReactEvent.Mouse.t => unit),
+    @uncurry ReactEvent.Mouse.t => unit,
   ) => unit = "on"
 
   @module("codemirror")
@@ -129,7 +122,7 @@ module CM = {
   @send external refresh: t => unit = "refresh"
 
   @send
-  external onChange: (t, @as("change") _, @uncurry (t => unit)) => unit = "on"
+  external onChange: (t, @as("change") _, @uncurry t => unit) => unit = "on"
 
   @send external toTextArea: t => unit = "toTextArea"
 
@@ -138,7 +131,7 @@ module CM = {
   @send external getValue: t => string = "getValue"
 
   @send
-  external operation: (t, @uncurry (unit => unit)) => unit = "operation"
+  external operation: (t, @uncurry unit => unit) => unit = "operation"
 
   @send
   external setGutterMarker: (t, int, string, Dom.element) => unit = "setGutterMarker"
@@ -323,7 +316,7 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
 
   let markerRef = React.useRef(None)
 
-  React.useEffect0(() => {
+  React.useEffect(() => {
     tooltip->HoverTooltip.attach
 
     Some(
@@ -331,7 +324,7 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
         tooltip->HoverTooltip.clear
       },
     )
-  })
+  }, [])
 
   let checkIfTextMarker: Dom.element => bool = %raw(`
   function(el) {
@@ -381,8 +374,8 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
             markerRef.current = Some(marker)
             stateRef.current = Shown({
               el: target,
-              marker: marker,
-              hoverHint: hoverHint,
+              marker,
+              hoverHint,
               hideTimer: None,
             })
           | Shown({el, marker: prevMarker, hideTimer}) =>
@@ -394,9 +387,9 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
             let marker = cm->CM.markText(from, to_, markerObj)
 
             stateRef.current = Shown({
-              el: el,
-              marker: marker,
-              hoverHint: hoverHint,
+              el,
+              marker,
+              hoverHint,
               hideTimer: None,
             })
           }
@@ -423,9 +416,9 @@ let useHoverTooltip = (~cmStateRef: React.ref<state>, ~cmRef: React.ref<option<C
       }, 200)
 
       stateRef.current = Shown({
-        el: el,
-        hoverHint: hoverHint,
-        marker: marker,
+        el,
+        hoverHint,
+        marker,
         hideTimer: Some(timerId),
       })
     | _ => ()
@@ -460,7 +453,7 @@ module GutterMarker = {
     }
 
     let (row, col) = rowCol
-    marker->setId(j`gutter-marker_$row-$col`)
+    marker->setId(`gutter-marker_${row->Belt.Int.toString}-${col->Belt.Int.toString}`)
     marker->setClassName(
       "flex items-center justify-center text-14 text-center ml-1 h-6 font-bold hover:cursor-pointer " ++
       colorClass,
@@ -492,90 +485,91 @@ let extractRowColFromId = (id: string): option<(int, int)> =>
   | _ => None
   }
 
+module ErrorHash = Belt.Id.MakeHashableU({
+  type t = int
+  let hash = a => a
+  let eq = (a, b) => a == b
+})
+
 let updateErrors = (~state: state, ~onMarkerFocus=?, ~onMarkerFocusLeave=?, ~cm: CM.t, errors) => {
   Belt.Array.forEach(state.marked, mark => mark->CM.TextMarker.clear)
+
+  let errorsMap = Belt.HashMap.make(~hintSize=Belt.Array.length(errors), ~id=module(ErrorHash))
   state.marked = []
-  cm->{
-    open CM
-    clearGutter(errorGutterId)
-  }
+  cm->CM.clearGutter(CM.errorGutterId)
 
   let wrapper = cm->CM.getWrapperElement
 
-  Belt.Array.forEachWithIndex(errors, (_idx, e) => {
+  Belt.Array.forEachWithIndex(errors, (idx, e) => {
     open DomUtil
     open Error
 
-    let marker = GutterMarker.make(~rowCol=(e.row, e.column), ~kind=e.kind, ())
+    if !Belt.HashMap.has(errorsMap, e.row) {
+      let marker = GutterMarker.make(~rowCol=(e.row, e.column), ~kind=e.kind, ())
+      Belt.HashMap.set(errorsMap, e.row, idx)
+      wrapper->appendChild(marker)
 
-    wrapper->appendChild(marker)
+      // CodeMirrors line numbers are (strangely enough) zero based
+      let row = e.row - 1
+      let endRow = e.endRow - 1
 
-    // CodeMirrors line numbers are (strangely enough) zero based
-    let row = e.row - 1
-    let endRow = e.endRow - 1
+      cm->CM.setGutterMarker(row, CM.errorGutterId, marker)
 
-    cm->CM.setGutterMarker(row, CM.errorGutterId, marker)
+      let from = {CM.line: row, ch: e.column}
+      let to_ = {CM.line: endRow, ch: e.endColumn}
 
-    let from = {CM.line: row, ch: e.column}
-    let to_ = {CM.line: endRow, ch: e.endColumn}
+      let markTextColor = switch e.kind {
+      | #Error => "border-fire"
+      | #Warning => "border-orange"
+      }
 
-    let markTextColor = switch e.kind {
-    | #Error => "border-fire"
-    | #Warning => "border-orange"
-    }
-
-    cm
-    ->CM.markText(
-      from,
-      to_,
-      CM.MarkTextOption.make(
-        ~className="border-b border-dotted hover:cursor-pointer " ++ markTextColor,
-        ~attributes=CM.MarkTextOption.Attr.make(
-          ~id="text-marker_" ++
-          (Belt.Int.toString(e.row) ++
-          ("-" ++ (Belt.Int.toString(e.column) ++ ""))),
+      cm
+      ->CM.markText(
+        from,
+        to_,
+        CM.MarkTextOption.make(
+          ~className="border-b border-dotted hover:cursor-pointer " ++ markTextColor,
+          ~attributes=CM.MarkTextOption.Attr.make(
+            ~id="text-marker_" ++
+            (Belt.Int.toString(e.row) ++
+            ("-" ++ (Belt.Int.toString(e.column) ++ ""))),
+            (),
+          ),
           (),
         ),
-        (),
-      ),
-    )
-    ->Js.Array2.push(state.marked, _)
-    ->ignore
-    ()
+      )
+      ->Js.Array2.push(state.marked, _)
+      ->ignore
+      ()
+    }
   })
 
   let isMarkerId = id =>
     Js.String2.startsWith(id, "gutter-marker") || Js.String2.startsWith(id, "text-marker")
 
-  wrapper->{
-    open DomUtil
-    setOnMouseOver(evt => {
-      let target = Event.target(evt)
+  wrapper->DomUtil.setOnMouseOver(evt => {
+    let target = DomUtil.Event.target(evt)
 
-      let id = getId(target)
-      if isMarkerId(id) {
-        switch extractRowColFromId(id) {
-        | Some(rowCol) => Belt.Option.forEach(onMarkerFocus, cb => cb(rowCol))
-        | None => ()
-        }
+    let id = DomUtil.getId(target)
+    if isMarkerId(id) {
+      switch extractRowColFromId(id) {
+      | Some(rowCol) => Belt.Option.forEach(onMarkerFocus, cb => cb(rowCol))
+      | None => ()
       }
-    })
-  }
+    }
+  })
 
-  wrapper->{
-    open DomUtil
-    setOnMouseOut(evt => {
-      let target = Event.target(evt)
+  wrapper->DomUtil.setOnMouseOut(evt => {
+    let target = DomUtil.Event.target(evt)
 
-      let id = getId(target)
-      if isMarkerId(id) {
-        switch extractRowColFromId(id) {
-        | Some(rowCol) => Belt.Option.forEach(onMarkerFocusLeave, cb => cb(rowCol))
-        | None => ()
-        }
+    let id = DomUtil.getId(target)
+    if isMarkerId(id) {
+      switch extractRowColFromId(id) {
+      | Some(rowCol) => Belt.Option.forEach(onMarkerFocusLeave, cb => cb(rowCol))
+      | None => ()
       }
-    })
-  }
+    }
+  })
 }
 
 @react.component
@@ -595,30 +589,29 @@ let make = // props relevant for the react wrapper
   ~mode,
   ~readOnly=false,
   ~lineNumbers=true,
-  ~scrollbarStyle="overlay",
+  ~scrollbarStyle="native",
   ~lineWrapping=false,
 ): React.element => {
   let inputElement = React.useRef(Js.Nullable.null)
   let cmRef: React.ref<option<CM.t>> = React.useRef(None)
-  let cmStateRef = React.useRef({marked: [], hoverHints: hoverHints})
+  let cmStateRef = React.useRef({marked: [], hoverHints})
 
   let windowWidth = useWindowWidth()
   let (onMouseOver, onMouseOut, onMouseMove) = useHoverTooltip(~cmStateRef, ~cmRef, ())
 
-  React.useEffect0(() =>
+  React.useEffect(() =>
     switch inputElement.current->Js.Nullable.toOption {
     | Some(input) =>
-      let options = CM.Options.t(
-        ~theme="material",
-        ~gutters=[CM.errorGutterId, "CodeMirror-linenumbers"],
-        ~mode,
-        ~lineWrapping,
-        ~fixedGutter=false,
-        ~readOnly,
-        ~lineNumbers,
-        ~scrollbarStyle,
-        (),
-      )
+      let options = {
+        CM.Options.theme: "material",
+        gutters: [CM.errorGutterId, "CodeMirror-linenumbers"],
+        mode,
+        lineWrapping,
+        fixedGutter: false,
+        readOnly,
+        lineNumbers,
+        scrollbarStyle,
+      }
       let cm = CM.fromTextArea(input, options)
 
       Belt.Option.forEach(minHeight, minHeight =>
@@ -658,9 +651,9 @@ let make = // props relevant for the react wrapper
       Some(cleanup)
     | None => None
     }
-  )
+  , [])
 
-  React.useEffect1(() => {
+  React.useEffect(() => {
     cmStateRef.current.hoverHints = hoverHints
     None
   }, [hoverHints])
@@ -701,10 +694,10 @@ let make = // props relevant for the react wrapper
  */
   let errorsFingerprint = Belt.Array.map(errors, e => {
     let {Error.row: row, column} = e
-    j`$row-$column`
+    `${row->Belt.Int.toString}-${column->Belt.Int.toString}`
   })->Js.Array2.joinWith(";")
 
-  React.useEffect1(() => {
+  React.useEffect(() => {
     let state = cmStateRef.current
     switch cmRef.current {
     | Some(cm) =>
@@ -716,7 +709,7 @@ let make = // props relevant for the react wrapper
     None
   }, [errorsFingerprint])
 
-  React.useEffect1(() => {
+  React.useEffect(() => {
     let cm = Belt.Option.getExn(cmRef.current)
     cm->CM.setMode(mode)
     None
@@ -726,7 +719,7 @@ let make = // props relevant for the react wrapper
     Needed in case the className visually hides / shows
     a codemirror instance, or the window has been resized.
  */
-  React.useEffect2(() => {
+  React.useEffect(() => {
     switch cmRef.current {
     | Some(cm) => cm->CM.refresh
     | None => ()

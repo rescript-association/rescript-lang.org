@@ -1,5 +1,5 @@
 // This is used for the version dropdown in the api layouts
-let allApiVersions = [("latest", "v8.2.0"), ("v8.0.0", "< v8.2.0")]
+let allApiVersions = Constants.allManualVersions
 
 module Sidebar = SidebarLayout.Sidebar
 module Toc = SidebarLayout.Toc
@@ -57,7 +57,7 @@ let makeBreadcrumbs = (~prefix: Url.breadcrumb, route: string): list<Url.breadcr
       ret,
       {
         open Url
-        {name: prettyString(path), href: href}
+        {name: prettyString(path), href}
       },
     )->ignore
     (href, ret)
@@ -81,7 +81,7 @@ let make = (
   let (isSidebarOpen, setSidebarOpen) = React.useState(_ => false)
   let toggleSidebar = () => setSidebarOpen(prev => !prev)
 
-  React.useEffect0(() => {
+  React.useEffect(() => {
     open Next.Router.Events
     let {Next.Router.events: events} = router
 
@@ -96,7 +96,7 @@ let make = (
         events->off(#hashChangeComplete(onChangeComplete))
       },
     )
-  })
+  }, [])
 
   let preludeSection =
     <div className="flex justify-between text-fire font-medium items-baseline">

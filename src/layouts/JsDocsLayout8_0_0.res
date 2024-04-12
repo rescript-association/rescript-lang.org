@@ -1,11 +1,12 @@
 // Structure defined by `scripts/extract-indices.js`
-let indexData: Js.Dict.t<{
+@module("index_data/v800_js_api_index.json")
+external indexData: Js.Dict.t<{
   "moduleName": string,
   "headers": array<{
     "name": string,
     "href": string,
   }>,
-}> = %raw("require('index_data/v800_js_api_index.json')")
+}> = "default"
 
 module Category = SidebarLayout.Sidebar.Category
 module NavItem = SidebarLayout.Sidebar.NavItem
@@ -189,7 +190,7 @@ module Docs = {
       open SidebarLayout.Toc
       {
         title: moduleName,
-        entries: Belt.Array.map(headers, ((name, href)) => {header: name, href: href}),
+        entries: Belt.Array.map(headers, ((name, href)) => {header: name, href}),
       }
     }
 
@@ -199,7 +200,8 @@ module Docs = {
     let warnBanner = <ApiLayout.OldDocsWarning route version />
 
     <ApiLayout components title version activeToc categories breadcrumbs>
-      warnBanner children
+      warnBanner
+      children
     </ApiLayout>
   }
 }

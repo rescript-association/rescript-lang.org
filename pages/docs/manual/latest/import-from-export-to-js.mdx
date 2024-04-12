@@ -8,7 +8,7 @@ canonical: "/docs/manual/latest/import-from-export-to-js"
 
 You've seen how ReScript's idiomatic [Import & Export](import-export.md) works. This section describes how we work with importing stuff from JavaScript and exporting stuff for JavaScript consumption.
 
-**Note**: due to JS ecosystem's module compatibility issues, our advice of keeping your ReScript file's compiled JS output open in a tab applies here **more than ever**, as you don't want to subtly output the wrong JS module import/export code, on top of having to deal with Babel/Webpack/Jest/Node's CommonJS<->ES6 compatibility shims.
+**Note**: due to JS ecosystem's module compatibility issues, our advice of keeping your ReScript file's compiled JS output open in a tab applies here **more than ever**, as you don't want to subtly output the wrong JS module import/export code, on top of having to deal with Babel/Webpack/Jest/Node's CommonJS \<-> ES6 compatibility shims.
 
 In short: **make sure your bindings below output what you'd have manually written in JS**.
 
@@ -16,10 +16,10 @@ In short: **make sure your bindings below output what you'd have manually writte
 
 We support 2 JavaScript import/export formats:
 
-- CommonJS: `require('myFile')` and `module.export = ...`.
+- CommonJS: `require('myFile')` and `module.exports = ...`.
 - ES6 modules: `import * from 'MyReScriptFile'` and `export let ...`.
 
-The format is [configurable in via `bsconfig.json`](build-configuration.md#package-specs).
+The format is [configurable in via `rescript.json`](build-configuration.md#package-specs).
 
 ## Import From JavaScript
 
@@ -60,7 +60,7 @@ By omitting the string argument to `module`, you bind to the whole JS module:
 <CodeTab labels={["ReScript", "JS Output (CommonJS)", "JS Output (ES6)"]}>
 
 ```res example
-@module external leftPad: string => int => string = "./leftPad"
+@module external leftPad: (string, int) => string = "./leftPad"
 let paddedResult = leftPad("hi", 5)
 ```
 ```js
@@ -84,13 +84,105 @@ Use the value `"default"` on the right hand side:
 
 ```res example
 @module("./student") external studentName: string = "default"
-Js.log(studentName)
+Console.log(studentName)
 ```
 ```js
 import Student from "./student";
 var studentName = Student;
 ```
 
+</CodeTab>
+
+### Use Import Attributes
+
+**Since 11.1**
+
+[Import attributes](https://github.com/tc39/proposal-import-attributes) can be used in ReScript, as long as ReScript is configured to output ES6. You do that by passing configuration to the `@module` attribute:
+
+<CodeTab labels={["ReScript", "JS Output (ES6)"]}>
+```rescript
+@module({from: "./myJson.json", with: {type_: "json", \"some-exotic-identifier": "someValue"}})
+external myJson: Js.Json.t = "default"
+
+Console.log(myJson)
+```
+
+```javascript
+import MyJsonJson from "./myJson.json" with {"type": "json", "some-exotic-identifier": "someValue"};
+
+var myJson = MyJsonJson;
+
+console.log(myJson);
+```
+</CodeTab>
+
+This above imports the local `./myJson.json` file, adding import attributes.
+
+This is how it works:
+1. Instead of passing a string or tuple to `@module`, pass a record.
+2. This record should have a `from` key. The value of that is where you want the module to be imported from (just like the regular string to `@module` is).
+3. It should also have a `with` key, with another record where you put all the import attributes you want emitted.
+
+Notice `\"some-exotic-identifier"` - you'll need to escape any key that's not a valid ReScript record key.
+Also notice `type_`. Since `type` is a reserved keyword in ReScript, you can use `type_` instead. It will be output as `type` in the JavaScript code.
+
+## Dynamic Import
+Leveraging JavaScript's [dynamic `import`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import) to reduce bundle size and lazy load code as needed is easy in ReScript. It's also a little bit more convenient than in regular JavaScript because you don't need to keep track of file paths manually with ReScript's module system.
+
+### Dynamically Importing Parts of a Module
+Use the `Js.import` function to dynamically import a specific part of a module. Put whatever `let` binding you want to import in there, and you'll get a `promise` back resolving to that specific binding.
+
+Let's look at an example. Imagine the following file `MathUtils.res`:
+
+```rescript
+let add = (a, b) => a + b
+let sub = (a, b) => a - b
+```
+
+Now let's dynamically import the add function in another module, e.g. `App.res`:
+
+<CodeTab labels={["ReScript", "JS Output (ES6)"]}>
+```rescript
+// App.res
+let main = async () => {
+  let add = await Js.import(MathUtils.add)
+  let onePlusOne = add(1, 1)
+
+  Console.log(onePlusOne)
+}
+```
+```javascript
+async function main() {
+  var add = await import("./MathUtils.mjs").then(function(m) {
+    return m.add;
+  });
+
+  var onePlusOne = add(1, 1);
+  console.log(onePlusOne);
+}
+```
+</CodeTab>
+
+### Dynamically Importing an Entire Module
+The syntax for importing a whole module looks a little different, since we are operating on the module syntax level; instead of using `Js.import`, you may simply `await` the module itself:
+<CodeTab labels={["ReScript", "JS Output (ES6)"]}>
+```rescript
+// App.res
+let main = async () => {
+  module Utils = await MathUtils
+
+  let twoPlusTwo = Utils.add(2, 2)
+  Console.log(twoPlusTwo)
+}
+```
+```javascript
+async function main() {
+  var Utils = await import("./MathUtils.mjs");
+
+  var twoPlusTwo = Utils.add(2, 2);
+  console.log(twoPlusTwo);
+}
+```
 </CodeTab>
 
 ## Export To JavaScript

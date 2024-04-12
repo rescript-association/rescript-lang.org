@@ -44,10 +44,10 @@ It'd be nice if on ReScript's side, we can bind & call `draw` while labeling thi
 
 ```res example
 @module("MyGame")
-external draw: (~x: int, ~y: int, ~border: bool=?, unit) => unit = "draw"
+external draw: (~x: int, ~y: int, ~border: bool=?) => unit = "draw"
 
-draw(~x=10, ~y=20, ~border=true, ())
-draw(~x=10, ~y=20, ())
+draw(~x=10, ~y=20, ~border=true)
+draw(~x=10, ~y=20)
 ```
 ```js
 var MyGame = require("MyGame");
@@ -60,18 +60,16 @@ MyGame.draw(10, 20, undefined);
 
 We've compiled to the same function, but now the usage is much clearer on the ReScript side thanks to labels!
 
-**Note**: in this particular case, you need a unit, `()` after `border`, since `border` is an [optional argument at the last position](function.md#optional-labeled-arguments). Not having a unit to indicate you've finished applying the function would generate a warning.
-
 Note that you can freely reorder the labels on the ReScript side; they'll always correctly appear in their declaration order in the JavaScript output:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
 @module("MyGame")
-external draw: (~x: int, ~y: int, ~border: bool=?, unit) => unit = "draw"
+external draw: (~x: int, ~y: int, ~border: bool=?) => unit = "draw"
 
-draw(~x=10, ~y=20, ())
-draw(~y=20, ~x=10, ())
+draw(~x=10, ~y=20)
+draw(~y=20, ~x=10)
 ```
 ```js
 var MyGame = require("MyGame");
@@ -245,6 +243,24 @@ testIntType(21);
 
 `onClosed` compiles to `0`, `onOpen` to `20` and `inBinary` to **`21`**.
 
+## Unknown for type safety
+
+It is best practice to inspect data received from untrusted external functions to ensure it contains what you expect. This helps avoid run-time crashes and unexpected behavior. If you're certain about what an external function returns, simply assert the return value as `string` or `array<int>` or whatever you want it to be. Otherwise use `unknown`. The ReScript type system will prevent you from using an `unknown` until you first inspect it and "convert" it using JSON parsing utilities or similar tools.
+
+Consider the example below of two external functions that access the value of a property on a JavaScript object. `getPropertyUnsafe` returns an `'a`, which means "anything you want it to be." ReScript allows you to use this value as a `string` or `array` or any other type. Quite convenient! But if the property is missing or contains something unexpected, your code might break. You can make the binding more safe by changing `'a` to `string` or `option<'a>`, but this doesn't completely eliminate the problem.
+
+The `getPropertySafe` function returns an `unknown`, which could be `null` or a `string` or anything else. But ReScript prevents you from using this value inappropriately until it has been safely parsed.
+
+```res example
+@get_index external getPropertyUnsafe: ({..}, string) => 'a = ""
+@get_index external getPropertySafe: ({..}, string) => unknown = ""
+
+let person = {"name": "Bob", "age": 12}
+
+let greeting1 = "Hello, " ++ getPropertyUnsafe(person, "name") // works (this time!)
+// let greeting2 = "Hello, " ++ getPropertySafe(person, "name") // syntax error
+```
+
 ## Special-case: Event Listeners
 
 One last trick with polymorphic variants:
@@ -267,7 +283,7 @@ external on: (
 let register = rl =>
   rl
   ->on(#close(event => ()))
-  ->on(#line(line => Js.log(line)));
+  ->on(#line(line => Console.log(line)));
 ```
 ```js
 function register(rl) {
@@ -297,7 +313,7 @@ external processOnExit: (
 ) => unit = "process.on"
 
 processOnExit(exitCode =>
-  Js.log("error code: " ++ Js.Int.toString(exitCode))
+  Console.log("error code: " ++ Int.toString(exitCode))
 );
 ```
 ```js
@@ -330,83 +346,6 @@ doSomething("test");
 
 **Note:** It's a pretty niche feature, mostly used to map to polymorphic JS APIs.
 
-
-## Curry & Uncurry
-
-Curry is a delicious Indian dish. More importantly, in the context of ReScript (and functional programming in general), currying means that function taking multiple arguments can be applied a few arguments at time, until all the arguments are applied.
-
-See the `addFive` intermediate function? `add` takes in 3 arguments but received only 1. It's interpreted as "currying" the argument `5` and waiting for the next 2 arguments to be applied later on. Type signatures:
-
-```res sig
-let add: (int, int, int) => int
-let addFive: (int, int) => int
-let twelve: int
-```
-
-(In a dynamic language such as JS, currying would be dangerous, since accidentally forgetting to pass an argument doesn't error at compile time).
-
-### Drawback
-
-Unfortunately, due to JS not having currying because of the aforementioned reason, it's hard for ReScript multi-argument functions to map cleanly to JS functions 100% of the time:
-
-1. When all the arguments of a function are supplied (aka no currying), ReScript does its best to to compile e.g. a 3-arguments call into a plain JS call with 3 arguments.
-
-2. If it's too hard to detect whether a function application is complete\*, ReScript will use a runtime mechanism (the `Curry` module) to curry as many args as we can and check whether the result is fully applied.
-
-3. Some JS APIs like `throttle`, `debounce` and `promise` might mess with context, aka use the function `bind` mechanism, carry around `this`, etc. Such implementation clashes with the previous currying logic.
-
-\* If the call site is typed as having 3 arguments, we sometimes don't know whether it's a function that's being curried, or if the original one indeed has only 3 arguments.
-
-ReScript tries to do #1 as much as it can. Even when it bails and uses #2's currying mechanism, it's usually harmless.
-
-**However**, if you encounter #3, heuristics are not good enough: you need a guaranteed way of fully applying a function, without intermediate currying steps. We provide such guarantee through the use of the ["uncurrying" syntax](./function#uncurried-function) on a function declaration & call site.
-
-### Solution: Use Guaranteed Uncurrying
-
-[Uncurried function](function.md#uncurried-function) annotation also works on `external`:
-
-<CodeTab labels={["ReScript", "JS Output"]}>
-
-```res example
-type timerId
-@val external setTimeout: ((. unit) => unit, int) => timerId = "setTimeout"
-
-let id = setTimeout((.) => Js.log("hello"), 1000)
-```
-```js
-var id = setTimeout(function () {
-  console.log("hello");
-}, 1000);
-```
-
-</CodeTab>
-
-#### Extra Solution
-
-The above solution is safe, guaranteed, and performant, but sometimes visually a little burdensome. We provide an alternative solution if:
-
-- you're using `external`
-- the `external` function takes in an argument that's another function
-- you want the user **not** to need to annotate the call sites with the dot
-
-<!-- TODO: is this up-to-date info? -->
-
-Then try `@uncurry`:
-
-<CodeTab labels={["ReScript", "JS Output"]}>
-
-```res example
-@send external map: (array<'a>, @uncurry ('a => 'b)) => array<'b> = "map"
-map([1, 2, 3], x => x + 1)
-```
-```js
-// Empty output
-```
-
-</CodeTab>
-
-In general, `uncurry` is recommended; the compiler will do lots of optimizations to resolve the currying to uncurrying at compile time. However, there are some cases the compiler can't optimize it. In these cases, it will be converted to a runtime check.
-
 ## Modeling `this`-based Callbacks
 
 Many JS libraries have callbacks which rely on this (the source), for example:
@@ -426,7 +365,7 @@ type x
 @val external x: x = "x"
 @set external setOnload: (x, @this ((x, int) => unit)) => unit = "onload"
 @get external resp: x => int = "response"
-setOnload(x, @this ((o, v) => Js.log(resp(o) + v)))
+setOnload(x, @this (o, v) => Console.log(resp(o) + v))
 ```
 ```js
 x.onload = function (v) {
@@ -437,7 +376,7 @@ x.onload = function (v) {
 
 </CodeTab>
 
-`this` has its first parameter is reserved for `this` and for arity of 0, there is no need for a redundant `unit` type.
+`@this` reserves the first parameter for the `this` value, and for arity of 0, there is no need for a redundant `unit` type.
 
 ## Function Nullable Return Value Wrapping
 
@@ -482,3 +421,39 @@ Currently 4 directives are supported: `null_to_opt`, `undefined_to_opt`, `nullab
 <!-- When the return type is unit: the compiler will append its return value with an OCaml unit literal to make sure it does return unit. Its main purpose is to make the user consume FFI in idiomatic OCaml code, the cost is very very small and the compiler will do smart optimizations to remove it when the returned value is not used (mostly likely). -->
 
 `identity` will make sure that compiler will do nothing about the returned value. It is rarely used, but introduced here for debugging purpose.
+
+## Tagged template functions
+
+**Since 11.1**
+
+**Experimental** You can easily bind to [JS tagged template functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates).
+Tag functions in JS expect as input an array of strings and variadic parameters for the arguments of the interpolation.
+To bind to those functions in ReScript, the binding signature must have two arrays as arguments,
+the first one being an array of strings and the second can be an array of anything.
+You add the `@taggedTemplate` annotation and you're good to go!
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+// see https://bun.sh/docs/runtime/shell
+type result = {exitCode: int}
+@module("bun") @taggedTemplate
+external sh: (array<string>, array<string>) => promise<result> = "$"
+
+let filename = "index.res"
+let result = await sh`ls ${filename}`
+```
+
+```js 
+import * as $$Bun from "bun";
+var filename = "index.res";
+var result = await $$Bun.$`ls ${filename}`;
+```
+
+</CodeTab>
+
+Notice that it gets compiled to tagged template literals in JS, which allows
+to use JS tools that only work on the literals and not by calling directly the tag function.
+
+There are plenty of useful JS tools you can bind to, like [`gql`](https://github.com/apollographql/graphql-tag),
+[`sql`](https://github.com/porsager/postgres), [`css`](https://github.com/mayank99/ecsstatic) and a lot others!

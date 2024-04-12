@@ -38,7 +38,7 @@ let makeBreadcrumbs = (~basePath: string, route: string): list<Url.breadcrumb> =
       ret,
       {
         open Url
-        {name: prettyString(path), href: href}
+        {name: prettyString(path), href}
       },
     )->ignore
     (href, ret)
@@ -56,7 +56,7 @@ let make = (
   ~availableVersions: option<array<(string, string)>>=?,
   ~activeToc: option<SidebarLayout.Toc.t>=?,
   ~categories: array<Category.t>,
-  ~components=Markdown.default,
+  ~components=MarkdownComponents.default,
   ~theme=#Reason,
   ~children,
 ) => {
@@ -66,7 +66,7 @@ let make = (
   let (isSidebarOpen, setSidebarOpen) = React.useState(_ => false)
   let toggleSidebar = () => setSidebarOpen(prev => !prev)
 
-  React.useEffect0(() => {
+  React.useEffect(() => {
     open Next.Router.Events
     let {Next.Router.events: events} = router
 
@@ -81,7 +81,7 @@ let make = (
         events->off(#hashChangeComplete(onChangeComplete))
       },
     )
-  })
+  }, [])
 
   let preludeSection =
     <div className="flex justify-between text-fire font-medium items-baseline">
@@ -135,8 +135,14 @@ let make = (
         metaTitle ++ (" | " ++ titleCategory)
       | None => title
       }
-      let meta = <Meta title ?description ?canonical />
-      (meta, Some(fm.ghEditHref))
+      let meta = <Meta title ?description ?canonical version=Url.parse(router.route).version />
+
+      let ghEditHref = switch canonical {
+      | Some(canonical) =>
+        `https://github.com/rescript-association/rescript-lang.org/blob/master/pages${canonical}.mdx`->Some
+      | None => None
+      }
+      (meta, ghEditHref)
     | None => (React.null, None)
     }
   | None => (React.null, None)
@@ -148,14 +154,16 @@ let make = (
     components
     sidebarState=(isSidebarOpen, setSidebarOpen)
     sidebar
+    categories
     ?breadcrumbs
     ?editHref>
-    metaElement children
+    metaElement
+    children
   </SidebarLayout>
 }
 
 module type StaticContent = {
-  /* let categories: array(SidebarLayout.Sidebar.Category.t); */
+  /* let categories: array<SidebarLayout.Sidebar.Category.t>; */
   let tocData: SidebarLayout.Toc.raw
 }
 
@@ -169,8 +177,8 @@ module Make = (Content: StaticContent) => {
     ~frontmatter=?,
     ~version: option<string>=?,
     ~availableVersions: option<array<(string, string)>>=?,
-    /* ~activeToc: option(SidebarLayout.Toc.t)=?, */
-    ~components: option<Mdx.Components.t>=?,
+    /* ~activeToc: option<SidebarLayout.Toc.t>=?, */
+    ~components: option<MarkdownComponents.t>=?,
     ~theme: option<ColorTheme.t>=?,
     ~children: React.element,
   ) => {
@@ -192,13 +200,12 @@ module Make = (Content: StaticContent) => {
     let activeToc: option<SidebarLayout.Toc.t> = {
       open Belt.Option
       Js.Dict.get(Content.tocData, route)->map(data => {
-        open SidebarLayout.Toc
         let title = data["title"]
         let entries = Belt.Array.map(data["headers"], header => {
-          header: header["name"],
+          SidebarLayout.Toc.header: header["name"],
           href: "#" ++ header["href"],
         })
-        {title: title, entries: entries}
+        {SidebarLayout.Toc.title, entries}
       })
     }
 
@@ -225,27 +232,27 @@ module Make = (Content: StaticContent) => {
       Js.Dict.entries(groups)->Belt.Array.map(((name, values)) => {
         open Category
         {
-          name: name,
+          name,
           items: Belt.Array.map(values, ((href, value)) => {
             NavItem.name: value["title"],
-            href: href,
+            href,
           }),
         }
       })
     }
 
     make({
-      "breadcrumbs": breadcrumbs,
-      "title": title,
-      "metaTitleCategory": metaTitleCategory,
-      "frontmatter": frontmatter,
-      "version": version,
-      "availableVersions": availableVersions,
-      "activeToc": activeToc,
-      "categories": categories,
-      "components": components,
-      "theme": theme,
-      "children": children,
+      ?breadcrumbs,
+      title,
+      ?metaTitleCategory,
+      ?frontmatter,
+      ?version,
+      ?availableVersions,
+      ?activeToc,
+      categories,
+      ?components,
+      ?theme,
+      children,
     })
   }
 }

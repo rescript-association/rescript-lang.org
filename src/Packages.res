@@ -138,7 +138,10 @@ module Card = {
   let make = (~value: Resource.t, ~onKeywordSelect: option<string => unit>=?) => {
     let icon = switch value {
     | Npm(_) => <Icon.Npm className="w-8 opacity-50" />
-    | Url(_) => <span> <Icon.Hyperlink className="w-8 opacity-50" /> </span>
+    | Url(_) =>
+      <span>
+        <Icon.Hyperlink className="w-8 opacity-50" />
+      </span>
     }
     let linkBox = switch value {
     | Npm(pkg) =>
@@ -146,24 +149,20 @@ module Card = {
       let repoEl = switch repositoryHref {
       | Some(href) =>
         let name = if Js.String2.startsWith(href, "https://github.com") {
-          "Github"
+          "GitHub"
         } else if Js.String2.startsWith(href, "https://gitlab.com") {
-          "Gitlab"
+          "GitLab"
         } else {
           "Repository"
         }
         <>
           <span> {React.string("|")} </span>
-          <a href rel="noopener noreferrer" className="hover:text-fire" target="_blank">
-            {React.string(name)}
-          </a>
+          <a href rel="noopener noreferrer" className="hover:text-fire"> {React.string(name)} </a>
         </>
       | None => React.null
       }
       <div className="text-14 space-x-2 mt-1">
-        <a className="hover:text-fire" href={pkg.npmHref} target="_blank">
-          {React.string("NPM")}
-        </a>
+        <a className="hover:text-fire" href={pkg.npmHref}> {React.string("NPM")} </a>
         {repoEl}
       </div>
     | Url(_) => React.null
@@ -182,7 +181,7 @@ module Card = {
     <div className="bg-gray-5-tr py-6 rounded-lg p-4">
       <div className="flex justify-between">
         <div>
-          <a className="font-bold hover:text-fire text-18" href=titleHref target="_blank">
+          <a className="font-bold hover:text-fire text-18" href=titleHref>
             <span> {React.string(title)} </span>
           </a>
           {linkBox}
@@ -307,12 +306,12 @@ module InfoSidebar = {
       <div>
         <h2 className=h2> {React.string("Guidelines")} </h2>
         <ul className="space-y-4">
-          <Next.Link href="/docs/guidelines/publishing-packages">
-            <a className=link> {React.string("Publishing ReScript npm packages")} </a>
+          <Next.Link href="/docs/guidelines/publishing-packages" className=link>
+            {React.string("Publishing ReScript npm packages")}
           </Next.Link>
           /* <li> */
-          /* <Next.Link href="/docs/guidelines/writing-bindings"> */
-          /* <a className=link> {React.string("Writing Bindings & Libraries")} </a> */
+          /* <Next.Link href="/docs/guidelines/writing-bindings"  className=link> */
+          /* {React.string("Writing Bindings & Libraries")} */
           /* </Next.Link> */
           /* </li> */
         </ul>
@@ -434,14 +433,14 @@ let default = (props: props) => {
   // On first render, the router query is undefined so we set a flag.
   let firstRenderDone = React.useRef(false)
 
-  React.useEffect0(() => {
+  React.useEffect(() => {
     firstRenderDone.current = true
 
     None
-  })
+  }, [])
 
   // On second render, this hook runs one more time to actually trigger the search.
-  React.useEffect1(() => {
+  React.useEffect(() => {
     router.query->Js.Dict.get("search")->Belt.Option.forEach(onValueChange)
 
     None
@@ -454,7 +453,7 @@ let default = (props: props) => {
     })
 
   // When the search term changes, update the router query accordingly.
-  React.useEffect1(() => {
+  React.useEffect(() => {
     switch state {
     | All => updateQuery("")
     | Filtered(value) => updateQuery(value)
@@ -476,7 +475,7 @@ let default = (props: props) => {
         <div className="flex overflow-hidden">
           <div
             className="flex justify-between min-w-320 px-4 pt-16 lg:align-center w-full lg:px-8 pb-48">
-            <Mdx.Provider components=Markdown.default>
+            <MdxProvider components=MarkdownComponents.default>
               <main className="max-w-1280 w-full flex justify-center">
                 <div style={ReactDOM.Style.make(~maxWidth="44.0625rem", ())} className="w-full">
                   <H1> {React.string("Libraries & Bindings")} </H1>
@@ -486,11 +485,16 @@ let default = (props: props) => {
                     onClear
                     value={searchValue}
                   />
-                  <div className="mt-12 space-y-8"> officialCategory communityCategory </div>
+                  <div className="mt-12 space-y-8">
+                    officialCategory
+                    communityCategory
+                  </div>
                 </div>
               </main>
-              <div className="hidden lg:block h-full "> <InfoSidebar filter setFilter /> </div>
-            </Mdx.Provider>
+              <div className="hidden lg:block h-full ">
+                <InfoSidebar filter setFilter />
+              </div>
+            </MdxProvider>
           </div>
         </div>
         <Footer />
@@ -513,43 +517,43 @@ type npmData = {
 
 module Response = {
   type t
-  @send external json: t => Js.Promise.t<npmData> = "json"
+  @send external json: t => promise<npmData> = "json"
 }
 
-@val external fetchNpmPackages: string => Js.Promise.t<Response.t> = "fetch"
+@val external fetchNpmPackages: string => promise<Response.t> = "fetch"
 
-let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = _ctx => {
-  fetchNpmPackages("https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250")
-  ->Js.Promise.then_(response => {
-    Response.json(response)
-  }, _)
-  ->Js.Promise.then_(data => {
-    let pkges = Belt.Array.map(data["objects"], item => {
-      let pkg = item["package"]
-      {
-        name: pkg["name"],
-        version: pkg["version"],
-        keywords: Resource.filterKeywords(pkg["keywords"])->Resource.uniqueKeywords,
-        description: Belt.Option.getWithDefault(pkg["description"], ""),
-        repositoryHref: Js.Null.fromOption(pkg["links"]["repository"]),
-        npmHref: pkg["links"]["npm"],
-      }
-    })
+let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => {
+  let response = await fetchNpmPackages(
+    "https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250",
+  )
 
-    let index_data_dir = Node.Path.join2(Node.Process.cwd(), "./data")
-    let urlResources =
-      Node.Path.join2(index_data_dir, "packages_url_resources.json")
-      ->Node.Fs.readFileSync(#utf8)
-      ->Js.Json.parseExn
-      ->unsafeToUrlResource
-    let props: props = {
-      "packages": pkges,
-      "urlResources": urlResources,
+  let data = await response->Response.json
+
+  let pkges = Belt.Array.map(data["objects"], item => {
+    let pkg = item["package"]
+    {
+      name: pkg["name"],
+      version: pkg["version"],
+      keywords: Resource.filterKeywords(pkg["keywords"])->Resource.uniqueKeywords,
+      description: Belt.Option.getWithDefault(pkg["description"], ""),
+      repositoryHref: Js.Null.fromOption(pkg["links"]["repository"]),
+      npmHref: pkg["links"]["npm"],
     }
-    let ret = {
-      "props": props,
-      "revalidate": 43200,
-    }
-    Js.Promise.resolve(ret)
-  }, _)
+  })
+
+  let index_data_dir = Node.Path.join2(Node.Process.cwd(), "./data")
+  let urlResources =
+    Node.Path.join2(index_data_dir, "packages_url_resources.json")
+    ->Node.Fs.readFileSync
+    ->Js.Json.parseExn
+    ->unsafeToUrlResource
+  let props: props = {
+    "packages": pkges,
+    "urlResources": urlResources,
+  }
+
+  {
+    "props": props,
+    "revalidate": 43200,
+  }
 }

@@ -27,17 +27,17 @@ let default = (~showVersionSelect=true) => {
   }
 
   let languageManual = [
-    ("Overview", j` /docs/manual/$version/introduction`),
-    ("Language Features", j`/docs/manual/$version/overview`),
-    ("JS Interop", j`/docs/manual/$version/embed-raw-javascript`),
-    ("Build System", j`/docs/manual/$version/build-overview`),
+    ("Overview", `/docs/manual/${version}/introduction`),
+    ("Language Features", `/docs/manual/${version}/overview`),
+    ("JS Interop", `/docs/manual/${version}/embed-raw-javascript`),
+    ("Build System", `/docs/manual/${version}/build-overview`),
   ]
 
   let ecosystem = [
     ("Package Index", "/packages"),
     ("rescript-react", "/docs/react/latest/introduction"),
-    ("GenType", "/docs/gentype/latest/introduction"),
-    ("Reanalyze", "https://github.com/reason-association/reanalyze"),
+    ("GenType", "/docs/manual/latest/typescript-integration"),
+    ("Reanalyze", "https://github.com/rescript-association/reanalyze"),
   ]
 
   let tools = [("Syntax Lookup", "/syntax-lookup")]
@@ -64,7 +64,9 @@ let default = (~showVersionSelect=true) => {
 
   <>
     <div>
-      versionSelect <div className="mb-6" /> <Markdown.H1> {React.string("Docs")} </Markdown.H1>
+      versionSelect
+      <div className="mb-6" />
+      <Markdown.H1> {React.string("Docs")} </Markdown.H1>
     </div>
     <div className="grid grid-cols-1 xs:grid-cols-2 gap-8">
       <Card title="Language Manual" hrefs=languageManual />

@@ -6,7 +6,7 @@ canonical: "/docs/manual/latest/bind-to-global-js-values"
 
 # Bind to Global JS Values
 
-**First**, make sure the value you'd like to model doesn't already exist in our [provided API](api/js).
+**First**, make sure the value you'd like to model doesn't already exist in our [provided API](api/core).
 
 Some JS values, like `setTimeout`, live in the global scope. You can bind to them like so:
 
@@ -22,7 +22,7 @@ Some JS values, like `setTimeout`, live in the global scope. You can bind to the
 
 </CodeTab>
 
-(We already provide `setTimeout`, `clearTimeout` and others in the [Js.Global](api/js/global) module).
+(We already provide `setTimeout`, `clearTimeout` and others in the [Core API](api/core) module).
 
 This binds to the JavaScript [`setTimeout`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrworkerGlobalScope/setTimeout) methods and the corresponding `clearTimeout`. The `external`'s type annotation specifies that `setTimeout`:
 
@@ -43,7 +43,7 @@ type timerId
 @val external setTimeout: (unit => unit, int) => timerId = "setTimeout"
 @val external clearTimeout: timerId => unit = "clearTimeout"
 
-let id = setTimeout(() => Js.log("hello"), 100)
+let id = setTimeout(() => Console.log("hello"), 100)
 clearTimeout(id)
 ```
 ```js
@@ -102,8 +102,8 @@ For these troublesome global values, ReScript provides a special approach: `%ext
 
 ```res example
 switch %external(__DEV__) {
-| Some(_) => Js.log("dev mode")
-| None => Js.log("production mode")
+| Some(_) => Console.log("dev mode")
+| None => Console.log("production mode")
 }
 ```
 ```js
@@ -126,8 +126,8 @@ Another example:
 
 ```res example
 switch %external(__filename) {
-| Some(f) => Js.log(f)
-| None => Js.log("non-node environment")
+| Some(f) => Console.log(f)
+| None => Console.log("non-node environment")
 };
 ```
 ```js

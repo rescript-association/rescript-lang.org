@@ -16,7 +16,8 @@ import urlModule from "url";
 import { URL } from 'url';
 import {getAllPosts, blogPathToSlug} from '../src/common/BlogApi.mjs'
 
-const __dirname = new URL('.', import.meta.url).pathname;
+const pathname = new URL('.', import.meta.url).pathname;
+const __dirname = process.platform !== 'win32' ? pathname : pathname.substring(1)
 
 const mapBlogFilePath = path => {
   const match = path.match(/\.\/_blogposts\/(.*\.mdx)/);
@@ -108,6 +109,22 @@ const showErrorMsg = failedTest => {
   console.log(stderr);
 };
 
+const createApiIndexModules = version => {
+  const dir = path.join(__dirname, "..", "data", "api", version);
+  const modules = fs.readdirSync(dir).filter(file => file !== "toc_tree.json");
+  const paths = modules.reduce((acc, file) => {
+    const json = JSON.parse(fs.readFileSync(path.join(dir, file)));
+    const keys = Object.keys(json);
+
+    const paths = keys.map(modulePath => path.join(version, "api", modulePath));
+
+    return acc.concat(paths);
+  }, []);
+  return ["latest/api", ...paths];
+};
+
+const apiIndexModules = createApiIndexModules("latest")
+
 const testFile = (pageMap, test) => {
   const filepath = test.filepath;
 
@@ -158,6 +175,28 @@ const testFile = (pageMap, test) => {
           // e.g. /api/javascript/latest/js needs to be prefixed to actual pages dir
           resolved = path.join("/pages", parsed.pathname);
         }
+      }
+
+      if (resolved.startsWith("/pages/docs/manual/latest/api")) {
+        const pathToModule = resolved.replace("/pages/docs/manual/", "");
+        const pathExists = apiIndexModules.includes(pathToModule);
+
+        if (pathExists) {
+          results.push({
+            status: "ok",
+            link
+          });
+        } else {
+          const { line, column } = link.position.start;
+          const stderr = `${filepath}: Unknown href '${url}' in line ${line}:${column}`;
+          results.push({
+            status: "failed",
+            filepath,
+            stderr,
+            link
+          });
+        }
+        return;
       }
 
       // If there's no page stated the relative link
@@ -221,8 +260,6 @@ const main = () => {
 
   const pageMap = createPageIndex(allFiles);
 
-  //console.log(pageMap);
-  //return;
   const processedFiles = files.map(processFile);
 
   const allTested = processedFiles.map(file => testFile(pageMap, file));

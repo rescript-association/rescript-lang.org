@@ -12,7 +12,7 @@ category: "extensionpoints"
 
 ```res
 let regex = %re("/^hello/")
-let result = regex->Js.Re.test_("hello world")
+let result = regex->Re.test("hello world")
 ```
 
 ```js
@@ -26,4 +26,4 @@ var result = regex.test("hello world");
 
 * [Regular Expressions](/docs/manual/latest/primitive-types#regular-expression)
 * [Extension Point Attributes](/docs/manual/latest/attribute#extension-point)
-* [Js.Re API](/docs/manual/latest/api/js/re)
+* [Re API](/docs/manual/latest/api/core/re)
