@@ -431,8 +431,8 @@ module Compiler = {
 
   let setConfig = (t: t, config: Config.t): unit => {
     let moduleSystem = switch config.module_system {
-    | "nodejs" => #nodejs->Some
-    | "es6" => #es6->Some
+    | "commonjs" => #nodejs->Some
+    | "esmodule" => #es6->Some
     | _ => None
     }
 

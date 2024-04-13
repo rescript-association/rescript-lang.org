@@ -1023,7 +1023,7 @@ module Settings = {
       <div className="mt-6">
         <div className=titleClass> {React.string("Module-System")} </div>
         <ToggleSelection
-          values=["nodejs", "es6"]
+          values=["commonjs", "esmodule"]
           toLabel={value => value}
           selected=config.module_system
           onChange=onModuleSystemUpdate

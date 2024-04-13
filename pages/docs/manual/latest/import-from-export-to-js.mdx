@@ -8,7 +8,7 @@ canonical: "/docs/manual/latest/import-from-export-to-js"
 
 You've seen how ReScript's idiomatic [Import & Export](import-export.md) works. This section describes how we work with importing stuff from JavaScript and exporting stuff for JavaScript consumption.
 
-**Note**: due to JS ecosystem's module compatibility issues, our advice of keeping your ReScript file's compiled JS output open in a tab applies here **more than ever**, as you don't want to subtly output the wrong JS module import/export code, on top of having to deal with Babel/Webpack/Jest/Node's CommonJS \<-> ES6 compatibility shims.
+**Note**: due to JS ecosystem's module compatibility issues, our advice of keeping your ReScript file's compiled JS output open in a tab applies here **more than ever**, as you don't want to subtly output the wrong JS module import/export code, on top of having to deal with Babel/Webpack/Jest/Node's CommonJS \<-> JavaScript module compatibility shims.
 
 In short: **make sure your bindings below output what you'd have manually written in JS**.
 
@@ -16,8 +16,8 @@ In short: **make sure your bindings below output what you'd have manually writte
 
 We support 2 JavaScript import/export formats:
 
+- JavaScript module: `import * from 'MyReScriptFile'` and `export let ...`.
 - CommonJS: `require('myFile')` and `module.exports = ...`.
-- ES6 modules: `import * from 'MyReScriptFile'` and `export let ...`.
 
 The format is [configurable in via `rescript.json`](build-configuration.md#package-specs).
 
@@ -27,7 +27,7 @@ The format is [configurable in via `rescript.json`](build-configuration.md#packa
 
 Use the `module` [external](external.md):
 
-<CodeTab labels={["ReScript", "JS Output (CommonJS)", "JS Output (ES6)"]}>
+<CodeTab labels={["ReScript", "JS Output (Module)", "JS Output (CommonJS)"]}>
 
 ```res example
 // Import nodejs' path.dirname
@@ -35,11 +35,11 @@ Use the `module` [external](external.md):
 let root = dirname("/User/github") // returns "User"
 ```
 ```js
-var Path = require("path");
+import * as Path from "path";
 var root = Path.dirname("/User/github");
 ```
 ```js
-import * as Path from "path";
+var Path = require("path");
 var root = Path.dirname("/User/github");
 ```
 
@@ -57,30 +57,30 @@ Here's what the `external` does:
 
 By omitting the string argument to `module`, you bind to the whole JS module:
 
-<CodeTab labels={["ReScript", "JS Output (CommonJS)", "JS Output (ES6)"]}>
+<CodeTab labels={["ReScript", "JS Output (Module)", "JS Output (CommonJS)"]}>
 
 ```res example
 @module external leftPad: (string, int) => string = "./leftPad"
 let paddedResult = leftPad("hi", 5)
 ```
 ```js
-var LeftPad = require("./leftPad");
+import * as LeftPad from "./leftPad";
 var paddedResult = LeftPad("hi", 5);
 ```
 ```js
-import * as LeftPad from "./leftPad";
+var LeftPad = require("./leftPad");
 var paddedResult = LeftPad("hi", 5);
 ```
 
 </CodeTab>
 
-Depending on whether you're compiling ReScript to CommonJS or ES6 module, **this feature will generate subtly different code**. Please check both output tabs to see the difference. The ES6 output here would be wrong!
+Depending on whether you're compiling ReScript to JavaScript module or CommonJS, **this feature will generate subtly different code**. Please check both output tabs to see the difference. The JavaScript module output here would be wrong!
 
-### Import an ES6 Default Export
+### Import an `default` Export
 
-Use the value `"default"` on the right hand side:
+Use the value `default` on the right hand side:
 
-<CodeTab labels={["ReScript", "JS Output (ES6)"]}>
+<CodeTab labels={["ReScript", "JS Output (Module)"]}>
 
 ```res example
 @module("./student") external studentName: string = "default"
@@ -97,9 +97,9 @@ var studentName = Student;
 
 **Since 11.1**
 
-[Import attributes](https://github.com/tc39/proposal-import-attributes) can be used in ReScript, as long as ReScript is configured to output ES6. You do that by passing configuration to the `@module` attribute:
+[Import attributes](https://github.com/tc39/proposal-import-attributes) can be used in ReScript, as long as ReScript is configured to output JavaScript module. You do that by passing configuration to the `@module` attribute:
 
-<CodeTab labels={["ReScript", "JS Output (ES6)"]}>
+<CodeTab labels={["ReScript", "JS Output (Module)"]}>
 ```rescript
 @module({from: "./myJson.json", with: {type_: "json", \"some-exotic-identifier": "someValue"}})
 external myJson: Js.Json.t = "default"
@@ -141,7 +141,7 @@ let sub = (a, b) => a - b
 
 Now let's dynamically import the add function in another module, e.g. `App.res`:
 
-<CodeTab labels={["ReScript", "JS Output (ES6)"]}>
+<CodeTab labels={["ReScript", "JS Output (Module)"]}>
 ```rescript
 // App.res
 let main = async () => {
@@ -165,7 +165,7 @@ async function main() {
 
 ### Dynamically Importing an Entire Module
 The syntax for importing a whole module looks a little different, since we are operating on the module syntax level; instead of using `Js.import`, you may simply `await` the module itself:
-<CodeTab labels={["ReScript", "JS Output (ES6)"]}>
+<CodeTab labels={["ReScript", "JS Output (Module)"]}>
 ```rescript
 // App.res
 let main = async () => {
@@ -191,9 +191,9 @@ async function main() {
 
 As mentioned in ReScript's idiomatic [Import & Export](import-export.md), every let binding and module is exported by default to other ReScript modules (unless you use a `.resi` [interface file](module#signatures)). If you open up the compiled JS file, you'll see that these values can also directly be used by a _JavaScript_ file too.
 
-### Export an ES6 Default Value
+### Export a `default` Value
 
-If your JS project uses ES6 modules, you're likely exporting & importing some default values:
+If your JS project uses JavaScript module, you're likely exporting & importing some default values:
 
 ```js
 // student.js
@@ -207,7 +207,7 @@ import studentName from 'student.js';
 
 A JavaScript default export is really just syntax sugar for a named export implicitly called `default` (now you know!). So to export a default value from ReScript, you can just do:
 
-<CodeTab labels={["ReScript", "JS Output (CommonJS)", "JS Output (ES6)"]}>
+<CodeTab labels={["ReScript", "JS Output (Module)", "JS Output (CommonJS)"]}>
 
 ```res example
 // ReScriptStudent.res
@@ -218,7 +218,7 @@ var $$default = "Bob";
 
 exports.$$default = $$default;
 exports.default = $$default;
-// informal transpiler-compatible marker of a default export compiled from ES6
+// informal transpiler-compatible marker of a default export compiled from JavaScript module
 exports.__esModule = true;
 ```
 ```js
@@ -239,4 +239,4 @@ You can then import this default export as usual on the JS side:
 import studentName from 'ReScriptStudent.js';
 ```
 
-If your JavaScript's ES6 default import is transpiled by Babel/Webpack/Jest into CommonJS `require`s, we've taken care of that too! See the CommonJS output tab for `__esModule`.
+If your JavaScript's default import is transpiled by Babel/Webpack/Jest into CommonJS `require`s, we've taken care of that too! See the CommonJS output tab for `__esModule`.
