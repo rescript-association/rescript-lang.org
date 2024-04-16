@@ -15,7 +15,7 @@ canonical: "/docs/manual/latest/build-configuration"
 
 `name` is the name of the library, used as its "namespace". You can activate namespacing through `"namespace": true` in your `rescript.json`. Namespacing is almost **mandatory**; we haven't turned it on by default yet to preserve backward-compatibility.
 
-**Explanation**: by default, your files, once used as a third-party dependency, are available globally to the consumer. E.g. if you have an `Util.re` and the consumer also has a file of the same name, they will clash. Turning on `namespace` avoids this by wrapping all your own project's files into an extra module layer; instead of a global `Util` module, the consumer will see you as `MyProject.Util`. **The namespacing affects your consumers, not yourself**.
+**Explanation**: by default, your files, once used as a third-party dependency, are available globally to the consumer. E.g. if you have a `Util.res` and the consumer also has a file of the same name, they will clash. Turning on `namespace` avoids this by wrapping all your own project's files into an extra module layer; instead of a global `Util` module, the consumer will see you as `MyProject.Util`. **The namespacing affects your consumers, not yourself**.
 
 Aka, in ReScript, "namespace" is just a fancy term for an auto-generated module that wraps all your project's files (efficiently and correctly, of course!) for third-party consumption.
 
