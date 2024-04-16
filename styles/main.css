@@ -1,11 +1,10 @@
+@tailwind base;
+@tailwind components;
+
 @import './_hljs.css';
 @import './_markdown.css';
 @import "./_fonts.css";
 @import "./_docsearch.css";
-
-@tailwind base;
-@tailwind components;
-
 /* @import "./_typography.css"; */
 
 body {
@@ -48,7 +47,7 @@ body {
     }
   }
 
-  @layer components {
+  @responsive {
     .hl-1 {
       @apply text-48 font-semibold tracking-tighter leading-tight text-black
     }
@@ -69,7 +68,7 @@ body {
     }
   }
 
-  @layer components {
+  @responsive {
     .body-lg {
       @apply text-18 font-normal tracking-tight leading-4
     }
