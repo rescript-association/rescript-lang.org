@@ -12,7 +12,7 @@ At the beginning of the year, the ReScript team [released ReScript 11.0](/blog/r
 
 This next minor has some wonderful additions to the ReScript toolbelt for you today.
 
-To install, use your favorite package manager to install the new compiler release, e.g.:
+Use your favorite package manager to install the new compiler release, e.g.:
 
 ```sh
 npm install rescript@11.1
@@ -72,7 +72,7 @@ var result = await $$Bun.$`ls ${filename}`;
 </CodeTab>
 
 
-Of course you can also create your own tag functions in ReScript now as well, it is just a function with the following signature.
+Of course you can also create your own tag function in ReScript now as well, it is just a function with the following signature.
 
 ```rescript
 let myTagFunction : (array<string>, array<'param>) => 'output
@@ -158,7 +158,7 @@ This is particularly useful when dealing with [web components](https://developer
 
 ## Omit trailing undefined in external function calls
 
-ReScript 11's uncurried mode allows for much more ergonomic external function bindings, because trailing units were not needed anymore. But, this comes with a potential problem. All arguments, whether they're actually supplied or not, were printed as `undefined` in the resulting JS. This is handled better now, as trailing `undefined`s are automatically omitted.
+ReScript 11's uncurried mode allows for much more ergonomic external function bindings, because trailing units are not needed anymore. But, this comes with a potential problem. All arguments, whether they're actually supplied or not, were printed as `undefined` in the resulting JS. This is handled better now, as trailing `undefined`s are automatically omitted.
 
 <CodeTab labels={["ReScript", "JS Output (ReScript 11.0)", "JS Output (ReScript 11.1)"]}>
 
@@ -200,7 +200,7 @@ var result2 = JSON.stringify(obj, undefined, 2);
 
 Inspired by languages like [Elm](https://package.elm-lang.org/packages/elm/core/latest/Debug#todo) or [Gleam](https://tour.gleam.run/advanced-features/todo/), we introduced a new extension point: [`%todo`](/syntax-lookup#todo).
 
-It is used to tell the compiler that some code still needs to be implemented and it will crash when exectuted.
+It is used to tell the compiler that some code still needs to be implemented and it will crash when executed.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -240,7 +240,7 @@ Of course we also got a bunch of other changes and bug fixes in this release. Ch
 
 
 ## v12 is next
-v11.1 marks the completion of the v11 versions feature wise. We will of course continue to support the v11 release series with bug fixes and other important updates. With this release however, our focus for new feature development will move to v12. You'll hear more about v12 and the plans for that version soon.
+v11.1 marks the completion of the v11 versions feature wise. We will of course continue to support the v11 release series with bug fixes and other important updates. However, our focus for new feature development will move to v12. You'll hear more about v12 and the plans for that version soon.
 
 ## Acknowledgements
 
