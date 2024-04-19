@@ -9057,8 +9057,8 @@
     "id": "Js.WeakMap",
     "name": "WeakMap",
     "docstrings": [
-      "Provides bindings for JavaScript WeakMap",
-      "WeakMap API"
+      "Provides bindings for ES6 WeakMap",
+      "ES6 WeakMap API"
     ],
     "items": [
       {
@@ -9074,8 +9074,8 @@
     "id": "Js.Map",
     "name": "Map",
     "docstrings": [
-      "Provides bindings for JavaScript Map",
-      "Map API"
+      "Provides bindings for ES6 Map",
+      "ES6 Map API"
     ],
     "items": [
       {
@@ -9091,8 +9091,8 @@
     "id": "Js.WeakSet",
     "name": "WeakSet",
     "docstrings": [
-      "Provides bindings for JavaScript WeakSet",
-      "WeakSet API"
+      "Provides bindings for ES6 WeakSet",
+      "ES6 WeakSet API"
     ],
     "items": [
       {
@@ -9108,8 +9108,8 @@
     "id": "Js.Set",
     "name": "Set",
     "docstrings": [
-      "Provides bindings for JavaScript Set",
-      "Set API"
+      "Provides bindings for ES6 Set",
+      "ES6 Set API"
     ],
     "items": [
       {
@@ -10138,7 +10138,7 @@
         "kind": "type",
         "name": "symbol",
         "docstrings": [
-          "Js symbol type"
+          "Js symbol type (only available in ES6)"
         ],
         "signature": "type symbol"
       },
