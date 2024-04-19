@@ -70,6 +70,7 @@ let numeric = [
   (107, "Integer literal exceeds the range of representable integers of type int"),
   (108, "Uninterpreted delimiters (for unicode)"),
   (109, "Toplevel expression has unit type"),
+  (110, "Todo found"),
 ]
 
 let letterAll = numeric->Belt.Array.map(fst)
@@ -226,7 +227,12 @@ module Parser = {
     | _ => ()
     }
 
-    ret
+    ret->Belt.SortArray.stableSortBy((v1, v2) => {
+      let a = v1.flag->Belt.Int.fromString
+      let b = v2.flag->Belt.Int.fromString
+
+      compare(a, b)
+    })
   }
 
   let parse = (input: string): result<array<token>, string> =>
