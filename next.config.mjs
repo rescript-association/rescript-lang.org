@@ -18,7 +18,7 @@ const config = {
   env: {
     ENV: process.env.NODE_ENV,
   },
-  swcMinify: true,
+  swcMinify: false,
   webpack: (config, options) => {
     const { isServer } = options;
     if (!isServer) {
