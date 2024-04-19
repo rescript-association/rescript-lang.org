@@ -107,6 +107,28 @@ console.log(buttonCss);
 ```
 </CodeTab>
 
+## BigInt support
+
+ReScript now natively supports [JavaScript's `bigint` type](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt).
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+open! Js.BigInt 
+
+let a = 9007199254740991n + 9007199254740991n
+let b = 2n ** 2n
+```
+```js
+var a = 9007199254740991n + 9007199254740991n;
+
+var p = 2n ** 2n;
+```
+
+</CodeTab>
+
+See [big integer docs](https://rescript-lang.org/docs/manual/latest/primitive-types#big-integers-experimental) for more.
+
 ## Array spread syntax
 
 The spread syntax, which was already supported for records and lists for a long time, now also supports arrays!
@@ -114,7 +136,7 @@ The spread syntax, which was already supported for records and lists for a long 
 ```rescript
 let animals = ["🐶", "🐱", "🐷"]
 let moreAnimals = [...animals, "🐔", "🐴", "🐮"]
-````
+```
 
 ## Hyphens in JSX tag names
 
