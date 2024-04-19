@@ -174,6 +174,43 @@ var result2 = JSON.stringify(obj, undefined, 2);
 ```
 </CodeTab>
 
+## %todo and warn-error
+
+Inspired by languages like [Elm](https://package.elm-lang.org/packages/elm/core/latest/Debug#todo) or [Gleam](https://tour.gleam.run/advanced-features/todo/), we introduced a new extension point: [`%todo`](/syntax-lookup#todo).
+
+It is used to tell the compiler that some code still needs to be implemented and it will crash when exectuted.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+let implementMeLater = (): string => %todo("This should return a string eventually.")
+
+let x = implementMeLater()
+
+Console.log(x->String.includes("x"))
+```
+
+```js
+var Js_exn = require("./stdlib/js_exn.js");
+
+function implementMeLater() {
+  return Js_exn.raiseError("playground.res:1:37-42 - Todo: This should return a string eventually.");
+}
+
+var x = Js_exn.raiseError("playground.res:1:37-42 - Todo: This should return a string eventually.");
+
+console.log(x.includes("x"));
+```
+
+</CodeTab>
+
+We also made the compiler's `-warn-error` flag accessible by the build system, so that `%todo`s and other warnings can be turned into errors in production builds.
+
+```sh
+rescript -warn-error +110
+```
+
+See ["Compile with stricter errors in CI"](/docs/manual/latest/build-overview#compile-with-stricter-errors-in-ci).
 
 ## Other changes
 
@@ -187,7 +224,7 @@ v11.1 marks the completion of the v11 versions feature wise. We will of course c
 
 Once again we want to thank everyone from the community who volunteered their precious time to support this project with contributions of any kind, from documentation, to PRs, to discussions in the forum. But especially we want to thank the following people, who helped landing this release:
 
-[@cknitt](https://github.com/cknitt), [@cometkim](https://github.com/cometkim), [@cristianoc](https://github.com/cristianoc), [@diogomqbm](https://github.com/diogomqbm), [@enzo-pellegrini](https://github.com/enzo-pellegrini), [@glennsl](https://github.com/glennsl), [@JonoPrest](https://github.com/JonoPrest), [@mununki](https://github.com/mununki), [@kevinbarabash](https://github.com/kevinbarabash), [@shulhi](https://github.com/shulhi), [@tsnobip](https://github.com/tsnobip), [@zth](https://github.com/zth).
+[@cknitt](https://github.com/cknitt), [@cometkim](https://github.com/cometkim), [@cristianoc](https://github.com/cristianoc), [@diogomqbm](https://github.com/diogomqbm), [@enzo-pellegrini](https://github.com/enzo-pellegrini), [@fhammerschmidt](https://github.com/fhammerschmidt), [@glennsl](https://github.com/glennsl), [@JonoPrest](https://github.com/JonoPrest), [@mununki](https://github.com/mununki), [@kevinbarabash](https://github.com/kevinbarabash), [@shulhi](https://github.com/shulhi), [@tsnobip](https://github.com/tsnobip), [@zth](https://github.com/zth).
 
 ## That's it
 
