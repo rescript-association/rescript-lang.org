@@ -206,6 +206,10 @@ module MobileDrawerButton = {
     </button>
 }
 
+type scrollDir =
+  | Up({scrollY: int})
+  | Down({scrollY: int})
+
 @react.component
 let make = (
   ~metaTitle: string,
@@ -221,6 +225,8 @@ let make = (
   ~children,
 ) => {
   let (isNavOpen, setNavOpen) = React.useState(() => false)
+  let (_, startScrollEventTransition) = React.useTransition()
+  let (scrollDir, setScrollDir) = React.useState(() => Up({scrollY: %raw(`Infinity`)}))
   let router = Next.Router.useRouter()
   let version = Url.parse(router.route).version
 
@@ -252,6 +258,30 @@ let make = (
         events->off(#hashChangeComplete(onChangeComplete))
       },
     )
+  }, [])
+
+  React.useEffect(() => {
+    let onScroll = _e => {
+      startScrollEventTransition(() => {
+        setScrollDir(
+          prev => {
+            let Up({scrollY}) | Down({scrollY}) = prev
+            if scrollY === 0 || scrollY > Webapi.Window.scrollY {
+              Up({scrollY: Webapi.Window.scrollY})
+            } else {
+              Down({scrollY: Webapi.Window.scrollY})
+            }
+          },
+        )
+      })
+    }
+    Webapi.Window.addEventListener("scroll", onScroll)
+    Some(() => Webapi.Window.removeEventListener("scroll", onScroll))
+  }, [])
+
+  let handleDrawerButtonClick = React.useCallback(evt => {
+    ReactEvent.Mouse.preventDefault(evt)
+    toggleSidebar()
   }, [])
 
   let editLinkEl = switch editHref {
@@ -297,25 +327,24 @@ let make = (
   | None => React.null
   }
 
+  let navAppearanceCascading = switch scrollDir {
+  | Up(_) => "nav-appear"
+  | Down(_) => "nav-disappear"
+  }
+
   <>
     <Meta title=metaTitle version />
-    <div className={"mt-16 min-w-320 " ++ theme}>
+    <div className={"mt-16 min-w-320 " ++ theme ++ " group " ++ navAppearanceCascading}>
       <div className="w-full">
-        <Navigation overlayState=(isNavOpen, setNavOpen) />
+        <Navigation isOverlayOpen=isNavOpen setOverlayOpen=setNavOpen />
         <div className="flex lg:justify-center">
           <div className="flex w-full max-w-1280 md:mx-8">
             sidebar
             <main className="px-4 w-full pt-16 md:ml-12 lg:mr-8 mb-32 md:max-w-576 lg:max-w-740">
               //width of the right content part
               <div
-                className="z-10 fixed border-b shadow top-16 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center">
-                <MobileDrawerButton
-                  hidden=isNavOpen
-                  onClick={evt => {
-                    ReactEvent.Mouse.preventDefault(evt)
-                    toggleSidebar()
-                  }}
-                />
+                className={"z-10 fixed border-b shadow top-16 left-0 pl-4 bg-white w-full py-4 md:relative md:border-none md:shadow-none md:p-0 md:top-auto flex items-center transition duration-300 ease-out group-[.nav-disappear]:-translate-y-32 md:group-[.nav-disappear]:transform-none"}>
+                <MobileDrawerButton hidden=isNavOpen onClick={handleDrawerButtonClick} />
                 <div
                   className="truncate overflow-x-auto touch-scroll flex items-center space-x-4 md:justify-between mr-4 w-full">
                   breadcrumbs

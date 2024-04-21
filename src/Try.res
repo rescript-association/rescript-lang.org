@@ -1,7 +1,7 @@
 type props = {versions: array<string>}
 
 let default = props => {
-  let overlayState = React.useState(() => false)
+  let (isOverlayOpen, setOverlayOpen) = React.useState(() => false)
 
   let lazyPlayground = Next.Dynamic.dynamic(
     async () => await Js.import(Playground.make),
@@ -20,7 +20,7 @@ let default = props => {
     </Next.Head>
     <div className="text-16">
       <div className="text-gray-40 text-14">
-        <Navigation fixed=false overlayState />
+        <Navigation fixed=false isOverlayOpen setOverlayOpen />
         playground
       </div>
     </div>

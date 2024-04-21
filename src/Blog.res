@@ -289,7 +289,7 @@ let default = (props: props): React.element => {
     </>
   }
 
-  let overlayState = React.useState(() => false)
+  let (isOverlayOpen, setOverlayOpen) = React.useState(() => false)
   let title = "Blog | ReScript Documentation"
 
   <>
@@ -298,7 +298,7 @@ let default = (props: props): React.element => {
     />
     <div className="mt-16 pt-2">
       <div className="text-gray-80 text-18">
-        <Navigation overlayState />
+        <Navigation isOverlayOpen setOverlayOpen />
         <div className="flex justify-center overflow-hidden">
           <main className="min-w-320 lg:align-center w-full lg:px-0 max-w-1280 pb-48">
             <MdxProvider components=MarkdownComponents.default>
