@@ -42,13 +42,13 @@ let blogPathToSlug = path => {
   path->Js.String2.replaceByRe(%re(`/^(archive\/)?\d\d\d\d-\d\d-\d\d-(.+)\.mdx$/`), "$2")
 }
 
+let mdxFiles = dir => {
+  Node.Fs.readdirSync(dir)->Js.Array2.filter(path => Node.Path.extname(path) === ".mdx")
+}
+
 let getAllPosts = () => {
   let postsDirectory = Node.Path.join2(Node.Process.cwd(), "_blogposts")
   let archivedPostsDirectory = Node.Path.join2(postsDirectory, "archive")
-
-  let mdxFiles = dir => {
-    Node.Fs.readdirSync(dir)->Js.Array2.filter(path => Node.Path.extname(path) === ".mdx")
-  }
 
   let nonArchivedPosts = mdxFiles(postsDirectory)->Js.Array2.map(path => {
     let {GrayMatter.data: data} =
@@ -77,6 +77,49 @@ let getAllPosts = () => {
   })
 
   Js.Array2.concat(nonArchivedPosts, archivedPosts)->Js.Array2.sortInPlaceWith((a, b) => {
+    String.compare(Node.Path.basename(b.path), Node.Path.basename(a.path))
+  })
+}
+
+let getLivePosts = () => {
+  let postsDirectory = Node.Path.join2(Node.Process.cwd(), "_blogposts")
+
+  let livePosts = mdxFiles(postsDirectory)->Js.Array2.map(path => {
+    let {GrayMatter.data: data} =
+      Node.Path.join2(postsDirectory, path)->Node.Fs.readFileSync->GrayMatter.matter
+    switch BlogFrontmatter.decode(data) {
+    | Error(msg) => Js.Exn.raiseError(msg)
+    | Ok(d) => {
+        path,
+        frontmatter: d,
+        archived: false,
+      }
+    }
+  })
+
+  livePosts->Js.Array2.sortInPlaceWith((a, b) => {
+    String.compare(Node.Path.basename(b.path), Node.Path.basename(a.path))
+  })
+}
+
+let getArchivedPosts = () => {
+  let postsDirectory = Node.Path.join2(Node.Process.cwd(), "_blogposts")
+  let archivedPostsDirectory = Node.Path.join2(postsDirectory, "archive")
+
+  let archivedPosts = mdxFiles(archivedPostsDirectory)->Js.Array2.map(path => {
+    let {GrayMatter.data: data} =
+      Node.Path.join2(archivedPostsDirectory, path)->Node.Fs.readFileSync->GrayMatter.matter
+    switch BlogFrontmatter.decode(data) {
+    | Error(msg) => Js.Exn.raiseError(msg)
+    | Ok(d) => {
+        path: Node.Path.join2("archive", path),
+        frontmatter: d,
+        archived: true,
+      }
+    }
+  })
+
+  archivedPosts->Js.Array2.sortInPlaceWith((a, b) => {
     String.compare(Node.Path.basename(b.path), Node.Path.basename(a.path))
   })
 }

@@ -39,44 +39,34 @@ module Badge = {
     </div>
   }
 }
+
+type category =
+  | /** Actually only unarchived */ All
+  | Archived
+
 module CategorySelector = {
-  type selection =
-    | All
-    | Archived
-
-  let renderTab = (~text: string, ~isActive: bool, ~onClick) => {
-    let active = "bg-gray-20 text-gray-80 rounded py-1"
-    <div
-      key=text
-      onClick
-      className={(
-        isActive ? active : "hover:cursor-pointer bg-white hover:text-gray-80"
-      ) ++ "  px-4 inline-block"}>
-      {React.string(text)}
-    </div>
-  }
-
   @react.component
-  let make = (~selected: selection, ~onSelected: selection => unit) => {
+  let make = (~selected: category) => {
     let tabs = [All, Archived]
 
     <div className="text-16 w-full flex items-center justify-between text-gray-60">
-      {Belt.Array.map(tabs, tab => {
-        let onClick = evt => {
-          evt->ReactEvent.Mouse.preventDefault
-          onSelected(tab)
-        }
-
+      {tabs
+      ->Belt.Array.map(tab => {
         // Deep comparison here!
         let isActive = selected == tab
-
-        let text = switch tab {
-        | All => "All"
-        | Archived => "Archived"
+        let text = (tab :> string)
+        let href = switch tab {
+        | All => "/blog"
+        | Archived => "/blog/archived"
         }
-
-        renderTab(~isActive, ~text, ~onClick)
-      })->React.array}
+        let className =
+          switch isActive {
+          | true => "bg-gray-20 text-gray-80 rounded py-1"
+          | false => "hover:cursor-pointer bg-white hover:text-gray-80"
+          } ++ " px-4 inline-block"
+        <Link key=text href className> {React.string(text)} </Link>
+      })
+      ->React.array}
     </div>
   }
 }
@@ -209,15 +199,10 @@ module FeatureCard = {
 
 type params = {slug: string}
 
-type props = {
-  posts: array<BlogApi.post>,
-  archived: array<BlogApi.post>,
-}
+type props = {posts: array<BlogApi.post>, category: category}
 
 let default = (props: props): React.element => {
-  let {posts, archived} = props
-
-  let (currentSelection, setSelection) = React.useState(() => CategorySelector.All)
+  let {posts, category} = props
 
   let content = if Belt.Array.length(posts) === 0 {
     /* <div> {React.string("Currently no posts available")} </div>; */
@@ -226,16 +211,11 @@ let default = (props: props): React.element => {
       <Markdown.Warn> {React.string("This blog is currently in the works.")} </Markdown.Warn>
     </div>
   } else {
-    let filtered = switch currentSelection {
-    | All => posts
-    | Archived => archived
-    }
-
-    let result = switch Belt.Array.length(filtered) {
+    let result = switch Belt.Array.length(posts) {
     | 0 => <div> {React.string("No posts for this category available...")} </div>
     | _ =>
-      let first = Belt.Array.getExn(filtered, 0)
-      let rest = Js.Array2.sliceFrom(filtered, 1)
+      let first = Belt.Array.getExn(posts, 0)
+      let rest = Js.Array2.sliceFrom(posts, 1)
 
       let featureBox =
         <div className="w-full mb-24 lg:px-8 xl:px-0">
@@ -280,9 +260,7 @@ let default = (props: props): React.element => {
     <>
       <div className="hidden sm:flex justify-center ">
         <div className="my-16 w-full" style={ReactDOMStyle.make(~maxWidth="12rem", ())}>
-          <CategorySelector
-            onSelected={selection => setSelection(_ => selection)} selected=currentSelection
-          />
+          <CategorySelector selected=category />
         </div>
       </div>
       result
@@ -316,12 +294,19 @@ let default = (props: props): React.element => {
   </>
 }
 
-let getStaticProps: Next.GetStaticProps.t<props, params> = async _ctx => {
-  let (archived, nonArchived) = BlogApi.getAllPosts()->Belt.Array.partition(data => data.archived)
-
+let getStaticProps_All: Next.GetStaticProps.t<props, params> = async _ctx => {
   let props = {
-    posts: nonArchived,
-    archived,
+    posts: BlogApi.getLivePosts(),
+    category: All,
+  }
+
+  {"props": props}
+}
+
+let getStaticProps_Archived: Next.GetStaticProps.t<props, params> = async _ctx => {
+  let props = {
+    posts: BlogApi.getArchivedPosts(),
+    category: Archived,
   }
 
   {"props": props}
