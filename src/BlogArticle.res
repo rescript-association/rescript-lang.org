@@ -199,7 +199,7 @@ let default = (props: props) => {
       </Markdown.Warn>
     </div>
   }
-  <MainLayout> content </MainLayout>
+  <MainLayout navbarCollapsible=true> content </MainLayout>
 }
 
 let getStaticProps: Next.GetStaticProps.t<props, Params.t> = async ctx => {

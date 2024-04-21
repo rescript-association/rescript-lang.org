@@ -374,6 +374,7 @@ let default = (props: props) => {
     metaTitle={title ++ " | ReScript API"}
     theme=#Reason
     components=ApiMarkdown.default
+    navbarCollapsible=true
     sidebarState=(isSidebarOpen, setSidebarOpen)
     sidebar
     rightSidebar>

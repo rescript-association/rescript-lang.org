@@ -152,6 +152,7 @@ let make = (
     metaTitle
     theme
     components
+    navbarCollapsible=true
     sidebarState=(isSidebarOpen, setSidebarOpen)
     sidebar
     categories
