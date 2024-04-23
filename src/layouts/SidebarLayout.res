@@ -218,11 +218,9 @@ let make = (
   ~rightSidebar: option<React.element>=?,
   ~categories: option<array<Sidebar.Category.t>>=?,
   ~breadcrumbs: option<list<Url.breadcrumb>>=?,
-  ~navbarCollapsible=false,
   ~children,
 ) => {
   let (isNavOpen, setNavOpen) = React.useState(() => false)
-  let scrollDir = ScrollDirectionHook.useScrollDirection()
   let router = Next.Router.useRouter()
   let version = Url.parse(router.route).version
 
@@ -304,15 +302,9 @@ let make = (
   | None => React.null
   }
 
-  let navAppearanceCascading = switch (navbarCollapsible, scrollDir) {
-  | (true, Up(_)) => " group nav-appear"
-  | (true, Down(_)) => " group nav-disappear"
-  | _ => ""
-  }
-
   <>
     <Meta title=metaTitle version />
-    <div className={"mt-16 min-w-320 " ++ theme ++ navAppearanceCascading}>
+    <div className={"mt-16 min-w-320 " ++ theme}>
       <div className="w-full">
         <Navigation isOverlayOpen=isNavOpen setOverlayOpen=setNavOpen />
         <div className="flex lg:justify-center">

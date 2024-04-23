@@ -1,16 +1,9 @@
 @react.component
-let make = (~components=MarkdownComponents.default, ~navbarCollapsible=false, ~children) => {
+let make = (~components=MarkdownComponents.default, ~children) => {
   let (isOverlayOpen, setOverlayOpen) = React.useState(() => false)
-  let scrollDir = ScrollDirectionHook.useScrollDirection()
-
-  let navAppearanceCascading = switch (navbarCollapsible, scrollDir) {
-  | (true, Up(_)) => " group nav-appear"
-  | (true, Down(_)) => " group nav-disappear"
-  | _ => ""
-  }
 
   <>
-    <div className={"mt-4 xs:mt-16" ++ navAppearanceCascading}>
+    <div className={"mt-4 xs:mt-16"}>
       <div className="text-gray-80">
         <Navigation isOverlayOpen setOverlayOpen />
         <div className="flex xs:justify-center overflow-hidden pb-48">

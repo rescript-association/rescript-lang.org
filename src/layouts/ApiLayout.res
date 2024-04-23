@@ -133,7 +133,6 @@ let make = (
     metaTitle={pageTitle ++ " | ReScript API"}
     theme=#Reason
     components
-    navbarCollapsible=true
     sidebarState=(isSidebarOpen, setSidebarOpen)
     sidebar>
     children

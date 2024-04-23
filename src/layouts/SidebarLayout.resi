@@ -73,6 +73,5 @@ let make: (
   ~rightSidebar: React.element=?,
   ~categories: array<Sidebar.Category.t>=?,
   ~breadcrumbs: list<Url.breadcrumb>=?,
-  ~navbarCollapsible: bool=?,
   ~children: React.element,
 ) => React.element

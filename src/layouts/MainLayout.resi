@@ -1,6 +1,2 @@
 @react.component
-let make: (
-  ~components: MarkdownComponents.t=?,
-  ~navbarCollapsible: bool=?,
-  ~children: React.element,
-) => React.element
+let make: (~components: MarkdownComponents.t=?, ~children: React.element) => React.element
