@@ -380,11 +380,7 @@ module A = {
       | [pathname] => Js.String2.replaceByRe(pathname, regex, "")
       | _ => href
       }
-      <Next.Link
-        href
-        hrefRel="noopener noreferrer"
-        className="no-underline text-fire hover:underline"
-        ?target>
+      <Next.Link href className="no-underline text-fire hover:underline" ?target>
         children
       </Next.Link>
     }

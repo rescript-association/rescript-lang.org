@@ -1,6 +1,4 @@
 /* Contains some generic hooks */
-%%raw("import React from 'react'")
-
 let useOutsideClick: (ReactDOM.Ref.t, unit => unit) => unit = %raw(`(outerRef, trigger) => {
   function handleClickOutside(event) {
     if (outerRef.current && !outerRef.current.contains(event.target)) {
@@ -16,33 +14,38 @@ let useOutsideClick: (ReactDOM.Ref.t, unit => unit) => unit = %raw(`(outerRef, t
   });
 }`)
 
-let useWindowWidth: unit => option<int> = %raw(` () => {
-  const isClient = typeof window === 'object';
+/** scrollDir is not memo-friendly.
+  It must be used with pattern matching.
+  Do not pass it directly to child components. */
+type scrollDir =
+  | Up({scrollY: int})
+  | Down({scrollY: int})
 
-  function getSize() {
-    return {
-      width: isClient ? window.innerWidth : undefined,
-      height: isClient ? window.innerHeight : undefined
-    };
-  }
-
-  const [windowSize, setWindowSize] = React.useState(getSize);
+/**
+  This will cause highly frequent events, so use it only once in a root as possible.
+  And split the children components to prevent heavy ones from being re-rendered unnecessarily. */
+let useScrollDirection = () => {
+  let (_, startScrollEventTransition) = React.useTransition()
+  let (scrollDir, setScrollDir) = React.useState(() => Up({scrollY: %raw(`Infinity`)}))
 
   React.useEffect(() => {
-    if (!isClient) {
-      return false;
+    let onScroll = _e => {
+      startScrollEventTransition(() => {
+        setScrollDir(
+          prev => {
+            let Up({scrollY}) | Down({scrollY}) = prev
+            if scrollY === 0 || scrollY > Webapi.Window.scrollY {
+              Up({scrollY: Webapi.Window.scrollY})
+            } else {
+              Down({scrollY: Webapi.Window.scrollY})
+            }
+          },
+        )
+      })
     }
+    Webapi.Window.addEventListener("scroll", onScroll)
+    Some(() => Webapi.Window.removeEventListener("scroll", onScroll))
+  }, [])
 
-    function handleResize() {
-      setWindowSize(getSize());
-    }
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []); // Empty array ensures that effect is only run on mount and unmount
-
-  if(windowSize) {
-    return windowSize.width;
-  }
-  return null;
-}`)
+  scrollDir
+}

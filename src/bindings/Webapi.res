@@ -37,6 +37,7 @@ module Window = {
   external removeEventListener: (string, 'a => unit) => unit = "removeEventListener"
   @scope("window") @val external innerWidth: int = "innerWidth"
   @scope("window") @val external innerHeight: int = "innerHeight"
+  @scope("window") @val external scrollY: int = "scrollY"
 }
 
 module Fetch = {
