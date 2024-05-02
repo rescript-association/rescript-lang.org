@@ -6,16 +6,21 @@ canonical: "/docs/manual/latest/module-functions"
 
 # Module Functions
 
+Module functions can be used to create modules based on types, values, or functions from other modules. 
+This is a powerful tool that can be used to created abstractions and reusable code that might not be possible with functions, or might have a runtime cost if done with functions.
+
+Next.js has a `useNavigation` hook that returns an unknown type, 
+and it's up to the developer to add in a type annotation to define the type of the parameters returned by the hook.
+```TS
+const params = useParams<{ tag: string; item: string }>()
+```
+
+Instead of having to add the type annotation every time you use the hook, you can create a module function that will return a typed response for the `useNavigation` hook.
 <CodeTab labels={["ReScript", "JS Output"]}>
 ```res example
 module Next = {
-  // define a module type to use a parameter for out module function
-  module type Params = {
-    type t
-  }
-
   // define our module function
-  module MakeNavigation = (Params: Params) => {
+  module MakeNavigation = (Params: { type t }) => {
     @module("next/navigation")
     external useNavigation: unit => Params.t = "useNavigation"
     /* You can use values from the function parameter, such as Params.t */
@@ -88,5 +93,56 @@ export {
 }
 /* next/navigation Not a pure module */
 
+```
+</ CodeTab>
+
+This becomes incredibly useful when you need to have types that are unique to a project but shared across multiple components.
+Let's say you want to create a library with a `useEnv` hook to load in environment variables found in `import.meta.env`.
+```res
+@val external env: 'a = "import.meta.env"
+
+let useEnv = () => {
+  env
+}
+```
+It's not possible to define types for this that will work for every project, so we just set it as 'a and the consumer of our library can define the return type when they use the hook.
+```res
+type t = {"LOG_LEVEL": string}
+
+let values: t = useEnv()
+```
+This isn't great and it doesn't take advantage of ReScript's type system and ability to use types without type definitions, and it can't be easily shared across our application.
+
+We can instead create a module function that can return a module that has contains a `useEnv` hook that has a typed response.
+```res
+module MakeEnv = (
+  E: {
+    type t
+  },
+) => {
+  @val external env: E.t = "import.meta.env"
+
+  let useEnv = () => {
+    env
+  }
+}
+```
+And now consumers of our library can define the types and create a custom version of the hook just for their application.
+Notice that in the JavaScript output that the `import.meta.env` is used directly and doesn't require any function calls or runtime overhead.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+```res
+module Env = MakeEnv({
+	type t = {"LOG_LEVEL": string}
+})
+
+let values = Env.useEnv()
+```
+```js
+var Env = {
+  useEnv: useEnv
+};
+
+var values = import.meta.env;
 ```
 </ CodeTab>
