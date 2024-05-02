@@ -5,3 +5,36 @@ canonical: "/docs/manual/latest/module-functions"
 ---
 
 # Module Functions
+
+```rescript
+// next.res - bindings for Next
+module type Params = {
+  type t
+}
+
+module MakeNavigation = (Params: Params) => {
+  @module("next/navigation")
+  external useNavigation: unit => Params.t = "useNavigation"
+}
+
+// Your React component
+// component.res
+module Params = {
+  type t = {
+    tag: string,
+    item: string,
+  }
+}
+
+module Navigation = Next.MakeNavigation(Params)
+
+@react.component
+let make = () => {
+  let params = Navigation.useNavigation()
+  <div>
+    <p> {React.string("Tag: " ++ params.tag)} </p>
+    <p> {React.string("Item: " ++ params.item)} </p>
+  </div>
+}
+```
+import { comma } from "postcss/lib/list"
