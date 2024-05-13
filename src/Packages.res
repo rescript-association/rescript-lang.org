@@ -29,18 +29,19 @@ type npmPackage = {
 }
 
 module Resource = {
-  type t = Npm(npmPackage) | Url(urlResource)
+  type t = Npm(npmPackage) | Url(urlResource) | Outdated(npmPackage)
 
   let getId = (res: t) => {
     switch res {
     | Npm({name})
+    | Outdated({name})
     | Url({name}) => name
     }
   }
 
   let shouldFilter = (res: t) => {
     switch res {
-    | Npm(pkg) =>
+    | Npm(pkg) | Outdated(pkg) =>
       if pkg.name->Js.String2.startsWith("@elm-react") {
         true
       } else if pkg.name->Js.String2.startsWith("bs-") {
@@ -74,7 +75,7 @@ module Resource = {
 
   let isOfficial = (res: t) => {
     switch res {
-    | Npm(pkg) =>
+    | Npm(pkg) | Outdated(pkg) =>
       pkg.name === "rescript" ||
       pkg.name->Js.String2.startsWith("@rescript/") ||
       pkg.name === "gentype"
@@ -121,20 +122,26 @@ module Resource = {
   }
 
   let applySearch = (resources: array<t>, pattern: string): array<t> => {
-    let (allNpms, allUrls) = Belt.Array.reduce(resources, ([], []), (acc, next) => {
-      let (npms, resources) = acc
+    let (allNpms, allUrls, allOutDated) = Belt.Array.reduce(resources, ([], [], []), (
+      acc,
+      next,
+    ) => {
+      let (npms, resources, outdated) = acc
 
       switch next {
       | Npm(pkg) => Js.Array2.push(npms, pkg)->ignore
       | Url(res) => Js.Array2.push(resources, res)->ignore
+      | Outdated(pkg) => Js.Array2.push(outdated, pkg)->ignore
       }
-      (npms, resources)
+      (npms, resources, outdated)
     })
 
     let filteredNpm = applyNpmSearch(allNpms, pattern)->Belt.Array.map(m => Npm(m["item"]))
     let filteredUrls = applyUrlResourceSearch(allUrls, pattern)->Belt.Array.map(m => Url(m["item"]))
+    let filteredOutdated =
+      applyNpmSearch(allOutDated, pattern)->Belt.Array.map(m => Outdated(m["item"]))
 
-    Belt.Array.concat(filteredNpm, filteredUrls)
+    Belt.Array.concat(filteredNpm, filteredUrls)->Belt.Array.concat(filteredOutdated)
   }
 }
 
@@ -142,14 +149,14 @@ module Card = {
   @react.component
   let make = (~value: Resource.t, ~onKeywordSelect: option<string => unit>=?) => {
     let icon = switch value {
-    | Npm(_) => <Icon.Npm className="w-8 opacity-50" />
+    | Npm(_) | Outdated(_) => <Icon.Npm className="w-8 opacity-50" />
     | Url(_) =>
       <span>
         <Icon.Hyperlink className="w-8 opacity-50" />
       </span>
     }
     let linkBox = switch value {
-    | Npm(pkg) =>
+    | Npm(pkg) | Outdated(pkg) =>
       let repositoryHref = Js.Null.toOption(pkg.repositoryHref)
       let repoEl = switch repositoryHref {
       | Some(href) =>
@@ -174,12 +181,14 @@ module Card = {
     }
 
     let titleHref = switch value {
-    | Npm(pkg) => pkg.repositoryHref->Js.Null.toOption->Belt.Option.getWithDefault(pkg.npmHref)
+    | Npm(pkg) | Outdated(pkg) =>
+      pkg.repositoryHref->Js.Null.toOption->Belt.Option.getWithDefault(pkg.npmHref)
     | Url(res) => res.urlHref
     }
 
     let (title, description, keywords) = switch value {
     | Npm({name, description, keywords})
+    | Outdated({name, description, keywords})
     | Url({name, description, keywords}) => (name, description, keywords)
     }
 
@@ -243,6 +252,7 @@ module Filter = {
     includeCommunity: bool,
     includeNpm: bool,
     includeUrlResource: bool,
+    includeOutdated: bool,
   }
 }
 
@@ -268,7 +278,7 @@ module InfoSidebar = {
 
     <aside className=" border-l-2 p-4 py-12 border-fire-30 space-y-16">
       <div>
-        <h2 className=h2> {React.string("Filter for")} </h2>
+        <h2 className=h2> {React.string("Include")} </h2>
         <div className="space-y-2">
           <Toggle
             enabled={filter.includeOfficial}
@@ -306,6 +316,15 @@ module InfoSidebar = {
             }}>
             {React.string("URL resources")}
           </Toggle>
+          <Toggle
+            enabled={filter.includeOutdated}
+            toggle={() => {
+              setFilter(prev => {
+                {...prev, Filter.includeOutdated: !filter.includeOutdated}
+              })
+            }}>
+            {React.string("Outdated")}
+          </Toggle>
         </div>
       </div>
       <div>
@@ -325,7 +344,11 @@ module InfoSidebar = {
   }
 }
 
-type props = {"packages": array<npmPackage>, "urlResources": array<urlResource>}
+type props = {
+  "packages": array<npmPackage>,
+  "urlResources": array<urlResource>,
+  "unmaintained": array<npmPackage>,
+}
 
 type state =
   | All
@@ -351,13 +374,14 @@ let default = (props: props) => {
     includeCommunity: true,
     includeNpm: true,
     includeUrlResource: true,
+    includeOutdated: false,
   })
 
   let allResources = {
     let npms = props["packages"]->Belt.Array.map(pkg => Resource.Npm(pkg))
     let urls = props["urlResources"]->Belt.Array.map(res => Resource.Url(res))
-
-    Belt.Array.concat(npms, urls)
+    let outdated = props["unmaintained"]->Belt.Array.map(pkg => Resource.Outdated(pkg))
+    Belt.Array.concat(npms, urls)->Belt.Array.concat(outdated)
   }
 
   let resources = switch state {
@@ -391,6 +415,7 @@ let default = (props: props) => {
     let isResourceIncluded = switch next {
     | Npm(_) => filter.includeNpm
     | Url(_) => filter.includeUrlResource
+    | Outdated(_) => filter.includeOutdated
     }
     if !isResourceIncluded {
       ()
@@ -440,7 +465,6 @@ let default = (props: props) => {
 
   React.useEffect(() => {
     firstRenderDone.current = true
-
     None
   }, [])
 
@@ -563,6 +587,8 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => 
     three->Response.json,
   ))
 
+  let unmaintained = []
+
   let pkges =
     parsePkgs(data1)
     ->Js.Array2.concat(parsePkgs(data2))
@@ -572,7 +598,8 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => 
         true
       } else if pkg.name->Js.String2.includes("reason") {
         false
-      } else if pkg.maintenanceScore < 0.09 {
+      } else if pkg.maintenanceScore < 0.3 {
+        let _ = unmaintained->Js.Array2.push(pkg)
         false
       } else {
         true
@@ -587,6 +614,7 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => 
     ->unsafeToUrlResource
   let props: props = {
     "packages": pkges,
+    "unmaintained": unmaintained,
     "urlResources": urlResources,
   }
 

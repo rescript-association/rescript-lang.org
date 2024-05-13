@@ -18,7 +18,11 @@ type npmPackage = {
   score: {"final": float, "detail": {"quality": float, "popularity": float, "maintenance": float}},
 }
 
-type props = {"packages": array<npmPackage>, "urlResources": array<urlResource>}
+type props = {
+  "packages": array<npmPackage>,
+  "urlResources": array<urlResource>,
+  "unmaintained": array<npmPackage>,
+}
 
 let default: props => React.element
 
