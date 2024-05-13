@@ -99,23 +99,23 @@ export {
 
 ## Sharing a type with an external binding
 This becomes incredibly useful when you need to have types that are unique to a project but shared across multiple components.
-Let's say you want to create a library with a `useEnv` hook to load in environment variables found in `import.meta.env`.
+Let's say you want to create a library with a `getEnv` function to load in environment variables found in `import.meta.env`.
 ```res
 @val external env: 'a = "import.meta.env"
 
-let useEnv = () => {
+let getEnv = () => {
   env
 }
 ```
-It's not possible to define types for this that will work for every project, so we just set it as 'a and the consumer of our library can define the return type when they use the hook.
+It's not possible to define types for this that will work for every project, so we just set it as 'a and the consumer of our library can define the return type when they use the function.
 ```res
 type t = {"LOG_LEVEL": string}
 
-let values: t = useEnv()
+let values: t = getEnv()
 ```
 This isn't great and it doesn't take advantage of ReScript's type system and ability to use types without type definitions, and it can't be easily shared across our application.
 
-We can instead create a module function that can return a module that has contains a `useEnv` hook that has a typed response.
+We can instead create a module function that can return a module that has contains a `getEnv` hook that has a typed response.
 ```res
 module MakeEnv = (
   E: {
@@ -124,7 +124,7 @@ module MakeEnv = (
 ) => {
   @val external env: E.t = "import.meta.env"
 
-  let useEnv = () => {
+  let getEnv = () => {
     env
   }
 }
@@ -138,11 +138,11 @@ module Env = MakeEnv({
 	type t = {"LOG_LEVEL": string}
 })
 
-let values = Env.useEnv()
+let values = Env.getEnv()
 ```
 ```js
 var Env = {
-  useEnv: useEnv
+  getEnv: getEnv
 };
 
 var values = import.meta.env;
