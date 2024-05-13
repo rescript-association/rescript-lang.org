@@ -415,7 +415,7 @@ let default = (props: props) => {
     let isResourceIncluded = switch next {
     | Npm(_) => filter.includeNpm
     | Url(_) => filter.includeUrlResource
-    | Outdated(_) => filter.includeOutdated
+    | Outdated(_) => filter.includeOutdated && filter.includeNpm
     }
     if !isResourceIncluded {
       ()
