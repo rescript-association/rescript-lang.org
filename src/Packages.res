@@ -572,7 +572,7 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => 
         true
       } else if pkg.name->Js.String2.includes("reason") {
         false
-      } else if pkg.maintenanceScore < 0.3 {
+      } else if pkg.maintenanceScore < 0.09 {
         false
       } else {
         true
