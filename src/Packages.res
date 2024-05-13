@@ -97,20 +97,9 @@ module Resource = {
 
     let fuser = Fuse.make(packages, fuseOpts)
 
-    let t =
-      fuser
-      ->Fuse.search(pattern)
-      ->Js.Array2.map(t => {
-        if t["item"].name === "reson" || t["item"].name === "rescript-json-schema" {
-          Js.Console.log(t)
-          t
-        } else {
-          t
-        }
-      })
-      ->Js.Array2.sortInPlaceWith((a, b) => a["item"].searchScore < b["item"].searchScore ? -1 : 1)
-
-    t
+    fuser
+    ->Fuse.search(pattern)
+    ->Js.Array2.sortInPlaceWith((a, b) => a["item"].searchScore > b["item"].searchScore ? -1 : 1)
   }
 
   let applyUrlResourceSearch = (urls: array<urlResource>, pattern: string): array<
@@ -560,16 +549,12 @@ let parsePkgs = data =>
   })
 
 let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => {
+  let baseUrl = "https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250&maintenance=1.0&popularity=0.5&quality=0.9"
+
   let (one, two, three) = await Js.Promise2.all3((
-    fetchNpmPackages(
-      "https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250&maintenance=1.0&popularity=0.7&quality=0.1",
-    ),
-    fetchNpmPackages(
-      "https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250&maintenance=1.0&popularity=0.7&quality=0.1&from=250",
-    ),
-    fetchNpmPackages(
-      "https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250&maintenance=1.0&popularity=0.7&quality=0.1&from=500",
-    ),
+    fetchNpmPackages(baseUrl),
+    fetchNpmPackages(baseUrl ++ "&from=250"),
+    fetchNpmPackages(baseUrl ++ "&from=500"),
   ))
 
   let (data1, data2, data3) = await Js.Promise2.all3((
@@ -578,22 +563,21 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => 
     three->Response.json,
   ))
 
-  let unmaintained = []
-
   let pkges =
     parsePkgs(data1)
     ->Js.Array2.concat(parsePkgs(data2))
     ->Js.Array2.concat(parsePkgs(data3))
     ->Js.Array2.filter(pkg => {
-      if pkg.maintenanceScore < 0.03 {
+      if [/* Allow list of names */]->Js.Array2.includes(pkg.name) {
+        true
+      } else if pkg.name->Js.String2.includes("reason") {
+        false
+      } else if pkg.maintenanceScore < 0.3 {
         false
       } else {
         true
       }
     })
-
-  Js.Console.log2("Number of packages", pkges->Js.Array2.length)
-  Js.Console.log2("Number of unmaintained", unmaintained->Js.Array2.length)
 
   let index_data_dir = Node.Path.join2(Node.Process.cwd(), "./data")
   let urlResources =
