@@ -13,6 +13,9 @@ type npmPackage = {
   description: string,
   repositoryHref: Js.Null.t<string>,
   npmHref: string,
+  searchScore: float,
+  maintenanceScore: float,
+  score: {"final": float, "detail": {"quality": float, "popularity": float, "maintenance": float}},
 }
 
 type props = {"packages": array<npmPackage>, "urlResources": array<urlResource>}

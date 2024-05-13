@@ -23,6 +23,9 @@ type npmPackage = {
   description: string,
   repositoryHref: Js.Null.t<string>,
   npmHref: string,
+  searchScore: float,
+  maintenanceScore: float,
+  score: {"final": float, "detail": {"quality": float, "popularity": float, "maintenance": float}},
 }
 
 module Resource = {
@@ -94,7 +97,20 @@ module Resource = {
 
     let fuser = Fuse.make(packages, fuseOpts)
 
-    fuser->Fuse.search(pattern)
+    let t =
+      fuser
+      ->Fuse.search(pattern)
+      ->Js.Array2.map(t => {
+        if t["item"].name === "reson" || t["item"].name === "rescript-json-schema" {
+          Js.Console.log(t)
+          t
+        } else {
+          t
+        }
+      })
+      ->Js.Array2.sortInPlaceWith((a, b) => a["item"].searchScore < b["item"].searchScore ? -1 : 1)
+
+    t
   }
 
   let applyUrlResourceSearch = (urls: array<urlResource>, pattern: string): array<
@@ -505,6 +521,11 @@ let default = (props: props) => {
 
 type npmData = {
   "objects": array<{
+    "searchScore": float,
+    "score": {
+      "final": float,
+      "detail": {"quality": float, "popularity": float, "maintenance": float},
+    },
     "package": {
       "name": string,
       "keywords": array<string>,
@@ -522,14 +543,8 @@ module Response = {
 
 @val external fetchNpmPackages: string => promise<Response.t> = "fetch"
 
-let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => {
-  let response = await fetchNpmPackages(
-    "https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250",
-  )
-
-  let data = await response->Response.json
-
-  let pkges = Belt.Array.map(data["objects"], item => {
+let parsePkgs = data =>
+  Belt.Array.map(data["objects"], item => {
     let pkg = item["package"]
     {
       name: pkg["name"],
@@ -538,8 +553,47 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => 
       description: Belt.Option.getWithDefault(pkg["description"], ""),
       repositoryHref: Js.Null.fromOption(pkg["links"]["repository"]),
       npmHref: pkg["links"]["npm"],
+      searchScore: item["searchScore"],
+      maintenanceScore: item["score"]["detail"]["maintenance"],
+      score: item["score"],
     }
   })
+
+let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => {
+  let (one, two, three) = await Js.Promise2.all3((
+    fetchNpmPackages(
+      "https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250&maintenance=1.0&popularity=0.7&quality=0.1",
+    ),
+    fetchNpmPackages(
+      "https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250&maintenance=1.0&popularity=0.7&quality=0.1&from=250",
+    ),
+    fetchNpmPackages(
+      "https://registry.npmjs.org/-/v1/search?text=keywords:rescript&size=250&maintenance=1.0&popularity=0.7&quality=0.1&from=500",
+    ),
+  ))
+
+  let (data1, data2, data3) = await Js.Promise2.all3((
+    one->Response.json,
+    two->Response.json,
+    three->Response.json,
+  ))
+
+  let unmaintained = []
+
+  let pkges =
+    parsePkgs(data1)
+    ->Js.Array2.concat(parsePkgs(data2))
+    ->Js.Array2.concat(parsePkgs(data3))
+    ->Js.Array2.filter(pkg => {
+      if pkg.maintenanceScore < 0.03 {
+        false
+      } else {
+        true
+      }
+    })
+
+  Js.Console.log2("Number of packages", pkges->Js.Array2.length)
+  Js.Console.log2("Number of unmaintained", unmaintained->Js.Array2.length)
 
   let index_data_dir = Node.Path.join2(Node.Process.cwd(), "./data")
   let urlResources =
