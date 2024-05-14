@@ -143,7 +143,7 @@ module Resource = {
     let filteredOutdated =
       applyNpmSearch(allOutDated, pattern)->Belt.Array.map(m => Outdated(m["item"]))
 
-    Belt.Array.concat(filteredNpm, filteredUrls)->Belt.Array.concat(filteredOutdated)
+    Belt.Array.concatMany([filteredNpm, filteredUrls, filteredOutdated])
   }
 }
 
@@ -383,7 +383,7 @@ let default = (props: props) => {
     let npms = props["packages"]->Belt.Array.map(pkg => Resource.Npm(pkg))
     let urls = props["urlResources"]->Belt.Array.map(res => Resource.Url(res))
     let outdated = props["unmaintained"]->Belt.Array.map(pkg => Resource.Outdated(pkg))
-    Belt.Array.concat(npms, urls)->Belt.Array.concat(outdated)
+    Belt.Array.concatMany([npms, urls, outdated])
   }
 
   let resources = switch state {
