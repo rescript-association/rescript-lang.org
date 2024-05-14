@@ -6,10 +6,12 @@
   },
   "bs-dependencies": [
     "@rescript/react",
-    "@rescript/tools"
+    "@rescript/tools",
+    "@rescript/core"
   ],
   "uncurried": true,
   "ppx-flags": [],
+  "bsc-flags": [],
   "sources": [
     {
       "dir": "src",
@@ -22,7 +24,7 @@
     }
   ],
   "package-specs": {
-    "module": "es6",
+    "module": "esmodule",
     "in-source": true
   },
   "warnings": {
