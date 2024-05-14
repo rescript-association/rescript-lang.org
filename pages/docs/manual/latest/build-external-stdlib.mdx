@@ -24,9 +24,11 @@ To solve that, we now publish our runtime as a standalone package at [`@rescript
 Say you want to publish a JS-only ReScript 9.0 library. Install the packages like this:
 
 ```sh
-npm install rescript@11.0.1 --save-dev
+npm install rescript@11.0.1
 npm install @rescript/std@11.0.1
 ```
+
+> Note: When ReScript 12 releases, it will ship with the ReScript Core standard library and `rescript` can be installed as a `--dev` dependency again.
 
 Then add this to `rescript.json`:
 
@@ -34,6 +36,21 @@ Then add this to `rescript.json`:
 {
   // ...
   "external-stdlib" : "@rescript/std"
+}
+```
+
+Make sure you are using commonjs because only `.mjs` files are published with ReScript Core:
+
+```json
+{
+  // ...
+  "package-specs": [
+    {
+      "module": "esmodule",
+      "in-source": true
+    }
+  ],
+  "suffix": ".mjs",
 }
 ```
 
