@@ -15,7 +15,6 @@ type npmPackage = {
   npmHref: string,
   searchScore: float,
   maintenanceScore: float,
-  score: {"final": float, "detail": {"quality": float, "popularity": float, "maintenance": float}},
 }
 
 type props = {

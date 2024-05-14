@@ -25,7 +25,6 @@ type npmPackage = {
   npmHref: string,
   searchScore: float,
   maintenanceScore: float,
-  score: {"final": float, "detail": {"quality": float, "popularity": float, "maintenance": float}},
 }
 
 // These are packages that we do not want to filter out when loading searching from NPM.
@@ -571,7 +570,6 @@ let parsePkgs = data =>
       npmHref: pkg["links"]["npm"],
       searchScore: item["searchScore"],
       maintenanceScore: item["score"]["detail"]["maintenance"],
-      score: item["score"],
     }
   })
 
