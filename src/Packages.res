@@ -28,6 +28,9 @@ type npmPackage = {
   score: {"final": float, "detail": {"quality": float, "popularity": float, "maintenance": float}},
 }
 
+// These are packages that we do not want to filter out when loading searching from NPM.
+let packageAllowList: array<string> = []
+
 module Resource = {
   type t = Npm(npmPackage) | Url(urlResource) | Outdated(npmPackage)
 
@@ -594,7 +597,7 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => 
     ->Js.Array2.concat(parsePkgs(data2))
     ->Js.Array2.concat(parsePkgs(data3))
     ->Js.Array2.filter(pkg => {
-      if [/* Allow list of names */]->Js.Array2.includes(pkg.name) {
+      if packageAllowList->Js.Array2.includes(pkg.name) {
         true
       } else if pkg.name->Js.String2.includes("reason") {
         false
