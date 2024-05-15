@@ -16,7 +16,9 @@
       builds are taking too long.  I think we will be fine for now.
   Link to NextJS discussion: https://github.com/zeit/next.js/discussions/11728#discussioncomment-3501
  */
-let middleDotSpacer = " " ++ (Js.String.fromCharCode(183) ++ " ")
+open RescriptCore
+
+let middleDotSpacer = " " ++ (String.fromCharCode(183) ++ " ")
 
 module Params = {
   type t = {slug: string}
@@ -151,8 +153,8 @@ let default = (props: props) => {
       <Meta
         siteName="ReScript Blog"
         title={title ++ " | ReScript Blog"}
-        description=?{description->Js.Null.toOption}
-        ogImage={previewImg->Js.Null.toOption->Belt.Option.getWithDefault(Blog.defaultPreviewImg)}
+        description=?{description->Null.toOption}
+        ogImage={previewImg->Null.toOption->Option.getOr(Blog.defaultPreviewImg)}
       />
       <div className="mb-10 md:mb-20">
         <BlogHeader
@@ -160,8 +162,8 @@ let default = (props: props) => {
           author
           co_authors
           title
-          description={description->Js.Null.toOption}
-          articleImg={articleImg->Js.Null.toOption}
+          description={description->Null.toOption}
+          articleImg={articleImg->Null.toOption}
         />
       </div>
       <div className="flex justify-center">
@@ -206,7 +208,7 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = async ctx => {
   open Next.GetStaticProps
   let {params} = ctx
 
-  let path = switch BlogApi.getAllPosts()->Js.Array2.find(({path}) =>
+  let path = switch BlogApi.getAllPosts()->Array.find(({path}) =>
     BlogApi.blogPathToSlug(path) == params.slug
   ) {
   | None => params.slug
@@ -215,7 +217,7 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = async ctx => {
 
   let filePath = Node.Path.resolve("_blogposts", path)
 
-  let isArchived = Js.String2.startsWith(path, "archive/")
+  let isArchived = String.startsWith(path, "archive/")
 
   let source = filePath->Node.Fs.readFileSync
 

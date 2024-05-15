@@ -14,11 +14,12 @@
  */
 
 module Link = Next.Link
+open RescriptCore
 
 let defaultPreviewImg = "/static/Art-3-rescript-launch.jpg"
 
 // For encoding reasons, see https://shripadk.github.io/react/docs/jsx-gotchas.html
-let middleDotSpacer = " " ++ (Js.String.fromCharCode(183) ++ " ")
+let middleDotSpacer = " " ++ (String.fromCharCode(183) ++ " ")
 
 module Badge = {
   @react.component
@@ -79,7 +80,7 @@ module BlogCard = {
     ~author as _: BlogFrontmatter.author,
     ~category: option<string>=?,
     ~badge: option<BlogFrontmatter.Badge.t>=?,
-    ~date: Js.Date.t,
+    ~date: Date.t,
     ~slug: string,
   ) =>
     <section className="h-full">
@@ -127,7 +128,7 @@ module FeatureCard = {
     ~title: string="Unknown Title",
     ~author: BlogFrontmatter.author,
     ~badge: option<BlogFrontmatter.Badge.t>=?,
-    ~date: Js.Date.t,
+    ~date: Date.t,
     ~category: option<string>=?,
     ~firstParagraph: string="",
     ~slug: string,
@@ -204,7 +205,7 @@ type props = {posts: array<BlogApi.post>, category: category}
 let default = (props: props): React.element => {
   let {posts, category} = props
 
-  let content = if Belt.Array.length(posts) === 0 {
+  let content = if Array.length(posts) === 0 {
     /* <div> {React.string("Currently no posts available")} </div>; */
     <div className="mt-8">
       <Markdown.H1> {React.string("Blog not yet available")} </Markdown.H1>
@@ -220,11 +221,11 @@ let default = (props: props): React.element => {
       let featureBox =
         <div className="w-full mb-24 lg:px-8 xl:px-0">
           <FeatureCard
-            previewImg=?{first.frontmatter.previewImg->Js.Null.toOption}
+            previewImg=?{first.frontmatter.previewImg->Null.toOption}
             title=first.frontmatter.title
-            badge=?{first.frontmatter.badge->Js.Null.toOption}
+            badge=?{first.frontmatter.badge->Null.toOption}
             author=first.frontmatter.author
-            firstParagraph=?{first.frontmatter.description->Js.Null.toOption}
+            firstParagraph=?{first.frontmatter.description->Null.toOption}
             date={first.frontmatter.date->DateStr.toDate}
             slug={BlogApi.blogPathToSlug(first.path)}
           />
@@ -236,11 +237,11 @@ let default = (props: props): React.element => {
         <div
           className="px-4 md:px-8 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 gap-y-12 md:gap-y-24 w-full">
           {Js.Array2.map(rest, post => {
-            let badge = post.frontmatter.badge->Js.Null.toOption
+            let badge = post.frontmatter.badge->Null.toOption
 
             <BlogCard
               key={post.path}
-              previewImg=?{post.frontmatter.previewImg->Js.Null.toOption}
+              previewImg=?{post.frontmatter.previewImg->Null.toOption}
               title=post.frontmatter.title
               author=post.frontmatter.author
               ?badge
