@@ -9781,19 +9781,137 @@
     ]
   },
   "js/bigint": {
-    "id": "Js.Bigint",
-    "name": "Bigint",
+    "id": "Js.BigInt",
+    "name": "BigInt",
     "docstrings": [
       "Provide utilities for bigint",
       "JavaScript BigInt API"
     ],
     "items": [
       {
-        "id": "Js.Bigint.t",
-        "kind": "type",
-        "name": "t",
+        "id": "Js.BigInt.fromStringExn",
+        "kind": "value",
+        "name": "fromStringExn",
+        "docstrings": [
+          "Parses the given `string` into a `bigint` using JavaScript semantics. Return the\nnumber as a `bigint` if successfully parsed. Uncaught syntax exception otherwise.\n\n## Examples\n\n```rescript\n/* returns 123n */\nJs.BigInt.fromStringExn(\"123\")\n\n/* returns 0n */\nJs.BigInt.fromStringExn(\"\")\n\n/* returns 17n */\nJs.BigInt.fromStringExn(\"0x11\")\n\n/* returns 3n */\nJs.BigInt.fromStringExn(\"0b11\")\n\n/* returns 9n */\nJs.BigInt.fromStringExn(\"0o11\")\n\n/* catch exception */\ntry {\n  Js.BigInt.fromStringExn(\"a\")\n} catch {\n| _ => ...\n}\n```"
+        ],
+        "signature": "let fromStringExn: string => bigint"
+      },
+      {
+        "id": "Js.BigInt.~-",
+        "kind": "value",
+        "name": "~-",
         "docstrings": [],
-        "signature": "type t"
+        "signature": "let ~-: bigint => bigint"
+      },
+      {
+        "id": "Js.BigInt.~+",
+        "kind": "value",
+        "name": "~+",
+        "docstrings": [],
+        "signature": "let ~+: bigint => bigint"
+      },
+      {
+        "id": "Js.BigInt.+",
+        "kind": "value",
+        "name": "+",
+        "docstrings": [],
+        "signature": "let +: (bigint, bigint) => bigint"
+      },
+      {
+        "id": "Js.BigInt.-",
+        "kind": "value",
+        "name": "-",
+        "docstrings": [],
+        "signature": "let -: (bigint, bigint) => bigint"
+      },
+      {
+        "id": "Js.BigInt.*",
+        "kind": "value",
+        "name": "*",
+        "docstrings": [],
+        "signature": "let *: (bigint, bigint) => bigint"
+      },
+      {
+        "id": "Js.BigInt./",
+        "kind": "value",
+        "name": "/",
+        "docstrings": [],
+        "signature": "let /: (bigint, bigint) => bigint"
+      },
+      {
+        "id": "Js.BigInt.mod",
+        "kind": "value",
+        "name": "mod",
+        "docstrings": [],
+        "signature": "let mod: (bigint, bigint) => bigint"
+      },
+      {
+        "id": "Js.BigInt.**",
+        "kind": "value",
+        "name": "**",
+        "docstrings": [],
+        "signature": "let **: (bigint, bigint) => bigint"
+      },
+      {
+        "id": "Js.BigInt.land",
+        "kind": "value",
+        "name": "land",
+        "docstrings": [],
+        "signature": "let land: (bigint, bigint) => bigint"
+      },
+      {
+        "id": "Js.BigInt.lor",
+        "kind": "value",
+        "name": "lor",
+        "docstrings": [],
+        "signature": "let lor: (bigint, bigint) => bigint"
+      },
+      {
+        "id": "Js.BigInt.lxor",
+        "kind": "value",
+        "name": "lxor",
+        "docstrings": [],
+        "signature": "let lxor: (bigint, bigint) => bigint"
+      },
+      {
+        "id": "Js.BigInt.lnot",
+        "kind": "value",
+        "name": "lnot",
+        "docstrings": [],
+        "signature": "let lnot: bigint => bigint"
+      },
+      {
+        "id": "Js.BigInt.lsl",
+        "kind": "value",
+        "name": "lsl",
+        "docstrings": [],
+        "signature": "let lsl: (bigint, bigint) => bigint"
+      },
+      {
+        "id": "Js.BigInt.asr",
+        "kind": "value",
+        "name": "asr",
+        "docstrings": [],
+        "signature": "let asr: (bigint, bigint) => bigint"
+      },
+      {
+        "id": "Js.BigInt.toString",
+        "kind": "value",
+        "name": "toString",
+        "docstrings": [
+          "Formats a `bigint` as a string. Return a `string` representing the given value.\nSee [`toString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString) on MDN.\n\n## Examples\n\n```rescript\n/* prints \"123\" */\nJs.BigInt.toString(123n)->Js.log\n```"
+        ],
+        "signature": "let toString: bigint => string"
+      },
+      {
+        "id": "Js.BigInt.toLocaleString",
+        "kind": "value",
+        "name": "toLocaleString",
+        "docstrings": [
+          "Returns a string with a language-sensitive representation of this BigInt value.\n\n## Examples\n\n```rescript\n/* prints \"123\" */\nJs.BigInt.toString(123n)->Js.log\n```"
+        ],
+        "signature": "let toLocaleString: bigint => string"
       }
     ]
   },

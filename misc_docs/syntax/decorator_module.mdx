@@ -33,7 +33,7 @@ var root = Path.dirname("/User/github");
 
 `@module` also supports [import attributes](https://github.com/tc39/proposal-import-attributes). It looks like this:
 
-<CodeTab labels={["ReScript", "JS Output (ES6)"]}>
+<CodeTab labels={["ReScript", "JS Output (Module)"]}>
 ```rescript
 @module({from: "./myJson.json", with: {type_: "json", \"some-exotic-identifier": "someValue"}})
 external myJson: Js.Json.t = "default"

@@ -383,56 +383,14 @@
         "kind": "value",
         "name": "make",
         "docstrings": [],
-        "signature": "let make: unit => t"
-      },
-      {
-        "id": "Core.Intl.Segmenter.makeWithLocale",
-        "kind": "value",
-        "name": "makeWithLocale",
-        "docstrings": [],
-        "signature": "let makeWithLocale: string => t"
-      },
-      {
-        "id": "Core.Intl.Segmenter.makeWithLocales",
-        "kind": "value",
-        "name": "makeWithLocales",
-        "docstrings": [],
-        "signature": "let makeWithLocales: array<string> => t"
-      },
-      {
-        "id": "Core.Intl.Segmenter.makeWithLocaleAndOptions",
-        "kind": "value",
-        "name": "makeWithLocaleAndOptions",
-        "docstrings": [],
-        "signature": "let makeWithLocaleAndOptions: (string, options) => t"
-      },
-      {
-        "id": "Core.Intl.Segmenter.makeWithLocalesAndOptions",
-        "kind": "value",
-        "name": "makeWithLocalesAndOptions",
-        "docstrings": [],
-        "signature": "let makeWithLocalesAndOptions: (array<string>, options) => t"
-      },
-      {
-        "id": "Core.Intl.Segmenter.makeWithOptions",
-        "kind": "value",
-        "name": "makeWithOptions",
-        "docstrings": [],
-        "signature": "let makeWithOptions: options => t"
+        "signature": "let make: (~locales: array<string>=?, ~options: options=?) => t"
       },
       {
         "id": "Core.Intl.Segmenter.supportedLocalesOf",
         "kind": "value",
         "name": "supportedLocalesOf",
         "docstrings": [],
-        "signature": "let supportedLocalesOf: array<string> => t"
-      },
-      {
-        "id": "Core.Intl.Segmenter.supportedLocalesOfWithOptions",
-        "kind": "value",
-        "name": "supportedLocalesOfWithOptions",
-        "docstrings": [],
-        "signature": "let supportedLocalesOfWithOptions: (array<string>, supportedLocalesOptions) => t"
+        "signature": "let supportedLocalesOf: (array<string>, ~options: supportedLocalesOptions=?) => t"
       },
       {
         "id": "Core.Intl.Segmenter.resolvedOptions",
@@ -523,56 +481,14 @@
         "kind": "value",
         "name": "make",
         "docstrings": [],
-        "signature": "let make: unit => t"
-      },
-      {
-        "id": "Core.Intl.RelativeTimeFormat.makeWithLocale",
-        "kind": "value",
-        "name": "makeWithLocale",
-        "docstrings": [],
-        "signature": "let makeWithLocale: string => t"
-      },
-      {
-        "id": "Core.Intl.RelativeTimeFormat.makeWithLocales",
-        "kind": "value",
-        "name": "makeWithLocales",
-        "docstrings": [],
-        "signature": "let makeWithLocales: array<string> => t"
-      },
-      {
-        "id": "Core.Intl.RelativeTimeFormat.makeWithLocaleAndOptions",
-        "kind": "value",
-        "name": "makeWithLocaleAndOptions",
-        "docstrings": [],
-        "signature": "let makeWithLocaleAndOptions: (string, options) => t"
-      },
-      {
-        "id": "Core.Intl.RelativeTimeFormat.makeWithLocalesAndOptions",
-        "kind": "value",
-        "name": "makeWithLocalesAndOptions",
-        "docstrings": [],
-        "signature": "let makeWithLocalesAndOptions: (array<string>, options) => t"
-      },
-      {
-        "id": "Core.Intl.RelativeTimeFormat.makeWithOptions",
-        "kind": "value",
-        "name": "makeWithOptions",
-        "docstrings": [],
-        "signature": "let makeWithOptions: options => t"
+        "signature": "let make: (~locales: array<string>=?, ~options: options=?) => t"
       },
       {
         "id": "Core.Intl.RelativeTimeFormat.supportedLocalesOf",
         "kind": "value",
         "name": "supportedLocalesOf",
         "docstrings": [],
-        "signature": "let supportedLocalesOf: array<string> => t"
-      },
-      {
-        "id": "Core.Intl.RelativeTimeFormat.supportedLocalesOfWithOptions",
-        "kind": "value",
-        "name": "supportedLocalesOfWithOptions",
-        "docstrings": [],
-        "signature": "let supportedLocalesOfWithOptions: (array<string>, supportedLocalesOptions) => t"
+        "signature": "let supportedLocalesOf: (array<string>, ~options: supportedLocalesOptions=?) => t"
       },
       {
         "id": "Core.Intl.RelativeTimeFormat.resolvedOptions",
@@ -649,56 +565,14 @@
         "kind": "value",
         "name": "make",
         "docstrings": [],
-        "signature": "let make: unit => t"
-      },
-      {
-        "id": "Core.Intl.PluralRules.makeWithLocale",
-        "kind": "value",
-        "name": "makeWithLocale",
-        "docstrings": [],
-        "signature": "let makeWithLocale: string => t"
-      },
-      {
-        "id": "Core.Intl.PluralRules.makeWithLocales",
-        "kind": "value",
-        "name": "makeWithLocales",
-        "docstrings": [],
-        "signature": "let makeWithLocales: array<string> => t"
-      },
-      {
-        "id": "Core.Intl.PluralRules.makeWithLocaleAndOptions",
-        "kind": "value",
-        "name": "makeWithLocaleAndOptions",
-        "docstrings": [],
-        "signature": "let makeWithLocaleAndOptions: (string, options) => t"
-      },
-      {
-        "id": "Core.Intl.PluralRules.makeWithLocalesAndOptions",
-        "kind": "value",
-        "name": "makeWithLocalesAndOptions",
-        "docstrings": [],
-        "signature": "let makeWithLocalesAndOptions: (array<string>, options) => t"
-      },
-      {
-        "id": "Core.Intl.PluralRules.makeWithOptions",
-        "kind": "value",
-        "name": "makeWithOptions",
-        "docstrings": [],
-        "signature": "let makeWithOptions: options => t"
+        "signature": "let make: (~locales: array<string>=?, ~options: options=?) => t"
       },
       {
         "id": "Core.Intl.PluralRules.supportedLocalesOf",
         "kind": "value",
         "name": "supportedLocalesOf",
         "docstrings": [],
-        "signature": "let supportedLocalesOf: array<string> => t"
-      },
-      {
-        "id": "Core.Intl.PluralRules.supportedLocalesOfWithOptions",
-        "kind": "value",
-        "name": "supportedLocalesOfWithOptions",
-        "docstrings": [],
-        "signature": "let supportedLocalesOfWithOptions: (array<string>, supportedLocalesOptions) => t"
+        "signature": "let supportedLocalesOf: (array<string>, ~options: supportedLocalesOptions=?) => t"
       },
       {
         "id": "Core.Intl.PluralRules.resolvedOptions",
@@ -733,7 +607,7 @@
         "kind": "value",
         "name": "selectBigInt",
         "docstrings": [],
-        "signature": "let selectBigInt: (t, Core__BigInt.t) => rule"
+        "signature": "let selectBigInt: (t, bigint) => rule"
       },
       {
         "id": "Core.Intl.PluralRules.selectRange",
@@ -754,7 +628,7 @@
         "kind": "value",
         "name": "selectRangeBigInt",
         "docstrings": [],
-        "signature": "let selectRangeBigInt: (t, ~start: Core__BigInt.t, ~end: Core__BigInt.t) => rule"
+        "signature": "let selectRangeBigInt: (t, ~start: bigint, ~end: bigint) => rule"
       }
     ]
   },
@@ -923,56 +797,14 @@
         "kind": "value",
         "name": "make",
         "docstrings": [],
-        "signature": "let make: unit => t"
-      },
-      {
-        "id": "Core.Intl.NumberFormat.makeWithLocale",
-        "kind": "value",
-        "name": "makeWithLocale",
-        "docstrings": [],
-        "signature": "let makeWithLocale: string => t"
-      },
-      {
-        "id": "Core.Intl.NumberFormat.makeWithLocales",
-        "kind": "value",
-        "name": "makeWithLocales",
-        "docstrings": [],
-        "signature": "let makeWithLocales: array<string> => t"
-      },
-      {
-        "id": "Core.Intl.NumberFormat.makeWithLocaleAndOptions",
-        "kind": "value",
-        "name": "makeWithLocaleAndOptions",
-        "docstrings": [],
-        "signature": "let makeWithLocaleAndOptions: (string, options) => t"
-      },
-      {
-        "id": "Core.Intl.NumberFormat.makeWithLocalesAndOptions",
-        "kind": "value",
-        "name": "makeWithLocalesAndOptions",
-        "docstrings": [],
-        "signature": "let makeWithLocalesAndOptions: (array<string>, options) => t"
-      },
-      {
-        "id": "Core.Intl.NumberFormat.makeWithOptions",
-        "kind": "value",
-        "name": "makeWithOptions",
-        "docstrings": [],
-        "signature": "let makeWithOptions: options => t"
+        "signature": "let make: (~locales: array<string>=?, ~options: options=?) => t"
       },
       {
         "id": "Core.Intl.NumberFormat.supportedLocalesOf",
         "kind": "value",
         "name": "supportedLocalesOf",
         "docstrings": [],
-        "signature": "let supportedLocalesOf: array<string> => t"
-      },
-      {
-        "id": "Core.Intl.NumberFormat.supportedLocalesOfWithOptions",
-        "kind": "value",
-        "name": "supportedLocalesOfWithOptions",
-        "docstrings": [],
-        "signature": "let supportedLocalesOfWithOptions: (array<string>, supportedLocalesOptions) => t"
+        "signature": "let supportedLocalesOf: (array<string>, ~options: supportedLocalesOptions=?) => t"
       },
       {
         "id": "Core.Intl.NumberFormat.resolvedOptions",
@@ -1042,28 +874,28 @@
         "kind": "value",
         "name": "formatBigInt",
         "docstrings": [],
-        "signature": "let formatBigInt: (t, Core__BigInt.t) => string"
+        "signature": "let formatBigInt: (t, bigint) => string"
       },
       {
         "id": "Core.Intl.NumberFormat.formatBigIntRange",
         "kind": "value",
         "name": "formatBigIntRange",
         "docstrings": [],
-        "signature": "let formatBigIntRange: (\n  t,\n  ~start: Core__BigInt.t,\n  ~end: Core__BigInt.t,\n) => array<string>"
+        "signature": "let formatBigIntRange: (t, ~start: bigint, ~end: bigint) => array<string>"
       },
       {
         "id": "Core.Intl.NumberFormat.formatBigIntToParts",
         "kind": "value",
         "name": "formatBigIntToParts",
         "docstrings": [],
-        "signature": "let formatBigIntToParts: (t, Core__BigInt.t) => array<numberFormatPart>"
+        "signature": "let formatBigIntToParts: (t, bigint) => array<numberFormatPart>"
       },
       {
         "id": "Core.Intl.NumberFormat.formatBigIntRangeToParts",
         "kind": "value",
         "name": "formatBigIntRangeToParts",
         "docstrings": [],
-        "signature": "let formatBigIntRangeToParts: (\n  t,\n  ~start: Core__BigInt.t,\n  ~end: Core__BigInt.t,\n) => array<numberFormatPart>"
+        "signature": "let formatBigIntRangeToParts: (t, ~start: bigint, ~end: bigint) => array<numberFormatPart>"
       },
       {
         "id": "Core.Intl.NumberFormat.formatString",
@@ -1105,14 +937,7 @@
         "kind": "value",
         "name": "make",
         "docstrings": [],
-        "signature": "let make: string => t"
-      },
-      {
-        "id": "Core.Intl.Locale.makeWithOptions",
-        "kind": "value",
-        "name": "makeWithOptions",
-        "docstrings": [],
-        "signature": "let makeWithOptions: (string, options) => t"
+        "signature": "let make: (string, ~options: options=?) => t"
       },
       {
         "id": "Core.Intl.Locale.baseName",
@@ -1266,56 +1091,14 @@
         "kind": "value",
         "name": "make",
         "docstrings": [],
-        "signature": "let make: unit => t"
-      },
-      {
-        "id": "Core.Intl.ListFormat.makeWithLocale",
-        "kind": "value",
-        "name": "makeWithLocale",
-        "docstrings": [],
-        "signature": "let makeWithLocale: string => t"
-      },
-      {
-        "id": "Core.Intl.ListFormat.makeWithLocales",
-        "kind": "value",
-        "name": "makeWithLocales",
-        "docstrings": [],
-        "signature": "let makeWithLocales: array<string> => t"
-      },
-      {
-        "id": "Core.Intl.ListFormat.makeWithLocaleAndOptions",
-        "kind": "value",
-        "name": "makeWithLocaleAndOptions",
-        "docstrings": [],
-        "signature": "let makeWithLocaleAndOptions: (string, options) => t"
-      },
-      {
-        "id": "Core.Intl.ListFormat.makeWithLocalesAndOptions",
-        "kind": "value",
-        "name": "makeWithLocalesAndOptions",
-        "docstrings": [],
-        "signature": "let makeWithLocalesAndOptions: (array<string>, options) => t"
-      },
-      {
-        "id": "Core.Intl.ListFormat.makeWithOptions",
-        "kind": "value",
-        "name": "makeWithOptions",
-        "docstrings": [],
-        "signature": "let makeWithOptions: options => t"
+        "signature": "let make: (~locales: array<string>=?, ~options: options=?) => t"
       },
       {
         "id": "Core.Intl.ListFormat.supportedLocalesOf",
         "kind": "value",
         "name": "supportedLocalesOf",
         "docstrings": [],
-        "signature": "let supportedLocalesOf: array<string> => t"
-      },
-      {
-        "id": "Core.Intl.ListFormat.supportedLocalesOfWithOptions",
-        "kind": "value",
-        "name": "supportedLocalesOfWithOptions",
-        "docstrings": [],
-        "signature": "let supportedLocalesOfWithOptions: (array<string>, supportedLocalesOptions) => t"
+        "signature": "let supportedLocalesOf: (array<string>, ~options: supportedLocalesOptions=?) => t"
       },
       {
         "id": "Core.Intl.ListFormat.resolvedOptions",
@@ -1513,56 +1296,14 @@
         "kind": "value",
         "name": "make",
         "docstrings": [],
-        "signature": "let make: unit => t"
-      },
-      {
-        "id": "Core.Intl.DateTimeFormat.makeWithLocale",
-        "kind": "value",
-        "name": "makeWithLocale",
-        "docstrings": [],
-        "signature": "let makeWithLocale: string => t"
-      },
-      {
-        "id": "Core.Intl.DateTimeFormat.makeWithLocales",
-        "kind": "value",
-        "name": "makeWithLocales",
-        "docstrings": [],
-        "signature": "let makeWithLocales: array<string> => t"
-      },
-      {
-        "id": "Core.Intl.DateTimeFormat.makeWithLocaleAndOptions",
-        "kind": "value",
-        "name": "makeWithLocaleAndOptions",
-        "docstrings": [],
-        "signature": "let makeWithLocaleAndOptions: (string, options) => t"
-      },
-      {
-        "id": "Core.Intl.DateTimeFormat.makeWithLocalesAndOptions",
-        "kind": "value",
-        "name": "makeWithLocalesAndOptions",
-        "docstrings": [],
-        "signature": "let makeWithLocalesAndOptions: (array<string>, options) => t"
-      },
-      {
-        "id": "Core.Intl.DateTimeFormat.makeWithOptions",
-        "kind": "value",
-        "name": "makeWithOptions",
-        "docstrings": [],
-        "signature": "let makeWithOptions: options => t"
+        "signature": "let make: (~locales: array<string>=?, ~options: options=?) => t"
       },
       {
         "id": "Core.Intl.DateTimeFormat.supportedLocalesOf",
         "kind": "value",
         "name": "supportedLocalesOf",
         "docstrings": [],
-        "signature": "let supportedLocalesOf: array<string> => t"
-      },
-      {
-        "id": "Core.Intl.DateTimeFormat.supportedLocalesOfWithOptions",
-        "kind": "value",
-        "name": "supportedLocalesOfWithOptions",
-        "docstrings": [],
-        "signature": "let supportedLocalesOfWithOptions: (array<string>, supportedLocalesOptions) => t"
+        "signature": "let supportedLocalesOf: (array<string>, ~options: supportedLocalesOptions=?) => t"
       },
       {
         "id": "Core.Intl.DateTimeFormat.resolvedOptions",
@@ -1583,7 +1324,7 @@
         "kind": "value",
         "name": "formatToParts",
         "docstrings": [],
-        "signature": "let formatToParts: (\n  t,\n  Core__Date.t,\n) => array<{\"type\": string, \"value\": string}>"
+        "signature": "let formatToParts: (t, Core__Date.t) => array<dateTimePart>"
       },
       {
         "id": "Core.Intl.DateTimeFormat.formatRange",
@@ -1597,7 +1338,7 @@
         "kind": "value",
         "name": "formatRangeToParts",
         "docstrings": [],
-        "signature": "let formatRangeToParts: (\n  t,\n  ~startDate: Core__Date.t,\n  ~endDate: Core__Date.t,\n) => array<\n  {\"source\": string, \"type\": string, \"value\": string},\n>"
+        "signature": "let formatRangeToParts: (\n  t,\n  ~startDate: Core__Date.t,\n  ~endDate: Core__Date.t,\n) => array<dateTimeRangePart>"
       }
     ]
   },
@@ -1660,56 +1401,14 @@
         "kind": "value",
         "name": "make",
         "docstrings": [],
-        "signature": "let make: unit => t"
-      },
-      {
-        "id": "Core.Intl.Collator.makeWithLocale",
-        "kind": "value",
-        "name": "makeWithLocale",
-        "docstrings": [],
-        "signature": "let makeWithLocale: string => t"
-      },
-      {
-        "id": "Core.Intl.Collator.makeWithLocales",
-        "kind": "value",
-        "name": "makeWithLocales",
-        "docstrings": [],
-        "signature": "let makeWithLocales: array<string> => t"
-      },
-      {
-        "id": "Core.Intl.Collator.makeWithLocaleAndOptions",
-        "kind": "value",
-        "name": "makeWithLocaleAndOptions",
-        "docstrings": [],
-        "signature": "let makeWithLocaleAndOptions: (string, options) => t"
-      },
-      {
-        "id": "Core.Intl.Collator.makeWithLocalesAndOptions",
-        "kind": "value",
-        "name": "makeWithLocalesAndOptions",
-        "docstrings": [],
-        "signature": "let makeWithLocalesAndOptions: (array<string>, options) => t"
-      },
-      {
-        "id": "Core.Intl.Collator.makeWithOptions",
-        "kind": "value",
-        "name": "makeWithOptions",
-        "docstrings": [],
-        "signature": "let makeWithOptions: options => t"
+        "signature": "let make: (~locales: array<string>=?, ~options: options=?) => t"
       },
       {
         "id": "Core.Intl.Collator.supportedLocalesOf",
         "kind": "value",
         "name": "supportedLocalesOf",
         "docstrings": [],
-        "signature": "let supportedLocalesOf: array<string> => t"
-      },
-      {
-        "id": "Core.Intl.Collator.supportedLocalesOfWithOptions",
-        "kind": "value",
-        "name": "supportedLocalesOfWithOptions",
-        "docstrings": [],
-        "signature": "let supportedLocalesOfWithOptions: (array<string>, supportedLocalesOptions) => t"
+        "signature": "let supportedLocalesOf: (array<string>, ~options: supportedLocalesOptions=?) => t"
       },
       {
         "id": "Core.Intl.Collator.resolvedOptions",
@@ -1724,6 +1423,55 @@
         "name": "compare",
         "docstrings": [],
         "signature": "let compare: (t, string, string) => int"
+      }
+    ]
+  },
+  "core/intl/common": {
+    "id": "Core.Intl.Common",
+    "name": "Common",
+    "docstrings": [],
+    "items": [
+      {
+        "id": "Core.Intl.Common.localeMatcher",
+        "kind": "type",
+        "name": "localeMatcher",
+        "docstrings": [],
+        "signature": "type localeMatcher = [#bestFit | #lookup]"
+      },
+      {
+        "id": "Core.Intl.Common.calendar",
+        "kind": "type",
+        "name": "calendar",
+        "docstrings": [],
+        "signature": "type calendar = [\n  | #buddhist\n  | #chinese\n  | #coptic\n  | #dangi\n  | #ethioaa\n  | #ethiopic\n  | #gregory\n  | #hebrew\n  | #indian\n  | #islamic\n  | #\"islamic-civil\"\n  | #\"islamic-rgsa\"\n  | #\"islamic-tbla\"\n  | #\"islamic-umalqura\"\n  | #iso8601\n  | #japanese\n  | #persian\n  | #roc\n]"
+      },
+      {
+        "id": "Core.Intl.Common.collation",
+        "kind": "type",
+        "name": "collation",
+        "docstrings": [],
+        "signature": "type collation = [\n  | #compat\n  | #dict\n  | #emoji\n  | #eor\n  | #phonebk\n  | #phonetic\n  | #pinyin\n  | #stroke\n  | #trad\n  | #unihan\n  | #zhuyin\n]"
+      },
+      {
+        "id": "Core.Intl.Common.numberingSystem",
+        "kind": "type",
+        "name": "numberingSystem",
+        "docstrings": [],
+        "signature": "type numberingSystem = [\n  | #adlm\n  | #ahom\n  | #arab\n  | #arabext\n  | #bali\n  | #beng\n  | #bhks\n  | #brah\n  | #cakm\n  | #cham\n  | #deva\n  | #diak\n  | #fullwide\n  | #gong\n  | #gonm\n  | #gujr\n  | #guru\n  | #hanidec\n  | #hmng\n  | #hmnp\n  | #java\n  | #kali\n  | #kawi\n  | #khmr\n  | #knda\n  | #lana\n  | #lanatham\n  | #laoo\n  | #latn\n  | #lepc\n  | #limb\n  | #mathbold\n  | #mathdbl\n  | #mathmono\n  | #mathsanb\n  | #mathsans\n  | #mlym\n  | #modi\n  | #mong\n  | #mroo\n  | #mtei\n  | #mymr\n  | #mymrshan\n  | #mymrtlng\n  | #nagm\n  | #newa\n  | #nkoo\n  | #olck\n  | #orya\n  | #osma\n  | #rohg\n  | #saur\n  | #segment\n  | #shrd\n  | #sind\n  | #sinh\n  | #sora\n  | #sund\n  | #takr\n  | #talu\n  | #tamldec\n  | #telu\n  | #thai\n  | #tibt\n  | #tirh\n  | #tnsa\n  | #vaii\n  | #wara\n  | #wcho\n]"
+      },
+      {
+        "id": "Core.Intl.Common.oneTo21",
+        "kind": "type",
+        "name": "oneTo21",
+        "docstrings": [],
+        "signature": "type oneTo21 = [\n  | #1\n  | #10\n  | #11\n  | #12\n  | #13\n  | #14\n  | #15\n  | #16\n  | #17\n  | #18\n  | #19\n  | #2\n  | #20\n  | #21\n  | #3\n  | #4\n  | #5\n  | #6\n  | #7\n  | #8\n  | #9\n]"
+      },
+      {
+        "id": "Core.Intl.Common.zeroTo20",
+        "kind": "type",
+        "name": "zeroTo20",
+        "docstrings": [],
+        "signature": "type zeroTo20 = [\n  | #0\n  | #1\n  | #10\n  | #11\n  | #12\n  | #13\n  | #14\n  | #15\n  | #16\n  | #17\n  | #18\n  | #19\n  | #2\n  | #20\n  | #3\n  | #4\n  | #5\n  | #6\n  | #7\n  | #8\n  | #9\n]"
       }
     ]
   },
@@ -2089,7 +1837,7 @@
         "docstrings": [
           "The type representing a classified JavaScript value."
         ],
-        "signature": "type t =\n  | Bool(bool)\n  | Null\n  | Undefined\n  | String(string)\n  | Number(float)\n  | Object(object)\n  | Function(function)\n  | Symbol(Core__Symbol.t)\n  | BigInt(Core__BigInt.t)"
+        "signature": "type t =\n  | Bool(bool)\n  | Null\n  | Undefined\n  | String(string)\n  | Number(float)\n  | Object(object)\n  | Function(function)\n  | Symbol(Core__Symbol.t)\n  | BigInt(bigint)"
       },
       {
         "id": "Core.Type.Classify.classify",
@@ -3249,9 +2997,9 @@
         "kind": "value",
         "name": "getExn",
         "docstrings": [
-          "`getExn(opt)` returns `value` if `opt` is `Some(value)`, otherwise raises an exception.\n\n```rescript\nOption.getExn(Some(3)) // 3\nOption.getExn(None) /* Raises an Error */\n```\n\n## Exceptions\n\n- Raises an error if `opt` is `None`"
+          "`getExn(opt, ~message=?)` returns `value` if `opt` is `Some(value)`, otherwise raises an exception with the message provided, or a generic message if no message was provided.\n\n```rescript\nOption.getExn(Some(3)) // 3\nOption.getExn(None) /* Raises an Error */\nOption.getExn(None, ~message=\"was None!\") /* Raises an Error with the message \"was None!\" */\n```\n\n## Exceptions\n\n- Raises an error if `opt` is `None`"
         ],
-        "signature": "let getExn: option<'a> => 'a"
+        "signature": "let getExn: (option<'a>, ~message: string=?) => 'a"
       },
       {
         "id": "Core.Option.getUnsafe",
@@ -3542,7 +3290,7 @@
         "docstrings": [
           "The `BigUint64Array` typed array represents an array of 64-bit unsigned integers in platform byte order. See [BigUint64Array on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigUint64Array)"
         ],
-        "signature": "type t = Core__TypedArray.t<Core__BigInt.t>"
+        "signature": "type t = Core__TypedArray.t<bigint>"
       },
       {
         "id": "Core.BigUint64Array.fromArray",
@@ -3551,7 +3299,7 @@
         "docstrings": [
           "`fromArray` creates a `BigUint64Array` from an array of values. See [TypedArray constructor on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigUint64Array/BigUint64Array)"
         ],
-        "signature": "let fromArray: array<Core__BigInt.t> => t"
+        "signature": "let fromArray: array<bigint> => t"
       },
       {
         "id": "Core.BigUint64Array.fromBuffer",
@@ -3605,7 +3353,7 @@
         "docstrings": [
           "`fromArrayLikeOrIterableWithMap` creates a `BigUint64Array` from an array-like or iterable object and applies the mapping function to each item. The mapping function expects (value, index). See [TypedArray.from on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/from)"
         ],
-        "signature": "let fromArrayLikeOrIterableWithMap: ('a, ('b, int) => Core__BigInt.t) => t"
+        "signature": "let fromArrayLikeOrIterableWithMap: ('a, ('b, int) => bigint) => t"
       }
     ]
   },
@@ -3621,7 +3369,7 @@
         "docstrings": [
           "The `BigInt64Array` typed array represents an array of 64-bit signed integers in platform byte order. See [BigInt64Array on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt64Array)"
         ],
-        "signature": "type t = Core__TypedArray.t<Core__BigInt.t>"
+        "signature": "type t = Core__TypedArray.t<bigint>"
       },
       {
         "id": "Core.BigInt64Array.fromArray",
@@ -3630,7 +3378,7 @@
         "docstrings": [
           "`fromArray` creates a `BigInt64Array` from an array of values. See [TypedArray constructor on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt64Array/BigInt64Array)"
         ],
-        "signature": "let fromArray: array<Core__BigInt.t> => t"
+        "signature": "let fromArray: array<bigint> => t"
       },
       {
         "id": "Core.BigInt64Array.fromBuffer",
@@ -3684,7 +3432,7 @@
         "docstrings": [
           "`fromArrayLikeOrIterableWithMap` creates a `BigInt64Array` from an array-like or iterable object and applies the mapping function to each item. The mapping function expects (value, index). See [TypedArray.from on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/from)"
         ],
-        "signature": "let fromArrayLikeOrIterableWithMap: ('a, ('b, int) => Core__BigInt.t) => t"
+        "signature": "let fromArrayLikeOrIterableWithMap: ('a, ('b, int) => bigint) => t"
       }
     ]
   },
@@ -5271,31 +5019,39 @@
         "signature": "type t = Js.Json.t =\n  | Boolean(bool)\n  | Null\n  | String(string)\n  | Number(float)\n  | Object(Core__Dict.t<t>)\n  | Array(array<t>)"
       },
       {
+        "id": "Core.JSON.replacer",
+        "kind": "type",
+        "name": "replacer",
+        "docstrings": [],
+        "signature": "type replacer =\n  | Keys(array<string>)\n  | Replacer((string, t) => t)"
+      },
+      {
         "id": "Core.JSON.parseExn",
         "kind": "value",
         "name": "parseExn",
         "docstrings": [
-          "`parseExn(string)` \n\nParses a JSON string or throws a JavaScript exception (SyntaxError), if the string isn't valid.\nIt returns a JSON type.\n\n## Examples\n```rescript\ntry {\n  let _ = JSON.parseExn(`{\"foo\":\"bar\",\"hello\":\"world\"}`)\n  // { foo: 'bar', hello: 'world' }\n\n  let _ = JSON.parseExn(\"\")\n  // error\n} catch {\n| Exn.Error(_) => Console.log(\"error\")\n}\n```\n\n## Exceptions \n\n- Raises a SyntaxError (Exn.t) if the string isn't valid JSON."
+          "`parseExn(string, ~reviver=?)` \n\nParses a JSON string or throws a JavaScript exception (SyntaxError), if the string isn't valid.\nThe reviver describes how the value should be transformed. It is a function which receives a key and a value.\nIt returns a JSON type.\n\n## Examples\n```rescript\ntry {\n  let _ = JSON.parseExn(`{\"foo\":\"bar\",\"hello\":\"world\"}`)\n  // { foo: 'bar', hello: 'world' }\n\n  let _ = JSON.parseExn(\"\")\n  // error\n} catch {\n| Exn.Error(_) => Console.log(\"error\")\n}\n\nlet reviver = (_, value: JSON.t) =>\n  switch value {\n  | String(string) => string->String.toUpperCase->JSON.Encode.string\n  | Number(number) => (number *. 2.0)->JSON.Encode.float\n  | _ => value\n  }\n\nlet jsonString = `{\"hello\":\"world\",\"someNumber\":21}`\n\ntry {\n  JSON.parseExn(jsonString, ~reviver)->Console.log\n  // { hello: 'WORLD', someNumber: 42 }\n\n  JSON.parseExn(\"\", ~reviver)->Console.log\n  // error\n} catch {\n| Exn.Error(_) => Console.log(\"error\")\n}\n```\n\n## Exceptions \n\n- Raises a SyntaxError (Exn.t) if the string isn't valid JSON."
         ],
-        "signature": "let parseExn: string => t"
+        "signature": "let parseExn: (string, ~reviver: (string, t) => t=?) => t"
       },
       {
         "id": "Core.JSON.parseExnWithReviver",
         "kind": "value",
         "name": "parseExnWithReviver",
         "docstrings": [
-          "`parseExnWithReviver(string, reviver)` \n\nParses a JSON string or throws a JavaScript exception (SyntaxError), if the string isn't valid.\nThe reviver describes how the value should be transformed. It is a function which receives a key and a value.\nIt returns a JSON type.\n\n## Examples\n```rescript\nlet reviver = (_, value) => {\n  let valueType = JSON.Classify.classify(value)\n\n  switch valueType {\n  | String(string) => string->String.toUpperCase->JSON.Encode.string\n  | Number(number) => (number *. 2.0)->JSON.Encode.float\n  | _ => value\n  }\n}\n\nlet jsonString = `{\"hello\":\"world\",\"someNumber\":21}`\n\ntry {\n  JSON.parseExnWithReviver(jsonString, reviver)->Console.log\n  // { hello: 'WORLD', someNumber: 42 }\n\n  JSON.parseExnWithReviver(\"\", reviver)->Console.log\n  // error\n} catch {\n| Exn.Error(_) => Console.log(\"error\")\n}\n```\n\n## Exceptions \n\n- Raises a SyntaxError if the string isn't valid JSON."
+          "`parseExnWithReviver(string, reviver)` \n\nParses a JSON string or throws a JavaScript exception (SyntaxError), if the string isn't valid.\nThe reviver describes how the value should be transformed. It is a function which receives a key and a value.\nIt returns a JSON type.\n\n## Examples\n```rescript\nlet reviver = (_, value: JSON.t) =>\n  switch value {\n  | String(string) => string->String.toUpperCase->JSON.Encode.string\n  | Number(number) => (number *. 2.0)->JSON.Encode.float\n  | _ => value\n  }\n\nlet jsonString = `{\"hello\":\"world\",\"someNumber\":21}`\n\ntry {\n  JSON.parseExnWithReviver(jsonString, reviver)->Console.log\n  // { hello: 'WORLD', someNumber: 42 }\n\n  JSON.parseExnWithReviver(\"\", reviver)->Console.log\n  // error\n} catch {\n| Exn.Error(_) => Console.log(\"error\")\n}\n```\n\n## Exceptions \n\n- Raises a SyntaxError if the string isn't valid JSON."
         ],
-        "signature": "let parseExnWithReviver: (string, (string, t) => t) => t"
+        "signature": "let parseExnWithReviver: (string, (string, t) => t) => t",
+        "deprecated": "Use `parseExn` with optional parameter instead"
       },
       {
         "id": "Core.JSON.stringify",
         "kind": "value",
         "name": "stringify",
         "docstrings": [
-          "`stringify(json)` \n\nConverts a JSON object to a JSON string.\nIf you want to stringify any type, use `JSON.stringifyAny` instead.\n\n## Examples\n```rescript\nlet json =\n  Dict.fromArray([\n    (\"foo\", JSON.Encode.string(\"bar\")),\n    (\"hello\", JSON.Encode.string(\"world\")),\n    (\"someNumber\", JSON.Encode.int(42)),\n  ])->JSON.Encode.object\n\nJSON.stringify(json)\n// {\"foo\":\"bar\",\"hello\":\"world\",\"someNumber\":42}\n```"
+          "`stringify(json, ~replacer=?, ~space=?)` \n\nConverts a JSON object to a JSON string.\nThe replacer describes how the value should be transformed. It is a function which receives a key and a value,\nor an array of keys which should be included in the output.\nIf you want to stringify any type, use `JSON.stringifyAny` instead.\n\n## Examples\n```rescript\nlet json =\n  Dict.fromArray([\n    (\"foo\", JSON.Encode.string(\"bar\")),\n    (\"hello\", JSON.Encode.string(\"world\")),\n    (\"someNumber\", JSON.Encode.int(42)),\n  ])->JSON.Encode.object\n\nJSON.stringify(json)\n// {\"foo\":\"bar\",\"hello\":\"world\",\"someNumber\":42}\n\nJSON.stringify(json, ~space=2)\n// {\n//   \"foo\": \"bar\",\n//   \"hello\": \"world\",\n//   \"someNumber\": 42\n// }\n\nJSON.stringify(json, ~replacer=Keys([\"foo\", \"someNumber\"]))\n// {\"foo\":\"bar\",\"someNumber\":42}\n\nlet replacer = JSON.Replacer((_, value) => {\n  let decodedValue = value->JSON.Decode.string\n\n  switch decodedValue {\n  | Some(string) => string->String.toUpperCase->JSON.Encode.string\n  | None => value\n  }\n})\n\nJSON.stringify(json, ~replacer)\n// {\"foo\":\"BAR\",\"hello\":\"WORLD\",\"someNumber\":42}\n```"
         ],
-        "signature": "let stringify: t => string"
+        "signature": "let stringify: (t, ~replacer: replacer=?, ~space: int=?) => string"
       },
       {
         "id": "Core.JSON.stringifyWithIndent",
@@ -5304,7 +5060,8 @@
         "docstrings": [
           "`stringifyWithIndent(json, indentation)` \n\nConverts a JSON object to a JSON string. The output will be indented.\nIf you want to stringify any type, use `JSON.stringifyAnyWithIndent` instead.\n\n## Examples\n```rescript\nlet json =\n  Dict.fromArray([\n    (\"foo\", JSON.Encode.string(\"bar\")),\n    (\"hello\", JSON.Encode.string(\"world\")),\n    (\"someNumber\", JSON.Encode.int(42)),\n  ])->JSON.Encode.object\n\nJSON.stringifyWithIndent(json, 2)\n// {\n//   \"foo\": \"bar\",\n//   \"hello\": \"world\",\n//   \"someNumber\": 42\n// }\n```"
         ],
-        "signature": "let stringifyWithIndent: (t, int) => string"
+        "signature": "let stringifyWithIndent: (t, int) => string",
+        "deprecated": "Use `stringify` with optional parameter instead"
       },
       {
         "id": "Core.JSON.stringifyWithReplacer",
@@ -5313,7 +5070,8 @@
         "docstrings": [
           "`stringifyWithReplacer(json, replacer)` \n\nConverts a JSON object to a JSON string.\nThe replacer describes how the value should be transformed. It is a function which receives a key and a value.\nIf you want to stringify any type, use `JSON.stringifyAnyWithReplacer` instead.\n\n## Examples\n```rescript\nlet json =\n  Dict.fromArray([\n    (\"foo\", JSON.Encode.string(\"bar\")),\n    (\"hello\", JSON.Encode.string(\"world\")),\n    (\"someNumber\", JSON.Encode.int(42)),\n  ])->JSON.Encode.object\n\nlet replacer = (_, value) => {\n  let decodedValue = value->JSON.Decode.string\n\n  switch decodedValue {\n  | Some(string) => string->String.toUpperCase->JSON.Encode.string\n  | None => value\n  }\n}\n\nJSON.stringifyWithReplacer(json, replacer)\n// {\"foo\":\"BAR\",\"hello\":\"WORLD\",\"someNumber\":42}\n```"
         ],
-        "signature": "let stringifyWithReplacer: (t, (string, t) => t) => string"
+        "signature": "let stringifyWithReplacer: (t, (string, t) => t) => string",
+        "deprecated": "Use `stringify` with optional parameter instead"
       },
       {
         "id": "Core.JSON.stringifyWithReplacerAndIndent",
@@ -5322,7 +5080,8 @@
         "docstrings": [
           "`stringifyWithReplacerAndIndent(json, replacer, indentation)`\n\nConverts a JSON object to a JSON string. The output will be indented.\nThe replacer describes how the value should be transformed. It is a function which receives a key and a value.\nIf you want to stringify any type, use `JSON.stringifyAnyWithReplacerAndIndent` instead.\n\n## Examples\n```rescript\nlet json =\n  Dict.fromArray([\n    (\"foo\", JSON.Encode.string(\"bar\")),\n    (\"hello\", JSON.Encode.string(\"world\")),\n    (\"someNumber\", JSON.Encode.int(42)),\n  ])->JSON.Encode.object\n\nlet replacer = (_, value) => {\n  let decodedValue = value->JSON.Decode.string\n\n  switch decodedValue {\n  | Some(string) => string->String.toUpperCase->JSON.Encode.string\n  | None => value\n  }\n}\n\nJSON.stringifyWithReplacerAndIndent(json, replacer, 2)\n// {\n//   \"foo\": \"BAR\",\n//   \"hello\": \"WORLD\",\n//   \"someNumber\": 42\n// }\n```"
         ],
-        "signature": "let stringifyWithReplacerAndIndent: (t, (string, t) => t, int) => string"
+        "signature": "let stringifyWithReplacerAndIndent: (t, (string, t) => t, int) => string",
+        "deprecated": "Use `stringify` with optional parameters instead"
       },
       {
         "id": "Core.JSON.stringifyWithFilter",
@@ -5331,7 +5090,8 @@
         "docstrings": [
           "`stringifyWithFilter(json, filter)` \n\nConverts a JSON object to a JSON string.\nThe filter is an array of keys, which should be included in the output.\nIf you want to stringify any type, use `JSON.stringifyAnyWithFilter` instead.\n\n## Examples\n```rescript\nlet json =\n  Dict.fromArray([\n    (\"foo\", JSON.Encode.string(\"bar\")),\n    (\"hello\", JSON.Encode.string(\"world\")),\n    (\"someNumber\", JSON.Encode.int(42)),\n  ])->JSON.Encode.object\n\nJSON.stringifyWithFilter(json, [\"foo\", \"someNumber\"])\n// {\"foo\":\"bar\",\"someNumber\":42}\n```"
         ],
-        "signature": "let stringifyWithFilter: (t, array<string>) => string"
+        "signature": "let stringifyWithFilter: (t, array<string>) => string",
+        "deprecated": "Use `stringify` with optional parameter instead"
       },
       {
         "id": "Core.JSON.stringifyWithFilterAndIndent",
@@ -5340,16 +5100,17 @@
         "docstrings": [
           "`stringifyWithFilterAndIndent(json, filter, indentation)` \n\nConverts a JSON object to a JSON string. The output will be indented.\nThe filter is an array of keys, which should be included in the output.\nIf you want to stringify any type, use `JSON.stringifyAnyWithFilterAndIndent` instead.\n\n## Examples\n```rescript\nlet json =\n  Dict.fromArray([\n    (\"foo\", JSON.Encode.string(\"bar\")),\n    (\"hello\", JSON.Encode.string(\"world\")),\n    (\"someNumber\", JSON.Encode.int(42)),\n  ])->JSON.Encode.object\n\nJSON.stringifyWithFilterAndIndent(json, [\"foo\", \"someNumber\"], 2)\n// {\n//   \"foo\": \"bar\",\n//   \"someNumber\": 42\n// }\n```"
         ],
-        "signature": "let stringifyWithFilterAndIndent: (t, array<string>, int) => string"
+        "signature": "let stringifyWithFilterAndIndent: (t, array<string>, int) => string",
+        "deprecated": "Use `stringify` with optional parameters instead"
       },
       {
         "id": "Core.JSON.stringifyAny",
         "kind": "value",
         "name": "stringifyAny",
         "docstrings": [
-          "`stringifyAny(any)` \n\nConverts any type to a JSON string.\nStringifying a function or `undefined` will return `None`.\nIf the value contains circular references or `BigInt`s, the function will throw a JavaScript exception (TypeError).\nIf you want to stringify a JSON object, use `JSON.stringify` instead.\n\n## Examples\n```rescript\nlet dict = Dict.fromArray([\n  (\"foo\", JSON.Encode.string(\"bar\")),\n  (\"hello\", JSON.Encode.string(\"world\")),\n  (\"someNumber\", JSON.Encode.int(42)),\n])\n\nJSON.stringifyAny(dict)\n// {\"foo\":\"bar\",\"hello\":\"world\",\"someNumber\":42}\n\nJSON.stringifyAny(() => \"hello world\")\n// None\n\nBigInt.fromInt(0)->JSON.stringifyAny\n// exception\n```\n\n## Exceptions \n\n- Raises a TypeError if the value contains circular references.\n- Raises a TypeError if the value contains `BigInt`s."
+          "`stringifyAny(any, ~replacer=?, ~space=?)` \n\nConverts any type to a JSON string.\nThe replacer describes how the value should be transformed. It is a function which receives a key and a value.\nStringifying a function or `undefined` will return `None`.\nIf the value contains circular references or `BigInt`s, the function will throw a JavaScript exception (TypeError).\nIf you want to stringify a JSON object, use `JSON.stringify` instead.\n\n## Examples\n```rescript\nlet dict = Dict.fromArray([\n  (\"foo\", JSON.Encode.string(\"bar\")),\n  (\"hello\", JSON.Encode.string(\"world\")),\n  (\"someNumber\", JSON.Encode.int(42)),\n])\n\nJSON.stringifyAny(dict)\n// {\"foo\":\"bar\",\"hello\":\"world\",\"someNumber\":42}\n\nJSON.stringifyAny(dict, ~space=2)\n// {\n//   \"foo\": \"bar\",\n//   \"hello\": \"world\",\n//   \"someNumber\": 42\n// }\n\nJSON.stringifyAny(dict, ~replacer=Keys([\"foo\", \"someNumber\"]))\n// {\"foo\":\"bar\",\"someNumber\":42}\n\nlet replacer = JSON.Replacer((_, value) => {\n  let decodedValue = value->JSON.Decode.string\n\n  switch decodedValue {\n  | Some(string) => string->String.toUpperCase->JSON.Encode.string\n  | None => value\n  }\n})\n\nJSON.stringifyAny(dict, ~replacer)\n// {\"foo\":\"BAR\",\"hello\":\"WORLD\",\"someNumber\":42}\n\nJSON.stringifyAny(() => \"hello world\")\n// None\n\nBigInt.fromInt(0)->JSON.stringifyAny\n// exception\n```\n\n## Exceptions \n\n- Raises a TypeError if the value contains circular references.\n- Raises a TypeError if the value contains `BigInt`s."
         ],
-        "signature": "let stringifyAny: 'a => option<string>"
+        "signature": "let stringifyAny: ('a, ~replacer: replacer=?, ~space: int=?) => option<string>"
       },
       {
         "id": "Core.JSON.stringifyAnyWithIndent",
@@ -5358,7 +5119,8 @@
         "docstrings": [
           "`stringifyAnyWithIndent(any, indentation)` \n\nConverts any type to a JSON string. The output will be indented.\nStringifying a function or `undefined` will return `None`.\nIf the value contains circular references or `BigInt`s, the function will throw a JavaScript exception (TypeError).\nIf you want to stringify a JSON object, use `JSON.stringifyWithIndent` instead.\n\n## Examples\n```rescript\nlet dict = Dict.fromArray([\n  (\"foo\", JSON.Encode.string(\"bar\")),\n  (\"hello\", JSON.Encode.string(\"world\")),\n  (\"someNumber\", JSON.Encode.int(42)),\n])\n\nJSON.stringifyAnyWithIndent(dict, 2)\n// {\n//   \"foo\": \"bar\",\n//   \"hello\": \"world\",\n//   \"someNumber\": 42\n// }\n\nJSON.stringifyAny(() => \"hello world\")\n// None\n\nBigInt.fromInt(0)->JSON.stringifyAny\n// exception\n```\n\n## Exceptions \n\n- Raises a TypeError if the value contains circular references.\n- Raises a TypeError if the value contains `BigInt`s."
         ],
-        "signature": "let stringifyAnyWithIndent: ('a, int) => option<string>"
+        "signature": "let stringifyAnyWithIndent: ('a, int) => option<string>",
+        "deprecated": "Use `stringifyAny` with optional parameter instead"
       },
       {
         "id": "Core.JSON.stringifyAnyWithReplacer",
@@ -5367,7 +5129,8 @@
         "docstrings": [
           "`stringifyAnyWithReplacer(json, replacer)`\n\nConverts any type to a JSON string.\nThe replacer describes how the value should be transformed. It is a function which receives a key and a value.\nStringifying a function or `undefined` will return `None`.\nIf the value contains circular references or `BigInt`s, the function will throw a JavaScript exception (TypeError).\nIf you want to stringify a JSON object, use `JSON.stringifyWithReplacer` instead.\n\n## Examples\n```rescript\nlet dict = Dict.fromArray([\n  (\"foo\", JSON.Encode.string(\"bar\")),\n  (\"hello\", JSON.Encode.string(\"world\")),\n  (\"someNumber\", JSON.Encode.int(42)),\n])\n\nlet replacer = (_, value) => {\n  let decodedValue = value->JSON.Decode.string\n\n  switch decodedValue {\n  | Some(string) => string->String.toUpperCase->JSON.Encode.string\n  | None => value\n  }\n}\n\nJSON.stringifyAnyWithReplacer(dict, replacer)\n// {\"foo\":\"BAR\",\"hello\":\"WORLD\",\"someNumber\":42}\n\nJSON.stringifyAny(() => \"hello world\")\n// None\n\nBigInt.fromInt(0)->JSON.stringifyAny\n// exception\n```\n\n## Exceptions \n\n- Raises a TypeError if the value contains circular references.\n- Raises a TypeError if the value contains `BigInt`s."
         ],
-        "signature": "let stringifyAnyWithReplacer: ('a, (string, t) => t) => option<string>"
+        "signature": "let stringifyAnyWithReplacer: ('a, (string, t) => t) => option<string>",
+        "deprecated": "Use `stringifyAny` with optional parameter instead"
       },
       {
         "id": "Core.JSON.stringifyAnyWithReplacerAndIndent",
@@ -5376,7 +5139,8 @@
         "docstrings": [
           "`stringifyAnyWithReplacerAndIndent(json, replacer, indentation)` \n\nConverts any type to a JSON string. The output will be indented.\nThe replacer describes how the value should be transformed. It is a function which receives a key and a value.\nStringifying a function or `undefined` will return `None`.\nIf the value contains circular references or `BigInt`s, the function will throw a JavaScript exception (TypeError).\nIf you want to stringify a JSON object, use `JSON.stringifyWithReplacerAndIndent` instead.\n\n## Examples\n```rescript\nlet dict = Dict.fromArray([\n  (\"foo\", JSON.Encode.string(\"bar\")),\n  (\"hello\", JSON.Encode.string(\"world\")),\n  (\"someNumber\", JSON.Encode.int(42)),\n])\n\nlet replacer = (_, value) => {\n  let decodedValue = value->JSON.Decode.string\n\n  switch decodedValue {\n  | Some(string) => string->String.toUpperCase->JSON.Encode.string\n  | None => value\n  }\n}\n\nJSON.stringifyAnyWithReplacerAndIndent(dict, replacer, 2)\n// {\n//   \"foo\": \"BAR\",\n//   \"hello\": \"WORLD\",\n//   \"someNumber\": 42\n// }\n\nJSON.stringifyAny(() => \"hello world\")\n// None\n\nBigInt.fromInt(0)->JSON.stringifyAny\n// exception\n```\n\n## Exceptions \n\n- Raises a TypeError if the value contains circular references.\n- Raises a TypeError if the value contains `BigInt`s."
         ],
-        "signature": "let stringifyAnyWithReplacerAndIndent: ('a, (string, t) => t, int) => option<string>"
+        "signature": "let stringifyAnyWithReplacerAndIndent: ('a, (string, t) => t, int) => option<string>",
+        "deprecated": "Use `stringifyAny` with optional parameters instead"
       },
       {
         "id": "Core.JSON.stringifyAnyWithFilter",
@@ -5385,7 +5149,8 @@
         "docstrings": [
           "`stringifyAnyWithFilter(json, filter)` \n\nConverts any type to a JSON string.\nThe filter is an array of keys, which should be included in the output.\nStringifying a function or `undefined` will return `None`.\nIf the value contains circular references or `BigInt`s, the function will throw a JavaScript exception (TypeError).\nIf you want to stringify a JSON object, use `JSON.stringifyWithFilter` instead.\n\n## Examples\n```rescript\nlet dict = Dict.fromArray([\n  (\"foo\", JSON.Encode.string(\"bar\")),\n  (\"hello\", JSON.Encode.string(\"world\")),\n  (\"someNumber\", JSON.Encode.int(42)),\n])\n\nJSON.stringifyAnyWithFilter(dict, [\"foo\", \"someNumber\"])\n// {\"foo\": \"bar\",\"someNumber\": 42}\n\nJSON.stringifyAny(() => \"hello world\")\n// None\n\nBigInt.fromInt(0)->JSON.stringifyAny\n// exception\n```\n\n## Exceptions \n\n- Raises a TypeError if the value contains circular references.\n- Raises a TypeError if the value contains `BigInt`s."
         ],
-        "signature": "let stringifyAnyWithFilter: ('a, array<string>) => string"
+        "signature": "let stringifyAnyWithFilter: ('a, array<string>) => string",
+        "deprecated": "Use `stringifyAny` with optional parameter instead"
       },
       {
         "id": "Core.JSON.stringifyAnyWithFilterAndIndent",
@@ -5394,7 +5159,8 @@
         "docstrings": [
           "`stringifyAnyWithFilterAndIndent(json, filter, indentation)` \n\nConverts any type to a JSON string. The output will be indented.\nThe filter is an array of keys, which should be included in the output.\nStringifying a function or `undefined` will return `None`.\nIf the value contains circular references or `BigInt`s, the function will throw a JavaScript exception (TypeError).\nIf you want to stringify a JSON object, use `JSON.stringifyWithFilterAndIndent` instead.\n\n## Examples\n```rescript\nlet dict = Dict.fromArray([\n  (\"foo\", JSON.Encode.string(\"bar\")),\n  (\"hello\", JSON.Encode.string(\"world\")),\n  (\"someNumber\", JSON.Encode.int(42)),\n])\n\nJSON.stringifyAnyWithFilterAndIndent(dict, [\"foo\", \"someNumber\"], 2)\n// {\n//   \"foo\": \"bar\",\n//   \"someNumber\": 42\n// }\n\nJSON.stringifyAny(() => \"hello world\")\n// None\n\nBigInt.fromInt(0)->JSON.stringifyAny\n// exception\n```\n\n## Exceptions \n\n- Raises a TypeError if the value contains circular references.\n- Raises a TypeError if the value contains `BigInt`s."
         ],
-        "signature": "let stringifyAnyWithFilterAndIndent: ('a, array<string>, int) => string"
+        "signature": "let stringifyAnyWithFilterAndIndent: ('a, array<string>, int) => string",
+        "deprecated": "Use `stringifyAny` with optional parameters instead"
       }
     ]
   },
@@ -6265,6 +6031,22 @@
         "signature": "let make: (('a => unit, 'e => unit) => unit) => t<'a>"
       },
       {
+        "id": "Core.Promise.promiseAndResolvers",
+        "kind": "type",
+        "name": "promiseAndResolvers",
+        "docstrings": [],
+        "signature": "type promiseAndResolvers<'a> = {\n  promise: t<'a>,\n  resolve: 'a => unit,\n  reject: exn => unit,\n}"
+      },
+      {
+        "id": "Core.Promise.withResolvers",
+        "kind": "value",
+        "name": "withResolvers",
+        "docstrings": [
+          "`withResolvers()` returns a object containing a new promise with functions to resolve or reject it. See [`Promise.withResolvers`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/withResolvers) on MDN.\n\n## Examples\n\n```rescript\nopen Promise\n\nlet {promise, resolve, _} = Promise.withResolvers()\n\nsetTimeout(() => {\n  resolve(. \"success\")\n}, 1000)->ignore\n\npromise\n->thenResolve(str => {\n  Console.log(str)\n})\n->ignore\n```"
+        ],
+        "signature": "let withResolvers: unit => promiseAndResolvers<'a>"
+      },
+      {
         "id": "Core.Promise.catch",
         "kind": "value",
         "name": "catch",
@@ -6305,16 +6087,25 @@
         "kind": "value",
         "name": "race",
         "docstrings": [
-          "`race(arr)` combining `array` of promises. See [`Promise.race`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race) on MDN.\n\n## Examples\n\n```rescript\nopen Promise\nlet racer = (ms, name) => {\n  Promise.make((resolve, _) => {\n    setTimeout(() => {\n      resolve(name)\n    }, ms)->ignore\n  })\n}\n\nlet promises = [racer(1000, \"Turtle\"), racer(500, \"Hare\"), racer(100, \"Eagle\")]\n\nrace(promises)->then(winner => {\n  Console.log(\"The winner is \" ++ winner)\n  resolve()\n})\n```"
+          "`race(arr)` runs all promises concurrently and returns promise settles with the eventual state of the first promise that settles. See [`Promise.race`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race) on MDN.\n\n## Examples\n\n```rescript\nopen Promise\nlet racer = (ms, name) => {\n  Promise.make((resolve, _) => {\n    setTimeout(() => {\n      resolve(name)\n    }, ms)->ignore\n  })\n}\n\nlet promises = [racer(1000, \"Turtle\"), racer(500, \"Hare\"), racer(100, \"Eagle\")]\n\nrace(promises)->then(winner => {\n  Console.log(\"The winner is \" ++ winner)\n  resolve()\n})\n```"
         ],
         "signature": "let race: array<t<'a>> => t<'a>"
+      },
+      {
+        "id": "Core.Promise.any",
+        "kind": "value",
+        "name": "any",
+        "docstrings": [
+          "`any(arr)` runs all promises concurrently and returns promise fulfills when any of the input's promises fulfills, with this first fulfillment value. See [`Promise.any`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any) on MDN.\n\n## Examples\n\n```rescript\nopen Promise\nlet racer = (ms, name) => {\n  Promise.make((resolve, _) => {\n    setTimeout(() => {\n      resolve(name)\n    }, ms)->ignore\n  })\n}\n\nlet promises = [racer(1000, \"Turtle\"), racer(500, \"Hare\"), racer(100, \"Eagle\")]\n\nany(promises)->then(winner => {\n  Console.log(\"The winner is \" ++ winner)\n  resolve()\n})\n```"
+        ],
+        "signature": "let any: array<t<'a>> => t<'a>"
       },
       {
         "id": "Core.Promise.all",
         "kind": "value",
         "name": "all",
         "docstrings": [
-          "`all(promises)` runs all promises in parallel and returns a new promise resolving\nall gathered results in a unified array. See [`Promise.all`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all) on MDN.\n\n```rescript\nopen Promise\nlet promises = [resolve(1), resolve(2), resolve(3)]\n\nall(promises)\n->then((results) => {\n  results->Array.forEach(num => {\n    Console.log2(\"Number: \", num)\n  })\n\n  resolve()\n})\n->ignore\n```"
+          "`all(promises)` runs all promises concurrently and returns a promise fulfills when all of the input's promises fulfill, with an array of the fulfillment values. See [`Promise.all`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all) on MDN.\n\n```rescript\nopen Promise\nlet promises = [resolve(1), resolve(2), resolve(3)]\n\nall(promises)\n->then((results) => {\n  results->Array.forEach(num => {\n    Console.log2(\"Number: \", num)\n  })\n\n  resolve()\n})\n->ignore\n```"
         ],
         "signature": "let all: array<t<'a>> => t<array<'a>>"
       },
@@ -6362,6 +6153,67 @@
           "`all6((p1, p2, p4, p5, p6))`. Like `all()`, but with a fixed size tuple of 6\n\")"
         ],
         "signature": "let all6: (\n  (t<'a>, t<'b>, t<'c>, t<'d>, t<'e>, t<'f>),\n) => t<('a, 'b, 'c, 'd, 'e, 'f)>"
+      },
+      {
+        "id": "Core.Promise.settledResult",
+        "kind": "type",
+        "name": "settledResult",
+        "docstrings": [],
+        "signature": "type settledResult<'a> =\n  | Fulfilled({value: 'a})\n  | Rejected({reason: exn})"
+      },
+      {
+        "id": "Core.Promise.allSettled",
+        "kind": "value",
+        "name": "allSettled",
+        "docstrings": [
+          "`allSettled(promises)` runs all promises concurrently and returns promise fulfills when all of the input's promises settle with an array of objects that describe the outcome of each promise. See [`Promise.allSettled`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled) on MDN.\n\n```rescript\nopen Promise\n\nexception TestError(string)\n\nlet promises = [resolve(1), resolve(2), reject(TestError(\"some rejected promise\"))]\n\nallSettled(promises)\n->then((results) => {\n  results->Array.forEach((result) => {\n    switch result {\n      | Fulfilled({value: num}) => \n        Console.log2(\"Number: \", num)\n      | Rejected({reason}) =>\n        Console.log(reason)\n    }\n  })\n\n  resolve()\n})\n->ignore\n```"
+        ],
+        "signature": "let allSettled: array<t<'a>> => t<array<settledResult<'a>>>"
+      },
+      {
+        "id": "Core.Promise.allSettled2",
+        "kind": "value",
+        "name": "allSettled2",
+        "docstrings": [
+          "`allSettled2((p1, p2))`. Like `allSettled()`, but with a fixed size tuple of 2"
+        ],
+        "signature": "let allSettled2: (\n  (t<'a>, t<'b>),\n) => t<(settledResult<'a>, settledResult<'b>)>"
+      },
+      {
+        "id": "Core.Promise.allSettled3",
+        "kind": "value",
+        "name": "allSettled3",
+        "docstrings": [
+          "`allSettled3((p1, p2, p3))`. Like `allSettled()`, but with a fixed size tuple of 3"
+        ],
+        "signature": "let allSettled3: (\n  (t<'a>, t<'b>, t<'c>),\n) => t<\n  (settledResult<'a>, settledResult<'b>, settledResult<'c>),\n>"
+      },
+      {
+        "id": "Core.Promise.allSettled4",
+        "kind": "value",
+        "name": "allSettled4",
+        "docstrings": [
+          "`allSettled4((p1, p2, p3, p4))`. Like `allSettled()`, but with a fixed size tuple of 4"
+        ],
+        "signature": "let allSettled4: (\n  (t<'a>, t<'b>, t<'c>, t<'d>),\n) => t<\n  (\n    settledResult<'a>,\n    settledResult<'b>,\n    settledResult<'c>,\n    settledResult<'d>,\n  ),\n>"
+      },
+      {
+        "id": "Core.Promise.allSettled5",
+        "kind": "value",
+        "name": "allSettled5",
+        "docstrings": [
+          "`allSettled5((p1, p2, p3, p4, p5))`. Like `allSettled()`, but with a fixed size tuple of 5"
+        ],
+        "signature": "let allSettled5: (\n  (t<'a>, t<'b>, t<'c>, t<'d>, t<'e>),\n) => t<\n  (\n    settledResult<'a>,\n    settledResult<'b>,\n    settledResult<'c>,\n    settledResult<'d>,\n    settledResult<'e>,\n  ),\n>"
+      },
+      {
+        "id": "Core.Promise.allSettled6",
+        "kind": "value",
+        "name": "allSettled6",
+        "docstrings": [
+          "`allSettled6((p1, p2, p4, p5, p6))`. Like `allSettled()`, but with a fixed size tuple of 6\n\")"
+        ],
+        "signature": "let allSettled6: (\n  (t<'a>, t<'b>, t<'c>, t<'d>, t<'e>, t<'f>),\n) => t<\n  (\n    settledResult<'a>,\n    settledResult<'b>,\n    settledResult<'c>,\n    settledResult<'d>,\n    settledResult<'e>,\n    settledResult<'f>,\n  ),\n>"
       },
       {
         "id": "Core.Promise.done",
@@ -7288,186 +7140,214 @@
     "docstrings": [],
     "items": [
       {
-        "id": "Core.BigInt.t",
-        "kind": "type",
-        "name": "t",
-        "docstrings": [],
-        "signature": "type t = Js.Types.bigint_val"
-      },
-      {
         "id": "Core.BigInt.asIntN",
         "kind": "value",
         "name": "asIntN",
         "docstrings": [],
-        "signature": "let asIntN: (~width: int, t) => t"
+        "signature": "let asIntN: (~width: int, bigint) => bigint"
       },
       {
         "id": "Core.BigInt.asUintN",
         "kind": "value",
         "name": "asUintN",
         "docstrings": [],
-        "signature": "let asUintN: (~width: int, t) => t"
+        "signature": "let asUintN: (~width: int, bigint) => bigint"
       },
       {
         "id": "Core.BigInt.fromString",
         "kind": "value",
         "name": "fromString",
         "docstrings": [],
-        "signature": "let fromString: string => t"
+        "signature": "let fromString: string => bigint"
+      },
+      {
+        "id": "Core.BigInt.fromStringExn",
+        "kind": "value",
+        "name": "fromStringExn",
+        "docstrings": [
+          "Parses the given `string` into a `bigint` using JavaScript semantics. Return the\nnumber as a `bigint` if successfully parsed. Uncaught syntax exception otherwise.\n\n## Examples\n\n```rescript\n/* returns 123n */\nBigInt.fromStringExn(\"123\")\n\n/* returns 0n */\nBigInt.fromStringExn(\"\")\n\n/* returns 17n */\nBigInt.fromStringExn(\"0x11\")\n\n/* returns 3n */\nBigInt.fromStringExn(\"0b11\")\n\n/* returns 9n */\nBigInt.fromStringExn(\"0o11\")\n\n/* catch exception */\ntry {\n  BigInt.fromStringExn(\"a\")\n} catch {\n| Exn.Error(_error) => 0n\n}\n```"
+        ],
+        "signature": "let fromStringExn: string => bigint"
       },
       {
         "id": "Core.BigInt.fromInt",
         "kind": "value",
         "name": "fromInt",
         "docstrings": [],
-        "signature": "let fromInt: int => t"
+        "signature": "let fromInt: int => bigint"
       },
       {
         "id": "Core.BigInt.fromFloat",
         "kind": "value",
         "name": "fromFloat",
         "docstrings": [],
-        "signature": "let fromFloat: float => t"
+        "signature": "let fromFloat: float => bigint"
       },
       {
         "id": "Core.BigInt.toString",
         "kind": "value",
         "name": "toString",
-        "docstrings": [],
-        "signature": "let toString: t => string"
+        "docstrings": [
+          "Formats a `bigint` as a string. Return a `string` representing the given value.\nSee [`toString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString) on MDN.\n\n## Examples\n\n```rescript\n/* prints \"123\" */\nJs.BigInt.toString(123n)->Js.log\n```"
+        ],
+        "signature": "let toString: (bigint, ~radix: int=?) => string"
       },
       {
         "id": "Core.BigInt.toStringWithRadix",
         "kind": "value",
         "name": "toStringWithRadix",
         "docstrings": [],
-        "signature": "let toStringWithRadix: (t, ~radix: int) => string"
+        "signature": "let toStringWithRadix: (bigint, ~radix: int) => string",
+        "deprecated": "Use `toString` with `~radix` instead"
       },
       {
         "id": "Core.BigInt.toLocaleString",
         "kind": "value",
         "name": "toLocaleString",
-        "docstrings": [],
-        "signature": "let toLocaleString: t => string"
+        "docstrings": [
+          "Returns a string with a language-sensitive representation of this BigInt value.\n\n## Examples\n\n```rescript\n/* prints \"123\" */\nJs.BigInt.toString(123n)->Js.log\n```"
+        ],
+        "signature": "let toLocaleString: bigint => string"
       },
       {
         "id": "Core.BigInt.toFloat",
         "kind": "value",
         "name": "toFloat",
         "docstrings": [],
-        "signature": "let toFloat: t => float"
+        "signature": "let toFloat: bigint => float"
       },
       {
         "id": "Core.BigInt.toInt",
         "kind": "value",
         "name": "toInt",
         "docstrings": [],
-        "signature": "let toInt: t => int"
+        "signature": "let toInt: bigint => int"
       },
       {
         "id": "Core.BigInt.+",
         "kind": "value",
         "name": "+",
         "docstrings": [],
-        "signature": "let +: (t, t) => t"
+        "signature": "let +: (bigint, bigint) => bigint"
       },
       {
         "id": "Core.BigInt.-",
         "kind": "value",
         "name": "-",
         "docstrings": [],
-        "signature": "let -: (t, t) => t"
+        "signature": "let -: (bigint, bigint) => bigint"
       },
       {
         "id": "Core.BigInt.*",
         "kind": "value",
         "name": "*",
         "docstrings": [],
-        "signature": "let *: (t, t) => t"
+        "signature": "let *: (bigint, bigint) => bigint"
       },
       {
         "id": "Core.BigInt./",
         "kind": "value",
         "name": "/",
         "docstrings": [],
-        "signature": "let /: (t, t) => t"
+        "signature": "let /: (bigint, bigint) => bigint"
+      },
+      {
+        "id": "Core.BigInt.~-",
+        "kind": "value",
+        "name": "~-",
+        "docstrings": [],
+        "signature": "let ~-: bigint => bigint"
+      },
+      {
+        "id": "Core.BigInt.~+",
+        "kind": "value",
+        "name": "~+",
+        "docstrings": [],
+        "signature": "let ~+: bigint => bigint"
+      },
+      {
+        "id": "Core.BigInt.**",
+        "kind": "value",
+        "name": "**",
+        "docstrings": [],
+        "signature": "let **: (bigint, bigint) => bigint"
       },
       {
         "id": "Core.BigInt.add",
         "kind": "value",
         "name": "add",
         "docstrings": [],
-        "signature": "let add: (t, t) => t"
+        "signature": "let add: (bigint, bigint) => bigint"
       },
       {
         "id": "Core.BigInt.sub",
         "kind": "value",
         "name": "sub",
         "docstrings": [],
-        "signature": "let sub: (t, t) => t"
+        "signature": "let sub: (bigint, bigint) => bigint"
       },
       {
         "id": "Core.BigInt.mul",
         "kind": "value",
         "name": "mul",
         "docstrings": [],
-        "signature": "let mul: (t, t) => t"
+        "signature": "let mul: (bigint, bigint) => bigint"
       },
       {
         "id": "Core.BigInt.div",
         "kind": "value",
         "name": "div",
         "docstrings": [],
-        "signature": "let div: (t, t) => t"
+        "signature": "let div: (bigint, bigint) => bigint"
       },
       {
         "id": "Core.BigInt.mod",
         "kind": "value",
         "name": "mod",
         "docstrings": [],
-        "signature": "let mod: (t, t) => t"
+        "signature": "let mod: (bigint, bigint) => bigint"
       },
       {
         "id": "Core.BigInt.land",
         "kind": "value",
         "name": "land",
         "docstrings": [],
-        "signature": "let land: (t, t) => t"
+        "signature": "let land: (bigint, bigint) => bigint"
       },
       {
         "id": "Core.BigInt.lor",
         "kind": "value",
         "name": "lor",
         "docstrings": [],
-        "signature": "let lor: (t, t) => t"
+        "signature": "let lor: (bigint, bigint) => bigint"
       },
       {
         "id": "Core.BigInt.lxor",
         "kind": "value",
         "name": "lxor",
         "docstrings": [],
-        "signature": "let lxor: (t, t) => t"
+        "signature": "let lxor: (bigint, bigint) => bigint"
       },
       {
         "id": "Core.BigInt.lsl",
         "kind": "value",
         "name": "lsl",
         "docstrings": [],
-        "signature": "let lsl: (t, t) => t"
+        "signature": "let lsl: (bigint, bigint) => bigint"
       },
       {
         "id": "Core.BigInt.asr",
         "kind": "value",
         "name": "asr",
         "docstrings": [],
-        "signature": "let asr: (t, t) => t"
+        "signature": "let asr: (bigint, bigint) => bigint"
       },
       {
-        "id": "Core.BigInt.exp",
+        "id": "Core.BigInt.lnot",
         "kind": "value",
-        "name": "exp",
+        "name": "lnot",
         "docstrings": [],
-        "signature": "let exp: (t, t) => 'a"
+        "signature": "let lnot: bigint => bigint"
       }
     ]
   },
@@ -7497,9 +7377,9 @@
         "kind": "value",
         "name": "toExponential",
         "docstrings": [
-          "`toExponential(n)` return a `string` representing the given value in exponential\nnotation.\nSee [`Number.toExponential`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential)\non MDN.\n\n## Examples\n\n```rescript\nInt.toExponential(1000) // \"1e+3\"\nInt.toExponential(-1000) // \"-1e+3\"\n```"
+          "`toExponential(n, ~digits=?)` return a `string` representing the given value in\nexponential notation. `digits` specifies how many digits should appear after\nthe decimal point. See [`Number.toExponential`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential)\n\n## Examples\n\n```rescript\nInt.toExponential(1000) // \"1e+3\"\nInt.toExponential(-1000) // \"-1e+3\"\nInt.toExponential(77, ~digits=2) // \"7.70e+1\"\nInt.toExponential(5678, ~digits=2) // \"5.68e+3\"\n```\n\n## Exceptions\n\n- `RangeError`: If `digits` less than 0 or greater than 10."
         ],
-        "signature": "let toExponential: int => string"
+        "signature": "let toExponential: (int, ~digits: int=?) => string"
       },
       {
         "id": "Core.Int.toExponentialWithPrecision",
@@ -7508,16 +7388,17 @@
         "docstrings": [
           "`toExponential(n, ~digits)` return a `string` representing the given value in\nexponential notation. `digits` specifies how many digits should appear after\nthe decimal point. See [`Number.toExponential`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential)\non MDN.\n\n## Examples\n\n```rescript\nInt.toExponentialWithPrecision(77, ~digits=2) // \"7.70e+1\"\nInt.toExponentialWithPrecision(5678, ~digits=2) // \"5.68e+3\"\n```\n\n## Exceptions\n\n- `RangeError`: If `digits` less than 0 or greater than 10."
         ],
-        "signature": "let toExponentialWithPrecision: (int, ~digits: int) => string"
+        "signature": "let toExponentialWithPrecision: (int, ~digits: int) => string",
+        "deprecated": "Use `toExponential` instead"
       },
       {
         "id": "Core.Int.toFixed",
         "kind": "value",
         "name": "toFixed",
         "docstrings": [
-          "`toFixed(n)` return a `string` representing the given value using fixed-point\nnotation. See [`Number.toFixed`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed)\non MDN.\n\n\n## Examples\n\n```rescript\nInt.toFixed(123456) // \"123456.00\"\nInt.toFixed(10) // \"10.00\"\n```"
+          "`toFixed(n, ~digits=?)` return a `string` representing the given\nvalue using fixed-point notation. `digits` specifies how many digits should\nappear after the decimal point. See [`Number.toFixed`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed)\non MDN.\n\n## Examples\n\n```rescript\nInt.toFixed(123456) // \"123456.00\"\nInt.toFixed(10) // \"10.00\"\nInt.toFixed(300, ~digits=4) // \"300.0000\"\nInt.toFixed(300, ~digits=1) // \"300.0\"\n```\n\n## Exceptions\n\n- `RangeError`: If `digits` is less than 0 or larger than 100."
         ],
-        "signature": "let toFixed: int => string"
+        "signature": "let toFixed: (int, ~digits: int=?) => string"
       },
       {
         "id": "Core.Int.toFixedWithPrecision",
@@ -7526,16 +7407,17 @@
         "docstrings": [
           "`toFixedWithPrecision(n, ~digits)` return a `string` representing the given\nvalue using fixed-point notation. `digits` specifies how many digits should\nappear after the decimal point. See [`Number.toFixed`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed)\non MDN.\n\n## Examples\n\n```rescript\nInt.toFixedWithPrecision(300, ~digits=4) // \"300.0000\"\nInt.toFixedWithPrecision(300, ~digits=1) // \"300.0\"\n```\n\n## Exceptions\n\n- `RangeError`: If `digits` is less than 0 or larger than 100."
         ],
-        "signature": "let toFixedWithPrecision: (int, ~digits: int) => string"
+        "signature": "let toFixedWithPrecision: (int, ~digits: int) => string",
+        "deprecated": "Use `toFixed` instead"
       },
       {
         "id": "Core.Int.toPrecision",
         "kind": "value",
         "name": "toPrecision",
         "docstrings": [
-          "`toPrecision(n)` return a `string` representing the giver value with precision.\nThis function omits the argument that controls precision, so it behaves like\n`toString`. See `toPrecisionWithPrecision` to control precision. See [`Number.toPrecision`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision) on MDN.\n\n## Examples\n\n```rescript\nInt.toPrecision(100) // \"100\"\nInt.toPrecision(1) // \"1\"\n```"
+          "`toPrecision(n, ~digits=?)` return a `string` representing the giver value with\nprecision. `digits` specifies the number of significant digits. See [`Number.toPrecision`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision) on MDN.\n\n## Examples\n\n```rescript\nInt.toPrecision(100) // \"100\"\nInt.toPrecision(1) // \"1\"\nInt.toPrecision(100, ~digits=2) // \"1.0e+2\"\nInt.toPrecision(1, ~digits=2) // \"1.0\"\n```\n\n## Exceptions\n\n- `RangeError`: If `digits` is not between 1 and 100 (inclusive).\nImplementations are allowed to support larger and smaller values as well.\nECMA-262 only requires a precision of up to 21 significant digits."
         ],
-        "signature": "let toPrecision: int => string"
+        "signature": "let toPrecision: (int, ~digits: int=?) => string"
       },
       {
         "id": "Core.Int.toPrecisionWithPrecision",
@@ -7544,16 +7426,17 @@
         "docstrings": [
           "`toPrecisionWithPrecision(n, ~digits)` return a `string` representing the giver value with\nprecision. `digits` specifies the number of significant digits. See [`Number.toPrecision`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision) on MDN.\n\n## Examples\n\n```rescript\nInt.toPrecisionWithPrecision(100, ~digits=2) // \"1.0e+2\"\nInt.toPrecisionWithPrecision(1, ~digits=2) // \"1.0\"\n```\n\n## Exceptions\n\n- `RangeError`: If `digits` is not between 1 and 100 (inclusive).\nImplementations are allowed to support larger and smaller values as well.\nECMA-262 only requires a precision of up to 21 significant digits."
         ],
-        "signature": "let toPrecisionWithPrecision: (int, ~digits: int) => string"
+        "signature": "let toPrecisionWithPrecision: (int, ~digits: int) => string",
+        "deprecated": "Use `toPrecision` instead"
       },
       {
         "id": "Core.Int.toString",
         "kind": "value",
         "name": "toString",
         "docstrings": [
-          "`toString(n)` return a `string` representing the given value.\nSee [`Number.toString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString)\non MDN.\n\n## Examples\n\n```rescript\nInt.toString(1000) // \"1000\"\nInt.toString(-1000) // \"-1000\"\n```"
+          "`toString(n, ~radix=?)` return a `string` representing the given value.\n`~radix` specifies the radix base to use for the formatted number.\nSee [`Number.toString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString)\non MDN.\n\n## Examples\n\n```rescript\nInt.toString(1000) // \"1000\"\nInt.toString(-1000) // \"-1000\"\nInt.toString(6, ~radix=2) // \"110\"\nInt.toString(373592855, ~radix=16) // \"16449317\"\nInt.toString(123456, ~radix=36) // \"2n9c\"\n```\n\n## Exceptions\n\n`RangeError`: if `radix` is less than 2 or greater than 36."
         ],
-        "signature": "let toString: int => string"
+        "signature": "let toString: (int, ~radix: int=?) => string"
       },
       {
         "id": "Core.Int.toStringWithRadix",
@@ -7562,7 +7445,8 @@
         "docstrings": [
           "`toStringWithRadix(n, ~radix)` return a `string` representing the given value.\n`~radix` specifies the radix base to use for the formatted number.\nSee [`Number.toString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString)\non MDN.\n\n## Examples\n\n```rescript\nInt.toStringWithRadix(6, ~radix=2) // \"110\"\nInt.toStringWithRadix(373592855, ~radix=16) // \"16449317\"\nInt.toStringWithRadix(123456, ~radix=36) // \"2n9c\"\n```\n\n## Exceptions\n\n`RangeError`: if `radix` is less than 2 or greater than 36."
         ],
-        "signature": "let toStringWithRadix: (int, ~radix: int) => string"
+        "signature": "let toStringWithRadix: (int, ~radix: int) => string",
+        "deprecated": "Use `toString` instead"
       },
       {
         "id": "Core.Int.toLocaleString",
@@ -7596,9 +7480,9 @@
         "kind": "value",
         "name": "fromString",
         "docstrings": [
-          "`fromString(~radix?, str)` return an `option<int>` representing the given value\n`str`. `~radix` specifies the radix base to use for the formatted number.\n\n## Examples\n\n```rescript\nInt.fromString(\"0\") == Some(0)\nInt.fromString(\"NaN\") == None\nInt.fromString(~radix=2, \"6\") == None\n```"
+          "`fromString(str, ~radix=?)` return an `option<int>` representing the given value\n`str`. `~radix` specifies the radix base to use for the formatted number.\n\n## Examples\n\n```rescript\nInt.fromString(\"0\") == Some(0)\nInt.fromString(\"NaN\") == None\nInt.fromString(\"6\", ~radix=2) == None\n```"
         ],
-        "signature": "let fromString: (~radix: int=?, string) => option<int>"
+        "signature": "let fromString: (string, ~radix: int=?) => option<int>"
       },
       {
         "id": "Core.Int.mod",
@@ -7610,22 +7494,22 @@
         "signature": "let mod: (int, int) => int"
       },
       {
-        "id": "Core.Int.range",
-        "kind": "value",
-        "name": "range",
-        "docstrings": [
-          "`range(start, end)` returns an int array of the sequence of integers in the\nrange `[start, end)`. That is, including `start` but excluding `end`.\n\nIf `start < end` the sequence will be increasing in steps of 1.\n\nIf `start > end` the sequence will be decreasing in steps of -1.\n\nThis is equivalent to `rangeWithOptions` with `inclusive` set to `false` and\n`step` set to `1` if `start < end` and `-1` otherwise.\n\n## Examples\n\n```rescript\nInt.range(3, 6) == [3, 4, 5]\nInt.range(-3, -1) == [-3, -2]\nInt.range(3, 1) == [3, 2]\n```"
-        ],
-        "signature": "let range: (int, int) => array<int>"
-      },
-      {
         "id": "Core.Int.rangeOptions",
         "kind": "type",
         "name": "rangeOptions",
         "docstrings": [
-          "The options for `rangeWithOptions`."
+          "The options for `range`."
         ],
         "signature": "type rangeOptions = {step?: int, inclusive?: bool}"
+      },
+      {
+        "id": "Core.Int.range",
+        "kind": "value",
+        "name": "range",
+        "docstrings": [
+          "`range(start, end, ~options=?)` returns an int array of the sequence of integers in the\nrange `[start, end)`. That is, including `start` but excluding `end`.\n\nIf `step` is not set and `start < end`, the sequence will be increasing in steps of 1.\n\nIf `step` is not set and `start > end`, the sequence will be decreasing in steps of -1.\n\nIf `step` is set, the sequence will increase or decrease by that amount for each\nstep. If `start < end` and `step` is negative, or vice versa, an empty array is\nreturned since the sequence would otherwise never reach or exceed the end value\nand hence be infinite. If `step` is `0` and `start !=` end, a `RangeError` is\nraised as the sequence would never reach or exceed the end value and hence be\ninfinite.\n\nIf `inclusive` is set to `true`, the sequence will include `end` if `step` is\nset such that the sequence includes it.\n\n## Examples\n\n```rescript\nInt.range(3, 6) == [3, 4, 5]\nInt.range(-3, -1) == [-3, -2]\nInt.range(3, 1) == [3, 2]\nInt.range(3, 7, ~options={step: 2}) == [3, 5]\nInt.range(3, 7, ~options={step: 2, inclusive: true}) == [3, 5, 7]\nInt.range(3, 6, ~options={step: -2}) // RangeError\n```\n\n## Exceptions\n\n- Raises `RangeError` if `step == 0 && start != end`."
+        ],
+        "signature": "let range: (int, int, ~options: rangeOptions=?) => array<int>"
       },
       {
         "id": "Core.Int.rangeWithOptions",
@@ -7634,7 +7518,8 @@
         "docstrings": [
           "`rangeWithOptions(start, end, options)` is like `range`, but with `step` and\n`inclusive` options configurable.\n\nIf `step` is set, the sequence will increase or decrease by that amount for each\nstep. If `start < end` and `step` is negative, or vice versa, an empty array is\nreturned since the sequence would otherwise never reach or exceed the end value\nand hence be infinite. If `step` is `0` and `start !=` end, a `RangeError` is\nraised as the sequence would never reach or exceed the end value and hence be\ninfinite.\n\nIf `inclusive` is set to `true`, the sequence will include `end` if `step` is\nset such that the sequence includes it.\n\n## Examples\n\n```rescript\nInt.rangeWithOptions(3, 7, {step: 2}) == [3, 5]\nInt.rangeWithOptions(3, 7, {step: 2, inclusive: true}) == [3, 5, 7]\nInt.rangeWithOptions(3, 6, {step: -2}) // RangeError\n```\n\n## Exceptions\n\n- Raises `RangeError` if `step == 0 && start != end`."
         ],
-        "signature": "let rangeWithOptions: (int, int, rangeOptions) => array<int>"
+        "signature": "let rangeWithOptions: (int, int, rangeOptions) => array<int>",
+        "deprecated": "Use `range` instead"
       },
       {
         "id": "Core.Int.clamp",
@@ -7700,9 +7585,9 @@
         "kind": "value",
         "name": "parseInt",
         "docstrings": [
-          "`parseInt(v)` parse the given `v` and returns a float. Leading whitespace in\n`v` is ignored. Returns `NaN` if `v` can't be parsed.\nSee [`parseInt`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt) on MDN.\n\n## Examples\n\n```rescript\nFloat.parseInt(\"1.0\") // 1.0\nFloat.parseInt(\"  3.14   \") // 3.0\nFloat.parseInt(3) // 3.0\nFloat.parseInt(\"3.14some non-digit characters\") // 3.0\nFloat.parseInt(\"error\")->Float.isNaN // true\n```"
+          "`parseInt(v, ~radix=?)` parse the given `v` and returns a float. Leading\nwhitespace in this argument `v`is ignored. `radix` specifies the radix base to\nuse for the formatted number. The value must be in the range [2, 36] (inclusive).\nReturns `NaN` if `v` can't be parsed and `radix` is smaller than 2 or bigger\nthan 36.\nSee [`parseInt`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt) on MDN.\n\n## Examples\n\n```rescript\nFloat.parseInt(\"1.0\") // 1.0\nFloat.parseInt(\"  3.14   \") // 3.0\nFloat.parseInt(3) // 3.0\nFloat.parseInt(\"3.14some non-digit characters\") // 3.0\nFloat.parseInt(\"error\")->Float.isNaN // true\nFloat.parseInt(\"10.0\", ~radix=2) // 2.0\nFloat.parseInt(\"15 * 3\", ~radix=10) // 15.0\nFloat.parseInt(\"12\", ~radix=13) // 15.0\nFloat.parseInt(\"17\", ~radix=40)->Float.isNaN // true\n```"
         ],
-        "signature": "let parseInt: 'a => float"
+        "signature": "let parseInt: ('a, ~radix: int=?) => float"
       },
       {
         "id": "Core.Float.parseIntWithRadix",
@@ -7711,16 +7596,17 @@
         "docstrings": [
           "`parseIntWithRadix(v, ~radix)` parse the given `v` and returns a float. Leading\nwhitespace in this argument `v`is ignored. `radix` specifies the radix base to\nuse for the formatted number. The value must be in the range [2, 36] (inclusive).\nReturns `NaN` if `v` can't be parsed and `radix` is smaller than 2 or bigger\nthan 36.\nSee [`parseInt`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt) on MDN.\n\n## Examples\n\n```rescript\nFloat.parseIntWithRadix(\"10.0\", ~radix=2) // 2.0\nFloat.parseIntWithRadix(\"15 * 3\", ~radix=10) // 15.0\nFloat.parseIntWithRadix(\"12\", ~radix=13) // 15.0\nFloat.parseIntWithRadix(\"17\", ~radix=40)->Float.isNaN // true\n```"
         ],
-        "signature": "let parseIntWithRadix: ('a, ~radix: int) => float"
+        "signature": "let parseIntWithRadix: ('a, ~radix: int) => float",
+        "deprecated": "Use `parseInt` instead"
       },
       {
         "id": "Core.Float.toExponential",
         "kind": "value",
         "name": "toExponential",
         "docstrings": [
-          "`toExponential(v)` return a `string` representing the given value in exponential\nnotation.\nSee [`Number.toExponential`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential) on MDN.\n\n## Examples\n\n```rescript\nFloat.toExponential(1000.0) // \"1e+3\"\nFloat.toExponential(-1000.0) // \"-1e+3\"\n```"
+          "`toExponential(v, ~digits=?)` return a `string` representing the given value in\nexponential notation. `digits` specifies how many digits should appear after\nthe decimal point.\nSee [`Number.toExponential`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential) on MDN.\n\n## Examples\n\n```rescript\nFloat.toExponential(1000.0) // \"1e+3\"\nFloat.toExponential(-1000.0) // \"-1e+3\"\nFloat.toExponential(77.0, ~digits=2) // \"7.70e+1\"\nFloat.toExponential(5678.0, ~digits=2) // \"5.68e+3\"\n```\n\n## Exceptions\n\n- `RangeError`: If `digits` less than 0 or greater than 10."
         ],
-        "signature": "let toExponential: float => string"
+        "signature": "let toExponential: (float, ~digits: int=?) => string"
       },
       {
         "id": "Core.Float.toExponentialWithPrecision",
@@ -7729,16 +7615,17 @@
         "docstrings": [
           "`toExponential(v, ~digits)` return a `string` representing the given value in\nexponential notation. `digits` specifies how many digits should appear after\nthe decimal point.\nSee [`Number.toExponential`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toExponential) on MDN.\n\n## Examples\n\n```rescript\nFloat.toExponentialWithPrecision(77.0, ~digits=2) // \"7.70e+1\"\nFloat.toExponentialWithPrecision(5678.0, ~digits=2) // \"5.68e+3\"\n```\n\n## Exceptions\n\n- `RangeError`: If `digits` less than 0 or greater than 10."
         ],
-        "signature": "let toExponentialWithPrecision: (float, ~digits: int) => string"
+        "signature": "let toExponentialWithPrecision: (float, ~digits: int) => string",
+        "deprecated": "Use `toExponential` instead"
       },
       {
         "id": "Core.Float.toFixed",
         "kind": "value",
         "name": "toFixed",
         "docstrings": [
-          "`toFixed(v)` return a `string` representing the given value using fixed-point\nnotation.\nSee [`Number.toFixed`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed) on MDN.\n\n## Examples\n\n```rescript\nFloat.toFixed(123456.0) // \"123456.00\"\nFloat.toFixed(10.0) // \"10.00\"\n```"
+          "`toFixed(v, ~digits=?)` return a `string` representing the given\nvalue using fixed-point notation. `digits` specifies how many digits should\nappear after the decimal point.\nSee [`Number.toFixed`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed) on MDN.\n\n## Examples\n\n```rescript\nFloat.toFixed(123456.0) // \"123456.00\"\nFloat.toFixed(10.0) // \"10.00\"\nFloat.toFixed(300.0, ~digits=4) // \"300.0000\"\nFloat.toFixed(300.0, ~digits=1) // \"300.0\"\n```\n\n## Exceptions\n\n- `RangeError`: If `digits` is less than 0 or larger than 100."
         ],
-        "signature": "let toFixed: float => string"
+        "signature": "let toFixed: (float, ~digits: int=?) => string"
       },
       {
         "id": "Core.Float.toFixedWithPrecision",
@@ -7747,16 +7634,17 @@
         "docstrings": [
           "`toFixedWithPrecision(v, ~digits)` return a `string` representing the given\nvalue using fixed-point notation. `digits` specifies how many digits should\nappear after the decimal point.\nSee [`Number.toFixed`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed) on MDN.\n\n## Examples\n\n```rescript\nFloat.toFixedWithPrecision(300.0, ~digits=4) // \"300.0000\"\nFloat.toFixedWithPrecision(300.0, ~digits=1) // \"300.0\"\n```\n\n## Exceptions\n\n- `RangeError`: If `digits` is less than 0 or larger than 100."
         ],
-        "signature": "let toFixedWithPrecision: (float, ~digits: int) => string"
+        "signature": "let toFixedWithPrecision: (float, ~digits: int) => string",
+        "deprecated": "Use `toFixed` instead"
       },
       {
         "id": "Core.Float.toPrecision",
         "kind": "value",
         "name": "toPrecision",
         "docstrings": [
-          "`toPrecision(v)` return a `string` representing the giver value with precision.\nThis function omits the argument that controls precision, so it behaves like\n`toString`. See `toPrecisionWithPrecision` to control precision.\nSee [`Number.toPrecision`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision) on MDN.\n\n## Examples\n\n```rescript\nFloat.toPrecision(100.0) // \"100\"\nFloat.toPrecision(1.0) // \"1\"\n```"
+          "`toPrecision(v, ~digits=?)` return a `string` representing the giver value with\nprecision. `digits` specifies the number of significant digits.\nSee [`Number.toPrecision`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision) on MDN.\n\n## Examples\n\n```rescript\nFloat.toPrecision(100.0) // \"100\"\nFloat.toPrecision(1.0) // \"1\"\nFloat.toPrecision(100.0, ~digits=2) // \"1.0e+2\"\nFloat.toPrecision(1.0, ~digits=1) // \"1\"\n```\n\n## Exceptions\n\n- `RangeError`: If `digits` is not between 1 and 100 (inclusive).\nImplementations are allowed to support larger and smaller values as well.\nECMA-262 only requires a precision of up to 21 significant digits."
         ],
-        "signature": "let toPrecision: float => string"
+        "signature": "let toPrecision: (float, ~digits: int=?) => string"
       },
       {
         "id": "Core.Float.toPrecisionWithPrecision",
@@ -7765,7 +7653,8 @@
         "docstrings": [
           "`toPrecisionWithPrecision(v, ~digits)` return a `string` representing the giver value with\nprecision. `digits` specifies the number of significant digits.\nSee [`Number.toPrecision`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toPrecision) on MDN.\n\n## Examples\n\n```rescript\nFloat.toPrecisionWithPrecision(100.0, ~digits=2) // \"1.0e+2\"\nFloat.toPrecisionWithPrecision(1.0, ~digits=1) // \"1\"\n```\n\n## Exceptions\n\n- `RangeError`: If `digits` is not between 1 and 100 (inclusive).\nImplementations are allowed to support larger and smaller values as well.\nECMA-262 only requires a precision of up to 21 significant digits."
         ],
-        "signature": "let toPrecisionWithPrecision: (float, ~digits: int) => string"
+        "signature": "let toPrecisionWithPrecision: (float, ~digits: int) => string",
+        "deprecated": "Use `toPrecision` instead"
       },
       {
         "id": "Core.Float.toString",
@@ -7774,7 +7663,7 @@
         "docstrings": [
           "`toString(v)` return a `string` representing the given value.\nSee [`Number.toString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString) on MDN.\n\n## Examples\n\n```rescript\nFloat.toString(1000.0) // \"1000\"\nFloat.toString(-1000.0) // \"-1000\"\n```"
         ],
-        "signature": "let toString: float => string"
+        "signature": "let toString: (float, ~radix: int=?) => string"
       },
       {
         "id": "Core.Float.toStringWithRadix",
@@ -7783,7 +7672,8 @@
         "docstrings": [
           "`toStringWithRadix(v, ~radix)` return a `string` representing the given value.\n`~radix` specifies the radix base to use for the formatted number.\nSee [`Number.toString`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toString) on MDN.\n\n## Examples\n\n```rescript\nFloat.toStringWithRadix(6.0, ~radix=2) // \"110\"\nFloat.toStringWithRadix(3735928559.0, ~radix=16) // \"deadbeef\"\nFloat.toStringWithRadix(123456.0, ~radix=36) // \"2n9c\"\n```\n\n## Exceptions\n\n`RangeError`: if `radix` is less than 2 or greater than 36."
         ],
-        "signature": "let toStringWithRadix: (float, ~radix: int) => string"
+        "signature": "let toStringWithRadix: (float, ~radix: int) => string",
+        "deprecated": "Use `toString` with `~radix` instead"
       },
       {
         "id": "Core.Float.toLocaleString",
@@ -8085,7 +7975,7 @@
         "kind": "value",
         "name": "mapValues",
         "docstrings": [
-          "`mapValues(dictionary, f)` returns a new dictionary with the same keys, and `f` applied to each value in the original dictionary.\n\n## Examples\n\n```rescript\nlet dict = Dict.fromArray([(\"key1\", 1), (\"key2\", 2)])\n\ndict->Dict.mapValues(v => v + 10)->Dict.toArray // [(\"key1\", 11), (\"key2\", 12)]\ndict->Dict.mapValues(Int.toString)->Dict.toArray // [(\"key1\", \"1\"), (\"key2\", \"2\")]\n```"
+          "`mapValues(dictionary, f)` returns a new dictionary with the same keys, and `f` applied to each value in the original dictionary.\n\n## Examples\n\n```rescript\nlet dict = Dict.fromArray([(\"key1\", 1), (\"key2\", 2)])\n\ndict->Dict.mapValues(v => v + 10)->Dict.toArray // [(\"key1\", 11), (\"key2\", 12)]\ndict->Dict.mapValues(v => Int.toString(v))->Dict.toArray // [(\"key1\", \"1\"), (\"key2\", \"2\")]\n```"
         ],
         "signature": "let mapValues: (t<'a>, 'a => 'b) => t<'b>"
       }
@@ -8913,14 +8803,14 @@
         "kind": "value",
         "name": "getBigInt64",
         "docstrings": [],
-        "signature": "let getBigInt64: t => Core__BigInt.t"
+        "signature": "let getBigInt64: t => bigint"
       },
       {
         "id": "Core.DataView.getBigUint64",
         "kind": "value",
         "name": "getBigUint64",
         "docstrings": [],
-        "signature": "let getBigUint64: t => Core__BigInt.t"
+        "signature": "let getBigUint64: t => bigint"
       },
       {
         "id": "Core.DataView.setInt8",
@@ -8983,14 +8873,14 @@
         "kind": "value",
         "name": "setBigInt64",
         "docstrings": [],
-        "signature": "let setBigInt64: (t, Core__BigInt.t) => unit"
+        "signature": "let setBigInt64: (t, bigint) => unit"
       },
       {
         "id": "Core.DataView.setBigUint64",
         "kind": "value",
         "name": "setBigUint64",
         "docstrings": [],
-        "signature": "let setBigUint64: (t, Core__BigInt.t) => unit"
+        "signature": "let setBigUint64: (t, bigint) => unit"
       }
     ]
   },
@@ -9786,13 +9676,32 @@
         "signature": "let indexOfFrom: (array<'a>, 'a, int) => int"
       },
       {
+        "id": "Core.Array.join",
+        "kind": "value",
+        "name": "join",
+        "docstrings": [
+          "`join(array, separator)` produces a string where all items of `array` are printed, separated by `separator`. Array items must be strings, to join number or other arrays, use `joinUnsafe`. Under the hood this will run JavaScript's `toString` on all the array items.\n\nSee [Array.join](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join)\n\n## Examples\n```rescript\nlet array = [\"One\", \"Two\", \"Three\"]\n\nConsole.log(array->Array.join(\" -- \")) // One -- Two -- Three\n```"
+        ],
+        "signature": "let join: (array<string>, string) => string"
+      },
+      {
         "id": "Core.Array.joinWith",
         "kind": "value",
         "name": "joinWith",
         "docstrings": [
           "`joinWith(array, separator)` produces a string where all items of `array` are printed, separated by `separator`. Array items must be strings, to join number or other arrays, use `joinWithUnsafe`. Under the hood this will run JavaScript's `toString` on all the array items.\n\n## Examples\n```rescript\nlet array = [\"One\", \"Two\", \"Three\"]\n\nConsole.log(array->Array.joinWith(\" -- \")) // One -- Two -- Three\n```"
         ],
-        "signature": "let joinWith: (array<string>, string) => string"
+        "signature": "let joinWith: (array<string>, string) => string",
+        "deprecated": "Use `join` instead"
+      },
+      {
+        "id": "Core.Array.joinUnsafe",
+        "kind": "value",
+        "name": "joinUnsafe",
+        "docstrings": [
+          "`joinUnsafe(array, separator)` produces a string where all items of `array` are printed, separated by `separator`. Under the hood this will run JavaScript's `toString` on all the array items.\n\nSee [Array.join](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join)\n\n## Examples\n```rescript\nlet array = [1, 2, 3]\n\nConsole.log(array->Array.joinUnsafe(\" -- \")) // 1 -- 2 -- 3\n```"
+        ],
+        "signature": "let joinUnsafe: (array<'a>, string) => string"
       },
       {
         "id": "Core.Array.joinWithUnsafe",
@@ -9801,7 +9710,8 @@
         "docstrings": [
           "`joinWithUnsafe(array, separator)` produces a string where all items of `array` are printed, separated by `separator`. Under the hood this will run JavaScript's `toString` on all the array items.\n\n## Examples\n```rescript\nlet array = [1, 2, 3]\n\nConsole.log(array->Array.joinWithUnsafe(\" -- \")) // 1 -- 2 -- 3\n```"
         ],
-        "signature": "let joinWithUnsafe: (array<'a>, string) => string"
+        "signature": "let joinWithUnsafe: (array<'a>, string) => string",
+        "deprecated": "Use `joinUnsafe` instead"
       },
       {
         "id": "Core.Array.lastIndexOf",
@@ -10148,6 +10058,15 @@
           "`flatMap(array, mapper)` returns a new array concatenating the arrays returned from running `mapper` on all items in `array`.\n\n## Examples\n```rescript\ntype language = ReScript | TypeScript | JavaScript\n\nlet array = [ReScript, TypeScript, JavaScript]\n\nConsole.log(\n  array->Array.flatMap(item =>\n    switch item {\n    | ReScript => [1, 2, 3]\n    | TypeScript => [4, 5, 6]\n    | JavaScript => [7, 8, 9]\n    }\n  ),\n)\n// [1, 2, 3, 4, 5, 6, 7, 8, 9]\n```"
         ],
         "signature": "let flatMap: (array<'a>, 'a => array<'b>) => array<'b>"
+      },
+      {
+        "id": "Core.Array.flatMapWithIndex",
+        "kind": "value",
+        "name": "flatMapWithIndex",
+        "docstrings": [
+          "`flatMapWithIndex(array, mapper)` returns a new array concatenating the arrays returned from running `mapper` on all items in `array`.\n\n## Examples\n```rescript\ntype language = ReScript | TypeScript | JavaScript\n\nlet array = [ReScript, TypeScript, JavaScript]\n\nConsole.log(\n  array->Array.flatMapWithIndex((item, index) =>\n    switch item {\n    | ReScript => [index]\n    | TypeScript => [index, index + 1]\n    | JavaScript => [index, index + 1, index + 2]\n    }\n  ),\n)\n// [0, 1, 2, 2, 3, 4]\n```"
+        ],
+        "signature": "let flatMapWithIndex: (array<'a>, ('a, int) => array<'b>) => array<'b>"
       },
       {
         "id": "Core.Array.findMap",

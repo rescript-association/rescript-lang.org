@@ -45,11 +45,11 @@ let style =
 Use a `%%raw` expression to import CSS files within your ReScript / React component code:
 
 ```rescript
-// in a CommonJS setup
-%%raw("require('./styles/main.css')")
-
-// or with ES6
+// in a JS module setup
 %%raw("import './styles/main.css'")
+
+// or with CommonJS
+%%raw("require('./styles/main.css')")
 ```
 
 ## CSS Modules

@@ -407,12 +407,12 @@ let useCompilerManager = (
 
               // Note: The compiler bundle currently defaults to
               // commonjs when initiating the compiler, but our playground
-              // should default to ES6. So we override the config
+              // should default to esmodule. So we override the config
               // and use the `setConfig` function to sync up the
               // internal compiler state with our playground state.
               let config = {
                 ...instance->Compiler.getConfig,
-                module_system: "es6",
+                module_system: "esmodule",
                 ?open_modules,
               }
               instance->Compiler.setConfig(config)
