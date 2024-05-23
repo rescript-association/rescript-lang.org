@@ -63,7 +63,6 @@ module Link: {
     ~children: React.element,
     ~className: string=?,
     ~target: string=?,
-    ~hrefRel: string=?,
   ) => React.element
 }
 

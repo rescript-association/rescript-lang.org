@@ -74,3 +74,5 @@ let make = () => {
     </div>
   </footer>
 }
+
+let make = React.memo(make)

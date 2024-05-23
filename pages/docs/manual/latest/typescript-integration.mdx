@@ -132,7 +132,7 @@ The minimal configuration of genType is following:
 ```json
 {
   "gentypeconfig": {
-    "module": "es6",
+    "module": "esmodule",
     "moduleResolution": "node",
     "generatedFileExtension": ".gen.tsx"
   }
@@ -153,7 +153,7 @@ And don't forget to make sure `allowJs` is set to `true` in the project's `tscon
 
 Make sure to set the same `moduleResolution` value in both `rescript.json` and `tsconfig.json`, so that the output of genType is done with the preferred module resolution.
 
-For example if the TypeScript project uses ES Modules with `Node16` / `NodeNext` module resolution:
+For example if the TypeScript project uses JavaScript modules with `Node16` / `NodeNext` module resolution:
 
 ```json
 // tsconfig.json

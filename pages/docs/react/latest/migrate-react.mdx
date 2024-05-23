@@ -34,7 +34,6 @@ or, to keep using the legacy `React.createElement` API like with JSX v3:
 }
 ```
 
-
 ### File-level config
 
 The top-level attribute `@@jsxConfig` is used to update the `jsx` config for the rest of the file (or until the next config update). Only the values mentioned are updated, the others are left unchanged.
@@ -73,7 +72,7 @@ JSX v3 is still available with the latest version of compiler and rescript-react
 }
 ```
 
-To build certain dependencies in v3 compatibility mode, whatever the version used in the root project, use `"v3-dependencies"`. The listed dependencies will be built in v3 mode, and in addition `-open ReactV3` is added to the compiler options.
+To build certain dependencies in v3 compatibility mode, whatever the version used in the root project, use `"v3-dependencies"`. The listed dependencies will be built-in v3 mode, and in addition `-open ReactV3` is added to the compiler options.
 
 ## Migration of v3 components
 
@@ -229,7 +228,6 @@ module Comp = {
       </Modal>
 }
 ```
-
 
 ### Bindings to JS components with optional props
 

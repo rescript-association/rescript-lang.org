@@ -69,3 +69,15 @@ If you ever get into a stale build for edge-case reasons, use:
 ```sh
 rescript clean
 ```
+
+## Compile with stricter errors in CI
+
+**Since 11.1**
+
+You may want to compile your project with stricter rules for production, than when developing. With the `-warn-error` build flag, this can easily be done, for instance in a continuous integration script. E.g.:
+
+```sh
+rescript -warn-error +110
+```
+
+Here, warning number 110, which is triggered when a [`%todo`](/syntax-lookup#todo) has been found, gets promoted to an error. The full list of warning numbers can be found [here](/docs/manual/latest/warning-numbers).

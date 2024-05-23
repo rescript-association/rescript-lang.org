@@ -56,93 +56,106 @@ let make = (props: props): React.element => {
   // docs routes
   | {base: ["docs", "manual"], pagepath, version} =>
     // check if it's an api route
-    switch Belt.Array.get(pagepath, 0) {
-    | Some("api") =>
-      switch version {
-      | Latest =>
-        switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
-        | (1, _) => <ApiOverviewLayout.Docs> content </ApiOverviewLayout.Docs>
+    <EnableCollapsibleNavbar>
+      {switch Belt.Array.get(pagepath, 0) {
+      | Some("api") =>
+        switch version {
+        | Latest =>
+          switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
+          | (1, _) => <ApiOverviewLayout.Docs> content </ApiOverviewLayout.Docs>
+          | _ => content
+          }
+        | Version("v8.0.0") =>
+          switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
+          | (1, _) => <ApiOverviewLayout8_0_0.Docs> content </ApiOverviewLayout8_0_0.Docs>
+          | (2, Some("js")) => <JsDocsLayout8_0_0.Prose> content </JsDocsLayout8_0_0.Prose>
+          | (2, Some("belt")) => <BeltDocsLayout8_0_0.Prose> content </BeltDocsLayout8_0_0.Prose>
+          | (_, Some("js")) => <JsDocsLayout8_0_0.Docs> content </JsDocsLayout8_0_0.Docs>
+          | (_, Some("belt")) => <BeltDocsLayout8_0_0.Docs> content </BeltDocsLayout8_0_0.Docs>
+          | (_, Some("dom")) => <DomDocsLayout8_0_0.Docs> content </DomDocsLayout8_0_0.Docs>
+          | _ => React.null
+          }
+        | Version("v9.0.0") =>
+          switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
+          | (1, _) => <ApiOverviewLayout9_0_0.Docs> content </ApiOverviewLayout9_0_0.Docs>
+          | (2, Some("js")) => <JsDocsLayout9_0_0.Prose> content </JsDocsLayout9_0_0.Prose>
+          | (2, Some("belt")) => <BeltDocsLayout9_0_0.Prose> content </BeltDocsLayout9_0_0.Prose>
+          | (_, Some("js")) => <JsDocsLayout9_0_0.Docs> content </JsDocsLayout9_0_0.Docs>
+          | (_, Some("belt")) => <BeltDocsLayout9_0_0.Docs> content </BeltDocsLayout9_0_0.Docs>
+          | (_, Some("dom")) => <DomDocsLayout9_0_0.Docs> content </DomDocsLayout9_0_0.Docs>
+          | _ => React.null
+          }
+        | Version("v10.0.0") =>
+          switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
+          | (1, _) => <ApiOverviewLayout10_0_0.Docs> content </ApiOverviewLayout10_0_0.Docs>
+          | (2, Some("js")) => <JsDocsLayout10_0_0.Prose> content </JsDocsLayout10_0_0.Prose>
+          | (2, Some("belt")) => <BeltDocsLayout10_0_0.Prose> content </BeltDocsLayout10_0_0.Prose>
+          | (_, Some("js")) => <JsDocsLayout10_0_0.Docs> content </JsDocsLayout10_0_0.Docs>
+          | (_, Some("belt")) => <BeltDocsLayout10_0_0.Docs> content </BeltDocsLayout10_0_0.Docs>
+          | (_, Some("dom")) => <DomDocsLayout10_0_0.Docs> content </DomDocsLayout10_0_0.Docs>
+          | _ => React.null
+          }
         | _ => content
         }
-      | Version("v8.0.0") =>
-        switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
-        | (1, _) => <ApiOverviewLayout8_0_0.Docs> content </ApiOverviewLayout8_0_0.Docs>
-        | (2, Some("js")) => <JsDocsLayout8_0_0.Prose> content </JsDocsLayout8_0_0.Prose>
-        | (2, Some("belt")) => <BeltDocsLayout8_0_0.Prose> content </BeltDocsLayout8_0_0.Prose>
-        | (_, Some("js")) => <JsDocsLayout8_0_0.Docs> content </JsDocsLayout8_0_0.Docs>
-        | (_, Some("belt")) => <BeltDocsLayout8_0_0.Docs> content </BeltDocsLayout8_0_0.Docs>
-        | (_, Some("dom")) => <DomDocsLayout8_0_0.Docs> content </DomDocsLayout8_0_0.Docs>
+      | _ =>
+        switch version {
+        | Latest =>
+          <ManualDocsLayout.Latest frontmatter={component->frontmatter}>
+            content
+          </ManualDocsLayout.Latest>
+        | Version("v8.0.0") =>
+          <ManualDocsLayout.V800 frontmatter={component->frontmatter}>
+            content
+          </ManualDocsLayout.V800>
+        | Version("v9.0.0") =>
+          <ManualDocsLayout.V900 frontmatter={component->frontmatter}>
+            content
+          </ManualDocsLayout.V900>
+        | Version("v10.0.0") =>
+          <ManualDocsLayout.V1000 frontmatter={component->frontmatter}>
+            content
+          </ManualDocsLayout.V1000>
         | _ => React.null
         }
-      | Version("v9.0.0") =>
-        switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
-        | (1, _) => <ApiOverviewLayout9_0_0.Docs> content </ApiOverviewLayout9_0_0.Docs>
-        | (2, Some("js")) => <JsDocsLayout9_0_0.Prose> content </JsDocsLayout9_0_0.Prose>
-        | (2, Some("belt")) => <BeltDocsLayout9_0_0.Prose> content </BeltDocsLayout9_0_0.Prose>
-        | (_, Some("js")) => <JsDocsLayout9_0_0.Docs> content </JsDocsLayout9_0_0.Docs>
-        | (_, Some("belt")) => <BeltDocsLayout9_0_0.Docs> content </BeltDocsLayout9_0_0.Docs>
-        | (_, Some("dom")) => <DomDocsLayout9_0_0.Docs> content </DomDocsLayout9_0_0.Docs>
-        | _ => React.null
-        }
-      | Version("v10.0.0") =>
-        switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
-        | (1, _) => <ApiOverviewLayout10_0_0.Docs> content </ApiOverviewLayout10_0_0.Docs>
-        | (2, Some("js")) => <JsDocsLayout10_0_0.Prose> content </JsDocsLayout10_0_0.Prose>
-        | (2, Some("belt")) => <BeltDocsLayout10_0_0.Prose> content </BeltDocsLayout10_0_0.Prose>
-        | (_, Some("js")) => <JsDocsLayout10_0_0.Docs> content </JsDocsLayout10_0_0.Docs>
-        | (_, Some("belt")) => <BeltDocsLayout10_0_0.Docs> content </BeltDocsLayout10_0_0.Docs>
-        | (_, Some("dom")) => <DomDocsLayout10_0_0.Docs> content </DomDocsLayout10_0_0.Docs>
-        | _ => React.null
-        }
-      | _ => content
-      }
-    | _ =>
-      switch version {
-      | Latest =>
-        <ManualDocsLayout.Latest frontmatter={component->frontmatter}>
-          content
-        </ManualDocsLayout.Latest>
-      | Version("v8.0.0") =>
-        <ManualDocsLayout.V800 frontmatter={component->frontmatter}>
-          content
-        </ManualDocsLayout.V800>
-      | Version("v9.0.0") =>
-        <ManualDocsLayout.V900 frontmatter={component->frontmatter}>
-          content
-        </ManualDocsLayout.V900>
-      | Version("v10.0.0") =>
-        <ManualDocsLayout.V1000 frontmatter={component->frontmatter}>
-          content
-        </ManualDocsLayout.V1000>
-      | _ => React.null
-      }
-    }
+      }}
+    </EnableCollapsibleNavbar>
   | {base: ["docs", "react"], version} =>
-    switch version {
-    | Latest =>
-      <ReactDocsLayout.Latest frontmatter={component->frontmatter}>
-        content
-      </ReactDocsLayout.Latest>
-    | Version("v0.10.0") =>
-      <ReactDocsLayout.V0100 frontmatter={component->frontmatter}> content </ReactDocsLayout.V0100>
-    | Version("v0.11.0") =>
-      <ReactDocsLayout.V0110 frontmatter={component->frontmatter}> content </ReactDocsLayout.V0110>
-    | _ => React.null
-    }
+    <EnableCollapsibleNavbar>
+      {switch version {
+      | Latest =>
+        <ReactDocsLayout.Latest frontmatter={component->frontmatter}>
+          content
+        </ReactDocsLayout.Latest>
+      | Version("v0.10.0") =>
+        <ReactDocsLayout.V0100 frontmatter={component->frontmatter}>
+          content
+        </ReactDocsLayout.V0100>
+      | Version("v0.11.0") =>
+        <ReactDocsLayout.V0110 frontmatter={component->frontmatter}>
+          content
+        </ReactDocsLayout.V0110>
+      | _ => React.null
+      }}
+    </EnableCollapsibleNavbar>
   | {base: ["docs", "reason-compiler"], version: Latest} =>
-    <ReasonCompilerDocsLayout> content </ReasonCompilerDocsLayout>
+    <EnableCollapsibleNavbar>
+      <ReasonCompilerDocsLayout> content </ReasonCompilerDocsLayout>
+    </EnableCollapsibleNavbar>
   // common routes
   | {base} =>
     switch Belt.List.fromArray(base) {
     | list{"community", ..._rest} =>
-      <CommunityLayout frontmatter={component->frontmatter}> content </CommunityLayout>
+      <EnableCollapsibleNavbar>
+        <CommunityLayout frontmatter={component->frontmatter}> content </CommunityLayout>
+      </EnableCollapsibleNavbar>
     | list{"try"} => content
     | list{"blog"} => content // Blog implements its own layout as well
-    | list{"syntax-lookup"} => content
-    | list{"packages"} => content
-    | list{"blog", ..._rest} => // Here, the layout will be handled by the Blog_Article component
+    | list{"syntax-lookup"} => <EnableCollapsibleNavbar> content </EnableCollapsibleNavbar>
+    | list{"packages"} => <EnableCollapsibleNavbar> content </EnableCollapsibleNavbar>
+    | list{"blog", ..._rest} =>
+      // Here, the layout will be handled by the Blog_Article component
       // to keep the frontmatter parsing etc in one place
-      content
+      <EnableCollapsibleNavbar> content </EnableCollapsibleNavbar>
     | _ =>
       let fm = component->frontmatter->DocFrontmatter.decode
       let title = switch url {

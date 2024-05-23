@@ -191,7 +191,7 @@ module QuickInstall = {
           // and in the next tick, add the opacity-100 class, so the transition animation actually takes place.
           // If we don't do that, the banner will essentially pop up without any animation
           let bannerEl = Document.createElement("div")
-          bannerEl->Element.setClassName("foobar opacity-0 absolute top-0 mt-4 -mr-1 px-2 rounded right-0 
+          bannerEl->Element.setClassName("foobar opacity-0 absolute top-0 mt-4 -mr-1 px-2 rounded right-0
             bg-turtle text-gray-80-tr body-sm
             transition-all duration-500 ease-in-out ")
           let textNode = Document.createTextNode("Copied!")
@@ -694,7 +694,7 @@ module Sponsors = {
 
 @react.component
 let make = (~components=MarkdownComponents.default, ~children) => {
-  let overlayState = React.useState(() => false)
+  let (isOverlayOpen, setOverlayOpen) = React.useState(() => false)
 
   <>
     <Meta
@@ -705,12 +705,12 @@ let make = (~components=MarkdownComponents.default, ~children) => {
     />
     <div className="mt-4 xs:mt-16">
       <div className="text-gray-80 text-18 z">
-        <Navigation overlayState />
+        <Navigation isOverlayOpen setOverlayOpen />
         <div className="absolute w-full top-16">
-          // Delete this again, when ReScript 11 is out for some time.
+          // Delete this again, when ReScript 11.1 is out for some time.
           <Banner>
-            {React.string("ReScript 11 is out! Read the ")}
-            <Next.Link href="/blog/release-11-0-0" className="underline">
+            {React.string("ReScript 11.1 is out! Read the ")}
+            <Next.Link href="/blog/release-11-1-0" className="underline">
               {React.string("announcement blog post")}
             </Next.Link>
             {React.string(".")}

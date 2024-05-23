@@ -373,9 +373,6 @@ module MobileNav = {
     <div className="border-gray-80 border-t">
       <ul>
         <li className=base>
-          <DocSearch.Textbox id="docsearch-mobile" />
-        </li>
-        <li className=base>
           <Link href="/try" className={linkOrActiveLink(~target="/try", ~route)}>
             {React.string("Playground")}
           </Link>
@@ -388,9 +385,9 @@ module MobileNav = {
         /*
          <li className=base>
            <Link href="/community"  className={linkOrActiveLink(~target="/community", ~route)}>
-             
+
                {React.string("Community")}
-             
+
            </Link>
          </li>
  */
@@ -416,7 +413,7 @@ module MobileNav = {
 
 /* isOverlayOpen: if the mobile overlay is toggled open */
 @react.component
-let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
+let make = (~fixed=true, ~isOverlayOpen: bool, ~setOverlayOpen: (bool => bool) => unit) => {
   let minWidth = "20rem"
   let router = Next.Router.useRouter()
   let route = router.route
@@ -445,8 +442,6 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
   ])
 
   let isSubnavOpen = Js.Array2.find(collapsibles, c => c.state !== Closed) !== None
-
-  let (isOverlayOpen, setOverlayOpen) = overlayState
 
   let toggleOverlay = () => setOverlayOpen(prev => !prev)
 
@@ -521,7 +516,7 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
       ref={ReactDOM.Ref.domRef(navRef)}
       id="header"
       style={ReactDOMStyle.make(~minWidth, ())}
-      className={fixedNav ++ " z-50 px-4 flex xs:justify-center w-full h-16 bg-gray-90 shadow text-white-80 text-14"}>
+      className={fixedNav ++ " items-center z-50 px-4 flex xs:justify-center w-full h-16 bg-gray-90 shadow text-white-80 text-14 transition duration-300 ease-out group-[.nav-disappear]:-translate-y-16 md:group-[.nav-disappear]:transform-none"}>
       <div className="flex justify-between items-center h-full w-full max-w-1280">
         <div className="h-8 w-8 lg:h-10 lg:w-32">
           <a
@@ -557,22 +552,22 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
               {React.string("Community")}
             </Link>
           </div>
-          <div className="hidden md:flex items-center">
-            <div className="hidden sm:block mr-6">
-              <DocSearch />
+          <div className="md:flex flex items-center">
+            <Search />
+            <div className="hidden md:flex items-center ml-5">
+              <a href=githubHref rel="noopener noreferrer" className={"mr-5 " ++ link}>
+                <Icon.GitHub className="w-6 h-6 opacity-50 hover:opacity-100" />
+              </a>
+              <a
+                href="https://twitter.com/rescriptlang"
+                rel="noopener noreferrer"
+                className={"mr-5 " ++ link}>
+                <Icon.Twitter className="w-6 h-6 opacity-50 hover:opacity-100" />
+              </a>
+              <a href=discourseHref rel="noopener noreferrer" className=link>
+                <Icon.Discourse className="w-6 h-6 opacity-50 hover:opacity-100" />
+              </a>
             </div>
-            <a href=githubHref rel="noopener noreferrer" className={"mr-5 " ++ link}>
-              <Icon.GitHub className="w-6 h-6 opacity-50 hover:opacity-100" />
-            </a>
-            <a
-              href="https://twitter.com/rescriptlang"
-              rel="noopener noreferrer"
-              className={"mr-5 " ++ link}>
-              <Icon.Twitter className="w-6 h-6 opacity-50 hover:opacity-100" />
-            </a>
-            <a href=discourseHref rel="noopener noreferrer" className=link>
-              <Icon.Discourse className="w-6 h-6 opacity-50 hover:opacity-100" />
-            </a>
           </div>
         </div>
       </div>
@@ -612,3 +607,5 @@ let make = (~fixed=true, ~overlayState: (bool, (bool => bool) => unit)) => {
     />
   </>
 }
+
+let make = React.memo(make)

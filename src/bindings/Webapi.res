@@ -7,6 +7,7 @@ module Document = {
 module ClassList = {
   type t
   @send external toggle: (t, string) => unit = "toggle"
+  @send external remove: (t, string) => unit = "remove"
 }
 
 module Element = {
@@ -15,6 +16,7 @@ module Element = {
   @set external setClassName: (Dom.element, string) => unit = "className"
   @get external classList: Dom.element => ClassList.t = "classList"
   @send external getBoundingClientRect: Dom.element => {..} = "getBoundingClientRect"
+  @send external addEventListener: (Dom.element, string, unit => unit) => unit = "addEventListener"
 
   @send
   external getElementById: (Dom.element, string) => Js.nullable<Dom.element> = "getElementById"
@@ -44,6 +46,7 @@ module Window = {
   external removeEventListener: (string, 'a => unit) => unit = "removeEventListener"
   @scope("window") @val external innerWidth: int = "innerWidth"
   @scope("window") @val external innerHeight: int = "innerHeight"
+  @scope("window") @val external scrollY: int = "scrollY"
 }
 
 module Fetch = {
