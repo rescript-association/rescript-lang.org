@@ -1211,23 +1211,26 @@ let locMsgToCmError = (~kind: CodeMirror.Error.kind, locMsg: Api.LocMsg.t): Code
 module RenderOutput = {
   @react.component
   let make = (~compilerState: CompilerManagerHook.state) => {
-    let code = switch compilerState {
-    | Ready(ready) =>
-      switch ready.result {
-      | Comp(Success(_)) => ControlPanel.codeFromResult(ready.result)->Some
+    React.useEffect(() => {
+      let code = switch compilerState {
+      | Ready(ready) =>
+        switch ready.result {
+        | Comp(Success(_)) => ControlPanel.codeFromResult(ready.result)->Some
+        | _ => None
+        }
       | _ => None
       }
-    | _ => None
-    }
 
-    let _valid = switch code {
-    | Some(code) =>
-      switch RenderOutputManager.renderOutput(code) {
-      | Ok(_) => true
-      | Error(_) => false
+      let _valid = switch code {
+      | Some(code) =>
+        switch RenderOutputManager.renderOutput(code) {
+        | Ok(_) => true
+        | Error(_) => false
+        }
+      | None => false
       }
-    | None => false
-    }
+      None
+    }, [compilerState])
 
     <div className={""}>
       <iframe
@@ -1287,17 +1290,20 @@ module OutputPanel = {
     let (logs, setLogs) = React.useState(_ => [])
 
     React.useEffect(() => {
-      Webapi.Window.addEventListener("message", e => {
+      RescriptCore.Console.log2("logs", logs)
+      let cb = e => {
+        // RescriptCore.Console.log2("eventListener, logs", logs)
         let data = e["data"]
         let type_: string = data["type"]
 
         if type_ === "log" {
           let args: array<string> = data["args"]
 
-          setLogs(_ => logs->Belt.Array.concat([args]))
+          setLogs(previous => previous->Belt.Array.concat([args]))
         }
-      })
-      None
+      }
+      Webapi.Window.addEventListener("message", cb)
+      Some(() => Webapi.Window.removeEventListener("message", cb))
     }, [])
 
     let cmCode = switch prevState.current {
@@ -1460,7 +1466,7 @@ module App = {
 }
 `
 
-  let since_10_1 = `@@jsxConfig({version: 4, mode: "classic"})
+  let _since_10_1 = `@@jsxConfig({version: 4, mode: "classic"})
 
 module Button = {
   @react.component
@@ -1484,6 +1490,10 @@ module App = {
   }
 }
 
+`
+  let since_10_1 = `
+Console.log(1)
+Console.log(2)
 `
 }
 

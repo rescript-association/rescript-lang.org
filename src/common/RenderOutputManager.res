@@ -74,7 +74,7 @@ module Frame = {
     switch frame {
     | Some(element) =>
       switch element->Element.contentWindow {
-      | Some(win) => win->Element.postMessage(code, "*")
+      | Some(win) => win->Element.postMessage(code, ~targetOrigin="*")
       | None => ()
       }
     | None => ()
@@ -90,6 +90,7 @@ let renderOutput = code => {
     Transpiler.run(transpiled)->Frame.sendOutput
     Ok()
   | false =>
+    RescriptCore.Console.log("run without entry point")
     Frame.sendOutput(transpiled)
     Error()
   }

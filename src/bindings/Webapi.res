@@ -24,7 +24,8 @@ module Element = {
   type contentWindow
   @get external contentWindow: Dom.element => option<contentWindow> = "contentWindow"
 
-  @send external postMessage: (contentWindow, string, string) => unit = "postMessage"
+  @send
+  external postMessage: (contentWindow, string, ~targetOrigin: string=?) => unit = "postMessage"
 
   module Style = {
     @scope("style") @set external width: (Dom.element, string) => unit = "width"
