@@ -22,7 +22,7 @@ open CompilerManagerHook
 module Api = RescriptCompilerApi
 
 type layout = Column | Row
-type tab = JavaScript | Problems | Settings
+type tab = JavaScript | Problems | Settings | Console
 let breakingPoint = 1024
 
 module DropdownSelect = {
@@ -1054,6 +1054,20 @@ module Settings = {
 }
 
 module ControlPanel = {
+  let codeFromResult = (result: FinalResult.t): string => {
+    open Api
+    switch result {
+    | FinalResult.Comp(comp) =>
+      switch comp {
+      | CompilationResult.Success({js_code}) => js_code
+      | UnexpectedError(_)
+      | Unknown(_, _)
+      | Fail(_) => "/* No JS code generated */"
+      }
+    | Nothing
+    | Conv(_) => "/* No JS code generated */"
+    }
+  }
   module Button = {
     @react.component
     let make = (~children, ~onClick=?) =>
@@ -1134,8 +1148,11 @@ module ControlPanel = {
     ~state: CompilerManagerHook.state,
     ~dispatch: CompilerManagerHook.action => unit,
     ~editorCode: React.ref<string>,
+    ~runOutput,
+    ~toggleRunOutput,
   ) => {
     let router = Next.Router.useRouter()
+
     let children = switch state {
     | Init => React.string("Initializing...")
     | SwitchingCompiler(_ready, _version) => React.string("Switching Compiler...")
@@ -1168,12 +1185,14 @@ module ControlPanel = {
         Next.Router.replace(router, url)
         url
       }
-      <>
-        <div className="mr-2">
-          <Button onClick=onFormatClick> {React.string("Format")} </Button>
-        </div>
+
+      <div className="flex flex-row gap-x-2">
+        <ToggleButton checked=runOutput onChange={_ => toggleRunOutput()}>
+          {React.string("Auto-run")}
+        </ToggleButton>
+        <Button onClick=onFormatClick> {React.string("Format")} </Button>
         <ShareButton actionIndicatorKey createShareLink />
-      </>
+      </div>
     | _ => React.null
     }
 
@@ -1193,28 +1212,75 @@ let locMsgToCmError = (~kind: CodeMirror.Error.kind, locMsg: Api.LocMsg.t): Code
   }
 }
 
-module OutputPanel = {
-  let codeFromResult = (result: FinalResult.t): string => {
-    open Api
-    switch result {
-    | FinalResult.Comp(comp) =>
-      switch comp {
-      | CompilationResult.Success({js_code}) => js_code
-      | UnexpectedError(_)
-      | Unknown(_, _)
-      | Fail(_) => "/* No JS code generated */"
-      }
-    | Nothing
-    | Conv(_) => "/* No JS code generated */"
-    }
-  }
+// module RenderOutput = {
+//   @react.component
+//   let make = (~compilerState: CompilerManagerHook.state) => {
+//     React.useEffect(() => {
+//       let code = switch compilerState {
+//       | Ready(ready) =>
+//         switch ready.result {
+//         | Comp(Success(_)) => ControlPanel.codeFromResult(ready.result)->Some
+//         | _ => None
+//         }
+//       | _ => None
+//       }
 
+//       let _valid = switch code {
+//       | Some(code) =>
+//         switch RenderOutputManager.renderOutput(code) {
+//         | Ok(_) => true
+//         | Error(_) => false
+//         }
+//       | None => false
+//       }
+//       None
+//     }, [compilerState])
+
+//     <div className={""}>
+//       <iframe
+//         width="100%"
+//         id="iframe-eval"
+//         className="relative w-full text-gray-20"
+//         srcDoc=RenderOutputManager.Frame.srcdoc
+//       />
+//     </div>
+
+//     //     switch code {
+//     //     | Some(code) =>
+//     //       switch RenderOutputManager.renderOutput(code) {
+//     //       | Ok() =>
+//     //         <iframe
+//     //           width="100%"
+//     //           id="iframe-eval"
+//     //           className="relative w-full text-gray-20"
+//     //           srcDoc=RenderOutputManager.Frame.srcdoc
+//     //         />
+//     //       | Error() =>
+//     //         let code = `module App = {
+//     //   @react.component
+//     //   let make = () => {
+//     //     <ModuleName />
+//     //   }
+//     // }`
+//     //         <div className={"whitespace-pre-wrap p-4 block"}>
+//     //           <p className={"mb-2"}> {React.string("To render element create a module App")} </p>
+//     //           <pre> {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="rescript", ())} </pre>
+//     //         </div>
+//     //       }
+
+//     //     | _ => React.null
+//     //     }
+//   }
+// }
+
+module OutputPanel = {
   @react.component
   let make = (
     ~compilerDispatch,
     ~compilerState: CompilerManagerHook.state,
     ~editorCode: React.ref<string>,
     ~currentTab: tab,
+    ~runOutput,
   ) => {
     /*
        We need the prevState to understand different
@@ -1232,17 +1298,18 @@ module OutputPanel = {
       | (_, Ready({result: Nothing})) => None
       | (Ready(prevReady), Ready(ready)) =>
         switch (prevReady.result, ready.result) {
-        | (_, Comp(Success(_))) => codeFromResult(ready.result)->Some
+        | (_, Comp(Success(_))) => ControlPanel.codeFromResult(ready.result)->Some
         | _ => None
         }
-      | (_, Ready({result: Comp(Success(_)) as result})) => codeFromResult(result)->Some
+      | (_, Ready({result: Comp(Success(_)) as result})) =>
+        ControlPanel.codeFromResult(result)->Some
       | (Ready({result: Comp(Success(_)) as result}), Compiling(_, _)) =>
-        codeFromResult(result)->Some
+        ControlPanel.codeFromResult(result)->Some
       | _ => None
       }
     | None =>
       switch compilerState {
-      | Ready(ready) => codeFromResult(ready.result)->Some
+      | Ready(ready) => ControlPanel.codeFromResult(ready.result)->Some
       | _ => None
       }
     }
@@ -1322,7 +1389,12 @@ module OutputPanel = {
 
     prevSelected.current = selected
 
-    let tabs = [(JavaScript, output), (Problems, errorPane), (Settings, settingsPane)]
+    let tabs = [
+      (Console, <ConsolePanel compilerState runOutput />),
+      (JavaScript, output),
+      (Problems, errorPane),
+      (Settings, settingsPane),
+    ]
 
     let body = Belt.Array.mapWithIndex(tabs, (i, (tab, content)) => {
       let className = currentTab == tab ? "block h-inherit" : "hidden"
@@ -1700,10 +1772,12 @@ let make = (~versions: array<string>) => {
     "flex-1 items-center p-4 border-t-4 border-transparent " ++ activeClass
   }
 
-  let tabs = [JavaScript, Problems, Settings]
+  let tabs = [JavaScript, Console, Problems, Settings]
 
   let headers = Belt.Array.mapWithIndex(tabs, (i, tab) => {
     let title = switch tab {
+    // | RenderOutput => "Render Output"
+    | Console => "Console"
     | JavaScript => "JavaScript"
     | Problems => "Problems"
     | Settings => "Settings"
@@ -1722,12 +1796,17 @@ let make = (~versions: array<string>) => {
     </button>
   })
 
+  let (runOutput, setRunOutput) = React.useState(() => false)
+  let toggleRunOutput = () => setRunOutput(prev => !prev)
+
   <main className={"flex flex-col bg-gray-100 overflow-hidden"}>
     <ControlPanel
       actionIndicatorKey={Belt.Int.toString(actionCount)}
       state=compilerState
       dispatch=compilerDispatch
       editorCode
+      runOutput
+      toggleRunOutput
     />
     <div
       className={`flex ${layout == Column ? "flex-col" : "flex-row"}`}
@@ -1782,7 +1861,7 @@ let make = (~versions: array<string>) => {
           {React.array(headers)}
         </div>
         <div ref={ReactDOM.Ref.domRef(subPanelRef)} className="overflow-auto">
-          <OutputPanel currentTab compilerDispatch compilerState editorCode />
+          <OutputPanel currentTab compilerDispatch compilerState editorCode runOutput />
         </div>
       </div>
     </div>

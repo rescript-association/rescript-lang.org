@@ -1,4 +1,5 @@
 module Document = {
+  @val external document: Dom.element = "document"
   @scope("document") @val external createElement: string => Dom.element = "createElement"
   @scope("document") @val external createTextNode: string => Dom.element = "createTextNode"
 }
@@ -16,6 +17,15 @@ module Element = {
   @get external classList: Dom.element => ClassList.t = "classList"
   @send external getBoundingClientRect: Dom.element => {..} = "getBoundingClientRect"
   @send external addEventListener: (Dom.element, string, unit => unit) => unit = "addEventListener"
+
+  @send
+  external getElementById: (Dom.element, string) => Js.nullable<Dom.element> = "getElementById"
+
+  type contentWindow
+  @get external contentWindow: Dom.element => option<contentWindow> = "contentWindow"
+
+  @send
+  external postMessage: (contentWindow, string, ~targetOrigin: string=?) => unit = "postMessage"
 
   module Style = {
     @scope("style") @set external width: (Dom.element, string) => unit = "width"
