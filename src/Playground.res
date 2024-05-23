@@ -22,7 +22,7 @@ open CompilerManagerHook
 module Api = RescriptCompilerApi
 
 type layout = Column | Row
-type tab = RenderOutput | JavaScript | Problems | Settings | Console
+type tab = JavaScript | Problems | Settings | Console
 let breakingPoint = 1024
 
 module DropdownSelect = {
@@ -1148,8 +1148,11 @@ module ControlPanel = {
     ~state: CompilerManagerHook.state,
     ~dispatch: CompilerManagerHook.action => unit,
     ~editorCode: React.ref<string>,
+    ~runOutput,
+    ~toggleRunOutput,
   ) => {
     let router = Next.Router.useRouter()
+
     let children = switch state {
     | Init => React.string("Initializing...")
     | SwitchingCompiler(_ready, _version) => React.string("Switching Compiler...")
@@ -1183,12 +1186,13 @@ module ControlPanel = {
         url
       }
 
-      <>
-        <div className="mr-2">
-          <Button onClick=onFormatClick> {React.string("Format")} </Button>
-        </div>
+      <div className="flex flex-row gap-x-2">
+        <ToggleButton checked=runOutput onChange={_ => toggleRunOutput()}>
+          {React.string("Auto-run")}
+        </ToggleButton>
+        <Button onClick=onFormatClick> {React.string("Format")} </Button>
         <ShareButton actionIndicatorKey createShareLink />
-      </>
+      </div>
     | _ => React.null
     }
 
@@ -1208,66 +1212,66 @@ let locMsgToCmError = (~kind: CodeMirror.Error.kind, locMsg: Api.LocMsg.t): Code
   }
 }
 
-module RenderOutput = {
-  @react.component
-  let make = (~compilerState: CompilerManagerHook.state) => {
-    React.useEffect(() => {
-      let code = switch compilerState {
-      | Ready(ready) =>
-        switch ready.result {
-        | Comp(Success(_)) => ControlPanel.codeFromResult(ready.result)->Some
-        | _ => None
-        }
-      | _ => None
-      }
+// module RenderOutput = {
+//   @react.component
+//   let make = (~compilerState: CompilerManagerHook.state) => {
+//     React.useEffect(() => {
+//       let code = switch compilerState {
+//       | Ready(ready) =>
+//         switch ready.result {
+//         | Comp(Success(_)) => ControlPanel.codeFromResult(ready.result)->Some
+//         | _ => None
+//         }
+//       | _ => None
+//       }
 
-      let _valid = switch code {
-      | Some(code) =>
-        switch RenderOutputManager.renderOutput(code) {
-        | Ok(_) => true
-        | Error(_) => false
-        }
-      | None => false
-      }
-      None
-    }, [compilerState])
+//       let _valid = switch code {
+//       | Some(code) =>
+//         switch RenderOutputManager.renderOutput(code) {
+//         | Ok(_) => true
+//         | Error(_) => false
+//         }
+//       | None => false
+//       }
+//       None
+//     }, [compilerState])
 
-    <div className={""}>
-      <iframe
-        width="100%"
-        id="iframe-eval"
-        className="relative w-full text-gray-20"
-        srcDoc=RenderOutputManager.Frame.srcdoc
-      />
-    </div>
+//     <div className={""}>
+//       <iframe
+//         width="100%"
+//         id="iframe-eval"
+//         className="relative w-full text-gray-20"
+//         srcDoc=RenderOutputManager.Frame.srcdoc
+//       />
+//     </div>
 
-    //     switch code {
-    //     | Some(code) =>
-    //       switch RenderOutputManager.renderOutput(code) {
-    //       | Ok() =>
-    //         <iframe
-    //           width="100%"
-    //           id="iframe-eval"
-    //           className="relative w-full text-gray-20"
-    //           srcDoc=RenderOutputManager.Frame.srcdoc
-    //         />
-    //       | Error() =>
-    //         let code = `module App = {
-    //   @react.component
-    //   let make = () => {
-    //     <ModuleName />
-    //   }
-    // }`
-    //         <div className={"whitespace-pre-wrap p-4 block"}>
-    //           <p className={"mb-2"}> {React.string("To render element create a module App")} </p>
-    //           <pre> {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="rescript", ())} </pre>
-    //         </div>
-    //       }
+//     //     switch code {
+//     //     | Some(code) =>
+//     //       switch RenderOutputManager.renderOutput(code) {
+//     //       | Ok() =>
+//     //         <iframe
+//     //           width="100%"
+//     //           id="iframe-eval"
+//     //           className="relative w-full text-gray-20"
+//     //           srcDoc=RenderOutputManager.Frame.srcdoc
+//     //         />
+//     //       | Error() =>
+//     //         let code = `module App = {
+//     //   @react.component
+//     //   let make = () => {
+//     //     <ModuleName />
+//     //   }
+//     // }`
+//     //         <div className={"whitespace-pre-wrap p-4 block"}>
+//     //           <p className={"mb-2"}> {React.string("To render element create a module App")} </p>
+//     //           <pre> {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="rescript", ())} </pre>
+//     //         </div>
+//     //       }
 
-    //     | _ => React.null
-    //     }
-  }
-}
+//     //     | _ => React.null
+//     //     }
+//   }
+// }
 
 module OutputPanel = {
   @react.component
@@ -1276,6 +1280,7 @@ module OutputPanel = {
     ~compilerState: CompilerManagerHook.state,
     ~editorCode: React.ref<string>,
     ~currentTab: tab,
+    ~runOutput,
   ) => {
     /*
        We need the prevState to understand different
@@ -1286,25 +1291,6 @@ module OutputPanel = {
        state transitions
  */
     let prevState = React.useRef(None)
-
-    let (logs, setLogs) = React.useState(_ => [])
-
-    React.useEffect(() => {
-      RescriptCore.Console.log2("logs", logs)
-      let cb = e => {
-        // RescriptCore.Console.log2("eventListener, logs", logs)
-        let data = e["data"]
-        let type_: string = data["type"]
-
-        if type_ === "log" {
-          let args: array<string> = data["args"]
-
-          setLogs(previous => previous->Belt.Array.concat([args]))
-        }
-      }
-      Webapi.Window.addEventListener("message", cb)
-      Some(() => Webapi.Window.removeEventListener("message", cb))
-    }, [])
 
     let cmCode = switch prevState.current {
     | Some(prev) =>
@@ -1357,20 +1343,6 @@ module OutputPanel = {
         {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="js", ())}
       </pre>
 
-    let consolePanel = switch logs {
-    | [] => React.null
-    | logs =>
-      let content =
-        logs
-        ->Belt.Array.mapWithIndex((i, log) => {
-          let log = Js.Array2.joinWith(log, " ")
-          <pre key={Js.Int.toString(i)}> {React.string(log)} </pre>
-        })
-        ->React.array
-
-      <div className="whitespace-pre-wrap p-4 block"> content </div>
-    }
-
     let output =
       <div className="text-gray-20">
         resultPane
@@ -1418,8 +1390,7 @@ module OutputPanel = {
     prevSelected.current = selected
 
     let tabs = [
-      (RenderOutput, <RenderOutput compilerState />),
-      (Console, consolePanel),
+      (Console, <ConsolePanel compilerState runOutput />),
       (JavaScript, output),
       (Problems, errorPane),
       (Settings, settingsPane),
@@ -1445,8 +1416,7 @@ and the different jsx modes (classic and automatic).
 module InitialContent = {
   let original = `module Button = {
   @react.component
-  let make = () => {
-    let (count, setCount) = React.useState(_ => 0)
+  let make = (~count) => {
     let times = switch count {
     | 1 => "once"
     | 2 => "twice"
@@ -1454,46 +1424,60 @@ module InitialContent = {
     }
     let text = \`Click me $\{times\}\`
 
-    <button onClick={_ => setCount(c => c + 1)}> {msg->React.string} </button>
-  }
-}
-
-module App = {
-  @react.component
-  let make = () => {
-    <Button />
+    <button> {text->React.string} </button>
   }
 }
 `
 
-  let _since_10_1 = `@@jsxConfig({version: 4, mode: "classic"})
+  let since_10_1 = `@@jsxConfig({ version: 4, mode: "automatic" })
 
-module Button = {
+module CounterMessage = {
   @react.component
-  let make = () => {
-    let (count, setCount) = React.useState(_ => 0)
+  let make = (~count, ~username=?) => {
     let times = switch count {
     | 1 => "once"
     | 2 => "twice"
-    | n => n->Int.toString ++ " times"
+    | n => Belt.Int.toString(n) ++ " times"
     }
-    let msg = \`Click me $\{times\}\`
 
-    <button onClick={_ => setCount(c => c + 1)}> {msg->React.string} </button>
+    let name = switch username {
+    | Some("") => "Anonymous"
+    | Some(name) => name
+    | None => "Anonymous"
+    }
+
+    <div> {React.string(\`Hello \$\{name\}, you clicked me \` ++ times)} </div>
   }
 }
 
 module App = {
   @react.component
   let make = () => {
-    <Button />
+    let (count, setCount) = React.useState(() => 0)
+    let (username, setUsername) = React.useState(() => "Anonymous")
+
+    <div>
+      {React.string("Username: ")}
+      <input
+        type_="text"
+        value={username}
+        onChange={evt => {
+          evt->ReactEvent.Form.preventDefault
+          let username = (evt->ReactEvent.Form.target)["value"]
+          setUsername(_prev => username)
+        }}
+      />
+      <button
+        onClick={_evt => {
+          setCount(prev => prev + 1)
+        }}>
+        {React.string("Click me")}
+      </button>
+      <button onClick={_evt => setCount(_ => 0)}> {React.string("Reset")} </button>
+      <CounterMessage count username />
+    </div>
   }
 }
-
-`
-  let since_10_1 = `
-Console.log(1)
-Console.log(2)
 `
 }
 
@@ -1788,11 +1772,11 @@ let make = (~versions: array<string>) => {
     "flex-1 items-center p-4 border-t-4 border-transparent " ++ activeClass
   }
 
-  let tabs = [JavaScript, RenderOutput, Console, Problems, Settings]
+  let tabs = [JavaScript, Console, Problems, Settings]
 
   let headers = Belt.Array.mapWithIndex(tabs, (i, tab) => {
     let title = switch tab {
-    | RenderOutput => "Render Output"
+    // | RenderOutput => "Render Output"
     | Console => "Console"
     | JavaScript => "JavaScript"
     | Problems => "Problems"
@@ -1812,12 +1796,17 @@ let make = (~versions: array<string>) => {
     </button>
   })
 
+  let (runOutput, setRunOutput) = React.useState(() => false)
+  let toggleRunOutput = () => setRunOutput(prev => !prev)
+
   <main className={"flex flex-col bg-gray-100 overflow-hidden"}>
     <ControlPanel
       actionIndicatorKey={Belt.Int.toString(actionCount)}
       state=compilerState
       dispatch=compilerDispatch
       editorCode
+      runOutput
+      toggleRunOutput
     />
     <div
       className={`flex ${layout == Column ? "flex-col" : "flex-row"}`}
@@ -1872,7 +1861,7 @@ let make = (~versions: array<string>) => {
           {React.array(headers)}
         </div>
         <div ref={ReactDOM.Ref.domRef(subPanelRef)} className="overflow-auto">
-          <OutputPanel currentTab compilerDispatch compilerState editorCode />
+          <OutputPanel currentTab compilerDispatch compilerState editorCode runOutput />
         </div>
       </div>
     </div>
