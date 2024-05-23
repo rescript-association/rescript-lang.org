@@ -1220,7 +1220,7 @@ module RenderOutput = {
     | _ => None
     }
 
-    let valid = switch code {
+    let _valid = switch code {
     | Some(code) =>
       switch RenderOutputManager.renderOutput(code) {
       | Ok(_) => true
@@ -1229,43 +1229,40 @@ module RenderOutput = {
     | None => false
     }
 
-    let a =
-      <div className={""}>
-        <iframe
-          width="100%"
-          id="iframe-eval"
-          className="relative w-full text-gray-20"
-          srcDoc=RenderOutputManager.Frame.srcdoc
-        />
-      </div>
+    <div className={""}>
+      <iframe
+        width="100%"
+        id="iframe-eval"
+        className="relative w-full text-gray-20"
+        srcDoc=RenderOutputManager.Frame.srcdoc
+      />
+    </div>
 
-    a
+    //     switch code {
+    //     | Some(code) =>
+    //       switch RenderOutputManager.renderOutput(code) {
+    //       | Ok() =>
+    //         <iframe
+    //           width="100%"
+    //           id="iframe-eval"
+    //           className="relative w-full text-gray-20"
+    //           srcDoc=RenderOutputManager.Frame.srcdoc
+    //         />
+    //       | Error() =>
+    //         let code = `module App = {
+    //   @react.component
+    //   let make = () => {
+    //     <ModuleName />
+    //   }
+    // }`
+    //         <div className={"whitespace-pre-wrap p-4 block"}>
+    //           <p className={"mb-2"}> {React.string("To render element create a module App")} </p>
+    //           <pre> {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="rescript", ())} </pre>
+    //         </div>
+    //       }
 
-//     switch code {
-//     | Some(code) =>
-//       switch RenderOutputManager.renderOutput(code) {
-//       | Ok() =>
-//         <iframe
-//           width="100%"
-//           id="iframe-eval"
-//           className="relative w-full text-gray-20"
-//           srcDoc=RenderOutputManager.Frame.srcdoc
-//         />
-//       | Error() =>
-//         let code = `module App = {
-//   @react.component
-//   let make = () => {
-//     <ModuleName />
-//   }
-// }`
-//         <div className={"whitespace-pre-wrap p-4 block"}>
-//           <p className={"mb-2"}> {React.string("To render element create a module App")} </p>
-//           <pre> {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="rescript", ())} </pre>
-//         </div>
-//       }
-
-//     | _ => React.null
-//     }
+    //     | _ => React.null
+    //     }
   }
 }
 
@@ -1287,7 +1284,7 @@ module OutputPanel = {
  */
     let prevState = React.useRef(None)
 
-    let (logs, setLogs) = React.useState(_ => None)
+    let (logs, setLogs) = React.useState(_ => [])
 
     React.useEffect(() => {
       Webapi.Window.addEventListener("message", e => {
@@ -1297,13 +1294,7 @@ module OutputPanel = {
         if type_ === "log" {
           let args: array<string> = data["args"]
 
-          // setLogs(
-          //   previousLogs =>
-          //     logs
-          //     ->Belt.Option.getWithDefault([])
-          //     ->Js.Array2.concat([args])
-          //     ->Some,
-          // )
+          setLogs(_ => logs->Belt.Array.concat([args]))
         }
       })
       None
@@ -1361,21 +1352,17 @@ module OutputPanel = {
       </pre>
 
     let consolePanel = switch logs {
-    | Some(logs) =>
+    | [] => React.null
+    | logs =>
       let content =
         logs
-        ->Js.Array2.map(log =>
-          <pre>
-            {log
-            ->Js.Array2.map(item => <span> {`${item} `->React.string} </span>)
-            ->React.array}
-          </pre>
-        )
+        ->Belt.Array.mapWithIndex((i, log) => {
+          let log = Js.Array2.joinWith(log, " ")
+          <pre key={Js.Int.toString(i)}> {React.string(log)} </pre>
+        })
         ->React.array
 
       <div className="whitespace-pre-wrap p-4 block"> content </div>
-
-    | None => React.null
     }
 
     let output =

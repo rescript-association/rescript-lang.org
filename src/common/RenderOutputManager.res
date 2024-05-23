@@ -89,6 +89,8 @@ let renderOutput = code => {
   | true =>
     Transpiler.run(transpiled)->Frame.sendOutput
     Ok()
-  | false => Error()
+  | false =>
+    Frame.sendOutput(transpiled)
+    Error()
   }
 }
