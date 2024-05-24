@@ -9782,7 +9782,7 @@
         "kind": "value",
         "name": "every",
         "docstrings": [
-          "`every(array, predicate)` returns true if `predicate` returns true for all items in `array`.\n\nSee [`Array.every`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every) on MDN.\n\n## Examples\n```rescript\nlet array = [1, 2, 3, 4]\n\nConsole.log(array->Array.every(num => num < 4)) // true\nConsole.log(array->Array.every(num => num === 1)) // false\n```"
+          "`every(array, predicate)` returns true if `predicate` returns true for all items in `array`.\n\nSee [`Array.every`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every) on MDN.\n\n## Examples\n```rescript\nlet array = [1, 2, 3, 4]\n\nConsole.log(array->Array.every(num => num <= 4)) // true\nConsole.log(array->Array.every(num => num === 1)) // false\n```"
         ],
         "signature": "let every: (array<'a>, 'a => bool) => bool"
       },
