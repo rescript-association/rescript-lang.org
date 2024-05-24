@@ -1,8 +1,7 @@
 let wrapReactApp = code =>
   `(function () {
   ${code}
-  const appContainer$$ = () => App.make();
-  window.reactRoot.render(appContainer$$());
+  window.reactRoot.render(React.createElement(App.make, {}));
 })();`
 
 @react.component
