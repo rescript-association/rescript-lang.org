@@ -4,6 +4,8 @@ let css = `body {
   color-scheme: light dark;
 }`
 
+let reactVersion = "18.2.0"
+
 let srcDoc = `
     <html>
       <head>
@@ -41,18 +43,15 @@ let srcDoc = `
 let sendOutput = code => {
   open Webapi
 
-  let frame =
-    Document.document
-    ->Element.getElementById("iframe-eval")
-    ->Nullable.toOption
+  let frame = Document.document->Element.getElementById("iframe-eval")
 
   switch frame {
-  | Some(element) =>
+  | Value(element) =>
     switch element->Element.contentWindow {
     | Some(win) => win->Element.postMessage(code, ~targetOrigin="*")
-    | None => ()
+    | None => RescriptCore.Console.error("contentWindow not found")
     }
-  | None => ()
+  | Null | Undefined => RescriptCore.Console.error("iframe not found")
   }
 }
 

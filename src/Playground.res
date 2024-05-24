@@ -22,7 +22,7 @@ open CompilerManagerHook
 module Api = RescriptCompilerApi
 
 type layout = Column | Row
-type tab = JavaScript | Problems | Settings | Console
+type tab = JavaScript | RenderOutput | Console | Problems | Settings
 let breakingPoint = 1024
 
 module DropdownSelect = {
@@ -1204,67 +1204,6 @@ let locMsgToCmError = (~kind: CodeMirror.Error.kind, locMsg: Api.LocMsg.t): Code
   }
 }
 
-// module RenderOutput = {
-//   @react.component
-//   let make = (~compilerState: CompilerManagerHook.state) => {
-//     React.useEffect(() => {
-//       let code = switch compilerState {
-//       | Ready(ready) =>
-//         switch ready.result {
-//         | Comp(Success(_)) => ControlPanel.codeFromResult(ready.result)->Some
-//         | _ => None
-//         }
-//       | _ => None
-//       }
-
-//       let _valid = switch code {
-//       | Some(code) =>
-//         switch RenderOutputManager.renderOutput(code) {
-//         | Ok(_) => true
-//         | Error(_) => false
-//         }
-//       | None => false
-//       }
-//       None
-//     }, [compilerState])
-
-//     <div className={""}>
-//       <iframe
-//         width="100%"
-//         id="iframe-eval"
-//         className="relative w-full text-gray-20"
-//         srcDoc=RenderOutputManager.Frame.srcdoc
-//       />
-//     </div>
-
-//     //     switch code {
-//     //     | Some(code) =>
-//     //       switch RenderOutputManager.renderOutput(code) {
-//     //       | Ok() =>
-//     //         <iframe
-//     //           width="100%"
-//     //           id="iframe-eval"
-//     //           className="relative w-full text-gray-20"
-//     //           srcDoc=RenderOutputManager.Frame.srcdoc
-//     //         />
-//     //       | Error() =>
-//     //         let code = `module App = {
-//     //   @react.component
-//     //   let make = () => {
-//     //     <ModuleName />
-//     //   }
-//     // }`
-//     //         <div className={"whitespace-pre-wrap p-4 block"}>
-//     //           <p className={"mb-2"}> {React.string("To render element create a module App")} </p>
-//     //           <pre> {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="rescript", ())} </pre>
-//     //         </div>
-//     //       }
-
-//     //     | _ => React.null
-//     //     }
-//   }
-// }
-
 module OutputPanel = {
   @react.component
   let make = (
@@ -1381,8 +1320,11 @@ module OutputPanel = {
 
     prevSelected.current = selected
 
+    let (logs, setLogs) = React.useState(_ => [])
+
     let tabs = [
-      (Console, <ConsolePanel compilerState runOutput />),
+      (RenderOutput, <RenderPanel runOutput compilerState clearLogs={() => setLogs(_ => [])} />),
+      (Console, <ConsolePanel logs setLogs />),
       (JavaScript, output),
       (Problems, errorPane),
       (Settings, settingsPane),
@@ -1408,7 +1350,8 @@ and the different jsx modes (classic and automatic).
 module InitialContent = {
   let original = `module Button = {
   @react.component
-  let make = (~count) => {
+  let make = () => {
+    let (count, setCount) = React.useState(_ => 0)
     let times = switch count {
     | 1 => "once"
     | 2 => "twice"
@@ -1416,60 +1359,42 @@ module InitialContent = {
     }
     let text = \`Click me $\{times\}\`
 
-    <button> {text->React.string} </button>
-  }
-}
-`
-
-  let since_10_1 = `@@jsxConfig({ version: 4, mode: "automatic" })
-
-module CounterMessage = {
-  @react.component
-  let make = (~count, ~username=?) => {
-    let times = switch count {
-    | 1 => "once"
-    | 2 => "twice"
-    | n => Belt.Int.toString(n) ++ " times"
-    }
-
-    let name = switch username {
-    | Some("") => "Anonymous"
-    | Some(name) => name
-    | None => "Anonymous"
-    }
-
-    <div> {React.string(\`Hello \$\{name\}, you clicked me \` ++ times)} </div>
+    <button onClick={_ => setCount(c => c + 1)}> {msg->React.string} </button>
   }
 }
 
 module App = {
   @react.component
   let make = () => {
-    let (count, setCount) = React.useState(() => 0)
-    let (username, setUsername) = React.useState(() => "Anonymous")
-
-    <div>
-      {React.string("Username: ")}
-      <input
-        type_="text"
-        value={username}
-        onChange={evt => {
-          evt->ReactEvent.Form.preventDefault
-          let username = (evt->ReactEvent.Form.target)["value"]
-          setUsername(_prev => username)
-        }}
-      />
-      <button
-        onClick={_evt => {
-          setCount(prev => prev + 1)
-        }}>
-        {React.string("Click me")}
-      </button>
-      <button onClick={_evt => setCount(_ => 0)}> {React.string("Reset")} </button>
-      <CounterMessage count username />
-    </div>
+    <Button />
   }
 }
+`
+
+  let since_10_1 = `@@jsxConfig({version: 4, mode: "classic"})
+
+module Button = {
+  @react.component
+  let make = () => {
+    let (count, setCount) = React.useState(_ => 0)
+    let times = switch count {
+    | 1 => "once"
+    | 2 => "twice"
+    | n => n->Int.toString ++ " times"
+    }
+    let msg = \`Click me $\{times\}\`
+
+    <button onClick={_ => setCount(c => c + 1)}> {msg->React.string} </button>
+  }
+}
+
+module App = {
+  @react.component
+  let make = () => {
+    <Button />
+  }
+}
+
 `
 }
 
@@ -1763,11 +1688,11 @@ let make = (~versions: array<string>) => {
     "flex-1 items-center p-4 border-t-4 border-transparent " ++ activeClass
   }
 
-  let tabs = [JavaScript, Console, Problems, Settings]
+  let tabs = [JavaScript, RenderOutput, Console, Problems, Settings]
 
   let headers = Array.mapWithIndex(tabs, (tab, i) => {
     let title = switch tab {
-    // | RenderOutput => "Render Output"
+    | RenderOutput => "Render Output"
     | Console => "Console"
     | JavaScript => "JavaScript"
     | Problems => "Problems"
