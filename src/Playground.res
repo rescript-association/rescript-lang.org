@@ -1379,7 +1379,7 @@ module App = {
 }
 `
 
-  let since_10_1 = `@@jsxConfig({version: 4, mode: "classic"})
+  let since_10_1 = `@@jsxConfig({version: 4, mode: "automatic"})
 
 module Button = {
   @react.component

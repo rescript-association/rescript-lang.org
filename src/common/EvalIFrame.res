@@ -15,6 +15,26 @@ let srcDoc = `
       </head>
       <body>
         <div id="root"></div>
+        <script type="importmap">
+          {
+            "imports": {
+              "@jsxImportSource": "https://esm.sh/react@${reactVersion}",
+              "react-dom/client": "https://esm.sh/react-dom@${reactVersion}/client",
+              "react": "https://esm.sh/react@${reactVersion}",
+              "react/jsx-runtime": "https://esm.sh/react@${reactVersion}/jsx-runtime"
+            }
+          }
+        </script>
+        <script type="module">
+          import * as ReactDOM from 'react-dom/client';
+          import * as React from 'react';
+          import * as JsxRuntime from 'react/jsx-runtime';
+          const container = document.getElementById("root");
+          const root = ReactDOM.createRoot(container);
+          window.reactRoot = root;
+          window.React = React;
+          window.JsxRuntime = JsxRuntime;
+        </script>
         <script>
           window.addEventListener("message", (event) => {
             try {

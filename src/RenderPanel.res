@@ -1,11 +1,6 @@
 let wrapReactApp = code =>
   `(function () {
   ${code}
-  if (!window.reactRoot){
-    const container = document.getElementById("root");
-    const root = ReactDOM.createRoot(container);
-    window.reactRoot = root;
-  }
   const appContainer$$ = () => App.make();
   window.reactRoot.render(appContainer$$());
 })();`
