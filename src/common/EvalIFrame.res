@@ -13,14 +13,6 @@ let srcDoc = `
       </head>
       <body>
         <div id="root"></div>
-        <script
-          src="https://unpkg.com/react@17/umd/react.production.min.js"
-          crossorigin
-        ></script>
-        <script
-          src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
-          crossorigin
-        ></script>
         <script>
           window.addEventListener("message", (event) => {
             try {
