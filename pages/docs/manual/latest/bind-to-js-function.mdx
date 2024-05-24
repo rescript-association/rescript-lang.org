@@ -124,6 +124,9 @@ type sessionResult
 @scope(("checkout", "sessions"))
 external createCheckoutSession: (stripe, createSession) => 
   Promise.t<sessionResult> = "create"
+
+let stripe = make("sk_...")
+let session = stripe->createCheckoutSession({})
 ```
 ```js
 import Stripe from "stripe";
