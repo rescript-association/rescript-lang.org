@@ -5,9 +5,7 @@ type logLevel = [
 ]
 
 @react.component
-let make = (~compilerState, ~runOutput) => {
-  let (logs, setLogs) = React.useState(_ => [])
-
+let make = (~logs, ~setLogs) => {
   React.useEffect(() => {
     let cb = e => {
       let data = e["data"]
@@ -21,20 +19,6 @@ let make = (~compilerState, ~runOutput) => {
     Webapi.Window.addEventListener("message", cb)
     Some(() => Webapi.Window.removeEventListener("message", cb))
   }, [])
-
-  React.useEffect(() => {
-    if runOutput {
-      switch compilerState {
-      | CompilerManagerHook.Ready({result: Comp(Success({js_code}))}) =>
-        setLogs(_ => [])
-        let ast = AcornParse.parse(js_code)
-        let transpiled = AcornParse.removeImportsAndExports(ast)
-        EvalIFrame.sendOutput(transpiled)
-      | _ => ()
-      }
-    }
-    None
-  }, (compilerState, runOutput))
 
   <div>
     {switch logs {
@@ -58,6 +42,5 @@ let make = (~compilerState, ~runOutput) => {
 
       <div className="whitespace-pre-wrap p-4 block"> content </div>
     }}
-    <EvalIFrame />
   </div>
 }
