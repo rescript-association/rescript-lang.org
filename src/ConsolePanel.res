@@ -22,7 +22,12 @@ let make = (~logs, ~setLogs) => {
 
   <div>
     {switch logs {
-    | [] => React.null
+    | [] =>
+      <div className="m-2">
+        {React.string(
+          "Add some 'Console.log' to your code and enable 'Auto-run' to see your logs here.",
+        )}
+      </div>
     | logs =>
       let content =
         logs

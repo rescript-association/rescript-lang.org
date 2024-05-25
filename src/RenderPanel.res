@@ -6,6 +6,7 @@ let wrapReactApp = code =>
 
 @react.component
 let make = (~compilerState: CompilerManagerHook.state, ~clearLogs, ~runOutput) => {
+  let (validReact, setValidReact) = React.useState(() => false)
   React.useEffect(() => {
     if runOutput {
       switch compilerState {
@@ -13,15 +14,23 @@ let make = (~compilerState: CompilerManagerHook.state, ~clearLogs, ~runOutput) =
         clearLogs()
         let ast = AcornParse.parse(js_code)
         let transpiled = AcornParse.removeImportsAndExports(ast)
-        switch AcornParse.hasEntryPoint(ast) {
-        | true => transpiled->wrapReactApp->EvalIFrame.sendOutput
-        | false => EvalIFrame.sendOutput(transpiled)
-        }
+        let isValidReact = AcornParse.hasEntryPoint(ast)
+        isValidReact
+          ? transpiled->wrapReactApp->EvalIFrame.sendOutput
+          : EvalIFrame.sendOutput(transpiled)
+        setValidReact(_ => isValidReact)
       | _ => ()
       }
     }
     None
   }, (compilerState, runOutput))
 
-  <EvalIFrame />
+  <div className="m-2">
+    {validReact
+      ? React.null
+      : React.string(
+          "Create a React component called 'App' if you want to render it here, then enable 'Auto-run'.",
+        )}
+    <EvalIFrame />
+  </div>
 }
