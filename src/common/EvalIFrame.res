@@ -45,12 +45,17 @@ let srcDoc = `
           });
           const sendLog = (logLevel) => (...args) => {
             let finalArgs = args.map(arg => {
-              if (typeof arg === 'object') {
-                return JSON.stringify(arg);
+              if (arg === undefined) {
+                return 'undefined';
+              }
+              else if (typeof arg === 'object') {
+                return JSON.stringify(arg, Object.getOwnPropertyNames(arg));
+              } else if (typeof arg === 'function') {
+                return '[function]';
               }
               return arg;
             });
-            parent.window.postMessage({ type: logLevel, args: finalArgs }, '*')
+            parent.window.postMessage({ type: logLevel, args: finalArgs }, '*');
           };
           console.log = sendLog('log');
           console.warn = sendLog('warn');
