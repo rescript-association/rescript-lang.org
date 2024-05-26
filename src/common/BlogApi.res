@@ -76,9 +76,9 @@ let getAllPosts = () => {
     }
   })
 
-  Js.Array2.concat(nonArchivedPosts, archivedPosts)->Js.Array2.sortInPlaceWith((a, b) => {
+  Array.concat(nonArchivedPosts, archivedPosts)->Array.toSorted((a, b) =>
     String.compare(Node.Path.basename(b.path), Node.Path.basename(a.path))
-  })
+  )
 }
 
 let getLivePosts = () => {
@@ -97,9 +97,9 @@ let getLivePosts = () => {
     }
   })
 
-  livePosts->Js.Array2.sortInPlaceWith((a, b) => {
+  livePosts->Array.toSorted((a, b) =>
     String.compare(Node.Path.basename(b.path), Node.Path.basename(a.path))
-  })
+  )
 }
 
 let getArchivedPosts = () => {
@@ -119,9 +119,9 @@ let getArchivedPosts = () => {
     }
   })
 
-  archivedPosts->Js.Array2.sortInPlaceWith((a, b) => {
+  archivedPosts->Array.toSorted((a, b) =>
     String.compare(Node.Path.basename(b.path), Node.Path.basename(a.path))
-  })
+  )
 }
 
 module RssFeed = {
@@ -156,7 +156,7 @@ module RssFeed = {
   let getLatest = (~max=10, ~baseUrl="https://rescript-lang.org", ()): array<item> => {
     let items =
       getAllPosts()
-      ->Js.Array2.map(post => {
+      ->Array.map(post => {
         let fm = post.frontmatter
         let description = Js.Null.toOption(fm.description)->Belt.Option.getWithDefault("")
         {
@@ -166,7 +166,7 @@ module RssFeed = {
           pubDate: DateStr.toDate(fm.date),
         }
       })
-      ->Js.Array2.slice(~start=0, ~end_=max)
+      ->Array.slice(~start=0, ~end=max)
     items
   }
 
