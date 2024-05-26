@@ -1,7 +1,6 @@
 // This file was automatically converted to ReScript from 'AnsiPre.re'
 // Check the output and make sure to delete the original file
 open Ansi
-open RescriptCore
 
 type colorTarget =
   | Fg

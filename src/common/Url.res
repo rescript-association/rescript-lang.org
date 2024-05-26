@@ -64,8 +64,9 @@ let parse = (route: string): t => {
     (NoVersion, fullpath, [])
   } else {
     let version = switch fullpath[foundVersionIndex] {
-    | "latest" => Latest
-    | v => Version(v)
+    | Some("latest") => Latest
+    | Some(v) => Version(v)
+    | None => NoVersion
     }
     (
       version,

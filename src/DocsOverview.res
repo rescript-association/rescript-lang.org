@@ -1,4 +1,3 @@
-open RescriptCore
 module Card = {
   @react.component
   let make = (~title: string, ~hrefs: array<(string, string)>) => {

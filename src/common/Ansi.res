@@ -182,7 +182,7 @@ module Lexer = {
               switch x {
               | Some(result) =>
                 let groups = Js.Re.captures(result)
-                switch Js.Nullable.toOption(groups[1]) {
+                switch groups[1]->Option.flatMap(o => o->Js.Nullable.toOption) {
                 | Some(str) =>
                   switch Js.String2.split(str, ";") {
                   | ["0"] => ClearSgr({loc, raw})

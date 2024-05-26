@@ -16,7 +16,6 @@
       builds are taking too long.  I think we will be fine for now.
   Link to NextJS discussion: https://github.com/zeit/next.js/discussions/11728#discussioncomment-3501
  */
-open RescriptCore
 
 let middleDotSpacer = " " ++ (String.fromCharCode(183) ++ " ")
 

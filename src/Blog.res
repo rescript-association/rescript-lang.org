@@ -14,7 +14,6 @@
  */
 
 module Link = Next.Link
-open RescriptCore
 
 let defaultPreviewImg = "/static/Art-3-rescript-launch.jpg"
 

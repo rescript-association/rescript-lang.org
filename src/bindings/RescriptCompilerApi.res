@@ -128,7 +128,7 @@ module LocMsg = {
     let result = Js.Dict.empty()
 
     for i in 0 to Js.Array.length(arr) - 1 {
-      let locMsg = Js.Array2.unsafe_get(arr, i)
+      let locMsg = Array.getUnsafe(arr, i)
       let id = makeId(locMsg)
 
       // The last element with the same id wins

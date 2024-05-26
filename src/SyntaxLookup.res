@@ -55,9 +55,9 @@ module Status = {
 
   let compare = (a, b) =>
     switch (a, b) {
-    | (Deprecated, Deprecated) | (Active, Active) => 0
-    | (Active, Deprecated) => -1
-    | (Deprecated, Active) => 1
+    | (Deprecated, Deprecated) | (Active, Active) => Ordering.equal
+    | (Active, Deprecated) => Ordering.less
+    | (Deprecated, Active) => Ordering.greater
     }
 }
 
@@ -76,7 +76,7 @@ module Item = {
 
   let compare = (a, b) =>
     switch Status.compare(a.status, b.status) {
-    | 0 => String.compare(a.name, b.name)
+    | 0. => String.compare(a.name, b.name)
     | x => x
     }
 }
@@ -299,15 +299,15 @@ let default = (props: props) => {
       })
     })
     ->Js.Dict.entries
-    ->Belt.Array.reduce([], (acc, entry) => {
+    ->Array.reduce([], (acc, entry) => {
       let (title, items) = entry
-      if Js.Array.length(items) === 0 {
+      if Array.length(items) === 0 {
         acc
       } else {
         let children =
           items
-          ->Belt.SortArray.stableSortBy(Item.compare)
-          ->Belt.Array.map(item => {
+          ->Array.toSorted(Item.compare)
+          ->Array.map(item => {
             let onMouseDown = evt => {
               ReactEvent.Mouse.preventDefault(evt)
               onSearchValueChange(item.name)

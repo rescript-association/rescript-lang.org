@@ -1,6 +1,6 @@
 // NOTE: This file will later be important to document our
 //       design tokens etc.
-open RescriptCore
+
 module ColorSquare = {
   @react.component
   let make = (~className="") => {
