@@ -20,14 +20,13 @@ let make = (~logs, ~setLogs) => {
     Some(() => Webapi.Window.removeEventListener("message", cb))
   }, [])
 
-  <div>
+  <div className="px-2 py-6 relative">
+    <h2 className="font-bold text-gray-5/50 absolute right-2 top-2"> {React.string("Console")} </h2>
     {switch logs {
     | [] =>
-      <div className="m-2">
-        {React.string(
-          "Add some 'Console.log' to your code and enable 'Auto-run' to see your logs here.",
-        )}
-      </div>
+      React.string(
+        "Add some 'Console.log' to your code and enable 'Auto-run' to see your logs here.",
+      )
     | logs =>
       let content =
         logs
