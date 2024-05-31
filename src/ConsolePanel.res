@@ -20,7 +20,7 @@ let make = (~logs, ~setLogs) => {
     Some(() => Webapi.Window.removeEventListener("message", cb))
   }, [])
 
-  <div className="px-2 py-6 relative">
+  <div className="px-2 py-6 relative flex flex-col flex-1 overflow-y-hidden">
     <h2 className="font-bold text-gray-5/50 absolute right-2 top-2"> {React.string("Console")} </h2>
     {switch logs {
     | [] =>
@@ -44,7 +44,7 @@ let make = (~logs, ~setLogs) => {
         })
         ->React.array
 
-      <div className="whitespace-pre-wrap p-4 block"> content </div>
+      <div className="whitespace-pre-wrap p-4 overflow-auto"> content </div>
     }}
   </div>
 }

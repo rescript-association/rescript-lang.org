@@ -82,5 +82,5 @@ let sendOutput = code => {
 
 @react.component
 let make = () => {
-  <iframe width="100%" id="iframe-eval" className="relative w-full text-gray-20" srcDoc />
+  <iframe width="100%" id="iframe-eval" className="relative h-full w-full text-gray-20" srcDoc />
 }
