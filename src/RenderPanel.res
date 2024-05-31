@@ -25,7 +25,7 @@ let make = (~compilerState: CompilerManagerHook.state, ~clearLogs, ~runOutput) =
     None
   }, (compilerState, runOutput))
 
-  <div className="m-2">
+  <div className="p-2">
     {validReact
       ? React.null
       : React.string(
