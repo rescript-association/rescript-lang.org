@@ -22,7 +22,7 @@ open CompilerManagerHook
 module Api = RescriptCompilerApi
 
 type layout = Column | Row
-type tab = JavaScript | RenderOutput | Console | Problems | Settings
+type tab = JavaScript | Output | Problems | Settings
 let breakingPoint = 1024
 
 module DropdownSelect = {
@@ -1331,8 +1331,7 @@ module OutputPanel = {
     let (logs, setLogs) = React.useState(_ => [])
 
     let tabs = [
-      (RenderOutput, <RenderPanel runOutput compilerState clearLogs={() => setLogs(_ => [])} />),
-      (Console, <ConsolePanel logs setLogs />),
+      (Output, <OutputPanel runOutput compilerState logs setLogs />),
       (JavaScript, output),
       (Problems, errorPane),
       (Settings, settingsPane),
@@ -1714,12 +1713,11 @@ let make = (~versions: array<string>) => {
     "flex-1 items-center p-4 border-t-4 border-transparent " ++ activeClass
   }
 
-  let tabs = [JavaScript, RenderOutput, Console, Problems, Settings]
+  let tabs = [JavaScript, Output, Problems, Settings]
 
   let headers = Belt.Array.mapWithIndex(tabs, (i, tab) => {
     let title = switch tab {
-    | RenderOutput => "Render Output"
-    | Console => "Console"
+    | Output => "Output"
     | JavaScript => "JavaScript"
     | Problems => "Problems"
     | Settings => "Settings"
