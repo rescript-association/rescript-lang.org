@@ -51,7 +51,7 @@ module CategorySelector = {
 
     <div className="text-16 w-full flex items-center justify-between text-gray-60">
       {tabs
-      ->Belt.Array.map(tab => {
+      ->Array.map(tab => {
         // Deep comparison here!
         let isActive = selected == tab
         let text = (tab :> string)
@@ -211,11 +211,11 @@ let default = (props: props): React.element => {
       <Markdown.Warn> {React.string("This blog is currently in the works.")} </Markdown.Warn>
     </div>
   } else {
-    let result = switch Belt.Array.length(posts) {
+    let result = switch Array.length(posts) {
     | 0 => <div> {React.string("No posts for this category available...")} </div>
     | _ =>
       let first = Belt.Array.getExn(posts, 0)
-      let rest = Js.Array2.sliceFrom(posts, 1)
+      let rest = Array.sliceToEnd(posts, ~start=1)
 
       let featureBox =
         <div className="w-full mb-24 lg:px-8 xl:px-0">
@@ -235,7 +235,7 @@ let default = (props: props): React.element => {
       | rest =>
         <div
           className="px-4 md:px-8 xl:px-0 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-20 gap-y-12 md:gap-y-24 w-full">
-          {Js.Array2.map(rest, post => {
+          {Array.map(rest, post => {
             let badge = post.frontmatter.badge->Null.toOption
 
             <BlogCard

@@ -38,7 +38,7 @@ type pageProps = {.}
 type props = {"Component": pageComponent, "pageProps": pageProps}
 
 @get
-external frontmatter: React.component<{.}> => Js.Json.t = "frontmatter"
+external frontmatter: React.component<{.}> => JSON.t = "frontmatter"
 
 let make = (props: props): React.element => {
   let component = props["Component"]
@@ -57,16 +57,16 @@ let make = (props: props): React.element => {
   | {base: ["docs", "manual"], pagepath, version} =>
     // check if it's an api route
     <EnableCollapsibleNavbar>
-      {switch Belt.Array.get(pagepath, 0) {
+      {switch pagepath[0] {
       | Some("api") =>
         switch version {
         | Latest =>
-          switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
+          switch (Array.length(pagepath), pagepath[1]) {
           | (1, _) => <ApiOverviewLayout.Docs> content </ApiOverviewLayout.Docs>
           | _ => content
           }
         | Version("v8.0.0") =>
-          switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
+          switch (Array.length(pagepath), pagepath[1]) {
           | (1, _) => <ApiOverviewLayout8_0_0.Docs> content </ApiOverviewLayout8_0_0.Docs>
           | (2, Some("js")) => <JsDocsLayout8_0_0.Prose> content </JsDocsLayout8_0_0.Prose>
           | (2, Some("belt")) => <BeltDocsLayout8_0_0.Prose> content </BeltDocsLayout8_0_0.Prose>
@@ -76,7 +76,7 @@ let make = (props: props): React.element => {
           | _ => React.null
           }
         | Version("v9.0.0") =>
-          switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
+          switch (Array.length(pagepath), pagepath[1]) {
           | (1, _) => <ApiOverviewLayout9_0_0.Docs> content </ApiOverviewLayout9_0_0.Docs>
           | (2, Some("js")) => <JsDocsLayout9_0_0.Prose> content </JsDocsLayout9_0_0.Prose>
           | (2, Some("belt")) => <BeltDocsLayout9_0_0.Prose> content </BeltDocsLayout9_0_0.Prose>
@@ -86,7 +86,7 @@ let make = (props: props): React.element => {
           | _ => React.null
           }
         | Version("v10.0.0") =>
-          switch (Belt.Array.length(pagepath), Belt.Array.get(pagepath, 1)) {
+          switch (Array.length(pagepath), pagepath[1]) {
           | (1, _) => <ApiOverviewLayout10_0_0.Docs> content </ApiOverviewLayout10_0_0.Docs>
           | (2, Some("js")) => <JsDocsLayout10_0_0.Prose> content </JsDocsLayout10_0_0.Prose>
           | (2, Some("belt")) => <BeltDocsLayout10_0_0.Prose> content </BeltDocsLayout10_0_0.Prose>
@@ -143,7 +143,7 @@ let make = (props: props): React.element => {
     </EnableCollapsibleNavbar>
   // common routes
   | {base} =>
-    switch Belt.List.fromArray(base) {
+    switch List.fromArray(base) {
     | list{"community", ..._rest} =>
       <EnableCollapsibleNavbar>
         <CommunityLayout frontmatter={component->frontmatter}> content </CommunityLayout>
@@ -160,9 +160,9 @@ let make = (props: props): React.element => {
       let fm = component->frontmatter->DocFrontmatter.decode
       let title = switch url {
       | {base: ["docs"]} => Some("Overview | ReScript Documentation")
-      | _ => Belt.Option.map(fm, fm => fm.title)
+      | _ => Option.map(fm, fm => fm.title)
       }
-      let description = Belt.Option.flatMap(fm, fm => Js.Null.toOption(fm.description))
+      let description = Option.flatMap(fm, fm => Null.toOption(fm.description))
       <MainLayout>
         <Meta ?title ?description version=url.version />
         <div className="flex justify-center">

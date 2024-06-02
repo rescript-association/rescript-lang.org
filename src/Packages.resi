@@ -11,7 +11,7 @@ type npmPackage = {
   version: string,
   keywords: array<string>,
   description: string,
-  repositoryHref: Js.Null.t<string>,
+  repositoryHref: Null.t<string>,
   npmHref: string,
   searchScore: float,
   maintenanceScore: float,

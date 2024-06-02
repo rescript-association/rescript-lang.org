@@ -49,8 +49,8 @@ let make = (~className=?, ~children: string) => {
   let spans =
     Ansi.parse(children)
     ->SgrString.fromTokens
-    ->Belt.Array.mapWithIndex((i, str) => {
-      let key = Belt.Int.toString(i)
+    ->Array.mapWithIndex((str, i) => {
+      let key = Int.toString(i)
       renderSgrString(~key, str)
     })
 

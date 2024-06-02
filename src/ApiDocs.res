@@ -11,13 +11,13 @@ type field = {
   docstrings: array<string>,
   signature: string,
   optional: bool,
-  deprecated: Js.Null.t<string>,
+  deprecated: Null.t<string>,
 }
 type constructor = {
   name: string,
   docstrings: array<string>,
   signature: string,
-  deprecated: Js.Null.t<string>,
+  deprecated: Null.t<string>,
 }
 
 type detail =
@@ -30,29 +30,29 @@ type item =
       docstrings: array<string>,
       signature: string,
       name: string,
-      deprecated: Js.Null.t<string>,
+      deprecated: Null.t<string>,
     })
   | Type({
       id: string,
       docstrings: array<string>,
       signature: string,
       name: string,
-      deprecated: Js.Null.t<string>,
-      detail: Js.Null.t<detail>,
+      deprecated: Null.t<string>,
+      detail: Null.t<detail>,
     })
 
 module RightSidebar = {
   @react.component
   let make = (~items: array<item>) => {
     items
-    ->Js.Array2.map(item => {
+    ->Array.map(item => {
       switch item {
       | Value({name, deprecated}) as kind | Type({name, deprecated}) as kind =>
         let (icon, textColor, bgColor, href) = switch kind {
         | Type(_) => ("t", "text-fire-30", "bg-fire-5", `#type-${name}`)
         | Value(_) => ("v", "text-sky-30", "bg-sky-5", `#value-${name}`)
         }
-        let deprecatedIcon = switch deprecated->Js.Null.toOption {
+        let deprecatedIcon = switch deprecated->Null.toOption {
         | Some(_) =>
           <div
             className={`bg-orange-100 min-w-[20px] min-h-[20px] w-5 h-5 mr-3 flex justify-center items-center rounded-xl ml-auto`}>
@@ -60,7 +60,7 @@ module RightSidebar = {
           </div>->Some
         | None => None
         }
-        let title = `${Belt.Option.isSome(deprecatedIcon) ? "Deprecated " : ""}` ++ name
+        let title = `${Option.isSome(deprecatedIcon) ? "Deprecated " : ""}` ++ name
         let result =
           <li className="my-3">
             <a
@@ -94,13 +94,13 @@ module SidebarTree = {
 
     let moduleRoute =
       Webapi.URL.make("file://" ++ router.asPath).pathname
-      ->Js.String2.replace("/docs/manual/latest/api/", "")
-      ->Js.String2.split("/")
+      ->String.replace("/docs/manual/latest/api/", "")
+      ->String.split("/")
 
     let summaryClassName = "truncate py-1 md:h-auto tracking-tight text-gray-60 font-medium text-14 rounded-sm hover:bg-gray-20 hover:-ml-2 hover:py-1 hover:pl-2 "
     let classNameActive = " bg-fire-5 text-red-500 -ml-2 pl-2 font-medium hover:bg-fire-70"
 
-    let subMenu = switch items->Js.Array2.length > 0 {
+    let subMenu = switch items->Array.length > 0 {
     | true =>
       <div className={"xl:hidden ml-5"}>
         <ul className={"list-none py-0.5"}>
@@ -111,23 +111,22 @@ module SidebarTree = {
     }
 
     let rec renderNode = node => {
-      let isCurrentRoute =
-        Js.Array2.joinWith(moduleRoute, "/") === Js.Array2.joinWith(node.path, "/")
+      let isCurrentRoute = Array.join(moduleRoute, "/") === Array.join(node.path, "/")
 
       let classNameActive = isCurrentRoute ? classNameActive : ""
 
-      let hasChildren = node.children->Js.Array2.length > 0
-      let href = node.path->Js.Array2.joinWith("/")
+      let hasChildren = node.children->Array.length > 0
+      let href = node.path->Array.join("/")
 
       let tocModule = isCurrentRoute ? subMenu : React.null
 
       switch hasChildren {
       | true =>
         let open_ =
-          node.path->Js.Array2.joinWith("/") ===
+          node.path->Array.join("/") ===
             moduleRoute
-            ->Js.Array2.slice(~start=0, ~end_=Js.Array2.length(moduleRoute) - 1)
-            ->Js.Array2.joinWith("/")
+            ->Array.slice(~start=0, ~end=Array.length(moduleRoute) - 1)
+            ->Array.join("/")
 
         <details key={node.name} open_>
           <summary className={summaryClassName ++ classNameActive}>
@@ -139,7 +138,7 @@ module SidebarTree = {
           {if hasChildren {
             <ul className={"ml-5"}>
               {node.children
-              ->Js.Array2.map(renderNode)
+              ->Array.map(renderNode)
               ->React.array}
             </ul>
           } else {
@@ -174,8 +173,8 @@ module SidebarTree = {
 
             let targetUrl =
               "/" ++
-              (Js.Array2.joinWith(url.base, "/") ++
-              ("/" ++ (version ++ ("/" ++ Js.Array2.joinWith(url.pagepath, "/")))))
+              (Array.join(url.base, "/") ++
+              ("/" ++ (version ++ ("/" ++ Array.join(url.pagepath, "/")))))
             router->Next.Router.push(targetUrl)
           }
           let version = switch version {
@@ -216,16 +215,16 @@ module SidebarTree = {
           </div>
           <Next.Link
             className={"block " ++
-            summaryClassName ++ (moduleRoute->Js.Array2.length == 1 ? classNameActive : "")}
-            href={node.path->Js.Array2.joinWith("/")}>
+            summaryClassName ++ (moduleRoute->Array.length == 1 ? classNameActive : "")}
+            href={node.path->Array.join("/")}>
             {node.name->React.string}
           </Next.Link>
-          {moduleRoute->Js.Array2.length === 1 ? subMenu : React.null}
+          {moduleRoute->Array.length === 1 ? subMenu : React.null}
         </div>
         <div className="hl-overline text-gray-80 mt-5 mb-2"> {"submodules"->React.string} </div>
         {node.children
-        ->Js.Array2.sortInPlaceWith((v1, v2) => v1.name > v2.name ? 1 : -1)
-        ->Js.Array2.map(renderNode)
+        ->Belt.SortArray.stableSortBy((v1, v2) => v1.name > v2.name ? 1 : -1)
+        ->Array.map(renderNode)
         ->React.array}
       </aside>
     </div>
@@ -235,7 +234,7 @@ module SidebarTree = {
 type module_ = {
   id: string,
   docstrings: array<string>,
-  deprecated: Js.Null.t<string>,
+  deprecated: Null.t<string>,
   name: string,
   items: array<item>,
 }
@@ -262,7 +261,7 @@ module MarkdownStylize = {
 module DeprecatedMessage = {
   @react.component
   let make = (~deprecated) => {
-    switch deprecated->Js.Null.toOption {
+    switch deprecated->Null.toOption {
     | Some(content) =>
       <Markdown.Warn>
         <h4 className={"hl-4 mb-2"}> {"Deprecated"->React.string} </h4>
@@ -279,10 +278,10 @@ module DocstringsStylize = {
     let rehypePlugins =
       [Rehype.WithOptions([Plugin(Rehype.slug), SlugOption({prefix: slugPrefix ++ "-"})])]->Some
 
-    let content = switch docstrings->Js.Array2.length > 1 {
-    | true => docstrings->Js.Array2.sliceFrom(1)
+    let content = switch docstrings->Array.length > 1 {
+    | true => docstrings->Array.sliceToEnd(~start=1)
     | false => docstrings
-    }->Js.Array2.joinWith("\n")
+    }->Array.join("\n")
 
     <div className={"mt-3"}>
       <MarkdownStylize content rehypePlugins />
@@ -304,10 +303,10 @@ let default = (props: props) => {
     open Markdown
     switch props {
     | Ok({module_: {id, name, docstrings, items}}) =>
-      let valuesAndType = items->Js.Array2.map(item => {
+      let valuesAndType = items->Array.map(item => {
         switch item {
         | Value({name, signature, docstrings, deprecated}) =>
-          let code = Js.String2.replaceByRe(signature, %re("/\\n/g"), "\n")
+          let code = String.replaceRegExp(signature, %re("/\\n/g"), "\n")
           let slugPrefix = "value-" ++ name
           <>
             <H2 id=slugPrefix> {name->React.string} </H2>
@@ -316,7 +315,7 @@ let default = (props: props) => {
             <DocstringsStylize docstrings slugPrefix />
           </>
         | Type({name, signature, docstrings, deprecated}) =>
-          let code = Js.String2.replaceByRe(signature, %re("/\\n/g"), "\n")
+          let code = String.replaceRegExp(signature, %re("/\\n/g"), "\n")
           let slugPrefix = "type-" ++ name
           <>
             <H2 id=slugPrefix> {name->React.string} </H2>
@@ -337,7 +336,7 @@ let default = (props: props) => {
   }
 
   let rightSidebar = switch props {
-  | Ok({module_: {items}}) if Js.Array2.length(items) > 0 =>
+  | Ok({module_: {items}}) if Array.length(items) > 0 =>
     <div className="hidden xl:block lg:w-1/5 md:h-auto md:relative overflow-y-visible bg-white">
       <aside
         className="relative top-0 pl-4 w-full block md:top-16 md:pt-16 md:sticky border-l border-gray-20 overflow-y-auto pb-24 h-[calc(100vh-4.5rem)]">
@@ -383,8 +382,8 @@ let default = (props: props) => {
 
 module Data = {
   type t = {
-    mainModule: Js.Dict.t<Js.Json.t>,
-    tree: Js.Dict.t<Js.Json.t>,
+    mainModule: Dict.t<JSON.t>,
+    tree: Dict.t<JSON.t>,
   }
 
   let dir = Node.Path.resolve("data", "api")
@@ -394,7 +393,7 @@ module Data = {
 
     let pathModule = Path.join([dir, version, `${moduleName}.json`])
 
-    let moduleContent = Fs.readFileSync(pathModule)->Js.Json.parseExn
+    let moduleContent = Fs.readFileSync(pathModule)->JSON.parseExn
 
     let content = switch moduleContent {
     | Object(dict) => dict->Some
@@ -403,7 +402,7 @@ module Data = {
 
     let toctree = switch Path.join([dir, version, "toc_tree.json"])
     ->Fs.readFileSync
-    ->Js.Json.parseExn {
+    ->JSON.parseExn {
     | Object(dict) => dict->Some
     | _ => None
     }
@@ -419,23 +418,23 @@ let processStaticProps = (~slug: array<string>, ~version: string) => {
   let moduleName = slug->Belt.Array.getExn(0)
   let content = Data.getVersion(~version, ~moduleName)
 
-  let modulePath = slug->Js.Array2.joinWith("/")
+  let modulePath = slug->Array.join("/")
 
   switch content {
   | Some({mainModule, tree}) =>
-    switch mainModule->Js.Dict.get(modulePath) {
+    switch mainModule->Dict.get(modulePath) {
     | Some(json) =>
       let {items, docstrings, deprecated, name} = Docgen.decodeFromJson(json)
       let id = switch json {
       | Object(dict) =>
-        switch Js.Dict.get(dict, "id") {
+        switch Dict.get(dict, "id") {
         | Some(String(s)) => s
         | _ => ""
         }
       | _ => ""
       }
 
-      let items = items->Js.Array2.map(item =>
+      let items = items->Array.map(item =>
         switch item {
         | Docgen.Value({id, docstrings, signature, name, ?deprecated}) =>
           Value({
@@ -443,14 +442,14 @@ let processStaticProps = (~slug: array<string>, ~version: string) => {
             docstrings,
             signature,
             name,
-            deprecated: deprecated->Js.Null.fromOption,
+            deprecated: deprecated->Null.fromOption,
           })
         | Type({id, docstrings, signature, name, ?deprecated, ?detail}) =>
           let detail = switch detail {
           | Some(kind) =>
             switch kind {
             | Docgen.Record({items}) =>
-              let items = items->Js.Array2.map(({
+              let items = items->Array.map(({
                 name,
                 docstrings,
                 signature,
@@ -462,21 +461,21 @@ let processStaticProps = (~slug: array<string>, ~version: string) => {
                   docstrings,
                   signature,
                   optional,
-                  deprecated: deprecated->Js.Null.fromOption,
+                  deprecated: deprecated->Null.fromOption,
                 }
               })
-              Record({items: items})->Js.Null.return
+              Record({items: items})->Null.make
             | Variant({items}) =>
-              let items = items->Js.Array2.map(({name, docstrings, signature, ?deprecated}) => {
+              let items = items->Array.map(({name, docstrings, signature, ?deprecated}) => {
                 {
                   name,
                   docstrings,
                   signature,
-                  deprecated: deprecated->Js.Null.fromOption,
+                  deprecated: deprecated->Null.fromOption,
                 }
               })
 
-              Variant({items: items})->Js.Null.return
+              Variant({items: items})->Null.make
             }
           | None => Js.Null.empty
           }
@@ -485,7 +484,7 @@ let processStaticProps = (~slug: array<string>, ~version: string) => {
             docstrings,
             signature,
             name,
-            deprecated: deprecated->Js.Null.fromOption,
+            deprecated: deprecated->Null.fromOption,
             detail,
           })
         | _ => assert(false)
@@ -495,11 +494,11 @@ let processStaticProps = (~slug: array<string>, ~version: string) => {
         id,
         name,
         docstrings,
-        deprecated: deprecated->Js.Null.fromOption,
+        deprecated: deprecated->Null.fromOption,
         items,
       }
 
-      let toctree = tree->Js.Dict.get(moduleName)
+      let toctree = tree->Dict.get(moduleName)
 
       switch toctree {
       | Some(toctree) => Ok({module_, toctree: (Obj.magic(toctree): node)})
@@ -531,24 +530,24 @@ let getStaticPathsByVersion = async (~version: string) => {
   let slugs =
     pathDir
     ->Fs.readdirSync
-    ->Js.Array2.reduce((acc, file) => {
+    ->Array.reduce([], (acc, file) => {
       switch file == "toc_tree.json" {
       | true => acc
       | false =>
         let paths = switch Path.join2(pathDir, file)
         ->Fs.readFileSync
-        ->Js.Json.parseExn {
+        ->JSON.parseExn {
         | Object(dict) =>
           dict
-          ->Js.Dict.keys
-          ->Js.Array2.map(modPath => modPath->Js.String2.split("/"))
+          ->Dict.keysToArray
+          ->Array.map(modPath => modPath->String.split("/"))
         | _ => acc
         }
-        Js.Array2.concat(acc, paths)
+        Array.concat(acc, paths)
       }
-    }, [])
+    })
 
-  let paths = slugs->Js.Array2.map(slug =>
+  let paths = slugs->Array.map(slug =>
     {
       "params": {
         "slug": slug,

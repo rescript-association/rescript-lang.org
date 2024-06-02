@@ -64,7 +64,7 @@ let value = myRef.current
 ```
 
 The value of the ref differs depending on the type of the node:
-- When the ref attribute is used on an HTML element, the ref passed via `ReactDOM.Ref.domRef` receives the underlying DOM element as its current property (type of `React.ref<Js.Nullable.t<Dom.element>>`)
+- When the ref attribute is used on an HTML element, the ref passed via `ReactDOM.Ref.domRef` receives the underlying DOM element as its current property (type of `React.ref<Nullable.t<Dom.element>>`)
 - In case of interop, when the ref attribute is used on a custom class component (based on JS classes), the ref object receives the mounted instance of the component as its current (not discussed in this document).
 - **You may not use the ref attribute on component functions** because they don’t have instances (we don't expose JS classes in ReScript).
 
@@ -83,10 +83,10 @@ This code uses a `React.ref` to store a reference to an `input` DOM node to put 
 
 @react.component
 let make = () => {
-  let textInput = React.useRef(Js.Nullable.null)
+  let textInput = React.useRef(Nullable.null)
 
   let focusInput = () =>
-    switch textInput.current->Js.Nullable.toOption {
+    switch textInput.current->Nullable.toOption {
     | Some(dom) => dom->focus
     | None => ()
     }
@@ -126,7 +126,7 @@ function CustomTextInput(Props) {
 
 A few things happened here, so let's break them down:
 
-- We initialize our `textInput` ref as a `Js.Nullable.null`
+- We initialize our `textInput` ref as a `Nullable.null`
 - We register our `textInput` ref in our `<input>` element with `ReactDOM.Ref.domRef(textInput)`
 - In our `focusInput` function, we need to first verify that our DOM element is set, and then use the `focus` binding to set the focus
 
@@ -148,7 +148,7 @@ module MyComp = {
 
 @react.component
 let make = () => {
-  let textInput = React.useRef(Js.Nullable.null)
+  let textInput = React.useRef(Nullable.null)
 
   // This will **not** work
   <MyComp ref={ReactDOM.Ref.domRef(textInput)} />
@@ -193,15 +193,15 @@ The example below implements a common pattern: using the ref callback to store a
 
 @react.component
 let make = () => {
-  let textInput = React.useRef(Js.Nullable.null)
+  let textInput = React.useRef(Nullable.null)
   let setTextInputRef = element => {
     textInput.current = element;
   }
 
   let focusTextInput = _ => {
     textInput.current
-    ->Js.Nullable.toOption
-    ->Belt.Option.forEach(input => input->focus)
+    ->Nullable.toOption
+    ->Option.forEach(input => input->focus)
   }
 
   <div>
@@ -261,7 +261,7 @@ module CustomTextInput = {
 
 @react.component
 let make = () => {
-  let textInput = React.useRef(Js.Nullable.null)
+  let textInput = React.useRef(Nullable.null)
   let setInputRef = element => { textInput.current = element}
 
   <CustomTextInput setInputRef/>

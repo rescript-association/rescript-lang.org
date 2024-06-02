@@ -56,12 +56,12 @@ module FancyInput = {
 
 @react.component
 let make = () => {
-  let input = React.useRef(Js.Nullable.null)
+  let input = React.useRef(Nullable.null)
 
   let focusInput = () =>
     input.current
-    ->Js.Nullable.toOption
-    ->Belt.Option.forEach(input => input->focus)
+    ->Nullable.toOption
+    ->Option.forEach(input => input->focus)
 
   let onClick = _ => focusInput()
 
@@ -96,7 +96,7 @@ module FancyInput = {
       <input
         type_="text"
         ?className
-        ref=?{Js.Nullable.toOption(ref)->Belt.Option.map(ReactDOM.Ref.domRef)}
+        ref=?{Nullable.toOption(ref)->Option.map(ReactDOM.Ref.domRef)}
       />
       children
     </div>
@@ -107,10 +107,10 @@ module FancyInput = {
 
 @react.component
 let make = () => {
-  let input = React.useRef(Js.Nullable.null)
+  let input = React.useRef(Nullable.null)
 
   let focusInput = () =>
-    input.current->Js.Nullable.toOption->Belt.Option.forEach(input => input->focus)
+    input.current->Nullable.toOption->Option.forEach(input => input->focus)
 
   let onClick = _ => focusInput()
 

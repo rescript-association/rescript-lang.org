@@ -63,7 +63,7 @@ module BlogHeader = {
   ) => {
     let date = DateStr.toDate(date)
 
-    let authors = Belt.Array.concat([author], co_authors)
+    let authors = Array.concat([author], co_authors)
 
     <div className="flex flex-col items-center">
       <div className="w-full max-w-740">
@@ -79,7 +79,7 @@ module BlogHeader = {
           {React.string(Util.Date.toDayMonthYear(date))}
         </div>
         <h1 className="hl-title"> {React.string(title)} </h1>
-        {description->Belt.Option.mapWithDefault(React.null, desc =>
+        {description->Option.mapOr(React.null, desc =>
           switch desc {
           | "" => <div className="mb-8" />
           | desc =>
@@ -89,7 +89,7 @@ module BlogHeader = {
           }
         )}
         <div className="flex flex-col md:flex-row mb-12">
-          {Belt.Array.map(authors, author =>
+          {Array.map(authors, author =>
             <div
               key=author.username
               style={ReactDOMStyle.make(~minWidth="8.1875rem", ())}
@@ -233,7 +233,7 @@ let getStaticProps: Next.GetStaticProps.t<props, Params.t> = async ctx => {
 let getStaticPaths: Next.GetStaticPaths.t<Params.t> = async () => {
   open Next.GetStaticPaths
 
-  let paths = BlogApi.getAllPosts()->Belt.Array.map(postData => {
+  let paths = BlogApi.getAllPosts()->Array.map(postData => {
     params: {
       Params.slug: BlogApi.blogPathToSlug(postData.path),
     },

@@ -12,20 +12,20 @@ type contentType =
 type hierarchy = {
   lvl0: string,
   lvl1: string,
-  lvl2: Js.Nullable.t<string>,
-  lvl3: Js.Nullable.t<string>,
-  lvl4: Js.Nullable.t<string>,
-  lvl5: Js.Nullable.t<string>,
-  lvl6: Js.Nullable.t<string>,
+  lvl2: Nullable.t<string>,
+  lvl3: Nullable.t<string>,
+  lvl4: Nullable.t<string>,
+  lvl5: Nullable.t<string>,
+  lvl6: Nullable.t<string>,
 }
 
 type docSearchHit = {
   objectID: string,
-  content: Js.Nullable.t<string>,
+  content: Nullable.t<string>,
   url: string,
   url_without_anchor: string,
   @as("type") type_: contentType,
-  anchor: Js.Nullable.t<string>,
+  anchor: Nullable.t<string>,
   hierarchy: hierarchy,
   // NOTE: docsearch need these two fields to highlight results
   _highlightResult: {.},

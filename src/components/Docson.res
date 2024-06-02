@@ -5,11 +5,11 @@ type t
 @set external setTemplateBaseUrl: (t, string) => unit = "templateBaseUrl"
 
 @module("docson") @scope("default")
-external doc: (string, Js.Json.t, option<string>, string) => unit = "doc"
+external doc: (string, JSON.t, option<string>, string) => unit = "doc"
 
 @react.component
 let make = (~tag) => {
-  let element = React.useRef(Js.Nullable.null)
+  let element = React.useRef(Nullable.null)
 
   React.useEffect(() => {
     let segment = `https://raw.githubusercontent.com/rescript-lang/rescript-compiler/${tag}/docs/docson/build-schema.json`
@@ -18,9 +18,9 @@ let make = (~tag) => {
     // See: https://github.com/lbovet/docson/blob/master/src/index.js
     let _ =
       Webapi.Fetch.fetch(segment)
-      ->Js.Promise2.then(Webapi.Fetch.Response.json)
-      ->Js.Promise2.then(schema => {
-        let _ = switch element.current->Js.Nullable.toOption {
+      ->Promise.then(Webapi.Fetch.Response.json)
+      ->Promise.then(schema => {
+        let _ = switch element.current->Nullable.toOption {
         | Some(_el) =>
           setTemplateBaseUrl(docson, "/static/docson")
 
@@ -28,7 +28,7 @@ let make = (~tag) => {
 
         | None => ()
         }
-        Js.Promise2.resolve()
+        Promise.resolve()
       })
 
     None

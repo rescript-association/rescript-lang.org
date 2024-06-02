@@ -63,7 +63,7 @@ module ToggleSelection = {
     | None => 0
     }
 
-    let elements = Belt.Array.mapWithIndex(values, (i, value) => {
+    let elements = Array.mapWithIndex(values, (value, i) => {
       let active = i === selectedIndex ? "bg-fire text-white font-bold" : "bg-gray-80 opacity-50"
       let label = toLabel(value)
 
@@ -72,7 +72,7 @@ module ToggleSelection = {
         ReactEvent.Mouse.stopPropagation(evt)
 
         if i !== selectedIndex {
-          switch Belt.Array.get(values, i) {
+          switch values[i] {
           | Some(value) => onChange(value)
           | None => ()
           }
@@ -125,7 +125,7 @@ module ResultPane = {
       <div className={"p-2 " ++ highlightClass}>
         <span className=prefixColor> {React.string(prefixText)} </span>
         <span className="font-medium text-gray-40">
-          {React.string(` Line ${row->Belt.Int.toString}, column ${column->Belt.Int.toString}:`)}
+          {React.string(` Line ${row->Int.toString}, column ${column->Int.toString}:`)}
         </span>
         <AnsiPre className="whitespace-pre-wrap "> shortMsg </AnsiPre>
       </div>
@@ -150,9 +150,7 @@ module ResultPane = {
     switch focusedRowCol {
     | Some(focusedRowCol) =>
       let (fRow, fCol) = focusedRowCol
-      let filtered = Belt.Array.keep(locMsgs, locMsg =>
-        fRow === locMsg.row && fCol === locMsg.column
-      )
+      let filtered = Array.filter(locMsgs, locMsg => fRow === locMsg.row && fCol === locMsg.column)
 
       if Array.length(filtered) === 0 {
         locMsgs
@@ -170,7 +168,7 @@ module ResultPane = {
     switch focusedRowCol {
     | Some(focusedRowCol) =>
       let (fRow, fCol) = focusedRowCol
-      let filtered = Belt.Array.keep(warnings, warning =>
+      let filtered = Array.filter(warnings, warning =>
         switch warning {
         | Warn({details})
         | WarnErr({details}) =>
@@ -198,8 +196,8 @@ module ResultPane = {
       | OtherErr(locMsgs)
       | SyntaxErr(locMsgs) =>
         filterHighlightedLocMsgs(~focusedRowCol, locMsgs)
-        ->Belt.Array.mapWithIndex((i, locMsg) =>
-          <div key={Belt.Int.toString(i)}>
+        ->Array.mapWithIndex((locMsg, i) =>
+          <div key={Int.toString(i)}>
             {compactErrorLine(
               ~highlight=isHighlighted(~focusedRowCol?, locMsg),
               ~prefix=#E,
@@ -210,12 +208,12 @@ module ResultPane = {
         ->React.array
       | WarningErr(warnings) =>
         filterHighlightedLocWarnings(~focusedRowCol, warnings)
-        ->Belt.Array.mapWithIndex((i, warning) => {
+        ->Array.mapWithIndex((warning, i) => {
           let (prefix, details) = switch warning {
           | Api.Warning.Warn({details}) => (#W, details)
           | WarnErr({details}) => (#E, details)
           }
-          <div key={Belt.Int.toString(i)}>
+          <div key={Int.toString(i)}>
             {compactErrorLine(~highlight=isHighlighted(~focusedRowCol?, details), ~prefix, details)}
           </div>
         })
@@ -231,12 +229,12 @@ module ResultPane = {
         <PreWrap> {React.string("0 Errors, 0 Warnings")} </PreWrap>
       } else {
         filterHighlightedLocWarnings(~focusedRowCol, warnings)
-        ->Belt.Array.mapWithIndex((i, warning) => {
+        ->Array.mapWithIndex((warning, i) => {
           let (prefix, details) = switch warning {
           | Api.Warning.Warn({details}) => (#W, details)
           | WarnErr({details}) => (#E, details)
           }
-          <div key={Belt.Int.toString(i)}>
+          <div key={Int.toString(i)}>
             {compactErrorLine(~highlight=isHighlighted(~focusedRowCol?, details), ~prefix, details)}
           </div>
         })
@@ -253,8 +251,8 @@ module ResultPane = {
     | Conv(Fail({fromLang, toLang, details})) =>
       let errs =
         filterHighlightedLocMsgs(~focusedRowCol, details)
-        ->Belt.Array.mapWithIndex((i, locMsg) =>
-          <div key={Belt.Int.toString(i)}>
+        ->Array.mapWithIndex((locMsg, i) =>
+          <div key={Int.toString(i)}>
             {compactErrorLine(
               ~highlight=isHighlighted(~focusedRowCol?, locMsg),
               ~prefix=#E,
@@ -303,7 +301,7 @@ module ResultPane = {
         <div className="mt-4">
           <PreWrap>
             <span className=subheader> {React.string("Received JSON payload:")} </span>
-            <div> {Util.Json.prettyStringify(json)->React.string} </div>
+            <div> {JSON.stringify(json, ~space=2)->React.string} </div>
           </PreWrap>
         </div>
       </div>
@@ -332,11 +330,11 @@ module ResultPane = {
       }
     | Conv(Fail(_)) => (errClass, "Syntax Errors")
     | Comp(Success({warnings})) =>
-      let warningNum = Belt.Array.length(warnings)
+      let warningNum = Array.length(warnings)
       if warningNum === 0 {
         (okClass, "Compiled successfully")
       } else {
-        (warnClass, "Compiled with " ++ (Belt.Int.toString(warningNum) ++ " Warning(s)"))
+        (warnClass, "Compiled with " ++ (Int.toString(warningNum) ++ " Warning(s)"))
       }
     | Conv(Success(_)) => (okClass, "Format Successful")
     | Comp(UnexpectedError(_))
@@ -426,13 +424,13 @@ module WarningFlagsWidget = {
     | "" => NoSuggestion
     | _ =>
       // Case: +
-      let last = input->Js.String2.length - 1
-      switch input->Js.String2.get(last) {
+      let last = input->String.length - 1
+      switch input->String.get(last)->Option.getUnsafe {
       | "+" as modifier
       | "-" as modifier =>
         let results = WarningFlagDescription.lookupAll()
 
-        let partial = input->Js.String2.substring(~from=0, ~to_=last)
+        let partial = input->String.substring(~start=0, ~end=last)
 
         let precedingTokens = switch WarningFlagDescription.Parser.parse(partial) {
         | Ok(tokens) => tokens
@@ -450,19 +448,15 @@ module WarningFlagsWidget = {
         let results = WarningFlagDescription.Parser.parse(input)
         switch results {
         | Ok(tokens) =>
-          let last = Belt.Array.get(tokens, Belt.Array.length(tokens) - 1)
+          let last = tokens[Array.length(tokens) - 1]
 
           switch last {
           | Some(token) =>
             let results = WarningFlagDescription.fuzzyLookup(token.flag)
-            if Belt.Array.length(results) === 0 {
+            if Array.length(results) === 0 {
               ErrorSuggestion("No results")
             } else {
-              let precedingTokens = Belt.Array.slice(
-                tokens,
-                ~offset=0,
-                ~len=Belt.Array.length(tokens) - 1,
-              )
+              let precedingTokens = Array.slice(tokens, ~start=0, ~end=Array.length(tokens) - 1)
               let modifier = token.enabled ? "+" : "-"
               FuzzySuggestions({
                 modifier,
@@ -507,7 +501,7 @@ module WarningFlagsWidget = {
       let nextIdx = if selected > 0 {
         selected - 1
       } else {
-        Belt.Array.length(results) - 1
+        Array.length(results) - 1
       }
       Typing({
         ...typing,
@@ -521,7 +515,7 @@ module WarningFlagsWidget = {
   let selectNext = (prev: state) =>
     switch prev {
     | Typing({suggestion: FuzzySuggestions({selected, results} as suggestion)} as typing) =>
-      let nextIdx = if selected < Belt.Array.length(results) - 1 {
+      let nextIdx = if selected < Array.length(results) - 1 {
         selected + 1
       } else {
         0
@@ -543,18 +537,16 @@ module WarningFlagsWidget = {
     let (state, setState) = React.useState(_ => HideSuggestion({input: ""}))
 
     // Used for the suggestion box list
-    let listboxRef = React.useRef(Js.Nullable.null)
+    let listboxRef = React.useRef(Nullable.null)
 
     // Used for the text input
-    let inputRef = React.useRef(Js.Nullable.null)
+    let inputRef = React.useRef(Nullable.null)
 
-    let focusInput = () =>
-      inputRef.current->Js.Nullable.toOption->Belt.Option.forEach(el => el->focus)
+    let focusInput = () => inputRef.current->Nullable.toOption->Option.forEach(el => el->focus)
 
-    let blurInput = () =>
-      inputRef.current->Js.Nullable.toOption->Belt.Option.forEach(el => el->blur)
+    let blurInput = () => inputRef.current->Nullable.toOption->Option.forEach(el => el->blur)
 
-    let chips = Belt.Array.mapWithIndex(flags, (i, token) => {
+    let chips = Array.mapWithIndex(flags, (token, i) => {
       let {WarningFlagDescription.Parser.flag: flag, enabled} = token
 
       let isActive = switch state {
@@ -604,7 +596,7 @@ module WarningFlagsWidget = {
         // Removes clicked token from the current flags
         ReactEvent.Mouse.preventDefault(evt)
 
-        let remaining = Belt.Array.keep(flags, t => t.flag !== flag)
+        let remaining = Array.filter(flags, t => t.flag !== flag)
         onUpdate(remaining)
       }
 
@@ -613,7 +605,7 @@ module WarningFlagsWidget = {
         ?onMouseEnter
         ?onMouseLeave
         className={color ++ " hover:cursor-default text-16 inline-block border border-gray-40 rounded-full px-2 mr-1"}
-        key={Belt.Int.toString(i) ++ flag}>
+        key={Int.toString(i) ++ flag}>
         {React.string(full)}
       </span>
     })->React.array
@@ -623,7 +615,7 @@ module WarningFlagsWidget = {
       let ctrlKey = ReactEvent.Keyboard.ctrlKey(evt)
 
       /* let caretPosition = ReactEvent.Keyboard.target(evt)["selectionStart"] */
-      /* Js.log2("caretPosition", caretPosition); */
+      /* Console.log2("caretPosition", caretPosition); */
 
       let full = (ctrlKey ? "CTRL+" : "") ++ key
       switch full {
@@ -632,7 +624,7 @@ module WarningFlagsWidget = {
         | Typing({suggestion: FuzzySuggestions({precedingTokens, modifier, selected, results})}) =>
           // In case a selection was made correctly, add
           // the flag to the current flags
-          switch Belt.Array.get(results, selected) {
+          switch results[selected] {
           | Some((num, _)) =>
             let token = {
               WarningFlagDescription.Parser.enabled: modifier === "+",
@@ -640,7 +632,7 @@ module WarningFlagsWidget = {
             }
 
             // TODO: merge tokens with flags
-            let newTokens = Belt.Array.concat(precedingTokens, [token])
+            let newTokens = Array.concat(precedingTokens, [token])
 
             let all = WarningFlagDescription.Parser.merge(flags, newTokens)
 
@@ -655,7 +647,7 @@ module WarningFlagsWidget = {
       | "Tab" =>
         switch state {
         | Typing({suggestion: FuzzySuggestions({modifier, precedingTokens, selected, results})}) =>
-          switch Belt.Array.get(results, selected) {
+          switch results[selected] {
           | Some((num, _)) =>
             let flag = modifier ++ num
 
@@ -683,7 +675,7 @@ module WarningFlagsWidget = {
           if full !== "Backspace" {
             ReactEvent.Keyboard.preventDefault(evt)
           }
-        | _ => Js.log(full)
+        | _ => Console.log(full)
         }
       }
     }
@@ -691,7 +683,7 @@ module WarningFlagsWidget = {
     let suggestions = switch state {
     | ShowTokenHint({token}) =>
       WarningFlagDescription.lookup(token.flag)
-      ->Belt.Array.map(((num, description)) => {
+      ->Array.map(((num, description)) => {
         let (modifier, color) = if token.enabled {
           ("(Enabled) ", "text-turtle-dark")
         } else {
@@ -710,13 +702,13 @@ module WarningFlagsWidget = {
       | NoSuggestion => React.string("Type + / - followed by a number or letter (e.g. +a+1)")
       | ErrorSuggestion(msg) => React.string(msg)
       | FuzzySuggestions({precedingTokens, selected, results, modifier}) =>
-        Belt.Array.mapWithIndex(results, (i, (flag, desc)) => {
+        Array.mapWithIndex(results, ((flag, desc), i) => {
           let activeClass = selected === i ? "bg-gray-40" : ""
 
           let ref = if selected === i {
             ReactDOM.Ref.callbackDomRef(dom => {
-              let el = Js.Nullable.toOption(dom)
-              let parent = listboxRef.current->Js.Nullable.toOption
+              let el = Nullable.toOption(dom)
+              let parent = listboxRef.current->Nullable.toOption
 
               switch (parent, el) {
               | (Some(parent), Some(el)) => scrollToElement(~parent, el)
@@ -765,14 +757,14 @@ module WarningFlagsWidget = {
     }
 
     let suggestionBox =
-      Belt.Option.map(suggestions, elements =>
+      Option.map(suggestions, elements =>
         <div
           ref={ReactDOM.Ref.domRef(listboxRef)}
           className="p-2 absolute overflow-auto z-50 border-b rounded border-l border-r block w-full bg-gray-100"
           style={ReactDOM.Style.make(~maxHeight="15rem", ())}>
           elements
         </div>
-      )->Belt.Option.getWithDefault(React.null)
+      )->Option.getOr(React.null)
 
     let onChange = evt => {
       ReactEvent.Form.preventDefault(evt)
@@ -897,8 +889,7 @@ module Settings = {
       setConfig(config)
     }
 
-    let warnFlagTokens =
-      WarningFlagDescription.Parser.parse(warn_flags)->Belt.Result.getWithDefault([])
+    let warnFlagTokens = WarningFlagDescription.Parser.parse(warn_flags)->Result.getOr([])
 
     let onResetClick = evt => {
       ReactEvent.Mouse.preventDefault(evt)
@@ -906,7 +897,7 @@ module Settings = {
       let open_modules = switch readyState.selected.apiVersion {
       | V1 | V2 | V3 | UnknownVersion(_) => None
       | V4 =>
-        readyState.selected.libraries->Belt.Array.some(el => el === "@rescript/core")
+        readyState.selected.libraries->Array.some(el => el === "@rescript/core")
           ? Some(["RescriptCore"])
           : None
       }
@@ -937,22 +928,24 @@ module Settings = {
             }
           }}>
           {
-            let (experimentalVersions, stableVersions) =
-              readyState.versions->Js.Array2.reduce((acc, item) => {
+            let (experimentalVersions, stableVersions) = readyState.versions->Array.reduce(
+              ([], []),
+              (acc, item) => {
                 let (lhs, rhs) = acc
-                if item.preRelease->Belt.Option.isSome {
-                  Js.Array2.push(lhs, item)
+                if item.preRelease->Option.isSome {
+                  Array.push(lhs, item)
                 } else {
-                  Js.Array2.push(rhs, item)
+                  Array.push(rhs, item)
                 }->ignore
                 acc
-              }, ([], []))
+              },
+            )
 
             <>
               {switch experimentalVersions {
               | [] => React.null
               | experimentalVersions =>
-                let versionByOrder = experimentalVersions->Js.Array2.sortInPlaceWith((a, b) => {
+                let versionByOrder = experimentalVersions->Belt.SortArray.stableSortBy((a, b) => {
                   let cmp = ({
                     CompilerManagerHook.Semver.major: major,
                     minor,
@@ -971,10 +964,10 @@ module Settings = {
                     }
                     let number =
                       [major, minor, patch]
-                      ->Js.Array2.map(v => v->Belt.Int.toString)
-                      ->Js.Array2.joinWith("")
-                      ->Belt.Int.fromString
-                      ->Belt.Option.getWithDefault(0)
+                      ->Array.map(v => v->Int.toString)
+                      ->Array.join("")
+                      ->Int.fromString
+                      ->Option.getOr(0)
 
                     number + preRelease
                   }
@@ -985,7 +978,7 @@ module Settings = {
                     {React.string("---Experimental---")}
                   </option>
                   {versionByOrder
-                  ->Belt.Array.map(version => {
+                  ->Array.map(version => {
                     let version = CompilerManagerHook.Semver.toString(version)
                     <option className="py-4" key=version value=version>
                       {React.string(version)}
@@ -1000,7 +993,7 @@ module Settings = {
               {switch stableVersions {
               | [] => React.null
               | stableVersions =>
-                Belt.Array.map(stableVersions, version => {
+                Array.map(stableVersions, version => {
                   let version = CompilerManagerHook.Semver.toString(version)
                   <option className="py-4" key=version value=version>
                     {React.string(version)}
@@ -1015,7 +1008,7 @@ module Settings = {
         <div className=titleClass> {React.string("Syntax")} </div>
         <ToggleSelection
           values=availableTargetLangs
-          toLabel={lang => lang->Api.Lang.toExt->Js.String2.toUpperCase}
+          toLabel={lang => lang->Api.Lang.toExt->String.toUpperCase}
           selected=readyState.targetLang
           onChange=onTargetLangSelect
         />
@@ -1032,7 +1025,7 @@ module Settings = {
       <div className="mt-6">
         <div className=titleClass> {React.string("Loaded Libraries")} </div>
         <ul>
-          {Belt.Array.map(readyState.selected.libraries, lib => {
+          {Array.map(readyState.selected.libraries, lib => {
             <li className="ml-2" key=lib> {React.string(lib)} </li>
           })->React.array}
         </ul>
@@ -1171,15 +1164,14 @@ module ControlPanel = {
 
         let version = ready.selected.compilerVersion
 
-        Js.Array2.push(params, ("version", "v" ++ version))->ignore
+        Array.push(params, ("version", "v" ++ version))->ignore
 
-        Js.Array2.push(
+        Array.push(
           params,
           ("code", editorCode.current->LzString.compressToEncodedURIComponent),
         )->ignore
 
-        let querystring =
-          params->Js.Array2.map(((key, value)) => key ++ "=" ++ value)->Js.Array2.joinWith("&")
+        let querystring = params->Array.map(((key, value)) => key ++ "=" ++ value)->Array.join("&")
 
         let url = origin ++ router.route ++ "?" ++ querystring
         Next.Router.replace(router, url)
@@ -1396,10 +1388,10 @@ module OutputPanel = {
       (Settings, settingsPane),
     ]
 
-    let body = Belt.Array.mapWithIndex(tabs, (i, (tab, content)) => {
+    let body = Array.mapWithIndex(tabs, ((tab, content), i) => {
       let className = currentTab == tab ? "block h-inherit" : "hidden"
 
-      <div key={Belt.Int.toString(i)} className> content </div>
+      <div key={Int.toString(i)} className> content </div>
     })
 
     <> {body->React.array} </>
@@ -1498,32 +1490,31 @@ let make = (~versions: array<string>) => {
 
   let versions =
     versions
-    ->Belt.Array.keepMap(v => v->CompilerManagerHook.Semver.parse)
-    ->Js.Array2.sortInPlaceWith((a, b) => {
+    ->Array.filterMap(v => v->CompilerManagerHook.Semver.parse)
+    ->Belt.SortArray.stableSortBy((a, b) => {
       let cmp = ({CompilerManagerHook.Semver.major: major, minor, patch, _}) => {
         [major, minor, patch]
-        ->Js.Array2.map(v => v->Belt.Int.toString)
-        ->Js.Array2.joinWith("")
-        ->Belt.Int.fromString
-        ->Belt.Option.getWithDefault(0)
+        ->Array.map(v => v->Int.toString)
+        ->Array.join("")
+        ->Int.fromString
+        ->Option.getOr(0)
       }
       cmp(b) - cmp(a)
     })
 
-  let lastStableVersion =
-    versions->Js.Array2.find(version => version.preRelease->Belt.Option.isNone)
+  let lastStableVersion = versions->Array.find(version => version.preRelease->Option.isNone)
 
-  let initialVersion = switch Js.Dict.get(router.query, "version") {
+  let initialVersion = switch Dict.get(router.query, "version") {
   | Some(version) => version->CompilerManagerHook.Semver.parse
   | None => lastStableVersion
   }
 
-  let initialLang = switch Js.Dict.get(router.query, "ext") {
+  let initialLang = switch Dict.get(router.query, "ext") {
   | Some("re") => Api.Lang.Reason
   | _ => Api.Lang.Res
   }
 
-  let initialContent = switch (Js.Dict.get(router.query, "code"), initialLang) {
+  let initialContent = switch (Dict.get(router.query, "code"), initialLang) {
   | (Some(compressedCode), _) => LzString.decompressToEncodedURIComponent(compressedCode)
   | (None, Reason) => initialReContent
   | (None, Res)
@@ -1591,27 +1582,27 @@ let make = (~versions: array<string>) => {
 
   let isDragging = React.useRef(false)
 
-  let panelRef = React.useRef(Js.Nullable.null)
+  let panelRef = React.useRef(Nullable.null)
 
-  let separatorRef = React.useRef(Js.Nullable.null)
-  let leftPanelRef = React.useRef(Js.Nullable.null)
-  let rightPanelRef = React.useRef(Js.Nullable.null)
-  let subPanelRef = React.useRef(Js.Nullable.null)
+  let separatorRef = React.useRef(Nullable.null)
+  let leftPanelRef = React.useRef(Nullable.null)
+  let rightPanelRef = React.useRef(Nullable.null)
+  let subPanelRef = React.useRef(Nullable.null)
 
   let onResize = () => {
     let newLayout = Webapi.Window.innerWidth < breakingPoint ? Column : Row
     setLayout(_ => newLayout)
-    switch panelRef.current->Js.Nullable.toOption {
+    switch panelRef.current->Nullable.toOption {
     | Some(element) =>
       let offsetTop = Webapi.Element.getBoundingClientRect(element)["top"]
-      Webapi.Element.Style.height(element, `calc(100vh - ${offsetTop->Belt.Float.toString}px)`)
+      Webapi.Element.Style.height(element, `calc(100vh - ${offsetTop->Float.toString}px)`)
     | None => ()
     }
 
-    switch subPanelRef.current->Js.Nullable.toOption {
+    switch subPanelRef.current->Nullable.toOption {
     | Some(element) =>
       let offsetTop = Webapi.Element.getBoundingClientRect(element)["top"]
-      Webapi.Element.Style.height(element, `calc(100vh - ${offsetTop->Belt.Float.toString}px)`)
+      Webapi.Element.Style.height(element, `calc(100vh - ${offsetTop->Float.toString}px)`)
     | None => ()
     }
   }
@@ -1632,36 +1623,36 @@ let make = (~versions: array<string>) => {
   let onMove = position => {
     if isDragging.current {
       switch (
-        panelRef.current->Js.Nullable.toOption,
-        leftPanelRef.current->Js.Nullable.toOption,
-        rightPanelRef.current->Js.Nullable.toOption,
-        subPanelRef.current->Js.Nullable.toOption,
+        panelRef.current->Nullable.toOption,
+        leftPanelRef.current->Nullable.toOption,
+        rightPanelRef.current->Nullable.toOption,
+        subPanelRef.current->Nullable.toOption,
       ) {
       | (Some(panelElement), Some(leftElement), Some(rightElement), Some(subElement)) =>
         let rectPanel = Webapi.Element.getBoundingClientRect(panelElement)
 
         // Update OutputPanel height
         let offsetTop = Webapi.Element.getBoundingClientRect(subElement)["top"]
-        Webapi.Element.Style.height(subElement, `calc(100vh - ${offsetTop->Belt.Float.toString}px)`)
+        Webapi.Element.Style.height(subElement, `calc(100vh - ${offsetTop->Float.toString}px)`)
 
         switch layout {
         | Row =>
-          let delta = Belt.Int.toFloat(position) -. rectPanel["left"]
+          let delta = Int.toFloat(position) -. rectPanel["left"]
 
           let leftWidth = delta /. rectPanel["width"] *. 100.0
           let rightWidth = (rectPanel["width"] -. delta) /. rectPanel["width"] *. 100.0
 
-          Webapi.Element.Style.width(leftElement, `${leftWidth->Belt.Float.toString}%`)
-          Webapi.Element.Style.width(rightElement, `${rightWidth->Belt.Float.toString}%`)
+          Webapi.Element.Style.width(leftElement, `${leftWidth->Float.toString}%`)
+          Webapi.Element.Style.width(rightElement, `${rightWidth->Float.toString}%`)
 
         | Column =>
-          let delta = Belt.Int.toFloat(position) -. rectPanel["top"]
+          let delta = Int.toFloat(position) -. rectPanel["top"]
 
           let topHeight = delta /. rectPanel["height"] *. 100.
           let bottomHeight = (rectPanel["height"] -. delta) /. rectPanel["height"] *. 100.
 
-          Webapi.Element.Style.height(leftElement, `${topHeight->Belt.Float.toString}%`)
-          Webapi.Element.Style.height(rightElement, `${bottomHeight->Belt.Float.toString}%`)
+          Webapi.Element.Style.height(leftElement, `${topHeight->Float.toString}%`)
+          Webapi.Element.Style.height(rightElement, `${bottomHeight->Float.toString}%`)
         }
       | _ => ()
       }
@@ -1706,9 +1697,9 @@ let make = (~versions: array<string>) => {
       | SyntaxErr(locMsgs)
       | TypecheckErr(locMsgs)
       | OtherErr(locMsgs) =>
-        Js.Array2.map(locMsgs, locMsgToCmError(~kind=#Error, ...))
+        Array.map(locMsgs, locMsgToCmError(~kind=#Error, ...))
       | WarningErr(warnings) =>
-        Js.Array2.map(warnings, warning => {
+        Array.map(warnings, warning => {
           switch warning {
           | Api.Warning.Warn({details})
           | WarnErr({details}) =>
@@ -1718,14 +1709,14 @@ let make = (~versions: array<string>) => {
       | WarningFlagErr(_) => []
       }
     | Comp(Success({warnings})) =>
-      Js.Array2.map(warnings, warning => {
+      Array.map(warnings, warning => {
         switch warning {
         | Api.Warning.Warn({details})
         | WarnErr({details}) =>
           locMsgToCmError(~kind=#Warning, details)
         }
       })
-    | Conv(Fail({details})) => Js.Array2.map(details, locMsgToCmError(~kind=#Error, ...))
+    | Conv(Fail({details})) => Array.map(details, locMsgToCmError(~kind=#Error, ...))
     | Comp(_)
     | Conv(_)
     | Nothing => []
@@ -1735,7 +1726,7 @@ let make = (~versions: array<string>) => {
 
   let cmHoverHints = switch compilerState {
   | Ready({result: FinalResult.Comp(Success({type_hints}))}) =>
-    Js.Array2.map(type_hints, hint => {
+    Array.map(type_hints, hint => {
       switch hint {
       | TypeDeclaration({start, end, hint})
       | Binding({start, end, hint})
@@ -1774,7 +1765,7 @@ let make = (~versions: array<string>) => {
 
   let tabs = [JavaScript, Console, Problems, Settings]
 
-  let headers = Belt.Array.mapWithIndex(tabs, (i, tab) => {
+  let headers = Array.mapWithIndex(tabs, (tab, i) => {
     let title = switch tab {
     // | RenderOutput => "Render Output"
     | Console => "Console"
@@ -1791,7 +1782,7 @@ let make = (~versions: array<string>) => {
     // For Safari iOS12
     let onClick = _ => ()
     let className = makeTabClass(active)
-    <button key={Belt.Int.toString(i) ++ ("-" ++ title)} onMouseDown onClick className disabled>
+    <button key={Int.toString(i) ++ ("-" ++ title)} onMouseDown onClick className disabled>
       {React.string(title)}
     </button>
   })
@@ -1801,7 +1792,7 @@ let make = (~versions: array<string>) => {
 
   <main className={"flex flex-col bg-gray-100 overflow-hidden"}>
     <ControlPanel
-      actionIndicatorKey={Belt.Int.toString(actionCount)}
+      actionIndicatorKey={Int.toString(actionCount)}
       state=compilerState
       dispatch=compilerDispatch
       editorCode
@@ -1827,9 +1818,9 @@ let make = (~versions: array<string>) => {
 
             switch typingTimer.current {
             | None => ()
-            | Some(timer) => Js.Global.clearTimeout(timer)
+            | Some(timer) => clearTimeout(timer)
             }
-            let timer = Js.Global.setTimeout(() => {
+            let timer = setTimeout(() => {
               timeoutCompile.current()
               typingTimer.current = None
             }, 100)

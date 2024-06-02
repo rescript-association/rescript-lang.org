@@ -19,7 +19,7 @@ module Element = {
   @send external addEventListener: (Dom.element, string, unit => unit) => unit = "addEventListener"
 
   @send
-  external getElementById: (Dom.element, string) => Js.nullable<Dom.element> = "getElementById"
+  external getElementById: (Dom.element, string) => Nullable.t<Dom.element> = "getElementById"
 
   type contentWindow
   @get external contentWindow: Dom.element => option<contentWindow> = "contentWindow"
@@ -54,7 +54,7 @@ module Fetch = {
   module Response = {
     type t
     @send external text: t => promise<string> = "text"
-    @send external json: t => promise<Js.Json.t> = "json"
+    @send external json: t => promise<JSON.t> = "json"
   }
 
   @val external fetch: string => promise<Response.t> = "fetch"

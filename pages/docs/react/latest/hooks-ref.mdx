@@ -56,12 +56,12 @@ More infos on direct DOM manipulation can be found in the [Refs and the DOM](./r
 
 @react.component
 let make = () => {
-  let inputEl = React.useRef(Js.Nullable.null)
+  let inputEl = React.useRef(Nullable.null)
 
   let onClick = _ => {
     inputEl.current
-    ->Js.Nullable.toOption
-    ->Belt.Option.forEach(input => input->focus)
+    ->Nullable.toOption
+    ->Option.forEach(input => input->focus)
   }
 
   <>
@@ -104,15 +104,15 @@ Reusing the example from our [Refs and the DOM](./refs-and-the-dom#callback-refs
 
 @react.component
 let make = () => {
-  let textInput = React.useRef(Js.Nullable.null)
+  let textInput = React.useRef(Nullable.null)
   let setTextInputRef = element => {
     textInput.current = element;
   }
 
   let focusTextInput = _ => {
     textInput.current
-    ->Js.Nullable.toOption
-    ->Belt.Option.forEach(input => input->focus)
+    ->Nullable.toOption
+    ->Option.forEach(input => input->focus)
   }
 
   <div>

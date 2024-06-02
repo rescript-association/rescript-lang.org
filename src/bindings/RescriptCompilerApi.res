@@ -41,10 +41,10 @@ module Version = {
 
   // Helps finding the right API version
   let fromString = (apiVersion: string): t =>
-    switch Js.String2.split(apiVersion, ".")->Belt.List.fromArray {
+    switch String.split(apiVersion, ".")->List.fromArray {
     | list{maj, min, ..._} =>
-      let maj = Belt.Int.fromString(maj)
-      let min = Belt.Int.fromString(min)
+      let maj = Int.fromString(maj)
+      let min = Int.fromString(min)
 
       switch (maj, min) {
       | (Some(maj), Some(_))
@@ -113,28 +113,28 @@ module LocMsg = {
     | #E => "E"
     }
 
-    `[1;31m[${prefix}] Line ${row->Belt.Int.toString}, ${column->Belt.Int.toString}:[0m ${shortMsg}`
+    `[1;31m[${prefix}] Line ${row->Int.toString}, ${column->Int.toString}:[0m ${shortMsg}`
   }
 
   // Creates a somewhat unique id based on the rows / cols of the locMsg
   let makeId = t => {
-    open Belt.Int
+    open Int
     toString(t.row) ++
     ("-" ++
     (toString(t.endRow) ++ ("-" ++ (toString(t.column) ++ ("-" ++ toString(t.endColumn))))))
   }
 
   let dedupe = (arr: array<t>) => {
-    let result = Js.Dict.empty()
+    let result = Dict.make()
 
-    for i in 0 to Js.Array.length(arr) - 1 {
+    for i in 0 to Array.length(arr) - 1 {
       let locMsg = Array.getUnsafe(arr, i)
       let id = makeId(locMsg)
 
       // The last element with the same id wins
-      result->Js.Dict.set(id, locMsg)
+      result->Dict.set(id, locMsg)
     }
-    Js.Dict.values(result)
+    Dict.valuesToArray(result)
   }
 }
 
@@ -163,11 +163,11 @@ module Warning = {
     | Warn({warnNumber, details})
     | WarnErr({warnNumber, details}) =>
       let {LocMsg.row: row, column, shortMsg} = details
-      let msg = `(Warning number ${warnNumber->Belt.Int.toString}) ${shortMsg}`
+      let msg = `(Warning number ${warnNumber->Int.toString}) ${shortMsg}`
       (row, column, msg)
     }
 
-    `[1;31m[${prefix}] Line ${row->Belt.Int.toString}, ${column->Belt.Int.toString}:[0m ${msg}`
+    `[1;31m[${prefix}] Line ${row->Int.toString}, ${column->Int.toString}:[0m ${msg}`
   }
 }
 
@@ -308,10 +308,10 @@ module CompilationResult = {
     | Fail(CompileFail.t) // When a compilation failed with some error result
     | Success(CompileSuccess.t)
     | UnexpectedError(string) // Errors that slip through as uncaught exceptions of the compiler bundle
-    | Unknown(string, Js.Json.t)
+    | Unknown(string, JSON.t)
 
   // TODO: We might change this specific api completely before launching
-  let decode = (~time: float, json: Js.Json.t): t => {
+  let decode = (~time: float, json: JSON.t): t => {
     open! Json.Decode
 
     try switch field("type", string, json) {
@@ -329,7 +329,7 @@ module ConversionResult = {
     | Success(ConvertSuccess.t)
     | Fail({fromLang: Lang.t, toLang: Lang.t, details: array<LocMsg.t>}) // When a compilation failed with some error result
     | UnexpectedError(string) // Errors that slip through as uncaught exceptions within the playground
-    | Unknown(string, Js.Json.t)
+    | Unknown(string, JSON.t)
 
   let decode = (~fromLang: Lang.t, ~toLang: Lang.t, json): t => {
     open! Json.Decode
@@ -369,7 +369,7 @@ module Compiler = {
   @get @scope("rescript") external resVersion: t => string = "version"
 
   @send @scope("rescript")
-  external resCompile: (t, string) => Js.Json.t = "compile"
+  external resCompile: (t, string) => JSON.t = "compile"
 
   let resCompile = (t, code): CompilationResult.t => {
     let startTime = now()
@@ -380,7 +380,7 @@ module Compiler = {
   }
 
   @send @scope("rescript")
-  external resFormat: (t, string) => Js.Json.t = "format"
+  external resFormat: (t, string) => JSON.t = "format"
 
   let resFormat = (t, code): ConversionResult.t => {
     let json = resFormat(t, code)
@@ -388,7 +388,7 @@ module Compiler = {
   }
 
   @send @scope("reason")
-  external reasonCompile: (t, string) => Js.Json.t = "compile"
+  external reasonCompile: (t, string) => JSON.t = "compile"
   let reasonCompile = (t, code): CompilationResult.t => {
     let startTime = now()
     let json = reasonCompile(t, code)
@@ -398,7 +398,7 @@ module Compiler = {
   }
 
   @send @scope("reason")
-  external reasonFormat: (t, string) => Js.Json.t = "format"
+  external reasonFormat: (t, string) => JSON.t = "format"
 
   let reasonFormat = (t, code): ConversionResult.t => {
     let json = reasonFormat(t, code)
@@ -408,7 +408,7 @@ module Compiler = {
   @get @scope("ocaml") external ocamlVersion: t => string = "version"
 
   @send @scope("ocaml")
-  external ocamlCompile: (t, string) => Js.Json.t = "compile"
+  external ocamlCompile: (t, string) => JSON.t = "compile"
 
   let ocamlCompile = (t, code): CompilationResult.t => {
     let startTime = now()
@@ -436,14 +436,14 @@ module Compiler = {
     | _ => None
     }
 
-    Belt.Option.forEach(moduleSystem, moduleSystem => t->setModuleSystem(moduleSystem)->ignore)
-    Belt.Option.forEach(config.open_modules, modules => t->setOpenModules(modules)->ignore)
+    Option.forEach(moduleSystem, moduleSystem => t->setModuleSystem(moduleSystem)->ignore)
+    Option.forEach(config.open_modules, modules => t->setOpenModules(modules)->ignore)
 
     t->setWarnFlags(config.warn_flags)->ignore
   }
 
   @send
-  external convertSyntax: (t, string, string, string) => Js.Json.t = "convertSyntax"
+  external convertSyntax: (t, string, string, string) => JSON.t = "convertSyntax"
 
   // General format function
   let convertSyntax = (~fromLang: Lang.t, ~toLang: Lang.t, ~code: string, t): ConversionResult.t =>
@@ -455,8 +455,8 @@ module Compiler = {
       ~fromLang,
       ~toLang,
     ) catch {
-    | Js.Exn.Error(obj) =>
-      switch Js.Exn.message(obj) {
+    | Exn.Error(obj) =>
+      switch Exn.message(obj) {
       | Some(m) => ConversionResult.UnexpectedError(m)
       | None => UnexpectedError("")
       }
