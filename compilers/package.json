@@ -5,7 +5,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@rescript/core": "^0.6.0",
+    "@rescript/core": "^1.3.0",
     "@rescript/react": "^0.12.0",
     "rescript-1000": "npm:rescript@10.0.0",
     "rescript-1010": "npm:rescript@10.1.0",
