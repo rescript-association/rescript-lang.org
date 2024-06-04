@@ -14,7 +14,7 @@ module Section = {
 let make = () => {
   let linkClass = "hover:underline hover:pointer"
   let iconLink = "hover:pointer hover:text-gray-60-tr"
-  let copyrightYear = Js.Date.make()->Js.Date.getFullYear->Js.Float.toString
+  let copyrightYear = Date.make()->Date.getFullYear->Int.toString
 
   <footer className="flex justify-center border-t border-gray-10">
     <div

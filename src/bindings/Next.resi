@@ -14,7 +14,7 @@ module GetServerSideProps: {
   // See: https://github.com/zeit/next.js/blob/canary/packages/next/types/index.d.ts
   type context<'props, 'params> = {
     params: 'params,
-    query: Js.Dict.t<string>,
+    query: Dict.t<string>,
     req: Req.t,
     res: Res.t,
   }
@@ -26,8 +26,8 @@ module GetStaticProps: {
   // See: https://github.com/zeit/next.js/blob/canary/packages/next/types/index.d.ts
   type context<'props, 'params> = {
     params: 'params,
-    query: Js.Dict.t<string>,
-    req: Js.Nullable.t<'props>,
+    query: Dict.t<string>,
+    req: Nullable.t<'props>,
   }
 
   type t<'props, 'params> = context<'props, 'params> => promise<{"props": 'props}>
@@ -97,12 +97,12 @@ module Router: {
     asPath: string,
     events: Events.t,
     pathname: string,
-    query: Js.Dict.t<string>,
+    query: Dict.t<string>,
   }
 
   type pathObj = {
     pathname: string,
-    query: Js.Dict.t<string>,
+    query: Dict.t<string>,
   }
 
   let push: (router, string) => unit

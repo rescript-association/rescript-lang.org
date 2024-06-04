@@ -1,5 +1,5 @@
 module Req = {
-  type req = {query: Js.Dict.t<string>}
+  type req = {query: Dict.t<string>}
 }
 
 module Res = {
@@ -17,9 +17,9 @@ module Res = {
 }
 
 let handler = async (req: Req.req, res: Res.res) => {
-  switch req.query->Js.Dict.get("secret") {
+  switch req.query->Dict.get("secret") {
   | Some(secret) =>
-    switch Node.Process.env->Js.Dict.get("NEXT_REVALIDATE_SECRET_TOKEN") {
+    switch Node.Process.env->Dict.get("NEXT_REVALIDATE_SECRET_TOKEN") {
     | Some(token) =>
       if secret !== token {
         res->Res.Status.make(401)->Res.Status.json({"message": "Invalid secret"})
@@ -28,7 +28,7 @@ let handler = async (req: Req.req, res: Res.res) => {
           let () = await res->Res.revalidate("/try")
           res->Res.json({"revalidated": true})
         } catch {
-        | Js.Exn.Error(_) => res->Res.Status.make(500)->Res.Status.send("Error revalidating")
+        | Exn.Error(_) => res->Res.Status.make(500)->Res.Status.send("Error revalidating")
         }
       }
     | None =>

@@ -26,28 +26,27 @@ external keyboardEventPreventDefault: keyboardEventLike => unit = "preventDefaul
 type state = Active | Inactive
 
 let hit = ({hit, children}: DocSearch.hitComponent) => {
-  let toTitle = str =>
-    str->Js.String2.charAt(0)->Js.String2.toUpperCase ++ Js.String2.sliceToEnd(str, ~from=1)
+  let toTitle = str => str->String.charAt(0)->String.toUpperCase ++ String.sliceToEnd(str, ~start=1)
 
   let description = switch hit.url
-  ->Js.String2.split("/")
-  ->Js.Array2.sliceFrom(1)
-  ->Belt.List.fromArray {
+  ->String.split("/")
+  ->Array.sliceToEnd(~start=1)
+  ->List.fromArray {
   | list{"blog" as r | "community" as r, ..._} => r->toTitle
   | list{"docs", doc, version, ...rest} =>
-    let path = rest->Belt.List.toArray
+    let path = rest->List.toArray
 
     let info =
       path
-      ->Js.Array2.slice(~start=0, ~end_=Js.Array2.length(path) - 1)
-      ->Js.Array2.map(path =>
+      ->Array.slice(~start=0, ~end=Array.length(path) - 1)
+      ->Array.map(path =>
         switch path {
         | "api" => "API"
         | other => toTitle(other)
         }
       )
 
-    [doc->toTitle, version->toTitle]->Js.Array2.concat(info)->Js.Array2.joinWith(" / ")
+    [doc->toTitle, version->toTitle]->Array.concat(info)->Array.join(" / ")
   | _ => ""
   }
 
@@ -60,10 +59,10 @@ let hit = ({hit, children}: DocSearch.hitComponent) => {
 }
 
 let transformItems = (items: DocSearch.transformItems) => {
-  items->Belt.Array.keepMap(item => {
+  items->Array.filterMap(item => {
     let url = try Webapi.URL.make(item.url)->Some catch {
-    | Js.Exn.Error(obj) =>
-      Js.Console.error2(`Failed to parse URL ${item.url}`, obj)
+    | Exn.Error(obj) =>
+      Console.error2(`Failed to parse URL ${item.url}`, obj)
       None
     }
     switch url {

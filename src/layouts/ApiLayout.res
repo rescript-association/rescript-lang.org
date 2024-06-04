@@ -9,13 +9,11 @@ module OldDocsWarning = {
   let make = (~version: string, ~route: string) => {
     let url = Url.parse(route)
     let latestUrl =
-      "/" ++
-      (Js.Array2.joinWith(url.base, "/") ++
-      ("/latest/" ++ Js.Array2.joinWith(url.pagepath, "/")))
+      "/" ++ (Array.join(url.base, "/") ++ ("/latest/" ++ Array.join(url.pagepath, "/")))
 
     open Markdown
 
-    let label = switch Js.Array2.find(allApiVersions, ((v, _)) => {
+    let label = switch Array.find(allApiVersions, ((v, _)) => {
       v === version
     }) {
     | Some((_, label)) => label
@@ -48,12 +46,12 @@ let makeBreadcrumbs = (~prefix: Url.breadcrumb, route: string): list<Url.breadcr
   let url = route->Url.parse
 
   let (_, rest) = // Strip the "api" part of the url before creating the rest of the breadcrumbs
-  Js.Array2.sliceFrom(url.pagepath, 1)->Belt.Array.reduce((prefix.href, []), (acc, path) => {
+  Array.sliceToEnd(url.pagepath, ~start=1)->Array.reduce((prefix.href, []), (acc, path) => {
     let (baseHref, ret) = acc
 
     let href = baseHref ++ ("/" ++ path)
 
-    Js.Array2.push(
+    Array.push(
       ret,
       {
         open Url
@@ -62,7 +60,7 @@ let makeBreadcrumbs = (~prefix: Url.breadcrumb, route: string): list<Url.breadcr
     )->ignore
     (href, ret)
   })
-  Belt.Array.concat([prefix], rest)->Belt.List.fromArray
+  Array.concat([prefix], rest)->List.fromArray
 }
 
 @react.component
@@ -111,8 +109,8 @@ let make = (
 
           let targetUrl =
             "/" ++
-            (Js.Array2.joinWith(url.base, "/") ++
-            ("/" ++ (version ++ ("/" ++ Js.Array2.joinWith(url.pagepath, "/")))))
+            (Array.join(url.base, "/") ++
+            ("/" ++ (version ++ ("/" ++ Array.join(url.pagepath, "/")))))
           router->Next.Router.push(targetUrl)
         }
         <VersionSelect onChange version availableVersions=allApiVersions />

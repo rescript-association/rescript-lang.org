@@ -125,13 +125,13 @@ type state = {
 let reducer = (state, action) =>
   switch action {
   | AddTodo(content) =>
-    let todos = Js.Array2.concat(
+    let todos = Array.concat(
       state.todos,
       [{id: state.nextId, content: content, completed: false}],
     )
     {todos: todos, nextId: state.nextId + 1}
   | RemoveTodo(id) =>
-    let todos = Js.Array2.filter(state.todos, todo => todo.id !== id)
+    let todos = Array.filter(state.todos, todo => todo.id !== id)
     {...state, todos: todos}
   | ToggleTodo(id) =>
     let todos = Belt.Array.map(state.todos, todo =>

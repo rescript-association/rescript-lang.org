@@ -18,18 +18,18 @@ let make = (
   ~onValueChange: string => unit,
 ) => {
   let (state, setState) = React.useState(_ => Inactive)
-  let textInput = React.useRef(Js.Nullable.null)
+  let textInput = React.useRef(Nullable.null)
 
   let onMouseDownClear = evt => {
     ReactEvent.Mouse.preventDefault(evt)
     onClear()
   }
 
-  let focusInput = () =>
-    textInput.current->Js.Nullable.toOption->Belt.Option.forEach(el => el->focus)
+  let focusInput = () => textInput.current->Nullable.forEach(el => el->focus)
 
   let onAreaFocus = evt => {
     let el = ReactEvent.Focus.target(evt)
+    // TODO(aspeddro): Replace with `Nullable.isNullable` when Core merge https://github.com/rescript-association/rescript-core/pull/227 and publish a new release
     let isDiv = Js.Null_undefined.isNullable(el["type"])
 
     if isDiv && state === Inactive {
@@ -54,7 +54,7 @@ let make = (
     switch full {
     | "Escape" => onClear()
     | "Tab" =>
-      if Js.Array.length(completionValues) === 1 {
+      if Array.length(completionValues) === 1 {
         let targetValue = Belt.Array.getExn(completionValues, 0)
 
         if targetValue !== value {

@@ -14,7 +14,7 @@ let make = (~compilerState, ~runOutput) => {
       switch data["type"] {
       | #...logLevel as logLevel =>
         let args: array<string> = data["args"]
-        setLogs(previous => previous->Belt.Array.concat([(logLevel, args)]))
+        setLogs(previous => previous->Array.concat([(logLevel, args)]))
       | _ => ()
       }
     }
@@ -42,8 +42,8 @@ let make = (~compilerState, ~runOutput) => {
     | logs =>
       let content =
         logs
-        ->Belt.Array.mapWithIndex((i, (logLevel, log)) => {
-          let log = Js.Array2.joinWith(log, " ")
+        ->Array.mapWithIndex(((logLevel, log), i) => {
+          let log = Array.join(log, " ")
           <pre
             key={RescriptCore.Int.toString(i)}
             className={switch logLevel {

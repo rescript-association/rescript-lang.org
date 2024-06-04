@@ -16,7 +16,7 @@ This is the official documentation platform for the [ReScript](https://rescript-
 
 ## System Requirements
 
-- `node@18` or higher
+- `node@20` or higher
 - `npm@10` or higher
 
 ## Setup
@@ -28,10 +28,7 @@ npm i
 # Initial build
 npx rescript
 
-# Only needed for initial clone (or content H2 changes)
-npm run update-index
-
-# Build the index data
+# Build the index data. Only needed for initial clone (or content H2 changes)
 npm run update-index
 
 # In a new tab

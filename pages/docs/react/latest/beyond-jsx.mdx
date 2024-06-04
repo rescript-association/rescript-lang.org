@@ -99,7 +99,7 @@ type props<'className, 'children, 'ref> = {
 
 let make = (
   {?className, children, _}: props<'className, 'children, ReactRef.currentDomRef>,
-  ref: Js.Nullable.t<ReactRef.currentDomRef>,
+  ref: Nullable.t<ReactRef.currentDomRef>,
 ) =>
   make(~className, ~children, ~ref, ())
 ```

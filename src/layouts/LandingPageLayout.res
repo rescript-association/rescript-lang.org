@@ -67,7 +67,7 @@ export {
 
   @react.component
   let make = () => {
-    let (example, _setExample) = React.useState(_ => examples->Js.Array2.unsafe_get(0))
+    let (example, _setExample) = React.useState(_ => examples->Array.getUnsafe(0))
 
     //Playground Section & Background
     <section className="relative mt-20 bg-gray-10">
@@ -169,7 +169,7 @@ module QuickInstall = {
     let make = (~code) => {
       let (state, setState) = React.useState(_ => Init)
 
-      let buttonRef = React.useRef(Js.Nullable.null)
+      let buttonRef = React.useRef(Nullable.null)
 
       let onClick = evt => {
         ReactEvent.Mouse.preventDefault(evt)
@@ -184,7 +184,7 @@ module QuickInstall = {
         switch state {
         | Copied =>
           open Webapi
-          let buttonEl = Js.Nullable.toOption(buttonRef.current)->Belt.Option.getExn
+          let buttonEl = Nullable.toOption(buttonRef.current)->Option.getExn
 
           // Note on this imperative DOM nonsense:
           // For Tailwind transitions to behave correctly, we need to first paint the DOM element in the tree,
@@ -204,7 +204,7 @@ module QuickInstall = {
             bannerEl->Element.classList->ClassList.toggle("opacity-100")
           })
 
-          let timeoutId = Js.Global.setTimeout(() => {
+          let timeoutId = setTimeout(() => {
             buttonEl->Element.removeChild(bannerEl)
             setState(_ => Init)
           }, 2000)
@@ -212,7 +212,7 @@ module QuickInstall = {
           Some(
             () => {
               cancelAnimationFrame(nextFrameId)
-              Js.Global.clearTimeout(timeoutId)
+              clearTimeout(timeoutId)
             },
           )
         | _ => None
@@ -524,7 +524,7 @@ module TrustedBy = {
       <div
         className="flex flex-wrap mx-4 gap-8 justify-center items-center max-w-xl lg:mx-auto mt-16 mb-16">
         {OurUsers.companies
-        ->Js.Array2.map(company => {
+        ->Array.map(company => {
           let (companyKey, renderedCompany) = switch company {
           | Logo({name, path, url}) => (
               name,
@@ -642,9 +642,9 @@ module CuratedResources = {
         <div
           className="grid grid-flow-col grid-cols-2 grid-rows-2 lg:grid-cols-4 lg:grid-rows-1 gap-2 md:gap-4 lg:gap-8 max-w-1280 px-5 md:px-8 mx-auto">
           {cards
-          ->Belt.Array.mapWithIndex((i, card) =>
+          ->Array.mapWithIndex((card, i) =>
             <Next.Link
-              key={Belt.Int.toString(i)}
+              key={Int.toString(i)}
               href={card.href}
               className="hover:bg-gray-80 bg-gray-90 px-4 md:px-8 pb-0 md:pb-8 relative rounded-xl md:min-w-[196px]">
               <img className="h-[53px] absolute mt-6" src=card.imgSrc />
@@ -665,9 +665,9 @@ module CuratedResources = {
         <div
           className="grid grid-flow-col grid-cols-2 lg:grid-cols-3 lg:grid-rows-1 gap-2 md:gap-4 lg:gap-8 max-w-1280 px-5 md:px-8 mx-auto">
           {templates
-          ->Belt.Array.mapWithIndex((i, card) =>
+          ->Array.mapWithIndex((card, i) =>
             <a
-              key={Belt.Int.toString(i)}
+              key={Int.toString(i)}
               href={card.href}
               className="hover:bg-gray-80 bg-gray-90 px-5 pb-8 relative rounded-xl min-w-[200px]">
               <img className="h-12 absolute mt-5" src=card.imgSrc />

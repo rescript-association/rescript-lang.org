@@ -4,7 +4,7 @@ let default = props => {
   let (isOverlayOpen, setOverlayOpen) = React.useState(() => false)
 
   let lazyPlayground = Next.Dynamic.dynamic(
-    async () => await Js.import(Playground.make),
+    async () => await import(Playground.make),
     {
       ssr: false,
       loading: () => <span> {React.string("Loading...")} </span>,
@@ -32,20 +32,16 @@ let getStaticProps: Next.GetStaticProps.t<props, _> = async _ => {
     let response = await Webapi.Fetch.fetch("https://cdn.rescript-lang.org/")
     let text = await Webapi.Fetch.Response.text(response)
     text
-    ->Js.String2.split("\n")
-    ->Belt.Array.keepMap(line => {
-      switch line->Js.String2.startsWith("<a href") {
+    ->String.split("\n")
+    ->Array.filterMap(line => {
+      switch line->String.startsWith("<a href") {
       | true =>
         // Adapted from https://semver.org/
         let semverRe = %re(
           "/v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/"
         )
-        switch Js.Re.exec_(semverRe, line) {
-        | Some(result) =>
-          switch Js.Re.captures(result)->Belt.Array.get(0) {
-          | Some(str) => Js.Nullable.toOption(str)
-          | None => None
-          }
+        switch Re.exec(semverRe, line) {
+        | Some(result) => Re.Result.fullMatch(result)->Some
         | None => None
         }
       | false => None

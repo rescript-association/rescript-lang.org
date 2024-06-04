@@ -44,7 +44,7 @@ let sendOutput = code => {
   let frame =
     Document.document
     ->Element.getElementById("iframe-eval")
-    ->Js.Nullable.toOption
+    ->Nullable.toOption
 
   switch frame {
   | Some(element) =>

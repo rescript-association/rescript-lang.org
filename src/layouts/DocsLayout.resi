@@ -6,7 +6,7 @@ let make: (
   ~breadcrumbs: list<Url.breadcrumb>=?,
   ~title: string,
   ~metaTitleCategory: string=?, // e.g. Introduction | My Meta Title Category
-  ~frontmatter: Js.Json.t=?,
+  ~frontmatter: JSON.t=?,
   ~version: string=?,
   ~availableVersions: array<(string, string)>=?,
   ~activeToc: SidebarLayout.Toc.t=?,
@@ -28,7 +28,7 @@ module Make: (Content: StaticContent) =>
     ~breadcrumbs: list<Url.breadcrumb>=?,
     ~title: string,
     ~metaTitleCategory: string=?,
-    ~frontmatter: Js.Json.t=?,
+    ~frontmatter: JSON.t=?,
     ~version: string=?,
     ~availableVersions: array<(string, string)>=?,
     /* ~activeToc: option<SidebarLayout.Toc.t>=?, */

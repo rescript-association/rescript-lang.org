@@ -36,7 +36,7 @@ var root = Path.dirname("/User/github");
 <CodeTab labels={["ReScript", "JS Output (Module)"]}>
 ```rescript
 @module({from: "./myJson.json", with: {type_: "json", \"some-exotic-identifier": "someValue"}})
-external myJson: Js.Json.t = "default"
+external myJson: JSON.t = "default"
 
 Console.log(myJson)
 ```

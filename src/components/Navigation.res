@@ -6,11 +6,11 @@ let activeLink = "font-medium text-fire-30 border-b border-fire"
 let linkOrActiveLink = (~target, ~route) => target === route ? activeLink : link
 
 let linkOrActiveLinkSubroute = (~target, ~route) =>
-  Js.String2.startsWith(route, target) ? activeLink : link
+  String.startsWith(route, target) ? activeLink : link
 
 let linkOrActiveApiSubroute = (~route) => {
   let url = Url.parse(route)
-  switch Belt.Array.get(url.pagepath, 0) {
+  switch url.pagepath[0] {
   | Some("api") => activeLink
   | _ => link
   }
@@ -219,7 +219,7 @@ module DocsSection = {
           <div>
             <ul className="space-y-2 ml-2 mt-6">
               {languageManual
-              ->Js.Array2.map(item => {
+              ->Array.map(item => {
                 let (text, href) = item
 
                 let linkClass = if router.route === href {
@@ -248,7 +248,7 @@ module DocsSection = {
           </div>
           <div>
             <div className="mt-6">
-              {Js.Array2.map(documentation, item => {
+              {Array.map(documentation, item => {
                 let {imgSrc, title, href, description, isActive} = item
 
                 let icon = <img style={ReactDOM.Style.make(~width="2.1875rem", ())} src={imgSrc} />
@@ -324,8 +324,8 @@ module DocsSection = {
       | {base: ["docs", "manual"]} =>
         let targetUrl =
           "/" ++
-          (Js.Array2.joinWith(url.base, "/") ++
-          ("/" ++ (version ++ ("/" ++ Js.Array2.joinWith(url.pagepath, "/")))))
+          (Array.join(url.base, "/") ++
+          ("/" ++ (version ++ ("/" ++ Array.join(url.pagepath, "/")))))
         router->Next.Router.push(targetUrl)
       | _ => ()
       }
@@ -429,7 +429,7 @@ let make = (~fixed=true, ~isOverlayOpen: bool, ~setOverlayOpen: (bool => bool) =
         | {base: ["docs", "react"]}
         | {base: ["docs", "gentype"]}
         | {base: ["docs", "manual"]} =>
-          switch Belt.Array.get(url.pagepath, 0) {
+          switch url.pagepath[0] {
           | Some("api") => false
           | _ => true
           }
@@ -441,14 +441,13 @@ let make = (~fixed=true, ~isOverlayOpen: bool, ~setOverlayOpen: (bool => bool) =
     },
   ])
 
-  let isSubnavOpen = Js.Array2.find(collapsibles, c => c.state !== Closed) !== None
+  let isSubnavOpen = Array.find(collapsibles, c => c.state !== Closed) !== None
 
   let toggleOverlay = () => setOverlayOpen(prev => !prev)
 
-  let resetCollapsibles = () =>
-    setCollapsibles(prev => Belt.Array.map(prev, c => {...c, state: Closed}))
+  let resetCollapsibles = () => setCollapsibles(prev => Array.map(prev, c => {...c, state: Closed}))
 
-  let navRef = React.useRef(Js.Nullable.null)
+  let navRef = React.useRef(Nullable.null)
   Hooks.useOutsideClick(ReactDOM.Ref.domRef(navRef), resetCollapsibles)
 
   /* let windowWidth = useWindowWidth() */
@@ -488,7 +487,7 @@ let make = (~fixed=true, ~isOverlayOpen: bool, ~setOverlayOpen: (bool => bool) =
 
   let onStateChange = (~id, state) => {
     setCollapsibles(prev => {
-      Belt.Array.keepMap(prev, next => {
+      Array.filterMap(prev, next => {
         if next.title === id {
           Some({...next, state})
         } else {
@@ -498,7 +497,7 @@ let make = (~fixed=true, ~isOverlayOpen: bool, ~setOverlayOpen: (bool => bool) =
     })
   }
 
-  let collapsibleElements = Js.Array2.map(collapsibles, coll => {
+  let collapsibleElements = Array.map(collapsibles, coll => {
     <CollapsibleLink
       key={coll.title}
       title={coll.title}

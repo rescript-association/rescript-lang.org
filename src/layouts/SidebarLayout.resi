@@ -1,8 +1,8 @@
 module Toc: {
   // the plain data coming from the toc file
-  type raw = Js.Dict.t<{
+  type raw = Dict.t<{
     "title": string,
-    "category": Js.Nullable.t<string>,
+    "category": Nullable.t<string>,
     "headers": array<{
       "name": string,
       "href": string,

@@ -13,7 +13,7 @@ module URL = {
 
 module Process = {
   @scope("process") external cwd: unit => string = "cwd"
-  @scope("process") external env: Js.Dict.t<string> = "env"
+  @scope("process") external env: Dict.t<string> = "env"
   @scope("process") @val external argv: array<string> = "argv"
   @scope("process") external exit: int => unit = "exit"
 }

@@ -1,6 +1,6 @@
 // Structure defined by `scripts/extract-tocs.js`
 @module("index_data/reason_compiler_toc.json")
-external tocData: Js.Dict.t<{
+external tocData: Dict.t<{
   "title": string,
   "headers": array<{
     "name": string,
@@ -64,10 +64,10 @@ let make = (~components=MarkdownComponents.default, ~children) => {
   let route = router.route
 
   let activeToc: option<Toc.t> = {
-    open Belt.Option
-    Js.Dict.get(tocData, route)->map(data => {
+    open Option
+    Dict.get(tocData, route)->map(data => {
       let title = data["title"]
-      let entries = Belt.Array.map(data["headers"], header => {
+      let entries = Array.map(data["headers"], header => {
         Toc.header: header["name"],
         href: "#" ++ header["href"],
       })
@@ -97,7 +97,7 @@ let make = (~components=MarkdownComponents.default, ~children) => {
     },
   }
 
-  let breadcrumbs = Belt.List.concat(
+  let breadcrumbs = List.concat(
     prefix,
     DocsLayout.makeBreadcrumbs(~basePath="/docs/manual/" ++ version, route),
   )

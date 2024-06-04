@@ -56,11 +56,9 @@ module Latest = {
       open Markdown
 
       let v011Url =
-        "/" ++
-        (Js.Array2.joinWith(url.base, "/") ++
-        ("/v0.11.0/" ++ Js.Array2.joinWith(url.pagepath, "/")))
+        "/" ++ (Array.join(url.base, "/") ++ ("/v0.11.0/" ++ Array.join(url.pagepath, "/")))
 
-      let label = switch Js.Array2.find(Constants.allReactVersions, ((v, _)) => {
+      let label = switch Array.find(Constants.allReactVersions, ((v, _)) => {
         v === version
       }) {
       | Some((_, label)) => label

@@ -63,7 +63,7 @@ module CopyButton = {
   let make = (~code) => {
     let (state, setState) = React.useState(_ => Init)
 
-    let buttonRef = React.useRef(Js.Nullable.null)
+    let buttonRef = React.useRef(Nullable.null)
 
     let onClick = evt => {
       ReactEvent.Mouse.preventDefault(evt)
@@ -78,7 +78,7 @@ module CopyButton = {
       switch state {
       | Copied =>
         open DomUtil
-        let buttonEl = Js.Nullable.toOption(buttonRef.current)->Belt.Option.getExn
+        let buttonEl = Nullable.toOption(buttonRef.current)->Option.getExn
 
         // Note on this imperative DOM nonsense:
         // For Tailwind transitions to behave correctly, we need to first paint the DOM element in the tree,
@@ -98,7 +98,7 @@ module CopyButton = {
           bannerEl->classList->toggle("opacity-100")
         })
 
-        let timeoutId = Js.Global.setTimeout(() => {
+        let timeoutId = setTimeout(() => {
           buttonEl->removeChild(bannerEl)
           setState(_ => Init)
         }, 3000)
@@ -106,7 +106,7 @@ module CopyButton = {
         Some(
           () => {
             cancelAnimationFrame(nextFrameId)
-            Js.Global.clearTimeout(timeoutId)
+            clearTimeout(timeoutId)
           },
         )
       | _ => None
@@ -131,7 +131,7 @@ let make = (~highlightedLines=[], ~code: string, ~showLabel=true, ~lang="text") 
     <div
       className="absolute right-1 top-0 p-1 font-sans text-12 font-bold text-gray-30 pointer-events-none">
       {//RES or JS Label
-      Js.String2.toUpperCase(label)->React.string}
+      String.toUpperCase(label)->React.string}
     </div>
   } else {
     React.null
@@ -166,15 +166,15 @@ module Toggle = {
         showLabel: true,
       })
     | multiple =>
-      let numberOfItems = Js.Array.length(multiple)
-      let tabElements = Belt.Array.mapWithIndex(multiple, (i, tab) => {
+      let numberOfItems = Array.length(multiple)
+      let tabElements = Array.mapWithIndex(multiple, (tab, i) => {
         // if there's no label, infer the label from the language
         let label = switch tab.label {
         | Some(label) => label
         | None =>
           switch tab.lang {
-          | Some(lang) => langShortname(lang)->Js.String2.toUpperCase
-          | None => Belt.Int.toString(i)
+          | Some(lang) => langShortname(lang)->String.toUpperCase
+          | None => Int.toString(i)
           }
         }
 
@@ -188,7 +188,7 @@ module Toggle = {
           ReactEvent.Mouse.preventDefault(evt)
           setSelected(_ => i)
         }
-        let key = label ++ ("-" ++ Belt.Int.toString(i))
+        let key = label ++ ("-" ++ Int.toString(i))
 
         let paddingX = switch numberOfItems {
         | 1
@@ -215,12 +215,12 @@ module Toggle = {
       })
 
       let children =
-        Belt.Array.get(multiple, selected)
-        ->Belt.Option.map(tab => {
-          let lang = Belt.Option.getWithDefault(tab.lang, "text")
+        multiple[selected]
+        ->Option.map(tab => {
+          let lang = Option.getOr(tab.lang, "text")
           HighlightJs.renderHLJS(~highlightedLines=?tab.highlightedLines, ~code=tab.code, ~lang, ())
         })
-        ->Belt.Option.getWithDefault(React.null)
+        ->Option.getOr(React.null)
 
       // On a ReScript tab, always copy or open the ReScript code. Otherwise, copy the current selected code.
       let isReScript = tab =>
@@ -229,7 +229,7 @@ module Toggle = {
         | _ => false
         }
 
-      let buttonDiv = switch Js.Array2.findi(multiple, (tab, index) =>
+      let buttonDiv = switch Array.findWithIndex(multiple, (tab, index) =>
         tab->isReScript || index === selected
       ) {
       | Some({code: ""}) => React.null

@@ -134,7 +134,7 @@ throw {
 
 ## Catching JS Exceptions
 
-To distinguish between JavaScript exceptions and ReScript exceptions, ReScript namespaces JS exceptions under the `Js.Exn.Error(payload)` variant. To catch an exception thrown from the JS side:
+To distinguish between JavaScript exceptions and ReScript exceptions, ReScript namespaces JS exceptions under the `Exn.Error(payload)` variant. To catch an exception thrown from the JS side:
 
 
 Throw an exception from JS:
@@ -158,25 +158,25 @@ try {
   // call the external method
   someJSFunctionThatThrows()
 } catch {
-| Js.Exn.Error(obj) =>
-  switch Js.Exn.message(obj) {
+| Exn.Error(obj) =>
+  switch Exn.message(obj) {
   | Some(m) => Console.log("Caught a JS exception! Message: " ++ m)
   | None => ()
   }
 }
 ```
 
-The `obj` here is of type `Js.Exn.t`, intentionally opaque to disallow illegal operations. To operate on `obj`, do like the code above by using the standard library's [`Js.Exn`](api/js/exn) module's helpers.
+The `obj` here is of type `Exn.t`, intentionally opaque to disallow illegal operations. To operate on `obj`, do like the code above by using the standard library's [`Exn`](api/js/exn) module's helpers.
 
 ## Raise a JS Exception
 
-`raise(MyException)` raises a ReScript exception. To raise a JavaScript exception (whatever your purpose is), use `Js.Exn.raiseError`:
+`raise(MyException)` raises a ReScript exception. To raise a JavaScript exception (whatever your purpose is), use `Exn.raiseError`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
 let myTest = () => {
-  Js.Exn.raiseError("Hello!")
+  Exn.raiseError("Hello!")
 }
 ```
 ```js
@@ -257,7 +257,7 @@ try {
 } catch {
 | Not_found => ... // catch a ReScript exception
 | Invalid_argument(_) => ... // catch a second ReScript exception
-| Js.Exn.Error(obj) => ... // catch the JS exception
+| Exn.Error(obj) => ... // catch the JS exception
 }
 ```
 
