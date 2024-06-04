@@ -542,9 +542,9 @@ module WarningFlagsWidget = {
     // Used for the text input
     let inputRef = React.useRef(Nullable.null)
 
-    let focusInput = () => inputRef.current->Nullable.toOption->Option.forEach(el => el->focus)
+    let focusInput = () => inputRef.current->Nullable.forEach(el => el->focus)
 
-    let blurInput = () => inputRef.current->Nullable.toOption->Option.forEach(el => el->blur)
+    let blurInput = () => inputRef.current->Nullable.forEach(el => el->blur)
 
     let chips = Array.mapWithIndex(flags, (token, i) => {
       let {WarningFlagDescription.Parser.flag: flag, enabled} = token

@@ -25,7 +25,7 @@ let make = (
     onClear()
   }
 
-  let focusInput = () => textInput.current->Nullable.toOption->Option.forEach(el => el->focus)
+  let focusInput = () => textInput.current->Nullable.forEach(el => el->focus)
 
   let onAreaFocus = evt => {
     let el = ReactEvent.Focus.target(evt)
