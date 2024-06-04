@@ -100,7 +100,7 @@ module Resource = {
 
     fuser
     ->Fuse.search(pattern)
-    ->Belt.SortArray.stableSortBy((a, b) => a["item"].searchScore > b["item"].searchScore ? -1 : 1)
+    ->Array.toSorted((a, b) => Float.compare(a["item"].searchScore, b["item"].searchScore))
   }
 
   let applyUrlResourceSearch = (urls: array<urlResource>, pattern: string): array<

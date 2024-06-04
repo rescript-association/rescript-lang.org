@@ -29,9 +29,8 @@ let make = (
 
   let onAreaFocus = evt => {
     let el = ReactEvent.Focus.target(evt)
-    // TODO(aspeddro)
-    // let isDiv = Js.Null_undefined.isNullable(el["type"])
-    let isDiv = Nullable.toOption(el["type"])->Option.isSome
+    // TODO(aspeddro): Replace with `Nullable.isNullable` when Core merge https://github.com/rescript-association/rescript-core/pull/227 and publish a new release
+    let isDiv = Js.Null_undefined.isNullable(el["type"])
 
     if isDiv && state === Inactive {
       focusInput()

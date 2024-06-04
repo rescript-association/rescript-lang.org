@@ -223,7 +223,7 @@ module SidebarTree = {
         </div>
         <div className="hl-overline text-gray-80 mt-5 mb-2"> {"submodules"->React.string} </div>
         {node.children
-        ->Belt.SortArray.stableSortBy((v1, v2) => v1.name > v2.name ? 1 : -1)
+        ->Array.toSorted((v1, v2) => String.compare(v1.name, v2.name))
         ->Array.map(renderNode)
         ->React.array}
       </aside>

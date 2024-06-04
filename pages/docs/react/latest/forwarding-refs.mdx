@@ -59,9 +59,7 @@ let make = () => {
   let input = React.useRef(Nullable.null)
 
   let focusInput = () =>
-    input.current
-    ->Nullable.toOption
-    ->Option.forEach(input => input->focus)
+    input.current->Nullable.forEach(input => input->focus)
 
   let onClick = _ => focusInput()
 

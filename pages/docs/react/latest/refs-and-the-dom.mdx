@@ -86,9 +86,9 @@ let make = () => {
   let textInput = React.useRef(Nullable.null)
 
   let focusInput = () =>
-    switch textInput.current->Nullable.toOption {
-    | Some(dom) => dom->focus
-    | None => ()
+    switch textInput.current {
+    | Value(dom) => dom->focus
+    | Null | Undefined => ()
     }
 
   let onClick = _ => focusInput()
@@ -103,22 +103,29 @@ let make = () => {
 ```js
 function CustomTextInput(Props) {
   var textInput = React.useRef(null);
-  var onClick = function (param) {
+  var focusInput = function () {
     var dom = textInput.current;
-    if (!(dom == null)) {
-      dom.focus();
+    if (dom === null || dom === undefined) {
       return ;
     }
-
+    dom.focus();
   };
-  return React.createElement("div", undefined, React.createElement("input", {
-                  ref: textInput,
-                  type: "text"
-                }), React.createElement("input", {
-                  type: "button",
-                  value: "Focus the text input",
-                  onClick: onClick
-                }));
+  var onClick = function (param) {
+    focusInput();
+  };
+  return JsxRuntime.jsxs("div", {
+              children: [
+                JsxRuntime.jsx("input", {
+                      ref: Caml_option.some(textInput),
+                      type: "text"
+                    }),
+                JsxRuntime.jsx("input", {
+                      type: "button",
+                      value: "Focus the text input",
+                      onClick: onClick
+                    })
+              ]
+            });
 }
 ```
 
@@ -199,9 +206,7 @@ let make = () => {
   }
 
   let focusTextInput = _ => {
-    textInput.current
-    ->Nullable.toOption
-    ->Option.forEach(input => input->focus)
+    textInput.current->Nullable.forEach(input => input->focus)
   }
 
   <div>
@@ -218,16 +223,14 @@ function CustomTextInput(Props) {
   var textInput = React.useRef(null);
   var setTextInputRef = function (element) {
     textInput.current = element;
-
   };
   var focusTextInput = function (param) {
-    return Belt_Option.forEach(Caml_option.nullable_to_opt(textInput.current), (function (input) {
-                  input.focus();
-
-                }));
+    Core__Nullable.forEach(textInput.current, (function (input) {
+            input.focus();
+          }));
   };
   return React.createElement("div", undefined, React.createElement("input", {
-                  ref: setTextInputRef,
+                  ref: Caml_option.some(setTextInputRef),
                   type: "text"
                 }), React.createElement("input", {
                   type: "button",
