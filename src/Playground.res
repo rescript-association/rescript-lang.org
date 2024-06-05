@@ -1559,64 +1559,62 @@ let make = (~versions: array<string>) => {
     None
   }, [])
 
-  let onMouseDown = _ => isDragging.current = true
-
-  let onMove = position => {
-    if isDragging.current {
-      switch (
-        panelRef.current->Nullable.toOption,
-        leftPanelRef.current->Nullable.toOption,
-        rightPanelRef.current->Nullable.toOption,
-        subPanelRef.current->Nullable.toOption,
-      ) {
-      | (Some(panelElement), Some(leftElement), Some(rightElement), Some(subElement)) =>
-        let rectPanel = Webapi.Element.getBoundingClientRect(panelElement)
-
-        // Update OutputPanel height
-        let offsetTop = Webapi.Element.getBoundingClientRect(subElement)["top"]
-        Webapi.Element.Style.height(subElement, `calc(100vh - ${offsetTop->Float.toString}px)`)
-
-        switch layout {
-        | Row =>
-          let delta = Int.toFloat(position) -. rectPanel["left"]
-
-          let leftWidth = delta /. rectPanel["width"] *. 100.0
-          let rightWidth = (rectPanel["width"] -. delta) /. rectPanel["width"] *. 100.0
-
-          Webapi.Element.Style.width(leftElement, `${leftWidth->Float.toString}%`)
-          Webapi.Element.Style.width(rightElement, `${rightWidth->Float.toString}%`)
-
-        | Column =>
-          let delta = Int.toFloat(position) -. rectPanel["top"]
-
-          let topHeight = delta /. rectPanel["height"] *. 100.
-          let bottomHeight = (rectPanel["height"] -. delta) /. rectPanel["height"] *. 100.
-
-          Webapi.Element.Style.height(leftElement, `${topHeight->Float.toString}%`)
-          Webapi.Element.Style.height(rightElement, `${bottomHeight->Float.toString}%`)
-        }
-      | _ => ()
-      }
-    }
-  }
-
-  let onMouseMove = e => {
-    let position = layout == Row ? ReactEvent.Mouse.clientX(e) : ReactEvent.Mouse.clientY(e)
-    onMove(position)
-  }
-
   let onMouseUp = _ => isDragging.current = false
-
-  let onTouchMove = e => {
-    let touches = e->ReactEvent.Touch.touches
-    let firstTouch = touches["0"]
-    let position = layout == Row ? firstTouch["clientX"] : firstTouch["clientY"]
-    onMove(position)
-  }
-
+  let onMouseDown = _ => isDragging.current = true
   let onTouchStart = _ => isDragging.current = true
 
   React.useEffect(() => {
+    let onMove = position => {
+      if isDragging.current {
+        switch (
+          panelRef.current->Nullable.toOption,
+          leftPanelRef.current->Nullable.toOption,
+          rightPanelRef.current->Nullable.toOption,
+          subPanelRef.current->Nullable.toOption,
+        ) {
+        | (Some(panelElement), Some(leftElement), Some(rightElement), Some(subElement)) =>
+          let rectPanel = Webapi.Element.getBoundingClientRect(panelElement)
+
+          // Update OutputPanel height
+          let offsetTop = Webapi.Element.getBoundingClientRect(subElement)["top"]
+          Webapi.Element.Style.height(subElement, `calc(100vh - ${offsetTop->Float.toString}px)`)
+
+          switch layout {
+          | Row =>
+            let delta = Int.toFloat(position) -. rectPanel["left"]
+
+            let leftWidth = delta /. rectPanel["width"] *. 100.0
+            let rightWidth = (rectPanel["width"] -. delta) /. rectPanel["width"] *. 100.0
+
+            Webapi.Element.Style.width(leftElement, `${leftWidth->Float.toString}%`)
+            Webapi.Element.Style.width(rightElement, `${rightWidth->Float.toString}%`)
+
+          | Column =>
+            let delta = Int.toFloat(position) -. rectPanel["top"]
+
+            let topHeight = delta /. rectPanel["height"] *. 100.
+            let bottomHeight = (rectPanel["height"] -. delta) /. rectPanel["height"] *. 100.
+
+            Webapi.Element.Style.height(leftElement, `${topHeight->Float.toString}%`)
+            Webapi.Element.Style.height(rightElement, `${bottomHeight->Float.toString}%`)
+          }
+        | _ => ()
+        }
+      }
+    }
+
+    let onMouseMove = e => {
+      let position = layout == Row ? ReactEvent.Mouse.clientX(e) : ReactEvent.Mouse.clientY(e)
+      onMove(position)
+    }
+
+    let onTouchMove = e => {
+      let touches = e->ReactEvent.Touch.touches
+      let firstTouch = touches["0"]
+      let position = layout == Row ? firstTouch["clientX"] : firstTouch["clientY"]
+      onMove(position)
+    }
+
     Webapi.Window.addEventListener("mousemove", onMouseMove)
     Webapi.Window.addEventListener("touchmove", onTouchMove)
     Webapi.Window.addEventListener("mouseup", onMouseUp)
@@ -1628,7 +1626,7 @@ let make = (~versions: array<string>) => {
         Webapi.Window.removeEventListener("mouseup", onMouseUp)
       },
     )
-  }, [])
+  }, [layout])
 
   let cmErrors = switch compilerState {
   | Ready({result}) =>

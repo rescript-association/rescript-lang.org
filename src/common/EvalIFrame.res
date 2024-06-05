@@ -76,9 +76,9 @@ let sendOutput = code => {
   | Value(element) =>
     switch element->Element.contentWindow {
     | Some(win) => win->Element.postMessage(code, ~targetOrigin="*")
-    | None => RescriptCore.Console.error("contentWindow not found")
+    | None => Console.error("contentWindow not found")
     }
-  | Null | Undefined => RescriptCore.Console.error("iframe not found")
+  | Null | Undefined => Console.error("iframe not found")
   }
 }
 
