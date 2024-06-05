@@ -38,7 +38,9 @@ let srcDoc = `
         <script>
           window.addEventListener("message", (event) => {
             try {
-              eval(event.data);
+              // https://rollupjs.org/troubleshooting/#avoiding-eval
+              const eval2 = eval;
+              eval2(event.data);
             } catch (err) {
               console.error(err);
             }
