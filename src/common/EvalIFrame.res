@@ -4,6 +4,8 @@ let css = `body {
   color-scheme: light dark;
 }`
 
+let reactVersion = "18.2.0"
+
 let srcDoc = `
     <html>
       <head>
@@ -13,22 +15,49 @@ let srcDoc = `
       </head>
       <body>
         <div id="root"></div>
+        <script type="importmap">
+          {
+            "imports": {
+              "@jsxImportSource": "https://esm.sh/react@${reactVersion}",
+              "react-dom/client": "https://esm.sh/react-dom@${reactVersion}/client",
+              "react": "https://esm.sh/react@${reactVersion}",
+              "react/jsx-runtime": "https://esm.sh/react@${reactVersion}/jsx-runtime"
+            }
+          }
+        </script>
+        <script type="module">
+          import * as ReactDOM from 'react-dom/client';
+          import * as React from 'react';
+          import * as JsxRuntime from 'react/jsx-runtime';
+          const container = document.getElementById("root");
+          const root = ReactDOM.createRoot(container);
+          window.reactRoot = root;
+          window.React = React;
+          window.JsxRuntime = JsxRuntime;
+        </script>
         <script>
           window.addEventListener("message", (event) => {
             try {
-              eval(event.data);
+              // https://rollupjs.org/troubleshooting/#avoiding-eval
+              const eval2 = eval;
+              eval2(event.data);
             } catch (err) {
               console.error(err);
             }
           });
           const sendLog = (logLevel) => (...args) => {
             let finalArgs = args.map(arg => {
-              if (typeof arg === 'object') {
-                return JSON.stringify(arg);
+              if (arg === undefined) {
+                return 'undefined';
+              }
+              else if (typeof arg === 'object') {
+                return JSON.stringify(arg, Object.getOwnPropertyNames(arg));
+              } else if (typeof arg === 'function') {
+                return '[function]';
               }
               return arg;
             });
-            parent.window.postMessage({ type: logLevel, args: finalArgs }, '*')
+            parent.window.postMessage({ type: logLevel, args: finalArgs }, '*');
           };
           console.log = sendLog('log');
           console.warn = sendLog('warn');
@@ -41,22 +70,19 @@ let srcDoc = `
 let sendOutput = code => {
   open Webapi
 
-  let frame =
-    Document.document
-    ->Element.getElementById("iframe-eval")
-    ->Nullable.toOption
+  let frame = Document.document->Element.getElementById("iframe-eval")
 
   switch frame {
-  | Some(element) =>
+  | Value(element) =>
     switch element->Element.contentWindow {
     | Some(win) => win->Element.postMessage(code, ~targetOrigin="*")
-    | None => ()
+    | None => RescriptCore.Console.error("contentWindow not found")
     }
-  | None => ()
+  | Null | Undefined => RescriptCore.Console.error("iframe not found")
   }
 }
 
 @react.component
 let make = () => {
-  <iframe width="100%" id="iframe-eval" className="relative w-full text-gray-20" srcDoc />
+  <iframe width="100%" id="iframe-eval" className="relative h-full w-full text-gray-20" srcDoc />
 }

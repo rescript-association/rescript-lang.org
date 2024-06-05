@@ -22,7 +22,7 @@ open CompilerManagerHook
 module Api = RescriptCompilerApi
 
 type layout = Column | Row
-type tab = JavaScript | Problems | Settings | Console
+type tab = JavaScript | Output | Problems | Settings
 let breakingPoint = 1024
 
 module DropdownSelect = {
@@ -1204,67 +1204,6 @@ let locMsgToCmError = (~kind: CodeMirror.Error.kind, locMsg: Api.LocMsg.t): Code
   }
 }
 
-// module RenderOutput = {
-//   @react.component
-//   let make = (~compilerState: CompilerManagerHook.state) => {
-//     React.useEffect(() => {
-//       let code = switch compilerState {
-//       | Ready(ready) =>
-//         switch ready.result {
-//         | Comp(Success(_)) => ControlPanel.codeFromResult(ready.result)->Some
-//         | _ => None
-//         }
-//       | _ => None
-//       }
-
-//       let _valid = switch code {
-//       | Some(code) =>
-//         switch RenderOutputManager.renderOutput(code) {
-//         | Ok(_) => true
-//         | Error(_) => false
-//         }
-//       | None => false
-//       }
-//       None
-//     }, [compilerState])
-
-//     <div className={""}>
-//       <iframe
-//         width="100%"
-//         id="iframe-eval"
-//         className="relative w-full text-gray-20"
-//         srcDoc=RenderOutputManager.Frame.srcdoc
-//       />
-//     </div>
-
-//     //     switch code {
-//     //     | Some(code) =>
-//     //       switch RenderOutputManager.renderOutput(code) {
-//     //       | Ok() =>
-//     //         <iframe
-//     //           width="100%"
-//     //           id="iframe-eval"
-//     //           className="relative w-full text-gray-20"
-//     //           srcDoc=RenderOutputManager.Frame.srcdoc
-//     //         />
-//     //       | Error() =>
-//     //         let code = `module App = {
-//     //   @react.component
-//     //   let make = () => {
-//     //     <ModuleName />
-//     //   }
-//     // }`
-//     //         <div className={"whitespace-pre-wrap p-4 block"}>
-//     //           <p className={"mb-2"}> {React.string("To render element create a module App")} </p>
-//     //           <pre> {HighlightJs.renderHLJS(~code, ~darkmode=true, ~lang="rescript", ())} </pre>
-//     //         </div>
-//     //       }
-
-//     //     | _ => React.null
-//     //     }
-//   }
-// }
-
 module OutputPanel = {
   @react.component
   let make = (
@@ -1381,8 +1320,10 @@ module OutputPanel = {
 
     prevSelected.current = selected
 
+    let (logs, setLogs) = React.useState(_ => [])
+
     let tabs = [
-      (Console, <ConsolePanel compilerState runOutput />),
+      (Output, <OutputPanel runOutput compilerState logs setLogs />),
       (JavaScript, output),
       (Problems, errorPane),
       (Settings, settingsPane),
@@ -1763,12 +1704,11 @@ let make = (~versions: array<string>) => {
     "flex-1 items-center p-4 border-t-4 border-transparent " ++ activeClass
   }
 
-  let tabs = [JavaScript, Console, Problems, Settings]
+  let tabs = [JavaScript, Output, Problems, Settings]
 
   let headers = Array.mapWithIndex(tabs, (tab, i) => {
     let title = switch tab {
-    // | RenderOutput => "Render Output"
-    | Console => "Console"
+    | Output => "Output"
     | JavaScript => "JavaScript"
     | Problems => "Problems"
     | Settings => "Settings"

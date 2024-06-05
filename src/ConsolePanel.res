@@ -5,9 +5,7 @@ type logLevel = [
 ]
 
 @react.component
-let make = (~compilerState, ~runOutput) => {
-  let (logs, setLogs) = React.useState(_ => [])
-
+let make = (~logs, ~setLogs) => {
   React.useEffect(() => {
     let cb = e => {
       let data = e["data"]
@@ -22,23 +20,13 @@ let make = (~compilerState, ~runOutput) => {
     Some(() => Webapi.Window.removeEventListener("message", cb))
   }, [])
 
-  React.useEffect(() => {
-    if runOutput {
-      switch compilerState {
-      | CompilerManagerHook.Ready({result: Comp(Success({js_code}))}) =>
-        setLogs(_ => [])
-        let ast = AcornParse.parse(js_code)
-        let transpiled = AcornParse.removeImportsAndExports(ast)
-        EvalIFrame.sendOutput(transpiled)
-      | _ => ()
-      }
-    }
-    None
-  }, (compilerState, runOutput))
-
-  <div>
+  <div className="px-2 py-6 relative flex flex-col flex-1 overflow-y-hidden">
+    <h2 className="font-bold text-gray-5/50 absolute right-2 top-2"> {React.string("Console")} </h2>
     {switch logs {
-    | [] => React.null
+    | [] =>
+      React.string(
+        "Add some 'Console.log' to your code and enable 'Auto-run' to see your logs here.",
+      )
     | logs =>
       let content =
         logs
@@ -56,8 +44,7 @@ let make = (~compilerState, ~runOutput) => {
         })
         ->React.array
 
-      <div className="whitespace-pre-wrap p-4 block"> content </div>
+      <div className="whitespace-pre-wrap p-4 overflow-auto"> content </div>
     }}
-    <EvalIFrame />
   </div>
 }
