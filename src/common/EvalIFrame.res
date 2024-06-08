@@ -53,7 +53,7 @@ let srcDoc = `
               else if (typeof arg === 'object') {
                 return JSON.stringify(arg, Object.getOwnPropertyNames(arg));
               } else if (typeof arg === 'function') {
-                return '[function]';
+                return arg.toString()
               }
               return arg;
             });
