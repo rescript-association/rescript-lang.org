@@ -117,8 +117,3 @@ let parse: string => option<JSON.t>
 `ParseError` otherwise
 */
 let parseOrRaise: string => JSON.t
-
-/**
-stringify(json)` returns the `string` representation of the given `JSON.t` value
-*/
-let stringify: JSON.t => string

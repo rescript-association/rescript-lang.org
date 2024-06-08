@@ -17,5 +17,3 @@ let parseOrRaise = s =>
     }
     \"@@"(raise, ParseError(message))
   }
-
-@val external stringify: JSON.t => string = "JSON.stringify"
