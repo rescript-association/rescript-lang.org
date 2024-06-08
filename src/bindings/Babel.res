@@ -59,15 +59,17 @@ module PlaygroundValidator = {
             switch (firstDeclaration.id, firstDeclaration.init) {
             | (Identifier({name}), Some(init)) if name === "App" =>
               switch init->Null.toOption {
-              | Some(ObjectExpression({
-                  properties: [
-                    ObjectProperty({
+              | Some(ObjectExpression({properties})) =>
+                let foundEntryPoint = properties->Array.find(property => {
+                  switch property {
+                  | ObjectProperty({
                       key: Identifier({name: "make"}),
                       value: Identifier({name: "Playground$App"}),
-                    }),
-                  ],
-                })) =>
-                entryPoint.contents = true
+                    }) => true
+                  | _ => false
+                  }
+                })
+                entryPoint.contents = Option.isSome(foundEntryPoint)
               | _ => ()
               }
             | _ => ()
