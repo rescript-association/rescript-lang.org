@@ -17,6 +17,9 @@
     }
   },
   "dependencies": {
+    "@babel/generator": "^7.24.7",
+    "@babel/parser": "^7.24.7",
+    "@babel/traverse": "^7.24.7",
     "@docsearch/react": "^3.5.2",
     "@headlessui/react": "^1.2.0",
     "@mdx-js/loader": "^2.3.0",
