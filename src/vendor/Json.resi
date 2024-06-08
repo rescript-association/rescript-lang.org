@@ -106,13 +106,19 @@ module Encode = Json_encode
 
 exception ParseError(string)
 
-@ocaml.doc(" [parse s] returns [Some json] if s is a valid json string, [None] otherwise ")
-let parse: string => option<Js.Json.t>
+/**
+`parse(s)` returns `option<JSON.t>` if s is a valid json string, `None`
+otherwise
+*/
+let parse: string => option<JSON.t>
 
-@ocaml.doc(
-  " [parse s] returns a [Js.Json.t] if s is a valid json string, raises [ParseError] otherwise "
-)
-let parseOrRaise: string => Js.Json.t
+/**
+`parse(s)` returns a `JSON.t` if `s` is a valid json string, raises 
+`ParseError` otherwise
+*/
+let parseOrRaise: string => JSON.t
 
-@ocaml.doc(" [stringify json] returns the [string] representation of the given [Js.Json.t] value ")
-let stringify: Js.Json.t => string
+/**
+stringify(json)` returns the `string` representation of the given `JSON.t` value
+*/
+let stringify: JSON.t => string

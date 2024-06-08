@@ -477,7 +477,7 @@ let processStaticProps = (~slug: array<string>, ~version: string) => {
 
               Variant({items: items})->Null.make
             }
-          | None => Js.Null.empty
+          | None => Null.null
           }
           Type({
             id,
