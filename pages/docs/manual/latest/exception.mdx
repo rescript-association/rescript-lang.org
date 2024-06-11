@@ -6,7 +6,7 @@ canonical: "/docs/manual/latest/exception"
 
 # Exception
 
-Exceptions are just a special kind of variant, thrown in **exceptional** cases (don't abuse them!). Consider using the `option` or `result` type for recoverable errors.
+Exceptions are just a special kind of variant, thrown in **exceptional** cases (don't abuse them!). Consider using the [`option`](null-undefined-option.mdx) or `result` type for recoverable errors.
 
 You can create your own exceptions like you'd make a variant (exceptions need to be capitalized too).
 
@@ -136,7 +136,7 @@ if (exit === 1) {
 
 ### `Invalid_argument`
 
-Used to check if argument is valid. This exception take a string
+Used to check if argument is valid. This exception takes a string
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 ```res example
