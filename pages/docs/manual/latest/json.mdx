@@ -34,7 +34,7 @@ Where `data` can be any type you assume the JSON is. As you can see, this compil
 
 ## Stringify
 
-Use `Json.stringify`:
+Use `JSON.stringify`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
@@ -52,4 +52,4 @@ console.log(JSON.stringify([
 
 ## Advanced
 
-The [Json](api/core/json) module provides slightly safer, low-level building blocks for power users who want to parse JSON on a per-field basis. See the examples in the API docs.
+Thanks to untagged variants, JSON can be encoded and decoded idiomatically. Check it out on [the variants page](/variant#decoding-and-encoding-json-idiomatically).
