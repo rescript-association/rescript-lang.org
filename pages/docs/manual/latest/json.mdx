@@ -34,12 +34,12 @@ Where `data` can be any type you assume the JSON is. As you can see, this compil
 
 ## Stringify
 
-Use `JSON.stringify`:
+Use [`JSON.stringify`](api/core/json#value-stringify):
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-Console.log(JSON.stringifyAny(["Amy", "Joe"]))
+Console.log(JSON.stringify(["Amy", "Joe"]))
 ```
 ```js
 console.log(JSON.stringify([
@@ -52,4 +52,4 @@ console.log(JSON.stringify([
 
 ## Advanced
 
-Thanks to untagged variants, JSON can be encoded and decoded idiomatically. Check it out on [the variants page](/variant#decoding-and-encoding-json-idiomatically).
+Thanks to untagged variants, JSON can be encoded and decoded idiomatically. Check it out on [the variants page](variant#decoding-and-encoding-json-idiomatically).
