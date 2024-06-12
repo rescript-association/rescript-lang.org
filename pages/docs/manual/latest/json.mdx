@@ -50,6 +50,33 @@ console.log(JSON.stringify([
 
 </CodeTab>
 
+### Import a JSON file
+
+Use the `@module` attribute to import JSON files directly.
+
+<CodeTab labels={["ReScript", "JS Output (Module)", "JS Output (CommonJS)"]}>
+
+```res example
+@module external studentNames: JSON.t = "./students.json"
+Console.log(studentNames)
+```
+```js
+import * as StudentsJson from "./students.json";
+
+var studentNames = StudentsJson;
+
+console.log(studentNames);
+```
+```js
+var StudentsJson = require("./students.json");
+
+var studentNames = StudentsJson;
+
+console.log(studentNames);
+```
+
+</CodeTab>
+
 ## Advanced
 
 Thanks to untagged variants, JSON can be encoded and decoded idiomatically. Check it out on [the variants page](variant#decoding-and-encoding-json-idiomatically).
