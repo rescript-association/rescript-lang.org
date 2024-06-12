@@ -9,6 +9,7 @@
     "rendering-elements",
     "components-and-props",
     "arrays-and-keys",
+    "events",
     "refs-and-the-dom",
     "context",
     "styling",
