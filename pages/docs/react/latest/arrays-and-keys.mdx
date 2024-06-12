@@ -12,7 +12,26 @@ Whenever we are transforming data into an array of elements and put it in our Re
 
 </Intro>
 
-## Keys & Rendering Arrays
+## Rendering Arrays
+
+Arrays require a special function `React.array` to convert an `array<Jsx.element>` to render as `Jsx.element`.
+
+```res
+type todo = {id: string, text: string}
+
+@react.component
+let make = () => {
+  let todos = [{id: "todo1", text: "Todo 1"}, {id: "todo2", text: "Todo 2"}]
+
+  let items = Array.map(todos, todo => {
+    <li key={todo.id}> {React.string(todo.text)} </li>
+  })
+
+  <ul> {React.array(items)} </ul>
+}
+```
+
+## Keys
 
 Keys help React identify which elements have been changed, added, or removed throughout each render. Keys should be given to elements inside the array to give the elements a stable identity:
 
