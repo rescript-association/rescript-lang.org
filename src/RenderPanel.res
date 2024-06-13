@@ -12,13 +12,13 @@ let make = (~compilerState: CompilerManagerHook.state, ~clearLogs, ~runOutput) =
       switch compilerState {
       | CompilerManagerHook.Ready({result: Comp(Success({js_code}))}) =>
         clearLogs()
-        let ast = AcornParse.parse(js_code)
-        let transpiled = AcornParse.removeImportsAndExports(ast)
-        let isValidReact = AcornParse.hasEntryPoint(ast)
-        isValidReact
-          ? transpiled->wrapReactApp->EvalIFrame.sendOutput
-          : EvalIFrame.sendOutput(transpiled)
-        setValidReact(_ => isValidReact)
+        open Babel
+
+        let ast = Parser.parse(js_code, {sourceType: "module"})
+        let {entryPointExists, code} = PlaygroundValidator.validate(ast)
+
+        entryPointExists ? code->wrapReactApp->EvalIFrame.sendOutput : EvalIFrame.sendOutput(code)
+        setValidReact(_ => entryPointExists)
       | _ => ()
       }
     }
