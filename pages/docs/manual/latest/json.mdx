@@ -34,12 +34,12 @@ Where `data` can be any type you assume the JSON is. As you can see, this compil
 
 ## Stringify
 
-Use [`JSON.stringify`](api/core/json#value-stringify):
+Use [`JSON.stringify`](api/core/json#value-stringify) if your data is of type `JSON.t` or [`JSON.stringifyAny`](api/core/json#value-stringifyAny) if it is not.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res example
-Console.log(JSON.stringify(["Amy", "Joe"]))
+Console.log(JSON.stringifyAny(["Amy", "Joe"]))
 ```
 ```js
 console.log(JSON.stringify([
