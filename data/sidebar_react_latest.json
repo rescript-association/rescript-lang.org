@@ -28,6 +28,7 @@
   "Guides": [
     "beyond-jsx",
     "forwarding-refs",
-    "extensions-of-props"
+    "extensions-of-props",
+    "interopt"
   ]
 }
