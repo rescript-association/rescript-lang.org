@@ -29,6 +29,6 @@
     "beyond-jsx",
     "forwarding-refs",
     "extensions-of-props",
-    "interopt"
+    "interop"
   ]
 }
