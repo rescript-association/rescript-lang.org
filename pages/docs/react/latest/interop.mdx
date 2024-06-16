@@ -14,19 +14,12 @@ including defining component props and handling various import scenarios.
 
 To reuse a React component in ReScript, create a new module, specify the component's location, and define its props.
 
-```js
-import Confetti from "react-confetti"
-
-const App = () => {
-    <Confetti width={300} height={300} />
-}
-```
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 module Confetti = {
-  @module("react-confetti")
-  @react.component
-  external make : (~width:int, ~height: int) => React.element =  "default"
+  @module("react-confetti") @react.component
+  external make: (~width: int, ~height: int) => React.element = "default"
 }
 
 // Assuming we are in App.res
@@ -36,6 +29,22 @@ let make = () => {
 }
 ```
 
+```js
+import ReactConfetti from "react-confetti";
+import * as JsxRuntime from "react/jsx-runtime";
+
+var Confetti = {};
+
+function Playground(props) {
+  return JsxRuntime.jsx(ReactConfetti, {
+              width: 300,
+              height: 300
+            });
+}
+```
+
+</CodeTab>
+
 ## Importing from Relative Paths
 
 You can import components from relative file paths using the `@module` attribute.  
@@ -43,20 +52,25 @@ Use "default" to indicate the default export, or specify a named export if neede
 
 ### Named Export Example 
 
+<CodeTab labels={["ReScript"]}>
+
 ```res
 // Equivalent of import { Foo } from "bar"
 module Foo = {
-  @module("bar")
-  @react.component
-  external make : () => React.element =  "Foo"
+  @module("bar") @react.component
+  external make: unit => React.element = "Foo"
 }
 ```
+
+</CodeTab>
 
 ## Defining Props Types
 
 You can define a separate type for your component's props within the module.
 
 ### Props Type Example
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 module Confetti = {
@@ -75,9 +89,27 @@ let make = () => {
 }
 ```
 
+```js
+import ReactConfetti from "react-confetti";
+import * as JsxRuntime from "react/jsx-runtime";
+
+var Confetti = {};
+
+function Playground(props) {
+  return JsxRuntime.jsx(ReactConfetti, {
+              width: 300,
+              height: 300
+            });
+}
+```
+
+</CodeTab>
+
 ## Optional Props
 
 To define optional props, use the `?` symbol.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 module Confetti = {
@@ -98,9 +130,27 @@ let make = () => {
 }
 ```
 
+```js
+import ReactConfetti from "react-confetti";
+import * as JsxRuntime from "react/jsx-runtime";
+
+var Confetti = {};
+
+function Playground(props) {
+  return JsxRuntime.jsx(ReactConfetti, {
+              width: 300,
+              height: 300
+            });
+}
+```
+
+</CodeTab>
+
 ## Extending Built-in DOM Nodes
 
 To accept existing DOM props for a component, extend the `JsxDOM.domProps` type.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 module Foo = {
@@ -118,5 +168,22 @@ let make = () => {
   <Foo width={"300px"} height={"300px"} customProp="bar" />
 }
 ```
+
+```js
+import Foo from "foo";
+import * as JsxRuntime from "react/jsx-runtime";
+
+var Foo$1 = {};
+
+function Playground(props) {
+  return JsxRuntime.jsx(Foo, {
+              height: "300px",
+              width: "300px",
+              customProp: "bar"
+            });
+}
+```
+
+</CodeTab>
 
 In this example `width` and `height` can be set because `JsxDOM.domProps` was spread into `fooProps`.
