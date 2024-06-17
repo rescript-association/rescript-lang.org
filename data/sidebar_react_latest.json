@@ -14,7 +14,8 @@
     "context",
     "styling",
     "router",
-    "lazy-components"
+    "lazy-components",
+    "import-export-reactjs"
   ],
   "Hooks & State Management": [
     "hooks-overview",
@@ -28,7 +29,6 @@
   "Guides": [
     "beyond-jsx",
     "forwarding-refs",
-    "extensions-of-props",
-    "interop"
+    "extensions-of-props"
   ]
 }
