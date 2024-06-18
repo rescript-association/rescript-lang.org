@@ -12,6 +12,7 @@
     "events",
     "refs-and-the-dom",
     "context",
+    "memo",
     "styling",
     "router",
     "lazy-components",
