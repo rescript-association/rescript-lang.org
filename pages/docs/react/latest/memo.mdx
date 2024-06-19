@@ -48,51 +48,43 @@ var make = React.memo(function (props) {
 In React, memo can accept an optional argument called "arePropsEqual". This function takes two arguments: the previous props and the new props of the component.
 It should return true if the old and new props are the same, meaning the component will produce the same output and behavior with the new props as it did with the old ones.
 
-In ReScript, to use the `arePropsEqual` function, you must redefine the `memo` binding.
+In ReScript, to use the `arePropsEqual` function, you must redefine the `make` binding with `React.memoCustomCompareProps`.
 
 <CodeTab>
 
 ```res
-type propsDef = {
-  disabled: bool,
-  onClick: unit => unit,
-}
-
-// Refine memo to satify the compiler.
-let memo = React.memoCustomCompareProps(_, (p1, p2) =>
-  p1.disabled == p2.disabled
-)
-
-@react.component(: propsDef)
-let make = memo((~disabled, ~onClick) => {
+@react.component
+let make = (~disabled, ~onClick) => {
   <button
     disabled={disabled}
     onClick={ev => ev->JsxEvent.Mouse.preventDefault->onClick}>
     {React.string("My button")}
   </button>
-})
+}
+
+let make = React.memoCustomCompareProps(make, (p1, p2) =>
+  p1.disabled == p2.disabled
+)
 ```
 
 ```js
 import * as React from "react";
 import * as JsxRuntime from "react/jsx-runtime";
 
-function memo(__x) {
-  return React.memo(__x, (function (p1, p2) {
-                return p1.disabled === p2.disabled;
-              }));
+function Playground(props) {
+  var onClick = props.onClick;
+  return JsxRuntime.jsx("button", {
+              children: "My button",
+              disabled: props.disabled,
+              onClick: (function (ev) {
+                  onClick((ev.preventDefault(), undefined));
+                })
+            });
 }
 
-var make = memo(function (props) {
-      var onClick = props.onClick;
-      return JsxRuntime.jsx("button", {
-                  children: "My button",
-                  disabled: props.disabled,
-                  onClick: (function (ev) {
-                      onClick((ev.preventDefault(), undefined));
-                    })
-                });
-    });
+var make = React.memo(Playground, (function (p1, p2) {
+        return p1.disabled === p2.disabled;
+      }));
 ```
 
 </CodeTab>
