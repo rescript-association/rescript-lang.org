@@ -48,9 +48,11 @@ var make = React.memo(function (props) {
 In React, memo can accept an optional argument called "arePropsEqual". This function takes two arguments: the previous props and the new props of the component.
 It should return true if the old and new props are the same, meaning the component will produce the same output and behavior with the new props as it did with the old ones.
 
-In ReScript, to use the `arePropsEqual` function, you must redefine the `make` binding with `React.memoCustomCompareProps`.
+In ReScript, you can use the `arePropsEqual` function with the `React.memoCustomCompareProps` binding. However, `React.memoCustomCompareProps` cannot be combined with `@react.component`.
 
-<CodeTab>
+To work around this, you can redefine the make binding:
+
+<CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
 @react.component
@@ -83,6 +85,47 @@ function Playground(props) {
 }
 
 var make = React.memo(Playground, (function (p1, p2) {
+        return p1.disabled === p2.disabled;
+      }));
+```
+
+</CodeTab>
+
+
+Another approach is to use a custom prop type and remove the `@react.component` annotation.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res
+type props = {
+  disabled: bool,
+  onClick: JsxEvent.Mouse.t => unit,
+}
+
+let make = React.memoCustomCompareProps(
+  ({disabled, onClick}) => {
+    <button disabled={disabled} onClick={ev => ev->onClick}>
+      {React.string("My button")}
+    </button>
+  },
+  (p1, p2) => p1.disabled == p2.disabled,
+)
+```
+
+```js
+import * as React from "react";
+import * as JsxRuntime from "react/jsx-runtime";
+
+var make = React.memo((function (param) {
+        var onClick = param.onClick;
+        return JsxRuntime.jsx("button", {
+                    children: "My button",
+                    disabled: param.disabled,
+                    onClick: (function (ev) {
+                        onClick(ev);
+                      })
+                  });
+      }), (function (p1, p2) {
         return p1.disabled === p2.disabled;
       }));
 ```
