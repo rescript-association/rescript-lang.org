@@ -13,7 +13,7 @@ omitted when calling the function.
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let print = (text, ~logLevel=?) => {
   switch logLevel {
   | Some(#error) => Console.error(text)
@@ -41,8 +41,45 @@ print("An error", "error");
 
 </CodeTab>
 
+Optional labeled arguments can also hold a default value.
+
+<CodeTab labels={["ReScript", "JS Output"]}>
+
+```res example
+let print = (text, ~logLevel=#info) => {
+  switch logLevel {
+  | #error => Console.error(text)
+  | #warn => Console.warn(text)
+  | #info => Console.log(text)
+  }
+}
+
+print("An info")
+print("A warning", ~logLevel=#warn)
+```
+
+```js
+function print(text, logLevelOpt) {
+  var logLevel = logLevelOpt !== undefined ? logLevelOpt : "info";
+  if (logLevel === "warn") {
+    console.warn(text);
+  } else if (logLevel === "error") {
+    console.error(text);
+  } else {
+    console.log(text);
+  }
+}
+
+print("An info", undefined);
+
+print("A warning", "warn");
+```
+
+</CodeTab>
+
 ### References
 
 * [Labeled Arguments](/docs/manual/latest/function#labeled-arguments)
 * [Optional Labeled Arguments](/docs/manual/latest/function#optional-labeled-arguments)
+* [Labeled Argument with Default Value](/docs/manual/latest/function#optional-with-default-value)
 * [Function Syntax Cheatsheet](/docs/manual/latest/function#tips--tricks)
