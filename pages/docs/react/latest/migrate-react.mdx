@@ -93,7 +93,7 @@ module M = {
 
 To this:
 
-```res
+```res example
 // V4
 module M = {
   type props<'msg> = {msg: 'msg}
@@ -122,7 +122,7 @@ module Context = {
 
 To this:
 
-```res
+```res example
 module Context = {
   let context = React.createContext(() => ())
 
@@ -156,7 +156,7 @@ module FancyInput = {
 }
 
 @react.component
-let make = () => {
+let make = (~onClick) => {
   let input = React.useRef(Nullable.null)
 
   <div>
@@ -169,7 +169,7 @@ let make = () => {
 
 To this: In v3, there is an inconsistency between `ref` as prop and `ref_` as argument. With JSX v4, `ref` is only allowed as an argument.
 
-```res
+```res example
 module FancyInput = {
   @react.component
   let make = React.forwardRef((
@@ -189,7 +189,7 @@ module FancyInput = {
 }
 
 @react.component
-let make = () => {
+let make = (~onClick) => {
   let input = React.useRef(Nullable.null)
 
   <div>
@@ -244,7 +244,7 @@ module Button = {
 
 To this:
 
-```res
+```res example
 module Button = {
   @module("./Button") @react.component
   external make: (~text: string=?) => React.element = "default"

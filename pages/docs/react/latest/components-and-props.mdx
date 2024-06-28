@@ -26,7 +26,7 @@ Let's start with a first example to see how a ReScript React component looks lik
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 // src/Greeting.res
 @react.component
 let make = () => {
@@ -59,7 +59,7 @@ In ReactJS, props are usually described as a single `props` record. In ReScript,
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 // src/Article.res
 @react.component
 let make = (~title: string, ~visitorCount: int, ~children: React.element) => {
@@ -90,7 +90,7 @@ We can leverage the full power of labeled arguments to define optional props as 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 // Greeting.res
 @react.component
 let make = (~name: option<string>=?) => {
@@ -116,9 +116,20 @@ function Greeting(props) {
 
 In JSX, you can apply optional props with some special syntax:
 
+<div className="hidden">
+
+```res prelude
+module Greeting = {
+  @react.component
+  let make = (~name: option<string>=?) => {React.string(name->Option.getOr(""))}
+}
+```
+
+</div>
+
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 let name = Some("Andrea")
 
 <Greeting ?name />
@@ -162,7 +173,7 @@ as a `React.element`:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 module MyList = {
   @react.component
   let make = (~children: React.element) => {
@@ -219,7 +230,7 @@ module StringChildren = {
 
 **Component with an optional `React.element` as children:**
 
-```res
+```res example
 module OptionalChildren = {
   @react.component
   let make = (~children: option<React.element>=?) => {
@@ -268,7 +279,7 @@ The ReScript type system is really good at inferring the prop types just by look
 For simple cases, well-scoped usage, or experimentation, it's still fine to omit type annotations:
 
 
-```res
+```res example
 // Button.res
 
 @react.component
@@ -290,7 +301,7 @@ Every ReScript component can be used in JSX. For example, if we want to use our 
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 // src/App.res
 
 @react.component
@@ -324,7 +335,7 @@ For example:
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 module Link = {
   type props = {href: string, children: React.element};
   
@@ -365,7 +376,7 @@ More details on the `@react.component` decorator and its generated interface can
 
 We can also represent React components as submodules, which makes it very convenient to build more complex UI without the need to create multiple files for each composite component (that's probably only used by the parent component anyways): 
 
-```res
+```res example
 // src/Button.res
 module Label = {
   @react.component
@@ -412,7 +423,7 @@ module Nested = {
   // will be named `File$Nested` in dev tools
   @react.component
   let make = ...
-};
+}
 ```
 
 If you need a dynamic name for higher-order components or you would like to set your own name you can use `React.setDisplayName(make, "NameThatShouldBeInDevTools")`.

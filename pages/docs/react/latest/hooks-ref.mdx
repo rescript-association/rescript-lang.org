@@ -17,7 +17,7 @@ The `useRef` hooks creates and manages mutable containers inside your React comp
 <CodeTab labels={["ReScript", "JS Output"]}>
 
 ```res
-let refContainer = React.useRef(initialValue);
+let refContainer = React.useRef(initialValue)
 ```
 
 ```js
@@ -49,7 +49,7 @@ More infos on direct DOM manipulation can be found in the [Refs and the DOM](./r
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 // TextInputWithFocusButton.res
 
 @send external focus: Dom.element => unit = "focus"
@@ -94,7 +94,7 @@ Reusing the example from our [Refs and the DOM](./refs-and-the-dom#callback-refs
 
 <CodeTab labels={["ReScript", "JS Output"]}>
 
-```res
+```res example
 // CustomTextInput.res
 
 @send external focus: Dom.element => unit = "focus"
