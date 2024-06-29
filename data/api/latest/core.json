@@ -164,13 +164,6 @@
         "signature": "let import: 'a => promise<'a>"
       },
       {
-        "id": "Core.t",
-        "kind": "type",
-        "name": "t",
-        "docstrings": [],
-        "signature": "type t<'a> = Js.t<'a>\n  constraint 'a = {..}"
-      },
-      {
         "id": "Core.null",
         "kind": "type",
         "name": "null",
@@ -239,56 +232,6 @@
         "name": "parseJsValue",
         "docstrings": [],
         "signature": "let parseJsValue: 'a => option<[> #always | #auto | #bool(bool) | #min2]>"
-      }
-    ]
-  },
-  "core/re/result": {
-    "id": "Core.Re.Result",
-    "name": "Result",
-    "docstrings": [],
-    "items": [
-      {
-        "id": "Core.Re.Result.t",
-        "kind": "type",
-        "name": "t",
-        "docstrings": [
-          "Type representing the result of a `RegExp` execution."
-        ],
-        "signature": "type t = array<string>"
-      },
-      {
-        "id": "Core.Re.Result.fullMatch",
-        "kind": "value",
-        "name": "fullMatch",
-        "docstrings": [
-          "`fullMatch(regExpResult)` returns the full string that matched in this result.\n\n  ## Examples\n  ```rescript\n  // Match the first two words separated by a space\n  let regexp = RegExp.fromString(\"(\\\\w+) (\\\\w+)\")\n\n  switch regexp->RegExp.exec(\"ReScript is pretty cool, right?\") {\n  | None => Console.log(\"Nope, no match...\")\n  | Some(result) => Console.log(result->RegExp.Result.fullMatch) // Prints the full string that matched, \"ReScript is\"\n  }\n  ```"
-        ],
-        "signature": "let fullMatch: t => string"
-      },
-      {
-        "id": "Core.Re.Result.matches",
-        "kind": "value",
-        "name": "matches",
-        "docstrings": [
-          "`matches(regExpResult)` returns all matches for `regExpResult`.\n\n  ## Examples\n  ```rescript\n  // Match the first two words separated by a space\n  let regexp = RegExp.fromString(\"(\\\\w+) (\\\\w+)\")\n\n  // This below will log \"ReScript\" and \"is\" to the console.\n  switch regexp->RegExp.exec(\"ReScript is pretty cool, right?\") {\n  | None => Console.log(\"Nope, no match...\")\n  | Some(result) => switch result->RegExp.Result.matches {\n    | [firstWord, secondWord] => Console.log2(firstWord, secondWord)\n    | _ => Console.log(\"Didn't find exactly two words...\")\n    }\n  }\n  ```"
-        ],
-        "signature": "let matches: t => array<string>"
-      },
-      {
-        "id": "Core.Re.Result.index",
-        "kind": "value",
-        "name": "index",
-        "docstrings": [],
-        "signature": "let index: t => int"
-      },
-      {
-        "id": "Core.Re.Result.input",
-        "kind": "value",
-        "name": "input",
-        "docstrings": [
-          "`input(regExpResult)` returns the full input string that was passed to what produced the `RegExp.Result.t`.\n\n  ## Examples\n  ```rescript\n  // Match the first two words separated by a space\n  let regexp = RegExp.fromString(\"(\\\\w+) (\\\\w+)\")\n\n  // This below will log the full input string \"ReScript is pretty cool, right?\" to the console.\n  switch regexp->RegExp.exec(\"ReScript is pretty cool, right?\") {\n  | None => Console.log(\"Nope, no match...\")\n  | Some(result) => Console.log(result->RegExp.Result.input)\n  }\n  ```"
-        ],
-        "signature": "let input: t => string"
       }
     ]
   },
@@ -1233,7 +1176,7 @@
         "kind": "type",
         "name": "formatMatcher",
         "docstrings": [],
-        "signature": "type formatMatcher = [#basic | #bestFit]"
+        "signature": "type formatMatcher = [#basic | #\"best fit\"]"
       },
       {
         "id": "Core.Intl.DateTimeFormat.fractionalSecondDigits",
@@ -1436,7 +1379,7 @@
         "kind": "type",
         "name": "localeMatcher",
         "docstrings": [],
-        "signature": "type localeMatcher = [#bestFit | #lookup]"
+        "signature": "type localeMatcher = [#\"best fit\" | #lookup]"
       },
       {
         "id": "Core.Intl.Common.calendar",
@@ -1862,7 +1805,7 @@
         "docstrings": [
           "Type representing the result of a `RegExp` execution."
         ],
-        "signature": "type t = array<string>"
+        "signature": "type t = array<option<string>>"
       },
       {
         "id": "Core.RegExp.Result.fullMatch",
@@ -1993,9 +1936,18 @@
         "kind": "value",
         "name": "floor",
         "docstrings": [
-          "floor(v) returns the largest `int` less than or equal to the argument; \n  the result is pinned to the range of the `int` data type: -2147483648 to 2147483647. \n  See [`Math.floor`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/floor)\n  on MDN.\n\n  ## Examples\n\n  ```rescript\n  Math.Int.floor(3.7) == 3\n  Math.Int.floor(3.0) == 3\n  Math.Int.floor(-3.1) == -4\n  Math.Int.floor(-1.0e15) == -2147483648\n  Math.Int.floor(1.0e15) == 2147483647\n  ```"
+          "floor(v) returns the largest `int` less than or equal to the argument; \n  See [`Math.floor`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/floor)\n  on MDN.\n\n  ## Examples\n\n  ```rescript\n  Math.Int.floor(3.7) == 3\n  Math.Int.floor(3.0) == 3\n  Math.Int.floor(-3.1) == -4\n  ```"
         ],
         "signature": "let floor: float => int"
+      },
+      {
+        "id": "Core.Math.Int.ceil",
+        "kind": "value",
+        "name": "ceil",
+        "docstrings": [
+          "ceil(v) returns the smallest `int` greater than or equal to the argument;\n  See [`Math.floor`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/floor)\n  on MDN.\n\n  ## Examples\n\n  ```rescript\n  Math.Int.ceil(3.7) == 4\n  Math.Int.ceil(3.0) == 3\n  Math.Int.ceil(-3.1) == -3\n  ```"
+        ],
+        "signature": "let ceil: float => int"
       },
       {
         "id": "Core.Math.Int.random",
@@ -3112,135 +3064,6 @@
   "core/exn": {
     "id": "Core.Exn",
     "name": "Exn",
-    "docstrings": [],
-    "items": []
-  },
-  "core/re": {
-    "id": "Core.Re",
-    "name": "Re",
-    "docstrings": [
-      "Functions for handling RegExp's in ReScript.\n\nSee [`RegExp`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp) on MDN."
-    ],
-    "items": [
-      {
-        "id": "Core.Re.t",
-        "kind": "type",
-        "name": "t",
-        "docstrings": [
-          "Type representing an instantiated `RegExp`."
-        ],
-        "signature": "type t = Js.Re.t"
-      },
-      {
-        "id": "Core.Re.fromString",
-        "kind": "value",
-        "name": "fromString",
-        "docstrings": [
-          "`fromString(string)` creates a `RegExp.t` from the provided string. This can then be used to match on strings using `RegExp.exec`.\n\nSee [`RegExp`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/RegExp) on MDN.\n\n## Examples\n```rescript\n// Match the first word in a sentence\nlet regexp = RegExp.fromString(\"\\\\w+\")\n\nswitch regexp->RegExp.exec(\"ReScript is pretty cool, right?\") {\n| None => Console.log(\"Nope, no match...\")\n| Some(result) => Console.log(result->RegExp.Result.fullMatch) // Prints \"ReScript\"\n}\n```"
-        ],
-        "signature": "let fromString: string => t"
-      },
-      {
-        "id": "Core.Re.fromStringWithFlags",
-        "kind": "value",
-        "name": "fromStringWithFlags",
-        "docstrings": [
-          "`fromStringWithFlags(string)` creates a `RegExp.t` from the provided string, using the provided `flags`. This can then be used to match on strings using `RegExp.exec`.\n\nSee [`RegExp parameters`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/RegExp#parameters) on MDN.\n\n## Examples\n```rescript\n// Match the first word in a sentence\nlet regexp = RegExp.fromStringWithFlags(\"\\\\w+\", ~flags=\"g\")\n\nswitch regexp->RegExp.exec(\"ReScript is pretty cool, right?\") {\n| None => Console.log(\"Nope, no match...\")\n| Some(result) => Console.log(result->RegExp.Result.fullMatch) // Prints \"ReScript\"\n}\n```"
-        ],
-        "signature": "let fromStringWithFlags: (string, ~flags: string) => t"
-      },
-      {
-        "id": "Core.Re.test",
-        "kind": "value",
-        "name": "test",
-        "docstrings": [
-          "`test(regexp, string)` tests whether the provided `regexp` matches on the provided string.\n\nSee [`RegExp.test`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/test) on MDN.\n\n## Examples\n```rescript\n// Match the first word in a sentence\nlet regexp = RegExp.fromString(\"\\\\w+\")\n\nif regexp->RegExp.test(\"ReScript is cool!\") {\n  Console.log(\"Yay, there's a word in there.\")\n}\n```"
-        ],
-        "signature": "let test: (t, string) => bool"
-      },
-      {
-        "id": "Core.Re.exec",
-        "kind": "value",
-        "name": "exec",
-        "docstrings": [
-          "`exec(regexp, string)` executes the provided regexp on the provided string, optionally returning a `RegExp.Result.t` if the regexp matches on the string.\n\nSee [`RegExp.exec`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec) on MDN.\n\n## Examples\n```rescript\n// Match the first word in a sentence\nlet regexp = RegExp.fromString(\"\\\\w+\")\n\nswitch regexp->RegExp.exec(\"ReScript is pretty cool, right?\") {\n| None => Console.log(\"Nope, no match...\")\n| Some(result) => Console.log(result->RegExp.Result.fullMatch) // Prints \"ReScript\"\n}\n```"
-        ],
-        "signature": "let exec: (t, string) => option<Result.t>"
-      },
-      {
-        "id": "Core.Re.lastIndex",
-        "kind": "value",
-        "name": "lastIndex",
-        "docstrings": [
-          "`lastIndex(regexp)` returns the index the next match will start from.\n\nSee [`RegExp.lastIndex`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/lastIndex) on MDN.\n\n## Examples\n```rescript\n// Match the first word in a sentence\nlet regexp = RegExp.fromString(\"\\\\w+\")\nlet someStr = \"Many words here.\"\n\nConsole.log(regexp->RegExp.lastIndex) // Logs `0` to the console\n\nregexp->RegExp.exec(someStr)->ignore\n\nConsole.log(regexp->RegExp.lastIndex) // Logs `4` to the console\n```"
-        ],
-        "signature": "let lastIndex: t => int"
-      },
-      {
-        "id": "Core.Re.ignoreCase",
-        "kind": "value",
-        "name": "ignoreCase",
-        "docstrings": [
-          "`ignoreCase(regexp)` returns whether the ignore case (`i`) flag is set on this `RegExp`.\n\nSee [`RegExp.ignoreCase`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/ignoreCase) on MDN.\n\n## Examples\n```rescript\nlet regexp1 = RegExp.fromStringWithFlags(\"\\\\w+\", ~flags=\"g\")\nConsole.log(regexp1->RegExp.ignoreCase) // Logs `false`, since `i` is not set\n\nlet regexp2 = RegExp.fromStringWithFlags(\"\\\\w+\", ~flags=\"i\")\nConsole.log(regexp2->RegExp.ignoreCase) // Logs `true`, since `i` is set\n```"
-        ],
-        "signature": "let ignoreCase: t => bool"
-      },
-      {
-        "id": "Core.Re.global",
-        "kind": "value",
-        "name": "global",
-        "docstrings": [
-          "`global(regexp)` returns whether the global (`g`) flag is set on this `RegExp`.\n\nSee [`RegExp.global`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/global) on MDN.\n\n## Examples\n```rescript\nlet regexp1 = RegExp.fromStringWithFlags(\"\\\\w+\", ~flags=\"g\")\nConsole.log(regexp1->RegExp.global) // Logs `true`, since `g` is set\n\nlet regexp2 = RegExp.fromStringWithFlags(\"\\\\w+\", ~flags=\"i\")\nConsole.log(regexp2->RegExp.global) // Logs `false`, since `g` is not set\n```"
-        ],
-        "signature": "let global: t => bool"
-      },
-      {
-        "id": "Core.Re.multiline",
-        "kind": "value",
-        "name": "multiline",
-        "docstrings": [
-          "`multiline(regexp)` returns whether the multiline (`m`) flag is set on this `RegExp`.\n\nSee [`RegExp.multiline`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/multiline) on MDN.\n\n## Examples\n```rescript\nlet regexp1 = RegExp.fromStringWithFlags(\"\\\\w+\", ~flags=\"g\")\nConsole.log(regexp1->RegExp.multiline) // Logs `false`, since `m` is not set\n\nlet regexp2 = RegExp.fromStringWithFlags(\"\\\\w+\", ~flags=\"mi\")\nConsole.log(regexp2->RegExp.multiline) // Logs `true`, since `m` is set\n```"
-        ],
-        "signature": "let multiline: t => bool"
-      },
-      {
-        "id": "Core.Re.source",
-        "kind": "value",
-        "name": "source",
-        "docstrings": [
-          "`source(regexp)` returns the source text for this `RegExp`, without the two forward slashes (if present), and without any set flags.\n\nSee [`RegExp.source`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/source) on MDN.\n\n## Examples\n```rescript\nlet regexp = RegExp.fromStringWithFlags(\"\\\\w+\", ~flags=\"g\")\nConsole.log(regexp->RegExp.source) // Logs `\\w+`, the source text of the `RegExp`\n```"
-        ],
-        "signature": "let source: t => string"
-      },
-      {
-        "id": "Core.Re.sticky",
-        "kind": "value",
-        "name": "sticky",
-        "docstrings": [
-          "`sticky(regexp)` returns whether the sticky (`y`) flag is set on this `RegExp`.\n\nSee [`RegExp.sticky`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/sticky) on MDN.\n\n## Examples\n```rescript\nlet regexp1 = RegExp.fromStringWithFlags(\"\\\\w+\", ~flags=\"g\")\nConsole.log(regexp1->RegExp.unicode) // Logs `false`, since `y` is not set\n\nlet regexp2 = RegExp.fromStringWithFlags(\"\\\\w+\", ~flags=\"my\")\nConsole.log(regexp2->RegExp.unicode) // Logs `true`, since `y` is set\n```"
-        ],
-        "signature": "let sticky: t => bool"
-      },
-      {
-        "id": "Core.Re.unicode",
-        "kind": "value",
-        "name": "unicode",
-        "docstrings": [
-          "`unicode(regexp)` returns whether the unicode (`y`) flag is set on this `RegExp`.\n\nSee [`RegExp.unicode`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicode) on MDN.\n\n## Examples\n```rescript\nlet regexp1 = RegExp.fromStringWithFlags(\"\\\\w+\", ~flags=\"g\")\nConsole.log(regexp1->RegExp.unicode) // Logs `false`, since `u` is not set\n\nlet regexp2 = RegExp.fromStringWithFlags(\"\\\\w+\", ~flags=\"mu\")\nConsole.log(regexp2->RegExp.unicode) // Logs `true`, since `u` is set\n```"
-        ],
-        "signature": "let unicode: t => bool"
-      }
-    ]
-  },
-  "core/internal": {
-    "id": "Core.Internal",
-    "name": "Internal",
-    "docstrings": [],
-    "items": []
-  },
-  "core/mapperrt": {
-    "id": "Core.MapperRt",
-    "name": "MapperRt",
     "docstrings": [],
     "items": []
   },
@@ -5402,6 +5225,15 @@
         "signature": "let get: (string, int) => option<string>"
       },
       {
+        "id": "Core.String.getUnsafe",
+        "kind": "value",
+        "name": "getUnsafe",
+        "docstrings": [
+          "`getUnsafe(str, index)` returns an `string` at the given `index` number.\n\nThis is _unsafe_, meaning it will return `undefined` value if `index` does not exist in `string`.\n\nUse `String.getUnsafe` only when you are sure the `index` exists.\n## Examples\n\n```rescript\nString.getUnsafe(\"ReScript\", 0) == \"R\"\nString.getUnsafe(\"Hello\", 4) == \"o\"\n```"
+        ],
+        "signature": "let getUnsafe: (string, int) => string"
+      },
+      {
         "id": "Core.String.charAt",
         "kind": "value",
         "name": "charAt",
@@ -5541,7 +5373,7 @@
         "kind": "value",
         "name": "match",
         "docstrings": [
-          "`match(str, regexp)` matches a `string` against the given `regexp`. If there is\nno match, it returns `None`. For regular expressions without the g modifier, if\nthere is a match, the return value is `Some(array)` where the array contains:\n- The entire matched string\n- Any capture groups if the regexp had parentheses\nFor regular expressions with the g modifier, a matched expression returns\n`Some(array)` with all the matched substrings and no capture groups.\nSee [`String.match`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match) on MDN.\n\n## Examples\n\n```rescript\nString.match(\"The better bats\", %re(\"/b[aeiou]t/\")) == Some([\"bet\"])\nString.match(\"The better bats\", %re(\"/b[aeiou]t/g\")) == Some([\"bet\", \"bat\"])\nString.match(\"Today is 2018-04-05.\", %re(\"/(\\d+)-(\\d+)-(\\d+)/\")) ==\n  Some([\"2018-04-05\", \"2018\", \"04\", \"05\"])\nString.match(\"The large container.\", %re(\"/b[aeiou]g/\")) == None\n```"
+          "`match(str, regexp)` matches a `string` against the given `regexp`. If there is\nno match, it returns `None`. For regular expressions without the g modifier, if\nthere is a match, the return value is `Some(array)` where the array contains:\n- The entire matched string\n- Any capture groups if the regexp had parentheses\nFor regular expressions with the g modifier, a matched expression returns\n`Some(array)` with all the matched substrings and no capture groups.\nSee [`String.match`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match) on MDN.\n\n## Examples\n\n```rescript\nString.match(\"The better bats\", %re(\"/b[aeiou]t/\")) == Some([Some(\"bet\")])\nString.match(\"The better bats\", %re(\"/b[aeiou]t/g\")) == Some([Some(\"bet\"), Some(\"bat\")])\nString.match(\"Today is 2018-04-05.\", %re(\"/(\\d+)-(\\d+)-(\\d+)/\")) ==\n  Some([Some(\"2018-04-05\"), Some(\"2018\"), Some(\"04\"), Some(\"05\")])\nString.match(\"The optional example\", %re(\"/(foo)?(example)/\")) == Some([Some(\"example\"), None, Some(\"example\")])\nString.match(\"The large container.\", %re(\"/b[aeiou]g/\")) == None\n```"
         ],
         "signature": "let match: (string, Core__RegExp.t) => option<Core__RegExp.Result.t>"
       },
@@ -5932,6 +5764,15 @@
           "`lastIndex(regexp)` returns the index the next match will start from.\n\nSee [`RegExp.lastIndex`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/lastIndex) on MDN.\n\n## Examples\n```rescript\n// Match the first word in a sentence\nlet regexp = RegExp.fromString(\"\\\\w+\")\nlet someStr = \"Many words here.\"\n\nConsole.log(regexp->RegExp.lastIndex) // Logs `0` to the console\n\nregexp->RegExp.exec(someStr)->ignore\n\nConsole.log(regexp->RegExp.lastIndex) // Logs `4` to the console\n```"
         ],
         "signature": "let lastIndex: t => int"
+      },
+      {
+        "id": "Core.RegExp.setLastIndex",
+        "kind": "value",
+        "name": "setLastIndex",
+        "docstrings": [
+          "`setLastIndex(regexp, index)` set the index the next match will start from.\n\nSee [`RegExp.lastIndex`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/lastIndex) on MDN.\n\n## Examples\n```rescript\n// Match the first word in a sentence\nlet regexp = RegExp.fromString(\"\\\\w+\")\nlet someStr = \"Many words here.\"\n\nregexp->RegExp.setLastIndex(4)\nregexp->RegExp.exec(someStr)->ignore\n\nConsole.log(regexp->RegExp.lastIndex) // Logs `10` to the console\n```"
+        ],
+        "signature": "let setLastIndex: (t, int) => unit"
       },
       {
         "id": "Core.RegExp.ignoreCase",
@@ -6522,6 +6363,15 @@
           "The value `undefined`.\n\nSee [`undefined`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/undefined) on MDN.\n\n## Examples\n```rescript\nConsole.log(undefined) // Logs `undefined` to the console.\n```"
         ],
         "signature": "let undefined: t<'a>"
+      },
+      {
+        "id": "Core.Nullable.isNullable",
+        "kind": "value",
+        "name": "isNullable",
+        "docstrings": [
+          "`isNullable(a)` returns `true` if `a` is null or undefined, `false` otherwise.\n\n## Examples\n\n```rescript\nlet myStr = \"Hello\"\nlet asNullable = myStr->Nullable.make\n\n// Can't do the below because we're now forced to check for nullability\n// myStr == asNullable\n\n// Check if asNullable is not null or undefined\nswitch asNullable->Nullable.isNullable {\n| true => assert(false)\n| false => assert(true)\n}\n```"
+        ],
+        "signature": "let isNullable: t<'a> => bool"
       },
       {
         "id": "Core.Nullable.make",
@@ -9782,7 +9632,7 @@
         "kind": "value",
         "name": "every",
         "docstrings": [
-          "`every(array, predicate)` returns true if `predicate` returns true for all items in `array`.\n\nSee [`Array.every`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every) on MDN.\n\n## Examples\n```rescript\nlet array = [1, 2, 3, 4]\n\nConsole.log(array->Array.every(num => num > 4)) // true\nConsole.log(array->Array.every(num => num === 1)) // false\n```"
+          "`every(array, predicate)` returns true if `predicate` returns true for all items in `array`.\n\nSee [`Array.every`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every) on MDN.\n\n## Examples\n```rescript\nlet array = [1, 2, 3, 4]\n\nConsole.log(array->Array.every(num => num <= 4)) // true\nConsole.log(array->Array.every(num => num === 1)) // false\n```"
         ],
         "signature": "let every: (array<'a>, 'a => bool) => bool"
       },
