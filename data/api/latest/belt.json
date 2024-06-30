@@ -3687,7 +3687,7 @@
     "name": "String",
     "docstrings": [
       "Specialized when value type is `string`, more efficient than the generic type,\nits compare behavior is fixed using the built-in comparison",
-      "This module is [`Belt.Set`]() specialized with value type to be a primitive type.\nIt is more efficient in general, the  API is the same with [`Belt_Set`]() except its value type is fixed,\nand identity is not needed(using the built-in one)\n\n**See** [`Belt.Set`]()"
+      "This module is [`Belt.Set`]() specialized with value type to be a primitive type.\n  It is more efficient in general, the  API is the same with [`Belt_Set`]() except its value type is fixed,\n  and identity is not needed(using the built-in one)\n\n  **See** [`Belt.Set`]()"
     ],
     "items": [
       {
@@ -3867,7 +3867,7 @@
         "kind": "value",
         "name": "every",
         "docstrings": [
-          "`every(p, s)` checks if all elements of the set satisfy the predicate `p`.\nOrder unspecified."
+          "`every(p, s)` checks if all elements of the set satisfy the predicate `p`. Order\nunspecified."
         ],
         "signature": "let every: (t, value => bool) => bool"
       },
@@ -3915,7 +3915,7 @@
         "kind": "value",
         "name": "partition",
         "docstrings": [
-          "`partition(p, s)` returns a pair of sets `(s1, s2)`, where\n`s1` is the set of all the elements of `s` that satisfy the\npredicate `p`, and `s2` is the set of all the elements of\n`s` that do not satisfy `p`."
+          "`partition(p, s)` returns a pair of sets `(s1, s2)`, where `s1` is the set of\nall the elements of `s` that satisfy the predicate `p`, and `s2` is the set of\nall the elements of `s` that do not satisfy `p`."
         ],
         "signature": "let partition: (t, value => bool) => (t, t)"
       },
@@ -3996,7 +3996,7 @@
         "kind": "value",
         "name": "split",
         "docstrings": [
-          "`split(x, s)` returns a triple `(l, present, r)`, where\n`l` is the set of elements of `s` that are\nstrictly less than `x`;\n`r` is the set of elements of `s` that are\nstrictly greater than `x`;\n`present` is `false` if `s` contains no element equal to `x`,\nor `true` if `s` contains an element equal to `x`."
+          "`split(x, s)` returns a triple `(l, present, r)`, where `l` is the set of\nelements of `s` that are strictly less than `x`;`r` is the set of elements of\n`s` that are strictly greater than `x`; `present` is `false` if `s` contains no\nelement equal to `x`, or `true` if `s` contains an element equal to `x`."
         ],
         "signature": "let split: (t, value) => ((t, t), bool)"
       },
@@ -4016,7 +4016,7 @@
     "name": "Int",
     "docstrings": [
       "Specialized when value type is `int`, more efficient than the generic type, its\ncompare behavior is fixed using the built-in comparison",
-      "This module is [`Belt.Set`]() specialized with value type to be a primitive type.\nIt is more efficient in general, the  API is the same with [`Belt_Set`]() except its value type is fixed,\nand identity is not needed(using the built-in one)\n\n**See** [`Belt.Set`]()"
+      "This module is [`Belt.Set`]() specialized with value type to be a primitive type.\n  It is more efficient in general, the  API is the same with [`Belt_Set`]() except its value type is fixed,\n  and identity is not needed(using the built-in one)\n\n  **See** [`Belt.Set`]()"
     ],
     "items": [
       {
@@ -4077,7 +4077,7 @@
         "kind": "value",
         "name": "add",
         "docstrings": [
-          "`add(s, x)` if `x` was already in `s`, `s` is returned unchanged."
+          "`add(s, x)` If `x` was already in `s`, `s` is returned unchanged."
         ],
         "signature": "let add: (t, value) => t"
       },
@@ -4093,7 +4093,7 @@
         "kind": "value",
         "name": "remove",
         "docstrings": [
-          "`remove(m, x)` if `x` was not in `m`, `m` is returned reference unchanged."
+          "`remove(m, x)` If `x` was not in `m`, `m` is returned reference unchanged."
         ],
         "signature": "let remove: (t, value) => t"
       },
@@ -4325,7 +4325,7 @@
         "kind": "value",
         "name": "split",
         "docstrings": [
-          "`split(x, s)` returns a triple `(l, present, r)`, where\n`l` is the set of elements of `s` that are\nstrictly less than `x`;\n`r` is the set of elements of `s` that are\nstrictly greater than `x`;\n`present` is `false` if `s` contains no element equal to `x`,\nor `true` if `s` contains an element equal to `x`."
+          "`split(x, s)` returns a triple `(l, present, r)`, where `l` is the set of\nelements of `s` that are strictly less than `x`;`r` is the set of elements of\n`s` that are strictly greater than `x`; `present` is `false` if `s` contains no\nelement equal to `x`, or `true` if `s` contains an element equal to `x`."
         ],
         "signature": "let split: (t, value) => ((t, t), bool)"
       },
