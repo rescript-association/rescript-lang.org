@@ -179,4 +179,9 @@ let companies = [
     url: "https://ybru.ru",
     path: "/static/lp/ybru.svg",
   }),
+  Logo({
+    name: "WebCurate",
+    url: "https://webcurate.co",
+    path: "/static/lp/webcurate.svg",
+  }),
 ]
