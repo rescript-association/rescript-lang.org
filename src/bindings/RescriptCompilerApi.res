@@ -408,10 +408,11 @@ module Compiler = {
     ConversionResult.decode(~fromLang=Reason, ~toLang=Reason, json)
   }
 
-  @get external ocaml: t => option<{..}> = "ocaml"
+  @get external ocaml: t => option<dict<string>> = "ocaml"
+
   let ocamlVersion = (t: t): option<string> => {
     switch ocaml(t) {
-    | Some(ocaml) => ocaml->Obj.magic->Dict.get("version")
+    | Some(ocaml) => ocaml->Dict.get("version")
     | None => None
     }
   }
