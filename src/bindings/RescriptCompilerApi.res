@@ -37,6 +37,7 @@ module Version = {
     | V2
     | V3
     | V4
+    | V5
     | UnknownVersion(string)
 
   // Helps finding the right API version
@@ -59,6 +60,7 @@ module Version = {
     | list{"2"} => V2
     | list{"3"} => V3
     | list{"4"} => V4
+    | list{"5"} => V5
     | _ => UnknownVersion(apiVersion)
     }
 
@@ -68,6 +70,7 @@ module Version = {
     | V2 => "2.0"
     | V3 => "3.0"
     | V4 => "4.0"
+    | V5 => "5.0"
     | UnknownVersion(version) => version
     }
 
@@ -76,7 +79,7 @@ module Version = {
   let availableLanguages = t =>
     switch t {
     | V1 => [Lang.Reason, Res]
-    | V2 | V3 | V4 => [Lang.Res]
+    | V2 | V3 | V4 | V5 => [Lang.Res]
     | UnknownVersion(_) => [Res]
     }
 }
@@ -405,7 +408,14 @@ module Compiler = {
     ConversionResult.decode(~fromLang=Reason, ~toLang=Reason, json)
   }
 
-  @get @scope("ocaml") external ocamlVersion: t => string = "version"
+  @get external ocaml: t => option<dict<string>> = "ocaml"
+
+  let ocamlVersion = (t: t): option<string> => {
+    switch ocaml(t) {
+    | Some(ocaml) => ocaml->Dict.get("version")
+    | None => None
+    }
+  }
 
   @send @scope("ocaml")
   external ocamlCompile: (t, string) => JSON.t = "compile"

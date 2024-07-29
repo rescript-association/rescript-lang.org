@@ -896,7 +896,7 @@ module Settings = {
 
       let open_modules = switch readyState.selected.apiVersion {
       | V1 | V2 | V3 | UnknownVersion(_) => None
-      | V4 =>
+      | V4 | V5 =>
         readyState.selected.libraries->Array.some(el => el === "@rescript/core")
           ? Some(["RescriptCore"])
           : None

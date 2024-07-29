@@ -147,7 +147,7 @@ let getLibrariesForVersion = (~version: Semver.t): array<string> => {
 let getOpenModules = (~apiVersion: Version.t, ~libraries: array<string>): option<array<string>> =>
   switch apiVersion {
   | V1 | V2 | V3 | UnknownVersion(_) => None
-  | V4 => libraries->Array.some(el => el === "@rescript/core") ? Some(["RescriptCore"]) : None
+  | V4 | V5 => libraries->Array.some(el => el === "@rescript/core") ? Some(["RescriptCore"]) : None
   }
 
 /*
@@ -207,7 +207,7 @@ type selected = {
   id: Semver.t, // The id used for loading the compiler bundle (ideally should be the same as compilerVersion)
   apiVersion: Version.t, // The playground API version in use
   compilerVersion: string,
-  ocamlVersion: string,
+  ocamlVersion: option<string>,
   libraries: array<string>,
   config: Config.t,
   instance: Compiler.t,
@@ -509,6 +509,11 @@ let useCompilerManager = (
               `Reason not supported with API version "${apiVersion->RescriptCompilerApi.Version.toString}"`,
             )
           | Lang.Res => instance->Compiler.resCompile(code)
+          }
+        | V5 =>
+          switch lang {
+          | Lang.Res => instance->Compiler.resCompile(code)
+          | _ => CompilationResult.UnexpectedError(`Can't handle with lang: ${lang->Lang.toString}`)
           }
         | UnknownVersion(version) =>
           CompilationResult.UnexpectedError(

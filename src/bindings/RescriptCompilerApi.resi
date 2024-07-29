@@ -25,6 +25,7 @@ module Version: {
     | V2
     | V3
     | V4
+    | V5
     | UnknownVersion(string)
 
   // Helps finding the right API version
@@ -188,7 +189,7 @@ module Compiler: {
   /*
    * OCaml compiler actions (Note: no pretty print available for OCaml)
    */
-  let ocamlVersion: t => string
+  let ocamlVersion: t => option<string>
   let ocamlCompile: (t, string) => CompilationResult.t
 
   /*
