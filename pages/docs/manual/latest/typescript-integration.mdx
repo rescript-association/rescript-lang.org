@@ -214,6 +214,55 @@ These features are for experimentation only. They could be changed/removed any t
 
 - Export object and record types as interfaces. To activate, add `"exportInterfaces": true` to the configuration. The types are also renamed from `name` to `Iname`.
 
+
+## Shims
+
+A shim is a TS file that provides user-provided definitions for library types.
+
+Required only if one needs to export certain basic ReScript data types to JS when one cannot modify the sources to add annotations (e.g. exporting ReScript lists), and if the types are not first-classed in genType.
+  - Example: `Array<string>` with format: `"RescriptModule=JavaScriptModule"`
+
+Configure your shim files within `"gentypeconfig"` in your [`rescript.json`]:
+
+```json
+{
+  "gentypeconfig": {
+    "shims": {
+      "Js": "Js",
+      "ReactEvent": "ReactEvent",
+      "RescriptPervasives": "RescriptPervasives",
+      "ReasonReact": "ReactShim"
+    },
+  },
+}
+```
+
+and add relevant `.shim.ts` files in a directory which is visible by ReScript e.g. 
+
+```
+├── rescript.json
+├── src
+│   ├── shims
+│   │   ├── Js.shim.ts
+│   │   ├── ReactEvent.shim.ts
+│   │   └── RescriptPervasives.shim.ts
+```
+
+Here are some examples:
+
+```ts
+// Excerpt from https://github.com/rescript-lang/rescript-compiler/blob/master/jscomp/gentype_tests/typescript-react-example/src/shims/Js.shim.ts
+export type Json_t = unknown;
+export type t = unknown;
+```
+
+```ts
+// Excerpt from https://github.com/rescript-lang/rescript-compiler/tree/master/jscomp/gentype_tests/typescript-react-example/src/shims
+export type inputFocusEvent = React.FocusEvent<HTMLInputElement>;
+```
+
+More complete example shims can be found [here](https://github.com/rescript-lang/rescript-compiler/blob/master/jscomp/gentype_tests/typescript-react-example/src/shims/).
+
 ## Deprecated features
 
 Features related to generating runtimes were deprecated since v11 and should no longer be used.
