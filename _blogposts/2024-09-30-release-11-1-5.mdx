@@ -44,6 +44,13 @@ The compiler also received some improvements, mostly around error reporting, (un
 - [Windows 11 ARM Support](https://github.com/rescript-lang/rescript-compiler/pull/6813)
 
 ## v12 outlook
+ReScript version 12 is well under way and we're working hard to streamline our platform and development process more. A sneak peak of some of the things we're working on:
+- Uncurried only, making sure the generated JS is as fast and clean as possible
+- A new significantly faster (up to 60% faster in some cases) and more robust build system in [`Rewatch`](https://github.com/rescript-lang/rewatch), with full monorepo support
+-  [ReScript Core](https://github.com/rescript-association/rescript-core) moves into the compiler and becomes the standard library
+- Streamlined and improved TypeScript <-> ReScript interop through a revamp of Gentype
+
+...and many more things. More blog posts on v12 to follow!
 
 We are deep in the process of removing a lot of legacy compiler internals as well as support for ml syntax. With v12, ReScript will be a language with just _one_ syntax, targeting _one_ platform and, ideally, _one_ standard library that ships with the compiler directly. We hope it will enable us to tailor ReScript even more to the JS platform.
 
