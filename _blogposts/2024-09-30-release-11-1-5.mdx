@@ -23,107 +23,24 @@ JSX 3 has been officially deprecated. Moving forward, developers should only use
 
 ## Some parser and formatter fixes
 
-On the way to remove the legacy `Pervasives` standard library out of the compiler, we adapted a lot of compiler tests and found some parser and formatter issues, see below:
+On the way to remove the legacy `Pervasives` standard library out of the compiler, we adapted a lot of compiler tests and found and fixed some parser and formatter issues, for instance:
 
-### Trailing Comma Issue Fixed in Partial Applications
+- [Trailing Comma Issue Fixed in Partial Applications](https://github.com/rescript-lang/rescript-compiler/pull/6949)
+- [Unary Operator Function Format Fix](https://github.com/rescript-lang/rescript-compiler/pull/6953)
+- [Correct printing of module binding with signature](https://github.com/rescript-lang/rescript-compiler/pull/6963)
+- [Comment Retention in Function Signatures with `type`](https://github.com/rescript-lang/rescript-compiler/pull/6997)
+- [Parsing Error Fixed in Type Definitions](https://github.com/rescript-lang/rescript-compiler/pull/7001)
 
-A bug that caused a trailing comma in partial applications (`...`) during long layout breaks has been fixed. This resolves formatting inconsistencies that could arise in such cases. [More details](https://github.com/rescript-lang/rescript-compiler/pull/6949).
+## Compiler fixes
 
-### Unary Operator Function Format Fix
+The compiler also received some improvements, mostly around error reporting, (untagged) variant checks and producing more efficient code in uncurried mode. Furthermore, there were some Windows support improvements. Some notable changes are:
 
-Previously, functions placed under unary operators could end up incorrectly formatted. This issue has now been resolved, ensuring that such scenarios are handled cleanly. [PR link](https://github.com/rescript-lang/rescript-compiler/pull/6953).
-
-### Correct printing of module binding with signature
-
-An issue where the module binding with a signature was incorrectly printed has been addressed. The formatting now works as expected, improving readability and reducing confusion. [Learn more](https://github.com/rescript-lang/rescript-compiler/pull/6963).
-
-### Comment Retention in Function Signatures with `type`
-
-Comments were sometimes removed when a function signature included the `type` keyword. This bug has been fixed, ensuring that comments remain intact and improve code clarity. [PR details](https://github.com/rescript-lang/rescript-compiler/pull/6997).
-
-### Parsing Error Fixed in Type Definitions
-
-A parsing error that occurred when a doc comment appeared before an "and" in a type definition has been corrected. Developers can now rely on proper parsing in such scenarios. [See the PR](https://github.com/rescript-lang/rescript-compiler/pull/7001).
-
-### Tuple Coercion Fix
-
-A bug in tuple coercion has been addressed, ensuring proper behavior in tuple-related type coercion. [More here](https://github.com/rescript-lang/rescript-compiler/pull/7024).
-
-### Comment Handling in Uncurried Functions
-
-The formatter now properly retains comments in the first argument of uncurried functions, improving code readability during formatting. [Details in the PR](https://github.com/rescript-lang/rescript-compiler/pull/6763).
-
-### Parenthesis Retention in Pipe Operators
-
-A formatter bug where parentheses were removed in pipe operators with anonymous uncurried functions has been fixed, ensuring that the intended operator precedence is preserved. [More details](https://github.com/rescript-lang/rescript-compiler/pull/6766).
-
-### Improved Support for Capitalized Type Variables
-
-A bug preventing capitalized type variables from being used in certain positions has been fixed, allowing greater flexibility in type variable naming. [Details here](https://github.com/rescript-lang/rescript-compiler/pull/6820).
-
-## Compiler improvements
-
-### Stricter Variant Spreading Rules
-
-The compiler now disallows spreading anything other than regular variants inside other variants. This change enforces stricter type-safety rules, making your code more predictable and reducing potential edge-case errors. [PR link](https://github.com/rescript-lang/rescript-compiler/pull/6980).
-
-### Improved Error Reporting in Tag Functions
-
-Compiler error reports related to tag functions have been improved, ensuring accurate error locations for easier debugging. [Details in the PR](https://github.com/rescript-lang/rescript-compiler/pull/6816).
-
-### Infinite Loops Fix in Recursive Types
-
-An infinite loop issue arising from recursive types with type errors has been fixed. This significantly improves the compiler’s robustness when handling more complex type definitions. [PR link](https://github.com/rescript-lang/rescript-compiler/pull/6867).
-
-### Better Handling of `@uncurry` in Uncurried Mode
-
-The `@uncurry` attribute is now ignored in uncurried mode, preventing unnecessary runtime calls to `Curry`, which optimizes performance and reduces overhead. [More on the fix](https://github.com/rescript-lang/rescript-compiler/pull/6869). As uncurried mode will be the only mode of V12, the attribute will also be removed.
-
-### Arity Adjustment Without `Curry` Calls
-
-The compiler now avoids generating `Curry` calls when adjusting the arity of uncurried functions, further improving runtime efficiency. [Details in the PR](https://github.com/rescript-lang/rescript-compiler/pull/6870).
-
-### Recursive Function Fix for `_param`
-
-An uninitialized `_param` in recursive functions with unit arguments has been fixed, improving reliability in recursive function calls. [See the PR](https://github.com/rescript-lang/rescript-compiler/pull/6907).
-
-### Optional Labels in Record Value Construction
-
-An issue where optional labels were not considered during record value construction has been fixed, making record creation more consistent and error-free. [PR link](https://github.com/rescript-lang/rescript-compiler/pull/6798).
-
-### Gentype Improvements for `Jsx.element`
-
-A bug in Gentype when the `Jsx.element` type surfaced to the user has been addressed, ensuring better interoperability between Gentype and JSX elements. [Read more](https://github.com/rescript-lang/rescript-compiler/pull/6808).
-
-### Untagged Variant Fixes
-
-The compiler now correctly handles inclusion checks for untagged variants and improves the outcome printer to properly display tags. [Details in the PR](https://github.com/rescript-lang/rescript-compiler/pull/6669).
-
-### Encoding Fix in Tagged Template Literals
-
-An encoding issue in tagged template literals has been fixed, ensuring that template literals work correctly with special character encodings. [Learn more](https://github.com/rescript-lang/rescript-compiler/pull/6810).
-
-### Switch Case Issue Fixed for Mixed Objects and Arrays
-
-A bug causing incorrect switch case behavior when mixing objects and arrays with identical bodies has been resolved, improving the correctness of switch case statements. [PR link](https://github.com/rescript-lang/rescript-compiler/pull/6792).
-
-## Platform support and build system
-
-### Deno Compatibility on Windows
-
-The ReScript compiler now resolves compatibility issues when using Deno on Windows, making development smoother for Windows users working with Deno. [Read more](https://github.com/rescript-lang/rescript-compiler/pull/6850).
-
-### Windows 11 ARM Support
-
-The compiler now supports Windows 11 ARM, using x64 binaries in emulation mode, expanding ReScript’s compatibility with new hardware architectures. [Learn more](https://github.com/rescript-lang/rescript-compiler/pull/6813).
-
-### Build Fix Without `-warn-error`
-
-A specific build issue that occurred when running the compiler without `-warn-error` has been resolved. This improves the flexibility of build configurations. [Learn more](https://github.com/rescript-lang/rescript-compiler/pull/6877).
-
-### Omit Standard Library in Load Path
-
-If the `-nostdlib` flag is set, the standard library directory will now be omitted from the load path, giving developers more control over their environment. [PR link](https://github.com/rescript-lang/rescript-compiler/pull/6833).
+- [Stricter Variant Spreading Rules](https://github.com/rescript-lang/rescript-compiler/pull/6980)
+- [Improved Error Reporting in Tag Functions](https://github.com/rescript-lang/rescript-compiler/pull/6816)
+- [Better Handling of `@uncurry` in Uncurried Mode](https://github.com/rescript-lang/rescript-compiler/pull/6869)
+- [Untagged Variant Fixes](https://github.com/rescript-lang/rescript-compiler/pull/6669)
+- [Deno Compatibility on Windows](https://github.com/rescript-lang/rescript-compiler/pull/6850)
+- [Windows 11 ARM Support](https://github.com/rescript-lang/rescript-compiler/pull/6813)
 
 ## v12 outlook
 
