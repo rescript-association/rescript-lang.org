@@ -134,11 +134,17 @@ let getLibrariesForVersion = (~version: Semver.t): array<string> => {
     []
   }
 
-  // Since version 11, we ship the compiler-builtins as a separate file, and
-  // we also added @rescript/core as a pre-vendored package
+  // Since version 11, we ship the compiler-builtins as a separate file
   if version.major >= 11 {
-    libraries->Array.push("@rescript/core")->ignore
-    libraries->Array.push("compiler-builtins")->ignore
+    libraries->Array.push("compiler-builtins")
+  }
+
+  // From version 11 to 12.0.0-alpha.3 @rescript/core is an external package
+  switch version {
+  | {major: 11}
+  | {major: 12, minor: 0, patch: 0, preRelease: Some(Alpha(1 | 2 | 3))} =>
+    libraries->Array.push("@rescript/core")
+  | _ => ()
   }
 
   libraries
