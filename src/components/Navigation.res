@@ -546,7 +546,7 @@ let make = (~fixed=true, ~isOverlayOpen: bool, ~setOverlayOpen: (bool => bool) =
               {React.string("Blog")}
             </Link>
             <Link
-              href="/community"
+              href="/community/overview"
               className={"hidden xs:block " ++ linkOrActiveLink(~target="/community", ~route)}>
               {React.string("Community")}
             </Link>
