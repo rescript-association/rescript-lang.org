@@ -189,4 +189,9 @@ let companies = [
     url: "https://resmume.com/",
     path: "/static/lp/resmume.svg",
   }),
+  Logo({
+    name: "Cardoc",
+    url: "https://www.cardoc.co.kr/",
+    path: "/static/lp/cardoc.svg",
+  }),
 ]
