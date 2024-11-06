@@ -34,7 +34,7 @@ module GetStaticProps = {
 
   type revalidate<'props, 'params> = context<'props, 'params> => promise<{
     "props": 'props,
-    "revalidate": int,
+    "revalidate": Nullable.t<int>,
   }>
 }
 

@@ -611,6 +611,9 @@ let getStaticProps: Next.GetStaticProps.revalidate<props, unit> = async _ctx => 
 
   {
     "props": props,
-    "revalidate": 43200,
+    "revalidate": switch Node.Process.env->Dict.get("BUILD_STATIC") {
+      | Some("true") => Nullable.undefined
+      | _ => Nullable.make(43200)
+    },
   }
 }
