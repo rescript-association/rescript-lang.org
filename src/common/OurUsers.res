@@ -1,7 +1,7 @@
 type company = Logo({name: string, url: string, path: string})
 
 // NOTE: More details on how this works can be found in our README:
-// https://github.com/rescript-association/rescript-lang.org#how-to-add-your-company-logo-to-our-front-page
+// https://github.com/rescript-lang/rescript-lang.org#how-to-add-your-company-logo-to-our-front-page
 
 let companies = [
   Logo({

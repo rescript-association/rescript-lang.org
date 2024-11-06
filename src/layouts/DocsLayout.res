@@ -139,7 +139,7 @@ let make = (
 
       let ghEditHref = switch canonical {
       | Some(canonical) =>
-        `https://github.com/rescript-association/rescript-lang.org/blob/master/pages${canonical}.mdx`->Some
+        `https://github.com/rescript-lang/rescript-lang.org/blob/master/pages${canonical}.mdx`->Some
       | None => None
       }
       (meta, ghEditHref)

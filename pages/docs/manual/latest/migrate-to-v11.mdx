@@ -34,7 +34,7 @@ The old configuration filename `bsconfig.json` is deprecated. Rename `bsconfig.j
 
 ### ReScript Core standard library
 
-[ReScript Core](https://github.com/rescript-association/rescript-core) is ReScript's new standard library. It replaces the complete `Js` module as well as some of the more frequently used modules from `Belt` and is recommended to use with uncurried mode.
+[ReScript Core](https://github.com/rescript-lang/rescript-core) is ReScript's new standard library. It replaces the complete `Js` module as well as some of the more frequently used modules from `Belt` and is recommended to use with uncurried mode.
 
 It will be integrated into the compiler in a future version. In ReScript 11, it still needs to be installed manually:
 
@@ -63,12 +63,14 @@ Open it so it's available in the global scope.
 ```
 
 One major change to be aware of is that array access now returns an `option`.
+
 ```res
 let firstItem = myArray[0] // Some("hello")
 ```
+
 If you would like to not use an `option`, you can use [`Array.getUnsafe`](api/core/array#value-getUnsafe).
 
-For a detailed explanation on migration to ReScript Core, please refer to its [migration guide](https://github.com/rescript-association/rescript-core#migration). A semi-automated script is available as well.
+For a detailed explanation on migration to ReScript Core, please refer to its [migration guide](https://github.com/rescript-lang/rescript-core#migration). A semi-automated script is available as well.
 
 See ReScript Core API docs [here](api/core).
 
