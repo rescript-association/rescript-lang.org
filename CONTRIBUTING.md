@@ -6,8 +6,8 @@ Please make sure to check out our [Code of Conduct](CODE_OF_CONDUCT.md) and make
 
 ## Ways to contribute
 
-- Writing docs for the manual (Check for issues that are marked with a [`manual`](https://github.com/rescript-association/rescript-lang.org/issues?q=is%3Aissue+is%3Aopen+label%3A"manual") and [`help wanted`](https://github.com/rescript-association/rescript-lang.org/issues?q=is%3Aissue+is%3Aopen+label%3A"help+wanted") tag)
-- Joining in discussions on our [issue tracker](https://github.com/rescript-association/rescript-lang.org/issues)
+- Writing docs for the manual (Check for issues that are marked with a [`manual`](https://github.com/rescript-lang/rescript-lang.org/issues?q=is%3Aissue+is%3Aopen+label%3A"manual") and [`help wanted`](https://github.com/rescript-lang/rescript-lang.org/issues?q=is%3Aissue+is%3Aopen+label%3A"help+wanted") tag)
+- Joining in discussions on our [issue tracker](https://github.com/rescript-lang/rescript-lang.org/issues)
 - Give feedback for improvements (incomplete / missing docs, bad wording,
   search user experience / design, etc.)
 - Advanced: Help building platform features (design system, automatic testing, markdown parsing, etc.)
@@ -16,7 +16,7 @@ Please make sure to check out our [Code of Conduct](CODE_OF_CONDUCT.md) and make
 
 ### Find an issue
 
-Before you start any work or submit any PRs, make sure to check our [issue tracker](https://github.com/rescript-association/rescript-lang.org/issues) for any issues or discussions on the topic.
+Before you start any work or submit any PRs, make sure to check our [issue tracker](https://github.com/rescript-lang/rescript-lang.org/issues) for any issues or discussions on the topic.
 
 If you can't find any relevant issues, feel free to create a new one to start a discussion. We usually assign issues to a responsible person to prevent confusion and duplicate work, so always double check if an issue is currently being worked on, or talk to the current assignee to take over the task.
 
@@ -24,7 +24,7 @@ If you can't find any relevant issues, feel free to create a new one to start a 
 
 The project follows very specific goals and tries to deliver the highest value with the least amount of resources. Please help us focus on the tasks at hand and don't submit any code / bigger refactorings without any proper discussion on the issue tracker. Otherwise your PR might not be accepted!
 
-If you need inspiration on what to work on, you can check out issues tagged with [`good first issue`](https://github.com/rescript-association/rescript-lang.org/issues?q=is%3Aissue+is%3Aopen+label%3A"good+first+issue") or [`help wanted`](https://github.com/rescript-association/rescript-lang.org/issues?q=is%3Aissue+is%3Aopen+label%3A"help+wanted").
+If you need inspiration on what to work on, you can check out issues tagged with [`good first issue`](https://github.com/rescript-lang/rescript-lang.org/issues?q=is%3Aissue+is%3Aopen+label%3A"good+first+issue") or [`help wanted`](https://github.com/rescript-lang/rescript-lang.org/issues?q=is%3Aissue+is%3Aopen+label%3A"help+wanted").
 
 ### Discuss an issue
 
@@ -44,7 +44,7 @@ We value your voluntary work, and of course it's fine to step back from a ticket
 
 ### Communication Channels
 
-- [Issue Tracker](https://github.com/rescript-association/rescript-lang.org/issues)
+- [Issue Tracker](https://github.com/rescript-lang/rescript-lang.org/issues)
 - [ReScript Discourse (General / mostly unrelated discussions)](http://forum.rescript-lang.org)
 
 ## Working on the rescript-lang.org

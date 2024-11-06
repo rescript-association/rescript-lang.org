@@ -202,7 +202,7 @@ module DocsSection = {
         imgSrc: "/static/ic_reanalyze@2x.png",
         title: "Reanalyze",
         description: "Dead Code & Termination analysis",
-        href: "https://github.com/rescript-association/reanalyze",
+        href: "https://github.com/rescript-lang/reanalyze",
         isActive: _ => {
           false
         },

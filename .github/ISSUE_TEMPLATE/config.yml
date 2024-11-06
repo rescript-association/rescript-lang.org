@@ -13,7 +13,7 @@ contact_links:
     url: https://github.com/rescript-lang/rescript-react/issues
     about: ReScript bindings to React.js
   - name: 🌐 rescript-core
-    url: https://github.com/rescript-association/rescript-core/issues
+    url: https://github.com/rescript-lang/rescript-core/issues
     about: New ReScript standard library
   - name: 💬 ReScript Forum
     url: https://forum.rescript-lang.org/
