@@ -13,7 +13,7 @@ module Intro = {
         </h2>
         <div className="mt-4 mb-2">
           <Next.Link href="/docs/manual/latest/installation" passHref={true}>
-            <Button> {React.string("Get started")} </Button>
+            <Button> {React.string("Get started!!")} </Button>
           </Next.Link>
         </div>
       </div>
