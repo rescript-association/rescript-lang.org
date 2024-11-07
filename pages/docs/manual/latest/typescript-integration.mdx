@@ -198,7 +198,7 @@ In case of the TypeScript project using `Bundler` module resolution, `allowImpor
 
 ## Testing the Whole Setup
 
-Open any relevant `*.res` file and add `@genType` annotations to any bindings / values / functions to be used from JavaScript. If an annotated value uses a type, the type must be annotated too. See e.g. [Hooks.res](https://github.com/rescript-lang/rescript-compiler/blob/master/jscomp/gentype_tests/typescript-react-example/src/Hooks.res).
+Open any relevant `*.res` file and add `@genType` annotations to any bindings / values / functions to be used from JavaScript. If an annotated value uses a type, the type must be annotated too. See e.g. [Hooks.res](https://github.com/rescript-lang/rescript-compiler/blob/master/tests/gentype_tests/typescript-react-example/src/Hooks.res).
 
 Save the file and rebuild the project via `npm run res:build` or similar. You should now see a `*.gen.tsx` file with the same name (e.g. `MyComponent.res` -> `MyComponent.gen.tsx`).
 
@@ -251,7 +251,7 @@ and add relevant `.shim.ts` files in a directory which is visible by ReScript e.
 Here are some examples:
 
 ```ts
-// Excerpt from https://github.com/rescript-lang/rescript-compiler/blob/master/jscomp/gentype_tests/typescript-react-example/src/shims/Js.shim.ts
+// Excerpt from https://github.com/rescript-lang/rescript-compiler/blob/master/tests/gentype_tests/typescript-react-example/src/shims/Js.shim.ts
 export type Json_t = unknown;
 export type t = unknown;
 ```
