@@ -1134,7 +1134,6 @@ module ControlPanel = {
     }
   }
 
-  @val @scope(("window", "location")) external origin: string = "origin"
   @react.component
   let make = (
     ~actionIndicatorKey: string,
@@ -1173,8 +1172,8 @@ module ControlPanel = {
 
         let querystring = params->Array.map(((key, value)) => key ++ "=" ++ value)->Array.join("&")
 
-        let url = origin ++ router.route ++ "?" ++ querystring
-        Next.Router.replace(router, url)
+        let url = router.route ++ "?" ++ querystring
+        Webapi.Window.History.replaceState(null, ~url)
         url
       }
 
