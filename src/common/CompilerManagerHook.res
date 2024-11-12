@@ -242,13 +242,14 @@ type action =
   | CompileCode(Lang.t, string)
   | UpdateConfig(Config.t)
 
-let createUrl = (pathName, {code, selected: {compilerVersion}, targetLang}) => {
-  let params = switch targetLang {
+let createUrl = (pathName, ready) => {
+  let params = switch ready.targetLang {
   | Res => []
   | lang => [("ext", RescriptCompilerApi.Lang.toExt(lang))]
   }
-  Array.push(params, ("version", "v" ++ compilerVersion))
-  Array.push(params, ("code", code->LzString.compressToEncodedURIComponent))
+  Array.push(params, ("version", "v" ++ ready.selected.compilerVersion))
+  Array.push(params, ("module", ready.selected.config.module_system))
+  Array.push(params, ("code", ready.code->LzString.compressToEncodedURIComponent))
   let querystring = params->Array.map(((key, value)) => key ++ "=" ++ value)->Array.join("&")
   let url = pathName ++ "?" ++ querystring
   url
@@ -267,6 +268,7 @@ let createUrl = (pathName, {code, selected: {compilerVersion}, targetLang}) => {
 //  cases where the output didn't visually change)
 let useCompilerManager = (
   ~initialVersion: option<Semver.t>=?,
+  ~initialModuleSystem="esmodule",
   ~initialLang: Lang.t=Res,
   ~onAction: option<action => unit>=?,
   ~versions: array<Semver.t>,
@@ -430,7 +432,7 @@ let useCompilerManager = (
               // internal compiler state with our playground state.
               let config = {
                 ...instance->Compiler.getConfig,
-                module_system: "esmodule",
+                module_system: initialModuleSystem,
                 ?open_modules,
               }
               instance->Compiler.setConfig(config)

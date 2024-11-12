@@ -59,6 +59,7 @@ type action =
 
 let useCompilerManager: (
   ~initialVersion: Semver.t=?,
+  ~initialModuleSystem: string=?,
   ~initialLang: Lang.t=?,
   ~onAction: action => unit=?,
   ~versions: array<Semver.t>,

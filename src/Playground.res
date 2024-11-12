@@ -1429,6 +1429,8 @@ let make = (~versions: array<string>) => {
   | _ => Api.Lang.Res
   }
 
+  let initialModuleSystem = Dict.get(router.query, "module")
+
   let initialContent = switch (Dict.get(router.query, "code"), initialLang) {
   | (Some(compressedCode), _) => LzString.decompressToEncodedURIComponent(compressedCode)
   | (None, Reason) => initialReContent
@@ -1447,6 +1449,7 @@ let make = (~versions: array<string>) => {
   let onAction = _ => setActionCount(prev => prev > 1000000 ? 0 : prev + 1)
   let (compilerState, compilerDispatch) = useCompilerManager(
     ~initialVersion?,
+    ~initialModuleSystem?,
     ~initialLang,
     ~onAction,
     ~versions,
