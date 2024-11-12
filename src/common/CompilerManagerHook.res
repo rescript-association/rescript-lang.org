@@ -242,6 +242,18 @@ type action =
   | CompileCode(Lang.t, string)
   | UpdateConfig(Config.t)
 
+let createUrl = (pathName, {code, selected: {compilerVersion}, targetLang}) => {
+  let params = switch targetLang {
+  | Res => []
+  | lang => [("ext", RescriptCompilerApi.Lang.toExt(lang))]
+  }
+  Array.push(params, ("version", "v" ++ compilerVersion))
+  Array.push(params, ("code", code->LzString.compressToEncodedURIComponent))
+  let querystring = params->Array.map(((key, value)) => key ++ "=" ++ value)->Array.join("&")
+  let url = pathName ++ "?" ++ querystring
+  url
+}
+
 // ~initialLang:
 // The target language the compiler should be set to during
 // playground initialization.  If the compiler doesn't support the language, it
@@ -261,6 +273,7 @@ let useCompilerManager = (
   (),
 ) => {
   let (state, setState) = React.useState(_ => Init)
+  let router = Next.Router.useRouter()
 
   // Dispatch method for the public interface
   let dispatch = (action: action): unit => {
@@ -528,8 +541,10 @@ let useCompilerManager = (
         }
 
         setState(_ => Ready({...ready, result: FinalResult.Comp(compResult)}))
-      | SetupFailed(_)
-      | Ready(_) => ()
+      | SetupFailed(_) => ()
+      | Ready(ready) =>
+        let url = createUrl(router.route, ready)
+        Webapi.Window.History.replaceState(null, ~url)
       }
     }
 

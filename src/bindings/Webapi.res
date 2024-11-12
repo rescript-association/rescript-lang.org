@@ -55,6 +55,10 @@ module Window = {
     @scope(("window", "history")) @val
     external replaceState: (nullable<'a>, @as(json`""`) _, ~url: string=?) => unit = "replaceState"
   }
+
+  module Location = {
+    @scope(("window", "location")) @val external href: string = "href"
+  }
 }
 
 module Fetch = {

@@ -1102,7 +1102,7 @@ module ControlPanel = {
       | CopySuccess
 
     @react.component
-    let make = (~createShareLink: unit => string, ~actionIndicatorKey: string) => {
+    let make = (~actionIndicatorKey: string) => {
       let (state, setState) = React.useState(() => Init)
 
       React.useEffect(() => {
@@ -1112,8 +1112,7 @@ module ControlPanel = {
 
       let onClick = evt => {
         ReactEvent.Mouse.preventDefault(evt)
-        let url = createShareLink()
-        let ret = copyToClipboard(url)
+        let ret = copyToClipboard(Webapi.Window.Location.href)
         if ret {
           setState(_ => CopySuccess)
         }
@@ -1143,38 +1142,14 @@ module ControlPanel = {
     ~runOutput,
     ~toggleRunOutput,
   ) => {
-    let router = Next.Router.useRouter()
-
     let children = switch state {
     | Init => React.string("Initializing...")
     | SwitchingCompiler(_ready, _version) => React.string("Switching Compiler...")
-    | Compiling(ready, _)
-    | Ready(ready) =>
+    | Compiling(_, _)
+    | Ready(_) =>
       let onFormatClick = evt => {
         ReactEvent.Mouse.preventDefault(evt)
         dispatch(Format(editorCode.current))
-      }
-
-      let createShareLink = () => {
-        let params = switch ready.targetLang {
-        | Res => []
-        | lang => [("ext", Api.Lang.toExt(lang))]
-        }
-
-        let version = ready.selected.compilerVersion
-
-        Array.push(params, ("version", "v" ++ version))->ignore
-
-        Array.push(
-          params,
-          ("code", editorCode.current->LzString.compressToEncodedURIComponent),
-        )->ignore
-
-        let querystring = params->Array.map(((key, value)) => key ++ "=" ++ value)->Array.join("&")
-
-        let url = router.route ++ "?" ++ querystring
-        Webapi.Window.History.replaceState(null, ~url)
-        url
       }
 
       <div className="flex flex-row gap-x-2">
@@ -1182,7 +1157,7 @@ module ControlPanel = {
           {React.string("Auto-run")}
         </ToggleButton>
         <Button onClick=onFormatClick> {React.string("Format")} </Button>
-        <ShareButton actionIndicatorKey createShareLink />
+        <ShareButton actionIndicatorKey />
       </div>
     | _ => React.null
     }

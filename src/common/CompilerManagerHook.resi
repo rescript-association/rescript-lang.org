@@ -64,3 +64,5 @@ let useCompilerManager: (
   ~versions: array<Semver.t>,
   unit,
 ) => (state, action => unit)
+
+let createUrl: (string, ready) => string
