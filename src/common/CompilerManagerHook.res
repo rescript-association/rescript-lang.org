@@ -255,6 +255,8 @@ let createUrl = (pathName, ready) => {
   url
 }
 
+let defaultModuleSystem = "esmodule"
+
 // ~initialLang:
 // The target language the compiler should be set to during
 // playground initialization.  If the compiler doesn't support the language, it
@@ -268,7 +270,7 @@ let createUrl = (pathName, ready) => {
 //  cases where the output didn't visually change)
 let useCompilerManager = (
   ~initialVersion: option<Semver.t>=?,
-  ~initialModuleSystem="esmodule",
+  ~initialModuleSystem=defaultModuleSystem,
   ~initialLang: Lang.t=Res,
   ~onAction: option<action => unit>=?,
   ~versions: array<Semver.t>,
@@ -485,7 +487,11 @@ let useCompilerManager = (
           let apiVersion = apiVersion->Version.fromString
           let open_modules = getOpenModules(~apiVersion, ~libraries)
 
-          let config = {...instance->Compiler.getConfig, ?open_modules}
+          let config = {
+            ...instance->Compiler.getConfig,
+            module_system: defaultModuleSystem,
+            ?open_modules,
+          }
           instance->Compiler.setConfig(config)
 
           let selected = {
