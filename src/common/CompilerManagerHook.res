@@ -242,6 +242,21 @@ type action =
   | CompileCode(Lang.t, string)
   | UpdateConfig(Config.t)
 
+let createUrl = (pathName, ready) => {
+  let params = switch ready.targetLang {
+  | Res => []
+  | lang => [("ext", RescriptCompilerApi.Lang.toExt(lang))]
+  }
+  Array.push(params, ("version", "v" ++ ready.selected.compilerVersion))
+  Array.push(params, ("module", ready.selected.config.module_system))
+  Array.push(params, ("code", ready.code->LzString.compressToEncodedURIComponent))
+  let querystring = params->Array.map(((key, value)) => key ++ "=" ++ value)->Array.join("&")
+  let url = pathName ++ "?" ++ querystring
+  url
+}
+
+let defaultModuleSystem = "esmodule"
+
 // ~initialLang:
 // The target language the compiler should be set to during
 // playground initialization.  If the compiler doesn't support the language, it
@@ -255,12 +270,14 @@ type action =
 //  cases where the output didn't visually change)
 let useCompilerManager = (
   ~initialVersion: option<Semver.t>=?,
+  ~initialModuleSystem=defaultModuleSystem,
   ~initialLang: Lang.t=Res,
   ~onAction: option<action => unit>=?,
   ~versions: array<Semver.t>,
   (),
 ) => {
   let (state, setState) = React.useState(_ => Init)
+  let router = Next.Router.useRouter()
 
   // Dispatch method for the public interface
   let dispatch = (action: action): unit => {
@@ -417,7 +434,7 @@ let useCompilerManager = (
               // internal compiler state with our playground state.
               let config = {
                 ...instance->Compiler.getConfig,
-                module_system: "esmodule",
+                module_system: initialModuleSystem,
                 ?open_modules,
               }
               instance->Compiler.setConfig(config)
@@ -470,7 +487,11 @@ let useCompilerManager = (
           let apiVersion = apiVersion->Version.fromString
           let open_modules = getOpenModules(~apiVersion, ~libraries)
 
-          let config = {...instance->Compiler.getConfig, ?open_modules}
+          let config = {
+            ...instance->Compiler.getConfig,
+            module_system: defaultModuleSystem,
+            ?open_modules,
+          }
           instance->Compiler.setConfig(config)
 
           let selected = {
@@ -528,8 +549,10 @@ let useCompilerManager = (
         }
 
         setState(_ => Ready({...ready, result: FinalResult.Comp(compResult)}))
-      | SetupFailed(_)
-      | Ready(_) => ()
+      | SetupFailed(_) => ()
+      | Ready(ready) =>
+        let url = createUrl(router.route, ready)
+        Webapi.Window.History.replaceState(null, ~url)
       }
     }
 

@@ -1102,7 +1102,7 @@ module ControlPanel = {
       | CopySuccess
 
     @react.component
-    let make = (~createShareLink: unit => string, ~actionIndicatorKey: string) => {
+    let make = (~actionIndicatorKey: string) => {
       let (state, setState) = React.useState(() => Init)
 
       React.useEffect(() => {
@@ -1112,8 +1112,7 @@ module ControlPanel = {
 
       let onClick = evt => {
         ReactEvent.Mouse.preventDefault(evt)
-        let url = createShareLink()
-        let ret = copyToClipboard(url)
+        let ret = copyToClipboard(Webapi.Window.Location.href)
         if ret {
           setState(_ => CopySuccess)
         }
@@ -1134,7 +1133,6 @@ module ControlPanel = {
     }
   }
 
-  @val @scope(("window", "location")) external origin: string = "origin"
   @react.component
   let make = (
     ~actionIndicatorKey: string,
@@ -1144,38 +1142,14 @@ module ControlPanel = {
     ~runOutput,
     ~toggleRunOutput,
   ) => {
-    let router = Next.Router.useRouter()
-
     let children = switch state {
     | Init => React.string("Initializing...")
     | SwitchingCompiler(_ready, _version) => React.string("Switching Compiler...")
-    | Compiling(ready, _)
-    | Ready(ready) =>
+    | Compiling(_, _)
+    | Ready(_) =>
       let onFormatClick = evt => {
         ReactEvent.Mouse.preventDefault(evt)
         dispatch(Format(editorCode.current))
-      }
-
-      let createShareLink = () => {
-        let params = switch ready.targetLang {
-        | Res => []
-        | lang => [("ext", Api.Lang.toExt(lang))]
-        }
-
-        let version = ready.selected.compilerVersion
-
-        Array.push(params, ("version", "v" ++ version))->ignore
-
-        Array.push(
-          params,
-          ("code", editorCode.current->LzString.compressToEncodedURIComponent),
-        )->ignore
-
-        let querystring = params->Array.map(((key, value)) => key ++ "=" ++ value)->Array.join("&")
-
-        let url = origin ++ router.route ++ "?" ++ querystring
-        Next.Router.replace(router, url)
-        url
       }
 
       <div className="flex flex-row gap-x-2">
@@ -1183,7 +1157,7 @@ module ControlPanel = {
           {React.string("Auto-run")}
         </ToggleButton>
         <Button onClick=onFormatClick> {React.string("Format")} </Button>
-        <ShareButton actionIndicatorKey createShareLink />
+        <ShareButton actionIndicatorKey />
       </div>
     | _ => React.null
     }
@@ -1455,6 +1429,8 @@ let make = (~versions: array<string>) => {
   | _ => Api.Lang.Res
   }
 
+  let initialModuleSystem = Dict.get(router.query, "module")
+
   let initialContent = switch (Dict.get(router.query, "code"), initialLang) {
   | (Some(compressedCode), _) => LzString.decompressToEncodedURIComponent(compressedCode)
   | (None, Reason) => initialReContent
@@ -1473,6 +1449,7 @@ let make = (~versions: array<string>) => {
   let onAction = _ => setActionCount(prev => prev > 1000000 ? 0 : prev + 1)
   let (compilerState, compilerDispatch) = useCompilerManager(
     ~initialVersion?,
+    ~initialModuleSystem?,
     ~initialLang,
     ~onAction,
     ~versions,

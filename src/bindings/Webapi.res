@@ -48,6 +48,17 @@ module Window = {
   @scope("window") @val external innerWidth: int = "innerWidth"
   @scope("window") @val external innerHeight: int = "innerHeight"
   @scope("window") @val external scrollY: int = "scrollY"
+
+  module History = {
+    @scope(("window", "history")) @val
+    external pushState: (nullable<'a>, @as(json`""`) _, ~url: string=?) => unit = "pushState"
+    @scope(("window", "history")) @val
+    external replaceState: (nullable<'a>, @as(json`""`) _, ~url: string=?) => unit = "replaceState"
+  }
+
+  module Location = {
+    @scope(("window", "location")) @val external href: string = "href"
+  }
 }
 
 module Fetch = {
