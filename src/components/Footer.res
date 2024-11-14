@@ -59,13 +59,16 @@ let make = () => {
         </Section>
         <Section title="Find us on">
           <div className="flex space-x-3 text-gray-100">
-            <a className=iconLink rel="noopener noreferrer" href="https://github.com/rescript-lang">
+            <a className=iconLink rel="noopener noreferrer" href=Constants.githubHref>
               <Icon.GitHub className="w-6 h-6" />
             </a>
-            <a className=iconLink rel="noopener noreferrer" href="https://twitter.com/rescriptlang">
-              <Icon.Twitter className="w-6 h-6" />
+            <a className=iconLink rel="noopener noreferrer" href=Constants.xHref>
+              <Icon.X className="w-6 h-6" />
             </a>
-            <a className=iconLink rel="noopener noreferrer" href="https://forum.rescript-lang.org">
+            <a className=iconLink rel="noopener noreferrer" href=Constants.blueSkyHref>
+              <Icon.BlueSky className="w-6 h-6" />
+            </a>
+            <a className=iconLink rel="noopener noreferrer" href=Constants.discourseHref>
               <Icon.Discourse className="w-6 h-6" />
             </a>
           </div>

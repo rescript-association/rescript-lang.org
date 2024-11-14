@@ -16,10 +16,6 @@ let linkOrActiveApiSubroute = (~route) => {
   }
 }
 
-let githubHref = "https://github.com/rescript-lang/rescript-compiler"
-//let twitterHref = "https://twitter.com/rescriptlang"
-let discourseHref = "https://forum.rescript-lang.org"
-
 module CollapsibleLink = {
   // KeepOpen = Menu has been opened and should stay open
   type state =
@@ -392,17 +388,22 @@ module MobileNav = {
          </li>
  */
         <li className=base>
-          <a href="https://twitter.com/rescriptlang" rel="noopener noreferrer" className=extLink>
-            {React.string("Twitter")}
+          <a href=Constants.xHref rel="noopener noreferrer" className=extLink>
+            {React.string("X")}
           </a>
         </li>
         <li className=base>
-          <a href=githubHref rel="noopener noreferrer" className=extLink>
+          <a href=Constants.blueSkyHref rel="noopener noreferrer" className=extLink>
+            {React.string("BlueSky")}
+          </a>
+        </li>
+        <li className=base>
+          <a href=Constants.githubHref rel="noopener noreferrer" className=extLink>
             {React.string("GitHub")}
           </a>
         </li>
         <li className=base>
-          <a href=discourseHref rel="noopener noreferrer" className=extLink>
+          <a href=Constants.discourseHref rel="noopener noreferrer" className=extLink>
             {React.string("Forum")}
           </a>
         </li>
@@ -554,16 +555,16 @@ let make = (~fixed=true, ~isOverlayOpen: bool, ~setOverlayOpen: (bool => bool) =
           <div className="md:flex flex items-center">
             <Search />
             <div className="hidden md:flex items-center ml-5">
-              <a href=githubHref rel="noopener noreferrer" className={"mr-5 " ++ link}>
+              <a href=Constants.githubHref rel="noopener noreferrer" className={"mr-5 " ++ link}>
                 <Icon.GitHub className="w-6 h-6 opacity-50 hover:opacity-100" />
               </a>
-              <a
-                href="https://twitter.com/rescriptlang"
-                rel="noopener noreferrer"
-                className={"mr-5 " ++ link}>
-                <Icon.Twitter className="w-6 h-6 opacity-50 hover:opacity-100" />
+              <a href=Constants.xHref rel="noopener noreferrer" className={"mr-5 " ++ link}>
+                <Icon.X className="w-6 h-6 opacity-50 hover:opacity-100" />
               </a>
-              <a href=discourseHref rel="noopener noreferrer" className=link>
+              <a href=Constants.blueSkyHref rel="noopener noreferrer" className={"mr-5 " ++ link}>
+                <Icon.BlueSky className="w-6 h-6 opacity-50 hover:opacity-100" />
+              </a>
+              <a href=Constants.discourseHref rel="noopener noreferrer" className=link>
                 <Icon.Discourse className="w-6 h-6 opacity-50 hover:opacity-100" />
               </a>
             </div>
