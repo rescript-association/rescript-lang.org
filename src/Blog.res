@@ -170,7 +170,7 @@ module FeatureCard = {
               <div>
                 <a
                   className="hover:text-gray-60"
-                  href={"https://twitter.com/" ++ author.twitter}
+                  href={"https://x.com/" ++ author.xHandle}
                   rel="noopener noreferrer">
                   {React.string(author.fullname)}
                 </a>

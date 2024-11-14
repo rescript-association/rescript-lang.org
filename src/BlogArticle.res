@@ -39,7 +39,7 @@ module AuthorBox = {
       <div className="w-10 h-10 bg-berry-40 block rounded-full mr-3"> authorImg </div>
       <div className="body-sm">
         <a
-          href={"https://twitter.com/" ++ author.twitter}
+          href={"https://x.com/" ++ author.xHandle}
           className="hover:text-gray-80"
           rel="noopener noreferrer">
           {React.string(author.fullname)}

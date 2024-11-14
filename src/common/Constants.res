@@ -26,7 +26,7 @@ let ecosystem = [
 
 let tools = [("Syntax Lookup", "/syntax-lookup")]
 
-let githubHref = "https://github.com/rescript-lang/rescript-compiler"
+let githubHref = "https://github.com/rescript-lang/rescript"
 let xHref = "https://x.com/rescriptlang"
 let blueSkyHref = "https://bsky.app/profile/rescript-lang.org"
 let discourseHref = "https://forum.rescript-lang.org"
