@@ -12,7 +12,7 @@ let make = (~tag) => {
   let element = React.useRef(Nullable.null)
 
   React.useEffect(() => {
-    let segment = `https://raw.githubusercontent.com/rescript-lang/rescript-compiler/${tag}/docs/docson/build-schema.json`
+    let segment = `https://raw.githubusercontent.com/rescript-lang/rescript/${tag}/docs/docson/build-schema.json`
 
     // The api for docson is a little bit funky, so you need to check out the source to understand what it's doing
     // See: https://github.com/lbovet/docson/blob/master/src/index.js

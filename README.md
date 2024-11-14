@@ -6,7 +6,7 @@
 
 This is the official documentation platform for the [ReScript](https://rescript-lang.org) programming language.
 
-**Please report any technical issues with ReScript to the [compiler repository](https://github.com/rescript-lang/rescript-compiler).**
+**Please report any technical issues with ReScript to the [compiler repository](https://github.com/rescript-lang/rescript).**
 
 **In case you are missing some specific documentation:**
 
