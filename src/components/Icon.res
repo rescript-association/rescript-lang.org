@@ -42,7 +42,7 @@ module X = {
     </svg>
 }
 
-module BlueSky = {
+module Bluesky = {
   @react.component
   let make = (~className: string) =>
     <svg className={"fill-current " ++ className} viewBox="0 0 568 501">

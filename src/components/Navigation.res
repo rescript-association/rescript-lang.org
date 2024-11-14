@@ -394,7 +394,7 @@ module MobileNav = {
         </li>
         <li className=base>
           <a href=Constants.blueSkyHref rel="noopener noreferrer" className=extLink>
-            {React.string("BlueSky")}
+            {React.string("Bluesky")}
           </a>
         </li>
         <li className=base>
@@ -562,7 +562,7 @@ let make = (~fixed=true, ~isOverlayOpen: bool, ~setOverlayOpen: (bool => bool) =
                 <Icon.X className="w-6 h-6 opacity-50 hover:opacity-100" />
               </a>
               <a href=Constants.blueSkyHref rel="noopener noreferrer" className={"mr-5 " ++ link}>
-                <Icon.BlueSky className="w-6 h-6 opacity-50 hover:opacity-100" />
+                <Icon.Bluesky className="w-6 h-6 opacity-50 hover:opacity-100" />
               </a>
               <a href=Constants.discourseHref rel="noopener noreferrer" className=link>
                 <Icon.Discourse className="w-6 h-6 opacity-50 hover:opacity-100" />

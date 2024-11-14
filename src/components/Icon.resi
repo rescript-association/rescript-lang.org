@@ -11,7 +11,7 @@ module X: {
   @react.component
   let make: (~className: string) => React.element
 }
-module BlueSky: {
+module Bluesky: {
   @react.component
   let make: (~className: string) => React.element
 }

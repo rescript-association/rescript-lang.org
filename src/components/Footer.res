@@ -66,7 +66,7 @@ let make = () => {
               <Icon.X className="w-6 h-6" />
             </a>
             <a className=iconLink rel="noopener noreferrer" href=Constants.blueSkyHref>
-              <Icon.BlueSky className="w-6 h-6" />
+              <Icon.Bluesky className="w-6 h-6" />
             </a>
             <a className=iconLink rel="noopener noreferrer" href=Constants.discourseHref>
               <Icon.Discourse className="w-6 h-6" />
